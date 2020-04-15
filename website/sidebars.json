@@ -1,11 +1,27 @@
 {
   "docs": {
-    "Getting Started": ["overview", "installing-server"],
-    
-    "First Category": ["doc2"],
-    "Second Category": ["doc3"]
+    "Getting Started": [
+      "overview",
+      "installing-server"
+    ],
+    "Java SDK": [
+      "java-quick-start",
+      "java-workflow-interface",
+      "java-implementing-workflows",
+      "java-starting-workflow-executions",
+      "java-activity-interface",
+      "java-implementing-activities",
+      "java-versioning",
+      "java-distributed-cron"
+    ],
+    "Second Category": [
+      "doc3"
+    ]
   },
   "docs-other": {
-    "First Category": ["doc4", "doc5"]
+    "First Category": [
+      "doc4",
+      "doc5"
+    ]
   }
 }
