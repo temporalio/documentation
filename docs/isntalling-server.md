@@ -1,40 +1,39 @@
 ---
-id: quickstart
-title: Quickstart
-sidebar_label: Quickstart
+id: installing-server
+title: Installing Temporal
+sidebar_label: Installing Temporal
 ---
 
-## Install Temporal Server Locally
+## Install Server Locally
 
-### Install docker
+### Prerequisites
 
 Follow the Docker installation instructions found here: [https://docs.docker.com/engine/install](https://docs.docker.com/engine/install)
-
-### Install docker-compose
 
 Follow the docker-compose installation instructions found here: [https://docs.docker.com/compose/install](https://docs.docker.com/compose/install)
 
 ### Run Temporal Server Using docker-compose
 
 Download the Temporal docker-compose file to preferred location (i.e. `quick_start` directory):
+
 ```bash
-> curl -L https://github.com/temporalio/temporal/releases/download/v0.21.1/docker.tar.gz | tar -xz --strip-components 1 docker/docker-compose.yml
-  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-100   604  100   604    0     0   6357      0 --:--:-- --:--:-- --:--:--  6291
-100  7294  100  7294    0     0  12909      0 --:--:-- --:--:-- --:--:-- 12909
-> ls
-docker-compose.yml
+curl -L https://github.com/temporalio/temporal/releases/download/v0.21.1/docker.tar.gz | tar -xz --strip-components 1 docker/docker-compose.yml
+
+ls
+# docker-compose.yml
 ```
 
 Start Temporal Service:
+
 ```bash
-> docker-compose up
+docker-compose up
+```
+
+The output should look similar to:
+
+```
 Creating network "quick_start_default" with the default driver
 Pulling temporal (temporalio/temporal-auto-setup:0.21.1)...
-...
-...
-<skip docker-compose output>
 ...
 ...
 temporal_1   | Description: Default namespace for Temporal Server
@@ -57,7 +56,9 @@ temporal_1   | + echo 'Default namespace registration complete.'
 temporal_1   | Default namespace registration complete.
 ```
 
-Note that a default namespace is created upon first cluster start.
+This will download and run Temporal docker images. You can now see the web interface on [localhost:8088](http://localhost:8088/)
+
+![temporal-web-home-page](assets/temporal-web-home-page.png)
 
 ## Write Workflows and Activities using Client SDK
 

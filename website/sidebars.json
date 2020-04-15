@@ -1,6 +1,6 @@
 {
   "docs": {
-    "Getting Started": ["overview", "quickstart"],
+    "Getting Started": ["overview", "installing-server"],
     
     "First Category": ["doc2"],
     "Second Category": ["doc3"]
