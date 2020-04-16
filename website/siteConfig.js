@@ -30,8 +30,8 @@ const siteConfig = {
   //   baseUrl: '/test-site/',
 
   // Used for publishing and more
-  projectName: 'test-site',
-  organizationName: 'facebook',
+  projectName: 'temporal-docs',
+  organizationName: 'Temporal Technologies Inc',
   // For top-level user or org sites, the organization is still the same.
   // e.g., for the https://JoelMarcey.github.io site, it would be set like...
   //   organizationName: 'JoelMarcey'
@@ -73,7 +73,9 @@ const siteConfig = {
   */
 
   // This copyright info is used in /core/Footer.js and blog RSS/Atom feeds.
-  copyright: `Copyright © ${new Date().getFullYear()} Your Name or Your Company Name`,
+  copyright: `
+  Copyright © ${new Date().getFullYear()} Temporal Technologies Inc.  All rights reserved.
+  Copyright © 2020 Uber Technologies, Inc.`,
 
   highlight: {
     // Highlight.js theme to use for syntax highlighting in code blocks.

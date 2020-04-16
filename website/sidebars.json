@@ -2,6 +2,7 @@
   "docs": {
     "Getting Started": [
       "overview",
+      "license",
       "installing-server"
     ],
     "SDK": [
@@ -44,9 +45,6 @@
           "go-tracing"
         ]
       }
-    ],
-    "Second Category": [
-      "doc3"
     ]
   },
   "docs-other": {
