@@ -65,7 +65,7 @@ from crashes or failures. It also serves as an audit log for debugging.
 
 ### Local Activity
 
-A [local activity](03_concepts/02_activities#local-activities) is an activity that is invoked directly in the same process by a workflow code. It consumes much less resources than a normal activity, but imposes a lot of limitations like low duration and lack of rate limiting.
+A [local activity](learn-activities#local-activities) is an activity that is invoked directly in the same process by a workflow code. It consumes much less resources than a normal activity, but imposes a lot of limitations like low duration and lack of rate limiting.
 
 ### Namespace
 Temporal is backed by a multi tenant service. The unit of isolation is called a **namespace**. Each namespace acts as a namespace for task list names as well as workflow Ids. For example, when a workflow is started, it is started in a

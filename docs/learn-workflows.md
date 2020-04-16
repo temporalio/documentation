@@ -77,7 +77,7 @@ To understand the Temporal execution model as well as the recovery mechanism, wa
 
 Workflow Id is assigned by a client when starting a workflow. It is usually a business level Id like customer Id or order Id.
 
-Temporal guarantees that there could be only one workflow (across all workflow types) with a given Id open per [namespace](../04_glossary#namespace) at any time. An attempt to start a workflow with the same Id is going to fail with `WorkflowExecutionAlreadyStarted` error.
+Temporal guarantees that there could be only one workflow (across all workflow types) with a given Id open per [namespace](learn-glossary#namespace) at any time. An attempt to start a workflow with the same Id is going to fail with `WorkflowExecutionAlreadyStarted` error.
 
 An attempt to start a workflow if there is a completed workflow with the same Id depends on a `WorkflowIdReusePolicy` option:
 

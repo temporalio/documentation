@@ -3,9 +3,9 @@ id: learn-task-lists
 title: Task Lists
 ---
 
-When a workflow invokes an activity, it sends the ```ScheduleActivityTask``` [decision](../04_glossary#decision) to the 
+When a workflow invokes an activity, it sends the ```ScheduleActivityTask``` [decision](learn-glossary#decision) to the 
 Temporal service. As a result, the service updates the workflow state and dispatches 
-an [activity task](../04_glossary#activity-task) to a worker that implements the activity. 
+an [activity task](learn-glossary#activity-task) to a worker that implements the activity. 
 Instead of calling the worker directly, an intermediate queue is used. So the service adds an _activity task_ to this 
 queue and a worker receives the task using a long poll request. 
 Temporal calls this queue used to dispatch activity tasks an *activity task list*.

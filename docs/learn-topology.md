@@ -12,7 +12,7 @@ Note that both types of workers as well as external clients are roles and can be
 
 ## Temporal Service
 
-![Temporal Service](../../assets/overview.png)
+![Temporal Service](assets/overview.png)
 
 At the core of Temporal is a highly scalable multitentant service. The service exposes all its functionality through a strongly typed [Proto API](https://github.com/temporalio/temporal-proto/blob/master/workflowservice/service.proto).
 
