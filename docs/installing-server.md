@@ -4,8 +4,6 @@ title: Installing Temporal
 sidebar_label: Installing Temporal
 ---
 
-## Install Server Locally
-
 ### Prerequisites
 
 Follow the Docker installation instructions found here: [https://docs.docker.com/engine/install](https://docs.docker.com/engine/install)
