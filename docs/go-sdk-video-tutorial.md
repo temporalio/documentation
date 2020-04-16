@@ -3,7 +3,9 @@ id: go-sdk-video-tutorial
 title: SDK Video Tutorial
 ---
 
-{% include youtubePlayer.html id="Wo0y_Ce3d4I" %}
+import ReactPlayer from 'react-player'
+
+<ReactPlayer url='https://www.youtube.com/watch?v=Wo0y_Ce3d4I' />
 
 Source code:
 

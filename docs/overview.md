@@ -4,6 +4,8 @@ title: Overview
 sidebar_label: Overview
 ---
 
+import ReactPlayer from 'react-player'
+
 A large number of use cases span beyond a single request-reply, require tracking
 of a complex state, respond to asynchronous events, and communicate to external unreliable dependencies.
 The usual approach to building such applications is a hodgepodge of stateless services,
@@ -34,7 +36,7 @@ that are shared by hundreds of applications.
 
 Watch Maxim's talk from the Uber Open Summit for an introduction to the Temporal programming model and value proposition.
 
-{% include youtubePlayer.html id="llmsBGKOuWI" %}
+<ReactPlayer url='https://www.youtube.com/watch?v=llmsBGKOuWI' />
 
 The GitHub repo for the Temporal server is [temporalio/temporal](https://github.com/temporalio/temporal). The docker
 image for the Temporal server is available on Docker Hub at
