@@ -62,6 +62,6 @@ This will download and run Temporal docker images. You can now see the web inter
 
 ## Write Workflows and Activities using Client SDK
 
-Try out [Java SDK](06_java_sdk/01_quick_start#).
+Try out [Java SDK](java-quick-start.md).
  
-Try out [Go SDK](07_go_sdk/001_quick_start#). 
+Try out [Go SDK](go-quick-start.md). 

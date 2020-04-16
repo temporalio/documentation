@@ -2,7 +2,8 @@
   "docs": {
     "Getting Started": [
       "overview",
-      "installing-server"
+      "installing-server",
+      "go-sdk-video-tutorial"
     ],
     "Java SDK": [
       "java-quick-start",
@@ -13,6 +14,26 @@
       "java-implementing-activities",
       "java-versioning",
       "java-distributed-cron"
+    ],
+    "Go SDK": [
+      "go-quick-start",
+      "go-workers",
+      "go-create-workflows",
+      "go-activities",
+      "go-execute-activity",
+      "go-child-workflows",
+      "go-retries",
+      "go-error-handling",
+      "go-signals",
+      "go-continue-as-new",
+      "go-side-effect",
+      "go-queries",
+      "go-activity-async-completion",
+      "go-workflow-testing",
+      "go-versioning",
+      "go-sessions",
+      "go-distributed-cron",
+      "go-tracing"
     ],
     "Second Category": [
       "doc3"
