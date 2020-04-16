@@ -6,6 +6,20 @@ module.exports = {
       "installing-server",
       "go-sdk-video-tutorial"
     ],
+    "Use Cases":[
+      "use-cases-periodic",
+      "use-cases-orchestration",
+      "use-cases-polling",
+      "use-cases-event-driven",
+      "use-cases-partitioned-scan",
+      "use-cases-batch-job",
+      "use-cases-provisioning",
+      "use-cases-cicd",
+      "use-cases-operational-management",
+      "use-cases-interactive",
+      "use-cases-dsl",
+      "use-cases-big-ml"      
+    ],
     "Learn": [
       "learn-glossary",
       "learn-workflows",
