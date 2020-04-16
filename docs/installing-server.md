@@ -54,6 +54,4 @@ temporal_1   | + echo 'Default namespace registration complete.'
 temporal_1   | Default namespace registration complete.
 ```
 
-This will download and run Temporal docker images. You can now see the web interface on [localhost:8088](http://localhost:8088/)
-
-![temporal-web-home-page](assets/temporal-web-home-page.png)
+At this point Temporal Server is running! You can also see the web interface on [localhost:8088](http://localhost:8088/)
