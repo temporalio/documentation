@@ -1,6 +1,6 @@
 ---
 id: go-sdk-video-tutorial
-title: SDK Video Tutorial
+title: Video Tutorial
 ---
 
 {% include youtubePlayer.html id="Wo0y_Ce3d4I" %}

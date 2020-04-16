@@ -2,38 +2,48 @@
   "docs": {
     "Getting Started": [
       "overview",
-      "installing-server",
-      "go-sdk-video-tutorial"
+      "installing-server"
     ],
-    "Java SDK": [
-      "java-quick-start",
-      "java-workflow-interface",
-      "java-implementing-workflows",
-      "java-starting-workflow-executions",
-      "java-activity-interface",
-      "java-implementing-activities",
-      "java-versioning",
-      "java-distributed-cron"
-    ],
-    "Go SDK": [
-      "go-quick-start",
-      "go-workers",
-      "go-create-workflows",
-      "go-activities",
-      "go-execute-activity",
-      "go-child-workflows",
-      "go-retries",
-      "go-error-handling",
-      "go-signals",
-      "go-continue-as-new",
-      "go-side-effect",
-      "go-queries",
-      "go-activity-async-completion",
-      "go-workflow-testing",
-      "go-versioning",
-      "go-sessions",
-      "go-distributed-cron",
-      "go-tracing"
+    "SDK": [
+      "go-sdk-video-tutorial",
+      {
+        "type": "subcategory",
+        "label": "Java",
+        "ids": [
+          "java-quick-start",
+          "java-workflow-interface",
+          "java-implementing-workflows",
+          "java-starting-workflow-executions",
+          "java-activity-interface",
+          "java-implementing-activities",
+          "java-versioning",
+          "java-distributed-cron"
+        ]
+      },
+      {
+        "type": "subcategory",
+        "label": "Go",
+        "ids": [
+          "go-quick-start",
+          "go-workers",
+          "go-create-workflows",
+          "go-activities",
+          "go-execute-activity",
+          "go-child-workflows",
+          "go-retries",
+          "go-error-handling",
+          "go-signals",
+          "go-continue-as-new",
+          "go-side-effect",
+          "go-queries",
+          "go-activity-async-completion",
+          "go-workflow-testing",
+          "go-versioning",
+          "go-sessions",
+          "go-distributed-cron",
+          "go-tracing"
+        ]
+      }
     ],
     "Second Category": [
       "doc3"
