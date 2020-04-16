@@ -13,7 +13,11 @@ module.exports = {
       "learn-events",
       "learn-queries",
       "learn-topology",
-      "learn-task-lists"
+      "learn-task-lists",
+      "learn-server-configuration",
+      "learn-archival",
+      "learn-cross-dc-replication",
+      "learn-workflow-filtering"
     ],
     "Java SDK": [
       "java-quick-start",
