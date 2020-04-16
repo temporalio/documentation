@@ -6,6 +6,7 @@ module.exports = {
   favicon: 'img/favicon.svg',
   organizationName: 'Temporal Technologies Inc', // Usually your GitHub org/user name.
   projectName: 'temporal-docs', // Usually your repo name.
+  plugins: ['@docusaurus/plugin-google-gtag'],
   themeConfig: {
     navbar: {
       title: 'Temporal',
@@ -90,6 +91,11 @@ module.exports = {
         },
       ],
       copyright: `Copyright © ${new Date().getFullYear()} Temporal Technologies Inc.  All rights reserved. Copyright © 2020 Uber Technologies, Inc.`,
+    },
+    gtag: {
+      trackingID: 'UA-163137879-1',
+      // Optional fields.
+      anonymizeIP: true, // Should IPs be anonymized?
     },
   },
   presets: [
