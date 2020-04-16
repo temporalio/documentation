@@ -1,5 +1,5 @@
 ---
-id: glossary-events
+id: learn-events
 title: Events
 ---
 

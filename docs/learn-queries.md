@@ -1,5 +1,5 @@
 ---
-id: glossary-queries
+id: learn-queries
 title: Queries
 ---
 

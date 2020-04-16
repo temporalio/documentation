@@ -1,5 +1,5 @@
 ---
-id: glossary-topology
+id: learn-topology
 title: Deployment Topology
 ---
 

@@ -1,6 +1,7 @@
 ---
-id: glossary-workflows
+id: learn-workflows
 title: Fault-Oblivious Stateful Workflow Code
+sidebar_label: Workflows
 ---
 
 ## Overview

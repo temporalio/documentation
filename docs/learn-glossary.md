@@ -1,5 +1,5 @@
 ---
-id: glossary
+id: learn-glossary
 title: Glossary
 ---
 

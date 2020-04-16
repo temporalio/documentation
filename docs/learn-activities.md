@@ -1,5 +1,5 @@
 ---
-id: glossary-activities
+id: learn-activities
 title: Activities
 ---
 

@@ -7,19 +7,13 @@ module.exports = {
       "go-sdk-video-tutorial"
     ],
     "Learn": [
-      "glossary",
-      {
-        "type": "category",
-        "label": "Concepts",
-        "items": [
-          "glossary-activities",
-          "glossary-events",
-          "glossary-queries",
-          "glossary-task-lists",
-          "glossary-topology",
-          "glossary-workflows"
-        ]
-      }
+      "learn-glossary",
+      "learn-workflows",
+      "learn-activities",
+      "learn-events",
+      "learn-queries",
+      "learn-topology",
+      "learn-task-lists"
     ],
     "Java SDK": [
       "java-quick-start",
