@@ -1,5 +1,5 @@
-{
-  "docs": {
+module.exports = {
+  docs: {
     "Getting Started": [
       "overview",
       "license",
@@ -9,9 +9,9 @@
     "Learn": [
       "glossary",
       {
-        "type": "subcategory",
+        "type": "category",
         "label": "Concepts",
-        "ids": [
+        "items": [
           "glossary-activities",
           "glossary-events",
           "glossary-queries",
@@ -52,10 +52,4 @@
       "go-tracing"
     ]
   },
-  "docs-other": {
-    "First Category": [
-      "doc4",
-      "doc5"
-    ]
-  }
-}
+};
