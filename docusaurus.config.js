@@ -115,7 +115,7 @@ module.exports = {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
           editUrl:
-            'https://github.com/temporalio/temporal-docs',
+            'https://github.com/temporalio/temporal-documentation-legacy-v2/blob/master',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
