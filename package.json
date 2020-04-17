@@ -16,7 +16,8 @@
     "classnames": "^2.2.6",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
-    "react-player": "^1.15.3"
+    "react-player": "^1.15.3",
+    "react-router": "^5.1.2"
   },
   "browserslist": {
     "production": [
