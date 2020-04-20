@@ -15,14 +15,14 @@ interface. The default implementation uses a JSON serializer, but an alternative
 Following is an example of an interface that defines four activities:
 
 ```java
-@ActivityAnnotation
+@ActivityInterface
 public interface FileProcessingActivities {
 
     void upload(String bucketName, String localName, String targetName);
 
     String download(String bucketName, String remoteName);
 
-    @ActivityMethod(scheduleToCloseTimeoutSeconds = 2)
+    @ActivityMethod(name="transcode_file")
     String processFile(String localName);
 
     void deleteLocalFile(String fileName);
