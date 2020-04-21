@@ -1,11 +1,11 @@
 module.exports = {
   title: 'Temporal',
   tagline: 'Invincible applications, invisible infrastructure',
-  url: 'https://docs.temporal.io',
+  url: 'https://temporalio.github.io',
   baseUrl: '/',
   favicon: 'img/favicon.svg',
-  organizationName: 'Temporal Technologies Inc', // Usually your GitHub org/user name.
-  projectName: 'temporal-docs', // Usually your repo name.
+  organizationName: 'temporalio', // Usually your GitHub org/user name.
+  projectName: 'temporal-documentation-legacy-v2', // Usually your repo name.
   plugins: [
     '@docusaurus/plugin-google-gtag',
     [
