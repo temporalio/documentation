@@ -3,8 +3,7 @@ module.exports = {
     "Getting Started": [
       "overview",
       "license",
-      "installing-server",
-      "go-sdk-video-tutorial"
+      "installing-server"
     ],
     "Use Cases":[
       "use-cases-periodic",
@@ -45,6 +44,7 @@ module.exports = {
     ],
     "Go SDK": [
       "go-quick-start",
+      "go-sdk-video-tutorial",
       "go-workers",
       "go-create-workflows",
       "go-activities",
