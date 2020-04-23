@@ -30,7 +30,8 @@ module.exports = {
       "learn-server-configuration",
       "learn-archival",
       "learn-cross-dc-replication",
-      "learn-workflow-filtering"
+      "learn-workflow-filtering",
+      "learn-cli"
     ],
     "Java SDK": [
       "java-quick-start",
