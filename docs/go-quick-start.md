@@ -30,7 +30,7 @@ go: creating new go.mod: module github.com/temporalio/tutorial-go-sdk
 
 Add dependency to Temporal Go SDK
 ```bash
-> go get go.temporal.io/temporal
+> go get go.temporal.io/temporal@v0.21.0
 go: downloading go.temporal.io/temporal v0.21.0
 go: go.temporal.io/temporal upgrade => v0.21.0
 ```
