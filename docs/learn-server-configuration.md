@@ -6,7 +6,7 @@ sidebar_label: Configuration
 
 Temporal Server configuration is found in `development.yaml` and may contain the following possible sections:
 
-- [**server**](#server) 
+- [**global**](#global) 
 - [**persistence**](#persistence) 
 - [**log**](#log) 
 - [**clusterMetadata**](#clusterMetadata)
@@ -22,26 +22,28 @@ Temporal Server configuration is found in `development.yaml` and may contain the
 
 **Note:** If you'd like to dig deeper and see how we actually parse this file, see our source code [here](https://github.com/temporalio/temporal/blob/master/common/service/config/config.go).
 
-## server
+## global
 
-The `server` section contains process-wide configuration. See below for a minimal server configuration (optional parameters are commented out.)
+The `global` section contains process-wide configuration. See below for a minimal configuration (optional parameters are commented out.)
 
 ```yaml
-server:
-  ringpop: 
+global:
+  membership: 
     name: temporal
     #maxJoinDuration: 30s
     #broadcastAddress: "127.0.0.1"
   #pprof:
     #port: 7936
+  #tls:
+    #...
 
 ```
 
-### ringpop - *required*
+### membership - *required*
 
-The `ringpop` section controls the following membership layer parameters:
+The `membership` section controls the following membership layer parameters:
 
-- `name` - *required* - used to identify other cluster members in a ringpop ring. This must be the same for all nodes.
+- `name` - *required* - used to identify other cluster members in the gossip ring. This must be the same for all nodes.
 - `maxJoinDuration` - The amount of time the service will attempt to join the gossip layer before failing.
 - `broadcastAddress` - Used as the address that is communicated to remote nodes to connect on. 
   - This is generally used when BindOnIP would be the same across several nodes (ie: 0.0.0.0) and for nat traversal scenarios. `net.ParseIP` controls the supported syntax. Note: Only IPV4 is supported.
@@ -49,6 +51,81 @@ The `ringpop` section controls the following membership layer parameters:
 ### pprof
 
 - `port` - If specified, this will initialize pprof upon process start on the listed port.
+
+### tls
+
+The `tls` section controls the SSL/TLS settings for network communication and contains two subsections, `internode` and `frontend`. The `internode` section governs internal service communication among roles where the `frontend` governs SDK client communication to the frontend service role.
+
+Each of these subsections are compromised of a `server` section and a `client` section. The `server` cotnains the following parameters:
+
+- `certFile` - The path to the file containing the PEM-encoded public key of the certificate to use.
+- `keyFile` - The path to the file containing the PEM-encoded private key of the certificate to use.
+- `requireClientAuth` - *boolean* - Requires clients to authenticate, otherwise known as mutual TLS.
+- `clientCAFiles` - A list of paths to files containing the PEM-encoded public key of the Certificate Authorities you wish to trust for client authentication. This value is ignored if `requireClientAuth` is not enabled.
+
+Below is an example enabling Server TLS (https) between SDKs and the Frontend APIs:
+
+```yaml
+global:
+  tls:
+    frontend:
+      server:
+        certFile: /path/to/public/cert
+        keyFile: /path/to/private/cert
+```
+
+The `client` section only needs to be provided in the case that a client's host does not trust RootCA used by the server and contains the single parameter `rootCAFiles`. The example below extends the above example to manually specifiy the RootCA used by the internode services:
+
+```yaml
+global:
+  tls:
+    frontend:
+      server:
+        certFile: /path/to/public/cert
+        keyFile: /path/to/private/cert
+      client:
+        rootCAFiles:
+          - /path/to/frontend/server/ca
+```
+
+Below is an additional example of a fully secured cluster using mutual TLS for both frontend and internode communication with manually specified CAs:
+
+```yaml
+global:
+  tls:
+    internode:
+      server:
+        certFile: /path/to/internode/publicCert
+        keyFile: /path/to/internode/privCert
+        requireClientAuth: true
+        clientCAFiles:
+          - /path/to/internode/serverCa
+      client:
+        rootCAFiles:
+          - /path/to/internode/serverCa
+    frontend:
+      server:
+        certFile: /path/to/frontend/publicCert
+        keyFile: /path/to/frontend/privCert
+        requireClientAuth: true
+        clientCAFiles:
+          - /path/to/internode/serverCa
+          - /path/to/sdkClientPool1/ca
+          - /path/to/sdkClientPool2/ca
+      client:
+        rootCAFiles:
+          - /path/to/frontend/serverCa
+
+```
+**Note:** In the case that client authentication is enabled, the `internode.server` certificate is used as the client certificate among services. This adds the following requirements:
+
+- The `internode.server` certificate must be specified on all roles, even for a frontend-only configuration.
+- Internode server certificates must be minted with either **no** Extended Key Usages or **both** ServerAuth and ClientAuth EKUs.
+- If your Certificate Authorities are untrusted, such as in the previous example, the internode server CA will need to be specified in the following places:
+
+  - `internode.server.clientCAFiles`
+  - `internode.client.rootCAFiles`
+  - `frontend.server.clientCAFiles`
 
 ## persistence
 The `persistence` section holds configuration for the data store / persistence layer. Below is an example minimal specification for a password-secured Cassandra cluster.
@@ -62,7 +139,7 @@ persistence:
       cassandra:
         hosts: "127.0.0.1"
         keyspace: "temporal"
-        user: "mark"
+        user: "username"
         password: "password"
     visibility:
       cassandra:
@@ -184,7 +261,7 @@ There are two sections defined under each service heading:
 `rpc` contains settings related to the way a service interacts with other services. The following values are supported:
 
 - `grpcPort` is the port  on which gRPC will listen.
-- `membershipPort` - used by the membership listener (ringpop).
+- `membershipPort` - used by the membership listener.
 - `bindOnLocalHost` - uses `localhost` as the listener address.
 - `bindOnIP` - used to bind service on specific ip (eg. `0.0.0.0`) - check `net.ParseIP` for supported syntax, only IPv4 is supported, mutually exclusive with `BindOnLocalHost` option.
 - `disableLogging` - disables all logging for rpc.
