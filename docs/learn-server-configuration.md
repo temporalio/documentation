@@ -9,10 +9,10 @@ Temporal Server configuration is found in `development.yaml` and may contain the
 - [**global**](#global) 
 - [**persistence**](#persistence) 
 - [**log**](#log) 
-- [**clusterMetadata**](#clusterMetadata)
-- [**services**](#service) 
-- [**kafka**](#kafkaConfig) 
-- [**publicClient**](#publicClient) 
+- [**clusterMetadata**](#clustermetadata)
+- [**services**](#services)
+- [**kafka**](#kafka)
+- [**publicClient**](#publicclient)
 - archival
 - dcRedirectionPolicy
 - dynamicConfigClient
