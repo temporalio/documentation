@@ -56,11 +56,11 @@ The `membership` section controls the following membership layer parameters:
 
 The `tls` section controls the SSL/TLS settings for network communication and contains two subsections, `internode` and `frontend`. The `internode` section governs internal service communication among roles where the `frontend` governs SDK client communication to the frontend service role.
 
-Each of these subsections are compromised of a `server` section and a `client` section. The `server` cotnains the following parameters:
+Each of these subsections contain a `server` section and a `client` section. The `server` contains the following parameters:
 
 - `certFile` - The path to the file containing the PEM-encoded public key of the certificate to use.
 - `keyFile` - The path to the file containing the PEM-encoded private key of the certificate to use.
-- `requireClientAuth` - *boolean* - Requires clients to authenticate, otherwise known as mutual TLS.
+- `requireClientAuth` - *boolean* - Requires clients to authenticate with a certificate when connecting, otherwise known as mutual TLS.
 - `clientCAFiles` - A list of paths to files containing the PEM-encoded public key of the Certificate Authorities you wish to trust for client authentication. This value is ignored if `requireClientAuth` is not enabled.
 
 Below is an example enabling Server TLS (https) between SDKs and the Frontend APIs:
@@ -74,7 +74,7 @@ global:
         keyFile: /path/to/private/cert
 ```
 
-The `client` section only needs to be provided in the case that a client's host does not trust RootCA used by the server and contains the single parameter `rootCAFiles`. The example below extends the above example to manually specifiy the RootCA used by the internode services:
+The `client` section only needs to be provided in the case that a client's host does not trust RootCA used by the server and contains the single parameter `rootCAFiles`. The example below extends the above example to manually specify the RootCA used by the internode services:
 
 ```yaml
 global:
@@ -152,10 +152,10 @@ The following top level configuration items are required:
 - `numHistoryShards` - *required* - the number of history shards to create when initializing the cluster. 
   - **Warning**: This value is immutable and will be ignored after the first run. Please ensure you set this value appropriately high enough to scale with the worst case peak load for this cluster.
 - `defaultStore` - *required* - the name of the data store definition that should be used by the Temporal server.
-- `visiblityStore` - *required* - the name of the data store definition that should be used by the Temporal visibility server.
+- `visibilityStore` - *required* - the name of the data store definition that should be used by the Temporal visibility server.
 - `datastores` - *required* - contains named data store definitions to be referenced.
   - Each definition is defined with a heading declaring a name (ie: `default:` and `visibility:` above), which contains a data store definition.
-  - data store definions must be either `cassandra` or `sql`.
+  - data store definitions must be either `cassandra` or `sql`.
 
 A `cassandra` data store definition can contain the following values:
 
