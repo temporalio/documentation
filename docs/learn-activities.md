@@ -27,8 +27,7 @@ As Temporal doesn't recover an activity's state and they can communicate to any 
 - `InitialInterval` is a delay before the first retry.
 - `BackoffCoefficient`. Retry policies are exponential. The coefficient specifies how fast the retry interval is growing. The coefficient of 1 means that the retry interval is always equal to the `InitialInterval`.
 - `MaximumInterval` specifies the maximum interval between retries. Useful for coefficients more than 1.
-- `MaximumAttempts` specifies how many times to attempt to execute an activity in the presence of failures. If this limit is exceeded, the error is returned back to the workflow that invoked the activity. Not required if `ExpirationInterval` is specified.
-- `ExpirationInterval` specifies for how long to attempt executing an activity in the presence of failures. If this interval is exceeded, the error is returned back to the workflow that invoked the activity. Not required if `MaximumAttempts` is specified.
+- `MaximumAttempts` specifies how many times to attempt to execute an activity in the presence of failures. If this limit is exceeded, the error is returned back to the workflow that invoked the activity.
 - `NonRetryableErrorReasons` allows you to specify errors that shouldn't be retried. For example retrying invalid arguments error doesn't make sense in some scenarios.
 
 There are scenarios when not a single activity but rather the whole part of a workflow should be retried on failure. For example, a media encoding workflow that downloads a file to a host, processes it, and then uploads the result back to storage. In this workflow, if the host that hosts the worker dies, all three activities should be retried on a different host. Such retries should be handled by the workflow code as they are very use case specific.

@@ -115,6 +115,5 @@ Some workflows require a guarantee that they keep running even in presence of su
 - `InitialInterval` is a delay before the first retry.
 - `BackoffCoefficient`. Retry policies are exponential. The coefficient specifies how fast the retry interval is growing. The coefficient of 1 means that the retry interval is always equal to the `InitialInterval`.
 - `MaximumInterval` specifies the maximum interval between retries. Useful for coefficients of more than 1.
-- `MaximumAttempts` specifies how many times to attempt to execute a workflow in the presence of failures. If this limit is exceeded, the workflow fails without retry. Not required if `ExpirationInterval` is specified.
-- `ExpirationInterval` specifies for how long to attempt executing a workflow in the presence of failures. If this interval is exceeded, the workflow fails without retry. Not required if `MaximumAttempts` is specified.
+- `MaximumAttempts` specifies how many times to attempt to execute a workflow in the presence of failures. If this limit is exceeded, the workflow fails without retry.
 - `NonRetryableErrorReasons` allows to specify errors that shouldn't be retried. For example, retrying invalid arguments error doesn't make sense in some scenarios.
