@@ -106,6 +106,14 @@ The main limitation of a child workflow versus collocating all the application l
 
 We recommended starting from a single workflow implementation if your problem has bounded size in terms of number of executed activities and processed signals. It is more straightforward than multiple asynchronously communicating workflows.
 
+## Workflow Timeouts
+
+It's often necessary to limit the amount of time a specific workflow can be running. To support this, the following three parameters can be provided to workflow options:
+
+- `WorkflowExecutionTimeout` maximum time a workflow should be allowed to run including retries and continue as new. Use `WorkflowRunTimeout` to limit execution time of a single run.
+- `WorkflowRunTimeout` maximum time a single workflow run should be allowed.
+- `WorkflowTaskTimeout` timeout for processing a workflow task starting from the point when a worker pulled the task. If a decision task is lost, it is retried after this timeout.
+
 ## Workflow Retries
 
 Workflow code is unaffected by infrastructure level downtime and failures. But it still can fail due to business logic level failures. For example, an activity can fail due to exceeding the retry interval and the error is not handled by application code, or the workflow code having a bug.
@@ -115,6 +123,5 @@ Some workflows require a guarantee that they keep running even in presence of su
 - `InitialInterval` is a delay before the first retry.
 - `BackoffCoefficient`. Retry policies are exponential. The coefficient specifies how fast the retry interval is growing. The coefficient of 1 means that the retry interval is always equal to the `InitialInterval`.
 - `MaximumInterval` specifies the maximum interval between retries. Useful for coefficients of more than 1.
-- `MaximumAttempts` specifies how many times to attempt to execute a workflow in the presence of failures. If this limit is exceeded, the workflow fails without retry. Not required if `ExpirationInterval` is specified.
-- `ExpirationInterval` specifies for how long to attempt executing a workflow in the presence of failures. If this interval is exceeded, the workflow fails without retry. Not required if `MaximumAttempts` is specified.
+- `MaximumAttempts` specifies how many times to attempt to execute a workflow in the presence of failures. If this limit is exceeded, the workflow fails without retry.
 - `NonRetryableErrorReasons` allows to specify errors that shouldn't be retried. For example, retrying invalid arguments error doesn't make sense in some scenarios.

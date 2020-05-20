@@ -23,13 +23,8 @@ RetryPolicy struct {
     // This value is the cap of the interval. Default is 100x of initial interval.
     MaximumInterval time.Duration
 
-    // Maximum time to retry. Either ExpirationInterval or MaximumAttempts is required.
-    // When exceeded the retries stop even if maximum retries is not reached yet.
-    ExpirationInterval time.Duration
-
     // Maximum number of attempts. When exceeded the retries stop even if not expired yet.
-    // If not set or set to 0, it means unlimited, and relies on ExpirationInterval to stop.
-    // Either MaximumAttempts or ExpirationInterval is required.
+    // If not set or set to 0, it means unlimited
     MaximumAttempts int32
 
     // Non-Retriable errors. This is optional. Temporal server will stop retry if error reason matches this list.
@@ -51,7 +46,6 @@ retryPolicy := &workflow.RetryPolicy{
     InitialInterval:    time.Second,
     BackoffCoefficient: 2,
     MaximumInterval:    expiration,
-    ExpirationInterval: time.Minute * 10,
     MaximumAttempts:    5,
 }
 ao := workflow.ActivityOptions{
@@ -93,9 +87,7 @@ you start a workflow via `StartWorkflowOptions`.
 There are some subtle changes to workflow's history events when `RetryPolicy` is used.
 For an activity with `RetryPolicy`:
 
-* The `ActivityTaskScheduledEvent` will have extended `ScheduleToStartTimeout` and `ScheduleToCloseTimeout`. These two timeouts
-  will be overwritten by the server to be as long as the retry policy's `ExpirationInterval`. If the `ExpirationInterval`
-  is not specified, it will be overwritten to the workflow's timeout.
+* The `ActivityTaskScheduledEvent` will have extended `ScheduleToStartTimeout` and `ScheduleToCloseTimeout`.
 * The `ActivityTaskStartedEvent` will not show up in history until the activity is completed or failed with no more retry.
   This is to avoid recording the `ActivityTaskStarted` event but later it failed and retried. Using the `DescribeWorkflowExecution`
   API will return the `PendingActivityInfo` and it will contain `attemptCount` if it is retrying.
