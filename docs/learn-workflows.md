@@ -106,6 +106,14 @@ The main limitation of a child workflow versus collocating all the application l
 
 We recommended starting from a single workflow implementation if your problem has bounded size in terms of number of executed activities and processed signals. It is more straightforward than multiple asynchronously communicating workflows.
 
+## Workflow Timeouts
+
+It's often necessary to limit the amount of time a specific workflow can be running. To support this, the following three parameters can be provided to workflow options:
+
+- `WorkflowExecutionTimeout` maximum time a workflow should be allowed to run including retries and continue as new. Use `WorkflowRunTimeout` to limit execution time of a single run.
+- `WorkflowRunTimeout` maximum time a single workflow run should be allowed.
+- `WorkflowTaskTimeout` timeout for processing a workflow task starting from the point when a worker pulled the task. If a decision task is lost, it is retried after this timeout.
+
 ## Workflow Retries
 
 Workflow code is unaffected by infrastructure level downtime and failures. But it still can fail due to business logic level failures. For example, an activity can fail due to exceeding the retry interval and the error is not handled by application code, or the workflow code having a bug.
