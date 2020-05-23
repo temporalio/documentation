@@ -61,7 +61,7 @@ Each of these subsections contain a `server` section and a `client` section. The
 - `certFile` - The path to the file containing the PEM-encoded public key of the certificate to use.
 - `keyFile` - The path to the file containing the PEM-encoded private key of the certificate to use.
 - `requireClientAuth` - *boolean* - Requires clients to authenticate with a certificate when connecting, otherwise known as mutual TLS.
-- `clientCAFiles` - A list of paths to files containing the PEM-encoded public key of the Certificate Authorities you wish to trust for client authentication. This value is ignored if `requireClientAuth` is not enabled.
+- `clientCaFiles` - A list of paths to files containing the PEM-encoded public key of the Certificate Authorities you wish to trust for client authentication. This value is ignored if `requireClientAuth` is not enabled.
 
 Below is an example enabling Server TLS (https) between SDKs and the Frontend APIs:
 
@@ -72,9 +72,13 @@ global:
       server:
         certFile: /path/to/public/cert
         keyFile: /path/to/private/cert
+      client:
+        serverName: dnsSanInFrontendCertificate
 ```
 
-The `client` section only needs to be provided in the case that a client's host does not trust RootCA used by the server and contains the single parameter `rootCAFiles`. The example below extends the above example to manually specify the RootCA used by the internode services:
+Note, the `client` section generally needs to be provided to specify an expected DNS SubjectName contained in the presented server certificate via the `serverName` field; this is needed as Temporal uses IP to IP communication. You can avoid specifying this if your server certificates contain the appropriate IP Subject Alternative Names. 
+
+Additionally, the `rootCaFiles` field needs to be provided when the client's host does not trust the Root CA used by the server. The example below extends the above example to manually specify the Root CA used by the frontend services:
 
 ```yaml
 global:
@@ -84,11 +88,12 @@ global:
         certFile: /path/to/public/cert
         keyFile: /path/to/private/cert
       client:
-        rootCAFiles:
+        serverName: dnsSanInFrontendCertificate
+        rootCaFiles:
           - /path/to/frontend/server/ca
 ```
 
-Below is an additional example of a fully secured cluster using mutual TLS for both frontend and internode communication with manually specified CAs:
+Below is an additional example of a fully secured cluster using mutual TLS for both frontend and internode communication with manually specified Cas:
 
 ```yaml
 global:
@@ -98,22 +103,24 @@ global:
         certFile: /path/to/internode/publicCert
         keyFile: /path/to/internode/privCert
         requireClientAuth: true
-        clientCAFiles:
+        clientCaFiles:
           - /path/to/internode/serverCa
       client:
-        rootCAFiles:
+        serverName: dnsSanInInternodeCertificate
+        rootCaFiles:
           - /path/to/internode/serverCa
     frontend:
       server:
         certFile: /path/to/frontend/publicCert
         keyFile: /path/to/frontend/privCert
         requireClientAuth: true
-        clientCAFiles:
+        clientCaFiles:
           - /path/to/internode/serverCa
           - /path/to/sdkClientPool1/ca
           - /path/to/sdkClientPool2/ca
       client:
-        rootCAFiles:
+        serverName: dnsSanInFrontendCertificate
+        rootCaFiles:
           - /path/to/frontend/serverCa
 
 ```
@@ -121,11 +128,11 @@ global:
 
 - The `internode.server` certificate must be specified on all roles, even for a frontend-only configuration.
 - Internode server certificates must be minted with either **no** Extended Key Usages or **both** ServerAuth and ClientAuth EKUs.
-- If your Certificate Authorities are untrusted, such as in the previous example, the internode server CA will need to be specified in the following places:
+- If your Certificate Authorities are untrusted, such as in the previous example, the internode server Ca will need to be specified in the following places:
 
-  - `internode.server.clientCAFiles`
-  - `internode.client.rootCAFiles`
-  - `frontend.server.clientCAFiles`
+  - `internode.server.clientCaFiles`
+  - `internode.client.rootCaFiles`
+  - `frontend.server.clientCaFiles`
 
 ## persistence
 The `persistence` section holds configuration for the data store / persistence layer. Below is an example minimal specification for a password-secured Cassandra cluster.

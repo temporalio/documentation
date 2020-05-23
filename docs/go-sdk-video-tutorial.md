@@ -132,6 +132,6 @@ func main() {
 ```
 Commands:
 ```bash
-docker run --network=host --rm temporalio/tctl:0.23.0 wf start --tl tutorial_tl -w Greet_Temporal_1 --wt Greetings --et 3600 --dt 10
+docker run --network=host --rm temporalio/tctl:0.23.1 wf start --tl tutorial_tl -w Greet_Temporal_1 --wt Greetings --et 3600 --dt 10
 ```
 
