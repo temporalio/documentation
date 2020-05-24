@@ -146,14 +146,15 @@ func main() {
 	logger.Info("Zap logger created")
 
 	// The client is a heavyweight object that should be created once
-	serviceClient, err := client.NewClient(client.Options{})
+	serviceClient, err := client.NewClient(client.Options{
+			Logger: logger,
+	})
+
 	if err != nil {
 		logger.Fatal("Unable to start worker", zap.Error(err))
 	}
 
-	worker := worker.New(serviceClient, "tutorial_tl", worker.Options{
-		Logger: logger,
-	})
+	worker := worker.New(serviceClient, "tutorial_tl", worker.Options{})
 
 	worker.RegisterWorkflow(Greetings)
 	worker.RegisterActivity(GetUser)
