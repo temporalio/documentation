@@ -35,15 +35,14 @@ func main() {
 	// The client and worker are heavyweight objects that should be created once per process.
 	serviceClient, err := client.NewClient(client.Options{
 		HostPort: client.DefaultHostPort,
+		Logger: logger,
 	})
 	if err != nil {
 		logger.Fatal("Unable to create client", zap.Error(err))
 	}
-	defer func() { _ = serviceClient.CloseConnection() }()
+	defer serviceClient.Close()
 
-	worker := worker.New(serviceClient, Tasklist, worker.Options{
-		Logger: logger,
-	})
+	worker := worker.New(serviceClient, Tasklist, worker.Options{})
 
 	worker.RegisterWorkflow(MyWorkflow)
 	worker.RegisterActivity(MyActivity)
@@ -52,16 +51,6 @@ func main() {
 	if err != nil {
 		logger.Fatal("Unable to start worker", zap.Error(err))
 	}
-	defer worker.Stop()
-
-	// The workers are supposed to be long running process that should not exit.
-	waitCtrlC()
-}
-
-func waitCtrlC() {
-	ch := make(chan os.Signal, 1)
-	signal.Notify(ch, os.Interrupt)
-	<-ch
 }
 
 func MyWorkflow(context workflow.Context) error {

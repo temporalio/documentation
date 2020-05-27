@@ -5,50 +5,56 @@ title: Error Handling
 
 An activity, or child workflow, might fail and you could handle errors differently based on different
 error cases. If the activity returns an error as `errors.New()` or `fmt.Errorf()`, those errors will
-be converted to `workflow.GenericError`. If the activity returns an error as
-`temporal.NewCustomError(“err-reason”, details)`, that error will be converted to `*temporal.CustomError`.
+be converted to `workflow.ApplicationError` and wrapped inside `workflow.ActivityTaskError` or `workflow.ChildWorkflowExecutionError`. If the activity returns an error as
+`temporal.NewApplicationError("erroro message", false, details)`, that error will also be converted to `*temporal.ApplicationError`.
 There are other types of errors such as `workflow.TimeoutError`, `workflow.CanceledError` and
 `workflow.PanicError`. Following is an example of what your error code might look like:
 
 ```go
-err := workflow.ExecuteActivity(ctx, YourActivityFunc).Get(ctx, nil)
-switch err := err.(type) {
-case *temporal.CustomError:
-        switch err.Reason() {
-        case "err-reason-a":
-                // Handle error-reason-a.
-                var details YourErrorDetailsType
-                err.Details(&details)
-                // Deal with details.
-        case "err-reason-b":
-                // Handle error-reason-b.
-        default:
-                // Handle all other error reasons.
-        }
-case *workflow.GenericError:
-        switch err.Error() {
-        case "err-msg-1":
-                // Handle error with message "err-msg-1".
-        case "err-msg-2":
-                // Handle error with message "err-msg-2".
-        default:
-                // Handle all other generic errors.
-        }
-case *workflow.TimeoutError:
+err := workflow.ExecuteActivity(ctx, MyActivity, ...).Get(ctx, nil)
+if err != nil {
+	var applicationErr *ApplicationError
+	if errors.As(err, &applicationError) {
+		// handle activity errors (created via NewApplicationError() API)
+		if !applicationErr.NonRetryable() {
+			// manually retry activity
+		}
+		var detailMsg string // assuming activity return error by NewApplicationError("message", true, "string details")
+		applicationErr.Details(&detailMsg) // extract strong typed details
+
+		// handle activity errors (errors created other than using NewApplicationError() API)
+		switch err.OriginalType() {
+		case "CustomErrTypeA":
+			// handle CustomErrTypeA
+		case CustomErrTypeB:
+			// handle CustomErrTypeB
+		default:
+			// newer version of activity could return new errors that workflow was not aware of.
+		}
+	}
+
+	var canceledErr *CanceledError
+	if errors.As(err, &canceledErr) {
+		// handle cancellation
+	}
+
+	var timeoutErr *TimeoutError
+	if errors.As(err, &timeoutErr) {
+		// handle timeout, could check timeout type by timeoutErr.TimeoutType()
         switch err.TimeoutType() {
-        case shared.TimeoutTypeScheduleToStart:
+        case commonpb.ScheduleToStart:
                 // Handle ScheduleToStart timeout.
-        case shared.TimeoutTypeStartToClose:
+        case commonpb.StartToClose:
                 // Handle StartToClose timeout.
-        case shared.TimeoutTypeHeartbeat:
+        case commonpb.Heartbeat:
                 // Handle heartbeat timeout.
         default:
         }
-case *workflow.PanicError:
-         // Handle panic error.
-case *temporal.CanceledError:
-        // Handle canceled error.
-default:
-        // All other cases (ideally, this should not happen).
+	}
+
+	var panicErr *PanicError
+	if errors.As(err, &panicErr) {
+		// handle panic, message and stack trace are available by panicErr.Error() and panicErr.StackTrace()
+	}
 }
 ```
