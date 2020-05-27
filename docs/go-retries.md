@@ -27,13 +27,11 @@ RetryPolicy struct {
     // If not set or set to 0, it means unlimited
     MaximumAttempts int32
 
-    // Non-Retriable errors. This is optional. Temporal server will stop retry if error reason matches this list.
-    // Error reason for custom error is specified when your activity/workflow returns workflow.NewCustomError(reason).
-    // Error reason for panic error is "temporalInternal:Panic".
-    // Error reason for any other error is "temporalInternal:Generic".
-    // Error reason for timeouts is: "temporalInternal:Timeout TIMEOUT_TYPE". TIMEOUT_TYPE could be StartToClose or Heartbeat.
-    // Note that cancellation is not a failure, so it won't be retried.
-    NonRetriableErrorReasons []string
+    // Non-Retriable errors. This is optional. Temporal server will stop retry if error type matches this list.
+    // Note:
+    //  - cancellation is not a failure, so it won't be retried,
+    //  - only StartToClose or Heartbeat timeouts are retryable.
+    NonRetryableErrorTypes []string
 }
 ```
 
