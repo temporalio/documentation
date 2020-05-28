@@ -30,7 +30,7 @@ Temporal supports the standard cron spec:
 // after the current run is completed/failed/timeout. If a RetryPolicy is also supplied, and the workflow failed
 // or timed out, the workflow will be retried based on the retry policy. While the workflow is retrying, it won't
 // schedule its next run. If next schedule is due while the workflow is running (or retrying), then it will skip that
-// schedule. Cron workflow will not stop until it is terminated or cancelled (by returning workflow.CanceledError).
+// schedule. Cron workflow will not stop until it is terminated or cancelled (by returning temporal.CanceledError).
 // The cron spec is as following:
 // ┌───────────── minute (0 - 59)
 // │ ┌───────────── hour (0 - 23)
