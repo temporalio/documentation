@@ -6,19 +6,19 @@ title: Error Handling
 An activity, or child workflow, might fail, and you could handle errors differently based on different
 error cases. If the activity returns an error as `errors.New()` or `fmt.Errorf()`, those errors will
 be converted to `*temporal.ApplicationError` and wrapped inside `*temporal.ActivityTaskError` or `*temporal.ChildWorkflowExecutionError`. If the activity returns an error as
-`temporal.NewApplicationError("error message", false, details)`, that error will be returned as `*temporal.ApplicationError`.
-There are other types of errors such as `*workflow.TimeoutError`, `*workflow.CanceledError` and
-`*workflow.PanicError`. Following is an example of what your error code might look like:
+`temporal.NewRetryableApplicationError("error message", details)`, that error will be returned as `*temporal.ApplicationError`.
+There are other types of errors such as `*temporal.TimeoutError`, `*temporal.CanceledError` and
+`*temporal.PanicError`. Following is an example of what your error code might look like:
 
 ```go
 err := workflow.ExecuteActivity(ctx, MyActivity, ...).Get(ctx, nil)
 if err != nil {
 	var applicationErr *ApplicationError
 	if errors.As(err, &applicationError) {
+		// retrieve error message
+		fmt.Println(applicationError.Error())
+
 		// handle activity errors (created via NewApplicationError() API)
-		if !applicationErr.NonRetryable() {
-			// manually retry activity
-		}
 		var detailMsg string // assuming activity return error by NewApplicationError("message", true, "string details")
 		applicationErr.Details(&detailMsg) // extract strong typed details
 
