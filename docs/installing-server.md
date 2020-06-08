@@ -58,6 +58,6 @@ At this point Temporal Server is running! You can also see the web interface on 
 
 ## Write Workflows and Activities using Client SDK
 
-Try out [Java SDK](../java-quick-start/).
+Try out [Java SDK](../docs/java-quick-start/).
  
-Try out [Go SDK](../go-quick-start/). 
+Try out [Go SDK](../docs/go-quick-start/). 
