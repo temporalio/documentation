@@ -353,7 +353,7 @@ Update the workflow code to:
     void updateGreeting(String greeting);
 
     @QueryMethod
-    int getCount();
+    String getCount();
   }
 
   public static class HelloWorldImpl implements HelloWorld {
@@ -377,8 +377,10 @@ Update the workflow code to:
     }
 
     @Override
-    public int getCount() {
-      return count;
+    public String getCount() {
+      int count = this.count;
+      String query_requirement = count.toString();
+      return query_requirement;
     }
   }
 ```
