@@ -2,18 +2,14 @@ module.exports = {
   docs: {
     'Getting Started': ['overview', 'license', 'installing-server'],
     'Use Cases': [
-      'use-cases-periodic',
       'use-cases-orchestration',
-      'use-cases-polling',
-      'use-cases-event-driven',
-      'use-cases-partitioned-scan',
-      'use-cases-batch-job',
+      'use-cases-distributed-transactions',
       'use-cases-provisioning',
-      'use-cases-cicd',
-      'use-cases-operational-management',
-      'use-cases-interactive',
+      'use-cases-monitoring',
+      'use-cases-pipelines',
+      'use-cases-long-running',
       'use-cases-dsl',
-      'use-cases-big-ml',
+      'use-cases-actors',
     ],
     Learn: [
       'learn-glossary',
