@@ -114,7 +114,7 @@ Now run the worker program. Following is an example log:
 ```
 No Hello printed. This is expected because a worker is just a workflow code host. The workflow has to be started to execute. Let's use Temporal CLI to start the workflow:
 ```bash
-> docker run --network=host --rm temporalio/tctl:0.23.1 workflow start --tasklist HelloWorldTaskList --workflow_type HelloWorld_sayHello --execution_timeout 3600 --input \"World\"
+> docker run --network=host --rm temporalio/tctl:0.23.1 workflow start --tasklist HelloWorldTaskList --workflow_type HelloWorld --execution_timeout 3600 --input \"World\"
 Started Workflow Id: ef8c6cd6-de62-4481-8398-623865467696, run Id: 26eafcde-6cab-4836-9ad4-888a74e172e1
 ```
 The last line of output of the program should now be:
@@ -123,7 +123,7 @@ The last line of output of the program should now be:
 ```
 Let's start another workflow execution:
 ```bash
-> docker run --network=host --rm temporalio/tctl:0.23.1 workflow start --tasklist HelloWorldTaskList --workflow_type HelloWorld_sayHello --execution_timeout 3600 --input \"Temporal\"
+> docker run --network=host --rm temporalio/tctl:0.23.1 workflow start --tasklist HelloWorldTaskList --workflow_type HelloWorld --execution_timeout 3600 --input \"Temporal\"
 Started Workflow Id: 7bdfba1d-b3f4-4665-88c2-cec73301dd52, run Id: d6c99e2d-7d76-458f-956b-a2f72af292bf
 ```
 The last two lines of output of the program should now be:
@@ -175,7 +175,7 @@ Even for such a trivial workflow, the history gives a lot of useful information.
 Before proceeding to a more complex workflow implementation, let's take a look at the workflow Id semantic.
 When starting a workflow without providing an Id, the client generates one in the form of a UUID. In most real-life scenarios this is not a desired behavior. The business Id should be used instead. Here, we'll specify the Id when starting a workflow:
 ```bash
-> docker run --network=host --rm temporalio/tctl:0.23.1 workflow start  --workflow_id "HelloTemporal1" --tasklist HelloWorldTaskList --workflow_type HelloWorld_sayHello --execution_timeout 3600 --input \"Temporal\"
+> docker run --network=host --rm temporalio/tctl:0.23.1 workflow start  --workflow_id "HelloTemporal1" --tasklist HelloWorldTaskList --workflow_type HelloWorld --execution_timeout 3600 --input \"Temporal\"
 Started Workflow Id: HelloTemporal1, run Id: 78ca0a3f-8cd2-46a2-8d23-076c3f0f187c
 ```
 Now the list operation is more meaningful as the WORKFLOW ID is our business Id:
@@ -186,7 +186,7 @@ Now the list operation is more meaningful as the WORKFLOW ID is our business Id:
 ```
 After the previous one completes, let's try to start another workflow with the same Id:
 ```bash
-> docker run --network=host --rm temporalio/tctl:0.23.1 workflow start  --workflow_id "HelloTemporal1" --tasklist HelloWorldTaskList --workflow_type HelloWorld_sayHello --execution_timeout 3600 --input \"Temporal\"
+> docker run --network=host --rm temporalio/tctl:0.23.1 workflow start  --workflow_id "HelloTemporal1" --tasklist HelloWorldTaskList --workflow_type HelloWorld --execution_timeout 3600 --input \"Temporal\"
 Started Workflow Id: HelloTemporal1, run Id: 9b5e36a3-9868-4de5-bbdf-eda9cedcd865
 ```
 After the second start the workflow list is:
@@ -272,7 +272,7 @@ one @WorkflowMethod which is a _main_ function of the workflow and as many signa
 The updated workflow implementation demonstrates a few important Temporal concepts. The first is that workflow is stateful and can
 have fields of any complex type. Another is that the `Workflow.await` function that blocks until the function it receives as a parameter evaluates to true. The condition is going to be evaluated only on workflow state changes, so it is not a busy wait in traditional sense.
 ```bash
-temporal: docker run --network=host --rm temporalio/tctl:0.23.1 workflow start  --workflow_id "HelloSignal" --tasklist HelloWorldTaskList --workflow_type HelloWorld_sayHello --execution_timeout 3600 --input \"World\"
+temporal: docker run --network=host --rm temporalio/tctl:0.23.1 workflow start  --workflow_id "HelloSignal" --tasklist HelloWorldTaskList --workflow_type HelloWorld --execution_timeout 3600 --input \"World\"
 Started Workflow Id: HelloSignal, run Id: 6fa204cb-f478-469a-9432-78060b83b6cd
 ```
 Program output:
@@ -281,7 +281,7 @@ Program output:
 ```
 Let's send a signal using CLI:
 ```bash
-temporal: docker run --network=host --rm temporalio/tctl:0.23.1 workflow signal --workflow_id "HelloSignal" --name "HelloWorld_updateGreeting" --input \"Hi\"
+temporal: docker run --network=host --rm temporalio/tctl:0.23.1 workflow signal --workflow_id "HelloSignal" --name "updateGreeting" --input \"Hi\"
 Signal workflow succeeded.
 ```
 Program output:
@@ -292,7 +292,7 @@ Program output:
 Try sending the same signal with the same input again. Note that the output doesn't change. This happens because the await condition
 doesn't unblock when it sees the same value. But a new greeting unblocks it:
 ```bash
-temporal: docker run --network=host --rm temporalio/tctl:0.23.1 workflow signal --workflow_id "HelloSignal" --name "HelloWorld_updateGreeting" --input \"Welcome\"
+temporal: docker run --network=host --rm temporalio/tctl:0.23.1 workflow signal --workflow_id "HelloSignal" --name "updateGreeting" --input \"Welcome\"
 Signal workflow succeeded.
 ```
 Program output:
@@ -303,7 +303,7 @@ Program output:
 ```
 Now shut down the worker and send the same signal again:
 ```bash
-temporal: docker run --network=host --rm temporalio/tctl:0.23.1 workflow signal --workflow_id "HelloSignal" --name "HelloWorld_updateGreeting" --input \"Welcome\"
+temporal: docker run --network=host --rm temporalio/tctl:0.23.1 workflow signal --workflow_id "HelloSignal" --name "updateGreeting" --input \"Welcome\"
 Signal workflow succeeded.
 ```
 Note that sending signals as well as starting workflows does not need a worker running. The requests are queued inside the Temporal service.
@@ -389,11 +389,11 @@ The main restriction on the implementation of the query method is that it is not
 It also is not allowed to block its thread in any way. It usually just returns a value derived from the fields of the workflow object.
 Let's run the updated worker and send a couple signals to it:
 ```bash
-temporal: docker run --network=host --rm temporalio/tctl:0.23.1 workflow start  --workflow_id "HelloQuery" --tasklist HelloWorldTaskList --workflow_type HelloWorld_sayHello --execution_timeout 3600 --input \"World\"
+temporal: docker run --network=host --rm temporalio/tctl:0.23.1 workflow start  --workflow_id "HelloQuery" --tasklist HelloWorldTaskList --workflow_type HelloWorld --execution_timeout 3600 --input \"World\"
 Started Workflow Id: HelloQuery, run Id: 1925f668-45b5-4405-8cba-74f7c68c3135
-temporal: docker run --network=host --rm temporalio/tctl:0.23.1 workflow signal --workflow_id "HelloQuery" --name "HelloWorld_updateGreeting" --input \"Hi\"
+temporal: docker run --network=host --rm temporalio/tctl:0.23.1 workflow signal --workflow_id "HelloQuery" --name "updateGreeting" --input \"Hi\"
 Signal workflow succeeded.
-temporal: docker run --network=host --rm temporalio/tctl:0.23.1 workflow signal --workflow_id "HelloQuery" --name "HelloWorld_updateGreeting" --input \"Welcome\"
+temporal: docker run --network=host --rm temporalio/tctl:0.23.1 workflow signal --workflow_id "HelloQuery" --name "updateGreeting" --input \"Welcome\"
 Signal workflow succeeded.
 ```
 The worker output:
@@ -404,16 +404,16 @@ The worker output:
 ```
 Now let's query the workflow using the CLI:
 ```bash
-temporal: docker run --network=host --rm temporalio/tctl:0.23.1 workflow query --workflow_id "HelloQuery" --query_type "HelloWorld_getCount"
+temporal: docker run --network=host --rm temporalio/tctl:0.23.1 workflow query --workflow_id "HelloQuery" --query_type "getCount"
 Query result as JSON:
 3
 ```
 One limitation of the query is that it requires a worker process running because it is executing callback code.
 An interesting feature of the query is that it works for completed workflows as well. Let's complete the workflow by sending "Bye" and query it.
 ```bash
-temporal: docker run --network=host --rm temporalio/tctl:0.23.1 workflow signal --workflow_id "HelloQuery" --name "HelloWorld_updateGreeting" --input \"Bye\"
+temporal: docker run --network=host --rm temporalio/tctl:0.23.1 workflow signal --workflow_id "HelloQuery" --name "updateGreeting" --input \"Bye\"
 Signal workflow succeeded.
-temporal: docker run --network=host --rm temporalio/tctl:0.23.1 workflow query --workflow_id "HelloQuery" --query_type "HelloWorld_getCount"
+temporal: docker run --network=host --rm temporalio/tctl:0.23.1 workflow query --workflow_id "HelloQuery" --query_type "getCount"
 Query result as JSON:
 4
 ```
