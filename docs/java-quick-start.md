@@ -6,7 +6,7 @@ title: Quick Start
 This topic helps you install the Temporal server and implement a workflow.
 
 ## Install Temporal Server Locally
-To run samples locally you need to run Temporal server locally using [instructions](installing-server.md). 
+To run samples locally you need to run Temporal server locally using [instructions](/docs/installing-server). 
 
 ## Implement Hello World Java Workflow
 
