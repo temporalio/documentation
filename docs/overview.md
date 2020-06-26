@@ -2,6 +2,7 @@
 id: overview
 title: Overview
 sidebar_label: Overview
+description: This guide will help you build your own resilient applications using Temporal Workflow as Code™
 ---
 
 import ReactPlayer from 'react-player'

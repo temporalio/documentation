@@ -21,7 +21,7 @@ module.exports = {
     navbar: {
       title: 'Temporal',
       logo: {
-        alt: 'My Site Logo',
+        alt: 'Temporal logo',
         src: 'img/favicon.svg',
       },
       links: [

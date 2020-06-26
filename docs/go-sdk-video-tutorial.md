@@ -1,6 +1,7 @@
 ---
 id: go-sdk-video-tutorial
 title: SDK Video Tutorial
+description: Video tutorial to help you build your first workflow using Go SDK
 ---
 
 import ReactPlayer from 'react-player'
@@ -25,6 +26,7 @@ func GetUser(ctx context.Context) (string, error) {
 	return "Temporal", nil
 }
 ```
+
 ```go
 package activities
 
@@ -44,6 +46,7 @@ func SendGreeting(ctx context.Context, user string) error {
 	return nil
 }
 ```
+
 ```go
 package workflows
 
@@ -81,6 +84,7 @@ func Greetings(ctx workflow.Context) error {
 	return nil
 }
 ```
+
 ```go
 package main
 
@@ -90,7 +94,7 @@ import (
 
 	"github.com/samarabbas/tutorial-go-sdk/activities"
 	"github.com/samarabbas/tutorial-go-sdk/workflows"
-	
+
 	"go.temporal.io/temporal/client"
 	"go.temporal.io/temporal/worker"
 )
@@ -130,8 +134,9 @@ func main() {
 	select {}
 }
 ```
+
 Commands:
+
 ```bash
 docker run --network=host --rm temporalio/tctl:0.23.1 wf start --tl tutorial_tl -w Greet_Temporal_1 --wt Greetings --et 3600 --dt 10
 ```
-
