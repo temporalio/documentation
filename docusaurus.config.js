@@ -19,6 +19,7 @@ module.exports = {
   ],
   themeConfig: {
     navbar: {
+      hideOnScroll: true,
       title: 'Temporal',
       logo: {
         alt: 'Temporal logo',
@@ -29,6 +30,11 @@ module.exports = {
           to: 'docs/overview',
           activeBasePath: 'docs',
           label: 'Docs',
+          position: 'right',
+        },
+        {
+          to: 'blog',
+          label: 'Blog',
           position: 'right',
         },
         {
@@ -43,7 +49,8 @@ module.exports = {
           position: 'right',
         },
         {
-          href: 'https://join.slack.com/t/temporalio/shared_invite/zt-c1e99p8g-beF7~ZZW2HP6gGStXD8Nuw',
+          href:
+            'https://join.slack.com/t/temporalio/shared_invite/zt-c1e99p8g-beF7~ZZW2HP6gGStXD8Nuw',
           label: 'Slack',
           position: 'right',
         },
@@ -66,7 +73,7 @@ module.exports = {
             {
               label: 'Go SDK',
               to: 'docs/go-quick-start',
-            }
+            },
           ],
         },
         {
@@ -74,11 +81,13 @@ module.exports = {
           items: [
             {
               label: 'Stack Overflow',
-              href: 'https://stackoverflow.com/questions/tagged/temporal-workflow',
+              href:
+                'https://stackoverflow.com/questions/tagged/temporal-workflow',
             },
             {
               label: 'Slack',
-              href: 'https://join.slack.com/t/temporalio/shared_invite/zt-c1e99p8g-beF7~ZZW2HP6gGStXD8Nuw',
+              href:
+                'https://join.slack.com/t/temporalio/shared_invite/zt-c1e99p8g-beF7~ZZW2HP6gGStXD8Nuw',
             },
           ],
         },
@@ -114,8 +123,35 @@ module.exports = {
       {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
+          routeBasePath: 'docs',
           editUrl:
             'https://github.com/temporalio/temporal-documentation-legacy-v2/blob/master',
+          /**
+           * Whether to display the author who last updated the doc.
+           */
+          showLastUpdateAuthor: false,
+          /**
+           * Whether to display the last date the doc was updated.
+           */
+          showLastUpdateTime: false,
+          /**
+           * Skip the next release docs when versioning is enabled.
+           * This will not generate HTML files in the production build for documents
+           * in `/docs/next` directory, only versioned docs.
+           */
+          excludeNextVersionDocs: false,
+        },
+        blog: {
+          routeBasePath: 'blog',
+          postsPerPage: 10,
+          /**
+           * Show estimated reading time for the blog post.
+           */
+          showReadingTime: true,
+          feedOptions: {
+            type: 'all',
+            copyright: `Copyright © ${new Date().getFullYear()} Temporal Technologies Inc.  All rights reserved. Copyright © 2020 Uber Technologies, Inc.`,
+          },
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
