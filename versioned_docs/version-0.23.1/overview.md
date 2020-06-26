@@ -32,7 +32,9 @@ are in production. [Python](https://github.com/firdaus/cadence-python) and
 
 The backend service is stateless and relies on a persistent store. Currently, Cassandra and MySQL stores
 are supported. An adapter to any other database that provides multi-row single shard transactions
-can be added. There are different service deployment models. There are multi-tenant production deployments that are shared by over hundred applications.
+can be added. 
+
+Today there are multi-tenant production deployments that are shared by over hundred applications.
 
 Watch Maxim's talk from the Uber Open Summit for an introduction to the Temporal programming model and value proposition.
 
