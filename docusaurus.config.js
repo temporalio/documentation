@@ -1,3 +1,5 @@
+const versions = require('./versions.json');
+
 module.exports = {
   title: 'Temporal',
   tagline: 'Invincible applications, invisible infrastructure',
@@ -26,6 +28,11 @@ module.exports = {
         src: 'img/favicon.svg',
       },
       links: [
+        {
+          to: 'versions',
+          label: `v${versions[0]}`,
+          position: 'left',
+        },
         {
           to: 'docs/overview',
           activeBasePath: 'docs',

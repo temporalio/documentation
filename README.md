@@ -28,6 +28,14 @@ $ yarn build
 
 This command generates static content into the `build` directory and can be served using any static contents hosting service.
 
+### Versioning
+
+```
+$ yarn run docusaurus docs:version 1.1.0
+```
+
+This command creates a copy of /docs and tags with the specified version
+
 ### Deployment
 
 ```
