@@ -2,6 +2,7 @@
 id: learn-workflows
 title: Fault-Oblivious Stateful Workflow Code
 sidebar_label: Workflows
+description: Temporal core abstraction is a fault-oblivious stateful workflow. The state of the workflow code, including local variables and threads it creates, is immune to process and Temporal service failures.
 ---
 
 import ReactPlayer from 'react-player'
@@ -58,6 +59,7 @@ public class SubscriptionWorkflowImpl implements SubscriptionWorkflow {
   }
 }
 ```
+
 Again, note that this code directly implements the business logic. If any of the invoked operations (aka activities) takes a long time, the code is not going to change. It is okay to block on `chargeMonthlyFee` for a day if the downstream processing service is down that long. The same way that blocking sleep for 30 days is a normal operation inside the workflow code.
 
 Temporal has practically no scalability limits on the number of open workflow instances. So even if your site has hundreds of millions of consumers, the above code is not going to change.
