@@ -3,7 +3,7 @@ id: go-sessions
 title: Sessions
 ---
 
-The session framework provides a straightforward interface for scheduling multiple activities on a single worker without requiring you to manually specify the task list name. It also includes features like **concurrent session limitation** and **worker failure detection**.
+The session framework provides a straightforward interface for scheduling multiple activities on a single worker without requiring you to manually specify the task queue name. It also includes features like **concurrent session limitation** and **worker failure detection**.
 
 ## Use Cases
 
@@ -18,6 +18,7 @@ Before using the session framework to write your workflow code, you need to conf
 The most important APIs provided by the session framework are `workflow.CreateSession()` and `workflow.CompleteSession()`. The basic idea is that all the activities executed within a session will be processed by the same worker and these two APIs allow you to create new sessions and close them after all activities finish executing.
 
 Here's a more detailed description of these two APIs:
+
 ```go
 type SessionOptions struct {
   // ExecutionTimeout: required, no default.
@@ -32,7 +33,7 @@ type SessionOptions struct {
 func CreateSession(ctx Context, sessionOptions *SessionOptions) (Context, error)
 ```
 
-`CreateSession()` takes in `workflow.Context`, `sessionOptions` and returns a new context which contains metadata information of the created session (referred to as the **session context** below). When it's called, it will check the task list name specified in the `ActivityOptions` (or in the `StartWorkflowOptions` if the task list name is not specified in `ActivityOptions`), and create the session on one of the workers which is polling that task list.
+`CreateSession()` takes in `workflow.Context`, `sessionOptions` and returns a new context which contains metadata information of the created session (referred to as the **session context** below). When it's called, it will check the task queue name specified in the `ActivityOptions` (or in the `StartWorkflowOptions` if the task queue name is not specified in `ActivityOptions`), and create the session on one of the workers which is polling that task queue.
 
 The returned session context should be used to execute all activities belonging to the session. The context will be cancelled if the worker executing this session dies or `CompleteSession()` is called. When using the returned session context to execute activities, a `workflow.ErrSessionFailed` error may be returned if the session framework detects that the worker executing this session has died. The failure of your activities won't affect the state of the session, so you still need to handle the errors returned from your activities and call `CompleteSession()` if necessary.
 
@@ -106,7 +107,7 @@ If a worker hits this limitation, it won't accept any new `CreateSession()` requ
 
 ## Recreate Session
 
-For long-running sessions, you may want to use the `ContinueAsNew` feature to split the workflow into multiple runs when all activities need to be executed by the same worker. The `RecreateSession()`  API is designed for such a use case.
+For long-running sessions, you may want to use the `ContinueAsNew` feature to split the workflow into multiple runs when all activities need to be executed by the same worker. The `RecreateSession()` API is designed for such a use case.
 
 ```go
 func RecreateSession(ctx Context, recreateToken []byte, sessionOptions *SessionOptions) (Context, error)
@@ -121,19 +122,23 @@ token := workflow.GetSessionInfo(sessionCtx).GetRecreateToken()
 ## Q & A
 
 ### Is there a complete example?
+
 Yes, the [file processing example](https://github.com/temporalio/temporal-go-samples/blob/master/cmd/samples/fileprocessing/workflow.go) in the temporal-go-samples repo has been updated to use the session framework.
 
 ### What happens to my activity if the worker dies?
+
 If your activity has already been scheduled, it will be cancelled. If not, you will get a `workflow.ErrSessionFailed` error when you call `workflow.ExecuteActivity()`.
 
 ### Is the concurrent session limitation per process or per host?
-It's per worker process, so make sure there's only one worker process running on the host if you plan to use that feature.
 
+It's per worker process, so make sure there's only one worker process running on the host if you plan to use that feature.
 
 ## Future Work
 
-* 
+-
+
 Right now a session is considered failed if the worker process dies. However, for some use cases, you may only care whether worker host is alive or not. For these uses cases, the session should be automatically re-established if the worker process is restarted.
 
-* 
+-
+
 The current implementation assumes that all sessions are consuming the same type of resource and there's only one global limitation. Our plan is to allow you to specify what type of resource your session will consume and enforce different limitations on different types of resources.

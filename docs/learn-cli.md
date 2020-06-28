@@ -15,13 +15,13 @@ locally.
 Example of using the docker image to describe a namespace:
 
 ```
-docker run --rm temporalio/tctl:0.25.0 --namespace samples-namespace namespace describe
+docker run --rm temporalio/tctl:0.26.0 --namespace samples-namespace namespace describe
 ```
 
 On Docker versions 18.03 and later, you may get a "connection refused" error. You can work around this by setting the host to "host.docker.internal" (see [here](https://docs.docker.com/docker-for-mac/networking/#use-cases-and-workarounds) for more info).
 
 ```
-docker run --network=host --rm temporalio/tctl:0.25.0 --namespace samples-namespace namespace describe
+docker run --network=host --rm temporalio/tctl:0.26.0 --namespace samples-namespace namespace describe
 ```
 
 To build the CLI tool locally, clone the [Temporal server repo](https://github.com/temporalio/temporal) and run
@@ -46,7 +46,7 @@ Setting environment variables for repeated parameters can shorten the CLI comman
 Run `./tctl` for help on top level commands and global options
 Run `./tctl namespace` for help on namespace operations
 Run `./tctl workflow` for help on workflow operations
-Run `./tctl tasklist` for help on tasklist operations
+Run `./tctl taskqueue` for help on taskqueue operations
 (`./tctl help`, `./tctl help [namespace|workflow]` will also print help messages)
 
 **Note:** make sure you have a Temporal server running before using CLI
@@ -85,7 +85,7 @@ Start a workflow and see its progress. This command doesn't finish until workflo
 Brief explanation:
 To run a workflow, the user must specify the following:
 
-1. Tasklist name (--tl)
+1. Taskqueue name (--tl)
 2. Workflow type (--wt)
 3. Execution start to close timeout in seconds (--et)
 4. Input in JSON format (--i) (optional)
@@ -96,10 +96,10 @@ and takes a string as input with the `-i '"temporal"'` parameter. Single quotes 
 **Note:** You need to start the worker so that the workflow can make progress.
 (Run `make && ./bin/helloworld -m worker` in temporal-go-samples to start the worker)
 
-#### Show running workers of a tasklist
+#### Show running workers of a taskqueue
 
 ```
-./tctl tasklist desc --tl helloWorldGroup
+./tctl taskqueue desc --tl helloWorldGroup
 ```
 
 #### Start workflow

@@ -282,7 +282,7 @@ Queries are supported in [Temporal Web](https://github.com/temporalio/temporal-w
 ## Local Testing
 
 1. Increase Docker memory to higher than 6GB. Navigate to Docker -> Preferences -> Advanced -> Memory
-2. Get the Temporal Docker compose file. Run `curl -L https://github.com/temporalio/temporal/releases/download/v0.25.0/docker.tar.gz | tar -xz --strip-components 1 docker/docker-compose-es.yml`
+2. Get the Temporal Docker compose file. Run `curl -L https://github.com/temporalio/temporal/releases/download/v0.26.0/docker.tar.gz | tar -xz --strip-components 1 docker/docker-compose-es.yml`
 3. Start Temporal Docker (which contains Apache Kafka, Apache Zookeeper, and Elasticsearch) using `docker-compose -f docker-compose-es.yml up`
 4. From the Docker output log, make sure Elasticsearch and Temporal started correctly. If you encounter an insufficient disk space error, try `docker system prune -a --volumes`
 5. Register a local namespace and start using it. `tctl --ns samples-namespace n re`
