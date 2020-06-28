@@ -15,7 +15,7 @@ Follow the docker-compose installation instructions found here: [https://docs.do
 Download the Temporal docker-compose file to preferred location (i.e. `quick_start` directory):
 
 ```bash
-curl -L https://github.com/temporalio/temporal/releases/download/v0.26.0/docker.tar.gz | tar -xz --strip-components 1 docker/docker-compose.yml
+curl -L https://github.com/temporalio/temporal/releases/download/v0.25.0/docker.tar.gz | tar -xz --strip-components 1 docker/docker-compose.yml
 
 ls
 # docker-compose.yml
@@ -31,7 +31,7 @@ The output should look similar to:
 
 ```
 Creating network "quick_start_default" with the default driver
-Pulling temporal (temporalio/temporal-auto-setup:0.26.0)...
+Pulling temporal (temporalio/temporal-auto-setup:0.25.0)...
 ...
 ...
 temporal_1   | Description: Default namespace for Temporal Server
