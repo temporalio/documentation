@@ -23,20 +23,21 @@ This design puts the following constraints on the workflow implementation:
 - Do not call any non-deterministic functions like non seeded random or UUID.randomUUID() directly from the workflow code.
 
 Always do the following in the workflow implementation code:
+
 - Don’t perform any IO or service calls as they are not usually deterministic. Use activities for this.
 - Only use `Workflow.currentTimeMillis()` to get the current time inside a workflow.
 - Do not use native Java `Thread` or any other multi-threaded classes like `ThreadPoolExecutor`. Use `Async.function` or `Async.procedure`
-to execute code asynchronously.
+  to execute code asynchronously.
 - Don't use any synchronization, locks, and other standard Java blocking concurrency-related classes besides those provided
-by the Workflow class. There is no need in explicit synchronization because multi-threaded code inside a workflow is
-executed one thread at a time and under a global lock.
+  by the Workflow class. There is no need in explicit synchronization because multi-threaded code inside a workflow is
+  executed one thread at a time and under a global lock.
   - Call `WorkflowThread.sleep` instead of `Thread.sleep`.
   - Use `Promise` and `CompletablePromise` instead of `Future` and `CompletableFuture`.
   - Use `WorkflowQueue` instead of `BlockingQueue`.
 - Use `Workflow.getVersion` when making any changes to the workflow code. Without this, any deployment of updated workflow code
-might break already open workflows.  
+  might break already open workflows.
 - Don’t access configuration APIs directly from a workflow because changes in the configuration might affect a workflow execution path.
-Pass it as an argument to a workflow function or use an activity to load it.
+  Pass it as an argument to a workflow function or use an activity to load it.
 
 Workflow method arguments and return values are serializable to a byte array using the provided
 [DataConverter](https://static.javadoc.io/com.uber.cadence/cadence-client/2.4.1/index.html?com/uber/cadence/converter/DataConverter.html)
@@ -59,6 +60,7 @@ An activity invocation synchronously blocks until the activity completes, fails,
 execution takes a few months, the workflow code still sees it as a single synchronous invocation.
 It doesn't matter what happens to the processes that host the workflow. The business logic code
 just sees a single method call.
+
 ```java
 public class FileProcessingWorkflowImpl implements FileProcessingWorkflow {
 
@@ -92,19 +94,20 @@ public class FileProcessingWorkflowImpl implements FileProcessingWorkflow {
     ...
 }
 ```
-If different activities need different options, like timeouts or a task list, multiple client-side stubs can be created
+
+If different activities need different options, like timeouts or a task queue, multiple client-side stubs can be created
 with different options.
 
 ```java
 public FileProcessingWorkflowImpl() {
     ActivityOptions options1 = ActivityOptions.newBuilder()
-             .setTaskList("taskList1")
+             .setTaskQueue("taskQueue1")
              .setStartToCloseTimeout(Duration.ofMinutes(10))
              .build();
     this.store1 = Workflow.newActivityStub(FileProcessingActivities.class, options1);
 
     ActivityOptions options2 = ActivityOptions.newBuilder()
-             .setTaskList("taskList2")
+             .setTaskQueue("taskQueue2")
              .setStartToCloseTimeout(Duration.ofMinutes(5))
              .build();
     this.store2 = Workflow.newActivityStub(FileProcessingActivities.class, options2);
@@ -119,19 +122,26 @@ The `Async` class static methods allow you to invoke any activity asynchronously
 It also exposes the `thenApply` and `handle` methods. See the `Promise` JavaDoc for technical details about differences with `Future`.
 
 To convert a synchronous call:
+
 ```java
 String localName = activities.download(sourceBucket, sourceFile);
 ```
+
 To asynchronous style, the method reference is passed to `Async.function` or `Async.procedure`
 followed by activity arguments:
+
 ```java
 Promise<String> localNamePromise = Async.function(activities::download, sourceBucket, sourceFile);
 ```
+
 Then to wait synchronously for the result:
+
 ```java
 String localName = localNamePromise.get();
 ```
+
 Here is the above example rewritten to call download and upload in parallel on multiple files:
+
 ```java
 public void processFile(Arguments args) {
     List<Promise<String>> localNamePromises = new ArrayList<>();
@@ -179,37 +189,41 @@ public void processFile(Arguments args) {
 ```
 
 ## Child Workflows
+
 Besides activities, a workflow can also orchestrate other workflows.
 
 `Workflow.newChildWorkflowStub` returns a client-side stub that implements a child workflow interface.
- It takes a child workflow type and optional child workflow options as arguments. Workflow options may be needed to override
- the timeouts and task list if they differ from the ones defined in the `@WorkflowMethod` annotation or parent workflow.
+It takes a child workflow type and optional child workflow options as arguments. Workflow options may be needed to override
+the timeouts and task queue if they differ from the ones defined in the `@WorkflowMethod` annotation or parent workflow.
 
- The first call to the child workflow stub must always be to a method annotated with `@WorkflowMethod`. Similar to activities, a call
- can be made synchronous or asynchronous by using `Async#function` or `Async#procedure`. The synchronous call blocks until a child workflow completes. The asynchronous call
- returns a `Promise` that can be used to wait for the completion. After an async call returns the stub, it can be used to send signals to the child
- by calling methods annotated with `@SignalMethod`. Querying a child workflow by calling methods annotated with `@QueryMethod`
- from within workflow code is not supported. However, queries can be done from activities
- using the provided `WorkflowClient` stub.
- ```java
+The first call to the child workflow stub must always be to a method annotated with `@WorkflowMethod`. Similar to activities, a call
+can be made synchronous or asynchronous by using `Async#function` or `Async#procedure`. The synchronous call blocks until a child workflow completes. The asynchronous call
+returns a `Promise` that can be used to wait for the completion. After an async call returns the stub, it can be used to send signals to the child
+by calling methods annotated with `@SignalMethod`. Querying a child workflow by calling methods annotated with `@QueryMethod`
+from within workflow code is not supported. However, queries can be done from activities
+using the provided `WorkflowClient` stub.
+
+```java
 @WorkflowInterface
 public interface GreetingChild {
-    @WorkflowMethod
-    String composeGreeting(String greeting, String name);
+   @WorkflowMethod
+   String composeGreeting(String greeting, String name);
 }
 
 public static class GreetingWorkflowImpl implements GreetingWorkflow {
 
-    @Override
-    public String getGreeting(String name) {
-        GreetingChild child = Workflow.newChildWorkflowStub(GreetingChild.class);
+   @Override
+   public String getGreeting(String name) {
+       GreetingChild child = Workflow.newChildWorkflowStub(GreetingChild.class);
 
-        // This is a blocking call that returns only after child has completed.
-        return child.composeGreeting("Hello", name );
-    }
+       // This is a blocking call that returns only after child has completed.
+       return child.composeGreeting("Hello", name );
+   }
 }
 ```
+
 Running two children in parallel:
+
 ```java
 public static class GreetingWorkflowImpl implements GreetingWorkflow {
 
@@ -230,7 +244,9 @@ public static class GreetingWorkflowImpl implements GreetingWorkflow {
     }
 }
 ```
+
 To send a signal to a child, call a method annotated with `@SignalMethod`:
+
 ```java
 @WorkflowInterface
 public interface GreetingChild {
@@ -252,4 +268,5 @@ public static class GreetingWorkflowImpl implements GreetingWorkflow {
     }
 }
 ```
+
 Calling methods annotated with `@QueryMethod` is not allowed from within workflow code. Use an activity to call them.

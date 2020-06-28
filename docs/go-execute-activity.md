@@ -9,7 +9,7 @@ sample code demonstrates making this call:
 
 ```go
 ao := workflow.ActivityOptions{
-        TaskList:               "sampleTaskList",
+        TaskQueue:               "sampleTaskQueue",
         ScheduleToCloseTimeout: time.Second * 60,
         ScheduleToStartTimeout: time.Second * 60,
         StartToCloseTimeout:    time.Second * 60,
@@ -24,6 +24,7 @@ if err != nil {
         return err
 }
 ```
+
 Let's take a look at each component of this call.
 
 ## Activity options
@@ -37,14 +38,14 @@ values, then the same context instance can be used when calling `workflow.Execut
 ## Activity timeouts
 
 There can be various kinds of timeouts associated with an activity. Temporal guarantees that activities
-are executed *at most once*, so an activity either succeeds or fails with one of the following timeouts:
+are executed _at most once_, so an activity either succeeds or fails with one of the following timeouts:
 
-Timeout | Description
---- | ---
-`StartToCloseTimeout` | Maximum time that a worker can take to process a task after it has received the task.
-`ScheduleToStartTimeout` | Time a task can wait to be picked up by an activity worker after a workflow schedules it. If there are no workers available to process this task for the specified duration, the task will time out.
-`ScheduleToCloseTimeout` | Time a task can take to complete after it is scheduled by a workflow. This is usually greater than the sum of `StartToClose` and `ScheduleToStart` timeouts.
-`HeartbeatTimeout` | If a task doesn't heartbeat to the Temporal service for this duration, it will be considered to have failed. This is useful for long-running tasks.
+| Timeout                  | Description                                                                                                                                                                                          |
+| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `StartToCloseTimeout`    | Maximum time that a worker can take to process a task after it has received the task.                                                                                                                |
+| `ScheduleToStartTimeout` | Time a task can wait to be picked up by an activity worker after a workflow schedules it. If there are no workers available to process this task for the specified duration, the task will time out. |
+| `ScheduleToCloseTimeout` | Time a task can take to complete after it is scheduled by a workflow. This is usually greater than the sum of `StartToClose` and `ScheduleToStart` timeouts.                                         |
+| `HeartbeatTimeout`       | If a task doesn't heartbeat to the Temporal service for this duration, it will be considered to have failed. This is useful for long-running tasks.                                                  |
 
 ## ExecuteActivity call
 
@@ -88,6 +89,7 @@ default:
         return err
 }
 ```
+
 In this example, we called the `Get()` method on the returned future immediately after `workflow.ExecuteActivity()`.
 However, this is not necessary. If you want to execute multiple activities in parallel, you can
 repeatedly call `workflow.ExecuteActivity()`, store the returned futures, and then wait for all

@@ -118,7 +118,7 @@ func main() {
 		logger.Fatal("Unable to start worker", zap.Error(err))
 	}
 
-	worker := worker.New(serviceClient, "tutorial_tl", worker.Options{
+	worker := worker.New(serviceClient, "tutorial_tq", worker.Options{
 		Logger: logger,
 	})
 
@@ -138,5 +138,5 @@ func main() {
 Commands:
 
 ```bash
-docker run --network=host --rm temporalio/tctl:0.26.0 wf start --tl tutorial_tl -w Greet_Temporal_1 --wt Greetings --et 3600 --dt 10
+docker run --network=host --rm temporalio/tctl:latest wf start --tq tutorial_tq -w Greet_Temporal_1 --wt Greetings --et 3600 --dt 10
 ```

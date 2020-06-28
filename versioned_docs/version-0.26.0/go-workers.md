@@ -3,7 +3,7 @@ id: go-workers
 title: Worker Service
 ---
 
-A worker or *worker service* is a service that hosts the workflow and activity implementations. The worker polls the *Temporal service* for tasks, performs those tasks, and communicates task execution results back to the *Temporal service*. Worker services are developed, deployed, and operated by Temporal customers.
+A worker or _worker service_ is a service that hosts the workflow and activity implementations. The worker polls the _Temporal service_ for tasks, performs those tasks, and communicates task execution results back to the _Temporal service_. Worker services are developed, deployed, and operated by Temporal customers.
 
 You can run a Temporal worker in a new or an existing service. Use the framework APIs to start the Temporal worker and link in all activity and workflow implementations that you require the service to execute.
 
@@ -23,7 +23,7 @@ import (
 )
 
 var (
-	Tasklist  = "samples_tl"
+	Taskqueue  = "samples_tq"
 )
 
 func main() {
@@ -42,7 +42,7 @@ func main() {
 	}
 	defer serviceClient.Close()
 
-	worker := worker.New(serviceClient, Tasklist, worker.Options{})
+	worker := worker.New(serviceClient, TaskQueue, worker.Options{})
 
 	worker.RegisterWorkflow(MyWorkflow)
 	worker.RegisterActivity(MyActivity)

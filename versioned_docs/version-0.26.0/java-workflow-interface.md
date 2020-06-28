@@ -6,15 +6,16 @@ title: Workflow Interface
 Workflow encapsulates the orchestration of activities and child workflows.
 It can also answer synchronous queries and receive external events (also known as signals).
 
-A workflow must define an interface class. A workflow interface class must be annotated with `@WorkflowInterface`. 
+A workflow must define an interface class. A workflow interface class must be annotated with `@WorkflowInterface`.
 All of its methods must have one of the following annotations:
 
-- **@WorkflowMethod** indicates an entry point to a workflow. It contains parameters such as timeouts and a task list.
+- **@WorkflowMethod** indicates an entry point to a workflow. It contains parameters such as timeouts and a task queue.
   Required parameters (such as `executionStartToCloseTimeoutSeconds`) that are not specified through the annotation must be provided at runtime.
 - **@SignalMethod** indicates a method that reacts to external signals. It must have a `void` return type.
 - **@QueryMethod** indicates a method that reacts to synchronous query requests. It must have a non `void` return type.
 
 You can have more than one method with the same annotation (except @WorkflowMethod). For example:
+
 ```java
 @WorkflowInterface
 public interface FileProcessingWorkflow {
@@ -30,16 +31,17 @@ public interface FileProcessingWorkflow {
 
     @SignalMethod
     void retryNow();
-    
+
     @SignalMethod
     void abandon();
 }
 ```
-Note that name parameter of workflow method annotations can be used to specify name of workflow, signal and query types. 
-If name is not specified the short name of the workflow interface separated by underscore with the method name is used. 
+
+Note that name parameter of workflow method annotations can be used to specify name of workflow, signal and query types.
+If name is not specified the short name of the workflow interface separated by underscore with the method name is used.
 In the above code the @WorkflowMethod.name is not specified, thus the workflow type defaults to `"FileProcessingWorkflow_processFile"`.
 
-We recommended that you use a single value type argument for all types of workflow methods. 
+We recommended that you use a single value type argument for all types of workflow methods.
 This way, adding new arguments as fields to the value type is a backwards-compatible change.
 
 # Workflow Interface Inheritance
@@ -47,6 +49,7 @@ This way, adding new arguments as fields to the value type is a backwards-compat
 Workflow interfaces can form inheritance hierarchies. It may be useful for creating components reusable across multiple
 workflow types. For example imaging a UI or CLI button that allows to call `retryNow` signal on any workflow. To implement
 this feature you can redesign the above interface to:
+
 ```java
 @WorkflowInterface
 public interface Retryable {
@@ -65,12 +68,14 @@ public interface FileProcessingWorkflow extends Retryable {
 
     @QueryMethod(name="status")
     String getStatus();
-   
+
     @SignalMethod
     void abandon();
 }
 ```
+
 Then some other workflow can implement it as well:
+
 ```java
 @WorkflowInterface
 public interface MediaProcessingWorkflow extends Retryable {
@@ -78,15 +83,19 @@ public interface MediaProcessingWorkflow extends Retryable {
     String processBlob(Arguments args);
 }
 ```
+
 Then it would be possible to send signal to both of them using the Retryable interface only:
+
 ```java
 Retryable r = client.newWorkflowStab(Retryable.class, workflowId);
 r.retryNow();
 ```
+
 The same technique can be used to query workflows through a base interface.
 
-Note that an attempt to start workflow through a base interface annotated with `@WorkflowInterface` is not going to work. 
+Note that an attempt to start workflow through a base interface annotated with `@WorkflowInterface` is not going to work.
 Let's look at the following **invalid** example:
+
 ```java
 // INVALID CODE!
 @WorkflowInterface
@@ -101,9 +110,11 @@ public interface Workflow1 extends BaseWorkflow {}
 @WorkflowInterface
 public interface Workflow2 extends BaseWorkflow {}
 ```
+
 An attempt to register implementations of Workflow1 and Workflow2 are going to fail as they are going to use the same
 workflow type. The type is defined by the type of the class which is annotated with @WorkflowInterface. In this case `BaseWorkflow`.
 The solution is to remove @WorkflowInterface annotation from BaseWorkflow. The following is valid code:
+
 ```java
 public interface BaseWorkflow {
     @WorkflowMethod
@@ -116,4 +127,5 @@ public interface Workflow1 extends BaseWorkflow {}
 @WorkflowInterface
 public interface Workflow2 extends BaseWorkflow {}
 ```
+
 Implementations of Workflow1 and Workflow2 can registered with the same worker as they will have types defined by their interfaces.

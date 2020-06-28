@@ -157,7 +157,7 @@ func main() {
 		logger.Fatal("Unable to start worker", zap.Error(err))
 	}
 
-	worker := worker.New(serviceClient, "tutorial_tl", worker.Options{})
+	worker := worker.New(serviceClient, "tutorial_tq", worker.Options{})
 
 	worker.RegisterWorkflow(Greetings)
 	worker.RegisterActivity(GetUser)
@@ -179,26 +179,26 @@ Run your worker app which hosts workflow and activity implementations
 ```bash
 > go run *.go
 2020-04-07T22:44:53.073-0700    INFO    tutorial-go-sdk/main.go:19      Zap logger created
-2020-04-07T22:44:53.111-0700    INFO    internal/internal_worker.go:1021        Started Worker  {"Namespace": "default", "TaskList": "tutorial_tl", "WorkerID": "59260@local@"}
+2020-04-07T22:44:53.111-0700    INFO    internal/internal_worker.go:1021        Started Worker  {"Namespace": "default", "TaskQueue": "tutorial_tq", "WorkerID": "59260@local@"}
 ```
 
 ## Start workflow execution
 
 ```bash
-> docker run --network=host --rm temporalio/tctl:0.26.0 wf start --tl tutorial_tl -w Greet_Temporal_1 --wt Greetings --et 3600 --dt 10
+> docker run --network=host --rm temporalio/tctl:0.26.0 wf start --tq tutorial_tq -w Greet_Temporal_1 --wt Greetings --et 3600 --dt 10
 Started Workflow Id: Greet_Temporal_1, run Id: b4f8957a-565c-40ad-8495-15a41338f8f4
 ```
 
 ## Workflow Completes Execution
 
 ```
-2020-04-07T22:46:32.424-0700    INFO    workflows/greetings.go:14       Workflow Greetings started      {"Namespace": "default", "TaskList": "tutorial_tl", "WorkerID": "59260@local@", "WorkflowType": "Greetings", "WorkflowID": "Greet_Temporal_1", "RunID": "b4f8957a-565c-40ad-8495-15a41338f8f4"}
-2020-04-07T22:46:32.424-0700    DEBUG   internal/internal_event_handlers.go:466 ExecuteActivity {"Namespace": "default", "TaskList": "tutorial_tl", "WorkerID": "59260@local@", "WorkflowType": "Greetings", "WorkflowID": "Greet_Temporal_1", "RunID": "b4f8957a-565c-40ad-8495-15a41338f8f4", "ActivityID": "0", "ActivityType": "GetUser"}
-2020-04-07T22:46:32.452-0700    INFO    activities/get_user.go:12       GetUser activity called {"Namespace": "default", "TaskList": "tutorial_tl", "WorkerID": "59260@local@", "ActivityID": "0", "ActivityType": "GetUser", "WorkflowType": "Greetings", "WorkflowID": "Greet_Temporal_1", "RunID": "b4f8957a-565c-40ad-8495-15a41338f8f4"}
-2020-04-07T22:46:32.485-0700    DEBUG   internal/internal_event_handlers.go:466 ExecuteActivity {"Namespace": "default", "TaskList": "tutorial_tl", "WorkerID": "59260@local@", "WorkflowType": "Greetings", "WorkflowID": "Greet_Temporal_1", "RunID": "b4f8957a-565c-40ad-8495-15a41338f8f4", "ActivityID": "1", "ActivityType": "SendGreeting"}
-2020-04-07T22:46:32.505-0700    INFO    activities/send_greeting.go:13  SendGreeting activity called    {"Namespace": "default", "TaskList": "tutorial_tl", "WorkerID": "59260@local@", "ActivityID": "1", "ActivityType": "SendGreeting", "WorkflowType": "Greetings", "WorkflowID": "Greet_Temporal_1", "RunID": "b4f8957a-565c-40ad-8495-15a41338f8f4"}
+2020-04-07T22:46:32.424-0700    INFO    workflows/greetings.go:14       Workflow Greetings started      {"Namespace": "default", "TaskQueue": "tutorial_tq", "WorkerID": "59260@local@", "WorkflowType": "Greetings", "WorkflowID": "Greet_Temporal_1", "RunID": "b4f8957a-565c-40ad-8495-15a41338f8f4"}
+2020-04-07T22:46:32.424-0700    DEBUG   internal/internal_event_handlers.go:466 ExecuteActivity {"Namespace": "default", "TaskQueue": "tutorial_tq", "WorkerID": "59260@local@", "WorkflowType": "Greetings", "WorkflowID": "Greet_Temporal_1", "RunID": "b4f8957a-565c-40ad-8495-15a41338f8f4", "ActivityID": "0", "ActivityType": "GetUser"}
+2020-04-07T22:46:32.452-0700    INFO    activities/get_user.go:12       GetUser activity called {"Namespace": "default", "TaskQueue": "tutorial_tq", "WorkerID": "59260@local@", "ActivityID": "0", "ActivityType": "GetUser", "WorkflowType": "Greetings", "WorkflowID": "Greet_Temporal_1", "RunID": "b4f8957a-565c-40ad-8495-15a41338f8f4"}
+2020-04-07T22:46:32.485-0700    DEBUG   internal/internal_event_handlers.go:466 ExecuteActivity {"Namespace": "default", "TaskQueue": "tutorial_tq", "WorkerID": "59260@local@", "WorkflowType": "Greetings", "WorkflowID": "Greet_Temporal_1", "RunID": "b4f8957a-565c-40ad-8495-15a41338f8f4", "ActivityID": "1", "ActivityType": "SendGreeting"}
+2020-04-07T22:46:32.505-0700    INFO    activities/send_greeting.go:13  SendGreeting activity called    {"Namespace": "default", "TaskQueue": "tutorial_tq", "WorkerID": "59260@local@", "ActivityID": "1", "ActivityType": "SendGreeting", "WorkflowType": "Greetings", "WorkflowID": "Greet_Temporal_1", "RunID": "b4f8957a-565c-40ad-8495-15a41338f8f4"}
 Greeting sent to user: Temporal
-2020-04-07T22:46:32.523-0700    INFO    workflows/greetings.go:33       Greetings workflow complete     {"Namespace": "default", "TaskList": "tutorial_tl", "WorkerID": "59260@local@", "WorkflowType": "Greetings", "WorkflowID": "Greet_Temporal_1", "RunID": "b4f8957a-565c-40ad-8495-15a41338f8f4", "user": "Temporal"}
+2020-04-07T22:46:32.523-0700    INFO    workflows/greetings.go:33       Greetings workflow complete     {"Namespace": "default", "TaskQueue": "tutorial_tq", "WorkerID": "59260@local@", "WorkflowType": "Greetings", "WorkflowID": "Greet_Temporal_1", "RunID": "b4f8957a-565c-40ad-8495-15a41338f8f4", "user": "Temporal"}
 ```
 
 ## Try Go SDK Samples

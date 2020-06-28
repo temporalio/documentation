@@ -7,7 +7,7 @@ Fault-oblivious stateful workflow code is the core abstraction of Temporal. But,
 Instead they orchestrate execution of activities. In its simplest form, a Temporal activity is a function or an object method in one of the supported languages.
 Temporal does not recover activity state in case of failures. Therefore an activity function is allowed to contain any code without restrictions.
 
-Activities are invoked asynchronously though task lists. A task list is essentially a queue used to store an activity task until it is picked up by an available worker. The worker processes an activity by invoking its implementation function. When the function returns, the worker reports the result back to the Temporal service which in turn notifies the workflow about completion. It is possible to implement an activity fully asynchronously by completing it from a different process.
+Activities are invoked asynchronously though task queues. A task queue is essentially a queue used to store an activity task until it is picked up by an available worker. The worker processes an activity by invoking its implementation function. When the function returns, the worker reports the result back to the Temporal service which in turn notifies the workflow about completion. It is possible to implement an activity fully asynchronously by completing it from a different process.
 
 ## Timeouts
 
@@ -48,20 +48,20 @@ A workflow can request an activity cancellation. Currently the only way for an a
 
 Another common case for activity heartbeat failure is that the workflow that invoked it is in a completed state. In this case an activity is expected to perform cleanup as well.
 
-## Activity Task Routing through Task Lists
+## Activity Task Routing through Task Queues
 
-Activities are dispatched to workers through task lists. Task lists are queues that workers listen on. Task lists are highly dynamic and lightweight. They don't need to be explicitly registered. And it is okay to have one task list per worker process. It is normal to have more than one activity type to be invoked through a single task list. And it is normal in some cases (like host routing) to invoke the same activity type on multiple task lists.
+Activities are dispatched to workers through task queues. Task queues are queues that workers listen on. Task queues are highly dynamic and lightweight. They don't need to be explicitly registered. And it is okay to have one task queue per worker process. It is normal to have more than one activity type to be invoked through a single task queue. And it is normal in some cases (like host routing) to invoke the same activity type on multiple task queues.
 
-Here are some use cases for employing multiple activity task lists in a single workflow:
+Here are some use cases for employing multiple activity task queues in a single workflow:
 
-- _Flow control_. A worker that consumes from a task list asks for an activity task only when it has available capacity. So workers are never overloaded by request spikes. If activity executions are requested faster than workers can process them, they are backlogged in the task list.
-- _Throttling_. Each activity worker can specify the maximum rate it is allowed to processes activities on a task list. It does not exceed this limit even if it has spare capacity. There is also support for global task list rate limiting. This limit works across all workers for the given task list. It is frequently used to limit load on a downstream service that an activity calls into.
-- _Deploying a set of activities independently_. Think about a service that hosts activities and can be deployed independently from other activities and workflows. To send activity tasks to this service, a separate task list is needed.
-- _Workers with different capabilities_. For example, workers on GPU boxes vs non GPU boxes. Having two separate task lists in this case allows workflows to pick which one to send activity an execution request to.
+- _Flow control_. A worker that consumes from a task queue asks for an activity task only when it has available capacity. So workers are never overloaded by request spikes. If activity executions are requested faster than workers can process them, they are backlogged in the task queue.
+- _Throttling_. Each activity worker can specify the maximum rate it is allowed to processes activities on a task queue. It does not exceed this limit even if it has spare capacity. There is also support for global task queue rate limiting. This limit works across all workers for the given task queue. It is frequently used to limit load on a downstream service that an activity calls into.
+- _Deploying a set of activities independently_. Think about a service that hosts activities and can be deployed independently from other activities and workflows. To send activity tasks to this service, a separate task queue is needed.
+- _Workers with different capabilities_. For example, workers on GPU boxes vs non GPU boxes. Having two separate task queues in this case allows workflows to pick which one to send activity an execution request to.
 - _Routing activity to a specific host_. For example, in the media encoding case the transform and upload activity have to run on the same host as the download one.
 - _Routing activity to a specific process_. For example, some activities load large data sets and caches it in the process. The activities that rely on this data set should be routed to the same process.
-- _Multiple priorities_. One task list per priority and having a worker pool per priority.
-- _Versioning_. A new backwards incompatible implementation of an activity might use a different task list.
+- _Multiple priorities_. One task queue per priority and having a worker pool per priority.
+- _Versioning_. A new backwards incompatible implementation of an activity might use a different task queue.
 
 ## Asynchronous Activity Completion
 
@@ -73,11 +73,9 @@ To support such use cases, Temporal allows activity implementations that do not 
 
 Some of the activities are very short lived and do not need the queing semantic, flow control, rate limiting and routing capabilities. For these Temporal supports so called _local activity_ feature. Local activities are executed in the same worker process as the workflow that invoked them. Consider using local activities for functions that are:
 
-* no longer than a few seconds
-* do not require global rate limiting
-* do not require routing to specific workers or pools of workers
-* can be implemented in the same binary as the workflow that invokes them
+- no longer than a few seconds
+- do not require global rate limiting
+- do not require routing to specific workers or pools of workers
+- can be implemented in the same binary as the workflow that invokes them
 
 The main benefit of local activities is that they are much more efficient in utilizing Temporal service resources and have much lower latency overhead comparing to the usual activity invocation.
-
-
