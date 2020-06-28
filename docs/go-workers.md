@@ -23,7 +23,7 @@ import (
 )
 
 var (
-	Taskqueue  = "samples_tl"
+	Taskqueue  = "samples_tq"
 )
 
 func main() {
@@ -42,7 +42,7 @@ func main() {
 	}
 	defer serviceClient.Close()
 
-	worker := worker.New(serviceClient, Taskqueue, worker.Options{})
+	worker := worker.New(serviceClient, TaskQueue, worker.Options{})
 
 	worker.RegisterWorkflow(MyWorkflow)
 	worker.RegisterActivity(MyActivity)
