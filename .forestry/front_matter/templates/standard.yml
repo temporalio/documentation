@@ -2,3 +2,5 @@
 label: Standard
 hide_body: true
 fields: []
+pages:
+- blog/Discourse.md
