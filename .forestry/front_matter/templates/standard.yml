@@ -28,3 +28,7 @@ fields:
   config:
     required: false
   label: Author Image Url
+- name: tags
+  type: tag_list
+  default: []
+  label: Tags
