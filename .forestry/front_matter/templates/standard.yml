@@ -1,4 +1,30 @@
 ---
 label: Standard
-hide_body: true
-fields: []
+hide_body: false
+fields:
+- name: id
+  type: text
+  config:
+    required: true
+  label: Id
+  hidden: false
+- name: title
+  type: text
+  config:
+    required: false
+  label: Title
+- name: author
+  type: text
+  config:
+    required: false
+  label: Author
+- name: author_title
+  type: text
+  config:
+    required: false
+  label: Author Title
+- name: author_image_url
+  type: text
+  config:
+    required: false
+  label: Author Image Url
