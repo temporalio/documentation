@@ -20,6 +20,10 @@ module.exports = {
     ],
   ],
   themeConfig: {
+    prism: {
+      theme: require('prism-react-renderer/themes/github'),
+      darkTheme: require('prism-react-renderer/themes/dracula'),
+    },
     navbar: {
       hideOnScroll: true,
       title: 'Temporal',
@@ -166,4 +170,5 @@ module.exports = {
       },
     ],
   ],
+  themes: ['@docusaurus/theme-live-codeblock'],
 };
