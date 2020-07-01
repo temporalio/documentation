@@ -4,7 +4,7 @@ title: SDK Video Tutorial
 description: Video tutorial to help you build your first workflow using Go SDK
 ---
 
-import { ResponsivePlayer } from '../src/components'
+import { ResponsivePlayer } from '../../src/components'
 
 <ResponsivePlayer url='https://www.youtube.com/watch?v=Wo0y_Ce3d4I' />
 

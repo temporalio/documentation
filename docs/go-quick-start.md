@@ -185,7 +185,7 @@ Run your worker app which hosts workflow and activity implementations
 ## Start workflow execution
 
 ```bash
-> docker run --network=host --rm temporalio/tctl:0.26.0 wf start --tl tutorial_tq -w Greet_Temporal_1 --wt Greetings --et 3600 --dt 10
+> docker run --network=host --rm temporalio/tctl:0.26.0 wf start --tq tutorial_tq -w Greet_Temporal_1 --wt Greetings --et 3600 --dt 10
 Started Workflow Id: Greet_Temporal_1, run Id: b4f8957a-565c-40ad-8495-15a41338f8f4
 ```
 

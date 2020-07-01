@@ -5,7 +5,7 @@ sidebar_label: Overview
 description: This guide will help you build your own resilient applications using Temporal Workflow as Code™
 ---
 
-import { ResponsivePlayer } from '../src/components'
+import { ResponsivePlayer } from '../../src/components'
 
 A large number of use cases span beyond a single request-reply, require tracking
 of a complex state, respond to asynchronous events, and communicate to external unreliable dependencies.
