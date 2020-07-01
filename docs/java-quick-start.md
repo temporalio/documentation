@@ -246,7 +246,7 @@ USAGE:
    tctl workflow start [command options] [arguments...]
 
 OPTIONS:
-   --taskqueue value, --tq value                TaskQueue
+   --taskqueue value, --tl value                TaskQueue
    --workflow_id value, --wid value, -w value  WorkflowId
    --workflow_type value, --wt value           WorkflowTypeName
    --execution_timeout value, --et value       Execution start to close timeout in seconds (default: 0)

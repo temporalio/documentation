@@ -1,6 +1,7 @@
 {
   "version-0.26.0/docs": [
     {
+      "collapsed": true,
       "type": "category",
       "label": "Getting Started",
       "items": [
@@ -19,6 +20,7 @@
       ]
     },
     {
+      "collapsed": true,
       "type": "category",
       "label": "Use Cases",
       "items": [
@@ -73,6 +75,7 @@
       ]
     },
     {
+      "collapsed": true,
       "type": "category",
       "label": "Learn",
       "items": [
@@ -127,6 +130,7 @@
       ]
     },
     {
+      "collapsed": true,
       "type": "category",
       "label": "Java SDK",
       "items": [
@@ -165,6 +169,7 @@
       ]
     },
     {
+      "collapsed": true,
       "type": "category",
       "label": "Go SDK",
       "items": [

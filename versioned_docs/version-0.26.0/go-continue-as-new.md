@@ -17,6 +17,6 @@ terminate by returning the special **ContinueAsNewError** error:
 ```go
 func SimpleWorkflow(workflow.Context ctx, value string) error {
     ...
-    return temporal.NewContinueAsNewError(ctx, SimpleWorkflow, value)
+    return workflow.NewContinueAsNewError(ctx, SimpleWorkflow, value)
 }
 ```
