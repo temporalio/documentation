@@ -10,7 +10,7 @@ tags:
 id: discourse
 title: Why We're Moving to Discourse
 author: Ryland Goldstein
-author_title: Product
+author_title: Temporals product person
 author_image_url: https://avatars2.githubusercontent.com/u/27736122?s=460&u=7b6a3e58ec7ed7157f23f51e91a2f4cd2028d606&v=4
 
 ---
@@ -18,7 +18,7 @@ Why Temporal is moving to Discourse for our knowledge DB needs.
 
 <!--truncate-->
 
-**TL;DR;** The growth of this awesome community has made it difficult for us to provide the desired level of support using our current tools. A solution is needed that will scale with our communities growth and we strongly believe that Slack is not this solution. To solve this, we have started a Discourse forum (available at [https://community.temporal.io/](https://community.temporal.io/ "https://community.temporal.io/")) and will slowly migrate certain questions/discussions away from Slack. We believe that Discourse will allow us to maintain the same responsive and personal support that we offer today, but with far less overhead.
+**TL;DR;** The growth of this awesome community has made it difficult for us to provide the desired level of support using our current tools. A solution is needed that will scale with our communities growth and we strongly believe that Slack is not this solution. To solve this, we have started a Discourse forum and will slowly migrate certain questions/discussions away from Slack. We believe that Discourse will allow us to maintain the same responsive and personal support that we offer today, but with far less overhead.
 
 Check it out here at: [https://community.temporal.io/](https://community.temporal.io/ "https://community.temporal.io/")
 
