@@ -5,7 +5,7 @@ sidebar_label: Overview
 description: This guide will help you build your own resilient applications using Temporal Workflow as Code™
 ---
 
-import ReactPlayer from 'react-player'
+import { ResponsivePlayer } from '../src/components'
 
 A large number of use cases span beyond a single request-reply, require tracking
 of a complex state, respond to asynchronous events, and communicate to external unreliable dependencies.
@@ -37,7 +37,7 @@ that are shared by hundreds of applications.
 
 Watch Maxim's talk from the Uber Open Summit for an introduction to the Temporal programming model and value proposition.
 
-<ReactPlayer url='https://www.youtube.com/watch?v=llmsBGKOuWI' />
+<ResponsivePlayer url='https://www.youtube.com/watch?v=llmsBGKOuWI' />
 
 The GitHub repo for the Temporal server is [temporalio/temporal](https://github.com/temporalio/temporal). The docker
 image for the Temporal server is available on Docker Hub at

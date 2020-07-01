@@ -4,9 +4,9 @@ title: SDK Video Tutorial
 description: Video tutorial to help you build your first workflow using Go SDK
 ---
 
-import ReactPlayer from 'react-player'
+import { ResponsivePlayer } from '../src/components'
 
-<ReactPlayer url='https://www.youtube.com/watch?v=Wo0y_Ce3d4I' />
+<ResponsivePlayer url='https://www.youtube.com/watch?v=Wo0y_Ce3d4I' />
 
 Source code:
 
@@ -138,5 +138,5 @@ func main() {
 Commands:
 
 ```bash
-docker run --network=host --rm temporalio/tctl:latest wf start --tq tutorial_tq -w Greet_Temporal_1 --wt Greetings --et 3600 --dt 10
+docker run --network=host --rm temporalio/tctl:latest wf start --tl tutorial_tq -w Greet_Temporal_1 --wt Greetings --et 3600 --dt 10
 ```

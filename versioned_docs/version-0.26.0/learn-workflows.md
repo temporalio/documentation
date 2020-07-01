@@ -5,7 +5,7 @@ sidebar_label: Workflows
 description: Temporal core abstraction is a fault-oblivious stateful workflow. The state of the workflow code, including local variables and threads it creates, is immune to process and Temporal service failures.
 ---
 
-import ReactPlayer from 'react-player'
+import { ResponsivePlayer } from '../src/components'
 
 ## Overview
 
@@ -75,7 +75,7 @@ The workflow state recovery utilizes event sourcing which puts a few restriction
 
 To understand the Temporal execution model as well as the recovery mechanism, watch the following webcast. The animation covering recovery starts at 15:50.
 
-<ReactPlayer url='https://www.youtube.com/watch?v=qce_AqCkFys' />
+<ResponsivePlayer url='https://www.youtube.com/watch?v=qce_AqCkFys' />
 
 ## Id Uniqueness
 
