@@ -18,13 +18,13 @@ Why Temporal is moving to Discourse for our knowledge DB needs.
 
 <!--truncate-->
 
-**TL;DR;** The growth of this awesome community has made it difficult for us to provide the desired level of support using our current tools. A solution is needed that will scale with our communities growth and we strongly believe that Slack is not this solution. To solve this, we have started a Discourse forum (available at [community.temporal.io](https://community.temporal.io/)) and will slowly migrate certain questions/discussions away from Slack. We believe that Discourse will allow us to maintain the same responsive and personal support that we offer today, but with far less overhead.
+**TL;DR;** The growth of this awesome community has made it difficult for us to provide the desired level of support using our current tools. A solution is needed that will scale with our communities growth and we strongly believe that Slack is not this solution. To solve this, we have started a Discourse forum (available at [https://community.temporal.io/](https://community.temporal.io/ "https://community.temporal.io/")) and will slowly migrate certain questions/discussions away from Slack. We believe that Discourse will allow us to maintain the same responsive and personal support that we offer today, but with far less overhead.
 
-[https://community.temporal.io/](https://community.temporal.io/ "https://community.temporal.io/")
+Check it out here at: [https://community.temporal.io/](https://community.temporal.io/ "https://community.temporal.io/")
 
 ## Rationale for Slack Migration and Discourse
 
-A couple months ago we reached the message limit on Slack and our community started asking if we planned to pay. While paying would have been the quickest solution, Slack is so expensive that we had to consider alternatives. How expensive you ask? Slack charges a minimum of $7 per user each month but more realistically $12 per user each month. With our current community of \~500 we would be paying anywhere from $3500 - $6000 each month. As we're expecting \~10x growth over the next year the problem becomes much bigger as $60k a month isn't feasible.
+A couple months ago we reached the message limit on Slack and our community started asking if we planned to pay. While paying would have been the quickest solution, Slack is so expensive that we had to consider alternatives. How expensive you ask? Slack charges a minimum of $7 per user each month but more realistically $12 per user each month. With our current community of \~500 we would be paying anywhere from $3500 - $6000 each month. As we're expecting at least \~10x growth over the next few years the problem becomes much bigger as $60k a month isn't feasible.
 
 Initially we were searching for a cheaper Slack alternative but we quickly realized that if we were considering a migration, it made sense to evaluate alternatives holistically and not just based on the fact that Slack costs more. To evaluate alternatives fairly we defined a number of metrics to evaluate them by:
 
