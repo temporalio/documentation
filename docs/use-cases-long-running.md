@@ -6,7 +6,7 @@ sidebar_label: Long-running Processes
 
 ## Motivation
 
-Many business processes naturally have a long duration and may run for hours, days, or months:
+Many business processes naturally have a long duration and may run for hours, days, months, or even years:
 
 - Expense approval process requiring manual intervention from a human.
 - A process of labeling data for ML where an expert fills metadata via a user interface.
@@ -14,12 +14,12 @@ Many business processes naturally have a long duration and may run for hours, da
 - Customer loyalty program where the workflow accumulates reward points and applies them when requested.
 - User nurturing process that sends educational emails based on the schedule and past user activities.
 
-It's typical to use a distributed asynchronous event-driven architecture in such scenarios. The code is scattered across multiple handlers and does not resemble the structure of the original business process.
+It's typical to use a distributed asynchronous event-driven architecture in such scenarios. Unfortunately, this means that the code is now scattered across multiple handlers and does not resemble the structure of the original business process.
 
 ## Benefits of Temporal
 
-Temporal provides a holistic approach to the implementation of long-running workflows. Workflow execution is paused and resumed by the runtime as required. Programmers don't have to focus on edge cases and boilerplate code of handling long periods of inactivity, and can concentrate on logic instead.
+Temporal provides a holistic approach for implementing long-running workflows. Workflow execution is paused and resumed by the runtime as required. Developers no longer have to focus on edge cases and boilerplate code that handles long periods of inactivity, and can instead concentrate exclusively on business logic.
 
-Temporal has direct support for asynchronous events (aka signals). A simple programming model handles a lot of complexity around state persistence and ensures external action execution through built-in retries.
+Temporal has direct support for asynchronous events (aka signals). Temporal's simple programming model handles a lot of complexity around state persistence and ensures external action execution through built-in retries.
 
-A sophisticated workflow may have a few different paths that branch out, and you want to execute in steps parallel, but then join them back together, even if each track might take days to run. It's straightforward to express complicated decision paths because everything is represented as code rather than some GUI or JSON configuration.
+A sophisticated workflow may have a few different paths that branch out, that you want to execute in parallel, but then join them back together, even if each track might take days to run. With Temporal, it's straightforward to express complicated decision paths since everything is represented as code rather than via a GUI or JSON configuration.

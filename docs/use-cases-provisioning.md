@@ -6,7 +6,7 @@ sidebar_label: Infrastructure Provisioning
 
 ## Motivation
 
-Provisioning resources on a public or hybrid cloud is a potentially long-running operation with many possibilities for intermittent failures. While existing deployment tools support simple operations, many scenarios may still require a custom provisioning flow:
+Provisioning resources depends on a series of potentially long-running operations with many possibilities for intermittent failures. While existing deployment tools support simple operations, many scenarios may still require a custom provisioning flow:
 
 - Automatic infrastructure provisioning for a new customer in multi-tenant environments.
 - Particularly large deployments when tens or even hundreds of thousands of resources should be configured.
@@ -15,19 +15,19 @@ Provisioning resources on a public or hybrid cloud is a potentially long-running
 
 It's beneficial to have a single workflow engine to manage all the various tasks: spinning up the cluster, long term monitoring, managing upgrades, database schema migrations, automated staged rollout of new features.
 
-Some provisioning operations may take dozens of minutes. Ad-hoc solutions may fail in the middle and leave the system in an undefined state. 
+Some provisioning operations may take dozens of minutes or even hours to complete. Ad-hoc solutions may fail in the middle and leave the system in an undefined state. 
 
 ## Benefits of Temporal
 
-Temporal workflows can express complex decision trees using a general-purpose programming language. Support of long-running operations, polling, responding to events, automatic retries are excellent building blocks for robust provisioning flow. If an extensive provisioning workflow fails in the middle, Temporal would handle the error and restart the flow at the right spot.
+Temporal workflows can express complex decision trees using a general-purpose programming language. Support for long-running operations, polling, responding to events, automatic retries are excellent building blocks for a robust provisioning flow. If a lengthy provisioning workflow fails in the middle, Temporal would handle the error and restart the flow at the right spot.
 
 Temporal can route activity execution to a specific process or host, which is useful for many provisioning scenarios.
 
-Many resource management operations require locking to ensure that only one mutation is executed on a resource at a time. Temporal provides strong guarantees of uniqueness by operation identifier. This primitive enables the implementation of locking behavior in a fault-tolerant and scalable manner.
+Many resource management operations require locking to ensure that only one mutation is executed on any given resource at a time. Temporal provides a strong guarantee of uniqueness via the operation identifier. This primitive enables the implementation of locking behavior in a fault-tolerant and scalable manner.
 
 ## Example Scenarios
 
-**CI/CD**. Implementing CI/CD pipelines and deploying applications to containers or virtual or physical machines is a non-trivial process. Its business logic has to deal with complex requirements around rolling upgrades, canary deployments, and rollbacks. Temporal is a perfect platform for building a deployment solution because it provides all the necessary guarantees and abstractions, allowing developers to focus on business logic.
+**CI/CD**. Implementing CI/CD pipelines and deploying applications to containers or virtual or physical machines is a non-trivial process. The logic has to deal with complex requirements around rolling upgrades, canary deployments, and rollbacks. Temporal is a perfect platform for building a deployment solution because it provides all the necessary guarantees and abstractions, allowing developers to focus on business logic.
 
 Temporal can assist and augment existing DevOps automation, deployments, load testing, orchestration of real-time analytics, builds, and integration testing.
 

@@ -24,13 +24,13 @@ Temporal provides guaranteed execution, sophisticated error handling, flexible r
 
 Scalability is another crucial advantage of using Temporal for periodic execution. Many use cases require periodic execution for a large number of entities. At Uber, some applications run recurring workflows for each customer. Imagine 100s of millions parallel cron jobs that don't require a separate batch processing framework.
 
-Temporal support for long-running activities and unlimited retries also makes it a good fit.
+Temporal support for long-running activities and unlimited retries also makes it a great fit for monitoring use cases.
 
 ## Example: Cluster Lifecycle Workflow
 
 Imagine a system that manages a large number of compute clusters. It monitors that a cluster is up and running, its CPU and network utilization, run backups and software upgrades.
 
-You can model these operational activities as one indefinitely long workflow per cluster which exists anywhere from minutes to years, depending on the cluster lifetime. Each workflow would run periodic activities, react to user commands via signals, and coordinate multiple potentially conflicting operations.
+You can model these operational activities as one indefinitely long workflow per cluster which can be alive anywhere from minutes to years, depending on the cluster lifetime. Each workflow would run periodic activities, react to user commands via signals, and coordinate multiple potentially conflicting operations.
 
 ## Next Steps
 

@@ -6,27 +6,27 @@ sidebar_label: Distributed Transactions with Sagas
 
 ## Motivation
 
-Most businesses have to deal with managing complex **monetary transactions** and transfers, including
+Most businesses have to deal with managing complex **monetary transactions** and transfers, including:
 
 - Handling consumer's subscriptions, installment payments, and communications in a reliable and timely manner.
 - Integrating with multiple payment systems and shopping platform backends.
 - Detecting suspicious and fraudulent activities.
 
-Similar to [microservices orchestration](./use-cases-orchestration), such workflows need a way to deliver the transactional **consistency**&mdash;but across multiple independent vendors. Each of these systems has a potential for failure, delays, or intermittent availability issues. Despite the challenges, the entire process represents a long-running transaction that needs to eventually complete in a predictable way.
+Similar to [microservices orchestration](./use-cases-orchestration), such workflows need a way to deliver the transactional **consistency**&mdash;but across multiple third-party vendors. Each of these third-party systems has a potential for failure, delays, or intermittent availability issues. Despite the challenges, the entire process represents a long-running transaction that needs to eventually complete in a predictable way.
 
 In some cases, instead of trying to complete the process by continuously retrying, **compensation rollback** logic should be executed. [Saga Pattern](https://microservices.io/patterns/data/saga.html) is one way to standardize compensation APIs.
 
 ## Benefits of Temporal
 
-Temporal provides an extensive toolset to deal with the unpredictability of external services reliably and transparently: built-in execution guarantees, exponential activity **retries**, timeouts.
+Temporal provides an extensive toolset for dealing with the unpredictability of external services via reliable and transparent mechanisms: built-in execution guarantees, exponential activity **retries**, timeouts.
 
-Temporal comes with a native Saga Pattern support. You can define a compensation action for each workflow activity. If a failure happens in one of the downstream services, compensation actions will run for all activities that already succeeded.
+Temporal boasts native Saga Pattern support out of the box. Simply define a compensation action for each workflow activity. That way, when a failure happens in one of the downstream services, compensation actions will run for each of the activities that previously succeeded.
 
 ## Example
 
 The workflow snippet below orchestrates two activity calls: booking a hotel and reserving a flight. If the first activity fails (including all the configured retries), the workflow returns directly.
 
-However, if the first reservation succeeds, but the second one fails, you should cancel the already booked hotel to avoid undesirable charges. The error-handling block contains a call that cancels the hotel reservation before completing the workflow.
+However, if the first activity (reservation) succeeds, but the second one fails, you need to cancel the already booked hotel to avoid undesirable charges. The error-handling block contains a call that cancels the hotel reservation before completing the workflow.
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
