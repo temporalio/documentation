@@ -16,13 +16,13 @@ Interdependency graphs between services can be remarkably complicated. Processes
 
 ## Benefits of Temporal
 
-Temporal is a perfect fit for microservice orchestration scenarios. It guarantees that workflow code eventually completes, has built-in support for exponential activity **retries**, and simplifies the coding of the **compensation** logic. 
+Temporal is a perfect fit for microservice orchestration scenarios. It guarantees that workflow code eventually completes, has built-in support for exponential activity **retries**, and simplifies the coding of the **compensation** logic with native [Saga pattern support](./use-cases-distributed-transactions).
 
 You can define retries, rollbacks, or even a human intervention step in the case of failure. Workflows are defined in general-purpose programming languages that bring the ultimate **flexibility** especially when compared to text-based DSL engines.
 
 Temporal provides full **visibility** into each workflow's state. Contrast this with ad-hoc orchestration based on queues where getting a current status of each request is virtually impossible.
 
-Temporal seamlessly scales to a large number of workflows running in parallel and has native [Saga pattern support](./use-cases-distributed-transactions).
+Temporal seamlessly scales to a large number of workflows running in parallel.
 
 ## Next Steps
 

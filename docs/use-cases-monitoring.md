@@ -16,11 +16,18 @@ There is often a need for monitoring and periodic maintenance of IT systems on t
 - Pushing configuration updates when they become available.
 - Failing over in an active-passive setup when the primary instance becomes unhealthy.
 
-Monitoring is often an example of periodic execution of business logic, also known as a **distributed cron** engine.
+As monitoring is often an example of periodic execution of business logic, it can benefit from Temporal's **distributed cron** engine.
 
 ## Benefits of Temporal
 
-Temporal provides guaranteed execution, sophisticated error handling, flexible retry policies, and visibility into execution history for periodic workflow executions.
+Temporal provides guaranteed execution with exactly-once semantics with automatic retries.
+
+Polling configuration can be as straightforward or sophisticated as needed:
+
+- Workflows can run on a cron schedule with a single configuration setting.
+- Alternatively, you can manually control the delays between intervals with `sleep` commands. For example, you can switch to more frequent executions in case of detected downtime.
+
+The history service provides visibility into history for periodic workflow executions.
 
 Scalability is another crucial advantage of using Temporal for periodic execution. Many use cases require periodic execution for a large number of entities. At Uber, some applications run recurring workflows for each customer. Imagine 100s of millions parallel cron jobs that don't require a separate batch processing framework.
 

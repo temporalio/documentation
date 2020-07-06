@@ -21,6 +21,6 @@ It is common to have large data sets partitioned across many hosts or databases 
 
 Temporal provides hard guarantees around the **durability** of data and seamlessly deals with long-running operations, retries, and intermittent failures. Temporal handles the distributed nature of these systems automatically.
 
-One crucial feature of Temporal is its ability to **route task execution** to a specific process or host. It is often useful to control how ML models and other large files are distributed across hosts. For example, if an ML model is partitioned by the city, the requests should be routed to hosts that contain the corresponding city model.
-
 Temporal is an ideal solution for implementing a full scan of a dataset in a scalable and resilient way. The standard pattern is to run an activity (or multiple parallel activities for partitioned data sets) that performs the scan and **heartbeats** its progress back to Temporal. In the case of a host failure, the operation is retried on a different host and continues execution from the last reported progress.
+
+One crucial feature of Temporal is its ability to **route task execution** to a specific process or host. It is often useful to control how ML models and other large files are distributed across hosts. For example, if an ML model is partitioned by the city, the requests should be routed to hosts that contain the corresponding city model.
