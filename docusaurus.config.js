@@ -127,6 +127,12 @@ module.exports = {
       // Optional fields.
       anonymizeIP: true, // Should IPs be anonymized?
     },
+    algolia: {
+      apiKey: '14805ba2eb682edb2e719df4d5e03c8a',
+      indexName: 'temporal',
+      // appId: 'app-id', // Optional, if you run the DocSearch crawler on your own
+      // algoliaOptions: {}, // Optional, if provided by Algolia
+    },
   },
   presets: [
     [
