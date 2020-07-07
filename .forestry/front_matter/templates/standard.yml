@@ -43,15 +43,13 @@ fields:
   label: 'Posted on:'
   default: now
 - name: release_version
-  type: number
-  description: ''
-  default: 0
-  required: true
+  type: textarea
+  default: ''
   config:
-    min: 
-    max: 
-    step: 
     required: true
+    wysiwyg: false
+    schema:
+      format: markdown
   label: Release Version
 pages:
 - blog/why-we-re-moving-to-discourse.md
