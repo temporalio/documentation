@@ -95,4 +95,4 @@ if err != nil {
 
 ## Next Steps
 
-* Explore the full [Saga example with Java SDK](https://github.com/temporalio/temporal-java-samples/tree/master/src/main/java/io/temporal/samples/bookingsaga)
+* Explore the full [Saga example in Java](https://github.com/temporalio/temporal-java-samples/tree/master/src/main/java/io/temporal/samples/bookingsaga)
