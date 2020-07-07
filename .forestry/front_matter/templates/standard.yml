@@ -32,5 +32,26 @@ fields:
   type: tag_list
   default: []
   label: Tags
+- name: posted_on_
+  type: datetime
+  description: ''
+  config:
+    required: true
+    date_format: 
+    time_format: 
+    display_utc: false
+  label: 'Posted on:'
+  default: now
+- name: release_version
+  type: number
+  description: ''
+  default: 0
+  required: true
+  config:
+    min: 
+    max: 
+    step: 
+    required: true
+  label: Release Version
 pages:
 - blog/why-we-re-moving-to-discourse.md
