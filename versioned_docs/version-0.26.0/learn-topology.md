@@ -30,7 +30,7 @@ Temporal reuses terminology from _workflow automation_ namespace. So fault-obliv
 
 The Temporal service does not execute workflow code directly. The workflow code is hosted by an external (from the service point of view) _workflow worker_ process. These processes receive _decision tasks_ that contain events that the workflow is expected to handle from the Temporal service, delivers them to the workflow code, and communicates workflow _decisions_ back to the service.
 
-As workflow code is external to the service, it can be implemented in any language that can talk service Thrift API. Currently Java and Go clients are production ready. While Python and C# clients are under development. Let us know if you are interested in contributing a client in your preferred language.
+As workflow code is external to the service, it can be implemented in any language that can talk to the service gRPC API. Currently Java and Go clients are production ready. While Python and C# clients are under development. Let us know if you are interested in contributing a client in your preferred language.
 
 The Temporal service API doesn't impose any specific workflow definition language. So a specific worker can be implemented to execute practically any existing workflow specification. The model the Temporal team chose to support out of the box is based on the idea of durable function. Durable functions are as close as possible to application business logic with minimal plumbing required.
 
