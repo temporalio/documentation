@@ -79,14 +79,14 @@ Use the admin CLI to add a new search attribute:
 tctl --namespace samples-namespace adm cl asa --search_attr_key NewKey --search_attr_type 1
 ```
 
-The numbers for the attribute types map as follows:
+The possible values for **_search_attr_type_** are:
 
-- 0 = String
-- 1 = Keyword
-- 2 = Int
-- 3 = Double
-- 4 = Bool
-- 5 = DateTime
+* string
+* keyword
+* int
+* double
+* bool
+* datetime
 
 #### Keyword vs String
 
