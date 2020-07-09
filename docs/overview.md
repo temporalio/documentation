@@ -7,6 +7,8 @@ description: This guide will help you build your own resilient applications usin
 
 import { ResponsivePlayer } from '../src/components'
 
+I CHANGED THIS - IT WAS ME - I DID IT
+
 A large number of use cases span beyond a single request-reply, require tracking
 of a complex state, respond to asynchronous events, and communicate to external unreliable dependencies.
 The usual approach to building such applications is a hodgepodge of stateless services,
