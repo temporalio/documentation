@@ -76,7 +76,7 @@ $ tctl --namespace samples-namespace cl get-search-attr
 Use the admin CLI to add a new search attribute:
 
 ```bash
-tctl --namespace samples-namespace adm cl asa --search_attr_key NewKey --search_attr_type 1
+tctl --namespace samples-namespace adm cl asa --search_attr_key NewKey --search_attr_type string
 ```
 
 The possible values for **_search_attr_type_** are:
