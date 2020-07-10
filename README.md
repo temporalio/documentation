@@ -81,7 +81,7 @@ The first step is to initialize the use of Yarn to build the site locally.
 From your terminal, change directory to the project root and run:
 
 ```
-$ yarn
+$ yarn install
 ```
 
 ### Step 2: Build the website
