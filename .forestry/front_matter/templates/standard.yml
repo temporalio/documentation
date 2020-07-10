@@ -52,4 +52,5 @@ fields:
       format: markdown
   label: Release Version
 pages:
+- blog/v1-release-premortem.md
 - blog/why-we-re-moving-to-discourse.md
