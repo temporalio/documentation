@@ -11,6 +11,8 @@ author_image_url: https://avatars2.githubusercontent.com/u/1766515?s=460&u=42e28
 release_version: v0.26.0
 
 ---
+<!--truncate-->
+
 We know that the recent delay caused some concern in the community. We empathize entirely and are seriously dedicated to correcting this going forward.
 
 First I want to outline the two main guiding principles which drives most of the release related decisions at Temporal:
