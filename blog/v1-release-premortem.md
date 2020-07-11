@@ -27,7 +27,7 @@ Many factors directly or indirectly contributed to the delay of production ready
 When Maxim and I left Uber to start Temporal we had a lot of uncertainty in front of us. There were big open questions about the roadmap, potential collaboration with Uber on Cadence, the business model for the Company, etc. Figuring out a plan during these uncertain first few months took a lot of time and energy. As we talked with our users during this initial phase it became evident that there is one thing which is going in our favor despite all these challenges - an amazing community of Cadence developers who are super excited at the potential of our technology. Once we had this realization everything started to fall in place. Every decision we have made since then is quantified by the value it brings to the community. We chose our first three focus areas explicitly based on the value they would bring to community:
 
 1. Simplify experience of writing applications using Go and Java SDKs
-2. Grpc migration for better security and ability to easily provide SDKs in other languages
+2. gRPC migration for better security and ability to easily provide SDKs in other languages
 3. Persistence improvements so we can easily provide bindings to other databases like PostgresSQL in the future
 
 Although we did relatively well to navigate through this period of uncertainty, we made the key mistake of committing to dates without having a clear engineering plan in place. We would frequently communicate release dates to users which were based on the assumption of ideal days. This meant all of our estimates were based on the happy path leaving no room for unknowns.
