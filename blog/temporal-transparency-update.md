@@ -12,6 +12,8 @@ author_image_url: https://avatars2.githubusercontent.com/u/27736122?s=460&u=7b6a
 release_version: v0.26.0
 
 ---
+<!--truncate-->
+
 **Latest Release at Time of Writing:** V0.26.0
 
 We recently announced that there would be some changes to our V1 release timeline. While we obviously prefer to deliver on time, this situation indicated we should be more concerned with our transparency than our velocity. We believe that life is full of surprises and sometimes you can't prevent delays, but you can always have open and direct communication channels. Moving forward our goal is to be consistently open and transparent, especially when we're working on things that are in our users critical path. As a first step, we plan to release regular updates (like this one) that provide insight into what the team is working on and what hasn't been worked on yet.
