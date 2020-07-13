@@ -4,12 +4,20 @@ title: DSL Workflows
 sidebar_label: DSL Workflows
 ---
 
-Temporal supports implementing business logic directly in programming languages like Java and Go. But there are cases when
-using a namespace-specific language is more appropriate. Or there might be a legacy system that uses some form of DSL for process definition but it is not operationally stable and scalable. This also applies to more recent systems like Apache Airflow, various BPMN engines and AWS Step Functions.
+## Motivation
 
-An application that interprets the DSL definition can be written using the Temporal SDK. It automatically becomes highly fault tolerant, scalable, and durable when running on Temporal. Cadence has been used to deprecate several Uber internal DSL engines. The customers continue to use existing process definitions, but Temporal is used as an execution engine.
+With Temporal, you usually implement business logic with programming languages like Java and Go. However, there are cases when using a domain-specific language (DSL) can be more appropriate.
 
-There are multiple benefits of unifying all company workflow engines on top of Temporal. The most obvious one is that
-it is more efficient to support a single product instead of many. It is also difficult to beat the scalability and stability of
-Temporal which each of the integrations it comes with. Additionally, the ability to share activities across "engines"
-might be a huge benefit in some cases.
+Another use case would be a legacy system that uses some form of DSL for process definition but is not operationally stable and scalable. It could be a home-grown solution, or a system like Apache Airflow, various BPMN engines, and even AWS Step Functions.
+
+## Migrate DSLs to Temporal
+
+An application can utilize the Temporal SDK to interpret the DSL definition. This automatically makes the DSL execution highly fault-tolerant, scalable, and durable since it's running on Temporal. This means that users can migrate their existing portfolio of internal DSL-based process definitions and take advantage of Temporal as an execution engine.
+
+If your company uses multiple workflow engines internally, it can be very beneficial to unify them with Temporal. For one, it is more efficient to support a single product instead of many. Additionally, it's hard to overestimate the the benefit sharing activities will bring across the company.
+
+On top of that, Temporal comes with unmatched scalability and stability characteristics. 
+
+## Example
+
+- [An implemtation of Amazon States Language](https://github.com/checkr/states-language-cadence) from Checkr
