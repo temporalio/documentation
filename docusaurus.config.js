@@ -49,20 +49,18 @@ module.exports = {
           position: 'right',
         },
         {
-          to: 'https://temporal.io/careers',
-          label: 'Jobs',
+          href: 'https://community.temporal.io/',
+          label: 'Support',
           position: 'right',
         },
-        // {to: 'blog', label: 'Blog', position: 'left'},
         {
           href: 'https://github.com/temporalio/temporal',
           label: 'GitHub',
           position: 'right',
         },
         {
-          href:
-            'https://join.slack.com/t/temporalio/shared_invite/zt-c1e99p8g-beF7~ZZW2HP6gGStXD8Nuw',
-          label: 'Slack',
+          to: 'https://temporal.io/careers',
+          label: 'Jobs',
           position: 'right',
         },
       ],
