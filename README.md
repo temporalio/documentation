@@ -2,7 +2,7 @@
 
 This repository contains Temporal's documentation.
 
-The source of this documentation is available for public use and public contributions.
+The source of this documentation is available to the public for individual and commercial use.
 
 You can view the published documentation at https://docs.temporal.io.
 
@@ -14,13 +14,13 @@ Contributions from the community are highly encouraged. To contribute please fol
 
 ### Fork and clone
 
-To ensure that each change is properly peer reviewed, we request that you follow standard open source contribution processes. GitHub's [first-contributions repo README](https://github.com/firstcontributions/first-contributions) provides a decent overview.
+To ensure that each change is relevant and properly peer reviewed, we request that you adhere to open source contribution best practices. GitHub's [first-contributions repo README](https://github.com/firstcontributions/first-contributions) offers a decent overview.
 
 Start by forking the project into your own GitHub account.
 
 ![Fork repository button](static/img/readme/forkrepo.png)
 
-Using git, clone the fork onto your local machine.
+Using git, clone your fork onto your local machine.
 
 ```bash
 $ git clone git@github.com:<your-account>/documentation-legacy.git
