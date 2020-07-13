@@ -118,8 +118,8 @@ Temporal documentation will accumulate changes in the "next" version and be peri
 
 Documentation version schemas will reflect the Temporal API version that they are pinned to as well as the iteration of the documentation for that API version.
 
-Version schema: `{temporal api version}-docs-{docs version}`
+**Version schema**: `{temporal api version}-docs-{docs version}`
 
-Example: `0.26.0-docs-1`
+**Example**: `0.26.0-docs-1`
 
 There is no guarantee that documentation versions will be backwards or forwards compatible, meaning that pages that existed in a previous version are not guaranteed to exist in the next version and vice versa.
