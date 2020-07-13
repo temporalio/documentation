@@ -6,21 +6,23 @@ The source of this documentation is available to the public for individual and c
 
 You can view the published documentation at https://docs.temporal.io.
 
-This documentation utilizes the [Docusaurus 2](https://v2.docusaurus.io/) framework, a modern static website generator, which makes it possible to build and view the documentation locally.
+This documentation utilizes the [Docusaurus 2](https://v2.docusaurus.io/) framework, a modern static website generator, which makes it possible to build and view documentation locally.
 
 ## Contribution guidelines
 
-Contributions from the community are highly encouraged. To contribute please follow these steps.
-
-### Fork and clone
+Contributions from the community are highly encouraged.
 
 To ensure that each change is relevant and properly peer reviewed, we request that you adhere to open source contribution best practices. GitHub's [first-contributions repo README](https://github.com/firstcontributions/first-contributions) offers a decent overview.
 
-Start by forking the project into your own GitHub account.
+To contribute please follow these steps.
+
+### Fork and clone
+
+Start by forking the project into your GitHub account.
 
 ![Fork repository button](static/img/readme/forkrepo.png)
 
-Using git, clone your fork onto your local machine.
+Then, using git, clone your fork locally.
 
 ```bash
 $ git clone git@github.com:<your-account>/documentation-legacy.git
@@ -37,7 +39,7 @@ $ git remote add upstream git@github.com/temporal/documentation-legacy.git
 
 ### Create a local branch
 
-Before you make changes, sync your local copy with the upstream project as well as your forked project.
+Before you make changes, you will want to sync your forked project and your local repository with the upstream project (temporal/documentation-legacy).
 
 ```bash
 $ git checkout master
@@ -50,7 +52,7 @@ Create a branch to work on.
 $ git checkout -b your-branch
 ```
 
-Now you can make changes. See [Building and viewing the site locally](#building-and-viewing-the-site-locally) for visualizing your changes.
+Now you can start making changes! See [Building and viewing the site locally](#building-and-viewing-the-site-locally) for visualizing your changes.
 
 ### Submit a pull request
 
@@ -70,7 +72,7 @@ Ensure the "base fork" points to the correct repository and branch and provide a
 
 Then click "Create pull request".
 
-You can refer to [Rob Allen's DevNotes](https://akrabat.com/the-beginners-guide-to-contributing-to-a-github-project/) for details on this type of contribution process.
+Refer to [Rob Allen's DevNotes](https://akrabat.com/the-beginners-guide-to-contributing-to-a-github-project/) for details on the contribution process.
 
 ## Building and viewing the site locally
 
@@ -88,9 +90,9 @@ From your terminal, change directory to the project root and run:
 $ yarn install
 ```
 
-Read the [yarn CLI docs](https://classic.yarnpkg.com/en/docs/cli/) to learn what yarn is doing.
+Read the [yarn CLI docs](https://classic.yarnpkg.com/en/docs/cli/) if you want to learn what yarn is doing.
 
-### View the site in localhost
+### View the site locally
 
 You can view the site via localhost in your browser by running this command from inside the project:
 
@@ -100,13 +102,15 @@ $ yarn start
 
 This command starts a local development server and opens up a browser window.
 
-This will fail if there are errors with the site.
+This will fail if there are source code errors or references to relative paths that do not exist.
 
 Most changes to the site are reflected instantly without having to restart the server. Installing a new plugin will require you to restart.
 
 ## When will my changes be reflected in docs.temporal.io?
 
-You will have a chance to preview the changes in your pull request.
+You will have a chance to preview the changes in your pull request. Click "Details" next to the Netlify deploy-preview check.
+
+![Netlify build preview](static/img/readme/netlifypreview.png)
 
 As soon as your pull request is merged, a new build will automatically kick off and deploy the changes to the [next](https://docs.temporal.io/docs/next/) version of the docs.
 
