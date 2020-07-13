@@ -56,5 +56,8 @@ module.exports = {
       'go-distributed-cron',
       'go-tracing',
     ],
+    'About': [
+      'docs-sla',
+    ],
   },
 };
