@@ -5,7 +5,7 @@ title: Documentation SLA
 
 Temporal is constantly working to improve and expand its documentation. As a result, some components may change without notice. Page slugs (URLs), menu labels, and the location of information are a few of the items you can expect to see altered as we aim to try and give our users the best experience possible.
 
-[Documentation versions](https://docs.temporal.io/versions) are used to preserve changes to user facing content, which enables users to reference older material.
+[Documentation versions](https://docs.temporal.io/versions) are used to preserve changes to user facing content, which enables older material to be referenced.
 
 Visit [community.temporal.io](https://community.temporal.io) for help if the information you are looking for appears to be missing.
 
