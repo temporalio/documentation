@@ -18,7 +18,7 @@ To ensure that each change is properly peer reviewed, we request that you follow
 
 Start by forking the project into your own GitHub account.
 
-![Fork repository button](https://raw.githubusercontent.com/temporalio/documentation-legacy/master/static/img/readme/forkrepo.png)
+![Fork repository button](static/img/readme/forkrepo.png)
 
 Using git, clone the fork onto your local machine.
 
