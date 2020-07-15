@@ -1,6 +1,9 @@
 module.exports = {
   docs: {
-    'Getting Started': ['overview', 'license', 'installing-server'],
+    'Getting Started': [
+      'overview',
+      'installing-server'
+    ],
     'Use Cases': [
       'use-cases-orchestration',
       'use-cases-distributed-transactions',
@@ -11,7 +14,7 @@ module.exports = {
       'use-cases-dsl',
       'use-cases-actors',
     ],
-    Learn: [
+    'Learn': [
       'learn-glossary',
       'learn-workflows',
       'learn-activities',
@@ -58,6 +61,7 @@ module.exports = {
     ],
     'About': [
       'docs-sla',
+      'license',
     ],
   },
 };
