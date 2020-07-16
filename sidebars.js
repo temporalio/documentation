@@ -1,6 +1,7 @@
 module.exports = {
   docs: [
     'overview',
+    'installing-server',
     {
       'type': 'category',
       'collapsed': true,
@@ -38,7 +39,6 @@ module.exports = {
       'collapsed': true,
       'label': 'How to guides',
       'items': [
-        'installing-server',
         'learn-workflow-filtering',
         'learn-cli',
       ],
