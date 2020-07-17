@@ -16,9 +16,9 @@ An Activity is a business-level function that implements your application logic,
 - An Activity can be retried indefinitely according to the provided exponential retry policy.
 - If for any reason an Activity is not completed within the specified timeout, an error is reported to the [Workflow](#workflow) which decides how to handle it. There is no limit for an Activity duration.
 
-### Acitity ID
+### Acitity Id
 
-An Activity ID is a UUID that corresponds to an Activity.
+An Activity Id is a UUID that corresponds to an Activity.
 
 ### Activity Task
 
@@ -84,8 +84,8 @@ A [Local Activity](/docs/learn-activities#local-activities) is an [Activity](#ac
 
 Temporal is backed by a multi-tenant service and the unit of isolation is called a Namespace.
 
-- Each Namespace acts as a such for [Task Queue](#task-queue) names as well as [Workflow IDs](#workflow-id). For example, when a Workflow is started, it is started in a specific Namespace.
-- Temporal guarantees a unique [Workflow ID](#workflow-id) within a Namespace, and supports running [Workflow Executions](#workflow-execution) to use the same [Workflow ID](#workflow-id) if they are in different Namespaces.
+- Each Namespace acts as a such for [Task Queue](#task-queue) names as well as [Workflow Ids](#workflow-id). For example, when a Workflow is started, it is started in a specific Namespace.
+- Temporal guarantees a unique [Workflow Id](#workflow-id) within a Namespace, and supports running [Workflow Executions](#workflow-execution) to use the same [Workflow Id](#workflow-id) if they are in different Namespaces.
 - Various configuration options like the retention period or Archival destination are configured per Namespace as well through a special CRUD API or through [`tctl`](./learn-cli).
 - In a multi-cluster deployment, Namespace is a unit of fail-over.
 - Each Namespace can only be active on a single Temporal cluster at a time. However, different Namespaces can be active in different clusters and can fail-over independently.
@@ -96,12 +96,12 @@ A Query is a synchronous (from the caller's point of view) operation that is use
 
 - A Query is inherently read only and cannot affect a workflow state.
 
-### Run ID
+### Run Id
 
-A Run ID is UUID that a Temporal service assigns to each Workflow run.
+A Run Id is UUID that a Temporal service assigns to each Workflow run.
 
-- If allowed by a configured policy, you might be able to re-execute a Workflow, after it has closed or failed, with the same [Workflow ID](#workflow-id).
-- Each such re-execution is called a run. Run ID is used to uniquely identify a run even if it shares a Workflow ID with others.
+- If allowed by a configured policy, you might be able to re-execute a Workflow, after it has closed or failed, with the same [Workflow Id](#workflow-id).
+- Each such re-execution is called a run. Run Id is used to uniquely identify a run even if it shares a Workflow Id with others.
 
 ### Signal
 
@@ -124,9 +124,9 @@ Common name for [Activity Task Queues](#activity-task-queue) and [Workflow Task 
 
 ### Task Token
 
-A Task Token is a unique correlation ID for a Temporal [Activity](#activity).
+A Task Token is a unique correlation Id for a Temporal [Activity](#activity).
 
-- [Activity](#activity) completion calls take a Task Token, [Namespace](#namespace), [Workflow ID](#workflow-id), or [Activity ID](#activity-id) as an argument.
+- [Activity](#activity) completion calls take a Task Token, [Namespace](#namespace), [Workflow Id](#workflow-id), or [Activity Id](#activity-id) as an argument.
 
 ### Worker
 
@@ -151,12 +151,12 @@ An instance of a [Workflow](#workflow).
 
 - The instance can be in the process of executing or it could have already completed execution.
 
-### Workflow ID
+### Workflow Id
 
 A unique identifier for a [Workflow Execution](#workflow-execution).
 
-- Temporal guarantees the uniqueness of an ID within a [Namespace](#namespace).
-- An attempt to start a [Workflow](#workflow) with a duplicate ID results in an **already started** error.
+- Temporal guarantees the uniqueness of an Id within a [Namespace](#namespace).
+- An attempt to start a [Workflow](#workflow) with a duplicate Id results in an **already started** error.
 
 ### Workflow Task
 
