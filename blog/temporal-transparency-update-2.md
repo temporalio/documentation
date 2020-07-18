@@ -16,7 +16,7 @@ release_version: V0.27.0
 
 **Latest Release at Time of Writing:** V0.27.0
 
-Hope everyone is having a great Friday, I'm here to share our second V1 status update as part of our continued effort to be more transparent.
+Hope everyone is having a great Friday. I'm happy to share our second V1 status update as part of our continued effort to be more transparent.
 
 ## Update July, 17, 2020
 
@@ -31,13 +31,13 @@ Hope everyone is having a great Friday, I'm here to share our second V1 status u
 
 We're continuing to dedicate the majority of our time and energy to V1 code completion. Here are the items which we handled since the last update:
 
-![](/cms/screen-shot-2020-07-17-at-4-36-48-pm.png)
+![](/cms/dsadsd.png)
 
 While we did make serious progress on our previously defined tasks, we also ended up adding a considerable number of new items:
 
 ![](/cms/screen-shot-2020-07-17-at-4-37-37-pm.png)
 
-New items are the result of us triaging open issues on our public GitHub repos earlier in the week. While we didn't expect to have any additional items added before code completion, we're happy that they are now being tracked. To make it easier to track publicly, we've created a few GitHub project milestones with all of the newly discovered work:
+New items are the result of us triaging open issues in our public GitHub repos earlier in the week. While we didn't expect to have any additional items added before code completion, we're happy that they are now being tracked. To make it easier to track publicly, we've created a few GitHub project milestones with all of the newly discovered work:
 
 * [https://github.com/temporalio/temporal/milestone/2](https://github.com/temporalio/temporal/milestone/2 "https://github.com/temporalio/temporal/milestone/2")
 * [https://github.com/temporalio/go-sdk/milestone/1](https://github.com/temporalio/go-sdk/milestone/1 "https://github.com/temporalio/go-sdk/milestone/1")
