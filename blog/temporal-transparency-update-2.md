@@ -16,7 +16,7 @@ release_version: V0.27.0
 
 **Latest Release at Time of Writing:** V0.27.0
 
-Hope everyone is having a great Friday, I'm here to share our second V1 status update. These updates are part of our continued effort to be more transparent.
+Hope everyone is having a great Friday, I'm here to share our second V1 status update as part of our continued effort to be more transparent.
 
 ## Update July, 17, 2020
 
