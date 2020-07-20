@@ -3,7 +3,7 @@ const versions = require('./versions.json');
 module.exports = {
   title: 'Temporal',
   tagline: 'Invincible applications, invisible infrastructure',
-  url: 'https://temporalio.github.io',
+  url: 'https://docs.temporal.io',
   baseUrl: '/',
   favicon: 'img/favicon.svg',
   organizationName: 'temporalio', // Usually your GitHub org/user name.
