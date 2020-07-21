@@ -15,6 +15,14 @@ An Activity is a business-level function that implements your application logic,
 - An Activity can be implemented as a synchronous method or fully asynchronously involving multiple processes.
 - An Activity can be retried indefinitely according to the provided exponential retry policy.
 - If for any reason an Activity is not completed within the specified timeout, an error is reported to the [**Workflow**](#workflow) which decides how to handle it. There is no limit for an Activity duration.
+- Activities support an [**Activity Heartbeat**](#activity-heartbeat) that helps to identify timeouts faster in case the Activity execution fails.
+
+### Activity Heartbeat
+
+An Activity Heartbeat is a means to provide a signal to the Temporal service regarding the status of an Activity Task that is being executed.
+
+- Activity Heartbeats are implemented in code and are recorded at the discretion of the [Workflow](#workflow) implementation.
+- Custom [**Activity**](#activity) progress information can be included in an Activity Heartbeat and can be used when the [**Activity**](#activity) is retried.
 
 ### Acitity Id
 
@@ -22,19 +30,9 @@ A unique Id that identifies an [**Activity**](#activity) that is executing. The 
 
 ### Activity Task
 
-A Task that contains invocation information for an [**Activity**](#activity) that is delivered to an [**Activity Worker**](#activity-worker) through and an [**Activity Task Queue**](#activity-task-queue).
+A Task that contains invocation information for an [**Activity**](#activity) that is delivered to an [**Activity Worker**](#activity-worker) through and a [**Task Queue**](#activity-task-queue).
 
 - Upon receiving an [**Activity Task**](#activity-task), an [**Activity Worker**](#activity-worker) executes the corresponding [**Activity**](#activity).
-
-### Activity Task Queue
-
-[**Task Queue**](#task-queue) that is used to deliver [**Activity Tasks**](#activity-task) to [**Activity Workers**](#activity-worker)
-
-### Activity Worker
-
-An object that is executed in the client application and receives [**Activity Tasks**](#activity-task) from an [**Activity Task Queue**](#activity-task-queue) that it is subscribed to.
-
-Once the [**Activity Task**](#activity-task) is received it invokes the corresponding [**Activity**](#activity).
 
 ### Archival
 
@@ -58,14 +56,18 @@ Any action requested by the [**Workflow**](#workflow) durable function is called
 
 - Scheduling an [**Activity**](#activity), canceling a child [**Workflow**](#workflow), or starting a timer are all Commands for example.
 - A [**Workflow Task**](#workflow-task) contains an optional list of Commands.
-- Every Command is recorded in the [**Event History**](#event-history) as an [**Event**](#event).
+- A [**Worker**](#worker) executing a [**Workflow**](#workflow) generates a list of Commands as a result to a [**Workflow Task**](#workflow-task). This list is sent to the Temporal service as part of the [**Workflow Task**](#workflow-task) completion request.
+- Every Command is recorded in the [**Event History**](#event-history) as an [**Event**](#event). For example, the `StartTimer` command is recorded as a corresponding `TimerStarted` event.
 
 ### Event
 
-An Event is an indivisible operation performed by your application.
+There are two types of Events that Temporal tracks for each workflow:
+1. [**Command**](#command) Events.
+2. Everything else.
 
-- For example, `activity_task_started`, `task_failed`, or `timer_canceled` are all Events.
-- Events are recorded in the [**Event History**](#event-history).
+- Command Events are events that correspond to [**Commands**](#command) produced by the [**Workflow Worker**](#workflow-worker).
+- All other events represent various external occurrences that the [**Workflow**] is expected to react to such as an [**Activity**](#activity) completion, a timer firing, a cancellation request, etc.
+- All Events are recorded in the [**Event History**](#event-history).
 
 ### Event History
 
@@ -84,7 +86,8 @@ A [**Local Activity**](/docs/learn-activities#local-activities) is an [**Activit
 
 Temporal is backed by a multi-tenant service and the unit of isolation is called a Namespace.
 
-- Each Namespace acts as a such for [**Task Queue**](#task-queue) names as well as [**Workflow Ids**](#workflow-id). For example, when a Workflow is started, it is started in a specific Namespace.
+- By default a Temporal service is provisioned with a "default" Namespace. All APIs and tools, such as the UI and CLI, default to the "default" Namespace if it is not specified. So, if you are not planning to use multiple Namespaces, we recommend using the default one.
+- [**Task Queue**](#task-queue) names as well as [**Workflow Ids**](#workflow-id) correspond to a specific Namespace. For example, when a Workflow is started, it is started within a specific Namespace.
 - Temporal guarantees a unique [**Workflow Id**](#workflow-id) within a Namespace, and supports running [**Workflow Executions**](#workflow-execution) to use the same [**Workflow Id**](#workflow-id) if they are in different Namespaces.
 - Various configuration options like the retention period or Archival destination are configured per Namespace as well through a special CRUD API or through [`tctl`](./learn-cli).
 - In a multi-cluster deployment, Namespace is a unit of fail-over.
@@ -95,12 +98,13 @@ Temporal is backed by a multi-tenant service and the unit of isolation is called
 A Query is a synchronous (from the caller's point of view) operation that is used to report the state of a [**Workflow**](#workflow).
 
 - A Query is inherently read only and cannot affect a workflow state.
+- The query logic is part of a workflow code with the only limitation that it cannot mutate the workflow state.
 
 ### Run Id
 
-A Run Id is UUID that a Temporal service assigns to each Workflow run.
+A Run Id is UUID that a Temporal service assigns to each [**Workflow**](#workflow) run.
 
-- If allowed by a configured policy, you might be able to re-execute a Workflow, after it has closed or failed, with the same [**Workflow Id**](#workflow-id).
+- Temporal guarantees that only one [**Workflow Execution**](#workflow-execution) with a given [**Workflow Id**](#workflow-id) can be open at a time. But after the [**Workflow Execution**](#workflow-execution) has completed, if allowed by a configured policy, you might be able to re-execute a [**Workflow**](#workflow) after it has closed or failed, using the same [**Workflow Id**](#workflow-id).
 - Each such re-execution is called a run. Run Id is used to uniquely identify a run even if it shares a Workflow Id with others.
 
 ### Signal
@@ -120,7 +124,10 @@ A Task is the context needed to execute a specific [**Activity**](#activity) or 
 
 ### Task Queue
 
-Common name for [**Activity Task Queues**](#activity-task-queue) and [**Workflow Task Queues**](#workflow-task-queue)
+A Task Queue is a queue that a [**Worker**] subscribes to and polls to pick up tasks to execute.
+
+- Each Task Queue is capable of queuing [**Activity Tasks**](#activity-task) and [**Workflow Tasks**](#workflow-task).
+- Task Queues rely on the same persistent storage as the rest of the Temporal service (Task Queues are not based on other technologies such as Kafka).
 
 ### Task Token
 
@@ -132,7 +139,7 @@ A Task Token is a unique correlation Id for a Temporal [**Activity**](#activity)
 
 A Worker is a service that hosts the [**Workflow**](#workflow) and [**Activity**](#activity) implementations.
 
-- A Worker can exist as both an [**Activity Worker**](#activity-worker) and a [**Workflow Worker**](#workflow-worker), having the ability to execute both types of tasks.
+- A single Worker actually contains both an [**Activity Worker**](#activity-worker) and a [**Workflow Worker**](#workflow-worker), abstracting the logical separation and having the ability to execute both types of tasks.
 - The Worker polls the Temporal service for [**Tasks**](#task), performs those [**Tasks**](#task), and communicates [**Task**](#task) execution results back to the Temporal service.
 - Worker services are developed, deployed, and operated by Temporal customers.
 
@@ -163,16 +170,6 @@ A unique identifier for a [**Workflow Execution**](#workflow-execution).
 
 A Workflow Task is a [**Task**](#task) that contains invocation information for a [**Workfow**](#workflow).
 
-- Every time a new external event that might affect a [**Workflow**](#workflow) state is recorded, a Workflow Task that contains it, is added to a [**Workflow Task Queue**](#workflow-task-queue) and then picked up by a [**Workflow Worker**](#worflow-worker).
+- Every time a new external event that might affect a [**Workflow**](#workflow) state is recorded, a Workflow Task that contains it, is added to a [**Task Queue**](#task-queue) and then picked up by a [**Workflow Worker**](#worflow-worker).
 - After the new event is handled, the Workflow Task is completed with a list of [**Commands**](#command).
 - Handling of a Workflow Task is usually very fast and is not related to the duration of operations that the [**Workflow**](#workflow) invokes.
-
-### Workflow Task Queue
-
-[**Task Queue**](#task-queue) that is used to deliver [**Workflow Tasks**](#workflow-task) to [**Workflow Workers**](#workflow-worker)
-
-### Workflow Worker
-
-A [**Worker**](#worker) service that receives [**Workflow Tasks**](#workflow-task) from an [**Workflow Task Queue**](#workflow-task-queue) it is subscribed to.
-
-- Whenever a [Task](#task) is received it is handled by a corresponding [**Workflow**](#workflow).
