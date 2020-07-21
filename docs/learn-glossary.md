@@ -19,8 +19,9 @@ An Activity is a business-level function that implements your application logic,
 
 ### Activity Heartbeat
 
-An Activity Heartbeat is a means to provide a signal to the Temporal service regarding the status of an Activity Task that is being executed.
+An Activity Heartbeat provides the status of an [**Activity Task**](#activity-task) that is being executed to the Temporal server.
 
+- Activity Heartbeats help ensure that [**Activity**](#activity) execution failures and timeouts are handled quickly.
 - Activity Heartbeats are implemented in code and are recorded at the discretion of the [Workflow](#workflow) implementation.
 - Custom [**Activity**](#activity) progress information can be included in an Activity Heartbeat and can be used when the [**Activity**](#activity) is retried.
 
@@ -95,10 +96,10 @@ Temporal is backed by a multi-tenant service and the unit of isolation is called
 
 ### Query
 
-A Query is a synchronous (from the caller's point of view) operation that is used to report the state of a [**Workflow**](#workflow).
+From the caller's point of view, a Query is a synchronous operation that is used to report the state of a [**Workflow**](#workflow).
 
+- Query logic is implemented as code within a [**Workflow**](#workflow).
 - A Query is inherently read only and cannot affect a workflow state.
-- The query logic is part of a workflow code with the only limitation that it cannot mutate the workflow state.
 
 ### Run Id
 
