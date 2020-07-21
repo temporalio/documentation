@@ -21,7 +21,7 @@ An Activity is a business-level function that implements your application logic,
 
 An Activity Heartbeat provides the status of an [**Activity Task**](#activity-task) that is being executed to the Temporal server.
 
-- Activity Heartbeats help ensure that [**Activity**](#activity) execution failures and timeouts are handled quickly.
+- Activity Heartbeats help ensure that [**Activity**](#activity) execution failures and timeouts are identified quickly.
 - Activity Heartbeats are implemented in code and are recorded at the discretion of the [Workflow](#workflow) implementation.
 - Custom [**Activity**](#activity) progress information can be included in an Activity Heartbeat and can be used when the [**Activity**](#activity) is retried.
 
@@ -31,7 +31,7 @@ A unique Id that identifies an [**Activity**](#activity) that is executing. The 
 
 ### Activity Task
 
-A Task that contains invocation information for an [**Activity**](#activity) that is delivered to an [**Activity Worker**](#activity-worker) through and a [**Task Queue**](#activity-task-queue).
+A Task that contains invocation information for an [**Activity**](#activity) that is delivered to an [**Activity Worker**](#worker) through and a [**Task Queue**](#activity-task-queue).
 
 - Upon receiving an [**Activity Task**](#activity-task), an [**Activity Worker**](#activity-worker) executes the corresponding [**Activity**](#activity).
 
@@ -116,7 +116,7 @@ A Signal is an external asynchronous request to a [**Workflow**](#workflow).
 
 ### Task
 
-A Task is the context needed to execute a specific [**Activity**](#activity) or Workflow state transition.
+A Task is the context needed to execute a specific [**Activity**](#activity) or [**Workflow**](#workflow) state transition.
 
 - There are two types of tasks:
   1. [**Activity Task**](#activity-task)
@@ -125,7 +125,7 @@ A Task is the context needed to execute a specific [**Activity**](#activity) or 
 
 ### Task Queue
 
-A Task Queue is a queue that a [**Worker**] subscribes to and polls to pick up tasks to execute.
+A Task Queue is a queue that a [**Worker**](#worker) subscribes to and polls to pick up tasks to execute.
 
 - Each Task Queue is capable of queuing [**Activity Tasks**](#activity-task) and [**Workflow Tasks**](#workflow-task).
 - Task Queues rely on the same persistent storage as the rest of the Temporal service (Task Queues are not based on other technologies such as Kafka).
