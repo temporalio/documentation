@@ -1,7 +1,7 @@
 ---
-id: learn-server-configuration
+id: configuring-temporal-server
 title: Configuring Temporal
-sidebar_label: Configuration
+sidebar_label: Configuring Temporal
 ---
 
 Temporal Server configuration is found in `development.yaml` and may contain the following possible sections:

@@ -28,7 +28,6 @@ module.exports = {
         'learn-queries',
         'learn-topology',
         'learn-task-queues',
-        'learn-server-configuration',
         'learn-archival',
         'learn-cross-dc-replication',
         'learn-glossary',
@@ -39,6 +38,7 @@ module.exports = {
       'collapsed': true,
       'label': 'How to guides',
       'items': [
+        'configuring-temporal-server',
         'learn-workflow-filtering',
         'learn-cli',
       ],
