@@ -5,17 +5,15 @@ title: Configuring Archival
  
 ## What is Archival?
 
-Archival is a feature that automatically moves Workflow Event Histories from Temporal's normal persistence storage to a long-term blob store after the Workflow retention period expires.
+Archival is a feature that automatically moves [Workflow](docs/learn-workflow) [Event Histories](docs/learn-events) from Temporal's normal persistence storage to long-term storage after the Workflow retention period expires. This enables Event Histories to be stored indefinitely while not overwhelming the persistence store.
 
-This feature enables Event Histories to be stored indefinitely while not overwhelming the persistence store.
-
-The Archival feature can be customized per Namespace, but must be enabled and configured at the Cluster level as well.
+Archival can be customized per Namespace, but must be [enabled and configured](#archival-configuration-reference) at the Cluster level as well.
 
 :::note
 
 **Archival only supports Event Histories.**
 
-You may see some infrastructure in place to support archiving visibility records. However, the functionality is not yet supported and visibility records are currently deleted after the Workflow retention period.
+You may notice some boilerplate infrastructure to support archiving visibility records. This functionality is not yet supported and visibility records are currently deleted after the Workflow retention period.
 
 :::
 
@@ -23,31 +21,21 @@ You may see some infrastructure in place to support archiving visibility records
 
 There are two main reasons you may want to keep Event Histories after the retention period has past:
 
-1. **Compliance:** For legal reasons Event Histories may need to be stored for a long period of time.
-2. **Debugging:** Old Event Histories may help with debugging.
-
-:::info
-
-**Want to turn off the Archival feature?**
-
-Set `archival.history.state` and `namespaceDefaults.archival.history.state` to `disabled`.
-
-:::
+1. **Compliance**: For legal reasons, Event Histories may need to be stored for a long period of time.
+2. **Debugging**: Old Event Histories may help with debugging.
 
 ## How to use Archival
 
-There are four main components to the Archival feature that you need to be aware of.
+Archival consists of four main components.
 
-1. **Archival feature configuration**: The Archival feature is controlled by the `archival` configuration in the `config/development.yaml` file.
-2. **Archive Provider**: The location where the Event Histories are archived to is called the Archive Provider. Common providers are S3, GCloud, Kafka, and the local file system.
-3. **Archiver**: The actual system component that archives and retrieves Event Histories is called an Archiver. An Archiver is directly correlated to a single Archive Provider. 
-4. **URI**: The URI is what the Namespace uses to know which Archive Provider and Archiver to use. The schema of the URI identifies which Archiver and Provider to use, and where the URI points to, identifies the actual archive location.
+1. **Archival feature configuration**: Archival is controlled by the `archival` configuration in the `config/development.yaml` file.
+2. **Archive Provider**: Location where the Event Histories are archived to. Commonly used providers are S3, GCloud, Kafka, and the local file system.
+3. **Archiver**: System component which archives and retrieves Event Histories. An Archiver is directly correlated to a single Archive Provider. 
+4. **URI**: Specifies to the Namespace which Archiver Provider and Archiver should be used. The schema of the URI identifies which Archiver and Provider to use. Where the URI points to identifies the actual archive location.
 
-Temporal supports several Archive Providers (and Archivers) out of the box as well as the option to create and use your own. If you want to create your own Archiver, follow [this guide](https://github.com/temporalio/temporal/blob/master/common/archiver/README.md).
+Temporal supports several Archive Providers (and Archivers) out of the box as well as the option to create and use your own. If you want to create your own Archiver, follow [this guide](https://github.com/temporalio/temporal/blob/master/common/archiver/README.md). Contributions are welcome.
 
-New Namespaces require the Archival URI to be set at the time of creation. Once set, the URI can not be changed for a Namespace. Each Namespace supports a single Archival URI, but each Namespace in a cluster can have a unique URI.
-
-When creating a new Namespace, if the URI is not specifically provided, the Namespace will use the value of `defaultNamespace.archival.history.URI` from the `config/development.yaml` file.
+The Archival URI is set when a Namespace is created. If you do not specify the URI when creating a Namespace, it will use the value of `defaultNamespace.archival.history.URI` from the `config/development.yaml` file. Once set, the URI can not be changed. Each Namespace supports a single Archival URI.
 
 A Namespace can safely switch between `enabled` and `disabled` states, however `archival.history.state` must be set to `"enabled"` for Archival to work within any Namespace within the cluster regardless of whether the Namespace has Archival enabled.
 
@@ -93,34 +81,34 @@ namespaceDefaults:
 ```
 
 | Config |  Description |
-|--------|--------------------------|
-| `archival.history.state` | Acceptable values are `"enabled"`,`"disabled"`. This must be set to `"enabled"` to use the Archival feature with any Namespace in the cluster. |
-| `archival.history.enableRead`| Acceptable values are `true`, `false`. This must be set to `true` to read from the archived Event History. |
-| `archival.history.provider` | Sub `provider` configs are typically `filestore`, `gstorage`, `s3`, or `your_custom_provider`. The default provider is `filestore`. |
+|--------|--------------|
+| `archival.history.state`                       | Acceptable values are `"enabled"`,`"disabled"`. This must be set to `"enabled"` to use the Archival feature with any Namespace in the cluster. |
+| `archival.history.enableRead`                  | Acceptable values are `true`, `false`. This must be set to `true` to read from the archived Event History. |
+| `archival.history.provider`                    | Sub `provider` configs are typically `filestore`, `gstorage`, `s3`, or `your_custom_provider`. The default provider is `filestore`. |
 | `archival.history.provider.filestore.fileMode` | This specifies the file permissions of the archived files. We recommend using the default value of `"0666"` to avoid read/write issues. |
-| `archival.history.provider.filestore.dirMode` |  This specifies the directory permissions of the archive directory. we recommend using the default value of `"0766"` to avoid read/write issues. |
-| `namespaceDefaults.archival.history.state` | Acceptable values are `"enabled"`, `"disabled"`. This sets the default state of the Archival feature whenever a new Namespace is created without specifying the Archival state. |
-| `namespaceDefaults.archival.history.URI` | The value must be the URI of the file store location. By default, this is set to your local filestore, but can be changed to any Archive Provider location. |
+| `archival.history.provider.filestore.dirMode`  |  This specifies the directory permissions of the archive directory. we recommend using the default value of `"0766"` to avoid read/write issues. |
+| `namespaceDefaults.archival.history.state`     | Acceptable values are `"enabled"`, `"disabled"`. This sets the default state of the Archival feature whenever a new Namespace is created without specifying the Archival state. |
+| `namespaceDefaults.archival.history.URI`       | The value must be the URI of the file store location. By default, this is set to your local filestore, but can be changed to any Archive Provider location. |
 
-## Retrieving archived Event Histories
+### Retrieving archived Event Histories
  
 To retrieve archived Event Histories you will need the Workflow Id and the Run Id:
 
-```
-$ ./temporal --ns <namespace> wf show --wid <workflowId> --rid <runId>`
+```bash
+$ ./temporal --ns <namespace> wf show --wid <workflowId> --rid <runId>
 ```
 
 :::info
 
 Want to test this feature locally? Start by running a Temporal server:
 
-```
+```bash
 $ ./temporal-server start
 ```
 
 Then register a new Namespace with the Archival feature enabled for that Namespace. 
 
-```
+```bash
 $ ./tctl --ns samples-namespace namespace register --gd false --history_archival_status enabled --retention 0
 ```
 
@@ -128,8 +116,26 @@ Next, run a sample workflow such as the [helloworld temporal sample](https://git
 
 Once the sample has completed, you can view the archived Event Histories by copying the `workflowId` and `runId` of the completed Workflow from the log output and running:
 
+```bash
+$ ./temporal --ns samples-namespace wf show --wid <workflowId> --rid <runId>
 ```
-$ ./temporal --ns samples-namespace wf show --wid <workflowId> --rid <runId>`
-```
+
 :::
+
+### Disabling Archival
+
+You can disable Archival by setting `archival.history.state` and `namespaceDefaults.archival.history.state` to `"disabled"`.
+
+Example:
+
+```yaml
+archival:
+  history:
+    state: "disabled"
+
+namespaceDefaults:
+  archival:
+    history:
+      state: "disabled"
+```
 
