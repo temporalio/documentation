@@ -1,6 +1,6 @@
 ---
-id: learn-cli
-title: Command Line Interface
+id: using-tctl
+title: Using tctl (CLI)
 ---
 
 The Temporal CLI is a command-line tool you can use to perform various tasks on a Temporal server. It can perform

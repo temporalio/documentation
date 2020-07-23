@@ -1,5 +1,5 @@
 ---
-id: learn-events
+id: events
 title: Events
 ---
 

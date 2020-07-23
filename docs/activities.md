@@ -1,5 +1,5 @@
 ---
-id: learn-activities
+id: activities
 title: Activities
 ---
 
