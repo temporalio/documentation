@@ -1,7 +1,22 @@
 module.exports = {
   docs: [
-    'overview',
-    'installing-server',
+    'home',
+    'getting-started',
+    {
+      'type': 'category',
+      'collapsed': true,
+      'label': 'Core concepts',
+      'items': [
+        'overview',
+        'system-architecture',
+        'workflows',
+        'activities',
+        'events',
+        'queries',
+        'task-queues',
+        'namespaces',
+      ],
+    },
     {
       'type': 'category',
       'collapsed': true,
@@ -20,27 +35,13 @@ module.exports = {
     {
       'type': 'category',
       'collapsed': true,
-      'label': 'Core concepts',
-      'items': [
-        'learn-workflows',
-        'learn-activities',
-        'learn-events',
-        'learn-queries',
-        'learn-topology',
-        'learn-task-queues',
-        'learn-archival',
-        'learn-cross-dc-replication',
-        'learn-glossary',
-      ],
-    },
-    {
-      'type': 'category',
-      'collapsed': true,
       'label': 'How to guides',
       'items': [
+        'installing-temporal-server',
         'configuring-temporal-server',
-        'learn-workflow-filtering',
-        'learn-cli',
+        'filtering-workflows',
+        'using-tctl',
+        'archiving-data',
       ],
     },
     {
