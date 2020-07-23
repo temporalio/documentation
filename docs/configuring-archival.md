@@ -124,6 +124,8 @@ $ ./temporal --ns samples-namespace wf show --wid <workflowId> --rid <runId>
 
 ### Disabling Archival
 
+If you are running Temporal 
+
 You can disable Archival by setting `archival.history.state` and `namespaceDefaults.archival.history.state` to `"disabled"`.
 
 Example:
