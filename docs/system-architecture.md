@@ -1,6 +1,6 @@
 ---
-id: learn-topology
-title: Deployment Topology
+id: system-architecture
+title: System architecture
 ---
 
 ## Overview

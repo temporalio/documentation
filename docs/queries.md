@@ -1,5 +1,5 @@
 ---
-id: learn-queries
+id: queries
 title: Queries
 ---
 
