@@ -1,5 +1,5 @@
 ---
-id: learn-task-queues
+id: task-queues
 title: Task Queues
 ---
 

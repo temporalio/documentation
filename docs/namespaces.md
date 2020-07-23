@@ -1,6 +1,6 @@
 ---
-id: learn-cross-dc-replication
-title: Cross-DC Replication
+id: namespaces
+title: Namespaces
 ---
 
 The Temporal Global Namespace feature provides clients with the capability to continue their workflow execution from another
