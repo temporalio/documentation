@@ -5,14 +5,13 @@ tags:
 - workflow
 posted_on_: 2020-07-25T00:03:40Z
 id: transparency-update-3
-title: 'Transparency Update #3'
+title: 'Temporal Transparency Update #3'
 author: Ryland Goldstein
 author_title: Temporals product person
 author_image_url: https://avatars2.githubusercontent.com/u/27736122?s=460&u=7b6a3e58ec7ed7157f23f51e91a2f4cd2028d606&v=4
 release_version: V0.27.0
 
 ---
-
 <!--truncate-->
 
 **Latest Release at Time of Writing:** V0.27.0
@@ -38,7 +37,7 @@ We're in the final stretch and things are looking very positive. All remaining i
 
 ![](/cms/screen-shot-2020-07-24-at-4-02-13-pm.png)
 
-Based on the progress made this week, we are quite confident that we will meet the initial date we defined for code completion (July 31, 2020). The remaining work is relatively well scoped and understood so there shouldn't be any showstoppers that pop up (fingers crossed). As team resources free up internally over the next week and all focus will be shifted to stabilization.
+Based on the progress made this week, we are quite confident that we will meet the initial date we defined for code completion (July 31, 2020). The remaining work is relatively well scoped and understood so there shouldn't be any showstoppers that pop up (fingers crossed). As team resources free up internally over the next week all focus will be shifted to stabilization.
 
 Things in the world have been a bit rough lately so hopefully this update comes as a bit of good news. As always, feel free to reach out with questions, comments or critical feedback via email, Slack or our community forum.
 
