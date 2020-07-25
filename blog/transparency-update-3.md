@@ -12,6 +12,8 @@ author_image_url: https://avatars2.githubusercontent.com/u/27736122?s=460&u=7b6a
 release_version: V0.27.0
 
 ---
+<!--truncate--> 
+
 **Latest Release at Time of Writing:** V0.27.0
 
 Hope everyone had a productive and enjoyable week! I'm here to share our third update for V1 code completion.
