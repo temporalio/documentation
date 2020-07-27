@@ -1,6 +1,6 @@
 ---
-id: filtering-workflows
-title: Filtering Workflows
+id: filter-workflows
+title: Filter Workflows
 ---
 
 Temporal supports creating workflows with customized key-value pairs, updating the information within the workflow code, and then listing/searching workflows with a SQL-like query. For example, you can create workflows with keys `city` and `age`, then search all workflows with `city = seattle and age > 22`.
