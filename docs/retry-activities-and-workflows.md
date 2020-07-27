@@ -4,11 +4,42 @@ title: How to retry Activities and Workflows
 sidebar_label: Retry Activities and Workflows
 ---
 
-Since Activities are used to encapsulate logic that is non-deterministic, an important Workflow feature is the ability to "automatically" retry an Activity execution in the event of its failure.
+Temporal is built to expect failures from Activities and Workflows. Retrying Activity or Workflow executions is part of what makes the Temporal system fault tolerant.
 
-Currently, Temporal uses an exponential backoff for Activity retries.
+In this guide we cover the difference between Activity and Workflow retries and when to use them.
 
-Here we have a simple Workflow which executes a single Activity, `fetchRemoteData` :
+## Activity retries
+
+The nature of an [Activity](docs/activities) is to encapsulate logic that is non-deterministic. With Temporal, the paradigm is to not explicitly handle errors and retries within the Activity logic. Instead, the Activity should return the error directly to the Workflow which will trigger a retry per the Activity's retry policy. Each Activity can have its own retry policy, can use a shared one, or not specify one at all and use Temporal's default retry policy. Said another way, if `RetryOptions` are not specified within the `ActivityOptions` then the Activity will be retried per Temporal's default configuration.
+
+It is possible to explicitly handle erorrs and retries within the Activity code. However, one of the benefits of using Temporal's retry feature is that it removes the need to repetitively write the same boilerplate error handling and retry code around every piece of business logic.
+
+The code snippet below shows how to implement `RetryOptions` in the `ActivityOptions`. The values used in this code snippet are the same values used by the default retry policy, i.e. what would happen if no `RetryOptions` were specified at all.
+
+```java
+private final RemoteDataActivities activities =
+    Workflow.newActivityStub(
+        RemoteDataActivity.class,
+        ActivityOptions.newBuilder()
+        .setScheduleToCloseTimeout(Duration.ofSeconds(10)) // scheduleToClose is required and therefore has no default
+        // Here we set the RetryOptions
+        .setRetryOptions(
+            RetryOptions.newBuilder()
+            // Here we set the InitialInternal backoff 
+            .setInitialInterval(Duration.ofSeconds(1))
+            // Here we set the BackoffCoefficient (Temporal uses an exponential backoff)
+            .setBackoffCoefficient(2.0)
+            // Here we set the MaximumInterval backoff
+            .setMaximumInterval(Duration.ofSeconds(100))
+            // Here we set the MaximumAttempts
+            .setMaximumAttempts(0) // 0 or no option is interpreted as infinite
+            // Here we set DoNotRetry values 
+            .setDoNotRetry([])
+            .build())
+        .build());
+```
+
+Let's take a look at an example using Java. Here we have a simple Workflow which executes a single Activity, `fetchRemoteData`:
 
 ```java
 public static class RetryActivityWorkflowImpl implements RetryActivityWorkflow {
