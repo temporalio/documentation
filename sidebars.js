@@ -1,7 +1,7 @@
 module.exports = {
   docs: [
     'home',
-    'getting-started',
+    'get-started',
     {
       'type': 'category',
       'collapsed': true,
@@ -37,11 +37,11 @@ module.exports = {
       'collapsed': true,
       'label': 'How to guides',
       'items': [
-        'installing-temporal-server',
-        'configuring-temporal-server',
-        'filtering-workflows',
-        'using-tctl',
-        'archiving-data',
+        'install-temporal-server',
+        'configure-temporal-server',
+        'filter-workflows',
+        'use-tctl',
+        'archive-data',
       ],
     },
     {
