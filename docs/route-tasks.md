@@ -1,6 +1,7 @@
 ---
 id: route-tasks
-title: Route Tasks 
+title: How to route Tasks
+sidebar_label: Route Tasks
 ---
 
 Consider the specifications of a Worker:
