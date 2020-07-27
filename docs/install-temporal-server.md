@@ -1,7 +1,6 @@
 ---
-id: installing-temporal-server
-title: Installing Temporal
-sidebar_label: Installing Temporal
+id: install-temporal-server
+title: Install Temporal
 ---
 
 ### Prerequisites
