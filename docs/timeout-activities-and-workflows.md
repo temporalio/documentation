@@ -1,67 +1,119 @@
 ---
 id: timeout-activities-and-workflows
-title: Timeout Activities and Workflows
+title: How to timeout Activities and Workflows
+sidebar_label: Timeout Activities and Workflows
 ---
 
-## Activity Timeouts
+Temporal does not impose limits on the duration of Activities or Workflows by default, it is designed to enable these to run idefinitely if desired. Instead, timeout options are available to set limits on the time allowed for certain actions to occur.
 
-The default behavior of Temporal is to not impose any restrictions/limits on the duration of activities. This makes sense as there are many use cases which depend on long running or indefinitely running activities. Even though the default behavior is to let activities run indefinitely, you'll often want to limit the length that a certain activity can run. Piggybacking on the example we used for the []Retrying Activities section, let's make a new assumption that the call to our unreliable HTTP server has a potential to hang for minutes or even hours. Based on this new assumption, it makes a lot of sense to set an upper bound on the duration of our `fetchRemoteData` activity:
+## Activity timeouts
 
-```diff
-    private final RemoteDataActivities activities =
-        Workflow.newActivityStub(
-            RemoteDataActivity.class,
-            ActivityOptions.newBuilder()
-+                .setScheduleToStartTimeout(Duration.ofMinutes(1))
-							   .setScheduleToCloseTimeout(Duration.ofMinutes(20))
-+                .setStartToCloseTimeout(Duration.ofMinutes(10))
-            .build());
-```
+Activity timeouts provide additional control over the way your Workflows execute Activities.
 
-Since it's not intuitive what effect each of those methods has on activity behavior, I've explained them below:
+### Timeout policy options
 
-- `ScheduleToStart` - duration a workflow should wait for a worker to start executing a requested activity. A common use for this timeout is checking if all workers are down or not able to keep up at the current request rate.
-- `StartToClose` - maximum time an activity can be executed after it was picked by a worker.
-- `ScheduleToClose` - maximum time from the workflow requesting an activity execution to its completion including retries.
+The following fields values can be customized within the `ActivityOptions`:
 
-Let's apply these definitions to the code snippet above so we get a full picture of what's practically going to happen.
+| Field | Java Type | Go Type | Description | Default |
+|-------|-----------|---------|-------------|---------|
+| `ScheduleToStart` | Duration | time.Time | Maximum time a Workflow should wait for a Worker to start executing the Activity. This is commonly used for checking if all workers are down or are not able to keep up with current request rate. | TODO |
+| `StartToClose`    | Duration | time.Time | Maximum time an Activity can take to  execute after it was picked by a Worker. | TODO |
+| `ScheduleToClose` | Duration | time.Time | Maximum time from when the Workflow requests an Activity execution to its completion including retries | TODO |
 
-1. We set `ScheduleToStart` to a duration of 1 minute. This means that our workflow will wait 1 minute at most for a worker to pick up this activity. If that 1 minute is exceeded the activity will either be retried or an error will be surfaced to the worker. In the majority of cases it makes sense to set this to the expected run duration of the activity.
-2. We then set `ScheduleToClose` to a duration of 1 minute. This means that our workflow will wait 1 minute at most for an activity execution to complete starting from the point it requested it, including retries. If that minute is exceed an error will be surfaced to the worker.
-3. Finally we set `StartToCloseTimeout`  to a duration of 10 minutes. This means that our workflow will wait 10 minutes at most for a worker that has picked up the activity to finish executing it. As you probably suspect, if those 10 minutes are exceeded the activity will either be retried or an error will be surfaced to the worker.
+### Example usage
 
-Activity timeouts provide fine grain control over the way your workflows execute activities. Unless all your activities are designed to run indefinitely, I highly recommend taking the time to fully understand the available options.
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
-## Workflow Timeouts
+<Tabs
+    defaultValue="java"
+    values={[
+        { label: 'Java', value: 'java', },
+        { label: 'Go', value: 'go', },
+    ]
+}>
 
-Activity timeouts are great when you need to impose time restrictions on a specific activity, but there's often a need to impose similar restrictions on a workflow execution. The code snippet below shows all the timeout properties that are available to workflows.
+<TabItem value="java">
 
 ```java
-WorkflowOptions workflowOpts =
-		WorkflowOptions.newBuilder()
-		    .setTaskList('FOO')
-        .setWorkflowExecutionTimeout(Duration.ofHours(2))
-        .setWorkflowTaskTimeout(Duration.ofSeconds(10))
-				.setWorkflowRunTimeout(Duration.ofMinutes(20))
-		.build();
+private final RemoteDataActivities activities = Workflow.newActivityStub(
+    RemoteDataActivity.class,
+    ActivityOptions.newBuilder()
+    .setScheduleToStartTimeout(Duration.ofMinutes(1))
+    .setScheduleToCloseTimeout(Duration.ofMinutes(20))
+    .setStartToCloseTimeout(Duration.ofMinutes(10))
+    .build()
+);
 ```
 
-Just as with the activity timeouts, these aren't super intuitive so I'll cover them in more depth below:
+</TabItem>
+<TabItem value="go">
 
-- `WorkflowExecutionTimeout` - The timeout for duration of workflow execution. It includes retries and continue as new. Use WorkflowRunTimeout to limit execution time of a single workflow run.
-- `WorkflowTaskTimeout` - The timeout for processing workflow task from the time the worker pulled this task. If a decision task is lost, it is retried after this timeout.
-- `WorkflowRunTimeout` - The timeout for duration of a single workflow run.
+```go
+sample := "TODO"
+//Go Activity timeout sample
+```
 
-With these definitions in mind, let's take another look at the original snippet.
+</TabItem>
+</Tabs>
 
-1. We set `WorkflowExecutionTimeout` to a duration of 1 minute. This means that the entire workflow execution (including retries and continue as new) will run for 1 minute at most.
-2. We set `WorkflowTaskTimeout` to a duration of 10 seconds. This means that a worker has 10 seconds at most to finish processing the workflow task starting from the point it was pulled.
-3. Finally we set `WorkflowRunTimeout` to a duration of 10 seconds. This means that a single workflow run (not including retries and continue as new) will run for 10 seconds at most.
+In the above code snippets:
 
-In the event that any of these limits are exceeded, an error will be returned.
+1. We set `ScheduleToStart` to a duration of 1 minute. This means that our Workflow will wait a maximum of 1 minute for a Worker to pick up this Activity. If it is exceeded the Activity will either be retried or an error will be surfaced to the Worker. In the majority of cases it makes sense to set this to the expected run duration of the Activity.
+2. We set `ScheduleToClose` to a duration of 1 minute. This means that our Workflow will wait a maximum of 1 minute for an Activity execution to complete starting from when the Task was requested to completion, including retries. If it is exceeded an error will be surfaced to the Worker.
+3. We set `StartToCloseTimeout` to a duration of 10 minutes. This means that our Workflow will wait a maximum of 10 minutes for a Worker that has picked up the Activity to finish executing it. If it is exceeded the Activity will either be retried or an error will be surfaced to the Worker.
 
-## Conclusion
+## Workflow timeouts
 
-While timeouts and retries may have a bit of a learning curve, they also bring an enormous amount of control and predictability to your workflows. I hope this post was able to shed some light on the options available and how they can be practically useful.
+Activity timeouts are great when you need to impose time restrictions on a specific Activity, but there's often a need to impose similar restrictions on a workflow execution. The code snippet below shows all the timeout properties that are available to workflows.
 
-If you have questions or feedback about timeouts, retries or anything else please feel free to jump on our Slack or shoot me an email (ryland@temporal.io). Temporal cannot exist without it's amazing community, so we love when users tell us what they think about the system and its features.
+### Timeout policy options
+
+The following field values can be customized within the `WorkflowOptions`:
+
+| Field | Java Type | Go Type | Description | Default |
+|-------|-----------|---------|-------------|---------|
+| `WorkflowExecutionTimeout` | Duration | time.Time | Maximum time for the Workflow Execution including retries and "ContinueAsNew"". Use WorkflowRunTimeout to limit execution time of a single workflow run. | TODO |
+| `WorkflowTaskTimeout`      | Duration | time.Time | Maximum time from when a Worker pulls the task. If a Workflow Task is lost, it is retried after this timeout. | TODO |
+| `WorkflowRunTimeout`       | Duration | time.Time | Maximum time of a single Workflow run. | TODO |
+
+<Tabs
+    defaultValue="java"
+    values={[
+        {label: 'Java', value: 'java', },
+        {label: 'Go', value: 'go', },
+    ]
+}>
+
+### Example usage
+
+<TabItem value="java">
+
+```java
+WorkflowOptions workflowOpts = WorkflowOptions.newBuilder()
+    .setTaskList('FOO')
+    .setWorkflowExecutionTimeout(Duration.ofHours(2))
+    .setWorkflowTaskTimeout(Duration.ofSeconds(10))
+    .setWorkflowRunTimeout(Duration.ofMinutes(20))
+    .build();
+```
+
+</TabItem>
+<TabItem value="go">
+
+```go
+sample := "TODO"
+//Go Workflow timeout sample
+```
+
+</TabItem>
+</Tabs>
+
+In the above code snippets:
+
+1. We set `WorkflowExecutionTimeout` to a duration of 1 minute. This means that the entire Workflow execution (including retries and `ContinueAsNew` will run for a maximum of 1 minute.
+2. We set `WorkflowTaskTimeout` to a duration of 10 seconds. This means that a Worker has a maximum of 10 seconds to finish processing the Workflow Task starting from when it was pulled.
+3. We set `WorkflowRunTimeout` to a duration of 10 seconds. This means that a single Workflow run (not including retries and `ContinueAsNew`) will run for a maximum of 10 seconds.
+
+If any of these limits are exceeded, an error will be returned.
+
