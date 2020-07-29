@@ -1,5 +1,5 @@
 ---
-id: use-tctl
+id: tctl
 title: Use tctl (CLI)
 ---
 

@@ -1,20 +1,19 @@
 module.exports = {
   docs: [
-    'home',
     'get-started',
     {
       'type': 'category',
       'collapsed': true,
-      'label': 'Core concepts',
+      'label': 'Concepts',
       'items': [
         'overview',
-        'system-architecture',
         'workflows',
         'activities',
         'events',
         'queries',
         'task-queues',
         'namespaces',
+        'system-architecture',
       ],
     },
     {
@@ -35,13 +34,12 @@ module.exports = {
     {
       'type': 'category',
       'collapsed': true,
-      'label': 'How to guides',
+      'label': 'How to',
       'items': [
         'install-temporal-server',
         'configure-temporal-server',
         'filter-workflows',
-        'use-tctl',
-        'archive-data',
+        'tctl',
       ],
     },
     {
