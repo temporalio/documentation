@@ -3,7 +3,7 @@ id: get-started
 title: Temporal documentation
 ---
 
-Temporal re-imagines state-dependent service-orchestrated application development, and so much more.
+Temporal reimagines state-dependent service-orchestrated application development, and so much more.
 
 ## Get started
 
