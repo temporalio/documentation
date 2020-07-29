@@ -14,6 +14,8 @@ The nature of an [Activity](docs/activities) is to encapsulate logic that is non
 
 It is possible to explicitly handle erorrs and retries within the Activity code. However, one of the benefits of using Temporal's retry feature is that it removes the need to repetitively write the same boilerplate error handling and retry code around every piece of business logic.
 
+### Retry policy options
+
 The following field values can be customized within the `RetryOptions` of any `ActivityOptions`:
 
 | Field | Type | Description |
@@ -24,7 +26,9 @@ The following field values can be customized within the `RetryOptions` of any `A
 | `MaximumAttempts`          | int         | Total number of attempts that should be made to execute an activity in the presence of failures. If this limit is exceeded, the error is returned back to the Workflow that invoked the Activity. |
 | `NonRetryableErrorReasons` | Exception[] |  Errors that should not be retried. For example, if there is an error for invalid arguments, there's a good chance retrying won't fix the problem. |
 
-The following code snippets provide an example implementation. These values are the same values used by the default retry policy, i.e. what would happen if no `RetryOptions` were specified at all.
+### Example usage
+
+The following code snippets provide example implementations. The values of the first example are the same values used by the default retry policy, i.e. what would happen if no `RetryOptions` were specified at all.
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -85,7 +89,7 @@ ao := workflow.ActivityOptions{
 </TabItem>
 </Tabs>
 
-In this code snippet we are adjusting only the initial interval and doubling the coefficient:
+In this second example, we are adjusting only the initial interval and doubling the coefficient.
 
 <Tabs
     defaultValue="java"
@@ -135,6 +139,8 @@ ctx = workflow.WithActivityOptions(ctx, ao)
 
 While retrying Activities is enough for the majority of use cases, Temporal also provides a mechanism for retrying an entire Workflow. Workflow level retries can be very useful, such as when your Workflow consists of multiple Activities that rely on a host-specific state. Unlike Activities, Workflows are not retried by default, they must be explicitly configured to occur. 
 
+### Example usage
+
 The follow code snippets are taken from the [Java file processing](https://github.com/temporalio/java-samples/blob/master/src/main/java/io/temporal/samples/fileprocessing/FileProcessingWorkflowImpl.java) and [Go file processing](https://github.com/temporalio/go-samples/tree/master/fileprocessing) samples respectively, which demonstrate Workflow level retries in the context of downloading, processing and uploading a file.
 
 <Tabs
@@ -154,6 +160,7 @@ public void processFile(URL source, URL destination) {
     // Workflow.retry accepts the same `RetryOptions` available to activities
     RetryOptions retryOptions =
         RetryOptions.newBuilder()
+        // TODO add more retry customizations if available.
         .setInitialInterval(Duration.ofSeconds(1))
         .build();
     // Here we wrap our Workflow implementation and invoke it using `Workflow.retry`
