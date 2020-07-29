@@ -1,6 +1,6 @@
 ---
-id: archive-data
-title: Archive data
+id: learn-archival
+title: Archival
 ---
 
 Archival is a feature that automatically moves workflow histories from persistence to another location after the retention period. The purpose of archival is to be able to keep histories as long as needed while not overwhelming the persistence store. There are two reasons you may want to keep the histories after the retention period has past:
