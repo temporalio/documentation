@@ -13,6 +13,7 @@ The question is how do we make sure a specific Worker is executing a specific Ta
 ## Task routing with Task Queues
 
 Task Queues are what enable "Task routing". Task routing is the development technique that pairs Tasks with Workers. The basics of it can be broken down into 3 steps:
+
 1. Create a Worker that is registered to handle Workflow and/or Activity Tasks.
 2. Subscribe the Worker to listen to a Task Queue.
 3. Configure Workflows and Activities to send Tasks to the Task Queue.
@@ -67,7 +68,7 @@ This is accomplished in different ways depending on the SDK.
 
 ### Java
 
-Consider the [file processing sample in Java](https://github.com/temporalio/java-samples/tree/master/src/main/java/io/temporal/samples/fileprocessing), the paradigm is to create two Workers. Each will run on the same host and thus have access to the same file system, but one will listen to a global (shared) Task Queue, which it will use to start the Workflow, and the other will listen to its own host-specific (private) Task Queue. 
+Consider the [file processing sample in Java](https://github.com/temporalio/java-samples/tree/master/src/main/java/io/temporal/samples/fileprocessing). The paradigm is to create two Workers. Each will run on the same host and thus have access to the same file system, but one will listen to a global (shared) Task Queue, which it will use to start the Workflow, and the other will listen to its own host-specific (private) Task Queue. 
 
 The following code snippet is stripped down from the [FileProcessingWorker.java sample](https://github.com/temporalio/java-samples/blob/master/src/main/java/io/temporal/samples/fileprocessing/FileProcessingWorker.java) and highlights the creation of two workers for this purpose:
 
@@ -118,21 +119,14 @@ The host-specific Task Queue is then set on [subsequent Activities](https://gith
 
 ```java
 private void processFileImpl(URL source, URL destination) {
-    StoreActivities.TaskQueueFileNamePair downloaded = defaultTaskQueueStore.download(source);
-
     // Initialize stubs that are specific to the returned task queue.
     ActivityOptions hostActivityOptions =
         ActivityOptions.newBuilder()
-        .setTaskQueue(downloaded.getHostTaskQueue())
+        // Set the host-specific Task Queue
+        .setTaskQueue(hostSpecificTaskQueue)
         .build();
-    StoreActivities hostSpecificStore =
-        Workflow.newActivityStub(StoreActivities.class, hostActivityOptions);
 
-    // Call processFile activity to zip the file.
     // Call the Activity to process the file using worker-specific task queue.
-    String processed = hostSpecificStore.process(downloaded.getFileName());
-    // Call upload activity to upload the zipped file.
-    hostSpecificStore.upload(processed, destination);
 }
 ```
 
