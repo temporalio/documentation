@@ -145,7 +145,7 @@ func main() {
 	serviceClient, err := client.NewClient(client.Options{})
 
 	if err != nil {
-		log.Fatalf("Unable to start worker.  Error: %v", err)
+		log.Fatalf("Unable to create client.  Error: %v", err)
 	}
 
 	w := worker.New(serviceClient, "tutorial_tq", worker.Options{})
