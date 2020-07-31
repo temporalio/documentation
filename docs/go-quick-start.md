@@ -96,7 +96,6 @@ import (
 	"time"
 
 	"go.temporal.io/sdk/workflow"
-	"go.uber.org/zap"
 )
 
 // Greetings is the implementation for Temporal workflow
@@ -121,7 +120,7 @@ func Greetings(ctx workflow.Context) error {
 		return err
 	}
 
-	logger.Info("Greetings workflow complete", zap.String("user", user))
+	logger.Info("Greetings workflow complete", "user", user)
 	return nil
 }
 ```
@@ -169,7 +168,6 @@ Run your worker app which hosts workflow and activity implementations
 > go run *.go
 2020-07-31T16:06:13.245-0700	INFO	tutorial-go-sdk/main.go:16	Zap logger created
 2020/07/31 16:06:13 INFO  No logger configured for temporal client. Created default one.
-
 2020/07/31 16:06:13 INFO  Started Worker Namespace default TaskQueue tutorial_tq WorkerID 56116@local@
 ```
 
@@ -185,15 +183,11 @@ Started Workflow Id: Greet_Temporal_1, run Id: 2666b82a-c706-45e2-8d8e-ae84a5b4e
 ```
 2020/07/31 16:08:09 INFO  Workflow Greetings started Namespace default TaskQueue tutorial_tq WorkerID 56116@local@ WorkflowType Greetings WorkflowID Greet_Temporal_1 RunID 2666b82a-c706-45e2-8d8e-ae84a5b4e892
 2020/07/31 16:08:09 DEBUG ExecuteActivity Namespace default TaskQueue tutorial_tq WorkerID 56116@local@ WorkflowType Greetings WorkflowID Greet_Temporal_1 RunID 2666b82a-c706-45e2-8d8e-ae84a5b4e892 ActivityID 5 ActivityType GetUser
-
 2020/07/31 16:08:09 INFO  GetUser activity called Namespace default TaskQueue tutorial_tq WorkerID 56116@local@ ActivityID 5 ActivityType GetUser WorkflowType Greetings WorkflowID Greet_Temporal_1 RunID 2666b82a-c706-45e2-8d8e-ae84a5b4e892
-
 2020/07/31 16:08:09 DEBUG ExecuteActivity Namespace default TaskQueue tutorial_tq WorkerID 56116@local@ WorkflowType Greetings WorkflowID Greet_Temporal_1 RunID 2666b82a-c706-45e2-8d8e-ae84a5b4e892 ActivityID 11 ActivityType SendGreeting
-
 2020/07/31 16:08:09 INFO  SendGreeting activity called Namespace default TaskQueue tutorial_tq WorkerID 56116@local@ ActivityID 11 ActivityType SendGreeting WorkflowType Greetings WorkflowID Greet_Temporal_1 RunID 2666b82a-c706-45e2-8d8e-ae84a5b4e892
-
 Greeting sent to user: Temporal
-2020/07/31 16:08:09 INFO  Greetings workflow complete Namespace default TaskQueue tutorial_tq WorkerID 56116@local@ WorkflowType Greetings WorkflowID Greet_Temporal_1 RunID 2666b82a-c706-45e2-8d8e-ae84a5b4e892 {user 15 0 Temporal <nil>}
+2020/07/31 16:08:09 INFO  Greetings workflow complete Namespace default TaskQueue tutorial_tq WorkerID 63248@local@ WorkflowType Greetings WorkflowID Greet_Temporal_1 RunID 6bfa9a98-7dee-44b1-8473-6f7117fae930 user Temporal
 ```
 
 ## Try Go SDK Samples
