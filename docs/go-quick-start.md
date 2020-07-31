@@ -134,39 +134,30 @@ Create file main.go
 package main
 
 import (
-	"go.uber.org/zap"
+	"log"
 
 	"go.temporal.io/sdk/client"
 	"go.temporal.io/sdk/worker"
 )
 
 func main() {
-	logger, err := zap.NewDevelopment()
-	if err != nil {
-		panic(err)
-	}
-
-	logger.Info("Zap logger created")
-
 	// The client is a heavyweight object that should be created once
 	serviceClient, err := client.NewClient(client.Options{})
 
 	if err != nil {
-		logger.Fatal("Unable to start worker", zap.Error(err))
+		log.Fatalf("Unable to start worker.  Error: %v", err)
 	}
 
-	worker := worker.New(serviceClient, "tutorial_tq", worker.Options{})
+	w := worker.New(serviceClient, "tutorial_tq", worker.Options{})
 
-	worker.RegisterWorkflow(Greetings)
-	worker.RegisterActivity(GetUser)
-	worker.RegisterActivity(SendGreeting)
+	w.RegisterWorkflow(Greetings)
+	w.RegisterActivity(GetUser)
+	w.RegisterActivity(SendGreeting)
 
-	err = worker.Start()
+	err = w.Run(worker.InterruptCh())
 	if err != nil {
-		logger.Fatal("Unable to start worker", zap.Error(err))
+		log.Fatalf("Unable to start worker.  Error: %v", err)
 	}
-
-	select {}
 }
 ```
 
