@@ -16,7 +16,7 @@ package activities
 import (
 	"context"
 
-	"go.temporal.io/temporal/activity"
+	"go.temporal.io/sdk/activity"
 )
 
 // GetUser is the implementation for Temporal activity
@@ -34,7 +34,7 @@ import (
 	"context"
 	"fmt"
 
-	"go.temporal.io/temporal/activity"
+	"go.temporal.io/sdk/activity"
 )
 
 // SendGreeting is the implementation for Temporal activity
@@ -54,7 +54,7 @@ import (
 	"time"
 
 	"github.com/samarabbas/tutorial-go-sdk/activities"
-	"go.temporal.io/temporal/workflow"
+	"go.temporal.io/sdk/workflow"
 	"go.uber.org/zap"
 )
 
@@ -95,8 +95,8 @@ import (
 	"github.com/samarabbas/tutorial-go-sdk/activities"
 	"github.com/samarabbas/tutorial-go-sdk/workflows"
 
-	"go.temporal.io/temporal/client"
-	"go.temporal.io/temporal/worker"
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/worker"
 )
 
 func main() {

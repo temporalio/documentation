@@ -33,7 +33,7 @@ import (
 
 	"go.uber.org/zap"
 
-	"go.temporal.io/temporal/activity"
+	"go.temporal.io/sdk/activity"
 )
 
 // SimpleActivity is a sample Temporal activity function that takes one parameter and
