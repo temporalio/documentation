@@ -17,9 +17,9 @@ import (
 	"github.com/uber-go/tally"
 	"go.uber.org/zap"
 
-	"go.temporal.io/temporal/client"
-	"go.temporal.io/temporal/worker"
-	"go.temporal.io/temporal/workflow"
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/worker"
+	"go.temporal.io/sdk/workflow"
 )
 
 var (

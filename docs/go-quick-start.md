@@ -33,9 +33,9 @@ go: creating new go.mod: module github.com/temporalio/tutorial-go-sdk
 Add dependency to Temporal Go SDK
 
 ```bash
-> go get go.temporal.io/temporal@v0.26.0
-go: downloading go.temporal.io/temporal v0.26.0
-go: go.temporal.io/temporal upgrade => v0.26.0
+> go get go.temporal.io/sdk@latest
+go: downloading go.temporal.io/sdk v0.28.0
+go: go.temporal.io/sdk upgrade => v0.28.0
 ```
 
 ## Implement Activities
@@ -50,7 +50,7 @@ package main
 import (
 	"context"
 
-	"go.temporal.io/temporal/activity"
+	"go.temporal.io/sdk/activity"
 )
 
 // GetUser is the implementation for Temporal activity
@@ -72,7 +72,7 @@ import (
 	"context"
 	"fmt"
 
-	"go.temporal.io/temporal/activity"
+	"go.temporal.io/sdk/activity"
 )
 
 // SendGreeting is the implementation for Temporal activity
@@ -95,7 +95,7 @@ package main
 import (
 	"time"
 
-	"go.temporal.io/temporal/workflow"
+	"go.temporal.io/sdk/workflow"
 	"go.uber.org/zap"
 )
 
@@ -136,8 +136,8 @@ package main
 import (
 	"go.uber.org/zap"
 
-	"go.temporal.io/temporal/client"
-	"go.temporal.io/temporal/worker"
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/worker"
 )
 
 func main() {
