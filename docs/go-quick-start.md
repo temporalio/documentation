@@ -134,41 +134,30 @@ Create file main.go
 package main
 
 import (
-	"go.uber.org/zap"
+	"log"
 
 	"go.temporal.io/sdk/client"
 	"go.temporal.io/sdk/worker"
 )
 
 func main() {
-	logger, err := zap.NewDevelopment()
-	if err != nil {
-		panic(err)
-	}
-
-	logger.Info("Zap logger created")
-
 	// The client is a heavyweight object that should be created once
-	serviceClient, err := client.NewClient(client.Options{
-			Logger: logger,
-	})
+	serviceClient, err := client.NewClient(client.Options{})
 
 	if err != nil {
-		logger.Fatal("Unable to start worker", zap.Error(err))
+		log.Fatalf("Unable to create client.  Error: %v", err)
 	}
 
-	worker := worker.New(serviceClient, "tutorial_tq", worker.Options{})
+	w := worker.New(serviceClient, "tutorial_tq", worker.Options{})
 
-	worker.RegisterWorkflow(Greetings)
-	worker.RegisterActivity(GetUser)
-	worker.RegisterActivity(SendGreeting)
+	w.RegisterWorkflow(Greetings)
+	w.RegisterActivity(GetUser)
+	w.RegisterActivity(SendGreeting)
 
-	err = worker.Start()
+	err = w.Run(worker.InterruptCh())
 	if err != nil {
-		logger.Fatal("Unable to start worker", zap.Error(err))
+		log.Fatalf("Unable to start worker.  Error: %v", err)
 	}
-
-	select {}
 }
 ```
 
@@ -178,30 +167,36 @@ Run your worker app which hosts workflow and activity implementations
 
 ```bash
 > go run *.go
-2020-04-07T22:44:53.073-0700    INFO    tutorial-go-sdk/main.go:19      Zap logger created
-2020-04-07T22:44:53.111-0700    INFO    internal/internal_worker.go:1021        Started Worker  {"Namespace": "default", "TaskQueue": "tutorial_tq", "WorkerID": "59260@local@"}
+2020-07-31T16:06:13.245-0700	INFO	tutorial-go-sdk/main.go:16	Zap logger created
+2020/07/31 16:06:13 INFO  No logger configured for temporal client. Created default one.
+
+2020/07/31 16:06:13 INFO  Started Worker Namespace default TaskQueue tutorial_tq WorkerID 56116@local@
 ```
 
 ## Start workflow execution
 
 ```bash
-> docker run --network=host --rm temporalio/tctl:0.26.0 wf start --tq tutorial_tq -w Greet_Temporal_1 --wt Greetings --et 3600 --dt 10
-Started Workflow Id: Greet_Temporal_1, run Id: b4f8957a-565c-40ad-8495-15a41338f8f4
+> docker run --network=host --rm temporalio/tctl:0.28.0 wf start --tq tutorial_tq -w Greet_Temporal_1 --wt Greetings --et 3600
+Started Workflow Id: Greet_Temporal_1, run Id: 2666b82a-c706-45e2-8d8e-ae84a5b4e892
 ```
 
 ## Workflow Completes Execution
 
 ```
-2020-04-07T22:46:32.424-0700    INFO    workflows/greetings.go:14       Workflow Greetings started      {"Namespace": "default", "TaskQueue": "tutorial_tq", "WorkerID": "59260@local@", "WorkflowType": "Greetings", "WorkflowID": "Greet_Temporal_1", "RunID": "b4f8957a-565c-40ad-8495-15a41338f8f4"}
-2020-04-07T22:46:32.424-0700    DEBUG   internal/internal_event_handlers.go:466 ExecuteActivity {"Namespace": "default", "TaskQueue": "tutorial_tq", "WorkerID": "59260@local@", "WorkflowType": "Greetings", "WorkflowID": "Greet_Temporal_1", "RunID": "b4f8957a-565c-40ad-8495-15a41338f8f4", "ActivityID": "0", "ActivityType": "GetUser"}
-2020-04-07T22:46:32.452-0700    INFO    activities/get_user.go:12       GetUser activity called {"Namespace": "default", "TaskQueue": "tutorial_tq", "WorkerID": "59260@local@", "ActivityID": "0", "ActivityType": "GetUser", "WorkflowType": "Greetings", "WorkflowID": "Greet_Temporal_1", "RunID": "b4f8957a-565c-40ad-8495-15a41338f8f4"}
-2020-04-07T22:46:32.485-0700    DEBUG   internal/internal_event_handlers.go:466 ExecuteActivity {"Namespace": "default", "TaskQueue": "tutorial_tq", "WorkerID": "59260@local@", "WorkflowType": "Greetings", "WorkflowID": "Greet_Temporal_1", "RunID": "b4f8957a-565c-40ad-8495-15a41338f8f4", "ActivityID": "1", "ActivityType": "SendGreeting"}
-2020-04-07T22:46:32.505-0700    INFO    activities/send_greeting.go:13  SendGreeting activity called    {"Namespace": "default", "TaskQueue": "tutorial_tq", "WorkerID": "59260@local@", "ActivityID": "1", "ActivityType": "SendGreeting", "WorkflowType": "Greetings", "WorkflowID": "Greet_Temporal_1", "RunID": "b4f8957a-565c-40ad-8495-15a41338f8f4"}
+2020/07/31 16:08:09 INFO  Workflow Greetings started Namespace default TaskQueue tutorial_tq WorkerID 56116@local@ WorkflowType Greetings WorkflowID Greet_Temporal_1 RunID 2666b82a-c706-45e2-8d8e-ae84a5b4e892
+2020/07/31 16:08:09 DEBUG ExecuteActivity Namespace default TaskQueue tutorial_tq WorkerID 56116@local@ WorkflowType Greetings WorkflowID Greet_Temporal_1 RunID 2666b82a-c706-45e2-8d8e-ae84a5b4e892 ActivityID 5 ActivityType GetUser
+
+2020/07/31 16:08:09 INFO  GetUser activity called Namespace default TaskQueue tutorial_tq WorkerID 56116@local@ ActivityID 5 ActivityType GetUser WorkflowType Greetings WorkflowID Greet_Temporal_1 RunID 2666b82a-c706-45e2-8d8e-ae84a5b4e892
+
+2020/07/31 16:08:09 DEBUG ExecuteActivity Namespace default TaskQueue tutorial_tq WorkerID 56116@local@ WorkflowType Greetings WorkflowID Greet_Temporal_1 RunID 2666b82a-c706-45e2-8d8e-ae84a5b4e892 ActivityID 11 ActivityType SendGreeting
+
+2020/07/31 16:08:09 INFO  SendGreeting activity called Namespace default TaskQueue tutorial_tq WorkerID 56116@local@ ActivityID 11 ActivityType SendGreeting WorkflowType Greetings WorkflowID Greet_Temporal_1 RunID 2666b82a-c706-45e2-8d8e-ae84a5b4e892
+
 Greeting sent to user: Temporal
-2020-04-07T22:46:32.523-0700    INFO    workflows/greetings.go:33       Greetings workflow complete     {"Namespace": "default", "TaskQueue": "tutorial_tq", "WorkerID": "59260@local@", "WorkflowType": "Greetings", "WorkflowID": "Greet_Temporal_1", "RunID": "b4f8957a-565c-40ad-8495-15a41338f8f4", "user": "Temporal"}
+2020/07/31 16:08:09 INFO  Greetings workflow complete Namespace default TaskQueue tutorial_tq WorkerID 56116@local@ WorkflowType Greetings WorkflowID Greet_Temporal_1 RunID 2666b82a-c706-45e2-8d8e-ae84a5b4e892 {user 15 0 Temporal <nil>}
 ```
 
 ## Try Go SDK Samples
 
-Check [Go SDK Samples](https://github.com/temporalio/temporal-go-samples)
+Check [Go SDK Samples](https://github.com/temporalio/go-samples)
 and try simple Temporal usage scenario.
