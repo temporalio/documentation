@@ -14,11 +14,19 @@ Follow the docker-compose installation instructions found here: [https://docs.do
 Download the Temporal docker-compose file to preferred location (i.e. `quick_start` directory):
 
 ```bash
-curl -L https://github.com/temporalio/temporal/releases/download/v0.26.0/docker.tar.gz | tar -xz --strip-components 1 docker/docker-compose.yml
+curl -L https://github.com/temporalio/temporal/releases/latest/download/docker.tar.gz | tar -xz --strip-components 1 docker/docker-compose.yml
 
 ls
 # docker-compose.yml
 ```
+
+:::note
+
+You can install a specific version. Change the release version in the URL:
+
+`https://github.com/temporalio/temporal/releases/download/<release>/docker.tar.gz`
+
+:::
 
 Start Temporal Service:
 
