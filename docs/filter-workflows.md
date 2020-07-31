@@ -5,7 +5,7 @@ title: Filter Workflows
 
 Temporal supports creating workflows with customized key-value pairs, updating the information within the workflow code, and then listing/searching workflows with a SQL-like query. For example, you can create workflows with keys `city` and `age`, then search all workflows with `city = seattle and age > 22`.
 
-Also note that normal workflow properties like start time and workflow type can be queried as well. For example, the following query could be specified when [listing workflows from the CLI](/docs/learn-cli#list-closed-or-open-workflow-executions) or using the list APIs ([Go](https://pkg.go.dev/go.temporal.io/temporal/client#Client), [Java](https://static.javadoc.io/com.uber.cadence/cadence-client/2.6.0/com/uber/cadence/WorkflowService.Iface.html#ListWorkflowExecutions-com.uber.cadence.ListWorkflowExecutionsRequest-)):
+Also note that normal workflow properties like start time and workflow type can be queried as well. For example, the following query could be specified when [listing workflows from the CLI](/docs/learn-cli#list-closed-or-open-workflow-executions) or using the list APIs ([Go](https://pkg.go.dev/go.temporal.io/sdk/client#Client))
 
 ```sql
 WorkflowType = "main.Workflow" and Status != 0 and (StartTime > "2019-06-07T16:46:34-08:00" or CloseTime > "2019-06-07T16:46:34-08:00" order by StartTime desc)
@@ -15,7 +15,7 @@ WorkflowType = "main.Workflow" and Status != 0 and (StartTime > "2019-06-07T16:4
 
 Temporal offers two methods for creating workflows with key-value pairs: memo and search attributes. Memo can only be provided on workflow start. Also, memo data are not indexed, and are therefore not searchable. Memo data are visible when listing workflows using the list APIs. Search attributes data are indexed so you can search workflows by querying on these attributes. However, search attributes require the use of Elasticsearch.
 
-Memo and search attributes are available in the Go client in [StartWorkflowOptions](https://pkg.go.dev/go.temporal.io/temporal/internal#StartWorkflowOptions).
+Memo and search attributes are available in the Go client in [StartWorkflowOptions](https://pkg.go.dev/go.temporal.io/sdk/internal#StartWorkflowOptions).
 
 ```go
 type StartWorkflowOptions struct {
@@ -31,7 +31,7 @@ type StartWorkflowOptions struct {
 }
 ```
 
-In the Java client, the _WorkflowOptions.Builder_ has similar methods for [memo](https://static.javadoc.io/com.uber.cadence/cadence-client/2.6.0/com/uber/cadence/client/WorkflowOptions.Builder.html#setMemo-java.util.Map-) and [search attributes](https://static.javadoc.io/com.uber.cadence/cadence-client/2.6.0/com/uber/cadence/client/WorkflowOptions.Builder.html#setSearchAttributes-java.util.Map-).
+In the Java client, the _WorkflowOptions.Builder_ has similar methods for [memo](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setMemo-java.util.Map-) and [search attributes](https://www.javadoc.io/doc/com.uber.cadence/cadence-client/2.6.0/com/uber/cadence/client/WorkflowOptions.Builder.html#setSearchAttributes-java.util.Map-).
 
 Some important distinctions between memo and search attributes:
 
@@ -41,7 +41,7 @@ Some important distinctions between memo and search attributes:
 
 ## Search Attributes (Go Client Usage)
 
-When using the Temporal Go client, provide key-value pairs as SearchAttributes in [StartWorkflowOptions](https://pkg.go.dev/go.temporal.io/temporal/internal#StartWorkflowOptions).
+When using the Temporal Go client, provide key-value pairs as SearchAttributes in [StartWorkflowOptions](https://pkg.go.dev/go.temporal.io/sdk/internal#StartWorkflowOptions).
 
 SearchAttributes is `map[string]interface{}` where the keys need to be allowlisted so that Temporal knows the attribute key name and value type. The value provided in the map must be the same type as registered.
 
@@ -79,7 +79,7 @@ Use the admin CLI to add a new search attribute:
 tctl --namespace samples-namespace adm cl asa --search_attr_key NewKey --search_attr_type string
 ```
 
-The possible values for **_search_attr_type_** are: 
+The possible values for **_search_attr_type_** are:
 
 * string
 * keyword
@@ -133,7 +133,7 @@ Temporal reserves keys like NamespaceId, WorkflowId, and RunId. These can only b
 
 ### Upsert Search Attributes in Workflow
 
-[UpsertSearchAttributes](https://pkg.go.dev/go.temporal.io/temporal/workflow#UpsertSearchAttributes) is used to add or update search attributes from within the workflow code.
+[UpsertSearchAttributes](https://pkg.go.dev/go.temporal.io/sdk/workflow#UpsertSearchAttributes) is used to add or update search attributes from within the workflow code.
 
 Go samples for search attributes can be found at [github.com/temporalio/temporal-go-samples](https://github.com/temporalio/temporal-go-samples/tree/master/searchattributes).
 
@@ -176,7 +176,7 @@ When performing a [ContinueAsNew](/docs/go-continue-as-new) or using [Cron](/doc
 
 ## Query Capabilities
 
-Query workflows by using a SQL-like where clause when [listing workflows from the CLI](/docs/learn-cli#list-closed-or-open-workflow-executions) or using the list APIs ([Go](https://pkg.go.dev/go.temporal.io/temporal/client#Client), [Java](https://static.javadoc.io/com.uber.cadence/cadence-client/2.6.0/com/uber/cadence/WorkflowService.Iface.html#ListWorkflowExecutions-com.uber.cadence.ListWorkflowExecutionsRequest-)).
+Query workflows by using a SQL-like where clause when [listing workflows from the CLI](/docs/learn-cli#list-closed-or-open-workflow-executions) or using the list APIs ([Go](https://pkg.go.dev/go.temporal.io/sdk/client#Client), [Java](https://static.javadoc.io/com.uber.cadence/cadence-client/2.6.0/com/uber/cadence/WorkflowService.Iface.html#ListWorkflowExecutions-com.uber.cadence.ListWorkflowExecutionsRequest-)).
 
 Note that you will only see workflows from one namespace when querying.
 

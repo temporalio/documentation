@@ -33,8 +33,9 @@ go: creating new go.mod: module github.com/temporalio/tutorial-go-sdk
 Add dependency to Temporal Go SDK
 
 ```bash
-> go get go.temporal.io/sdk@v0.28.0
+> go get go.temporal.io/sdk@latest
 go: downloading go.temporal.io/sdk v0.28.0
+go: go.temporal.io/sdk upgrade => v0.28.0
 ```
 
 ## Implement Activities
