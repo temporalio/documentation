@@ -32,6 +32,7 @@ Make sure that the following code compiles:
 
 ```java
 import io.temporal.workflow.Workflow;
+import io.temporal.workflow.WorkflowInterface;
 import io.temporal.workflow.WorkflowMethod;
 import org.slf4j.Logger;
 
@@ -40,7 +41,7 @@ public class GettingStarted {
     private static Logger logger = Workflow.getLogger(GettingStarted.class);
 
     @WorkflowInterface
-    interface HelloWorld {
+    public interface HelloWorld {
         @WorkflowMethod
         void sayHello(String name);
     }
@@ -51,7 +52,7 @@ public class GettingStarted {
 If you are having problems setting up the build files use the
 [Temporal Java Samples](https://github.com/temporalio/temporal-java-samples) GitHub repository as a reference.
 
-Also add the following logback config file somewhere in your classpath:
+Also add the following logback config file (call it logback.xml) somewhere in your classpath:
 
 ```xml
 <configuration>
@@ -74,8 +75,8 @@ Also add the following logback config file somewhere in your classpath:
 Let's add `HelloWorldImpl` with the `sayHello` method that just logs the "Hello ..." and returns.
 
 ```java
-import io.temporal.worker.Worker;
 import io.temporal.workflow.Workflow;
+import io.temporal.workflow.WorkflowInterface;
 import io.temporal.workflow.WorkflowMethod;
 import org.slf4j.Logger;
 
@@ -103,6 +104,18 @@ To link the workflow implementation to the Temporal framework, it should be regi
 a Temporal Service. By default the worker connects to the locally running Temporal service.
 
 ```java
+import io.temporal.client.WorkflowClient;
+import io.temporal.serviceclient.WorkflowServiceStubs;
+import io.temporal.worker.Worker;
+import io.temporal.worker.WorkerFactory;
+import io.temporal.workflow.Workflow;
+import io.temporal.workflow.WorkflowInterface;
+import io.temporal.workflow.WorkflowMethod;
+import org.slf4j.Logger;
+
+public class GettingStarted {
+    // ...
+    
     public static void main(String[] args) {
         // gRPC stubs wrapper that talks to the local docker instance of temporal service.
         WorkflowServiceStubs service = WorkflowServiceStubs.newInstance();
