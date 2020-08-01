@@ -1,0 +1,250 @@
+{
+  "version-0.28.0-docs-1/docs": [
+    {
+      "type": "doc",
+      "id": "version-0.28.0-docs-1/overview"
+    },
+    {
+      "type": "doc",
+      "id": "version-0.28.0-docs-1/installing-server"
+    },
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "Use cases",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-0.28.0-docs-1/use-cases-orchestration"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.28.0-docs-1/use-cases-distributed-transactions"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.28.0-docs-1/use-cases-provisioning"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.28.0-docs-1/use-cases-monitoring"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.28.0-docs-1/use-cases-pipelines"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.28.0-docs-1/use-cases-long-running"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.28.0-docs-1/use-cases-dsl"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.28.0-docs-1/use-cases-actors"
+        }
+      ]
+    },
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "Core concepts",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-0.28.0-docs-1/learn-workflows"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.28.0-docs-1/learn-activities"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.28.0-docs-1/learn-events"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.28.0-docs-1/learn-queries"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.28.0-docs-1/learn-topology"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.28.0-docs-1/learn-task-queues"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.28.0-docs-1/learn-archival"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.28.0-docs-1/learn-cross-dc-replication"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.28.0-docs-1/learn-glossary"
+        }
+      ]
+    },
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "How to guides",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-0.28.0-docs-1/configuring-temporal-server"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.28.0-docs-1/learn-workflow-filtering"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.28.0-docs-1/learn-cli"
+        }
+      ]
+    },
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "Go SDK",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-0.28.0-docs-1/go-quick-start"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.28.0-docs-1/go-sdk-video-tutorial"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.28.0-docs-1/go-workers"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.28.0-docs-1/go-create-workflows"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.28.0-docs-1/go-activities"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.28.0-docs-1/go-execute-activity"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.28.0-docs-1/go-child-workflows"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.28.0-docs-1/go-retries"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.28.0-docs-1/go-error-handling"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.28.0-docs-1/go-signals"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.28.0-docs-1/go-continue-as-new"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.28.0-docs-1/go-side-effect"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.28.0-docs-1/go-queries"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.28.0-docs-1/go-activity-async-completion"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.28.0-docs-1/go-workflow-testing"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.28.0-docs-1/go-versioning"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.28.0-docs-1/go-sessions"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.28.0-docs-1/go-distributed-cron"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.28.0-docs-1/go-tracing"
+        }
+      ]
+    },
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "Java SDK",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-0.28.0-docs-1/java-quick-start"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.28.0-docs-1/java-workflow-interface"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.28.0-docs-1/java-implementing-workflows"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.28.0-docs-1/java-starting-workflow-executions"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.28.0-docs-1/java-activity-interface"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.28.0-docs-1/java-implementing-activities"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.28.0-docs-1/java-versioning"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.28.0-docs-1/java-distributed-cron"
+        }
+      ]
+    },
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "About the docs",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-0.28.0-docs-1/docs-sla"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.28.0-docs-1/license"
+        }
+      ]
+    }
+  ]
+}
