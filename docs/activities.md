@@ -1,13 +1,80 @@
 ---
 id: activities
 title: Activities
+sidebar_label: Activities
 ---
 
-Fault-oblivious stateful workflow code is the core abstraction of Temporal. But, due to deterministic execution requirements, they are not allowed to call any external API directly.
-Instead they orchestrate execution of activities. In its simplest form, a Temporal activity is a function or an object method in one of the supported languages.
-Temporal does not recover activity state in case of failures. Therefore an activity function is allowed to contain any code without restrictions.
+## Overview
 
-Activities are invoked asynchronously though task queues. A task queue is essentially a queue used to store an activity task until it is picked up by an available worker. The worker processes an activity by invoking its implementation function. When the function returns, the worker reports the result back to the Temporal service which in turn notifies the workflow about completion. It is possible to implement an activity fully asynchronously by completing it from a different process.
+Activities are like [Workflow](docs/workflows) subroutines that execute nondeterministic business logic. They are units of code that execute ashychronously to a Workflow, and return their results back to the Temporal service.
+
+Calling an external API is a very common use case for an Activity, for example, as there is a potential for any number of uknown outcomes. From a high level, the Workflow executes the Activity which then makes a request to an API. The result of the API request can then be used by the Workflow.
+
+![Activity diagram - API request](/static/img/docs/activity-diagram-1.png)
+
+Within a Workflow, an Activity is executed when it is sent to a [Task Queue](docs/task-queues) that a [Worker](docs/worker) is listening to.
+
+A Workflow can execute as many Activities as needed.
+
+## Activity Options
+
+Activity code is just the execution of business logic. In other application frameworks business logic execution is mixed with timeout, retry, and other error handling logic. With Temporal it is not necessary to do that. Instead, each Activity can be configured to automatically timeout, retry, or cancel with the help of Activity Options.
+
+Activity Options are configured within the Workflow code and passed to the Activity Execution.
+
+### Task Queue
+
+
+		// TaskQueue that the activity needs to be scheduled on.
+		// optional: The default task queue with the same name as the workflow task queue.
+		TaskQueue string
+
+### Schedule-to-close timeout
+
+		// ScheduleToCloseTimeout - The end to end timeout for the activity needed.
+		// The zero value of this uses default value.
+		// Optional: The default value is the sum of ScheduleToStartTimeout and StartToCloseTimeout
+		ScheduleToCloseTimeout time.Duration
+
+### Schedule-to-start timeout
+
+		// ScheduleToStartTimeout - The queue timeout before the activity starts executed.
+		// Mandatory: No default.
+		ScheduleToStartTimeout time.Duration
+### Start-to-close timeout
+
+		// StartToCloseTimeout - The timeout from the start of execution to end of it.
+		// Mandatory: No default.
+		StartToCloseTimeout time.Duration
+### Heartbeat timeout
+
+		// HeartbeatTimeout - The periodic timeout while the activity is in execution. This is
+		// the max interval the server needs to hear at-least one ping from the activity.
+		// Optional: Default zero, means no heart beating is needed.
+		HeartbeatTimeout time.Duration
+### Wait for cancellation
+
+		// WaitForCancellation - Whether to wait for cancelled activity to be completed(
+		// activity can be failed, completed, cancel accepted)
+		// Optional: default false
+		WaitForCancellation bool
+### Activity Id
+
+		// ActivityID - Business level activity ID, this is not needed for most of the cases if you have
+		// to specify this then talk to temporal team. This is something will be done in future.
+		// Optional: default empty string
+		ActivityID string
+### Retry policy 
+
+		// RetryPolicy specify how to retry activity if error happens. When RetryPolicy.ExpirationInterval is specified
+		// and it is larger than the activity's ScheduleToStartTimeout, then the ExpirationInterval will override activity's
+		// ScheduleToStartTimeout. This is to avoid retrying on ScheduleToStartTimeout error which only happen when worker
+		// is not picking up the task within the timeout. Retrying ScheduleToStartTimeout does not make sense as it just
+		// mark the task as failed and create a new task and put back in the queue waiting worker to pick again. Temporal
+		// server also make sure the ScheduleToStartTimeout will not be larger than the workflow's timeout.
+		// Same apply to ScheduleToCloseTimeout. See more details about RetryPolicy on the doc for RetryPolicy.
+		// Optional: default is no retry
+		RetryPolicy *RetryPolicy
 
 ## Timeouts
 
