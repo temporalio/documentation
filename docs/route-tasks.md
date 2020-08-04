@@ -8,11 +8,11 @@ Consider the specifications of a Worker:
 - A Worker only handles [Activity](docs/learn-activities) and [Workflow](docs/learn-workflows) Tasks that it is registered to handle. This means that a Task must be paired with a Worker that is registered to handle that Task.
 - A Worker runs on a specific host. This means that Activity Tasks that depend on host-specific resources, such as a local file, must be executed by a Worker on that host.
 
-The question is how do we make sure a specific Worker is executing a specific Task? We do this through "Task routing".
+The question is how can we ensure a specific Worker will execute a given Task? We do this through "Task routing".
 
 ## Task routing with Task Queues
 
-Task Queues are what enable "Task routing". Task routing is the development technique that pairs Tasks with Workers. The basics of it can be broken down into 3 steps:
+Task routing is the development technique that pairs Tasks with Workers using Task Queues. At the basic level it consists of 3 steps:
 
 1. Create a Worker that is registered to handle Workflow and/or Activity Tasks.
 2. Subscribe the Worker to listen to a Task Queue.
