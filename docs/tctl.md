@@ -77,7 +77,7 @@ The following examples assume the TEMPORAL_CLI_NAMESPACE environment variable is
 Start a workflow and see its progress. This command doesn't finish until workflow completes.
 
 ```
-./tctl workflow run --tq helloWorldGroup --wt main.Workflow --et 60 -i '"temporal"'
+./tctl workflow run --tq hello-world --wt Workflow --et 60 -i '"temporal"'
 
 # view help messages for workflow run
 ./tctl workflow run -h
@@ -91,7 +91,7 @@ To run a workflow, the user must specify the following:
 3. Execution start to close timeout in seconds (--et)
 4. Input in JSON format (--i) (optional)
 
-example above uses [this sample workflow](https://github.com/temporalio/temporal-go-samples/blob/master/cmd/samples/recipes/helloworld/helloworld_workflow.go)
+example above uses [this sample workflow](https://github.com/temporalio/go-samples/blob/master/helloworld/helloworld.go)
 and takes a string as input with the `-i '"temporal"'` parameter. Single quotes (`''`) are used to wrap input as JSON.
 
 **Note:** You need to start the worker so that the workflow can make progress.
@@ -100,19 +100,19 @@ and takes a string as input with the `-i '"temporal"'` parameter. Single quotes 
 #### Show running workers of a task queue
 
 ```
-./tctl taskqueue desc --tq helloWorldGroup
+./tctl taskqueue desc --tq hello-world
 ```
 
 #### Start workflow
 
 ```
-./tctl workflow start --tq helloWorldGroup --wt main.Workflow --et 60 -i '"temporal"'
+./tctl workflow start --tq hello-world --wt Workflow --et 60 -i '"temporal"'
 
 # view help messages for workflow start
 ./tctl workflow start -h
 
 # for a workflow with multiple inputs, separate each json with space/newline like
-./tctl workflow start --tq helloWorldGroup --wt main.WorkflowWith3Args --et 60 -i '"your_input_string" 123 {"Name":"my-string", "Age":12345}'
+./tctl workflow start --tq hello-world --wt WorkflowWith3Args --et 60 -i '"your_input_string" 123 {"Name":"my-string", "Age":12345}'
 ```
 
 The workflow `start` command is similar to the `run` command, but immediately returns the workflow_id and
@@ -127,10 +127,10 @@ Use option `--workflowidreusepolicy` or `--wrp` to configure the workflow id reu
 
 ```
 # use AllowDuplicateFailedOnly option to start a workflow
-./tctl workflow start --tq helloWorldGroup --wt main.Workflow --et 60 -i '"temporal"' --wid "<duplicated workflow id>" --wrp 0
+./tctl workflow start --tq hello-world --wt Workflow --et 60 -i '"temporal"' --wid "<duplicated workflow id>" --wrp 0
 
 # use AllowDuplicate option to run a workflow
-./tctl workflow run --tq helloWorldGroup --wt main.Workflow --et 60 -i '"temporal"' --wid "<duplicated workflow id>" --wrp 1
+./tctl workflow run --tq hello-world --wt Workflow --et 60 -i '"temporal"' --wid "<duplicated workflow id>" --wrp 1
 ```
 
 ##### Start a workflow with a memo
@@ -140,7 +140,7 @@ visible when listing workflows. More information on memos can be found
 [here](/docs/learn-workflow-filtering#memo-vs-search-attributes).
 
 ```
-tctl wf start -tq helloWorldGroup -wt main.Workflow -et 60 -i '"temporal"' -memo_key ‘“Service” “Env” “Instance”’ -memo ‘“serverName1” “test” 5’
+tctl wf start -tq hello-world -wt Workflow -et 60 -i '"temporal"' -memo_key ‘“Service” “Env” “Instance”’ -memo ‘“serverName1” “test” 5’
 ```
 
 #### Show workflow history
