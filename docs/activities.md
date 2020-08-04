@@ -6,143 +6,64 @@ sidebar_label: Activities
 
 ## Overview
 
-Activities are like [Workflow](docs/workflows) subroutines that execute nondeterministic business logic. They are units of code that execute ashychronously to a Workflow, and return their results back to the Temporal service.
+Activities are like [Workflow](docs/workflows) subroutines that execute nondeterministic business logic. They are units of code that execute ashychronously to a Workflow, and return their results back to the Temporal service (which then notifies the Workflow).
 
-Calling an external API is a very common use case for an Activity, for example, as there is a potential for any number of uknown outcomes. From a high level, the Workflow executes the Activity which then makes a request to an API. The result of the API request can then be used by the Workflow.
+A very common use case for Activities, for example, is making a request to an external API. API requests carry the potential for any number of uknown outcomes. From a high level, the Workflow uses the Activity to make a request to the API. If successful, the result of the API request can then be used by the Workflow.
 
-![Activity diagram - API request](/static/img/docs/activity-diagram-1.png)
+![Activity diagram - API request](/static/img/docs/activity-diagram-01.png)
 
-Within a Workflow, an Activity is executed when it is sent to a [Task Queue](docs/task-queues) that a [Worker](docs/worker) is listening to.
+## Activity options
 
-A Workflow can execute as many Activities as needed.
-
-## Activity Options
-
-Activity code is just the execution of business logic. In other application frameworks business logic execution is mixed with timeout, retry, and other error handling logic. With Temporal it is not necessary to do that. Instead, each Activity can be configured to automatically timeout, retry, or cancel with the help of Activity Options.
-
-Activity Options are configured within the Workflow code and passed to the Activity Execution.
+Activity code is just the execution of business logic. In other application frameworks business logic is mixed with timeout, retry, and other error handling logic. With Temporal it is not necessary to do that, at least not in the traditional sense. Instead, each Activity can be configured to automatically timeout, retry, or cancel with the help of Activity Options. Activity Options are configured within the Workflow code and passed to the Activity execution call.
 
 ### Task Queue
 
-
-		// TaskQueue that the activity needs to be scheduled on.
-		// optional: The default task queue with the same name as the workflow task queue.
-		TaskQueue string
+Activities are executed by [Workers](workers) and Workers listen to [Task Queues](task-queues) to pick up their Tasks. The Task Queue option enables you to specify which Task Queue the Activity Task will be sent to. It is optional to specify, as it will default to the Workflow's Task Queue. For practical implementation guidance, read [How to route tasks](route-tasks).
 
 ### Schedule-to-close timeout
 
-		// ScheduleToCloseTimeout - The end to end timeout for the activity needed.
-		// The zero value of this uses default value.
-		// Optional: The default value is the sum of ScheduleToStartTimeout and StartToCloseTimeout
-		ScheduleToCloseTimeout time.Duration
+When an Activity Task is sent to a Task Queue the Activity is then considered to be "scheduled". This timeout sets a maxium duration from the time the Activity is scheduled to when it is fully complete. If this expires it prevents retries from occurring. This must be set if the [Schedule-to-start](#schedule-to-start-timeout) and [Start-to-close](#start-to-close-timeout) timeouts are not set, as its default value is the sum of [Schedule-to-start](#schedule-to-start-timeout) and [Start-to-close](#start-to-close-timeout). For practical implementation guidance, read [How to timeout Activities and Workflows](timeout-activities-and-workflows).
 
 ### Schedule-to-start timeout
 
-		// ScheduleToStartTimeout - The queue timeout before the activity starts executed.
-		// Mandatory: No default.
-		ScheduleToStartTimeout time.Duration
+An Activity Task should be picked up from a Task Queue and executed as soon as a Worker has the capacity to do so. This timeout sets a maxium duration from the time the Activity is scheduled (Activity Task is sent to the Task Queue) to when a Worker picks up the Task and begins executing it. This timeout is used primarily to identify situations where a Worker has stopped responding and an Activity must be rescheduled. This must be set in conjunction with the [Start-to-close timeout](#start-to-close-timeout) if the [Schedule-to-close timeout](#schedule-to-close-timeout) is not set. For practical implementation guidance, read [How to timeout Activities and Workflows](timeout-activities-and-workflows).
+
 ### Start-to-close timeout
 
-		// StartToCloseTimeout - The timeout from the start of execution to end of it.
-		// Mandatory: No default.
-		StartToCloseTimeout time.Duration
+This sets a maximum duration from the time the Activity starts executing to the time it is complete. If this expires it prevents retries from occurring. This must be set in conjunction with the [Schedule-to-start timeout](#schedule-to-start) if the [Schedule-to-close timeout](#schedule-to-close-timeout) is not set. For practical implementation guidance, read [How to timeout Activities and Workflows](timeout-activities-and-workflows).
+
 ### Heartbeat timeout
 
-		// HeartbeatTimeout - The periodic timeout while the activity is in execution. This is
-		// the max interval the server needs to hear at-least one ping from the activity.
-		// Optional: Default zero, means no heart beating is needed.
-		HeartbeatTimeout time.Duration
+Within Activity code, [Heartbeats](heartbeats) can be recorded. To record a Heartbeat is to ping the Temporal server letting it know that the Activity is still executing. This timeout sets a maximum duration between Heartbeats, effectively enabling manual timeout implementations for Activity executions. This timeout is optional and should only be used if Heartbeats are recorded within the Activity. For practical implementation guidance, read [How to timeout Activities and Workflows](timeout-activities-and-workflows).
+
 ### Wait for cancellation
 
-		// WaitForCancellation - Whether to wait for cancelled activity to be completed(
-		// activity can be failed, completed, cancel accepted)
-		// Optional: default false
-		WaitForCancellation bool
+When an Activity is cancelled it may be necessary for the Activity to revert actions that it has already taken. This option specifies to the Workflow whether to wait for the clean up to occur after an Activity has been cancelled.
+
 ### Activity Id
 
-		// ActivityID - Business level activity ID, this is not needed for most of the cases if you have
-		// to specify this then talk to temporal team. This is something will be done in future.
-		// Optional: default empty string
-		ActivityID string
+Use this to give your Activity a name or unique identifier that correlates to your business logic. This is optional and is not used by the Temporal server.
+
 ### Retry policy 
 
-		// RetryPolicy specify how to retry activity if error happens. When RetryPolicy.ExpirationInterval is specified
-		// and it is larger than the activity's ScheduleToStartTimeout, then the ExpirationInterval will override activity's
-		// ScheduleToStartTimeout. This is to avoid retrying on ScheduleToStartTimeout error which only happen when worker
-		// is not picking up the task within the timeout. Retrying ScheduleToStartTimeout does not make sense as it just
-		// mark the task as failed and create a new task and put back in the queue waiting worker to pick again. Temporal
-		// server also make sure the ScheduleToStartTimeout will not be larger than the workflow's timeout.
-		// Same apply to ScheduleToCloseTimeout. See more details about RetryPolicy on the doc for RetryPolicy.
-		// Optional: default is no retry
-		RetryPolicy *RetryPolicy
-
-## Timeouts
-
-Temporal does not impose any system limit on activity duration. It is up to the application to choose the timeouts for its execution. These are the configurable activity timeouts:
-
-- `ScheduleToStart` is the maximum time from a workflow requesting activity execution to a worker starting its execution. The usual reason for this timeout to fire is all workers being down or not being able to keep up with the request rate. We recommend setting this timeout to the maximum time a workflow is willing to wait for an activity execution in the presence of all possible worker outages.
-- `StartToClose` is the maximum time an activity can execute after it was picked by a worker.
-- `ScheduleToClose` is the maximum time from the workflow requesting an activity execution to its completion.
-- `Heartbeat` is the maximum time between heartbeat requests. See [Long Running Activities](#long-running-activities).
-
-Either `ScheduleToClose` or both `ScheduleToStart` and `StartToClose` timeouts are required.
-
-## Retries
-
-As Temporal doesn't recover an activity's state and they can communicate to any external system, failures are expected. Therefore, Temporal supports automatic activity retries. Any activity when invoked can have an associated retry policy. Here are the retry policy parameters:
-
-- `InitialInterval` is a delay before the first retry.
-- `BackoffCoefficient`. Retry policies are exponential. The coefficient specifies how fast the retry interval is growing. The coefficient of 1 means that the retry interval is always equal to the `InitialInterval`.
-- `MaximumInterval` specifies the maximum interval between retries. Useful for coefficients more than 1.
-- `MaximumAttempts` specifies how many times to attempt to execute an activity in the presence of failures. If this limit is exceeded, the error is returned back to the workflow that invoked the activity.
-- `NonRetryableErrorReasons` allows you to specify errors that shouldn't be retried. For example retrying invalid arguments error doesn't make sense in some scenarios.
-
-There are scenarios when not a single activity but rather the whole part of a workflow should be retried on failure. For example, a media encoding workflow that downloads a file to a host, processes it, and then uploads the result back to storage. In this workflow, if the host that hosts the worker dies, all three activities should be retried on a different host. Such retries should be handled by the workflow code as they are very use case specific.
-
-## Long Running Activities
-
-For long running activities, we recommended that you specify a relatively short heartbeat timeout and constantly heartbeat. This way worker failures for even very long running activities can be handled in a timely manner. An activity that specifies the heartbeat timeout is expected to call the heartbeat method _periodically_ from its implementation.
-
-A heartbeat request can include application specific payload. This is useful to save activity execution progress. If an activity times out due to a missed heartbeat, the next attempt to execute it can access that progress and continue its execution from that point.
-
-Long running activities can be used as a special case of leader election. Temporal timeouts use second resolution. So it is not a solution for realtime applications. But if it is okay to react to the process failure within a few seconds, then a Temporal heartbeat activity is a good fit.
-
-One common use case for such leader election is monitoring. An activity executes an internal loop that periodically polls some API and checks for some condition. It also heartbeats on every iteration. If the condition is satisfied, the activity completes which lets its workflow to handle it. If the activity worker dies, the activity times out after the heartbeat interval is exceeded and is retried on a different worker. The same pattern works for polling for new files in Amazon S3 buckets or responses in REST or other synchronous APIs.
-
-## Cancellation
-
-A workflow can request an activity cancellation. Currently the only way for an activity to learn that it was cancelled is through heart beating. The heartbeat request fails with a special error indicating that the activity was cancelled. Then it is up to the activity implementation to perform all the necessary cleanup and report that it is done with it. It is up to the workflow implementation to decide if it wants to wait for the activity cancellation confirmation or just proceed without waiting.
-
-Another common case for activity heartbeat failure is that the workflow that invoked it is in a completed state. In this case an activity is expected to perform cleanup as well.
-
-## Activity Task Routing through Task Queues
-
-Activities are dispatched to workers through task queues. Task queues are queues that workers listen on. Task queues are highly dynamic and lightweight. They don't need to be explicitly registered. And it is okay to have one task queue per worker process. It is normal to have more than one activity type to be invoked through a single task queue. And it is normal in some cases (like host routing) to invoke the same activity type on multiple task queues.
-
-Here are some use cases for employing multiple activity task queues in a single workflow:
-
-- _Flow control_. A worker that consumes from a task queue asks for an activity task only when it has available capacity. So workers are never overloaded by request spikes. If activity executions are requested faster than workers can process them, they are backlogged in the task queue.
-- _Throttling_. Each activity worker can specify the maximum rate it is allowed to processes activities on a task queue. It does not exceed this limit even if it has spare capacity. There is also support for global task queue rate limiting. This limit works across all workers for the given task queue. It is frequently used to limit load on a downstream service that an activity calls into.
-- _Deploying a set of activities independently_. Think about a service that hosts activities and can be deployed independently from other activities and workflows. To send activity tasks to this service, a separate task queue is needed.
-- _Workers with different capabilities_. For example, workers on GPU boxes vs non GPU boxes. Having two separate task queues in this case allows workflows to pick which one to send activity an execution request to.
-- _Routing activity to a specific host_. For example, in the media encoding case the transform and upload activity have to run on the same host as the download one.
-- _Routing activity to a specific process_. For example, some activities load large data sets and caches it in the process. The activities that rely on this data set should be routed to the same process.
-- _Multiple priorities_. One task queue per priority and having a worker pool per priority.
-- _Versioning_. A new backwards incompatible implementation of an activity might use a different task queue.
-
-## Asynchronous Activity Completion
-
-By default an activity is a function or a method depending on a client side library language. As soon as the function returns, an activity completes. But in some cases an activity implementation is asynchronous. For example it is forwarded to an external system through a message queue. And the reply comes through a different queue.
-
-To support such use cases, Temporal allows activity implementations that do not complete upon activity function completions. A separate API should be used in this case to complete the activity. This API can be called from any process, even in a different programming language, that the original activity worker used.
+Unlike Workflows, Temporal does not recover the state of an Activity. Activity failures are expected to occur and when they do the Activity can be automatically retried per its Retry policy. For practical implementation guidance, read [How to retry Activities and Workflows](retry-activities-and-workflows).
 
 ## Local Activities
 
-Some of the activities are very short lived and do not need the queing semantic, flow control, rate limiting and routing capabilities. For these Temporal supports so called _local activity_ feature. Local activities are executed in the same worker process as the workflow that invoked them. Consider using local activities for functions that are:
+For Activities that have perfunctory requirements, Temporal supports a stripped down version of Activity implementations called "local Activities". A local Activity is executed by the same Worker that is executing the Workflow that invoked it. A function can be executed as a local Activity if it:
 
-- no longer than a few seconds
-- do not require global rate limiting
-- do not require routing to specific workers or pools of workers
-- can be implemented in the same binary as the workflow that invokes them
+- takes no more than a few seconds to complete.
+- does not require global rate limiting.
+- does not require routing to specific Workers or pools of Workers.
+- can be implemented in the same binary as the Workflow that invokes it.
 
-The main benefit of local activities is that they are much more efficient in utilizing Temporal service resources and have much lower latency overhead comparing to the usual activity invocation.
+The main benefit of local Activities is that they are much more efficient in utilizing Temporal service resources and have much lower latency overhead in comparison to the usual Activity invocation.
+
+### Local Activity options
+
+Local activities support a small subset of options:
+
+- [Schedule-to-close timeout](#schedule-to-close-timeout)
+- [Start-to-close timeout](#start-to-close-timeout)
+- [Retry policy](#retry-policy)
+
