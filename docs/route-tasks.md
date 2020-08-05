@@ -14,13 +14,38 @@ The question is how can we ensure a specific Worker will execute a given Task? W
 
 Task routing is the development technique that pairs Tasks with Workers using Task Queues. At the basic level it consists of 3 steps:
 
-1. Create a Worker that is registered to handle Workflow and/or Activity Tasks.
-2. Subscribe the Worker to listen to a Task Queue.
+1. Subscribe a Worker to a Task Queue.
+2. Register Workflow and/or Activity Tasks with the Worker.
 3. Configure Workflows and Activities to send Tasks to the Task Queue.
 
-Let's look at the ["Hello World" sample in Go](https://github.com/temporalio/temporal-go-samples/tree/master/helloworld) to see how this is done.
+Let's look a simple "Hello World" sample to see how this is done. In the following code snippet, we [create a new Worker](https://github.com/temporalio/go-samples/blob/master/helloworld/worker/main.go#L26) that is subscribed to the "hello-world" Task Queue and is registered to handle the `helloworld.Workflow` and `helloworld.Activity`:
 
-In the following code snippet, we [create a new Worker](https://github.com/temporalio/go-samples/blob/master/helloworld/worker/main.go#L26) that is subscribed to the "hello-world" Task Queue and is registered to handle the `helloworld.Workflow` and `helloworld.Activity`:
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs
+    defaultValue="java"
+    values={[
+        { label: 'Java', value: 'java', },
+        { label: 'Go', value: 'go', },
+    ]
+}>
+
+<TabItem value="java">
+
+```java
+// Worker is created and subscribed to the "hello-world" Task Queue 
+Worker worker = factory.newWorker("hello-world");
+// Worker is registered to handle helloworld Workflow
+worker.registerWorkflowImplementationTypes(HelloWorldWorkflowImpl.class)
+// Worker is registered to handle helloworld Activity
+worker.registerActivityImplementationTypes(HelloWorldActivityImpl)
+```
+
+</TabItem>
+<TabItem value="go">
+
+[source](https://github.com/temporalio/temporal-go-samples/tree/master/helloworld)
 
 ```go
 // Worker is created and subscribed to the "hello-world" Task Queue
@@ -32,7 +57,35 @@ w.RegisterWorkflow(helloworld.Workflow)
 w.RegisterActivity(helloworld.Activity)
 ```
 
+</TabItem>
+</Tabs>
+
 In the next code snippet, we [start the `helloworld.Workflow`](https://github.com/temporalio/go-samples/blob/master/helloworld/starter/main.go#L25):
+
+<Tabs
+    defaultValue="go"
+    values={[
+        { label: 'Java', value: 'java'},
+        { label: 'Go', value: 'go' },
+    ]           
+}>
+
+<TabItem value="java">
+
+```java
+HelloWorldWorkflow workflow =
+    client.newWorkflowStub(
+        HelloWorldWorkflow.class,
+        // Workflow Options specify the "hello-world"" Task Queue
+        // Which is the Task Queue that the Workflow will send its Tasks to
+        WorkflowOptions.newBuilder().setTaskQueue("hello_world").build());
+// Workflow is executed
+WorkflowExecution workflowExecution =
+    WorkflowClient.start(workflow::helloWorld);
+```
+
+</TabItem>
+<TabItem value="go"> 
 
 ```go
 // Workflow Options specify the "hello-world" Task Queue
@@ -49,6 +102,9 @@ we, err := c.ExecuteWorkflow(
   "Temporal",
 )
 ```
+
+</TabItem>
+</Tabs>
 
 :::caution
 
