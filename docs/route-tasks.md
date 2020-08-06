@@ -18,7 +18,7 @@ Task routing is the development technique that pairs Tasks with Workers using Ta
 2. Register Workflow and/or Activity Tasks with the Worker.
 3. Configure Workflows and Activities to send Tasks to the Task Queue.
 
-Let's look a simple "Hello World" sample to see how this is done. In the following code snippet, we [create a new Worker](https://github.com/temporalio/go-samples/blob/master/helloworld/worker/main.go#L26) that is subscribed to the "hello-world" Task Queue and is registered to handle the `helloworld.Workflow` and `helloworld.Activity`:
+Let's look a simple "Hello World" sample to see how this is done. In the following code snippet we create a new Worker, subscribe it to the "hello-world" Task Queue, and register it to handle "Hello World" Workflow and "Hello World" Activity implementations:
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -33,6 +33,7 @@ import TabItem from '@theme/TabItem';
 
 <TabItem value="java">
 
+[Sample source reference](https://github.com/temporalio/java-samples/blob/master/src/main/java/io/temporal/samples/hello/HelloActivity.java#L91-L99)
 ```java
 // Worker is created and subscribed to the "hello-world" Task Queue 
 Worker worker = factory.newWorker("hello-world");
@@ -45,8 +46,7 @@ worker.registerActivityImplementationTypes(HelloWorldActivityImpl)
 </TabItem>
 <TabItem value="go">
 
-[source](https://github.com/temporalio/temporal-go-samples/tree/master/helloworld)
-
+[Sample source reference](https://github.com/temporalio/go-samples/blob/master/helloworld/worker/main.go#L20-L23)
 ```go
 // Worker is created and subscribed to the "hello-world" Task Queue
 w := worker.New(c, "hello-world", worker.Options{})
@@ -60,7 +60,7 @@ w.RegisterActivity(helloworld.Activity)
 </TabItem>
 </Tabs>
 
-In the next code snippet, we [start the `helloworld.Workflow`](https://github.com/temporalio/go-samples/blob/master/helloworld/starter/main.go#L25):
+In the next code snippet, we start the "Hello World" Workflow:
 
 <Tabs
     defaultValue="go"
@@ -72,6 +72,7 @@ In the next code snippet, we [start the `helloworld.Workflow`](https://github.co
 
 <TabItem value="java">
 
+[Sample source reference](https://github.com/temporalio/java-samples/blob/master/src/main/java/io/temporal/samples/hello/HelloActivity.java#L91-L99)
 ```java
 HelloWorldWorkflow workflow =
     client.newWorkflowStub(
@@ -85,8 +86,9 @@ WorkflowExecution workflowExecution =
 ```
 
 </TabItem>
-<TabItem value="go"> 
+<TabItem value="go">
 
+[Sample source reference](https://github.com/temporalio/go-samples/blob/master/helloworld/starter/main.go#L20-L25)
 ```go
 // Workflow Options specify the "hello-world" Task Queue
 // Which is the Task Queue that the Workflow will send its Tasks to
@@ -114,13 +116,11 @@ If a Worker pulls a Task that it has not been registered to run, an "unknown wor
 
 ## Task routing for Activity dependencies
 
-The Temporal service will persist Activity results as long as the results are less than 2MB in size and can be serialized for storage (which happens to be true for most Activity results). However, there are some scenarios where an Activity execution will do something that results in data, such as a large file, being stored directly on the host where the Worker is running. It is also possible that the next Activity in the Workflow has a dependency on that data and needs to run on the same host.
+The Temporal service will persist Activity results as long as the results are less than 2MB in size and can be serialized for storage (which happens to be true for most Activity results). However, there are some scenarios where an Activity execution will do something that results in data or files being stored directly on the host where the Worker is running. It is also possible that the next Activity in the Workflow has a dependency on that data and needs to run on the same host.
 
 Let's look at a file processing Workflow example where files are downloaded, processed in some way, and then uploaded to some other location. If a large video file is being processed only the name of the file can persist normally. The file itself must persist locally on the Worker host, as it is too big for normal Temporal storage. This means that any future Activities that act on the video file must also take place on the host where the Worker downloaded it.
 
-So, how do we ensure that a Worker on the correct host will execute the next Activity that depends on the video file?
-
-This is accomplished in different ways depending on the SDK.
+So, how do we ensure that a Worker on the correct host will execute the next Activity that depends on the video file? This is accomplished in different ways depending on the SDK.
 
 ### Java
 
