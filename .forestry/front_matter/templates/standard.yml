@@ -53,6 +53,7 @@ fields:
   label: Release Version
 pages:
 - blog/temporal-transparency-update-2.md
+- blog/temporal-transparency-update-5.md
 - blog/temporal-transparency-update.md
 - blog/transparency-update-3.md
 - blog/v1-release-premortem.md
