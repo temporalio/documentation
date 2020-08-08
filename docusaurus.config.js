@@ -5,6 +5,7 @@ module.exports = {
   tagline: 'Invincible applications, invisible infrastructure',
   url: 'https://docs.temporal.io',
   baseUrl: '/',
+  onBrokenLinks: 'throw',
   favicon: 'img/favicon.svg',
   organizationName: 'temporalio', // Usually your GitHub org/user name.
   projectName: 'temporal-documentation-legacy-v2', // Usually your repo name.
@@ -31,7 +32,7 @@ module.exports = {
         alt: 'Temporal logo',
         src: 'img/favicon.svg',
       },
-      links: [
+      items: [
         {
           to: 'versions',
           label: `v${versions[0]}`,
@@ -174,5 +175,4 @@ module.exports = {
       },
     ],
   ],
-  themes: ['@docusaurus/theme-live-codeblock'],
 };

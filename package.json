@@ -1,24 +1,23 @@
 {
-  "name": "temporal-docs",
+  "name": "docs-2",
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "docusaurus": "docusaurus",
     "start": "docusaurus start",
     "build": "docusaurus build",
     "swizzle": "docusaurus swizzle",
-    "deploy": "docusaurus deploy"
+    "deploy": "docusaurus deploy",
+    "serve": "docusaurus serve"
   },
   "dependencies": {
-    "@docusaurus/core": "^2.0.0-alpha.58",
-    "@docusaurus/plugin-google-gtag": "^2.0.0-alpha.37",
-    "@docusaurus/plugin-sitemap": "^2.0.0-alpha.37",
-    "@docusaurus/preset-classic": "^2.0.0-alpha.58",
-    "@docusaurus/theme-live-codeblock": "^2.0.0-alpha.58",
-    "classnames": "^2.2.6",
+    "@docusaurus/core": "^2.0.0-alpha.61",
+    "@docusaurus/preset-classic": "^2.0.0-alpha.61",
+    "@mdx-js/react": "^1.5.8",
+    "clsx": "^1.1.1",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
-    "react-player": "^2.3.1",
-    "react-router": "^5.1.2"
+    "react-player": "^2.6.0"
   },
   "browserslist": {
     "production": [

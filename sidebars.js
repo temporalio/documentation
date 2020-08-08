@@ -2,10 +2,10 @@ module.exports = {
   docs: [
     'get-started',
     {
-      'type': 'category',
-      'collapsed': true,
-      'label': 'Concepts',
-      'items': [
+      type: 'category',
+      collapsed: true,
+      label: 'Concepts',
+      items: [
         'overview',
         'workflows',
         'activities',
@@ -17,10 +17,10 @@ module.exports = {
       ],
     },
     {
-      'type': 'category',
-      'collapsed': true,
-      'label': 'Use cases',
-      'items': [
+      type: 'category',
+      collapsed: true,
+      label: 'Use cases',
+      items: [
         'use-cases-orchestration',
         'use-cases-distributed-transactions',
         'use-cases-provisioning',
@@ -32,10 +32,10 @@ module.exports = {
       ],
     },
     {
-      'type': 'category',
-      'collapsed': true,
-      'label': 'How to',
-      'items': [
+      type: 'category',
+      collapsed: true,
+      label: 'How to',
+      items: [
         'install-temporal-server',
         'configure-temporal-server',
         'filter-workflows',
@@ -43,10 +43,10 @@ module.exports = {
       ],
     },
     {
-      'type': 'category',
-      'collapsed': true,
-      'label': 'Go SDK',
-      'items': [
+      type: 'category',
+      collapsed: true,
+      label: 'Go SDK',
+      items: [
         'go-quick-start',
         'go-sdk-video-tutorial',
         'go-workers',
@@ -69,10 +69,10 @@ module.exports = {
       ],
     },
     {
-      'type': 'category',
-      'collapsed': true,
-      'label': 'Java SDK',
-      'items': [
+      type: 'category',
+      collapsed: true,
+      label: 'Java SDK',
+      items: [
         'java-quick-start',
         'java-workflow-interface',
         'java-implementing-workflows',
@@ -84,13 +84,10 @@ module.exports = {
       ],
     },
     {
-      'type': 'category',
-      'collapsed': true,
-      'label': 'About the docs',
-      'items': [
-        'docs-sla',
-        'license',
-      ],
-    }
+      type: 'category',
+      collapsed: true,
+      label: 'About the docs',
+      items: ['docs-sla', 'license'],
+    },
   ],
 };
