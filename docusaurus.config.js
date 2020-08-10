@@ -174,6 +174,9 @@ module.exports = {
     ],
   ],
   scripts: [
-    '/scripts/feedback.js',
+    {
+      src: 'https://docs.temporal.io/scripts/feedback.js',
+      async: true,
+    },
   ]
 };
