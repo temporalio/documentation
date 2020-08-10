@@ -175,9 +175,9 @@ module.exports = {
   ],
   scripts: [
     {
-      src: 'scripts/feedback.js',
+      src: '/scripts/feedback.js',
       async: true,
-      //defer: true,
+      defer: true,
     },
   ]
 };
