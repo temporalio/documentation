@@ -23,11 +23,6 @@ module.exports = {
       },
       items: [
         {
-          to: 'versions',
-          label: `v${versions[0]}`,
-          position: 'left',
-        },
-        {
           to: 'docs/overview',
           activeBasePath: 'docs',
           label: 'Docs',
