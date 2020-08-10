@@ -173,4 +173,7 @@ module.exports = {
       },
     ],
   ],
+  scripts: [
+    '/scripts/feedback.js',
+  ]
 };
