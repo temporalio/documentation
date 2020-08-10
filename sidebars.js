@@ -83,11 +83,5 @@ module.exports = {
         'java-distributed-cron',
       ],
     },
-    {
-      type: 'category',
-      collapsed: true,
-      label: 'About the docs',
-      items: ['docs-sla', 'license'],
-    },
   ],
 };
