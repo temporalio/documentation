@@ -73,6 +73,10 @@ module.exports = {
               label: 'Go SDK',
               to: 'docs/go-quick-start',
             },
+            {
+              label: 'About',
+              to: '/about',
+            },
           ],
         },
         {
