@@ -24,10 +24,10 @@
   padding: 0 var(--ifm-pre-padding);
 }
 
-.markdown ul {
+.markdown > ul {
   list-style-type: none;
 }
 
-.markdown li:before{
+.markdown > ul > li:before{
   content: '→ ';
 }
