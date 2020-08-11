@@ -4,31 +4,29 @@ title: Temporal documentation
 sidebar_label: Get started
 ---
 
-Welcome to Temporal's user documentation!
-
 Temporal reimagines state-dependent service-orchestrated application development, and so much more.
 
 ## Get started
 
-Ready to develop? [Install the Temporal server](install-temporal-server) and choose your SDK.
+Ready to build? [Install the Temporal server](install-temporal-server) and choose your SDK.
 
-→ [Go SDK](go-quick-start)
-
-→ [Java SDK](java-quick-start)
+- [Go SDK](go-quick-start)
+- [Java SDK](java-quick-start)
 
 ## Learn about Temporal
 
-Building applications with Temporal is a paradigm shift. If you are new to Temporal, or workflow applications in general, get caught up on the [core concepts](concepts-overview) and common [use cases](use-cases-overview).
+Building applications with Temporal is a paradigm shift. If you are new to Temporal, or workflow applications in general, get caught up on the [core concepts](concepts-overview).
 
-Run the code samples to see how it works:
+Wondering if Temporal is a good fit for your use case? Check out our [documented use cases](use-cases-overview) or visit the [community forum](https://community.temporal.io/tag/use-case-validation).
 
-→ [Go SDK samples](https://github.com/temporalio/go-samples)
+Prefer to jump right in? Try some of our tested examples.
 
-→ [Java SDK samples](https://github.com/temporalio/java-samples)
+- [Go SDK samples](https://github.com/temporalio/go-samples)
+- [Java SDK samples](https://github.com/temporalio/java-samples)
 
 ## Best practices
 
-Want to master Temporal Workflows and recommended development techniques? Our guides will show you how.
+Want to master Temporal Workflows? Our guides will break down some of the recommended development techniques.
 
 - [How to install Temporal](install-temporal-server)
 - [How to configure Temporal](configure-temporal-server)
@@ -37,7 +35,7 @@ Want to master Temporal Workflows and recommended development techniques? Our gu
 
 ## Contribute
 
-Want to contribute? Follow the contribution instructions:
+Want to contribute? Follow the contribution instructions provided within the repositories.
 
 - [Temporal server](https://github.com/temporalio/temporal/blob/master/CONTRIBUTING.md)
 - [Documentation](https://github.com/temporalio/documentation-legacy/blob/master/README.md).
