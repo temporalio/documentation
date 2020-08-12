@@ -13,7 +13,7 @@ The usual approach to building such applications is a hodgepodge of stateless se
 databases, cron jobs, and queuing systems. This negatively impacts the developer productivity as most of the code is
 dedicated to plumbing, obscuring the actual business logic behind a myriad of low-level details. Such systems frequently have availability problems as it is hard to keep all the components healthy.
 
-The Temporal solution is a [_fault-oblivious stateful_ programming model](/docs/learn-workflows) that obscures most of the complexities of building scalable distributed applications. In essence, Temporal provides a durable virtual memory that is not
+The Temporal solution is a [_fault-oblivious stateful_ programming model](/docs/workflows) that obscures most of the complexities of building scalable distributed applications. In essence, Temporal provides a durable virtual memory that is not
 linked to a specific process, and preserves the full application state, including function stacks, with local variables across all sorts of host and software failures.
 This allows you to write code using the full power of a programming language while Temporal takes care of durability, availability, and scalability of the application.
 

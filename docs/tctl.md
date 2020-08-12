@@ -137,7 +137,7 @@ Use option `--workflowidreusepolicy` or `--wrp` to configure the workflow id reu
 
 Memos are immutable key/value pairs that can be attached to a workflow run when starting the workflow. These are
 visible when listing workflows. More information on memos can be found
-[here](/docs/learn-workflow-filtering#memo-vs-search-attributes).
+[here](/docs/filter-workflows#memo-vs-search-attributes).
 
 ```
 tctl wf start -tq hello-world -wt Workflow -et 60 -i '"temporal"' -memo_key ‘“Service” “Env” “Instance”’ -memo ‘“serverName1” “test” 5’
