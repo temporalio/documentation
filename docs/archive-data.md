@@ -4,64 +4,52 @@ title: How to archive data
 sidebar_label: Archive data
 ---
 
-Data that is generated from a Workflow, such as Event Histories,  persists in normal Temporal storage per the configured retention period. The retention period exists so that the persistence store is not overwhelmed by the accummulation of Workflow data over time. To preserve Workflow data indefinitely, you can use the Archival feature which automatically moves the data from the normal persistence storage to long-term storage after the Workflow retention period expires.
+This guide covers Temporal's archiving capabilities and how to setup the Archival feature.
 
-:::info
+## Overview
 
-**Archival is currently disabled by default.**
-- Archival is disabled when running Temporal via `docker-compose` and can not be enabled.
-- Archival is disabled by default when cloning the repo and installing the system manually, but can be enabled in the config.
-- Archival is disabled by default when deploying via [helm charts](https://github.com/temporalio/helm-charts/blob/d08ab3a582e9bc605da460b79cd7524e18d2c91d/templates/server-configmap.yaml#L176) but can be enabled in the config.
+Temporal stores data that is generated from a Workflow, such as Event Histories, per the configured retention period. When the retention period expires the data is deleted to avoid running out of space. To preserve Workflow data indefinitely you can use the Archival feature, which automatically moves the data from Temporal to long-term storage (i.e. S3) after the Workflow retention period expires.
 
-:::
-
-:::info
-
-**Archival currently only supports Event Histories.**
-
-You may notice some boilerplate infrastructure to support archiving visibility records. This functionality is not yet supported and visibility records are currently deleted after the Workflow retention period.
-
-:::
-
-## Archiving use cases
-
-There are two main reasons you may want to keep data after the retention period has past:
+There are at least two reasons you may want to keep data after the retention period has passed:
 
 1. **Compliance**: For legal reasons, data may need to be stored for a long period of time.
 2. **Debugging**: Older data may help with debugging.
 
-## Archival components
+:::note
 
-Archival consists of four main components.
+Archival is not supported when running Temporal via `docker-compose`. It is disabled by default when cloning the repo and installing the system manually, and when deploying via [helm charts](https://github.com/temporalio/helm-charts/blob/master/templates/server-configmap.yaml#L176) but can be enabled in the [config](https://github.com/temporalio/temporal/blob/master/config/development.yaml).
 
-1. **Archival feature configuration**: Archival is controlled by the [`archival` configuration](https://github.com/temporalio/temporal/blob/master/config/development.yaml#L81) in the `config/development.yaml` file.
-2. **Archive Provider**: Location where the data is archived to. Commonly used providers are S3, GCloud, Kafka, and the local file system.
-3. **Archiver**: System component which archives and retrieves data. An Archiver is directly correlated to a single Archive Provider. 
-4. **URI**: Specifies to the Namespace which Archiver Provider and Archiver should be used. The schema of the URI identifies which Archiver and Provider to use. Where the URI points to identifies the archive location.
+Archival only supports Event Histories. You may notice some boilerplate infrastructure to support archiving visibility records. Visibility archival is not yet supported and visibility records are deleted after the Workflow retention period.
 
-## Archival setup    
+:::
 
-To setup Archival, there are a few things you will need to do:
-1. Setup archive providers. 
-2. Manage Archival related configurations for the Temporal server.
-3. Create a Namespace that enables Archival and is registered with an Archival URI.
+## Setup
 
-### Archival providers
+Archival consists of four elements.
 
-Temporal supports several archive providers (and archivers) out of the box as well as the option to create and use your own.
+1. **Configuration**: Archival is controlled by the [server configuration](https://github.com/temporalio/temporal/blob/master/config/development.yaml#L81) (i.e. the `config/development.yaml` file).
+2. **Provider**: Location where the data should be archived. Supported providers are S3, GCloud, and the local file system.
+3. **Archiver**: System component which archives and retrieves data. Each archiver supports a specific provider. 
+4. **URI**: Specifies which provider and archiver should be used. The system uses the URI schema and path to make the determination.
 
-To archive data with a specific provider, Temporal must have a corresponding archiver component installed. [Currently supported archive providers](https://github.com/temporalio/temporal/tree/master/common/archiver) include the local filesystem (of whatever host Temporal is currently running on), Google Cloud, and S3.
+To setup Archival, you will need to take the following steps.
 
-The local filesystem is used mainly for local installations, testing, and when running Temporal via `docker-compose`. In a production environment, you will most likely want to archive data using one of the cloud based storage systems.
+1. Setup the provider of your choice. 
+2. Configure Archival.
+3. Create a Namespace with Archival enabled provide it a valid URI.
 
-Get started with Google Cloud storage here: https://cloud.google.com/storage
-Get started with S3 storage here: https://aws.amazon.com/s3
+### Providers
 
-You will need the URI of the storage location where you want the data to be archived.
+Temporal supports several providers out of the box.
 
-If you want to create your own archiver, review the [Custom archiver](#custom-archiver) section below. Contributions are welcome.
+- **Local file system**: The [filestore archiver](https://github.com/temporalio/temporal/tree/master/common/archiver/filestore) is used to archive data in the file system of whatever host the Temporal server is running on. This provider is used mainly for local installations and testing and should not be relied on for production environments.
+- **Google Cloud**: The [gcloud archiver](https://github.com/temporalio/temporal/tree/master/common/archiver/gcloud) is used to connect and archive data with them. Create an account with [Google Cloud](https://cloud.google.com/storage) to get started with using them as a provider.
+- **S3**: The [s3store archiver](https://github.com/temporalio/temporal/tree/master/common/archiver/s3store) is used to connect and archive data with S3. Create an account with [S3](https://aws.amazon.com/s3) to get started with them as a provider. 
+- **Custom**: If you want to use a provider that is not currently supported, you can [create your own archiver](#custom-archiver) to support it (To archive data with a specific provider, Temporal must have a corresponding archiver component installed.)
 
-### Archival configuration
+You will need the storage location's URI as it will need to be passed as a parameter when a [Namespace is created](#namespace-creation).
+
+### Configuration
 
 First familiarize yourself with the configuration in [`config/development.yaml`](https://github.com/temporalio/temporal/blob/master/config/development.yaml#L81).
 
