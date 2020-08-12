@@ -10,6 +10,10 @@ module.exports = {
   organizationName: 'temporalio', // Usually your GitHub org/user name.
   projectName: 'temporal-documentation-legacy-v2', // Usually your repo name.
   themeConfig: {
+    colorMode: {
+      // "light" | "dark"
+      defaultMode: 'dark',
+    },
     prism: {
       theme: require('prism-react-renderer/themes/github'),
       darkTheme: require('prism-react-renderer/themes/dracula'),
