@@ -15,7 +15,7 @@ Ready to build? [Install the Temporal server](install-temporal-server) and choos
 
 ## Learn about Temporal
 
-Applications built with Temporal are extremely reliable, but using it can be a paradigm shift for some folks. If you are new to Temporal, or workflow applications in general, get caught up on the [core concepts](overview).
+Temporal enables developers to write highly reliable applications without having to worry about all the edge cases, but getting started can be paradigm shift for some. If you are new to Temporal, or workflow applications in general, get caught up on the [core concepts](overview).
 
 Wondering if Temporal is a good fit for your use case? Check out our [use cases section](use-cases-orchestration) or visit the [community forum](https://community.temporal.io/tag/use-case-validation).
 
