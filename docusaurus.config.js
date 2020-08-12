@@ -23,7 +23,7 @@ module.exports = {
       },
       items: [
         {
-          to: 'docs/overview',
+          to: 'docs/get-started',
           activeBasePath: 'docs',
           label: 'Docs',
           position: 'right',
@@ -58,7 +58,7 @@ module.exports = {
           items: [
             {
               label: 'Getting Started',
-              to: 'docs/overview',
+              to: 'docs/get-started',
             },
             {
               label: 'Java SDK',
