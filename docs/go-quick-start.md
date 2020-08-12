@@ -7,7 +7,7 @@ This topic helps you install the Temporal server and implement a workflow.
 
 ## Install Temporal Server Locally
 
-To run samples locally you need to run Temporal server locally using [instructions](/docs/installing-server).
+To run samples locally you need to run Temporal server locally using [instructions](/docs/install-temporal-server).
 
 ## Start with an empty directory
 
