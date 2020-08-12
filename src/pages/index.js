@@ -58,7 +58,7 @@ function Feature({ imageUrl, title, description }) {
 function Home() {
   const context = useDocusaurusContext();
   const { siteConfig = {} } = context;
-  return <Redirect to='/docs/overview' />;
+  return <Redirect to='/docs/get-started' />;
   return (
     <Layout
       title={`Hello from ${siteConfig.title}`}
