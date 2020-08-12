@@ -15,18 +15,18 @@ Ready to build? [Install the Temporal server](install-temporal-server) and choos
 
 ## Learn about Temporal
 
-Building applications with Temporal is a paradigm shift. If you are new to Temporal, or workflow applications in general, get caught up on the [core concepts](concepts-overview).
+Applications built with Temporal are extremely reliable, but using it can be a paradigm shift for some folks. If you are new to Temporal, or workflow applications in general, get caught up on the [core concepts](overview).
 
-Wondering if Temporal is a good fit for your use case? Check out our [documented use cases](use-cases-overview) or visit the [community forum](https://community.temporal.io/tag/use-case-validation).
+Wondering if Temporal is a good fit for your use case? Check out our [use cases section](use-cases-orchestration) or visit the [community forum](https://community.temporal.io/tag/use-case-validation).
 
-Prefer to jump right in? Try some of our tested examples.
+Prefer to jump right in? Try out some of our examples.
 
 - [Go SDK samples](https://github.com/temporalio/go-samples)
 - [Java SDK samples](https://github.com/temporalio/java-samples)
 
 ## Best practices
 
-Want to master Temporal Workflows? Our guides will break down some of the recommended development techniques.
+Want to master Temporal Workflows? Our guides will bring you up to speed on Temporal development best practices.
 
 - [How to install Temporal](install-temporal-server)
 - [How to configure Temporal](configure-temporal-server)
