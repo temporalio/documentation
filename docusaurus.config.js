@@ -126,6 +126,7 @@ module.exports = {
     [
       '@docusaurus/preset-classic',
       {
+        // Will be passed to @docusaurus/plugin-content-docs
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
           routeBasePath: 'docs',
@@ -146,6 +147,7 @@ module.exports = {
            */
           excludeNextVersionDocs: false,
         },
+        // Will be passed to @docusaurus/plugin-content-blog
         blog: {
           routeBasePath: 'blog',
           postsPerPage: 10,
@@ -158,8 +160,15 @@ module.exports = {
             copyright: `Copyright © ${new Date().getFullYear()} Temporal Technologies Inc.  All rights reserved. Copyright © 2020 Uber Technologies, Inc.`,
           },
         },
+        // Will be passed to @docusaurus/theme-classic.
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
+        },
+        // Will be passed to @docusaurus/plugin-content-sitemap
+        sitemap: {
+          cacheTime: 600 * 1000, // 600 sec - cache purge period
+          changefreq: 'weekly',
+          priority: 0.5,
         },
       },
     ],
