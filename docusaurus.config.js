@@ -27,7 +27,7 @@ module.exports = {
       },
       items: [
         {
-          to: 'docs/get-started',
+          to: 'docs/get-started/',
           activeBasePath: 'docs',
           label: 'Docs',
           position: 'right',
@@ -62,7 +62,7 @@ module.exports = {
           items: [
             {
               label: 'Getting Started',
-              to: 'docs/get-started',
+              to: 'docs/get-started/',
             },
             {
               label: 'Java SDK',
@@ -182,5 +182,5 @@ module.exports = {
       async: true,
       defer: true,
     },
-  ]
+  ],
 };

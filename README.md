@@ -78,7 +78,7 @@ Refer to [Rob Allen's DevNotes](https://akrabat.com/the-beginners-guide-to-contr
 
 The website is built using [Docusaurus 2](https://v2.docusaurus.io/).
 
-Check out their [installation requirements](https://v2.docusaurus.io/docs/installation#requirements) for tooling prerequisites.
+Check out their [installation requirements](https://v2.docusaurus.io/docs/installation/#requirements) for tooling prerequisites.
 
 ### Initialize yarn
 

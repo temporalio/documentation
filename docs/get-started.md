@@ -8,16 +8,16 @@ Temporal reimagines state-dependent service-orchestrated application development
 
 ## Get started
 
-Ready to build? [Install the Temporal server](/docs/install-temporal-server) and choose your SDK.
+Ready to build? [Install the Temporal server](/docs/install-temporal-server/) and choose your SDK.
 
-- [Go SDK](/docs/go-quick-start)
-- [Java SDK](/docs/java-quick-start)
+- [Go SDK](/docs/go-quick-start/)
+- [Java SDK](/docs/java-quick-start/)
 
 ## Learn about Temporal
 
-Temporal enables developers to write highly reliable applications without having to worry about all the edge cases, but getting started can be paradigm shift for some. If you are new to Temporal, or workflow applications in general, get caught up on the [core concepts](/docs/overview).
+Temporal enables developers to write highly reliable applications without having to worry about all the edge cases, but getting started can be paradigm shift for some. If you are new to Temporal, or workflow applications in general, get caught up on the [core concepts](/docs/overview/).
 
-Wondering if Temporal is a good fit for your use case? Check out our [use cases section](/docs/use-cases-orchestration) or visit the [community forum](https://community.temporal.io/tag/use-case-validation).
+Wondering if Temporal is a good fit for your use case? Check out our [use cases section](/docs/use-cases-orchestration/) or visit the [community forum](https://community.temporal.io/tag/use-case-validation).
 
 Prefer to jump right in? Try out some of our examples.
 
@@ -28,9 +28,9 @@ Prefer to jump right in? Try out some of our examples.
 
 Want to master Temporal Workflows? Our guides will bring you up to speed on Temporal development best practices.
 
-- [How to install Temporal](/docs/install-temporal-server)
-- [How to configure Temporal](/docs/configure-temporal-server)
-- [How to filter Workflows](/docs/filter-workflows)
+- [How to install Temporal](/docs/install-temporal-server/)
+- [How to configure Temporal](/docs/configure-temporal-server/)
+- [How to filter Workflows](/docs/filter-workflows/)
 - [How to use the CLI (tctl)](/docs/tctl)
 
 ## Contribute

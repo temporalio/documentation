@@ -5,7 +5,7 @@ title: Filter Workflows
 
 Temporal supports creating workflows with customized key-value pairs, updating the information within the workflow code, and then listing/searching workflows with a SQL-like query. For example, you can create workflows with keys `city` and `age`, then search all workflows with `city = seattle and age > 22`.
 
-Also note that normal workflow properties like start time and workflow type can be queried as well. For example, the following query could be specified when [listing workflows from the CLI](/docs/tctl#list-closed-or-open-workflow-executions) or using the list APIs ([Go](https://pkg.go.dev/go.temporal.io/sdk/client#Client))
+Also note that normal workflow properties like start time and workflow type can be queried as well. For example, the following query could be specified when [listing workflows from the CLI](/docs/tctl/#list-closed-or-open-workflow-executions) or using the list APIs ([Go](https://pkg.go.dev/go.temporal.io/sdk/client#Client))
 
 ```sql
 WorkflowType = "main.Workflow" and Status != 0 and (StartTime > "2019-06-07T16:46:34-08:00" or CloseTime > "2019-06-07T16:46:34-08:00" order by StartTime desc)
@@ -35,9 +35,9 @@ In the Java client, the _WorkflowOptions.Builder_ has similar methods for [memo]
 
 Some important distinctions between memo and search attributes:
 
-* Memo can support all data types because it is not indexed. Search attributes only support basic data types (including String, Int, Float, Bool, Datetime) because it is indexed by Elasticsearch.
-* Memo does not restrict on key names. Search attributes require that keys are allowlisted before using them because Elasticsearch has a limit on indexed keys.
-* Memo doesn't require Temporal clusters to depend on Elasticsearch while search attributes only works with Elasticsearch.
+- Memo can support all data types because it is not indexed. Search attributes only support basic data types (including String, Int, Float, Bool, Datetime) because it is indexed by Elasticsearch.
+- Memo does not restrict on key names. Search attributes require that keys are allowlisted before using them because Elasticsearch has a limit on indexed keys.
+- Memo doesn't require Temporal clusters to depend on Elasticsearch while search attributes only works with Elasticsearch.
 
 ## Search Attributes (Go Client Usage)
 
@@ -81,12 +81,12 @@ tctl --namespace samples-namespace adm cl asa --search_attr_key NewKey --search_
 
 The possible values for **_search_attr_type_** are:
 
-* string
-* keyword
-* int
-* double
-* bool
-* datetime
+- string
+- keyword
+- int
+- double
+- bool
+- datetime
 
 #### Keyword vs String
 
@@ -94,19 +94,19 @@ Note that **Keyword** and **String** are concepts taken from Elasticsearch. Each
 
 For example, key RunId with value "2dd29ab7-2dd8-4668-83e0-89cae261cfb1"
 
-* as a **Keyword** will only be matched by RunId = "2dd29ab7-2dd8-4668-83e0-89cae261cfb1" (or in the future with [regular expressions](https://github.com/uber/cadence/issues/1137))
-* as a **String** will be matched by RunId = "2dd8", which may cause unwanted matches
+- as a **Keyword** will only be matched by RunId = "2dd29ab7-2dd8-4668-83e0-89cae261cfb1" (or in the future with [regular expressions](https://github.com/uber/cadence/issues/1137))
+- as a **String** will be matched by RunId = "2dd8", which may cause unwanted matches
 
 **Note:** String type can not be used in Order By query.
 
 There are some pre-allowlisted search attributes that are handy for testing:
 
-* CustomKeywordField
-* CustomIntField
-* CustomDoubleField
-* CustomBoolField
-* CustomDatetimeField
-* CustomStringField
+- CustomKeywordField
+- CustomIntField
+- CustomDoubleField
+- CustomBoolField
+- CustomDatetimeField
+- CustomStringField
 
 Their types are indicated in their names.
 
@@ -114,20 +114,20 @@ Their types are indicated in their names.
 
 Here are the Search Attribute value types and their correspondent Golang types:
 
-* Keyword = string
-* Int = int64
-* Double = float64
-* Bool = bool
-* Datetime = time.Time
-* String = string
+- Keyword = string
+- Int = int64
+- Double = float64
+- Bool = bool
+- Datetime = time.Time
+- String = string
 
 ### Limit
 
 We recommend limiting the number of Elasticsearch indexes by enforcing limits on the following:
 
-* Number of keys: 100 per workflow
-* Size of value: 2kb per value
-* Total size of key and values: 40kb per workflow
+- Number of keys: 100 per workflow
+- Size of value: 2kb per value
+- Total size of key and values: 40kb per workflow
 
 Temporal reserves keys like NamespaceId, WorkflowId, and RunId. These can only be used in list queries. The values are not updatable.
 
@@ -172,60 +172,60 @@ Use `workflow.GetInfo` to get current search attributes.
 
 ### ContinueAsNew and Cron
 
-When performing a [ContinueAsNew](/docs/go-continue-as-new) or using [Cron](/docs/go-distributed-cron), search attributes (and memo) will be carried over to the new run by default.
+When performing a [ContinueAsNew](/docs/go-continue-as-new/) or using [Cron](/docs/go-distributed-cron/), search attributes (and memo) will be carried over to the new run by default.
 
 ## Query Capabilities
 
-Query workflows by using a SQL-like where clause when [listing workflows from the CLI](/docs/tctl#list-closed-or-open-workflow-executions) or using the list APIs ([Go](https://pkg.go.dev/go.temporal.io/sdk/client#Client), [Java](https://static.javadoc.io/com.uber.cadence/cadence-client/2.6.0/com/uber/cadence/WorkflowService.Iface.html#ListWorkflowExecutions-com.uber.cadence.ListWorkflowExecutionsRequest-)).
+Query workflows by using a SQL-like where clause when [listing workflows from the CLI](/docs/tctl/#list-closed-or-open-workflow-executions) or using the list APIs ([Go](https://pkg.go.dev/go.temporal.io/sdk/client#Client), [Java](https://static.javadoc.io/com.uber.cadence/cadence-client/2.6.0/com/uber/cadence/WorkflowService.Iface.html#ListWorkflowExecutions-com.uber.cadence.ListWorkflowExecutionsRequest-)).
 
 Note that you will only see workflows from one namespace when querying.
 
 ### Supported Operators
 
-* AND, OR, ()
-* =, !=, >, >=, <, <=
-* IN
-* BETWEEN ... AND
-* ORDER BY
+- AND, OR, ()
+- =, !=, >, >=, <, <=
+- IN
+- BETWEEN ... AND
+- ORDER BY
 
 ### Default Attributes
 
 These can be found by using the CLI get-search-attr command or the GetSearchAttributes API. The names and types are as follows:
 
-| KEY | VALUE TYPE |
-| --- | --- |
-| Status | INT |
-| CloseTime | INT |
-| CustomBoolField | DOUBLE |
-| CustomDatetimeField | DATETIME |
-| CustomNamespace | KEYWORD |
-| CustomDoubleField | BOOL |
-| CustomIntField | INT |
-| CustomKeywordField | KEYWORD |
-| CustomStringField | STRING |
-| NamespaceId | KEYWORD |
-| ExecutionTime | INT |
-| HistoryLength | INT |
-| RunId | KEYWORD |
-| StartTime | INT |
-| WorkflowId | KEYWORD |
-| WorkflowType | KEYWORD |
+| KEY                 | VALUE TYPE |
+| ------------------- | ---------- |
+| Status              | INT        |
+| CloseTime           | INT        |
+| CustomBoolField     | DOUBLE     |
+| CustomDatetimeField | DATETIME   |
+| CustomNamespace     | KEYWORD    |
+| CustomDoubleField   | BOOL       |
+| CustomIntField      | INT        |
+| CustomKeywordField  | KEYWORD    |
+| CustomStringField   | STRING     |
+| NamespaceId         | KEYWORD    |
+| ExecutionTime       | INT        |
+| HistoryLength       | INT        |
+| RunId               | KEYWORD    |
+| StartTime           | INT        |
+| WorkflowId          | KEYWORD    |
+| WorkflowType        | KEYWORD    |
 
 There are some special considerations for these attributes:
 
-* Status, CloseTime, NamespaceId, ExecutionTime, HistoryLength, RunId, StartTime, WorkflowId, WorkflowType are reserved by Temporal and are read-only
-* Status is a mapping of int to state:
-  * 0 = unknown
-  * 1 = running
-  * 2 = completed
-  * 3 = failed
-  * 4 = canceled
-  * 5 = terminated
-  * 6 = continuedasnew
-  * 7 = timedout
-* StartTime, CloseTime and ExecutionTime are stored as INT, but support queries using both EpochTime in nanoseconds, and string in RFC3339 format (ex. "2006-01-02T15:04:05+07:00")
-* CloseTime, HistoryLength are only present in closed workflow
-* ExecutionTime is for Retry/Cron user to query a workflow that will run in the future
+- Status, CloseTime, NamespaceId, ExecutionTime, HistoryLength, RunId, StartTime, WorkflowId, WorkflowType are reserved by Temporal and are read-only
+- Status is a mapping of int to state:
+  - 0 = unknown
+  - 1 = running
+  - 2 = completed
+  - 3 = failed
+  - 4 = canceled
+  - 5 = terminated
+  - 6 = continuedasnew
+  - 7 = timedout
+- StartTime, CloseTime and ExecutionTime are stored as INT, but support queries using both EpochTime in nanoseconds, and string in RFC3339 format (ex. "2006-01-02T15:04:05+07:00")
+- CloseTime, HistoryLength are only present in closed workflow
+- ExecutionTime is for Retry/Cron user to query a workflow that will run in the future
 
 To list only open workflows, add `CloseTime = missing` to the end of the query.
 
@@ -233,13 +233,13 @@ If you use retry or the cron feature to query workflows that will start executio
 
 ### General Notes About Queries
 
-* Pagesize default is 1000, and cannot be larger than 10k
-* Range query on Temporal timestamp (StartTime, CloseTime, ExecutionTime) cannot be larger than 9223372036854775807 (maxInt64 - 1001)
-* Query by time range will have 1ms resolution
-* Query column names are case sensitive
-* ListWorkflow may take longer when retrieving a large number of workflows (10M+)
-* To retrieve a large number of workflows without caring about order, use the ScanWorkflow API
-* To efficiently count the number of workflows, use the CountWorkflow API
+- Pagesize default is 1000, and cannot be larger than 10k
+- Range query on Temporal timestamp (StartTime, CloseTime, ExecutionTime) cannot be larger than 9223372036854775807 (maxInt64 - 1001)
+- Query by time range will have 1ms resolution
+- Query column names are case sensitive
+- ListWorkflow may take longer when retrieving a large number of workflows (10M+)
+- To retrieve a large number of workflows without caring about order, use the ScanWorkflow API
+- To efficiently count the number of workflows, use the CountWorkflow API
 
 ## Tools Support
 
