@@ -141,7 +141,8 @@ import (
 
 func main() {
 	// The client is a heavyweight object that should be created once
-	serviceClient, err := client.NewClient(client.Options{})
+	clientOptions := client.Options{HostPort: "localhost:7233"}
+	serviceClient, err := client.NewClient(clientOptions)
 
 	if err != nil {
 		log.Fatalf("Unable to create client.  Error: %v", err)
