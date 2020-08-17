@@ -31,7 +31,7 @@ Want to master Temporal Workflows? Our guides will bring you up to speed on Temp
 - [How to install Temporal](/docs/install-temporal-server/)
 - [How to configure Temporal](/docs/configure-temporal-server/)
 - [How to filter Workflows](/docs/filter-workflows/)
-- [How to use the CLI (tctl)](/docs/tctl)
+- [How to use the CLI (tctl)](/docs/tctl/)
 
 ## Contribute
 

@@ -40,7 +40,7 @@ A Task that contains invocation information for an [**Activity**](#activity) tha
 Archival is a feature that automatically moves [**Event Histories**](#event-history) from normal persistence to a blob store after the [**Workflow**](#workflow) retention period.
 
 - The purpose of Archival is to be able to keep [**Event Histories**](#event-history) as long as needed while not overwhelming the persistence store.
-- There are two reasons why you may want to keep [**Event Histories**]((#event-history)) after the retention period has passed:
+- There are two reasons why you may want to keep [**Event Histories**](#event-history) after the retention period has passed:
   1. Compliance: For legal reasons, [**Event Histories**](#event-history) may need to be stored for a long period of time.
   2. Debugging: Older [**Event Histories**](#event-history) can be referenced to help with debugging.
 
@@ -63,6 +63,7 @@ Any action requested by the [**Workflow**](#workflow) durable function is called
 ### Event
 
 There are two types of Events that Temporal tracks for each workflow:
+
 1. [**Command**](#command) Events.
 2. Everything else.
 
@@ -90,7 +91,7 @@ Temporal is backed by a multi-tenant service and the unit of isolation is called
 - By default a Temporal service is provisioned with a "default" Namespace. All APIs and tools, such as the UI and CLI, default to the "default" Namespace if it is not specified. So, if you are not planning to use multiple Namespaces, we recommend using the default one.
 - [**Task Queue**](#task-queue) names as well as [**Workflow Ids**](#workflow-id) correspond to a specific Namespace. For example, when a Workflow is started, it is started within a specific Namespace.
 - Temporal guarantees a unique [**Workflow Id**](#workflow-id) within a Namespace, and supports running [**Workflow Executions**](#workflow-execution) to use the same [**Workflow Id**](#workflow-id) if they are in different Namespaces.
-- Various configuration options like the retention period or Archival destination are configured per Namespace as well through a special CRUD API or through [`tctl`](/docs/learn-cli).
+- Various configuration options like the retention period or Archival destination are configured per Namespace as well through a special CRUD API or through [`tctl`](/docs/learn-cli/).
 - In a multi-cluster deployment, Namespace is a unit of fail-over.
 - Each Namespace can only be active on a single Temporal cluster at a time. However, different Namespaces can be active in different clusters and can fail-over independently.
 
@@ -149,7 +150,7 @@ A Worker is a service that hosts the [**Workflow**](#workflow) and [**Activity**
 A fault-oblivious stateful function that orchestrates activities.
 
 - A Workflow has full control over which [**Activities**](#activity) are executed, and in which order.
-- A Workflow must not affect the external world directly, only through [**Activities**]((#activity)).
+- A Workflow must not affect the external world directly, only through [**Activities**](#activity).
 - What makes Workflow code a Workflow is that its state is preserved by Temporal. Therefore any failure of a [**Worker**](#worker) process that hosts the Workflow code does not affect the [**Workflow Execution**](#workflow-execution). The Workflow continues as if these failures did not happen. At the same time, [**Activities**](#activity) can fail any moment for any reason.
 - Because Workflow code is fully fault-oblivious, it is guaranteed to get notifications about [**Activity**](#activity) failures or timeouts and act accordingly.
 - There is no limit to the duration of a Workflow.
