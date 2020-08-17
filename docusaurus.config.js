@@ -66,11 +66,11 @@ module.exports = {
             },
             {
               label: 'Java SDK',
-              to: 'docs/java-quick-start',
+              to: 'docs/java-quick-start/',
             },
             {
               label: 'Go SDK',
-              to: 'docs/go-quick-start',
+              to: 'docs/go-quick-start/',
             },
             {
               label: 'About',
