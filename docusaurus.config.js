@@ -133,8 +133,7 @@ module.exports = {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
           routeBasePath: 'docs',
-          editUrl:
-            'https://github.com/temporalio/temporal-documentation-legacy-v2/blob/master',
+          editUrl: 'https://github.com/temporalio/documentation/blob/master',
           /**
            * Whether to display the author who last updated the doc.
            */
