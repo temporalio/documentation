@@ -13,7 +13,7 @@ To run samples locally you need to run Temporal server locally using [instructio
 
 ### Include Temporal Java SDK Dependency
 
-Go to the [Maven Repository Temporal Java Client Page](https://oss.sonatype.org/#nexus-search;quick~temporal-sdk)
+Go to the [Maven Repository Temporal Java Client Page](https://search.maven.org/artifact/io.temporal/temporal-sdk)
 and find the latest version of the library. Include it as a dependency into your Java project. For example if you
 are using Gradle the dependency looks like:
 
