@@ -11,12 +11,12 @@ title: 'Temporal Transparency Update #6'
 author: Ryland Goldstein
 author_title: Temporals product person
 author_image_url: https://avatars2.githubusercontent.com/u/27736122?s=460&u=7b6a3e58ec7ed7157f23f51e91a2f4cd2028d606&v=4
-release_version: V0.28.0
+release_version: V0.29.0
 
 ---
 <!--truncate-->
 
-**Latest Release at Time of Writing:** V0.28.0
+**Latest Release at Time of Writing:** V0.29.0
 
 It has been two weeks since our [last update](https://docs.temporal.io/blog/temporal-transparency-5) which feels like a year in pandemic/startup time. We've been taking advantage of the time warping to make as much progress as possible on stabilization and the JavaSDK. 
 
@@ -41,12 +41,12 @@ export const Calendly = () => {
 
 <Calendly/>
 
-# Update August, 21, 2020
+# Update August, 24, 2020
 
 **TL;DR;**
 
   * JavaSDK rewrite is complete and has been fully reviewed
-  * JavaSDK was released (compatible with server V0.28.0)
+  * JavaSDK was released (compatible with server V0.29.0)
   * We are now code complete
   * The team is completely focused on stabilization, things look positive
 
