@@ -3,38 +3,44 @@ id: install-temporal-server
 title: Install Temporal
 ---
 
-### Prerequisites
+## Overview
 
-Follow the Docker installation instructions found here: [https://docs.docker.com/engine/install](https://docs.docker.com/engine/install)
+This guide will show you how to quickly install and run Temporal using `docker-compose`.
 
-Follow the docker-compose installation instructions found here: [https://docs.docker.com/compose/install](https://docs.docker.com/compose/install)
+## Prerequisites
 
-### Run Temporal Server Using docker-compose
+1. [Install Docker](https://docs.docker.com/engine/install)
+2. [Install docker-compose](https://docs.docker.com/compose/install)
 
-Download the Temporal docker-compose file to preferred location (i.e. `quick_start` directory):
+## Install Temporal
+
+In your terminal, `cd` into the directory where you want to install and run Temporal.
+
+Run this command to download the Temporal docker-compose file:
 
 ```bash
 curl -L https://github.com/temporalio/temporal/releases/latest/download/docker.tar.gz | tar -xz --strip-components 1 docker/docker-compose.yml
-
-ls
-# docker-compose.yml
 ```
+
+Once complete you should see the `docker-compose.yml` file in your working directory.
 
 :::note
 
-You can install a specific version. Change the release version in the URL:
+You can install a specific version of Temporal by changing the release version in the URL:
 
 `https://github.com/temporalio/temporal/releases/download/<release>/docker.tar.gz`
 
 :::
 
-Start Temporal Service:
+## Run Temporal
+
+Run the following command to start the Temporal server:
 
 ```bash
 docker-compose up
 ```
 
-The output should look similar to:
+You should see output that looks similar to:
 
 ```
 Creating network "quick_start_default" with the default driver
@@ -61,10 +67,19 @@ temporal_1   | + echo 'Default namespace registration complete.'
 temporal_1   | Default namespace registration complete.
 ```
 
-At this point Temporal Server is running! You can also see the web interface on [localhost:8088](http://localhost:8088/)
+The Temporal Server is now running!
 
-## Write Workflows and Activities using Client SDK
+You can view the Temporal web interface at [localhost:8088](http://localhost:8088/).
 
-Try out [Java SDK](/docs/java-quick-start/).
+:::note
 
-Try out [Go SDK](/docs/go-quick-start/).
+If you wish to deploy Temporal to a Kubernetes cluster, follow the [helm-charts guide](https://github.com/temporalio/helm-charts).
+
+:::
+
+## Run Workflows 
+
+You can now run Workflows via Temporal.
+
+Get started quickly by running either a [Go sample](https://github.com/temporalio/go-samples) or [Java sample](https://github.com/temporalio/java-samples), or write your own using the [Go SDK](/docs/go-quick-start/) or [Java SDK](/docs/java-quick-start/).
+
