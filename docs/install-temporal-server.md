@@ -40,7 +40,7 @@ Run the following command to start the Temporal server:
 docker-compose up
 ```
 
-You should see output that looks similar to:
+You will see output that looks similar to:
 
 ```
 Creating network "quick_start_default" with the default driver
