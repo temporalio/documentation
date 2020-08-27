@@ -31,9 +31,9 @@ A unique Id that identifies an [**Activity**](#activity) that is executing. The 
 
 ### Activity Task
 
-A Task that contains invocation information for an [**Activity**](#activity) that is delivered to an [**Activity Worker**](#worker) through and a [**Task Queue**](#activity-task-queue).
+A Task that contains invocation information for an [**Activity**](#activity) that is delivered to an [**Activity Worker**](#worker) through and a [**Task Queue**](#task-queue).
 
-- Upon receiving an [**Activity Task**](#activity-task), an [**Activity Worker**](#activity-worker) executes the corresponding [**Activity**](#activity).
+- Upon receiving an [**Activity Task**](#activity-task), an [**Activity Worker**](#worker) executes the corresponding [**Activity**](#activity).
 
 ### Archival
 
@@ -67,7 +67,7 @@ There are two types of Events that Temporal tracks for each workflow:
 1. [**Command**](#command) Events.
 2. Everything else.
 
-- Command Events are events that correspond to [**Commands**](#command) produced by the [**Workflow Worker**](#workflow-worker).
+- Command Events are events that correspond to [**Commands**](#command) produced by the [**Workflow Worker**](#worker).
 - All other events represent various external occurrences that the [**Workflow**] is expected to react to such as an [**Activity**](#activity) completion, a timer firing, a cancellation request, etc.
 - All Events are recorded in the [**Event History**](#event-history).
 
@@ -141,7 +141,7 @@ A Task Token is a unique correlation Id for a Temporal [**Activity**](#activity)
 
 A Worker is a service that hosts the [**Workflow**](#workflow) and [**Activity**](#activity) implementations.
 
-- A single Worker actually contains both an [**Activity Worker**](#activity-worker) and a [**Workflow Worker**](#workflow-worker), abstracting the logical separation and having the ability to execute both types of tasks.
+- A single Worker actually contains both an [**Activity Worker**](#worker) and a [**Workflow Worker**](#worker), abstracting the logical separation and having the ability to execute both types of tasks.
 - The Worker polls the Temporal service for [**Tasks**](#task), performs those [**Tasks**](#task), and communicates [**Task**](#task) execution results back to the Temporal service.
 - Worker services are developed, deployed, and operated by Temporal customers.
 
