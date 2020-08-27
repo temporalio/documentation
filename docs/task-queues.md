@@ -3,7 +3,7 @@ id: task-queues
 title: Task Queues
 ---
 
-When a workflow invokes an activity, it sends the `ScheduleActivityTask` [decision](/docs/learn-glossary/#decision) to the
+When a workflow invokes an activity, it sends the `ScheduleActivityTask` [Command](/docs/learn-glossary/#command) to the
 Temporal service. As a result, the service updates the workflow state and dispatches
 an [activity task](/docs/learn-glossary/#activity-task) to a worker that implements the activity.
 Instead of calling the worker directly, an intermediate queue is used. So the service adds an _activity task_ to this
