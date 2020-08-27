@@ -1,7 +1,6 @@
 [[plugins]]
 package = "netlify-plugin-checklinks"
-    
+
     [plugins.inputs]
 
-    skipPatterns = ["#!"]
-
+    skipPatterns = ["#!", "www.google-analytics.com", "www.googletagmanager.com"]
