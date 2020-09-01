@@ -89,41 +89,51 @@ func SendGreeting(ctx context.Context, user string) error {
 
 Create file greetings.go
 
+<!--START greeting-workflow-->
 ```go
-package main
-
-import (
-	"time"
-
-	"go.temporal.io/sdk/workflow"
-)
-
-// Greetings is the implementation for Temporal workflow
-func Greetings(ctx workflow.Context) error {
+// GreetingSample workflow definition.
+// This greetings sample workflow executes 3 activities in sequential.
+// It gets greeting and name from 2 different activities,
+// and then pass greeting and name as input to a 3rd activity to generate final greetings.
+func GreetingSample(ctx workflow.Context) (string, error) {
 	logger := workflow.GetLogger(ctx)
-	logger.Info("Workflow Greetings started")
 
 	ao := workflow.ActivityOptions{
-		ScheduleToStartTimeout: time.Hour,
-		StartToCloseTimeout:    time.Hour,
+		StartToCloseTimeout:    time.Minute,
+		ScheduleToStartTimeout: time.Minute,
 	}
 	ctx = workflow.WithActivityOptions(ctx, ao)
 
-	var user string
-	err := workflow.ExecuteActivity(ctx, GetUser).Get(ctx, &user)
+	var a *Activities
+
+	var greetResult string
+	err := workflow.ExecuteActivity(ctx, a.GetGreeting).Get(ctx, &greetResult)
 	if err != nil {
-		return err
+		logger.Error("Get greeting failed.", "Error", err)
+		return "", err
 	}
 
-	err = workflow.ExecuteActivity(ctx, SendGreeting, user).Get(ctx, nil)
+	// Get Name.
+	var nameResult string
+	err = workflow.ExecuteActivity(ctx, a.GetName).Get(ctx, &nameResult)
 	if err != nil {
-		return err
+		logger.Error("Get name failed.", "Error", err)
+		return "", err
 	}
 
-	logger.Info("Greetings workflow complete", "user", user)
-	return nil
+	// Say Greeting.
+	var sayResult string
+	err = workflow.ExecuteActivity(ctx, a.SayGreeting, greetResult, nameResult).Get(ctx, &sayResult)
+	if err != nil {
+		logger.Error("Marshalling failed with error.", "Error", err)
+		return "", err
+	}
+
+	logger.Info("GreetingSample completed.", "Result", sayResult)
+	return sayResult, nil
 }
 ```
+<!--END-->
 
 ## Host Workflows and Activities inside Worker
 

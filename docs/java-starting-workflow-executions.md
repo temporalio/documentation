@@ -46,4 +46,3 @@ FileProcessingWorkflow workflow = workflowClient.newWorkflowStub(execution);
 // Returns result potentially waiting for workflow to complete.
 String result = workflow.processFile(workflowArgs);
 ```
-
