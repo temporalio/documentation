@@ -77,9 +77,8 @@ If you wish to deploy Temporal to a Kubernetes cluster, follow the [helm-charts 
 
 :::
 
-## Run Workflows 
+## Run Workflows
 
 You can now run Workflows via Temporal.
 
 Get started quickly by running either a [Go sample](https://github.com/temporalio/go-samples) or [Java sample](https://github.com/temporalio/java-samples), or write your own using the [Go SDK](/docs/go-quick-start/) or [Java SDK](/docs/java-quick-start/).
-
