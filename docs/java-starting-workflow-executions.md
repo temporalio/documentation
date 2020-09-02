@@ -7,7 +7,7 @@ A workflow interface that executes a workflow requires initializing a `WorkflowC
 a client side stub to the workflow, and then calling a method annotated with @WorkflowMethod.
 
 ```java
-    // service and client are heavyweight objects that should be created once per process lifetime. 
+    // service and client are heavyweight objects that should be created once per process lifetime.
     WorkflowServiceStubs service = WorkflowServiceStubs.newInstance();
     WorkflowClient client = WorkflowClient.newInstance(service);
     // Create a new workflow stub per each workflow start
@@ -46,4 +46,3 @@ FileProcessingWorkflow workflow = workflowClient.newWorkflowStub(execution);
 // Returns result potentially waiting for workflow to complete.
 String result = workflow.processFile(workflowArgs);
 ```
-
