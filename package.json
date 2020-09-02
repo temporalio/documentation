@@ -19,7 +19,7 @@
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
     "react-player": "^2.6.0",
-    "snipsync": "file:/Users/cullywakelin/Temporal/snippetsync"
+    "snipsync": "0.0.2-beta.2"
   },
   "browserslist": {
     "production": [

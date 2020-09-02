@@ -1,0 +1,7 @@
+origins:
+  - owner: temporalio
+    repo: go-samples
+    ref: 6880b0d09ddb6edf150e3095c90522602022578f
+
+target: docs
+
