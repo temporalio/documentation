@@ -14,6 +14,8 @@ This guide will show you how to quickly install and run Temporal using `docker-c
 
 ## Install Temporal
 
+![Temporal Docker Compose Install GIF](/img/docs/TemporalDockerComposeInstall.gif)
+
 In your terminal, `cd` into the directory where you want to install and run Temporal.
 
 Run this command to download the Temporal docker-compose file:
