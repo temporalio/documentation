@@ -53,7 +53,7 @@ We are not yet code complete for our V1 stabilization tests but we have made ser
 
 The outcome of all testing and stabilization work is to identify and fix bugs that are lurking in the system. The good news is that the number of new bugs we are discovering has consistently decreased since we started our stabilization effort. While new bugs are still being found, there are less and less popping up each day. This is our key indicator of stabilization success and things are looking positive.
 
-If you're interested in learning more about our stabilization effort and a deeper dive into the specific tests/scenarios, [Manu](should we link to the personnel page for this) plans to publish a blog post in the near future covering this topic. We are still quite confident in our internal timeline and things look positive. Expect a Temporal release coming to a store near you in the not-so-distant future. In the meantime, have a great weekend (3 whole days for Americans) and stay safe out there!
+If you're interested in learning more about our stabilization effort and a deeper dive into the specific tests/scenarios, [Manu](https://github.com/temporalio/team) plans to publish a blog post in the near future covering this topic. We are still quite confident in our internal timeline and things look positive. Expect a Temporal release coming to a store near you in the not-so-distant future. In the meantime, have a great weekend (3 whole days for Americans) and stay safe out there!
 
 As always, feel free to reach out with questions, comments or critical feedback via email, Slack or our community forum.
 
