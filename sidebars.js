@@ -40,6 +40,7 @@ module.exports = {
         'configure-temporal-server',
         'filter-workflows',
         'tctl',
+        'archive-data',
       ],
     },
     {
