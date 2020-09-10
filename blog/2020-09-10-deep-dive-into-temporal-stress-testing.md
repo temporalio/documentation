@@ -1,9 +1,9 @@
 ---
 tags:
-- stresstest
-- stabilization
-- deepdive
-- temporal
+  - stresstest
+  - stabilization
+  - deepdive
+  - temporal
 posted_on_: 2020-09-10T20:09:50Z
 id: temporal-deep-dive-stress-testing
 title: Deep dive into Temporal stress testing
@@ -11,8 +11,10 @@ author: Manu Srivastava
 author_title: Engineer
 author_image_url: https://raw.githubusercontent.com/temporalio/team/master/assets/manu.png
 release_version: v0.29.0
-
 ---
+
+<!--truncate-->
+
 # Introduction
 
 From a software development standpoint, Temporal is in the unique position of acting as both a database and a service orchestrator. This duality means that complex stress testing is required to validate the systems ability to sustain performance under high loads. Therefore, a huge part of our stabilization effort involves running high volume stress tests and exercising Temporal in a wide range of conditions. The effort has proved fruitful, as we were able to identify and fix many issues that went unnoticed during small scale deployments. In this post we cover two of the scenarios running against Temporal, provide a high level look at our strategy, and highlight some of the issues we have discovered as a result of testing.
@@ -110,9 +112,9 @@ When creating a child Workflow, you can define a `ParentClosePolicy` that termin
 
 ## Bug discovery
 
-* [Parent → child Workflow cancellation was broken in the Go SDK](https://github.com/temporalio/go-sdk/commit/f3ddb31cb3624cd0182c670d850d5db0ee748142): There was a race condition where the parent Workflow would “miss” the cancellation response from the child Workflow and would therefore be stuck waiting for the child to be cancelled even though the child was already cancelled.
-* [Nil pointer exception when the Temporal Worker processes cancels / terminates](https://github.com/temporalio/temporal/commit/e807dca07b0017e912630849dc84812dfc703d6d): For Workflows with a large number of children (i.e. a large fan-out), `Terminate` and `Cancel` were not propagating to the parent.
-* [Parent → child cancellation / termination is not propagated if the child has “continued-as-new” at least once](https://github.com/temporalio/temporal/pull/696): If a parent Workflow spawned a child Workflow, and that child Workflow has continued-as-new at least once, then any `Terminate` or `Cancel` request sent to the parent would not be sent to that child.
+- [Parent → child Workflow cancellation was broken in the Go SDK](https://github.com/temporalio/go-sdk/commit/f3ddb31cb3624cd0182c670d850d5db0ee748142): There was a race condition where the parent Workflow would “miss” the cancellation response from the child Workflow and would therefore be stuck waiting for the child to be cancelled even though the child was already cancelled.
+- [Nil pointer exception when the Temporal Worker processes cancels / terminates](https://github.com/temporalio/temporal/commit/e807dca07b0017e912630849dc84812dfc703d6d): For Workflows with a large number of children (i.e. a large fan-out), `Terminate` and `Cancel` were not propagating to the parent.
+- [Parent → child cancellation / termination is not propagated if the child has “continued-as-new” at least once](https://github.com/temporalio/temporal/pull/696): If a parent Workflow spawned a child Workflow, and that child Workflow has continued-as-new at least once, then any `Terminate` or `Cancel` request sent to the parent would not be sent to that child.
 
 # The "reactor" scenario
 
@@ -180,12 +182,12 @@ The following picture shows an example of how the test driver periodically queri
 
 ## Bug Discovery
 
-* [Workflow history corruption issue (missing contiguous event)](https://github.com/temporalio/temporal/issues/584): This prevents a Workflow from making any additional progress. We are investigating the root cause for this.
-* [Workflow reset broken if history not contiguous](https://github.com/temporalio/temporal/issues/585): We discovered this when trying to recover the Workflow that suffered the issue described above to the last contiguous point in the replay history.
-* [Worker reports validation error on processing of transient decision](https://github.com/temporalio/go-sdk/issues): Occurs when one schedules and then immediately cancels a Workflow timer. This is still a work in progress.
-* [“tctl wf desc” fails if a pending activity is running that has reported heartbeat data](https://github.com/temporalio/temporal/issues/516): This was a critical bug preventing visibility into long-running activities that periodically send Heartbeats.
-* Workflow history grows forever when trying to continue as new with a steady supply of signals coming in: We identified a bug which attempts to continue-as-new a Workflow with a high-rate of incoming signals will result in the Workflow history continuously growing as opposed to properly continuing as new. We have filed a backlog item to fix this.
-* [Simultaneous SignalWithStarts for the Same WF ID randomly returns an Internal Server Error](https://github.com/temporalio/temporal/pull/719) - Occurred when multiple processes tried to send a [SignalWithStart](https://docs.temporal.io/docs/go-signals/#signalwithstart) for the same Workflow ID at the same time. [SignalWithStart](https://docs.temporal.io/docs/go-signals/#signalwithstart) is supposed to either start the Workflow if it is not running or signal an already existing one. Instead, it was randomly returning a "Workflow execution already started" internal server error, which is antithetical to the purpose of the API.
+- [Workflow history corruption issue (missing contiguous event)](https://github.com/temporalio/temporal/issues/584): This prevents a Workflow from making any additional progress. We are investigating the root cause for this.
+- [Workflow reset broken if history not contiguous](https://github.com/temporalio/temporal/issues/585): We discovered this when trying to recover the Workflow that suffered the issue described above to the last contiguous point in the replay history.
+- [Worker reports validation error on processing of transient decision](https://github.com/temporalio/go-sdk/issues): Occurs when one schedules and then immediately cancels a Workflow timer. This is still a work in progress.
+- [“tctl wf desc” fails if a pending activity is running that has reported heartbeat data](https://github.com/temporalio/temporal/issues/516): This was a critical bug preventing visibility into long-running activities that periodically send Heartbeats.
+- Workflow history grows forever when trying to continue as new with a steady supply of signals coming in: We identified a bug which attempts to continue-as-new a Workflow with a high-rate of incoming signals will result in the Workflow history continuously growing as opposed to properly continuing as new. We have filed a backlog item to fix this.
+- [Simultaneous SignalWithStarts for the Same WF ID randomly returns an Internal Server Error](https://github.com/temporalio/temporal/pull/719) - Occurred when multiple processes tried to send a [SignalWithStart](https://docs.temporal.io/docs/go-signals/#signalwithstart) for the same Workflow ID at the same time. [SignalWithStart](https://docs.temporal.io/docs/go-signals/#signalwithstart) is supposed to either start the Workflow if it is not running or signal an already existing one. Instead, it was randomly returning a "Workflow execution already started" internal server error, which is antithetical to the purpose of the API.
 
 # Ongoing work
 
@@ -194,3 +196,4 @@ The following picture shows an example of how the test driver periodically queri
 **Failure testing -** These same stress tests we are authoring can be run against a cluster that is hooked up to fault injection. We’ve written our stress Workflows in a way that we expect them to successfully finish, even in the face of consistent Temporal outages. There is an ongoing effort to create automated pipelines that validate successful test execution in such failure scenarios.
 
 You can expect future blog posts detailing our results and findings for each of the above two efforts as they progress. You can also expect us to have future posts about additional stress tests we are implementing.
+
