@@ -13,6 +13,9 @@ author_image_url: https://raw.githubusercontent.com/temporalio/team/master/asset
 release_version: v0.29.0
 
 ---
+
+<!--truncate-->
+
 # Introduction
 
 From a software development standpoint, Temporal is in the unique position of acting as both a database and a service orchestrator. This duality means that complex stress testing is required to validate the systems ability to sustain performance under high loads. Therefore, a huge part of our stabilization effort involves running high volume stress tests and exercising Temporal in a wide range of conditions. The effort has proved fruitful, as we were able to identify and fix many issues that went unnoticed during small scale deployments. In this post we cover two of the scenarios running against Temporal, provide a high level look at our strategy, and highlight some of the issues we have discovered as a result of testing.
