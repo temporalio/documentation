@@ -100,7 +100,7 @@ touch starter/main.go
 
 Copy the following code and paste it into starter/main.go:
 
-<!--START go-helloworld-sample-workflow-starter-->  
+<!--START go-helloworld-sample-workflow-starter-->
 <!--END-->
 
 In the code above, we are creating a Temporal client and using it to let the Temporal system know the Workflow should be executed.
