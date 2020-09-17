@@ -14,29 +14,13 @@ This tutorial is aimed at developers who are new to [Temporal](/docs/overview), 
 
 ## Prerequisites
 
-### Java JDK
-
-Make sure you have the [Java JDK](https://www.oracle.com/ca-en/java/technologies/javase-downloads.html) installed. This tutorial was produced using Java SE 14.0.1.
-
-### IntelliJ IDEA
-
-Download and install the [IntelliJ IDEA](https://www.jetbrains.com/idea/). The IDE automates much of the project setup for us. It comes packaged with Gradle, a dependency management and build tool which we will use for these tutorials.
-
-### Temporal server
-
-Download, install, and run the [Temporal server](/docs/install-temporal-server) via docker-compose. It is easy to do and you can keep it running in the background while we build the application.
+Make sure you have the tutorial [prerequisites](/docs/java-sdk-tutorial-prerequisites) setup.
 
 ## Project setup
 
-Let's create a place where we can group the Temporal Java tutorials. Start by creating a "temporal-java-tutorials" directory in the location of your choice:
-
-```bash
-mkdir temporal-java-tutorials
-```
-
 Open IntelliJ and create a new Gradle project by following Step 1 of the [Getting started with Gradle guide](https://www.jetbrains.com/help/idea/getting-started-with-gradle.html#create_project). Make sure your project is created inside the "temporal-java-tutorials" directory and name your project "helloworld-tutorial". It will take a few moments to complete.
 
-Once Gradle has finished scaffolding you will need to customize the project dependencies. To do this, open the build.gradle file that is in the root of your project. Add the following lines to the `dependencies` section while replacing {version} with the most recent version listed on the [Temporal SDK Maven repository page](https://search.maven.org/artifact/io.temporal/temporal-sdk):
+Once Gradle has finished scaffolding you will need to customize the project dependencies. To do this, open the build.gradle file that is in the root of your project. Add the following lines to the dependencies section while replacing {version} with the most recent version listed on the [Temporal SDK Maven repository page](https://search.maven.org/artifact/io.temporal/temporal-sdk):
 
 ```
 implementation 'io.temporal:temporal-sdk:{version}'
@@ -47,20 +31,29 @@ The 'logback-classic' dependency will ensure that there is a logger to bind to w
 
 A "refresh" icon will appear on the screen, click it to load the changes. Gradle will rebuild with the dependencies.
 
-Lastly, to limit the logging output from the SDK, within src/main/resources create the file logback.xml and paste in the following XML:
+Lastly, to limit the logging output from the SDK, within src/main/resources create a logback.xml file and paste in the following XML:
 
-<!--SNIPSTART java-logback-xml-sample-->
+<!--SNIPSTART java-samples-logback-dependency-configuration-->
+```xml
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- encoders are assigned the type
+             ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <logger name="io.grpc.netty" level="INFO"/>
+    <root level="INFO">
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>
+```
 <!--SNIPEND-->
 
-## Hello World! app
+## Build "Hello World!" app
 
 Now we are ready to create our Temporal Workflow application.
-
-Note that the following code snippets can be copied and pasted directly into your Java files. However, make sure that the first line of each file specifies the package name:
-
-```java
-package helloworld;
-```
 
 Within src/main/java/ create the "helloworld" directory and within src/main/java/helloworld create the following files:
 
@@ -70,6 +63,12 @@ Within src/main/java/ create the "helloworld" directory and within src/main/java
 - HelloWorldWorkflowImpl.java
 - HelloWorldStarter.java
 - HelloWorldWorker.java
+
+The following code snippets can be copied and pasted directly into your Java files. However, make sure that the first line of each file specifies the package name:
+
+```java
+package helloworld;
+```
 
 ### Activity
 
@@ -83,7 +82,7 @@ import io.temporal.activity.ActivityInterface;
 import io.temporal.activity.ActivityMethod;
 
 @ActivityInterface
-public interface HelloWorldActivityInterface {
+public interface HelloWorldActivity {
 
   @ActivityMethod
   String composeGreeting(String name);
@@ -95,11 +94,11 @@ Next, open HelloWorldActivityImpl.java and implement the Activity:
 
 <!--SNIPSTART java-hello-world-sample-activity-->
 ```java
-
-public class HelloWorldActivity implements HelloWorldActivityInterface {
+public class HelloWorldActivityImpl implements HelloWorldActivity {
 
   @Override
   public String composeGreeting(String name) {
+    // Append and strings and return the new one
     return "Hello " + name + "!";
   }
 }
@@ -108,7 +107,7 @@ public class HelloWorldActivity implements HelloWorldActivityInterface {
 
 ### Workflow
 
-The Workflow is a special function that organizes the sequence of Activity executions. Opposed to an Activity, the Workflow is deterministic in nature. It is where you can specify Activity options, such as what to do if the Activity results in an error or when to time out the Activity execution. Since our Activity is just formatting strings we will only specify the required timeout.
+A Workflow is a special function that organizes the sequence of Activity executions. Opposed to an Activity, a Workflow is deterministic in nature. It is where you can specify Activity options, such as what to do if the Activity results in an error or when to time out the Activity execution. Since our Activity is just formatting strings we will only specify the required timeout.
 
 Open HelloWorldWorkflow.java and define the Workflow interface:
 
@@ -118,7 +117,7 @@ import io.temporal.workflow.WorkflowInterface;
 import io.temporal.workflow.WorkflowMethod;
 
 @WorkflowInterface
-public interface HelloWorldWorkflowInterface {
+public interface HelloWorldWorkflow {
 
   @WorkflowMethod
   String getGreeting(String name);
@@ -134,17 +133,19 @@ import io.temporal.activity.ActivityOptions;
 import io.temporal.workflow.Workflow;
 import java.time.Duration;
 
-public class HelloWorldWorkflow implements HelloWorldWorkflowInterface {
-
-  private final HelloWorldActivityInterface activities =
-      Workflow.newActivityStub(
-          HelloWorldActivityInterface.class,
-          ActivityOptions.newBuilder().setScheduleToCloseTimeout(Duration.ofSeconds(2)).build());
+public class HelloWorldWorkflowImpl implements HelloWorldWorkflow {
+  // Set the ActivityOptions
+  ActivityOptions ao =
+      ActivityOptions.newBuilder().setScheduleToCloseTimeout(Duration.ofSeconds(2)).build();
+  // Create a new ActivityStub for the Activity
+  private final HelloWorldActivity activity =
+      Workflow.newActivityStub(HelloWorldActivity.class, ao);
 
   @Override
   public String getGreeting(String name) {
-
-    return activities.composeGreeting(name);
+    // Execute the Activity within the Workflow method
+    // If there were more Activities, they would be executed from within this method
+    return activity.composeGreeting(name);
   }
 }
 ```
@@ -165,6 +166,7 @@ import io.temporal.serviceclient.WorkflowServiceStubs;
 public class HelloWorldStarter {
 
   public static void main(String args[]) throws Exception {
+
     // gRPC stubs wrapper that talks to the local docker instance of temporal service.
     WorkflowServiceStubs service = WorkflowServiceStubs.newInstance();
     // client that can be used to start and signal workflows
@@ -173,11 +175,11 @@ public class HelloWorldStarter {
     final String TASK_QUEUE = "java-hello-world-task-queue";
     // Start a workflow execution.
     // Uses task queue from the GreetingWorkflow @WorkflowMethod annotation.
-    HelloWorldWorkflowInterface workflow =
+    HelloWorldWorkflow workflow =
         client.newWorkflowStub(
-            HelloWorldWorkflowInterface.class,
+            HelloWorldWorkflow.class,
             WorkflowOptions.newBuilder().setTaskQueue(TASK_QUEUE).build());
-    // Execute a workflow waiting for it to complete.
+    // Use the Workflow method to get the
     String greeting = workflow.getGreeting("World");
     // Print the greeting to the console
     System.out.println(greeting);
@@ -215,13 +217,15 @@ public class HelloWorldWorker {
     // Define the name of the Task Queue that the Worker will listen to
     final String TASK_QUEUE = "java-hello-world-task-queue";
     // Create a Worker that listens on a Task Queue
-    // This Worker hosts both Workflow and Activity implementations
     Worker worker = factory.newWorker(TASK_QUEUE);
+    // This Worker hosts both Workflow and Activity implementations
+    // Register the Workflow with the Worker
     // Workflows are stateful. So you need a type to create instances.
-    worker.registerWorkflowImplementationTypes(HelloWorldWorkflow.class);
-    // Activities are stateless and thread safe. So a shared instance is used.
-    worker.registerActivitiesImplementations(new HelloWorldActivity());
-    // Start listening to the workflow and activity task queues.
+    worker.registerWorkflowImplementationTypes(HelloWorldWorkflowImpl.class);
+    // Register the Activity with the Worker
+    // Activities are stateless and thread safe, so a shared instance is used.
+    worker.registerActivitiesImplementations(new HelloWorldActivityImpl());
+    // Start listening to the Task Queue.
     factory.start();
   }
 }
@@ -230,7 +234,7 @@ public class HelloWorldWorker {
 
 In this function we are creating a Temporal client and using it to create a new Worker. The Worker is registered to handle both HellowWorldWorkflow and HelloWorldActivity Tasks and is configured to listen to the same Task Queue that the Workflow and Activity Tasks are sent to.
 
-## Run Hello World! app
+## Run "Hello World!" app
 
 At this stage you should have the Temporal server running in a terminal, have the [Temporal Web UI](localhost:8088) open in your browser, and have a project package directory that looks like this:
 
@@ -250,7 +254,7 @@ To verify that the Workflow is running, visit the Web UI in your browser and cli
 
 To actually execute the Workflow and Activity functions, we need to run the Worker. The Worker, once running, will immediately start polling the Task Queue for Tasks. Since we only have one Workflow with one Activity, then the Worker will pick these up in their respective order and actually execute the functions, returning the output to the Workflow starter process.
 
-Right click on HelloWorldWorker and select Run. Another terminal will open inside of IntelliJ and you will see the Worker log each step it is taking. Since our Workflow is very simple it will finish executing the Workflow and Activity Tasks very quickly. Switch back to the starter terminal where you will then see "Hello World!" printed to the console.
+Right click on HelloWorldWorker and select Run. Another terminal will open inside of IntelliJ and you will see the Worker log each step it is taking. Since our Workflow is very simple it will finish executing the Workflow and Activity Tasks very quickly. Switch back to the starter terminal to see "Hello World!" printed to the console.
 
 Congratulations you have successfully run a Temporal Workflow!
 
@@ -262,9 +266,9 @@ Let's see what you have learned.
 
 **A**: Activities are functions that are meant to handle non-deterministic code such as handling API calls.
 
-**Q**: Which function type is organizes the execution of non-deterministic code?
+**Q**: Which function type organizes the execution of non-deterministic code?
 
-**A**: Workflows are functions that organize the execution of Activities and where you can specify timeout and retry policies for them.
+**A**: Workflows are functions that organize the execution of Activities, and where you can specify timeout and retry policies for them.
 
 **Q**: What needs to be done in code to pair Activity and Workflow Tasks with a Worker?
 
@@ -272,4 +276,4 @@ Let's see what you have learned.
 
 **Q**: How can you view the details of a Workflow that has not yet completed?
 
-**A**: One way is it view the Temporal Web UI and click on the RunID of the Workflow.
+**A**: One way is to open the [Temporal Web UI](localhost:8088) and click on the RunID of the Workflow.
