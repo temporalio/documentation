@@ -78,11 +78,32 @@ First, let's define our Activity. Activities are meant to handle non-determinist
 Open HelloWorldActivity.java and define the Activity interface:
 
 <!--START java-hello-world-sample-activity-interface-->
+```java
+import io.temporal.activity.ActivityInterface;
+import io.temporal.activity.ActivityMethod;
+
+@ActivityInterface
+public interface HelloWorldActivityInterface {
+
+  @ActivityMethod
+  String composeGreeting(String name);
+}
+```
 <!--END-->
 
 Next, open HelloWorldActivityImpl.java and implement the Activity:
 
 <!--START java-hello-world-sample-activity-->
+```java
+
+public class HelloWorldActivity implements HelloWorldActivityInterface {
+
+  @Override
+  public String composeGreeting(String name) {
+    return "Hello " + name + "!";
+  }
+}
+```
 <!--END-->
 
 ### Workflow
@@ -92,11 +113,41 @@ The Workflow is a special function that organizes the sequence of Activity execu
 Open HelloWorldWorkflow.java and define the Workflow interface:
 
 <!--START java-hello-world-sample-workflow-interface-->
+```java
+import io.temporal.workflow.WorkflowInterface;
+import io.temporal.workflow.WorkflowMethod;
+
+@WorkflowInterface
+public interface HelloWorldWorkflowInterface {
+
+  @WorkflowMethod
+  String getGreeting(String name);
+}
+```
 <!--END-->
 
 Open HelloWorldWorkflowImpl.java and define the Workflow:
 
 <!--START java-hello-world-sample-workflow-->
+```java
+import io.temporal.activity.ActivityOptions;
+import io.temporal.workflow.Workflow;
+import java.time.Duration;
+
+public class HelloWorldWorkflow implements HelloWorldWorkflowInterface {
+
+  private final HelloWorldActivityInterface activities =
+      Workflow.newActivityStub(
+          HelloWorldActivityInterface.class,
+          ActivityOptions.newBuilder().setScheduleToCloseTimeout(Duration.ofSeconds(2)).build());
+
+  @Override
+  public String getGreeting(String name) {
+
+    return activities.composeGreeting(name);
+  }
+}
+```
 <!--END-->
 
 ### Starter
@@ -106,6 +157,35 @@ There are two ways to start a Workflow, either via the CLI or via a starter prog
 Open HelloWorldStarter.java and paste in the following code:
 
 <!--START java-hello-world-sample-workflow-starter-->
+```java
+import io.temporal.client.WorkflowClient;
+import io.temporal.client.WorkflowOptions;
+import io.temporal.serviceclient.WorkflowServiceStubs;
+
+public class HelloWorldStarter {
+
+  public static void main(String args[]) throws Exception {
+    // gRPC stubs wrapper that talks to the local docker instance of temporal service.
+    WorkflowServiceStubs service = WorkflowServiceStubs.newInstance();
+    // client that can be used to start and signal workflows
+    WorkflowClient client = WorkflowClient.newInstance(service);
+    // Define the name of the Task Queue that the Workflow and Activity Tasks will be sent to
+    final String TASK_QUEUE = "java-hello-world-task-queue";
+    // Start a workflow execution.
+    // Uses task queue from the GreetingWorkflow @WorkflowMethod annotation.
+    HelloWorldWorkflowInterface workflow =
+        client.newWorkflowStub(
+            HelloWorldWorkflowInterface.class,
+            WorkflowOptions.newBuilder().setTaskQueue(TASK_QUEUE).build());
+    // Execute a workflow waiting for it to complete.
+    String greeting = workflow.getGreeting("World");
+    // Print the greeting to the console
+    System.out.println(greeting);
+    // Exit the starter program
+    System.exit(0);
+  }
+}
+```
 <!--END-->
 
 In the code above, we are creating a Temporal client and using it to host the Workflow with the Temporal server. Said another way, this starter program is sending the Workflow to the Temporal server where it will be broken into Tasks. The Tasks will be sent to the Task Queue that we supplied in the Workflow options.
@@ -117,6 +197,35 @@ A Worker is the process that will actually execute the Workflow and Activity fun
 Open HelloWorldWorker.java and paste in the following code:
 
 <!--START java-hello-world-sample-worker-->
+```java
+import io.temporal.client.WorkflowClient;
+import io.temporal.serviceclient.WorkflowServiceStubs;
+import io.temporal.worker.Worker;
+import io.temporal.worker.WorkerFactory;
+
+public class HelloWorldWorker {
+
+  public static void main(String args[]) {
+    // Create a gRPC stubs wrapper that talks to the local docker instance of the Temporal service
+    WorkflowServiceStubs service = WorkflowServiceStubs.newInstance();
+    // Create a Temporal Java SDK client
+    WorkflowClient client = WorkflowClient.newInstance(service);
+    // Create a Worker factory that can be used to create Workers for specific Task Queues
+    WorkerFactory factory = WorkerFactory.newInstance(client);
+    // Define the name of the Task Queue that the Worker will listen to
+    final String TASK_QUEUE = "java-hello-world-task-queue";
+    // Create a Worker that listens on a Task Queue
+    // This Worker hosts both Workflow and Activity implementations
+    Worker worker = factory.newWorker(TASK_QUEUE);
+    // Workflows are stateful. So you need a type to create instances.
+    worker.registerWorkflowImplementationTypes(HelloWorldWorkflow.class);
+    // Activities are stateless and thread safe. So a shared instance is used.
+    worker.registerActivitiesImplementations(new HelloWorldActivity());
+    // Start listening to the workflow and activity task queues.
+    factory.start();
+  }
+}
+```
 <!--END-->
 
 In this function we are creating a Temporal client and using it to create a new Worker. The Worker is registered to handle both HellowWorldWorkflow and HelloWorldActivity Tasks and is configured to listen to the same Task Queue that the Workflow and Activity Tasks are sent to.
