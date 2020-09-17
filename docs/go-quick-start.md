@@ -34,8 +34,8 @@ Add dependency to Temporal Go SDK
 
 ```bash
 > go get go.temporal.io/sdk@latest
-go: downloading go.temporal.io/sdk v0.29.0
-go: go.temporal.io/sdk upgrade => v0.29.0
+go: downloading go.temporal.io/sdk v0.30.0
+go: go.temporal.io/sdk upgrade => v0.30.0
 ```
 
 ## Implement Activities
@@ -175,7 +175,7 @@ Run your worker app which hosts workflow and activity implementations
 ## Start workflow execution
 
 ```bash
-> docker run --network=host --rm temporalio/tctl:0.29.0 wf start --tq tutorial_tq -w Greet_Temporal_1 --wt Greetings --et 3600
+> docker run --network=host --rm temporalio/tctl:0.30.0 wf start --tq tutorial_tq -w Greet_Temporal_1 --wt Greetings --et 3600
 Started Workflow Id: Greet_Temporal_1, run Id: 2666b82a-c706-45e2-8d8e-ae84a5b4e892
 ```
 
