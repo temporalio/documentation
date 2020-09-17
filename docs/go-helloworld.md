@@ -4,7 +4,12 @@ title: Go SDK "Hello World!" tutorial
 sidebar_label: Go hello world
 ---
 
-By the end of this tutorial you will have a simple "Hello World!" Temporal Workflow running on your local machine. This tutorial is meant for developers who are new to Temporal or who wish to make sure their environment is working.
+This tutorial is aimed at developers who are new to Temporal, beginner Go programmers, or both. It will teach you how to build a simple "Hello World!" Temporal Workflow application using the [Tempora Go SDK]() as well as a few basics, such as:
+
+- How to set up your development environment and its dependencies.
+- How to define an [Activity](/docs/activities) and a [Workflow](/docs/workflows).
+- How to create and execute a Worker program and a Workflow starter program.
+- Where to view Workflow details.
 
 ## Prerequisites
 
