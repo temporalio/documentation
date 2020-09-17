@@ -57,8 +57,8 @@ touch activity.go
 
 Copy the following code and paste it into activity.go:
 
-<!--START go-helloworld-sample-activity-->
-<!--END-->
+<!--SNIPSTART go-helloworld-sample-activity-->
+<!--SNIPEND-->
 
 Activities are meant to handle non-deterministic code that could result in unexpected results or errors. For this tutorial all we are doing is taking a string, appending it to "Hello", and returning it back to the Workflow.
 
@@ -72,8 +72,8 @@ touch workflow.go
 
 Copy the following code and paste it into workflow.go:
 
-<!--START go-helloworld-sample-workflow-->
-<!--END-->
+<!--SNIPSTART go-helloworld-sample-workflow-->
+<!--SNIPEND-->
 
 As you can see in the code above, a Workflow is simply a function that organizes the sequence of Activity executions. Opposed to an Activity, a Workflow is deterministic in nature. It is where you can specify Activity options, such as what to do if the Activity results in an error or when to time out the Activity execution. Since our Activity is just formatting strings we will only specify the required timeout. We have also explicitly defined the name of the Task Queue to which the Workflow and Activity Tasks will be sent. This is important because the Worker will register itself to listen to the same Task Queue.
 
@@ -90,8 +90,8 @@ touch starter/main.go
 
 Copy the following code and paste it into starter/main.go, making sure to replace the import path `"github.com/temporalio/temporal-go-samples/helloworld"` with your Go module import path:
 
-<!--START go-helloworld-sample-workflow-starter-->
-<!--END-->
+<!--SNIPSTART go-helloworld-sample-workflow-starter-->
+<!--SNIPEND-->
 
 In the code above, we are creating a Temporal client and using it to host the Workflow with the Temporal server. Said another way, this starter program is sending the Workflow to the Temporal server where it will be broken into Tasks. The Tasks will be sent to the Task Queue that we supplied in the Workflow options.
 
@@ -108,8 +108,8 @@ touch worker/main.go
 
 Copy the following code and paste it into main.go, making sure to replace the import path `"github.com/temporalio/temporal-go-samples/helloworld"` with your Go module import path:
 
-<!--START go-helloworld-sample-worker-->
-<!--END-->
+<!--SNIPSTART go-helloworld-sample-worker-->
+<!--SNIPEND-->
 
 In this function we are creating a Temporal client and using it to create a new Worker. The Worker is registered to handle the HellowWorldWorkflow and HelloWorldActivity functions and is configured to listen to the same Task Queue that the Workflow and Activity Tasks are sent to.
 
