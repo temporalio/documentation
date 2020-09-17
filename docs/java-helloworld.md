@@ -49,8 +49,8 @@ A "refresh" icon will appear on the screen, click it to load the changes. Gradle
 
 Lastly, to limit the logging output from the SDK, within src/main/resources create the file logback.xml and paste in the following XML:
 
-<!--START java-logback-xml-sample-->
-<!--END-->
+<!--SNIPSTART java-logback-xml-sample-->
+<!--SNIPEND-->
 
 ## Hello World! app
 
@@ -77,7 +77,7 @@ First, let's define our Activity. Activities are meant to handle non-determinist
 
 Open HelloWorldActivity.java and define the Activity interface:
 
-<!--START java-hello-world-sample-activity-interface-->
+<!--SNIPSTART java-hello-world-sample-activity-interface-->
 ```java
 import io.temporal.activity.ActivityInterface;
 import io.temporal.activity.ActivityMethod;
@@ -89,11 +89,11 @@ public interface HelloWorldActivityInterface {
   String composeGreeting(String name);
 }
 ```
-<!--END-->
+<!--SNIPEND-->
 
 Next, open HelloWorldActivityImpl.java and implement the Activity:
 
-<!--START java-hello-world-sample-activity-->
+<!--SNIPSTART java-hello-world-sample-activity-->
 ```java
 
 public class HelloWorldActivity implements HelloWorldActivityInterface {
@@ -104,7 +104,7 @@ public class HelloWorldActivity implements HelloWorldActivityInterface {
   }
 }
 ```
-<!--END-->
+<!--SNIPEND-->
 
 ### Workflow
 
@@ -112,7 +112,7 @@ The Workflow is a special function that organizes the sequence of Activity execu
 
 Open HelloWorldWorkflow.java and define the Workflow interface:
 
-<!--START java-hello-world-sample-workflow-interface-->
+<!--SNIPSTART java-hello-world-sample-workflow-interface-->
 ```java
 import io.temporal.workflow.WorkflowInterface;
 import io.temporal.workflow.WorkflowMethod;
@@ -124,11 +124,11 @@ public interface HelloWorldWorkflowInterface {
   String getGreeting(String name);
 }
 ```
-<!--END-->
+<!--SNIPEND-->
 
 Open HelloWorldWorkflowImpl.java and define the Workflow:
 
-<!--START java-hello-world-sample-workflow-->
+<!--SNIPSTART java-hello-world-sample-workflow-->
 ```java
 import io.temporal.activity.ActivityOptions;
 import io.temporal.workflow.Workflow;
@@ -148,7 +148,7 @@ public class HelloWorldWorkflow implements HelloWorldWorkflowInterface {
   }
 }
 ```
-<!--END-->
+<!--SNIPEND-->
 
 ### Starter
 
@@ -156,7 +156,7 @@ There are two ways to start a Workflow, either via the CLI or via a starter prog
 
 Open HelloWorldStarter.java and paste in the following code:
 
-<!--START java-hello-world-sample-workflow-starter-->
+<!--SNIPSTART java-hello-world-sample-workflow-starter-->
 ```java
 import io.temporal.client.WorkflowClient;
 import io.temporal.client.WorkflowOptions;
@@ -186,7 +186,7 @@ public class HelloWorldStarter {
   }
 }
 ```
-<!--END-->
+<!--SNIPEND-->
 
 In the code above, we are creating a Temporal client and using it to host the Workflow with the Temporal server. Said another way, this starter program is sending the Workflow to the Temporal server where it will be broken into Tasks. The Tasks will be sent to the Task Queue that we supplied in the Workflow options.
 
@@ -196,7 +196,7 @@ A Worker is the process that will actually execute the Workflow and Activity fun
 
 Open HelloWorldWorker.java and paste in the following code:
 
-<!--START java-hello-world-sample-worker-->
+<!--SNIPSTART java-hello-world-sample-worker-->
 ```java
 import io.temporal.client.WorkflowClient;
 import io.temporal.serviceclient.WorkflowServiceStubs;
@@ -226,7 +226,7 @@ public class HelloWorldWorker {
   }
 }
 ```
-<!--END-->
+<!--SNIPEND-->
 
 In this function we are creating a Temporal client and using it to create a new Worker. The Worker is registered to handle both HellowWorldWorkflow and HelloWorldActivity Tasks and is configured to listen to the same Task Queue that the Workflow and Activity Tasks are sent to.
 
