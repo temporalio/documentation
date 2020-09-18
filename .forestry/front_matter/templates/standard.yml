@@ -53,3 +53,4 @@ fields:
   label: Release Version
 pages:
 - blog/deep-dive-into-temporal-stress-testing.md
+- blog/temporal-transparency-update-8.md
