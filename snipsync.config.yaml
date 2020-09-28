@@ -1,6 +1,6 @@
 origins:
   - owner: temporalio
-    repo: go-samples
+    repo: java-project-template
+    ref: 5489fdba4c6eade8db2c5f21814c13bb3c921642
 
 target: docs
-
