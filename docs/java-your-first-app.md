@@ -122,7 +122,7 @@ Save it and run the Workflow and the Worker. The Worker executed the Workflow, a
 
 ![Activity UI error details](/img/docs/web-ui-activity-error-info.png)
 
-[Timeout configurations](/docs/activities#timeouts) and [retry policies](/docs/activities#retries) for Activities are specified in the Workflow code as Activity options. This is another key value proposition that Temporal offers, as other modern applications implement timeout and retry logic within the business process itself. In our Workflow code you can see that we have specified a setStartToCloseTimeout for our Activities, but have not specified a retry policy. That is because Temporal automatically uses a default retry policy if one isn't specified!
+[Timeout configurations](/docs/activities/#timeouts) and [retry policies](/docs/activities/#retries) for Activities are specified in the Workflow code as Activity options. This is another key value proposition that Temporal offers, as other modern applications implement timeout and retry logic within the business process itself. In our Workflow code you can see that we have specified a setStartToCloseTimeout for our Activities, but have not specified a retry policy. That is because Temporal automatically uses a default retry policy if one isn't specified!
 
 So, your Workflow is running, but only the `withdraw()` Activity succeeded. In any other application, the whole process would likely have to be abandoned and rolled back. But with Temporal, we can test the durable state of the Workflow again by stopping either the Temporal server, the Worker, or both and then starting them back up again. The Workflow will be in the same state!
 
