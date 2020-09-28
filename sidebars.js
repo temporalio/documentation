@@ -74,6 +74,8 @@ module.exports = {
       collapsed: true,
       label: 'Java SDK',
       items: [
+        'java-sdk-tutorial-prerequisites',
+        'java-run-your-first-app',
         'java-quick-start',
         'java-workflow-interface',
         'java-implementing-workflows',
