@@ -40,7 +40,7 @@ Once your project has built, you are ready to go.
 
 The Java project template mimics a "money transfer" application in order to give you the minimum elements needed to both get started building your own application as well as understand some of the value that Temporal gives you right out of the box. The project includes a predefined [Workflow](/docs/workflows) that orchestrates the execution of an account object's methods `withdraw()` and `deposit()` to mock the transfer of money from one account to another. Temporal calls such methods [Activities](/docs/activities).
 
-The first thing you will do is to call on the Temporal server to start the transfer. Temporal will then start tracking the progress of the Workflow execution. You will then run a Worker. A Worker contains the Workflow code, and its sole job is to execute the functions of the Workflow and communicate the results back to the Temporal server.
+The first thing you will do is to call on the Temporal server to start the transfer. Temporal will then start tracking the progress of the Workflow execution. You will then run a Worker. A Worker has compiled the Workflow and Activity code and its sole job is to execute the functions and communicate the results back to the Temporal server.
 
 ![High level project design](/img/docs/temporal-high-level-application-design.png)
 
