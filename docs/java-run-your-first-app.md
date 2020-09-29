@@ -4,23 +4,27 @@ title: Run your first Temporal application with the Java SDK
 sidebar_label: Run your first app
 ---
 
-Are you ready to run your first Temporal Workflow application? Let's get started.
+Welcome to the evolution of application development!
+
+This tutorial is aimed at developers who are new to Temporal and have some basic knowledge of Java. By following this tutorial you will learn how to run a Temporal Workflow application using the [Temporal Java SDK](https://github.com/temporalio/java-sdk) and you will also witness the fundamentally resilient nature of a Workflow, getting just a taste of the value that Temporal can provide.
 
 In case you are still wondering what [Temporal](/docs/overview) is, that is OK, there is a lot that can be said about it. In this tutorial we will focus on two of its main user facing components which are the Temporal server and its Java SDK.
 
 ![Temporal server and SDK diagram](/img/docs/temporal-server-and-sdk-icons.png)
 
-Together they are a solution to the complexities that arise from modern application development needs. You can think of Temporal as a sort of "cure all" for the pains developers experience from having to implement retry logic, timeout logic, databases to track application states, rollbacks due to process failures, and more.
+Together they are a solution to the complexities that arise from modern application development needs. You can think of Temporal as a sort of "cure all" for the pains developers experience when trying to make reliable applications. Temporal provides reliability primitives right out of the box, such as automatic retries, timeouts, databases to track application states, rollbacks due to process failures, and more.
 
-This tutorial is aimed at developers who are new to Temporal and have some basic knowledge of Java. By following this tutorial you will learn how to run a Temporal Workflow application using the [Temporal Java SDK](https://github.com/temporalio/java-sdk) and you will also witness the fundamentally resilient nature of a Workflow, getting just a taste of the value that Temporal can provide.
+Let's run your first Temporal Workflow application and forever change the way you approach application development.
+
+<img class="tutorial-section-icon" src={require('../static/img/docs/repair-tools.png').default} />
 
 ## Project setup
 
-![Tool box](/img/docs/repair-tools.png)
-
 First, make sure you have the [tutorial prerequisites](/docs/java-sdk-tutorial-prerequisites) setup.
 
-Next, download the ['java-project-template'](https://github.com/temporalio/java-project-template) by downloading it as a zip or by [creating a new repository](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-from-a-template#creating-a-repository-from-a-template) in your own Github account and then cloning the repo to the location of your choice.
+Next, download the ['Java project template'](https://github.com/temporalio/project-template-java) by downloading it as a zip or by [creating a new repository](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-from-a-template#creating-a-repository-from-a-template) in your own Github account and then cloning the repo to the location of your choice. Look for the "Use this template" button:
+
+<img class="docs-image-centered" src={require('../static/img/docs/use-this-template.png').default} />
 
 The last setup step is to build the project. If you open it with [IntelliJ](https://www.jetbrains.com/idea/) the project will build automatically. If you prefer to run programs from your terminal, make sure you have [Gradle](https://gradle.org/install/) installed and run the Gradle build command from the root of the project:
 
@@ -30,21 +34,21 @@ The last setup step is to build the project. If you open it with [IntelliJ](http
 
 Once your project has built, you are ready to go.
 
-## Application overview
+<img class="tutorial-section-icon" src={require('../static/img/docs/workflow.png').default} />
 
-![Tool box](/img/docs/workflow.png)
+## Application overview
 
 The Java project template mimics a "money transfer" application in order to give you the minimum elements needed to both get started building your own application as well as understand some of the value that Temporal gives you right out of the box. The project includes a predefined [Workflow](/docs/workflows) that orchestrates the execution of an account object's methods `withdraw()` and `deposit()` to mock the transfer of money from one account to another. Temporal calls such methods [Activities](/docs/activities).
 
-The first thing you will do is to call on the Temporal server to start the transfer. Temporal will then start tracking the progress of the Workflow execution. You will then run a Worker whose sole job is to execute the functions of the Workflow and communicate the results back to the Temporal server.
+The first thing you will do is to call on the Temporal server to start the transfer. Temporal will then start tracking the progress of the Workflow execution. You will then run a Worker. A Worker contains the Workflow code, and its sole job is to execute the functions of the Workflow and communicate the results back to the Temporal server.
 
 ![High level project design](/img/docs/temporal-high-level-application-design.png)
 
 ### The Workflow
 
-With Temporal, when you "start" a Workflow, what you are really doing is telling the Temporal server about code that needs to be run and to start tracking its state. The server then breaks up the code into Tasks and sends each Task to a Task Queue. The code below represents three Tasks, one for the Workflow itself, and one for each of the Activity methods.
+With Temporal, when you "start" a Workflow you are saying to the Temporal server, "track the state of the Workflow with this Id". The server will then put a Task into a Task Queue that lets a Worker know to start executing that Workflow's entry method. Each method in the Workflow is represented as a Task in Temporal. A Task is basically function/method metadata, not actual code. The code below represents three Tasks, one for the Workflow itself, and one for each of the Activity methods.
 
-<!--SNIPSTART java-project-template-workflow-implementation-->
+<!--SNIPSTART project-template-java-workflow-implementation-->
 <!--SNIPEND-->
 
 ### Initiate transfer
@@ -57,7 +61,7 @@ Let's tell the server that we want this Workflow code to execute. Make sure the 
 
 The two ways to initiate a Workflow with Temporal is either via the SDK or via the CLI. For this tutorial we are focusing on using the SDK to start the Workflow, which is how most Workflows would be initiated in a production environment. Here is the code we just ran to start the Workflow:
 
-<!--SNIPSTART java-project-template-workflow-initiator-->
+<!--SNIPSTART project-template-java-workflow-initiator-->
 <!--SNIPEND-->
 
 The call to the Temporal service can be done synchronously or asynchronously and here we do it asynchronously. You will see the program run, tell you the transaction is processing, and exit.
@@ -74,35 +78,35 @@ So, the Workflow is running, but why hasn't the Workflow and Activity code execu
 
 ### The Worker
 
-As mentioned earlier, a special process called a "Worker" is responsible for actually executing pieces of Workflow code. This is what our Worker looks like:
+As mentioned earlier, a Worker is responsible for actually executing pieces of Workflow code. It listens to a Task Queue, polling for Tasks. A Task identifies a function/method, which the Worker executes, returning any result back to the Temporal server. This is what our Worker looks like:
 
-<!--SNIPSTART java-project-template-worker-->
+<!--SNIPSTART project-template-java-worker-->
 <!--SNIPEND-->
 
 Notice that the Worker will listen to the same Task Queue that the Workflow and Activity tasks are sent to. This is called "Task routing", and is a built-in mechanism for load balancing.
 
-<!--SNIPSTART java-project-template-shared-constants-->
+<!--SNIPSTART project-template-java-shared-constants-->
 <!--SNIPEND-->
 
-Let's start the Worker. From within IntelliJ run the TransferMoneyWorkfer class, or from the project root, run the following command:
+Let's start the Worker. From within IntelliJ run the TransferMoneyWorker class, or from the project root, run the following command:
 
 ```
 ./gradlew startWorker
 ```
 
-When the Worker starts it begins polling the Task Queue. The first Task it finds is the Workflow Task, which it executes. Executing the Workflow causes the Activity tasks to be sent to the Task Queue as well. The Worker then pulls each of the Activity Tasks in their respective order from the Task Queue and executes the corresponding Activities.
+When the Worker starts it begins polling the Task Queue. The first Task it finds is the Workflow Task, which it executes. Executing the Workflow causes the Activity Tasks to be sent to the Task Queue as well. The Worker then grabs each of the Activity Tasks in their respective order from the Task Queue and executes the corresponding Activities.
 
 Congratulations, you have run a Temporal Workflow application!
 
+<img class="tutorial-section-icon" src={require('../static/img/docs/warning.png').default} />
+
 ## Failure simulation
 
-![Warning](/img/docs/warning.png)
-
-By running the application as is, at minimum you got a taste of one of Temporal's amazing value propositions: visibility into the Workflow and the status of the Workers executing the code. Let's explore another key value proposition, maintaining the state of a Workflow, by simulating some failures. Make sure your Worker process is stopped before proceeding.
+By running the application as is, at minimum you got a taste of one of Temporal's amazing value propositions: visibility into the Workflow and the status of the Workers executing the code. Let's explore another key value proposition, maintaining the state of a Workflow, by simulating some failures. Make sure your Worker is stopped before proceeding.
 
 ### Server crash
 
-In most modern application environments, to accommodate a host failure, leader election processes are applied to multiple application instances which are backed by databases that maintain the application state and so on. With Temporal, even if the Temporal server is down, the state of the Workflow is preserved. You can easily test this by following these steps:
+In most modern application environments, to accommodate a host failure, leader election processes are applied to multiple application instances which are backed by databases that maintain the application state and so on. With Temporal, even if the Temporal server is down, the state of the Workflow is preserved. You can easily test this by following these steps (again, make sure your Worker is stopped so your Workflow doesn't finish):
 
 1. Start the Workflow again.
 2. Verify the Workflow is running in the UI.
@@ -115,14 +119,14 @@ The Workflow is still there!
 
 Next let's simulate a bug in the Activity method. Inside your project find the AccountActivityImpl.java file and uncomment the line that throws an exception in the deposit method:
 
-<!--SNIPSTART java-project-template-activity-implementation-->
+<!--SNIPSTART project-template-java-activity-implementation-->
 <!--SNIPEND-->
 
-Save it and run the Workflow and the Worker. The Worker executed the Workflow, and completes the `withdraw()` Activity. But then the exception is thrown when it attempts the `deposit()` Activity. Notice how the Worker keeps retrying the Activity? Visit the UI and click on the RunId of the Workflow. You will see the pending Activity listed there with details such as its state, the number of times it has been attempted, and the next scheduled attempt.
+Save it and run the Workflow and the Worker. The Worker executed the Workflow, and completes the `withdraw()` Activity. But then the exception is thrown when it attempts the `deposit()` Activity. Notice how the Worker keeps retrying the Activity? Visit the [UI](localhost:8088) and click on the RunId of the Workflow. You will see the pending Activity listed there with details such as its state, the number of times it has been attempted, and the next scheduled attempt.
 
 ![Activity UI error details](/img/docs/web-ui-activity-error-info.png)
 
-[Timeout configurations](/docs/activities/#timeouts) and [retry policies](/docs/activities/#retries) for Activities are specified in the Workflow code as Activity options. This is another key value proposition that Temporal offers, as other modern applications implement timeout and retry logic within the business process itself. In our Workflow code you can see that we have specified a setStartToCloseTimeout for our Activities, but have not specified a retry policy. That is because Temporal automatically uses a default retry policy if one isn't specified!
+[Timeout configurations](/docs/activities/#timeouts) and [retry policies](/docs/activities/#retries) for Activities are specified in the Workflow code as Activity options. This is another key value proposition that Temporal offers, as other modern applications implement timeout and retry logic within the business process itself. In our Workflow code you can see that we have specified a setStartToCloseTimeout for our Activities, and set a retry policy that tells the server to retry them indefinitely. But we did that as an example for this tutorial, as Temporal automatically uses a default retry policy if one isn't specified!
 
 So, your Workflow is running, but only the `withdraw()` Activity succeeded. In any other application, the whole process would likely have to be abandoned and rolled back. But with Temporal, we can test the durable state of the Workflow again by stopping either the Temporal server, the Worker, or both and then starting them back up again. The Workflow will be in the same state!
 
@@ -130,9 +134,9 @@ Now, pretend that you have a fix for the issue and you have commented the except
 
 On the next scheduled attempt, the Worker will successfully execute the `deposit()` Activity and complete the Workflow. You have just fixed a bug "on the fly" with out losing the state of the Workflow.
 
-## Lore check
+<img class="tutorial-section-icon" src={require('../static/img/docs/wisdom.png').default} />
 
-![Wisdom](/img/docs/wisdom.png)
+## Lore check
 
 Great work! In this tutorial we covered practicalities of running a Temporal Workflow, code implementation, and concepts. Let's do a quick review to make sure you remember some of the more important pieces.
 
@@ -148,7 +152,7 @@ What are three of Temporal's value propositions that we touched on in this tutor
 
 ![Two](/img/docs/two.png)
 
-How do you pair up Workflow code with a Worker process that executes it?
+How do you pair up Workflow code with a Worker that executes it?
 
 **Answer**
 

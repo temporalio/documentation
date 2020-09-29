@@ -23,3 +23,15 @@
   margin: 0 calc(-1 * var(--ifm-pre-padding));
   padding: 0 var(--ifm-pre-padding);
 }
+
+.tutorial-section-icon {
+  float: right;
+}
+
+.docs-image-centered {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 25px;
+  width: 20%;
+}
