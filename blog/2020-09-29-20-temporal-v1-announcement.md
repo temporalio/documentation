@@ -52,10 +52,13 @@ V1 is just the start of the Temporal story. Moving forward expect to see things 
 
 We recently made some changes to how our versioning will work moving forward.
 
-1. All validation logic is on server. Client only sends headers. If header is missing assume that "client doesn't care" and no restriction is applied.
-2. Client sends to server following headers: `client-name`: one of `temporal-go`, `temporal-java`, `temporal-cliclient-version`: `1.0.0supported-server-versions`: `>=1.0.0 <2.0.0`
-3. Server has GetClusterInfo API which returns its version and supported version ranges for every supported client.
-4. All old clients are supported because they don't send these headers and fit into "I don't care" category. But moving forward we will be able to restrict old clients and old servers. (edited)
+1. All validation logic is on the server. Client only sends headers. If header is missing assume that "client doesn't care" and no restriction is applied.
+2. Client sends to server following headers:
+  * `client-name`: one of `temporal-go`, `temporal-java`, `temporal-cli`,
+  * `client-version`: `1.0.0`,
+  * `supported-server-versions`: `>=1.0.0 <2.0.0`.
+3. Server has `GetClusterInfo` API which returns its version and supported version ranges for every supported client.
+4. All old clients and servers are supported because they don't send these headers and fit into "I don't care" category. Moving forward we will be able to restrict old clients and old servers. (edited)
 
 As always, feel free to reach out with questions, comments or critical feedback via email, Slack or our community forum.
 
