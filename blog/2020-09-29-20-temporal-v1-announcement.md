@@ -30,7 +30,7 @@ This is a huge milestone for the project, community and Temporal as a business. 
 
 Temporal version 1 is available and ready for production consumption with the caveats covered in our last report (reiterated below). This also means that the system has entered a backwards compatibility era where there will be no more breaking API or schema changes for publicly facing APIs. Note that we will have a deprecation policy (which will be made public in the near future) so we can continue evolving and improving the product.
 
-An important note about this release is that we've seen some temporary instability caused by rolling upgrade process from the previous versions. To be 100% clear there is no potential for data loss and this should only happen once. The practical impact is slightly higher resource usage on your cluster until the upgrade is complete.
+In this released we improved how shard IDs are hashed. This may cause an elevated rate of errors when upgrading cluster in-place from a previous release. To be 100% clear there is no potential for data loss and this should only happen once. The practical impact is slightly higher resource usage on your cluster until the upgrade is complete.
 
 ### What is not included in the release?
 
