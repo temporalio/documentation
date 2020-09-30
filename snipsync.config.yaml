@@ -1,6 +1,6 @@
 origins:
   - owner: temporalio
-    repo: transfer-money-project-template-java
+    repo: money-transfer-project-template-java
     ref: 73d4cebb677906079bab596283799372b13f1880
 
 target: docs
