@@ -22,7 +22,7 @@ Let's run your first Temporal Workflow application and forever change the way yo
 
 First, make sure you have the [tutorial prerequisites](/docs/java-sdk-tutorial-prerequisites) setup.
 
-Next, download the ['Java project template'](https://github.com/temporalio/project-template-java) by downloading it as a zip or by [creating a new repository](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-from-a-template#creating-a-repository-from-a-template) in your own Github account and then cloning the repo to the location of your choice. Look for the "Use this template" button:
+Next, download the ['Java project template'](https://github.com/temporalio/money-transfer-project-template-java) by downloading it as a zip or by [creating a new repository](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-from-a-template#creating-a-repository-from-a-template) in your own Github account and then cloning the repo to the location of your choice. Look for the "Use this template" button:
 
 <img class="docs-image-centered" src={require('../static/img/docs/use-this-template.png').default} />
 
@@ -48,7 +48,7 @@ The first thing you will do is to call on the Temporal server to start the trans
 
 With Temporal, when you "start" a Workflow you are saying to the Temporal server, "track the state of the Workflow with this Id". The server will then put a Task into a Task Queue that lets a Worker know to start executing that Workflow's entry method. Each method in the Workflow is represented as a Task in Temporal. A Task is basically function/method metadata, not actual code. The code below represents three Tasks, one for the Workflow itself, and one for each of the Activity methods.
 
-<!--SNIPSTART project-template-java-workflow-implementation-->
+<!--SNIPSTART money-transfer-project-template-java-workflow-implementation-->
 <!--SNIPEND-->
 
 ### Initiate transfer
@@ -61,7 +61,7 @@ Let's tell the server that we want this Workflow code to execute. Make sure the 
 
 The two ways to initiate a Workflow with Temporal is either via the SDK or via the CLI. For this tutorial we are focusing on using the SDK to start the Workflow, which is how most Workflows would be initiated in a production environment. Here is the code we just ran to start the Workflow:
 
-<!--SNIPSTART project-template-java-workflow-initiator-->
+<!--SNIPSTART money-transfer-project-template-java-workflow-initiator-->
 <!--SNIPEND-->
 
 The call to the Temporal service can be done synchronously or asynchronously and here we do it asynchronously. You will see the program run, tell you the transaction is processing, and exit.
@@ -80,12 +80,12 @@ So, the Workflow is running, but why hasn't the Workflow and Activity code execu
 
 As mentioned earlier, a Worker is responsible for actually executing pieces of Workflow code. It listens to a Task Queue, polling for Tasks. A Task identifies a function/method, which the Worker executes, returning any result back to the Temporal server. This is what our Worker looks like:
 
-<!--SNIPSTART project-template-java-worker-->
+<!--SNIPSTART money-transfer-project-template-java-worker-->
 <!--SNIPEND-->
 
 Notice that the Worker will listen to the same Task Queue that the Workflow and Activity tasks are sent to. This is called "Task routing", and is a built-in mechanism for load balancing.
 
-<!--SNIPSTART project-template-java-shared-constants-->
+<!--SNIPSTART money-transfer-project-template-java-shared-constants-->
 <!--SNIPEND-->
 
 Let's start the Worker. From within IntelliJ run the TransferMoneyWorker class, or from the project root, run the following command:
@@ -119,7 +119,7 @@ The Workflow is still there!
 
 Next let's simulate a bug in the Activity method. Inside your project find the AccountActivityImpl.java file and uncomment the line that throws an exception in the deposit method:
 
-<!--SNIPSTART project-template-java-activity-implementation-->
+<!--SNIPSTART money-transfer-project-template-java-activity-implementation-->
 <!--SNIPEND-->
 
 Save it and run the Workflow and the Worker. The Worker executed the Workflow, and completes the `withdraw()` Activity. But then the exception is thrown when it attempts the `deposit()` Activity. Notice how the Worker keeps retrying the Activity? Visit the [UI](localhost:8088) and click on the RunId of the Workflow. You will see the pending Activity listed there with details such as its state, the number of times it has been attempted, and the next scheduled attempt.
