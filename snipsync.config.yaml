@@ -1,6 +1,6 @@
 origins:
   - owner: temporalio
     repo: java-project-template
-    ref: 47ac8c62b93bd0164b6337d3e149bc4b507aab57
+    ref: 36e82892821ed7d22cb660bceec1df7b46b0cbff
 
 target: docs
