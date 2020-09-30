@@ -2,5 +2,8 @@ origins:
   - owner: temporalio
     repo: money-transfer-project-template-java
     ref: 28a0eef72ffab7e29901242063ea66561404937d
+  - owner: temporalio
+    repo: hello-world-project-template-java
+    ref: ad90087a6c0cdd598a8886982a806b35681bbc66
 
 target: docs

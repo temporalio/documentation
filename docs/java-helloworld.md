@@ -1,16 +1,13 @@
 ---
 id: java-helloworld
-title: Java SDK "Hello World!" tutorial
-sidebar_label: Java "Hello World!"
+title: Build a Temporal "Hello World!" app from scratch
+sidebar_label: Build "Hello World!" from scratch
 tags: helloworld, java, sdk, intellij, gradle, tutorial
 ---
 
-This tutorial is aimed at developers who are new to [Temporal](/docs/overview), beginner Java programmers, or both. It will teach you how to build a simple "Hellow World!" Temporal Workflow application using the [Temporal Java SDK](https://github.com/temporalio/java-sdk) as well as a few basics, such as:
+This tutorial is aimed at developers who are relatively new to [Temporal](/docs/overview) and have some basic knowledge of Java. It will take most developers 15-20 minutes to complete. By following this tutorials you will learn how to build a simple "Hello World!" Temporal Workflow application from scratch using the [Temporal Java SDK](https://github.com/temporalio/sdk-java).
 
-- How to set up your development environment and its dependencies.
-- How to define an [Activity](/docs/activities) and a [Workflow](/docs/workflows).
-- How to create and execute a Worker program and a Workflow starter program.
-- Where to view Workflow details.
+If you are still wondering what Temporal is, we recommend that you follow the tutorial where you [run your first Temporal application] to get a taste of its value proposition.
 
 ## Prerequisites
 
