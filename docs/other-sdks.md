@@ -9,7 +9,7 @@ There is demand for other Temporal SDKs other than Go and Java. The user communi
 - [Ruby SDK by Coinbase](https://github.com/coinbase/temporal-ruby)
 - Python SDK - please get in touch with us
 - Swift SDK - please get in touch with us
-- C#/dotNet SDK - please get in touch with us
+- C#/.Net SDK - please get in touch with us
 - Node.js SDK - please get in touch with us
 - Rust SDK - please get in touch with us
 - C++ SDK - please get in touch with us
