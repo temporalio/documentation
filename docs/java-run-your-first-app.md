@@ -132,28 +132,16 @@ On the next scheduled attempt, the Worker will successfully execute the `deposit
 
 Great work! In this tutorial we covered practicalities of running a Temporal Workflow, code implementation, and concepts. Let's do a quick review to make sure you remember some of the more important pieces.
 
-![One](/img/docs/one.png)
-
-What are three of Temporal's value propositions that we touched on in this tutorial?
-
-**Answer**
+![One](/img/docs/one.png) &nbsp;&nbsp; **What are three of Temporal's value propositions that we touched on in this tutorial?**
 
 1. Temporal gives you full visibility in the state of your Workflow and code execution.
 2. Temporal maintains the state of your Workflow, even through server outages and errors.
 3. Temporal makes it easy to timeout and retry Activity code using options that exist outside of your business logic.
 
-![Two](/img/docs/two.png)
-
-How do you pair up Workflow code with a Worker that executes it?
-
-**Answer**
+![Two](/img/docs/two.png) &nbsp;&nbsp; **How do you pair up Workflow code with a Worker that executes it?**
 
 Use the same Task Queue.
 
-![Three](/img/docs/three.png)
-
-What do you have to do if you make changes to Activity code for a Workflow that is running?
-
-**Answer**
+![Three](/img/docs/three.png) &nbsp;&nbsp; **What do you have to do if you make changes to Activity code for a Workflow that is running?**
 
 Restart the Worker.
