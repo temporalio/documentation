@@ -84,5 +84,6 @@ module.exports = {
         'java-distributed-cron',
       ],
     },
+    'other-sdks',
   ],
 };
