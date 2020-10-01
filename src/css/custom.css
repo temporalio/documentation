@@ -24,10 +24,6 @@
   padding: 0 var(--ifm-pre-padding);
 }
 
-.tutorial-section-icon {
-  float: right;
-}
-
 .docs-image-centered {
   display: block;
   margin-left: auto;
