@@ -13,6 +13,8 @@ Ready to build? [Install the Temporal server](/docs/install-temporal-server/) an
 - [Go SDK](/docs/go-quick-start/)
 - [Java SDK](/docs/java-quick-start/)
 
+[Other SDKs](/docs/other-sdks) are in the works, please get in touch.
+
 ## Learn about Temporal
 
 Temporal enables developers to write highly reliable applications without having to worry about all the edge cases, but getting started can be paradigm shift for some. If you are new to Temporal, or workflow applications in general, get caught up on the [core concepts](/docs/overview/).
