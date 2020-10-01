@@ -14,4 +14,4 @@ There is demand for other Temporal SDKs other than Go and Java. The user communi
 - Rust SDK - please get in touch with us
 - C++ SDK - please get in touch with us
 
-We are very excited by the interest of the community, but please don't go too far without getting in touch with us! Collaboration via open source is something we strongly believe in, but we also care about the long term developer experience and therefore likely will want to take on maintenance leadership of SDKs in key languages.
+If you are interested in using an unofficial SDK, we recommend that you reach out to any of us at Temporal. We are very excited by the community's enthusiasm and strongly believe in collaborating on open source projects. Our goal is to make sure there is maintenance leadership in place to care for the developer experience over the long term.
