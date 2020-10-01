@@ -16,9 +16,7 @@ Together they are a solution to the complexities that arise from modern applicat
 
 Let's run your first Temporal Workflow application and forever change the way you approach application development.
 
-<img class="tutorial-section-icon" src={require('../static/img/docs/repair-tools.png').default} />
-
-## Project setup
+## Project setup &nbsp;&nbsp; ![](/img/docs/repair-tools.png)
 
 First, make sure you have the [tutorial prerequisites](/docs/java-sdk-tutorial-prerequisites) setup.
 
@@ -34,9 +32,7 @@ The last setup step is to build the project. If you open it with [IntelliJ](http
 
 Once your project has built, you are ready to go.
 
-<img class="tutorial-section-icon" src={require('../static/img/docs/workflow.png').default} />
-
-## Application overview
+## Application overview &nbsp;&nbsp; ![](/img/docs/workflow.png)
 
 The Java project template mimics a "money transfer" application in order to give you the minimum elements needed to both get started building your own application as well as understand some of the value that Temporal gives you right out of the box. The project includes a predefined [Workflow](/docs/workflows) that orchestrates the execution of an account object's methods `withdraw()` and `deposit()` to mock the transfer of money from one account to another. Temporal calls such methods [Activities](/docs/activities).
 
@@ -98,9 +94,7 @@ When the Worker starts it begins polling the Task Queue. The first Task it finds
 
 Congratulations, you have run a Temporal Workflow application!
 
-<img class="tutorial-section-icon" src={require('../static/img/docs/warning.png').default} />
-
-## Failure simulation
+## Failure simulation &nbsp;&nbsp;![](/img/docs/warning.png)
 
 By running the application as is, at minimum you got a taste of one of Temporal's amazing value propositions: visibility into the Workflow and the status of the Workers executing the code. Let's explore another key value proposition, maintaining the state of a Workflow, by simulating some failures. Make sure your Worker is stopped before proceeding.
 
@@ -134,9 +128,7 @@ Now, pretend that you have a fix for the issue and you have commented the except
 
 On the next scheduled attempt, the Worker will successfully execute the `deposit()` Activity and complete the Workflow. You have just fixed a bug "on the fly" with out losing the state of the Workflow.
 
-<img class="tutorial-section-icon" src={require('../static/img/docs/wisdom.png').default} />
-
-## Lore check
+## Lore check &nbsp;&nbsp; ![](/img/docs/wisdom.png)
 
 Great work! In this tutorial we covered practicalities of running a Temporal Workflow, code implementation, and concepts. Let's do a quick review to make sure you remember some of the more important pieces.
 
