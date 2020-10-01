@@ -4,7 +4,7 @@ title: Other SDKs
 sidebar_label: Other SDKs
 ---
 
-There is demand for other Temporal SDKs other than Go and Java. The user community has taken initiative to build some of these, but please note that they are not officially supported or endorsed by Temporal unless explicitly mentioned:
+Looking for SDKs in other languages? There are plans to support many other SDKs, but currently we only support Go and Java. This is a list of ones that are in the works but are not yet officially endorsed:
 
 - [Ruby SDK by Coinbase](https://github.com/coinbase/temporal-ruby)
 - Python SDK - please get in touch with us
