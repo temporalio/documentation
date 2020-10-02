@@ -34,9 +34,14 @@ Once your project has built, you are ready to go.
 
 ## Application overview &nbsp;&nbsp; ![](/img/docs/workflow.png)
 
-The Java project template mimics a "money transfer" application in order to give you the minimum elements needed to both get started building your own application as well as understand some of the value that Temporal gives you right out of the box. The project includes a predefined [Workflow](/docs/workflows) that orchestrates the execution of an account object's methods `withdraw()` and `deposit()` to mock the transfer of money from one account to another. Temporal calls such methods [Activities](/docs/activities).
+The Java project template mimics a "money transfer" application in order to give you the minimum elements needed to both get started building your own application as well as understand some of the value that Temporal gives you right out of the box. The project includes a predefined [Workflow](/docs/workflows) that orchestrates the execution of an account object's methods, `withdraw()` and `deposit()`, to mock the transfer of money from one account to another. Temporal calls such methods [Activities](/docs/activities).
 
-The first thing you will do is to call on the Temporal server to start the transfer. Temporal will then start tracking the progress of the Workflow execution. You will then run a Worker. A Worker has compiled the Workflow and Activity code and its sole job is to execute the functions and communicate the results back to the Temporal server.
+To run the application you will do two things:
+
+1. The first thing you will do is to call on the Temporal server to start the transfer. Temporal will then start tracking the progress of the Workflow execution.
+2. You will then run a Worker. A Worker has compiled the Workflow and Activity code and its sole job is to execute the functions and communicate the results back to the Temporal server.
+
+This diagram illustrates what is happening at a high level:
 
 ![High level project design](/img/docs/temporal-high-level-application-design.png)
 
@@ -55,7 +60,7 @@ Let's tell the server that we want this Workflow code to execute. Make sure the 
 ./gradlew initiateTransfer
 ```
 
-The two ways to initiate a Workflow with Temporal is either via the SDK or via the CLI. For this tutorial we are focusing on using the SDK to start the Workflow, which is how most Workflows would be initiated in a production environment. Here is the code we just ran to start the Workflow:
+There are two ways to initiate a Workflow with Temporal, either via the SDK or via the CLI. For this tutorial we are focusing on using the SDK to start the Workflow, which is how most Workflows would be initiated in a production environment. Here is the code we just ran to start the Workflow:
 
 <!--SNIPSTART money-transfer-project-template-java-workflow-initiator-->
 <!--SNIPEND-->
@@ -70,7 +75,11 @@ OK, now let's check out one of the really cool value propositions that Temporal 
 
 Click the RunId. Here we can view everything we want to know about the state of the execution of the code we told the server to run, such as what parameter values it was given, timeout configurations, scheduled retries, number of attempts, stack traceable errors, and more.
 
+![Money transfer empty poller list](/img/docs/web-ui-money-transfer-workflow-details.png)
+
 So, the Workflow is running, but why hasn't the Workflow and Activity code executed yet? Click on the Task Queue name to view active "Pollers" registered to handle these Tasks. The list will be empty. There are no Workers polling the Task Queue!
+
+![Money transfer empty poller list](/img/docs/web-ui-empty-pollers.png)
 
 ### The Worker
 
@@ -90,9 +99,11 @@ Let's start the Worker. From within IntelliJ run the TransferMoneyWorker class, 
 ./gradlew startWorker
 ```
 
-When the Worker starts it begins polling the Task Queue. The first Task it finds is the Workflow Task, which it executes. Executing the Workflow causes the Activity Tasks to be sent to the Task Queue as well. The Worker then grabs each of the Activity Tasks in their respective order from the Task Queue and executes the corresponding Activities.
+When the Worker starts it begins polling the Task Queue. The first Task it finds is the Workflow Task, which it executes. Executing the Workflow causes the Activity Tasks to be sent to the Task Queue as well. The Worker then grabs each of the Activity Tasks in their respective order from the Task Queue and executes each of the corresponding Activities.
 
-Congratulations, you have run a Temporal Workflow application!
+<img class="docs-image-centered" src={require('../static/img/docs/confetti.png').default} />
+
+**Congratulations**, you have run a Temporal Workflow application!
 
 ## Failure simulation &nbsp;&nbsp;![](/img/docs/warning.png)
 
@@ -116,11 +127,11 @@ Next let's simulate a bug in the Activity method. Inside your project find the A
 <!--SNIPSTART money-transfer-project-template-java-activity-implementation-->
 <!--SNIPEND-->
 
-Save it and run the Workflow and the Worker. The Worker executed the Workflow, and completes the `withdraw()` Activity. But then the exception is thrown when it attempts the `deposit()` Activity. Notice how the Worker keeps retrying the Activity? Visit the [UI](localhost:8088) and click on the RunId of the Workflow. You will see the pending Activity listed there with details such as its state, the number of times it has been attempted, and the next scheduled attempt.
+Save it and run the Worker (the Workflow should still be running, start it if it isn't). The Worker executes the Workflow, and completes the `withdraw()` Activity. But then the exception is thrown when it attempts the `deposit()` Activity. Notice how the Worker keeps retrying the Activity? Visit the [UI](localhost:8088) and click on the RunId of the Workflow. You will see the pending Activity listed there with details such as its state, the number of times it has been attempted, and the next scheduled attempt.
 
 ![Activity UI error details](/img/docs/web-ui-activity-error-info.png)
 
-[Timeout configurations](/docs/activities/#timeouts) and [retry policies](/docs/activities/#retries) for Activities are specified in the Workflow code as Activity options. This is another key value proposition that Temporal offers, as other modern applications implement timeout and retry logic within the business process itself. In our Workflow code you can see that we have specified a setStartToCloseTimeout for our Activities, and set a retry policy that tells the server to retry them indefinitely. But we did that as an example for this tutorial, as Temporal automatically uses a default retry policy if one isn't specified!
+[Timeout configurations](/docs/activities/#timeouts) and [retry policies](/docs/activities/#retries) for Activities are specified in the Workflow code as Activity options. This is another key value proposition that Temporal offers, as other modern applications implement timeout and retry logic within the business process itself. In our Workflow code you can see that we have specified a setStartToCloseTimeout for our Activities, and set a retry policy that tells the server to retry them up to 500 times. But we did that as an example for this tutorial, as Temporal automatically uses a default retry policy if one isn't specified!
 
 So, your Workflow is running, but only the `withdraw()` Activity succeeded. In any other application, the whole process would likely have to be abandoned and rolled back. But with Temporal, we can test the durable state of the Workflow again by stopping either the Temporal server, the Worker, or both and then starting them back up again. The Workflow will be in the same state!
 
@@ -128,9 +139,11 @@ Now, pretend that you have a fix for the issue and you have commented the except
 
 On the next scheduled attempt, the Worker will successfully execute the `deposit()` Activity and complete the Workflow. You have just fixed a bug "on the fly" with out losing the state of the Workflow.
 
+<img class="docs-image-centered" src={require('../static/img/docs/boost.png').default} />
+
 ## Lore check &nbsp;&nbsp; ![](/img/docs/wisdom.png)
 
-Great work! In this tutorial we covered practicalities of running a Temporal Workflow, code implementation, and concepts. Let's do a quick review to make sure you remember some of the more important pieces.
+Great work! In this tutorial we covered some of the practicalities of running a Temporal Workflow, code implementation, and concepts. Let's do a quick review to make sure you remember some of the more important pieces.
 
 ![One](/img/docs/one.png) &nbsp;&nbsp; **What are three of Temporal's value propositions that we touched on in this tutorial?**
 
