@@ -1,43 +1,62 @@
 ---
-id: java-helloworld
+id: java-hello-world
 title: Build a Temporal "Hello World!" app from scratch
-sidebar_label: Build "Hello World!" from scratch
+sidebar_label: Build "Hello World!" app
 tags: helloworld, java, sdk, intellij, gradle, tutorial
 ---
 
-This tutorial is aimed at developers who are relatively new to [Temporal](/docs/overview) and have some basic knowledge of Java. It will take most developers 15-20 minutes to complete. By following this tutorials you will learn how to build a simple "Hello World!" Temporal Workflow application from scratch using the [Temporal Java SDK](https://github.com/temporalio/sdk-java).
+Your taking the next step in your journey to building better apps!
 
-If you are still wondering what Temporal is, we recommend that you follow the tutorial where you [run your first Temporal application] to get a taste of its value proposition.
+This tutorial is aimed at developers who are relatively new to [Temporal](/docs/overview) and have some basic knowledge of Java. It will take most developers 15-20 minutes to complete. By following this tutorial you will learn how to build a simple "Hello World!" Temporal Workflow application from scratch using the [Temporal Java SDK](https://github.com/temporalio/sdk-java) and [Gradle](https://gradle.org/).
+
+<img class="docs-image-centered" src={require('../static/img/docs/hello.png').default} />
+
+If you are still wondering what Temporal is, we recommend that you follow the tutorial where you [run your first Temporal application] to get a taste of its value propositions.
+
+All of the code in this tutorial is available in the [hello-world-project-template-java](https://github.com/temporalio/hello-world-project-template-java) template repository.
 
 ## Prerequisites
 
 Make sure you have the tutorial [prerequisites](/docs/java-sdk-tutorial-prerequisites) setup.
 
-## Project setup
+## Scaffold Gradle
 
-Open IntelliJ and create a new Gradle project by following Step 1 of the [Getting started with Gradle guide](https://www.jetbrains.com/help/idea/getting-started-with-gradle.html#create_project). Make sure your project is created inside the "temporal-java-tutorials" directory and name your project "helloworld-tutorial". It will take a few moments to complete.
+First, we need a new project directory. Create one called "hello-world-tutorial", or something similar.
+
+You can scaffold Gradle from the terminal or from within IntelliJ.
+
+**Terminal:**
+
+Change your working directory to the one created for the project and follow Gradle's [Building Java Applications](https://guides.gradle.org/building-java-applications/) guide. When you get to the step where you define your source package, use "helloworldapp".
+
+**IntelliJ**
+
+Open IntelliJ and create a new Gradle project by following Step 1 of the [Getting started with Gradle guide](https://www.jetbrains.com/help/idea/getting-started-with-gradle.html#create_project). When you get to the step where you name the project, use
+"helloworldapp" and make sure you choose the "hello-world-tutorial" directory as the project location. It will take a few moments to complete.
+
+## Project dependencies
 
 Once Gradle has finished scaffolding you will need to customize the project dependencies. To do this, open the build.gradle file that is in the root of your project. Add the following lines to the dependencies section while replacing {version} with the most recent version listed on the [Temporal SDK Maven repository page](https://search.maven.org/artifact/io.temporal/temporal-sdk):
 
-```
-implementation 'io.temporal:temporal-sdk:{version}'
-implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
-```
+<!-- SNIPSTART hello-world-project-template-java-gradle-dependencies -->
+<!-- SNIPEND -->
 
-The 'logback-classic' dependency will ensure that there is a logger to bind to within the SDK and prevent a default logger warning message.
+- `com.google.guava:guava` offers a suit of core and expanded libraries that Gradle uses.
+- `io.temporal:temporal-sdk` enables communication with the Temporal server.
+- `ch.qos.logback:logback-classic` will ensure that there is a logger to bind to within the SDK and prevent a default logger warning message.
 
 A "refresh" icon will appear on the screen, click it to load the changes. Gradle will rebuild with the dependencies.
 
-Lastly, to limit the logging output from the SDK, within src/main/resources create a logback.xml file and paste in the following XML:
+To limit the logging output from the SDK, within src/main/resources create a logback.xml file and paste in the following XML:
 
-<!--SNIPSTART java-samples-logback-dependency-configuration-->
+<!--SNIPSTART hello-world-project-template-java-logback-dependency-configuration-->
 <!--SNIPEND-->
 
-## Build "Hello World!" app
+## The helloworldapp
 
-Now we are ready to create our Temporal Workflow application.
+Now we are ready to build our Temporal Workflow application.
 
-Within src/main/java/ create the "helloworld" directory and within src/main/java/helloworld create the following files:
+Within src/main/java/helloworldapp create the following files:
 
 - HelloWorldActivity.java
 - HelloWorldActivityImpl.java
