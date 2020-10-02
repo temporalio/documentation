@@ -6,7 +6,7 @@ sidebar_label: Run your first app
 
 Welcome to the evolution of application development!
 
-This tutorial is aimed at developers who are new to Temporal and have some basic knowledge of Java. By following this tutorial you will learn how to run a Temporal Workflow application using the [Temporal Java SDK](https://github.com/temporalio/java-sdk) and you will also witness the fundamentally resilient nature of a Workflow, getting just a taste of the value that Temporal can provide.
+This tutorial is aimed at developers who are new to Temporal and have some basic knowledge of Java. We recommend setting aside about 20 minutes to complete it. By following this tutorial you will learn how to run a Temporal Workflow application using the [Temporal Java SDK](https://github.com/temporalio/java-sdk) and you will also witness the fundamentally resilient nature of a Workflow, getting just a taste of the value that Temporal can provide.
 
 In case you are still wondering what [Temporal](/docs/overview) is, that is OK, there is a lot that can be said about it. In this tutorial we will focus on two of its main user facing components which are the Temporal server and its Java SDK.
 
