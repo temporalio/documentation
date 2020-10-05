@@ -29,5 +29,8 @@
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 25px;
+}
+
+.docs-image-max-width-20 {
   width: 20%;
 }
