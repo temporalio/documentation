@@ -14,6 +14,7 @@ module.exports = {
         'task-queues',
         'namespaces',
         'system-architecture',
+        'glossary',
       ],
     },
     {

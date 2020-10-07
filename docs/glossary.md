@@ -1,5 +1,5 @@
 ---
-id: learn-glossary
+id: glossary
 title: Glossary
 ---
 
@@ -31,9 +31,9 @@ A unique Id that identifies an [**Activity**](#activity) that is executing. The 
 
 ### Activity Task
 
-A Task that contains invocation information for an [**Activity**](#activity) that is delivered to an [**Activity Worker**](#worker) through and a [**Task Queue**](#activity-task-queue).
+A Task that contains invocation information for an [**Activity**](#activity) that is delivered to an [**Activity Worker**](#worker) through and a [**Task Queue**](#task-queue).
 
-- Upon receiving an [**Activity Task**](#activity-task), an [**Activity Worker**](#activity-worker) executes the corresponding [**Activity**](#activity).
+- Upon receiving an [**Activity Task**](#activity-task), an [**Activity Worker**](#worker) executes the corresponding [**Activity**](#activity).
 
 ### Archival
 
@@ -67,7 +67,7 @@ There are two types of Events that Temporal tracks for each workflow:
 1. [**Command**](#command) Events.
 2. Everything else.
 
-- Command Events are events that correspond to [**Commands**](#command) produced by the [**Workflow Worker**](#workflow-worker).
+- Command Events are events that correspond to [**Commands**](#command) produced by the [**Workflow Worker**](#worker).
 - All other events represent various external occurrences that the [**Workflow**] is expected to react to such as an [**Activity**](#activity) completion, a timer firing, a cancellation request, etc.
 - All Events are recorded in the [**Event History**](#event-history).
 
@@ -80,7 +80,7 @@ The Event History is an append-log of [**Events**](#event) for your application.
 
 ### Local Activity
 
-A [**Local Activity**](/docs/learn-activities#local-activities) is an [**Activity**](#activity) that is invoked directly in the same process by Workflow code.
+A [**Local Activity**](/docs/activities/#local-activities) is an [**Activity**](#activity) that is invoked directly in the same process by Workflow code.
 
 - While a Local Activity consumes less resources than a normal [**Activity**](#activity), it is subject to shorter durations and a lack of rate limiting.
 
@@ -91,7 +91,7 @@ Temporal is backed by a multi-tenant service and the unit of isolation is called
 - By default a Temporal service is provisioned with a "default" Namespace. All APIs and tools, such as the UI and CLI, default to the "default" Namespace if it is not specified. So, if you are not planning to use multiple Namespaces, we recommend using the default one.
 - [**Task Queue**](#task-queue) names as well as [**Workflow Ids**](#workflow-id) correspond to a specific Namespace. For example, when a Workflow is started, it is started within a specific Namespace.
 - Temporal guarantees a unique [**Workflow Id**](#workflow-id) within a Namespace, and supports running [**Workflow Executions**](#workflow-execution) to use the same [**Workflow Id**](#workflow-id) if they are in different Namespaces.
-- Various configuration options like the retention period or Archival destination are configured per Namespace as well through a special CRUD API or through [`tctl`](/docs/learn-cli/).
+- Various configuration options like the retention period or Archival destination are configured per Namespace as well through a special CRUD API or through [`tctl`](/docs/tctl/).
 - In a multi-cluster deployment, Namespace is a unit of fail-over.
 - Each Namespace can only be active on a single Temporal cluster at a time. However, different Namespaces can be active in different clusters and can fail-over independently.
 
@@ -141,7 +141,7 @@ A Task Token is a unique correlation Id for a Temporal [**Activity**](#activity)
 
 A Worker is a service that hosts the [**Workflow**](#workflow) and [**Activity**](#activity) implementations.
 
-- A single Worker actually contains both an [**Activity Worker**](#activity-worker) and a [**Workflow Worker**](#workflow-worker), abstracting the logical separation and having the ability to execute both types of tasks.
+- A single Worker actually contains both an [**Activity Worker**](#worker) and a [**Workflow Worker**](#worker), abstracting the logical separation and having the ability to execute both types of tasks.
 - The Worker polls the Temporal service for [**Tasks**](#task), performs those [**Tasks**](#task), and communicates [**Task**](#task) execution results back to the Temporal service.
 - Worker services are developed, deployed, and operated by Temporal customers.
 
@@ -172,6 +172,6 @@ A unique identifier for a [**Workflow Execution**](#workflow-execution).
 
 A Workflow Task is a [**Task**](#task) that contains invocation information for a [**Workfow**](#workflow).
 
-- Every time a new external event that might affect a [**Workflow**](#workflow) state is recorded, a Workflow Task that contains it, is added to a [**Task Queue**](#task-queue) and then picked up by a [**Workflow Worker**](#worflow-worker).
+- Every time a new external event that might affect a [**Workflow**](#workflow) state is recorded, a Workflow Task that contains it, is added to a [**Task Queue**](#task-queue) and then picked up by a [**Workflow Worker**](#worker).
 - After the new event is handled, the Workflow Task is completed with a list of [**Commands**](#command).
 - Handling of a Workflow Task is usually very fast and is not related to the duration of operations that the [**Workflow**](#workflow) invokes.
