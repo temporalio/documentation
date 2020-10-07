@@ -22,6 +22,7 @@ Clone the repository and checkout a new branch to work from:
 
 ```bash
 git clone git@github.com:temporalio/documentation.git
+cd documentation
 git checkout -b yourbranch
 ```
 
