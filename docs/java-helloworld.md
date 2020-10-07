@@ -5,25 +5,27 @@ sidebar_label: Build "Hello World!" app
 tags: helloworld, java, sdk, intellij, gradle, tutorial
 ---
 
-Your taking the next step in your journey to building better apps!
+You're taking the next step in your journey towards building better apps!
 
-This tutorial is aimed at developers who are relatively new to [Temporal](/docs/overview) and have some basic knowledge of Java. It will take most developers 15-20 minutes to complete. By following this tutorial you will learn how to build a simple "Hello World!" Temporal Workflow application from scratch using the [Temporal Java SDK](https://github.com/temporalio/sdk-java) and [Gradle](https://gradle.org/).
+This tutorial is for developers who are relatively new to [Temporal](/docs/overview) and have some basic knowledge of Java. We recommend setting aside ~20 minutes to complete. By following this tutorial you will achieve a few things:
+
+- Learn how to set up a Temporal Java application project.
+- Become more familiar with core concepts and the application structure.
+- Build and test a simple "Hello World!" Temporal Workflow application from scratch using the [Temporal Java SDK](https://github.com/temporalio/sdk-java) and [Gradle](https://gradle.org/).
 
 <img class="docs-image-centered" src={require('../static/img/docs/hello.png').default} />
 
-If you are still wondering what Temporal is, we recommend that you follow the tutorial where you [run your first Temporal application] to get a taste of its value propositions.
+This tutorial focuses on the practicalities of building an application from scratch. To better understand *why* you should use Temporal, we recommend that you follow the tutorial where you [run a Temporal money transfer application](/docs/java-run-your-first-app) to get a taste of its value propositions.
 
-All of the code in this tutorial is available in the [hello-world-project-template-java](https://github.com/temporalio/hello-world-project-template-java) template repository.
+All of the code in this tutorial is available in the [hello-world Java template repository](https://github.com/temporalio/hello-world-project-template-java).
 
-## Prerequisites
+## ![](/img/docs/harbor-crane.png) &nbsp;&nbsp; Scaffold Gradle
 
-Make sure you have the tutorial [prerequisites](/docs/java-sdk-tutorial-prerequisites) setup.
+Before starting, make sure you have looked over the [tutorial prerequisites](/docs/java-sdk-tutorial-prerequisites).
 
-## Scaffold Gradle
+Create a new project directory called "hello-world-tutorial", or something similar.
 
-First, we need a new project directory. Create one called "hello-world-tutorial", or something similar.
-
-You can scaffold Gradle from the terminal or from within IntelliJ.
+You can scaffold a new Gradle project from the terminal or from within IntelliJ.
 
 **Terminal:**
 
@@ -34,12 +36,12 @@ Change your working directory to the one created for the project and follow Grad
 Open IntelliJ and create a new Gradle project by following Step 1 of the [Getting started with Gradle guide](https://www.jetbrains.com/help/idea/getting-started-with-gradle.html#create_project). When you get to the step where you name the project, use
 "helloworldapp" and make sure you choose the "hello-world-tutorial" directory as the project location. It will take a few moments to complete.
 
-## Project dependencies
+## ![](/img/docs/block.png) &nbsp;&nbsp; Project dependencies
 
-Once Gradle has finished scaffolding you will need to customize the project dependencies. To do this, open the build.gradle file that is in the root of your project. Add the following lines to the dependencies section while replacing {version} with the most recent version listed on the [Temporal SDK Maven repository page](https://search.maven.org/artifact/io.temporal/temporal-sdk):
+Once Gradle has finished scaffolding you will need to customize the project dependencies. To do this, open the build.gradle file that is in the root of your project and add the following lines to the dependencies section. If you want to try using different versions of dependencies, you can find them on [search.maven.org](https://search.maven.org/) ([Temporal SDK versions](https://search.maven.org/artifact/io.temporal/temporal-sdk)):
 
-<!-- SNIPSTART hello-world-project-template-java-gradle-dependencies -->
-<!-- SNIPEND -->
+<!--SNIPSTART hello-world-project-template-java-gradle-dependencies-->
+<!--SNIPEND-->
 
 - `com.google.guava:guava` offers a suit of core and expanded libraries that Gradle uses.
 - `io.temporal:temporal-sdk` enables communication with the Temporal server.
@@ -47,115 +49,166 @@ Once Gradle has finished scaffolding you will need to customize the project depe
 
 A "refresh" icon will appear on the screen, click it to load the changes. Gradle will rebuild with the dependencies.
 
-To limit the logging output from the SDK, within src/main/resources create a logback.xml file and paste in the following XML:
+To limit the logging output from the SDK, within src/main/resources/ create a logback.xml file and paste in the following XML:
 
 <!--SNIPSTART hello-world-project-template-java-logback-dependency-configuration-->
 <!--SNIPEND-->
 
-## The helloworldapp
+## ![](/img/docs/apps.png) &nbsp;&nbsp; "Hello World!" app
 
-Now we are ready to build our Temporal Workflow application.
+Now we are ready to build our Temporal Workflow application. Our app will consist of four pieces:
 
-Within src/main/java/helloworldapp create the following files:
+1. An Activity: An Activity is just a function, in this case an object method, that contains your business logic. Ours will simply format some text and return it.
+2. A Workflow: Workflows are functions that organize Activity method calls. Our Workflow will have a single entry method which calls the Activity object method.
+3. A Worker: Workers host the Activity and Workflow code and execute the code piece by piece.
+4. An initiator: To start a Workflow, we must send a signal to the Temporal server that tells it to track the state of the Workflow. We will write a separate function to do this.
 
-- HelloWorldActivity.java
-- HelloWorldActivityImpl.java
-- HelloWorldWorkflow.java
-- HelloWorldWorkflowImpl.java
-- HelloWorldStarter.java
-- HelloWorldWorker.java
-
-The following code snippets can be copied and pasted directly into your Java files. However, make sure that the first line of each file specifies the package name:
-
-```java
-package helloworld;
-```
+All of the files for our application will be created in src/main/java/helloworldapp/. Gradle will have generated a default App.java class in that location. Remove it before proceeding.
 
 ### Activity
 
-First, let's define our Activity. Activities are meant to handle non-deterministic code that could result in unexpected results or errors. But for this tutorial all we are doing is taking a string, appending it to "Hello", and returning it back to the Workflow.
+First, let's define our Activity object and its method. Activities are meant to handle non-deterministic code that could result in unexpected results or errors. But for this tutorial all we are doing is taking a string, appending it to "Hello", and returning it back to the Workflow.
 
-Open HelloWorldActivity.java and define the Activity interface:
+An Activity object is defined like any other object in Java. You need an interface and an implementation. The only difference is that the interface includes Temporal decorators. Let's create a `Format` object with a `composeGreeting()` method.
 
-<!--SNIPSTART java-hello-world-sample-activity-interface-->
+Create Format.java and add the following interface definition:
+
+<!--SNIPSTART hello-world-project-template-java-activity-interface-->
+<!--SNIPEND-->
+
+Create FormatImpl.java and define the implementation of the Format interface:
+
+<!--SNIPSTART hello-world-project-template-java-activity-->
 <!--SNIPEND-->
 
 ### Workflow
 
-A Workflow is a special function that organizes the sequence of Activity executions. Opposed to an Activity, a Workflow is deterministic in nature. It is where you can specify Activity options, such as what to do if the Activity results in an error or when to time out the Activity execution. Since our Activity is just formatting strings we will only specify the required timeout.
+Next is our Workflow. Workflow functions are where you configure and organize the execution of Activity functions. Again, the Workflow object is defined like any other, except the interface includes Temporal decorators. Our Workflow has just a single entry method which calls the `composeGreeting()` Activity method and returns the result.
 
-Open HelloWorldWorkflow.java and define the Workflow interface:
+Create HelloWorldWorkflow.java and define the Workflow interface:
 
-<!--SNIPSTART java-hello-world-sample-workflow-interface-->
+<!--SNIPSTART hello-world-project-template-java-workflow-interface-->
 <!--SNIPEND-->
 
-Open HelloWorldWorkflowImpl.java and define the Workflow:
+Create HelloWorldWorkflowImpl.java and define the Workflow:
 
-<!--SNIPSTART java-hello-world-sample-workflow-->
+<!--SNIPSTART hello-world-project-template-java-workflow-->
 <!--SNIPEND-->
 
-### Starter
+### Task Queue
 
-There are two ways to start a Workflow, either via the CLI or via a starter program. In this tutorial we will start our Workflow by invoking it with a starter program.
+Task Queues are how the Temporal server supplies information to Workers. When you start a Workflow, you tell the server which Task Queue the Workflow and/or Activities use as an information queue. We will configure our Worker to listen to the same Task Queue that our Workflow and Activities use. Since the Task Queue name is used by multiple things, let's create Shared.java and define our Task Queue name there:
 
-Open HelloWorldStarter.java and paste in the following code:
-
-<!--SNIPSTART java-hello-world-sample-workflow-starter-->
+<!--SNIPSTART hello-world-project-template-java-shared-constants-->
 <!--SNIPEND-->
-
-In the code above, we are creating a Temporal client and using it to host the Workflow with the Temporal server. Said another way, this starter program is sending the Workflow to the Temporal server where it will be broken into Tasks. The Tasks will be sent to the Task Queue that we supplied in the Workflow options.
 
 ### Worker
 
-A Worker is the process that will actually execute the Workflow and Activity functions as Tasks.
+Our Worker hosts Workflow and Activity functions and executes them one at a time. The Worker is instructed to execute the specific functions via information it gets from the Task Queue, and after execution, it communicates results back to the server.
 
-Open HelloWorldWorker.java and paste in the following code:
+Create HelloWorldWorker.java and define the Worker:
 
-<!--SNIPSTART java-hello-world-sample-worker-->
+<!--SNIPSTART hello-world-project-template-java-workflow-initiator-->
 <!--SNIPEND-->
 
-In this function we are creating a Temporal client and using it to create a new Worker. The Worker is registered to handle both HellowWorldWorkflow and HelloWorldActivity Tasks and is configured to listen to the same Task Queue that the Workflow and Activity Tasks are sent to.
+### Workflow initiator
 
-## Run "Hello World!" app
+There are two ways to start a Workflow, via the Temporal CLI or Temporal SDK. In this tutorial we will use the SDK to start the Workflow which is how most Workflows are started in live environments.
+
+Create InitiateHelloWorld.java and use the SDK to define the start of the Workflow:
+
+<!--SNIPSTART hello-world-project-template-java-workflow-initiator-->
+<!--SNIPEND-->
+
+##  ![](/img/docs/check.png) &nbsp;&nbsp; Test the app
+
+Let's add a simple unit test to our application to make sure things are working as expected. Test code lives in src/test/java/helloworldapp. Gradle will have generated a default AppTest.java in that location. Remove that file and replace it with HelloWorldWorkflowTest.java that contains the following code:
+
+<!--SNIPSTART hello-world-project-template-java-workflow-test-->
+<!--SNIPEND-->
+
+**Terminal**
+
+From the root of the project, run this command:
+
+```
+./gradlew test
+```
+
+**IntelliJ**
+
+From within IntelliJ, right click on HelloWorldWorkflowTest and select Run.
+
+Look for "BUILD SUCCESSFUL" in the output to confirm.
+
+## ![](/img/docs/running.png) &nbsp;&nbsp; Run the app
 
 At this stage you should have the Temporal server running in a terminal, have the [Temporal Web UI](localhost:8088) open in your browser, and have a project package directory that looks like this:
 
 ```
 src/main/java/helloworld/
-  - HelloWorldActivity
-  - HelloWorldActivityImpl
-  - HelloWorldStarter
+  - Format
+  - FormatImpl
+  - InitiateHelloWorld
   - HelloWorldWorker
   - HelloWorldWorkflow
   - HelloWorldWorkflowImpl
 ```
 
-Within IntelliJ, right click on HelloWorldStarter and select Run. This will open a terminal inside of IntelliJ which compiles and executes the starter program.
+An optional step is to add tasks to the build.gradle file so that you can run the main methods from the terminal.
 
-To verify that the Workflow is running, visit the Web UI in your browser and click on the "Workflows" tab. You will see your Workflow listed there with a "running" status. Click on the RunID to see additional details, such as the payload that is being provided to it.
+<!--SNIPSTART hello-world-project-template-java-gradle-tasks-->
+<!--SNIPEND-->
 
-To actually execute the Workflow and Activity functions, we need to run the Worker. The Worker, once running, will immediately start polling the Task Queue for Tasks. Since we only have one Workflow with one Activity, then the Worker will pick these up in their respective order and actually execute the functions, returning the output to the Workflow starter process.
+You can start the Workflow and the Worker in any order. If you use the terminal run each command from separate terminal windows.
 
-Right click on HelloWorldWorker and select Run. Another terminal will open inside of IntelliJ and you will see the Worker log each step it is taking. Since our Workflow is very simple it will finish executing the Workflow and Activity Tasks very quickly. Switch back to the starter terminal to see "Hello World!" printed to the console.
+### Start Worker
 
-Congratulations you have successfully run a Temporal Workflow!
+**Terminal**
 
-## Lore check
+From the project root, run this command:
 
-Let's see what you have learned.
+```
+./gradlew startWorker
+```
 
-**Q**: Which function type is meant to handle non-deterministic (error prone) code?
+**IntelliJ**
 
-**A**: Activities are functions that are meant to handle non-deterministic code such as handling API calls.
+Within IntelliJ, right click on HelloWorldWorker and select Run.
 
-**Q**: Which function type organizes the execution of non-deterministic code?
+### Start Workflow
 
-**A**: Workflows are functions that organize the execution of Activities, and where you can specify timeout and retry policies for them.
+**Terminal**
 
-**Q**: What needs to be done in code to pair Activity and Workflow Tasks with a Worker?
+From the project root, run this command:
 
-**A**: Provide the same Task Queue name to the Activity, Workflow, and Worker. The Worker must also be registered to handle the specific Activity and Workflow.
+```
+./gradlew sayHello
+```
 
-**Q**: How can you view the details of a Workflow that has not yet completed?
+**IntelliJ**
 
-**A**: One way is to open the [Temporal Web UI](localhost:8088) and click on the RunID of the Workflow.
+Within IntelliJ, right click on InitiateHelloWorld and select Run.
+
+<img class="docs-image-centered docs-image-max-width-20" src={require('../static/img/docs/confetti.png').default} />
+
+**Congratulations** you have successfully built a Temporal application from scratch!
+
+## ![](/img/docs/wisdom.png) &nbsp;&nbsp; Lore check
+
+Great work! You now know how to build a Temporal Workflow application using the Java SDK and Gradle. Let's do a quick review to make sure you remember some fo the more important pieces.
+
+![One](/img/docs/one.png) &nbsp;&nbsp; **What are the minimum four pieces of a Temporal Workflow application?**
+
+1. An Activity object and method.
+2. A Workflow object and method.
+3. A Worker to host the Activity and Workflow code.
+4. A function to start the Workflow.
+
+![Two](/img/docs/two.png) &nbsp;&nbsp; **How does the Temporal server get information to the Worker?**
+
+It puts information into a Task Queue.
+
+![Three](/img/docs/three.png) &nbsp;&nbsp; **What makes Temporal Activity and Workflow objects different from any other Java object?**
+
+The only difference is the interfaces have Temporal decorators.
