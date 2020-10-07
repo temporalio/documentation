@@ -78,6 +78,7 @@ module.exports = {
         'java-sdk-tutorial-prerequisites',
         'java-run-your-first-app',
         'java-hello-world',
+        'java-quick-start',
         'java-workflow-interface',
         'java-implementing-workflows',
         'java-starting-workflow-executions',
