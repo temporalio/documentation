@@ -18,7 +18,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 <!--truncate-->
 
-**Latest Release at Time of Writing:** V1.0.0
+**Latest Release at Time of Writing:** v1.0.0
 
 Hey Temporal community, I hope you've got your socks on because this isn't a typical transparency report. I am extremely happy to announce that we have officially reached stability which means that Temporal V1 production release is now available.
 
