@@ -41,6 +41,9 @@ Setting environment variables for repeated parameters can shorten the CLI comman
 
 - **TEMPORAL_CLI_ADDRESS** - host:port for Temporal frontend service, the default is for the local server
 - **TEMPORAL_CLI_NAMESPACE** - default workflow namespace, so you don't need to specify `--namespace`
+- **TEMPORAL_CLI_TLS_CA** - path to server Certificate Authority certificate file
+- **TEMPORAL_CLI_TLS_CERT** - path to public x509 certificate file for mutual TLS authentication
+- **TEMPORAL_CLI_TLS_KEY** - path to private key file for mutual TLS authentication
 
 ## Quick Start
 
@@ -315,3 +318,15 @@ Then use this command to tell Temporal to auto-reset all workflows impacted by t
 ```
 
 As you add the bad binary checksum to your namespace, Temporal will not dispatch any decision tasks to the bad binary. So make sure that you have rolled back to a good deployment(or roll out new bits with bug fixes). Otherwise your workflow can't make any progress after auto-reset.
+
+#### Secure connection to Temporal cluster
+
+`tctl` supports optional Transport Level Security (TLS) for secure communication with Temporal, authentication of the server, and authentication of the client (mutual TLS).
+
+`--tls_ca_path=<certificate file path>` command line argument that passes a certificate authority (CA) certificate for the validating server that `tctl` is connecting to.
+
+`--tls_cert_path=<certificate file path>` command line argument that passes a certificate for the server to validate the client (`tctl`) identity. Requires that `--tls_key_path` is also provided.
+
+`--tls_key_path=<private key file path>` command line argument that passes a private key for secure communication with the server. Requires that `--tls_key_path` is also provided.
+
+TLS command line arguments can be provided via their respective environment variables to shorten the command line.
