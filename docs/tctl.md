@@ -323,7 +323,7 @@ As you add the bad binary checksum to your namespace, Temporal will not dispatch
 
 `tctl` supports optional Transport Level Security (TLS) for secure communication with Temporal, authentication of the server, and authentication of the client (mutual TLS).
 
-`--tls_ca_path=<certificate file path>` command line argument allows to pass a certificate authority (CA) certificate for validating server `tctl` is connecting to.
+`--tls_ca_path=<certificate file path>` command line argument that passes a certificate authority (CA) certificate for the validating server that `tctl` is connecting to.
 
 `--tls_cert_path=<certificate file path>` command line argument that passes a certificate for the server to validate the client (`tctl`) identity. Requires that `--tls_key_path` is also provided.
 
