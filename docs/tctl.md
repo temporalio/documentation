@@ -329,4 +329,4 @@ As you add the bad binary checksum to your namespace, Temporal will not dispatch
 
 `--tls_key_path=<private key file path>` command line argument that passes a private key for secure communication with the server. Requires that `--tls_key_path` is also provided.
 
-TLS command line arguments can be provided via their respective environment variable to shorten the command line.
+TLS command line arguments can be provided via their respective environment variables to shorten the command line.
