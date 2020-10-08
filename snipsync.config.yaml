@@ -4,6 +4,6 @@ origins:
     ref: 28a0eef72ffab7e29901242063ea66561404937d
   - owner: temporalio
     repo: hello-world-project-template-java
-    ref: 33cdefbf8898275a9446ea449cfc365e3f120543
+    ref: 36145d28d5dade98b54ec11057a3296cdd52cbde
 
 target: docs
