@@ -23,9 +23,9 @@ Let's run our first Temporal Workflow application and forever change the way you
 
 ## ![](/img/docs/repair-tools.png) &nbsp;&nbsp; Project setup
 
-Before starting, make sure you have looked over the [tutorial prerequisites](/docs/go-sdk-tutorial-prerequisites) setup.
+Before starting, make sure you have looked over the [tutorial prerequisites](/docs/go-sdk-tutorial-prerequisites).
 
-This tutorial uses a fully working template application. You can get the ['Go project template'](https://github.com/temporalio/transfer-money-project-template-go) by downloading it as a [zip](https://github.com/temporalio/transfer-money-project-template-go/archive/main.zip) or by [creating a new repository](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-from-a-template#creating-a-repository-from-a-template) in your own Github account and then cloning the repo to the location of your choice. Look for the "Use this template" button:
+This tutorial uses a fully working template application. You can get the [Go project template](https://github.com/temporalio/transfer-money-project-template-go) by downloading it as a [zip](https://github.com/temporalio/transfer-money-project-template-go/archive/main.zip) or by [creating a new repository](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-from-a-template#creating-a-repository-from-a-template) in your own Github account and then cloning the repo to the location of your choice. Look for the "Use this template" button:
 
 Once you have it locally, open your terminal in the project's root directory. You are ready to go.
 
