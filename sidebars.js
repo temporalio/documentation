@@ -49,6 +49,8 @@ module.exports = {
       collapsed: true,
       label: 'Go SDK',
       items: [
+        'go-sdk-tutorial-prerequisites',
+        'go-run-your-first-app',
         'go-quick-start',
         'go-sdk-video-tutorial',
         'go-workers',
