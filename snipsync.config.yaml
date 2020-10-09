@@ -7,6 +7,6 @@ origins:
     ref: 36145d28d5dade98b54ec11057a3296cdd52cbde
   - owner: temporalio
     repo: money-transfer-project-template-go
-    ref: 938e6a7ac87bd09feba19dfddf8e82b4936e3beb
+    ref: f4a81efd8922a721ea1190f90dfe8cb13e99e1f4
 
 target: docs
