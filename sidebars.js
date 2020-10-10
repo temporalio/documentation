@@ -51,7 +51,7 @@ module.exports = {
       items: [
         'go-sdk-tutorial-prerequisites',
         'go-run-your-first-app',
-        'go-quick-start',
+        'go-hello-world',
         'go-sdk-video-tutorial',
         'go-workers',
         'go-create-workflows',
