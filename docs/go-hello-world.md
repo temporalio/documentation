@@ -1,8 +1,8 @@
 ---
-id: java-hello-world
+id: go-hello-world
 title: Build a Temporal "Hello World!" app from scratch
 sidebar_label: Build "Hello World!" app
-tags: helloworld, java, sdk, intellij, gradle, tutorial
+tags: helloworld, go, sdk, tutorial
 ---
 
 You're taking the next step in your journey towards building better apps!
