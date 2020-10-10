@@ -6,13 +6,13 @@ module.exports = {
   url: 'https://docs.temporal.io',
   baseUrl: '/',
   onBrokenLinks: 'warn',
-  favicon: 'img/favicon.svg',
+  favicon: 'img/white-icon.png',
   organizationName: 'temporalio', // Usually your GitHub org/user name.
   projectName: 'temporal-documentation-legacy-v2', // Usually your repo name.
   themeConfig: {
     colorMode: {
       // "light" | "dark"
-      defaultMode: 'dark',
+      defaultMode: 'light',
     },
     prism: {
       theme: require('prism-react-renderer/themes/github'),
@@ -20,10 +20,9 @@ module.exports = {
     },
     navbar: {
       hideOnScroll: true,
-      title: 'Temporal',
       logo: {
         alt: 'Temporal logo',
-        src: 'img/favicon.svg',
+        src: 'img/temporal-logo.svg',
       },
       items: [
         {
