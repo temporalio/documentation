@@ -11,8 +11,8 @@ module.exports = {
   projectName: 'temporal-documentation-legacy-v2', // Usually your repo name.
   themeConfig: {
     colorMode: {
-      // "light" | "dark"
-      defaultMode: 'light',
+      defaultMode: 'dark',
+      disableSwitch: true,
     },
     prism: {
       theme: require('prism-react-renderer/themes/github'),
