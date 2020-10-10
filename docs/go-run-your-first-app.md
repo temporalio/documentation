@@ -25,7 +25,7 @@ Let's run our first Temporal Workflow application and forever change the way you
 
 Before starting, make sure you have looked over the [tutorial prerequisites](/docs/go-sdk-tutorial-prerequisites).
 
-This tutorial uses a fully working template application. You can get the [Go project template](https://github.com/temporalio/transfer-money-project-template-go) by downloading it as a [zip](https://github.com/temporalio/transfer-money-project-template-go/archive/main.zip) or by [creating a new repository](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-from-a-template#creating-a-repository-from-a-template) in your own Github account and then cloning the repo to the location of your choice. Look for the "Use this template" button:
+This tutorial uses a fully working template application. You can get the [Go project template](https://github.com/temporalio/money-transfer-project-template-go) by downloading it as a [zip](https://github.com/temporalio/money-transfer-project-template-go/archive/main.zip) or by [creating a new repository](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-from-a-template#creating-a-repository-from-a-template) in your own Github account and then cloning the repo to the location of your choice. Look for the "Use this template" button:
 
 Once you have it locally, open your terminal in the project's root directory. You are ready to go.
 
@@ -46,7 +46,7 @@ Here's a high-level illustration of what's happening:
 
 When you "start" a Workflow you are basically telling the Temporal server, "track the state of the Workflow with this signature". Workers will execute the Workflow code below, piece by piece, relaying the execution events and results back to the server.
 
-<!--SNIPSTART transfer-money-project-template-go-workflow-->
+<!--SNIPSTART money-transfer-project-template-go-workflow-->
 <!--SNIPEND-->
 
 ### Initiate transfer
@@ -59,7 +59,7 @@ go run start/main.go
 
 There are two ways to start a Workflow with Temporal, either via the SDK or via the [CLI](/docs/tctl). For this tutorial we used the SDK to start the Workflow, which is how most Workflows would be started in a live environment. Here is the code we just ran to do that:
 
-<!--SNIPSTART transfer-money-project-template-go-start-workflow-->
+<!--SNIPSTART money-transfer-project-template-go-start-workflow-->
 <!--SNIPEND-->
 
 The call to the Temporal server can be done synchronously or asynchronously. Here we do it asynchronously, so you will see the program run, tell you the transaction is processing, and exit.
@@ -82,12 +82,12 @@ It seems that our Workflow is "running", but why hasn't the Workflow and Activit
 
 A Worker is responsible for executing pieces of Workflow and Activity code, and it knows which piece to execute from Tasks that it gets from the one or more Task Queues that it listens to. After The Worker executes code, it returns the results back to the Temporal server. This is what our Worker looks like:
 
-<!--SNIPSTART transfer-money-project-template-go-worker-->
+<!--SNIPSTART money-transfer-project-template-go-worker-->
 <!--SNIPEND-->
 
 Notice that the Worker listens to the same Task Queue that the Workflow and Activity tasks are sent to. This is called "Task routing", and is a built-in mechanism for load balancing.
 
-<!--SNIPSTART transfer-money-project-template-go-shared-task-queue-->
+<!--SNIPSTART money-transfer-project-template-go-shared-task-queue-->
 <!--SNIPEND-->
 
 It's time to start start the Worker. Run worker/main.go from the project root using the following command:
@@ -121,7 +121,7 @@ Your Workflow is still there!
 
 Next let's simulate a bug in the `Deposit()` Activity function. Let your Workflow continue to run. Open the activity.go file and switch out the comments on the return statements such that the `Deposit()` function returns an error:
 
-<!--SNIPSTART transfer-money-project-template-go-activity-->
+<!--SNIPSTART money-transfer-project-template-go-activity-->
 <!--SNIPEND-->
 
 Save it and run the Worker. The Worker completes the `Withdraw()` Activity function, but throws the error when it attempts the `Deposit()` Activity function. Notice how the Worker keeps retrying the `Deposit()` function? To view information of what is happening, visit the [UI](localhost:8088) and click on the RunId of the Workflow. You will see the pending Activity listed there with details such as its state, the number of times it has been attempted, and the next scheduled attempt.
