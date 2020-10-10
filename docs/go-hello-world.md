@@ -96,7 +96,7 @@ Let's add a simple unit test to our application to make sure things are working 
 <!--SNIPSTART hello-world-project-template-go-workflow-test-->
 <!--SNIPEND-->
 
-Test the app with this command:
+Run this command from the project root to execute the unit tests:
 
 ```
 go test
