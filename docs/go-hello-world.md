@@ -23,7 +23,7 @@ All of the code in this tutorial is available in the [hello-world Go template re
 
 Before starting, make sure you have looked over the [tutorial prerequisites](/docs/go-sdk-tutorial-prerequisites).
 
-In a terminal, create a new project directory called "hello-world-project", or something similar and cd into it.
+In a terminal, create a new project directory named "hello-world-project", or something similar and cd into it.
 
 From the root of your new project directory, initialize a new Go module:
 
@@ -41,14 +41,14 @@ go get go.temporal.io/sdk@latest
 
 Now we are ready to build our Temporal Workflow application. Our app will consist of four pieces:
 
-1. An Activity: An Activity is just a function, that contains your business logic. Ours will simply format some text and return it.
+1. An Activity: An Activity is just a function that contains your business logic. Ours will simply format some text and return it.
 2. A Workflow: Workflows are functions that organize Activity method calls. Our Workflow will orchestrate the call of a single Activity function.
 3. A Worker: Workers host the Activity and Workflow code and execute the code piece by piece.
-4. An initiator: To start a Workflow, we must send a signal to the Temporal server that tells it to track the state of the Workflow. We will write a separate function to do this.
+4. An initiator: To start a Workflow, we must send a signal to the Temporal server to tell it to track the state of the Workflow. We'll write a separate function to do this.
 
 ### Activity
 
-First, let's define our Activity function which is just like any other function in Go. Activities are meant to handle non-deterministic code that could result in unexpected results or errors. But for this tutorial all we are doing is taking a string, appending it to "Hello", and returning it back to the Workflow.
+First, let's define our Activity function which is just like any other function in Go. Activities are meant to handle non-deterministic code that could result in an error. But for this tutorial all we are doing is taking a string, appending it to "Hello", and returning it back to the Workflow.
 
 Create activity.go and add the following code:
 
@@ -73,7 +73,7 @@ Task Queues are how the Temporal server supplies information to Workers. When yo
 
 ### Worker
 
-Our Worker hosts Workflow and Activity functions and executes them one at a time. The Worker is instructed to execute the specific functions via information it gets from the Task Queue, and after execution, it communicates results back to the server.
+Our Worker hosts Workflow and Activity functions and executes them one at a time. The Worker is instructed to execute a specific function via information it pulls from the Task Queue. After it runs the code, it communicates the results back to the server.
 
 Create worker/main.go and add the following code:
 
@@ -104,19 +104,7 @@ go test
 
 ## ![](/img/docs/running.png) &nbsp;&nbsp; Run the app
 
-At this stage you should have the Temporal server running in a terminal and have a project directory that has the following:
-
-```
-hello-world-project/
-  - start/main.go
-  - worker/main.go
-  - activity.go
-  - shared.go
-  - workflow.go
-  - workflow_test.go
-```
-
-You can start the Workflow and the Worker in any order, but run each command from separate terminal windows.
+To run the app we need to start the Workflow and the Worker. You can start them in any order, but run each command from a separate terminal window.
 
 To start the Worker run this command from the project root:
 
@@ -143,11 +131,11 @@ Great work! You now know how to build a Temporal Workflow application using the 
 1. An Activity function.
 2. A Workflow function.
 3. A Worker to host the Activity and Workflow code.
-4. A function to start the Workflow.
+4. A frontend to start the Workflow.
 
 ![Two](/img/docs/two.png) &nbsp;&nbsp; **How does the Temporal server get information to the Worker?**
 
-It puts information into a Task Queue.
+It adds the information to a Task Queue.
 
 ![Three](/img/docs/three.png) &nbsp;&nbsp; **True or false, Temporal Activity and Workflow functions are just normal Go functions?**
 
