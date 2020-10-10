@@ -10,8 +10,8 @@ Temporal reimagines state-dependent service-orchestrated application development
 
 Ready to build? [Install the Temporal server](/docs/install-temporal-server/) and choose your SDK.
 
-- [Go SDK](/docs/go-quick-start/)
-- [Java SDK](/docs/java-quick-start/)
+- [Go SDK](/docs/go-run-your-first-app/)
+- [Java SDK](/docs/java-run-your-first-app/)
 
 [Other SDKs](/docs/other-sdks) are in the works, please get in touch.
 
