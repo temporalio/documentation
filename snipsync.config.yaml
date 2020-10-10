@@ -8,5 +8,8 @@ origins:
   - owner: temporalio
     repo: money-transfer-project-template-go
     ref: 7a512d04d39f85e2241fd6b8225634ee1ba218da
+  - owner: temporalio
+    repo: hello-world-project-template-go
+    ref: e125da67ff723e770e172a0a0f4f6b30508b5472
 
 target: docs
