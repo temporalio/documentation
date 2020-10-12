@@ -5,6 +5,7 @@ tags:
   - Checkr
   - microservice-orchestration
   - microservices
+  - case study
 posted_on_: 2020-10-15T15:06:09Z
 id: how-temporal-simplified-checkr-workflows
 title: 'How Temporal simplified Checkr workflows'
