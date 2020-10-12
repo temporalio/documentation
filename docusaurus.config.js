@@ -37,6 +37,11 @@ module.exports = {
           position: 'right',
         },
         {
+          to: 'blog/tags/case-study',
+          label: 'Case Studies',
+          position: 'right',
+        },
+        {
           href: 'https://community.temporal.io/',
           label: 'Support',
           position: 'right',

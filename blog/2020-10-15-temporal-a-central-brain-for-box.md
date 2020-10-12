@@ -5,6 +5,7 @@ tags:
   - Box
   - microservice-orchestration
   - microservices
+  - case study
 posted_on_: 2020-10-15T23:06:09Z
 id: Temporal a central brain for Box
 title: 'Temporal a central brain for Box'
