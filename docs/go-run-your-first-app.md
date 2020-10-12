@@ -8,7 +8,7 @@ Welcome to the evolution of application development!
 
 This is a tutorial for developers who are new to [Temporal](/docs/overview) and have some basic knowledge of Go. We recommend setting aside ~20 minutes to complete it. By following this tutorial, you will achieve a few things:
 
-- Complete several runs of a Temporal Workflow application using the Temporal server and [Go SDK](https://github.com/temporalio/java-sdk).
+- Complete several runs of a Temporal Workflow application using the Temporal server and [Go SDK](https://github.com/temporalio/go-sdk).
 - Practice accessing and using the visibility of the Workflow's state.
 - Understand the inherent reliability of Workflow functions.
 - Learn many of Temporal's core terminology and concepts.
@@ -19,7 +19,11 @@ The Temporal server and corresponding SDK provide a comprehensive solution to th
 
 Think of Temporal as a sort of "cure all" for the pains you experience as a developer when trying to build reliable applications. Temporal provides reliability primitives right out of the box, such as seamless and fault tolerant application state tracking, automatic retries, timeouts, rollbacks due to process failures, and more.
 
-Let's run our first Temporal Workflow application and forever change the way you approach application development.
+Let's run our first Temporal Workflow application and forever change the way you approach application development. You can also follow along via our video walk through:
+
+import { ResponsivePlayer } from '../src/components'
+
+<ResponsivePlayer url='https://www.youtube.com/watch?v=aUUhFAupUbk' />
 
 ## ![](/img/docs/repair-tools.png) &nbsp;&nbsp; Project setup
 
@@ -27,7 +31,7 @@ Before starting, make sure you have looked over the [tutorial prerequisites](/do
 
 This tutorial uses a fully working template application. You can get the [Go project template](https://github.com/temporalio/money-transfer-project-template-go) by downloading it as a [zip](https://github.com/temporalio/money-transfer-project-template-go/archive/main.zip) or by [creating a new repository](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-from-a-template#creating-a-repository-from-a-template) in your own Github account and then cloning the repo to the location of your choice. Look for the "Use this template" button:
 
-Once you have it locally, open your terminal in the project's root directory. You are ready to go.
+Make sure you use the same repository name in your own Github account so that you don't have to make changes to the Go module name when you clone it. Once you have it, open your terminal in the project's root directory. You are ready to go.
 
 ## ![](/img/docs/workflow.png) &nbsp;&nbsp; Application overview
 
@@ -80,7 +84,7 @@ It seems that our Workflow is "running", but why hasn't the Workflow and Activit
 
 ### The Worker
 
-A Worker is responsible for executing pieces of Workflow and Activity code, and it knows which piece to execute from Tasks that it gets from the one or more Task Queues that it listens to. After The Worker executes code, it returns the results back to the Temporal server. This is what our Worker looks like:
+A Worker is responsible for executing pieces of Workflow and Activity code, and it knows which piece to execute from Tasks that it gets from the Task Queue that it listens to. After The Worker executes code, it returns the results back to the Temporal server. This is what our Worker looks like:
 
 <!--SNIPSTART money-transfer-project-template-go-worker-->
 <!--SNIPEND-->

@@ -6,7 +6,7 @@ sidebar_label: Run your first app
 
 Welcome to the evolution of application development!
 
-This is a tutorial for developers who are new to [Temporal](/docs/overview) and have some basic knowledge of Java. We recommend setting aside ~20 minutes to complete it. You will achieve a few things by following this tutorial:
+This is a tutorial for developers who are new to [Temporal](/docs/overview) and have some basic knowledge of Java. We recommend setting aside ~20 minutes to complete it. By following this tutorial, you will achieve a few things:
 
 - Complete several runs of a Temporal Workflow application using the Temporal server and [ Java SDK](https://github.com/temporalio/java-sdk).
 - Practice accessing and using the visibility of the Workflow's state.
@@ -88,7 +88,7 @@ It seems that our Workflow is "running", but why hasn't the Workflow and Activit
 
 ### The Worker
 
-A Worker is responsible for executing pieces of Workflow and Activity code, and it knows which piece to execute from Tasks that it gets from the one or more Task Queues that it listens to. After The Worker executes code, it returns the results back to the Temporal server. This is what our Worker looks like:
+A Worker is responsible for executing pieces of Workflow and Activity code, and it knows which piece to execute from Tasks that it gets from the Task Queue that it listens to. After The Worker executes code, it returns the results back to the Temporal server. This is what our Worker looks like:
 
 <!--SNIPSTART money-transfer-project-template-java-worker-->
 <!--SNIPEND-->
