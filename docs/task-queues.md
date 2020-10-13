@@ -24,4 +24,4 @@ There are multiple advantages of using a Task Queue to deliver Tasks instead of 
 - Task Queues support server side throttling. This allows you to limit the Task dispatch rate to the pool of Workers and still supports adding a Task with a higher rate when spikes happen.
 - Task Queues can be used to route a request to specific pools of Workers or even a specific process.
 
-All Workers processing from a given Task Queue should have identical registration of Activities/Workflows with the exception of during upgrade, where it is okay to temporarily have them be misaligned while your binary rolls out
+All Workers processing from a given Task Queue should have identical registration of Activities/Workflows, with the exception being during upgrades where it is okay to temporarily have them misaligned while your binary rolls out.
