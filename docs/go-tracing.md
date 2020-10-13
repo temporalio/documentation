@@ -9,22 +9,22 @@ The Go SDK provides support for distributed tracing through [OpenTracing](https:
 Tracing can be configured by providing an [opentracing.Tracer](https://pkg.go.dev/github.com/opentracing/opentracing-go#Tracer)
 implementation in [ClientOptions](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientOptions) during client instantiation.
 
-Tracing allows you to view the call graph of a workflow along with its activities, child workflows etc.
+Tracing allows you to view the call graph of a Workflow along with its Activities, child Workflows etc.
 For more details on how to configure and leverage tracing, see the [OpenTracing documentation](https://opentracing.io/docs/getting-started/).
 The OpenTracing support has been validated using [Jaeger](https://www.jaegertracing.io/), but other implementations mentioned [here](https://opentracing.io/docs/supported-tracers/) should also work. Tracing functionality utilizes generic context propagation provided by the client.
 
 ## Context Propagation
 
-Temporal provides a standard way to propagate custom context across a workflow.
+Temporal provides a standard way to propagate custom context across a Workflow.
 [ClientOptions](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientOptions) support configuring a context propagator.
 The context propagator extracts and passes on information present in the `context.Context`
-and `workflow.Context` objects across the workflow.
+and `workflow.Context` objects across the Workflow.
 Once a context propagator is configured, you should be able to access the required values in the context objects as you would normally do in Go.
 You can see how the Go SDK implements a [tracing context propagator](https://github.com/temporalio/sdk-go/blob/master/internal/tracer.go).
 
 ### Server-Side Headers
 
-On the server side, Temporal provides a mechanism for propagating context across workflow transitions called headers.
+On the server side, Temporal provides a mechanism for propagating context across Workflow transitions called headers.
 
 ```proto
 message Header {
@@ -56,7 +56,7 @@ type HeaderReader interface {
 
 ### Context Propagators
 
-You can propagate additional context through workflow execution by using a context propagator.
+You can propagate additional context through Workflow execution by using a context propagator.
 A context propagator needs to implement the `ContextPropagator` interface that includes the following four methods:
 
 ```go
@@ -81,7 +81,7 @@ The [tracing context propagator](https://github.com/temporalio/temporal-go-sdk/b
 ### Is there a complete example?
 
 The [context propagation sample](https://github.com/temporalio/samples-go/blob/master/ctxpropagation/)
-configures a custom context propagator and shows context propagation of custom keys across a workflow and an activity.
+configures a custom context propagator and shows context propagation of custom keys across a Workflow and an Activity.
 It also uses Jaeger for tracing.
 
 ### Can I configure multiple context propagators?

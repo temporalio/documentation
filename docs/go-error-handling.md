@@ -3,19 +3,19 @@ id: go-error-handling
 title: Error Handling
 ---
 
-An activity, or a child workflow, might fail, and you could handle errors differently based on the different
+An Activity, or a child Workflow, might fail, and you could handle errors differently based on the different
 error cases.
 
-If the activity returns an error as `errors.New()` or `fmt.Errorf()`, that error will
+If the Activity returns an error as `errors.New()` or `fmt.Errorf()`, that error will
 be converted to `*temporal.ApplicationError` and wrapped inside `*temporal.ActivityTaskError` or `*temporal.ChildWorkflowExecutionError`.
 
-If the activity returns an error as `temporal.NewRetryableApplicationError("error message", details)`, that error will be returned as `*temporal.ApplicationError`.
+If the Activity returns an error as `temporal.NewRetryableApplicationError("error message", details)`, that error will be returned as `*temporal.ApplicationError`.
 
 There are other types of errors such as `*temporal.TimeoutError`, `*temporal.CanceledError` and
 `*temporal.PanicError`.
 Following is an example of what your error code might look like:
 
-Here's an example of handling activity errors within workflow code that differentiates between different error types.
+Here's an example of handling Activity errors within Workflow code that differentiates between different error types.
 
 ```go
 err := workflow.ExecuteActivity(ctx, MyActivity, ...).Get(ctx, nil)
@@ -25,18 +25,18 @@ if err != nil {
 		// retrieve error message
 		fmt.Println(applicationError.Error())
 
-		// handle activity errors (created via NewApplicationError() API)
-		var detailMsg string // assuming activity return error by NewApplicationError("message", true, "string details")
+		// handle Activity errors (created via NewApplicationError() API)
+		var detailMsg string // assuming Activity return error by NewApplicationError("message", true, "string details")
 		applicationErr.Details(&detailMsg) // extract strong typed details
 
-		// handle activity errors (errors created other than using NewApplicationError() API)
+		// handle Activity errors (errors created other than using NewApplicationError() API)
 		switch err.OriginalType() {
 		case "CustomErrTypeA":
 			// handle CustomErrTypeA
 		case CustomErrTypeB:
 			// handle CustomErrTypeB
 		default:
-			// newer version of activity could return new errors that workflow was not aware of.
+			// newer version of Activity could return new errors that Workflow was not aware of.
 		}
 	}
 
