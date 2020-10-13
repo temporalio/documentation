@@ -72,7 +72,7 @@ Setting environment variables for repeated parameters can shorten the CLI comman
 
 ### Workflow operation examples
 
-The following examples assume the TEMPORAL_CLI_NAMESPACE environment variable is set.
+The following examples assume the `TEMPORAL_CLI_NAMESPACE` environment variable is set.
 
 #### Run workflow
 
@@ -113,8 +113,8 @@ and takes a string as input with the `-i '"temporal"'` parameter. Single quotes 
 # view help messages for workflow start
 ./tctl workflow start -h
 
-# for a workflow with multiple inputs, separate each json with space/newline like
-./tctl workflow start --tq hello-world --wt WorkflowWith3Args --et 60 -i '"your_input_string" 123 {"Name":"my-string", "Age":12345}'
+# for a workflow with multiple inputs, provide a separate -i flag for each of them
+./tctl workflow start --tq hello-world --wt WorkflowWith3Args --et 60 -i '"your_input_string"' -i 'null' -i '{"Name":"my-string", "Age":12345}'
 ```
 
 The workflow `start` command is similar to the `run` command, but immediately returns the workflow_id and
