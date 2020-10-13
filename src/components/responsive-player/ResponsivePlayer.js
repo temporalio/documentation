@@ -13,6 +13,7 @@ function ResponsivePlayer({ url, loop, playing }) {
         playing={playing}
         width="100%"
         height="100%"
+        controls={true}
       />
     </div>
   );
