@@ -7,7 +7,7 @@ tags:
   - microservices
   - case study
 posted_on_: 2020-10-15T23:06:09Z
-id: Temporal a central brain for Box
+id: Temporal-a-central-brain-for-Box
 title: 'Temporal a central brain for Box'
 author: Ryland Goldstein
 author_title: Head of Product
