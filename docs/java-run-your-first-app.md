@@ -4,6 +4,8 @@ title: Run your first Temporal application with the Java SDK
 sidebar_label: Run your first app
 ---
 
+import { ResponsivePlayer } from '../src/components'
+
 Welcome to the evolution of application development!
 
 This is a tutorial for developers who are new to [Temporal](/docs/overview) and have some basic knowledge of Java. We recommend setting aside ~20 minutes to complete it. By following this tutorial, you will achieve a few things:
@@ -76,15 +78,11 @@ The call to the Temporal server can be done synchronously or asynchronously. Her
 
 OK, now it's time to check out one of the really cool value propositions offered by Temporal: application state visibility. Visit the [Temporal Web UI](localhost:8088) where you will see your Workflow listed.
 
-![Temporal web UI](/img/docs/temporal-web-ui-transfer-money-workflow.png)
-
 Next, click the "Run Id" for your Workflow. Now we can see everything we want to know about the execution of the Workflow code we told the server to track, such as what parameter values it was given, timeout configurations, scheduled retries, number of attempts, stack traceable errors, and more.
-
-![Money transfer empty poller list](/img/docs/web-ui-money-transfer-workflow-details.png)
 
 It seems that our Workflow is "running", but why hasn't the Workflow and Activity code executed yet? Investigate by clicking on the Task Queue name to view active "Pollers" registered to handle these Tasks. The list will be empty. There are no Workers polling the Task Queue!
 
-![Money transfer empty poller list](/img/docs/web-ui-empty-pollers.png)
+<ResponsivePlayer url='https://youtu.be/oUGf2D4kX3U' loop='true' playing='true'/>
 
 ### The Worker
 

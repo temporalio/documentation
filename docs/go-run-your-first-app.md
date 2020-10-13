@@ -3,6 +3,7 @@ id: go-run-your-first-app
 title: Run your first Temporal application with the Go SDK
 sidebar_label: Run your first app
 ---
+import { ResponsivePlayer } from '../src/components'
 
 Welcome to the evolution of application development!
 
@@ -20,8 +21,6 @@ The Temporal server and corresponding SDK provide a comprehensive solution to th
 Think of Temporal as a sort of "cure all" for the pains you experience as a developer when trying to build reliable applications. Temporal provides reliability primitives right out of the box, such as seamless and fault tolerant application state tracking, automatic retries, timeouts, rollbacks due to process failures, and more.
 
 Let's run our first Temporal Workflow application and forever change the way you approach application development. You can also follow along via our video walk through:
-
-import { ResponsivePlayer } from '../src/components'
 
 <ResponsivePlayer url='https://www.youtube.com/watch?v=aUUhFAupUbk' />
 
@@ -72,15 +71,11 @@ The call to the Temporal server can be done synchronously or asynchronously. Her
 
 OK, now it's time to check out one of the really cool value propositions offered by Temporal: application state visibility. Visit the [Temporal Web UI](localhost:8088) where you will see your Workflow listed.
 
-![Temporal web UI](/img/docs/temporal-web-ui-transfer-money-workflow.png)
-
 Next, click the "Run Id" for your Workflow. Now we can see everything we want to know about the execution of the Workflow code we told the server to track, such as what parameter values it was given, timeout configurations, scheduled retries, number of attempts, stack traceable errors, and more.
-
-![Web UI Workflow details](/img/docs/web-ui-money-transfer-workflow-details.png)
 
 It seems that our Workflow is "running", but why hasn't the Workflow and Activity code executed yet? Investigate by clicking on the Task Queue name to view active "Pollers" registered to handle these Tasks. The list will be empty. There are no Workers polling the Task Queue!
 
-![Money transfer empty poller list](/img/docs/web-ui-empty-pollers.png)
+<ResponsivePlayer url='https://youtu.be/oUGf2D4kX3U' loop='true' playing='true'/>
 
 ### The Worker
 
