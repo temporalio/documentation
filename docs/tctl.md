@@ -13,7 +13,7 @@ workflow, show workflow history, and signal workflow.
 The Temporal CLI can be used directly from the Docker Hub image _temporalio/tctl_ or by building the CLI tool
 locally.
 
-Example of using the docker image to describe a namespace2:
+Example of using the docker image to describe a namespace:
 
 ```
 docker run --rm temporalio/tctl:1.0.0 --namespace samples-namespace namespace describe
