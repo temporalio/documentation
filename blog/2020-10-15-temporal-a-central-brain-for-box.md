@@ -20,6 +20,8 @@ release_version: V1.0.0
 
 <!--truncate-->
 
+_This case study is based on an interview with [Steven Cipolla](https://www.linkedin.com/in/steven-cipolla-9aa02216/) who lead Temporal adoption within Box_
+
 Over the last decade, Box has become the defacto solution for enterprise file sharing and cloud content management. In order to stay on top of the competition, Box continuously searches for ways to improve their product architecture that will enable new features and improve the performance of existing functionality. As Box continued to scale, supporting larger customers with ever-growing storage demands, it needed to rework a critical part of its core architecture in a way that both enhanced the already great experience, and improve velocity for product teams to innovate quickly.
 
 ### **Problem**
