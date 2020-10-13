@@ -13,7 +13,11 @@ The usual approach to building such applications is a hodgepodge of stateless se
 databases, cron jobs, and queuing systems. This negatively impacts the developer productivity as most of the code is
 dedicated to plumbing, obscuring the actual business logic behind a myriad of low-level details. Such systems frequently have availability problems as it is hard to keep all the components healthy.
 
-The Temporal solution is a [_fault-oblivious stateful_ programming model](/docs/workflows/) that obscures most of the complexities of building scalable distributed applications. In essence, Temporal provides a durable virtual memory that is not
+<ResponsivePlayer url='https://www.youtube.com/watch?v=bc0qUobRhsw'/>
+
+<br />
+
+The Temporal solution is a [_fault-oblivious stateful_ programming model](/docs/workflows/) that hides most of the complexity behind building scalable distributed applications. In essence, Temporal provides a durable virtual memory that is not
 linked to a specific process, and preserves the full application state, including function stacks, with local variables across all sorts of host and software failures.
 This allows you to write code using the full power of a programming language while Temporal takes care of durability, availability, and scalability of the application.
 
@@ -32,12 +36,7 @@ are in production. [Python](https://github.com/firdaus/cadence-python) and
 
 The backend service is stateless and relies on a persistent store. Currently, Cassandra and MySQL stores
 are supported. An adapter to any other database that provides multi-row single shard transactions
-can be added. There are different service deployment models. At Uber, our team operates multitenant clusters
-that are shared by hundreds of applications.
-
-Watch Maxim's talk from the Uber Open Summit for an introduction to the Temporal programming model and value proposition.
-
-<ResponsivePlayer url='https://www.youtube.com/watch?v=llmsBGKOuWI' />
+can be added. There are different service deployment models.
 
 The GitHub repo for the Temporal server is [temporalio/temporal](https://github.com/temporalio/temporal). The docker
 image for the Temporal server is available on Docker Hub at
