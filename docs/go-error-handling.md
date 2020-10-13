@@ -3,12 +3,19 @@ id: go-error-handling
 title: Error Handling
 ---
 
-An activity, or child workflow, might fail, and you could handle errors differently based on different
-error cases. If the activity returns an error as `errors.New()` or `fmt.Errorf()`, those errors will
-be converted to `*temporal.ApplicationError` and wrapped inside `*temporal.ActivityTaskError` or `*temporal.ChildWorkflowExecutionError`. If the activity returns an error as
-`temporal.NewRetryableApplicationError("error message", details)`, that error will be returned as `*temporal.ApplicationError`.
+An activity, or a child workflow, might fail, and you could handle errors differently based on the different
+error cases.
+
+If the activity returns an error as `errors.New()` or `fmt.Errorf()`, that error will
+be converted to `*temporal.ApplicationError` and wrapped inside `*temporal.ActivityTaskError` or `*temporal.ChildWorkflowExecutionError`.
+
+If the activity returns an error as `temporal.NewRetryableApplicationError("error message", details)`, that error will be returned as `*temporal.ApplicationError`.
+
 There are other types of errors such as `*temporal.TimeoutError`, `*temporal.CanceledError` and
-`*temporal.PanicError`. Following is an example of what your error code might look like:
+`*temporal.PanicError`.
+Following is an example of what your error code might look like:
+
+Here's an example of handling activity errors within workflow code that differentiates between different error types.
 
 ```go
 err := workflow.ExecuteActivity(ctx, MyActivity, ...).Get(ctx, nil)
