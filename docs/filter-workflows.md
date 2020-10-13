@@ -31,7 +31,7 @@ type StartWorkflowOptions struct {
 }
 ```
 
-In the Java client, the _WorkflowOptions.Builder_ has similar methods for [memo](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setMemo-java.util.Map-) and [search attributes](https://www.javadoc.io/doc/com.uber.cadence/cadence-client/2.6.0/com/uber/cadence/client/WorkflowOptions.Builder.html#setSearchAttributes-java.util.Map-).
+In the Java client, the _WorkflowOptions.Builder_ has similar methods for [memo](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setMemo-java.util.Map-) and search attributes.
 
 Some important distinctions between memo and search attributes:
 
@@ -176,7 +176,7 @@ When performing a [ContinueAsNew](/docs/go-continue-as-new/) or using [Cron](/do
 
 ## Query Capabilities
 
-Query workflows by using a SQL-like where clause when [listing workflows from the CLI](/docs/tctl/#list-closed-or-open-workflow-executions) or using the list APIs ([Go](https://pkg.go.dev/go.temporal.io/sdk/client#Client), [Java](https://static.javadoc.io/com.uber.cadence/cadence-client/2.6.0/com/uber/cadence/WorkflowService.Iface.html#ListWorkflowExecutions-com.uber.cadence.ListWorkflowExecutionsRequest-)).
+Query workflows by using an SQL-like "Where" clause when [listing workflows from the CLI](/docs/tctl/#list-closed-or-open-workflow-executions) or using the list APIs.
 
 Note that you will only see workflows from one namespace when querying.
 

@@ -31,8 +31,7 @@ in development).
 
 The framework enables developers to author fault-oblivious code in familiar languages.
 ([Go](https://github.com/temporalio/temporal-go-sdk/) and [Java](https://github.com/temporalio/temporal-java-sdk)
-are in production. [Python](https://github.com/firdaus/cadence-python) and
-[C#](https://github.com/nforgeio/neonKUBE/tree/master/Lib/Neon.Cadence) are under development).
+are in production. Other SDKs are in development, check out their status [here](/docs/other-sdks).
 
 The backend service is stateless and relies on a persistent store. Currently, Cassandra and MySQL stores
 are supported. An adapter to any other database that provides multi-row single shard transactions
