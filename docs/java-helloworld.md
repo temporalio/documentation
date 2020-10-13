@@ -108,7 +108,7 @@ Our Worker hosts Workflow and Activity functions and executes them one at a time
 
 Create HelloWorldWorker.java and define the Worker:
 
-<!--SNIPSTART hello-world-project-template-java-workflow-initiator-->
+<!--SNIPSTART hello-world-project-template-java-worker-->
 <!--SNIPEND-->
 
 ### Workflow initiator
