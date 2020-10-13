@@ -12,7 +12,7 @@ Note that both types of workers as well as external clients are roles and can be
 
 ## Temporal Service
 
-![Temporal Overview](/img/docs/learn-topology-overview.png)
+![Temporal architecture](/img/docs/system-architecture.png)
 
 At the core of Temporal is a highly scalable multitentant service. The service exposes all its functionality through a strongly typed [Proto API](https://github.com/temporalio/temporal-proto/blob/master/workflowservice/service.proto).
 
@@ -22,7 +22,7 @@ Temporal service is responsible for keeping workflow state and associated durabl
 
 Temporal service is multitentant. Therefore it is expected that multiple pools of workers implementing different use cases connect to the same service instance. For example, at Uber a single service is used by more than a hundred applications. At the same time some external customers deploy an instance of Temporal service per application. For local development, a local Temporal service instance configured through docker-compose is used.
 
-![Temporal Overview](/img/docs/temporal-overview.svg)
+![Temporal Overview](/img/docs/system-architecture-2.png)
 
 ## Workflow Worker
 
