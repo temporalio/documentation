@@ -26,23 +26,21 @@ Temporal Server configuration is found in `development.yaml` and may contain the
 The `global` section contains process-wide configuration. See below for a minimal configuration (optional parameters are commented out.)
 
 ```yaml
-global:
-  membership: 
-    name: temporal
+#global:
+  #membership: 
     #maxJoinDuration: 30s
     #broadcastAddress: "127.0.0.1"
   #pprof:
     #port: 7936
   #tls:
-    #...
+    #... <see below>
 
 ```
 
-### membership - *required*
+### membership
 
 The `membership` section controls the following membership layer parameters:
 
-- `name` - *required* - used to identify other cluster members in the gossip ring. This must be the same for all nodes.
 - `maxJoinDuration` - The amount of time the service will attempt to join the gossip layer before failing.
 - `broadcastAddress` - Used as the address that is communicated to remote nodes to connect on. 
   - This is generally used when BindOnIP would be the same across several nodes (ie: 0.0.0.0) and for nat traversal scenarios. `net.ParseIP` controls the supported syntax. Note: Only IPV4 is supported.
@@ -69,13 +67,13 @@ global:
   tls:
     frontend:
       server:
-        certFile: /path/to/public/cert
-        keyFile: /path/to/private/cert
+        certFile: /path/to/cert/file
+        keyFile: /path/to/key/file
       client:
         serverName: dnsSanInFrontendCertificate
 ```
 
-Note, the `client` section generally needs to be provided to specify an expected DNS SubjectName contained in the presented server certificate via the `serverName` field; this is needed as Temporal uses IP to IP communication. You can avoid specifying this if your server certificates contain the appropriate IP Subject Alternative Names. 
+Note, the `client` section generally needs to be provided to specify an expected DNS SubjectName contained in the presented server certificate via the `serverName` field; this is needed as Temporal uses IP to IP communication. You can avoid specifying this if your server certificates contain the appropriate IP Subject Alternative Names.
 
 Additionally, the `rootCaFiles` field needs to be provided when the client's host does not trust the Root CA used by the server. The example below extends the above example to manually specify the Root CA used by the frontend services:
 
@@ -84,12 +82,12 @@ global:
   tls:
     frontend:
       server:
-        certFile: /path/to/public/cert
-        keyFile: /path/to/private/cert
+        certFile: /path/to/cert/file
+        keyFile: /path/to/key/file
       client:
         serverName: dnsSanInFrontendCertificate
         rootCaFiles:
-          - /path/to/frontend/server/ca
+          - /path/to/frontend/server/CA/files
 ```
 
 Below is an additional example of a fully secured cluster using mutual TLS for both frontend and internode communication with manually specified Cas:
@@ -99,8 +97,8 @@ global:
   tls:
     internode:
       server:
-        certFile: /path/to/internode/publicCert
-        keyFile: /path/to/internode/privCert
+        certFile: /path/to/internode/cert/file
+        keyFile: /path/to/internode/key/file
         requireClientAuth: true
         clientCaFiles:
           - /path/to/internode/serverCa
@@ -110,8 +108,8 @@ global:
           - /path/to/internode/serverCa
     frontend:
       server:
-        certFile: /path/to/frontend/publicCert
-        keyFile: /path/to/frontend/privCert
+        certFile: /path/to/frontend/cert/file
+        keyFile: /path/to/frontend/key/file
         requireClientAuth: true
         clientCaFiles:
           - /path/to/internode/serverCa
@@ -155,7 +153,7 @@ persistence:
 
 The following top level configuration items are required:
 
-- `numHistoryShards` - *required* - the number of history shards to create when initializing the cluster. 
+- `numHistoryShards` - *required* - the number of history shards to create when initializing the cluster.
   - **Warning**: This value is immutable and will be ignored after the first run. Please ensure you set this value appropriately high enough to scale with the worst case peak load for this cluster.
 - `defaultStore` - *required* - the name of the data store definition that should be used by the Temporal server.
 - `visibilityStore` - *required* - the name of the data store definition that should be used by the Temporal visibility server.
@@ -165,9 +163,9 @@ The following top level configuration items are required:
 
 A `cassandra` data store definition can contain the following values:
 
-- `hosts` - *required* - a csv of Cassandra endpoints.
+- `hosts` - *required* - "," separated Cassandra endpoints, e.g. "192.168.1.2,192.168.1.3,192.168.1.4".
 - `port` - default: 9042 - Cassandra port used for connection by `gocql` client.
-- `user` - Cassandra user used for authentication by `gocql` client.
+- `user` - Cassandra username used for authentication by `gocql` client.
 - `password` - Cassandra password used for authentication by `gocql` client.
 - `keyspace` - *required* -  the Cassandra keyspace.
 - `datacenter` - the data center filter arg for Cassandra.
@@ -176,22 +174,22 @@ A `cassandra` data store definition can contain the following values:
 
 A `sql` data store definition can contain the following values:
 
-- `user` - user used for authentication.
+- `user` - username used for authentication.
 - `password` - password used for authentication.
 - `pluginName` - *required* - SQL database type.
   - *Valid values*: `mysql` or `postgres`.
 - `databaseName` - *required* - the name of SQL database to connect to.
-- `connectAddr` - *required* - the remote addr of the database.
+- `connectAddr` - *required* - the remote address of the database, e.g. "192.168.1.2".
 - `connectProtocol` - *required* - the protocol that goes with the `connectAddr`
   - *Valid values*: `tcp` or `unix`
 - `connectAttributes` - a map of key-value attributes to be sent as part of connect `data_source_name` url.
 - `maxConns` - the max number of connections to this data store.
 - `maxIdleConns` - the max number of idle connections to this data store
 - `maxConnLifetime` - is the maximum time a connection can be alive.
-- `numShards` - number of storage shards to use for tables in a sharded sql database (*Default:* 1).
 - `tls` - See below.
 
 `tls` sections may contain:
+
 - `enabled` - *boolean*.
 - `serverName` - name of the server hosting the data store.
 - `certFile` - path to the cert file.
@@ -206,12 +204,14 @@ The `log` section is optional and contains the following possible values:
 
 - `stdout` - *boolean* - `true` if the output needs to go to standard out.
 - `level` - sets the logging level.
-    - *Valid values* - debug, info, warn, error or fatal.
+    - *Valid values* - debug, info, warn, error or fatal, default to info.
 - `outputFile` - path to output log file.
 
 ## clusterMetadata
 
 `clusterMetadata` contains all cluster definitions, including those which participate in cross DC.
+
+Design doc can be found [here](https://github.com/temporalio/temporal/blob/master/docs/design/2290-cadence-ndc.md)
 
 An example `clusterMetadata` section:
 ```yaml
@@ -230,11 +230,11 @@ clusterMetadata:
 ```
 - `currentClusterName` - *required* - the name of the current cluster. **Warning**: This value is immutable and will be ignored after the first run.
 - `enableGlobalNamespace` - *Default:* `false`.
-- `replicationConsumerConfig` - determines which method to use to consume replication tasks. The type may be either `kafka` or `rpc`.
+- `replicationConsumer` - determines which method to use to consume replication tasks. The type may be either `kafka` or `rpc`.
 - `failoverVersionIncrement` - the increment of each cluster version when failover happens.
 - `masterClusterName` - the master cluster name, only the master cluster can register/update namespace. All clusters can do namespace failover.
 - `clusterInformation` - contains a map of cluster names to `ClusterInformation` definitions. `ClusterInformation` sections consist of:
-  - `enabled` - *boolean*
+  - `enabled` - *boolean* - whether a remote cluster is enabled for replication.
   - `initialFailoverVersion`
   - `rpcAddress` - indicate the remote service address (host:port). Host can be DNS name. Use `dns:///` prefix to enable round-robin between IP address for DNS name.
 
@@ -266,14 +266,12 @@ There are two sections defined under each service heading:
 ### rpc - *required*
 `rpc` contains settings related to the way a service interacts with other services. The following values are supported:
 
-- `grpcPort` is the port  on which gRPC will listen.
+- `grpcPort` is the port on which gRPC will listen.
 - `membershipPort` - used by the membership listener.
-- `bindOnLocalHost` - uses `localhost` as the listener address.
+- `bindOnLocalHost` - whether uses `localhost` as the listener address.
 - `bindOnIP` - used to bind service on specific ip (eg. `0.0.0.0`) - check `net.ParseIP` for supported syntax, only IPv4 is supported, mutually exclusive with `BindOnLocalHost` option.
-- `disableLogging` - disables all logging for rpc.
-- `logLevel` - the desired log level.
 
-**Note**: Port values are currently expected to be consistent among role types across all hosts. 
+**Note**: Port values are currently expected to be consistent among role types across all hosts.
 
 ### metrics
 `metrics` contains configuration for the metrics subsystem keyed by provider name. There are three supported providers:
@@ -286,7 +284,7 @@ The `statsd` sections supports the following settings:
 
 - `hostPort` - the statsd server host:port.
 - `prefix` - specific prefix in reporting to `statsd`.
-- `flushInterval` - maximum interval for sending packets. (*Default* 1 second).
+- `flushInterval` - maximum interval for sending packets. (*Default* 300ms).
 - `flushBytes` - specifies the maximum UDP packet size you wish to send. (*Default* 1432 bytes).
 
 Additionally, metrics supports the following non-provider specific settings:
@@ -301,7 +299,7 @@ The `kafka` section describes the configuration needed to connect to all Kafka c
 - `clusters` - map of named `ClusterConfig` definitions, which describe the configuration for each Kafka cluster. A `ClusterConfig` definition contains a list of brokers using the configuration value `brokers`.
 - `topics` - map of topics to Kafka clusters.
 - `temporal-cluster-topics`- map of named `TopicList` definitions.
-- `applications` - map of named `TopicList` definitions.
+- `applications` - map of named `TopicList` definitions, this configuration is only used by ElasticSearch powered visibility, please see the example below.
 
 A `TopicList` definition describes the topic names for each cluster and contains the following required values:
 - `topic`
@@ -344,10 +342,16 @@ kafka:
     other:
       topic: other
       dlq-topic: other-dlq
+  applications:
+    visibility:
+      topic: cadence-visibility-dev
+      dlq-topic: cadence-visibility-dev-dlq
 ```
 
 ## publicClient 
-`publicClient` is a required section that contains a single value `hostPort` that is used to specify IPv4 address or DNS name and port to reach a frontend client.
+The `publicClient` a required section describing the configuration needed to for worker to connect to Temporal server for background server maintenance.
+
+- `hostPort` IPv4 host port or DNS name to reach Temporal frontend, [reference](https://github.com/grpc/grpc/blob/master/doc/naming.md)
 
 Example:
 ```yaml
