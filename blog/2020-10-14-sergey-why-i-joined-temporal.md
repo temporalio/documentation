@@ -11,7 +11,7 @@ title: 'Why I joined Temporal'
 author: Sergey Bykov
 author_title: Engineering
 author_image_url: https://avatars2.githubusercontent.com/u/8248806?s=460&v=4
-release_version: V1.0.0
+release_version: V1.1.0
 ---
 
 <!--truncate-->
