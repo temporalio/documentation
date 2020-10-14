@@ -129,10 +129,10 @@ Use option `--workflowidreusepolicy` or `--wrp` to configure the workflow id reu
 
 ```
 # use AllowDuplicateFailedOnly option to start a workflow
-./tctl workflow start --tq hello-world --wt Workflow --et 60 -i '"temporal"' --wid "<duplicated workflow id>" --wrp 0
+./tctl workflow start --tq hello-world --wt Workflow --et 60 -i '"temporal"' --wid "<duplicated workflow id>" --wrp AllowDuplicateFailedOnly
 
 # use AllowDuplicate option to run a workflow
-./tctl workflow run --tq hello-world --wt Workflow --et 60 -i '"temporal"' --wid "<duplicated workflow id>" --wrp 1
+./tctl workflow run --tq hello-world --wt Workflow --et 60 -i '"temporal"' --wid "<duplicated workflow id>" --wrp AllowDuplicate
 ```
 
 ##### Start a workflow with a memo
@@ -219,7 +219,7 @@ Canceling a running workflow execution will record a WorkflowExecutionCancelRequ
 #### Signal, cancel, terminate workflows as a batch job
 
 Batch job is based on List Workflow Query(**--query**). It supports signal, cancel and terminate as batch job type.
-For terminating workflows as batch job, it will terminte the children recursively.
+For terminating workflows as batch job, it will terminate the children recursively.
 
 Start a batch job(using signal as batch type):
 
@@ -243,7 +243,7 @@ tctl --ns samples-namespace wf batch list
 Describe the progress of a batch job:
 
 ```
-tctl --ns samples-namespace wf batch desc -jid <batch-job-id>
+tctl --ns samples-namespace batch desc -jid <batch-job-id>
 ```
 
 Terminate a batch job:
