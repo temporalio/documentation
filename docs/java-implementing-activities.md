@@ -41,7 +41,7 @@ public class FileProcessingActivitiesImpl implements FileProcessingActivities {
 
 ## Accessing Activity Info
 
-The [Activity](https://static.javadoc.io/com.uber.cadence/cadence-client/2.4.1/index.html?com/uber/cadence/activity/Activity.html)
+The [Activity](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/Activity.html)
 class provides static getters to access information about the workflow that invoked it. Note that this information is stored in a thread local variable. Therefore, calls to Activity accessors succeed only in the thread that invoked the activity function.
 
 ```java
@@ -69,7 +69,7 @@ and later a reply comes and is picked up by a different worker process. The whol
 as a single Temporal activity.
 
 To indicate that an activity should not be completed upon its method return, call `Activity.doNotCompleteOnReturn()` from the
-original activity thread. Then later, when replies come, complete the activity using [ActivityCompletionClient](https://static.javadoc.io/com.uber.cadence/cadence-client/2.4.1/index.html?com/uber/cadence/client/ActivityCompletionClient.html).
+original activity thread. Then later, when replies come, complete the activity using [ActivityCompletionClient](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/ActivityCompletionClient.html).
 To correlate activity invocation with completion, use either `TaskToken` or workflow and activity Ids.
 
 ```java
