@@ -20,7 +20,7 @@ release_version: V1.0.0
 
 <!--truncate-->
 
-Reliable crypto transactions at Coinbase
+_This case study is based on an interview with Anthony Dmitriyev who was a key player in Temporal* adoption within Box_
 
 Coinbase’s mission is to create an open financial system for the world. Finding a solution which allows you to innovate without additional risk is critical and why Coinbase began re-architecting their core transaction workload.
 
