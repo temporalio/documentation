@@ -20,7 +20,7 @@ The Temporal server and corresponding SDK provide a comprehensive solution to th
 
 Think of Temporal as a sort of "cure all" for the pains you experience as a developer when trying to build reliable applications. Temporal provides reliability primitives right out of the box, such as seamless and fault tolerant application state tracking, automatic retries, timeouts, rollbacks due to process failures, and more.
 
-Let's run our first Temporal Workflow application and forever change the way you approach application development. You can also follow along via our video walk through:
+Let's run our first Temporal Workflow application and forever change the way you approach application development. You can also follow along via our video walkthrough:
 
 <ResponsivePlayer url='https://www.youtube.com/watch?v=aUUhFAupUbk' />
 
