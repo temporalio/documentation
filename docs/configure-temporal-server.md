@@ -5,9 +5,9 @@ title: Configure Temporal
 
 Temporal Server configuration is found in `development.yaml` and may contain the following possible sections:
 
-- [**global**](#global) 
-- [**persistence**](#persistence) 
-- [**log**](#log) 
+- [**global**](#global)
+- [**persistence**](#persistence)
+- [**log**](#log)
 - [**clusterMetadata**](#clustermetadata)
 - [**services**](#services)
 - [**kafka**](#kafka)
@@ -27,7 +27,7 @@ The `global` section contains process-wide configuration. See below for a minima
 
 ```yaml
 #global:
-  #membership: 
+  #membership:
     #maxJoinDuration: 30s
     #broadcastAddress: "127.0.0.1"
   #pprof:
@@ -42,7 +42,7 @@ The `global` section contains process-wide configuration. See below for a minima
 The `membership` section controls the following membership layer parameters:
 
 - `maxJoinDuration` - The amount of time the service will attempt to join the gossip layer before failing.
-- `broadcastAddress` - Used as the address that is communicated to remote nodes to connect on. 
+- `broadcastAddress` - Used as the address that is communicated to remote nodes to connect on.
   - This is generally used when BindOnIP would be the same across several nodes (ie: 0.0.0.0) and for nat traversal scenarios. `net.ParseIP` controls the supported syntax. Note: Only IPV4 is supported.
 
 ### pprof
@@ -211,8 +211,6 @@ The `log` section is optional and contains the following possible values:
 
 `clusterMetadata` contains all cluster definitions, including those which participate in cross DC.
 
-Design doc can be found [here](https://github.com/temporalio/temporal/blob/master/docs/design/2290-cadence-ndc.md)
-
 An example `clusterMetadata` section:
 ```yaml
 clusterMetadata:
@@ -344,11 +342,11 @@ kafka:
       dlq-topic: other-dlq
   applications:
     visibility:
-      topic: cadence-visibility-dev
-      dlq-topic: cadence-visibility-dev-dlq
+      topic: temporal-visibility-dev
+      dlq-topic: temporal-visibility-dev-dlq
 ```
 
-## publicClient 
+## publicClient
 The `publicClient` a required section describing the configuration needed to for worker to connect to Temporal server for background server maintenance.
 
 - `hostPort` IPv4 host port or DNS name to reach Temporal frontend, [reference](https://github.com/grpc/grpc/blob/master/doc/naming.md)

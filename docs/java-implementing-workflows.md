@@ -40,7 +40,7 @@ Always do the following in the workflow implementation code:
   Pass it as an argument to a workflow function or use an activity to load it.
 
 Workflow method arguments and return values are serializable to a byte array using the provided
-[DataConverter](https://static.javadoc.io/com.uber.cadence/cadence-client/2.4.1/index.html?com/uber/cadence/converter/DataConverter.html)
+[DataConverter](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html)
 interface. The default implementation uses JSON serializer, but you can use any alternative serialization mechanism.
 
 The values passed to workflows through invocation parameters or returned through a result value are recorded in the execution history.

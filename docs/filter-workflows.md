@@ -94,7 +94,7 @@ Note that **Keyword** and **String** are concepts taken from Elasticsearch. Each
 
 For example, key RunId with value "2dd29ab7-2dd8-4668-83e0-89cae261cfb1"
 
-- as a **Keyword** will only be matched by RunId = "2dd29ab7-2dd8-4668-83e0-89cae261cfb1" (or in the future with [regular expressions](https://github.com/uber/cadence/issues/1137))
+- as a **Keyword** will only be matched by RunId = "2dd29ab7-2dd8-4668-83e0-89cae261cfb1"
 - as a **String** will be matched by RunId = "2dd8", which may cause unwanted matches
 
 **Note:** String type can not be used in Order By query.
@@ -176,7 +176,7 @@ When performing a [ContinueAsNew](/docs/go-continue-as-new/) or using [Cron](/do
 
 ## Query Capabilities
 
-Query workflows by using an SQL-like "Where" clause when [listing workflows from the CLI](/docs/tctl/#list-closed-or-open-workflow-executions) or using the list APIs.
+Query workflows by using an SQL-like "Where" clause when [listing workflows from the CLI](/docs/tctl/#list-closed-or-open-workflow-executions) or using the list APIs ([Go](https://pkg.go.dev/go.temporal.io/sdk/client#Client)).
 
 Note that you will only see workflows from one namespace when querying.
 

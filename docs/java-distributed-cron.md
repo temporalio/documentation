@@ -6,7 +6,7 @@ title: Distributed CRON
 It is relatively straightforward to turn any Temporal workflow into a Cron workflow. All you need
 is to supply a cron schedule when starting the workflow using the CronSchedule
 parameter of
-[StartWorkflowOptions](https://static.javadoc.io/com.uber.cadence/cadence-client/2.5.1/com/uber/cadence/client/WorkflowOptions.html).
+[StartWorkflowOptions](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.html).
 
 You can also start a workflow using the Temporal CLI with an optional cron schedule using the `--cron` argument.
 
