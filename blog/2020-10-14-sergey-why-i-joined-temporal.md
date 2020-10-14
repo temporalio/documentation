@@ -16,7 +16,6 @@ release_version: V1.1.0
 
 <!--truncate-->
 
-Why I joined Temporal
 I left Microsoft last month after a long and successful career. It's an understatement to say that most of my colleagues were surprised. What could possibly motivate me to leave the environment where I learned how the system works, built many relationships and knew how to make things happen? Not to mention the sizable amount of unvested stock.
 
 To answer this question, we have to travel back more than a decade. The year was 2009, and I had recently moved to Microsoft Research from the Online Services Division. I joined a newly established lab with a charter to explore the future of Cloud Computing (still relatively novel  at the time). More than joining the lab, I joined the project Orleans. A project that had a name, a 60,000-ft vision, and not a single line of written code. The vision was bold - to reimagine how cloud-scale application should be coded. At the time highly available high-performance scalable systems were only achievable by experts and Orleans wanted to make it something possible for every developer. The question was how to reduce the amount of complexity inherent in this space. We believed the answer was a new programming model, that changed how developers conceptualize applications, how they structure code and ultimately how they think about the problems they face.
