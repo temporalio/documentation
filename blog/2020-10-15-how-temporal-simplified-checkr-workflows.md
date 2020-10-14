@@ -55,7 +55,7 @@ And judged against key requirements:
 
 Going into the process, there was a strong belief that a DSL (Domain Specific Language - such as SQL) based workflow solution was going to be the best bet. After Checkr engineers prototyped some workflows in code with Temporal, they started to reconsider the need for a DSL. The short experiment had convinced them that understanding and testing workflows written as code was fundamentally easier than with a DSL.
 
-> After prototyping workflows in code using Temporal, we refocused our efforts towards that because of the easier understanding and testability of those workflows
+<blockquote>After prototyping workflows in code using Temporal, we refocused our efforts towards that because of the easier understanding and testability of those workflows</blockquote>
 
 **Migrating to Temporal:**
 
@@ -63,17 +63,17 @@ While Checkr was fairly confident in their choice to use Temporal, it wasn't pra
 
 In addition to migrating existing aspects of the pipeline, Checkr began encouraging engineers to build new features and flows with Temporal. Teams started to notice the increase in productivity and reliability that Temporal offers, and internal adoption grew rapidly. Today all new data sources used during background checks are implemented with Temporal. This is not a requirement but a choice by the Checkr developers.
 
-> All new data sources incorporated into our background checks are now done via Temporal, and more specifically by choice of the engineering team working on it.
+<blockquote>All new data sources incorporated into our background checks are now done via Temporal, and more specifically by choice of the engineering team working on it.</blockquote>
 
 **Looking back:**
 
 Since switching to Temporal, the way we think about the Checkr product has simplified and the happiness of developers has increased. Learning to model their problems as workflows and activities actually helped clarify the core product. Modeling things as workflows and activities makes inter-team sharing possible, meaning that code is continuously reused and not continuously reinvented.
 
-> Developer happiness has increased. Thinking about our problems in terms of workflows and activities has clarified our product and now allow us to share workflow components with different teams.
+<blockquote>Developer happiness has increased. Thinking about our problems in terms of workflows and activities has clarified our product and now allow us to share workflow components with different teams.</blockquote>
 
 The team has also noticed benefits from the switch that they never initially expected. Observability in both development and production has dramatically improved. Testing distributed parts of the system together not only became possible but enjoyable.
 
-> Being able to see step by step what is happening, what path a workflow took, is very valuable.
+<blockquote>Being able to see step by step what is happening, what path a workflow took, is very valuable.</blockquote>
 
 **Whats next:**
 
@@ -81,4 +81,4 @@ Developers at Checkr who use Temporal love the technology. Usage has grown outsi
 
 **Working with Temporal:**
 
-> Great, the team has been very helpful when we have questions, the slack community is very active and we've even been able to contribute to the project with thoughtful feedback.
+<blockquote>Great, the team has been very helpful when we have questions, the slack community is very active and we've even been able to contribute to the project with thoughtful feedback.</blockquote>
