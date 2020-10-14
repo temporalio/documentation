@@ -39,8 +39,8 @@ The example commands below will use `./tctl` for brevity.
 
 Setting environment variables for repeated parameters can shorten the CLI commands.
 
-- **TEMPORAL_CLI_ADDRESS** - host:port for Temporal frontend service, the default is for the local server
-- **TEMPORAL_CLI_NAMESPACE** - default workflow namespace, so you don't need to specify `--namespace`
+- **TEMPORAL_CLI_ADDRESS** - host and port for Temporal frontend service (default: `127.0.0.1:7233`)
+- **TEMPORAL_CLI_NAMESPACE** - workflow namespace, so you don't need to specify `--namespace` (default namespace: `default`)
 - **TEMPORAL_CLI_TLS_CA** - path to server Certificate Authority certificate file
 - **TEMPORAL_CLI_TLS_CERT** - path to public x509 certificate file for mutual TLS authentication
 - **TEMPORAL_CLI_TLS_KEY** - path to private key file for mutual TLS authentication
