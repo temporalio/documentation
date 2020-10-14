@@ -64,7 +64,7 @@ func (s *UnitTestSuite) Test_SimpleWorkflow_ActivityFails() {
         s.True(s.env.IsWorkflowCompleted())
 
         s.NotNil(s.env.GetWorkflowError())
-        _, ok := s.env.GetWorkflowError().(*cadence.GenericError)
+        _, ok := s.env.GetWorkflowError().(*error.GenericError)
         s.True(ok)
         s.Equal("SimpleActivityFailure", s.env.GetWorkflowError().Error())
 }
@@ -136,7 +136,7 @@ func (s *UnitTestSuite) Test_SimpleWorkflow_ActivityFails() {
         s.True(s.env.IsWorkflowCompleted())
 
         s.NotNil(s.env.GetWorkflowError())
-        _, ok := s.env.GetWorkflowError().(*cadence.GenericError)
+        _, ok := s.env.GetWorkflowError().(*error.GenericError)
         s.True(ok)
         s.Equal("SimpleActivityFailure", s.env.GetWorkflowError().Error())
 }
