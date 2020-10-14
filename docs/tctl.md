@@ -59,9 +59,9 @@ Setting environment variables for repeated parameters can shorten the CLI comman
 - Register a new namespace named "samples-namespace":
 
 ```
-./tctl --namespace samples-namespace namespace register --global_namespace false
+./tctl --namespace samples-namespace namespace register
 # OR using short alias
-./tctl --ns samples-namespace n re --gd false
+./tctl --ns samples-namespace n re
 ```
 
 - View "samples-namespace" details:
