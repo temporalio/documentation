@@ -6,7 +6,7 @@ module.exports = {
   url: 'https://docs.temporal.io',
   baseUrl: '/',
   onBrokenLinks: 'warn',
-  favicon: 'img/white-icon.png',
+  favicon: 'img/favicon.png',
   organizationName: 'temporalio', // Usually your GitHub org/user name.
   projectName: 'temporal-documentation-legacy-v2', // Usually your repo name.
   themeConfig: {
