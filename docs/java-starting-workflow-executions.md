@@ -18,7 +18,7 @@ There are two ways to start workflow execution: asynchronously and synchronously
 
 Asynchronous start initiates a workflow execution and immediately returns to the caller. This is the most common way to start workflows in production.
 
-Synchronous invocation starts a workflow and then waits for its completion. If the process (synchronous invocation) that started the workflow crashes or stops waiting, the workflow will continue execution. This is not very commonly found in production use.
+Synchronous invocation starts a workflow and then waits for its completion. The started workflow will not rely on the invocation process and will continue executing even if the process crashed or was stopped.
 
 Asynchronous start:
 ```java
