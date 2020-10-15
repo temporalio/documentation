@@ -7,8 +7,8 @@ Activity implementation is an implementation of an activity interface. A single 
 is shared across multiple simultaneous activity invocations. Therefore, the activity implementation code must be *thread safe*.
 
 The values passed to activities through invocation parameters or returned through a result value are recorded in the execution history.
-The entire execution history is transferred from the Temporal service to workflow workers when a workflow state needs to recover.
-A large execution history can thus adversely impact the performance of your workflow. Therefore, be mindful of the amount of data you transfer via activity invocation parameters or return values. Otherwise, no additional limitations exist on activity implementations.
+The entire execution history is transferred from the Temporal service to Workflow workers when a Workflow state needs to recover.
+A large execution history can thus adversely impact the performance of your Workflow. Therefore, be mindful of the amount of data you transfer via activity invocation parameters or return values. Otherwise, no additional limitations exist on activity implementations.
 
 ```java
 public class FileProcessingActivitiesImpl implements FileProcessingActivities {
@@ -42,7 +42,7 @@ public class FileProcessingActivitiesImpl implements FileProcessingActivities {
 ## Accessing Activity Info
 
 The [Activity](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/Activity.html)
-class provides static getters to access information about the workflow that invoked it. Note that this information is stored in a thread local variable. Therefore, calls to Activity accessors succeed only in the thread that invoked the activity function.
+class provides static getters to access information about the Workflow that invoked it. Note that this information is stored in a thread local variable. Therefore, calls to Activity accessors succeed only in the thread that invoked the activity function.
 
 ```java
 public class FileProcessingActivitiesImpl implements FileProcessingActivities {
@@ -70,7 +70,7 @@ as a single Temporal activity.
 
 To indicate that an activity should not be completed upon its method return, call `Activity.doNotCompleteOnReturn()` from the
 original activity thread. Then later, when replies come, complete the activity using [ActivityCompletionClient](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/ActivityCompletionClient.html).
-To correlate activity invocation with completion, use either `TaskToken` or workflow and activity Ids.
+To correlate activity invocation with completion, use either `TaskToken` or Workflow and activity Ids.
 
 ```java
 public class FileProcessingActivitiesImpl implements FileProcessingActivities {
@@ -100,7 +100,7 @@ When the download is complete, the download service potentially calls back from 
 Some activities are long running. To react to a crash quickly, use a heartbeat mechanism.
 The `Activity.heartbeat` function lets the Temporal service know that the activity is still alive. You can piggyback
 `details` on an activity heartbeat. If an activity times out, the last value of `details` is included
-in the `ActivityTimeoutException` delivered to a workflow. Then the workflow can pass the details to
+in the `ActivityTimeoutException` delivered to a Workflow. Then the Workflow can pass the details to
 the next activity invocation. This acts as a periodic checkpoint mechanism for the progress of an activity.
 ```java
 public class FileProcessingActivitiesImpl implements FileProcessingActivities {

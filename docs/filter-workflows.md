@@ -1,11 +1,11 @@
 ---
-id: filter-workflows
+id: filter-Workflows
 title: Filter Workflows
 ---
 
-Temporal supports creating workflows with customized key-value pairs, updating the information within the workflow code, and then listing/searching workflows with a SQL-like query. For example, you can create workflows with keys `city` and `age`, then search all workflows with `city = seattle and age > 22`.
+Temporal supports creating Workflows with customized key-value pairs, updating the information within the Workflow code, and then listing/searching Workflows with a SQL-like query. For example, you can create Workflows with keys `city` and `age`, then search all Workflows with `city = seattle and age > 22`.
 
-Also note that normal workflow properties like start time and workflow type can be queried as well. For example, the following query could be specified when [listing workflows from the CLI](/docs/tctl/#list-closed-or-open-workflow-executions) or using the list APIs ([Go](https://pkg.go.dev/go.temporal.io/sdk/client#Client))
+Also note that normal Workflow properties like start time and Workflow type can be queried as well. For example, the following query could be specified when [listing Workflows from the CLI](/docs/tctl/#list-closed-or-open-workflow-executions) or using the list APIs ([Go](https://pkg.go.dev/go.temporal.io/sdk/client#Client))
 
 ```sql
 WorkflowType = "main.Workflow" and Status != 0 and (StartTime > "2019-06-07T16:46:34-08:00" or CloseTime > "2019-06-07T16:46:34-08:00" order by StartTime desc)
@@ -13,7 +13,7 @@ WorkflowType = "main.Workflow" and Status != 0 and (StartTime > "2019-06-07T16:4
 
 ## Memo vs Search Attributes
 
-Temporal offers two methods for creating workflows with key-value pairs: memo and search attributes. Memo can only be provided on workflow start. Also, memo data are not indexed, and are therefore not searchable. Memo data are visible when listing workflows using the list APIs. Search attributes data are indexed so you can search workflows by querying on these attributes. However, search attributes require the use of Elasticsearch.
+Temporal offers two methods for creating Workflows with key-value pairs: memo and search attributes. Memo can only be provided on Workflow start. Also, memo data are not indexed, and are therefore not searchable. Memo data are visible when listing Workflows using the list APIs. Search attributes data are indexed so you can search Workflows by querying on these attributes. However, search attributes require the use of Elasticsearch.
 
 Memo and search attributes are available in the Go client in [StartWorkflowOptions](https://pkg.go.dev/go.temporal.io/sdk/internal#StartWorkflowOptions).
 
@@ -21,10 +21,10 @@ Memo and search attributes are available in the Go client in [StartWorkflowOptio
 type StartWorkflowOptions struct {
     // ...
 
-    // Memo - Optional non-indexed info that will be shown in list workflow.
+    // Memo - Optional non-indexed info that will be shown in list Workflow.
     Memo map[string]interface{}
 
-    // SearchAttributes - Optional indexed info that can be used in query of List/Scan/Count workflow APIs (only
+    // SearchAttributes - Optional indexed info that can be used in query of List/Scan/Count Workflow APIs (only
     // supported when Temporal server is using Elasticsearch). The key and value type must be registered on Temporal server side.
     // Use GetSearchAttributes API to get valid key and corresponding value type.
     SearchAttributes map[string]interface{}
@@ -125,19 +125,19 @@ Here are the Search Attribute value types and their correspondent Golang types:
 
 We recommend limiting the number of Elasticsearch indexes by enforcing limits on the following:
 
-- Number of keys: 100 per workflow
+- Number of keys: 100 per Workflow
 - Size of value: 2kb per value
-- Total size of key and values: 40kb per workflow
+- Total size of key and values: 40kb per Workflow
 
 Temporal reserves keys like NamespaceId, WorkflowId, and RunId. These can only be used in list queries. The values are not updatable.
 
 ### Upsert Search Attributes in Workflow
 
-[UpsertSearchAttributes](https://pkg.go.dev/go.temporal.io/sdk/workflow#UpsertSearchAttributes) is used to add or update search attributes from within the workflow code.
+[UpsertSearchAttributes](https://pkg.go.dev/go.temporal.io/sdk/workflow#UpsertSearchAttributes) is used to add or update search attributes from within the Workflow code.
 
 Go samples for search attributes can be found at [github.com/temporalio/temporal-go-samples](https://github.com/temporalio/temporal-go-samples/tree/master/searchattributes).
 
-UpsertSearchAttributes will merge attributes to the existing map in the workflow. Consider this example workflow code:
+UpsertSearchAttributes will merge attributes to the existing map in the Workflow. Consider this example Workflow code:
 
 ```go
 func MyWorkflow(ctx workflow.Context, input string) error {
@@ -166,7 +166,7 @@ map[string]interface{}{
 }
 ```
 
-There is no support for removing a field. To achieve a similar effect, set the field to a sentinel value. For example, to remove “CustomKeywordField”, update it to “impossibleVal”. Then searching `CustomKeywordField != ‘impossibleVal’` will match workflows with CustomKeywordField not equal to "impossibleVal", which **includes** workflows without the CustomKeywordField set.
+There is no support for removing a field. To achieve a similar effect, set the field to a sentinel value. For example, to remove “CustomKeywordField”, update it to “impossibleVal”. Then searching `CustomKeywordField != ‘impossibleVal’` will match Workflows with CustomKeywordField not equal to "impossibleVal", which **includes** Workflows without the CustomKeywordField set.
 
 Use `workflow.GetInfo` to get current search attributes.
 
@@ -176,9 +176,9 @@ When performing a [ContinueAsNew](/docs/go-continue-as-new/) or using [Cron](/do
 
 ## Query Capabilities
 
-Query workflows by using an SQL-like "Where" clause when [listing workflows from the CLI](/docs/tctl/#list-closed-or-open-workflow-executions) or using the list APIs ([Go](https://pkg.go.dev/go.temporal.io/sdk/client#Client)).
+Query Workflows by using an SQL-like "Where" clause when [listing Workflows from the CLI](/docs/tctl/#list-closed-or-open-workflow-executions) or using the list APIs ([Go](https://pkg.go.dev/go.temporal.io/sdk/client#Client)).
 
-Note that you will only see workflows from one namespace when querying.
+Note that you will only see Workflows from one namespace when querying.
 
 ### Supported Operators
 
@@ -224,12 +224,12 @@ There are some special considerations for these attributes:
   - 6 = continuedasnew
   - 7 = timedout
 - StartTime, CloseTime and ExecutionTime are stored as INT, but support queries using both EpochTime in nanoseconds, and string in RFC3339 format (ex. "2006-01-02T15:04:05+07:00")
-- CloseTime, HistoryLength are only present in closed workflow
-- ExecutionTime is for Retry/Cron user to query a workflow that will run in the future
+- CloseTime, HistoryLength are only present in closed Workflow
+- ExecutionTime is for Retry/Cron user to query a Workflow that will run in the future
 
-To list only open workflows, add `CloseTime = missing` to the end of the query.
+To list only open Workflows, add `CloseTime = missing` to the end of the query.
 
-If you use retry or the cron feature to query workflows that will start execution in a certain time range, you can add predicates on ExecutionTime. For example: `ExecutionTime > 2019-01-01T10:00:00-07:00`. Note that if predicates on ExecutionTime are included, only cron or a workflow that needs to retry will be returned.
+If you use retry or the cron feature to query Workflows that will start execution in a certain time range, you can add predicates on ExecutionTime. For example: `ExecutionTime > 2019-01-01T10:00:00-07:00`. Note that if predicates on ExecutionTime are included, only cron or a Workflow that needs to retry will be returned.
 
 ### General Notes About Queries
 
@@ -237,9 +237,9 @@ If you use retry or the cron feature to query workflows that will start executio
 - Range query on Temporal timestamp (StartTime, CloseTime, ExecutionTime) cannot be larger than 9223372036854775807 (maxInt64 - 1001)
 - Query by time range will have 1ms resolution
 - Query column names are case sensitive
-- ListWorkflow may take longer when retrieving a large number of workflows (10M+)
-- To retrieve a large number of workflows without caring about order, use the ScanWorkflow API
-- To efficiently count the number of workflows, use the CountWorkflow API
+- ListWorkflow may take longer when retrieving a large number of Workflows (10M+)
+- To retrieve a large number of Workflows without caring about order, use the ScanWorkflow API
+- To efficiently count the number of Workflows, use the CountWorkflow API
 
 ## Tools Support
 
@@ -263,7 +263,7 @@ tctl --ns samples-namespace wf list -q '(CustomKeywordField = "keyword1" and Cus
 tctl --ns samples-namespace wf list -q 'CustomKeywordField in ("keyword2", "keyword1") and CustomIntField >= 5 and CloseTime between "2018-06-07T16:16:36-08:00" and "2019-06-07T16:46:34-08:00" order by CustomDatetimeField desc' -psa
 ```
 
-To list only open workflows, add `CloseTime = missing` to the end of the query.
+To list only open Workflows, add `CloseTime = missing` to the end of the query.
 
 Note that queries can support more than one type of filter:
 
@@ -288,4 +288,4 @@ Queries are supported in [Temporal Web](https://github.com/temporalio/temporal-w
 5. Register a local namespace and start using it. `tctl --ns samples-namespace n re`
 6. Allow list search attributes. `tctl --ns namespace adm cl asa --search_attr_key NewKey --search_attr_type 1`
 
-Note: starting a workflow with search attributes but without Elasticsearch will succeed as normal, but will not be searchable and will not be shown in list results.
+Note: starting a Workflow with search attributes but without Elasticsearch will succeed as normal, but will not be searchable and will not be shown in list results.

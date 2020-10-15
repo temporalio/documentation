@@ -15,8 +15,8 @@ it is serializable.
 
 The values passed to activities through invocation parameters or returned through the result value
 are recorded in the execution history. The entire execution history is transferred from the Temporal
-service to workflow workers with every event that the workflow logic needs to process. A large execution
-history can thus adversely impact the performance of your workflow. Therefore, be mindful of the amount
+service to Workflow workers with every event that the Workflow logic needs to process. A large execution
+history can thus adversely impact the performance of your Workflow. Therefore, be mindful of the amount
 of data you transfer via activity invocation parameters or return values. Otherwise, no additional
 limitations exist on activity implementations.
 
@@ -101,7 +101,7 @@ the activity.
 
 #### Cancellation
 
-When an activity is cancelled, or its workflow execution has completed or failed, the context passed
+When an activity is cancelled, or its Workflow execution has completed or failed, the context passed
 into its function is cancelled, which sets its channel’s closed state to `Done`. An activity can use that
 to perform any necessary cleanup and abort its execution. Cancellation is only delivered to activities
 that call `RecordActivityHeartbeat`.

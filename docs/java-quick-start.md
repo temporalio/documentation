@@ -3,7 +3,7 @@ id: java-quick-start
 title: Quick Start
 ---
 
-This topic helps you install the Temporal server and implement a workflow.
+This topic helps you install the Temporal server and implement a Workflow.
 
 ## Install Temporal Server Locally
 
@@ -75,7 +75,7 @@ Also add the following logback.xml config file somewhere in your classpath (for 
 Let's add `HelloWorldImpl` with the `sayHello` method that just logs the "Hello ..." and returns.
 
 ```java
-import io.temporal.workflow.Workflow;
+import io.temporal.Workflow.Workflow;
 import io.temporal.workflow.WorkflowInterface;
 import io.temporal.workflow.WorkflowMethod;
 import org.slf4j.Logger;
@@ -100,7 +100,7 @@ public class GettingStarted {
 }
 ```
 
-To link the workflow implementation to the Temporal framework, it should be registered with a worker that connects to
+To link the Workflow implementation to the Temporal framework, it should be registered with a worker that connects to
 a Temporal Service. By default the worker connects to the locally running Temporal service.
 
 ```java
@@ -113,7 +113,7 @@ public class HelloWorker {
     public static void main(String[] args) {
         // gRPC stubs wrapper that talks to the local docker instance of temporal service.
         WorkflowServiceStubs service = WorkflowServiceStubs.newInstance();
-        // client that can be used to start and signal workflows
+        // client that can be used to start and signal Workflows
         WorkflowClient client = WorkflowClient.newInstance(service);
         // worker factory that can be used to create workers for specific task queues
         WorkerFactory factory = WorkerFactory.newInstance(client);
@@ -134,7 +134,7 @@ Now run the worker program. Following is an example log:
 18:39:45.676 [main] INFO  io.temporal.internal.worker.Poller - start(): Poller{options=PollerOptions{maximumPollRateIntervalMilliseconds=1000, maximumPollRatePerSecond=0.0, pollBackoffCoefficient=2.0, pollBackoffInitialInterval=PT0.1S, pollBackoffMaximumInterval=PT1M, pollThreadCount=1, pollThreadNamePrefix='null'}, identity=95963a78-641d-434b-841e-a2efe7f8a19f}
 ```
 
-No Hello printed. This is expected because a worker is just a workflow code host. The workflow has to be started to execute. Let's use Temporal CLI to start the workflow:
+No Hello printed. This is expected because a worker is just a Workflow code host. The Workflow has to be started to execute. Let's use Temporal CLI to start the Workflow:
 
 ```bash
 docker run --network=host --rm temporalio/tctl:1.0.0 workflow run --taskqueue HelloWorldTaskQueue --workflow_type HelloWorld --execution_timeout 3600 --input \"World\"
@@ -169,7 +169,7 @@ The last line of output in the HelloWorker's log should now be:
 18:40:28.354 [workflow-1029765531] INFO  main - Hello World!
 ```
 
-Let's start another workflow execution:
+Let's start another Workflow execution:
 
 ```bash
 docker run --network=host --rm temporalio/tctl:1.0.0 workflow run --taskqueue HelloWorldTaskQueue --workflow_type HelloWorld --execution_timeout 3600 --input \"Temporal\"
@@ -184,7 +184,7 @@ The last two lines of output in the HelloWorker's log should now be:
 
 ### List Workflows and Workflow History
 
-Let's list our workflows in the CLI:
+Let's list our Workflows in the CLI:
 
 ```bash
 docker run --network=host --rm temporalio/tctl:1.0.0 workflow list
@@ -197,7 +197,7 @@ CLI output should be similar to:
   HelloWorld    | d58237c9-2ae7-4e17-9cbd-311beeedfbe2 | 7a948e0b-0b0a-4aea-9457-994821c7f7be | HelloWorldTaskQueue | 20:40:12   | 20:40:12       | 20:40:12
 ```
 
-Now let's look at the workflow execution history more closely:
+Now let's look at the Workflow execution history more closely:
 
 ```bash
 docker run --network=host --rm temporalio/tctl:1.0.0 workflow showid 08c0259f-c1d5-41d9-b51f-8c70c203ccca
@@ -228,13 +228,13 @@ CLI output:
                                   WorkflowTaskCompletedEventId:4}
 ```
 
-Even for such a trivial workflow, the history gives a lot of useful information about all steps that were executed and their inputs. 
-For complex workflows this is a really useful tool for production and development troubleshooting. 
+Even for such a trivial Workflow, the history gives a lot of useful information about all steps that were executed and their inputs.
+For complex Workflows this is a really useful tool for production and development troubleshooting.
 
 ### Workflow Id Uniqueness
 
-Before proceeding to a more complex workflow implementation, let's take a look at the workflow Id semantic.
-When starting a workflow without providing an Id, the client generates one in the form of a UUID. In most real-life scenarios this is not a desired behavior. The business Id should be used instead. Here, we'll specify the Id when starting a workflow:
+Before proceeding to a more complex Workflow implementation, let's take a look at the Workflow Id semantic.
+When starting a Workflow without providing an Id, the client generates one in the form of a UUID. In most real-life scenarios this is not a desired behavior. The business Id should be used instead. Here, we'll specify the Id when starting a Workflow:
 
 ```bash
 docker run --network=host --rm temporalio/tctl:1.0.0 workflow start  --workflow_id "HelloTemporal1" --taskqueue HelloWorldTaskQueue --workflow_type HelloWorld --execution_timeout 3600 --input \"Temporal\"
@@ -259,7 +259,7 @@ CLI output:
   HelloWorld_sayHello | HelloTemporal1        | 78ca0a3f-8cd2-46a2-8d23-076c3f0f187c | 01:47:24   | 01:47:24       | 01:47:25
 ```
 
-After the previous workflow completes, let's try to start another one with the same Id:
+After the previous Workflow completes, let's try to start another one with the same Id:
 
 ```bash
 docker run --network=host --rm temporalio/tctl:1.0.0 workflow start  --workflow_id "HelloTemporal1" --taskqueue HelloWorldTaskQueue --workflow_type HelloWorld --execution_timeout 3600 --input \"Temporal\"
@@ -271,7 +271,7 @@ Output:
 Started Workflow Id: HelloTemporal1, run Id: 9b5e36a3-9868-4de5-bbdf-eda9cedcd865
 ```
 
-After the second start list workflows with:
+After the second start list Workflows with:
 
 ```bash
 docker run --network=host --rm temporalio/tctl:1.0.0 workflow list
@@ -285,9 +285,9 @@ CLI output:
   HelloWorld    | HelloTemporal1                       | a90989f0-e629-46c8-9dbd-f7e6c374ceea | HelloWorldTaskQueue | 20:43:36   | 20:43:36       | 20:43:36
 ```
 
-As you can see Workflow Id can be reused while system-generated Run Id uniquely identifies a particular execution of a workflow. 
+As you can see Workflow Id can be reused while system-generated Run Id uniquely identifies a particular execution of a Workflow.
 
-Note - Under no circumstances does Temporal allow more than one instance of an open workflow with the same Id. Multiple workflow Ids are required in the case that paralell invocations wish to be supported (such as an Actor patern)
+Note - Under no circumstances does Temporal allow more than one instance of an open Workflow with the same Id. Multiple Workflow Ids are required in the case that paralell invocations wish to be supported (such as an Actor patern)
 
 ### CLI Help
 
@@ -301,7 +301,7 @@ CLI output:
 
 ```text
 NAME:
-   tctl workflow start - start a new workflow execution
+   tctl workflow start - start a new Workflow execution
 
 USAGE:
    tctl workflow start [command options] [arguments...]
@@ -312,7 +312,7 @@ OPTIONS:
    --workflow_type value, --wt value           WorkflowTypeName
    --execution_timeout value, --et value       Execution start to close timeout in seconds (default: 0)
    --workflow_task_timeout value, --wtt value  Workflow task start to close timeout in seconds (default: 10)
-   --cron value                                Optional cron schedule for the workflow. Cron spec is as following:
+   --cron value                                Optional cron schedule for the Workflow. Cron spec is as following:
                                                ┌───────────── minute (0 - 59)
                                                │ ┌───────────── hour (0 - 23)
                                                │ │ ┌───────────── day of the month (1 - 31)
@@ -320,20 +320,20 @@ OPTIONS:
                                                │ │ │ │ ┌───────────── day of the week (0 - 6) (Sunday to Saturday)
                                                │ │ │ │ │
                                                * * * * *
-   --workflowidreusepolicy value, --wrp value  Configure if the same workflow Id is allowed for use in new workflow execution. Options: AllowDuplicate, AllowDuplicateFailedOnly, RejectDuplicate
-   --input value, -i value                     Optional input for the workflow in JSON format. If there are multiple parameters, pass each as a separate input flag. Pass "null" for null values
-   --input_file value, --if value              Optional input for the workflow from JSON file. If there are multiple JSON, concatenate them and separate by space or newline. Input from file will be overwrite by input from command line
+   --workflowidreusepolicy value, --wrp value  Configure if the same workflow Id is allowed for use in new Workflow execution. Options: AllowDuplicate, AllowDuplicateFailedOnly, RejectDuplicate
+   --input value, -i value                     Optional input for the Workflow in JSON format. If there are multiple parameters, pass each as a separate input flag. Pass "null" for null values
+   --input_file value, --if value              Optional input for the Workflow from JSON file. If there are multiple JSON, concatenate them and separate by space or newline. Input from file will be overwrite by input from command line
    --memo_key value                            Optional key of memo. If there are multiple keys, concatenate them and separate by space
-   --memo value                                Optional info that can be showed when list workflow, in JSON format. If there are multiple JSON, concatenate them and separate by space. The order must be same as memo_key
-   --memo_file value                           Optional info that can be listed in list workflow, from JSON format file. If there are multiple JSON, concatenate them and separate by space or newline. The order must be same as memo_key
+   --memo value                                Optional info that can be showed when list Workflow, in JSON format. If there are multiple JSON, concatenate them and separate by space. The order must be same as memo_key
+   --memo_file value                           Optional info that can be listed in list Workflow, from JSON format file. If there are multiple JSON, concatenate them and separate by space or newline. The order must be same as memo_key
    --search_attr_key value                     Optional search attributes keys that can be be used in list query. If there are multiple keys, concatenate them and separate by |. Use 'cluster get-search-attr' cmd to list legal keys.
    --search_attr_value value                   Optional search attributes value that can be be used in list query. If there are multiple keys, concatenate them and separate by |. If value is array, use json array like ["a","b"], [1,2], ["true","false"], ["2019-06-07T17:16:34-08:00","2019-06-07T18:16:34-08:00"]. Use 'cluster get-search-attr' cmd to list legal keys and value types
 ```
 
 ## Signals
 
-So far our workflow was simply printing a message and completing execution. 
-Let's change workflow implementation to listen for external events and save the state accordingly.
+So far our Workflow was simply printing a message and completing execution.
+Let's change Workflow implementation to listen for external events and save the state accordingly.
 Restart the worker to pick up your changes.
 
 ```java
@@ -382,12 +382,12 @@ public class GettingStarted {
 }
 ```
 
-The workflow interface now has a new method annotated with @SignalMethod. It is a callback method that is invoked
-every time a new signal of "HelloWorld*updateGreeting" is delivered to a workflow. The workflow interface can have only
-one @WorkflowMethod which is a \_main* function of the workflow and as many signal methods as needed.
+The Workflow interface now has a new method annotated with @SignalMethod. It is a callback method that is invoked
+every time a new signal of "HelloWorld*updateGreeting" is delivered to a Workflow. The Workflow interface can have only
+one @WorkflowMethod which is a \_main* function of the Workflow and as many signal methods as needed.
 
-The updated workflow implementation demonstrates a few important Temporal concepts. The first is that workflow is stateful and can
-have fields of any complex type. Another is that the `Workflow.await` function that blocks until the function it receives as a parameter evaluates to true. The condition is going to be evaluated only on workflow state changes, so it is not a busy wait in traditional sense.
+The updated Workflow implementation demonstrates a few important Temporal concepts. The first is that Workflow is stateful and can
+have fields of any complex type. Another is that the `Workflow.await` function that blocks until the function it receives as a parameter evaluates to true. The condition is going to be evaluated only on Workflow state changes, so it is not a busy wait in traditional sense.
 
 ```bash
 docker run --network=host --rm temporalio/tctl:1.0.0 workflow start  --workflow_id "HelloSignal" --taskqueue HelloWorldTaskQueue --workflow_type HelloWorld --execution_timeout 3600 --input \"World\"
@@ -439,14 +439,14 @@ CLI output:
 Signal workflow succeeded.
 ```
 
-Note that sending signals as well as starting workflows does not need a worker running. The requests are queued inside the Temporal server.
+Note that sending signals as well as starting Workflows does not need a worker running. The requests are queued inside the Temporal server.
 
 Now bring the worker back. Note that it doesn't log anything besides the standard startup messages.
 This occurs because it ignores the queued signal that contains the same input as the current value of greeting.
-Note that the restart of the worker didn't affect the workflow execution. It is still blocked on the same line of code as before the failure.
-This is the most important feature of Temporal. The workflow code doesn't need to deal with worker failures at all. Its state is fully recovered to its current state that includes all the local variables and threads.
+Note that the restart of the worker didn't affect the Workflow execution. It is still blocked on the same line of code as before the failure.
+This is the most important feature of Temporal. The Workflow code doesn't need to deal with worker failures at all. Its state is fully recovered to its current state that includes all the local variables and threads.
 
-Let's look at the line where the workflow is blocked:
+Let's look at the line where the Workflow is blocked:
 
 ```bash
 docker run --network=host --rm temporalio/tctl:1.0.0 workflow stack --workflow_id HelloSignal
@@ -472,31 +472,31 @@ app//io.temporal.internal.sync.POJOWorkflowImplementationFactory$POJOWorkflowImp
 ]
 ```
 
-Yes, indeed the workflow is blocked on await. Stack feature works for any open workflow, greatly simplifying troubleshooting in production.
-Let's complete the workflow by sending a signal with a "Bye" greeting:
+Yes, indeed the Workflow is blocked on await. Stack feature works for any open Workflow, greatly simplifying troubleshooting in production.
+Let's complete the Workflow by sending a signal with a "Bye" greeting:
 
 ```bash
 docker run --network=host --rm temporalio/tctl:1.0.0 workflow signal --workflow_id "HelloSignal" --name "updateGreeting" --input \"Bye\"
 ```
 
-You can make sure that workflow execution has been completed by looking at the workflow execution history:
+You can make sure that Workflow execution has been completed by looking at the Workflow execution history:
 
 ```bash
 docker run --network=host --rm temporalio/tctl:1.0.0 workflow showid HelloSignal
 ```
 
 Note that the value of the count variable was not lost during the restart.
-This is one of key features of temporal, which allows us to restore workflow state on any worker based on previous workflow events.
+This is one of key features of temporal, which allows us to restore Workflow state on any worker based on previous Workflow events.
 
 Also note that while a single worker instance was used for this walkthrough, any real production deployment has multiple worker instances running. So any worker failure or restart does not delay any
-workflow execution because it is just migrated to any other available worker.
+Workflow execution because it is just migrated to any other available worker.
 
 ## Query
 
-So far we have learned that the workflow code is fault tolerant and can update its state in reaction to external events in the form of signals.
-Temporal provides a query feature that supports synchronously returning any information from a workflow to an external caller.
+So far we have learned that the Workflow code is fault tolerant and can update its state in reaction to external events in the form of signals.
+Temporal provides a query feature that supports synchronously returning any information from a Workflow to an external caller.
 
-Update the workflow code to:
+Update the Workflow code to:
 
 ```java
   @WorkflowInterface
@@ -538,11 +538,11 @@ Update the workflow code to:
   }
 ```
 
-The new `getCount` method annotated with `@QueryMethod` was added to the workflow interface definition. It is allowed
-to have multiple query methods per workflow interface.
+The new `getCount` method annotated with `@QueryMethod` was added to the Workflow interface definition. It is allowed
+to have multiple query methods per Workflow interface.
 
-The main restriction on the implementation of the query method is that it is not allowed to modify workflow state in any form.
-It also is not allowed to block its thread in any way. It usually just returns a value derived from the fields of the workflow object.
+The main restriction on the implementation of the query method is that it is not allowed to modify Workflow state in any form.
+It also is not allowed to block its thread in any way. It usually just returns a value derived from the fields of the Workflow object.
 Let's run the updated worker and send a couple signals to it:
 
 ```bash
@@ -562,7 +562,7 @@ The worker output:
 17:36:16.204 [workflow-root] INFO  c.u.c.samples.hello.GettingStarted - 3: Welcome World!
 ```
 
-Now let's query the workflow using the CLI:
+Now let's query the Workflow using the CLI:
 
 ```bash
 temporal: docker run --network=host --rm temporalio/tctl:1.1.0 workflow query --workflow_id "HelloQuery" --query_type "getCount"
@@ -571,7 +571,7 @@ Query result as JSON:
 ```
 
 One limitation of the query is that it requires a worker process running because it is executing callback code.
-An interesting feature of the query is that it works for completed workflows as well. Let's complete the workflow by sending "Bye" and query it.
+An interesting feature of the query is that it works for completed Workflows as well. Let's complete the Workflow by sending "Bye" and query it.
 
 ```bash
 temporal: docker run --network=host --rm temporalio/tctl:1.1.0 workflow signal --workflow_id "HelloQuery" --name "updateGreeting" --input \"Bye\"
@@ -581,15 +581,15 @@ Query result as JSON:
 4
 ```
 
-The Query method can accept parameters. This might be useful if only part of the workflow state should be returned.
+The Query method can accept parameters. This might be useful if only part of the Workflow state should be returned.
 
 ## Activities
 
 Having fault tolerant code that maintains state, updates it in reaction to external events, and supports querying is already very useful.
-But in most practical applications, the workflow is expected to act upon the external world. Temporal supports such externally-facing code in the form of activities.
+But in most practical applications, the Workflow is expected to act upon the external world. Temporal supports such externally-facing code in the form of activities.
 
-An activity is essentially a function that can execute any code like DB updates or service calls. The workflow is not allowed to
-directly call any external APIs; it can do this only through activities. The workflow is essentially an orchestrator of activities.
+An activity is essentially a function that can execute any code like DB updates or service calls. The Workflow is not allowed to
+directly call any external APIs; it can do this only through activities. The Workflow is essentially an orchestrator of activities.
 Let's change our program to print the greeting from an activity on every change.
 
 First let's define an activities interface and implement it:
@@ -623,7 +623,7 @@ activity object can have any dependencies. Examples of real application dependen
   }
 ```
 
-Let's create a separate main method for the activity worker. It is common to have a single worker that hosts both activities and workflows,
+Let's create a separate main method for the activity worker. It is common to have a single worker that hosts both activities and Workflows,
 but here we keep them separate to demonstrate how Temporal deals with worker failures.
 To make the activity implementation known to Temporal, register it with the worker:
 
@@ -643,7 +643,7 @@ public class GettingStartedActivityWorker {
 
 A single instance of an activity object is registered per activity interface type. This means that the activity implementation should be thread-safe since the activity method can be simultaneously called from multiple threads.
 
-Let's modify the workflow code to invoke the activity instead of logging:
+Let's modify the Workflow code to invoke the activity instead of logging:
 
 ```java
   public static class HelloWorldImpl implements HelloWorld {
@@ -676,14 +676,14 @@ Let's modify the workflow code to invoke the activity instead of logging:
 
 Activities are invoked through a stub that implements their interface. So an invocation is just a method call on an activity stub.
 
-Now run the workflow worker. Do not run the activity worker yet. Then start a new workflow execution:
+Now run the Workflow worker. Do not run the activity worker yet. Then start a new Workflow execution:
 
 ```bash
 temporal: docker run --network=host --rm temporalio/tctl:1.1.0 workflow start  --workflow_id "HelloActivityWorker" --taskqueue HelloWorldTaskQueue --workflow_type HelloWorld_sayHello --execution_timeout 3600 --input \"World\"
 Started Workflow Id: HelloActivityWorker, run Id: ff015637-b5af-43e8-b3f6-8b6c7b919b62
 ```
 
-The workflow is started, but nothing visible happens. This is expected as the activity worker is not running. What are the options to understand the currently running workflow state?
+The Workflow is started, but nothing visible happens. This is expected as the activity worker is not running. What are the options to understand the currently running Workflow state?
 
 The first option is look at the stack trace:
 
@@ -702,11 +702,11 @@ sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 "
 ```
 
-It shows that the workflow code is blocked on the "say" method of a Proxy object that implements the activity stub.
-You can restart the workflow worker if you want to make sure that restarting it does not change that. It works for activities
-of any duration. It is okay for the workflow code to block on an activity invocation for a month for example.
+It shows that the Workflow code is blocked on the "say" method of a Proxy object that implements the activity stub.
+You can restart the Workflow worker if you want to make sure that restarting it does not change that. It works for activities
+of any duration. It is okay for the Workflow code to block on an activity invocation for a month for example.
 
-Another way to see what exactly happened in the workflow execution is to look at the workflow execution history:
+Another way to see what exactly happened in the Workflow execution is to look at the Workflow execution history:
 
 ```text
 temporal: docker run --network=host --rm temporalio/tctl:1.1.0 workflow show  --workflow_id "HelloActivityWorker"
@@ -741,7 +741,7 @@ temporal: docker run --network=host --rm temporalio/tctl:1.1.0 workflow show  --
                                 DecisionTaskCompletedEventId:4}
 ```
 
-The last event in the workflow history is `ActivityTaskScheduled`. It is recorded when workflow invoked the activity, but it wasn't picked up by an activity worker yet.
+The last event in the Workflow history is `ActivityTaskScheduled`. It is recorded when Workflow invoked the activity, but it wasn't picked up by an activity worker yet.
 
 Another useful API is `DescribeWorkflowExecution` which, among other information, contains the list of outstanding activities:
 
@@ -791,7 +791,7 @@ Let's start the activity worker. It starts and immediately prints:
 1: Hello World!
 ```
 
-Let's look at the workflow execution history:
+Let's look at the Workflow execution history:
 
 ```text
 temporal: docker run --network=host --rm temporalio/tctl:1.1.0 workflow show  --workflow_id "HelloActivityWorker"

@@ -3,19 +3,19 @@ id: namespaces
 title: Namespaces
 ---
 
-The Temporal Global Namespace feature provides clients with the capability to continue their workflow execution from another
+The Temporal Global Namespace feature provides clients with the capability to continue their Workflow execution from another
 cluster in the event of a datacenter failover. Although you can configure a Global Namespace to be replicated to any number of
 clusters, it is only considered active in a single cluster.
 
 ## Global Namespaces Architecture
-Temporal has introduced a new top level entity, Global Namespaces, which provides support for replication of workflow
+Temporal has introduced a new top level entity, Global Namespaces, which provides support for replication of Workflow
 execution across clusters. Client applications need to run workers polling on Activity/Decision tasks on all clusters.
 Temporal will only dispatch tasks on the current active cluster; workers on the standby cluster will sit idle
 until the Global Namespace is failed over.
 
 Because Temporal is a service that provides highly consistent semantics, we only allow external events like
 **StartWorkflowExecution**, **SignalWorkflowExecution**, etc. on an active cluster. Global Namespaces relies on light-weight
-transactions (paxos) on the local cluster (Local_Quorum) to update the workflow execution state and create replication
+transactions (paxos) on the local cluster (Local_Quorum) to update the Workflow execution state and create replication
 tasks which are applied asynchronously to replicate state across clusters. If an application makes these API calls on a
 cluster where Global Namespace is in standby mode, Temporal will reject those calls with **NamespaceNotActiveError**, which
 contains the name of the current active cluster. It is the responsibility of the application to forward the external
@@ -46,18 +46,18 @@ triggered simultaneously on two clusters.
 Unlike local namespaces which provide at-most-once semantics for activity execution, Global Namespaces can only support at-least-once
 semantics. Temporal XDC relies on asynchronous replication of events across clusters, so in the event of a failover
 it is possible that activity gets dispatched again on the new active cluster due to a replication task lag. This also
-means that whenever workflow execution is updated after a failover by the new cluster, any previous replication tasks
-for that execution cannot be applied. This results in loss of some progress made by the workflow execution in the
+means that whenever Workflow execution is updated after a failover by the new cluster, any previous replication tasks
+for that execution cannot be applied. This results in loss of some progress made by the Workflow execution in the
 previous active cluster. During such conflict resolution, Temporal re-injects any external events like Signals to the
 new history before discarding replication tasks. Even though some progress could rollback during failovers, Temporal
-provides the guarantee that workflows won’t get stuck and will continue to make forward progress.
+provides the guarantee that Workflows won’t get stuck and will continue to make forward progress.
 
 ## Visibility API
 All Visibility APIs are allowed on both active and standby clusters. This enables
 [Temporal Web](https://github.com/temporalio/temporal-web) to work seamlessly for Global Namespaces as all visibility records for
-workflow executions can be queried from any cluster the namespace is replicated to. Applications making API calls directly
+Workflow executions can be queried from any cluster the namespace is replicated to. Applications making API calls directly
 to the Temporal Visibility API will continue to work even if a Global Namespace is in standby mode. However, they might see
-a lag due to replication delay when querying the workflow execution state from a standby cluster.
+a lag due to replication delay when querying the Workflow execution state from a standby cluster.
 
 ## CLI
 The Temporal CLI can also be used to query the namespace config or perform failovers. Here are some useful commands.

@@ -5,7 +5,7 @@ title: SideEffect
 
 `workflow.SideEffect` is useful for short, nondeterministic code snippets, such as getting a random
 value or generating a UUID. It executes the provided function once and records its result into the
-workflow history. `workflow.SideEffect` does not re-execute upon replay, but instead returns the
+Workflow history. `workflow.SideEffect` does not re-execute upon replay, but instead returns the
 recorded result. It can be seen as an "inline" activity. Something to note about `workflow.SideEffect`
 is that, unlike the Temporal guarantee of at-most-once execution for activities, there is no such
 guarantee with `workflow.SideEffect`. Under certain failure conditions, `workflow.SideEffect` can

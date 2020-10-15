@@ -15,11 +15,11 @@ Provisioning resources depends on a series of potentially long-running operation
 
 It's beneficial to have a single workflow engine to manage all the various tasks: spinning up the cluster, long term monitoring, managing upgrades, database schema migrations, automated staged rollout of new features.
 
-Some provisioning operations may take dozens of minutes or even hours to complete. Ad-hoc solutions may fail in the middle and leave the system in an undefined state. 
+Some provisioning operations may take dozens of minutes or even hours to complete. Ad-hoc solutions may fail in the middle and leave the system in an undefined state.
 
 ## Benefits of Temporal
 
-Temporal workflows can express complex decision trees using a general-purpose programming language. Support for long-running operations, polling, responding to events, automatic retries are excellent building blocks for a robust provisioning flow. If a lengthy provisioning workflow fails in the middle, Temporal would handle the error and restart the flow at the right spot.
+Temporal Workflows can express complex decision trees using a general-purpose programming language. Support for long-running operations, polling, responding to events, automatic retries are excellent building blocks for a robust provisioning flow. If a lengthy provisioning Workflow fails in the middle, Temporal would handle the error and restart the flow at the right spot.
 
 Temporal can route activity execution to a specific process or host, which is useful for many provisioning scenarios.
 
@@ -33,11 +33,11 @@ Temporal can assist and augment existing DevOps automation, deployments, load te
 
 **Managed deployments**. Imagine that you have to create a self-operating database similar to Amazon RDS. Multiple projects use Temporal to automate managing and automatic recovery of various products like MySQL, Elasticsearch, Apache Cassandra, and HashiCorp Consul.
 
-**Kubernetes provisioning**. Kubernetes deployments involve managing components on multiple levels. A workflow could create virtual machines, join them in a Kubernetes cluster, and install certain components like autoscaler. You may want to support this workflow on multiple cloud providers, so you'd have to deal with their specifics and still have a resilient pipeline for those infrastructure management tasks. 
+**Kubernetes provisioning**. Kubernetes deployments involve managing components on multiple levels. A Workflow could create virtual machines, join them in a Kubernetes cluster, and install certain components like autoscaler. You may want to support this Workflow on multiple cloud providers, so you'd have to deal with their specifics and still have a resilient pipeline for those infrastructure management tasks.
 
 ## Next Steps
 
 Here are some real-world use cases of infrastructure provisioning:
 
- * [Using Temporal workflows to spin up Kubernetes](https://banzaicloud.com/blog/introduction-to-cadence/), a blog post by Banzai Cloud
+ * [Using Temporal Workflows to spin up Kubernetes](https://banzaicloud.com/blog/introduction-to-cadence/), a blog post by Banzai Cloud
  * [Using Temporal to orchestrate cluster lifecycle in HashiCorp Consul](https://www.youtube.com/watch?v=kDlrM6sgk2k&feature=youtu.be&t=1188), a video by HashiCorp

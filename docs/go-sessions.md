@@ -7,13 +7,13 @@ The session framework provides a straightforward interface for scheduling multip
 
 ## Use Cases
 
-- **File Processing**: You may want to implement a workflow that can download a file, process it, and then upload the modified version. If these three steps are implemented as three different activities, all of them should be executed by the same worker.
+- **File Processing**: You may want to implement a Workflow that can download a file, process it, and then upload the modified version. If these three steps are implemented as three different activities, all of them should be executed by the same worker.
 
 - **Machine Learning Model Training**: Training a machine learning model typically involves three stages: download the data set, optimize the model, and upload the trained parameter. Since the models may consume a large amount of resources (GPU memory for example), the number of models processed on a host needs to be limited.
 
 ## Basic Usage
 
-Before using the session framework to write your workflow code, you need to configure your worker to process sessions. To do that, set the `EnableSessionWorker` field of `worker.Options` to `true` when starting your worker.
+Before using the session framework to write your Workflow code, you need to configure your worker to process sessions. To do that, set the `EnableSessionWorker` field of `worker.Options` to `true` when starting your worker.
 
 The most important APIs provided by the session framework are `workflow.CreateSession()` and `workflow.CompleteSession()`. The basic idea is that all the activities executed within a session will be processed by the same worker and these two APIs allow you to create new sessions and close them after all activities finish executing.
 
@@ -107,7 +107,7 @@ If a worker hits this limitation, it won't accept any new `CreateSession()` requ
 
 ## Recreate Session
 
-For long-running sessions, you may want to use the `ContinueAsNew` feature to split the workflow into multiple runs when all activities need to be executed by the same worker. The `RecreateSession()` API is designed for such a use case.
+For long-running sessions, you may want to use the `ContinueAsNew` feature to split the Workflow into multiple runs when all activities need to be executed by the same worker. The `RecreateSession()` API is designed for such a use case.
 
 ```go
 func RecreateSession(ctx Context, recreateToken []byte, sessionOptions *SessionOptions) (Context, error)

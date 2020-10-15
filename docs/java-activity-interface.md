@@ -6,7 +6,7 @@ title: Activity Interface
 An activity is a manifestation of a particular task in the business logic.
 
 Activities are defined as methods of a plain Java interface annotated with `@ActivityInterface`.
-Each method defines a single activity type. A single workflow can use more than one activity interface and call more
+Each method defines a single activity type. A single Workflow can use more than one activity interface and call more
 that one activity method from the same interface.
 The only requirement is that activity method arguments and return values are serializable to a byte array using the provided
 [DataConverter](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html)

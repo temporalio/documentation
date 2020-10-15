@@ -33,7 +33,7 @@ Archival consists of the following elements:
 
 Take the following steps to set up Archival:
 
-1. [Set up the provider](#providers) of your choice. 
+1. [Set up the provider](#providers) of your choice.
 2. [Configure Archival](#configuration).
 3. [Create a Namespace](#namespace-creation) that uses a valid URI and has Archival enabled.
 
@@ -43,7 +43,7 @@ Temporal supports several providers out of the box:
 
 - **Local file system**: The [filestore archiver](https://github.com/temporalio/temporal/tree/master/common/archiver/filestore) is used to archive data in the file system of whatever host the Temporal server is running on. This provider is used mainly for local installations and testing and should not be relied on for production environments.
 - **Google Cloud**: The [gcloud archiver](https://github.com/temporalio/temporal/tree/master/common/archiver/gcloud) is used to connect and archive data with [Google Cloud](https://cloud.google.com/storage).
-- **S3**: The [s3store archiver](https://github.com/temporalio/temporal/tree/master/common/archiver/s3store) is used to connect and archive data with [S3](https://aws.amazon.com/s3). 
+- **S3**: The [s3store archiver](https://github.com/temporalio/temporal/tree/master/common/archiver/s3store) is used to connect and archive data with [S3](https://aws.amazon.com/s3).
 - **Custom**: If you want to use a provider that is not currently supported, you can [create your own archiver](#custom-archiver) to support it.
 
 Make sure that you save the provider's storage location URI in a place where you can reference it later, as it is passed as a parameter when you [create a Namespace](#namespace-creation).
@@ -94,7 +94,7 @@ namespaceDefaults:
       state: "disabled"
 ```
 
-The following table showcases acceptable values for each configuration and what purpose they serve. 
+The following table showcases acceptable values for each configuration and what purpose they serve.
 
 | Config | Acceptable values | Description |
 |--------|-------------------|-------------|
@@ -120,13 +120,13 @@ To test Archival locally, start by running a Temporal server:
 ./temporal-server start
 ```
 
-Then register a new Namespace with Archival enabled. 
+Then register a new Namespace with Archival enabled.
 
 ```bash
 ./tctl --ns samples-namespace namespace register --gd false --history_archival_status enabled --retention 0
 ```
 
-Next, run a sample workflow such as the [helloworld temporal sample](https://github.com/temporalio/temporal-go-samples/tree/master/helloworld).
+Next, run a sample Workflow such as the [helloworld temporal sample](https://github.com/temporalio/temporal-go-samples/tree/master/helloworld).
 
 Once execution has finished Archival will occur.
 
@@ -168,7 +168,7 @@ The objects should live in `historyArchiver.go` and `visibilityArchiver.go` resp
 
 Update provider to enable access to your implementation by modifying the
 
-Update the `GetHistoryArchiver` and `GetVisibilityArchiver` methods of the `archiverProvider` object in the [/common/archiver/provider/provider.go](https://github.com/temporalio/temporal/blob/master/common/archiver/provider/provider.go) file so that it knows how to create an instance of your archiver. 
+Update the `GetHistoryArchiver` and `GetVisibilityArchiver` methods of the `archiverProvider` object in the [/common/archiver/provider/provider.go](https://github.com/temporalio/temporal/blob/master/common/archiver/provider/provider.go) file so that it knows how to create an instance of your archiver.
 
 ### Add configs
 
@@ -211,7 +211,7 @@ func(a * Archiver) Archive(ctx context.Context, URI string, request * ArchiveReq
     featureCatalog: = GetFeatureCatalog(opts...) // this function is defined in options.go
 
     err: = youArchiverImpl()
-  
+
     if nonRetryableErr(err) {
         if featureCatalog.NonRetryableError != nil {
             return featureCatalog.NonRetryableError() // when the caller gets this error type back it will not retry anymore.
@@ -231,4 +231,3 @@ Each archiver is free to define and return its own errors. However many common e
 **Is there a generic query syntax for the visibility archiver?**
 
 Currently no. But this is something we plan to do in the future. As for now, try to make your syntax similar to the one used by our advanced list Workflow API.
-

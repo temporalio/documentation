@@ -3,49 +3,49 @@ id: java-implementing-workflows
 title: Implementing Workflows
 ---
 
-A workflow implementation implements a workflow interface. Each time a new workflow execution is started,
-a new instance of the workflow implementation object is created. Then, one of the methods
-(depending on which workflow type has been started) annotated with `@WorkflowMethod` is invoked. As soon as this method
-returns, the workflow execution is closed. While workflow execution is open, it can receive calls to signal and query methods.
-No additional calls to workflow methods are allowed. The workflow object is stateful, so query and signal methods
-can communicate with the other parts of the workflow through workflow object fields.
+A Workflow implementation implements a Workflow interface. Each time a new Workflow execution is started,
+a new instance of the Workflow implementation object is created. Then, one of the methods
+(depending on which Workflow type has been started) annotated with `@WorkflowMethod` is invoked. As soon as this method
+returns, the Workflow execution is closed. While Workflow execution is open, it can receive calls to signal and query methods.
+No additional calls to Workflow methods are allowed. The Workflow object is stateful, so query and signal methods
+can communicate with the other parts of the Workflow through Workflow object fields.
 
 ## Workflow Implementation Constraints
 
 Temporal uses the [Microsoft Azure Event Sourcing pattern](https://docs.microsoft.com/en-us/azure/architecture/patterns/event-sourcing) to recover
-the state of a workflow object including its threads and local variable values.
-In essence, every time a workflow state has to be restored, its code is re-executed from the beginning. When replaying, side
-effects (such as activity invocations) are ignored because they are already recorded in the workflow event history.
-When writing workflow logic, the replay is not visible, so the code should be written since it executes only once.
-This design puts the following constraints on the workflow implementation:
+the state of a Workflow object including its threads and local variable values.
+In essence, every time a Workflow state has to be restored, its code is re-executed from the beginning. When replaying, side
+effects (such as activity invocations) are ignored because they are already recorded in the Workflow event history.
+When writing Workflow logic, the replay is not visible, so the code should be written since it executes only once.
+This design puts the following constraints on the Workflow implementation:
 
-- Do not use any mutable global variables because multiple instances of workflows are executed in parallel.
-- Do not call any non-deterministic functions like non seeded random or UUID.randomUUID() directly from the workflow code.
+- Do not use any mutable global variables because multiple instances of Workflows are executed in parallel.
+- Do not call any non-deterministic functions like non seeded random or UUID.randomUUID() directly from the Workflow code.
 
-Always do the following in the workflow implementation code:
+Always do the following in the Workflow implementation code:
 
 - Don’t perform any IO or service calls as they are not usually deterministic. Use activities for this.
-- Only use `Workflow.currentTimeMillis()` to get the current time inside a workflow.
+- Only use `Workflow.currentTimeMillis()` to get the current time inside a Workflow.
 - Do not use native Java `Thread` or any other multi-threaded classes like `ThreadPoolExecutor`. Use `Async.function` or `Async.procedure`
   to execute code asynchronously.
 - Don't use any synchronization, locks, and other standard Java blocking concurrency-related classes besides those provided
-  by the Workflow class. There is no need in explicit synchronization because multi-threaded code inside a workflow is
+  by the Workflow class. There is no need in explicit synchronization because multi-threaded code inside a Workflow is
   executed one thread at a time and under a global lock.
   - Call `WorkflowThread.sleep` instead of `Thread.sleep`.
   - Use `Promise` and `CompletablePromise` instead of `Future` and `CompletableFuture`.
   - Use `WorkflowQueue` instead of `BlockingQueue`.
-- Use `Workflow.getVersion` when making any changes to the workflow code. Without this, any deployment of updated workflow code
-  might break already open workflows.
-- Don’t access configuration APIs directly from a workflow because changes in the configuration might affect a workflow execution path.
-  Pass it as an argument to a workflow function or use an activity to load it.
+- Use `Workflow.getVersion` when making any changes to the Workflow code. Without this, any deployment of updated Workflow code
+  might break already open Workflows.
+- Don’t access configuration APIs directly from a Workflow because changes in the configuration might affect a Workflow execution path.
+  Pass it as an argument to a Workflow function or use an activity to load it.
 
 Workflow method arguments and return values are serializable to a byte array using the provided
 [DataConverter](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html)
 interface. The default implementation uses JSON serializer, but you can use any alternative serialization mechanism.
 
-The values passed to workflows through invocation parameters or returned through a result value are recorded in the execution history.
-The entire execution history is transferred from the Temporal service to workflow workers with every event that the workflow logic needs to process.
-A large execution history can thus adversely impact the performance of your workflow.
+The values passed to Workflows through invocation parameters or returned through a result value are recorded in the execution history.
+The entire execution history is transferred from the Temporal service to Workflow workers with every event that the Workflow logic needs to process.
+A large execution history can thus adversely impact the performance of your Workflow.
 Therefore, be mindful of the amount of data that you transfer via activity invocation parameters or return values.
 Otherwise, no additional limitations exist on activity implementations.
 
@@ -57,8 +57,8 @@ timeouts are not specified through the `@ActivityMethod` annotation.
 
 Calling a method on this interface invokes an activity that implements this method.
 An activity invocation synchronously blocks until the activity completes, fails, or times out. Even if activity
-execution takes a few months, the workflow code still sees it as a single synchronous invocation.
-It doesn't matter what happens to the processes that host the workflow. The business logic code
+execution takes a few months, the Workflow code still sees it as a single synchronous invocation.
+It doesn't matter what happens to the processes that host the Workflow. The business logic code
 just sees a single method call.
 
 ```java
@@ -116,7 +116,7 @@ public FileProcessingWorkflowImpl() {
 
 ## Calling Activities Asynchronously
 
-Sometimes workflows need to perform certain operations in parallel.
+Sometimes Workflows need to perform certain operations in parallel.
 The `Async` class static methods allow you to invoke any activity asynchronously. The calls return a `Promise` result immediately.
 `Promise` is similar to both Java `Future` and `CompletionStage`. The `Promise` `get` blocks until a result is available.
 It also exposes the `thenApply` and `handle` methods. See the `Promise` JavaDoc for technical details about differences with `Future`.
@@ -190,17 +190,17 @@ public void processFile(Arguments args) {
 
 ## Child Workflows
 
-Besides activities, a workflow can also orchestrate other workflows.
+Besides activities, a Workflow can also orchestrate other Workflows.
 
-`Workflow.newChildWorkflowStub` returns a client-side stub that implements a child workflow interface.
-It takes a child workflow type and optional child workflow options as arguments. Workflow options may be needed to override
-the timeouts and task queue if they differ from the ones defined in the `@WorkflowMethod` annotation or parent workflow.
+`Workflow.newChildWorkflowStub` returns a client-side stub that implements a child Workflow interface.
+It takes a child Workflow type and optional child Workflow options as arguments. Workflow options may be needed to override
+the timeouts and task queue if they differ from the ones defined in the `@WorkflowMethod` annotation or parent Workflow.
 
-The first call to the child workflow stub must always be to a method annotated with `@WorkflowMethod`. Similar to activities, a call
-can be made synchronous or asynchronous by using `Async#function` or `Async#procedure`. The synchronous call blocks until a child workflow completes. The asynchronous call
+The first call to the child Workflow stub must always be to a method annotated with `@WorkflowMethod`. Similar to activities, a call
+can be made synchronous or asynchronous by using `Async#function` or `Async#procedure`. The synchronous call blocks until a child Workflow completes. The asynchronous call
 returns a `Promise` that can be used to wait for the completion. After an async call returns the stub, it can be used to send signals to the child
-by calling methods annotated with `@SignalMethod`. Querying a child workflow by calling methods annotated with `@QueryMethod`
-from within workflow code is not supported. However, queries can be done from activities
+by calling methods annotated with `@SignalMethod`. Querying a child Workflow by calling methods annotated with `@QueryMethod`
+from within Workflow code is not supported. However, queries can be done from activities
 using the provided `WorkflowClient` stub.
 
 ```java
@@ -269,4 +269,4 @@ public static class GreetingWorkflowImpl implements GreetingWorkflow {
 }
 ```
 
-Calling methods annotated with `@QueryMethod` is not allowed from within workflow code. Use an activity to call them.
+Calling methods annotated with `@QueryMethod` is not allowed from within Workflow code. Use an activity to call them.
