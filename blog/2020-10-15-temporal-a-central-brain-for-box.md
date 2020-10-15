@@ -18,6 +18,7 @@ release_version: V1.0.0
 
 ![](https://i.imgur.com/Kn3I1sY.png)
 
+[Link to PDF version](http://temporal.io/case-studies/Temporal_a_central_brain_for_Box.pdf)
 
 <!--truncate-->
 

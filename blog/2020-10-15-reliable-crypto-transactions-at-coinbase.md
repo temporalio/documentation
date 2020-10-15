@@ -18,6 +18,8 @@ release_version: V1.0.0
 
 ![](https://i.imgur.com/FQxs3KM.png)
 
+[Link to PDF version](http://temporal.io/case-studies/Reliable_crypto_transactions_at_Coinbase.pdf)
+
 <!--truncate-->
 
 _This case study is based on an interview with Anthony Dmitriyev who was a key player in Temporal* adoption within Coinbase_

@@ -18,6 +18,8 @@ release_version: V1.0.0
 
 ![](https://i.imgur.com/z9V8OZd.png)
 
+[Link to PDF version](http://temporal.io/case-studies/How_Temporal_Simplified_Checkr_Workflows.pdf)
+
 <!--truncate-->
 
 _This case study is based on an interview with [Ben Jacobson](https://www.linkedin.com/in/bjacobso/) who was a key player in Temporal* adoption within Checkr_
