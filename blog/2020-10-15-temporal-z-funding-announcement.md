@@ -21,7 +21,7 @@ release_version: V1.1.0
 
 Hey Temporal community, we have a big announcement for everyone. 
 
-10 years ago two engineers at AWS started working on a project that would turn into something way bigger than either could have expected. In the time since then, the underlying idea has been iterated on and refined into something that brings businesses tons of value and developers love. The next step of that journey starts today. Temporal is proud to announce it has received a 18.75M A round led by Sequoia Capital and a 6.75M Seed round led by Amplify partners.
+10 years ago two engineers at AWS started working on a project that would turn into something way bigger than either could have expected. In the time since then, the underlying idea has been iterated on and refined into something that brings businesses tons of value and developers love. The next step of that journey starts today. Temporal is proud to announce it has received a 18.75M A round led by Sequoia Capital and a 6.75M Seed round led by Amplify Partners.
 
 Before we talk about the future it's important to be grateful for the past. Without the support of every single one of you in the community creating a company or raising money would have never been possible. Very rarely will you find such a positive and intelligent group of people with a shared common goal but that's exactly what we have within the Temporal community. While Temporal is no longer just an open-source project, we are fundamentally dedicated to the open-source community who made all of this possible.
 
