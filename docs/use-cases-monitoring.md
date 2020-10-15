@@ -7,7 +7,7 @@ sidebar_label: Monitoring
 
 ## Motivation
 
-There is often a need for monitoring and periodic maintenance of IT systems on top of [infrastructure provisioning](./use-cases-provisioning). **Polling** is executing a regular action to check for a state change, for example:
+There is often a need for monitoring and periodic maintenance of IT systems on top of [infrastructure provisioning](/docs/use-cases-provisioning). **Polling** is executing a regular action to check for a state change, for example:
 
 - Pinging a host to make sure it's online and responsive.
 - Once-per-minute health checks of a production deployment.
@@ -46,5 +46,5 @@ Learn more about cron jobs in Temporal:
 - [Cron example in Go](https://github.com/temporalio/temporal-go-samples/tree/master/cron)
 - [Cron example in Java](https://github.com/temporalio/temporal-java-samples/blob/master/src/main/java/io/temporal/samples/hello/HelloCron.java)
 - [Periodic execution example in Java](https://github.com/temporalio/temporal-java-samples/blob/master/src/main/java/io/temporal/samples/hello/HelloPeriodic.java)
-- [Go SDK docs](go-distributed-cron.md)
-- [Java SDK docs](java-distributed-cron.md)
+- [Go SDK docs](/docs/go-distributed-cron)
+- [Java SDK docs](/docs/java-distributed-cron)
