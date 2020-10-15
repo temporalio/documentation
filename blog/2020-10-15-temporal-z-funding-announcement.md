@@ -8,9 +8,9 @@ tags:
 posted_on_: 2020-10-15T00:00:09Z
 id: funding-announcement
 title: 'Announcing our funding'
-author: Ryland Goldstein
-author_title: Head of Product
-author_image_url: https://avatars2.githubusercontent.com/u/27736122?s=460&u=7b6a3e58ec7ed715│       7f23f51e91a2f4cd2028d606&v=4
+author: Ryland Goldstein, Maxim Fateev, Samar Abbas
+author_title: Heads of stuff
+author_image_url: https://i.imgur.com/uvJjERl.png
 image: https://i.imgur.com/aJGzD3d.png
 release_version: V1.1.0
 ---
