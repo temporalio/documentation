@@ -10,7 +10,7 @@ import { ResponsivePlayer } from '../src/components'
 A large number of use cases span beyond a single request-reply, require tracking
 of a complex state, respond to asynchronous events, and communicate to external unreliable dependencies. The usual approach to building such applications is a hodgepodge of stateless services, databases, cron jobs, and queuing systems. This negatively impacts the developer productivity as most of the code is dedicated to plumbing, obscuring the actual business logic behind a myriad of low-level details. Such systems frequently have availability problems as it is hard to keep all the components healthy.
 
-<ResponsivePlayer url='https://www.youtube.com/watch?v=bc0qUobRhsw'/>
+<ResponsivePlayer url='https://www.youtube.com/watch?v=f-18XztyN6c'/>
 
 <br/>
 
