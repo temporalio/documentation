@@ -14,9 +14,11 @@ a client side stub to the workflow, and then calling a method annotated with @Wo
     FileProcessingWorkflow workflow = workflowClient.newWorkflowStub(FileProcessingWorkflow.class);
 ```
 
-There are two ways to start workflow execution: asynchronously and synchronously. Asynchronous start initiates a workflow execution and immediately returns to the caller. This is the most common way to start workflows in production code. Synchronous invocation starts a workflow
-and then waits for its completion. If the process that started the workflow crashes or stops waiting, the workflow continues executing.
-Because workflows are potentially long running, and crashes of clients happen, this is not very commonly found in production use.
+There are two ways to start workflow execution: asynchronously and synchronously.
+
+Asynchronous start initiates a workflow execution and immediately returns to the caller. This is the most common way to start workflows in production.
+
+Synchronous invocation starts a workflow and then waits for its completion. The started workflow will not rely on the invocation process and will continue executing even if the process crashed or was stopped.
 
 Asynchronous start:
 ```java
