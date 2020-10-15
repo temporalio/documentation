@@ -3,7 +3,7 @@ id: go-workflow-testing
 title: Testing
 ---
 
-The Temporal Go client library provides a test framework to facilitate testing workflow implementations.
+The Temporal Go SDK provides a test framework to facilitate testing workflow implementations.
 The framework is suited for implementing unit tests as well as functional tests of the workflow logic.
 
 The following code implements unit tests for the `SimpleWorkflow` sample:
@@ -63,10 +63,11 @@ func (s *UnitTestSuite) Test_SimpleWorkflow_ActivityFails() {
 
         s.True(s.env.IsWorkflowCompleted())
 
-        s.NotNil(s.env.GetWorkflowError())
-        _, ok := s.env.GetWorkflowError().(*error.GenericError)
-        s.True(ok)
-        s.Equal("SimpleActivityFailure", s.env.GetWorkflowError().Error())
+        err := s.env.GetWorkflowError()
+        s.Error(err)
+        var applicationErr *temporal.ApplicationError
+        s.True(errors.As(err, &applicationErr))
+        s.Equal("SimpleActivityFailure", applicationErr.Error())
 }
 
 func TestUnitTestSuite(t *testing.T) {
@@ -83,7 +84,7 @@ via `suite.Suite` and the suite functionality from the Temporal test framework v
 add a property to our struct to hold an instance of the test environment. This allows us to initialize
 the test environment in a setup method. For testing workflows, we use a `testsuite.TestWorkflowEnvironment`.
 
-Next, we implement a `SetupTest` method to setup a new test environment before each test. Doing so
+Next, we implement a `SetupTest` method to set up a new test environment before each test. Doing so
 ensures that each test runs in its own isolated sandbox. We also implement an `AfterTest` function
 where we assert that all mocks we set up were indeed called by invoking `s.env.AssertExpectations(s.T())`.
 
@@ -91,7 +92,7 @@ Finally, we create a regular test function recognized by "go test" and pass the 
 
 ## A Simple Test
 
-The most simple test case we can write is to have the test environment execute the workflow and then
+The simplest test case we can write is to have the test environment execute the workflow and then
 evaluate the results.
 
 ```go
@@ -135,10 +136,11 @@ func (s *UnitTestSuite) Test_SimpleWorkflow_ActivityFails() {
 
         s.True(s.env.IsWorkflowCompleted())
 
-        s.NotNil(s.env.GetWorkflowError())
-        _, ok := s.env.GetWorkflowError().(*error.GenericError)
-        s.True(ok)
-        s.Equal("SimpleActivityFailure", s.env.GetWorkflowError().Error())
+        err := s.env.GetWorkflowError()
+        s.Error(err)
+        var applicationErr *temporal.ApplicationError
+        s.True(errors.As(err, &applicationErr))
+        s.Equal("SimpleActivityFailure", applicationErr.Error())
 }
 ```
 This test simulates the execution of the activity `SimpleActivity` that is invoked by our workflow
@@ -149,7 +151,7 @@ for the `SimpleActivity` that returns an error.
 s.env.OnActivity(SimpleActivity, mock.Anything, mock.Anything).Return(
   "", errors.New("SimpleActivityFailure"))
 ```
-With the mock set up we can now execute the workflow via the s.env.ExecuteWorkflow(...) method and
+With the mock set up we can now execute the workflow via the `s.env.ExecuteWorkflow(...)` method and
 assert that the workflow completed successfully and returned the expected error.
 
 Simply mocking the execution to return a desired value or error is a pretty powerful mechanism to
@@ -174,8 +176,8 @@ func (s *UnitTestSuite) Test_SimpleWorkflow_ActivityParamCorrect() {
 In this example, we provide a function implementation as the parameter to `Return`. This allows us to
 provide an alternate implementation for the activity `SimpleActivity`. The framework will execute this
 function whenever the activity is invoked and pass on the return value from the function as the result
-of the activity invocation. Additionally, the framework will validate that the signature of the “mock”
+of the activity invocation. Additionally, the framework will validate that the signature of the "mock"
 function matches the signature of the original activity function.
 
 Since this can be an entire function, there is no limitation as to what we can do here. In this
-example, we assert that the “value” param has the same content as the value param we passed to the workflow.
+example, we assert that the `value` param has the same content as the value param we passed to the workflow.
