@@ -3,13 +3,13 @@ id: java-workflow-interface
 title: Workflow Interface
 ---
 
-Workflow encapsulates the orchestration of activities and child workflows.
+Workflow encapsulates the orchestration of activities and child Workflows.
 It can also answer synchronous queries and receive external events (also known as signals).
 
-A workflow must define an interface class. A workflow interface class must be annotated with `@WorkflowInterface`.
+A Workflow must define an interface class. A Workflow interface class must be annotated with `@WorkflowInterface`.
 All of its methods must have one of the following annotations:
 
-- **@WorkflowMethod** indicates an entry point to a workflow. It contains parameters such as timeouts and a task queue.
+- **@WorkflowMethod** indicates an entry point to a Workflow. It contains parameters such as timeouts and a task queue.
   Required parameters (such as `executionStartToCloseTimeoutSeconds`) that are not specified through the annotation must be provided at runtime.
 - **@SignalMethod** indicates a method that reacts to external signals. It must have a `void` return type.
 - **@QueryMethod** indicates a method that reacts to synchronous query requests. It must have a non `void` return type.
@@ -37,17 +37,17 @@ public interface FileProcessingWorkflow {
 }
 ```
 
-Note that name parameter of workflow method annotations can be used to specify name of workflow, signal and query types.
-If name is not specified the short name of the workflow interface separated by underscore with the method name is used.
-In the above code the @WorkflowMethod.name is not specified, thus the workflow type defaults to `"FileProcessingWorkflow_processFile"`.
+Note that name parameter of Workflow method annotations can be used to specify name of Workflow, signal and query types.
+If name is not specified the short name of the Workflow interface separated by underscore with the method name is used.
+In the above code the @WorkflowMethod.name is not specified, thus the Workflow type defaults to `"FileProcessingWorkflow_processFile"`.
 
-We recommended that you use a single value type argument for all types of workflow methods.
+We recommended that you use a single value type argument for all types of Workflow methods.
 This way, adding new arguments as fields to the value type is a backwards-compatible change.
 
 # Workflow Interface Inheritance
 
 Workflow interfaces can form inheritance hierarchies. It may be useful for creating components reusable across multiple
-workflow types. For example imaging a UI or CLI button that allows to call `retryNow` signal on any workflow. To implement
+Workflow types. For example imaging a UI or CLI button that allows to call `retryNow` signal on any Workflow. To implement
 this feature you can redesign the above interface to:
 
 ```java
@@ -74,7 +74,7 @@ public interface FileProcessingWorkflow extends Retryable {
 }
 ```
 
-Then some other workflow can implement it as well:
+Then some other Workflow can implement it as well:
 
 ```java
 @WorkflowInterface
@@ -91,9 +91,9 @@ Retryable r = client.newWorkflowStab(Retryable.class, workflowId);
 r.retryNow();
 ```
 
-The same technique can be used to query workflows through a base interface.
+The same technique can be used to query Workflows through a base interface.
 
-Note that an attempt to start workflow through a base interface annotated with `@WorkflowInterface` is not going to work.
+Note that an attempt to start Workflow through a base interface annotated with `@WorkflowInterface` is not going to work.
 Let's look at the following **invalid** example:
 
 ```java
@@ -112,7 +112,7 @@ public interface Workflow2 extends BaseWorkflow {}
 ```
 
 An attempt to register implementations of Workflow1 and Workflow2 are going to fail as they are going to use the same
-workflow type. The type is defined by the type of the class which is annotated with @WorkflowInterface. In this case `BaseWorkflow`.
+Workflow type. The type is defined by the type of the class which is annotated with @WorkflowInterface. In this case `BaseWorkflow`.
 The solution is to remove @WorkflowInterface annotation from BaseWorkflow. The following is valid code:
 
 ```java

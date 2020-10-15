@@ -18,8 +18,8 @@ It's typical to use a distributed asynchronous event-driven architecture in such
 
 ## Benefits of Temporal
 
-Temporal provides a holistic approach for implementing long-running workflows. Workflow execution is paused and resumed by the runtime as required. Developers no longer have to focus on edge cases and boilerplate code that handles long periods of inactivity, and can instead concentrate exclusively on business logic.
+Temporal provides a holistic approach for implementing long-running Workflows. Workflow execution is paused and resumed by the runtime as required. Developers no longer have to focus on edge cases and boilerplate code that handles long periods of inactivity, and can instead concentrate exclusively on business logic.
 
 Temporal has direct support for asynchronous events (aka signals). Temporal's simple programming model handles a lot of complexity around state persistence and ensures external action execution through built-in retries.
 
-A sophisticated workflow may have a few different paths that branch out, that you want to execute in parallel, but then join them back together, even if each track might take days to run. With Temporal, it's straightforward to express complicated decision paths since everything is represented as code rather than via a GUI or JSON configuration.
+A sophisticated Workflow may have a few different paths that branch out, that you want to execute in parallel, but then join them back together, even if each track might take days to run. With Temporal, it's straightforward to express complicated decision paths since everything is represented as code rather than via a GUI or JSON configuration.

@@ -1,7 +1,7 @@
 ---
 id: use-cases-dsl
-title: DSL Workflows
-sidebar_label: DSL Workflows
+title: DSL workflows
+sidebar_label: DSL workflows
 ---
 
 ## Motivation
@@ -16,7 +16,7 @@ An application can utilize the Temporal SDK to interpret the DSL definition. Thi
 
 If your company uses multiple workflow engines internally, it can be very beneficial to unify them with Temporal. For one, it is more efficient to support a single product instead of many. Additionally, it's hard to overestimate the the benefit sharing activities will bring across the company.
 
-On top of that, Temporal comes with unmatched scalability and stability characteristics. 
+On top of that, Temporal comes with unmatched scalability and stability characteristics.
 
 ## Example
 

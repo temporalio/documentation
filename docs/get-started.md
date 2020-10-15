@@ -17,7 +17,7 @@ Ready to build? [Install the Temporal server](/docs/install-temporal-server/) an
 
 ## Learn about Temporal
 
-Temporal enables developers to write highly reliable applications without having to worry about all the edge cases, but getting started can be paradigm shift for some. If you are new to Temporal, or workflow applications in general, get caught up on the [core concepts](/docs/overview/).
+Temporal enables developers to write highly reliable applications without having to worry about all the edge cases, but getting started can be paradigm shift for some. If you are new to Temporal, or Workflow applications in general, get caught up on the [core concepts](/docs/overview/).
 
 Wondering if Temporal is a good fit for your use case? Check out our [use cases section](/docs/use-cases-orchestration/) or visit the [community forum](https://community.temporal.io/tag/use-case-validation).
 

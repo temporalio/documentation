@@ -74,9 +74,9 @@ Setting environment variables for repeated parameters can shorten the CLI comman
 
 The following examples assume the `TEMPORAL_CLI_NAMESPACE` environment variable is set.
 
-#### Run workflow
+#### Run Workflow
 
-Start a workflow and see its progress. This command doesn't finish until workflow completes.
+Start a Workflow and see its progress. This command doesn't finish until Workflow completes.
 
 ```
 ./tctl workflow run --tq hello-world --wt Workflow --et 60 -i '"temporal"'
@@ -86,17 +86,17 @@ Start a workflow and see its progress. This command doesn't finish until workflo
 ```
 
 Brief explanation:
-To run a workflow, the user must specify the following:
+To run a Workflow, the user must specify the following:
 
 1. Task queue name (--tq)
 2. Workflow type (--wt)
 3. Execution start to close timeout in seconds (--et)
 4. Input in JSON format (--i) (optional)
 
-example above uses [this sample workflow](https://github.com/temporalio/go-samples/blob/master/helloworld/helloworld.go)
+example above uses [this sample Workflow](https://github.com/temporalio/go-samples/blob/master/helloworld/helloworld.go)
 and takes a string as input with the `-i '"temporal"'` parameter. Single quotes (`''`) are used to wrap input as JSON.
 
-**Note:** You need to start the worker so that the workflow can make progress.
+**Note:** You need to start the worker so that the Workflow can make progress.
 (Run `make && ./bin/helloworld -m worker` in temporal-go-samples to start the worker)
 
 #### Show running workers of a task queue
@@ -105,7 +105,7 @@ and takes a string as input with the `-i '"temporal"'` parameter. Single quotes 
 ./tctl taskqueue desc --tq hello-world
 ```
 
-#### Start workflow
+#### Start Workflow
 
 ```
 ./tctl workflow start --tq hello-world --wt Workflow --et 60 -i '"temporal"'
@@ -117,18 +117,18 @@ and takes a string as input with the `-i '"temporal"'` parameter. Single quotes 
 ./tctl workflow start --tq hello-world --wt WorkflowWith3Args --et 60 -i '"your_input_string"' -i 'null' -i '{"Name":"my-string", "Age":12345}'
 ```
 
-The workflow `start` command is similar to the `run` command, but immediately returns the workflow_id and
-run_id after starting the workflow. Use the `show` command to view the workflow's history/progress.
+The Workflow `start` command is similar to the `run` command, but immediately returns the workflow_id and
+run_id after starting the Workflow. Use the `show` command to view the Workflow's history/progress.
 
-##### Reuse the same workflow id when starting/running a workflow
+##### Reuse the same Workflow Id when starting/running a Workflow
 
-Use option `--workflowidreusepolicy` or `--wrp` to configure the workflow id reuse policy.
-**Option 0 AllowDuplicateFailedOnly:** Allow starting a workflow execution using the same workflow Id when a workflow with the same workflow Id is not already running and the last execution close state is one of _[terminated, cancelled, timedout, failed]_.
-**Option 1 AllowDuplicate:** Allow starting a workflow execution using the same workflow Id when a workflow with the same workflow Id is not already running.
-**Option 2 RejectDuplicate:** Do not allow starting a workflow execution using the same workflow Id as a previous workflow.
+Use option `--workflowidreusepolicy` or `--wrp` to configure the Workflow id reuse policy.
+**Option 0 AllowDuplicateFailedOnly:** Allow starting a Workflow execution using the same Workflow Id when a Workflow with the same Workflow Id is not already running and the last execution close state is one of _[terminated, cancelled, timedout, failed]_.
+**Option 1 AllowDuplicate:** Allow starting a Workflow execution using the same Workflow Id when a Workflow with the same Workflow Id is not already running.
+**Option 2 RejectDuplicate:** Do not allow starting a Workflow execution using the same Workflow Id as a previous Workflow.
 
 ```
-# use AllowDuplicateFailedOnly option to start a workflow
+# use AllowDuplicateFailedOnly option to start a Workflow
 ./tctl workflow start --tq hello-world --wt Workflow --et 60 -i '"temporal"' --wid "<duplicated workflow id>" --wrp AllowDuplicateFailedOnly
 
 # use AllowDuplicate option to run a workflow

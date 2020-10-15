@@ -3,7 +3,7 @@ id: go-queries
 title: Queries
 ---
 
-If a workflow execution has been stuck at a state for longer than an expected period of time, you
+If a Workflow execution has been stuck at a state for longer than an expected period of time, you
 might want to query the current call stack. You can use the Temporal CLI to perform this query. For
 example:
 
@@ -11,7 +11,7 @@ example:
 
 This command uses `__stack_trace`, which is a built-in query type supported by the Temporal client
 library. You can add custom query types to handle queries such as querying the current state of a
-workflow, or querying how many activities the workflow has completed. To do this, you need to set
+Workflow, or querying how many activities the Workflow has completed. To do this, you need to set
 up a query handler using `workflow.SetQueryHandler`.
 
 The handler must be a function that returns two values:
@@ -31,7 +31,7 @@ func MyWorkflow(ctx workflow.Context, input string) error {
     currentState = "failed to register query handler"
     return err
   }
-  // Your normal workflow code begins here, and you update the currentState as the code makes progress.
+  // Your normal Workflow code begins here, and you update the currentState as the code makes progress.
   currentState = "waiting timer"
   err = NewTimer(ctx, time.Hour).Get(ctx, nil)
   if err != nil {
@@ -58,21 +58,21 @@ You can also issue a query from code using the `QueryWorkflow()` API on a Tempor
 
 ## Consistent Query
 
-Query has two consistency levels, eventual and strong. Consider if you were to signal a workflow and then
-immediately query the workflow:
+Query has two consistency levels, eventual and strong. Consider if you were to signal a Workflow and then
+immediately query the Workflow:
 
 `tctl --namespace samples-namespace workflow signal -w my_workflow_id -r my_run_id -n signal_name -if ./input.json`
 
 `tctl --namespace samples-namespace workflow query -w my_workflow_id -r my_run_id -qt current_state`
 
-In this example if signal were to change workflow state, query may or may not see that state update reflected
+In this example if signal were to change Workflow state, query may or may not see that state update reflected
 in the query result. This is what it means for query to be eventually consistent.
 
 Query has another consistency level called strong consistency. A strongly consistent query is guaranteed
-to be based on workflow state which includes all events that came before the query was issued. An event
+to be based on Workflow state which includes all events that came before the query was issued. An event
 is considered to have come before a query if the call creating the external event returned success before
-the query was issued. External events which are created while the query is outstanding may or may not 
-be reflected in the workflow state the query result is based on.
+the query was issued. External events which are created while the query is outstanding may or may not
+be reflected in the Workflow state the query result is based on.
 
 In order to run consistent query through the cli do the following:
 

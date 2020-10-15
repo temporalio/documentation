@@ -67,7 +67,7 @@ try {
 var hotelResID string
 err := workflow.ExecuteActivity(ctx, activities.BookHotel, name).Get(ctx, &hotelResID)
 if err != nil {
-    // If the hotel reservation failed, fail the workflow.
+    // If the hotel reservation failed, fail the Workflow.
     return err
 }
 

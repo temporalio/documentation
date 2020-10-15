@@ -1,7 +1,7 @@
 ---
 id: go-sdk-video-tutorial
 title: SDK Video Tutorial
-description: Video tutorial to help you build your first workflow using Go SDK
+description: Video tutorial to help you build your first Workflow using Go SDK
 ---
 
 import { ResponsivePlayer } from '../src/components'
@@ -58,7 +58,7 @@ import (
 	"go.uber.org/zap"
 )
 
-// Greetings is the implementation for Temporal workflow
+// Greetings is the implementation for Temporal Workflow
 func Greetings(ctx workflow.Context) error {
 	logger := workflow.GetLogger(ctx)
 	logger.Info("Workflow Greetings started")
@@ -80,7 +80,7 @@ func Greetings(ctx workflow.Context) error {
 		return err
 	}
 
-	logger.Info("Greetings workflow complete", zap.String("user", user))
+	logger.Info("Greetings Workflow complete", zap.String("user", user))
 	return nil
 }
 ```

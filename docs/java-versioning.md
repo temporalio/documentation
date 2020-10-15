@@ -3,9 +3,9 @@ id: java-versioning
 title: Versioning
 ---
 
-As outlined in the _Workflow Implementation Constraints_ section, workflow code has to be deterministic by taking the same
-code path when replaying history events. Any workflow code change that affects the order in which decisions are generated breaks
-this assumption. The solution that allows updating code of already running workflows is to keep both the old and new code.
+As outlined in the _Workflow Implementation Constraints_ section, Workflow code has to be deterministic by taking the same
+code path when replaying history events. Any Workflow code change that affects the order in which decisions are generated breaks
+this assumption. The solution that allows updating code of already running Workflows is to keep both the old and new code.
 When replaying, use the code version that the events were generated with and when executing a new code path, always take the
 new code.
 
@@ -60,7 +60,7 @@ public void processFile(Arguments args) {
 }
 ```
 
-Later, when all workflows that use the old version are completed, the old branch can be removed.
+Later, when all Workflows that use the old version are completed, the old branch can be removed.
 
 ```java
 public void processFile(Arguments args) {
@@ -88,5 +88,5 @@ public void processFile(Arguments args) {
 ```
 
 The Id that is passed to the `getVersion` call identifies the change. Each change is expected to have its own Id. But if
-a change spawns multiple places in the workflow code and the new code should be either executed in all of them or
+a change spawns multiple places in the Workflow code and the new code should be either executed in all of them or
 in none of them, then they have to share the Id.
