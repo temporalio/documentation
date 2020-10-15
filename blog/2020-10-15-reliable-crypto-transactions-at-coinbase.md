@@ -35,7 +35,7 @@ Coinbase processes millions of cryptocurrency transactions every day. From their
 3. Deposit foocoin into user B's wallet
 4. Deposit barcoin into user A's wallet
 
-If all of these steps succeed, the user-level transaction succeeds. On the other hand, if a step fails the user-level transaction cannot fail until the steps which were already executed are rolled back.œœœ This need to rollback is traditionally accomplished using SAGA - a common pattern for handling rollbacks in distributed transactions.
+If all of these steps succeed, the user-level transaction succeeds. On the other hand, if a step fails the user-level transaction cannot fail until the steps which were already executed are rolled back. This need to rollback is traditionally accomplished using SAGA - a common pattern for handling rollbacks in distributed transactions.
 
 Until recently Coinbase relied on a custom engine to handle these SAGA needs. The homegrown system was quite reliable and well-suited enough for SAGA support, but when teams began trying to extend the system to be useful in other domains things became painful. Each new use case the system needed to support translated into a large amount of plumbing and developer work. Coinbase quickly realized that they were going to need a flexible, general-purpose solution if they wanted to continue scaling and innovating.
 

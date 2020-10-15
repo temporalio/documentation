@@ -27,6 +27,7 @@ release_version: V1.1.0
 * [Yahoo News](https://au.news.yahoo.com/temporal-raises-18-75m-series-160000059.html)
 * [Mekhato](https://mekhato.com/aws-microsoft-uber-engineering-vets-raise-20m-from-top-vcs-for-seattle-startup-temporal/)
 * [Biz Journals](https://www.bizjournals.com/seattle/news/2020/10/15/temporal-series-a-madrona-sequoia-seattle-tech.html)
+- [Finsmes](https://www.finsmes.com/2020/10/temporal-raises-18-75m-in-series-a-funding.html)
 
 ## Announcement
 
