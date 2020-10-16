@@ -13,3 +13,6 @@ origins:
     ref: 51ba6c9ef7eeabc7c86624e4f60058ae57ab1a5d
 
 target: docs
+
+features:
+  enable_source_link: true

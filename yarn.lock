@@ -8939,10 +8939,10 @@ snapdragon@^0.8.1:
     source-map-resolve "^0.5.0"
     use "^3.1.0"
 
-snipsync@0.0.2-beta.5:
-  version "0.0.2-beta.5"
-  resolved "https://registry.yarnpkg.com/snipsync/-/snipsync-0.0.2-beta.5.tgz#962f68711a9ceb02cb046f7002502372e695241c"
-  integrity sha512-UyETYtEqs67so/CSjtOnCmDK6IvasfamVyMyEMOR8/Ieu5J9ZsmOle3aKb3y+rCJOpXx8/gwywqVMFzYKyoIgg==
+snipsync@0.1.0-beta.0:
+  version "0.1.0-beta.0"
+  resolved "https://registry.yarnpkg.com/snipsync/-/snipsync-0.1.0-beta.0.tgz#1f0f24407a47ba97a5ce3a53f7f80184c519b4a5"
+  integrity sha512-XcljubKl0WzfTc0uPkNNCPftgeCuKImBxiG1XD4RrjkO7v/muix06ffyLLn1us2TQqYnjNiRcsr7D0O8tt1NOQ==
   dependencies:
     "@octokit/rest" "^18.0.3"
     anzip "^0.2.0"
