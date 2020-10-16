@@ -31,13 +31,13 @@ The history service provides visibility into history for periodic Workflow execu
 
 Scalability is another crucial advantage of using Temporal for periodic execution. Many use cases require periodic execution for a large number of entities. At Uber, some applications run recurring Workflows for each customer. Imagine 100s of millions parallel cron jobs that don't require a separate batch processing framework.
 
-Temporal support for long-running activities and unlimited retries also makes it a great fit for monitoring use cases.
+Temporal support for long-running Activities and unlimited retries also makes it a great fit for monitoring use cases.
 
 ## Example: Cluster Lifecycle Workflow
 
 Imagine a system that manages a large number of compute clusters. It monitors that a cluster is up and running, its CPU and network utilization, run backups and software upgrades.
 
-You can model these operational activities as one indefinitely long Workflow per cluster which can be alive anywhere from minutes to years, depending on the cluster lifetime. Each Workflow would run periodic activities, react to user commands via signals, and coordinate multiple potentially conflicting operations.
+You can model these operational Activities as one indefinitely long Workflow per cluster which can be alive anywhere from minutes to years, depending on the cluster lifetime. Each Workflow would run periodic Activities, react to user commands via signals, and coordinate multiple potentially conflicting operations.
 
 ## Next Steps
 

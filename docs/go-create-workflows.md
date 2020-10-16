@@ -19,9 +19,9 @@ coordination logic. The details of these requirements and restrictions are descr
 
 ## Overview
 
-The sample code below shows a simple implementation of a Workflow that executes one activity. The
+The sample code below shows a simple implementation of a Workflow that executes one Activity. The
 Workflow also passes the sole parameter it receives as part of its initialization as a parameter
-to the activity.
+to the Activity.
 
 ```go
 package sample
@@ -97,7 +97,7 @@ A straightforward way to think about these requirements is that the Workflow cod
 - Workflow code can only read and manipulate local state or state received as return values from
   Temporal client library functions.
 - Workflow code should not affect changes in external systems other than through invocation
-  of activities.
+  of Activities.
 - Workflow code should interact with **time** only through the functions provided by the Temporal
   client library (i.e. **workflow.Now()**, **workflow.Sleep()**).
 - Workflow code should not create and interact with goroutines directly, it should instead use the

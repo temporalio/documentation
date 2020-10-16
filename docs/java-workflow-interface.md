@@ -3,7 +3,7 @@ id: java-workflow-interface
 title: Workflow Interface
 ---
 
-Workflow encapsulates the orchestration of activities and child Workflows.
+Workflow encapsulates the orchestration of Activities and child Workflows.
 It can also answer synchronous queries and receive external events (also known as signals).
 
 A Workflow must define an interface class. A Workflow interface class must be annotated with `@WorkflowInterface`.

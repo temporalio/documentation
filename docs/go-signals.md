@@ -7,14 +7,14 @@ title: Signals
 two options for passing data to the Workflow implementation:
 
 * Via start parameters
-* As return values from activities
+* As return values from Activities
 
 With start parameters, we could only pass in values before Workflow execution began.
 
-Return values from activities allowed us to pass information to a running Workflow, but this
+Return values from Activities allowed us to pass information to a running Workflow, but this
 approach comes with its own complications. One major drawback is reliance on polling. This means
 that the data needs to be stored in a third-party location until it's ready to be picked up by
-the activity. Further, the lifecycle of this activity requires management, and the activity
+the Activity. Further, the lifecycle of this Activity requires management, and the Activity
 requires manual restart if it fails before acquiring the data.
 
 **Signals**, on the other hand, provide a fully asynchronous and durable mechanism for providing data to

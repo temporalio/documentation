@@ -586,13 +586,13 @@ The Query method can accept parameters. This might be useful if only part of the
 ## Activities
 
 Having fault tolerant code that maintains state, updates it in reaction to external events, and supports querying is already very useful.
-But in most practical applications, the Workflow is expected to act upon the external world. Temporal supports such externally-facing code in the form of activities.
+But in most practical applications, the Workflow is expected to act upon the external world. Temporal supports such externally-facing code in the form of Activities.
 
-An activity is essentially a function that can execute any code like DB updates or service calls. The Workflow is not allowed to
-directly call any external APIs; it can do this only through activities. The Workflow is essentially an orchestrator of activities.
-Let's change our program to print the greeting from an activity on every change.
+An Activity is essentially a function that can execute any code like DB updates or service calls. The Workflow is not allowed to
+directly call any external APIs; it can do this only through Activities. The Workflow is essentially an orchestrator of Activities.
+Let's change our program to print the greeting from an Activity on every change.
 
-First let's define an activities interface and implement it:
+First let's define an Activities interface and implement it:
 
 ```java
   @ActivityInterface
@@ -601,12 +601,12 @@ First let's define an activities interface and implement it:
   }
 ```
 
-`@ActivityInterface` annotation is required for an activity interface. Each method that belongs to an activity interface
-defines a separate activity type.
+`@ActivityInterface` annotation is required for an Activity interface. Each method that belongs to an Activity interface
+defines a separate Activity type.
 
 Activity implementation is just a normal [POJO](https://en.wikipedia.org/wiki/Plain_old_Java_object).
 The `out` stream is passed as a parameter to the constructor to demonstrate that the
-activity object can have any dependencies. Examples of real application dependencies are database connections and service clients.
+Activity object can have any dependencies. Examples of real application dependencies are database connections and service clients.
 
 ```java
   public class HelloWordActivitiesImpl implements HelloWorldActivities {
@@ -623,9 +623,9 @@ activity object can have any dependencies. Examples of real application dependen
   }
 ```
 
-Let's create a separate main method for the activity worker. It is common to have a single worker that hosts both activities and Workflows,
+Let's create a separate main method for the Activity worker. It is common to have a single worker that hosts both Activities and Workflows,
 but here we keep them separate to demonstrate how Temporal deals with worker failures.
-To make the activity implementation known to Temporal, register it with the worker:
+To make the Activity implementation known to Temporal, register it with the worker:
 
 ```java
 public class GettingStartedActivityWorker {
@@ -641,9 +641,9 @@ public class GettingStartedActivityWorker {
 }
 ```
 
-A single instance of an activity object is registered per activity interface type. This means that the activity implementation should be thread-safe since the activity method can be simultaneously called from multiple threads.
+A single instance of an Activity object is registered per Activity interface type. This means that the Activity implementation should be thread-safe since the Activity method can be simultaneously called from multiple threads.
 
-Let's modify the Workflow code to invoke the activity instead of logging:
+Let's modify the Workflow code to invoke the Activity instead of logging:
 
 ```java
   public static class HelloWorldImpl implements HelloWorld {
@@ -674,16 +674,16 @@ Let's modify the Workflow code to invoke the activity instead of logging:
   }
 ```
 
-Activities are invoked through a stub that implements their interface. So an invocation is just a method call on an activity stub.
+Activities are invoked through a stub that implements their interface. So an invocation is just a method call on an Activity stub.
 
-Now run the Workflow worker. Do not run the activity worker yet. Then start a new Workflow execution:
+Now run the Workflow worker. Do not run the Activity worker yet. Then start a new Workflow execution:
 
 ```bash
 temporal: docker run --network=host --rm temporalio/tctl:1.1.0 workflow start  --workflow_id "HelloActivityWorker" --taskqueue HelloWorldTaskQueue --workflow_type HelloWorld_sayHello --execution_timeout 3600 --input \"World\"
 Started Workflow Id: HelloActivityWorker, run Id: ff015637-b5af-43e8-b3f6-8b6c7b919b62
 ```
 
-The Workflow is started, but nothing visible happens. This is expected as the activity worker is not running. What are the options to understand the currently running Workflow state?
+The Workflow is started, but nothing visible happens. This is expected as the Activity worker is not running. What are the options to understand the currently running Workflow state?
 
 The first option is look at the stack trace:
 
@@ -702,9 +702,9 @@ sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 "
 ```
 
-It shows that the Workflow code is blocked on the "say" method of a Proxy object that implements the activity stub.
-You can restart the Workflow worker if you want to make sure that restarting it does not change that. It works for activities
-of any duration. It is okay for the Workflow code to block on an activity invocation for a month for example.
+It shows that the Workflow code is blocked on the "say" method of a Proxy object that implements the Activity stub.
+You can restart the Workflow worker if you want to make sure that restarting it does not change that. It works for Activities
+of any duration. It is okay for the Workflow code to block on an Activity invocation for a month for example.
 
 Another way to see what exactly happened in the Workflow execution is to look at the Workflow execution history:
 
@@ -741,9 +741,9 @@ temporal: docker run --network=host --rm temporalio/tctl:1.1.0 workflow show  --
                                 DecisionTaskCompletedEventId:4}
 ```
 
-The last event in the Workflow history is `ActivityTaskScheduled`. It is recorded when Workflow invoked the activity, but it wasn't picked up by an activity worker yet.
+The last event in the Workflow history is `ActivityTaskScheduled`. It is recorded when Workflow invoked the Activity, but it wasn't picked up by an Activity worker yet.
 
-Another useful API is `DescribeWorkflowExecution` which, among other information, contains the list of outstanding activities:
+Another useful API is `DescribeWorkflowExecution` which, among other information, contains the list of outstanding Activities:
 
 ```text
 temporal: docker run --network=host --rm temporalio/tctl:1.1.0 workflow describe  --workflow_id "HelloActivityWorker"
@@ -785,7 +785,7 @@ temporal: docker run --network=host --rm temporalio/tctl:1.1.0 workflow describe
 }
 ```
 
-Let's start the activity worker. It starts and immediately prints:
+Let's start the Activity worker. It starts and immediately prints:
 
 ```text
 1: Hello World!
@@ -842,12 +842,12 @@ temporal: docker run --network=host --rm temporalio/tctl:1.1.0 workflow show  --
                                 Identity:37694@maxim-C02XD0AAJGH6}
 ```
 
-_ActivityTaskStarted_ event is recorded when the activity task is picked up by an activity worker. The Identity field
+_ActivityTaskStarted_ event is recorded when the Activity task is picked up by an Activity worker. The Identity field
 contains the Id of the worker (you can set it to any value on worker startup).
 
-_ActivityTaskCompleted_ event is recorded when activity completes. It contains the result of the activity execution.
+_ActivityTaskCompleted_ event is recorded when Activity completes. It contains the result of the Activity execution.
 
-Let's look at various failure scenarios. Modify activity task timeout:
+Let's look at various failure scenarios. Modify Activity task timeout:
 
 ```java
   @ActivityInterface
