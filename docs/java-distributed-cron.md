@@ -59,7 +59,7 @@ To convert those Workflows to make use of Temporal CronSchedule, all you need is
 ## Retrieve last successful result
 
 Sometimes it is useful to obtain the progress of previous successful runs.
-This is supported by two new APIs in the client library:
+This is supported by two new APIs in the Java SDK:
 `HasLastCompletionResult` and `GetLastCompletionResult`. Below is an example of how
 to use this in Java:
 

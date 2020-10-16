@@ -4,8 +4,8 @@ title: Creating Workflows
 ---
 
 The Workflow is the implementation of the coordination logic. The Temporal programming framework
-(aka client library) allows you to write the Workflow coordination logic as simple procedural code
-that uses standard Go data modeling. The client library takes care of the communication between
+(aka Go SDK) allows you to write the Workflow coordination logic as simple procedural code
+that uses standard Go data modeling. The Go SDK takes care of the communication between
 the worker service and the Temporal service, and ensures state persistence between events even in
 case of worker failures. Furthermore, any particular execution is not tied to a particular worker
 machine. Different steps of the coordination logic can end up executing on different worker
@@ -69,8 +69,8 @@ specifies the parameters the Workflow accepts as well as any values it might ret
 Let’s deconstruct the declaration above:
 
 - The first parameter to the function is **ctx workflow.Context**. This is a required parameter for
-  all Workflow functions and is used by the Temporal client library to pass execution context.
-  Virtually all the client library functions that are callable from the Workflow functions require
+  all Workflow functions and is used by the Temporal Go SDK to pass execution context.
+  Virtually all the Go SDK functions that are callable from the Workflow functions require
   this **ctx** parameter. This **context** parameter is the same concept as the standard
   **context.Context** provided by Go. The only difference between **workflow.Context** and
   **context.Context** is that the **Done()** function in **workflow.Context** returns
@@ -95,15 +95,15 @@ must behave in order to guarantee correctness. The requirements are that:
 A straightforward way to think about these requirements is that the Workflow code is as follows:
 
 - Workflow code can only read and manipulate local state or state received as return values from
-  Temporal client library functions.
+  Temporal Go SDK functions.
 - Workflow code should not affect changes in external systems other than through invocation
   of Activities.
 - Workflow code should interact with **time** only through the functions provided by the Temporal
-  client library (i.e. **workflow.Now()**, **workflow.Sleep()**).
+  Go SDK (i.e. **workflow.Now()**, **workflow.Sleep()**).
 - Workflow code should not create and interact with goroutines directly, it should instead use the
-  functions provided by the Temporal client library (i.e., **workflow.Go()** instead of **go**,
+  functions provided by the Temporal Go SDK (i.e., **workflow.Go()** instead of **go**,
   **workflow.Channel** instead of **chan**, **workflow.Selector** instead of **select**).
-- Workflow code should do all logging via the logger provided by the Temporal client library
+- Workflow code should do all logging via the logger provided by the Temporal Go SDK
   (i.e., **workflow.GetLogger()**).
 - Workflow code should not iterate over maps using range because the order of map iteration is randomized.
 
@@ -112,7 +112,7 @@ used for writing Temporal Workflows and how to implement some common patterns.
 
 ### Special Temporal SDK functions and types
 
-The Temporal client library provides a number of functions and types as alternatives to some native
+The Temporal Go SDK provides a number of functions and types as alternatives to some native
 Go functions and types. Usage of these replacement functions/types is necessary in order to ensure
 that the Workflow code execution is deterministic and repeatable within an execution context.
 

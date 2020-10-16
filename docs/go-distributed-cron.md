@@ -60,7 +60,7 @@ remove the delay timer and return without using
 ## Retrieve last successful result
 
 Sometimes it is useful to obtain the progress of previous successful runs.
-This is supported by two new APIs in the client library:
+This is supported by two new APIs in the Go SDK:
 `HasLastCompletionResult` and `GetLastCompletionResult`. Below is an example of how
 to use this in Go:
 
