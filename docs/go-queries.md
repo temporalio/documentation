@@ -11,7 +11,7 @@ example:
 
 This command uses `__stack_trace`, which is a built-in query type supported by the Temporal client
 library. You can add custom query types to handle queries such as querying the current state of a
-Workflow, or querying how many activities the Workflow has completed. To do this, you need to set
+Workflow, or querying how many Activities the Workflow has completed. To do this, you need to set
 up a query handler using `workflow.SetQueryHandler`.
 
 The handler must be a function that returns two values:

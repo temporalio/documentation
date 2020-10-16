@@ -3,9 +3,9 @@ id: go-workers
 title: Worker Service
 ---
 
-A worker or _worker service_ is a service that hosts the Workflow and activity implementations. The worker polls the _Temporal service_ for tasks, performs those tasks, and communicates task execution results back to the _Temporal service_. Worker services are developed, deployed, and operated by Temporal customers.
+A worker or _worker service_ is a service that hosts the Workflow and Activity implementations. The worker polls the _Temporal service_ for tasks, performs those tasks, and communicates task execution results back to the _Temporal service_. Worker services are developed, deployed, and operated by Temporal customers.
 
-You can run a Temporal worker in a new or an existing service. Use the framework APIs to start the Temporal worker and link in all activity and Workflow implementations that you require the service to execute.
+You can run a Temporal worker in a new or an existing service. Use the framework APIs to start the Temporal worker and link in all Activity and Workflow implementations that you require the service to execute.
 
 ```go
 package main

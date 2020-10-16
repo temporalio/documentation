@@ -12,11 +12,11 @@ Each microservice typically has its own storage and interacts with other service
 
 The implementation must **guarantee** that all of the calls eventually succeed even in the case of prolonged failures of individual microservices, preserving business rules across multiple independent sub-domains.
 
-Interdependency graphs between services can be remarkably complicated. Processes can run asynchronously or in parallel, some tasks need information from other systems, and the next steps often depend on the outcome of previous activities.
+Interdependency graphs between services can be remarkably complicated. Processes can run asynchronously or in parallel, some tasks need information from other systems, and the next steps often depend on the outcome of previous Activities.
 
 ## Benefits of Temporal
 
-Temporal is a perfect fit for microservice orchestration scenarios. It guarantees that Workflow code eventually completes, has built-in support for exponential activity **retries**, and simplifies the coding of the **compensation** logic with native [Saga pattern support](/docs/use-cases-distributed-transactions).
+Temporal is a perfect fit for microservice orchestration scenarios. It guarantees that Workflow code eventually completes, has built-in support for exponential Activity **retries**, and simplifies the coding of the **compensation** logic with native [Saga pattern support](/docs/use-cases-distributed-transactions).
 
 You can define retries, rollbacks, or even a human intervention step in the case of failure. Workflows are defined in general-purpose programming languages that bring the ultimate **flexibility** especially when compared to text-based DSL engines.
 

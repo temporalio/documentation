@@ -5,7 +5,7 @@ title: Child Workflows
 
 `workflow.ExecuteChildWorkflow` enables the scheduling of other Workflows from within a Workflow's
 implementation. The parent Workflow has the ability to monitor and impact the lifecycle of the child
-Workflow, similar to the way it does for an activity that it invoked.
+Workflow, similar to the way it does for an Activity that it invoked.
 
 ```go
 cwo := workflow.ChildWorkflowOptions{
@@ -27,7 +27,7 @@ Let's take a look at each component of this call.
 Before calling `workflow.ExecuteChildworkflow()`, you must configure `ChildWorkflowOptions` for the
 invocation. These options customize various execution timeouts, and are passed in by creating a child
 context from the initial context and overwriting the desired values. The child context is then passed
-into the `workflow.ExecuteChildWorkflow()` call. If multiple activities are sharing the same option
+into the `workflow.ExecuteChildWorkflow()` call. If multiple Activities are sharing the same option
 values, then the same context instance can be used when calling `workflow.ExecuteChildworkflow()`.
 
 The first parameter in the call is the required `workflow.Context` object. This type is a copy of

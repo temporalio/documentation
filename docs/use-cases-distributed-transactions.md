@@ -10,7 +10,7 @@ Most businesses have to deal with managing complex **monetary transactions** and
 
 - Handling consumer's subscriptions, installment payments, and communications in a reliable and timely manner.
 - Integrating with multiple payment systems and shopping platform backends.
-- Detecting suspicious and fraudulent activities.
+- Detecting suspicious and fraudulent Activities.
 
 Similar to [microservices orchestration](/docs/use-cases-orchestration), such workflows need a way to deliver the transactional **consistency**&mdash;but across multiple third-party vendors. Each of these third-party systems has a potential for failure, delays, or intermittent availability issues. Despite the challenges, the entire process represents a long-running transaction that needs to eventually complete in a predictable way.
 

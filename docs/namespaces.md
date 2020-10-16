@@ -43,9 +43,9 @@ be triggered from any cluster, so failover version is designed in a way to not a
 triggered simultaneously on two clusters.
 
 ## Conflict Resolution
-Unlike local namespaces which provide at-most-once semantics for activity execution, Global Namespaces can only support at-least-once
+Unlike local namespaces which provide at-most-once semantics for Activity execution, Global Namespaces can only support at-least-once
 semantics. Temporal XDC relies on asynchronous replication of events across clusters, so in the event of a failover
-it is possible that activity gets dispatched again on the new active cluster due to a replication task lag. This also
+it is possible that Activity gets dispatched again on the new active cluster due to a replication task lag. This also
 means that whenever Workflow execution is updated after a failover by the new cluster, any previous replication tasks
 for that execution cannot be applied. This results in loss of some progress made by the Workflow execution in the
 previous active cluster. During such conflict resolution, Temporal re-injects any external events like Signals to the
@@ -87,10 +87,10 @@ $ tctl --ns my-namespace-global n up --ac dc2
 
 ## FAQ
 
-### What happens to outstanding activities after failover?
-Temporal does not forward activity completions across clusters. Any outstanding activity will eventually timeout based
-on the configuration. Your application should have retry logic in place so that the activity gets retried and dispatched
-again to a worker after the failover to the new DC. Handling this is pretty much the same as activity timeout caused by
+### What happens to outstanding Activities after failover?
+Temporal does not forward Activity completions across clusters. Any outstanding Activity will eventually timeout based
+on the configuration. Your application should have retry logic in place so that the Activity gets retried and dispatched
+again to a worker after the failover to the new DC. Handling this is pretty much the same as Activity timeout caused by
 a worker restart even without Global Namespaces.
 
 ### What happens when a start or signal API call is made to a standby cluster?

@@ -21,7 +21,7 @@ Some provisioning operations may take dozens of minutes or even hours to complet
 
 Temporal Workflows can express complex decision trees using a general-purpose programming language. Support for long-running operations, polling, responding to events, automatic retries are excellent building blocks for a robust provisioning flow. If a lengthy provisioning Workflow fails in the middle, Temporal would handle the error and restart the flow at the right spot.
 
-Temporal can route activity execution to a specific process or host, which is useful for many provisioning scenarios.
+Temporal can route Activity execution to a specific process or host, which is useful for many provisioning scenarios.
 
 Many resource management operations require locking to ensure that only one mutation is executed on any given resource at a time. Temporal provides a strong guarantee of uniqueness via the operation identifier. This primitive enables the implementation of locking behavior in a fault-tolerant and scalable manner.
 

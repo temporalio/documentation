@@ -7,7 +7,7 @@ title: System architecture
 
 Temporal is a highly scalable fault-oblivious stateful code platform. The fault-oblivious code is a next level of abstraction over commonly used techniques to achieve fault tolerance and durability.
 
-A common Temporal-based application consists of a Temporal service, Workflow and activity workers, and external clients.
+A common Temporal-based application consists of a Temporal service, Workflow and Activity workers, and external clients.
 Note that both types of workers as well as external clients are roles and can be collocated in a single application process if necessary.
 
 ## Temporal Service
@@ -36,13 +36,13 @@ The Temporal service API doesn't impose any specific Workflow definition languag
 
 ## Activity Worker
 
-Workflow fault-oblivious code is immune to infrastructure failures. But it has to communicate with the imperfect external world where failures are common. All communication to the external world is done through activities. Activities are pieces of code that can perform any application-specific action like calling a service, updating a database record, or downloading a file from Amazon S3. Temporal activities are very feature-rich compared to queuing systems. Example features are task routing to specific processes, infinite retries, heartbeats, and unlimited execution time.
+Workflow fault-oblivious code is immune to infrastructure failures. But it has to communicate with the imperfect external world where failures are common. All communication to the external world is done through Activities. Activities are pieces of code that can perform any application-specific action like calling a service, updating a database record, or downloading a file from Amazon S3. Temporal Activities are very feature-rich compared to queuing systems. Example features are task routing to specific processes, infinite retries, heartbeats, and unlimited execution time.
 
-Activities are hosted by _activity worker_ processes that receive _activity tasks_ from the Temporal service, invoke correspondent activity implementations and report back task completion statuses.
+Activities are hosted by _Activity worker_ processes that receive _Activity tasks_ from the Temporal service, invoke correspondent Activity implementations and report back task completion statuses.
 
 ## External Clients
 
-Workflow and activity workers host Workflow and activity code. But to create a Workflow instance (an execution in Temporal terminology) the `StartWorkflowExecution` Temporal service API call should be used. Usually, Workflows are started by outside entities like UIs, microservices or CLIs.
+Workflow and Activity workers host Workflow and Activity code. But to create a Workflow instance (an execution in Temporal terminology) the `StartWorkflowExecution` Temporal service API call should be used. Usually, Workflows are started by outside entities like UIs, microservices or CLIs.
 
 These entities can also:
 

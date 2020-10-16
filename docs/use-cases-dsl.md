@@ -14,7 +14,7 @@ Another use case would be a legacy system that uses some form of DSL for process
 
 An application can utilize the Temporal SDK to interpret the DSL definition. This automatically makes the DSL execution highly fault-tolerant, scalable, and durable since it's running on Temporal. This means that users can migrate their existing portfolio of internal DSL-based process definitions and take advantage of Temporal as an execution engine.
 
-If your company uses multiple workflow engines internally, it can be very beneficial to unify them with Temporal. For one, it is more efficient to support a single product instead of many. Additionally, it's hard to overestimate the the benefit sharing activities will bring across the company.
+If your company uses multiple workflow engines internally, it can be very beneficial to unify them with Temporal. For one, it is more efficient to support a single product instead of many. Additionally, it's hard to overestimate the the benefit sharing Activities will bring across the company.
 
 On top of that, Temporal comes with unmatched scalability and stability characteristics.
 

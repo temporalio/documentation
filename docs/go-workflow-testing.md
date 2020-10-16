@@ -103,14 +103,14 @@ func (s *UnitTestSuite) Test_SimpleWorkflow_Success() {
         s.NoError(s.env.GetWorkflowError())
 }
 ```
-Calling `s.env.ExecuteWorkflow(...)` executes the Workflow logic and any invoked activities inside the
+Calling `s.env.ExecuteWorkflow(...)` executes the Workflow logic and any invoked Activities inside the
 test process. The first parameter of `s.env.ExecuteWorkflow(...)` contains the Workflow functions,
 and any subsequent parameters contain values for custom input parameters declared by the Workflow
 function.
 
-> Note that unless the activity invocations are mocked or activity implementation
+> Note that unless the Activity invocations are mocked or Activity implementation
 > replaced (see [Activity mocking and overriding](#activity-mocking-and-overriding)), the test environment
-> will execute the actual activity code including any calls to outside services.
+> will execute the actual Activity code including any calls to outside services.
 
 After executing the Workflow in the above example, we assert that the Workflow ran through completion
 via the call to `s.env.IsWorkflowComplete()`. We also assert that no errors were returned by asserting
@@ -121,12 +121,12 @@ value.
 ## Activity mocking and overriding
 
 When running unit tests on Workflows, we want to test the Workflow logic in isolation. Additionally,
-we want to inject activity errors during our test runs. The test framework provides two mechanisms
-that support these scenarios: activity mocking and activity overriding. Both of these mechanisms allow
-you to change the behavior of activities invoked by your Workflow without the need to modify the actual
+we want to inject Activity errors during our test runs. The test framework provides two mechanisms
+that support these scenarios: Activity mocking and Activity overriding. Both of these mechanisms allow
+you to change the behavior of Activities invoked by your Workflow without the need to modify the actual
 Workflow code.
 
-Let's take a look at a test that simulates a test that fails via the "activity mocking" mechanism.
+Let's take a look at a test that simulates a test that fails via the "Activity mocking" mechanism.
 
 ```go
 func (s *UnitTestSuite) Test_SimpleWorkflow_ActivityFails() {
@@ -143,7 +143,7 @@ func (s *UnitTestSuite) Test_SimpleWorkflow_ActivityFails() {
         s.Equal("SimpleActivityFailure", applicationErr.Error())
 }
 ```
-This test simulates the execution of the activity `SimpleActivity` that is invoked by our Workflow
+This test simulates the execution of the Activity `SimpleActivity` that is invoked by our Workflow
 `SimpleWorkflow` returning an error. We accomplish this by setting up a mock on the test environment
 for the `SimpleActivity` that returns an error.
 
@@ -155,8 +155,8 @@ With the mock set up we can now execute the Workflow via the `s.env.ExecuteWorkf
 assert that the Workflow completed successfully and returned the expected error.
 
 Simply mocking the execution to return a desired value or error is a pretty powerful mechanism to
-isolate Workflow logic. However, sometimes we want to replace the activity with an alternate implementation
-to support a more complex test scenario. Let's assume we want to validate that the activity gets called
+isolate Workflow logic. However, sometimes we want to replace the Activity with an alternate implementation
+to support a more complex test scenario. Let's assume we want to validate that the Activity gets called
 with the correct parameters.
 
 ```go
@@ -174,10 +174,10 @@ func (s *UnitTestSuite) Test_SimpleWorkflow_ActivityParamCorrect() {
 ```
 
 In this example, we provide a function implementation as the parameter to `Return`. This allows us to
-provide an alternate implementation for the activity `SimpleActivity`. The framework will execute this
-function whenever the activity is invoked and pass on the return value from the function as the result
-of the activity invocation. Additionally, the framework will validate that the signature of the "mock"
-function matches the signature of the original activity function.
+provide an alternate implementation for the Activity `SimpleActivity`. The framework will execute this
+function whenever the Activity is invoked and pass on the return value from the function as the result
+of the Activity invocation. Additionally, the framework will validate that the signature of the "mock"
+function matches the signature of the original Activity function.
 
 Since this can be an entire function, there is no limitation as to what we can do here. In this
 example, we assert that the `value` param has the same content as the value param we passed to the Workflow.
