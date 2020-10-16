@@ -16,7 +16,7 @@ of a complex state, respond to asynchronous events, and communicate to external 
 
 The Temporal solution is a [fault-oblivious stateful programming model](/docs/workflows/) that hides most of the complexity behind building scalable distributed applications. In essence, Temporal provides a durable virtual memory that is not linked to a specific process, and preserves the full application state, including function stacks, with local variables across all sorts of host and software failures. This allows you to write code using the full power of a programming language while Temporal takes care of durability, availability, and scalability of the application.
 
-Temporal consists of a programming framework (or client library) and a managed service (or backend). The framework enables developers to author and coordinate tasks in familiar languages. [Go](https://github.com/temporalio/temporal-go-sdk/) and [Java](https://github.com/temporalio/temporal-java-sdk) are supported today with many [other SDKs](/docs/other-sdks) in development.
+Temporal consists of a programming framework (or SDK) and a managed service (or backend). The framework enables developers to author and coordinate tasks in familiar languages. [Go](https://github.com/temporalio/temporal-go-sdk/) and [Java](https://github.com/temporalio/temporal-java-sdk) are supported today with many [other SDKs](/docs/other-sdks) in development.
 
 The backend service is stateless and relies on a persistent store. Currently, Cassandra and MySQL stores are supported. An adapter to any other database that provides multi-row single shard transactions can be added. There are different service deployment models.
 

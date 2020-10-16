@@ -58,7 +58,7 @@ in the actual function object is that the framework can validate Activity parame
 
 The remaining parameters are passed to the Activity as part of the call. In our example, we have a
 single parameter: `value`. This list of parameters must match the list of parameters declared by
-the Activity function. The Temporal client library will validate this.
+the Activity function. The Temporal Go SDK will validate this.
 
 The method call returns immediately and returns a `workflow.Future`. This allows you to execute more
 code without having to wait for the scheduled Activity to complete.
