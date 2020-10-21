@@ -74,7 +74,7 @@ There are two ways to start a Workflow with Temporal, either via the SDK or via 
 <!--SNIPSTART money-transfer-project-template-java-workflow-initiator-->
 <!--SNIPEND-->
 
-The call to the Temporal server can be done synchronously or asynchronously. Here we do it asynchronously, so you will see the program run, tell you the transaction is processing, and exit.
+The call to the Temporal server can be done [synchronously or asynchronously](/docs/java-starting-workflow-executions). Here we do it asynchronously, so you will see the program run, tell you the transaction is processing, and exit.
 
 ### State visibility
 
