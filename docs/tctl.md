@@ -224,7 +224,7 @@ For terminating workflows as batch job, it will terminate the children recursive
 Start a batch job(using signal as batch type):
 
 ```
-tctl --ns samples-namespace wf batch start --query "WorkflowType='main.SampleParentWorkflow' AND CloseTime=missing" --reason "test" --bt signal --sig testname
+tctl --ns samples-namespace batch start --query "WorkflowType='main.SampleParentWorkflow' AND CloseTime=missing" --reason "test" --bt signal --sig testname
 This batch job will be operating on 5 workflows.
 Please confirm[Yes/No]:yes
 {
@@ -237,7 +237,7 @@ Please confirm[Yes/No]:yes
 You need to remember the JobId or use List command to get all your batch jobs:
 
 ```
-tctl --ns samples-namespace wf batch list
+tctl --ns samples-namespace batch list
 ```
 
 Describe the progress of a batch job:
@@ -249,7 +249,7 @@ tctl --ns samples-namespace batch desc -jid <batch-job-id>
 Terminate a batch job:
 
 ```
-tctl --ns samples-namespace wf batch terminate -jid <batch-job-id>
+tctl --ns samples-namespace batch terminate -jid <batch-job-id>
 ```
 
 Note that the operation performed by a batch will not be rolled back by terminating the batch. However, you can use reset to rollback your workflows.
