@@ -24,7 +24,9 @@ function Providers({ children }) {
 }
 
 function Layout(props) {
-  localStorage.removeItem('theme');
+  if (localStorage) {
+    localStorage.removeItem('theme');
+  }
   const { siteConfig = {} } = useDocusaurusContext();
   const {
     favicon,
