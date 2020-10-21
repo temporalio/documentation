@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React from 'react';
+import React, { useEffect } from 'react';
 import Head from '@docusaurus/Head';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import useBaseUrl from '@docusaurus/useBaseUrl';
@@ -24,9 +24,6 @@ function Providers({ children }) {
 }
 
 function Layout(props) {
-  if (localStorage) {
-    localStorage.removeItem('theme');
-  }
   const { siteConfig = {} } = useDocusaurusContext();
   const {
     favicon,
@@ -50,6 +47,9 @@ function Layout(props) {
     absolute: true,
   });
   const faviconUrl = useBaseUrl(favicon);
+  useEffect(() => {
+    localStorage.removeItem('theme');
+  }, []);
   return (
     <Providers>
       <Head>
