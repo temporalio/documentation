@@ -24,7 +24,7 @@ release_version: V1.1.1
 
 <img class="docs-image-centered docs-image-max-width-20" src={require('../static/img/docs/hiker.png').default} />
 
-In terms of our documentation, it’s no secret that we were facing a number of challenges. To start, product documentation is typically offered a secondary level of prioritization; Faced with limited resources, as long as the product ships with some minimal viable information and access to product experts who can answer questions, then at least most advanced users can get it going. So, documentation tends to lag behind in fully describing a product’s capability and feature set, which held true for Temporal.
+&nbsp;&nbsp; In terms of our documentation, it’s no secret that we were facing a number of challenges. To start, product documentation is typically offered a secondary level of prioritization; Faced with limited resources, as long as the product ships with some minimal viable information and access to product experts who can answer questions, then at least most advanced users can get it going. So, documentation tends to lag behind in fully describing a product’s capability and feature set, which held true for Temporal.
 
 Another challenge we were facing is that our docs started as a copy of the docs from Temporal’s predecessor, Cadence, and since the fork, there have been many core changes to the system, terminology, and SDKs. Many of these changes had yet to be propagated throughout the docs as well, so not only was there missing information, but some of it was just wrong.
 
@@ -42,7 +42,7 @@ We started as most might, trying to envision what the ideal situation would look
 
 <img class="docs-image-centered docs-image-max-width-20" src={require('../static/img/docs/sync.png').default} />
 
-It was around this time (early September), that I was testing out a tool I had prototyped in Node. The concept is simple, and to this day I am surprised that it didn’t already exist; I am sure that any day now I will stumble upon a more established version that we were somehow able to completely miss. It downloads Github repos, scrapes code snippets that exist between specific comment wrappers, and writes the snippets to their corresponding comment wrappers in Markdown files. It basically automates the synchronization of code with the docs from any given repository. There are several benefits to this:
+&nbsp;&nbsp; It was around this time (early September), that I was testing out a tool I had prototyped in Node. The concept is simple, and to this day I am surprised that it didn’t already exist; I am sure that any day now I will stumble upon a more established version that we were somehow able to completely miss. It downloads Github repos, scrapes code snippets that exist between specific comment wrappers, and writes the snippets to their corresponding comment wrappers in Markdown files. It basically automates the synchronization of code with the docs from any given repository. There are several benefits to this:
 
 1. Code snippets in the documentation work, they are tested, and they can be copied and pasted directly into someone else’s editor.
 2. We can control exactly which code is shown from a specific commit, in case bugs are introduced to the main branch.
@@ -58,7 +58,7 @@ We decided to try [Snipsync](https://github.com/temporalio/snipsync) and solve t
 
 <img class="docs-image-centered docs-image-max-width-20" src={require('../static/img/docs/templates.png').default} />
 
-We actually had a repository of code samples for the Go SDK and Java SDK already. And while we desired to see more samples, there were already quite a few of them in each. However we discovered that users will likely want to view the source file and relative file path of the code snippet for added context. They will also be likely to clone the repo and try to run the sample. Shared sample repositories as we discovered tended to have two issues:
+&nbsp;&nbsp; We actually had a repository of code samples for the Go SDK and Java SDK already. And while we desired to see more samples, there were already quite a few of them in each. However we discovered that users will likely want to view the source file and relative file path of the code snippet for added context. They will also be likely to clone the repo and try to run the sample. Shared sample repositories as we discovered tended to have two issues:
 
 1. While effective, they have more overhead in terms of approachability than that of stand alone repositories that have a single fully working application sample designed to illustrate certain concepts.
 2. When it comes to SDKs in multiple languages and shared repos, it is harder to retain the idiomatic nature of the languages and mirror the functionality of the samples across the different languages than if each sample existed in its own repo.
@@ -74,7 +74,7 @@ So, we created template repos for each of the sample applications that we planne
 
 <img class="docs-image-centered docs-image-max-width-20" src={require('../static/img/docs/tutorials.png').default} />
 
-Since we really wanted new users to grasp some of the core value propositions Temporal offers, we decided to aim for a “tutorial” style of documentation. The first iterations aimed to build upon and replace the existing SDK “quick start” pages that maintained the industry standard of showing an example that printed “Hello World!” to the console. But, as you may have guessed, this route wasn’t sufficient enough to show users the real values that Temporal offers.
+&nbsp;&nbsp; Since we really wanted new users to grasp some of the core value propositions Temporal offers, we decided to aim for a “tutorial” style of documentation. The first iterations aimed to build upon and replace the existing SDK “quick start” pages that maintained the industry standard of showing an example that printed “Hello World!” to the console. But, as you may have guessed, this route wasn’t sufficient enough to show users the real values that Temporal offers.
 
 So, we approached our co-founder and CEO, Maxim Fateev, and asked him to give us the same demonstration that he liked to give when introducing the software to another engineer for the first time. One of Maxim’s go-to scenarios is a money transfer from one bank account to another. “Aha!” we said, because as it turns out, for someone new to Temporal the attraction doesn’t come from using the SDK to print “Hello World!”, but it is instead to witness the inherent benefits that Temporal offers by running simulations using a pre-built application.
 
@@ -91,4 +91,4 @@ So, it was this direction that we decided to send new users. Once a user can wra
 
 <img class="docs-image-centered docs-image-max-width-20" src={require('../static/img/docs/steps.png').default} />
 
-We are far from satisfied with our documentation. We plan to bring SDK reference right into the docs, merge SDK tutorials into a single journey, so that a user can easily see how things are done across different languages, rewrite our concepts, re-write server management docs, and prepare for our hosted cloud offering that will enable all developers to build invincible applications.
+&nbsp;&nbsp; We are far from satisfied with our documentation. We plan to bring SDK reference right into the docs, merge SDK tutorials into a single journey, so that a user can easily see how things are done across different languages, rewrite our concepts, re-write server management docs, and prepare for our hosted cloud offering that will enable all developers to build invincible applications.
