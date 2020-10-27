@@ -11,8 +11,8 @@ module.exports = {
   projectName: 'temporal-documentation-legacy-v2', // Usually your repo name.
   themeConfig: {
     colorMode: {
-      defaultMode: 'dark',
-      disableSwitch: true,
+      defaultMode: 'light',
+      disableSwitch: false,
     },
     prism: {
       theme: require('prism-react-renderer/themes/github'),
@@ -22,7 +22,8 @@ module.exports = {
       hideOnScroll: true,
       logo: {
         alt: 'Temporal logo',
-        src: 'img/temporal-logo.svg',
+        src: 'img/temporal-logo-dark.svg',
+        srcDark: 'img/temporal-logo.svg',
       },
       items: [
         {
