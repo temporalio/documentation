@@ -95,7 +95,7 @@ Once your project has finished building, you are ready to go.
 
 ## ![](/img/docs/workflow.png) Application overview
 
-Each project template mimics a "money transfer" application that has a single [Workflow function](/docs/workflows) which orchestrates the execution of `Withdraw()` and `Deposit()` functions, representing a transfer of money from one account to another. Temporal calls these orchestrated functions [Activity functions](/docs/activities).
+Each project template mimics a "money transfer" application that has a single [Workflow function](/docs/workflows) which orchestrates the execution of withdraw and deposit functions, representing a transfer of money from one account to another. Temporal calls these orchestrated functions [Activity functions](/docs/activities).
 
 To run the application you will do the following:
 
@@ -260,36 +260,53 @@ Your Workflow is still there!
 
 ### Activity error
 
-Next let's simulate a bug in one of the Activity functions.
+Next let's simulate a bug in one of the Activity functions. Change the code in the deposit function so that it errors.
 
+<Tabs
+  defaultValue="go"
+  groupId="codePreference"
+  values={[
+    { label: 'Go', value: 'go', },
+    { label: 'Java', value: 'java', },
+  ]
+}>
+<TabItem value="go">
 
-
-
-Inside your project open the AccountActivityImpl.java file and uncomment the line that throws an exception in the deposit method:
-
-<!--SNIPSTART money-transfer-project-template-java-activity-implementation-->
-<!--SNIPEND-->
-
-Save it and run the Worker. The Worker completes the `withdraw()` Activity method, but throws the exception when it attempts the `deposit()` Activity method. Notice how the Worker keeps retrying the `deposit()` method? To view information of what is happening, visit the [UI](localhost:8088) and click on the RunId of the Workflow. You will see the pending Activity listed there with details such as its state, the number of times it has been attempted, and the next scheduled attempt.
-
-Next let's simulate a bug in the `Deposit()` Activity function. Let your Workflow continue to run. Open the activity.go file and switch out the comments on the return statements such that the `Deposit()` function returns an error:
+Open the activity.go file and switch out the comments on the return statements such that the `Deposit()` function returns an error:
 
 <!--SNIPSTART money-transfer-project-template-go-activity-->
 <!--SNIPEND-->
 
-Save it and run the Worker. The Worker completes the `Withdraw()` Activity function, but throws the error when it attempts the `Deposit()` Activity function. Notice how the Worker keeps retrying the `Deposit()` function? To view information of what is happening, visit the [UI](localhost:8088) and click on the RunId of the Workflow. You will see the pending Activity listed there with details such as its state, the number of times it has been attempted, and the next scheduled attempt.
+</TabItem>
+<TabItem value="java">
 
-![Activity UI error details](/img/docs/web-ui-activity-error-info.png)
+Inside your project open the AccountActivityImpl.java file and uncomment the line that throws an exception in the `deposit()` method:
 
-Traditionally application developers are forced to implement timeout and retry logic within the business code itself. With Temporal, one of the key value propositions is that [timeout configurations](/docs/activities/#timeouts) and [retry policies](/docs/activities/#retries) are specified in the Workflow code as Activity options. In our Workflow code you can see that we have specified a setStartToCloseTimeout for our Activities, and set a retry policy that tells the server to retry them up to 500 times. But we did that as an example for this tutorial, as Temporal automatically uses a default retry policy if one isn't specified!
+<!--SNIPSTART money-transfer-project-template-java-activity-implementation-->
+<!--SNIPEND-->
 
-So, your Workflow is running, but only the `withdraw()` Activity method succeeded. In any other application, the whole process would likely have to be abandoned and rolled back. So, here is the last value proposition of this tutorial: With Temporal, we can debug the issue while the Workflow is running! Pretend that you found a potential fix for the issue; Re-comment the exception in the AccountActivityImpl.java file and save your changes. How can we possibly update Workflow code that is already halfway complete? With Temporal, it is actually very simple: just restart the Worker!
+</TabItem>
+</Tabs>
 
-On the next scheduled attempt, the Worker will pick up right where the Workflow was failing and successfully execute the newly compiled `deposit()` Activity method, completing the Workflow. Basically, you have just fixed a bug "on the fly" with out losing the state of the Workflow.
+Save your changes and run the Worker. You will see the Worker complete the withdraw Activity function but throw the error when it attempts the deposit Activity function. The important thing to note here is that the Worker keeps retrying the deposit function.
+
+You can view more information about what is happening in the [UI](localhost:8088). Click on the RunId of the Workflow. You will see the pending Activity listed there with details such as its state, the number of times it has been attempted, and the next scheduled attempt.
+
+<ResponsivePlayer url='https://youtu.be/sMotKSI5xxE' loop='true' playing='true'/>
+
+<br/>
+
+Traditionally application developers are forced to implement timeout and retry logic within the business code itself. With Temporal, one of the key value propositions is that [timeout configurations](/docs/activities/#timeouts) and [retry policies](/docs/activities/#retries) can be specified in the Workflow code as Activity options.
+
+In our Workflow code above you can see that we have specified a StartToCloseTimeout and a retry policy that tells the server to retry the Activities up to 500 times. But we did that as an example for this tutorial as Temporal automatically uses a default retry policy if one isn't specified!
+
+So, your Workflow is running, but only the withdraw Activity function succeeded. In any other application, the whole process would likely have to be abandoned and rolled back. So, here is the last value proposition of this tutorial: With Temporal, we can debug the issue while the Workflow is running!
+
+Pretend that you found a potential fix for the issue; Revert the code so that it doesn't error and save your changes. Now restart the Worker. Restarting the Worker causes it to pick up the most recent changes to your code. On the next scheduled attempt, the Worker will pick up right where the Workflow was failing and successfully execute the deposit Activity completing the Workflow. Basically, you have just fixed a bug "on the fly" with out losing the state of the Workflow.
 
 <img class="docs-image-centered docs-image-max-width-20" src={require('../static/img/docs/boost.png').default} />
 
-## ![](/img/docs/wisdom.png) &nbsp;&nbsp; Lore check
+## ![](/img/docs/wisdom.png) Lore check
 
 Great work! You now know how to run a Temporal Workflow and understand some of the key values Temporal offers. Let's do a quick review to make sure you remember some of the more important pieces.
 
