@@ -28,7 +28,7 @@ Before starting, make sure you have looked over the [tutorial prerequisites](/do
 
 All of the code in this tutorial can be found in the project templates:
 
-- [Go "Hello World!" application template]((https://github.com/temporalio/hello-world-project-template-go))
+- [Go "Hello World!" application template](https://github.com/temporalio/hello-world-project-template-go)
 - [Java "Hello World!" application template](https://github.com/temporalio/hello-world-project-template-java)
 
 ## ![](/img/docs/harbor-crane.png) Scaffold project & add dependencies
