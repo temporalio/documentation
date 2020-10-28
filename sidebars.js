@@ -51,6 +51,8 @@ module.exports = {
       items: [
         'sdk-tutorial-prerequisites',
         'sdk-tutorial-run-your-first-app',
+        'sdk-tutorial-hello-world',
+        'sdk-tutorial-sync-vs-async-start',
       ],
     },
     {

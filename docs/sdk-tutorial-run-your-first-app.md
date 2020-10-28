@@ -12,11 +12,7 @@ import TabItem from '@theme/TabItem';
 
 :::note Tutorial information
 
-**Level:** Temporal beginner
-
-**Time:** ~20 minutes
-
-**Goals:**
+🎚️ **Level:** Temporal beginner ⏱️ **Time:** ~20 minutes 🙌 &nbsp;**Goals:**
 
 - Complete several runs of a Temporal Workflow application using the Temporal server and the SDK of your choice:
     - [Java](https://github.com/temporalio/java-sdk)
@@ -136,7 +132,7 @@ When you "start" a Workflow you are basically telling the Temporal server, "trac
 
 ### Initiate transfer
 
-There are two ways to start a Workflow with Temporal, either via the SDK or via the [CLI](/docs/tctl). For this tutorial we use the SDK to start the Workflow, which is how most Workflows get started in a live environment. The call to the Temporal server can be done [synchronously or asynchronously](/docs/java-starting-workflow-executions). Here we do it asynchronously, so you will see the program run, tell you the transaction is processing, and exit.
+There are two ways to start a Workflow with Temporal, either via the SDK or via the [CLI](/docs/tctl). For this tutorial we use the SDK to start the Workflow, which is how most Workflows get started in a live environment. The call to the Temporal server can be done [synchronously or asynchronously](/docs/sdk-tutorial-sync-vs-async-start). Here we do it asynchronously, so you will see the program run, tell you the transaction is processing, and exit.
 
 Take a look at the code below that is used to start the Workflow. Make sure the [Temporal server](/docs/install-temporal-server) is running in a terminal, and then follow the language specific instructions to start the Workflow.
 
@@ -303,6 +299,8 @@ In our Workflow code above you can see that we have specified a StartToCloseTime
 So, your Workflow is running, but only the withdraw Activity function succeeded. In any other application, the whole process would likely have to be abandoned and rolled back. So, here is the last value proposition of this tutorial: With Temporal, we can debug the issue while the Workflow is running!
 
 Pretend that you found a potential fix for the issue; Revert the code so that it doesn't error and save your changes. Now restart the Worker. Restarting the Worker causes it to pick up the most recent changes to your code. On the next scheduled attempt, the Worker will pick up right where the Workflow was failing and successfully execute the deposit Activity completing the Workflow. Basically, you have just fixed a bug "on the fly" with out losing the state of the Workflow.
+
+<br/>
 
 <img class="docs-image-centered docs-image-max-width-20" src={require('../static/img/docs/boost.png').default} />
 
