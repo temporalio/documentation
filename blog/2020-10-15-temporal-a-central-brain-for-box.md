@@ -15,8 +15,7 @@ author_image_url: https://avatars2.githubusercontent.com/u/27736122?s=460&u=7b6a
 image: https://i.imgur.com/5sfZdDf.png
 release_version: V1.0.0
 ---
-
-![](https://i.imgur.com/Kn3I1sY.png)
+<img class="case-study-header" src='https://i.imgur.com/Kn3I1sY.png' />
 
 [Link to PDF version](http://temporal.io/case-studies/Temporal_a_central_brain_for_Box.pdf)
 

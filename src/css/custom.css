@@ -42,3 +42,7 @@ blockquote {
   color: white;
   quotes: "\201C""\201D""\2018""\2019";
 }
+
+.case-study-header{
+  background-color: #000000;
+}
