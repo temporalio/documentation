@@ -35,6 +35,12 @@
   width: 20%;
 }
 
+.tutorial-sub-title{
+    text-align: center;
+    font-size: 2em;
+    font-weight: bolder;
+}
+
 blockquote {
   border-left: 4px solid white;
   margin: 1.5em 0px;

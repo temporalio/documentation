@@ -47,6 +47,15 @@ module.exports = {
     {
       type: 'category',
       collapsed: true,
+      label: 'SDK tutorials',
+      items: [
+        'sdk-tutorial-prerequisites',
+        'sdk-tutorial-run-your-first-app',
+      ],
+    },
+    {
+      type: 'category',
+      collapsed: true,
       label: 'Go SDK',
       items: [
         'go-sdk-tutorial-prerequisites',
