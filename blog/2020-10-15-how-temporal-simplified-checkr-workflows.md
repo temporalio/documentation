@@ -16,7 +16,7 @@ image: https://i.imgur.com/EMzeTdD.png
 release_version: V1.0.0
 ---
 
-![](https://i.imgur.com/z9V8OZd.png)
+<img class="case-study-header" src='https://i.imgur.com/z9V8OZd.png' />
 
 [Link to PDF version](http://temporal.io/case-studies/How_Temporal_Simplified_Checkr_Workflows.pdf)
 
