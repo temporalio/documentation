@@ -15,7 +15,7 @@
   --ifm-color-primary-lighter: #867fc3;
   --ifm-color-primary-lightest: #a19bd1;
   --ifm-code-font-size: 95%;
-  --ifm-link-color: var(--ifm-color-primary-darkest);
+  --ifm-link-color: var(--ifm-color-primary-dark);
   --ifm-background-color: #f2f2f2;
 }
 
