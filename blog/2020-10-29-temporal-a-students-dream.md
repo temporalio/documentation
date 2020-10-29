@@ -11,7 +11,7 @@ title: 'Temporal - a students dream'
 author: Manu Srivastava
 author_title: Engineering
 author_image_url: https://avatars2.githubusercontent.com/u/5552381?s=88&u=1ee5691d390f3281efecaa23dea30f471bc9230f&v=4
-image: https://avatars2.githubusercontent.com/u/5552381?s=88&u=1ee5691d390f3281efecaa23dea30f471bc9230f&v=4
+image: ../static/img/a-students-dream/manu-background-image.png
 release_version: V1.2.1
 ---
 
