@@ -97,11 +97,8 @@ When the download is complete, the download service potentially calls back from 
 
 ## Activity Heart Beating
 
-Some Activities are long running. To react to a crash quickly, use a heartbeat mechanism.
-The `Activity.heartbeat` function lets the Temporal service know that the Activity is still alive. You can piggyback
-`details` on an Activity heartbeat. If an Activity times out, the last value of `details` is included
-in the `ActivityTimeoutException` delivered to a Workflow. Then the Workflow can pass the details to
-the next Activity invocation. This acts as a periodic checkpoint mechanism for the progress of an Activity.
+Some Activities are long running. To react to a crash quickly, use a heartbeat mechanism. `Activity.getExecutionContext().heartbeat()` lets the Temporal service know that the Activity is still alive. You can piggyback `details` on an Activity heartbeat. If an Activity times out, the last value of `details` is included in the `ActivityTimeoutException` delivered to a Workflow. Then the Workflow can pass the details to the next Activity invocation. This acts as a periodic checkpoint mechanism for the progress of an Activity.
+
 ```java
 public class FileProcessingActivitiesImpl implements FileProcessingActivities {
 
