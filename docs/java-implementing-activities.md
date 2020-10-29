@@ -116,7 +116,7 @@ public class FileProcessingActivitiesImpl implements FileProcessingActivities {
                 /*
                  * Let the service know about the download progress.
                  */
-                 Activity.heartbeat(totalRead);
+                 Activity.getExecutionContext().heartbeat(totalRead);
             }
         } finally {
             inputStream.close();
