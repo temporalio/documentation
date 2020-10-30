@@ -19,6 +19,22 @@
   --ifm-background-color: #f2f2f2;
 }
 
+html[data-theme='dark'] {
+  --ifm-background-color: #141414;
+  --ifm-link-color: #b8b4dc;
+  --ifm-menu-color-active: #b8b4dc;
+  --ifm-navbar-link-hover-color: #b8b4dc;
+  --ifm-toc-link-color: #b8b4dc;
+}
+
+.footer {
+  background-color: var(--ifm-color-primary-darker);
+
+}
+.footer a:hover{
+  color:#ffffff;
+}
+
 .docusaurus-highlight-code-line {
   background-color: rgb(72, 77, 91);
   display: block;
