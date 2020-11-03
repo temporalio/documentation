@@ -10,11 +10,11 @@ title: The making of the new user SDK tutorials
 author: Cully Wakelin
 author_title: SDE Technical Writer
 author_image_url: https://avatars2.githubusercontent.com/u/34380806?s=400&u=5cd38b5e4416a5d10cdf9ebd386eec1d02f0b067&v=4
-image: ../static/img/docs/sketchbook.png
+image: https://raw.githubusercontent.com/temporalio/documentation-images/main/static/sketchbook.png
 release_version: V1.1.1
 ---
 
-<img class="docs-image-centered docs-image-max-width-20" src={require('../static/img/docs/sketchbook.png').default} />
+<img alt="image" class="docs-image-centered docs-image-max-width-20" src="https://raw.githubusercontent.com/temporalio/documentation-images/main/static/sketchbook.png" />
 
 <!--truncate-->
 
@@ -22,7 +22,7 @@ In early September it was clear that V1 of Temporal would be ready by the end of
 
 ## Uphill challenges
 
-<img class="docs-image-centered docs-image-max-width-20" src={require('../static/img/docs/hiker.png').default} />
+<img alt="image" class="docs-image-centered docs-image-max-width-20" src="https://raw.githubusercontent.com/temporalio/documentation-images/main/static/hiker.png" />
 
 In terms of our documentation, there were at least three challenges we were facing. Two of those challenges stemmed directly from the fact that our docs started as a copy of the docs from Temporal's predecessor, Cadence.
 
@@ -33,7 +33,8 @@ The second challenge was that in the time since Temporal forked from Cadence the
 Lastly, and the biggest challenge of documenting Temporal is that it is fundamentally new. Temporal presents a different approach to application development. Users are faced with a set of familiar terms and concepts but must comprehend them in an entirely new context and landscape.
 
 ## Picking a path
-<img class="docs-image-centered" src={require('../static/img/docs/temporal-server-and-sdk-icons.png').default} />
+
+<img alt="image" class="docs-image-centered" src="https://raw.githubusercontent.com/temporalio/documentation-images/main/static/temporal-server-and-sdk-icons.png" />
 
 At a high level, there are two parts to Temporal: the backend and a client-side SDK. Configuring, deploying, and operating the Temporal backend for a live environment is no small task. On the other hand, it is really easy to [get Temporal running on your local machine](/docs/install-temporal-server) in a Docker container. In fact, you can do it with just two terminal commands.
 
@@ -45,7 +46,7 @@ We started as most might, by trying to envision what the ideal new user experien
 
 ## Snipsync
 
-<img class="docs-image-centered docs-image-max-width-20" src={require('../static/img/docs/sync.png').default} />
+<img alt="image" class="docs-image-centered docs-image-max-width-20" src="https://raw.githubusercontent.com/temporalio/documentation-images/main/static/sync.png" />
 
 It was around this time (early September), that I was testing out a NodeJS tool I had built to improve the experience of creating and maintaining documentation. It downloads Github repos, scrapes code snippets that exist between specific comment wrappers, and writes the snippets to their corresponding comment wrappers in Markdown files. We borrowed the idea from [Google's proprietary version](https://github.com/GoogleCloudPlatform/golang-samples/blob/master/secretmanager/get_secret.go#L17) they use for their [Google Cloud documentation](https://cloud.google.com/docs). The concept is fairly simple, and I am still surprised that there was no existing open-source solution. So we made one!
 
@@ -64,7 +65,7 @@ We decided to embrace [Snipsync](https://github.com/temporalio/snipsync) and sol
 
 ## Template repos
 
-<img class="docs-image-centered docs-image-max-width-20" src={require('../static/img/docs/templates.png').default} />
+<img alt="image" class="docs-image-centered docs-image-max-width-20" src="https://raw.githubusercontent.com/temporalio/documentation-images/main/static/templates.png" />
 
 We now had a way to synchronize code with our documentation. But from where will the code be synchronized? We know users will likely want to view the source file and relative file path of the code snippet for added context. They will also be likely to clone the repo and try to run the sample.
 
@@ -82,7 +83,7 @@ So for each of the sample applications we planned on using to drive our document
 
 ## The tutorial
 
-<img class="docs-image-centered docs-image-max-width-20" src={require('../static/img/docs/tutorials.png').default} />
+<img alt="image" class="docs-image-centered docs-image-max-width-20" src="https://raw.githubusercontent.com/temporalio/documentation-images/main/static/tutorials.png" />
 
 Since the goal of our documentation changes was to help with new user acquisition, we decided to aim for a "tutorial" style of documentation. The first iterations aimed to build upon and replace the existing SDK “quick start” pages that maintained the status quo and printed “Hello World!” to the console. As you may have guessed, this route wasn’t sufficient enough to show users the real values that Temporal offers.
 
@@ -104,6 +105,6 @@ Check out these finished tutorials and see for yourself!
 
 ## Next steps
 
-<img class="docs-image-centered docs-image-max-width-20" src={require('../static/img/docs/steps.png').default} />
+<img alt="image" class="docs-image-centered docs-image-max-width-20" src="https://raw.githubusercontent.com/temporalio/documentation-images/main/static/steps.png" />
 
 At Temporal we understand that our documentation plays a very important role in our users' experience. And to get our docs into a world class state we have lots of work in front of us. In our next steps we will be looking at the end-to-end journey through our documentation and how we can provide the best experience for every user. To validate any direction we take we will be engaging with the community to hear what you think and help us dial things in. Any user can [schedule a 15 minute feedback session](https://calendly.com/cully-temporal/schedule-feedback-session) with me directly! We will also be preparing for all the new and exciting features around our hosted cloud offering that will enable all developers to build invincible applications.
