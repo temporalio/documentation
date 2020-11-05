@@ -24,7 +24,7 @@ Another commonly employed approach is to use a timer service and queues. Any upd
 
 With Temporal, the entire logic can be encapsulated in a simple durable function that directly implements the business logic. Because the function is stateful, the implementer doesn't need to employ any additional systems to ensure durability and fault tolerance.
 
-Here is an example Workflow that implements the subscription management use case. It is in Java, but Go is also supported. The Python and .NET libraries are under active development.
+Here is an example Workflow that implements the subscription management use case. It is in Java, but Go is also supported. [Other SDKS](/docs/other-sdks) are under active development.
 
 ```java
 public interface SubscriptionWorkflow {
