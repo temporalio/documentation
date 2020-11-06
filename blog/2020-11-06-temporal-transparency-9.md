@@ -40,25 +40,25 @@ We're working on Authentication for Temporal Web, and are looking for beta teste
 ### Context
 
 Temporal is a highly critical system for many businesses, so security is paramount. 
-While commmunication is already encrypted with [TLS](https://docs.temporal.io/docs/configure-temporal-server/#tls), 
-and you could always put Temporal behind a reverse proxy,
-one of our longest standing requests has been for an authentication/authorization layer for Temporal, in particular Temporal Web. 
+Communication is already encrypted with [TLS](https://docs.temporal.io/docs/configure-temporal-server/#tls), 
+and you could can put Temporal behind a reverse proxy. However, 
+one of our longest standing requests has been for an authentication/authorization layer for Temporal. 
 This is what we are tackling first, 
-as it happens to also be necessary for [the upcoming Temporal Cloud](https://temporal.us17.list-manage.com/subscribe/post?u=2334a0f23e55fd1840613755d&id=bbbbd4709f) service offering. 
+as it is also necessary for [the upcoming Temporal Cloud](https://temporal.us17.list-manage.com/subscribe/post?u=2334a0f23e55fd1840613755d&id=bbbbd4709f) service offering. 
 
 It's not ready for release yet, but we'd like to share how we're shipping this major feature. We basically followed the classic converge/diverge pattern:
 
 ![image](https://user-images.githubusercontent.com/6764957/98401393-92855580-20a0-11eb-8098-0f331163c87a.png)
 
 - **Diverge**:
-  - **Collecting Requirements**: [Ryland](https://twitter.com/taillogs) had been meticulously collecting feedback from prospective users and customers for the past 6 months. Having this "CRM" (entirely done in Notion) ensured that we started with a strong idea of what our customers' most common requirements would be. For example, we determined that while many companies did use SAML and LDAP for authentication, virtually everyone used the OAuth/OpenID Connect (OIDC) open standard today ([more info on OAuth and OIDC here](https://developer.okta.com/blog/2019/10/21/illustrated-guide-to-oauth-and-oidc)). We were also mindful that we ideally would develop a solution that would work for both the self-hosted open-source version of Temporal, and for the coming Temporal Cloud offering.
-  - **Comparable Research**: Sometimes customers don't tell you what they want. It can help to supplement customer research with comparable products to find ideas and perspectives we never considered. We did a broad search of peer tools, which offered an even broader range of options, including the controversial "[The Prometheus project takes the stance that server side security features are outside its scope]( https://www.robustperception.io/prometheus-security-authentication-authorization-and-encryption)". Our search also showed that a surprising number of tools offered Certificate Authority auth, which didn't feel like the developer experience we wanted to offer. I was quite impressed by [the wide range of auth options offered by Grafana](https://grafana.com/docs/grafana/latest/auth/).
+  - **Collecting Requirements**: [Ryland](https://twitter.com/taillogs) had been meticulously collecting feedback from prospective customers for the past 6 months. Having this "CRM" (entirely done in Notion) ensured that we started with a strong idea of what our customers' most common requirements would be. For example, we realized that many companies use SAML and LDAP for authentication, but virtually everyone used the OAuth/OpenID Connect (OIDC) open standard ([more info on OAuth and OIDC here](https://developer.okta.com/blog/2019/10/21/illustrated-guide-to-oauth-and-oidc)). We also wanted a solution that would work for both the self-hosted open-source version of Temporal, and for the coming Temporal Cloud offering.
+  - **Comparable Research**: Sometimes customers don't tell you what they want. It can help to supplement customer research with comparable products. This helps surface ideas and perspectives we never considered. We did a broad search of peer tools. This offered an even broader range of options, including the controversial "[The Prometheus project takes the stance that server side security features are outside its scope]( https://www.robustperception.io/prometheus-security-authentication-authorization-and-encryption)". Our search also showed that a surprising number of tools offered Certificate Authority auth. I was quite impressed by [the wide range of auth options offered by Grafana](https://grafana.com/docs/grafana/latest/auth/).
 - **Converge**:
   - **Narrowing Scope**: One of the most impactful things you can do to ship faster is to say no as much as possible during the design phase. 
-    - [Maxim](https://www.linkedin.com/in/fateev/) suggested offering authentication within the `tctl` CLI as well, but it would have involved crossing language and client-server boundaries that would have added undue complexity. 
-    - [Sergey](https://dev.to/temporalio/why-i-joined-temporal-19dg) also had the retrospectively brilliant insight that most customers would demand OIDC Single Sign-On eventually. If we built our own username/password solution, (possible, since Temporal has a persistence layer) it would be a lot of effort and it wouldn't be used by enterprises anyway. We decided that we would go all in on OIDC Single Sign-On. 
-    - Finally, we saw that Grafana had a wide range of OAuth options because they were incrementally adopted over the span of 4 years - we as a greenfield solution had the opportunity to leapfrog all that to benefit from their years of customer feedback.
-  - **Researching Implementation**: Temporal Web is in Node.js, and the dominant authentication library has been [Passport.js](http://www.passportjs.org/) for years. After [confirming nothing had changed](https://twitter.com/swyx/status/1315754745412284416), we went with the obvious choice. In my research I had figured that we would pursue [Okta](http://www.passportjs.org/packages/passport-okta-oauth) and [Auth0](http://www.passportjs.org/packages/passport-auth0) integration first, but [Ruslan](https://www.linkedin.com/in/feedmeapples) found a [node-openid-client](https://github.com/panva/node-openid-client) that would fit our generic OAuth requirement found during the comparative research and scope definition phases :tada:
+    - [Maxim](https://www.linkedin.com/in/fateev/) suggested offering authentication within the `tctl` CLI. However it would have involved crossing language and client-server boundaries that would have added undue complexity. 
+    - [Sergey](https://dev.to/temporalio/why-i-joined-temporal-19dg) had the retrospectively brilliant insight that most customers would demand OIDC Single Sign-On eventually. If we built our own username/password solution, it would be a lot of effort and it wouldn't be used by enterprises anyway. We decided that we would go all in on OIDC Single Sign-On. 
+    - Finally, we saw that Grafana had a wide range of OAuth options because they were incrementally adopted over the span of 4 years. We, as a greenfield solution, had the opportunity to leapfrog all that.
+  - **Researching Implementation**: Temporal Web is in Node.js, and the dominant authentication library has been [Passport.js](http://www.passportjs.org/) for years. After [confirming nothing had changed](https://twitter.com/swyx/status/1315754745412284416), we went with the obvious choice. In my research I had figured that we would pursue [Okta](http://www.passportjs.org/packages/passport-okta-oauth) and [Auth0](http://www.passportjs.org/packages/passport-auth0) integration first. But [Ruslan](https://www.linkedin.com/in/feedmeapples) found a [node-openid-client](https://github.com/panva/node-openid-client) that would fit our generic OAuth requirement found :tada:
  
 The process we envision will be as simple as providing your OAuth identity provider information in a config file (currently at `/server/config.yml`, both the location and the schema of this config are subject to change):
 
@@ -81,7 +81,7 @@ We are currently in the implementation phase, and just did our first internal de
 
 ![temporal1](https://user-images.githubusercontent.com/6764957/98401239-518d4100-20a0-11eb-8acf-bd9703d7f073.gif)
 
-It felt slightly surreal to be the first people to "log in to Temporal", though that is no exaggeration. A normal process might also have involved some UI design to ensure a delightful and accessible frontend experience, but we don't yet have inhouse design talent at Temporal (want to send anyone our way?) and are holding off on that for a possible future total design revamp.
+It felt slightly surreal to be the first people to "log in to Temporal", though that is no exaggeration. A normal process might also have involved some UI design to ensure a delightful and accessible frontend experience. However we are holding oss as we hope to do a possible total design revamp.
 
 ### Seeking Beta Testers!
 
