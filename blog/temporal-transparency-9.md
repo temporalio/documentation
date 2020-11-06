@@ -77,6 +77,10 @@ We are currently in the implementation phase, and just did our first internal de
 
 It felt slightly surreal to be the first people to "log in to Temporal", though that is no exaggeration. A normal process might also have involved some UI design to ensure a delightful and accessible frontend experience, but we don't yet have inhouse design talent at Temporal (want to send anyone our way?) and are holding off on that for a possible future total design revamp.
 
+### Seeking Beta Testers!
+
+If you have been waiting for this authentication feature, we'd love to send you an early preview of this for testing and feedback. Please <a href="mailto:swyx@temporal.io">email me at `swyx@temporal.io`</a>!
+
 ## Conclusion
 
 We are working hard to bring you authentication and other top feature requests you are asking for. If you'd like to receive updates on Temporal Cloud, do make sure to [sign up for our mailing list](https://temporal.us17.list-manage.com/subscribe/post?u=2334a0f23e55fd1840613755d&id=bbbbd4709f).
