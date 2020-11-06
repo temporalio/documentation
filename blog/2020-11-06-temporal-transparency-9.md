@@ -48,7 +48,7 @@ as it is also necessary for [the upcoming Temporal Cloud](https://temporal.us17.
 
 It's not ready for release yet, but we'd like to share how we're shipping this major feature. We basically followed the classic converge/diverge pattern:
 
-![image](https://user-images.githubusercontent.com/6764957/98401393-92855580-20a0-11eb-8098-0f331163c87a.png)
+<img src="https://user-images.githubusercontent.com/6764957/98401393-92855580-20a0-11eb-8098-0f331163c87a.png" align="center">
 
 - **Diverge**:
   - **Collecting Requirements**: [Ryland](https://twitter.com/taillogs) had been meticulously collecting feedback from prospective customers for the past 6 months. Having this "CRM" (entirely done in Notion) ensured that we started with a strong idea of what our customers' most common requirements would be. For example, we realized that many companies use SAML and LDAP for authentication, but virtually everyone used the OAuth/OpenID Connect (OIDC) open standard ([more info on OAuth and OIDC here](https://developer.okta.com/blog/2019/10/21/illustrated-guide-to-oauth-and-oidc)). We also wanted a solution that would work for both the self-hosted open-source version of Temporal, and for the coming Temporal Cloud offering.
