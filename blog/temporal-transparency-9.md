@@ -33,7 +33,7 @@ The team has grown some (including me!) and [we're absolutely hiring](https://ww
 
 ## Authentication is Coming
 
-Temporal is a highly business critical system component, so security is paramount. 
+Temporal is a highly critical system for many businesses, so security is paramount. 
 While commmunication is already encrypted with [TLS](https://docs.temporal.io/docs/configure-temporal-server/#tls), 
 and you could always put Temporal behind a reverse proxy,
 one of our longest standing requests has been for an authentication/authorization layer for Temporal, in particular Temporal Web. 
