@@ -41,7 +41,7 @@ We're working on Authentication for Temporal Web, and are looking for beta teste
 
 Temporal is a highly critical system for many businesses, so security is paramount. 
 Communication is already encrypted with [TLS](https://docs.temporal.io/docs/configure-temporal-server/#tls), 
-and you could can put Temporal behind a reverse proxy. However, 
+and you can put Temporal behind a reverse proxy. However, 
 one of our longest standing requests has been for an authentication/authorization layer for Temporal. 
 This is what we are tackling first, 
 as it is also necessary for [the upcoming Temporal Cloud](https://temporal.us17.list-manage.com/subscribe/post?u=2334a0f23e55fd1840613755d&id=bbbbd4709f) service offering. 
