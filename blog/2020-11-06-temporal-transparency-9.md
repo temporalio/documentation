@@ -33,6 +33,12 @@ The team has grown some (including me!) and [we're absolutely hiring](https://ww
 
 ## Authentication is Coming
 
+### TL;DR
+
+We're working on Authentication for Temporal Web, and are looking for beta testers. Please <a href="mailto:swyx@temporal.io">get in touch at `swyx@temporal.io`</a> if you're interested in helping to test!
+
+### Context
+
 Temporal is a highly critical system for many businesses, so security is paramount. 
 While commmunication is already encrypted with [TLS](https://docs.temporal.io/docs/configure-temporal-server/#tls), 
 and you could always put Temporal behind a reverse proxy,
