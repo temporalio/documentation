@@ -54,7 +54,7 @@ It's not ready for release yet, but we'd like to share how we're shipping this m
     - Finally, we saw that Grafana had a wide range of OAuth options because they were incrementally adopted over the span of 4 years - we as a greenfield solution had the opportunity to leapfrog all that to benefit from their years of customer feedback.
   - **Researching Implementation**: Temporal Web is in Node.js, and the dominant authentication library has been [Passport.js](http://www.passportjs.org/) for years. After [confirming nothing had changed](https://twitter.com/swyx/status/1315754745412284416), we went with the obvious choice. In my research I had figured that we would pursue [Okta](http://www.passportjs.org/packages/passport-okta-oauth) and [Auth0](http://www.passportjs.org/packages/passport-auth0) integration first, but [Ruslan](https://www.linkedin.com/in/feedmeapples) found a [`node-openid-client`](https://github.com/panva/node-openid-client) that would fit our generic OAuth requirement found during the comparative research and scope definition phases :tada:
  
-The process we envision will be as simple as providing your OAuth identity provider information in a config file (currently at `/server/config.yml`, both the location and the schema of this config change):
+The process we envision will be as simple as providing your OAuth identity provider information in a config file (currently at `/server/config.yml`, both the location and the schema of this config are subject to change):
 
 ```yaml
 auth:
