@@ -79,7 +79,7 @@ In future we may support multiple auth providers, but we expect the vast majorit
 
 We are currently in the implementation phase, and just did our first internal demo of the full authentication process this week. 
 
-![temporal1](https://user-images.githubusercontent.com/6764957/98401239-518d4100-20a0-11eb-8acf-bd9703d7f073.gif)
+![temporal1](https://user-images.githubusercontent.com/6764957/98414812-0599c680-20b7-11eb-8d95-aea7ec64e230.gif)
 
 It felt slightly surreal to be the first people to "log in to Temporal", though that is no exaggeration. A normal process might also have involved some UI design to ensure a delightful and accessible frontend experience. However we are holding out for a possible total design revamp sometime in the near future.
 
