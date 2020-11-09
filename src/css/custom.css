@@ -25,6 +25,13 @@ html[data-theme='dark'] {
   --ifm-menu-color-active: #b8b4dc;
   --ifm-navbar-link-hover-color: #b8b4dc;
   --ifm-toc-link-color: #b8b4dc;
+  --ifm-blockquote-color: #eeeeee;
+  --ifm-color-emphasis-300: #d0d0d0;
+}
+
+html[data-theme='light'] {
+  --ifm-blockquote-color: #000000;
+  --ifm-color-emphasis-300: #505050;
 }
 
 .footer {
@@ -53,13 +60,13 @@ html[data-theme='dark'] {
   width: 20%;
 }
 
-blockquote {
+/* blockquote {
   border-left: 4px solid white;
   margin: 1.5em 0px;
   padding: 0 10px;
   color: white;
   quotes: "\201C""\201D""\2018""\2019";
-}
+} */
 
 .case-study-header{
   background-color: #000000;
