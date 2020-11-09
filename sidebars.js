@@ -49,6 +49,11 @@ module.exports = {
       collapsed: true,
       label: 'Go SDK',
       items: [
+        {
+          type: 'link',
+          label: 'API Reference',
+          href: 'https://pkg.go.dev/go.temporal.io/sdk',
+        },
         'go-sdk-tutorial-prerequisites',
         'go-run-your-first-app',
         'go-hello-world',
@@ -77,6 +82,11 @@ module.exports = {
       collapsed: true,
       label: 'Java SDK',
       items: [
+        {
+          type: 'link',
+          label: 'API Reference',
+          href: 'https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/index.html',
+        },
         'java-sdk-tutorial-prerequisites',
         'java-run-your-first-app',
         'java-hello-world',
