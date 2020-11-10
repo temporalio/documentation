@@ -1,7 +1,7 @@
 ---
 id: tctl
-title: tctl (CLI)
-sidebar_label: tctl (CLI)
+title: Temporal CLI - tctl
+sidebar_label: CLI
 ---
 
 The Temporal CLI is a command-line tool you can use to perform various tasks on a Temporal server. It can perform
