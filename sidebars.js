@@ -51,7 +51,7 @@ module.exports = {
       items: [
         {
           type: 'link',
-          label: 'API Reference',
+          label: 'Reference 🔗',
           href: 'https://pkg.go.dev/go.temporal.io/sdk',
         },
         'go-sdk-tutorial-prerequisites',
@@ -84,7 +84,7 @@ module.exports = {
       items: [
         {
           type: 'link',
-          label: 'API Reference',
+          label: 'Reference 🔗',
           href: 'https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/index.html',
         },
         'java-sdk-tutorial-prerequisites',
