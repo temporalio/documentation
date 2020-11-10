@@ -30,7 +30,7 @@ Temporal reuses terminology from _Workflow automation_ namespace. So fault-obliv
 
 The Temporal service does not execute Workflow code directly. The Workflow code is hosted by an external (from the service point of view) _Workflow worker_ process. These processes receive _decision tasks_ that contain events that the Workflow is expected to handle from the Temporal service, delivers them to the Workflow code, and communicates Workflow _decisions_ back to the service.
 
-As Workflow code is external to the service, it can be implemented in any language that can work with [gRPC protocol buffers](https://grpc.io/docs/what-is-grpc/introduction/). Currently Java and Go clients are production ready. [Other SDKs](/docs/other-sdks) are under development.
+As Workflow code is external to the service, it can be implemented in any language that can work with [gRPC protocol buffers](https://grpc.io/docs/what-is-grpc/introduction/). Currently Java and Go clients are production ready. [Other SDKs](/docs/sdks-introduction/#other-sdks) are under development.
 
 The Temporal service API doesn't impose any specific Workflow definition language. So a specific worker can be implemented to execute practically any existing Workflow specification. The model the Temporal team chose to support out of the box is based on the idea of durable function. Durable functions are as close as possible to application business logic with minimal plumbing required.
 

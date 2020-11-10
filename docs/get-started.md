@@ -13,7 +13,7 @@ Ready to build? [Install the Temporal server](/docs/install-temporal-server/) an
 - [Go SDK](/docs/go-run-your-first-app/)
 - [Java SDK](/docs/java-run-your-first-app/)
 
-[Other SDKs](/docs/other-sdks) are in the works, please get in touch.
+[Other SDKs](/docs/sdks-introduction/#other-sdks) are in the works, please get in touch.
 
 ## Learn about Temporal
 
