@@ -4,7 +4,7 @@ tags:
   - temporal
   - announcement
   - tutorials
-posted_on_: 2020-10-23T00:00:00
+posted_on_: 2020-11-12T00:00:00
 id: the-making-of-new-user-sdk-tutorials
 title: The making of the new user SDK tutorials
 author: Cully Wakelin
