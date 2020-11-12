@@ -325,9 +325,9 @@ As you add the bad binary checksum to your namespace, Temporal will not dispatch
 
 `--tls_ca_path=<certificate file path>` command line argument that passes a certificate authority (CA) certificate for the validating server that `tctl` is connecting to.
 
-`--tls_cert_path=<certificate file path>` command line argument that passes a certificate for the server to validate the client (`tctl`) identity. Requires that `--tls_key_path` is also provided.
+`--tls_cert_path=<certificate file path>` command line argument that passes a client certificate for the server to validate the client (`tctl`) identity. Requires that `--tls_key_path` is also provided.
 
-`--tls_key_path=<private key file path>` command line argument that passes a private key for secure communication with the server.
+`--tls_key_path=<private key file path>` command line argument that passes a private key associated with the client certificate supplied with the --tls_cert_path setting.
 
 `--tls_enable_host_verification=[true|false]` command line argument that enables verification of the server certificate, i.e. host verification.
 
