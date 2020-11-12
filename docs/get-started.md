@@ -6,12 +6,19 @@ sidebar_label: Get started
 
 Temporal reimagines state-dependent service-orchestrated application development, and so much more.
 
-## Get started
+## Quick start
 
-Ready to build? [Install the Temporal server](/docs/install-temporal-server/) and choose your SDK.
+[Install the Temporal server](/docs/install-temporal-server/) and [choose your SDK](/docs/sdks-introduction). Or, try one of these application template tutorials:
 
-- [Go SDK](/docs/go-run-your-first-app/)
-- [Java SDK](/docs/java-run-your-first-app/)
+**Go**
+
+- [Run your first app](/docs/go-run-your-first-app/)
+- [Build a "Hello World!" app from scratch](/docs/go-hello-world)
+
+**Java**
+
+- [Run your first app](/docs/java-run-your-first-app/)
+- [Build a "Hello World!" app from scratch](/docs/java-hello-world)
 
 [Other SDKs](/docs/sdks-introduction/#other-sdks) are in the works, please get in touch.
 
@@ -21,19 +28,16 @@ Temporal enables developers to write highly reliable applications without having
 
 Wondering if Temporal is a good fit for your use case? Check out our [use cases section](/docs/use-cases-orchestration/) or visit the [community forum](https://community.temporal.io/tag/use-case-validation).
 
-Prefer to jump right in? Try out some of our examples.
+## Temporal deployment and configuration
 
-- [Go SDK samples](https://github.com/temporalio/go-samples)
-- [Java SDK samples](https://github.com/temporalio/java-samples)
 
-## Best practices
+There are a few ways to run Temporal. Try out the [quick install guide](/docs/install-temporal-server/) or use the [Temporal Helm Chart](https://github.com/temporalio/helm-charts) to deploy to a Kubernetes cluster.
 
-Want to master Temporal Workflows? Our guides will bring you up to speed on Temporal development best practices.
+Learn how to [manage Temporal configurations](/docs/configure-temporal-server/), [customize Workflow filtering](/docs/filter-workflows/), or [set up Archival](/docs/archive-data).
 
-- [How to install Temporal](/docs/install-temporal-server/)
-- [How to configure Temporal](/docs/configure-temporal-server/)
-- [How to filter Workflows](/docs/filter-workflows/)
-- [How to use the CLI (tctl)](/docs/tctl/)
+## CLI
+
+Learn how to use the [Temporal CLI](/docs/tctl/) to query the backend and get information about Workflows.
 
 ## Contribute
 
