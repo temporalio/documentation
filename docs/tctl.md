@@ -272,7 +272,7 @@ You can reset to some predefined event types:
 - FirstWorkflowTask: reset to the beginning of the history.
 - LastWorkflowTask: reset to the end of the history.
 - LastContinuedAsNew: reset to the end of the history for the previous run.
-- BadBinary: <>.
+- BadBinary: reset to the point where a bad binary was used.
 
 If you are familiar with the Temporal history event, You can also reset to any decision finish event by using:
 
