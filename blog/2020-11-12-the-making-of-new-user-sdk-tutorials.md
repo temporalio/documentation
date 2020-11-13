@@ -18,7 +18,7 @@ release_version: V1.1.1
 
 <!--truncate-->
 
-In early September it was clear that V1 of Temporal would be ready by the end of that month. This also meant that we would be announcing our funding shortly thereafter. From a documentation perspective, we felt that it was important to coordinate changes in a way that would support the announcement. As with any product launch, we were hoping to create some buzz and see a surge in new users. Considering that documentation is one of the most important aspects of new user adoption, we had our work cut out for us.
+In early September it was clear that V1 of Temporal would be ready by the end of that month and we would be announcing our funding shortly thereafter. From a documentation perspective, we felt that it was important to coordinate changes in a way that would support the announcement. As with any product launch, we were hoping to create some buzz and see a surge in new users. Considering that documentation is one of the most important aspects of new user adoption, we had our work cut out for us.
 
 ## Uphill challenges
 
