@@ -59,8 +59,8 @@ To convert those Workflows to make use of Temporal CronSchedule, all you need is
 ## Retrieve last successful result
 
 Sometimes it is useful to obtain the progress of previous successful runs.
-This is supported by two new APIs in the Java SDK:
-`HasLastCompletionResult` and `GetLastCompletionResult`. Below is an example of how
+This is supported by one new APIs in the Java SDK:
+`GetLastCompletionResult`. The method returns null if there is no previous completion. Below is an example of how
 to use this in Java:
 
 ```java
@@ -80,3 +80,4 @@ next schedule will still get the last successful result if it ever successfully
 completed at least once. For example, for a daily cron Workflow, if the first day
 run succeeds and the second day fails, then the third day run will still get
 the result from first day's run using these APIs.
+
