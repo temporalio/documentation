@@ -6,7 +6,7 @@ tags:
 - auth
 - code-first
 posted_on_: 2020-11-06T23:06:09Z
-id: temporal-transparency-9
+slug: temporal-transparency-9
 title: 'Temporal Transparency Update #9: Auth is Coming'
 author: Swyx (Shawn Wang)
 author_title: Product Manager

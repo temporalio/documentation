@@ -6,7 +6,7 @@ tags:
   - stability
   - code-first
 posted_on_: 2020-09-29T23:06:09Z
-id: temporal-v1-announcement
+slug: temporal-v1-announcement
 title: 'Temporal V1 Announcement'
 author: Ryland Goldstein
 author_title: Temporals product person

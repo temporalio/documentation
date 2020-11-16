@@ -4,7 +4,7 @@ tags:
 - temporal
 - v1
 posted_on_: 2020-07-18T00:02:32Z
-id: temporal-transparency-update-2
+slug: temporal-transparency-update-2
 title: 'Temporal Transparency Update #2'
 author: Ryland Goldstein
 author_title: Temporals product person

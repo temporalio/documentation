@@ -6,7 +6,7 @@ tags:
   - microservices
   - engineering
 posted_on_: 2020-10-29T00:06:09Z
-id: temporal-a-students-dream
+slug: temporal-a-students-dream
 title: 'Temporal - a students dream'
 author: Manu Srivastava
 author_title: Engineering

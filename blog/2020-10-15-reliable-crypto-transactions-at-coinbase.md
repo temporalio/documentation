@@ -7,7 +7,7 @@ tags:
   - microservices
   - case study
 posted_on_: 2020-10-15T23:06:09Z
-id: reliable-crypto-transactions-at-coinbase
+slug: reliable-crypto-transactions-at-coinbase
 title: 'Reliable crypto transactions at Coinbase'
 author: Ryland Goldstein
 author_title: Head of Product

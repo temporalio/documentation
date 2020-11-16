@@ -7,7 +7,7 @@ tags:
   - durable-task-framework
   - swf
 posted_on_: 2020-10-14T00:06:09Z
-id: samars-journey
+slug: samars-journey
 title: 'A Journey'
 author: Samar Abbas
 author_title: Cofounder/CTO

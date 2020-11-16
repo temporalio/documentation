@@ -6,7 +6,7 @@ tags:
   - temporal
   - stability
 posted_on_: 2020-09-04T00:42:18Z
-id: temporal-transparency-7
+slug: temporal-transparency-7
 title: 'Temporal Transparency Update #7'
 author: Ryland Goldstein
 author_title: Temporals product person

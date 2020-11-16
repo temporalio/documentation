@@ -6,7 +6,7 @@ tags:
   - microservices
   - orleans
 posted_on_: 2020-10-14T00:06:09Z
-id: sergey-why-i-joined-temporal
+slug: sergey-why-i-joined-temporal
 title: 'Why I joined Temporal'
 author: Sergey Bykov
 author_title: Engineering

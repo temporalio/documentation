@@ -6,7 +6,7 @@ tags:
   - microservices
   - funding
 posted_on_: 2020-10-15T00:00:09Z
-id: funding-announcement
+slug: funding-announcement
 title: 'Announcing our funding'
 author: Ryland Goldstein, Maxim Fateev, Samar Abbas
 author_title: Head of all things
