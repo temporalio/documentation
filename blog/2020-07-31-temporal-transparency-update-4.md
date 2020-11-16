@@ -4,7 +4,7 @@ tags:
 - community
 - workflow
 posted_on_: 2020-07-31T00:15:40Z
-id: transparency-update-4
+slug: transparency-update-4
 title: 'Temporal Transparency Update #4'
 author: Ryland Goldstein
 author_title: Temporals product person

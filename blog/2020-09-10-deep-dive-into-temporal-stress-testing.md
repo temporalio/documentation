@@ -5,7 +5,7 @@ tags:
   - deepdive
   - temporal
 posted_on_: 2020-09-10T20:09:50Z
-id: temporal-deep-dive-stress-testing
+slug: temporal-deep-dive-stress-testing
 title: Deep dive into Temporal stress testing
 author: Manu Srivastava
 author_title: Engineer

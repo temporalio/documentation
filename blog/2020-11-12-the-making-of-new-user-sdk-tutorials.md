@@ -5,7 +5,7 @@ tags:
   - announcement
   - tutorials
 posted_on_: 2020-11-12T00:00:00
-id: the-making-of-new-user-sdk-tutorials
+slug: the-making-of-new-user-sdk-tutorials
 title: The process of creating SDK tutorials for new users
 author: Cully Wakelin
 author_title: SDE Technical Writer

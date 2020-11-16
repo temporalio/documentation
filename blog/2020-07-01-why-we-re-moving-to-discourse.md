@@ -7,7 +7,7 @@ tags:
 - migration
 - community
 - workflow
-id: discourse
+slug: discourse
 title: Why We're Moving to Discourse
 author: Ryland Goldstein
 author_title: Temporals product person

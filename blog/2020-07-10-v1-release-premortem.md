@@ -3,7 +3,7 @@ tags:
 - Temporal
 - V1Release
 posted_on_: 2020-07-10T21:59:30Z
-id: v1-release-premortem
+slug: v1-release-premortem
 title: V1 Release Premortem
 author: Samar Abbas
 author_title: Co-founder & CTO
