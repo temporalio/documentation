@@ -126,6 +126,7 @@ module.exports = {
     algolia: {
       apiKey: '14805ba2eb682edb2e719df4d5e03c8a',
       indexName: 'temporal',
+      // contextualSearch: true, // Optional, If you different version of docs etc (v1 and v2) doesn't display dup results
       // appId: 'app-id', // Optional, if you run the DocSearch crawler on your own
       // algoliaOptions: {}, // Optional, if provided by Algolia
     },
@@ -152,11 +153,13 @@ module.exports = {
            * This will not generate HTML files in the production build for documents
            * in `/docs/next` directory, only versioned docs.
            */
-          excludeNextVersionDocs: false,
+          // excludeNextVersionDocs: false,
+          includeCurrentVersion: true, // excludeNextVersionDocs is now deprecated
         },
         // Will be passed to @docusaurus/plugin-content-blog
         blog: {
           routeBasePath: 'blog',
+          path: 'blog',
           postsPerPage: 10,
           /**
            * Show estimated reading time for the blog post.
