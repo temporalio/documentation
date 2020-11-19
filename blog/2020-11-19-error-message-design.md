@@ -24,7 +24,7 @@ Who among us hasn't thrown up their hands at an unhelpful `Error: NullPointerExc
 
 The frustrating part comes from errors that were *anticipated* but obviously not given any thought:
 
-![Alt Text](https://dev-to-uploads.s3.amazonaws.com/i/qiivj3cdvkbo07fwrxq6.png)
+![Example of unhelpful error message from Twitter screenshot](https://dev-to-uploads.s3.amazonaws.com/i/qiivj3cdvkbo07fwrxq6.png)
 
 This is particularly aggravating because it compounds an already unhappy situation with an even worse debugging and bug reporting experience.
 
