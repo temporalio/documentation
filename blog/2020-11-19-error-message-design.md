@@ -16,7 +16,7 @@ There is nothing more frustrating than a cryptic error message.
 
 When something goes wrong, chances are you already knew it - all a cryptic error message does is confirm your suspicion *and* tell you that you're gonna need to read through a bunch of code to figure out your error.
 
-As framework and library designers, we can and should do better for our users with some careful design principles.
+As framework and library designers, we can and should do better for our users by carefully following a few design principles.
 
 ## Why We Should Care
 
