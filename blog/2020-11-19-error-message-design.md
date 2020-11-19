@@ -41,7 +41,7 @@ You might be familiar with the old adage "If you fail to plan, you plan to fail.
 
 At Temporal, our current style guide reflects our engineering roots in [Uber](https://github.com/uber-go/guide/blob/master/style.md#error-types) and [Golang](https://blog.golang.org/go1.13-errors) with some tactical recommendations:
 
-- Use `errors.New` for simple messages and `fmt.Errorf` for formatted messages. Make sure `errors` is standard go package.
+- Use `errors.New` for simple messages and `fmt.Errorf` for formatted messages. Make sure you're using the standard `errors` go package.
 - Error messages start with lowercase and no punctuation at the end: `unable to open file` instead of `Unable to open file..`
 - Error messages should be actionable, e.g. `no such directory` instead of `loading service config`.
 - Use `unable to...` instead of `failed to...`, `can't...`, or `could not...`.
