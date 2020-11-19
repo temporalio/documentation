@@ -11,7 +11,7 @@ author_image_url: https://avatars2.githubusercontent.com/u/6764957?s=460&u=97ad8
 release_version: V1.3
 
 ---
-
+<!--truncate-->
 There is nothing more frustrating than a cryptic error message. 
 
 When something goes wrong, chances are you already knew it - all a cryptic error message does is confirm your suspicion *and* tell you that you're gonna need to read through a bunch of code to figure out your error.
