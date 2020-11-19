@@ -45,7 +45,7 @@ At Temporal, our current style guide reflects our engineering roots in [Uber](ht
 - Error messages start with lowercase and no punctuation at the end: `unable to open file` instead of `Unable to open file..`
 - Error messages should be actionable, e.g. `no such directory` instead of `loading service config`.
 - Use `unable to...` instead of `failed to...`, `can't...`, or `could not...`.
-- Messages should reflect logic action that we just tried to make (in a call on previous line which returned an error), not a function name: `load service config` instead of `LoadServiceConfig`. This message should add actionable meaningful context to the existing error message.
+- Messages should reflect the logical action, not merely a function name: `load service config` instead of `LoadServiceConfig`. This message should add actionable, meaningful context to the existing error message.
 
 That said, as we look to evolve our philosophy of developer experience, we are looking toward higher level design principles that help guide successful outcomes.
 
