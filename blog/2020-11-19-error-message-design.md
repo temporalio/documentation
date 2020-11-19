@@ -32,7 +32,7 @@ Thoughtful error message design is one of the less glamorous, but most important
 
 We must acknowledge two things:
 
-- there is immense information asymmetry between framework developer and framework user (developers know the codebase far better than users)
+- there is immense information asymmetry between the framework developer and the framework user (developers know the codebase far better than users)
 - error messages are part of your developer experience too
 
 You might be familiar with the old adage "If you fail to plan, you plan to fail." Here, we have a slight twist: **If you fail to plan to fail, you are planning to fail your users when they need you most.** Touting great developer experience with lousy error message design is like selling a beautiful car with seatbelts that don't work when there's a crash.
