@@ -153,12 +153,6 @@ Here is the above example rewritten to call download and upload in parallel on m
             Async.function(activities::download, args.getSourceBucketName(), sourceFilename);
         localNamePromises.add(localName);
       }
-      // allOf converts a list of promises to a single promise that contains a list
-      // of each promise value.
-      Promise.allOf(localNamePromises).get();
-
-      // All code until the next line wasn't blocking.
-      // The promise get is a blocking call.
       List<String> localNames = new ArrayList<>();
       for (Promise<String> localName : localNamePromises) {
         localNames.add(localName.get());
