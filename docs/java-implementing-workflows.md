@@ -143,49 +143,55 @@ String localName = localNamePromise.get();
 Here is the above example rewritten to call download and upload in parallel on multiple files:
 
 ```java
-public void processFile(Arguments args) {
+  public void processFile(Arguments args) {
     List<Promise<String>> localNamePromises = new ArrayList<>();
     List<String> processedNames = null;
     try {
-        // Download all files in parallel.
-        for (String sourceFilename : args.getSourceFilenames()) {
-            Promise<String> localName = Async.function(activities::download,
-                args.getSourceBucketName(), sourceFilename);
-            localNamePromises.add(localName);
-        }
-        // allOf converts a list of promises to a single promise that contains a list
-        // of each promise value.
-        Promise<List<String>> localNamesPromise = Promise.allOf(localNamePromises);
+      // Download all files in parallel.
+      for (String sourceFilename : args.getSourceFilenames()) {
+        Promise<String> localName =
+            Async.function(activities::download, args.getSourceBucketName(), sourceFilename);
+        localNamePromises.add(localName);
+      }
+      // allOf converts a list of promises to a single promise that contains a list
+      // of each promise value.
+      Promise.allOf(localNamePromises).get();
 
-        // All code until the next line wasn't blocking.
-        // The promise get is a blocking call.
-        List<String> localNames = localNamesPromise.get();
-        processedNames = activities.processFiles(localNames);
+      // All code until the next line wasn't blocking.
+      // The promise get is a blocking call.
+      List<String> localNames = new ArrayList<>();
+      for (Promise<String> localName : localNamePromises) {
+        localNames.add(localName.get());
+      }
+      processedNames = activities.processFiles(localNames);
 
-        // Upload all results in parallel.
-        List<Promise<Void>> uploadedList = new ArrayList<>();
-        for (String processedName : processedNames) {
-            Promise<Void> uploaded = Async.procedure(activities::upload,
-                args.getTargetBucketName(), args.getTargetFilename(), processedName);
-            uploadedList.add(uploaded);
-        }
-        // Wait for all uploads to complete.
-        Promise<?> allUploaded = Promise.allOf(uploadedList);
-        allUploaded.get(); // blocks until all promises are ready.
+      // Upload all results in parallel.
+      List<Promise<Void>> uploadedList = new ArrayList<>();
+      for (String processedName : processedNames) {
+        Promise<Void> uploaded =
+            Async.procedure(
+                activities::upload,
+                args.getTargetBucketName(),
+                args.getTargetFilename(),
+                processedName);
+        uploadedList.add(uploaded);
+      }
+      // Wait for all uploads to complete.
+      Promise.allOf(uploadedList).get();
     } finally {
-        for (Promise<String> localNamePromise : localNamePromises) {
-            // Skip files that haven't completed downloading.
-            if (localNamePromise.isCompleted()) {
-                activities.deleteLocalFile(localNamePromise.get());
-            }
+      for (Promise<String> localNamePromise : localNamePromises) {
+        // Skip files that haven't completed downloading.
+        if (localNamePromise.isCompleted()) {
+          activities.deleteLocalFile(localNamePromise.get());
         }
-        if (processedNames != null) {
-            for (String processedName : processedNames) {
-                activities.deleteLocalFile(processedName);
-            }
+      }
+      if (processedNames != null) {
+        for (String processedName : processedNames) {
+          activities.deleteLocalFile(processedName);
         }
+      }
     }
-}
+  }
 ```
 
 ## Child Workflows
