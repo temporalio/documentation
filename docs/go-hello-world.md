@@ -5,6 +5,8 @@ sidebar_label: Build "Hello World!" app
 tags: helloworld, go, sdk, tutorial
 ---
 
+<img class="docs-image-centered" src="https://raw.githubusercontent.com/temporalio/documentation-images/main/static/astronaut-hello-go.jpg" />
+
 You're taking the next step in your journey towards building better apps!
 
 This tutorial is for developers who are relatively new to [Temporal](/docs/overview) and have some basic knowledge of Go. We recommend setting aside ~20 minutes to complete. By following this tutorial you will achieve a few things:

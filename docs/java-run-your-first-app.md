@@ -6,6 +6,18 @@ sidebar_label: Run your first app
 
 import { ResponsivePlayer } from '../src/components'
 
+<img class="docs-image-centered" src="https://raw.githubusercontent.com/temporalio/documentation-images/main/static/rocket-launch-java.jpg" />
+
+:::note Tutorial information
+- **Level**: ⭐ Temporal beginner
+- **Time**: ⏱️ ~20 minutes
+- **Goals**: 🙌
+  - Complete several runs of a Temporal Workflow application using the Temporal server and the [Java SDK](https://github.com/temporalio/java-sdk).
+  - Practice accessing and using the visibility of the Workflow's state.
+  - Understand the inherent reliability of Workflow functions.
+  - Learn many of Temporal's core terminology and concepts.
+:::
+
 Welcome to the evolution of application development!
 
 This is a tutorial for developers who are new to [Temporal](/docs/overview) and have some basic knowledge of Java. We recommend setting aside ~20 minutes to complete it. By following this tutorial, you will achieve a few things:
