@@ -5,6 +5,8 @@ sidebar_label: Run your first app
 ---
 import { ResponsivePlayer } from '../src/components'
 
+<img class="docs-image-centered" src="https://raw.githubusercontent.com/temporalio/documentation-images/main/static/rocket-launch-go.jpg" />
+
 Welcome to the evolution of application development!
 
 This is a tutorial for developers who are new to [Temporal](/docs/overview) and have some basic knowledge of Go. We recommend setting aside ~20 minutes to complete it. By following this tutorial, you will achieve a few things:

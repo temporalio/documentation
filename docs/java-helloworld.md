@@ -5,23 +5,26 @@ sidebar_label: Build "Hello World!" app
 tags: helloworld, java, sdk, intellij, gradle, tutorial
 ---
 
-You're taking the next step in your journey towards building better apps!
+<img class="docs-image-centered" src="https://raw.githubusercontent.com/temporalio/documentation-images/main/static/astronaut-hello-java.jpg" />
 
-This tutorial is for developers who are relatively new to [Temporal](/docs/overview) and have some basic knowledge of Java. We recommend setting aside ~20 minutes to complete. By following this tutorial you will achieve a few things:
-
-- Learn how to set up a Temporal Java application project.
+:::note Tutorial information
+- **Level:** ⭐ Temporal beginner
+- **Time:** ⏱️ ~20 minutes
+- **Goals:** 🙌
+  - Learn how to set up, build, and test a Temporal application project from scratch using the [Java SDK](https://github.com/temporalio/java-sdk).
 - Become more familiar with core concepts and the application structure.
-- Build and test a simple "Hello World!" Temporal Workflow application from scratch using the [Temporal Java SDK](https://github.com/temporalio/sdk-java) and [Gradle](https://gradle.org/).
+:::
 
-<img class="docs-image-centered" src={require('../static/img/docs/hello.png').default} />
+## Overview
 
 This tutorial focuses on the practicalities of building an application from scratch. To better understand *why* you should use Temporal, we recommend that you follow the tutorial where you [run a Temporal money transfer application](/docs/java-run-your-first-app) to get a taste of its value propositions.
 
-All of the code in this tutorial is available in the [hello-world Java template repository](https://github.com/temporalio/hello-world-project-template-java).
-
-## ![](/img/docs/harbor-crane.png) &nbsp;&nbsp; Scaffold Gradle
-
 Before starting, make sure you have looked over the [tutorial prerequisites](/docs/java-sdk-tutorial-prerequisites).
+
+All of the code in this tutorial is available in the [Java "Hello World!" application template](https://github.com/temporalio/hello-world-project-template-java).
+
+## ![](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/harbor-crane.png) Scaffold Gradle
+
 
 Create a new project directory called "hello-world-tutorial", or something similar.
 
