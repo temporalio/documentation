@@ -4,14 +4,14 @@ title: Default JWT Claim Mapper
 sidebar_label: Security
 ---
 
-One of the key components of Temporal's supports for [authorization of API calls](authorization.md) is [Claim Mapper](authorization.md#Claim-Mapper) that is responsible for translating (mapping) information extracted from the authorization token and/or mutual TLS certificate of the caller into [claims about callers roles within Temporal](authorization.md#Claims).
+One of the key components of Temporal's supports for [authorization of API calls](/docs/authorization) is [Claim Mapper](/docs/authorization/#Claim-Mapper) that is responsible for translating (mapping) information extracted from the authorization token and/or mutual TLS certificate of the caller into [claims about callers roles within Temporal](authorization.md#Claims).
 Claim Mapper is a pluggable component.
 Temporal includes a Default JWT Claim Mapper (`defaultClaimMapper`) that extracts claims from JWT access tokens and translates them into Temporal claims.
-Default JWT Claim Mapper expects claims in [JWT tokens](https://tools.ietf.org/html/rfc7519) to be in certain format [described below]().
+Default JWT Claim Mapper expects claims in [JWT tokens](https://tools.ietf.org/html/rfc7519) to be in the certain format [described below](#Format-of-JWT-Claims).
 The secondary purpose of Default JWT Claim Mapper is to serve as an example that would help others build their own claim mappers for translating caller's authorization information from other formats and conventions into Temporal claims.
 
 Default JWT Claim Mapper expects [JWT tokens](https://tools.ietf.org/html/rfc7519) to contain custom claims of a particular (configurable) name.
-Those custom claims are expected to be in a [particular format](#jwt-claim-format).
+Those custom claims are expected to be in a [particular format](#Format-of-JWT-Claims).
 Default JWT Claim Mapper needs a public key to perform validation of tokens' digital signatures.
 To obtain public keys from issuers of JWT tokens and to refresh them over time, Default JWT Claim Mapper uses another pluggable component - Token Key Provider.
 Token Key Providers implement `TokenKeyProvider` interface.
@@ -34,13 +34,13 @@ Default JWT Claim Mapper expects authorization tokens to be in the "bearer &lt;t
 
 Default JWT Claim Mapper expects permission claims in JWT tokens to be named `"permissions"`, unless overriden in configuration.
 Each individual claim is expected in the "&lt;namespace&gt;:&lt;permission&gt;" format, where &lt;namespace&gt; is a Temporal namespace or "system" for system-wide permissions and &lt;permission&gt; contains one of the four values: "read", "write", "worker", or "admin".
-Default JWT Claim Mapper converts these permissions into Temporal roles for the caller as described [here](authorization#Claims).
+Default JWT Claim Mapper converts these permissions into Temporal roles for the caller as described [here](/docs/authorization/#Claims).
 Multiple permissions for the same namespace get OR'ed.
 For example, when "&lt;accounting&gt;:&lt;read&gt;" and "&lt;accounting&gt;:&lt;write&gt;" are found in a token, they are translated into `authorization.RoleReader | authorization.RoleWriter`.
 
 ## Configuring Default JWT Claim Mapper
 
-Temporal server can be configured to use Default JWT Claim Mapper via the `temporal.WithClaimMapper` [server option](server-options.md).
+Temporal server can be configured to use Default JWT Claim Mapper via the `temporal.WithClaimMapper` [server option](/docs/server-options).
 
 ```go
 s := temporal.NewServer(

@@ -44,7 +44,7 @@ For APIs that do not target a specific namespace `CallTarget.Namespace` is set t
 
 ### Authorizer Plug-in
 
-Authorizer is a pluggable component that can be set via the `temporal.WithAuthorizer` [server options mechanism](server-options.md).
+Authorizer is a pluggable component that can be set via the `temporal.WithAuthorizer` [server options mechanism](/docs/server-options).
 Here's an example of how this can be done.
 
 ```go
@@ -118,7 +118,7 @@ type AuthInfo struct {
 }
 ```
 
-Claim mapper can be set via the `temporal.WithClaimMapper` [server option](server-options.md).
+Claim mapper can be set via the `temporal.WithClaimMapper` [server option](/docs/server-options).
 Here's an example of how this can be done.
 
 ```go
