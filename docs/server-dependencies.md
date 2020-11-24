@@ -8,10 +8,7 @@ sidebar_label: Dependencies
 
 This page details some of the requirements and dependencies needed to build and run an instance of Temporal.
 
-All versions of Temporal require the following:
-
-1. [Go 1.15+](https://golang.org/dl/)
-2. [Go package dependencies](https://github.com/temporalio/temporal/blob/master/go.mod)
+All versions of Temporal require that [Go v1.15+](https://golang.org/dl/) is installed in the environment.
 
 ## Dependency matrix
 
@@ -30,24 +27,22 @@ Legend of tested and supported dependency versions:
 - 🟫 &nbsp;**Kafka v2.1.1 & Zookeeper v3.4.6**
 
 
-| Temporal version | Databases | Search | Event streaming | Monitoring | Observation |
-|------------------|-----------|--------|-----------------|------------|-------------|
-| 1.3.2            | 🟩 🟪 🟧 | 🟥     | 🟫              | 🟦        | 🟨          |
-| 1.3.1            | 🟩 🟪 🟧 | 🟥     | 🟫              | 🟦        | 🟨          |
-| 1.3.0            | 🟩 🟪 🟧 | 🟥     | 🟫              | 🟦        | 🟨          |
-| 1.2.2            | 🟩 🟪 🟧 | 🟥     | 🟫              | 🟦        | 🟨          |
-| 1.2.1            | 🟩 🟪 🟧 | 🟥     | 🟫              | 🟦        | 🟨          |
-| 1.1.1            | 🟩 🟪    | 🟥     | 🟫              | 🟦        | 🟨          |
-| 1.1.0            | 🟩 🟪    | 🟥     | 🟫              | 🟦        | 🟨          |
-| 1.0.0            | 🟩 🟪    | 🟥     | 🟫              | 🟦        | 🟨          |
+| Version | Go packages | Databases | Search | Event streaming | Monitoring | Observation |
+|---------|-------------|-----------|--------|-----------------|------------|-------------|
+| [1.3.2](https://github.com/temporalio/temporal/tree/v1.3.2) | [go.mod](https://github.com/temporalio/temporal/blob/v1.3.2/go.mod) | 🟩 🟪 🟧 | 🟥 | 🟫 | 🟦 | 🟨 |
+| [1.3.1](https://github.com/temporalio/temporal/tree/v1.3.1) | [go.mod](https://github.com/temporalio/temporal/blob/v1.3.1/go.mod) | 🟩 🟪 🟧 | 🟥 | 🟫 | 🟦 | 🟨 |
+| [1.3.0](https://github.com/temporalio/temporal/tree/v1.3.0) | [go.mod](https://github.com/temporalio/temporal/blob/v1.3.0/go.mod) | 🟩 🟪 🟧 | 🟥 | 🟫 | 🟦 | 🟨 |
+| [1.2.2](https://github.com/temporalio/temporal/tree/v1.2.2) | [go.mod](https://github.com/temporalio/temporal/blob/v1.2.2/go.mod) | 🟩 🟪 🟧 | 🟥 | 🟫 | 🟦 | 🟨 |
+| [1.2.1](https://github.com/temporalio/temporal/tree/v1.2.1) | [go.mod](https://github.com/temporalio/temporal/blob/v1.2.1/go.mod) | 🟩 🟪 🟧 | 🟥 | 🟫 | 🟦 | 🟨          |
+| [1.1.1](https://github.com/temporalio/temporal/tree/v1.1.1) | [go.mod](https://github.com/temporalio/temporal/blob/v1.1.1/go.mod) | 🟩 🟪 | 🟥 | 🟫 | 🟦 | 🟨 |
+| [1.1.0](https://github.com/temporalio/temporal/tree/v1.1.0)   | [go.mod](https://github.com/temporalio/temporal/blob/v1.1.0/go.mod) | 🟩 🟪 | 🟥 | 🟫 | 🟦 | 🟨 |
+| [1.0.0](https://github.com/temporalio/temporal/tree/v1.0.0) | [go.mod](https://github.com/temporalio/temporal/blob/v1.0.0/go.mod) | 🟩 🟪 | 🟥 | 🟫 | 🟦 | 🟨 |
 
 ## How to use a different Temporal release version
 
 To use a more recent version of Temporal, first [check to see](https://github.com/temporalio/temporal/releases) if an upgrade to the database schema is required. Newer binaries can not run with older database schemas. Some releases require changes to the schema, and some do not. If you are using a version that is older than 1.0.0, reach out to us at [community.temporal.io](http://community.temporal.io) to ask how to upgrade.
 
-If you wish to use an older version of Temporal, you do not need to make schema changes as older binaries can operate with newer schemas. Note: we do not recommend using any version older than v1.0.0.
-
-We ensure that any consecutive versions are compatible in terms of database schema upgrades, however there is no guarantee that schema changes between *any* 2 non-consecutive versions are compatible. Please reach out to us or check the forums at [community.temporal.io](http://community.temporal.io) for more information.
+We ensure that any consecutive versions are compatible in terms of database schema upgrades, features, and system behavior, however there is no guarantee that there is compatibility between *any* 2 non-consecutive versions. Please reach out to us or check the forums at [community.temporal.io](http://community.temporal.io) for more information.
 
 ### Upgrade Cassandra schema
 
@@ -55,7 +50,7 @@ You can use the `temporal-cassandra-tool` to upgrade both the default and visibi
 
 **Example default schema upgrade:**
 
-```
+```bash
 temporal_v1.2.1 $ temporal-cassandra-tool \
    --tls \
    --tls-ca-file <...> \
@@ -71,7 +66,7 @@ temporal_v1.2.1 $ temporal-cassandra-tool \
 
 **Example visibility schema upgrade:**
 
-```
+```bash
 temporal_v1.2.1 $ temporal-cassandra-tool \
    --tls \
    --tls-ca-file <...> \
@@ -91,12 +86,64 @@ Use the `temporal-sql-tool`, which works similarly to the `temporal-cassandra-to
 
 Refer to this [Makefile](https://github.com/temporalio/temporal/blob/v1.3.2/Makefile#L367-L383) for context.
 
+#### PostgreSQL
+
+**Example default schema upgrade:***
+
+```bash
+./temporal-sql-tool \
+	--tls \
+	--tls-enable-host-verification \
+	--tls-cert-file <path to your client cert> \
+	--tls-key-file <path to your client key> \
+	--tls-ca-file <path to your CA> \
+	--ep localhost -p 5432 -u temporal -pw temporal --pl postgres --db temporal update-schema -d ./schema/postgresql/v96/temporal/versioned
+```
+
+**Example visibility schema upgrade:**
+
+```bash
+./temporal-sql-tool \
+	--tls \
+	--tls-enable-host-verification \
+	--tls-cert-file <path to your client cert> \
+	--tls-key-file <path to your client key> \
+	--tls-ca-file <path to your CA> \
+	--ep localhost -p 5432 -u temporal -pw temporal --pl postgres --db temporal_visibility update-schema -d ./schema/postgresql/v96/visibility/versioned
+```
+
+#### MySQL
+
+**Example default schema upgrade:**
+
+```bash
+./temporal-sql-tool \
+	--tls \
+	--tls-enable-host-verification \
+	--tls-cert-file <path to your client cert> \
+	--tls-key-file <path to your client key> \
+	--tls-ca-file <path to your CA> \
+	--ep localhost -p 3036 -u root -pw root --pl mysql --db temporal update-schema -d ./schema/mysql/v57/temporal/versioned/
+```
+
+**Example visibility schema upgrade:**
+
+```bash
+./temporal-sql-tool \
+	--tls \
+	--tls-enable-host-verification \
+	--tls-cert-file <path to your client cert> \
+	--tls-key-file <path to your client key> \
+	--tls-ca-file <path to your CA> \
+	--ep localhost -p 3036 -u root -pw root --pl mysql --db temporal_visibility update-schema -d ./schema/mysql/v57/visibility/versioned/
+```
+
 ### Cluster Management
 
 We recommend preparing a staging cluster and then do the following to verify the upgrade is successful:
 
-1. Create simulation load on the staging cluster.
-2. Upgrade the database schema in staging cluster.
+1. Create some simulation load on the staging cluster.
+2. Upgrade the database schema in the staging cluster.
 3. Wait and observe for few minutes to verify that there is no unstable behavior from both the server and the simulation load logic.
 4. Upgrade the server.
-5. Now do the same to live environment cluster.
+5. Now do the same to the live environment cluster.
