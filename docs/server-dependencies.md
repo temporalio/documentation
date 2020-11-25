@@ -12,7 +12,7 @@ All versions of Temporal require that [Go v1.15+](https://golang.org/dl/) is ins
 
 ## Dependencies
 
-Temporal offers official support for and is tested against dependencies with these exact versions:
+Temporal offers official support for and is tested against dependencies with the exact versions described below.
 
 ### Go Packages
 
