@@ -27,7 +27,7 @@ Temporal offers official support for and is tested against dependencies with the
 | [1.1.0](https://github.com/temporalio/temporal/tree/v1.1.0) | [go.mod](https://github.com/temporalio/temporal/blob/v1.1.0/go.mod) |
 | [1.0.0](https://github.com/temporalio/temporal/tree/v1.0.0) | [go.mod](https://github.com/temporalio/temporal/blob/v1.0.0/go.mod) |
 
-### Databases
+### Persistence
 
 The only required dependency is a database, and there are multiple types of databases that are supported.
 
@@ -35,9 +35,9 @@ The only required dependency is a database, and there are multiple types of data
 - **MySQL v5.7**
 - **PostgreSQL v9.6** (supported since Temporal v1.2.1)
 
-### Search
+### Visibility via search
 
-Search is an optional feature and currently only ElasticSearch is supported.
+The Workflow search feature is optional. Currently only ElasticSearch is supported.
 
 - **ElasticSearch v6.8**
 
@@ -48,9 +48,9 @@ Temporal emits metrics by default in a format that is supported by Prometheus. M
 - **Prometheus >= v2.0**
 - **Grafana >= v2.5**
 
-### Sreaming
+### Multi-cluster replication
 
-Event streaming software as a dependency is only required when ElasticSearch is being used or when Temporal is deployed across multiple data centers, however in future releases of Temporal, third party event streaming software will likely cease to be needed as dependency for both.
+Event streaming software as a dependency is only required when ElasticSearch is being used or when Temporal is deployed across multiple data centers. However, in future releases of Temporal, third party event streaming software will likely cease to be needed as dependency for both.
 
 - **Kafka v2.1.1 & Zookeeper v3.4.6**
 
