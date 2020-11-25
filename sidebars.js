@@ -38,7 +38,7 @@ module.exports = {
       label: 'Server',
       items: [
         'install-temporal-server',
-        'server-dependencies',
+        'server-versions-and-dependencies',
         'configure-temporal-server',
         'filter-workflows',
         'archive-data',

@@ -1,12 +1,12 @@
 ---
-id: server-dependencies
-title: Temporal server dependencies
-sidebar_label: Dependencies
+id: server-versions-and-dependencies
+title: Versions and dependencies
+sidebar_label: Versions & dependencies
 ---
 
 ## Overview
 
-This page details some of the requirements and dependencies needed to build and run an instance of Temporal.
+This page details some of the version specific requirements and dependencies needed to build and run an instance of Temporal.
 
 All versions of Temporal require that [Go v1.15+](https://golang.org/dl/) is installed in the environment.
 
