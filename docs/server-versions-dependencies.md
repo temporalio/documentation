@@ -41,7 +41,7 @@ Search is an optional feature and currently only ElasticSearch is supported.
 
 - **ElasticSearch v6.8**
 
-### Monitoring & Observability
+### Monitoring & observability
 
 Temporal emits metrics by default in a format that is supported by Prometheus. Monitoring and observing those metrics is optional. Any software that can pull metrics that supports the same format could be used, but we only ensure it works with Prometheus and Grafana versions.
 
@@ -54,7 +54,9 @@ Event streaming software as a dependency is only required when ElasticSearch is 
 
 - **Kafka v2.1.1 & Zookeeper v3.4.6**
 
-## How to use a different Temporal release version
+## Upgrade your version of Temporal
+
+If there is a newer version of Temporal available, a notification will appear in the Temporal Web UI.
 
 To use a more recent version of Temporal, first [check to see](https://github.com/temporalio/temporal/releases) if an upgrade to the database schema is required. Newer binaries can not run with older database schemas. Some releases require changes to the schema, and some do not. If you are using a version that is older than 1.0.0, reach out to us at [community.temporal.io](http://community.temporal.io) to ask how to upgrade.
 
@@ -154,7 +156,7 @@ Refer to this [Makefile](https://github.com/temporalio/temporal/blob/v1.3.2/Make
 	--ep localhost -p 3036 -u root -pw root --pl mysql --db temporal_visibility update-schema -d ./schema/mysql/v57/visibility/versioned/
 ```
 
-### Cluster management
+### Manage cluster
 
 We recommend preparing a staging cluster and then do the following to verify the upgrade is successful:
 
