@@ -10,33 +10,49 @@ This page details some of the requirements and dependencies needed to build and 
 
 All versions of Temporal require that [Go v1.15+](https://golang.org/dl/) is installed in the environment.
 
-## Dependency matrix
+## Dependencies
 
-The following table shows which versions of dependencies are supported with a specific version of Temporal.
+Temporal offers official support for and is tested against dependencies with these exact versions:
 
-Note that the only required dependency is a database, and there are multiple types of databases that are supported. Search is an optional feature and currently only ElasticSearch is supported. Event streaming software as a dependency is only required when ElasticSearch is being used or when Temporal is deployed across multiple data centers, however in future releases of Temporal, third party event streaming software will likely cease to be needed as dependency for both. Temporal emits metrics by default in a format that is supported by Prometheus. Monitoring and observing those metrics is optional. Any software that can pull metrics that supports the same format could be used, but we only ensure it works with Prometheus and Grafana versions.
+### Go Packages
 
-Legend of tested and supported dependency versions:
+| Temporal version | Go packages |
+|------------------|-------------|
+| [1.3.2](https://github.com/temporalio/temporal/tree/v1.3.2) | [go.mod](https://github.com/temporalio/temporal/blob/v1.3.2/go.mod) |
+| [1.3.1](https://github.com/temporalio/temporal/tree/v1.3.1) | [go.mod](https://github.com/temporalio/temporal/blob/v1.3.1/go.mod) |
+| [1.3.0](https://github.com/temporalio/temporal/tree/v1.3.0) | [go.mod](https://github.com/temporalio/temporal/blob/v1.3.0/go.mod) |
+| [1.2.2](https://github.com/temporalio/temporal/tree/v1.2.2) | [go.mod](https://github.com/temporalio/temporal/blob/v1.2.2/go.mod) |
+| [1.2.1](https://github.com/temporalio/temporal/tree/v1.2.1) | [go.mod](https://github.com/temporalio/temporal/blob/v1.2.1/go.mod) |
+| [1.1.1](https://github.com/temporalio/temporal/tree/v1.1.1) | [go.mod](https://github.com/temporalio/temporal/blob/v1.1.1/go.mod) |
+| [1.1.0](https://github.com/temporalio/temporal/tree/v1.1.0) | [go.mod](https://github.com/temporalio/temporal/blob/v1.1.0/go.mod) |
+| [1.0.0](https://github.com/temporalio/temporal/tree/v1.0.0) | [go.mod](https://github.com/temporalio/temporal/blob/v1.0.0/go.mod) |
 
-- 🟩 &nbsp;**Cassandra v3.11**
-- 🟪 &nbsp;**MySQL v5.7**
-- 🟧 &nbsp;**PostgreSQL v9.6**
-- 🟥 &nbsp;**ElasticSearch v6.8**
-- 🟦 &nbsp;**Prometheus >= v2.0**
-- 🟨 &nbsp;**Grafana >= v2.5**
-- 🟫 &nbsp;**Kafka v2.1.1 & Zookeeper v3.4.6**
+### Databases
 
+The only required dependency is a database, and there are multiple types of databases that are supported.
 
-| Version | Go packages | Databases | Search | Event streaming | Monitoring | Observation |
-|---------|-------------|-----------|--------|-----------------|------------|-------------|
-| [1.3.2](https://github.com/temporalio/temporal/tree/v1.3.2) | [go.mod](https://github.com/temporalio/temporal/blob/v1.3.2/go.mod) | 🟩 🟪 🟧 | 🟥 | 🟫 | 🟦 | 🟨 |
-| [1.3.1](https://github.com/temporalio/temporal/tree/v1.3.1) | [go.mod](https://github.com/temporalio/temporal/blob/v1.3.1/go.mod) | 🟩 🟪 🟧 | 🟥 | 🟫 | 🟦 | 🟨 |
-| [1.3.0](https://github.com/temporalio/temporal/tree/v1.3.0) | [go.mod](https://github.com/temporalio/temporal/blob/v1.3.0/go.mod) | 🟩 🟪 🟧 | 🟥 | 🟫 | 🟦 | 🟨 |
-| [1.2.2](https://github.com/temporalio/temporal/tree/v1.2.2) | [go.mod](https://github.com/temporalio/temporal/blob/v1.2.2/go.mod) | 🟩 🟪 🟧 | 🟥 | 🟫 | 🟦 | 🟨 |
-| [1.2.1](https://github.com/temporalio/temporal/tree/v1.2.1) | [go.mod](https://github.com/temporalio/temporal/blob/v1.2.1/go.mod) | 🟩 🟪 🟧 | 🟥 | 🟫 | 🟦 | 🟨          |
-| [1.1.1](https://github.com/temporalio/temporal/tree/v1.1.1) | [go.mod](https://github.com/temporalio/temporal/blob/v1.1.1/go.mod) | 🟩 🟪 | 🟥 | 🟫 | 🟦 | 🟨 |
-| [1.1.0](https://github.com/temporalio/temporal/tree/v1.1.0)   | [go.mod](https://github.com/temporalio/temporal/blob/v1.1.0/go.mod) | 🟩 🟪 | 🟥 | 🟫 | 🟦 | 🟨 |
-| [1.0.0](https://github.com/temporalio/temporal/tree/v1.0.0) | [go.mod](https://github.com/temporalio/temporal/blob/v1.0.0/go.mod) | 🟩 🟪 | 🟥 | 🟫 | 🟦 | 🟨 |
+- **Cassandra v3.11**
+- **MySQL v5.7**
+- **PostgreSQL v9.6** (supported since Temporal v1.2.1)
+
+### Search
+
+Search is an optional feature and currently only ElasticSearch is supported.
+
+- **ElasticSearch v6.8**
+
+### Monitoring & Observability
+
+Temporal emits metrics by default in a format that is supported by Prometheus. Monitoring and observing those metrics is optional. Any software that can pull metrics that supports the same format could be used, but we only ensure it works with Prometheus and Grafana versions.
+
+- **Prometheus >= v2.0**
+- **Grafana >= v2.5**
+
+### Sreaming
+
+Event streaming software as a dependency is only required when ElasticSearch is being used or when Temporal is deployed across multiple data centers, however in future releases of Temporal, third party event streaming software will likely cease to be needed as dependency for both.
+
+- **Kafka v2.1.1 & Zookeeper v3.4.6**
 
 ## How to use a different Temporal release version
 
@@ -138,7 +154,7 @@ Refer to this [Makefile](https://github.com/temporalio/temporal/blob/v1.3.2/Make
 	--ep localhost -p 3036 -u root -pw root --pl mysql --db temporal_visibility update-schema -d ./schema/mysql/v57/visibility/versioned/
 ```
 
-### Cluster Management
+### Cluster management
 
 We recommend preparing a staging cluster and then do the following to verify the upgrade is successful:
 
