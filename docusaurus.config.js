@@ -109,10 +109,14 @@ module.exports = {
               label: 'GitHub',
               href: 'https://github.com/temporalio/temporal',
             },
-            // {
-            //   label: 'Twitter',
-            //   href: 'https://twitter.com/docusaurus',
-            // },
+            {
+              label: 'Twitter',
+              href: 'https://twitter.com/temporalio',
+            },
+            {
+              label: 'YouTube',
+              href: 'https://www.youtube.com/channel/UCGovZyy8OfFPNlNV0i1fI1g',
+            },
           ],
         },
       ],
