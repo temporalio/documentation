@@ -72,9 +72,9 @@ Authorizer assumes that the caller has been properly authenticated and trusts th
 
 ```go
 type Claims struct {
-	subject string
-	system Role
-	namespaces map[string]Role
+	Subject    string
+	System     Role
+	Namespaces map[string]Role
 }
 
 ```
@@ -113,8 +113,9 @@ The `AuthInfo` struct that is passed to claim mapper's `GetClaims` method contai
 
 ```go
 type AuthInfo struct {
-	authToken  string
-	tlsSubject *pkix.Name
+	AuthToken     string
+    TlsSubject    *pkix.Name
+    TLSConnection *credentials.TLSInfo
 }
 ```
 
