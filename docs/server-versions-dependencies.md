@@ -12,7 +12,7 @@ All versions of Temporal require that [Go v1.15+](https://golang.org/dl/) is ins
 
 ## Dependencies
 
-Temporal offers official support for and is tested against dependencies with the exact versions described below.
+Temporal offers official support for, and is tested against, dependencies with the exact versions described below.
 
 ### Go Packages
 
@@ -35,13 +35,14 @@ The only required dependency is a database, and there are multiple types of data
 - **MySQL v5.7**
 - **PostgreSQL v9.6** (supported since Temporal v1.2.1)
 
-### Visibility via search
+### Workflow search
 
-The Workflow search feature is optional. Currently only ElasticSearch is supported.
+The feature that enables you to search for Workflows is optional. Currently only ElasticSearch is supported. The use of ElasticSearch also requires the use of event streaming software and currently only Kafka + Zookeeper is supported. See the note on event streaming dependency below.
 
 - **ElasticSearch v6.8**
+- **Kafka v2.1.1 & Zookeeper v3.4.6**
 
-### Monitoring & observability
+### Monitoring & observation
 
 Temporal emits metrics by default in a format that is supported by Prometheus. Monitoring and observing those metrics is optional. Any software that can pull metrics that supports the same format could be used, but we only ensure it works with Prometheus and Grafana versions.
 
@@ -50,9 +51,15 @@ Temporal emits metrics by default in a format that is supported by Prometheus. M
 
 ### Multi-cluster replication
 
-Event streaming software as a dependency is only required when ElasticSearch is being used or when Temporal is deployed across multiple data centers. However, in future releases of Temporal, third party event streaming software will likely cease to be needed as dependency for both.
+This is an experimental feature, most Temporal users do not need this. Requires the use of event streaming software. See the note on event streaming dependency below.
 
 - **Kafka v2.1.1 & Zookeeper v3.4.6**
+
+:::note Note on event streaming dependency
+
+Event streaming software as a dependency is only required when ElasticSearch is being used or when Temporal is deployed across multiple data centers. However, in future releases of Temporal, third party event streaming software will likely cease to be needed as dependency for both.
+
+:::
 
 ## Upgrade your version of Temporal
 
