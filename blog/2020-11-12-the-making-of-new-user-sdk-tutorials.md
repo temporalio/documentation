@@ -74,7 +74,7 @@ Snipsync does come with a few considerations:
 1. Embedded code needs to have carefully reviewed comments, structure, and make sense within the context of the documentation. For example, if the code snippet is coming from a working repo it may include additional variables or function calls. These must be minimized and optimized out so they don’t cause unnecessary confusion.
 2. In the same way that the code must be optimized for the docs, the docs must also be optimized for the code. In essence, the docs are being “driven” and "defined" by the underlying code. And if no one has coined the term yet, I think the credit for “code-driven documentation” should go to our Head of Product, Ryland Goldstein, as he pinged me one afternoon to share that epiphany with me.
 
-<img alt="image" class="docs-image-centered" src="https://raw.githubusercontent.com/temporalio/documentation-images/addimage/static/code-driven-docs-post.png" />
+<img alt="image" class="docs-image-centered" src="https://raw.githubusercontent.com/temporalio/documentation-images/main/static/code-driven-docs-post.png" />
 
 We decided to embrace [Snipsync](https://github.com/temporalio/snipsync) as the challenges it introduced were minimal compared to the value.
 
