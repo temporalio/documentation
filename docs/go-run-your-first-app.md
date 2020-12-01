@@ -7,36 +7,38 @@ import { ResponsivePlayer } from '../src/components'
 
 <img class="docs-image-centered" src="https://raw.githubusercontent.com/temporalio/documentation-images/main/static/rocket-launch-go.jpg" />
 
-Welcome to the evolution of application development!
+:::note Tutorial information
+- **Level**: ⭐ Temporal beginner
+- **Time**: ⏱️ ~20 minutes
+- **Goals**: 🙌
+  - Complete several runs of a Temporal Workflow application using the Temporal server and the [Go SDK](https://github.com/temporalio/go-sdk).
+  - Practice accessing and using the visibility of the Workflow's state.
+  - Understand the inherent reliability of Workflow functions.
+  - Learn many of Temporal's core terminology and concepts.
+:::
 
-This is a tutorial for developers who are new to [Temporal](/docs/overview) and have some basic knowledge of Go. We recommend setting aside ~20 minutes to complete it. By following this tutorial, you will achieve a few things:
+The Temporal server and a language specific SDK, in this case the [Go SDK](https://github.com/temporalio/go-sdk), provide a comprehensive solution to the complexities which arise from modern application development. You can think of Temporal as a sort of "cure all" for the pains you experience as a developer when trying to build reliable applications. Temporal provides reliability primitives right out of the box, such as seamless and fault tolerant application state tracking, automatic retries, timeouts, rollbacks due to process failures, and more.
 
-- Complete several runs of a Temporal Workflow application using the Temporal server and [Go SDK](https://github.com/temporalio/go-sdk).
-- Practice accessing and using the visibility of the Workflow's state.
-- Understand the inherent reliability of Workflow functions.
-- Learn many of Temporal's core terminology and concepts.
+Let's run our first Temporal Workflow application and forever change the way you approach application development.
 
-The Temporal server and corresponding SDK provide a comprehensive solution to the complexities which arise from modern application development.
-
-<img class="docs-image-centered" src={require('../static/img/docs/temporal-server-and-sdk-icons.png').default} />
-
-Think of Temporal as a sort of "cure all" for the pains you experience as a developer when trying to build reliable applications. Temporal provides reliability primitives right out of the box, such as seamless and fault tolerant application state tracking, automatic retries, timeouts, rollbacks due to process failures, and more.
-
-Let's run our first Temporal Workflow application and forever change the way you approach application development. You can also follow along via our video walkthrough:
+Keep reading or follow along via this video walkthrough:
 
 <ResponsivePlayer url='https://www.youtube.com/watch?v=aUUhFAupUbk' />
 
-## ![](/img/docs/repair-tools.png) &nbsp;&nbsp; Project setup
+## ![](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/repair-tools.png) Project setup
 
 Before starting, make sure you have looked over the [tutorial prerequisites](/docs/go-sdk-tutorial-prerequisites).
 
-This tutorial uses a fully working template application. You can get the [Go project template](https://github.com/temporalio/money-transfer-project-template-go) by downloading it as a [zip](https://github.com/temporalio/money-transfer-project-template-go/archive/main.zip) or by [creating a new repository](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-from-a-template#creating-a-repository-from-a-template) in your own Github account and then cloning the repo to the location of your choice. Look for the "Use this template" button:
+This tutorial uses a fully working template application which can be downloaded as a zip or converted to a new repository in your own Github account and cloned. Github's [creating a repository from a template guide](creating a new repository](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-from-a-template#creating-a-repository-from-a-template)) will walk you through the steps.
 
-Make sure you use the same repository name in your own Github account so that you don't have to make changes to the Go module name when you clone it. Once you have it, open your terminal in the project's root directory. You are ready to go.
+- [Github source](https://github.com/temporalio/money-transfer-project-template-go)
+- [Zip download](https://github.com/temporalio/money-transfer-project-template-go/archive/main.zip)
 
-## ![](/img/docs/workflow.png) &nbsp;&nbsp; Application overview
+If you convert the template to a new repo, make sure you use the same repository name in your own Github account so that you don't have to make changes to the Go module name when you clone it. Once you have it, open your terminal in the project's root directory and you are ready to go.
 
-This project template mimics a "money transfer" application, giving you the minimum elements needed to start building your own applications and understand some of the value that Temporal provides right out of the box. The project includes a predefined [Workflow function](/docs/workflows) which orchestrates the execution of `Withdraw()` and `Deposit()` functions, representing a transfer of money from one account to another. Temporal calls such functions [Activity functions](/docs/activities).
+## ![](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/workflow.png) Application overview
+
+This project template mimics a "money transfer" application that has a single [Workflow function](/docs/workflows) that orchestrates the execution of `Withdraw()` and `Deposit()` functions, representing a transfer of money from one account to another. Temporal calls these orchestrated functions [Activity functions](/docs/activities).
 
 To run the application you will do the following:
 
@@ -45,29 +47,29 @@ To run the application you will do the following:
 
 Here's a high-level illustration of what's happening:
 
-![High level project design](/img/docs/temporal-high-level-application-design.png)
+![High level project design](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/temporal-high-level-application-design.png)
 
 ### The Workflow function
 
-When you "start" a Workflow you are basically telling the Temporal server, "track the state of the Workflow with this signature". Workers will execute the Workflow code below, piece by piece, relaying the execution events and results back to the server.
+The Workflow function is the application entry point. Below you can see how the money transfer Workflow looks.
 
 <!--SNIPSTART money-transfer-project-template-go-workflow-->
 <!--SNIPEND-->
 
+When you "start" a Workflow you are basically telling the Temporal server, "track the state of the Workflow with this signature". Workers will execute the Workflow code below, piece by piece, relaying the execution events and results back to the server.
+
 ### Initiate transfer
 
-To initiate our transfer, we need to tell the server that we want this Workflow code to execute. Make sure the [Temporal server](/docs/install-temporal-server) is running in a terminal, and then run start/main.go from the project root using the following command:
-
-```
-go run start/main.go
-```
-
-There are two ways to start a Workflow with Temporal, either via the SDK or via the [CLI](/docs/tctl). For this tutorial we used the SDK to start the Workflow, which is how most Workflows would be started in a live environment. Here is the code we just ran to do that:
+There are two ways to start a Workflow with Temporal, either via the SDK or via the [CLI](/docs/tctl). For this tutorial we used the SDK to start the Workflow, which is how most Workflows get started in a live environment. The call to the Temporal server can be done [synchronously or asynchronously](). Here we do it asynchronously, so you will see the program run, tell you the transaction is processing, and exit.
 
 <!--SNIPSTART money-transfer-project-template-go-start-workflow-->
 <!--SNIPEND-->
 
-The call to the Temporal server can be done synchronously or asynchronously. Here we do it asynchronously, so you will see the program run, tell you the transaction is processing, and exit.
+Make sure the [Temporal server](/docs/install-temporal-server) is running in a terminal, and then run start/main.go from the project root using the following command:
+
+```
+go run start/main.go
+```
 
 ### State visibility
 

@@ -18,34 +18,26 @@ import { ResponsivePlayer } from '../src/components'
   - Learn many of Temporal's core terminology and concepts.
 :::
 
-Welcome to the evolution of application development!
+## Overview
 
-This is a tutorial for developers who are new to [Temporal](/docs/overview) and have some basic knowledge of Java. We recommend setting aside ~20 minutes to complete it. By following this tutorial, you will achieve a few things:
+The [Temporal server](https://github.com/temporalio/temporal) and a language specific SDK, in this case the [Java SDK](https://github.com/temporalio/java-sdk), provide a comprehensive solution to the complexities which arise from modern application development. You can think of Temporal as a sort of "cure all" for the pains you experience as a developer when trying to build reliable applications. Temporal provides reliability primitives right out of the box, such as seamless and fault tolerant application state tracking, automatic retries, timeouts, databases to track application states, rollbacks due to process failures, and more.
 
-- Complete several runs of a Temporal Workflow application using the Temporal server and [ Java SDK](https://github.com/temporalio/java-sdk).
-- Practice accessing and using the visibility of the Workflow's state.
-- Understand the inherent reliability of Workflow functions.
-- Learn many of Temporal's core terminology and concepts.
+Let's run our first Temporal Workflow application and forever change the way you approach application development.
 
-The Temporal server and corresponding SDK provide a comprehensive solution to the complexities which arise from modern application development.
-
-<img class="docs-image-centered" src={require('../static/img/docs/temporal-server-and-sdk-icons.png').default} />
-
-Think of Temporal as a sort of "cure all" for the pains you experience as a developer when trying to build reliable applications. Temporal provides reliability primitives right out of the box, such as seamless and fault tolerant application state tracking, automatic retries, timeouts, databases to track application states, rollbacks due to process failures, and more.
-
-Let's run our first Temporal Workflow application and forever change the way you approach application development. You can also follow along via our video walkthrough:
+Keep reading, or follow along via this video walkthrough:
 
 <ResponsivePlayer url='https://youtu.be/jjRu8GJgL1k'/>
 
-## ![](/img/docs/repair-tools.png) &nbsp;&nbsp; Project setup
+## ![](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/repair-tools.png) Project setup
 
 Before starting, make sure you have looked over the [tutorial prerequisites](/docs/java-sdk-tutorial-prerequisites) setup.
 
-This tutorial uses a fully working template application. You can get the ['Java project template'](https://github.com/temporalio/money-transfer-project-template-java) by downloading it as a [zip](https://github.com/temporalio/money-transfer-project-template-java/archive/master.zip) or by [creating a new repository](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-from-a-template#creating-a-repository-from-a-template) in your own Github account and then cloning the repo to the location of your choice. Look for the "Use this template" button:
+This tutorial uses a fully working template application which can be downloaded as a zip or converted to a new repository in your own Github account and cloned. Github's [creating a repository from a template guide](creating a new repository](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-from-a-template#creating-a-repository-from-a-template)) will walk you through the steps.
 
-<img class="docs-image-centered docs-image-max-width-20" src={require('../static/img/docs/use-this-template.png').default} />
+- [Github source](https://github.com/temporalio/money-transfer-project-template-java)
+- [Zip download](https://github.com/temporalio/money-transfer-project-template-java/archive/master.zip)
 
-The last setup step is to build the project. If you open it with [IntelliJ](https://www.jetbrains.com/idea/) the project will build automatically. If you prefer to run programs from your terminal, make sure you have [Gradle](https://gradle.org/install/) installed and run the Gradle build command from the root of the project:
+To build the project, either open it with [IntelliJ](https://www.jetbrains.com/idea/) (the project will build automatically) or make sure you have [Gradle](https://gradle.org/install/) installed and run the Gradle build command from the root of the project:
 
 ```
 ./gradlew build
@@ -53,25 +45,27 @@ The last setup step is to build the project. If you open it with [IntelliJ](http
 
 Once your project has finished building, you are ready to go.
 
-## ![](/img/docs/workflow.png) &nbsp;&nbsp; Application overview
+## ![](/img/docs/workflow.png) Application overview
 
-This project template mimics a "money transfer" application, giving you the minimum elements needed to start building your own applications and understand some of the value that Temporal provides right out of the box. The project includes a predefined [Workflow function](/docs/workflows) which orchestrates the execution of an Account object's `withdraw()` and `deposit()` methods, representing a transfer of money from one account to another. Temporal calls such methods [Activity functions](/docs/activities).
+This project template mimics a "money transfer" application that has a single [Workflow function](/docs/workflows) that orchestrates the execution of an Account object's `withdraw()` and `deposit()` methods, representing a transfer of money from one account to another. Temporal calls such methods [Activity functions](/docs/activities).
 
 To run the application you will do the following:
 
-1. Send a signal to the Temporal server to start the money transfer. The Temporal server will track the progress of your Workflow function execution.
+1. Send a signal to the Temporal server to start the money transfer. The Temporal server will then start tracking the progress of your Workflow function execution.
 2. Run a Worker. A Worker is a wrapper around your compiled Workflow and Activity code. A Worker's only job is to execute the Activity and Workflow functions and communicate the results back to the Temporal server.
 
 Here's a high-level illustration of what's happening:
 
-![High level project design](/img/docs/temporal-high-level-application-design.png)
+![High level project design](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/temporal-high-level-application-design.png)
 
 ### The Workflow function
 
-When you "start" a Workflow you are basically telling the Temporal server, "track the state of the Workflow with this signature". Workers will execute the Workflow code below, piece by piece, relaying the execution events and results back to the server.
+The Workflow function is the application entry point. Below you can see how the money transfer Workflow looks.
 
 <!--SNIPSTART money-transfer-project-template-java-workflow-implementation-->
 <!--SNIPEND-->
+
+When you "start" a Workflow you are basically telling the Temporal server, "track the state of the Workflow with this signature". Workers will execute the Workflow code below, piece by piece, relaying the execution events and results back to the server.
 
 ### Initiate transfer
 
