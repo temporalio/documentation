@@ -10,7 +10,7 @@ origins:
     ref: 33c23e3b19444cd5c7df59fb7e29bc0ee5c92cc5
   - owner: temporalio
     repo: hello-world-project-template-go
-    ref: af1d29051ffd30f52c1bf13d171e745c47a65097
+    ref: 3243bbb16d64a1892bde43dc8b7ef8b267267f9c
 
 target: docs
 
