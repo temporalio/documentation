@@ -45,7 +45,7 @@ To build the project, either open it with [IntelliJ](https://www.jetbrains.com/i
 
 Once your project has finished building, you are ready to go.
 
-## ![](/img/docs/workflow.png) Application overview
+## ![](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/workflow.png) Application overview
 
 This project template mimics a "money transfer" application that has a single [Workflow function](/docs/workflows) that orchestrates the execution of an Account object's `withdraw()` and `deposit()` methods, representing a transfer of money from one account to another. Temporal calls such methods [Activity functions](/docs/activities).
 
@@ -69,7 +69,7 @@ When you "start" a Workflow you are basically telling the Temporal server, "trac
 
 ### Initiate transfer
 
-There are two ways to start a Workflow with Temporal, either via the SDK or via the [CLI](/docs/tctl). For this tutorial we used the SDK to start the Workflow, which is how most Workflows get started in a live environment. The call to the Temporal server can be done [synchronously or asynchronously](docs/java-starting-workflow-executions). Here we do it asynchronously, so you will see the program run, tell you the transaction is processing, and exit.
+There are two ways to start a Workflow with Temporal, either via the SDK or via the [CLI](/docs/tctl). For this tutorial we used the SDK to start the Workflow, which is how most Workflows get started in a live environment. The call to the Temporal server can be done [synchronously or asynchronously](/docs/java-starting-workflow-executions). Here we do it asynchronously, so you will see the program run, tell you the transaction is processing, and exit.
 
 <!--SNIPSTART money-transfer-project-template-java-workflow-initiator-->
 <!--SNIPEND-->
