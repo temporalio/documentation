@@ -60,7 +60,7 @@ When you "start" a Workflow you are basically telling the Temporal server, "trac
 
 ### Initiate transfer
 
-There are two ways to start a Workflow with Temporal, either via the SDK or via the [CLI](/docs/tctl). For this tutorial we used the SDK to start the Workflow, which is how most Workflows get started in a live environment. The call to the Temporal server can be done [synchronously or asynchronously](). Here we do it asynchronously, so you will see the program run, tell you the transaction is processing, and exit.
+There are two ways to start a Workflow with Temporal, either via the SDK or via the [CLI](/docs/tctl). For this tutorial we used the SDK to start the Workflow, which is how most Workflows get started in a live environment. The call to the Temporal server can be done [synchronously or asynchronously](docs/go-sync-vs-async-start). Here we do it asynchronously, so you will see the program run, tell you the transaction is processing, and exit.
 
 <!--SNIPSTART money-transfer-project-template-go-start-workflow-->
 <!--SNIPEND-->
@@ -83,17 +83,17 @@ It seems that our Workflow is "running", but why hasn't the Workflow and Activit
 
 ### The Worker
 
-A Worker is responsible for executing pieces of Workflow and Activity code, and it knows which piece to execute from Tasks that it gets from the Task Queue that it listens to. After The Worker executes code, it returns the results back to the Temporal server. This is what our Worker looks like:
+It's time to start the Worker. A Worker is responsible for executing pieces of Workflow and Activity code, and it knows which piece to execute from Tasks that it gets from the Task Queue it is listening to. After The Worker executes code, it returns the results back to the Temporal server. Note that the Worker listens to the same Task Queue that the Workflow and Activity tasks are sent to. This is called "Task routing", and is a built-in mechanism for load balancing.
 
 <!--SNIPSTART money-transfer-project-template-go-worker-->
 <!--SNIPEND-->
 
-Notice that the Worker listens to the same Task Queue that the Workflow and Activity tasks are sent to. This is called "Task routing", and is a built-in mechanism for load balancing.
+Task Queues are defined by a simple string name:
 
 <!--SNIPSTART money-transfer-project-template-go-shared-task-queue-->
 <!--SNIPEND-->
 
-It's time to start start the Worker. Run worker/main.go from the project root using the following command:
+Run worker/main.go from the project root using the following command:
 
 ```
 go run worker/main.go
@@ -101,11 +101,11 @@ go run worker/main.go
 
 When you start the Worker it begins polling the Task Queue. The first Task the Worker finds is the one that tells it to execute the Workflow function. The Worker communicates the event back to the server which then causes the server to send Activity Tasks to the Task Queue as well. The Worker then grabs each of the Activity Tasks in their respective order from the Task Queue and executes each of the corresponding Activities.
 
-<img class="docs-image-centered docs-image-max-width-20" src={require('../static/img/docs/confetti.png').default} />
+<img class="docs-image-centered docs-image-max-width-20" src="https://raw.githubusercontent.com/temporalio/documentation-images/main/static/confetti.png" />
 
 **Congratulations**, you just ran a Temporal Workflow application!
 
-## ![](/img/docs/warning.png) &nbsp;&nbsp; Failure simulation
+## ![](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/warning.png) Failure simulation
 
 You just got a taste of one of Temporal's amazing value propositions: visibility into the Workflow and the status of the Workers executing the code. Let's explore another key value proposition, maintaining the state of a Workflow, even in the face of failures. To demonstrate this we will simulate some failures for our Workflow. Make sure your Worker is stopped before proceeding.
 
@@ -122,14 +122,18 @@ Your Workflow is still there!
 
 ### Activity error
 
-Next let's simulate a bug in the `Deposit()` Activity function. Let your Workflow continue to run. Open the activity.go file and switch out the comments on the return statements such that the `Deposit()` function returns an error:
+Next let's simulate a bug in the `Deposit()` Activity function. Let your Workflow continue to run. Open the activity.go file and switch out the comments on the return statements such that the `Deposit()` function returns an error.
 
 <!--SNIPSTART money-transfer-project-template-go-activity-->
 <!--SNIPEND-->
 
-Save it and run the Worker. The Worker completes the `Withdraw()` Activity function, but throws the error when it attempts the `Deposit()` Activity function. Notice how the Worker keeps retrying the `Deposit()` function? To view information of what is happening, visit the [UI](localhost:8088) and click on the RunId of the Workflow. You will see the pending Activity listed there with details such as its state, the number of times it has been attempted, and the next scheduled attempt.
+Save your changes and run the Worker. You will see the Worker complete the `Withdraw()` Activity function, but error when it attempts the `Deposit()` Activity function. The important thing to note here is that the Worker keeps retrying the `Deposit()` function.
 
-![Activity UI error details](/img/docs/web-ui-activity-error-info.png)
+You can view more information about what is happening in the [UI](localhost:8088). Click on the RunId of the Workflow. You will see the pending Activity listed there with details such as its state, the number of times it has been attempted, and the next scheduled attempt.
+
+<ResponsivePlayer url='https://youtu.be/sMotKSI5xxE' loop='true' playing='true'/>
+
+<br/>
 
 Traditionally application developers are forced to implement timeout and retry logic within the business code itself. With Temporal, one of the key value propositions is that [timeout configurations](/docs/activities/#timeouts) and [retry policies](/docs/activities/#retries) are specified in the Workflow code as Activity options. In our Workflow code you can see that we have specified a StartToCloseTimeout for our Activities, and set a retry policy that tells the server to retry them up to 500 times. But we did that as an example for this tutorial, as Temporal automatically uses a default retry policy if one isn't specified!
 
@@ -137,23 +141,23 @@ So, your Workflow is running, but only the `Withdraw()` Activity function has su
 
 On the next scheduled attempt, the Worker will pick up right where the Workflow was failing and successfully execute the newly compiled `Deposit()` Activity function, completing the Workflow. Basically, you have just fixed a bug "on the fly" with out losing the state of the Workflow.
 
-<img class="docs-image-centered docs-image-max-width-20" src={require('../static/img/docs/boost.png').default} />
+<img class="docs-image-centered docs-image-max-width-20" src="https://raw.githubusercontent.com/temporalio/documentation-images/main/static/boost.png" />
 
-## ![](/img/docs/wisdom.png) &nbsp;&nbsp; Lore check
+## ![](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/wisdom.png) Lore check
 
 Great work! You now know how to run a Temporal Workflow and understand some of the key values Temporal offers. Let's do a quick review to make sure you remember some of the more important pieces.
 
-![One](/img/docs/one.png) &nbsp;&nbsp; **What are four of Temporal's value propositions that we touched on in this tutorial?**
+![One](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/one.png) &nbsp;&nbsp; **What are four of Temporal's value propositions that we touched on in this tutorial?**
 
 1. Temporal gives you full visibility in the state of your Workflow and code execution.
 2. Temporal maintains the state of your Workflow, even through server outages and errors.
 3. Temporal makes it easy to timeout and retry Activity code using options that exist outside of your business logic.
 4. Temporal enables you to perform "live debugging" of your business logic while the Workflow is running.
 
-![Two](/img/docs/two.png) &nbsp;&nbsp; **How do you pair up Workflow initiation with a Worker that executes it?**
+![Two](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/two.png) &nbsp;&nbsp; **How do you pair up Workflow initiation with a Worker that executes it?**
 
 Use the same Task Queue.
 
-![Three](/img/docs/three.png) &nbsp;&nbsp; **What do we have to do if we make changes to Activity code for a Workflow that is running?**
+![Three](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/three.png) &nbsp;&nbsp; **What do we have to do if we make changes to Activity code for a Workflow that is running?**
 
 Restart the Worker.

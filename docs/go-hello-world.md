@@ -7,27 +7,27 @@ tags: helloworld, go, sdk, tutorial
 
 <img class="docs-image-centered" src="https://raw.githubusercontent.com/temporalio/documentation-images/main/static/astronaut-hello-go.jpg" />
 
-You're taking the next step in your journey towards building better apps!
-
-This tutorial is for developers who are relatively new to [Temporal](/docs/overview) and have some basic knowledge of Go. We recommend setting aside ~20 minutes to complete. By following this tutorial you will achieve a few things:
-
-- Learn how to set up a Temporal Go application project.
+:::note Tutorial information
+- **Level:** ⭐ Temporal beginner
+- **Time:** ⏱️ ~20 minutes
+- **Goals:** 🙌
+  - Learn how to set up, build, and test a Temporal application project from scratch using the [Go SDK](https://github.com/temporalio/sdk-go).
 - Become more familiar with core concepts and the application structure.
-- Build and test a simple "Hello World!" Temporal Workflow application from scratch using the [Temporal Go SDK](https://github.com/temporalio/sdk-go).
+:::
 
-<img class="docs-image-centered" src={require('../static/img/docs/hello.png').default} />
+## Overview
 
 This tutorial focuses on the practicalities of building an application from scratch. To better understand *why* you should use Temporal, we recommend that you follow the tutorial where you [run a Temporal money transfer application](/docs/go-run-your-first-app) to get a taste of its value propositions.
 
-All of the code in this tutorial is available in the [hello-world Go template repository](https://github.com/temporalio/hello-world-project-template-go).
-
-## ![](/img/docs/harbor-crane.png) &nbsp;&nbsp; Scaffold Go project
-
 Before starting, make sure you have looked over the [tutorial prerequisites](/docs/go-sdk-tutorial-prerequisites).
 
-In a terminal, create a new project directory named "hello-world-project", or something similar and cd into it.
+All of the code in this tutorial is available in the [hello-world Go template repository](https://github.com/temporalio/hello-world-project-template-go).
 
-From the root of your new project directory, initialize a new Go module:
+## ![](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/harbor-crane.png) Scaffold Go project
+
+In a terminal, create a new project directory named "hello-world-project", or something similar and `cd` into it.
+
+From the root of your new project directory, initialize a new Go module. Make sure the module path (i.e. hello-world-project) matches that of the directory in which you creating the module:
 
 ```
 go mod init hello-world-project/app
@@ -39,7 +39,7 @@ Then, add the Temporal Go SDK as a project dependency:
 go get go.temporal.io/sdk@latest
 ```
 
-## ![](/img/docs/apps.png) &nbsp;&nbsp; "Hello World!" app
+## ![](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/apps.png) "Hello World!" app
 
 Now we are ready to build our Temporal Workflow application. Our app will consist of four pieces:
 
@@ -50,9 +50,11 @@ Now we are ready to build our Temporal Workflow application. Our app will consis
 
 ### Activity
 
-First, let's define our Activity function which is just like any other function in Go. Activities are meant to handle non-deterministic code that could result in an error. But for this tutorial all we are doing is taking a string, appending it to "Hello", and returning it back to the Workflow.
+First, let's define our Activity. Activities are meant to handle non-deterministic code that could result in unexpected results or errors. But for this tutorial all we are doing is taking a string, appending it to "Hello", and returning it back to the Workflow.
 
-Create activity.go and add the following code:
+In the Go SDK, an Activity function is just like any other [exported Go function](https://tour.golang.org/basics/3).
+
+Create activity.go in the project root and add the following code:
 
 <!--SNIPSTART hello-world-project-template-go-activity-->
 <!--SNIPEND-->
@@ -68,14 +70,14 @@ Create workflow.go and add the following code:
 
 ### Task Queue
 
-Task Queues are how the Temporal server supplies information to Workers. When you start a Workflow, you tell the server which Task Queue the Workflow and/or Activities use as an information queue. We will configure our Worker to listen to the same Task Queue that our Workflow and Activities use. Since the Task Queue name is used by multiple things, let's create shared.go and define our Task Queue name there:
+[Task Queues](docs/glossary/#task-queue) are how the Temporal server supplies information to Workers. When you start a Workflow, you tell the server which Task Queue the Workflow and/or Activities use as an information queue. We will configure our Worker to listen to the same Task Queue that our Workflow and Activities use. Since the Task Queue name is used by multiple things, let's create shared.go and define our Task Queue name there:
 
 <!--SNIPSTART hello-world-project-template-go-shared-->
 <!--SNIPEND-->
 
 ### Worker
 
-Our Worker hosts Workflow and Activity functions and executes them one at a time. The Worker is instructed to execute a specific function via information it pulls from the Task Queue. After it runs the code, it communicates the results back to the server.
+Our [Worker](/docs/glossary/#worker) hosts Workflow and Activity functions and executes them one at a time. The Worker is instructed to execute a specific function via information it pulls from the Task Queue. After it runs the code, it communicates the results back to the server.
 
 Create worker/main.go and add the following code:
 
@@ -84,14 +86,14 @@ Create worker/main.go and add the following code:
 
 ### Workflow starter
 
-There are two ways to start a Workflow, via the Temporal CLI or Temporal SDK. In this tutorial we use the SDK to start the Workflow which is how most Workflows are started in live environments.
+There are two ways to start a Workflow, via the Temporal CLI or Temporal SDK. In this tutorial we use the SDK to start the Workflow which is how most Workflows are started in live environments. Additionally, the call to the Temporal server can be done [synchronously or asynchronously](/docs/go-sync-vs-async-start). Here we do it synchronously, so you will see the start process wait for the result of the Workflow.
 
 Create start/main.go and add the following code:
 
 <!--SNIPSTART hello-world-project-template-go-start-workflow-->
 <!--SNIPEND-->
 
-##  ![](/img/docs/check.png) &nbsp;&nbsp; Test the app
+##  ![](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/check.png) Test the app
 
 Let's add a simple unit test to our application to make sure things are working as expected. Create workflow_test.go and add the following code:
 
@@ -104,7 +106,7 @@ Run this command from the project root to execute the unit tests:
 go test
 ```
 
-## ![](/img/docs/running.png) &nbsp;&nbsp; Run the app
+## ![](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/running.png) Run the app
 
 To run the app we need to start the Workflow and the Worker. You can start them in any order, but run each command from a separate terminal window.
 
@@ -120,25 +122,25 @@ To start the Workflow run this command from the project root:
 go run start/main.go
 ```
 
-<img class="docs-image-centered docs-image-max-width-20" src={require('../static/img/docs/confetti.png').default} />
+<img class="docs-image-centered docs-image-max-width-20" src="https://raw.githubusercontent.com/temporalio/documentation-images/main/static/confetti.png" />
 
 **Congratulations** you have successfully built a Temporal application from scratch!
 
-## ![](/img/docs/wisdom.png) &nbsp;&nbsp; Lore check
+## ![](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/wisdom.png) Lore check
 
 Great work! You now know how to build a Temporal Workflow application using the Go SDK. Let's do a quick review to make sure you remember some fo the more important pieces.
 
-![One](/img/docs/one.png) &nbsp;&nbsp; **What are the minimum four pieces of a Temporal Workflow application?**
+![One](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/one.png) &nbsp;&nbsp; **What are the minimum four pieces of a Temporal Workflow application?**
 
 1. An Activity function.
 2. A Workflow function.
 3. A Worker to host the Activity and Workflow code.
 4. A frontend to start the Workflow.
 
-![Two](/img/docs/two.png) &nbsp;&nbsp; **How does the Temporal server get information to the Worker?**
+![Two](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/two.png) &nbsp;&nbsp; **How does the Temporal server get information to the Worker?**
 
 It adds the information to a Task Queue.
 
-![Three](/img/docs/three.png) &nbsp;&nbsp; **True or false, Temporal Activity and Workflow functions are just normal Go functions?**
+![Three](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/three.png) &nbsp;&nbsp; **True or false, Temporal Activity and Workflow functions are just normal Go functions?**
 
 True
