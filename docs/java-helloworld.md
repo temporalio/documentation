@@ -12,7 +12,7 @@ tags: helloworld, java, sdk, intellij, gradle, tutorial
 - **Time:** ⏱️ ~20 minutes
 - **Goals:** 🙌
   - Learn how to set up, build, and test a Temporal application project from scratch using the [Java SDK](https://github.com/temporalio/java-sdk).
-- Become more familiar with core concepts and the application structure.
+  - Become more familiar with core concepts and the application structure.
 :::
 
 ## Overview
