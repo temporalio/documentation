@@ -70,7 +70,7 @@ Create workflow.go and add the following code:
 
 ### Task Queue
 
-[Task Queues](docs/glossary/#task-queue) are how the Temporal server supplies information to Workers. When you start a Workflow, you tell the server which Task Queue the Workflow and/or Activities use as an information queue. We will configure our Worker to listen to the same Task Queue that our Workflow and Activities use. Since the Task Queue name is used by multiple things, let's create shared.go and define our Task Queue name there:
+[Task Queues](/docs/glossary/#task-queue) are how the Temporal server supplies information to Workers. When you start a Workflow, you tell the server which Task Queue the Workflow and/or Activities use as an information queue. We will configure our Worker to listen to the same Task Queue that our Workflow and Activities use. Since the Task Queue name is used by multiple things, let's create shared.go and define our Task Queue name there:
 
 <!--SNIPSTART hello-world-project-template-go-shared-->
 <!--SNIPEND-->
