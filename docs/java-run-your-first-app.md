@@ -13,7 +13,7 @@ import { ResponsivePlayer } from '../src/components'
 - **Time**: ⏱️ ~20 minutes
 - **Goals**: 🙌
   - Complete several runs of a Temporal Workflow application using the Temporal server and the [Java SDK](https://github.com/temporalio/java-sdk).
-  - Practice accessing and using the visibility of the Workflow's state.
+  - Practice reviewing the state of the Workflow.
   - Understand the inherent reliability of Workflow functions.
   - Learn many of Temporal's core terminology and concepts.
 :::
@@ -24,7 +24,7 @@ The [Temporal server](https://github.com/temporalio/temporal) and a language spe
 
 Let's run our first Temporal Workflow application and forever change the way you approach application development.
 
-Keep reading, or follow along via this video walkthrough:
+Keep reading or follow along with this video walkthrough:
 
 <ResponsivePlayer url='https://youtu.be/jjRu8GJgL1k'/>
 
@@ -47,7 +47,7 @@ Once your project has finished building, you are ready to go.
 
 ## ![](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/workflow.png) Application overview
 
-This project template mimics a "money transfer" application that has a single [Workflow function](/docs/workflows) that orchestrates the execution of an Account object's `withdraw()` and `deposit()` methods, representing a transfer of money from one account to another. Temporal calls such methods [Activity functions](/docs/activities).
+This project template mimics a "money transfer" application that has a single [Workflow function](/docs/workflows) which orchestrates the execution of an Account object's `withdraw()` and `deposit()` methods, representing a transfer of money from one account to another. Temporal calls these particular methods [Activity functions](/docs/activities).
 
 To run the application you will do the following:
 
@@ -60,12 +60,12 @@ Here's a high-level illustration of what's happening:
 
 ### The Workflow function
 
-The Workflow function is the application entry point. Below you can see how the money transfer Workflow looks.
+The Workflow function is the application entry point. This is what our money transfer Workflow looks like:
 
 <!--SNIPSTART money-transfer-project-template-java-workflow-implementation-->
 <!--SNIPEND-->
 
-When you "start" a Workflow you are basically telling the Temporal server, "track the state of the Workflow with this signature". Workers will execute the Workflow code below, piece by piece, relaying the execution events and results back to the server.
+When you "start" a Workflow you are basically telling the Temporal server, "track the state of the Workflow with this function signature". Workers will execute the Workflow code below, piece by piece, relaying the execution events and results back to the server.
 
 ### Initiate transfer
 
@@ -92,7 +92,13 @@ It seems that our Workflow is "running", but why hasn't the Workflow and Activit
 
 ### The Worker
 
-It's time to start the Worker. A Worker is responsible for executing pieces of Workflow and Activity code, and it knows which piece to execute from Tasks that it gets from the Task Queue it is listening to. After The Worker executes code, it returns the results back to the Temporal server. Note that the Worker listens to the same Task Queue that the Workflow and Activity tasks are sent to. This is called "Task routing", and is a built-in mechanism for load balancing.
+It's time to start the Worker. A Worker is responsible for executing pieces of Workflow and Activity code.
+
+- It can only execute code that has been registered to it.
+- It knows which piece of code to execute from Tasks that it gets from the Task Queue.
+- It only listens to the Task Queue that it is registered to.
+
+After The Worker executes code, it returns the results back to the Temporal server. Note that the Worker listens to the same Task Queue that the Workflow and Activity tasks are sent to. This is called "Task routing", and is a built-in mechanism for load balancing.
 
 <!--SNIPSTART money-transfer-project-template-java-worker-->
 <!--SNIPEND-->

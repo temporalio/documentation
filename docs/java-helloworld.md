@@ -52,7 +52,7 @@ To limit the logging output from the SDK, within src/main/resources/ create a lo
 <!--SNIPSTART hello-world-project-template-java-logback-dependency-configuration-->
 <!--SNIPEND-->
 
-If you are editing the files in IntelliJ, a "refresh" icon will appear on the screen, click it to load the changes. Gradle will rebuild with the dependencies. Otherwise you can run `./gradlew build` from the root of the project again.
+If you are editing the files in IntelliJ, a "refresh" icon will appear on the screen. Click it to load the changes. Gradle will rebuild with the dependencies. Otherwise you can run `./gradlew build` from the root of the project again.
 
 All of the files for our application will be created in src/main/java/helloworldapp/. Gradle will have generated a default App.java class in that location. Remove it before proceeding.
 
@@ -113,7 +113,7 @@ Create HelloWorldWorker.java and define the Worker:
 
 ### Workflow initiator
 
-There are two ways to start a Workflow, via the Temporal CLI or Temporal SDK. In this tutorial we will use the SDK to start the Workflow which is how most Workflows are started in live environments. Additionally, the call to the Temporal server can be done [synchronously or asynchronously](/docs/java-starting-workflow-executions). Here we do it synchronously, so you will see the start process wait for the result of the Workflow.
+There are two ways to start a Workflow, via the Temporal CLI or Temporal SDK. In this tutorial we will use the SDK to start the Workflow which is how most Workflows are started in live environments. Additionally, the call to the Temporal server can be made [synchronously or asynchronously](/docs/java-starting-workflow-executions). Here we do it synchronously, so you will see the caller wait for the result of the Workflow.
 
 Create InitiateHelloWorld.java and use the SDK to define the start of the Workflow:
 
