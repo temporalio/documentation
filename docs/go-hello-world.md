@@ -27,7 +27,7 @@ All of the code in this tutorial is available in the [hello-world Go template re
 
 In a terminal, create a new project directory named "hello-world-project", or something similar and `cd` into it.
 
-From the root of your new project directory, initialize a new Go module. Make sure the module path (i.e. hello-world-project) matches that of the directory in which you creating the module:
+From the root of your new project directory, initialize a new Go module. Make sure the module path (i.e. hello-world-project) matches that of the directory in which you are creating the module:
 
 ```
 go mod init hello-world-project/app
@@ -86,7 +86,7 @@ Create worker/main.go and add the following code:
 
 ### Workflow starter
 
-There are two ways to start a Workflow, via the Temporal CLI or Temporal SDK. In this tutorial we use the SDK to start the Workflow which is how most Workflows are started in live environments. Additionally, the call to the Temporal server can be done [synchronously or asynchronously](/docs/go-sync-vs-async-start). Here we do it synchronously, so you will see the start process wait for the result of the Workflow.
+There are two ways to start a Workflow, via the Temporal CLI or Temporal SDK. In this tutorial we use the SDK to start the Workflow which is how most Workflows are started in live environments. Additionally, the call to the Temporal server can be made [synchronously or asynchronously](/docs/go-sync-vs-async-start). Here we do it synchronously, so you will see the caller wait for the result of the Workflow.
 
 Create start/main.go and add the following code:
 
