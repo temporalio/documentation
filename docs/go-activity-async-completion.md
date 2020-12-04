@@ -8,7 +8,7 @@ or desirable. For example, you might have an application that requires user inpu
 the Activity. You could implement the Activity with a polling mechanism, but a simpler and less
 resource-intensive implementation is to asynchronously complete a Temporal Activity.
 
-There two parts to implementing an asynchronously completed Activity:
+There are two parts to implementing an asynchronously completed Activity:
 
 1. The Activity provides the information necessary for completion from an external system and notifies
 the Temporal service that it is waiting for that outside callback.
