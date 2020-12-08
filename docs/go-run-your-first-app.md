@@ -65,7 +65,7 @@ There are two ways to start a Workflow with Temporal, either via the SDK or via 
 <!--SNIPSTART money-transfer-project-template-go-start-workflow-->
 <!--SNIPEND-->
 
-Make sure the [Temporal server](/docs/install-temporal-server) is running in a terminal, and then run start/main.go from the project root using the following command:
+Make sure the [Temporal server](/docs/server-quick-install) is running in a terminal, and then run start/main.go from the project root using the following command:
 
 ```
 go run start/main.go
