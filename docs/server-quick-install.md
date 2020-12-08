@@ -1,6 +1,7 @@
 ---
-id: install-temporal-server
-title: Install Temporal
+id: server-quick-install
+title: Install Temporal for local development
+sidebar_label: Quick install
 ---
 
 ## Overview
@@ -70,12 +71,6 @@ temporal_1   | Default namespace registration complete.
 The Temporal Server is now running!
 
 You can view the Temporal web interface at [localhost:8088](http://localhost:8088/).
-
-:::note
-
-If you wish to deploy Temporal to a Kubernetes cluster, follow the [helm-charts guide](https://github.com/temporalio/helm-charts).
-
-:::
 
 ## Run Workflows
 

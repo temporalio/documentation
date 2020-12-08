@@ -74,7 +74,7 @@ There are two ways to start a Workflow with Temporal, either via the SDK or via 
 <!--SNIPSTART money-transfer-project-template-java-workflow-initiator-->
 <!--SNIPEND-->
 
-Make sure the [Temporal server](/docs/install-temporal-server) is running in a terminal, and then run the InitiateMoneyTransfer class within IntelliJ or from the project root using the following command:
+Make sure the [Temporal server](/docs/server-quick-install) is running in a terminal, and then run the InitiateMoneyTransfer class within IntelliJ or from the project root using the following command:
 
 ```
 ./gradlew initiateTransfer

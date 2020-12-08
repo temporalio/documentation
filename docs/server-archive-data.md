@@ -1,5 +1,5 @@
 ---
-id: archive-data
+id: server-archive-data
 title: How to archive data
 sidebar_label: Archive data
 ---

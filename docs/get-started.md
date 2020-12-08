@@ -8,7 +8,7 @@ Temporal reimagines state-dependent service-orchestrated application development
 
 ## Quick start
 
-[Install the Temporal server](/docs/install-temporal-server/) and [choose your SDK](/docs/sdks-introduction). Or, try one of these application template tutorials:
+[Install the Temporal server](/docs/server-quick-install/) and [choose your SDK](/docs/sdks-introduction). Or, try one of these application template tutorials:
 
 **Go**
 
@@ -31,7 +31,7 @@ Wondering if Temporal is a good fit for your use case? Check out our [use cases 
 ## Temporal deployment and configuration
 
 
-There are a few ways to run Temporal. Try out the [quick install guide](/docs/install-temporal-server/) or use the [Temporal Helm Chart](https://github.com/temporalio/helm-charts) to deploy to a Kubernetes cluster.
+There are a few ways to run Temporal. Try out the [quick install guide](/docs/server-quick-install/) or use the [Temporal Helm Chart](https://github.com/temporalio/helm-charts) to deploy to a Kubernetes cluster.
 
 Learn how to [manage Temporal configurations](/docs/configure-temporal-server/), [customize Workflow filtering](/docs/filter-workflows/), or [set up Archival](/docs/archive-data).
 
