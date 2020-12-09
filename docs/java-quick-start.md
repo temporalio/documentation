@@ -546,11 +546,11 @@ It also is not allowed to block its thread in any way. It usually just returns a
 Let's run the updated worker and send a couple signals to it:
 
 ```bash
-temporal: docker run --network=host --rm temporalio/tctl:1.3.0 workflow start  --workflow_id "HelloQuery" --taskqueue HelloWorldTaskQueue --workflow_type HelloWorld --execution_timeout 3600 --input \"World\"
+temporal: docker run --network=host --rm temporalio/tctl:1.4.0 workflow start  --workflow_id "HelloQuery" --taskqueue HelloWorldTaskQueue --workflow_type HelloWorld --execution_timeout 3600 --input \"World\"
 Started Workflow Id: HelloQuery, run Id: 1925f668-45b5-4405-8cba-74f7c68c3135
-temporal: docker run --network=host --rm temporalio/tctl:1.3.0 workflow signal --workflow_id "HelloQuery" --name "updateGreeting" --input \"Hi\"
+temporal: docker run --network=host --rm temporalio/tctl:1.4.0 workflow signal --workflow_id "HelloQuery" --name "updateGreeting" --input \"Hi\"
 Signal workflow succeeded.
-temporal: docker run --network=host --rm temporalio/tctl:1.3.0 workflow signal --workflow_id "HelloQuery" --name "updateGreeting" --input \"Welcome\"
+temporal: docker run --network=host --rm temporalio/tctl:1.4.0 workflow signal --workflow_id "HelloQuery" --name "updateGreeting" --input \"Welcome\"
 Signal workflow succeeded.
 ```
 
@@ -565,7 +565,7 @@ The worker output:
 Now let's query the Workflow using the CLI:
 
 ```bash
-temporal: docker run --network=host --rm temporalio/tctl:1.3.0 workflow query --workflow_id "HelloQuery" --query_type "getCount"
+temporal: docker run --network=host --rm temporalio/tctl:1.4.0 workflow query --workflow_id "HelloQuery" --query_type "getCount"
 Query result as JSON:
 3
 ```
@@ -574,9 +574,9 @@ One limitation of the query is that it requires a worker process running because
 An interesting feature of the query is that it works for completed Workflows as well. Let's complete the Workflow by sending "Bye" and query it.
 
 ```bash
-temporal: docker run --network=host --rm temporalio/tctl:1.3.0 workflow signal --workflow_id "HelloQuery" --name "updateGreeting" --input \"Bye\"
+temporal: docker run --network=host --rm temporalio/tctl:1.4.0 workflow signal --workflow_id "HelloQuery" --name "updateGreeting" --input \"Bye\"
 Signal workflow succeeded.
-temporal: docker run --network=host --rm temporalio/tctl:1.3.0 workflow query --workflow_id "HelloQuery" --query_type "getCount"
+temporal: docker run --network=host --rm temporalio/tctl:1.4.0 workflow query --workflow_id "HelloQuery" --query_type "getCount"
 Query result as JSON:
 4
 ```
@@ -679,7 +679,7 @@ Activities are invoked through a stub that implements their interface. So an inv
 Now run the Workflow worker. Do not run the Activity worker yet. Then start a new Workflow execution:
 
 ```bash
-temporal: docker run --network=host --rm temporalio/tctl:1.3.0 workflow start  --workflow_id "HelloActivityWorker" --taskqueue HelloWorldTaskQueue --workflow_type HelloWorld_sayHello --execution_timeout 3600 --input \"World\"
+temporal: docker run --network=host --rm temporalio/tctl:1.4.0 workflow start  --workflow_id "HelloActivityWorker" --taskqueue HelloWorldTaskQueue --workflow_type HelloWorld_sayHello --execution_timeout 3600 --input \"World\"
 Started Workflow Id: HelloActivityWorker, run Id: ff015637-b5af-43e8-b3f6-8b6c7b919b62
 ```
 
@@ -688,7 +688,7 @@ The Workflow is started, but nothing visible happens. This is expected as the Ac
 The first option is look at the stack trace:
 
 ```text
-temporal: docker run --network=host --rm temporalio/tctl:1.3.0 workflow stack  --workflow_id "HelloActivityWorker"
+temporal: docker run --network=host --rm temporalio/tctl:1.4.0 workflow stack  --workflow_id "HelloActivityWorker"
 Query result as JSON:
 "workflow-root: (BLOCKED on Feature.get)io.temporal.internal.sync.CompletablePromiseImpl.get(CompletablePromiseImpl.java:71)
 io.temporal.internal.sync.ActivityStubImpl.execute(ActivityStubImpl.java:58)
@@ -709,7 +709,7 @@ of any duration. It is okay for the Workflow code to block on an Activity invoca
 Another way to see what exactly happened in the Workflow execution is to look at the Workflow execution history:
 
 ```text
-temporal: docker run --network=host --rm temporalio/tctl:1.3.0 workflow show  --workflow_id "HelloActivityWorker"
+temporal: docker run --network=host --rm temporalio/tctl:1.4.0 workflow show  --workflow_id "HelloActivityWorker"
   1  WorkflowExecutionStarted  {WorkflowType:{Name:HelloWorld_sayHello},
                                 TaskQueue:{Name:HelloWorldTaskQueue},
                                 Input:["World"],
@@ -746,7 +746,7 @@ The last event in the Workflow history is `ActivityTaskScheduled`. It is recorde
 Another useful API is `DescribeWorkflowExecution` which, among other information, contains the list of outstanding Activities:
 
 ```text
-temporal: docker run --network=host --rm temporalio/tctl:1.3.0 workflow describe  --workflow_id "HelloActivityWorker"
+temporal: docker run --network=host --rm temporalio/tctl:1.4.0 workflow describe  --workflow_id "HelloActivityWorker"
 {
   "ExecutionConfiguration": {
     "taskQueue": {
@@ -794,7 +794,7 @@ Let's start the Activity worker. It starts and immediately prints:
 Let's look at the Workflow execution history:
 
 ```text
-temporal: docker run --network=host --rm temporalio/tctl:1.3.0 workflow show  --workflow_id "HelloActivityWorker"
+temporal: docker run --network=host --rm temporalio/tctl:1.4.0 workflow show  --workflow_id "HelloActivityWorker"
    1  WorkflowExecutionStarted  {WorkflowType:{Name:HelloWorld_sayHello},
                                 TaskQueue:{Name:HelloWorldTaskQueue},
                                 Input:["World"],
