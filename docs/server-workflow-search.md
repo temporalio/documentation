@@ -1,6 +1,6 @@
 ---
 id: server-workflow-search
-title: How to search for Workflows
+title: Search for Workflows
 sidebar_label: Search Workflows
 ---
 
