@@ -18,19 +18,35 @@ If you want to see how Temporal runs on a Kubernetes cluster, the fastest way is
 
 ## Install for a live environment
 
-To install Temporal for a cloud or on-premise live environment, you can either include the Temporal server package and run it via a Go application, or fork the repository and clone it to the location of your choice.
+To run Temporal in a cloud or on-premise live environment, [include the Temporal server package](/docs/server-options) and run it as a Go application.
 
 ## Features and dependencies
 
-Depending on how you install Temporal, and what you features you wish to use, there are some options available when it comes to [Temporal's dependencies](server-versions-and-dependencies).
+Depending on how you install Temporal, and what you features you wish to use, there are some options available when it comes to customizing Temporal's features and [dependencies](server-versions-and-dependencies).
+
+### Security
+
+Want to make sure your instance of Temporal is secure? There are a few options available.
+
+1. TLS protocols can be configured to work for network communications for both internode and SDK client traffic.
+2. SDK API calls can require authentication and authorization.
+3. The web UI can require authentication and authorization.
+
+#### TLS
+
+TLS is configured in the `development.yaml` source file. The values of this configuration can be set via [server options](/docs/server-options). Follow the TLS section of the [server configuration guide](/docs/server-configuration/#tls) for details on acceptable values.
+
+#### SDK API
+
+API calls made via an SDK client can be restricted by authentication and authorization. Follow the [server API authorization guide](/docs/server-api-auth) to set it up.
+
+#### Web UI
+
+Access to the web UI can be restricted by authentication and authorization. This feature relies on the same mechanism that enables SDK auth controls. Follow the [server API authorization guide](/docs/server-api-auth) to set it up.
 
 ### Workflow search
 
 The Temporal server supports Workflow search with filters, by default, without the need for any additional dependencies. However, Temporal's default search capabilities are limited in comparison to instances that are integrated with ElasticSearch. Integrating ElasticSearch enables the use of customizable search attributes and complex search queries. Read the [Workflow search guide](/docs/server-workflow-search) for details.
-
-### Security
-
-Want to make sure your instance of Temporal is secure? There are a few security features available. Read our guide on [how to secure your Temporal instance](/docs/server-security) for more details.
 
 ### Archiving data
 

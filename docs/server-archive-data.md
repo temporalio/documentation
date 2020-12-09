@@ -1,6 +1,6 @@
 ---
 id: server-archive-data
-title: How to archive data
+title: Archive data
 sidebar_label: Archive data
 ---
 
