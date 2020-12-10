@@ -52,7 +52,12 @@ s := tempora.NewServer(
 
 ### InterruptOn
 
-InterruptOn interrupts server on the signal from server. If channel is nil Start() will block forever.
+This option provides a channel that interrupts the server on the signal from that channel.
+
+- If `temporal.InterruptOn()` is not passed, `server.Start()` is not blocking and `server.Stop()` needs to be called somewhere.
+- If `temporal.InterruptOn(nil)` is passed, `server.Start()` blocks forever until the process is killed.
+- If `temporal.InterruptOn(temporal.InterruptCh())` is passed, `server.Start()` blocks until Ctrl+C is used and then the server is gracefully shut down.
+- If `temporal.Interrupt(someCustomChan)` is passed, `server.Start()` blocks until a signal is sent to `someCustomChan`.
 
 ```go
 s := temporal.NewServer(
