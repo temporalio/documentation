@@ -34,7 +34,7 @@ Want to make sure your instance of Temporal is secure? There are a few options a
 
 #### TLS
 
-TLS is configured in the `development.yaml` source file. The values of this configuration can be set via [server options](/docs/server-options). Follow the TLS section of the [server configuration guide](/docs/server-configuration/#tls) for details on acceptable values.
+TLS is configured in the `development.yaml` source file. The values of this configuration can be set via [server options](/docs/server-options/#withconfig). Follow the TLS section of the [server configuration guide](/docs/server-configuration/#tls) for details on acceptable values.
 
 #### SDK API
 

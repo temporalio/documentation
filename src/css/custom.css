@@ -32,6 +32,7 @@ html[data-theme='dark'] {
 html[data-theme='light'] {
   --ifm-blockquote-color: #000000;
   --ifm-color-emphasis-300: #505050;
+  --ifm-code-background: #b8b4dc; /*light purple*/
 }
 
 .footer {
