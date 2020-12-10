@@ -33,7 +33,7 @@ Wondering if Temporal is a good fit for your use case? Check out our [use cases 
 
 There are a few ways to run Temporal. Try out the [quick install guide](/docs/server-quick-install/) or use the [Temporal Helm Chart](https://github.com/temporalio/helm-charts) to deploy to a Kubernetes cluster.
 
-Learn how to [manage Temporal configurations](/docs/configure-temporal-server/), [customize Workflow filtering](/docs/filter-workflows/), or [set up Archival](/docs/archive-data).
+Learn how to [manage Temporal configurations](/docs/server-configuration/), [customize Workflow filtering](/docs/server-workflow-search/), or [set up Archival](/docs/server-archive-data).
 
 ## CLI
 

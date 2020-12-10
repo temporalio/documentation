@@ -43,7 +43,7 @@ If an `Authorizer` is not set in the server options, Temporal uses the `nopAutho
 
 ### Claims
 
-The `Claims` struct contains information about permission claims granted to the caller. Authorizer assumes that the caller has been properly authenticated and trusts the claims passed to it as input for making an authorization decision. That is because, this information is populated by the [`ClaimMapper` component](#claimmapper), typically by extracting information from the authentication token and/or mutual TLS certificate associated with the gRPC connection over which the call has arrived.
+The `Claims` struct contains information about permission claims granted to the caller. Authorizer assumes that the caller has been properly authenticated and trusts the claims passed to it as input for making an authorization decision. That is because, this information is populated by the [`ClaimMapper` component](#mappingclaims), typically by extracting information from the authentication token and/or mutual TLS certificate associated with the gRPC connection over which the call has arrived.
 
 <!--SNIPSTART temporal-common-authorization-claims-->
 <!--SNIPEND-->
@@ -61,7 +61,7 @@ role := authorization.RoleReader | authorization.RoleWriter
 
 ## Mapping claims
 
-One of the key components of Temporal's supports for authorization of API calls is a "claim mapper" that is responsible for translating (mapping) information extracted from the authorization token and/or mutual TLS certificate of the caller into [claims about callers roles within Temporal](#claims). This component is customizable and can be set via the `temporal.WithClaimMapper` [server option](/docs/server-options#Withclaimmapper).
+One of the key components of Temporal's supports for authorization of API calls is a "claim mapper" that is responsible for translating (mapping) information extracted from the authorization token and/or mutual TLS certificate of the caller into [claims about callers roles within Temporal](#claims). This component is customizable and can be set via the `temporal.WithClaimMapper` [server option](/docs/server-options/#withclaimmapper).
 
 <!--SNIPSTART temporal-common-authorization-claimmapper-interface-->
 <!--SNIPEND-->
@@ -140,6 +140,6 @@ Each individual claim is expected to be in the following format:
 	- worker
 	- admin
 
-The default JWT claim mapper converts these permissions into Temporal roles for the caller as described [above](/#claims).
+The default JWT claim mapper converts these permissions into Temporal roles for the caller as described [above](#claims).
 
 Multiple permissions for the same namespace get OR'ed. For example, when `accounting:read` and `accounting:write` are found in a token, they are translated into `authorization.RoleReader | authorization.RoleWriter`.
