@@ -43,7 +43,7 @@ If an `Authorizer` is not set in the server options, Temporal uses the `nopAutho
 
 ### Claims
 
-The `Claims` struct contains information about permission claims granted to the caller. Authorizer assumes that the caller has been properly authenticated and trusts the claims passed to it as input for making an authorization decision. That is because, this information is populated by the [`ClaimMapper` component](#mappingclaims), typically by extracting information from the authentication token and/or mutual TLS certificate associated with the gRPC connection over which the call has arrived.
+The `Claims` struct contains information about permission claims granted to the caller. Authorizer assumes that the caller has been properly authenticated and trusts the claims passed to it as input for making an authorization decision. That is because, this information is populated by the [`ClaimMapper` component](#mapping-claims), typically by extracting information from the authentication token and/or mutual TLS certificate associated with the gRPC connection over which the call has arrived.
 
 <!--SNIPSTART temporal-common-authorization-claims-->
 <!--SNIPEND-->
