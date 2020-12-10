@@ -22,7 +22,7 @@ Hey Temporal community, it's Friday again! It's been a long week with *ahem* a l
 
 # Update November 6, 2020
 
-It's been a while since we published one of these updates, but in our defence, we were busy: 
+It's been a while since we published one of these updates, but in our defence, we were busy:
 
 - [Announcing Temporal v1.0](https://docs.temporal.io/blog/temporal-v1-announcement), our first production-ready release
 - [Announcing our Seed and Series A rounds](https://docs.temporal.io/blog/funding-announcement) led by Amplify and Sequoia
@@ -39,12 +39,12 @@ We're working on Authentication for Temporal Web, and are looking for beta teste
 
 ### Context
 
-Temporal is a highly critical system for many businesses, so security is paramount. 
-Communication is already encrypted with [TLS](https://docs.temporal.io/docs/configure-temporal-server/#tls), 
-and you can put Temporal behind a reverse proxy. However, 
-one of our longest standing requests has been for an authentication/authorization layer for Temporal. 
-This is what we are tackling first, 
-as it is also necessary for [the upcoming Temporal Cloud](https://temporal.us17.list-manage.com/subscribe/post?u=2334a0f23e55fd1840613755d&id=bbbbd4709f) service offering. 
+Temporal is a highly critical system for many businesses, so security is paramount.
+Communication is already encrypted with [TLS](https://docs.temporal.io/docs/server-configuration/#tls), 
+and you can put Temporal behind a reverse proxy. However,
+one of our longest standing requests has been for an authentication/authorization layer for Temporal.
+This is what we are tackling first,
+as it is also necessary for [the upcoming Temporal Cloud](https://temporal.us17.list-manage.com/subscribe/post?u=2334a0f23e55fd1840613755d&id=bbbbd4709f) service offering.
 
 It's not ready for release yet, but we'd like to share how we're shipping this major feature. We basically followed the classic converge/diverge pattern:
 
@@ -54,12 +54,12 @@ It's not ready for release yet, but we'd like to share how we're shipping this m
   - **Collecting Requirements**: [Ryland](https://twitter.com/taillogs) had been meticulously collecting feedback from prospective customers for the past 6 months. Having this "CRM" (entirely done in Notion) ensured that we started with a strong idea of what our customers' most common requirements would be. For example, we realized that many companies use SAML and LDAP for authentication, but virtually everyone uses the OAuth/OpenID Connect (OIDC) open standard ([more info on OAuth and OIDC here](https://developer.okta.com/blog/2019/10/21/illustrated-guide-to-oauth-and-oidc)). We also wanted a solution that would work for both the self-hosted open-source version of Temporal, and for the coming Temporal Cloud offering.
   - **Comparable Research**: Sometimes customers don't tell you what they want. It can help to supplement customer research with comparable products. This helps surface ideas and perspectives we hadn't considered. We did a broad search of peer tools. This offered an even broader range of options, including the controversial "[The Prometheus project takes the stance that server side security features are outside its scope]( https://www.robustperception.io/prometheus-security-authentication-authorization-and-encryption)". Our search also showed that a surprising number of tools offered Certificate Authority auth. I was quite impressed by [the wide range of auth options offered by Grafana](https://grafana.com/docs/grafana/latest/auth/).
 - **Converge**:
-  - **Narrowing Scope**: One of the most impactful things you can do to ship faster is to say no as much as possible during the design phase. 
-    - [Maxim](https://www.linkedin.com/in/fateev/) suggested offering authentication within the `tctl` CLI. However it would have involved crossing language and client-server boundaries that would have added undue complexity. 
-    - [Sergey](https://dev.to/temporalio/why-i-joined-temporal-19dg) had the retrospectively brilliant insight that most customers would demand OIDC Single Sign-On eventually. If we built our own username/password solution, it would be a lot of effort and it wouldn't be used by enterprises anyway. We decided that we would go all in on OIDC Single Sign-On. 
+  - **Narrowing Scope**: One of the most impactful things you can do to ship faster is to say no as much as possible during the design phase.
+    - [Maxim](https://www.linkedin.com/in/fateev/) suggested offering authentication within the `tctl` CLI. However it would have involved crossing language and client-server boundaries that would have added undue complexity.
+    - [Sergey](https://dev.to/temporalio/why-i-joined-temporal-19dg) had the retrospectively brilliant insight that most customers would demand OIDC Single Sign-On eventually. If we built our own username/password solution, it would be a lot of effort and it wouldn't be used by enterprises anyway. We decided that we would go all in on OIDC Single Sign-On.
     - Finally, we saw that Grafana had a wide range of OAuth options because they were incrementally adopted over the span of 4 years. We, as a greenfield solution, had the opportunity to leapfrog all that.
   - **Researching Implementation**: Temporal Web is in Node.js, and the dominant authentication library has been [Passport.js](http://www.passportjs.org/) for years. After [confirming nothing had changed](https://twitter.com/swyx/status/1315754745412284416), we went with the obvious choice. In my research I had figured that we would pursue [Okta](http://www.passportjs.org/packages/passport-okta-oauth) and [Auth0](http://www.passportjs.org/packages/passport-auth0) integration first. But [Ruslan](https://www.linkedin.com/in/feedmeapples) found a [node-openid-client](https://github.com/panva/node-openid-client) that would fit our generic OAuth requirement found :tada:
- 
+
 The process we envision will be as simple as providing your OAuth identity provider information in a config file (currently at `/server/config.yml`, both the location and the schema of this config are subject to change):
 
 ```yaml
@@ -77,7 +77,7 @@ auth:
 
 In future we may support multiple auth providers, but we expect the vast majority of users to just use one.
 
-We are currently in the implementation phase, and just did our first internal demo of the full authentication process this week. 
+We are currently in the implementation phase, and just did our first internal demo of the full authentication process this week.
 
 ![temporal1](https://user-images.githubusercontent.com/6764957/98414812-0599c680-20b7-11eb-8d95-aea7ec64e230.gif)
 
