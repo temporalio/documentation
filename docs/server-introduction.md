@@ -42,7 +42,7 @@ API calls made via an SDK client can be restricted by authentication and authori
 
 #### Web UI
 
-Access to the web UI can be restricted by authentication and authorization. This feature relies on the same mechanism that enables SDK auth controls. Follow the [server API authorization guide](/docs/server-api-auth) to set it up.
+Access to the web UI can be restricted by authentication and authorization. This feature relies on the same mechanism that enables SDK auth controls. Follow the [server API authorization guide](/docs/server-api-auth) as well as the steps outlined in the [Temporal Web README](https://github.com/temporalio/web#configuring-authentication-optional).
 
 ### Workflow search
 
