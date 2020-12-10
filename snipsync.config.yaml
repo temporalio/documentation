@@ -11,6 +11,9 @@ origins:
   - owner: temporalio
     repo: hello-world-project-template-go
     ref: 3243bbb16d64a1892bde43dc8b7ef8b267267f9c
+  - owner: temporalio
+    repo: temporal
+    ref: c84e88c74d52619cc75433e4b5dc445068ae13fb
 
 target: docs
 

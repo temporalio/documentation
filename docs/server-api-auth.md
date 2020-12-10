@@ -8,7 +8,7 @@ sidebar_label: API auth setup
 
 Temporal supports the ability to restrict API call access via an optional authorization mechanism. It enables the server to process or deny individual calls based on a caller's criteria. Criteria can include the caller's unique permissions, the name of the API, and the target Namespace.
 
-The authorization logic is customizable, making it available to a variety of use cases and identity schemes.
+The authorization and claim mapping logic is customizable, making it available to a variety of use cases and identity schemes.
 
 ## Authorizer
 
@@ -17,36 +17,31 @@ The authorization logic is customizable, making it available to a variety of use
 <!--SNIPSTART temporal-common-authorization-authorizer-interface-->
 <!--SNIPEND-->
 
-When authorization is enabled, the `Authorizer`'s `Authorize` method is invoked for each incoming API call that is received by the Frontend gRPC service. It then returns one of two possible decisions within the `Result.Decision` field:
+You can create your own `Authorizer` and customize the decision making logic that can make use of the arguments that are passed to it or any other configuration available to the system. If you don't want to create your own, you can use the default `Authorizer`:
+
+```go
+a := authorization.NewDefaultAuthorizer()
+```
+
+To use the `Authorizer`, set it via the `temporal.WithAuthorizer` [server option mechanism](/docs/server-options/#withauthorizer).
+
+Providing an `Authorizer` to the server instance enables authorization. When authorization is enabled, the `Authorizer`'s `Authorize` method is invoked for each incoming API call that is received by the Frontend gRPC service. It then returns one of two possible decisions within the `Result.Decision` field:
 
 - `DecisionDeny`: the requested API call is not invoked and an error is returned to the caller.
 - `DecisionAllow`: the requested API call is invoked.
 
-The logic to make the decision is customizable, and can be based on the arguments passed or other configurations available to the system.
-
 The following arguments must be passed to the `Authorize` method.
 
 - `context.Context`: General context of the call `ctx` of type.
-- `Claims`: Claims about the roles assigned to the caller. Its intended use is [described below](#Claims).
-- `CallTarget`: Target of the API call.
+- `authorization.Claims`: Claims about the roles assigned to the caller. Its intended use is [described below](#claims).
+- `authorization.CallTarget`: Target of the API call.
 
-<!--SNIPSTART temporal-common-authorization-calltarget-->
+<!--SNIPSTART temporal-common-authorization-authorizer-calltarget-->
 <!--SNIPEND-->
 
-To use the `Authorizer`, set it via the `temporal.WithAuthorizer` [server options mechanism](/docs/server-options).
+If an `Authorizer` is not set in the server options, Temporal uses the `nopAuthority` authorizer that unconditionally allows all API call to pass through.
 
-```go
-s := temporal.NewServer(
-	...
-	temporal.WithAuthorizer(myAuthorizer),
-)
-
-err = s.Start()
-```
-
-If an `Authorizer` is not set in the server options, Temporal uses the `nopAuthority` authorizer that unconditionally allows all API call to pass through. The codebase also includes a `defaultAuthorizer`.
-
-## Claims
+### Claims
 
 The `Claims` struct contains information about permission claims granted to the caller. Authorizer assumes that the caller has been properly authenticated and trusts the claims passed to it as input for making an authorization decision. That is because, this information is populated by the [`ClaimMapper` component](#claimmapper), typically by extracting information from the authentication token and/or mutual TLS certificate associated with the gRPC connection over which the call has arrived.
 
@@ -66,7 +61,7 @@ role := authorization.RoleReader | authorization.RoleWriter
 
 ## Mapping claims
 
-One of the key components of Temporal's supports for authorization of API calls is a "claim mapper" that is responsible for translating (mapping) information extracted from the authorization token and/or mutual TLS certificate of the caller into [claims about callers roles within Temporal](#claims). This component is customizablea and can be set via the `temporal.WithClaimMapper` [server option](/docs/server-options).
+One of the key components of Temporal's supports for authorization of API calls is a "claim mapper" that is responsible for translating (mapping) information extracted from the authorization token and/or mutual TLS certificate of the caller into [claims about callers roles within Temporal](#claims). This component is customizable and can be set via the `temporal.WithClaimMapper` [server option](/docs/server-options#Withclaimmapper).
 
 <!--SNIPSTART temporal-common-authorization-claimmapper-interface-->
 <!--SNIPEND-->
@@ -76,20 +71,9 @@ The `AuthInfo` struct that is passed to claim mapper's `GetClaims` method contai
 <!--SNIPSTART temporal-common-authorization-authinfo-->
 <!--SNIPEND-->
 
-```go
-s := temporal.NewServer(
-	...
-  temporal.WithClaimMapper(func(cfg *config.Config) authorization.ClaimMapper {
-		return authorization.NewNoopClaimMapper(cfg)
-	}),
-)
-
-err = s.Start()
-```
-
 ### Default JWT `ClaimMapper`
 
-Temporal offers a default JSON web token claim mapper (`defaultClaimMapper`) that extracts claims from JWT access tokens and translates them into Temporal claims. The default JWT Claim Mapper expects claims in [JWT tokens](https://tools.ietf.org/html/rfc7519) to be in the certain format [described below](#Format-of-JWT-Claims).
+Temporal offers a default JSON web token claim mapper (`defaultClaimMapper`) that extracts claims from JWT access tokens and translates them into Temporal claims. The default JWT Claim Mapper expects claims in [JWT tokens](https://tools.ietf.org/html/rfc7519) to be in the certain format [described below](#format-of-jwt-claims).
 
 You can use the default JWT Claim Mapper as an example to build your own for translating a caller's authorization information from other formats and conventions into Temporal claims.
 
@@ -102,55 +86,60 @@ To obtain public keys from issuers of JWT tokens and to refresh them over time, 
 <!--SNIPSTART temporal-common-authorization-tokenkeyprovider-->
 <!--SNIPEND-->
 
-Temporal provides an implementation of the `TokenKeyProvider, `rsaTokenKeyProvider`, that dynamically obtains public keys from given issuers' URIs that adhere to the [JWKS format](https://tools.ietf.org/html/rfc7517). Use `authorization.NewRSAKeyProvider(cfg)` to get an instance of it. Note that `rsaTokenKeyProvider` only implements `RSAKey` and `Close` methods, and returns en error from `EcdsaKey` and `HmacKey` methods.
+Temporal provides an implementation of the `TokenKeyProvider`, `rsaTokenKeyProvider`, that dynamically obtains public keys from given issuers' URIs that adhere to the [JWKS format](https://tools.ietf.org/html/rfc7517). Use `authorization.NewRSAKeyProvider(cfg)` to get an instance of it. Note that `rsaTokenKeyProvider` only implements `RSAKey` and `Close` methods, and returns en error from `EcdsaKey` and `HmacKey` methods.
 
-### Format of JWT Claims
-
-Default JWT Claim Mapper expects authorization tokens to be in the "bearer &lt;token&gt;", where &lt;token&gt; is the Base64url-encoded value of the token.
-
-Default JWT Claim Mapper expects permission claims in JWT tokens to be named `"permissions"`, unless overriden in configuration.
-
-Each individual claim is expected in the "&lt;namespace&gt;:&lt;permission&gt;" format, where &lt;namespace&gt; is a Temporal namespace or "system" for system-wide permissions and &lt;permission&gt; contains one of the four values: "read", "write", "worker", or "admin".
-
-Default JWT Claim Mapper converts these permissions into Temporal roles for the caller as described [here](/docs/authorization/#Claims).
-
-Multiple permissions for the same namespace get OR'ed.
-
-For example, when "&lt;accounting&gt;:&lt;read&gt;" and "&lt;accounting&gt;:&lt;write&gt;" are found in a token, they are translated into `authorization.RoleReader | authorization.RoleWriter`.
-
-## Configuring Default JWT Claim Mapper
-
-Temporal server can be configured to use Default JWT Claim Mapper via the `temporal.WithClaimMapper` [server option](/docs/server-options).
+Here is an example of how to use the default `ClaimMapper`:
 
 ```go
 s := temporal.NewServer(
-	temporal.ForServices(services),
-	temporal.WithConfig(cfg),
-    temporal.WithAuthorizer(myAuthorizer),
-    temporal.WithClaimMapper(func(cfg *config.Config) authorization.ClaimMapper {
-	    return authorization.NewDefaultJWTClaimMapper(
-			authorization.NewRSAKeyProvider(cfg), cfg)
+	...
+	temporal.WithClaimMapper(func(cfg *config.Config) authorization.ClaimMapper {
+		return authorization.NewDefaultJWTClaimMapper(
+			authorization.NewRSAKeyProvider(cfg),
+			cfg,
+		)
 	}),
 )
 
 err = s.Start()
 ```
 
-`authorization.NewDefaultJWTClaimMapper` function takes a token key provider (implementation of `authorization.TokenKeyProvider` interface) and a config object as arguments.
-In this example we are passing `rsaTokenKeyProvider` instantiated by `authorization.NewRSAKeyProvider` function.
+The `authorization.NewDefaultJWTClaimMapper()` function takes a token key provider (implementation of `authorization.TokenKeyProvider` interface) and a config object as arguments. In the above example we are passing `rsaTokenKeyProvider` instantiated by the `authorization.NewRSAKeyProvider` function.
 
-Default JWT Claim Mapper uses `config.Config.Global.Authorization.PermissionsClaimName` property as an override for the default name of the permission claims it is looking for in JWT tokens.
-If `config.Config.Global.Authorization.PermissionsClaimName` isn't set it uses `"permissions"` as the name of the JWT claims.
+The default JWT `ClaimMapper` uses the `config.Config.Global.Authorization.PermissionsClaimName` property as an override for the default name of the permission claims it is looking for in JWT tokens. If `config.Config.Global.Authorization.PermissionsClaimName` isn't set it uses "permissions" as the name of the JWT claims.
 
-`rsaTokenKeyProvider` is configured via `config.Config.Global.Authorization.JWTKeyProvider` which is the following struct.
+The `rsaTokenKeyProvider` is configured via `config.Config.Global.Authorization.JWTKeyProvider`:
 
-```go
-JWTKeyProvider struct {
-	KeySourceURIs   []string      `yaml:"keySourceURIs"`
-	RefreshInterval time.Duration `yaml:"refreshInterval"`
-}
+<!--SNIPSTART temporal-common-service-config-jwtkeyprovider-->
+<!--SNIPEND-->
+
+Here, `KeySourceURIs` are the HTTP endpoints that return public keys of token issuers in the [JWKS format](https://tools.ietf.org/html/rfc7517). `RefreshInterval` defines how frequently keys should be refreshed. For example, [Auth0](https://auth0.com/) exposes such endpoints as `https://YOUR_DOMAIN/.well-known/jwks.json`.
+
+#### Format of JWT Claims
+
+The default JWT claim mapper expects authorization tokens to be in the following format:
+
+```
+bearer <token>
 ```
 
-Here, `KeySourceURIs` are the HTTP endpoints that return public keys of token issuers in the [JWKS format](https://tools.ietf.org/html/rfc7517).
-`RefreshInterval` defines how frequently keys should be refreshed.
-For example, [Auth0](https://auth0.com/) exposes such endpoints as `https://YOUR_DOMAIN/.well-known/jwks.json`.
+- &lt;token&gt;: Must be the Base64 url-encoded value of the token.
+
+The default JWT claim mapper expects permission claims in the JWT tokens to be named "permissions", unless overridden in configuration.
+
+Each individual claim is expected to be in the following format:
+
+```
+<namespace>:<permission>
+```
+
+- &lt;namespace&gt;: This can be either a Temporal Namespace name or "system" to represent system-wide permissions.
+- &lt;permission&gt;: This can be one of the four values:
+	- read
+	- write
+	- worker
+	- admin
+
+The default JWT claim mapper converts these permissions into Temporal roles for the caller as described [above](/#claims).
+
+Multiple permissions for the same namespace get OR'ed. For example, when `accounting:read` and `accounting:write` are found in a token, they are translated into `authorization.RoleReader | authorization.RoleWriter`.
