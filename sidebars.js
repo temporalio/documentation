@@ -41,7 +41,7 @@ module.exports = {
         'server-quick-install',
         'server-versions-and-dependencies',
         'server-options',
-        'server-api-auth',
+        'server-security',
         'server-configuration',
         'server-workflow-search',
         'server-archive-data',
