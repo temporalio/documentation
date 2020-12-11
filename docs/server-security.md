@@ -1,10 +1,26 @@
 ---
-id: server-api-auth
+id: server-security
 title: Set up server API authorization
 sidebar_label: API auth setup
 ---
 
 ## Overview
+
+1. TLS protocols can be configured to work for network communications for both internode and SDK client traffic.
+2. SDK API calls can require authentication and authorization.
+3. The web UI can require authentication and authorization.
+
+#### TLS
+
+TLS is configured in the `development.yaml` source file. The values of this configuration can be set via [server options](/docs/server-options/#withconfig). Follow the TLS section of the [server configuration guide](/docs/server-configuration/#tls) for details on acceptable values.
+
+#### SDK API
+
+API calls made via an SDK client can be restricted by authentication and authorization. Follow the [server API authorization guide](/docs/server-api-auth) to set it up.
+
+#### Web UI
+
+Access to the web UI can be restricted by authentication and authorization. This feature relies on the same mechanism that enables SDK auth controls. Follow the [server API authorization guide](/docs/server-api-auth) as well as the steps outlined in the [Temporal Web README](https://github.com/temporalio/web#configuring-authentication-optional).
 
 Temporal supports the ability to restrict API call access via an optional authorization mechanism. It enables the server to process or deny individual calls based on a caller's criteria. Criteria can include the caller's unique permissions, the name of the API, and the target Namespace.
 

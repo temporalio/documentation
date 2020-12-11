@@ -20,29 +20,17 @@ If you want to see how Temporal runs on a Kubernetes cluster, the fastest way is
 
 To run Temporal in a cloud or on-premise live environment, [include the Temporal server package](/docs/server-options) and run it as a Go application.
 
-## Features and dependencies
+## Security
 
-Depending on how you install Temporal, and what you features you wish to use, there are some options available when it comes to customizing Temporal's features and [dependencies](server-versions-and-dependencies).
+Keep your instance secure with [TLS and auth protocols](/docs/server-security).
 
-### Security
+## Dependencies
 
-Want to make sure your instance of Temporal is secure? There are a few options available.
+Temporal has some required and some optional [dependencies](server-versions-and-dependencies).
 
-1. TLS protocols can be configured to work for network communications for both internode and SDK client traffic.
-2. SDK API calls can require authentication and authorization.
-3. The web UI can require authentication and authorization.
+## Features
 
-#### TLS
-
-TLS is configured in the `development.yaml` source file. The values of this configuration can be set via [server options](/docs/server-options/#withconfig). Follow the TLS section of the [server configuration guide](/docs/server-configuration/#tls) for details on acceptable values.
-
-#### SDK API
-
-API calls made via an SDK client can be restricted by authentication and authorization. Follow the [server API authorization guide](/docs/server-api-auth) to set it up.
-
-#### Web UI
-
-Access to the web UI can be restricted by authentication and authorization. This feature relies on the same mechanism that enables SDK auth controls. Follow the [server API authorization guide](/docs/server-api-auth) as well as the steps outlined in the [Temporal Web README](https://github.com/temporalio/web#configuring-authentication-optional).
+Temporal supports some optional features.
 
 ### Workflow search
 
