@@ -18,13 +18,10 @@ Temporal offers official support for, and is tested against, dependencies with t
 
 | Temporal version | Go packages |
 |------------------|-------------|
-| [1.4.0](https://github.com/temporalio/temporal/tree/v1.4.0) | [go.mod](https://github.com/temporalio/temporal/blob/v1.4.0/go.mod) |
-| [1.4.0](https://github.com/temporalio/temporal/tree/v1.4.0) | [go.mod](https://github.com/temporalio/temporal/blob/v1.4.0/go.mod) |
-| [1.4.0](https://github.com/temporalio/temporal/tree/v1.4.0) | [go.mod](https://github.com/temporalio/temporal/blob/v1.4.0/go.mod) |
+| [1.4.1](https://github.com/temporalio/temporal/tree/v1.4.1) | [go.mod](https://github.com/temporalio/temporal/blob/v1.4.1/go.mod) |
+| [1.3.2](https://github.com/temporalio/temporal/tree/v1.3.2) | [go.mod](https://github.com/temporalio/temporal/blob/v1.3.2/go.mod) |
 | [1.2.2](https://github.com/temporalio/temporal/tree/v1.2.2) | [go.mod](https://github.com/temporalio/temporal/blob/v1.2.2/go.mod) |
-| [1.2.1](https://github.com/temporalio/temporal/tree/v1.2.1) | [go.mod](https://github.com/temporalio/temporal/blob/v1.2.1/go.mod) |
 | [1.1.1](https://github.com/temporalio/temporal/tree/v1.1.1) | [go.mod](https://github.com/temporalio/temporal/blob/v1.1.1/go.mod) |
-| [1.1.0](https://github.com/temporalio/temporal/tree/v1.1.0) | [go.mod](https://github.com/temporalio/temporal/blob/v1.1.0/go.mod) |
 | [1.0.0](https://github.com/temporalio/temporal/tree/v1.0.0) | [go.mod](https://github.com/temporalio/temporal/blob/v1.0.0/go.mod) |
 
 ### Persistence
@@ -109,7 +106,7 @@ temporal_v1.2.1 $ temporal-cassandra-tool \
 
 Use the `temporal-sql-tool`, which works similarly to the `temporal-cassandra-tool`.
 
-Refer to this [Makefile](https://github.com/temporalio/temporal/blob/v1.4.0/Makefile#L367-L383) for context.
+Refer to this [Makefile](https://github.com/temporalio/temporal/blob/v1.4.1/Makefile#L367-L383) for context.
 
 #### PostgreSQL
 
