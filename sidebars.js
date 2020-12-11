@@ -44,6 +44,7 @@ module.exports = {
         'archive-data',
       ],
     },
+    'cloud-introduction',
     'tctl',
     {
       type: 'category',
