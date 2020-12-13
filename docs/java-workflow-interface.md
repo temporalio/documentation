@@ -87,7 +87,7 @@ public interface MediaProcessingWorkflow extends Retryable {
 Then it would be possible to send signal to both of them using the Retryable interface only:
 
 ```java
-Retryable r = client.newWorkflowStab(Retryable.class, workflowId);
+Retryable r = client.newWorkflowStub(Retryable.class, workflowId);
 r.retryNow();
 ```
 
