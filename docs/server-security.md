@@ -1,8 +1,102 @@
 ---
 id: server-security
-title: Set up server API authorization
-sidebar_label: API auth setup
+title: Temporal Server security
+sidebar_label: Security
 ---
+
+## Overview
+
+A secured Temporal server has network communication encrypted and has authentication and authorization protocols set up for API calls made to it. Without these your server could be accessed by unwanted entities.
+
+## Encryption of network traffic
+
+Temporal supports Mutual TLS (mTLS) as a way of encrypting network traffic between the services of a cluster and also between application processes and a cluster.
+Self-signed or properly minted certificates can be used for mTLS.
+Mutual TLS is set in Temporal's [configuration](/docs/server-configuration/#tls).
+The configuration includes two sections such that intra-cluster and external traffic can be encrypted with different sets of certificates and settings:
+
+- `internode`: Configuration for encrypting communication between nodes in the cluster.
+- `frontend`: Confiugration for encryption Frontend's public endpoints.
+
+A customized configuration can be passed using either the [WithConfig](/docs/server-options/#withconfig) or [WithConfigLoader](/docs/server-options/#withconfigloader) server options.
+
+## Authentication
+
+There are a few authentication protocols available to prevent unwanted access such as authentication of servers, clients, and users.
+
+### Servers
+
+To prevent spoofing and [MITM attacks](https://en.wikipedia.org/wiki/Man-in-the-middle_attack) you can specify the `serverName` in the `client` section of your respective mTLS configuration.
+This enables established connections to authenticate the endpoint, ensuring that the server certificate presented to any connecting client has the given server name in its CN property.
+It can be used for both `internode` and `frontend` endpoints.
+
+### Client connections
+
+To restrict a client's network access to cluster endpoints you can limit it to clients with certificates issued by a specific Certificate Authority (CA).
+Use the `clientCAFiles`/ `clientCAData` and `requireClientAuth` properties in both the `internode` and `frontend` sections of the [mTLS configuration](/docs/server-configuration/#tls).
+
+### Users
+
+To restrict access to specific users, authentication and authorization is performed through extensibility points and plugins as described in the [Authorization](/#authorization) section below.
+
+## Authorization
+
+Temporal offers two plugin interfaces for implementing authorization of calls to the Frontend APIs. Frontend invokes the `Authorizer` interface before executing a requested operation and information of the target of the call and a set of claims about caller's roles/permission in the cluster. Frontend invokes `Claim Mapper` interface to get claims for the caller prior to calling `Authorizer`.
+
+### Authorizer plugin interface
+
+The `Authorizer` interface includes a single method, `Authorize`, that receives information about the API call and role claims of the caller, and return an allow/deny decision back.
+
+```go
+type Authorizer interface {
+	Authorize(ctx context.Context, caller *Claims, target *CallTarget) (Result, error)
+}
+```
+
+`Authorizer` allows for a wide range of authorization logic based on the data provided for a call or any addition configuration or data received out of band.
+
+### Claim Mapper plugin interface
+
+`ClaimMapper` interface includes a single method, `GetClaims`, that receives information from the TLS connection, if TLS is enabled, and a JWT token bearer token, if set by the caller of the API. `ClaimMapper` returns a `Claims` struct that describes caller's roles/permissions at the cluster (system) level and for 0 or more Temporal namespaces in the cluster.
+
+```go
+type ClaimMapper interface {
+	GetClaims(authInfo *AuthInfo) (*Claims, error)
+}
+
+type AuthInfo struct {
+	AuthToken     string
+  TLSSubject    *pkix.Name
+  TLSConnection *credentials.TLSInfo
+}
+
+type Claims struct {
+	Subject    string
+	System     Role
+	Namespaces map[string]Role
+}
+
+const (
+	RoleWorker = Role(1 << iota)
+	RoleReader
+	RoleWriter
+	RoleAdmin
+	RoleUndefined = Role(0)
+)
+```
+
+The responsibility of the `ClaimMapper` plugin is to translate the provided information about the caller into their set of permissions in the cluster, so that the  `Authorizer` plugin can make a decision whether or not to authorize the call. The `ClaimMapper` interface allows for a wide range of options of how information about caller's identity and permissions is defined and interpreted.
+
+A typical approach is for `ClaimMapper` to interpret custom claims in caller's JWT access token, such as membership in groups, and map them to Temporal roles for the user. Another approach is to use subject information from caller's TLS certificate as an input for mapping of roles.
+
+## Single sign-on integration
+
+Via the plugin interfaces of `ClaimMapper` and `Authorizer` Temporal can be integrated for a single sign-on (SSO) experience. The codebase includes a `ClaimMapper` implementation, `defaultJWTClaimMapper` that could be used as is or as a base for a custom implementation of a similar plugin.
+
+`defaultJWTClaimMapper` expects custom claims in a JWT token in the particular format of `system:<role>` and `<namespace>:<role>`. To get public keys for validation of JWT tokens, it uses another plugin interface, `TokenKeyProvider`, that supports retrieving and refreshing of RSA, HMAC, and ECDSA keys.
+
+
+
 
 ## Overview
 
