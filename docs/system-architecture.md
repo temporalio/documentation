@@ -14,7 +14,7 @@ Note that both types of workers as well as external clients are roles and can be
 
 ![Temporal architecture](/img/docs/system-architecture.png)
 
-At the core of Temporal is a highly scalable multitenant service. The service exposes all its functionality through a strongly typed [Proto API](https://github.com/temporalio/temporal-proto/blob/master/workflowservice/service.proto).
+At the core of Temporal is a highly scalable multitenant service. The service exposes all its functionality through a strongly typed [Proto API](https://github.com/temporalio/api/blob/master/temporal/api/workflowservice/v1/service.proto).
 
 Internally it depends on a persistent store. Currently, Apache Cassandra and MySQL stores are supported out of the box. For listing Workflows using complex predicates, Elasticsearch cluster can be used.
 
