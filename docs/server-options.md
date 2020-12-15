@@ -92,7 +92,7 @@ s := temporal.NewServer(
 
 ### WithClaimMapper
 
-Configures a [mechanism to map roles](/docs/#claimmapper-plugin-interface) to `Claims` for authorization.
+Configures a [mechanism to map roles](/docs/server-security/#claimmapper-plugin-interface) to `Claims` for authorization.
 
 ```go
 s := temporal.NewServer(
