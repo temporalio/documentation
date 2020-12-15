@@ -6,7 +6,8 @@ sidebar_label: Start options
 
 ## Overview
 
-To run the Temporal, include the temporal server package `go.temporal.io/server/temporal` in your Go application. Then use it to create and start a new server:
+To run the Temporal, include the temporal server package `go.temporal.io/server/temporal` in your Go application.
+Then use it to create and start a new server:
 
 ```go
 s := temporal.NewServer()
@@ -18,7 +19,9 @@ if err != nil{
 
 ## Options
 
-`NewServer()` accepts functions as parameters. Each function returns a `ServerOption` that is applied to the instance.
+`NewServer()` accepts functions as parameters.
+Each function returns a `ServerOption` that is applied to the instance.
+Source code for parameter reference is here: https://github.com/temporalio/temporal/blob/master/temporal/server_option.go
 
 ### WithConfig
 
@@ -42,7 +45,8 @@ s := tempora.NewServer(
 
 ### ForServices
 
-Sets the list of all valid temporal services. The default can be used from the `go.temporal.io/server/temporal` package.
+Sets the list of all valid temporal services.
+The default can be used from the `go.temporal.io/server/temporal` package.
 
 ```go
 s := tempora.NewServer(
@@ -67,7 +71,7 @@ s := temporal.NewServer(
 
 ### WithAuthorizer
 
-Sets a low level authorizer that determines whether to allow or deny inbound API calls.
+Sets a low level [authorization mechanism](/docs/server-security/#authorizer-plugin-interface) that determines whether to allow or deny inbound API calls.
 
 ```go
 s := temporal.NewServer(
@@ -77,7 +81,8 @@ s := temporal.NewServer(
 
 ### WithTLSConfigFactory
 
-Overrides the default TLS configuration provider. `TLSConfigProvider` is defined in the `go.temporal.io/server/common/rpc/encryption` package.
+Overrides the default TLS configuration provider.
+`TLSConfigProvider` is defined in the `go.temporal.io/server/common/rpc/encryption` package.
 
 ```go
 s := temporal.NewServer(
@@ -87,7 +92,7 @@ s := temporal.NewServer(
 
 ### WithClaimMapper
 
-Configures a role mapper for authorization.
+Configures a [mechanism to map roles](/docs/#claimmapper-plugin-interface) to `Claims` for authorization.
 
 ```go
 s := temporal.NewServer(
