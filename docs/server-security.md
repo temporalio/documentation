@@ -6,7 +6,7 @@ sidebar_label: Security
 
 ## Overview
 
-A secured Temporal server has network communication encrypted and has authentication and authorization protocols set up for API calls made to it. Without these your server could be accessed by unwanted entities.
+A secured Temporal server has its network communication encrypted and has authentication and authorization protocols set up for API calls made to it. Without these your server could be accessed by unwanted entities.
 
 ## Encryption of network traffic
 
@@ -16,7 +16,7 @@ Mutual TLS is set in Temporal's [configuration](/docs/server-configuration/#tls)
 The configuration includes two sections such that intra-cluster and external traffic can be encrypted with different sets of certificates and settings:
 
 - `internode`: Configuration for encrypting communication between nodes in the cluster.
-- `frontend`: Confiugration for encryption Frontend's public endpoints.
+- `frontend`: Configuration for encrypting the Frontend's public endpoints.
 
 A customized configuration can be passed using either the [WithConfig](/docs/server-options/#withconfig) or [WithConfigLoader](/docs/server-options/#withconfigloader) server options.
 
@@ -41,119 +41,73 @@ To restrict access to specific users, authentication and authorization is perfor
 
 ## Authorization
 
-Temporal offers two plugin interfaces for implementing authorization of calls to the Frontend APIs. Frontend invokes the `Authorizer` interface before executing a requested operation and information of the target of the call and a set of claims about caller's roles/permission in the cluster. Frontend invokes `Claim Mapper` interface to get claims for the caller prior to calling `Authorizer`.
+Temporal offers two plugin interfaces for implementing API call authorization:
 
-### Authorizer plugin interface
-
-The `Authorizer` interface includes a single method, `Authorize`, that receives information about the API call and role claims of the caller, and return an allow/deny decision back.
-
-```go
-type Authorizer interface {
-	Authorize(ctx context.Context, caller *Claims, target *CallTarget) (Result, error)
-}
-```
-
-`Authorizer` allows for a wide range of authorization logic based on the data provided for a call or any addition configuration or data received out of band.
-
-### Claim Mapper plugin interface
-
-`ClaimMapper` interface includes a single method, `GetClaims`, that receives information from the TLS connection, if TLS is enabled, and a JWT token bearer token, if set by the caller of the API. `ClaimMapper` returns a `Claims` struct that describes caller's roles/permissions at the cluster (system) level and for 0 or more Temporal namespaces in the cluster.
-
-```go
-type ClaimMapper interface {
-	GetClaims(authInfo *AuthInfo) (*Claims, error)
-}
-
-type AuthInfo struct {
-	AuthToken     string
-  TLSSubject    *pkix.Name
-  TLSConnection *credentials.TLSInfo
-}
-
-type Claims struct {
-	Subject    string
-	System     Role
-	Namespaces map[string]Role
-}
-
-const (
-	RoleWorker = Role(1 << iota)
-	RoleReader
-	RoleWriter
-	RoleAdmin
-	RoleUndefined = Role(0)
-)
-```
-
-The responsibility of the `ClaimMapper` plugin is to translate the provided information about the caller into their set of permissions in the cluster, so that the  `Authorizer` plugin can make a decision whether or not to authorize the call. The `ClaimMapper` interface allows for a wide range of options of how information about caller's identity and permissions is defined and interpreted.
-
-A typical approach is for `ClaimMapper` to interpret custom claims in caller's JWT access token, such as membership in groups, and map them to Temporal roles for the user. Another approach is to use subject information from caller's TLS certificate as an input for mapping of roles.
-
-## Single sign-on integration
-
-Via the plugin interfaces of `ClaimMapper` and `Authorizer` Temporal can be integrated for a single sign-on (SSO) experience. The codebase includes a `ClaimMapper` implementation, `defaultJWTClaimMapper` that could be used as is or as a base for a custom implementation of a similar plugin.
-
-`defaultJWTClaimMapper` expects custom claims in a JWT token in the particular format of `system:<role>` and `<namespace>:<role>`. To get public keys for validation of JWT tokens, it uses another plugin interface, `TokenKeyProvider`, that supports retrieving and refreshing of RSA, HMAC, and ECDSA keys.
-
-
-
-
-## Overview
-
-1. TLS protocols can be configured to work for network communications for both internode and SDK client traffic.
-2. SDK API calls can require authentication and authorization.
-3. The web UI can require authentication and authorization.
-
-#### TLS
-
-TLS is configured in the `development.yaml` source file. The values of this configuration can be set via [server options](/docs/server-options/#withconfig). Follow the TLS section of the [server configuration guide](/docs/server-configuration/#tls) for details on acceptable values.
-
-#### SDK API
-
-API calls made via an SDK client can be restricted by authentication and authorization. Follow the [server API authorization guide](/docs/server-api-auth) to set it up.
-
-#### Web UI
-
-Access to the web UI can be restricted by authentication and authorization. This feature relies on the same mechanism that enables SDK auth controls. Follow the [server API authorization guide](/docs/server-api-auth) as well as the steps outlined in the [Temporal Web README](https://github.com/temporalio/web#configuring-authentication-optional).
-
-Temporal supports the ability to restrict API call access via an optional authorization mechanism. It enables the server to process or deny individual calls based on a caller's criteria. Criteria can include the caller's unique permissions, the name of the API, and the target Namespace.
+- `ClaimMapper`
+- `Authorizer`
 
 The authorization and claim mapping logic is customizable, making it available to a variety of use cases and identity schemes.
+When these are provided the frontend invokes the implementation of these interfaces before executing the requested operation.
 
-## Authorizer
+![](/img/docs/frontend-authorization-order-of-operations.png)
 
-`Authorizer` is the interface that enables access control to API calls. It is defined in the `authorization` package.
+### `Authorizer` plugin interface
+
+The `Authorizer` has a single `Authorize` method which is invoked for each incoming API call that is received by the Frontend gRPC service.
+The `Authorize` method receives information about the API call and the role/permission claims of the caller.
 
 <!--SNIPSTART temporal-common-authorization-authorizer-interface-->
 <!--SNIPEND-->
 
-You can create your own `Authorizer` and customize the decision making logic that can make use of the arguments that are passed to it or any other configuration available to the system. If you don't want to create your own, you can use the default `Authorizer`:
+`Authorizer` allows for a wide range of authorization logic, as information such as the call target, a set of role/permission claims, and any other data available to the system can be used in the authorization logic.
+The following arguments must be passed to the `Authorize` method for example:
 
-```go
-a := authorization.NewDefaultAuthorizer()
-```
-
-To use the `Authorizer`, set it via the `temporal.WithAuthorizer` [server option mechanism](/docs/server-options/#withauthorizer).
-
-Providing an `Authorizer` to the server instance enables authorization. When authorization is enabled, the `Authorizer`'s `Authorize` method is invoked for each incoming API call that is received by the Frontend gRPC service. It then returns one of two possible decisions within the `Result.Decision` field:
-
-- `DecisionDeny`: the requested API call is not invoked and an error is returned to the caller.
-- `DecisionAllow`: the requested API call is invoked.
-
-The following arguments must be passed to the `Authorize` method.
-
-- `context.Context`: General context of the call `ctx` of type.
+- `context.Context`: General context of the call.
 - `authorization.Claims`: Claims about the roles assigned to the caller. Its intended use is [described below](#claims).
 - `authorization.CallTarget`: Target of the API call.
 
 <!--SNIPSTART temporal-common-authorization-authorizer-calltarget-->
 <!--SNIPEND-->
 
+The `Authorize` method then returns one of two possible decisions within the `Result.Decision` field:
+
+- `DecisionDeny`: the requested API call is not invoked and an error is returned to the caller.
+- `DecisionAllow`: the requested API call is invoked.
+
+If you don't want to create your own, you can use the default `Authorizer`:
+
+```go
+a := authorization.NewDefaultAuthorizer()
+```
+
+Configure your `Authorizer` when you start the server via the `temporal.WithAuthorizer` [server option](/docs/server-options/#withauthorizer).
+
 If an `Authorizer` is not set in the server options, Temporal uses the `nopAuthority` authorizer that unconditionally allows all API call to pass through.
 
-### Claims
+### `ClaimMapper` plugin interface
 
-The `Claims` struct contains information about permission claims granted to the caller. Authorizer assumes that the caller has been properly authenticated and trusts the claims passed to it as input for making an authorization decision. That is because, this information is populated by the [`ClaimMapper` component](#mapping-claims), typically by extracting information from the authentication token and/or mutual TLS certificate associated with the gRPC connection over which the call has arrived.
+`ClaimMapper` interface includes a single method, `GetClaims` that is responsible for translating information from the authorization token and/or mutual TLS certificate of the caller into [Claims](#claims) about the callers roles within Temporal.
+This component is customizable and can be set via the `temporal.WithClaimMapper` [server option](/docs/server-options/#withclaimmapper), enabling a wide range of options for interpreting a caller's identity.
+
+<!--SNIPSTART temporal-common-authorization-claimmapper-interface-->
+<!--SNIPEND-->
+
+A typical approach is for `ClaimMapper` to interpret custom `Claims` from a caller's JWT access token, such as membership in groups, and map them to Temporal roles for the user.
+Another approach is to use the subject information from the caller's TLS certificate as a parameter for determining roles.
+See the [default JWT `ClaimMapper`](#default-jwt-claimmapper) as an example.
+
+#### `AuthInfo`
+
+The `AuthInfo` struct that is passed to claim mapper's `GetClaims` method contains an authorization token extracted from the `"authorization"` header of the gRPC request.
+It also includes a pointer to the `pkix.Name` struct that contains a X.509 distinguishable name from the caller's mutual TLS certificate.
+
+<!--SNIPSTART temporal-common-authorization-authinfo-->
+<!--SNIPEND-->
+
+#### `Claims`
+
+The `Claims` struct contains information about permission claims granted to the caller.
+The `Authorizer` assumes that the caller has been properly authenticated and trusts the `Claims` that are passed to it for making an authorization decision.
 
 <!--SNIPSTART temporal-common-authorization-claims-->
 <!--SNIPEND-->
@@ -169,65 +123,43 @@ For example, a role can be set as
 role := authorization.RoleReader | authorization.RoleWriter
 ```
 
-## Mapping claims
-
-One of the key components of Temporal's supports for authorization of API calls is a "claim mapper" that is responsible for translating (mapping) information extracted from the authorization token and/or mutual TLS certificate of the caller into [claims about callers roles within Temporal](#claims). This component is customizable and can be set via the `temporal.WithClaimMapper` [server option](/docs/server-options/#withclaimmapper).
-
-<!--SNIPSTART temporal-common-authorization-claimmapper-interface-->
-<!--SNIPEND-->
-
-The `AuthInfo` struct that is passed to claim mapper's `GetClaims` method contains an authorization token extracted from the `"authorization"` header of the gRPC request and a pointer to the `pkix.Name` struct that contains a X.509 distinguishable name from the caller's mutual TLS certificate.
-
-<!--SNIPSTART temporal-common-authorization-authinfo-->
-<!--SNIPEND-->
-
 ### Default JWT `ClaimMapper`
 
-Temporal offers a default JSON web token claim mapper (`defaultClaimMapper`) that extracts claims from JWT access tokens and translates them into Temporal claims. The default JWT Claim Mapper expects claims in [JWT tokens](https://tools.ietf.org/html/rfc7519) to be in the certain format [described below](#format-of-jwt-claims).
-
-You can use the default JWT Claim Mapper as an example to build your own for translating a caller's authorization information from other formats and conventions into Temporal claims.
-
-The default JWT ClaimMapper expects [JWT tokens](https://tools.ietf.org/html/rfc7519) to contain custom claims of a particular configurable name.
-
-Those custom claims are expected to be in a [particular format](#format-of-jwt-claims). The default JWT Claim Mapper needs a public key to perform validation of tokens' digital signatures.
-
-To obtain public keys from issuers of JWT tokens and to refresh them over time, the default JWT ClaimMapper uses another pluggable component, the `TokenKeyProvider`. Token key providers implement the `TokenKeyProvider` interface:
-
-<!--SNIPSTART temporal-common-authorization-tokenkeyprovider-->
-<!--SNIPEND-->
-
-Temporal provides an implementation of the `TokenKeyProvider`, `rsaTokenKeyProvider`, that dynamically obtains public keys from given issuers' URIs that adhere to the [JWKS format](https://tools.ietf.org/html/rfc7517). Use `authorization.NewRSAKeyProvider(cfg)` to get an instance of it. Note that `rsaTokenKeyProvider` only implements `RSAKey` and `Close` methods, and returns en error from `EcdsaKey` and `HmacKey` methods.
-
-Here is an example of how to use the default `ClaimMapper`:
+Temporal offers a default JSON Web Token `ClaimMapper` that extracts claims from JWT access tokens and translates them into Temporal `Claims`.
+The default JWT `ClaimMapper` needs a public key to perform validation of tokens' digital signatures and expects [JWT tokens](https://tools.ietf.org/html/rfc7519) to be in the certain format [described below](#format-of-json-web-tokens).
+You can use the default as an example to build your own for translating a caller's authorization information from other formats and conventions into Temporal `Claims`.
 
 ```go
-s := temporal.NewServer(
-	...
-	temporal.WithClaimMapper(func(cfg *config.Config) authorization.ClaimMapper {
-		return authorization.NewDefaultJWTClaimMapper(
-			authorization.NewRSAKeyProvider(cfg),
-			cfg,
-		)
-	}),
-)
-
-err = s.Start()
+claimMapper := authorization.NewDefaultJWTClaimMapper(provider, cfg)
 ```
 
-The `authorization.NewDefaultJWTClaimMapper()` function takes a token key provider (implementation of `authorization.TokenKeyProvider` interface) and a config object as arguments. In the above example we are passing `rsaTokenKeyProvider` instantiated by the `authorization.NewRSAKeyProvider` function.
+Note that the default JWT `ClaimMapper` sets "permissions" as the `permissionsClaimName` if the `config.Config.Global.Authorization.PermissionsClaimName` property is not set as an override for the JWT tokens.
 
-The default JWT `ClaimMapper` uses the `config.Config.Global.Authorization.PermissionsClaimName` property as an override for the default name of the permission claims it is looking for in JWT tokens. If `config.Config.Global.Authorization.PermissionsClaimName` isn't set it uses "permissions" as the name of the JWT claims.
+#### `TokenKeyProvider`
 
-The `rsaTokenKeyProvider` is configured via `config.Config.Global.Authorization.JWTKeyProvider`:
+To obtain public keys from issuers of JWT tokens and to refresh them over time, the default JWT ClaimMapper uses another pluggable component, the `TokenKeyProvider`.
+
+<!--SNIPSTART temporal-common-authorization-tokenkeyprovider-interface-->
+<!--SNIPEND-->
+
+Temporal provides an implementation of the `TokenKeyProvider`, `rsaTokenKeyProvider`, that dynamically obtains public keys from given issuers' URIs that adhere to the [JWKS format](https://tools.ietf.org/html/rfc7517).
+
+```go
+provider := authorization.NewRSAKeyProvider(cfg)
+```
+
+Note that the `rsaTokenKeyProvider` returned by `NewRSAKeyProvider` only implements `RSAKey` and `Close` methods, and returns an error from `EcdsaKey` and `HmacKey` methods. It is configured via `config.Config.Global.Authorization.JWTKeyProvider`:
 
 <!--SNIPSTART temporal-common-service-config-jwtkeyprovider-->
 <!--SNIPEND-->
 
-Here, `KeySourceURIs` are the HTTP endpoints that return public keys of token issuers in the [JWKS format](https://tools.ietf.org/html/rfc7517). `RefreshInterval` defines how frequently keys should be refreshed. For example, [Auth0](https://auth0.com/) exposes such endpoints as `https://YOUR_DOMAIN/.well-known/jwks.json`.
+`KeySourceURIs` are the HTTP endpoints that return public keys of token issuers in the [JWKS format](https://tools.ietf.org/html/rfc7517).
+`RefreshInterval` defines how frequently keys should be refreshed.
+For example, [Auth0](https://auth0.com/) exposes such endpoints as `https://YOUR_DOMAIN/.well-known/jwks.json`.
 
-#### Format of JWT Claims
+#### Format of JSON Web Tokens
 
-The default JWT claim mapper expects authorization tokens to be in the following format:
+The default JWT `ClaimMapper` expects authorization tokens to be in the following format:
 
 ```
 bearer <token>
@@ -253,3 +185,12 @@ Each individual claim is expected to be in the following format:
 The default JWT claim mapper converts these permissions into Temporal roles for the caller as described [above](#claims).
 
 Multiple permissions for the same namespace get OR'ed. For example, when `accounting:read` and `accounting:write` are found in a token, they are translated into `authorization.RoleReader | authorization.RoleWriter`.
+
+## Single sign-on integration
+
+Temporal can be integrated with a single sign-on (SSO) experience by utilizing the `ClaimMapper` and `Authorizer` plugins.
+The default JWT `ClaimMapper` implementation can be used as is or as a base for a custom implementation of a similar plugin.
+
+### Temporal Web
+
+To enable SSO for the Temporal Web UI edit the web service's configuration per the [Temporal Web README](https://github.com/temporalio/web#configuring-authentication-optional).
