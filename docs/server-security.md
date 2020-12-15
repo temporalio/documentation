@@ -86,7 +86,7 @@ If an `Authorizer` is not set in the server options, Temporal uses the `nopAutho
 
 ### `ClaimMapper` plugin interface
 
-`ClaimMapper` interface includes a single method, `GetClaims` that is responsible for translating information from the authorization token and/or mutual TLS certificate of the caller into [Claims](#claims) about the callers roles within Temporal.
+`ClaimMapper` has a single method, `GetClaims` that is responsible for translating information from the authorization token and/or mutual TLS certificate of the caller into [Claims](#claims) about the callers roles within Temporal.
 This component is customizable and can be set via the `temporal.WithClaimMapper` [server option](/docs/server-options/#withclaimmapper), enabling a wide range of options for interpreting a caller's identity.
 
 <!--SNIPSTART temporal-common-authorization-claimmapper-interface-->
@@ -98,7 +98,7 @@ See the [default JWT `ClaimMapper`](#default-jwt-claimmapper) as an example.
 
 #### `AuthInfo`
 
-The `AuthInfo` struct that is passed to claim mapper's `GetClaims` method contains an authorization token extracted from the `"authorization"` header of the gRPC request.
+The `AuthInfo` struct that is passed to claim mapper's `GetClaims` method contains an authorization token extracted from the `authorization` header of the gRPC request.
 It also includes a pointer to the `pkix.Name` struct that contains a X.509 distinguishable name from the caller's mutual TLS certificate.
 
 <!--SNIPSTART temporal-common-authorization-authinfo-->

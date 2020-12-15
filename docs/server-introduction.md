@@ -17,9 +17,9 @@ Read the [system architecture](/docs/system-architecture) page to get a view of 
 
 ## Install for local development environment
 
-The fastest way to start building Workflow applications and test out the system is to follow the [quick install guide](/docs/server-quick-install), which will get the Temporal server up and running on your local machine.
+The fastest way to start building Workflow applications, and test out the system, is to follow the [quick install guide](/docs/server-quick-install). The Temporal server can be up and running on your local machine with just a few commands.
 
-If you want to see how Temporal runs on a Kubernetes cluster, the fastest way is to use this [Helm chart](https://github.com/temporalio/helm-charts).
+If you want to see how Temporal runs on a Kubernetes cluster, the fastest way is to use the [Temporal Helm Chart](https://github.com/temporalio/helm-charts).
 
 ## Install for live environment
 
@@ -28,7 +28,7 @@ If you want to use a hosted solution, checkout out [Temporal Cloud](/docs/cloud-
 
 ## Security
 
-Keep your instance secure with [encryption and auth protocols](/docs/server-security).
+Keep your instance secure with [encryption and pluggable auth protocols](/docs/server-security).
 
 ## Dependencies
 
