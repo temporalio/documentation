@@ -37,7 +37,7 @@ Use the `clientCAFiles`/ `clientCAData` and `requireClientAuth` properties in bo
 
 ### Users
 
-To restrict access to specific users, authentication and authorization is performed through extensibility points and plugins as described in the [Authorization](/#authorization) section below.
+To restrict access to specific users, authentication and authorization is performed through extensibility points and plugins as described in the [Authorization](#authorization) section below.
 
 ## Authorization
 
