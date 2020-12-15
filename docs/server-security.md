@@ -139,7 +139,7 @@ Note that the default JWT `ClaimMapper` sets "permissions" as the `permissionsCl
 
 To obtain public keys from issuers of JWT tokens and to refresh them over time, the default JWT ClaimMapper uses another pluggable component, the `TokenKeyProvider`.
 
-<!--SNIPSTART temporal-common-authorization-tokenkeyprovider-interface-->
+<!--SNIPSTART temporal-common-authorization-tokenkeyprovider-->
 <!--SNIPEND-->
 
 Temporal provides an implementation of the `TokenKeyProvider`, `rsaTokenKeyProvider`, that dynamically obtains public keys from given issuers' URIs that adhere to the [JWKS format](https://tools.ietf.org/html/rfc7517).
