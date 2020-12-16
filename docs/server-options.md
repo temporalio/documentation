@@ -6,8 +6,7 @@ sidebar_label: Start options
 
 ## Overview
 
-To run the Temporal, include the temporal server package `go.temporal.io/server/temporal` in your Go application.
-Then use it to create and start a new server:
+You can run the Temporal server as a Go application by including the server package `go.temporal.io/server/temporal` and using it to create and start a new server:
 
 ```go
 s := temporal.NewServer()
