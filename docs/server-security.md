@@ -7,6 +7,8 @@ sidebar_label: Security
 ## Overview
 
 A secured Temporal server has its network communication encrypted and has authentication and authorization protocols set up for API calls made to it. Without these your server could be accessed by unwanted entities.
+What is documented on this page are the built-in opt-in security measures that come with Temporal.
+However users may also choose to design their own security architecture with reverse proxies or run unsecured instances inside of a VPC environment.
 
 ## Encryption of network traffic
 
@@ -139,7 +141,7 @@ Note that the default JWT `ClaimMapper` sets "permissions" as the `permissionsCl
 
 To obtain public keys from issuers of JWT tokens and to refresh them over time, the default JWT ClaimMapper uses another pluggable component, the `TokenKeyProvider`.
 
-<!--SNIPSTART temporal-common-authorization-tokenkeyprovider-->
+<!--SNIPSTART temporal-common-authorization-tokenkeyprovider-interface-->
 <!--SNIPEND-->
 
 Temporal provides an implementation of the `TokenKeyProvider`, `rsaTokenKeyProvider`, that dynamically obtains public keys from given issuers' URIs that adhere to the [JWKS format](https://tools.ietf.org/html/rfc7517).

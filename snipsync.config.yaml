@@ -13,7 +13,7 @@ origins:
     ref: 3243bbb16d64a1892bde43dc8b7ef8b267267f9c
   - owner: temporalio
     repo: temporal
-    ref: c84e88c74d52619cc75433e4b5dc445068ae13fb
+    ref: 66f0614aafde2de804d68bc07b3f8d9c4d5d9b73
 
 target: docs
 
