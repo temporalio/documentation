@@ -108,15 +108,14 @@ that call `RecordActivityHeartbeat`.
 
 ### Registration
 
-To make the Activity visible to the worker process hosting it, the Activity must be registered via a
-call to `activity.Register`.
+To make the Activity visible to the worker process hosting it, the Activity must be registered with the Worker.
 
 ```go
-activity.Register(SimpleActivity)
+w := worker.New(temporalClient, "your_task_queue", worker.Options{})
+w.RegisterActivity(YourActivity)
 ```
-This call creates an in-memory mapping inside the worker process between the fully qualified function
-name and the implementation. If a worker receives a request to start an Activity execution for an
-Activity type it does not know, it will fail that request.
+This call creates an in-memory mapping inside the worker process between the fully qualified function name and the implementation.
+If a worker receives a request to start an Activity execution for an Activity type it does not know, it will fail that request.
 
 ## Failing an Activity
 
