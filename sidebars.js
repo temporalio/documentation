@@ -13,7 +13,6 @@ module.exports = {
         'queries',
         'task-queues',
         'namespaces',
-        'system-architecture',
         'glossary',
       ],
     },
@@ -39,6 +38,7 @@ module.exports = {
       items: [
         'server-introduction',
         'server-quick-install',
+        'server-architecture',
         'server-versions-and-dependencies',
         'server-options',
         'server-security',
