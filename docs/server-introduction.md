@@ -6,14 +6,17 @@ sidebar_label: Introduction
 
 ## Overview
 
-The [Temporal server](https://github.com/temporalio/temporal) is a micro-service orchestration platform.
+The [Temporal Server](https://github.com/temporalio/temporal) is a micro-service orchestration platform.
 It can be thought of as a layer in your technology stack that exists between your compute servers and your executable source code.
 It is completely open source and can be run in a variety of cloud or on-premise environments.
+A single Server instance can be used for many different use cases simultaneously, or be tied to a single application.
 
 ## Design
 
 The "Temporal Server" is actually a cluster of different services.
-Read the [system architecture](/docs/system-architecture) page to get a view of the server's topology.
+The Server is responsible for tracking the state of Workflows and associated durable timers.
+It is also responsible for maintaining internal [Task Queues](/docs/task-queues) which are used for queuing Tasks to be consumed by external Workers.
+Read the [system architecture](/docs/server-architecture) page to get a view of the server's topology.
 
 ## Docker images
 
