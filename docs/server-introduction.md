@@ -1,6 +1,6 @@
 ---
 id: server-introduction
-title: Introduction to the Temporal server
+title: Introduction to the Temporal Server
 sidebar_label: Introduction
 ---
 

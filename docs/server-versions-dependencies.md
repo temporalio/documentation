@@ -1,6 +1,6 @@
 ---
 id: server-versions-and-dependencies
-title: Versions and dependencies
+title: Temporal Server versions and dependencies
 sidebar_label: Versions & dependencies
 ---
 

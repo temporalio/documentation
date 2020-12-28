@@ -1,6 +1,6 @@
 ---
 id: server-quick-install
-title: Install Temporal for local development
+title: Install Temporal Server for local development
 sidebar_label: Quick install
 ---
 

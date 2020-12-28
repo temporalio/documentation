@@ -1,6 +1,6 @@
 ---
 id: server-archive-data
-title: Archive data
+title: Archive Workflow data
 sidebar_label: Archive data
 ---
 
