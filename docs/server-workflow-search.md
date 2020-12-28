@@ -1,6 +1,6 @@
 ---
 id: server-workflow-search
-title: Search for Workflows
+title: Search for Temporal Server Workflows
 sidebar_label: Search Workflows
 ---
 

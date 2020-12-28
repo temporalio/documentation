@@ -1,6 +1,6 @@
 ---
 id: server-options
-title: Temporal server options
+title: Temporal Server options
 sidebar_label: Start options
 ---
 

@@ -1,6 +1,6 @@
 ---
 id: server-configuration
-title: Configure the Temporal server
+title: Configure the Temporal Server
 sidebar_label: Configuration reference
 ---
 
