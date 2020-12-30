@@ -12,13 +12,13 @@ And it is capable of scaling horizontally by running multiple instances on multi
 
 The Server itself does not execute application code, but instead tracks the state of it using queues, timers, and a database.
 
-![Temporal Server simple relationship diagram](/img/docs/temporal-high-level-abstracted-relationships.png)
+<iframe allowfullscreen frameborder="0" width="100%" height="480px" src="https://lucid.app/documents/embeddedchart/b1d350aa-356f-476d-81e6-c805b5554686" id="QuZ1jPEWw4pf"></iframe>
 
 ## Server topology
 
 The "Server" itself is actually a cluster of four services and a database.
 
-![Temporal Server simple internal services diagram](/img/docs/temporal-server-simple-internal.png)
+<iframe allowfullscreen frameborder="0" width="100%" height="500px;" src="https://lucid.app/documents/embeddedchart/c28dc028-1a34-40e7-b785-f77622eb9a84" id="d0K15Ag98G_7"></iframe>
 
 Instances of the Server can run as independent processes or be grouped together into shared processes on one or more physical or virtual machines. But for live environments make sure each service is running independently, as they each have different scale out requirements and troubleshooting becomes easier.
 
@@ -68,4 +68,4 @@ Cassandra, MySQL, and PostgreSQL schemas are supported and thus can be used as t
 
 The database stores Tasks, Workflow data, Events, and visibility data.
 
-![](/img/docs/temporal-server-database-simple.png)
+<iframe allowfullscreen frameborder="0" width="100%" height="250px" src="https://lucid.app/documents/embeddedchart/e88c7cca-b93e-48e0-a510-3ee77efad54e" id="hqZ1EgnXOpUk"></iframe>
