@@ -18,7 +18,8 @@ Temporal offers official support for, and is tested against, dependencies with t
 
 | Temporal version | Go packages |
 |------------------|-------------|
-| [1.4.1](https://github.com/temporalio/temporal/tree/v1.4.1) | [go.mod](https://github.com/temporalio/temporal/blob/v1.4.1/go.mod) |
+| [1.5.1](https://github.com/temporalio/temporal/tree/v1.5.1) | [go.mod](https://github.com/temporalio/temporal/blob/v1.5.1/go.mod) |
+| [1.4.2](https://github.com/temporalio/temporal/tree/v1.4.2) | [go.mod](https://github.com/temporalio/temporal/blob/v1.4.2/go.mod) |
 | [1.3.2](https://github.com/temporalio/temporal/tree/v1.3.2) | [go.mod](https://github.com/temporalio/temporal/blob/v1.3.2/go.mod) |
 | [1.2.2](https://github.com/temporalio/temporal/tree/v1.2.2) | [go.mod](https://github.com/temporalio/temporal/blob/v1.2.2/go.mod) |
 | [1.1.1](https://github.com/temporalio/temporal/tree/v1.1.1) | [go.mod](https://github.com/temporalio/temporal/blob/v1.1.1/go.mod) |
