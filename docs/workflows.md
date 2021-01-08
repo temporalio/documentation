@@ -102,7 +102,7 @@ Some reasons to use child Workflows are:
 - A child Workflow can be hosted by a separate set of workers which don't contain the parent Workflow code. So it would act as a separate service that can be invoked from multiple other Workflows.
 - A single Workflow has a limited size. For example, it cannot execute 100k Activities. Child Workflows can be used to partition the problem into smaller chunks. One parent with 1000 children each executing 1000 Activities is 1 million executed Activities.
 - A child Workflow can be used to manage some resource using its Id to guarantee uniqueness. For example, a Workflow that manages host upgrades can have a child Workflow per host (host name being a Workflow Id) and use them to ensure that all operations on the host are serialized.
-- A child Workflow can be used to execute some periodic logic without blowing up the parent history size. When a parent starts a child, it executes periodic logic calling that continues as many times as needed, then completes. From the parent point if view, it is just a single child Workflow invocation.
+- A child Workflow can be used to execute some periodic logic without blowing up the parent history size. When a parent starts a child, it executes periodic logic calling that continues as many times as needed, then completes. From the parent point of view, it is just a single child Workflow invocation.
 
 The main limitation of a child Workflow versus collocating all the application logic in a single Workflow is lack of the shared state. Parent and child can communicate only through asynchronous signals. But if there is a tight coupling between them, it might be simpler to use a single Workflow and just rely on a shared object state.
 
