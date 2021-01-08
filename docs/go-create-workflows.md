@@ -139,7 +139,8 @@ For some client code to be able to invoke a Workflow type, the worker process ne
 all the implementations it has access to. A Workflow is registered with the following call:
 
 ```go
-workflow.Register(SimpleWorkflow)
+w := worker.New(sdkClient, "your_task_queue", worker.Options{})
+w.RegisterWorkflow(SimpleWorkflow)
 ```
 
 This call essentially creates an in-memory mapping inside the worker process between the fully
