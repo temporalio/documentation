@@ -135,8 +135,7 @@ error via the **err** return value.
 
 ## Registration
 
-For some client code to be able to invoke a Workflow type, the Worker process needs to be aware of
-all the implementations it has access to.
+For some client code to be able to invoke a Workflow type, the Worker process needs to be aware of all the implementations it has access to.
 A Workflow is registered with a Worker with the following call:
 
 ```go
