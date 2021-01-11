@@ -135,15 +135,15 @@ error via the **err** return value.
 
 ## Registration
 
-For some client code to be able to invoke a Workflow type, the worker process needs to be aware of
-all the implementations it has access to. A Workflow is registered with the following call:
+For some client code to be able to invoke a Workflow type, the Worker process needs to be aware of
+all the implementations it has access to.
+A Workflow is registered with a Worker with the following call:
 
 ```go
 w := worker.New(sdkClient, "your_task_queue", worker.Options{})
 w.RegisterWorkflow(SimpleWorkflow)
 ```
 
-This call essentially creates an in-memory mapping inside the worker process between the fully
-qualified function name and the implementation. It is safe to call this registration method from
-an **init()** function. If the worker receives tasks for a Workflow type it does not know, it will
-fail that task. However, the failure of the task will not cause the entire Workflow to fail.
+This call essentially creates an in-memory mapping inside the Worker process between the fully qualified function name and the implementation.
+If the Worker receives tasks for a Workflow type it does not know, it will fail that Task.
+However, the failure of the Task will not cause the entire Workflow to fail.
