@@ -13,6 +13,12 @@ workflow, show workflow history, and signal workflow.
 The Temporal CLI can be used directly from the Docker Hub image _temporalio/tctl_ or by building the CLI tool
 locally.
 
+You can also install it using [Homebrew](https://brew.sh/):
+
+```
+brew install tctl
+```
+
 Example of using the docker image to describe a namespace:
 
 ```
