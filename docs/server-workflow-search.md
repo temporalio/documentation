@@ -4,6 +4,21 @@ title: Search for Temporal Server Workflows
 sidebar_label: Search Workflows
 ---
 
+## Overview
+
+For many use-cases, you may have hundreds, thousands, or tens of thousands of Workflows.
+Finding the one you want can become a non-trivial matter.
+That is why the Temporal Server has built-in Workflow search functionality that enables you to search for Workflows via the CLI(tctl), Web UI, and API.
+
+To enhance this search functionality, the Temporal Server supports an integration with [Elasticsearch](https://www.elastic.co/elasticsearch/).
+By integrating with Elasticsearch, custom key-value search attributes can be added to Workflow metadata which enables SQL-like search queries.
+Without Elasticsearch, search functionality is limited to listing Workflows by ID and type (open/closed).
+So, for any use-case that spawns more than just a few Workflows, we highly recommend running Temporal with Elasticsearch.
+Follow the [Elasticsearch setup guide](/docs/server-elasticsearch-setup) to do that.
+The rest of this page assumes your instance of Temporal is integrated with Elasticsearch.
+
+## Search attributes
+
 Temporal supports creating Workflows with customized key-value pairs, updating the information within the Workflow code, and then listing/searching Workflows with a SQL-like query. For example, you can create Workflows with keys `city` and `age`, then search all Workflows with `city = seattle and age > 22`.
 
 Also note that normal Workflow properties like start time and Workflow type can be queried as well. For example, the following query could be specified when [listing Workflows from the CLI](/docs/tctl/#list-closed-or-open-workflow-executions) or using the list APIs ([Go](https://pkg.go.dev/go.temporal.io/sdk/client#Client))
