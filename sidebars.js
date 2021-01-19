@@ -40,6 +40,7 @@ module.exports = {
         'server-quick-install',
         'server-architecture',
         'server-versions-and-dependencies',
+        'server-elasticsearch-setup',
         'server-options',
         'server-security',
         'server-configuration',
