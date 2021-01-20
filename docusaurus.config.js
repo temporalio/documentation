@@ -77,6 +77,10 @@ module.exports = {
               label: 'Privacy Policy',
               to: '/privacy-policy',
             },
+            {
+              label: 'Terms of Service',
+              to: 'pdf/temporal-tos-2021-01-19.pdf'
+            },
           ],
         },
         {
