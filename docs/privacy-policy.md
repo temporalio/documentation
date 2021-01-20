@@ -7,7 +7,7 @@ title: Privacy Policy
 
 Last updated: January 19th, 2021
 
-Temporal Technologies Inc. operates https://temporal.io (the "Site").
+Temporal Technologies Inc. operates https://temporal.io, https://docs.temporal.io (the "Sites").
 This page informs you of our policies regarding the collection, use and disclosure of Personal Information we receive from users of the Site.
 
 We use your Personal Information only for providing and improving the Site.
