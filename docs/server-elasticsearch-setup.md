@@ -1,12 +1,12 @@
 ---
 id: server-elasticsearch-setup
-title: How to set up Elasticsearch for the Temporal Server
+title: Set up Elasticsearch for Temporal Server
 sidebar_label: Set up Elasticsearch
 ---
 
 ## Overview
 
-You can integrate [Elasticsearch](https://www.elastic.co/elasticsearch/) with the Temporal Server to enhance Workflow search functionality.
+You can integrate [Elasticsearch](https://www.elastic.co/elasticsearch/) with the Temporal Server to enhance [Workflow search](/docs/server-workflow-search) functionality.
 The [Server versions and dependencies](/docs/server-versions-and-dependencies) page lists compatible versions of dependencies.
 To set up Elasticsearch, there are two main Server configurations that need to be edited.
 
