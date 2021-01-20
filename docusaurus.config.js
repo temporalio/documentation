@@ -79,7 +79,7 @@ module.exports = {
             },
             {
               label: 'Terms of Service',
-              to: 'pdf/temporal-tos-2021-01-19.pdf'
+              to: 'https://docs.temporal.io/pdf/temporal-tos-2021-01-19.pdf'
             },
           ],
         },
