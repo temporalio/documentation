@@ -66,26 +66,26 @@ module.exports = {
           title: 'Docs',
           items: [
             {
-              label: 'Getting Started',
+              label: 'Get Started',
               to: 'docs/get-started/',
-            },
-            {
-              label: 'Java SDK',
-              to: 'docs/java-run-your-first-app/',
-            },
-            {
-              label: 'Go SDK',
-              to: 'docs/go-run-your-first-app/',
             },
             {
               label: 'About',
               to: '/about',
+            },
+            {
+              label: 'Privacy Policy',
+              to: '/privacy-policy',
             },
           ],
         },
         {
           title: 'Community',
           items: [
+            {
+              label: 'Discourse Forum',
+              href: 'https://community.temporal.io/',
+            },
             {
               label: 'Stack Overflow',
               href:
@@ -101,10 +101,6 @@ module.exports = {
         {
           title: 'Social',
           items: [
-            // {
-            //   label: 'Blog',
-            //   to: 'blog',
-            // },
             {
               label: 'GitHub',
               href: 'https://github.com/temporalio/temporal',
