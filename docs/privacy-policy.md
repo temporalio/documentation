@@ -26,7 +26,7 @@ In addition, we may use third party services such as Google Analytics that colle
 
 ## Communications
 
-We may use your Personal Information to contact you with newsletters, marketing or promotional materials and other information that we believe is relevant for you.
+Depending on the method of collection, we may use your Personal Information to contact you with newsletters, marketing or promotional materials and other information that we believe is relevant for you.
 
 ## Cookies
 
