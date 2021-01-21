@@ -57,7 +57,7 @@ module.exports = {
         'sdks-introduction',
         {
           type: 'category',
-          collapsed: true,
+          collapsed: false,
           label: 'Go',
           items: [
             'go-sdk-overview',
