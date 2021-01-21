@@ -51,13 +51,13 @@ module.exports = {
     'tctl',
     {
       type: 'category',
-      collapsed: true,
+      collapsed: false,
       label: 'SDKs',
       items: [
         'sdks-introduction',
         {
           type: 'category',
-          collapsed: false,
+          collapsed: true,
           label: 'Go',
           items: [
             'go-sdk-overview',
