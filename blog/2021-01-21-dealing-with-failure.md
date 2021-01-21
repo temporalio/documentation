@@ -11,7 +11,7 @@ title: 'Dealing with failure'
 author: Sergey Bykov
 author_title: Engineering
 author_image_url: https://avatars2.githubusercontent.com/u/8248806?s=460&v=4
-image: https://avatars2.githubusercontent.com/u/8248806?s=460&v=4 
+image: https://res.cloudinary.com/practicaldev/image/fetch/s--7RGv4ASg--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/i/u22ppsaodkhc3ekickb4.png
 release_version: V1.5.1
 ---
 
