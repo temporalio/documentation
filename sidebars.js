@@ -101,6 +101,7 @@ module.exports = {
                 'go-sessions',
                 'go-distributed-cron',
                 'go-tracing',
+                'go-search-apis',
               ],
             },
           ],
