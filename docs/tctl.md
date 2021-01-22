@@ -10,8 +10,7 @@ workflow, show workflow history, and signal workflow.
 
 ## Using the CLI
 
-The Temporal CLI can be used directly from the Docker Hub image _temporalio/tctl_ or by building the CLI tool
-locally.
+The Temporal CLI can be used directly from the [Docker Hub image](https://hub.docker.com/r/temporalio/tctl) or by building the CLI tool locally.
 
 You can also install it using [Homebrew](https://brew.sh/):
 
@@ -177,23 +176,6 @@ tctl wf start -tq hello-world -wt Workflow -et 60 -i '"temporal"' -memo_key â€˜â
 ./tctl workflow describeid 3ea6b242-b23c-4279-bb13-f215661b4717
 ```
 
-#### List closed or open workflow executions
-
-```
-./tctl workflow list
-
-# default will only show one page, to view more items, use --more flag
-./tctl workflow list -m
-```
-
-Use **--query** to list workflows with SQL like query:
-
-```
-./tctl workflow list --query "WorkflowType='main.SampleParentWorkflow' AND CloseTime = missing "
-```
-
-This will return all open workflows with workflowType as "main.SampleParentWorkflow".
-
 #### Query workflow execution
 
 ```
@@ -340,3 +322,99 @@ As you add the bad binary checksum to your namespace, Temporal will not dispatch
 `--tls_server_name=<server name>` command line argument that passes an override value for the target server that is used for TLS host verification. It also enables host verification. The value must be one of the DNS names listed in the server TLS certificate.
 
 TLS command line arguments can be provided via their respective environment variables to shorten the command line.
+
+## Search Workflows
+
+### List closed or open workflow executions
+
+```
+./tctl workflow list
+
+# default will only show one page, to view more items, use --more flag
+./tctl workflow list -m
+```
+
+Use **--query** to list workflows with SQL like query:
+
+```
+./tctl workflow list --query "WorkflowType='main.SampleParentWorkflow' AND CloseTime = missing "
+```
+
+This will return all open workflows with workflowType as "main.SampleParentWorkflow".
+
+### Search attributes
+
+You can query the list of search attributes with the following command:
+
+```bash
+tctl --namespace samples-namespace cl get-search-attr
+```
+
+Here is some example output:
+
+```bash
++---------------------+------------+
+|         KEY         | VALUE TYPE |
++---------------------+------------+
+| Status              | INT        |
+| CloseTime           | INT        |
+| CustomBoolField     | DOUBLE     |
+| CustomDatetimeField | DATETIME   |
+| CustomNamespace     | KEYWORD    |
+| CustomDoubleField   | BOOL       |
+| CustomIntField      | INT        |
+| CustomKeywordField  | KEYWORD    |
+| CustomStringField   | STRING     |
+| NamespaceId         | KEYWORD    |
+| ExecutionTime       | INT        |
+| HistoryLength       | INT        |
+| RunId               | KEYWORD    |
+| StartTime           | INT        |
+| WorkflowId          | KEYWORD    |
+| WorkflowType        | KEYWORD    |
++---------------------+------------+
+```
+
+Here is how you add a new search attribute:
+
+```bash
+tctl --namespace samples-namespace adm cl asa --search_attr_key NewKey --search_attr_type string
+```
+
+The possible values for `--search_attr_type` are:
+
+- string
+- keyword
+- int
+- double
+- bool
+- datetime
+
+
+### Start Workflow with Search Attributes
+
+```bash
+tctl --ns samples-namespace workflow start --tq helloWorldGroup --wt main.Workflow --et 60 --dt 10 -i '"vancexu"' -search_attr_key 'CustomIntField | CustomKeywordField | CustomStringField |  CustomBoolField | CustomDatetimeField' -search_attr_value '5 | keyword1 | vancexu test | true | 2019-06-07T16:16:36-08:00'
+```
+
+### Search Workflows with List API
+
+```bash
+tctl --ns samples-namespace wf list -q '(CustomKeywordField = "keyword1" and CustomIntField >= 5) or CustomKeywordField = "keyword2"' -psa
+```
+
+```bash
+tctl --ns samples-namespace wf list -q 'CustomKeywordField in ("keyword2", "keyword1") and CustomIntField >= 5 and CloseTime between "2018-06-07T16:16:36-08:00" and "2019-06-07T16:46:34-08:00" order by CustomDatetimeField desc' -psa
+```
+
+To list only open Workflows, add `CloseTime = missing` to the end of the query.
+
+Note that queries can support more than one type of filter:
+
+```bash
+tctl --ns samples-namespace wf list -q 'WorkflowType = "main.Workflow" and (WorkflowId = "1645a588-4772-4dab-b276-5f9db108b3a8" or RunId = "be66519b-5f09-40cd-b2e8-20e4106244dc")'
+```
+
+```bash
+tctl --ns samples-namespace wf list -q 'WorkflowType = "main.Workflow" StartTime > "2019-06-07T16:46:34-08:00" and CloseTime = missing'
+```
