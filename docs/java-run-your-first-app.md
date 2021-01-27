@@ -32,7 +32,7 @@ Keep reading or follow along with this video walkthrough:
 
 Before starting, make sure you have looked over the [tutorial prerequisites](/docs/java-sdk-tutorial-prerequisites) setup.
 
-This tutorial uses a fully working template application which can be downloaded as a zip or converted to a new repository in your own Github account and cloned. Github's [creating a repository from a template guide](creating a new repository](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-from-a-template#creating-a-repository-from-a-template)) will walk you through the steps.
+This tutorial uses a fully working template application which can be downloaded as a zip or converted to a new repository in your own Github account and cloned. Github's [creating a repository from a template guide](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-from-a-template#creating-a-repository-from-a-template) will walk you through the steps.
 
 - [Github source](https://github.com/temporalio/money-transfer-project-template-java)
 - [Zip download](https://github.com/temporalio/money-transfer-project-template-java/archive/master.zip)
