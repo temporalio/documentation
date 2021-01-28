@@ -50,7 +50,7 @@ persistence:
 
 :::note
 
-You should only edit this configuration if you are using a Server version that requires the use of Kafka.
+You should only edit this configuration if you are using a Server version that supports the use of Kafka and you are choosing to use it.
 Check the [Server versions and dependencies](/docs/server-versions-and-dependencies/#workflow-search) page for details.
 
 :::

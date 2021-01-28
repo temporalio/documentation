@@ -37,7 +37,8 @@ The only required dependency is a database, and there are multiple types of data
 
 Temporal has built-in Workflow search functionality.
 To enhance this feature, Temporal supports an [integration with Elasticsearch](/docs/server-elasticsearch-setup).
-Eventstreaming (Kafka + Zookeeper) is required for this feature by default, but starting with Temporal Server version 1.5.4 it can be disabled using dynamic config settings.
+Eventstreaming (Kafka + Zookeeper) is required for this feature in some versions of Temporal.
+Starting with Temporal Server version 1.5.4, the use of Kafka can be disabled using dynamic config settings.
 See the Temporal Server version [1.5.0 release notes](https://github.com/temporalio/temporal/releases/tag/v1.5.0) for details on how to disable it.
 
 - **ElasticSearch v6.8 & v7.7**
