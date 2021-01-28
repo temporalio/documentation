@@ -142,7 +142,7 @@ Note that, if a predicate on `ExecutionTime` is included, only the cron/retry Wo
 ## Local testing
 
 1. Increase the Docker memory to anything higher than 6GB (Navigate to Docker -> Preferences -> Advanced -> Memory).
-2. Use the [Quick start guide](/docs/server-quick-start) to clone the temporalio/docker-compose repo.
+2. Use the [Quick start guide](/docs/server-quick-install) to clone the temporalio/docker-compose repo.
 3. Start the Temporal Server using the `docker-compose-es.yml` file, which contains Apache Kafka, Apache Zookeeper, and Elasticsearch).
 
 ```bash
