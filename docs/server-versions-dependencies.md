@@ -35,9 +35,12 @@ The only required dependency is a database, and there are multiple types of data
 
 ### Workflow search
 
-The feature that enables you to search for Workflows is optional. Currently only ElasticSearch is supported. For Temporal server versions < 1.6.0, the use of ElasticSearch also requires the use of event streaming software. Currently only Kafka + Zookeeper are supported. See the note on event streaming dependency below. For Temporal Server versions >= 1.6.0 Elasticsearch does not require any other dependencies.
+The feature that enables you to search for Workflows is optional.
+Currently only ElasticSearch is supported.
+Eventstreaming (Kafka + Zookeeper) is required for this feature by default, but starting with Temporal Server version 1.5.4 it can be disabled using dynamic config settings.
+See the Temporal Server version [1.5.0 release notes](https://github.com/temporalio/temporal/releases/tag/v1.5.0) for details on how to disable it.
 
-- **ElasticSearch v6.8 & v7.0**
+- **ElasticSearch v6.8 & v7.7**
 - **Kafka v2.1.1 & Zookeeper v3.4.6**
 
 ### Monitoring & observation
