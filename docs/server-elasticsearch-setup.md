@@ -7,13 +7,11 @@ sidebar_label: Set up Elasticsearch
 ## Overview
 
 You can integrate [Elasticsearch](https://www.elastic.co/elasticsearch/) with the Temporal Server to enhance [Workflow search](/docs/server-workflow-search) functionality.
-Temporal Server versions < 1.6.0 require the use of Kafka + Zookeeper to use Elasticsearch.
-Temporal Server versions >= 1.6.0 do not require any additional dependencies to use Elasticsearch.
-The [Server versions and dependencies](/docs/server-versions-and-dependencies) page lists compatible versions of dependencies.
+The [Server versions and dependencies](/docs/server-versions-and-dependencies/#workflow-search) page describes which versions require the use of Kafka, and which ones do not.
 
 Integration with Elasticsearch is defined in the Server configuration files.
-For Server versions >= 1.6.0, all you need to do is edit the `persistence` section.
-For Server versions < 1.6.0, you will need to edit the `kafka` section as well.
+If you are not using Kafka, all you need to do is edit the `persistence` section.
+If you are using Kafka, you will need to edit the `kafka` section as well.
 
 You can use the Temporal Server [development_es.yaml](https://github.com/temporalio/temporal/blob/master/config/development_es.yaml) file as working example.
 
@@ -21,9 +19,8 @@ You can use the Temporal Server [development_es.yaml](https://github.com/tempora
 
 Elasticsearch relies on storage to operate.
 Storage related configurations are defined within the `persistence` section of the configuration file.
-The Temporal Server needs to know where to connect to the Elasticsearch storage.
 
-To do this, first add the `advancedVisibilityStore: es-visibility` key value pair to the `persistence` section.
+To configure Elasticsearch add the `advancedVisibilityStore: es-visibility` key value pair to the `persistence` section.
 
 ```yaml
 persistence:
@@ -31,7 +28,7 @@ persistence:
   advancedVisibilityStore: es-visibility
 ```
 
-Next, define the ElasticSearch datastore connection information under the `es-visibility` key:
+Then, define the ElasticSearch datastore connection information under the `es-visibility` key:
 
 ```yaml
 persistence:
@@ -51,7 +48,12 @@ persistence:
 
 ## Kafka
 
-**Note that you only need to complete this step if you are using a Server version that is < 1.6.0**
+:::note
+
+You should only edit this configuration if you are using a Server version that requires the use of Kafka.
+Check the [Server versions and dependencies](/docs/server-versions-and-dependencies/#workflow-search) page for details.
+
+:::
 
 The Workflow metadata that gets stored and matched to search queries is moved around the system as "visibility records".
 In order to ship these records to specific processes, Kafka is used.
