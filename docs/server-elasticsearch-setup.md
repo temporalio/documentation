@@ -19,8 +19,8 @@ You can use the Temporal Server [development_es.yaml](https://github.com/tempora
 
 Elasticsearch relies on storage to operate.
 Storage related configurations are defined within the `persistence` section of the configuration file.
-
-To configure Elasticsearch add the `advancedVisibilityStore: es-visibility` key value pair to the `persistence` section.
+The Temporal Server needs to know how and where to connect to Elasticsearch storage.
+To do this, add the `advancedVisibilityStore: es-visibility` key value pair to the `persistence` section.
 
 ```yaml
 persistence:
