@@ -1,6 +1,3 @@
-[build]
-  environment = { NODE_VERSION = "15.2.1" }
-
 [[plugins]]
   package = "netlify-plugin-checklinks"
 
