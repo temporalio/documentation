@@ -147,7 +147,7 @@ visible when listing workflows. More information on memos can be found
 [here](/docs/server-workflow-search/#memo-vs-search-attributes).
 
 ```
-tctl wf start -tq hello-world -wt Workflow -et 60 -i '"temporal"' -memo_key ‘“Service” “Env” “Instance”’ -memo ‘“serverName1” “test” 5’
+tctl workflow start -tq hello-world -wt Workflow -et 60 -i '"temporal"' -memo_key ‘“Service” “Env” “Instance”’ -memo ‘“serverName1” “test” 5’
 ```
 
 #### Show workflow history
@@ -289,7 +289,7 @@ Let's get familiar with some concepts. Each deployment will have an identifier, 
 To find out which **binary checksum** of the bad deployment to reset, you should be aware of at least one workflow running into a bad state. Use the describe command with **--reset_points_only** option to show all the reset points:
 
 ```
-./tctl wf desc -w <WorkflowId>  --reset_points_only
+./tctl workflow desc -w <WorkflowId>  --reset_points_only
 +----------------------------------+--------------------------------+--------------------------------------+---------+
 |         BINARY CHECKSUM          |          CREATE TIME           |                RUNID                 | EVENTID |
 +----------------------------------+--------------------------------+--------------------------------------+---------+
@@ -328,26 +328,31 @@ TLS command line arguments can be provided via their respective environment vari
 ### List closed or open workflow executions
 
 ```
-./tctl workflow list
-
-# default will only show one page, to view more items, use --more flag
-./tctl workflow list -m
+tctl workflow list
 ```
 
-Use **--query** to list workflows with SQL like query:
+By default only one page is shown.
+To view more items, use the `--more` flag.
 
 ```
-./tctl workflow list --query "WorkflowType='main.SampleParentWorkflow' AND CloseTime = missing "
+tctl workflow list --more
 ```
 
-This will return all open workflows with workflowType as "main.SampleParentWorkflow".
+Use the `--query` flag to list Workflows using an SQL-like query:
 
-### Search attributes
+```
+tctl workflow list \
+  --query "WorkflowType='main.SampleParentWorkflow' AND CloseTime = missing"
+```
+
+This will return all open Workflows with `workflowType` as `main.SampleParentWorkflow`.
+
+### List search attributes
 
 You can query the list of search attributes with the following command:
 
 ```bash
-tctl --namespace samples-namespace cl get-search-attr
+tctl cluster get-search-attr
 ```
 
 Here is some example output:
@@ -375,10 +380,14 @@ Here is some example output:
 +---------------------+------------+
 ```
 
+### Add new search attributes
+
 Here is how you add a new search attribute:
 
 ```bash
-tctl --namespace samples-namespace adm cl asa --search_attr_key NewKey --search_attr_type string
+tctl admin cluster add_search_attr \
+  --search_attr_key <NewKey> \
+  --search_attr_type string
 ```
 
 The possible values for `--search_attr_type` are:
@@ -394,17 +403,27 @@ The possible values for `--search_attr_type` are:
 ### Start Workflow with Search Attributes
 
 ```bash
-tctl --ns samples-namespace workflow start --tq helloWorldGroup --wt main.Workflow --et 60 --dt 10 -i '"vancexu"' -search_attr_key 'CustomIntField | CustomKeywordField | CustomStringField |  CustomBoolField | CustomDatetimeField' -search_attr_value '5 | keyword1 | vancexu test | true | 2019-06-07T16:16:36-08:00'
+tctl workflow start \
+  --taskqueue helloWorldGroup \
+  --workflow_type main.Workflow \
+  --execution_timeout 60
+  --input '"john"' \
+  --search_attr_key 'CustomIntField | CustomKeywordField | CustomStringField | CustomBoolField | CustomDatetimeField' \
+  --search_attr_value '5 | keyword1 | john test | true | 2019-06-07T16:16:36-08:00'
 ```
 
 ### Search Workflows with List API
 
 ```bash
-tctl --ns samples-namespace wf list -q '(CustomKeywordField = "keyword1" and CustomIntField >= 5) or CustomKeywordField = "keyword2"' -psa
+tctl workflow list \
+  --query '(CustomKeywordField = "keyword1" and CustomIntField >= 5) or CustomKeywordField = "keyword2"' \
+  --print_search_attr
 ```
 
 ```bash
-tctl --ns samples-namespace wf list -q 'CustomKeywordField in ("keyword2", "keyword1") and CustomIntField >= 5 and CloseTime between "2018-06-07T16:16:36-08:00" and "2019-06-07T16:46:34-08:00" order by CustomDatetimeField desc' -psa
+tctl workflow list \
+  --query 'CustomKeywordField in ("keyword2", "keyword1") and CustomIntField >= 5 and CloseTime between "2018-06-07T16:16:36-08:00" and "2019-06-07T16:46:34-08:00" order by CustomDatetimeField desc'
+  --print_search_attr
 ```
 
 To list only open Workflows, add `CloseTime = missing` to the end of the query.
@@ -412,9 +431,11 @@ To list only open Workflows, add `CloseTime = missing` to the end of the query.
 Note that queries can support more than one type of filter:
 
 ```bash
-tctl --ns samples-namespace wf list -q 'WorkflowType = "main.Workflow" and (WorkflowId = "1645a588-4772-4dab-b276-5f9db108b3a8" or RunId = "be66519b-5f09-40cd-b2e8-20e4106244dc")'
+tctl workflow list \
+  --query 'WorkflowType = "main.Workflow" and (WorkflowId = "1645a588-4772-4dab-b276-5f9db108b3a8" or RunId = "be66519b-5f09-40cd-b2e8-20e4106244dc")'
 ```
 
 ```bash
-tctl --ns samples-namespace wf list -q 'WorkflowType = "main.Workflow" StartTime > "2019-06-07T16:46:34-08:00" and CloseTime = missing'
+tctl workflow list \
+  --query 'WorkflowType = "main.Workflow" StartTime > "2019-06-07T16:46:34-08:00" and CloseTime = missing'
 ```

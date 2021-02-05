@@ -6,20 +6,21 @@ sidebar_label: Search Workflows
 
 ## Overview
 
-For many use-cases, you may have hundreds, thousands, or tens of thousands of Workflows.
-Finding the one you want can become a non-trivial matter.
-That is why the Temporal Server has built-in Workflow search functionality that enables you to search for Workflows via the CLI(tctl), Web UI, and SDK APIs.
+Many use-cases may have hundreds, thousands, or tens of thousands of Workflows.
+This means, finding the one you want can be a non-trivial exercise.
+To address this, Temporal Server has built-in functionality that enables you to search for Workflows via the CLI(tctl), Web UI, and SDK APIs.
 
-To enhance this search functionality, the Temporal Server supports an integration with [Elasticsearch](https://www.elastic.co/elasticsearch/).
-By integrating with Elasticsearch, custom key-value search attributes can be added to Workflow metadata and SQL-like search queries are enabled.
+To make this search functionality even better, the Temporal Server supports an integration with [Elasticsearch](https://www.elastic.co/elasticsearch/).
+By integrating with Elasticsearch, custom key-value search attributes can be added to Workflow metadata which can be referenced in SQL-like search queries.
 
 Example:
 
 ```sql
-WorkflowType = "main.Workflow" and Status != 0 and (StartTime > "2019-06-07T16:46:34-08:00" or CloseTime > "2019-06-07T16:46:34-08:00" order by StartTime desc)
+WorkflowType = "main.Workflow" and Status != 0 and (StartTime > "2019-06-07T16:46:34-08:00" or CloseTime > "2019-06-07T16:46:34-08:00") order by StartTime desc
 ```
 
-Without Elasticsearch, search functionality is limited to listing Workflows by ID and type (open/closed).
+Without Elasticsearch, search functionality is limited to listing Workflows by Id and type (open/closed), and search queries are run directly against the Temporal Server database.
+The Elasticsearch database takes on the search query request load, relieving potential performance issues that can occur.
 So, for any use-case that spawns more than just a few Workflows, we highly recommend running Temporal with Elasticsearch.
 Follow the [Elasticsearch setup instructions](/docs/server-elasticsearch-setup) to do that.
 The rest of this page assumes your instance of Temporal is integrated with Elasticsearch.
@@ -29,6 +30,9 @@ The rest of this page assumes your instance of Temporal is integrated with Elast
 Search attributes are indexed and queryable pieces of Workflow meta data.
 They are represented as key-value pairs.
 There are many attributes provided by default, but you can also add your own.
+Keys must be registered within the dynamic config file so that the Temporal Server knows the attribute key name and value type.
+If there are multiple instances of the Server running across multiple hosts, then keys must be registered across all of the dynamic config files.
+To add new search attributes, you can use the [CLI](/docs/tctl/#add-new-search-attributes) or edit the dynamic config file manually.
 
 ### Default attributes
 
@@ -57,16 +61,20 @@ These can be found by using the [CLI](/docs/tctl/#search-attributes) or the `Get
 
 There are some special considerations for the Default attributes:
 
-- Status, CloseTime, NamespaceId, ExecutionTime, HistoryLength, RunId, StartTime, WorkflowId, WorkflowType are reserved by Temporal and are read-only.
-- Status is a mapping of an integer to a state:
-  - 0 = unknown
-  - 1 = running
-  - 2 = completed
-  - 3 = failed
-  - 4 = canceled
-  - 5 = terminated
-  - 6 = continuedasnew
-  - 7 = timedout
+- ExecutionStatus, CloseTime, NamespaceId, ExecutionTime, HistoryLength, RunId, StartTime, WorkflowId, WorkflowType are reserved by Temporal and are read-only.
+- ExecutionStatus is a mapping of an integer to a state:
+
+| Integer | State |
+|---------|-------|
+| 0 | Unspecified |
+|	1 | Running |
+|	2 | Completed |
+|	3 | Failed |
+|	4 | Canceled |
+|	5 | Terminated |
+|	6 | ContinuedAsNew |
+|	7 | TimedOut |
+
 - StartTime, CloseTime and ExecutionTime are stored as integers, but are supported by queries using both EpochTime in nanoseconds and a string in RFC3339 format (ex. "2006-01-02T15:04:05+07:00").
 - CloseTime, HistoryLength are only present in a closed Workflow.
 - ExecutionTime is meant for queries against Workflows that will run in the future (retry/cron use-cases).
@@ -99,7 +107,7 @@ For example, if the key `SomeUniqueId` has the value of "2dd29ab7-2dd8-4668-83e0
 - As a **keyword** it would only be matched by `SomeUniqueId` = "2dd29ab7-2dd8-4668-83e0-89cae261cfb1".
 - As a **string** it would be matched by `SomeUniqueId` = "2dd8", which could cause unwanted matches.
 
-Also note that the **string** type can not be used in "Order By" search queries.
+Also note that the **string** type cannot be used in the "Order By" clause.
 
 There are some pre-allowlisted search attributes that are handy for testing, that have their types indicated in their name:
 
@@ -117,6 +125,8 @@ When performing a [ContinueAsNew](/docs/go-continue-as-new/) or using [Cron](/do
 You can perform search queries for Workflows using an SQL-like "Where" clause via the [CLI](/docs/tctl/#search-workflows), list APIs via one of the SDKs([Go](/docs/go-search-apis)), or via the Temporal Web UI.
 
 In the Temporal Web UI, use the "Basic/Advanced" button to switch to "Advanced" mode and type the query into the search box.
+
+![](/img/docs/web-ui-advanced-search-button.png)
 
 The following criteria applies to search queries:
 
@@ -143,30 +153,19 @@ Note that, if a predicate on `ExecutionTime` is included, only the cron/retry Wo
 
 1. Increase the Docker memory to anything higher than 6GB (Navigate to Docker -> Preferences -> Advanced -> Memory).
 2. Use the [Quick start guide](/docs/server-quick-install) to clone the temporalio/docker-compose repo.
-3. Start the Temporal Server using the `docker-compose-es.yml` file, which contains Apache Kafka, Apache Zookeeper, and Elasticsearch).
+3. Start the Temporal Server using the `docker-compose-es.yml` file, which contains Cassandra, Kafka, Zookeeper, and Elasticsearch.
 
 ```bash
 docker-compose -f docker-compose-es.yml up
 ```
 
 4. From the Docker output log, make sure Elasticsearch and Temporal started correctly.
-If you encounter an "insufficient disk space error", try running the following command:
+
+5. Allow list search attributes.
 
 ```bash
-docker system prune -a --volumes
-```
-
-5. Register a local Namespace and start using it.
-
-```
-tctl --ns samples-namespace n re
-```
-
-6. Allow list search attributes.
-
-```bash
-tctl --ns namespace adm cl asa --search_attr_key NewKey --search_attr_type 1
+tctl admin cluster add_search_attr --search_attr_key NewKey --search_attr_type string
 ```
 
 Note that starting a Workflow with search attributes, but without Elasticsearch, will succeed as normal.
-However it will not be searchable and will not be shown in list results.
+However the Workflow will not be searchable by those attributes.
