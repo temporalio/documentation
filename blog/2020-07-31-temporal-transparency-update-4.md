@@ -46,6 +46,6 @@ Everyone in the team put in a ton of extra effort over the last few weeks so we 
 
 Email: [ryland@temporal.io](mailto:ryland@temporal.io)
 
-Slack: [temporalio.slack.com](http://temporalio.slack.com/)
+Slack: [temporalio.slack.com](https://join.slack.com/t/temporalio/shared_invite/zt-kfgfjuye-L8gCQVRhPykA2td8pk7eTQ)
 
 Forum: [https://community.temporal.io/](https://community.temporal.io/)

@@ -86,6 +86,6 @@ We are very content with our progress over the last few weeks and still are conf
 
 Email: [ryland@temporal.io](mailto:ryland@temporal.io)
 
-Slack: [temporalio.slack.com](http://temporalio.slack.com/)
+Slack: [temporalio.slack.com](https://join.slack.com/t/temporalio/shared_invite/zt-kfgfjuye-L8gCQVRhPykA2td8pk7eTQ)
 
 Forum: [https://community.temporal.io/](https://community.temporal.io/)
