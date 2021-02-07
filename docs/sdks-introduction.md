@@ -30,7 +30,7 @@ These other SDKs have community interest - please get in touch with us if you ar
 
 If you are interested in using an "unofficial" SDK, we recommend that you reach out to any of us at Temporal.
 
-- [Slack](http://temporalio.slack.com/)
+- [Slack](https://join.slack.com/t/temporalio/shared_invite/zt-kfgfjuye-L8gCQVRhPykA2td8pk7eTQ)
 - [Community forums](https://community.temporal.io/)
 
 We are very excited by the community's enthusiasm and strongly believe in collaborating on open source projects. Our goal is to make sure there is maintenance leadership in place to care for the developer experience over the long term.

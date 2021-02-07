@@ -8,7 +8,7 @@ sidebar_label: Overview
 
 The [PHP SDK](https://github.com/temporalio/php-sdk) is still under development. Please contact us before using it.
 
-  - [Slack](http://temporalio.slack.com/)
+  - [Slack](https://join.slack.com/t/temporalio/shared_invite/zt-kfgfjuye-L8gCQVRhPykA2td8pk7eTQ)
   - [Community forum](https://community.temporal.io/)
 
 ## Reference
