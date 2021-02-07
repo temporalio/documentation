@@ -42,7 +42,7 @@ Keep your instance secure with [encryption and pluggable auth protocols](/docs/s
 
 ## Dependencies
 
-Different versions of Temporal support different [dependencies](server-versions-and-dependencies).
+Different versions of Temporal support different [dependencies](/docs/server-versions-and-dependencies).
 
 ## Optional features
 
