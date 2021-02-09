@@ -22,7 +22,10 @@ monitoring & observability (Prometheus & Grafana), and multi-cluster replicaiton
 precise versions we support together with their features.
 
 2. **Configuration**: A full configuration reference is available [here](https://docs.temporal.io/docs/server-configuration).
-3. ???
+
+3. **Scaling and Metrics**: *what metrics map to what questions to ask?*
+
+4. **Debugging**: *?*
 
 ## Further Reading
 
