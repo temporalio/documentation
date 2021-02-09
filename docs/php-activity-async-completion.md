@@ -28,8 +28,8 @@ class MyActivity
     
         // Send the taskToken to the external service that will complete the Activity.
     
-        // Return from the Activity a function indicating that Temporal should wait for an async completion
-        // message.
+        // Return from the Activity a function indicating that Temporal should wait
+        // for an async completion message.
         Activity::doNotCompleteOnReturn();
     
         // When doNotCompleteOnReturn() is invoked the return value is ignored.

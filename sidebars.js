@@ -156,22 +156,20 @@ module.exports = {
               items: [
                 'php-sync-vs-async-start',
                 'php-workers',
-                // 'go-create-workflows',
-                // 'go-activities',
-                // 'go-execute-activity',
-                // 'go-child-workflows',
+                // 'php-create-workflows', todo
+                // 'php-activities', todo
+                // 'php-execute-activity', todo
+
+                'php-child-workflows',
                 'php-retries',
-                // 'go-error-handling',
+                // 'php-error-handling', todo 5
                 'php-signals',
                 'php-continue-as-new',
                 'php-side-effect',
-                // 'go-queries',
+                'php-queries',
                 'php-activity-async-completion',
-                // 'go-workflow-testing',
-                // 'go-versioning',
-                // 'go-sessions',
-                // 'go-distributed-cron',
-                // 'go-tracing',
+                'php-versioning',
+                'php-distributed-cron',
               ],
             },
           ],
