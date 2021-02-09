@@ -20,14 +20,14 @@ WorkflowType = "main.Workflow" and Status != 0 and (StartTime > "2019-06-07T16:4
 ```
 
 Without Elasticsearch, search functionality is limited to listing Workflows by Id and type (open/closed), and search queries are run directly against the Temporal Server database.
-The Elasticsearch database takes on the search query request load, relieving potential performance issues that can occur.
-So, for any use-case that spawns more than just a few Workflows, we highly recommend running Temporal with Elasticsearch.
+Elasticsearch takes on the search query request load, relieving potential performance issues that can occur.
+This is why we highly recommend running Temporal with Elasticsearch for any use-case that spawns more than just a few Workflows.
 Follow the [Elasticsearch setup instructions](/docs/server-elasticsearch-setup) to do that.
 The rest of this page assumes your instance of Temporal is integrated with Elasticsearch.
 
 ## Search attributes
 
-Search attributes are indexed and queryable pieces of Workflow meta data.
+Search attributes are indexed and queryable pieces of Workflow metadata.
 They are represented as key-value pairs.
 There are many attributes provided by default, but you can also add your own.
 Keys must be registered within the dynamic config file so that the Temporal Server knows the attribute key name and value type.
