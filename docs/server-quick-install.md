@@ -1,19 +1,24 @@
 ---
 id: server-quick-install
-title: Install the Temporal Server for local development
+title: Quick install Temporal Server for testing and local development
 sidebar_label: Quick install
 ---
 
 ## Overview
 
-This guide will show you how to quickly install and run Temporal using `docker-compose`.
+There are two ways to quickly install Temporal:
 
-## Prerequisites
+- for local development: using `docker-compose`
+- on Kubernetes: using the [Temporal Helm Chart](https://github.com/temporalio/helm-charts)
+
+## Docker
+
+### Prerequisites
 
 1. [Install Docker](https://docs.docker.com/engine/install)
 2. [Install docker-compose](https://docs.docker.com/compose/install)
 
-## Run the Temporal Server
+### Run the Temporal Server
 
 The following steps will run a local instance of the Temporal Server using the default configuration file:
 
@@ -31,10 +36,10 @@ After the Temporal Server has started you can view the Temporal Web interface in
 
 ### Alternative configurations
 
-If you want to try other configurations using different dependencies, or use a custom Docker image, follow the [temporalio/docker-compose README](https://github.com/temporalio/docker-compose/blob/main/README.md).
+If you want to try other configurations using different dependencies (e.g. different database), or use a custom Docker image, follow the [temporalio/docker-compose README](https://github.com/temporalio/docker-compose/blob/main/README.md).
 
-## Run application Workflows
+### Run application Workflows
 
-You can now run Workflows via the Temporal Server.
+You can now write and run Workflows via the Temporal Server.
 
 Get started quickly by running a [Go sample](https://github.com/temporalio/samples-go), [Java sample](https://github.com/temporalio/samples-java), or write your own using one of the [SDKs](/docs/sdks-introduction).
