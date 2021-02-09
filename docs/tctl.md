@@ -98,8 +98,8 @@ To run a Workflow, the user must specify the following:
 3. Execution start to close timeout in seconds (--et)
 4. Input in JSON format (--i) (optional)
 
-example above uses [this sample Workflow](https://github.com/temporalio/go-samples/blob/master/helloworld/helloworld.go)
-and takes a string as input with the `-i '"temporal"'` parameter. Single quotes (`''`) are used to wrap input as JSON.
+The example above uses [this sample Workflow](https://github.com/temporalio/go-samples/blob/master/helloworld/helloworld.go) and takes a string as input with the `-i '"temporal"'` parameter.
+Single quotes (`''`) are used to wrap input as JSON.
 
 **Note:** You need to start the worker so that the Workflow can make progress.
 (Run `make && ./bin/helloworld -m worker` in temporal-go-samples to start the worker)
