@@ -5,6 +5,8 @@ title: Activity and Workflow Retries
 
 Activities and Workflows can fail for a number of expected and unexpected reasons.
 In most failure cases, we want to retry the failed Activity or child Workflow or even the parent Workflow.
+By default, Temporal retries Activities, but not Workflows.
+To change the default behavior, a custom retry policy can be provided.
 
 To change the default behavior, a custom retry policy can be provided.
 
