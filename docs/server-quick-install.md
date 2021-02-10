@@ -22,8 +22,8 @@ The following steps will run a local instance of the Temporal Server using the d
 3. Run the `docker-compose up` command.
 
 ```bash
-git clone https://github.com/temporalio/docker-compose.git
-cd  docker-compose
+git clone https://github.com/temporalio/docker-compose.git temporal-server
+cd temporal-server
 docker-compose up
 ```
 
