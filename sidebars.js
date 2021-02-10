@@ -156,13 +156,14 @@ module.exports = {
               items: [
                 'php-sync-vs-async-start',
                 'php-workers',
-                // 'php-create-workflows', todo
-                // 'php-activities', todo
-                // 'php-execute-activity', todo
+
+                // 'php-create-workflows',
+                // 'php-activities',
+                //'php-execute-activity',
 
                 'php-child-workflows',
                 'php-retries',
-                // 'php-error-handling', todo 5
+                'php-error-handling',
                 'php-signals',
                 'php-continue-as-new',
                 'php-side-effect',
