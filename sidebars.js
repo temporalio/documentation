@@ -153,15 +153,26 @@ module.exports = {
             {
               type: 'category',
               collapsed: true,
+              label: 'Tutorials',
+              items: [
+               // 'java-sdk-tutorial-prerequisites',
+               // 'java-run-your-first-app',
+               // 'java-hello-world',
+              ],
+            },
+            {
+              type: 'category',
+              collapsed: true,
               label: 'Guides',
               items: [
                 'php-sync-vs-async-start',
                 'php-workers',
 
-                // 'php-create-workflows',
-                // 'php-activities',
-                //'php-execute-activity',
+                // todo: workflow interface
+                // todo: creating workflows
 
+                'php-activity-interface',
+                'php-implementing-activities',
                 'php-child-workflows',
                 'php-retries',
                 'php-error-handling',
@@ -172,6 +183,11 @@ module.exports = {
                 'php-activity-async-completion',
                 'php-versioning',
                 'php-distributed-cron',
+
+                 // todo: quick start and installation
+                 // todo: tutorials
+                 // todo: installation
+                 // todo: run your first app
               ],
             },
           ],

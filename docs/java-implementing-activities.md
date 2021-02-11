@@ -19,7 +19,7 @@ public class FileProcessingActivitiesImpl implements FileProcessingActivities {
 
     void upload(String bucketName, String localName, String targetName) {
         File f = new File(localName);
-        s3Client.putObject(bucket, remoteName, f);
+        s3Client.putObject(bucket, targetName, f);
     }
 
     String download(String bucketName, String remoteName, String localName) {

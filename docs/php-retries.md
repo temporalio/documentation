@@ -17,24 +17,28 @@ use Temporal\Common\RetryOptions;
 
 $retry = RetryOptions::new()
 
-    // Backoff interval for the first retry. If coefficient is 1.0 then it is used for all retries.
-    // Required, no default value. 
+    // Backoff interval for the first retry. If coefficient is 1.0
+    // then it is used for all retries. Required, no default value. 
     ->withInitialInterval(120) // seconds or DateInterval
 
     // Coefficient used to calculate the next retry backoff interval.
-    // The next retry interval is previous interval multiplied by this coefficient.
+    // The next retry interval is previous interval multiplied
+    // by this coefficient.
     // Must be 1 or larger. Default is 2.0.
     ->withBackoffCoefficient(1)
 
-    // Maximum backoff interval between retries. Exponential backoff leads to interval increase.
-    // This value is the cap of the interval. Default is 100x of initial interval.
+    // Maximum backoff interval between retries. Exponential backoff
+    // leads to interval increase. This value is the cap of the interval.
+    // Default is 100x of initial interval.
     ->withMaximumInterval(600) // seconds or DateInterval
 
-    // Maximum number of attempts. When exceeded the retries stop even if not expired yet.
-    // If not set or set to 0, it means unlimited
+    // Maximum number of attempts. When exceeded the retries stop even
+    // if not expired yet. If not set or set to 0, it means unlimited
     ->withMaximumAttempts(10)
 
-    // Non-Retriable errors. This is optional. Temporal server will stop retry if error type matches this list.
+    // Non-Retriable errors. This is optional. Temporal server will stop
+    // retry if error type matches this list.
+    //
     // Note:
     //  - cancellation is not a failure, so it won't be retried,
     //  - only StartToClose or Heartbeat timeouts are retryable.
@@ -83,7 +87,7 @@ class MyActivity
 ```
 
 To enable retries for a Workflow, you need to provide a retry policy via `ChildWorkflowOptions` for child Workflows or 
-via `tWorkflowOptions` for top-level Workflows.
+via `WorkflowOptions` for top-level Workflows.
 
 There are some subtle nuances to how Workflow's history events are recorded when a `RetryOptions` is used.
 For an Activity with a `RetryOptions`:

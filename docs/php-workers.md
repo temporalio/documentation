@@ -3,7 +3,7 @@ id: php-workers
 title: Workers
 ---
  
-The RoadRunner application server will launch multiple Temporal PHP worker processes based on provided `.rr.yaml` configuration.
+The [RoadRunner application server](https://roadrunner.dev/) will launch multiple Temporal PHP worker processes based on provided `.rr.yaml` configuration.
 
 Each worker might connect to one or multiple task queues. Worker poll _Temporal service_ for tasks, performs those tasks, 
 and communicates task execution results back to the _Temporal service_. 
@@ -70,3 +70,5 @@ temporal:
   activities:
     num_workers: 10
 ```
+
+> You can serve HTTP endpoints using the same server setup. 
