@@ -122,6 +122,9 @@ module.exports = {
           label: 'PHP',
           items: [
             'php-sdk-overview',
+            'php-activity-async-completion',
+            'php-sync-vs-async-start',
+            'php-activity-interface',
             // {
             //   type: 'category',
             //   collapsed: true,
