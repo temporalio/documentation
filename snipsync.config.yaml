@@ -1,19 +1,17 @@
 origins:
   - owner: temporalio
     repo: money-transfer-project-template-java
-    ref: 2d4de50bfad5b12add81b0069e73b4d2fe00f94d
   - owner: temporalio
     repo: hello-world-project-template-java
-    ref: 36145d28d5dade98b54ec11057a3296cdd52cbde
   - owner: temporalio
     repo: money-transfer-project-template-go
-    ref: 33c23e3b19444cd5c7df59fb7e29bc0ee5c92cc5
   - owner: temporalio
     repo: hello-world-project-template-go
-    ref: 3243bbb16d64a1892bde43dc8b7ef8b267267f9c
   - owner: temporalio
     repo: temporal
-    ref: 66f0614aafde2de804d68bc07b3f8d9c4d5d9b73
+  - owner: temporalio
+    repo: samples-php
+    ref: 09b039aaaf8ad675e4b346e28a0afd0ac0e1b603
 
 target: docs
 
