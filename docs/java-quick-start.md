@@ -75,7 +75,7 @@ Also add the following logback.xml config file somewhere in your classpath (for 
 Let's add `HelloWorldImpl` with the `sayHello` method that just logs the "Hello ..." and returns.
 
 ```java
-import io.temporal.Workflow.Workflow;
+import io.temporal.workflow.Workflow;
 import io.temporal.workflow.WorkflowInterface;
 import io.temporal.workflow.WorkflowMethod;
 import org.slf4j.Logger;
