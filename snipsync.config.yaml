@@ -11,7 +11,6 @@ origins:
     repo: temporal
   - owner: temporalio
     repo: samples-php
-    ref: 09b039aaaf8ad675e4b346e28a0afd0ac0e1b603
 
 target: docs
 
