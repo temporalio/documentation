@@ -9,8 +9,8 @@ Workflow, similar to the way it does for an Activity that it invoked.
 
 ```go
 cwo := workflow.ChildWorkflowOptions{
-        // Do not specify WorkflowId if you want Temporal to generate a unique Id for the child execution.
-        WorkflowId:                   "BID-SIMPLE-CHILD-WORKFLOW",
+        // Do not specify WorkflowID if you want Temporal to generate a unique Id for the child execution.
+        WorkflowID:                   "BID-SIMPLE-CHILD-WORKFLOW",
         ExecutionStartToCloseTimeout: time.Minute * 30,
 }
 ctx = workflow.WithChildWorkflowOptions(ctx, cwo)
