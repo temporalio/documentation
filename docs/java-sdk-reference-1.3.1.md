@@ -34,7 +34,17 @@ Overall timeout workflow is willing to wait for activity to complete. It include
 
 **Method** | **Sets the schedule to start timeout**
 
-Time Activity can stay in task queue before it is picked up by a Worker. If schedule to close is not provided then both this and start to close are required.
+Time Activity can stay in Task Queue before it is picked up by a Worker. If schedule to close is not provided then both this and start to close are required.
+
+**Params**
+
+- **Duration:**
+
+#### `ActivityOptions.Builder.setStartToCloseTimeout`
+
+**Method** | **Sets the start to close timeout**
+
+Maximum Activity execution time after it was sent to a Worker. If schedule to close is not provided then both this and schedule to start are required.
 
 **Params**
 
