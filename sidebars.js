@@ -136,7 +136,6 @@ module.exports = {
             'php-continue-as-new',
             'php-side-effect',
             'php-queries',
-            'php-activity-async-completion',
             'php-versioning',
             'php-distributed-cron',
           ],
