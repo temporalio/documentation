@@ -103,6 +103,7 @@ module.exports = {
               label: 'Reference 🔗',
               href: 'https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/index.html',
             },
+            'java-sdk-quick-reference-1.3.1',
             'java-sdk-tutorial-prerequisites',
             'java-run-your-first-app',
             'java-hello-world',
