@@ -128,7 +128,7 @@ go run start/main.go
 
 ## ![](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/wisdom.png) Lore check
 
-Great work! You now know how to build a Temporal Workflow application using the Go SDK. Let's do a quick review to make sure you remember some fo the more important pieces.
+Great work! You now know how to build a Temporal Workflow application using the Go SDK. Let's do a quick review to make sure you remember some for the more important pieces.
 
 ![One](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/one.png) &nbsp;&nbsp; **What are the minimum four pieces of a Temporal Workflow application?**
 
