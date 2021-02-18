@@ -38,6 +38,7 @@ module.exports = {
       items: [
         'server-introduction',
         'server-quick-install',
+        'server-production-deployment',
         'server-architecture',
         'server-versions-and-dependencies',
         'server-workflow-search',
