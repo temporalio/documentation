@@ -29,5 +29,5 @@ This short video provides a decent overview of the functionality and how to use 
 <br/>
 
 There are some considerations to using Snipsync however.
-The source code snippet needs to make sense within the context of the documentation.
+The source code snippets need to make sense within the context of the documentation.
 Comments should be carefully selected, and additional variables and function calls within the snippet should be minimized. Essentially, a little extra effort is usually needed to align the code snippet and the documentation to work together. But even so, over the long term, it should help alleviate the painful process of scouring documentation to make sure code examples are up-to-date.
