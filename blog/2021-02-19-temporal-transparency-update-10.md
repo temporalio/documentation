@@ -34,7 +34,7 @@ We plan to provide a more detailed post-mortem in coming weeks. TL;DR; Golang va
 
 At a product level, security has been a major focus over the last few months. Security features have been requested for some time, but they were always hard to prioritize since Uber runs Cadence in a private network. As we started to collect feedback about the most desired Temporal features in mid 2020, it immediately became clear that security needed to be a priority. For context, when we started our security efforts in October, authentication and authorization were the most requested features by almost double the next highest request. We also knew that AuthN/AuthZ were baseline requirements for our cloud solution.
 
-Throughout November and December of 2020, we made immense progress securing Temporal. One of our major goals with both authentication and authorization was to be very un-opinionated and reinvent as few wheels as possible. For these reasons, we decided to design authentication so it could support any OIDC compliant identity provider.  In November we launched authentication beta for open source. We really appreciate everyone who helped validate and drive our design. 
+Throughout November and December of 2020, we made immense progress securing Temporal. One of our major goals with both authentication and authorization was to be very un-opinionated and reinvent as few wheels as possible. For these reasons, we decided to design authentication so it could support any OIDC compliant identity provider.  In November we launched authentication beta for open source. We really appreciate everyone who helped validate and drive our design.
 
 In parallel to the authentication work, we were also working on authorization. We wanted a killer authorization experience, but also needed to meticulously review existing system APIs to ensure access control was enforced everywhere it should be. The team really worked hard to get this feature out securely and quickly. This hard work paid off and we released authorization into open source by mid December.
 
@@ -58,19 +58,19 @@ followed by:
 
 **"Why not support/licensing/on-prem?"**
 
-These are valid questions, so I'll briefly explain why cloud is the right fit for us. 
+These are valid questions, so I'll briefly explain why cloud is the right fit for us.
 
 Our number one goal as a company is to **improve the lives of as many developers as possible**. We're definitely biased, but we believe Temporal fundamentally improves developers lives in a way that most technology products don't. Because of this, we believe the number one way to reach our goal is to get Temporal into the hands of as many developers as possible. So now the question becomes:
 
 > How do we get Temporal into as many developers hands as possible?
 
-The answer is complex, but at the highest level it really boils down to making Temporal more accessible. When we look at the aspects of Temporal which are the least accessible today, it's clear that running Temporal itself is the biggest barrier of entry. While there are numerous motivations for our choice to be a cloud company, this is the most important. We believe the cloud is the optimal path for getting Temporal into the hands of more developers, therefore improving their lives. 
+The answer is complex, but at the highest level it really boils down to making Temporal more accessible. When we look at the aspects of Temporal which are the least accessible today, it's clear that running Temporal itself is the biggest barrier of entry. While there are numerous motivations for our choice to be a cloud company, this is the most important. We believe the cloud is the optimal path for getting Temporal into the hands of more developers, therefore improving their lives.
 
 We are also a business and from a business point of view, the cloud just makes common sense. We pride ourselves on providing high quality "no strings attached" support and becoming a services company would have changed our incentives making that much harder. On-prem is another common revenue path, but we know that it would mean spending far more time debugging customer infrastructure, and far less time improving Temporal. Finally there is the licensing route, but we really like MIT and strongly believe that creating an enterprise version would be unhealthy for our open source community. Even if you don't agree with this rationale,  I hope it at least provides some insight into thought process.
 
 ### The cloud journey
 
-For a long time, a hosted version of Temporal was merely an idea. It was an idea that we really liked but there had always been more pressing priorities. For the first half of 2020, our time and energy was consumed by producing a high quality production release. Once we released , our focus shifted to our funding announcement and subsequent exit from stealth. So by the time we announced our funding, serious demand had grown for a cloud offering. It became clear that the cloud was no longer a hypothetical "nice to have", but instead a real blocker for Temporal adoption. 
+For a long time, a hosted version of Temporal was merely an idea. It was an idea that we really liked but there had always been more pressing priorities. For the first half of 2020, our time and energy was consumed by producing a high quality production release. Once we released , our focus shifted to our funding announcement and subsequent exit from stealth. So by the time we announced our funding, serious demand had grown for a cloud offering. It became clear that the cloud was no longer a hypothetical "nice to have", but instead a real blocker for Temporal adoption.
 
 Towards the end of October, we began seriously ramping up our cloud efforts. In addition to our dedicated cloud team, our other teams were also making changes to the core service necessary to provide a secure and reliable hosted experience. Security was the largest of these changes, but coming in as a close second was the removal of Kafka from both the visibility and cross-DC code paths. Removing Kafka was a core requirement for our hosted service, but it was also a huge win for Temporal. Removing Kafka means one less dependency is required to run the system. In general the team did an amazing job delivering all the features blocking our cloud effort.
 
@@ -80,7 +80,7 @@ If you are interested in Temporal Cloud, feel free to reach out (ryland@temporal
 
 ## SDKs
 
-Another area of focus over the last few months has been our language SDKs. Historically, Temporal only officially supported Java and Golang as official language SDKs. There are [community contributed SDKs for Ruby, Python and a few others](https://docs.temporal.io/docs/sdks-introduction/#other-sdks). While we really appreciate these contributions, we can't provide any guarantees for them until they are integrated in officially. We know that supported languages is one of the most important factors for choosing a new technology. This is why we've put serious effort into expanding our official language support over the last few months. 
+Another area of focus over the last few months has been our language SDKs. Historically, Temporal only officially supported Java and Golang as official language SDKs. There are [community contributed SDKs for Ruby, Python and a few others](https://docs.temporal.io/docs/sdks-introduction/#other-sdks). While we really appreciate these contributions, we can't provide any guarantees for them until they are integrated in officially. We know that supported languages is one of the most important factors for choosing a new technology. This is why we've put serious effort into expanding our official language support over the last few months.
 
 ### PHP SDK
 
@@ -94,7 +94,7 @@ PHP isn't the only language on its way to Temporal. Work is also underway on a T
 
 Instead of poorly explaining our progress with docs, I'll defer to resident expert and information architect Cully:
 
-> There have been many contributions to Temporal's documentation over the last couple of months. Highlights include Server information and SDK guides. In regards to the Server, while we have refreshed some of the existing information, we have also published new information on security, versions and dependencies, Elasticsearch setup, and Server options. In regards to SDKs, thanks to Anton Titov, there is now a brand new set of PHP SDK guides for PHP developers. The Temporal Product Team appreciates all of the contributions the community has made and we look forward to bringing you even more content over the next several months.
+> There have been many contributions to [Temporal's documentation](/docs/get-started) over the last couple of months. Highlights include Server information and SDK guides. In regards to the Server, while we have refreshed some of the existing information, we have also published new information on [security](/docs/server-security), [versions and dependencies](/docs/server-versions-and-dependencies), [Elasticsearch setup](/docs/server-elasticsearch-setup), and [Server options](/docs/server-options). In regards to SDKs, thanks to [Anton Titov](https://github.com/wolfy-j), there is now a brand new set of [PHP SDK guides](/docs/php-sdk-overview) for PHP developers. The Temporal Product Team appreciates all of the contributions the community has made and we look forward to bringing you even more content over the next several months.
 
 ## Community
 
@@ -102,19 +102,19 @@ Instead of poorly explaining our progress with docs, I'll defer to resident expe
 
 For those who remember, we ran a survey a while back about Discord and Slack. Some users later reached out and asked about the purpose of the survey and if we had any immediate plans to switch. To directly answer, there are no immediate plans to switch. With that in mind, our medium/long term plan is to move away from Slack. There's a lot of reasons we're not fans of Slack for community management, [most of which are covered in my previous post.](https://docs.temporal.io/blog/discourse) The biggest blocker stopping us from moving is lack of threads. We feel threads are an important mechanism for asynchronous community communication. Unfortunately Discord has no official plans for thread support and definitely no timeline (which we can respect). We will continue to evaluate the situation and will keep the community updated as things progress.
 
-I've also included the results from the two primary questions in the survey. The first (image below): "Would you be open to trying Discord..." was only presented to users who said they had never tried Discord. 
+I've also included the results from the two primary questions in the survey. The first (image below): "Would you be open to trying Discord..." was only presented to users who said they had never tried Discord.
 
 ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d9aeb934-5827-4b4a-b45f-70637d62012a/Screen_Shot_2021-02-19_at_1.46.50_PM.png](../static/img/discord-0.png)
 
-While the second (image below), was conversely only shown to users who said they had tried Discord. The results of both questions indicate that the community is very willing to consider Discord in the future. 
+While the second (image below), was conversely only shown to users who said they had tried Discord. The results of both questions indicate that the community is very willing to consider Discord in the future.
 
 ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/ad9a5eda-0668-40dd-acd9-d171e8cf7148/Screen_Shot_2021-02-19_at_1.44.46_PM.png](../static/img/discord-1.png)
 
 ### Open office hours and other content
 
-You may have noticed that there hasn't been an open office hours in a while and that other auxiliary content has also decreased in volume. The honest truth is that we are a very small team and the amount of workload has increased much faster than our headcount has. For the most part, this is an amazing sign for the technology and the business. 
+You may have noticed that there hasn't been an open office hours in a while and that other auxiliary content has also decreased in volume. The honest truth is that we are a very small team and the amount of workload has increased much faster than our headcount has. For the most part, this is an amazing sign for the technology and the business.
 
-While all of this is true, we really love community focused events like the open office hours and are dedicated to bringing them back. The most surefire way for us to accomplish this is by hiring more talented and intelligent people like all of you who are reading this. This is a perfect segue to the next section which talks about our current hiring and open roles. 
+While all of this is true, we really love community focused events like the open office hours and are dedicated to bringing them back. The most surefire way for us to accomplish this is by hiring more talented and intelligent people like all of you who are reading this. This is a perfect segue to the next section which talks about our current hiring and open roles.
 
 ## Work with us (seriously we need amazing people like all of you)!
 
