@@ -24,7 +24,7 @@ Hey there everyone, it's been a while since the last update. Things have been **
 
 ## Cassandra persistence issue
 
-Until 1.6.0 there was a bug that only affects users running with Cassandra persistence. We highly recommend that all Temporal-Cassandra users **immediately upgrade** to 1.6.0 or higher and refrain from making changes to their Cassandra cluster until they’ve upgraded. For more details read:
+Until 1.6.0 there was a bug that only affects users running with Cassandra persistence. We highly recommend that all Temporal-Cassandra users **immediately upgrade** to 1.6.0 (or the updated version of your current major/minor patch) and refrain from making changes to their Cassandra cluster until they’ve upgraded. For more details read:
 
 [https://community.temporal.io/t/important-announcement-for-temporal-cassandra-users/1540](https://community.temporal.io/t/important-announcement-for-temporal-cassandra-users/1540)
 
