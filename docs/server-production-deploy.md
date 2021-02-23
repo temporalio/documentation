@@ -39,8 +39,7 @@ precise versions we support together with their features.
 
 ## Further Reading
 
-A full understanding of [Temporal Server Architecture](https://docs.temporal.io/docs/server-architecture/) will help you 
-debug and troubleshoot production deployment issues.
+A full understanding of [Temporal Server Architecture](https://docs.temporal.io/docs/server-architecture/) will help you debug and troubleshoot production deployment issues.
 
 ## External Runbooks
 
