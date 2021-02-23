@@ -13,13 +13,9 @@ We remain accessible to you via the [Community forum](https://community.temporal
 for further questions.
 
 1. **Prerequisites**:  Temporal Server is a Go application which [you can import](https://docs.temporal.io/docs/server-options) or run as a binary. 
-    The other minimum requirement is a database - we support Cassandra, MySQL, or PostgreSQL. 
-    
-    Further dependencies are only needed to support optional features. For example: enhanced workflow search (with ElasticSearch), 
-monitoring & observability (Prometheus & Grafana), and multi-cluster replication (including cross-data-center).
-    
-    Please see our [versions & dependencies doc](https://docs.temporal.io/docs/server-versions-and-dependencies/) for 
-precise versions we support together with their features.
+
+    - The other minimum requirement is a database - we support Cassandra, MySQL, or PostgreSQL.  Further dependencies are only needed to support optional features. For example: enhanced workflow search (with ElasticSearch), monitoring & observability (Prometheus & Grafana), and multi-cluster replication (including cross-data-center).
+    - Please see our [versions & dependencies doc](https://docs.temporal.io/docs/server-versions-and-dependencies/) for precise versions we support together with their features.
 
 2. **Configuration**: You will want to configure `development.yaml` with at least the [`global`](https://docs.temporal.io/docs/server-configuration/#global) and [`persistence`](https://docs.temporal.io/docs/server-configuration/#persistence) parameters. A full configuration reference is available [here](https://docs.temporal.io/docs/server-configuration).
 
