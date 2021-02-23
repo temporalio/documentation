@@ -29,7 +29,7 @@ precise versions we support together with their features.
 
     - **Service Metrics**: For each request by service handler we emit `service_requests`, `service_errors`, and `service_latency` metric with type, operation, and namespace tags. This gives you basic visibility into service usage and allows you to look request rates across services, namespaces or even operations.
 
-    - **Persistence Metric**: Temporal emits `persistence_requests`, `persistence_errors` and `persistence_latency` metrics for each persistence operation. These metrics are tagged with operation tag to allow getting request rates, error rates or latencies per operation. These are super useful to identify issues caused by database problems.
+    - **Persistence Metrics**: Temporal emits `persistence_requests`, `persistence_errors` and `persistence_latency` metrics for each persistence operation. These metrics are tagged with operation tag to allow getting request rates, error rates or latencies per operation. These are super useful to identify issues caused by database problems.
 
     - **Workflow Stats**: Temporal also emits counters on completion of workflows. These are super useful in getting overall stats about workflow completion. Use `workflow_success`, `workflow_failed`, `workflow_timeout`, `workflow_terminate` and `workflow_cancel` counters for each type of workflow completion. They are also tagged with namespace tag.
     
