@@ -6,10 +6,16 @@ sidebar_label: Quick install
 
 ## Overview
 
-There are two ways to quickly install Temporal:
+There are two ways to quickly install and run the Temporal Server:
 
-- for local development: using `docker-compose`
-- on Kubernetes: using the [Temporal Helm Chart](https://github.com/temporalio/helm-charts)
+- [Docker](#docker): Using `docker-compose` makes it easy to develop Workflows locally.
+- [Helm Charts](#helm-charts): Deploying the Server to [Kubernetes](https://kubernetes.io/) is an easy way to test the system and develop Workflows.
+
+We do not recommend using either of these methods in a [live (production) environment](/docs/server-production-deployment).
+
+## Helm Charts
+
+Instructions for using the Temporal Helm Chart is available in the [temporalio/helm-charts repo README](https://github.com/temporalio/helm-charts).
 
 ## Docker
 
@@ -27,8 +33,8 @@ The following steps will run a local instance of the Temporal Server using the d
 3. Run the `docker-compose up` command.
 
 ```bash
-git clone https://github.com/temporalio/docker-compose.git temporal-server
-cd temporal-server
+git clone https://github.com/temporalio/docker-compose.git
+cd  docker-compose
 docker-compose up
 ```
 
