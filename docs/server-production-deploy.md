@@ -1,41 +1,61 @@
 ---
 id: server-production-deployment
-title: Production self-hosted deployment of Temporal Server
+title: Temporal Server self-hosted production deployment
 sidebar_label: Production deployment
 ---
 
 ## Overview
 
-While it is easy to [quick start for local development](https://docs.temporal.io/docs/server-quick-install), there is a lot of nuance to a production deployment of Temporal Server, because it is highly use-case and infrastructure dependent. 
+While a lot of effort has been made to easily run and test the Temporal Server in a development environment (see the [Quick install guide](/docs/server-quick-install)), there is far less of an established framework for deploying Temporal to a live (production) environment.
+That is because the set up of the Server depends very much on the intended use-case and the hosting infrastructure.
 
-It is impossible for us to document every permutation, so we instead focus on giving you what you need to know to deploy Temporal Server from first principles.
-We remain accessible to you via the [Community forum](https://community.temporal.io/) or [Slack](https://join.slack.com/t/temporalio/shared_invite/zt-kfgfjuye-L8gCQVRhPykA2td8pk7eTQ) 
-for further questions.
+This page is dedicated to providing a "first principles" approach to self-hosting the Temporal Server.
+As a reminder, experts are accessible via the [Community forum](https://community.temporal.io/) and [Slack](https://join.slack.com/t/temporalio/shared_invite/zt-kfgfjuye-L8gCQVRhPykA2td8pk7eTQ) should you have any questions.
 
-1. **Prerequisites**:  Temporal Server is a Go application which [you can import](https://docs.temporal.io/docs/server-options) or run as a binary. 
+## Setup principles
 
-    - The other minimum requirement is a database - we support Cassandra, MySQL, or PostgreSQL.  Further dependencies are only needed to support optional features. For example: enhanced workflow search (with ElasticSearch), monitoring & observability (Prometheus & Grafana), and multi-cluster replication (including cross-data-center).
-    - Please see our [versions & dependencies doc](https://docs.temporal.io/docs/server-versions-and-dependencies/) for precise versions we support together with their features.
+### Prerequisites
 
-2. **Configuration**: You will want to configure `development.yaml` with at least the [`global`](https://docs.temporal.io/docs/server-configuration/#global) and [`persistence`](https://docs.temporal.io/docs/server-configuration/#persistence) parameters. A full configuration reference is available [here](https://docs.temporal.io/docs/server-configuration).
+The Temporal Server is a Go application which you can [import](https://docs.temporal.io/docs/server-options) or run as a binary.
 
-3. **Scaling and Metrics**: Once your Temporal instance is running, you will want to watch key metrics to understand system health and scaling needs. Temporal maintains a set of [Grafana dashboards](https://github.com/temporalio/dashboards) you can use as a starting point.
+The minimum dependency is a database.
+The Server supports [Cassandra](https://cassandra.apache.org/), [MySQL](https://www.mysql.com/), or [PostgreSQL](https://www.postgresql.org/).
+Further dependencies are only needed to support optional features.
+For example, enhanced Workflow search can be achieved using [ElasticSearch](/docs/server-elasticsearch-setup).
+And, monitoring and observability are available with [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/).
 
-    At a high level, you will want to track these 3 categories of metrics:
+See the [versions & dependencies page](/docs/server-versions-and-dependencies/) for precise versions we support together with these features.
 
-    - **Service Metrics**: For each request by service handler we emit `service_requests`, `service_errors`, and `service_latency` metric with type, operation, and namespace tags. This gives you basic visibility into service usage and allows you to look request rates across services, namespaces or even operations.
+### Configuration
 
-    - **Persistence Metrics**: Temporal emits `persistence_requests`, `persistence_errors` and `persistence_latency` metrics for each persistence operation. These metrics are tagged with operation tag to allow getting request rates, error rates or latencies per operation. These are super useful to identify issues caused by database problems.
+At minimum, the `development.yaml` file needs to have the [`global`](/docs/server-configuration/#global) and [`persistence`](https://docs.temporal.io/docs/server-configuration/#persistence) parameters defined.
 
-    - **Workflow Stats**: Temporal also emits counters on completion of workflows. These are super useful in getting overall stats about workflow completion. Use `workflow_success`, `workflow_failed`, `workflow_timeout`, `workflow_terminate` and `workflow_cancel` counters for each type of workflow completion. They are also tagged with namespace tag.
-    
-    More details can be found [in our forums](https://community.temporal.io/t/metrics-for-monitoring-server-performance/536/3).
+The [Server configuration reference](/docs/server-configuration) has a more complete list of possible parameters.
 
-4. **Debugging**: *to be completed*
+### Scaling and Metrics
+
+Once your instance of the Server is running, you can watch for key metrics to understand the system health and scaling needs. You can use these [Grafana dashboards](https://github.com/temporalio/dashboards) as a starting point.
+
+At a high level, you will want to track these 3 categories of metrics:
+
+- **Service metrics**: For each request made by the service handler we emit `service_requests`, `service_errors`, and `service_latency` metrics with `type`, `operation`, and `namespace` tags.
+This gives you basic visibility into service usage and allows you to look at request rates across services, namespaces and even operations.
+- **Persistence metrics**: The Server emits `persistence_requests`, `persistence_errors` and `persistence_latency` metrics for each persistence operation.
+These metrics include the `operation` tag such that you can get the request rates, error rates or latencies per operation.
+These are super useful in identifying issues caused by the database.
+- **Workflow stats**: The Server also emits counters on Workflows complete.
+These are  useful in getting overall stats about Workflow completions.
+Use `workflow_success`, `workflow_failed`, `workflow_timeout`, `workflow_terminate` and `workflow_cancel` counters for each type of Workflow completion.
+They are also include the `namespace` tag.
+Additional information is available in [this forum post](https://community.temporal.io/t/metrics-for-monitoring-server-performance/536/3).
+
+### Debugging
+
+Coming soon.
 
 ## Further Reading
 
-A full understanding of [Temporal Server Architecture](https://docs.temporal.io/docs/server-architecture/) will help you debug and troubleshoot production deployment issues.
+Understanding the [Temporal Server architecture](https://docs.temporal.io/docs/server-architecture/) can help you debug and troubleshoot production deployment issues.
 
 ## External Runbooks
 
