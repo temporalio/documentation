@@ -91,6 +91,7 @@ module.exports = {
             'go-distributed-cron',
             'go-tracing',
             'go-search-apis',
+            'go-selectors',
           ],
         },
         {
