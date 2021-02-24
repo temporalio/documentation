@@ -22,7 +22,7 @@ Here is a list of SDKs that are in the works but are not yet officially endorsed
 - **Python SDK** is [being developed by a community member](https://github.com/firdaus/temporal-python-sdk) - please get in touch on Slack
 - **Node.js SDK** is [currently in active development](https://github.com/temporalio/proposals/pull/15) - please get in touch on Slack
 
-These other SDKs have community interest - please get in touch with us if you are interested in using or trying
+These other SDKs have community interest - please get in touch with us if you are interested in using or trying:
 
 - **C#/.Net SDK**
 - **Swift SDK**
@@ -35,4 +35,5 @@ If you are interested in using an "unofficial" SDK, we recommend that you reach 
 - [Slack](https://join.slack.com/t/temporalio/shared_invite/zt-kfgfjuye-L8gCQVRhPykA2td8pk7eTQ)
 - [Community forums](https://community.temporal.io/)
 
-We are very excited by the community's enthusiasm and strongly believe in collaborating on open source projects. Our goal is to make sure there is maintenance leadership in place to care for the developer experience over the long term.
+We are very excited by the community's enthusiasm and strongly believe in collaborating on open source projects.
+Our goal is to make sure there is maintenance leadership in place to care for the developer experience over the long term.
