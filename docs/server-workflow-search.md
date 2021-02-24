@@ -54,6 +54,7 @@ Here are the attributes that are provided by default:
 | HistoryLength       | INT        |
 | RunId               | KEYWORD    |
 | StartTime           | INT        |
+| TaskQueue           | STRING     |
 | WorkflowId          | KEYWORD    |
 | WorkflowType        | KEYWORD    |
 
