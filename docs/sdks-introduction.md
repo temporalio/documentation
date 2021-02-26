@@ -10,13 +10,13 @@ Get started building Temporal applications using an SDK.
 
 - [Go](/docs/go-sdk-overview)
 - [Java](/docs/java-sdk-overview)
+- [PHP](/docs/php-sdk-overview)
 
 ## Other SDKs
 
 Looking for SDKs in other languages? There are plans to support many others. Here is a list of SDKs that are in the works but are not yet officially endorsed:
 
 - [**Ruby SDK**](/docs/ruby-sdk-overview) is in active development
-- [**PHP SDK**](/docs/php-sdk-overview) is in active development
 - **Python SDK** is [being developed by a community member](https://github.com/firdaus/temporal-python-sdk) - please get in touch on Slack
 - **Node.js SDK** is [currently in active development](https://github.com/temporalio/proposals/pull/15) - please get in touch on Slack
 
