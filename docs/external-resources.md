@@ -18,14 +18,14 @@ If you have made a tutorial or explanation of Temporal, please submit them here 
     > "The Temporal Workflows engine is incredibly powerful and provides full control over workflows, including retries, timeouts, backpressure, and the parallel execution of activities. Workflows can be written in most programming languages and include checks, conditions, and sequences of execution."
 - [The macro problem with microservices](https://stackoverflow.blog/2020/11/23/the-macro-problem-with-microservices/) on the Stackoverflow blog
 
-    > "In just 20 years, software engineering has shifted from architecting monoliths with a single database and centralized state to microservices where everything is distributed across multiple containers, servers, data centers, and even continents. Distributing things solves scaling concerns, but introduces a whole new world of problems, many of which were previously solved by monoliths."
+    > "In just 20 years, software engineering has shifted — from architecting monoliths with a single database and centralized state — to microservices where everything is distributed across multiple containers, servers, data centers, and even continents. Distributing things solves scaling concerns, but introduces a whole new world of problems, many of which were previously solved by monoliths."
 - [Temporal Tackles Microservice Reliability Headaches](https://thenewstack.io/temporal-tackles-microservice-reliability-headaches/) on the New Stack blog
 
     > "Using code, it aims to hide the complexity of building with microservices across distributed systems. It employs durable virtual memory not linked to a specific process that preserves the application state despite a whole range of possible failures."
 
 ## Tutorials
 
-> Note: Each of [our SDK docs](/docs/sdks-introduction) have a Hello World and Run Your First App tutorial!
+*Note: Each of [our SDK docs](/docs/sdks-introduction) have a Hello World and Run Your First App tutorial!*
 
 - [Writing your first Workflow](https://www.youtube.com/watch?v=taKrIWt6KMY&feature=youtu.be) (20 minutes)
 - [How To Deploy Temporal to Azure Kubernetes Service](https://mikhail.io/2020/11/how-to-deploy-temporal-to-azure-kubernetes-aks/) by Mikhail Shilkov
@@ -51,7 +51,7 @@ If you have made a tutorial or explanation of Temporal, please submit them here 
 
 ## How Temporal Works
 
-> Don't forget our own [Temporal Architecture docs](/docs/server-architecture/)!
+*Don't forget our own [Temporal Architecture docs](/docs/server-architecture/)!*
 
 - [A Practical Approach to Temporal Architecture](https://mikhail.io/2020/10/practical-approach-to-temporal-architecture/) by Mikhail Shilkov
 - [Cadence Architecture Talk](https://www.youtube.com/watch?v=5M5eiNBUf4Q) (24 mins) by Samar Abbas
