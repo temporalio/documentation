@@ -33,11 +33,25 @@ If you have made a tutorial or explanation of Temporal, please submit them here 
 
 ## Tweetsize Comments
 
-- "did I mention we’re using Temporal and it’s wonderful? I think it’s very close and I’m hugely bullish on them. Lots of things Uber was doing would have been infinitely harder without it’s predecessor. Tbh, this came out super quick because of em" - [Jake Cooper](https://twitter.com/JustJake/status/1355392273173737476?s=20),  Railway.app
-- "Certain programming models allow more to be in the lower layers, not exposed to the application, due to their semantics and failure models. Eg, as was mentioned with Temporal - the app code is failure oblivious and retries/backoff/jitter/durability can be handled below" - [Reuben Bond](https://twitter.com/reubenbond/status/1338901280090025985?s=20), Microsoft
-- "Pretty awesome tech. Allows you to express long running processes in a fault tolerant way using Java (or Go) without explicit timers, queues, polling, etc. Like in this example: "pause" a method for 30 days, something you wouldn't normally do." - [Richard Kettelerij](https://twitter.com/rkettelerij/status/1320477838156435456?s=20), Mindloops
-- "Temporal does to backend and infra what React did to frontend. If you're in the React world, you've forgotten about manually adding and removing DOM elements, updating attributes and their quirks, hooking up event listeners… It's not only been a boost in developer experience, but most importantly in *consistency and reliability*. In the backend world, this reliability problem is absurdly amplified as monoliths break into SaaS services, functions, containers… You have to carefully manage and create queues to capture each side effect, ensure everything gets retried, state is scattered all over the place. Temporal's engine is quite complex, much like React's, but the surface exposed to the developer is a beautiful "render()" function to organize your backend workflows." - [Guillermo Rauch](https://twitter.com/rauchg/status/1316808665370820609?s=20), Vercel
-- "So every "cluster create" is a long-running Cadence operation. Once complete, this kicks of a variety of Cadence workflows _per cluster_ that run forever until it is destroyed. This lets you have a central "event loop" per cluster. For example: a "snapshot" triggers an event in the main event loop for a cluster, which ensures that no other ops (upgrades, etc.) are running at the same time, kicks off the snapshot job, then continues. We have long (multi-day/week) sleeps in the main event loop that wake up to renew TLS certs. And if any of the Cadence workers die, they come back up and continue right where they left off. Really just amazing technology. There's some great talks out there by the creators. An example use case they had (its out of Uber) was: every single driver on Uber has a long-running workflow that triggers monthly/bi-weekly to pay them, for example. Just super cool stuff." - [Mitchell Hashimoto](https://twitter.com/mitchellh/status/1316510643030114304?s=20)
+[Jake Cooper](https://twitter.com/JustJake/status/1355392273173737476?s=20),  Railway.app
+
+> "did I mention we’re using Temporal and it’s wonderful? I think it’s very close and I’m hugely bullish on them. Lots of things Uber was doing would have been infinitely harder without it’s predecessor. Tbh, [Railway] came out super quick because of em"
+
+[Reuben Bond](https://twitter.com/reubenbond/status/1338901280090025985?s=20), Microsoft
+
+> "Certain programming models allow more to be in the lower layers, not exposed to the application, due to their semantics and failure models. Eg, as was mentioned with Temporal - the app code is failure oblivious and retries/backoff/jitter/durability can be handled below"
+
+[Richard Kettelerij](https://twitter.com/rkettelerij/status/1320477838156435456?s=20), Mindloops
+
+> "Pretty awesome tech. Allows you to express long running processes in a fault tolerant way using Java (or Go) without explicit timers, queues, polling, etc. Like in this example: "pause" a method for 30 days, something you wouldn't normally do."
+
+[Guillermo Rauch](https://twitter.com/rauchg/status/1316808665370820609?s=20), Vercel
+
+> "Temporal does to backend and infra what React did to frontend. If you're in the React world, you've forgotten about manually adding and removing DOM elements, updating attributes and their quirks, hooking up event listeners… It's not only been a boost in developer experience, but most importantly in *consistency and reliability*. In the backend world, this reliability problem is absurdly amplified as monoliths break into SaaS services, functions, containers… You have to carefully manage and create queues to capture each side effect, ensure everything gets retried, state is scattered all over the place. Temporal's engine is quite complex, much like React's, but the surface exposed to the developer is a beautiful "render()" function to organize your backend workflows."
+
+[Mitchell Hashimoto](https://twitter.com/mitchellh/status/1316510643030114304?s=20), Hashicorp
+
+> "So every "cluster create" is a long-running Cadence operation. Once complete, this kicks of a variety of Cadence workflows _per cluster_ that run forever until it is destroyed. This lets you have a central "event loop" per cluster. For example: a "snapshot" triggers an event in the main event loop for a cluster, which ensures that no other ops (upgrades, etc.) are running at the same time, kicks off the snapshot job, then continues. We have long (multi-day/week) sleeps in the main event loop that wake up to renew TLS certs. And if any of the Cadence workers die, they come back up and continue right where they left off. Really just amazing technology. There's some great talks out there by the creators. An example use case they had (its out of Uber) was: every single driver on Uber has a long-running workflow that triggers monthly/bi-weekly to pay them, for example. Just super cool stuff."
 
 ## How Temporal Works
 
