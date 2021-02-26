@@ -24,6 +24,10 @@ If you have made a tutorial or explanation of Temporal, please submit them here 
 - [Temporal Tackles Microservice Reliability Headaches](https://thenewstack.io/temporal-tackles-microservice-reliability-headaches/) on the New Stack blog
 
     > Using code, it aims to hide the complexity of building with microservices across distributed systems. It employs **durable virtual memory not linked to a specific process that preserves the application state** despite a whole range of possible failures.
+- [Software Delivery Building Blocks at Datadog](https://www.youtube.com/watch?v=eWFpl-nzGsY&feature=youtu.be) by Jacob LeGrone and Kevin Devroede (Datadog) (starting at 6min 30s)
+
+    > Temporal lets you: 1) write "fault oblivious" stateful control flow and business logic, int he programming language of your choice, 2) respond to external events, 3) support very long running operations, 4) Communicate with 3rd party services
+
 - [Workflow Engine with Maxim Fateev](https://www.listennotes.com/podcasts/software/cadence-ubers-workflow-nNoaPiSfk7v/)  on Software Engineering Daily (56 mins Podcast)
 
 ## External Tutorials
@@ -58,7 +62,7 @@ If you have made a tutorial or explanation of Temporal, please submit them here 
 
 ## Misc
 
-Everything else that doesn't fit goes here.
+*Everything else that doesn't fit goes here.*
 
 If you can't find what you need, don't hesitate to ask on the Temporal Slack, or search in the Forums where there are common questions like:
 
