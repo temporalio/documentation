@@ -25,7 +25,7 @@ If you have made a tutorial or explanation of Temporal, please submit them here 
 
 ## Tutorials
 
-> Note: Each of [our SDK docs](docs/sdks-introduction) have a Hello World and Run Your First App tutorial!
+> Note: Each of [our SDK docs](/docs/sdks-introduction) have a Hello World and Run Your First App tutorial!
 
 - [Writing your first Workflow](https://www.youtube.com/watch?v=taKrIWt6KMY&feature=youtu.be) (20 minutes)
 - [How To Deploy Temporal to Azure Kubernetes Service](https://mikhail.io/2020/11/how-to-deploy-temporal-to-azure-kubernetes-aks/) by Mikhail Shilkov
@@ -41,7 +41,7 @@ If you have made a tutorial or explanation of Temporal, please submit them here 
 
 ## How Temporal Works
 
-> Don't forget our own [Temporal Architecture docs](https://docs.temporal.io/docs/server-architecture/)!
+> Don't forget our own [Temporal Architecture docs](/docs/server-architecture/)!
 
 - [A Practical Approach to Temporal Architecture](https://mikhail.io/2020/10/practical-approach-to-temporal-architecture/) by Mikhail Shilkov
 - [Cadence Architecture Talk](https://www.youtube.com/watch?v=5M5eiNBUf4Q) (24 mins) by Samar Abbas
