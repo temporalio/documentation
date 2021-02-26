@@ -150,5 +150,6 @@ module.exports = {
         },
       ],
     },
+    'external-resources',
   ],
 };
