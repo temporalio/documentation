@@ -4,7 +4,7 @@ tags:
   - Temporal
   - snipsync
   - documentation
-posted_on_: 2021-02-18T00:00:00Z
+posted_on_: 2021-02-26T00:00:00Z
 slug: snipsync-overview
 title: How we keep our code examples fresh
 author: Cully Wakelin
