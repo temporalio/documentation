@@ -44,6 +44,7 @@ Learn how to use the [Temporal CLI](/docs/tctl/) to query the backend and get in
 Want to contribute? Follow the contribution instructions provided within the repositories.
 
 - [Temporal server](https://github.com/temporalio/temporal/blob/master/CONTRIBUTING.md)
-- [Documentation](https://github.com/temporalio/documentation-legacy/blob/master/README.md).
+- [Documentation](https://github.com/temporalio/documentation-legacy/blob/master/README.md)
 - [Go SDK](https://github.com/temporalio/go-sdk/blob/master/CONTRIBUTING.md)
 - [Java SDK](https://github.com/temporalio/java-sdk/blob/master/CONTRIBUTING.md)
+- [PHP SDK](https://github.com/temporalio/sdk-php/blob/master/README.md)
