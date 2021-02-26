@@ -44,8 +44,17 @@ If you have made a tutorial or explanation of Temporal, please submit them here 
 > Don't forget our own [Temporal Architecture docs](https://docs.temporal.io/docs/server-architecture/)!
 
 - [A Practical Approach to Temporal Architecture](https://mikhail.io/2020/10/practical-approach-to-temporal-architecture/) by Mikhail Shilkov
-- 
+- [Cadence Architecture Talk](https://www.youtube.com/watch?v=5M5eiNBUf4Q) (24 mins) by Samar Abbas
+- [Cadence: Micro service Architecture Beyond Request/Response](https://www.youtube.com/watch?v=BJwFxqdSx4Y) (34 mins) by Maxim Fateev
 
 ## Misc
 
 Everything else that doesn't fit goes here.
+
+If you can't find what you need, don't hesitate to ask on the Temporal Slack, or search in the Forums where there are common questions like:
+
+- [What is the best practice for a polling activity?](https://community.temporal.io/t/what-is-the-best-practice-for-a-polling-activity/328)
+- [How to create a Signalling system for Human driven workflows? SMS OTP use case](https://community.temporal.io/t/signalling-system-human-driven-workflows/160)
+- [What is the recommended setup for running Cadence/Temporal with Cassandra on production?](https://community.temporal.io/t/what-is-the-recommended-setup-for-running-cadence-temporal-with-cassandra-on-production/556)
+- [Why use Temporal over a combination of AWS Step Functions and AWS Lambda?](https://community.temporal.io/t/why-use-temporal-over-a-combination-of-aws-step-functions-and-aws-lambda/342)
+- [Do we need Kafka with Temporal?](https://community.temporal.io/t/temporal-and-kafka/410)
