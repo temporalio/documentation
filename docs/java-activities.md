@@ -4,19 +4,15 @@ title: Activities in Java
 sidebar_label: Activities
 ---
 
-## Overview
-
-In Java, a Temporal Activity is simply an object method that contains any business-level logic.
-
 ## Activity Interface
 
-Activities are defined as methods of a plain Java interface annotated with `@ActivityInterface`.
+In Java, Activities are methods of a plain Java interface that are annotated with `@ActivityInterface`.
 Each method defines a single Activity type.
 A single Workflow can use more than one Activity interface and call more than one Activity method from the same interface.
 The only requirement is that Activity method arguments and return values are serializable to a byte array using the provided `io.temporal.common.converter.DataConverter` implementation.
 The default implementation uses a JSON serializer, but an alternative implementation can be configured through `io.temporal.client.WorkflowClientOptions.Builder.setDataConverter()`.
 
-Example of an interface that defines four Activities:
+Example of an interface that defines four Activities for interacting with S3:
 
 ```java
 @ActivityInterface
