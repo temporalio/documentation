@@ -34,7 +34,7 @@ If you have made a tutorial or explanation of Temporal, please submit them here 
 - [Writing your first Workflow](https://www.youtube.com/watch?v=taKrIWt6KMY&feature=youtu.be) by Ryland Goldstein (20 minutes) 
 - *submit yours [here](https://github.com/temporalio/documentation/edit/master/docs/external-resources.md)!*
 
-## Temporal Users Sharing Experience
+## Temporal Users
 
 - [Mitchell Hashimoto](https://twitter.com/mitchellh/status/1316510643030114304?s=20), Hashicorp
     
