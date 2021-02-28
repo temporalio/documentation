@@ -44,7 +44,7 @@ If you have made a tutorial or explanation of Temporal, please submit them here 
 
     > Temporal lets you: 1) write "fault oblivious" stateful control flow and business logic, int he programming language of your choice, 2) respond to external events, 3) support very long running operations, 4) Communicate with 3rd party services
 
-- [Building Reliable Workflows: Cadence as a Fallback for Event-Driven Processing](https://doordash.engineering/2020/08/14/workflows-cadence-event-driven-processing/) by Alan Lin (Datadog)
+- [Building Reliable Workflows: Cadence as a Fallback for Event-Driven Processing](https://doordash.engineering/2020/08/14/workflows-cadence-event-driven-processing/) by Alan Lin (Doordash)
     
     > Moving to a fully asynchronous-based event driven processing system will in our case result in **big performance gains** as we move off a synchronous processing model for one of our core flows. Eventually... we will eventually build enough confidence in the platform to use it solely for our primary delivery creation flow. **This will bring us massive gains in developer productivity** due to its ease of use and abstraction of fussy details.
 - [Reuben Bond](https://twitter.com/reubenbond/status/1338901280090025985?s=20), Microsoft
