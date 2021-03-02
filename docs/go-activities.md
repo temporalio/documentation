@@ -108,14 +108,21 @@ that call `RecordActivityHeartbeat`.
 
 ### Registration
 
-To make the Activity visible to the worker process hosting it, the Activity must be registered with the Worker.
+To make the Activity visible to the Worker process hosting it, the Activity must be registered with the Worker.
 
 ```go
 w := worker.New(temporalClient, "your_task_queue", worker.Options{})
 w.RegisterActivity(YourActivity)
 ```
-This call creates an in-memory mapping inside the worker process between the fully qualified function name and the implementation.
-If a worker receives a request to start an Activity execution for an Activity type it does not know, it will fail that request.
+
+This call creates an in-memory mapping inside the Worker process between the fully qualified function name and the implementation.
+If a Worker receives a request to start an Activity execution for an Activity type it does not know, it will fail that request.
+
+To register multiple Activities with the Worker, each Activity function name must be unique, and you must provide all Activity function names in the registration call like so:
+
+```
+w.registerActivity(ActivityA, ActivityB, ActivityC)
+```
 
 ## Failing an Activity
 

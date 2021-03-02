@@ -2,11 +2,11 @@
 id: php-workers
 title: Workers
 ---
- 
+
 The [RoadRunner application server](https://roadrunner.dev/) will launch multiple Temporal PHP worker processes based on provided `.rr.yaml` configuration.
 
-Each worker might connect to one or multiple task queues. Worker poll _Temporal service_ for tasks, performs those tasks, 
-and communicates task execution results back to the _Temporal service_. 
+Each worker might connect to one or multiple task queues. Worker poll _Temporal service_ for tasks, performs those tasks,
+and communicates task execution results back to the _Temporal service_.
 
 Worker code are developed, deployed, and operated by Temporal customers. To create a worker use `Temporal\WorkerFactory`:
 
@@ -31,6 +31,9 @@ $worker->registerWorkflowTypes(App\DemoWorkflow::class);
 
 // Activities are stateless and thread safe. So a shared instance is used.
 $worker->registerActivityImplementations(new App\DemoActivity());
+// To register multiple Activities with the Worker, each Activity implementation name must be unique.
+// And you must provide all Activity function names in the registration call like so:
+// $worker->registerActivityImplementations(new App/ActivityA(), new App/ActivityB(), new App/ActivityC());
 
 // start primary loop
 $factory->run();
@@ -71,4 +74,4 @@ temporal:
     num_workers: 10
 ```
 
-> You can serve HTTP endpoints using the same server setup. 
+> You can serve HTTP endpoints using the same server setup.
