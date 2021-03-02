@@ -201,3 +201,20 @@ try {
 ```
 
 If `wrap` returned void it wouldn't be possible to write `throw Activity.wrap` and compiler would complain about missing return.
+
+## Registering Activities
+
+To make the Activity visible to the Worker process hosting it, the Activity must be registered with the Worker.
+
+```java
+worker.registerActivitiesImplementations(new YourActivityImpl());
+```
+
+This call creates an in-memory mapping inside the Worker process between the fully qualified function name and the implementation.
+If a Worker receives a request to start an Activity execution for an Activity type it does not know, it will fail that request.
+
+To register multiple Activities with the Worker, each Activity implementation name must be unique, and you must provide all Activity function names in the registration call like so:
+
+```java
+worker.registerActivitiesImplementations(new ActivityA(), new ActivityB(), new ActivityC());
+```
