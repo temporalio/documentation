@@ -115,13 +115,15 @@ w := worker.New(temporalClient, "your_task_queue", worker.Options{})
 w.RegisterActivity(YourActivity)
 ```
 
-This call creates an in-memory mapping inside the Worker process between the fully qualified function name and the implementation.
-If a Worker receives a request to start an Activity execution for an Activity type it does not know, it will fail that request.
+This call creates an in-memory mapping inside the Worker process between the function name and the function itself.
+If a Worker receives a request to start an Activity execution for an Activity function it does not know, it will fail that request.
 
-To register multiple Activities with the Worker, each Activity function name must be unique, and you must provide all Activity function names in the registration call like so:
+To register multiple Activities with the Worker, just make multiple Activity registration calls, but make sure each Activity function name is unique:
 
 ```
-w.registerActivity(ActivityA, ActivityB, ActivityC)
+w.registerActivity(ActivityA)
+w.registerActivity(ActivityB)
+w.registerActivity(ActivityC)
 ```
 
 ## Failing an Activity
