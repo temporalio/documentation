@@ -210,7 +210,7 @@ To make the Activity visible to the Worker process hosting it, the Activity must
 worker.registerActivitiesImplementations(new YourActivityImpl());
 ```
 
-This call creates an in-memory mapping inside the Worker process between the fully qualified function name and the implementation.
+This call creates an in-memory mapping inside the Worker process between the Activity object name and the actual implementation.
 If a Worker receives a request to start an Activity execution for an Activity type it does not know, it will fail that request.
 
 To register multiple Activity objects with the Worker, each Activity object implementation name must be unique, and you must provide all Activity function names in the registration call like so:
