@@ -16,7 +16,7 @@ By integrating with Elasticsearch, custom key-value search attributes can be add
 Example:
 
 ```sql
-WorkflowType = "main.Workflow" and Status != 0 and (StartTime > "2019-06-07T16:46:34-08:00" or CloseTime > "2019-06-07T16:46:34-08:00") order by StartTime desc
+WorkflowType = "main.Workflow" and ExecutionStatus != 0 and (StartTime > "2019-06-07T16:46:34-08:00" or CloseTime > "2019-06-07T16:46:34-08:00") order by StartTime desc
 ```
 
 Without Elasticsearch, search functionality is limited to listing Workflows by Id and type (open/closed), and search queries are run directly against the Temporal Server database.
@@ -40,7 +40,7 @@ Here are the attributes that are provided by default:
 
 | KEY                 | VALUE TYPE |
 | ------------------- | ---------- |
-| Status              | INT        |
+| ExecutionStatus     | INT        |
 | CloseTime           | INT        |
 | CustomBoolField     | DOUBLE     |
 | CustomDatetimeField | DATETIME   |
