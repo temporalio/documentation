@@ -24,16 +24,15 @@ Temporal reimagines state-dependent service-orchestrated application development
 
 ## Learn about Temporal
 
-Temporal enables developers to write highly reliable applications without having to worry about all the edge cases, but getting started can be paradigm shift for some. If you are new to Temporal, or Workflow applications in general, get caught up on the [core concepts](/docs/overview/).
+The Temporal system as a whole enables developers to write highly reliable applications without having to worry about all the edge cases, but getting started can be paradigm shift for some. If you are new to the Temporal system, or Workflow applications in general, get caught up on the [core concepts](/docs/overview/).
 
-Wondering if Temporal is a good fit for your use case? Check out our [use cases section](/docs/use-cases-orchestration/) or visit the [community forum](https://community.temporal.io/tag/use-case-validation).
+Wondering if the Temporal system is a good fit for your use case? Check out our [use cases section](/docs/use-cases-orchestration/) or visit the [community forum](https://community.temporal.io/tag/use-case-validation).
 
-## Temporal deployment and configuration
+## Temporal Server
 
+If you are looking to self-host the Temporal Server, start with the [Server introduction](/docs/server-introduction).
 
-There are a few ways to run Temporal. Try out the [quick install guide](/docs/server-quick-install/) or use the [Temporal Helm Chart](https://github.com/temporalio/helm-charts) to deploy to a Kubernetes cluster.
-
-Learn how to [manage Temporal configurations](/docs/server-configuration/), [customize Workflow filtering](/docs/server-workflow-search/), or [set up Archival](/docs/server-archive-data).
+Interested in using Temporal Cloud (SaaS)? [Hop on the waitlist](https://docs.temporal.io/docs/cloud-introduction).
 
 ## CLI
 
