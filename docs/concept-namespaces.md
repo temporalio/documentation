@@ -1,6 +1,7 @@
 ---
-id: namespaces
+id: concept-namespaces
 title: Namespaces
+sidebar_label: Namespaces
 ---
 
 The Temporal Global Namespace feature provides clients with the capability to continue their Workflow execution from another
