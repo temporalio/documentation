@@ -1,6 +1,7 @@
 ---
-id: events
+id: concept-events
 title: Events
+sidebar_label: Events
 ---
 
 ## Event Handling
