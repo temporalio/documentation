@@ -1,6 +1,7 @@
 ---
-id: activities
+id: concept-activities
 title: Activities
+sidebar_label: Activities
 ---
 
 Fault-oblivious stateful Workflow code is the core abstraction of Temporal. But, due to deterministic execution requirements, they are not allowed to call any external API directly.

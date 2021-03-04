@@ -80,7 +80,7 @@ The Event History is an append-log of [**Events**](#event) for your application.
 
 ### Local Activity
 
-A [**Local Activity**](/docs/activities/#local-activities) is an [**Activity**](#activity) that is invoked directly in the same process by Workflow code.
+A [**Local Activity**](/docs/concept-activities/#local-activities) is an [**Activity**](#activity) that is invoked directly in the same process by Workflow code.
 
 - While a Local Activity consumes less resources than a normal [**Activity**](#activity), it is subject to shorter durations and a lack of rate limiting.
 
