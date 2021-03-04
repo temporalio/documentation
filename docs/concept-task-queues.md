@@ -1,6 +1,7 @@
 ---
-id: task-queues
+id: concept-task-queues
 title: Task Queues
+sidebar_label: Task Queues
 ---
 
 When a Workflow invokes an Activity, it sends the `ScheduleActivityTask` [Command](/docs/glossary/#command) to the Temporal service. As a result, the service updates the Workflow state and dispatches an [Activity Task](/docs/glossary/#activity-task) to a Worker that implements the Activity.

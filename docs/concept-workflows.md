@@ -1,5 +1,5 @@
 ---
-id: workflows
+id: concept-workflows
 title: Workflows
 sidebar_label: Workflows
 description: Temporal core abstraction is a fault-oblivious stateful Workflow. The state of the Workflow code, including local variables and threads it creates, is immune to process and Temporal service failures.

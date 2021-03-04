@@ -6,14 +6,13 @@ module.exports = {
       collapsed: true,
       label: 'Concepts',
       items: [
-        'overview',
-        'workflows',
-        'activities',
-        'events',
-        'queries',
-        'task-queues',
-        'namespaces',
-        'glossary',
+        'concept-overview',
+        'concept-workflows',
+        'concept-activities',
+        'concept-events',
+        'concept-queries',
+        'concept-task-queues',
+        'concept-namespaces',
       ],
     },
     {
@@ -151,5 +150,6 @@ module.exports = {
       ],
     },
     'external-resources',
+    'glossary',
   ],
 };
