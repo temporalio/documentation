@@ -1,24 +1,39 @@
 ---
 id: concept-overview
-title: Overview
+title: Conceptual Overview
 sidebar_label: Overview
 description: This guide will help you build your own resilient applications using Temporal Workflow as Code™
 ---
 
 import { ResponsivePlayer } from '../src/components'
 
-A large number of use cases span beyond a single request-reply, require tracking
-of a complex state, respond to asynchronous events, and communicate to external unreliable dependencies. The usual approach to building such applications is a hodgepodge of stateless services, databases, cron jobs, and queuing systems. This negatively impacts the developer productivity as most of the code is dedicated to plumbing, obscuring the actual business logic behind a myriad of low-level details. Such systems frequently have availability problems as it is hard to keep all the components healthy.
+## The problem
+
+Have you ever developed an application that had to respond to multiple asynchronous events, communicate with unreliable external resources, or track the state of something very complex?
+
+If so, you are likely familiar with the mixture of stateless services, databases, cron jobs, and queuing systems that is the modern approach to building such applications.
+
+But these types of systems often come with a number of problems.
+It can be quite difficult to maintain the health of all the individual components.
+And there is usually a large investment that has to be made in infrastructure that can visualize the health of the overall system, define timeouts, and orchestrate retries. Scaling and maintaining these systems is challenging and costly.
+
+## The Temporal solution
+
+The Temporal solution is a fault-oblivious stateful programming model that hides or abstracts most of the complexities mentioned above.
+
+Watch this 2 minute video to get a better sense of what that means:
 
 <ResponsivePlayer url='https://www.youtube.com/watch?v=f-18XztyN6c'/>
 
 <br/>
 
-The Temporal solution is a [fault-oblivious stateful programming model](/docs/concept-workflows/) that hides most of the complexity behind building scalable distributed applications. In essence, Temporal provides a durable virtual memory that is not linked to a specific process, and preserves the full application state, including function stacks, with local variables across all sorts of host and software failures. This allows you to write code using the full power of a programming language while Temporal takes care of durability, availability, and scalability of the application.
+The Temporal solution consists of a programming framework (Temporal SDK) and a backend service (Temporal Server).
 
-Temporal consists of a programming framework (or SDK) and a managed service (or backend). The framework enables developers to author and coordinate tasks in familiar languages. [Go](https://github.com/temporalio/temporal-go-sdk/) and [Java](https://github.com/temporalio/temporal-java-sdk) are supported today with many [other SDKs](/docs/sdks-introduction/#other-sdks) in development.
+The [Temporal Server](/docs/server-introduction) provides a durable virtual memory that is not linked to any specific process.
+It preserves the full application state, including function stacks with local variables, across all kinds of hosting and software related failures.
 
-The backend service is stateless and relies on a persistent store. Currently, Cassandra and MySQL stores are supported. An adapter to any other database that provides multi-row single shard transactions can be added. There are different service deployment models.
+A [Temporal SDK](/docs/sdks-introduction) then enables you to write your application code using the full power of the programming language, while Temporal Server handles the durability, availability, and scalability of the application.
 
-The GitHub repo for the Temporal server is [temporalio/temporal](https://github.com/temporalio/temporal). The docker image for the Temporal server is available on Docker Hub at
-[temporalio/server](https://hub.docker.com/r/temporalio/server).
+# Core concepts
+
+## some subtitle
