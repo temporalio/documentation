@@ -155,7 +155,7 @@ Workflow::async(
 yield Workflow::await(fn() => $done);
 ```
 
-You can not use any activity, timer or child workflow invocation inside `await` or `awaitWithTimeout` method. However, 
+You can not use any activity, timer or child workflow invocation inside `await` or `awaitWithTimeout` method. However,
 you can use variables referenced by other coroutines.
 
 ## Timers
