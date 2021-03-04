@@ -21,6 +21,9 @@ release_version: V1.7.0
 
 I'm Ryland from Temporal - an MIT OSS platform for building highly reliable distributed applications. We pride ourselves on the reliability and consistency Temporal provides to our users mission critical applications. As a testament to that, in the last two years a data-loss bug has never reached production. Until last week. 
 
+* [Click here if you don't care about the narrative](#someone-pays-the-price) 
+* [Click here if you only care about the code](#the-bug)
+
 ### What happened?
 
 Before we get into the details of the bug, I want to talk about how everything played out. 
