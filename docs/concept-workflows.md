@@ -89,7 +89,7 @@ An attempt to start a Workflow if there is a completed Workflow with the same Id
 - `AllowDuplicate` means that it is allowed to start independently of the previous Workflow completion status.
 - `RejectDuplicate` means that it is not allowed to start a Workflow execution using the same Workflow Id at all.
 
-The default is `AllowDuplicateFailedOnly`.
+The default is `AllowDuplicate`.
 
 To distinguish multiple runs of a Workflow with the same Workflow Id, Temporal identifies a Workflow with two Ids: `Workflow Id` and `Run Id`. `Run Id` is a service-assigned UUID. To be precise, any Workflow is uniquely identified by a triple: `Namespace`, `Workflow Id` and `Run Id`.
 
