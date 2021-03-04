@@ -170,7 +170,7 @@ The test validation procedure is as follows:
 2. For every signal received by the "stats-aggregation" Workflow, it increments an internal in-memory counter. Note that the "long-replay" history restriction also applies to this Workflow.
 3. Once the stats-aggregation Workflow has processed 3,000 events, to avoid a large replay history, the Workflow processes any remaining pending signals and then continues as new.
 4. As part of the "continue as new" logic, the stats aggregation Workflow passes in the latest value of the counter as an input to the next Workflow execution. Counter increments can start from this latest value instead of from zero. This is how one can build an increasing counter across multiple runs of the same Workflow execution.
-5. We can both expose and query the value of this counter using either the Admin CLI or the Temporal SDK through the use of the [synchronous queries feature.](https://docs.temporal.io/docs/queries/#synchronous-query)
+5. We can both expose and query the value of this counter using either the Admin CLI or the Temporal SDK through the use of the [synchronous queries feature.](https://docs.temporal.io/docs/concept-queries/#synchronous-query)
 6. For every purchase order signal sent, we expect the stats aggregation counter to be incremented by 1. (Note that there are considerations around duplicate increments that we will not cover in today's post.)
 7. Once our test logic detects that the counter has reached the specified threshold (1,000,000 in the case of our common stress test scenario), the test is considered to have successfully passed.
 

@@ -1,6 +1,7 @@
 ---
-id: queries
+id: concept-queries
 title: Queries
+sidebar_label: Queries
 ---
 
 ## Synchronous Query

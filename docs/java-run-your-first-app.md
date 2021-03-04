@@ -47,7 +47,7 @@ Once your project has finished building, you are ready to go.
 
 ## ![](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/workflow.png) Application overview
 
-This project template mimics a "money transfer" application that has a single [Workflow function](/docs/workflows) which orchestrates the execution of an Account object's `withdraw()` and `deposit()` methods, representing a transfer of money from one account to another. Temporal calls these particular methods [Activity functions](/docs/concept-activities).
+This project template mimics a "money transfer" application that has a single [Workflow function](/docs/concept-workflows) which orchestrates the execution of an Account object's `withdraw()` and `deposit()` methods, representing a transfer of money from one account to another. Temporal calls these particular methods [Activity functions](/docs/concept-activities).
 
 To run the application you will do the following:
 
