@@ -51,11 +51,17 @@ Additional information is available in [this forum post](https://community.tempo
 
 *This section is still being written - if you have specific questions you'd like us to answer, please get in touch on Slack or [email](mailto:swyx@temporal.io).*
 
-### Debugging
+Upcoming content:
 
-Coming soon.
-
-*This section is still being written - if you have specific questions you'd like us to answer, please get in touch on Slack or [email](mailto:swyx@temporal.io).*
+- Recommended Environment and Debugging Workflow
+  - Staging/Test
+  - using Temporal Web
+- More on Monitoring/Prometheus/Logging
+- Setting up alerts for Workflow Task failures
+- Best practices for writing Workflow Code:
+  - testing: unit, integration
+  - retries: figuring out right values
+  - Versioning
 
 ## Further Reading
 
