@@ -49,19 +49,22 @@ Use `workflow_success`, `workflow_failed`, `workflow_timeout`, `workflow_termina
 They are also include the `namespace` tag.
 Additional information is available in [this forum post](https://community.temporal.io/t/metrics-for-monitoring-server-performance/536/3).
 
-*This section is still being written - if you have specific questions you'd like us to answer, please get in touch on Slack or [email](mailto:swyx@temporal.io).*
+*This section is still being written - if you have specific questions you'd like us to answer, please search or [ask on the Temporal Forum](https://community.temporal.io/).*
 
 Upcoming content:
 
-- Recommended Environment and Debugging Workflow
+- Recommended Environment
   - Staging/Test
   - using Temporal Web
+- Troubleshooting/Debugging Temporal Apps
+  - reading event histories
+  - Give guidance on how to set up alerts on Metrics provided by SDK
 - More on Monitoring/Prometheus/Logging
 - Setting up alerts for Workflow Task failures
 - Best practices for writing Workflow Code:
-  - testing: unit, integration
-  - retries: figuring out right values
-  - Versioning
+  - Testing: unit, integration
+  - Retries: figuring out right values for timeouts
+  - Versioning: 
 
 ## Further Reading
 
