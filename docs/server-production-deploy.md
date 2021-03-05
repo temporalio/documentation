@@ -49,9 +49,13 @@ Use `workflow_success`, `workflow_failed`, `workflow_timeout`, `workflow_termina
 They are also include the `namespace` tag.
 Additional information is available in [this forum post](https://community.temporal.io/t/metrics-for-monitoring-server-performance/536/3).
 
+*This section is still being written - if you have specific questions you'd like us to answer, please get in touch on Slack or [email](mailto:swyx@temporal.io).*
+
 ### Debugging
 
 Coming soon.
+
+*This section is still being written - if you have specific questions you'd like us to answer, please get in touch on Slack or [email](mailto:swyx@temporal.io).*
 
 ## Further Reading
 
