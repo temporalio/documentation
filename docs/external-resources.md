@@ -32,6 +32,7 @@ If you have made a tutorial or explanation of Temporal, please submit them here 
 *Note: Each of [our SDK docs](/docs/sdks-introduction) have a Hello World and Run Your First App tutorial!*
 
 - [Writing your first Workflow](https://www.youtube.com/watch?v=taKrIWt6KMY&feature=youtu.be) by Ryland Goldstein (20 minutes) 
+- (Español) [Construye aplicaciones invencibles con Temporal](https://sistecma.github.io/2021/02/04/aplicaciones-invencibles-con-temporal.html) y [Aplicando el patrón SAGA en tus microservicios construidos](https://sistecma.github.io/2021/03/04/aplicando-saga-en-microservicios-con-temporal.html) by Hernán Moreno
 - *submit yours [here](https://github.com/temporalio/documentation/edit/master/docs/external-resources.md)!*
 
 ## Temporal Users
