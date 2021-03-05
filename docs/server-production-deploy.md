@@ -51,7 +51,7 @@ Additional information is available in [this forum post](https://community.tempo
 
 *This section is still being written - if you have specific questions you'd like us to answer, please search or [ask on the Temporal Forum](https://community.temporal.io/).*
 
-Upcoming content:
+Topics this document will cover in future: (for now, please search/ask on the forum)
 
 - Recommended Environment
   - Staging/Test
