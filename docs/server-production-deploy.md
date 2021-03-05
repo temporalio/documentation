@@ -64,7 +64,7 @@ Upcoming content:
 - Best practices for writing Workflow Code:
   - Testing: unit, integration
   - Retries: figuring out right values for timeouts
-  - Versioning: 
+  - Versioning
 
 ## Further Reading
 
