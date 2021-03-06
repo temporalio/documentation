@@ -1,6 +1,6 @@
 ---
 id: concept-workflows
-title: Workflows
+title: The concept of Workflows
 sidebar_label: Workflows
 description: Temporal core abstraction is a fault-oblivious stateful Workflow. The state of the Workflow code, including local variables and threads it creates, is immune to process and Temporal service failures.
 ---
@@ -9,16 +9,33 @@ import { ResponsivePlayer } from '../src/components'
 
 ## Overview
 
-Temporal core abstraction is a **fault-oblivious stateful Workflow**. The state of the Workflow code, including local variables and threads it creates, is immune to process and Temporal service failures.
+Temporal core abstraction is a **fault-oblivious stateful Workflow**.
+
+The state of the Workflow code, including local variables and threads it creates, is immune to process and Temporal service failures.
+
 This is a very powerful concept as it encapsulates state, processing threads, durable timers and event handlers.
 
 ## Example
 
-Let's look at a use case. A customer signs up for an application with a trial period. After the period, if the customer has not cancelled, he should be charged once a month for the renewal. The customer has to be notified by email about the charges and should be able to cancel the subscription at any time.
+Let's look at a use case.
 
-The business logic of this use case is not very complicated and can be expressed in a few dozen lines of code. But any practical implementation has to ensure that the business process is fault tolerant and scalable. There are various ways to approach the design of such a system.
+A customer signs up for an application with a trial period.
 
-One approach is to center it around a database. An application process would periodically scan database tables for customers in specific states, execute necessary actions, and update the state to reflect that. While feasible, this approach has various drawbacks. The most obvious is that the state machine of the customer state quickly becomes extremely complicated. For example, charging a credit card or sending emails can fail due to a downstream system unavailability. The failed calls might need to be retried for a long time, ideally using an exponential retry policy. These calls should be throttled to not overload external systems. There should be support for poison pills to avoid blocking the whole process if a single customer record cannot be processed for whatever reason. The database-based approach also usually has performance problems. Databases are not efficient for scenarios that require constant polling for records in a specific state.
+After the period, if the customer has not cancelled, he should be charged once a month for the renewal.
+
+The customer has to be notified by email about the charges and should be able to cancel the subscription at any time.
+
+The business logic of this use case is not very complicated and can be expressed in a few dozen lines of code.
+
+But any practical implementation has to ensure that the business process is fault tolerant and scalable.
+
+There are various ways to approach the design of such a system.
+
+One approach is to center it around a database.
+
+An application process would periodically scan database tables for customers in specific states, execute necessary actions, and update the state to reflect that.
+
+While feasible, this approach has various drawbacks. The most obvious is that the state machine of the customer state quickly becomes extremely complicated. For example, charging a credit card or sending emails can fail due to a downstream system unavailability. The failed calls might need to be retried for a long time, ideally using an exponential retry policy. These calls should be throttled to not overload external systems. There should be support for poison pills to avoid blocking the whole process if a single customer record cannot be processed for whatever reason. The database-based approach also usually has performance problems. Databases are not efficient for scenarios that require constant polling for records in a specific state.
 
 Another commonly employed approach is to use a timer service and queues. Any update is pushed to a queue and then a worker that consumes from it updates a database and possibly pushes more messages in downstream queues. For operations that require scheduling, an external timer service can be used. This approach usually scales much better because a database is not constantly polled for changes. But it makes the programming model more complex and error prone as usually there is no transactional update between a queuing system and a database.
 
