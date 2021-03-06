@@ -43,10 +43,10 @@ serializable. The following sample code sets up a query handler that handles the
 #[Workflow\WorkflowInterface]
 class MyWorkflow 
 {
-    private int $currentState;
+    private string $currentState;
 
     #[Workflow\QueryMethod('current_state')]
-    public function getCurrentState(): int
+    public function getCurrentState(): string
     {
         return $this->currentState;
     }
@@ -77,7 +77,7 @@ class MyWorkflow
             throw $e;
         }      
       
-        $this->currentState = 'done;
+        $this->currentState = 'done';
       
         return null;
     }
