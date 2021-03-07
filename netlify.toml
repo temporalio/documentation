@@ -8,3 +8,11 @@
 [[redirects]]
   from = "/docs/overview"
   to = "/docs/concept-overview"
+
+[[redirects]]
+  from = "/docs/activities"
+  to = "/docs/concept-activities"
+
+[[redirects]]
+  from = "/docs/workflows"
+  to = "/docs/concept-workflows"
