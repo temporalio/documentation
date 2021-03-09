@@ -62,7 +62,7 @@ The primary mechanism we recommend for debugging is Temporal Web:
 ![6XkjmR](https://user-images.githubusercontent.com/6764957/110544958-71746480-8167-11eb-8152-8d3a3eb73d4e.gif)
 
 - Workflows are identified by their **Workflow ID**, which you provide when creating the workflow. They also have a **Name** which is directly taken from your code.
-- Workflow ID's are are distinct from **Run ID's**, which identify one of potentially many unique runs of a Workflow.
+- Workflow ID's are are distinct from **Run ID's**, which uniquely identify one of potentially many runs of the same Workflow.
 - Workflow **Status** is usually in one of a few states: Running, Completed, or Terminated, with **Start Time** and **End Time** shown accordingly.
 
 The full state of every Workflow Execution is inspectable in Temporal Web:
