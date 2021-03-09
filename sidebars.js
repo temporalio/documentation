@@ -46,6 +46,7 @@ module.exports = {
         'server-security',
         'server-configuration',
         'server-archive-data',
+        'server-event-types',
       ],
     },
     'cloud-introduction',
