@@ -7,13 +7,104 @@ description: Temporal core abstraction is a fault-oblivious stateful Workflow. T
 
 import { ResponsivePlayer } from '../src/components'
 
-## Overview
+## Its all about state
 
-Temporal core abstraction is a **fault-oblivious stateful Workflow**.
+Depending on the language, a Workflow is really just a single function or object method that orchestrates a series of actions.
 
-The state of the Workflow code, including local variables and threads it creates, is immune to process and Temporal service failures.
+```
+WorkflowCode {
+  action1()
+  action2()
+  ...
+}
+```
 
-This is a very powerful concept as it encapsulates state, processing threads, durable timers and event handlers.
+Because the Temporal Server does not know what language an application is written in, the term "Workflow" is used as the label for any chunk of code whose execution state can be tracked by the Server.
+
+The idea is that code written inside a Workflow should be able to focus on "business logic".
+When we talk about "business logic", we are talking about the literal steps an application is taking to meet the goals of a business.
+
+Example:
+
+1. Charge customer
+2. Send invoice
+3. Notify shipping
+4. Update inventory
+5. etc...
+
+This is in contrast to the logic that is often needed to handle any timeouts, errors, edge cases, or infrastructure failures that might occur while executing the business logic.
+
+The Temporal Server uses "event sourcing" techniques to track the state of a Workflow's execution.
+The [Event Sourcing pattern](https://docs.microsoft.com/en-us/azure/architecture/patterns/event-sourcing) article published in Microsoft's Azure documentation provides a general explanation of what that technique looks like.
+As a result, a Workflow must use certain Temporal SDK APIs to manage time related operations or create new threads.
+And it also means that any "non-deterministic" behavior, such as calls to external resources, APIs, or random number generators, must not exist directly inside the Workflow.
+The elegant solution to this is to have any code that handles this potentially unexpected behavior reside in [Activities](/docs/concept-activities).
+
+But, by using event sourcing a Workflow becomes quite durable.
+For example, if a host fails in the middle of a Workflow execution, not only can another host resume the Workflow, but it can resume at the exact line of code where it stopped executing without having to re-execute the code up until that point.
+The Workflow execution state is even preserved through crashes of the Temporal Server itself.
+
+## Location location
+
+Workflow code, for the most part, is completely independent from the location in which it is executed.
+There are a few specific use-cases that may require a Workflow to start and finish on the same host.
+
+
+## Completely configurable
+
+
+
+## Id Uniqueness
+
+Workflow Id is assigned by a client when starting a Workflow. It is usually a business level Id like customer Id or order Id.
+
+Temporal guarantees that there could be only one Workflow (across all Workflow types) with a given Id open per [namespace](/docs/glossary/#namespace) at any time. An attempt to start a Workflow with the same Id is going to fail with `WorkflowExecutionAlreadyStarted` error.
+
+An attempt to start a Workflow if there is a completed Workflow with the same Id depends on a `WorkflowIdReusePolicy` option:
+
+- `AllowDuplicateFailedOnly` means that it is allowed to start a Workflow only if a previously executed Workflow with the same Id failed.
+- `AllowDuplicate` means that it is allowed to start independently of the previous Workflow completion status.
+- `RejectDuplicate` means that it is not allowed to start a Workflow execution using the same Workflow Id at all.
+
+The default is `AllowDuplicate`.
+
+To distinguish multiple runs of a Workflow with the same Workflow Id, Temporal identifies a Workflow with two Ids: `Workflow Id` and `Run Id`. `Run Id` is a service-assigned UUID. To be precise, any Workflow is uniquely identified by a triple: `Namespace`, `Workflow Id` and `Run Id`.
+
+## Workflow Timeouts
+
+It's often necessary to limit the amount of time a specific Workflow can be running. To support this, the following three parameters can be provided to Workflow options:
+
+- `WorkflowExecutionTimeout` maximum time a Workflow should be allowed to run including retries and continue as new. Use `WorkflowRunTimeout` to limit execution time of a single run.
+- `WorkflowRunTimeout` maximum time a single Workflow run should be allowed.
+- `WorkflowTaskTimeout` timeout for processing a Workflow task starting from the point when a worker pulled the task. If a decision task is lost, it is retried after this timeout.
+
+## Workflow Retries
+
+Workflow code is unaffected by infrastructure level downtime and failures. But it still can fail due to business logic level failures. For example, an Activity can fail due to exceeding the retry interval and the error is not handled by application code, or the Workflow code having a bug.
+
+Some Workflows require a guarantee that they keep running even in presence of such failures. To support such use cases, an optional exponential _retry policy_ can be specified when starting a Workflow. When it is specified, a Workflow failure restarts a Workflow from the beginning after the calculated retry interval. Following are the retry policy parameters:
+
+- `InitialInterval` is a delay before the first retry.
+- `BackoffCoefficient`. Retry policies are exponential. The coefficient specifies how fast the retry interval is growing. The coefficient of 1 means that the retry interval is always equal to the `InitialInterval`.
+- `MaximumInterval` specifies the maximum interval between retries. Useful for coefficients of more than 1.
+- `MaximumAttempts` specifies how many times to attempt to execute a Workflow in the presence of failures. If this limit is exceeded, the Workflow fails without retry.
+- `NonRetryableErrorReasons` allows to specify errors that shouldn't be retried. For example, retrying invalid arguments error doesn't make sense in some scenarios.
+
+## Child Workflow
+
+A Workflow can execute other Workflows as `child Workflows`. A child Workflow completion or failure is reported to its parent.
+
+Some reasons to use child Workflows are:
+
+- A child Workflow can be hosted by a separate set of workers which don't contain the parent Workflow code. So it would act as a separate service that can be invoked from multiple other Workflows.
+- A single Workflow has a limited size. For example, it cannot execute 100k Activities. Child Workflows can be used to partition the problem into smaller chunks. One parent with 1000 children each executing 1000 Activities is 1 million executed Activities.
+- A child Workflow can be used to manage some resource using its Id to guarantee uniqueness. For example, a Workflow that manages host upgrades can have a child Workflow per host (host name being a Workflow Id) and use them to ensure that all operations on the host are serialized.
+- A child Workflow can be used to execute some periodic logic without blowing up the parent history size. When a parent starts a child, it executes periodic logic calling that continues as many times as needed, then completes. From the parent point of view, it is just a single child Workflow invocation.
+
+The main limitation of a child Workflow versus collocating all the application logic in a single Workflow is lack of the shared state. Parent and child can communicate only through asynchronous signals. But if there is a tight coupling between them, it might be simpler to use a single Workflow and just rely on a shared object state.
+
+We recommended starting from a single Workflow implementation if your problem has bounded size in terms of number of executed Activities and processed signals. It is more straightforward than multiple asynchronously communicating Workflows.
+
 
 ## Example
 
@@ -93,54 +184,3 @@ The Workflow state recovery utilizes event sourcing which puts a few restriction
 To understand the Temporal execution model as well as the recovery mechanism, watch the following webcast. The animation covering recovery starts at 15:50.
 
 <ResponsivePlayer url='https://www.youtube.com/watch?v=qce_AqCkFys' />
-
-## Id Uniqueness
-
-Workflow Id is assigned by a client when starting a Workflow. It is usually a business level Id like customer Id or order Id.
-
-Temporal guarantees that there could be only one Workflow (across all Workflow types) with a given Id open per [namespace](/docs/glossary/#namespace) at any time. An attempt to start a Workflow with the same Id is going to fail with `WorkflowExecutionAlreadyStarted` error.
-
-An attempt to start a Workflow if there is a completed Workflow with the same Id depends on a `WorkflowIdReusePolicy` option:
-
-- `AllowDuplicateFailedOnly` means that it is allowed to start a Workflow only if a previously executed Workflow with the same Id failed.
-- `AllowDuplicate` means that it is allowed to start independently of the previous Workflow completion status.
-- `RejectDuplicate` means that it is not allowed to start a Workflow execution using the same Workflow Id at all.
-
-The default is `AllowDuplicate`.
-
-To distinguish multiple runs of a Workflow with the same Workflow Id, Temporal identifies a Workflow with two Ids: `Workflow Id` and `Run Id`. `Run Id` is a service-assigned UUID. To be precise, any Workflow is uniquely identified by a triple: `Namespace`, `Workflow Id` and `Run Id`.
-
-## Child Workflow
-
-A Workflow can execute other Workflows as `child Workflows`. A child Workflow completion or failure is reported to its parent.
-
-Some reasons to use child Workflows are:
-
-- A child Workflow can be hosted by a separate set of workers which don't contain the parent Workflow code. So it would act as a separate service that can be invoked from multiple other Workflows.
-- A single Workflow has a limited size. For example, it cannot execute 100k Activities. Child Workflows can be used to partition the problem into smaller chunks. One parent with 1000 children each executing 1000 Activities is 1 million executed Activities.
-- A child Workflow can be used to manage some resource using its Id to guarantee uniqueness. For example, a Workflow that manages host upgrades can have a child Workflow per host (host name being a Workflow Id) and use them to ensure that all operations on the host are serialized.
-- A child Workflow can be used to execute some periodic logic without blowing up the parent history size. When a parent starts a child, it executes periodic logic calling that continues as many times as needed, then completes. From the parent point of view, it is just a single child Workflow invocation.
-
-The main limitation of a child Workflow versus collocating all the application logic in a single Workflow is lack of the shared state. Parent and child can communicate only through asynchronous signals. But if there is a tight coupling between them, it might be simpler to use a single Workflow and just rely on a shared object state.
-
-We recommended starting from a single Workflow implementation if your problem has bounded size in terms of number of executed Activities and processed signals. It is more straightforward than multiple asynchronously communicating Workflows.
-
-## Workflow Timeouts
-
-It's often necessary to limit the amount of time a specific Workflow can be running. To support this, the following three parameters can be provided to Workflow options:
-
-- `WorkflowExecutionTimeout` maximum time a Workflow should be allowed to run including retries and continue as new. Use `WorkflowRunTimeout` to limit execution time of a single run.
-- `WorkflowRunTimeout` maximum time a single Workflow run should be allowed.
-- `WorkflowTaskTimeout` timeout for processing a Workflow task starting from the point when a worker pulled the task. If a decision task is lost, it is retried after this timeout.
-
-## Workflow Retries
-
-Workflow code is unaffected by infrastructure level downtime and failures. But it still can fail due to business logic level failures. For example, an Activity can fail due to exceeding the retry interval and the error is not handled by application code, or the Workflow code having a bug.
-
-Some Workflows require a guarantee that they keep running even in presence of such failures. To support such use cases, an optional exponential _retry policy_ can be specified when starting a Workflow. When it is specified, a Workflow failure restarts a Workflow from the beginning after the calculated retry interval. Following are the retry policy parameters:
-
-- `InitialInterval` is a delay before the first retry.
-- `BackoffCoefficient`. Retry policies are exponential. The coefficient specifies how fast the retry interval is growing. The coefficient of 1 means that the retry interval is always equal to the `InitialInterval`.
-- `MaximumInterval` specifies the maximum interval between retries. Useful for coefficients of more than 1.
-- `MaximumAttempts` specifies how many times to attempt to execute a Workflow in the presence of failures. If this limit is exceeded, the Workflow fails without retry.
-- `NonRetryableErrorReasons` allows to specify errors that shouldn't be retried. For example, retrying invalid arguments error doesn't make sense in some scenarios.
