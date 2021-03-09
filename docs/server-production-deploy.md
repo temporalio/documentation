@@ -86,8 +86,6 @@ Temporal also stores the stack trace of where a given activity is currently bloc
 ![image](https://user-images.githubusercontent.com/6764957/110547621-20ff0600-816b-11eb-84f3-c6a97c5cad31.png)
 
 This is often a good way to get a deep understanding of whether your workflow is executing as expected.
-
-
 #### Recovering In-flight Workflows While Running
 
 Here we will discuss how to proceed oince you have identified and fixed the code for an erroring activity.
