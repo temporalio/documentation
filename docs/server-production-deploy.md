@@ -57,7 +57,7 @@ If you have the time, we recommend [watching our 19 minute video guide on YouTub
 
 #### Basic Debugging on Temporal Web
 
-The primary mechanism we recommend for debugging is Temporal Web:
+The primary mechanism we recommend for debugging is [Temporal Web](https://github.com/temporalio/web), which is run in a separate process:
 
 ![6XkjmR](https://user-images.githubusercontent.com/6764957/110544958-71746480-8167-11eb-8152-8d3a3eb73d4e.gif)
 
