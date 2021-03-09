@@ -49,6 +49,55 @@ Use `workflow_success`, `workflow_failed`, `workflow_timeout`, `workflow_termina
 They are also include the `namespace` tag.
 Additional information is available in [this forum post](https://community.temporal.io/t/metrics-for-monitoring-server-performance/536/3).
 
+### Debugging Workflows
+
+> ⚠️ This is a basic guide to troubleshooting/debugging Temporal applications. It is work-in-progress and we encourage [reading about our Architecture](https://docs.temporal.io/docs/server-architecture) for more detail. The better you understand how Temporal works, the better you will be at debugging your workflows.
+
+If you have the time, we recommend [watching our 19 minute video guide on YouTube](https://youtu.be/PqcVKIxI0nU) which demonstrates the debugging explained below.
+
+#### Basic Debugging on Temporal Web
+
+The primary mechanism we recommend for debugging is Temporal Web:
+
+![6XkjmR](https://user-images.githubusercontent.com/6764957/110544958-71746480-8167-11eb-8152-8d3a3eb73d4e.gif)
+
+- Workflows are identified by their **Workflow ID**, which you provide when creating the workflow. They also have a **Name** which is directly taken from your code.
+- Workflow ID's are are distinct from **Run ID's**, which identify one of potentially many unique runs of a Workflow.
+- Workflow **Status** is usually in one of a few states: Running, Completed, or Terminated, with **Start Time** and **End Time** shown accordingly.
+
+The full state of every Workflow Execution is inspectable in Temporal Web:
+
+- If your workflows seem like they aren't receiving the right data, check the **Input** arguments given.
+- If your workflows seem "stuck", check the **Task Queue** assigned to a given workflow to see that there are active workers polling.
+- If you see inspect the **Pending Activities** and see an activity with a lot of retry `attempt`s, you can check the `lastFailure` field for a clue as to what happened.
+- If you need to go back in time from the current state, check the **History Events** where you can see the full Workflow Execution History logs (this is what makes Temporal so resilient)
+
+#### Execution Histories on Temporal Web
+
+Reading execution histories is one of the more reliable ways of debugging:
+
+![image](https://user-images.githubusercontent.com/6764957/110546362-54d92c00-8169-11eb-81a6-74817e0d1378.png)
+
+Here, you can see the exact sequence of events that have happened so far, together with the relevant state for each event, and reason about what went wrong or what is preventing the next correct event. *There are about 40 system events in total - We intend to publish a full guide to each.*
+
+
+#### Viewing Stack Traces on Temporal Web
+
+Temporal also stores the stack trace of where a given activity is currently blocked:
+
+![image](https://user-images.githubusercontent.com/6764957/110547621-20ff0600-816b-11eb-84f3-c6a97c5cad31.png)
+
+This is often a good way to get a deep understanding of whether your workflow is executing as expected.
+
+
+#### Recovering In-flight Workflows While Running
+
+Here we will discuss how to proceed oince you have identified and fixed the code for an erroring activity.
+
+If your activity code is deterministic, you might be able to simply restart the worker to pick up the changes. Execution will continue from where it last succeeded (typically an `ActivityTaskScheduled` event, without a corresponding `ActivityTaskCompleted`). In other words, we get "hotfixing for free" due to Temporal's execution model.
+
+However, if your activity is more complex/non-deterministic, you will have to use [our versioning feature](https://docs.temporal.io/docs/go-versioning/) or even manually terminate and restart the workflows.
+
 *This section is still being written - if you have specific questions you'd like us to answer, please search or [ask on the Temporal Forum](https://community.temporal.io/).*
 
 Topics this document will cover in future: (for now, please search/ask on the forum)
@@ -56,10 +105,8 @@ Topics this document will cover in future: (for now, please search/ask on the fo
 - Recommended Environment
   - Staging/Test
   - using Temporal Web
-- Troubleshooting/Debugging Temporal Apps
-  - reading event histories
-  - Give guidance on how to set up alerts on Metrics provided by SDK
 - More on Monitoring/Prometheus/Logging
+  - Give guidance on how to set up alerts on Metrics provided by SDK
 - Setting up alerts for Workflow Task failures
 - Best practices for writing Workflow Code:
   - Testing: unit, integration
