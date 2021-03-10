@@ -66,8 +66,9 @@ The primary mechanism we recommend for debugging is [Temporal Web](https://githu
 - Workflow ID's are are distinct from **Run ID's**, which uniquely identify one of potentially many Runs of Workflows with the same Workflow ID.
 
 > Tip: Don't confuse Runs with [Workflow Executions](https://docs.temporal.io/docs/glossary/#workflow-execution) - they are similar, but a long-running Workflow Execution can have multiple Runs. A Run is the atomic unit.
-The full state of every Run is inspectable in Temporal Web:
 
+
+The full state of every Run is inspectable in Temporal Web:
 - If your workflows seem like they aren't receiving the right data, check the **Input** arguments given.
 - If your workflows seem "stuck", check the **Task Queue** assigned to a given workflow to see that there are active workers polling.
 - If you see inspect the **Pending Activities** and see an activity with a lot of retry `attempt`s, you can check the `lastFailure` field for a clue as to what happened.
