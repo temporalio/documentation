@@ -93,7 +93,7 @@ This is often a good way to get a deep understanding of whether your workflow is
 
 Here we will discuss how to proceed oince you have identified and fixed the code for an erroring activity.
 
-If your activity code is deterministic, you might be able to simply restart the worker to pick up the changes. Execution will continue from where it last succeeded (typically an `ActivityTaskScheduled` event, without a corresponding `ActivityTaskCompleted`). In other words, we get "hotfixing for free" due to Temporal's execution model.
+If your activity code is deterministic, you might be able to simply restart the worker to pick up the changes. Execution will continue from where it last succeeded. In other words, we get "hotfixing for free" due to Temporal's execution model.
 
 However, if your activity is more complex/non-deterministic, you will have to use [our versioning feature](https://docs.temporal.io/docs/go-versioning/) or even manually terminate and restart the workflows.
 
