@@ -10,6 +10,23 @@ This page details some of the version specific requirements and dependencies nee
 
 All versions of Temporal require that [Go v1.15+](https://golang.org/dl/) is installed in the environment.
 
+## Temporal Versioning and Support Policy
+
+All of Temporal's releases abide by [semver](https://semver.org/), but here we detail the precise upgrade paths and support we offer:
+
+- We define maintenance support as continuing to release critical bugfixes — related to security, preventing data loss, reliability — for previously published minor and major versions, whenever they are found.
+- **For Temporal Server OSS**
+    - We will publish incremental upgrade guides for each minor and major version
+        - This also includes specifying what dependency upgrades we test for (e.g. from Cassandra 3.0 to 3.11)
+    - We will offer maintenance support of the last 3 **minor** versions post release
+        - In other words, we will not backport patches beyond the previous 3 minor versions for free
+    - We will offer maintenance support of **major** versions for at least 12 months after GA release, and provide at least 6 months' notice before EOL/deprecating support
+- **For Temporal Cloud**
+    - We will automatically upgrade all customers to the latest minor versions
+    - We will offer maintenance support of major versions for at least 18 months after GA release, and provide at least 6 months' notice before EOL/deprecating support
+
+This versioning policy is intended to serve as a minimum promise to the many customers who rely on us for their critical business operations. If you have any further questions on specifics, please do not hesitate to reach out via community or customer channels.
+
 ## Dependencies
 
 Temporal offers official support for, and is tested against, dependencies with the exact versions described below.
