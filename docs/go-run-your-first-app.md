@@ -74,8 +74,18 @@ There are two ways to start a Workflow with Temporal, either via the SDK or via 
 
 Make sure the [Temporal server](/docs/server-quick-install) is running in a terminal, and then run start/main.go from the project root using the following command:
 
-```
+```bash
 go run start/main.go
+```
+
+If this is your first time running this application, go may download some dependencies initially, but eventually you will get some feedback that looks like this:
+
+```bash
+2021/03/12 01:34:36 INFO  No logger configured for temporal client. Created default one.
+2021/03/12 01:34:37 
+Transfer of $54.990002 from account 001-001 to account 002-002 is processing. ReferenceID: 8e37aafe-5fb8-4649-99e3-3699e35e6c32
+2021/03/12 01:34:37 
+WorkflowID: transfer-money-workflow RunID: 0730a9a3-d17b-4cb5-a4a0-279c9759dfa1
 ```
 
 ### State visibility
