@@ -166,12 +166,29 @@ Your Workflow is still there!
 
 ### Activity error
 
-Next let's simulate a bug in the `Deposit()` Activity function. Let your Workflow continue to run. Open the activity.go file and switch out the comments on the return statements such that the `Deposit()` function returns an error.
+Next let's simulate a bug in the `Deposit()` Activity function. Let your Workflow continue to run. Open the `activity.go` file and switch out the comments on the return statements such that the `Deposit()` function returns an error.
 
 <!--SNIPSTART money-transfer-project-template-go-activity-->
 <!--SNIPEND-->
 
 Save your changes and run the Worker. You will see the Worker complete the `Withdraw()` Activity function, but error when it attempts the `Deposit()` Activity function. The important thing to note here is that the Worker keeps retrying the `Deposit()` function.
+
+```bash
+021/03/12 02:03:23 INFO  No logger configured for temporal client. Created default one.
+2021/03/12 02:03:23 INFO  Started Worker Namespace default TaskQueue TRANSFER_MONEY_TASK_QUEUE WorkerID 41532@swyxs-Mac-mini@
+2021/03/12 02:04:25 DEBUG ExecuteActivity Namespace default TaskQueue TRANSFER_MONEY_TASK_QUEUE WorkerID 41532@swyxs-Mac-mini@ WorkflowType TransferMoney WorkflowID transfer-money-workflow RunID 90059628-4506-4afb-bb41-90abc6a6ade9 ActivityID 5 ActivityType Withdraw
+
+Withdrawing $54.990002 from account 001-001. ReferenceId: 1a203da3-f5ea-4c17-b5cf-5ee4dcb061a1
+2021/03/12 02:04:25 DEBUG ExecuteActivity Namespace default TaskQueue TRANSFER_MONEY_TASK_QUEUE WorkerID 41532@swyxs-Mac-mini@ WorkflowType TransferMoney WorkflowID transfer-money-workflow RunID 90059628-4506-4afb-bb41-90abc6a6ade9 ActivityID 11 ActivityType Deposit
+
+Depositing $54.990002 into account 002-002. ReferenceId: 1a203da3-f5ea-4c17-b5cf-5ee4dcb061a1
+2021/03/12 02:04:25 ERROR Activity error. Namespace default TaskQueue TRANSFER_MONEY_TASK_QUEUE WorkerID 41532@swyxs-Mac-mini@ WorkflowID transfer-money-workflow RunID 90059628-4506-4afb-bb41-90abc6a6ade9 ActivityType Deposit Error deposit did not occur due to an issue
+
+Depositing $54.990002 into account 002-002. ReferenceId: 1a203da3-f5ea-4c17-b5cf-5ee4dcb061a1
+2021/03/12 02:04:26 ERROR Activity error. Namespace default TaskQueue TRANSFER_MONEY_TASK_QUEUE WorkerID 41532@swyxs-Mac-mini@ WorkflowID transfer-money-workflow RunID 90059628-4506-4afb-bb41-90abc6a6ade9 ActivityType Deposit Error deposit did not occur due to an issue
+
+# it keeps retrying... with the RetryPolicy specified in workflow.go
+```
 
 You can view more information about what is happening in the [UI](localhost:8088). Click on the RunId of the Workflow. You will see the pending Activity listed there with details such as its state, the number of times it has been attempted, and the next scheduled attempt.
 
@@ -179,9 +196,29 @@ You can view more information about what is happening in the [UI](localhost:8088
 
 <br/>
 
-Traditionally application developers are forced to implement timeout and retry logic within the business code itself. With Temporal, one of the key value propositions is that [timeout configurations](/docs/concept-activities/#timeouts) and [retry policies](/docs/concept-activities/#retries) are specified in the Workflow code as Activity options. In our Workflow code you can see that we have specified a StartToCloseTimeout for our Activities, and set a retry policy that tells the server to retry them up to 500 times. But we did that as an example for this tutorial, as Temporal automatically uses a default retry policy if one isn't specified!
+**Traditionally application developers are forced to implement timeout and retry logic within the service code itself.** This is repetitive and error prone. With Temporal, one of the key value propositions is that [timeout configurations](/docs/concept-activities/#timeouts) and [retry policies](/docs/concept-activities/#retries) are specified in the Workflow code as Activity options. In `workflow.go`, you can see that we have specified a `StartToCloseTimeout` for our Activities, and set a retry policy that tells the server to retry them up to 500 times. You can read more about [Activity and Workflow Retries](https://docs.temporal.io/docs/go-retries/) in our docs.
 
-So, your Workflow is running, but only the `Withdraw()` Activity function has succeeded. In any other application, the whole process would likely have to be abandoned and rolled back. So, here is the last value proposition of this tutorial: With Temporal, we can debug the issue while the Workflow is running! Pretend that you found a potential fix for the issue; Switch the comments back on the return statements of the `Deposit()` function in the activity.go file and save your changes. How can we possibly update a Workflow that is already halfway complete? With Temporal, it is actually very simple: just restart the Worker!
+So, your Workflow is running, but only the `Withdraw()` Activity function has succeeded. In any other application, the whole process would likely have to be abandoned and rolled back. So, here is the last value proposition of this tutorial: With Temporal, we can debug the issue while the Workflow is running! Pretend that you found a potential fix for the issue; Switch the comments back on the return statements of the `Deposit()` function in the `activity.go` file and save your changes. 
+
+How can we possibly update a Workflow that is already halfway complete? With Temporal, it is actually very simple: just restart the Worker!
+
+```bash
+# continuing logs from previous retries...
+
+Depositing $54.990002 into account 002-002. ReferenceId: 1a203da3-f5ea-4c17-b5cf-5ee4dcb061a1
+2021/03/12 02:09:28 ERROR Activity error. Namespace default TaskQueue TRANSFER_MONEY_TASK_QUEUE WorkerID 41532@swyxs-Mac-mini@ WorkflowID transfer-money-workflow RunID 90059628-4506-4afb-bb41-90abc6a6ade9 ActivityType Deposit Error deposit did not occur due to an issue
+
+# cancel and restart...
+
+^C2021/03/12 02:10:17 INFO  Worker has been stopped. Namespace default TaskQueue TRANSFER_MONEY_TASK_QUEUE WorkerID 41532@swyxs-Mac-mini@ Signal interrupt
+2021/03/12 02:10:17 INFO  Stopped Worker Namespace default TaskQueue TRANSFER_MONEY_TASK_QUEUE WorkerID 41532@swyxs-Mac-mini@
+
+$ go run worker/main.go
+2021/03/12 02:10:23 INFO  No logger configured for temporal client. Created default one.
+2021/03/12 02:10:23 INFO  Started Worker Namespace default TaskQueue TRANSFER_MONEY_TASK_QUEUE WorkerID 41708@swyxs-Mac-mini@
+
+Depositing $54.990002 into account 002-002. ReferenceId: 1a203da3-f5ea-4c17-b5cf-5ee4dcb061a1
+```
 
 On the next scheduled attempt, the Worker will pick up right where the Workflow was failing and successfully execute the newly compiled `Deposit()` Activity function, completing the Workflow. Basically, you have just fixed a bug "on the fly" with out losing the state of the Workflow.
 
