@@ -27,7 +27,7 @@ Keep reading or follow along with this video walkthrough:
 
 ## ![](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/repair-tools.png) Project setup
 
-Before starting, make sure you have looked over the [tutorial prerequisites](/docs/go-sdk-tutorial-prerequisites) - make sure Temporal Server is running ([Docker is the fastest way](https://docs.temporal.io/docs/server-quick-install#run-the-temporal-server)) and your Go version is above v1.14.
+Before starting, make sure you have looked over the [tutorial prerequisites](/docs/go-sdk-tutorial-prerequisites) - make sure Temporal Server is running ([Docker is the fastest way](https://docs.temporal.io/docs/server-quick-install)) and your Go version is above v1.14.
 
 This tutorial uses a fully working template application which can be downloaded as a zip or converted to a new repository in your own Github account and cloned. Github's ["Creating a Repository from a Template" guide](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-from-a-template#creating-a-repository-from-a-template) will walk you through the steps.
 
