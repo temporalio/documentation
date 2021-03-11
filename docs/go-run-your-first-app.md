@@ -96,7 +96,7 @@ Next, click the "Run Id" for your Workflow. Now we can see everything we want to
 
 It seems that our Workflow is "running", but why hasn't the Workflow and Activity code executed yet? Investigate by clicking on the Task Queue name to view active "Pollers" registered to handle these Tasks. The list will be empty. There are no Workers polling the Task Queue!
 
-<ResponsivePlayer url='https://youtu.be/oUGf2D4kX3U' loop='true' playing='true'/>
+<ResponsivePlayer url='https://youtu.be/oUGf2D4kX3U' loop={false} playing={true} />
 
 ### The Worker
 
