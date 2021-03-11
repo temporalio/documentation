@@ -106,7 +106,7 @@ It's time to start the Worker. A Worker is responsible for executing pieces of W
 - It knows which piece of code to execute from Tasks that it gets from the Task Queue.
 - It only listens to the Task Queue that it is registered to.
 
-After The Worker executes code, it returns the results back to the Temporal server. Note that the Worker listens to the same Task Queue that the Workflow and Activity tasks are sent to. This is called "Task routing", and is a built-in mechanism for load balancing.
+After The Worker executes code, it returns the results back to the Temporal server. Note that the Worker listens to the same Task Queue that the Workflow and Activity Tasks are sent to. This is called "Task routing", and is a built-in mechanism for load balancing.
 
 <!--SNIPSTART money-transfer-project-template-go-worker-->
 <!--SNIPEND-->
@@ -120,11 +120,30 @@ Task Queues are defined by a simple string name:
 
 Run worker/main.go from the project root using the following command:
 
-```
+```bash
 go run worker/main.go
 ```
 
-When you start the Worker it begins polling the Task Queue. The first Task the Worker finds is the one that tells it to execute the Workflow function. The Worker communicates the event back to the server which then causes the server to send Activity Tasks to the Task Queue as well. The Worker then grabs each of the Activity Tasks in their respective order from the Task Queue and executes each of the corresponding Activities.
+When you start the Worker it begins polling the Task Queue (if you check Temporal Web again, you will see a new Poller registered where previously there was none). 
+
+The terminal output will look like this:
+
+```bash
+2021/03/12 01:43:49 INFO  No logger configured for temporal client. Created default one.
+2021/03/12 01:43:49 INFO  Started Worker Namespace default TaskQueue TRANSFER_MONEY_TASK_QUEUE WorkerID 41326@swyxs-Mac-mini@
+2021/03/12 01:43:50 DEBUG ExecuteActivity Namespace default TaskQueue TRANSFER_MONEY_TASK_QUEUE WorkerID 41326@swyxs-Mac-mini@ WorkflowType TransferMoney WorkflowID transfer-money-workflow RunID 0730a9a3-d17b-4cb5-a4a0-279c9759dfa1 ActivityID 5 ActivityType Withdraw
+
+Withdrawing $54.990002 from account 001-001. ReferenceId: 8e37aafe-5fb8-4649-99e3-3699e35e6c32
+```
+
+> Tip: What actually happens under the hood:
+> 
+> - The first Task the Worker finds is the one that tells it to execute the Workflow function. 
+> - The Worker communicates the event back to the server.
+> - This causes the server to send Activity Tasks to the Task Queue. 
+> - The Worker then grabs each of the Activity Tasks in their respective order from the Task Queue and executes each of the corresponding Activities.
+> 
+> Each of these are **History Events** that can be audited in Temporal Web (under the `History` tab next to `Summary`). Once a workflow is completed and closed, the full history will persist for a set retention period (typically 7-30 days) before being deleted. You can set up [the Archival feature](https://docs.temporal.io/docs/server-archive-data/) to send them to long term storage for compliance/audit needs.
 
 <img class="docs-image-centered docs-image-max-width-20" src="https://raw.githubusercontent.com/temporalio/documentation-images/main/static/confetti.png" />
 
