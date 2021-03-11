@@ -27,11 +27,16 @@ Keep reading or follow along with this video walkthrough:
 
 ## ![](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/repair-tools.png) Project setup
 
-Before starting, make sure you have looked over the [tutorial prerequisites](/docs/go-sdk-tutorial-prerequisites).
+Before starting, make sure you have looked over the [tutorial prerequisites](/docs/go-sdk-tutorial-prerequisites) - make sure Temporal Server is running ([Docker is the fastest way to get up and running](https://docs.temporal.io/docs/server-quick-install#run-the-temporal-server)) and your Go version is above v1.14.
 
 This tutorial uses a fully working template application which can be downloaded as a zip or converted to a new repository in your own Github account and cloned. Github's ["Creating a Repository from a Template" guide](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-from-a-template#creating-a-repository-from-a-template) will walk you through the steps.
 
 - [Github source](https://github.com/temporalio/money-transfer-project-template-go)
+
+    ```bash
+    git clone https://github.com/temporalio/money-transfer-project-template-go
+    cd money-transfer-project-template-go
+    ```
 - [Zip download](https://github.com/temporalio/money-transfer-project-template-go/archive/main.zip)
 
 If you convert the template to a new repo, make sure you use the same repository name in your own Github account so that you don't have to make changes to the Go module name when you clone it. Once you have it, open your terminal in the project's root directory and you are ready to go.
@@ -64,6 +69,8 @@ There are two ways to start a Workflow with Temporal, either via the SDK or via 
 
 <!--SNIPSTART money-transfer-project-template-go-start-workflow-->
 <!--SNIPEND-->
+
+### Running the Workflow
 
 Make sure the [Temporal server](/docs/server-quick-install) is running in a terminal, and then run start/main.go from the project root using the following command:
 
@@ -98,6 +105,8 @@ Task Queues are defined by a simple string name:
 
 <!--SNIPSTART money-transfer-project-template-go-shared-task-queue-->
 <!--SNIPEND-->
+
+### Running the Worker
 
 Run worker/main.go from the project root using the following command:
 
