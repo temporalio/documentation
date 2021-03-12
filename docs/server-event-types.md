@@ -154,7 +154,9 @@ This event type indicates that the Temporal Server has successfully Signaled the
 
 #### EVENT_TYPE_MARKER_RECORDED
 
-This event type indicates that a marker has been recorded.
+This event type is transparent to the Temporal Server.
+The Server will only store it and will not try to understand it.
+The SDK client may use it for local activities or side effects.
 
 #### EVENT_TYPE_START_CHILD_WORKFLOW_EXECUTION_INITIATED
 
