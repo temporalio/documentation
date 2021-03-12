@@ -65,9 +65,9 @@ The SDK client picked up the Workflow Task, processed new history events, and ma
 It is possible for the following events to still occur:
 
 - [EVENT_TYPE_ACTIVITY_TASK_SCHEDULED](#event_type_activity_task_scheduled)
-- [EVENT_TYPE_TIMER_STARTED](#event_type_timer_starter)
+- [EVENT_TYPE_TIMER_STARTED](#event_type_timer_started)
 - [EVENT_TYPE_UPSERT_WORKFLOW_SEARCH_ATTRIBUTES](#event_type_upsert_workflow_search_attributes)
-- [EVENT_TYPE_MARKER_RECORDED](#event_type_marker_recorder)
+- [EVENT_TYPE_MARKER_RECORDED](#event_type_marker_recorded)
 - [EVENT_TYPE_START_CHILD_WORKFLOW_EXECUTION_INITIATED](#event_type_start_child_workflow_execution_initiated)
 - [EVENT_TYPE_REQUEST_CANCEL_EXTERNAL_WORKFLOW_EXECUTION_INITIATED](#event_type_request_cancel_external_workflow_execution_initiated)
 - [EVENT_TYPE_SIGNAL_EXTERNAL_WORKFLOW_EXECUTION_INITIATED](#event_type_signal_external_workflow_execution_initiated)
