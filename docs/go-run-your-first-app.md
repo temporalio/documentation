@@ -139,7 +139,7 @@ The terminal output will look like this:
 Withdrawing $54.990002 from account 001-001. ReferenceId: 8e37aafe-5fb8-4649-99e3-3699e35e6c32
 ```
 
-> Tip: What actually happens under the hood:
+:::tip What actually happens under the hood
 > 
 > - The first Task the Worker finds is the one that tells it to execute the Workflow function. 
 > - The Worker communicates the event back to the server.
