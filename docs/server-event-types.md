@@ -4,7 +4,8 @@ title: Event type reference
 sidebar_label: Event types
 ---
 
-Event types are defined in the Server API [event_type.proto](https://github.com/temporalio/api/blob/master/temporal/api/enums/v1/event_type.proto) file. If you are new to debugging and monitoring your workflows, check the relevant sections in our [Production Deployment guide](https://docs.temporal.io/docs/server-production-deployment).
+Event types are defined in the Server API [event_type.proto](https://github.com/temporalio/api/blob/master/temporal/api/enums/v1/event_type.proto) file.
+If you are new to debugging and monitoring your Workflows, check the relevant sections in our [production deployment guide](https://docs.temporal.io/docs/server-production-deployment).
 
 #### EVENT_TYPE_UNSPECIFIED
 
