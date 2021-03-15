@@ -169,7 +169,9 @@ Your Workflow is still there!
 
 ### Activity error
 
-Next let's simulate a bug in the `Deposit()` Activity function. Let your Workflow continue to run. Open the `activity.go` file and switch out the comments on the return statements such that the `Deposit()` function returns an error.
+Next let's simulate a bug in the `Deposit()` Activity function.
+Let your Workflow continue to run. 
+Open the `activity.go` file and switch out the comments on the return statements such that the `Deposit()` function returns an error.
 
 <!--SNIPSTART money-transfer-project-template-go-activity-->
 <!--SNIPEND-->
