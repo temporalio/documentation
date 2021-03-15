@@ -10,7 +10,7 @@ This page details some of the version specific requirements and dependencies nee
 
 All versions of Temporal require that [Go v1.15+](https://golang.org/dl/) is installed in the environment.
 
-## Temporal Versioning and Support Policy
+## Server versioning and support policy
 
 All of Temporal's releases abide by [semver](https://semver.org/), but here we detail the precise upgrade paths and support we offer, starting from Temporal `v1.7.0`:
 
