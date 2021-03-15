@@ -16,17 +16,16 @@ All versions of Temporal require that [Go v1.15+](https://golang.org/dl/) is ins
 - Fairly precise upgrade paths and support have been established starting from Temporal `v1.7.0`.
 
 - We provide maintenance support for previously published minor and major versions by continuing to release critical bug fixes related to security, the prevention of data loss, and reliability, whenever they are found.
-- **For Temporal Server OSS**
-    - We will publish incremental upgrade guides for each minor and major version
-        - This also includes specifying what dependency upgrades we test for (e.g. from Cassandra 3.0 to 3.11)
-    - We will offer maintenance support of the last 3 **minor** versions post release
-        - In other words, we will not backport patches beyond the previous 3 minor versions for free
-    - We will offer maintenance support of **major** versions for at least 12 months after GA release, and provide at least 6 months' notice before EOL/deprecating support
-- **For Temporal Cloud**
-    - We will automatically upgrade all customers to the latest minor versions
-    - We will offer maintenance support of major versions for at least 18 months after GA release, and provide at least 6 months' notice before EOL/deprecating support
+**Temporal Server OSS**
+    - We aim to publish incremental upgrade guides for each minor and major version, which will include specifics around dependency upgrades that we have tested for (e.g. Cassandra 3.0 -> 3.11).
+    - We will offer maintenance support of the last 3 **minor** versions after a release, and do not plan to "backport" patches beyond that.
+    - We will offer maintenance support of **major** versions for at least 12 months after a GA release, and provide at least 6 months' notice before EOL/deprecating support.
+**Temporal Cloud**
+    - All customers will automatically be upgrade to the latest minor version.
+    - Maintenance support, for major versions, will be provided for at least 18 months after a GA release, and there will be at least 6 months' notice before EOL/deprecating support.
 
-This versioning policy is intended to serve as a minimum promise to the many customers who rely on us for their critical business operations. If you have any further questions on specifics, please do not hesitate to reach out via community or customer channels.
+- This versioning policy is intended to serve as a minimum set of guidelines for customers who rely on us for their critical business operations.
+- If you have any further questions, please do not hesitate to reach out via community or customer channels.
 
 ## Dependencies
 
