@@ -107,7 +107,9 @@ It's time to start the Worker. A Worker is responsible for executing pieces of W
 - It knows which piece of code to execute from Tasks that it gets from the Task Queue.
 - It only listens to the Task Queue that it is registered to.
 
-After The Worker executes code, it returns the results back to the Temporal server. Note that the Worker listens to the same Task Queue that the Workflow and Activity Tasks are sent to. This is called "Task routing", and is a built-in mechanism for load balancing.
+After The Worker executes code, it returns the results back to the Temporal Server. 
+Note that the Worker listens to the same Task Queue that the Workflow and Activity Tasks are sent to.
+This is called "Task routing", and is a built-in mechanism for load balancing.
 
 <!--SNIPSTART money-transfer-project-template-go-worker-->
 <!--SNIPEND-->
