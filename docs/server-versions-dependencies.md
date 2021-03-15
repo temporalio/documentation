@@ -15,7 +15,7 @@ All versions of Temporal require that [Go v1.15+](https://golang.org/dl/) is ins
 - All Temporal Server releases abide by the [Semantic Versioning Specification](https://semver.org/).
 - Fairly precise upgrade paths and support have been established starting from Temporal `v1.7.0`.
 
-- We define maintenance support as continuing to release critical bugfixes — related to security, preventing data loss, reliability — for previously published minor and major versions, whenever they are found.
+- We provide maintenance support for previously published minor and major versions by continuing to release critical bug fixes related to security, the prevention of data loss, and reliability, whenever they are found.
 - **For Temporal Server OSS**
     - We will publish incremental upgrade guides for each minor and major version
         - This also includes specifying what dependency upgrades we test for (e.g. from Cassandra 3.0 to 3.11)
