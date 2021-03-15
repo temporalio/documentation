@@ -12,7 +12,8 @@ All versions of Temporal require that [Go v1.15+](https://golang.org/dl/) is ins
 
 ## Server versioning and support policy
 
-All of Temporal's releases abide by [semver](https://semver.org/), but here we detail the precise upgrade paths and support we offer, starting from Temporal `v1.7.0`:
+- All Temporal Server releases abide by the [Semantic Versioning Specification](https://semver.org/).
+- Fairly precise upgrade paths and support have been established starting from Temporal `v1.7.0`.
 
 - We define maintenance support as continuing to release critical bugfixes — related to security, preventing data loss, reliability — for previously published minor and major versions, whenever they are found.
 - **For Temporal Server OSS**
