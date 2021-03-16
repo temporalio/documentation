@@ -80,6 +80,7 @@ module.exports = {
             'go-child-workflows',
             'go-retries',
             'go-error-handling',
+            'go-selectors',
             'go-signals',
             'go-continue-as-new',
             'go-side-effect',
@@ -91,7 +92,6 @@ module.exports = {
             'go-distributed-cron',
             'go-tracing',
             'go-search-apis',
-            'go-selectors',
           ],
         },
         {
