@@ -9,20 +9,34 @@ import { ResponsivePlayer } from '../src/components'
 
 ## Overview
 
-Temporal core abstraction is a **fault-oblivious stateful Workflow**. The state of the Workflow code, including local variables and threads it creates, is immune to process and Temporal service failures.
+Temporal's core abstraction is a **fault-oblivious stateful Workflow**. The state of the Workflow code, including local variables and threads it creates, is immune to process and Temporal service failures.
 This is a very powerful concept as it encapsulates state, processing threads, durable timers and event handlers.
 
 ## Example
 
-Let's look at a use case. A customer signs up for an application with a trial period. After the period, if the customer has not cancelled, he should be charged once a month for the renewal. The customer has to be notified by email about the charges and should be able to cancel the subscription at any time.
+Let's look at a use case: 
 
-The business logic of this use case is not very complicated and can be expressed in a few dozen lines of code. But any practical implementation has to ensure that the business process is fault tolerant and scalable. There are various ways to approach the design of such a system.
+- A customer signs up for an application with a trial period. 
+- After the period, if the customer has not cancelled, he should be charged once a month for the renewal. 
+- The customer has to be notified by email about the charges.
+- The customer should be able to cancel the subscription at any time.
 
-One approach is to center it around a database. An application process would periodically scan database tables for customers in specific states, execute necessary actions, and update the state to reflect that. While feasible, this approach has various drawbacks. The most obvious is that the state machine of the customer state quickly becomes extremely complicated. For example, charging a credit card or sending emails can fail due to a downstream system unavailability. The failed calls might need to be retried for a long time, ideally using an exponential retry policy. These calls should be throttled to not overload external systems. There should be support for poison pills to avoid blocking the whole process if a single customer record cannot be processed for whatever reason. The database-based approach also usually has performance problems. Databases are not efficient for scenarios that require constant polling for records in a specific state.
+The business logic of this use case is not very complicated and can be expressed in a few dozen lines of code. 
+But any practical implementation has to ensure that the business process is fault tolerant and scalable. 
 
-Another commonly employed approach is to use a timer service and queues. Any update is pushed to a queue and then a worker that consumes from it updates a database and possibly pushes more messages in downstream queues. For operations that require scheduling, an external timer service can be used. This approach usually scales much better because a database is not constantly polled for changes. But it makes the programming model more complex and error prone as usually there is no transactional update between a queuing system and a database.
+There are various ways to approach the design of such a system:
 
-With Temporal, the entire logic can be encapsulated in a simple durable function that directly implements the business logic. Because the function is stateful, the implementer doesn't need to employ any additional systems to ensure durability and fault tolerance.
+- **Use a database and cronjob**: An application process would periodically scan database tables for customers in specific states, execute necessary actions, and update the state to reflect that. While feasible, this approach has various drawbacks: 
+    - The state machine of the customer state quickly becomes extremely complicated. For example, charging a credit card or sending emails can fail due to a downstream system unavailability. 
+    - The failed calls might need to be retried for a long time, ideally using an exponential retry policy. These calls should be throttled to not overload external systems. 
+    - There should be support for poison pills to avoid blocking the whole process if a single customer record cannot be processed for whatever reason. 
+    - There may also be performance issues. Databases are not efficient for scenarios that require constant polling for records in a specific state.
+- **Use a timer service and queues**: Any update is pushed to a queue and then a worker that consumes from it updates a database and possibly pushes more messages in downstream queues. For operations that require scheduling, an external timer service can be used. 
+    - This approach usually scales much better because a database is not constantly polled for changes. 
+    - However, it makes the programming model more complex and error prone as usually there is no transactional update between a queuing system and a database.
+    - It is also harder to test and debug as the asynchrony is spread across your infrastructure.
+
+With Temporal, the entire logic can be encapsulated in a **single durable function** that directly implements the business logic. Because the function is stateful, the implementer doesn't need to employ any additional systems to ensure durability and fault tolerance.
 
 Here is an example Workflow that implements the subscription management use case. It is in Java, but Go is also supported. [Other SDKS](/docs/sdks-introduction/#other-sdks) are under active development.
 
@@ -60,18 +74,34 @@ public class SubscriptionWorkflowImpl implements SubscriptionWorkflow {
 }
 ```
 
-Again, note that this code directly implements the business logic. If any of the invoked operations (aka Activities) takes a long time, the code is not going to change. It is okay to block on `chargeMonthlyFee` for a day if the downstream processing service is down that long. The same way that blocking sleep for 30 days is a normal operation inside the Workflow code.
+Again, note that this code directly implements the business logic: 
 
-Temporal has practically no scalability limits on the number of open Workflow instances. So even if your site has hundreds of millions of consumers, the above code is not going to change.
+- If any of the invoked operations (aka Activities) takes a long time, the code is not going to change. 
+- It is okay to block on `chargeMonthlyFee` for a day if the downstream processing service is down that long.
+- In the same way, blocking the Workflow with `sleep` for 30 days is a routine operation.
+- Temporal has practically no scalability limits on the number of concurrently open Workflow instances. So even if your site has hundreds of millions of consumers, the above code is not going to change.
 
-The commonly asked question by developers that learn Temporal is "How do I handle Workflow worker process failure/restart in my Workflow"? The answer is that you do not. **The Workflow code is completely oblivious to any failures and downtime of workers or even the Temporal service itself**. As soon as they are recovered and the Workflow needs to handle some event, like timer or an Activity completion, the current state of the Workflow is fully restored and the execution is continued. The only reason for a Workflow failure is the Workflow business code throwing an exception, not underlying infrastructure outages.
+### Frequently asked questions
 
-Another commonly asked question is whether a worker can handle more Workflow instances than its cache size or number of threads it can support. The answer is that a Workflow, when in a blocked state, can be safely removed from a worker.
-Later it can be resurrected on a different or the same worker when the need (in the form of an external event) arises. So a single worker can handle millions of open Workflow executions, assuming it can handle the update rate.
+- **Can I write infinitely long running Workflows?**
+    - Workflows that are intended to run indefinitely should be written with some care. Temporal stores the complete event history for the entire life of a Workflow Execution, and there is a maximum size enforced by the service.
+    - The idiomatic way to handle this is to return `ContinueAsNew` (available in all SDKs) at a reasonable cutoff point to complete the current Workflow Execution and start a new execution with the same Workflow Id, passing it the appropriate parameters to continue.
+- **How do I handle Workflow worker process failure/restart in my Workflow?** 
+    - The answer is that you do not. **The Workflow code is completely oblivious to any failures and downtime of workers or even the Temporal service itself**. 
+    - As soon as they are recovered and the Workflow needs to handle some event, like timer or an Activity completion, the current state of the Workflow is fully restored and the execution is continued. 
+    - The only reason for a Workflow failure is the Workflow business code throwing an exception, not underlying infrastructure outages.
+- **Can a worker handle more Workflow instances than its cache size or number of supported threads?** 
+    - Yes. The tradeoff is some added latency. 
+    - Workers are stateless. Any Workflow, while in a blocked state, can be safely removed from a worker. Later on, it can be resurrected on a different or the same worker when the need arises (in the form of an external event). 
+    - So a single worker can handle millions of open Workflow executions, assuming it can handle the update rate and that slightly higher latency is not a concern.
 
 ## State Recovery and Determinism
 
-The Workflow state recovery utilizes event sourcing which puts a few restrictions on how the code is written. The main restriction is that the Workflow code must be deterministic which means that it must produce exactly the same result if executed multiple times. This rules out any external API calls from the Workflow code as external calls can fail intermittently or change its output any time. That is why all communication with the external world should happen through Activities. For the same reason, Workflow code must use Temporal APIs to get current time, sleep, and create new threads.
+Workflow state recovery utilizes event sourcing which puts a few restrictions on how the code is written:
+
+- The main restriction is that **Workflow code must be deterministic**. It must produce exactly the same result if executed multiple times. 
+- This rules out any external API calls *from the Workflow code* as external calls can fail intermittently or change its output any time. That is why **all communication with the external world should happen through Activities**. 
+- For the same reason, Workflow code must use Temporal APIs to get current time, `sleep`, and create new threads.
 
 To understand the Temporal execution model as well as the recovery mechanism, watch the following webcast. The animation covering recovery starts at 15:50.
 
@@ -81,7 +111,7 @@ To understand the Temporal execution model as well as the recovery mechanism, wa
 
 Workflow Id is assigned by a client when starting a Workflow. It is usually a business level Id like customer Id or order Id.
 
-Temporal guarantees that there could be only one Workflow (across all Workflow types) with a given Id open per [namespace](/docs/glossary/#namespace) at any time. An attempt to start a Workflow with the same Id is going to fail with `WorkflowExecutionAlreadyStarted` error.
+Temporal guarantees that there will only be one Workflow (across all Workflow types) with a given Id open per [namespace](/docs/glossary/#namespace) at any time. An attempt to start a Workflow with the same Id is going to fail with `WorkflowExecutionAlreadyStarted` error.
 
 An attempt to start a Workflow if there is a completed Workflow with the same Id depends on a `WorkflowIdReusePolicy` option:
 
@@ -104,7 +134,7 @@ Some reasons to use child Workflows are:
 - A child Workflow can be used to manage some resource using its Id to guarantee uniqueness. For example, a Workflow that manages host upgrades can have a child Workflow per host (host name being a Workflow Id) and use them to ensure that all operations on the host are serialized.
 - A child Workflow can be used to execute some periodic logic without blowing up the parent history size. When a parent starts a child, it executes periodic logic calling that continues as many times as needed, then completes. From the parent point of view, it is just a single child Workflow invocation.
 
-The main limitation of a child Workflow versus collocating all the application logic in a single Workflow is lack of the shared state. Parent and child can communicate only through asynchronous signals. But if there is a tight coupling between them, it might be simpler to use a single Workflow and just rely on a shared object state.
+The main reason *not* to use child Workflows (and instead, collocating all the application logic in a single Workflow) is **lack of shared state**. Parent and child can communicate only through asynchronous signals. If there is a tight coupling between them, it might be simpler to use a single Workflow and just rely on a shared object state.
 
 We recommended starting from a single Workflow implementation if your problem has bounded size in terms of number of executed Activities and processed signals. It is more straightforward than multiple asynchronously communicating Workflows.
 
@@ -112,7 +142,7 @@ We recommended starting from a single Workflow implementation if your problem ha
 
 It's often necessary to limit the amount of time a specific Workflow can be running. To support this, the following three parameters can be provided to Workflow options:
 
-- `WorkflowExecutionTimeout` maximum time a Workflow should be allowed to run including retries and continue as new. Use `WorkflowRunTimeout` to limit execution time of a single run.
+- `WorkflowExecutionTimeout` maximum time a Workflow should be allowed to run including retries and `ContinueAsNew`. Use `WorkflowRunTimeout` to limit execution time of a single run.
 - `WorkflowRunTimeout` maximum time a single Workflow run should be allowed.
 - `WorkflowTaskTimeout` timeout for processing a Workflow task starting from the point when a worker pulled the task. If a decision task is lost, it is retried after this timeout.
 
