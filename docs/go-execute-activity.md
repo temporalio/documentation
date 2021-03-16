@@ -95,4 +95,4 @@ However, this is not necessary. If you want to execute multiple Activities in pa
 repeatedly call `workflow.ExecuteActivity()`, store the returned futures, and then wait for all
 Activities to complete by calling the `Get()` methods of the future at a later time.
 
-To implement more complex wait conditions on returned future objects, use the `workflow.Selector` class.
+To implement more complex wait conditions on returned future objects, use the `workflow.Selector` class (learn more on the [Go SDK Selectors](https://docs.temporal.io/docs/go-selectors) doc).
