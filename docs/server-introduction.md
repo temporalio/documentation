@@ -26,6 +26,7 @@ Choose from the list below to get started:
 
 ## Features
 
+- [Namespaces](/docs/server-namespaces): Create basic logical separations within a Temporal cluster, or use Global Namespaces to enable failover across multi-cluster instances.
 - [Security](/docs/server-security): Learn how to keep your self-hosted instance secure with encryption and pluggable auth protocols.
 - [Enhanced Workflow search](/docs/server-workflow-search): Integrating ElasticSearch enables the use of customizable search attributes and complex search queries.
 - [Archiving data](/docs/server-archive-data): Want to back up your Workflow event history? You can with a cloud provider of your choice.
