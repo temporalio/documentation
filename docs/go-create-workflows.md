@@ -121,7 +121,7 @@ Coroutine related constructs:
 - **workflow.Go** : This is a replacement for the the **go** statement.
 - **workflow.Channel** : This is a replacement for the native **chan** type. Temporal provides
   support for both buffered and unbuffered channels.
-- **workflow.Selector** : This is a replacement for the **select** statement.
+- **workflow.Selector** : This is a replacement for the **select** statement. Learn more on the [Go SDK Selectors](https://docs.temporal.io/docs/go-selectors) page.
 
 Time related functions:
 
