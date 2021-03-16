@@ -101,7 +101,7 @@ Merely matching on the channel doesn't consume the message; it has to be explici
 
 ## Querying Selector State
 
-There is a `selector.HasPending` API that was added to ensure that signals are not lost when Workflow closed.
+There is a `selector.HasPending` API that was added to ensure that signals are not lost when Workflow closed.	
 
 ## Learn More
 
