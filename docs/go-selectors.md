@@ -39,13 +39,13 @@ func SampleWorkflow(ctx workflow.Context) error {
 	channel := workflow.GetSignalChannel(ctx, channelName)
 	selector.AddReceive(channel, func(c workflow.ReceiveChannel, more bool) {
 		// matching on the channel doesn't consume the message.
-    // So it has to be explicitly consumed here
+	 	// So it has to be explicitly consumed here
 		c.Receive(ctx, &signalVal)
 		// do something with received information
 	})
 
 	// API Example: block until the next Future is ready to run
-  // important! none of the deferred code runs until you call selector.Select
+	// important! none of the deferred code runs until you call selector.Select
 	selector.Select(ctx)
 
 	// Todo: document selector.HasPending
@@ -54,7 +54,7 @@ func SampleWorkflow(ctx workflow.Context) error {
 
 ## Using Selectors with Futures
 
-You add `Future`s after `Activities`:
+You usually add `Future`s after `Activities`:
 
 ```go
 	// API Example: defer code execution until after an activity is done
@@ -101,21 +101,13 @@ Merely matching on the channel doesn't consume the message; it has to be explici
 
 ## Querying Selector State
 
-There is a `selector.HasPending` API that was added to ensure that signals are not lost when Workflow closed.	
+You can use the `selector.HasPending` API to ensure that signals are not lost when a Workflow is closed (e.g. by `ContinueAsNew`).
 
 ## Learn More
 
 Usage of Selectors is best learned by example:
 
-- Setting up a race condition between an Activity and a Timer, and conditionally execute ([example](https://github.com/temporalio/samples-go/blob/14980b3792cc3a8447318fefe9a73fe0a580d4b9/timer/workflow.go))
+- Setting up a race condition between an Activity and a Timer, and conditionally execute ([Timer example](https://github.com/temporalio/samples-go/blob/14980b3792cc3a8447318fefe9a73fe0a580d4b9/timer/workflow.go))
 - Receiving information in a Channel ([Mutex example](https://github.com/temporalio/samples-go/blob/14980b3792cc3a8447318fefe9a73fe0a580d4b9/mutex/mutex_workflow.go))
 - Looping through a list of work and scheduling them all in parallel ([DSL example](https://github.com/temporalio/samples-go/blob/14980b3792cc3a8447318fefe9a73fe0a580d4b9/dsl/workflow.go))
 - Executing activities in parallel, pick the first result, cancel remainder ([Pick First example](https://github.com/temporalio/samples-go/blob/14980b3792cc3a8447318fefe9a73fe0a580d4b9/pickfirst/pickfirst_workflow.go))
-
-Frequently Asked Questions:
-
-- What happens when `[selector.Select](http://selector.Select)` is called with nothing left in the queue?
-- What other Selector APIs remain to be documented?
-- If multiple Futures are simultaneously ready to run, what does `[selector.Select](http://selector.Select)` do?
-    - It chooses at random - order of execution is not defined.
-    - it is called once per Future
