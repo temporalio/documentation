@@ -1,6 +1,6 @@
 ---
 id: go-selectors
-title: Go Selectors
+title: Go SDK Selectors
 sidebar_label: Selectors
 ---
 
@@ -9,7 +9,10 @@ sidebar_label: Selectors
 In Go, the `select` statement lets a goroutine wait on multiple communication operations.
 A `select` **blocks until one of its cases can run**, then it executes that case.
 It chooses one at random if multiple are ready.
-Temporal's Go SDK `Selector`s are similar, but can block on sending and receiving from `Channel`s as well as `Future` deferred work.
+
+However, a normal Go select statement can not be used inside of Workflows directly because of the random nature.
+Temporal's Go SDK `Selector`s are similar and act as a replacement.
+They can block on sending and receiving from Channels but as a bonus can listen on Future deferred work.
 Usage of Selectors to defer and process work (in place of Go's `select`) are necessary in order to ensure deterministic Workflow code execution (though using `select` in Activity code is fine).
 
 ## Full API Example
@@ -98,9 +101,7 @@ Merely matching on the channel doesn't consume the message; it has to be explici
 
 ## Querying Selector State
 
-TODO: document `selector.HasPending`
-Context: This was added to ensure that signals are not lost when Workflow closed.
-Explain how to ensure signals are not lost.
+There is a `selector.HasPending` API that was added to ensure that signals are not lost when Workflow closed.
 
 ## Learn More
 
