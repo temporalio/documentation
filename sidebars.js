@@ -12,7 +12,6 @@ module.exports = {
         'concept-events',
         'concept-queries',
         'concept-task-queues',
-        'concept-namespaces',
       ],
     },
     {
@@ -40,6 +39,7 @@ module.exports = {
         'server-production-deployment',
         'server-architecture',
         'server-versions-and-dependencies',
+        'server-namespaces',
         'server-workflow-search',
         'server-elasticsearch-setup',
         'server-options',

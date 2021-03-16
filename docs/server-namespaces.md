@@ -1,6 +1,6 @@
 ---
-id: concept-namespaces
-title: Namespaces
+id: server-namespaces
+title: Temporal Server Namespaces
 sidebar_label: Namespaces
 ---
 
