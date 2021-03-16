@@ -16,3 +16,7 @@
 [[redirects]]
   from = "/docs/workflows"
   to = "/docs/concept-workflows"
+
+[[redirects]]
+  from = "/docs/concept-namespaces"
+  to = "/docs/server-namespaces"
