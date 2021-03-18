@@ -60,7 +60,7 @@ Eventstreaming (Kafka + Zookeeper) is required for this feature in some versions
 Starting with Temporal Server version 1.5.4, the use of Kafka can be disabled using dynamic config settings.
 See the Temporal Server version [1.5.0 release notes](https://github.com/temporalio/temporal/releases/tag/v1.5.0) for details on how to disable it.
 
-- **ElasticSearch v6.8 & v7.7**
+- **Elasticsearch v6.8 & v7.7**
 - **Kafka v2.1.1 & Zookeeper v3.4.6**
 
 ### Monitoring & observation
@@ -78,7 +78,7 @@ This is an experimental feature, most Temporal users do not need this. Requires 
 
 :::note Note on event streaming dependency
 
-Event streaming software as a dependency is only required when ElasticSearch is being used or when Temporal is deployed across multiple data centers. However, in future releases of Temporal, third party event streaming software will likely cease to be needed as dependency for both.
+Event streaming software as a dependency is only required when Elasticsearch is being used or when Temporal is deployed across multiple data centers. However, in future releases of Temporal, third party event streaming software will likely cease to be needed as dependency for both.
 
 :::
 
