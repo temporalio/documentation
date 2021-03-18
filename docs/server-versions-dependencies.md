@@ -8,7 +8,9 @@ sidebar_label: Versions & dependencies
 
 This page details some of the version specific requirements and dependencies needed to build and run an instance of Temporal.
 
-All versions of Temporal require that [Go v1.15+](https://golang.org/dl/) is installed in the environment.
+If you are just running the Go binary, Go is not required.
+
+But if you are building Temporal or running it from source, [Go v1.16+ is required](https://github.com/temporalio/temporal/blob/master/CONTRIBUTING.md).
 
 ## Server versioning and support policy
 
@@ -33,17 +35,6 @@ This versioning policy is intended to serve as a minimum set of guidelines for c
 
 Temporal offers official support for, and is tested against, dependencies with the exact versions described below.
 
-### Go Packages
-
-| Temporal version | Go packages |
-|------------------|-------------|
-| [1.5.1](https://github.com/temporalio/temporal/tree/v1.5.1) | [go.mod](https://github.com/temporalio/temporal/blob/v1.5.1/go.mod) |
-| [1.4.2](https://github.com/temporalio/temporal/tree/v1.4.2) | [go.mod](https://github.com/temporalio/temporal/blob/v1.4.2/go.mod) |
-| [1.3.2](https://github.com/temporalio/temporal/tree/v1.3.2) | [go.mod](https://github.com/temporalio/temporal/blob/v1.3.2/go.mod) |
-| [1.2.2](https://github.com/temporalio/temporal/tree/v1.2.2) | [go.mod](https://github.com/temporalio/temporal/blob/v1.2.2/go.mod) |
-| [1.1.1](https://github.com/temporalio/temporal/tree/v1.1.1) | [go.mod](https://github.com/temporalio/temporal/blob/v1.1.1/go.mod) |
-| [1.0.0](https://github.com/temporalio/temporal/tree/v1.0.0) | [go.mod](https://github.com/temporalio/temporal/blob/v1.0.0/go.mod) |
-
 ### Persistence
 
 The only required dependency is a database, and there are multiple types of databases that are supported.
@@ -56,12 +47,15 @@ The only required dependency is a database, and there are multiple types of data
 
 Temporal has built-in Workflow search functionality.
 To enhance this feature, Temporal supports an [integration with Elasticsearch](/docs/server-elasticsearch-setup).
-Eventstreaming (Kafka + Zookeeper) is required for this feature in some versions of Temporal.
-Starting with Temporal Server version 1.5.4, the use of Kafka can be disabled using dynamic config settings.
-See the Temporal Server version [1.5.0 release notes](https://github.com/temporalio/temporal/releases/tag/v1.5.0) for details on how to disable it.
 
-- **Elasticsearch v6.8 & v7.7**
+- **Elasticsearch**
+	- Elasticsearch v7.7 is supported from Temporal version 1.7.0 onwards
+	- Elasticsearch v6.8 is supported in all Temporal versions
+	- Both versions are explicitly supported with AWS Elasticsearch
 - **Kafka v2.1.1 & Zookeeper v3.4.6**
+	- Starting with Temporal Server version 1.5.4, the use of Kafka can be disabled using dynamic config settings.
+	  See the [1.5.0 release notes](https://github.com/temporalio/temporal/releases/tag/v1.5.0) for details on how to disable it.
+	- Starting from Temporal Server version 1.8.0, Kafka and Zookeper are no longer required.
 
 ### Monitoring & observation
 
@@ -72,13 +66,15 @@ Temporal emits metrics by default in a format that is supported by Prometheus. M
 
 ### Multi-cluster replication
 
-This is an experimental feature, most Temporal users do not need this. Requires the use of event streaming software. See the note on event streaming dependency below.
+This is an experimental feature, most Temporal users do not need this. You should be on the latest Temporal version (v1.7+) to use this. Requires the use of event streaming software. See the note on event streaming dependency below.
 
-- **Kafka v2.1.1 & Zookeeper v3.4.6**
+- **Zookeeper v3.4.6**
 
 :::note Note on event streaming dependency
 
-Event streaming software as a dependency is only required when Elasticsearch is being used or when Temporal is deployed across multiple data centers. However, in future releases of Temporal, third party event streaming software will likely cease to be needed as dependency for both.
+Event streaming software as a dependency is only required when Elasticsearch is being used or when Temporal is deployed across multiple data centers. 
+However, in future releases of Temporal, third party event streaming software will likely cease to be needed as dependency for both.
+
 
 :::
 
