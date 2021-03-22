@@ -148,6 +148,8 @@ Withdrawing $54.990002 from account 001-001. ReferenceId: 8e37aafe-5fb8-4649-99e
 > 
 > Each of these are **History Events** that can be audited in Temporal Web (under the `History` tab next to `Summary`). Once a workflow is completed and closed, the full history will persist for a set retention period (typically 7-30 days) before being deleted. You can set up [the Archival feature](https://docs.temporal.io/docs/server-archive-data/) to send them to long term storage for compliance/audit needs.
 
+:::
+
 <img class="docs-image-centered docs-image-max-width-20" src="https://raw.githubusercontent.com/temporalio/documentation-images/main/static/confetti.png" />
 
 **Congratulations**, you just ran a Temporal Workflow application!
