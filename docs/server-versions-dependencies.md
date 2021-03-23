@@ -66,7 +66,10 @@ Temporal emits metrics by default in a format that is supported by Prometheus. M
 
 ### Multi-cluster replication
 
-This is an experimental feature, most Temporal users do not need this. You should be on the latest Temporal version (v1.7+) to use this. Requires the use of event streaming software. See the note on event streaming dependency below.
+This is an experimental feature, most Temporal users do not need this.
+You should be on the latest Temporal version (v1.7+) to use this. 
+Some Server versions require the use of event streaming software.
+See the note on event streaming dependency below.
 
 - **Zookeeper v3.4.6**
 
