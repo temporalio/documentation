@@ -117,7 +117,7 @@ In this case you can specify them such that if they occur, the Workflow will not
 
 The only required Workflow options parameter is the name of a [Task Queue](/docs/concept-task-queues).
 Read the [Task Queues concept page](/docs/concept-task-queues) for a better overview.
-But essentially a Task Queue is the mechanism by which any given Worker knows which piece of code to execute next.
+Essentially a Task Queue is the mechanism by which any given Worker knows which piece of code to execute next.
 A Workflow can only use one Task Queue, and the from a developer's perspective it is named and managed as a simple string value.
 
 ### Custom Id
