@@ -109,8 +109,9 @@ Useful for coefficients of more than 1.
 
 #### Non-retryable error reasons
 
-- **Description**: allows to specify errors that shouldn't be retried. For example, retrying invalid arguments error doesn't make sense in some scenarios.
-- **Use-case**:
+- **Description**: Specifies errors that shouldn't be retried.
+- **Use-case**: There may be errors that you know of that should not trigger a retry.
+In this case you can specify them such that if they occur, the Workflow will not be retried.
 
 ### The Task Queue
 
