@@ -33,7 +33,7 @@ This versioning policy is intended to serve as a minimum set of guidelines for c
 
 ## Dependencies
 
-Temporal offers official support for, and is tested against, dependencies with the exact versions described below.
+Temporal offers official support for, and is tested against, dependencies with the exact versions described in the `go.mod` file of corresponding release tag (Example, [v1.5.1](https://github.com/temporalio/temporal/tree/v1.5.1) dependencies are documented in [the go.mod for v1.5.1](https://github.com/temporalio/temporal/blob/v1.5.1/go.mod)).
 
 ### Persistence
 
