@@ -13,15 +13,11 @@ Depending on the language, a Workflow is really just a single function or object
 The idea is that Workflow code should be able to focus on "business logic".
 When we talk about "business logic", we are talking about the literal steps an application is taking to meet the goals of a business.
 
-```
-Workflow {
-  ChargeCustomer()
-  SendInvoice()
-  NotifyShipping()
-  UpdateInventory()
-  ...
-}
-```
+1. Charge customer
+2. Send invoice
+3. Notify shipping
+4. Update inventory
+5. Etc...
 
 This is in contrast to the logic that is often needed to handle any timeouts, errors, edge cases, or infrastructure failures that might occur while executing the business logic.
 
@@ -69,19 +65,19 @@ To support this, the following three parameters can be provided to Workflow opti
 
 #### Execution timeout
 
-- **Description**: maximum time a Workflow should be allowed to run including retries and continue as new.
-Different from Run timeout which is a single run.
+- **Description**: This is the maximum amount of time that a Workflow should be allowed to run including retries and any usage of the "Continue-as-new" feature.
+This is different from [Run timeout](#run-timeout).
 - **Use-case**:
 
 #### Run timeout
 
-- **Description**: maximum time a single Workflow run should be allowed.
+- **Description**: This is the maximum amount of time that a single Workflow run is restricted to.
 - **Use-case**:
 
 #### Task timeout
 
-- **Description**: timeout for processing a Workflow task starting from the point when a worker pulled the task.
-If a Command task is lost, it is retried after this timeout.
+- **Description**: This is the maximum amount of time that the Server will wait for the Worker to start processing a Task after the Task has been pulled from the Task Queue.
+If a [Command Task](/docs/glossary/#command) is lost, it is retried after this timeout.
 - **Use-case**:
 
 ### Retry policy
@@ -91,7 +87,7 @@ In this case, you can use supply a retry policy when you start the Workflow.
 
 #### Initial interval
 
-- **Description**: This is the amount of time that must elapse before the first retry occurs.
+- **Description**: Amount of time that must elapse before the first retry occurs.
 - **Use-case**:
 
 #### Backoff coefficient
@@ -102,12 +98,13 @@ The coefficient specifies how fast the retry interval is growing. The coefficien
 
 #### Maximum interval
 
-- **Description**: specifies the maximum interval between retries. Useful for coefficients of more than 1.
+- **Description**: Specifies the maximum interval between retries.
+Useful for coefficients of more than 1.
 - **Use-case**:
 
 #### Maximum attempts
 
-- **Description**: specifies how many times to attempt to execute a Workflow in the presence of failures. If this limit is exceeded, the Workflow fails without retry.
+- **Description**: Specifies the maximum number of attempts that can be made to execute a Workflow in the presence of failures. If this limit is exceeded, the Workflow fails without retrying again.
 - **Use-case**:
 
 #### Non-retryable error reasons
