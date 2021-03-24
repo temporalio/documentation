@@ -18,6 +18,7 @@ If your company uses multiple workflow engines internally, it can be very benefi
 
 On top of that, Temporal comes with unmatched scalability and stability characteristics.
 
-## Example
+## Examples
 
-- [An implemtation of Amazon States Language](https://github.com/checkr/states-language-cadence) from Checkr
+- [An implementation of Amazon States Language](https://github.com/checkr/states-language-cadence) from Checkr
+- [Example Go Workflow driven by YAML config file](https://github.com/temporalio/samples-go/blob/master/dsl)
