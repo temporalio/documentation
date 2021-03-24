@@ -7,6 +7,8 @@ description: The core abstraction of the Temporal solution is a fault-oblivious 
 
 import { ResponsivePlayer } from '../src/components'
 
+The core abstraction of the Temporal solution is a fault-oblivious stateful Workflow.
+
 ## Focus on business logic
 
 Depending on the language, a Workflow is really just a single function or object method that orchestrates a series of actions.
@@ -142,7 +144,7 @@ This includes the ability to set timeouts for Workflow execution, a Retry Policy
 ### Timeout settings
 
 It's sometimes necessary to limit the amount of time that a specific Workflow can run.
-Though, unlike [Activities](/docs/concept-activites), Workflow timeouts are available primarily to protect the system from "runaway" Workflows that may end up consuming too many resources, and not intended to be used as a part of the business logic.
+Though, unlike [Activities](/docs/concept-activities), Workflow timeouts are available primarily to protect the system from "runaway" Workflows that may end up consuming too many resources, and not intended to be used as a part of the business logic.
 So, there are a few important things to consider with Workflow timeout settings:
 
 1. When a Workflow times out, it is terminated without any notifications available to another application.
