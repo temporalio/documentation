@@ -47,7 +47,7 @@ The Workflow execution state is even preserved through crashes of the Temporal S
 
 While there are a few specific use-cases that may require a Workflow to start and finish on the same host, Workflow code is completely independent from the location in which it is executed
 
-Instead of deploying executable code to a host directly, Temporal applications use special [Worker](/docs/concept-workers) processes whose sole job is to host and execute Workflow and Activity code.
+Instead of deploying executable code to a host directly, Temporal applications use special [Worker](/docs/glossary/#worker) processes whose sole job is to host and execute Workflow and Activity code.
 The Worker communicates with the Temporal Server in order to know which line of code to execute through [Tasks](/docs/concept-task-queues) it picks up.
 
 Because a Workflow is executed piece by piece, and because the Server tracks the state of that execution, there can be multiple Worker processes in multiple locations capable of executing any one of those pieces.
@@ -323,7 +323,7 @@ This keeps the event history within limits, but continues the logic execution.
 
 :::note
 
-If you are using [Signals](https://docs.temporal.io/docs/concept-signals/) with the Go SDK, you should make sure to do an asynchronous drain on the Signal channel or the Signals will be lost.
+If you are using [Signals](/docs/concept-events) with the Go SDK, you should make sure to do an asynchronous drain on the Signal channel or the Signals will be lost.
 
 :::
 
