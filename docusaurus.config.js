@@ -180,7 +180,8 @@ module.exports = {
         },
         // Will be passed to @docusaurus/plugin-content-sitemap
         sitemap: {
-          cacheTime: 600 * 1000, // 600 sec - cache purge period
+          // Per v2.0.0-alpha.72 cacheTime is now deprecated
+          //cacheTime: 600 * 1000, // 600 sec - cache purge period
           changefreq: 'weekly',
           priority: 0.5,
         },
