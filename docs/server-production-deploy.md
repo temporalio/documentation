@@ -34,7 +34,10 @@ The [Server configuration reference](/docs/server-configuration) has a more comp
 
 ### Scaling and Metrics
 
-Once your instance of the Server is running, you can watch for key metrics to understand the system health and scaling needs. You can use these [Grafana dashboards](https://github.com/temporalio/dashboards) as a starting point.
+The requirements of your Temporal system will vary widely based on your intended production workload. You will want to run your own proof of concept tests and watch for key metrics to understand the system health and scaling needs. 
+
+- You can use these [Grafana dashboards](https://github.com/temporalio/dashboards) as a starting point.
+- You can also use [Maru](https://github.com/temporalio/maru/), our Load Testing Tool for Temporal Workflows ([author's guide here](https://mikhail.io/2021/03/maru-load-testing-tool-for-temporal-workflows/))
 
 At a high level, you will want to track these 3 categories of metrics:
 
