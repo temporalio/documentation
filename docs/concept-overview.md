@@ -35,6 +35,14 @@ It preserves the full application state (including function stacks with local va
 
 A [Temporal SDK](/docs/sdks-introduction) then enables you to write your application code using the full power of the programming language, while the Temporal Server handles the durability, availability, and scalability of the application.
 
+:::note Temporal as a Distributed System
+In terms of CAP theorem, each Temporal cluster is eventually available and highly consistent.
+
+- Because Temporal makes it easy to retry activities and horizontally scale resources, availability loss doesn't result in a fault, but in increased latency.
+- Network failures are prevented from reaching the application level - if persistence nodes are lost or unreachable, your workflows will not progress, but the data will still be highly consistent.
+- The optional [multi-cluster replication feature](https://docs.temporal.io/docs/server-versions-and-dependencies/#multi-cluster-replication) greatly increases system availability.
+:::
+
 ## Core concepts
 
 Temporal SDKs enable you to build applications around a set of key concepts.
