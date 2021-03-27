@@ -6,11 +6,11 @@ sidebar_label: External Resources
 
 There are many ways to introduce and teach Temporal based on what background you are coming from. Temporal doesn't have a monopoly on explaining Temporal.
 
-Here we list great blogposts and videos by Temporal staff and users found off-site, that may be helpful in increasing your understanding or convincing your team about Temporal.
+Here, we list great blogposts and videos by Temporal staff and users that may be helpful in increasing your understanding or convincing your team about Temporal.
 
 If you have made a tutorial or explanation of Temporal, please submit them here so that others can find it!
 
-## Why Workflows and Why Temporal
+## Temporal Workflows
 
 - [Dealing with Failure](https://dev.to/temporalio/dealing-with-failure-5adf) on Dev.to
     
@@ -18,7 +18,7 @@ If you have made a tutorial or explanation of Temporal, please submit them here 
 - [Microservices Architecture With Temporal.io](https://spiralscout.com/blog/temporal-workflow-and-microservices) on the SpiralScout blog
     
     > The Temporal Workflows engine is incredibly powerful and provides full control over workflows, including **retries, timeouts, backpressure, and the parallel execution of activities**. Workflows can be written in most programming languages and include checks, conditions, and sequences of execution.
-- [The macro problem with microservices](https://stackoverflow.blog/2020/11/23/the-macro-problem-with-microservices/) on the Stackoverflow blog
+- [The macro problem with microservices](https://stackoverflow.blog/2020/11/23/the-macro-problem-with-microservices/) on the StackOverflow blog
 
     > In just 20 years, software engineering has shifted — from architecting monoliths with a single database and centralized state — to microservices where everything is distributed across multiple containers, servers, data centers, and even continents. **Distributing things solves scaling concerns, but introduces a whole new world of problems**, many of which were previously solved by monoliths.
 - [Temporal Tackles Microservice Reliability Headaches](https://thenewstack.io/temporal-tackles-microservice-reliability-headaches/) on the New Stack blog
@@ -27,7 +27,7 @@ If you have made a tutorial or explanation of Temporal, please submit them here 
 
 - [Workflow Engine with Maxim Fateev](https://www.listennotes.com/podcasts/software/cadence-ubers-workflow-nNoaPiSfk7v/)  on Software Engineering Daily (56 mins Podcast)
 
-## External Tutorials
+## External tutorials
 
 *Note: Each of [our SDK docs](/docs/sdks-introduction) have a Hello World and Run Your First App tutorial!*
 
@@ -35,7 +35,7 @@ If you have made a tutorial or explanation of Temporal, please submit them here 
 - (Español) [Construye aplicaciones invencibles con Temporal](https://sistecma.github.io/2021/02/04/aplicaciones-invencibles-con-temporal.html) y [Aplicando el patrón SAGA en tus microservicios construidos](https://sistecma.github.io/2021/03/04/aplicando-saga-en-microservicios-con-temporal.html) by Hernán Moreno
 - *submit yours [here](https://github.com/temporalio/documentation/edit/master/docs/external-resources.md)!*
 
-## Temporal Users
+## Temporal users
 
 - [Mitchell Hashimoto](https://twitter.com/mitchellh/status/1316510643030114304?s=20), Hashicorp
     
@@ -45,7 +45,7 @@ If you have made a tutorial or explanation of Temporal, please submit them here 
 
     > Temporal lets you: 1) write "fault oblivious" stateful control flow and business logic, int he programming language of your choice, 2) respond to external events, 3) support very long running operations, 4) Communicate with 3rd party services
 
-- [Building Reliable Workflows: Cadence as a Fallback for Event-Driven Processing](https://doordash.engineering/2020/08/14/workflows-cadence-event-driven-processing/) by Alan Lin (Doordash)
+- [Building Reliable Workflows: Cadence as a Fallback for Event-Driven Processing](https://doordash.engineering/2020/08/14/workflows-cadence-event-driven-processing/) by Alan Lin (DoorDash)
     
     > Moving to a fully asynchronous-based event driven processing system will in our case result in **big performance gains** as we move off a synchronous processing model for one of our core flows. Eventually... we will eventually build enough confidence in the platform to use it solely for our primary delivery creation flow. **This will bring us massive gains in developer productivity** due to its ease of use and abstraction of fussy details.
 - [Reuben Bond](https://twitter.com/reubenbond/status/1338901280090025985?s=20), Microsoft
@@ -58,7 +58,7 @@ If you have made a tutorial or explanation of Temporal, please submit them here 
     
     > "**Temporal does to backend and infra what React did to frontend.** If you're in the React world, you've forgotten about manually adding and removing DOM elements, updating attributes and their quirks, hooking up event listeners… It's not only been a boost in developer experience, but most importantly in *consistency and reliability*. In the backend world, this reliability problem is absurdly amplified as monoliths break into SaaS services, functions, containers… You have to carefully manage and create queues to capture each side effect, ensure everything gets retried, state is scattered all over the place. Temporal's engine is quite complex, much like React's, but the surface exposed to the developer is a beautiful "render()" function to organize your backend workflows."
 
-## How Temporal Works
+## How Temporal works
 
 *Don't forget our own [Temporal Architecture docs](/docs/server-architecture/)!*
 
