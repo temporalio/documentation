@@ -38,14 +38,14 @@ The following code demonstrates how to complete the Activity successfully:
 serviceClient, err := client.NewClient(client.Options{})
 
 // Complete the Activity.
-client.CompleteActivity(taskToken, result, nil)
+client.CompleteActivity(context.Background(), taskToken, result, nil)
 ```
 
 To fail the Activity, you would do the following:
 
 ```go
 // Fail the Activity.
-client.CompleteActivity(taskToken, nil, err)
+client.CompleteActivity(context.Background(), taskToken, nil, err)
 ```
 
 Following are the parameters of the `CompleteActivity` function:
