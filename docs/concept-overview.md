@@ -38,7 +38,7 @@ A [Temporal SDK](/docs/sdks-introduction) then enables you to write your applica
 :::note Temporal as a Distributed System
 In terms of CAP theorem, each Temporal cluster is eventually available and highly consistent.
 
-- Because Temporal makes it easy to retry activities and horizontally scale resources, availability loss doesn't result in a fault, but in increased latency.
+- Because Temporal makes it easy to retry Activities and horizontally scale resources, availability loss doesn't result in a fault, but in increased latency.
 - Network failures are prevented from reaching the application level - if persistence nodes are lost or unreachable, your workflows will not progress, but the data will still be highly consistent.
 - The optional [multi-cluster replication feature](https://docs.temporal.io/docs/server-versions-and-dependencies/#multi-cluster-replication) greatly increases system availability.
 :::
