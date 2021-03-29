@@ -152,6 +152,7 @@ module.exports = {
       ],
     },
     'external-resources',
+    'cadence-to-temporal',
     'glossary',
   ],
 };
