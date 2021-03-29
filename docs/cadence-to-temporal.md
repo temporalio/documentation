@@ -23,6 +23,7 @@ When using Temporal, this means the following things:
   - All payloads (Workflow input, Activity input, etc...) sent to Temporal now have headers and data fields.
   - Standard [gRPC health service](https://github.com/grpc/grpc/blob/master/doc/health-checking.md) is used for health checks.
   - Standard Protobuf types are used for [time](https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#timestamp) and [duration](https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#google.protobuf.Duration).
+  - The persistence layer uses Protobuf blobs for much of the data stored in both MySQL and Cassandra. Cadence used Thrift blobs for in MySQL data.
 
 2. **Entities names are different**:
 
@@ -47,7 +48,7 @@ When using Temporal, this means the following things:
 
 4. **Workflow retries are different in Temporal**
 
-  - In Temporal, `WorkflowExecutionTimeout` is used, instead of `ExpirationInterval`, to stop retries for Workflows.
+  - In Temporal, `WorkflowExecutionTimeout` is used, instead of `ExpirationInterval` (which has been completely removed from Temporal), to stop retries for Workflows.
   - Attempt counters start at 1.
 
 5. **Activity retries are different in Temporal**
@@ -63,4 +64,4 @@ When using Temporal, this means the following things:
 
   - Uber YARPC library is not used by Temporal.
   - Temporal no longer needs to use Kafka.
-  - Temporal does not use statsd.
+  - Temporal uses Promentheus by default in Docker images instead of statsd.
