@@ -66,6 +66,8 @@ If you have made a tutorial or explanation of Temporal, please submit them here 
 - [Cadence Architecture Talk](https://www.youtube.com/watch?v=5M5eiNBUf4Q) (24 mins) by Samar Abbas
 - [Cadence: Micro service Architecture Beyond Request/Response](https://www.youtube.com/watch?v=BJwFxqdSx4Y) (34 mins) by Maxim Fateev
 
+*If you are seeking to migrate from Cadence to Temporal, [our v0.28.0 changelog](https://docs.temporal.io/blog/temporal-v0.28.0-changelog/) has the key differences you will need.*
+
 ## Misc
 
 *Everything else that doesn't fit goes here.*
