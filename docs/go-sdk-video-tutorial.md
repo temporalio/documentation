@@ -11,6 +11,7 @@ import { ResponsivePlayer } from '../src/components'
 Source code:
 
 ```go
+// activity.go
 package activities
 
 import (
@@ -86,6 +87,7 @@ func Greetings(ctx workflow.Context) error {
 ```
 
 ```go
+// main.go
 package main
 
 import (
@@ -135,8 +137,12 @@ func main() {
 }
 ```
 
-Commands:
+The video has outdated `tctl` CLI commands from Temporal v0.20. Commands as of Temporal v1.7:
 
 ```bash
+# run workers
 docker run --network=host --rm temporalio/tctl:latest wf start --tq tutorial_tq -w Greet_Temporal_1 --wt Greetings --et 3600 --wtt 10
+
+# describe task list
+docker run --network=host --rm temporalio/tctl:latest tq describe --tq tutorial_tq
 ```
