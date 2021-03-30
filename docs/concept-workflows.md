@@ -1,58 +1,9 @@
 ---
 id: concept-workflows
-title: The concept of Workflows
+title: Workflows
 sidebar_label: Workflows
 description: The core abstraction of the Temporal solution is a fault-oblivious stateful Workflow.
 ---
-
-import { ResponsivePlayer } from '../src/components'
-
-The core abstraction of the Temporal solution is a fault-oblivious stateful Workflow.
-
-## Focus on business logic
-
-Depending on the language, a Workflow is really just a single function or object method that orchestrates a series of actions.
-The idea is that Workflow code should be able to focus on "business logic".
-When we talk about "business logic", we are talking about the literal steps an application is taking to meet the goals of a business.
-
-1. Charge customer
-2. Send invoice
-3. Notify shipping
-4. Update inventory
-5. Etc...
-
-This is in contrast to the logic that is often needed to handle any timeouts, errors, edge cases, or infrastructure failures that might occur while executing the business logic.
-
-Because the Temporal Server does not know what language an application is written in, the term "Workflow" is used as the label for any chunk of code whose execution state can be tracked by the Server.
-
-## It's all about state
-
-The Temporal Server uses "event sourcing" techniques to track the state of a Workflow's execution.
-
-:::note
-
-The [Event Sourcing pattern](https://docs.microsoft.com/en-us/azure/architecture/patterns/event-sourcing) article published in Microsoft's Azure documentation provides a general explanation of what that technique looks like.
-
-:::
-
-As a result, a Workflow must use certain Temporal SDK APIs to manage time related operations or create new threads.
-And it also means that any "non-deterministic" behavior, such as calls to external APIs, or random number generators, must not exist directly inside the Workflow.
-The elegant solution to this is to have any code that handles this potentially unexpected behavior reside in [Activities](/docs/concept-activities).
-
-But, by using event sourcing a Workflow becomes quite durable and in essence "fault-tolerant".
-For example, if a host fails in the middle of a Workflow execution, not only can another host resume the Workflow, but it can resume at the exact line of code where it stopped executing without having to re-execute the code up until that point.
-The Workflow execution state is even preserved through crashes of the Temporal Server itself.
-
-## Freedom to relocate
-
-While there are a few specific use-cases that may require a Workflow to start and finish on the same host, Workflow code is completely independent from the location in which it is executed
-
-Instead of deploying executable code to a host directly, Temporal applications use special [Worker](/docs/glossary/#worker) processes whose sole job is to host and execute Workflow and Activity code.
-The Worker communicates with the Temporal Server in order to know which line of code to execute through [Tasks](/docs/concept-task-queues) it picks up.
-
-Because a Workflow is executed piece by piece, and because the Server tracks the state of that execution, there can be multiple Worker processes in multiple locations capable of executing any one of those pieces.
-
-Essentially load balancing and processing failover are "out-of-the-box" features of Temporal Workflows.
 
 ## Example subscription use-case
 
