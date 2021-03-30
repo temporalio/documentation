@@ -11,17 +11,10 @@ import { ResponsivePlayer } from '../src/components'
 
 :::note tctl CLI commands
 
-The video has outdated `tctl` CLI commands from Temporal v0.20. Task lists have been renamed to task queues [since v0.28](https://docs.temporal.io/docs/cadence-to-temporal/).
+The video has outdated `tctl` CLI commands from Temporal v0.20. 
+"Task lists" have been renamed to "task queues" and "domains" renamed to "namespaces" [since v0.28](https://docs.temporal.io/docs/cadence-to-temporal/). 
+We update the commands used accordingly below.
 
-Correct commands as of Temporal v1.7:
-
-```bash
-# run workers
-docker run --network=host --rm temporalio/tctl:latest wf start --tq tutorial_tq -w Greet_Temporal_1 --wt Greetings --et 3600 --wtt 10
-
-# describe task list
-docker run --network=host --rm temporalio/tctl:latest tq describe --tq tutorial_tq
-```
 :::
 
 <details>
@@ -88,6 +81,13 @@ func MyActivity(ctx context.Context) error {
 
 ```
 
+Once you are ready, you can run:
+
+```bash
+go run main.go
+docker run --network=host --rm temporalio/tctl:latest tq describe --tq tutorial_tq
+```
+
 </details>
 
 <details>
@@ -95,7 +95,7 @@ func MyActivity(ctx context.Context) error {
 </summary>
 
 ```go
-// activity.go
+// activities/get_user.go
 package activities
 
 import (
@@ -113,6 +113,7 @@ func GetUser(ctx context.Context) (string, error) {
 ```
 
 ```go
+// activities/send_greeting.go
 package activities
 
 import (
@@ -133,6 +134,7 @@ func SendGreeting(ctx context.Context, user string) error {
 ```
 
 ```go
+// workflows/greeting.go
 package workflows
 
 import (
@@ -177,12 +179,12 @@ package main
 import (
     "github.com/uber-go/tally"
     "go.uber.org/zap"
+    
+    "github.com/samarabbas/tutorial-go-sdk/activities"
+    "github.com/samarabbas/tutorial-go-sdk/workflows"
 
-	"github.com/samarabbas/tutorial-go-sdk/activities"
-	"github.com/samarabbas/tutorial-go-sdk/workflows"
-
-	"go.temporal.io/sdk/client"
-	"go.temporal.io/sdk/worker"
+    "go.temporal.io/sdk/client"
+    "go.temporal.io/sdk/worker"
 )
 
 func main() {
@@ -220,4 +222,22 @@ func main() {
 	select {}
 }
 ```
+
+
+Once you are ready, you can run:
+
+```bash
+# start workers
+go run main.go
+
+# start workflow
+docker run --network=host --rm temporalio/tctl:latest wf start --tq tutorial_tq -w Greet_Temporal_1 --wt Greetings --et 3600 --wtt 10
+
+# list workflow executions
+docker run --network=host --rm temporalio/tctl:latest wf list
+
+# list single workflwo
+docker run --network=host --rm temporalio/tctl:latest wf show -w Greet_Samar_1
+```
+
 </details>
