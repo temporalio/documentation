@@ -5,6 +5,7 @@ import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import styles from './styles.module.css';
+import { ResponsivePlayer } from '../components'
 
 const features = [
   {
@@ -53,12 +54,12 @@ function Feature({imageUrl, title, description, goto}) {
   const imgUrl = useBaseUrl(imageUrl);
   return (
     <div className={clsx('col col--3', styles.feature)}>
+      <h3>{title}</h3>
       {imgUrl && (
         <div className="text--center">
           <img className={styles.featureImage} src={imgUrl} alt={title} />
         </div>
       )}
-      <h3>{title}</h3>
       <p>{description}</p>
       <div className={styles.buttons}>
         <Link
@@ -112,6 +113,9 @@ export default function Home() {
           </section>
         )}
       </main>
+      <div className="container">
+        <ResponsivePlayer url='https://www.youtube.com/watch?v=f-18XztyN6c'/>
+      </div>
     </Layout>
   );
 }
