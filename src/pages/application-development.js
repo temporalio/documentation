@@ -8,8 +8,8 @@ import styles from './styles.module.css';
 
 const features = [
   {
-    title: <>Server management</>,
-    imageUrl: 'img/server.png',
+    title: <>Go</>,
+    imageUrl: 'img/go-lang.svg',
     description: (
       <>
         Deploy and manage your own instance of the Temporal Server.
@@ -18,8 +18,8 @@ const features = [
     goto: '/docs/server-introduction',
   },
   {
-    title: <>Temporal Cloud</>,
-    imageUrl: 'img/cloud.png',
+    title: <>Java</>,
+    imageUrl: 'img/java.svg',
     description: (
       <>
         Let us handle the hard part so you can focus on code.
@@ -28,21 +28,11 @@ const features = [
     goto: '/docs/cloud-introduction',
   },
   {
-    title: <>Application development</>,
-    imageUrl: 'img/layers.png',
+    title: <>PHP</>,
+    imageUrl: 'img/php.svg',
     description: (
       <>
         Start building invincible applications in the language of your choice!
-      </>
-    ),
-    goto: '/application-development',
-  },
-  {
-    title: <>System tools</>,
-    imageUrl: 'img/settings.png',
-    description: (
-      <>
-        Use our tooling to visualize and manage different aspects of your system.
       </>
     ),
     goto: '/docs/sdks-introduction',
@@ -52,7 +42,7 @@ const features = [
 function Feature({imageUrl, title, description, goto}) {
   const imgUrl = useBaseUrl(imageUrl);
   return (
-    <div className={clsx('col col--3', styles.feature)}>
+    <div className={clsx('col col--4', styles.feature)}>
       {imgUrl && (
         <div className="text--center">
           <img className={styles.featureImage} src={imgUrl} alt={title} />
@@ -76,27 +66,18 @@ function Feature({imageUrl, title, description, goto}) {
   );
 }
 
-export default function Home() {
+export default function ApplicationDevelopment() {
   const context = useDocusaurusContext();
   const {siteConfig = {}} = context;
   return (
     <Layout
-      title={`${siteConfig.title}`}
-      description={`${siteConfig.tagline}`}>
+      title="Temporal application development"
+      permalink="/application-development"
+      description="Description will go into a meta tag in <head />">
       <header className={clsx('hero hero--primary', styles.heroBanner)}>
         <div className="container">
-          <h1 className="hero__title">{siteConfig.title}</h1>
-          <p className="hero__subtitle">{siteConfig.tagline}</p>
-          <div className={styles.buttons}>
-            <Link
-              className={clsx(
-                'button button--outline button--secondary button--lg',
-                styles.getStarted,
-              )}
-              to={useBaseUrl('docs/')}>
-              Get Started
-            </Link>
-          </div>
+          <h1 className="hero__title">Application development</h1>
+          <p className="hero__subtitle">Choose your language</p>
         </div>
       </header>
       <main>
