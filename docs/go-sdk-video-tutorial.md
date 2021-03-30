@@ -9,11 +9,12 @@ import { ResponsivePlayer } from '../src/components'
 <ResponsivePlayer url='https://www.youtube.com/watch?v=Wo0y_Ce3d4I' />
 
 
-:::note tctl CLI commands
+:::note `tctl` CLI commands
 
 The video has outdated `tctl` CLI commands from Temporal v0.20. 
 "Task lists" have been renamed to "task queues" and "domains" renamed to "namespaces" [since v0.28](https://docs.temporal.io/docs/cadence-to-temporal/). 
 We update the commands used accordingly below.
+You can also check the [`tctl` docs](https://docs.temporal.io/docs/tctl).
 
 :::
 
