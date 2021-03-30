@@ -43,12 +43,12 @@ function Feature({imageUrl, title, description, goto}) {
   const imgUrl = useBaseUrl(imageUrl);
   return (
     <div className={clsx('col col--4', styles.feature)}>
+      <h3>{title}</h3>
       {imgUrl && (
         <div className="text--center">
           <img className={styles.featureImage} src={imgUrl} alt={title} />
         </div>
       )}
-      <h3>{title}</h3>
       <p>{description}</p>
       <div className={styles.buttons}>
         <Link
