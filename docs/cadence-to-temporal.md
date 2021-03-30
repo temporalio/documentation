@@ -4,12 +4,12 @@ title: Cadence to Temporal migration highlights
 sidebar_label: Migrate from Cadence
 ---
 
-This page highlights the key changes between Cadence and Temporal that you will need to account for when migrating.
+This page highlights the key differences between Cadence and Temporal that you will need to account for when migrating.
 
 There is no direct upgrade path from Cadence to Temporal.
 The Temporal Server requires a fresh install, and we recommend choosing one of the [latest releases](https://github.com/temporalio/temporal/releases).
 
-The [changelog blog post](/blog/temporal-v0.28.0-changelog) includes many of the core changes that occurred prior to Temporal's v1.0.0 release.
+The [v0.28 changelog blog post](/blog/temporal-v0.28.0-changelog) details many of the core changes that occurred prior to Temporal's v1.0.0 release.
 
 ## Key differences
 
@@ -65,3 +65,7 @@ When using Temporal, this means the following things:
   - Uber YARPC library is not used by Temporal.
   - Temporal no longer needs to use Kafka.
   - Temporal uses Promentheus by default in Docker images instead of statsd.
+
+7. **Temporal Server configuration files are different**
+
+  - Cadence Server configuration files are largely incompatible with the Temporal Server.
