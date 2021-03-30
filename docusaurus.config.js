@@ -1,22 +1,22 @@
-const versions = require('./versions.json');
+/** @type {import('@docusaurus/types').DocusaurusConfig} */
 
 module.exports = {
-  title: 'Temporal',
+  title: 'Temporal system documentation',
   tagline: 'Invincible applications, invisible infrastructure',
   url: 'https://docs.temporal.io',
   baseUrl: '/',
   onBrokenLinks: 'warn',
+  onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.png',
   organizationName: 'temporalio', // Usually your GitHub org/user name.
-  projectName: 'temporal-documentation-legacy-v2', // Usually your repo name.
+  projectName: 'temporal-documentation', // Usually your repo name.
   themeConfig: {
     colorMode: {
       defaultMode: 'light',
       disableSwitch: false,
     },
     prism: {
-      theme: require('prism-react-renderer/themes/github'),
-      darkTheme: require('prism-react-renderer/themes/dracula'),
+      theme: require('prism-react-renderer/themes/dracula'),
       additionalLanguages: ['java', 'ruby', 'php'],
     },
     navbar: {
