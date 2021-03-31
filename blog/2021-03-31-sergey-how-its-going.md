@@ -50,7 +50,7 @@ What's lacking:
 Overall, Go is a reasonable tool for the job. I think C# would be more powerful as a language. What’s less clear to me is how much we would lose not having access to Go modules.
 
 ## Development
-I joined a couple of weeks before Temporal v1.0 was released. It was a huge milestone after almost a year of development since co-founders left Uber - weto gRPC, added support for mTLS, and made a myriad of other changes.
+I joined a couple of weeks before Temporal v1.0 was released. It was a huge milestone after almost a year of development since co-founders left Uber - we switched to gRPC, added support for mTLS, and made a myriad of other changes.
 
 As I ramped up, I primarily contributed to Temporal server. My major focus was developing Temporal's security features: authentication and authorization. The authorization model was my first design effort. Through the process of formulating the initial proposal, having internal discussions, implementing, and releasing the code, I got to know the team better. I also learned a number of "how can this be done in Go" things and established relations with some key customers.
 
