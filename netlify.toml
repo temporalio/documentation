@@ -14,6 +14,14 @@
   to = "/docs/concept-activities"
 
 [[redirects]]
+  from = "/docs/go-execute-activity"
+  to = "/docs/go-activities#executing-activities"
+
+[[redirects]]
+  from = "/docs/go-activity-async-completion"
+  to = "/docs/go-activities#asynchronous-activity-completion"
+  
+[[redirects]]
   from = "/docs/workflows"
   to = "/docs/concept-workflows"
 
