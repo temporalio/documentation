@@ -56,7 +56,7 @@ of an Activity function is of type `context.Context`, in order to allow the Acti
 
 There's no hard limit on what you can pass into or return from an Activity function, but keep in mind that all parameters and return values are recorded in the execution history.
 A large execution history can adversely impact the performance of your Workflows as the entire history is transferred to your workers with every event processed.
-
+No other limitations on Activity functions exist; you are free to use idiomatic loggers and metrics controllers, and the standard Go concurrency constructs.
 #### Heart Beating
 
 For long-running Activities, Temporal provides an API for the Activity code to report both liveness and
