@@ -48,8 +48,7 @@ Activities are implemented as regular Go functions:
 - Parameters:
     - Data can be passed directly to an Activity via function
 parameters. The parameters can be either basic types or structs (must be serializable). 
-    - Though it is not required, we recommend that the first parameter
-of an Activity function is of type `context.Context`, in order to allow the Activity to interact with other framework methods. 
+    - Though it is not required, we recommend that the first parameter of an Activity function is of type `context.Context`, in order to allow the Activity to interact with other framework methods. 
 - Return values:
     - The function must return an `error` value. To mark an Activity as failed, return an error here, instead of `nil`.
     - The result value is optional, and can be either a basic type or a struct (must be serializable).
