@@ -51,12 +51,13 @@ parameters. The parameters can be either basic types or structs (must be seriali
     - Though it is not required, we recommend that the first parameter
 of an Activity function is of type `context.Context`, in order to allow the Activity to interact with other framework methods. 
 - Return values:
-    - The function must return an `error` value.
+    - The function must return an `error` value. To mark an Activity as failed, return an error here, instead of `nil`.
     - The result value is optional, and can be either a basic type or a struct (must be serializable).
 
 There's no hard limit on what you can pass into or return from an Activity function, but keep in mind that all parameters and return values are recorded in the execution history.
 A large execution history can adversely impact the performance of your Workflows as the entire history is transferred to your workers with every event processed.
 No other limitations on Activity functions exist; you are free to use idiomatic loggers and metrics controllers, and the standard Go concurrency constructs.
+
 #### Heart Beating
 
 For long-running Activities, Temporal provides an API for the Activity code to report both liveness and
@@ -123,7 +124,7 @@ w.registerActivity(ActivityC)
 ```
 
 
-## Executing Activities
+## Synchronous Activity Execution
 
 The primary responsibility of a Workflow implementation is to schedule Activities for execution. The
 most straightforward way to do this is via the library method `workflow.ExecuteActivity`. The following
@@ -227,11 +228,6 @@ repeatedly call `workflow.ExecuteActivity()`, store the returned futures, and th
 Activities to complete by calling the `Get()` methods of the future at a later time.
 
 To implement more complex wait conditions on returned future objects, use the `workflow.Selector` class. Learn more on the [Go SDK Selectors](https://docs.temporal.io/docs/go-selectors) page.
-
-
-## Failing an Activity
-
-To mark an Activity as failed, return an error via the `error` return value, instead of `nil`.
 
 ## Asynchronous Activity Completion
 
