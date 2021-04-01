@@ -99,7 +99,7 @@ This is often a good way to get a deep understanding of whether your workflow is
 
 #### Recovering In-flight Workflows While Running
 
-Here we will discuss how to proceed oince you have identified and fixed the code for an erroring activity.
+Here we will discuss how to proceed once you have identified and fixed the code for an erroring activity.
 
 If your activity code is deterministic, you might be able to simply restart the worker to pick up the changes. Execution will continue from where it last succeeded. In other words, we get "hotfixing for free" due to Temporal's execution model.
 
