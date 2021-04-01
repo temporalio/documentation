@@ -6,11 +6,23 @@ sidebar_label: External Resources
 
 There are many ways to introduce and teach Temporal based on what background you are coming from. Temporal doesn't have a monopoly on explaining Temporal.
 
-Here, we list great blogposts and videos by Temporal staff and users that may be helpful in increasing your understanding or convincing your team about Temporal.
+Here, we list great blogposts and videos by Temporal staff and users that may be helpful in increasing your understanding or convincing your team.
 
-If you have made a tutorial or explanation of Temporal, please submit them here so that others can find it!
+If you have made a tutorial or explanation of Temporal, please [submit them here](https://github.com/temporalio/documentation/edit/master/docs/external-resources.md) so that others can find it!
 
-## Temporal Workflows
+## How Temporal works
+
+*Don't forget our own [Temporal Architecture docs](/docs/server-architecture/)!*
+
+- [A Practical Approach to Temporal Architecture](https://mikhail.io/2020/10/practical-approach-to-temporal-architecture/) by Mikhail Shilkov (4 min read)
+- [Designing a Workflow Engine from First Principles](https://youtu.be/t524U9CixZ0) by Maxim Fateev (23 min talk given at Systems @ Scale 2021)
+- [Workflow Engine with Maxim Fateev](https://www.listennotes.com/podcasts/software/cadence-ubers-workflow-nNoaPiSfk7v/)  on Software Engineering Daily (56 min Podcast)
+- Temporal's previous iteration was Cadence, which shares a lot of the same design principles:
+    - [Cadence Architecture Talk](https://www.youtube.com/watch?v=5M5eiNBUf4Q) (24 min) by Samar Abbas at Uber Cadence meetup
+    - [Cadence: Micro service Architecture Beyond Request/Response](https://www.youtube.com/watch?v=BJwFxqdSx4Y) (34 min) by Maxim Fateev at Data@Scale 2017
+    -  Note: we have documented [the difference between Cadence and Temporal](https://docs.temporal.io/docs/cadence-to-temporal) separately.
+
+## Why orchestrate microservices
 
 - [Dealing with Failure](https://dev.to/temporalio/dealing-with-failure-5adf) on Dev.to
     
@@ -25,8 +37,6 @@ If you have made a tutorial or explanation of Temporal, please submit them here 
 
     > Using code, it aims to hide the complexity of building with microservices across distributed systems. It employs **durable virtual memory not linked to a specific process that preserves the application state** despite a whole range of possible failures.
 
-- [Workflow Engine with Maxim Fateev](https://www.listennotes.com/podcasts/software/cadence-ubers-workflow-nNoaPiSfk7v/)  on Software Engineering Daily (56 mins Podcast)
-
 ## External tutorials
 
 *Note: Each of [our SDK docs](/docs/sdks-introduction) have a Hello World and Run Your First App tutorial!*
@@ -39,11 +49,18 @@ If you have made a tutorial or explanation of Temporal, please submit them here 
 
 - [Mitchell Hashimoto](https://twitter.com/mitchellh/status/1316510643030114304?s=20), Hashicorp
     
-    > "So every "cluster create" is a long-running Cadence operation. Once complete, this kicks of a variety of Cadence workflows _per cluster_ that run forever until it is destroyed. **This lets you have a central "event loop" per cluster.** For example: a "snapshot" triggers an event in the main event loop for a cluster, which ensures that no other ops (upgrades, etc.) are running at the same time, kicks off the snapshot job, then continues. We have long (multi-day/week) sleeps in the main event loop that wake up to renew TLS certs. And if any of the Cadence workers die, they come back up and continue right where they left off. Really just amazing technology. There's some great talks out there by the creators. An example use case they had (its out of Uber) was: every single driver on Uber has a long-running workflow that triggers monthly/bi-weekly to pay them, for example. Just super cool stuff."
+    > So every "cluster create" is a long-running Cadence operation. Once complete, this kicks of a variety of Cadence workflows _per cluster_ that run forever until it is destroyed. **This lets you have a central "event loop" per cluster.** For example: a "snapshot" triggers an event in the main event loop for a cluster, which ensures that no other ops (upgrades, etc.) are running at the same time, kicks off the snapshot job, then continues. 
+    > 
+    > We have **long (multi-day/week) sleeps** in the main event loop that wake up to renew TLS certs. And if any of the Cadence workers die, they come back up and continue right where they left off.
 
 - [Software Delivery Building Blocks at Datadog](https://www.youtube.com/watch?v=eWFpl-nzGsY&feature=youtu.be) by Jacob LeGrone and Kevin Devroede (Datadog) (starting at 6min 30s)
 
-    > Temporal lets you: 1) write "fault oblivious" stateful control flow and business logic, int he programming language of your choice, 2) respond to external events, 3) support very long running operations, 4) Communicate with 3rd party services
+    > Temporal lets [Datadog]: 
+    > 
+    > 1. write "fault oblivious" stateful control flow and business logic, in the programming language of your choice, 
+    > 2. respond to external events, 
+    > 3. support very long running operations, 
+    > 4. Communicate with 3rd party services
 
 - [Building Reliable Workflows: Cadence as a Fallback for Event-Driven Processing](https://doordash.engineering/2020/08/14/workflows-cadence-event-driven-processing/) by Alan Lin (DoorDash)
     
@@ -58,19 +75,9 @@ If you have made a tutorial or explanation of Temporal, please submit them here 
     
     > "**Temporal does to backend and infra what React did to frontend.** If you're in the React world, you've forgotten about manually adding and removing DOM elements, updating attributes and their quirks, hooking up event listeners… It's not only been a boost in developer experience, but most importantly in *consistency and reliability*. In the backend world, this reliability problem is absurdly amplified as monoliths break into SaaS services, functions, containers… You have to carefully manage and create queues to capture each side effect, ensure everything gets retried, state is scattered all over the place. Temporal's engine is quite complex, much like React's, but the surface exposed to the developer is a beautiful "render()" function to organize your backend workflows."
 
-## How Temporal works
-
-*Don't forget our own [Temporal Architecture docs](/docs/server-architecture/)!*
-
-- [A Practical Approach to Temporal Architecture](https://mikhail.io/2020/10/practical-approach-to-temporal-architecture/) by Mikhail Shilkov
-- [Cadence Architecture Talk](https://www.youtube.com/watch?v=5M5eiNBUf4Q) (24 mins) by Samar Abbas
-- [Cadence: Micro service Architecture Beyond Request/Response](https://www.youtube.com/watch?v=BJwFxqdSx4Y) (34 mins) by Maxim Fateev
-
-*If you are seeking to migrate from Cadence to Temporal, [our v0.28.0 changelog](https://docs.temporal.io/blog/temporal-v0.28.0-changelog/) has the key differences you will need.*
-
 ## Misc
 
-*Everything else that doesn't fit goes here.*
+*Everything that doesn't fit above goes here.*
 
 If you can't find what you need, don't hesitate to ask on the Temporal Slack, or search in the Forums where there are common questions like:
 
