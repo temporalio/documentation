@@ -17,6 +17,7 @@ release_version: V1.8.1
 ---
 
 <!--truncate-->
+**This is not april fools related** 
 
 In the last year, Temporal has transformed from the wild dream of two Uber engineers, to a real business, community and product. In March 2020 there was no V1 release, no GRPC/Postgres support, no authentication or authorization and Kafka was still a core dependency. Today things look a ot different. An amazing community formed around the project, we've validated our cloud strategy with paying customers and delivered a ton of critical features to the open source technology. 
 
