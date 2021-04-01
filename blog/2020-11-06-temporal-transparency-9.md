@@ -95,6 +95,6 @@ That's it from the Temporal side, have a great weekend everyone! As always, feel
 
 Email: [swyx@temporal.io](mailto:swyx@temporal.io)
 
-Slack: [temporalio.slack.com](https://join.slack.com/t/temporalio/shared_invite/zt-kfgfjuye-L8gCQVRhPykA2td8pk7eTQ)
+Slack: [temporalio.slack.com](https://join.slack.com/t/temporalio/shared_invite/zt-onhti57l-J0bl~Tr7MqSUnIc1upjRkw)
 
 Forum: [https://community.temporal.io/](https://community.temporal.io/ "https://community.temporal.io/")

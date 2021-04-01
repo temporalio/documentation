@@ -38,6 +38,6 @@ I hope that this provides insight into what we've been focused on recently and w
 
 Email: [ryland@temporal.io](mailto:ryland@temporal.io)
 
-Slack: [temporalio.slack.com](https://join.slack.com/t/temporalio/shared_invite/zt-kfgfjuye-L8gCQVRhPykA2td8pk7eTQ)
+Slack: [temporalio.slack.com](https://join.slack.com/t/temporalio/shared_invite/zt-onhti57l-J0bl~Tr7MqSUnIc1upjRkw)
 
 Forum: [https://community.temporal.io/](https://community.temporal.io/ "https://community.temporal.io/")

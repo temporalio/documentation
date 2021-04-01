@@ -10,7 +10,7 @@ While a lot of effort has been made to easily run and test the Temporal Server i
 That is because the set up of the Server depends very much on the intended use-case and the hosting infrastructure.
 
 This page is dedicated to providing a "first principles" approach to self-hosting the Temporal Server.
-As a reminder, experts are accessible via the [Community forum](https://community.temporal.io/) and [Slack](https://join.slack.com/t/temporalio/shared_invite/zt-kfgfjuye-L8gCQVRhPykA2td8pk7eTQ) should you have any questions.
+As a reminder, experts are accessible via the [Community forum](https://community.temporal.io/) and [Slack](https://join.slack.com/t/temporalio/shared_invite/zt-onhti57l-J0bl~Tr7MqSUnIc1upjRkw) should you have any questions.
 
 ## Setup principles
 
