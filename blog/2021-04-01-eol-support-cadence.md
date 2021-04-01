@@ -19,7 +19,7 @@ release_version: V1.8.1
 <!--truncate-->
 **This is not april fools related** 
 
-In the last year, Temporal has transformed from the wild dream of two Uber engineers, to a real business, community and product. In March 2020 there was no V1 release, no GRPC/Postgres support, no authentication or authorization and Kafka was still a core dependency. Today things look a lot different. An amazing community formed around the project, we've validated our cloud strategy with paying customers and delivered a ton of critical features to the open source technology. 
+In the last year, Temporal has transformed from the wild dream of two Uber engineers, to a real business, community and product. In March 2020 there was no V1 release, no gRPC/PostgreSQL support, no authentication or authorization and Kafka was still a core dependency. Today things look a lot different. An amazing community formed around the project, we've validated our cloud strategy with paying customers and delivered a ton of critical features to the open source technology. 
 
 Every day Temporal feels more and more like its own entity, and less and less like a transformation of Cadence. This is not just ideological, at the code level there are constantly new differences introduced in both projects. For some critical changes it may be feasible to remain compatible, but in most cases it's just too much overhead. At a support level, the cost is also increasing. It's become harder and harder for our team to support Cadence users. When new employees join Temporal should they be expected to also ramp up on Cadence?
 
@@ -39,7 +39,7 @@ While this is something which was initially considered, the pace and direction o
 
 ### What is the process of migrating to Temporal?
 
-As of today there is not automatic process to migrate. The fundamental design of your application will generally remain the same, but specific API calls and values you provide them will need to be updated. We've created a page on our docs which details the majority of changes between Temporal and Cadence. If there is something missing from this list we would love to know: [https://docs.temporal.io/docs/cadence-to-temporal](https://docs.temporal.io/docs/cadence-to-temporal)
+As of today there is no automatic process to migrate. The fundamental design of your application will generally remain the same, but specific API calls and values you provide them will need to be updated. We've created a page on our docs which details the majority of changes between Temporal and Cadence. If there is something missing from this list we would love to know: [https://docs.temporal.io/docs/cadence-to-temporal](https://docs.temporal.io/docs/cadence-to-temporal)
 
 We know migrating away from a critical dependency like Cadence can be daunting. We are also available to help with your specific migration process. Please feel free to post on our forums or contact us directly!
 
