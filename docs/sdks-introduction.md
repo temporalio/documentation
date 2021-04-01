@@ -32,7 +32,7 @@ These other SDKs have community interest - please get in touch with us if you ar
 
 If you are interested in using an "unofficial" SDK, we recommend that you reach out to any of us at Temporal.
 
-- [Slack](https://join.slack.com/t/temporalio/shared_invite/zt-kfgfjuye-L8gCQVRhPykA2td8pk7eTQ)
+- [Slack](https://join.slack.com/t/temporalio/shared_invite/zt-onhti57l-J0bl~Tr7MqSUnIc1upjRkw)
 - [Community forums](https://community.temporal.io/)
 
 We are very excited by the community's enthusiasm and strongly believe in collaborating on open source projects.

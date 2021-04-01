@@ -99,7 +99,7 @@ module.exports = {
             {
               label: 'Slack',
               href:
-                'https://join.slack.com/t/temporalio/shared_invite/zt-kfgfjuye-L8gCQVRhPykA2td8pk7eTQ',
+                'https://join.slack.com/t/temporalio/shared_invite/zt-onhti57l-J0bl~Tr7MqSUnIc1upjRkw',
             },
           ],
         },

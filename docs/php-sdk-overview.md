@@ -10,7 +10,7 @@ You can clone the SDK from [https://github.com/temporalio/sdk-php](https://githu
 
 Additional PHP application samples are available here: [https://github.com/temporalio/samples-php](https://github.com/temporalio/samples-php)
 
-- [Slack](https://join.slack.com/t/temporalio/shared_invite/zt-kfgfjuye-L8gCQVRhPykA2td8pk7eTQ)
+- [Slack](https://join.slack.com/t/temporalio/shared_invite/zt-onhti57l-J0bl~Tr7MqSUnIc1upjRkw)
 - [Community forum](https://community.temporal.io/)
 
 ## Reference

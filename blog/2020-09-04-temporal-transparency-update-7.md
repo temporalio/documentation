@@ -59,6 +59,6 @@ As always, feel free to reach out with questions, comments or critical feedback 
 
 Email: [ryland@temporal.io](mailto:ryland@temporal.io)
 
-Slack: [temporalio.slack.com](https://join.slack.com/t/temporalio/shared_invite/zt-kfgfjuye-L8gCQVRhPykA2td8pk7eTQ)
+Slack: [temporalio.slack.com](https://join.slack.com/t/temporalio/shared_invite/zt-onhti57l-J0bl~Tr7MqSUnIc1upjRkw)
 
 Forum: [https://community.temporal.io/](https://community.temporal.io/)
