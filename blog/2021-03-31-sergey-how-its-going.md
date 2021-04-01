@@ -132,6 +132,6 @@ I realized I mostly miss people, individuals. At the same time, I’m getting ex
 
 I’m trying to make this as much of an honest assessment as I can, but it seems to sound very upbeat. That must be a reflection of how I feel now. I don’t know if it’s some kind of an extended honeymoon period. Time will tell. I think that regardless, this was a good and necessary change for me, no matter what happens next. I believe in our profession it is important to periodically shake yourself up, circumstances permitting. In a big scheme of things, we have the luxury of being able to do that when most other people can’t. Why not use it?
 
-“Steh alf!” as the famous German modern artist sings.
+“Steh auf!”, as the famous German modern artist sings.
 
 
