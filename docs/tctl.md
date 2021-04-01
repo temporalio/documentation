@@ -127,10 +127,11 @@ run_id after starting the Workflow. Use the `show` command to view the Workflow'
 
 ##### Reuse the same Workflow Id when starting/running a Workflow
 
-Use option `--workflowidreusepolicy` or `--wrp` to configure the Workflow id reuse policy.
-**Option 0 AllowDuplicateFailedOnly:** Allow starting a Workflow execution using the same Workflow Id when a Workflow with the same Workflow Id is not already running and the last execution close state is one of _[terminated, cancelled, timedout, failed]_.
-**Option 1 AllowDuplicate:** Allow starting a Workflow execution using the same Workflow Id when a Workflow with the same Workflow Id is not already running.
-**Option 2 RejectDuplicate:** Do not allow starting a Workflow execution using the same Workflow Id as a previous Workflow.
+Use option `--workflowidreusepolicy` or `--wrp` to configure the Workflow id reuse policy. There are three:
+
+- **AllowDuplicateFailedOnly:** Allow starting a Workflow execution using the same Workflow Id when a Workflow with the same Workflow Id is not already running and the last execution close state is one of _[terminated, cancelled, timedout, failed]_.
+- **AllowDuplicate:** Allow starting a Workflow execution using the same Workflow Id when a Workflow with the same Workflow Id is not already running.
+- **RejectDuplicate:** Do not allow starting a Workflow execution using the same Workflow Id as a previous Workflow.
 
 ```bash
 # use AllowDuplicateFailedOnly option to start a Workflow
@@ -139,6 +140,8 @@ Use option `--workflowidreusepolicy` or `--wrp` to configure the Workflow id reu
 # use AllowDuplicate option to run a workflow
 ./tctl workflow run --tq hello-world --wt Workflow --et 60 -i '"temporal"' --wid "<duplicated workflow id>" --wrp AllowDuplicate
 ```
+
+You may also set this inside your workflow code with `WorkflowOptions.WorkflowIdReusePolicy`.
 
 ##### Start a Workflow with a memo
 
