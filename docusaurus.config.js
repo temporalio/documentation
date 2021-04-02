@@ -28,7 +28,7 @@ module.exports = {
       },
       items: [
         {
-          to: 'docs/get-started/',
+          to: '/',
           activeBasePath: 'docs',
           label: 'Docs',
           position: 'right',
@@ -63,6 +63,23 @@ module.exports = {
     footer: {
       style: 'dark',
       links: [
+        {
+          title: 'App development',
+          items: [
+            {
+              label: 'Go',
+              to: 'docs/go-sdk-overview',
+            },
+            {
+              label: 'Java',
+              to: 'docs/java-sdk-overview',
+            },
+            {
+              label: 'PHP',
+              to: 'docs/php-sdk-overview',
+            },
+          ],
+        },
         {
           title: 'Docs',
           items: [
