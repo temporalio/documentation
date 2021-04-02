@@ -15,7 +15,7 @@ const features = [
         Deploy and manage your own instance of the Temporal Server.
       </>
     ),
-    goto: '/docs/server-introduction',
+    goto: '/docs/go-sdk-overview',
   },
   {
     title: <>Java</>,
@@ -25,7 +25,7 @@ const features = [
         Let us handle the hard part so you can focus on code.
       </>
     ),
-    goto: '/docs/cloud-introduction',
+    goto: '/docs/java-sdk-overview',
   },
   {
     title: <>PHP</>,
@@ -35,7 +35,7 @@ const features = [
         Start building invincible applications in the language of your choice!
       </>
     ),
-    goto: '/docs/sdks-introduction',
+    goto: '/docs/php-sdk-overview',
   },
 ];
 

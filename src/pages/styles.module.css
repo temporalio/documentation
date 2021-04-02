@@ -35,3 +35,9 @@
 .featureImage {
   width: 100px;
 }
+
+.videoContainer {
+  margin: 15px auto;
+  text-align:center;
+  max-width: 966px;
+}

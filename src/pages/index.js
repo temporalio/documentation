@@ -114,7 +114,28 @@ export default function Home() {
         )}
       </main>
       <div className="container">
-        <ResponsivePlayer url='https://www.youtube.com/watch?v=f-18XztyN6c'/>
+        <div className="row">
+          <div className={clsx('col col-6')}>
+            <h4>The problem</h4>
+            <p>Have you ever developed an application that needed to respond to multiple asynchronous events, communicate with unreliable external resources, or track the state of something very complex?</p>
+            <p>If so, you are likely familiar with the mixture of stateless services, databases, cron jobs, and queuing systems that is the modern approach to building such applications.</p>
+            <p>However, these types of systems often come with a number of problems.</p>
+            <p>It can be quite difficult to maintain the health of each individual component.</p>
+            <p>Moreover, there is usually a large investment that has to be made in infrastructure to visualize the health of the overall system, define timeouts, and orchestrate retries.</p>
+            <p>Scaling and maintaining these systems is challenging and costly effort.</p>
+          </div>
+          <div className={clsx('col col-6')}>
+            <h4>The Temporal solution</h4>
+            <p>The Temporal solution is a fault-oblivious stateful programming model that hides or abstracts most of the complexities mentioned above.</p>
+            <p>Watch this 2-minute video to get a better sense of what that means:</p>
+          </div>
+
+        </div>
+      </div>
+      <div className={clsx(styles.videoContainer)}>
+        <div className="container">
+          <ResponsivePlayer url='https://www.youtube.com/watch?v=f-18XztyN6c'/>
+        </div>
       </div>
     </Layout>
   );
