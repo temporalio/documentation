@@ -64,29 +64,8 @@ module.exports = {
       style: 'dark',
       links: [
         {
-          title: 'App development',
+          title: 'Policies',
           items: [
-            {
-              label: 'Go',
-              to: 'docs/go-sdk-overview',
-            },
-            {
-              label: 'Java',
-              to: 'docs/java-sdk-overview',
-            },
-            {
-              label: 'PHP',
-              to: 'docs/php-sdk-overview',
-            },
-          ],
-        },
-        {
-          title: 'Docs',
-          items: [
-            {
-              label: 'Get Started',
-              to: 'docs/get-started/',
-            },
             {
               label: 'About',
               to: '/about',
@@ -98,6 +77,43 @@ module.exports = {
             {
               label: 'Terms of Service',
               to: 'https://docs.temporal.io/pdf/temporal-tos-2021-01-19.pdf'
+            },
+          ],
+        },
+        {
+          title: 'Docs',
+          items: [
+            {
+              label: 'Go',
+              to: '/docs/go-sdk-overview',
+            },
+            {
+              label: 'Java',
+              to: '/docs/java-sdk-overview',
+            },
+            {
+              label: 'PHP',
+              to: '/docs/php-sdk-overview',
+            },
+            {
+              label: 'Temporal Server',
+              to: '/docs/server-introduction',
+            },
+            {
+              label: 'Temporal Cloud',
+              to: '/docs/cloud-introduction',
+            },
+            {
+              label: 'CLI',
+              to: '/docs/tctl',
+            },
+            {
+              label: 'Glossary',
+              to: '/docs/glossary',
+            },
+            {
+              label: 'External resources',
+              to: '/docs/external-resources',
             },
           ],
         },
