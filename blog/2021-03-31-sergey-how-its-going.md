@@ -32,7 +32,7 @@ About half of Temporal engineers develop on Linux machines. I realized why over 
 From the coding point of view, JetBrains is simply awesome; it is lightweight, cross-platform, and cross-language. In the hindsight, I should have started using Rider back at Microsoft for its lightweightness and cross-platform support. At Temporal, I mostly use GoLand, IntelliJ (occasionally) and Rider(I try to stay up to speed with the fast development in the Orleans world).
 
 ### Golang
-Go is a bit strange with some tradeoffs, I understand but others, not so much.
+Go is a bit strange, with some tradeoffs I understand but others, not so much.
 
 On the plus side:
 * Simple, limited syntax
