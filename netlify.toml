@@ -20,3 +20,11 @@
 [[redirects]]
   from = "/docs/concept-namespaces"
   to = "/docs/server-namespaces"
+
+[[redirects]]
+  from = "/docs/go-execute-activity"
+  to = "/docs/go-activities#executing-activities"
+
+[[redirects]]
+  from = "/docs/go-activity-async-completion"
+  to = "/docs/go-activities#asynchronous-activity-completion"
