@@ -294,7 +294,7 @@ This architecture is pretty scalable and reliable because every host can fail an
 
 But the system still has a single point of failure in terms of blast radius, because a single bad schema deployment to the database can bring it down.
 
-If you want to provide very high availability, we have **multi-cluster deployment** with synchronous replication. 
+If you want to provide very high availability, we have **multi-cluster deployment** with asynchronous replication. 
 
 
 
