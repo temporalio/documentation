@@ -132,7 +132,7 @@ The default JWT `ClaimMapper` needs a public key to perform validation of tokens
 You can use the default as an example to build your own for translating a caller's authorization information from other formats and conventions into Temporal `Claims`.
 
 ```go
-claimMapper := authorization.NewDefaultJWTClaimMapper(provider, cfg)
+claimMapper := authorization.NewDefaultJWTClaimMapper(provider, cfg, logger)
 ```
 
 Note that the default JWT `ClaimMapper` sets "permissions" as the `permissionsClaimName` if the `config.Config.Global.Authorization.PermissionsClaimName` property is not set as an override for the JWT tokens.
