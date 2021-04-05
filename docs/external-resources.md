@@ -14,8 +14,8 @@ If you have made a tutorial or explanation of Temporal, please [submit them here
 
 *Don't forget our own [Temporal Architecture docs](/docs/server-architecture/)!*
 
+- ⭐ [Designing a Workflow Engine from First Principles](https://docs.temporal.io/blog/workflow-engine-principles/) by Maxim Fateev (23 min talk given at Systems @ Scale 2021)
 - [A Practical Approach to Temporal Architecture](https://mikhail.io/2020/10/practical-approach-to-temporal-architecture/) by Mikhail Shilkov (4 min read)
-- [Designing a Workflow Engine from First Principles](https://youtu.be/t524U9CixZ0) by Maxim Fateev (23 min talk given at Systems @ Scale 2021)
 - [Workflow Engine with Maxim Fateev](https://www.listennotes.com/podcasts/software/cadence-ubers-workflow-nNoaPiSfk7v/)  on Software Engineering Daily (56 min Podcast)
 - Temporal's previous iteration was Cadence, which shares a lot of the same design principles:
     - [Cadence Architecture Talk](https://www.youtube.com/watch?v=5M5eiNBUf4Q) (24 min) by Samar Abbas at Uber Cadence meetup
