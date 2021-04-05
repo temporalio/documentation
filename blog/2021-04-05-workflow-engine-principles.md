@@ -48,9 +48,6 @@ Our definition is that a workflow is a:
 - Executes Tasks, and
 - Reacts to External Events, including
 - Timers and timeouts
-
-![Designing Workflow Engine-v7-images 007](https://user-images.githubusercontent.com/6764957/113586735-6f1b0280-9660-11eb-9ed7-edbe4ba4062b.png)
-
 **Resilient** means that the program will continue execution despite failures (like infrastructure outages and availability zones going down). 
 
 Usually this program is organized as a **sequence of tasks** and it also has to **react to external events** and **deal with time**. Timers and timeouts are an important component of every business level process.
