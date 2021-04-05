@@ -132,6 +132,8 @@ We need to store the state of the workflow so that every time we start a workflo
 ![Designing Workflow Engine-v7-images 016](https://user-images.githubusercontent.com/6764957/113587041-d8027a80-9660-11eb-9d30-d21aaa50f685.png)
 
 
+**If you only remember one slide from this presentation, remember this one.**
+
 If you run atop a workflow engine that doesn't have transactions across all these components, you will run into all sorts of race conditions:
 
 - if you update state, and put tasks in task queue, and the state update goes through, but the task queue update fails, your system ends up in a state where it thinks there is a task outstanding but the task is not.
@@ -145,7 +147,7 @@ This doesn't just apply to the workflow engine implementation. Most engineers do
 
 Our point about lack of transactions leading to race conditions applies to the majority of ad hoc systems built by developers. 
 
-This is very important to understand: **If you are building a system from these components you're guaranteed to have edge cases in race conditions**. So that's why having a robust engine with something like Temporal's underlying architecture will simplify your life tremendously. If you want to remember one slide for this presentation, remember this one.
+This is very important to understand: **If you are building a system from these components you're guaranteed to have edge cases in race conditions**. So that's why having a robust engine with something like Temporal's underlying architecture will simplify your life tremendously.
 
 ## Scalability Needs (10:30)
 
