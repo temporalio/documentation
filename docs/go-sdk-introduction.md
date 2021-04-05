@@ -1,7 +1,7 @@
 ---
-id: go-sdk-overview
-title: Go SDK Overview
-sidebar_label: Overview
+id: go-sdk-introduction
+title: Go SDK introduction
+sidebar_label: Go SDK introduction
 ---
 
 ## Quick start

@@ -1,7 +1,7 @@
 ---
-id: php-sdk-overview
-title: PHP SDK overview
-sidebar_label: Overview
+id: php-sdk-introduction
+title: PHP SDK introduction
+sidebar_label: PHP SDK introduction
 ---
 
 ## Quick start

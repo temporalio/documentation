@@ -48,4 +48,4 @@ If you want to try other configurations using different dependencies (e.g. diffe
 
 You can now write and run Workflows via the Temporal Server.
 
-Get started quickly by running a [Go sample](https://github.com/temporalio/samples-go), [Java sample](https://github.com/temporalio/samples-java), or write your own using one of the [SDKs](/docs/sdks-introduction).
+Get started quickly by running a [Go sample](https://github.com/temporalio/samples-go), [Java sample](https://github.com/temporalio/samples-java), or write your own using one of the [SDKs](/application-development).

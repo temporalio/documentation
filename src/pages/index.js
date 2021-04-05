@@ -46,14 +46,14 @@ const features = [
         Use our tooling to visualize and manage different aspects of your system.
       </>
     ),
-    goto: '/docs/sdks-introduction',
+    goto: '/docs/system-tooling-introduction',
   },
 ];
 
 function Feature({imageUrl, title, description, goto}) {
   const imgUrl = useBaseUrl(imageUrl);
   return (
-    <div className={clsx('col col--3', styles.feature)}>
+    <div className={clsx('col col--3')}>
       <h3>{title}</h3>
       {imgUrl && (
         <div className="text--center">
@@ -69,6 +69,66 @@ function Feature({imageUrl, title, description, goto}) {
         )}
         to={useBaseUrl(goto)}>
         Get Started
+        </Link>
+      </div>
+      <div className={styles.spacer}>
+      </div>
+    </div>
+  );
+}
+
+const levelTwoFeatures = [
+  {
+    title: <>External resources</>,
+    imageUrl: 'img/foreign.svg',
+    description: (
+      <>
+        Check out what the community is saying.
+      </>
+    ),
+    goto: '/docs/external-resources',
+  },
+  {
+    title: <>Case studies</>,
+    imageUrl: 'img/case-study.svg',
+    description: (
+      <>
+        Big names use Temporal for important business processes.
+      </>
+    ),
+    goto: '/blog/tags/case-study',
+  },
+  {
+    title: <>Migrating from Cadence?</>,
+    imageUrl: 'img/finish.svg',
+    description: (
+      <>
+        Check out the key differences between the systems.
+      </>
+    ),
+    goto: '/docs/cadence-to-temporal',
+  },
+]
+
+function LevelTwoFeature({imageUrl, title, description, goto}) {
+  const imgUrl = useBaseUrl(imageUrl);
+  return (
+    <div className={clsx('col col--4')}>
+      <h3>{title}</h3>
+      {imgUrl && (
+        <div className="text--center">
+          <img className={styles.featureImage} src={imgUrl} alt={title} />
+        </div>
+      )}
+      <p>{description}</p>
+      <div className={styles.buttons}>
+        <Link
+        className={clsx(
+          'button button--outline button--primary button--md',
+          styles.getStarted,
+        )}
+        to={useBaseUrl(goto)}>
+        Learn more
         </Link>
       </div>
       <div className={styles.spacer}>
@@ -113,30 +173,48 @@ export default function Home() {
           </section>
         )}
       </main>
-      <div className="container">
-        <div className="row">
-          <div className={clsx('col col-6')}>
-            <h4>The problem</h4>
-            <p>Have you ever developed an application that needed to respond to multiple asynchronous events, communicate with unreliable external resources, or track the state of something very complex?</p>
-            <p>If so, you are likely familiar with the mixture of stateless services, databases, cron jobs, and queuing systems that is the modern approach to building such applications.</p>
-            <p>However, these types of systems often come with a number of problems.</p>
-            <p>It can be quite difficult to maintain the health of each individual component.</p>
-            <p>Moreover, there is usually a large investment that has to be made in infrastructure to visualize the health of the overall system, define timeouts, and orchestrate retries.</p>
-            <p>Scaling and maintaining these systems is challenging and costly effort.</p>
-          </div>
-          <div className={clsx('col col-6')}>
-            <h4>The Temporal solution</h4>
-            <p>The Temporal solution is a fault-oblivious stateful programming model that hides or abstracts most of the complexities mentioned above.</p>
-            <p>Watch this 2-minute video to get a better sense of what that means:</p>
-          </div>
-
-        </div>
-      </div>
-      <div className={clsx(styles.videoContainer)}>
+      <div className={clsx('hero hero--secondary', styles.heroBanner)}>
         <div className="container">
-          <ResponsivePlayer url='https://www.youtube.com/watch?v=f-18XztyN6c'/>
+          <div className="row">
+            <div className={clsx('col col-4', styles.textFeature)}>
+              <h4>Modern problems</h4>
+              <p>Have you ever developed an application that needed to respond to multiple asynchronous events, communicate with unreliable external resources, or track the state of something very complex?</p>
+              <p>If so, you are likely familiar with the mixture of stateless services, databases, cron jobs, and queuing systems that is the modern approach to building such applications. And you are likely familiar with some of the problems they come with.</p>
+              <ol>
+                <li>It is difficult to maintain the health of each individual component.</li>
+                <li>A large investment that has to be made in infrastructure to visualize the health of the overall system, define timeouts, and orchestrate retries.</li>
+                <li>Scaling and maintaining these systems is challenging and costly effort.</li>
+              </ol>
+            </div>
+            <div className={clsx('col col-4')}>
+              <div className={clsx(styles.videoContainer)}>
+                <ResponsivePlayer url='https://www.youtube.com/watch?v=f-18XztyN6c'/>
+              </div>
+            </div>
+            <div className={clsx('col col-4', styles.textFeature)}>
+              <h4>The Temporal solution</h4>
+              <p>The Temporal solution is a fault-oblivious stateful programming model that hides or abstracts most of the complexities mentioned above.
+              It consists of a programming framework (Temporal SDK) and a backend service (Temporal Server).</p>
+              <p> The <a href="/docs/server-introduction"> Temporal Server</a> provides a durable virtual memory that is not linked to any specific process.
+              It preserves the full application state (including function stacks with local variables) across all kinds of hosting and software related failures.</p>
+              <p>A <a hef="/application-development">Temporal SDK</a> then enables you to write your application code using the full power of the programming language, while the Temporal Server handles the durability, availability, and scalability of the application.</p>
+            </div>
+          </div>
         </div>
       </div>
+      <main>
+        {levelTwoFeatures && levelTwoFeatures.length > 0 && (
+          <section className={styles.features}>
+            <div className="container">
+              <div className="row">
+                {levelTwoFeatures.map((props, idx) => (
+                  <LevelTwoFeature key={idx} {...props} />
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+      </main>
     </Layout>
   );
 }

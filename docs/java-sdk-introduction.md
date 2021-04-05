@@ -1,7 +1,7 @@
 ---
-id: java-sdk-overview
-title: Java SDK overview
-sidebar_label: Overview
+id: java-sdk-introduction
+title: Java SDK introduction
+sidebar_label: Java SDK introduction
 ---
 
 ## Quick start
