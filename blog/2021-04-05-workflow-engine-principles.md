@@ -237,6 +237,8 @@ This way we have transactional commits with a later transfer to the queueing sub
 
 So this is a very simple mechanism that allows transactionality, but doesn't rely on complex two-phase commit protocols.
 
+> Note: This is also known as [the transactional "Outbox" pattern](https://microservices.io/patterns/data/transactional-outbox.html).
+
 ## Workflow Visibility (17:35)
 
 The other requirement that a reasonable workflow system should implement is the ability to list workflows, e.g. "give me all workflows started by $USER in the last 24 hours that failed". 
