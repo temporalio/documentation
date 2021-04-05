@@ -85,15 +85,15 @@ module.exports = {
           items: [
             {
               label: 'Go',
-              to: '/docs/go-sdk-overview',
+              to: '/docs/go-sdk-introduction',
             },
             {
               label: 'Java',
-              to: '/docs/java-sdk-overview',
+              to: '/docs/java-sdk-introduction',
             },
             {
               label: 'PHP',
-              to: '/docs/php-sdk-overview',
+              to: '/docs/php-sdk-introduction',
             },
             {
               label: 'Temporal Server',
@@ -114,6 +114,10 @@ module.exports = {
             {
               label: 'External resources',
               to: '/docs/external-resources',
+            },
+            {
+              label: 'Cadence to Temporal',
+              to: '/docs/cadence-to-temporal',
             },
           ],
         },

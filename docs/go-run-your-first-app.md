@@ -44,7 +44,7 @@ If you convert the template to a new repo, make sure you use the same repository
 
 ## ![](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/workflow.png) Application overview
 
-This project template mimics a "money transfer" application that has a single [Workflow function](/docs/concept-workflows) which orchestrates the execution of `Withdraw()` and `Deposit()` functions, representing a transfer of money from one account to another. Temporal calls these particular functions [Activity functions](/docs/concept-activities).
+This project template mimics a "money transfer" application that has a single [Workflow function](/docs/go-workflows) which orchestrates the execution of `Withdraw()` and `Deposit()` functions, representing a transfer of money from one account to another. Temporal calls these particular functions [Activity functions](/docs/go-activities).
 
 To run the application you will do the following:
 
@@ -83,9 +83,9 @@ If this is your first time running this application, go may download some depend
 
 ```bash
 2021/03/12 01:34:36 INFO  No logger configured for temporal client. Created default one.
-2021/03/12 01:34:37 
+2021/03/12 01:34:37
 Transfer of $54.990002 from account 001-001 to account 002-002 is processing. ReferenceID: 8e37aafe-5fb8-4649-99e3-3699e35e6c32
-2021/03/12 01:34:37 
+2021/03/12 01:34:37
 WorkflowID: transfer-money-workflow RunID: 0730a9a3-d17b-4cb5-a4a0-279c9759dfa1
 ```
 
@@ -107,7 +107,7 @@ It's time to start the Worker. A Worker is responsible for executing pieces of W
 - It knows which piece of code to execute from Tasks that it gets from the Task Queue.
 - It only listens to the Task Queue that it is registered to.
 
-After The Worker executes code, it returns the results back to the Temporal Server. 
+After The Worker executes code, it returns the results back to the Temporal Server.
 Note that the Worker listens to the same Task Queue that the Workflow and Activity Tasks are sent to.
 This is called "Task routing", and is a built-in mechanism for load balancing.
 
@@ -127,7 +127,7 @@ Run worker/main.go from the project root using the following command:
 go run worker/main.go
 ```
 
-When you start the Worker it begins polling the Task Queue (if you check Temporal Web again, you will see a new Poller registered where previously there was none). 
+When you start the Worker it begins polling the Task Queue (if you check Temporal Web again, you will see a new Poller registered where previously there was none).
 
 The terminal output will look like this:
 
@@ -140,12 +140,12 @@ Withdrawing $54.990002 from account 001-001. ReferenceId: 8e37aafe-5fb8-4649-99e
 ```
 
 :::tip What actually happens under the hood
-> 
-> - The first Task the Worker finds is the one that tells it to execute the Workflow function. 
+>
+> - The first Task the Worker finds is the one that tells it to execute the Workflow function.
 > - The Worker communicates the event back to the server.
-> - This causes the server to send Activity Tasks to the Task Queue. 
+> - This causes the server to send Activity Tasks to the Task Queue.
 > - The Worker then grabs each of the Activity Tasks in their respective order from the Task Queue and executes each of the corresponding Activities.
-> 
+>
 > Each of these are **History Events** that can be audited in Temporal Web (under the `History` tab next to `Summary`). Once a workflow is completed and closed, the full history will persist for a set retention period (typically 7-30 days) before being deleted. You can set up [the Archival feature](https://docs.temporal.io/docs/server-archive-data/) to send them to long term storage for compliance/audit needs.
 
 :::
@@ -172,7 +172,7 @@ Your Workflow is still there!
 ### Activity error
 
 Next let's simulate a bug in the `Deposit()` Activity function.
-Let your Workflow continue to run. 
+Let your Workflow continue to run.
 Open the `activity.go` file and switch out the comments on the return statements such that the `Deposit()` function returns an error.
 
 <!--SNIPSTART money-transfer-project-template-go-activity-->
@@ -203,9 +203,9 @@ You can view more information about what is happening in the [UI](localhost:8088
 
 <br/>
 
-**Traditionally application developers are forced to implement timeout and retry logic within the service code itself.** This is repetitive and error prone. With Temporal, one of the key value propositions is that [timeout configurations](/docs/concept-activities/#timeouts) and [retry policies](/docs/concept-activities/#retries) are specified in the Workflow code as Activity options. In `workflow.go`, you can see that we have specified a `StartToCloseTimeout` for our Activities, and set a retry policy that tells the server to retry them up to 500 times. You can read more about [Activity and Workflow Retries](https://docs.temporal.io/docs/go-retries/) in our docs.
+**Traditionally application developers are forced to implement timeout and retry logic within the service code itself.** This is repetitive and error prone. With Temporal, one of the key value propositions is that [timeout configurations](/docs/go-activities/#timeouts) and [retry policies](/docs/go-activities/#retries) are specified in the Workflow code as Activity options. In `workflow.go`, you can see that we have specified a `StartToCloseTimeout` for our Activities, and set a retry policy that tells the server to retry them up to 500 times. You can read more about [Activity and Workflow Retries](https://docs.temporal.io/docs/go-retries/) in our docs.
 
-So, your Workflow is running, but only the `Withdraw()` Activity function has succeeded. In any other application, the whole process would likely have to be abandoned and rolled back. So, here is the last value proposition of this tutorial: With Temporal, we can debug the issue while the Workflow is running! Pretend that you found a potential fix for the issue; Switch the comments back on the return statements of the `Deposit()` function in the `activity.go` file and save your changes. 
+So, your Workflow is running, but only the `Withdraw()` Activity function has succeeded. In any other application, the whole process would likely have to be abandoned and rolled back. So, here is the last value proposition of this tutorial: With Temporal, we can debug the issue while the Workflow is running! Pretend that you found a potential fix for the issue; Switch the comments back on the return statements of the `Deposit()` function in the `activity.go` file and save your changes.
 
 How can we possibly update a Workflow that is already halfway complete? With Temporal, it is actually very simple: just restart the Worker!
 

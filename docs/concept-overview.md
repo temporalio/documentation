@@ -33,7 +33,7 @@ The Temporal solution consists of a programming framework (Temporal SDK) and a b
 The [Temporal Server](/docs/server-introduction) provides a durable virtual memory that is not linked to any specific process.
 It preserves the full application state (including function stacks with local variables) across all kinds of hosting and software related failures.
 
-A [Temporal SDK](/docs/sdks-introduction) then enables you to write your application code using the full power of the programming language, while the Temporal Server handles the durability, availability, and scalability of the application.
+A [Temporal SDK](/application-development) then enables you to write your application code using the full power of the programming language, while the Temporal Server handles the durability, availability, and scalability of the application.
 
 :::note Temporal as a Distributed System
 In terms of CAP theorem, each Temporal cluster is eventually available and highly consistent.
@@ -48,12 +48,12 @@ If persistence nodes are lost or unreachable, your Workflows will not progress, 
 
 Temporal SDKs enable you to build applications around a set of key concepts.
 
-- [Workflows](/docs/concept-workflows) - Functions or object methods that are the entry point and base of your application.
-- [Activities](/docs/concept-activities) - Functions or object methods that handle non-deterministic business logic.
-- [Workers](/docs/concept-workers) - Processes running on physical or virtual machines that execute Workflow and Activity code.
-- [Signals](/docs/concept-signals) - Write-only calls to Workflows that can update the variable values and Workflow state.
-- [Queries](/docs/concept-queries) - Read-only calls to Workflows that can retrieve function return values and Workflow state.
-- [Task Queues](/docs/concept-task-queues) - A routing mechanism that enables load balancing.
+- Workflows - Functions or object methods that are the entry point and base of your application.
+- Activities - Functions or object methods that handle non-deterministic business logic.
+- Workers - Processes running on physical or virtual machines that execute Workflow and Activity code.
+- Signals - Write-only calls to Workflows that can update the variable values and Workflow state.
+- Queries- Read-only calls to Workflows that can retrieve function return values and Workflow state.
+- Task Queues - A routing mechanism that enables load balancing.
 
 Each of the language-specific SDKs may present these concepts to the developer in a slightly different way, but the idea behind them remains the same.
 Select from the list above, or read on to learn more about each of these developer-facing concepts and what they mean.

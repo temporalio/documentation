@@ -8,7 +8,7 @@ Temporal reimagines state-dependent service-orchestrated application development
 
 ## Quick start
 
-[Install the Temporal server](/docs/server-quick-install/) and [choose your SDK](/docs/sdks-introduction). Or, try one of these application template tutorials:
+[Install the Temporal server](/docs/server-quick-install/) and [choose your SDK](/application-development). Or, try one of these application template tutorials:
 
 **Go**
 
@@ -20,7 +20,7 @@ Temporal reimagines state-dependent service-orchestrated application development
 - [Run your first app](/docs/java-run-your-first-app/)
 - [Build a "Hello World!" app from scratch](/docs/java-hello-world)
 
-[Other SDKs](/docs/sdks-introduction/#other-sdks) are in the works, please get in touch.
+[Other SDKs](/application-development) are in the works, please get in touch.
 
 ## Learn about Temporal
 

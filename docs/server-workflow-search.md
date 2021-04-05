@@ -58,7 +58,7 @@ Here are the attributes that are provided by default:
 | WorkflowId          | KEYWORD    |
 | WorkflowType        | KEYWORD    |
 
-These can be found by using the [CLI](/docs/tctl/#search-workflows) or the `GetSearchAttributes` API via one of the [SDKs](/docs/sdks-introduction).
+These can be found by using the [CLI](/docs/tctl/#search-workflows) or the `GetSearchAttributes` API via one of the [SDKs](/application-development).
 
 There are some special considerations for the Default attributes:
 

@@ -80,7 +80,7 @@ If you are interested in Temporal Cloud, feel free to reach out (ryland@temporal
 
 ## SDKs
 
-Another area of focus over the last few months has been our language SDKs. Historically, Temporal only officially supported Java and Golang as official language SDKs. There are [community contributed SDKs for Ruby, Python and a few others](https://docs.temporal.io/docs/sdks-introduction/#other-sdks). While we really appreciate these contributions, we can't provide any guarantees for them until they are integrated in officially. We know that supported languages is one of the most important factors for choosing a new technology. This is why we've put serious effort into expanding our official language support over the last few months.
+Another area of focus over the last few months has been our language SDKs. Historically, Temporal only officially supported Java and Golang as official language SDKs. There are [community contributed SDKs for Ruby, Python and a few others](/application-development). While we really appreciate these contributions, we can't provide any guarantees for them until they are integrated in officially. We know that supported languages is one of the most important factors for choosing a new technology. This is why we've put serious effort into expanding our official language support over the last few months.
 
 ### PHP SDK
 
@@ -94,7 +94,7 @@ PHP isn't the only language on its way to Temporal. Work is also underway on a T
 
 Instead of poorly explaining our progress with docs, I'll defer to resident expert and information architect Cully:
 
-> There have been many contributions to [Temporal's documentation](/docs/get-started) over the last couple of months. Highlights include Server information and SDK guides. In regards to the Server, while we have refreshed some of the existing information, we have also published new information on [security](/docs/server-security), [versions and dependencies](/docs/server-versions-and-dependencies), [Elasticsearch setup](/docs/server-elasticsearch-setup), and [Server options](/docs/server-options). In regards to SDKs, thanks to [Anton Titov](https://github.com/wolfy-j), there is now a brand new set of [PHP SDK guides](/docs/php-sdk-overview) for PHP developers. The Temporal Product Team appreciates all of the contributions the community has made and we look forward to bringing you even more content over the next several months.
+> There have been many contributions to [Temporal's documentation](/docs/get-started) over the last couple of months. Highlights include Server information and SDK guides. In regards to the Server, while we have refreshed some of the existing information, we have also published new information on [security](/docs/server-security), [versions and dependencies](/docs/server-versions-and-dependencies), [Elasticsearch setup](/docs/server-elasticsearch-setup), and [Server options](/docs/server-options). In regards to SDKs, thanks to [Anton Titov](https://github.com/wolfy-j), there is now a brand new set of [PHP SDK guides](/docs/php-sdk-introduction) for PHP developers. The Temporal Product Team appreciates all of the contributions the community has made and we look forward to bringing you even more content over the next several months.
 
 ## Community
 
