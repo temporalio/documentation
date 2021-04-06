@@ -41,6 +41,19 @@ Open IntelliJ and create a new Gradle project by following Step 1 of the [Gettin
 Once Gradle has finished scaffolding you will need to customize the project dependencies. To do this, open the build.gradle file that is in the root of your project and add the following lines to the dependencies section. If you want to try using different versions of dependencies, you can find them on [search.maven.org](https://search.maven.org/) ([Temporal SDK versions](https://search.maven.org/artifact/io.temporal/temporal-sdk)):
 
 <!--SNIPSTART hello-world-project-template-java-gradle-dependencies-->
+[build.gradle](https://github.com/temporalio/hello-world-project-template-java/blob/master/build.gradle)
+```gradle
+dependencies {
+    // Application dependencies
+    implementation 'com.google.guava:guava:29.0-jre'
+    implementation 'io.temporal:temporal-sdk:1.0.0'
+    implementation 'ch.qos.logback:logback-classic:1.2.3'
+
+    // Testing dependencies
+    testImplementation 'junit:junit:4.13'
+    testImplementation 'org.mockito:mockito-all:1.10.19'
+}
+```
 <!--SNIPEND-->
 
 - `com.google.guava:guava` offers a suit of core and expanded libraries that Gradle uses.
@@ -50,6 +63,22 @@ Once Gradle has finished scaffolding you will need to customize the project depe
 To limit the logging output from the SDK, within src/main/resources/ create a logback.xml file and paste in the following XML:
 
 <!--SNIPSTART hello-world-project-template-java-logback-dependency-configuration-->
+[src/main/resources/logback.xml](https://github.com/temporalio/hello-world-project-template-java/blob/master/src/main/resources/logback.xml)
+```xml
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- encoders are assigned the type
+             ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <logger name="io.grpc.netty" level="INFO" />
+    <root level="INFO">
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>
+```
 <!--SNIPEND-->
 
 If you are editing the files in IntelliJ, a "refresh" icon will appear on the screen. Click it to load the changes. Gradle will rebuild with the dependencies. Otherwise you can run `./gradlew build` from the root of the project again.
@@ -74,11 +103,37 @@ An Activity object is defined like any other object in Java. You need an interfa
 Create Format.java and add the following interface definition:
 
 <!--SNIPSTART hello-world-project-template-java-activity-interface-->
+[src/main/java/helloworldapp/Format.java](https://github.com/temporalio/hello-world-project-template-java/blob/master/src/main/java/helloworldapp/Format.java)
+```java
+package helloworldapp;
+
+import io.temporal.activity.ActivityInterface;
+import io.temporal.activity.ActivityMethod;
+
+@ActivityInterface
+public interface Format {
+
+    @ActivityMethod
+    String composeGreeting(String name);
+}
+```
 <!--SNIPEND-->
 
 Create FormatImpl.java and define the implementation of the Format interface:
 
 <!--SNIPSTART hello-world-project-template-java-activity-->
+[src/main/java/helloworldapp/FormatImpl.java](https://github.com/temporalio/hello-world-project-template-java/blob/master/src/main/java/helloworldapp/FormatImpl.java)
+```java
+package helloworldapp;
+
+public class FormatImpl implements Format {
+
+    @Override
+    public String composeGreeting(String name) {
+        return "Hello " + name + "!";
+    }
+}
+```
 <!--SNIPEND-->
 
 ### Workflow
@@ -88,11 +143,51 @@ Next is our Workflow. Workflow functions are where you configure and organize th
 Create HelloWorldWorkflow.java and define the Workflow interface:
 
 <!--SNIPSTART hello-world-project-template-java-workflow-interface-->
+[src/main/java/helloworldapp/HelloWorldWorkflow.java](https://github.com/temporalio/hello-world-project-template-java/blob/master/src/main/java/helloworldapp/HelloWorldWorkflow.java)
+```java
+package helloworldapp;
+
+import io.temporal.workflow.WorkflowInterface;
+import io.temporal.workflow.WorkflowMethod;
+
+@WorkflowInterface
+public interface HelloWorldWorkflow {
+
+    @WorkflowMethod
+    String getGreeting(String name);
+}
+```
 <!--SNIPEND-->
 
 Create HelloWorldWorkflowImpl.java and define the Workflow:
 
 <!--SNIPSTART hello-world-project-template-java-workflow-->
+[src/main/java/helloworldapp/HelloWorldWorkflowImpl.java](https://github.com/temporalio/hello-world-project-template-java/blob/master/src/main/java/helloworldapp/HelloWorldWorkflowImpl.java)
+```java
+package helloworldapp;
+
+import io.temporal.activity.ActivityOptions;
+import io.temporal.workflow.Workflow;
+
+import java.time.Duration;
+
+public class HelloWorldWorkflowImpl implements HelloWorldWorkflow {
+
+    ActivityOptions options = ActivityOptions.newBuilder()
+            .setScheduleToCloseTimeout(Duration.ofSeconds(2))
+            .build();
+
+    // ActivityStubs enable calls to Activities as if they are local methods, but actually perform an RPC.
+    private final Format format = Workflow.newActivityStub(Format.class, options);
+
+    @Override
+    public String getGreeting(String name) {
+        // This is the entry point to the Workflow.
+        // If there were other Activity methods they would be orchestrated here or from within other Activities.
+        return format.composeGreeting(name);
+    }
+}
+```
 <!--SNIPEND-->
 
 ### Task Queue
@@ -100,6 +195,15 @@ Create HelloWorldWorkflowImpl.java and define the Workflow:
 [Task Queues](/docs/glossary/#task-queue) are how the Temporal server supplies information to Workers. When you start a Workflow, you tell the server which Task Queue the Workflow and/or Activities use as an information queue. We will configure our Worker to listen to the same Task Queue that our Workflow and Activities use. Since the Task Queue name is used by multiple things, let's create Shared.java and define our Task Queue name there:
 
 <!--SNIPSTART hello-world-project-template-java-shared-constants-->
+[src/main/java/helloworldapp/Shared.java](https://github.com/temporalio/hello-world-project-template-java/blob/master/src/main/java/helloworldapp/Shared.java)
+```java
+package helloworldapp;
+
+public interface Shared {
+
+    String HELLO_WORLD_TASK_QUEUE = "HELLO_WORLD_TASK_QUEUE";
+}
+```
 <!--SNIPEND-->
 
 ### Worker
@@ -109,6 +213,34 @@ Our [Worker](/docs/glossary/#worker) hosts Workflow and Activity functions and e
 Create HelloWorldWorker.java and define the Worker:
 
 <!--SNIPSTART hello-world-project-template-java-worker-->
+[src/main/java/helloworldapp/HelloWorldWorker.java](https://github.com/temporalio/hello-world-project-template-java/blob/master/src/main/java/helloworldapp/HelloWorldWorker.java)
+```java
+package helloworldapp;
+
+import io.temporal.client.WorkflowClient;
+import io.temporal.serviceclient.WorkflowServiceStubs;
+import io.temporal.worker.Worker;
+import io.temporal.worker.WorkerFactory;
+
+public class HelloWorldWorker {
+
+    public static void main(String[] args) {
+        // This gRPC stubs wrapper talks to the local docker instance of the Temporal service.
+        WorkflowServiceStubs service = WorkflowServiceStubs.newInstance();
+        WorkflowClient client = WorkflowClient.newInstance(service);
+        // Create a Worker factory that can be used to create Workers that poll specific Task Queues.
+        WorkerFactory factory = WorkerFactory.newInstance(client);
+        Worker worker = factory.newWorker(Shared.HELLO_WORLD_TASK_QUEUE);
+        // This Worker hosts both Workflow and Activity implementations.
+        // Workflows are stateful, so you need to supply a type to create instances.
+        worker.registerWorkflowImplementationTypes(HelloWorldWorkflowImpl.class);
+        // Activities are stateless and thread safe, so a shared instance is used.
+        worker.registerActivitiesImplementations(new FormatImpl());
+        // Start polling the Task Queue.
+        factory.start();
+    }
+}
+```
 <!--SNIPEND-->
 
 ### Workflow initiator
@@ -118,6 +250,33 @@ There are two ways to start a Workflow, via the Temporal CLI or Temporal SDK. In
 Create InitiateHelloWorld.java and use the SDK to define the start of the Workflow:
 
 <!--SNIPSTART hello-world-project-template-java-workflow-initiator-->
+[src/main/java/helloworldapp/InitiateHelloWorld.java](https://github.com/temporalio/hello-world-project-template-java/blob/master/src/main/java/helloworldapp/InitiateHelloWorld.java)
+```java
+package helloworldapp;
+
+import io.temporal.client.WorkflowClient;
+import io.temporal.client.WorkflowOptions;
+import io.temporal.serviceclient.WorkflowServiceStubs;
+
+public class InitiateHelloWorld {
+
+    public static void main(String[] args) throws Exception {
+        // This gRPC stubs wrapper talks to the local docker instance of the Temporal service.
+        WorkflowServiceStubs service = WorkflowServiceStubs.newInstance();
+        // WorkflowClient can be used to start, signal, query, cancel, and terminate Workflows.
+        WorkflowClient client = WorkflowClient.newInstance(service);
+        WorkflowOptions options = WorkflowOptions.newBuilder()
+                .setTaskQueue(Shared.HELLO_WORLD_TASK_QUEUE)
+                .build();
+        // WorkflowStubs enable calls to methods as if the Workflow object is local, but actually perform an RPC.
+        HelloWorldWorkflow workflow = client.newWorkflowStub(HelloWorldWorkflow.class, options);
+        // Synchronously execute the Workflow and wait for the response.
+        String greeting = workflow.getGreeting("World");
+        System.out.println(greeting);
+        System.exit(0);
+    }
+}
+```
 <!--SNIPEND-->
 
 ## ![](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/check.png) Test the app
@@ -125,6 +284,56 @@ Create InitiateHelloWorld.java and use the SDK to define the start of the Workfl
 Let's add a simple unit test to our application to make sure things are working as expected. Test code lives in src/test/java/helloworldapp. Gradle will have generated a default AppTest.java in that location. Remove that file and replace it with HelloWorldWorkflowTest.java that contains the following code:
 
 <!--SNIPSTART hello-world-project-template-java-workflow-test-->
+[src/test/java/helloworldapp/HelloWorldWorkflowTest.java](https://github.com/temporalio/hello-world-project-template-java/blob/master/src/test/java/helloworldapp/HelloWorldWorkflowTest.java)
+```java
+package helloworldapp;
+
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+
+import io.temporal.client.WorkflowClient;
+import io.temporal.client.WorkflowOptions;
+import io.temporal.testing.TestWorkflowEnvironment;
+import io.temporal.worker.Worker;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+public class HelloWorldWorkflowTest {
+
+    private TestWorkflowEnvironment testEnv;
+    private Worker worker;
+    private WorkflowClient workflowClient;
+
+    @Before
+    public void setUp() {
+        testEnv = TestWorkflowEnvironment.newInstance();
+        worker = testEnv.newWorker(Shared.HELLO_WORLD_TASK_QUEUE);
+        worker.registerWorkflowImplementationTypes(HelloWorldWorkflowImpl.class);
+        workflowClient = testEnv.getWorkflowClient();
+    }
+
+    @After
+    public void tearDown() {
+        testEnv.close();
+    }
+
+    @Test
+    public void testGetGreeting() {
+        Format format = mock(Format.class);
+        worker.registerActivitiesImplementations(format);
+        testEnv.start();
+        WorkflowOptions options = WorkflowOptions.newBuilder()
+                .setTaskQueue(Shared.HELLO_WORLD_TASK_QUEUE)
+                .build();
+        HelloWorldWorkflow workflow = workflowClient.newWorkflowStub(HelloWorldWorkflow.class, options);
+        workflow.getGreeting("test");
+        verify(format).composeGreeting(eq("test"));
+    }
+}
+```
 <!--SNIPEND-->
 
 **Terminal**
@@ -148,6 +357,18 @@ To run the app we need to start the Workflow and the Worker. You can start them 
 If you are using the terminal, add tasks to the build.gradle file so that you can run the main methods from there.
 
 <!--SNIPSTART hello-world-project-template-java-gradle-tasks-->
+[build.gradle](https://github.com/temporalio/hello-world-project-template-java/blob/master/build.gradle)
+```gradle
+task sayHello(type: JavaExec) {
+    main = 'helloworldapp.InitiateHelloWorld'
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+task startWorker(type: JavaExec) {
+    main = 'helloworldapp.HelloWorldWorker'
+    classpath = sourceSets.main.runtimeClasspath
+}
+```
 <!--SNIPEND-->
 
 **Terminal**

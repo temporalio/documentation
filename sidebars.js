@@ -13,14 +13,75 @@ module.exports = {
     'server-configuration',
     'server-archive-data',
     'server-event-types',
-  ],
-  cloudSidebar: [
-    'cloud-introduction'
+    {
+      type: 'category',
+      label: 'Nav',
+      collapsed: true,
+      items: [
+        {
+          type: 'link',
+          label: 'Go SDK',
+          href: '/docs/go-sdk-introduction',
+        },
+        {
+          type: 'link',
+          label: 'Java SDK',
+          href: '/docs/java-sdk-introduction',
+        },
+        {
+          type: 'link',
+          label: 'PHP SDK',
+          href: '/docs/php-sdk-introduction',
+        },
+        {
+          type: 'link',
+          label: 'System tools',
+          href: '/docs/system-tooling-introduction',
+        },
+        {
+          type: 'link',
+          label: 'Additional resources',
+          href: '/docs/external-resources',
+        },
+      ],
+    },
   ],
   toolingSidebar: [
     'system-tooling-introduction',
     'tctl',
     'web-ui',
+    {
+      type: 'category',
+      label: 'Nav',
+      collapsed: true,
+      items: [
+        {
+          type: 'link',
+          label: 'Server',
+          href: '/docs/server-introduction',
+        },
+        {
+          type: 'link',
+          label: 'Go SDK',
+          href: '/docs/go-sdk-introduction',
+        },
+        {
+          type: 'link',
+          label: 'Java SDK',
+          href: '/docs/java-sdk-introduction',
+        },
+        {
+          type: 'link',
+          label: 'PHP SDK',
+          href: '/docs/php-sdk-introduction',
+        },
+        {
+          type: 'link',
+          label: 'Additional resources',
+          href: '/docs/external-resources',
+        },
+      ],
+    },
   ],
   goSidebar: [
     'go-sdk-introduction',
@@ -67,6 +128,38 @@ module.exports = {
     'go-distributed-cron',
     'go-tracing',
     'go-search-apis',
+    {
+      type: 'category',
+      label: 'Nav',
+      collapsed: true,
+      items: [
+        {
+          type: 'link',
+          label: 'Server',
+          href: '/docs/server-introduction',
+        },
+        {
+          type: 'link',
+          label: 'Java SDK',
+          href: '/docs/java-sdk-introduction',
+        },
+        {
+          type: 'link',
+          label: 'PHP SDK',
+          href: '/docs/php-sdk-introduction',
+        },
+        {
+          type: 'link',
+          label: 'System tools',
+          href: '/docs/system-tooling-introduction',
+        },
+        {
+          type: 'link',
+          label: 'Additional resources',
+          href: '/docs/external-resources',
+        },
+      ],
+    },
   ],
   javaSidebar: [
     'java-sdk-introduction',
@@ -104,7 +197,38 @@ module.exports = {
     'java-starting-workflow-executions',
     'java-versioning',
     'java-distributed-cron',
-
+    {
+      type: 'category',
+      label: 'Nav',
+      collapsed: true,
+      items: [
+        {
+          type: 'link',
+          label: 'Server',
+          href: '/docs/server-introduction',
+        },
+        {
+          type: 'link',
+          label: 'Go SDK',
+          href: '/docs/go-sdk-introduction',
+        },
+        {
+          type: 'link',
+          label: 'PHP SDK',
+          href: '/docs/php-sdk-introduction',
+        },
+        {
+          type: 'link',
+          label: 'System tools',
+          href: '/docs/system-tooling-introduction',
+        },
+        {
+          type: 'link',
+          label: 'Additional resources',
+          href: '/docs/external-resources',
+        },
+      ],
+    },
   ],
   phpSidebar: [
     'php-sdk-introduction',
@@ -134,9 +258,81 @@ module.exports = {
     'php-side-effect',
     'php-versioning',
     'php-distributed-cron',
+    {
+      type: 'category',
+      label: 'Nav',
+      collapsed: true,
+      items: [
+        {
+          type: 'link',
+          label: 'Server',
+          href: '/docs/server-introduction',
+        },
+        {
+          type: 'link',
+          label: 'Go SDK',
+          href: '/docs/go-sdk-introduction',
+        },
+        {
+          type: 'link',
+          label: 'Java SDK',
+          href: '/docs/java-sdk-introduction',
+        },
+        {
+          type: 'link',
+          label: 'System tools',
+          href: '/docs/system-tooling-introduction',
+        },
+        {
+          type: 'link',
+          label: 'Additional resources',
+          href: '/docs/external-resources',
+        },
+      ],
+    },
   ],
   additionalResources: [
-    'external-resources',
-    'cadence-to-temporal',
+    {
+      type: 'category',
+      label: 'Additional resources',
+      collapsed: false,
+      items: [
+        'external-resources',
+        'cadence-to-temporal',
+        'glossary',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Nav',
+      collapsed: true,
+      items: [
+        {
+          type: 'link',
+          label: 'Server',
+          href: '/docs/server-introduction',
+        },
+        {
+          type: 'link',
+          label: 'Go SDK',
+          href: '/docs/go-sdk-introduction',
+        },
+        {
+          type: 'link',
+          label: 'Java SDK',
+          href: '/docs/java-sdk-introduction',
+        },
+        {
+          type: 'link',
+          label: 'PHP SDK',
+          href: '/docs/php-sdk-introduction',
+        },
+        {
+          type: 'link',
+          label: 'System tools',
+          href: '/docs/system-tooling-introduction',
+        },
+      ],
+    },
   ],
 };

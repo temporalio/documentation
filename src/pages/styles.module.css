@@ -55,9 +55,28 @@
 .videoContainer {
   margin: 15px auto;
   text-align:center;
-  max-width: 966px;
+  max-width: 600px;
 }
 
 .textFeature {
+  margin: 15px auto;
+  max-width: 966px;
   text-align: left;
+}
+
+.formFeature {
+  margin: 50px auto;
+  max-width: 400px;
+  text-align: left;
+}
+
+.sdkTakeMeToTutorialLogo {
+  margin: 5px 15px;
+  max-width: 80px;
+  padding:10px;
+  vertical-align: bottom;
+}
+
+.sdkTakeMeToTutorialLogo:hover {
+  opacity: 50%;
 }
