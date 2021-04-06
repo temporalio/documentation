@@ -19,21 +19,11 @@ const features = [
     goto: '/docs/server-introduction',
   },
   {
-    title: <>Temporal Cloud</>,
-    imageUrl: 'img/cloud.png',
-    description: (
-      <>
-        Let us handle the hard part so you can focus on code.
-      </>
-    ),
-    goto: '/docs/cloud-introduction',
-  },
-  {
     title: <>Application development</>,
     imageUrl: 'img/layers.png',
     description: (
       <>
-        Start building invincible applications in the language of your choice!
+        Start building invincible applications using an SDK in the language of your choice!
       </>
     ),
     goto: '/application-development',
@@ -53,7 +43,7 @@ const features = [
 function Feature({imageUrl, title, description, goto}) {
   const imgUrl = useBaseUrl(imageUrl);
   return (
-    <div className={clsx('col col--3')}>
+    <div className={clsx('col col--4')}>
       <h3>{title}</h3>
       {imgUrl && (
         <div className="text--center">
@@ -80,7 +70,6 @@ function Feature({imageUrl, title, description, goto}) {
 const levelTwoFeatures = [
   {
     title: <>External resources</>,
-    imageUrl: 'img/foreign.svg',
     description: (
       <>
         Check out what the community is saying.
@@ -90,7 +79,6 @@ const levelTwoFeatures = [
   },
   {
     title: <>Case studies</>,
-    imageUrl: 'img/case-study.svg',
     description: (
       <>
         Big names use Temporal for important business processes.
@@ -100,7 +88,6 @@ const levelTwoFeatures = [
   },
   {
     title: <>Migrating from Cadence?</>,
-    imageUrl: 'img/finish.svg',
     description: (
       <>
         Check out the key differences between the systems.
@@ -110,16 +97,10 @@ const levelTwoFeatures = [
   },
 ]
 
-function LevelTwoFeature({imageUrl, title, description, goto}) {
-  const imgUrl = useBaseUrl(imageUrl);
+function LevelTwoFeature({title, description, goto}) {
   return (
     <div className={clsx('col col--4')}>
       <h3>{title}</h3>
-      {imgUrl && (
-        <div className="text--center">
-          <img className={styles.featureImage} src={imgUrl} alt={title} />
-        </div>
-      )}
       <p>{description}</p>
       <div className={styles.buttons}>
         <Link
@@ -137,6 +118,42 @@ function LevelTwoFeature({imageUrl, title, description, goto}) {
   );
 }
 
+function SelectTutorial() {
+  const [clicked, setClicked] = React.useState(false);
+  return (
+    <div className="flex flex-col sm:flex-row justify-between mb-8 sm:mb-8 items-center">
+      {clicked ? (
+        <div className="inline-flex md:-mt-8">
+          <a className="mr-8" href="/docs/go-run-your-first-app">
+            <img
+              aria-label="go SDK"
+              className={styles.sdkTakeMeToTutorialLogo}
+              src={useBaseUrl("img/logo-go.png")}
+              alt="logo"
+            />
+          </a>
+          <a className="" href="/docs/java-run-your-first-app">
+            <img
+              aria-label="java SDK"
+              className={styles.sdkTakeMeToTutorialLogo}
+              src={useBaseUrl("img/logo-java.png")}
+              alt="logo"
+            />
+          </a>
+        </div>
+      ) : (
+        <button
+          className={clsx('button button--outline button--secondary button--lg',
+          styles.getStarted,
+          )}
+          onClick={() => setClicked(true)} >
+          Run my first app! →
+        </button>
+      )}
+    </div>
+  );
+}
+
 export default function Home() {
   const context = useDocusaurusContext();
   const {siteConfig = {}} = context;
@@ -149,14 +166,7 @@ export default function Home() {
           <h1 className="hero__title">{siteConfig.title}</h1>
           <p className="hero__subtitle">{siteConfig.tagline}</p>
           <div className={styles.buttons}>
-            <Link
-              className={clsx(
-                'button button--outline button--secondary button--lg',
-                styles.getStarted,
-              )}
-              to={useBaseUrl('/application-development')}>
-              Get Started
-            </Link>
+            <SelectTutorial />
           </div>
         </div>
       </header>
@@ -175,31 +185,67 @@ export default function Home() {
       </main>
       <div className={clsx('hero hero--secondary', styles.heroBanner)}>
         <div className="container">
-          <div className="row">
-            <div className={clsx('col col-4', styles.textFeature)}>
-              <h4>Modern problems</h4>
-              <p>Have you ever developed an application that needed to respond to multiple asynchronous events, communicate with unreliable external resources, or track the state of something very complex?</p>
-              <p>If so, you are likely familiar with the mixture of stateless services, databases, cron jobs, and queuing systems that is the modern approach to building such applications. And you are likely familiar with some of the problems they come with.</p>
-              <ol>
-                <li>It is difficult to maintain the health of each individual component.</li>
-                <li>A large investment that has to be made in infrastructure to visualize the health of the overall system, define timeouts, and orchestrate retries.</li>
-                <li>Scaling and maintaining these systems is challenging and costly effort.</li>
-              </ol>
+          <div className={styles.textFeature}>
+            <h3>Modern problems</h3>
+            <p>Have you ever developed an application that needed to respond to multiple asynchronous events, communicate with unreliable external resources, or track the state of something very complex?</p>
+            <p>If so, you are likely familiar with the mixture of stateless services, databases, cron jobs, and queuing systems that is the modern approach to building such applications. And you are likely familiar with some of the problems they come with.</p>
+            <ol>
+              <li>It is difficult to maintain the health of each individual component.</li>
+              <li>A large investment that has to be made in infrastructure to visualize the health of the overall system, define timeouts, and orchestrate retries.</li>
+              <li>Scaling and maintaining these systems is challenging and costly effort.</li>
+            </ol>
+            <div className={clsx(styles.videoContainer)}>
+              <ResponsivePlayer url='https://www.youtube.com/watch?v=f-18XztyN6c'/>
             </div>
-            <div className={clsx('col col-4')}>
-              <div className={clsx(styles.videoContainer)}>
-                <ResponsivePlayer url='https://www.youtube.com/watch?v=f-18XztyN6c'/>
-              </div>
-            </div>
-            <div className={clsx('col col-4', styles.textFeature)}>
-              <h4>The Temporal solution</h4>
-              <p>The Temporal solution is a fault-oblivious stateful programming model that hides or abstracts most of the complexities mentioned above.
-              It consists of a programming framework (Temporal SDK) and a backend service (Temporal Server).</p>
-              <p> The <a href="/docs/server-introduction"> Temporal Server</a> provides a durable virtual memory that is not linked to any specific process.
-              It preserves the full application state (including function stacks with local variables) across all kinds of hosting and software related failures.</p>
-              <p>A <a hef="/application-development">Temporal SDK</a> then enables you to write your application code using the full power of the programming language, while the Temporal Server handles the durability, availability, and scalability of the application.</p>
-            </div>
+            <h3>Modern solution</h3>
+            <p>The Temporal solution is a fault-oblivious stateful programming model that hides or abstracts most of the complexities mentioned above.
+            It consists of a programming framework (Temporal SDK) and a backend service (Temporal Server).</p>
+            <p> The <a href="/docs/server-introduction"> Temporal Server</a> provides a durable virtual memory that is not linked to any specific process.
+            It preserves the full application state (including function stacks with local variables) across all kinds of hosting and software related failures.</p>
+            <p>A <a hef="/application-development">Temporal SDK</a> then enables you to write your application code using the full power of the programming language, while the Temporal Server handles the durability, availability, and scalability of the application.</p>
           </div>
+        </div>
+      </div>
+      <div className="container">
+        <div className={styles.formFeature}>
+          <h2 className="text-3xl font-bold mb-4">Temporal Cloud</h2>
+          <p className="w-56 lg:w-700 mb-8">
+            Temporal Cloud is coming soon. Sign up to the waitlist and to receive updates.
+          </p>
+          <form
+            action="https://temporal.us17.list-manage.com/subscribe/post?u=2334a0f23e55fd1840613755d&amp;id=bbbbd4709f"
+            method="post"
+            id="mc-embedded-subscribe-form"
+            name="mc-embedded-subscribe-form"
+            target="_blank"
+            noValidate="novalidate"
+            className="validate">
+            <div id="mc_embed_signup_scroll" className="signup_controls">
+              <div className="email_wrap">
+                <label htmlFor="mce-EMAIL" className="sr-only">
+                  Email:
+                </label>
+                <input
+                  className="signUpInput"
+                  type="email"
+                  name="EMAIL"
+                  id="mce-EMAIL"
+                  placeholder="Your email"
+                  required="required"
+                />
+              </div>
+              <span className="cta_text" style={{ display: 'none' }}>
+                You are in the waitlist!
+              </span>
+              <input
+                type="submit"
+                name="waitlist"
+                id="mc-embedded-waitlist"
+                className="tt-button tt-button--lightblue tt-button--outline tt-button--block@xs button-email"
+                style={{ display: 'none' }}
+              />
+            </div>
+          </form>
         </div>
       </div>
       <main>

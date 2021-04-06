@@ -22,7 +22,6 @@ Choose from the list below to get started:
 
 - [Quick install for Workflow development](/docs/server-quick-install)
 - [Deploy to a live (production) environment](/docs/server-production-deployment)
-- [Use the Temporal Cloud (SaaS)](/docs/cloud-introduction)
 
 ## Features
 

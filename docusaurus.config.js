@@ -100,10 +100,6 @@ module.exports = {
               to: '/docs/server-introduction',
             },
             {
-              label: 'Temporal Cloud',
-              to: '/docs/cloud-introduction',
-            },
-            {
               label: 'CLI',
               to: '/docs/tctl',
             },

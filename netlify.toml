@@ -72,3 +72,39 @@
 [[redirects]]
   from = "/docs/concept-signals"
   to = "/docs/concept-content-moved"
+
+[[redirects]]
+  from = "/docs/use-cases-actors"
+  to = "https://temporal.io/usecases#Actors"
+
+[[redirects]]
+  from = "/docs/use-cases-distributed-transactions"
+  to = "https://temporal.io/usecases#transactions"
+
+[[redirects]]
+  from = "/docs/use-cases-dsl"
+  to = "https://temporal.io/usecases#DSL"
+
+[[redirects]]
+  from = "/docs/use-cases-long-running"
+  to = "https://temporal.io/usecases#Processes"
+
+[[redirects]]
+  from = "/docs/use-cases-monitoring"
+  to = "https://temporal.io/usecases#Monitoring"
+
+[[redirects]]
+  from = "/docs/use-cases-orchestration"
+  to = "https://temporal.io/usecases#orchestration"
+
+[[redirects]]
+  from = "/docs/use-cases-pipelines"
+  to = "https://temporal.io/usecases#Pipelines"
+
+[[redirects]]
+  from = "/docs/use-cases-provisioning"
+  to = "https://temporal.io/usecases#provisioning"
+
+[[redirects]]
+  from = "/docs/get-started"
+  to = "/"
