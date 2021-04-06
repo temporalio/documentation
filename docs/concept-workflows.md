@@ -36,7 +36,7 @@ The next commonly employed approach is to use a timer service and queues.
 Updates are pushed to a queue while a service consumes them one at a time, updating a database, and possibly pushing more messages into other downstream queues.
 A timer service can be used to schedule queue polling or database actions.
 
-While this approach has shown to scale a bit better, the programming model can become very complex, very quickly and error-prone, as there are usually no transactional updates between a queuing system, a timer service, and a database.
+While this approach has shown to scale a bit better, the programming model can become very complex and error-prone, as there are usually no transactional updates between a queuing system, a timer service, and a database.
 
 ### Temporal design approach
 
@@ -168,7 +168,7 @@ The default is 100x that of [initial interval](#initial-interval).
 - **Description**: Specifies the maximum number of attempts that can be made to execute a Workflow in the presence of failures. If this limit is exceeded, the Workflow fails without retrying again.
 The default is unlimited. Setting it to 0 also means unlimited.
 - **Use-case**: This can be used to ensure that retries do not continue indefinitely.
-However, in the majority of cases, we recommend relying on the [execution timeout](#execution-timeout) to limit the duration of the retries instead this.
+However, in the majority of cases, we recommend relying on the [execution timeout](#execution-timeout) to limit the duration of the retries instead of this.
 
 #### Non-retryable error reasons
 
@@ -182,7 +182,8 @@ The only required Workflow options parameter is the name of a [Task Queue](/docs
 Read the [Task Queues concept page](/docs/concept-task-queues) for a better overview.
 
 Essentially, a Task Queue is a mechanism where any given Worker knows which piece of code to execute next.
-A Workflow can only use one Task Queue, just as a Worker can only subscribe to a single Task Queue. From a developer's perspective, it is named and managed as a simple string value.
+A Workflow can only use one Task Queue, just as a Worker can only subscribe to a single Task Queue.
+From a developer's perspective, it is named and managed as a simple string value.
 
 ### Workflow Id
 
