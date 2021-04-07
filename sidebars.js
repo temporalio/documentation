@@ -122,7 +122,7 @@ module.exports = {
     'go-selectors',
     'go-continue-as-new',
     'go-side-effect',
-    'go-workflow-testing',
+    'go-testing',
     'go-versioning',
     'go-sessions',
     'go-distributed-cron',
