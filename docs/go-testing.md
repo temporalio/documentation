@@ -1,6 +1,7 @@
 ---
-id: go-workflow-testing
-title: Testing
+id: go-testing
+title: Testing Workflows
+sidebar_label: Testing
 ---
 
 The Temporal Go SDK provides a test framework to facilitate testing Workflow implementations.
