@@ -27,7 +27,7 @@ Source code for parameter reference is here: https://github.com/temporalio/tempo
 Overrides the default configuration with a custom configuration that is defined in the config package `go.temporal.io/server/common/service/config`.
 
 ```go
-s := tempora.NewServer(
+s := temporal.NewServer(
 	temporal.WithConfig(cfg),
 )
 ```
@@ -37,7 +37,7 @@ s := tempora.NewServer(
 Load a custom configuration from a file.
 
 ```go
-s := tempora.NewServer(
+s := temporal.NewServer(
 	temporal.WithConfigLoader(configDir, env, zone),
 )
 ```
@@ -48,7 +48,7 @@ Sets the list of all valid temporal services.
 The default can be used from the `go.temporal.io/server/temporal` package.
 
 ```go
-s := tempora.NewServer(
+s := temporal.NewServer(
 	temporal.ForServices(temporal.Services),
 )
 ```
