@@ -1,6 +1,7 @@
 ---
 id: go-signals
-title: Signals
+title: Signals in Go
+sidebar_label: Signals
 ---
 
 ## Event Handling

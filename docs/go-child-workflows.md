@@ -3,6 +3,21 @@ id: go-child-workflows
 title: Child Workflows
 ---
 
+If a Workflow is started by another Workflow, then it is considered a Child Workflow.
+The completion or failure of a Child Workflow is reported to the Workflow that started it (the Parent Workflow).
+
+The following is a list of some of the more common reasons why you might want to break up code execution into Child Workflows:
+
+- Execute code using a different set of Workers.
+- Enable invocation from multiple Workflows.
+- Workaround event history size limits.
+- Create one-to-one mappings between a Workflow Id and some other resource.
+- Execute some periodic logic.
+
+One of the main reasons you would not want to use a Child Workflow is the lack of a shared state with the Parent Workflow.
+A Parent and Child Workflow can communicate only through asynchronous signals.
+If the executing logic has tight coupling between Workflows, it may simply be easier to use a single Workflow that can rely on a shared object's state.
+
 `workflow.ExecuteChildWorkflow` enables the scheduling of other Workflows from within a Workflow's
 implementation. The parent Workflow has the ability to monitor and impact the lifecycle of the child
 Workflow, similar to the way it does for an Activity that it invoked.

@@ -75,8 +75,8 @@
   max-width: 80px;
   padding:10px;
   vertical-align: bottom;
+  transition: transform 1s;
 }
-
 .sdkTakeMeToTutorialLogo:hover {
-  opacity: 50%;
+  transform: scale(1.1);
 }

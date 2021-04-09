@@ -1,6 +1,7 @@
 ---
 id: go-queries
-title: Queries
+title: Queries in Go
+sidebar_label: Queries
 ---
 
 ## Synchronous Query
