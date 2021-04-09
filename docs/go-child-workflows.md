@@ -13,7 +13,7 @@ cwo := workflow.ChildWorkflowOptions{
         WorkflowID:                   "BID-SIMPLE-CHILD-WORKFLOW",
         ExecutionStartToCloseTimeout: time.Minute * 30,
 }
-ctx = workflow.WithChildWorkflowOptions(ctx, cwo)
+ctx = workflow.WithChildOptions(ctx, cwo)
 
 var result string
 future := workflow.ExecuteChildWorkflow(ctx, SimpleChildWorkflow, value)
