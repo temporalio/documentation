@@ -6,13 +6,17 @@ sidebar_label: Go SDK introduction
 
 ## Quick start
 
-You can clone the SDK from [https://github.com/temporalio/sdk-go](https://github.com/temporalio/sdk-go) or use `go get` from your Go project:
+1. Add the [Temporal Go SDK](https://github.com/temporalio/sdk-go) to your project:
 
 ```
 go get go.temporal.io/sdk@latest
 ```
 
-You can also get started using an application template that already has the SDK as a dependency:
+2. [Install and run the Temporal Server](/docs/server-quick-install) using `docker compose`:
+
+## Application templates
+
+If you don't want to start a project from scratch, try an application template that already has the SDK as a dependency:
 
 - [Money transfer application template](https://github.com/temporalio/money-transfer-project-template-go)
 - ["Hello World!" application template](https://github.com/temporalio/hello-world-project-template-go)

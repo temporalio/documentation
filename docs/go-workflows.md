@@ -5,8 +5,48 @@ sidebar_label: Workflows
 description: The core abstraction of the Temporal solution is a fault-oblivious stateful Workflow.
 ---
 
+## What is a Workflow?
+
+In the Temporal Go SDK programming model, a Workflow is an exportable function.
+
+```go
+package app
+
+import (
+    "go.temporal.io/sdk/workflow"
+)
+
+func SimpleWorkflow(ctx workflow.Context, value string) (string, error) {
+  // Do something
+  if err != nil {
+    return "", err
+  }
+  return "success", nil
+}
+```
+
+The first parameter, `workflow.Context` is a requirement for all Workflow functions as it is used by the Temporal Go SDK to pass around an execution context, and virtually all the Go SDK functions that are callable from the Workflow require it.
+
+:::note
+
+This `workflow.Context` entity operates similarly to the standard `context.Context` entity provided by Go.
+The only difference is that the `Done()` function provided by `workflow.Context` returns `workflow.Channel` instead of the standard Go `chan`.
+
+:::
+
+The second parameter, `string`, is a custom parameter that can be used to pass data into the Workflow when it starts.
+A Workflow can have one or more such parameters.
+
+:::note
+
+All Workflow function parameters must be serializable, which essentially means that params can’t be channels, functions, variadic, or unsafe pointers.
+:::
+
+Returning an error from a Workflow is used indicate that an error was encountered during its execution and the Workflow should be terminated.
+
 ## Example subscription use-case
 
+Workflows are used to implement coordination logic.
 Let's look at a subscription-based use-case to compare the difference between a Temporal application and other modern approaches.
 
 The basic business steps are as follows:
@@ -16,7 +56,7 @@ The basic business steps are as follows:
 3. The customer has to be notified via email about the charges and should be able to cancel the subscription at any time.
 
 This business logic is not very complicated and can be expressed in a few dozen lines of code.
-In addition to that, any practical implementation has to ensure that the business process is fault-tolerant and scalable.
+However, any practical implementation has to ensure that the business process is fault-tolerant and scalable.
 
 ### Database-centric design approach
 
@@ -43,41 +83,9 @@ While this approach has shown to scale a bit better, the programming model can b
 The Temporal programming model aims to encapsulate and implement the entire business logic in a simple function or object method.
 Thanks to the Temporal Server, the function/method is stateful, and the implementer doesn't need to employ any additional systems to ensure durability and fault tolerance.
 
-Here is an example Workflow that implements the subscription management use case in Java ([Check out all our available language SDKs](/application-development)).
+Here is an example Workflow that implements the subscription management use case:
 
-```java
-public interface SubscriptionWorkflow {
-    @WorkflowMethod
-    void execute(String customerId);
-}
-
-public class SubscriptionWorkflowImpl implements SubscriptionWorkflow {
-
-  private final SubscriptionActivities activities =
-      Workflow.newActivityStub(SubscriptionActivities.class);
-
-  @Override
-  public void execute(String customerId) {
-    activities.sendWelcomeEmail(customerId);
-    try {
-      boolean trialPeriod = true;
-      while (true) {
-        Workflow.sleep(Duration.ofDays(30));
-        activities.chargeMonthlyFee(customerId);
-        if (trialPeriod) {
-          activities.sendEndOfTrialEmail(customerId);
-          trialPeriod = false;
-        } else {
-          activities.sendMonthlyChargeEmail(customerId);
-        }
-      }
-    } catch (CancellationException e) {
-      activities.processSubscriptionCancellation(customerId);
-      activities.sendSorryToSeeYouGoEmail(customerId);
-    }
-  }
-}
-```
+!!!TODO REPLACE WITH GO SAMPLE!!!
 
 Again, it is important to note that this code directly implements the business logic, and if any of the invoked operations (aka [Activities](/docs/go-activities)) take a long time, the code is not going to change.
 
@@ -89,8 +97,8 @@ The Temporal Server has practically no scalability limits on the number of open 
 
 ## Workflows have options
 
-When you start a Workflow, you can pass along parameters that tell the Temporal Server how to handle the Workflow.
-This includes the ability to set timeouts for Workflow execution, a Retry Policy, the Task Queue name, a data converter, search attributes, and Child Workflow options.
+When you start a Workflow, you can pass along a `StartWorkflowOptions` struct that tell the Temporal Server how to handle the Workflow.
+This includes the ability to set timeouts for the Workflow execution, a `RetryPolicy`, the `TaskQueue` name, and `SearchAttributes`.
 
 ### Timeout settings
 
@@ -103,17 +111,18 @@ There are a few important things to consider with Workflow timeout settings:
 Start with infinite timeouts.
 3. The SDKs come equipped with timers and sleep APIs that can be used directly inside of Workflows to handle business logic related timeouts.
 
-#### Execution timeout
+#### `WorkflowExecutionTimeout`
 
 - **Description**: This is the maximum amount of time that a Workflow should be allowed to run including retries and any usage of the "Continue-as-new" feature.
 The default value is set to 10 years.
-This is different from [Run timeout](#run-timeout).
+This is different from [Run timeout](#workflowruntimeout).
 - **Use-case**: This is most commonly used for stopping the execution of a [cron scheduled Workflow](#cron-schedule) after a certain amount of time has passed.
 
-#### Run timeout
+#### `WorkflowRunTimeout`
 
+- **Type**: time.Duration
 - **Description**: This is the maximum amount of time that a single Workflow run is restricted to.
-The default is set to the same value as the [Execution timeout](#execution-timeout).
+The default is set to the same value as the [Execution timeout](#workflowexecutiontimeout).
 - **Use-case**: This is most commonly used to limit the execution time of a single [cron scheduled Workflow](#cron-schedule) invocation.
 If this timeout is reached and there is an associated Retry Policy, the Workflow will be retried before any scheduling occurs.
 If there is no Retry Policy then the Workflow will be scheduled per the [cron schedule](#cron-schedule).
@@ -130,7 +139,7 @@ The main reason for increasing the default value would be to accommodate a Workf
 There may be scenarios where you need to retry a Workflow's execution from the very beginning.
 In this case, you can supply a Retry Policy when you start the Workflow.
 However, the intention is that Workflows are written such that they would never fail on intermittent issues.
-[Activities](/docs/go-activities) are made available to handle that kind of logic, and thus retrying Workflows is rare.
+[Activities](/docs/go-activities) are made available to handle that kind of logic, and thus retrying Workflows is rare and does not happen by default.
 The exceptions tend to be [cron scheduled Workflows](#cron-schedule) or some other stateless always-running Workflows that benefit from retries.
 
 :::note
@@ -168,7 +177,7 @@ The default is 100x that of [initial interval](#initial-interval).
 - **Description**: Specifies the maximum number of attempts that can be made to execute a Workflow in the presence of failures. If this limit is exceeded, the Workflow fails without retrying again.
 The default is unlimited. Setting it to 0 also means unlimited.
 - **Use-case**: This can be used to ensure that retries do not continue indefinitely.
-However, in the majority of cases, we recommend relying on the [execution timeout](#execution-timeout) to limit the duration of the retries instead of this.
+However, in the majority of cases, we recommend relying on the [execution timeout](#workflowexecutiontimeout) to limit the duration of the retries instead of this.
 
 #### Non-retryable error reasons
 
@@ -244,20 +253,7 @@ You can also attach a non-indexed bit of information to a Workflow, known as a m
 
 ## Child Workflows
 
-If a Workflow is started by another Workflow, then it is considered a Child Workflow.
-The completion or failure of a Child Workflow is reported to the Workflow that started it (the Parent Workflow).
-
-The following is a list of some of the more common reasons why you might want to break up code execution into Child Workflows:
-
-- Execute code using a different set of Workers.
-- Enable invocation from multiple Workflows.
-- Workaround event history size limits.
-- Create one-to-one mappings between a Workflow Id and some other resource.
-- Execute some periodic logic.
-
-One of the main reasons you would not want to use a Child Workflow is the lack of a shared state with the Parent Workflow.
-A Parent and Child Workflow can communicate only through asynchronous signals.
-If the executing logic has tight coupling between Workflows, it may simply be easier to use a single Workflow that can rely on a shared object's state.
+You can learn more by visiting the [Child Workflows in Go](/docs/go-child-workflows) page.
 
 ## FAQ
 

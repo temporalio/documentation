@@ -13,7 +13,7 @@ const features = [
     imageUrl: 'img/server.png',
     description: (
       <>
-        Deploy and manage your own instance of the Temporal Server.
+        Get started deploying and manage your own instance of the Temporal Server.
       </>
     ),
     goto: '/docs/server-introduction',
@@ -23,7 +23,7 @@ const features = [
     imageUrl: 'img/layers.png',
     description: (
       <>
-        Start building invincible applications using an SDK in the language of your choice!
+        Get started building applications using SDK tutorials and references in the language of your choice!
       </>
     ),
     goto: '/application-development',
@@ -33,7 +33,7 @@ const features = [
     imageUrl: 'img/settings.png',
     description: (
       <>
-        Use our tooling to visualize and manage different aspects of your system.
+        Use the Temporal Web UI and <code>tctl</code> to visualize, debug, and manage different aspects of your system.
       </>
     ),
     goto: '/docs/system-tooling-introduction',

@@ -19,6 +19,7 @@ module.exports = {
       theme: require('prism-react-renderer/themes/dracula'),
       additionalLanguages: ['java', 'ruby', 'php'],
     },
+    hideableSidebar: true,
     navbar: {
       hideOnScroll: true,
       logo: {
@@ -29,33 +30,38 @@ module.exports = {
       items: [
         {
           to: '/',
-          activeBasePath: 'docs',
-          label: 'Docs',
+          activeBasePath: 'none',
+          label: 'Docs Home',
           position: 'right',
         },
         {
-          to: 'blog',
-          label: 'Blog',
+          to: '/docs/server-introduction',
+          activeBasePath: 'none',
+          label: 'Server',
           position: 'right',
         },
         {
-          to: 'blog/tags/case-study',
+          to: '/application-development',
+          activeBasePath: 'none',
+          label: 'SDKs',
+          position: 'right',
+        },
+        {
+          to: '/docs/system-tooling-introduction',
+          activeBasePath: 'none',
+          label: 'System Tools',
+          position: 'right',
+        },
+        {
+          to: '/blog/tags/case-study',
+          activeBasePath: 'none',
           label: 'Case Studies',
           position: 'right',
         },
         {
-          href: 'https://community.temporal.io/',
-          label: 'Support',
-          position: 'right',
-        },
-        {
-          href: 'https://github.com/temporalio/temporal',
-          label: 'GitHub',
-          position: 'right',
-        },
-        {
-          to: 'https://temporal.io/careers',
-          label: 'Jobs',
+          to: '/blog',
+          activeBasePath: 'none',
+          label: 'Blog',
           position: 'right',
         },
       ],
@@ -64,10 +70,9 @@ module.exports = {
       style: 'dark',
       links: [
         {
-          title: 'Policies',
           items: [
             {
-              label: 'About',
+              label: 'About the Docs',
               to: '/about',
             },
             {
@@ -81,27 +86,34 @@ module.exports = {
           ],
         },
         {
-          title: 'Docs',
           items: [
             {
-              label: 'Go',
+              label: 'Application Development',
+              to: '/application-development',
+            },
+            {
+              label: 'Go SDK',
               to: '/docs/go-sdk-introduction',
             },
             {
-              label: 'Java',
-              to: '/docs/java-sdk-introduction',
+              label: 'Java SDK',
+              to: '/docs/go-sdk-introduction',
             },
             {
-              label: 'PHP',
-              to: '/docs/php-sdk-introduction',
+              label: 'PHP SDK',
+              to: '/docs/go-sdk-introduction',
             },
+          ],
+        },
+        {
+          items: [
             {
               label: 'Temporal Server',
               to: '/docs/server-introduction',
             },
             {
-              label: 'CLI',
-              to: '/docs/tctl',
+              label: 'System Tools',
+              to: '/docs/system-tooling-introduction',
             },
             {
               label: 'Glossary',
@@ -118,26 +130,23 @@ module.exports = {
           ],
         },
         {
-          title: 'Community',
           items: [
             {
-              label: 'Discourse Forum',
+              label: 'Support Forum',
               href: 'https://community.temporal.io/',
             },
             {
-              label: 'Stack Overflow',
-              href:
-                'https://stackoverflow.com/questions/tagged/temporal-workflow',
-            },
-            {
-              label: 'Slack',
+              label: 'Public Slack',
               href:
                 'https://join.slack.com/t/temporalio/shared_invite/zt-onhti57l-J0bl~Tr7MqSUnIc1upjRkw',
+            },
+            {
+              label: 'Temporal Careers',
+              href: 'https://temporal.io/careers',
             },
           ],
         },
         {
-          title: 'Social',
           items: [
             {
               label: 'GitHub',
