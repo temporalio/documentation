@@ -22,7 +22,7 @@ If you have made a tutorial or explanation of Temporal, please [submit them here
     - [Cadence: Micro service Architecture Beyond Request/Response](https://www.youtube.com/watch?v=BJwFxqdSx4Y) (34 min) by Maxim Fateev at Data@Scale 2017
     -  Note: we have documented [the difference between Cadence and Temporal](https://docs.temporal.io/docs/cadence-to-temporal) separately.
 
-## Why orchestrate microservices
+## Why Workflows
 
 - [Dealing with Failure](https://dev.to/temporalio/dealing-with-failure-5adf) on Dev.to
     
@@ -37,11 +37,20 @@ If you have made a tutorial or explanation of Temporal, please [submit them here
 
     > Using code, it aims to hide the complexity of building with microservices across distributed systems. It employs **durable virtual memory not linked to a specific process that preserves the application state** despite a whole range of possible failures.
 
+- [Using Temporal to outsource operational concerns](https://www.jcheng.org/post/workflow-orchestration-1.1/) by Jon Cheng
+
+    > Unlike Step Functions and Conductor, the entire Temporal Workflow is defined by code. This makes the behavior of the entire program easier to understand. Moreover, for users of the Go or Java SDK, the users may take advantage of the compiler to catch a wide array of errors as well as improve quality in a large team. Then code is guaranteed to execute as you specified on the Temporal Platform. **All of the operational stuff: Retries, recovery, persistent state, message queues, scaling, work distribution, tracing and monitoring are all handled by the platform itself.** This really is amazing stuff! If C simplified writng portable code, and GC simplified memory management, and serverless simplified scalable architectures, Temporal simplifies implementing a computer program on top of a fragile, distributed system.
+
+- [A comparison of Temporal Workflows vs Actor Toolkits like Akka and Vert.X](https://manuel.bernhardt.io/2021/04/12/tour-of-temporal-welcome-to-the-workflow) by Manuel Bernhardt
+
+    > Just like actors provide the illusion of single-threaded, sequential execution, workflows provide the illusion of persistent method calls.
+
 ## External tutorials
 
 *Note: Each of [our SDK docs](/docs/sdks-introduction) have a Hello World and Run Your First App tutorial!*
 
-- [Writing your first Workflow](https://www.youtube.com/watch?v=taKrIWt6KMY&feature=youtu.be) by Ryland Goldstein (20 minutes) 
+- (Go) [Writing your first Workflow](https://www.youtube.com/watch?v=taKrIWt6KMY&feature=youtu.be) by Ryland Goldstein (20 min watch) 
+- (Go) [Writing a Workflow, Simulating Failures, Comparing Retries with Apache Airflow, and Testing](https://www.jcheng.org/post/workflow-orchestration-1.2/) by Jon Cheng (8 min read)
 - (Español) [Construye aplicaciones invencibles con Temporal](https://sistecma.github.io/2021/02/04/aplicaciones-invencibles-con-temporal.html) y [Aplicando el patrón SAGA en tus microservicios construidos](https://sistecma.github.io/2021/03/04/aplicando-saga-en-microservicios-con-temporal.html) by Hernán Moreno
 - *submit yours [here](https://github.com/temporalio/documentation/edit/master/docs/external-resources.md)!*
 
