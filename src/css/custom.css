@@ -52,10 +52,6 @@ body {
 }
 
 html[data-theme='dark'] {
-  --ifm-link-color: #b8b4dc;
-  --ifm-menu-color-active: #b8b4dc;
-  --ifm-navbar-link-hover-color: #b8b4dc;
-  --ifm-toc-link-color: #b8b4dc;
   --ifm-blockquote-color: #eeeeee;
   --ifm-code-background: var(--ifm-color-primary-dark);
   --ifm-color-input-background: var(--ifm-color-hero-background-dark);
