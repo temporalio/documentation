@@ -59,12 +59,6 @@ module.exports = {
           position: 'right',
         },
         {
-          to: '/blog/tags/case-study',
-          activeBasePath: 'none',
-          label: 'Case Studies',
-          position: 'right',
-        },
-        {
           to: '/blog',
           activeBasePath: 'none',
           label: 'Blog',
@@ -158,6 +152,14 @@ module.exports = {
         },
         {
           items: [
+            {
+              label: 'Blog',
+              href: '/blog',
+            },
+            {
+              label: 'Case Studies',
+              href: '/blog/tags/case-study',
+            },
             {
               label: 'GitHub',
               href: 'https://github.com/temporalio/temporal',
