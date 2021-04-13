@@ -180,6 +180,7 @@ module.exports = {
     'java-implementing-workflows',
     'java-starting-workflow-executions',
     'java-versioning',
+    'java-testing-and-debugging',
     'java-distributed-cron',
     {
       type: 'category',
