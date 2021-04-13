@@ -7,15 +7,19 @@
 
 [[redirects]]
   from = "/docs/overview"
-  to = "/docs/concept-content-moved"
+  to = "/docs/concept-overview"
 
 [[redirects]]
   from = "/docs/activities"
-  to = "/docs/concept-content-moved"
+  to = "/docs/concept-activities"
 
 [[redirects]]
   from = "/docs/workflows"
-  to = "/docs/concept-content-moved"
+  to = "/docs/concept-workflows"
+
+[[redirects]]
+  from = "/docs/events"
+  to = "/docs/signals"
 
 [[redirects]]
   from = "/docs/concept-namespaces"
@@ -44,34 +48,6 @@
 [[redirect]]
   from = "/docs/sdks-introduction"
   to = "/application-development"
-
-[[redirects]]
-  from = "/docs/concept-workflows"
-  to = "/docs/concept-content-moved"
-
-[[redirects]]
-  from = "/docs/concept-activities"
-  to = "/docs/concept-content-moved"
-
-[[redirects]]
-  from = "/docs/concept-workers"
-  to = "/docs/concept-content-moved"
-
-[[redirects]]
-  from = "/docs/concept-task-queues"
-  to = "/docs/concept-content-moved"
-
-[[redirects]]
-  from = "/docs/concept-queries"
-  to = "/docs/concept-content-moved"
-
-[[redirects]]
-  from = "/docs/concept-events"
-  to = "/docs/concept-content-moved"
-
-[[redirects]]
-  from = "/docs/concept-signals"
-  to = "/docs/concept-content-moved"
 
 [[redirects]]
   from = "/docs/use-cases-actors"

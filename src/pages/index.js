@@ -185,27 +185,36 @@ export default function Home() {
       </main>
       <div className={clsx('hero hero--secondary', styles.heroBanner)}>
         <div className="container">
-          <div className={styles.textFeature}>
-            <h3>Modern problems</h3>
-            <p>Have you ever developed an application that needed to respond to multiple asynchronous events, communicate with unreliable external resources, or track the state of something very complex?</p>
-            <p>If so, you are likely familiar with the mixture of stateless services, databases, cron jobs, and queuing systems that is the modern approach to building such applications. And you are likely familiar with some of the problems they come with.</p>
-            <ol>
-              <li>It is difficult to maintain the health of each individual component.</li>
-              <li>A large investment that has to be made in infrastructure to visualize the health of the overall system, define timeouts, and orchestrate retries.</li>
-              <li>Scaling and maintaining these systems is challenging and costly effort.</li>
-            </ol>
-            <div className={clsx(styles.videoContainer)}>
-              <ResponsivePlayer url='https://www.youtube.com/watch?v=f-18XztyN6c'/>
-            </div>
-            <h3>Modern solution</h3>
-            <p>The Temporal solution is a fault-oblivious stateful programming model that hides or abstracts most of the complexities mentioned above.
-            It consists of a programming framework (Temporal SDK) and a backend service (Temporal Server).</p>
-            <p> The <a href="/docs/server-introduction"> Temporal Server</a> provides a durable virtual memory that is not linked to any specific process.
-            It preserves the full application state (including function stacks with local variables) across all kinds of hosting and software related failures.</p>
-            <p>A <a hef="/application-development">Temporal SDK</a> then enables you to write your application code using the full power of the programming language, while the Temporal Server handles the durability, availability, and scalability of the application.</p>
+          <h2>Core concepts</h2>
+          <div className="text--center">
+            <img className={styles.featureImage} src={useBaseUrl("img/concept-map.svg")} alt="concepts" />
+          </div>
+          <p>Get started by reviewing some of Temporal's core concepts and building blocks.</p>
+          <div className={styles.buttons}>
+            <Link
+            className={clsx(
+              'button button--outline button--primary button--md',
+              styles.getStarted,
+            )}
+            to={useBaseUrl("/docs/concept-overview")}>
+            Learn more
+            </Link>
           </div>
         </div>
       </div>
+      <main>
+        {levelTwoFeatures && levelTwoFeatures.length > 0 && (
+          <section className={styles.features}>
+            <div className="container">
+              <div className="row">
+                {levelTwoFeatures.map((props, idx) => (
+                  <LevelTwoFeature key={idx} {...props} />
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+      </main>
       <div className="container">
         <div className={styles.formFeature}>
           <h2 className="text-3xl font-bold mb-4">Temporal Cloud</h2>
@@ -248,19 +257,6 @@ export default function Home() {
           </form>
         </div>
       </div>
-      <main>
-        {levelTwoFeatures && levelTwoFeatures.length > 0 && (
-          <section className={styles.features}>
-            <div className="container">
-              <div className="row">
-                {levelTwoFeatures.map((props, idx) => (
-                  <LevelTwoFeature key={idx} {...props} />
-                ))}
-              </div>
-            </div>
-          </section>
-        )}
-      </main>
     </Layout>
   );
 }
