@@ -62,9 +62,9 @@ The basic idea of Temporal is that you "just write code", as in this Java sample
 
 We also support [Go, PHP, and other SDKs](https://docs.temporal.io/docs/sdks-introduction) (TypeScript and Python are in the works).
 
-This looks like normal Java code, but it is a workflow because **the state of the program is fully preserved at all times**. If your program restarts or the backend service goes down, your pgoram will be in exactly the same state with all local variables and stack traces in exactly the same state. You can call sleep for 30 days in your code without caring about process restarts or dealing with databases and state recovery
+This looks like normal Java code, but it is a workflow because **the state of the program is fully preserved at all times**. If your program restarts or the backend service goes down, your program will be in exactly the same state with all local variables and stack traces in exactly the same state. You can call sleep for 30 days in your code without caring about process restarts or dealing with databases and state recovery
 
-- If your program restarts or the backend service goes down, your pgoram will be in exactly the same state with all local variables and stack traces in exactly the same state.
+- If your program restarts or the backend service goes down, your program will be in exactly the same state with all local variables and stack traces in exactly the same state.
 - You can call sleep for 30 days in your code without caring about process restarts or dealing with databases and state recovery, because that is done automatically by Temporal.
 
 Maxim and Samar have given [multiple presentations the Cadence and Temporal programming model](https://docs.temporal.io/docs/external-resources/#how-temporal-works) over the past 4 years if you want to learn more.
