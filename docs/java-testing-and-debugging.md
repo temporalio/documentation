@@ -9,10 +9,10 @@ The test framework provides a`TestWorkflowEnvironment` class which includes an i
 of the Temporal service that supports automatic time skipping. This allows you to 
 easily test long-running workflows in seconds, without having to change your workflow code.
 
-You can use the provided `TestWorkflowEnvironment` with an Java unit testing frameworkf on your choice,
+You can use the provided `TestWorkflowEnvironment` with an Java unit testing framework on your choice,
 such as JUnit.
 
-The following code implements a unit tests for the `HelloActivity` sample:
+The following code implements an unit tests for the `HelloActivity` sample:
 
 ```java
 public class HelloActivityTest {
@@ -112,7 +112,7 @@ public class HelloActivityTest {
 
 In addition to writing unit and integration tests, debugging your workflows is also a very
 valuable testing tool. You can debug your workflow code using a debugger provided 
-by your favorit Java IDE.
+by your favorite Java IDE.
 
 Note that when debugging your workflow code, the Temporal Java SDK includes deadlock detection
 which fails a workflow task in case the code blocks over a second without relinquishing
