@@ -1,6 +1,7 @@
 ---
 id: go-workers
 title: Workers in Go
+sidebar_label: Workers
 ---
 
 A worker or _worker service_ is a service that hosts the Workflow and Activity implementations. The worker polls the _Temporal service_ for tasks, performs those tasks, and communicates task execution results back to the _Temporal service_. Worker services are developed, deployed, and operated by Temporal customers.

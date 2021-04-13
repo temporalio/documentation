@@ -147,7 +147,7 @@ A Worker is a service that hosts the [**Workflow**](#workflow) and [**Activity**
 
 ### Workflow
 
-A fault-oblivious stateful function that orchestrates activities.
+A fault-oblivious stateful function that orchestrates Activities.
 
 - A Workflow has full control over which [**Activities**](#activity) are executed, and in which order.
 - A Workflow must not affect the external world directly, only through [**Activities**](#activity).

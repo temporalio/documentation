@@ -35,6 +35,12 @@ module.exports = {
           position: 'right',
         },
         {
+          to: '/docs/concept-overview',
+          activeBasePath: 'none',
+          label: 'Concepts',
+          position: 'right',
+        },
+        {
           to: '/docs/server-introduction',
           activeBasePath: 'none',
           label: 'Server',
@@ -107,6 +113,10 @@ module.exports = {
         },
         {
           items: [
+            {
+              label: 'Core concepts',
+              to: '/docs/concept-overview',
+            },
             {
               label: 'Temporal Server',
               to: '/docs/server-introduction',

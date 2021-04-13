@@ -20,18 +20,13 @@ module.exports = {
       items: [
         {
           type: 'link',
-          label: 'Go SDK',
-          href: '/docs/go-sdk-introduction',
+          label: 'Concepts',
+          href: '/docs/concept-overview',
         },
         {
           type: 'link',
-          label: 'Java SDK',
-          href: '/docs/java-sdk-introduction',
-        },
-        {
-          type: 'link',
-          label: 'PHP SDK',
-          href: '/docs/php-sdk-introduction',
+          label: 'SDKs',
+          href: '/application-development',
         },
         {
           type: 'link',
@@ -57,23 +52,18 @@ module.exports = {
       items: [
         {
           type: 'link',
+          label: 'Concepts',
+          href: '/docs/concept-overview',
+        },
+        {
+          type: 'link',
           label: 'Server',
           href: '/docs/server-introduction',
         },
         {
           type: 'link',
-          label: 'Go SDK',
-          href: '/docs/go-sdk-introduction',
-        },
-        {
-          type: 'link',
-          label: 'Java SDK',
-          href: '/docs/java-sdk-introduction',
-        },
-        {
-          type: 'link',
-          label: 'PHP SDK',
-          href: '/docs/php-sdk-introduction',
+          label: 'SDKs',
+          href: '/application-development',
         },
         {
           type: 'link',
@@ -109,7 +99,6 @@ module.exports = {
         'go-workflows',
         'go-activities',
         'go-workers',
-        'go-task-queues',
         'go-signals',
         'go-queries',
       ],
@@ -135,18 +124,18 @@ module.exports = {
       items: [
         {
           type: 'link',
+          label: 'Concepts',
+          href: '/docs/concept-overview',
+        },
+        {
+          type: 'link',
           label: 'Server',
           href: '/docs/server-introduction',
         },
         {
           type: 'link',
-          label: 'Java SDK',
-          href: '/docs/java-sdk-introduction',
-        },
-        {
-          type: 'link',
-          label: 'PHP SDK',
-          href: '/docs/php-sdk-introduction',
+          label: 'SDKs',
+          href: '/application-development',
         },
         {
           type: 'link',
@@ -183,12 +172,7 @@ module.exports = {
       label: 'Basic concepts',
       collapsed: false,
       items: [
-        'java-workflows',
         'java-activities',
-        'java-workers',
-        'java-task-queues',
-        'java-signals',
-        'java-queries',
       ],
     },
     'java-quick-start',
@@ -204,18 +188,18 @@ module.exports = {
       items: [
         {
           type: 'link',
+          label: 'Concepts',
+          href: '/docs/concept-overview',
+        },
+        {
+          type: 'link',
           label: 'Server',
           href: '/docs/server-introduction',
         },
         {
           type: 'link',
-          label: 'Go SDK',
-          href: '/docs/go-sdk-introduction',
-        },
-        {
-          type: 'link',
-          label: 'PHP SDK',
-          href: '/docs/php-sdk-introduction',
+          label: 'SDKs',
+          href: '/application-development',
         },
         {
           type: 'link',
@@ -237,10 +221,7 @@ module.exports = {
       label: 'Basic concepts',
       collapsed: false,
       items: [
-        'php-workflows',
-        'php-activities',
         'php-workers',
-        'php-task-queues',
         'php-signals',
         'php-queries',
       ],
@@ -265,18 +246,18 @@ module.exports = {
       items: [
         {
           type: 'link',
+          label: 'Concepts',
+          href: '/docs/concept-overview',
+        },
+        {
+          type: 'link',
           label: 'Server',
           href: '/docs/server-introduction',
         },
         {
           type: 'link',
-          label: 'Go SDK',
-          href: '/docs/go-sdk-introduction',
-        },
-        {
-          type: 'link',
-          label: 'Java SDK',
-          href: '/docs/java-sdk-introduction',
+          label: 'SDKs',
+          href: '/application-development',
         },
         {
           type: 'link',
@@ -291,7 +272,21 @@ module.exports = {
       ],
     },
   ],
-  additionalResources: [
+  coreConcepts: [
+    {
+      type: 'category',
+      label: 'Core concepts',
+      collapsed: false,
+      items: [
+        'concept-overview',
+        'concept-workflows',
+        'concept-activities',
+        'concept-workers',
+        'concept-task-queues',
+        'concept-signals',
+        'concept-queries',
+      ],
+    },
     {
       type: 'category',
       label: 'Additional resources',
@@ -314,18 +309,8 @@ module.exports = {
         },
         {
           type: 'link',
-          label: 'Go SDK',
-          href: '/docs/go-sdk-introduction',
-        },
-        {
-          type: 'link',
-          label: 'Java SDK',
-          href: '/docs/java-sdk-introduction',
-        },
-        {
-          type: 'link',
-          label: 'PHP SDK',
-          href: '/docs/php-sdk-introduction',
+          label: 'SDKs',
+          href: '/application-development',
         },
         {
           type: 'link',
