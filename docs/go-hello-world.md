@@ -100,6 +100,16 @@ Let's add a simple unit test to our application to make sure things are working 
 <!--SNIPSTART hello-world-project-template-go-workflow-test-->
 <!--SNIPEND-->
 
+Add the required `testify` packages to your `go.mod` file by running the following:
+
+```
+go get github.com/stretchr/testify/mock
+```
+
+```
+go get github.com/stretchr/testify/require
+```
+
 Run this command from the project root to execute the unit tests:
 
 ```
