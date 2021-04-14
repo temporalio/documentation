@@ -84,6 +84,7 @@
 .cloudWaitlistSubmit {
   margin-top: 15px;
   color: var(--ifm-color-primary);
+  border-color: var(--ifm-color-primary);
 }
 
 .cloudWaitlistSubmit:hover{
