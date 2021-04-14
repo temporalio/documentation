@@ -1,0 +1,3 @@
+[submodule "docs/node/reference"]
+	path = docs/node/reference
+	url = git@github.com:temporalio/sdk-node.git
