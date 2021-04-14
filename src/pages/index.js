@@ -250,8 +250,7 @@ export default function Home() {
                 type="submit"
                 name="waitlist"
                 id="mc-embedded-waitlist"
-                className="tt-button tt-button--lightblue tt-button--outline tt-button--block@xs button-email"
-                style={{ display: 'none' }}
+                className={clsx("button button--outline button-secondary button--md", styles.cloudWaitlistSubmit)}
               />
             </div>
           </form>

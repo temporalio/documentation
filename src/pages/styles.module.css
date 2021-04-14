@@ -80,3 +80,12 @@
 .sdkTakeMeToTutorialLogo:hover {
   transform: scale(1.1);
 }
+
+.cloudWaitlistSubmit {
+  margin-top: 15px;
+  color: var(--ifm-color-primary);
+}
+
+.cloudWaitlistSubmit:hover{
+  background-color: var(--ifm-color-primary);
+}
