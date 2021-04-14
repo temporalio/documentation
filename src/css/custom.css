@@ -110,10 +110,10 @@ html[data-theme='light'] {
 
 .signUpInput {
   width: 100%;
-  color: #a0aec0;
+  color: #5d6570;
   border-width: 0px 0px 1px 0px;
   border-style: solid;
-  border-color: #f2f2f2;
+  border-color: #a2a2a2;
   padding-top: 1rem;
   padding-bottom: 1rem;
   background-color: var(--ifm-color-input-background);
