@@ -11,6 +11,8 @@ origins:
     repo: temporal
   - owner: temporalio
     repo: samples-php
+  - owner: temporalio
+    repo: sdk-node
 
 target: docs
 

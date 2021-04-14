@@ -84,24 +84,13 @@ module.exports = {
       type: 'category',
       label: 'Tutorials',
       collapsed: false,
-      items: [
-        'go-sdk-tutorial-prerequisites',
-        'go-run-your-first-app',
-        'go-hello-world',
-        'go-sdk-video-tutorial',
-      ],
+      items: ['go-sdk-tutorial-prerequisites', 'go-run-your-first-app', 'go-hello-world', 'go-sdk-video-tutorial'],
     },
     {
       type: 'category',
       label: 'Basic concepts',
       collapsed: false,
-      items: [
-        'go-workflows',
-        'go-activities',
-        'go-workers',
-        'go-signals',
-        'go-queries',
-      ],
+      items: ['go-workflows', 'go-activities', 'go-workers', 'go-signals', 'go-queries'],
     },
     'go-sync-vs-async-start',
     'go-create-workflows',
@@ -161,19 +150,13 @@ module.exports = {
       type: 'category',
       label: 'Tutorials',
       collapsed: false,
-      items: [
-        'java-sdk-tutorial-prerequisites',
-        'java-run-your-first-app',
-        'java-hello-world',
-      ],
+      items: ['java-sdk-tutorial-prerequisites', 'java-run-your-first-app', 'java-hello-world'],
     },
     {
       type: 'category',
       label: 'Basic concepts',
       collapsed: false,
-      items: [
-        'java-activities',
-      ],
+      items: ['java-activities'],
     },
     'java-quick-start',
     'java-workflow-interface',
@@ -221,11 +204,7 @@ module.exports = {
       type: 'category',
       label: 'Basic concepts',
       collapsed: false,
-      items: [
-        'php-workers',
-        'php-signals',
-        'php-queries',
-      ],
+      items: ['php-workers', 'php-signals', 'php-queries'],
     },
     'php-workflow-interface',
     'php-implementing-workflows',
@@ -273,6 +252,28 @@ module.exports = {
       ],
     },
   ],
+  nodejsSidebar: [
+    'node/reference/README',
+    {
+      type: 'category',
+      collapsed: true,
+      label: 'NodeJS',
+      items: [
+        'node/getting-started',
+        'node/hello-world',
+        {
+          type: 'doc',
+          id: 'node/reference/modules',
+          label: 'Reference',
+        },
+        'node/package-initializer',
+        'node/sdk-structure',
+        'node/logging',
+        'node/determinism',
+        'node/workflow-scopes-and-cancellation',
+      ],
+    },
+  ],
   coreConcepts: [
     {
       type: 'category',
@@ -292,11 +293,7 @@ module.exports = {
       type: 'category',
       label: 'Additional resources',
       collapsed: false,
-      items: [
-        'external-resources',
-        'cadence-to-temporal',
-        'glossary',
-      ],
+      items: ['external-resources', 'cadence-to-temporal', 'glossary'],
     },
     {
       type: 'category',
@@ -322,3 +319,4 @@ module.exports = {
     },
   ],
 };
+
