@@ -12,8 +12,9 @@ author_image_url: https://avatars.githubusercontent.com/u/6764957?v=4
 release_version: V1.8.1
 ---
 
-
 import { ResponsivePlayer } from '../src/components'
+
+<!--truncate-->
 
 <ResponsivePlayer url='https://www.youtube.com/watch?v=t524U9CixZ0' />
 
@@ -50,7 +51,7 @@ Our definition is that a workflow is a:
 - Timers and timeouts
 
 
-**Resilient** means that the program will continue execution despite failures (like infrastructure outages and availability zones going down). 
+**Resilient** means that the program will continue execution despite failures (like infrastructure outages and availability zones going down).
 
 Usually this program is organized as a **sequence of tasks** and it also has to **react to external events** and **deal with time**. Timers and timeouts are an important component of every business level process.
 
@@ -93,7 +94,7 @@ Walking through the diagram:
 
 ## Using Task Queues (6:00)
 
-In practical systems, you don't want to call tasks directly, because there can be issues with flow control, availability, or slowness. So using queues to dispatch tasks is a very common technique. 
+In practical systems, you don't want to call tasks directly, because there can be issues with flow control, availability, or slowness. So using queues to dispatch tasks is a very common technique.
 
 
 ![Designing Workflow Engine-v7-images 012](https://user-images.githubusercontent.com/6764957/113586922-b73a2500-9660-11eb-81fe-758266691161.png)
@@ -104,7 +105,7 @@ Every practical workflow engine uses queues to dispatch tasks to workers (workin
 
 ## Timer Queue (7:10)
 
-Time is important because: 
+Time is important because:
 
 - every task invocation should have a timeout
 - the workflow itself can time out
@@ -144,7 +145,7 @@ This doesn't just apply to the workflow engine implementation. Most engineers do
 
 ![Designing Workflow Engine-v7-images 017](https://user-images.githubusercontent.com/6764957/113587101-e8b2f080-9660-11eb-9841-8f0141844945.png)
 
-Our point about lack of transactions leading to race conditions applies to the majority of ad hoc systems built by developers. 
+Our point about lack of transactions leading to race conditions applies to the majority of ad hoc systems built by developers.
 
 This is very important to understand: **If you are building a system from these components you're guaranteed to have edge cases in race conditions**. So that's why having a robust engine with something like Temporal's underlying architecture will simplify your life tremendously.
 
@@ -152,7 +153,7 @@ This is very important to understand: **If you are building a system from these 
 
 Workflow engines are hard because they need to deal with multiple things like task queues, timers, and state, and transactional updates across them all. When you look for workflow engines with these requirements, many implementations just use one database or even one process. If that is all you need, then the transactional requirements are easily solvable. But it wouldn't be scalable.
 
-What dimensions of scalability are important to us? How would we execute a million tasks? 
+What dimensions of scalability are important to us? How would we execute a million tasks?
 
 We could naively create a single huge workflow that spawns multiple machines, e.g. MapReduce lets you write a single pipeline executed by thousands of machines. However, Temporal chose a different direction.
 
@@ -171,9 +172,9 @@ If you can handle a partitioned database and partitioned hosts you can get to a 
 
 ## Sharding (12:38)
 
-The simple way to solve the partitioning problems would be to simply have **one database per host** and guarantee transactions within each host - but this wouldn't be very practical because it would be very hard to add and remove hosts. 
+The simple way to solve the partitioning problems would be to simply have **one database per host** and guarantee transactions within each host - but this wouldn't be very practical because it would be very hard to add and remove hosts.
 
-The standard way to solve this is to use **sharding. I**nstead of physical hosts, we: 
+The standard way to solve this is to use **sharding. I**nstead of physical hosts, we:
 
 - use partitions within the database,
 - overallocate the number of partitions,
@@ -240,9 +241,9 @@ So this is a very simple mechanism that allows transactionality, but doesn't rel
 
 ## Workflow Visibility (17:35)
 
-The other requirement that a reasonable workflow system should implement is the ability to list workflows, e.g. "give me all workflows started by $USER in the last 24 hours that failed". 
+The other requirement that a reasonable workflow system should implement is the ability to list workflows, e.g. "give me all workflows started by $USER in the last 24 hours that failed".
 
-Going to all 10,000 shards and asking for this information, even with indexing, would be impractical. The way to solve this is to have a separate indexing component. 
+Going to all 10,000 shards and asking for this information, even with indexing, would be impractical. The way to solve this is to have a separate indexing component.
 
 ![Designing Workflow Engine-v7-images 038](https://user-images.githubusercontent.com/6764957/113587499-71319100-9661-11eb-8fdd-83ef5f62e2df.png)
 
@@ -284,7 +285,7 @@ This leaves **Workflows** and **Activities** implemented by application develope
 
 ## Bonus: Multi-cluster Deployment (21:00)
 
-This architecture is pretty scalable and reliable because every host can fail and it will still continue functioning: 
+This architecture is pretty scalable and reliable because every host can fail and it will still continue functioning:
 
 - Shards, history, and matching will be redistributed automatically.
 - Clustered databases like Cassandra can sustain node failures.
@@ -293,7 +294,7 @@ This architecture is pretty scalable and reliable because every host can fail an
 
 But the system still has a single point of failure in terms of blast radius, because a single bad schema deployment to the database can bring it down.
 
-If you want to provide very high availability, we have **multi-cluster deployment** with asynchronous replication. 
+If you want to provide very high availability, we have **multi-cluster deployment** with asynchronous replication.
 
 
 
