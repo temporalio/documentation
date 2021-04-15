@@ -37,6 +37,10 @@
   margin-bottom: 15px;
 }
 
+.featuresMarginBottom {
+  margin-bottom: 25px;
+}
+
 .listImage {
   max-width: 50px;
   margin: 5px 7px 5px auto;

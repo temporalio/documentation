@@ -8,18 +8,35 @@
 /* You can override the default Infima variables here. */
 
 :root {
-  --ifm-color-primary: #3b86c4;
-  --ifm-color-primary-dark: #2c5282;
-  --ifm-color-primary-darker: #2d3748;
-  --ifm-color-primary-darkest: #1a202c;
-  --ifm-color-primary-light: #4299e1;
-  --ifm-color-primary-lighter: #63b3ed;
-  --ifm-color-primary-lightest: #90cdf4;
+  --ifm-color-primary: #6b62b6;
+  --ifm-color-primary-dark: #5a50ac;
+  --ifm-color-primary-darker: #554ca2;
+  --ifm-color-primary-darkest: #463e86;
+  --ifm-color-primary-light: #7d75bf;
+  --ifm-color-primary-lighter: #867fc3;
+  --ifm-color-primary-lightest: #b8b4dc;
   --ifm-code-font-size: 95%;
   --ifm-color-hero-background-dark: #18191a;
 }
 
-@font-face {
+html[data-theme='dark'] {
+  --ifm-link-color: #b8b4dc;
+  --ifm-menu-color-active: #b8b4dc;
+  --ifm-navbar-link-hover-color: #b8b4dc;
+  --ifm-toc-link-color: #b8b4dc;
+  --ifm-blockquote-color: #eeeeee;
+  --ifm-code-background: var(--ifm-color-primary-dark);
+}
+
+html[data-theme='light'] {
+  --ifm-blockquote-color: #000000;
+  --ifm-color-emphasis-300: #505050;
+  --ifm-code-background: var(--ifm-color-primary-lightest);
+  --ifm-color-input-background:#ffffff;
+}
+
+/* These fonts are available but not used. */
+/* @font-face {
   font-family: 'Aeonik';
   src: url('../fonts/Aeonik-Regular.woff');
   font-weight: 400;
@@ -47,21 +64,10 @@ body {
   font-family: 'Aeonik', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
     'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
     'Segoe UI Symbol', 'Noto Color Emoji';
-  /* background-image: url('/backgrounds/StarBackgroundMuted.svg');
-  background-attachment: fixed; */
-}
+} */
 
-html[data-theme='dark'] {
-  --ifm-blockquote-color: #eeeeee;
-  --ifm-code-background: var(--ifm-color-primary-dark);
-  --ifm-color-input-background: var(--ifm-color-hero-background-dark);
-}
-
-html[data-theme='light'] {
-  --ifm-blockquote-color: #000000;
-  --ifm-color-emphasis-300: #505050;
-  --ifm-code-background: var(--ifm-color-primary-lightest);
-  --ifm-color-input-background:#ffffff;
+.markdown {
+  font-size: 1.1em;
 }
 
 .hero--primary {

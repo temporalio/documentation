@@ -86,18 +86,20 @@ export default function ApplicationDevelopment() {
             <div className={clsx('col col-4', styles.textFeature)}>
               <h3>Officially in the works</h3>
               <ul className={clsx(styles.unOrderedList)}>
-                <li><img className={clsx(styles.listImage)} src={useBaseUrl("img/ruby.svg")} alt="Ruby" /><a href="https://github.com/coinbase/temporal-ruby">Ruby SDk by Coinbase</a></li>
-                <li>Reach out via the #ruby-sdk Slack channel</li>
                 <li><img className={clsx(styles.listImage)} src={useBaseUrl("img/nodejs.svg")} alt="NodeJS" /><a href="https://github.com/temporalio/sdk-node">Node.js/TypeScript SDK by Temporal</a></li>
                 <li>Reach out via the #nodejs-sdk Slack channel</li>
                 <li><img className={clsx(styles.listImage)} src={useBaseUrl("img/python.svg")} alt="Python" /><a href="https://github.com/firdaus/temporal-python-sdk">Python SDK by firdaus</a></li>
                 <li>Reach out via the #python-sdk Slack channel</li>
+                <li><img className={clsx(styles.listImage)} src={useBaseUrl("img/rust.png")} alt="Rust" /><a href="https://github.com/temporalio/sdk-core">Rust based Core SDK by Temporal</a></li>
+                <li>Reach out via the #support Slack channel</li>
               </ul>
             </div>
             <div className={clsx('col col-4', styles.textFeature)}>
               <h3>SDKs with community interest</h3>
               <p>Get in touch with us if you are interested in using or trying any of the following:</p>
               <ul className={clsx(styles.unOrderedList)}>
+                <li><img className={clsx(styles.listImage)} src={useBaseUrl("img/ruby.svg")} alt="Ruby" /><a href="https://github.com/coinbase/temporal-ruby">Ruby SDk by Coinbase</a></li>
+                <li>Reach out via the #ruby-sdk Slack channel</li>
                 <li><img className={clsx(styles.listImage)} src={useBaseUrl("img/dotnet.svg")} alt="C#/.Net" />C#/.Net SDK</li>
                 <li><img className={clsx(styles.listImage)} src={useBaseUrl("img/swift.svg")} alt="Swift" />Swift SDK</li>
                 <li><img className={clsx(styles.listImage)} src={useBaseUrl("img/haskell.svg")} alt="Haskell" />Haskell SDK</li>

@@ -23,7 +23,7 @@ const features = [
     imageUrl: 'img/layers.png',
     description: (
       <>
-        Build applications using SDK tutorials and references in the language of your choice.
+        Use SDK tutorials and references in the language of your choice.
       </>
     ),
     goto: '/application-development',
@@ -33,7 +33,7 @@ const features = [
     imageUrl: 'img/settings.png',
     description: (
       <>
-        Visualize, debug, and manage different aspects of your system using the Temporal Web UI and <code>tctl</code>.
+        Visualize and debug using the Temporal Web UI and CLI.
       </>
     ),
     goto: '/docs/system-tooling-introduction',
@@ -43,7 +43,7 @@ const features = [
 function Feature({imageUrl, title, description, goto}) {
   const imgUrl = useBaseUrl(imageUrl);
   return (
-    <div className={clsx('col col--4')}>
+    <div className={clsx('col col--4', styles.featuresMarginBottom)}>
       <h3>{title}</h3>
       {imgUrl && (
         <div className="text--center">
@@ -99,7 +99,7 @@ const levelTwoFeatures = [
 
 function LevelTwoFeature({title, description, goto}) {
   return (
-    <div className={clsx('col col--4')}>
+    <div className={clsx('col col--4', styles.featuresMarginBottom)}>
       <h3>{title}</h3>
       <p>{description}</p>
       <div className={styles.buttons}>
