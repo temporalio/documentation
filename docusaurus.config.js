@@ -1,8 +1,8 @@
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 
 module.exports = {
-  title: 'Temporal system documentation',
-  tagline: 'Invincible applications, invisible infrastructure',
+  title: 'Temporal documentation',
+  tagline: 'Build invincible applications',
   url: 'https://docs.temporal.io',
   baseUrl: '/',
   onBrokenLinks: 'warn',
