@@ -15,8 +15,8 @@ module.exports = {
     'server-event-types',
     {
       type: 'category',
-      label: 'Nav',
-      collapsed: true,
+      label: 'Quick links',
+      collapsed: false,
       items: [
         {
           type: 'link',
@@ -47,8 +47,8 @@ module.exports = {
     'web-ui',
     {
       type: 'category',
-      label: 'Nav',
-      collapsed: true,
+      label: 'Quick links',
+      collapsed: false,
       items: [
         {
           type: 'link',
@@ -119,8 +119,8 @@ module.exports = {
     'go-search-apis',
     {
       type: 'category',
-      label: 'Nav',
-      collapsed: true,
+      label: 'Quick links',
+      collapsed: false,
       items: [
         {
           type: 'link',
@@ -183,8 +183,8 @@ module.exports = {
     'java-distributed-cron',
     {
       type: 'category',
-      label: 'Nav',
-      collapsed: true,
+      label: 'Quick links',
+      collapsed: false,
       items: [
         {
           type: 'link',
@@ -241,8 +241,8 @@ module.exports = {
     'php-distributed-cron',
     {
       type: 'category',
-      label: 'Nav',
-      collapsed: true,
+      label: 'Quick links',
+      collapsed: false,
       items: [
         {
           type: 'link',
@@ -299,8 +299,8 @@ module.exports = {
     },
     {
       type: 'category',
-      label: 'Nav',
-      collapsed: true,
+      label: 'Quick links',
+      collapsed: false,
       items: [
         {
           type: 'link',

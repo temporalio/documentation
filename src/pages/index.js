@@ -13,7 +13,7 @@ const features = [
     imageUrl: 'img/server.png',
     description: (
       <>
-        Get started deploying and manage your own instance of the Temporal Server.
+        Deploy and manage your own instance of the Temporal Server.
       </>
     ),
     goto: '/docs/server-introduction',
@@ -23,7 +23,7 @@ const features = [
     imageUrl: 'img/layers.png',
     description: (
       <>
-        Get started building applications using SDK tutorials and references in the language of your choice!
+        Build applications using SDK tutorials and references in the language of your choice.
       </>
     ),
     goto: '/application-development',
@@ -33,7 +33,7 @@ const features = [
     imageUrl: 'img/settings.png',
     description: (
       <>
-        Use the Temporal Web UI and <code>tctl</code> to visualize, debug, and manage different aspects of your system.
+        Visualize, debug, and manage different aspects of your system using the Temporal Web UI and <code>tctl</code>.
       </>
     ),
     goto: '/docs/system-tooling-introduction',
@@ -90,7 +90,7 @@ const levelTwoFeatures = [
     title: <>Migrating from Cadence?</>,
     description: (
       <>
-        Check out the key differences between the systems.
+        There are key differences between the systems.
       </>
     ),
     goto: '/docs/cadence-to-temporal',
@@ -189,7 +189,7 @@ export default function Home() {
           <div className="text--center">
             <img className={styles.featureImage} src={useBaseUrl("img/concept-map.svg")} alt="concepts" />
           </div>
-          <p>Get started by reviewing some of Temporal's core concepts and building blocks.</p>
+          <p>Review some of Temporal's core concepts and building blocks.</p>
           <div className={styles.buttons}>
             <Link
             className={clsx(
