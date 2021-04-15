@@ -175,7 +175,7 @@ module.exports = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} Temporal Technologies Inc.  All rights reserved. Copyright © 2020 Uber Technologies, Inc.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Temporal Technologies Inc.`,
     },
     gtag: {
       trackingID: 'UA-163137879-1',
