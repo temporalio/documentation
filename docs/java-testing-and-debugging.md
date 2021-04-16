@@ -5,7 +5,7 @@ sidebar_label: Testing and Debugging
 ---
 
 The Temporal Java SDK provides a test framework to facilitate Workflow unit and integration testing.
-The test framework provides a`TestWorkflowEnvironment` class which includes an in-memory implementation
+The test framework provides a `TestWorkflowEnvironment` class which includes an in-memory implementation
 of the Temporal service that supports automatic time skipping. This allows you to 
 easily test long-running workflows in seconds, without having to change your workflow code.
 
