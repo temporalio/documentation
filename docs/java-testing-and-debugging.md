@@ -12,7 +12,7 @@ easily test long-running Workflows in seconds, without having to change your Wor
 You can use the provided `TestWorkflowEnvironment` with a Java unit testing framework of your choice,
 such as JUnit.
 
-The following code implements an unit tests for the `HelloActivity` sample:
+The following code implements unit tests for the `HelloActivity` sample:
 
 ```java
 public class HelloActivityTest {
