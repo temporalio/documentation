@@ -117,7 +117,7 @@ by your favorite Java IDE.
 Note that when debugging your Workflow code, the Temporal Java SDK includes deadlock detection
 which fails a workflow task in case the code blocks over a second without relinquishing
 execution control. Because of this you can often encounter the `PotentialDeadlockException`
-exception while stepping through workflow code during debugging.
+exception while stepping through Workflow code during debugging.
 
 To alleviate this issue, you can set the `TEMPORAL_DEBUG` environment variable to true before debugging your
 workflow code. 
