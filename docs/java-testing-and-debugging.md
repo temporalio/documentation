@@ -110,7 +110,7 @@ public class HelloActivityTest {
 }
 ```
 
-In addition to writing unit and integration tests, debugging your workflows is also a very
+In addition to writing unit and integration tests, debugging your Workflows is also a very
 valuable testing tool. You can debug your workflow code using a debugger provided 
 by your favorite Java IDE.
 
