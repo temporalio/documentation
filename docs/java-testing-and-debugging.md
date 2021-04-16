@@ -111,7 +111,7 @@ public class HelloActivityTest {
 ```
 
 In addition to writing unit and integration tests, debugging your Workflows is also a very
-valuable testing tool. You can debug your workflow code using a debugger provided 
+valuable testing tool. You can debug your Workflow code using a debugger provided 
 by your favorite Java IDE.
 
 Note that when debugging your workflow code, the Temporal Java SDK includes deadlock detection
