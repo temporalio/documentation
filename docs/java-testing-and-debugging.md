@@ -9,7 +9,7 @@ The test framework provides a `TestWorkflowEnvironment` class which includes an 
 of the Temporal service that supports automatic time skipping. This allows you to 
 easily test long-running Workflows in seconds, without having to change your Workflow code.
 
-You can use the provided `TestWorkflowEnvironment` with an Java unit testing framework on your choice,
+You can use the provided `TestWorkflowEnvironment` with a Java unit testing framework of your choice,
 such as JUnit.
 
 The following code implements an unit tests for the `HelloActivity` sample:
