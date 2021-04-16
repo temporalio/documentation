@@ -49,12 +49,9 @@ If you have made a tutorial or explanation of Temporal, please [submit them here
 
 *Note: Each of [our SDK docs](/application-development) have a Hello World and Run Your First App tutorial!*
 
-<<<<<<< HEAD
 - (Go) [Writing your first Workflow](https://www.youtube.com/watch?v=taKrIWt6KMY&feature=youtu.be) by Ryland Goldstein (20 min watch) 
 - (Go) [Writing a Workflow, Simulating Failures, Comparing Retries with Apache Airflow, and Testing](https://www.jcheng.org/post/workflow-orchestration-1.2/) by Jon Cheng (8 min read)
-=======
 - [Writing your first Workflow](https://www.youtube.com/watch?v=taKrIWt6KMY&feature=youtu.be) by Ryland Goldstein (20 minutes)
->>>>>>> fedbc08d (basic landing page designs, adding images, sidebar adjustments, link updates, add/rm pages)
 - (Español) [Construye aplicaciones invencibles con Temporal](https://sistecma.github.io/2021/02/04/aplicaciones-invencibles-con-temporal.html) y [Aplicando el patrón SAGA en tus microservicios construidos](https://sistecma.github.io/2021/03/04/aplicando-saga-en-microservicios-con-temporal.html) by Hernán Moreno
 - *submit yours [here](https://github.com/temporalio/documentation/edit/master/docs/external-resources.md)!*
 
