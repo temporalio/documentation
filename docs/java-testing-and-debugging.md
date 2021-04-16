@@ -115,7 +115,7 @@ valuable testing tool. You can debug your Workflow code using a debugger provide
 by your favorite Java IDE.
 
 Note that when debugging your Workflow code, the Temporal Java SDK includes deadlock detection
-which fails a workflow task in case the code blocks over a second without relinquishing
+which fails a Workflow Task in case the code blocks over a second without relinquishing
 execution control. Because of this you can often encounter the `PotentialDeadlockException`
 exception while stepping through Workflow code during debugging.
 
