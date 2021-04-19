@@ -187,7 +187,10 @@ module.exports = {
       indexName: 'temporal',
       // contextualSearch: true, // Optional, If you different version of docs etc (v1 and v2) doesn't display dup results
       // appId: 'app-id', // Optional, if you run the DocSearch crawler on your own
-      // algoliaOptions: {}, // Optional, if provided by Algolia
+      searchOptions: { // used to be called algoliaOptions
+        facetFilters: null,
+        facets: null
+      }
     },
   },
   presets: [
