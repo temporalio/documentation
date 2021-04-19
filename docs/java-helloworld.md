@@ -123,7 +123,7 @@ Create InitiateHelloWorld.java and use the SDK to define the start of the Workfl
 
 ## ![](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/check.png) Test the app
 
-Let's add a simple unit test to our application to make sure things are working as expected. Test code lives in src/test/java/helloworldapp. Gradle will have generated a default AppTest.java in that location. Remove that file and replace it with HelloWorldWorkflowTest.java that contains the following code:
+Let's add a simple unit test to our application to make sure things are working as expected. Test code lives in src/test/java/helloworldapp. If you don't see the `helloworldapp` directory, go ahead and create it yourself. Gradle might have generated a default AppTest.java in that location - if so, remove that file. Create a new class HelloWorldWorkflowTest.java that contains the following code:
 
 <!--SNIPSTART hello-world-project-template-java-workflow-test-->
 <!--SNIPEND-->
