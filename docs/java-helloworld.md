@@ -54,7 +54,7 @@ To limit the logging output from the SDK, within src/main/resources/ create a lo
 
 If you are editing the files in IntelliJ, a "refresh" icon will appear on the screen. Click it to load the changes. Gradle will rebuild with the dependencies. Otherwise you can run `./gradlew build` from the root of the project again.
 
-All of the files for our application will be created in src/main/java/helloworldapp/. However, if you have selected Gradle through IntelliJ instead of scaffolding it from the terminal, you may have to create the directory `helloworldapp` by yourself. If you have scaffolded Gradle through the terminal, Gradle will have generated a default App.java class in that location. Remove it before proceeding.
+All of the files for our application will be created in src/main/java/helloworldapp/. However, if you have selected Gradle through IntelliJ instead of scaffolding it from the terminal, you may have to create the directory helloworldapp by yourself. If you have scaffolded Gradle through the terminal, Gradle will have generated a default App.java class in that location. Remove it before proceeding.
 
 
 ## ![](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/apps.png) "Hello World!" app
@@ -123,7 +123,7 @@ Create InitiateHelloWorld.java and use the SDK to define the start of the Workfl
 
 ## ![](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/check.png) Test the app
 
-Let's add a simple unit test to our application to make sure things are working as expected. Test code lives in src/test/java/helloworldapp. If you don't see the `helloworldapp` directory, go ahead and create it yourself. Gradle might have generated a default AppTest.java in that location - if so, remove that file. Create a new class HelloWorldWorkflowTest.java that contains the following code:
+Let's add a simple unit test to our application to make sure things are working as expected. Test code lives in src/test/java/helloworldapp. If you don't see the helloworldapp-directory, go ahead and create it yourself. Gradle might have generated a default AppTest.java in that location - if so, remove that file. Create a new class HelloWorldWorkflowTest.java that contains the following code:
 
 <!--SNIPSTART hello-world-project-template-java-workflow-test-->
 <!--SNIPEND-->
