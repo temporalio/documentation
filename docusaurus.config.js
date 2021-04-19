@@ -185,7 +185,7 @@ module.exports = {
     algolia: {
       apiKey: '14805ba2eb682edb2e719df4d5e03c8a',
       indexName: 'temporal',
-      // contextualSearch: true, // Optional, If you different version of docs etc (v1 and v2) doesn't display dup results
+      contextualSearch: true, // see if this matters
       // appId: 'app-id', // Optional, if you run the DocSearch crawler on your own
       searchParameters: { // used to be called algoliaOptions https://docusaurus.io/docs/search#using-algolia-docsearch
         facetFilters: [],
