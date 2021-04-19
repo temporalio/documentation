@@ -54,7 +54,8 @@ To limit the logging output from the SDK, within src/main/resources/ create a lo
 
 If you are editing the files in IntelliJ, a "refresh" icon will appear on the screen. Click it to load the changes. Gradle will rebuild with the dependencies. Otherwise you can run `./gradlew build` from the root of the project again.
 
-All of the files for our application will be created in src/main/java/helloworldapp/. Gradle might have generated a default App.java class in that location - if it has done so, remove it before proceeding.
+All of the files for our application will be created in src/main/java/helloworldapp/. However, if you have selected Gradle through IntelliJ instead of the terminal, you may have to create the directory `helloworldapp` by yourself. Also, Gradle might have generated a default App.java class in that location - if it has done so, remove it before proceeding.
+
 
 ## ![](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/apps.png) "Hello World!" app
 
