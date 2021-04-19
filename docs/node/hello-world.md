@@ -13,7 +13,7 @@ Activities are called from workflows in order to run non-deterministic code.
 
 Activities are just async functions, they run like typical NodeJS code and can be cancelled and report heartbeats.
 
-`src/activities/greeter`
+`src/activities/greeter.ts`
 
 <!--SNIPSTART nodejs-hello-activity {"enable_source_link": false}-->
 <!--SNIPEND-->
@@ -34,7 +34,7 @@ Workflow interfaces are directly referenced by their implementation and maybe be
 
 Workflow interface declarations are optional, they're only required for generating type safe clients. It is considered good practice to declare an interface for each workflow.
 
-`src/interfaces/workflows`
+`src/interfaces/workflows.ts`
 
 <!--SNIPSTART nodejs-hello-workflow-interface {"enable_source_link": false}-->
 <!--SNIPEND-->
@@ -45,7 +45,7 @@ A workflow implmentation module may export a `workflow` object which can be type
 
 In a workflow, activities can be imported and called as regular functions. At runtime, the imported activities are replaced with stubs which schedule activities in the system.
 
-`src/workflows/example`
+`src/workflows/example.ts`
 
 <!--SNIPSTART nodejs-hello-workflow {"enable_source_link": false}-->
 <!--SNIPEND-->
