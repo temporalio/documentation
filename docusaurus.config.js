@@ -37,25 +37,21 @@ module.exports = {
               to: '/docs/concept-overview',
               activeBasePath: 'none',
               label: 'Concepts',
-              position: 'right',
             },
             {
               to: '/docs/server-introduction',
               activeBasePath: 'none',
               label: 'Server',
-              position: 'right',
             },
             {
               to: '/application-development',
               activeBasePath: 'none',
               label: 'SDKs',
-              position: 'right',
             },
             {
               to: '/docs/system-tooling-introduction',
               activeBasePath: 'none',
-              label: 'System Tools',
-              position: 'right',
+              label: 'System Tools'
             }
           ]
         },
