@@ -6,7 +6,8 @@ Follow the instructions below for setting up a local development environment.
 
 This project requires nodejs LTS version 12 (or later).
 
-Furthermore, you will need a C++ compiler installed (instuctions [here](https://github.com/nodejs/node-gyp)).
+Furthermore, you will need to install [node-gyp](https://github.com/nodejs/node-gyp#installation).
+
 If you run into errors during installation it is likely your environment is not properly set up.
 
 The worker package embeds the Temporal Core SDK which requires the Rust toolchain to compile.
@@ -34,9 +35,12 @@ cd ./example
 
 ### Compile Typescript
 
-```
-npm run build
-```
+Use one of the provided helper package scripts to compile Typescript.
+
+- `npm run build.watch` - Watch files and compile on change (recommended because it's most convenient).
+- `npm run build` - Compile Typescript once (you will need to rerun this every time edit the code).
+
+> NOTE: `ts-node` does not work with our project structure since it changes `__dirname` which affects the automatic workflow and activity [registration](./hello-world#worker) and we don't support running typescript directly in the [workflow v8 isolates](./determinism#how-a-workflow-is-executed).
 
 #### Run the Temporal server
 
@@ -47,11 +51,11 @@ Download, install, and run the [Temporal server](https://docs.temporal.io/docs/s
 - Run the worker
 
   ```sh
-  node lib/worker
+  npm start
   ```
 
 - Run a workflow
 
   ```sh
-  node lib/worker/test.js
+  node lib/worker/schedule-workflow.js
   ```

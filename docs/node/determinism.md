@@ -27,5 +27,5 @@ In order for the Typescript compiler to output ES modules we set the [`module` c
 - `uuid4` - provided by the runtime
 - `Date` - replaced by the runtime
 - `WeakRef | WeakMap | WeakSet` - can not be used as GC is non-deterministic, deleted by the runtime
-- Timers - `setTimeout` and `clearTimeout` are replaced by the runtime, prefer to use the exported `sleep` function
+- Timers - `setTimeout` and `clearTimeout` are replaced by the runtime, prefer to use the exported `sleep` function because it plays well with [cancellation](./workflow-scopes-and-cancellation).
 - Activities - use to run non-deterministic code, results are replayed from history
