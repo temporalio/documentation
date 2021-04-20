@@ -4,6 +4,7 @@
     [plugins.inputs]
 
     skipPatterns = ["#!", "www.google-analytics.com", "www.googletagmanager.com", "#main"]
+    pretty = true
 
 [[redirects]]
   from = "/docs/overview"
