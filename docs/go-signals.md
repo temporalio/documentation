@@ -46,7 +46,7 @@ channel and process the payload received with the signal.
 
 We can send a signal to this Workflow using the `SignalWorkflow()` function. To uniquely identify the Workflow,
 we need to pass in the `workflowID` and `runID`. Typically, we signal a
-Workflow from a different process, like a [starter](/docs/go-hello-world#workflow-starter).
+Workflow from a different process, like a [starter](/docs/go-hello-world/#workflow-starter).
 
 ```go
 temporal, err := client.NewClient(client.Options{})
