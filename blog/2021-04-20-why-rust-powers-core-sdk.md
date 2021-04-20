@@ -8,7 +8,7 @@ slug: why-rust-powers-core-sdk
 title: 'Why Rust powers Temporal’s new Core SDK'
 author: Spencer Judge & Vitaly Arbuzov
 author_title: Engineering
-author_image_url: ../static/img/spencer-vitaly-wide.png
+author_image_url: /img/spencer-vitaly-wide.png
 release_version: V1.8.1
 ---
 
