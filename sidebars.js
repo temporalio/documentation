@@ -276,6 +276,7 @@ module.exports = {
     'node/sdk-structure',
     'node/logging',
     'node/determinism',
+    'node/versioning',
     'node/workflow-scopes-and-cancellation',
   ],
   coreConcepts: [
