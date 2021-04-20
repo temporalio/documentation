@@ -8710,10 +8710,10 @@ snapdragon@^0.8.1:
     source-map-resolve "^0.5.0"
     use "^3.1.0"
 
-snipsync@1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/snipsync/-/snipsync-1.1.0.tgz#13d762dc5cb0c8ec3adf86596d092768e92fd511"
-  integrity sha512-l6Kmk4NPYeLVlo3LbiGZsuE6RJfMFQ+louZ2IMx4frHmbx8I1CKpDyBcFn+wf41KukaSB3BCmEddnfgxWFineA==
+snipsync@1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/snipsync/-/snipsync-1.2.0.tgz#9057cc1c0d6f1026a65aaae76a7012306b88b397"
+  integrity sha512-fjs18tnWidatRzKj3JGOvZ1wr0fpgM7BHyVGXMiDZdxNwxV7PLE15Fwwf2WRTSDARXREoB+gDsqhN2mJkpS2FQ==
   dependencies:
     "@octokit/rest" "^18.0.3"
     anzip "^0.2.0"
