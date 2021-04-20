@@ -25,7 +25,7 @@ const features = [
   {
     title: <>NodeJS</>,
     imageUrl: 'img/nodejs.svg',
-    goto: '/docs/node/getting-started',
+    goto: '/docs/node/reference/README',
   },
 ];
 

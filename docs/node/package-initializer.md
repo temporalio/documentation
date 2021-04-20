@@ -1,4 +1,4 @@
-# Package Initializer
+# @temporalio/create
 
 [![NPM](https://img.shields.io/npm/v/@temporalio/create)](https://www.npmjs.com/package/@temporalio/create)
 
@@ -15,7 +15,7 @@ npm init @temporalio /path/to/project [--use-yarn] [--temporal-version TEMPORAL_
 #### Flags
 
 - `--use-yarn` - configure the project with `yarn` (defaults to `npm`).
-- `--temporal-version` - use specified version or `@latest` if not provided.
+- `--temporal-version` - use specified SDK version or `@latest` if not provided.
 
 ### Project Structure
 

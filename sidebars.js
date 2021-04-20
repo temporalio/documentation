@@ -253,26 +253,30 @@ module.exports = {
     },
   ],
   nodejsSidebar: [
-    'node/reference/README',
+    {
+      type: 'doc',
+      id: 'node/reference/README',
+      label: 'Overview',
+    },
+    'node/getting-started',
+    'node/hello-world',
     {
       type: 'category',
-      collapsed: true,
-      label: 'NodeJS',
+      label: 'API Reference',
       items: [
-        'node/getting-started',
-        'node/hello-world',
-        {
-          type: 'doc',
-          id: 'node/reference/modules',
-          label: 'Reference',
-        },
-        'node/package-initializer',
-        'node/sdk-structure',
-        'node/logging',
-        'node/determinism',
-        'node/workflow-scopes-and-cancellation',
+        { type: 'doc', id: 'node/meta-package', label: 'temporalio' },
+        { type: 'doc', id: 'node/reference/modules/activity', label: '@temporalio/activity' },
+        { type: 'doc', id: 'node/reference/modules/workflow', label: '@temporalio/workflow' },
+        { type: 'doc', id: 'node/reference/modules/worker', label: '@temporalio/worker' },
+        { type: 'doc', id: 'node/reference/modules/client', label: '@temporalio/client' },
+        { type: 'doc', id: 'node/reference/modules/proto', label: '@temporalio/proto' },
+        { type: 'doc', id: 'node/package-initializer', label: '@temporalio/create' },
       ],
     },
+    'node/sdk-structure',
+    'node/logging',
+    'node/determinism',
+    'node/workflow-scopes-and-cancellation',
   ],
   coreConcepts: [
     {
@@ -319,4 +323,3 @@ module.exports = {
     },
   ],
 };
-

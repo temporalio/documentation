@@ -68,7 +68,14 @@ The worker connects to the service and runs workflows and activities.
 The client can be used to schedule workflows and send other requests to the temporal service.
 It can be used in any NodeJS process e.g an express app and does not depend on the worker.
 
-`src/worker/test.ts`
+`src/worker/schedule-workflow.ts`
 
 <!--SNIPSTART nodejs-hello-client {"enable_source_link": false}-->
 <!--SNIPEND-->
+
+### Testing
+
+There's no official support for testing workflows and activities.
+
+- Since activities are async functions they should be testable as long as you avoid using [Context](./reference/classes/activity.context) or are able to mock it.
+- You can test workflows by running them with a [WorkflowClient](./reference/interfaces/client.workflowclient).
