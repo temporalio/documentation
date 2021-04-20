@@ -44,7 +44,8 @@ In the example above, the Workflow code uses **workflow.GetSignalChannel** to op
 **workflow.Channel** for the named signal. We then use a [**workflow.Selector**](https://docs.temporal.io/docs/go-selectors) to wait on this
 channel and process the payload received with the signal.
 
-We can send a signal to this Workflow using the `SignalWorkflow()` function. To uniquely identify the Workflow,
+We can send a Signal to this Workflow using the `SignalWorkflow()` function.
+To uniquely identify the Workflow,
 we need to pass in the `workflowID` and `runID`. Typically, we signal a
 Workflow from a different process, like a [starter](/docs/go-hello-world/#workflow-starter).
 
