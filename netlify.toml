@@ -89,3 +89,54 @@
 [[redirects]]
   from = "/docs/go-workflow-testing"
   to = "/docs/go-testing"
+
+#
+# Server pages
+#
+[[redirects]]
+  from = "/docs/server-archive-data"
+  to = "/docs/server/archive-data"
+
+[[redirects]]
+  from = "/docs/server-configuration"
+  to = "/docs/server/configuration"
+
+[[redirects]]
+  from = "/docs/server-elasticsearch-setup"
+  to = "/docs/server/elasticsearch-setup"
+
+[[redirects]]
+  from = "/docs/server-event-types"
+  to = "/docs/server/event-types"
+
+[[redirects]]
+  from = "/docs/server-introduction"
+  to = "/docs/server/introduction"
+
+[[redirects]]
+  from = "/docs/server-namespaces"
+  to = "/docs/server/namespaces"
+
+[[redirects]]
+  from = "/docs/server-options"
+  to = "/docs/server/options"
+
+[[redirects]]
+  from = "/docs/server-production-deploy"
+  to = "/docs/server/production-deploy"
+
+[[redirects]]
+  from = "/docs/server-quick-install"
+  to = "/docs/server/quick-install"
+
+[[redirects]]
+  from = "/docs/server-security"
+  to = "/docs/server/security"
+
+[[redirects]]
+  from = "/docs/server-versions-and-dependencies"
+  to = "/docs/server/versions-and-dependencies"
+
+[[redirects]]
+  from = "/docs/server-workflow-search"
+  to = "/docs/server/workflow-search"

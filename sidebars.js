@@ -1,18 +1,18 @@
 module.exports = {
   serverSidebar: [
-    'server-introduction',
-    'server-quick-install',
-    'server-production-deployment',
+    'server/introduction',
+    'server/quick-install',
+    'server/production-deployment',
     'server-architecture',
-    'server-versions-and-dependencies',
-    'server-namespaces',
-    'server-workflow-search',
-    'server-elasticsearch-setup',
-    'server-options',
-    'server-security',
-    'server-configuration',
-    'server-archive-data',
-    'server-event-types',
+    'server/versions-and-dependencies',
+    'server/namespaces',
+    'server/workflow-search',
+    'server/elasticsearch-setup',
+    'server/options',
+    'server/security',
+    'server/configuration',
+    'server/archive-data',
+    'server/event-types',
     {
       type: 'category',
       label: 'Quick links',
@@ -58,7 +58,7 @@ module.exports = {
         {
           type: 'link',
           label: 'Server',
-          href: '/docs/server-introduction',
+          href: '/docs/server/introduction',
         },
         {
           type: 'link',
@@ -119,7 +119,7 @@ module.exports = {
         {
           type: 'link',
           label: 'Server',
-          href: '/docs/server-introduction',
+          href: '/docs/server/introduction',
         },
         {
           type: 'link',
@@ -178,7 +178,7 @@ module.exports = {
         {
           type: 'link',
           label: 'Server',
-          href: '/docs/server-introduction',
+          href: '/docs/server/introduction',
         },
         {
           type: 'link',
@@ -232,7 +232,7 @@ module.exports = {
         {
           type: 'link',
           label: 'Server',
-          href: '/docs/server-introduction',
+          href: '/docs/server/introduction',
         },
         {
           type: 'link',
@@ -301,7 +301,7 @@ module.exports = {
         {
           type: 'link',
           label: 'Server',
-          href: '/docs/server-introduction',
+          href: '/docs/server/introduction',
         },
         {
           type: 'link',

@@ -28,7 +28,7 @@ Keep reading or follow along with this video walkthrough:
 ## ![](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/repair-tools.png) Project setup
 
 Before starting, make sure you have looked over the [tutorial prerequisites](/docs/go-sdk-tutorial-prerequisites).
-Basically, make sure the Temporal Server is running (using [Docker is the fastest way](https://docs.temporal.io/docs/server-quick-install)), and your Go version is above v1.14.
+Basically, make sure the Temporal Server is running (using [Docker is the fastest way](https://docs.temporal.io/docs/server/quick-install)), and your Go version is above v1.14.
 
 This tutorial uses a fully working template application which can be downloaded as a zip or converted to a new repository in your own Github account and cloned. Github's ["Creating a Repository from a Template" guide](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-from-a-template#creating-a-repository-from-a-template) will walk you through the steps.
 
@@ -60,6 +60,35 @@ Here's a high-level illustration of what's happening:
 The Workflow function is the application entry point. This is what our money transfer Workflow looks like:
 
 <!--SNIPSTART money-transfer-project-template-go-workflow-->
+[workflow.go](https://github.com/temporalio/money-transfer-project-template-go/blob/master/workflow.go)
+```go
+func TransferMoney(ctx workflow.Context, transferDetails TransferDetails) error {
+	// RetryPolicy specifies how to automatically handle retries if an Activity fails.
+	retrypolicy := &temporal.RetryPolicy{
+		InitialInterval:    time.Second,
+		BackoffCoefficient: 2.0,
+		MaximumInterval:    time.Minute,
+		MaximumAttempts:    500,
+	}
+	options := workflow.ActivityOptions{
+		// Timeout options specify when to automatically timeout Actvitivy functions.
+		StartToCloseTimeout: time.Minute,
+		// Optionally provide a customized RetryPolicy.
+		// Temporal retries failures by default, this is just an example.
+		RetryPolicy: retrypolicy,
+	}
+	ctx = workflow.WithActivityOptions(ctx, options)
+	err := workflow.ExecuteActivity(ctx, Withdraw, transferDetails).Get(ctx, nil)
+	if err != nil {
+		return err
+	}
+	err = workflow.ExecuteActivity(ctx, Deposit, transferDetails).Get(ctx, nil)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+```
 <!--SNIPEND-->
 
 When you "start" a Workflow you are basically telling the Temporal server, "track the state of the Workflow with this function signature". Workers will execute the Workflow code below, piece by piece, relaying the execution events and results back to the server.
@@ -69,11 +98,37 @@ When you "start" a Workflow you are basically telling the Temporal server, "trac
 There are two ways to start a Workflow with Temporal, either via the SDK or via the [CLI](/docs/tctl). For this tutorial we used the SDK to start the Workflow, which is how most Workflows get started in a live environment. The call to the Temporal server can be done [synchronously or asynchronously](/docs/go-sync-vs-async-start). Here we do it asynchronously, so you will see the program run, tell you the transaction is processing, and exit.
 
 <!--SNIPSTART money-transfer-project-template-go-start-workflow-->
+[start/main.go](https://github.com/temporalio/money-transfer-project-template-go/blob/master/start/main.go)
+```go
+func main() {
+	// Create the client object just once per process
+	c, err := client.NewClient(client.Options{})
+	if err != nil {
+		log.Fatalln("unable to create Temporal client", err)
+	}
+	defer c.Close()
+	options := client.StartWorkflowOptions{
+		ID:        "transfer-money-workflow",
+		TaskQueue: app.TransferMoneyTaskQueue,
+	}
+	transferDetails := app.TransferDetails{
+		Amount:      54.99,
+		FromAccount: "001-001",
+		ToAccount:   "002-002",
+		ReferenceID: uuid.New().String(),
+	}
+	we, err := c.ExecuteWorkflow(context.Background(), options, app.TransferMoney, transferDetails)
+	if err != nil {
+		log.Fatalln("error starting TransferMoney workflow", err)
+	}
+	printResults(transferDetails, we.GetID(), we.GetRunID())
+}
+```
 <!--SNIPEND-->
 
 ### Running the Workflow
 
-Make sure the [Temporal server](/docs/server-quick-install) is running in a terminal, and then run start/main.go from the project root using the following command:
+Make sure the [Temporal server](/docs/server/quick-install) is running in a terminal, and then run start/main.go from the project root using the following command:
 
 ```bash
 go run start/main.go
@@ -112,11 +167,36 @@ Note that the Worker listens to the same Task Queue that the Workflow and Activi
 This is called "Task routing", and is a built-in mechanism for load balancing.
 
 <!--SNIPSTART money-transfer-project-template-go-worker-->
+[worker/main.go](https://github.com/temporalio/money-transfer-project-template-go/blob/master/worker/main.go)
+```go
+func main() {
+	// Create the client object just once per process
+	c, err := client.NewClient(client.Options{})
+	if err != nil {
+		log.Fatalln("unable to create Temporal client", err)
+	}
+	defer c.Close()
+	// This worker hosts both Worker and Activity functions
+	w := worker.New(c, app.TransferMoneyTaskQueue, worker.Options{})
+	w.RegisterWorkflow(app.TransferMoney)
+	w.RegisterActivity(app.Withdraw)
+	w.RegisterActivity(app.Deposit)
+	// Start listening to the Task Queue
+	err = w.Run(worker.InterruptCh())
+	if err != nil {
+		log.Fatalln("unable to start Worker", err)
+	}
+}
+```
 <!--SNIPEND-->
 
 Task Queues are defined by a simple string name:
 
 <!--SNIPSTART money-transfer-project-template-go-shared-task-queue-->
+[shared.go](https://github.com/temporalio/money-transfer-project-template-go/blob/master/shared.go)
+```go
+const TransferMoneyTaskQueue = "TRANSFER_MONEY_TASK_QUEUE"
+```
 <!--SNIPEND-->
 
 ### Running the Worker
@@ -146,7 +226,7 @@ Withdrawing $54.990002 from account 001-001. ReferenceId: 8e37aafe-5fb8-4649-99e
 > - This causes the server to send Activity Tasks to the Task Queue.
 > - The Worker then grabs each of the Activity Tasks in their respective order from the Task Queue and executes each of the corresponding Activities.
 >
-> Each of these are **History Events** that can be audited in Temporal Web (under the `History` tab next to `Summary`). Once a workflow is completed and closed, the full history will persist for a set retention period (typically 7-30 days) before being deleted. You can set up [the Archival feature](https://docs.temporal.io/docs/server-archive-data/) to send them to long term storage for compliance/audit needs.
+> Each of these are **History Events** that can be audited in Temporal Web (under the `History` tab next to `Summary`). Once a workflow is completed and closed, the full history will persist for a set retention period (typically 7-30 days) before being deleted. You can set up [the Archival feature](https://docs.temporal.io/docs/server/archive-data/) to send them to long term storage for compliance/audit needs.
 
 :::
 
@@ -176,6 +256,20 @@ Let your Workflow continue to run.
 Open the `activity.go` file and switch out the comments on the return statements such that the `Deposit()` function returns an error.
 
 <!--SNIPSTART money-transfer-project-template-go-activity-->
+[activity.go](https://github.com/temporalio/money-transfer-project-template-go/blob/master/activity.go)
+```go
+func Deposit(ctx context.Context, transferDetails TransferDetails) error {
+	fmt.Printf(
+		"\nDepositing $%f into account %s. ReferenceId: %s\n",
+		transferDetails.Amount,
+		transferDetails.ToAccount,
+		transferDetails.ReferenceID,
+	)
+	// Switch out comments on the return statements to simulate an error
+	//return fmt.Errorf("deposit did not occur due to an issue")
+	return nil
+}
+```
 <!--SNIPEND-->
 
 Save your changes and run the Worker. You will see the Worker complete the `Withdraw()` Activity function, but error when it attempts the `Deposit()` Activity function. The important thing to note here is that the Worker keeps retrying the `Deposit()` function.

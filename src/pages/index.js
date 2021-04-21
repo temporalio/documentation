@@ -16,7 +16,7 @@ const features = [
         Deploy and manage your own instance of the Temporal Server.
       </>
     ),
-    goto: '/docs/server-introduction',
+    goto: '/docs/server/introduction',
   },
   {
     title: <>Application development</>,

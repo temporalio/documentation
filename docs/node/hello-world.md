@@ -16,6 +16,11 @@ Activities are just async functions, they run like typical NodeJS code and can b
 `src/activities/greeter.ts`
 
 <!--SNIPSTART nodejs-hello-activity {"enable_source_link": false}-->
+```ts
+export async function greet(name: string): Promise<string> {
+  return `Hello, ${name}!`;
+}
+```
 <!--SNIPEND-->
 
 ### Workflows
@@ -37,6 +42,15 @@ Workflow interface declarations are optional, they're only required for generati
 `src/interfaces/workflows.ts`
 
 <!--SNIPSTART nodejs-hello-workflow-interface {"enable_source_link": false}-->
+```ts
+import { Workflow } from '@temporalio/workflow';
+
+// Extend the generic Workflow interface to check that Example is a valid workflow interface
+// Workflow interfaces are useful for generating type safe workflow clients
+export interface Example extends Workflow {
+  main(name: string): Promise<string>;
+}
+```
 <!--SNIPEND-->
 
 #### Implementation
@@ -48,6 +62,18 @@ In a Workflow, Activities can be imported and called as regular functions. At ru
 `src/workflows/example.ts`
 
 <!--SNIPSTART nodejs-hello-workflow {"enable_source_link": false}-->
+```ts
+import { Example } from '@interfaces/workflows';
+import { greet } from '@activities/greeter';
+
+// A workflow that simply calls an activity
+async function main(name: string): Promise<string> {
+  return greet(name);
+}
+
+// Declare the workflow's type to be checked by the Typescript compiler
+export const workflow: Example = { main };
+```
 <!--SNIPEND-->
 
 ### Worker
@@ -59,6 +85,24 @@ The Worker connects to the Service and runs Workflows and Activities.
 `src/worker/index.ts`
 
 <!--SNIPSTART nodejs-hello-worker {"enable_source_link": false}-->
+```ts
+import { Worker } from '@temporalio/worker';
+
+async function run() {
+  // Automatically locate and register activities and workflows
+  // (assuming package was bootstrapped with `npm init @temporalio`).
+  // Worker connects to localhost by default and uses console error for logging.
+  // Customize the worker by passing options a second parameter of `create()`.
+  const worker = await Worker.create(__dirname);
+  // Bind to the `tutorial` queue and start accepting tasks
+  await worker.run('tutorial');
+}
+
+run().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
+```
 <!--SNIPEND-->
 
 ### Client
@@ -71,6 +115,24 @@ It can be used in any NodeJS process e.g an express app and does not depend on t
 `src/worker/schedule-workflow.ts`
 
 <!--SNIPSTART nodejs-hello-client {"enable_source_link": false}-->
+```ts
+import { Connection } from '@temporalio/client';
+import { Example } from '@interfaces/workflows';
+
+async function run() {
+  // Connect to localhost and use the "default" namespace
+  const connection = new Connection();
+  // Create a typed client for the workflow defined above
+  const example = connection.workflow<Example>('example', { taskQueue: 'tutorial' });
+  const result = await example.start('Temporal');
+  console.log(result); // Hello, Temporal
+}
+
+run().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
+```
 <!--SNIPEND-->
 
 ### Testing

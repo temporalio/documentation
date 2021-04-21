@@ -12,7 +12,7 @@ sidebar_label: Go SDK introduction
 go get go.temporal.io/sdk@latest
 ```
 
-2. [Install and run the Temporal Server](/docs/server-quick-install) using `docker compose`.
+2. [Install and run the Temporal Server](/docs/server/quick-install) using `docker compose`.
 
 ## Application templates
 

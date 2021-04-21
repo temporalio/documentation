@@ -1,5 +1,5 @@
 ---
-id: server-quick-install
+id: quick-install
 title: Quick install Temporal Server for testing and local development
 sidebar_label: Quick install
 ---
@@ -11,7 +11,7 @@ There are two ways to quickly install and run the Temporal Server:
 - [Docker](#docker): Using `docker-compose` makes it easy to develop Workflows locally.
 - [Helm Charts](#helm-charts): Deploying the Server to [Kubernetes](https://kubernetes.io/) is an easy way to test the system and develop Workflows.
 
-We do not recommend using either of these methods in a [live (production) environment](/docs/server-production-deployment).
+We do not recommend using either of these methods in a [live (production) environment](/docs/server/production-deployment).
 
 ## Helm Charts
 

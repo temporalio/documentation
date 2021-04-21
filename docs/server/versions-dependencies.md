@@ -1,5 +1,5 @@
 ---
-id: server-versions-and-dependencies
+id: versions-and-dependencies
 title: Temporal Server versions and dependencies
 sidebar_label: Versions & dependencies
 ---
@@ -46,7 +46,7 @@ The only required dependency is a database, and there are multiple types of data
 ### Workflow search
 
 Temporal has built-in Workflow search functionality.
-To enhance this feature, Temporal supports an [integration with Elasticsearch](/docs/server-elasticsearch-setup).
+To enhance this feature, Temporal supports an [integration with Elasticsearch](/docs/server/elasticsearch-setup).
 
 - **Elasticsearch**
 	- Elasticsearch v7.7 is supported from Temporal version 1.7.0 onwards
@@ -67,7 +67,7 @@ Temporal emits metrics by default in a format that is supported by Prometheus. M
 ### Multi-cluster replication
 
 This is an experimental feature, most Temporal users do not need this.
-You should be on the latest Temporal version (v1.7+) to use this. 
+You should be on the latest Temporal version (v1.7+) to use this.
 Some Server versions require the use of event streaming software.
 See the note on event streaming dependency below.
 
@@ -75,7 +75,7 @@ See the note on event streaming dependency below.
 
 :::note Note on event streaming dependency
 
-Event streaming software as a dependency is only required when Elasticsearch is being used or when Temporal is deployed across multiple data centers. 
+Event streaming software as a dependency is only required when Elasticsearch is being used or when Temporal is deployed across multiple data centers.
 However, in future releases of Temporal, third party event streaming software will likely cease to be needed as dependency for both.
 
 

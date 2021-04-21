@@ -39,7 +39,7 @@ module.exports = {
               label: 'Concepts',
             },
             {
-              to: '/docs/server-introduction',
+              to: '/docs/server/introduction',
               activeBasePath: 'none',
               label: 'Server',
             },
@@ -116,7 +116,7 @@ module.exports = {
             },
             {
               label: 'Temporal Server',
-              to: '/docs/server-introduction',
+              to: '/docs/server/introduction',
             },
             {
               label: 'System Tools',
