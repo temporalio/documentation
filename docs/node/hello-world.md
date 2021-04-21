@@ -3,13 +3,13 @@
 In this tutorial we'll go over the different components that make up a Temporal project.
 To set it up see the [getting started](./getting-started) instuctions.
 
-The SDK steers developers to write their workflows and activities in TypeScript but vanilla JS is also supported. All examples in the documentation are written in TypeScript.
+The SDK steers developers to write their Workflows and activities in TypeScript but vanilla JS is also supported. All examples in the documentation are written in TypeScript.
 
 ### Activities
 
-[API reference](./reference/modules/activity)
+[API reference](https://nodejs.temporal.io/api/modules/activity)
 
-Activities are called from workflows in order to run non-deterministic code.
+Activities are called from Workflows in order to run non-deterministic code.
 
 Activities are just async functions, they run like typical NodeJS code and can be cancelled and report heartbeats.
 
@@ -20,15 +20,15 @@ Activities are just async functions, they run like typical NodeJS code and can b
 
 ### Workflows
 
-[API reference](./reference/modules/workflow)
+[API reference](https://nodejs.temporal.io/api/modules/workflow)
 
 Workflows are the core of the Temporal system, they abstract away the complexities of writing distributed programs.
 
-In the NodeJS SDK, each workflow runs in a separate V8 isolate to provide a [deterministic runtime](./determinism).
+In the NodeJS SDK, each Workflow runs in a separate V8 isolate to provide a [deterministic runtime](./determinism).
 
 #### Interface
 
-A workflow's interface is used for validating the implementation and generating a type safe [WorkflowClient](./reference/interfaces/client.workflowclient) and `ChildWorkflow` (not yet implemented).
+A Workflow's interface is used for validating the implementation and generating a type safe [WorkflowClient](https://nodejs.temporal.io/api/interfaces/client.workflowclient) and `ChildWorkflow` (not yet implemented).
 
 Workflow interfaces are directly referenced by their implementation and maybe be written in sync or async form meaning a method could return `number` or it could return `Promise<number>`.
 
@@ -52,7 +52,7 @@ In a workflow, activities can be imported and called as regular functions. At ru
 
 ### Worker
 
-[API reference](./reference/modules/worker)
+[API reference](https://nodejs.temporal.io/api/modules/worker)
 
 The worker connects to the service and runs workflows and activities.
 
@@ -63,7 +63,7 @@ The worker connects to the service and runs workflows and activities.
 
 ### Client
 
-[API reference](./reference/modules/client)
+[API reference](https://nodejs.temporal.io/api/modules/client)
 
 The client can be used to schedule workflows and send other requests to the temporal service.
 It can be used in any NodeJS process e.g an express app and does not depend on the worker.
@@ -77,5 +77,5 @@ It can be used in any NodeJS process e.g an express app and does not depend on t
 
 There's no official support for testing workflows and activities.
 
-- Since activities are async functions they should be testable as long as you avoid using [Context](./reference/classes/activity.context) or are able to mock it.
-- You can test workflows by running them with a [WorkflowClient](./reference/interfaces/client.workflowclient).
+- Since activities are async functions they should be testable as long as you avoid using [Context](https://nodejs.temporal.io/api/classes/activity.context) or are able to mock it.
+- You can test Workflows by running them with a [WorkflowClient](https://nodejs.temporal.io/api/interfaces/client.workflowclient).
