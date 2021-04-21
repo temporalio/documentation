@@ -21,7 +21,7 @@ module.exports = {
         {
           type: 'link',
           label: 'Concepts',
-          href: '/docs/concept-overview',
+          href: '/docs/concepts/introduction',
         },
         {
           type: 'link',
@@ -53,7 +53,7 @@ module.exports = {
         {
           type: 'link',
           label: 'Concepts',
-          href: '/docs/concept-overview',
+          href: '/docs/concepts/introduction',
         },
         {
           type: 'link',
@@ -114,7 +114,7 @@ module.exports = {
         {
           type: 'link',
           label: 'Concepts',
-          href: '/docs/concept-overview',
+          href: '/docs/concepts/introduction',
         },
         {
           type: 'link',
@@ -173,7 +173,7 @@ module.exports = {
         {
           type: 'link',
           label: 'Concepts',
-          href: '/docs/concept-overview',
+          href: '/docs/concepts/introduction',
         },
         {
           type: 'link',
@@ -227,7 +227,7 @@ module.exports = {
         {
           type: 'link',
           label: 'Concepts',
-          href: '/docs/concept-overview',
+          href: '/docs/concepts/introduction',
         },
         {
           type: 'link',
@@ -278,13 +278,13 @@ module.exports = {
       label: 'Core concepts',
       collapsed: false,
       items: [
-        'concept-overview',
-        'concept-workflows',
-        'concept-activities',
-        'concept-workers',
-        'concept-task-queues',
-        'concept-signals',
-        'concept-queries',
+        'concepts/introduction',
+        'concepts/workflows',
+        'concepts/activities',
+        'concepts/workers',
+        'concepts/task-queues',
+        'concepts/signals',
+        'concepts/queries',
       ],
     },
     {
