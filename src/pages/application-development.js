@@ -34,11 +34,13 @@ function Feature({ imageUrl, title, goto }) {
   return (
     <div className={clsx('col col--3', styles.feature)}>
       <h3>{title}</h3>
-      {imgUrl && (
-        <div className="text--center">
-          <img className={styles.featureImage} src={imgUrl} alt={title} />
-        </div>
-      )}
+      <Link to={goto}>
+        {imgUrl && (
+          <div className="text--center">
+            <img className={styles.featureImage} src={imgUrl} alt={title} />
+          </div>
+        )}
+      </Link>
       <div className={styles.buttons}>
         <Link className={clsx('button button--outline button--primary button--md', styles.getStarted)} to={goto}>
           Get Started
