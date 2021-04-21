@@ -15,7 +15,7 @@ release_version: V1.8.1
 <!--truncate-->
 
 
-Perhaps you’ve heard that here at Temporal, we’re working on new SDKs to support more languages. I’m an engineer on our SDK team, and I’m writing here to elaborate on our challenges and how we’re meeting them.
+Perhaps you’ve heard that here at Temporal, we’re working on new SDKs to support more languages. We are engineers on the SDK team and wanted to elaborate on our challenges and how we’re meeting them.
 
 Temporal faces some unique challenges with respect to our client side libraries, namely:
 
