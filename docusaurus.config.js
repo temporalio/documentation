@@ -40,7 +40,7 @@ module.exports = {
             },
             {
               to: '/docs/server/introduction',
-              activeBasePath: 'none',
+              activeBasePath: '/docs/server/',
               label: 'Server',
             },
             {
