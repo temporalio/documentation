@@ -45,11 +45,13 @@ function Feature({imageUrl, title, description, goto}) {
   return (
     <div className={clsx('col col--4', styles.featuresMarginBottom)}>
       <h3>{title}</h3>
-      {imgUrl && (
-        <div className="text--center">
-          <img className={styles.featureImage} src={imgUrl} alt={title} />
-        </div>
-      )}
+      <Link to={useBaseUrl(goto)}>
+        {imgUrl && (
+          <div className="text--center">
+            <img className={styles.featureImage} src={imgUrl} alt={title} />
+          </div>
+        )}
+      </Link>
       <p>{description}</p>
       <div className={styles.buttons}>
         <Link
@@ -187,7 +189,9 @@ export default function Home() {
         <div className="container">
           <h2>Core concepts</h2>
           <div className="text--center">
-            <img className={styles.featureImage} src={useBaseUrl("img/concept-map.svg")} alt="concepts" />
+            <a href={useBaseUrl("img/concept-map.svg")}>
+              <img className={styles.featureImage} src={useBaseUrl("img/concept-map.svg")} alt="concepts" />
+            </a>
           </div>
           <p>Review some of Temporal's core concepts and building blocks.</p>
           <div className={styles.buttons}>
