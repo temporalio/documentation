@@ -1,5 +1,6 @@
 module.exports = {
   serverSidebar: [
+
     {
       type: 'category',
       label: 'Server',
@@ -8,7 +9,6 @@ module.exports = {
         'server/introduction',
         'server/quick-install',
         'server/production-deployment',
-        'server-architecture',
         'server/versions-and-dependencies',
         'server/namespaces',
         'server/workflow-search',
@@ -349,6 +349,15 @@ module.exports = {
         'concepts/task-queues',
         'concepts/signals',
         'concepts/queries',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'System design',
+      collapsed: false,
+      items: [
+        'system-design/architecture',
+        'system-design/how-it-works',
       ],
     },
     {

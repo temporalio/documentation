@@ -67,7 +67,7 @@ Recommended configuration debugging techniques for production Temporal Server se
 
 ### Debugging Workflows
 
-> ⚠️ This is a basic guide to troubleshooting/debugging Temporal applications. It is work-in-progress and we encourage [reading about our Architecture](https://docs.temporal.io/docs/server-architecture) for more detail. The better you understand how Temporal works, the better you will be at debugging your workflows.
+> ⚠️ This is a basic guide to troubleshooting/debugging Temporal applications. It is work-in-progress and we encourage [reading about our Architecture](https://docs.temporal.io/docs/system-design/architecture) for more detail. The better you understand how Temporal works, the better you will be at debugging your workflows.
 
 If you have the time, we recommend [watching our 19 minute video guide on YouTube](https://youtu.be/PqcVKIxI0nU) which demonstrates the debugging explained below.
 
@@ -133,7 +133,7 @@ Topics this document will cover in future: (for now, please search/ask on the fo
 
 ## Further Reading
 
-Understanding the [Temporal Server architecture](https://docs.temporal.io/docs/server-architecture/) can help you debug and troubleshoot production deployment issues.
+Understanding the [Temporal Server architecture](https://docs.temporal.io/docs/system-design/architecture/) can help you debug and troubleshoot production deployment issues.
 
 ## External Runbooks
 

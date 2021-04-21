@@ -1,6 +1,6 @@
 ---
-id: server-architecture
-title: Temporal Server architecture
+id: architecture
+title: System architecture
 sidebar_label: Architecture
 ---
 

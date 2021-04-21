@@ -40,7 +40,7 @@
 [[redirects]]
   from = "/docs/task-queues"
   to = "/docs/concepts/task-queues"
-  
+
 [[redirects]]
   from = "/docs/concept-workers"
   to = "/docs/concepts/workers"
@@ -426,7 +426,7 @@
 [[redirects]]
   from = "/docs/server-namespaces"
   to = "/docs/server/namespaces"
-  
+
 [[redirects]]
   from = "/docs/namespaces"
   to = "/docs/server/namespaces"
@@ -466,3 +466,10 @@
 [[redirects]]
   from = "/docs/system-tools"
   to = "/docs/system-tools/introduction"
+
+#
+# System design redirects
+#
+[[redirects]]
+  from = "/docs/server-architecture"
+  to = "/docs/system-design/architecture"
