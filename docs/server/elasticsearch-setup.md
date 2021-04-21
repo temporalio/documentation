@@ -1,13 +1,13 @@
 ---
-id: server-elasticsearch-setup
+id: elasticsearch-setup
 title: Set up Elasticsearch for the Temporal Server
 sidebar_label: Set up Elasticsearch
 ---
 
 ## Overview
 
-You can integrate [Elasticsearch](https://www.elastic.co/elasticsearch/) with the Temporal Server to enhance [Workflow search](/docs/server-workflow-search) functionality.
-The [Server versions and dependencies](/docs/server-versions-and-dependencies/#workflow-search) page describes which versions require the use of Kafka, and which ones do not.
+You can integrate [Elasticsearch](https://www.elastic.co/elasticsearch/) with the Temporal Server to enhance [Workflow search](/docs/server/workflow-search) functionality.
+The [Server versions and dependencies](/docs/server/versions-and-dependencies/#workflow-search) page describes which versions require the use of Kafka, and which ones do not.
 
 Integration with Elasticsearch is defined in the Server configuration files.
 If you are not using Kafka, all you need to do is edit the `persistence` section.
@@ -51,7 +51,7 @@ persistence:
 :::note
 
 You should only edit this configuration if you are using a Server version that supports the use of Kafka and you are choosing to use it.
-Check the [Server versions and dependencies](/docs/server-versions-and-dependencies/#workflow-search) page for details.
+Check the [Server versions and dependencies](/docs/server/versions-and-dependencies/#workflow-search) page for details.
 
 :::
 

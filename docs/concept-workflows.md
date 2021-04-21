@@ -189,7 +189,7 @@ From a developer's perspective, it is named and managed as a simple string value
 
 You may assign a custom Workflow Id to a Workflow.
 This Id is meant for business level identification such as a customer Id or an order Id.
-The Temporal Server enforces the uniqueness of the Id, within a [Namespace](/docs/server-namespaces) based on the Workflow Id re-use policy.
+The Temporal Server enforces the uniqueness of the Id, within a [Namespace](/docs/server/namespaces) based on the Workflow Id re-use policy.
 
 Any attempt to start a Workflow that has the same Id of a Workflow with a re-use policy that does not allow it, is going to fail with a "Workflow execution already started" error.
 Note that, it is not possible to have two open Workflows with the same Workflow Id, regardless of the re-use policy.
@@ -236,7 +236,7 @@ Scheduling is based on UTC time.
 ### Search attributes
 
 When you start a Workflow, you can configure it with search attributes that can be used in complex Workflow visibility search queries.
-Read the [search attributes guide](/docs/server-workflow-search) to learn how to enable search attributes in Workflows.
+Read the [search attributes guide](/docs/server/workflow-search) to learn how to enable search attributes in Workflows.
 
 ### Memos
 

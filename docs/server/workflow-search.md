@@ -1,5 +1,5 @@
 ---
-id: server-workflow-search
+id: workflow-search
 title: Search for Temporal Server Workflows
 sidebar_label: Search Workflows
 ---
@@ -22,7 +22,7 @@ WorkflowType = "main.Workflow" and ExecutionStatus != 0 and (StartTime > "2019-0
 Without Elasticsearch, search functionality is limited to listing Workflows by Id and type (open/closed), and search queries are run directly against the Temporal Server database.
 Elasticsearch takes on the search query request load, relieving potential performance issues that can occur.
 This is why we highly recommend running Temporal with Elasticsearch for any use-case that spawns more than just a few Workflows.
-Follow the [Elasticsearch setup instructions](/docs/server-elasticsearch-setup) to do that.
+Follow the [Elasticsearch setup instructions](/docs/server/elasticsearch-setup) to do that.
 The rest of this page assumes your instance of Temporal is integrated with Elasticsearch.
 
 ## Search attributes
@@ -153,7 +153,7 @@ Note that, if a predicate on `ExecutionTime` is included, only the cron/retry Wo
 ## Local testing
 
 1. Increase the Docker memory to anything higher than 6GB (Navigate to Docker -> Preferences -> Advanced -> Memory).
-2. Use the [Quick start guide](/docs/server-quick-install) to clone the temporalio/docker-compose repo.
+2. Use the [Quick start guide](/docs/server/quick-install) to clone the temporalio/docker-compose repo.
 3. Start the Temporal Server using the `docker-compose-es.yml` file, which contains Cassandra, Kafka, Zookeeper, and Elasticsearch.
 
 ```bash

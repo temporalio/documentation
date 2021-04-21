@@ -58,4 +58,4 @@ The created project comes with some helper package scripts.
 [ts-project-references]: https://www.typescriptlang.org/tsconfig#references
 [npm-init]: https://docs.npmjs.com/cli/v6/commands/npm-init
 [tsconfig-paths]: https://www.typescriptlang.org/tsconfig#paths
-[local-server]: /docs/server-quick-install
+[local-server]: /docs/server/quick-install
