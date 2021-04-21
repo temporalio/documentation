@@ -1,5 +1,5 @@
 ---
-id: concept-activities
+id: activities
 title: Activities
 sidebar_label: Activities
 ---

@@ -1,5 +1,5 @@
 ---
-id: concept-task-queues
+id: task-queues
 title: Task Queues
 sidebar_label: Task Queues
 ---

@@ -1,5 +1,5 @@
 ---
-id: concept-signals
+id: signals
 title: Signals
 sidebar_label: Signals
 ---

@@ -7,20 +7,32 @@
     pretty = true
 
 [[redirects]]
-  from = "/docs/overview"
-  to = "/docs/concept-overview"
+  from = "/docs/concept-overview"
+  to = "/docs/concepts/introduction"
 
 [[redirects]]
-  from = "/docs/activities"
-  to = "/docs/concept-activities"
+  from = "/docs/concept-workflows"
+  to = "/docs/concepts/workflows"
 
 [[redirects]]
-  from = "/docs/workflows"
-  to = "/docs/concept-workflows"
+  from = "/docs/concept-activities"
+  to = "/docs/concepts/activities"
 
 [[redirects]]
-  from = "/docs/events"
-  to = "/docs/signals"
+  from = "/docs/concept-signals"
+  to = "/docs/concepts/signals"
+
+[[redirects]]
+  from = "/docs/concept-queries"
+  to = "/docs/concepts/queries"
+
+[[redirects]]
+  from = "/docs/concept-task-queues"
+  to = "/docs/concepts/task-queues"
+
+[[redirects]]
+  from = "/docs/concept-workers"
+  to = "/docs/concepts/workers"
 
 [[redirects]]
   from = "/docs/concept-namespaces"

@@ -1,11 +1,11 @@
 ---
-id: concept-overview
-title: Conceptual Overview
-sidebar_label: Overview
+id: introduction
+title: Concepts introduction
+sidebar_label: Introduction
 description: This guide will help you build your own resilient applications using Temporal Workflow as Code™
 ---
 
-import { ResponsivePlayer } from '../src/components'
+import { ResponsivePlayer } from '../../src/components'
 
 ## Modern problems
 
@@ -48,12 +48,12 @@ If persistence nodes are lost or unreachable, your Workflows will not progress, 
 
 Temporal SDKs enable you to build applications around a set of key concepts.
 
-- [Workflows](/docs/concept-workflows) - Functions or object methods that are the entry point and base of your application.
-- [Activities](/docs/concept-activities) - Functions or object methods that handle non-deterministic business logic.
-- [Workers](/docs/concept-workers) - Processes running on physical or virtual machines that execute Workflow and Activity code.
-- [Signals](/docs/concept-signals) - Write-only calls to Workflows that can update the variable values and Workflow state.
-- [Queries](/docs/concept-queries) - Read-only calls to Workflows that can retrieve function return values and Workflow state.
-- [Task Queues](/docs/concept-task-queues) - A routing mechanism that enables load balancing.
+- [Workflows](/docs/concepts/workflows) - Functions or object methods that are the entry point and base of your application.
+- [Activities](/docs/concepts/activities) - Functions or object methods that handle non-deterministic business logic.
+- [Workers](/docs/concepts/workers) - Processes running on physical or virtual machines that execute Workflow and Activity code.
+- [Signals](/docs/concepts/signals) - Write-only calls to Workflows that can update the variable values and Workflow state.
+- [Queries](/docs/concepts/queries) - Read-only calls to Workflows that can retrieve function return values and Workflow state.
+- [Task Queues](/docs/concepts/task-queues) - A routing mechanism that enables load balancing.
 
 Each of the language-specific SDKs may present these concepts to the developer in a slightly different way, but the idea behind them remains the same.
 Select from the list above, or read on to learn more about each of these developer-facing concepts and what they mean.
