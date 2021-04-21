@@ -196,7 +196,7 @@ export default function Home() {
               'button button--outline button--primary button--md',
               styles.getStarted,
             )}
-            to={useBaseUrl("/docs/concept-overview")}>
+            to={useBaseUrl("/docs/concepts/introduction")}>
             Learn more
             </Link>
           </div>

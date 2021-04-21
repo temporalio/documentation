@@ -1,5 +1,5 @@
 ---
-id: concept-workflows
+id: workflows
 title: Workflows
 sidebar_label: Workflows
 description: The core abstraction of the Temporal solution is a fault-oblivious stateful Workflow.
@@ -79,7 +79,7 @@ public class SubscriptionWorkflowImpl implements SubscriptionWorkflow {
 }
 ```
 
-Again, it is important to note that this code directly implements the business logic, and if any of the invoked operations (aka [Activities](/docs/concept-activities)) take a long time, the code is not going to change.
+Again, it is important to note that this code directly implements the business logic, and if any of the invoked operations (aka [Activities](/docs/concepts/activities)) take a long time, the code is not going to change.
 
 It is completely okay to be blocked on `chargeMonthlyFee` for a day or more if the downstream processing service is down or not responding.
 In the same way, it is a completely normal operation to sleep for 30 days directly inside the Workflow code.
@@ -95,7 +95,7 @@ This includes the ability to set timeouts for Workflow execution, a Retry Policy
 ### Timeout settings
 
 It's sometimes necessary to limit the amount of time that a specific Workflow can run.
-Though, unlike [Activities](/docs/concept-activities), Workflow timeouts are available primarily to protect the system from "runaway" Workflows that may end up consuming too many resources, and not intended to be used as a part of the business logic.
+Though, unlike [Activities](/docs/concepts/activities), Workflow timeouts are available primarily to protect the system from "runaway" Workflows that may end up consuming too many resources, and not intended to be used as a part of the business logic.
 There are a few important things to consider with Workflow timeout settings:
 
 1. When a Workflow times out, it is terminated without any notifications available to another application.
@@ -130,7 +130,7 @@ The main reason for increasing the default value would be to accommodate a Workf
 There may be scenarios where you need to retry a Workflow's execution from the very beginning.
 In this case, you can supply a Retry Policy when you start the Workflow.
 However, the intention is that Workflows are written such that they would never fail on intermittent issues.
-[Activities](/docs/concept-activities) are made available to handle that kind of logic, and thus retrying Workflows is rare.
+[Activities](/docs/concepts/activities) are made available to handle that kind of logic, and thus retrying Workflows is rare.
 The exceptions tend to be [cron scheduled Workflows](#cron-schedule) or some other stateless always-running Workflows that benefit from retries.
 
 :::note
@@ -178,8 +178,8 @@ In this case you can specify them such that if they occur, the Workflow will not
 
 ### The Task Queue
 
-The only required Workflow options parameter is the name of a [Task Queue](/docs/concept-task-queues).
-Read the [Task Queues concept page](/docs/concept-task-queues) for a better overview.
+The only required Workflow options parameter is the name of a [Task Queue](/docs/concepts/task-queues).
+Read the [Task Queues concept page](/docs/concepts/task-queues) for a better overview.
 
 Essentially, a Task Queue is a mechanism where any given Worker knows which piece of code to execute next.
 A Workflow can only use one Task Queue, just as a Worker can only subscribe to a single Task Queue.
@@ -275,7 +275,7 @@ This keeps the event history within limits, but continues the logic execution.
 
 :::note
 
-If you are using [Signals](/docs/concept-signals) with the Go SDK, you should make sure to do an asynchronous drain on the Signal channel or the Signals will be lost.
+If you are using [Signals](/docs/concepts/signals) with the Go SDK, you should make sure to do an asynchronous drain on the Signal channel or the Signals will be lost.
 
 :::
 

@@ -1,5 +1,5 @@
 ---
-id: concept-queries
+id: queries
 title: Queries
 sidebar_label: Queries
 ---
