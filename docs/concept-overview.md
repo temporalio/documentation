@@ -30,7 +30,7 @@ Watch this 2-minute video to get a better sense of what that means:
 
 The Temporal solution consists of a programming framework (Temporal SDK) and a backend service (Temporal Server).
 
-The [Temporal Server](/docs/server-introduction) provides a durable virtual memory that is not linked to any specific process.
+The [Temporal Server](/docs/server/introduction) provides a durable virtual memory that is not linked to any specific process.
 It preserves the full application state (including function stacks with local variables) across all kinds of hosting and software related failures.
 
 A [Temporal SDK](/application-development) then enables you to write your application code using the full power of the programming language, while the Temporal Server handles the durability, availability, and scalability of the application.
@@ -41,7 +41,7 @@ In terms of CAP theorem, each Temporal cluster is eventually available and highl
 - Because Temporal makes it easy to retry Activities and horizontally scale resources, availability loss doesn't result in a fault, but in increased latency.
 - Network failures are prevented from reaching the application level.
 If persistence nodes are lost or unreachable, your Workflows will not progress, but the data will still be highly consistent.
-- The optional [multi-cluster replication feature](https://docs.temporal.io/docs/server-versions-and-dependencies/#multi-cluster-replication) greatly increases system availability.
+- The optional [multi-cluster replication feature](https://docs.temporal.io/docs/server/versions-and-dependencies/#multi-cluster-replication) greatly increases system availability.
 :::
 
 ## Core concepts

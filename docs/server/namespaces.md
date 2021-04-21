@@ -1,5 +1,5 @@
 ---
-id: server-namespaces
+id: namespaces
 title: Temporal Server Namespaces
 sidebar_label: Namespaces
 ---

@@ -44,7 +44,7 @@ Use one of the provided helper package scripts to compile Typescript.
 
 #### Run the Temporal server
 
-Download, install, and run the [Temporal server](https://docs.temporal.io/docs/server-quick-install) via docker-compose. It is easy to do and you can keep it running in the background while you build applications.
+Download, install, and run the [Temporal server](https://docs.temporal.io/docs/server/quick-install) via docker-compose. It is easy to do and you can keep it running in the background while you build applications.
 
 #### Test your Workflow
 

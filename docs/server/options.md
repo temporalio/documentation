@@ -1,5 +1,5 @@
 ---
-id: server-options
+id: options
 title: Temporal Server options
 sidebar_label: Start options
 ---
@@ -70,7 +70,7 @@ s := temporal.NewServer(
 
 ### WithAuthorizer
 
-Sets a low level [authorization mechanism](/docs/server-security/#authorizer-plugin-interface) that determines whether to allow or deny inbound API calls.
+Sets a low level [authorization mechanism](/docs/server/security/#authorizer-plugin-interface) that determines whether to allow or deny inbound API calls.
 
 ```go
 s := temporal.NewServer(
@@ -91,7 +91,7 @@ s := temporal.NewServer(
 
 ### WithClaimMapper
 
-Configures a [mechanism to map roles](/docs/server-security/#claimmapper-plugin-interface) to `Claims` for authorization.
+Configures a [mechanism to map roles](/docs/server/security/#claimmapper-plugin-interface) to `Claims` for authorization.
 
 ```go
 s := temporal.NewServer(

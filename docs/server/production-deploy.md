@@ -1,12 +1,12 @@
 ---
-id: server-production-deployment
+id: production-deployment
 title: Temporal Server self-hosted production deployment
 sidebar_label: Production deployment
 ---
 
 ## Overview
 
-While a lot of effort has been made to easily run and test the Temporal Server in a development environment (see the [Quick install guide](/docs/server-quick-install)), there is far less of an established framework for deploying Temporal to a live (production) environment.
+While a lot of effort has been made to easily run and test the Temporal Server in a development environment (see the [Quick install guide](/docs/server/quick-install)), there is far less of an established framework for deploying Temporal to a live (production) environment.
 That is because the set up of the Server depends very much on the intended use-case and the hosting infrastructure.
 
 This page is dedicated to providing a "first principles" approach to self-hosting the Temporal Server.
@@ -16,28 +16,28 @@ As a reminder, experts are accessible via the [Community forum](https://communit
 
 ### Prerequisites
 
-The Temporal Server is a Go application which you can [import](https://docs.temporal.io/docs/server-options) or run as a binary.
+The Temporal Server is a Go application which you can [import](https://docs.temporal.io/docs/server/options) or run as a binary.
 
 The minimum dependency is a database.
 The Server supports [Cassandra](https://cassandra.apache.org/), [MySQL](https://www.mysql.com/), or [PostgreSQL](https://www.postgresql.org/).
 Further dependencies are only needed to support optional features.
-For example, enhanced Workflow search can be achieved using [ElasticSearch](/docs/server-elasticsearch-setup).
+For example, enhanced Workflow search can be achieved using [ElasticSearch](/docs/server/elasticsearch-setup).
 And, monitoring and observability are available with [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/).
 
-See the [versions & dependencies page](/docs/server-versions-and-dependencies/) for precise versions we support together with these features.
+See the [versions & dependencies page](/docs/server/versions-and-dependencies/) for precise versions we support together with these features.
 
 ### Configuration
 
-At minimum, the `development.yaml` file needs to have the [`global`](/docs/server-configuration/#global) and [`persistence`](https://docs.temporal.io/docs/server-configuration/#persistence) parameters defined.
+At minimum, the `development.yaml` file needs to have the [`global`](/docs/server/configuration/#global) and [`persistence`](https://docs.temporal.io/docs/server/configuration/#persistence) parameters defined.
 
-The [Server configuration reference](/docs/server-configuration) has a more complete list of possible parameters.
+The [Server configuration reference](/docs/server/configuration) has a more complete list of possible parameters.
 
 ### Scaling and Metrics
 
 The requirements of your Temporal system will vary widely based on your intended production workload.
-You will want to run your own proof of concept tests and watch for key metrics to understand the system health and scaling needs. 
+You will want to run your own proof of concept tests and watch for key metrics to understand the system health and scaling needs.
 
-- **[Configure your metrics subsystem](https://docs.temporal.io/docs/server-configuration/#metrics).** Temporal supports three metrics providers out of the box: [StatsD](https://github.com/statsd/statsd), [Prometheus](https://prometheus.io/), and [M3](https://m3db.io/).
+- **[Configure your metrics subsystem](https://docs.temporal.io/docs/server/configuration/#metrics).** Temporal supports three metrics providers out of the box: [StatsD](https://github.com/statsd/statsd), [Prometheus](https://prometheus.io/), and [M3](https://m3db.io/).
 - **Set up monitoring.** You can use these [Grafana dashboards](https://github.com/temporalio/dashboards) as a starting point.
 - **Load testing.** You can use [Maru](https://github.com/temporalio/maru/) ([author's guide here](https://mikhail.io/2021/03/maru-load-testing-tool-for-temporal-workflows/)) or write your own.
 
@@ -87,7 +87,7 @@ Reading execution histories is one of the more reliable ways of debugging:
 
 Here, you can see the exact sequence of events that has happened so far, which includes the relevant state for each event and details about what went wrong or what is preventing the next correct event.
 There are about 40 system events in total.
-See our [Temporal Server Event Types reference](https://docs.temporal.io/docs/server-event-types/) for detailed descriptions.
+See our [Temporal Server Event Types reference](https://docs.temporal.io/docs/server/event-types/) for detailed descriptions.
 
 #### Viewing Stack Traces on Temporal Web
 
