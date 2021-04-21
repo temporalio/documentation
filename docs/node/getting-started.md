@@ -40,7 +40,7 @@ Use one of the provided helper package scripts to compile Typescript.
 - `npm run build.watch` - Watch files and compile on change (recommended because it's most convenient).
 - `npm run build` - Compile Typescript once (you will need to rerun this every time edit the code).
 
-> NOTE: `ts-node` does not work with our project structure since it changes `__dirname` which affects the automatic Workflow and Activity [registration](./hello-world#worker) and we don't support running typescript directly in the [Workflow v8 isolates](./determinism#how-a-workflow-is-executed).
+> NOTE: `ts-node` does not work with our project structure since it changes `__dirname` which affects the automatic Workflow and Activity [registration](/docs/node/hello-world/#worker) and we don't support running typescript directly in the [Workflow v8 isolates](/docs/node/determinism/#how-a-workflow-is-executed).
 
 #### Run the Temporal server
 
