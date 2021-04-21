@@ -22,13 +22,13 @@ npm init @temporalio /path/to/project [--use-yarn] [--temporal-version TEMPORAL_
 The generated project consists of 4 sub-projects with typescript [project references][ts-project-references].
 
 ```
-src/worker/ -> worker code
-src/interfaces/ -> workflow interfaces
-src/workflows/ -> workflows implementations
-src/activities/ -> activities implementations
+src/worker/ -> Worker code
+src/interfaces/ -> Workflow interfaces
+src/workflows/ -> Workflow implementations
+src/activities/ -> Activity implementations
 ```
 
-This code structure is required for enabling workflows - which run in an [isolated environment](#workflows) - to specify a custom `tsconfig.json` than the rest of the project.
+This code structure is required for enabling Workflows - which run in an [isolated environment](#workflows) - to specify a custom `tsconfig.json` than the rest of the project.
 
 #### References
 
@@ -53,7 +53,7 @@ The created project comes with some helper package scripts.
 - Compile the project with one of the commands above
 - Download, install, and run the [Temporal server][local-server] via docker-compose
 - Start the worker `node lib/worker`
-- In a new terminal, use the provided client to start a workflow `node lib/worker/test.js`
+- In a new terminal, use the provided client to start a Workflow `node lib/worker/test.js`
 
 [ts-project-references]: https://www.typescriptlang.org/tsconfig#references
 [npm-init]: https://docs.npmjs.com/cli/v6/commands/npm-init
