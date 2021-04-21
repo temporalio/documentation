@@ -10,15 +10,15 @@ Furthermore, you will need to install [node-gyp](https://github.com/nodejs/node-
 
 If you run into errors during installation it is likely your environment is not properly set up.
 
-The worker package embeds the Temporal Core SDK which requires the Rust toolchain to compile.
-We've provided prebuilt binaries for the worker for:
+The Worker package embeds the Temporal Core SDK which requires the Rust toolchain to compile.
+We've provided prebuilt binaries for the Worker for:
 
 - Mac with an Intel chip: `x86_64-apple-darwin`
 - Mac with an Apple chip: `aarch64-apple-darwin`
 - Linux with x86_64 architecture: `x86_64-unknown-linux-gnu`
 - Windows with x86_64 architecture: `x86_64-pc-windows-gnu` (Windows is not yet supported but it is a [priority for us](https://github.com/temporalio/sdk-node/issues/12)).
 
-If you need to compile the worker yourself, set up the Rust toolchain by following the instructions [here](https://rustup.rs/).
+If you need to compile the Worker yourself, set up the Rust toolchain by following the instructions [here](https://rustup.rs/).
 
 > NOTE: Macs with an Apple chip require NodeJS 15 installed from source, the easiest way to install it is using [`nvm`](https://github.com/nvm-sh/nvm).
 
@@ -40,21 +40,21 @@ Use one of the provided helper package scripts to compile Typescript.
 - `npm run build.watch` - Watch files and compile on change (recommended because it's most convenient).
 - `npm run build` - Compile Typescript once (you will need to rerun this every time edit the code).
 
-> NOTE: `ts-node` does not work with our project structure since it changes `__dirname` which affects the automatic workflow and activity [registration](./hello-world#worker) and we don't support running typescript directly in the [workflow v8 isolates](./determinism#how-a-workflow-is-executed).
+> NOTE: `ts-node` does not work with our project structure since it changes `__dirname` which affects the automatic Workflow and Activity [registration](./hello-world#worker) and we don't support running typescript directly in the [Workflow v8 isolates](./determinism#how-a-workflow-is-executed).
 
 #### Run the Temporal server
 
 Download, install, and run the [Temporal server](https://docs.temporal.io/docs/server-quick-install) via docker-compose. It is easy to do and you can keep it running in the background while you build applications.
 
-#### Test your workflow
+#### Test your Workflow
 
-- Run the worker
+- Run the Worker
 
   ```sh
   npm start
   ```
 
-- Run a workflow
+- Run a Workflow
 
   ```sh
   node lib/worker/schedule-workflow.js

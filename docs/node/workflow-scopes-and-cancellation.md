@@ -1,16 +1,16 @@
 # Scopes and Cancellation
 
-Temporal workflows have different types that can be cancelled:
+Temporal Workflows have different types that can be cancelled:
 
-- A timer or an activity
-- An entire workflow
-- A workflow scope
+- A timer or an Activity
+- An entire Workflow
+- A Workflow scope
 
 Workflows are represented internally by a tree of scopes where the `main` function runs in the root scope.
 Cancellation propagates from outer scopes to inner ones and is handled by catching `CancellationError`s when `await`ing on `Promise`s.
-Each activity and timer implicitly creates a new scope to support cancellation.
+Each Activity and timer implicitly creates a new scope to support cancellation.
 
-The following example demonstrates how to handle workflow cancellation by an external client while an activity is running.
+The following example demonstrates how to handle Workflow cancellation by an external client while an Activity is running.
 
 ```ts
 import { CancellationError } from '@temporalio/workflow';
@@ -31,13 +31,13 @@ export async function main(url: string) {
 }
 ```
 
-Scopes may be cancelled from workflow code using `cancel`.
+Scopes may be cancelled from Workflow code using `cancel`.
 
 ```ts
 import { CancellationError, cancel, sleep } from '@temporalio/workflow';
 
 export async function main() {
-  // Timers and activities are automatically cancelled when their scope is cancelled.
+  // Timers and Activities are automatically cancelled when their scope is cancelled.
   // Awaiting on a cancelled scope with throw the original CancellationError.
   const scope = sleep(1);
   cancel(scope);
@@ -51,9 +51,9 @@ export async function main() {
 }
 ```
 
-In order to have fine-grained control over cancellation, the workflow library exports 2 methods for explicitly creating scopes.
+In order to have fine-grained control over cancellation, the Workflow library exports 2 methods for explicitly creating scopes.
 
-The first is `cancellationScope` which when cancelled will propagate cancellation to all child scopes such as timers, activities and other scopes.
+The first is `cancellationScope` which when cancelled will propagate cancellation to all child scopes such as timers, Activities and other scopes.
 
 ```ts
 import { CancellationError, cancellationScope, cancel, sleep } from '@temporalio/workflow';
@@ -102,8 +102,8 @@ export async function main(url: string) {
 }
 ```
 
-In case the result of the shielded activity is needed despite the cancellation, pass `false` as the second argument to `shield` (`throwOnCancellation`).
-To see if the workflow was cancelled while waiting, check `Context.cancelled`.
+In case the result of the shielded Activity is needed despite the cancellation, pass `false` as the second argument to `shield` (`throwOnCancellation`).
+To see if the Workflow was cancelled while waiting, check `Context.cancelled`.
 
 ```ts
 import { Context, shield } from '@temporalio/workflow';

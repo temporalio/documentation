@@ -1,8 +1,8 @@
 # Logging
 
-The worker comes with a default logger which defaults to log any messages with level `INFO` and higher to `STDERR` using `console.error`.
+The Worker comes with a default logger which defaults to log any messages with level `INFO` and higher to `STDERR` using `console.error`.
 
-The rationale behind this is to minimize worker dependencies and allow SDK users to bring their own logger.
+The rationale behind this is to minimize Worker dependencies and allow SDK users to bring their own logger.
 
 #### Customizing the default logger
 

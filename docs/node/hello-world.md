@@ -3,7 +3,7 @@
 In this tutorial we'll go over the different components that make up a Temporal project.
 To set it up see the [getting started](./getting-started) instuctions.
 
-The SDK steers developers to write their Workflows and activities in TypeScript but vanilla JS is also supported. All examples in the documentation are written in TypeScript.
+The SDK steers developers to write their Workflows and Activities in TypeScript but vanilla JS is also supported. All examples in the documentation are written in TypeScript.
 
 ### Activities
 
@@ -32,7 +32,7 @@ A Workflow's interface is used for validating the implementation and generating 
 
 Workflow interfaces are directly referenced by their implementation and maybe be written in sync or async form meaning a method could return `number` or it could return `Promise<number>`.
 
-Workflow interface declarations are optional, they're only required for generating type safe clients. It is considered good practice to declare an interface for each workflow.
+Workflow interface declarations are optional, they're only required for generating type safe clients. It is considered good practice to declare an interface for each Workflow.
 
 `src/interfaces/workflows.ts`
 
@@ -41,9 +41,9 @@ Workflow interface declarations are optional, they're only required for generati
 
 #### Implementation
 
-A workflow implmentation module may export a `workflow` object which can be type checked using a pre-defined inteface or `main` - and optionally `signals` and `queries` - directly.
+A Workflow implmentation module may export a `workflow` object which can be type checked using a pre-defined inteface or `main` - and optionally `signals` and `queries` - directly.
 
-In a workflow, activities can be imported and called as regular functions. At runtime, the imported activities are replaced with stubs which schedule activities in the system.
+In a Workflow, Activities can be imported and called as regular functions. At runtime, the imported Activities are replaced with stubs which schedule Activities in the system.
 
 `src/workflows/example.ts`
 
@@ -54,7 +54,7 @@ In a workflow, activities can be imported and called as regular functions. At ru
 
 [API reference](https://nodejs.temporal.io/api/modules/worker)
 
-The worker connects to the service and runs workflows and activities.
+The Worker connects to the Service and runs Workflows and Activities.
 
 `src/worker/index.ts`
 
@@ -65,8 +65,8 @@ The worker connects to the service and runs workflows and activities.
 
 [API reference](https://nodejs.temporal.io/api/modules/client)
 
-The client can be used to schedule workflows and send other requests to the temporal service.
-It can be used in any NodeJS process e.g an express app and does not depend on the worker.
+The client can be used to schedule Workflows and send other requests to the Temporal Service.
+It can be used in any NodeJS process e.g an express app and does not depend on the Worker.
 
 `src/worker/schedule-workflow.ts`
 
@@ -75,7 +75,7 @@ It can be used in any NodeJS process e.g an express app and does not depend on t
 
 ### Testing
 
-There's no official support for testing workflows and activities.
+There's no official support for testing Workflows and Activities.
 
-- Since activities are async functions they should be testable as long as you avoid using [Context](https://nodejs.temporal.io/api/classes/activity.context) or are able to mock it.
+- Since Activities are async functions they should be testable as long as you avoid using [Context](https://nodejs.temporal.io/api/classes/activity.context) or are able to mock it.
 - You can test Workflows by running them with a [WorkflowClient](https://nodejs.temporal.io/api/interfaces/client.workflowclient).
