@@ -4,7 +4,7 @@
 
 Sets up a new Temporal project with a preset skeleton.
 
-> Make sure to follow the [getting started instructions](./getting-started#install-system-dependencies).
+> Make sure to follow the [getting started instructions](/docs/node/getting-started/#install-system-dependencies).
 
 ### Usage
 
@@ -28,7 +28,7 @@ src/workflows/ -> Workflow implementations
 src/activities/ -> Activity implementations
 ```
 
-This code structure is required for enabling Workflows - which run in an [isolated environment](#workflows) - to specify a custom `tsconfig.json` than the rest of the project.
+This code structure is required for enabling Workflows - which run in an [isolated environment](/docs/node/hello-world/#workflows) - to specify a custom `tsconfig.json` than the rest of the project.
 
 #### References
 
@@ -58,4 +58,4 @@ The created project comes with some helper package scripts.
 [ts-project-references]: https://www.typescriptlang.org/tsconfig#references
 [npm-init]: https://docs.npmjs.com/cli/v6/commands/npm-init
 [tsconfig-paths]: https://www.typescriptlang.org/tsconfig#paths
-[local-server]: ../server-quick-install
+[local-server]: /docs/server-quick-install
