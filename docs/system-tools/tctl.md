@@ -340,7 +340,7 @@ As you add the bad binary checksum to your namespace, Temporal will not dispatch
 
 `--tls_key_path=<private key file path>` command line argument that passes a private key associated with the client certificate supplied with the --tls_cert_path setting.
 
-`--tls_disable_host_verification` command line argument that disable verification of the server certificate, i.e. host verification.
+`--tls_disable_host_verification` command line argument that disables verification of the server certificate, i.e. host verification.
 
 `--tls_server_name=<server name>` command line argument that passes an override value for the target server that is used for TLS host verification. It also enables host verification. The value must be one of the DNS names listed in the server TLS certificate.
 
