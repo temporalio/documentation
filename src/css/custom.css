@@ -79,7 +79,7 @@ body {
 }
 
 .footer {
-  background-color: var(--ifm-color-primary);
+  background-color: var(--ifm-color-primary-darkest);
 }
 
 .footer a:hover{
