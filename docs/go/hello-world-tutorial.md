@@ -1,5 +1,5 @@
 ---
-id: go-hello-world
+id: hello-world-tutorial
 title: Build a Temporal "Hello World!" app from scratch
 sidebar_label: Build "Hello World!" app
 tags: helloworld, go, sdk, tutorial

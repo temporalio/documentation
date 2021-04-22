@@ -1,5 +1,5 @@
 ---
-id: go-activities
+id: activities
 title: Activities in Go
 sidebar_label: Activities
 ---

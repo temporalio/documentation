@@ -1,5 +1,5 @@
 ---
-id: go-sdk-tutorial-prerequisites
+id: sdk-tutorial-prerequisites
 title: Go SDK tutorial prerequisites
 sidebar_label: Tutorial prerequisites
 ---

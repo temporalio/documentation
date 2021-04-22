@@ -1,5 +1,5 @@
 ---
-id: go-selectors
+id: selectors
 title: Go SDK Selectors
 sidebar_label: Selectors
 ---

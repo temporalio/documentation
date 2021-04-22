@@ -1,5 +1,5 @@
 ---
-id: go-sessions
+id: sessions
 title: Sessions
 ---
 

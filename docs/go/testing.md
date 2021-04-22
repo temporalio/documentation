@@ -1,5 +1,5 @@
 ---
-id: go-testing
+id: testing
 title: Testing Workflows
 sidebar_label: Testing
 ---

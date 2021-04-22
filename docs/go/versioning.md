@@ -1,5 +1,5 @@
 ---
-id: go-versioning
+id: versioning
 title: Versioning
 ---
 

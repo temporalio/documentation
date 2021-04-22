@@ -1,5 +1,5 @@
 ---
-id: go-workflows
+id: workflows
 title: Workflows in Go
 sidebar_label: Workflows
 description: The core abstraction of the Temporal solution is a fault-oblivious stateful Workflow.

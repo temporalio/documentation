@@ -1,5 +1,5 @@
 ---
-id: go-run-your-first-app
+id: run-your-first-app-tutorial
 title: Run your first Temporal application with the Go SDK
 sidebar_label: Run your first app
 ---
@@ -44,7 +44,7 @@ If you convert the template to a new repo, make sure you use the same repository
 
 ## ![](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/workflow.png) Application overview
 
-This project template mimics a "money transfer" application that has a single [Workflow function](/docs/go-workflows) which orchestrates the execution of `Withdraw()` and `Deposit()` functions, representing a transfer of money from one account to another. Temporal calls these particular functions [Activity functions](/docs/go-activities).
+This project template mimics a "money transfer" application that has a single [Workflow function](/docs/go-workflows) which orchestrates the execution of `Withdraw()` and `Deposit()` functions, representing a transfer of money from one account to another. Temporal calls these particular functions [Activity functions](/docs/go/activities).
 
 To run the application you will do the following:
 

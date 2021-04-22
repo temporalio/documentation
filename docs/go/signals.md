@@ -1,5 +1,5 @@
 ---
-id: go-signals
+id: signals
 title: Signals in Go
 sidebar_label: Signals
 ---

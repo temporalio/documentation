@@ -1,5 +1,5 @@
 ---
-id: go-tracing
+id: tracing
 title: Tracing and Context Propagation
 ---
 
