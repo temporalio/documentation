@@ -55,6 +55,7 @@ In a Workflow, Activities can be imported and called as regular functions. At ru
 [API reference](https://nodejs.temporal.io/api/modules/worker)
 
 The Worker connects to the Service and runs Workflows and Activities.
+`Worker.create()` accepts these [options](https://nodejs.temporal.io/api/interfaces/worker.workeroptions).
 
 `src/worker/index.ts`
 
