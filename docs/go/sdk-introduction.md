@@ -1,5 +1,5 @@
 ---
-id: go-sdk-introduction
+id: sdk-introduction
 title: Go SDK introduction
 sidebar_label: Go SDK introduction
 ---

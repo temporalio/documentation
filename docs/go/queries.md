@@ -1,5 +1,5 @@
 ---
-id: go-queries
+id: queries
 title: Queries in Go
 sidebar_label: Queries
 ---

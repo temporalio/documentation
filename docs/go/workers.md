@@ -1,5 +1,5 @@
 ---
-id: go-workers
+id: workers
 title: Workers in Go
 sidebar_label: Workers
 ---

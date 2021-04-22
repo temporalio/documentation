@@ -1,5 +1,5 @@
 ---
-id: go-search-apis
+id: search-apis
 title: Using Search APIs in Go
 sidebar_label: Search APIs
 ---

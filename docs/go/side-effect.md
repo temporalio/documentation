@@ -1,5 +1,5 @@
 ---
-id: go-side-effect
+id: side-effect
 title: SideEffect
 ---
 

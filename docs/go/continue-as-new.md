@@ -1,5 +1,5 @@
 ---
-id: go-continue-as-new
+id: continue-as-new
 title: ContinueAsNew
 ---
 

@@ -1,5 +1,5 @@
 ---
-id: go-sync-vs-async-start
+id: sync-vs-async-start
 title: Sync vs async Workflow start
 sidebar_label: Sync vs async Workflow start
 ---

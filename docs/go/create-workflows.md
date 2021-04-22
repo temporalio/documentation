@@ -1,5 +1,5 @@
 ---
-id: go-create-workflows
+id: create-workflows
 title: Creating Workflows
 ---
 

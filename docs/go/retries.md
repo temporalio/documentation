@@ -1,5 +1,5 @@
 ---
-id: go-retries
+id: retries
 title: Activity and Workflow Retries
 ---
 

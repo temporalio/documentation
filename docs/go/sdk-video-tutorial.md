@@ -1,5 +1,5 @@
 ---
-id: go-sdk-video-tutorial
+id: sdk-video-tutorial
 title: SDK Video Tutorial
 description: Video tutorial to help you build your first Workflow using Go SDK
 ---
@@ -11,15 +11,15 @@ import { ResponsivePlayer } from '../src/components'
 
 :::note `tctl` CLI commands
 
-The video has outdated `tctl` CLI commands from Temporal v0.20. 
-"Task lists" have been renamed to "task queues" and "domains" renamed to "namespaces" [since v0.28](https://docs.temporal.io/docs/cadence-to-temporal/). 
+The video has outdated `tctl` CLI commands from Temporal v0.20.
+"Task lists" have been renamed to "task queues" and "domains" renamed to "namespaces" [since v0.28](https://docs.temporal.io/docs/cadence-to-temporal/).
 We update the commands used accordingly below.
 You can also check the [`tctl` docs](https://docs.temporal.io/docs/tctl).
 
 :::
 
 <details>
-<summary> Initial (single file) source code 
+<summary> Initial (single file) source code
 </summary>
 
 ```go
@@ -180,7 +180,7 @@ package main
 import (
     "github.com/uber-go/tally"
     "go.uber.org/zap"
-    
+
     "github.com/samarabbas/tutorial-go-sdk/activities"
     "github.com/samarabbas/tutorial-go-sdk/workflows"
 

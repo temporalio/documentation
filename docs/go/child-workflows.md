@@ -1,5 +1,5 @@
 ---
-id: go-child-workflows
+id: child-workflows
 title: Child Workflows
 ---
 

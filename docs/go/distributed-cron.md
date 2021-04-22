@@ -1,5 +1,5 @@
 ---
-id: go-distributed-cron
+id: distributed-cron
 title: Distributed CRON
 ---
 
