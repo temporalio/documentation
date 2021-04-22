@@ -79,7 +79,7 @@ h1, h2, h3, h4, .menu__list, .navbar {
 }
 
 .footer {
-  background-color: var(--ifm-color-primary);
+  background-color: var(--ifm-color-primary-darkest);
 }
 
 .footer a:hover{
