@@ -1,7 +1,7 @@
 # Hello world
 
 In this tutorial we'll go over the different components that make up a Temporal project.
-To set it up see the [getting started](./getting-started) instuctions.
+All of the code in this page is included in our package initializer, set it up using the [getting started](./getting-started) instructions.
 
 The SDK steers developers to write their Workflows and Activities in TypeScript but vanilla JS is also supported. All examples in the documentation are written in TypeScript.
 
