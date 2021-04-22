@@ -29,7 +29,7 @@ module.exports = {
       },
       items: [
         {
-          activeBasePath: 'none',
+          activeBasePath: '/docs',
           label: 'Docs',
           position: 'right',
           items: [
@@ -45,12 +45,12 @@ module.exports = {
             },
             {
               to: '/application-development',
-              activeBasePath: 'none',
+              activeBasePath: '/application-development',
               label: 'SDKs',
             },
             {
-              to: '/docs/system-tooling-introduction',
-              activeBasePath: 'none',
+              to: '/docs/system-tools/introduction',
+              activeBasePath: '/docs/system-tools/',
               label: 'System Tools'
             }
           ]
@@ -96,15 +96,15 @@ module.exports = {
             },
             {
               label: 'Go SDK',
-              to: '/docs/go/sdk-introduction',
+              to: '/docs/go/introduction',
             },
             {
               label: 'Java SDK',
-              to: '/docs/go-sdk-introduction',
+              to: '/docs/java/introduction',
             },
             {
               label: 'PHP SDK',
-              to: '/docs/go-sdk-introduction',
+              to: '/docs/php/introduction',
             },
           ],
         },
@@ -120,7 +120,7 @@ module.exports = {
             },
             {
               label: 'System Tools',
-              to: '/docs/system-tooling-introduction',
+              to: '/docs/system-tools/introduction',
             },
             {
               label: 'Glossary',

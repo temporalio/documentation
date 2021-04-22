@@ -36,7 +36,7 @@ const features = [
         Visualize and debug using the Temporal Web UI and CLI.
       </>
     ),
-    goto: '/docs/system-tooling-introduction',
+    goto: '/docs/system-tools/introduction',
   },
 ];
 
@@ -126,7 +126,7 @@ function SelectTutorial() {
     <div className="flex flex-col sm:flex-row justify-between mb-8 sm:mb-8 items-center">
       {clicked ? (
         <div className="inline-flex md:-mt-8">
-          <a className="mr-8" href="/docs/go-run-your-first-app">
+          <a className="mr-8" href="/docs/go/run-your-first-app-tutorial">
             <img
               aria-label="go SDK"
               className={styles.sdkTakeMeToTutorialLogo}

@@ -32,7 +32,7 @@ They are represented as key-value pairs.
 There are many attributes provided by default, but you can also add your own.
 Keys must be registered within the dynamic config file so that the Temporal Server knows the attribute key name and value type.
 If there are multiple instances of the Server running across multiple hosts, then keys must be registered across all of the dynamic config files.
-To add new search attributes, you can use the [CLI](/docs/tctl/#add-new-search-attributes) or edit the dynamic config file manually.
+To add new search attributes, you can use the [CLI](/docs/system-tools/tctl/#add-new-search-attributes) or edit the dynamic config file manually.
 
 ### Default attributes
 
@@ -58,7 +58,7 @@ Here are the attributes that are provided by default:
 | WorkflowId          | KEYWORD    |
 | WorkflowType        | KEYWORD    |
 
-These can be found by using the [CLI](/docs/tctl/#search-workflows) or the `GetSearchAttributes` API via one of the [SDKs](/application-development).
+These can be found by using the [CLI](/docs/system-tools/tctl/#search-workflows) or the `GetSearchAttributes` API via one of the [SDKs](/application-development).
 
 There are some special considerations for the Default attributes:
 
@@ -119,11 +119,11 @@ There are some pre-allowlisted search attributes that are handy for testing, tha
 - CustomDatetimeField
 - CustomStringField
 
-When performing a [ContinueAsNew](/docs/go-continue-as-new/) or using [Cron](/docs/go-distributed-cron/), search attributes will be carried over to the new run by default.
+When performing a [ContinueAsNew](/docs/go/continue-as-new/) or using [Cron](/docs/go/distributed-cron/), search attributes will be carried over to the new run by default.
 
 ## Search queries
 
-You can perform search queries for Workflows using an SQL-like "Where" clause via the [CLI](/docs/tctl/#search-workflows), list APIs via one of the SDKs([Go](/docs/go-search-apis)), or via the Temporal Web UI.
+You can perform search queries for Workflows using an SQL-like "Where" clause via the [CLI](/docs/system-tools/tctl/#search-workflows), list APIs via one of the SDKs([Go](/docs/go/search-apis)), or via the Temporal Web UI.
 
 In the Temporal Web UI, use the "Basic/Advanced" button to switch to "Advanced" mode and type the query into the search box.
 
