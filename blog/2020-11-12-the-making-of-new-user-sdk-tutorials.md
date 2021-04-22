@@ -115,8 +115,8 @@ This is the direction that we decided to send new users. If a user can wrap thei
 
 Check out these finished tutorials and see for yourself!
 
-- [Go: Run your first Temporal application](/docs/go-run-your-first-app)
-- [Java: Run your first Temporal application](/docs/java-run-your-first-app)
+- [Go: Run your first Temporal application](/docs/go/run-your-first-app-tutorial)
+- [Java: Run your first Temporal application](/docs/java/run-your-first-app-tutorial)
 
 ## Next steps
 
