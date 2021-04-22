@@ -35,8 +35,7 @@ html[data-theme='light'] {
   --ifm-color-input-background:#ffffff;
 }
 
-/* These fonts are available but not used. */
-/* @font-face {
+@font-face {
   font-family: 'Aeonik';
   src: url('../fonts/Aeonik-Regular.woff');
   font-weight: 400;
@@ -60,11 +59,12 @@ html[data-theme='light'] {
   font-display: swap;
 }
 
-body {
+h1, h2, h3, h4, .menu__list, .navbar {
   font-family: 'Aeonik', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
     'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
     'Segoe UI Symbol', 'Noto Color Emoji';
-} */
+  letter-spacing: 0.03em;
+}
 
 .markdown {
   font-size: 1.1em;
