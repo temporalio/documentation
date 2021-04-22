@@ -55,7 +55,17 @@ You can now query `current_state` by using the CLI:
 
 `tctl --namespace samples-namespace workflow query -w my_workflow_id -r my_run_id -qt current_state`
 
-You can also issue a query from code using the `QueryWorkflow()` API on a Temporal client object.
+You can also issue a query from code using the `QueryWorkflow()` API on a Temporal client object as shown below.
+
+```golang
+response, err := temporal.QueryWorkflow(context.Background(), workflowID, runID, "current_state")
+if err != nil {
+  fmt.Println("Error querying workflow: " + err.Error())
+	return
+}
+
+fmt.Printf("Response: %v\n", response)
+```
 
 ## Consistent Query
 
