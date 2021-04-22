@@ -34,19 +34,19 @@
   from = "/docs/go-activity-async-completion"
   to = "/docs/go-activities#asynchronous-activity-completion"
 
-[[redirect]]
+[[redirects]]
   from = "/docs/java-sdk-overview"
   to = "/docs/java-sdk-introduction"
 
-[[redirect]]
+[[redirects]]
   from = "/docs/go-sdk-overview"
   to = "/docs/go-sdk-introduction"
 
-[[redirect]]
+[[redirects]]
   from = "/docs/php-sdk-overview"
   to = "/docs/php-sdk-introduction"
 
-[[redirect]]
+[[redirects]]
   from = "/docs/sdks-introduction"
   to = "/application-development"
 
