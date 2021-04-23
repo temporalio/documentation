@@ -6,50 +6,337 @@
     skipPatterns = ["#!", "www.google-analytics.com", "www.googletagmanager.com", "#main"]
     pretty = true
 
+#
+# Concept pages redirects
+#
 [[redirects]]
-  from = "/docs/overview"
-  to = "/docs/concept-overview"
+  from = "docs/concepts"
+  to = "docs/concepts/introduction"
 
 [[redirects]]
-  from = "/docs/activities"
-  to = "/docs/concept-activities"
+  from = "/docs/concept-overview"
+  to = "/docs/concepts/introduction"
 
 [[redirects]]
-  from = "/docs/workflows"
-  to = "/docs/concept-workflows"
+  from = "/docs/concept-workflows"
+  to = "/docs/concepts/workflows"
 
 [[redirects]]
-  from = "/docs/events"
-  to = "/docs/signals"
+  from = "/docs/concept-activities"
+  to = "/docs/concepts/activities"
+
+[[redirects]]
+  from = "/docs/concept-signals"
+  to = "/docs/concepts/signals"
+
+[[redirects]]
+  from = "/docs/concept-queries"
+  to = "/docs/concepts/queries"
+
+[[redirects]]
+  from = "/docs/concept-task-queues"
+  to = "/docs/concepts/task-queues"
+
+[[redirects]]
+  from = "/docs/concept-workers"
+  to = "/docs/concepts/workers"
 
 [[redirects]]
   from = "/docs/concept-namespaces"
   to = "/docs/server-namespaces"
 
+#
+# Go pages redirects
+#
 [[redirects]]
-  from = "/docs/go-execute-activity"
-  to = "/docs/go-activities#executing-activities"
-
-[[redirects]]
-  from = "/docs/go-activity-async-completion"
-  to = "/docs/go-activities#asynchronous-activity-completion"
-
-[[redirects]]
-  from = "/docs/java-sdk-overview"
-  to = "/docs/java-sdk-introduction"
+  from = "/docs/go"
+  to = "/docs/go/introduction"
 
 [[redirects]]
   from = "/docs/go-sdk-overview"
   to = "/docs/go-sdk-introduction"
 
 [[redirects]]
+  from = "/docs/go-sdk-introduction"
+  to = "/docs/go/introduction"
+
+[[redirects]]
+  from = "/docs/go-activities"
+  to = "/docs/go/activities"
+
+[[redirects]]
+  from = "/docs/go-child-workflows"
+  to = "/docs/go/child-workflows"
+
+[[redirects]]
+  from = "/docs/go-continue-as-new"
+  to = "/docs/go/continue-as-new"
+
+[[redirects]]
+  from = "/docs/go-create-workflows"
+  to = "/docs/go/create-workflows"
+
+[[redirects]]
+  from = "/docs/go-distributed-cron"
+  to = "/docs/go/distributed-cron"
+
+[[redirects]]
+  from = "/docs/go-error-handling"
+  to = "/docs/go/error-handling"
+
+[[redirects]]
+  from = "/docs/go-hello-world"
+  to = "/docs/go/hello-world-tutorial"
+
+[[redirects]]
+  from = "/docs/go-queries"
+  to = "/docs/go/queries"
+
+[[redirects]]
+  from = "/docs/go-retries"
+  to = "/docs/go/retries"
+
+[[redirects]]
+  from = "/docs/go-run-your-first-app"
+  to = "/docs/go/run-your-first-app-tutorial"
+
+[[redirects]]
+  from = "/docs/go-sdk-video-tutorial"
+  to = "/docs/go/sdk-video-tutorial"
+
+[[redirects]]
+  from = "/docs/go-search-apis"
+  to = "/docs/go/search-apis"
+
+[[redirects]]
+  from = "/docs/go-selectors"
+  to = "/docs/go/selectors"
+
+[[redirects]]
+  from = "/docs/go-sessions"
+  to = "/docs/go/sessions"
+
+[[redirects]]
+  from = "/docs/go-side-effects"
+  to = "/docs/go/side-effects"
+
+[[redirects]]
+  from = "/docs/go-signals"
+  to = "/docs/go/signals"
+
+[[redirects]]
+  from = "/docs/go-sync-vs-async-start"
+  to = "/docs/go/sync-vs-async-start"
+
+[[redirects]]
+  from = "/docs/go-task-queues"
+  to = "/docs/go/task-queues"
+
+[[redirects]]
+  from = "/docs/go-testing"
+  to = "/docs/go/testing"
+
+[[redirects]]
+  from = "/docs/go-tracing"
+  to = "/docs/go/tracing"
+
+[[redirects]]
+  from = "/docs/go-tutorial-prerequisites"
+  to = "/docs/go/tutorial-prerequisites"
+
+[[redirects]]
+  from = "/docs/go-versioning"
+  to = "/docs/go/versioning"
+
+[[redirects]]
+  from = "/docs/go-workflows"
+  to = "/docs/go/workflows"
+
+[[redirects]]
+  from = "/docs/go-workers"
+  to = "/docs/go/workers"
+
+[[redirects]]
+  from = "/docs/go-execute-activity"
+  to = "/docs/go/activities#executing-activities"
+
+[[redirects]]
+  from = "/docs/go-activity-async-completion"
+  to = "/docs/go/activities#asynchronous-activity-completion"
+
+#
+# Java pages redirects
+#
+[[redirects]]
+  from = "/docs/java"
+  to = "/docs/java/introduction"
+
+[[redirects]]
+  from = "/docs/java-sdk-overview"
+  to = "/docs/java-sdk-introduction"
+
+[[redirects]]
+  from = "/docs/java-sdk-introduction"
+  to = "/docs/java/introduction"
+
+[[redirects]]
+  from = "/docs/java-activities"
+  to = "/docs/java/activities"
+
+[[redirects]]
+  from = "/docs/java-distributed-cron"
+  to = "/docs/java/distributed-cron"
+
+[[redirects]]
+  from = "/docs/java-hello-world"
+  to = "/docs/java/hello-world-tutorial"
+
+[[redirects]]
+  from = "/docs/java-implementing-workflows"
+  to = "/docs/java/implementing-workflows"
+
+[[redirects]]
+  from = "/docs/java-queries"
+  to = "/docs/java/queries"
+
+[[redirects]]
+  from = "/docs/java-quick-start"
+  to = "/docs/java/quick-start"
+
+[[redirects]]
+  from = "/docs/java-run-your-first-app"
+  to = "/docs/java/run-your-first-app-tutorial"
+
+[[redirects]]
+  from = "/docs/java-signals"
+  to = "/docs/java/signals"
+
+[[redirects]]
+  from = "/docs/java-start-workflow-execution"
+  to = "/docs/java/start-workflow-execution"
+
+[[redirects]]
+  from = "/docs/java-task-queues"
+  to = "/docs/java/task-queues"
+
+[[redirects]]
+  from = "/docs/java-testing-and-debugging"
+  to = "/docs/java/testing-and-debugging"
+
+[[redirects]]
+  from = "/docs/java-sdk-tutorial-prerequisites"
+  to = "/docs/java/tutorial-prerequisites"
+
+[[redirects]]
+  from = "/docs/java-versioning"
+  to = "/docs/java/versioning"
+
+[[redirects]]
+  from = "/docs/java-workers"
+  to = "/docs/java/workers"
+
+[[redirects]]
+  from = "/docs/java-workflow-interface"
+  to = "/docs/java/workflow-interface"
+
+[[redirects]]
+  from = "/docs/java-workflows"
+  to = "/docs/java/workflows"
+
+#
+# PHP pages redirects
+#
+[[redirects]]
+  from = "/docs/php"
+  to = "/docs/php/introduction"
+
+[[redirects]]
   from = "/docs/php-sdk-overview"
   to = "/docs/php-sdk-introduction"
 
 [[redirects]]
-  from = "/docs/sdks-introduction"
-  to = "/application-development"
+  from = "/docs/php-sdk-introduction"
+  to = "/docs/php/introduction"
 
+[[redirects]]
+  from = "/docs/php-activities"
+  to = "/docs/php/activities"
+
+[[redirects]]
+  from = "/docs/php-activity-async-completion"
+  to = "/docs/php/activity-async-completion"
+
+[[redirects]]
+  from = "/docs/php-activity-interface"
+  to = "/docs/php/activity-interface"
+
+[[redirects]]
+  from = "/docs/php-child-workflows"
+  to = "/docs/php/child-workflows"
+
+[[redirects]]
+  from = "/docs/php-continue-as-new"
+  to = "/docs/php/continue-as-new"
+
+[[redirects]]
+  from = "/docs/php-distributed-cron"
+  to = "/docs/php/distributed-cron"
+
+[[redirects]]
+  from = "/docs/php-error-handling"
+  to = "/docs/php/error-handling"
+
+[[redirects]]
+  from = "/docs/php-implementing-activities"
+  to = "/docs/php/implementing-activities"
+
+[[redirects]]
+  from = "/docs/php-implementing-workflows"
+  to = "/docs/php/implementing-workflows"
+
+[[redirects]]
+  from = "/docs/php-queries"
+  to = "/docs/php/queries"
+
+[[redirects]]
+  from = "/docs/php-retries"
+  to = "/docs/php/retries"
+
+[[redirects]]
+  from = "/docs/php-side-effect"
+  to = "/docs/php/side-effect"
+
+[[redirects]]
+  from = "/docs/php-signals"
+  to = "/docs/php/signals"
+
+[[redirects]]
+  from = "/docs/php-sync-vs-async-start"
+  to = "/docs/php/sync-vs-async-start"
+
+[[redirects]]
+  from = "/docs/php-task-queues"
+  to = "/docs/php/task-queues"
+
+[[redirects]]
+  from = "/docs/versioning"
+  to = "/docs/php/versioning"
+
+[[redirects]]
+  from = "/docs/workers"
+  to = "/docs/php/workers"
+
+[[redirects]]
+  from = "/docs/workflow-interface"
+  to = "/docs/php/workflow-interface"
+
+[[redirects]]
+  from = "/docs/workflows"
+  to = "/docs/php/workflows"
+#
+# Use cases redirects
+# Can remove after 06/2021
+#
 [[redirects]]
   from = "/docs/use-cases-actors"
   to = "https://temporal.io/usecases#Actors"
@@ -82,6 +369,13 @@
   from = "/docs/use-cases-provisioning"
   to = "https://temporal.io/usecases#provisioning"
 
+#
+# General redirects
+#
+[[redirects]]
+  from = "/docs/sdks-introduction"
+  to = "/application-development"
+
 [[redirects]]
   from = "/docs/get-started"
   to = "/"
@@ -89,3 +383,70 @@
 [[redirects]]
   from = "/docs/go-workflow-testing"
   to = "/docs/go-testing"
+
+#
+# Server pages redirects
+#
+[[redirects]]
+  from = "/docs/server"
+  to = "/docs/server/introduction"
+
+[[redirects]]
+  from = "/docs/server-archive-data"
+  to = "/docs/server/archive-data"
+
+[[redirects]]
+  from = "/docs/server-configuration"
+  to = "/docs/server/configuration"
+
+[[redirects]]
+  from = "/docs/server-elasticsearch-setup"
+  to = "/docs/server/elasticsearch-setup"
+
+[[redirects]]
+  from = "/docs/server-event-types"
+  to = "/docs/server/event-types"
+
+[[redirects]]
+  from = "/docs/server-introduction"
+  to = "/docs/server/introduction"
+
+[[redirects]]
+  from = "/docs/server-namespaces"
+  to = "/docs/server/namespaces"
+
+[[redirects]]
+  from = "/docs/server-options"
+  to = "/docs/server/options"
+
+[[redirects]]
+  from = "/docs/server-production-deploy"
+  to = "/docs/server/production-deploy"
+
+[[redirects]]
+  from = "/docs/server-quick-install"
+  to = "/docs/server/quick-install"
+
+[[redirects]]
+  from = "/docs/server-security"
+  to = "/docs/server/security"
+
+[[redirects]]
+  from = "/docs/server-versions-and-dependencies"
+  to = "/docs/server/versions-and-dependencies"
+
+[[redirects]]
+  from = "/docs/server-workflow-search"
+  to = "/docs/server/workflow-search"
+
+#
+# System tools redirects
+#
+
+[[redirects]]
+  from = "/docs/tctl"
+  to = "/docs/system-tools/tctl"
+
+[[redirects]]
+  from = "/docs/system-tools"
+  to = "/docs/system-tools/introduction"

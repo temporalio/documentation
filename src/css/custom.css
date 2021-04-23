@@ -8,22 +8,22 @@
 /* You can override the default Infima variables here. */
 
 :root {
-  --ifm-color-primary: #6b62b6;
-  --ifm-color-primary-dark: #5a50ac;
-  --ifm-color-primary-darker: #554ca2;
-  --ifm-color-primary-darkest: #463e86;
-  --ifm-color-primary-light: #7d75bf;
-  --ifm-color-primary-lighter: #867fc3;
-  --ifm-color-primary-lightest: #b8b4dc;
+  --ifm-color-primary: #127AE5;
+  --ifm-color-primary-dark: #0E60B2;
+  --ifm-color-primary-darker: #093D71;
+  --ifm-color-primary-darkest: #041A31;
+  --ifm-color-primary-light: #3E97EF;
+  --ifm-color-primary-lighter: #84BDF5;
+  --ifm-color-primary-lightest: #CAE3FB;
   --ifm-code-font-size: 95%;
   --ifm-color-hero-background-dark: #18191a;
 }
 
 html[data-theme='dark'] {
-  --ifm-link-color: #b8b4dc;
-  --ifm-menu-color-active: #b8b4dc;
-  --ifm-navbar-link-hover-color: #b8b4dc;
-  --ifm-toc-link-color: #b8b4dc;
+  --ifm-link-color: var(--ifm-color-primary-lighter);
+  --ifm-menu-color-active: var(--ifm-color-primary-lighter);
+  --ifm-navbar-link-hover-color: var(--ifm-color-primary-lighter);
+  --ifm-toc-link-color: var(--ifm-color-primary-lighter);
   --ifm-blockquote-color: #eeeeee;
   --ifm-code-background: var(--ifm-color-primary-dark);
 }
@@ -79,7 +79,7 @@ h1, h2, h3, h4, .menu__list, .navbar {
 }
 
 .footer {
-  background-color: var(--ifm-color-primary);
+  background-color: var(--ifm-color-primary-darkest);
 }
 
 .footer a:hover{

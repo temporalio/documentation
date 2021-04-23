@@ -29,28 +29,28 @@ module.exports = {
       },
       items: [
         {
-          activeBasePath: 'none',
+          activeBasePath: '/docs',
           label: 'Docs',
           position: 'right',
           items: [
             {
-              to: '/docs/concept-overview',
-              activeBasePath: 'none',
+              to: '/docs/concepts/introduction',
+              activeBasePath: '/docs/concepts/',
               label: 'Concepts',
             },
             {
-              to: '/docs/server-introduction',
-              activeBasePath: 'none',
+              to: '/docs/server/introduction',
+              activeBasePath: '/docs/server/',
               label: 'Server',
             },
             {
               to: '/application-development',
-              activeBasePath: 'none',
+              activeBasePath: '/application-development',
               label: 'SDKs',
             },
             {
-              to: '/docs/system-tooling-introduction',
-              activeBasePath: 'none',
+              to: '/docs/system-tools/introduction',
+              activeBasePath: '/docs/system-tools/',
               label: 'System Tools'
             }
           ]
@@ -63,7 +63,7 @@ module.exports = {
         },
         {
           to: '/blog',
-          activeBasePath: 'none',
+          activeBasePath: '/blog/',
           label: 'Blog',
           position: 'right',
         },
@@ -96,15 +96,15 @@ module.exports = {
             },
             {
               label: 'Go SDK',
-              to: '/docs/go-sdk-introduction',
+              to: '/docs/go/introduction',
             },
             {
               label: 'Java SDK',
-              to: '/docs/go-sdk-introduction',
+              to: '/docs/java/introduction',
             },
             {
               label: 'PHP SDK',
-              to: '/docs/go-sdk-introduction',
+              to: '/docs/php/introduction',
             },
           ],
         },
@@ -112,15 +112,15 @@ module.exports = {
           items: [
             {
               label: 'Core concepts',
-              to: '/docs/concept-overview',
+              to: '/docs/concepts/introduction',
             },
             {
               label: 'Temporal Server',
-              to: '/docs/server-introduction',
+              to: '/docs/server/introduction',
             },
             {
               label: 'System Tools',
-              to: '/docs/system-tooling-introduction',
+              to: '/docs/system-tools/introduction',
             },
             {
               label: 'Glossary',
