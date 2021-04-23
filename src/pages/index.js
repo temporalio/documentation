@@ -16,7 +16,7 @@ const features = [
         Deploy and manage your own instance of the Temporal Server.
       </>
     ),
-    goto: '/docs/server-introduction',
+    goto: '/docs/server/introduction',
   },
   {
     title: <>Application development</>,
@@ -36,7 +36,7 @@ const features = [
         Visualize and debug using the Temporal Web UI and CLI.
       </>
     ),
-    goto: '/docs/system-tooling-introduction',
+    goto: '/docs/system-tools/introduction',
   },
 ];
 
@@ -126,7 +126,7 @@ function SelectTutorial() {
     <div className="flex flex-col sm:flex-row justify-between mb-8 sm:mb-8 items-center">
       {clicked ? (
         <div className="inline-flex md:-mt-8">
-          <a className="mr-8" href="/docs/go-run-your-first-app">
+          <a className="mr-8" href="/docs/go/run-your-first-app-tutorial">
             <img
               aria-label="go SDK"
               className={styles.sdkTakeMeToTutorialLogo}
@@ -200,7 +200,7 @@ export default function Home() {
               'button button--outline button--primary button--md',
               styles.getStarted,
             )}
-            to={useBaseUrl("/docs/concept-overview")}>
+            to={useBaseUrl("/docs/concepts/introduction")}>
             Learn more
             </Link>
           </div>
