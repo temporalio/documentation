@@ -189,16 +189,6 @@ export default function Home() {
         <div className="container">
           <h2>Core concepts</h2>
           <p>Review some of Temporal's core concepts and building blocks.</p>
-          <div className={styles.buttons}>
-            <Link
-            className={clsx(
-              'button button--outline button--primary button--md',
-              styles.getStarted,
-            )}
-            to={useBaseUrl("/docs/concepts/introduction")}>
-            Learn more
-            </Link>
-          </div>
           <ul>
             <li><Link to={useBaseUrl("/docs/concepts/introduction")}> Introduction </Link></li>
             <li><Link to={useBaseUrl("/docs/concepts/workflows")}> Workflows </Link></li>
