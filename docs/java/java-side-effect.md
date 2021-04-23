@@ -1,5 +1,5 @@
 ---
-id: java-side-effect
+id: side-effect
 title: SideEffect
 ---
 
