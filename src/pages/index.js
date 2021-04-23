@@ -185,14 +185,9 @@ export default function Home() {
           </section>
         )}
       </main>
-      <div className={clsx('hero hero--secondary', styles.heroBanner)}>
+      <div className={clsx('hero hero--secondary boo', styles.heroSecondRow)}>
         <div className="container">
           <h2>Core concepts</h2>
-          <div className="text--center">
-            <a href={useBaseUrl("img/concept-map.svg")}>
-              <img className={styles.featureImage} src={useBaseUrl("img/concept-map.svg")} alt="concepts" />
-            </a>
-          </div>
           <p>Review some of Temporal's core concepts and building blocks.</p>
           <div className={styles.buttons}>
             <Link
@@ -204,21 +199,24 @@ export default function Home() {
             Learn more
             </Link>
           </div>
+          <ul>
+            <li><Link to={useBaseUrl("/docs/concepts/introduction")}> Introduction </Link></li>
+            <li><Link to={useBaseUrl("/docs/concepts/workflows")}> Workflows </Link></li>
+            <li><Link to={useBaseUrl("/docs/concepts/activities")}> Activities </Link></li>
+            <li><Link to={useBaseUrl("/docs/concepts/workers")}> Workers </Link></li>
+            <li>More: <Link to={useBaseUrl("/docs/concepts/task-queues")}> Task Queues</Link>, <Link to={useBaseUrl("/docs/concepts/signals")}> Signals</Link>, <Link to={useBaseUrl("/docs/concepts/queries")}>Queries </Link></li>
+          </ul>
+        </div>
+        <div className="container">
+          <h2>Additional Resources</h2>
+          <p>Everything else to help you learn Temporal and pitch it internally.</p>
+          <ul>
+            <li><Link to={useBaseUrl("/docs/external-resources")}> External Resources </Link> - Why Temporal, Tutorials, How It Works</li>
+            <li><Link to={useBaseUrl("/blog/tags/case-study")}> Case Studies </Link> - Big names use Temporal for big things!</li>
+            <li><Link to={useBaseUrl("/docs/cadence-to-temporal")}> Migrate from Cadence </Link> - There are key differences, but it's easy!</li>
+          </ul>
         </div>
       </div>
-      <main>
-        {levelTwoFeatures && levelTwoFeatures.length > 0 && (
-          <section className={styles.features}>
-            <div className="container">
-              <div className="row">
-                {levelTwoFeatures.map((props, idx) => (
-                  <LevelTwoFeature key={idx} {...props} />
-                ))}
-              </div>
-            </div>
-          </section>
-        )}
-      </main>
       <div className="container">
         <div className={styles.formFeature}>
           <h2 className="text-3xl font-bold mb-4">Temporal Cloud</h2>
