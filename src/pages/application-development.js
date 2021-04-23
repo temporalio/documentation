@@ -10,17 +10,17 @@ const features = [
   {
     title: <>Go</>,
     imageUrl: 'img/go-lang.svg',
-    goto: '/docs/go-sdk-introduction',
+    goto: '/docs/go/introduction',
   },
   {
     title: <>Java</>,
     imageUrl: 'img/java.svg',
-    goto: '/docs/java-sdk-introduction',
+    goto: '/docs/java/introduction',
   },
   {
     title: <>PHP</>,
     imageUrl: 'img/php.svg',
-    goto: '/docs/php-sdk-introduction',
+    goto: '/docs/php/introduction',
   },
   {
     title: <>NodeJS</>,
