@@ -187,7 +187,7 @@ export default function Home() {
       </main>
       <div className={clsx('hero hero--secondary boo', styles.heroSecondRow)}>
         <div className="container">
-          <h2>>🍎 Core concepts</h2>
+          <h2>🍎 Core concepts</h2>
           <p>Review some of Temporal's core concepts and building blocks.</p>
           <ul>
             <li><Link to={useBaseUrl("/docs/concepts/introduction")}> Introduction </Link></li>
