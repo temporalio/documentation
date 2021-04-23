@@ -187,9 +187,8 @@ export default function Home() {
       </main>
       <div className={clsx('hero hero--secondary boo', styles.heroSecondRow)}>
         <div className="container">
-          <h2>🍎 Core concepts</h2>
+          <h2>Core concepts</h2>
           <p>Review some of Temporal's core concepts and building blocks.</p>
-<<<<<<< HEAD
           <div className={styles.buttons}>
             <Link
             className={clsx(
@@ -200,17 +199,18 @@ export default function Home() {
             Learn more
             </Link>
           </div>
-=======
           <ul>
-            <li><Link to={useBaseUrl("/docs/concepts/introduction")}> Introduction </Link></li>
-            <li><Link to={useBaseUrl("/docs/concepts/workflows")}> Workflows </Link></li>
-            <li><Link to={useBaseUrl("/docs/concepts/activities")}> Activities </Link></li>
-            <li><Link to={useBaseUrl("/docs/concepts/workers")}> Workers </Link></li>
-            <li>More: <Link to={useBaseUrl("/docs/concepts/task-queues")}> Task Queues</Link>, <Link to={useBaseUrl("/docs/concepts/signals")}> Signals</Link>, <Link to={useBaseUrl("/docs/concepts/queries")}>Queries </Link></li>
+            <li><Link to={useBaseUrl("/docs/concept-overview")}> Overview </Link></li>
+            <ul>
+              <li><Link to={useBaseUrl("/docs/concept-workflows")}> Workflows </Link></li>
+              <li><Link to={useBaseUrl("/docs/concept-activities")}> Activities </Link></li>
+              <li><Link to={useBaseUrl("/docs/concept-workers")}> Workers </Link></li>
+            </ul>
+            <li>More: <Link to={useBaseUrl("/docs/concept-task-queues")}> Task Queues</Link>, <Link to={useBaseUrl("/docs/concept-signals")}> Signals</Link>, <Link to={useBaseUrl("/docs/concept-queries")}>Queries </Link></li>
           </ul>
         </div>
         <div className="container">
-          <h2>🔥 Additional Resources</h2>
+          <h2>Additional Resources</h2>
           <p>Everything else to help you learn Temporal and pitch it internally.</p>
           <ul>
             <li><Link to={useBaseUrl("/docs/external-resources")}> External Resources </Link> - Why Temporal, Tutorials, How It Works</li>
