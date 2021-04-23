@@ -6,7 +6,7 @@ sidebar_label: Workers
 
 A _worker service_ is a service that hosts Workflow and Activity implementations.
 A worker service starts one or more Workers.
-A Worker polls a Task Queue for tasks, and executes Workflows in response to tasks.
+A Worker polls a Task Queue for Tasks, and executes Workflows in response to Tasks.
 When you call `ExecuteWorkflow()`, Temporal adds a new task to the Task Queue, and a Worker executes the task.
 
 Worker services are developed, deployed, and operated by Temporal customers.
