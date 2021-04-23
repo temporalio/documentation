@@ -1,7 +1,7 @@
 # Hello world
 
 In this tutorial we'll go over the different components that make up a Temporal project.
-To set it up see the [getting started](./getting-started) instuctions.
+All of the code in this page is included in our package initializer, set it up using the [getting started](/docs/node/getting-started) instructions.
 
 The SDK steers developers to write their Workflows and Activities in TypeScript but vanilla JS is also supported. All examples in the documentation are written in TypeScript.
 
@@ -55,6 +55,7 @@ In a Workflow, Activities can be imported and called as regular functions. At ru
 [API reference](https://nodejs.temporal.io/api/modules/worker)
 
 The Worker connects to the Service and runs Workflows and Activities.
+`Worker.create()` accepts these [options](https://nodejs.temporal.io/api/interfaces/worker.workeroptions).
 
 `src/worker/index.ts`
 
