@@ -25,7 +25,8 @@ serializable. The following sample code sets up a query handler that handles the
 ```go
 func MyWorkflow(ctx workflow.Context, input string) error {
   currentState := "started" // This could be any serializable struct.
-  err := workflow.SetQueryHandler(ctx, "current_state", func() (string, error) {
+  queryType := "current_state"
+  err := workflow.SetQueryHandler(ctx, queryType, func() (string, error) {
     return currentState, nil
   })
   if err != nil {
@@ -55,16 +56,79 @@ You can now query `current_state` by using the CLI:
 
 `tctl --namespace samples-namespace workflow query -w my_workflow_id -r my_run_id -qt current_state`
 
-You can also issue a query from code using the `QueryWorkflow()` API on a Temporal client object as shown below.
+## The `QueryWorkflow()` Function
 
-```golang
-response, err := temporal.QueryWorkflow(context.Background(), workflowID, runID, "current_state")
+You can also issue a query from your Go code using the `QueryWorkflow()` function as shown below.
+
+```go
+queryType := "current_state"
+response, err := temporal.QueryWorkflow(context.Background(), workflowID, runID, queryType)
 if err != nil {
   fmt.Println("Error querying workflow: " + err.Error())
 	return
 }
 
 fmt.Printf("Response: %v\n", response)
+```
+
+You can pass an arbitrary number of arguments to the `QueryWorkflow()` function.
+For example, suppose your query handler function takes 2 parameters:
+
+```go
+err := workflow.SetQueryHandler(ctx, "current_state", func(prefix string, suffix string) (string, error) {
+  return prefix + currentState + suffix, nil
+})
+```
+
+You can pass `prefix` and `suffix` arguments to the `QueryWorkflow()` as shown below:
+
+```go
+response, err := temporal.QueryWorkflow(context.Background(), workflowID, runID, queryType, "foo", "baz")
+if err != nil {
+  fmt.Println("Error querying workflow: " + err.Error())
+	return
+}
+
+fmt.Printf("Response: %v\n", response) // "foo" + currentState + "baz"
+```
+
+## The `QueryWorkflowWithOptions()` Function
+
+The `QueryWorkflowWithOptions()` function is an alternative way to send a query to a Workflow that has a few extra configuration options.
+
+```go
+import (
+  "context"
+  "fmt"
+  enumspb "go.temporal.io/api/enums/v1"
+	"go.temporal.io/sdk/client"
+)
+
+// ...
+
+// https://golang.org/doc/faq#convert_slice_of_interface
+args := [...]string{"foo"}
+args := make([]interface{}, len(_args))
+for i, v := range _args {
+	args[i] = v
+}
+
+response, err := temporal.QueryWorkflowWithOptions(context.Background(), &client.QueryWorkflowWithOptionsRequest{
+  WorkflowID: workflowID,
+  RunID: runID,
+  QueryType: queryType,
+  // Positional arguments as a []interface{}
+  Args: args,
+  // QueryRejectCondition is an optional field used to reject queries based on workflow state.
+  // QUERY_REJECT_CONDITION_NONE indicates that query should not be rejected.
+  // QUERY_REJECT_CONDITION_NOT_OPEN indicates that query should be rejected if workflow is not open.
+  // QUERY_REJECT_CONDITION_NOT_COMPLETED_CLEANLY indicates that query should be rejected if workflow did not complete cleanly (e.g. terminated, canceled timeout etc...).
+  QueryRejectCondition: enumspb.QUERY_REJECT_CONDITION_NONE,
+})
+if err != nil {
+	fmt.Println("Error querying workflow: " + err.Error())
+	return err
+}
 ```
 
 ## Consistent Query
