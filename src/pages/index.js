@@ -200,11 +200,11 @@ export default function Home() {
             </Link>
           </div>
           <ul>
-            <li><Link to={useBaseUrl("/docs/concept-overview")}> Introduction </Link></li>
-            <li><Link to={useBaseUrl("/docs/concept-workflows")}> Workflows </Link></li>
-            <li><Link to={useBaseUrl("/docs/concept-activities")}> Activities </Link></li>
-            <li><Link to={useBaseUrl("/docs/concept-workers")}> Workers </Link></li>
-            <li>More: <Link to={useBaseUrl("/docs/concept-task-queues")}> Task Queues</Link>, <Link to={useBaseUrl("/docs/concept-signals")}> Signals</Link>, <Link to={useBaseUrl("/docs/concept-queries")}>Queries </Link></li>
+            <li><Link to={useBaseUrl("/docs/concepts/introduction")}> Introduction </Link></li>
+            <li><Link to={useBaseUrl("/docs/concepts/workflows")}> Workflows </Link></li>
+            <li><Link to={useBaseUrl("/docs/concepts/activities")}> Activities </Link></li>
+            <li><Link to={useBaseUrl("/docs/concepts/workers")}> Workers </Link></li>
+            <li>More: <Link to={useBaseUrl("/docs/concepts/task-queues")}> Task Queues</Link>, <Link to={useBaseUrl("/docs/concepts/signals")}> Signals</Link>, <Link to={useBaseUrl("/docs/concepts/queries")}>Queries </Link></li>
           </ul>
         </div>
         <div className="container">
