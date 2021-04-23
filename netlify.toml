@@ -438,3 +438,15 @@
 [[redirects]]
   from = "/docs/server-workflow-search"
   to = "/docs/server/workflow-search"
+
+#
+# System tools redirects
+#
+
+[[redirects]]
+  from = "/docs/tctl"
+  to = "/docs/system-tools/tctl"
+
+[[redirects]]
+  from = "/docs/system-tools"
+  to = "/docs/system-tools/introduction"
