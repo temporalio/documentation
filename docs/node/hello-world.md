@@ -30,7 +30,7 @@ In the NodeJS SDK, each Workflow runs in a separate V8 isolate to provide a [det
 
 A Workflow's interface is used for validating the implementation and generating a type safe [WorkflowClient](https://nodejs.temporal.io/api/interfaces/client.workflowclient) and `ChildWorkflow` (not yet implemented).
 
-Workflow interfaces are directly referenced by their implementation and maybe be written in sync or async form meaning a method could return `number` or it could return `Promise<number>`.
+Workflow interfaces are directly referenced by their implementation and may be written in sync or async form meaning a method could return `number` or it could return `Promise<number>`.
 
 Workflow interface declarations are optional, they're only required for generating type safe clients. It is considered good practice to declare an interface for each Workflow.
 
