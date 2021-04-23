@@ -10,6 +10,10 @@
 # Concept pages redirects
 #
 [[redirects]]
+  from = "docs/concepts"
+  to = "docs/concepts/introduction"
+
+[[redirects]]
   from = "/docs/concept-overview"
   to = "/docs/concepts/introduction"
 
@@ -44,6 +48,10 @@
 #
 # Go pages redirects
 #
+[[redirects]]
+  from = "/docs/go"
+  to = "/docs/go/introduction"
+
 [[redirects]]
   from = "/docs/go-sdk-overview"
   to = "/docs/go-sdk-introduction"
@@ -160,6 +168,10 @@
 # Java pages redirects
 #
 [[redirects]]
+  from = "/docs/java"
+  to = "/docs/java/introduction"
+
+[[redirects]]
   from = "/docs/java-sdk-overview"
   to = "/docs/java-sdk-introduction"
 
@@ -234,6 +246,10 @@
 #
 # PHP pages redirects
 #
+[[redirects]]
+  from = "/docs/php"
+  to = "/docs/php/introduction"
+
 [[redirects]]
   from = "/docs/php-sdk-overview"
   to = "/docs/php-sdk-introduction"
@@ -371,6 +387,10 @@
 #
 # Server pages redirects
 #
+[[redirects]]
+  from = "/docs/server"
+  to = "/docs/server/introduction"
+
 [[redirects]]
   from = "/docs/server-archive-data"
   to = "/docs/server/archive-data"
