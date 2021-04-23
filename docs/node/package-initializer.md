@@ -52,7 +52,7 @@ The created project comes with some helper package scripts.
 
 - Compile the project with one of the commands above
 - Download, install, and run the [Temporal server][local-server] via docker-compose
-- Start the worker using `npm start`, or, equivalently, `node lib/worker`
+- Start the worker using `npm start`, or equivalently, `node lib/worker`
 - In a new terminal, use the provided client to start a Workflow `node lib/worker/schedule-workflow.js`
 
 [ts-project-references]: https://www.typescriptlang.org/tsconfig#references
