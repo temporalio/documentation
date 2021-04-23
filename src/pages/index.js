@@ -217,7 +217,6 @@ export default function Home() {
             <li><Link to={useBaseUrl("/blog/tags/case-study")}> Case Studies </Link> - Big names use Temporal for big things!</li>
             <li><Link to={useBaseUrl("/docs/cadence-to-temporal")}> Migrate from Cadence </Link> - There are key differences, but it's easy!</li>
           </ul>
->>>>>>> 9a2b6990 (alternate landing apge)
         </div>
       </div>
       <div className="container">
