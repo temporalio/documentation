@@ -9,9 +9,8 @@ A worker service starts one or more Workers.
 A Worker polls a Task Queue for Tasks, and executes Workflows in response to Tasks.
 When you call `ExecuteWorkflow()`, Temporal adds a new task to the Task Queue, and a Worker executes the task.
 
-Worker services are developed, deployed, and operated by Temporal customers.
-You can run a Worker in a new or an existing service.
-Use the framework APIs to start the Worker and link in all Activity and Workflow implementations that you require the service to execute.
+Just like workflows and activities, the workers and worker service are hosted on user applications, and not the Temporal server.
+Use the Temporal SDK to start the Worker and register all Activity and Workflow implementations that you require the service to execute.
 
 ```go
 package main
