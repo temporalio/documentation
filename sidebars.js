@@ -3,7 +3,7 @@ module.exports = {
     {
       type: 'doc',
       label: 'Temporal Server', 
-      id: '/server/introduction',
+      id: 'server/introduction',
     },
     'server/quick-install',
     'server/production-deployment',
@@ -49,7 +49,7 @@ module.exports = {
     {
       type: 'doc',
       label: 'Temporal System Tools', 
-      id: '/system-tools/introduction',
+      id: 'system-tools/introduction',
     },
     'system-tools/tctl',
     'system-tools/web-ui',
@@ -85,7 +85,7 @@ module.exports = {
     {
       type: 'doc',
       label: 'Go SDK', 
-      id: '/go/introduction',
+      id: 'go/introduction',
     },
     {
       type: 'link',
@@ -155,7 +155,7 @@ module.exports = {
     {
       type: 'doc',
       label: 'Java SDK', 
-      id: '/java/introduction',
+      id: 'java/introduction',
     },
     {
       type: 'link',
@@ -219,7 +219,7 @@ module.exports = {
     {
       type: 'doc',
       label: 'PHP SDK', 
-      id: '/php/introduction',
+      id: 'php/introduction',
     },
     {
       type: 'category',
@@ -277,7 +277,7 @@ module.exports = {
     {
       type: 'doc',
       label: 'Node SDK', 
-      id: '/node/introduction',
+      id: 'node/introduction',
     },
     {
       type: 'link',
