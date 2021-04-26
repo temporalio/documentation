@@ -1,6 +1,10 @@
 module.exports = {
   serverSidebar: [
-    'server/introduction',
+    {
+      type: 'link',
+      label: 'Temporal Server', 
+      href: '/server/introduction',
+    },
     'server/quick-install',
     'server/production-deployment',
     'server-architecture',
@@ -42,7 +46,11 @@ module.exports = {
     },
   ],
   toolingSidebar: [
-    'system-tools/introduction',
+    {
+      type: 'link',
+      label: 'Temporal System Tools', 
+      href: '/system-tools/introduction',
+    },
     'system-tools/tctl',
     'system-tools/web-ui',
     {
@@ -74,7 +82,11 @@ module.exports = {
     },
   ],
   goSidebar: [
-    'go/introduction',
+    {
+      type: 'link',
+      label: 'Go SDK', 
+      href: '/go/introduction',
+    },
     {
       type: 'link',
       label: 'Reference',
@@ -140,7 +152,11 @@ module.exports = {
     },
   ],
   javaSidebar: [
-    'java/introduction',
+    {
+      type: 'link',
+      label: 'Java SDK', 
+      href: '/java/introduction',
+    },
     {
       type: 'link',
       label: 'Reference',
@@ -200,7 +216,11 @@ module.exports = {
     },
   ],
   phpSidebar: [
-    'php/introduction',
+    {
+      type: 'link',
+      label: 'PHP SDK', 
+      href: '/php/introduction',
+    },
     {
       type: 'category',
       label: 'Basic concepts',
@@ -254,7 +274,11 @@ module.exports = {
     },
   ],
   nodejsSidebar: [
-    'node/introduction',
+    {
+      type: 'link',
+      label: 'Node SDK', 
+      href: '/node/introduction',
+    },
     {
       type: 'link',
       label: 'Reference',
