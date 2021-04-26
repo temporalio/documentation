@@ -39,13 +39,13 @@ In this way, adding new arguments to the value type, as fields, is a backwards-c
 
 An Activity is the implementation of an Activity interface.
 A single instance of the Activity's implementation is shared across multiple simultaneous Activity invocations.
-Therefore, the Activity implementation code must be thread safe.
+Therefore, the Activity implementation code must be _thread safe_.
 
 The values passed to Activities through invocation parameters or returned through a result value are recorded in the execution history.
 The entire execution history is transferred from the Temporal service to Workflow Workers when a Workflow state needs to recover.
 A large execution history can thus adversely impact the performance of your Workflow.
 Therefore, be mindful of the amount of data you transfer via Activity invocation parameters or return values.
-Other than that no additional limitations exist on Activity implementations.
+Other than that, no additional limitations exist on Activity implementations.
 
 ```java
 public class FileProcessingActivitiesImpl implements FileProcessingActivities {
@@ -147,7 +147,7 @@ When the download is complete, the download service potentially calls back from 
 
 ## Activity heartbeats
 
-Some Activities are long running.
+Some Activities are long-running.
 To react to a crash quickly, use the heartbeat mechanism.
 `Activity.getExecutionContext().heartbeat()` lets the Temporal service know that the Activity is still alive.
 You can piggyback `details` on an Activity heartbeat.
