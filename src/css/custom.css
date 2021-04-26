@@ -66,6 +66,12 @@ h1, h2, h3, h4, .menu__list, .navbar {
   letter-spacing: 0.03em;
 }
 
+@media only screen and (max-width: 500px) {
+  .hero__title {
+    font-size: 2.0em;
+  }
+}
+
 .markdown {
   font-size: 1.1em;
 }
