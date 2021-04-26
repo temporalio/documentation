@@ -101,6 +101,21 @@ h4,
   font-weight: bold;
 }
 
+.footer .footer__copyright {
+  margin-bottom: 1rem;
+  opacity: 0.8;
+}
+
+@media (max-width: 996px) {
+  .footer .footer__separators {
+    display: none;
+  }
+
+  .footer .footer__block {
+    display: block;
+  }
+}
+
 .footer .footer__svg {
   fill: currentColor;
   margin: 2em;
