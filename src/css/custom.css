@@ -8,13 +8,13 @@
 /* You can override the default Infima variables here. */
 
 :root {
-  --ifm-color-primary: #127AE5;
-  --ifm-color-primary-dark: #0E60B2;
-  --ifm-color-primary-darker: #093D71;
-  --ifm-color-primary-darkest: #041A31;
-  --ifm-color-primary-light: #3E97EF;
-  --ifm-color-primary-lighter: #84BDF5;
-  --ifm-color-primary-lightest: #CAE3FB;
+  --ifm-color-primary: #127ae5;
+  --ifm-color-primary-dark: #0e60b2;
+  --ifm-color-primary-darker: #093d71;
+  --ifm-color-primary-darkest: #041a31;
+  --ifm-color-primary-light: #3e97ef;
+  --ifm-color-primary-lighter: #84bdf5;
+  --ifm-color-primary-lightest: #cae3fb;
   --ifm-code-font-size: 95%;
   --ifm-color-hero-background-dark: #18191a;
 }
@@ -32,7 +32,7 @@ html[data-theme='light'] {
   --ifm-blockquote-color: #000000;
   --ifm-color-emphasis-300: #505050;
   --ifm-code-background: var(--ifm-color-primary-lightest);
-  --ifm-color-input-background:#ffffff;
+  --ifm-color-input-background: #ffffff;
 }
 
 @font-face {
@@ -59,10 +59,15 @@ html[data-theme='light'] {
   font-display: swap;
 }
 
-h1, h2, h3, h4, .menu__list, .navbar {
-  font-family: 'Aeonik', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-    'Segoe UI Symbol', 'Noto Color Emoji';
+h1,
+h2,
+h3,
+h4,
+.menu__list,
+.navbar {
+  font-family: 'Aeonik', system-ui, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   letter-spacing: 0.03em;
 }
 
@@ -88,8 +93,17 @@ h1, h2, h3, h4, .menu__list, .navbar {
   background-color: var(--ifm-color-primary-darkest);
 }
 
-.footer a:hover{
+.footer a:hover {
   color: #ffffff;
+}
+
+.footer .footer__col:first-child .footer__item:first-child {
+  font-weight: bold;
+}
+
+.footer .footer__svg {
+  fill: currentColor;
+  margin: 2em;
 }
 
 .docusaurus-highlight-code-line {
@@ -110,7 +124,7 @@ h1, h2, h3, h4, .menu__list, .navbar {
   width: 20%;
 }
 
-.case-study-header{
+.case-study-header {
   background-color: #000000;
 }
 
@@ -138,7 +152,7 @@ h1, h2, h3, h4, .menu__list, .navbar {
   padding: 0;
   margin: -1px;
   overflow: hidden;
-  clip: rect(0,0,0,0);
+  clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border-width: 0;
 }
