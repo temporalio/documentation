@@ -207,8 +207,6 @@ module.exports = {
           path: 'blog',
           postsPerPage: 10,
           editUrl: 'https://github.com/temporalio/documentation/tree/master/blog',
-          // blogListComponent: '@theme/BlogListPage', // we swizzled this so as to customize the look
-          // blogPostComponent: '@theme/BlogPostPage',
           showReadingTime: true, // Show estimated reading time for the blog post.
           feedOptions: {
             type: 'all',
