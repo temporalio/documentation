@@ -1,6 +1,6 @@
 ---
 id: workers
-title: Workers
+title: Workers in PHP
 ---
 
 The [RoadRunner application server](https://roadrunner.dev/) will launch multiple Temporal PHP worker processes based on provided `.rr.yaml` configuration.

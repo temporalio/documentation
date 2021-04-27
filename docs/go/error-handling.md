@@ -1,6 +1,6 @@
 ---
 id: error-handling
-title: Error Handling
+title: Error Handling in Go
 ---
 
 An Activity, or a child Workflow, might fail, and you could handle errors differently based on the different

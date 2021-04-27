@@ -1,6 +1,6 @@
 ---
 id: sdk-video-tutorial
-title: SDK Video Tutorial
+title: Go SDK Video Tutorial
 description: Video tutorial to help you build your first Workflow using Go SDK
 ---
 
