@@ -14,7 +14,10 @@
 }
 
 .sidebarItemTitle {
-  margin-bottom: 0.5rem;
+  margin-bottom: -0.5rem;
+}
+
+.sidebarItemTitle:nth-child(n + 2) {
   margin-top: 4rem;
 }
 
@@ -37,11 +40,18 @@
   text-decoration: none;
 }
 .sidebarItemLinkActive {
-  color: var(--ifm-color-primary);
+  padding-left: 0.5rem;
+  border-width: 0px 0px 0px 8px;
+  border-style: solid;
+  border-color: var(--ifm-color-primary-lighter);
+  font-weight: bold;
 }
 
 .tagsList {
-  display: inline;
+  display: grid;
+  list-style: none;
+  grid-template-columns: auto auto;
+  margin-top: 1rem;
 }
 
 @media only screen and (max-width: 996px) {
