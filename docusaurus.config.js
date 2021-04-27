@@ -201,14 +201,15 @@ module.exports = {
           includeCurrentVersion: true, // excludeNextVersionDocs is now deprecated
         },
         // Will be passed to @docusaurus/plugin-content-blog
+        // options: https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-blog
         blog: {
           routeBasePath: 'blog',
           path: 'blog',
           postsPerPage: 10,
-          /**
-           * Show estimated reading time for the blog post.
-           */
-          showReadingTime: true,
+          editUrl: 'https://github.com/temporalio/documentation/tree/master/blog',
+          // blogListComponent: '@theme/BlogListPage', // we swizzled this so as to customize the look
+          // blogPostComponent: '@theme/BlogPostPage',
+          showReadingTime: true, // Show estimated reading time for the blog post.
           feedOptions: {
             type: 'all',
             copyright: `Copyright © ${new Date().getFullYear()} Temporal Technologies Inc.  All rights reserved. Copyright © 2020 Uber Technologies, Inc.`,
