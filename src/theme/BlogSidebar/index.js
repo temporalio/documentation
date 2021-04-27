@@ -41,7 +41,7 @@ export default function BlogSidebar({sidebar}) {
         })}
       </ul>
       <h3 className={styles.sidebarItemTitle}>Tags</h3>
-      <ul className={styles.tagsList} style={{marginBottom: 48}}>
+      <ul className={styles.tagsList}>
         <li><a href="https://docs.temporal.io/blog/tags/community">#community</a></li>
         <li><a href="https://docs.temporal.io/blog/tags/errors">#errors</a></li>
         <li><a href="https://docs.temporal.io/blog/tags/bug">#bug</a></li>
