@@ -1,6 +1,6 @@
 ---
 id: signals
-title: Signals
+title: Signals in PHP
 ---
 
 **Signals** provide a mechanism to send data directly to a running Workflow. Previously, you had

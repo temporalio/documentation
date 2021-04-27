@@ -1,6 +1,6 @@
 ---
 id: queries
-title: Queries
+title: Queries in PHP
 ---
 
 If a Workflow execution has been stuck at a state for longer than an expected period of time, you

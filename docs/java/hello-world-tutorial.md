@@ -1,6 +1,6 @@
 ---
 id: hello-world-tutorial
-title: Build a Temporal "Hello World!" app from scratch
+title: Build a Temporal "Hello World!" app from scratch in Java
 sidebar_label: Build "Hello World!" app
 tags: helloworld, java, sdk, intellij, gradle, tutorial
 ---

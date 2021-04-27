@@ -1,4 +1,4 @@
-# Hello world
+# Hello world in Node
 
 In this tutorial we'll go over the different components that make up a Temporal project.
 All of the code in this page is included in our package initializer, set it up using the [getting started](/docs/node/getting-started) instructions.
