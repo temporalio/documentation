@@ -52,6 +52,7 @@
   list-style: none;
   grid-template-columns: auto auto;
   margin-top: 1rem;
+  font-family: monospace;
 }
 
 @media only screen and (max-width: 996px) {

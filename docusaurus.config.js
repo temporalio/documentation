@@ -207,6 +207,7 @@ module.exports = {
           path: 'blog',
           postsPerPage: 10,
           editUrl: 'https://github.com/temporalio/documentation/tree/master/blog',
+          blogTitle: 'Temporal Blog',
           showReadingTime: true, // Show estimated reading time for the blog post.
           feedOptions: {
             type: 'all',
