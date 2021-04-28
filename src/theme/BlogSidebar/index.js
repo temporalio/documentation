@@ -43,15 +43,15 @@ export default function BlogSidebar({sidebar}) {
       <em><a href={"/blog"}>See full blog index</a></em>
       <h3 className={styles.sidebarItemTitle}>Tags</h3> 
       <ul className={clsx(styles.sidebarItemList, styles.tagsList)}>
-        <li><a href="https://docs.temporal.io/blog/tags/community">#community</a></li>
-        <li><a href="https://docs.temporal.io/blog/tags/errors">#errors</a></li>
-        <li><a href="https://docs.temporal.io/blog/tags/bug">#bug</a></li>
-        <li><a href="https://docs.temporal.io/blog/tags/announcement">#announcement</a></li>
-        <li><a href="https://docs.temporal.io/blog/tags/architecture">#architecture</a></li>
-        <li><a href="https://docs.temporal.io/blog/tags/code-first">#code-first</a></li>
-        <li><a href="https://docs.temporal.io/blog/tags/cloud">#cloud</a></li>
-        <li><a href="https://docs.temporal.io/blog/tags/stability">#stability</a></li>
-        <li><a href="https://docs.temporal.io/blog/tags">Browse all tags</a></li>
+        <li><a href="/blog/tags/community">#community</a></li>
+        <li><a href="/blog/tags/errors">#errors</a></li>
+        <li><a href="/blog/tags/bug">#bug</a></li>
+        <li><a href="/blog/tags/announcement">#announcement</a></li>
+        <li><a href="/blog/tags/architecture">#architecture</a></li>
+        <li><a href="/blog/tags/code-first">#code-first</a></li>
+        <li><a href="/blog/tags/cloud">#cloud</a></li>
+        <li><a href="/blog/tags/stability">#stability</a></li>
+        <li><a href="/blog/tags">Browse all tags</a></li>
       </ul>
       <h3 className={styles.sidebarItemTitle}>Guest post/Request content</h3>
       <p>
