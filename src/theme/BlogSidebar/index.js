@@ -53,7 +53,7 @@ export default function BlogSidebar({sidebar}) {
         <li><a href="/blog/tags/stability">#stability</a></li>
         <li><a href="/blog/tags">Browse all tags</a></li>
       </ul>
-      <h3>Request content</h3>
+      <div>Couldn't find something you needed? Want to guest post?</div>
       <p>
         Email: <a href="mailto:swyx@temporal.io">swyx@temporal.io</a>
       </p>
