@@ -40,7 +40,6 @@ export default function BlogSidebar({sidebar}) {
           );
         })}
       </ul>
-      <em><a href={"/blog"}>See full blog index</a></em>
       <h3 className={styles.sidebarItemTitle}>Tags</h3> 
       <ul className={clsx(styles.sidebarItemList, styles.tagsList)}>
         <li><a href="/blog/tags/community">#community</a></li>
@@ -53,7 +52,7 @@ export default function BlogSidebar({sidebar}) {
         <li><a href="/blog/tags/stability">#stability</a></li>
         <li><a href="/blog/tags">Browse all tags</a></li>
       </ul>
-      <div>Couldn't find something you needed? Want to guest post?</div>
+      <div>Content request? Guest post?</div>
       <p>
         Email: <a href="mailto:swyx@temporal.io">swyx@temporal.io</a>
       </p>
