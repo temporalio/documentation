@@ -51,7 +51,11 @@ export default function BlogSidebar({sidebar}) {
         <li><a href="https://docs.temporal.io/blog/tags/cloud">#cloud</a></li>
         <li><a href="https://docs.temporal.io/blog/tags/stability">#stability</a></li>
       </ul>
-      <div><LinkWrapped href="/blog/tags">Browse all tags</LinkWrapped></div>
+      <div>
+        <a href={"/blog/tags"}>
+          Browse all tags
+        </a>
+     </div>
     </div>
   );
 }
