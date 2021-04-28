@@ -40,11 +40,7 @@ export default function BlogSidebar({sidebar}) {
           );
         })}
       </ul>
-      <div>
-        <a href={"/blog"}>
-          Full blog index
-        </a>
-      </div>
+      <em><LinkWrapped href={"/blog"}>>>Full blog index</LinkWrapped></em>
       <h3 className={styles.sidebarItemTitle}>Tags</h3> 
       <ul className={clsx(styles.sidebarItemList, styles.tagsList)}>
         <li><a href="https://docs.temporal.io/blog/tags/community">#community</a></li>
@@ -56,11 +52,7 @@ export default function BlogSidebar({sidebar}) {
         <li><a href="https://docs.temporal.io/blog/tags/cloud">#cloud</a></li>
         <li><a href="https://docs.temporal.io/blog/tags/stability">#stability</a></li>
       </ul>
-      <div>
-        <a href={"/blog/tags"}>
-          Browse all tags
-        </a>
-      </div>
+      <em><LinkWrapped href={"/blog/tags"}>Browse all tags</LinkWrapped></em>
     </div>
   );
 }
