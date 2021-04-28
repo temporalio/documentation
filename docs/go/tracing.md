@@ -84,3 +84,7 @@ It also uses Jaeger for tracing.
 ### Can I configure multiple context propagators?
 
 Yes. Multiple context propagators help to structure code with each propagator having its own scope of responsibility.
+
+## Useful Resources
+
+- [Passing Context with Temporal](https://spiralscout.com/blog/passing-context-with-temporal) by SpiralScout
