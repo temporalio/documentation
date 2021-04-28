@@ -54,7 +54,7 @@ export default function BlogSidebar({sidebar}) {
       </ul>
       <div>Content request? Guest post?</div>
       <p>
-        Email: <a href="mailto:swyx@temporal.io">swyx@temporal.io</a>
+        Email: <a href="mailto:docs@temporal.io">docs@temporal.io</a>
       </p>
     </div>
   );
