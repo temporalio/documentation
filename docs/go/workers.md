@@ -27,11 +27,11 @@ To run the Worker, you need to first register which Workflows and/or Activities 
 As a simple example, let's say we want our Worker to be able to execute the following Go functions:
 
 ```go
-func MyWorkflow(context workflow.Context) error {
+func MyWorkflowFunction(context workflow.Context) error {
 	return nil
 }
 
-func MyActivity() error {
+func MyActivityFunction() error {
 	return nil
 }
 ```
@@ -58,8 +58,8 @@ func main() {
 	w := worker.New(c, "your-simple-task-queue", worker.Options{})
 
 	// Register your functions
-	w.RegisterWorkflow(app.GreetingWorkflow)
-	w.RegisterActivity(app.ComposeGreeting)
+	w.RegisterWorkflow(MyWorkflowFunction)
+	w.RegisterActivity(MyActivityFunction)
 
 	// Run the Worker
 	err = w.Run(worker.InterruptCh())
@@ -69,7 +69,7 @@ func main() {
 }
 ```
 
-The `RegisterWorkflow()` and `RegisterActivity` calls essentially create an in-memory mapping between the fully qualified function name and the implementation, inside the Worker process.
+The `RegisterWorkflow()` and `RegisterActivity` calls essentially create an in-memory mapping between the fully qualified function names and their implementations, inside the Worker process.
 
 :::note
 
