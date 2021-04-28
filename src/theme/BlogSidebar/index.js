@@ -53,10 +53,9 @@ export default function BlogSidebar({sidebar}) {
         <li><a href="/blog/tags/stability">#stability</a></li>
         <li><a href="/blog/tags">Browse all tags</a></li>
       </ul>
-      <h3 className={styles.sidebarItemTitle}>Guest post/Request content</h3>
+      <h3 className={styles.sidebarItemTitle}>Request content</h3>
       <p>
-        If you are looking for content that we don't yet have, let us know: <a href="mailto:swyx@temporal.io">swyx@temporal.io</a>.
-        Of course, if you'd like to write it, we welcome that too!
+        Email: <a href="mailto:swyx@temporal.io">swyx@temporal.io</a>
       </p>
     </div>
   );
