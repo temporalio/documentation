@@ -4,60 +4,29 @@ title: Workers in Go
 sidebar_label: Workers
 ---
 
-A _worker service_ is a service that hosts Workflow and Activity implementations.
-A worker service starts one or more Workers.
-A Worker polls a Task Queue for Tasks, and executes Workflows in response to Tasks.
-When you call `ExecuteWorkflow()`, Temporal adds a new task to the Task Queue, and a Worker executes the task.
+## What is a Worker?
 
-Just like workflows and activities, the workers and worker service are hosted on user applications, and not the Temporal server.
-Use the Temporal SDK to start the Worker and register all Activity and Workflow implementations that you require the service to execute.
+A Worker is a service that executes [Workflows](/docs/go/workflows) and [Activities](/docs/go/activities).
+Workers are run on user controlled hosts.
+You can use the `worker` package to create and run as many Workers as your use case demands, across any number of hosts.
+
+Workers poll Task Queues for Tasks, execute chunks of code in response to those Tasks, and then communicate the results back to the Temporal Server.
+
+As a developer, running Workers is a fairly simple procedure, because the Go SDK handles all of the communication between the Worker and the Temporal Server behind the scenes.
+
+## How to start a Worker
+
+To start a Worker you need to pass it the following three things:
+
+1. The Temporal Go SDK client.
+2. The name of the Task Queue that it will poll.
+3. The Worker's options, which can be empty by default.
+
+To run the Worker, you need to first register which Workflows and/or Activities it can execute and then pass it an interrupt channel.
+
+As a simple example, let's say we want our Worker to be able to execute the following Go functions:
 
 ```go
-package main
-
-import (
-	"os"
-	"os/signal"
-
-	"github.com/uber-go/tally"
-	"go.uber.org/zap"
-
-	"go.temporal.io/sdk/client"
-	"go.temporal.io/sdk/worker"
-	"go.temporal.io/sdk/workflow"
-)
-
-var (
-	TaskQueue  = "samples_tq"
-)
-
-func main() {
-	logger, err := zap.NewDevelopment()
-	if err != nil {
-		panic(err)
-	}
-
-	// The client and worker are heavyweight objects that should be created once per process.
-	serviceClient, err := client.NewClient(client.Options{
-		HostPort: client.DefaultHostPort,
-		Logger: logger,
-	})
-	if err != nil {
-		logger.Fatal("Unable to create client", zap.Error(err))
-	}
-	defer serviceClient.Close()
-
-	worker := worker.New(serviceClient, TaskQueue, worker.Options{})
-
-	worker.RegisterWorkflow(MyWorkflow)
-	worker.RegisterActivity(MyActivity)
-
-	err = worker.Start()
-	if err != nil {
-		logger.Fatal("Unable to start worker", zap.Error(err))
-	}
-}
-
 func MyWorkflow(context workflow.Context) error {
 	return nil
 }
@@ -66,3 +35,47 @@ func MyActivity() error {
 	return nil
 }
 ```
+
+This is how you would create and run the Worker for those functions:
+
+```go
+package main
+
+import (		
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/worker"
+)
+
+func main() {
+	// Create the client
+	c, err := client.NewClient(client.Options{})
+	if err != nil {
+		// log failure
+	}
+	defer c.Close()
+
+	// Create the Worker
+	w := worker.New(c, "your-simple-task-queue", worker.Options{})
+
+	// Register your functions
+	w.RegisterWorkflow(app.GreetingWorkflow)
+	w.RegisterActivity(app.ComposeGreeting)
+
+	// Run the Worker
+	err = w.Run(worker.InterruptCh())
+	if err != nil
+		// log failure
+	}
+}
+```
+
+The `RegisterWorkflow()` and `RegisterActivity` calls essentially create an in-memory mapping between the fully qualified function name and the implementation, inside the Worker process.
+
+:::note
+
+If the Worker polls a Task for a Workflow or Activity function it does not know about, it will fail that Task.
+However, the failure of the Task will not cause the associated Workflow to fail.
+
+:::
+
+When you start a Workflow by calling `ExecuteWorkflow()`, the Temporal Server adds a new Task to the Workflow's Task Queue, and any Worker polling that Task Queue could execute that Task.

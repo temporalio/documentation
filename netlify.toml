@@ -77,6 +77,10 @@
   to = "/docs/go/create-workflows"
 
 [[redirects]]
+  from = "/docs/go/create-workflows"
+  to = "/docs/go/workflows"
+
+[[redirects]]
   from = "/docs/go-distributed-cron"
   to = "/docs/go/distributed-cron"
 
