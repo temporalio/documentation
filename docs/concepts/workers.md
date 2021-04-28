@@ -161,7 +161,7 @@ However, a typical production Temporal deployment will have a **fleet** of Worke
 
 > Note: Temporal Server itself has [internal workers](https://docs.temporal.io/blog/workflow-engine-principles/#system-workflows-1910) for system workflows. But this is not visible to the developer.
 
-## Workers can encrypt in transit and at rest
+## Workers can be encrypted in transit and at rest
 
 The external nature of workers works very well for data privacy concerns, because Temporal Server (including our managed Temporal Cloud version) doesn't run any Workflow or Activity code on its machines - it is solely responsible for orchestrating state transitions and dispatching messages to the next available Worker. 
 
