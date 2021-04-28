@@ -44,7 +44,7 @@ export default function BlogSidebar({sidebar}) {
         <a href={"/blog"}>
           Full blog index
         </a>
-     </div>
+      </div>
       <h3 className={styles.sidebarItemTitle}>Tags</h3> 
       <ul className={clsx(styles.sidebarItemList, styles.tagsList)}>
         <li><a href="https://docs.temporal.io/blog/tags/community">#community</a></li>
@@ -60,7 +60,7 @@ export default function BlogSidebar({sidebar}) {
         <a href={"/blog/tags"}>
           Browse all tags
         </a>
-     </div>
+      </div>
     </div>
   );
 }
