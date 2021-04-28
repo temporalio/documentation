@@ -4,7 +4,20 @@ title: Workers
 sidebar_label: Workers
 ---
 
-A Worker is a service that hosts the [Workflow](/docs/concepts/workflows) and [Activity](/docs/concepts/activities) implementations. 
+A Worker is a service that:
+
+- hosts (registers) [Workflows](/docs/concepts/workflows) and [Activities](/docs/concepts/activities)
+- listens to [Activity Task Queues](/docs/concepts/task-queues) by long polling
+
+Workers should have access to the resources needed to perform the activities they implement, for example:
+
+- network access for external API calls
+- credentials for infrastructure provisioning
+- specialized GPUs for machine learning tasks
+
+Since workers are subscribed to task queues they can implement, it is straightforward to do [Activity Task Routing](/docs/concepts/activities/#activity-task-routing-through-task-queues). 
+
+> Note: if you need to process stateful work sequentially on the same machine, the Go SDK also offers a [Sessions API](https://docs.temporal.io/docs/go/sessions/).
 
 ## Workers are external to Temporal Server
 
