@@ -10,13 +10,13 @@ slug: descript-case-study
 title: 'Revolutionizing Audio with Descript and Temporal'
 author: swyx
 author_title: Head of Developer Experience
-author_image_url: TODO
-image: TODO
+author_image_url: https://avatars.githubusercontent.com/u/6764957?v=4
+image: https://user-images.githubusercontent.com/6764957/116481376-a1adc900-a8b5-11eb-8ae6-326a0fe90b1c.png
 release_version: V1.9.0
 ---
-<img class="case-study-header" src='TODO' />
+<img class="case-study-header" src='https://user-images.githubusercontent.com/6764957/116481376-a1adc900-a8b5-11eb-8ae6-326a0fe90b1c.png' />
 
-[Link to PDF version](TODO)
+[Link to PDF version](https://user-images.githubusercontent.com/6764957/116481376-a1adc900-a8b5-11eb-8ae6-326a0fe90b1c.png)
 
 <!--truncate-->
 
