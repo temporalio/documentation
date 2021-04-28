@@ -110,7 +110,6 @@ module.exports = {
         'go/workers',
         'go/signals',
         'go/queries',
-        'go/sync-vs-async-start',
         'go/child-workflows',
         'go/retries',
         'go/error-handling',

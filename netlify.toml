@@ -133,6 +133,10 @@
   to = "/docs/go/sync-vs-async-start"
 
 [[redirects]]
+  from = "/docs/go/sync-vs-async-start"
+  to = "/docs/go/workflows/#how-to-start-a-workflow"
+
+[[redirects]]
   from = "/docs/go-task-queues"
   to = "/docs/go/task-queues"
 
