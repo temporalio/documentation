@@ -8,7 +8,7 @@ A Worker is a service that hosts the [Workflow](/docs/concepts/workflows) and [A
 
 ## Workers are external to Temporal Server
 
-In our tutorials, we show you how to run both the Temporal Server and Worker on the same machine for local development
+In our tutorials, we show you how to run both the Temporal Server and one Worker on the same machine for local development.
 
 However, a typical production Temporal deployment will have a **fleet** of Workers external to the main Temporal Server cluster. These can be independently managed by different developer teams, each registering their own sets of workflows and activities.
 
