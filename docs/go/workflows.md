@@ -138,9 +138,11 @@ func main() {
 }
 ```
 
-In Go, the only difference between a synchronous start and an asynchronous start is whether you use the `WorkflowExecution` that is returned from `ExecuteWorkflow` to get the result of the Workflow from the same process in which you started it.
-Workflows do not rely on the invocation process and will continue executing even if the waiting process crashes or stops.
-
+Starting Workflows synchronously or asynchronously is both possible.
+In Go, the only difference is whether the code waits for the result of the Workflow in the same process in which you started it.
+When you start a Workflow, a `WorkflowExecution` is returned.
+The `WorkflowExecution` can be used to get the result or capture the WorkflowId.
+Workflows do not rely on the process that invoked it, and will continue executing even if the waiting process crashes or stops.
 As long as you have the WorkflowID, which is available from the `WorkflowExecution` you can retrieve the result of the Workflow from a completely different process by using the `GetWorkflow` call on the client.
 
 ```go
@@ -148,6 +150,8 @@ we = client.GetWorkflow(workflowID)
 var result string
 we.Get(ctx, &result)
 ```
+
+In most uses cases it is better to be prepared to execute the Workflow asynchronously.
 
 ## How to get data in or out of a running Workflow
 
