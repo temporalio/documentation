@@ -181,6 +181,7 @@ module.exports = {
         'java/implementing-workflows',
         'java/starting-workflow-executions',
         'java/versioning',
+        'java/continue-as-new',
         'java/side-effect',
         'java/testing-and-debugging',
         'java/distributed-cron',
