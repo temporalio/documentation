@@ -185,7 +185,7 @@ export default function Home() {
           </section>
         )}
       </main>
-      <div className={clsx('hero hero--secondary boo', styles.heroSecondRow)}>
+      <div className={clsx('hero hero--secondary container', styles.heroSecondRow)}>
         <div className="container">
           <h2>🍎 Core concepts</h2>
           <p>Review some of Temporal's core concepts and building blocks.</p>
