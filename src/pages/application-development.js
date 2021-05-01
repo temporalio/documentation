@@ -85,7 +85,7 @@ export default function ApplicationDevelopment() {
           <p className="hero__subtitle">Looking for SDKs in other languages? There are plans to support many others.</p>
           <div className="row">
             <div className={clsx('col col-4', styles.textFeature)}>
-              <h3>Officially in the works</h3>
+              <h3>In the works, not yet endorsed</h3>
               <ul className={clsx(styles.unOrderedList)}>
                 <li>Reach out via the #nodejs-sdk Slack channel</li>
                 <li>
@@ -98,17 +98,17 @@ export default function ApplicationDevelopment() {
                   <a href="https://github.com/temporalio/sdk-core">Rust based Core SDK by Temporal</a>
                 </li>
                 <li>Reach out via the #support Slack channel</li>
+                <li>
+                  <img className={clsx(styles.listImage)} src={useBaseUrl('img/ruby.svg')} alt="Ruby" />
+                  <a href="https://github.com/coinbase/temporal-ruby">Ruby SDk by Coinbase</a>
+                </li>
+                <li>Reach out via the #ruby-sdk Slack channel</li>
               </ul>
             </div>
             <div className={clsx('col col-4', styles.textFeature)}>
               <h3>SDKs with community interest</h3>
               <p>Get in touch with us if you are interested in using or trying any of the following:</p>
               <ul className={clsx(styles.unOrderedList)}>
-                <li>
-                  <img className={clsx(styles.listImage)} src={useBaseUrl('img/ruby.svg')} alt="Ruby" />
-                  <a href="https://github.com/coinbase/temporal-ruby">Ruby SDk by Coinbase</a>
-                </li>
-                <li>Reach out via the #ruby-sdk Slack channel</li>
                 <li>
                   <img className={clsx(styles.listImage)} src={useBaseUrl('img/dotnet.svg')} alt="C#/.Net" />
                   C#/.Net SDK
