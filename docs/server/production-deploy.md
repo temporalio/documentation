@@ -54,6 +54,17 @@ Use `workflow_success`, `workflow_failed`, `workflow_timeout`, `workflow_termina
 They are also include the `namespace` tag.
 Additional information is available in [this forum post](https://community.temporal.io/t/metrics-for-monitoring-server-performance/536/3).
 
+## Debugging Temporal
+
+### Debugging Temporal Server Configs
+
+Recommended techniques to be aware of for production Temporal Server setups:
+
+- Containers (tbc)
+- Storage (tbc)
+- Networking
+  - [Temporal cluster unable to establish ring membership, causing an infinite crash loop](https://community.temporal.io/t/crash-loop-of-history-service-in-k8s-cluster/2015): Use `tcurl` to audit it
+
 ### Debugging Workflows
 
 > ⚠️ This is a basic guide to troubleshooting/debugging Temporal applications. It is work-in-progress and we encourage [reading about our Architecture](https://docs.temporal.io/docs/server-architecture) for more detail. The better you understand how Temporal works, the better you will be at debugging your workflows.
