@@ -15,7 +15,6 @@ origins:
     repo: sdk-node
   - owner: temporalio
     repo: samples-go
-    ref: 61534e23fc4babda1fdb7dd1faf3982a05837901
 
 target: docs
 
