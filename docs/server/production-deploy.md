@@ -60,8 +60,8 @@ Additional information is available in [this forum post](https://community.tempo
 
 Recommended configuration debugging techniques for production Temporal Server setups:
 
-- Containers (tbc)
-- Storage (tbc)
+- Containers (to be completed)
+- Storage (to be completed)
 - Networking
   - [Temporal cluster unable to establish ring membership, causing an infinite crash loop](https://community.temporal.io/t/crash-loop-of-history-service-in-k8s-cluster/2015): Use `tcurl` to audit it
 
