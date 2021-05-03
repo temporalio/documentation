@@ -77,6 +77,10 @@
   to = "/docs/go/create-workflows"
 
 [[redirects]]
+  from = "/docs/go/create-workflows"
+  to = "/docs/go/workflows"
+
+[[redirects]]
   from = "/docs/go-distributed-cron"
   to = "/docs/go/distributed-cron"
 
@@ -127,6 +131,10 @@
 [[redirects]]
   from = "/docs/go-sync-vs-async-start"
   to = "/docs/go/sync-vs-async-start"
+
+[[redirects]]
+  from = "/docs/go/sync-vs-async-start"
+  to = "/docs/go/workflows/#how-to-start-a-workflow"
 
 [[redirects]]
   from = "/docs/go-task-queues"

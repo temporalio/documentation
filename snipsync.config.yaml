@@ -13,6 +13,8 @@ origins:
     repo: samples-php
   - owner: temporalio
     repo: sdk-node
+  - owner: temporalio
+    repo: samples-go
 
 target: docs
 
