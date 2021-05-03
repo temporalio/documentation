@@ -58,7 +58,7 @@ Additional information is available in [this forum post](https://community.tempo
 
 ### Debugging Temporal Server Configs
 
-Recommended techniques to be aware of for production Temporal Server setups:
+Recommended configuration debugging techniques for production Temporal Server setups:
 
 - Containers (tbc)
 - Storage (tbc)
