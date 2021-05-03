@@ -38,7 +38,7 @@ export default function Security() {
             </div>
             <div className={clsx('col col--4', styles.justifyLeft)}>
               <p>All traffic to and from the Temporal Cloud is encrypted with mTLS.</p>
-              <p>Customers have access to data encryption tools to encrypt data at rest.</p>
+              <p>Customers have access to <a href="https://docs.temporal.io/docs/server/security">data encryption tools</a> to encrypt data at rest.</p>
             </div>
           </div>
           <div className="row">
@@ -66,7 +66,7 @@ export default function Security() {
                 <li>Don't intentionally harm our service or exfiltrate data from it</li>
               </ul>
             </div>
-          </div> 
+          </div>
         </div>
       </div>
     </Layout>
