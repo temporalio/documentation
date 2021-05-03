@@ -55,18 +55,18 @@ export default function Security() {
           </div>
           <div className="row">
             <div className={clsx('col col--6', styles.justifyRight)}>
-              <h2>Disclosure</h2>
+              <h2>Responsible Disclosure</h2>
             </div>
             <div className={clsx('col col--4', styles.justifyLeft)}>
-            <p>If you have any concerns about security or would like to report a security issue, please reach out to our team at <a href="mailto:security@temporal.io">security@temporal.io</a>.</p>
-            <p>Include the details of your concerns or finding and we will get back to you.</p>
+              <p>If you have any concerns about security or would like to report a security issue, please reach out to our team at <a href="mailto:security@temporal.io">security@temporal.io</a>.</p>
+              <p>We promise not to bring legal action against people who do the following:</p>
+              <ul>
+                <li>Share with us the full details of any problem they've found.</li>
+                <li>Keep the issue private until we've had a reasonable time to address it.</li>
+                <li>Don't intentionally harm our service or exfiltrate data from it</li>
+              </ul>
             </div>
-          </div>
-
-
-
-
-
+          </div> 
         </div>
       </div>
     </Layout>
