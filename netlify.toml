@@ -38,6 +38,10 @@
   to = "/docs/concepts/task-queues"
 
 [[redirects]]
+  from = "/docs/task-queues"
+  to = "/docs/concepts/task-queues"
+  
+[[redirects]]
   from = "/docs/concept-workers"
   to = "/docs/concepts/workers"
 
@@ -421,6 +425,10 @@
 
 [[redirects]]
   from = "/docs/server-namespaces"
+  to = "/docs/server/namespaces"
+  
+[[redirects]]
+  from = "/docs/namespaces"
   to = "/docs/server/namespaces"
 
 [[redirects]]
