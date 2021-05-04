@@ -4,9 +4,6 @@ title: Workers
 sidebar_label: Workers
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
 A Worker is a service that:
 
 - hosts (registers) [Workflows](/docs/concepts/workflows) and [Activities](/docs/concepts/activities)
