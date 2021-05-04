@@ -433,11 +433,11 @@ Implementations of Workflow1 and Workflow2 can registered with the same worker a
 
 ## Long Event Histories (ContinueAsNew)
 
-import SharedDoc from '../shared/continue-as-new.md'
+import SharedContinueAsNew from '../shared/continue-as-new.md'
 
-<SharedDoc />
+<SharedContinueAsNew />
 
-Temporal SDK allows you to manually use "Continue-as-new" in a number of ways:
+Temporal SDK allows you to manually use "ContinueAsNew" in a number of ways:
 
 If you are continuing execution of the same workflow that is currently running you can do:
 
@@ -445,7 +445,7 @@ If you are continuing execution of the same workflow that is currently running y
 Workflow.continueAsNew(input1, ...);
 ```
 
-It is also possible to continue execution as a completely differnt Workflow type.
+It is also possible to continue execution as a completely different Workflow type.
 In a Workflow class called `MyWorkflow` for example, we can create a Workflow Stub with a different type and
 call its Workflow method to continue execution as that type:
 
@@ -471,4 +471,4 @@ and on a different Task Queue.
 
 Another way to deal with the execution history size limits is to use Child Workflows, however
 they themselves could eventually, if long running, experience the same issue in which case you can again
-apply the "Continue-as-new" feature if needed.
+apply the "ContinueAsNew" feature if needed.
