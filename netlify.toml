@@ -256,11 +256,19 @@
   to = "/docs/java/workers"
 
 [[redirects]]
-  from = "/docs/java-workflow-interface"
-  to = "/docs/java/workflow-interface"
+  from = "/docs/java/workflow-interface"
+  to = "/docs/java/workflows"
 
 [[redirects]]
-  from = "/docs/java-workflows"
+  from = "/docs/java-workflow-interface"
+  to = "/docs/java/workflows"
+
+[[redirects]]
+  from = "/docs/java-workflow-interface"
+  to = "/docs/java/workflows"
+
+[[redirects]]
+  from = "/docs/java/starting-workflow-executions"
   to = "/docs/java/workflows"
 
 #
