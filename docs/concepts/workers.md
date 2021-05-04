@@ -22,7 +22,7 @@ Since workers are subscribed to task queues they can implement, it is straightfo
 
 > Note: if you need to process stateful work sequentially on the same machine, the Go SDK also offers a [Sessions API](https://docs.temporal.io/docs/go/sessions/).
 
-See example worker code for:
+See example Worker code for:
 
 - [Go SDK](docs/go/workers)
 - [Java SDK](docs/java/run-your-first-app-tutorial#the-worker)
