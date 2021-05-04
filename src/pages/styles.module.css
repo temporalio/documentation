@@ -107,14 +107,21 @@
   background-color: var(--ifm-color-primary);
 }
 
-.justifyRight{
-  text-align: right;
-}
-
 .justifyLeft{
   text-align: left;
 }
 
 .justifyCenter{
   text-align: center;
+}
+
+.securityPageHeaders{
+  text-align: right;
+}
+
+@media screen and (max-width: 996px) {
+
+  .securityPageHeaders {
+    text-align: left;
+  }
 }

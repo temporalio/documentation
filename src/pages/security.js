@@ -24,7 +24,7 @@ export default function Security() {
       <div className={clsx('hero hero--secondary', styles.heroBanner)}>
         <div className="container">
           <div className="row">
-            <div className={clsx('col col--6', styles.justifyRight)}>
+            <div className={clsx('col col--5', styles.securityPageHeaders)}>
               <h2>Our Stack</h2>
             </div>
             <div className={clsx('col col--4', styles.justifyLeft)}>
@@ -33,7 +33,7 @@ export default function Security() {
             </div>
           </div>
           <div className="row">
-            <div className={clsx('col col--6', styles.justifyRight)}>
+            <div className={clsx('col col--5', styles.securityPageHeaders)}>
               <h2>Encryption</h2>
             </div>
             <div className={clsx('col col--4', styles.justifyLeft)}>
@@ -42,7 +42,7 @@ export default function Security() {
             </div>
           </div>
           <div className="row">
-            <div className={clsx('col col--6', styles.justifyRight)}>
+            <div className={clsx('col col--5', styles.securityPageHeaders)}>
               <h2>SOC2 Type 1</h2>
             </div>
             <div className={clsx('col col--4', styles.justifyLeft)}>
@@ -54,7 +54,7 @@ export default function Security() {
             </div>
           </div>
           <div className="row">
-            <div className={clsx('col col--6', styles.justifyRight)}>
+            <div className={clsx('col col--5', styles.securityPageHeaders)}>
               <h2>Responsible Disclosure</h2>
             </div>
             <div className={clsx('col col--4', styles.justifyLeft)}>
