@@ -8,16 +8,17 @@ tags: helloworld, java, sdk, intellij, gradle, tutorial
 <img class="docs-image-centered" src="https://raw.githubusercontent.com/temporalio/documentation-images/main/static/astronaut-hello-java.jpg" />
 
 :::note Tutorial information
+
 - **Level:** ⭐ Temporal beginner
 - **Time:** ⏱️ ~20 minutes
 - **Goals:** 🙌
   - Learn how to set up, build, and test a Temporal application project from scratch using the [Java SDK](https://github.com/temporalio/java-sdk).
   - Become more familiar with core concepts and the application structure.
-:::
+    :::
 
 ## Overview
 
-This tutorial focuses on the practicalities of building an application from scratch. To better understand *why* you should use Temporal, we recommend that you follow the tutorial where you [run a Temporal money transfer application](/docs/java/run-your-first-app-tutorial) to get a taste of its value propositions.
+This tutorial focuses on the practicalities of building an application from scratch. To better understand _why_ you should use Temporal, we recommend that you follow the tutorial where you [run a Temporal money transfer application](/docs/java/run-your-first-app-tutorial) to get a taste of its value propositions.
 
 Before starting, make sure you have looked over the [tutorial prerequisites](/docs/java/tutorial-prerequisites).
 
@@ -55,7 +56,6 @@ To limit the logging output from the SDK, within src/main/resources/ create a lo
 If you are editing the files in IntelliJ, a "refresh" icon will appear on the screen. Click it to load the changes. Gradle will rebuild with the dependencies. Otherwise you can run `./gradlew build` from the root of the project again.
 
 All of the files for our application will be created in src/main/java/helloworldapp/. However, if you have selected Gradle through IntelliJ instead of scaffolding it from the terminal, you may have to create the directory helloworldapp by yourself. If you have scaffolded Gradle through the terminal, Gradle will have generated a default App.java class in that location. Remove it before proceeding.
-
 
 ## ![](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/apps.png) "Hello World!" app
 
@@ -114,7 +114,7 @@ Create HelloWorldWorker.java and define the Worker:
 
 ### Workflow initiator
 
-There are two ways to start a Workflow, via the Temporal CLI or Temporal SDK. In this tutorial we will use the SDK to start the Workflow which is how most Workflows are started in live environments. Additionally, the call to the Temporal server can be made [synchronously or asynchronously](/docs/java/starting-workflow-executions). Here we do it synchronously, so you will see the caller wait for the result of the Workflow.
+There are two ways to start a Workflow, via the Temporal CLI or Temporal SDK. In this tutorial we will use the SDK to start the Workflow which is how most Workflows are started in live environments. Additionally, the call to the Temporal server can be made [synchronously or asynchronously](/docs/java/workflows). Here we do it synchronously, so you will see the caller wait for the result of the Workflow.
 
 Create InitiateHelloWorld.java and use the SDK to define the start of the Workflow:
 
