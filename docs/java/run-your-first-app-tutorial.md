@@ -17,7 +17,8 @@ import { ResponsivePlayer } from '../../src/components'
   - Practice reviewing the state of the Workflow.
   - Understand the inherent reliability of Workflow functions.
   - Learn many of Temporal's core terminology and concepts.
-    :::
+
+:::
 
 ## Overview
 
