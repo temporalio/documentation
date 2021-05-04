@@ -18,7 +18,6 @@ Workers should have access to the resources needed to perform the activities the
 - credentials for infrastructure provisioning
 - specialized GPUs for machine learning tasks
 
-Since workers are subscribed to task queues they can implement, it is straightforward to do [Activity Task Routing](/docs/concepts/activities/#activity-task-routing-through-task-queues). 
 
 > Note: if you need to process stateful work sequentially on the same machine, the Go SDK also offers a [Sessions API](https://docs.temporal.io/docs/go/sessions/).
 
