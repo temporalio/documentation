@@ -279,7 +279,7 @@ Calling methods annotated with `@QueryMethod` is not allowed from within Workflo
 
 In Java, Workflows can be started both synchronously and asynchronously in Java. To do either, you must initialize an instance of a `WorkflowClient`, create a client side Workflow stub, and then call a method that is annotated with `@WorkflowMethod`.
 
-## Asynchronous start
+### Asynchronous start
 
 An asynchronous start initiates a Workflow execution and immediately returns to the caller. This is the most common way to start Workflows in a live environment.
 
@@ -295,7 +295,7 @@ YourWorkflow workflow = client.newWorkflowStub(YourWorkflow.class, we);
 String result = workflow.yourMethod();
 ```
 
-## Synchronous start
+### Synchronous start
 
 A Synchronous start initiates a Workflow and then waits for its completion. The started Workflow will not rely on the invocation process and will continue executing even if the waiting process crashes or was stops.
 
