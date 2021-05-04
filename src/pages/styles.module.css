@@ -54,6 +54,12 @@
   border-radius: 25px;
 }
 
+.soc2Logo {
+  max-width: 50px;
+  margin: auto;
+  padding: 5px;
+}
+
 .unOrderedList {
   list-style-type: none;
   margin: 0px;
@@ -99,4 +105,16 @@
 
 .cloudWaitlistSubmit:hover {
   background-color: var(--ifm-color-primary);
+}
+
+.justifyRight{
+  text-align: right;
+}
+
+.justifyLeft{
+  text-align: left;
+}
+
+.justifyCenter{
+  text-align: center;
 }
