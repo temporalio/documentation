@@ -1,6 +1,5 @@
 module.exports = {
   serverSidebar: [
-
     {
       type: 'category',
       label: 'Server',
