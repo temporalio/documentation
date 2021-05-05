@@ -25,9 +25,9 @@ If you need to process work sequentially on the same machine, the Go SDK also of
 See example Worker code for:
 
 - [Go SDK](docs/go/workers)
-- [Java SDK](docs/java/run-your-first-app-tutorial#the-worker)
+- [Java SDK](docs/java/run-your-first-app-tutorial/#the-worker)
 - [PHP SDK](docs/php/workers)
-- [Node SDK](docs/node/hello-world#worker)
+- [Node SDK](docs/node/hello-world/#worker)
 
 ## Workers are external to the Temporal Server
 
