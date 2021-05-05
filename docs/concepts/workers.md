@@ -4,19 +4,23 @@ title: Workers
 sidebar_label: Workers
 ---
 
-A Worker is a service that:
+A Worker is a service that does the following:
 
-- hosts (registers) [Workflows](/docs/concepts/workflows) and [Activities](/docs/concepts/activities)
-- listens to [Activity Task Queues](/docs/concepts/task-queues) by long polling
+- Hosts executable [Workflow](/docs/concepts/workflows) and [Activity](/docs/concepts/activities) code.
+- Listens to [Task Queues](/docs/concepts/task-queues) via long polling.
 
-Workers should have access to the resources needed to perform the activities they implement, for example:
+Workers must have access to any resources needed to execute the actions defined in Activities, such as the following:
 
-- network access for external API calls
-- credentials for infrastructure provisioning
-- specialized GPUs for machine learning tasks
+- Network access for external API calls.
+- Credentials for infrastructure provisioning.
+- Specialized GPUs for machine learning utilities.
 
 
-> Note: if you need to process stateful work sequentially on the same machine, the Go SDK also offers a [Sessions API](https://docs.temporal.io/docs/go/sessions/).
+:::note
+
+If you need to process work sequentially on the same machine, the Go SDK also offers a [Sessions API](https://docs.temporal.io/docs/go/sessions/).
+
+:::
 
 See example Worker code for:
 
@@ -25,23 +29,27 @@ See example Worker code for:
 - [PHP SDK](docs/php/workers)
 - [Node SDK](docs/node/hello-world#worker)
 
-## Workers are external to Temporal Server
+## Workers are external to the Temporal Server
 
 In our tutorials, we show you how to run both the Temporal Server and one Worker on the same machine for local development.
 
 However, a typical production Temporal deployment will have a **fleet** of Workers external to the main Temporal Server cluster. 
-These can be independently managed by different developer teams, each registering their own sets of workflows and activities.
+These can be independently managed by different developer teams, each registering their own sets of Workflows and Activities.
 
 [![https://user-images.githubusercontent.com/6764957/113587567-8c9c9c00-9661-11eb-8614-576a68caa8f1.png](https://user-images.githubusercontent.com/6764957/113587567-8c9c9c00-9661-11eb-8614-576a68caa8f1.png)](https://docs.temporal.io/blog/workflow-engine-principles)
 
-> Note: Temporal Server itself has [internal workers](https://docs.temporal.io/blog/workflow-engine-principles/#system-workflows-1910) for system workflows. 
-> But this is not visible to the developer.
+:::note
+
+Temporal Server itself has [internal workers](https://docs.temporal.io/blog/workflow-engine-principles/#system-workflows-1910) for system workflows.
+But this is not visible to the developer.
+
+:::
 
 ## Workers can be encrypted in transit and at rest
 
-The external nature of workers works very well for data privacy concerns, because Temporal Server (including our managed Temporal Cloud version) doesn't run any Workflow or Activity code on its machines. 
+The external nature of Workers works very well for data privacy concerns, because the Temporal Server (including our managed Temporal Cloud version) doesn't run any Workflow or Activity code on its machines. 
 It is solely responsible for orchestrating state transitions and dispatching messages to the next available Worker. 
 
-While data transferred in the event histories is [secured by mTLS](https://docs.temporal.io/docs/server/security/#encryption-of-network-traffic), by default, it is still readable at rest in Temporal Server. 
+While data transferred in the event histories is [secured by mTLS](https://docs.temporal.io/docs/server/security/#encryption-of-network-traffic), by default, it is still readable at rest in the Temporal Server. 
 
-Temporal offers a [Data Converter API](https://docs.temporal.io/docs/java/activities/#activity-interface) to solve this - you can customize the serialization of data going out of and coming back in to a Worker, with the net effect of guaranteeing that Temporal Server cannot read sensitive business data.
+To solve this, Temporal SDKs offer a [Data Converter API](https://docs.temporal.io/docs/java/activities/#activity-interface) that you can use to customize the serialization of data going out of and coming back in to a Worker, with the net effect of guaranteeing that the Temporal Server cannot read sensitive business data.
