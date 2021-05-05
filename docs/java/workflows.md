@@ -210,7 +210,7 @@ A large execution history can thus adversely impact the performance of your Work
 Therefore, be mindful of the amount of data that you transfer via Activity invocation parameters or return values.
 Otherwise, no additional limitations exist on Activity implementations.
 
-We discuss how to work around the history size limitations in the [Large Event Histories](#Large-Event-Histories) section.
+We discuss how to work around the history size limitations in the [Large Event Histories](#large-event-histories) section.
 
 ## Workflow Activities
 
