@@ -47,7 +47,7 @@ Returning an error from a Workflow is used to indicate that an error was encount
 
 ## How to write Workflow code
 
-There is a single requirement for how the code inside of a Workflow is written. Workflow code must be "deterministic".
+There is a single requirement for how the code inside a Workflow is written. Workflow code must be "deterministic".
 This requirement stems from how the Temporal Server tracks the state of code execution and its need to be able to replay an execution.
 
 In practical terms, this means the following:
@@ -57,7 +57,7 @@ In practical terms, this means the following:
 - Workflow code must use Go SDK APIs to handle things like time, logging, and goroutines.
 - Workflow code can not directly iterate over maps using `range` because the order of the map's iteration is randomized.
 
-However the Go SDK provides a number of features to handle these restrictions with ease.
+However, the Go SDK provides a number of features to handle these restrictions with ease.
 
 1. To interact with external systems and nondeterministic code, Workflows can execute [Activities](/docs/go/activities).
 2. To handle things like time, logging, and goroutines, as mentioned above, there are specific Go SDK APIs available, such as:
