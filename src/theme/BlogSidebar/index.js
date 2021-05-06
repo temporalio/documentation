@@ -42,8 +42,8 @@ export default function BlogSidebar({sidebar}) {
       </ul>
       <h3 className={styles.sidebarItemTitle}>Tags</h3> 
       <ul className={clsx(styles.sidebarItemList, styles.tagsList)}>
-        <li><a href="/blog/tags/community">#community</a></li>
-        <li><a href="/blog/tags/errors">#errors</a></li>
+        <li><LinkWrapped href="/blog/tags/community">#community</LinkWrapped></li>
+        <li><LinkWrapped href="/blog/tags/errors">#errors</LinkWrapped></li>
         <li><a href="/blog/tags/bug">#bug</a></li>
         <li><a href="/blog/tags/announcement">#announcement</a></li>
         <li><a href="/blog/tags/architecture">#architecture</a></li>
