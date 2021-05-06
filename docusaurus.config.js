@@ -154,7 +154,9 @@ module.exports = {
       </div>
       <div class="footer__copyright"><span class="footer__block">Copyright © ${new Date().getFullYear()}</span> Temporal Technologies Inc.</div>
       <div>
-        <a class="footer__link-item" href="/about">About The Docs</a>
+        <a class="footer__link-item" href="/about">About</a>
+        <span class="footer__separators"> | </span>
+        <a class="footer__link-item" href="/security">Security</a>
         <span class="footer__separators"> | </span>
         <a class="footer__link-item" href="/privacy-policy">Privacy Policy</a>
         <span class="footer__separators"> | </span>
