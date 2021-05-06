@@ -204,8 +204,12 @@
   to = "/docs/java/hello-world-tutorial"
 
 [[redirects]]
+  from = "/docs/java/implementing-workflows"
+  to = "/docs/java/workflows"
+
+[[redirects]]
   from = "/docs/java-implementing-workflows"
-  to = "/docs/java/implementing-workflows"
+  to = "/docs/java/workflows"
 
 [[redirects]]
   from = "/docs/java-queries"
@@ -225,7 +229,11 @@
 
 [[redirects]]
   from = "/docs/java-start-workflow-execution"
-  to = "/docs/java/start-workflow-execution"
+  to = "/docs/java/workflows"
+
+[[redirects]]
+  from = "/docs/java/start-workflow-execution"
+  to = "/docs/java/workflows"
 
 [[redirects]]
   from = "/docs/java-task-queues"
@@ -248,11 +256,15 @@
   to = "/docs/java/workers"
 
 [[redirects]]
-  from = "/docs/java-workflow-interface"
-  to = "/docs/java/workflow-interface"
+  from = "/docs/java/workflow-interface"
+  to = "/docs/java/workflows"
 
 [[redirects]]
-  from = "/docs/java-workflows"
+  from = "/docs/java-workflow-interface"
+  to = "/docs/java/workflows"
+
+[[redirects]]
+  from = "/docs/java/starting-workflow-executions"
   to = "/docs/java/workflows"
 
 #

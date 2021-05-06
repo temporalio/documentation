@@ -4,83 +4,181 @@ title: Activities in Java
 sidebar_label: Activities
 ---
 
-## Activity Interface
-
-In Java, Activities are methods of a plain Java interface that are annotated with `@ActivityInterface`.
-Each method defines a single Activity type.
-A single Workflow can use more than one Activity interface and call more than one Activity method from the same interface.
-The only requirement is that Activity method arguments and return values are serializable to a byte array using the provided `io.temporal.common.converter.DataConverter` implementation.
-The default implementation uses a JSON serializer, but an alternative implementation can be configured through `io.temporal.client.WorkflowClientOptions.Builder.setDataConverter()`.
-
-Example of an interface that defines four Activities for interacting with S3:
+Activities can be invoked during Workflow execution. Similar to Workflows, Activities in Temporal
+Java SDK programming model are classes which implement an Activity Interface:
 
 ```java
 @ActivityInterface
-public interface FileProcessingActivities {
-
-  void upload(String bucketName, String localName, String targetName);
-
-  String download(String bucketName, String remoteName);
-
-  // An optional @ActivityMethod annotation can be used to specify the Activity name.
-  // By default the method name with the first letter capitalized is used as the Activity name.
-  // This interface defines the following Activities: "Upload", "Download", "Transcode" and "DeleteLocalFile".
-  @ActivityMethod(name = "Transcode")
-  String processFile(String localName);
-
-  void deleteLocalFile(String fileName);
+public interface GreetingActivities {
+    String composeGreeting(String greeting, String name);
 }
 ```
 
-We recommend using a single value type argument for Activity methods.
-In this way, adding new arguments to the value type, as fields, is a backwards-compatible change.
+Activity interface must be annotated with the `@ActivityInterface`. You can annotate each method in the
+Activity interface with the `@ActivityMethod` annotation, but this is completely optional.
+Note that the `@ActivityMethod` annotation has a `name` parameter which can be used to define
+the activity type. If not specified, the method name is used by default.
 
-## Activity Implementation
+### Calling Activities inside Workflows
 
-An Activity is the implementation of an Activity interface.
-A single instance of the Activity's implementation is shared across multiple simultaneous Activity invocations.
-Therefore, the Activity implementation code must be _thread safe_.
+Similar to Workflows, Activities should only be instantiated via stubs.
 
-The values passed to Activities through invocation parameters or returned through a result value are recorded in the execution history.
-The entire execution history is transferred from the Temporal service to Workflow Workers when a Workflow state needs to recover.
-A large execution history can thus adversely impact the performance of your Workflow.
-Therefore, be mindful of the amount of data you transfer via Activity invocation parameters or return values.
-Other than that, no additional limitations exist on Activity implementations.
+`Workflow.newActivityStub` returns a client-side stub that implements an Activity interface.
+It takes Activity type and Activity options as arguments.
+Activity options allow you to specify different Activity timeout and retry options.
+
+Calling a method on this interface invokes an Activity that implements this method.
+An Activity invocation synchronously blocks until the Activity completes, fails, or times out. Even if Activity
+execution takes a few months, the Workflow code still sees it as a single synchronous invocation.
+It doesn't matter what happens to the processes that host the Workflow. The business logic code
+just sees a single method call.
+
+Let's take a look at an example Workflow that calls Activities:
 
 ```java
-public class FileProcessingActivitiesImpl implements FileProcessingActivities {
+public class FileProcessingWorkflowImpl implements FileProcessingWorkflow {
 
-  private final AmazonS3 s3Client;
+    private final FileProcessingActivities activities;
 
-  private final String localDirectory;
+    public FileProcessingWorkflowImpl() {
+        this.activities = Workflow.newActivityStub(
+                FileProcessingActivities.class,
+                ActivityOptions.newBuilder()
+                        .setStartToCloseTimeout(Duration.ofHours(1))
+                        .build());
+    }
 
-  void upload(String bucketName, String localName, String targetName) {
-    File f = new File(localName);
-    s3Client.putObject(bucket, remoteName, f);
-  }
-
-  String download(String bucketName, String remoteName, String localName) {
-    // Implementation omitted for brevity.
-    return downloadFileFromS3(bucketName, remoteName, localDirectory + localName);
-  }
-
-  String processFile(String localName) {
-    // Implementation omitted for brevity.
-    return compressFile(localName);
-  }
-
-  void deleteLocalFile(String fileName) {
-    File f = new File(localDirectory + fileName);
-    f.delete();
-  }
+    @Override
+    public void processFile(Arguments args) {
+        String localName = null;
+        String processedName = null;
+        try {
+            localName = activities.download(args.getSourceBucketName(), args.getSourceFilename());
+            processedName = activities.processFile(localName);
+            activities.upload(args.getTargetBucketName(), args.getTargetFilename(), processedName);
+        } finally {
+            if (localName != null) { 
+                activities.deleteLocalFile(localName);
+            }
+            if (processedName != null) { 
+                activities.deleteLocalFile(processedName);
+            }
+        }
+    }
+    // ...
 }
 ```
 
-## Accessing Activity info
+In this example we use `Workflow.newActivityStub` to craete a client-side stuf of our file processing Activity.
+We also define ActivityOptions and set the setStartToCloseTimeout timeout to one hour, meaning that
+we set the total execution timeout for each of its method invocations to one hour (from when
+the Activity execution is started to when it completes).
 
-The `getExecutionContext()` method returns an `ActivityExecutionContext` which provides static getters to access information about the Workflow that invoked it.
+Workflow can create multiple Activity stubs. Each activity stub can have its own ActivityOptions defined, for example:
+
+```java
+public FileProcessingWorkflowImpl() {
+    ActivityOptions options1 = ActivityOptions.newBuilder()
+             .setTaskQueue("taskQueue1")
+             .setStartToCloseTimeout(Duration.ofMinutes(10))
+             .build();
+    this.store1 = Workflow.newActivityStub(FileProcessingActivities.class, options1);
+
+    ActivityOptions options2 = ActivityOptions.newBuilder()
+             .setTaskQueue("taskQueue2")
+             .setStartToCloseTimeout(Duration.ofMinutes(5))
+             .build();
+    this.store2 = Workflow.newActivityStub(FileProcessingActivities.class, options2);
+}
+```
+
+### Calling Activities Asynchronously
+
+Sometimes Workflows need to perform certain operations in parallel.
+The Temporal Java SDK provides the `Async` class which includes static methods used to invoke any Activity asynchronously.
+The calls return a result of type `Promise` which is similar to the Java `Future` and `CompletionStage`.
+
+When you need to get the results of an async invoked Activity method, you can use the `Promise` `get`
+method to block until the Activity method result is available.
+
+To convert the following synchronous Activity method call:
+
+```java
+String localName = activities.download(sourceBucket, sourceFile);
+```
+
+To asynchronous style, the method reference is passed to `Async.function` or `Async.procedure`
+followed by Activity arguments:
+
+```java
+Promise<String> localNamePromise = Async.function(activities::download, sourceBucket, sourceFile);
+```
+
+Then to wait synchronously for the result you can do the following:
+
+```java
+String localName = localNamePromise.get();
+```
+
+Here is the above example rewritten to call download and upload Activity methods in parallel, on multiple files:
+
+```java
+  public void processFile(Arguments args) {
+    List<Promise<String>> localNamePromises = new ArrayList<>();
+    List<String> processedNames = null;
+    try {
+      // Download all files in parallel.
+      for (String sourceFilename : args.getSourceFilenames()) {
+        Promise<String> localName =
+            Async.function(activities::download, args.getSourceBucketName(), sourceFilename);
+        localNamePromises.add(localName);
+      }
+      List<String> localNames = new ArrayList<>();
+      for (Promise<String> localName : localNamePromises) {
+        localNames.add(localName.get());
+      }
+      processedNames = activities.processFiles(localNames);
+
+      // Upload all results in parallel.
+      List<Promise<Void>> uploadedList = new ArrayList<>();
+      for (String processedName : processedNames) {
+        Promise<Void> uploaded =
+            Async.procedure(
+                activities::upload,
+                args.getTargetBucketName(),
+                args.getTargetFilename(),
+                processedName);
+        uploadedList.add(uploaded);
+      }
+      // Wait for all uploads to complete.
+      Promise.allOf(uploadedList).get();
+    } finally {
+      for (Promise<String> localNamePromise : localNamePromises) {
+        // Skip files that haven't completed downloading.
+        if (localNamePromise.isCompleted()) {
+          activities.deleteLocalFile(localNamePromise.get());
+        }
+      }
+      if (processedNames != null) {
+        for (String processedName : processedNames) {
+          activities.deleteLocalFile(processedName);
+        }
+      }
+    }
+  }
+```
+
+## Activity Execution Context
+
+
+`ActivityExecutionContext` is a context object passed to each Activity implementation by default.
+You can access it in your Activity implementations via `Activity.getExecutionContext()`.
+
+It provides static getters to access information about the Workflow that invoked the Activity.
 Note that the Activity context information is stored in a thread-local variable.
 Therefore, calls to `getExecutionContext()` succeed only within the thread that invoked the Activity function.
+
+Following is an example of using the `ActivityExecutionContext`:
 
 ```java
 public class FileProcessingActivitiesImpl implements FileProcessingActivities {
@@ -107,12 +205,15 @@ public class FileProcessingActivitiesImpl implements FileProcessingActivities {
 
 Sometimes an Activity lifecycle goes beyond a synchronous method invocation.
 For example, a request can be put in a queue and later a reply comes and is picked up by a different Worker process.
-The whole request-reply interaction can be modeled as a single Temporal Activity.
+The whole request-reply interaction can be modeled as a single Activity.
 
-To indicate that an Activity should not be completed upon its method return, call `ActivityExecutionContext.doNotCompleteOnReturn()` from the original Activity thread.
+To indicate that an Activity should not be completed upon its method return, 
+call `ActivityExecutionContext.doNotCompleteOnReturn()` from the original Activity thread.
 
-Then later, when replies come, complete the Activity using `io.temporal.client.ActivityCompletionClient`.
-To correlate Activity invocation with completion use either `TaskToken` or Workflow and Activity IDs.
+Then later, when replies come, complete the Activity using the `ActivityCompletionClient`.
+To correlate Activity invocation with completion use either a `TaskToken` or Workflow and Activity IDs.
+
+Following is an example of using `ActivityExecutionContext.doNotCompleteOnReturn()`:
 
 ```java
 public class FileProcessingActivitiesImpl implements FileProcessingActivities {
@@ -133,7 +234,8 @@ public class FileProcessingActivitiesImpl implements FileProcessingActivities {
 }
 ```
 
-When the download is complete, the download service potentially calls back from a different process:
+When the download is complete, the download service potentially can complete the Activity, or fail it 
+from a different process, for example:
 
 ```java
   public <R> void completeActivity(byte[] taskToken, R result) {
@@ -147,13 +249,23 @@ When the download is complete, the download service potentially calls back from 
 
 ## Activity heartbeats
 
-Some Activities are long-running.
-To react to a crash quickly, use the heartbeat mechanism.
+Activities can be long-running. In these cases the Activity execution timeouts should be set to be longer 
+than the maximum predicted time of the Activity execution.
+In those cases it can happen that an Activity execution is started and cannot proceed, or fails to continue its execution
+for some reasons. With our long set execution timeout the calling Workflow will not be able to time out the Activity 
+and retry it or fail it until this timeout is reached. 
+
+In order to react quickly to crashes of long-running Activities you can use the Activity heartbeat mechanism.
+You can set a short heartbeat timeout in order to detect Activity issues and react to them without having to wait
+for the long Activity execution timeout to complete first.
+
 `Activity.getExecutionContext().heartbeat()` lets the Temporal service know that the Activity is still alive.
-You can piggyback `details` on an Activity heartbeat.
-If an Activity times out, the last value of `details` is included in the `ActivityTimeoutException` delivered to a Workflow.
-Then the Workflow can pass the details to the next Activity invocation.
-This acts as a periodic checkpoint mechanism for the progress of an Activity.
+The `Activity.getExecutionContext().heartbeat()` can take an argument which represents heartbeat 
+`details`. If an Activity times out, the last heartbeat `details` will be included in the thrown `ActivityTimeoutException`
+which can be caught by the calling Workflow. 
+The Workflow then can use the `details` information to pass to the next Activity invocation if needed.
+
+Following is an example of using Activity heartbeat:
 
 ```java
 public class FileProcessingActivitiesImpl implements FileProcessingActivities {
@@ -169,7 +281,7 @@ public class FileProcessingActivitiesImpl implements FileProcessingActivities {
         // Let the Server know about the download progress.
         Activity.getExecutionContext().heartbeat(totalRead);
       }
-    }finally{
+    } finally{
       inputStream.close();
     }
   }
@@ -179,18 +291,19 @@ public class FileProcessingActivitiesImpl implements FileProcessingActivities {
 
 ## Throwing Activity errors
 
-If there is a need to return a checked exception from an Activity, do not add the exception to a method signature but instead re-throw it using the `wrap` method.
-The library code will unwrap it automatically when propagating the exception to the caller.
-There is no need to wrap unchecked exceptions, but it is safe to call this method on them.
+If there is a need to throw a checked Exception from an Activity, 
+your should wrap it using the `Activity.wrap` method and re-throw it.
+There is no need to wrap unchecked Exceptions, but it's safe to do so if you want to.
 
-The reason for such a design is that returning the originally thrown exception from a remote call (which child Workflow and Activity invocations are) does not allow adding context information regarding a failure, such as Activity and child Workflow Id.
+The reason for such a design is that re-throwing the originally caught Exception from a 
+remote call (such as child Workflows and Activities) does not include failure context information.
+Wrapping the Exception and re-throwing it will include this context which includes things
+like Activity and child Workflow Ids for example.
 
-So a stub always throws a subclass of `ActivityFailure` from calls to an Activity and a subclass of `ChildWorkflowFailure` from calls to a child Workflow.
-The original exception is attached as a cause to these wrapper exceptions.
-So as exceptions are always wrapped adding checked ones to method signature causes more pain than benefit.
+In addition, when wrapping the checked Exception, the original exception is attached as a cause 
+to the wrapped one, and is not lost.
 
-Throws original exception if e is `RuntimeException` or `Error`, it never returns.
-But return type is not empty to be able to use it as:
+Here is an example of catching a checked Exception and wrapping it:
 
 ```java
 try {
@@ -198,23 +311,4 @@ try {
 } catch (Exception e) {
   throw Activity.wrap(e);
 }
-```
-
-If `wrap` returned void it wouldn't be possible to write `throw Activity.wrap` and compiler would complain about missing return.
-
-## Registering Activities
-
-To make the Activity visible to the Worker process hosting it, the Activity must be registered with the Worker.
-
-```java
-worker.registerActivitiesImplementations(new YourActivityImpl());
-```
-
-This call creates an in-memory mapping inside the Worker process between the Activity object name and the actual implementation.
-If a Worker receives a request to start an Activity execution for an Activity type it does not know, it will fail that request.
-
-To register multiple Activity objects with the Worker, each Activity object implementation name must be unique, and you must provide all Activity function names in the registration call like so:
-
-```java
-worker.registerActivitiesImplementations(new ActivityAImpl(), new ActivityBImpl(), new ActivityCImpl());
 ```
