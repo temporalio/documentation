@@ -226,11 +226,10 @@ module.exports = {
       collapsed: false,
       items: [
         'php/introduction',
+        'php/workflows',
         'php/workers',
         'php/signals',
         'php/queries',
-        'php/workflow-interface',
-        'php/implementing-workflows',
         'php/activity-interface',
         'php/implementing-activities',
         'php/sync-vs-async-start',

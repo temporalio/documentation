@@ -40,7 +40,7 @@
 [[redirects]]
   from = "/docs/task-queues"
   to = "/docs/concepts/task-queues"
-  
+
 [[redirects]]
   from = "/docs/concept-workers"
   to = "/docs/concepts/workers"
@@ -304,7 +304,15 @@
 
 [[redirects]]
   from = "/docs/php-implementing-workflows"
-  to = "/docs/php/implementing-workflows"
+  to = "/docs/php/workflows"
+
+[[redirects]]
+  from = "/docs/workflow-interface"
+  to = "/docs/php/workflows"
+
+[[redirects]]
+  from = "/docs/php-workflows"
+  to = "/docs/php/workflows"
 
 [[redirects]]
   from = "/docs/php-queries"
@@ -337,14 +345,6 @@
 [[redirects]]
   from = "/docs/workers"
   to = "/docs/php/workers"
-
-[[redirects]]
-  from = "/docs/workflow-interface"
-  to = "/docs/php/workflow-interface"
-
-[[redirects]]
-  from = "/docs/workflows"
-  to = "/docs/php/workflows"
 #
 # Use cases redirects
 # Can remove after 06/2021
@@ -426,7 +426,7 @@
 [[redirects]]
   from = "/docs/server-namespaces"
   to = "/docs/server/namespaces"
-  
+
 [[redirects]]
   from = "/docs/namespaces"
   to = "/docs/server/namespaces"
