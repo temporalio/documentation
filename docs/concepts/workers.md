@@ -6,7 +6,7 @@ sidebar_label: Workers
 
 A Worker is a service that does the following:
 
-- Hosts executable [Workflow](/docs/concepts/workflows) and [Activity](/docs/concepts/activities) code.
+- Hosts executable [Workflow](/docs/concepts/workflows) and/or [Activity](/docs/concepts/activities) code. (Either can be hosted independently)
 - Listens to [Task Queues](/docs/concepts/task-queues) via long polling.
 
 Workers must have access to any resources needed to execute the actions defined in Activities, such as the following:
