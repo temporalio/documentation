@@ -36,8 +36,6 @@ In our tutorials, we show you how to run both the Temporal Server and one Worker
 However, a typical production Temporal deployment will have a **fleet** of Workers external to the main Temporal Server cluster. 
 These can be independently managed by different developer teams, each registering their own sets of Workflows and Activities.
 
-[![https://user-images.githubusercontent.com/6764957/113587567-8c9c9c00-9661-11eb-8614-576a68caa8f1.png](https://user-images.githubusercontent.com/6764957/113587567-8c9c9c00-9661-11eb-8614-576a68caa8f1.png)](https://docs.temporal.io/blog/workflow-engine-principles)
-
 :::note
 
 Temporal Server itself has [internal workers](https://docs.temporal.io/blog/workflow-engine-principles/#system-workflows-1910) for system workflows.
