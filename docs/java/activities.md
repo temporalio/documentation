@@ -270,7 +270,7 @@ The `Activity.getExecutionContext().heartbeat()` can take an argument which repr
 which can be caught by the calling Workflow.
 The Workflow then can use the `details` information to pass to the next Activity invocation if needed.
 
-In the case of Activity retries, the last heartbeat `details` are available and can be extracted from the last fail 
+In the case of Activity retries, the last Heartbeat's `details` are available and can be extracted from the last fail 
 attempt using `Activity.getExecutionContext().heartbeat(Class<V> detailsClass)`
 
 Following is an example of using Activity heartbeat:
