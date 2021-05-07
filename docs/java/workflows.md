@@ -162,6 +162,7 @@ Then, one of the methods
 As soon as this method returns, the Workflow execution is considered as completed.
 
 Workflow methods annotated with `@QueryMethod` and `@SignalMethod` can be invoked during a Workflow's execution.
+
 Note that methods annotated with `@QueryMethod` can be invoked even when a Workflow is in the `Completed` 
 state.
 
