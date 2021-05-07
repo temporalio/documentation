@@ -20,30 +20,29 @@ because the Java SDK handles all the communication between the Worker and the Te
 To start a Worker you need to: 
 
 1. Create a WorkflowClient instance
-2. Optionally create WorkerOptions (default WorkerOptions target local deployment of the Temporal Server and should not be used for production)
+2. Optionally create WorkerOptions
 3. Create a WorkerFactory instance
-4. Create a Worker and pass it in the Task Queue name it should listen to and WorkerOptions if you defined them
+4. Create a Worker using the created WorkerFactory's `newWorker` method
 5. Register Workflows and Activities this Worker should execute
-
 
 As a simple example, let's say we want our Worker to be able to execute the following Workflow implementation:
 
 ```java
-public static class GreetingWorkflowImpl implements GreetingWorkflow {
+public static class EmployeeWorkflowImpl implements EmployeeWorkflow {
     
-    private final GreetingActivities activities =
+    private final EmployeeActivities activities =
         Workflow.newActivityStub(
-            GreetingActivities.class,
+                EmployeeActivities.class,
             ActivityOptions.newBuilder().setStartToCloseTimeout(Duration.ofSeconds(2)).build());
 
     @Override
-    public String getGreeting(String name) {
-      return activities.composeGreeting("Hello", name);
+    public Employee getEmployee(String id) {
+      return activities.getEmployeeById(id);
     }
   }
 ```
 
-Our Workflow invokes `GreetingActivities` Activities. We can register both our Workflow and Activities with our Worker:
+Our Workflow invokes `EmployeeActivities` Activities. We can register our Workflow with our Worker:
 
 ```java
 WorkflowServiceStubs service = WorkflowServiceStubs.newInstance();
@@ -53,20 +52,18 @@ WorkerFactory factory = WorkerFactory.newInstance(client);
 Worker worker = factory.newWorker(TASK_QUEUE_NAME);
 
 worker.registerWorkflowImplementationTypes(GreetingWorkflowImpl.class);
-worker.registerActivitiesImplementations(new GreetingActivitiesImpl());
+```
+
+Note that in order to execute our `EmployeeWorkflowImpl` Workflow implementation, there is no need to register any Activities.
+Only if our created Worker is also used to host the Activity implementations we should register them as well by adding for example:
+
+```java
+String connectionUrl = "jdbc:sqlserver://localhost:1433;databaseName=EmployeesDb;user=user;password=pass";
+worker.registerActivitiesImplementations(new EmployeeActivitiesImpl(connectionUrl));
 ```
 
 Note that for Workflows we register the Workflow type. For Activities, since there are stateless and thread-safe, we need
 to register an Activity instance.
-
-The example above shows the registration of the Workflow and Activity on the same Worker. You can however 
-register your Workflows and Activities on different Workers depending on your setup and performance requirements.
-
-
-If the Worker polls a Task for a Workflow or Activity which was not registered, it will not be able to execute it and fail.
-However, the failure of the Task will not cause the associated Workflow to fail.
-
-:::
 
 When you start a Workflow or when a Workflow needs to invoke an Activity, the Temporal Server adds
 a new task to the Workflows / Activity Task Queue. Any Worker polling that Task Queue and has that Workflow / Activity 

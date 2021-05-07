@@ -7,7 +7,8 @@ Workflows that periodically execute a number of Activities, for a long time, hav
 of running into this execution history size limit.
 
 One way of dealing with this issue is to use "ContinueAsNew". This feature allows you
-to complete the current Workflow execution and start a new one.
+to complete the current Workflow execution and start a new one atomically.
+
 This new execution has the same Workflow Id, but a different Run Id, and as such will
 get its own execution history.
 
