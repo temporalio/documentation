@@ -305,7 +305,7 @@ you should wrap them using the `Activity.wrap` method and re-throw the Exception
 
 There is no need to wrap unchecked Exceptions, but it's safe to do so if you want to.
 
-In addition, when wrapping checked Exceptions, the original exception is attached as a cause 
+In addition, when wrapping checked Exceptions, the original Exception is attached as a cause 
 to the wrapped one, and is not lost.
 
 Here is an example of catching a checked Exception and wrapping it:
