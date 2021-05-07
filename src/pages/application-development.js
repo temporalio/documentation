@@ -23,7 +23,7 @@ const features = [
     goto: '/docs/php/introduction',
   },
   {
-    title: <>NodeJS</>,
+    title: <>Node (alpha)</>,
     imageUrl: 'img/nodejs.svg',
     goto: '/docs/node/introduction',
   },
@@ -63,7 +63,7 @@ export default function ApplicationDevelopment() {
       <header className={clsx('hero hero--primary', styles.heroBanner)}>
         <div className="container">
           <h1 className="hero__title">Application development</h1>
-          <p className="hero__subtitle">Choose your language</p>
+          <p className="hero__subtitle">Choose your language SDK</p>
         </div>
       </header>
       <main>
@@ -93,41 +93,14 @@ export default function ApplicationDevelopment() {
                   <a href="https://github.com/firdaus/temporal-python-sdk">Python SDK by firdaus</a>
                 </li>
                 <li>Reach out via the #python-sdk Slack channel</li>
-                <li>
-                  <img className={clsx(styles.listImage)} src={useBaseUrl('img/rust.png')} alt="Rust" />
-                  <a href="https://github.com/temporalio/sdk-core">Rust based Core SDK by Temporal</a>
-                </li>
                 <li>Reach out via the #support Slack channel</li>
                 <li>
                   <img className={clsx(styles.listImage)} src={useBaseUrl('img/ruby.svg')} alt="Ruby" />
-                  <a href="https://github.com/coinbase/temporal-ruby">Ruby SDk by Coinbase</a>
+                  <a href="https://github.com/coinbase/temporal-ruby">Ruby SDK by Coinbase</a>
                 </li>
                 <li>Reach out via the #ruby-sdk Slack channel</li>
-              </ul>
-            </div>
-            <div className={clsx('col col-4', styles.textFeature)}>
-              <h3>SDKs with community interest</h3>
-              <p>Get in touch with us if you are interested in using or trying any of the following:</p>
-              <ul className={clsx(styles.unOrderedList)}>
                 <li>
-                  <img className={clsx(styles.listImage)} src={useBaseUrl('img/dotnet.svg')} alt="C#/.Net" />
-                  C#/.Net SDK
-                </li>
-                <li>
-                  <img className={clsx(styles.listImage)} src={useBaseUrl('img/swift.svg')} alt="Swift" />
-                  Swift SDK
-                </li>
-                <li>
-                  <img className={clsx(styles.listImage)} src={useBaseUrl('img/haskell.svg')} alt="Haskell" />
-                  Haskell SDK
-                </li>
-                <li>
-                  <img className={clsx(styles.listImage)} src={useBaseUrl('img/rust.png')} alt="Rust" />
-                  Rust SDK
-                </li>
-                <li>
-                  <img className={clsx(styles.listImage)} src={useBaseUrl('img/c.svg')} alt="C++" />
-                  C++ SDK
+                  Temporal is working on a <a href="https://github.com/temporalio/sdk-core">Rust based Core SDK</a> that will be used by other SDKs in future.
                 </li>
               </ul>
             </div>
