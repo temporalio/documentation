@@ -60,7 +60,8 @@ The `@WorkflowMethod` annotation has a `name` parameter, for example: `@Workflow
 It can be used to denote the Workflow type. If not set, the Workflow type defaults to the short name of the Workflow interface,
 in the example above being `FileProcessingWorkflow`.
 Methods annotated with `@WorkflowMethod` can have any number of parameters.
-We recommend passing a single parameter that contains all the input fields. This allows adding fields in a backward compatible manner.
+We recommend passing a single parameter that contains all the input fields.
+This allows adding fields in a backward compatible manner.
 
 The `@QueryMethod` annotation also has a `name` parameter, for example: `@QueryMethod(name = "history")`. It can be 
 used to denote the query name. If not set, the query name defaults to the name of the method, in the example above 
