@@ -6,7 +6,7 @@ tags:
   - site design
 posted_on_: 2021-05-06T00:00:00Z
 slug: docs-info-arch-2021
-title: 'Docs site April 2021 sprint'
+title: 'How we structured docs for user personas'
 author: Cully Wakelin
 author_title: SDE Technical Writer
 author_image_url: https://avatars2.githubusercontent.com/u/34380806
@@ -57,10 +57,10 @@ The thing is, not all users are after the same information.
 Unlike many other technologies, we don't offer a single service or API endpoint.
 Temporal's boundaries are high and wide, and there are at least four unique user groups accessing the documentation.
 
-1. Infrastructure and operations engineers looking to deploy and operate their own Temporal Server cluster.
-2. Developers and software engineers looking to start building applications.
-3. Operators and SREs looking to troubleshoot, debug, or generally monitor the system's health.
-4. Business decision makers evaluating the technology as a whole or considering the use of our cloud service (still in beta).
+1. **Infrastructure and operations engineers** looking to deploy and operate their own Temporal Server cluster.
+2. **Developers and software engineers** looking to start building applications.
+3. **Operators and SREs** looking to troubleshoot, debug, or generally monitor the system's health.
+4. **Business decision makers** evaluating the technology as a whole or considering the use of our cloud service (still in beta).
 
 A single person may bridge multiple personas, but while embodying one, they won't want to be bogged down by information directed at the other.
 This particular aspect of our users convinced me that in order to meet our user's information needs, separating content based on our user's personas was the first step towards a fundamentally sound base to build off of.
@@ -207,5 +207,11 @@ And we started converting the core concepts into a directory for new users learn
 
 ![Core concepts area](/img/concepts-topic-area.png)
 
-There is a lot more work to be done in each of the language areas to ensure full coverage of the concepts within each language.
-But now we feel there is an information architecture in place that fundamentally addresses our user's personas such learning about how and why of a particular concept becomes a much more rewarding and informative experience.
+## Still day one
+
+We have finally arrived at a place where there is an information architecture that fundamentally matches our user's personas.
+With this change in focus, our hope is that learning about the how and why of a particular concept becomes a much more rewarding and informative experience.
+
+We know we have a LOT more work to do.
+We still lack full coverage of the concepts within each language, and the navigation and search experience can be made more intuitive.
+If you have ideas for how to improve them, [email us](mailto:docs@temporal.io)!
