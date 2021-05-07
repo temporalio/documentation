@@ -299,7 +299,7 @@ public class FileProcessingActivitiesImpl implements FileProcessingActivities {
 
 ## Throwing Activity errors
 
-If there is a need to throw a checked Exceptions from Activity methods which do not 
+If there is a need to throw checked Exceptions from Activity methods which do not 
 support re-throwing checked Exceptions in their signatures, 
 you should wrap them using the `Activity.wrap` method and re-throw it.
 
