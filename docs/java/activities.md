@@ -301,7 +301,7 @@ public class FileProcessingActivitiesImpl implements FileProcessingActivities {
 
 If there is a need to throw checked Exceptions from Activity methods which do not 
 support re-throwing checked Exceptions in their signatures, 
-you should wrap them using the `Activity.wrap` method and re-throw it.
+you should wrap them using the `Activity.wrap` method and re-throw the Exceptions.
 
 There is no need to wrap unchecked Exceptions, but it's safe to do so if you want to.
 
