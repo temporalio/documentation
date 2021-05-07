@@ -62,7 +62,8 @@ String connectionUrl = "jdbc:sqlserver://localhost:1433;databaseName=EmployeesDb
 worker.registerActivitiesImplementations(new EmployeeActivitiesImpl(connectionUrl));
 ```
 
-Note that for Workflows we register the Workflow type. For Activities, since there are stateless and thread-safe, we need
+For Workflows we register the Workflow type.
+For Activities, since they are stateless and thread-safe, we need
 to register an Activity instance.
 
 When you start a Workflow or when a Workflow needs to invoke an Activity, the Temporal Server adds
