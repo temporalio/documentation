@@ -299,16 +299,16 @@ public class FileProcessingActivitiesImpl implements FileProcessingActivities {
 
 ## Throwing Activity errors
 
-If there is a need to throw checked exception from Activity methods which do not 
-support re-throwing checked exceptions in their signatures, 
-you should wrap them using the `Activity.wrap` method and re-throw the exceptions.
+If there is a need to throw checked Exception from Activity methods which do not 
+support re-throwing checked Exceptions in their signatures, 
+you should wrap them using the `Activity.wrap` method and re-throw the Exceptions.
 
-There is no need to wrap unchecked exceptions, but it's safe to do so if you want to.
+There is no need to wrap unchecked Exceptions, but it's safe to do so if you want to.
 
-In addition, when wrapping checked exceptions, the original exception is attached as a cause 
+In addition, when wrapping checked Exceptions, the original Exception is attached as a cause 
 to the wrapped one, and is not lost.
 
-Here is an example of catching a checked exception and wrapping it:
+Here is an example of catching a checked Exception and wrapping it:
 
 ```java
 try {
@@ -318,5 +318,5 @@ try {
 }
 ```
 
-Note that any exception thrown from an Activity is converted to `io.temporal.failure.ApplicationFailure`, 
-unless the thrown exception extends `io.temporal.failure.TemporalException`    .
+Note that any Exception thrown from an Activity is converted to `io.temporal.failure.ApplicationFailure`, 
+unless the thrown Exception extends `io.temporal.failure.TemporalException`    .
