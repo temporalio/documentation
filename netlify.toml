@@ -264,7 +264,7 @@
 
 [[redirects]]
   from = "/docs/php-sdk-overview"
-  to = "/docs/php-sdk-introduction"
+  to = "/docs/php/introduction"
 
 [[redirects]]
   from = "/docs/php-sdk-introduction"
@@ -276,19 +276,19 @@
 
 [[redirects]]
   from = "/docs/php-activity-async-completion"
-  to = "/docs/php/activity-async-completion"
+  to = "/docs/php/activities/#async-completion"
 
 [[redirects]]
   from = "/docs/php-activity-interface"
-  to = "/docs/php/activity-interface"
+  to = "/docs/php/activities/#activity-interface"
 
 [[redirects]]
   from = "/docs/php-child-workflows"
-  to = "/docs/php/child-workflows"
+  to = "/docs/php/workflows/#child-workflows"
 
 [[redirects]]
   from = "/docs/php-continue-as-new"
-  to = "/docs/php/continue-as-new"
+  to = "/docs/php/workflows/#large-event-histories"
 
 [[redirects]]
   from = "/docs/php-distributed-cron"
@@ -300,11 +300,11 @@
 
 [[redirects]]
   from = "/docs/php-implementing-activities"
-  to = "/docs/php/implementing-activities"
+  to = "/docs/php/activities/#implementing-activities"
 
 [[redirects]]
   from = "/docs/php-implementing-workflows"
-  to = "/docs/php/workflows"
+  to = "/docs/php/workflows/#implementing-workflows"
 
 [[redirects]]
   from = "/docs/workflow-interface"
@@ -332,7 +332,7 @@
 
 [[redirects]]
   from = "/docs/php-sync-vs-async-start"
-  to = "/docs/php/sync-vs-async-start"
+  to = "/docs/php/workflows/#starting-workflows"
 
 [[redirects]]
   from = "/docs/php-task-queues"
