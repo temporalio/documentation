@@ -17,7 +17,8 @@ public interface GreetingActivities {
 Activity interface must be annotated with the `@ActivityInterface`. You can annotate each method in the
 Activity interface with the `@ActivityMethod` annotation, but this is completely optional.
 Note that the `@ActivityMethod` annotation has a `name` parameter which can be used to define
-the activity type. If not specified, the method name (with the first letter capitalized) is used by default, so in 
+the Activity type.
+If not specified, the method name (with the first letter capitalized) is used by default, so in 
 the above example it would be "ComposeGreeting".
 
 ### Calling Activities inside Workflows
