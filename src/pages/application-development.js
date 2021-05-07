@@ -63,7 +63,7 @@ export default function ApplicationDevelopment() {
       <header className={clsx('hero hero--primary', styles.heroBanner)}>
         <div className="container">
           <h1 className="hero__title">Application development</h1>
-          <p className="hero__subtitle">Choose your language SDK</p>
+          <p className="hero__subtitle">Choose your language SDK!</p>
         </div>
       </header>
       <main>
@@ -93,12 +93,12 @@ export default function ApplicationDevelopment() {
                   <a href="https://github.com/firdaus/temporal-python-sdk">Python SDK by firdaus</a>
                 </li>
                 <li>Reach out via the #python-sdk Slack channel</li>
-                <li>Reach out via the #support Slack channel</li>
                 <li>
                   <img className={clsx(styles.listImage)} src={useBaseUrl('img/ruby.svg')} alt="Ruby" />
                   <a href="https://github.com/coinbase/temporal-ruby">Ruby SDK by Coinbase</a>
                 </li>
                 <li>Reach out via the #ruby-sdk Slack channel</li>
+                <li>{/* spacer li */}</li>
                 <li>
                   Temporal is working on a <a href="https://github.com/temporalio/sdk-core">Rust based Core SDK</a> that will be used by other SDKs in future.
                 </li>
