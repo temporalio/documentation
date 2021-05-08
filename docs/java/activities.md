@@ -17,7 +17,9 @@ public interface GreetingActivities {
 Activity interface must be annotated with the `@ActivityInterface`. You can annotate each method in the
 Activity interface with the `@ActivityMethod` annotation, but this is completely optional.
 Note that the `@ActivityMethod` annotation has a `name` parameter which can be used to define
-the activity type. If not specified, the method name is used by default.
+the Activity type.
+If not specified, the method name (with the first letter capitalized) is used by default, so in 
+the above example it would be "ComposeGreeting".
 
 ### Calling Activities inside Workflows
 
@@ -69,7 +71,7 @@ public class FileProcessingWorkflowImpl implements FileProcessingWorkflow {
 }
 ```
 
-In this example we use `Workflow.newActivityStub` to craete a client-side stuf of our file processing Activity.
+In this example we use `Workflow.newActivityStub` to create a client-side stub of our file processing Activity.
 We also define ActivityOptions and set the setStartToCloseTimeout timeout to one hour, meaning that
 we set the total execution timeout for each of its method invocations to one hour (from when
 the Activity execution is started to when it completes).
@@ -91,6 +93,8 @@ public FileProcessingWorkflowImpl() {
     this.store2 = Workflow.newActivityStub(FileProcessingActivities.class, options2);
 }
 ```
+
+
 
 ### Calling Activities Asynchronously
 
@@ -174,7 +178,7 @@ Here is the above example rewritten to call download and upload Activity methods
 `ActivityExecutionContext` is a context object passed to each Activity implementation by default.
 You can access it in your Activity implementations via `Activity.getExecutionContext()`.
 
-It provides static getters to access information about the Workflow that invoked the Activity.
+It provides getters to access information about the Workflow that invoked the Activity.
 Note that the Activity context information is stored in a thread-local variable.
 Therefore, calls to `getExecutionContext()` succeed only within the thread that invoked the Activity function.
 
@@ -260,10 +264,14 @@ You can set a short heartbeat timeout in order to detect Activity issues and rea
 for the long Activity execution timeout to complete first.
 
 `Activity.getExecutionContext().heartbeat()` lets the Temporal service know that the Activity is still alive.
+
 The `Activity.getExecutionContext().heartbeat()` can take an argument which represents heartbeat 
 `details`. If an Activity times out, the last heartbeat `details` will be included in the thrown `ActivityTimeoutException`
-which can be caught by the calling Workflow. 
+which can be caught by the calling Workflow.
 The Workflow then can use the `details` information to pass to the next Activity invocation if needed.
+
+In the case of Activity retries, the last Heartbeat's `details` are available and can be extracted from the last fail 
+attempt using `Activity.getExecutionContext().heartbeat(Class<V> detailsClass)`
 
 Following is an example of using Activity heartbeat:
 
@@ -291,16 +299,13 @@ public class FileProcessingActivitiesImpl implements FileProcessingActivities {
 
 ## Throwing Activity errors
 
-If there is a need to throw a checked Exception from an Activity, 
-your should wrap it using the `Activity.wrap` method and re-throw it.
+If there is a need to throw checked Exception from Activity methods which do not 
+support re-throwing checked Exceptions in their signatures, 
+you should wrap them using the `Activity.wrap` method and re-throw the Exceptions.
+
 There is no need to wrap unchecked Exceptions, but it's safe to do so if you want to.
 
-The reason for such a design is that re-throwing the originally caught Exception from a 
-remote call (such as child Workflows and Activities) does not include failure context information.
-Wrapping the Exception and re-throwing it will include this context which includes things
-like Activity and child Workflow Ids for example.
-
-In addition, when wrapping the checked Exception, the original exception is attached as a cause 
+In addition, when wrapping checked Exceptions, the original Exception is attached as a cause 
 to the wrapped one, and is not lost.
 
 Here is an example of catching a checked Exception and wrapping it:
@@ -312,3 +317,6 @@ try {
   throw Activity.wrap(e);
 }
 ```
+
+Note that any Exception thrown from an Activity is converted to `io.temporal.failure.ApplicationFailure`, 
+unless the thrown Exception extends `io.temporal.failure.TemporalException`    .

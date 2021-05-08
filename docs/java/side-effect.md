@@ -20,7 +20,7 @@ public void execute() {
         return random.nextInt();
     });
     
-    String randomUUID = Workflow.sideEffect(String.class, UUID.randomUUID()::toString);
+    String userHome = Workflow.sideEffect(String.class, () -> System.getenv("USER_HOME"));
     
     if(randomInt % 2 == 0) {
         // ... 

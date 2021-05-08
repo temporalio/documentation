@@ -16,7 +16,7 @@ They also need to react to external events, respond to query requests, and deal 
 In the Temporal Java SDK programming model, a Workflow is a class which implements a Workflow Interface:
 
 ```java
-public static class FileProcessingWorkflowImpl implements FileProcessingWorkflow {
+public class FileProcessingWorkflowImpl implements FileProcessingWorkflow {
   // ...
 }
 ```
@@ -29,7 +29,8 @@ Workflow interface methods must have one of the following annotations:
 
 - **@WorkflowMethod** denotes the starting point of Workflow execution. Workflow execution completes when this methods returns.
 - **@SignalMethod** indicates that this method is a signal handler method and that it can react to external signals. It can have parameters which can contain the signal payload. It does not return a value, so it must have a `void` return type.
-- **@QueryMethod** indicates that this method can be used to query the workflow state any time during its execution. It should not have any input parameters, and since it does return a value it must have a non `void` return type.
+- **@QueryMethod** indicates that this method can be used to query the Workflow's state at any time during its execution.
+It can have parameters which can be used to filter a subset of the Workflow's state that it returns. Since it does return a value it must have a non `void` return type.
 
 Workflow interfaces can define only a single method annotated with `@WorkflowMethod`. They can define
 any number of methods annotated with `@SignalMethod` and `@QueryMethod`, for example:
@@ -58,9 +59,9 @@ public interface FileProcessingWorkflow {
 The `@WorkflowMethod` annotation has a `name` parameter, for example: `@WorkflowMethod(name = "MyWorkflowType")`.
 It can be used to denote the Workflow type. If not set, the Workflow type defaults to the short name of the Workflow interface,
 in the example above being `FileProcessingWorkflow`.
-Methods annotated with `@WorkflowMethod` can have any number of parameters. For backwards compatibility however,
-we recommend passing in a single Object type parameter. This way adding new properties to this input object allows you
-to stay backwards compatible with the method signature and you won't have to update all Workflows that implement this interface.
+Methods annotated with `@WorkflowMethod` can have any number of parameters.
+We recommend passing a single parameter that contains all the input fields.
+This allows adding fields in a backward compatible manner.
 
 The `@QueryMethod` annotation also has a `name` parameter, for example: `@QueryMethod(name = "history")`. It can be 
 used to denote the query name. If not set, the query name defaults to the name of the method, in the example above 
@@ -76,7 +77,6 @@ Workflow interfaces. For example imaging a UI or CLI button that allows to call 
 this feature you can redesign the above interface to:
 
 ```java
-@WorkflowInterface
 public interface Retryable {
     @SignalMethod
     void retryNow();
@@ -128,7 +128,6 @@ To illustrate this, lets' say that we define the following **invalid** code:
 
 ```java
 // INVALID CODE!
-@WorkflowInterface
 public interface BaseWorkflow {
     @WorkflowMethod
     void retryNow();
@@ -162,18 +161,20 @@ Then, one of the methods
 (depending on which Workflow type has been started) annotated with `@WorkflowMethod` can be invoked.
 As soon as this method returns, the Workflow execution is considered as completed.
 
-While Workflow execution is active, it can receive signals and query requests. Note that you can 
-send query requests to workflows after their have completed execution as well.
+Workflow methods annotated with `@QueryMethod` and `@SignalMethod` can be invoked during a Workflow's execution.
+
+Note that methods annotated with `@QueryMethod` can be invoked even when a Workflow is in the `Completed` 
+state.
 
 ### Workflow Implementation Constraints
 
-Temporal uses the [Microsoft Azure Event Sourcing pattern](https://docs.microsoft.com/en-us/azure/architecture/patterns/event-sourcing) to recover
+Temporal uses the [Event Sourcing pattern](https://docs.microsoft.com/en-us/azure/architecture/patterns/event-sourcing) to recover
 the state of a Workflow object including its threads and local variable values.
 In essence, every time a Workflow state has to be restored, its code is re-executed from the beginning. 
 Note that during replay, successfully executed Activities are not re-executed as their results are already recorded 
 in the Workflow event history. 
 
-Even tho Temporal has the replay capability, which brings resilience to your Workflows, you should never think about
+Even though Temporal has the replay capability, which brings resilience to your Workflows, you should never think about
 this capability when writing your Workflows.
 Instead, you should focus on implementing your business logic/requirements and write your Workflows 
 as they would execute only once.
@@ -181,10 +182,12 @@ as they would execute only once.
 There are some things however to think about when writing your Workflows, namely determinism and isolation.
 We summarize these constraints here:
 
+They shouldn't use any constructs that rely on system time.
+
 - Do not use any mutable global variables in your Workflow implementations. This will assure that multiple Workflow instances are fully isolated.
 - Do not call any non-deterministic functions like non seeded random or UUID.randomUUID() directly from the Workflow code. The Temporal SDK provides specific API for calling non-deterministic code in your Workflows, which we will show later on in this document.
 - Perform all IO operations and calls to third-party services on Activities and not Workflows, as they are usually non-deterministic in nature.
-- Do not use any standard Java constructs when dealing with time. For example, only use `Workflow.currentTimeMillis()` to get the current time inside a Workflow.
+- Do not use any programming language constructs that rely on system time. For example, only use `Workflow.currentTimeMillis()` to get the current time inside a Workflow.
 - Do not use native Java `Thread` or any other multi-threaded classes like `ThreadPoolExecutor`. Use `Async.function` or `Async.procedure`,
   provided by the Temporal SDK, to execute code asynchronously.
 - Don't use any synchronization, locks, and other standard Java blocking concurrency-related classes besides those provided
@@ -205,9 +208,12 @@ Workflow method arguments and return values are serializable to a byte array usi
 interface. The default implementation uses JSON serializer, but you can use any alternative serialization mechanism.
 
 The values passed to Workflows through invocation parameters or returned through a result value are recorded in the execution history.
-The entire execution history is transferred from the Temporal service to Workflow workers with every event that the Workflow logic needs to process.
-A large execution history can thus adversely impact the performance of your Workflow.
-Therefore, be mindful of the amount of data that you transfer via Activity invocation parameters or return values.
+
+Even though Workflow execution history is cached in the Workers, in the case of Worker failure, the full execution 
+history has to be transferred from the Temporal service to the Workflow Workers.
+
+In those cases a large execution history could adversely impact the performance of your Workflow.
+Be mindful of the amount of data that you transfer via Activity invocation parameters or return values.
 Otherwise, no additional limitations exist on Activity implementations.
 
 We discuss how to work around the history size limitations in the [Large Event Histories](#large-event-histories) section.
@@ -255,7 +261,7 @@ public interface GreetingChild {
 // Child Workflow implementation not shown
 
 // Parent Workflow implementation
-public static class GreetingWorkflowImpl implements GreetingWorkflow {
+public class GreetingWorkflowImpl implements GreetingWorkflow {
 
    @Override
    public String getGreeting(String name) {
@@ -271,7 +277,7 @@ Running two children (with the same type) in parallel:
 
 ```java
 // Parent Workflow implementation
-public static class GreetingWorkflowImpl implements GreetingWorkflow {
+public class GreetingWorkflowImpl implements GreetingWorkflow {
 
     @Override
     public String getGreeting(String name) {
@@ -305,7 +311,7 @@ public interface GreetingChild {
 }
 
 // Parent Workflow implementation
-public static class GreetingWorkflowImpl implements GreetingWorkflow {
+public class GreetingWorkflowImpl implements GreetingWorkflow {
 
     @Override
     public String getGreeting(String name) {
@@ -336,8 +342,8 @@ If `WorkflowOptions.WorkflowIdReusePolicy` is not set to `AllowDuplicate`, then 
 The following example shows how to do this from a different process than the one that started the Workflow. All this process needs is a `WorkflowId`.
 
 ```java
-WorkflowExecution we = new WorkflowExecution().setWorkflowId(workflowId);
-YourWorkflow workflow = client.newWorkflowStub(YourWorkflow.class, we);
+YourWorkflow workflow = client.newWorkflowStub(YourWorkflow.class, workflowId);
+
 // Returns the result after waiting for the Workflow to complete.
 String result = workflow.yourMethod();
 ```
@@ -390,3 +396,7 @@ and on a different Task Queue.
 Another way to deal with the execution history size limits is to use Child Workflows, however
 they themselves could eventually, if long running, experience the same issue in which case you can again
 apply the "ContinueAsNew" feature if needed.
+
+"ContinueAsNew" can also be used in [child Workflows](#child-workflows). Note that in this case the parent Workflow
+is not aware if its child Workflows called "ContinueAsNew". This way a child Workflow can call "ContinueAsNew" as many times 
+as it needs, and the parent Workflow will get notified when the last run of the child Workflow completes or fails.
