@@ -87,7 +87,6 @@ export default function ApplicationDevelopment() {
             <div className={clsx('col col-4', styles.textFeature)}>
               <h3>In the works, not yet endorsed</h3>
               <ul className={clsx(styles.unOrderedList)}>
-                <li>Reach out via the #nodejs-sdk Slack channel</li>
                 <li>
                   <img className={clsx(styles.listImage)} src={useBaseUrl('img/python.svg')} alt="Python" />
                   <a href="https://github.com/firdaus/temporal-python-sdk">Python SDK by firdaus</a>
