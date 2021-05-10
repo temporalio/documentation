@@ -123,11 +123,12 @@ token := workflow.GetSessionInfo(sessionCtx).GetRecreateToken()
 
 ### Is there a complete example?
 
-Yes, the [file processing example](https://github.com/temporalio/temporal-go-samples/blob/master/cmd/samples/fileprocessing/workflow.go) in the temporal-go-samples repo has been updated to use the session framework.
+Yes, the [file processing example](https://github.com/temporalio/samples-go/tree/master/fileprocessing) in the [temporalio/samples-go](https://github.com/temporalio/samples-go) repo has been updated to use the session framework.
 
 ### What happens to my Activity if the worker dies?
 
-If your Activity has already been scheduled, it will be cancelled. If not, you will get a `workflow.ErrSessionFailed` error when you call `workflow.ExecuteActivity()`.
+If your Activity has already been scheduled, it will be cancelled.
+If not, you will get a `workflow.ErrSessionFailed` error when you call `workflow.ExecuteActivity()`.
 
 ### Is the concurrent session limitation per process or per host?
 
@@ -135,10 +136,8 @@ It's per worker process, so make sure there's only one worker process running on
 
 ## Future Work
 
--
+- Right now a session is considered failed if the worker process dies. However, for some use cases, you may only care whether worker host is alive or not.
+For these uses cases, the session should be automatically re-established if the worker process is restarted.
 
-Right now a session is considered failed if the worker process dies. However, for some use cases, you may only care whether worker host is alive or not. For these uses cases, the session should be automatically re-established if the worker process is restarted.
-
--
-
-The current implementation assumes that all sessions are consuming the same type of resource and there's only one global limitation. Our plan is to allow you to specify what type of resource your session will consume and enforce different limitations on different types of resources.
+- The current implementation assumes that all sessions are consuming the same type of resource and there's only one global limitation.
+Our plan is to allow you to specify what type of resource your session will consume and enforce different limitations on different types of resources.
