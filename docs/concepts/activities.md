@@ -19,7 +19,7 @@ Temporal does not impose any system limit on Activity duration. It is up to the 
 - `ScheduleToClose` is the maximum time from the Workflow requesting an Activity execution to its completion.
 - `Heartbeat` is the maximum time between heartbeat requests. See [Long Running Activities](#long-running-activities).
 
-Either `ScheduleToClose` or both `ScheduleToStart` and `StartToClose` timeouts are required.
+Either `ScheduleToClose` or `ScheduleToStart` timeouts are required.
 
 ## Retries
 
