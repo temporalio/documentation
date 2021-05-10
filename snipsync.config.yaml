@@ -16,7 +16,9 @@ origins:
   - owner: temporalio
     repo: samples-go
 
-target: docs
+targets:
+  - docs
+  - blog
 
 features:
   enable_source_link: true
