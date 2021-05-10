@@ -15,6 +15,9 @@ origins:
     repo: sdk-node
   - owner: temporalio
     repo: samples-go
+  - owner: temporalio
+    repo: temporal-ecommerce
+    ref: chore-snipsync
 
 targets:
   - docs
