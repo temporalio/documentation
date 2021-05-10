@@ -21,6 +21,7 @@ If you have made a tutorial or explanation of Temporal, please [submit them here
 - Temporal's previous iteration was Cadence, which shares a lot of the same design principles:
     - [Cadence Architecture Talk](https://www.youtube.com/watch?v=5M5eiNBUf4Q) (24 min) by Samar Abbas at Uber Cadence meetup
     - [Cadence: Micro service Architecture Beyond Request/Response](https://www.youtube.com/watch?v=BJwFxqdSx4Y) (34 min) by Maxim Fateev at Data@Scale 2017
+    - [Intro to Cadence Slide Deck](https://sagikazarmark.hu/slides/workshops/cadence-intro/#/) by Márk Sági-Kazár
     -  Note: we have documented [the difference between Cadence and Temporal](https://docs.temporal.io/docs/cadence-to-temporal) separately.
 
 ## Why Workflows
