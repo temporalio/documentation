@@ -4,7 +4,7 @@ Follow the instructions below for setting up a local development environment.
 
 ### Install system dependencies
 
-This project requires nodejs LTS version 12 (or later).
+This project requires nodejs LTS version 14 (or later).
 
 Furthermore, you will need to install [node-gyp](https://github.com/nodejs/node-gyp#installation).
 
@@ -20,7 +20,7 @@ We've provided prebuilt binaries for the Worker for:
 
 If you need to compile the Worker yourself, set up the Rust toolchain by following the instructions [here](https://rustup.rs/).
 
-> NOTE: Macs with an Apple chip require NodeJS 15 installed from source, the easiest way to install it is using [`nvm`](https://github.com/nvm-sh/nvm).
+> NOTE: Brew installation of NodeJS>=15 does not work with the SDK, install with [`nvm`](https://github.com/nvm-sh/nvm) instead.
 
 ### Create a new project
 
