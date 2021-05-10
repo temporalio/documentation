@@ -155,12 +155,14 @@ class FileProcessingActivitiesImpl implements FileProcessingActivities
 ### Activity Heart Beating
 
 Some Activities are long-running.
-To react to a crash quickly, use a heartbeat mechanism.
-`Activity::heartbeat()` lets the Temporal service know that the Activity is still alive.
-You can piggyback `details` on an Activity heartbeat.
+To react to a crash quickly, use the Heartbeat mechanism, `Activity::heartbeat()`, which lets the Temporal Server know that the Activity is still alive.
+This acts as a periodic checkpoint mechanism for the progress of an Activity.
+
+You can piggyback `details` on an Activity Heartbeat.
 If an Activity times out, the last value of `details` is included in the `TimeoutFailure` delivered to a Workflow.
 Then the Workflow can pass the details to the next Activity invocation.
-This acts as a periodic checkpoint mechanism for the progress of an Activity.
+Additionally, you can access the details from within an Activity via `Activity::getHeartbeatDetails`.
+When an Activity is retried after a failure `getHeartbeatDetails` enables you to get the value from the last successful Heartbeat.
 
 ```php
 use Temporal\Activity;
@@ -195,9 +197,9 @@ class FileProcessingActivitiesImpl implements FileProcessingActivities
 
 ## Calling Activities
 
-`Workflow::newActivityStub` returns a client-side stub that implements an Activity interface.
-It takes Activity type and Activity options as arguments.
-Activity options are needed only if some of the required timeouts are not specified through the `#[ActivityMethod]` annotation.
+`Workflow::newActivityStub` returns a client-side stub an implements an Activity interface.
+The client-side stub can be used within the Workflow code.
+It takes the Activity's type and `ActivityOptions` as arguments.
 
 Calling (via `yield`) a method on this interface invokes an Activity that implements this method.
 An Activity invocation synchronously blocks until the Activity completes, fails, or times out.
