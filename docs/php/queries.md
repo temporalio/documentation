@@ -1,6 +1,7 @@
 ---
 id: queries
 title: Queries in PHP
+sidebar_label: Queries
 ---
 
 If a Workflow execution has been stuck at a state for longer than an expected period of time, you
