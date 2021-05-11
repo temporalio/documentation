@@ -75,11 +75,11 @@
 
 [[redirects]]
   from = "/docs/go-continue-as-new"
-  to = "/docs/go/workflows"
+  to = "/docs/go/workflows#large-event-histories"
 
 [[redirects]]
   from = "/docs/go/continue-as-new"
-  to = "/docs/go/workflows"
+  to = "/docs/go/workflows#large-event-histories"
 
 [[redirects]]
   from = "/docs/go-create-workflows"
