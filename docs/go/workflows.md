@@ -61,13 +61,13 @@ However, the Go SDK provides a number of features to handle these restrictions w
 
 1. To interact with external systems and nondeterministic code, Workflows can execute [Activities](/docs/go/activities).
 2. To handle things like time, logging, and goroutines, as mentioned above, there are specific Go SDK APIs available, such as:
-    - `workflow.Now()` This is a replacement for `time.Now()`.
-    - `workflow.Sleep()` This is a replacement for `time.Sleep()`.
-    - `workflow.GetLogger()` This is to ensure that the provided logger does not duplicate logs during a replay.
-    - `workflow.Go()` This is a replacement for the the `go` statement.
-    - `workflow.Channel` This is a replacement for the native `chan` type.
-    Temporal provides support for both buffered and unbuffered channels.
-    - `workflow.Selector` This is a replacement for the `select` statement. Learn more on the [Go SDK Selectors](https://docs.temporal.io/docs/go/selectors) page
+   - `workflow.Now()` This is a replacement for `time.Now()`.
+   - `workflow.Sleep()` This is a replacement for `time.Sleep()`.
+   - `workflow.GetLogger()` This is to ensure that the provided logger does not duplicate logs during a replay.
+   - `workflow.Go()` This is a replacement for the the `go` statement.
+   - `workflow.Channel` This is a replacement for the native `chan` type.
+     Temporal provides support for both buffered and unbuffered channels.
+   - `workflow.Selector` This is a replacement for the `select` statement. Learn more on the [Go SDK Selectors](https://docs.temporal.io/docs/go/selectors) page
 3. Additionally, for executing very small pieces of nondeterministic logic within the Workflow, you can use the [`workflow.SideEffect` API](/docs/go/side-effect).
 
 Below is a sample Workflow that is treated as a cron job by the Temporal Server.
@@ -166,10 +166,22 @@ In most uses cases it is better to be prepared to execute the Workflow asynchron
 
 ## Custom Serialization and Workflow Security
 
-Workflow method arguments and return values are serializable to a byte array using [the DataConverter interface](https://pkg.go.dev/go.temporal.io/sdk@v1.6.0/converter#DataConverter). The default implementation uses JSON serializer, but you can use any alternative serialization mechanism.
+import DataConverter from '../shared/dataconverter.md'
 
-The values passed to Workflows through invocation parameters or returned through a result value are recorded in the execution history.
+<DataConverter href="https://pkg.go.dev/go.temporal.io/sdk@v1.6.0/converter#DataConverter" continueAsNewURL="#large-event-histories"/>
 
-Even though Workflow execution history is cached in the Workers, in the case of Worker failure, the full execution history has to be transferred from the Temporal service to the Workflow Workers.
+## Large Event Histories
 
-In those cases a large execution history could adversely impact the performance of your Workflow. Be mindful of the amount of data that you transfer via Activity invocation parameters or return values. Otherwise, no additional limitations exist on Activity implementations.
+import SharedContinueAsNew from '../shared/continue-as-new.md'
+
+<SharedContinueAsNew />
+
+To trigger this behavior, the Workflow function should
+terminate by returning the special **ContinueAsNewError** error:
+
+```go
+func SimpleWorkflow(workflow.Context ctx, value string) error {
+    ...
+    return workflow.NewContinueAsNewError(ctx, SimpleWorkflow, value)
+}
+```

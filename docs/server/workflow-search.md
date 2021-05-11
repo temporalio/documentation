@@ -65,16 +65,16 @@ There are some special considerations for the Default attributes:
 - ExecutionStatus, CloseTime, NamespaceId, ExecutionTime, HistoryLength, RunId, StartTime, WorkflowId, WorkflowType are reserved by Temporal and are read-only.
 - ExecutionStatus is a mapping of an integer to a state:
 
-| Integer | State |
-|---------|-------|
-| 0 | Unspecified |
-|	1 | Running |
-|	2 | Completed |
-|	3 | Failed |
-|	4 | Canceled |
-|	5 | Terminated |
-|	6 | ContinuedAsNew |
-|	7 | TimedOut |
+| Integer | State          |
+| ------- | -------------- |
+| 0       | Unspecified    |
+| 1       | Running        |
+| 2       | Completed      |
+| 3       | Failed         |
+| 4       | Canceled       |
+| 5       | Terminated     |
+| 6       | ContinuedAsNew |
+| 7       | TimedOut       |
 
 - StartTime, CloseTime and ExecutionTime are stored as integers, but are supported by queries using both EpochTime in nanoseconds and a string in RFC3339 format (ex. "2006-01-02T15:04:05+07:00").
 - CloseTime, HistoryLength are only present in a closed Workflow.
@@ -119,7 +119,7 @@ There are some pre-allowlisted search attributes that are handy for testing, tha
 - CustomDatetimeField
 - CustomStringField
 
-When performing a [ContinueAsNew](/docs/go/continue-as-new/) or using [Cron](/docs/go/distributed-cron/), search attributes will be carried over to the new run by default.
+When performing a [ContinueAsNew](/docs/go/workflows#large-event-histories) or using [Cron](/docs/go/distributed-cron/), search attributes will be carried over to the new run by default.
 
 ## Search queries
 
@@ -147,8 +147,8 @@ The following criteria applies to search queries:
 - To efficiently count the number of Workflows, use the `CountWorkflow` API
 - To list only open Workflows, add `CloseTime = missing` to the end of the query.
 - If you use the retry/cron feature to search for Workflows that will start execution within a certain time range, you can add predicates on ExecutionTime.
-For example: `ExecutionTime > 2019-01-01T10:00:00-07:00`.
-Note that, if a predicate on `ExecutionTime` is included, only the cron/retry Workflow will be returned.
+  For example: `ExecutionTime > 2019-01-01T10:00:00-07:00`.
+  Note that, if a predicate on `ExecutionTime` is included, only the cron/retry Workflow will be returned.
 
 ## Local testing
 

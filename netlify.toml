@@ -74,7 +74,11 @@
 
 [[redirects]]
   from = "/docs/go-continue-as-new"
-  to = "/docs/go/continue-as-new"
+  to = "/docs/go/workflows"
+  
+[[redirects]]
+  from = "/docs/go/continue-as-new"
+  to = "/docs/go/workflows"
 
 [[redirects]]
   from = "/docs/go-create-workflows"

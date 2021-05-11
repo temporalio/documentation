@@ -6,12 +6,11 @@ your workflows don't reach it.
 Workflows that periodically execute a number of Activities, for a long time, have the potential
 of running into this execution history size limit.
 
-One way of dealing with this issue is to use "ContinueAsNew". This feature allows you
+One way of dealing with this issue is to use `ContinueAsNew`. This feature allows you
 to complete the current Workflow execution and start a new one atomically.
-
 This new execution has the same Workflow Id, but a different Run Id, and as such will
 get its own execution history.
 
-If your Workflow are running periodically using a Cron definition, the "ContinueAsNew"
-feature is used internally by Temporal. In this case, each Workflow execution as defined by the Cron definition
-will have its own Run Id and execution history.
+If your Workflows are running periodically using a Cron definition, the `ContinueAsNew`
+feature is used internally by Temporal.
+In this case, each Workflow execution as defined by the Cron definition will have its own Run Id and execution history.
