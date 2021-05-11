@@ -4,6 +4,7 @@
     [plugins.inputs]
 
     skipPatterns = ["#!", "www.google-analytics.com", "www.googletagmanager.com", "#main"]
+    todoPatterns = ["#large-event-histories"]
     pretty = true
 
 #
@@ -75,7 +76,7 @@
 [[redirects]]
   from = "/docs/go-continue-as-new"
   to = "/docs/go/workflows"
-  
+
 [[redirects]]
   from = "/docs/go/continue-as-new"
   to = "/docs/go/workflows"
