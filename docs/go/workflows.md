@@ -68,6 +68,7 @@ However, the Go SDK provides a number of features to handle these restrictions w
    - `workflow.Channel` This is a replacement for the native `chan` type.
      Temporal provides support for both buffered and unbuffered channels.
    - `workflow.Selector` This is a replacement for the `select` statement. Learn more on the [Go SDK Selectors](https://docs.temporal.io/docs/go/selectors) page
+   - `workflow.Context` This is a replacement for `context.Context`. Learn more on the [Go SDK Context Propagation](https://docs.temporal.io/docs/go/tracing) page.
 3. Additionally, for executing very small pieces of nondeterministic logic within the Workflow, you can use the [`workflow.SideEffect` API](/docs/go/side-effect).
 
 Below is a sample Workflow that is treated as a cron job by the Temporal Server.

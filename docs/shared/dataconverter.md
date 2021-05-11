@@ -1,4 +1,4 @@
-Workflow method arguments and return values are serializable to a byte array using <a href={props.href}>the provided DataConverter interface</a>.
+Workflow method arguments and return values are serializable to a [Payload](https://github.com/temporalio/api/blob/4c2f6a281fa3fde8b0a24447de3e0d0f47d230b4/temporal/api/common/v1/message.proto#L49) protobuf that contains a bytearray as well as metadata map. You can use <a href={props.href}>the SDK's DataConverter interface</a> to do this.
 The default implementation uses JSON serializer, but you can use any alternative serialization mechanism.
 
 The values passed to Workflows through invocation parameters or returned through a result value are recorded in the execution history.
