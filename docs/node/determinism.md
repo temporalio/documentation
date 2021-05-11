@@ -15,11 +15,8 @@ When an Activity completes its result is stored in the Workflow history to be re
 
 ### Imports in Workflow code
 
-Workflow code can reliably import [ES modules](https://nodejs.org/api/esm.html#esm_modules_ecmascript_modules).
-In order for the Typescript compiler to output ES modules we set the [`module` compiler option](https://www.typescriptlang.org/tsconfig#module) to `es2020` in the initializer project (`npm init @temporalio`).
-
-- [CommonJS](https://nodejs.org/docs/latest/api/modules.html#modules_modules_commonjs_modules) modules are experimentally supported via babel transformation using [babel-plugin-transform-commonjs](https://www.npmjs.com/package/babel-plugin-transform-commonjs).
-- Built-in node modules are not supported and will throw an exception on import.
+Workflow code is bundled on Worker creation using [Webpack](https://webpack.js.org), you may import any JS package as long as it doesn't reference Node or DOM APIs.
+`@activities` prefixed imports are replaced by Webpack with stubs that schedule activities in the system.
 
 ### Sources of non-determinism
 

@@ -41,7 +41,7 @@ Workflow interface declarations are optional, they're only required for generati
 
 #### Implementation
 
-A Workflow implmentation module may export a `workflow` object which can be type checked using a pre-defined inteface or `main` - and optionally `signals` and `queries` - directly.
+A Workflow implmentation module may export a `workflow` object which can be type checked using a pre-defined interface or `main` - and optionally `signals` and `queries` - directly.
 
 In a Workflow, Activities can be imported and called as regular functions. At runtime, the imported Activities are replaced with stubs which schedule Activities in the system.
 
