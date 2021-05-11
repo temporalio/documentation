@@ -32,6 +32,8 @@ To prevent spoofing and [MITM attacks](https://en.wikipedia.org/wiki/Man-in-the-
 This enables established connections to authenticate the endpoint, ensuring that the server certificate presented to any connecting client has the given server name in its CN property.
 It can be used for both `internode` and `frontend` endpoints.
 
+More guidance on mTLS setup can be found in [the `customization-samples` repo](https://github.com/temporalio/customization-samples/tree/master/tls) and you can reach out to us for further guidance.
+
 ### Client connections
 
 To restrict a client's network access to cluster endpoints you can limit it to clients with certificates issued by a specific Certificate Authority (CA).
