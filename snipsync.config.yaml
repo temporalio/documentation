@@ -17,7 +17,6 @@ origins:
     repo: samples-go
   - owner: temporalio
     repo: temporal-ecommerce
-    ref: chore-snipsync
 
 targets:
   - docs
