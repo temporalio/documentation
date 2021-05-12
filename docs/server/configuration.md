@@ -58,8 +58,12 @@ Each of these subsections contain a `server` section and a `client` section. The
 
 - `certFile` - The path to the file containing the PEM-encoded public key of the certificate to use.
 - `keyFile` - The path to the file containing the PEM-encoded private key of the certificate to use.
-- `requireClientAuth` - *boolean* - Requires clients to authenticate with a certificate when connecting, otherwise known as mutual TLS.
+- `requireClientAuth` - _boolean_ - Requires clients to authenticate with a certificate when connecting, otherwise known as mutual TLS.
 - `clientCaFiles` - A list of paths to files containing the PEM-encoded public key of the Certificate Authorities you wish to trust for client authentication. This value is ignored if `requireClientAuth` is not enabled.
+
+:::tip
+See the [customization samples repo](https://github.com/temporalio/customization-samples/tree/master/tls) for sample TLS configurations.
+:::
 
 Below is an example enabling Server TLS (https) between SDKs and the Frontend APIs:
 
