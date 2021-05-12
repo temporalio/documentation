@@ -7,7 +7,7 @@ description: The core abstraction of the Temporal solution is a fault-oblivious 
 
 ## What is a Workflow?
 
-Workflows are resilient programs, meaning that they will continue execution even in the presence of 
+Workflows are resilient programs, meaning that they will continue execution even in the presence of
 different failure conditions.
 
 Workflows encapsulate execution/orchestration of Tasks which include Activities and child Workflows.
@@ -30,7 +30,7 @@ Workflow interface methods must have one of the following annotations:
 - **@WorkflowMethod** denotes the starting point of Workflow execution. Workflow execution completes when this methods returns.
 - **@SignalMethod** indicates that this method is a signal handler method and that it can react to external signals. It can have parameters which can contain the signal payload. It does not return a value, so it must have a `void` return type.
 - **@QueryMethod** indicates that this method can be used to query the Workflow's state at any time during its execution.
-It can have parameters which can be used to filter a subset of the Workflow's state that it returns. Since it does return a value it must have a non `void` return type.
+  It can have parameters which can be used to filter a subset of the Workflow's state that it returns. Since it does return a value it must have a non `void` return type.
 
 Workflow interfaces can define only a single method annotated with `@WorkflowMethod`. They can define
 any number of methods annotated with `@SignalMethod` and `@QueryMethod`, for example:
@@ -63,8 +63,8 @@ Methods annotated with `@WorkflowMethod` can have any number of parameters.
 We recommend passing a single parameter that contains all the input fields.
 This allows adding fields in a backward compatible manner.
 
-The `@QueryMethod` annotation also has a `name` parameter, for example: `@QueryMethod(name = "history")`. It can be 
-used to denote the query name. If not set, the query name defaults to the name of the method, in the example above 
+The `@QueryMethod` annotation also has a `name` parameter, for example: `@QueryMethod(name = "history")`. It can be
+used to denote the query name. If not set, the query name defaults to the name of the method, in the example above
 being `getStatus`.
 
 The `@SignalMethod` too has a `name` parameter, for example: `@SignalMethod(name = "mysignal")`. It can be used to denote the
@@ -104,14 +104,14 @@ Then some other Workflow interface can extend just `Retryable`, for example:
 ```java
 @WorkflowInterface
 public interface MediaProcessingWorkflow extends Retryable {
-    
+
     @WorkflowMethod
     String processBlob(Arguments args);
 }
 ```
 
 Now if we have two running Workflows, one that implements the `FileProcessingWorkflow` interface and another that implements the
-`MediaProcessingWorkflow` interface, we can signal to both using their common interface and knowing their workflowIds, for example: 
+`MediaProcessingWorkflow` interface, we can signal to both using their common interface and knowing their workflowIds, for example:
 
 ```java
 Retryable r1 = client.newWorkflowStub(Retryable.class, firstWorkflowId);
@@ -156,27 +156,27 @@ java.lang.IllegalStateException: BaseWorkflow workflow type is already registere
 ## Implementing Workflows
 
 A Workflow implementation implements a Workflow interface. Each time a new Workflow execution is started,
-a new instance of the Workflow implementation object is created. 
+a new instance of the Workflow implementation object is created.
 Then, one of the methods
 (depending on which Workflow type has been started) annotated with `@WorkflowMethod` can be invoked.
 As soon as this method returns, the Workflow execution is considered as completed.
 
 Workflow methods annotated with `@QueryMethod` and `@SignalMethod` can be invoked during a Workflow's execution.
 
-Note that methods annotated with `@QueryMethod` can be invoked even when a Workflow is in the `Completed` 
+Note that methods annotated with `@QueryMethod` can be invoked even when a Workflow is in the `Completed`
 state.
 
 ### Workflow Implementation Constraints
 
 Temporal uses the [Event Sourcing pattern](https://docs.microsoft.com/en-us/azure/architecture/patterns/event-sourcing) to recover
 the state of a Workflow object including its threads and local variable values.
-In essence, every time a Workflow state has to be restored, its code is re-executed from the beginning. 
-Note that during replay, successfully executed Activities are not re-executed as their results are already recorded 
-in the Workflow event history. 
+In essence, every time a Workflow state has to be restored, its code is re-executed from the beginning.
+Note that during replay, successfully executed Activities are not re-executed as their results are already recorded
+in the Workflow event history.
 
 Even though Temporal has the replay capability, which brings resilience to your Workflows, you should never think about
 this capability when writing your Workflows.
-Instead, you should focus on implementing your business logic/requirements and write your Workflows 
+Instead, you should focus on implementing your business logic/requirements and write your Workflows
 as they would execute only once.
 
 There are some things however to think about when writing your Workflows, namely determinism and isolation.
@@ -203,39 +203,27 @@ They shouldn't use any constructs that rely on system time.
 
 ### Workflow Method Arguments
 
-Workflow method arguments and return values are serializable to a byte array using the provided
-[DataConverter](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html)
-interface. The default implementation uses JSON serializer, but you can use any alternative serialization mechanism.
+import DataConverter from '../shared/dataconverter.md'
 
-The values passed to Workflows through invocation parameters or returned through a result value are recorded in the execution history.
-
-Even though Workflow execution history is cached in the Workers, in the case of Worker failure, the full execution 
-history has to be transferred from the Temporal service to the Workflow Workers.
-
-In those cases a large execution history could adversely impact the performance of your Workflow.
-Be mindful of the amount of data that you transfer via Activity invocation parameters or return values.
-Otherwise, no additional limitations exist on Activity implementations.
-
-We discuss how to work around the history size limitations in the [Large Event Histories](#large-event-histories) section.
+<DataConverter href="https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html" continueAsNewURL="#large-event-histories" />
 
 ## Workflow Activities
 
 To learn about Workflow Activities visit [this page](/docs/java/activities).
-
 
 ### Child Workflows
 
 Besides Activities, a Workflow can also orchestrate other Workflows.
 
 `Workflow.newChildWorkflowStub` returns a client-side stub that implements a child Workflow interface.
-It takes a child Workflow type and optional child Workflow options as arguments. Workflow options can be used 
+It takes a child Workflow type and optional child Workflow options as arguments. Workflow options can be used
 to set timeout, retry options, and task queue settings for example.
-Note that by default a child Workflow inherits the Workflow options of its parent. You can however overwrite these 
+Note that by default a child Workflow inherits the Workflow options of its parent. You can however overwrite these
 by passing in custom Workflow options when creating the child Workflow stub.
 
-The first call to the child Workflow stub must always be its Workflow method (method annotated with `@WorkflowMethod`). 
+The first call to the child Workflow stub must always be its Workflow method (method annotated with `@WorkflowMethod`).
 
-Similar to Activities, invoking child Workflow methods can be made synchronous or asynchronous by using `Async#function` or `Async#procedure`. 
+Similar to Activities, invoking child Workflow methods can be made synchronous or asynchronous by using `Async#function` or `Async#procedure`.
 The synchronous call blocks until a child Workflow method completes. The asynchronous call
 returns a `Promise` that can be used to wait for the completion of the child Workflow method, for example:
 
@@ -246,7 +234,7 @@ Promise<String> greeting = Async.function(child::composeGreeting, "Hello", name)
 greeting.get()
 ```
 
-Note that querying child Workflows from within the parent Workflow code is not supported. You can however 
+Note that querying child Workflows from within the parent Workflow code is not supported. You can however
 query child Workflows from Activities using `WorkflowClient`.
 
 Following are examples of using a child Workflow inside a Workflow:
@@ -325,27 +313,40 @@ public class GreetingWorkflowImpl implements GreetingWorkflow {
 
 ## Starting Workflow Executions
 
-In the Temporal Java SDK, Workflows can be started both synchronously and asynchronously. 
-To do either, you must initialize an instance of a `WorkflowClient`, create a client side Workflow stub, 
+In the Temporal Java SDK, Workflows can be started both synchronously and asynchronously.
+To do either, you must initialize an instance of a `WorkflowClient`, create a client side Workflow stub,
 and then call a Workflow method (annotated with the `@WorkflowMethod` annotation).
 
 ### Asynchronous start
 
-An asynchronous start initiates a Workflow execution and immediately returns to the caller. 
+An asynchronous start initiates a Workflow execution and immediately returns to the caller.
 This is the most common way to start Workflows in a live environment.
 
 <!--SNIPSTART money-transfer-project-template-java-workflow-initiator-->
 <!--SNIPEND-->
 
-If you need to wait for the completion of a Workflow after an asynchronous start, the most straightforward way is to call the blocking Workflow instance again. 
-If `WorkflowOptions.WorkflowIdReusePolicy` is not set to `AllowDuplicate`, then instead of throwing `DuplicateWorkflowException`, it reconnects to an existing Workflow and waits for its completion. 
-The following example shows how to do this from a different process than the one that started the Workflow. All this process needs is a `WorkflowId`.
+If you need to wait for the completion of a Workflow after an asynchronous start, the most straightforward way is to call the blocking Workflow instance again.
+
+If `WorkflowOptions.WorkflowIdReusePolicy` is not set to `AllowDuplicate`, then instead of throwing `DuplicateWorkflowException`, 
+it reconnects to an existing Workflow and waits for its completion.
+
+The following example shows how to do this from a different process than the one that started the Workflow.
 
 ```java
 YourWorkflow workflow = client.newWorkflowStub(YourWorkflow.class, workflowId);
 
 // Returns the result after waiting for the Workflow to complete.
 String result = workflow.yourMethod();
+```
+
+Another way to connect to an existing workflow and wait for its completion from another process is to use
+`UntypedWorkflowStub`, for example:
+
+```java
+WorkflowStub workflowStub = client.newUntypedWorkflowStub(workflowType, workflowOptions);
+
+// Returns the result after waiting for the Workflow to complete.
+String result = workflowStub.getResult(String.class);
 ```
 
 ### Synchronous start
@@ -398,5 +399,5 @@ they themselves could eventually, if long running, experience the same issue in 
 apply the "ContinueAsNew" feature if needed.
 
 "ContinueAsNew" can also be used in [child Workflows](#child-workflows). Note that in this case the parent Workflow
-is not aware if its child Workflows called "ContinueAsNew". This way a child Workflow can call "ContinueAsNew" as many times 
+is not aware if its child Workflows called "ContinueAsNew". This way a child Workflow can call "ContinueAsNew" as many times
 as it needs, and the parent Workflow will get notified when the last run of the child Workflow completes or fails.

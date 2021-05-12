@@ -115,7 +115,6 @@ module.exports = {
         'go/retries',
         'go/error-handling',
         'go/selectors',
-        'go/continue-as-new',
         'go/side-effect',
         'go/testing',
         'go/versioning',
