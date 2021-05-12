@@ -326,14 +326,27 @@ This is the most common way to start Workflows in a live environment.
 <!--SNIPEND-->
 
 If you need to wait for the completion of a Workflow after an asynchronous start, the most straightforward way is to call the blocking Workflow instance again.
-If `WorkflowOptions.WorkflowIdReusePolicy` is not set to `AllowDuplicate`, then instead of throwing `DuplicateWorkflowException`, it reconnects to an existing Workflow and waits for its completion.
-The following example shows how to do this from a different process than the one that started the Workflow. All this process needs is a `WorkflowId`.
+
+If `WorkflowOptions.WorkflowIdReusePolicy` is not set to `AllowDuplicate`, then instead of throwing `DuplicateWorkflowException`, 
+it reconnects to an existing Workflow and waits for its completion.
+
+The following example shows how to do this from a different process than the one that started the Workflow.
 
 ```java
 YourWorkflow workflow = client.newWorkflowStub(YourWorkflow.class, workflowId);
 
 // Returns the result after waiting for the Workflow to complete.
 String result = workflow.yourMethod();
+```
+
+Another way to connect to an existing workflow and wait for its completion from another process is to use
+`UntypedWorkflowStub`, for example:
+
+```java
+WorkflowStub workflowStub = client.newUntypedWorkflowStub(workflowType, workflowOptions);
+
+// Returns the result after waiting for the Workflow to complete.
+String result = workflowStub.getResult(String.class);
 ```
 
 ### Synchronous start
