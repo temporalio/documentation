@@ -17,7 +17,7 @@ origins:
     repo: samples-go
   - owner: temporalio
     repo: temporal-ecommerce
-    ref: chore-snipsync
+    ref: vkarpov15/minor-refactor
 
 targets:
   - docs

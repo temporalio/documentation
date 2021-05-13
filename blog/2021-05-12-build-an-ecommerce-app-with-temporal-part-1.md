@@ -92,7 +92,7 @@ A Temporal _Worker_ listens for events on a queue and has a list of registered W
 Below is the largely-boilerplate `worker/main.go` file:
 
 <!--SNIPSTART temporal-ecommerce-worker-->
-[worker/main.go](https://github.com/temporalio/temporal-ecommerce/blob/chore-snipsync/worker/main.go)
+[worker/main.go](https://github.com/temporalio/temporal-ecommerce/blob/vkarpov15/minor-refactor/worker/main.go)
 ```go
 package main
 
@@ -130,7 +130,7 @@ func main() {
 In order to see this shopping cart Workflow in action, you can create a _starter_ that sends queries and signals to modify the shopping cart.
 
 <!--SNIPSTART temporal-ecommerce-starter-->
-[start/main.go](https://github.com/temporalio/temporal-ecommerce/blob/chore-snipsync/start/main.go)
+[start/main.go](https://github.com/temporalio/temporal-ecommerce/blob/vkarpov15/minor-refactor/start/main.go)
 ```go
 package main
 
@@ -233,9 +233,9 @@ All the `AddToCart()` and `RemoveFromCart()` functions need to do is modify the 
 Temporal is responsible for persisting and distributing `state`.
 
 <!--SNIPSTART temporal-ecommerce-add-and-remove-->
-[workflow.go](https://github.com/temporalio/temporal-ecommerce/blob/chore-snipsync/workflow.go)
+[workflow.go](https://github.com/temporalio/temporal-ecommerce/blob/vkarpov15/minor-refactor/workflow.go)
 ```go
-func AddToCart(state *CartState, item CartItem) {
+func (state *CartState) AddToCart(item CartItem) {
 	for i := range state.Items {
 		if state.Items[i].ProductId != item.ProductId {
 			continue
@@ -248,7 +248,7 @@ func AddToCart(state *CartState, item CartItem) {
 	state.Items = append(state.Items, item)
 }
 
-func RemoveFromCart(state *CartState, item CartItem) {
+func (state *CartState) RemoveFromCart(item CartItem) {
 	for i := range state.Items {
 		if state.Items[i].ProductId != item.ProductId {
 			continue
