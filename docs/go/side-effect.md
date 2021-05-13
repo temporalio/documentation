@@ -19,7 +19,7 @@ Do not return any data from `SideEffect` other than through its recorded return 
 The following sample demonstrates how to use `SideEffect`:
 
 ```go
-encodedRandom := SideEffect(func(ctx workflow.Context) interface{} {
+encodedRandom := workflow.SideEffect(ctx, func(ctx workflow.Context) interface{} {
         return rand.Intn(100)
 })
 
