@@ -3,8 +3,7 @@
 
     [plugins.inputs]
 
-    skipPatterns = ["#!", "www.google-analytics.com", "www.googletagmanager.com", "#main"]
-    todoPatterns = ["#large-event-histories"]
+    skipPatterns = ["#", "www.google-analytics.com", "www.googletagmanager.com"]
     pretty = true
 
 #
