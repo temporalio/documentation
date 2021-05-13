@@ -37,7 +37,7 @@ There are multiple advantages of using a Task Queue to deliver Tasks to a Worker
 - Workers do not need to have any open ports, which is more secure.
 - Workers do not need to advertise themselves through DNS or any other network discovery mechanism.
 - When all Workers are down, messages simply persist in a Task Queue, waiting for the Workers to recover.
-- A Worker polls for a message only when it has spare capacity, so it never gets overloaded.
+- A Worker polls for a message only when it has spare capacity, avoiding overloading itself.
 - Task Queues enable a sort of automatic load balancing across a large number of Workers.
 - Task Queues support server side throttling, which enables you to limit the Task dispatching rate to the pool of Workers while still supporting Task dispatching at higher rates when spikes happen.
 - Task Queues enable what we call "Task routing", which is the routing of specific Tasks to specific Workers or even a specific process.
@@ -66,8 +66,10 @@ However, the second and third Activities must be executed by a Worker on the sam
 
 You can use Task Queues and dedicated Workers to handle this scenario in an elegant way.
 
-You can find implementation examples that illustrate this technique for each language:
+You can find implementation examples that illustrate this technique for the following languages:
 
-- [Go file processing example](https://github.com/temporalio/samples-go/tree/master/fileprocessing)
 - [Java file processing example](https://github.com/temporalio/samples-java/tree/master/src/main/java/io/temporal/samples/fileprocessing)
 - [PHP file processing example](https://github.com/temporalio/samples-php/tree/master/app/src/FileProcessing)
+
+The Go SDK comes with a [Session](/docs/go/sessions) feature that abstracts the need to explicitly route tasks for this use case.
+The [Go file processing example](https://github.com/temporalio/samples-go/tree/master/fileprocessing) showcases that as well.
