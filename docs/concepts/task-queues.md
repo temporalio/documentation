@@ -8,12 +8,12 @@ sidebar_label: Task Queues
 
 There are a few different perspectives from which we can talk about Task Queues.
 
-From a high level, we can say that a Task Queue is exactly what the name suggests.
-It is a "first-in-first-out" queue for Tasks, where a Task is the context needed to execute a chunk of code that alters the "state" of the Workflow.
-Task Queues are maintained by the Temporal Server.
-The Server places Tasks into a Task Queue to schedule, start, cancel, and complete parts of a Workflow and/or Activity, for example.
-A Worker engages in a long poll with a Task Queue, hungrily waiting for a Task to become available.
-The Worker then executes what ever the Task tells the Worker to do.
+import SharedTaskQueuesBasic from '../shared/task-queues-basic.md'
+
+<SharedTaskQueuesBasic
+workflowLink="/docs/concepts/workflows"
+workerLink="/docs/concepts/workers"
+/>
 
 From the perspective of a developer, using the SDK, Task Queues are one of the means by which you associate a Worker with a Workflow and/or Activity.
 In this case, you can learn about how to implement Task Queues within the context of the language you are writing your application in:

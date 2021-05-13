@@ -23,6 +23,7 @@ Go SDK reference is available here: [https://pkg.go.dev/go.temporal.io/sdk](http
 - [Workflows](/docs/go/workflows)
 - [Activities](/docs/go/activities)
 - [Workers](/docs/go/workers)
+- [Task Queues](/docs/go/task-queues)
 - [Signals](/docs/go/signals)
 - [Queries](/docs/go/queries)
 
