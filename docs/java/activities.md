@@ -4,8 +4,20 @@ title: Activities in Java
 sidebar_label: Activities
 ---
 
-Activities can be invoked during Workflow execution. Similar to Workflows, Activities in Temporal
-Java SDK programming model are classes which implement an Activity Interface:
+## What is an Activity?
+
+Having fault tolerant code that maintains state is useful.
+But in most practical applications, a Workflow will be expected to act upon the external world.
+Temporal supports such externally-facing code in the form of Activities.
+
+An Activity is essentially a function that can execute any code like DB updates or service calls.
+The Workflow is not allowed to directly call any external APIs;
+It can do this only through Activities.
+The Workflow is essentially an orchestrator of Activities.
+
+### Activity interface
+
+Similar to Workflows, Activities in Temporal Java SDK programming model are classes which implement an Activity Interface:
 
 ```java
 @ActivityInterface
@@ -14,14 +26,44 @@ public interface GreetingActivities {
 }
 ```
 
-Activity interface must be annotated with the `@ActivityInterface`. You can annotate each method in the
-Activity interface with the `@ActivityMethod` annotation, but this is completely optional.
-Note that the `@ActivityMethod` annotation has a `name` parameter which can be used to define
-the Activity type.
-If not specified, the method name (with the first letter capitalized) is used by default, so in 
-the above example it would be "ComposeGreeting".
+An Activity interface must be annotated with the `@ActivityInterface`.
+Each method that belongs to an Activity interface defines a separate Activity type.
+You can annotate each method in the Activity interface with the `@ActivityMethod` annotation, but this is completely optional.
 
-### Calling Activities inside Workflows
+```java
+@ActivityInterface
+public interface GreetingActivities {
+    @ActivityMethod(name=composeHello)
+    String composeGreeting(String greeting, String name);
+}
+```
+
+Note that the `@ActivityMethod` annotation has a `name` parameter which can be used to define the Activity type.
+If not specified, the method name (with the first letter capitalized) is used by default, so in the above example it would be  ComposeHello. If the annotation did not specify the name then the Activity Type would be "ComposeGreeting".
+
+### Activity implementation
+
+An Activity implementation is just a normal [POJO](https://en.wikipedia.org/wiki/Plain_old_Java_object).
+The `out` stream is passed as a parameter to the constructor to demonstrate that the Activity object can have any dependency.
+Examples of real application dependencies are database connections and service clients.
+
+```java
+  public class GreetingsActivitiesImpl implements GreetingsActivities {
+    private final PrintStream out;
+
+    public GreetingsActivitiesImpl(PrintStream out) {
+      this.out = out;
+    }
+
+    @Override
+    public void composeGreeting(String greeting, String name) {
+      String message = greeting + " " + name;
+      out.println(message);
+    }
+  }
+```
+
+## Calling Activities inside Workflows
 
 Similar to Workflows, Activities should only be instantiated via stubs.
 
@@ -30,10 +72,10 @@ It takes Activity type and Activity options as arguments.
 Activity options allow you to specify different Activity timeout and retry options.
 
 Calling a method on this interface invokes an Activity that implements this method.
-An Activity invocation synchronously blocks until the Activity completes, fails, or times out. Even if Activity
-execution takes a few months, the Workflow code still sees it as a single synchronous invocation.
-It doesn't matter what happens to the processes that host the Workflow. The business logic code
-just sees a single method call.
+An Activity invocation synchronously blocks until the Activity completes, fails, or times out.
+Even if Activity execution takes a few months, the Workflow code still sees it as a single synchronous invocation.
+It doesn't matter what happens to the processes that host the Workflow.
+The business logic code just sees a single method call.
 
 Let's take a look at an example Workflow that calls Activities:
 
@@ -59,10 +101,10 @@ public class FileProcessingWorkflowImpl implements FileProcessingWorkflow {
             processedName = activities.processFile(localName);
             activities.upload(args.getTargetBucketName(), args.getTargetFilename(), processedName);
         } finally {
-            if (localName != null) { 
+            if (localName != null) {
                 activities.deleteLocalFile(localName);
             }
-            if (processedName != null) { 
+            if (processedName != null) {
                 activities.deleteLocalFile(processedName);
             }
         }
@@ -72,9 +114,7 @@ public class FileProcessingWorkflowImpl implements FileProcessingWorkflow {
 ```
 
 In this example we use `Workflow.newActivityStub` to create a client-side stub of our file processing Activity.
-We also define ActivityOptions and set the setStartToCloseTimeout timeout to one hour, meaning that
-we set the total execution timeout for each of its method invocations to one hour (from when
-the Activity execution is started to when it completes).
+We also define ActivityOptions and set the setStartToCloseTimeout timeout to one hour, meaning that we set the total execution timeout for each of its method invocations to one hour (from when the Activity execution is started to when it completes).
 
 Workflow can create multiple Activity stubs. Each activity stub can have its own ActivityOptions defined, for example:
 
@@ -102,8 +142,7 @@ Sometimes Workflows need to perform certain operations in parallel.
 The Temporal Java SDK provides the `Async` class which includes static methods used to invoke any Activity asynchronously.
 The calls return a result of type `Promise` which is similar to the Java `Future` and `CompletionStage`.
 
-When you need to get the results of an async invoked Activity method, you can use the `Promise` `get`
-method to block until the Activity method result is available.
+When you need to get the results of an async invoked Activity method, you can use the `Promise` `get` method to block until the Activity method result is available.
 
 To convert the following synchronous Activity method call:
 
@@ -174,7 +213,6 @@ Here is the above example rewritten to call download and upload Activity methods
 
 ## Activity Execution Context
 
-
 `ActivityExecutionContext` is a context object passed to each Activity implementation by default.
 You can access it in your Activity implementations via `Activity.getExecutionContext()`.
 
@@ -211,8 +249,7 @@ Sometimes an Activity lifecycle goes beyond a synchronous method invocation.
 For example, a request can be put in a queue and later a reply comes and is picked up by a different Worker process.
 The whole request-reply interaction can be modeled as a single Activity.
 
-To indicate that an Activity should not be completed upon its method return, 
-call `ActivityExecutionContext.doNotCompleteOnReturn()` from the original Activity thread.
+To indicate that an Activity should not be completed upon its method return, call `ActivityExecutionContext.doNotCompleteOnReturn()` from the original Activity thread.
 
 Then later, when replies come, complete the Activity using the `ActivityCompletionClient`.
 To correlate Activity invocation with completion use either a `TaskToken` or Workflow and Activity IDs.
@@ -238,8 +275,7 @@ public class FileProcessingActivitiesImpl implements FileProcessingActivities {
 }
 ```
 
-When the download is complete, the download service potentially can complete the Activity, or fail it 
-from a different process, for example:
+When the download is complete, the download service potentially can complete the Activity, or fail it from a different process, for example:
 
 ```java
   public <R> void completeActivity(byte[] taskToken, R result) {
@@ -253,25 +289,22 @@ from a different process, for example:
 
 ## Activity heartbeats
 
-Activities can be long-running. In these cases the Activity execution timeouts should be set to be longer 
-than the maximum predicted time of the Activity execution.
-In those cases it can happen that an Activity execution is started and cannot proceed, or fails to continue its execution
-for some reasons. With our long set execution timeout the calling Workflow will not be able to time out the Activity 
-and retry it or fail it until this timeout is reached. 
+Activities can be long-running.
+In these cases the Activity execution timeouts should be set to be longer than the maximum predicted time of the Activity execution.
+In those cases it can happen that an Activity execution is started and cannot proceed, or fails to continue its execution for some reasons.
+With our long set execution timeout the calling Workflow will not be able to time out the Activity and retry it or fail it until this timeout is reached.
 
 In order to react quickly to crashes of long-running Activities you can use the Activity heartbeat mechanism.
-You can set a short heartbeat timeout in order to detect Activity issues and react to them without having to wait
-for the long Activity execution timeout to complete first.
+You can set a short heartbeat timeout in order to detect Activity issues and react to them without having to wait for the long Activity execution timeout to complete first.
 
 `Activity.getExecutionContext().heartbeat()` lets the Temporal service know that the Activity is still alive.
 
-The `Activity.getExecutionContext().heartbeat()` can take an argument which represents heartbeat 
-`details`. If an Activity times out, the last heartbeat `details` will be included in the thrown `ActivityTimeoutException`
-which can be caught by the calling Workflow.
+The `Activity.getExecutionContext().heartbeat()` can take an argument which represents heartbeat
+`details`.
+If an Activity times out, the last heartbeat `details` will be included in the thrown `ActivityTimeoutException` which can be caught by the calling Workflow.
 The Workflow then can use the `details` information to pass to the next Activity invocation if needed.
 
-In the case of Activity retries, the last Heartbeat's `details` are available and can be extracted from the last fail 
-attempt using `Activity.getExecutionContext().heartbeat(Class<V> detailsClass)`
+In the case of Activity retries, the last Heartbeat's `details` are available and can be extracted from the last fail attempt using `Activity.getExecutionContext().heartbeat(Class<V> detailsClass)`
 
 Following is an example of using Activity heartbeat:
 
@@ -299,14 +332,12 @@ public class FileProcessingActivitiesImpl implements FileProcessingActivities {
 
 ## Throwing Activity errors
 
-If there is a need to throw checked Exception from Activity methods which do not 
-support re-throwing checked Exceptions in their signatures, 
+If there is a need to throw checked Exception from Activity methods which do not support re-throwing checked Exceptions in their signatures,
 you should wrap them using the `Activity.wrap` method and re-throw the Exceptions.
 
 There is no need to wrap unchecked Exceptions, but it's safe to do so if you want to.
 
-In addition, when wrapping checked Exceptions, the original Exception is attached as a cause 
-to the wrapped one, and is not lost.
+In addition, when wrapping checked Exceptions, the original Exception is attached as a cause to the wrapped one, and is not lost.
 
 Here is an example of catching a checked Exception and wrapping it:
 
@@ -318,5 +349,4 @@ try {
 }
 ```
 
-Note that any Exception thrown from an Activity is converted to `io.temporal.failure.ApplicationFailure`, 
-unless the thrown Exception extends `io.temporal.failure.TemporalException`    .
+Note that any Exception thrown from an Activity is converted to `io.temporal.failure.ApplicationFailure`, unless the thrown Exception extends `io.temporal.failure.TemporalException`    .
