@@ -12,7 +12,6 @@ Temporal supports such externally-facing code in the form of Activities.
 
 An Activity is essentially a function that can execute any code like DB updates or service calls.
 The Workflow is not allowed to directly call any external APIs; it can do this only through Activities.
-It can do this only through Activities.
 The Workflow is essentially an orchestrator of Activities.
 Activities that fail or timeout will be retried; therefore they should be written with care to be idempotent.
 ### Activity interface
