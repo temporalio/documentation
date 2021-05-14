@@ -27,7 +27,7 @@ public interface GreetingActivities {
 ```
 
 An Activity interface must be annotated with the `@ActivityInterface`.
-Each method that belongs to an Activity interface defines a separate Activity type.
+Each method that belongs to an `@ActivityInterface` defines a separate Activity type.
 You can annotate each method in the Activity interface with the `@ActivityMethod` annotation, but this is completely optional.
 
 ```java
