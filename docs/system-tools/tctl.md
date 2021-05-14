@@ -5,7 +5,7 @@ sidebar_label: CLI
 ---
 
 The Temporal CLI is a command-line tool you can use to perform various tasks on a Temporal server.
-It can performm namespace operations such as register, update, and describe as well as workflow operations like start
+It can perform namespace operations such as register, update, and describe as well as workflow operations like start
 workflow, show workflow history, and signal workflow.
 
 ## Install the CLI
