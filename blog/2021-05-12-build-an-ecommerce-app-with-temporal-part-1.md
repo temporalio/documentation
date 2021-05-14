@@ -2,6 +2,7 @@
 tags:
   - temporal
   - community
+  - go-ecommerce-tutorial
 posted_on_: 2021-05-12T00:00:00Z
 slug: build-an-ecommerce-app-with-temporal-part-1
 title: 'Build an eCommerce App With Temporal, Part 1: Getting Started'
@@ -27,7 +28,7 @@ You, as the developer are responsible for implementing [Workflows](https://docs.
 Meanwhile, Temporal handles the data persistence and horizontal scaling for you.
 
 In this blog post, I'll demonstrate how to build a shopping cart using long-living Workflows.
-You can find the [full source code for this shopping cart on GitHub](https://github.com/vkarpov15/temporal-ecommerce).
+You can find the [full source code for this shopping cart on GitHub](https://github.com/temporalio/temporal-ecommerce).
 
 ## Shopping cart Workflow
 
@@ -80,6 +81,8 @@ func CartWorkflowExample(ctx workflow.Context, state CartState) error {
 	})
 
 	for {
+		// Can also use `Receive()` instead of a selector, but we'll be making further
+		// use of selectors in part 2 of this series.
 		selector.Select(ctx)
 	}
 
