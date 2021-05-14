@@ -39,7 +39,7 @@ public interface GreetingActivities {
 ```
 
 Note that the `@ActivityMethod` annotation has a `name` parameter which can be used to define the Activity type.
-If not specified, the method name (with the first letter capitalized) is used by default, so in the above example it would be  ComposeHello. If the annotation did not specify the name then the Activity Type would be "ComposeGreeting".
+If not specified, the method name (with the first letter capitalized) is used by default, so in the above example it would be `ComposeHello`. If the annotation did not specify the name then the Activity Type would be `ComposeGreeting`.
 
 ### Activity implementation
 
