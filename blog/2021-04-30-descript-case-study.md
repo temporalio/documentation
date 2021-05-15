@@ -30,7 +30,7 @@ No transcription, no Descript. Therefore, this service needs to be fast and reli
 
 When a user hits “transcribe”, Descript fires off an asynchronous, multistage and parallelized process that involves re-encoding audio, chunk-splitting, external API calls, merging results that may potentially arrive out of order, and verifying their alignment.
 
-Until recently, this complex multistage task was handled via a patchwork of handwritten scripts and queues built with Node.js, RabbitMQ, and PostgreSQL. Since application state was distributed across various queues and databases , it was hard to test end to end logic.  This quickly resulted in Descript encountering production issues that were nearly impossible to debug. There were lots of production incidents, and when they happened it was extremely hard to understand which part of the pipeline was stuck.
+Until recently, this complex multistage task was handled via a patchwork of handwritten scripts and queues built with Node.js, RabbitMQ, and PostgreSQL. Since application state was distributed across various queues and databases, it was hard to test end to end logic.  This quickly resulted in Descript encountering production issues that were nearly impossible to debug. There were lots of production incidents, and when they happened it was extremely hard to understand which part of the pipeline was stuck.
 
 > "We had one incident every week just on the transcription workflow because it was too complicated to maintain... You can test each worker separately, but it was impossible to test the logic for every new feature end to end, so **we were afraid of doing any changes in that code path**."
 
@@ -81,6 +81,6 @@ Other teams at Descript are waiting for our NodeJS client to explore migrating o
 ## Working with Temporal
 
 
-Descript has found Temporal’s Slack very helpful. It can be difficult to adopt a core infrastructure technology like Temporal so early without help from the community and Temporal's core developers. It has also helped make the case internally to see other well regarded engineering teams ask similar questions and adopt alongside Descript.
+Descript has found Temporal’s Slack very helpful. It can be difficult to adopt a core infrastructure technology like Temporal without help from the community and Temporal's core developers. It has also helped make the case internally to see other well regarded engineering teams ask similar questions and adopt alongside Descript.
 
 > "The Temporal Community is great, the company is so helpful! Temporal is a complex piece of software and there are a lot of corner cases, so it is nice that the people who create Temporal are easy to reach to help us with our issues."
