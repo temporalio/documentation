@@ -32,6 +32,8 @@ At minimum, the `development.yaml` file needs to have the [`global`](/docs/serve
 
 The [Server configuration reference](/docs/server/configuration) has a more complete list of possible parameters.
 
+Make sure to set Workflow and Activity timeouts everywhere.
+
 ### Scaling and Metrics
 
 The requirements of your Temporal system will vary widely based on your intended production workload.
@@ -54,6 +56,16 @@ At a high level, you will want to track these 3 categories of metrics:
   They are also include the `namespace` tag.
   Additional information is available in [this forum post](https://community.temporal.io/t/metrics-for-monitoring-server-performance/536/3).
 
+Temporal is highly scalable due to its event sourced design — we have load tested up to 200 million concurrent workflow executions.
+Every shard is low contention by design — it is very difficult to oversubscribe to a task queue in the same cluster.
+That said, here are some guidelines as to common bottlenecks:
+
+- Usually the limiting factor of scaling is the database connection getting saturated; therefore you will want to monitor `ScheduleToStart` latency to look out for this.
+- Temporal Server's Frontend service is more CPU bound, whereas the History and Matching services require more matching.
+- See the **Server Limits** section below for other limits you will want to monitor, including event history length.
+
+You should be able to tell when workers are underprovisioned for a given task queue. The default is 4 workers which should handle no more than 300 messages per second. Scaling will depend on your workload. For example, you can scale up to 10 workers for a task queue with 500 messages per second.
+
 ## Server limits
 
 Running into limits can cause unexpected failures, so be mindful when you design your systems.
@@ -62,7 +74,7 @@ Here is a comprehensive list of all the hard (error) / soft (warn) server limits
 - **GRPC**: GRPC has 4MB size limit ([per each message received](https://github.com/grpc/grpc/blob/v1.36.2/include/grpc/impl/codegen/grpc_types.h#L466))
 - **Event Batch Size**: The `DefaultTransactionSizeLimit` limit is [4MB](https://github.com/temporalio/temporal/pull/1363) - this is the largest transaction size we allow for event histories to be persisted.
   - This is configurable with `TransactionSizeLimit`, if you know what you are doing.
-- **Blob size limit**: For incoming payloads, [we warn at 512KB and error at 2MB](https://github.com/temporalio/temporal/blob/v1.7.0/service/frontend/service.go#L133-L134).
+- **Blob size limit**: For incoming payloads (including workflow context), [we warn at 512KB and error at 2MB](https://github.com/temporalio/temporal/blob/v1.7.0/service/frontend/service.go#L133-L134).
   - This is configurable with [`BlobSizeLimitError` and `BlobSizeLimitWarn`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L378-L379), if you know what you are doing.
 - **History total size limit**: We warn at 10MB and error at 50mb (leading to terminated workflow)
   - This is configurable with [`HistorySizeLimitError` and `HistorySizeLimitWarn`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L380-L381), if you know what you are doing.
