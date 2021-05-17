@@ -5,7 +5,7 @@ tags:
   - microservice-orchestration
   - microservices
   - case study
-posted_on_: 2021-04-30T23:06:09Z
+posted_on_: 2021-05-18T04:20:00Z
 slug: descript-case-study
 title: 'Revolutionizing Audio with Descript and Temporal'
 author: swyx
