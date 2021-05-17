@@ -9,7 +9,7 @@ Sets up a new Temporal project with a preset skeleton.
 ### Usage
 
 ```
-npm init @temporalio /path/to/project [--use-yarn] [--temporal-version TEMPORAL_VERSION]
+npm init @temporalio /path/to/project [--use-yarn] [--temporal-version TEMPORAL_VERSION] [--sample hello-world|hello-world-mtls]
 ```
 
 #### Flags
@@ -37,7 +37,6 @@ This code structure is required for enabling Workflows - which run in an [isolat
 Each of the referenced projects can be imported using [typescript path aliases][tsconfig-paths].  
 The following aliases are included in the initializer package:
 
-- `@interfaces`
 - `@workflows`
 - `@activities`
 
