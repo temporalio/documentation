@@ -14,6 +14,7 @@ author_image_url: https://avatars.githubusercontent.com/u/6764957?v=4
 image: https://user-images.githubusercontent.com/6764957/116481376-a1adc900-a8b5-11eb-8ae6-326a0fe90b1c.png
 release_version: V1.9.0
 ---
+
 <img class="case-study-header" src='https://user-images.githubusercontent.com/6764957/116481376-a1adc900-a8b5-11eb-8ae6-326a0fe90b1c.png' />
 
 [Link to PDF version](https://www.temporal.io/case-studies/Revolutionizing_Audio_with_Descript_and_Temporal.pdf)
@@ -30,10 +31,9 @@ No transcription, no Descript. Therefore, this service needs to be fast and reli
 
 When a user hits “transcribe”, Descript fires off an asynchronous, multistage and parallelized process that involves re-encoding audio, chunk-splitting, external API calls, merging results that may potentially arrive out of order, and verifying their alignment.
 
-Until recently, this complex multistage task was handled via a patchwork of handwritten scripts and queues built with Node.js, RabbitMQ, and PostgreSQL. Since application state was distributed across various queues and databases, it was hard to test end to end logic.  This quickly resulted in Descript encountering production issues that were nearly impossible to debug. There were lots of production incidents, and when they happened it was extremely hard to understand which part of the pipeline was stuck.
+Until recently, this complex multistage task was handled via a patchwork of handwritten scripts and queues built with Node.js, RabbitMQ, and PostgreSQL. Since application state was distributed across various queues and databases, it was hard to test end to end logic. This quickly resulted in Descript encountering production issues that were nearly impossible to debug. There were lots of production incidents, and when they happened it was extremely hard to understand which part of the pipeline was stuck.
 
 > "We had one incident every week just on the transcription workflow because it was too complicated to maintain... You can test each worker separately, but it was impossible to test the logic for every new feature end to end, so **we were afraid of doing any changes in that code path**."
-
 
 ## To code or not to code
 
@@ -50,7 +50,7 @@ The migration process was relatively simple. Transcription is a self contained s
 Even though the migration was prototyped with a self hosted cluster of Temporal (using our [Kubernetes helm chart](https://github.com/temporalio/helm-charts)), they decided to sign up for Temporal Cloud as an early design partner. As a small startup, they didn't want to manage Temporal themselves.
 "We migrated progressively using feature flags, and verified performance as we went, but we had confidence in the Temporal team so we didn't stress about load testing."
 
-## Looking Back
+## Looking back
 
 Temporal has helped Descript solve fundamental reliability issues with its core transcription loop. The frequency of production incidents has declined from once-a-week to virtually zero. Nicolas attributes this success to the ability to test everything with unit tests as well as normal end-to-end testing on a staging environment.
 
@@ -64,8 +64,7 @@ An unexpected advantage that Descript is enjoying is better observability of wor
 
 > "When a customer reports an issue, it's very easy for us to just put the Workflow ID into the Temporal Web UI to see what is going on... I can see a summary of workflow status and access the full event history for audit needs. "
 
-
-## What's Next?
+## What's next?
 
 Now that Descript has had production experience running with Temporal Cloud, more opportunities are presenting themselves in a diverse array of use cases, including:
 
@@ -77,9 +76,7 @@ Other teams at Descript are waiting for our NodeJS client to explore migrating o
 
 > "Everyone in the company can see more and more use cases where Temporal would be useful."
 
-
 ## Working with Temporal
-
 
 Descript has found Temporal’s Slack very helpful. It can be difficult to adopt a core infrastructure technology like Temporal without help from the community and Temporal's core developers. It has also helped make the case internally to see other well regarded engineering teams ask similar questions and adopt alongside Descript.
 
