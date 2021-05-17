@@ -18,7 +18,9 @@ export default function BlogSidebar({ sidebar }) {
       <h3 className={styles.sidebarItemTitle}>Featured</h3>
       <ul className={styles.sidebarItemList}>
         <li className={styles.sidebarItem}>
-          <LinkWrapped href='/tags/case-study/'>Case Studies</LinkWrapped>
+          <LinkWrapped href='/blog/tags/case-study/'>
+            Case Studies: Box, Checkr, Coinbase, Descript
+          </LinkWrapped>
         </li>
         <li className={styles.sidebarItem}>
           <LinkWrapped href='/blog/funding-announcement/'>
