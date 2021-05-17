@@ -27,7 +27,7 @@ _This case study is based on an interview with Nicolas Gere-lamaysouette, engine
 
 Descript offers a revolutionary editing experience enabling users to modify spoken language in audio and video as if it’s written in a Google Doc. The foundation of Descript is transcription, which is achieved using a blend of proprietary AI algorithms. Synthetically generating a speaker's voice, deleting filler words and producing shareable assets are all made possible by Descript's proprietary transcription process.
 
-No transcription, no Descript. Therefore, this service needs to be fast and reliable. Regardless of whether you are transcribing a 5 minute clip or a 3 hour Clubhouse conversation.
+**No transcription, no Descript.** Therefore, this service needs to be fast and reliable. Regardless of whether you are transcribing a 5 minute clip or a 3 hour Clubhouse conversation.
 
 When a user hits “transcribe”, Descript fires off an asynchronous, multistage and parallelized process that involves re-encoding audio, chunk-splitting, external API calls, merging results that may potentially arrive out of order, and verifying their alignment.
 
@@ -45,14 +45,14 @@ The team evaluated a number of workflow orchestration tools, including [Argo Wor
 
 ## Migrating to Temporal
 
-The migration process was relatively simple. Transcription is a self contained service that doesn't rely on Descript's core databases. So the process was to create a new workflow and begin progressively migrating workloads over using feature flags. The end results of the pipeline were checked via a single table, making it easy to effectively port over by effectively switching from handwritten queues to Temporal task queues.
+The migration process was relatively simple. Transcription is a self contained service that doesn't rely on Descript's core databases. So the process was to create a new workflow and begin progressively migrating workloads over using feature flags. The end results of the pipeline were checked via a single table, making it easy to port over by effectively switching from handwritten queues to Temporal task queues.
 
-Even though the migration was prototyped with a self hosted cluster of Temporal (using our [Kubernetes helm chart](https://github.com/temporalio/helm-charts)), they decided to sign up for Temporal Cloud as an early design partner. As a small startup, they didn't want to manage Temporal themselves.
+Even though the migration was prototyped with a self hosted cluster of Temporal (using our [Kubernetes helm chart](https://github.com/temporalio/helm-charts)), they decided to [sign up for Temporal Cloud](https://docs.temporal.io/#mc_embed_signup_scroll) as an early design partner. As a small startup, they didn't want to manage Temporal themselves.
 "We migrated progressively using feature flags, and verified performance as we went, but we had confidence in the Temporal team so we didn't stress about load testing."
 
 ## Looking back
 
-Temporal has helped Descript solve fundamental reliability issues with its core transcription loop. The frequency of production incidents has declined from once-a-week to virtually zero. Nicolas attributes this success to the ability to test everything with unit tests as well as normal end-to-end testing on a staging environment.
+Temporal has helped Descript solve fundamental reliability issues with its core transcription loop. **The frequency of production incidents has declined from once-a-week to virtually zero.** Nicolas attributes this success to the ability to test everything with unit tests as well as normal end-to-end testing on a staging environment.
 
 Testing is important, but Temporal opened up more opportunities since migration:
 
