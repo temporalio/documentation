@@ -6,63 +6,79 @@ sidebar_label: Activities
 
 ## What is an Activity?
 
-Having fault tolerant code that maintains state is useful.
-But in most practical applications, a Workflow will be expected to act upon the external world.
-Temporal supports such externally-facing code in the form of Activities.
+Activities are implementations of certain tasks which need to be performed during workflow execution.
+They can be used to interact with external systems, such as databases, services, etc.
 
-An Activity is essentially a function that can execute any code like DB updates or service calls.
-The Workflow is not allowed to directly call any external APIs; it can do this only through Activities.
-The Workflow is essentially an orchestrator of Activities.
-Activities that fail or timeout will be retried; therefore they should be written with care to be idempotent.
+Workflows orchestrate invocations of Activities.
+
+Just like [Workflows](./workflows.md), Activities must be registered with a [Worker](./workers.md).
+
+
 ### Activity interface
 
-Similar to Workflows, Activities in Temporal Java SDK programming model are classes which implement an Activity Interface:
+Similar to Workflows, Activities in Temporal Java SDK programming model are classes which implement
+the ActivityInterface Interface.
+
+Activity Interfaces are Java Interfaces which are annotated with the `@ActivityInterface` annotation:
 
 ```java
 @ActivityInterface
 public interface GreetingActivities {
-    String composeGreeting(String greeting, String name);
+    String composeGreeting(String greeting, String language);
 }
 ```
 
-An Activity interface must be annotated with the `@ActivityInterface`.
-Each method that belongs to an `@ActivityInterface` defines a separate Activity type.
-You can annotate each method in the Activity interface with the `@ActivityMethod` annotation, but this is completely optional.
+Each method defined in the Actvity interface defines a separate Activity method.
+You can annotate each method in the Activity interface with the `@ActivityMethod` 
+annotation, but this is completely optional, for example:
 
 ```java
 @ActivityInterface
 public interface GreetingActivities {
-    @ActivityMethod(name=composeHello)
-    String composeGreeting(String greeting, String name);
+    @ActivityMethod(name = "greet")
+    String composeGreeting(String greeting, String language);
 }
 ```
 
 Note that the `@ActivityMethod` annotation has a `name` parameter which can be used to define the Activity type.
-If not specified, the method name (with the first letter capitalized) is used by default, so in the above example it would be `ComposeHello`. If the annotation did not specify the name then the Activity Type would be `ComposeGreeting`.
+If it is specified like in the example above the type would be "greet".
+If not specified, the Activity method name (with the first letter capitalized) is used by default, so in the example again it would be `composeGreeting`.
 
 ### Activity implementation
 
-An Activity implementation is just a normal [POJO](https://en.wikipedia.org/wiki/Plain_old_Java_object).
-The `out` stream is passed as a parameter to the constructor to demonstrate that the Activity object can have any dependency.
-Examples of real application dependencies are database connections and service clients.
+An Activity implementation is Java class which implements an Activity Interface, for example:
+
 
 ```java
-  public class GreetingsActivitiesImpl implements GreetingsActivities {
-    private final PrintStream out;
+  public class MultiLanguageGreeting implements GreetingsActivities {
+    private final TranslationService translationService;
 
-    public GreetingsActivitiesImpl(PrintStream out) {
-      this.out = out;
+    public MultiLanguageGreeting(TranslationService translationService) {
+      this.translationService = translationService;
     }
 
     @Override
-    public void composeGreeting(String greeting, String name) {
-      String message = greeting + " " + name;
-      out.println(message);
+    public String composeGreeting(String greeting, String language) {
+      return translationService.translate(greeting, language);
     }
   }
 ```
 
-## Calling Activities inside Workflows
+## Registering Activities with a Worker
+
+Just like Workflows, Activities need to be registered with a Worker, for example:
+
+```java
+    Worker worker = factory.newWorker(TASK_QUEUE);
+    ...
+    // register the Activity
+    worker.registerActivitiesImplementations(new MultiLanguageGreeting(translationService));
+```
+
+Note that when registering Activities, we register an instance of the Activity implementation, and can pass any
+number of dependencies in its constructor, such as the database connections, services, etc.
+
+## Invoking Activities inside Workflows
 
 Similar to Workflows, Activities should only be instantiated via stubs.
 
@@ -133,9 +149,7 @@ public FileProcessingWorkflowImpl() {
 }
 ```
 
-
-
-### Calling Activities Asynchronously
+### Invoking Activities Asynchronously
 
 Sometimes Workflows need to perform certain operations in parallel.
 The Temporal Java SDK provides the `Async` class which includes static methods used to invoke any Activity asynchronously.
@@ -208,6 +222,25 @@ Here is the above example rewritten to call download and upload Activity methods
       }
     }
   }
+```
+
+## Invoking Activities via `Workflow.newUntypedActivityStub`
+
+It is also possible to inoke Activities inside Workflows using `Workflow.newUntypedActivityStub`, meaning you can
+invoke them without referencing an interface it implements.
+This is useful in scenarios where the Activity type is not known at compile time, or to invoke 
+Activities implemented in different programming languages.
+
+```java
+   // Workflow code
+    ActivityOptions activityOptions =
+        ActivityOptions.newBuilder()
+        .setStartToCloseTimeout(Duration.ofSeconds(3))
+        .setTaskQueue("simple-queue-node")
+        .build();
+
+    ActivityStub activity = Workflow.newUntypedActivityStub(activityOptions);
+    activity.execute("ComposeGreeting", String.class, "Hello World" , "Spanish");
 ```
 
 ## Activity Execution Context

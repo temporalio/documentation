@@ -4,60 +4,63 @@ title: Signals in Java
 sidebar_label: Signals
 ---
 
-Workflows can listen to external events and save the state accordingly.
+Workflow signals provide an asynchronous and durable mechanism for providing data to running Workflows.
+
+Signal methods can only be defined inside Workflows Interfaces and are methods annotated with the `@SignalMethod` annotation, for example:
 
 ```java
-import io.temporal.workflow.SignalMethod;
-import io.temporal.workflow.Workflow;
-import io.temporal.workflow.WorkflowInterface;
-import io.temporal.workflow.WorkflowMethod;
-import org.slf4j.Logger;
+@WorkflowInterface
+public interface HelloWorld {
+    @WorkflowMethod
+    void sayHello(String name);
+    
+    @SignalMethod
+    void updateGreeting(String greeting);
 
-import java.util.Objects;
-
-public class GettingStarted {
-
-    private static Logger logger = Workflow.getLogger(GettingStarted.class);
-
-    @WorkflowInterface
-    public interface HelloWorld {
-        @WorkflowMethod
-        void sayHello(String name);
-
-        @SignalMethod
-        void updateGreeting(String greeting);
-    }
-
-    public static class HelloWorldImpl implements HelloWorld {
-
-        private String greeting = "Hello";
-
-        @Override
-        public void sayHello(String name) {
-            int count = 0;
-            while (!"Bye".equals(greeting)) {
-                logger.info(++count + ": " + greeting + " " + name + "!");
-                String oldGreeting = greeting;
-                Workflow.await(() -> !Objects.equals(greeting, oldGreeting));
-            }
-            logger.info(++count + ": " + greeting + " " + name + "!");
-        }
-
-        @Override
-        public void updateGreeting(String greeting) {
-            this.greeting = greeting;
-        }
-    }
-
+    @SignalMethod
+    void exit();
 }
 ```
 
-The Workflow interface now has a method annotated with @SignalMethod.
-It is a callback method that is invoked every time a new Signal of `HelloWorld.updateGreeting` is delivered to the Workflow.
-The Workflow interface can have only one @WorkflowMethod which is the main function of the Workflow, but can have as many Signal methods as needed.
+A Workflow interface can define any number of signal methods.
 
-This Workflow implementation demonstrates a few important Temporal concepts:
+Note that the `@SignalMethod` interface has a `name` parameter which can be used to set the signal type.
+If not specified, the signal type defaults to the name of the method.
 
-- The Workflow is stateful and can have fields of any complex type.
-- `Workflow.await` blocks until it receives a parameter that evaluates to true.
-The condition is going to be evaluated only on Workflow state changes, so it is not a busy wait, in traditional sense.
+The following example shows how signals can be used to update the Workflow state.
+You can use the `Workflow.await` to block the current Workflow execution until the provided unblock condition is evaluated
+to `true`. In our case, the unblock condition is evaluated to `true` when we receive a signal which changes the Workflow
+greeting to "Bye".
+
+```java
+@WorkflowInterface
+public interface HelloWorld {
+    @WorkflowMethod
+    void sayHello(String name);
+
+    @SignalMethod
+    void updateGreeting(String greeting);
+}
+```
+
+```java
+public class HelloWorldImpl implements HelloWorld {
+    private final Logger workflowLogger = Workflow.getLogger(HelloWorldImpl.class);
+    private String greeting;
+
+    @Override
+    public void sayHello(String name) {
+        int count = 0;
+        while (!"Bye".equals(greeting)) {
+            String oldGreeting = greeting;
+            Workflow.await(() -> !Objects.equals(greeting, oldGreeting));
+        }
+        workflowLogger.info(++count + ": " + greeting + " " + name + "!");
+    }
+
+    @Override
+    public void updateGreeting(String greeting) {
+        this.greeting = greeting;
+    }
+}
+```
