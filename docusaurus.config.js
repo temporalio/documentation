@@ -51,15 +51,32 @@ module.exports = {
             {
               to: '/docs/system-tools/introduction',
               activeBasePath: '/docs/system-tools/',
-              label: 'System Tools'
-            }
-          ]
+              label: 'System Tools',
+            },
+          ],
         },
         {
-          to: '/blog/tags/case-study/',
           activeBasePath: 'none',
           label: 'Case Studies',
           position: 'right',
+          items: [
+            {
+              to: '/blog/how-temporal-simplified-checkr-workflows',
+              label: 'Checkr',
+            },
+            {
+              to: '/blog/Temporal-a-central-brain-for-Box',
+              label: 'Box',
+            },
+            {
+              to: '/blog/reliable-crypto-transactions-at-coinbase',
+              label: 'Coinbase',
+            },
+            {
+              to: '/blog/descript-case-study',
+              label: 'Descript',
+            },
+          ],
         },
         {
           to: '/blog',
@@ -120,8 +137,7 @@ module.exports = {
             },
             {
               label: 'Public Slack',
-              href:
-                'https://join.slack.com/t/temporalio/shared_invite/zt-onhti57l-J0bl~Tr7MqSUnIc1upjRkw',
+              href: 'https://join.slack.com/t/temporalio/shared_invite/zt-onhti57l-J0bl~Tr7MqSUnIc1upjRkw',
             },
             {
               label: 'Temporal Careers',
@@ -144,7 +160,7 @@ module.exports = {
               to: '/docs/external-resources',
             },
           ],
-        }
+        },
       ],
       copyright: `
       <div>
@@ -208,7 +224,8 @@ module.exports = {
           routeBasePath: 'blog',
           path: 'blog',
           postsPerPage: 10,
-          editUrl: 'https://github.com/temporalio/documentation/tree/master/blog',
+          editUrl:
+            'https://github.com/temporalio/documentation/tree/master/blog',
           blogTitle: 'Temporal Blog',
           showReadingTime: true, // Show estimated reading time for the blog post.
           feedOptions: {
