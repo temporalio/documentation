@@ -56,7 +56,6 @@ module.exports = {
           ],
         },
         {
-          to: '/blog/tags/case-study/',
           activeBasePath: 'none',
           label: 'Case Studies',
           position: 'right',
