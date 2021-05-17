@@ -37,9 +37,9 @@ Until recently, this complex multistage task was handled via a patchwork of hand
 
 ## To code or not to code
 
-This homegrown system was sufficient to get going, but as Descript scaled up, they quickly realized that they wanted an orchestration engine built for this job. The most important features they needed were testing, debugging, monitoring, and scalability.
+This homegrown system was sufficient to get going, but as Descript scaled up, they quickly realized that they wanted an orchestration engine built for this job. The most important features they needed were **testing, debugging, monitoring, and scalability**.
 
-The team evaluated a number of workflow orchestration tools, including Argo Workflows. However they soon realized that they strongly preferred the "Workflow-as-Code" approach of Temporal. Descript wanted to write, test, deploy and version control workflows with the exact same languages and tools used in the rest of their stack. This ability to model complex dependencies and error handling as idiomatic Go code was a better fit than simple JSON/YAML DSL's, particularly for local debugging and production monitoring. They also had scalability and latency concerns with Argo, because it was designed for CI/CD workloads so that each activity requires starting up a Kubernetes pod. Descript's data pipeline needs would involve spinning up thousands of pods, making that a nonstarter.
+The team evaluated a number of workflow orchestration tools, including [Argo Workflows](https://argoproj.github.io/projects/argo/). However they soon realized that they strongly preferred the "Workflow-as-Code" approach of Temporal. Descript wanted to write, test, deploy and version control workflows with the exact same languages and tools used in the rest of their stack. This ability to model complex dependencies and error handling as idiomatic Go code was a better fit than simple JSON/YAML DSL's, particularly for local debugging and production monitoring. They also had scalability and latency concerns with Argo, because it was designed for CI/CD workloads so that each activity requires starting up a Kubernetes pod. Descript's data pipeline needs would involve spinning up thousands of pods, making that a nonstarter.
 
 > "It was a game changing revelation - **Temporal gave us the ability to test our workflows with unit tests**, basically just writing code instead of writing JSON or YAML, which are completely untestable."
 
@@ -47,7 +47,7 @@ The team evaluated a number of workflow orchestration tools, including Argo Work
 
 The migration process was relatively simple. Transcription is a self contained service that doesn't rely on Descript's core databases. So the process was to create a new workflow and begin progressively migrating workloads over using feature flags. The end results of the pipeline were checked via a single table, making it easy to effectively port over by effectively switching from handwritten queues to Temporal task queues.
 
-Even though the migration was prototyped with a self hosted cluster of Temporal (using our Kubernetes helm chart), they decided to sign up for Temporal Cloud as an early design partner. As a small startup, they didn't want to manage Temporal themselves.
+Even though the migration was prototyped with a self hosted cluster of Temporal (using our [Kubernetes helm chart](https://github.com/temporalio/helm-charts)), they decided to sign up for Temporal Cloud as an early design partner. As a small startup, they didn't want to manage Temporal themselves.
 "We migrated progressively using feature flags, and verified performance as we went, but we had confidence in the Temporal team so we didn't stress about load testing."
 
 ## Looking Back
@@ -56,11 +56,11 @@ Temporal has helped Descript solve fundamental reliability issues with its core 
 
 Testing is important, but Temporal opened up more opportunities since migration:
 
-- Orchestration of multiple Workflows: you can flexibly reuse a workflow once it is written, allowing the transcription workflow to be easily composed with other APIs. This helped Descript develop a major transcription correction feature much more quickly than with the previous architecture.
-- Specialized Compute for Machine Learning: Some parts of the transcription process use Python components that generate CUDA instructions - these must be run on workers with GPUs, and then reliably merged back into a general data processing workflow. Temporal's ability to route activities to multiple Task Queues made this straightforward.
-- Session Routing for Stateful Execution: You can finetune the execution of sequential activities on the same worker, using Go SDK Sessions, which Descript will need (but doesn't yet use).
+- **Orchestration of multiple Workflows**: you can flexibly **reuse a workflow** once it is written, allowing the transcription workflow to be easily composed with other APIs. This helped Descript develop a major transcription correction feature much more quickly than with the previous architecture.
+- **Specialized Compute for Machine Learning**: Some parts of the transcription process use Python components that generate CUDA instructions - these must be run on workers with GPUs, and then reliably merged back into a general data processing workflow. Temporal's ability to route activities to multiple [Task Queues](https://docs.temporal.io/docs/concept-task-queues) made this straightforward.
+- **Session Routing for Stateful Execution**: You can finetune the execution of sequential activities on the same worker, using [Go SDK Sessions](https://docs.temporal.io/docs/go-sessions/), which Descript will need (but doesn't yet use).
 
-An unexpected advantage that Descript is enjoying is better observability of workflows, which helps improve customer service even when Descript is not at fault.
+An unexpected advantage that Descript is enjoying is better observability of workflows, which **helps improve customer service** even when Descript is not at fault.
 
 > "When a customer reports an issue, it's very easy for us to just put the Workflow ID into the Temporal Web UI to see what is going on... I can see a summary of workflow status and access the full event history for audit needs. "
 
@@ -71,7 +71,7 @@ Now that Descript has had production experience running with Temporal Cloud, mor
 
 - billing and subscription management
 - other CPU intensive backend workloads
-- the (fan favorite) Identify Speaker feature
+- the ([fan favorite](https://twitter.com/swyx/status/1370415731372826628)) Identify Speaker feature
 
 Other teams at Descript are waiting for our NodeJS client to explore migrating other forms of workloads.
 
