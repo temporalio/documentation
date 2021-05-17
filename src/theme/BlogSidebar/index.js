@@ -20,6 +20,7 @@ export default function BlogSidebar({sidebar}) {
         <li className={styles.sidebarItem}><LinkWrapped href="/blog/how-temporal-simplified-checkr-workflows">Case Study: Checkr</LinkWrapped></li>
         <li className={styles.sidebarItem}><LinkWrapped href="/blog/Temporal-a-central-brain-for-Box">Case Study: Box</LinkWrapped></li>
         <li className={styles.sidebarItem}><LinkWrapped href="/blog/reliable-crypto-transactions-at-coinbase">Case Study: Coinbase</LinkWrapped></li>
+        <li className={styles.sidebarItem}><LinkWrapped href="/blog/descript-case-study">Case Study: Descript</LinkWrapped></li>
         <li className={styles.sidebarItem}><LinkWrapped href="/blog/funding-announcement/">Series A Funding Announcement</LinkWrapped></li>
         <li className={styles.sidebarItem}><LinkWrapped href="/blog/sergey-why-i-joined-temporal/">Why I joined Temporal</LinkWrapped></li>
         <li className={styles.sidebarItem}><LinkWrapped href="/blog/workflow-engine-principles/">Designing A Workflow Engine</LinkWrapped></li>
