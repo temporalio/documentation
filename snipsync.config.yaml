@@ -8,6 +8,11 @@ origins:
   - owner: temporalio
     repo: hello-world-project-template-go
   - owner: temporalio
+    repo: subscription-workflow-project-template-go
+  - owner: temporalio
+    repo: subscription-workflow-project-template-java
+    ref: snipwrappers
+  - owner: temporalio
     repo: temporal
   - owner: temporalio
     repo: samples-php
@@ -15,6 +20,8 @@ origins:
     repo: sdk-node
   - owner: temporalio
     repo: samples-go
+  - owner: temporalio
+    repo: samples-java
   - owner: temporalio
     repo: temporal-ecommerce
 
