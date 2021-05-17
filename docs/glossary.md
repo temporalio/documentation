@@ -17,6 +17,12 @@ An Activity is a business-level function that implements your application logic,
 - If for any reason an Activity is not completed within the specified timeout, an error is reported to the [**Workflow**](#workflow) which decides how to handle it. There is no limit for an Activity duration.
 - Activities support an [**Activity Heartbeat**](#activity-heartbeat) that helps to identify timeouts faster in case the Activity execution fails.
 
+### Activity Execution
+
+### Activity Type
+
+
+
 ### Activity Heartbeat
 
 An Activity Heartbeat provides the status of an [**Activity Task**](#activity-task) that is being executed to the Temporal server.
@@ -35,6 +41,10 @@ A Task that contains invocation information for an [**Activity**](#activity) tha
 
 - Upon receiving an [**Activity Task**](#activity-task), an [**Activity Worker**](#worker) executes the corresponding [**Activity**](#activity).
 
+### Activity Task Execution
+
+### Activity Task Queue
+
 ### Archival
 
 Archival is a feature that automatically moves [**Event Histories**](#event-history) from normal persistence to a blob store after the [**Workflow**](#workflow) retention period.
@@ -43,6 +53,9 @@ Archival is a feature that automatically moves [**Event Histories**](#event-hist
 - There are two reasons why you may want to keep [**Event Histories**](#event-history) after the retention period has passed:
   1. Compliance: For legal reasons, [**Event Histories**](#event-history) may need to be stored for a long period of time.
   2. Debugging: Older [**Event Histories**](#event-history) can be referenced to help with debugging.
+
+### Child Workflow
+
 
 ### Client Stub
 
@@ -78,6 +91,13 @@ The Event History is an append-log of [**Events**](#event) for your application.
 - Event History is durably persisted by the Temporal service, enabling seamless recovery of your application state from crashes or failures.
 - It also serves as an audit log for debugging.
 
+### Execution Timeout
+
+### Run Timeout
+
+### Task Timeout
+
+
 ### Local Activity
 
 A Local Activity is an [**Activity**](#activity) that is invoked directly in the same process by Workflow code.
@@ -102,12 +122,15 @@ From the caller's point of view, a Query is a synchronous operation that is used
 - Query logic is implemented as code within a [**Workflow**](#workflow).
 - A Query is inherently read only and cannot affect a Workflow state.
 
+### Retry Policy
+
+
+
 ### Run Id
 
-A Run Id is UUID that a Temporal service assigns to each [**Workflow**](#workflow) run.
+A Run Id is a UUID that the Temporal server assigns to each [**Workflow Run**](#workflow-run).
 
-- Temporal guarantees that only one [**Workflow Execution**](#workflow-execution) with a given [**Workflow Id**](#workflow-id) can be open at a time. But after the [**Workflow Execution**](#workflow-execution) has completed, if allowed by a configured policy, you might be able to re-execute a [**Workflow**](#workflow) after it has closed or failed, using the same [**Workflow Id**](#workflow-id).
-- Each such re-execution is called a run. Run Id is used to uniquely identify a run even if it shares a Workflow Id with others.
+- A Run Id is used to uniquely identify a run even if it shares a [**Workflow Id**](#workflow-id) with another Workflow.
 
 ### Signal
 
@@ -168,6 +191,15 @@ A unique identifier for a [**Workflow Execution**](#workflow-execution).
 - Temporal guarantees the uniqueness of an Id within a [**Namespace**](#namespace).
 - An attempt to start a [**Workflow**](#workflow) with a duplicate Id results in an **already started** error if there is another open Workflow execution. However, this behavior depends on the `WorkflowIdReusePolicy` flag; If set to `ALLOW_DUPLICATE`, it is possible to start a new execution with the same the same Workflow Id.
 
+### Workflow Id Reuse Policy
+
+### Workflow Run
+
+Temporal guarantees that only one [**Workflow Execution**](#workflow-execution) with a given [**Workflow Id**](#workflow-id) can be open at a time.
+However, after the [**Workflow Execution**](#workflow-execution) has completed, if allowed by a [**Workflow Id Reuse Policy**](), you might be able to re-execute a [**Workflow**](#workflow) after it has closed or failed, using the same [**Workflow Id**](#workflow-id).
+
+Each such re-execution is called a run.
+
 ### Workflow Task
 
 A Workflow Task is a [**Task**](#task) that contains invocation information for a [**Workfow**](#workflow).
@@ -175,3 +207,9 @@ A Workflow Task is a [**Task**](#task) that contains invocation information for 
 - Every time a new external event that might affect a [**Workflow**](#workflow) state is recorded, a Workflow Task that contains it, is added to a [**Task Queue**](#task-queue) and then picked up by a [**Workflow Worker**](#worker).
 - After the new event is handled, the Workflow Task is completed with a list of [**Commands**](#command).
 - Handling of a Workflow Task is usually very fast and is not related to the duration of operations that the [**Workflow**](#workflow) invokes.
+
+### Workflow Task Execution
+
+### Workflow Task Queue
+
+### Workflow Type
