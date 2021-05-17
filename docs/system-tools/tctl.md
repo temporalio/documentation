@@ -386,10 +386,10 @@ Here is some example output:
 +---------------------+------------+
 | Status              | INT        |
 | CloseTime           | INT        |
-| CustomBoolField     | DOUBLE     |
+| CustomBoolField     | BOOL       |
 | CustomDatetimeField | DATETIME   |
 | CustomNamespace     | KEYWORD    |
-| CustomDoubleField   | BOOL       |
+| CustomDoubleField   | DOUBLE     |
 | CustomIntField      | INT        |
 | CustomKeywordField  | KEYWORD    |
 | CustomStringField   | STRING     |
