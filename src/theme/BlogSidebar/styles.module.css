@@ -54,8 +54,15 @@
   font-family: monospace;
 }
 
+.sidebarRow {
+  display: flex;
+}
+
 @media only screen and (max-width: 996px) {
   .sidebar {
     display: none;
+  }
+  .sidebarRow {
+    display: block;
   }
 }
