@@ -3,12 +3,28 @@ id: distributed-cron
 title: Distributed CRON
 ---
 
-It is relatively straightforward to turn any Temporal Workflow into a Cron Workflow. All you need
-is to supply a cron schedule when starting the Workflow using the CronSchedule
+You can turn any Temporal Workflow into a Cron Workflow. Two choices:
+
+- start a Workflow using the Temporal CLI with an optional cron schedule using the `--cron` argument
+- (recommended) Supply a cron schedule when starting the Workflow using the CronSchedule
 parameter of
 [StartWorkflowOptions](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.html).
 
-You can also start a Workflow using the Temporal CLI with an optional cron schedule using the `--cron` argument.
+```java
+    WorkflowOptions workflowOptions =
+        WorkflowOptions.newBuilder()
+            .setWorkflowId(WORKFLOW_ID)
+            .setTaskQueue(TASK_QUEUE)
+            .setCronSchedule("* * * * *")
+            .setWorkflowExecutionTimeout(Duration.ofMinutes(3))
+            .setWorkflowRunTimeout(Duration.ofMinutes(1))
+            .build();
+
+    // Create the workflow client stub. It is used to start our workflow execution.
+    GreetingWorkflow workflow = client.newWorkflowStub(GreetingWorkflow.class, workflowOptions);
+```
+
+You can [check our Java Samples](https://github.com/temporalio/samples-java/blob/master/src/main/java/io/temporal/samples/hello/HelloCron.java) for example code.
 
 For Workflows with CronSchedule:
 
