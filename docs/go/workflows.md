@@ -155,7 +155,8 @@ we.Get(ctx, &result)
 
 :::note
 
-In most uses cases it is better to be prepared to execute the Workflow asynchronously.
+In most use cases it is better to execute the Workflow asynchronously.
+You can also start your workflows on a regular schedule with [the CronSchedule option](distributed-cron).
 
 :::
 

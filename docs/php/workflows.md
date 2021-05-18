@@ -42,12 +42,12 @@ Workflows can also answer synchronous [Queries](/docs/php/queries) and receive [
 All interface methods must have one of the following annotations:
 
 - **#[WorkflowMethod]** indicates an entry point to a Workflow.
-It contains parameters such as timeouts and a task queue.
-Required parameters (such as `executionStartToCloseTimeoutSeconds`) that are not specified through the annotation must be provided at runtime.
+  It contains parameters such as timeouts and a task queue.
+  Required parameters (such as `executionStartToCloseTimeoutSeconds`) that are not specified through the annotation must be provided at runtime.
 - **#[SignalMethod]** indicates a method that reacts to external signals. It must have a `void` return type.
 - **#[QueryMethod]** indicates a method that reacts to synchronous query requests. It must have a non `void` return type.
 
-> It is possible (though not recommended for usability reasons) to annotate concrete class implementation.  
+> It is possible (though not recommended for usability reasons) to annotate concrete class implementation.
 
 You can have more than one method with the same annotation (except #[WorkflowMethod]).
 
@@ -223,6 +223,7 @@ Therefore, be mindful of the amount of data that you transfer via Activity invoc
 Otherwise, no additional limitations exist on Activity implementations.
 
 ## Awaits
+
 Use specialized construct `Workflow::await` and `Workflow::awaitWithTimeout` to wait for Closure function become positive.
 
 ```php
@@ -323,6 +324,10 @@ $run = $workflowClient->start($accountTransfer, 'fromID', 'toID', 'refID', 1000)
 var_dump($run->getExecution()->getID());
 ```
 
+### Recurring start
+
+You can start your workflows on a regular schedule with [the CronSchedule option](distributed-cron).
+
 ## Connect to Running Workflows
 
 If you need to wait for the completion of a Workflow after an asynchronous start, make a blocking call to
@@ -355,7 +360,7 @@ $child = Workflow::newChildWorkflowStub(
     ChildWorkflowOptions::new()
         // Do not specify WorkflowId if you want Temporal to generate a unique Id
         // for the child execution.
-        ->withWorkflowId('BID-SIMPLE-CHILD-WORKFLOW')        
+        ->withWorkflowId('BID-SIMPLE-CHILD-WORKFLOW')
         ->withExecutionStartToCloseTimeout(DateInterval::createFromDateString('30 minutes'))
 );
 
@@ -393,7 +398,7 @@ $childResult = yield Workflow::executeChildWorkflow(
     'ChildWorkflowName',
     ['args'],
     ChildWorkflowOptions::new()->withWorkflowId('BID-SIMPLE-CHILD-WORKFLOW'),
-    Type::TYPE_STRING // optional: defines the return type     
+    Type::TYPE_STRING // optional: defines the return type
 );
 ```
 
