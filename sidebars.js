@@ -180,11 +180,12 @@ module.exports = {
         'java/activities',
         'java/workers',
         'java/task-queues',
+        'java/signals',
+        'java/queries',
         'java/versioning',
         'java/side-effect',
         'java/distributed-cron',
         'java/testing-and-debugging',
-        'java/quick-start',
       ],
     },
     {
