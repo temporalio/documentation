@@ -1,8 +1,8 @@
 # Getting started
 
-Follow the instructions below for setting up a local development environment.
+You can run "Hello Temporal" locally in under 5 minutes, assuming you have all prerequisites set up.
 
-## Step 0: Install dependencies
+## Step 0: Prerequisites
 
 This project requires nodejs LTS version 14 (or later).
 
@@ -27,18 +27,17 @@ We've provided prebuilt binaries for the Worker for:
 
 If you need to compile the Worker yourself, set up the Rust toolchain by following the instructions [here](https://rustup.rs/).
 
-</details>
-
-
 :::note
 
 Brew installation of NodeJS>=15 does not work with the SDK, install Node with [`nvm`](https://github.com/nvm-sh/nvm) instead.
 
 :::
 
+</details>
+
 :::note
 
-Make sure you also have Temporal Server running. If you haven't set it up yet, we recommend following the [Temporal Server Quick Install via docker-compose](https://docs.temporal.io/docs/server/quick-install).
+**Make sure you also have Temporal Server running**. If you haven't set it up yet, we recommend following the [Temporal Server Quick Install via docker-compose](https://docs.temporal.io/docs/server/quick-install).
 
 :::
 
@@ -85,8 +84,9 @@ npm run build.watch
 Run the Worker:
 
 ```bash
-npm start
+$ npm start # this runs node lib/worker
 
+# example successful output:
 2021-05-19T17:27:33.176Z [INFO] asset main.js 4.78 MiB [emitted] (name: main)
 2021-05-19T17:27:33.178Z [INFO] runtime modules 891 bytes 4 modules
 2021-05-19T17:27:33.178Z [INFO] modules by path ./node_modules/ 4.66 MiB
@@ -106,14 +106,15 @@ npm start
 2021-05-19T17:27:33.408Z [INFO] Worker state changed { state: 'RUNNING' }
 ```
 
-Run a Workflow:
+Then start your Workflow:
 
 ```bash
 $ node lib/worker/schedule-workflow.js
 Hello, Temporal!
 ```
 
-This "Hello Temporal" message comes from the combination of 
-"Hello" from the [Activity](https://github.com/temporalio/sdk-node/blob/main/packages/create-project/samples/activity.ts), 
-and "Temporal" from [`schedule-workflow.js`](https://github.com/temporalio/sdk-node/blob/03b0b3cd354da309aa6be1b1ff939f5fae007de2/packages/create-project/samples/client.ts),
-as compiled from your `/src` to `/lib` folder by TypeScript.
+This "Hello Temporal" message comes from the combination of:
+
+- "Hello" from the [Activity](https://github.com/temporalio/sdk-node/blob/main/packages/create-project/samples/activity.ts)
+- and "Temporal" from [`schedule-workflow.js`](https://github.com/temporalio/sdk-node/blob/03b0b3cd354da309aa6be1b1ff939f5fae007de2/packages/create-project/samples/client.ts)
+- as compiled from your `/src` to `/lib` folder by TypeScript.
