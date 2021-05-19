@@ -37,7 +37,7 @@ Brew installation of NodeJS>=15 does not work with the SDK, install Node with [`
 
 :::note
 
-**Make sure you also have Temporal Server running**. If you haven't set it up yet, we recommend following the [Temporal Server Quick Install via docker-compose](https://docs.temporal.io/docs/server/quick-install).
+**Make sure you also have Temporal Server running**. If you haven't set it up yet, we recommend following the [Temporal Server Quick Install via docker-compose](https://docs.temporal.io/docs/server/quick-install): 
 
 :::
 
@@ -118,3 +118,12 @@ This "Hello Temporal" message comes from the combination of:
 - "Hello" from the [Activity](https://github.com/temporalio/sdk-node/blob/main/packages/create-project/samples/activity.ts)
 - and "Temporal" from [`schedule-workflow.js`](https://github.com/temporalio/sdk-node/blob/03b0b3cd354da309aa6be1b1ff939f5fae007de2/packages/create-project/samples/client.ts)
 - as compiled from your `/src` to `/lib` folder by TypeScript.
+
+You can verify this via the Input and Result fields in Temporal Web (available at `localhost:8088` on the default [`docker-compose`](https://github.com/temporalio/docker-compose)):
+
+![image](https://user-images.githubusercontent.com/6764957/118865735-d7255f80-b913-11eb-8ace-a7dbdc351f8e.png)
+
+
+## Next Steps
+
+For a full code walkthrough of the Hello World example that you have spun up here, see our [Hello World documentation](/docs/node/hello-world).
