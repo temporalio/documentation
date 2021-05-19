@@ -31,7 +31,6 @@ module.exports = {
         {
           activeBasePath: '/docs',
           label: 'Docs',
-          position: 'right',
           items: [
             {
               to: '/docs/concepts/introduction',
@@ -58,7 +57,6 @@ module.exports = {
         {
           activeBasePath: 'none',
           label: 'Case Studies',
-          position: 'right',
           items: [
             {
               to: '/blog/how-temporal-simplified-checkr-workflows',
@@ -80,9 +78,8 @@ module.exports = {
         },
         {
           to: '/blog',
-          activeBasePath: '/blog/',
+          activeBasePath: '/blog',
           label: 'Blog',
-          position: 'right',
         },
       ],
     },
