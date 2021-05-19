@@ -1,22 +1,20 @@
-You can turn any Temporal Workflow into a repeatedly initiated Workflow. Two choices:
+There are two ways that you can turn any Temporal Workflow into a repeatedly executed Workflow.
 
-- start a Workflow using the Temporal CLI with an optional cron schedule using the `--cron` argument
-- (recommended) Supply a cron schedule when starting the Workflow using the CronSchedule
+1. Start a Workflow Execution using the Temporal CLI with an optional cron schedule using the `--cron` argument.
+2. **Recommended**: Supply a cron schedule when starting the Workflow Execution using the CronSchedule.
   parameter of <a href={props.docUrl}>StartWorkflowOptions</a>.
 
 <div>{props.children}</div>
 
 For Workflows with CronSchedule:
 
-- CronSchedule is based on UTC time. For example cron schedule "15 8 \* \* \*"
-  will run daily at 8:15am UTC.
-- If a Workflow failed and a RetryPolicy is supplied to the StartWorkflowOptions
-  as well, the Workflow will retry based on the RetryPolicy. While the Workflow is
-  retrying, the server will not schedule the next cron run.
-- Temporal server only schedules the next cron run after the current run is
-  completed. If the next schedule is due while a Workflow is running (or retrying),
-  then it will skip that schedule.
-- Cron Workflows will not stop until they are terminated or cancelled.
+- CronSchedule is based on UTC time.
+For example, cron schedule "15 8 \* \* \*" will run daily at 8:15am UTC.
+- If a Workflow Execution failed and a RetryPolicy is supplied to the `StartWorkflowOptions`, the Workflow Execution will be retried based on the RetryPolicy.
+While the Workflow Execution is retrying, the Server will not schedule the next Workflow Execution.
+- The Temporal Server only schedules the next Workflow Execution after the current execution has completed.
+If the next execution is due to occur while the Workflow is currently executing (including retries), then the next execution will be skipped.
+- Cron initiated Workflow Executions will not stop until they are terminated or cancelled.
 
 Temporal supports the standard cron spec:
 

@@ -330,7 +330,7 @@ If you need to wait for the completion of a Workflow after an asynchronous start
 If `WorkflowOptions.WorkflowIdReusePolicy` is not set to `AllowDuplicate`, then instead of throwing `DuplicateWorkflowException`,
 it reconnects to an existing Workflow and waits for its completion.
 
-The following example shows how to do this from a different process than the one that started the Workflow.
+The following example shows how to do this from a different process than the one that started the Workflow Execution.
 
 ```java
 YourWorkflow workflow = client.newWorkflowStub(YourWorkflow.class, workflowId);
@@ -358,7 +358,7 @@ A Synchronous start initiates a Workflow and then waits for its completion. The 
 
 ### Recurring start
 
-You can start your workflows on a regular schedule with [the CronSchedule option](distributed-cron).
+You can start a Workflow Execution on a regular schedule with [the CronSchedule option](distributed-cron).
 
 ## Large Event Histories
 

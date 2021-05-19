@@ -42,7 +42,7 @@ Workflows can also answer synchronous [Queries](/docs/php/queries) and receive [
 All interface methods must have one of the following annotations:
 
 - **#[WorkflowMethod]** indicates an entry point to a Workflow.
-  It contains parameters such as timeouts and a task queue.
+  It contains parameters that specify timeouts and a Task Queue name.
   Required parameters (such as `executionStartToCloseTimeoutSeconds`) that are not specified through the annotation must be provided at runtime.
 - **#[SignalMethod]** indicates a method that reacts to external signals. It must have a `void` return type.
 - **#[QueryMethod]** indicates a method that reacts to synchronous query requests. It must have a non `void` return type.
@@ -326,7 +326,7 @@ var_dump($run->getExecution()->getID());
 
 ### Recurring start
 
-You can start your workflows on a regular schedule with [the CronSchedule option](distributed-cron).
+You can start a Workflow Execution on a regular schedule with [the CronSchedule option](distributed-cron).
 
 ## Connect to Running Workflows
 
