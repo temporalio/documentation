@@ -12,7 +12,9 @@ If you run into errors during installation it is likely your environment is not 
 
 <details>
 <summary>
+  
 The Worker package embeds the [Temporal Core SDK](https://github.com/temporalio/sdk-core) which requires the Rust toolchain to compile.
+
 </summary>
   
 
@@ -45,9 +47,13 @@ Make sure you also have Temporal Server running. If you haven't set it up yet, w
 Use the [package initializer](./package-initializer) to create a new project.
 
 ```sh
-npm init @temporalio ./example
-cd ./example
+npx @temporalio/create@latest ./example
+cd example
 ```
+
+This will set up with [the basic Hello World sample](https://github.com/temporalio/sdk-node/blob/main/packages/create-project/samples/client.ts). 
+If you want a [sample for connecting to a Temporal Server instance secured with mTLS](https://github.com/temporalio/sdk-node/blob/main/packages/create-project/samples/client-mtls.ts), you can use `
+npx @temporalio/create@latest ./example --sample hello-world-mtls`.
 
 :::note
 
@@ -60,8 +66,12 @@ cd ./example
 Use one of the provided helper package scripts to compile Typescript.
 
 ```bash
-npm run build.watch # Watch files and compile on change (recommended because it's most convenient).
-## OR  npm run build # Compile Typescript once (you will need to rerun this every time you edit the code).
+# Watch files and compile on change (recommended because it's most convenient)
+npm run build.watch 
+
+## OR
+## Compile Typescript once (you will need to rerun this every time you edit the code)
+# npm run build 
 ```
 
 :::note
@@ -72,7 +82,7 @@ npm run build.watch # Watch files and compile on change (recommended because it'
 
 ## Step 3: Run your Workflow
 
-```sh
+```bash
 npm start                             # Run the Worker
 node lib/worker/schedule-workflow.js  # Run a Workflow
 ```
