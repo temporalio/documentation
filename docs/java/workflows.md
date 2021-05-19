@@ -327,10 +327,10 @@ This is the most common way to start Workflows in a live environment.
 
 If you need to wait for the completion of a Workflow after an asynchronous start, the most straightforward way is to call the blocking Workflow instance again.
 
-If `WorkflowOptions.WorkflowIdReusePolicy` is not set to `AllowDuplicate`, then instead of throwing `DuplicateWorkflowException`, 
+If `WorkflowOptions.WorkflowIdReusePolicy` is not set to `AllowDuplicate`, then instead of throwing `DuplicateWorkflowException`,
 it reconnects to an existing Workflow and waits for its completion.
 
-The following example shows how to do this from a different process than the one that started the Workflow.
+The following example shows how to do this from a different process than the one that started the Workflow Execution.
 
 ```java
 YourWorkflow workflow = client.newWorkflowStub(YourWorkflow.class, workflowId);
@@ -355,6 +355,10 @@ A Synchronous start initiates a Workflow and then waits for its completion. The 
 
 <!--SNIPSTART hello-world-project-template-java-workflow-initiator-->
 <!--SNIPEND-->
+
+### Recurring start
+
+You can start a Workflow Execution on a regular schedule with [the CronSchedule option](distributed-cron).
 
 ## Large Event Histories
 
