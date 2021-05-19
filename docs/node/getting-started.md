@@ -2,7 +2,7 @@
 
 Follow the instructions below for setting up a local development environment.
 
-### Install system dependencies
+## Step 0: Install dependencies
 
 This project requires nodejs LTS version 14 (or later).
 
@@ -10,7 +10,12 @@ Furthermore, you will need to install [node-gyp](https://github.com/nodejs/node-
 
 If you run into errors during installation it is likely your environment is not properly set up.
 
-The Worker package embeds the Temporal Core SDK which requires the Rust toolchain to compile.
+<details>
+<summary>
+The Worker package embeds the [Temporal Core SDK](https://github.com/temporalio/sdk-core) which requires the Rust toolchain to compile.
+</summary>
+  
+
 We've provided prebuilt binaries for the Worker for:
 
 - Mac with an Intel chip: `x86_64-apple-darwin`
@@ -20,9 +25,22 @@ We've provided prebuilt binaries for the Worker for:
 
 If you need to compile the Worker yourself, set up the Rust toolchain by following the instructions [here](https://rustup.rs/).
 
-> NOTE: Brew installation of NodeJS>=15 does not work with the SDK, install with [`nvm`](https://github.com/nvm-sh/nvm) instead.
+</details>
 
-### Create a new project
+
+:::note
+
+Brew installation of NodeJS>=15 does not work with the SDK, install Node with [`nvm`](https://github.com/nvm-sh/nvm) instead.
+
+:::
+
+:::note
+
+Make sure you also have Temporal Server running. If you haven't set it up yet, we recommend following the [Temporal Server Quick Install via docker-compose](https://docs.temporal.io/docs/server/quick-install).
+
+:::
+
+## Step 1: Create a new project
 
 Use the [package initializer](./package-initializer) to create a new project.
 
@@ -31,31 +49,30 @@ npm init @temporalio ./example
 cd ./example
 ```
 
-> NOTE: `init` triggers native module compilation which might take a while, npm 7 hides the compilation output so it may appear that the installation is stuck, to see the compilation progress export `NPM_CONFIG_FOREGROUND_SCRIPTS=true`.
+:::note
 
-### Compile Typescript
+`init` triggers native module compilation which might take a while, npm 7 hides the compilation output so it may appear that the installation is stuck, to see the compilation progress export `NPM_CONFIG_FOREGROUND_SCRIPTS=true`.
+
+:::
+
+## Step 2: Compile Typescript
 
 Use one of the provided helper package scripts to compile Typescript.
 
-- `npm run build.watch` - Watch files and compile on change (recommended because it's most convenient).
-- `npm run build` - Compile Typescript once (you will need to rerun this every time edit the code).
+```bash
+npm run build.watch # Watch files and compile on change (recommended because it's most convenient).
+## OR  npm run build # Compile Typescript once (you will need to rerun this every time you edit the code).
+```
 
-> NOTE: `ts-node` does not work with our project structure since it changes `__dirname` which affects the automatic Workflow and Activity [registration](/docs/node/hello-world/#worker) and we don't support running typescript directly in the [Workflow v8 isolates](/docs/node/determinism/#how-a-workflow-is-executed).
+:::note
 
-#### Run the Temporal server
+`ts-node` does not work with our project structure since it changes `__dirname` which affects the automatic Workflow and Activity [registration](/docs/node/hello-world/#worker) and we don't support running typescript directly in the [Workflow v8 isolates](/docs/node/determinism/#how-a-workflow-is-executed).
 
-Download, install, and run the [Temporal server](https://docs.temporal.io/docs/server/quick-install) via docker-compose. It is easy to do and you can keep it running in the background while you build applications.
+:::
 
-#### Test your Workflow
+### Run your Workflow
 
-- Run the Worker
-
-  ```sh
-  npm start
-  ```
-
-- Run a Workflow
-
-  ```sh
-  node lib/worker/schedule-workflow.js
-  ```
+```sh
+npm start                             # Run the Worker
+node lib/worker/schedule-workflow.js  # Run a Workflow
+```
