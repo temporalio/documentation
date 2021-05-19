@@ -6,7 +6,6 @@
  */
 
 .sidebar {
-  display: inherit;
   max-height: calc(100vh - (var(--ifm-navbar-height) + 2rem));
   overflow-y: auto;
   position: sticky;

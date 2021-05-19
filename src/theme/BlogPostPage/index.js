@@ -54,7 +54,7 @@ function BlogPostPage(props) {
           </div>
           <div className='row'>
             <div className='col'>
-              <BlogSidebar sidebar={sidebar} row />
+              <BlogSidebar sidebar={sidebar} row={true} />
             </div>
           </div>
         </div>
