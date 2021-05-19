@@ -70,7 +70,7 @@ npm run build.watch # Watch files and compile on change (recommended because it'
 
 :::
 
-### Run your Workflow
+## Step 3: Run your Workflow
 
 ```sh
 npm start                             # Run the Worker
