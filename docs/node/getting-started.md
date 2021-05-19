@@ -82,7 +82,38 @@ npm run build.watch
 
 ## Step 3: Run your Workflow
 
+Run the Worker:
+
 ```bash
-npm start                             # Run the Worker
-node lib/worker/schedule-workflow.js  # Run a Workflow
+npm start
+
+2021-05-19T17:27:33.176Z [INFO] asset main.js 4.78 MiB [emitted] (name: main)
+2021-05-19T17:27:33.178Z [INFO] runtime modules 891 bytes 4 modules
+2021-05-19T17:27:33.178Z [INFO] modules by path ./node_modules/ 4.66 MiB
+2021-05-19T17:27:33.178Z [INFO]   modules by path ./node_modules/@temporalio/ 4.54 MiB 14 modules
+2021-05-19T17:27:33.178Z [INFO]   modules by path ./node_modules/protobufjs/ 51.2 KiB
+2021-05-19T17:27:33.178Z [INFO]     modules by path ./node_modules/protobufjs/src/*.js 28.8 KiB 7 modules
+2021-05-19T17:27:33.178Z [INFO]     modules by path ./node_modules/protobufjs/src/util/*.js 17.7 KiB 2 modules
+2021-05-19T17:27:33.178Z [INFO]     2 modules
+2021-05-19T17:27:33.178Z [INFO]   modules by path ./node_modules/@protobufjs/ 23.7 KiB 7 modules
+2021-05-19T17:27:33.178Z [INFO]   ./node_modules/long/src/long.js 39.2 KiB [built] [code generated]
+2021-05-19T17:27:33.178Z [INFO]   ./node_modules/ms/index.js 2.95 KiB [built] [code generated]
+2021-05-19T17:27:33.178Z [INFO] modules by path ../../../../../src/ 686 bytes
+2021-05-19T17:27:33.178Z [INFO]   ../../../../../src/main.js 362 bytes [built] [code generated]
+2021-05-19T17:27:33.178Z [INFO]   ../../../../../src/@activities/greeter.js 324 bytes [built] [code generated]
+2021-05-19T17:27:33.178Z [INFO] ./lib/workflows/example.js 398 bytes [built] [code generated]
+2021-05-19T17:27:33.178Z [INFO] webpack 5.37.1 compiled successfully in 1058 ms
+2021-05-19T17:27:33.408Z [INFO] Worker state changed { state: 'RUNNING' }
 ```
+
+Run a Workflow:
+
+```bash
+$ node lib/worker/schedule-workflow.js
+Hello, Temporal!
+```
+
+This "Hello Temporal" message comes from the combination of 
+"Hello" from the [Activity](https://github.com/temporalio/sdk-node/blob/main/packages/create-project/samples/activity.ts), 
+and "Temporal" from [`schedule-workflow.js`](https://github.com/temporalio/sdk-node/blob/03b0b3cd354da309aa6be1b1ff939f5fae007de2/packages/create-project/samples/client.ts),
+as compiled from your `/src` to `/lib` folder by TypeScript.
