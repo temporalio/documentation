@@ -13,7 +13,7 @@ If you run into errors during installation it is likely your environment is not 
 <details>
 <summary>
   
-The Worker package embeds the [Temporal Core SDK](https://github.com/temporalio/sdk-core) which requires the Rust toolchain to compile.
+The Worker package embeds the <a href="https://github.com/temporalio/sdk-core">Temporal Core SDK</a> which requires the Rust toolchain to compile.
 
 </summary>
   
@@ -46,7 +46,7 @@ Make sure you also have Temporal Server running. If you haven't set it up yet, w
 
 Use the [package initializer](./package-initializer) to create a new project.
 
-```sh
+```bash
 npx @temporalio/create@latest ./example
 cd example
 ```
