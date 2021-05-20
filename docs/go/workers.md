@@ -78,4 +78,4 @@ However, the failure of the Task will not cause the associated Workflow to fail.
 
 :::
 
-When you start a Workflow by calling `ExecuteWorkflow()`, the Temporal Server adds a new Task to the Workflow's Task Queue, and any Worker polling that Task Queue could execute that Task.
+When you start a Workflow by calling `ExecuteWorkflow()`, the Temporal Server adds a new Task to the Workflow's Task Queue, and any Worker polling that Task Queue could execute that Task. You can learn more in the [Workflows docs](https://docs.temporal.io/docs/go/workflows#how-to-start-a-workflow).
