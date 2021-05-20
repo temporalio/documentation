@@ -140,8 +140,55 @@ func main() {
 ```
 
 You can start Workflows **asynchronously** or **synchronously**.
-In Go, the only difference is whether the code waits for the result of the Workflow in the same process in which you started it.
+In most use cases it is better to execute the Workflow asynchronously.
+In Go, the only difference is whether the code waits for the result of the Workflow in the same process in which you started it, so you should not synchronously block the process if you don't have a good reason to.
 Workflows do not rely on the process that invoked it, and will continue executing even if the waiting process crashes or stops.
+
+### Scheduling Cron Workflows
+
+You can also start a Workflow Execution on a regular schedule with the `CronSchedule` option.
+
+```go
+workflowOptions := client.StartWorkflowOptions{
+    ID:           workflowID,
+    TaskQueue:    "cron",
+    CronSchedule: "* * * * *",
+}
+
+we, err := c.ExecuteWorkflow(context.Background(), workflowOptions, cron.SampleCronWorkflow)
+```
+
+More info in the [Distributed Cron](distributed-cron) docs.
+
+### External Workflows
+
+You can call workflows from other language SDKs purely by name:
+
+```go
+// Call "SayHello" Java activity from Go workflow
+var result string
+aoj := workflow.ActivityOptions{
+    TaskQueue:           "simple-queue-java",
+    StartToCloseTimeout: 5 * time.Second,
+}
+ctx = workflow.WithActivityOptions(ctx, aoj)
+err = workflow.ExecuteActivity(ctx, "SayHello", "GoWorkflow").Get(ctx, &result)
+logger.Info(fmt.Sprintf("Java Activity returns %v, %v", result, err))
+
+```
+
+And you can send signals to running workflows with `SignalExternalWorkflow`:
+
+```go
+// Send 10 signals to PHP workflow
+for i := 0; i < 10; i++ {
+    workflow.SignalExternalWorkflow(ctx, "simple-workflow-php", "", "goMessage", "Hello from Go workflow: "+strconv.Itoa(i)).Get(ctx, nil)
+}
+```
+
+See our [Signals docs](https://docs.temporal.io/docs/go/signals) and [Temporal Polyglot example](https://github.com/tsurdilo/temporal-polyglot) for more.
+
+### Querying Workflow State
 
 When you start a Workflow with `ExecuteWorkflow`, a `WorkflowExecution` is returned (which is the `we` variable above).
 The `WorkflowExecution` can be used to get the result or capture the WorkflowId.
@@ -152,13 +199,6 @@ we = client.GetWorkflow(workflowID)
 var result string
 we.Get(ctx, &result)
 ```
-
-:::note
-
-In most use cases it is better to execute the Workflow asynchronously.
-You can also start a Workflow Execution on a regular schedule with [the CronSchedule option](distributed-cron).
-
-:::
 
 ## How to get data in or out of a running Workflow
 
