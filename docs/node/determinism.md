@@ -26,3 +26,27 @@ Workflow code is bundled on Worker creation using [Webpack](https://webpack.js.o
 - `WeakRef | WeakMap | WeakSet` - can not be used as GC is non-deterministic, deleted by the runtime
 - Timers - `setTimeout` and `clearTimeout` are replaced by the runtime, prefer to use the exported `sleep` function because it plays well with [cancellation](/docs/node/workflow-scopes-and-cancellation).
 - Activities - use to run non-deterministic code, results are replayed from history
+
+#### Runtime code replacement during startup
+
+The replaced `Match.random` and `Date` constructor cannot be called before the Workflow has been started because they require a random seed or Workflow task time.
+If used before the the Workflow's `main` function is called they will throw an `IllegalStateError`.
+
+Do **not** do this:
+
+```ts
+const startedAt = new Date(); // IllegalStateError
+
+async function main() {
+  // ...
+}
+```
+
+Instead initialize the variable inside of `main`:
+
+```ts
+async function main() {
+  const startedAt = new Date(); // OK
+  // ...
+}
+```
