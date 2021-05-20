@@ -34,12 +34,6 @@ This code structure is required for enabling Workflows - which run in an [isolat
 
 [![](https://mermaid.ink/svg/eyJjb2RlIjoiZ3JhcGggVERcbiAgICBXUksod29ya2VyKSAtLT4gV0ZcbiAgICBXRih3b3JrZmxvd3MpIC0tPiBJXG4gICAgV0YgLS0-IEFcbiAgICBBKGFjdGl2aXRpZXMpIC0tPiBJXG4gICAgV1JLIC0tPiBJXG4gICAgSShpbnRlcmZhY2VzKSIsIm1lcm1haWQiOnsidGhlbWUiOiJkZWZhdWx0IiwiZmxvd2NoYXJ0Ijp7ImN1cnZlIjoiYmFzaXMifSwidGhlbWVDU1MiOiIubGFiZWwgZm9yZWlnbk9iamVjdCB7IG92ZXJmbG93OiB2aXNpYmxlOyB9In0sInVwZGF0ZUVkaXRvciI6ZmFsc2V9)](https://mermaid-js.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ3JhcGggVERcbiAgICBXUksod29ya2VyKSAtLT4gV0ZcbiAgICBXRih3b3JrZmxvd3MpIC0tPiBJXG4gICAgV0YgLS0-IEFcbiAgICBBKGFjdGl2aXRpZXMpIC0tPiBJXG4gICAgV1JLIC0tPiBJXG4gICAgSShpbnRlcmZhY2VzKSIsIm1lcm1haWQiOnsidGhlbWUiOiJkZWZhdWx0IiwiZmxvd2NoYXJ0Ijp7ImN1cnZlIjoiYmFzaXMifSwidGhlbWVDU1MiOiIubGFiZWwgZm9yZWlnbk9iamVjdCB7IG92ZXJmbG93OiB2aXNpYmxlOyB9In0sInVwZGF0ZUVkaXRvciI6ZmFsc2V9)
 
-Each of the referenced projects can be imported using [typescript path aliases][tsconfig-paths].  
-The following aliases are included in the initializer package:
-
-- `@workflows`
-- `@activities`
-
 ### Working with the created project
 
 The created project comes with some helper package scripts.
@@ -56,5 +50,4 @@ The created project comes with some helper package scripts.
 
 [ts-project-references]: https://www.typescriptlang.org/tsconfig#references
 [npm-init]: https://docs.npmjs.com/cli/v6/commands/npm-init
-[tsconfig-paths]: https://www.typescriptlang.org/tsconfig#paths
 [local-server]: /docs/server/quick-install
