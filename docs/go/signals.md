@@ -81,7 +81,11 @@ The [client.SignalWithStartWorkflow](https://pkg.go.dev/go.temporal.io/sdk/clien
 
 ## Signalling external Workflows
 
-Workflows can send signals to other workflows with `SignalExternalWorkflow`:
+Workflows can send signals to other workflows with `SignalExternalWorkflow`, including across namespace boundaries.
+
+This is in contrast to how signals are normally used, for example, messages from the application layer (eg an API endpoint handler) to the workflow.
+
+Sample code:
 
 ```go
 workflow.SignalExternalWorkflow(ctx, "SimpleWorkflowJava", "", "receiveMessage", "Hello from Go")
