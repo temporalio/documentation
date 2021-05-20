@@ -162,7 +162,7 @@ More info in the [Distributed Cron](distributed-cron) docs.
 
 ### External Workflows
 
-You can call workflows from other language SDKs purely by name:
+You can execute workflows (including those from other language SDKs) purely by name:
 
 ```go
 // Call "SayHello" Java activity from Go workflow
