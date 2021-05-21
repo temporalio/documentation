@@ -29,6 +29,9 @@ See example Worker code for:
 - [PHP SDK](/docs/php/workers)
 - [Node SDK](/docs/node/hello-world/#worker)
 
+Note that [Temporal also supports a polyglot programming model](https://github.com/tsurdilo/temporal-polyglot) because you can start workflows by string name and send signals between workflows, including across namespace boundaries.
+This means that workflows can be run independently of teams maintaining microservices in different languages.
+
 ## Workers are external to the Temporal Server
 
 In our tutorials, we show you how to run both the Temporal Server and one Worker on the same machine for local development.

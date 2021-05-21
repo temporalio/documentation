@@ -360,6 +360,12 @@ A Synchronous start initiates a Workflow and then waits for its completion. The 
 
 You can start a Workflow Execution on a regular schedule with [the CronSchedule option](distributed-cron).
 
+### External Workflows
+
+Workflows can execute (and signal to) other workflows purely by name.
+This helps particularly for executing workflows from other language SDKs. 
+See our [Temporal Polyglot example](https://github.com/tsurdilo/temporal-polyglot) for more.
+
 ## Large Event Histories
 
 import SharedContinueAsNew from '../shared/continue-as-new.md'
