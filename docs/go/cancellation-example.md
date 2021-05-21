@@ -4,14 +4,12 @@ title: Workflow Execution cancellation in Go
 sidebar_label: Execution cancellation
 ---
 
-## Instructions
+## Example app
 
 Clone the [Temporal Go samples repo](https://github.com/temporalio/samples-go).
 
 <!--SNIPSTART samples-go-cancellation-readme {"enable_source_link": false, "enable_code_block": false}-->
 <!--SNIPEND-->
-
-## Code
 
 ### Workflow Definition
 

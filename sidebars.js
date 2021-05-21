@@ -115,6 +115,7 @@ module.exports = {
             },
           ],
         },
+<<<<<<< HEAD
         "go/workflows",
         "go/activities",
         "go/workers",
@@ -132,6 +133,34 @@ module.exports = {
         "go/distributed-cron",
         "go/tracing",
         "go/search-apis",
+=======
+        'go/workflows',
+        'go/activities',
+        'go/workers',
+        'go/task-queues',
+        'go/signals',
+        'go/queries',
+        'go/retries',
+        'go/error-handling',
+        'go/selectors',
+        'go/side-effect',
+        'go/testing',
+        'go/versioning',
+        'go/sessions',
+        'go/distributed-cron',
+        'go/tracing',
+        'go/search-apis',
+        {
+          type: 'category',
+          label: 'Example apps',
+          collapsed: false,
+          items: [
+            'go/branches-example',
+            'go/child-workflows',
+            'go/cancellation-example',
+          ],
+        }
+>>>>>>> adding snipsync backed example apps
       ],
     },
     {

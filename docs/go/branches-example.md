@@ -1,17 +1,15 @@
 ---
 id: branches-example
 title: Parallel Activity Executions in Go
-sidebar_label: Activity branches example
+sidebar_label: Parallel Activities
 ---
 
-## Instructions
+## Example app
 
 Clone the [Temporal Go samples repo](https://github.com/temporalio/samples-go).
 
 <!--SNIPSTART samples-go-branch-readme {"enable_source_link": false, "enable_code_block": false}-->
 <!--SNIPEND-->
-
-## Code
 
 ### Workflow Definition
 
