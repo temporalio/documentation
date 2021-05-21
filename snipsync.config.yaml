@@ -25,3 +25,4 @@ targets:
 
 features:
   enable_source_link: true
+  enable_code_block: true

@@ -8,7 +8,7 @@ sidebar_label: Activity branches example
 
 Clone the [Temporal Go samples repo](https://github.com/temporalio/samples-go).
 
-<!--SNIPSTART samples-go-branch-readme {"enable_source_link": false}-->
+<!--SNIPSTART samples-go-branch-readme {"enable_source_link": false, "enable_code_block": false}-->
 <!--SNIPEND-->
 
 ## Code

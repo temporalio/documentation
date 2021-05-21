@@ -108,6 +108,11 @@ module.exports = {
             "go/run-your-first-app-tutorial",
             "go/hello-world-tutorial",
             "go/sdk-video-tutorial",
+            {
+              type: 'link',
+              label: 'Build an eCommerce app',
+              href: '/blog/tags/go-ecommerce-tutorial',
+            },
           ],
         },
         "go/workflows",
