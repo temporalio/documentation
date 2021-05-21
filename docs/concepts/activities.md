@@ -14,14 +14,16 @@ Activities are invoked asynchronously though task queues. A task queue is essent
 
 Temporal does not impose any system limit on Activity duration. It is up to the application to choose the timeouts for its execution. These are the configurable Activity timeouts:
 
-- `ScheduleToStart` is the maximum time from when an Activity Execution is called to when a Worker has started the Activity Execution.
+- `ScheduleToStart`: Maximum time from when an Activity Execution is called to when a Worker has started the Activity Execution.
 The usual reason for this timeout to fire is when all Workers are down or they are not able to keep up with the request rate.
 We recommend setting this timeout to the maximum time a Workflow is willing to wait for an Activity Execution in the presence of all possible Worker outages.
 This timeout **does not** trigger any retries regardless of the Retry Policy.
 Do not use this timeout unless you know what you are doing.
-- `StartToClose` is the maximum time an Activity can execute after it was picked by a Worker.
-- `ScheduleToClose` is the maximum time from the Workflow Execution requesting an Activity Execution to its completion.
-- `Heartbeat` is the maximum time between Heartbeat requests.
+- `StartToClose`: Maximum time for a single Activity Execution attempt.
+- `ScheduleToClose`: Maximum time for the overall Activity Execution, including the time from ScheduleToStart and retries.
+- `Heartbeat`: Maximum time between Heartbeat requests.
+When an Activity calls the Heartbeat API, the calls will not be sent to the service unless the Heartbeat Timeout is specified.
+If a Heartbeat Timeout is specified then the Activity must call the Heartbeat API within this timeout.
 See [Long Running Activities](#long-running-activities).
 
 Either `ScheduleToClose` or `ScheduleToStart` timeouts are required.
