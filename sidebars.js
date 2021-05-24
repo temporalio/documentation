@@ -152,10 +152,10 @@ module.exports = {
         'go/search-apis',
         {
           type: 'category',
-          label: 'Example apps',
-          collapsed: false,
+          label: 'Go example apps',
+          collapsed: true,
           items: [
-            'go/branches-example',
+            'go/parallel-activities-example',
             'go/child-workflows',
             'go/cancellation-example',
           ],

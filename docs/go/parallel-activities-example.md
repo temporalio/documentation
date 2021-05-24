@@ -1,5 +1,5 @@
 ---
-id: branches-example
+id: parallel-activities-example
 title: Parallel Activity Executions in Go
 sidebar_label: Parallel Activities
 ---

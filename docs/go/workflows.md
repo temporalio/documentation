@@ -144,6 +144,13 @@ In most use cases it is better to execute the Workflow asynchronously.
 In Go, the only difference is whether the code waits for the result of the Workflow in the same process in which you started it, so you should not synchronously block the process if you don't have a good reason to.
 Workflows do not rely on the process that invoked it, and will continue executing even if the waiting process crashes or stops.
 
+:::note
+
+In most use cases it is better to execute the Workflow asynchronously.
+You can also start a Workflow Execution on a regular schedule with [the CronSchedule option](distributed-cron).
+
+:::
+
 ### Scheduling Cron Workflows
 
 You can also start a Workflow Execution on a regular schedule with the `CronSchedule` option.
@@ -199,6 +206,23 @@ we = client.GetWorkflow(workflowID)
 var result string
 we.Get(ctx, &result)
 ```
+
+## How to cancel a Workflow Execution
+
+There are many scenarios where it is necessary and even ideal to be able to cancel a Workflow Execution.
+Use the `CancelWorkflow` API to cancel a Workflow Execution using its Id.
+
+<!--SNIPSTART samples-go-cancellation-cancel-workflow-execution-trigger-->
+<!--SNIPEND-->
+
+Workflow Definitions can be written to handle execution cancellation requests.
+In the Workflow Definition below, there is a special Activity that handles clean up should the execution be cancelled.
+
+<!--SNIPSTART samples-go-cancellation-workflow-definition-->
+<!--SNIPEND-->
+
+Want to try it out?
+There is a full [cancellation example app](/docs/go/cancellation-example) available to play with.
 
 ## How to get data in or out of a running Workflow
 
