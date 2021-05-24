@@ -13,6 +13,7 @@ The following code implements unit tests for the `SimpleWorkflow` sample:
 package sample
 
 import (
+        "context"
         "errors"
         "testing"
 
