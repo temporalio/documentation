@@ -89,6 +89,10 @@ To use a more recent version of Temporal, first [check to see](https://github.co
 
 We ensure that any consecutive versions are compatible in terms of database schema upgrades, features, and system behavior, however there is no guarantee that there is compatibility between *any* 2 non-consecutive versions. Please reach out to us or check the forums at [community.temporal.io](http://community.temporal.io) for more information.
 
+We strongly recommend *never* using the "dryrun" (`-y`, or `--dryrun`) options in any of your schema update commands.
+Using this option might lead to potential loss of data, as when using this will create a new database and drop your
+existing one.
+
 ### Upgrade Cassandra schema
 
 You can use the `temporal-cassandra-tool` to upgrade both the default and visibility schemas for your Cassandra DB:
