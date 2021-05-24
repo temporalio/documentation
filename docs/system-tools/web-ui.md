@@ -4,13 +4,13 @@ title: Temporal Web UI
 sidebar_label: Web UI
 ---
 
-The Temporal Web UI is used to view workflows, see what's running, and explore and debug workflow executions.
+The Temporal Web UI can be used to view Workflow Execution states or explore and debug Workflow Executions.
 
 For a **video demo** of how this looks, you can [check our docs](https://docs.temporal.io/docs/java-run-your-first-app/#state-visibility).
 
-## Deploying and Securing Temporal Web
+## Deploying and securing Temporal Web
 
-_This section is still being written - if you have specific questions you'd like us to answer, please search or [ask on GitHub](https://github.com/temporalio/web/)._
+_If you have specific questions you'd like us to answer, please check Slack, Forums, or [post questions on GitHub](https://github.com/temporalio/web/)._
 
 ### Configuring Temporal Web
 
@@ -49,12 +49,14 @@ By default we will also verify your server `hostname`, matching it to `TEMPORAL_
 
 </details>
 
-### Configuring Authentication (optional)
+### Configuring authentication
 
-> This section covers only how to secure Temporal Web — to secure Temporal Server, see the [Server Security docs](https://docs.temporal.io/docs/server/security).
+> This section covers how to secure Temporal Web.
+To secure the Temporal Server, see the [Server security docs](https://docs.temporal.io/docs/server/security).
 > ⚠️ This is currently a beta feature, [please report any and all issues to us!](https://github.com/temporalio/web/issues/new)
 
-Since v1.3, Temporal Web offers optional OAuth SSO authentication. You can enable it in 2 steps:
+Since v1.3, Temporal Web offers optional OAuth SSO authentication.
+It can be enabled it in 2 steps:
 
 1. Edit the `server/config.yml` file:
 
@@ -80,7 +82,8 @@ Since v1.3, Temporal Web offers optional OAuth SSO authentication. You can enabl
 
    If you are running Temporal Web from the docker image, you can provide your external config.yml to docker to override the internal config.
    Create config.yml file on your machine, for example at `~/Desktop/config.yml`.
-   Start the docker image, providing the path to your config.yml file using external volume flag (-v). Leave the path after the semicolon as is:
+   Start the Docker image, providing the path to your `config.yml` file using external volume flag (-v).
+   Leave the path after the semicolon as is:
 
    ```bash
    docker run --network host -v ~/Desktop/config.yml:/usr/app/server/config.yml temporalio/web:latest
@@ -88,9 +91,9 @@ Since v1.3, Temporal Web offers optional OAuth SSO authentication. You can enabl
 
    </details>
 
-   In future, multiple Oauth providers may be supported, however for now we only read the first Oauth provider under the `providers` key above.
+In the future, multiple OAuth providers may be supported, however for now we only read the first OAuth provider under the `providers` key above.
 
-   Common Oauth Providers and their docs:
+Common OAuth Providers and their docs:
 
    - Google: https://developers.google.com/identity/protocols/oauth2/openid-connect
    - Auth0: https://auth0.com/docs/protocols/configure-okta-as-oauth2-identity-provider
@@ -116,22 +119,25 @@ Since v1.3, Temporal Web offers optional OAuth SSO authentication. You can enabl
    - Keycloak: https://www.keycloak.org/getting-started/getting-started-docker
    - please feel free to [PR or request more help on the Temporal Web repo](https://github.com/temporalio/web/)
 
-2. You will need to provide a redirect URL to your Oauth Provider. If you are hosting Temporal Web at `http://localhost:8088` (this is configured by `callback_base_uri` in `server/config.yml`), then it is `http://localhost:8088/auth/sso_callback`.
+2. You will need to provide a redirect URL to your OAuth Provider.
+If you are hosting Temporal Web at `http://localhost:8088` (this is configured by `callback_base_uri` in `server/config.yml`), then it is `http://localhost:8088/auth/sso_callback`.
 
    - By default, Temporal Web asks for 3 scopes, make sure your provider recognizes these or you may see scope-related errors:
      - `openid` required by some OIDC providers like [auth0](https://auth0.com/docs/scopes/openid-connect-scopes)
      - `profile` for name
      - `email` for email
 
-## Using Temporal Web for Development
+## Using Temporal Web for development
 
 Once you have the Temporal Server running locally (use the [quick install guide](/docs/server/quick-install)), you can view the Temporal Web UI at [http://localhost:8088](http://localhost:8088) (this is configurable with the `TEMPORAL_WEB_PORT` environment variable).
 
-> ⚠️ This is a basic guide to troubleshooting/debugging Temporal applications. It is work-in-progress and we encourage [reading about our Architecture](https://docs.temporal.io/docs/server-architecture) for more detail. The better you understand how Temporal works, the better you will be at debugging your workflows.
+> ⚠️ This is a basic guide to troubleshooting/debugging Temporal applications.
+> It is work-in-progress and we encourage [reading about our Architecture](https://docs.temporal.io/docs/server-architecture) for more detail.
+The better you understand how Temporal works, the better you will be at debugging Workflow Executions.
 
 If you have the time, we recommend [watching our 19 minute video guide on YouTube](https://youtu.be/PqcVKIxI0nU) which demonstrates the debugging explained below.
 
-### Basic Debugging on Temporal Web
+### Basic debugging via Temporal Web
 
 The primary mechanism we recommend for debugging is [Temporal Web](https://github.com/temporalio/web), which is run in a separate process:
 

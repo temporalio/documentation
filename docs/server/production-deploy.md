@@ -50,21 +50,25 @@ At a high level, you will want to track these 3 categories of metrics:
 - **Persistence metrics**: The Server emits `persistence_requests`, `persistence_errors` and `persistence_latency` metrics for each persistence operation.
   These metrics include the `operation` tag such that you can get the request rates, error rates or latencies per operation.
   These are super useful in identifying issues caused by the database.
-- **Workflow stats**: The Server also emits counters on Workflows complete.
-  These are useful in getting overall stats about Workflow completions.
-  Use `workflow_success`, `workflow_failed`, `workflow_timeout`, `workflow_terminate` and `workflow_cancel` counters for each type of Workflow completion.
-  They are also include the `namespace` tag.
-  Additional information is available in [this forum post](https://community.temporal.io/t/metrics-for-monitoring-server-performance/536/3).
+- **Workflow Execution stats**: The Server also emits counters for when Workflow Executions are complete.
+  These are useful in getting overall stats about Workflow Execution completions.
+  Use `workflow_success`, `workflow_failed`, `workflow_timeout`, `workflow_terminate` and `workflow_cancel` counters for each type of Workflow Execution completion.
+  These include the `namespace` tag.
+Additional information is available in [this forum post](https://community.temporal.io/t/metrics-for-monitoring-server-performance/536/3).
 
-Temporal is highly scalable due to its event sourced design — we have load tested up to 200 million concurrent workflow executions.
-Every shard is low contention by design — it is very difficult to oversubscribe to a task queue in the same cluster.
-That said, here are some guidelines as to common bottlenecks:
+Temporal is highly scalable due to its event sourced design.
+We have load tested up to 200 million concurrent Workflow Executions.
+Every shard is low contention by design and it is very difficult to oversubscribe to a Task Queue in the same cluster.
+With that said, here are some guidelines to some common bottlenecks:
 
-- Usually the limiting factor of scaling is the database connection getting saturated; therefore you will want to monitor `ScheduleToStart` latency to look out for this.
+- Usually the limiting factor to scaling is the database connection getting saturated; therefore you will want to monitor `ScheduleToStart` latency to look out for this.
 - Temporal Server's Frontend service is more CPU bound, whereas the History and Matching services require more matching.
 - See the **Server Limits** section below for other limits you will want to monitor, including event history length.
 
-You should be able to tell when workers are underprovisioned for a given task queue. The default is 4 workers which should handle no more than 300 messages per second. Scaling will depend on your workload. For example, you can scale up to 10 workers for a task queue with 500 messages per second.
+You should be able to tell when Workers are under-provisioned for a given Task Queue.
+The default is 4 Workers, which should handle no more than 300 messages per second.
+Scaling will depend on your workload.
+For example, you can scale up to 10 workers for a Task Queue with 500 messages per second.
 
 ## Server limits
 
@@ -72,13 +76,14 @@ Running into limits can cause unexpected failures, so be mindful when you design
 Here is a comprehensive list of all the hard (error) / soft (warn) server limits relevant to operating Temporal:
 
 - **GRPC**: GRPC has 4MB size limit ([per each message received](https://github.com/grpc/grpc/blob/v1.36.2/include/grpc/impl/codegen/grpc_types.h#L466))
-- **Event Batch Size**: The `DefaultTransactionSizeLimit` limit is [4MB](https://github.com/temporalio/temporal/pull/1363) - this is the largest transaction size we allow for event histories to be persisted.
+- **Event Batch Size**: The `DefaultTransactionSizeLimit` limit is [4MB](https://github.com/temporalio/temporal/pull/1363).
+This is the largest transaction size we allow for event histories to be persisted.
   - This is configurable with `TransactionSizeLimit`, if you know what you are doing.
-- **Blob size limit**: For incoming payloads (including workflow context), [we warn at 512KB and error at 2MB](https://github.com/temporalio/temporal/blob/v1.7.0/service/frontend/service.go#L133-L134).
+- **Blob size limit**: For incoming payloads (including Workflow context), [we warn at 512KB and error at 2MB](https://github.com/temporalio/temporal/blob/v1.7.0/service/frontend/service.go#L133-L134).
   - This is configurable with [`BlobSizeLimitError` and `BlobSizeLimitWarn`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L378-L379), if you know what you are doing.
-- **History total size limit**: We warn at 10MB and error at 50mb (leading to terminated workflow)
+- **History total size limit**: We warn at 10MB and error at 50mb (leading to a terminated Workflow Execution).
   - This is configurable with [`HistorySizeLimitError` and `HistorySizeLimitWarn`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L380-L381), if you know what you are doing.
-- **History total count limit**: We warn at 10,000 events and error at 50,000 events (leading to terminated workflow)
+- **History total count limit**: We warn at 10,000 events and error at 50,000 events (leading to a terminated Workflow Execution).
   - This is configurable with [`HistoryCountLimitError` and `HistoryCountLimitWarn`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L382-L383), if you know what you are doing.
 - **Search Attributes**:
   - **Number of Search Attributes**: max 100
@@ -99,7 +104,7 @@ Recommended configuration debugging techniques for production Temporal Server se
 
 ### Debugging Workflows
 
-We recommend [using Temporal Web to debug your workflows](https://docs.temporal.io/docs/system-tools/web-ui) in development and production.
+We recommend [using Temporal Web to debug your Workflow Executions](https://docs.temporal.io/docs/system-tools/web-ui) in development and production.
 
 ### Future content
 
