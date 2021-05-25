@@ -20,7 +20,7 @@ const features = [
     title: <>Application development</>,
     imageUrl: 'img/layers.png',
     description: (
-      <>Use SDK tutorials and references in the language of your choice.</>
+      <>Find SDK tutorials and API references in the language of your choice.</>
     ),
     goto: '/application-development',
   },
@@ -141,10 +141,12 @@ function SelectTutorial() {
 function TemporalCloud() {
   return (
     <div className={styles.formFeature}>
-      <h2>☁️ Temporal Cloud</h2>
+      <h2 id="cloud">☁️ Temporal Cloud</h2>
       <p>
         Temporal Cloud is a fully managed cloud offering of the open-source Server.
         What are we offering?
+      </p>
+      <p>
         <ul>
           <li>
             <strong>Updates</strong>: Automatic updates with latest releases.
@@ -242,7 +244,7 @@ export default function Home() {
         className={clsx('hero hero--secondary container', styles.heroSecondRow)}
       >
         <div className='container'>
-          <h2>🍎 Core concepts</h2>
+          <h2 id="concepts">🍎 Core concepts</h2>
           <p>Review some of Temporal's core concepts and building blocks.</p>
           <ul>
             <li>
@@ -281,7 +283,7 @@ export default function Home() {
           </ul>
         </div>
         <div className='container'>
-          <h2>🔥 Additional Resources</h2>
+          <h2 id="resources">🔥 Additional Resources</h2>
           <p>
             Everything else to help you learn Temporal and pitch it internally.
           </p>
