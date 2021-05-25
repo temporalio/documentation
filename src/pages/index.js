@@ -150,7 +150,7 @@ function TemporalCloud() {
             <strong>Updates</strong>: Automatic updates with latest releases.
           </li>
           <li>
-            <strong>Experience</strong>: Have run this technology in production
+            <strong>Experience</strong>: Our team has years of experience operating the technology in production environments.
             since our origins at Uber.
           </li>
           <li>
