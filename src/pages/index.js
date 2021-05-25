@@ -155,7 +155,7 @@ function TemporalCloud() {
           </li>
           <li>
             <strong>Scale</strong>: Our design partners are
-            multi-tens-of-billion valuation publicly listed companies.
+           are highly valued publicly listed companies.
           </li>
           <li>
             <strong>Dependencies</strong>: No more managing dependencies like
