@@ -202,6 +202,8 @@ func ProgressWorkflow(ctx workflow.Context, percent int) error {
 	}
 
 	for percent = 0; percent<100; percent++ {
+                // Important! Use `workflow.Sleep()`, not `time.Sleep()`, because Temporal's
+                // test environment doesn't stub out `time.Sleep()`.
 		workflow.Sleep(ctx, time.Second*1)
 	}
 
