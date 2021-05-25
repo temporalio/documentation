@@ -48,7 +48,8 @@ The team evaluated a number of workflow orchestration tools, including [Argo Wor
 The migration process was relatively simple. Transcription is a self contained service that doesn't rely on Descript's core databases. So the process was to create a new workflow and begin progressively migrating workloads over using feature flags. The end results of the pipeline were checked via a single table, making it easy to port over by effectively switching from handwritten queues to Temporal task queues.
 
 Even though the migration was prototyped with a self hosted cluster of Temporal (using our [Kubernetes helm chart](https://github.com/temporalio/helm-charts)), they decided to [sign up for Temporal Cloud](https://docs.temporal.io/#mc_embed_signup_scroll) as an early design partner. As a small startup, they didn't want to manage Temporal themselves.
-"We migrated progressively using feature flags, and verified performance as we went, but we had confidence in the Temporal team so we didn't stress about load testing."
+
+> "We migrated progressively using feature flags, and verified performance as we went, but we had confidence in the Temporal team so we didn't stress about load testing."
 
 ## Looking back
 
