@@ -1,160 +1,160 @@
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 
 module.exports = {
-  title: 'Temporal documentation',
-  tagline: 'Build invincible applications',
-  url: 'https://docs.temporal.io',
-  baseUrl: '/',
-  onBrokenLinks: 'warn',
-  onBrokenMarkdownLinks: 'warn',
-  favicon: 'img/favicon.png',
-  organizationName: 'temporalio', // Usually your GitHub org/user name.
-  projectName: 'temporal-documentation', // Usually your repo name.
+  title: "Temporal documentation",
+  tagline: "Build invincible applications",
+  url: "https://docs.temporal.io",
+  baseUrl: "/",
+  onBrokenLinks: "warn",
+  onBrokenMarkdownLinks: "warn",
+  favicon: "img/favicon.png",
+  organizationName: "temporalio", // Usually your GitHub org/user name.
+  projectName: "temporal-documentation", // Usually your repo name.
   themeConfig: {
     colorMode: {
-      defaultMode: 'light',
+      defaultMode: "light",
       disableSwitch: false,
     },
     prism: {
-      theme: require('prism-react-renderer/themes/dracula'),
-      additionalLanguages: ['java', 'ruby', 'php'],
+      theme: require("prism-react-renderer/themes/dracula"),
+      additionalLanguages: ["java", "ruby", "php"],
     },
     hideableSidebar: true,
     navbar: {
       hideOnScroll: true,
       logo: {
-        alt: 'Temporal logo',
-        src: 'img/temporal-logo-dark.svg',
-        srcDark: 'img/temporal-logo.svg',
+        alt: "Temporal logo",
+        src: "img/temporal-logo-dark.svg",
+        srcDark: "img/temporal-logo.svg",
       },
       items: [
         {
-          activeBasePath: '/docs',
-          label: 'Docs',
+          activeBasePath: "/docs",
+          label: "Docs",
           items: [
             {
-              to: '/docs/concepts/introduction',
-              activeBasePath: '/docs/concepts/',
-              label: 'Concepts',
+              to: "/docs/concepts/introduction",
+              activeBasePath: "/docs/concepts/",
+              label: "Concepts",
             },
             {
-              to: '/docs/server/introduction',
-              activeBasePath: '/docs/server/',
-              label: 'Server',
+              to: "/docs/server/introduction",
+              activeBasePath: "/docs/server/",
+              label: "Server",
             },
             {
-              to: '/application-development',
-              activeBasePath: '/application-development',
-              label: 'SDKs',
+              to: "/application-development",
+              activeBasePath: "/application-development",
+              label: "SDKs",
             },
             {
-              to: '/docs/system-tools/introduction',
-              activeBasePath: '/docs/system-tools/',
-              label: 'System Tools',
+              to: "/docs/system-tools/introduction",
+              activeBasePath: "/docs/system-tools/",
+              label: "System Tools",
             },
           ],
         },
         {
-          activeBasePath: 'none',
-          label: 'Case Studies',
+          activeBasePath: "none",
+          label: "Case Studies",
           items: [
             {
-              to: '/blog/how-temporal-simplified-checkr-workflows',
-              label: 'Checkr',
+              to: "/blog/how-temporal-simplified-checkr-workflows",
+              label: "Checkr",
             },
             {
-              to: '/blog/Temporal-a-central-brain-for-Box',
-              label: 'Box',
+              to: "/blog/Temporal-a-central-brain-for-Box",
+              label: "Box",
             },
             {
-              to: '/blog/reliable-crypto-transactions-at-coinbase',
-              label: 'Coinbase',
+              to: "/blog/reliable-crypto-transactions-at-coinbase",
+              label: "Coinbase",
             },
             {
-              to: '/blog/descript-case-study',
-              label: 'Descript',
+              to: "/blog/descript-case-study",
+              label: "Descript",
             },
           ],
         },
         {
-          to: '/blog',
-          activeBasePath: '/blog',
-          label: 'Blog',
+          to: "/blog",
+          activeBasePath: "/blog",
+          label: "Blog",
         },
       ],
     },
     footer: {
-      style: 'dark',
+      style: "dark",
       links: [
         {
           items: [
             {
-              label: 'All SDKs',
-              to: '/application-development',
+              label: "All SDKs",
+              to: "/application-development",
             },
             {
-              label: 'Go SDK',
-              to: '/docs/go/introduction',
+              label: "Go SDK",
+              to: "/docs/go/introduction",
             },
             {
-              label: 'Java SDK',
-              to: '/docs/java/introduction',
+              label: "Java SDK",
+              to: "/docs/java/introduction",
             },
             {
-              label: 'PHP SDK',
-              to: '/docs/php/introduction',
-            },
-          ],
-        },
-        {
-          items: [
-            {
-              label: 'Core concepts',
-              to: '/docs/concepts/introduction',
-            },
-            {
-              label: 'Temporal Server',
-              to: '/docs/server/introduction',
-            },
-            {
-              label: 'System Tools',
-              to: '/docs/system-tools/introduction',
-            },
-            {
-              label: 'Glossary',
-              to: '/docs/glossary',
+              label: "PHP SDK",
+              to: "/docs/php/introduction",
             },
           ],
         },
         {
           items: [
             {
-              label: 'Support Forum',
-              href: 'https://community.temporal.io/',
+              label: "Core concepts",
+              to: "/docs/concepts/introduction",
             },
             {
-              label: 'Public Slack',
-              href: 'https://join.slack.com/t/temporalio/shared_invite/zt-onhti57l-J0bl~Tr7MqSUnIc1upjRkw',
+              label: "Temporal Server",
+              to: "/docs/server/introduction",
             },
             {
-              label: 'Temporal Careers',
-              href: 'https://temporal.io/careers',
+              label: "System Tools",
+              to: "/docs/system-tools/introduction",
+            },
+            {
+              label: "Glossary",
+              to: "/docs/glossary",
             },
           ],
         },
         {
           items: [
             {
-              label: 'Case Studies',
-              href: '/blog/tags/case-study',
+              label: "Support Forum",
+              href: "https://community.temporal.io/",
             },
             {
-              label: 'Blog',
-              href: '/blog',
+              label: "Public Slack",
+              href: "https://join.slack.com/t/temporalio/shared_invite/zt-onhti57l-J0bl~Tr7MqSUnIc1upjRkw",
             },
             {
-              label: 'External resources',
-              to: '/docs/external-resources',
+              label: "Temporal Careers",
+              href: "https://temporal.io/careers",
+            },
+          ],
+        },
+        {
+          items: [
+            {
+              label: "Case Studies",
+              href: "/blog/tags/case-study",
+            },
+            {
+              label: "Blog",
+              href: "/blog",
+            },
+            {
+              label: "External resources",
+              to: "/docs/external-resources",
             },
           ],
         },
@@ -178,13 +178,13 @@ module.exports = {
       `,
     },
     gtag: {
-      trackingID: 'UA-163137879-1',
+      trackingID: "UA-163137879-1",
       // Optional fields.
       anonymizeIP: true, // Should IPs be anonymized?
     },
     algolia: {
-      apiKey: '14805ba2eb682edb2e719df4d5e03c8a',
-      indexName: 'temporal',
+      apiKey: "14805ba2eb682edb2e719df4d5e03c8a",
+      indexName: "temporal",
       // contextualSearch: true, // Optional, If you different version of docs etc (v1 and v2) doesn't display dup results
       // appId: 'app-id', // Optional, if you run the DocSearch crawler on your own
       // algoliaOptions: {}, // Optional, if provided by Algolia
@@ -192,13 +192,13 @@ module.exports = {
   },
   presets: [
     [
-      '@docusaurus/preset-classic',
+      "@docusaurus/preset-classic",
       {
         // Will be passed to @docusaurus/plugin-content-docs
         docs: {
-          sidebarPath: require.resolve('./sidebars.js'),
-          routeBasePath: 'docs',
-          editUrl: 'https://github.com/temporalio/documentation/blob/master',
+          sidebarPath: require.resolve("./sidebars.js"),
+          routeBasePath: "docs",
+          editUrl: "https://github.com/temporalio/documentation/blob/master",
           /**
            * Whether to display the author who last updated the doc.
            */
@@ -218,27 +218,27 @@ module.exports = {
         // Will be passed to @docusaurus/plugin-content-blog
         // options: https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-blog
         blog: {
-          routeBasePath: 'blog',
-          path: 'blog',
+          routeBasePath: "blog",
+          path: "blog",
           postsPerPage: 10,
           editUrl:
-            'https://github.com/temporalio/documentation/tree/master/blog',
-          blogTitle: 'Temporal Blog',
+            "https://github.com/temporalio/documentation/tree/master/blog",
+          blogTitle: "Temporal Blog",
           showReadingTime: true, // Show estimated reading time for the blog post.
           feedOptions: {
-            type: 'all',
+            type: "all",
             copyright: `Copyright © ${new Date().getFullYear()} Temporal Technologies Inc.  All rights reserved. Copyright © 2020 Uber Technologies, Inc.`,
           },
         },
         // Will be passed to @docusaurus/theme-classic.
         theme: {
-          customCss: require.resolve('./src/css/custom.css'),
+          customCss: require.resolve("./src/css/custom.css"),
         },
         // Will be passed to @docusaurus/plugin-content-sitemap
         sitemap: {
           // Per v2.0.0-alpha.72 cacheTime is now deprecated
           //cacheTime: 600 * 1000, // 600 sec - cache purge period
-          changefreq: 'weekly',
+          changefreq: "weekly",
           priority: 0.5,
         },
       },
@@ -246,7 +246,7 @@ module.exports = {
   ],
   scripts: [
     {
-      src: '/scripts/feedback.js',
+      src: "/scripts/feedback.js",
       async: true,
       defer: true,
     },

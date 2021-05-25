@@ -8,16 +8,17 @@ tags: helloworld, go, sdk, tutorial
 <img class="docs-image-centered" src="https://raw.githubusercontent.com/temporalio/documentation-images/main/static/astronaut-hello-go.jpg" />
 
 :::note Tutorial information
+
 - **Level:** ⭐ Temporal beginner
 - **Time:** ⏱️ ~20 minutes
 - **Goals:** 🙌
   - Learn how to set up, build, and test a Temporal application project from scratch using the [Go SDK](https://github.com/temporalio/sdk-go).
   - Become more familiar with core concepts and the application structure.
-:::
+    :::
 
 ## Overview
 
-This tutorial focuses on the practicalities of building an application from scratch. To better understand *why* you should use Temporal, we recommend that you follow the tutorial where you [run a Temporal money transfer application](/docs/go/run-your-first-app-tutorial) to get a taste of its value propositions.
+This tutorial focuses on the practicalities of building an application from scratch. To better understand _why_ you should use Temporal, we recommend that you follow the tutorial where you [run a Temporal money transfer application](/docs/go/run-your-first-app-tutorial) to get a taste of its value propositions.
 
 Before starting, make sure you have looked over the [tutorial prerequisites](/docs/go/tutorial-prerequisites).
 
@@ -93,7 +94,7 @@ Create start/main.go and add the following code:
 <!--SNIPSTART hello-world-project-template-go-start-workflow-->
 <!--SNIPEND-->
 
-##  ![](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/check.png) Test the app
+## ![](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/check.png) Test the app
 
 Let's add a simple unit test to our application to make sure things are working as expected. Create workflow_test.go and add the following code:
 

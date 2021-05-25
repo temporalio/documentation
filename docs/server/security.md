@@ -181,10 +181,10 @@ Each individual claim is expected to be in the following format:
 
 - &lt;namespace&gt;: This can be either a Temporal Namespace name or "system" to represent system-wide permissions.
 - &lt;permission&gt;: This can be one of the four values:
-	- read
-	- write
-	- worker
-	- admin
+  - read
+  - write
+  - worker
+  - admin
 
 The default JWT claim mapper converts these permissions into Temporal roles for the caller as described [above](#claims).
 

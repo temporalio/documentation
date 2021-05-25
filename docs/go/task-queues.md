@@ -64,7 +64,6 @@ import SharedWorkersTaskQueueRegistrationNote from '../shared/note-workers-task-
 
 <SharedWorkersTaskQueueRegistrationNote />
 
-
 3. Optionally, the name of a Task Queue can be provided in the `ActivityOptions` when calling an Activity from a Workflow.
 
 ```go

@@ -76,7 +76,7 @@ class MyWorkflow
         } catch (\Throwable $e) {
             $this->currentState = 'activity failed';
             throw $e;
-        }      
+        }
 
         $this->currentState = 'done';
 

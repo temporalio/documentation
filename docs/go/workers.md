@@ -41,7 +41,7 @@ This is how you would create and run the Worker for those functions:
 ```go
 package main
 
-import (		
+import (
 	"go.temporal.io/sdk/client"
 	"go.temporal.io/sdk/worker"
 )

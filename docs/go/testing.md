@@ -105,6 +105,7 @@ func (s *UnitTestSuite) Test_SimpleWorkflow_Success() {
         s.NoError(s.env.GetWorkflowError())
 }
 ```
+
 Calling `s.env.ExecuteWorkflow(...)` executes the Workflow logic and any invoked Activities inside the
 test process. The first parameter of `s.env.ExecuteWorkflow(...)` contains the Workflow functions,
 and any subsequent parameters contain values for custom input parameters declared by the Workflow
@@ -145,6 +146,7 @@ func (s *UnitTestSuite) Test_SimpleWorkflow_ActivityFails() {
         s.Equal("SimpleActivityFailure", applicationErr.Error())
 }
 ```
+
 This test simulates the execution of the Activity `SimpleActivity` that is invoked by our Workflow
 `SimpleWorkflow` returning an error. We accomplish this by setting up a mock on the test environment
 for the `SimpleActivity` that returns an error.
@@ -153,6 +155,7 @@ for the `SimpleActivity` that returns an error.
 s.env.OnActivity(SimpleActivity, mock.Anything, mock.Anything).Return(
   "", errors.New("SimpleActivityFailure"))
 ```
+
 With the mock set up we can now execute the Workflow via the `s.env.ExecuteWorkflow(...)` method and
 assert that the Workflow completed successfully and returned the expected error.
 

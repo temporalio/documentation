@@ -14,19 +14,19 @@ This is the conceptual opposite of [**Queries**](https://docs.temporal.io/docs/g
 
 Without Signals, you have only two options for passing data to the Workflow implementation:
 
-* Via start parameters
-* As return values from Activities
+- Via start parameters
+- As return values from Activities
 
 With start parameters, we can only pass in values before Workflow execution begins.
 
-Return values from Activities allow us to pass information to a running Workflow, but this approach comes with its own complications. 
-One major drawback is **reliance on polling**. 
-This means that the data needs to be stored in a third-party location until it's ready to be picked up by the Activity. 
+Return values from Activities allow us to pass information to a running Workflow, but this approach comes with its own complications.
+One major drawback is **reliance on polling**.
+This means that the data needs to be stored in a third-party location until it's ready to be picked up by the Activity.
 Further, the lifecycle of this Activity requires management, and the Activity requires manual restart if it fails before acquiring the data.
 
-**Signals**, on the other hand, provide a fully asynchronous and durable mechanism for providing data to a running Workflow. 
-When a signal is received for a running Workflow, Temporal persists the event and the payload in the Workflow history. 
-The Workflow can then process the signal at any time afterwards without the risk of losing the information. 
+**Signals**, on the other hand, provide a fully asynchronous and durable mechanism for providing data to a running Workflow.
+When a signal is received for a running Workflow, Temporal persists the event and the payload in the Workflow history.
+The Workflow can then process the signal at any time afterwards without the risk of losing the information.
 The Workflow also has the option to stop execution by blocking on a **signal channel**.
 
 ## Example Signal Code
@@ -49,7 +49,7 @@ if len(signalVal) > 0 && signalVal != "SOME_VALUE" {
 }
 ```
 
-In the example above, the Workflow code uses **workflow.GetSignalChannel** to open a **workflow.Channel** for the named signal. 
+In the example above, the Workflow code uses **workflow.GetSignalChannel** to open a **workflow.Channel** for the named signal.
 We then use a [**workflow.Selector**](https://docs.temporal.io/docs/go/selectors) to wait on this channel and process the payload received with the signal.
 
 We can send a Signal to this Workflow using the `SignalWorkflow()` function.
@@ -74,10 +74,9 @@ You can find more example Signals usage in our [Go Samples](https://github.com/t
 
 ## Signalling regardless of running status
 
-You may not know if a Workflow is running and can accept a signal. 
-The [client.SignalWithStartWorkflow](https://pkg.go.dev/go.temporal.io/sdk/client#Client) API allows you to send a signal to the current Workflow instance if one exists or to create a new run and then send the signal. 
+You may not know if a Workflow is running and can accept a signal.
+The [client.SignalWithStartWorkflow](https://pkg.go.dev/go.temporal.io/sdk/client#Client) API allows you to send a signal to the current Workflow instance if one exists or to create a new run and then send the signal.
 `SignalWithStartWorkflow` therefore doesn't take a run Id as a parameter.
-
 
 ## Signalling external Workflows
 

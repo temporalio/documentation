@@ -13,7 +13,7 @@ Signal methods can only be defined inside Workflows Interfaces and are methods a
 public interface HelloWorld {
     @WorkflowMethod
     void sayHello(String name);
-    
+
     @SignalMethod
     void updateGreeting(String greeting);
 

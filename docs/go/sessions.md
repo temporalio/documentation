@@ -137,7 +137,7 @@ It's per worker process, so make sure there's only one worker process running on
 ## Future Work
 
 - Right now a session is considered failed if the worker process dies. However, for some use cases, you may only care whether worker host is alive or not.
-For these uses cases, the session should be automatically re-established if the worker process is restarted.
+  For these uses cases, the session should be automatically re-established if the worker process is restarted.
 
 - The current implementation assumes that all sessions are consuming the same type of resource and there's only one global limitation.
-Our plan is to allow you to specify what type of resource your session will consume and enforce different limitations on different types of resources.
+  Our plan is to allow you to specify what type of resource your session will consume and enforce different limitations on different types of resources.

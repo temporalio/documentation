@@ -16,7 +16,6 @@ If you run into errors during installation it is likely your environment is not 
 The Worker package embeds the <a href="https://github.com/temporalio/sdk-core">Temporal Core SDK</a> which requires the Rust toolchain to compile.
 
 </summary>
-  
 
 We've provided prebuilt binaries for the Worker for:
 
@@ -37,7 +36,7 @@ Brew installation of NodeJS>=15 does not work with the SDK, install Node with [`
 
 :::note
 
-**Make sure you also have Temporal Server running**. If you haven't set it up yet, we recommend following the [Temporal Server Quick Install via docker-compose](https://docs.temporal.io/docs/server/quick-install): 
+**Make sure you also have Temporal Server running**. If you haven't set it up yet, we recommend following the [Temporal Server Quick Install via docker-compose](https://docs.temporal.io/docs/server/quick-install):
 
 :::
 
@@ -50,9 +49,8 @@ npx @temporalio/create@latest ./example
 cd example
 ```
 
-This will set up with [the basic Hello World sample](https://github.com/temporalio/sdk-node/blob/main/packages/create-project/samples/client.ts). 
-If you want a [sample for connecting to a Temporal Server instance secured with mTLS](https://github.com/temporalio/sdk-node/blob/main/packages/create-project/samples/client-mtls.ts), you can use `
-npx @temporalio/create@latest ./example --sample hello-world-mtls`.
+This will set up with [the basic Hello World sample](https://github.com/temporalio/sdk-node/blob/main/packages/create-project/samples/client.ts).
+If you want a [sample for connecting to a Temporal Server instance secured with mTLS](https://github.com/temporalio/sdk-node/blob/main/packages/create-project/samples/client-mtls.ts), you can use ` npx @temporalio/create@latest ./example --sample hello-world-mtls`.
 
 :::note
 
@@ -66,11 +64,11 @@ Use one of the provided helper package scripts to compile Typescript.
 
 ```bash
 # Watch files and compile on change (recommended because it's most convenient)
-npm run build.watch 
+npm run build.watch
 
 ## OR
 ## Compile Typescript once (you will need to rerun this every time you edit the code)
-# npm run build 
+# npm run build
 ```
 
 :::note
@@ -122,7 +120,6 @@ This "Hello Temporal" message comes from the combination of:
 You can verify this via the Input and Result fields in Temporal Web (available at `localhost:8088` on the default [`docker-compose`](https://github.com/temporalio/docker-compose)):
 
 ![image](https://user-images.githubusercontent.com/6764957/118865735-d7255f80-b913-11eb-8ace-a7dbdc351f8e.png)
-
 
 ## Next Steps
 

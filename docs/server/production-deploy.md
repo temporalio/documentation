@@ -44,15 +44,15 @@ You will want to run your own proof of concept tests and watch for key metrics t
 At a high level, you will want to track these 3 categories of metrics:
 
 - **Service metrics**: For each request made by the service handler we emit `service_requests`, `service_errors`, and `service_latency` metrics with `type`, `operation`, and `namespace` tags.
-This gives you basic visibility into service usage and allows you to look at request rates across services, namespaces and even operations.
+  This gives you basic visibility into service usage and allows you to look at request rates across services, namespaces and even operations.
 - **Persistence metrics**: The Server emits `persistence_requests`, `persistence_errors` and `persistence_latency` metrics for each persistence operation.
-These metrics include the `operation` tag such that you can get the request rates, error rates or latencies per operation.
-These are super useful in identifying issues caused by the database.
+  These metrics include the `operation` tag such that you can get the request rates, error rates or latencies per operation.
+  These are super useful in identifying issues caused by the database.
 - **Workflow stats**: The Server also emits counters on Workflows complete.
-These are  useful in getting overall stats about Workflow completions.
-Use `workflow_success`, `workflow_failed`, `workflow_timeout`, `workflow_terminate` and `workflow_cancel` counters for each type of Workflow completion.
-They are also include the `namespace` tag.
-Additional information is available in [this forum post](https://community.temporal.io/t/metrics-for-monitoring-server-performance/536/3).
+  These are useful in getting overall stats about Workflow completions.
+  Use `workflow_success`, `workflow_failed`, `workflow_timeout`, `workflow_terminate` and `workflow_cancel` counters for each type of Workflow completion.
+  They are also include the `namespace` tag.
+  Additional information is available in [this forum post](https://community.temporal.io/t/metrics-for-monitoring-server-performance/536/3).
 
 ## Debugging Temporal
 
@@ -83,8 +83,8 @@ The primary mechanism we recommend for debugging is [Temporal Web](https://githu
 
 > Tip: Don't confuse Runs with [Workflow Executions](https://docs.temporal.io/docs/glossary/#workflow-execution) - they are similar, but a long-running Workflow Execution can have multiple Runs. A Run is the atomic unit.
 
-
 The full state of every Run is inspectable in Temporal Web:
+
 - If your workflows seem like they aren't receiving the right data, check the **Input** arguments given.
 - If your workflows seem "stuck", check the **Task Queue** assigned to a given workflow to see that there are active workers polling.
 - If you see inspect the **Pending Activities** and see an activity with a lot of retry `attempt`s, you can check the `lastFailure` field for a clue as to what happened.
@@ -116,7 +116,7 @@ If your activity code is deterministic, you might be able to simply restart the 
 
 However, if your activity is more complex, you will have to explicitly [version your workflows](https://docs.temporal.io/docs/go/versioning/) or even manually terminate and restart the workflows.
 
-*This section is still being written - if you have specific questions you'd like us to answer, please search or [ask on the Temporal Forum](https://community.temporal.io/).*
+_This section is still being written - if you have specific questions you'd like us to answer, please search or [ask on the Temporal Forum](https://community.temporal.io/)._
 
 Topics this document will cover in future: (for now, please search/ask on the forum)
 
@@ -142,5 +142,5 @@ Third party content that may help:
 - [Recommended Setup for Running Temporal with Cassandra on Production (Temporal Forums)](https://community.temporal.io/t/what-is-the-recommended-setup-for-running-cadence-temporal-with-cassandra-on-production/556)
 - [How To Deploy Temporal to Azure Container Instances](https://mikhail.io/2020/10/how-to-deploy-temporal-to-azure-container-instances/)
 - [How To Deploy Temporal to Azure Kubernetes Service (AKS)](https://mikhail.io/2020/11/how-to-deploy-temporal-to-azure-kubernetes-aks/)
-- ECS runbook (*to be completed*)
-- EKS runbook (*to be completed*)
+- ECS runbook (_to be completed_)
+- EKS runbook (_to be completed_)

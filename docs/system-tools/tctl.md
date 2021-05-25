@@ -27,6 +27,7 @@ Example using the Docker image to describe a Namespace without setting host:
 ```bash
 docker run --rm temporalio/tctl:1.9.0 --namespace samples-namespace namespace describe
 ```
+
 Example setting the host:
 
 ```bash
@@ -438,6 +439,7 @@ docker run --network=host --rm temporalio/tctl:1.9.0 workflow list
 ```
 
 CLI output should be similar to:
+
 ```text
   WORKFLOW TYPE |             WORKFLOW ID              |                RUN ID                |     TASK QUEUE      | START TIME | EXECUTION TIME | END TIME
   HelloWorld    | 08c0259f-c1d5-41d9-b51f-8c70c203ccca | f0c04163-833f-490b-99a9-ee48b6199213 | HelloWorldTaskQueue | 20:41:06   | 20:41:06       | 20:41:06
@@ -529,7 +531,6 @@ The possible values for `--search_attr_type` are:
 - double
 - bool
 - datetime
-
 
 ### Start Workflow with Search Attributes
 
@@ -855,7 +856,6 @@ Let's look at various failure scenarios.
 
 ## Signals
 
-
 ```bash
 docker run --network=host --rm temporalio/tctl:1.9.0 workflow start  --workflow_id "HelloSignal" --taskqueue HelloWorldTaskQueue --workflow_type HelloWorld --execution_timeout 3600 --input \"World\"
 ```
@@ -962,7 +962,6 @@ This is one of key features of temporal, which allows us to restore Workflow sta
 
 Also note that while a single worker instance was used for this walkthrough, any real production deployment has multiple worker instances running.
 So any worker failure or restart does not delay any Workflow execution because it is just migrated to any other available worker.
-
 
 ```bash
 temporal: docker run --network=host --rm temporalio/tctl:1.9.0 workflow start  --workflow_id "HelloQuery" --taskqueue HelloWorldTaskQueue --workflow_type HelloWorld --execution_timeout 3600 --input \"World\"
