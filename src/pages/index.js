@@ -164,9 +164,6 @@ function TemporalCloud() {
             <strong>Prioritization</strong>: Dedicated channels for support and
             product feedback.
           </li>
-          <li>
-            <strong>Future improvements</strong>: to be discussed as needed
-          </li>
         </ul>
       </p>
       <p>
