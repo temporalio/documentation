@@ -20,7 +20,7 @@ const features = [
     title: <>Application development</>,
     imageUrl: "img/layers.png",
     description: (
-      <>Use SDK tutorials and references in the language of your choice.</>
+      <>Find SDK tutorials and API references in the language of your choice.</>
     ),
     goto: "/application-development",
   },
@@ -32,14 +32,14 @@ const features = [
   },
 ];
 
-function Feature({imageUrl, title, description, goto}) {
+function Feature({ imageUrl, title, description, goto }) {
   const imgUrl = useBaseUrl(imageUrl);
   return (
     <div className={clsx("col col--4", styles.featuresMarginBottom)}>
       <h3>{title}</h3>
       <Link to={useBaseUrl(goto)}>
         {imgUrl && (
-          <div className="text--center">
+          <div className='text--center'>
             <img className={styles.featureImage} src={imgUrl} alt={title} />
           </div>
         )}
@@ -79,7 +79,7 @@ const levelTwoFeatures = [
   },
 ];
 
-function LevelTwoFeature({title, description, goto}) {
+function LevelTwoFeature({ title, description, goto }) {
   return (
     <div className={clsx("col col--4", styles.featuresMarginBottom)}>
       <h3>{title}</h3>
@@ -103,23 +103,23 @@ function LevelTwoFeature({title, description, goto}) {
 function SelectTutorial() {
   const [clicked, setClicked] = React.useState(false);
   return (
-    <div className="flex flex-col sm:flex-row justify-between mb-8 sm:mb-8 items-center">
+    <div className='flex flex-col sm:flex-row justify-between mb-8 sm:mb-8 items-center'>
       {clicked ? (
-        <div className="inline-flex md:-mt-8">
-          <a className="mr-8" href="/docs/go/run-your-first-app-tutorial">
+        <div className='inline-flex md:-mt-8'>
+          <a className='mr-8' href='/docs/go/run-your-first-app-tutorial'>
             <img
-              aria-label="go SDK"
+              aria-label='go SDK'
               className={styles.sdkTakeMeToTutorialLogo}
-              src={useBaseUrl("img/logo-go.png")}
-              alt="logo"
+              src={useBaseUrl('img/logo-go.png')}
+              alt='logo'
             />
           </a>
-          <a className="" href="/docs/java-run-your-first-app">
+          <a className='' href='/docs/java-run-your-first-app'>
             <img
-              aria-label="java SDK"
+              aria-label='java SDK'
               className={styles.sdkTakeMeToTutorialLogo}
-              src={useBaseUrl("img/logo-java.png")}
-              alt="logo"
+              src={useBaseUrl('img/logo-java.png')}
+              alt='logo'
             />
           </a>
         </div>
@@ -138,9 +138,84 @@ function SelectTutorial() {
   );
 }
 
+function TemporalCloud() {
+  return (
+    <div className={styles.formFeature}>
+      <h2 id="cloud">☁️ Temporal Cloud</h2>
+      <p>
+        Temporal Cloud is a fully managed cloud offering of the open-source Server.
+        What are we offering?
+      </p>
+      <p>
+        <ul>
+          <li>
+            <strong>Updates</strong>: Automatic updates with latest releases.
+          </li>
+          <li>
+            <strong>Experience</strong>: Our team has years of experience operating the technology in production environments.
+          </li>
+          <li>
+            <strong>Scale</strong>: Our design partners are
+           are highly valued publicly listed companies.
+          </li>
+          <li>
+            <strong>Dependencies</strong>: No more managing dependencies like
+            Elasticsearch, Cassandra or MySQL.
+          </li>
+          <li>
+            <strong>Prioritization</strong>: Dedicated channels for support and
+            product feedback.
+          </li>
+        </ul>
+      </p>
+      <p>
+        Temporal Cloud is working with early design partners today. Sign up to
+        the waitlist and receive updates!
+      </p>
+      <form
+        action='https://temporal.us17.list-manage.com/subscribe/post?u=2334a0f23e55fd1840613755d&amp;id=bbbbd4709f'
+        method='post'
+        id='mc-embedded-subscribe-form'
+        name='mc-embedded-subscribe-form'
+        target='_blank'
+        noValidate='novalidate'
+        className='validate'
+      >
+        <div id='mc_embed_signup_scroll' className='signup_controls'>
+          <div className='email_wrap'>
+            <label htmlFor='mce-EMAIL' className='sr-only'>
+              Email:
+            </label>
+            <input
+              className='signUpInput'
+              type='email'
+              name='EMAIL'
+              id='mce-EMAIL'
+              placeholder='Your email'
+              required='required'
+            />
+          </div>
+          <span className='cta_text' style={{ display: 'none' }}>
+            You are in the waitlist!
+          </span>
+          <input
+            type='submit'
+            name='waitlist'
+            id='mc-embedded-waitlist'
+            className={clsx(
+              'button button--outline button-secondary button--md',
+              styles.cloudWaitlistSubmit
+            )}
+          />
+        </div>
+      </form>
+    </div>
+  );
+}
+
 export default function Home() {
   const context = useDocusaurusContext();
-  const {siteConfig = {}} = context;
+  const { siteConfig = {} } = context;
   return (
     <Layout title={`${siteConfig.title}`} description={`${siteConfig.tagline}`}>
       <header className={clsx("hero hero--primary", styles.heroBanner)}>
@@ -155,8 +230,8 @@ export default function Home() {
       <main>
         {features && features.length > 0 && (
           <section className={styles.features}>
-            <div className="container">
-              <div className="row">
+            <div className='container'>
+              <div className='row'>
                 {features.map((props, idx) => (
                   <Feature key={idx} {...props} />
                 ))}
