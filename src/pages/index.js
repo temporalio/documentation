@@ -172,7 +172,7 @@ function TemporalCloud() {
       </p>
       <p>
         Temporal Cloud is working with early design partners today. Sign up to
-        the waitlist and to receive updates!
+        the waitlist and receive updates!
       </p>
       <form
         action='https://temporal.us17.list-manage.com/subscribe/post?u=2334a0f23e55fd1840613755d&amp;id=bbbbd4709f'
