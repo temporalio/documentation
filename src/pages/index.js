@@ -151,7 +151,6 @@ function TemporalCloud() {
           </li>
           <li>
             <strong>Experience</strong>: Our team has years of experience operating the technology in production environments.
-            since our origins at Uber.
           </li>
           <li>
             <strong>Scale</strong>: Our design partners are
