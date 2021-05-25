@@ -144,7 +144,7 @@ function TemporalCloud() {
       <h2>☁️ Temporal Cloud</h2>
       <p>
         Temporal Cloud is a fully managed cloud offering from the company behind
-        Temporal's open source. We offer:
+        What are we offering?
         <ul>
           <li>
             <strong>Updates</strong>: Automatic updates with latest releases.
