@@ -217,21 +217,22 @@ Note that you should always query the Workflow either after `ExecuteWorkflow()` 
 func (s *UnitTestSuite) Test_ProgressWorkflow() {
 	value := 0
 
-	// After 10 seconds plus some padding, the progress should be 10.
+	// After 10 seconds plus padding, progress should be 10.
 	// Note that `RegisterDelayedCallback()` doesn't actually make your test wait for 10 seconds!
-	// This test should take far less than 1 second.
+	// Temporal's test framework advances time internally, so this test should take < 1 second.
 	s.env.RegisterDelayedCallback(func() {
 		res, err := s.env.QueryWorkflow("getProgress")
 		s.NoError(err)
 		err = res.Get(&value)
 		s.NoError(err)
 		s.Equal(10, value)
-	}, time.Second*10+time.Millisecond*2)
+	}, time.Second*10+time.Millisecond*1)
 
 	s.env.ExecuteWorkflow(ProgressWorkflow, 0)
 
 	s.True(s.env.IsWorkflowCompleted())
 
+	// Once the workflow is completed, progress should always be 100
 	res, err := s.env.QueryWorkflow("getProgress")
 	s.NoError(err)
 	err = res.Get(&value)
