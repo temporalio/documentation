@@ -159,7 +159,7 @@ function TemporalCloud() {
           </li>
           <li>
             <strong>Dependencies</strong>: No more managing dependencies like
-            Elasticsearch or Cassandra.
+            Elasticsearch, Cassandra or MySQL.
           </li>
           <li>
             <strong>Prioritization</strong>: Dedicated channels for support and
