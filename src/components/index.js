@@ -1,1 +1,1 @@
-export { default as ResponsivePlayer } from './responsive-player/ResponsivePlayer';
+export {default as ResponsivePlayer} from "./responsive-player/ResponsivePlayer";

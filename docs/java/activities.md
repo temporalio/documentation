@@ -13,7 +13,6 @@ Workflows orchestrate invocations of Activities.
 
 Just like [Workflows](./workflows.md), Activities must be registered with a [Worker](./workers.md).
 
-
 ### Activity interface
 
 Similar to Workflows, Activities in Temporal Java SDK programming model are classes which implement
@@ -29,7 +28,7 @@ public interface GreetingActivities {
 ```
 
 Each method defined in the Actvity interface defines a separate Activity method.
-You can annotate each method in the Activity interface with the `@ActivityMethod` 
+You can annotate each method in the Activity interface with the `@ActivityMethod`
 annotation, but this is completely optional, for example:
 
 ```java
@@ -47,7 +46,6 @@ If not specified, the Activity method name (with the first letter capitalized) i
 ### Activity implementation
 
 An Activity implementation is Java class which implements an Activity Interface, for example:
-
 
 ```java
   public class MultiLanguageGreeting implements GreetingsActivities {
@@ -228,7 +226,7 @@ Here is the above example rewritten to call download and upload Activity methods
 
 It is also possible to inoke Activities inside Workflows using `Workflow.newUntypedActivityStub`, meaning you can
 invoke them without referencing an interface it implements.
-This is useful in scenarios where the Activity type is not known at compile time, or to invoke 
+This is useful in scenarios where the Activity type is not known at compile time, or to invoke
 Activities implemented in different programming languages.
 
 ```java
@@ -381,4 +379,4 @@ try {
 }
 ```
 
-Note that any Exception thrown from an Activity is converted to `io.temporal.failure.ApplicationFailure`, unless the thrown Exception extends `io.temporal.failure.TemporalException`    .
+Note that any Exception thrown from an Activity is converted to `io.temporal.failure.ApplicationFailure`, unless the thrown Exception extends `io.temporal.failure.TemporalException` .

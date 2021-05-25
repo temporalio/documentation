@@ -3,8 +3,8 @@ id: side-effect
 title: SideEffect
 ---
 
-Workflow code must be deterministic. 
-This is important so Temporal can replay your Workflow to the point of failure and continue its execution. 
+Workflow code must be deterministic.
+This is important so Temporal can replay your Workflow to the point of failure and continue its execution.
 
 Workflow code that includes arbitrary side effects (for example getting a random number or generating a random UUID, etc), can cause unpredictable results during replay.
 
@@ -19,14 +19,14 @@ public void execute() {
         Random random = new SecureRandom();
         return random.nextInt();
     });
-    
+
     String userHome = Workflow.sideEffect(String.class, () -> System.getenv("USER_HOME"));
-    
+
     if(randomInt % 2 == 0) {
-        // ... 
+        // ...
     } else {
-        // ... 
-    }    
+        // ...
+    }
 }
 ```
 
@@ -41,9 +41,9 @@ The Temporal Java SDK provides deterministic methods to generate a random number
 // implementation of the @WorkflowMethod
 public void execute() {
     int randomInt = Workflow.newRandom().nextInt();
-    
+
     String randomUUID = Workflow.randomUUID().toString();
-    
+
     // ...
 }
 ```

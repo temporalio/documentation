@@ -2,55 +2,55 @@
 label: Standard
 hide_body: false
 fields:
-- name: id
-  type: text
-  config:
-    required: true
-  label: Id
-  hidden: false
-- name: title
-  type: text
-  config:
-    required: false
-  label: Title
-- name: author
-  type: text
-  config:
-    required: false
-  label: Author
-- name: author_title
-  type: text
-  config:
-    required: false
-  label: Author Title
-- name: author_image_url
-  type: text
-  config:
-    required: false
-  label: Author Image Url
-- name: tags
-  type: tag_list
-  default: []
-  label: Tags
-- name: posted_on_
-  type: datetime
-  description: ''
-  config:
-    required: true
-    date_format: 
-    time_format: 
-    display_utc: false
-  label: 'Posted on:'
-  default: now
-- name: release_version
-  type: textarea
-  default: ''
-  config:
-    required: true
-    wysiwyg: false
-    schema:
-      format: markdown
-  label: Release Version
+  - name: id
+    type: text
+    config:
+      required: true
+    label: Id
+    hidden: false
+  - name: title
+    type: text
+    config:
+      required: false
+    label: Title
+  - name: author
+    type: text
+    config:
+      required: false
+    label: Author
+  - name: author_title
+    type: text
+    config:
+      required: false
+    label: Author Title
+  - name: author_image_url
+    type: text
+    config:
+      required: false
+    label: Author Image Url
+  - name: tags
+    type: tag_list
+    default: []
+    label: Tags
+  - name: posted_on_
+    type: datetime
+    description: ""
+    config:
+      required: true
+      date_format:
+      time_format:
+      display_utc: false
+    label: "Posted on:"
+    default: now
+  - name: release_version
+    type: textarea
+    default: ""
+    config:
+      required: true
+      wysiwyg: false
+      schema:
+        format: markdown
+    label: Release Version
 pages:
-- blog/deep-dive-into-temporal-stress-testing.md
-- blog/temporal-transparency-update-8.md
+  - blog/deep-dive-into-temporal-stress-testing.md
+  - blog/temporal-transparency-update-8.md

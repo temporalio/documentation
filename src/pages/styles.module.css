@@ -107,20 +107,19 @@
   background-color: var(--ifm-color-primary);
 }
 
-.justifyLeft{
+.justifyLeft {
   text-align: left;
 }
 
-.justifyCenter{
+.justifyCenter {
   text-align: center;
 }
 
-.securityPageHeaders{
+.securityPageHeaders {
   text-align: right;
 }
 
 @media screen and (max-width: 996px) {
-
   .securityPageHeaders {
     text-align: left;
   }

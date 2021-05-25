@@ -30,7 +30,6 @@ Addition include scripts are available, after you select your version, here: [ht
 
 2. [Install and run the Temporal Server](/docs/server/quick-install) using `docker compose`.
 
-
 ## Reference
 
 Java SDK reference is available here: [https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/index.html](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/index.html)
@@ -41,7 +40,6 @@ Java SDK reference is available here: [https://www.javadoc.io/doc/io.temporal/te
 - [Activities](/docs/java/activities)
 - [Workers](/docs/java/workers)
 - [Task Queues](/docs/java/task-queues)
-
 
 ## Tutorials
 

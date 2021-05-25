@@ -85,7 +85,7 @@ If multiple items are available, the order of matching is not defined.
 
 ### Using Selectors with Timers
 
-An important use case of futures is setting up a race between a timer and a pending activity, effectively adding a "soft" timeout that doesn't result in any errors or retries of that activity. 
+An important use case of futures is setting up a race between a timer and a pending activity, effectively adding a "soft" timeout that doesn't result in any errors or retries of that activity.
 
 For example, [the Timer sample](https://github.com/temporalio/samples-go/blob/master/timer) shows how you can write a long running order processing operation where:
 
@@ -114,7 +114,7 @@ selector.AddFuture(timerFuture, func(f workflow.Future) {
 selector.Select(ctx)
 ```
 
-We create timers with the `workflow.NewTimer` API. 
+We create timers with the `workflow.NewTimer` API.
 
 ## Using Selectors with Channels
 

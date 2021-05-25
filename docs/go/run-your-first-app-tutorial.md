@@ -3,11 +3,13 @@ id: run-your-first-app-tutorial
 title: Run your first Temporal application with the Go SDK
 sidebar_label: Run your first app
 ---
+
 import { ResponsivePlayer } from '../../src/components'
 
 <img class="docs-image-centered" src="https://raw.githubusercontent.com/temporalio/documentation-images/main/static/rocket-launch-go.jpg" />
 
 :::note Tutorial information
+
 - **Level**: ⭐ Temporal beginner
 - **Time**: ⏱️ ~20 minutes
 - **Goals**: 🙌
@@ -15,6 +17,7 @@ import { ResponsivePlayer } from '../../src/components'
   - Practice reviewing the state of the Workflow.
   - Understand the inherent reliability of Workflow functions.
   - Learn many of Temporal's core terminology and concepts.
+
 :::
 
 The Temporal server and a language specific SDK, in this case the [Go SDK](https://github.com/temporalio/go-sdk), provide a comprehensive solution to the complexities which arise from modern application development. You can think of Temporal as a sort of "cure all" for the pains you experience as a developer when trying to build reliable applications. Temporal provides reliability primitives right out of the box, such as seamless and fault tolerant application state tracking, automatic retries, timeouts, rollbacks due to process failures, and more.
@@ -34,10 +37,11 @@ This tutorial uses a fully working template application which can be downloaded 
 
 - [Github source](https://github.com/temporalio/money-transfer-project-template-go)
 
-    ```bash
-    git clone https://github.com/temporalio/money-transfer-project-template-go
-    cd money-transfer-project-template-go
-    ```
+  ```bash
+  git clone https://github.com/temporalio/money-transfer-project-template-go
+  cd money-transfer-project-template-go
+  ```
+
 - [Zip download](https://github.com/temporalio/money-transfer-project-template-go/archive/main.zip)
 
 If you convert the template to a new repo, make sure you use the same repository name in your own Github account so that you don't have to make changes to the Go module name when you clone it. Once you have it, open your terminal in the project's root directory and you are ready to go.
@@ -140,7 +144,7 @@ Withdrawing $54.990002 from account 001-001. ReferenceId: 8e37aafe-5fb8-4649-99e
 ```
 
 :::tip What actually happens under the hood
->
+
 > - The first Task the Worker finds is the one that tells it to execute the Workflow function.
 > - The Worker communicates the event back to the server.
 > - This causes the server to send Activity Tasks to the Task Queue.

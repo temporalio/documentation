@@ -16,12 +16,14 @@ Workflow, or querying how many Activities the Workflow has completed. To do this
 up a query handler using `workflow.SetQueryHandler`.
 
 The handler must be a function that returns two values:
+
 1. A serializable result
 2. An error
 
 The handler function can receive any number of input parameters, but all input parameters must be
 serializable. The following sample code sets up a query handler that handles the query type of
 `current_state`:
+
 ```go
 func MyWorkflow(ctx workflow.Context, input string) error {
   currentState := "started" // This could be any serializable struct.
@@ -52,6 +54,7 @@ func MyWorkflow(ctx workflow.Context, input string) error {
   return nil
 }
 ```
+
 You can now query `current_state` by using the CLI:
 
 `tctl --namespace samples-namespace workflow query -w my_workflow_id -r my_run_id -qt current_state`

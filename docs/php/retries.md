@@ -70,7 +70,7 @@ use Temporal\DataConverter\Type;
 class MyActivity
 {
   public function sampleActivity(int $startIndex, int $lastIndex)
-  {  
+  {
       if (Activity::hasHeartbeatDetails()) {
           // Recover from finished progress.
           $lastIndex = Activity::getHeartbeatDetails(Type::TYPE_INT);

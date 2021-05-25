@@ -363,7 +363,7 @@ You can start a Workflow Execution on a regular schedule with [the CronSchedule 
 ### External Workflows
 
 Workflows can execute (and signal to) other workflows purely by name.
-This helps particularly for executing workflows from other language SDKs. 
+This helps particularly for executing workflows from other language SDKs.
 See our [Temporal Polyglot example](https://github.com/tsurdilo/temporal-polyglot) for more.
 
 ## Large Event Histories
