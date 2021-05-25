@@ -17,7 +17,8 @@ import { ResponsivePlayer } from '../../src/components'
   - Practice reviewing the state of the Workflow.
   - Understand the inherent reliability of Workflow functions.
   - Learn many of Temporal's core terminology and concepts.
-    :::
+
+:::
 
 The Temporal server and a language specific SDK, in this case the [Go SDK](https://github.com/temporalio/go-sdk), provide a comprehensive solution to the complexities which arise from modern application development. You can think of Temporal as a sort of "cure all" for the pains you experience as a developer when trying to build reliable applications. Temporal provides reliability primitives right out of the box, such as seamless and fault tolerant application state tracking, automatic retries, timeouts, rollbacks due to process failures, and more.
 
