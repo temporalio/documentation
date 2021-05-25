@@ -143,7 +143,7 @@ function TemporalCloud() {
     <div className={styles.formFeature}>
       <h2>☁️ Temporal Cloud</h2>
       <p>
-        Temporal Cloud is a fully managed cloud offering from the company behind
+        Temporal Cloud is a fully managed cloud offering of the open-source Server.
         What are we offering?
         <ul>
           <li>
