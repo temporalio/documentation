@@ -14,7 +14,8 @@ tags: helloworld, go, sdk, tutorial
 - **Goals:** 🙌
   - Learn how to set up, build, and test a Temporal application project from scratch using the [Go SDK](https://github.com/temporalio/sdk-go).
   - Become more familiar with core concepts and the application structure.
-    :::
+
+:::
 
 ## Overview
 
