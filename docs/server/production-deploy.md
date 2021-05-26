@@ -129,18 +129,7 @@ Topics this document will cover in future: (for now, please search/ask on the fo
   - Testing: unit, integration
   - Retries: figuring out right values for timeouts
   - Versioning
-  - WF as unit of scalability
-    - **TODO: find and document other limits imposed in the system**
-      - Single payload size
-      - total history size in bytes
-      - single workflow task response size in bytes
-      - Docs Task: [https://www.notion.so/temporalio/Temporal-server-size-limit-doc-352f5720715045aaaba011a94a68718d](https://www.notion.so/temporalio/Temporal-server-size-limit-doc-352f5720715045aaaba011a94a68718d)
-    - a single WF Execution has a critical limit of 50k (todo: CHECK) events - enforced by server -
-      - Dont even get close to 50k - we warn after every 10k events
-      - this is because when worker restarts, we need to replay history
-    - You should write complex workflows if possible... but the scalability unit of our system is a workflow. a single workflow has scalability limitations
-    - Tradeoff: my shared state is lost - i will have to use signals to do IPC
-    - Don't pack everything into a single workflow instance and expect it to scale
+  - WF as unit of scalability - break things into workflows to scale, don't stuff everything in one workflow!
 
 ## Further Reading
 
