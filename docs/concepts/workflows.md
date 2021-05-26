@@ -46,7 +46,7 @@ While this approach has shown to scale a bit better, the programming model can b
 The Temporal programming model aims to encapsulate and implement the entire business logic in a simple function or object method.
 Thanks to the Temporal Server, the function/method is stateful, and the implementer doesn't need to employ any additional systems to ensure durability and fault tolerance.
 
-Here is an example Workflow that implements the subscription management use case in Java:
+Here is are example Workflow Definitions that implement the subscription management use case in Java, Go, and PHP:
 
 <Tabs
   defaultValue="java"
@@ -59,25 +59,28 @@ Here is an example Workflow that implements the subscription management use case
 
 <TabItem value="go">
 
-TODO
+<!--SNIPSTART subscription-go-workflow-definition-->
+<!--SNIPEND-->
 
 </TabItem>
 <TabItem value="java">
 
-<!--SNIPSTART subscription-workflow-project-template-java-workflow-type-implementation-->
+<!--SNIPSTART subscription-java-workflow-definition-implementation-->
 <!--SNIPEND-->
 
 </TabItem>
 <TabItem value="php">
 
-TODO
+<!--SNIPSTART subscription-php-workflow-definition-implementation-->
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>
 
-Again, it is important to note that this code directly implements the business logic, and if any of the invoked operations (aka [Activities](/docs/concepts/activities)) take a long time, the code is not going to change.
+Again, it is important to note that this is working application code that directly implements the business logic.
+If any of the invoked operations (aka [Activities](/docs/concepts/activities)) take a long time, the code is not going to change.
 
-It is completely okay to be blocked on `chargeMonthlyFee` for a day or more if the downstream processing service is down or not responding.
+It is completely okay to be blocked on `chargeCustomerForBillingPeriod` for a day or more if the downstream processing service is down or not responding.
 In the same way, it is a completely normal operation to sleep for 30 days directly inside the Workflow code.
 This is possible because infrastructure failures are not going to affect the Workflow state including threads, blocking calls, and any local or Workflow variables.
 

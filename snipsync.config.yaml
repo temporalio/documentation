@@ -11,7 +11,8 @@ origins:
     repo: subscription-workflow-project-template-go
   - owner: temporalio
     repo: subscription-workflow-project-template-java
-    ref: snipwrappers
+  - owner: temporalio
+    repo: subscription-workflow-project-template-php
   - owner: temporalio
     repo: temporal
   - owner: temporalio
