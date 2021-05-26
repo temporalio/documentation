@@ -5,7 +5,7 @@ import Link from "@docusaurus/Link";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import useBaseUrl from "@docusaurus/useBaseUrl";
 import styles from "./styles.module.css";
-import {ResponsivePlayer} from "../components";
+// import {ResponsivePlayer} from "../components";
 
 const features = [
   {
@@ -54,45 +54,6 @@ function Feature({imageUrl, title, description, goto}) {
           to={useBaseUrl(goto)}
         >
           Get Started
-        </Link>
-      </div>
-      <div className={styles.spacer}></div>
-    </div>
-  );
-}
-
-const levelTwoFeatures = [
-  {
-    title: <>External resources</>,
-    description: <>Check out what the community is saying.</>,
-    goto: "/docs/external-resources",
-  },
-  {
-    title: <>Case studies</>,
-    description: <>Big names use Temporal for important business processes.</>,
-    goto: "/blog/tags/case-study",
-  },
-  {
-    title: <>Migrating from Cadence?</>,
-    description: <>There are key differences between the systems.</>,
-    goto: "/docs/cadence-to-temporal",
-  },
-];
-
-function LevelTwoFeature({title, description, goto}) {
-  return (
-    <div className={clsx("col col--4", styles.featuresMarginBottom)}>
-      <h3>{title}</h3>
-      <p>{description}</p>
-      <div className={styles.buttons}>
-        <Link
-          className={clsx(
-            "button button--outline button--primary button--md",
-            styles.getStarted
-          )}
-          to={useBaseUrl(goto)}
-        >
-          Learn more
         </Link>
       </div>
       <div className={styles.spacer}></div>
@@ -314,50 +275,7 @@ export default function Home() {
         </div>
       </div>
       <div className="container">
-        <div className={styles.formFeature}>
-          <h2 className="text-3xl font-bold mb-4">Temporal Cloud</h2>
-          <p className="w-56 lg:w-700 mb-8">
-            Temporal Cloud is coming soon. Sign up to the waitlist and to
-            receive updates.
-          </p>
-          <form
-            action="https://temporal.us17.list-manage.com/subscribe/post?u=2334a0f23e55fd1840613755d&amp;id=bbbbd4709f"
-            method="post"
-            id="mc-embedded-subscribe-form"
-            name="mc-embedded-subscribe-form"
-            target="_blank"
-            noValidate="novalidate"
-            className="validate"
-          >
-            <div id="mc_embed_signup_scroll" className="signup_controls">
-              <div className="email_wrap">
-                <label htmlFor="mce-EMAIL" className="sr-only">
-                  Email:
-                </label>
-                <input
-                  className="signUpInput"
-                  type="email"
-                  name="EMAIL"
-                  id="mce-EMAIL"
-                  placeholder="Your email"
-                  required="required"
-                />
-              </div>
-              <span className="cta_text" style={{display: "none"}}>
-                You are in the waitlist!
-              </span>
-              <input
-                type="submit"
-                name="waitlist"
-                id="mc-embedded-waitlist"
-                className={clsx(
-                  "button button--outline button-secondary button--md",
-                  styles.cloudWaitlistSubmit
-                )}
-              />
-            </div>
-          </form>
-        </div>
+        <TemporalCloud />
       </div>
     </Layout>
   );
