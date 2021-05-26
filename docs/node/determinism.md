@@ -24,7 +24,7 @@ Workflow code is bundled on Worker creation using [Webpack](https://webpack.js.o
 - `uuid4` - provided by the runtime
 - `Date` - replaced by the runtime
 - `WeakRef | WeakMap | WeakSet` - can not be used as GC is non-deterministic, deleted by the runtime
-- Timers - `setTimeout` and `clearTimeout` are replaced by the runtime, prefer to use the exported `sleep` function because it plays well with [cancellation](/docs/node/workflow-scopes-and-cancellation).
+- Timers - `setTimeout` and `clearTimeout` are replaced by the runtime. We recommend you use the `@temporal/workflow` package's exported `sleep` function because it plays well with [cancellation](/docs/node/workflow-scopes-and-cancellation): `import { sleep } from '@temporalio/workflow'`
 - Activities - use to run non-deterministic code, results are replayed from history
 
 #### Runtime code replacement during startup
