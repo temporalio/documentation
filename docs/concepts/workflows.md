@@ -49,12 +49,12 @@ Thanks to the Temporal Server, the function/method is stateful, and the implemen
 Here are example Workflow Definitions that implement the subscription management use case in Java, Go, and PHP:
 
 <Tabs
-  defaultValue="java"
-  values={[
-    {label: 'Go', value: 'go'},
-    {label: 'Java', value: 'java'},
-    {label: 'PHP', value: 'php'},
-  ]
+defaultValue="java"
+values={[
+{label: 'Go', value: 'go'},
+{label: 'Java', value: 'java'},
+{label: 'PHP', value: 'php'},
+]
 }>
 
 <TabItem value="go">
