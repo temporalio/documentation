@@ -122,7 +122,6 @@ module.exports = {
         "go/task-queues",
         "go/signals",
         "go/queries",
-        "go/child-workflows",
         "go/retries",
         "go/error-handling",
         "go/selectors",
