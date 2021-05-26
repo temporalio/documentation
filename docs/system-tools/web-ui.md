@@ -52,7 +52,7 @@ By default we will also verify your server `hostname`, matching it to `TEMPORAL_
 ### Configuring authentication
 
 > This section covers how to secure Temporal Web.
-To secure the Temporal Server, see the [Server security docs](https://docs.temporal.io/docs/server/security).
+> To secure the Temporal Server, see the [Server security docs](https://docs.temporal.io/docs/server/security).
 > ⚠️ This is currently a beta feature, [please report any and all issues to us!](https://github.com/temporalio/web/issues/new)
 
 Since v1.3, Temporal Web offers optional OAuth SSO authentication.
@@ -64,7 +64,7 @@ It can be enabled it in 2 steps:
    auth:
      enabled: true # Temporal Web checks this first before reading your provider config
      providers:
-       - label: 'google oidc' # for internal use; in future may expose as button text
+       - label: "google oidc" # for internal use; in future may expose as button text
          type: oidc # for futureproofing; only oidc is supported today
          issuer: https://accounts.google.com
          client_id: xxxxxxxxxx-xxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com
@@ -95,37 +95,37 @@ In the future, multiple OAuth providers may be supported, however for now we onl
 
 Common OAuth Providers and their docs:
 
-   - Google: https://developers.google.com/identity/protocols/oauth2/openid-connect
-   - Auth0: https://auth0.com/docs/protocols/configure-okta-as-oauth2-identity-provider
-   - Okta: https://help.okta.com/en/prod/Content/Topics/Apps/Apps_App_Integration_Wizard_OIDC.htm
-       <details>
-         <summary>
-           Troubleshooting note for Okta users:
-         </summary>
-         Some providers like Okta, have a race condition that may cause logins to occasionally fail. You can get around this by providing the full URL to the `openid-configuration` path as part of the `issuer` parameter:
+- Google: https://developers.google.com/identity/protocols/oauth2/openid-connect
+- Auth0: https://auth0.com/docs/protocols/configure-okta-as-oauth2-identity-provider
+- Okta: https://help.okta.com/en/prod/Content/Topics/Apps/Apps_App_Integration_Wizard_OIDC.htm
+    <details>
+      <summary>
+        Troubleshooting note for Okta users:
+      </summary>
+      Some providers like Okta, have a race condition that may cause logins to occasionally fail. You can get around this by providing the full URL to the `openid-configuration` path as part of the `issuer` parameter:
 
-     ```yaml
-       auth:
-         enabled: true
-         providers:
-             - label: 'okta dev'
-               type: oidc
-               issuer: https://dev-xxxxxxx.okta.com/.well-known/openid-configuration
-               ...
-     ```
+  ```yaml
+    auth:
+      enabled: true
+      providers:
+          - label: 'okta dev'
+            type: oidc
+            issuer: https://dev-xxxxxxx.okta.com/.well-known/openid-configuration
+            ...
+  ```
 
-     </details>
+  </details>
 
-   - Keycloak: https://www.keycloak.org/getting-started/getting-started-docker
-   - please feel free to [PR or request more help on the Temporal Web repo](https://github.com/temporalio/web/)
+- Keycloak: https://www.keycloak.org/getting-started/getting-started-docker
+- please feel free to [PR or request more help on the Temporal Web repo](https://github.com/temporalio/web/)
 
-2. You will need to provide a redirect URL to your OAuth Provider.
-If you are hosting Temporal Web at `http://localhost:8088` (this is configured by `callback_base_uri` in `server/config.yml`), then it is `http://localhost:8088/auth/sso_callback`.
+2.  You will need to provide a redirect URL to your OAuth Provider.
+    If you are hosting Temporal Web at `http://localhost:8088` (this is configured by `callback_base_uri` in `server/config.yml`), then it is `http://localhost:8088/auth/sso_callback`.
 
-     - By default, Temporal Web asks for 3 scopes, make sure your provider recognizes these or you may see scope-related errors:
-     - `openid` required by some OIDC providers like [auth0](https://auth0.com/docs/scopes/openid-connect-scopes)
-     - `profile` for name
-     - `email` for email
+         - By default, Temporal Web asks for 3 scopes, make sure your provider recognizes these or you may see scope-related errors:
+         - `openid` required by some OIDC providers like [auth0](https://auth0.com/docs/scopes/openid-connect-scopes)
+         - `profile` for name
+         - `email` for email
 
 ## Using Temporal Web for development
 
@@ -133,7 +133,7 @@ Once you have the Temporal Server running locally (use the [quick install guide]
 
 > ⚠️ This is a basic guide to troubleshooting/debugging Temporal applications.
 > It is work-in-progress and we encourage [reading about our Architecture](https://docs.temporal.io/docs/server-architecture) for more detail.
-The better you understand how Temporal works, the better you will be at debugging Workflow Executions.
+> The better you understand how Temporal works, the better you will be at debugging Workflow Executions.
 
 If you have the time, we recommend [watching our 19 minute video guide on YouTube](https://youtu.be/PqcVKIxI0nU) which demonstrates the debugging explained below.
 
