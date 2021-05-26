@@ -25,16 +25,6 @@ Clone the [Temporal Go samples repo](https://github.com/temporalio/samples-go).
 <!--SNIPSTART samples-go-child-workflow-example-child-workflow-definition-->
 <!--SNIPEND-->
 
-### Parent Workflow Execution starter
-
-<!--SNIPSTART samples-go-child-workflow-example-execution-starter-->
-<!--SNIPEND-->
-
-### Worker starter
-
-<!--SNIPSTART samples-go-child-workflow-example-worker-starter-->
-<!--SNIPEND-->
-
 ## Workflow Execution cancellation
 
 Clone the [Temporal Go samples repo](https://github.com/temporalio/samples-go).
@@ -50,16 +40,6 @@ Clone the [Temporal Go samples repo](https://github.com/temporalio/samples-go).
 ### Activity Definition
 
 <!--SNIPSTART samples-go-cancellation-activity-definition-->
-<!--SNIPEND-->
-
-### Workflow Execution starter
-
-<!--SNIPSTART samples-go-cancellation-workflow-execution-starter-->
-<!--SNIPEND-->
-
-### Worker starter
-
-<!--SNIPSTART samples-go-cancellation-worker-starter-->
 <!--SNIPEND-->
 
 ### Cancellation trigger
@@ -82,16 +62,6 @@ Clone the [Temporal Go samples repo](https://github.com/temporalio/samples-go).
 ### Activity Definition
 
 <!--SNIPSTART samples-go-branch-activity-definition-->
-<!--SNIPEND-->
-
-### Workflow Execution starter
-
-<!--SNIPSTART samples-go-branch-workflow-execution-starter-->
-<!--SNIPEND-->
-
-### Worker starter
-
-<!--SNIPSTART samples-go-branch-worker-starter-->
 <!--SNIPEND-->
 
 ### Workflow Definition tests

@@ -104,10 +104,11 @@ module.exports = {
           label: "Tutorials",
           collapsed: false,
           items: [
-            "go/tutorial-prerequisites",
-            "go/run-your-first-app-tutorial",
-            "go/hello-world-tutorial",
-            "go/sdk-video-tutorial",
+            'go/tutorial-prerequisites',
+            'go/run-your-first-app-tutorial',
+            'go/hello-world-tutorial',
+            'go/design-patterns',
+            'go/sdk-video-tutorial',
             {
               type: 'link',
               label: 'Build an eCommerce app',
