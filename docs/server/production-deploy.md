@@ -54,7 +54,7 @@ At a high level, you will want to track these 3 categories of metrics:
   These are useful in getting overall stats about Workflow Execution completions.
   Use `workflow_success`, `workflow_failed`, `workflow_timeout`, `workflow_terminate` and `workflow_cancel` counters for each type of Workflow Execution completion.
   These include the `namespace` tag.
-Additional information is available in [this forum post](https://community.temporal.io/t/metrics-for-monitoring-server-performance/536/3).
+  Additional information is available in [this forum post](https://community.temporal.io/t/metrics-for-monitoring-server-performance/536/3).
 
 Temporal is highly scalable due to its event sourced design.
 We have load tested up to 200 million concurrent Workflow Executions.
@@ -77,7 +77,7 @@ Here is a comprehensive list of all the hard (error) / soft (warn) server limits
 
 - **GRPC**: GRPC has 4MB size limit ([per each message received](https://github.com/grpc/grpc/blob/v1.36.2/include/grpc/impl/codegen/grpc_types.h#L466))
 - **Event Batch Size**: The `DefaultTransactionSizeLimit` limit is [4MB](https://github.com/temporalio/temporal/pull/1363).
-This is the largest transaction size we allow for event histories to be persisted.
+  This is the largest transaction size we allow for event histories to be persisted.
   - This is configurable with `TransactionSizeLimit`, if you know what you are doing.
 - **Blob size limit**: For incoming payloads (including Workflow context), [we warn at 512KB and error at 2MB](https://github.com/temporalio/temporal/blob/v1.7.0/service/frontend/service.go#L133-L134).
   - This is configurable with [`BlobSizeLimitError` and `BlobSizeLimitWarn`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L378-L379), if you know what you are doing.
