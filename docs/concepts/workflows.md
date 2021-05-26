@@ -46,7 +46,7 @@ While this approach has shown to scale a bit better, the programming model can b
 The Temporal programming model aims to encapsulate and implement the entire business logic in a simple function or object method.
 Thanks to the Temporal Server, the function/method is stateful, and the implementer doesn't need to employ any additional systems to ensure durability and fault tolerance.
 
-Here is are example Workflow Definitions that implement the subscription management use case in Java, Go, and PHP:
+Here are example Workflow Definitions that implement the subscription management use case in Java, Go, and PHP:
 
 <Tabs
   defaultValue="java"
