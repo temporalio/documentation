@@ -32,6 +32,8 @@ At minimum, the `development.yaml` file needs to have the [`global`](/docs/serve
 
 The [Server configuration reference](/docs/server/configuration) has a more complete list of possible parameters.
 
+Make sure to set Workflow and Activity timeouts everywhere.
+
 ### Scaling and Metrics
 
 The requirements of your Temporal system will vary widely based on your intended production workload.
@@ -48,11 +50,46 @@ At a high level, you will want to track these 3 categories of metrics:
 - **Persistence metrics**: The Server emits `persistence_requests`, `persistence_errors` and `persistence_latency` metrics for each persistence operation.
   These metrics include the `operation` tag such that you can get the request rates, error rates or latencies per operation.
   These are super useful in identifying issues caused by the database.
-- **Workflow stats**: The Server also emits counters on Workflows complete.
-  These are useful in getting overall stats about Workflow completions.
-  Use `workflow_success`, `workflow_failed`, `workflow_timeout`, `workflow_terminate` and `workflow_cancel` counters for each type of Workflow completion.
-  They are also include the `namespace` tag.
+- **Workflow Execution stats**: The Server also emits counters for when Workflow Executions are complete.
+  These are useful in getting overall stats about Workflow Execution completions.
+  Use `workflow_success`, `workflow_failed`, `workflow_timeout`, `workflow_terminate` and `workflow_cancel` counters for each type of Workflow Execution completion.
+  These include the `namespace` tag.
   Additional information is available in [this forum post](https://community.temporal.io/t/metrics-for-monitoring-server-performance/536/3).
+
+Temporal is highly scalable due to its event sourced design.
+We have load tested up to 200 million concurrent Workflow Executions.
+Every shard is low contention by design and it is very difficult to oversubscribe to a Task Queue in the same cluster.
+With that said, here are some guidelines to some common bottlenecks:
+
+- Usually the limiting factor to scaling is the database connection getting saturated; therefore you will want to monitor `ScheduleToStart` latency to look out for this.
+- Temporal Server's Frontend service is more CPU bound, whereas the History and Matching services require more matching.
+- See the **Server Limits** section below for other limits you will want to monitor, including event history length.
+
+You should be able to tell when Workers are under-provisioned for a given Task Queue.
+The default is 4 Workers, which should handle no more than 300 messages per second.
+Scaling will depend on your workload.
+For example, you can scale up to 10 workers for a Task Queue with 500 messages per second.
+
+## Server limits
+
+Running into limits can cause unexpected failures, so be mindful when you design your systems.
+Here is a comprehensive list of all the hard (error) / soft (warn) server limits relevant to operating Temporal:
+
+- **GRPC**: GRPC has 4MB size limit ([per each message received](https://github.com/grpc/grpc/blob/v1.36.2/include/grpc/impl/codegen/grpc_types.h#L466))
+- **Event Batch Size**: The `DefaultTransactionSizeLimit` limit is [4MB](https://github.com/temporalio/temporal/pull/1363).
+  This is the largest transaction size we allow for event histories to be persisted.
+  - This is configurable with `TransactionSizeLimit`, if you know what you are doing.
+- **Blob size limit**: For incoming payloads (including Workflow context), [we warn at 512KB and error at 2MB](https://github.com/temporalio/temporal/blob/v1.7.0/service/frontend/service.go#L133-L134).
+  - This is configurable with [`BlobSizeLimitError` and `BlobSizeLimitWarn`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L378-L379), if you know what you are doing.
+- **History total size limit**: We warn at 10MB and error at 50mb (leading to a terminated Workflow Execution).
+  - This is configurable with [`HistorySizeLimitError` and `HistorySizeLimitWarn`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L380-L381), if you know what you are doing.
+- **History total count limit**: We warn at 10,000 events and error at 50,000 events (leading to a terminated Workflow Execution).
+  - This is configurable with [`HistoryCountLimitError` and `HistoryCountLimitWarn`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L382-L383), if you know what you are doing.
+- **Search Attributes**:
+  - **Number of Search Attributes**: max 100
+  - **Single Search Attribute Size**: 2KB
+  - **Total Search Attribute Size**: 40KB
+  - This is configurable with [`SearchAttributesNumberOfKeysLimit`, `SearchAttributesTotalSizeLimit` and `SearchAttributesSizeOfValueLimit`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L440-L442), if you know what you are doing.
 
 ## Debugging Temporal
 
@@ -67,56 +104,9 @@ Recommended configuration debugging techniques for production Temporal Server se
 
 ### Debugging Workflows
 
-> ⚠️ This is a basic guide to troubleshooting/debugging Temporal applications. It is work-in-progress and we encourage [reading about our Architecture](https://docs.temporal.io/docs/server-architecture) for more detail. The better you understand how Temporal works, the better you will be at debugging your workflows.
+We recommend [using Temporal Web to debug your Workflow Executions](https://docs.temporal.io/docs/system-tools/web-ui) in development and production.
 
-If you have the time, we recommend [watching our 19 minute video guide on YouTube](https://youtu.be/PqcVKIxI0nU) which demonstrates the debugging explained below.
-
-#### Basic Debugging on Temporal Web
-
-The primary mechanism we recommend for debugging is [Temporal Web](https://github.com/temporalio/web), which is run in a separate process:
-
-![6XkjmR](https://user-images.githubusercontent.com/6764957/110544958-71746480-8167-11eb-8152-8d3a3eb73d4e.gif)
-
-- [Workflows](https://docs.temporal.io/docs/glossary/#workflow) are identified by their [**Workflow ID**](https://docs.temporal.io/docs/glossary/#workflow-id), which you provide when creating the workflow. They also have a **Name** which is directly taken from your code.
-- Workflow **Status** is usually in one of a few states: Running, Completed, or Terminated, with **Start Time** and **End Time** shown accordingly.
-- Workflow ID's are are distinct from **Run ID's**, which uniquely identify one of potentially many Runs of Workflows with the same Workflow ID.
-
-> Tip: Don't confuse Runs with [Workflow Executions](https://docs.temporal.io/docs/glossary/#workflow-execution) - they are similar, but a long-running Workflow Execution can have multiple Runs. A Run is the atomic unit.
-
-The full state of every Run is inspectable in Temporal Web:
-
-- If your workflows seem like they aren't receiving the right data, check the **Input** arguments given.
-- If your workflows seem "stuck", check the **Task Queue** assigned to a given workflow to see that there are active workers polling.
-- If you see inspect the **Pending Activities** and see an activity with a lot of retry `attempt`s, you can check the `lastFailure` field for a clue as to what happened.
-- If you need to go back in time from the current state, check the **History Events** where you can see the full Workflow Execution History logs (this is what makes Temporal so resilient)
-
-#### Execution Histories on Temporal Web
-
-Reading execution histories is one of the more reliable ways of debugging:
-
-![image](https://user-images.githubusercontent.com/6764957/110546362-54d92c00-8169-11eb-81a6-74817e0d1378.png)
-
-Here, you can see the exact sequence of events that has happened so far, which includes the relevant state for each event and details about what went wrong or what is preventing the next correct event.
-There are about 40 system events in total.
-See our [Temporal Server Event Types reference](https://docs.temporal.io/docs/server/event-types/) for detailed descriptions.
-
-#### Viewing Stack Traces on Temporal Web
-
-Temporal also stores the stack trace of where a given activity is currently blocked:
-
-![image](https://user-images.githubusercontent.com/6764957/110547621-20ff0600-816b-11eb-84f3-c6a97c5cad31.png)
-
-This is often a good way to get a deep understanding of whether your workflow is executing as expected.
-
-#### Recovering In-flight Workflows While Running
-
-Here we will discuss how to proceed once you have identified and fixed the code for an erroring activity.
-
-If your activity code is deterministic, you might be able to simply restart the worker to pick up the changes. Execution will continue from where it last succeeded. In other words, we get "hotfixing for free" due to Temporal's execution model.
-
-However, if your activity is more complex, you will have to explicitly [version your workflows](https://docs.temporal.io/docs/go/versioning/) or even manually terminate and restart the workflows.
-
-_This section is still being written - if you have specific questions you'd like us to answer, please search or [ask on the Temporal Forum](https://community.temporal.io/)._
+### Future content
 
 Topics this document will cover in future: (for now, please search/ask on the forum)
 
@@ -126,10 +116,20 @@ Topics this document will cover in future: (for now, please search/ask on the fo
 - More on Monitoring/Prometheus/Logging
   - Give guidance on how to set up alerts on Metrics provided by SDK
 - Setting up alerts for Workflow Task failures
-- Best practices for writing Workflow Code:
+- Temporal Antipatterns
+  - Trying to implement a queue in a workflow (because people hear we replace queues)
+  - Serializing massive amounts of state into and out of the workflow.
+  - Treating everything as incredibly rigid/linear sequence of steps instead of dynamic logic
+  - Implementing a DSL which is actually just a generic schema based language
+  - Polling in activities instead of using signals
+  - Blocking on incredibly long RPC requests and not using heartbeats
+  - Failing/retrying workflows without a very very specific business reason
+- Temporal Best practices
+  - Mapping things to entities instead of traditional service design
   - Testing: unit, integration
   - Retries: figuring out right values for timeouts
   - Versioning
+  - WF as unit of scalability - break things into workflows to scale, don't stuff everything in one workflow!
 
 ## Further Reading
 

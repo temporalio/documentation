@@ -4,4 +4,185 @@ title: Temporal Web UI
 sidebar_label: Web UI
 ---
 
-Once you have the Temporal Server running locally (use the [quick install guide](/docs/server/quick-install)), you can view the Temporal Web UI at [http://localhost:8088](http://localhost:8088).
+The Temporal Web UI can be used to view Workflow Execution states or explore and debug Workflow Executions.
+
+For a **video demo** of how this looks, you can [check our docs](https://docs.temporal.io/docs/java-run-your-first-app/#state-visibility).
+
+## Deploying and securing Temporal Web
+
+_If you have specific questions you'd like us to answer, please check Slack, Forums, or [post questions on GitHub](https://github.com/temporalio/web/)._
+
+### Configuring Temporal Web
+
+Set these environment variables if you need to change their defaults:
+
+| Variable                         | Description                                                                     | Default                       |
+| -------------------------------- | ------------------------------------------------------------------------------- | ----------------------------- |
+| TEMPORAL_GRPC_ENDPOINT           | String representing server gRPC endpoint                                        | 127.0.0.1:7233                |
+| TEMPORAL_WEB_PORT                | HTTP port to serve on                                                           | 8088                          |
+| TEMPORAL_CONFIG_PATH             | Path to config file, see [configurations](#configuring-authentication-optional) | ./server/config.yml           |
+| TEMPORAL_PERMIT_WRITE_API        | Boolean to permit write API methods such as Terminating Workflows               | true                          |
+| TEMPORAL_WEB_ROOT_PATH           | The root path to serve the app under                                            | /                             |
+| TEMPORAL_HOT_RELOAD_PORT         | HTTP port used by hot reloading in development                                  | 8081                          |
+| TEMPORAL_HOT_RELOAD_TEST_PORT    | HTTP port used by hot reloading in tests                                        | 8082                          |
+| TEMPORAL_SESSION_SECRET          | Secret used to hash the session with HMAC                                       | "ensure secret in production" |
+| TEMPORAL_EXTERNAL_SCRIPTS        | Additional JavaScript tags to serve in the UI                                   |                               |
+| TEMPORAL_GRPC_MAX_MESSAGE_LENGTH | gRPC max message length (bytes)                                                 | 4194304 (4mb)                 |
+
+<details>
+<summary>
+Optional TLS configuration variables:
+</summary>
+
+| Variable                              | Description                                                         | Default |
+| ------------------------------------- | ------------------------------------------------------------------- | ------- |
+| TEMPORAL_TLS_CERT_PATH                | Certificate for the server to validate the client (web) identity    |         |
+| TEMPORAL_TLS_KEY_PATH                 | Private key for secure communication with the server                |         |
+| TEMPORAL_TLS_CA_PATH                  | Certificate authority (CA) certificate for the validation of server |         |
+| TEMPORAL_TLS_ENABLE_HOST_VERIFICATION | Enables verification of the server certificate                      | true    |
+| TEMPORAL_TLS_SERVER_NAME              | Target server that is used for TLS host verification                |         |
+
+- To enable mutual TLS, you need to specify `TEMPORAL_TLS_KEY_PATH` and `TEMPORAL_TLS_CERT_PATH`.
+- For server-side TLS you need to specify only `TEMPORAL_TLS_CA_PATH`.
+
+By default we will also verify your server `hostname`, matching it to `TEMPORAL_TLS_SERVER_NAME`. You can turn this off by setting `TEMPORAL_TLS_ENABLE_HOST_VERIFICATION` to `false`.
+
+</details>
+
+### Configuring authentication
+
+> This section covers how to secure Temporal Web.
+> To secure the Temporal Server, see the [Server security docs](https://docs.temporal.io/docs/server/security).
+> ⚠️ This is currently a beta feature, [please report any and all issues to us!](https://github.com/temporalio/web/issues/new)
+
+Since v1.3, Temporal Web offers optional OAuth SSO authentication.
+It can be enabled it in 2 steps:
+
+1. Edit the `server/config.yml` file:
+
+   ```yaml
+   auth:
+     enabled: true # Temporal Web checks this first before reading your provider config
+     providers:
+       - label: "google oidc" # for internal use; in future may expose as button text
+         type: oidc # for futureproofing; only oidc is supported today
+         issuer: https://accounts.google.com
+         client_id: xxxxxxxxxx-xxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com
+         client_secret: xxxxxxxxxxxxxxxxxxxxxxx
+         scope: openid profile email
+         audience: temporal # identifier of the audience for an issued token (optional)
+         callback_base_uri: http://localhost:8088
+         pass_id_token: false # adds ID token as 'authorization-extras' header with every request to server
+   ```
+
+   <details>
+   <summary>
+   Providing <code>config.yml</code> to Docker image
+   </summary>
+
+   If you are running Temporal Web from the docker image, you can provide your external config.yml to docker to override the internal config.
+   Create config.yml file on your machine, for example at `~/Desktop/config.yml`.
+   Start the Docker image, providing the path to your `config.yml` file using external volume flag (-v).
+   Leave the path after the semicolon as is:
+
+   ```bash
+   docker run --network host -v ~/Desktop/config.yml:/usr/app/server/config.yml temporalio/web:latest
+   ```
+
+   </details>
+
+   In the future, multiple OAuth providers may be supported, however for now we only read the first OAuth provider under the `providers` key above.
+
+   Common OAuth Providers and their docs:
+
+   - **Google**: https://developers.google.com/identity/protocols/oauth2/openid-connect
+   - **Auth0**: https://auth0.com/docs/protocols/configure-okta-as-oauth2-identity-provider
+   - **Okta**: https://help.okta.com/en/prod/Content/Topics/Apps/Apps_App_Integration_Wizard_OIDC.htm
+       <details>
+         <summary>
+           Troubleshooting note for Okta users:
+         </summary>
+         Some providers like Okta, have a race condition that may cause logins to occasionally fail. You can get around this by providing the full URL to the `openid-configuration` path as part of the `issuer` parameter:
+
+     ```yaml
+       auth:
+         enabled: true
+         providers:
+             - label: 'okta dev'
+               type: oidc
+               issuer: https://dev-xxxxxxx.okta.com/.well-known/openid-configuration
+               ...
+     ```
+
+     </details>
+
+   - **Keycloak**: https://www.keycloak.org/getting-started/getting-started-docker
+   - please feel free to [PR or request more help on the Temporal Web repo](https://github.com/temporalio/web/)
+
+  <!-- prettier-ignore-end -->
+
+2.  You will need to provide a redirect URL to your OAuth Provider.
+    If you are hosting Temporal Web at `http://localhost:8088` (this is configured by `callback_base_uri` in `server/config.yml`), then it is `http://localhost:8088/auth/sso_callback`.
+
+    By default, Temporal Web asks for 3 scopes, make sure your provider recognizes these or you may see scope-related errors:
+
+    - `openid` required by some OIDC providers like [auth0](https://auth0.com/docs/scopes/openid-connect-scopes)
+    - `profile` for name
+    - `email` for email
+
+## Using Temporal Web for development
+
+Once you have the Temporal Server running locally (use the [quick install guide](/docs/server/quick-install)), you can view the Temporal Web UI at [http://localhost:8088](http://localhost:8088) (this is configurable with the `TEMPORAL_WEB_PORT` environment variable).
+
+> ⚠️ This is a basic guide to troubleshooting/debugging Temporal applications.
+> It is work-in-progress and we encourage [reading about our Architecture](https://docs.temporal.io/docs/server-architecture) for more detail.
+> The better you understand how Temporal works, the better you will be at debugging Workflow Executions.
+
+If you have the time, we recommend [watching our 19 minute video guide on YouTube](https://youtu.be/PqcVKIxI0nU) which demonstrates the debugging explained below.
+
+### Basic debugging via Temporal Web
+
+The primary mechanism we recommend for debugging is [Temporal Web](https://github.com/temporalio/web), which is run in a separate process:
+
+![6XkjmR](https://user-images.githubusercontent.com/6764957/110544958-71746480-8167-11eb-8152-8d3a3eb73d4e.gif)
+
+- [Workflows](https://docs.temporal.io/docs/glossary/#workflow) are identified by their [**Workflow ID**](https://docs.temporal.io/docs/glossary/#workflow-id), which you provide when creating the workflow. They also have a **Name** which is directly taken from your code.
+- Workflow **Status** is usually in one of a few states: Running, Completed, or Terminated, with **Start Time** and **End Time** shown accordingly.
+- Workflow ID's are are distinct from **Run ID's**, which uniquely identify one of potentially many Runs of Workflows with the same Workflow ID.
+
+> Tip: Don't confuse Runs with [Workflow Executions](https://docs.temporal.io/docs/glossary/#workflow-execution) - they are similar, but a long-running Workflow Execution can have multiple Runs. A Run is the atomic unit.
+
+The full state of every Run is inspectable in Temporal Web:
+
+- If your workflows seem like they aren't receiving the right data, check the **Input** arguments given.
+- If your workflows seem "stuck", check the **Task Queue** assigned to a given workflow to see that there are active workers polling.
+- If you see inspect the **Pending Activities** and see an activity with a lot of retry `attempt`s, you can check the `lastFailure` field for a clue as to what happened.
+- If you need to go back in time from the current state, check the **History Events** where you can see the full Workflow Execution History logs (this is what makes Temporal so resilient)
+
+### Execution Histories on Temporal Web
+
+Reading execution histories is one of the more reliable ways of debugging:
+
+![image](https://user-images.githubusercontent.com/6764957/110546362-54d92c00-8169-11eb-81a6-74817e0d1378.png)
+
+Here, you can see the exact sequence of events that has happened so far, which includes the relevant state for each event and details about what went wrong or what is preventing the next correct event.
+There are about 40 system events in total.
+See our [Temporal Server Event Types reference](https://docs.temporal.io/docs/server/event-types/) for detailed descriptions.
+
+### Viewing Stack Traces on Temporal Web
+
+Temporal also stores the stack trace of where a given activity is currently blocked:
+
+![image](https://user-images.githubusercontent.com/6764957/110547621-20ff0600-816b-11eb-84f3-c6a97c5cad31.png)
+
+This is often a good way to get a deep understanding of whether your workflow is executing as expected.
+
+### Recovering In-flight Workflows While Running
+
+Here we will discuss how to proceed once you have identified and fixed the code for an erroring activity.
+
+If your activity code is deterministic, you might be able to simply restart the worker to pick up the changes. Execution will continue from where it last succeeded. In other words, we get "hotfixing for free" due to Temporal's execution model.
+
+However, if your activity is more complex, you will have to explicitly [version your workflows](https://docs.temporal.io/docs/go/versioning/) or even manually terminate and restart the workflows.
+
+_This section is still being written - if you have specific questions you'd like us to answer, please search or [ask on the Temporal Forum](https://community.temporal.io/)._
