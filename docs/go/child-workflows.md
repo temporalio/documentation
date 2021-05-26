@@ -37,6 +37,7 @@ if err := future.Get(ctx, &result); err != nil {
         return err
 }
 ```
+
 Let's take a look at each component of this call.
 
 Before calling `workflow.ExecuteChildworkflow()`, you must configure `ChildWorkflowOptions` for the

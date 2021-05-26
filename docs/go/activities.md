@@ -30,6 +30,7 @@ func SimpleActivity(ctx context.Context, value string) (string, error) {
 	return "Processed: " + value, nil
 }
 ```
+
 Let's take a look at each component of this Activity.
 
 ### Declaration
@@ -72,6 +73,7 @@ for hasWork {
     progress++
 }
 ```
+
 When an Activity times out due to a missed heartbeat, the last value of the details (`progress` in the
 above sample) is returned from the `workflow.ExecuteActivity` function as the details field of `TimeoutError`
 with `TimeoutType` set to `Heartbeat`.
@@ -89,11 +91,12 @@ serviceClient, err := client.NewClient(client.Options{
 // Record heartbeat.
 err := serviceClient.RecordActivityHeartbeat(ctx, taskToken, details)
 ```
+
 The parameters of the `RecordActivityHeartbeat` function are:
 
-* `taskToken`: The value of the binary `TaskToken` field of the `ActivityInfo` struct retrieved inside
-the Activity.
-* `details`: The serializable payload containing progress information.
+- `taskToken`: The value of the binary `TaskToken` field of the `ActivityInfo` struct retrieved inside
+  the Activity.
+- `details`: The serializable payload containing progress information.
 
 #### Cancellation
 
@@ -121,7 +124,6 @@ w.registerActivity(ActivityA)
 w.registerActivity(ActivityB)
 w.registerActivity(ActivityC)
 ```
-
 
 ## Synchronous Activity Execution
 
@@ -234,12 +236,12 @@ There are certain scenarios when you want to defer completing an Activity until 
 For example, you might have an application that requires user input in order to complete
 the Activity.
 You could do this with a polling mechanism, but a simpler and less
-resource-intensive implementation is to *asynchronously* complete a Temporal Activity.
+resource-intensive implementation is to _asynchronously_ complete a Temporal Activity.
 
 There are two parts to implementing an asynchronously completed Activity:
 
 1. The Activity provides the information necessary for completion from an external system and notifies
-the Temporal service that it is waiting for that outside callback (with `activity.ErrResultPending`).
+   the Temporal service that it is waiting for that outside callback (with `activity.ErrResultPending`).
 2. The external service calls the Temporal service to complete the Activity (with `client.CompleteActivity`).
 
 The following example demonstrates the first part:
@@ -278,10 +280,10 @@ client.CompleteActivity(context.Background(), taskToken, nil, err)
 
 Following are the parameters of the `CompleteActivity` function:
 
-* `taskToken`: The value of the binary `TaskToken` field of the `ActivityInfo` struct retrieved inside
-the Activity.
-* `result`: The return value to record for the Activity. The type of this value must match the type
-of the return value declared by the Activity function.
-* `err`: The error code to return if the Activity terminates with an error.
+- `taskToken`: The value of the binary `TaskToken` field of the `ActivityInfo` struct retrieved inside
+  the Activity.
+- `result`: The return value to record for the Activity. The type of this value must match the type
+  of the return value declared by the Activity function.
+- `err`: The error code to return if the Activity terminates with an error.
 
 If `error` is not null, the value of the `result` field is ignored.

@@ -8,7 +8,6 @@ import { ResponsivePlayer } from '../../src/components'
 
 <ResponsivePlayer url='https://www.youtube.com/watch?v=Wo0y_Ce3d4I' />
 
-
 :::note `tctl` CLI commands
 
 The video has outdated `tctl` CLI commands from Temporal v0.20.
@@ -223,7 +222,6 @@ func main() {
 	select {}
 }
 ```
-
 
 Once you are ready, you can run:
 

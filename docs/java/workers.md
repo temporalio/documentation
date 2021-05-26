@@ -12,12 +12,12 @@ You can use the `WorkerFactory` class to create and run as many Workers as your 
 
 Workers poll Task Queues for Tasks, execute chunks of code in response to those Tasks, and then communicate the results back to the Temporal Server.
 
-As a developer, running Workers is a fairly simple procedure, 
+As a developer, running Workers is a fairly simple procedure,
 because the Java SDK handles all the communication between the Worker and the Temporal Server behind the scenes.
 
 ## How to start a Worker
 
-To start a Worker you need to: 
+To start a Worker you need to:
 
 1. Create a WorkflowClient instance
 2. Optionally create WorkerOptions
@@ -29,7 +29,7 @@ As a simple example, let's say we want our Worker to be able to execute the foll
 
 ```java
 public static class EmployeeWorkflowImpl implements EmployeeWorkflow {
-    
+
     private final EmployeeActivities activities =
         Workflow.newActivityStub(
                 EmployeeActivities.class,
@@ -67,5 +67,5 @@ For Activities, since they are stateless and thread-safe, we need
 to register an Activity instance.
 
 When you start a Workflow or when a Workflow needs to invoke an Activity, the Temporal Server adds
-a new task to the Workflows / Activity Task Queue. Any Worker polling that Task Queue and has that Workflow / Activity 
+a new task to the Workflows / Activity Task Queue. Any Worker polling that Task Queue and has that Workflow / Activity
 registered can pick up the new task and execute it.

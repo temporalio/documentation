@@ -64,7 +64,7 @@ archival:
     provider:
       filestore:
         fileMode: "0666"
-        dirMode: "0766"  
+        dirMode: "0766"
       gstorage:
         credentialsPath: "/tmp/gcloud/keyfile.json"
 
@@ -96,15 +96,15 @@ namespaceDefaults:
 
 The following table showcases acceptable values for each configuration and what purpose they serve.
 
-| Config | Acceptable values | Description |
-|--------|-------------------|-------------|
-| `archival.history.state`                       | `enabled`, `disabled`  | Must be `enabled` to use the Archival feature with any Namespace in the cluster. |
-| `archival.history.enableRead`                  | `true`, `false`        | Must be `true` to read from the archived Event History. |
-| `archival.history.provider`                    | Sub provider configs are `filestore`, `gstorage`, `s3`, or `your_custom_provider`. |  Default config specifies `filestore`. |
-| `archival.history.provider.filestore.fileMode` | File permission string | File permissions of the archived files. We recommend using the default value of `"0666"` to avoid read/write issues. |
-| `archival.history.provider.filestore.dirMode`  | File permission string | Directory permissions of the archive directory. We recommend using the default value of `"0766"` to avoid read/write issues. |
-| `namespaceDefaults.archival.history.state`     | `enabled`, `disabled`  | Default state of the Archival feature whenever a new Namespace is created without specifying the Archival state. |
-| `namespaceDefaults.archival.history.URI`       | Valid URI              | Must be a URI of the file store location and match a schema that correlates to a provider. |
+| Config                                         | Acceptable values                                                                  | Description                                                                                                                  |
+| ---------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `archival.history.state`                       | `enabled`, `disabled`                                                              | Must be `enabled` to use the Archival feature with any Namespace in the cluster.                                             |
+| `archival.history.enableRead`                  | `true`, `false`                                                                    | Must be `true` to read from the archived Event History.                                                                      |
+| `archival.history.provider`                    | Sub provider configs are `filestore`, `gstorage`, `s3`, or `your_custom_provider`. | Default config specifies `filestore`.                                                                                        |
+| `archival.history.provider.filestore.fileMode` | File permission string                                                             | File permissions of the archived files. We recommend using the default value of `"0666"` to avoid read/write issues.         |
+| `archival.history.provider.filestore.dirMode`  | File permission string                                                             | Directory permissions of the archive directory. We recommend using the default value of `"0766"` to avoid read/write issues. |
+| `namespaceDefaults.archival.history.state`     | `enabled`, `disabled`                                                              | Default state of the Archival feature whenever a new Namespace is created without specifying the Archival state.             |
+| `namespaceDefaults.archival.history.URI`       | Valid URI                                                                          | Must be a URI of the file store location and match a schema that correlates to a provider.                                   |
 
 ### Namespace creation
 
@@ -144,7 +144,7 @@ To archive data with a given provider, Temporal must have a corresponding archiv
 
 ### Create a new package
 
-The first step is to create a new package for your implementation in [/common/archiver](https://github.com/temporalio/temporal/tree/master/common/archiver). Create a new directory in the archiver folder and arrange the  structure to look like the following:
+The first step is to create a new package for your implementation in [/common/archiver](https://github.com/temporalio/temporal/tree/master/common/archiver). Create a new directory in the archiver folder and arrange the structure to look like the following:
 
 ```
 temporal/common/archiver

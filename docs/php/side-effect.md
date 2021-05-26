@@ -34,6 +34,6 @@ class MyWorkflow
         } else {
             // ...
         }
-    }    
+    }
 }
 ```

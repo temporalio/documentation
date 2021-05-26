@@ -83,6 +83,39 @@ It is intentionally flexible; you may call it conditionally or multiple times:
 A Future matches only once per Selector instance even if Select is called multiple times.
 If multiple items are available, the order of matching is not defined.
 
+### Using Selectors with Timers
+
+An important use case of futures is setting up a race between a timer and a pending activity, effectively adding a "soft" timeout that doesn't result in any errors or retries of that activity.
+
+For example, [the Timer sample](https://github.com/temporalio/samples-go/blob/master/timer) shows how you can write a long running order processing operation where:
+
+- if processing takes too long, we send out a notification email to user about the delay, but we won't cancel the operation
+- if the operation finishes before the timer fires, then we want to cancel the timer.
+
+```go
+var processingDone bool
+f := workflow.ExecuteActivity(ctx, OrderProcessingActivity)
+selector.AddFuture(f, func(f workflow.Future) {
+	processingDone = true
+	// cancel timerFuture
+	cancelHandler()
+})
+
+// use timer future to send notification email if processing takes too long
+timerFuture := workflow.NewTimer(childCtx, processingTimeThreshold)
+selector.AddFuture(timerFuture, func(f workflow.Future) {
+	if !processingDone {
+		// processing is not done yet when timer fires, send notification email
+		_ = workflow.ExecuteActivity(ctx, SendEmailActivity).Get(ctx, nil)
+	}
+})
+
+// wait the timer or the order processing to finish
+selector.Select(ctx)
+```
+
+We create timers with the `workflow.NewTimer` API.
+
 ## Using Selectors with Channels
 
 `selector.AddReceive(channel, func(c workflow.ReceiveChannel, more bool) {})` is the primary mechanism which receives messages from `Channels`.

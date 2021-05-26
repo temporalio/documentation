@@ -25,7 +25,7 @@ The first approach might be to center everything around a database where an appl
 However, there are various drawbacks.
 
 1. The most obvious one is the application state machine of the customer's state quickly becomes extremely complicated.
-For example, if a credit card charge attempt fails or sending an email fails due to a downstream system's unavailability, the state is now in limbo.
+   For example, if a credit card charge attempt fails or sending an email fails due to a downstream system's unavailability, the state is now in limbo.
 2. Failed calls likely need to be retried for a long time, and these calls need to be throttled to not overload external resources.
 3. There needs to be logic to handle corrupted customer records to avoid blocking the whole process.
 4. Additionally, databases have performance and scalability limitations (eventually would require sharding) and are not efficient for scenarios that require constant polling.
@@ -100,30 +100,30 @@ There are a few important things to consider with Workflow timeout settings:
 
 1. When a Workflow times out, it is terminated without any notifications available to another application.
 2. You should always account for possible outages, such that if your Workers go down for an hour, all of your Workflows won't time out.
-Start with infinite timeouts.
+   Start with infinite timeouts.
 3. The SDKs come equipped with timers and sleep APIs that can be used directly inside of Workflows to handle business logic related timeouts.
 
 #### Execution timeout
 
 - **Description**: This is the maximum amount of time that a Workflow should be allowed to run including retries and any usage of the "Continue-as-new" feature.
-The default value is set to 10 years.
-This is different from [Run timeout](#run-timeout).
+  The default value is set to 10 years.
+  This is different from [Run timeout](#run-timeout).
 - **Use-case**: This is most commonly used for stopping the execution of a [cron scheduled Workflow](#cron-schedule) after a certain amount of time has passed.
 
 #### Run timeout
 
 - **Description**: This is the maximum amount of time that a single Workflow run is restricted to.
-The default is set to the same value as the [Execution timeout](#execution-timeout).
+  The default is set to the same value as the [Execution timeout](#execution-timeout).
 - **Use-case**: This is most commonly used to limit the execution time of a single [cron scheduled Workflow](#cron-schedule) invocation.
-If this timeout is reached and there is an associated Retry Policy, the Workflow will be retried before any scheduling occurs.
-If there is no Retry Policy then the Workflow will be scheduled per the [cron schedule](#cron-schedule).
+  If this timeout is reached and there is an associated Retry Policy, the Workflow will be retried before any scheduling occurs.
+  If there is no Retry Policy then the Workflow will be scheduled per the [cron schedule](#cron-schedule).
 
 #### Task timeout
 
 - **Description**: This is the maximum amount of time that the Server will wait for the Worker to start processing a [Workflow Task](/docs/glossary/#workflow-task) after the Task has been pulled from the Task Queue.
-The default value is 10 seconds.
+  The default value is 10 seconds.
 - **Use-case**: This is primarily available to recognize whether a Worker has gone down so that the Workflow can be recovered and continue executing on a different Worker.
-The main reason for increasing the default value would be to accommodate a Workflow that has a very long event history that could take longer than 10 seconds for the Worker to load.
+  The main reason for increasing the default value would be to accommodate a Workflow that has a very long event history that could take longer than 10 seconds for the Worker to load.
 
 ### Retry Policy
 
@@ -144,37 +144,37 @@ However, if one is provided, the only required option is the [initial interval](
 #### Initial interval
 
 - **Description**: Amount of time that must elapse before the first retry occurs.
-There is no default value and one must be supplied if a Retry Policy is provided.
+  There is no default value and one must be supplied if a Retry Policy is provided.
 - **Use-case**: This is used as the base interval time for the backoff coefficient to multiply against.
 
 #### Backoff coefficient
 
 - **Description**: Retries can occur exponentially.
-The backoff coefficient specifies how fast the retry interval will grow.
-The default value is set to 2.0.
-A backoff coefficient of 1.0 means that the retry interval will always equal the [initial interval](#initial-interval).
+  The backoff coefficient specifies how fast the retry interval will grow.
+  The default value is set to 2.0.
+  A backoff coefficient of 1.0 means that the retry interval will always equal the [initial interval](#initial-interval).
 - **Use-case**: Use this to grow the interval between retries.
-By having a backoff coefficient, the first few retries happens relatively quickly to overcome intermittent failures, but subsequent retries will happen farther and farther apart to account for longer lasting outages.
-Use the [maximum interval option](#maximum-interval) to prevent the coefficient from growing the retry interval too much.
+  By having a backoff coefficient, the first few retries happens relatively quickly to overcome intermittent failures, but subsequent retries will happen farther and farther apart to account for longer lasting outages.
+  Use the [maximum interval option](#maximum-interval) to prevent the coefficient from growing the retry interval too much.
 
 #### Maximum interval
 
 - **Description**: Specifies the maximum interval between retries.
-The default is 100x that of [initial interval](#initial-interval).
+  The default is 100x that of [initial interval](#initial-interval).
 - **Use-case**: This is useful for coefficients greater than 1.0 as it prevents the interval from growing exponentially infinitely.
 
 #### Maximum attempts
 
 - **Description**: Specifies the maximum number of attempts that can be made to execute a Workflow in the presence of failures. If this limit is exceeded, the Workflow fails without retrying again.
-The default is unlimited. Setting it to 0 also means unlimited.
+  The default is unlimited. Setting it to 0 also means unlimited.
 - **Use-case**: This can be used to ensure that retries do not continue indefinitely.
-However, in the majority of cases, we recommend relying on the [execution timeout](#execution-timeout) to limit the duration of the retries instead of this.
+  However, in the majority of cases, we recommend relying on the [execution timeout](#execution-timeout) to limit the duration of the retries instead of this.
 
 #### Non-retryable error reasons
 
 - **Description**: Specifies errors that shouldn't be retried.
 - **Use-case**: There may be errors that you know of that should not trigger a retry.
-In this case you can specify them such that if they occur, the Workflow will not be retried.
+  In this case you can specify them such that if they occur, the Workflow will not be retried.
 
 ### The Task Queue
 
@@ -209,7 +209,7 @@ A Workflow is uniquely identified by its Namespace, Workflow Id, and Run Id.
 #### Allow duplicate policy
 
 - **Description**: Specifying this means that the Workflow is allowed to start independently of a previous Workflow with the same Id regardless of its completion status.
-This is the default policy, if one is not specified.
+  This is the default policy, if one is not specified.
 - **Use case**: Use this when it is OK to execute a Workflow with the same Workflow Id again.
 
 #### Reject duplicate policy

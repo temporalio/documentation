@@ -7,8 +7,8 @@ sidebar_label: Signals
 **Signals** provide a mechanism to send data directly to a running Workflow. Previously, you had
 two options for passing data to the Workflow implementation:
 
-* Via start parameters
-* As return values from Activities
+- Via start parameters
+- As return values from Activities
 
 With start parameters, we could only pass in values before Workflow execution began.
 
@@ -36,7 +36,7 @@ class MyWorkflow
     {
         yield Workflow::await(fn()=> $this->value);
         return 'OK';
-    }    
+    }
 
     #[Workflow\SignalMethod]
     public function setValue(bool $value)

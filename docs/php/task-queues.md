@@ -96,7 +96,7 @@ If a Task Queue name is not provided in the `ActivityOptions`, then the Activity
 ```php
 //Create new Child Workflow Options and set the Task Queue
 $childWorkflowOptions = ChildWorkflowOptions::new()
-    ->withTaskQueue("Child-Workflow-Task-Queue-1")        
+    ->withTaskQueue("Child-Workflow-Task-Queue-1")
     // ...
 
 // Create a new Child Workflow Stub and set the Task Queue

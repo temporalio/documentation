@@ -13,8 +13,8 @@ Each Activity and timer implicitly creates a new scope to support cancellation.
 The following example demonstrates how to handle Workflow cancellation by an external client while an Activity is running.
 
 ```ts
-import { CancellationError } from '@temporalio/workflow';
-import { httpGetJSON } from '@activities';
+import {CancellationError} from "@temporalio/workflow";
+import {httpGetJSON} from "@activities";
 
 export async function main(url: string) {
   let result: any = undefined;
@@ -22,7 +22,7 @@ export async function main(url: string) {
     result = await httpGetJSON(url);
   } catch (e) {
     if (e instanceof CancellationError) {
-      console.log('Workflow cancelled');
+      console.log("Workflow cancelled");
     } else {
       throw e;
     }
@@ -34,7 +34,7 @@ export async function main(url: string) {
 Scopes may be cancelled from Workflow code using `cancel`.
 
 ```ts
-import { CancellationError, cancel, sleep } from '@temporalio/workflow';
+import {CancellationError, cancel, sleep} from "@temporalio/workflow";
 
 export async function main() {
   // Timers and Activities are automatically cancelled when their scope is cancelled.
@@ -45,7 +45,7 @@ export async function main() {
     await scope;
   } catch (e) {
     if (e instanceof CancellationError) {
-      console.log('Exception was propagated 👍');
+      console.log("Exception was propagated 👍");
     }
   }
 }
@@ -56,8 +56,13 @@ In order to have fine-grained control over cancellation, the Workflow library ex
 The first is `cancellationScope` which when cancelled will propagate cancellation to all child scopes such as timers, Activities and other scopes.
 
 ```ts
-import { CancellationError, cancellationScope, cancel, sleep } from '@temporalio/workflow';
-import { httpGetJSON } from '@activities';
+import {
+  CancellationError,
+  cancellationScope,
+  cancel,
+  sleep,
+} from "@temporalio/workflow";
+import {httpGetJSON} from "@activities";
 
 export async function main(urls: string[], timeoutMs: number) {
   const scope = cancellationScope(async () => {
@@ -75,7 +80,7 @@ export async function main(urls: string[], timeoutMs: number) {
     // Do something with the results
   } catch (e) {
     if (e instanceof CancellationError) {
-      console.log('Exception was propagated 👍');
+      console.log("Exception was propagated 👍");
     }
   }
 }
@@ -85,8 +90,8 @@ The second is `shield` which prevents cancellation from propagating to child sco
 Note that by default it still throws `CancellationError` to be handled by waiters.
 
 ```ts
-import { CancellationError, shield } from '@temporalio/workflow';
-import { httpGetJSON } from '@activities';
+import {CancellationError, shield} from "@temporalio/workflow";
+import {httpGetJSON} from "@activities";
 
 export async function main(url: string) {
   let result: any = undefined;
@@ -95,7 +100,7 @@ export async function main(url: string) {
     result = await shield(async () => httpGetJSON(url));
   } catch (e) {
     if (e instanceof CancellationError) {
-      console.log('Exception was propagated 👍');
+      console.log("Exception was propagated 👍");
     }
   }
   return result; // Could be undefined
@@ -106,13 +111,13 @@ In case the result of the shielded Activity is needed despite the cancellation, 
 To see if the Workflow was cancelled while waiting, check `Context.cancelled`.
 
 ```ts
-import { Context, shield } from '@temporalio/workflow';
-import { httpGetJSON } from '@activities';
+import {Context, shield} from "@temporalio/workflow";
+import {httpGetJSON} from "@activities";
 
 export async function main(url: string) {
   const result = await shield(async () => httpGetJSON(url), false);
   if (Context.cancelled) {
-    console.log('Workflow cancelled');
+    console.log("Workflow cancelled");
   }
   return result;
 }
