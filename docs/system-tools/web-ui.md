@@ -91,16 +91,13 @@ It can be enabled it in 2 steps:
 
    </details>
 
-   <details>
-   <summary>
    In the future, multiple OAuth providers may be supported, however for now we only read the first OAuth provider under the `providers` key above.
-   </summary>
 
    Common OAuth Providers and their docs:
 
-   - Google: https://developers.google.com/identity/protocols/oauth2/openid-connect
-   - Auth0: https://auth0.com/docs/protocols/configure-okta-as-oauth2-identity-provider
-   - Okta: https://help.okta.com/en/prod/Content/Topics/Apps/Apps_App_Integration_Wizard_OIDC.htm
+   - **Google**: https://developers.google.com/identity/protocols/oauth2/openid-connect
+   - **Auth0**: https://auth0.com/docs/protocols/configure-okta-as-oauth2-identity-provider
+   - **Okta**: https://help.okta.com/en/prod/Content/Topics/Apps/Apps_App_Integration_Wizard_OIDC.htm
        <details>
          <summary>
            Troubleshooting note for Okta users:
@@ -119,9 +116,8 @@ It can be enabled it in 2 steps:
 
      </details>
 
-   - Keycloak: https://www.keycloak.org/getting-started/getting-started-docker
+   - **Keycloak**: https://www.keycloak.org/getting-started/getting-started-docker
    - please feel free to [PR or request more help on the Temporal Web repo](https://github.com/temporalio/web/)
-   </details>
 
   <!-- prettier-ignore-end -->
 
