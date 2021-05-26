@@ -107,7 +107,6 @@ module.exports = {
             'go/tutorial-prerequisites',
             'go/run-your-first-app-tutorial',
             'go/hello-world-tutorial',
-            'go/design-patterns',
             'go/sdk-video-tutorial',
             {
               type: 'link',

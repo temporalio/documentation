@@ -234,8 +234,6 @@ A Child Workflow is defined just like any other Workflow Definition.
 <!--SNIPSTART samples-go-child-workflow-example-child-workflow-definition-->
 <!--SNIPEND-->
 
-See the [Child Workflow sample app](/docs/go/design-patterns/#child-workflow-executions) for a full example.
-
 ### Querying Workflow State
 
 When you start a Workflow with `ExecuteWorkflow`, a `WorkflowExecution` is returned (which is the `we` variable above).
@@ -261,8 +259,6 @@ In the Workflow Definition below, there is a special Activity that handles clean
 
 <!--SNIPSTART samples-go-cancellation-workflow-definition-->
 <!--SNIPEND-->
-
-See the [Workflow Execution sample app](/docs/go/design-patterns/#workflow-execution-cancellation) for a full example.
 
 ## How to get data in or out of a running Workflow
 
