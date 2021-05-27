@@ -5,6 +5,9 @@ sidebar_label: Workflows
 description: The core abstraction of the Temporal solution is a fault-oblivious stateful Workflow.
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 ## Example subscription use-case
 
 Let's look at a subscription-based use-case to compare the difference between a Temporal application and other modern approaches.
@@ -43,45 +46,41 @@ While this approach has shown to scale a bit better, the programming model can b
 The Temporal programming model aims to encapsulate and implement the entire business logic in a simple function or object method.
 Thanks to the Temporal Server, the function/method is stateful, and the implementer doesn't need to employ any additional systems to ensure durability and fault tolerance.
 
-Here is an example Workflow that implements the subscription management use case in Java:
+Here are example Workflow Definitions that implement the subscription management use case in Java, Go, and PHP:
 
-```java
-public interface SubscriptionWorkflow {
-    @WorkflowMethod
-    void execute(String customerId);
-}
+<Tabs
+defaultValue="java"
+values={[
+{label: 'Go', value: 'go'},
+{label: 'Java', value: 'java'},
+{label: 'PHP', value: 'php'},
+]
+}>
 
-public class SubscriptionWorkflowImpl implements SubscriptionWorkflow {
+<TabItem value="go">
 
-  private final SubscriptionActivities activities =
-      Workflow.newActivityStub(SubscriptionActivities.class);
+<!--SNIPSTART subscription-go-workflow-definition-->
+<!--SNIPEND-->
 
-  @Override
-  public void execute(String customerId) {
-    activities.sendWelcomeEmail(customerId);
-    try {
-      boolean trialPeriod = true;
-      while (true) {
-        Workflow.sleep(Duration.ofDays(30));
-        activities.chargeMonthlyFee(customerId);
-        if (trialPeriod) {
-          activities.sendEndOfTrialEmail(customerId);
-          trialPeriod = false;
-        } else {
-          activities.sendMonthlyChargeEmail(customerId);
-        }
-      }
-    } catch (CancellationException e) {
-      activities.processSubscriptionCancellation(customerId);
-      activities.sendSorryToSeeYouGoEmail(customerId);
-    }
-  }
-}
-```
+</TabItem>
+<TabItem value="java">
 
-Again, it is important to note that this code directly implements the business logic, and if any of the invoked operations (aka [Activities](/docs/concepts/activities)) take a long time, the code is not going to change.
+<!--SNIPSTART subscription-java-workflow-definition-implementation-->
+<!--SNIPEND-->
 
-It is completely okay to be blocked on `chargeMonthlyFee` for a day or more if the downstream processing service is down or not responding.
+</TabItem>
+<TabItem value="php">
+
+<!--SNIPSTART subscription-php-workflow-definition-implementation-->
+<!--SNIPEND-->
+
+</TabItem>
+</Tabs>
+
+Again, it is important to note that this is working application code that directly implements the business logic.
+If any of the invoked operations (aka [Activities](/docs/concepts/activities)) take a long time, the code is not going to change.
+
+It is completely okay to be blocked on `chargeCustomerForBillingPeriod` for a day or more if the downstream processing service is down or not responding.
 In the same way, it is a completely normal operation to sleep for 30 days directly inside the Workflow code.
 This is possible because infrastructure failures are not going to affect the Workflow state including threads, blocking calls, and any local or Workflow variables.
 
