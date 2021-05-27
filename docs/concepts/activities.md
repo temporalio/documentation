@@ -26,7 +26,7 @@ Temporal does not impose any system limit on Activity duration. It is up to the 
   If a Heartbeat Timeout is specified then the Activity must call the Heartbeat API within this timeout.
   See [Long Running Activities](#long-running-activities).
 
-Either `ScheduleToClose` or `ScheduleToStart` timeouts are required.
+Either `ScheduleToClose` or `StartToClose` timeouts are required.
 
 ## Retries
 
