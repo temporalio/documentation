@@ -6,15 +6,16 @@ sidebar_label: Search Attributes
 
 ## Overview
 
-Search attributes enable complex and business-logic-focused search queries for Workflow Executions via the CLI and Web UI.
-The [Go SDK Client](https://pkg.go.dev/go.temporal.io/sdk/client#Client) offers APIs for configuring search attributes.
-There are also APIs on the SDK client for listing Workflows by status.
-Searching for and listing Workflows is helpful for debugging and visualizing Workflow Executions.
+Search attributes enable complex and business-logic-focused search queries for Workflow Executions.
+These are often queried via the Web UI, but you can also query from within your workflow code (as we show below).
 
 There are many [search attributes](/docs/server/workflow-search/#search-attributes) that are added to Workflow Executions by default.
 But these are necessarily focused on Temporal internal state tracking.
 
 For more debugging and monitoring, you may wish add your own domain specific search attributes (e.g. `customerId` or `numItems`) that may serve as useful search filters.
+
+The [Go SDK Client](https://pkg.go.dev/go.temporal.io/sdk/client#Client) offers APIs for configuring search attributes.
+There are also APIs on the SDK client for listing Workflows by status.
 
 ## Value types
 
@@ -98,8 +99,71 @@ Then searching `CustomKeywordField != 'impossibleVal'` will match Workflows with
 
 ## Retrieving search attributes
 
-Use `workflow.GetInfo` to get current search attributes.
+Use `workflow.GetInfo` to get a specific search attribute:
 
-## Learn more
+```go
+// Get search attributes that were provided when workflow was started.
+info := workflow.GetInfo(ctx)
+val := info.SearchAttributes.IndexedFields["CustomIntField"]
+```
 
-You can find sample search attribute sample code [in our `samples-go` repo](https://github.com/temporalio/samples-go/tree/master/searchattributes).
+## Querying search attributes within a workflow
+
+You can programmatically retrieve attributes from a workflow execution with `GetSearchAttributes`, and log out all fields with `GetIndexedFields`:
+
+```go
+searchAttributes := workflowExecution.GetSearchAttributes()
+var builder strings.Builder
+for k, v := range searchAttributes.GetIndexedFields() {
+    var currentVal interface{}
+    err := converter.GetDefaultDataConverter().FromPayload(v, &currentVal)
+    if err != nil {
+        logger.Error(fmt.Sprintf("Get search attribute for key %s failed.", k), "Error", err)
+        return err
+    }
+    builder.WriteString(fmt.Sprintf("%s=%v\n", k, currentVal))
+}
+```
+
+## Testing search attributes
+
+The Go SDK's test suite comes with corresponding methods for mocking and asserting these operations:
+
+```go
+
+func Test_Workflow(t *testing.T) {
+	testSuite := &testsuite.WorkflowTestSuite{}
+	env := testSuite.NewTestWorkflowEnvironment()
+	env.RegisterActivity(ListExecutions)
+
+	// mock search attributes on start
+	_ = env.SetSearchAttributesOnStart(map[string]interface{}{"CustomIntField": 1})
+
+	// mock upsert operations
+	attributes := map[string]interface{}{
+		"CustomIntField":      2, // update CustomIntField from 1 to 2, then insert other fields
+		"CustomKeywordField":  "Update1",
+		"CustomBoolField":     true,
+		"CustomDoubleField":   3.14,
+		"CustomDatetimeField": env.Now().UTC(),
+		"CustomStringField":   "String field is for text. When query, it will be tokenized for partial match. StringTypeField cannot be used in Order By",
+	}
+	env.OnUpsertSearchAttributes(attributes).Return(nil).Once()
+
+	attributes = map[string]interface{}{
+		"CustomKeywordField": "Update2",
+	}
+	env.OnUpsertSearchAttributes(attributes).Return(nil).Once()
+
+	// mock activity
+	env.OnActivity(ListExecutions, mock.Anything, mock.Anything).Return([]*workflowpb.WorkflowExecutionInfo{{}}, nil).Once()
+
+	env.ExecuteWorkflow(SearchAttributesWorkflow)
+	require.True(t, env.IsWorkflowCompleted())
+	require.NoError(t, env.GetWorkflowError())
+}
+```
+
+## Full search attributes example code
+
+You can find full example search attribute sample code [in our `samples-go` repo](https://github.com/temporalio/samples-go/tree/master/searchattributes).
