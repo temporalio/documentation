@@ -16,6 +16,7 @@ For more debugging and monitoring, you may wish add your own domain specific sea
 
 The [Go SDK Client](https://pkg.go.dev/go.temporal.io/sdk/client#Client) offers APIs for configuring search attributes.
 There are also APIs on the SDK client for listing Workflows by status.
+Go samples for search attributes can be found at [`temporalio/samples-go`](https://github.com/temporalio/samples-go/tree/master/searchattributes).
 
 ## Value types
 
@@ -58,8 +59,6 @@ func (c *Client) CallMyWorkflow(ctx context.Context, workflowID string, payload 
 In advanced cases, you may want to dynamically update these attributes as the workflow progresses.
 [UpsertSearchAttributes](https://pkg.go.dev/go.temporal.io/sdk/workflow#UpsertSearchAttributes) is used to add or update search attributes from within Workflow code.
 
-Go samples for search attributes can be found at [github.com/temporalio/samples-go](https://github.com/temporalio/samples-go/tree/master/searchattributes).
-
 `UpsertSearchAttributes` will merge attributes to the existing map in the Workflow.
 Consider this example Workflow code:
 
@@ -84,7 +83,7 @@ After the second call to `UpsertSearchAttributes`, the map will contain:
 
 ```go
 map[string]interface{}{
-    "CustomIntField": 2,
+    "CustomIntField": 2, // last update wins
     "CustomBoolField": true,
     "CustomKeywordField": "seattle",
 }
@@ -92,14 +91,15 @@ map[string]interface{}{
 
 ## Removing search attributes
 
-There is no support for removing a field.
-But, to achieve a similar effect, set the field to some placeholder value.
+**There is no support for removing a field.**
+
+However, to achieve a similar effect, set the field to some placeholder value.
 For example, you could set `CustomKeywordField` to `impossibleVal`.
 Then searching `CustomKeywordField != 'impossibleVal'` will match Workflows with `CustomKeywordField` not equal to `impossibleVal`, which includes Workflows without the `CustomKeywordField` set.
 
 ## Retrieving search attributes
 
-Use `workflow.GetInfo` to get a specific search attribute:
+Use the `SearchAttributes` property of `workflow.GetInfo` to get a specific search attribute:
 
 ```go
 // Get search attributes that were provided when workflow was started.
@@ -130,7 +130,6 @@ for k, v := range searchAttributes.GetIndexedFields() {
 The Go SDK's test suite comes with corresponding methods for mocking and asserting these operations:
 
 ```go
-
 func Test_Workflow(t *testing.T) {
 	testSuite := &testsuite.WorkflowTestSuite{}
 	env := testSuite.NewTestWorkflowEnvironment()
