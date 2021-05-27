@@ -67,7 +67,7 @@ With that said, here are some guidelines to some common bottlenecks:
 
 ### FAQ: Autoscaling Workers based on Task Queue load
 
-Temporal does not yet support returning the number of tasks in a task queue. 
+Temporal does not yet support returning the number of tasks in a task queue.
 The main technical hurdle is that each task can have its own `ScheduleToStart` timeout, so just counting how many tasks were added and consumed is not enough.
 
 This is why we recommend tracking `ScheduleToStart` latency for determining if the task queue has a backlog (aka Workers are under-provisioned for a given Task Queue).
