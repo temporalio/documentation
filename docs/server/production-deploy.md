@@ -79,11 +79,17 @@ Here is a comprehensive list of all the hard (error) / soft (warn) server limits
 - **Event Batch Size**: The `DefaultTransactionSizeLimit` limit is [4MB](https://github.com/temporalio/temporal/pull/1363).
   This is the largest transaction size we allow for event histories to be persisted.
   - This is configurable with `TransactionSizeLimit`, if you know what you are doing.
-- **Blob size limit**: For incoming payloads (including Workflow context), [we warn at 512KB and error at 2MB](https://github.com/temporalio/temporal/blob/v1.7.0/service/frontend/service.go#L133-L134).
+- **Blob size limit**: For incoming payloads (including Workflow context) - *[source](https://github.com/temporalio/temporal/blob/v1.7.0/service/frontend/service.go#L133-L134)*
+  - we warn at 512KB: [`Blob size exceeds limit.`](https://github.com/temporalio/temporal/blob/fee1c43823699e90b330680a8efeb9d8dbee8cf3/common/util.go#L568)
+  - we error at 2MB: `ErrBlobSizeExceedsLimit: Blob data size exceeds limit.`
   - This is configurable with [`BlobSizeLimitError` and `BlobSizeLimitWarn`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L378-L379), if you know what you are doing.
-- **History total size limit**: We warn at 10MB and error at 50mb (leading to a terminated Workflow Execution).
+- **History total size limit**: (leading to a terminated Workflow Execution)
+  - We warn at 10MB: `history size exceeds warn limit.`
+  - We error at 50mb: [`history size exceeds error limit.`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/workflowExecutionContext.go#L1204)
   - This is configurable with [`HistorySizeLimitError` and `HistorySizeLimitWarn`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L380-L381), if you know what you are doing.
-- **History total count limit**: We warn at 10,000 events and error at 50,000 events (leading to a terminated Workflow Execution).
+- **History total count limit**: (leading to a terminated Workflow Execution)
+  - We warn at 10,000 events: `history size exceeds warn limit.`
+  - We error at 50,000 events: [`history size exceeds error limit.`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/workflowExecutionContext.go#L1204)
   - This is configurable with [`HistoryCountLimitError` and `HistoryCountLimitWarn`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L382-L383), if you know what you are doing.
 - **Search Attributes**:
   - **Number of Search Attributes**: max 100
