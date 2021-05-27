@@ -79,7 +79,7 @@ Here is a comprehensive list of all the hard (error) / soft (warn) server limits
 - **Event Batch Size**: The `DefaultTransactionSizeLimit` limit is [4MB](https://github.com/temporalio/temporal/pull/1363).
   This is the largest transaction size we allow for event histories to be persisted.
   - This is configurable with `TransactionSizeLimit`, if you know what you are doing.
-- **Blob size limit**: For incoming payloads (including Workflow context) - *[source](https://github.com/temporalio/temporal/blob/v1.7.0/service/frontend/service.go#L133-L134)*
+- **Blob size limit**: For incoming payloads (including Workflow context) - _[source](https://github.com/temporalio/temporal/blob/v1.7.0/service/frontend/service.go#L133-L134)_
   - we warn at 512KB: [`Blob size exceeds limit.`](https://github.com/temporalio/temporal/blob/fee1c43823699e90b330680a8efeb9d8dbee8cf3/common/util.go#L568)
   - we error at 2MB: `ErrBlobSizeExceedsLimit: Blob data size exceeds limit.`
   - This is configurable with [`BlobSizeLimitError` and `BlobSizeLimitWarn`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L378-L379), if you know what you are doing.
