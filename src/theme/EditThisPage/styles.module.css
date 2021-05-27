@@ -1,13 +1,13 @@
 @media screen and (min-width: 998px) {
   .EditThisLink {
     position: fixed;
-    top: 90vh;
+    bottom: 1rem;
     right: 1rem;
     padding: 1rem;
-    border: 2px dashed;
-    border-radius: 2rem;
+    z-index: 99;
   }
   .EditThisLink:hover {
-    color: var(--ifm-link-decoration);
+    background-color: var(--ifm-color-content);
+    color: var(--ifm-color-content-inverse);
   }
 }
