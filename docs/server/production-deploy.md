@@ -62,13 +62,20 @@ Every shard is low contention by design and it is very difficult to oversubscrib
 With that said, here are some guidelines to some common bottlenecks:
 
 - Usually the limiting factor to scaling is the database connection getting saturated; therefore you will want to monitor `ScheduleToStart` latency to look out for this.
-- Temporal Server's Frontend service is more CPU bound, whereas the History and Matching services require more matching.
+- Temporal Server's Frontend service is more CPU bound, whereas the History and Matching services require more memory.
 - See the **Server Limits** section below for other limits you will want to monitor, including event history length.
 
-You should be able to tell when Workers are under-provisioned for a given Task Queue.
+### FAQ: Autoscaling Workers based on Task Queue load
+
+Temporal does not yet support returning the number of tasks in a task queue. 
+The main technical hurdle is that each task can have its own `ScheduleToStart` timeout, so just counting how many tasks were added and consumed is not enough.
+
+This is why we recommend tracking `ScheduleToStart` latency for determining if the task queue has a backlog (aka Workers are under-provisioned for a given Task Queue).
+When workers are able to keep up, the latency is close to zero.
 The default is 4 Workers, which should handle no more than 300 messages per second.
-Scaling will depend on your workload.
-For example, you can scale up to 10 workers for a Task Queue with 500 messages per second.
+Scaling will depend on your workload — for example, for a Task Queue with 500 messages per second, you might want to scale up to 10 workers.
+
+We do plan to add features that give more visibility into the task queue state in future.
 
 ## Server limits
 
