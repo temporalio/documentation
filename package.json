@@ -23,6 +23,7 @@
     "@docusaurus/preset-classic": "2.0.0-alpha.73",
     "@mdx-js/react": "^1.5.8",
     "clsx": "^1.1.1",
+    "mermaid": "^8.10.1",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
     "react-player": "^2.6.0",
