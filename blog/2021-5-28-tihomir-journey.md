@@ -62,6 +62,7 @@ This instantly brings all the Temporal benefits to your DSL of choice.
 There are many more technical benefits I’d love to talk about, but will leave that for future posts. After a month and a half I am still learning cool new things every day.
 Check out the Temporal intro video I made which shows off some of the benefits of Temporal we touched upon in this blog:
 
+import { ResponsivePlayer } from '../src/components'
 <ResponsivePlayer url='https://www.youtube.com/watch?v=23rX78xqYUg'/>
 
 <br/>
