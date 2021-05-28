@@ -2,6 +2,7 @@
 tags:
 - Temporal
 - Workflow
+- great-place-to-work
 - microservice-orchestration
 - microservices
 posted_on_: 2020-10-14T00:06:09Z
@@ -32,13 +33,13 @@ The situation made me want to try my luck in a different tech field, but I never
 On the technical side of things, Temporal is no joke. When they say they enable developers to build resilient apps at a massive scale, they really mean it. There are no fake promises, no switch and bait tactics, no hidden agendas. 
 Temporal has a strong focus on the community. If you have any questions, just reach out on our [Community Website](https://community.temporal.io/) or [Slack](https://join.slack.com/t/temporalio/shared_invite/zt-onhti57l-J0bl~Tr7MqSUnIc1upjRkw).
 
-## Control
+### Control
 
 Temporal is very un-intrusive which really stood out to me, given my past experiences. Typically, when you want to adopt a new workflow technology, you’re forced to change the way you code and architect applications. You sacrifice a lot of control and have to conform to the rules of the workflow engines you adopt.
 
 With Temporal, the story is completely different. It doesn’t matter if you have an existing application or are developing a new one; you can easily integrate it with a lot of different architectures and programming models. You pick and choose which parts of your code (typically your core business logic) you want to turn into resilient, transactional, and stateful Workflows.
 
-## Programming model
+### Programming model
 
 Another thing I want to mention is how workflows are defined in Temporal. My past experience revolved around representing workflows via some domain-specific language defined with XML, JSON, or YAML. DSLs can be great and often very useful, assuming they target a specific business domain and do that well. 
 There are currently very few workflow DSLs that are open source and vendor neutral that focus on this important fact.
@@ -67,7 +68,7 @@ import { ResponsivePlayer } from '../src/components'
 
 <br/>
 
-## Joining Temporal
+### Joining Temporal
 
 Being able to work on amazing technology is great, but what about the people inTemporal? From the beginning of my interview process until now, I still cannot believe how great the people are that work here. There hasn't been a single person I have interacted with that I didn't feel comfortable with. From the start, my co-workers went above and beyond to try to help me; from setting up health benefits, to signing up into the payment systems, and getting my laptop shipped. 
 Shortly after I started, I received a box full of Temporal swag in the mail. Everyone has been patient with me while trying to learn as much as possible to start being productive. And if it’s not enough to be surrounded by nice people, this team is also super smart and are leaders in the open source community. You can learn so much from them!
@@ -75,7 +76,3 @@ The team atmosphere at Temporal is real, and I think it’s something that a lot
 
 If you have any questions or would like to share your thoughts, feel free to reach out to me at [tihomir@temporal.io](mailto:tihomir@temporal.io).
 Also don't forget, [Temporal is hiring](https://temporal.io/careers).
-
-
-
-
