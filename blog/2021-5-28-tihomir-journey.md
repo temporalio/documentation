@@ -13,6 +13,8 @@ author_image_url: https://avatars.githubusercontent.com/u/119422?v=4
 release_version: V1.0.0
 ---
 
+import { ResponsivePlayer } from '../src/components'
+
 <!--truncate-->
 
 My 12-year journey with workflows has finally led me to [Temporal](https://temporal.io/), and I do not believe it was by chance.
