@@ -104,6 +104,10 @@ module.exports = {
               label: "PHP SDK",
               to: "/docs/php/introduction",
             },
+            {
+              label: "Node SDK (alpha)",
+              to: "/docs/node/introduction",
+            },
           ],
         },
         {
