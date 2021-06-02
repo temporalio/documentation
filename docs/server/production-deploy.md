@@ -77,6 +77,25 @@ Scaling will depend on your workload — for example, for a Task Queue with 500 
 
 We do plan to add features that give more visibility into the task queue state in future.
 
+### High Availability Cluster Configuration
+
+You can set up a high availability deployment by running more than one instance of the server. Temporal also handles [membership and routing](https://docs.temporal.io/blog/workflow-engine-principles/#membership-and-routing-1350), as well as cross-cluster replication (an experimental feature). You can find more details in [the `clusterMetadata` section of the Server Configuration reference](https://docs.temporal.io/docs/server/configuration/#clustermetadata).
+
+```yaml
+clusterMetadata:
+  enableGlobalNamespace: false
+  failoverVersionIncrement: 10
+  masterClusterName: "active"
+  currentClusterName: "active"
+  clusterInformation:
+    active:
+      enabled: true
+      initialFailoverVersion: 0
+      rpcAddress: "127.0.0.1:7233"
+  #replicationConsumer:
+  #type: kafka
+```
+
 ## Server limits
 
 Running into limits can cause unexpected failures, so be mindful when you design your systems.
