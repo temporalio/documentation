@@ -2,11 +2,13 @@
 title: NodeJS SDK introduction
 ---
 
-:::caution Alpha stage
+import CustomWarning from "../shared/CustomWarning.js"
+
+<CustomWarning>
 
 This SDK and associated documentation is in an Alpha stage and may change at any time.
 
-:::
+</CustomWarning>
 
 ## Getting started
 
