@@ -94,8 +94,6 @@ clusterMetadata:
       rpcAddress: "127.0.0.1:7233"
   #replicationConsumer:
   #type: kafka
-```
-
 ## Server limits
 
 Running into limits can cause unexpected failures, so be mindful when you design your systems.
