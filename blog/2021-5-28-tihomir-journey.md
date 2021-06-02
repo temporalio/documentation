@@ -3,13 +3,14 @@ tags:
   - Temporal
   - Workflow
   - Reflections
-posted_on_: 2020-10-14T00:06:09Z
-id: tihomir-journey
+posted_on_: 2021-06-02T00:00:00Z
+slug: tihomir-journey-to-temporal
 title: 'My journey to Temporal'
 author: Tihomir Surdilovic
 author_title: Product
 author_image_url: https://avatars.githubusercontent.com/u/119422?v=4
-release_version: V1.0.0
+image: https://avatars.githubusercontent.com/u/119422?v=4
+release_version: V1.9.2
 ---
 
 import { ResponsivePlayer } from '../src/components'
@@ -19,7 +20,7 @@ import { ResponsivePlayer } from '../src/components'
 My 12-year journey with workflows has finally led me to [Temporal](https://temporal.io/), and I do not believe it was by chance.
 For a long time I was trying to fit in with different workflow ecosystems, without much success. 
 I have been involved in writing workflow runtimes such as jBPM, Web and Editor tools, libraries, as well as 
-defining workflow language specifications, but often felt as something was missing.
+[defining workflow language specifications](https://serverlessworkflow.io/), but often felt as something was missing.
 
 ### Looking back
 
