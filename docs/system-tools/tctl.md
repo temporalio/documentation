@@ -280,6 +280,14 @@ The workflow has a chance to do some clean up work after cancellation.
 
 #### Signal, cancel, terminate workflows as a batch job
 
+import CustomWarning from "../shared/CustomWarning.js"
+
+<CustomWarning>
+
+Temporal's Batch Jobs feature is considered **experimental** and not subject to normal [versioning and support policy](/docs/server/versions-and-dependencies).
+
+</CustomWarning>
+
 Batch job is based on List Workflow Query(**--query**).
 It supports signal, cancel and terminate as batch job type.
 For terminating workflows as batch job, it will terminate the children recursively.
