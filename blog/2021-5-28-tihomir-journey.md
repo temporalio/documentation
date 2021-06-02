@@ -17,6 +17,8 @@ import { ResponsivePlayer } from '../src/components'
 
 <!--truncate-->
 
+![Alt Text](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/bbyrstkmia07llagoz14.png)
+
 My 12-year journey with workflows has finally led me to [Temporal](https://temporal.io/), and I do not believe it was by chance.
 For a long time I was trying to fit in with different workflow ecosystems, without much success. 
 I have been involved in writing workflow runtimes such as jBPM, Web and Editor tools, libraries, as well as 
