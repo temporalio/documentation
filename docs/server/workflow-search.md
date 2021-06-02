@@ -82,6 +82,14 @@ There are some special considerations for the Default attributes:
 
 ### Custom attributes
 
+import CustomWarning from "../shared/CustomWarning.js"
+
+<CustomWarning>
+
+Temporal's Custom Searchable Attributes feature is considered **experimental** and not subject to normal [versioning and support policy](/docs/server/versions-and-dependencies).
+
+</CustomWarning>
+
 There is no hard limit on the number of attributes you can add.
 However we recommend enforcing the following limits:
 
