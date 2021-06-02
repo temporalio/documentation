@@ -95,7 +95,7 @@ clusterMetadata:
   #replicationConsumer:
   #type: kafka
 ```
-  
+
 ## Server limits
 
 Running into limits can cause unexpected failures, so be mindful when you design your systems.
