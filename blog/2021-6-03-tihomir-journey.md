@@ -3,7 +3,7 @@ tags:
   - Temporal
   - Workflow
   - Reflections
-posted_on_: 2021-06-02T00:00:00Z
+posted_on_: 2021-06-03T00:00:00Z
 slug: tihomir-journey-to-temporal
 title: 'My journey to Temporal'
 author: Tihomir Surdilovic
