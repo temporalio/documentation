@@ -94,6 +94,8 @@ clusterMetadata:
       rpcAddress: "127.0.0.1:7233"
   #replicationConsumer:
   #type: kafka
+```
+  
 ## Server limits
 
 Running into limits can cause unexpected failures, so be mindful when you design your systems.
@@ -174,4 +176,3 @@ Third party content that may help:
 - [How To Deploy Temporal to Azure Kubernetes Service (AKS)](https://mikhail.io/2020/11/how-to-deploy-temporal-to-azure-kubernetes-aks/)
 - ECS runbook (_to be completed_)
 - EKS runbook (_to be completed_)
-```
