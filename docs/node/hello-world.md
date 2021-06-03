@@ -1,6 +1,5 @@
 # Hello world in Node
 
-
 import CustomWarning from "../shared/CustomWarning.js"
 
 <CustomWarning>
