@@ -260,7 +260,7 @@ If the executing logic has tight coupling between Workflows, it may simply be ea
 
 ### ParentClosePolicy
 
-When creating a child Workflow, you can define a `ParentClosePolicy` that terminates, cancels, or abandon the Workflow if the child's parent stops execution:
+When creating a child Workflow, you can define a `ParentClosePolicy` that terminates, cancels, or abandons the Workflow if the child's parent stops execution:
 
 - `ABANDON`: When the parent stops, don't do anything with the child workflow.
 - `TERMINATE`: When the parent stops, terminate the child workflow
