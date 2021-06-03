@@ -266,7 +266,7 @@ When creating a child Workflow, you can define a `ParentClosePolicy` that termin
 - `TERMINATE`: When the parent stops, terminate the child workflow
 - `REQUEST_CANCEL`: When the parent stops, terminate the child workflow
 
-You can set policies per child, which means you can opt out of propagating terminates / cancels on a per-child basis. 
+You can set policies per child, which means you can opt out of propagating terminates / cancels on a per-child basis.
 This is useful for starting Child Workflows asynchronously (see [relevant issue here](https://community.temporal.io/t/best-way-to-create-an-async-child-workflow/114) or the corresponding SDK docs).
 
 ## FAQ
