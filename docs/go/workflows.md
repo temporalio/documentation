@@ -246,6 +246,34 @@ var result string
 we.Get(ctx, &result)
 ```
 
+### ParentClosePolicy
+
+When creating a child Workflow, you can define a `ParentClosePolicy` that terminates, cancels, or abandons the Workflow if the child's parent stops execution.
+
+- `ABANDON`: When the parent stops, don't do anything with the child workflow.
+- `TERMINATE`: When the parent stops, terminate the child workflow
+- `REQUEST_CANCEL`: When the parent stops, terminate the child workflow
+
+You can set policies per child, which means you can opt out of propagating terminates / cancels on a per-child basis.
+This is useful for starting Child Workflows asynchronously:
+
+1. Set `ChildWorkflowOptions.ParentClosePolicy` to `ABANDON` when creating a child workflow stub.
+2. Start child workflow asynchronously using `ExecuteChildWorkflow`.
+3. Call `GetChildWorkflowExecution` on the `ChildWorkflowFuture` returned by the `ChildWorkflowFuture`
+4. Wait for the `ChildWorkflowFuture`. This indicates that the child successfully started (or start failed).
+5. Complete parent workflow asynchronously.
+
+Steps 3 and 4 are needed to ensure that child workflow starts before the parent closes. If the parent initiates child workflow and immediately completes the child would never start.
+
+```go
+func ParentWorkflow(ctx workflow.Context) error {
+    childWorkflow := workflow.ExecuteChildWorkflow(ctx, MyChildWorkflow)
+    // Wait for child to start
+    _ = childWorkflow.GetChildWorkflowExecution().Get(ctx, nil)
+    return nil
+}
+```
+
 ## How to cancel a Workflow Execution
 
 There are many scenarios where it is necessary and even ideal to be able to cancel a Workflow Execution.
