@@ -303,3 +303,7 @@ However, the tradeoff is added latency.
 Workers are stateless, so any Workflow in a blocked state can be safely removed from a Worker.
 Later on, it can be resurrected on the same or different Worker when the need arises (in the form of an external event).
 Therefore, a single Worker can handle millions of open Workflow executions, assuming it can handle the update rate and that a slightly higher latency is not a concern.
+
+**How can I load test workflows?**
+
+You can take a look at advanced workflow test scenarios and terminology in [our blogpost on Temporal stress testing](https://docs.temporal.io/blog/temporal-deep-dive-stress-testing).
