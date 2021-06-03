@@ -289,7 +289,7 @@ module.exports = {
   nodejsSidebar: [
     {
       type: "category",
-      label: "Node",
+      label: "Node (alpha)",
       collapsed: false,
       items: [
         "node/introduction",
