@@ -64,37 +64,59 @@ function Feature({imageUrl, title, description, goto}) {
 function SelectTutorial() {
   const [clicked, setClicked] = React.useState(false);
   return (
-    <div className="flex flex-col sm:flex-row justify-between mb-8 sm:mb-8 items-center">
-      {clicked ? (
-        <div className="inline-flex md:-mt-8">
-          <a className="mr-8" href="/docs/go/run-your-first-app-tutorial">
-            <img
-              aria-label="go SDK"
-              className={styles.sdkTakeMeToTutorialLogo}
-              src={useBaseUrl("img/logo-go.png")}
-              alt="logo"
-            />
-          </a>
-          <a className="" href="/docs/java-run-your-first-app">
-            <img
-              aria-label="java SDK"
-              className={styles.sdkTakeMeToTutorialLogo}
-              src={useBaseUrl("img/logo-java.png")}
-              alt="logo"
-            />
-          </a>
-        </div>
-      ) : (
-        <button
-          className={clsx(
-            "button button--outline button--secondary button--lg",
-            styles.getStarted
-          )}
-          onClick={() => setClicked(true)}
-        >
-          Run my first app! →
-        </button>
-      )}
+    <div
+      onMouseEnter={() => setClicked(true)}
+      onMouseLeave={() => setClicked(false)}
+    >
+      <div>
+        {clicked ? (
+          <div>
+            <a href="/docs/go/run-your-first-app-tutorial">
+              <img
+                aria-label="go SDK"
+                className={styles.sdkTakeMeToTutorialLogo}
+                src={useBaseUrl("img/go-lang.svg")}
+                alt="logo"
+              />
+            </a>
+            <a href="/docs/java-run-your-first-app">
+              <img
+                aria-label="java SDK"
+                className={styles.sdkTakeMeToTutorialLogo}
+                src={useBaseUrl("img/java.svg")}
+                alt="logo"
+              />
+            </a>
+            <a href="/docs/php/introduction">
+              <img
+                aria-label="php SDK"
+                className={styles.sdkTakeMeToTutorialLogo}
+                src={useBaseUrl("img/php.svg")}
+                alt="logo"
+              />
+            </a>
+            <a href="/docs/node/hello-world">
+              <img
+                aria-label="node SDK"
+                className={styles.sdkTakeMeToTutorialLogo}
+                src={useBaseUrl("img/nodejs.svg")}
+                alt="logo"
+              />
+            </a>
+          </div>
+        ) : (
+          <div className={styles.buttons}>
+            <div
+              className={clsx(
+                "button button--outline button--secondary button--lg",
+                styles.getStarted
+              )}
+            >
+              Run my first app! →
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
@@ -184,9 +206,7 @@ export default function Home() {
         <div className="container">
           <h1 className="hero__title">{siteConfig.title}</h1>
           <p className="hero__subtitle">{siteConfig.tagline}</p>
-          <div className={styles.buttons}>
-            <SelectTutorial />
-          </div>
+          <SelectTutorial />
         </div>
       </header>
       <main>
