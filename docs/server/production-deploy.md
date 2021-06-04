@@ -40,8 +40,8 @@ The requirements of your Temporal system will vary widely based on your intended
 You will want to run your own proof of concept tests and watch for key metrics to understand the system health and scaling needs.
 
 - **[Configure your metrics subsystem](https://docs.temporal.io/docs/server/configuration/#metrics).** Temporal supports three metrics providers out of the box: [StatsD](https://github.com/statsd/statsd), [Prometheus](https://prometheus.io/), and [M3](https://m3db.io/).
-- **Set up monitoring.** You can use these [Grafana dashboards](https://github.com/temporalio/dashboards) as a starting point.
-- **Load testing.** You can use [Maru](https://github.com/temporalio/maru/) ([author's guide here](https://mikhail.io/2021/03/maru-load-testing-tool-for-temporal-workflows/)) or write your own.
+- **Set up monitoring.** You can use these [Grafana dashboards](https://github.com/temporalio/dashboards) as a starting point. The single most important metric to track is `ScheduleToStart` latency - if you get a spike in workload and don't have enough workers, your tasks will get backlogged. **We strongly recommend setting alerts for this metric**.
+- **Load testing.** You can use [Maru](https://github.com/temporalio/maru/) ([author's guide here](https://mikhail.io/2021/03/maru-load-testing-tool-for-temporal-workflows/)), see how we ourselves [stress test Temporal](https://docs.temporal.io/blog/temporal-deep-dive-stress-testing/), or write your own.
 
 At a high level, you will want to track these 3 categories of metrics:
 
