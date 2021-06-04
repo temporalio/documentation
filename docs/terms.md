@@ -47,14 +47,12 @@ An instance of a [**Workflow Definition**](#workflow-definition).
 If a Workflow Execution is currently happening, then it is considered "Open".
 A Workflow Execution may end up with one of six states:
 
-1. Completed
-2. Continued-As-New
-3. Timed Out
-4. Terminated
-5. Canceled
-6. Failed
-
-import Mermaid from '@theme/Mermaid';
+- Completed
+- Continued-As-New
+- Timed Out
+- Terminated
+- Canceled
+- Failed
 
 <Mermaid chart={`
 	graph LR;
@@ -91,6 +89,31 @@ A Workflow Task is a [**Task**](#task) that contains invocation information for 
 ### Workflow Task Queue
 
 ### Workflow Task Execution
+
+Execution of a [Workflow Task](/docs/terms/#workflow-task).
+A [Worker] is responsible for polling its assigned [Workflow Task Queue](/docs/terms/#workflow-task-queue) to pickup Workflow Tasks.
+The Server captures the Workflow Task Scheduled Event when the Workflow Task is placed in the Workflow Task Queue.
+If a Worker does not pick up the Workflow Task within the Workflow Task Timeout period, a Workflow Task Timed Out Event is recorded.
+After a Worker starts the Task it responds to the Server
+
+- **Perspective of the Server**:
+
+<Mermaid chart={`
+	graph LR;
+    A[Scheduled]-->B[Started];
+    B-->C[Completed];
+		A-->D[Timed Out];
+		B-->E[Failed];
+`}/>
+
+- **Perspective of a Worker**:
+
+<Mermaid chart={`
+	graph LR;
+    A[Worker]-->|Poll Workflow Task Queue| B[Workflow Task Started];
+    B-->|Respond Workflow Task Complete| C[Completed];
+		B-->|Respond Workflow Task Failed| D[Failed];
+`}/>
 
 ### Workflow Options
 
@@ -305,11 +328,10 @@ Retry Policies instruct the Temporal system on how to retry a Workflow Execution
 :::note
 
 Retry Policies are not required when starting executions.
-If one is not provided, a default one is generated for the Workflow.
-However, if one is provided, the only required option is the [initial interval](#initial-interval).
-
+By default, Workflow Executions **do not** have a Retry Policy.
 Retrying Workflow Executions is a use-case specific.
-The exception being [Cron  Workflows](#cron-schedule) or some other stateless always-running Workflow Executions that benefit from retries.
+
+- [Cron  Workflows](#cron-schedule) or some other stateless always-running Workflow Executions that benefit from retries.
 
 There are scenarios when not a single Activity but rather the whole part of a Workflow should be retried on failure.
 For example, a media encoding Workflow that downloads a file to a host, processes it, and then uploads the result back to storage.
@@ -354,15 +376,9 @@ For example, a media encoding Workflow that downloads a file to a host, processe
 - **Use-case**: There may be errors that you know of that should not trigger a retry.
   In this case you can specify them such that if they occur, the given execution will not be retried.
 
-
-
-
-
-
-
 ## Event
 
-There are two types of Events that Temporal tracks for each Workflow:
+There are two types of Events that Temporal tracks for each Workflow Execution:
 
 1. [**Command**](#command) Events.
 2. Everything else.
@@ -404,7 +420,6 @@ Any action requested by the [**Workflow**](#workflow) durable function is called
 - A [**Worker**](#worker) executing a [**Workflow**](#workflow) generates a list of Commands as a result to a [**Workflow Task**](#workflow-task). This list is sent to the Temporal service as part of the [**Workflow Task**](#workflow-task) completion request.
 - Every Command is recorded in the [**Event History**](#event-history) as an [**Event**](#event). For example, the `StartTimer` command is recorded as a corresponding `TimerStarted` event.
 
-
 ### Namespace
 
 Temporal is backed by a multi-tenant service and the unit of isolation is called a Namespace.
@@ -444,7 +459,6 @@ A Task Queue is a queue that a [**Worker**](#worker) subscribes to and polls to 
 
 - Each Task Queue is capable of queuing [**Activity Tasks**](#activity-task) and [**Workflow Tasks**](#workflow-task).
 - Task Queues rely on the same persistent storage as the rest of the Temporal service (Task Queues are not based on other technologies such as Kafka).
-
 
 The only required Workflow options parameter is the name of a [Task Queue](/docs/concepts/task-queues).
 Read the [Task Queues concept page](/docs/concepts/task-queues) for a better overview.
