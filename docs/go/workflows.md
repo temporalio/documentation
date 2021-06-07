@@ -248,7 +248,7 @@ we.Get(ctx, &result)
 
 ### ParentClosePolicy
 
-When creating a child Workflow, you can define a `ParentClosePolicy` that terminates, cancels, or abandons the Workflow Execution if the child's parent stops execution.
+When creating a Child Workflow, you can define a `ParentClosePolicy` that terminates, cancels, or abandons the Workflow Execution if the child's parent stops execution.
 
 - `ABANDON`: When the parent stops, don't do anything with the Child Workflow.
 - `TERMINATE`: When the parent stops, terminate the Child Workflow
@@ -257,7 +257,7 @@ When creating a child Workflow, you can define a `ParentClosePolicy` that termin
 You can set policies per child, which means you can opt out of propagating terminates / cancels on a per-child basis.
 This is useful for starting Child Workflows asynchronously:
 
-1. Set `ChildWorkflowOptions.ParentClosePolicy` to `ABANDON` when creating a child workflow stub.
+1. Set `ChildWorkflowOptions.ParentClosePolicy` to `ABANDON` when creating a Child Workflow.
 2. Start the Child Workflow Execution asynchronously using `ExecuteChildWorkflow`.
 3. Call `GetChildWorkflowExecution` on the `ChildWorkflowFuture` returned by the `ChildWorkflowFuture`
 4. Wait for the `ChildWorkflowFuture`.
