@@ -261,11 +261,11 @@ This is useful for starting Child Workflows asynchronously:
 2. Start the Child Workflow Execution asynchronously using `ExecuteChildWorkflow`.
 3. Call `GetChildWorkflowExecution` on the `ChildWorkflowFuture` returned by the `ChildWorkflowFuture`
 4. Wait for the `ChildWorkflowFuture`.
-    This indicates that the child successfully started (or start failed).
+   This indicates that the child successfully started (or start failed).
 5. Complete Parent Workflow Execution asynchronously.
 
-Steps 3 and 4 are needed to ensure that a Child Workflow Execution starts before the parent closes. 
-    If the parent initiates a Child Workflow Execution and then immediately completes, the child would never execute.
+Steps 3 and 4 are needed to ensure that a Child Workflow Execution starts before the parent closes.
+If the parent initiates a Child Workflow Execution and then immediately completes, the child would never execute.
 
 ```go
 func ParentWorkflow(ctx workflow.Context) error {
