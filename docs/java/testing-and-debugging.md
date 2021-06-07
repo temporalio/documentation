@@ -15,7 +15,8 @@ You can use the provided `TestWorkflowEnvironment` with a Java unit testing fram
 such as JUnit.
 
 ## Setup testing dependency
-In order to start using the Java SDK test framework you need to add [`io.temporal:temporal-testing`](https://search.maven.org/artifact/io.temporal/temporal-testing) 
+
+To start using the Java SDK test framework, you need to add [`io.temporal:temporal-testing`](https://search.maven.org/artifact/io.temporal/temporal-testing) 
 as a dependency to your project:
 
 **[Apache Maven](https://maven.apache.org/)**:
@@ -35,7 +36,7 @@ as a dependency to your project:
 testImplementation group: 'io.temporal', name: 'temporal-testing', version: '1.0.7'
 ```
 
-Make sure to set the version which matches your dependency version of the [Temporal Java SDK](https://github.com/temporalio/sdk-java).
+Make sure to set the version that matches your dependency version of the [Temporal Java SDK](https://github.com/temporalio/sdk-java).
 
 ## Sample unit tests
 
@@ -137,7 +138,7 @@ public class HelloActivityTest {
 }
 ```
 
-You can find all unit tests for the [Temporal Java samples](https://github.com/temporalio/samples-java) repository [here](https://github.com/temporalio/samples-java/tree/master/src/test/java/io/temporal/samples).
+You can find all unit tests for the [Temporal Java samples](https://github.com/temporalio/samples-java) repository in [its test package](https://github.com/temporalio/samples-java/tree/master/src/test/java/io/temporal/samples).
 
 ## Debugging 
 
