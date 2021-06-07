@@ -151,4 +151,4 @@ execution control. Because of this you can often encounter the `PotentialDeadloc
 Exception while stepping through Workflow code during debugging.
 
 To alleviate this issue, you can set the `TEMPORAL_DEBUG` environment variable to true before debugging your
-Workflow code. Make sure to set `TEMPORAL_DEBUG` only during debugging.
+Workflow code. Make sure to set `TEMPORAL_DEBUG` to true only during debugging.
