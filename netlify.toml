@@ -69,8 +69,8 @@
   to = "/docs/go/activities"
 
 [[redirects]]
-  from = "/docs/go-child-workflows"
-  to = "/docs/go/child-workflows"
+  from = "/docs/go/child-workflows"
+  to = "/docs/go/workflows/#child-workflow-executions"
 
 [[redirects]]
   from = "/docs/go-continue-as-new"

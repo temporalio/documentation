@@ -69,7 +69,8 @@ body::-webkit-scrollbar {
   width: clamp(5px, 1vw, 20px);
 }
 body::-webkit-scrollbar-thumb {
-  background: linear-gradient(var(--ifm-color-primary), rgba(0, 0, 0, 0));
+  /* background: linear-gradient(var(--ifm-color-primary), #127ae5); */
+  background: linear-gradient(#127ae5, #8f86da);
   border-radius: 2px;
 }
 

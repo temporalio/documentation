@@ -82,7 +82,7 @@ It executes a single Activity and uses `workflow.Now()`.
 With the Go SDK, there are two ways that you can start a Workflow:
 
 1. Use the Go SDK `client` to start a Workflow from a Go process, as described below.
-2. Start a Workflow from an already running Workflow, which is known as a [Child Workflow](/docs/go/child-workflows).
+2. Start a Workflow from an already running Workflow, which is known as a [Child Workflow](#child-workflow-executions).
 
 :::note
 
@@ -144,6 +144,13 @@ In most use cases it is better to execute the Workflow asynchronously.
 In Go, the only difference is whether the code waits for the result of the Workflow in the same process in which you started it, so you should not synchronously block the process if you don't have a good reason to.
 Workflows do not rely on the process that invoked it, and will continue executing even if the waiting process crashes or stops.
 
+:::note
+
+In most use cases it is better to execute the Workflow asynchronously.
+You can also start a Workflow Execution on a regular schedule with [the CronSchedule option](distributed-cron).
+
+:::
+
 ### Scheduling Cron Workflows
 
 You can also start a Workflow Execution on a regular schedule with the `CronSchedule` option.
@@ -188,6 +195,45 @@ for i := 0; i < 10; i++ {
 
 See our [Signals docs](https://docs.temporal.io/docs/go/signals) and [Temporal Polyglot example](https://github.com/tsurdilo/temporal-polyglot) for more.
 
+## Child Workflow Executions
+
+If a Workflow Execution is started by another Workflow Execution, then it is considered a Child Workflow Execution.
+The completion or failure of a Child Workflow Execution is reported to the Workflow Execution that started it (the Parent Workflow Execution).
+The Parent Workflow Execution has the ability to monitor and impact the lifecycle of the Child Workflow Execution, similar to the way it does for Activities.
+
+### When to use Child Workflows
+
+The following is a list of some of the more common reasons why you might want to do this:
+
+- Execute code using different Workers.
+- Enable execution from multiple Workflow Executions.
+- Workaround Event History size limits.
+- Create one-to-one mappings between a Workflow Id and some other resource.
+- Execute some periodic logic.
+
+### When not to use Child Workflows
+
+One of the main reasons you would not want to execute a Child Workflow is the lack of a shared state with the Parent Workflow Execution.
+Parent Workflow Executions and Child Workflow Executions can communicate only through asynchronous [Signals](/docs/go/signals).
+If the executing logic is tightly coupled between Workflow Executions, it may simply be easier to use a single Workflow Definition that can rely on a shared object's state.
+
+### Parent Workflow Definition
+
+The `workflow.ExecuteChildWorkflow` call is used to schedule Workflow Executions from within an executing Workflow.
+
+<!--SNIPSTART samples-go-child-workflow-example-parent-workflow-definition-->
+<!--SNIPEND-->
+
+By default, a Child Workflow Execution inherits the options provided to the Parent Workflow Execution, and the Temporal Server will automatically generate a Child Workflow ID.
+You can overwrite these options and specify a customer Child Workflow ID by customizing `ChildWorkflowOptions` and adding them to the execution context.
+
+### Child Workflow Definition
+
+A Child Workflow is defined just like any other Workflow Definition.
+
+<!--SNIPSTART samples-go-child-workflow-example-child-workflow-definition-->
+<!--SNIPEND-->
+
 ### Querying Workflow State
 
 When you start a Workflow with `ExecuteWorkflow`, a `WorkflowExecution` is returned (which is the `we` variable above).
@@ -199,6 +245,50 @@ we = client.GetWorkflow(workflowID)
 var result string
 we.Get(ctx, &result)
 ```
+
+### ParentClosePolicy
+
+When creating a child Workflow, you can define a `ParentClosePolicy` that terminates, cancels, or abandons the Workflow Execution if the child's parent stops execution.
+
+- `ABANDON`: When the parent stops, don't do anything with the Child Workflow.
+- `TERMINATE`: When the parent stops, terminate the Child Workflow
+- `REQUEST_CANCEL`: When the parent stops, terminate the Child Workflow
+
+You can set policies per child, which means you can opt out of propagating terminates / cancels on a per-child basis.
+This is useful for starting Child Workflows asynchronously:
+
+1. Set `ChildWorkflowOptions.ParentClosePolicy` to `ABANDON` when creating a child workflow stub.
+2. Start the Child Workflow Execution asynchronously using `ExecuteChildWorkflow`.
+3. Call `GetChildWorkflowExecution` on the `ChildWorkflowFuture` returned by the `ChildWorkflowFuture`
+4. Wait for the `ChildWorkflowFuture`.
+   This indicates that the child successfully started (or start failed).
+5. Complete Parent Workflow Execution asynchronously.
+
+Steps 3 and 4 are needed to ensure that a Child Workflow Execution starts before the parent closes.
+If the parent initiates a Child Workflow Execution and then immediately completes, the child would never execute.
+
+```go
+func ParentWorkflow(ctx workflow.Context) error {
+    childWorkflow := workflow.ExecuteChildWorkflow(ctx, MyChildWorkflow)
+    // Wait for child to start
+    _ = childWorkflow.GetChildWorkflowExecution().Get(ctx, nil)
+    return nil
+}
+```
+
+## How to cancel a Workflow Execution
+
+There are many scenarios where it is necessary and even ideal to be able to cancel a Workflow Execution.
+Use the `CancelWorkflow` API to cancel a Workflow Execution using its Id.
+
+<!--SNIPSTART samples-go-cancellation-cancel-workflow-execution-trigger-->
+<!--SNIPEND-->
+
+Workflow Definitions can be written to handle execution cancellation requests.
+In the Workflow Definition below, there is a special Activity that handles clean up should the execution be cancelled.
+
+<!--SNIPSTART samples-go-cancellation-workflow-definition-->
+<!--SNIPEND-->
 
 ## How to get data in or out of a running Workflow
 
