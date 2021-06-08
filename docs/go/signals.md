@@ -72,6 +72,39 @@ if err != nil {
 
 You can find more example Signals usage in our [Go Samples](https://github.com/temporalio/samples-go).
 
+## Signalling with structs
+
+You can also send structs in signals, as long as the struct is [serializable](https://pkg.go.dev/go.temporal.io/sdk/converter#CompositeDataConverter.ToPayload).
+`Receive()` decodes data into a generic map, to decode the value into a struct you should use a library like [mapstructure](https://github.com/mitchellh/mapstructure).
+Note that Temporal only serializes public fields.
+
+```go
+// Make sure all fields you want to serialize are public. Temporal
+// serializes `Message`, not `message`.
+MySignal struct {
+	Message string
+}
+
+signalChan := workflow.GetSignalChannel(ctx, signalName)
+
+s := workflow.NewSelector(ctx)
+s.AddReceive(signalChan, func(c workflow.Channel, more bool) {
+    var rawSignalVal interface{}
+	c.Receive(ctx, &rawSignalVal)
+
+    // Using github.com/mitchellh/mapstructure
+    var signalVal MyStruct
+	err := mapstructure.Decode(rawSignalVal, &signalVal)
+    if err != nil {
+        workflow.GetLogger(ctx).Error("Received err!", err.Message)
+        return err
+    }
+
+    workflow.GetLogger(ctx).Info("Received message!", signalVal.Message)
+})
+s.Select(ctx)
+```
+
 ## Signalling regardless of running status
 
 You may not know if a Workflow is running and can accept a signal.
