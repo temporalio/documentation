@@ -248,7 +248,7 @@ func (s *UnitTestSuite) Test_ProgressWorkflow() {
 }
 ```
 
-## Debuggings
+## Debugging
 
 In addition to writing unit and integration tests, debugging your Workflows is also a very valuable testing tool. 
 You can debug your Workflow code using a debugger provided by your favorite IDE.
