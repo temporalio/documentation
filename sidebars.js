@@ -315,6 +315,7 @@ module.exports = {
         "node/determinism",
         "node/versioning",
         "node/workflow-scopes-and-cancellation",
+        "node/workflow-external-dependencies",
       ],
     },
     {
