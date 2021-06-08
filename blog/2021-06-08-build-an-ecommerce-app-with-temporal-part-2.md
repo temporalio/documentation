@@ -179,7 +179,7 @@ workflow.ExecuteActivity(ctx, SendAbandonedCartEmail, state.Email).Get(ctx, nil)
 ```
 
 The `ExecuteActivity()` function also exposes some neat options.
-For example, since [Temporal automatically retries failed activities](https://docs.temporal.io/docs/go-retries/), it would automatically retry the `SendAbandonedCart()` Activity for up to 5 times if `SendAbandonedCart()` returns an error.
+For example, since [Temporal automatically retries failed activities](https://docs.temporal.io/docs/go/retries/), it would automatically retry the `SendAbandonedCart()` Activity for up to 5 times if `SendAbandonedCart()` returns an error.
 You can configure how long Temporal will take while attempting to execute your Activity (including setting a retry policy), with `ScheduleToCloseTimeout`:
 
 ```go
