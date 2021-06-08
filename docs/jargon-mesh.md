@@ -318,30 +318,28 @@ The main benefit of local Activities is that they are much more efficient in uti
 
 ## Retry Policy
 
-Retry Policies instruct the Temporal system on how to retry a Workflow Execution failure or an Activity Execution failure.
+A Retry Policy instructs the Temporal Server on how to retry a Workflow Execution failure or an Activity Execution failure.
 
 - A retry is when an execution is tried again from the very beginning.
 - Workflow Executions **do not** start with a default Retry Policy, and therefore **do not** retry by default.
-- Activity Executions **do** start with a default Retry Policy.
-- Custom Retry Policies must be provided an execution is started.
+- Activity Executions **do** start with a default Retry Policy and therefore retry by default.
+- A custom Retry Policy must be provided when an execution is started.
 
 :::note
 
-Retry Policies are not required when starting executions.
-By default, Workflow Executions **do not** have a Retry Policy.
-Retrying Workflow Executions is a use-case specific.
+Workflow Executions should only be retried in specific scenarios, such as the following:
 
-- [Cron  Workflows](#cron-schedule) or some other stateless always-running Workflow Executions that benefit from retries.
-
-There are scenarios when not a single Activity but rather the whole part of a Workflow should be retried on failure.
-For example, a media encoding Workflow that downloads a file to a host, processes it, and then uploads the result back to storage.
+- Cron  Workflows or some other stateless always-running Workflow Executions that benefit from retries.
+- File processing or media encoding Workflow Executions that download files to a host.
 
 :::
+
+The following settings make up a Retry Policy:
 
 ### Initial Interval
 
 - **Description**: Amount of time that must elapse before the first retry occurs.
-  There is no default value and one must be supplied if a Retry Policy is provided.
+  The default value is 1 second.
 - **Use-case**: This is used as the base interval time for the backoff coefficient to multiply against.
 
 ### Backoff Coefficient
@@ -349,7 +347,7 @@ For example, a media encoding Workflow that downloads a file to a host, processe
 - **Description**: Retries can occur exponentially.
   The backoff coefficient specifies how fast the retry interval will grow.
   The default value is set to 2.0.
-  A backoff coefficient of 1.0 means that the retry interval will always equal the [Initial Interval](/docs/terms/#initial-interval).
+  A backoff coefficient of 1.0 means that the retry interval will always equal the [Initial Interval](#initial-interval).
 - **Use-case**: Use this to grow the interval between retries.
   By having a backoff coefficient, the first few retries happens relatively quickly to overcome intermittent failures, but subsequent retries will happen farther and farther apart to account for longer lasting outages.
   Use the [maximum interval option](#maximum-interval) to prevent the coefficient from growing the retry interval too much.
@@ -368,7 +366,7 @@ For example, a media encoding Workflow that downloads a file to a host, processe
   The default is unlimited.
   Setting it to 0 also means unlimited.
 - **Use-case**: This can be used to ensure that retries do not continue indefinitely.
-  However, in the majority of cases, we recommend relying on the [execution timeout](#execution-timeout) to limit the duration of the retries instead of this.
+  However, in the majority of cases, we recommend relying on the [Workflow Execution Timeout](/docs/concepts/workflows/#execution-timeout), for Workflow Executions, or the Schedule-To-Close Timeout, for Activity Executions, to limit the duration of the retries, instead of this.
 
 ### Non-Retryable Errors
 
