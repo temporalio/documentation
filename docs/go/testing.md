@@ -1,8 +1,10 @@
 ---
 id: testing
-title: Testing Workflows
-sidebar_label: Testing
+title: Testing and Debugging
+sidebar_label: Testing and Debugging
 ---
+
+## Testing
 
 The Temporal Go SDK provides a test framework to facilitate testing Workflow implementations.
 The framework is suited for implementing unit tests as well as functional tests of the Workflow logic.
@@ -245,3 +247,16 @@ func (s *UnitTestSuite) Test_ProgressWorkflow() {
 	s.Equal(value, 100)
 }
 ```
+
+## Debuggings
+
+In addition to writing unit and integration tests, debugging your Workflows is also a very valuable testing tool. 
+You can debug your Workflow code using a debugger provided by your favorite IDE.
+
+Note that when debugging your Workflow code, the Temporal Go SDK includes deadlock detection which fails a Workflow Task in case the code blocks over a second without relinquishing execution control. 
+Because of this you can often encounter a `PanicError: Potential deadlock detected` while stepping through Workflow code during debugging.
+
+To alleviate this issue, you can set the TEMPORAL_DEBUG environment variable to `true` before debugging your Workflow code. 
+Make sure to set TEMPORAL_DEBUG to true only during debugging.
+
+
