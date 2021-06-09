@@ -1,14 +1,18 @@
 # External Dependencies
 
-:::caution
-This is an advanced feature and should be used with care.
-:::
+import CustomWarning from "../shared/CustomWarning.js"
+
+<CustomWarning title="Advanced feature" color="var(--ifm-color-info)">
+
+This is an advanced feature and requires a good grasp of the basic SDK concepts
+
+</CustomWarning>
 
 Workflows in Temporal may be replayed from the beginning of their history when resumed.
 In order for Temporal to recreate the exact state Workflow code was in, the code is required to be [fully deterministic](/docs/node/determinism).
 To prevent breaking determinism, in the Node SDK, Workflow code runs in an isolated execution environment limited to functionality provided by the SDK.
 
-External Dependencies is an isolation breaking mechanism that allows injecting functions from the main NodeJS environment into a Workflow isolate.
+External Dependencies is an isolation breaking mechanism that allows injecting replay-aware functions from the main NodeJS environment into a Workflow isolate.
 They are typically used in order to inject custom instrumentation (e.g. logger) functions into the isolate.
 
 ## [Injection configuration](https://nodejs.temporal.io/api/modules/worker#injecteddependencyfunction)
@@ -28,6 +32,11 @@ The different modes for an injected function to be applied to the isolate are do
 - `SYNC`
 - `SYNC_IGNORED`
 - `SYNC_PROMISE`
+
+:::warning
+Only `IGNORED` apply modes are safe to use since they cannot break determinism.<br/>
+Use other modes only if you're certain you know what you're doing.
+:::
 
 ### Function arguments and return value
 
