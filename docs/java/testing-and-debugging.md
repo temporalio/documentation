@@ -4,6 +4,8 @@ title: Testing and Debugging
 sidebar_label: Testing and Debugging
 ---
 
+## Overview
+
 The Temporal Java SDK provides a test framework to facilitate Workflow unit and integration testing.
 The test framework provides a `TestWorkflowEnvironment` class which includes an in-memory implementation
 of the Temporal service that supports automatic time skipping. This allows you to
@@ -11,6 +13,32 @@ easily test long-running Workflows in seconds, without having to change your Wor
 
 You can use the provided `TestWorkflowEnvironment` with a Java unit testing framework of your choice,
 such as JUnit.
+
+## Setup testing dependency
+
+To start using the Java SDK test framework, you need to add [`io.temporal:temporal-testing`](https://search.maven.org/artifact/io.temporal/temporal-testing) 
+as a dependency to your project:
+
+**[Apache Maven](https://maven.apache.org/)**:
+
+```maven
+<dependency>
+    <groupId>io.temporal</groupId>
+    <artifactId>temporal-testing</artifactId>
+    <version>1.0.7</version>
+    <scope>test</scope>
+</dependency>
+```
+
+**[Gradle Groovy DSL](https://gradle.org/)**:
+
+```groovy
+testImplementation group: 'io.temporal', name: 'temporal-testing', version: '1.0.7'
+```
+
+Make sure to set the version that matches your dependency version of the [Temporal Java SDK](https://github.com/temporalio/sdk-java).
+
+## Sample unit tests
 
 The following code implements unit tests for the `HelloActivity` sample:
 
@@ -110,6 +138,10 @@ public class HelloActivityTest {
 }
 ```
 
+You can find all unit tests for the [Temporal Java samples](https://github.com/temporalio/samples-java) repository in [its test package](https://github.com/temporalio/samples-java/tree/master/src/test/java/io/temporal/samples).
+
+## Debugging 
+
 In addition to writing unit and integration tests, debugging your Workflows is also a very
 valuable testing tool. You can debug your Workflow code using a debugger provided
 by your favorite Java IDE.
@@ -120,4 +152,4 @@ execution control. Because of this you can often encounter the `PotentialDeadloc
 Exception while stepping through Workflow code during debugging.
 
 To alleviate this issue, you can set the `TEMPORAL_DEBUG` environment variable to true before debugging your
-Workflow code.
+Workflow code. Make sure to set `TEMPORAL_DEBUG` to true only during debugging.
