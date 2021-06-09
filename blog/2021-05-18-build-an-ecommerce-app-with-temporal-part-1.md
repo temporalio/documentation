@@ -160,3 +160,5 @@ Temporal is responsible for persisting and distributing `state`.
 Temporal introduces a new way of building web applications; instead of storing a shopping cart in a database, you can represent a shopping cart as a long-living Workflow.
 For simple CRUD applications like this shopping cart app, this pattern doesn't really make things significantly easier.
 In the next post, we'll look at a case where Temporal's long-living Workflows shine: sending a reminder email if the user abandons their cart.
+
+> Update: You can now [find Part 2 here](https://docs.temporal.io/blog/build-an-ecommerce-app-with-temporal-part-2-reminder-emails/)!
