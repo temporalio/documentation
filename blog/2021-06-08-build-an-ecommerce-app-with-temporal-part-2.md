@@ -19,7 +19,7 @@ import TabItem from '@theme/TabItem';
 
 ## Introduction
 
-In [Part 1](https://gist.github.com/vkarpov15/d0b4d3b1eb8ced160bd68172323eb379#file-part_1-md), you built out a simple shopping cart app using a long-living Workflow to track the state of the cart.
+In [Part 1](https://docs.temporal.io/blog/build-an-ecommerce-app-with-temporal-part-1), you built out a simple shopping cart app using a long-living Workflow to track the state of the cart.
 Instead of storing the cart in a database, Temporal lets you represent the cart as a function invocation, using Signals to update the cart and Queries to get the state of the cart.
 
 ```go
