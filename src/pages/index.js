@@ -139,7 +139,7 @@ function TemporalCloud() {
             operating the technology in production environments.
           </li>
           <li>
-            <strong>Scale</strong>: Our design partners are are highly valued
+            <strong>Scale</strong>: Our design partners are multibillion dollar
             publicly listed companies.
           </li>
           <li>
