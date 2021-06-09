@@ -23,6 +23,12 @@ A boolean controling whether or not the injected function will be called during 
 
 The different modes for an injected function to be applied to the isolate are documented in the [API reference](https://nodejs.temporal.io/api/enums/worker.applymode).
 
+- `ASYNC`
+- `ASYNC_IGNORED`
+- `SYNC`
+- `SYNC_IGNORED`
+- `SYNC_PROMISE`
+
 ### Function arguments and return value
 
 Functions configured to use `ASYNC*` apply modes **always** copy their arguments and return value, which limits them to primitive types such as `number`, `string`, `array` and `object`.
