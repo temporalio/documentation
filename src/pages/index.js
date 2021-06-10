@@ -64,10 +64,7 @@ function Feature({imageUrl, title, description, goto}) {
 function SelectTutorial() {
   const [clicked, setClicked] = React.useState(false);
   return (
-    <div
-      onMouseEnter={() => setClicked(true)}
-      onMouseLeave={() => setClicked(false)}
-    >
+    <div onMouseEnter={() => setClicked(true)}>
       <div>
         {clicked ? (
           <div>

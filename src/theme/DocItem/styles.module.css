@@ -45,3 +45,7 @@
     --ifm-link-color: var(--ifm-color-content-inverse);
   }
 }
+
+.formFeature {
+  --ifm-button-border-color: var(--ifm-color-content);
+}

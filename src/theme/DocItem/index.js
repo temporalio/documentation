@@ -119,9 +119,7 @@ function DocItem(props) {
 
 function TemporalCloudForm() {
   return (
-    <div
-    // className={styles.formFeature}
-    >
+    <div className={styles.formFeature}>
       <h2>Get notified of updates</h2>
       <form
         action="https://temporal.us17.list-manage.com/subscribe/post?u=2334a0f23e55fd1840613755d&amp;id=bbbbd4709f"
