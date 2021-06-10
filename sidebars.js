@@ -306,15 +306,22 @@ module.exports = {
           items: ["node/hello-world"],
         },
         {
+          type: "category",
+          label: "Workflows",
+          items: [
+            "node/determinism",
+            "node/versioning",
+            "node/workflow-scopes-and-cancellation",
+            "node/workflow-external-dependencies",
+          ],
+        },
+        {
           type: "doc",
           id: "node/package-initializer",
           label: "Package initializer",
         },
         "node/tls",
         "node/logging",
-        "node/determinism",
-        "node/versioning",
-        "node/workflow-scopes-and-cancellation",
       ],
     },
     {

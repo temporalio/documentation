@@ -2,6 +2,7 @@ import React from "react";
 
 export default function CustomWarning({
   children,
+  title = "experimental",
   color = "var(--ifm-color-warning)", // you can customize with any color you wish
 }) {
   const [isOpen, setOpen] = React.useState(false);
@@ -40,7 +41,7 @@ export default function CustomWarning({
               ></path>
             </svg>
           </span>
-          experimental
+          {title}
         </h5>
       </button>
     );
@@ -80,7 +81,7 @@ export default function CustomWarning({
             ></path>
           </svg>
         </span>
-        experimental
+        {title}
       </h5>
       <div
         style={{
