@@ -16,7 +16,7 @@ such as JUnit.
 
 ## Setup testing dependency
 
-To start using the Java SDK test framework, you need to add [`io.temporal:temporal-testing`](https://search.maven.org/artifact/io.temporal/temporal-testing) 
+To start using the Java SDK test framework, you need to add [`io.temporal:temporal-testing`](https://search.maven.org/artifact/io.temporal/temporal-testing)
 as a dependency to your project:
 
 **[Apache Maven](https://maven.apache.org/)**:
@@ -140,7 +140,7 @@ public class HelloActivityTest {
 
 You can find all unit tests for the [Temporal Java samples](https://github.com/temporalio/samples-java) repository in [its test package](https://github.com/temporalio/samples-java/tree/master/src/test/java/io/temporal/samples).
 
-## Debugging 
+## Debugging
 
 In addition to writing unit and integration tests, debugging your Workflows is also a very
 valuable testing tool. You can debug your Workflow code using a debugger provided
