@@ -113,3 +113,5 @@ s := temporal.NewServer(
 	temporal.WithCustomMetricsReporter(myReporter),
 )
 ```
+
+You can see the [Uber tally docs on custom reporter](https://github.com/uber-go/tally#report-your-metrics) and see a community implementation of [a reporter for Datadog's `dogstatsd` format](https://github.com/temporalio/temporal/pull/998#issuecomment-857884983).
