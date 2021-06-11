@@ -74,7 +74,7 @@ You can find more example Signals usage in our [Go Samples](https://github.com/t
 
 ## Signalling with structs
 
-You can also send structs in signals, as long as the struct is [serializable](https://pkg.go.dev/go.temporal.io/sdk/converter#CompositeDataConverter.ToPayload).
+You can also send structs in Signals, as long as the struct is [serializable](https://pkg.go.dev/go.temporal.io/sdk/converter#CompositeDataConverter.ToPayload).
 `Receive()` decodes data into a generic map, to decode the value into a struct you should use a library like [mapstructure](https://github.com/mitchellh/mapstructure).
 Note that Temporal only serializes public fields.
 
