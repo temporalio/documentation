@@ -18,7 +18,7 @@ export async function greet(name: string): Promise<string> {
 Below is the equivalent vanilla JavaScript implementation.
 
 ```javascript
-'use strict';
+"use strict";
 
 async function greet(name) {
   return `Hello, ${name}!`;
@@ -34,13 +34,13 @@ This [may cause issues with certain npm modules](https://www.getrevue.co/profile
 You can import the above `greet()` Activity in a Workflow as shown below, assuming that the `greet` function is in the `src/activities/greeter.js` file.
 
 ```typescript
-import { greet } from '@activities/greeter';
+import {greet} from "@activities/greeter";
 ```
 
 You can also use `require()` as shown below.
 
 ```javascript
-const { greet } = require('@activities/greeter');
+const {greet} = require("@activities/greeter");
 ```
 
 Currently, you need to use the `@activities` prefix.
