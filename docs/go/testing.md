@@ -256,4 +256,8 @@ Note that when debugging your Workflow code, the Temporal Go SDK includes deadlo
 Because of this you can often encounter a `PanicError: Potential deadlock detected` while stepping through Workflow Definitions during debugging.
 
 To alleviate this issue, you can set the TEMPORAL_DEBUG environment variable to `true` before debugging your Workflow code.
+::: note
+
 Make sure to set TEMPORAL_DEBUG to true only during debugging.
+
+:::
