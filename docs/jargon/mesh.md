@@ -865,7 +865,17 @@ To support such use cases, Temporal allows Activity implementations that do not 
 
 ## Temporal Server
 
+The Temporal Server is highly scalable and multi-tenant, capable of running millions of Workflows simultaneously.
+It employs various sharding techniques to ensure scalability internally.
+And it is capable of scaling horizontally by running multiple instances on multiple hosts.
+
+The Server itself does not execute application code, but instead tracks the state of it using queues, timers, and a database.
+
 ### Multi-cluster
+
+The "Server" itself is actually a cluster of four services and a database.
+
+Instances of the Server can run as independent processes or be grouped together into shared processes on one or more physical or virtual machines. But for live environments make sure each service is running independently, as they each have different scale out requirements and troubleshooting becomes easier.
 
 ### Namespace
 
