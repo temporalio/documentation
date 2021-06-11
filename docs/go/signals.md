@@ -80,7 +80,8 @@ Note that Temporal only serializes public fields.
 
 ```go
 // Make sure all fields you want to serialize are public. Temporal
-// serializes `Message`, not `message`.
+// serializes `Message`, not `message` because fields that start with lowercase
+// letters are private in Go.
 MySignal struct {
 	Message string
 }
