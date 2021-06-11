@@ -1,7 +1,7 @@
 ---
 id: testing
-title: Testing and Debugging
-sidebar_label: Testing and Debugging
+title: Testing and debugging
+sidebar_label: Testing and debugging
 ---
 
 ## Testing
