@@ -19,12 +19,11 @@ A fault-oblivious stateful function that orchestrates Activities.
 - A Workflow has full control over which [**Activities**](#activity) are executed, and in which order.
 - A Workflow must not affect the external world directly, only through [**Activities**](#activity).
 - What makes Workflow code a Workflow is that its state is preserved by Temporal.
-Therefore any failure of a [**Worker**](#worker) process that hosts the Workflow code does not affect the [**Workflow Execution**](#workflow-execution).
-The Workflow continues as if these failures did not happen.
-At the same time, [**Activities**](#activity) can fail any moment for any reason.
+  Therefore any failure of a [**Worker**](#worker) process that hosts the Workflow code does not affect the [**Workflow Execution**](#workflow-execution).
+  The Workflow continues as if these failures did not happen.
+  At the same time, [**Activities**](#activity) can fail any moment for any reason.
 - Because Workflow code is fully fault-oblivious, it is guaranteed to get notifications about [**Activity**](#activity) failures or timeouts and act accordingly.
 - There is no limit to the duration of a Workflow Execution.
-
 
 The Temporal programming model aims to encapsulate and implement the entire business logic in a simple function or object method.
 Thanks to the Temporal Server, the function/method is stateful, and the implementer doesn't need to employ any additional systems to ensure durability and fault tolerance.
@@ -39,7 +38,7 @@ The Temporal Server has practically no scalability limits on the number of open 
 
 ### Workflow Definition
 
-A Workflow Definition is the static code written in a  given language, such as Go, Java, or PHP that specifies the constraints of the Workflow Execution.
+A Workflow Definition is the static code written in a given language, such as Go, Java, or PHP that specifies the constraints of the Workflow Execution.
 
 ### Workflow Type
 
@@ -75,10 +74,7 @@ A Workflow Task is a [**Task**](#task) that contains invocation information for 
 - After the new event is handled, the Workflow Task is completed with a list of [**Commands**](#command).
 - Handling of a Workflow Task is usually very fast and is not related to the duration of operations that the [**Workflow**](#workflow) invokes.
 
-
 ### Workflow Task Queue
-
-
 
 ### Workflow Task Execution
 
@@ -130,7 +126,7 @@ There are a few important things to consider with Workflow timeout settings:
 
 A Workflow Id identifies a [Workflow Execution](/docs/terms/#workflow-execution).
 Custom Workflow Ids are supported.
-The Workflow Id is meant for business level identification such as a *customer Id* or an *order Id*.
+The Workflow Id is meant for business level identification such as a _customer Id_ or an _order Id_.
 The Temporal Server guarantees the uniqueness of this Id within a [Namespace](/docs/server/namespaces) based on the Workflow Id Re-use Policy.
 
 Any attempt to start a [Workflow Execution](/docs/terms/#workflow-execution) that has the same Id of another Workflow Execution that has a [Re-use Policy](/docs/terms/#workflow-id-re-use-policy) that does not allow it, is going to fail with a **"Workflow execution already started"** error.
@@ -244,6 +240,7 @@ It is the responsibility of the application developer to configure Activity Exec
   We recommend setting this timeout to the maximum time a Workflow is willing to wait for an Activity Execution in the presence of all possible Worker outages.
   This timeout **does not** trigger any retries regardless of the Retry Policy.
   Do not use this timeout unless you know what you are doing.
+
 #### Start-To-Close
 
 - **Description**: Maximum time for a single Activity Execution attempt.
@@ -281,11 +278,7 @@ A Task that contains invocation information for an [**Activity**](#activity) tha
 
 ### Activity Task Execution
 
-
-
 ### Activity Task Queue
-
-
 
 ### Local Activity
 
@@ -373,7 +366,7 @@ A Retry Policy instructs the Temporal Server on how to retry a Workflow Executio
 
 Workflow Executions should only be retried in specific scenarios, such as the following:
 
-- Cron  Workflows or some other stateless always-running Workflow Executions that benefit from retries.
+- Cron Workflows or some other stateless always-running Workflow Executions that benefit from retries.
 - File processing or media encoding Workflow Executions that download files to a host.
 
 :::
@@ -441,7 +434,6 @@ For example, an IoT device generates events and a certain sequence of events ind
 
 Another use case is a customer loyalty program. Every time a customer makes a purchase, an event is generated into Apache Kafka for downstream systems to process. A loyalty service Kafka consumer receives the event and signals a customer Workflow about the purchase using the Temporal `signalWorkflowExecution` API. The Workflow accumulates the count of the purchases. If a specified threshold is achieved, the Workflow executes an Activity that notifies some external service that the customer has reached the next level of loyalty program. The Workflow also executes Activities to periodically message the customer about their current status.
 
-
 ### History Entry
 
 There are two types of History Entries that Temporal tracks for each Workflow Execution
@@ -451,14 +443,12 @@ There are two types of History Entries that Temporal tracks for each Workflow Ex
 
 History entries are defined as "Event Types" in the Server API [event_type.proto](https://github.com/temporalio/api/blob/master/temporal/api/enums/v1/event_type.proto) file.
 
-
-
 - All Events are recorded in the [**Event History**](#event-history).
 
 #### Command
 
 - Command Events are events that correspond to [**Commands**](#command) produced by the [**Workflow Worker**](#worker).
-Any action requested by the [**Workflow**](#workflow) durable function is called a Command.
+  Any action requested by the [**Workflow**](#workflow) durable function is called a Command.
 
 - Scheduling an [**Activity**](#activity), canceling a child [**Workflow**](#workflow), or starting a timer are all Commands for example.
 - A [**Workflow Task**](#workflow-task) contains an optional list of Commands.
@@ -468,7 +458,7 @@ Any action requested by the [**Workflow**](#workflow) durable function is called
 #### Events
 
 - All other events represent various external occurrences that the [**Workflow**] is expected to react to such as an [**Activity**](#activity) completion, a timer firing, a cancellation request, etc.
-If you are new to debugging and monitoring your Workflows, check the relevant sections in our [production deployment guide](https://docs.temporal.io/docs/server/production-deployment).
+  If you are new to debugging and monitoring your Workflows, check the relevant sections in our [production deployment guide](https://docs.temporal.io/docs/server/production-deployment).
 
 ##### Workflow Execution Started
 
@@ -670,7 +660,6 @@ This event type indicates that the Temporal Server cannot Signal the targeted Wo
 
 This event type indicates that the Workflow search attributes should be updated and synchronized with the visibility store.
 
-
 ## Archival
 
 Archival is a feature that automatically moves [**Event Histories**](#event-history) from normal persistence to a blob store after the [**Workflow**](#workflow) retention period.
@@ -686,7 +675,6 @@ A Client Stub is a client-side proxy in the Java SDK which is used to make remot
 
 - To start a [**Workflow**](#workflow), for example, a Stub object which represents the [**Workflow**](#workflow) is created through a special API. Then the Stub is used to start, query, or signal the corresponding [**Workflow**](#worker).
 - The Go SDK does not make use of Client Stubs.
-
 
 ## Signal
 
@@ -729,7 +717,6 @@ Stack Trace Query
 
 The Temporal client libraries expose some predefined queries out of the box. Currently the only supported built-in query is _stack_trace_. This query returns stacks of all Workflow owned threads. This is a great way to troubleshoot any Workflow in production.
 
-
 ## Task
 
 A Task is the context needed to execute a specific [**Activity**](#activity) or [**Workflow**](#workflow) state transition.
@@ -762,7 +749,6 @@ Here are some use cases for employing multiple Activity task queues in a single 
 - _Routing Activity to a specific process_. For example, some Activities load large data sets and caches it in the process. The Activities that rely on this data set should be routed to the same process.
 - _Multiple priorities_. One task queue per priority and having a worker pool per priority.
 - _Versioning_. A new backwards incompatible implementation of an Activity might use a different task queue.
-
 
 There are a few different perspectives from which we can talk about Task Queues.
 
@@ -829,7 +815,6 @@ You can find implementation examples that illustrate this technique for the foll
 The Go SDK comes with a [Session](/docs/go/sessions) feature that abstracts the need to explicitly route tasks for this use case.
 The [Go file processing example](https://github.com/temporalio/samples-go/tree/master/fileprocessing) showcases that as well.
 
-
 ### Task Token
 
 A Task Token is a unique correlation Id for a Temporal [**Activity Execution**](#activity-execution).
@@ -855,7 +840,6 @@ Then it is up to the Activity implementation to perform all the necessary cleanu
 It is up to the Workflow implementation to decide if it wants to wait for the Activity cancellation confirmation or just proceed without waiting.
 
 Another common case for Activity heartbeat failure is that the Workflow that invoked it is in a completed state. In this case an Activity is expected to perform cleanup as well.
-
 
 ## Asynchronous Activity Completion
 
