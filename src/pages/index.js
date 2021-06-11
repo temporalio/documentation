@@ -64,10 +64,7 @@ function Feature({imageUrl, title, description, goto}) {
 function SelectTutorial() {
   const [clicked, setClicked] = React.useState(false);
   return (
-    <div
-      onMouseEnter={() => setClicked(true)}
-      onMouseLeave={() => setClicked(false)}
-    >
+    <div onMouseEnter={() => setClicked(true)}>
       <div>
         {clicked ? (
           <div>
@@ -139,7 +136,7 @@ function TemporalCloud() {
             operating the technology in production environments.
           </li>
           <li>
-            <strong>Scale</strong>: Our design partners are are highly valued
+            <strong>Scale</strong>: Our design partners are multibillion dollar
             publicly listed companies.
           </li>
           <li>
