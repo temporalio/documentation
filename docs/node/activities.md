@@ -1,13 +1,13 @@
 # Activities
 
 In Temporal, Activities are typically used to represent side effects, like making an HTTP request.
-Unlike [Workflows](/docs/node/logging#logging-from-workflows-and-activities), activities run in the standard Node.js environment, not an [isolate](https://www.npmjs.com/package/isolated-vm).
-So any code that needs to talk to the outside world, including importing modules, needs to be in an Activity.
+Unlike [Workflows](/docs/node/determinism), activities run in the standard Node.js environment, not an [isolate](https://www.npmjs.com/package/isolated-vm).
+So any code that needs to talk to the outside world needs to be in an Activity.
 
 ### Overview
 
 Below is a simple Activity that accepts a string parameter, appends a word to it, and returns the result.
-The Temporal Node SDK looks for any `.js` files in the `src/activities` directory, and automatically registers any exported functions as Activities.
+The Temporal Node SDK looks for any `.js` files in the `lib/activities` directory, and automatically registers any exported functions as Activities.
 
 ```typescript
 export async function greet(name: string): Promise<string> {
@@ -31,7 +31,7 @@ This [may cause issues with certain npm modules](https://www.getrevue.co/profile
 
 ### Importing and Using
 
-You can import the above `greet()` Activity in a Workflow as shown below, assuming that the `greet` function is in the `src/activities/greeter.js` file.
+You can import the above `greet()` Activity in a Workflow as shown below, assuming that the `greet` function is in the `lib/activities/greeter.js` file.
 
 ```typescript
 import { greet } from '@activities/greeter';
