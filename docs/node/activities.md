@@ -59,8 +59,7 @@ You can also use `require()` as shown below.
 ```javascript
 const {greet} = require("@activities/greeter");
 ```
-  
-  
+
 :::info
 
 Currently, you need to use the `@activities` prefix.
