@@ -9,17 +9,15 @@ So any code that needs to talk to the outside world needs to be in an Activity.
 Below is a simple Activity that accepts a string parameter, appends a word to it, and returns the result.
 The Temporal Node SDK looks for any `.js` files in the `lib/activities` directory, and automatically registers any exported functions as Activities.
 
-
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
 <Tabs
-  defaultValue="ts"
-  values={[
-    {label: 'TypeScript', value: 'ts'},
-    {label: 'JavaScript', value: 'js'},
-  ]
+defaultValue="ts"
+values={[
+{label: 'TypeScript', value: 'ts'},
+{label: 'JavaScript', value: 'js'},
+]
 }>
 
 <TabItem value="ts">
