@@ -59,6 +59,11 @@ You can also use `require()` as shown below.
 ```javascript
 const {greet} = require("@activities/greeter");
 ```
+  
+  
+:::info
 
 Currently, you need to use the `@activities` prefix.
 Do **not** import your Activity using the `'../activities/greeter'` path, otherwise your Activity will run in the same V8 isolate as your Workflow and your Activity will be subject to the same restrictions as your Workflow.
+
+:::
