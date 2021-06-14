@@ -360,7 +360,7 @@ A Retry Policy instructs the Temporal Server on how to retry a Workflow Executio
 - A retry is when an execution is tried again from the very beginning.
 - Workflow Executions **do not** start with a default Retry Policy, and therefore **do not** retry by default.
 - Activity Executions **do** start with a default Retry Policy and therefore retry by default.
-- A custom Retry Policy must be provided when an execution is started.
+- If a custom Retry Policy is provided it must be done so when an execution is started.
 
 :::note
 
