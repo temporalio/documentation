@@ -252,7 +252,7 @@ func (s *UnitTestSuite) Test_ProgressWorkflow() {
 
 You can use a debugger tool provided by your favorite IDE to debug your Workflow Definitions prior to testing or executing them.
 
-Note that when debugging your Workflow code, the Temporal Go SDK includes deadlock detection which fails a Workflow Task in case the code blocks over a second without relinquishing execution control.
+The Temporal Go SDK includes deadlock detection which fails a Workflow Task in case the code blocks over a second without relinquishing execution control.
 Because of this you can often encounter a `PanicError: Potential deadlock detected` while stepping through Workflow Definitions during debugging.
 
 To alleviate this issue, you can set the TEMPORAL_DEBUG environment variable to `true` before debugging your Workflow Definition.
