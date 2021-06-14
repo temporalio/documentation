@@ -1,126 +1,72 @@
-# Scopes and Cancellation
+# Workflow scopes and Cancellation
 
-Temporal Workflows have different types that can be cancelled:
+In the Node SDK, Workflows are represented internally by a tree of scopes where the main function runs in the root scope.
+Cancellation propagates from outer scopes to inner ones and is handled by catching `CancelledError`s
+thrown by cancellable operations (see below).
 
-- A timer or an Activity
-- An entire Workflow
-- A Workflow scope
+Scopes are created using the [`CancellationScope`](https://nodejs.temporal.io/api/classes/workflow.cancellationscope) constructor or the static helper methods
+[`cancellable`](https://nodejs.temporal.io/api/classes/workflow.cancellationscope#cancellable-1),
+[`nonCancellable`](https://nodejs.temporal.io/api/classes/workflow.cancellationscope#noncancellable),
+and [`withTimeout`](https://nodejs.temporal.io/api/classes/workflow.cancellationscope#withtimeout).
 
-Workflows are represented internally by a tree of scopes where the `main` function runs in the root scope.
-Cancellation propagates from outer scopes to inner ones and is handled by catching `CancellationError`s when `await`ing on `Promise`s.
-Each Activity and timer implicitly creates a new scope to support cancellation.
+When a `CancellationScope` is cancelled, it will propagate cancellation any child scopes and any cancellable operations created within it, such as:
 
-The following example demonstrates how to handle Workflow cancellation by an external client while an Activity is running.
+- Activities
+- Timers (created with the [`sleep`](https://nodejs.temporal.io/api/modules/workflow#sleep) function)
+- [`Trigger`](https://nodejs.temporal.io/api/classes/workflow.trigger)s
 
-```ts
-import {CancellationError} from "@temporalio/workflow";
-import {httpGetJSON} from "@activities";
+## Examples
 
-export async function main(url: string) {
-  let result: any = undefined;
-  try {
-    result = await httpGetJSON(url);
-  } catch (e) {
-    if (e instanceof CancellationError) {
-      console.log("Workflow cancelled");
-    } else {
-      throw e;
-    }
-  }
-  return result;
-}
-```
+#### Cancel a timer from Workflow code
 
-Scopes may be cancelled from Workflow code using `cancel`.
+<!--SNIPSTART nodejs-cancel-a-timer-from-workflow-->
+<!--SNIPEND-->
 
-```ts
-import {CancellationError, cancel, sleep} from "@temporalio/workflow";
+#### Alternatively the above can be written as
 
-export async function main() {
-  // Timers and Activities are automatically cancelled when their scope is cancelled.
-  // Awaiting on a cancelled scope with throw the original CancellationError.
-  const scope = sleep(1);
-  cancel(scope);
-  try {
-    await scope;
-  } catch (e) {
-    if (e instanceof CancellationError) {
-      console.log("Exception was propagated 👍");
-    }
-  }
-}
-```
+<!--SNIPSTART nodejs-cancel-a-timer-from-workflow-alternative-impl-->
+<!--SNIPEND-->
 
-In order to have fine-grained control over cancellation, the Workflow library exports 2 methods for explicitly creating scopes.
+#### Run multiple activities with a single deadline
 
-The first is `cancellationScope` which when cancelled will propagate cancellation to all child scopes such as timers, Activities and other scopes.
+<!--SNIPSTART nodejs-multiple-activities-single-timeout-workflow-->
+<!--SNIPEND-->
 
-```ts
-import {
-  CancellationError,
-  cancellationScope,
-  cancel,
-  sleep,
-} from "@temporalio/workflow";
-import {httpGetJSON} from "@activities";
+#### `nonCancellable` prevents cancellation from propagating to children
 
-export async function main(urls: string[], timeoutMs: number) {
-  const scope = cancellationScope(async () => {
-    return Promise.all(urls.map(httpGetJSON));
-  });
-  try {
-    const results = await Promise.race([
-      scope,
-      sleep(timeoutMs).then(() => {
-        cancel(scope);
-        // CancellationError rejects the race via scope
-        // Any code below this line may still run
-      }),
-    ]);
-    // Do something with the results
-  } catch (e) {
-    if (e instanceof CancellationError) {
-      console.log("Exception was propagated 👍");
-    }
-  }
-}
-```
+<!--SNIPSTART nodejs-non-cancellable-shields-children-->
+<!--SNIPEND-->
 
-The second is `shield` which prevents cancellation from propagating to child scopes.
-Note that by default it still throws `CancellationError` to be handled by waiters.
+#### `cancelRequested` may be awaited upon in order to make Workflow aware of cancellation while waiting on `nonCancellable` scopes
 
-```ts
-import {CancellationError, shield} from "@temporalio/workflow";
-import {httpGetJSON} from "@activities";
+<!--SNIPSTART nodejs-cancel-requested-with-non-cancellable-->
+<!--SNIPEND-->
 
-export async function main(url: string) {
-  let result: any = undefined;
-  try {
-    // Shield and await completion unless cancelled
-    result = await shield(async () => httpGetJSON(url));
-  } catch (e) {
-    if (e instanceof CancellationError) {
-      console.log("Exception was propagated 👍");
-    }
-  }
-  return result; // Could be undefined
-}
-```
+#### Handle Workflow cancellation by an external client while an Activity is running
 
-In case the result of the shielded Activity is needed despite the cancellation, pass `false` as the second argument to `shield` (`throwOnCancellation`).
-To see if the Workflow was cancelled while waiting, check `Context.cancelled`.
+<!--SNIPSTART nodejs-handle-external-workflow-cancellation-while-activity-running-->
+<!--SNIPEND-->
 
-```ts
-import {Context, shield} from "@temporalio/workflow";
-import {httpGetJSON} from "@activities";
+#### Complex flows may be achieved by nesting cancellation scopes
 
-export async function main(url: string) {
-  const result = await shield(async () => httpGetJSON(url), false);
-  if (Context.cancelled) {
-    console.log("Workflow cancelled");
-  }
-  return result;
-}
-```
+<!--SNIPSTART nodejs-nested-cancellation-scopes-->
+<!--SNIPEND-->
 
-More complex flows may be achieved by nesting `cancellationScope`s and `shield`s.
+#### Sharing promises between scopes
+
+Operations like timer and Activites are cancelled by the cancellation scope they were created in, the Promise returned by these operation may be awaited upon in different scopes.
+
+<!--SNIPSTART nodejs-shared-promise-scopes-->
+<!--SNIPEND-->
+
+<!--SNIPSTART nodejs-shield-awaited-in-root-scope-->
+<!--SNIPEND-->
+
+#### Callbacks and cancellation scopes
+
+Callbacks are not particularly useful in the Workflows because all meaningful asynchronous operations return a Promise.
+
+In the odd case that user code utilizes callbacks, CancellationScope.cancelRequested can be used to subscribe to cancellation.
+
+<!--SNIPSTART nodejs-cancellation-scopes-with-callbacks-->
+<!--SNIPEND-->
