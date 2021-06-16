@@ -157,7 +157,8 @@ While you can control intervals between retries and maximum number of retries in
 
 ## Heartbeat Timeout
 
-For long running activities, we use the `HeartbeatTimeout` to create more frequent pingbacks from the Activity Worker to Temporal Server. This allows us to retry failures more quickly than the `StartToCloseTimeout` which is necessarily set to as long as the longest possible activity.
+For long running activities, we recommend recording heartbeats to create more frequent pingbacks from the Activity Worker to Temporal Server. 
+Then, set a `HeartbeatTimeout` to create a failure when Temporal fails to receive a heartbeat from your activity at the expected frequency.
 
 ![image](https://user-images.githubusercontent.com/6764957/122290237-1ac8b480-cf26-11eb-9eb9-0e35d56e281f.png)
 
@@ -198,6 +199,8 @@ while ((read = inputStream.read(bytes)) != -1) {
 
 </TabItem>
 </Tabs>
+
+Setting a `HeartbeatTimeout` allows us to retry activities more quickly (e.g. the next minute after a heartbeat is missed) than the `StartToCloseTimeout`, which is necessarily set to as long as the longest possible activity (e.g. five hours later when we are sure the activity should have been completed).
 
 There are some minor nuances to heartbeats that may be of interest:
 
