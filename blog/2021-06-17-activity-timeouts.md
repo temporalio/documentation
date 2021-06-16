@@ -5,7 +5,7 @@ tags:
   - timeouts
 posted_on_: 2021-06-17T00:00:09Z
 slug: activity-timeouts
-title: 'The 4 Types of Activity Timeouts in TEmporal'
+title: 'The 4 Types of Activity Timeouts in Temporal'
 author: swyx
 author_title: Head of Developer Experience
 author_image_url: https://avatars.githubusercontent.com/u/6764957?v=4
@@ -50,16 +50,80 @@ There are 4 Timeouts in Temporal — 2 that are commonly used, and 2 that are on
 
 To really understand how timeouts work, we should understand the typical lifecycle of an activity as it journeys through the various parts of the system.
 
-- **Step 1 (Workflow Worker)**: An activity `Foo` is first invoked inside of a Workflow Worker on Task Queue `Bar`. The precise method of invocation differs by SDK:
-    - TODO: Insert sample code in 4 languages
-    - Behind the scenes, the SDK transforms this to a `ScheduleActivity` Command, which is sent to the Temporal Server. This Command includes various metadata, including the activity type (`Foo`), activity task queue (`Bar`), activity ID, and `RetryPolicy` (if not specified, Temporal uses a default policy).
-- **Step 2 (Temporal Server)**: Receiving the Command, Temporal Server then sets up the mutable state for that workflow and activity ID, and also adds an `ActivityTask` to the `Bar` Activity Queue.
-    - There is an atomic guarantee that these both happen together, to prevent race conditions. We explained why this is important and how Temporal accomplishes this in [Designing A Workflow Engine](https://docs.temporal.io/blog/workflow-engine-principles/).
-    - The activity is now in `SCHEDULED` state.
-- **Step 3 (Activity Worker)**: An Activity Worker that has been polling for the `Bar` activity queue picks up the `ActivityTask` and begins execution.
-    - The activity is now in `STARTED` state.
-- **Step 4 (Temporal Server)**: Once the activity finishes successfully, the Activity Worker sends a `CompleteActivityTask` message (together with the result of the activity) to Temporal Server, which now gives control back to the Workflow Worker to continue to the next line of code and repeat the process.
-    - The activity is now in `CLOSED` state.
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### Step 1 - Workflow Worker
+
+An activity `Foo` is first invoked inside of a Workflow Worker on Task Queue `Bar`. The precise method of invocation differs by SDK:
+
+<Tabs
+  defaultValue="go"
+  values={[
+    {label: 'Go', value: 'go'},
+    {label: 'Java', value: 'java'},
+  ]
+}>
+
+<TabItem value="go">
+
+```go
+var result string
+err := workflow.ExecuteActivity(ctx, SimpleActivity, value).Get(ctx, &result)
+if err != nil {
+        return err
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@WorkflowInterface
+public interface SimpleWorkflow {
+
+    @WorkflowMethod
+    String simpleWorkflowMethod(String someArg);
+
+}
+
+public static class SimpleWorkflowImpl implements SimpleWorkflow {
+    private final SimpleActivities activities =
+        Workflow.newActivityStub(
+            SimpleActivities.class,
+            ActivityOptions.newBuilder().setStartToCloseTimeout(Duration.ofSeconds(2)).build());
+
+    @Override
+    public String simpleWorkflowMethod(String name) {
+      // This is a blocking call that returns only after the activity has completed.
+      return activities.simpleActivity("Hello", name);
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+Behind the scenes, the SDK transforms this to a `ScheduleActivity` Command, which is sent to the Temporal Server. This Command includes various metadata, including the activity type (`Foo`), activity task queue (`Bar`), activity ID, and `RetryPolicy` (if not specified, Temporal uses a default policy).
+
+### Step 2 - Temporal Server
+
+Receiving the Command, Temporal Server then sets up the mutable state for that workflow and activity ID, and also adds an `ActivityTask` to the `Bar` Activity Queue.
+There is an atomic guarantee that these both happen together, to prevent race conditions. We explained why this is important and how Temporal accomplishes this in [Designing A Workflow Engine](https://docs.temporal.io/blog/workflow-engine-principles/).
+
+> The activity is now in `SCHEDULED` state.
+
+### Step 3 - Activity Worker 
+
+An Activity Worker that has been polling for the `Bar` activity queue picks up the `ActivityTask` and begins execution.
+
+> The activity is now in `STARTED` state.
+
+### Step 4 - Temporal Server
+
+Once the activity finishes successfully, the Activity Worker sends a `CompleteActivityTask` message (together with the result of the activity) to Temporal Server, which now gives control back to the Workflow Worker to continue to the next line of code and repeat the process.
+
+> The activity is now in `CLOSED` state.
 
 We have just described the "Happy Path" of an activity. However, what happens when a worker crashes midway through an execution?
 
@@ -96,7 +160,43 @@ For long running activities, we use the `HeartbeatTimeout` to create more freque
 
 By their nature, Heartbeats must be recorded from Activity code using SDK APIs:
 
-TODO INSERT HEARTBEAT API
+
+
+<Tabs
+  defaultValue="go"
+  values={[
+    {label: 'Go', value: 'go'},
+    {label: 'Java', value: 'java'},
+  ]
+}>
+
+<TabItem value="go">
+
+```go
+progress := 0
+for hasWork {
+    // Send heartbeat message to the server.
+    activity.RecordHeartbeat(ctx, progress)
+    // Do some work.
+    ...
+    progress++
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+while ((read = inputStream.read(bytes)) != -1) {
+  totalRead += read;
+  f.write(bytes, 0, read);
+  // Let the Server know about the download progress.
+  Activity.getExecutionContext().heartbeat(totalRead);
+}
+```
+
+</TabItem>
+</Tabs>
 
 There are some minor nuances to heartbeats that may be of interest:
 
