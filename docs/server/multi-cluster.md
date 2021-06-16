@@ -12,7 +12,9 @@ Temporal's Multi-cluster Replication feature is considered **experimental** and 
 
 </CustomWarning>
 
-This guide covers Temporal's Multi-cluster Replication capabilities.
+This guide introduces Temporal's Multi-cluster Replication capabilities. 
+You can set this up with [`clusterMetadata` configuration](/docs/server/configuration#clustermetadata), however this is only meant to be a conceptual guide rather than a detailed tutorial.
+Please reach out to us if you need to set this up.
 
 ## Overview
 
@@ -184,7 +186,8 @@ View in both Cluster A & B
 
 </details>
 
-Since Temporal is AP, during failover (change of active Temporal of a namespace), there exist case that more than one Cluster can modify a workflow, causing divergence of workflow history. Below shows how version history will look like under such conditions.
+
+Since Temporal is AP, during failover (change of active Temporal of a namespace), there exist cases where more than one Cluster can modify a workflow, causing divergence of workflow history. Below shows how version history will look like under such conditions.
 
 <details>
 <summary>Version history example (with data conflict)
@@ -308,7 +311,7 @@ Due to the nature of Multi-cluster Replication, i.e. workflow history events are
 
 ```
 | ------------- |          | ------------- |          | ------------- |
-| Cluster A |          | Network Layer |          | Cluster B |
+|   Cluster A   |          | Network Layer |          |   Cluster B   |
 | ------------- |          | ------------- |          | ------------- |
         |                          |                          |
         | Run 1 Replication Events |                          |
@@ -326,7 +329,7 @@ Due to the nature of Multi-cluster Replication, i.e. workflow history events are
         |                          | -----------------------> |
         |                          |                          |
 | ------------- |          | ------------- |          | ------------- |
-| Cluster A |          | Network Layer |          | Cluster B |
+|   Cluster A   |          | Network Layer |          |   Cluster B   |
 | ------------- |          | ------------- |          | ------------- |
 ```
 
@@ -334,7 +337,7 @@ Since run 2 appears in Cluster B first, run 1 cannot be replicated as runnable d
 
 Run 1 will be replicated similar to run 2, except run 1's workflow state will be zombie before run 1 reaches completion.
 
-### Workflow Task Processing
+## Workflow Task Processing
 
 In the context of Multi-cluster Replication, workflow mutable state is an entity which tracks all pending tasks.
 Prior to the introduction of Multi-cluster Replication, workflow history events are from a single branch, and Temporal server will only append new events to workflow history.
