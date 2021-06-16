@@ -5,7 +5,7 @@ tags:
   - timeouts
 posted_on_: 2021-06-17T00:00:09Z
 slug: activity-timeouts
-title: 'The 4 Types of Activity Timeouts in Temporal'
+title: 'The 4 Types of Activity Timeouts'
 author: swyx
 author_title: Head of Developer Experience
 author_image_url: https://avatars.githubusercontent.com/u/6764957?v=4
@@ -21,9 +21,9 @@ This post (together with the embedded talk) aims to give you a solid mental mode
 
 > Note: There are also workflow timeouts and retry policies you can set. This post only deals with *activity* timeouts.
 
-## 18 Minute Whiteboard Session
+## Talk Version: Whiteboard Session
 
-CEO Maxim Fateev explains the 4 Types of Timeouts you see in Temporal.
+You can watch this 18 minute talk where our CEO Maxim Fateev explains the 4 Types of Activity Timeouts you see in Temporal.
 
 import { ResponsivePlayer } from '../src/components'
 
@@ -41,10 +41,10 @@ Activities go through 3 main states in Temporal:
 
 There are 4 Timeouts in Temporal — 2 that are commonly used, and 2 that are only useful in specific cases:
 
-- ScheduleToClose: to limit maximum execution time including retries
-- StartToClose: to limit maximum execution time of a single invocation. We recommend ALWAYS setting this!
-- Heartbeat: For long running activities, to register more frequent health checks
-- ScheduleToStart: For queue timeouts and task routing, to limit maximum time that an activity waits in a task queue. This is rarely needed!
+- `ScheduleToClose`: to limit maximum execution time including retries
+- `StartToClose`: to limit maximum execution time of a single invocation. We recommend ALWAYS setting this!
+- `Heartbeat`: For long running activities, to register more frequent health checks
+- `ScheduleToStart`: For queue timeouts and task routing, to limit maximum time that an activity waits in a task queue. This is rarely needed!
 
 ## Lifecycle of an Activity
 
