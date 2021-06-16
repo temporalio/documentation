@@ -107,22 +107,23 @@ Behind the scenes, the SDK transforms this to a `ScheduleActivity` Command, whic
 
 ### Step 2 - Temporal Server
 
-> The activity is now in `SCHEDULED` state.
-
 Receiving the Command, Temporal Server then sets up the mutable state for that workflow and activity ID, and also adds an `ActivityTask` to the `Bar` Activity Queue.
-There is an atomic guarantee that these both happen together, to prevent race conditions. We explained why this is important and how Temporal accomplishes this in [Designing A Workflow Engine](https://docs.temporal.io/blog/workflow-engine-principles/).
+There is an atomic guarantee that these both happen together, to prevent race conditions. 
+We explained why this is important and how Temporal accomplishes this in [Designing A Workflow Engine](https://docs.temporal.io/blog/workflow-engine-principles/).
+
+> The activity is now in `SCHEDULED` state.
 
 ### Step 3 - Activity Worker 
 
-> The activity is now in `STARTED` state.
-
 An Activity Worker that has been polling for the `Bar` activity queue picks up the `ActivityTask` and begins execution.
+
+> The activity is now in `STARTED` state.
 
 ### Step 4 - Temporal Server
 
-> The activity is now in `CLOSED` state.
-
 Once the activity finishes successfully, the Activity Worker sends a `CompleteActivityTask` message (together with the result of the activity) to Temporal Server, which now gives control back to the Workflow Worker to continue to the next line of code and repeat the process.
+
+> The activity is now in `CLOSED` state.
 
 We have just described the "Happy Path" of an activity. However, what happens when a worker crashes midway through an execution?
 
@@ -158,8 +159,6 @@ For long running activities, we use the `HeartbeatTimeout` to create more freque
 ![image](https://user-images.githubusercontent.com/6764957/122290237-1ac8b480-cf26-11eb-9eb9-0e35d56e281f.png)
 
 By their nature, Heartbeats must be recorded from Activity code using SDK APIs:
-
-
 
 <Tabs
   defaultValue="go"
@@ -234,6 +233,4 @@ To resolve this, we could think about setting some timeout policies (for clarity
 
 ![image](https://user-images.githubusercontent.com/6764957/122290324-359b2900-cf26-11eb-93a6-5027fc98593b.png)
 
-I've even started jokingly referring to these timeouts internally and I've found some joy in correctly applying the each to a real life situation! 
-
-All that said, we've probably reached StartToClose timeout on this blogpost. Let us know if you have any other questions on how timeouts work in Temporal!
+Should we set a `ScheduleToStart` timeout? You could imagine candidates sitting a queue waiting to be interviewed, with not enough interviewer "workers" to process them. A timeout here wouldn't help much, because there's no other queue to put them on - better to set up monitoring and alerting on `ScheduleToStart` latency, and scale up workers accordingly as needed (autoscaling is [currently not possible](https://docs.temporal.io/docs/server/production-deployment/#faq-autoscaling-workers-based-on-task-queue-load)).
