@@ -15,7 +15,7 @@ release_version: V1.10.2
 
 <!--truncate-->
 
-Part of the benefit of moving business logic to Temporal is how it implements retries and timeouts for activities in a standardized way. However, understanding the terminology can be a bit intimidating at first glance. 
+Part of the benefit of moving business logic to Temporal is how it implements retries and timeouts for activities in a standardized way. This has the effect of adding a reliability layer atop unreliable activities and workers, in a durable and scalable fashion. However, understanding the terminology can be a bit intimidating at first glance. 
 
 This post (together with the embedded talk) aims to give you a solid mental model on what each activity timeout does and when to use it.
 
@@ -44,9 +44,9 @@ Activities go through 3 main states in Temporal:
 There are 4 Timeouts in Temporal — 2 that are commonly used, and 2 that are only useful in specific cases:
 
 - `ScheduleToClose`: to limit maximum execution time including retries
-- `StartToClose`: to limit maximum execution time of a single invocation. We recommend ALWAYS setting this!
-- `Heartbeat`: For long running activities, to register more frequent health checks
-- `ScheduleToStart`: For queue timeouts and task routing, to limit maximum time that an activity waits in a task queue. This is rarely needed!
+- `StartToClose`: to limit maximum execution time of a single invocation. **We recommend ALWAYS setting this!**
+- `Heartbeat`: *For long running activities*, to respond faster when a regular heartbeat fails to be recorded.
+- `ScheduleToStart`: *For queue timeouts and task routing*, to limit maximum time that an activity waits in a task queue. **This is rarely needed!**
 
 ## Lifecycle of an Activity
 
@@ -149,6 +149,9 @@ The tricky part of setting `StartToClose` is that it needs to be set longer than
 We use the `ScheduleToCloseTimeout` to control the overall maximum amount of time allowed for an activity execution, including all retries. This timeout only makes sense if the activity has a `RetryPolicy` with `MaximumAttempts > 1`.
 
 ![image](https://user-images.githubusercontent.com/6764957/122290183-0dabc580-cf26-11eb-913d-3dc74d5eb55f.png)
+
+If you let it, Temporal will retry a failing activity for up to 10 years! (with exponential backoff up to a defined maximum interval)
+Most Temporal developers will want to finetune how their system retries to balance user experience against the unreliability of the activity.
 
 While you can control intervals between retries and maximum number of retries in the `RetryPolicy`, `ScheduleToClose` is the best way to control retries based on *time elapsed*. We recommend using `ScheduleToClose` to limit retries rather than tweaking the number of `MaximumAttempts`, because that more closely matches desired user experience in the majority of cases.
 
