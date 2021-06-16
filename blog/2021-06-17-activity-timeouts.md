@@ -29,7 +29,9 @@ import { ResponsivePlayer } from '../src/components'
 
 <ResponsivePlayer url='https://www.youtube.com/watch?v=JK7WLK3ZSu8' />
 
-## TL;DR
+The rest of this post summarizes the main points covered in this whiteboard session, for those who prefer a written version.
+
+## Written Version: TL;DR
 
 ![image](https://user-images.githubusercontent.com/6764957/122289903-cde4de00-cf25-11eb-9d8e-2b5acfe94a9f.png)
 
