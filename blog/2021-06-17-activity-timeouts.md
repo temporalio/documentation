@@ -108,22 +108,22 @@ Behind the scenes, the SDK transforms this to a `ScheduleActivity` Command, whic
 
 ### Step 2 - Temporal Server
 
+> The activity is now in `SCHEDULED` state.
+
 Receiving the Command, Temporal Server then sets up the mutable state for that workflow and activity ID, and also adds an `ActivityTask` to the `Bar` Activity Queue.
 There is an atomic guarantee that these both happen together, to prevent race conditions. We explained why this is important and how Temporal accomplishes this in [Designing A Workflow Engine](https://docs.temporal.io/blog/workflow-engine-principles/).
 
-> The activity is now in `SCHEDULED` state.
-
 ### Step 3 - Activity Worker 
-
-An Activity Worker that has been polling for the `Bar` activity queue picks up the `ActivityTask` and begins execution.
 
 > The activity is now in `STARTED` state.
 
+An Activity Worker that has been polling for the `Bar` activity queue picks up the `ActivityTask` and begins execution.
+
 ### Step 4 - Temporal Server
 
-Once the activity finishes successfully, the Activity Worker sends a `CompleteActivityTask` message (together with the result of the activity) to Temporal Server, which now gives control back to the Workflow Worker to continue to the next line of code and repeat the process.
-
 > The activity is now in `CLOSED` state.
+
+Once the activity finishes successfully, the Activity Worker sends a `CompleteActivityTask` message (together with the result of the activity) to Temporal Server, which now gives control back to the Workflow Worker to continue to the next line of code and repeat the process.
 
 We have just described the "Happy Path" of an activity. However, what happens when a worker crashes midway through an execution?
 
