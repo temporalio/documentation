@@ -12,7 +12,7 @@ Temporal's Multi-cluster Replication feature is considered **experimental** and 
 
 </CustomWarning>
 
-This guide introduces Temporal's Multi-cluster Replication capabilities. 
+This guide introduces Temporal's Multi-cluster Replication capabilities.
 You can set this up with [`clusterMetadata` configuration](/docs/server/configuration#clustermetadata), however this is only meant to be a conceptual guide rather than a detailed tutorial.
 Please reach out to us if you need to set this up.
 
@@ -185,7 +185,6 @@ View in both Cluster A & B
 ```
 
 </details>
-
 
 Since Temporal is AP, during failover (change of active Temporal of a namespace), there exist cases where more than one Cluster can modify a workflow, causing divergence of workflow history. Below shows how version history will look like under such conditions.
 
