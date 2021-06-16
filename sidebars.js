@@ -16,8 +16,9 @@ module.exports = {
         "server/options",
         "server/security",
         "server/configuration",
-        "server/archive-data",
         "server/event-types",
+        "server/archive-data",
+        "server/multi-cluster"
       ],
     },
     {
