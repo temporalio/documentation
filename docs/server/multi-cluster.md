@@ -21,7 +21,6 @@ Please reach out to us if you need to set this up.
 Multi-cluster Replication is a feature which asynchronously replicates workflows from active cluster to other passive clusters, for backup & state reconstruction.
 When necessary, the customer can failover to any of the clusters which have the backup for high availability.
 
-
 ## Version
 
 A **version** is a concept in Multi-cluster Replication which describes the chronological order of events (per customer namespace).
