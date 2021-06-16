@@ -21,7 +21,6 @@ Please reach out to us if you need to set this up.
 Multi-cluster Replication is a feature which asynchronously replicates workflows from active cluster to other passive clusters, for backup & state reconstruction.
 When necessary, the customer can failover to any of the clusters which have the backup for high availability.
 
-In terms of the CAP theorem, Multi-cluster Replication adds high availability to Temporal's strongly consistent system.
 
 ## Version
 
