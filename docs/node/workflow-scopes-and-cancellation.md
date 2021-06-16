@@ -1,6 +1,6 @@
 # Workflow scopes and Cancellation
 
-In the Node SDK, Workflows are represented internally by a tree of scopes where the main function runs in the root scope.
+In the Node SDK, Workflows are represented internally by a tree of scopes. The main function runs in the root scope.
 Cancellation propagates from outer scopes to inner ones and is handled by catching `CancelledError`s
 thrown by cancellable operations (see below).
 
@@ -9,7 +9,7 @@ Scopes are created using the [`CancellationScope`](https://nodejs.temporal.io/ap
 [`nonCancellable`](https://nodejs.temporal.io/api/classes/workflow.cancellationscope#noncancellable),
 and [`withTimeout`](https://nodejs.temporal.io/api/classes/workflow.cancellationscope#withtimeout).
 
-When a `CancellationScope` is cancelled, it will propagate cancellation any child scopes and any cancellable operations created within it, such as:
+When a `CancellationScope` is cancelled, it propagates cancellation in any child scopes and of any cancellable operations created within it, such as:
 
 - Activities
 - Timers (created with the [`sleep`](https://nodejs.temporal.io/api/modules/workflow#sleep) function)
@@ -22,7 +22,7 @@ When a `CancellationScope` is cancelled, it will propagate cancellation any chil
 <!--SNIPSTART nodejs-cancel-a-timer-from-workflow-->
 <!--SNIPEND-->
 
-#### Alternatively the above can be written as
+#### Alternatively, the preceding can be written as
 
 <!--SNIPSTART nodejs-cancel-a-timer-from-workflow-alternative-impl-->
 <!--SNIPEND-->
@@ -37,7 +37,7 @@ When a `CancellationScope` is cancelled, it will propagate cancellation any chil
 <!--SNIPSTART nodejs-non-cancellable-shields-children-->
 <!--SNIPEND-->
 
-#### `cancelRequested` may be awaited upon in order to make Workflow aware of cancellation while waiting on `nonCancellable` scopes
+#### `cancelRequested` may be awaited upon to make Workflow aware of cancellation while waiting on `nonCancellable` scopes
 
 <!--SNIPSTART nodejs-cancel-requested-with-non-cancellable-->
 <!--SNIPEND-->
@@ -54,7 +54,7 @@ When a `CancellationScope` is cancelled, it will propagate cancellation any chil
 
 #### Sharing promises between scopes
 
-Operations like timer and Activites are cancelled by the cancellation scope they were created in, the Promise returned by these operation may be awaited upon in different scopes.
+Operations like timers and Activites are cancelled by the cancellation scope they were created in. Promises returned by these operations can be awaited in different scopes.
 
 <!--SNIPSTART nodejs-shared-promise-scopes-->
 <!--SNIPEND-->
@@ -64,7 +64,7 @@ Operations like timer and Activites are cancelled by the cancellation scope they
 
 #### Callbacks and cancellation scopes
 
-Callbacks are not particularly useful in the Workflows because all meaningful asynchronous operations return a Promise.
+Callbacks are not particularly useful in Workflows because all meaningful asynchronous operations return Promises.
 
 In the odd case that user code utilizes callbacks, CancellationScope.cancelRequested can be used to subscribe to cancellation.
 
