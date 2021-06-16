@@ -81,10 +81,8 @@ if err != nil {
 ```java
 @WorkflowInterface
 public interface SimpleWorkflow {
-
     @WorkflowMethod
     String simpleWorkflowMethod(String someArg);
-
 }
 
 public static class SimpleWorkflowImpl implements SimpleWorkflow {
@@ -95,7 +93,6 @@ public static class SimpleWorkflowImpl implements SimpleWorkflow {
 
     @Override
     public String simpleWorkflowMethod(String name) {
-      // This is a blocking call that returns only after the activity has completed.
       return activities.simpleActivity("Hello", name);
     }
 }
