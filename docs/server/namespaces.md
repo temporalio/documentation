@@ -11,7 +11,7 @@ clusters, it is only considered active in a single cluster.
 ## Global Namespaces Architecture
 
 Temporal has introduced a new top level entity, Global Namespaces, which provides support for replication of Workflow
-execution across clusters (aka [Multi-Cluster Replication](/docs/server/multi-cluster)). 
+execution across clusters (aka [Multi-Cluster Replication](/docs/server/multi-cluster)).
 Client applications need to run workers polling on Activity/Decision tasks on all clusters.
 Temporal will only dispatch tasks on the current active cluster; workers on the standby cluster will sit idle
 until the Global Namespace is failed over.
