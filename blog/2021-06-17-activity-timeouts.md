@@ -140,46 +140,51 @@ An Activity Worker that has been polling the `Bar` Activity Task Queue picks up 
 
 Once the Activity Execution finishes successfully, the Activity Worker sends a `CompleteActivityTask` message (together with the result of the Activity Execution) to Temporal Server, which now gives control back to the Workflow Worker to continue to the next line of code and repeat the process.
 
-> The activity is now in `CLOSED` state.
+> The Activity Execution is now in a `CLOSED` state.
 
-We have just described the "Happy Path" of an activity. However, what happens when a worker crashes midway through an execution?
+We have just described the "Happy Path" of an Activity Execution.
+However, what happens when an Activity Worker crashes midway through an execution?
 
-## StartToClose Timeout
+## Start-To-Close Timeout
 
-We use the `StartToCloseTimeout` to control the maximum amount of time **a single activity invocation** can take. We recommend **always** setting this timeout.
+We use the Start-To-Close timeout to control the maximum amount of time **a single Activity Execution** can take. We recommend **always** setting this timeout.
 
 ![image](https://user-images.githubusercontent.com/6764957/122290108-fff64000-cf25-11eb-92b3-0533e41c3fee.png)
 
-The classical example for how `StartToClose` becomes relevant is when an activity has been picked up from the activity queue (`STARTED` state) but crashes midway (so it never reaches `CLOSED` state). 
+The classic example for why the Start-To-Close timeout is relevant, is when an Activity Task has been picked up from the Activity Task Queue (`STARTED` state) but the Worker crashes after that (so the Activity Execution never reaches `CLOSED` state). 
 
 - Without a timeout configured, Temporal would never proactively timeout this activity to initiate a retry. The activity becomes "stuck" and the end user experiences an indefinite delay of their work with no feedback.
-- With a timeout, Temporal registers an `ActivityTaskTimedOut` event internally which triggers the Server to attempt a retry based on the `RetryPolicy:`
-    - It adds the activity back to its Activity Task Queue
-    - Increments the attempt count in the workflow's mutable state
-    - The activity is picked up again by an Activity Worker
-    - The `StartToClose` timer is reset and will fire again if this second attempt fails.
+- With the timeout configured, Temporal registers an `ActivityTaskTimedOut` event internally which triggers the Server to attempt a retry based on the Activity Execution's `RetryPolicy:`
+    - The Server adds the Activity Task to the Activity Task Queue again.
+    - The Server increments the attempt count in the Workflow Execution's mutable state.
+    - The Activity Task is picked up again by an Activity Worker.
+    - In the Temporal Server, the Start-To-Close timer is reset and will fire again if this second attempt fails.
 
-The tricky part of setting `StartToClose` is that it needs to be set longer than the maximum *possible* activity execution, since you want to avoid premature timeouts for activities that genuinely take that long. Concretely - if an activity can take anywhere from 5 minutes to 5 hours, you need to set `StartToClose` to over 5 hours. If you have a long running activity like this, see below for `Heartbeat` timeouts.
+The tricky part of setting Start-To-Close is that it needs to be set longer than the maximum *possible* Activity Execution, since you want to avoid premature timeouts for Activity Executions that genuinely take that long. 
+Practically, if an Activity Execution can take anywhere from 5 minutes to 5 hours, you need to set Start-To-Close to be longer than 5 hours.
+If you have a long running Activity Execution like that, then we suggest using Heartbeat timeouts.
 
-## ScheduleToClose Timeout
+## Schedule-To-Close Timeout
 
-We use the `ScheduleToCloseTimeout` to control the overall maximum amount of time allowed for an activity execution, including all retries. This timeout only makes sense if the activity has a `RetryPolicy` with `MaximumAttempts > 1`.
+The Schedule-To-Close Timeout is used to control the overall maximum amount of time allowed for an Activity Execution, including all retries.
+This timeout only makes sense if the Activity Execution has a `RetryPolicy` with `MaximumAttempts > 1`.
 
 ![image](https://user-images.githubusercontent.com/6764957/122290183-0dabc580-cf26-11eb-913d-3dc74d5eb55f.png)
 
-If you let it, Temporal will retry a failing activity for up to 10 years! (with exponential backoff up to a defined maximum interval)
-Most Temporal developers will want to finetune how their system retries to balance user experience against the unreliability of the activity.
+If you let it, Temporal will retry a failing Activity Execution for up to 10 years! (with exponential backoff up to a defined maximum interval)
+Most Temporal developers will want to fine-tune retries to balance the user experience against the unreliability of the Activity Execution.
 
-While you can control intervals between retries and maximum number of retries in the `RetryPolicy`, `ScheduleToClose` is the best way to control retries based on *time elapsed*. We recommend using `ScheduleToClose` to limit retries rather than tweaking the number of `MaximumAttempts`, because that more closely matches desired user experience in the majority of cases.
+While you can control intervals between retries and maximum number of retries in the `RetryPolicy`, the Schedule-To-Close Timeout is the best way to control retries based on the overall *time that has elapsed*.
+We recommend using the Schedule-To-Close Timeout to limit retries rather than tweaking the number of Maximum Attempts, because that more closely matches the desired user experience in the majority of cases.
 
 ## Heartbeat Timeout
 
-For long running activities, we recommend recording heartbeats to create more frequent pingbacks from the Activity Worker to Temporal Server. 
-Then, set a `HeartbeatTimeout` to create a failure when Temporal fails to receive a heartbeat from your activity at the expected frequency.
+For long running Activity Executions, we recommend recording Heartbeats to create more frequent ping-backs from the Activity Worker to the Temporal Server. 
+Then, set a Heartbeat Timeout to fail the Activity Execution when the Temporal doesn't receive a Heartbeat from your Activity Execution at the expected frequency.
 
 ![image](https://user-images.githubusercontent.com/6764957/122424268-287f4800-cfc1-11eb-8417-f52743347afc.png)
 
-By their nature, Heartbeats must be recorded from Activity code using SDK APIs:
+Heartbeats must be recorded from Activity Definitions (Activity code) using SDK APIs:
 
 <Tabs
   defaultValue="go"
@@ -217,12 +222,13 @@ while ((read = inputStream.read(bytes)) != -1) {
 </TabItem>
 </Tabs>
 
-Setting a `HeartbeatTimeout` allows us to retry activities more quickly (e.g. the next minute after a heartbeat is missed) than the `StartToCloseTimeout`, which is necessarily set to as long as the longest possible activity (e.g. five hours later when we are sure the activity should have been completed).
+Setting a Heartbeat Timeout enables you to retry Activity Executions more quickly (e.g. the next minute after a Heartbeat is missed) than the Start-To-Close Timeout, which must be set to as long as the longest possible Activity Execution (e.g. five hours later when we are sure the Activity Execution should have been completed).
 
-There are some minor nuances to heartbeats that may be of interest:
+There are some minor nuances to Heartbeats that may be of interest:
 
-- You can freely record heartbeats as often as you want - once a minute, or everytime a loop iterates - the SDKs throttle the heartbeats that get sent back anyway.
-- If a `HeartbeatTimeout` isn't set and the activity tries to record one, nothing will be recorded since that information will never be used.
+- You can freely record Heartbeats as often as you want (e.g. once a minute, or every time a loop iterates).
+The SDKs throttle the Heartbeats that get sent back to the Server anyway.
+- If a Heartbeat Timeout isn't set and the Activity Execution tries to record a Heartbeat, nothing will be recorded since that information will never be used.
 
 ## Schedule-To-Start Timeout
 
