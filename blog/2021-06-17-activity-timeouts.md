@@ -124,7 +124,7 @@ This Command includes various metadata, including the activity type (`SimpleActi
 
 ### Step 2 - Temporal Server
 
-Receiving the Command, Temporal Server then sets up the mutable state for that workflow and activity ID, and also adds an `ActivityTask` to the `Bar` Activity Queue.
+Receiving the Command, Temporal Server adds an Activity Task to the `Bar` Activity Task Queue.
 There is an atomic guarantee that these both happen together, to prevent race conditions. 
 We explained why this is important and how Temporal accomplishes this in [Designing A Workflow Engine](https://docs.temporal.io/blog/workflow-engine-principles/).
 
@@ -153,7 +153,7 @@ We use the Start-To-Close timeout to control the maximum amount of time **a sing
 
 The classic example for why the Start-To-Close timeout is relevant, is when an Activity Task has been picked up from the Activity Task Queue (`STARTED` state) but the Worker crashes after that (so the Activity Execution never reaches `CLOSED` state). 
 
-- Without a timeout configured, Temporal would never proactively timeout this activity to initiate a retry. The activity becomes "stuck" and the end user experiences an indefinite delay of their work with no feedback.
+- Without a timeout configured, Temporal would never proactively timeout this Activity Execution to initiate a retry. The Activity Execution becomes "stuck" and the end user would experience an indefinite delay of their Workflow Execution with no feedback.
 - With the timeout configured, Temporal registers an `ActivityTaskTimedOut` event internally which triggers the Server to attempt a retry based on the Activity Execution's `RetryPolicy:`
     - The Server adds the Activity Task to the Activity Task Queue again.
     - The Server increments the attempt count in the Workflow Execution's mutable state.
@@ -232,7 +232,8 @@ The SDKs throttle the Heartbeats that get sent back to the Server anyway.
 
 ## Schedule-To-Start Timeout
 
-We use the `ScheduleToStartTimeout`  to set a maximum limit that an activity should sit in a queue. We recommend that most users monitor the `ScheduleToStart` latency metric and set alerts for them as a [production scaling](https://docs.temporal.io/docs/server/production-deployment/#faq-autoscaling-workers-based-on-task-queue-load) metric, rather than setting an explicit timeout for it.
+The Schedule-To-Start Timeout  sets a limit on the amount of time that an Activity Task can sit in a Task Queue.
+We recommend that most users monitor the `temporal_activity_schedule_to_start_latency` metric and set alerts for that as a [production scaling](https://docs.temporal.io/docs/server/production-deployment/#faq-autoscaling-workers-based-on-task-queue-load) metric, rather than setting an explicit timeout for it.
 
 ![image](https://user-images.githubusercontent.com/6764957/122290279-287e3a00-cf26-11eb-8dd6-3133016a0bd9.png)
 
