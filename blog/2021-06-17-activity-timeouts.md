@@ -46,13 +46,13 @@ Temporal has four timeouts—two that are commonly used, and two that are useful
 - Schedule-To-Close: Limits the maximum execution time including retries.
 - Start-To-Close: Limits the maximum execution time of a single execution. **We recommend ALWAYS setting this!**
 - Heartbeat: Limits the maximum time between Heartbeats. *For long running Activities*, enables a quicker response when s Heartbeat fails to be recorded.
-- `ScheduleToStart`: *For queue timeouts and task routing*, to limit maximum time that an activity waits in a task queue. **This is rarely needed!**
+- Schedule-To-Start: Limits the maximum time that an Activity Task can sit in a Task Queue. Mainly to identify whether a Worker is down or for Task routing. **This is rarely needed!**
 
-You can find the precise APIs in each SDK's reference documentation: [Java](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html) and [Go](https://pkg.go.dev/go.temporal.io/sdk@v1.7.0/internal#ActivityOptions).
+You can find the precise APIs in the reference documentation for each SDK: [Java](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html) and [Go](https://pkg.go.dev/go.temporal.io/sdk@v1.7.0/internal#ActivityOptions).
 
 ## Lifecycle of an Activity
 
-To really understand how timeouts work, we should understand the typical lifecycle of an activity as it journeys through the various parts of the system.
+To really understand how timeouts work, we should understand the typical lifecycle of an Activity as it journeys through the various parts of the system.
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
