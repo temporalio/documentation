@@ -257,7 +257,7 @@ Because of this you can often encounter a `PanicError: Potential deadlock detect
 
 To alleviate this issue, you can set the TEMPORAL_DEBUG environment variable to `true` before debugging your Workflow Definition.
 
-::: note
+:::note
 
 Make sure to set TEMPORAL_DEBUG to true only during debugging.
 
