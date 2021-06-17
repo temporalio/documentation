@@ -26,7 +26,7 @@ Instances of the Server can run as independent processes or be grouped together 
 
 The Frontend service exposes a strongly typed [Proto API](https://github.com/temporalio/api/blob/master/temporal/api/workflowservice/v1/service.proto) that is used by applications to connect to the Server.
 
-The Frontend service is responsible for all in-bound calls, including cross-dc related calls that are invoked by a remote cluster.
+The Frontend service is responsible for all in-bound calls, including [Multi-cluster Replication](/docs/server/multi-cluster) related calls that are invoked by a remote cluster.
 
 It talks to the Matching service, History service, Worker service, and the database.
 

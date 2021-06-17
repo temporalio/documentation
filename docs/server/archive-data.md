@@ -1,7 +1,7 @@
 ---
 id: archive-data
 title: Archive Workflow data
-sidebar_label: Archive data
+sidebar_label: Archival
 ---
 
 import CustomWarning from "../shared/CustomWarning.js"
