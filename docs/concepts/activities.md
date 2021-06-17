@@ -8,7 +8,7 @@ Fault-oblivious stateful Workflow code is the core abstraction of Temporal. But,
 Instead they orchestrate execution of Activities. In its simplest form, a Temporal Activity is a function or an object method in one of the supported languages.
 Temporal does not recover Activity state in case of failures. Therefore an Activity function is allowed to contain any code without restrictions.
 
-Activities are invoked asynchronously though task queues. A task queue is essentially a queue used to store an Activity task until it is picked up by an available worker. The worker processes an Activity by invoking its implementation function. When the function returns, the worker reports the result back to the Temporal service which in turn notifies the Workflow about completion. It is possible to implement an Activity fully asynchronously by completing it from a different process.
+Activities are invoked asynchronously through task queues. A task queue is essentially a queue used to store an Activity task until it is picked up by an available worker. The worker processes an Activity by invoking its implementation function. When the function returns, the worker reports the result back to the Temporal service which in turn notifies the Workflow about completion. It is possible to implement an Activity fully asynchronously by completing it from a different process.
 
 ## Timeouts
 
