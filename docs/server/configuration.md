@@ -216,7 +216,7 @@ The `log` section is optional and contains the following possible values:
 
 ## clusterMetadata
 
-`clusterMetadata` contains all cluster definitions, including those which participate in [Multi-cluster Replication](/docs/server/multi-cluster).
+`clusterMetadata` contains all cluster definitions, including those which participate in cross DC.
 
 An example `clusterMetadata` section:
 
