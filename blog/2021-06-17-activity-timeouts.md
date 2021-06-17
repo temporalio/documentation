@@ -35,13 +35,7 @@ The rest of this post summarizes the main points covered in this whiteboard sess
 
 ![image](https://user-images.githubusercontent.com/6764957/122424123-0ab1e300-cfc1-11eb-82c5-cf8856a87242.png)
 
-Activities go through three main states in Temporal: 
-
-- Scheduled
-- Started
-- Closed
-
-Temporal has four timeouts—two that are commonly used, and two that are useful only in specific cases:
+Temporal has four timeouts — two that are commonly used, and two that are useful only in specific cases:
 
 - Schedule-To-Close: Limits the maximum execution time including retries.
 - Start-To-Close: Limits the maximum execution time of a single execution. **We recommend ALWAYS setting this!**
@@ -237,13 +231,13 @@ We recommend that most users monitor the `temporal_activity_schedule_to_start_la
 
 ![image](https://user-images.githubusercontent.com/6764957/122290279-287e3a00-cf26-11eb-8dd6-3133016a0bd9.png)
 
-As a queue timeout, `ScheduleToStart` is unique in that it **cannot be retried** — all a retry would do is pop the activity right back on to the same queue!
+As a queue timeout, `ScheduleToStart` is unique in that it **doesn't result in a retry** — all a retry would do is pop the activity right back on to the same queue!
 
 The Schedule-To-Start Timeout is most useful when you have a concrete plan to reroute an Activity Task to a different Task Queue, if a given Task Queue is not draining in adequate time.
 You can also reschedule a whole set of other Activity Executions or do other compensation logic based on this timeout.
 This is a powerful feature for building ultra-reliable systems, however most users will not need this since you can horizontally scale the number of Workers easily.
 
-Generally, issues with Schedule-To-Start` are better addressed by scaling Activity Workers accordingly, rather than by adding timeouts.
+Generally, issues with Schedule-To-Start are better addressed by scaling Activity Workers accordingly, rather than by adding timeouts.
 
 ## Putting it all together - a recruiting example
 
