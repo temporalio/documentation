@@ -48,6 +48,8 @@ There are 4 Timeouts in Temporal — 2 that are commonly used, and 2 that are on
 - `Heartbeat`: *For long running activities*, to respond faster when a regular heartbeat fails to be recorded.
 - `ScheduleToStart`: *For queue timeouts and task routing*, to limit maximum time that an activity waits in a task queue. **This is rarely needed!**
 
+You can find the precise APIs in each SDK's reference documentation: [Java](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html) and [Go](https://pkg.go.dev/go.temporal.io/sdk@v1.7.0/internal#ActivityOptions).
+
 ## Lifecycle of an Activity
 
 To really understand how timeouts work, we should understand the typical lifecycle of an activity as it journeys through the various parts of the system.
@@ -57,7 +59,7 @@ import TabItem from '@theme/TabItem';
 
 ### Step 1 - Workflow Worker
 
-An activity `Foo` is first invoked inside of a Workflow Worker on Task Queue `Bar`. The precise method of invocation differs by SDK:
+An activity `Foo` is first invoked inside of a Workflow Worker on Task Queue `Bar`. The precise method of invocation differs by SDK, and timeouts are also specified up front as part of activity options:
 
 <Tabs
   defaultValue="go"
@@ -70,6 +72,16 @@ An activity `Foo` is first invoked inside of a Workflow Worker on Task Queue `Ba
 <TabItem value="go">
 
 ```go
+ao := workflow.ActivityOptions{
+        TaskQueue:               "sampleTaskQueue",
+        ScheduleToCloseTimeout: time.Second * 500,
+        // ScheduleToStartTimeout: time.Second * 60, // usually not needed! see below
+        StartToCloseTimeout:    time.Second * 60,
+        HeartbeatTimeout:       time.Second * 10,
+        WaitForCancellation:    false,
+}
+ctx = workflow.WithActivityOptions(ctx, ao)
+
 var result string
 err := workflow.ExecuteActivity(ctx, SimpleActivity, value).Get(ctx, &result)
 if err != nil {
@@ -91,7 +103,11 @@ public static class SimpleWorkflowImpl implements SimpleWorkflow {
     private final SimpleActivities activities =
         Workflow.newActivityStub(
             SimpleActivities.class,
-            ActivityOptions.newBuilder().setStartToCloseTimeout(Duration.ofSeconds(2)).build());
+            ActivityOptions.newBuilder()
+              .setScheduleToCloseTimeout(Duration.ofSeconds(500))
+              .setStartToCloseTimeout(Duration.ofSeconds(60))
+              .setHeartbeatTimeout(Duration.ofSeconds(10))
+              .build());
 
     @Override
     public String simpleWorkflowMethod(String name) {
