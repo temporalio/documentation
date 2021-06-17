@@ -5,7 +5,7 @@ tags:
   - timeouts
 posted_on_: 2021-06-17T00:00:09Z
 slug: activity-timeouts
-title: 'The 4 Types of Activity Timeouts'
+title: 'The 4 Types of Activity timeouts'
 author: swyx
 author_title: Head of Developer Experience
 author_image_url: https://avatars.githubusercontent.com/u/6764957?v=4
@@ -15,15 +15,15 @@ release_version: V1.10.2
 
 <!--truncate-->
 
-Part of the benefit of moving business logic to Temporal is how it implements retries and timeouts for activities in a standardized way. This has the effect of adding a reliability layer atop unreliable activities and workers, in a durable and scalable fashion. However, understanding the terminology can be a bit intimidating at first glance. 
+Part of the benefit of moving business logic to Temporal is how it implements retries and timeouts for Activities in a standardized way. This has the effect of adding a reliability layer atop unreliable Activities and Workers, in a durable and scalable fashion. However, understanding the terminology can be a bit intimidating at first glance. 
 
-This post (together with the embedded talk) aims to give you a solid mental model on what each activity timeout does and when to use it.
+This post (together with the embedded talk) aims to give you a solid mental model on what each Activity timeout does and when to use it.
 
-> Note: There are also [workflow timeouts](https://docs.temporal.io/docs/concepts/workflows#timeout-settings) and [retry policies](https://docs.temporal.io/docs/concepts/activities#retries) you can set. This post only deals with *activity* timeouts.
+> Note: You can also set [Workflow timeouts](https://docs.temporal.io/docs/concepts/workflows#timeout-settings) and [retry policies](https://docs.temporal.io/docs/concepts/activities#retries) you can set. This post deals only with *Activity* timeouts.
 
-## Talk Version: Whiteboard Session
+## Talk version: whiteboard session
 
-You can watch this 18 minute talk where our CEO Maxim Fateev explains the 4 Types of Activity Timeouts you see in Temporal.
+You can watch this 18 minute talk where our CEO Maxim Fateev explains the 4 Types of Activity timeouts you see in Temporal.
 
 import { ResponsivePlayer } from '../src/components'
 
