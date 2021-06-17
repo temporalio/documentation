@@ -64,7 +64,7 @@ When using Temporal, this means the following things:
 
 - Uber YARPC library is not used by Temporal.
 - Temporal no longer needs to use Kafka.
-- Temporal uses Promentheus by default in Docker images instead of statsd.
+- Temporal uses Prometheus by default in Docker images instead of statsd.
 
 7. **Temporal Server configuration files are different**
 
