@@ -11,7 +11,8 @@ clusters, it is only considered active in a single cluster.
 ## Global Namespaces Architecture
 
 Temporal has introduced a new top level entity, Global Namespaces, which provides support for replication of Workflow
-execution across clusters. Client applications need to run workers polling on Activity/Decision tasks on all clusters.
+execution across clusters (aka [Multi-Cluster Replication](/docs/server/multi-cluster)). 
+Client applications need to run workers polling on Activity/Decision tasks on all clusters.
 Temporal will only dispatch tasks on the current active cluster; workers on the standby cluster will sit idle
 until the Global Namespace is failed over.
 
@@ -112,6 +113,6 @@ the failed call to active cluster based on information provided in the error.
 
 ### What is the recommended pattern to send external events to an active cluster?
 
-The recommendation at this point is to publish events to a Kafka topic if they can be generated in any DC.
-Then, have a consumer that consumes from the aggregated Kafka topic in the same DC and sends them to Temporal. Both the
+The recommendation at this point is to publish events to a Kafka topic if they can be generated in any cluster.
+Then, have a consumer that consumes from the aggregated Kafka topic in the same cluster and sends them to Temporal. Both the
 Kafka consumer and Global Namespace need to be failed over together.
