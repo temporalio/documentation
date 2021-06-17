@@ -223,7 +223,7 @@ There are some minor nuances to heartbeats that may be of interest:
 - You can freely record heartbeats as often as you want - once a minute, or everytime a loop iterates - the SDKs throttle the heartbeats that get sent back anyway.
 - If a `HeartbeatTimeout` isn't set and the activity tries to record one, nothing will be recorded since that information will never be used.
 
-## ScheduleToStart Timeout
+## Schedule-To-Start Timeout
 
 We use the `ScheduleToStartTimeout`  to set a maximum limit that an activity should sit in a queue. We recommend that most users monitor the `ScheduleToStart` latency metric and set alerts for them as a [production scaling](https://docs.temporal.io/docs/server/production-deployment/#faq-autoscaling-workers-based-on-task-queue-load) metric, rather than setting an explicit timeout for it.
 
@@ -231,17 +231,19 @@ We use the `ScheduleToStartTimeout`  to set a maximum limit that an activity sho
 
 As a queue timeout, `ScheduleToStart` is unique in that it **cannot be retried** — all a retry would do is pop the activity right back on to the same queue!
 
-The `ScheduleToStartTimeout` is most useful when you have a concrete plan to reroute activity to a different queue, if a given task queue is not draining in adequate time. You can also reschedule a whole set of other activities or do other compensation logic based on this timeout. This is a powerful feature for building ultra-reliable systems, however most users will not need this since you can horizontally scale the number of workers easily.
+The Schedule-To-Start Timeout is most useful when you have a concrete plan to reroute an Activity Task to a different Task Queue, if a given Task Queue is not draining in adequate time.
+You can also reschedule a whole set of other Activity Executions or do other compensation logic based on this timeout.
+This is a powerful feature for building ultra-reliable systems, however most users will not need this since you can horizontally scale the number of Workers easily.
 
-Generally, issues with `ScheduleToStart` are better addressed by scaling activity workers accordingly, than by adding timeouts.
+Generally, issues with Schedule-To-Start` are better addressed by scaling Activity Workers accordingly, rather than by adding timeouts.
 
-## Putting It All Together - A Recruiting Example
+## Putting it all together - a recruiting example
 
 We've recently found the terminology of timeouts useful even internally for our recruiting and realized that this could be a relatable analogy for most people.
 
-As [we are hiring heavily at Temporal](https://temporal.io/careers), there is a lot of interview scheduling going on intermixed with our regular day jobs. You could model the end-to-end hiring process for a candidate as a single workflow with multiple activities: sourcing, interviewing, making a decision, and then the offer process. 
+As [we are hiring heavily at Temporal](https://temporal.io/careers), there is a lot of interview scheduling going on intermixed with our regular day jobs. You could model the end-to-end hiring process for a candidate as a single "Workflow" with multiple "Activities": sourcing, interviewing, making a decision, and then the offer process. 
 
-Specifically for the activity of interviewing we've encountered some pain points:
+Specifically for the "Activity" of interviewing we've encountered some pain points:
 
 - Some interviews were scheduled for 90 minutes, which we found to be way too long
 - Some interviews had no-shows for any number of reasons ranging from miscommunication to Life™ getting in the way, and we were unclear on when to call an end to the interview and try to reschedule
@@ -249,10 +251,10 @@ Specifically for the activity of interviewing we've encountered some pain points
 
 To resolve this, we could think about setting some timeout policies (for clarity, none of these are real numbers):
 
-- A `StartToCloseTimeout` of 45 minutes so we don't spend too long per interview
-- A `HeartbeatTimeout` of 10 minutes to see if we should cancel on no-shows
-- A `ScheduleToCloseTimeout` of 4 weeks to limit the length of time we spend accommodating other people's schedules vs our own.
+- A Start-To-Close Timeout of 45 minutes so we don't spend too long per interview.
+- A Heartbeat Timeout of 10 minutes to see if we should cancel on no-shows.
+- A Schedule-To-Close Timeout of 4 weeks to limit the length of time we spend accommodating other people's schedules vs our own.
 
 ![image](https://user-images.githubusercontent.com/6764957/122290324-359b2900-cf26-11eb-93a6-5027fc98593b.png)
 
-Should we set a `ScheduleToStart` timeout? You could imagine candidates sitting a queue waiting to be interviewed, with not enough interviewer "workers" to process them. A timeout here wouldn't help much, because there's no other queue to put them on - better to set up monitoring and alerting on `ScheduleToStart` latency, and scale up workers accordingly as needed (autoscaling is [currently not possible](https://docs.temporal.io/docs/server/production-deployment/#faq-autoscaling-workers-based-on-task-queue-load)).
+Should we set a Schedule-To-Start timeout? You could imagine candidates sitting a queue waiting to be interviewed, with not enough interviewer "Workers" to process them. A timeout here wouldn't help much, because there's no other queue to put them on. Better to set up monitoring and alerting on Schedule-To-Start latency, and scale up workers accordingly as needed (autoscaling is [currently not possible](https://docs.temporal.io/docs/server/production-deployment/#faq-autoscaling-workers-based-on-task-queue-load)).
