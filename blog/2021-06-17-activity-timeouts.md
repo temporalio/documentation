@@ -31,17 +31,17 @@ import { ResponsivePlayer } from '../src/components'
 
 The rest of this post summarizes the main points covered in this whiteboard session, for those who prefer a written version.
 
-## Written Version: TL;DR
+## Written version: TL;DR
 
 ![image](https://user-images.githubusercontent.com/6764957/122424123-0ab1e300-cfc1-11eb-82c5-cf8856a87242.png)
 
-Activities go through 3 main states in Temporal: 
+Activities go through three main states in Temporal: 
 
 - Scheduled
 - Started
 - Closed
 
-There are 4 Timeouts in Temporal — 2 that are commonly used, and 2 that are only useful in specific cases:
+Temporal has four timeouts—two that are commonly used, and two that are useful only in specific cases:
 
 - `ScheduleToClose`: to limit maximum execution time including retries
 - `StartToClose`: to limit maximum execution time of a single invocation. **We recommend ALWAYS setting this!**
