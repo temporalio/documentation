@@ -302,7 +302,7 @@ Whenever there is a switch between Workflow Execution History branches, a comple
 
 ## Zombie Workflows
 
-There is an existing contract that for any Namespace and Workflow Id combination, there can be at most one run (Namespace + Workflow Id  + Run Id) open / executing.
+There is an existing contract that for any Namespace and Workflow Id combination, there can be at most one run (Namespace + Workflow Id + Run Id) open / executing.
 
 Multi-cluster Replication aims to keep the Workflow Execution History as up-to-date as possible among all participating Clusters.
 
@@ -332,7 +332,7 @@ Due to the nature of Multi-cluster Replication (i.e. Workflow Execution History 
 | ------------- |          | ------------- |          | ------------- |
 ```
 
-Since Run 2 appears in Cluster B first, Run 1 cannot be replicated as "runnable" due to the rule `at most one Run open` (see above), thus the "zombie" Workflow Execution state is introduced. 
+Since Run 2 appears in Cluster B first, Run 1 cannot be replicated as "runnable" due to the rule `at most one Run open` (see above), thus the "zombie" Workflow Execution state is introduced.
 A "zombie" state is one in which a Workflow Execution which cannot be actively mutated by a Cluster (assuming the corresponding Namespace is active in this Cluster). A zombie Workflow Execution can only be changed by a replication task.
 
 Run 1 will be replicated similar to run 2, except run 1's workflow state will be zombie before run 1 reaches completion.
