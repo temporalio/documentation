@@ -33,7 +33,7 @@ The rest of this post summarizes the main points covered in this whiteboard sess
 
 ## Written Version: TL;DR
 
-![image](https://user-images.githubusercontent.com/6764957/122421737-2c11cf80-cfbf-11eb-8fa7-5a723661d4f1.png)
+![image](https://user-images.githubusercontent.com/6764957/122424123-0ab1e300-cfc1-11eb-82c5-cf8856a87242.png)
 
 Activities go through 3 main states in Temporal: 
 
@@ -160,7 +160,7 @@ While you can control intervals between retries and maximum number of retries in
 For long running activities, we recommend recording heartbeats to create more frequent pingbacks from the Activity Worker to Temporal Server. 
 Then, set a `HeartbeatTimeout` to create a failure when Temporal fails to receive a heartbeat from your activity at the expected frequency.
 
-![image](https://user-images.githubusercontent.com/6764957/122421850-4350bd00-cfbf-11eb-9b4d-ff2449f718bd.png)
+![image](https://user-images.githubusercontent.com/6764957/122424268-287f4800-cfc1-11eb-8417-f52743347afc.png)
 
 By their nature, Heartbeats must be recorded from Activity code using SDK APIs:
 
