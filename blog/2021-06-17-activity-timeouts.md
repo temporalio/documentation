@@ -59,7 +59,7 @@ import TabItem from '@theme/TabItem';
 
 ### Step 1 - Workflow Worker
 
-An activity `Foo` is first invoked inside of a Workflow Worker on Task Queue `Bar`. The precise method of invocation differs by SDK, and timeouts are also specified up front as part of activity options:
+An activity `SimpleActivity` is first invoked inside a Workflow Worker on Task Queue `sampleTaskQueue`. The precise method of invocation differs by SDK, and timeouts are also specified up front as part of Activity options:
 
 <Tabs
   defaultValue="go"
@@ -119,7 +119,8 @@ public static class SimpleWorkflowImpl implements SimpleWorkflow {
 </TabItem>
 </Tabs>
 
-Behind the scenes, the SDK transforms this to a `ScheduleActivity` Command, which is sent to the Temporal Server. This Command includes various metadata, including the activity type (`Foo`), activity task queue (`Bar`), activity ID, and `RetryPolicy` (if not specified, Temporal uses a default policy).
+Behind the scenes, the SDK transforms this into a `ScheduleActivity` Command, which is sent to the Temporal Server. 
+This Command includes various metadata, including the activity type (`SimpleActivity`), activity task queue (`sampleTaskQueue`), and activity ID. A `RetryPolicy` was not specified, so Temporal uses [the default Retry Policy](https://docs.temporal.io/docs/concepts/workflows#retry-policy).
 
 ### Step 2 - Temporal Server
 
@@ -127,17 +128,17 @@ Receiving the Command, Temporal Server then sets up the mutable state for that w
 There is an atomic guarantee that these both happen together, to prevent race conditions. 
 We explained why this is important and how Temporal accomplishes this in [Designing A Workflow Engine](https://docs.temporal.io/blog/workflow-engine-principles/).
 
-> The activity is now in `SCHEDULED` state.
+> The Activity Execution is now in a `SCHEDULED` state.
 
 ### Step 3 - Activity Worker 
 
-An Activity Worker that has been polling for the `Bar` activity queue picks up the `ActivityTask` and begins execution.
+An Activity Worker that has been polling the `Bar` Activity Task Queue picks up the Activity Task and begins execution.
 
-> The activity is now in `STARTED` state.
+> The Activity Execution is now in a `STARTED` state.
 
 ### Step 4 - Temporal Server
 
-Once the activity finishes successfully, the Activity Worker sends a `CompleteActivityTask` message (together with the result of the activity) to Temporal Server, which now gives control back to the Workflow Worker to continue to the next line of code and repeat the process.
+Once the Activity Execution finishes successfully, the Activity Worker sends a `CompleteActivityTask` message (together with the result of the Activity Execution) to Temporal Server, which now gives control back to the Workflow Worker to continue to the next line of code and repeat the process.
 
 > The activity is now in `CLOSED` state.
 
