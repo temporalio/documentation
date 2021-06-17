@@ -290,23 +290,23 @@ T = 2: replication task from Cluster B arrives in Cluster C, same as above
 
 </details>
 
-## Workflow History Conflict Resolution
+## Workflow Execution History conflict resolution
 
-When a workflow encounters divergence of workflow history, proper conflict resolution should be applied.
+When a Workflow Execution History diverges, proper conflict resolution should be applied.
 
 In Multi-cluster Replication, workflow history events are modeled as a tree, as shown in the second example in [### Version History].
 
-Workflows which encounters divergence will have more than one history branches.
-Among all history branches, the history branch with the highest version is considered as the `current branch` and workflow mutable state is a summary of the current branch.
-Whenever there is a switch between workflow history branches, a complete rebuild of workflow mutable state will occur.
+Workflow Execution Histories that diverge will have more than one history branches.
+Among all history branches, the history branch with the highest version is considered the `current branch` and the Workflow Execution's mutable state is a summary of the current branch.
+Whenever there is a switch between Workflow Execution History branches, a complete rebuild of the Workflow Execution's mutable state will occur.
 
 ## Zombie Workflows
 
-There is an existing contract that for any namespace & workflow ID combination, there can be at most one run (namespace & workflow ID & run ID) open / running.
+There is an existing contract that for any Namespace and Workflow Id combination, there can be at most one run (Namespace + Workflow Id  + Run Id) open / executing.
 
-Multi-cluster Replication aims to keep the workflow state as up-to-date as possible among all participating Clusters.
+Multi-cluster Replication aims to keep the Workflow Execution History as up-to-date as possible among all participating Clusters.
 
-Due to the nature of Multi-cluster Replication, i.e. workflow history events are replicated asynchronously, different run (same namespace & workflow ID) can arrive at target Cluster at different times, sometimes out of order, as shown below:
+Due to the nature of Multi-cluster Replication (i.e. Workflow Execution History events are replicated asynchronously) different Runs (same Namespace and Workflow Id) can arrive at the target Cluster at different times, sometimes out of order, as shown below:
 
 ```
 | ------------- |          | ------------- |          | ------------- |
@@ -332,17 +332,18 @@ Due to the nature of Multi-cluster Replication, i.e. workflow history events are
 | ------------- |          | ------------- |          | ------------- |
 ```
 
-Since run 2 appears in Cluster B first, run 1 cannot be replicated as runnable due to rule `at most one run open` (see above), thus, `zombie` workflow state is introduced. Zombie state indicates a workflow which cannot be actively mutated by a Cluster (assuming corresponding namespace is active in this Cluster). A zombie workflow can only be changed by replication task.
+Since Run 2 appears in Cluster B first, Run 1 cannot be replicated as "runnable" due to the rule `at most one Run open` (see above), thus the "zombie" Workflow Execution state is introduced. 
+A "zombie" state is one in which a Workflow Execution which cannot be actively mutated by a Cluster (assuming the corresponding Namespace is active in this Cluster). A zombie Workflow Execution can only be changed by a replication task.
 
 Run 1 will be replicated similar to run 2, except run 1's workflow state will be zombie before run 1 reaches completion.
 
-## Workflow Task Processing
+## Workflow Task processing
 
-In the context of Multi-cluster Replication, workflow mutable state is an entity which tracks all pending tasks.
-Prior to the introduction of Multi-cluster Replication, workflow history events are from a single branch, and Temporal server will only append new events to workflow history.
+In the context of Multi-cluster Replication, a Workflow Execution's mutable state is an entity which tracks all pending tasks.
+Prior to the introduction of Multi-cluster Replication, Workflow Execution History entries (events) are from a single branch, and the Temporal Server will only append new entries (events) to the Workflow Execution History.
 
-After the introduction of Multi-cluster Replication, it is possible that a workflow can have multiple workflow history branches.
-Tasks generated according to one history branch maybe invalidated by history branch switching during conflict resolution.
+After the introduction of Multi-cluster Replication, it is possible that a Workflow Execution can have multiple Workflow Execution History branches.
+Tasks generated according to one history branch may become invalidated by switching history branches during conflict resolution.
 
 Example:
 
@@ -367,7 +368,7 @@ T = 0: task A is generated according to event ID: 4, version: 2
 | -------- | ------------- |
 ```
 
-T = 1: conflict resolution happens, workflow mutable state is rebuilt and history event ID: 4, version: 3 is written down to persistence
+T = 1: conflict resolution happens, Workflow Execution's mutable state is rebuilt and history event ID: 4, version: 3 is written down to persistence
 
 ```
                 | -------- | ------------- |
@@ -391,4 +392,5 @@ T = 1: conflict resolution happens, workflow mutable state is rebuilt and histor
 
 T = 2: task A is loaded.
 
-At this time, due to the rebuilt of workflow mutable state (conflict resolution), task A is no longer relevant (task A's corresponding event belongs to non-current branch). Task processing logic will verify both the event ID and version of the task against corresponding workflow mutable state, then discard task A.
+At this time, due to the rebuild of a Workflow Execution's mutable state (conflict resolution), task A is no longer relevant (task A's corresponding event belongs to non-current branch).
+Task processing logic will verify both the event ID and version of the task against a corresponding Workflow Execution's mutable state, then discard task A.
