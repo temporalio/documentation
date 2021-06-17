@@ -186,7 +186,7 @@ View in both Cluster A & B
 
 </details>
 
-Since Temporal is AP, during failover (change of active Temporal of a namespace), there exist cases where more than one Cluster can modify a workflow, causing divergence of workflow history. Below shows how version history will look like under such conditions.
+Since Temporal is AP, during failover (change of active Temporal Cluster Namespace), there can exist cases where more than one Cluster can modify a Workflow Execution, causing divergence of Workflow  Execution History. Below shows how the version history will look like under such conditions.
 
 <details>
 <summary>Version history example (with data conflict)
@@ -294,7 +294,7 @@ T = 2: replication task from Cluster B arrives in Cluster C, same as above
 
 When a Workflow Execution History diverges, proper conflict resolution should be applied.
 
-In Multi-cluster Replication, workflow history events are modeled as a tree, as shown in the second example in [### Version History].
+In Multi-cluster Replication, Workflow Execution History entries (events) are modeled as a tree, as shown in the second example in [Version History](#version-history).
 
 Workflow Execution Histories that diverge will have more than one history branches.
 Among all history branches, the history branch with the highest version is considered the `current branch` and the Workflow Execution's mutable state is a summary of the current branch.
@@ -335,7 +335,7 @@ Due to the nature of Multi-cluster Replication (i.e. Workflow Execution History 
 Since Run 2 appears in Cluster B first, Run 1 cannot be replicated as "runnable" due to the rule `at most one Run open` (see above), thus the "zombie" Workflow Execution state is introduced.
 A "zombie" state is one in which a Workflow Execution which cannot be actively mutated by a Cluster (assuming the corresponding Namespace is active in this Cluster). A zombie Workflow Execution can only be changed by a replication task.
 
-Run 1 will be replicated similar to run 2, except run 1's workflow state will be zombie before run 1 reaches completion.
+Run 1 will be replicated similar to Run 2, except when Run 1's execution will become a "zombie" before Run 1 reaches completion.
 
 ## Workflow Task processing
 
