@@ -43,9 +43,9 @@ Activities go through three main states in Temporal:
 
 Temporal has four timeouts—two that are commonly used, and two that are useful only in specific cases:
 
-- `ScheduleToClose`: to limit maximum execution time including retries
-- `StartToClose`: to limit maximum execution time of a single invocation. **We recommend ALWAYS setting this!**
-- `Heartbeat`: *For long running activities*, to respond faster when a regular heartbeat fails to be recorded.
+- Schedule-To-Close: Limits the maximum execution time including retries.
+- Start-To-Close: Limits the maximum execution time of a single execution. **We recommend ALWAYS setting this!**
+- Heartbeat: Limits the maximum time between Heartbeats. *For long running Activities*, enables a quicker response when s Heartbeat fails to be recorded.
 - `ScheduleToStart`: *For queue timeouts and task routing*, to limit maximum time that an activity waits in a task queue. **This is rarely needed!**
 
 You can find the precise APIs in each SDK's reference documentation: [Java](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html) and [Go](https://pkg.go.dev/go.temporal.io/sdk@v1.7.0/internal#ActivityOptions).
