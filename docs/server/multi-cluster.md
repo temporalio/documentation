@@ -18,46 +18,47 @@ Please reach out to us if you need to set this up.
 
 ## Overview
 
-Multi-cluster Replication is a feature which asynchronously replicates workflows from active cluster to other passive clusters, for backup & state reconstruction.
-When necessary, the customer can failover to any of the clusters which have the backup for high availability.
+Multi-cluster Replication is a feature which asynchronously replicates Workflow Executions from active cluster to other passive clusters, for backup and state reconstruction.
+When necessary, for higher availability, Server administrators can failover to any of the clusters which have the backup.
 
 ## Version
 
-A **version** is a concept in Multi-cluster Replication which describes the chronological order of events (per customer namespace).
+A **version** is a concept in Multi-cluster Replication which describes the chronological order of events per Namespace.
 
-In Multi-cluster Replication, all namespace change events & workflow history events are replicated asynchronously for high throughput.
-This means that data across clusters are **not** strongly consistent.
-To guarantee that namespace data & workflow data will achieve eventual consistency (especially when there is data conflict during a failover), a **version** is introduced and attached to customers' namespaces.
-All workflow history events generated in a namespace will also come with the version in that namespace.
+With Multi-cluster Replication, all Namespace change events and Workflow Execution History events are replicated asynchronously for high throughput.
+This means that data across clusters is **not** strongly consistent.
+To guarantee that Namespace data and Workflow Execution data will achieve eventual consistency (especially when there is a data conflict during a failover), a **version** is introduced and attached to Namespaces.
+All Workflow Execution History entries generated in a Namespace will also come with the version attached to that Namespace.
 
 All participating clusters are pre-configured with a unique initial version, and a shared version increment:
 
 - `initial version < shared version increment`
 
-When performing failover for one namespace from one cluster to another cluster, the version attached to the namespace will be changed by the following rule:
+When performing failover for a Namespace from one cluster to another cluster, the version attached to the Namespace will be changed by the following rule:
 
 - for all versions which follow `version % (shared version increment) == (active cluster's initial version)`, find the smallest version which has `version >= old version in namespace`
 
-When there is a data conflict, comparison will be made and workflow history events with the highest version will win.
+When there is a data conflict, a comparison will be made and Workflow Execution History entries with the highest version will be considered the source of truth.
 
-When a cluster is trying to mutate a workflow, version will be checked. A cluster can mutate a workflow if and only if
+When a cluster is trying to mutate a Workflow Execution History, the version will be checked.
+A cluster can mutate a Workflow Execution History only if the following is true:
 
-- version in the namespace belongs to this cluster, i.e.
+- The version in the Namespace belongs to this cluster, i.e.
   `(version in namespace) % (shared version increment) == (this cluster's initial version)`
-- the version of this workflow's last event is equal or less then version in namespace, i.e.
+- The version of this Workflow Execution History's last entry (event) is equal or less than the version in the Namespace, i.e.
   `(last event's version) <= (version in namespace)`
 
 <details>
 <summary>Namespace version change example
 </summary>
   
-Assume this scenario:
+Assuming the following scenario:
 
 - Cluster A comes with initial version: 1
 - Cluster B comes with initial version: 2
 - Shared version increment: 10
 
-T = 0: namespace α is registered, with active Cluster set to Cluster A
+T = 0: Namespace α is registered, with active Cluster set to Cluster A
 
 ```
 namespace α's version is 1
@@ -71,14 +72,14 @@ namespace β's version is 2
 all workflows events generated within this namespace, will come with version 2
 ```
 
-T = 2: namespace α is updated to with active Cluster set to Cluster B
+T = 2: Namespace α is updated to with active Cluster set to Cluster B
 
 ```
 namespace α's version is 2
 all workflows events generated within this namespace, will come with version 2
 ```
 
-T = 3: namespace β is updated to with active Cluster set to Cluster A
+T = 3: Namespace β is updated to with active Cluster set to Cluster A
 
 ```
 namespace β's version is 11
@@ -87,11 +88,12 @@ all workflows events generated within this namespace, will come with version 11
 
 </details>
 
-## Version History
+## Version history
 
-Version history is a concept which provides high level summary about version information of workflow history.
+Version history is a concept which provides a high level summary of version information in regards to Workflow Execution History.
 
-Whenever there is a new workflow history event generated, the version from namespace will be attached. Workflow mutable state will keep track of all history events & corresponding version.
+Whenever there is a new Workflow Execution History entry generated, the version from Namespace will be attached.
+The Workflow Executions's mutable state will keep track of all history entries (events) and the corresponding version.
 
 <details>
 <summary>Version history example (without data conflict)
@@ -146,7 +148,7 @@ View in both Cluster A & B
 | -------- | ------------- | --------------- | ------- |
 ```
 
-T = 3: namespace failover triggered, namespace version is now 2
+T = 3: Namespace failover triggered, Namespace version is now 2
 adding event with event ID == 4 & version == 2
 
 View in both Cluster A & B
@@ -190,7 +192,7 @@ Since Temporal is AP, during failover (change of active Temporal of a namespace)
 <summary>Version history example (with data conflict)
 </summary>
   
-Below will show version history of the same workflow in 2 different Clusters.
+Below, shows version history of the same Workflow Execution in 2 different Clusters.
 
 - Cluster A comes with initial version: 1
 - Cluster B comes with initial version: 2
