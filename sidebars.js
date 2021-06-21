@@ -376,7 +376,12 @@ module.exports = {
       type: "category",
       label: "Additional resources",
       collapsed: false,
-      items: ["external-resources", "cadence-to-temporal", "terminology", "glossary"],
+      items: [
+        "external-resources",
+        "cadence-to-temporal",
+        "terminology",
+        "glossary",
+      ],
     },
     {
       type: "category",
