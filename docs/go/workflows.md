@@ -169,7 +169,7 @@ More info in the [Distributed Cron](distributed-cron) docs.
 
 ### External Workflows
 
-You can execute Workflows (including those from other language SDKs) by its type name:
+You can execute Workflows (including those from other language SDKs) by their type name:
 
 ```go
 workflowID := "myworkflow_" + uuid.New()
