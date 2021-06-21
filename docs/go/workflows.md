@@ -185,7 +185,7 @@ if err != nil {
 log.Println("Started workflow", "WorkflowID", we.GetID(), "RunID", we.GetRunID())
 ```
 
-Here we execute a workflow by its type name, namely `MySimpleWorkflow`. By default, the 
+Here we execute a workflow by its type name, namely `MySimpleWorkflow`. By default, the
 Workflow type is the name of the Workflow function, for example:
 
 ```go
