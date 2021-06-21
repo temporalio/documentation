@@ -169,29 +169,51 @@ More info in the [Distributed Cron](distributed-cron) docs.
 
 ### External Workflows
 
-You can execute workflows (including those from other language SDKs) purely by name:
+You can execute Workflows (including those from other language SDKs) by its type name:
 
 ```go
-// Call "SayHello" Java activity from Go workflow
-var result string
-aoj := workflow.ActivityOptions{
-    TaskQueue:           "simple-queue-java",
-    StartToCloseTimeout: 5 * time.Second,
+workflowID := "myworkflow_" + uuid.New()
+workflowOptions := client.StartWorkflowOptions{
+  ID:        workflowID,
+  TaskQueue: "mytaskqueue",
 }
-ctx = workflow.WithActivityOptions(ctx, aoj)
-err = workflow.ExecuteActivity(ctx, "SayHello", "GoWorkflow").Get(ctx, &result)
-logger.Info(fmt.Sprintf("Java Activity returns %v, %v", result, err))
 
+we, err := c.ExecuteWorkflow(context.Background(), workflowOptions, "MySimpleWorkflow")
+if err != nil {
+  log.Fatalln("Unable to execute workflow", err)
+}
+log.Println("Started workflow", "WorkflowID", we.GetID(), "RunID", we.GetRunID())
 ```
 
-And you can send signals to running workflows with `SignalExternalWorkflow`:
+Here we execute a workflow by its type name, namely `MySimpleWorkflow`. By default, the 
+Workflow type is the name of the Workflow function, for example:
+
+```go
+func MySimpleWorkflow(ctx workflow.Context) error {
+ // Workflow code here...
+}
+```
+
+Note that you can also set the Workflow type via `RegisterWorkflowOptions` when registering your Workflow
+with the Worker, for example:
+
+```go
+rwo := workflow.RegisterOptions {
+   Name: "MyWorkflow", // Set "MyWorkflow" as the Workflow type
+}
+w.RegisterWorkflowWithOptions(dynamic.SampleGreetingsWorkflow, rwo)
+```
+
+Inside Workflow code you can also signal other workflows using their workflow type using `SignalExternalWorkflow`:
 
 ```go
 // Send 10 signals to PHP workflow
 for i := 0; i < 10; i++ {
-    workflow.SignalExternalWorkflow(ctx, "simple-workflow-php", "", "goMessage", "Hello from Go workflow: "+strconv.Itoa(i)).Get(ctx, nil)
+    err :=  workflow.SignalExternalWorkflow(ctx, "simple-workflow-php", "", "goMessage", "Hello from Go workflow: "+strconv.Itoa(i)).Get(ctx, nil)
 }
 ```
+
+Here we are sending a signal to a Workflow with type "simple-workflow-php" and signal name "goMessage".
 
 See our [Signals docs](https://docs.temporal.io/docs/go/signals) and [Temporal Polyglot example](https://github.com/tsurdilo/temporal-polyglot) for more.
 
