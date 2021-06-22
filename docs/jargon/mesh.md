@@ -1,12 +1,14 @@
 ---
-id: terminology
-title: Temporal terminology
-sidebar_label: Terminology
+id: mesh
+title: Jargon Mesh - Introduction to Temporal's core concepts
+sidebar_label: Jargon Mesh
 ---
 
-Temporal conceptualizes software development in a unique way. Few products share overlapping methodologies and concepts with Temporal.
+## Overview
 
-Therefore, the following terms are re-defined within the context of the Temporal product, and used throughout the documentation and reference material to describe aspects of it.
+**Welcome to Temporal's core terminology!**
+
+This page is dedicated to defining and describing the terms, components, and concepts of the Temporal system in a holistic way.
 
 ### Activity
 
