@@ -4,7 +4,7 @@ title: Application samples library
 sidebar_label: Samples library
 ---
 
-- [**Polyglot application**](git@github.com:temporalio/temporal-polyglot.git) - Showcases how to execute Workflows that are written in different languages using a Workflow Type.
+- [**Polyglot application**](https://github.com/temporalio/temporal-polyglot) - Showcases how to execute Workflows that are written in different languages using a Workflow Type.
 Go, Java, PHP, and NodeJS SDKs are represented in this sample.
 It also shows how to properly propagate errors including how to do it across Workflows written in different languages.
 
