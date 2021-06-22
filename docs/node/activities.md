@@ -64,7 +64,6 @@ When you import an Activity function from a Workflow, the Node SDK replaces the 
 For example, if you print `greet.toString()` in the previous example, Node will not print the contents of the `greet()` function from `lib/activities.greeter.js`.
 Instead, Node will print a function that calls the Node SDK's internal `scheduleActivity()` function.
 
-
 :::info
 
 Currently, you need to use the `@activities` prefix.
