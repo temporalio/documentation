@@ -41,7 +41,7 @@ In terms of CAP theorem, each Temporal cluster is eventually available and highl
 - Because Temporal makes it easy to retry Activities and horizontally scale resources, availability loss doesn't result in a fault, but in increased latency.
 - Network failures are prevented from reaching the application level.
   If persistence nodes are lost or unreachable, your Workflows will not progress, but the data will still be highly consistent.
-- The optional [multi-cluster replication feature](https://docs.temporal.io/docs/server/versions-and-dependencies/#multi-cluster-replication) greatly increases system availability.
+- The optional [Multi-cluster Replication feature](/docs/server/multi-cluster) greatly increases system availability.
 
 :::
 

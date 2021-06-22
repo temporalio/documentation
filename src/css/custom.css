@@ -59,8 +59,8 @@ html[data-theme="light"] {
   font-display: swap;
 }
 
-/* 
-  CUSTOM SCROLLBARS! https://css-tricks.com/the-current-state-of-styling-scrollbars/ 
+/*
+  CUSTOM SCROLLBARS! https://css-tricks.com/the-current-state-of-styling-scrollbars/
   */
 body::-webkit-scrollbar-track {
   background-color: rgba(0, 0, 0, 0);
@@ -185,4 +185,8 @@ h4,
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border-width: 0;
+}
+
+#mc-embedded-waitlist {
+  margin-top: 15px;
 }

@@ -2,5 +2,4 @@
 # Ignore artifacts:
 blog
 .docusaurus
-.forestry
 .github

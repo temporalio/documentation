@@ -1,7 +1,7 @@
 ---
 id: event-types
 title: Event type reference
-sidebar_label: Event types
+sidebar_label: Event types reference
 ---
 
 Event types are defined in the Server API [event_type.proto](https://github.com/temporalio/api/blob/master/temporal/api/enums/v1/event_type.proto) file.
