@@ -1,6 +1,6 @@
 # Activities
 
-In Temporal, Activities are typically used to represent side effects, like making an HTTP request.
+In Temporal, Activities are typically used to interact with external resources, like making an HTTP request.
 Unlike [Workflows](/docs/node/determinism), activities run in the standard Node.js environment, not an [isolate](https://www.npmjs.com/package/isolated-vm).
 So any code that needs to talk to the outside world needs to be in an Activity.
 
