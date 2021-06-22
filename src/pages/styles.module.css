@@ -124,3 +124,8 @@
     text-align: left;
   }
 }
+
+.viewCompleteLibraryLink {
+  font-size: 2em;
+  color: var(--ifm-color-primary);
+}

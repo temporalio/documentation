@@ -1,6 +1,6 @@
 ---
 id: samples-library
-title: Temporal application samples library
+title: Application samples library
 sidebar_label: Samples library
 ---
 
