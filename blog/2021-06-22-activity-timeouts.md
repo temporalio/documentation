@@ -3,7 +3,7 @@ tags:
   - Temporal
   - architecture
   - timeouts
-posted_on_: 2021-06-17T00:00:09Z
+posted_on_: 2021-06-22T00:00:09Z
 slug: activity-timeouts
 title: 'The 4 Types of Activity timeouts'
 author: swyx
@@ -15,7 +15,7 @@ release_version: V1.10.2
 
 <!--truncate-->
 
-Part of the benefit of moving business logic to Temporal is how it implements retries and timeouts for Activities in a standardized way. This has the effect of adding a reliability layer atop unreliable Activities and Workers, in a durable and scalable fashion. However, understanding the terminology can be a bit intimidating at first glance. 
+One benefit of moving business logic to Temporal is how Temporal implements retries and timeouts for Activities in a standardized way. This has the effect of adding a reliability layer atop unreliable Activities and Workers, in a durable and scalable fashion. However, understanding the terminology can be a bit intimidating at first glance. 
 
 This post (together with the embedded talk) aims to give you a solid mental model on what each Activity timeout does and when to use it.
 
@@ -226,14 +226,14 @@ The SDKs throttle the Heartbeats that get sent back to the Server anyway.
 
 ## Schedule-To-Start Timeout
 
-The Schedule-To-Start Timeout  sets a limit on the amount of time that an Activity Task can sit in a Task Queue.
+The Schedule-To-Start Timeout sets a limit on the amount of time that an Activity Task can sit in a Task Queue.
 We recommend that most users monitor the `temporal_activity_schedule_to_start_latency` metric and set alerts for that as a [production scaling](https://docs.temporal.io/docs/server/production-deployment/#faq-autoscaling-workers-based-on-task-queue-load) metric, rather than setting an explicit timeout for it.
 
 ![image](https://user-images.githubusercontent.com/6764957/122290279-287e3a00-cf26-11eb-8dd6-3133016a0bd9.png)
 
 As a queue timeout, `ScheduleToStart` is unique in that it **doesn't result in a retry** — all a retry would do is pop the activity right back on to the same queue!
 
-The Schedule-To-Start Timeout is most useful when you have a concrete plan to reroute an Activity Task to a different Task Queue, if a given Task Queue is not draining in adequate time.
+The Schedule-To-Start Timeout is most useful when you have a concrete plan to reroute an Activity Task to a different Task Queue, if a given Task Queue is not draining at an expected rate.
 You can also reschedule a whole set of other Activity Executions or do other compensation logic based on this timeout.
 This is a powerful feature for building ultra-reliable systems, however most users will not need this since you can horizontally scale the number of Workers easily.
 
@@ -253,7 +253,7 @@ Specifically for the "Activity" of interviewing we've encountered some pain poin
 
 To resolve this, we could think about setting some timeout policies (for clarity, none of these are real numbers):
 
-- A Start-To-Close Timeout of 45 minutes so we don't spend too long per interview.
+- A Start-To-Close Timeout of 45 minutes so we don't spend too much time per interview.
 - A Heartbeat Timeout of 10 minutes to see if we should cancel on no-shows.
 - A Schedule-To-Close Timeout of 4 weeks to limit the length of time we spend accommodating other people's schedules vs our own.
 
