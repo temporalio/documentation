@@ -378,6 +378,7 @@ module.exports = {
       label: "Additional resources",
       collapsed: false,
       items: [
+        "samples-library",
         "external-resources",
         "cadence-to-temporal",
         "jargon/mesh",
