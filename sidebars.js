@@ -379,7 +379,7 @@ module.exports = {
       items: [
         "external-resources",
         "cadence-to-temporal",
-        "terminology",
+        "jargon/mesh",
         "glossary",
       ],
     },
