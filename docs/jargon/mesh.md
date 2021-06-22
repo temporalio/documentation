@@ -10,7 +10,6 @@ sidebar_label: Jargon Mesh
 
 This page is dedicated to defining and describing the terms, components, and concepts of the Temporal system in a holistic way.
 
-
 ### Activity
 
 A business-level function that implements your application logic, such as calling a service or transcoding a media file.
