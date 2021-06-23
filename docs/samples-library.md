@@ -32,7 +32,7 @@ sidebar_label: Samples library
 - [**Money transfer application template in Java**](https://github.com/temporalio/money-transfer-project-template-java): Provides a quick start development app for users.
   It demonstrates a basic money transfer Workflow Definition and works in conjunction with the [Run your first app tutorial in Java](/docs/java/run-your-first-app-tutorial).
 
-- [**Subscription style Workflow Definition in Java**](https://github.com/temporalio/subscription-workflow-project-template-java): Demonstrates some of the patterns that could be implemented for a subscription style business process.
+- [**Subscription-style Workflow Definition in Java**](https://github.com/temporalio/subscription-workflow-project-template-java): Demonstrates some of the patterns that could be implemented for a subscription-style business process.
 
 <!--SNIPSTART samples-java-readme-samples-directory {"enable_source_link": false, "enable_code_block": false}-->
 <!--SNIPEND-->
