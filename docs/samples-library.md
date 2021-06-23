@@ -26,7 +26,7 @@ sidebar_label: Samples library
 
 ## Java
 
-- [**Hello world application template in Java**](https://github.com/temporalio/hello-world-project-template-java): Provides a quick start development app for users.
+- [**Hello world application template in Java**](https://github.com/temporalio/hello-world-project-template-java): Provides a quick-start development app for users.
   Works in conjunction with the ["Hello World!" from scratch tutorial in Java](/docs/java/hello-world-tutorial).
 
 - [**Money transfer application template in Java**](https://github.com/temporalio/money-transfer-project-template-java): Provides a quick start development app for users.
