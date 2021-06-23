@@ -39,7 +39,7 @@ sidebar_label: Samples library
 
 ## PHP
 
-- [**Subscription style Workflow Definition in PHP**](https://github.com/temporalio/subscription-workflow-project-template-php): Demonstrates some of the patterns that could be implemented for a subscription style business process.
+- [**Subscription-style Workflow Definition in PHP**](https://github.com/temporalio/subscription-workflow-project-template-php): Demonstrates some of the patterns that could be implemented for a subscription-style business process.
 
 <!--SNIPSTART samples-php-readme-samples-directory {"enable_source_link": false, "enable_code_block": false}-->
 <!--SNIPEND-->
