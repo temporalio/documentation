@@ -316,6 +316,7 @@ module.exports = {
             "node/workflow-external-dependencies",
           ],
         },
+        "node/activities",
         {
           type: "doc",
           id: "node/package-initializer",
