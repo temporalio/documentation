@@ -4,7 +4,7 @@ title: Application samples library
 sidebar_label: Samples library
 ---
 
-- [**Polyglot application**](https://github.com/temporalio/temporal-polyglot): Showcases how Workflow Executions, that are written in different languages, can send messages to each other.
+- [**Polyglot application**](https://github.com/temporalio/temporal-polyglot): Showcases how Workflow Executions, written in different languages, can send messages to each other.
   Go, Java, PHP, and Node.js SDKs are represented in this sample.
   It also shows how to properly propagate errors including how to do it across Workflows written in different languages.
 
