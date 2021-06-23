@@ -43,7 +43,7 @@ exports.greet = greet;
 </TabItem>
 </Tabs>
 
-Under the hood, the Temporal Node SDK uses [Webpack](https://webpack.js.org/) to bundle your Activities before running them.
+Under the hood, the Temporal Node SDK uses [Webpack](https://webpack.js.org/) to bundle your Workflows before running them.
 This [may cause issues with certain npm modules](https://www.getrevue.co/profile/masteringjs/issues/why-i-m-not-using-webpack-for-lambda-functions-anymore-266010).
 
 ### Importing and Using
