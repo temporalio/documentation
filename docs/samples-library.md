@@ -11,7 +11,7 @@ sidebar_label: Samples library
 ## Go
 
 - [**Hello world application template in Go**](https://github.com/temporalio/hello-world-project-template-go): Provides a quick start development app for users.
-  Works in conjunction with the ["Hello World!" from scratch tutorial in Java](/docs/go/hello-world-tutorial).
+  This sample works in conjunction with the ["Hello World!" from scratch tutorial in Go](/docs/go/hello-world-tutorial).
 
 - [**Money transfer application template in Go**](https://github.com/temporalio/money-transfer-project-template-go): Provides a quick start development app for users.
   It demonstrates a basic money transfer Workflow Definition and works in conjunction with the [Run your first app tutorial in Go](/docs/go/run-your-first-app-tutorial).
