@@ -10,7 +10,7 @@ sidebar_label: Samples library
 
 ## Go
 
-- [**Hello world application template in Go**](https://github.com/temporalio/hello-world-project-template-go): Provides a quick start development app for users.
+- [**Hello world application template in Go**](https://github.com/temporalio/hello-world-project-template-go): Provides a quick-start development app for users.
   This sample works in conjunction with the ["Hello World!" from scratch tutorial in Go](/docs/go/hello-world-tutorial).
 
 - [**Money transfer application template in Go**](https://github.com/temporalio/money-transfer-project-template-go): Provides a quick start development app for users.
