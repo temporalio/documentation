@@ -30,26 +30,30 @@ Addition include scripts are available, after you select your version, here: [ht
 
 2. [Install and run the Temporal Server](/docs/server/quick-install) using `docker compose`.
 
-## Reference
+## Resources
 
-Java SDK reference is available here: [https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/index.html](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/index.html)
+- [**Java SDK API reference**](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/index.html)
+
+- [**Java SDK samples library**](/docs/samples-library/#java)
+
+### Tutorials
+
+- [**Tutorial prerequisites**](/docs/java/tutorial-prerequisites)
+
+- [**Run your first application**](/docs/java/run-your-first-app-tutorial)
+
+- [**Build a "Hello World!" app from scratch**](/docs/java/hello-world-tutorial)
 
 ## The basics
 
-- [Workflows](/docs/java/workflows)
-- [Activities](/docs/java/activities)
-- [Workers](/docs/java/workers)
-- [Task Queues](/docs/java/task-queues)
+- [**Workflows**](/docs/java/workflows)
 
-## Tutorials
+- [**Activities**](/docs/java/activities)
 
-- [Tutorial prerequisites](/docs/java/tutorial-prerequisites)
-- [Run your first application](/docs/java/run-your-first-app-tutorial)
-- [Build a "Hello World! app from scratch"](/docs/java/hello-world-tutorial)
+- [**Workers**](/docs/java/workers)
 
-## Application templates
+- [**Task Queues**](/docs/java/task-queues)
 
-- [Money transfer application template](https://github.com/temporalio/money-transfer-project-template-java)
-- ["Hello World!" application template](https://github.com/temporalio/hello-world-project-template-java)
+- [**Signals**](/docs/java/signals)
 
-Additional Java application samples are available here: [https://github.com/temporalio/samples-java](https://github.com/temporalio/samples-java)
+- [**Queries**](/docs/java/queries)
