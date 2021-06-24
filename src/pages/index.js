@@ -62,13 +62,13 @@ function Feature({ imageUrl, title, description, goto }) {
 }
 
 function SelectTutorial() {
-  const [clicked, setclicked] = React.useState(false);
+  const [clicked, setClicked] = React.useState(false);
   return (
     <div>
       <div>
         <div className={styles.buttons}>
           <button
-            onClick={() => setclicked(!clicked)}
+            onClick={() => setClicked(!clicked)}
             className={clsx(
               "button button--outline button--secondary button--lg",
               styles.getStarted
