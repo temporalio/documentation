@@ -32,28 +32,28 @@ Addition include scripts are available, after you select your version, here: [ht
 
 ## Resources
 
-- [**Java SDK API reference**](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/index.html)
+- [Java SDK API reference](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/index.html)
 
-- [**Java SDK samples library**](/docs/samples-library/#java)
+- [Java SDK samples library](/docs/samples-library/#java)
 
 ### Tutorials
 
-- [**Tutorial prerequisites**](/docs/java/tutorial-prerequisites)
+- [Tutorial prerequisites](/docs/java/tutorial-prerequisites)
 
-- [**Run your first application**](/docs/java/run-your-first-app-tutorial)
+- [Run your first application](/docs/java/run-your-first-app-tutorial)
 
-- [**Build a "Hello World!" app from scratch**](/docs/java/hello-world-tutorial)
+- [Build a "Hello World!" app from scratch](/docs/java/hello-world-tutorial)
 
 ## The basics
 
-- [**Workflows**](/docs/java/workflows)
+- [Workflows](/docs/java/workflows)
 
-- [**Activities**](/docs/java/activities)
+- [Activities](/docs/java/activities)
 
-- [**Workers**](/docs/java/workers)
+- [Workers](/docs/java/workers)
 
-- [**Task Queues**](/docs/java/task-queues)
+- [Task Queues](/docs/java/task-queues)
 
-- [**Signals**](/docs/java/signals)
+- [Signals](/docs/java/signals)
 
-- [**Queries**](/docs/java/queries)
+- [Queries](/docs/java/queries)

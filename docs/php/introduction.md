@@ -18,20 +18,20 @@ sidebar_label: PHP SDK introduction
 
 ## Resources
 
-- **The PHP SDK reference is currently not available online.**
+- The PHP SDK reference is currently not available online.
 
-- [**PHP SDK samples library**](/docs/samples-library/#php)
+- [PHP SDK samples library](/docs/samples-library/#php)
 
 ## The basics
 
-- [**Workflows**](/docs/php/workflows)
+- [Workflows](/docs/php/workflows)
 
-- [**Activities**](/docs/php/activities)
+- [Activities](/docs/php/activities)
 
-- [**Workers**](/docs/php/workers)
+- [Workers](/docs/php/workers)
 
-- [**Task Queues**](/docs/php/task-queues)
+- [Task Queues](/docs/php/task-queues)
 
-- [**Signals**](/docs/php/signals)
+- [Signals](/docs/php/signals)
 
-- [**Queries**](/docs/php/queries)
+- [Queries](/docs/php/queries)

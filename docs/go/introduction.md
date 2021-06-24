@@ -16,28 +16,28 @@ go get go.temporal.io/sdk@latest
 
 ## Resources
 
-- [**Go SDK API reference**](https://pkg.go.dev/go.temporal.io/sdk)
+- [Go SDK API reference](https://pkg.go.dev/go.temporal.io/sdk)
 
-- [**Go SDK samples library**](/docs/samples-library/#go)
+- [Go SDK samples library](/docs/samples-library/#go)
 
 ### Tutorials
 
-- [**Tutorial prerequisites**](/docs/go/tutorial-prerequisites)
+- [Tutorial prerequisites](/docs/go/tutorial-prerequisites)
 
-- [**Run your first application tutorial**](/docs/go/run-your-first-app-tutorial)
+- [Run your first application tutorial](/docs/go/run-your-first-app-tutorial)
 
-- [**Build a "Hello World! app from scratch" tutorial**](/docs/go/hello-world-tutorial)
+- [Build a "Hello World! app from scratch" tutorial](/docs/go/hello-world-tutorial)
 
 ### Basics
 
-- [**Workflows**](/docs/go/workflows)
+- [Workflows](/docs/go/workflows)
 
-- [**Activities**](/docs/go/activities)
+- [Activities](/docs/go/activities)
 
-- [**Workers**](/docs/go/workers)
+- [Workers](/docs/go/workers)
 
-- [**Task Queues**](/docs/go/task-queues)
+- [Task Queues](/docs/go/task-queues)
 
-- [**Signals**](/docs/go/signals)
+- [Signals](/docs/go/signals)
 
-- [**Queries**](/docs/go/queries)
+- [Queries](/docs/go/queries)
