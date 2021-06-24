@@ -12,6 +12,8 @@ That is because the set up of the Server depends very much on the intended use-c
 This page is dedicated to providing a "first principles" approach to self-hosting the Temporal Server.
 As a reminder, experts are accessible via the [Community forum](https://community.temporal.io/) and [Slack](https://join.slack.com/t/temporalio/shared_invite/zt-onhti57l-J0bl~Tr7MqSUnIc1upjRkw) should you have any questions.
 
+> Note: if you are interested in a managed service hosting Temporal Server, please [register your interest in Temporal Cloud](https://docs.temporal.io/#cloud).
+
 ## Setup principles
 
 ### Prerequisites
