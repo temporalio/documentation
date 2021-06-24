@@ -16,23 +16,22 @@ sidebar_label: PHP SDK introduction
 
 2. [Install and run the Temporal Server](/docs/server/quick-install) using `docker compose`.
 
-## Reference
+## Resources
 
-The PHP SDK reference is currently not available online.
+- The PHP SDK reference is currently not available online.
+
+- [PHP SDK samples library](/docs/samples-library/#php)
 
 ## The basics
 
 - [Workflows](/docs/php/workflows)
+
 - [Activities](/docs/php/activities)
+
 - [Workers](/docs/php/workers)
+
 - [Task Queues](/docs/php/task-queues)
+
 - [Signals](/docs/php/signals)
+
 - [Queries](/docs/php/queries)
-
-## Tutorials
-
-Coming soon.
-
-## Application templates
-
-PHP application samples are available here: [https://github.com/temporalio/samples-php](https://github.com/temporalio/samples-php)

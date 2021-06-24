@@ -85,6 +85,16 @@ export default function ApplicationDevelopment() {
           </section>
         )}
       </main>
+      <div className="container">
+        <div className={styles.buttons}>
+          <Link
+            className={styles.viewCompleteLibraryLink}
+            to={"/docs/samples-library"}
+          >
+            View the complete library of samples
+          </Link>
+        </div>
+      </div>
       <div className={clsx("hero hero--secondary", styles.heroBanner)}>
         <div className="container">
           <h2 className="hero__title">Other SDKs</h2>

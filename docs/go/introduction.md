@@ -14,30 +14,30 @@ go get go.temporal.io/sdk@latest
 
 2. [Install and run the Temporal Server](/docs/server/quick-install) using `docker compose`.
 
-## Reference
+## Resources
 
-Go SDK reference is available here: [https://pkg.go.dev/go.temporal.io/sdk](https://pkg.go.dev/go.temporal.io/sdk)
+- [Go SDK API reference](https://pkg.go.dev/go.temporal.io/sdk)
 
-## The basics
+- [Go SDK samples library](/docs/samples-library/#go)
 
-- [Workflows](/docs/go/workflows)
-- [Activities](/docs/go/activities)
-- [Workers](/docs/go/workers)
-- [Task Queues](/docs/go/task-queues)
-- [Signals](/docs/go/signals)
-- [Queries](/docs/go/queries)
-
-## Tutorials
+### Tutorials
 
 - [Tutorial prerequisites](/docs/go/tutorial-prerequisites)
-- [Run your first application](/docs/go/run-your-first-app-tutorial)
-- [Build a "Hello World! app from scratch"](/docs/go/hello-world-tutorial)
 
-## Application templates
+- [Run your first application tutorial](/docs/go/run-your-first-app-tutorial)
 
-If you don't want to start a project from scratch, try an application template that already has the SDK as a dependency:
+- [Build a "Hello World! app from scratch" tutorial](/docs/go/hello-world-tutorial)
 
-- [Money transfer application template](https://github.com/temporalio/money-transfer-project-template-go)
-- ["Hello World!" application template](https://github.com/temporalio/hello-world-project-template-go)
+### Basics
 
-Additional Go application samples are available here: [https://github.com/temporalio/samples-go](https://github.com/temporalio/samples-go)
+- [Workflows](/docs/go/workflows)
+
+- [Activities](/docs/go/activities)
+
+- [Workers](/docs/go/workers)
+
+- [Task Queues](/docs/go/task-queues)
+
+- [Signals](/docs/go/signals)
+
+- [Queries](/docs/go/queries)
