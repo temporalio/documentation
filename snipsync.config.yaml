@@ -17,15 +17,12 @@ origins:
     repo: temporal
   - owner: temporalio
     repo: samples-php
-    ref: snip-readme
   - owner: temporalio
     repo: sdk-node
   - owner: temporalio
     repo: samples-go
-    ref: snip-readme
   - owner: temporalio
     repo: samples-java
-    ref: snip-readme
   - owner: temporalio
     repo: temporal-ecommerce
 
