@@ -32,7 +32,7 @@ const features = [
   },
 ];
 
-function Feature({ imageUrl, title, description, goto }) {
+function Feature({imageUrl, title, description, goto}) {
   const imgUrl = useBaseUrl(imageUrl);
   return (
     <div className={clsx("col col--4", styles.featuresMarginBottom)}>
@@ -75,7 +75,7 @@ function SelectTutorial() {
             )}
           >
             Run my first app! →
-            </button>
+          </button>
         </div>
         {clicked && (
           <div>
@@ -159,7 +159,9 @@ function TemporalCloud() {
           "button button--outline button--primary button--md",
           styles.getStarted
         )}
-        to={"https://us17.list-manage.com/survey?u=2334a0f23e55fd1840613755d&id=f1895b6f4a"}
+        to={
+          "https://us17.list-manage.com/survey?u=2334a0f23e55fd1840613755d&id=f1895b6f4a"
+        }
       >
         Book your place
       </Link>
@@ -169,7 +171,7 @@ function TemporalCloud() {
 
 export default function Home() {
   const context = useDocusaurusContext();
-  const { siteConfig = {} } = context;
+  const {siteConfig = {}} = context;
   return (
     <Layout title={`${siteConfig.title}`} description={`${siteConfig.tagline}`}>
       <header className={clsx("hero hero--primary", styles.heroBanner)}>
