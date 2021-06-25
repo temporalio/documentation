@@ -24,14 +24,14 @@ To start a Worker you need to pass the following two options to the `Worker.crea
 Below is an example of starting a Worker that polls the Task Queue named 'tutorial'.
 
 ```typescript
-import { Worker } from '@temporalio/worker';
+import {Worker} from "@temporalio/worker";
 
-main().catch(err => console.log(err));
+main().catch((err) => console.log(err));
 
 async function main() {
   const worker = await Worker.create({
     workDir: __dirname,
-    taskQueue: 'test',
+    taskQueue: "test",
   });
   await worker.run();
 }
@@ -42,10 +42,10 @@ For example, suppose `../workflows/example.js`, relative to `workDir`, contains 
 
 ```typescript
 async function main(): Promise<string> {
-  return 'Hello, World!';
+  return "Hello, World!";
 }
 
-export const workflow = { main };
+export const workflow = {main};
 ```
 
 The `Worker.create()` call will automatically register a Workflow named 'example' that returns the string 'Hello, World'.

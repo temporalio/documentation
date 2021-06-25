@@ -21,7 +21,9 @@ There are 3 places where the name of the Task Queue is supplied by the developer
 1. When starting a Workflow, you must pass the `taskQueue` option to the `Connection#workflow()` function.
 
 ```typescript
-const workflow = connection.workflow('my-workflow', { taskQueue: 'my-task-queue' });
+const workflow = connection.workflow("my-workflow", {
+  taskQueue: "my-task-queue",
+});
 
 const result = await workflow.start();
 ```
@@ -31,26 +33,26 @@ const result = await workflow.start();
 ```typescript
 const worker = await Worker.create({
   workDir: __dirname,
-  taskQueue: 'my-task-queue',
+  taskQueue: "my-task-queue",
 });
 ```
 
 3. Optionally, when calling an Activity, you can specify the task queue by passing the `taskQueue` option to `Context.configure()`.
 
 ```typescript
-import { Context } from '@temporalio/workflow';
-import { greet } from '@activities/greet';
+import {Context} from "@temporalio/workflow";
+import {greet} from "@activities/greet";
 
 const greetWithCustomTaskQueue = Context.configure(greet, {
-  taskQueue: 'my-other-task-queue',
-  startToCloseTimeout: '1s'
+  taskQueue: "my-other-task-queue",
+  startToCloseTimeout: "1s",
 });
 
 async function main(): Promise<void> {
-  await greetWithCustomTaskQueue('World');
+  await greetWithCustomTaskQueue("World");
 }
 
-export const workflow = { main };
+export const workflow = {main};
 ```
 
 If you do not specify a `taskQueue`, then the Node SDK places Activity Tasks in the same Task Queue as the Workflow Task Queue.
