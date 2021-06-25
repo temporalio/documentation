@@ -337,6 +337,8 @@ module.exports = {
           id: "node/package-initializer",
           label: "Package initializer",
         },
+        "node/task-queues",
+        "node/workers",
         "node/tls",
         "node/logging",
       ],
