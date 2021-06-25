@@ -94,13 +94,15 @@ The intention is that a Workflow is written to never fail due to intermittent is
 (Be aware that, by default, a Workflow Task Execution does retry indefinitely.)
 
 A [**Workflow Execution**](#workflow-execution) should be retried only in specific scenarios, such as the following:
-* A Cron Workflow or some other stateless always-running Workflow Execution that can benefit from retries.
-* A file-processing or media-encoding Workflow Execution that downloads files to a host.
+
+- A Cron Workflow or some other stateless always-running Workflow Execution that can benefit from retries.
+- A file-processing or media-encoding Workflow Execution that downloads files to a host.
 
 A Retry Policy does not apply to a Workflow Task Execution, which is governed by the Schedule-To-Start timeout.
 
 The time between retries is the _retry interval_. 
 A retry interval is the smaller of two values:
+
 - The [initial interval](#initial-interval) multiplied by the [backoff coefficient](#backoff-coefficient) raised to power of the number of retries.
 - The [maximum interval](#maximum-interval).
 
@@ -132,7 +134,7 @@ A Retry Policy contains the following attributes:
 
 - **Description**: Specifies the maximum number of attempts that can be made in the presence of failures.
   If this limit is exceeded, the Activity Task Execution or [**Workflow Execution**](#workflow-execution) fails without retrying again.
-  The default is unlimited. 
+  The default is unlimited.
   Setting the value to 0 also means unlimited.
 - **Use case**: Use this attribute to ensure that retries do not continue indefinitely.
   However, in the majority of cases, we recommend relying on the [execution timeout](#execution-timeout) to limit the duration of the retries instead of using this attribute.
@@ -141,7 +143,6 @@ A Retry Policy contains the following attributes:
 
 - **Description**: Specifies errors that shouldn't be retried. If one of those errors occurs, the Activity Task Execution or [**Workflow Execution**](#workflow-execution) is not retried.
 - **Use case**: For example, retrying an error caused by invalid arguments doesn't make sense in some scenarios.
-
 
 ## Event
 
