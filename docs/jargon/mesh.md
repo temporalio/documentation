@@ -100,7 +100,7 @@ A [**Workflow Execution**](#workflow-execution) should be retried only in specif
 
 A Retry Policy does not apply to a Workflow Task Execution, which is governed by the Schedule-To-Start timeout.
 
-The time between retries is the _retry interval_. 
+The time between retries is the _retry interval_.
 A retry interval is the smaller of two values:
 
 - The [initial interval](#initial-interval) multiplied by the [backoff coefficient](#backoff-coefficient) raised to power of the number of retries.
