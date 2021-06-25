@@ -82,14 +82,14 @@ An [**Activity**](#activity) that is invoked directly in the same process by Wor
 
 ## Retry Policy
 
-A collection of attributes that instructs Temporal Server how to retry a failure of an Activity Task Execution or a [**Workflow Execution**](#workflow-execution).
-Any custom Retry Policy must be provided when an [**Activity Task**](#activity-task) or Workflow starts.
+A collection of attributes that instructs the Temporal Server how to retry a failure of an Activity Task Execution or a [**Workflow Execution**](#workflow-execution).
+Any custom Retry Policy must be provided when an Activity Execution or [**Workflow Execution**](#workflow-execution) starts.
 
 Retrying an [**Activity Task**](#activity-task) produces a new Activity Task Execution that uses the same parameters [VERIFY] and Task Queue as the previous attempt.
 
-An Activity Task Execution has a default Retry Policy and thus retries by default.
+Activity Executions start with a default Retry Policy, and thus Activity Task Executions retry by default.
 
-A [**Workflow Execution**](#workflow-execution) does not have a default Retry Policy and thus does not retry by default.
+[**Workflow Executions**](#workflow-execution) do not start with a default Retry Policy and thus does not retry by default.
 The intention is that a Workflow is written to never fail due to intermittent issues; an Activity is designed to handle such issues.
 (Be aware that, by default, a Workflow Task Execution does retry indefinitely.)
 
@@ -99,17 +99,18 @@ A [**Workflow Execution**](#workflow-execution) should be retried only in specif
 
 A Retry Policy does not apply to a Workflow Task Execution, which is governed by the Schedule-To-Start timeout.
 
-The time between retries is the _retry interval_. A retry interval is the smaller of two values:
+The time between retries is the _retry interval_. 
+A retry interval is the smaller of two values:
 - The [initial interval](#initial-interval) multiplied by the [backoff coefficient](#backoff-coefficient) raised to power of the number of retries.
 - The [maximum interval](#maximum-interval).
 
-A Retry Policy contains the following settings:
+A Retry Policy contains the following attributes:
 
 ### Initial interval
 
 - **Description**: Amount of time that must elapse before the first retry occurs.
-  This setting has no default value.
-  If a Retry Policy is provided, this setting must be specified.
+  This attribute has no default value.
+  If a Retry Policy is provided, this attribute must be specified.
 - **Use case**: This value is also the base interval time that the [backoff coefficient](#backoff-coefficient) is multiplied against.
 
 ### Backoff coefficient
@@ -117,15 +118,15 @@ A Retry Policy contains the following settings:
 - **Description**: Specifies how quickly the retry interval increases.
   The default value is 2.0.
   A backoff coefficient of 1.0 means that the retry interval always equals the [initial interval](#initial-interval).
-- **Use case**: Use this setting to increase the interval between retries.
+- **Use case**: Use this attribute to increase the interval between retries.
   By having a backoff coefficient greater than 1.0, the first few retries happen relatively quickly to overcome intermittent failures, but subsequent retries happen farther and farther apart to account for longer outages.
-  Use the [maximum interval](#maximum-interval) setting to prevent the coefficient from increasing the retry interval too much.
+  Use the [maximum interval](#maximum-interval) attribute to prevent the coefficient from increasing the retry interval too much.
 
 ### Maximum interval
 
 - **Description**: Specifies the maximum interval between retries.
   The default value is 100 times the [initial interval](#initial-interval).
-- **Use case**: This setting is useful for [backoff coefficients](#backoff-coefficient) that are greater than 1.0 because it prevents the retry interval from growing infinitely.
+- **Use case**: This attribute is useful for [backoff coefficients](#backoff-coefficient) that are greater than 1.0 because it prevents the retry interval from growing infinitely.
 
 ### Maximum attempts
 
@@ -133,8 +134,8 @@ A Retry Policy contains the following settings:
   If this limit is exceeded, the Activity Task Execution or [**Workflow Execution**](#workflow-execution) fails without retrying again.
   The default is unlimited. 
   Setting the value to 0 also means unlimited.
-- **Use case**: Use this setting to ensure that retries do not continue indefinitely.
-  However, in the majority of cases, we recommend relying on the [execution timeout](#execution-timeout) to limit the duration of the retries instead of using this setting.
+- **Use case**: Use this attribute to ensure that retries do not continue indefinitely.
+  However, in the majority of cases, we recommend relying on the [execution timeout](#execution-timeout) to limit the duration of the retries instead of using this attribute.
 
 ### Non-retryable error reasons
 
