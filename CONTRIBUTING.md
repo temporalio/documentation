@@ -42,16 +42,14 @@ In general this content adheres to the [Google developers style guide](https://d
 
 However there are some Temporal specific style guidelines below.
 
-### Temporal specific
-
-**Infinitive verb forms**
+### Infinitive verb forms in headings
 
 Titles and headings should try to use infinitive verb forms whenever possible. People tend to search using infinitive verb forms and thus using them helps with SEO.
 
 - Correct: "Install Temporal"
 - Incorrect: "Installing Temporal"
 
-**Sentence casing in headings**
+### Sentence casing in headings
 
 Use sentence casing for titles and headings.
 Sentence casing means that only the first letter of the first word and proper nouns are capitalized.
@@ -59,7 +57,7 @@ Sentence casing means that only the first letter of the first word and proper no
 - Correct: "How to get started with Temporal"
 - Incorrect: "How To Get Started With Temporal"
 
-**Capitalize core terms**
+### Capitalize core terms
 
 Many of Temporal's core terms can be used in a generic way.
 To differentiate between one of Temporal's core terms vs a generic instance of a term, always treat Temporal terms as proper nouns in documentation.
