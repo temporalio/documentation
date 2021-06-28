@@ -2,7 +2,7 @@
 
 Contributions from the community are highly encouraged.
 
-To ensure that each change is relevant and properly peer reviewed, we request that you adhere to open source contribution best practices.
+To ensure that each change is relevant and properly peer reviewed, we request that you adhere to best practices for open-source contributions.
 This means that if you are outside the Temporal organization, you must fork the repository and create pull requests from branches on your own fork.
 GitHub's [first-contributions repo README](https://github.com/firstcontributions/first-contributions) provides an example of how to do that.
 
@@ -10,18 +10,18 @@ When it comes to crafting content, please follow our [style guidelines](style-gu
 
 ## Preview changes locally
 
-The Temporal documentation site utilizes [Docusaurus 2](https://v2.docusaurus.io/), which is a static website generator.
+The Temporal documentation site uses [Docusaurus 2](https://v2.docusaurus.io/), which is a static website generator.
 
 You can make changes locally without previewing them in the browser.
-However, if you wish to build the site and preview changes in the browser you will need to have [Docusaurus V2 dependencies](https://v2.docusaurus.io/docs/installation/#requirements) installed.
+However, if you wish to build the site and preview changes in the browser, you need to have [Docusaurus V2 dependencies](https://v2.docusaurus.io/docs/installation/#requirements) installed.
 
-Once you have the required tools installed and initialized in the repo (run [`yarn`](https://classic.yarnpkg.com/en/docs/cli/) once in the root directory) then you can build and view the site locally:
+After you have the required tools installed and initialized in the repo (run [`yarn`](https://classic.yarnpkg.com/en/docs/cli/) once in the root directory), you can build and view the site locally:
 
 ```bash
 yarn start
 ```
 
-The command starts a local development server and opens up a browser window.
+The command starts a local development server and opens a browser window.
 
 ## Pull requests
 
@@ -31,20 +31,20 @@ You will have a chance to preview the changes of your pull request by clicking "
 
 ![Netlify build preview](static/img/readme/netlifypreview.png)
 
-Pull requests are typically reviewed within 1-2 days.
+Pull requests are typically reviewed within 1–2 business days.
 Once approved, we will merge your changes.
 
-As soon as your pull request is merged, a new build will automatically kick off and your changes will publish to [https://docs.temporal.io](https://docs.temporal.io).
+As soon as your pull request is merged, a new build automatically occurs and your changes publish to [https://docs.temporal.io](https://docs.temporal.io).
 
 ## Style guidance
 
-In general this content adheres to the [Google developers style guide](https://developers.google.com/style).
+In general, this content adheres to the [Google developers style guide](https://developers.google.com/style).
 
-However there are some Temporal specific style guidelines below.
+However, we have some Temporal-specific style guidelines.
 
 ### Infinitive verb forms in headings
 
-Titles and headings should try to use infinitive verb forms whenever possible. People tend to search using infinitive verb forms and thus using them helps with SEO.
+Titles and headings should use infinitive verb forms whenever possible. People tend to search by using infinitive verb forms, so using them helps SEO.
 
 - Correct: "Install Temporal"
 - Incorrect: "Installing Temporal"
