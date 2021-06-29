@@ -98,7 +98,7 @@ A collection of attributes that instructs the Temporal Server how to retry a fai
 
 - If a custom Retry Policy is to be used, it must be provided when an [Activity Execution](#activity-execution) or [Workflow Execution](#workflow-execution) is invoked.
 
-- The time between a retry is the *retry interval*.
+- The time between a retry is the _retry interval_.
   A retry interval is the smaller of two values:
   - The [Initial Interval](#initial-interval) multiplied by the [Backoff Coefficient](#backoff-coefficient) raised to the power of the number of retries.
   - The [Maximum Interval](#maximum-interval).
@@ -115,12 +115,12 @@ Retry Policies does not apply to [Workflow Task Executions](#workflow-task-execu
 :::
 
 - A Retry Policy can be provided to a [Workflow Execution](#workflow-execution) when it is invoked, but only certain scenarios merit doing this, such as the following:
+
   - A Cron Workflow or some other stateless always-running Workflow Execution that can benefit from retries.
   - A file-processing or media-encoding Workflow Execution that downloads files to a host.
 
 - When an [Activity Execution](#activity-execution) is invoked it is associated with a default Retry Policy, and thus [Activity Task Executions](#activity-execution) are retried by default.
   When an [Activity Task Execution](#activity-execution) is retried, the Server places a new [Activity Task](#activity-task) into its respective [Activity Task Queue](#activity-task-queue), which results in a new [Activity Task Execution](#activity-task-execution).
-
 
 **Default Retry Policy**
 
@@ -135,12 +135,12 @@ Non-retryabele Errors = []
 ### Initial Interval
 
 - **Description**: Amount of time that must elapse before the first retry occurs.
-   - **The default value is 1 second.**
+  - **The default value is 1 second.**
 - **Use case**: This is used as the base interval time for the [Backoff Coefficient](#backoff-coefficient) to multiply against.
 
 ### Backoff Coefficient
 
-- **Description**: The value dictates how much the *retry interval* increases.
+- **Description**: The value dictates how much the _retry interval_ increases.
   - **The default value is 2.0.**
   - A backoff coefficient of 1.0 means that the retry interval always equals the [Initial Interval](#initial-interval).
 - **Use case**: Use this attribute to increase the interval between retries.
