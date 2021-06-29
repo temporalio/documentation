@@ -6,7 +6,7 @@ sidebar_label: Workers
 
 ## What is a Worker?
 
-A Worker is an object that connects to the Temporal Server, and executes [Workflows](/docs/node/workflows) and [Activities](/docs/node/activities) from [Task Queues](/docs/activities/task-queues).
+A Worker is an object that connects to the Temporal Server, and executes Workflows and [Activities](/docs/node/activities) from [Task Queues](/docs/node/task-queues).
 Workers are run on user controlled hosts.
 You can use the `worker` package's `Worker` class to create and run as many Workers as your use case demands, across any number of hosts.
 
