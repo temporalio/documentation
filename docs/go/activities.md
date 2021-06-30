@@ -9,7 +9,7 @@ You should have a conceptual understanding of Temporal Activities before proceed
 
 ## Overview
 
-The following example demonstrates a simple Activity that accepts a string parameter, appends a word
+The following example demonstrates a simple Activity Definition that accepts a string parameter, appends a word
 to it, and then returns a result.
 
 ```go
@@ -18,18 +18,19 @@ package sample
 import (
 	"context"
 
-	"go.uber.org/zap"
-
 	"go.temporal.io/sdk/activity"
 )
 
-// SimpleActivity is a sample Temporal Activity function that takes one parameter and
+// SimpleActivity is a sample Temporal Activity Definition that takes one parameter and
 // returns a string containing the parameter value.
 func SimpleActivity(ctx context.Context, value string) (string, error) {
-	activity.GetLogger(ctx).Info("SimpleActivity called.", zap.String("Value", value))
-	return "Processed: " + value, nil
+	logger := activity.GetLogger(ctx)
+	logger.Info("SimpleActivity called.", "Value:", value)
+	return value, nil
 }
 ```
+
+In the Workflow Definition, to invoke this Activity use `worklow.ExecuteActivity(ctx, SimpleActivity)`.
 
 Let's take a look at each component of this Activity.
 
@@ -57,6 +58,31 @@ Activities are implemented as regular Go functions:
 There's no hard limit on what you can pass into or return from an Activity function, but keep in mind that all parameters and return values are recorded in the execution history.
 A large execution history can adversely impact the performance of your Workflows as the entire history is transferred to your workers with every event processed.
 No other limitations on Activity functions exist; you are free to use idiomatic loggers and metrics controllers, and the standard Go concurrency constructs.
+
+Activities can also be implemented as methods on Struct.
+
+```go
+type Activities struct {
+	Name     string
+	Greeting string
+}
+
+// GetName Activity.
+func (a *Activities) GetName() (string, error) {
+	return a.Name, nil
+}
+
+// GetGreeting Activity.
+func (a *Activities) GetGreeting() (string, error) {
+	return a.Greeting, nil
+}
+
+// SayGreeting Activity.
+func (a *Activities) SayGreeting(greeting string, name string) (string, error) {
+	result := fmt.Sprintf("Greeting: %s %s!\n", greeting, name)
+	return result, nil
+}
+```
 
 #### Heart Beating
 
@@ -228,7 +254,7 @@ However, this is not necessary. If you want to execute multiple Activities in pa
 repeatedly call `workflow.ExecuteActivity()`, store the returned futures, and then wait for all
 Activities to complete by calling the `Get()` methods of the future at a later time.
 
-To implement more complex wait conditions on returned future objects, use the `workflow.Selector` class. Learn more on the [Go SDK Selectors](https://docs.temporal.io/docs/go/selectors) page.
+To implement more complex wait conditions on returned future objects, use `workflow.Selector`. Learn more on the [Go SDK Selectors](https://docs.temporal.io/docs/go/selectors) page.
 
 ## Asynchronous Activity Completion
 
