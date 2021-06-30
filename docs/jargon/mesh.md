@@ -160,6 +160,7 @@ Non-retryabele Errors = []
   - If this limit is exceeded, the execution fails without retrying again. When this happens an error is returned.
   - Setting the value to 0 also means unlimited.
   - Setting the value to 1 means that there will be no retries, as there will be only a single execution attempt.
+  - Setting the value to a negative integer will result in an error when the execution is invoked.
 - **Use case**: Use this attribute to ensure that retries do not continue indefinitely.
   However, in the majority of cases, we recommend relying on the Workflow Execution Timeout, in the case of Workflows, or Schedule-To-Close Timeout, in the case of Activities, to limit the total duration of retries instead of using this attribute.
 
