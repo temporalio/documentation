@@ -234,6 +234,8 @@ it like any normal result from a synchronous function call. The following sample
 you can use the result if it is a string value:
 
 ```go
+future := workflow.ExecuteActivity(ctx, ActivityName, param1)
+
 var result string
 if err := future.Get(ctx, &result); err != nil {
         return err
