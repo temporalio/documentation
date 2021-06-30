@@ -250,19 +250,20 @@ By default, a Child Workflow Execution inherits the options provided to the Pare
 You can overwrite any of these options and specify a customer Child Workflow ID by customizing `ChildWorkflowOptions` and adding them to the execution context.
 
 `ChildWorkflowOptions` include the following parameters:
-  - Namespace
-  - WorkflowID
-  - TaskQueue
-  - WorkflowExecutionTimeout
-  - WorkflowRunTimeout
-  - WorkflowTaskTimeout
-  - WaitForCancellation
-  - WorkflowIDReusePolicy
-  - RetryPolicy
-  - CronSchedule
-  - Memo
-  - SearchAttributes
-  - ParentClosePolicy
+
+- Namespace
+- WorkflowID
+- TaskQueue
+- WorkflowExecutionTimeout
+- WorkflowRunTimeout
+- WorkflowTaskTimeout
+- WaitForCancellation
+- WorkflowIDReusePolicy
+- RetryPolicy
+- CronSchedule
+- Memo
+- SearchAttributes
+- ParentClosePolicy
 
 ### Child Workflow Definition
 
