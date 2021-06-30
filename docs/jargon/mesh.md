@@ -98,38 +98,38 @@ A collection of attributes that instructs the Temporal Server how to retry a fai
 
 - If a custom Retry Policy is to be used, it must be provided as an options parameter when an [Activity Execution](#activity-execution) or [Workflow Execution](#workflow-execution) is invoked.
 
-- The time between a retry is the _retry interval_.
+- The wait time before a retry is the _retry interval_.
   A retry interval is the smaller of two values:
   - The [Initial Interval](#initial-interval) multiplied by the [Backoff Coefficient](#backoff-coefficient) raised to the power of the number of retries.
   - The [Maximum Interval](#maximum-interval).
 
-![retry interval](/img/retry-interval-diagram.png)
+![Diagram that shows the retry interval and its formula](/img/retry-interval-diagram.png)
 
 - When a [Workflow Execution](#workflow-execution) is invoked it is not associated with a default Retry Policy and thus does not retry by default.
   The intention is that a Workflow Definition should be written to never fail due to intermittent issues; an Activity is designed to handle such issues.
 
 :::note
 
-Retry Policies does not apply to [Workflow Task Executions](#workflow-task-execution) which retry, by default, indefinitely.
+Retry Policies do not apply to [Workflow Task Executions](#workflow-task-execution), which, by default, retry indefinitely.
 
 :::
 
 - A Retry Policy can be provided to a [Workflow Execution](#workflow-execution) when it is invoked, but only certain scenarios merit doing this, such as the following:
 
-  - A Cron Workflow or some other stateless always-running Workflow Execution that can benefit from retries.
+  - A cron Workflow or some other stateless, always-running Workflow Execution that can benefit from retries.
   - A file-processing or media-encoding Workflow Execution that downloads files to a host.
 
-- When an [Activity Execution](#activity-execution) is invoked it is associated with a default Retry Policy, and thus [Activity Task Executions](#activity-execution) are retried by default.
+- When an [Activity Execution](#activity-execution) is invoked, it is associated with a default Retry Policy, and thus [Activity Task Executions](#activity-execution) are retried by default.
   When an [Activity Task Execution](#activity-execution) is retried, the Server places a new [Activity Task](#activity-task) into its respective [Activity Task Queue](#activity-task-queue), which results in a new [Activity Task Execution](#activity-task-execution).
 
 **Default Retry Policy**
 
 ```
-Initial Interval      = 1 second
-Backoff Coefficient   = 2.0
-Maximum Interval      = 100 x Initial Interval
-Maximum Attempts      = ∞
-Non-retryabele Errors = []
+Initial Interval     = 1 second
+Backoff Coefficient  = 2.0
+Maximum Interval     = 100 × Initial Interval
+Maximum Attempts     = ∞
+Non-Retryable Errors = []
 ```
 
 ### Initial Interval
@@ -159,16 +159,16 @@ Non-retryabele Errors = []
   - **The default is unlimited.**
   - If this limit is exceeded, the execution fails without retrying again. When this happens an error is returned.
   - Setting the value to 0 also means unlimited.
-  - Setting the value to 1 means that there will be no retries, as there will be only a single execution attempt.
-  - Setting the value to a negative integer will result in an error when the execution is invoked.
+  - Setting the value to 1 means a single execution attempt and no retries.
+  - Setting the value to a negative integer results in an error when the execution is invoked.
 - **Use case**: Use this attribute to ensure that retries do not continue indefinitely.
-  However, in the majority of cases, we recommend relying on the Workflow Execution Timeout, in the case of Workflows, or Schedule-To-Close Timeout, in the case of Activities, to limit the total duration of retries instead of using this attribute.
+  However, in the majority of cases, we recommend relying on the Workflow Execution Timeout, in the case of [Workflows](#workflow), or Schedule-To-Close Timeout, in the case of [Activities](#activity), to limit the total duration of retries instead of using this attribute.
 
 ### Non-Retryable Errors
 
 - **Description**: Specifies errors that shouldn't be retried.
   - **Default is none.**
-  - If one of those errors occurs, the [Activity Task Execution](#activity-task-execution) or [**Workflow Execution**](#workflow-execution) is not retried.
+  - If one of those errors occurs, the [Activity Task Execution](#activity-task-execution) or [Workflow Execution](#workflow-execution) is not retried.
 - **Use case**: There may be errors that you know of that should not trigger a retry.
   In this case you can specify them such that if they occur, the given execution will not be retried.
 
