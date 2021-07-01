@@ -40,7 +40,7 @@ signalChan := workflow.GetSignalChannel(ctx, signalName)
 s := workflow.NewSelector(ctx)
 s.AddReceive(signalChan, func(c workflow.Channel, more bool) {
     c.Receive(ctx, &signalVal)
-    workflow.GetLogger(ctx).Info("Received signal!", zap.String("signal", signalName), zap.String("value", signalVal))
+    workflow.GetLogger(ctx).Info("Received signal!", "Signal", signalName, "value", signalVal)
 })
 s.Select(ctx)
 
@@ -109,7 +109,7 @@ s.Select(ctx)
 ## Signalling regardless of running status
 
 You may not know if a Workflow is running and can accept a signal.
-The [client.SignalWithStartWorkflow](https://pkg.go.dev/go.temporal.io/sdk/client#Client) API allows you to send a signal to the current Workflow instance if one exists or to create a new run and then send the signal.
+The [client.SignalWithStartWorkflow](https://pkg.go.dev/go.temporal.io/sdk/client#Client) API allows you to send a Signal to the current Workflow Execution if one exists or to create a new Execution and send a Signal to it.
 `SignalWithStartWorkflow` therefore doesn't take a run Id as a parameter.
 
 ## Signalling external Workflows
