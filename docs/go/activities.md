@@ -153,9 +153,9 @@ w.registerActivity(ActivityC)
 
 ## Synchronous Activity Execution
 
-The primary responsibility of a Workflow implementation is to schedule Activities for execution. The
-most straightforward way to do this is via the library method `workflow.ExecuteActivity`. The following
-sample code demonstrates making this call:
+The primary responsibility of a Workflow implementation is to schedule Activities for execution.
+The most straightforward way to do this is via the `workflow.ExecuteActivity` API.
+The following sample code demonstrates making this call:
 
 ```go
 ao := workflow.ActivityOptions{
@@ -197,7 +197,7 @@ You can refer to [our Retry Policy documentation](https://docs.temporal.io/docs/
 ### Activity timeouts
 
 There can be various kinds of timeouts associated with an Activity. Temporal guarantees that Activities
-are executed _at most once_, so an Activity either succeeds or fails with one of the following timeouts:
+are executed _at least once_, so an Activity either succeeds or fails with one of the following timeouts:
 
 | Timeout                  | Description                                                                                                                                                                                          |
 | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -212,7 +212,7 @@ The first parameter in the call is the required `workflow.Context` object. This 
 `context.Context` with the `Done()` method returning `workflow.Channel` instead of the native Go `chan`.
 
 The second parameter is the function that we registered as an Activity function. This parameter can
-also be a string representing the fully qualified name of the Activity function. The benefit of passing
+also be a string representing the name of the Activity function. The benefit of passing
 in the actual function object is that the framework can validate Activity parameters.
 
 The remaining parameters are passed to the Activity as part of the call. In our example, we have a

@@ -37,12 +37,15 @@ The only difference is that the `Done()` function provided by `workflow.Context`
 
 The second parameter, `string`, is a custom parameter that can be used to pass data into the Workflow when it starts.
 A Workflow can have one or more such parameters.
+However, we recommend having a single parameter that is of a struct type to support backward compatibility if new parameters are added.
 
 :::note
 
 All Workflow function parameters must be serializable, which essentially means that params can’t be channels, functions, variadic, or unsafe pointers.
 :::
 
+A Workflow can return an `err` or a `value, err`.
+Again, if there is a chance that the return value might change, use a struct type to hold the values.
 Returning an error from a Workflow is used to indicate that an error was encountered during its execution and the Workflow should be terminated.
 
 ## How to write Workflow code
@@ -52,7 +55,7 @@ This requirement stems from how the Temporal Server tracks the state of code exe
 
 In practical terms, this means the following:
 
-- Workflow code can only read and manipulate local variables or variables received as return values from Temporal Go SDK APIs.
+- Workflow code can only read and manipulate local variables or variables received as return values from Temporal Go SDK APIs. For example, Workflows should never read a configuration directly as it may change in the middle of a Workflow Execution, thus breaking "determinism". Use a [SideEffect](side-effect), MutableSideEffect, or an Activity to load configuration values.
 - Workflow code can not affect changes in external systems directly.
 - Workflow code must use Go SDK APIs to handle things like time, logging, and goroutines.
 - Workflow code can not directly iterate over maps using `range` because the order of the map's iteration is randomized.
