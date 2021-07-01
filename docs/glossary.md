@@ -17,6 +17,7 @@ These terms have specific definitions within the context of the Temporal product
 - [Local Activity](/docs/concepts-new/introduction/#loval-activity)
 - [Namespace](/docs/concepts-new/introduction/#namespace)
 - [Query](/docs/concepts-new/introduction/#query)
+- [Retry Policy](/docs/concepts-new/introduction/#retry-policy)
 - [Run Id](/docs/concepts-new/introduction/#run-id)
 - [Signal](/docs/concepts-new/introduction/#signal)
 - [Task](/docs/concepts-new/introduction/#task)
