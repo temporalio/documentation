@@ -1,5 +1,5 @@
 ---
-id: mesh
+id: introduction
 title: Introduction to Temporal's core concepts
 sidebar_label: Introduction
 ---

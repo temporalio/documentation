@@ -430,7 +430,7 @@ module.exports = {
       label: "Concepts WIP",
       collapsed: true,
       items: [
-        "concepts-new/mesh",
+        "concepts-new/introduction",
       ]
     },
   ]
