@@ -433,5 +433,5 @@ module.exports = {
         "concepts-new/introduction",
       ]
     },
-  ]
+  ],
 };
