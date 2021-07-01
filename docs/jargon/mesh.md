@@ -4,6 +4,12 @@ title: Jargon Mesh - Introduction to Temporal's core concepts
 sidebar_label: Jargon Mesh
 ---
 
+:::note
+
+This page is a work in progress!
+
+:::
+
 **Welcome to Temporal's core terminology!**
 
 This page is dedicated to defining and describing the terms, components, and concepts of the Temporal system in a holistic way.
@@ -103,7 +109,7 @@ A collection of attributes that instructs the Temporal Server how to retry a fai
   - The [Initial Interval](#initial-interval) multiplied by the [Backoff Coefficient](#backoff-coefficient) raised to the power of the number of retries.
   - The [Maximum Interval](#maximum-interval).
 
-![Diagram that shows the retry interval and its formula](/img/retry-interval-diagram.png)
+<!-- ![Diagram that shows the retry interval and its formula](/img/retry-interval-diagram.png) -->
 
 - When a [Workflow Execution](#workflow-execution) is invoked it is not associated with a default Retry Policy and thus does not retry by default.
   The intention is that a Workflow Definition should be written to never fail due to intermittent issues; an Activity is designed to handle such issues.
@@ -122,7 +128,7 @@ Retry Policies do not apply to [Workflow Task Executions](#workflow-task-executi
 - When an [Activity Execution](#activity-execution) is invoked, it is associated with a default Retry Policy, and thus [Activity Task Executions](#activity-execution) are retried by default.
   When an [Activity Task Execution](#activity-execution) is retried, the Server places a new [Activity Task](#activity-task) into its respective [Activity Task Queue](#activity-task-queue), which results in a new [Activity Task Execution](#activity-task-execution).
 
-**Default Retry Policy**
+**Default values for Retry Policy**
 
 ```
 Initial Interval     = 1 second
