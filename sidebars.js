@@ -429,9 +429,7 @@ module.exports = {
       type: "category",
       label: "Concepts WIP",
       collapsed: true,
-      items: [
-        "concepts-new/mesh",
-      ]
+      items: ["concepts-new/mesh"],
     },
-  ]
+  ],
 };
