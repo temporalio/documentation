@@ -397,10 +397,10 @@ module.exports = {
         "samples-library",
         "external-resources",
         "cadence-to-temporal",
-        "jargon/mesh",
         "glossary",
       ],
     },
+
     {
       type: "category",
       label: "Quick links",
@@ -424,4 +424,14 @@ module.exports = {
       ],
     },
   ],
+  coreConceptsNew: [
+    {
+      type: "category",
+      label: "Concepts WIP",
+      collapsed: true,
+      items: [
+        "concepts-new/mesh",
+      ]
+    },
+  ]
 };

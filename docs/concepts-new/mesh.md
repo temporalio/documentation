@@ -1,7 +1,7 @@
 ---
 id: mesh
-title: Jargon Mesh - Introduction to Temporal's core concepts
-sidebar_label: Jargon Mesh
+title: Introduction to Temporal's core concepts
+sidebar_label: Introduction
 ---
 
 :::note
