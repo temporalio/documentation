@@ -38,7 +38,7 @@ var signalVal string
 signalChan := workflow.GetSignalChannel(ctx, signalName)
 
 s := workflow.NewSelector(ctx)
-s.AddReceive(signalChan, func(c workflow.Channel, more bool) {
+s.AddReceive(signalChan, func(c workflow.ReceiveChannel, more bool) {
     c.Receive(ctx, &signalVal)
     workflow.GetLogger(ctx).Info("Received signal!", "Signal", signalName, "value", signalVal)
 })
@@ -89,7 +89,7 @@ MySignal struct {
 signalChan := workflow.GetSignalChannel(ctx, signalName)
 
 s := workflow.NewSelector(ctx)
-s.AddReceive(signalChan, func(c workflow.Channel, more bool) {
+s.AddReceive(signalChan, func(c workflow.ReceiveChannel, more bool) {
     var rawSignalVal interface{}
 	c.Receive(ctx, &rawSignalVal)
 
