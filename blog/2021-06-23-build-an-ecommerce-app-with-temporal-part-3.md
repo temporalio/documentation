@@ -28,7 +28,7 @@ In this blog post, I'll demonstrate how to use Temporal's testing utilities to w
 
 ## Testing Setup
 
-Below is a basic setup for testing a Temporal workflow using `go test` and [Testify](https://github.com/stretchr/testify) based on [Temporal's Go testing docs](/docs/go/testing).
+Below is a basic setup for testing a Temporal Workflow using `go test` and [Testify](https://github.com/stretchr/testify) based on [Temporal's Go testing docs](/docs/go/testing).
 You can find the full source code for the test suite in the `workflow_test.go` file.
 
 ```go
@@ -72,7 +72,7 @@ func TestUnitTestSuite(t *testing.T) {
 ```
 
 The most important property is the `env` property, which is an instance of [Temporal's `TestWorkflowEnvironment` struct](https://pkg.go.dev/go.temporal.io/temporal/internal#TestWorkflowEnvironment).
-A `TestWorkflowEnvironment` provides utilities for testing Workflows, including executing Workflows, mocking Activities, and signaling and querying test Workflows.
+A `TestWorkflowEnvironment` provides utilities for testing Workflows, including executing Workflows, mocking Activities, and Signaling and Querying test Workflows.
 
 The [testify package](https://github.com/stretchr/testify) also provides utilities for organizing tests, including setting up and tearing down test suites using `SetupTest()` and `AfterTest()`.
 For example, you can define multiple test suites as shown below.
@@ -112,9 +112,9 @@ func (s *IntegrationTestSuite) AfterTest(suiteName, testName string) {
 ## Querying Workflows in tests
 
 Remember that, in this app, a shopping cart is a Workflow.
-To get the current state of the shopping cart, you send a query to the Workflow, and to update the cart you send a signal to the Workflow.
+To get the current state of the shopping cart, you send a Query to the Workflow, and to update the cart you send a Signal to the Workflow.
 
-The below code shows how you can use `env.QueryWorkflow()` to send a query to the shopping cart Workflow.
+The below code shows how you can use `env.QueryWorkflow()` to send a Query to the shopping cart Workflow.
 
 ```go
 func (s *UnitTestSuite) Test_QueryCart() {
@@ -135,8 +135,8 @@ func (s *UnitTestSuite) Test_QueryCart() {
 }
 ```
 
-Note that the above code queries the Workflow _after the Workflow is done_.
-In order to interact with the Workflow via queries and signals while the Workflow is running, you should use the test environment's `RegisterDelayedCallback()` function as shown below.
+Note that the above code Queries the Workflow _after the Workflow is done_.
+In order to interact with the Workflow via Queries and Signals while the Workflow is running, you should use the test environment's `RegisterDelayedCallback()` function as shown below.
 Make sure you call `RegisterDelayedCallback()` _before_ `ExecuteWorkflow()`, otherwise Temporal will execute the entire Workflow without executing the callback.
 
 ```go
@@ -158,12 +158,12 @@ func (s *UnitTestSuite) Test_IntermediateQuery() {
 }
 ```
 
-You can query a Workflow after it is completed, but you can't signal a Workflow after it is completed.
+You can Query a Workflow after it is completed, but you can't Signal a Workflow after it is completed.
 
 ## Signaling Workflows in tests
 
-So in order to signal a Workflow from your tests, you need to use `RegisterDelayedCallback()`.
-Just remember that signaling is asynchronous, so you need to add a separate `RegisterDelayedCallback()` to read the result of your signal using a query.
+So in order to Signal a Workflow from your tests, you need to use `RegisterDelayedCallback()`.
+Just remember that Signaling is asynchronous, so you need to add a separate `RegisterDelayedCallback()` to read the result of your Signal using a Query.
 For example, below is a test case for the `AddToCart()` method.
 
 ```go
@@ -203,10 +203,10 @@ func (s *UnitTestSuite) Test_AddToCart() {
 	s.True(s.env.IsWorkflowCompleted())
 }
 ```
-### Sending multiple signals to Workflows in tests
+### Sending multiple Signals to Workflows in tests
 
-Similarly, if you want to send multiple signals, you should put them in separate `RegisterDelayedCallback()` calls.
-However, you can move any queries that don't have any signals after them to after the `ExecuteWorkflow()` call.
+Similarly, if you want to send multiple Signals, you should put them in separate `RegisterDelayedCallback()` calls.
+However, you can move any Queries that don't have any Signals after them to be after the `ExecuteWorkflow()` call.
 For example, below is a test case for the `RemoveFromCart()` method.
 
 ```go
@@ -256,8 +256,8 @@ But what about testing more sophisticated features, like testing that the Workfl
 
 ## Mocking Activities and Controlling Time
 
-Temporal's test environment makes it easy to mock activities, replacing them with a stubbed out function.
-For example, the below test asserts that sending a checkout signal calls the `CreateStripeCharge` activity with the correct receipt email using the test environment's `OnActivity()` function.
+Temporal's test environment makes it easy to mock Activities, replacing them with a stubbed out function.
+For example, the below test asserts that sending a checkout Signal calls the `CreateStripeCharge` Activity with the correct receipt email using the test environment's `OnActivity()` function.
 
 ```go
 func (s *UnitTestSuite) Test_Checkout() {
@@ -360,7 +360,7 @@ func (s *UnitTestSuite) Test_AbandonedCart() {
 ## Moving On
 
 Temporal's testing environment makes unit testing Workflows easy.
-Sending signals and queries to the currently running Workflow is straightforward with `RegisterDelayedCallback()`.
+Sending Signals and Queries to the currently running Workflow is straightforward with `RegisterDelayedCallback()`.
 Most importantly, Temporal's testing environment provides utilities for mocking Activities and testing logic that executes after a delay.
 That makes it to unit test Workflows that depend on external services or Workflows that involve long timeouts.
-In the next blog post in this series, you'll learn how to built a RESTful API on top of a Temporal Workflow.
+In the next blog post in this series, you'll learn how to build a RESTful API on top of a Temporal Workflow.
