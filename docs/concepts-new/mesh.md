@@ -28,12 +28,10 @@ Workflow Executions are lightweight components.
 A Temporal Application can consist of thousands to hundreds of thousands of Workflow Executions.
 A Workflow Execution consumes few compute resources; in fact, if a Workflow Execution is suspended, such as when it is in a waiting state, the Workflow Execution consumes no compute resources at all.
 
-<<<<<<< HEAD
 The Temporal runtime consists of the Temporal Server and Worker processes.
 A Temporal SDK provides users with the APIs they need to write Workflow Definitions as well as the APIs to invoke Workflow Executions and invoke Worker processes.
-=======
+
 The temporal.io runtime
->>>>>>> e0eea374ba4ebf9c8981a1934c7bf9a1de364da8
 
 ## What is a Workflow?
 
