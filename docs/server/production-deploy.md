@@ -123,6 +123,12 @@ Recommended configuration debugging techniques for production Temporal Server se
 
 We recommend [using Temporal Web to debug your Workflow Executions](https://docs.temporal.io/docs/system-tools/web-ui) in development and production.
 
+### Tracing Workflows
+
+Temporal Web's tracing capabilities mainly track activity execution within a Temporal context. If you need custom tracing specific for your usecase, you should make use of context propagation to add tracing logic accordingly.
+
+- Example: [Tracing Temporal Workflows with DataDog](https://spiralscout.com/blog/tracing-temporal-workflow-with-datadog)
+
 ### Future content
 
 Topics this document will cover in future: (for now, please search/ask on the forum)
