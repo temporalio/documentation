@@ -26,7 +26,7 @@ A Temporal Application is a set of Temporal Workflow Executions (Π). Each Tempo
 
 Workflow Executions are lightweight components, a Temporal Application may consist of thousands to hundreds of thousands of Workflow Executions. A Workflow Execution consumes few compute resources; in fact, if a Workflow Execution is suspended, for example if the Workflow Execution is in a waiting state, the Workflow Execution consumes no compute resources at all.
 
-The temporal.io runtime  
+The temporal.io runtime
 
 ## What is a Workflow?
 
