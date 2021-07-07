@@ -4,31 +4,55 @@ title: Introduction to Temporal's core concepts
 sidebar_label: Introduction
 ---
 
-:::note
+:::caution
 
 This page is a work in progress!
 
 :::
 
-**Welcome to Temporal's core terminology!**
+**Temporal's tenth rule**
 
-This page is dedicated to defining and describing the terms, components, and concepts of the Temporal system in a holistic way.
+> Any sufficiently complex distributed system contains an ad-hoc, informally-specified, bug-ridden, slow implementation of half of temporal.io.
 
-## Workflow
+## What is Temporal?
 
-A fault-oblivious stateful function that orchestrates [Activities](#activity).
+[temporal.io](https://temporal.io) is a scalable and reliable runtime for Temporal Workflow Executions.
 
-- A Workflow has full control over which [Activities](#activity) are executed, and in which order.
-- A Workflow must not affect the external world directly, only through [Activities](#activity).
-- What makes Workflow code a Workflow is that its state is preserved by Temporal. Therefore any failure of a [Worker](#worker) process that hosts the Workflow code does not affect the [Workflow Execution](#workflow-execution). The Workflow continues as if these failures did not happen. At the same time, [Activities](#activity) can fail any moment for any reason.
-- Because Workflow code is fully fault-oblivious, it is guaranteed to get notifications about [Activity](#activity) failures or timeouts and act accordingly.
-- The duration of a Workflow has no limit.
+<img class="docs-image-centered docs-image-max-width-50" src="/img/temporal-intro.png" />
+
+A [Temporal Workflow Execution](#what-is-a-workflow-execution) (π) executes a [Temporal Workflow Definition](#workflow-definition), also called a Temporal Workflow Function, your application code, exactly once and to completion—whether your code executes for seconds, minutes, hours, days, months, or years, in the presence of arbitrary load and arbitrary failures.
+
+A Temporal Application is a set of Temporal Workflow Executions (Π). Each Temporal Workflow Execution has exclusive access to its local state, executes concurrently to all other Workflow Executions and communicates with other Workflow Executions and the environment via message passing.
+
+Workflow Executions are lightweight components, a Temporal Application may consist of thousands to hundreds of thousands of Workflow Executions. A Workflow Execution consumes few compute resources; in fact, if a Workflow Execution is suspended, for example if the Workflow Execution is in a waiting state, the Workflow Execution consumes no compute resources at all.
+
+The temporal.io runtime  
+
+## What is a Workflow?
+
+In day to day conversations, the term "Workflow" is frequently used to denote either a [Workflow Prototype](#what-is-a-workflow-prototype) or a [Workflow Execution](#what-is-a-workflow-execution). This document is explicit and differentiates between Prototype and Execution.
+
+<img class="docs-image-centered docs-image-max-width-50" src="/img/prototype-execution-cardinality.png" />
+
+### Workflow Prototype
+
+Coming soon!
+
+### Workflow Definition
+
+Coming soon!
 
 ### Workflow Execution
 
-An instance of a [Workflow](#workflow).
+A Workflow Execution is a Reentrant Processes, that is, a resumable, recoverable, and reactive process:
 
-- It is possible for a Workflow Execution to be composed of multiple [Workflow](#workflow) runs. When the [Event History](#event-history) of a [Workflow](#workflow) grows too large, the next invocation can be called with a "Continue as New" flag to create a new run automatically.
+<img class="docs-image-centered docs-image-max-width-50" src="/img/reentrant.png" />
+
+- Resumable: Ability of a process to continue execution after execution was suspended on an await-able.
+- Recoverable: Ability of a process to continue execution after execution was suspended on a failure.
+- Reactive: Ability of a process to react to external events.
+
+<img class="docs-image-centered docs-image-max-width-50" src="/img/suspended.png" />
 
 ### Workflow Id
 
