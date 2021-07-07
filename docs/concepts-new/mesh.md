@@ -31,7 +31,8 @@ A Workflow Execution consumes few compute resources; in fact, if a Workflow Exec
 The Temporal runtime consists of the Temporal Server and Worker processes.
 A Temporal SDK provides users with the APIs they need to write Workflow Definitions as well as the APIs to invoke Workflow Executions and invoke Worker processes.
 
-The temporal.io runtime
+The Temporal runtime consists of the Temporal Server and Worker processes.
+A Temporal SDK provides users with the APIs they need to write Workflow Definitions as well as the APIs to invoke Workflow Executions and invoke Worker processes.
 
 ## What is a Workflow?
 
