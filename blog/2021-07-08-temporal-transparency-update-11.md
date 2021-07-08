@@ -43,7 +43,7 @@ We are now reprioritizing the landing page to better speak to developers, and ap
 
 `tctl` is a powerful tool that makes it easy to debug your Temporal applications and even the Temporal server itself. While `tctl` offers a lot of functionality, finding and using that functionality is often a challenge. We've know for a while that the CLI experience needed some love, but we couldn't rationalize prioritizing it throughout the last year. 
 
-Fortunately, we are now in a better place to revisit the original decisions made in the CLI. Ruslan recently decided he would spearhead a collaborative effort to make `tctl` more predictable, friendly and easier to reason about. A ton of scoping has already been done and the changes are currently in the proposal stage. We are now in a place where **we need your input!** These changes will affect everybody and we want to make sure the direction is representative of what our users want. There are a number of open RFCs [in our proposal repo](https://github.com/temporalio/proposals/pulls). Please don't be shy, every piece of feedback in valuable. Here are a few proposals which are worth highlighting. 
+Fortunately, we are now in a better place to revisit the original decisions made in the CLI. [Ruslan](https://github.com/feedmeapples) recently decided he would spearhead a collaborative effort to make `tctl` more predictable, friendly and easier to reason about. A ton of scoping has already been done and the changes are currently in the proposal stage. We are now in a place where **we need your input!** These changes will affect everybody and we want to make sure the direction is representative of what our users want. There are a number of open RFCs [in our proposal repo](https://github.com/temporalio/proposals/pulls). Please don't be shy, every piece of feedback in valuable. Here are a few proposals which are worth highlighting. 
 
 - [https://github.com/temporalio/proposals/pull/31](https://github.com/temporalio/proposals/pull/31) - consistent formatting for output (tables, json, cards)
 - [https://github.com/temporalio/proposals/pull/26](https://github.com/temporalio/proposals/pull/26) - ability to pipe output to well known tools like `less` and `more`
@@ -79,7 +79,7 @@ Visibility is one of the most attractive features Temporal offers. It's rightful
 
 The second level is what we refer to as "advanced visibility" and enables the use of custom searchable attributes. Custom searchable attributes are user defined indices which can be attached when workflow is started and upserted directly from Temporal workflows. Custom searchable attributes drastically change the way you operate and debug your Temporal application. Unfortunately, the experience of using them has been far from ideal. 
 
-Due to some very hard work by Alex on the engineering team, the custom search attributes experience is finally in a place we can be proud of. Instead of requiring users to manually edit ElasticSearch schemas and wade through dynamic config, all you have to do is run a few tctl commands:
+Due to some very hard work by [Alex](https://github.com/alexshtin) on the engineering team, the custom search attributes experience is finally in a place we can be proud of. Instead of requiring users to manually edit Elasticsearch schemas and wade through dynamic config, all you have to do is run a few tctl commands:
 
 ```
 tctl admin cluster add-search-attributes --name ProductId --type Keyword
