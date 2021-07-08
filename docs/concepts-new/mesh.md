@@ -103,14 +103,14 @@ The following is a full list of all properties that can be customized for a Work
 See how to implement Workflow Options using an SDK:
 
 <Tabs
-  groupId='sdk-preference'
-  defaultValue='go'
-  values={[
-      {label: 'Go', value: 'go'},
-      {label: 'Java', value: 'java'},
-      {label: 'Node.js', value: 'node'},
-      {label: 'PHP', value: 'php'},
-    ]
+groupId='sdk-preference'
+defaultValue='go'
+values={[
+{label: 'Go', value: 'go'},
+{label: 'Java', value: 'java'},
+{label: 'Node.js', value: 'node'},
+{label: 'PHP', value: 'php'},
+]
 }>
 <TabItem value='go'>
 
@@ -143,24 +143,24 @@ Each timeout property has a default value, but can be customized in [Workflow Ex
 ### Workflow Execution Timeout
 
 This is the maximum time that a Workflow Execution can be executing for (have an Open status) including retries and any usage of [Continue As New](#continue-as-new).
-  **The default value is set to 10 years.**
-  If this timeout is reached then the Workflow Execution will change to a Timed Out status.
+**The default value is set to 10 years.**
+If this timeout is reached then the Workflow Execution will change to a Timed Out status.
 
 This timeout is most commonly used for stopping the execution of a [cron scheduled Workflow](#cron-schedule) after a certain amount of time has passed. This timeout is different from the [Workflow Run timeout](#workflow-run-timeout).
 
 ### Workflow Run Timeout
 
 This is the maximum amount of time that a single Workflow Run is restricted to.
-  **The default is set to the same value as the [Execution timeout](#execution-timeout).**
+**The default is set to the same value as the [Execution timeout](#execution-timeout).**
 
 This timeout is most commonly used to limit the execution time of a single [cron scheduled Workflow Execution](#cron-schedule).
-  If this timeout is reached and there is an associated Retry Policy, the Workflow will be retried before any scheduling occurs.
-  If there is no Retry Policy then the Workflow will be scheduled per the [cron schedule](#cron-schedule).
+If this timeout is reached and there is an associated Retry Policy, the Workflow will be retried before any scheduling occurs.
+If there is no Retry Policy then the Workflow will be scheduled per the [cron schedule](#cron-schedule).
 
 ### Workflow Task Timeout
 
 This is the maximum amount of time that the Server will wait for the Worker to start processing a [Workflow Task](#workflow-task) after the Task has been pulled from the Task Queue.
-  **The default value is 10 seconds.**
+**The default value is 10 seconds.**
 
 This timeout is primarily available to recognize whether a Worker has gone down so that the Workflow Execution can be recovered on a different Worker.
 The main reason for increasing the default value would be to accommodate a Workflow Execution that has a very long Workflow Execution History that could take longer than 10 seconds for the Worker to load.
@@ -262,14 +262,14 @@ Non-Retryable Errors = []
 See how to implement a Retry Policy using an SDK:
 
 <Tabs
-  groupId='sdk-preference'
-  defaultValue='go'
-  values={[
-      {label: 'Go', value: 'go'},
-      {label: 'Java', value: 'java'},
-      {label: 'Node.js', value: 'node'},
-      {label: 'PHP', value: 'php'},
-    ]
+groupId='sdk-preference'
+defaultValue='go'
+values={[
+{label: 'Go', value: 'go'},
+{label: 'Java', value: 'java'},
+{label: 'Node.js', value: 'node'},
+{label: 'PHP', value: 'php'},
+]
 }>
 <TabItem value='go'>
 
