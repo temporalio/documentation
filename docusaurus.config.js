@@ -144,6 +144,10 @@ module.exports = {
               label: "Temporal Careers",
               href: "https://temporal.io/careers",
             },
+            {
+              label: "Open Office Hours",
+              href: "https://lu.ma/temporal",
+            },
           ],
         },
         {
