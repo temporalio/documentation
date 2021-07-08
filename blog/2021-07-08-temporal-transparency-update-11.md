@@ -93,13 +93,13 @@ Our hope is that this opens up the gates to an entire set of users who were prev
 
 Our first open office hours of 2021 took place last month. We were super excited by the turnout and the amazing questions that users asked during the session. 
 
-import { ResponsivePlayer } from '../../src/components'
+import { ResponsivePlayer } from '../src/components'
 
 <ResponsivePlayer url='https://www.youtube.com/watch?v=Qz0LURUyf-w' />
 
 **Our next office hours is Tuesday July 20th, 9am PT**. You can [sign up here to get an invite straight to your calendar](https://lu.ma/temporal).
 
-We have some exciting presentations planned, including our first customer presentation! If there are specific topics or types of content you would like to see, please email `swyx@temporal.io` or [add to this forum thread](https://community.temporal.io/t/what-sessions-do-you-want-to-see-at-the-next-open-office-hours/243/12)
+We have some exciting presentations planned, including our first customer presentation! If there are specific topics or types of content you would like to see, please email `swyx@temporal.io` or [add to this forum thread](https://community.temporal.io/t/what-sessions-do-you-want-to-see-at-the-next-open-office-hours/243/12).
 
 ## Conclusion
 
