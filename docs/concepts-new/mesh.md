@@ -4,6 +4,9 @@ title: Introduction to Temporal's core concepts
 sidebar_label: Introduction
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 :::caution
 
 This page is a work in progress!
@@ -27,9 +30,6 @@ A Temporal Application is a set of Temporal Workflow Executions (Π). Each Tempo
 Workflow Executions are lightweight components.
 A Temporal Application can consist of thousands to hundreds of thousands of Workflow Executions.
 A Workflow Execution consumes few compute resources; in fact, if a Workflow Execution is suspended, such as when it is in a waiting state, the Workflow Execution consumes no compute resources at all.
-
-The Temporal runtime consists of the Temporal Server and Worker processes.
-A Temporal SDK provides users with the APIs they need to write Workflow Definitions as well as the APIs to invoke Workflow Executions and invoke Worker processes.
 
 The Temporal runtime consists of the Temporal Server and Worker processes.
 A Temporal SDK provides users with the APIs they need to write Workflow Definitions as well as the APIs to invoke Workflow Executions and invoke Worker processes.
@@ -59,12 +59,34 @@ A Workflow Execution is a Reentrant Process; that is, a resumable, recoverabl
 <img class="docs-image-centered docs-image-max-width-50" src="/img/reentrant.png" />
 <img class="docs-image-centered docs-image-max-width-50" src="/img/suspended.png" />
 
+Certain properties of a Workflow Execution can be determined by a set of options.
+The options are passed to the Workflow Execution when it is inoked.
+The following properties are customizable per Workflow Execution:
+
+- [Task Queue Name](#task-queue)
+- [Workflow Execution Timeout](#workflow-execution-timeout)
+- [Workflow Run Timeout](#workflow-run-timeout)
+- [Workflow Task Timeout](#workflow-task-timeout)
+- [Namespace](#namespace)
+- [Workflow Id](#workflow-id)
+- [Workflow Id Reuse Policy](#workflow-id-reuse-policy)
+- [Wait For Cancellation](#wait-for-cancellation)
+- [Data Converter](#data-converter)
+- [Retry Policy](#retry-policy)
+- [Cron Schedule](#cron-schedule)
+- [Context Propagators](#context-propagators)
+- [Memo](#memo)
+- [Search Attributes](#search-attributes)
+- [Parent Close Policy](#parent-close-policy)
+
 ### Workflow Id
 
 A unique identifier for a [Workflow Execution](#workflow-execution).
 
 - Temporal guarantees the uniqueness of an Id within a [Namespace](#namespace).
 - An attempt to start a [Workflow](#workflow) with a duplicate Id results in an **already started** error if there is another open Workflow execution. However, this behavior depends on the `WorkflowIdReusePolicy` flag; if set to `ALLOW_DUPLICATE`, it is possible to start a new execution with the same Workflow Id.
+
+## What timeouts are available to Workflow Executions?
 
 ### Run Id
 
@@ -166,6 +188,40 @@ Maximum Interval     = 100 × Initial Interval
 Maximum Attempts     = ∞
 Non-Retryable Errors = []
 ```
+
+See how to implement a Retry Policy using an SDK:
+
+<Tabs
+  groupId='sdk-preference'
+  defaultValue='go'
+  values={[
+      {label: 'Go', value: 'go'},
+      {label: 'Java', value: 'java'},
+      {label: 'Node.js', value: 'node'},
+      {label: 'PHP', value: 'php'},
+    ]
+}>
+<TabItem value='go'>
+
+How to implement a Retry Policy in Go
+
+</TabItem>
+<TabItem value='java'>
+
+How to implement a Retry Policy in Java
+
+</TabItem>
+<TabItem value='node'>
+
+How to implement a Retry Policy in Node.js
+
+</TabItem>
+<TabItem value='php'>
+
+How to implement a Retry Policy in PHP
+
+</TabItem>
+</Tabs>
 
 ### Initial Interval
 
