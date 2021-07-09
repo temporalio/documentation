@@ -32,7 +32,7 @@ Activities are just async functions, they run like typical NodeJS code and can b
 
 Workflows are the core of the Temporal system, they abstract away the complexities of writing distributed programs.
 
-In the NodeJS SDK, each Workflow runs in a separate V8 isolate to provide a [deterministic runtime](./determinism).
+In the NodeJS SDK, each Workflow runs in a separate V8 isolate to provide a [deterministic runtime](/docs/node/determinism).
 
 #### Interface
 
