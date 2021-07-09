@@ -374,3 +374,9 @@ A service that hosts the [Workflow](#workflow) and [Activity](#activity) impleme
 - A single Worker actually contains both an [Activity Worker](#worker) and a [Workflow Worker](#worker), abstracting the logical separation and having the ability to execute both types of tasks.
 - The Worker polls the Temporal service for [Tasks](#task), performs those [Tasks](#task), and communicates [Task](#task) execution results back to the Temporal service.
 - Worker services are developed, deployed, and operated by Temporal customers.
+
+## What is a Child Workflow?
+
+If a Workflow Execution is started by another Workflow Execution, then it is considered a Child Workflow Execution.
+The completion or failure of a Child Workflow Execution is reported to the Workflow Execution that started it (the Parent Workflow Execution).
+The Parent Workflow Execution has the ability to monitor and impact the lifecycle of the Child Workflow Execution, similar to the way it does for Activities.
