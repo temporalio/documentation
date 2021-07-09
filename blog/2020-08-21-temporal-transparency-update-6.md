@@ -2,7 +2,7 @@
 tags:
 - v1
 - community
-- workflow
+- transparency
 - temporal
 - stability
 posted_on_: 2020-08-21T00:42:18Z

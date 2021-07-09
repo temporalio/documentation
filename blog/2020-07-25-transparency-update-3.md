@@ -2,7 +2,7 @@
 tags:
 - v1
 - community
-- workflow
+- transparency
 posted_on_: 2020-07-25T00:03:40Z
 slug: transparency-update-3
 title: 'Temporal Transparency Update #3'
