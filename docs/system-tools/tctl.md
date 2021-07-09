@@ -493,32 +493,34 @@ For complex Workflows this is a really useful tool for production and developmen
 You can query the list of search attributes with the following command:
 
 ```bash
-tctl cluster get-search-attr
+tctl cluster get-search-attributes
 ```
 
 Here is some example output:
 
 ```bash
-+---------------------+------------+
-|         KEY         | VALUE TYPE |
-+---------------------+------------+
-| Status              | INT        |
-| CloseTime           | INT        |
-| CustomBoolField     | BOOL       |
-| CustomDatetimeField | DATETIME   |
-| CustomNamespace     | KEYWORD    |
-| CustomDoubleField   | DOUBLE     |
-| CustomIntField      | INT        |
-| CustomKeywordField  | KEYWORD    |
-| CustomStringField   | STRING     |
-| NamespaceId         | KEYWORD    |
-| ExecutionTime       | INT        |
-| HistoryLength       | INT        |
-| RunId               | KEYWORD    |
-| StartTime           | INT        |
-| WorkflowId          | KEYWORD    |
-| WorkflowType        | KEYWORD    |
-+---------------------+------------+
++-----------------------+----------+
+|         NAME          |   TYPE   |
++-----------------------+----------+
+| BinaryChecksums       | Keyword  |
+| CloseTime             | Int      |
+| CustomBoolField       | Bool     |
+| CustomDatetimeField   | Datetime |
+| CustomDoubleField     | Double   |
+| CustomIntField        | Int      |
+| CustomKeywordField    | Keyword  |
+| CustomNamespace       | Keyword  |
+| CustomStringField     | String   |
+| ExecutionStatus       | Int      |
+| ExecutionTime         | Int      |
+| Operator              | Keyword  |
+| RunId                 | Keyword  |
+| StartTime             | Int      |
+| TaskQueue             | Keyword  |
+| TemporalChangeVersion | Keyword  |
+| WorkflowId            | Keyword  |
+| WorkflowType          | Keyword  |
++-----------------------+----------+
 ```
 
 ### Add new search attributes
@@ -526,12 +528,10 @@ Here is some example output:
 Here is how you add a new search attribute:
 
 ```bash
-tctl admin cluster add_search_attr \
-  --search_attr_key <NewKey> \
-  --search_attr_type string
+tctl admin cluster add-search-attributes --name <NewKey> --type string
 ```
 
-The possible values for `--search_attr_type` are:
+The possible values for `--type` are:
 
 - string
 - keyword
