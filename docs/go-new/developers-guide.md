@@ -238,22 +238,6 @@ You can also start a Workflow Execution on a regular schedule with [the CronSche
 
 :::
 
-### Scheduling Cron Workflows
-
-You can also start a Workflow Execution on a regular schedule with the `CronSchedule` option.
-
-```go
-workflowOptions := client.StartWorkflowOptions{
-    ID:           workflowID,
-    TaskQueue:    "cron",
-    CronSchedule: "* * * * *",
-}
-
-we, err := c.ExecuteWorkflow(context.Background(), workflowOptions, cron.SampleCronWorkflow)
-```
-
-More info in the [Distributed Cron](distributed-cron) docs.
-
 ### External Workflows
 
 You can execute Workflows (including those from other language SDKs) by their type name:
@@ -304,6 +288,22 @@ Here we are sending a signal to a Workflow with type "simple-workflow-php" and s
 
 See our [Signals docs](https://docs.temporal.io/docs/go/signals) and [Temporal Polyglot example](https://github.com/tsurdilo/temporal-polyglot) for more.
 
+### Scheduling Cron Workflows
+
+You can also start a Workflow Execution on a regular schedule with the `CronSchedule` option.
+
+```go
+workflowOptions := client.StartWorkflowOptions{
+    ID:           workflowID,
+    TaskQueue:    "cron",
+    CronSchedule: "* * * * *",
+}
+
+we, err := c.ExecuteWorkflow(context.Background(), workflowOptions, cron.SampleCronWorkflow)
+```
+
+More info in the [Distributed Cron](distributed-cron) docs.
+
 ## How to invoke a Child Workflow Execution in Go
 
 Any Workflow Execution that is invoked from within a Workflow is considered a Child Workflow.
@@ -311,6 +311,9 @@ The [Application operations guide](#) goes into more detail on when and why to u
 
 In Go, you must use the `workflow.ExecuteChildWorkflow` API and pass it `workflow.Context`, `workflow.ChildWorkflowOptions`, the Workflow Type, and any parameters that should be passed to the Child Workflow Execution.
 
+`workflow.ChildWorkflowOptions` contain the same fields as "normal" [Workflow Options](#what-are-workflow-execution-options).
+These fields will automatically inherit their values from the Parent Workflow Options if not explicitly set.
+If a custom `WorkflowID` is not set then one will be generated when it is invoked.
 
 ```go
 func YourWorkflowDefinition(ctx workflow.Context, params ParentParams) (ParentResp, error) {
@@ -327,43 +330,7 @@ func YourOtherWorkflowDefinition(ctx workflow.Context, params ChildParams) (Chil
   // ...
   return resp, nil
 }
-
 ```
-
-
-
-### Parent Workflow Definition
-
-The `workflow.ExecuteChildWorkflow` call is used to schedule Workflow Executions from within an executing Workflow.
-
-<!--SNIPSTART samples-go-child-workflow-example-parent-workflow-definition-->
-<!--SNIPEND-->
-
-By default, a Child Workflow Execution inherits the options provided to the Parent Workflow Execution, and the Temporal Server will automatically generate a Child Workflow ID.
-You can overwrite any of these options and specify a custom Child Workflow ID by customizing `ChildWorkflowOptions` and adding them to the execution context.
-
-`ChildWorkflowOptions` include the following parameters:
-
-- Namespace
-- WorkflowID
-- TaskQueue
-- WorkflowExecutionTimeout
-- WorkflowRunTimeout
-- WorkflowTaskTimeout
-- WaitForCancellation
-- WorkflowIDReusePolicy
-- RetryPolicy
-- CronSchedule
-- Memo
-- SearchAttributes
-- ParentClosePolicy
-
-### Child Workflow Definition
-
-A Child Workflow is defined just like any other Workflow Definition.
-
-<!--SNIPSTART samples-go-child-workflow-example-child-workflow-definition-->
-<!--SNIPEND-->
 
 ### Querying Workflow State
 
