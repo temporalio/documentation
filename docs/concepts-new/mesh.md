@@ -4,6 +4,9 @@ title: Introduction to Temporal's core concepts
 sidebar_label: Introduction
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 :::caution
 
 This page is a work in progress!
@@ -27,9 +30,6 @@ A Temporal Application is a set of Temporal Workflow Executions (Π). Each Tempo
 Workflow Executions are lightweight components.
 A Temporal Application can consist of thousands to hundreds of thousands of Workflow Executions.
 A Workflow Execution consumes few compute resources; in fact, if a Workflow Execution is suspended, such as when it is in a waiting state, the Workflow Execution consumes no compute resources at all.
-
-The Temporal runtime consists of the Temporal Server and Worker processes.
-A Temporal SDK provides users with the APIs they need to write Workflow Definitions as well as the APIs to invoke Workflow Executions and invoke Worker processes.
 
 The Temporal runtime consists of the Temporal Server and Worker processes.
 A Temporal SDK provides users with the APIs they need to write Workflow Definitions as well as the APIs to invoke Workflow Executions and invoke Worker processes.
@@ -59,6 +59,9 @@ A Workflow Execution is a Reentrant Process; that is, a resumable, recoverabl
 <img class="docs-image-centered docs-image-max-width-50" src="/img/reentrant.png" />
 <img class="docs-image-centered docs-image-max-width-50" src="/img/suspended.png" />
 
+Each Workflow Execution has a set of properties that define its behavior.
+Many of these properties can be a set in Workflow Execution Options.
+
 ### Workflow Id
 
 A unique identifier for a [Workflow Execution](#workflow-execution).
@@ -72,6 +75,95 @@ A UUID that a Temporal service assigns to each [Workflow](#workflow) run.
 
 - Temporal guarantees that only one [Workflow Execution](#workflow-execution) with a given [Workflow Id](#workflow-id) can be open at a time. But after the [Workflow Execution](#workflow-execution) has completed, if allowed by a configured policy, you might be able to re-execute a [Workflow](#workflow) after it has closed or failed, using the same [Workflow Id](#workflow-id).
 - Each such re-execution is called a run. Run Id is used to uniquely identify a run even if it shares a [Workflow Id](#workflow-id) with others.
+
+## What are Workflow Execution Options?
+
+Each SDK provides an API for customizing the properties of a Workflow Execution.
+The only property that is required to be set by the application developer is the name of the [Task Queue](#task-queue).
+All other properties either have defaults or are not required to be set.
+
+The following is a full list of all properties that can be customized for a Workflow Execution:
+
+- [Task Queue](#task-queue)
+- [Workflow Execution Timeout](#workflow-execution-timeout)
+- [Workflow Run Timeout](#workflow-run-timeout)
+- [Workflow Task Timeout](#workflow-task-timeout)
+- [Namespace](#namespace)
+- [Workflow Id](#workflow-id)
+- [Workflow Id Reuse Policy](#workflow-id-reuse-policy)
+- [Wait For Cancellation](#wait-for-cancellation)
+- [Data Converter](#data-converter)
+- [Retry Policy](#what-is-a-retry-policy)
+- [Cron Schedule](#cron-schedule)
+- [Context Propagators](#context-propagators)
+- [Memo](#memo)
+- [Search Attributes](#search-attributes)
+- [Parent Close Policy](#parent-close-policy)
+
+See how to implement Workflow Options using an SDK:
+
+<Tabs
+groupId='sdk-preference'
+defaultValue='go'
+values={[
+{label: 'Go', value: 'go'},
+{label: 'Java', value: 'java'},
+{label: 'Node.js', value: 'node'},
+{label: 'PHP', value: 'php'},
+]
+}>
+<TabItem value='go'>
+
+How to provide Workflow Options in Go
+
+</TabItem>
+<TabItem value='java'>
+
+How to provide Workflow Options in Java
+
+</TabItem>
+<TabItem value='node'>
+
+How to provide Workflow Options in Node.js
+
+</TabItem>
+<TabItem value='php'>
+
+How to provide Workflow Options in PHP
+
+</TabItem>
+</Tabs>
+
+## What are the timeout properties of a Workflow Execution?
+
+A Workflow Execution has three unique timeout properties.
+A timeout property sets the maximum interval that is acceptable between two expected actions that must take place.
+Each timeout property has a default value, but can be customized in [Workflow Execution Options](#what-are-workflow-options)
+
+### Workflow Execution Timeout
+
+This is the maximum time that a Workflow Execution can be executing for (have an Open status) including retries and any usage of [Continue As New](#continue-as-new).
+**The default value is set to 10 years.**
+If this timeout is reached then the Workflow Execution will change to a Timed Out status.
+
+This timeout is most commonly used for stopping the execution of a [cron scheduled Workflow](#cron-schedule) after a certain amount of time has passed. This timeout is different from the [Workflow Run timeout](#workflow-run-timeout).
+
+### Workflow Run Timeout
+
+This is the maximum amount of time that a single Workflow Run is restricted to.
+**The default is set to the same value as the [Execution timeout](#execution-timeout).**
+
+This timeout is most commonly used to limit the execution time of a single [cron scheduled Workflow Execution](#cron-schedule).
+If this timeout is reached and there is an associated Retry Policy, the Workflow will be retried before any scheduling occurs.
+If there is no Retry Policy then the Workflow will be scheduled per the [cron schedule](#cron-schedule).
+
+### Workflow Task Timeout
+
+This is the maximum amount of time that the Server will wait for the Worker to start processing a [Workflow Task](#workflow-task) after the Task has been pulled from the Task Queue.
+**The default value is 10 seconds.**
+
+This timeout is primarily available to recognize whether a Worker has gone down so that the Workflow Execution can be recovered on a different Worker.
+The main reason for increasing the default value would be to accommodate a Workflow Execution that has a very long Workflow Execution History that could take longer than 10 seconds for the Worker to load.
 
 ### Workflow Task
 
@@ -127,9 +219,9 @@ An [Activity](#activity) that is invoked directly in the same process by Workflo
 
 - Although a Local Activity consumes less resources than a normal [Activity](#activity), it is subject to shorter durations and a lack of rate limiting.
 
-## Retry Policy
+## What is a Retry Policy?
 
-A collection of attributes that instructs the Temporal Server how to retry a failure of an [Activity Task Execution](#activity-task-execution) or a [Workflow Execution](#workflow-execution).
+A Retry Policy is collection of attributes that instructs the Temporal Server how to retry a failure of an [Activity Task Execution](#activity-task-execution) or a [Workflow Execution](#workflow-execution).
 
 - If a custom Retry Policy is to be used, it must be provided as an options parameter when an [Activity Execution](#activity-execution) or [Workflow Execution](#workflow-execution) is invoked.
 
@@ -166,6 +258,40 @@ Maximum Interval     = 100 × Initial Interval
 Maximum Attempts     = ∞
 Non-Retryable Errors = []
 ```
+
+See how to implement a Retry Policy using an SDK:
+
+<Tabs
+groupId='sdk-preference'
+defaultValue='go'
+values={[
+{label: 'Go', value: 'go'},
+{label: 'Java', value: 'java'},
+{label: 'Node.js', value: 'node'},
+{label: 'PHP', value: 'php'},
+]
+}>
+<TabItem value='go'>
+
+How to implement a Retry Policy in Go
+
+</TabItem>
+<TabItem value='java'>
+
+How to implement a Retry Policy in Java
+
+</TabItem>
+<TabItem value='node'>
+
+How to implement a Retry Policy in Node.js
+
+</TabItem>
+<TabItem value='php'>
+
+How to implement a Retry Policy in PHP
+
+</TabItem>
+</Tabs>
 
 ### Initial Interval
 
