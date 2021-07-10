@@ -278,6 +278,28 @@ Non-Retryable Errors = []
 - **Use case**: There may be errors that you know of that should not trigger a retry.
   In this case you can specify them such that if they occur, the given execution will not be retried.
 
+## What is a Parent Close Policy?
+
+When creating a Child Workflow, you can define a `ParentClosePolicy` that terminates, cancels, or abandons the Workflow Execution if the child's parent stops execution.
+
+- `ABANDON`: When the parent stops, don't do anything with the Child Workflow.
+- `TERMINATE`: When the parent stops, terminate the Child Workflow
+- `REQUEST_CANCEL`: When the parent stops, terminate the Child Workflow
+
+You can set policies per child, which means you can opt out of propagating terminates / cancels on a per-child basis.
+This is useful for starting Child Workflows asynchronously:
+
+1. Set `ChildWorkflowOptions.ParentClosePolicy` to `ABANDON` when creating a Child Workflow.
+2. Start the Child Workflow Execution asynchronously using `ExecuteChildWorkflow`.
+3. Call `GetChildWorkflowExecution` on the `ChildWorkflowFuture` returned by the `ChildWorkflowFuture`
+4. Wait for the `ChildWorkflowFuture`.
+   This indicates that the child successfully started (or start failed).
+5. Complete Parent Workflow Execution asynchronously.
+
+Steps 3 and 4 are needed to ensure that a Child Workflow Execution starts before the parent closes.
+If the parent initiates a Child Workflow Execution and then immediately completes, the child would never execute.
+
+
 ## Event
 
 For each [Workflow](#workflow), Temporal tracks two types of Events:
@@ -380,3 +402,15 @@ A service that hosts the [Workflow](#workflow) and [Activity](#activity) impleme
 If a Workflow Execution is started by another Workflow Execution, then it is considered a Child Workflow Execution.
 The completion or failure of a Child Workflow Execution is reported to the Workflow Execution that started it (the Parent Workflow Execution).
 The Parent Workflow Execution has the ability to monitor and impact the lifecycle of the Child Workflow Execution, similar to the way it does for Activities.
+
+## What are the timeout properties of an Activity Execution
+
+There can be various kinds of timeouts associated with an Activity. Temporal guarantees that Activities
+are executed _at least once_, so an Activity either succeeds or fails with one of the following timeouts:
+
+| Timeout                  | Description                                                                                                                                                                                          |
+| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `StartToCloseTimeout`    | Maximum time that a worker can take to process a task after it has received the task.                                                                                                                |
+| `ScheduleToStartTimeout` | Time a task can wait to be picked up by an Activity worker after a Workflow schedules it. If there are no workers available to process this task for the specified duration, the task will time out. |
+| `ScheduleToCloseTimeout` | Time a task can take to complete after it is scheduled by a Workflow. This is usually greater than the sum of `StartToClose` and `ScheduleToStart` timeouts.                                         |
+| `HeartbeatTimeout`       | If a task doesn't heartbeat to the Temporal service for this duration, it will be considered to have failed. This is useful for long-running tasks.  
