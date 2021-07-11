@@ -8,7 +8,7 @@ import React from "react";
 import clsx from "clsx";
 import Link from "@docusaurus/Link";
 import styles from "./styles.module.css";
-export default function BlogSidebar({ sidebar, row }) {
+export default function BlogSidebar({sidebar, row}) {
   if (sidebar.items.length === 0) {
     return null;
   }
@@ -117,7 +117,7 @@ export default function BlogSidebar({ sidebar, row }) {
   );
 }
 
-function LinkWrapped({ href, children }) {
+function LinkWrapped({href, children}) {
   return (
     <Link
       isNavLink

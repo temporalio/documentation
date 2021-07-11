@@ -6,16 +6,16 @@
  */
 import React from "react";
 import clsx from "clsx";
-import { MDXProvider } from "@mdx-js/react";
-import Translate, { translate } from "@docusaurus/Translate";
+import {MDXProvider} from "@mdx-js/react";
+import Translate, {translate} from "@docusaurus/Translate";
 import Link from "@docusaurus/Link";
 import MDXComponents from "@theme/MDXComponents";
 import Seo from "@theme/Seo";
 import styles from "./styles.module.css";
-import { usePluralForm } from "@docusaurus/theme-common"; // Very simple pluralization: probably good enough for now
+import {usePluralForm} from "@docusaurus/theme-common"; // Very simple pluralization: probably good enough for now
 
 function useReadingTimePlural() {
-  const { selectMessage } = usePluralForm();
+  const {selectMessage} = usePluralForm();
   return (readingTimeFloat) => {
     const readingTime = Math.ceil(readingTimeFloat);
     return selectMessage(
@@ -44,8 +44,8 @@ function BlogPostItem(props) {
     truncated,
     isBlogPostPage = false,
   } = props;
-  const { date, formattedDate, permalink, tags, readingTime } = metadata;
-  const { author, title, image } = frontMatter;
+  const {date, formattedDate, permalink, tags, readingTime} = metadata;
+  const {author, title, image} = frontMatter;
   const authorURL = frontMatter.author_url || frontMatter.authorURL;
   // const authorTitle = frontMatter.author_title || frontMatter.authorTitle;
   const authorImageURL =
@@ -92,7 +92,7 @@ function BlogPostItem(props) {
         <div className={styles.metadata}>
           {(tags.length > 0 || truncated) && tags.length > 0 && (
             <span className={styles.tagList}>
-              {tags.map(({ label, permalink: tagPermalink }) => (
+              {tags.map(({label, permalink: tagPermalink}) => (
                 <Link
                   key={tagPermalink}
                   className="margin-horiz--sm"
