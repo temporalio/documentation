@@ -1,10 +1,10 @@
 ---
 id: developer-guide
-title: Guide to developing Workflows using the Temporal Go SDK
+title: Guide to developing Temporal applications using the Temporal Go SDK
 sidebar_label: Go SDK developers guide
 ---
 
-This guide is for anyone building Temporal Applications in Go.
+This guide is for anyone building Temporal applications in Go.
 
 ## How to use the Temporal Go SDK
 
@@ -48,7 +48,7 @@ func YourWorkflowDefinition(ctx workflow.Context) error {
 
 ### Workflow parameters
 
-The first parameter of a Go-based Workflow Defintion must be of the, `workflow.Context` type, as it is used by the Temporal Go SDK to pass around an execution context, and virtually all the Go SDK APIs that are callable from the Workflow require it.
+The first parameter of a Go-based Workflow Definition must be of the, `workflow.Context` type, as it is used by the Temporal Go SDK to pass around an execution context, and virtually all the Go SDK APIs that are callable from the Workflow require it.
 It is acquired from the `go.temporal.io/sdk/workflow` package.
 
 ```go
@@ -56,7 +56,7 @@ import (
     "go.temporal.io/sdk/workflow"
 )
 
-func YourWorkflowDefinition(ctx workflow.Context, yourVar string) error {
+func YourWorkflowDefinition(ctx workflow.Context, param string) error {
   // ...
 }
 ```
@@ -69,12 +69,12 @@ A Workflow Definition may support multiple custom parameters, or none.
 However, the best practice is to pass a single parameter that is of a `struct` type so there can be some backward compatibility if new parameters are added.
 
 ```go
-type YourParam struct {
-  Param1 string
-  Param2 int
+type YourWorkflowParam struct {
+  WorkflowParamFieldOne string
+  WorkflowParamFieldTwo int
 }
 
-func YourWorkflowDefinition(ctx workflow.Context, yourVar YourParam) (string, error) {
+func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (string, error) {
   // ...
 }
 ```
@@ -83,23 +83,23 @@ All Workflow Definition parameters must be serializable, which means that parame
 
 ### Workflow return values
 
-A Go-based Workflow Definition can return either just an `err` or a `value, err` combination.
-Again, the best practice here is to use a `struct` type to hold the values.
+A Go-based Workflow Definition can return either just an `error` or a `Value, error` combination.
+Again, the best practice here is to use a `struct` type to hold all custom values.
 
 ```go
-type YourResponse {
-  Value1 string
-  Value2 int
+type YourWorkflowResponse {
+  WorkflowResultFieldOne string
+  WorkflowResultFieldTwo int
 }
 
-func YourWorkflowDefinition(ctx workflow.Context, yourVar YourParam) (YourResponse, error) {
+func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (YourWorkflowResponse, error) {
   // ...
   if err != nil {
     return "", err
   }
-  responseVar := YourResponse {
-    Value1: "super",
-    Value2: 1,
+  responseVar := YourWorkflowResponse {
+    FieldOne: "super",
+    FieldTwo: 1,
   }
   return responseVar, nil
 }
@@ -146,19 +146,19 @@ func main() {
   workflowOptions := client.StartWorkflowOptions{
     TaskQueue: "your_task_queue",
   }
-  we, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition, yourVar)
+  we, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition, param)
   if err != nil {
     // ...
   }
   // ...
 }
 
-func YourWorkflowDefinition(ctx workflow.Context, yourVar YourParam) (YourResponse, error) {
+func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (YourWorkflowResponse, error) {
   // ...
 }
 ```
 
-### Start Workflow Options
+### Which Start Workflow Options are required?
 
 The only field, of the `StartWorkflowOptions` instance, that requires a value is the `TaskQueue`.
   A Task Queue name is also provided to the Worker that is registered to execute that particular Workflow Type.
@@ -167,22 +167,22 @@ The only field, of the `StartWorkflowOptions` instance, that requires a value is
 - See [How to use Task Queues](#) for details.
 - See [What are Workflow Execution Options](#) for a full list of Workflow Options.
 
-### Workflow Type
+### How to invoke using a Workflow Type
 
-If the invocation process does not have direct access to the statically defined Workflow Defintion, (i.e. the Workflow Definiton is in an unimportable package, or it is written in a completely different langauge) then provide the Workflow Type as a `string`.
+If the invocation process does not have direct access to the statically defined Workflow Definition, for example, if the Workflow Definition is in an un-importable package, or it is written in a completely different language, then the Workflow Type can be provided as a `string`.
 
 ```go
-we, err := c.ExecuteWorkflow(context.Background(), workflowOptions, "YourWorkflowDefinition", yourVar)
+we, err := c.ExecuteWorkflow(context.Background(), workflowOptions, "YourWorkflowDefinition", param)
 ```
 
 In Go, the name of the Workflow Type can be customized when the Workflow Definiton is registered with a [Worker](#)
 
-## How to get the result of a Workflow Execution
+### How to get the result of a Workflow Execution
 
 The `ExecuteWorkflow` call returns an instance of a `WorkflowRun`, which is the `we` variable below.
 
 ```go
-  we, err := c.ExecuteWorkflow(context.Background(), workflowOptions, app.YourWorkflowDefinition, yourVar)
+  we, err := c.ExecuteWorkflow(context.Background(), workflowOptions, app.YourWorkflowDefinition, param)
   if err != nil {
     // ...
   }
@@ -196,16 +196,16 @@ The instance of `WorkflowRun` has the following three methods:
 - `GetRunID()`: Always returns the Run Id of the initial Run (See [Continue As New](#)) in the series of Runs that make up the full Workflow Execution.
 - `Get`: Takes a pointer as a parameter and populates the associated variable with the Workflow Execution result.
 
-### Sync
+#### Get Workflow Execution result synchronously
 
-To wait on the result of Workflow Execution in the same process that invoked it, call `Get()` on the instance of `WorkflowRun`.
+To wait on the result of Workflow Execution in the same process that invoked it, call `Get()` on the instance of `WorkflowRun` that is returned by the `ExecuteWorkflow()` call.
 
 ```go
-  we, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition, yourVar)
+  we, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition, param)
   if err != nil {
     // ...
   }
-  var result YourResponse
+  var result YourWorkflowResponse
   err = we.Get(context.Background(), &result)
   if err != nil {
       // ...
@@ -214,16 +214,16 @@ To wait on the result of Workflow Execution in the same process that invoked it,
 }
 ```
 
-### Async
+#### Get Workflow Execution result asynchronously
 
 The result of a Workflow Execution can be obtained from a completely different process, all that is needed is the [Workflow Id](#) and [Run Id](#).
 The result of the Workflow Execution is available for as long as it's Execution History remains in the system (See [How long do Workflow Execution Histories persist](#)).
 
-To get the Workflow Id and Run Id, call the `GetWorkflowID` and `GetRunId` on the instance of `WorkflowRun` and store the results.
+To get the Workflow Id and Run Id, call the `GetWorkflowID` and `GetRunId` on the instance of `WorkflowRun` that is returned by the `ExecuteWorkflow()` call and store the results.
 These values can then be used to get an instance of `WorkflowRun` again by calling `GetWorkflow()` on an instance of the Go SDK Client.
 
 ```go
-  we, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition, yourVar)
+  we, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition, param)
   if err != nil {
     // ...
   }
@@ -232,7 +232,7 @@ These values can then be used to get an instance of `WorkflowRun` again by calli
   // ...
   we := c.GetWorkflow(context.Background, workflowID, workflowRunID)
 
-  var result YourResponse
+  var result YourWorkflowResponse
   err = we.Get(context.Background(), &result)
   if err != nil {
       // ...
@@ -240,6 +240,128 @@ These values can then be used to get an instance of `WorkflowRun` again by calli
   // ...
 }
 ```
+
+## How to write an Activity Definition in Go
+
+In the Temporal Go SDK programming model, an [Activity Definition](/docs/concepts-new/introduction#workflow-definition) is an exportable function or `stuct` method.
+
+**Function**:
+
+```go
+func YourActivityDefinition(ctx workflow.Context) error {
+  // ...
+  return nil
+}
+```
+
+**Struct method**:
+
+```go
+type YourActivityStruct struct {
+  ActivityFieldOne string
+  ActivityFieldTwo int
+}
+
+func(a *YourActivityStruct) YourActivityDefinition(ctx workflow.Context) error {
+
+}
+```
+
+Activities written as struct methods can make use of shared struct variables.
+  The rest of this guide will show Activities written as struct methods.
+
+### Activity parameters
+
+The first parameter of an Activity Definition is `context.Context`.
+  This parameter is optional for an Activity Definition, though it is recommended especially if the Activity is expected to use other Go SDK APIs.
+
+An Activity Definition can support as many other custom parameters as needed.
+  However, all parameters must be serializable (parameters can’t be channels, functions, variadic, or unsafe pointers), and it is recommended to pass a single struct that can be updated later.
+  There is no explicit limit to the amount of parameter data that can be passed to an Activity, however all parameters and are recorded in the Workflow Execution History and a large Workflow Execution History can adversely impact the performance of your Workflow Execution.
+
+Related Read: When to care about the size of your Workflow Execution History
+
+```go
+type YourActivityParam {
+  ActivityParamFieldOne string
+  ActivityParamFieldTwo int
+}
+
+type YourActivityStruct struct {}
+
+func (a *YourActivityStruct) YourActivityDefinition(ctx workflow.Context, param YourActivityParam) error {
+  // ...
+}
+```
+
+### Activity return values
+
+A Go-based Activity Definition can return either just an `error` or a `Value, error` combination (same as a Workflow Definition).
+Again, the best practice here is to use a `struct` type to hold all the custom values.
+  The custom return value must be serializable.
+
+```go
+type YourActivityResponse {
+  ActivityResultFieldOne string
+  ActivityResultFieldTwo int
+}
+
+func (a *YourActivityStruct) YourActivityDefinition(ctx workflow.Context, param YourActivityParam) (YourActivityResponse, error) {
+  // ...
+  result := YourActivityResponse {
+    ActivityResultFieldOne: a.ActivityFieldOne,
+    ActivityResultFieldTwo: a.ActivityFieldTwo,
+  }
+  return result, nil
+}
+```
+
+Related: When to return an error from an Activity
+
+### Activity logic requirements
+
+There are no other limitations to Activity Definition logic.
+All native features of the Go programming language can be used within an Activity, and it is idiomatic to use an Activity to make calls to other services across a network.
+
+Related: What are some Activity implementation design patterns.
+
+## How to invoke an Activity Execution?
+
+
+In the Workflow Definition, to invoke this Activity use `worklow.ExecuteActivity(ctx, SimpleActivity)`.
+
+
+### Activity options
+
+Before calling `workflow.ExecuteActivity()`, you must configure `ActivityOptions` for the
+invocation. These options customize various execution timeouts, and are passed in by creating a child
+context from the initial context and overwriting the desired values. The child context is then passed
+into the `workflow.ExecuteActivity()` call. If multiple Activities are sharing the same option
+values, then the same context instance can be used when calling `workflow.ExecuteActivity()`.
+
+By default, Temporal retries failing Activities with these default values (exponential backoff starting from 1 second going up to 100 seconds):
+
+- `InitialInterval` of 1 second
+- `BackoffCoefficient` of 2.0
+- `MaximumInterval` of 100 seconds (100x multiple of `InitialInterval`)
+- `MaximumAttempts` of 0 (in other words, unlimited retries)
+
+You can refer to [our Retry Policy documentation](https://docs.temporal.io/docs/go/retries) for guidance on customizing your retry behavior.
+
+### Activity timeouts
+
+There can be various kinds of timeouts associated with an Activity. Temporal guarantees that Activities
+are executed _at least once_, so an Activity either succeeds or fails with one of the following timeouts:
+
+| Timeout                  | Description                                                                                                                                                                                          |
+| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `StartToCloseTimeout`    | Maximum time that a worker can take to process a task after it has received the task.                                                                                                                |
+| `ScheduleToStartTimeout` | Time a task can wait to be picked up by an Activity worker after a Workflow schedules it. If there are no workers available to process this task for the specified duration, the task will time out. |
+| `ScheduleToCloseTimeout` | Time a task can take to complete after it is scheduled by a Workflow. This is usually greater than the sum of `StartToClose` and `ScheduleToStart` timeouts.                                         |
+| `HeartbeatTimeout`       | If a task doesn't heartbeat to the Temporal service for this duration, it will be considered to have failed. This is useful for long-running tasks.
+
+
+
 
 ## How to start a Worker
 
@@ -290,7 +412,7 @@ func main() {
 	}
 }
 
-func YourWorkflowDefinition(ctx workflow.Context, yourVar YourParam) (YourResponse, error) {
+func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (YourResponse, error) {
   // ...
 }
 ```
@@ -316,6 +438,10 @@ rwo := workflow.RegisterOptions {
 }
 w.RegisterWorkflowWithOptions(dynamic.SampleGreetingsWorkflow, rwo)
 ```
+
+
+
+
 
 
 
@@ -439,93 +565,6 @@ func SimpleWorkflow(workflow.Context ctx, value string) error {
     return workflow.NewContinueAsNewError(ctx, SimpleWorkflow, value)
 }
 ```
-## How write an Activity Definition
-
----
-id: activities
-title: Activities in Go
-sidebar_label: Activities
----
-
-An Activity is the implementation of a particular task in the business logic.
-You should have a conceptual understanding of Temporal Activities before proceeding.
-
-## Overview
-
-The following example demonstrates a simple Activity Definition that accepts a string parameter, appends a word
-to it, and then returns a result.
-
-```go
-package sample
-
-import (
-	"context"
-
-	"go.temporal.io/sdk/activity"
-)
-
-// SimpleActivity is a sample Temporal Activity Definition that takes one parameter and
-// returns a string containing the parameter value.
-func SimpleActivity(ctx context.Context, value string) (string, error) {
-	logger := activity.GetLogger(ctx)
-	logger.Info("SimpleActivity called.", "Value:", value)
-	return value, nil
-}
-```
-
-In the Workflow Definition, to invoke this Activity use `worklow.ExecuteActivity(ctx, SimpleActivity)`.
-
-Let's take a look at each component of this Activity.
-
-### Declaration
-
-In the Temporal programing model, an Activity is implemented with a function. The function declaration specifies the parameters the Activity accepts as well as any values it might return. An Activity function can take zero or many Activity specific parameters and can return one or two values. It must always at least return an error value. The Activity function can accept as parameters and return as results any serializable type.
-
-`func SimpleActivity(ctx context.Context, value string) (string, error)`
-
-The first parameter to the function is context.Context. This is an optional parameter and can be omitted. This parameter is the standard Go context.
-The second string parameter is a custom Activity specific parameter that can be used to pass data into the Activity on start. An Activity can have one or more such parameters. All parameters to an Activity function must be serializable, which essentially means that params can’t be channels, functions, variadic, or unsafe pointers.
-The Activity declares two return values: string and error. The string return value is used to return the result of the Activity. The error return value is used to indicate that an error was encountered during execution.
-
-### Implementation
-
-Activities are implemented as regular Go functions:
-
-- Parameters:
-  - Data can be passed directly to an Activity via function parameters. The parameters can be either basic types or structs (must be serializable).
-  - Though it is not required, we recommend that the first parameter of an Activity function is of type `context.Context`, in order to allow the Activity to interact with other framework methods.
-- Return values:
-  - The function must return an `error` value. To mark an Activity as failed, return an error here, instead of `nil`.
-  - The result value is optional, and can be either a basic type or a struct (must be serializable).
-
-There's no hard limit on what you can pass into or return from an Activity function, but keep in mind that all parameters and return values are recorded in the execution history.
-A large execution history can adversely impact the performance of your Workflows as the entire history is transferred to your workers with every event processed.
-No other limitations on Activity functions exist; you are free to use idiomatic loggers and metrics controllers, and the standard Go concurrency constructs.
-
-Activities can also be implemented as methods on Struct.
-
-```go
-type Activities struct {
-	Name     string
-	Greeting string
-}
-
-// GetName Activity.
-func (a *Activities) GetName() (string, error) {
-	return a.Name, nil
-}
-
-// GetGreeting Activity.
-func (a *Activities) GetGreeting() (string, error) {
-	return a.Greeting, nil
-}
-
-// SayGreeting Activity.
-func (a *Activities) SayGreeting(greeting string, name string) (string, error) {
-	result := fmt.Sprintf("Greeting: %s %s!\n", greeting, name)
-	return result, nil
-}
-```
 
 #### Heart Beating
 
@@ -620,34 +659,7 @@ if err != nil {
 
 Let's take a look at each component of this call.
 
-### Activity options
-
-Before calling `workflow.ExecuteActivity()`, you must configure `ActivityOptions` for the
-invocation. These options customize various execution timeouts, and are passed in by creating a child
-context from the initial context and overwriting the desired values. The child context is then passed
-into the `workflow.ExecuteActivity()` call. If multiple Activities are sharing the same option
-values, then the same context instance can be used when calling `workflow.ExecuteActivity()`.
-
-By default, Temporal retries failing Activities with these default values (exponential backoff starting from 1 second going up to 100 seconds):
-
-- `InitialInterval` of 1 second
-- `BackoffCoefficient` of 2.0
-- `MaximumInterval` of 100 seconds (100x multiple of `InitialInterval`)
-- `MaximumAttempts` of 0 (in other words, unlimited retries)
-
-You can refer to [our Retry Policy documentation](https://docs.temporal.io/docs/go/retries) for guidance on customizing your retry behavior.
-
-### Activity timeouts
-
-There can be various kinds of timeouts associated with an Activity. Temporal guarantees that Activities
-are executed _at least once_, so an Activity either succeeds or fails with one of the following timeouts:
-
-| Timeout                  | Description                                                                                                                                                                                          |
-| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `StartToCloseTimeout`    | Maximum time that a worker can take to process a task after it has received the task.                                                                                                                |
-| `ScheduleToStartTimeout` | Time a task can wait to be picked up by an Activity worker after a Workflow schedules it. If there are no workers available to process this task for the specified duration, the task will time out. |
-| `ScheduleToCloseTimeout` | Time a task can take to complete after it is scheduled by a Workflow. This is usually greater than the sum of `StartToClose` and `ScheduleToStart` timeouts.                                         |
-| `HeartbeatTimeout`       | If a task doesn't heartbeat to the Temporal service for this duration, it will be considered to have failed. This is useful for long-running tasks.                                                  |
+                                                 |
 
 ### ExecuteActivity call
 

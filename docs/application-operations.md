@@ -21,7 +21,7 @@ For example, Workflow Definiton code should never read a config file directly, a
 ## When to return an error from a Workflow?
 
 
-### When to use Child Workflows
+## When to use Child Workflows
 
 The following is a list of some of the more common reasons why you might want to do this:
 
@@ -42,3 +42,13 @@ If the executing logic is tightly coupled between Workflow Executions, it may si
 Starting a Workflow is not the same as executing a Workflow.
 Starting a Workflow means that you are telling the Server to begin tracking the state of the Workflow execution.
 In a Temporal application, you do not run Workflow code directly, instead Workflow code is hosted and executed by a [Worker](/docs/go/workers).
+
+## When to care about the size of your Workflow Execution History
+
+A large execution history can adversely impact the performance of your Workflows as the entire history is transferred to your workers with every event processed.
+
+## How many Workers should be running?
+
+### How many Workers can run per "Worker process"?
+
+### When to enable concurrent Task Execution within Workers vs run multiple Workers
