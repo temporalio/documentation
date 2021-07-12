@@ -399,10 +399,10 @@ module.exports = {
         "samples-library",
         "external-resources",
         "cadence-to-temporal",
-        "jargon/mesh",
         "glossary",
       ],
     },
+
     {
       type: "category",
       label: "Quick links",
@@ -424,6 +424,14 @@ module.exports = {
           href: "/docs/system-tools/introduction",
         },
       ],
+    },
+  ],
+  coreConceptsNew: [
+    {
+      type: "category",
+      label: "Concepts WIP",
+      collapsed: true,
+      items: ["concepts-new/introduction"],
     },
   ],
 };
