@@ -6,6 +6,8 @@ sidebar_label: Introduction
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import LanguageLinkTabs from '../shared/LanguageLinkTabs.js'
+import RelatedRead from '../shared/RelatedRead.js'
 
 :::caution
 
@@ -100,39 +102,16 @@ The following is a full list of all properties that can be customized for a Work
 - [Search Attributes](#search-attributes)
 - [Parent Close Policy](#parent-close-policy)
 
-See how to implement Workflow Options using an SDK:
-
-<Tabs
-groupId='sdk-preference'
-defaultValue='go'
-values={[
-{label: 'Go', value: 'go'},
-{label: 'Java', value: 'java'},
-{label: 'Node.js', value: 'node'},
-{label: 'PHP', value: 'php'},
-]
-}>
-<TabItem value='go'>
-
-How to provide Workflow Options in Go
-
-</TabItem>
-<TabItem value='java'>
-
-How to provide Workflow Options in Java
-
-</TabItem>
-<TabItem value='node'>
-
-How to provide Workflow Options in Node.js
-
-</TabItem>
-<TabItem value='php'>
-
-How to provide Workflow Options in PHP
-
-</TabItem>
-</Tabs>
+<LanguageLinkTabs
+goText="How to provide Workflow Options in Go"
+goGoTo="#"
+javaText="How to provide Workflow Options in Java"
+javaGoTo="#"
+nodeText="How to provide Workflow Options in Node.js"
+nodeGoTo="#"
+phpText= "How to provide Workflow Options in PHP"
+phpGoTo="#"
+/>
 
 ## What are the timeout properties of a Workflow Execution?
 
@@ -258,40 +237,6 @@ Maximum Interval     = 100 × Initial Interval
 Maximum Attempts     = ∞
 Non-Retryable Errors = []
 ```
-
-See how to implement a Retry Policy using an SDK:
-
-<Tabs
-groupId='sdk-preference'
-defaultValue='go'
-values={[
-{label: 'Go', value: 'go'},
-{label: 'Java', value: 'java'},
-{label: 'Node.js', value: 'node'},
-{label: 'PHP', value: 'php'},
-]
-}>
-<TabItem value='go'>
-
-How to implement a Retry Policy in Go
-
-</TabItem>
-<TabItem value='java'>
-
-How to implement a Retry Policy in Java
-
-</TabItem>
-<TabItem value='node'>
-
-How to implement a Retry Policy in Node.js
-
-</TabItem>
-<TabItem value='php'>
-
-How to implement a Retry Policy in PHP
-
-</TabItem>
-</Tabs>
 
 ### Initial Interval
 

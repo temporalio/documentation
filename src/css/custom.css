@@ -194,3 +194,46 @@ h4,
 #mc-embedded-waitlist {
   margin-top: 15px;
 }
+
+.related-read-div {
+  background-color: var(--ifm-color-primary-lightest);
+  border-color: var(--ifm-color-primary-lightest);
+  border-radius: var(--ifm-alert-border-radius);
+  border-style: solid;
+  border-width: var(--ifm-alert-border-width);
+  padding: var(--ifm-alert-padding-vertical) var(--ifm-alert-padding-horizontal);
+  margin-bottom: 1em;
+}
+
+.related-read-link {
+  margin-left: 7px;
+  color: var(--ifm-color-primary-darkest);
+}
+
+.related-read-link:hover {
+  color: var(--ifm-color-primary-dark);
+}
+
+.archetype-tag {
+  padding:3px;
+  color: #ffffff;
+  font-size: 0.8em;
+  border-radius: 6px;
+  margin-left: 7px;
+}
+
+.archetype-tag-guide {
+  background-color: #CA1A7B;
+}
+
+.archetype-tag-tutorial {
+  background-color: #1AC9C7;
+}
+
+.archetype-tag-explanation {
+  background-color: #78C91A;
+}
+
+.archetype-tag-reference {
+  background-color: #CF8F19;
+}
