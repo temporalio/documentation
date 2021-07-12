@@ -26,7 +26,9 @@ But if you are building Temporal or running it from source, [Go v1.16+ is requir
 
 **Temporal Cloud**
 
-- All customers will automatically be upgrade to the latest minor version.
+> Interested in a Temporal as a service? [Sign up for Temporal Cloud and join our monthly events](https://docs.temporal.io/#cloud)!
+
+- All customers will automatically be upgraded to the latest minor version.
 - Maintenance support, for major versions, will be provided for at least 18 months after a GA release, and there will be at least 6 months' notice before EOL/deprecating support.
 
 This versioning policy is intended to serve as a minimum set of guidelines for customers who rely on us for their critical business operations. If you have any further questions, please do not hesitate to reach out via community or customer channels.

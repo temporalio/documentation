@@ -12,6 +12,8 @@ That is because the set up of the Server depends very much on the intended use-c
 This page is dedicated to providing a "first principles" approach to self-hosting the Temporal Server.
 As a reminder, experts are accessible via the [Community forum](https://community.temporal.io/) and [Slack](https://join.slack.com/t/temporalio/shared_invite/zt-onhti57l-J0bl~Tr7MqSUnIc1upjRkw) should you have any questions.
 
+> Note: if you are interested in a managed service hosting Temporal Server, please [register your interest in Temporal Cloud](https://docs.temporal.io/#cloud).
+
 ## Setup principles
 
 ### Prerequisites
@@ -120,6 +122,12 @@ Recommended configuration debugging techniques for production Temporal Server se
 ### Debugging Workflows
 
 We recommend [using Temporal Web to debug your Workflow Executions](https://docs.temporal.io/docs/system-tools/web-ui) in development and production.
+
+### Tracing Workflows
+
+Temporal Web's tracing capabilities mainly track activity execution within a Temporal context. If you need custom tracing specific for your usecase, you should make use of context propagation to add tracing logic accordingly.
+
+- Example: [Tracing Temporal Workflows with DataDog](https://spiralscout.com/blog/tracing-temporal-workflow-with-datadog)
 
 ### Future content
 

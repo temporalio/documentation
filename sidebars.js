@@ -337,6 +337,8 @@ module.exports = {
           id: "node/package-initializer",
           label: "Package initializer",
         },
+        "node/task-queues",
+        "node/workers",
         "node/tls",
         "node/logging",
       ],
@@ -397,10 +399,10 @@ module.exports = {
         "samples-library",
         "external-resources",
         "cadence-to-temporal",
-        "jargon/mesh",
         "glossary",
       ],
     },
+
     {
       type: "category",
       label: "Quick links",
@@ -422,6 +424,14 @@ module.exports = {
           href: "/docs/system-tools/introduction",
         },
       ],
+    },
+  ],
+  coreConceptsNew: [
+    {
+      type: "category",
+      label: "Concepts WIP",
+      collapsed: true,
+      items: ["concepts-new/introduction"],
     },
   ],
 };

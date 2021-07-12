@@ -47,7 +47,7 @@ function BlogPostItem(props) {
   const {date, formattedDate, permalink, tags, readingTime} = metadata;
   const {author, title, image} = frontMatter;
   const authorURL = frontMatter.author_url || frontMatter.authorURL;
-  const authorTitle = frontMatter.author_title || frontMatter.authorTitle;
+  // const authorTitle = frontMatter.author_title || frontMatter.authorTitle;
   const authorImageURL =
     frontMatter.author_image_url || frontMatter.authorImageURL;
   const renderPostHeader = () => {
@@ -68,7 +68,7 @@ function BlogPostItem(props) {
           <div className="avatar__intro">
             {author && (
               <>
-                <h4 className="avatar__name">
+                <h4 className={styles.avatar__name}>
                   {authorURL ? (
                     <Link href={authorURL}>{author}</Link>
                   ) : (

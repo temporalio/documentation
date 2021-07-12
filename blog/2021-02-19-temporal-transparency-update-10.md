@@ -4,6 +4,7 @@ tags:
   - Temporal
   - microservice-orchestration
   - microservices
+  - transparency
   - cloud
   - security
   - errors
