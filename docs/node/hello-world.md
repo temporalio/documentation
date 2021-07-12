@@ -25,6 +25,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 <Tabs
+groupId="language"
 defaultValue="ts"
 values={[
 { label: 'TypeScript', value: 'ts', },
@@ -80,6 +81,7 @@ In a Workflow, Activities can be imported and called as regular functions. At ru
 `@activities` is a [typescript path alias](https://www.typescriptlang.org/tsconfig#paths) set to `src/activities`.
 
 <Tabs
+groupId="language"
 defaultValue="ts"
 values={[
 { label: 'TypeScript', value: 'ts', },
@@ -113,6 +115,7 @@ The Worker connects to the Service and runs Workflows and Activities.
 `Worker.create()` accepts these [options](https://nodejs.temporal.io/api/interfaces/worker.workeroptions).
 
 <Tabs
+groupId="language"
 defaultValue="ts"
 values={[
 { label: 'TypeScript', value: 'ts', },
@@ -146,6 +149,7 @@ The client can be used to schedule Workflows and send other requests to the Temp
 It can be used in any NodeJS process (e.g. an Express app) and does not depend on the Worker.
 
 <Tabs
+groupId="language"
 defaultValue="ts"
 values={[
 { label: 'TypeScript', value: 'ts', },
