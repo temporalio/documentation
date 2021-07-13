@@ -205,8 +205,8 @@ func (s *UnitTestSuite) Test_AddToCart() {
 ```
 ### Sending multiple Signals to Workflows in tests
 
-Similarly, if you want to send multiple Signals, you should put them in separate `RegisterDelayedCallback()` calls.
-However, you can move any Queries that don't have any Signals after them to be after the `ExecuteWorkflow()` call.
+Similarly, if you want to send a Query to check the state of the Workflow between Signals, you should put the Query in a separate `RegisterDelayedCallback()` call.
+You can move any Queries that don't have any Signals after them to after the `ExecuteWorkflow()` call.
 For example, below is a test case for the `RemoveFromCart()` method.
 
 ```go
@@ -222,7 +222,7 @@ func (s *UnitTestSuite) Test_RemoveFromCart() {
 		s.env.SignalWorkflow("cartMessages", update)
 	}, time.Millisecond*1)
 
-	// Remove 1 item from the cart
+	// Query the current state and then remove 1 item from the cart
 	s.env.RegisterDelayedCallback(func() {
 		res, err := s.env.QueryWorkflow("getCart")
 		s.NoError(err)
@@ -242,6 +242,8 @@ func (s *UnitTestSuite) Test_RemoveFromCart() {
 
 	s.True(s.env.IsWorkflowCompleted())
 
+	// Since there's no more Signals, no need to put this Query in a
+	// `RegisterDelayedCallback()` call.
 	res, err := s.env.QueryWorkflow("getCart")
 	s.NoError(err)
 	err = res.Get(&cart)
