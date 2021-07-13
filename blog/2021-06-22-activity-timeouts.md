@@ -39,7 +39,7 @@ Temporal has four timeouts — two that are commonly used, and two that are usef
 
 - Schedule-To-Close: Limits the maximum execution time including retries.
 - Start-To-Close: Limits the maximum execution time of a single execution. **We recommend ALWAYS setting this!**
-- Heartbeat: Limits the maximum time between Heartbeats. *For long running Activities*, enables a quicker response when s Heartbeat fails to be recorded.
+- Heartbeat: Limits the maximum time between Heartbeats. *For long running Activities*, enables a quicker response when a Heartbeat fails to be recorded.
 - Schedule-To-Start: Limits the maximum time that an Activity Task can sit in a Task Queue. Mainly to identify whether a Worker is down or for Task routing. **This is rarely needed!**
 
 You can find the precise APIs in the reference documentation for each SDK: [Java](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html) and [Go](https://pkg.go.dev/go.temporal.io/sdk@v1.7.0/internal#ActivityOptions).
@@ -114,19 +114,18 @@ public static class SimpleWorkflowImpl implements SimpleWorkflow {
 </Tabs>
 
 Behind the scenes, the SDK transforms this into a `ScheduleActivity` Command, which is sent to the Temporal Server. 
-This Command includes various metadata, including the activity type (`SimpleActivity`), activity task queue (`sampleTaskQueue`), and activity ID. A `RetryPolicy` was not specified, so Temporal uses [the default Retry Policy](https://docs.temporal.io/docs/concepts/workflows#retry-policy).
+This Command includes various metadata, including the activity type (`SimpleActivity`), activity task queue (`sampleTaskQueue`), and activity ID. If a `RetryPolicy` is not specified, Temporal uses [the default Retry Policy](https://docs.temporal.io/docs/concepts/workflows#retry-policy).
 
 ### Step 2 - Temporal Server
 
-Receiving the Command, Temporal Server adds an Activity Task to the `Bar` Activity Task Queue.
-There is an atomic guarantee that these both happen together, to prevent race conditions. 
-We explained why this is important and how Temporal accomplishes this in [Designing A Workflow Engine](https://docs.temporal.io/blog/workflow-engine-principles/).
+Receiving the Command, Temporal Server adds an Activity Task to the `sampleTaskQueue` Activity Task Queue.
+We explain details of how Temporal accomplishes this in [Designing A Workflow Engine](https://docs.temporal.io/blog/workflow-engine-principles/).
 
 > The Activity Execution is now in a `SCHEDULED` state.
 
 ### Step 3 - Activity Worker 
 
-An Activity Worker that has been polling the `Bar` Activity Task Queue picks up the Activity Task and begins execution.
+An Activity Worker that has been polling the `sampleTaskQueue` Activity Task Queue picks up the Activity Task and begins execution.
 
 > The Activity Execution is now in a `STARTED` state.
 

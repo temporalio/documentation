@@ -101,6 +101,11 @@ module.exports = {
           href: "https://pkg.go.dev/go.temporal.io/sdk",
         },
         {
+          type: "link",
+          label: "Samples library",
+          href: "/docs/samples-library/#go",
+        },
+        {
           type: "category",
           label: "Tutorials",
           collapsed: false,
@@ -180,6 +185,11 @@ module.exports = {
           href: "https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/index.html",
         },
         {
+          type: "link",
+          label: "Samples library",
+          href: "/docs/samples-library/#java",
+        },
+        {
           type: "category",
           label: "Tutorials",
           collapsed: false,
@@ -241,6 +251,11 @@ module.exports = {
       collapsed: false,
       items: [
         "php/introduction",
+        {
+          type: "link",
+          label: "Samples library",
+          href: "/docs/samples-library/#php",
+        },
         "php/workflows",
         "php/activities",
         "php/task-queues",
@@ -316,11 +331,14 @@ module.exports = {
             "node/workflow-external-dependencies",
           ],
         },
+        "node/activities",
         {
           type: "doc",
           id: "node/package-initializer",
           label: "Package initializer",
         },
+        "node/task-queues",
+        "node/workers",
         "node/tls",
         "node/logging",
       ],
@@ -378,12 +396,13 @@ module.exports = {
       label: "Additional resources",
       collapsed: false,
       items: [
+        "samples-library",
         "external-resources",
         "cadence-to-temporal",
-        "jargon/mesh",
         "glossary",
       ],
     },
+
     {
       type: "category",
       label: "Quick links",
@@ -405,6 +424,14 @@ module.exports = {
           href: "/docs/system-tools/introduction",
         },
       ],
+    },
+  ],
+  coreConceptsNew: [
+    {
+      type: "category",
+      label: "Concepts WIP",
+      collapsed: true,
+      items: ["concepts-new/introduction"],
     },
   ],
 };

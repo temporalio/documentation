@@ -64,9 +64,20 @@ function Feature({imageUrl, title, description, goto}) {
 function SelectTutorial() {
   const [clicked, setClicked] = React.useState(false);
   return (
-    <div onMouseEnter={() => setClicked(true)}>
+    <div>
       <div>
-        {clicked ? (
+        <div className={styles.buttons}>
+          <button
+            onClick={() => setClicked(!clicked)}
+            className={clsx(
+              "button button--outline button--secondary button--lg",
+              styles.getStarted
+            )}
+          >
+            Run my first app! →
+          </button>
+        </div>
+        {clicked && (
           <div>
             <a href="/docs/go/run-your-first-app-tutorial">
               <img
@@ -100,17 +111,6 @@ function SelectTutorial() {
                 alt="logo"
               />
             </a>
-          </div>
-        ) : (
-          <div className={styles.buttons}>
-            <div
-              className={clsx(
-                "button button--outline button--secondary button--lg",
-                styles.getStarted
-              )}
-            >
-              Run my first app! →
-            </div>
           </div>
         )}
       </div>
@@ -153,43 +153,18 @@ function TemporalCloud() {
         Temporal Cloud is working with early design partners today. Sign up to
         the waitlist and receive updates!
       </p>
-      <form
-        action="https://temporal.us17.list-manage.com/subscribe/post?u=2334a0f23e55fd1840613755d&amp;id=bbbbd4709f"
-        method="post"
-        id="mc-embedded-subscribe-form"
-        name="mc-embedded-subscribe-form"
-        target="_blank"
-        noValidate="novalidate"
-        className="validate"
+
+      <Link
+        className={clsx(
+          "button button--outline button--primary button--md",
+          styles.getStarted
+        )}
+        to={
+          "https://us17.list-manage.com/survey?u=2334a0f23e55fd1840613755d&id=f1895b6f4a"
+        }
       >
-        <div id="mc_embed_signup_scroll" className="signup_controls">
-          <div className="email_wrap">
-            <label htmlFor="mce-EMAIL" className="sr-only">
-              Email:
-            </label>
-            <input
-              className="signUpInput"
-              type="email"
-              name="EMAIL"
-              id="mce-EMAIL"
-              placeholder="Your email"
-              required="required"
-            />
-          </div>
-          <span className="cta_text" style={{display: "none"}}>
-            You are in the waitlist!
-          </span>
-          <input
-            type="submit"
-            name="waitlist"
-            id="mc-embedded-waitlist"
-            className={clsx(
-              "button button--outline button-secondary button--md",
-              styles.cloudWaitlistSubmit
-            )}
-          />
-        </div>
-      </form>
+        Book your place
+      </Link>
     </div>
   );
 }

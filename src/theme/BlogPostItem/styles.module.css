@@ -33,6 +33,9 @@
   margin-bottom: 1rem;
   margin-top: 1rem;
 }
+.avatar__name {
+  margin-bottom: 0.25rem;
+}
 
 @media only screen and (max-width: 996px) {
   .postBottom {

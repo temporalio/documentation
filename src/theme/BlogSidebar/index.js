@@ -27,7 +27,17 @@ export default function BlogSidebar({sidebar, row}) {
         <ul className={styles.sidebarItemList}>
           <li className={styles.sidebarItem}>
             <LinkWrapped href="/blog/tags/case-study/">
-              Case Studies: Box, Checkr, Coinbase, Descript
+              Case Studies
+            </LinkWrapped>
+          </li>
+          <li className={styles.sidebarItem}>
+            <LinkWrapped href="/blog/tags/transparency/">
+              Transparency Reports
+            </LinkWrapped>
+          </li>
+          <li className={styles.sidebarItem}>
+            <LinkWrapped href="/blog/tags/architecture">
+              Temporal Architecture
             </LinkWrapped>
           </li>
           <li className={styles.sidebarItem}>
@@ -36,13 +46,8 @@ export default function BlogSidebar({sidebar, row}) {
             </LinkWrapped>
           </li>
           <li className={styles.sidebarItem}>
-            <LinkWrapped href="/blog/sergey-why-i-joined-temporal/">
-              Why I joined Temporal
-            </LinkWrapped>
-          </li>
-          <li className={styles.sidebarItem}>
-            <LinkWrapped href="/blog/workflow-engine-principles/">
-              Designing A Workflow Engine
+            <LinkWrapped href="/blog/tags/reflections">
+              Joining Temporal
             </LinkWrapped>
           </li>
         </ul>
@@ -52,7 +57,7 @@ export default function BlogSidebar({sidebar, row}) {
           <h3 className={styles.sidebarItemTitle}>{sidebar.title}</h3>
         </a>
         <ul className={styles.sidebarItemList}>
-          {sidebar.items.map((item) => {
+          {sidebar.items.slice(0, 4).map((item) => {
             return (
               <li key={item.permalink} className={styles.sidebarItem}>
                 <Link
@@ -85,7 +90,7 @@ export default function BlogSidebar({sidebar, row}) {
               #announcement
             </LinkWrapped>
           </li>
-          <li>
+          {/* <li>
             <LinkWrapped href="/blog/tags/architecture">
               #architecture
             </LinkWrapped>
@@ -98,7 +103,7 @@ export default function BlogSidebar({sidebar, row}) {
           </li>
           <li>
             <LinkWrapped href="/blog/tags/stability">#stability</LinkWrapped>
-          </li>
+          </li> */}
           <li>
             <LinkWrapped href="/blog/tags">Browse all tags</LinkWrapped>
           </li>
