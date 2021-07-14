@@ -3,7 +3,7 @@ tags:
   - temporal
   - community
   - go-ecommerce-tutorial
-posted_on_: 2021-07-13T00:00:00Z
+posted_on_: 2021-07-14T00:00:00Z
 slug: build-an-ecommerce-app-with-temporal-part-3-testing
 title: 'Building an eCommerce web app with Temporal, Part 3: Testing'
 author: Valeri Karpov
