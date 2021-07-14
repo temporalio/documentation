@@ -21,35 +21,10 @@ Activities are called from Workflows in order to run non-deterministic code.
 
 Activities are just async functions, they run like typical NodeJS code and can be cancelled and report heartbeats.
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
-<Tabs
-groupId="language"
-defaultValue="ts"
-values={[
-{ label: 'TypeScript', value: 'ts', },
-{ label: 'JavaScript', value: 'js', },
-]
-}>
-
-<TabItem value="ts">
-
 `src/activities/greeter.ts`
 
 <!--SNIPSTART nodejs-hello-activity {"enable_source_link": false}-->
 <!--SNIPEND-->
-
-</TabItem>
-
-<TabItem value="js">
-
-<!--SNIPSTART nodejs-js-hello-activity {"enable_source_link": false}-->
-<!--SNIPEND-->
-
-</TabItem>
-
-</Tabs>
 
 ### Workflows
 
@@ -80,32 +55,10 @@ In a Workflow, Activities can be imported and called as regular functions. At ru
 
 `@activities` is a [typescript path alias](https://www.typescriptlang.org/tsconfig#paths) set to `src/activities`.
 
-<Tabs
-groupId="language"
-defaultValue="ts"
-values={[
-{ label: 'TypeScript', value: 'ts', },
-{ label: 'JavaScript', value: 'js', },
-]
-}>
-
-<TabItem value="ts">
-
 `src/workflows/example.ts`
 
 <!--SNIPSTART nodejs-hello-workflow {"enable_source_link": false}-->
 <!--SNIPEND-->
-
-</TabItem>
-
-<TabItem value="js">
-
-<!--SNIPSTART nodejs-js-hello-workflow {"enable_source_link": false}-->
-<!--SNIPEND-->
-
-</TabItem>
-
-</Tabs>
 
 ### Worker
 
@@ -114,32 +67,10 @@ values={[
 The Worker connects to the Service and runs Workflows and Activities.
 `Worker.create()` accepts these [options](https://nodejs.temporal.io/api/interfaces/worker.workeroptions).
 
-<Tabs
-groupId="language"
-defaultValue="ts"
-values={[
-{ label: 'TypeScript', value: 'ts', },
-{ label: 'JavaScript', value: 'js', },
-]
-}>
-
-<TabItem value="ts">
-
 `src/worker/index.ts`
 
 <!--SNIPSTART nodejs-hello-worker {"enable_source_link": false}-->
 <!--SNIPEND-->
-
-</TabItem>
-
-<TabItem value="js">
-
-<!--SNIPSTART nodejs-js-hello-worker {"enable_source_link": false}-->
-<!--SNIPEND-->
-
-</TabItem>
-
-</Tabs>
 
 ### Client
 
@@ -148,32 +79,10 @@ values={[
 The client can be used to schedule Workflows and send other requests to the Temporal Service.
 It can be used in any NodeJS process (e.g. an Express app) and does not depend on the Worker.
 
-<Tabs
-groupId="language"
-defaultValue="ts"
-values={[
-{ label: 'TypeScript', value: 'ts', },
-{ label: 'JavaScript', value: 'js', },
-]
-}>
-
-<TabItem value="ts">
-
 `src/worker/schedule-workflow.ts`
 
 <!--SNIPSTART nodejs-hello-client {"enable_source_link": false}-->
 <!--SNIPEND-->
-
-</TabItem>
-
-<TabItem value="js">
-
-<!--SNIPSTART nodejs-js-hello-client {"enable_source_link": false}-->
-<!--SNIPEND-->
-
-</TabItem>
-
-</Tabs>
 
 ### Testing
 
