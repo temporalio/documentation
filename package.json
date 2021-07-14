@@ -19,8 +19,8 @@
     "**/*": "prettier --write --ignore-unknown"
   },
   "dependencies": {
-    "@docusaurus/core": "2.0.0-beta.3",
-    "@docusaurus/preset-classic": "2.0.0-beta.3",
+    "@docusaurus/core": "2.0.0-beta.818fb3956",
+    "@docusaurus/preset-classic": "2.0.0-beta.818fb3956",
     "@mdx-js/react": "^1.5.8",
     "clsx": "^1.1.1",
     "mermaid": "^8.10.1",

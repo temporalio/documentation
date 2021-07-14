@@ -19,6 +19,11 @@
   .docItemCol {
     max-width: 75% !important;
   }
+
+  /* Prevent hydration FOUC, as the mobile TOC needs to be server-rendered */
+  .tocMobile {
+    display: none;
+  }
 }
 
 @media only screen and (max-width: 996px) {
