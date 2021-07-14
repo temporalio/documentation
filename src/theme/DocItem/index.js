@@ -10,11 +10,13 @@ import DocVersionBanner from "@theme/DocVersionBanner";
 import Seo from "@theme/Seo";
 import LastUpdated from "@theme/LastUpdated";
 import TOC from "@theme/TOC";
+import TOCCollapsible from '@theme/TOCCollapsible';
 import EditThisPage from "@theme/EditThisPage";
 import {MainHeading} from "@theme/Heading";
 import clsx from "clsx";
 import styles from "./styles.module.css";
 import {useActivePlugin, useVersions} from "@theme/hooks/useDocs";
+import useWindowSize from '@theme/hooks/useWindowSize';
 
 function DocItem(props) {
   const {content: DocContent, versionMetadata} = props;
@@ -46,6 +48,19 @@ function DocItem(props) {
 
   const shouldAddTitle =
     !hideTitle && typeof DocContent.contentTitle === "undefined";
+
+  const windowSize = useWindowSize();
+
+  const renderTocMobile =
+    !hideTableOfContents &&
+    DocContent.toc &&
+    (windowSize === 'mobile' || windowSize === 'ssr');
+
+  const renderTocDesktop =
+    !hideTableOfContents &&
+    DocContent.toc &&
+    (windowSize === 'desktop' || windowSize === 'ssr');
+
   return (
     <>
       <Seo
@@ -73,6 +88,14 @@ function DocItem(props) {
                   </span>
                 </div>
               )}
+
+              {renderTocMobile && (
+                <TOCCollapsible
+                  toc={DocContent.toc}
+                  className={styles.tocMobile}
+                />
+              )}
+
               <div className="markdown">
                 {/*
                   Title can be declared inside md content or declared through frontmatter and added manually
@@ -107,7 +130,7 @@ function DocItem(props) {
             </div>
           </div>
         </div>
-        {!hideTableOfContents && DocContent.toc && (
+        {renderTocDesktop && (
           <div className="col col--3">
             <TOC toc={DocContent.toc} />
           </div>
