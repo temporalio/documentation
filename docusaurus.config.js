@@ -44,7 +44,7 @@ module.exports = {
             },
             {
               to: "/application-development",
-              activeBasePath: "/application-development",
+              activeBaseRegex: "(/application-development)|(/docs/(go|java|php|node))",
               label: "SDKs",
             },
             {
