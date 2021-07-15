@@ -10,13 +10,13 @@ import DocVersionBanner from "@theme/DocVersionBanner";
 import Seo from "@theme/Seo";
 import LastUpdated from "@theme/LastUpdated";
 import TOC from "@theme/TOC";
-import TOCCollapsible from '@theme/TOCCollapsible';
+import TOCCollapsible from "@theme/TOCCollapsible";
 import EditThisPage from "@theme/EditThisPage";
 import {MainHeading} from "@theme/Heading";
 import clsx from "clsx";
 import styles from "./styles.module.css";
 import {useActivePlugin, useVersions} from "@theme/hooks/useDocs";
-import useWindowSize from '@theme/hooks/useWindowSize';
+import useWindowSize from "@theme/hooks/useWindowSize";
 
 function DocItem(props) {
   const {content: DocContent, versionMetadata} = props;
@@ -54,12 +54,12 @@ function DocItem(props) {
   const renderTocMobile =
     !hideTableOfContents &&
     DocContent.toc &&
-    (windowSize === 'mobile' || windowSize === 'ssr');
+    (windowSize === "mobile" || windowSize === "ssr");
 
   const renderTocDesktop =
     !hideTableOfContents &&
     DocContent.toc &&
-    (windowSize === 'desktop' || windowSize === 'ssr');
+    (windowSize === "desktop" || windowSize === "ssr");
 
   return (
     <>
