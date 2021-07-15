@@ -434,4 +434,14 @@ module.exports = {
       items: ["concepts-new/introduction", "concepts-new/event-reference"],
     },
   ],
+  goNew: [
+    {
+      type: "category",
+      label: "Go",
+      collapsed: false,
+      items: [
+        "go-new/developer-guide",
+      ]
+    }
+  ]
 };

@@ -52,3 +52,5 @@ A large execution history can adversely impact the performance of your Workflows
 ### How many Workers can run per "Worker process"?
 
 ### When to enable concurrent Task Execution within Workers vs run multiple Workers
+
+### What are the effects of a Parent Close Policy
