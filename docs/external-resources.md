@@ -24,7 +24,11 @@ _Don't forget our own [Temporal Architecture docs](/docs/server-architecture/)!_
   - [Intro to Cadence Slide Deck](https://sagikazarmark.hu/slides/workshops/cadence-intro/#/) by Márk Sági-Kazár
   - Note: we have documented [the difference between Cadence and Temporal](https://docs.temporal.io/docs/cadence-to-temporal) separately.
 
-## Why Workflows
+## Why Workflow Orchestration
+
+- [Build a Reliable System in a Microservices World](https://eng.snap.com/build_a_reliable_system_in_a_microservices_world_at_snap) on Snap Engineering Blog
+
+  > Building a reliable “simple” microservices system is not simple. It often requires engineers to think through edge cases and write boilerplate error handling logic in any places where systems are integrated. Beyond error handling, in certain systems like payment or billing systems if we are not able to track the application states, it could mean money loss or other worse consequences. 
 
 - [Dealing with Failure](https://dev.to/temporalio/dealing-with-failure-5adf) on Dev.to
 
