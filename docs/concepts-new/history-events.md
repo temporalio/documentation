@@ -1,39 +1,20 @@
 ---
-id: history-entries
-title: All possible Workflow Execution History Entries
-sidebar_label: History Entries
+id: event-reference
+title: Workflow Execution Event reference
+sidebar_label: Event reference
 ---
 
-The following is a complete list of all possible History Entries that could appear in a Workflow Execution History.
-Each entry corresponds to an `enum` that is defined in the [Server API](https://github.com/temporalio/api/blob/master/temporal/api/enums/v1/event_type.proto).
+The following is a complete list of all possible Events that could appear in a Workflow Execution History.
 
-There are two types of History Entries, "Commands" and "Events".
+:::note
 
-## Commands
+Each Event corresponds to an `enum` that is defined in the [Server API](https://github.com/temporalio/api/blob/master/temporal/api/enums/v1/event_type.proto).
 
-## Events
+:::
 
 ### WorkflowExecutionStarted
 
-This is always the first History Entry in a Workflow Execution History and it indicates that the execution was invoked.
-This History Entry contains the following details:
-
-- Workflow Type
-- Parent Workflow Namespace
-- Parent Initiated EventId
-- Task Queue Name
-- Task Queue Kind
-- Workflow Execution Timeout
-- Workflow Run Timeout
-- Workflow Task Timeout
-- Continued Execution RunId
-- Initiator
-- Original Execution RunId
-- Identity
-- First Execution RunId
-- Attempt
-- Cron Schedule
-- First Workflow Task Backoff
+This is always the first Event in a Workflow Execution History and it indicates that the execution was invoked.
 
 ### WorkflowExecutionCompleted
 

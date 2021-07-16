@@ -431,7 +431,7 @@ module.exports = {
       collapsed: true,
       items: [
         "concepts-new/introduction",
-        "concepts-new/history-entries",
+        "concepts-new/event-reference",
       ],
     },
   ],
