@@ -32,6 +32,29 @@ const features = [
   },
 ];
 
+const sdks = [
+  {
+    title: "go SDK",
+    imgUrl: "img/go-lang.svg",
+    goto: "/docs/go/run-your-first-app-tutorial",
+  },
+  {
+    title: "java SDK",
+    imgUrl: "img/java.svg",
+    goto: "/docs/java/run-your-first-app-tutorial",
+  },
+  {
+    title: "php SDK",
+    imgUrl: "img/php.svg",
+    goto: "/docs/php/introduction",
+  },
+  {
+    title: "node SDK",
+    imgUrl: "img/nodejs.svg",
+    goto: "/docs/node/hello-world",
+  },
+];
+
 function Feature({imageUrl, title, description, goto}) {
   const imgUrl = useBaseUrl(imageUrl);
   return (
@@ -77,41 +100,34 @@ function SelectTutorial() {
             Run my first app! →
           </button>
         </div>
-        {clicked && (
-          <div>
-            <a href="/docs/go/run-your-first-app-tutorial">
-              <img
-                aria-label="go SDK"
-                className={styles.sdkTakeMeToTutorialLogo}
-                src={useBaseUrl("img/go-lang.svg")}
-                alt="logo"
-              />
-            </a>
-            <a href="/docs/java-run-your-first-app">
-              <img
-                aria-label="java SDK"
-                className={styles.sdkTakeMeToTutorialLogo}
-                src={useBaseUrl("img/java.svg")}
-                alt="logo"
-              />
-            </a>
-            <a href="/docs/php/introduction">
-              <img
-                aria-label="php SDK"
-                className={styles.sdkTakeMeToTutorialLogo}
-                src={useBaseUrl("img/php.svg")}
-                alt="logo"
-              />
-            </a>
-            <a href="/docs/node/hello-world">
-              <img
-                aria-label="node SDK"
-                className={styles.sdkTakeMeToTutorialLogo}
-                src={useBaseUrl("img/nodejs.svg")}
-                alt="logo"
-              />
-            </a>
-          </div>
+        {clicked && sdks.length > 0 && (
+          <section className={styles.features}>
+            <div className="container">
+              <div className={clsx("row", styles.justifyCenter)}>
+                {sdks.map(({title, imgUrl, goto}, idx) => (
+                  <div className="col col--2">
+                    <Link to={useBaseUrl(goto)}>
+                      {imgUrl && (
+                        <div
+                          className={clsx(
+                            "text--center",
+                            styles.featureImageContainer
+                          )}
+                        >
+                          <img
+                            className={styles.featureImage}
+                            src={imgUrl}
+                            alt={title}
+                            aria-label={title}
+                          />
+                        </div>
+                      )}
+                    </Link>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
         )}
       </div>
     </div>

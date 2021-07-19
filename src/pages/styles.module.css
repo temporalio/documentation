@@ -122,6 +122,7 @@
 
 .justifyCenter {
   text-align: center;
+  justify-content: center;
 }
 
 .securityPageHeaders {
