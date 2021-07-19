@@ -52,9 +52,9 @@ Before writing a Temporal Workflow, let’s take a closer look at the business r
 ## The Temporal Workflow 
 _**Note: The accompanying code for this post can be found in [this Github repo](https://github.com/nirpadma/temporal-workflows/tree/v0.1.3/media_processing_workflow).**_
 
-Now that we have a good grasp of the steps in the business process, let’s see how this would look in Temporal. Each of the steps highlighted in the previous section can roughly be mapped over to [Activities](https://docs.temporal.io/docs/go-activities/) within Temporal.
+Now that we have a good grasp of the steps in the business process, let’s see how this would look in Temporal. Each of the steps highlighted in the previous section can roughly be mapped over to [Activities](https://docs.temporal.io/docs/go/activities/) within Temporal.
  As prerequisites, ensure that
-- the Temporal service is running as specified in the [Quickstart](https://docs.temporal.io/docs/server-quick-install/) section of the Temporal docs.
+- the Temporal service is running as specified in the [Quickstart](https://docs.temporal.io/docs/server/quick-install/) section of the Temporal docs.
 - `ffmpeg` is installed. See instructions in the [official website](https://ffmpeg.org/download.html).
 
 The code has only been tested to work in certain Linux distributions and macOS. 
