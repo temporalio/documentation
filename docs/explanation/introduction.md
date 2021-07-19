@@ -1,6 +1,6 @@
 ---
 id: introduction
-title: Introduction to Temporal's core concepts
+title: What is Temporal?
 sidebar_label: Introduction
 ---
 
@@ -9,19 +9,15 @@ import TabItem from '@theme/TabItem';
 import LanguageLinkTabs from '../shared/LanguageLinkTabs.js'
 import RelatedRead from '../shared/RelatedRead.js'
 
-:::caution
+**Temporal is a scalable and reliable runtime for Temporal Workflow Executions.**
 
-This page is a work in progress!
-
-:::
+:::note
 
 **Temporal's tenth rule**
 
 > Any sufficiently complex distributed system contains an ad-hoc, informally-specified, bug-ridden, slow implementation of half of temporal.io.
 
-## What is Temporal?
-
-Temporal is a scalable and reliable runtime for Temporal Workflow Executions.
+:::
 
 <img class="docs-image-centered docs-image-max-width-50" src="/img/temporal-intro.png" />
 
@@ -32,6 +28,12 @@ A Temporal Application is a set of Temporal Workflow Executions (Π). Each Tempo
 Workflow Executions are lightweight components.
 A Temporal Application can consist of thousands to hundreds of thousands of Workflow Executions.
 A Workflow Execution consumes few compute resources; in fact, if a Workflow Execution is suspended, such as when it is in a waiting state, the Workflow Execution consumes no compute resources at all.
+
+<RelatedRead
+text="Temporal vs a traditional system"
+goTo="#"
+tagChar="e"
+/>
 
 The Temporal runtime consists of the Temporal Server and Worker processes.
 A Temporal SDK provides users with the APIs they need to write Workflow Definitions as well as the APIs to invoke Workflow Executions and invoke Worker processes.
@@ -61,22 +63,8 @@ A Workflow Execution is a Reentrant Process; that is, a resumable, recoverabl
 <img class="docs-image-centered docs-image-max-width-50" src="/img/reentrant.png" />
 <img class="docs-image-centered docs-image-max-width-50" src="/img/suspended.png" />
 
-Each Workflow Execution has a set of properties that define its behavior.
-Many of these properties can be a set in Workflow Execution Options.
 
-### Workflow Id
 
-A unique identifier for a [Workflow Execution](#workflow-execution).
-
-- Temporal guarantees the uniqueness of an Id within a [Namespace](#namespace).
-- An attempt to start a [Workflow](#workflow) with a duplicate Id results in an **already started** error if there is another open Workflow execution. However, this behavior depends on the `WorkflowIdReusePolicy` flag; if set to `ALLOW_DUPLICATE`, it is possible to start a new execution with the same Workflow Id.
-
-### Run Id
-
-A UUID that a Temporal service assigns to each [Workflow](#workflow) run.
-
-- Temporal guarantees that only one [Workflow Execution](#workflow-execution) with a given [Workflow Id](#workflow-id) can be open at a time. But after the [Workflow Execution](#workflow-execution) has completed, if allowed by a configured policy, you might be able to re-execute a [Workflow](#workflow) after it has closed or failed, using the same [Workflow Id](#workflow-id).
-- Each such re-execution is called a run. Run Id is used to uniquely identify a run even if it shares a [Workflow Id](#workflow-id) with others.
 
 ## What are Workflow Execution Options?
 
@@ -102,16 +90,6 @@ The following is a full list of all properties that can be customized for a Work
 - [Search Attributes](#search-attributes)
 - [Parent Close Policy](#parent-close-policy)
 
-<LanguageLinkTabs
-goText="How to provide Workflow Options in Go"
-goGoTo="#"
-javaText="How to provide Workflow Options in Java"
-javaGoTo="#"
-nodeText="How to provide Workflow Options in Node.js"
-nodeGoTo="#"
-phpText= "How to provide Workflow Options in PHP"
-phpGoTo="#"
-/>
 
 ## What are the timeout properties of a Workflow Execution?
 
@@ -119,30 +97,16 @@ A Workflow Execution has three unique timeout properties.
 A timeout property sets the maximum interval that is acceptable between two expected actions that must take place.
 Each timeout property has a default value, but can be customized in [Workflow Execution Options](#what-are-workflow-options)
 
-### Workflow Execution Timeout
 
-This is the maximum time that a Workflow Execution can be executing for (have an Open status) including retries and any usage of [Continue As New](#continue-as-new).
-**The default value is set to 10 years.**
-If this timeout is reached then the Workflow Execution will change to a Timed Out status.
 
-This timeout is most commonly used for stopping the execution of a [cron scheduled Workflow](#cron-schedule) after a certain amount of time has passed. This timeout is different from the [Workflow Run timeout](#workflow-run-timeout).
 
-### Workflow Run Timeout
 
-This is the maximum amount of time that a single Workflow Run is restricted to.
-**The default is set to the same value as the [Execution timeout](#execution-timeout).**
 
-This timeout is most commonly used to limit the execution time of a single [cron scheduled Workflow Execution](#cron-schedule).
-If this timeout is reached and there is an associated Retry Policy, the Workflow will be retried before any scheduling occurs.
-If there is no Retry Policy then the Workflow will be scheduled per the [cron schedule](#cron-schedule).
 
-### Workflow Task Timeout
 
-This is the maximum amount of time that the Server will wait for the Worker to start processing a [Workflow Task](#workflow-task) after the Task has been pulled from the Task Queue.
-**The default value is 10 seconds.**
 
-This timeout is primarily available to recognize whether a Worker has gone down so that the Workflow Execution can be recovered on a different Worker.
-The main reason for increasing the default value would be to accommodate a Workflow Execution that has a very long Workflow Execution History that could take longer than 10 seconds for the Worker to load.
+
+
 
 ### Workflow Task
 
@@ -197,86 +161,6 @@ Provides to the Temporal server the status of an [Activity Task](#activity-task)
 An [Activity](#activity) that is invoked directly in the same process by Workflow code.
 
 - Although a Local Activity consumes less resources than a normal [Activity](#activity), it is subject to shorter durations and a lack of rate limiting.
-
-## What is a Retry Policy?
-
-A Retry Policy is collection of attributes that instructs the Temporal Server how to retry a failure of an [Activity Task Execution](#activity-task-execution) or a [Workflow Execution](#workflow-execution).
-
-- If a custom Retry Policy is to be used, it must be provided as an options parameter when an [Activity Execution](#activity-execution) or [Workflow Execution](#workflow-execution) is invoked.
-
-- The wait time before a retry is the _retry interval_.
-  A retry interval is the smaller of two values:
-  - The [Initial Interval](#initial-interval) multiplied by the [Backoff Coefficient](#backoff-coefficient) raised to the power of the number of retries.
-  - The [Maximum Interval](#maximum-interval).
-
-<!-- ![Diagram that shows the retry interval and its formula](/img/retry-interval-diagram.png) -->
-
-- When a [Workflow Execution](#workflow-execution) is invoked it is not associated with a default Retry Policy and thus does not retry by default.
-  The intention is that a Workflow Definition should be written to never fail due to intermittent issues; an Activity is designed to handle such issues.
-
-:::note
-
-Retry Policies do not apply to [Workflow Task Executions](#workflow-task-execution), which, by default, retry indefinitely.
-
-:::
-
-- A Retry Policy can be provided to a [Workflow Execution](#workflow-execution) when it is invoked, but only certain scenarios merit doing this, such as the following:
-
-  - A cron Workflow or some other stateless, always-running Workflow Execution that can benefit from retries.
-  - A file-processing or media-encoding Workflow Execution that downloads files to a host.
-
-- When an [Activity Execution](#activity-execution) is invoked, it is associated with a default Retry Policy, and thus [Activity Task Executions](#activity-execution) are retried by default.
-  When an [Activity Task Execution](#activity-execution) is retried, the Server places a new [Activity Task](#activity-task) into its respective [Activity Task Queue](#activity-task-queue), which results in a new [Activity Task Execution](#activity-task-execution).
-
-**Default values for Retry Policy**
-
-```
-Initial Interval     = 1 second
-Backoff Coefficient  = 2.0
-Maximum Interval     = 100 × Initial Interval
-Maximum Attempts     = ∞
-Non-Retryable Errors = []
-```
-
-### Initial Interval
-
-- **Description**: Amount of time that must elapse before the first retry occurs.
-  - **The default value is 1 second.**
-- **Use case**: This is used as the base interval time for the [Backoff Coefficient](#backoff-coefficient) to multiply against.
-
-### Backoff Coefficient
-
-- **Description**: The value dictates how much the _retry interval_ increases.
-  - **The default value is 2.0.**
-  - A backoff coefficient of 1.0 means that the retry interval always equals the [Initial Interval](#initial-interval).
-- **Use case**: Use this attribute to increase the interval between retries.
-  By having a backoff coefficient greater than 1.0, the first few retries happen relatively quickly to overcome intermittent failures, but subsequent retries happen farther and farther apart to account for longer outages.
-  Use the [Maximum Interval](#maximum-interval) attribute to prevent the coefficient from increasing the retry interval too much.
-
-### Maximum Interval
-
-- **Description**: Specifies the maximum interval between retries.
-  - **The default value is 100 times the [Initial Interval](#initial-interval).**
-- **Use case**: This attribute is useful for [Backoff Coefficients](#backoff-coefficient) that are greater than 1.0 because it prevents the retry interval from growing infinitely.
-
-### Maximum Attempts
-
-- **Description**: Specifies the maximum number of execution attempts that can be made in the presence of failures.
-  - **The default is unlimited.**
-  - If this limit is exceeded, the execution fails without retrying again. When this happens an error is returned.
-  - Setting the value to 0 also means unlimited.
-  - Setting the value to 1 means a single execution attempt and no retries.
-  - Setting the value to a negative integer results in an error when the execution is invoked.
-- **Use case**: Use this attribute to ensure that retries do not continue indefinitely.
-  However, in the majority of cases, we recommend relying on the Workflow Execution Timeout, in the case of [Workflows](#workflow), or Schedule-To-Close Timeout, in the case of [Activities](#activity), to limit the total duration of retries instead of using this attribute.
-
-### Non-Retryable Errors
-
-- **Description**: Specifies errors that shouldn't be retried.
-  - **Default is none.**
-  - If one of those errors occurs, the [Activity Task Execution](#activity-task-execution) or [Workflow Execution](#workflow-execution) is not retried.
-- **Use case**: There may be errors that you know of that should not trigger a retry.
-  In this case you can specify them such that if they occur, the given execution will not be retried.
 
 ## Event
 

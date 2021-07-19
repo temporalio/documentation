@@ -429,9 +429,14 @@ module.exports = {
   coreConceptsNew: [
     {
       type: "category",
-      label: "Concepts WIP",
+      label: "Temporal explained",
       collapsed: true,
-      items: ["concepts-new/introduction", "concepts-new/event-reference"],
+      items: [
+        "explanation/introduction",
+        "explanation/system-topology",
+        "explanation/retry-policy",
+        "explanation/event-reference",
+      ],
     },
   ],
 };
