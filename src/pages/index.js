@@ -39,7 +39,7 @@ function Feature({imageUrl, title, description, goto}) {
       <h3>{title}</h3>
       <Link to={useBaseUrl(goto)}>
         {imgUrl && (
-          <div className="text--center">
+          <div className={clsx("text--center", styles.featureImageContainer)}>
             <img className={styles.featureImage} src={imgUrl} alt={title} />
           </div>
         )}
