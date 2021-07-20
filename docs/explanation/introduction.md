@@ -63,9 +63,6 @@ A Workflow Execution is a Reentrant Process; that is, a resumable, recoverabl
 <img class="docs-image-centered docs-image-max-width-50" src="/img/reentrant.png" />
 <img class="docs-image-centered docs-image-max-width-50" src="/img/suspended.png" />
 
-
-
-
 ## What are Workflow Execution Options?
 
 Each SDK provides an API for customizing the properties of a Workflow Execution.
@@ -90,14 +87,11 @@ The following is a full list of all properties that can be customized for a Work
 - [Search Attributes](#search-attributes)
 - [Parent Close Policy](#parent-close-policy)
 
-
 ## What are the timeout properties of a Workflow Execution?
 
 A Workflow Execution has three unique timeout properties.
 A timeout property sets the maximum interval that is acceptable between two expected actions that must take place.
 Each timeout property has a default value, but can be customized in [Workflow Execution Options](#what-are-workflow-options)
-
-
 
 ### Workflow Task
 
