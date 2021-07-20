@@ -26,6 +26,14 @@ Temporal Workflows do more than make working with time easy, they also make your
 Temporal provides testing utilities that help you stub out external services and programmatically advance time, which lets you [unit test your Workflows](/blog/descript-case-study/#to-code-or-not-to-code).
 In this blog post, I'll demonstrate how to use Temporal's testing utilities to write fast unit tests for the shopping cart from Part 1 and Part 2.
 
+## 30 Minute Video Version
+
+We recorded this blogpost in video form for those who prefer that, or you can choose to read on below.
+
+import { ResponsivePlayer } from '../src/components'
+
+<ResponsivePlayer url='https://www.youtube.com/watch?v=-GKxFDQSlEU' />
+
 ## Testing Setup
 
 Below is a basic setup for testing a Temporal Workflow using `go test` and [Testify](https://github.com/stretchr/testify) based on [Temporal's Go testing docs](/docs/go/testing).
