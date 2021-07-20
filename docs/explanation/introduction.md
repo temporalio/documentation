@@ -36,7 +36,7 @@ tagChar="e"
 />
 
 The Temporal runtime consists of the Temporal Server and Worker processes.
-A Temporal SDK provides users with the APIs they need to write Workflow Definitions as well as the APIs to invoke Workflow Executions and invoke Worker processes.
+A Temporal SDK provides developers with the APIs needed to write Workflow Definitions as well as the APIs to invoke Workflow Executions and invoke Worker processes.
 
 ## What is a Workflow?
 
@@ -96,15 +96,6 @@ The following is a full list of all properties that can be customized for a Work
 A Workflow Execution has three unique timeout properties.
 A timeout property sets the maximum interval that is acceptable between two expected actions that must take place.
 Each timeout property has a default value, but can be customized in [Workflow Execution Options](#what-are-workflow-options)
-
-
-
-
-
-
-
-
-
 
 
 

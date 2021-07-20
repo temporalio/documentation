@@ -1,8 +1,17 @@
 ---
-id: event-reference
-title: Workflow Execution Event reference
+id: workflow-execution-history
+title: What is a Workflow Execution History?
 sidebar_label: Event reference
 ---
+
+The History of a Workflow Execution is a strictly ordered sequence of Events.
+A Workflow Execution Event History is what enables a Worker to replay a Workflow Execution.
+
+Event Histories are stored within the Temporal Server.
+The period of time that the Event Histories are stored can be customized in the Temporal Server's configuration file.
+Event Histories can be backed up automatically to a cloud storage provider of your choice using the Archival feature.
+
+## What are all possible Events in a Workflow Execution History?
 
 The following is a complete list of all possible Events that could appear in a Workflow Execution History.
 

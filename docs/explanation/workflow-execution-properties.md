@@ -1,6 +1,6 @@
 ---
 id: workflow-execution-properties
-title: What are Workflow Execution properties?
+title: What are all the properties of a Workflow Execution?
 sidebar_label: Workflow Execution properties
 ---
 
@@ -65,7 +65,6 @@ This property can be customized in the Workflow Options at invocation.
 
 ## Data Converter
 
-
 ## Retry Policy
 
 ## Cron Schedule
@@ -78,6 +77,6 @@ This property can be customized in the Workflow Options at invocation.
 
 ## Parent Close Policy
 
-## Workflow Execution invocation properties
+## What the properties of Workflow Execution invocation?
 
 ### Workflow Id Reuse Policy
