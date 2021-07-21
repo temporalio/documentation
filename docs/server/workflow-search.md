@@ -29,7 +29,7 @@ The rest of this page assumes your instance of Temporal is integrated with Elast
 
 Search attributes are indexed and queryable pieces of Workflow metadata.
 They are represented as key-value pairs.
-There are many attributes provided by default, but you can also add your own.
+Many attributes are provided by default, but you can also add your own.
 Keys must be registered with tctl command so that the Temporal Server knows the attribute key name and value type.
 To add new search attributes, you should use the [CLI](/docs/system-tools/tctl/#add-new-search-attributes).
 
