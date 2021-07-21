@@ -50,14 +50,9 @@ The only required dependency is a database, and there are multiple types of data
 Temporal has built-in Workflow search functionality.
 To enhance this feature, Temporal supports an [integration with Elasticsearch](/docs/server/elasticsearch-setup).
 
-- **Elasticsearch**
-  - Elasticsearch v7.7 is supported from Temporal version 1.7.0 onwards
-  - Elasticsearch v6.8 is supported in all Temporal versions
-  - Both versions are explicitly supported with AWS Elasticsearch
-- **Kafka v2.1.1 & Zookeeper v3.4.6**
-  - Starting with Temporal Server version 1.5.4, the use of Kafka can be disabled using dynamic config settings.
-    See the [1.5.0 release notes](https://github.com/temporalio/temporal/releases/tag/v1.5.0) for details on how to disable it.
-  - Starting from Temporal Server version 1.8.0, Kafka and Zookeper are no longer required.
+- Elasticsearch v7.7 is supported from Temporal version 1.7.0 onwards
+- Elasticsearch v6.8 is supported in all Temporal versions
+- Both versions are explicitly supported with AWS Elasticsearch
 
 ### Monitoring & observation
 
@@ -65,22 +60,6 @@ Temporal emits metrics by default in a format that is supported by Prometheus. M
 
 - **Prometheus >= v2.0**
 - **Grafana >= v2.5**
-
-### Multi-cluster replication
-
-This is an experimental feature, most Temporal users do not need this.
-You should be on the latest Temporal version (v1.7+) to use this.
-Some Server versions require the use of event streaming software.
-See the note on event streaming dependency below.
-
-- **Zookeeper v3.4.6**
-
-:::note Note on event streaming dependency
-
-Event streaming software as a dependency is only required when Elasticsearch is being used or when Temporal is deployed across multiple data centers.
-However, in future releases of Temporal, third party event streaming software will likely cease to be needed as dependency for both.
-
-:::
 
 ## Upgrade your version of Temporal
 

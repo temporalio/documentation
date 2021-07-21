@@ -47,7 +47,7 @@ It was an amazing effort by the team to finish all tasks for us to hit code comp
 
 ### Backwards Compatibility
 
-We are not planning any breaking API changes for Go SDK or service GRPC definition. Additionally we are going to maintain schema compatibility for Cassandra and MySQL. This means users should be able to adopt future releases during stabilization, without making any changes on their end.
+We are not planning any breaking API changes for Go SDK or service gRPC definition. Additionally we are going to maintain schema compatibility for Cassandra and MySQL. This means users should be able to adopt future releases during stabilization, without making any changes on their end.
 
 ### Stability
 

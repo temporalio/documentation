@@ -295,7 +295,7 @@ For terminating workflows as batch job, it will terminate the children recursive
 Start a batch job(using signal as batch type):
 
 ```bash
-tctl --ns samples-namespace batch start --query "WorkflowType='main.SampleParentWorkflow' AND CloseTime=missing" --reason "test" --bt signal --sig testname
+tctl --ns samples-namespace batch start --query "WorkflowType='main.SampleParentWorkflow' AND ExecutionStatus='Running'" --reason "test" --bt signal --sig testname
 This batch job will be operating on 5 workflows.
 Please confirm[Yes/No]:yes
 {
@@ -435,7 +435,7 @@ Use the `--query` flag to list Workflows using an SQL-like query:
 
 ```bash
 tctl workflow list \
-  --query "WorkflowType='main.SampleParentWorkflow' AND CloseTime = missing"
+  --query "WorkflowType='main.SampleParentWorkflow' AND ExecutionStatus='Running'"
 ```
 
 This will return all open Workflows with `workflowType` as `main.SampleParentWorkflow`.
@@ -528,17 +528,17 @@ Here is some example output:
 Here is how you add a new search attribute:
 
 ```bash
-tctl admin cluster add-search-attributes --name <NewKey> --type string
+tctl admin cluster add-search-attributes --name ProductId --type Keyword
 ```
 
 The possible values for `--type` are:
 
-- string
-- keyword
-- int
-- double
-- bool
-- datetime
+- String
+- Keyword
+- Int
+- Double
+- Bool
+- Datetime
 
 ### Start Workflow with Search Attributes
 
@@ -566,7 +566,7 @@ tctl workflow list \
   --print_search_attr
 ```
 
-To list only open Workflows, add `CloseTime = missing` to the end of the query.
+To list only open Workflows, add `ExecutionStatus = "Running"` to the end of the query.
 
 Note that queries can support more than one type of filter:
 
@@ -577,7 +577,7 @@ tctl workflow list \
 
 ```bash
 tctl workflow list \
-  --query 'WorkflowType = "main.Workflow" StartTime > "2019-06-07T16:46:34-08:00" and CloseTime = missing'
+  --query 'WorkflowType = "main.Workflow" StartTime > "2019-06-07T16:46:34-08:00" and ExecutionStatus = "Running"'
 ```
 
 ### Workflow Id Uniqueness
