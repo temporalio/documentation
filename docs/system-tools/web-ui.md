@@ -4,9 +4,11 @@ title: Temporal Web UI
 sidebar_label: Web UI
 ---
 
-The Temporal Web UI can be used to view Workflow Execution states or explore and debug Workflow Executions.
+The Temporal Web UI can be used to view Workflow Execution states or explore and debug Workflow Executions. It is [open source](https://github.com/temporalio/web).
 
 For a **video demo** of how this looks, you can [check our docs](https://docs.temporal.io/docs/java-run-your-first-app/#state-visibility).
+
+<img width="1222" alt="CleanShot 2021-07-20 at 18 00 27@2x" src="https://user-images.githubusercontent.com/6764957/126414038-860403cd-dd86-4348-82f3-be2214c804bb.png">
 
 ## Deploying and securing Temporal Web
 
@@ -154,16 +156,45 @@ The primary mechanism we recommend for debugging is [Temporal Web](https://githu
 
 The full state of every Run is inspectable in Temporal Web:
 
-- If your workflows seem like they aren't receiving the right data, check the **Input** arguments given.
-- If your workflows seem "stuck", check the **Task Queue** assigned to a given workflow to see that there are active workers polling.
-- If you see inspect the **Pending Activities** and see an activity with a lot of retry `attempt`s, you can check the `lastFailure` field for a clue as to what happened.
-- If you need to go back in time from the current state, check the **History Events** where you can see the full Workflow Execution History logs (this is what makes Temporal so resilient)
+<details>
+<summary>
+If your workflows seem like they aren't receiving the right data, check the **Input** arguments given.
+</summary>
+
+![CleanShot 2021-07-20 at 18 05 24@2x](https://user-images.githubusercontent.com/6764957/126414387-fb2e0be4-86f9-491a-9722-e94060cd0115.png)
+
+</details>
+<details>
+<summary>
+If your workflows seem "stuck", check the **Task Queue** assigned to a given workflow to see that there are active workers polling.
+</summary>
+
+<img width="882" alt="CleanShot 2021-07-20 at 17 48 45@2x" src="https://user-images.githubusercontent.com/6764957/126413160-18663430-bb7a-4d3a-874e-80598e1fa07d.png">
+
+</details>
+<details>
+<summary>
+If you see inspect the **Pending Activities** and see an activity with a lot of retry `attempt`s, you can check the `lastFailure` field for a clue as to what happened.
+</summary>
+
+![CleanShot 2021-07-20 at 18 08 18@2x](https://user-images.githubusercontent.com/6764957/126414614-432a0db3-603c-4f64-995f-6289863c6ee5.png)
+
+</details>
+<details>
+<summary>
+If you need to go back in time from the current state, check the **History Events** where you can see the full Workflow Execution History logs (this is what makes Temporal so resilient)
+
+</summary>
+
+![CleanShot 2021-07-20 at 18 07 29@2x](https://user-images.githubusercontent.com/6764957/126414550-595b3c22-c719-40c9-abe1-e1fd75c459f8.png)
+
+</details>
 
 ### Execution Histories on Temporal Web
 
 Reading execution histories is one of the more reliable ways of debugging:
 
-![image](https://user-images.githubusercontent.com/6764957/110546362-54d92c00-8169-11eb-81a6-74817e0d1378.png)
+![CleanShot 2021-07-20 at 18 07 29@2x](https://user-images.githubusercontent.com/6764957/126414550-595b3c22-c719-40c9-abe1-e1fd75c459f8.png)
 
 Here, you can see the exact sequence of events that has happened so far, which includes the relevant state for each event and details about what went wrong or what is preventing the next correct event.
 There are about 40 system events in total.
