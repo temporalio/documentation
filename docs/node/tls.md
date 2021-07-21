@@ -8,7 +8,7 @@ In order to connect to the server using TLS, set a _truthy_ value (`true` or [TL
 Use [`ServerOptions.tls`](https://nodejs.temporal.io/api/interfaces/worker.serveroptions#tls)When [creating](https://nodejs.temporal.io/api/classes/worker.worker-1#create) a new Worker and
 [`ConnectionOptions.tls`](https://nodejs.temporal.io/api/interfaces/client.connectionoptions#tls) for the [`Connection`](https://nodejs.temporal.io/api/classes/client.connection) constructor.
 
-The client connection also accepts [GRPC credentials](https://grpc.github.io/grpc/node/grpc.credentials.html) at [`ConnectionOptions.credentials`](https://nodejs.temporal.io/api/interfaces/client.connectionoptions#tls) as long as `tls` is not also specified.
+The client connection also accepts [gRPC credentials](https://grpc.github.io/grpc/node/grpc.credentials.html) at [`ConnectionOptions.credentials`](https://nodejs.temporal.io/api/interfaces/client.connectionoptions#tls) as long as `tls` is not also specified.
 
 ### mTLS tutorial
 

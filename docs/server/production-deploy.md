@@ -23,7 +23,7 @@ The Temporal Server is a Go application which you can [import](https://docs.temp
 The minimum dependency is a database.
 The Server supports [Cassandra](https://cassandra.apache.org/), [MySQL](https://www.mysql.com/), or [PostgreSQL](https://www.postgresql.org/).
 Further dependencies are only needed to support optional features.
-For example, enhanced Workflow search can be achieved using [ElasticSearch](/docs/server/elasticsearch-setup).
+For example, enhanced Workflow search can be achieved using [Elasticsearch](/docs/server/elasticsearch-setup).
 And, monitoring and observability are available with [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/).
 
 See the [versions & dependencies page](/docs/server/versions-and-dependencies/) for precise versions we support together with these features.
@@ -86,7 +86,7 @@ We do plan to add features that give more visibility into the task queue state i
 Running into limits can cause unexpected failures, so be mindful when you design your systems.
 Here is a comprehensive list of all the hard (error) / soft (warn) server limits relevant to operating Temporal:
 
-- **GRPC**: GRPC has 4MB size limit ([per each message received](https://github.com/grpc/grpc/blob/v1.36.2/include/grpc/impl/codegen/grpc_types.h#L466))
+- **gRPC**: gRPC has 4MB size limit ([per each message received](https://github.com/grpc/grpc/blob/v1.36.2/include/grpc/impl/codegen/grpc_types.h#L466))
 - **Event Batch Size**: The `DefaultTransactionSizeLimit` limit is [4MB](https://github.com/temporalio/temporal/pull/1363).
   This is the largest transaction size we allow for event histories to be persisted.
   - This is configurable with `TransactionSizeLimit`, if you know what you are doing.

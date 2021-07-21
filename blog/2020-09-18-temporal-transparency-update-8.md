@@ -33,7 +33,7 @@ Hey Temporal community, it's Friday! It's been a long week but the end is almost
   * Cross data center replication
   * Batch operations (signal, terminate, cancel)
   * Dynamic config
-  * Addition, removal and creation of searchable attributes with ElasticSearch
+  * Addition, removal and creation of searchable attributes with Elasticsearch
 * Confident in our original internal timeline for stabilization
 
 ## V1 Stabilization
@@ -64,7 +64,7 @@ With this context, here are the features we consider experimental in the V1 rele
 * Cross data center replication
 * Batch operations (signal, terminate, cancel)
 * Dynamic config
-* Addition, removal and creation of searchable attributes with ElasticSearch
+* Addition, removal and creation of searchable attributes with Elasticsearch
 
 In general, experimental features will not stay experimental and eventually make their way into production. In the case of the V1 experimental features listed above, we intend to productionize all of them following the initial release. In some cases we may choose to not move a feature forward if demand/value seems low.
 
