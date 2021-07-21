@@ -2,7 +2,7 @@
 id: what-is-temporal
 title: What is Temporal?
 tags:
-- explanation
+  - explanation
 ---
 
 Temporal is a scalable and reliable runtime for Temporal Workflow Executions.
