@@ -8,7 +8,7 @@ The Temporal Web UI can be used to view Workflow Execution states or explore and
 
 For a **video demo** of how this looks, you can [check our docs](https://docs.temporal.io/docs/java-run-your-first-app/#state-visibility).
 
-<img width="1222" alt="CleanShot 2021-07-20 at 18 00 27@2x" src="https://user-images.githubusercontent.com/6764957/126414038-860403cd-dd86-4348-82f3-be2214c804bb.png">
+<img width="1222" alt="CleanShot 2021-07-20 at 18 00 27@2x" src="https://user-images.githubusercontent.com/6764957/126414038-860403cd-dd86-4348-82f3-be2214c804bb.png" />
 
 ## Deploying and securing Temporal Web
 
@@ -169,7 +169,7 @@ If your workflows seem like they aren't receiving the right data, check the **In
 If your workflows seem "stuck", check the **Task Queue** assigned to a given workflow to see that there are active workers polling.
 </summary>
 
-<img width="882" alt="CleanShot 2021-07-20 at 17 48 45@2x" src="https://user-images.githubusercontent.com/6764957/126413160-18663430-bb7a-4d3a-874e-80598e1fa07d.png">
+<img width="882" alt="CleanShot 2021-07-20 at 17 48 45@2x" src="https://user-images.githubusercontent.com/6764957/126413160-18663430-bb7a-4d3a-874e-80598e1fa07d.png" />
 
 </details>
 <details>

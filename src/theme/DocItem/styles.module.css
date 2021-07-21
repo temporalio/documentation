@@ -33,8 +33,7 @@
 }
 
 .EditThisPage {
-  margin-bottom: 5rem;
-  margin-top: 5rem;
+  backdrop-filter: invert(0.2);
 }
 
 @media screen and (min-width: 998px) {
