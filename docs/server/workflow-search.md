@@ -59,7 +59,7 @@ These can be found by using the [CLI](/docs/system-tools/tctl/#search-workflows)
 
 There are some special considerations for the System attributes:
 
-- ExecutionStatus, CloseTime, NamespaceId, ExecutionTime, HistoryLength, RunId, StartTime, WorkflowId, WorkflowType are reserved by Temporal and are read-only.
+- All System search attributes are reserved by Temporal and are read-only.
 - ExecutionStatus can be one of these: Running, Completed, Failed, Canceled, Terminated, ContinuedAsNew, TimedOut.
 - StartTime, CloseTime and ExecutionTime are stored as dates, but are supported by queries using both EpochTime in nanoseconds and a string in [RFC3339Nano format](https://pkg.go.dev/time#pkg-constants) (ex. "2006-01-02T15:04:05.999999999Z07:00").
 - ExecutionDuration is stored in nanoseconds, but supported by queries using integers in nanoseconds, [Golang duration format](https://pkg.go.dev/time#ParseDuration), and "hh:mm:ss" format.
@@ -100,9 +100,8 @@ Note:
   For a UUID, that can be problematic as Elasticsearch will index each portion of the UUID separately.
   To have the whole string considered as a searchable keyword, use the **Keyword** type.
   For example, if the key `ProductId` has the value of "2dd29ab7-2dd8-4668-83e0-89cae261cfb1"
-
-- As a **Keyword** it would only be matched by `ProductId` = "2dd29ab7-2dd8-4668-83e0-89cae261cfb1".
-- As a **String** it would be matched by `ProductId` = "2dd8", which could cause unwanted matches.
+  - As a **Keyword** it would only be matched by `ProductId` = "2dd29ab7-2dd8-4668-83e0-89cae261cfb1".
+  - As a **String** it would be matched by `ProductId` = "2dd8", which could cause unwanted matches.
 
 Also note that the **String** type cannot be used in the "Order By" clause.
 
