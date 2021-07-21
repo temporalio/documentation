@@ -63,7 +63,7 @@ Temporal emits metrics by default in a format that is supported by Prometheus. M
 
 ## Upgrade your version of Temporal
 
-If there is a newer version of Temporal available, a notification will appear in the Temporal Web UI.
+If a newer version of Temporal is available, a notification appears in the Temporal Web UI.
 
 To use a more recent version of Temporal, first [check to see](https://github.com/temporalio/temporal/releases) if an upgrade to the database schema is required. Newer binaries can not run with older database schemas. Some releases require changes to the schema, and some do not. If you are using a version that is older than 1.0.0, reach out to us at [community.temporal.io](http://community.temporal.io) to ask how to upgrade.
 
