@@ -559,7 +559,9 @@ Here is how you remove an existing search attribute:
 ```bash
 tctl admin cluster remove-search-attributes --name ProductId
 ```
-::note Due to Elasticsearch limitations this command will only remove search attribute from cluster metadata (Workflows won't be able to use them)
+:::note 
+
+Due to Elasticsearch limitations, this command removes search attributes only from cluster metadata (Workflows won't be able to use them).
 but not from Elasticsearch index schema. You need to modify Elasticsearch index manually (it will require reindex in the most cases).
 
 ### Start Workflow with Search Attributes
