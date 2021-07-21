@@ -7,8 +7,9 @@ sidebar_label: Set up Elasticsearch
 ## Overview
 
 You can integrate [Elasticsearch](https://www.elastic.co/elasticsearch/) with the Temporal Server to enhance [Workflow search](/docs/server/workflow-search) functionality.
+The [Server versions and dependencies](/docs/server/versions-and-dependencies/#workflow-search) page describes which versions of Elasticsearch are supported.
 
-Integration with Elasticsearch is defined in the Server configuration files.
+Integration with Elasticsearch is defined in the Server configuration files: all you need to do is edit the `persistence` section.
 
 You can use the Temporal Server [development_es.yaml](https://github.com/temporalio/temporal/blob/master/config/development_es.yaml) file as working example.
 
@@ -42,3 +43,11 @@ persistence:
         indices:
           visibility: temporal_visibility_v1_dev
 ```
+
+## Index schema setup
+If you run Temporal Server using our [Helm Charts](https://github.com/temporalio/helm-charts) or
+[docker-compose](https://github.com/temporalio/docker-compose) which uses [auto-setup](https://hub.docker.com/r/temporalio/auto-setup) docker image,
+then Elasticsearch index is automatically created. Docker auto-setup image also [creates](https://github.com/temporalio/temporal/blob/master/docker/auto-setup.sh#L263-L269) 6 custom search attributes for testing.
+
+If you run plain Temporal Server [docker image](https://hub.docker.com/r/temporalio/server) you need to create
+index schema template and index manually. You can use commands from our [Makefile](https://github.com/temporalio/temporal/blob/master/Makefile#L370-L374).

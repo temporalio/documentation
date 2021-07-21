@@ -105,7 +105,7 @@ Note:
 
 Also note that the **String** type cannot be used in the "Order By" clause.
 
-[auto-setup](https://hub.docker.com/repository/docker/temporalio/auto-setup) version of server image has some pre-allowlisted search attributes that are handy for testing, that have their types indicated in their name:
+Docker [auto-setup](https://hub.docker.com/r/temporalio/auto-setup) image has some pre-allowlisted search attributes that are handy for testing, that have their types indicated in their name:
 
 - CustomKeywordField
 - CustomIntField
