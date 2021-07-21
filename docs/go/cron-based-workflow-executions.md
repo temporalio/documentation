@@ -1,6 +1,7 @@
 ---
-id: distributed-cron
-title: Distributed CRON
+id: cron-scheduled-workflow-executions
+title: How to invoke Workflow Executions on a cron schedule
+sidebar_label: Cron-scheduled Workflow Executions
 ---
 
 import DistributedCron from '../shared/distributed-cron.md'

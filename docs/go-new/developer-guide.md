@@ -526,7 +526,7 @@ First, create a new instance of a [`Worker`](https://pkg.go.dev/go.temporal.io/s
 Then, register the Workflow Types and the Activity Types that the Worker will be capable of executing.
 
 Lastly, call either the `Start()` or the `Run()` method on the instance of the Worker.
-Run accepts an interrupt channel as a parameter to be able to stop the Worker.
+Run accepts an interrupt channel as a parameter, so that the Worker can be stopped in the terminal.
 Otherwise the `Stop()` method must be called to stop the Worker.
 
 ```go
@@ -544,8 +544,8 @@ func main() {
 	}
 	defer c.Close()
 	w := worker.New(c, "your-task-queue", worker.Options{})
-	w.RegisterWorkflow(MyWorkflowFunction)
-	w.RegisterActivity(MyActivityFunction)
+	w.RegisterWorkflow(YourWorkflowDefinition)
+	w.RegisterActivity(YourActivityDefinition)
 	err = w.Run(worker.InterruptCh())
 	if err != nil
 		// ...

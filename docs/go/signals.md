@@ -10,25 +10,6 @@ This is the conceptual opposite of [**Queries**](https://docs.temporal.io/docs/g
 - If you are unsure of the run state, you can send a `SignalWithStart` to start the Workflow and signal it at the same time.
 - Workflows can signal other workflows with `SignalExternalWorkflow`.
 
-## When to use Signals
-
-Without Signals, you have only two options for passing data to the Workflow implementation:
-
-- Via start parameters
-- As return values from Activities
-
-With start parameters, we can only pass in values before Workflow execution begins.
-
-Return values from Activities allow us to pass information to a running Workflow, but this approach comes with its own complications.
-One major drawback is **reliance on polling**.
-This means that the data needs to be stored in a third-party location until it's ready to be picked up by the Activity.
-Further, the lifecycle of this Activity requires management, and the Activity requires manual restart if it fails before acquiring the data.
-
-**Signals**, on the other hand, provide a fully asynchronous and durable mechanism for providing data to a running Workflow.
-When a signal is received for a running Workflow, Temporal persists the event and the payload in the Workflow history.
-The Workflow can then process the signal at any time afterwards without the risk of losing the information.
-The Workflow also has the option to stop execution by blocking on a **signal channel**.
-
 ## Example Signal Code
 
 In Temporal, Signals are sent to and from Signal Channels:
