@@ -546,7 +546,11 @@ The possible values for `--type` are:
 - Bool
 - Datetime
 
-::note Due to Elasticsearch limitations you can only add new custom search attributes but not rename or remove existing ones.
+:::note 
+
+Due to Elasticsearch limitations you can only add new custom search attributes but not rename or remove existing ones.
+
+:::
 
 ### Remove search attributes
 
