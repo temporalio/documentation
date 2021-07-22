@@ -47,13 +47,13 @@ You can use `tctl` directly from the [admin-tools](https://hub.docker.com/r/temp
 - On Linux:
 
 ```bash
-docker run --rm -it --entrypoint tctl --network host --env TEMPORAL_CLI_ADDRESS=localhost:7233 temporalio/admin-tools:1.11.1
+docker run --rm -it --entrypoint tctl --network host --env TEMPORAL_CLI_ADDRESS=localhost:7233 temporalio/admin-tools:1.11.2
 ```
 
 - On macOS/Windows:
 
 ```bash
-docker run --rm -it --entrypoint tctl --env TEMPORAL_CLI_ADDRESS=host.docker.internal:7233 temporalio/admin-tools:1.11.1
+docker run --rm -it --entrypoint tctl --env TEMPORAL_CLI_ADDRESS=host.docker.internal:7233 temporalio/admin-tools:1.11.2
 ```
 
 Change the value of `TEMPORAL_CLI_ADDRESS` if your Temporal Server is running on remote host.
