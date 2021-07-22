@@ -74,7 +74,7 @@ Setting environment variables for repeated parameters can shorten the CLI comman
 
 ## Quick Start
 
-- Run `tctl -h` for help on top level commands and global options
+- Run `tctl -h` for help on top-level commands and global options
 - Run `tctl namespace -h` for help on namespace operations
 - Run `tctl workflow -h` for help on workflow operations
 - Run `tctl taskqueue -h` for help on task queue operations
