@@ -30,7 +30,7 @@ If you plan to run `tctl` command multiple times, you might want to create an al
 ```bash
 alias tctl="docker exec temporal-admin-tools tctl"
 ```
-and then invoke `tctl` command as if it is installed locally. For example to describe default namespace:
+...and then invoke `tctl` command as though it is installed locally. For example, to describe the default namespace:
 ```bash
 tctl namespace describe
 ```
