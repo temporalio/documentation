@@ -95,11 +95,6 @@ module.exports = {
       collapsed: false,
       items: [
         "go/introduction",
-        "go/workflow-definitions",
-        "go/workflow-executions",
-        "go/activity-definitions",
-        "go/activity-executions",
-        "go/workers",
         {
           type: "link",
           label: "Reference",
@@ -139,7 +134,7 @@ module.exports = {
         "go/testing",
         "go/versioning",
         "go/sessions",
-        "go/cron-scheduled-workflow-executions",
+        "go/distributed-cron",
         "go/tracing",
         "go/search-apis",
       ],
@@ -437,16 +432,6 @@ module.exports = {
       label: "Concepts WIP",
       collapsed: true,
       items: ["concepts-new/introduction", "concepts-new/event-reference"],
-    },
-  ],
-  goNew: [
-    {
-      type: "category",
-      label: "Go",
-      collapsed: false,
-      items: [
-        "go-new/developer-guide",
-      ],
     },
   ],
   applicationOperations: [
