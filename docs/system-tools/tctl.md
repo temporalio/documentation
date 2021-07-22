@@ -37,7 +37,8 @@ tctl namespace describe
 
 ### Run from docker image
 
-Also `tctl` can be used directly from the [admin-tools](https://hub.docker.com/r/temporalio/admin-tools) docker image:
+You can use `tctl` directly from the [admin-tools](https://hub.docker.com/r/temporalio/admin-tools) docker image:
+
 - On Linux:
 ```bash
 docker run --rm -it --entrypoint tctl --network host --env TEMPORAL_CLI_ADDRESS=localhost:7233 temporalio/admin-tools:1.11.1
