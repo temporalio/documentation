@@ -22,7 +22,7 @@ brew install tctl
 
 ### Run from docker-compose container
 
-If you are running Temporal Server locally using [docker-compose](https://github.com/temporalio/docker-compose) you can run `tctl` from `temporal-admin-tools` container with:
+If you are running Temporal Server locally by using [docker-compose](https://github.com/temporalio/docker-compose), you can run `tctl` from the `temporal-admin-tools` container.
 ```bash
 docker exec temporal-admin-tools tctl
 ```
