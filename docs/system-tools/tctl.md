@@ -438,7 +438,7 @@ tctl workflow list \
   --query "WorkflowType='main.SampleParentWorkflow' AND ExecutionStatus='Running'"
 ```
 
-This will return all open Workflows with `workflowType` as `main.SampleParentWorkflow`:
+This returns all open Workflows with `workflowType` as `main.SampleParentWorkflow`.
 
 ```bash
 tctl workflow list
