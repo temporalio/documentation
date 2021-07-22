@@ -58,7 +58,7 @@ Copy this executable to any directory from `PATH` environment variable. For exam
 
 :::note
 
-The example commands below will use `tctl` for brevity, which might be a binary or pre-created alias as described above. 
+For brevity, the example commands that follow use `tctl` for brevity, which might be a binary or a pre-created alias as described earlier. 
 
 :::
 
