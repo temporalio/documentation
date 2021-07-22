@@ -93,9 +93,10 @@ Search attributes must be one of the following types:
 - Datetime
 
 Note:
+
 - **Double** is backed up by `scaled_float` Elasticsearch type with scale factor 10000 (4 decimal digits).
 - **Datetime** is backed up by `date` type with milliseconds precision in Elasticsearch 6 and `date_nanos` type with nanoseconds precision in Elasticsearch 7.
-- **Int** is 64-bits integer (`long` Elasticsearch type). 
+- **Int** is 64-bits integer (`long` Elasticsearch type).
 - **Keyword** and **String** types are concepts taken from Elasticsearch. Each word in a **String** is considered a searchable keyword.
   For a UUID, that can be problematic as Elasticsearch will index each portion of the UUID separately.
   To have the whole string considered as a searchable keyword, use the **Keyword** type.

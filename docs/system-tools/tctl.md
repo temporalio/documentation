@@ -23,14 +23,19 @@ brew install tctl
 ### Run from docker-compose container
 
 If you are running Temporal Server locally by using [docker-compose](https://github.com/temporalio/docker-compose), you can run `tctl` from the `temporal-admin-tools` container.
+
 ```bash
 docker exec temporal-admin-tools tctl
 ```
+
 If you plan to run `tctl` command multiple times, you might want to create an alias:
+
 ```bash
 alias tctl="docker exec temporal-admin-tools tctl"
 ```
+
 ...and then invoke `tctl` command as though it is installed locally. For example, to describe the default namespace:
+
 ```bash
 tctl namespace describe
 ```
@@ -40,13 +45,17 @@ tctl namespace describe
 You can use `tctl` directly from the [admin-tools](https://hub.docker.com/r/temporalio/admin-tools) docker image:
 
 - On Linux:
+
 ```bash
 docker run --rm -it --entrypoint tctl --network host --env TEMPORAL_CLI_ADDRESS=localhost:7233 temporalio/admin-tools:1.11.1
 ```
+
 - On macOS/Windows:
+
 ```bash
 docker run --rm -it --entrypoint tctl --env TEMPORAL_CLI_ADDRESS=host.docker.internal:7233 temporalio/admin-tools:1.11.1
 ```
+
 Change the value of `TEMPORAL_CLI_ADDRESS` if your Temporal Server is running on remote host.
 
 Same `tctl` alias can be created to simplify experience.
@@ -58,7 +67,7 @@ Copy this executable to any directory from `PATH` environment variable. For exam
 
 :::note
 
-For brevity, the example commands that follow use `tctl` for brevity, which might be a binary or a pre-created alias as described earlier. 
+For brevity, the example commands that follow use `tctl` for brevity, which might be a binary or a pre-created alias as described earlier.
 
 :::
 
@@ -523,10 +532,12 @@ Here is some example output:
 ```
 
 There is also admin version of this command:
+
 ```bash
 tctl admin cluster get-search-attributes
 ```
-which will show you custom and system search attributes separately and also show underlying Elasticsearch index schema and system Workflow status.    
+
+which will show you custom and system search attributes separately and also show underlying Elasticsearch index schema and system Workflow status.
 
 ### Add new search attributes
 
@@ -545,7 +556,7 @@ The possible values for `--type` are:
 - Bool
 - Datetime
 
-:::note 
+:::note
 
 Due to Elasticsearch limitations you can only add new custom search attributes but not rename or remove existing ones.
 
@@ -558,7 +569,8 @@ Here is how you remove an existing search attribute:
 ```bash
 tctl admin cluster remove-search-attributes --name ProductId
 ```
-:::note 
+
+:::note
 
 Due to Elasticsearch limitations, this command removes search attributes only from cluster metadata (Workflows won't be able to use them).
 but not from the Elasticsearch index schema. You need to modify the Elasticsearch index manually; in most cases, this requires reindexing.
