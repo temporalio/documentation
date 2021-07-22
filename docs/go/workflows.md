@@ -247,8 +247,8 @@ If the executing logic is tightly coupled between Workflow Executions, it may si
 The `workflow.ExecuteChildWorkflow` call is used to schedule Workflow Executions from within an executing Workflow.
 `ExecuteChildWorkflow` returns a `ChildWorkflowFuture` and you can either block on the Child Workflow starting ("asynchronous") or ending ("synchronous"):
 
-- Block until start: `workflow.ExecuteChildWorkflow(ctx, SampleChildWorkflow, "World").Get(...) `
-- Block until end: `workflow.ExecuteChildWorkflow(ctx, SampleChildWorkflow, "World").GetChildWorkflowExecution()`
+- Block until start: `workflow.ExecuteChildWorkflow(ctx, SampleChildWorkflow, "World").GetChildWorkflowExecution() `
+- Block until end: `workflow.ExecuteChildWorkflow(ctx, SampleChildWorkflow, "World").Get(...)`
 
 <!--SNIPSTART samples-go-child-workflow-example-parent-workflow-definition-->
 <!--SNIPEND-->
