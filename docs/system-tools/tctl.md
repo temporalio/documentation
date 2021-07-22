@@ -274,7 +274,7 @@ tctl workflow cancel -w <wid> -r <rid>
 tctl workflow terminate -w <wid> -r <rid> --reason
 ```
 
-Terminating a running Workflow execution will record a WorkflowExecutionTerminated event as the closing event in the history.
+Terminating a running Workflow Execution records a WorkflowExecutionTerminated event as the closing event in the history.
 No more command tasks will be scheduled for a terminated workflow execution.
 Canceling a running workflow execution will record a WorkflowExecutionCancelRequested event in the history, and a new command task will be scheduled.
 The workflow has a chance to do some clean up work after cancellation.
