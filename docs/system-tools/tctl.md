@@ -646,7 +646,7 @@ Output:
 Started Workflow Id: HelloTemporal1, run Id: 9b5e36a3-9868-4de5-bbdf-eda9cedcd865
 ```
 
-After the second start list Workflows with:
+After the second start, list Workflows with:
 
 ```bash
 tctl workflow list
