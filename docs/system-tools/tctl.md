@@ -14,7 +14,7 @@ There are a few ways to run the CLI.
 
 ### Install locally with Brew
 
-You can install `tctl` using [Homebrew](https://brew.sh/):
+You can install `tctl` by using [Homebrew](https://brew.sh/):
 
 ```bash
 brew install tctl
