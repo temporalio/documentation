@@ -389,7 +389,7 @@ tctl workflow desc -w <WorkflowId>  --reset_points_only
 ```
 
 Then use this command to tell Temporal to auto-reset all Workflows impacted by the bad deployment.
-The command will store the bad binary checksum into namespace info and trigger a process to reset all your workflows.
+The command stores the bad binary checksum into namespace info and triggers a process to reset all your Workflows.
 
 ```bash
 tctl --ns <YourNamespace> namespace update --add_bad_binary aae748fdc557a3f873adbe1dd066713f  --reason "rollback bad deployment"
