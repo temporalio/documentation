@@ -104,7 +104,7 @@ The following examples assume the `TEMPORAL_CLI_NAMESPACE` environment variable 
 #### Run Workflow
 
 Start a Workflow and see its progress.
-This command doesn't finish until Workflow completes.
+This command doesn't finish until the Workflow completes.
 
 ```bash
 tctl workflow run --tq hello-world --wt Workflow --et 60 -i '"temporal"'
