@@ -249,7 +249,7 @@ tctl workflow describe -w 3ea6b242-b23c-4279-bb13-f215661b4717
 tctl workflow describeid 3ea6b242-b23c-4279-bb13-f215661b4717
 ```
 
-#### Query Workflow execution
+#### Query Workflow Execution
 
 ```bash
 # use custom query type
