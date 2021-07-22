@@ -395,7 +395,7 @@ The command stores the bad binary checksum into namespace info and triggers a pr
 tctl --ns <YourNamespace> namespace update --add_bad_binary aae748fdc557a3f873adbe1dd066713f  --reason "rollback bad deployment"
 ```
 
-As you add the bad binary checksum to your namespace, Temporal will not dispatch any command tasks to the bad binary.
+After you add the checksum of the bad binary to your namespace, Temporal will not dispatch any command tasks to the bad binary.
 So make sure that you have rolled back to a good deployment(or roll out new bits with bug fixes).
 Otherwise your workflow can't make any progress after auto-reset.
 
