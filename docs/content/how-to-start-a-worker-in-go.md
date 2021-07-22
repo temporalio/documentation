@@ -1,7 +1,9 @@
 ---
 id: how-to-start-a-worker-in-go
 title: How to start a Worker in Go
-sidebar_label: Workers
+description: Create a new instance of a Worker by calling `worker.New()`, available via the `go.temporal.io/sdk/worker` package.
+tags:
+	- guide
 ---
 
 import DetermineHeader from '../components/DetermineHeader.js'

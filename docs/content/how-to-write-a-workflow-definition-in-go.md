@@ -1,6 +1,7 @@
 ---
 id: how-to-write-a-workflow-definition-in-go
 title: How to write a Workflow Definition in Go
+description: In the Temporal Go SDK programming model, a Workflow Definition is an exportable function.
 tags:
   - guide
 ---
