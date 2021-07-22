@@ -26,7 +26,7 @@ If you are running Temporal Server locally by using [docker-compose](https://git
 ```bash
 docker exec temporal-admin-tools tctl
 ```
-If you plan to run `tctl` command multiply times it might be a good idea to create an alias:
+If you plan to run `tctl` command multiple times, you might want to create an alias:
 ```bash
 alias tctl="docker exec temporal-admin-tools tctl"
 ```
