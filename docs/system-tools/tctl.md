@@ -191,7 +191,7 @@ tctl workflow start --tq hello-world --wt Workflow --et 60 -i '"temporal"' --wid
 tctl workflow run --tq hello-world --wt Workflow --et 60 -i '"temporal"' --wid "<duplicated workflow id>" --wrp AllowDuplicate
 ```
 
-You may also set this inside your workflow code with `WorkflowOptions.WorkflowIdReusePolicy`.
+You can also set this inside your Workflow code with `WorkflowOptions.WorkflowIdReusePolicy`.
 
 ##### Start a Workflow with a memo
 
