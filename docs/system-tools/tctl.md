@@ -346,7 +346,7 @@ tctl workflow reset -w <wid> -r <rid> --reset_type <reset_type> --reason "some_r
 - LastContinuedAsNew: reset to the end of the history for the previous run.
 - BadBinary: reset to the point where a bad binary was used.
 
-If you are familiar with the Temporal history event, You can also reset to any command finish event by using:
+If you are familiar with the Temporal history event, you can also reset to any command finish event by using:
 
 ```bash
 tctl workflow reset -w <wid> -r <rid> --event_id <decision_finish_event_id> --reason "some_reason"
