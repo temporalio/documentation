@@ -46,7 +46,7 @@ docker run --rm -it --entrypoint tctl --network host --env TEMPORAL_CLI_ADDRESS=
 ```bash
 docker run --rm -it --entrypoint tctl --env TEMPORAL_CLI_ADDRESS=host.docker.internal:7233 temporalio/admin-tools:1.11.1
 ```
-Change value of `TEMPORAL_CLI_ADDRESS` if your Temporal Server is running on remote host.
+Change the value of `TEMPORAL_CLI_ADDRESS` if your Temporal Server is running on remote host.
 
 Same `tctl` alias can be created to simplify experience.
 
