@@ -15,7 +15,7 @@ export default function RelatedRead({text, goTo, tagChar}) {
       tag = "tutorial";
       break;
     case "e":
-      tagClass = "archetype-tag-tutorial";
+      tagClass = "archetype-tag-explanation";
       tag = "explanation";
       break;
     default:
@@ -24,7 +24,7 @@ export default function RelatedRead({text, goTo, tagChar}) {
   }
   return (
     <div className={"related-read-div"}>
-      <b>Related:</b>
+      <span className={"related-read-label"}>Related 📚 </span>
       <Link className={"related-read-link"} to={goTo}>
         {text}
       </Link>
