@@ -1,9 +1,18 @@
 ---
 id: how-to-get-the-result-of-an-activity-execution-in-go
-title: How to get the result of an Activity Execution in Go?
+title: How to get the result of an Activity Execution in Go
 tags:
   - guide
 ---
+
+import DetermineHeader from '../components/DetermineHeader.js'
+
+export const headingText = 'How to get the result of an Activity Execution in Go'
+
+<DetermineHeader
+hLevel={props.heading}
+hText={headingText}
+/>
 
 The `ExecuteActivity` API call returns an instance of [`workflow.Future`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Futures) which has the following two methods:
 

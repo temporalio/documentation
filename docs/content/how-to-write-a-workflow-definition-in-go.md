@@ -1,10 +1,19 @@
 ---
 id: how-to-write-a-workflow-definition-in-go
-title: How to write a Workflow Definition in Go?
-sidebar_label: Workflow Definitions
+title: How to write a Workflow Definition in Go
+tags:
+  - guide
 ---
 
 import RelatedRead from '../shared/RelatedRead.js'
+import DetermineHeader from '../components/DetermineHeader.js'
+
+export const headingText = 'How to write a Workflow Definition in Go'
+
+<DetermineHeader
+hLevel={props.heading}
+hText={headingText}
+/>
 
 In the Temporal Go SDK programming model, a [Workflow Definition](/docs/concepts-new/introduction#workflow-definition) is an exportable function.
 
