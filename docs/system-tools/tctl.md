@@ -10,7 +10,7 @@ Workflow, show Workflow history, and signal Workflow.
 
 ## Run the CLI
 
-There are a few ways to run the CLI.
+You can run the CLI in four ways.
 
 ### Install locally with Brew
 
