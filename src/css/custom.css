@@ -201,8 +201,13 @@ h4,
   border-radius: var(--ifm-alert-border-radius);
   border-style: solid;
   border-width: var(--ifm-alert-border-width);
-  padding: var(--ifm-alert-padding-vertical) var(--ifm-alert-padding-horizontal);
-  margin-bottom: 1em;
+  padding: 7px var(--ifm-alert-padding-horizontal);
+  margin-bottom: 0.5em;
+}
+
+.related-read-label {
+  color: var(--ifm-color-primary-darkest);
+  font-weight: 600;
 }
 
 .related-read-link {
