@@ -79,7 +79,7 @@ Setting environment variables for repeated parameters can shorten the CLI comman
 - Run `tctl workflow -h` for help on workflow operations
 - Run `tctl taskqueue -h` for help on task queue operations
 
-**Note:** make sure you have a Temporal server running before using CLI
+**Note:** Ensure you have a Temporal Server running before using CLI.
 
 ### Namespace operation examples
 
