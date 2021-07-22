@@ -45,6 +45,7 @@ persistence:
 ```
 
 ## Index schema setup
+
 If you run Temporal Server using our [Helm Charts](https://github.com/temporalio/helm-charts) or
 [docker-compose](https://github.com/temporalio/docker-compose) which uses [auto-setup](https://hub.docker.com/r/temporalio/auto-setup) docker image,
 then Elasticsearch index is automatically created. Docker auto-setup image also [creates](https://github.com/temporalio/temporal/blob/master/docker/auto-setup.sh#L263-L269) 6 custom search attributes for testing.
