@@ -1,20 +1,42 @@
 ---
 id: workers
-title: How to start a Worker in Go?
+title: Workers in Go
 sidebar_label: Workers
 ---
 
-First, create a new instance of a [`Worker`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/worker#Worker) by calling `worker.New()`, available via the `go.temporal.io/sdk/worker` package and pass it the following parameters:
+## What is a Worker?
 
-1. An instance of the The Temporal Go SDK `Client`.
+A Worker is a service that executes [Workflows](/docs/go/workflows) and [Activities](/docs/go/activities).
+Workers are run on user controlled hosts.
+You can use the `worker` package to create and run as many Workers as your use case demands, across any number of hosts.
+
+Workers poll Task Queues for Tasks, execute chunks of code in response to those Tasks, and then communicate the results back to the Temporal Server.
+
+As a developer, running Workers is a fairly simple procedure, because the Go SDK handles all of the communication between the Worker and the Temporal Server behind the scenes.
+
+## How to start a Worker
+
+To start a Worker you need to pass it the following three things:
+
+1. The Temporal Go SDK client.
 2. The name of the Task Queue that it will poll.
-3. An instance of `worker.Options`, which can be empty.
+3. The Worker's options, which can be empty by default.
 
-Then, register the Workflow Types and the Activity Types that the Worker will be capable of executing.
+To run the Worker, you need to first register which Workflows and/or Activities it can execute and then pass it an interrupt channel.
 
-Lastly, call either the `Start()` or the `Run()` method on the instance of the Worker.
-Run accepts an interrupt channel as a parameter, so that the Worker can be stopped in the terminal.
-Otherwise the `Stop()` method must be called to stop the Worker.
+As a simple example, let's say we want our Worker to be able to execute the following Go functions:
+
+```go
+func MyWorkflowFunction(context workflow.Context) error {
+	return nil
+}
+
+func MyActivityFunction() error {
+	return nil
+}
+```
+
+This is how you would create and run the Worker for those functions:
 
 ```go
 package main
@@ -25,35 +47,29 @@ import (
 )
 
 func main() {
+	// Create the client
 	c, err := client.NewClient(client.Options{})
 	if err != nil {
-		// ...
+		// log failure
 	}
 	defer c.Close()
-	w := worker.New(c, "your-task-queue", worker.Options{})
-	w.RegisterWorkflow(YourWorkflowDefinition)
-	w.RegisterActivity(YourActivityDefinition)
+
+	// Create the Worker
+	w := worker.New(c, "your-simple-task-queue", worker.Options{})
+
+	// Register your functions
+	w.RegisterWorkflow(MyWorkflowFunction)
+	w.RegisterActivity(MyActivityFunction)
+
+	// Run the Worker
 	err = w.Run(worker.InterruptCh())
 	if err != nil
-		// ...
+		// log failure
 	}
-  // ...
-}
-
-func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (YourWorkflowResponse, error) {
-  // ...
-}
-
-func YourActivityDefinition(ctx context.Context, param YourActivityParam) (YourActivityResponse, error) {
-  // ...
 }
 ```
 
-The `RegisterWorkflow()` and `RegisterActivity` calls essentially create an in-memory mapping between the Workflow Types and their implementations, inside the Worker process.
-
-Notice that that the Task Queue name is the same as the name provided [when the Workflow Execution is invoked](#).
-
-The name of the Task Queue that is provided to the Worker must be the same Task Queue name that is provided with the invocation of Workflow Execution
+The `RegisterWorkflow()` and `RegisterActivity` calls essentially create an in-memory mapping between the fully qualified function names and their implementations, inside the Worker process.
 
 :::note
 
@@ -62,11 +78,4 @@ However, the failure of the Task will not cause the associated Workflow to fail.
 
 :::
 
-### How to set Worker Options?
-
-```go
-options := workflow.RegisterOptions {
-   Name: "MyWorkflow", // Set "MyWorkflow" as the Workflow type
-}
-w.RegisterWorkflowWithOptions(YourWorkflowDefinition, options)
-```
+When you start a Workflow by calling `ExecuteWorkflow()`, the Temporal Server adds a new Task to the Workflow's Task Queue, and any Worker polling that Task Queue could execute that Task. You can learn more in the [Workflows docs](https://docs.temporal.io/docs/go/workflows#how-to-start-a-workflow).

@@ -1,47 +1,9 @@
 ---
-id: activity-executions
-title: How to invoke an Activity Execution in Go?
-sidebar_label: Activity Executions
+id: how-to-get-the-result-of-an-activity-execution-in-go
+title: How to get the result of an Activity Execution in Go?
+tags:
+  - guide
 ---
-
-import RelatedRead from '../shared/RelatedRead.js'
-
-To invoke an Activity Execution, use the [`ExecuteActivity()`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/workflow#ExecuteActivity) API call available from the [`go.temporal.io/sdk/workflow`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/workflow) package.
-
-The `ExecuteActivity()` API call requires an instance of `workflow.Context`, the Activity function name, and any variables to be passed to the Activity Execution.
-
-```go
-import (
-  // ...
-
-  "go.temporal.io/sdk/workflow"
-)
-
-func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (YourWorkflowResponse, error) {
-  // ...
-  yourActivityParam := YourActivityParam{
-    // ...
-  }
-  future := workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam)
-  // ...
-}
-
-func (a *YourActivityStruct) YourActivityDefinition(ctx context.Context, param YourActivityParam) error {
-  // ...
-}
-```
-
-The Activity function name can be provided as a variable object (no quotations) or as a string.
-
-```go
-// ...
-  future := workflow.ExecuteActivity(ctx, "YourActivityDefinition", yourActivityParam)
-// ...
-```
-
-The benefit of passing the actual function object is that the framework can validate the parameters against the Activity Definition.
-
-### How to get the result of an Activity Execution in Go
 
 The `ExecuteActivity` API call returns an instance of [`workflow.Future`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Futures) which has the following two methods:
 
@@ -85,8 +47,10 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (Your
 It is idiomatic to invoke multiple Activity Executions from within a Workflow.
   Therefore it is also idiomatic to either block on the results of any of the Activity Executions or continue on to execute additional logic, checking for the Activity Execution results at a later time.
 
+<!--
 <RelatedRead
 text="How to implement Selectors for complex wait conditions"
 goTo="#"
 tagChar="g"
 />
+-->

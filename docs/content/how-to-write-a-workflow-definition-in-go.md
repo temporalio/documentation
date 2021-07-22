@@ -1,5 +1,5 @@
 ---
-id: workflow-definitions
+id: how-to-write-a-workflow-definition-in-go
 title: How to write a Workflow Definition in Go?
 sidebar_label: Workflow Definitions
 ---
@@ -76,11 +76,13 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (Your
 
 Returning a non-nil `error` from a Workflow indicates that an error was encountered during its execution and the Workflow Execution should be [Terminated](#).
 
+<!--
 <RelatedRead
 text="When to return an error from a Workflow"
 goTo="#"
 tagChar="g"
 />
+-->
 
 ## Workflow logic requirements in Go
 
@@ -89,6 +91,8 @@ In Go specifically, Workflow Definition code can not directly do the following:
 - Iterate over maps using `range`, because with `range` the order of the map's iteration is randomized (Use a Side Effect or an Activity.
 - Use the native `go` statement, `select` statement, or `chan` type (Use the [SDK Go API](#), [SDK Select API](#), and [SDK Channel API](#))
 
+
+<!--
 <RelatedRead
 text="General requirements for writing Workflow Definitions"
 goTo="/docs/application-operations/#what-are-general-requirements-for-writing-workflow-defintions"
@@ -106,3 +110,4 @@ text="How to write an Activity Definition"
 goTo="#how-to-write-an-activity-definition"
 tagChar="g"
 />
+-->

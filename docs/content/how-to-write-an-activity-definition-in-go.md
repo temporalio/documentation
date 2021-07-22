@@ -1,7 +1,8 @@
 ---
-id: activity-definitions
+id: how-to-write-an-activity-definition-in-go
 title: How to write an Activity Definition in Go?
-sidebar_label: Activity Definitions
+tags:
+  - guide
 ---
 
 import RelatedRead from '../shared/RelatedRead.js'
@@ -33,11 +34,13 @@ func(a *YourActivityStruct) YourActivityDefinition(ctx workflow.Context) error {
 Activities written as struct methods can make use of shared struct variables.
   The rest of this guide will show Activities written as struct methods.
 
+<!--
 <RelatedRead
 text="What are Activities"
 goTo="/docs/concepts-new/introduction#workflow-definition"
 tagChar="e"
 />
+-->
 
 ## Activity parameters in Go
 
@@ -64,6 +67,7 @@ func (a *YourActivityStruct) YourActivityDefinition(ctx context.Context, param Y
 
 There is no explicit limit to the amount of parameter data that can be passed to an Activity, however all parameters are recorded in the Workflow Execution History and a large Workflow Execution History can adversely impact the performance of your Workflow Execution.
 
+<!--
 <RelatedRead
 text="What is a Workflow Execution History"
 goTo="#"
@@ -75,6 +79,7 @@ text="When to care about the size of your Workflow Execution History"
 goTo="#"
 tagChar="g"
 />
+-->
 
 ## Activity return values in Go
 
@@ -97,20 +102,23 @@ func (a *YourActivityStruct) YourActivityDefinition(ctx context.Context, param Y
   return result, nil
 }
 ```
-
+<!--
 <RelatedRead
 text="When to return an error from an Activity"
 goTo="#"
 tagChar="g"
 />
+-->
 
 ## Activity logic requirements in Go
 
 There are no other limitations to Activity Definition logic.
 All native features of the Go programming language can be used within an Activity, and it is idiomatic to use an Activity to make calls to other services across a network.
 
+<!--
 <RelatedRead
 text="What are some Activity implementation design patterns"
 goTo="#"
 tagChar="g"
 />
+-->
