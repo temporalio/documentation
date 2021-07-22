@@ -236,7 +236,7 @@ Shortcut:
 tctl workflow showid 3ea6b242-b23c-4279-bb13-f215661b4717
 ```
 
-#### Show Workflow execution information
+#### Show Workflow Execution information
 
 ```bash
 tctl workflow describe -w 3ea6b242-b23c-4279-bb13-f215661b4717 -r 866ae14c-88cf-4f1e-980f-571e031d71b0
