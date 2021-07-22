@@ -7,7 +7,7 @@ sidebar_label: Introduction
 ## What are general requirements for writing Workflow Defintions?
 
 Consider that [Workflow](/docs/concepts-new/introduction#what-is-a-workflow) logic must be "deterministic".
-  Therefore any logic that is not deterministic must be called upon by an SDK API.
+Therefore any logic that is not deterministic must be called upon by an SDK API.
 
 Practically, this means that Workflow Definition code can only read and manipulate input parameters, local variables, or variables received as return values from Temporal Go SDK APIs.
 
@@ -17,7 +17,6 @@ For example, Workflow Definiton code should never read a config file directly, a
 - Workflow Definition code must use Go SDK APIs to handle things like time, logging, and goroutines.
 
 ## When to return an error from a Workflow?
-
 
 ## When to use Child Workflows
 
@@ -34,8 +33,6 @@ The following is a list of some of the more common reasons why you might want to
 One of the main reasons you would not want to execute a Child Workflow is the lack of a shared state with the Parent Workflow Execution.
 Parent Workflow Executions and Child Workflow Executions can communicate only through asynchronous [Signals](/docs/go/signals).
 If the executing logic is tightly coupled between Workflow Executions, it may simply be easier to use a single Workflow Definition that can rely on a shared object's state.
-
-
 
 Starting a Workflow is not the same as executing a Workflow.
 Starting a Workflow means that you are telling the Server to begin tracking the state of the Workflow execution.

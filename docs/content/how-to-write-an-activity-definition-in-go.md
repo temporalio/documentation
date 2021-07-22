@@ -32,7 +32,7 @@ func(a *YourActivityStruct) YourActivityDefinition(ctx workflow.Context) error {
 ```
 
 Activities written as struct methods can make use of shared struct variables.
-  The rest of this guide will show Activities written as struct methods.
+The rest of this guide will show Activities written as struct methods.
 
 <!--
 <RelatedRead
@@ -45,10 +45,10 @@ tagChar="e"
 ## Activity parameters in Go
 
 The first parameter of an Activity Definition is `context.Context`.
-  This parameter is optional for an Activity Definition, though it is recommended especially if the Activity is expected to use other Go SDK APIs.
+This parameter is optional for an Activity Definition, though it is recommended especially if the Activity is expected to use other Go SDK APIs.
 
 An Activity Definition can support as many other custom parameters as needed.
-  However, all parameters must be serializable (parameters can’t be channels, functions, variadic, or unsafe pointers), and it is recommended to pass a single struct that can be updated later.
+However, all parameters must be serializable (parameters can’t be channels, functions, variadic, or unsafe pointers), and it is recommended to pass a single struct that can be updated later.
 
 ```go
 type YourActivityParam {
@@ -85,7 +85,7 @@ tagChar="g"
 
 A Go-based Activity Definition can return either just an `error` or a `customValue, error` combination (same as a Workflow Definition).
 Again, the best practice here is to use a `struct` type to hold all custom values.
-  Custom return values must be serializable.
+Custom return values must be serializable.
 
 ```go
 type YourActivityResult {
@@ -102,6 +102,7 @@ func (a *YourActivityStruct) YourActivityDefinition(ctx context.Context, param Y
   return result, nil
 }
 ```
+
 <!--
 <RelatedRead
 text="When to return an error from an Activity"

@@ -299,7 +299,6 @@ This is useful for starting Child Workflows asynchronously:
 Steps 3 and 4 are needed to ensure that a Child Workflow Execution starts before the parent closes.
 If the parent initiates a Child Workflow Execution and then immediately completes, the child would never execute.
 
-
 ## Event
 
 For each [Workflow](#workflow), Temporal tracks two types of Events:
@@ -413,4 +412,4 @@ are executed _at least once_, so an Activity either succeeds or fails with one o
 | `StartToCloseTimeout`    | Maximum time that a worker can take to process a task after it has received the task.                                                                                                                |
 | `ScheduleToStartTimeout` | Time a task can wait to be picked up by an Activity worker after a Workflow schedules it. If there are no workers available to process this task for the specified duration, the task will time out. |
 | `ScheduleToCloseTimeout` | Time a task can take to complete after it is scheduled by a Workflow. This is usually greater than the sum of `StartToClose` and `ScheduleToStart` timeouts.                                         |
-| `HeartbeatTimeout`       | If a task doesn't heartbeat to the Temporal service for this duration, it will be considered to have failed. This is useful for long-running tasks.  
+| `HeartbeatTimeout`       | If a task doesn't heartbeat to the Temporal service for this duration, it will be considered to have failed. This is useful for long-running tasks.                                                  |

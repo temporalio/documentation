@@ -91,7 +91,6 @@ In Go specifically, Workflow Definition code can not directly do the following:
 - Iterate over maps using `range`, because with `range` the order of the map's iteration is randomized (Use a Side Effect or an Activity.
 - Use the native `go` statement, `select` statement, or `chan` type (Use the [SDK Go API](#), [SDK Select API](#), and [SDK Channel API](#))
 
-
 <!--
 <RelatedRead
 text="General requirements for writing Workflow Definitions"

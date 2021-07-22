@@ -13,7 +13,7 @@ The `ExecuteActivity` API call returns an instance of [`workflow.Future`](https:
 - `IsReady()`: Returns `true` when the result of the Activity Execution is ready.
 
 Call the `Get()` method on the instance of `workflow.Future` to get the result of the Activity Execution.
-  The type of the result parameter must match the type of the return value declared by the Activity function.
+The type of the result parameter must match the type of the return value declared by the Activity function.
 
 ```go
 func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (YourWorkflowResponse, error) {
@@ -45,7 +45,7 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (Your
 ```
 
 It is idiomatic to invoke multiple Activity Executions from within a Workflow.
-  Therefore it is also idiomatic to either block on the results of any of the Activity Executions or continue on to execute additional logic, checking for the Activity Execution results at a later time.
+Therefore it is also idiomatic to either block on the results of any of the Activity Executions or continue on to execute additional logic, checking for the Activity Execution results at a later time.
 
 <!--
 <RelatedRead

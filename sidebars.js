@@ -439,9 +439,7 @@ module.exports = {
       type: "category",
       label: "Application operations guide",
       collapsed: false,
-      items: [
-        "application-operations/introduction",
-      ],
+      items: ["application-operations/introduction"],
     },
   ],
 };

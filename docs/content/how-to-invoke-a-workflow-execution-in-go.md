@@ -18,7 +18,7 @@ tagChar="g"
 -->
 
 The `ExecuteWorkflow()` API call requires an instance of [`context.Context`](https://pkg.go.dev/context#Context), an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client#StartWorkflowOptions), a Workflow Type name, and all variables to be passed to the Workflow Execution.
-  The `ExecuteWorkflow()` call returns a Future, which can be used to get the result of the Workflow Execution.
+The `ExecuteWorkflow()` call returns a Future, which can be used to get the result of the Workflow Execution.
 
 ```go
 package main
@@ -68,8 +68,8 @@ tagChar="g"
 -->
 
 The only field, of the `StartWorkflowOptions` instance, that requires a value is the `TaskQueue`.
-  A Task Queue name is also provided to the Worker that is registered to execute that particular Workflow Type.
-  The Task Queue name must be the same for both.
+A Task Queue name is also provided to the Worker that is registered to execute that particular Workflow Type.
+The Task Queue name must be the same for both.
 
 <!--
 <RelatedRead
