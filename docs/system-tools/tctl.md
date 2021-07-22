@@ -4,58 +4,61 @@ title: Temporal CLI - tctl
 sidebar_label: CLI
 ---
 
-The Temporal CLI is a command-line tool you can use to perform various tasks on a Temporal server.
-It can perform namespace operations such as register, update, and describe as well as workflow operations like start
-workflow, show workflow history, and signal workflow.
+The Temporal CLI is a command-line tool you can use to perform various tasks on a Temporal Server.
+It can perform namespace operations such as register, update, and describe as well as Workflow operations like start
+Workflow, show Workflow history, and signal Workflow.
 
-## Install the CLI
+## Run the CLI
 
-There are a few ways to install the CLI.
+You can run the CLI in four ways.
 
-### Docker Hub image
+### Install locally with Brew
 
-The Temporal CLI can be used directly from the [Docker Hub image](https://hub.docker.com/r/temporalio/tctl).
-
-:::note
-
-On Docker versions 18.03 and later, you may get a "connection refused" error.
-You can work around this by setting the host to "host.docker.internal".
-See the [Docker for Mac workarounds page](https://docs.docker.com/docker-for-mac/networking/#use-cases-and-workarounds) for more info.
-
-Example using the Docker image to describe a Namespace without setting host:
-
-```bash
-docker run --rm temporalio/tctl:1.11.1 --namespace samples-namespace namespace describe
-```
-
-Example setting the host:
-
-```bash
-docker run --network=host --rm temporalio/tctl:1.11.1 --namespace samples-namespace namespace describe
-```
-
-:::
-
-### Build it locally
-
-To build the CLI tool locally, clone the [Temporal server repo](https://github.com/temporalio/temporal) and run `make bins`. This produces an executable called `tctl`.
-With a local build, the command to describe a namespace would look like this:
-
-```bash
-./tctl --namespace samples-namespace namespace describe
-```
-
-### Brew install
-
-You can also install it using [Homebrew](https://brew.sh/):
+You can install `tctl` by using [Homebrew](https://brew.sh/):
 
 ```bash
 brew install tctl
 ```
 
+### Run from docker-compose container
+
+If you are running Temporal Server locally by using [docker-compose](https://github.com/temporalio/docker-compose), you can run `tctl` from the `temporal-admin-tools` container.
+```bash
+docker exec temporal-admin-tools tctl
+```
+If you plan to run `tctl` command multiple times, you might want to create an alias:
+```bash
+alias tctl="docker exec temporal-admin-tools tctl"
+```
+...and then invoke `tctl` command as though it is installed locally. For example, to describe the default namespace:
+```bash
+tctl namespace describe
+```
+
+### Run from docker image
+
+You can use `tctl` directly from the [admin-tools](https://hub.docker.com/r/temporalio/admin-tools) docker image:
+
+- On Linux:
+```bash
+docker run --rm -it --entrypoint tctl --network host --env TEMPORAL_CLI_ADDRESS=localhost:7233 temporalio/admin-tools:1.11.1
+```
+- On macOS/Windows:
+```bash
+docker run --rm -it --entrypoint tctl --env TEMPORAL_CLI_ADDRESS=host.docker.internal:7233 temporalio/admin-tools:1.11.1
+```
+Change the value of `TEMPORAL_CLI_ADDRESS` if your Temporal Server is running on remote host.
+
+Same `tctl` alias can be created to simplify experience.
+
+### Build it locally
+
+To build the CLI tool locally, clone the [Temporal server repo](https://github.com/temporalio/temporal) and run `make tctl`. This produces an executable called `tctl`.
+Copy this executable to any directory from `PATH` environment variable. For example, `/usr/bin/`.
+
 :::note
 
-The example commands below will use `./tctl` for brevity.
+For brevity, the example commands that follow use `tctl` for brevity, which might be a binary or a pre-created alias as described earlier. 
 
 :::
 
@@ -71,27 +74,27 @@ Setting environment variables for repeated parameters can shorten the CLI comman
 
 ## Quick Start
 
-- Run `./tctl -h` for help on top level commands and global options
-- Run `./tctl namespace -h` for help on namespace operations
-- Run `./tctl workflow -h` for help on workflow operations
-- Run `./tctl taskqueue -h` for help on task queue operations
+- Run `tctl -h` for help on top-level commands and global options
+- Run `tctl namespace -h` for help on namespace operations
+- Run `tctl workflow -h` for help on Workflow operations
+- Run `tctl taskqueue -h` for help on Task Queue operations
 
-**Note:** make sure you have a Temporal server running before using CLI
+**Note:** Ensure you have a Temporal Server running before using CLI.
 
 ### Namespace operation examples
 
 - Register a new namespace named "samples-namespace":
 
 ```bash
-./tctl --namespace samples-namespace namespace register
+tctl --namespace samples-namespace namespace register
 # OR using short alias
-./tctl --ns samples-namespace n re
+tctl --ns samples-namespace n re
 ```
 
 - View "samples-namespace" details:
 
 ```bash
-./tctl --namespace samples-namespace namespace describe
+tctl --namespace samples-namespace namespace describe
 ```
 
 ### Workflow operation examples
@@ -101,13 +104,13 @@ The following examples assume the `TEMPORAL_CLI_NAMESPACE` environment variable 
 #### Run Workflow
 
 Start a Workflow and see its progress.
-This command doesn't finish until Workflow completes.
+This command doesn't finish until the Workflow completes.
 
 ```bash
-./tctl workflow run --tq hello-world --wt Workflow --et 60 -i '"temporal"'
+tctl workflow run --tq hello-world --wt Workflow --et 60 -i '"temporal"'
 
 # view help messages for workflow run
-./tctl workflow run -h
+tctl workflow run -h
 ```
 
 Brief explanation:
@@ -127,27 +130,25 @@ Single quotes (`''`) are used to wrap input as JSON.
 #### Show running Workers of a Task Queue
 
 ```bash
-./tctl taskqueue desc --tq hello-world
+tctl taskqueue desc --tq hello-world
 ```
 
 #### Start Workflow
 
 ```bash
-./tctl workflow start --tq hello-world --wt Workflow --et 60 -i '"temporal"'
+tctl workflow start --tq hello-world --wt Workflow --et 60 -i '"temporal"'
 
 # view help messages for workflow start
-./tctl workflow start -h
+tctl workflow start -h
 
 # for a workflow with multiple inputs, provide a separate -i flag for each of them
-./tctl workflow start --tq hello-world --wt WorkflowWith3Args --et 60 -i '"your_input_string"' -i 'null' -i '{"Name":"my-string", "Age":12345}'
+tctl workflow start --tq hello-world --wt WorkflowWith3Args --et 60 -i '"your_input_string"' -i 'null' -i '{"Name":"my-string", "Age":12345}'
 ```
 
-The Workflow `start` command is similar to the `run` command, but immediately returns the workflow_id and run_id after starting the Workflow. Use the `show` command to view the Workflow's history/progress.
-
-Locally with Docker:
+The Workflow `start` command is similar to the `run` command, but immediately returns the workflow_id and run_id after starting the Workflow. Use the `show` command to view the Workflow's history/progress:
 
 ```bash
-docker run --network=host --rm temporalio/tctl:1.11.1 workflow run --taskqueue HelloWorldTaskQueue --workflow_type HelloWorld --execution_timeout 3600 --input \"World\"
+tctl workflow run --taskqueue HelloWorldTaskQueue --workflow_type HelloWorld --execution_timeout 3600 --input \"World\"
 ```
 
 CLI output:
@@ -184,13 +185,13 @@ There are three:
 
 ```bash
 # use AllowDuplicateFailedOnly option to start a Workflow
-./tctl workflow start --tq hello-world --wt Workflow --et 60 -i '"temporal"' --wid "<duplicated workflow id>" --wrp AllowDuplicateFailedOnly
+tctl workflow start --tq hello-world --wt Workflow --et 60 -i '"temporal"' --wid "<duplicated workflow id>" --wrp AllowDuplicateFailedOnly
 
 # use AllowDuplicate option to run a workflow
-./tctl workflow run --tq hello-world --wt Workflow --et 60 -i '"temporal"' --wid "<duplicated workflow id>" --wrp AllowDuplicate
+tctl workflow run --tq hello-world --wt Workflow --et 60 -i '"temporal"' --wid "<duplicated workflow id>" --wrp AllowDuplicate
 ```
 
-You may also set this inside your workflow code with `WorkflowOptions.WorkflowIdReusePolicy`.
+You can also set this inside your Workflow code with `WorkflowOptions.WorkflowIdReusePolicy`.
 
 ##### Start a Workflow with a memo
 
@@ -211,7 +212,7 @@ tctl workflow start \
 #### Show Workflow history
 
 ```bash
-./tctl workflow show \
+tctl workflow show \
   -w 3ea6b242-b23c-4279-bb13-f215661b4717 \
   -r 866ae14c-88cf-4f1e-980f-571e031d71b0
 ```
@@ -219,61 +220,61 @@ tctl workflow start \
 Shortcut without `-w` and `-r` flag:
 
 ```bash
-./tctl workflow showid 3ea6b242-b23c-4279-bb13-f215661b4717 866ae14c-88cf-4f1e-980f-571e031d71b0
+tctl workflow showid 3ea6b242-b23c-4279-bb13-f215661b4717 866ae14c-88cf-4f1e-980f-571e031d71b0
 ```
 
 If the `run_id` is not provided, the latest run history for the workflow_id:
 
 ```bash
-./tctl workflow show \
+tctl workflow show \
   -w 3ea6b242-b23c-4279-bb13-f215661b4717
 ```
 
 Shortcut:
 
 ```bash
-./tctl workflow showid 3ea6b242-b23c-4279-bb13-f215661b4717
+tctl workflow showid 3ea6b242-b23c-4279-bb13-f215661b4717
 ```
 
-#### Show Workflow execution information
+#### Show Workflow Execution information
 
 ```bash
-./tctl workflow describe -w 3ea6b242-b23c-4279-bb13-f215661b4717 -r 866ae14c-88cf-4f1e-980f-571e031d71b0
+tctl workflow describe -w 3ea6b242-b23c-4279-bb13-f215661b4717 -r 866ae14c-88cf-4f1e-980f-571e031d71b0
 # a shortcut of this is (without -w -r flag)
-./tctl workflow describeid 3ea6b242-b23c-4279-bb13-f215661b4717 866ae14c-88cf-4f1e-980f-571e031d71b0
+tctl workflow describeid 3ea6b242-b23c-4279-bb13-f215661b4717 866ae14c-88cf-4f1e-980f-571e031d71b0
 
 # if run_id is not provided, it will show the latest workflow execution of that workflow_id
-./tctl workflow describe -w 3ea6b242-b23c-4279-bb13-f215661b4717
+tctl workflow describe -w 3ea6b242-b23c-4279-bb13-f215661b4717
 # a shortcut of this is
-./tctl workflow describeid 3ea6b242-b23c-4279-bb13-f215661b4717
+tctl workflow describeid 3ea6b242-b23c-4279-bb13-f215661b4717
 ```
 
-#### Query Workflow execution
+#### Query Workflow Execution
 
 ```bash
 # use custom query type
-./tctl workflow query -w <wid> -r <rid> --qt <query-type>
+tctl workflow query -w <wid> -r <rid> --qt <query-type>
 
 # use build-in query type "__stack_trace" which is supported by Temporal SDK
-./tctl workflow query -w <wid> -r <rid> --qt __stack_trace
+tctl workflow query -w <wid> -r <rid> --qt __stack_trace
 # a shortcut to query using __stack_trace is (without --qt flag)
-./tctl workflow stack -w <wid> -r <rid>
+tctl workflow stack -w <wid> -r <rid>
 ```
 
 #### Signal, cancel, terminate Workflow
 
 ```bash
 # signal
-./tctl workflow signal -w <wid> -r <rid> -n <signal-name> -i '"signal-value"'
+tctl workflow signal -w <wid> -r <rid> -n <signal-name> -i '"signal-value"'
 
 # cancel
-./tctl workflow cancel -w <wid> -r <rid>
+tctl workflow cancel -w <wid> -r <rid>
 
 # terminate
-./tctl workflow terminate -w <wid> -r <rid> --reason
+tctl workflow terminate -w <wid> -r <rid> --reason
 ```
 
-Terminating a running Workflow execution will record a WorkflowExecutionTerminated event as the closing event in the history.
+Terminating a running Workflow Execution records a WorkflowExecutionTerminated event as the closing event in the history.
 No more command tasks will be scheduled for a terminated workflow execution.
 Canceling a running workflow execution will record a WorkflowExecutionCancelRequested event in the history, and a new command task will be scheduled.
 The workflow has a chance to do some clean up work after cancellation.
@@ -338,7 +339,7 @@ There are a lot of use cases:
 You can reset to some predefined event types:
 
 ```bash
-./tctl workflow reset -w <wid> -r <rid> --reset_type <reset_type> --reason "some_reason"
+tctl workflow reset -w <wid> -r <rid> --reset_type <reset_type> --reason "some_reason"
 ```
 
 - FirstWorkflowTask: reset to the beginning of the history.
@@ -346,10 +347,10 @@ You can reset to some predefined event types:
 - LastContinuedAsNew: reset to the end of the history for the previous run.
 - BadBinary: reset to the point where a bad binary was used.
 
-If you are familiar with the Temporal history event, You can also reset to any command finish event by using:
+If you are familiar with the Temporal history event, you can also reset to any command finish event by using:
 
 ```bash
-./tctl workflow reset -w <wid> -r <rid> --event_id <decision_finish_event_id> --reason "some_reason"
+tctl workflow reset -w <wid> -r <rid> --event_id <decision_finish_event_id> --reason "some_reason"
 ```
 
 Some things to note:
@@ -361,7 +362,7 @@ Some things to note:
 To reset multiple workflows, you can use batch reset command:
 
 ```bash
-./tctl workflow reset-batch --input_file <file_of_workflows_to_reset> --reset_type <reset_type> --reason "some_reason"
+tctl workflow reset-batch --input_file <file_of_workflows_to_reset> --reset_type <reset_type> --reason "some_reason"
 ```
 
 #### Recovery from bad deployment -- auto-reset workflow
@@ -378,7 +379,7 @@ To find out which **binary checksum** of the bad deployment to reset, you should
 Use the describe command with **--reset_points_only** option to show all the reset points:
 
 ```bash
-./tctl workflow desc -w <WorkflowId>  --reset_points_only
+tctl workflow desc -w <WorkflowId>  --reset_points_only
 +----------------------------------+--------------------------------+--------------------------------------+---------+
 |         BINARY CHECKSUM          |          CREATE TIME           |                RUNID                 | EVENTID |
 +----------------------------------+--------------------------------+--------------------------------------+---------+
@@ -389,13 +390,13 @@ Use the describe command with **--reset_points_only** option to show all the res
 ```
 
 Then use this command to tell Temporal to auto-reset all Workflows impacted by the bad deployment.
-The command will store the bad binary checksum into namespace info and trigger a process to reset all your workflows.
+The command stores the bad binary checksum into namespace info and triggers a process to reset all your Workflows.
 
 ```bash
-./tctl --ns <YourNamespace> namespace update --add_bad_binary aae748fdc557a3f873adbe1dd066713f  --reason "rollback bad deployment"
+tctl --ns <YourNamespace> namespace update --add_bad_binary aae748fdc557a3f873adbe1dd066713f  --reason "rollback bad deployment"
 ```
 
-As you add the bad binary checksum to your namespace, Temporal will not dispatch any command tasks to the bad binary.
+After you add the checksum of the bad binary to your namespace, Temporal will not dispatch any command tasks to the bad binary.
 So make sure that you have rolled back to a good deployment(or roll out new bits with bug fixes).
 Otherwise your workflow can't make any progress after auto-reset.
 
@@ -438,12 +439,10 @@ tctl workflow list \
   --query "WorkflowType='main.SampleParentWorkflow' AND ExecutionStatus='Running'"
 ```
 
-This will return all open Workflows with `workflowType` as `main.SampleParentWorkflow`.
-
-Locally using Docker:
+This returns all open Workflows with `workflowType` as `main.SampleParentWorkflow`.
 
 ```bash
-docker run --network=host --rm temporalio/tctl:1.11.1 workflow list
+tctl workflow list
 ```
 
 CLI output should be similar to:
@@ -457,7 +456,7 @@ CLI output should be similar to:
 Looking at the Workflow execution history more closely:
 
 ```bash
-docker run --network=host --rm temporalio/tctl:1.11.1 workflow showid 08c0259f-c1d5-41d9-b51f-8c70c203ccca
+tctl workflow showid 08c0259f-c1d5-41d9-b51f-8c70c203ccca
 ```
 
 CLI output:
@@ -614,7 +613,7 @@ In most real-life scenarios this is not a desired behavior. The business Id shou
 Here, we'll specify the Id when starting a Workflow:
 
 ```bash
-docker run --network=host --rm temporalio/tctl:1.11.1 workflow start  --workflow_id "HelloTemporal1" --taskqueue HelloWorldTaskQueue --workflow_type HelloWorld --execution_timeout 3600 --input \"Temporal\"
+tctl workflow start  --workflow_id "HelloTemporal1" --taskqueue HelloWorldTaskQueue --workflow_type HelloWorld --execution_timeout 3600 --input \"Temporal\"
 ```
 
 CLI output:
@@ -626,7 +625,7 @@ Started Workflow Id: HelloTemporal1, run Id: 78ca0a3f-8cd2-46a2-8d23-076c3f0f187
 Now the list operation is more meaningful as the WORKFLOW ID is our business Id:
 
 ```bash
-docker run --network=host --rm temporalio/tctl:1.11.1 workflow list
+tctl workflow list
 ```
 
 CLI output:
@@ -639,7 +638,7 @@ CLI output:
 After the previous Workflow completes, let's try to start another one with the same Id:
 
 ```bash
-docker run --network=host --rm temporalio/tctl:1.11.1 workflow start  --workflow_id "HelloTemporal1" --taskqueue HelloWorldTaskQueue --workflow_type HelloWorld --execution_timeout 3600 --input \"Temporal\"
+tctl workflow start  --workflow_id "HelloTemporal1" --taskqueue HelloWorldTaskQueue --workflow_type HelloWorld --execution_timeout 3600 --input \"Temporal\"
 ```
 
 Output:
@@ -648,10 +647,10 @@ Output:
 Started Workflow Id: HelloTemporal1, run Id: 9b5e36a3-9868-4de5-bbdf-eda9cedcd865
 ```
 
-After the second start list Workflows with:
+After the second start, list Workflows with:
 
 ```bash
-docker run --network=host --rm temporalio/tctl:1.11.1 workflow list
+tctl workflow list
 ```
 
 CLI output:
@@ -672,7 +671,7 @@ Multiple Workflow Ids are required in the case that paralell invocations wish to
 See the CLI help command for all of the options supported:
 
 ```bash
-docker run --network=host --rm temporalio/tctl:1.11.1 workflow help start
+tctl workflow help start
 ```
 
 CLI output:
@@ -713,7 +712,7 @@ OPTIONS:
 Start a new Workflow execution:
 
 ```bash
-temporal: docker run --network=host --rm temporalio/tctl:1.11.1 workflow start  --workflow_id "HelloActivityWorker" --taskqueue HelloWorldTaskQueue --workflow_type HelloWorld_sayHello --execution_timeout 3600 --input \"World\"
+$ tctl workflow start  --workflow_id "HelloActivityWorker" --taskqueue HelloWorldTaskQueue --workflow_type HelloWorld_sayHello --execution_timeout 3600 --input \"World\"
 Started Workflow Id: HelloActivityWorker, run Id: ff015637-b5af-43e8-b3f6-8b6c7b919b62
 ```
 
@@ -723,7 +722,7 @@ This is expected as the Activity worker is not running. What are the options to 
 The first option is look at the stack trace:
 
 ```text
-temporal: docker run --network=host --rm temporalio/tctl:1.11.1 workflow stack  --workflow_id "HelloActivityWorker"
+$ tctl workflow stack  --workflow_id "HelloActivityWorker"
 Query result as JSON:
 "workflow-root: (BLOCKED on Feature.get)io.temporal.internal.sync.CompletablePromiseImpl.get(CompletablePromiseImpl.java:71)
 io.temporal.internal.sync.ActivityStubImpl.execute(ActivityStubImpl.java:58)
@@ -745,7 +744,7 @@ It is okay for the Workflow code to block on an Activity invocation for a month 
 Another way to see what exactly happened in the Workflow execution is to look at the Workflow execution history:
 
 ```text
-temporal: docker run --network=host --rm temporalio/tctl:1.11.1 workflow show  --workflow_id "HelloActivityWorker"
+$ tctl workflow show  --workflow_id "HelloActivityWorker"
   1  WorkflowExecutionStarted  {WorkflowType:{Name:HelloWorld_sayHello},
                                 TaskQueue:{Name:HelloWorldTaskQueue},
                                 Input:["World"],
@@ -783,7 +782,7 @@ It is recorded when Workflow invoked the Activity, but it wasn't picked up by an
 Another useful API is `DescribeWorkflowExecution` which, among other information, contains the list of outstanding Activities:
 
 ```text
-temporal: docker run --network=host --rm temporalio/tctl:1.11.1 workflow describe  --workflow_id "HelloActivityWorker"
+$ tctl workflow describe  --workflow_id "HelloActivityWorker"
 {
   "ExecutionConfiguration": {
     "taskQueue": {
@@ -832,7 +831,7 @@ It starts and immediately prints:
 Let's look at the Workflow execution history:
 
 ```text
-temporal: docker run --network=host --rm temporalio/tctl:1.11.1 workflow show  --workflow_id "HelloActivityWorker"
+$ tctl workflow show  --workflow_id "HelloActivityWorker"
    1  WorkflowExecutionStarted  {WorkflowType:{Name:HelloWorld_sayHello},
                                 TaskQueue:{Name:HelloWorldTaskQueue},
                                 Input:["World"],
@@ -891,7 +890,7 @@ Let's look at various failure scenarios.
 ## Signals
 
 ```bash
-docker run --network=host --rm temporalio/tctl:1.11.1 workflow start  --workflow_id "HelloSignal" --taskqueue HelloWorldTaskQueue --workflow_type HelloWorld --execution_timeout 3600 --input \"World\"
+tctl workflow start  --workflow_id "HelloSignal" --taskqueue HelloWorldTaskQueue --workflow_type HelloWorld --execution_timeout 3600 --input \"World\"
 ```
 
 Worker output:
@@ -903,7 +902,7 @@ Worker output:
 Let's send a signal using CLI:
 
 ```bash
-docker run --network=host --rm temporalio/tctl:1.11.1 workflow signal --workflow_id "HelloSignal" --name "updateGreeting" --input \"Hi\"
+tctl workflow signal --workflow_id "HelloSignal" --name "updateGreeting" --input \"Hi\"
 ```
 
 Worker output:
@@ -917,7 +916,7 @@ Try sending the same signal with the same input again.
 Note that the output doesn't change. This happens because the await condition doesn't unblock when it sees the same value. But a new greeting unblocks it:
 
 ```bash
-docker run --network=host --rm temporalio/tctl:1.11.1 workflow signal --workflow_id "HelloSignal" --name "updateGreeting" --input \"Welcome\"
+tctl workflow signal --workflow_id "HelloSignal" --name "updateGreeting" --input \"Welcome\"
 ```
 
 Worker output:
@@ -931,7 +930,7 @@ Worker output:
 Now shut down the worker and send the same signal again:
 
 ```bash
-docker run --network=host --rm temporalio/tctl:1.11.1 workflow signal --workflow_id "HelloSignal" --name "updateGreeting" --input \"Welcome\"
+tctl workflow signal --workflow_id "HelloSignal" --name "updateGreeting" --input \"Welcome\"
 ```
 
 CLI output:
@@ -954,7 +953,7 @@ Its state is fully recovered to its current state that includes all the local va
 Let's look at the line where the Workflow is blocked:
 
 ```bash
-docker run --network=host --rm temporalio/tctl:1.11.1 workflow stack --workflow_id HelloSignal
+tctl workflow stack --workflow_id HelloSignal
 ```
 
 CLI output:
@@ -982,13 +981,13 @@ Stack feature works for any open Workflow, greatly simplifying troubleshooting i
 Let's complete the Workflow by sending a signal with a "Bye" greeting:
 
 ```bash
-docker run --network=host --rm temporalio/tctl:1.11.1 workflow signal --workflow_id "HelloSignal" --name "updateGreeting" --input \"Bye\"
+tctl workflow signal --workflow_id "HelloSignal" --name "updateGreeting" --input \"Bye\"
 ```
 
 You can make sure that Workflow execution has been completed by looking at the Workflow execution history:
 
 ```bash
-docker run --network=host --rm temporalio/tctl:1.11.1 workflow showid HelloSignal
+tctl workflow showid HelloSignal
 ```
 
 Note that the value of the count variable was not lost during the restart.
@@ -998,11 +997,11 @@ Also note that while a single worker instance was used for this walkthrough, any
 So any worker failure or restart does not delay any Workflow execution because it is just migrated to any other available worker.
 
 ```bash
-temporal: docker run --network=host --rm temporalio/tctl:1.11.1 workflow start  --workflow_id "HelloQuery" --taskqueue HelloWorldTaskQueue --workflow_type HelloWorld --execution_timeout 3600 --input \"World\"
+$ tctl workflow start  --workflow_id "HelloQuery" --taskqueue HelloWorldTaskQueue --workflow_type HelloWorld --execution_timeout 3600 --input \"World\"
 Started Workflow Id: HelloQuery, run Id: 1925f668-45b5-4405-8cba-74f7c68c3135
-temporal: docker run --network=host --rm temporalio/tctl:1.11.1 workflow signal --workflow_id "HelloQuery" --name "updateGreeting" --input \"Hi\"
+$ tctl workflow signal --workflow_id "HelloQuery" --name "updateGreeting" --input \"Hi\"
 Signal workflow succeeded.
-temporal: docker run --network=host --rm temporalio/tctl:1.11.1 workflow signal --workflow_id "HelloQuery" --name "updateGreeting" --input \"Welcome\"
+$ tctl workflow signal --workflow_id "HelloQuery" --name "updateGreeting" --input \"Welcome\"
 Signal workflow succeeded.
 ```
 
@@ -1019,7 +1018,7 @@ The worker output:
 Now let's query the Workflow using the CLI:
 
 ```bash
-temporal: docker run --network=host --rm temporalio/tctl:1.11.1 workflow query --workflow_id "HelloQuery" --query_type "getCount"
+$ tctl workflow query --workflow_id "HelloQuery" --query_type "getCount"
 Query result as JSON:
 3
 ```
@@ -1029,9 +1028,9 @@ An interesting feature of the query is that it works for completed Workflows as 
 Let's complete the Workflow by sending "Bye" and query it.
 
 ```bash
-temporal: docker run --network=host --rm temporalio/tctl:1.11.1 workflow signal --workflow_id "HelloQuery" --name "updateGreeting" --input \"Bye\"
+$ tctl workflow signal --workflow_id "HelloQuery" --name "updateGreeting" --input \"Bye\"
 Signal workflow succeeded.
-temporal: docker run --network=host --rm temporalio/tctl:1.11.1 workflow query --workflow_id "HelloQuery" --query_type "getCount"
+$ tctl workflow query --workflow_id "HelloQuery" --query_type "getCount"
 Query result as JSON:
 4
 ```
