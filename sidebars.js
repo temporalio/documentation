@@ -431,9 +431,7 @@ module.exports = {
       type: "category",
       label: "Temporal explained",
       collapsed: true,
-      items: [
-        "temporal-explained/introduction",
-      ],
+      items: ["temporal-explained/introduction"],
     },
   ],
 };
