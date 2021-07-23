@@ -1,6 +1,7 @@
 ---
 id: how-to-write-an-activity-definition-in-go
 title: How to write an Activity Definition in Go
+description: In the Temporal Go SDK programming model, an Activity Definition is an exportable function or `stuct` method.
 tags:
   - guide
 ---

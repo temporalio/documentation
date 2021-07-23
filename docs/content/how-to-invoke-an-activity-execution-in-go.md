@@ -1,6 +1,7 @@
 ---
 id: how-to-invoke-an-activity-execution-in-go
 title: How to invoke an Activity Execution in Go
+description: Use the `ExecuteActivity()` API call available from the `go.temporal.io/sdk/workflow` package.
 tags:
   - guide
 ---
