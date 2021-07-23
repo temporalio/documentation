@@ -164,7 +164,6 @@ func SendAbandonedCartEmail(_ context.Context, email string) error {
 	_, _, err := mg.Send(m)
 	if err != nil {
 		fmt.Println("Mailgun err: " + err.Error())
-    return err
 	}
 
 	return err
