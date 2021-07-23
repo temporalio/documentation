@@ -16,7 +16,7 @@ hLevel={props.heading}
 hText={headingText}
 />
 
-In the Temporal Go SDK programming model, a [Workflow Definition](/docs/concepts-new/introduction#workflow-definition) is an exportable function.
+In the Temporal Go SDK programming model, a [Workflow Definition](/docs/temporal-explained/introduction#workflow-definition) is an exportable function.
 
 ```go
 func YourWorkflowDefinition(ctx workflow.Context) error {
