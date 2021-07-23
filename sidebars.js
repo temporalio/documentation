@@ -426,12 +426,12 @@ module.exports = {
       ],
     },
   ],
-  coreConceptsNew: [
+  temporalExplained: [
     {
       type: "category",
-      label: "Concepts WIP",
+      label: "Temporal explained",
       collapsed: true,
-      items: ["concepts-new/introduction", "concepts-new/event-reference"],
+      items: ["temporal-explained/introduction"],
     },
   ],
 };
