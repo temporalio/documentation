@@ -68,7 +68,7 @@ There are some special considerations for the System attributes:
 
 ### Custom attributes
 
-import CustomWarning from "../shared/CustomWarning.js"
+import CustomWarning from "../components/CustomWarning.js"
 
 <CustomWarning>
 
