@@ -1,6 +1,6 @@
 # External Dependencies
 
-import CustomWarning from "../shared/CustomWarning.js"
+import CustomWarning from "../components/CustomWarning.js"
 
 <CustomWarning title="Advanced feature" color="var(--ifm-color-info)">
 

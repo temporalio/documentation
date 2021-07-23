@@ -290,7 +290,7 @@ The workflow has a chance to do some clean up work after cancellation.
 
 #### Signal, cancel, terminate workflows as a batch job
 
-import CustomWarning from "../shared/CustomWarning.js"
+import CustomWarning from "../components/CustomWarning.js"
 
 <CustomWarning>
 

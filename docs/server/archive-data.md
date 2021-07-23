@@ -4,7 +4,7 @@ title: Archive Workflow data
 sidebar_label: Archival
 ---
 
-import CustomWarning from "../shared/CustomWarning.js"
+import CustomWarning from "../components/CustomWarning.js"
 
 <CustomWarning>
 

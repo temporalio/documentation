@@ -3,7 +3,7 @@ id: how-to-start-a-worker-in-go
 title: How to start a Worker in Go
 description: Create a new instance of a Worker by calling `worker.New()`, available via the `go.temporal.io/sdk/worker` package.
 tags:
-	- guide
+  - guide
 ---
 
 import DetermineHeader from '../components/DetermineHeader.js'
@@ -64,11 +64,8 @@ The `RegisterWorkflow()` and `RegisterActivity` calls essentially create an in-m
 
 Notice that that the Task Queue name is the same as the name provided [when the Workflow Execution is invoked](#).
 
-The name of the Task Queue that is provided to the Worker must be the same Task Queue name that is provided with the invocation of Workflow Execution
+The name of the Task Queue that is provided to the Worker must be the same Task Queue name that is provided with the invocation of the Workflow Execution.
 
-:::note
+import SharedWorkersTaskQueueRegistrationNote from '../reminders/note-workers-task-queue-registration-match.md'
 
-If the Worker polls a Task for a Workflow or Activity function it does not know about, it will fail that Task.
-However, the failure of the Task will not cause the associated Workflow to fail.
-
-:::
+<SharedWorkersTaskQueueRegistrationNote />

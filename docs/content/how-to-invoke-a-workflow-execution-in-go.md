@@ -6,7 +6,7 @@ tags:
   - guide
 ---
 
-import RelatedRead from '../shared/RelatedRead.js'
+import RelatedRead from '../components/RelatedRead.js'
 import DetermineHeader from '../components/DetermineHeader.js'
 
 export const headingText = 'How to invoke a Workflow Execution in Go'
