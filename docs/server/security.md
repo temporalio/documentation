@@ -73,7 +73,7 @@ The following arguments must be passed to the `Authorize` method for example:
 <!--SNIPSTART temporal-common-authorization-authorizer-calltarget-->
 <!--SNIPEND-->
 
-The `Authorize` method then returns one of two possible commands within the `Result.Decision` field:
+The `Authorize` method then returns one of two possible decisions within the `Result.Decision` field:
 
 - `DecisionDeny`: the requested API call is not invoked and an error is returned to the caller.
 - `DecisionAllow`: the requested API call is invoked.
