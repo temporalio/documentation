@@ -365,7 +365,7 @@ tctl workflow reset -w <wid> -r <rid> --event_id <workflow_task_finish_event_id>
 Some things to note:
 
 - When reset, a new run will be kicked off with the same workflowId. But if there is a running execution for the workflow(workflowId), the current run will be terminated.
-- workflow_finish_event_id is the Id of events of the type: WorkflowTaskComplete/WorkflowTaskFailed/WorkflowTaskTimeout.
+- workflow_task_finish_event_id is the Id of events of the type: WorkflowTaskComplete/WorkflowTaskFailed/WorkflowTaskTimeout.
 - To restart a workflow from the beginning, reset to the first command task finish event.
 
 To reset multiple workflows, you can use batch reset command:
