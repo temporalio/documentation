@@ -359,7 +359,7 @@ tctl workflow reset -w <wid> -r <rid> --reset_type <reset_type> --reason "some_r
 If you are familiar with the Temporal history event, you can also reset to any command finish event by using:
 
 ```bash
-tctl workflow reset -w <wid> -r <rid> --event_id <workflow_finish_event_id> --reason "some_reason"
+tctl workflow reset -w <wid> -r <rid> --event_id <workflow_task_finish_event_id> --reason "some_reason"
 ```
 
 Some things to note:
