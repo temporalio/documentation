@@ -359,13 +359,13 @@ tctl workflow reset -w <wid> -r <rid> --reset_type <reset_type> --reason "some_r
 If you are familiar with the Temporal history event, you can also reset to any command finish event by using:
 
 ```bash
-tctl workflow reset -w <wid> -r <rid> --event_id <decision_finish_event_id> --reason "some_reason"
+tctl workflow reset -w <wid> -r <rid> --event_id <workflow_task_finish_event_id> --reason "some_reason"
 ```
 
 Some things to note:
 
 - When reset, a new run will be kicked off with the same workflowId. But if there is a running execution for the workflow(workflowId), the current run will be terminated.
-- decision_finish_event_id is the Id of events of the type: DecisionTaskComplete/DecisionTaskFailed/DecisionTaskTimeout.
+- workflow_task_finish_event_id is the Id of events of the type: WorkflowTaskComplete/WorkflowTaskFailed/WorkflowTaskTimeout.
 - To restart a workflow from the beginning, reset to the first command task finish event.
 
 To reset multiple workflows, you can use batch reset command:
@@ -766,14 +766,14 @@ $ tctl workflow show  --workflow_id "HelloActivityWorker"
                                 LastCompletionResult:[],
                                 Identity:temporal-cli@linuxkit-025000000001,
                                 Attempt:0,
-                                FirstDecisionTaskBackoffSeconds:0}
-  2  DecisionTaskScheduled     {TaskQueue:{Name:HelloWorldTaskQueue},
+                                FirstWorkflowTaskBackoffSeconds:0}
+  2  WorkflowTaskScheduled     {TaskQueue:{Name:HelloWorldTaskQueue},
                                 StartToCloseTimeoutSeconds:10,
                                 Attempt:0}
-  3  DecisionTaskStarted       {ScheduledEventId:2,
+  3  WorkflowTaskStarted       {ScheduledEventId:2,
                                 Identity:36234@maxim-C02XD0AAJGH6,
                                 RequestId:ef645576-7cee-4d2e-9892-597a08b7b01f}
-  4  DecisionTaskCompleted     {ExecutionContext:[],
+  4  WorkflowTaskCompleted     {ExecutionContext:[],
                                 ScheduledEventId:2,
                                 StartedEventId:3,
                                 Identity:36234@maxim-C02XD0AAJGH6}
@@ -785,7 +785,7 @@ $ tctl workflow show  --workflow_id "HelloActivityWorker"
                                 ScheduleToStartTimeoutSeconds:100,
                                 StartToCloseTimeoutSeconds:100,
                                 HeartbeatTimeoutSeconds:100,
-                                DecisionTaskCompletedEventId:4}
+                                WorkflowTaskCompletedEventId:4}
 ```
 
 The last event in the Workflow history is `ActivityTaskScheduled`.
@@ -853,14 +853,14 @@ $ tctl workflow show  --workflow_id "HelloActivityWorker"
                                 LastCompletionResult:[],
                                 Identity:temporal-cli@linuxkit-025000000001,
                                 Attempt:0,
-                                FirstDecisionTaskBackoffSeconds:0}
-   2  DecisionTaskScheduled     {TaskQueue:{Name:HelloWorldTaskQueue},
+                                FirstWorkflowTaskBackoffSeconds:0}
+   2  WorkflowTaskScheduled     {TaskQueue:{Name:HelloWorldTaskQueue},
                                 StartToCloseTimeoutSeconds:10,
                                 Attempt:0}
-   3  DecisionTaskStarted       {ScheduledEventId:2,
+   3  WorkflowTaskStarted       {ScheduledEventId:2,
                                 Identity:37694@maxim-C02XD0AAJGH6,
                                 RequestId:1d7cba6d-98c8-41fd-91b1-c27dffb21c7f}
-   4  DecisionTaskCompleted     {ExecutionContext:[],
+   4  WorkflowTaskCompleted     {ExecutionContext:[],
                                 ScheduledEventId:2,
                                 StartedEventId:3,
                                 Identity:37694@maxim-C02XD0AAJGH6}
@@ -872,7 +872,7 @@ $ tctl workflow show  --workflow_id "HelloActivityWorker"
                                 ScheduleToStartTimeoutSeconds:300,
                                 StartToCloseTimeoutSeconds:300,
                                 HeartbeatTimeoutSeconds:300,
-                                DecisionTaskCompletedEventId:4}
+                                WorkflowTaskCompletedEventId:4}
    6  ActivityTaskStarted       {ScheduledEventId:5,
                                 Identity:37784@maxim-C02XD0AAJGH6,
                                 RequestId:a646d5d2-566f-4f43-92d7-6689139ce944,
@@ -880,12 +880,12 @@ $ tctl workflow show  --workflow_id "HelloActivityWorker"
    7  ActivityTaskCompleted     {Result:[], ScheduledEventId:5,
                                 StartedEventId:6,
                                 Identity:37784@maxim-C02XD0AAJGH6}
-   8  DecisionTaskScheduled     {TaskQueue:{Name:maxim-C02XD0AAJGH6:fd3a85ed-752d-4662-a49d-2665b7667c8a},
+   8  WorkflowTaskScheduled     {TaskQueue:{Name:maxim-C02XD0AAJGH6:fd3a85ed-752d-4662-a49d-2665b7667c8a},
                                 StartToCloseTimeoutSeconds:10, Attempt:0}
-   9  DecisionTaskStarted       {ScheduledEventId:8,
+   9  WorkflowTaskStarted       {ScheduledEventId:8,
                                 Identity:fd3a85ed-752d-4662-a49d-2665b7667c8a,
                                 RequestId:601ef30a-0d1b-4400-b034-65b8328ad34c}
-  10  DecisionTaskCompleted     {ExecutionContext:[],
+  10  WorkflowTaskCompleted     {ExecutionContext:[],
                                 ScheduledEventId:8,
                                 StartedEventId:9,
                                 Identity:37694@maxim-C02XD0AAJGH6}
