@@ -53,3 +53,7 @@
 .formFeature {
   --ifm-button-border-color: var(--ifm-color-content);
 }
+
+.email_wrap {
+  max-width: 262px;
+}
