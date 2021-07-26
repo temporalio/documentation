@@ -230,8 +230,7 @@ module.exports = {
           routeBasePath: "blog",
           path: "blog",
           postsPerPage: 10,
-          editUrl:
-            "https://github.com/temporalio/documentation/blob/master",
+          editUrl: "https://github.com/temporalio/documentation/blob/master",
           blogTitle: "Temporal Blog",
           showReadingTime: true, // Show estimated reading time for the blog post.
           feedOptions: {
