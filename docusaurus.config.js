@@ -182,7 +182,7 @@ module.exports = {
         <span class="footer__separators"> | </span>
         <a class="footer__link-item" href="/privacy-policy">Privacy Policy</a>
         <span class="footer__separators"> | </span>
-        <a class="footer__link-item" href="https://docs.temporal.io/pdf/temporal-tos-2021-01-19.pdf">Terms of Service</a> 
+        <a class="footer__link-item" href="https://docs.temporal.io/pdf/temporal-tos-2021-07-24.pdf">Terms of Service</a> 
       </div>
       `,
     },
