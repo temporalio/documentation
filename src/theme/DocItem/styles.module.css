@@ -33,11 +33,12 @@
 }
 
 .EditThisPage {
-  backdrop-filter: invert(0.2);
+  margin-top: 2rem;
 }
 
 @media screen and (min-width: 998px) {
   .EditThisPage {
+    backdrop-filter: invert(0.2);
     position: fixed;
     bottom: 1rem;
     right: 1rem;
@@ -52,4 +53,15 @@
 
 .formFeature {
   --ifm-button-border-color: var(--ifm-color-content);
+}
+
+.email_wrap {
+  max-width: 30ch;
+}
+
+.email_wrap input:focus {
+  background-color: lightyellow;
+  color: black;
+  font-weight: bolder;
+  padding-left: 0.2rem;
 }
