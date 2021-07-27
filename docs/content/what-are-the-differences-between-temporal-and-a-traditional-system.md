@@ -1,8 +1,19 @@
 ---
-id: temporal-vs-traditional
+id: what-are-the-differences-between-temporal-and-a-traditional-system
 title: What are the differences between Temporal and a traditional system?
-sidebar_label: Temporal versus traditional
+description: Compare a function execution in a traditional system to a Workflow Execution in Temporal.
+tags:
+  - explanation
 ---
+
+import DetermineHeader from '../components/DetermineHeader.js'
+
+export const headingText = 'What are the differences between Temporal and a traditional system?'
+
+<DetermineHeader
+hLevel={props.heading}
+hText={headingText}
+/>
 
 The Temporal platform exists to facilitate Workflow Executions.
 Compare a function execution in a traditional system to a Workflow Execution in Temporal.
