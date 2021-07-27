@@ -198,7 +198,7 @@ h4,
 .related-read-div {
   background-color: var(--ifm-color-primary-lightest);
   border-color: var(--ifm-color-primary-lightest);
-  border-radius: var(--ifm-alert-border-radius);
+  border-radius: 0;
   border-style: solid;
   border-width: var(--ifm-alert-border-width);
   padding: 7px var(--ifm-alert-padding-horizontal);
@@ -241,4 +241,24 @@ h4,
 
 .archetype-tag-reference {
   background-color: #CF8F19;
+}
+
+.docs-centered-image-wrapper {
+  width: 100%;
+  text-align: center;
+  margin:0;
+  padding:15px;
+  background-color: #efefef;
+}
+
+.docs-centered-image-size-100 {
+  width: 100%;
+}
+
+.docs-centered-image-size-75 {
+  width: 75%;
+}
+
+.docs-centered-image-size-50 {
+  width: 50%;
 }
