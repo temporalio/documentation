@@ -33,7 +33,7 @@ import {Worker, DefaultLogger} from "@temporalio/worker";
 const logger = new DefaultLogger("WARNING", (severity, message, meta) => {
   /* Implement this in order to generate custom log output */
 });
-const worker = await Worker.create(__dirname, {logger});
+const worker = await Worker.create({workDir: __dirname, logger});
 ```
 
 #### BYOL - Bring your own logger
@@ -49,5 +49,5 @@ const logger = winston.createLogger({
   format: winston.format.json(),
   transports: [new transports.File({filename: "/path/to/worker.log"})],
 });
-const worker = await Worker.create(__dirname, {logger});
+const worker = await Worker.create({workDir: __dirname, logger});
 ```
