@@ -2,7 +2,7 @@
 title: NodeJS SDK introduction
 ---
 
-import CustomWarning from "../shared/CustomWarning.js"
+import CustomWarning from "../components/CustomWarning.js"
 
 <CustomWarning>
 

@@ -13,8 +13,8 @@ module.exports = {
         "server/configuration",
         "server/production-deployment",
         "server/security",
-        "server/workflow-search",
         "server/elasticsearch-setup",
+        "server/workflow-search",
         "server/namespaces",
         "server/multi-cluster",
         "server/archive-data",
@@ -426,12 +426,12 @@ module.exports = {
       ],
     },
   ],
-  coreConceptsNew: [
+  temporalExplained: [
     {
       type: "category",
-      label: "Concepts WIP",
+      label: "Temporal explained",
       collapsed: true,
-      items: ["concepts-new/introduction"],
+      items: ["temporal-explained/introduction"],
     },
   ],
 };

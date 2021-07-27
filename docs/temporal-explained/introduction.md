@@ -1,11 +1,13 @@
 ---
 id: introduction
-title: Introduction to Temporal's core concepts
+title: Introduction to Temporal
 sidebar_label: Introduction
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import LanguageLinkTabs from '../components/LanguageLinkTabs.js'
+import RelatedRead from '../components/RelatedRead.js'
 
 :::caution
 
@@ -13,26 +15,11 @@ This page is a work in progress!
 
 :::
 
-**Temporal's tenth rule**
+import WhatIsTemporal from '../content/what-is-temporal.md'
 
-> Any sufficiently complex distributed system contains an ad-hoc, informally-specified, bug-ridden, slow implementation of half of temporal.io.
-
-## What is Temporal?
-
-Temporal is a scalable and reliable runtime for Temporal Workflow Executions.
-
-<img class="docs-image-centered docs-image-max-width-50" src="/img/temporal-intro.png" />
-
-A [Temporal Workflow Execution](#what-is-a-workflow-execution) (π) executes a [Temporal Workflow Definition](#workflow-definition), also called a Temporal Workflow Function, your application code, exactly once and to completion—whether your code executes for seconds, minutes, hours, days, months, or years, in the presence of arbitrary load and arbitrary failures.
-
-A Temporal Application is a set of Temporal Workflow Executions (Π). Each Temporal Workflow Execution has exclusive access to its local state, executes concurrently to all other Workflow Executions, and communicates with other Workflow Executions and the environment via message passing.
-
-Workflow Executions are lightweight components.
-A Temporal Application can consist of thousands to hundreds of thousands of Workflow Executions.
-A Workflow Execution consumes few compute resources; in fact, if a Workflow Execution is suspended, such as when it is in a waiting state, the Workflow Execution consumes no compute resources at all.
-
-The Temporal runtime consists of the Temporal Server and Worker processes.
-A Temporal SDK provides users with the APIs they need to write Workflow Definitions as well as the APIs to invoke Workflow Executions and invoke Worker processes.
+<WhatIsTemporal
+heading=""
+/>
 
 ## What is a Workflow?
 
@@ -100,39 +87,16 @@ The following is a full list of all properties that can be customized for a Work
 - [Search Attributes](#search-attributes)
 - [Parent Close Policy](#parent-close-policy)
 
-See how to implement Workflow Options using an SDK:
-
-<Tabs
-groupId='sdk-preference'
-defaultValue='go'
-values={[
-{label: 'Go', value: 'go'},
-{label: 'Java', value: 'java'},
-{label: 'Node.js', value: 'node'},
-{label: 'PHP', value: 'php'},
-]
-}>
-<TabItem value='go'>
-
-How to provide Workflow Options in Go
-
-</TabItem>
-<TabItem value='java'>
-
-How to provide Workflow Options in Java
-
-</TabItem>
-<TabItem value='node'>
-
-How to provide Workflow Options in Node.js
-
-</TabItem>
-<TabItem value='php'>
-
-How to provide Workflow Options in PHP
-
-</TabItem>
-</Tabs>
+<LanguageLinkTabs
+goText="How to provide Workflow Options in Go"
+goGoTo="#"
+javaText="How to provide Workflow Options in Java"
+javaGoTo="#"
+nodeText="How to provide Workflow Options in Node.js"
+nodeGoTo="#"
+phpText= "How to provide Workflow Options in PHP"
+phpGoTo="#"
+/>
 
 ## What are the timeout properties of a Workflow Execution?
 
@@ -219,119 +183,11 @@ An [Activity](#activity) that is invoked directly in the same process by Workflo
 
 - Although a Local Activity consumes less resources than a normal [Activity](#activity), it is subject to shorter durations and a lack of rate limiting.
 
-## What is a Retry Policy?
+import WhatIsARetryPolicy from '../content/what-is-a-retry-policy.md'
 
-A Retry Policy is collection of attributes that instructs the Temporal Server how to retry a failure of an [Activity Task Execution](#activity-task-execution) or a [Workflow Execution](#workflow-execution).
-
-- If a custom Retry Policy is to be used, it must be provided as an options parameter when an [Activity Execution](#activity-execution) or [Workflow Execution](#workflow-execution) is invoked.
-
-- The wait time before a retry is the _retry interval_.
-  A retry interval is the smaller of two values:
-  - The [Initial Interval](#initial-interval) multiplied by the [Backoff Coefficient](#backoff-coefficient) raised to the power of the number of retries.
-  - The [Maximum Interval](#maximum-interval).
-
-<!-- ![Diagram that shows the retry interval and its formula](/img/retry-interval-diagram.png) -->
-
-- When a [Workflow Execution](#workflow-execution) is invoked it is not associated with a default Retry Policy and thus does not retry by default.
-  The intention is that a Workflow Definition should be written to never fail due to intermittent issues; an Activity is designed to handle such issues.
-
-:::note
-
-Retry Policies do not apply to [Workflow Task Executions](#workflow-task-execution), which, by default, retry indefinitely.
-
-:::
-
-- A Retry Policy can be provided to a [Workflow Execution](#workflow-execution) when it is invoked, but only certain scenarios merit doing this, such as the following:
-
-  - A cron Workflow or some other stateless, always-running Workflow Execution that can benefit from retries.
-  - A file-processing or media-encoding Workflow Execution that downloads files to a host.
-
-- When an [Activity Execution](#activity-execution) is invoked, it is associated with a default Retry Policy, and thus [Activity Task Executions](#activity-execution) are retried by default.
-  When an [Activity Task Execution](#activity-execution) is retried, the Server places a new [Activity Task](#activity-task) into its respective [Activity Task Queue](#activity-task-queue), which results in a new [Activity Task Execution](#activity-task-execution).
-
-**Default values for Retry Policy**
-
-```
-Initial Interval     = 1 second
-Backoff Coefficient  = 2.0
-Maximum Interval     = 100 × Initial Interval
-Maximum Attempts     = ∞
-Non-Retryable Errors = []
-```
-
-See how to implement a Retry Policy using an SDK:
-
-<Tabs
-groupId='sdk-preference'
-defaultValue='go'
-values={[
-{label: 'Go', value: 'go'},
-{label: 'Java', value: 'java'},
-{label: 'Node.js', value: 'node'},
-{label: 'PHP', value: 'php'},
-]
-}>
-<TabItem value='go'>
-
-How to implement a Retry Policy in Go
-
-</TabItem>
-<TabItem value='java'>
-
-How to implement a Retry Policy in Java
-
-</TabItem>
-<TabItem value='node'>
-
-How to implement a Retry Policy in Node.js
-
-</TabItem>
-<TabItem value='php'>
-
-How to implement a Retry Policy in PHP
-
-</TabItem>
-</Tabs>
-
-### Initial Interval
-
-- **Description**: Amount of time that must elapse before the first retry occurs.
-  - **The default value is 1 second.**
-- **Use case**: This is used as the base interval time for the [Backoff Coefficient](#backoff-coefficient) to multiply against.
-
-### Backoff Coefficient
-
-- **Description**: The value dictates how much the _retry interval_ increases.
-  - **The default value is 2.0.**
-  - A backoff coefficient of 1.0 means that the retry interval always equals the [Initial Interval](#initial-interval).
-- **Use case**: Use this attribute to increase the interval between retries.
-  By having a backoff coefficient greater than 1.0, the first few retries happen relatively quickly to overcome intermittent failures, but subsequent retries happen farther and farther apart to account for longer outages.
-  Use the [Maximum Interval](#maximum-interval) attribute to prevent the coefficient from increasing the retry interval too much.
-
-### Maximum Interval
-
-- **Description**: Specifies the maximum interval between retries.
-  - **The default value is 100 times the [Initial Interval](#initial-interval).**
-- **Use case**: This attribute is useful for [Backoff Coefficients](#backoff-coefficient) that are greater than 1.0 because it prevents the retry interval from growing infinitely.
-
-### Maximum Attempts
-
-- **Description**: Specifies the maximum number of execution attempts that can be made in the presence of failures.
-  - **The default is unlimited.**
-  - If this limit is exceeded, the execution fails without retrying again. When this happens an error is returned.
-  - Setting the value to 0 also means unlimited.
-  - Setting the value to 1 means a single execution attempt and no retries.
-  - Setting the value to a negative integer results in an error when the execution is invoked.
-- **Use case**: Use this attribute to ensure that retries do not continue indefinitely.
-  However, in the majority of cases, we recommend relying on the Workflow Execution Timeout, in the case of [Workflows](#workflow), or Schedule-To-Close Timeout, in the case of [Activities](#activity), to limit the total duration of retries instead of using this attribute.
-
-### Non-Retryable Errors
-
-- **Description**: Specifies errors that shouldn't be retried.
-  - **Default is none.**
-  - If one of those errors occurs, the [Activity Task Execution](#activity-task-execution) or [Workflow Execution](#workflow-execution) is not retried.
-- **Use case**: There may be errors that you know of that should not trigger a retry.
-  In this case you can specify them such that if they occur, the given execution will not be retried.
+<WhatIsARetryPolicy
+heading="##"
+/>
 
 ## Event
 

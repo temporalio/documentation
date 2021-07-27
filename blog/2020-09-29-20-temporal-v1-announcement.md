@@ -42,7 +42,7 @@ With this context, here are the features we consider experimental in this releas
 - Cross data center replication
 - Batch operations (signal, terminate, cancel)
 - Dynamic config
-- Addition, removal and creation of searchable attributes with ElasticSearch
+- Addition, removal and creation of searchable attributes with Elasticsearch
 
 ## What's next?
 

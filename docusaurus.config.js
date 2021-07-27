@@ -46,7 +46,8 @@ module.exports = {
             },
             {
               to: "/application-development",
-              activeBasePath: "/application-development",
+              activeBaseRegex:
+                "(/application-development)|(/docs/(go|java|php|node))",
               label: "SDKs",
             },
             {
@@ -183,7 +184,7 @@ module.exports = {
         <span class="footer__separators"> | </span>
         <a class="footer__link-item" href="/privacy-policy">Privacy Policy</a>
         <span class="footer__separators"> | </span>
-        <a class="footer__link-item" href="https://docs.temporal.io/pdf/temporal-tos-2021-01-19.pdf">Terms of Service</a> 
+        <a class="footer__link-item" href="https://docs.temporal.io/pdf/temporal-tos-2021-07-24.pdf">Terms of Service</a> 
       </div>
       `,
     },
@@ -280,8 +281,7 @@ module.exports = {
           routeBasePath: "blog",
           path: "blog",
           postsPerPage: 10,
-          editUrl:
-            "https://github.com/temporalio/documentation/tree/master/blog",
+          editUrl: "https://github.com/temporalio/documentation/blob/master",
           blogTitle: "Temporal Blog",
           showReadingTime: true, // Show estimated reading time for the blog post.
           feedOptions: {

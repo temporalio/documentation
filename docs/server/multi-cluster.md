@@ -4,7 +4,7 @@ title: Multi-cluster Replication
 sidebar_label: Multi-cluster Replication
 ---
 
-import CustomWarning from "../shared/CustomWarning.js"
+import CustomWarning from "../components/CustomWarning.js"
 
 <CustomWarning>
 

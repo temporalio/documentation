@@ -7,11 +7,9 @@ sidebar_label: Set up Elasticsearch
 ## Overview
 
 You can integrate [Elasticsearch](https://www.elastic.co/elasticsearch/) with the Temporal Server to enhance [Workflow search](/docs/server/workflow-search) functionality.
-The [Server versions and dependencies](/docs/server/versions-and-dependencies/#workflow-search) page describes which versions require the use of Kafka, and which ones do not.
+The [Server versions and dependencies](/docs/server/versions-and-dependencies/#workflow-search) page describes which versions of Elasticsearch are supported.
 
-Integration with Elasticsearch is defined in the Server configuration files.
-If you are not using Kafka, all you need to do is edit the `persistence` section.
-If you are using Kafka, you will need to edit the `kafka` section as well.
+Integration with Elasticsearch is defined in the Server configuration files: all you need to do is edit the `persistence` section.
 
 You can use the Temporal Server [development_es.yaml](https://github.com/temporalio/temporal/blob/master/config/development_es.yaml) file as working example.
 
@@ -28,7 +26,7 @@ persistence:
   advancedVisibilityStore: es-visibility
 ```
 
-Then, define the ElasticSearch datastore connection information under the `es-visibility` key:
+Then, define the Elasticsearch datastore connection information under the `es-visibility` key:
 
 ```yaml
 persistence:
@@ -43,46 +41,14 @@ persistence:
           scheme: "http"
           host: "127.0.0.1:9200"
         indices:
-          visibility: temporal-visibility-dev
+          visibility: temporal_visibility_v1_dev
 ```
 
-## Kafka
+## Index schema setup
 
-:::note
+If you run Temporal Server using our [Helm Charts](https://github.com/temporalio/helm-charts) or
+[docker-compose](https://github.com/temporalio/docker-compose) which uses [auto-setup](https://hub.docker.com/r/temporalio/auto-setup) docker image,
+then Elasticsearch index is automatically created. Docker auto-setup image also [creates](https://github.com/temporalio/temporal/blob/master/docker/auto-setup.sh#L263-L269) 6 custom search attributes for testing.
 
-You should only edit this configuration if you are using a Server version that supports the use of Kafka and you are choosing to use it.
-Check the [Server versions and dependencies](/docs/server/versions-and-dependencies/#workflow-search) page for details.
-
-:::
-
-The Workflow metadata that gets stored and matched to search queries is moved around the system as "visibility records".
-In order to ship these records to specific processes, Kafka is used.
-To configure Kafka for this purpose, find and edit the `kafka` section of the configuration file.
-
-There are four parts of the section that need to be defined.
-
-- `tls`: Enables or disables TLS connections for Kafka traffic.
-- `clusters`: Connection information for Kafka broker.
-- `applications`: Defines the Kafka topic names.
-- `topics`: Maps Kafka topic name to Kafka broker.
-
-Here is an example of how the entire Kafka config might look like:
-
-```yaml
-kafka:
-  tls:
-    enabled: false
-  clusters:
-    test:
-      brokers:
-        - 127.0.0.1:9092
-  topics:
-    temporal-visibility-dev:
-      cluster: test
-    temporal-visibility-dev-dlq:
-      cluster: test
-  applications:
-    visibility:
-      topic: temporal-visibility-dev
-      dlq-topic: temporal-visibility-dev-dlq
-```
+If you run plain Temporal Server [docker image](https://hub.docker.com/r/temporalio/server) you need to create
+index schema template and index manually. You can use commands from our [Makefile](https://github.com/temporalio/temporal/blob/master/Makefile#L370-L374).

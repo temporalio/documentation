@@ -60,7 +60,7 @@ func main() {
 A single Worker can listen to only one Task Queue.
 And, it is important to remember that the name of the Task Queue the Worker is listening to must match the name of the Task Queue provided in the options to any given Workflow or Activity.
 
-import SharedWorkersTaskQueueRegistrationNote from '../shared/note-workers-task-queue-registration-match.md'
+import SharedWorkersTaskQueueRegistrationNote from '../reminders/note-workers-task-queue-registration-match.md'
 
 <SharedWorkersTaskQueueRegistrationNote />
 
