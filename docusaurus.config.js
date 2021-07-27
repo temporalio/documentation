@@ -1,6 +1,6 @@
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 
-const visit = require('unist-util-visit');
+const visit = require("unist-util-visit");
 
 module.exports = {
   title: "Temporal documentation",
@@ -226,52 +226,53 @@ module.exports = {
           includeCurrentVersion: true, // excludeNextVersionDocs is now deprecated
           remarkPlugins: [
             [
-              () => function addTSNoCheck(tree) {
-                // Disable TS type checking for any TypeScript code blocks.
-                // This is because imports are messy with snipsync: we don't
-                // have a way to pull in a separate config for every example
-                // snipsync pulls from.
-                function visitor(node) {
-                  if (!/^ts$/.test(node.lang)) {
-                    return;
+              () =>
+                function addTSNoCheck(tree) {
+                  // Disable TS type checking for any TypeScript code blocks.
+                  // This is because imports are messy with snipsync: we don't
+                  // have a way to pull in a separate config for every example
+                  // snipsync pulls from.
+                  function visitor(node) {
+                    if (!/^ts$/.test(node.lang)) {
+                      return;
+                    }
+                    node.value = "// @ts-nocheck\n" + node.value;
                   }
-                  node.value = '// @ts-nocheck\n' + node.value;
-                }
 
-                visit(tree, 'code', visitor);
-              },
+                  visit(tree, "code", visitor);
+                },
               {},
             ],
             [
-              require('remark-typescript-tools').transpileCodeblocks,
+              require("remark-typescript-tools").transpileCodeblocks,
               {
                 compilerSettings: {
                   tsconfig: './tsconfig.json',
                   externalResolutions: {}
                 },
-                fileExtensions: ['.md', '.mdx']
+                fileExtensions: ['.md', '.mdx'],
               },
             ],
             [
-              () => function removeTSNoCheck(tree) {
-                function visitor(node) {
-                  if (!/^ts$/.test(node.lang) && !/^js$/.test(node.lang)) {
-                    return;
+              () =>
+                function removeTSNoCheck(tree) {
+                  function visitor(node) {
+                    if (!/^ts$/.test(node.lang) && !/^js$/.test(node.lang)) {
+                      return;
+                    }
+                    if (node.value.startsWith("// @ts-nocheck\n")) {
+                      node.value = node.value.slice("// @ts-nocheck\n".length);
+                    }
+                    // If TS compiled output is empty, replace it with a more helpful comment
+                    if (node.lang === 'js' && node.value === 'export {};') {
+                      node.value = '// Not required in JavaScript';
+                    }
                   }
-                  if (node.value.startsWith('// @ts-nocheck\n')) {
-                    node.value = node.value.slice('// @ts-nocheck\n'.length);
-                  }
-                  // If TS compiled output is empty, replace it with a more helpful comment
-                  if (node.lang === 'js' && node.value === 'export {};') {
-                    node.value = '// Not required in JavaScript';
-                  }
-                }
-
-                visit(tree, 'code', visitor);
-              },
+                  visit(tree, "code", visitor);
+                },
               {},
             ],
-          ]
+          ],
         },
         // Will be passed to @docusaurus/plugin-content-blog
         // options: https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-blog
