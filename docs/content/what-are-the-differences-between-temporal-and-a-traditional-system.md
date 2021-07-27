@@ -34,7 +34,7 @@ Although the two systems seem similar at first glance, they differ in several si
 
 In a traditional system, a service function execution (λ) is both volatile and short-lived.
 
-- If a function execution fails, it's not resumable because all execution state is lost. The longer a function execution awaits, the higher the change of failure. 
+- If a function execution fails, it's not resumable because all execution state is lost. The longer a function execution awaits, the higher the change of failure.
 - A traditional function execution typically has a limited lifespan, often measured in minutes.
 
 In Temporal, a Workflow Execution (π) is resumable.
@@ -52,7 +52,7 @@ In Temporal, computation resumes from its _latest_ state. All progress is retain
 
 ## Communication
 
-In a traditional system, you can't "communicate" with a function execution. 
+In a traditional system, you can't "communicate" with a function execution.
 
 In Temporal, you can use Signals to "communicate" with a Workflow Execution.
 You can also query the state of a Workflow Execution.
