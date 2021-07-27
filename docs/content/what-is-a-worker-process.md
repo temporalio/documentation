@@ -39,10 +39,8 @@ A process is a Worker Process if that process speaks the [Task Queue Protocol](#
 - A process can act as a Workflow Worker Process if that process speaks the [Workflow Task Queue Protocol](#) and the [Workflow Task Processing Protocol](#).
   - Whenever a Worker gets a Workflow Task, it makes progress with a Workflow Execution.
 - A process can act as an Activity Worker Process if that process speaks the [Activity Task Queue Protocol](#) and the [Activity Task Processing Protocol](#).
-    - Whenever a worker gets an Activity Task, it makes progress with an Activity Execution.
+  - Whenever a worker gets an Activity Task, it makes progress with an Activity Execution.
 - A process can act as both a Workflow Worker Process and an Activity Worker Process.
-
-
 
 The easiest way to do this is to use one of the Temporal SDKs.
 The current official SDKs are structured around the abstraction/concept of a Worker Object.

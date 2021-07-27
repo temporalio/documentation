@@ -56,6 +56,7 @@ tagChar="g"
 More formally, a Worker Process is a process that implements the [Task Queue Protocol](#) and the [Task Execution Protocol](#).
 
 <!-- Component diagram -->
+
 <CenteredImage
 imagePath="/diagrams/worker-entity-relationship.svg"
 imageSize="75"
@@ -72,6 +73,7 @@ An Activity Worker Process can listen on an arbitrary number of Activity Task Qu
 A Worker Process can be both a Workflow Worker Process and an Activity Worker Process.
 
 <!-- Meta model of Worker Processes -->
+
 <CenteredImage
 imagePath="/diagrams/worker-process-and-task-queues.svg"
 imageSize="75"
