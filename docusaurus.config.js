@@ -248,7 +248,8 @@ module.exports = {
                 compilerSettings: {
                   tsconfig: './tsconfig.json',
                   externalResolutions: {}
-                }
+                },
+                fileExtensions: ['.md', '.mdx']
               },
             ],
             [
@@ -259,6 +260,10 @@ module.exports = {
                   }
                   if (node.value.startsWith('// @ts-nocheck\n')) {
                     node.value = node.value.slice('// @ts-nocheck\n'.length);
+                  }
+                  // If TS compiled output is empty, replace it with a more helpful comment
+                  if (node.lang === 'js' && node.value === 'export {};') {
+                    node.value = '// Not required in JavaScript';
                   }
                 }
 

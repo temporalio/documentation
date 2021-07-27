@@ -20,7 +20,7 @@ There are 3 places where the name of the Task Queue is supplied by the developer
 
 1. When starting a Workflow, you must pass the `taskQueue` option to the [Connection's `workflow()` method](https://nodejs.temporal.io/api/classes/client.connection#workflow).
 
-```typescript
+```ts
 const workflow = connection.workflow("my-workflow", {
   taskQueue: "my-task-queue",
 });
@@ -30,7 +30,7 @@ const result = await workflow.start();
 
 2. When creating a Worker, you must pass the `taskQueue` option to the [`Worker.create()` function](https://nodejs.temporal.io/api/classes/worker.worker-1#create).
 
-```typescript
+```ts
 const worker = await Worker.create({
   workDir: __dirname,
   taskQueue: "my-task-queue",
@@ -39,7 +39,7 @@ const worker = await Worker.create({
 
 3. Optionally, when calling an Activity, you can specify the task queue by passing the `taskQueue` option to `Context.configure()`. If you do not specify a `taskQueue`, then the Node SDK places Activity Tasks in the same Task Queue as the Workflow Task Queue.
 
-```typescript
+```ts
 import {Context} from "@temporalio/workflow";
 import {greet} from "@activities/greet";
 
