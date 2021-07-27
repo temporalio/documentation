@@ -67,10 +67,10 @@ We have load tested up to 200 million concurrent Workflow Executions.
 Every shard is low contention by design and it is very difficult to oversubscribe to a Task Queue in the same cluster.
 With that said, here are some guidelines to some common bottlenecks:
 
-- **Database**. The vast majority of the time the database will be the bottleneck. This is why we default to using Cassandra as a highly horizontal database with batch transactions. **We highly recommend setting alerts on `ScheduleToStart` latency** to look out for this. Also check if your database connection getting saturated.
+- **Database**. The vast majority of the time the database will be the bottleneck. **We highly recommend setting alerts on `ScheduleToStart` latency** to look out for this. Also check if your database connection getting saturated.
 - **Internal services**. The next layer will be scaling the 4 internal services of Temporal ([Frontend, Matching, History, and Worker](https://docs.temporal.io/docs/server-architecture/)). Monitor each accordingly. The Frontend service is more CPU bound, whereas the History and Matching services require more memory.
 - See the **Server Limits** section below for other limits you will want to keep in mind when doing system design, including event history length.
-- For very bursty and high throughput workloads (eg >10k workflows created per second) you may explore using [Kafka in front of Temporal](https://community.temporal.io/t/temporal-and-kafka/410).
+- [Multi-Cluster Replication](https://docs.temporal.io/docs/server/multi-cluster/) is an experimental feature you can explore for heavy reads.
 
 ### FAQ: Autoscaling Workers based on Task Queue load
 
