@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function CenteredImage({imagePath1, imagePath2}) {
+export default function RowOfImages({imagePath1, imagePath2}) {
   return (
     <div className={"docs-centered-image-wrapper"}>
       <div className="row">
