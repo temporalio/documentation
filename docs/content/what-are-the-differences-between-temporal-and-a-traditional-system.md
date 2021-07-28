@@ -1,7 +1,7 @@
 ---
 id: what-are-the-differences-between-temporal-and-a-traditional-system
 title: What are the differences between Temporal and a traditional system?
-description: Compare a function execution in a traditional system to a Workflow Execution in Temporal.
+description: This page compares a function execution in a traditional system and a Workflow Execution in Temporal.
 tags:
   - explanation
 ---
@@ -16,14 +16,14 @@ hText={headingText}
 />
 
 The Temporal platform exists to facilitate Workflow Executions.
-Compare a function execution in a traditional system to a Workflow Execution in Temporal.
+This page compares a function execution in a traditional system and a Workflow Execution in Temporal.
 
 ![Diagram that shows traditional function execution and Temporal Workflow Execution](/img/docs/function-execution-vs-reentrant-process.png)
 
 :::note Legend
 
-λ = traditional function execution
-π = Temporal Workflow Execution
+λ = traditional function execution  
+π = Temporal Workflow Execution  
 𝝈 = state
 
 :::
@@ -39,8 +39,8 @@ In a traditional system, a service function execution (λ) is both volatile and 
 
 In Temporal, a Workflow Execution (π) is resumable.
 
-- A Workflow Execution is fully resumable after a failure of any kind.
-- Temporal imposes no deadline on a Workflow Execution.
+- A Workflow Execution is fully resumable after a failure.
+- Temporal imposes no deadlines on Workflow Executions.
 
 ## State
 
@@ -54,8 +54,7 @@ In Temporal, computation resumes from its _latest_ state. All progress is retain
 
 In a traditional system, you can't "communicate" with a function execution.
 
-In Temporal, you can use Signals to "communicate" with a Workflow Execution.
-You can also query the state of a Workflow Execution.
+In Temporal, you can use Signals to send data into and get data out of a Workflow Execution.
 
 ## Scope
 
