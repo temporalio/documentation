@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" viewBox="14317.5 -9721 1001 531.896" width="1001" height="531.896">
+  <defs>
+    <font-face font-family="Helvetica Neue" font-size="16" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+    <font-face font-family="Helvetica Neue" font-size="14" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
+      <font-face-src>
+        <font-face-name name="HelveticaNeue"/>
+      </font-face-src>
+    </font-face>
+  </defs>
+  <metadata> Produced by OmniGraffle 7.18.5\n2021-07-27 17:33:29 +0000</metadata>
+  <g id="Architecture" fill="none" stroke="none" stroke-opacity="1" stroke-dasharray="none" fill-opacity="1">
+    <title>Architecture</title>
+    <g id="Architecture_Layer_1">
+      <title>Layer 1</title>
+      <g id="Graphic_1298">
+        <path d="M 14687 -9612.552 L 14899 -9612.552 C 14903.97 -9612.552 14908 -9608.523 14908 -9603.552 L 14908 -9306.552 C 14908 -9301.581 14903.97 -9297.552 14899 -9297.552 L 14687 -9297.552 C 14682.03 -9297.552 14678 -9301.581 14678 -9306.552 L 14678 -9603.552 C 14678 -9608.523 14682.03 -9612.552 14687 -9612.552 Z" fill="white"/>
+        <path d="M 14687 -9612.552 L 14899 -9612.552 C 14903.97 -9612.552 14908 -9608.523 14908 -9603.552 L 14908 -9306.552 C 14908 -9301.581 14903.97 -9297.552 14899 -9297.552 L 14687 -9297.552 C 14682.03 -9297.552 14678 -9301.581 14678 -9306.552 L 14678 -9603.552 C 14678 -9608.523 14682.03 -9612.552 14687 -9612.552 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_1297">
+        <path d="M 14712 -9587.552 L 14874 -9587.552 C 14878.97 -9587.552 14883 -9583.523 14883 -9578.552 L 14883 -9476.552 C 14883 -9471.581 14878.97 -9467.552 14874 -9467.552 L 14712 -9467.552 C 14707.03 -9467.552 14703 -9471.581 14703 -9476.552 L 14703 -9578.552 C 14703 -9583.523 14707.03 -9587.552 14712 -9587.552 Z" fill="white"/>
+        <path d="M 14712 -9587.552 L 14874 -9587.552 C 14878.97 -9587.552 14883 -9583.523 14883 -9578.552 L 14883 -9476.552 C 14883 -9471.581 14878.97 -9467.552 14874 -9467.552 L 14712 -9467.552 C 14707.03 -9467.552 14703 -9471.581 14703 -9476.552 L 14703 -9578.552 C 14703 -9583.523 14707.03 -9587.552 14712 -9587.552 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(14708 -9546)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="51.84" y="15">Workflow</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="68.848" y="33.448">Task</tspan>
+        </text>
+      </g>
+      <g id="Graphic_1296">
+        <path d="M 14712 -9442.552 L 14874 -9442.552 C 14878.97 -9442.552 14883 -9438.523 14883 -9433.552 L 14883 -9331.552 C 14883 -9326.581 14878.97 -9322.552 14874 -9322.552 L 14712 -9322.552 C 14707.03 -9322.552 14703 -9326.581 14703 -9331.552 L 14703 -9433.552 C 14703 -9438.523 14707.03 -9442.552 14712 -9442.552 Z" fill="white"/>
+        <path d="M 14712 -9442.552 L 14874 -9442.552 C 14878.97 -9442.552 14883 -9438.523 14883 -9433.552 L 14883 -9331.552 C 14883 -9326.581 14878.97 -9322.552 14874 -9322.552 L 14712 -9322.552 C 14707.03 -9322.552 14703 -9326.581 14703 -9331.552 L 14703 -9433.552 C 14703 -9438.523 14707.03 -9442.552 14712 -9442.552 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(14708 -9401)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="58.928" y="15">Activity</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="68.848" y="33.448">Task</tspan>
+        </text>
+      </g>
+      <g id="Graphic_1295">
+        <path d="M 14327 -9612.552 L 14489 -9612.552 C 14493.97 -9612.552 14498 -9608.523 14498 -9603.552 L 14498 -9306.552 C 14498 -9301.581 14493.97 -9297.552 14489 -9297.552 L 14327 -9297.552 C 14322.03 -9297.552 14318 -9301.581 14318 -9306.552 L 14318 -9603.552 C 14318 -9608.523 14322.03 -9612.552 14327 -9612.552 Z" fill="white"/>
+        <path d="M 14327 -9612.552 L 14489 -9612.552 C 14493.97 -9612.552 14498 -9608.523 14498 -9603.552 L 14498 -9306.552 C 14498 -9301.581 14493.97 -9297.552 14489 -9297.552 L 14327 -9297.552 C 14322.03 -9297.552 14318 -9301.581 14318 -9306.552 L 14318 -9603.552 C 14318 -9608.523 14322.03 -9612.552 14327 -9612.552 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(14323 -9473.5)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="59.68" y="15">Worker</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="56.112" y="33.448">Process</tspan>
+        </text>
+      </g>
+      <g id="Graphic_1294">
+        <rect x="14968" y="-9547.552" width="60" height="40" fill="white"/>
+        <rect x="14968" y="-9547.552" width="60" height="40" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(14973 -9535.748)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="14" font-weight="400" fill="black" x="15.27" y="13">n:1</tspan>
+        </text>
+      </g>
+      <g id="Graphic_1293">
+        <rect x="14968" y="-9402.552" width="60" height="40" fill="white"/>
+        <rect x="14968" y="-9402.552" width="60" height="40" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(14973 -9390.748)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="14" font-weight="400" fill="black" x="15.27" y="13">n:1</tspan>
+        </text>
+      </g>
+      <g id="Graphic_1292">
+        <path d="M 15097 -9612.552 L 15309 -9612.552 C 15313.97 -9612.552 15318 -9608.523 15318 -9603.552 L 15318 -9306.552 C 15318 -9301.581 15313.97 -9297.552 15309 -9297.552 L 15097 -9297.552 C 15092.03 -9297.552 15088 -9301.581 15088 -9306.552 L 15088 -9603.552 C 15088 -9608.523 15092.03 -9612.552 15097 -9612.552 Z" fill="white"/>
+        <path d="M 15097 -9612.552 L 15309 -9612.552 C 15313.97 -9612.552 15318 -9608.523 15318 -9603.552 L 15318 -9306.552 C 15318 -9301.581 15313.97 -9297.552 15309 -9297.552 L 15097 -9297.552 C 15092.03 -9297.552 15088 -9301.581 15088 -9306.552 L 15088 -9603.552 C 15088 -9608.523 15092.03 -9612.552 15097 -9612.552 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_1291">
+        <path d="M 15122 -9587.552 L 15284 -9587.552 C 15288.97 -9587.552 15293 -9583.523 15293 -9578.552 L 15293 -9476.552 C 15293 -9471.581 15288.97 -9467.552 15284 -9467.552 L 15122 -9467.552 C 15117.03 -9467.552 15113 -9471.581 15113 -9476.552 L 15113 -9578.552 C 15113 -9583.523 15117.03 -9587.552 15122 -9587.552 Z" fill="white"/>
+        <path d="M 15122 -9587.552 L 15284 -9587.552 C 15288.97 -9587.552 15293 -9583.523 15293 -9578.552 L 15293 -9476.552 C 15293 -9471.581 15288.97 -9467.552 15284 -9467.552 L 15122 -9467.552 C 15117.03 -9467.552 15113 -9471.581 15113 -9476.552 L 15113 -9578.552 C 15113 -9583.523 15117.03 -9587.552 15122 -9587.552 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(15118 -9546)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="51.84" y="15">Workflow</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="43.056" y="33.448">Task Queue</tspan>
+        </text>
+      </g>
+      <g id="Graphic_1290">
+        <path d="M 15122 -9442.552 L 15284 -9442.552 C 15288.97 -9442.552 15293 -9438.523 15293 -9433.552 L 15293 -9331.552 C 15293 -9326.581 15288.97 -9322.552 15284 -9322.552 L 15122 -9322.552 C 15117.03 -9322.552 15113 -9326.581 15113 -9331.552 L 15113 -9433.552 C 15113 -9438.523 15117.03 -9442.552 15122 -9442.552 Z" fill="white"/>
+        <path d="M 15122 -9442.552 L 15284 -9442.552 C 15288.97 -9442.552 15293 -9438.523 15293 -9433.552 L 15293 -9331.552 C 15293 -9326.581 15288.97 -9322.552 15284 -9322.552 L 15122 -9322.552 C 15117.03 -9322.552 15113 -9326.581 15113 -9331.552 L 15113 -9433.552 C 15113 -9438.523 15117.03 -9442.552 15122 -9442.552 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(15118 -9401)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="58.928" y="15">Activity</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="43.056" y="33.448">Task Queue</tspan>
+        </text>
+      </g>
+      <g id="Line_1289">
+        <line x1="14618" y1="-9527.552" x2="14703" y2="-9527.552" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Line_1288">
+        <line x1="14618" y1="-9382.552" x2="14703" y2="-9382.552" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_1287">
+        <rect x="14558" y="-9547.552" width="60" height="40" fill="white"/>
+        <rect x="14558" y="-9547.552" width="60" height="40" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(14563 -9535.748)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="14" font-weight="400" fill="black" x="15.27" y="13">1:n</tspan>
+        </text>
+      </g>
+      <g id="Graphic_1286">
+        <rect x="14558" y="-9402.552" width="60" height="40" fill="white"/>
+        <rect x="14558" y="-9402.552" width="60" height="40" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(14563 -9390.748)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="14" font-weight="400" fill="black" x="15.27" y="13">1:n</tspan>
+        </text>
+      </g>
+      <g id="Line_1285">
+        <line x1="14883" y1="-9527.552" x2="14968" y2="-9527.552" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Line_1284">
+        <line x1="15028" y1="-9527.552" x2="15113" y2="-9527.552" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Line_1283">
+        <line x1="14883" y1="-9382.552" x2="14968" y2="-9382.552" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Line_1282">
+        <line x1="15028" y1="-9382.552" x2="15113" y2="-9382.552" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_1281">
+        <rect x="14558" y="-9692.552" width="60" height="40" fill="white"/>
+        <rect x="14558" y="-9692.552" width="60" height="40" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(14563 -9680.748)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="14" font-weight="400" fill="black" x="13.191" y="13">n:m</tspan>
+        </text>
+      </g>
+      <g id="Graphic_1280">
+        <rect x="14558" y="-9257.552" width="60" height="40" fill="white"/>
+        <rect x="14558" y="-9257.552" width="60" height="40" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <text transform="translate(14563 -9245.748)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="14" font-weight="400" fill="black" x="13.191" y="13">n:m</tspan>
+        </text>
+      </g>
+      <g id="Line_1279">
+        <path d="M 14498 -9527.552 L 14548 -9527.552 L 14558 -9527.552" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Line_1278">
+        <path d="M 14498 -9382.552 L 14548 -9382.552 L 14558 -9382.552" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Line_1277">
+        <path d="M 14408 -9612.552 L 14408 -9672.552 L 14558 -9672.552" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Line_1276">
+        <path d="M 14408 -9297.552 L 14408 -9237.552 L 14558 -9237.552" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Line_1275">
+        <path d="M 14618 -9672.552 L 15203 -9672.552 L 15203 -9587.552" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Line_1274">
+        <path d="M 14618 -9237.552 L 15203 -9237.552 L 15203 -9322.552" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_1265">
+        <text transform="translate(14558.368 -9716)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="0" y="15">listening</tspan>
+        </text>
+      </g>
+      <g id="Graphic_1264">
+        <text transform="translate(14509.456 -9502.552)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="0" y="15">dequeued &amp; executed</tspan>
+        </text>
+      </g>
+      <g id="Graphic_1263">
+        <text transform="translate(14962.28 -9502.552)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="0" y="15">enqueued</tspan>
+        </text>
+      </g>
+      <g id="Graphic_1262">
+        <text transform="translate(14962.28 -9426)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="0" y="15">enqueued</tspan>
+        </text>
+      </g>
+      <g id="Graphic_1261">
+        <text transform="translate(14509.456 -9426)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="0" y="15">dequeued &amp; executed</tspan>
+        </text>
+      </g>
+      <g id="Graphic_1260">
+        <text transform="translate(14558.368 -9212.552)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="0" y="15">listening</tspan>
+        </text>
+      </g>
+    </g>
+  </g>
+</svg>

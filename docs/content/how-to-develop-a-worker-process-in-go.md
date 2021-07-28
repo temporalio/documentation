@@ -1,6 +1,6 @@
 ---
-id: how-to-start-a-worker-in-go
-title: How to start a Worker in Go
+id: how-to-develop-a-worker-process-in-go
+title: How to develop a Worker in Go
 description: Create a new instance of a Worker by calling `worker.New()`, available via the `go.temporal.io/sdk/worker` package.
 tags:
   - guide
