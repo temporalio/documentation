@@ -18,14 +18,14 @@ workerLink="/docs/java/workers"
 In Node, a Task Queue is represented in code by name, as a `string`.
 There are 3 places where the name of the Task Queue is supplied by the developer.
 
-1. When starting a Workflow, you must pass the `taskQueue` option to the [Connection's `workflow()` method](https://nodejs.temporal.io/api/classes/client.connection#workflow).
+1. When starting a Workflow, you must pass the `taskQueue` option to the [WorkflowClient's `stub()` method](https://nodejs.temporal.io/api/classes/client.workflowclient#stub).
 
 ```typescript
-const workflow = connection.workflow("my-workflow", {
+const workflow = workflowClient.stub("my-workflow", {
   taskQueue: "my-task-queue",
 });
 
-const result = await workflow.start();
+const result = await workflow.execute();
 ```
 
 2. When creating a Worker, you must pass the `taskQueue` option to the [`Worker.create()` function](https://nodejs.temporal.io/api/classes/worker.worker-1#create).
