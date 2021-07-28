@@ -34,12 +34,10 @@ How to develop a Worker in PHP?/docs/content/how-to-develop-a-worker-in-php?g"
 
 More formally, a Worker Process is a process that implements the [Task Queue Protocol](#) and the [Task Execution Protocol](#).
 
-<!-- Component diagram -->
-
 <CenteredImage
 imagePath="/diagrams/worker-entity-relationship.svg"
 imageSize="75"
-title="Worker and Server relationship"
+title="Worker Process as a component"
 />
 
 A Worker Process is a Workflow Worker Process if that process implements the [Workflow Task Queue Protocol](#) and executes the [Workflow Task Execution Protocol](#) to make progress on a [Workflow Execution](#).
@@ -50,10 +48,8 @@ An Activity Worker Process can listen on an arbitrary number of Activity Task Qu
 
 A Worker Process can be both a Workflow Worker Process and an Activity Worker Process.
 
-<!-- Meta model of Worker Processes -->
-
 <CenteredImage
 imagePath="/diagrams/worker-process-and-task-queues.svg"
 imageSize="75"
-title="Worker Process meta model"
+title="Worker Process as a meta model"
 />
