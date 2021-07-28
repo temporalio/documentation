@@ -6,15 +6,6 @@ tags:
   - guide
 ---
 
-import DetermineHeader from '../components/DetermineHeader.js'
-
-export const headingText = 'How to start a Worker in PHP'
-
-<DetermineHeader
-hLevel={props.heading}
-hText={headingText}
-/>
-
 The [RoadRunner application server](https://roadrunner.dev/) will launch multiple Temporal PHP worker processes based on provided `.rr.yaml` configuration.
 
 Each Worker might connect to one or multiple Task Queues.

@@ -5,15 +5,6 @@ tags:
   - explanation
 ---
 
-import DetermineHeader from '../components/DetermineHeader.js'
-
-export const headingText = 'What is a Workflow Run Timeout?'
-
-<DetermineHeader
-hLevel={props.heading}
-hText={headingText}
-/>
-
 This is the maximum amount of time that a single Workflow Run is restricted to.
 
 **The default is set to the same value as the [Workflow Execution Timeout](/docs/content/what-is-a-workflow-execution-timeout).**

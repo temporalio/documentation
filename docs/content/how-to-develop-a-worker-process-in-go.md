@@ -6,15 +6,6 @@ tags:
   - guide
 ---
 
-import DetermineHeader from '../components/DetermineHeader.js'
-
-export const headingText = 'How to start a Worker in Go'
-
-<DetermineHeader
-hLevel={props.heading}
-hText={headingText}
-/>
-
 First, create a new instance of a [`Worker`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/worker#Worker) by calling `worker.New()`, available via the `go.temporal.io/sdk/worker` package and pass it the following parameters:
 
 1. An instance of the The Temporal Go SDK `Client`.

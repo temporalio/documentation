@@ -6,15 +6,6 @@ tags:
   - explanation
 ---
 
-import DetermineHeader from '../components/DetermineHeader.js'
-
-export const headingText = 'What is Temporal?'
-
-<DetermineHeader
-hLevel={props.heading}
-hText={headingText}
-/>
-
 Temporal is a scalable and reliable runtime for Temporal Workflow Executions.
 
 **Temporal's tenth rule**
