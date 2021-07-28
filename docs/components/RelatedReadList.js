@@ -15,28 +15,20 @@ export default function RelatedRead({readliststring}) {
       tagClass: tagStuff.tagClass,
     });
   }
-  if (readingList.length == 1 ) {
+  if (readingList.length == 1) {
     return (
       <div className={"related-read-div"}>
         <span className={"related-read-label"}>Related 📚 </span>
-          {readingList.map(({text, goTo, tag, tagClass}) => (
-            <>
-            <Link
-              className={"related-read-link"}
-              to={goTo}
-            >
+        {readingList.map(({text, goTo, tag, tagClass}) => (
+          <>
+            <Link className={"related-read-link"} to={goTo}>
               {text}
             </Link>
-            <span
-              className={clsx(
-                "related-read-archetype-tag",
-                tagClass
-              )}
-            >
+            <span className={clsx("related-read-archetype-tag", tagClass)}>
               {tag}
             </span>
-            </>
-          ))}
+          </>
+        ))}
       </div>
     );
   } else {
@@ -49,10 +41,7 @@ export default function RelatedRead({readliststring}) {
               <Link className={"related-read-link"} to={goTo}>
                 {text}
               </Link>
-              <span className={clsx(
-                  "related-read-archetype-tag",
-                  tagClass
-              )}>
+              <span className={clsx("related-read-archetype-tag", tagClass)}>
                 {tag}
               </span>
             </li>
