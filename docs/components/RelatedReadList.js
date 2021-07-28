@@ -7,8 +7,13 @@ export default function RelatedRead({readliststring}) {
   let readingList = [];
   for (const item of items) {
     const parts = item.split("?");
-    const tagStuff = tagInfo(parts[2])
-    readingList.push({"text": parts[0], "goTo": parts[1], "tag": tagStuff.tag, "tagClass": tagStuff.tagClass});
+    const tagStuff = tagInfo(parts[2]);
+    readingList.push({
+      text: parts[0],
+      goTo: parts[1],
+      tag: tagStuff.tag,
+      tagClass: tagStuff.tagClass,
+    });
   }
 
   return (
@@ -17,7 +22,9 @@ export default function RelatedRead({readliststring}) {
       <ul className="related-read-list">
         {readingList.map(({text, goTo, tag, tagClass}) => (
           <li>
-            <span className={clsx("related-read-archetype-tag", tagClass)}>{tag}</span>
+            <span className={clsx("related-read-archetype-tag", tagClass)}>
+              {tag}
+            </span>
             <Link className={"related-read-link"} to={goTo}>
               {text}
             </Link>
@@ -28,7 +35,7 @@ export default function RelatedRead({readliststring}) {
   );
 }
 
-function tagInfo (tagChar) {
+function tagInfo(tagChar) {
   var tagClass;
   var tag;
   switch (tagChar) {
@@ -48,5 +55,5 @@ function tagInfo (tagChar) {
       tagClass = "archetype-tag-reference";
       tag = "reference";
   }
-  return {"tag": tag, "tagClass": tagClass};
+  return {tag: tag, tagClass: tagClass};
 }

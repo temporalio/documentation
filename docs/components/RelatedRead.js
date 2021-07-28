@@ -28,7 +28,15 @@ export default function RelatedRead({text, goTo, tagChar}) {
       <Link className={"related-read-link"} to={goTo}>
         {text}
       </Link>
-      <span className={clsx("related-read-archetype-tag", "related-read-archetype-tag-float", tagClass)}>{tag}</span>
+      <span
+        className={clsx(
+          "related-read-archetype-tag",
+          "related-read-archetype-tag-float",
+          tagClass
+        )}
+      >
+        {tag}
+      </span>
     </div>
   );
 }
