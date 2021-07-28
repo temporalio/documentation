@@ -219,10 +219,6 @@ h4,
   color: var(--ifm-color-primary-dark);
 }
 
-.related-read-archetype-tag-float {
-  float: right;
-}
-
 .related-read-archetype-tag {
   padding:3px;
   color: #ffffff;

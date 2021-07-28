@@ -15,33 +15,65 @@ export default function RelatedRead({readliststring}) {
       tagClass: tagStuff.tagClass,
     });
   }
-
-  return (
-    <div className={"related-read-div"}>
-      <span className={"related-read-label"}>Related 📚 </span>
-      <ul className="related-read-list">
-        {readingList.map(({text, goTo, tag, tagClass}) => (
-          <li>
-            <span className={clsx("related-read-archetype-tag", tagClass)}>
-              {tag}
-            </span>
-            <Link className={"related-read-link"} to={goTo}>
+  if (readingList.length == 1 ) {
+    return (
+      <div className={"related-read-div"}>
+        <span className={"related-read-label"}>Related 📚 </span>
+          {readingList.map(({text, goTo, tag, tagClass}) => (
+            <>
+            <Link
+              className={"related-read-link"}
+              to={goTo}
+            >
               {text}
             </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
+            <span
+              className={clsx(
+                "related-read-archetype-tag",
+                tagClass
+              )}
+            >
+              {tag}
+            </span>
+            </>
+          ))}
+      </div>
+    );
+  } else {
+    return (
+      <div className={"related-read-div"}>
+        <span className={"related-read-label"}>Related 📚 </span>
+        <ul className="related-read-list">
+          {readingList.map(({text, goTo, tag, tagClass}) => (
+            <li>
+              <Link className={"related-read-link"} to={goTo}>
+                {text}
+              </Link>
+              <span className={clsx(
+                  "related-read-archetype-tag",
+                  tagClass
+              )}>
+                {tag}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
+  }
 }
 
 function tagInfo(tagChar) {
   var tagClass;
   var tag;
   switch (tagChar) {
-    case "g":
+    case "dg":
       tagClass = "archetype-tag-guide";
-      tag = "guide";
+      tag = "developer guide";
+      break;
+    case "og":
+      tagClass = "archetype-tag-guide";
+      tag = "operations guide";
       break;
     case "t":
       tagClass = "archetype-tag-tutorial";

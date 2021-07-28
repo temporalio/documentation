@@ -1,5 +1,5 @@
 ---
-id: how-to-develop-a-worker-in-node
+id: how-to-develop-a-worker-process-in-node
 title: How to develop a Worker in Node.js
 description: Import a Worker from the `@temporalio/worker` module and call `Worker.create()` to create a new Worker in Node.js.
 tags:

@@ -1,5 +1,5 @@
 ---
-id: how-to-develop-a-worker-in-php
+id: how-to-develop-a-worker-process-in-php
 title: How to develop a Worker in PHP
 description: Use the `newWorker()` method on an instance of a `WorkerFactory` to create a new Worker in PHP.
 tags:

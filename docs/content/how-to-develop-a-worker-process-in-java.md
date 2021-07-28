@@ -1,5 +1,5 @@
 ---
-id: how-to-develop-a-worker-in-java
+id: how-to-develop-a-worker-process-in-java
 title: How to develop a Worker in Java
 description: Use the `newWorker` method on an instance of a `WorkerFactory` to create a new Worker in Java.
 tags:
