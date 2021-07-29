@@ -248,10 +248,10 @@ module.exports = {
               require("remark-typescript-tools").transpileCodeblocks,
               {
                 compilerSettings: {
-                  tsconfig: './tsconfig.json',
-                  externalResolutions: {}
+                  tsconfig: "./tsconfig.json",
+                  externalResolutions: {},
                 },
-                fileExtensions: ['.md', '.mdx'],
+                fileExtensions: [".md", ".mdx"],
               },
             ],
             [
@@ -265,8 +265,8 @@ module.exports = {
                       node.value = node.value.slice("// @ts-nocheck\n".length);
                     }
                     // If TS compiled output is empty, replace it with a more helpful comment
-                    if (node.lang === 'js' && node.value === 'export {};') {
-                      node.value = '// Not required in JavaScript';
+                    if (node.lang === "js" && node.value === "export {};") {
+                      node.value = "// Not required in JavaScript";
                     }
                   }
                   visit(tree, "code", visitor);
