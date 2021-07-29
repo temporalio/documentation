@@ -24,7 +24,7 @@ imagePath="/diagrams/worker-and-server-component.svg"
 title="Component diagram of a Worker Process and the Temporal Server"
 />
 
-A Worker Process is responsible for listening on a [Task Queue](#), dequeueing a [Task](#), executing your code in response to a Task, and responding to the [Temporal Server](#) with the results.
+A Worker Process is responsible for polling a [Task Queue](#), dequeueing a [Task](#), executing your code in response to a Task, and responding to the [Temporal Server](#) with the results.
 
 More formally, a Worker Process is any process that implements the [Task Queue Protocol](#) and the [Task Execution Protocol](#):
 
