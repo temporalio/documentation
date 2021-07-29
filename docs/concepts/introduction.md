@@ -16,7 +16,7 @@ If so, you are likely familiar with the mixture of stateless services, databases
 However, these types of systems often come with a number of problems.
 It can be quite difficult to maintain the health of each individual component.
 Moreover, there is usually a large investment that has to be made in infrastructure to visualize the health of the overall system, define timeouts, and orchestrate retries.
-Scaling and maintaining these systems is challenging and costly effort.
+Scaling and maintaining these systems is a challenging and costly effort.
 
 ## Modern solution
 
