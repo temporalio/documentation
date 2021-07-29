@@ -1,6 +1,6 @@
 ---
-id: how-to-write-an-activity-definition-in-go
-title: How to write an Activity Definition in Go
+id: how-to-develop-an-activity-definition-in-go
+title: How to develop an Activity Definition in Go
 description: In the Temporal Go SDK programming model, an Activity Definition is an exportable function or `stuct` method.
 tags:
   - guide
@@ -35,15 +35,11 @@ func(a *YourActivityStruct) YourActivityDefinition(ctx workflow.Context) error {
 Activities written as struct methods can make use of shared struct variables.
 The rest of this guide will show Activities written as struct methods.
 
-<!--
-<RelatedRead
-text="What are Activities"
-goTo="/docs/concepts-new/introduction#workflow-definition"
-tagChar="e"
+<RelatedReadList
+readliststring="What are Activities?/docs/concepts-new/introduction#workflow-definition?e"
 />
--->
 
-## Activity parameters in Go
+**Activity parameters in Go**
 
 The first parameter of an Activity Definition is `context.Context`.
 This parameter is optional for an Activity Definition, though it is recommended especially if the Activity is expected to use other Go SDK APIs.
@@ -68,21 +64,12 @@ func (a *YourActivityStruct) YourActivityDefinition(ctx context.Context, param Y
 
 There is no explicit limit to the amount of parameter data that can be passed to an Activity, however all parameters are recorded in the Workflow Execution History and a large Workflow Execution History can adversely impact the performance of your Workflow Execution.
 
-<!--
-<RelatedRead
-text="What is a Workflow Execution History"
-goTo="#"
-tagChar="e"
+<RelatedReadList
+readliststring="What is a Workflow Execution History?#?e|
+When to care about the size of your Workflow Execution History?#?g"
 />
 
-<RelatedRead
-text="When to care about the size of your Workflow Execution History"
-goTo="#"
-tagChar="g"
-/>
--->
-
-## Activity return values in Go
+**Activity return values in Go**
 
 A Go-based Activity Definition can return either just an `error` or a `customValue, error` combination (same as a Workflow Definition).
 Again, the best practice here is to use a `struct` type to hold all custom values.
@@ -104,23 +91,15 @@ func (a *YourActivityStruct) YourActivityDefinition(ctx context.Context, param Y
 }
 ```
 
-<!--
-<RelatedRead
-text="When to return an error from an Activity"
-goTo="#"
-tagChar="g"
+<RelatedReadList
+readliststring="When to return an error from an Activity?#?g"
 />
--->
 
-## Activity logic requirements in Go
+**Activity logic requirements in Go**
 
 There are no other limitations to Activity Definition logic.
 All native features of the Go programming language can be used within an Activity, and it is idiomatic to use an Activity to make calls to other services across a network.
 
-<!--
-<RelatedRead
-text="What are some Activity implementation design patterns"
-goTo="#"
-tagChar="g"
+<RelatedReadList
+readliststring="What are some Activity implementation design patterns?#?g"
 />
--->

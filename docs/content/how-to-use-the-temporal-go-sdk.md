@@ -12,11 +12,6 @@ Add the [Temporal Go SDK](https://github.com/temporalio/sdk-go) to your project:
 go get go.temporal.io/sdk@latest
 ```
 
-**How to run your application locally?**
-
-[Install and run the Temporal Server](/docs/server/quick-install) using `docker compose`.
-The Server needs to be running for your Temporal Application to execute.
-
 **Where is the Go SDK technical reference?**
 
 The [Temporal Go SDK API reference](https://pkg.go.dev/go.temporal.io/sdk) is published on [pkg.go.dev](https://pkg.go.dev/go.temporal.io/sdk)

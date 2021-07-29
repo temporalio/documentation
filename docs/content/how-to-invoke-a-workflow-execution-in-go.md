@@ -10,13 +10,9 @@ import RelatedReadList from '../components/RelatedReadList.js'
 
 A Workflow Execution can be invoked using the `ExecuteWorkflow()` method on the Go SDK [`Client`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client#Client), which is available via [`NewClient()`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client#NewClient) in the [`go.temporal.io/sdk/client`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client) package.
 
-<!--
-<RelatedRead
-text="How to invoke a Child Workflow Execution"
-goTo="#"
-tagChar="g"
+<RelatedReadList
+readliststring="How to invoke a Child Workflow Execution?#?dg"
 />
--->
 
 The `ExecuteWorkflow()` API call requires an instance of [`context.Context`](https://pkg.go.dev/context#Context), an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client#StartWorkflowOptions), a Workflow Type name, and all variables to be passed to the Workflow Execution.
 The `ExecuteWorkflow()` call returns a Future, which can be used to get the result of the Workflow Execution.
@@ -54,43 +50,20 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (Your
 
 Notice that that the Task Queue name is the same as the name provided [when a new Worker is created](#).
 
-<!--
-<RelatedRead
-text="What is a Workflow Execution"
-goTo="#"
-tagChar="g"
+<RelatedReadList
+readliststring="What is a Workflow Execution?#?g|
+How to customize the name of the Workflow Type?#?g"
 />
-
-<RelatedRead
-text="How to customize the name of the Workflow Type"
-goTo="#"
-tagChar="g"
-/>
--->
 
 The only field, of the `StartWorkflowOptions` instance, that requires a value is the `TaskQueue`.
 A Task Queue name is also provided to the Worker that is registered to execute that particular Workflow Type.
 The Task Queue name must be the same for both.
 
-<!--
-<RelatedRead
-text="What are Workflow Execution Options"
-goTo="#"
-tagChar="e"
+<RelatedReadList
+readliststring="What are Workflow Execution Options?#?e|
+How to start a Worker?#?g|
+When to care about Task Queues?#?g"
 />
-
-<RelatedRead
-text="How to start a Worker"
-goTo="#"
-tagChar="g"
-/>
-
-<RelatedRead
-text="When to care about Task Queues"
-goTo="#"
-tagChar="g"
-/>
--->
 
 By default, the Workflow Type name is the same as the function name.
 If the invocation process has access to the function directly, then the Workflow Type name parameter can be passed as if the function name were a variable, without quotations.
@@ -103,22 +76,8 @@ we, err := c.ExecuteWorkflow(context.Background(), workflowOptions, "YourWorkflo
 
 In Go, the name of the Workflow Type can be customized when the Workflow Definition is registered with a Worker.
 
-<!--
-<RelatedRead
-text="How to start a Worker"
-goTo="#"
-tagChar="g"
+<RelatedReadList
+readliststring="How to develop a Worker Process in Go?#?g|
+What is a Workflow Type?#?e|
+How to build a polyglot application?#?t"
 />
-
-<RelatedRead
-text="What is a Workflow Type"
-goTo="#"
-tagChar="e"
-/>
-
-<RelatedRead
-text="How to build a polyglot application"
-goTo="#"
-tagChar="t"
-/>
--->
