@@ -5,15 +5,6 @@ tags:
   - explanation
 ---
 
-import DetermineHeader from '../components/DetermineHeader.js'
-
-export const headingText = 'What is a Workflow Task Timeout?'
-
-<DetermineHeader
-hLevel={props.heading}
-hText={headingText}
-/>
-
 This is the maximum amount of time that the Temporal Server will wait for a Worker to start processing a [Workflow Task](#workflow-task) after the Task has been pulled from the Task Queue.
 
 **The default value is 10 seconds.**

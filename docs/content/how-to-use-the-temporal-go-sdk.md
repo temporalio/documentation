@@ -6,15 +6,6 @@ tags:
   - guide
 ---
 
-import DetermineHeader from '../components/DetermineHeader.js'
-
-export const headingText = 'How to use the Temporal Go SDK'
-
-<DetermineHeader
-hLevel={props.heading}
-hText={headingText}
-/>
-
 Add the [Temporal Go SDK](https://github.com/temporalio/sdk-go) to your project:
 
 ```

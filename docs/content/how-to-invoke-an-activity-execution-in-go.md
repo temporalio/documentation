@@ -6,15 +6,7 @@ tags:
   - guide
 ---
 
-import RelatedRead from '../components/RelatedRead.js'
-import DetermineHeader from '../components/DetermineHeader.js'
-
-export const headingText = 'How to invoke an Activity Execution in Go'
-
-<DetermineHeader
-hLevel={props.heading}
-hText={headingText}
-/>
+import RelatedReadList from '../components/RelatedReadList.js'
 
 To invoke an Activity Execution, use the [`ExecuteActivity()`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/workflow#ExecuteActivity) API call available from the [`go.temporal.io/sdk/workflow`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/workflow) package.
 

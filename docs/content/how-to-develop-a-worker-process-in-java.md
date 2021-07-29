@@ -6,15 +6,7 @@ tags:
   - guide
 ---
 
-import RelatedRead from '../components/RelatedRead.js'
-import DetermineHeader from '../components/DetermineHeader.js'
-
-export const headingText = 'How to start a Worker in Java'
-
-<DetermineHeader
-hLevel={props.heading}
-hText={headingText}
-/>
+import RelatedReadList from '../components/RelatedReadList.js'
 
 Use the `newWorker` method on an instance of a [`WorkerFactory`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkerFactory.html) to create a new Worker in Java.
 

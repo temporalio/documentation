@@ -6,15 +6,7 @@ tags:
   - guide
 ---
 
-import RelatedRead from '../components/RelatedRead.js'
-import DetermineHeader from '../components/DetermineHeader.js'
-
-export const headingText = 'How to write a Workflow Definition in Go'
-
-<DetermineHeader
-hLevel={props.heading}
-hText={headingText}
-/>
+import RelatedReadList from '../components/RelatedReadList.js'
 
 In the Temporal Go SDK programming model, a [Workflow Definition](/docs/temporal-explained/introduction#workflow-definition) is an exportable function.
 

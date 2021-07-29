@@ -6,16 +6,9 @@ tags:
   - explanation
 ---
 
-import RelatedRead from '../components/RelatedRead.js'
 import RelatedReadList from '../components/RelatedReadList.js'
 import CenteredImage from "../components/CenteredImage.js"
-import DetermineHeader from '../components/DetermineHeader.js'
 import LanguageLinkTabs from '../components/LanguageLinkTabs.js'
-
-<DetermineHeader
-hLevel={props.hLevel}
-hText={props.hText}
-/>
 
 > In day-to-day conversations, the term Worker is used to denote a Worker Process.
 

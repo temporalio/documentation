@@ -6,15 +6,6 @@ tags:
   - guide
 ---
 
-import DetermineHeader from '../components/DetermineHeader.js'
-
-export const headingText = 'How to start a Worker in Node.js'
-
-<DetermineHeader
-hLevel={props.heading}
-hText={headingText}
-/>
-
 To start a Worker you need to pass the following two parameters to the `Worker.create()` function:
 
 1. The `workDir`: The Node SDK will automatically register all Activities in any `.js` files in `workDir + '/../activities'` and it will register all Workflows in any `.js` files in `workDir + '/../workflows'`.
