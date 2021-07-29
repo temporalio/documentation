@@ -23,7 +23,7 @@ cd  docker-compose
 docker-compose up
 ```
 
-Once the Temporal Server is running, Workflow Executions can be invoked.
+When the Temporal Server is running, Workflow Executions can be invoked.
 The Temporal Server can be kept running in the background while applications are built.
 Workflow Execution details can be viewed in the Temporal Web UI via your browser: [localhost:8088](http://localhost:8088/).
 
