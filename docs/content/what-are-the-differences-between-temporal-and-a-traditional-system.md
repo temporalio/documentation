@@ -9,7 +9,7 @@ tags:
 The Temporal platform exists to facilitate Workflow Executions.
 This page compares a function execution in a traditional system and a Workflow Execution in Temporal.
 
-![Diagram that shows traditional function execution and Temporal Workflow Execution](/img/docs/function-execution-vs-reentrant-process.png)
+![Diagram that shows traditional function execution and Temporal Workflow Execution](/img/diagrams/temporal-vs-traditional-high-level.svg)
 
 :::note Legend
 
