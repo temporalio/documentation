@@ -254,7 +254,7 @@ The completion or failure of a Child Workflow is reported to the Workflow that s
 - Create one-to-one mappings between a Workflow Id and some other resource.
 - Execute some periodic logic.
 
-**When *not* to use Child Workflows?**
+**When _not_ to use Child Workflows?**
 
 - **Lack of a shared state with the Parent Workflow Execution.**
   Parent Workflow Executions and Child Workflow Executions can communicate only through asynchronous [Signals](/docs/go/signals).
