@@ -6,13 +6,30 @@ sidebar_label: Go SDK introduction
 
 ## Quick start
 
-1. Add the [Temporal Go SDK](https://github.com/temporalio/sdk-go) to your project:
+1. Clone the Hello World project which has all the basic files explained in our [Hello World Tutorial](/docs/go/hello-world-tutorial):
 
-```
-go get go.temporal.io/sdk@latest
+```bash
+git clone https://github.com/temporalio/hello-world-project-template-go
 ```
 
 2. [Install and run the Temporal Server](/docs/server/quick-install) using `docker compose`.
+
+```bash
+git clone https://github.com/temporalio/docker-compose.git
+cd docker-compose
+docker-compose up
+```
+
+You can now view Temporal Web at http://localhost:8088.
+
+3. Run the worker and starter included in the project.
+
+```bash
+go run worker/main.go
+go run start/main.go
+```
+
+If you have [`nodemon`](https://nodemon.io/) installed, you can automatically reload when you change any files: `nodemon --watch './**/*.go' --signal SIGTERM --exec 'go' run worker/main.go`
 
 ## Resources
 
