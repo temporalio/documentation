@@ -78,7 +78,6 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (Your
 
 Returning a non-nil `error` from a Workflow indicates that an error was encountered during its execution and the Workflow Execution should be [Terminated](#).
 
-
 <RelatedReadList
 readliststring="When to return an error from a Workflow?#?og"
 />
