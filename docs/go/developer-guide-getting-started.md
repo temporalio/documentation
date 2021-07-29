@@ -1,6 +1,7 @@
 ---
 id: getting-started
 title: Temporal Go SDK developer guide - getting started
+description: Get started building a Temporal application in Go.
 tags:
   - guide
 ---
