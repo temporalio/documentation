@@ -27,7 +27,7 @@ When the Temporal Server is running, Workflow Executions can be invoked.
 The Temporal Server can be kept running in the background while applications are built.
 Workflow Execution details can be viewed in the Temporal Web UI via your browser: [localhost:8088](http://localhost:8088/).
 
-The steps above will start the Temporal Server using a default configuration.
+The preceding steps start the Temporal Server using a default configuration.
 
 To try other configurations (different dependencies and databases), or to try a custom Docker image follow the [temporalio/docker-compose README](https://github.com/temporalio/docker-compose/blob/main/README.md).
 
