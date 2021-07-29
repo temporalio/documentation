@@ -463,5 +463,5 @@ module.exports = {
         "content/what-is-a-workflow-task-timeout",
       ],
     },
-  ]
+  ],
 };
