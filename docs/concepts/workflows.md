@@ -246,7 +246,7 @@ You can also attach a non-indexed bit of information to a Workflow, known as a m
 If a Workflow is started by another Workflow, then it is considered a Child Workflow.
 The completion or failure of a Child Workflow is reported to the Workflow that started it (the Parent Workflow).
 
-The following is a list of some of the more common reasons why you might want to break up code execution into Child Workflows:
+**When to use Child Workflows?** some of the more common reasons why you might want to break up code execution into Child Workflows:
 
 - Execute code using a different set of Workers.
 - Enable invocation from multiple Workflows.
@@ -254,9 +254,14 @@ The following is a list of some of the more common reasons why you might want to
 - Create one-to-one mappings between a Workflow Id and some other resource.
 - Execute some periodic logic.
 
-One of the main reasons you would not want to use a Child Workflow is the lack of a shared state with the Parent Workflow.
-A Parent and Child Workflow can communicate only through asynchronous signals.
-If the executing logic has tight coupling between Workflows, it may simply be easier to use a single Workflow that can rely on a shared object's state.
+**When *not* to use Child Workflows?**
+
+- **Lack of a shared state with the Parent Workflow Execution.**
+  Parent Workflow Executions and Child Workflow Executions can communicate only through asynchronous [Signals](/docs/go/signals).
+  If the executing logic is tightly coupled between Workflow Executions, it may simply be easier to use a single Workflow Definition that can rely on a shared object's state.
+- **Cost**: Child Workflows carry more event history overhead compared to Activities, and this may matter for large Temporal workloads.
+
+If in doubt, we recommend using Activities over Child Workflows until you see a clear need.
 
 ### ParentClosePolicy
 
