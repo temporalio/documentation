@@ -238,11 +238,11 @@ The following is a list of some of the more common reasons why you might want to
 
 ### When not to use Child Workflows
 
-The question of when to use Child Workflows vs Activities sometimes arises. Here is why you might *not* want to use a Child Workflow:
+The question of when to use Child Workflows vs Activities sometimes arises. Here is why you might _not_ want to use a Child Workflow:
 
 - **Lack of a shared state with the Parent Workflow Execution.**
-Parent Workflow Executions and Child Workflow Executions can communicate only through asynchronous [Signals](/docs/go/signals).
-If the executing logic is tightly coupled between Workflow Executions, it may simply be easier to use a single Workflow Definition that can rely on a shared object's state.
+  Parent Workflow Executions and Child Workflow Executions can communicate only through asynchronous [Signals](/docs/go/signals).
+  If the executing logic is tightly coupled between Workflow Executions, it may simply be easier to use a single Workflow Definition that can rely on a shared object's state.
 - **Cost**: Child Workflows carry more event history overhead compared to Activities, and this may matter for large Temporal workloads.
 
 If in doubt, we recommend using Activities over Child Workflows until you see a clear need.
