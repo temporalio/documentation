@@ -29,9 +29,9 @@ A Worker Process is responsible for listening on a [Task Queue](#), dequeueing a
 More formally, a Worker Process is any process that implements the [Task Queue Protocol](#) and the [Task Execution Protocol](#):
 
 - A Worker Process is a Workflow Worker Process if that process implements the [Workflow Task Queue Protocol](#) and executes the [Workflow Task Execution Protocol](#) to make progress on a [Workflow Execution](#).
-A Workflow Worker Process can listen on an arbitrary number of Workflow Task Queues and can execute an arbitrary number of Workflow Tasks.
+  A Workflow Worker Process can listen on an arbitrary number of Workflow Task Queues and can execute an arbitrary number of Workflow Tasks.
 - A Worker Process is an Activity Worker Process if that process implements the [Activity Task Queue Protocol](#) and executes the [Activity Task Processing Protocol](#) to make progress on an [Activity Execution](#).
-An Activity Worker Process can listen on an arbitrary number of Activity Task Queues and can execute an arbitrary number of Activity Tasks.
+  An Activity Worker Process can listen on an arbitrary number of Activity Task Queues and can execute an arbitrary number of Activity Tasks.
 
 Temporal application developers are responsible for developing and operating Worker Processes.
 An application can have as many Worker Processes as needed to meet scalability and reliability requirements.
