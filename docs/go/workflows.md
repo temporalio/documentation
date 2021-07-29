@@ -228,19 +228,24 @@ The Parent Workflow Execution has the ability to monitor and impact the lifecycl
 
 ### When to use Child Workflows
 
-The following is a list of some of the more common reasons why you might want to do this:
+The following is a list of some of the more common reasons why you might want to do use Child Workflows:
 
 - Execute code using different Workers.
 - Enable execution from multiple Workflow Executions.
 - Workaround Event History size limits.
 - Create one-to-one mappings between a Workflow Id and some other resource.
-- Execute some periodic logic.
+- Execute some periodic or asynchronous logic like `Workflow.sleep`.
 
 ### When not to use Child Workflows
 
-One of the main reasons you would not want to execute a Child Workflow is the lack of a shared state with the Parent Workflow Execution.
+The question of when to use Child Workflows vs Activities sometimes arises. Here is why you might *not* want to use a Child Workflow:
+
+- **Lack of a shared state with the Parent Workflow Execution.**
 Parent Workflow Executions and Child Workflow Executions can communicate only through asynchronous [Signals](/docs/go/signals).
 If the executing logic is tightly coupled between Workflow Executions, it may simply be easier to use a single Workflow Definition that can rely on a shared object's state.
+- **Cost**: Child Workflows carry more event history overhead compared to Activities, and this may matter for large Temporal workloads.
+
+If in doubt, we recommend using Activities over Child Workflows until you see a clear need.
 
 ### Parent Workflow Definition
 
