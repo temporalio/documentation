@@ -213,7 +213,30 @@ To learn about Workflow Activities visit [this page](/docs/java/activities).
 
 ## Child Workflows
 
-Besides Activities, a Workflow can also orchestrate other Workflows.
+Besides Activities, a Workflow can also start other Workflows.
+
+### When to use Child Workflows
+
+The following is a list of some of the more common reasons why you might want to do use Child Workflows:
+
+- Execute code using different Workers.
+- Enable execution from multiple Workflow Executions.
+- Workaround Event History size limits.
+- Create one-to-one mappings between a Workflow Id and some other resource.
+- Execute some periodic or asynchronous logic like `Workflow.sleep`.
+
+### When not to use Child Workflows
+
+The question of when to use Child Workflows vs Activities sometimes arises. Here is why you might _not_ want to use a Child Workflow:
+
+- **Lack of a shared state with the Parent Workflow Execution.**
+  Parent Workflow Executions and Child Workflow Executions can communicate only through asynchronous [Signals](/docs/go/signals).
+  If the executing logic is tightly coupled between Workflow Executions, it may simply be easier to use a single Workflow Definition that can rely on a shared object's state.
+- **Cost**: Child Workflows carry more event history overhead compared to Activities, and this may matter for large Temporal workloads.
+
+If in doubt, we recommend using Activities over Child Workflows until you see a clear need.
+
+### Java Child Workflow API
 
 `Workflow.newChildWorkflowStub` returns a client-side stub that implements a child Workflow interface.
 It takes a child Workflow type and optional child Workflow options as arguments. Workflow options can be used
