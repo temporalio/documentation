@@ -278,3 +278,24 @@ h4,
 .docs-centered-image-size-50 {
   width: 50%;
 }
+
+.docs-image-legend-wrapper {
+  width:100%;
+  margin:0;
+  padding:15px;
+  text-align: left;
+  font-size: 0.9em;
+  font-weight: 300;
+  color: #121212;
+}
+
+.docs-image-legend-list {
+  margin:0;
+  padding:0;
+  list-style-type: none;
+}
+
+.docs-image-legend-symbol {
+  font-size: 1.2em;
+  font-weight: 600;
+}
