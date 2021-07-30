@@ -21,7 +21,7 @@ Here's a small collection of 4 tips we put together for you.
 
 ## Auto-Restarting Workers
 
-When you write Activity Workflow code, you often have to kill and restart the Workers that host them, so as to pick up the changes. Usually this is a manual `Ctrl+C` + rerun process. However, you can set up your workers to reload on every *file save*. Since Workers are stateless and Workflows are tolerant to Workers going down, this works just fine.
+When you write Activity or Workflow code, you often have to kill and restart the Workers that host them, so as to pick up the changes. Usually this is a manual `Ctrl+C` + rerun process. However, you can set up your workers to reload on every *file save*. Since Workers are stateless and Workflows are tolerant to Workers going down, this works just fine.
 
 There are many ways to achieve this. You can use [`gow`](https://github.com/mitranim/gow) as a drop in replacement for the go binary that reloads upon save.  `nodemon` from the JavaScript ecosystem is a nice fully cross-platform binary that watches files and executes scripts.
 
