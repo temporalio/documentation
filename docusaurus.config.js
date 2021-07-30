@@ -1,5 +1,6 @@
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 
+const path = require("path");
 const visit = require("unist-util-visit");
 
 module.exports = {
@@ -248,7 +249,7 @@ module.exports = {
               require("remark-typescript-tools").transpileCodeblocks,
               {
                 compilerSettings: {
-                  tsconfig: "./tsconfig.json",
+                  tsconfig: path.join(__dirname, "docs", "node", "tsconfig.json"),
                   externalResolutions: {},
                 },
                 fileExtensions: [".md", ".mdx"],
