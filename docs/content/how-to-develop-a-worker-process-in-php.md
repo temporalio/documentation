@@ -1,19 +1,10 @@
 ---
-id: how-to-start-a-worker-in-php
-title: How to start a Worker in PHP
+id: how-to-develop-a-worker-process-in-php
+title: How to develop a Worker in PHP
 description: Use the `newWorker()` method on an instance of a `WorkerFactory` to create a new Worker in PHP.
 tags:
   - guide
 ---
-
-import DetermineHeader from '../components/DetermineHeader.js'
-
-export const headingText = 'How to start a Worker in PHP'
-
-<DetermineHeader
-hLevel={props.heading}
-hText={headingText}
-/>
 
 The [RoadRunner application server](https://roadrunner.dev/) will launch multiple Temporal PHP worker processes based on provided `.rr.yaml` configuration.
 

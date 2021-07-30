@@ -6,8 +6,7 @@ sidebar_label: Introduction
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import LanguageLinkTabs from '../components/LanguageLinkTabs.js'
-import RelatedRead from '../components/RelatedRead.js'
+import RelatedReadList from '../components/RelatedReadList.js'
 
 :::caution
 
@@ -17,9 +16,7 @@ This page is a work in progress!
 
 import WhatIsTemporal from '../content/what-is-temporal.md'
 
-<WhatIsTemporal
-heading=""
-/>
+<WhatIsTemporal/>
 
 ## What is a Workflow?
 
@@ -86,17 +83,6 @@ The following is a full list of all properties that can be customized for a Work
 - [Memo](#memo)
 - [Search Attributes](#search-attributes)
 - [Parent Close Policy](#parent-close-policy)
-
-<LanguageLinkTabs
-goText="How to provide Workflow Options in Go"
-goGoTo="#"
-javaText="How to provide Workflow Options in Java"
-javaGoTo="#"
-nodeText="How to provide Workflow Options in Node.js"
-nodeGoTo="#"
-phpText= "How to provide Workflow Options in PHP"
-phpGoTo="#"
-/>
 
 ## What are the timeout properties of a Workflow Execution?
 
@@ -183,11 +169,11 @@ An [Activity](#activity) that is invoked directly in the same process by Workflo
 
 - Although a Local Activity consumes less resources than a normal [Activity](#activity), it is subject to shorter durations and a lack of rate limiting.
 
+## Retry Policy
+
 import WhatIsARetryPolicy from '../content/what-is-a-retry-policy.md'
 
-<WhatIsARetryPolicy
-heading="##"
-/>
+<WhatIsARetryPolicy/>
 
 ## Event
 

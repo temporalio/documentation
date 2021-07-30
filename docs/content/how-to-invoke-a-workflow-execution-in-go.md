@@ -6,15 +6,7 @@ tags:
   - guide
 ---
 
-import RelatedRead from '../components/RelatedRead.js'
-import DetermineHeader from '../components/DetermineHeader.js'
-
-export const headingText = 'How to invoke a Workflow Execution in Go'
-
-<DetermineHeader
-hLevel={props.heading}
-hText={headingText}
-/>
+import RelatedReadList from '../components/RelatedReadList.js'
 
 A Workflow Execution can be invoked using the `ExecuteWorkflow()` method on the Go SDK [`Client`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client#Client), which is available via [`NewClient()`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client#NewClient) in the [`go.temporal.io/sdk/client`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client) package.
 

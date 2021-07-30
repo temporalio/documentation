@@ -6,14 +6,7 @@ tags:
   - explanation
 ---
 
-import DetermineHeader from '../components/DetermineHeader.js'
-
-export const headingText = 'What is Temporal?'
-
-<DetermineHeader
-hLevel={props.heading}
-hText={headingText}
-/>
+import CenteredImage from "../components/CenteredImage.js"
 
 Temporal is a scalable and reliable runtime for Temporal Workflow Executions.
 
@@ -21,7 +14,12 @@ Temporal is a scalable and reliable runtime for Temporal Workflow Executions.
 
 > Any sufficiently complex distributed system contains an ad-hoc, informally-specified, bug-ridden, slow implementation of half of temporal.io.
 
-<img class="docs-image-centered docs-image-max-width-50" src="/img/temporal-intro.png" />
+<CenteredImage
+imagePath="/diagrams/temporal-intro.svg"
+imageSize="50"
+title="The Temporal system"
+legendstring="π?Workflow Execution"
+/>
 
 A Temporal Workflow Execution (π) executes a Temporal Workflow Definition, also called a Temporal Workflow Function, your application code, exactly once and to completion—whether your code executes for seconds, minutes, hours, days, months, or years, in the presence of arbitrary load and arbitrary failures.
 

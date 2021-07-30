@@ -5,15 +5,6 @@ tags:
   - explanation
 ---
 
-import DetermineHeader from '../components/DetermineHeader.js'
-
-export const headingText = 'What is a Retry Policy?'
-
-<DetermineHeader
-hLevel={props.heading}
-hText={headingText}
-/>
-
 A Retry Policy is collection of attributes that instructs the Temporal Server how to retry a failure of an [Activity Task Execution](#activity-task-execution) or a [Workflow Execution](#workflow-execution).
 
 - If a custom Retry Policy is to be used, it must be provided as an options parameter when an [Activity Execution](#activity-execution) or [Workflow Execution](#workflow-execution) is invoked.

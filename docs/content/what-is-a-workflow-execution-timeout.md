@@ -5,15 +5,6 @@ tags:
   - explanation
 ---
 
-import DetermineHeader from '../components/DetermineHeader.js'
-
-export const headingText = 'What is a Workflow Execution Timeout?'
-
-<DetermineHeader
-hLevel={props.heading}
-hText={headingText}
-/>
-
 This is the maximum time that a Workflow Execution can be executing (have an Open status) including retries and any usage of Continue As New.
 
 **The default value is 10 years.**

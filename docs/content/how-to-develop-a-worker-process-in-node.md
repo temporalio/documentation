@@ -1,19 +1,10 @@
 ---
-id: how-to-start-a-worker-in-nodejs
-title: How to start a Worker in Node.js
+id: how-to-develop-a-worker-process-in-node
+title: How to develop a Worker in Node.js
 description: Import a Worker from the `@temporalio/worker` module and call `Worker.create()` to create a new Worker in Node.js.
 tags:
   - guide
 ---
-
-import DetermineHeader from '../components/DetermineHeader.js'
-
-export const headingText = 'How to start a Worker in Node.js'
-
-<DetermineHeader
-hLevel={props.heading}
-hText={headingText}
-/>
 
 To start a Worker you need to pass the following two parameters to the `Worker.create()` function:
 

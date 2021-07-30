@@ -6,15 +6,6 @@ tags:
   - guide
 ---
 
-import DetermineHeader from '../components/DetermineHeader.js'
-
-export const headingText = 'How to get the result of a Workflow Execution in Go'
-
-<DetermineHeader
-hLevel={props.heading}
-hText={headingText}
-/>
-
 The `ExecuteWorkflow` call returns an instance of [`WorkflowRun`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client#WorkflowRun), which is the `we` variable below.
 
 ```go

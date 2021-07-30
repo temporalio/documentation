@@ -6,14 +6,7 @@ tags:
   - guide
 ---
 
-import DetermineHeader from '../components/DetermineHeader.js'
-
-export const headingText = 'How to get the result of an Activity Execution in Go'
-
-<DetermineHeader
-hLevel={props.heading}
-hText={headingText}
-/>
+import RelatedReadList from '../components/RelatedReadList.js'
 
 The `ExecuteActivity` API call returns an instance of [`workflow.Future`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Futures) which has the following two methods:
 

@@ -60,14 +60,17 @@ At a high level, you will want to track these 3 categories of metrics:
   These include the `namespace` tag.
   Additional information is available in [this forum post](https://community.temporal.io/t/metrics-for-monitoring-server-performance/536/3).
 
+### Checklist for Scaling Temporal
+
 Temporal is highly scalable due to its event sourced design.
 We have load tested up to 200 million concurrent Workflow Executions.
 Every shard is low contention by design and it is very difficult to oversubscribe to a Task Queue in the same cluster.
 With that said, here are some guidelines to some common bottlenecks:
 
-- Usually the limiting factor to scaling is the database connection getting saturated; therefore you will want to monitor `ScheduleToStart` latency to look out for this.
-- Temporal Server's Frontend service is more CPU bound, whereas the History and Matching services require more memory.
-- See the **Server Limits** section below for other limits you will want to monitor, including event history length.
+- **Database**. The vast majority of the time the database will be the bottleneck. **We highly recommend setting alerts on `ScheduleToStart` latency** to look out for this. Also check if your database connection getting saturated.
+- **Internal services**. The next layer will be scaling the 4 internal services of Temporal ([Frontend, Matching, History, and Worker](https://docs.temporal.io/docs/server-architecture/)). Monitor each accordingly. The Frontend service is more CPU bound, whereas the History and Matching services require more memory.
+- See the **Server Limits** section below for other limits you will want to keep in mind when doing system design, including event history length.
+- [Multi-Cluster Replication](https://docs.temporal.io/docs/server/multi-cluster/) is an experimental feature you can explore for heavy reads.
 
 ### FAQ: Autoscaling Workers based on Task Queue load
 
