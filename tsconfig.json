@@ -16,6 +16,6 @@
     "checkJs": true,
     "alwaysStrict": false,
     "baseUrl": "..",
-    "jsx": "preserve",
+    "jsx": "preserve"
   }
 }
