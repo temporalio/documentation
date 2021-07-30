@@ -92,7 +92,7 @@ tctl workflow show \
   -r 866ae14c-88cf-4f1e-980f-571e031d71b0
 ```
 
-This is not just good for recordkeeping, but also great for migrating Workflows to new versions *while* they are still running!
+This is not just good for recordkeeping, but also great for taking a failing production workflow and debug it locally, exactly as it was executed.
 
 import { ResponsivePlayer } from '../src/components'
 
