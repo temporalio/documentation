@@ -15,7 +15,7 @@ release_version: V1.11.2
 
 <!--truncate-->
 
-Discussions about Temporal often get into very high minded distributed systems debates, but sometimes it can be helpful to swap small tips that can have a huge impact on developer productivity!
+Discussions about Temporal often get into very high-minded distributed systems debates, but sometimes it can be helpful to swap small tips that can have a huge impact on developer productivity!
 
 Here's a small collection we put together for you.
 
