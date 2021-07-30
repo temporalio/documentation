@@ -17,7 +17,7 @@ release_version: V1.11.2
 
 Discussions about Temporal often get into very high-minded distributed systems debates, but sometimes it can be helpful to swap small tips that can have a huge impact on developer productivity!
 
-Here's a small collection we put together for you.
+Here's a small collection of 4 tips we put together for you.
 
 ## Auto-Restarting Workers
 
@@ -84,7 +84,7 @@ This helps greatly with debugging and understanding how Temporal deals with asyn
 
 ## Event History
 
-You can export the event history via `[tctl](https://docs.temporal.io/docs/system-tools/tctl#show-workflow-history)` or the [Web UI](https://docs.temporal.io/docs/system-tools/web-ui#execution-histories-on-temporal-web):
+You can export the event history via [`tctl`](https://docs.temporal.io/docs/system-tools/tctl#show-workflow-history) or the [Web UI](https://docs.temporal.io/docs/system-tools/web-ui#execution-histories-on-temporal-web):
 
 ```bash
 tctl workflow show \
@@ -110,6 +110,7 @@ func (s *replayTestSuite) TestReplayFromInitialVersion() {
 	require.NoError(s.T(), err)
 }
 ```
+To learn more, you can see [how Temporal tests our Workflow Replay feature](https://github.com/temporalio/sdk-go/tree/6580cbe0aa41a8b515791f95c2c15bb37db1dab1/test/replaytests) since we are open source!
 
 ## More tips?
 
