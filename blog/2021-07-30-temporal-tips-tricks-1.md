@@ -78,7 +78,7 @@ In VS Code, you should try [the Easy Snippet extension](https://marketplace.visu
 
 One of the lesser known but extremely useful features of [Temporal Web](https://docs.temporal.io/docs/system-tools/web-ui#viewing-stack-traces-on-temporal-web) is the ability to view stack traces.
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/be6f3198-a73c-46f6-84ef-8623b12be710/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/be6f3198-a73c-46f6-84ef-8623b12be710/Untitled.png)
+![image](https://user-images.githubusercontent.com/6764957/127705775-8de7c70d-5d89-4b1b-8f4a-8dcd9ccb70f7.png)
 
 This helps greatly with debugging and understanding how Temporal deals with asynchronous work and is able to resume workflows on a different machine.
 
