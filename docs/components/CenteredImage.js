@@ -1,6 +1,11 @@
 import React from "react";
 
-export default function CenteredImage({imagePath, imageSize, title, legendstring}) {
+export default function CenteredImage({
+  imagePath,
+  imageSize,
+  title,
+  legendstring,
+}) {
   const legendList = [];
   if (legendstring != undefined) {
     const items = legendstring.split("|");
@@ -34,9 +39,12 @@ export default function CenteredImage({imagePath, imageSize, title, legendstring
       {legendList.length > 0 && (
         <div className={"docs-image-legend-wrapper"}>
           <ul className={"docs-image-legend-list"}>
-          {legendList.map(({symbol, description}) => (
-            <li><span className={"docs-image-legend-symbol"}>{symbol}</span> = {description}</li>
-          ))}
+            {legendList.map(({symbol, description}) => (
+              <li>
+                <span className={"docs-image-legend-symbol"}>{symbol}</span> ={" "}
+                {description}
+              </li>
+            ))}
           </ul>
         </div>
       )}
