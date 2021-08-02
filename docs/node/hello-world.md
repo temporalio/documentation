@@ -9,7 +9,19 @@ The Node SDK and associated documentation is in an Alpha stage and may change at
 </CustomWarning>
 
 In this tutorial we'll go over the different components that make up a Temporal project.
-All of the code in this page is included in our package initializer, set it up using the [getting started](/docs/node/getting-started) instructions.
+All of the code in this page is included in our package initializer, set it up using the [getting started](/docs/node/getting-started) instructions:
+
+```bash
+npx @temporalio/create@latest ./example
+cd example
+# Watch files and compile on change (recommended because it's most convenient)
+npm run build.watch
+
+## OR
+## Compile Typescript once (you will need to rerun this every time you edit the code)
+# npm run build
+npm start
+```
 
 The SDK steers developers to write their Workflows and Activities in TypeScript but vanilla JS is also supported. All examples in the documentation are written in TypeScript.
 

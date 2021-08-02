@@ -350,6 +350,16 @@ var_dump($workflow->getResult());
 
 ## Child Workflows
 
+Besides Activities, a Workflow can also start other Workflows.
+
+import WhenToUse from '../content/when-to-use-child-workflows.md'
+
+<WhenToUse
+signalsLink="/docs/php/signals"
+/>
+
+## PHP Child Workflow API
+
 `Workflow::executeChildWorkflow` and `Workflow::newChildWorkflowStub` enables the scheduling of other Workflows from within a Workflow's implementation.
 The parent Workflow has the ability to monitor and impact the lifecycle of the child Workflow, similar to the way it does for an Activity that it invoked.
 
