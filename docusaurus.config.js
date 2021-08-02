@@ -16,7 +16,8 @@ module.exports = {
       disableSwitch: false,
     },
     prism: {
-      theme: require("prism-react-renderer/themes/dracula"),
+      theme: require("prism-react-renderer/themes/nightOwlLight"),
+      darkTheme: require("prism-react-renderer/themes/dracula"),
       additionalLanguages: ["java", "ruby", "php"],
     },
     hideableSidebar: true,
@@ -182,7 +183,7 @@ module.exports = {
         <span class="footer__separators"> | </span>
         <a class="footer__link-item" href="/privacy-policy">Privacy Policy</a>
         <span class="footer__separators"> | </span>
-        <a class="footer__link-item" href="https://docs.temporal.io/pdf/temporal-tos-2021-07-24.pdf">Terms of Service</a> 
+        <a class="footer__link-item" href="https://docs.temporal.io/pdf/temporal-tos-2021-07-24.pdf">Terms of Service</a>
       </div>
       `,
     },
