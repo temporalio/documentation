@@ -4,20 +4,25 @@ You can run "Hello Temporal" locally in under 5 minutes, assuming you have all p
 
 ## Step 0: Prerequisites
 
-This project requires nodejs LTS version 14 (or later).
+<details>
+<summary>
+This project requires Node.js version 14 or later.
+</summary>
 
-Furthermore, you will need to install [node-gyp](https://github.com/nodejs/node-gyp#installation).
+:::note
 
-If you run into errors during installation it is likely your environment is not properly set up.
+Brew installation of Node.js versions 15.0 to 16.4 does not work with the SDK, instead use `>=16.5` or `<15`, or install Node.js with [`nvm`](https://github.com/nvm-sh/nvm).
+
+:::
+
+</details>
 
 <details>
 <summary>
-  
-The Worker package embeds the <a href="https://github.com/temporalio/sdk-core">Temporal Core SDK</a> which requires the Rust toolchain to compile.
-
+The Worker package embeds the <a href="https://github.com/temporalio/sdk-core">Temporal Core SDK</a>, it comes pre-compiled for most installations.
 </summary>
 
-We've provided prebuilt binaries for the Worker for:
+We've provided pre-compiled binaries for:
 
 - Mac with an Intel chip: `x86_64-apple-darwin`
 - Mac with an Apple chip: `aarch64-apple-darwin`
@@ -26,13 +31,11 @@ We've provided prebuilt binaries for the Worker for:
 
 If you need to compile the Worker yourself, set up the Rust toolchain by following the instructions [here](https://rustup.rs/).
 
-:::note
-
-Brew installation of NodeJS>=15 does not work with the SDK, install Node with [`nvm`](https://github.com/nvm-sh/nvm) instead.
-
-:::
-
 </details>
+
+Furthermore, you will need to install [node-gyp](https://github.com/nodejs/node-gyp#installation).
+
+If you run into errors during installation it is likely your environment is not properly set up.
 
 :::note
 
