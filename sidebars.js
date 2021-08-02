@@ -339,10 +339,7 @@ module.exports = {
         {
           type: "category",
           label: "Advanced",
-          items: [
-            "node/determinism",
-            "node/workflow-external-dependencies",
-          ],
+          items: ["node/determinism", "node/workflow-external-dependencies"],
         },
       ],
     },
