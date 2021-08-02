@@ -33,8 +33,8 @@ A Workflow Execution consumes few compute resources; in fact, if a Workflow Exec
 
 A Temporal Workflow Execution is a Reentrant Process. A Reentrant Process is resumable, recoverable, and reactive.
 
-- Resumable: Ability of a process to continue execution after execution was suspended on an *awaitable*.
-- Recoverable: Ability of a process to continue execution after execution was suspended on a *failure*.
+- Resumable: Ability of a process to continue execution after execution was suspended on an _awaitable_.
+- Recoverable: Ability of a process to continue execution after execution was suspended on a _failure_.
 - Reactive: Ability of a process to react to external events.
 
 Therefore, a Temporal Workflow Execution executes a Temporal Workflow Definition, also called a Temporal Workflow Function, your application code, exactly once and to completion—whether your code executes for seconds or years, in the presence of arbitrary load and arbitrary failures.
