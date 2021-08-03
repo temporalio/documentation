@@ -51,6 +51,8 @@ func YourActivityDefinition(ctx context.Context, param YourActivityParam) (YourA
 }
 ```
 
+Start the preceding Worker Process by running `go run <filename>.go`.
+
 The `RegisterWorkflow()` and `RegisterActivity` calls essentially create an in-memory mapping between the Workflow Types and their implementations, inside the Worker process.
 
 Notice that that the Task Queue name is the same as the name provided [when the Workflow Execution is invoked](#).

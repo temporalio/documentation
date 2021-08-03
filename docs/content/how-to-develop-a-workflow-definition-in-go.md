@@ -78,9 +78,11 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (Your
 
 Returning a non-nil `error` from a Workflow indicates that an error was encountered during its execution and the Workflow Execution should be [Terminated](#).
 
+<!--
 <RelatedReadList
 readliststring="When to return an error from a Workflow?#?og"
 />
+-->
 
 **Workflow logic requirements in Go**
 
@@ -89,8 +91,10 @@ In Go specifically, Workflow Definition code can not directly do the following:
 - Iterate over maps using `range`, because with `range` the order of the map's iteration is randomized (Use a Side Effect or an Activity.
 - Use the native `go` statement, `select` statement, or `chan` type (Use the [SDK Go API](#), [SDK Select API](#), and [SDK Channel API](#))
 
+<!--
 <RelatedReadList
 readliststring="General requirements for developing Workflow Definitions?/docs/application-operations/#what-are-general-requirements-for-writing-workflow-defintions?og|
 How to develop a Side Effect in Go?#?dg|
 How to develop an Activity Definition?#how-to-write-an-activity-definition?dg"
 />
+-->
