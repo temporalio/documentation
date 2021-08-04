@@ -15,7 +15,7 @@ workflowLink="/docs/concepts/workflows"
 workerLink="/docs/concepts/workers"
 />
 
-From the perspective of a developer, using the SDK, Task Queues are one of the means by which you associate a Worker with a Workflow and/or Activity.
+From the perspective of a developer using the SDK, Task Queues are one of the means by which you associate a Worker with a Workflow and/or Activity.
 In this case, you can learn about how to implement Task Queues within the context of the language you are writing your application in:
 
 - [Go](/docs/go/task-queues)

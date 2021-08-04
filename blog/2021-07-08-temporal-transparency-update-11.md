@@ -31,7 +31,7 @@ Hey community, things are going very well in the Temporal universe and we've see
 
 A few months ago, [we announced the official EOL date for Cadence support](https://docs.temporal.io/blog/cadence-eol-support). That date remains **September 29, 2021** which also marks the 1 year anniversary of Temporal V1 release. Cadence will always be an important part of the Temporal story, we just need to close that chapter out so we can continue fundamentally improving the way applications are built and run. 
 
-If you are still running on Cadence and depend on our team or the support they provide in anyway, we highly recommend migrating before the EOL date. 
+If you are still running on Cadence and depend on our team or the support they provide in any way, we highly recommend migrating before the EOL date.
 
 ## [Temporal.io](http://temporal.io) updates
 
