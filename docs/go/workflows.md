@@ -246,7 +246,7 @@ The `workflow.ExecuteChildWorkflow` call is used to schedule Workflow Executions
 By default, a Child Workflow Execution inherits the options provided to the Parent Workflow Execution, and the Temporal Server will automatically generate a Child Workflow ID.
 You can overwrite any of these options and specify a custom Child Workflow ID by customizing `ChildWorkflowOptions` and adding them to the execution context.
 
-`ChildWorkflowOptions` include the following parameters:
+`ChildWorkflowOptions` include the following parameters ([API reference](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/internal#ChildWorkflowOptions)):
 
 - Namespace
 - WorkflowID

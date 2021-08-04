@@ -331,6 +331,8 @@ module.exports = {
             "node/activities",
             "node/task-queues",
             "node/workers",
+            "node/signals",
+            "node/queries",
           ],
         },
         "node/tls",

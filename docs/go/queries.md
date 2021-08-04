@@ -4,15 +4,19 @@ title: Queries in Go
 sidebar_label: Queries
 ---
 
+## Stack Trace Query
+
 If a Workflow execution has been stuck at a state for longer than an expected period of time, you
 might want to query the current call stack. You can use the Temporal CLI to perform this query. For
 example:
 
 `tctl --namespace samples-namespace workflow query -w my_workflow_id -r my_run_id -qt __stack_trace`
 
-This command uses `__stack_trace`, which is a built-in query type supported by the Temporal client
-library. You can add custom query types to handle queries such as querying the current state of a
-Workflow, or querying how many Activities the Workflow has completed. To do this, you need to set
+This command uses `__stack_trace`, which is a built-in query type supported by the Temporal client library.
+
+## Custom Queries
+
+You can add custom query types to handle queries such as querying the current state of a Workflow, or querying how many Activities the Workflow has completed. To do this, you need to set
 up a query handler using `workflow.SetQueryHandler`.
 
 The handler must be a function that returns two values:
@@ -59,7 +63,7 @@ You can now query `current_state` by using the CLI:
 
 `tctl --namespace samples-namespace workflow query -w my_workflow_id -r my_run_id -qt current_state`
 
-## The `QueryWorkflow()` Function
+## How to Query a Workflow
 
 You can also issue a query from your Go code using the `QueryWorkflow()` function as shown below.
 
