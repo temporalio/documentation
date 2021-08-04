@@ -213,7 +213,15 @@ To learn about Workflow Activities visit [this page](/docs/java/activities).
 
 ## Child Workflows
 
-Besides Activities, a Workflow can also orchestrate other Workflows.
+Besides Activities, a Workflow can also start other Workflows.
+
+import WhenToUse from '../content/when-to-use-child-workflows.md'
+
+<WhenToUse
+signalsLink="/docs/java/signals"
+/>
+
+### Java Child Workflow API
 
 `Workflow.newChildWorkflowStub` returns a client-side stub that implements a child Workflow interface.
 It takes a child Workflow type and optional child Workflow options as arguments. Workflow options can be used

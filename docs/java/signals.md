@@ -6,6 +6,14 @@ sidebar_label: Signals
 
 Workflow signals provide an asynchronous and durable mechanism for providing data to running Workflows.
 
+## When to use Signals
+
+import WhenToSignals from '../content/when-to-use-signals.md'
+
+<WhenToSignals />
+
+## How to use Signals
+
 Signal methods can only be defined inside Workflows Interfaces and are methods annotated with the `@SignalMethod` annotation, for example:
 
 ```java

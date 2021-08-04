@@ -1,3 +1,9 @@
+---
+id: package-initializer
+title: Node SDK Package Initializer
+sidebar_label: Package Initializer
+---
+
 # @temporalio/create
 
 [![NPM](https://img.shields.io/npm/v/@temporalio/create)](https://www.npmjs.com/package/@temporalio/create)
