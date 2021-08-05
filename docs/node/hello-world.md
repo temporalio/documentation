@@ -8,20 +8,8 @@ The Node SDK and associated documentation is in an Alpha stage and may change at
 
 </CustomWarning>
 
-In this tutorial we'll go over the different components that make up a Temporal project.
-All of the code in this page is included in our package initializer, set it up using the [getting started](/docs/node/getting-started) instructions:
-
-```bash
-npx @temporalio/create@latest ./example
-cd example
-# Watch files and compile on change (recommended because it's most convenient)
-npm run build.watch
-
-## OR
-## Compile Typescript once (you will need to rerun this every time you edit the code)
-# npm run build
-npm start
-```
+In this tutorial, we'll go over the different components that make up a Temporal project.
+All of the code on this page is included in our package initializer skeleton, which we set up in [Getting started](/docs/node/getting-started).
 
 The SDK steers developers to write their Workflows and Activities in TypeScript but vanilla JS is also supported. All examples in the documentation are written in TypeScript.
 
@@ -31,7 +19,7 @@ The SDK steers developers to write their Workflows and Activities in TypeScript 
 
 Activities are called from Workflows in order to run non-deterministic code.
 
-Activities are just async functions, they run like typical NodeJS code and can be cancelled and report heartbeats.
+Activities are just async functions. They run like typical NodeJS code, and they can be cancelled and report heartbeats.
 
 `src/activities/greeter.ts`
 
@@ -42,9 +30,9 @@ Activities are just async functions, they run like typical NodeJS code and can b
 
 [API reference](https://nodejs.temporal.io/api/modules/workflow)
 
-Workflows are the core of the Temporal system, they abstract away the complexities of writing distributed programs.
+Workflows are the core of the Temporal system. They abstract away the complexities of writing distributed programs.
 
-In the NodeJS SDK, each Workflow runs in a separate V8 isolate to provide a [deterministic runtime](/docs/node/determinism).
+In the NodeJS SDK, each Workflow runs in a separate V8 isolate in order to provide a [deterministic runtime](/docs/node/determinism).
 
 #### Interface
 

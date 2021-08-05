@@ -44,7 +44,7 @@ This code structure is required for enabling Workflows - which run in an [isolat
 
 The created project comes with some helper package scripts.
 
-- `npm run build` - Compile Typescript
+- `npm run build` - Compile TypeScript
 - `npm run build.watch` - Watch files and compile on change
 
 #### Running the example
