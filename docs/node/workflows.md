@@ -65,14 +65,24 @@ There is no official support for querying the state of asynchronously started Wo
 
 ## How to cancel a Workflow Execution
 
-In the Node SDK, Workflows are represented internally by a tree of scopes. The main function runs in the root scope.
-Cancellation propagates from outer scopes to inner ones and is handled by catching `CancelledError`s
-thrown by cancellable operations (see below).
+In the Node SDK, Workflows are represented internally by a tree of scopes, each with cancellation behaviors you can specify.
 
-Scopes are created using the [`CancellationScope`](https://nodejs.temporal.io/api/classes/workflow.cancellationscope) constructor or the static helper methods
-[`cancellable`](https://nodejs.temporal.io/api/classes/workflow.cancellationscope#cancellable-1),
-[`nonCancellable`](https://nodejs.temporal.io/api/classes/workflow.cancellationscope#noncancellable),
-and [`withTimeout`](https://nodejs.temporal.io/api/classes/workflow.cancellationscope#withtimeout).
+Scopes are created using:
+
+- the [`CancellationScope`](https://nodejs.temporal.io/api/classes/workflow.cancellationscope) constructor
+- the [`CancellationScope.cancellable`](https://nodejs.temporal.io/api/classes/workflow.cancellationscope#cancellable-1) static helper: children are automatically cancelled when their containing scope is cancelled.
+- the [`CancellationScope.nonCancellable`](https://nodejs.temporal.io/api/classes/workflow.cancellationscope#noncancellable) static helper: prevents cancellation from propagating to children
+- the [`CancellationScope.withTimeout`](https://nodejs.temporal.io/api/classes/workflow.cancellationscope#withtimeout) static helper: If timeout triggers before all activities complete, the Workflow will fail with a `CancelledError`.
+
+Cancellation propagates from outer scopes to inner ones and is handled by catching `CancelledError`s thrown by cancellable operations (see below).
+
+Scopes all return native JS Promises, so you can use all the familiar Promise APIs like `Promise.all` and `Promise.race` to model your async logic.
+Other APIs you can use:
+
+- `CancellationScope.current()`: get the current scope
+- `scope.cancel()`: cancel all operations inside a `scope`
+- `scope.run()`: run an async function within a `scope`
+- `scope.cancelRequested()`: a promise that resolves when a cancel request hits a `nonCancellable` workflow
 
 When a `CancellationScope` is cancelled, it propagates cancellation in any child scopes and of any cancellable operations created within it, such as:
 
@@ -80,31 +90,41 @@ When a `CancellationScope` is cancelled, it propagates cancellation in any child
 - Timers (created with the [`sleep`](https://nodejs.temporal.io/api/modules/workflow#sleep) function)
 - [`Trigger`](https://nodejs.temporal.io/api/classes/workflow.trigger)s
 
-## Examples
-
-### Cancel a timer from Workflow code
+### Basic Cancellation example
 
 <!--SNIPSTART nodejs-cancel-a-timer-from-workflow-->
 <!--SNIPEND-->
 
-### Alternatively, the preceding can be written as
+Alternatively, the preceding can be written as:
 
 <!--SNIPSTART nodejs-cancel-a-timer-from-workflow-alternative-impl-->
 <!--SNIPEND-->
 
-### Run multiple activities with a single deadline
+### `CancellationScope.nonCancellable`
 
-<!--SNIPSTART nodejs-multiple-activities-single-timeout-workflow-->
-<!--SNIPEND-->
-
-### `nonCancellable` prevents cancellation from propagating to children
+`nonCancellable` prevents cancellation from propagating to children:
 
 <!--SNIPSTART nodejs-non-cancellable-shields-children-->
 <!--SNIPEND-->
 
-### `cancelRequested` may be awaited upon to make Workflow aware of cancellation while waiting on `nonCancellable` scopes
+### `CancellationScope.withTimeout`
+
+Run multiple activities with a single deadline:
+
+<!--SNIPSTART nodejs-multiple-activities-single-timeout-workflow-->
+<!--SNIPEND-->
+
+### `scope.cancelRequested`
+
+You can await `cancelRequested` to make Workflow aware of cancellation while waiting on `nonCancellable` scopes:
 
 <!--SNIPSTART nodejs-cancel-requested-with-non-cancellable-->
+<!--SNIPEND-->
+
+Callbacks are not particularly useful in Workflows because all meaningful asynchronous operations return Promises.
+In the rare case that user code utilizes callbacks, `CancellationScope.cancelRequested` can be used to subscribe to cancellation.
+
+<!--SNIPSTART nodejs-cancellation-scopes-with-callbacks-->
 <!--SNIPEND-->
 
 ### Handle Workflow cancellation by an external client while an Activity is running
@@ -112,7 +132,9 @@ When a `CancellationScope` is cancelled, it propagates cancellation in any child
 <!--SNIPSTART nodejs-handle-external-workflow-cancellation-while-activity-running-->
 <!--SNIPEND-->
 
-### Complex flows may be achieved by nesting cancellation scopes
+### Nesting Cancellation Scopes
+
+Complex flows may be achieved by nesting cancellation scopes:
 
 <!--SNIPSTART nodejs-nested-cancellation-scopes-->
 <!--SNIPEND-->
@@ -127,26 +149,18 @@ Operations like timers and Activites are cancelled by the cancellation scope the
 <!--SNIPSTART nodejs-shield-awaited-in-root-scope-->
 <!--SNIPEND-->
 
-### Callbacks and cancellation scopes
-
-Callbacks are not particularly useful in Workflows because all meaningful asynchronous operations return Promises.
-
-In the odd case that user code utilizes callbacks, CancellationScope.cancelRequested can be used to subscribe to cancellation.
-
-<!--SNIPSTART nodejs-cancellation-scopes-with-callbacks-->
-<!--SNIPEND-->
-
-## Scheduling Cron Workflows
+## Scheduling Cron Workflows (stub)
 
 There is no official support for Cron Workflows in Node.js yet.
 
-## Executing External Workflows
+## Executing External Workflows (stub)
 
 There is no official support for External Workflows in Node.js yet.
 
-## Child Workflows
+## Child Workflows (stub)
 
 Besides Activities, a Workflow can also start other Workflows.
+There is no official support for Child Workflows in Node.js yet.
 
 import WhenToUse from '../content/when-to-use-child-workflows.md'
 
@@ -154,8 +168,32 @@ import WhenToUse from '../content/when-to-use-child-workflows.md'
 signalsLink="/docs/go/signals"
 />
 
-## Large Event Histories
+## Large Event Histories (stub)
+
+### Why `ContinueAsNew` is needed
 
 import SharedContinueAsNew from '../shared/continue-as-new.md'
 
 <SharedContinueAsNew />
+
+### The `ContinueAsNew` API
+
+Use the `Context.continueAsNew` API to instruct the Node SDK to restart `main` with a new starting value and a new event history.
+
+```ts
+import {Context, CancellationScope} from "@temporalio/workflow";
+
+async function main(
+  continueFrom: "main" | "signal" | "none" = "main"
+): Promise<void> {
+  if (continueFrom === "none") {
+    return;
+  }
+  if (continueFrom === "main") {
+    await Context.continueAsNew<typeof main>("signal"); // must match the arguments expected by `main`
+  }
+  await CancellationScope.current().cancelRequested;
+}
+
+export const workflow: ContinueAsNewFromMainAndSignal = {main};
+```
