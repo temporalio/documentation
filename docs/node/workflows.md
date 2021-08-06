@@ -173,7 +173,7 @@ import WhenToUse from '../content/when-to-use-child-workflows.md'
 signalsLink="/docs/go/signals"
 />
 
-## Large Event Histories (stub)
+## Large Event Histories
 
 ### Why `ContinueAsNew` is needed
 
