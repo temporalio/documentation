@@ -70,9 +70,9 @@ In the Node SDK, Workflows are represented internally by a tree of scopes, each 
 Scopes are created using:
 
 - the [`CancellationScope`](https://nodejs.temporal.io/api/classes/workflow.cancellationscope) constructor
-- the [`CancellationScope.cancellable`](https://nodejs.temporal.io/api/classes/workflow.cancellationscope#cancellable-1) static helper: children are automatically cancelled when their containing scope is cancelled.
-- the [`CancellationScope.nonCancellable`](https://nodejs.temporal.io/api/classes/workflow.cancellationscope#noncancellable) static helper: prevents cancellation from propagating to children
-- the [`CancellationScope.withTimeout`](https://nodejs.temporal.io/api/classes/workflow.cancellationscope#withtimeout) static helper: If timeout triggers before all activities complete, the Workflow will fail with a `CancelledError`.
+- the [`CancellationScope.cancellable(fn)`](https://nodejs.temporal.io/api/classes/workflow.cancellationscope#cancellable-1) static helper: children are automatically cancelled when their containing scope is cancelled. Equivalent to `new CancellationScope().run(fn)`.
+- the [`CancellationScope.nonCancellable(fn)`](https://nodejs.temporal.io/api/classes/workflow.cancellationscope#noncancellable) static helper: prevents cancellation from propagating to children. Equivalent to `new CancellationScope({ cancellable: false }).run(fn)`.
+- the [`CancellationScope.withTimeout(timeoutMs, fn)`](https://nodejs.temporal.io/api/classes/workflow.cancellationscope#withtimeout) static helper: If timeout triggers before all activities complete, the Workflow will fail with a `CancelledError`. Equivalent to `new CancellationScope({ cancellable: true, timeout: timeoutMs }).run(fn)`.
 
 Cancellation propagates from outer scopes to inner ones and is handled by catching `CancelledError`s thrown by cancellable operations (see below).
 
