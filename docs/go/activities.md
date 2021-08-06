@@ -126,10 +126,9 @@ The parameters of the `RecordActivityHeartbeat` function are:
 
 #### Cancellation
 
-When an Activity is cancelled, or its Workflow execution has completed or failed, the context passed
-into its function is cancelled, which sets its channel’s closed state to `Done`. An Activity can use that
-to perform any necessary cleanup and abort its execution. Cancellation is only delivered to Activities
-that call `RecordActivityHeartbeat`.
+import WhatIsActivityCancellation from '../content/what-is-activity-cancellation.md'
+
+<WhatIsActivityCancellation />
 
 ### Registration
 
