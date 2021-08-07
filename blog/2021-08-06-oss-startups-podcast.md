@@ -1,4 +1,4 @@
----
+eter---
 tags:
   - Temporal
   - podcast
@@ -93,7 +93,7 @@ We started in October 2019 and we were only 15 people in 2020. Now it's much eas
 **What is the signs that made you understand, "Hey, this product is taking off." What are the signals that lead you to that?**
 
 It's interesting. We don't have a very large community. 
-We had probably around 1,000 people on our Slack when we started the company. 
+We had probably around 1,000 people on [our Slack](https://temporal.io/slack) when we started the company. 
 But these were senior engineers from top tier companies using that in production for mission critical systems. 
 And I'm not even talking about thousands of Uber engineers, which were using Cadence in production for hundreds of use cases, but even outside we had that community. And it was a very, very a strong community, very strong engineers and we were getting very positive feedback. 
 
@@ -124,7 +124,7 @@ We were extremely grateful, happy, and lucky that we worked at Uber, which paid 
 
 Temporal technically a new category of software. And I know everybody says that, but bear with me. 
 
-One way to describe us is we are a Workflow Engine. For example, Simple Workflow at Amazon is called Simple Workflow Engine. The problem is that workflows as known in legacy solutions are something which developers don't want to even touch. People think about Workflows as a simple linear sequences.
+One way to describe us is we are a [Workflow Engine](/blog/workflow-engine-principles). For example, Simple Workflow at Amazon is called Simple Workflow Engine. The problem is that workflows as known in legacy solutions are something which developers don't want to even touch. People think about Workflows as a simple linear sequences.
 
 **Temporal is more about stateful computation.** Specifically, preserving and guaranteeing the state of the computation and execution. 
 
@@ -162,13 +162,13 @@ People ask, "What do I do if it fails?" Nothing. Because you don't even see it. 
 
 **What was the actual process of forking Cadence and separating it out?**
 
-We forked it in a non backwards compatible manner. The reason was that, we ran at Uber for four years without making a single backwards incompatible change. All upgrades were live migrations. So you could never bring the system down to do upgrades. This meant we accumulated a lot of technical debt for these four years. We had a lot of things we wanted to do, and we couldn't do them. When we decided to fork the project, we realized that it was our chance to fix so many things, so we spent one year working just on our fork before we announced the production release of Temporal.
+We forked it in a non backwards compatible manner. The reason was that, we ran at Uber for four years without making a single backwards incompatible change. All upgrades were live migrations. So you could never bring the system down to do upgrades. This meant we accumulated a lot of technical debt for these four years. We had a lot of things we wanted to do, and we couldn't do them. When we decided to fork the project, we realized that it was our chance to fix so many things, so we spent one year working just on our fork before we [announced the production release of Temporal](https://docs.temporal.io/blog/temporal-v1-announcement).
 
 I think **the hardest part was migrating the community** because when you have real customers, you have users using that in production. And you say, "Okay, here's the new thing, but it's not backwards compatible, you need to do work to do that. And you need to migrate to this thing." 
 
-What helped is that Samar and I, are the heads of the project. Every user knew us personally. We talked to most people and they trusted us. They understand that we are doing it for good. And long term, this was a very good thingfor the community and for the software. So we got very good support from the community, didn't get any pushback on us forking it and actually moving it forward. 
+What helped is that Samar and I, are the heads of the project. Every user knew us personally. We talked to most people and they trusted us. They understand that we are doing it for good. And long term, this was a very good thing for the community and for the software. So we got very good support from the community, didn't get any pushback on us forking it and actually moving it forward. 
 
-Finally, we added many cool features on our fork. The most basic one is we added GRPC support where before it was only on a custom Uber protocol, which didn't even support TLS. Most of the community have moved to us and right now we have most new users are starting with Temporal right away.
+Finally, we added [many cool features on our fork](https://docs.temporal.io/docs/cadence-to-temporal). The most basic one is we added GRPC support where before it was only on a custom Uber protocol, which didn't even support TLS. Most of the community have moved to us and right now we have most new users are starting with Temporal right away.
 
 ## Temporal Cloud
 
@@ -183,6 +183,8 @@ We are the same thing. We give you an SDK library. So you write your workflows a
 We actually had a real case when we had a user who was running a production workload using our open source and they using backend. But they misconfigured Cassandra and got data corruption. It wasn't a problem of Cassandra or Temporal, they just misconfigured it by accident. And when we were trying to help them we suggest, "Maybe we just give you a cluster in Temporal Cloud?" **Within one hour they just switched their whole production workload to our cloud without changing any code.** They only had to change configuration parameters and add certificates for mTLS to be able to connect to Temporal Cloud. 
 
 That's why our cloud offering is very seamless for people to migrate to. And then the real benefits are from us running the actual cluster for you. Especially at large-scale it can be very difficult to run high workload clusters.
+
+> Note: If you're interested in Temporal Cloud, you can check out our first public case study with [Descript](/blog/descript-case-study), and [sign up for our wait list](https://docs.temporal.io/#cloud).
 
 ## Pricing
 
@@ -208,7 +210,7 @@ I don't think we ever will go to a CIO and say, "you need to buy like two millio
 
 **You have such strong developer adoption. Do you try to amplify that once you start to have a company? Do you start a hire evangelist team? Or do you have like advocates or something around that roles in your company now? And how did you even look for these people and figure out what they should do in the first place?**
 
-By the way we are hiring developer relations! We already have quite a few very awesome advocates, but if you're one of those people talk to us! 
+By the way [we are hiring](https://temporal.io/careers)! We already have quite a few very awesome advocates, but if you're one of those people talk to us! 
 
 Temporal is still not a household name. Most developers still don't understand what we provide. They still don't even think about using us for their next project. Something we hear all the time, when somebody learns about what we do, is, "Why I didn't I have it three years ago when I started my startup?" We have a long way to go until at least every developer knows that we exist and considers us for the next project. 
 
