@@ -15,9 +15,11 @@ release_version: V1.11.2
 
 Our CEO Maxim Fateev recently joined the OSS Startups Podcast with Robby Robson of Cowboy VC & Tim Chen of Essence VC to talk Temporal. [Listen to it here](https://www.listennotes.com/podcasts/the-oss-startup/ep7-from-open-source-project-1QEDGmJWMeB/)!
 
-<iframe src="https://www.listennotes.com/podcasts/the-oss-startup/ep7-from-open-source-project-1QEDGmJWMeB/embed/" height="170px" width="100%" style="width: 1px; min-width: 100%;" loading="lazy" frameborder="0" scrolling="no"></iframe>
+<iframe src="https://www.listennotes.com/podcasts/the-oss-startup/ep7-from-open-source-project-1QEDGmJWMeB/embed/" height="170px" width="100%" style={{width: 1, minWidth: "100%"}} loading="lazy" frameborder="0" scrolling="no"></iframe>
 
-## Origin Story of Temporal
+What follows is a lightly edited transcript for readability.
+
+## Origin story of Temporal
 
 **Can we get some context on you and the origin story of Temporal?**
 
