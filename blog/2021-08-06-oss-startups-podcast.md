@@ -194,7 +194,6 @@ How exactly the usage is priced, what dimensions we are going to use, we are try
 
 Obviously, we want to be friendly to the enterprises because they want predictability. But at the same time, we want to make sure that starting with a small load is cheap. We don't want a situation where you need to sign a multi-year contract just to try us.
 
-
 ## Go to market
 
 **How do people first get introduced to Temporal?**
