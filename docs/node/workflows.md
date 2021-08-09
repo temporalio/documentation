@@ -66,7 +66,7 @@ There is no official support for querying the state of asynchronously started Wo
 ## How to cancel a Workflow Execution
 
 In the Node SDK, Workflows are represented internally by a tree of **Cancellation Scopes**, each with cancellation behaviors you can specify.
-The Workflow `main` function is the only scope with no parent, running as the "root" scope.
+Everything runs in the "root" scope by default.
 
 Scopes are created using the [`CancellationScope`](https://nodejs.temporal.io/api/classes/workflow.cancellationscope) constructor, or one of 3 static helpers:
 
