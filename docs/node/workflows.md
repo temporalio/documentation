@@ -74,7 +74,7 @@ Scopes are created using the [`CancellationScope`](https://nodejs.temporal.io/ap
   - Equivalent to `new CancellationScope().run(fn)`.
 - [`nonCancellable(fn)`](https://nodejs.temporal.io/api/classes/workflow.cancellationscope#noncancellable): prevents cancellation from propagating to children.
   - Equivalent to `new CancellationScope({ cancellable: false }).run(fn)`.
-- [`withTimeout(timeoutMs, fn)`](https://nodejs.temporal.io/api/classes/workflow.cancellationscope#withtimeout): If timeout triggers before all activities complete, the Workflow will fail with a `CancelledError`.
+- [`withTimeout(timeoutMs, fn)`](https://nodejs.temporal.io/api/classes/workflow.cancellationscope#withtimeout): If timeout triggers before `fn` resolves the scope will be cancelled, triggering cancellation of enclosed operations, such as activities and timers.
   - Equivalent to `new CancellationScope({ cancellable: true, timeout: timeoutMs }).run(fn)`.
 
 Cancellation propagates from outer scopes to inner ones and is handled by catching `CancelledError`s thrown by cancellable operations (see below).
