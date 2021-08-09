@@ -85,7 +85,7 @@ Other APIs you can use:
 - `CancellationScope.current()`: get the current scope
 - `scope.cancel()`: cancel all operations inside a `scope`
 - `scope.run()`: run an async function within a `scope`
-- `scope.cancelRequested()`: a promise that resolves when a cancel request hits a `nonCancellable` workflow
+- `scope.cancelRequested`: a promise that resolves when a scope cancellation is requested, e.g when Workflow code calls `cancel()` or the entire Workflow is cancelled by an external client.
 
 When a `CancellationScope` is cancelled, it propagates cancellation in any child scopes and of any cancellable operations created within it, such as:
 
