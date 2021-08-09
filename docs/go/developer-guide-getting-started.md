@@ -30,9 +30,9 @@ import DevelopActivityDefinitionInGo from "../content/how-to-develop-an-activity
 
 <DevelopActivityDefinitionInGo/>
 
-## Invoke an Activity Execution
+## Develop the call to spawn an Activity Execution
 
-import InvokeActivityExecutionInGo from "../content/how-to-invoke-an-activity-execution-in-go.md"
+import InvokeActivityExecutionInGo from "../content/how-to-spawn-an-activity-execution-in-go.md"
 
 <InvokeActivityExecutionInGo/>
 
@@ -42,9 +42,9 @@ import GetActivityExecutionResultInGo from "../content/how-to-get-the-result-of-
 
 <GetActivityExecutionResultInGo/>
 
-## Invoke a Workflow Execution
+## Develop the program to spawn a Workflow Execution
 
-import InvokeWorkflowExecutionInGo from "../content/how-to-invoke-a-workflow-execution-in-go.md"
+import InvokeWorkflowExecutionInGo from "../content/how-to-spawn-a-workflow-execution-in-go.md"
 
 <InvokeWorkflowExecutionInGo/>
 
@@ -54,8 +54,8 @@ import GetWorkflowExecutionResultInGo from "../content/how-to-get-the-result-of-
 
 <GetWorkflowExecutionResultInGo/>
 
-## Develop a Worker Process
+## Develop a Worker Program
 
-import DevelopWorkerProcessInGo from "../content/how-to-develop-a-worker-process-in-go.md"
+import DevelopWorkerProcessInGo from "../content/how-to-develop-a-worker-program-in-go.md"
 
 <DevelopWorkerProcessInGo/>

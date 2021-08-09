@@ -1,6 +1,6 @@
 ---
-id: how-to-invoke-an-activity-execution-in-go
-title: How to invoke an Activity Execution in Go
+id: how-to-spawn-an-activity-execution-in-go
+title: How to spawn an Activity Execution in Go
 description: Use the `ExecuteActivity()` API call available from the `go.temporal.io/sdk/workflow` package.
 tags:
   - guide
@@ -8,7 +8,7 @@ tags:
 
 import RelatedReadList from '../components/RelatedReadList.js'
 
-To invoke an Activity Execution, use the [`ExecuteActivity()`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/workflow#ExecuteActivity) API call inside your Workflow Definition.
+To spawn an Activity Execution, use the [`ExecuteActivity()`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/workflow#ExecuteActivity) API call inside your Workflow Definition.
 The API is available from the [`go.temporal.io/sdk/workflow`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/workflow) package.
 
 The `ExecuteActivity()` API call requires an instance of `workflow.Context`, the Activity function name, and any variables to be passed to the Activity Execution.

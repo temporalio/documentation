@@ -1,12 +1,12 @@
 ---
-id: how-to-develop-a-worker-process-in-php
-title: How to develop a Worker in PHP
+id: how-to-develop-a-worker-program-in-php
+title: How to develop a Worker Program in PHP
 description: Use the `newWorker()` method on an instance of a `WorkerFactory` to create a new Worker in PHP.
 tags:
   - guide
 ---
 
-The [RoadRunner application server](https://roadrunner.dev/) will launch multiple Temporal PHP worker processes based on provided `.rr.yaml` configuration.
+The [RoadRunner application server](https://roadrunner.dev/) will launch multiple Temporal PHP Worker processes based on provided `.rr.yaml` configuration.
 
 Each Worker might connect to one or multiple Task Queues.
 Worker poll _Temporal service_ for tasks, performs those tasks, and communicates task execution results back to the _Temporal service_.

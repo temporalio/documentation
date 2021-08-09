@@ -1,6 +1,6 @@
 ---
-id: how-to-invoke-a-workflow-execution-in-go
-title: How to invoke a Workflow Execution in Go
+id: how-to-spawn-a-workflow-execution-in-go
+title: How to spawn a Workflow Execution in Go
 description: Use the `ExecuteWorkflow()` method on the Go SDK `Client`, which is available via `NewClient()` in the `go.temporal.io/sdk/client` package.
 tags:
   - guide
@@ -8,11 +8,11 @@ tags:
 
 import RelatedReadList from '../components/RelatedReadList.js'
 
-A Workflow Execution can be invoked using the `ExecuteWorkflow()` method on the Go SDK [`Client`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client#Client), which is available via [`NewClient()`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client#NewClient) in the [`go.temporal.io/sdk/client`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client) package.
+To spawn a Workflow Execution, use the `ExecuteWorkflow()` method on the Go SDK [`Client`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client#Client), which is available via [`NewClient()`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client#NewClient) in the [`go.temporal.io/sdk/client`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client) package.
 
 <!--
 <RelatedReadList
-readliststring="How to invoke a Child Workflow Execution?#?dg"
+readliststring="How to spawn a Child Workflow Execution?#?dg"
 />
 -->
 
