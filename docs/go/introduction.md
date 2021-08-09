@@ -29,7 +29,16 @@ go run worker/main.go
 go run start/main.go
 ```
 
-If you have [`nodemon`](https://nodemon.io/) installed, you can automatically reload when you change any files: `nodemon --watch './**/*.go' --signal SIGTERM --exec 'go' run worker/main.go`
+:::tip
+
+If you have [`gow`](https://github.com/mitranim/gow) installed, you can automatically reload when you change any files:
+
+```bash
+go install github.com/mitranim/gow@latest
+gow run worker/main.go # automatically reload when file changed
+```
+
+:::
 
 ## Resources
 
