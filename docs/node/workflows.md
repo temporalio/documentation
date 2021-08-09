@@ -87,7 +87,7 @@ Other APIs you can use:
 - `scope.run()`: run an async function within a `scope`
 - `scope.cancelRequested`: a promise that resolves when a scope cancellation is requested, e.g when Workflow code calls `cancel()` or the entire Workflow is cancelled by an external client.
 
-When a `CancellationScope` is cancelled, it propagates cancellation in any child scopes and of any cancellable operations created within it, such as:
+When a `CancellationScope` is cancelled, it propagates cancellation to any child scopes and any cancellable operations created within it, such as:
 
 - Activities
 - Timers (created with the [`sleep`](https://nodejs.temporal.io/api/modules/workflow#sleep) function)
