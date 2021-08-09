@@ -259,6 +259,10 @@ module.exports = {
                   externalResolutions: {},
                 },
                 fileExtensions: [".md", ".mdx"],
+                // remark-typescript-tools automatically running prettier with a custom config that doesn't
+                // line up with ours. This disables any post processing, including the default prettier step.
+                postProcessTs: files => files,
+                postProcessTranspiledJs: files => files,
               },
             ],
             [
