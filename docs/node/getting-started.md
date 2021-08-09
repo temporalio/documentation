@@ -1,23 +1,49 @@
 # Getting started
 
-You can run "Hello Temporal" locally in under 5 minutes, assuming you have all prerequisites set up.
+You can run "Hello Temporal" locally in under 5 minutes.
 
 ## Step 0: Prerequisites
 
-This project requires nodejs LTS version 14 (or later).
+### Node
 
-Furthermore, you will need to install [node-gyp](https://github.com/nodejs/node-gyp#installation).
+This project requires Node.js version 14 or later. Brew installation of Node.js versions 15.0 to 16.4 does not work with the SDK; instead, use `>=16.5` or `<15`. Or use `nvm`:
 
-If you run into errors during installation it is likely your environment is not properly set up.
+```bash
+nvm use 14
+```
+
+If you don’t have `nvm` ([Node Version Manager](https://github.com/nvm-sh/nvm)), you can [install](https://github.com/nvm-sh/nvm#install--update-script) it with:
+
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+nvm install 14
+nvm use 14
+```
+
+### node-gyp
+
+Install [node-gyp](https://github.com/nodejs/node-gyp#installation):
+
+```bash
+npm install -g node-gyp
+```
+
+### Temporal Server
+
+Run Temporal Server (requires [Docker](https://docs.docker.com/engine/install) and [Docker Compose](https://docs.docker.com/compose/install/)):
+
+```bash
+git clone https://github.com/temporalio/docker-compose.git temporal
+cd temporal/
+docker-compose up
+```
 
 <details>
 <summary>
-  
-The Worker package embeds the <a href="https://github.com/temporalio/sdk-core">Temporal Core SDK</a> which requires the Rust toolchain to compile.
-
+The Worker package embeds the <a href="https://github.com/temporalio/sdk-core">Temporal Core SDK</a>, it comes pre-compiled for most installations.
 </summary>
 
-We've provided prebuilt binaries for the Worker for:
+We've provided pre-compiled binaries for:
 
 - Mac with an Intel chip: `x86_64-apple-darwin`
 - Mac with an Apple chip: `aarch64-apple-darwin`
@@ -26,23 +52,13 @@ We've provided prebuilt binaries for the Worker for:
 
 If you need to compile the Worker yourself, set up the Rust toolchain by following the instructions [here](https://rustup.rs/).
 
-:::note
-
-Brew installation of NodeJS>=15 does not work with the SDK, install Node with [`nvm`](https://github.com/nvm-sh/nvm) instead.
-
-:::
-
 </details>
-
-:::note
-
-**Make sure you also have Temporal Server running**. If you haven't set it up yet, we recommend following the [Temporal Server Quick Install via docker-compose](https://docs.temporal.io/docs/server/quick-install):
-
-:::
 
 ## Step 1: Create a new project
 
-Use the [package initializer](./package-initializer) to create a new project.
+> If you run into errors during installation, it is likely your environment is not properly set up (see [Step 0](#step-0-prerequisites)).
+
+Use the [package initializer](./package-initializer) to create a new project:
 
 ```bash
 npx @temporalio/create@latest ./example
@@ -58,16 +74,17 @@ If you want a [sample for connecting to a Temporal Server instance secured with 
 
 :::
 
-## Step 2: Compile Typescript
+## Step 2: Compile TypeScript
 
-Use one of the provided helper package scripts to compile Typescript.
+Use one of the provided helper package scripts to compile TypeScript.
 
 ```bash
-# Watch files and compile on change (recommended because it's most convenient)
+# Watch files and compile on change
+# (recommended because it’s most convenient)
 npm run build.watch
 
-## OR
-## Compile Typescript once (you will need to rerun this every time you edit the code)
+## OR compile TypeScript once
+## (you’ll need to rerun this every time you edit the code)
 # npm run build
 ```
 
@@ -104,6 +121,8 @@ $ npm start # this runs node lib/worker
 2021-05-19T17:27:33.408Z [INFO] Worker state changed { state: 'RUNNING' }
 ```
 
+> If this step fails, make sure you have the correct version of Node and other [dependencies](#step-0-prerequisites).
+
 Then start your Workflow:
 
 ```bash
@@ -111,13 +130,15 @@ $ node lib/worker/schedule-workflow.js
 Hello, Temporal!
 ```
 
-This "Hello Temporal" message comes from the combination of:
+This "Hello, Temporal!" message comes from the combination of:
 
-- "Hello" from the [Activity](https://github.com/temporalio/sdk-node/blob/main/packages/create-project/samples/activity.ts)
-- and "Temporal" from [`schedule-workflow.js`](https://github.com/temporalio/sdk-node/blob/03b0b3cd354da309aa6be1b1ff939f5fae007de2/packages/create-project/samples/client.ts)
-- as compiled from your `/src` to `/lib` folder by TypeScript.
+- [`schedule-workflow.js`](https://github.com/temporalio/sdk-node/blob/03b0b3cd354da309aa6be1b1ff939f5fae007de2/packages/create-project/samples/client.ts) passing `'Temporal'` as an argument to the Workflow.
+- The [Workflow](https://github.com/temporalio/sdk-node/blob/main/packages/create-project/samples/workflow.ts) passing the argument to the Activity.
+- The [Activity](https://github.com/temporalio/sdk-node/blob/main/packages/create-project/samples/activity.ts) taking the argument as `name` and returning `Hello, ${name}!`.
 
-You can verify this via the Input and Result fields in Temporal Web (available at `localhost:8088` on the default [`docker-compose`](https://github.com/temporalio/docker-compose)):
+as compiled from your `/src` to `/lib` folder by TypeScript.
+
+You can verify this via the INPUT and RESULT fields in Temporal Web (available at [`localhost:8088`](http://localhost:8088/) on the default [`docker-compose`](https://github.com/temporalio/docker-compose)):
 
 ![image](https://user-images.githubusercontent.com/6764957/118865735-d7255f80-b913-11eb-8ace-a7dbdc351f8e.png)
 

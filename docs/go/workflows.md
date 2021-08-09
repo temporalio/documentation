@@ -220,27 +220,17 @@ Here we are sending a signal to a Workflow with type "simple-workflow-php" and s
 
 See our [Signals docs](https://docs.temporal.io/docs/go/signals) and [Temporal Polyglot example](https://github.com/tsurdilo/temporal-polyglot) for more.
 
-## Child Workflow Executions
+## Child Workflows
 
 If a Workflow Execution is started by another Workflow Execution, then it is considered a Child Workflow Execution.
 The completion or failure of a Child Workflow Execution is reported to the Workflow Execution that started it (the Parent Workflow Execution).
 The Parent Workflow Execution has the ability to monitor and impact the lifecycle of the Child Workflow Execution, similar to the way it does for Activities.
 
-### When to use Child Workflows
+import WhenToUse from '../content/when-to-use-child-workflows.md'
 
-The following is a list of some of the more common reasons why you might want to do this:
-
-- Execute code using different Workers.
-- Enable execution from multiple Workflow Executions.
-- Workaround Event History size limits.
-- Create one-to-one mappings between a Workflow Id and some other resource.
-- Execute some periodic logic.
-
-### When not to use Child Workflows
-
-One of the main reasons you would not want to execute a Child Workflow is the lack of a shared state with the Parent Workflow Execution.
-Parent Workflow Executions and Child Workflow Executions can communicate only through asynchronous [Signals](/docs/go/signals).
-If the executing logic is tightly coupled between Workflow Executions, it may simply be easier to use a single Workflow Definition that can rely on a shared object's state.
+<WhenToUse
+signalsLink="/docs/go/signals"
+/>
 
 ### Parent Workflow Definition
 
@@ -256,7 +246,7 @@ The `workflow.ExecuteChildWorkflow` call is used to schedule Workflow Executions
 By default, a Child Workflow Execution inherits the options provided to the Parent Workflow Execution, and the Temporal Server will automatically generate a Child Workflow ID.
 You can overwrite any of these options and specify a custom Child Workflow ID by customizing `ChildWorkflowOptions` and adding them to the execution context.
 
-`ChildWorkflowOptions` include the following parameters:
+`ChildWorkflowOptions` include the following parameters ([API reference](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/internal#ChildWorkflowOptions)):
 
 - Namespace
 - WorkflowID
@@ -323,13 +313,14 @@ func ParentWorkflow(ctx workflow.Context) error {
 
 ## How to cancel a Workflow Execution
 
-There are many scenarios where it is necessary and even ideal to be able to cancel a Workflow Execution.
 Use the `CancelWorkflow` API to cancel a Workflow Execution using its Id.
 
 <!--SNIPSTART samples-go-cancellation-cancel-workflow-execution-trigger-->
 <!--SNIPEND-->
 
-Workflow Definitions can be written to handle execution cancellation requests.
+### How to clean up after a Workflow is cancelled
+
+Workflow Definitions can be written to handle execution cancellation requests with Go's `defer` and the `workflow.NewDisconnectedContext` API.
 In the Workflow Definition below, there is a special Activity that handles clean up should the execution be cancelled.
 
 <!--SNIPSTART samples-go-cancellation-workflow-definition-->
@@ -337,9 +328,9 @@ In the Workflow Definition below, there is a special Activity that handles clean
 
 ## How to get data in or out of a running Workflow
 
-[Signals](/docs/go/signals) are the mechanism by which you can get data into already running Workflow.
+[Signals](/docs/go/signals) are the mechanism by which you can get data into an already running Workflow.
 
-[Queries](/docs/go/queries) are the mechanism by which you can get data out of currently running Workflow.
+[Queries](/docs/go/queries) are the mechanism by which you can get data out of a currently running Workflow.
 
 ## Custom Serialization and Workflow Security
 

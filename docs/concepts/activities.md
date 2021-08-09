@@ -27,6 +27,7 @@ Temporal does not impose any system limit on Activity duration. It is up to the 
   See [Long Running Activities](#long-running-activities).
 
 Either `ScheduleToClose` or `StartToClose` timeouts are required.
+You can see our explainer on [the 4 types of Activity Timeouts](/blog/activity-timeouts) for why.
 
 ## Retries
 
@@ -50,11 +51,21 @@ Long running Activities can be used as a special case of leader election. Tempor
 
 One common use case for such leader election is monitoring. An Activity executes an internal loop that periodically polls some API and checks for some condition. It also heartbeats on every iteration. If the condition is satisfied, the Activity completes which lets its Workflow to handle it. If the Activity worker dies, the Activity times out after the heartbeat interval is exceeded and is retried on a different worker. The same pattern works for polling for new files in Amazon S3 buckets or responses in REST or other synchronous APIs.
 
-## Cancellation
+## Activity Cancellation
 
-A Workflow can request an Activity cancellation. Currently the only way for an Activity to learn that it was cancelled is through heart beating. The heartbeat request fails with a special error indicating that the Activity was cancelled. Then it is up to the Activity implementation to perform all the necessary cleanup and report that it is done with it. It is up to the Workflow implementation to decide if it wants to wait for the Activity cancellation confirmation or just proceed without waiting.
+import WhatIsActivityCancellation from '../content/what-is-activity-cancellation.md'
 
-Another common case for Activity heartbeat failure is that the Workflow that invoked it is in a completed state. In this case an Activity is expected to perform cleanup as well.
+<WhatIsActivityCancellation />
+
+:::note Cancellations are not immediate
+
+`ctx.Done()` is only signaled when a heartbeat is sent to the service.
+Temporal's SDK throttles this so a heartbeat may not be sent to the service until 80% of the heartbeat timeout has elapsed.
+
+For example, if your heartbeat timeout is 20 seconds, `ctx.Done()` will not be signaled until 80% of 20 seconds (~16 seconds) has elapsed.
+To increase or decrease the delay of cancelation, modify the heartbeat timeout defined for the activity context.
+
+:::
 
 ## Activity Task Routing through Task Queues
 
@@ -73,17 +84,17 @@ Here are some use cases for employing multiple Activity task queues in a single 
 
 ## Asynchronous Activity Completion
 
-By default an Activity is a function or a method depending on a client side library language. As soon as the function returns, an Activity completes. But in some cases an Activity implementation is asynchronous. For example it is forwarded to an external system through a message queue. And the reply comes through a different queue.
+By default, an Activity is a function or method (depending on the language) that completes as soon as the function or method returns. But in some cases an Activity implementation is asynchronous. For example, the action could be forwarded to an external system through a message queue, and the result could come through a different queue.
 
 To support such use cases, Temporal allows Activity implementations that do not complete upon Activity function completions. A separate API should be used in this case to complete the Activity. This API can be called from any process, even in a different programming language, that the original Activity worker used.
 
 ## Local Activities
 
-Some of the Activities are very short lived and do not need the queing semantic, flow control, rate limiting and routing capabilities. For these Temporal supports so called _local Activity_ feature. Local Activities are executed in the same worker process as the Workflow that invoked them. Consider using local Activities for functions that are:
+Some Activities are very short lived and do not need the queuing semantic, flow control, rate limiting and routing capabilities. For this case, Temporal supports a _local Activity_ feature. Local Activities are executed in the same worker process as the Workflow that invoked them. Consider using local Activities for functions that are:
 
 - no longer than a few seconds
 - do not require global rate limiting
 - do not require routing to specific workers or pools of workers
 - can be implemented in the same binary as the Workflow that invokes them
 
-The main benefit of local Activities is that they are much more efficient in utilizing Temporal service resources and have much lower latency overhead comparing to the usual Activity invocation.
+The main benefit of local Activities is that they are much more efficient in utilizing Temporal service resources and have much lower latency overhead compared to the usual Activity invocation.

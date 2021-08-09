@@ -12,26 +12,43 @@ This is the conceptual opposite of [**Queries**](https://docs.temporal.io/docs/g
 
 ## When to use Signals
 
-Without Signals, you have only two options for passing data to the Workflow implementation:
+import WhenToSignals from '../content/when-to-use-signals.md'
 
-- Via start parameters
-- As return values from Activities
-
-With start parameters, we can only pass in values before Workflow execution begins.
-
-Return values from Activities allow us to pass information to a running Workflow, but this approach comes with its own complications.
-One major drawback is **reliance on polling**.
-This means that the data needs to be stored in a third-party location until it's ready to be picked up by the Activity.
-Further, the lifecycle of this Activity requires management, and the Activity requires manual restart if it fails before acquiring the data.
-
-**Signals**, on the other hand, provide a fully asynchronous and durable mechanism for providing data to a running Workflow.
-When a signal is received for a running Workflow, Temporal persists the event and the payload in the Workflow history.
-The Workflow can then process the signal at any time afterwards without the risk of losing the information.
-The Workflow also has the option to stop execution by blocking on a **signal channel**.
+<WhenToSignals />
 
 ## Example Signal Code
 
-In Temporal, Signals are sent to and from Signal Channels:
+You can find more example Signals usage in our [Go Samples](https://github.com/temporalio/samples-go).
+
+### How to send a Signal
+
+We can send a Signal using the `SignalWorkflow()` function.
+To uniquely identify the Workflow, we need to pass in the `workflowID` and `runID`.
+Typically, we signal a Workflow from a different process, like a [starter](/docs/go/hello-world-tutorial/#workflow-starter).
+
+```go
+temporal, err := client.NewClient(client.Options{})
+if err != nil {
+    log.Fatalln("Unable to create Temporal client", err)
+    return
+}
+
+err = temporal.SignalWorkflow(context.Background(), workflowID, runID, signalName, signalVal)
+if err != nil {
+	log.Fatalln("Error signaling client", err)
+	return
+}
+```
+
+### Signalling regardless of running status
+
+You may not know if a Workflow is running and can accept a signal.
+The [client.SignalWithStartWorkflow](https://pkg.go.dev/go.temporal.io/sdk/client#Client) API allows you to send a Signal to the current Workflow Execution if one exists or to create a new Execution and send a Signal to it.
+`SignalWithStartWorkflow` therefore doesn't take a run Id as a parameter.
+
+### How to receive a Signal
+
+You have to get a Signal Channel first:
 
 ```go
 var signalVal string
@@ -52,27 +69,7 @@ if len(signalVal) > 0 && signalVal != "SOME_VALUE" {
 In the example above, the Workflow code uses **workflow.GetSignalChannel** to open a **workflow.Channel** for the named signal.
 We then use a [**workflow.Selector**](https://docs.temporal.io/docs/go/selectors) to wait on this channel and process the payload received with the signal.
 
-We can send a Signal to this Workflow using the `SignalWorkflow()` function.
-To uniquely identify the Workflow, we need to pass in the `workflowID` and `runID`.
-Typically, we signal a Workflow from a different process, like a [starter](/docs/go/hello-world-tutorial/#workflow-starter).
-
-```go
-temporal, err := client.NewClient(client.Options{})
-if err != nil {
-    log.Fatalln("Unable to create Temporal client", err)
-    return
-}
-
-err = temporal.SignalWorkflow(context.Background(), workflowID, runID, signalName, signalVal)
-if err != nil {
-	log.Fatalln("Error signaling client", err)
-	return
-}
-```
-
-You can find more example Signals usage in our [Go Samples](https://github.com/temporalio/samples-go).
-
-## Signal with structs
+### Signal with structs
 
 You can also send structs in Signals, as long as the struct is [serializable](https://pkg.go.dev/go.temporal.io/sdk/converter#CompositeDataConverter.ToPayload).
 `Receive()` decodes data into the struct within the Workflow.
@@ -101,12 +98,6 @@ s.AddReceive(signalChan, func(c workflow.ReceiveChannel, more bool) {
 })
 s.Select(ctx)
 ```
-
-## Signalling regardless of running status
-
-You may not know if a Workflow is running and can accept a signal.
-The [client.SignalWithStartWorkflow](https://pkg.go.dev/go.temporal.io/sdk/client#Client) API allows you to send a Signal to the current Workflow Execution if one exists or to create a new Execution and send a Signal to it.
-`SignalWithStartWorkflow` therefore doesn't take a run Id as a parameter.
 
 ## Signalling external Workflows
 

@@ -2,7 +2,7 @@
 tags:
   - temporal
   - community
-  - go-ecommerce-tutorial
+  - golang
 posted_on_: 2021-07-14T00:00:00Z
 slug: media-processing-workflows
 title: 'Media processing workflows'

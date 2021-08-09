@@ -174,14 +174,14 @@ If you can handle a partitioned database and partitioned hosts you can get to a 
 
 The simple way to solve the partitioning problems would be to simply have **one database per host** and guarantee transactions within each host - but this wouldn't be very practical because it would be very hard to add and remove hosts.
 
-The standard way to solve this is to use **sharding. I**nstead of physical hosts, we:
+The standard way to solve this is to use **sharding**. Instead of physical hosts, we:
 
 - use partitions within the database,
-- overallocate the number of partitions,
+- over-allocate the number of partitions,
 - allocate those partitions to specific physical hosts, and
 - move them around if necessary.
 
-The same applies to shards within our our hosts - you can hash workflows to a specific shard id and use consistent hashing to allocate a shard to a specific host
+The same applies to shards within our hosts: you can hash workflows to a specific shard id and use consistent hashing to allocate a shard to a specific host.
 
 
 ![Designing Workflow Engine-v7-images 026](https://user-images.githubusercontent.com/6764957/113587251-16983500-9661-11eb-8b7d-edf47b3fb283.png)
@@ -254,9 +254,9 @@ We use the same transfer queue approach to commit "visibility records" into each
 
 ## System Workflows (19:10)
 
-As soon as you can list workflows your users will ask you to perform batch operations, for example "Terminate all flows which match this criteria started by $USER".
+As soon as you can list workflows, your users will ask you to perform batch operations, for example "Terminate all flows which match this criteria started by $USER".
 
-You could program this externally: make a list, get the id's save to a file and execute a script to terminate them. To execute this reliably you'd use a workflow, and this is exactly what Temporal does internally. The Batch Operation Workflow is built into the core cluster like a "system workflow" - it could be implemented outside, but we brought it in because we wanted to provide this as part of the core cluster functionality.
+You could program this externally: make a list, get the id's save to a file and execute a script to terminate them. To execute this reliably, you'd use a workflow, and this is exactly what Temporal does internally. The Batch Operation Workflow is built into the core cluster like a "system workflow" - it could be implemented outside, but we brought it in because we wanted to provide this as part of the core cluster functionality.
 
 ![Designing Workflow Engine-v7-images 040](https://user-images.githubusercontent.com/6764957/113587530-7ee71680-9661-11eb-852f-9c50972d42ea.png)
 
@@ -281,7 +281,7 @@ We have:
 - an **Elastic** component for indexing
 - a **Worker** component for background jobs.
 
-This leaves **Workflows** and **Activities** implemented by application developers using Temporal SDKs.
+This leaves **Workflows** and **Activities** to be implemented by application developers using one of the Temporal SDKs.
 
 ## Bonus: Multi-cluster Deployment (21:00)
 

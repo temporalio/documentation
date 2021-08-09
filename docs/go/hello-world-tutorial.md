@@ -29,15 +29,10 @@ All of the code in this tutorial is available in the [hello-world Go template re
 
 In a terminal, create a new project directory named "hello-world-project-template-go", or something similar and `cd` into it.
 
-From the root of your new project directory, initialize a new Go module. Make sure the module path (i.e. hello-world-project-template-go) matches that of the directory in which you are creating the module:
+From the root of your new project directory, initialize a new Go module. Make sure the module path (i.e. hello-world-project-template-go) matches that of the directory in which you are creating the module. Then, add the Temporal Go SDK as a project dependency:
 
-```
+```bash
 go mod init hello-world-project-template-go/app
-```
-
-Then, add the Temporal Go SDK as a project dependency:
-
-```
 go get go.temporal.io/sdk@latest
 ```
 

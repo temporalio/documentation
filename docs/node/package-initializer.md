@@ -1,3 +1,9 @@
+---
+id: package-initializer
+title: Node SDK Package Initializer
+sidebar_label: Package Initializer
+---
+
 # @temporalio/create
 
 [![NPM](https://img.shields.io/npm/v/@temporalio/create)](https://www.npmjs.com/package/@temporalio/create)
@@ -28,7 +34,7 @@ src/workflows/ -> Workflow implementations
 src/activities/ -> Activity implementations
 ```
 
-This code structure is required for enabling Workflows - which run in an [isolated environment](/docs/node/hello-world/#workflows) - to specify a custom `tsconfig.json` than the rest of the project.
+This code structure is required for enabling Workflows—which run in an [isolated environment](/docs/node/hello-world/#workflows)—to specify a custom `tsconfig.json` than the rest of the project.
 
 #### References
 
@@ -38,7 +44,7 @@ This code structure is required for enabling Workflows - which run in an [isolat
 
 The created project comes with some helper package scripts.
 
-- `npm run build` - Compile Typescript
+- `npm run build` - Compile TypeScript
 - `npm run build.watch` - Watch files and compile on change
 
 #### Running the example
