@@ -132,7 +132,7 @@ You can await `cancelRequested` to make Workflow aware of cancellation while wai
 <!--SNIPEND-->
 
 Callbacks are not particularly useful in Workflows because all meaningful asynchronous operations return Promises.
-In the rare case that user code utilizes callbacks, `CancellationScope.cancelRequested` can be used to subscribe to cancellation.
+In the rare case that user code utilizes callbacks and needs to handle cancellation, a callback can be used to consume the `CancellationScope.cancelRequested` `Promise`.
 
 <!--SNIPSTART nodejs-cancellation-scopes-with-callbacks-->
 <!--SNIPEND-->
