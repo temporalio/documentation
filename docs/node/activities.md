@@ -26,7 +26,7 @@ You can import the above `greet()` Activity in a Workflow as shown below, assumi
 import {greet} from "@activities/greeter";
 
 // Returns "Hello, World!"
-await greet('World');
+await greet("World");
 ```
 
 When you import an Activity function from a Workflow, the Node SDK replaces the Activity function with a stubbed function that schedules the Activity on the Temporal server.
