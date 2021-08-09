@@ -4,24 +4,15 @@ title: Signals in PHP
 sidebar_label: Signals
 ---
 
-**Signals** provide a mechanism to send data directly to a running Workflow. Previously, you had
-two options for passing data to the Workflow implementation:
+**Signals** provide a mechanism to send data directly into a running Workflow.
 
-- Via start parameters
-- As return values from Activities
+## When to Use Signals
 
-With start parameters, we could only pass in values before Workflow execution began.
+import WhenToSignals from '../content/when-to-use-signals.md'
 
-Return values from Activities allowed us to pass information to a running Workflow, but this
-approach comes with its own complications. One major drawback is reliance on polling. This means
-that the data needs to be stored in a third-party location until it's ready to be picked up by
-the Activity. Further, the lifecycle of this Activity requires management, and the Activity
-requires a manual restart if it fails before acquiring the data.
+<WhenToSignals />
 
-**Signals**, on the other hand, provide a fully asynchronous and durable mechanism for providing data to
-a running Workflow. When a signal is received for a running Workflow, Temporal persists the event
-and the payload in the Workflow history. The Workflow can then process the signal at any time
-afterwards without the risk of losing the information.
+## How to use Signals
 
 ```php
 use Temporal\Workflow;
