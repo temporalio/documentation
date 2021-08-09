@@ -61,8 +61,8 @@ const {greet} = require("@activities/greeter");
 ```
 
 When you import an Activity function from a Workflow, the Node SDK replaces the Activity function with a stubbed function that schedules the Activity on the Temporal server.
-For example, if you print `greet.toString()` in the previous example, Node will not print the contents of the `greet()` function from `lib/activities.greeter.js`.
-Instead, Node will print a function that calls the Node SDK's internal `scheduleActivity()` function.
+For example, if you log `greet.toString()` in the previous example, you won't see the contents of the `greet()` function from `lib/activities/greeter.js`.
+Instead, you'll see a function that calls the Node SDK's internal `scheduleActivity()` function.
 
 :::info
 

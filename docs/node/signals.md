@@ -18,7 +18,7 @@ import WhenToSignals from '../content/when-to-use-signals.md'
 
 ### How to define a Signal
 
-To add signal handlers to a workflow, add a `signals` property to the exported workflow object:
+To add Signal handlers to a Workflow, add a `signals` property to the exported Workflow object:
 
 ```ts
 // interface
@@ -33,7 +33,7 @@ export interface Interruptable extends Workflow {
 
 ### How to send a Signal
 
-You invoke a signal by the name you gave it:
+You invoke a Signal with `workflow.signal.signalName(args)`. In the above case, we called our Signal `interrupt`, so we call `workflow.signal.interrupt("some string")`:
 
 ```ts
 const client = new WorkflowClient();
@@ -46,7 +46,7 @@ await workflow.signal.interrupt("some string");
 
 ### How to receive a Signal
 
-Signal handlers can return either `void` or `Promise<void>`, you may schedule activities and timers from a signal handler.
+Signal handlers can return either `void` or `Promise<void>`. You may schedule Activities and Timers from a Signal handler.
 
 ```ts
 // implementation
@@ -75,9 +75,9 @@ export const workflow: Interruptable = {main, signals};
 
 ## Triggers
 
-Triggers are a concept unique to the Temporal Node SDK, useful for waiting for and then resolving or rejecting based on a signal.
+[Triggers](https://nodejs.temporal.io/api/classes/workflow.trigger) are a concept unique to the Temporal Node SDK. They allow you to wait for a Signal to be received. Inside the Signal, the Trigger is resolved, which allows the Workflow to continue, or rejected, which throws an error.
 
-They are a `PromiseLike` API which exposes `resolve` and `reject` methods.
+Triggers have a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)-like API which exposes `resolve` and `reject` methods.
 
 ```ts
 import {Trigger, CancelledError} from "@temporalio/workflow";
@@ -94,7 +94,7 @@ const signals = {
 async function main(): Promise<void> {
   try {
     console.log("Blocked");
-    await unblocked; // works because Trigger is promiselike
+    await unblocked; // works because Trigger is Promise-like
     console.log("Unblocked");
   } catch (err) {
     if (!(err instanceof CancelledError)) {
@@ -107,4 +107,4 @@ async function main(): Promise<void> {
 export const workflow: Blocked = {main, signals};
 ```
 
-``Trigger` is `CancellationScope` aware. It is linked to the current scope on construction and throws when that scope is cancelled.
+`Trigger` is `CancellationScope`-aware. It is linked to the current scope on construction and throws when that scope is cancelled.

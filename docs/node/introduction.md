@@ -1,5 +1,6 @@
 ---
-title: NodeJS SDK introduction
+title: Node.js SDK introduction
+sidebar_label: Introduction
 ---
 
 import CustomWarning from "../components/CustomWarning.js"
@@ -20,4 +21,4 @@ See the [Hello World](/docs/node/hello-world) tutorial to learn about the basic 
 
 ## Reference
 
-NodeJS SDK reference is available here: https://nodejs.temporal.io
+Node.js SDK reference is available here: https://nodejs.temporal.io
