@@ -239,7 +239,7 @@ module.exports = {
                     if (!/^ts$/.test(node.lang)) {
                       return;
                     }
-                    node.value = "// @ts-nocheck\n" + node.value;
+                    node.value = "// @ts-nocheck\n" + node.value.trim();
                   }
 
                   visit(tree, "code", visitor);
@@ -276,7 +276,7 @@ module.exports = {
                       node.value = node.value.slice("// @ts-nocheck\n".length);
                     }
                     // If TS compiled output is empty, replace it with a more helpful comment
-                    if (node.lang === "js" && node.value === "export {};") {
+                    if (node.lang === "js" && node.value.trim() === "export {};") {
                       node.value = "// Not required in JavaScript";
                     }
                   }
