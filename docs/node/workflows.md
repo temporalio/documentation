@@ -29,7 +29,7 @@ Workflow interface declarations are optional, they're only required for generati
 
 ### Workflow Implementation
 
-A Workflow implmentation module may export a `workflow` object which can be type checked using a pre-defined interface or `main` - and optionally `signals` and `queries` - directly.
+A Workflow implementation module may export a `workflow` object which can be type checked using a pre-defined interface or `main` - and optionally `signals` and `queries` - directly.
 
 In a Workflow, Activities can be imported and called as regular functions. At runtime, the imported Activities (prefixed with `@activities`) are replaced with stubs which schedule Activities in the system.
 
@@ -56,12 +56,6 @@ It can be used in any NodeJS process e.g an express app and does not depend on t
 
 If you `await` a workflow with `execute()`, you will get the result back after it completes.
 There is no official support for querying the state of asynchronously started Workflows in Node.js yet.
-
-## How to get data in or out of a running Workflow
-
-[Signals](/docs/go/signals) are the mechanism by which you can get data into an already running Workflow. There is no official support for Signals in Node.js yet.
-
-[Queries](/docs/go/queries) are the mechanism by which you can get data out of a currently running Workflow.There is no official support for Queries in Node.js yet.
 
 ## How Workflow operations are canceled
 
