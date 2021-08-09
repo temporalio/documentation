@@ -119,7 +119,7 @@ Handle Workflow cancellation by an external client while an Activity is running:
 
 ### `withTimeout` example
 
-A very common operation is to cancel one or more activities if a deadline elapses:
+A very common operation is to cancel one or more activities if a deadline elapses, `withTimeout` creates a `CancellationScope` that is automatically cancelled after a given timeout. 
 
 <!--SNIPSTART nodejs-multiple-activities-single-timeout-workflow-->
 <!--SNIPEND-->
