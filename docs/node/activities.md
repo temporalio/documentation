@@ -70,3 +70,14 @@ Currently, you need to use the `@activities` prefix.
 Do **not** import your Activity by using the `'../activities/greeter'` path; otherwise your Activity executes in the same V8 isolate as your Workflow, and your Activity is subject to the same restrictions as your Workflow.
 
 :::
+
+## Heartbeating
+
+Long running activities should heartbeat their progress back to the Workflow.
+This has not yet been implemented in the Node SDK.
+
+### Activity Cancellation
+
+import WhatIsActivityCancellation from '../content/what-is-activity-cancellation.md'
+
+<WhatIsActivityCancellation />

@@ -51,11 +51,21 @@ Long running Activities can be used as a special case of leader election. Tempor
 
 One common use case for such leader election is monitoring. An Activity executes an internal loop that periodically polls some API and checks for some condition. It also heartbeats on every iteration. If the condition is satisfied, the Activity completes which lets its Workflow to handle it. If the Activity worker dies, the Activity times out after the heartbeat interval is exceeded and is retried on a different worker. The same pattern works for polling for new files in Amazon S3 buckets or responses in REST or other synchronous APIs.
 
-## Cancellation
+## Activity Cancellation
 
-A Workflow can request an Activity cancellation. Currently the only way for an Activity to learn that it was cancelled is through heart beating. The heartbeat request fails with a special error indicating that the Activity was cancelled. Then it is up to the Activity implementation to perform all the necessary cleanup and report that it is done with it. It is up to the Workflow implementation to decide if it wants to wait for the Activity cancellation confirmation or just proceed without waiting.
+import WhatIsActivityCancellation from '../content/what-is-activity-cancellation.md'
 
-Another common case for Activity heartbeat failure is that the Workflow that invoked it is in a completed state. In this case an Activity is expected to perform cleanup as well.
+<WhatIsActivityCancellation />
+
+:::note Cancellations are not immediate
+
+`ctx.Done()` is only signaled when a heartbeat is sent to the service.
+Temporal's SDK throttles this so a heartbeat may not be sent to the service until 80% of the heartbeat timeout has elapsed.
+
+For example, if your heartbeat timeout is 20 seconds, `ctx.Done()` will not be signaled until 80% of 20 seconds (~16 seconds) has elapsed.
+To increase or decrease the delay of cancelation, modify the heartbeat timeout defined for the activity context.
+
+:::
 
 ## Activity Task Routing through Task Queues
 
