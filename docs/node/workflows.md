@@ -186,19 +186,13 @@ import SharedContinueAsNew from '../shared/continue-as-new.md'
 Use the `Context.continueAsNew` API to instruct the Node SDK to restart `main` with a new starting value and a new event history.
 
 ```ts
-import {Context, CancellationScope} from "@temporalio/workflow";
+import {Context, sleep} from "@temporalio/workflow";
 
-async function main(
-  continueFrom: "main" | "signal" | "none" = "main"
-): Promise<void> {
-  if (continueFrom === "none") {
-    return;
-  }
-  if (continueFrom === "main") {
-    await Context.continueAsNew<typeof main>("signal"); // must match the arguments expected by `main`
-  }
-  await CancellationScope.current().cancelRequested;
+async function main(iteration = 0): Promise<void> {
+  if (iteration === 10) return;
+  console.log("Running Workflow iteration:", iteration);
+  await sleep(1000);
+  await Context.continueAsNew<typeof main>(iteration + 1); // must match the arguments expected by `main`
+  // Unreachable code, continueAsNew is like `process.exit` and will stop execution once called.
 }
-
-export const workflow: ContinueAsNewFromMainAndSignal = {main};
 ```
