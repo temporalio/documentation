@@ -62,7 +62,7 @@ That's why opening up Cadence from the beginning was very important to us becaus
 
 ## Leaving Uber
 
-**Was part of making it open source just testing the true market potential outside of Uber? Or did the thought only come after it had some pretty strong traction?
+**Was part of making it open source just testing the true market potential outside of Uber? Or did the thought only come after it had some pretty strong traction?**
 
 Every engineer probably wants to start a company at some point, but to tell the truth, I never was thinking about it seriously. 
 We thought that it might be a company one day, but we just wanted to make Temporal popular in the industry. 
