@@ -27,6 +27,7 @@ Temporal does not impose any system limit on Activity duration. It is up to the 
   See [Long Running Activities](#long-running-activities).
 
 Either `ScheduleToClose` or `StartToClose` timeouts are required.
+You can see our explainer on [the 4 types of Activity Timeouts](/blog/activity-timeouts) for why.
 
 ## Retries
 
