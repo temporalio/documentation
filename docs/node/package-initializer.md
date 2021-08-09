@@ -34,7 +34,7 @@ src/workflows/ -> Workflow implementations
 src/activities/ -> Activity implementations
 ```
 
-This code structure is required for enabling Workflows - which run in an [isolated environment](/docs/node/hello-world/#workflows) - to specify a custom `tsconfig.json` than the rest of the project.
+This code structure is required for enabling Workflows—which run in an [isolated environment](/docs/node/hello-world/#workflows)—to specify a custom `tsconfig.json` than the rest of the project.
 
 #### References
 

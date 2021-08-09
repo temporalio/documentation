@@ -73,7 +73,7 @@ Now that Descript has had production experience running with Temporal Cloud, mor
 - other CPU intensive backend workloads
 - the ([fan favorite](https://twitter.com/swyx/status/1370415731372826628)) Identify Speaker feature
 
-Other teams at Descript are waiting for our NodeJS client to explore migrating other forms of workloads.
+Other teams at Descript are waiting for our Node.js client to explore migrating other forms of workloads.
 
 > "Everyone in the company can see more and more use cases where Temporal would be useful."
 

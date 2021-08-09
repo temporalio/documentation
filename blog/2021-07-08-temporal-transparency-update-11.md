@@ -22,7 +22,7 @@ Latest Release at Time of Writing: V1.10.5
 - Cadence EOL date remains **September 29, 2021**
 - Improvements and whimsy for the Temporal landing page
 - Cloud adoption continues to grow
-- NodeJS is imminent. Represents a fundamentally better experience for Temporal
+- Node.js is imminent. Represents a fundamentally better experience for Temporal
 - Custom search attributes redesign
 
 Hey community, things are going very well in the Temporal universe and we've seen huge jumps in open source and cloud adoption. There aren't any fundamentally new announcements in this update, but it should shed light on a lot of high impact efforts that are in flight.
@@ -65,11 +65,11 @@ We are also fortunate to have public cloud customers. Each of these companies is
 
 If you are interested in the cloud, we are still being selective with onboarding but are taking new partners. Please fill out our newly updated cloud survey to help us understand if your use case would be a good fit [https://us17.list-manage.com/survey?u=2334a0f23e55fd1840613755d&id=f1895b6f4a](https://us17.list-manage.com/survey?u=2334a0f23e55fd1840613755d&id=f1895b6f4a).
 
-## NodeJS
+## Node.js
 
-Temporal's ultimate goal is to make application development fundamentally more accessible to developers of all experience levels and backgrounds. While the current product delivers on that goal well for Golang and Java developers, the majority of developers today are writing JavaScript and Python. It became clear to us that until we  support the core languages that developers rely on, our ability to make application development more accessible was very limited. In other words, in order to make application development more accessible for the broader ecosystem we first need to make Temporal easier to adopt and learn about. Needless to say, accessibility was top of mind when we started thinking about NodeJS support. 
+Temporal's ultimate goal is to make application development fundamentally more accessible to developers of all experience levels and backgrounds. While the current product delivers on that goal well for Golang and Java developers, the majority of developers today are writing JavaScript and Python. It became clear to us that until we  support the core languages that developers rely on, our ability to make application development more accessible was very limited. In other words, in order to make application development more accessible for the broader ecosystem we first need to make Temporal easier to adopt and learn about. Needless to say, accessibility was top of mind when we started thinking about Node.js support.
 
-The NodeJS SDK is unlike any other SDK as determinism is guaranteed at the workflow level using V8 isolates. It's also the first SDK built on top of our next generation Rust core. By guaranteeing determinism at the workflow level, we eliminate an entire class of problems that exist with our other SDKs. This significantly reduces the mental overhead of writing and debugging workflows. 
+The Node.js SDK is unlike any other SDK as determinism is guaranteed at the workflow level using V8 isolates. It's also the first SDK built on top of our next generation Rust core. By guaranteeing determinism at the workflow level, we eliminate an entire class of problems that exist with our other SDKs. This significantly reduces the mental overhead of writing and debugging workflows.
 
 The SDK is currently in alpha ([source](https://github.com/temporalio/sdk-node), [docs](https://docs.temporal.io/docs/node/hello-world/)) but even today it provides a completely unique and incredibly simple Temporal experience. We believe it represents the fundamental direction and level of accessibility Temporal is aiming for in the future. That being said, we are desperately in need of additional feedback, so if you have opinions on JavaScript and/or Temporal please share it with us (and join the #nodejs-sdk channel in Slack). Together we can drastically lower the barrier of entry for building connected applications.
 

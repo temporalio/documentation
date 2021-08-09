@@ -6,13 +6,13 @@ You can run "Hello Temporal" locally in under 5 minutes.
 
 ### Node
 
-This project requires Node.js version 14 or later. Brew installation of Node.js versions 15.0 to 16.4 does not work with the SDK; instead, use `>=16.5` or `<15`. Or use `nvm` ([Node Version Manager](https://github.com/nvm-sh/nvm)):
+This project requires Node.js version 14 or later. Brew installation of Node.js versions 15.0 to 16.4 does not work with the SDK; instead, use `>=16.5` or `<15`. Or use `nvm`:
 
 ```bash
 nvm use 14
 ```
 
-If you don’t have `nvm`, you can [install](https://github.com/nvm-sh/nvm#install--update-script) with:
+If you don’t have `nvm` ([Node Version Manager](https://github.com/nvm-sh/nvm)), you can [install](https://github.com/nvm-sh/nvm#install--update-script) it with:
 
 ```bash
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
@@ -83,7 +83,7 @@ Use one of the provided helper package scripts to compile TypeScript.
 # (recommended because it’s most convenient)
 npm run build.watch
 
-## OR compile TypeScript once 
+## OR compile TypeScript once
 ## (you’ll need to rerun this every time you edit the code)
 # npm run build
 ```
@@ -120,6 +120,8 @@ $ npm start # this runs node lib/worker
 2021-05-19T17:27:33.178Z [INFO] webpack 5.37.1 compiled successfully in 1058 ms
 2021-05-19T17:27:33.408Z [INFO] Worker state changed { state: 'RUNNING' }
 ```
+
+> If this step fails, make sure you have the correct version of Node and other [dependencies](#step-0-prerequisites).
 
 Then start your Workflow:
 

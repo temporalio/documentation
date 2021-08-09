@@ -9,7 +9,7 @@ The Temporal SDKs come with a set of tools which allow you to overcome these lim
 
 ### How a Workflow is executed
 
-The Temporal NodeJS SDK runs each Workflow in a separate v8 isolate - a "sandbox" environment with its own global variables just like in the browser.
+The Temporal Node.js SDK runs each Workflow in a separate v8 isolate - a "sandbox" environment with its own global variables just like in the browser.
 The Workflow runtime is completely deterministic, functions like `Math.random`, `Date`, and `setTimeout` are replaced by deterministic versions and the only way for a Workflow to interact with the world is via Activities.
 When an Activity completes its result is stored in the Workflow history to be replayed in case a Workflow is restored.
 

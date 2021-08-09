@@ -6,13 +6,13 @@ sidebar_label: Queries
 
 ## What is a Query?
 
-**Queries** provide a mechanism to retrieve data OUT from a running Workflow.
+[**Queries**](/docs/concepts/queries) provide a mechanism to retrieve data OUT from a running Workflow.
 
 ## How to use Queries
 
 ### How to define a Query
 
-To add query handlers to a workflow, add a `queries` property to the exported workflow object:
+To add Query handlers to a Workflow, add a `queries` property to the exported Workflow object:
 
 ```ts
 // interface
@@ -58,13 +58,13 @@ async function main(): Promise<void> {
 export const workflow: SimpleQuery = {main, queries, signals};
 ```
 
-### How to poll a Query
+### How to make a Query
 
-Use the name you defined:
+Use the name of the function you defined:
 
 ```ts
 const client = new WorkflowClient();
 const workflow = client.stub<SimpleQuery>("simple-query", {taskQueue: "test"});
 await workflow.start();
-await workflow.query.isBlocked(); // this gets data out
+await workflow.query.isBlocked(); // this gets data out of the Workflow
 ```

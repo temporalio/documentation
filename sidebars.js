@@ -311,7 +311,7 @@ module.exports = {
         "node/introduction",
         {
           type: "link",
-          label: "Reference",
+          label: "API reference",
           href: "https://nodejs.temporal.io",
         },
         "node/getting-started",
