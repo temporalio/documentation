@@ -10,8 +10,8 @@
     "noEmitOnError": true,
     "strict": false,
     "removeComments": false,
-    "module": "CommonJS",
-    "target": "ES2015",
+    "module": "ESNext",
+    "target": "ESNext",
     "alwaysStrict": false
   }
 }
