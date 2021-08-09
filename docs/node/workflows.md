@@ -63,7 +63,7 @@ There is no official support for querying the state of asynchronously started Wo
 
 [Queries](/docs/go/queries) are the mechanism by which you can get data out of a currently running Workflow.There is no official support for Queries in Node.js yet.
 
-## How to cancel a Workflow Execution
+## How Workflow operations are canceled
 
 In the Node SDK, Workflows are represented internally by a tree of **Cancellation Scopes**, each with cancellation behaviors you can specify.
 Everything runs in the "root" scope by default.
