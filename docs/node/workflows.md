@@ -64,21 +64,21 @@ Everything runs in the "root" scope by default.
 
 Scopes are created using the [`CancellationScope`](https://nodejs.temporal.io/api/classes/workflow.cancellationscope) constructor, or one of 3 static helpers:
 
-- [`cancellable(fn)`](https://nodejs.temporal.io/api/classes/workflow.cancellationscope#cancellable-1) : children are automatically cancelled when their containing scope is cancelled.
+- [`cancellable(fn)`](https://nodejs.temporal.io/api/classes/workflow.cancellationscope#cancellable-1): children are automatically cancelled when their containing scope is cancelled.
   - Equivalent to `new CancellationScope().run(fn)`.
 - [`nonCancellable(fn)`](https://nodejs.temporal.io/api/classes/workflow.cancellationscope#noncancellable): prevents cancellation from propagating to children.
   - Equivalent to `new CancellationScope({ cancellable: false }).run(fn)`.
-- [`withTimeout(timeoutMs, fn)`](https://nodejs.temporal.io/api/classes/workflow.cancellationscope#withtimeout): If timeout triggers before `fn` resolves the scope will be cancelled, triggering cancellation of enclosed operations, such as activities and timers.
+- [`withTimeout(timeoutMs, fn)`](https://nodejs.temporal.io/api/classes/workflow.cancellationscope#withtimeout): if timeout triggers before `fn` resolves the scope will be cancelled, triggering cancellation of enclosed operations, such as activities and timers.
   - Equivalent to `new CancellationScope({ cancellable: true, timeout: timeoutMs }).run(fn)`.
 
 Cancellation propagates from outer scopes to inner ones and is handled by catching `CancelledError`s thrown by cancellable operations (see below).
 
-Scopes all return native JS Promises, so you can use all the familiar Promise APIs like `Promise.all` and `Promise.race` to model your async logic.
+`CancellationScope.run()` and the static helpers mentioned above all return native JS Promises, so you can use the familiar Promise APIs like `Promise.all` and `Promise.race` to model your async logic.
 Other APIs you can use:
 
 - `CancellationScope.current()`: get the current scope
 - `scope.cancel()`: cancel all operations inside a `scope`
-- `scope.run()`: run an async function within a `scope`
+- `scope.run(fn)`: run an async function within a `scope`, returns the result of `fn`
 - `scope.cancelRequested`: a promise that resolves when a scope cancellation is requested, e.g when Workflow code calls `cancel()` or the entire Workflow is cancelled by an external client.
 
 When a `CancellationScope` is cancelled, it propagates cancellation to any child scopes and any cancellable operations created within it, such as:
@@ -87,7 +87,7 @@ When a `CancellationScope` is cancelled, it propagates cancellation to any child
 - Timers (created with the [`sleep`](https://nodejs.temporal.io/api/modules/workflow#sleep) function)
 - [`Trigger`](https://nodejs.temporal.io/api/classes/workflow.trigger)s
 
-### Internal Cancellation example
+### Internal cancellation example
 
 <!--SNIPSTART nodejs-cancel-a-timer-from-workflow-->
 <!--SNIPEND-->
@@ -97,9 +97,11 @@ Alternatively, the preceding can be written as:
 <!--SNIPSTART nodejs-cancel-a-timer-from-workflow-alternative-impl-->
 <!--SNIPEND-->
 
-### External Cancellation example
+### External cancellation example
 
 Handle Workflow cancellation by an external client while an Activity is running:
+
+<!-- TODO: add a sample here of how this Workflow could be cancelled using a WorkflowStub -->
 
 <!--SNIPSTART nodejs-handle-external-workflow-cancellation-while-activity-running-->
 <!--SNIPEND-->
@@ -125,6 +127,8 @@ You can await `cancelRequested` to make Workflow aware of cancellation while wai
 <!--SNIPSTART nodejs-cancel-requested-with-non-cancellable-->
 <!--SNIPEND-->
 
+### CancellationScopes and callbacks 
+
 Callbacks are not particularly useful in Workflows because all meaningful asynchronous operations return Promises.
 In the rare case that user code utilizes callbacks and needs to handle cancellation, a callback can be used to consume the `CancellationScope.cancelRequested` `Promise`.
 
@@ -148,7 +152,7 @@ Operations like timers and Activites are cancelled by the cancellation scope the
 <!--SNIPSTART nodejs-shield-awaited-in-root-scope-->
 <!--SNIPEND-->
 
-## Scheduling Cron Workflows (stub)
+## Scheduling Cron Workflows
 
 There is no official support for Cron Workflows in Node.js yet.
 
