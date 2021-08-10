@@ -55,7 +55,7 @@ It can be used in any Node.js process (for example, an [Express](https://express
 Workflows can be started with a range of `[BaseWorkflowOptions](https://nodejs.temporal.io/api/interfaces/client.baseworkflowoptions/)` (all optional):
 
 - `taskQueue: string` (most common): Task queue to use for workflow tasks. It should match a task queue specified when creating a Worker that hosts the workflow code.
-- `workflowId: string`: Workflow id to use when starting. If not specified a UUID is generated. 
+- `workflowId: string`: Workflow id to use when starting. If not specified a UUID is generated.
 - `workflowIdReusePolicy: WorkflowIdReusePolicy`: Specifies server behavior if a completed workflow with the same id exists. [More details](https://nodejs.temporal.io/api/interfaces/client.baseworkflowoptions/#workflowidreusepolicy)
 - `cronSchedule: string`: see "Scheduling Cron Workflows"
 - `memo: Record<string, any>`: Specifies additional non-indexed information in result of list workflow
