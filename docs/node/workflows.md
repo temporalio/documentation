@@ -128,7 +128,7 @@ You can await `cancelRequested` to make Workflow aware of cancellation while wai
 <!--SNIPSTART nodejs-cancel-requested-with-non-cancellable-->
 <!--SNIPEND-->
 
-### CancellationScopes and callbacks 
+### CancellationScopes and callbacks
 
 Callbacks are not particularly useful in Workflows because all meaningful asynchronous operations return Promises.
 In the rare case that user code utilizes callbacks and needs to handle cancellation, a callback can be used to consume the `CancellationScope.cancelRequested` `Promise`.
@@ -161,11 +161,12 @@ import DistributedCron from '../shared/distributed-cron.md'
 You can set each workflow to repeat on a schedule with the `cronSchedule` option:
 
 ```ts
-const workflow = client.stub<WFInterface>('scheduled-workflow', { taskQueue: 'test',
+const workflow = client.stub<WFInterface>("scheduled-workflow", {
+  taskQueue: "test",
   cronSchedule: "* * * * *", // start every minute
 });
 ```
-  
+
 </DistributedCron>
 
 ## Executing External Workflows (stub)
@@ -193,7 +194,7 @@ import SharedContinueAsNew from '../shared/continue-as-new.md'
 
 ### The `ContinueAsNew` API
 
-Use the `Context.continueAsNew` API to instruct the Node SDK to restart `main` with a new starting value and a new event history. 
+Use the `Context.continueAsNew` API to instruct the Node SDK to restart `main` with a new starting value and a new event history.
 
 ```ts
 import {Context, sleep} from "@temporalio/workflow";
