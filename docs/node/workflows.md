@@ -29,7 +29,7 @@ Workflow interface declarations are optional but recommended. They're only requi
 
 ### Workflow Implementation
 
-A Workflow implementation may export a `workflow` object, which can be type-checked using a pre-defined interface or `main` (and optionally [signals](signals) and [queries](queries)) directly.
+A Workflow implementation may export a `workflow` object, which can be type-checked using a pre-defined interface or `main` (and optionally [signals](/docs/node/signals) and [queries](/docs/node/queries)) directly.
 
 In a Workflow, Activities can be imported and called as regular functions. At runtime, the imported Activities (prefixed with `@activities`) are replaced with stubs that schedule Activities to be run.
 
@@ -52,100 +52,55 @@ It can be used in any Node.js process (for example, an [Express](https://express
 <!--SNIPSTART nodejs-hello-client {"enable_source_link": false}-->
 <!--SNIPEND-->
 
-## How to query Workflow State
+Workflows can be started with a range of [`BaseWorkflowOptions`](https://nodejs.temporal.io/api/interfaces/client.baseworkflowoptions/) (all optional):
 
-If you `await` a workflow with `execute()`, you will get the result back after it completes.
-There is no official support for querying the state of asynchronously started Workflows in Node.js yet.
+- `taskQueue: string` (most common): Task queue to use for workflow tasks. It should match a task queue specified when creating a Worker that hosts the workflow code.
+- `workflowId: string`: Workflow id to use when starting. If not specified a UUID is generated.
+- `workflowIdReusePolicy: WorkflowIdReusePolicy`: Specifies server behavior if a completed workflow with the same id exists. [More details](https://nodejs.temporal.io/api/interfaces/client.baseworkflowoptions/#workflowidreusepolicy)
+- `cronSchedule: string`: see "Scheduling Cron Workflows"
+- `memo: Record<string, any>`: Specifies additional non-indexed information in result of list workflow
+- `retryPolicy: IRetryPolicy`: the overall [RetryPolicy](https://nodejs.temporal.io/api/interfaces/proto.temporal.api.common.v1.iretrypolicy/) at the Workflow level
+- `searchAttributes: Record<string, string | number | boolean>`: Specifies additional indexed information in result of list workflow.
 
-## How to get data in or out of a running Workflow
+## How to cancel a Workflow
 
-[Signals](/docs/go/signals) are the mechanism by which you can get data into an already running Workflow. There is no official support for Signals in Node.js yet.
+To cancel a Workflow execution, call the `cancel()` method on a WorkflowStub.
 
-[Queries](/docs/go/queries) are the mechanism by which you can get data out of a currently running Workflow. There is no official support for Queries in Node.js yet.
+```tsx
+// Create a typed client using the Example Workflow interface,
+const example = client.stub<Example>("example", {taskQueue: "tutorial"});
+const result = await example.execute("Temporal");
+// ... later on, cancel the workflow
+await example.cancel();
+```
 
-## How to cancel a Workflow Execution
-
-Cancellations are applied to _cancellation scopes_, which can encompass an entire workflow or just part of one. Scopes can be nested, and cancellation propagates from outer scopes to inner ones. A Workflow's `main` function runs in the outermost scope. Cancellations are handled by catching `CancelledError`s
-thrown by _cancellable operations_ (see below).
-
-Scopes are created using the [`CancellationScope`](https://nodejs.temporal.io/api/classes/workflow.cancellationscope) constructor or the static helper methods
-[`cancellable`](https://nodejs.temporal.io/api/classes/workflow.cancellationscope#cancellable-1),
-[`nonCancellable`](https://nodejs.temporal.io/api/classes/workflow.cancellationscope#noncancellable),
-and [`withTimeout`](https://nodejs.temporal.io/api/classes/workflow.cancellationscope#withtimeout).
-
-When a `CancellationScope` is cancelled, it propagates cancellation in any child scopes and of any _cancellable operations_ created within it, such as:
-
-- Activities
-- Timers (created with the [`sleep`](https://nodejs.temporal.io/api/modules/workflow#sleep) function)
-- [`Trigger`](https://nodejs.temporal.io/api/classes/workflow.trigger)s
-
-## Examples
-
-### Cancel a timer from Workflow code
-
-<!--SNIPSTART nodejs-cancel-a-timer-from-workflow-->
-<!--SNIPEND-->
-
-### Alternatively, the preceding can be written as
-
-<!--SNIPSTART nodejs-cancel-a-timer-from-workflow-alternative-impl-->
-<!--SNIPEND-->
-
-### Run multiple activities with a single deadline
-
-<!--SNIPSTART nodejs-multiple-activities-single-timeout-workflow-->
-<!--SNIPEND-->
-
-### `nonCancellable` prevents cancellation from propagating to children
-
-<!--SNIPSTART nodejs-non-cancellable-shields-children-->
-<!--SNIPEND-->
-
-### `cancelRequested` may be awaited upon to make Workflow aware of cancellation while waiting on `nonCancellable` scopes
-
-<!--SNIPSTART nodejs-cancel-requested-with-non-cancellable-->
-<!--SNIPEND-->
-
-### Handle Workflow cancellation by an external client while an Activity is running
-
-<!--SNIPSTART nodejs-handle-external-workflow-cancellation-while-activity-running-->
-<!--SNIPEND-->
-
-### Complex flows may be achieved by nesting cancellation scopes
-
-<!--SNIPSTART nodejs-nested-cancellation-scopes-->
-<!--SNIPEND-->
-
-### Sharing promises between scopes
-
-Operations like timers and Activities are cancelled by the cancellation scope they were created in. Promises returned by these operations can be awaited in different scopes.
-
-<!--SNIPSTART nodejs-shared-promise-scopes-->
-<!--SNIPEND-->
-
-<!--SNIPSTART nodejs-shield-awaited-in-root-scope-->
-<!--SNIPEND-->
-
-### Callbacks and cancellation scopes
-
-Callbacks are not particularly useful in Workflows because all meaningful asynchronous operations return Promises.
-
-In the odd case that user code utilizes callbacks, CancellationScope.cancelRequested can be used to subscribe to cancellation.
-
-<!--SNIPSTART nodejs-cancellation-scopes-with-callbacks-->
-<!--SNIPEND-->
+Temporal gives you fine grained control over what happens when you cancel a workflow. See our docs on [Cancellation Scopes](/docs/node/cancellation-scopes) for detailes and examples.
 
 ## Scheduling Cron Workflows
 
-There is no official support for Cron Workflows in Node.js yet.
+import DistributedCron from '../shared/distributed-cron.md'
 
-## Executing External Workflows
+<DistributedCron docUrl="https://nodejs.temporal.io/api/interfaces/client.baseworkflowoptions/#cronschedule">
+
+You can set each workflow to repeat on a schedule with the `cronSchedule` option:
+
+```ts
+const workflow = client.stub<WFInterface>("scheduled-workflow", {
+  taskQueue: "test",
+  cronSchedule: "* * * * *", // start every minute
+});
+```
+
+</DistributedCron>
+
+## Executing External Workflows (stub)
 
 There is no official support for External Workflows in Node.js yet.
 
-## Child Workflows
+## Child Workflows (stub)
 
 Besides Activities, a Workflow can also start other Workflows.
+There is no official support for Child Workflows in Node.js yet.
 
 import WhenToUse from '../content/when-to-use-child-workflows.md'
 
@@ -155,6 +110,26 @@ signalsLink="/docs/go/signals"
 
 ## Large Event Histories
 
+### Why `ContinueAsNew` is needed
+
 import SharedContinueAsNew from '../shared/continue-as-new.md'
 
 <SharedContinueAsNew />
+
+### The `ContinueAsNew` API
+
+Use the `Context.continueAsNew` API to instruct the Node SDK to restart `main` with a new starting value and a new event history.
+
+```ts
+import {Context, sleep} from "@temporalio/workflow";
+
+async function main(iteration = 0): Promise<void> {
+  if (iteration === 10) return;
+  console.log("Running Workflow iteration:", iteration);
+  await sleep(1000);
+  await Context.continueAsNew<typeof main>(iteration + 1); // must match the arguments expected by `main`
+  // Unreachable code, continueAsNew is like `process.exit` and will stop execution once called.
+}
+```
+
+You can also call `continueAsNew` from a signal and or `continueAsNew` to a different Workflow.

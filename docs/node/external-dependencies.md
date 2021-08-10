@@ -4,7 +4,7 @@ import CustomWarning from "../components/CustomWarning.js"
 
 <CustomWarning title="Advanced feature" color="var(--ifm-color-info)">
 
-This is an advanced feature and requires a good grasp of the basic SDK concepts
+This is an advanced feature and requires a good grasp of the basic SDK concepts.
 
 </CustomWarning>
 
