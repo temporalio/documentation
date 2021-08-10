@@ -6,26 +6,20 @@ There are two ways that you can turn any Temporal Workflow into a repeatedly exe
 
 <div>{props.children}</div>
 
-For Workflows with CronSchedule:
+Some details to note:
 
-- CronSchedule is based on UTC time.
+- **UTC Timezone**: CronSchedule is based on UTC time.
   For example, cron schedule "15 8 \* \* \*" will run daily at 8:15am UTC.
-- If a Workflow Execution failed and a RetryPolicy is supplied to the `StartWorkflowOptions`, the Workflow Execution will be retried based on the RetryPolicy.
-  While the Workflow Execution is retrying, the Server will not schedule the next Workflow Execution.
-- The Temporal Server only schedules the next Workflow Execution after the current execution has completed.
+- **No Overlaps**: The Temporal Server only schedules the next Workflow Execution after the current execution has completed.
   If the next execution is due to occur while the Workflow is currently executing (including retries), then the next execution will be skipped.
-- Cron initiated Workflow Executions will not stop until they are terminated or cancelled.
+- **Mind the Retry Policy**: If a Workflow Execution failed and a RetryPolicy is supplied to the `StartWorkflowOptions`, the Workflow Execution will be retried based on the RetryPolicy.
+  While the Workflow Execution is retrying, the Server will not schedule the next Workflow Execution.
+- **Cancellation applies to Cron**: Teminating or Canceling a Workflow Execution will also stop the cron scheduling.
+  A Cron Workflow will not stop until it is terminated or cancelled (by returning temporal.CanceledError).
 
 Temporal supports the standard cron spec:
 
 ```go
-// CronSchedule - Optional cron schedule for Workflow. If a cron schedule is specified, the Workflow will run
-// as a cron based on the schedule. The scheduling will be based on UTC time. The schedule for the next run only happens
-// after the current run is completed/failed/timeout. If a RetryPolicy is also supplied, and the Workflow failed
-// or timed out, the Workflow will be retried based on the retry policy. While the Workflow is retrying, it won't
-// schedule its next run. If the next schedule is due while the Workflow is running (or retrying), then it will skip that
-// schedule. Cron Workflow will not stop until it is terminated or cancelled (by returning temporal.CanceledError).
-// The cron spec is as follows:
 // ┌───────────── minute (0 - 59)
 // │ ┌───────────── hour (0 - 23)
 // │ │ ┌───────────── day of the month (1 - 31)

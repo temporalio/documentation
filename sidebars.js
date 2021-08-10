@@ -341,7 +341,11 @@ module.exports = {
         {
           type: "category",
           label: "Advanced",
-          items: ["node/determinism", "node/workflow-external-dependencies"],
+          items: [
+            "node/cancellation-scopes",
+            "node/determinism",
+            "node/external-dependencies"
+          ],
         },
       ],
     },
