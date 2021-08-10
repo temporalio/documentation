@@ -166,6 +166,7 @@ Operations like timers and Activities are cancelled by the cancellation scope th
 ## Scheduling Cron Workflows
 
 import DistributedCron from '../shared/distributed-cron.md'
+
 <DistributedCron docUrl="https://nodejs.temporal.io/api/interfaces/client.baseworkflowoptions/#cronschedule">
 
 You can set each workflow to repeat on a schedule with the `cronSchedule` option:
