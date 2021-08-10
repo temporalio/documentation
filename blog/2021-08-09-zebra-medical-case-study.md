@@ -80,17 +80,17 @@ The result was not only a successful migration, but also immediate visibility ab
 
 We used [the Grafana templates for Temporal dashboards](https://github.com/temporalio/dashboards). It helped us tremendously,  because now we could observe the execution of activities and their throughput, which helped us to find the bottlenecks in our pipeline and to fine-tune the configuration. One of the most important things was that you can change the rate limiting just by changing an environment variable. We used this feature regularly to fine-tune the pipeline and to find the bottlenecks.
 
-1. **Favorite feature of Temporal**
+2. **Favorite feature of Temporal**
 
 > The usability of the SDK, mainly. The intuitiveness of it, that you run an Activity, get a call back, and you can retrieve the result at any time. It significantly simplifies the business logic. We didn't use advanced visibility, but I think it's a really cool feature and have made plans to utilize it in the future.
 
-1. **Thoughts on Temporal**
+3. **Thoughts on Temporal**
 
 > We demoed the new pipeline and its results to the company.  People were very excited with the visibility and reliability Temporal brings to the pipeline. It was very well-received!
 
 Moreover, we received positive feedback about data no longer disappearing. A result of the migration is that we now have structured data. That way we know exactly what data is sent and what data analysts are receiving. We got a lot of positive feedback about that too. Previously, it was all unstructured, and then you had to query some unknown world.
 
-1. **About the Temporal community**
+4. **About the Temporal community**
 
 > I think it's really great. I'm a member of both the forums and the slack community, and I see almost impossible responses from the team. I mean, in every hour and every day. It's really amazing, the support that people get, for even naive questions.
 
