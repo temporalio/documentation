@@ -52,6 +52,16 @@ It can be used in any Node.js process (for example, an [Express](https://express
 <!--SNIPSTART nodejs-hello-client {"enable_source_link": false}-->
 <!--SNIPEND-->
 
+Workflows can be started with a range of `[BaseWorkflowOptions](https://nodejs.temporal.io/api/interfaces/client.baseworkflowoptions/)` (all optional):
+
+- `taskQueue: string` (most common): Task queue to use for workflow tasks. It should match a task queue specified when creating a Worker that hosts the workflow code.
+- `workflowId: string`: Workflow id to use when starting. If not specified a UUID is generated. 
+- `workflowIdReusePolicy: WorkflowIdReusePolicy`: Specifies server behavior if a completed workflow with the same id exists. [More details](https://nodejs.temporal.io/api/interfaces/client.baseworkflowoptions/#workflowidreusepolicy)
+- `cronSchedule: string`: see "Scheduling Cron Workflows"
+- `memo: Record<string, any>`: Specifies additional non-indexed information in result of list workflow
+- `retryPolicy: IRetryPolicy`: the overall [RetryPolicy](https://nodejs.temporal.io/api/interfaces/proto.temporal.api.common.v1.iretrypolicy/) at the Workflow level
+- `searchAttributes: Record<string, string | number | boolean>`: Specifies additional indexed information in result of list workflow.
+
 ## How to query Workflow State
 
 If you `await` a workflow with `execute()`, you will get the result back after it completes.
