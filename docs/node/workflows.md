@@ -154,7 +154,18 @@ Operations like timers and Activites are cancelled by the cancellation scope the
 
 ## Scheduling Cron Workflows
 
-There is no official support for Cron Workflows in Node.js yet.
+import DistributedCron from '../shared/distributed-cron.md'
+<DistributedCron docUrl="https://nodejs.temporal.io/api/interfaces/client.baseworkflowoptions/#cronschedule">
+
+You can set each workflow to repeat on a schedule with the `cronSchedule` option:
+
+```ts
+const workflow = client.stub<WFInterface>('scheduled-workflow', { taskQueue: 'test',
+  cronSchedule: "* * * * *", // start every minute
+});
+```
+  
+</DistributedCron>
 
 ## Executing External Workflows (stub)
 
@@ -181,7 +192,7 @@ import SharedContinueAsNew from '../shared/continue-as-new.md'
 
 ### The `ContinueAsNew` API
 
-Use the `Context.continueAsNew` API to instruct the Node SDK to restart `main` with a new starting value and a new event history.
+Use the `Context.continueAsNew` API to instruct the Node SDK to restart `main` with a new starting value and a new event history. 
 
 ```ts
 import {Context, sleep} from "@temporalio/workflow";
@@ -194,3 +205,5 @@ async function main(iteration = 0): Promise<void> {
   // Unreachable code, continueAsNew is like `process.exit` and will stop execution once called.
 }
 ```
+
+You can also call `continueAsNew` from a signal and or `continueAsNew` to a different Workflow.
