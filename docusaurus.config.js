@@ -281,7 +281,10 @@ module.exports = {
                       node.value = node.value.slice("// @ts-nocheck\n".length);
                     }
                     // If TS compiled output is empty, replace it with a more helpful comment
-                    if (node.lang === "js" && node.value.trim() === "export {};") {
+                    if (
+                      node.lang === "js" &&
+                      node.value.trim() === "export {};"
+                    ) {
                       node.value = "// Not required in JavaScript";
                     } else if (node.lang === "js") {
                       node.value = prettier.format(transformImportToRequire(node.value), {
