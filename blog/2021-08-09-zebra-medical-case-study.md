@@ -1,13 +1,9 @@
 ---
 tags:
-  - v1
-  - announcement
   - Zebra Medical Vision
   - Data pipeline
-  - ETL
   - Machine learning
   - microservice-orchestration
-  - microservices
   - case study
 posted_on_: 2021-08-09T23:06:09Z
 slug: zebra-medical-case-study
