@@ -15,7 +15,7 @@ release_version: V1.11.2
 
 Our CEO Maxim Fateev recently joined the OSS Startups Podcast with Robby Robson of Cowboy VC & Tim Chen of Essence VC to talk Temporal. [Listen to it here](https://www.listennotes.com/podcasts/the-oss-startup/ep7-from-open-source-project-1QEDGmJWMeB/)!
 
-<iframe src="https://www.listennotes.com/podcasts/the-oss-startup/ep7-from-open-source-project-1QEDGmJWMeB/embed/" height="170px" width="100%" style={{width: 1, minWidth: "100%", top: 0, position: 'sticky', position: '-webkit-sticky'}} loading="lazy" frameborder="0" scrolling="no"></iframe>
+<iframe src="https://www.listennotes.com/podcasts/the-oss-startup/ep7-from-open-source-project-1QEDGmJWMeB/embed/" height="170px" width="100%" style={{width: 1, minWidth: "100%", top: 0, position: 'sticky'}} loading="lazy" frameBorder="0" scrolling="no"></iframe>
 
 What follows is a lightly edited transcript for readability.
 
@@ -62,7 +62,7 @@ That's why opening up Cadence from the beginning was very important to us becaus
 
 ## Leaving Uber
 
-**Was part of making it open source just testing the true market potential outside of Uber? Or did the thought only come after it had some pretty strong traction?
+**Was part of making it open source just testing the true market potential outside of Uber? Or did the thought only come after it had some pretty strong traction?**
 
 Every engineer probably wants to start a company at some point, but to tell the truth, I never was thinking about it seriously. 
 We thought that it might be a company one day, but we just wanted to make Temporal popular in the industry. 

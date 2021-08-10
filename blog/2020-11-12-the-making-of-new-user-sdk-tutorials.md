@@ -48,7 +48,7 @@ We started as most might, by trying to envision what the ideal new user experien
 
 <img alt="image" class="docs-image-centered docs-image-max-width-20" src="https://raw.githubusercontent.com/temporalio/documentation-images/main/static/sync.png" />
 
-It was around this time (early September), that I was testing out a NodeJS tool I had built to improve the experience of creating and maintaining documentation. It downloads Github repos, scrapes code snippets that exist between specific comment wrappers, and writes the snippets to their corresponding comment wrappers in Markdown files.
+It was around this time (early September), that I was testing out a Node.js tool I had built to improve the experience of creating and maintaining documentation. It downloads Github repos, scrapes code snippets that exist between specific comment wrappers, and writes the snippets to their corresponding comment wrappers in Markdown files.
 
 ```go title="Source code"
 // @@@SNIPSTART unique-name-of-snippet

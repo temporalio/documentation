@@ -12,4 +12,6 @@ Make sure you have [Go](https://golang.org/doc/install) installed. These tutoria
 
 ## Temporal server
 
-Download, install, and run the Temporal server via `docker-compose`. You can find Temporal server setup instructions here: [https://docs.temporal.io/docs/server/quick-install](/docs/server/quick-install). It is easy to do and you can keep it running in the background while you build applications.
+import QuickInstall from '../content/how-to-quickly-install-the-temporal-server.md'
+
+<QuickInstall />

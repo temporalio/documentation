@@ -8,9 +8,9 @@ image: /img/workflow.png
 
 [API reference](https://nodejs.temporal.io/api/modules/workflow)
 
-Workflows are the core of the Temporal system, they abstract away the complexities of writing distributed programs.
+Workflows are the core of the Temporal system. They abstract away the complexities of writing distributed programs.
 
-In the NodeJS SDK, each Workflow runs in a separate V8 isolate to provide a [deterministic runtime](/docs/node/determinism).
+In the Node.js SDK, each Workflow runs in a separate V8 isolate to provide a [deterministic runtime](/docs/node/determinism).
 
 ## How to write Workflow code
 
@@ -20,7 +20,7 @@ A Workflow's interface is used for validating the implementation and generating 
 
 Workflow interfaces are directly referenced by their implementation and may be written in sync or async form meaning a method could return `number` or it could return `Promise<number>`.
 
-Workflow interface declarations are optional, they're only required for generating type safe clients. It is considered good practice to declare an interface for each Workflow.
+Workflow interface declarations are optional but recommended. They're only required for generating type-safe clients.
 
 `src/interfaces/workflows.ts`
 
@@ -29,11 +29,11 @@ Workflow interface declarations are optional, they're only required for generati
 
 ### Workflow Implementation
 
-A Workflow implementation module may export a `workflow` object which can be type checked using a pre-defined interface or `main` - and optionally `signals` and `queries` - directly.
+A Workflow implementation may export a `workflow` object, which can be type-checked using a pre-defined interface or `main` (and optionally [signals](signals) and [queries](queries)) directly.
 
-In a Workflow, Activities can be imported and called as regular functions. At runtime, the imported Activities (prefixed with `@activities`) are replaced with stubs which schedule Activities in the system.
+In a Workflow, Activities can be imported and called as regular functions. At runtime, the imported Activities (prefixed with `@activities`) are replaced with stubs that schedule Activities to be run.
 
-`@activities` is a [typescript path alias](https://www.typescriptlang.org/tsconfig#paths) set to `src/activities`.
+`@activities` is a TypeScript [path alias](https://www.typescriptlang.org/tsconfig#paths) set to `src/activities`.
 
 `src/workflows/example.ts`
 
@@ -45,7 +45,7 @@ In a Workflow, Activities can be imported and called as regular functions. At ru
 [API reference](https://nodejs.temporal.io/api/modules/client)
 
 The `WorkflowClient` class is used to instantiate clients that schedule Workflows and send other requests to the Temporal Service.
-It can be used in any NodeJS process e.g an express app and does not depend on the Worker.
+It can be used in any Node.js process (for example, an [Express](https://expressjs.com/) web server) and is separate from the Worker.
 
 `src/worker/schedule-workflow.ts`
 
@@ -71,7 +71,8 @@ Scopes are created using the [`CancellationScope`](https://nodejs.temporal.io/ap
 - [`withTimeout(timeoutMs, fn)`](https://nodejs.temporal.io/api/classes/workflow.cancellationscope#withtimeout): if timeout triggers before `fn` resolves the scope will be cancelled, triggering cancellation of enclosed operations, such as activities and timers.
   - Equivalent to `new CancellationScope({ cancellable: true, timeout: timeoutMs }).run(fn)`.
 
-Cancellation propagates from outer scopes to inner ones and is handled by catching `CancelledError`s thrown by cancellable operations (see below).
+Cancellations are applied to _cancellation scopes_, which can encompass an entire workflow or just part of one. Scopes can be nested, and cancellation propagates from outer scopes to inner ones. A Workflow's `main` function runs in the outermost scope. Cancellations are handled by catching `CancelledError`s
+thrown by _cancellable operations_ (see below).
 
 `CancellationScope.run()` and the static helpers mentioned above all return native JS Promises, so you can use the familiar Promise APIs like `Promise.all` and `Promise.race` to model your async logic.
 Other APIs you can use:
@@ -81,7 +82,7 @@ Other APIs you can use:
 - `scope.run(fn)`: run an async function within a `scope`, returns the result of `fn`
 - `scope.cancelRequested`: a promise that resolves when a scope cancellation is requested, e.g when Workflow code calls `cancel()` or the entire Workflow is cancelled by an external client.
 
-When a `CancellationScope` is cancelled, it propagates cancellation to any child scopes and any cancellable operations created within it, such as:
+When a `CancellationScope` is cancelled, it propagates cancellation in any child scopes and of any _cancellable operations_ created within it, such as:
 
 - Activities
 - Timers (created with the [`sleep`](https://nodejs.temporal.io/api/modules/workflow#sleep) function)
@@ -144,7 +145,7 @@ Complex flows may be achieved by nesting cancellation scopes:
 
 ### Sharing promises between scopes
 
-Operations like timers and Activites are cancelled by the cancellation scope they were created in. Promises returned by these operations can be awaited in different scopes.
+Operations like timers and Activities are cancelled by the cancellation scope they were created in. Promises returned by these operations can be awaited in different scopes.
 
 <!--SNIPSTART nodejs-shared-promise-scopes-->
 <!--SNIPEND-->
