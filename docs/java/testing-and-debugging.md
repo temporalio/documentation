@@ -25,7 +25,7 @@ as a dependency to your project:
 <dependency>
     <groupId>io.temporal</groupId>
     <artifactId>temporal-testing</artifactId>
-    <version>1.0.7</version>
+    <version>1.2.0</version>
     <scope>test</scope>
 </dependency>
 ```
@@ -33,7 +33,7 @@ as a dependency to your project:
 **[Gradle Groovy DSL](https://gradle.org/)**:
 
 ```groovy
-testImplementation group: 'io.temporal', name: 'temporal-testing', version: '1.0.7'
+testImplementation group: 'io.temporal', name: 'temporal-testing', version: '1.2.0'
 ```
 
 Make sure to set the version that matches your dependency version of the [Temporal Java SDK](https://github.com/temporalio/sdk-java).
@@ -134,6 +134,110 @@ public class HelloActivityTest {
         // Execute our workflow waiting for it to complete
         String greeting = workflow.getGreeting("World");
         assertEquals("Hello Mocked World!", greeting);
+    }
+}
+```
+
+## Testing with JUnit4
+
+For Junit4 tests, Temporal provides the TestWorkflowRule class which simplifies the Temporal test environment setup, as well as the 
+creation and shutdown of Workflow Workers in your tests.
+
+To start using TestWorkflowRule in your tests, you need to add [`io.temporal:temporal-testing-junit4`](https://search.maven.org/artifact/io.temporal/temporal-testing-junit4)
+as a dependency to your project:
+
+**[Apache Maven](https://maven.apache.org/)**:
+
+```maven
+<dependency>
+    <groupId>io.temporal</groupId>
+    <artifactId>temporal-testing-junit4</artifactId>
+    <version>1.2.0</version>
+    <scope>test</scope>
+</dependency>
+```
+
+**[Gradle Groovy DSL](https://gradle.org/)**:
+
+```groovy
+testImplementation group: 'io.temporal', name: 'temporal-testing-junit4', version: '1.2.0'
+```
+
+Make sure to set the version that matches your dependency version of the [Temporal Java SDK](https://github.com/temporalio/sdk-java).
+
+We can now rewrite our above mentioned "HelloActivityTest" test class as follows:
+
+```java
+public class HelloActivityJUnit4Test {
+    @Rule
+    public TestWorkflowRule testWorkflowRule =
+            TestWorkflowRule.newBuilder()
+                    .setWorkflowTypes(GreetingWorkflowImpl.class)
+                    .setActivityImplementations(new GreetingActivitiesImpl())
+                    .build();
+
+    @Test
+    public void testActivityImpl() {
+        // Get a workflow stub using the same task queue the worker uses.
+        GreetingWorkflow workflow =
+                testWorkflowRule
+                        .getWorkflowClient()
+                        .newWorkflowStub(
+                                GreetingWorkflow.class,
+                                WorkflowOptions.newBuilder().setTaskQueue(testWorkflowRule.getTaskQueue()).build());
+        // Execute a workflow waiting for it to complete.
+        String greeting = workflow.getGreeting("World");
+        assertEquals("Hello World!", greeting);
+
+        testWorkflowRule.getTestEnvironment().shutdown();
+    }
+}
+```
+
+## Testing with JUnit5
+
+For Junit5 tests, Temporal also provides the TestWorkflowExtension helped class which can be used to simplify the Temporal test environment setup
+as well as Workflow Worker startup and shutdowns.
+
+To start using the JUnit5 TestWorkflowExtension in your tests, you need to add [`io.temporal:temporal-testing-junit5`](https://search.maven.org/artifact/io.temporal/temporal-testing-junit5)
+as a dependency to your project:
+
+**[Apache Maven](https://maven.apache.org/)**:
+
+```maven
+<dependency>
+    <groupId>io.temporal</groupId>
+    <artifactId>temporal-testing-junit5</artifactId>
+    <version>1.2.0</version>
+    <scope>test</scope>
+</dependency>
+```
+
+**[Gradle Groovy DSL](https://gradle.org/)**:
+
+```groovy
+testImplementation group: 'io.temporal', name: 'temporal-testing-junit5', version: '1.2.0'
+```
+
+Make sure to set the version that matches your dependency version of the [Temporal Java SDK](https://github.com/temporalio/sdk-java).
+
+We can now use JUnit5 and rewrite our above mentioned "HelloActivityTest" test class as follows:
+
+```java
+public class HelloActivityJUnit5Test {
+    @RegisterExtension
+    public static final TestWorkflowExtension testWorkflowExtension =
+            TestWorkflowExtension.newBuilder()
+                    .setWorkflowTypes(GreetingWorkflowImpl.class)
+                    .setActivityImplementations(new GreetingActivitiesImpl())
+                    .build();
+
+    @Test
+    public void testActivityImpl(
+            TestWorkflowEnvironment testEnv, Worker worker, GreetingWorkflow workflow) {
+        // Execute a workflow waiting for it to complete.
+        String greeting = workflow.getGreeting("World");
+        assertEquals("Hello World!", greeting);
     }
 }
 ```
