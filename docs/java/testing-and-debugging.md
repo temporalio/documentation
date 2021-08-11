@@ -140,7 +140,7 @@ public class HelloActivityTest {
 
 ## Testing with JUnit4
 
-For Junit4 tests, Temporal provides the TestWorkflowRule class which simplifies the Temporal test environment setup, as well as the 
+For Junit4 tests, Temporal provides the TestWorkflowRule class which simplifies the Temporal test environment setup, as well as the
 creation and shutdown of Workflow Workers in your tests.
 
 To start using TestWorkflowRule in your tests, you need to add [`io.temporal:temporal-testing-junit4`](https://search.maven.org/artifact/io.temporal/temporal-testing-junit4)
