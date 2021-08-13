@@ -14,5 +14,14 @@
   "singleQuote": false,
   "tabWidth": 2,
   "trailingComma": "es5",
-  "useTabs": false
+  "useTabs": false,
+  "overrides": [
+    {
+      "files": ["docs/node/**/*.md"],
+      "options": {
+        "bracketSpacing": true,
+        "singleQuote": true
+      }
+    }
+  ]
 }
