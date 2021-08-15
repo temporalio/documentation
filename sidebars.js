@@ -346,6 +346,7 @@ module.exports = {
             "node/determinism",
             "node/external-dependencies",
             "node/failures",
+            "node/interceptors",
           ],
         },
       ],
