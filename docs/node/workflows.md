@@ -16,9 +16,7 @@ In the Node.js SDK, each Workflow runs in a separate V8 isolate to provide a [de
 
 ### Workflow Interface
 
-A Workflow's interface is used for validating the implementation and generating a type safe [WorkflowClient](https://nodejs.temporal.io/api/interfaces/client.workflowclient) and `ChildWorkflow` (not yet implemented).
-
-Workflow interfaces are directly referenced by their implementation and may be written in sync or async form meaning a method could return `number` or it could return `Promise<number>`.
+A Workflow's interface is used for validating the implementation and generating a type safe [WorkflowStub](https://nodejs.temporal.io/api/interfaces/client.workflowstub) and [child workflows](https://nodejs.temporal.io/api/classes/workflow.contextimpl#child).
 
 Workflow interface declarations are optional but recommended. They're only required for generating type-safe clients.
 
@@ -132,4 +130,4 @@ async function main(iteration = 0): Promise<void> {
 }
 ```
 
-You can also call `continueAsNew` from a signal and or `continueAsNew` to a different Workflow.
+You can also call `continueAsNew` from a signal handler or `continueAsNew` to a different Workflow using [`makeContinueAsNewFunc`](https://nodejs.temporal.io/api/classes/workflow.contextimpl#makecontinueasnewfunc).

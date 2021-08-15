@@ -345,6 +345,7 @@ module.exports = {
             "node/cancellation-scopes",
             "node/determinism",
             "node/external-dependencies",
+            "node/failures",
           ],
         },
       ],
