@@ -34,7 +34,7 @@ Workflow engines that rely on a centralized scheduler [have a confusing floor to
 
 **Under the hood, Temporal accomplishes fast responses with [long polling](https://ably.com/topic/long-polling)**. Workers listen to Task Queues inside Temporal Server, which hold the HTTP connection open until the next [Command](https://docs.temporal.io/docs/temporal-explained/introduction/#command) is enqueued. While Temporal is not suited for truly realtime needs like gaming, this lets Temporal workers respond quickly to state changes and is much less resource intensive than using web sockets.
 
-*Note: this is also why we strongly recommend [monitoring ScheduleToStart latency](https://docs.temporal.io/docs/server/production-deployment#scaling-and-metrics) for production deployments, as a spike in this latency metric is your first indication of a spike in traffic or problem with your Workers or networking.*
+> Note: this is also why we strongly recommend [monitoring ScheduleToStart latency](https://docs.temporal.io/docs/server/production-deployment#scaling-and-metrics) for production deployments, as a spike in this latency metric is your first indication of a spike in traffic or problem with your Workers or networking.
 
 ## "Long Running" can be infinitely long
 
@@ -46,7 +46,7 @@ Temporal solves this by persisting [event histories](https://docs.temporal.io/do
 
 In practice, this means you can write **infinitely long running Workflows.** Since Temporal makes state easy to store and fully auditable, this has the potential to change your programming model completely, by allowing you to model every user as a long lived Entity in your system. 
 
-*You could use this for e-commerce type usecases: For example, coordinating actions like loyalty rewards, subscription charges, and reminder emails over the entire history of their relationship with you.*
+> For example, you could use this for e-commerce: coordinating actions like loyalty rewards, subscription charges, and reminder emails over the entire history of their relationship with you.
 
 ## It's really about Uncertainty
 
