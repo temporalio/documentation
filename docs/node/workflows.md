@@ -66,7 +66,7 @@ Workflows can be started with a range of [`BaseWorkflowOptions`](https://nodejs.
 
 To cancel a Workflow execution, call the `cancel()` method on a WorkflowStub.
 
-```tsx
+```ts
 // Create a typed client using the Example Workflow interface,
 const example = client.stub<Example>("example", {taskQueue: "tutorial"});
 const result = await example.execute("Temporal");

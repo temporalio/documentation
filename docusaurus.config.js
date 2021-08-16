@@ -1,11 +1,6 @@
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 
-const babel = require("@babel/core");
-const generate = require("@babel/generator").default;
-const {parse} = require("@babel/parser");
 const path = require("path");
-const prettier = require("prettier");
-const traverse = require("@babel/traverse").default;
 const visit = require("unist-util-visit");
 
 module.exports = {
@@ -291,13 +286,7 @@ module.exports = {
                     ) {
                       node.value = "// Not required in JavaScript";
                     } else if (node.lang === "js") {
-                      node.value = prettier
-                        .format(transformImportToRequire(node.value), {
-                          semi: true,
-                          parser: "babel",
-                          singleQuote: true,
-                        })
-                        .trim();
+                      node.value = convertIndent4ToIndent2(transformImportToRequire(node.value)).trim();
                     }
                   }
                   visit(tree, "code", visitor);
@@ -344,85 +333,25 @@ module.exports = {
 };
 
 function transformImportToRequire(code) {
-  const ast = parse(code, {
-    sourceType: "module",
-    allowAwaitOutsideFunction: true,
-  });
+  return code
+    // `import x from 'y'` to `const x = require 'y'`
+    .replace(/import /g, 'const ')
+    .replace(/from '([^']+)'/g, '= require(\'$1\')')
+    // `const { x }` to `const {x}`
+    .replace(/const { ([a-zA-Z0-9, ]+) }/g, 'const {$1}')
+    // `export const foo = bar` to `exports.foo = bar`
+    .replace(/export const ([a-zA-Z0-9, ]+) = { ([a-zA-Z0-9, ]+) }/g, 'export const $1 = {$2}')
+    .replace(/export const /g, 'exports.')
+    // `export async function foo` to `exports.foo = async function foo`
+    .replace(/export async function ([a-zA-Z0-9]+)/g, 'exports.$1 = async function $1')
+    // `export function foo` to `exports.foo = function foo`
+    .replace(/export function ([a-zA-Z0-9]+)/g, 'exports.$1 = function $1');
+}
 
-  traverse(ast, {
-    enter(path) {
-      if (path.isImportDeclaration()) {
-        // Convert import -> require.
-        // Currently does **not** support default imports, e.g. `import activity from '@activities/greet'`
-        // as opposed to `import {greet} from '@activities/greet'`
-        if (path.node.specifiers[0].type === "ImportSpecifier") {
-          // `import {greet} from '@activities/greet';` -> `const { greet } = require('@activities/greet');`
-          const requireStatement = babel.types.variableDeclaration("const", [
-            babel.types.variableDeclarator(
-              babel.types.objectPattern(
-                path.node.specifiers.map((specifier) => {
-                  const shorthand =
-                    specifier.imported.name === specifier.local.name;
-                  return babel.types.objectProperty(
-                    specifier.imported,
-                    specifier.local,
-                    false,
-                    shorthand
-                  );
-                })
-              ),
-              babel.types.callExpression(babel.types.identifier("require"), [
-                path.node.source,
-              ])
-            ),
-          ]);
-          path.replaceWith(requireStatement);
-          path.skip();
-        }
-      } else if (path.isExportNamedDeclaration()) {
-        if (path.node.declaration.type === "FunctionDeclaration") {
-          // Convert named function export to CommonJS, e.g. `export async function foo() {}` ->
-          // `exports.foo = async function foo() {}`
-          const exportsAssignment = babel.types.expressionStatement(
-            babel.types.assignmentExpression(
-              "=",
-              babel.types.memberExpression(
-                babel.types.identifier("exports"),
-                babel.types.identifier(path.node.declaration.id.name)
-              ),
-              babel.types.functionExpression(
-                babel.types.identifier(path.node.declaration.id.name),
-                path.node.declaration.params,
-                path.node.declaration.body,
-                path.node.declaration.generator,
-                path.node.declaration.async
-              )
-            )
-          );
-          path.replaceWith(exportsAssignment);
-          path.skip();
-        } else if (path.node.declaration.type === "VariableDeclaration") {
-          // Convert named variable export to CommonJS, e.g. `export const workflow = { main }` ->
-          // `exports.workflow = { main };`
-          const exportsAssignment = babel.types.expressionStatement(
-            babel.types.assignmentExpression(
-              "=",
-              babel.types.memberExpression(
-                babel.types.identifier("exports"),
-                babel.types.identifier(
-                  path.node.declaration.declarations[0].id.name
-                )
-              ),
-              path.node.declaration.declarations[0].init
-            )
-          );
-          path.replaceWith(exportsAssignment);
-          path.skip();
-        }
-      }
-    },
+function convertIndent4ToIndent2(code) {
+  // TypeScript always outputs 4 space indent. This is a workaround.
+  // See https://github.com/microsoft/TypeScript/issues/4042
+  return code.replace(/^( {4})+/gm, match => {
+    return '  '.repeat(match.length / 4);
   });
-
-  const output = generate(ast, {retainLines: true}, code);
-  return output.code;
 }
