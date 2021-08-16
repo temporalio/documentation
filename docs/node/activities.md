@@ -74,10 +74,29 @@ Do **not** import your Activity by using the `'../activities/greeter'` path; oth
 ## Heartbeating
 
 Long running activities should heartbeat their progress back to the Workflow.
-This has not yet been implemented in the Node SDK.
 
 ### Activity Cancellation
 
-import WhatIsActivityCancellation from '../content/what-is-activity-cancellation.md'
+A Workflow can request to cancel an Activity by cancelling its containing [cancellation scope](/docs/node/cancellation-scopes).
 
-<WhatIsActivityCancellation />
+Activities may be cancelled only if they emit heartbeats.
+There are 2 ways to handle Activity cancellation:
+
+1. Await on [`Context.current().cancelled`](https://nodejs.temporal.io/api/classes/activity.context#cancelled)
+1. Pass the context's abort signal at [`Context.current().cancellationSignal`](https://nodejs.temporal.io/api/classes/activity.context#cancelled) to a library that supports it like `fetch`
+
+[`heartbeat()`](https://nodejs.temporal.io/api/classes/activity.context/#heartbeat) in the Node.js SDK is a background operation and does not propagate errors to the caller, such as when the scheduling Workflow has already completed or the Activity has been closed by the server (due to timeout for instance). These errors are translated into cancellation and can be handled using the methods above.
+
+### Examples
+
+#### An Activity that fakes progress and can be cancelled
+
+> Note that [`Context.current().sleep`](https://nodejs.temporal.io/api/classes/activity.context#sleep) is cancellation aware.
+
+<!--SNIPSTART nodejs-activity-fake-progress-->
+<!--SNIPEND-->
+
+#### An Activity that makes a cancellable HTTP request
+
+<!--SNIPSTART nodejs-activity-cancellable-fetch-->
+<!--SNIPEND-->

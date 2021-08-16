@@ -9,15 +9,15 @@ You can run "Hello Temporal" locally in under 5 minutes.
 This project requires Node.js version 14 or later. Brew installation of Node.js versions 15.0 to 16.4 does not work with the SDK; instead, use `>=16.5` or `<15`. Or use `nvm`:
 
 ```bash
-nvm use 14
+nvm use 16
 ```
 
 If you don’t have `nvm` ([Node Version Manager](https://github.com/nvm-sh/nvm)), you can [install](https://github.com/nvm-sh/nvm#install--update-script) it with:
 
 ```bash
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
-nvm install 14
-nvm use 14
+nvm install 16
+nvm use 16
 ```
 
 ### node-gyp
