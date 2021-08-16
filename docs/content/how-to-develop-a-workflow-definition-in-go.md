@@ -58,7 +58,7 @@ A Go-based Workflow Definition can return either just an `error` or a `customVal
 Again, the best practice here is to use a `struct` type to hold all custom values.
 
 ```go
-type YourWorkflowResponse {
+type YourWorkflowResponse struct{
   WorkflowResultFieldOne string
   WorkflowResultFieldTwo int
 }
