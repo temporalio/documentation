@@ -50,7 +50,7 @@ An Activity Definition can support as many other custom parameters as needed.
 However, all parameters must be serializable (parameters can’t be channels, functions, variadic, or unsafe pointers), and it is recommended to pass a single struct that can be updated later.
 
 ```go
-type YourActivityParam {
+type YourActivityParam struct{
   ActivityParamFieldOne string
   ActivityParamFieldTwo int
 }
@@ -80,7 +80,7 @@ Again, the best practice here is to use a `struct` type to hold all custom value
 Custom return values must be serializable.
 
 ```go
-type YourActivityResult {
+type YourActivityResult struct{
   ActivityResultFieldOne string
   ActivityResultFieldTwo int
 }
