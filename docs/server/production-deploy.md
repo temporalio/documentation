@@ -72,16 +72,23 @@ With that said, here are some guidelines to some common bottlenecks:
 - See the **Server Limits** section below for other limits you will want to keep in mind when doing system design, including event history length.
 - [Multi-Cluster Replication](https://docs.temporal.io/docs/server/multi-cluster/) is an experimental feature you can explore for heavy reads.
 
+Finally you want to set up alerting and monitoring on Worker metrics. 
+When workers are able to keep up, `ScheduleToStart` latency is close to zero.
+The default is 4 Workers, which should handle no more than 300 messages per second.
+Scaling will depend on your workload — for example, for a Task Queue with 500 messages per second, you might want to scale up to 10 workers.
+Provided you tune the concurrency of your worker / number of pollers based on your application, it should be possible to scale workers based on standard resource  utilization metrics (CPU, Memory, etc).
+
+It's possible to have too many workers. 
+Monitor the poll success and poll timeout metrics:
+- if you see low `ScheduleToStart` latency / low percentage of poll success / high percentage of timeouts, you might have too many workers/pollers. 
+- with 100% poll success and increasing `ScheduleToStart` latency, you need to scale up.
+
 ### FAQ: Autoscaling Workers based on Task Queue load
 
 Temporal does not yet support returning the number of tasks in a task queue.
 The main technical hurdle is that each task can have its own `ScheduleToStart` timeout, so just counting how many tasks were added and consumed is not enough.
 
 This is why we recommend tracking `ScheduleToStart` latency for determining if the task queue has a backlog (aka Workers are under-provisioned for a given Task Queue).
-When workers are able to keep up, the latency is close to zero.
-The default is 4 Workers, which should handle no more than 300 messages per second.
-Scaling will depend on your workload — for example, for a Task Queue with 500 messages per second, you might want to scale up to 10 workers.
-
 We do plan to add features that give more visibility into the task queue state in future.
 
 ## Server limits
