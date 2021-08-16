@@ -84,6 +84,10 @@ module.exports = {
               to: "/blog/descript-case-study",
               label: "Descript",
             },
+            {
+              to: "/blog/zebra-medical-case-study",
+              label: "Zebra",
+            },
           ],
         },
         {

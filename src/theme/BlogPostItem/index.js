@@ -45,7 +45,11 @@ function BlogPostItem(props) {
     isBlogPostPage = false,
   } = props;
   const {date, formattedDate, permalink, tags, readingTime} = metadata;
-  const {author, title, image} = frontMatter;
+  const {
+    author,
+    title,
+    image = "https://temporal.io/press/trim-banner-logo-text-white-on-black.png",
+  } = frontMatter;
   const authorURL = frontMatter.author_url || frontMatter.authorURL;
   // const authorTitle = frontMatter.author_title || frontMatter.authorTitle;
   const authorImageURL =
