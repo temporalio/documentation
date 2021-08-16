@@ -20,6 +20,7 @@ import WhenToSignals from '../content/when-to-use-signals.md'
 
 To add Signal handlers to a Workflow, add a `signals` property to the exported Workflow object:
 
+<!-- prettier-ignore -->
 ```ts
 // interface
 import {Workflow} from "@temporalio/workflow";
@@ -35,6 +36,7 @@ export interface Interruptable extends Workflow {
 
 You invoke a Signal with `workflow.signal.signalName(args)`. In the above case, we called our Signal `interrupt`, so we call `workflow.signal.interrupt("some string")`:
 
+<!-- prettier-ignore -->
 ```ts
 const client = new WorkflowClient();
 const workflow = client.stub<Interruptable>("interrupt-signal", {
@@ -48,6 +50,7 @@ await workflow.signal.interrupt("some string");
 
 Signal handlers can return either `void` or `Promise<void>`. You may schedule Activities and Timers from a Signal handler.
 
+<!-- prettier-ignore -->
 ```ts
 // implementation
 import {Interruptable} from "../interfaces";
@@ -79,6 +82,7 @@ export const workflow: Interruptable = {main, signals};
 
 Triggers have a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)-like API which exposes `resolve` and `reject` methods.
 
+<!-- prettier-ignore -->
 ```ts
 import {Trigger, CancelledError} from "@temporalio/workflow";
 import {Blocked} from "../interfaces";

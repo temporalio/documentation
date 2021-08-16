@@ -9,6 +9,7 @@ So any code that needs to talk to the outside world needs to be in an Activity.
 Below is a simple Activity that accepts a string parameter, appends a word to it, and returns the result.
 The Temporal Node SDK looks for any `.js` files in the `lib/activities` directory, and automatically registers any exported functions as Activities.
 
+<!-- prettier-ignore -->
 ```ts
 export async function greet(name: string): Promise<string> {
   return `Hello, ${name}!`;
@@ -22,6 +23,7 @@ This [may cause issues with certain npm modules](https://www.getrevue.co/profile
 
 You can import the above `greet()` Activity in a Workflow as shown below, assuming that the `greet` function is in the `lib/activities/greeter.js` file.
 
+<!-- prettier-ignore -->
 ```ts
 import {greet} from '@activities/greeter';
 

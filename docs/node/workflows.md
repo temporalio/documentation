@@ -66,6 +66,7 @@ Workflows can be started with a range of [`BaseWorkflowOptions`](https://nodejs.
 
 To cancel a Workflow execution, call the `cancel()` method on a WorkflowStub.
 
+<!-- prettier-ignore -->
 ```ts
 // Create a typed client using the Example Workflow interface,
 const example = client.stub<Example>("example", {taskQueue: "tutorial"});
@@ -84,6 +85,7 @@ import DistributedCron from '../shared/distributed-cron.md'
 
 You can set each workflow to repeat on a schedule with the `cronSchedule` option:
 
+<!-- prettier-ignore -->
 ```ts
 const workflow = client.stub<WFInterface>("scheduled-workflow", {
   taskQueue: "test",
@@ -120,6 +122,7 @@ import SharedContinueAsNew from '../shared/continue-as-new.md'
 
 Use the `Context.continueAsNew` API to instruct the Node SDK to restart `main` with a new starting value and a new event history.
 
+<!-- prettier-ignore -->
 ```ts
 import {Context, sleep} from "@temporalio/workflow";
 

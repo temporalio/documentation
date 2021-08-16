@@ -27,6 +27,7 @@ To start a Worker, you need to pass the following two options to the `Worker.cre
 
 Below is an example of starting a Worker that polls the Task Queue named 'tutorial'.
 
+<!-- prettier-ignore -->
 ```ts
 import {Worker} from "@temporalio/worker";
 
@@ -47,6 +48,7 @@ async function main() {
 In the above example, the Node SDK will look for `.js` files in `../workflows` that export a `workflow` property, and register their `main` property as Workflows.
 For example, suppose `../workflows/example.js`, relative to `workDir`, contains the below code.
 
+<!-- prettier-ignore -->
 ```ts
 async function main(): Promise<string> {
   return "Hello, World!";

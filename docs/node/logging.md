@@ -26,6 +26,7 @@ The rationale behind this is to minimize Worker dependencies and allow SDK users
 
 #### Customizing the default logger
 
+<!-- prettier-ignore -->
 ```ts
 import {Worker, DefaultLogger} from "@temporalio/worker";
 
@@ -40,6 +41,7 @@ const worker = await Worker.create({workDir: __dirname, logger});
 
 A common logging use case is logging to a file to be picked up by a collector like the [Datadog Agent](https://docs.datadoghq.com/logs/log_collection/nodejs/?tab=winston30).
 
+<!-- prettier-ignore -->
 ```ts
 import {Worker} from "@temporalio/worker";
 import winston from "winston";

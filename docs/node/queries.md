@@ -14,6 +14,7 @@ sidebar_label: Queries
 
 To add Query handlers to a Workflow, add a `queries` property to the exported Workflow object:
 
+<!-- prettier-ignore -->
 ```ts
 // interface
 import {Workflow} from "@temporalio/workflow";
@@ -30,6 +31,7 @@ export interface SimpleQuery extends Workflow {
 
 Query handlers can return any value.
 
+<!-- prettier-ignore -->
 ```ts
 // implementation
 import {Trigger} from "@temporalio/workflow";
@@ -62,6 +64,7 @@ export const workflow: SimpleQuery = {main, queries, signals};
 
 Use the name of the function you defined:
 
+<!-- prettier-ignore -->
 ```ts
 const client = new WorkflowClient();
 const workflow = client.stub<SimpleQuery>("simple-query", {taskQueue: "test"});
