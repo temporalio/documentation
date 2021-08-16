@@ -38,6 +38,8 @@ import {
 export class ActivityLogInterceptor
   implements WorkflowOutboundCallsInterceptor
 {
+  constructor(public readonly filename: string) {}
+
   async scheduleActivity(
     input: ActivityInput,
     next: Next<WorkflowOutboundCallsInterceptor, "scheduleActivity">
@@ -46,7 +48,10 @@ export class ActivityLogInterceptor
     try {
       return await next(input);
     } finally {
-      console.log("Completed activity", {activityType: input.activityType});
+      console.log("Completed activity", {
+        workflow: this.filename,
+        activityType: input.activityType,
+      });
     }
   }
 }
@@ -102,14 +107,25 @@ To properly do authorization from Workflow code, the Workflow would need to acce
 
 Workflow interceptor registration is different than the other interceptors because they run in the Workflow isolate, to register workflow interceptors, export an `interceptors` variable from a file located in the `workflows` directory and provide the name of that file to the Worker on creation via [WorkerOptions](https://nodejs.temporal.io/api/interfaces/worker.workeroptions#interceptors).
 
+At the time of construction, the Workflow Context is already initialized for the current Workflow.
+Use [`Context.info`](https://nodejs.temporal.io/api/interfaces/workflow.workflowinfo) to add Workflow specific information in the interceptor.
+
 `src/workflows/my-interceptors.ts`
 
 ```ts
+import {Context} from "@temporalio/workflow";
+
 export const interceptors = {
-  outbound: [new LogActivitiesInterceptor()],
+  outbound: [new ActivityLogInterceptor(Context.info.filename)],
   inbound: [],
 };
 ```
 
-At the time of construction, the Workflow Context is already initialized for the current Workflow.
-Use [`Context.info`](https://nodejs.temporal.io/api/interfaces/workflow.workflowinfo) to add Workflow specific information in the interceptor.
+`src/worker/index.ts`
+
+```ts
+const worker = await Worker.create({
+  workDir: __dirname,
+  interceptors: {workflowModules: ["my-interceptors"]},
+});
+```
