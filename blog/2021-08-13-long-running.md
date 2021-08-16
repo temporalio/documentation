@@ -16,7 +16,7 @@ release_version: V1.11.3
 
 In most discussions of Temporal use cases, we go straight to talking about "long running" work. In the past, I typically associated that sort of work with "use if I need to do video processing". But I was wrong.
 
-"L**ong running" usecases are both shorter *and* longer than you think.**
+**"Long running" usecases are both shorter *and* longer than you think.**
 
 ## Context
 
@@ -52,6 +52,6 @@ In practice, this means you can write **infinitely long running Workflows.** Sin
 
 The notion that "Temporal is for long running work" is more subtle than appears at first glance. If your microservices and third party APIs were always reliable and always responded quickly, you wouldn't need Temporal. If you didn't care about modeling and testing full journeys with code, from a multi-stage background check, to the entire history of a customer from signup to churn, then you could keep piecing them together on an ad-hoc basis.
 
-But it's when you're *unsure* about parts of your distributed system that you need Temporal. When you cross network boundaries, when you need to scale horizontally, or when you need to coordinate migrations, you start needing a solution that separates these mechanical uncertainties from the business logic. 
+But it's when you're *unsure* about parts of your distributed system that you need Temporal. **When you cross network boundaries, when you need to scale horizontally, or when you need to coordinate migrations**, you start needing a solution that separates these mechanical uncertainties from the business logic. 
 
 Most engineers have learned to deal with uncertainty piecemeal, painful incident after painful incident. We've assembled centuries of distributed systems experience to solve it for you.
