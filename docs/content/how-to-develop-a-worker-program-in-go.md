@@ -1,6 +1,6 @@
 ---
-id: how-to-develop-a-worker-process-in-go
-title: How to develop a Worker in Go
+id: how-to-develop-a-worker-program-in-go
+title: How to develop a Worker Program in Go
 description: Create a new instance of a Worker by calling `worker.New()`, available via the `go.temporal.io/sdk/worker` package.
 tags:
   - guide
@@ -50,6 +50,8 @@ func YourActivityDefinition(ctx context.Context, param YourActivityParam) (YourA
   // ...
 }
 ```
+
+Start a Worker Process by running `go run <filename>.go`.
 
 The `RegisterWorkflow()` and `RegisterActivity` calls essentially create an in-memory mapping between the Workflow Types and their implementations, inside the Worker process.
 

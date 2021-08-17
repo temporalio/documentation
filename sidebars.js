@@ -95,6 +95,7 @@ module.exports = {
       collapsed: false,
       items: [
         "go/introduction",
+        "go/getting-started",
         {
           type: "link",
           label: "Reference",

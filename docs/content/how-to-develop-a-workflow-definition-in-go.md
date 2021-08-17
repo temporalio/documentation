@@ -1,6 +1,6 @@
 ---
-id: how-to-write-a-workflow-definition-in-go
-title: How to write a Workflow Definition in Go
+id: how-to-develop-a-workflow-definition-in-go
+title: How to develop a Workflow Definition in Go
 description: In the Temporal Go SDK programming model, a Workflow Definition is an exportable function.
 tags:
   - guide
@@ -17,7 +17,7 @@ func YourWorkflowDefinition(ctx workflow.Context) error {
 }
 ```
 
-## Workflow parameters in Go
+**Workflow parameters in Go**
 
 The first parameter of a Go-based Workflow Definition must be of the [`workflow.Context`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/workflow#Context) type, as it is used by the Temporal Go SDK to pass around Workflow Execution context, and virtually all the Go SDK APIs that are callable from the Workflow require it.
 It is acquired from the [`go.temporal.io/sdk/workflow`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/workflow) package.
@@ -52,13 +52,13 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error
 
 All Workflow Definition parameters must be serializable, which means that parameters can’t be channels, functions, variadic, or unsafe pointers.
 
-## Workflow return values in Go
+**Workflow return values in Go**
 
 A Go-based Workflow Definition can return either just an `error` or a `customValue, error` combination.
 Again, the best practice here is to use a `struct` type to hold all custom values.
 
 ```go
-type YourWorkflowResponse {
+type YourWorkflowResponse struct{
   WorkflowResultFieldOne string
   WorkflowResultFieldTwo int
 }
@@ -79,14 +79,12 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (Your
 Returning a non-nil `error` from a Workflow indicates that an error was encountered during its execution and the Workflow Execution should be [Terminated](#).
 
 <!--
-<RelatedRead
-text="When to return an error from a Workflow"
-goTo="#"
-tagChar="g"
+<RelatedReadList
+readliststring="When to return an error from a Workflow?#?og"
 />
 -->
 
-## Workflow logic requirements in Go
+**Workflow logic requirements in Go**
 
 In Go specifically, Workflow Definition code can not directly do the following:
 
@@ -94,21 +92,9 @@ In Go specifically, Workflow Definition code can not directly do the following:
 - Use the native `go` statement, `select` statement, or `chan` type (Use the [SDK Go API](#), [SDK Select API](#), and [SDK Channel API](#))
 
 <!--
-<RelatedRead
-text="General requirements for writing Workflow Definitions"
-goTo="/docs/application-operations/#what-are-general-requirements-for-writing-workflow-defintions"
-tagChar="g"
-/>
-
-<RelatedRead
-text="How to implement a Side Effect in Go"
-goTo="#"
-tagChar="g"
-/>
-
-<RelatedRead
-text="How to write an Activity Definition"
-goTo="#how-to-write-an-activity-definition"
-tagChar="g"
+<RelatedReadList
+readliststring="General requirements for developing Workflow Definitions?/docs/application-operations/#what-are-general-requirements-for-writing-workflow-defintions?og|
+How to develop a Side Effect in Go?#?dg|
+How to develop an Activity Definition?#how-to-write-an-activity-definition?dg"
 />
 -->
