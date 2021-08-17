@@ -287,7 +287,7 @@ module.exports = {
                       node.value = "// Not required in JavaScript";
                     } else if (node.lang === "js") {
                       node.value = convertIndent4ToIndent2(
-                        transformImportToRequire(node.value)
+                        node.value
                       ).trim();
                     }
                   }
@@ -333,30 +333,6 @@ module.exports = {
     },
   ],
 };
-
-function transformImportToRequire(code) {
-  return (
-    code
-      // `import x from 'y'` to `const x = require 'y'`
-      .replace(/import /g, "const ")
-      .replace(/from '([^']+)'/g, "= require('$1')")
-      // `const { x }` to `const {x}`
-      .replace(/const { ([a-zA-Z0-9, ]+) }/g, "const {$1}")
-      // `export const foo = bar` to `exports.foo = bar`
-      .replace(
-        /export const ([a-zA-Z0-9, ]+) = { ([a-zA-Z0-9, ]+) }/g,
-        "export const $1 = {$2}"
-      )
-      .replace(/export const /g, "exports.")
-      // `export async function foo` to `exports.foo = async function foo`
-      .replace(
-        /export async function ([a-zA-Z0-9]+)/g,
-        "exports.$1 = async function $1"
-      )
-      // `export function foo` to `exports.foo = function foo`
-      .replace(/export function ([a-zA-Z0-9]+)/g, "exports.$1 = function $1")
-  );
-}
 
 function convertIndent4ToIndent2(code) {
   // TypeScript always outputs 4 space indent. This is a workaround.
