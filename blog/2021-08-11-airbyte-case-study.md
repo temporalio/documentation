@@ -21,7 +21,7 @@ release_version: V1.11.3
 
 <!--truncate-->
 
-This case study is based on an interview with [Abhi Vaidyanatha](https://www.linkedin.com/in/avaidyanatha/) and [Jared Rhizor](https://www.linkedin.com/in/jrhizor/) who were key players in Temporal adoption within Airbyte
+*This case study is based on an interview with [Abhi Vaidyanatha](https://www.linkedin.com/in/avaidyanatha/) and [Jared Rhizor](https://www.linkedin.com/in/jrhizor/) who were key players in Temporal adoption within Airbyte.*
 
 ### Context
 
