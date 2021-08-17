@@ -7,15 +7,19 @@ tags:
   - go
 ---
 
-To schedule a Workflow Execution, specify a value for the `CronSchedule` field within the instance of the `WorkflowOptions` that are passed to the `ExecuteWorkflow()` call.
+import RelatedReadList from '../components/RelatedReadList.js'
 
-You can also start a Workflow Execution on a regular schedule with the `CronSchedule` option.
+To schedule a repeating Workflow Execution (similar to a cron job), specify a value for the `CronSchedule` field within the instance of the `WorkflowOptions` that are passed to the `ExecuteWorkflow()` call.
 
 ```go
 workflowOptions := client.StartWorkflowOptions{
   // ...
-  CronSchedule: "* * * * *",
+  CronSchedule: "15 8 * * *",
 }
 
 we, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
 ```
+
+<RelatedReadList
+readliststring="What is a Scheduled Workflow Execution?/docs/content/what-is-a-scheduled-workflow-execution?e"
+/>
