@@ -83,6 +83,10 @@ module.exports = {
               to: "/blog/zebra-medical-case-study",
               label: "Zebra",
             },
+            {
+              to: "/blog/airbyte-case-study",
+              label: "Airbyte",
+            },
           ],
         },
         {

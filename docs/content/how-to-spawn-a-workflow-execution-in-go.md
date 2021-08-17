@@ -1,6 +1,6 @@
 ---
-id: how-to-invoke-a-workflow-execution-in-go
-title: How to invoke a Workflow Execution in Go
+id: how-to-spawn-a-workflow-execution-in-go
+title: How to spawn a Workflow Execution in Go
 description: Use the `ExecuteWorkflow()` method on the Go SDK `Client`, which is available via `NewClient()` in the `go.temporal.io/sdk/client` package.
 tags:
   - guide
@@ -8,13 +8,11 @@ tags:
 
 import RelatedReadList from '../components/RelatedReadList.js'
 
-A Workflow Execution can be invoked using the `ExecuteWorkflow()` method on the Go SDK [`Client`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client#Client), which is available via [`NewClient()`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client#NewClient) in the [`go.temporal.io/sdk/client`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client) package.
+To spawn a Workflow Execution, use the `ExecuteWorkflow()` method on the Go SDK [`Client`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client#Client), which is available via [`NewClient()`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client#NewClient) in the [`go.temporal.io/sdk/client`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client) package.
 
 <!--
-<RelatedRead
-text="How to invoke a Child Workflow Execution"
-goTo="#"
-tagChar="g"
+<RelatedReadList
+readliststring="How to spawn a Child Workflow Execution?#?dg"
 />
 -->
 
@@ -52,19 +50,14 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (Your
 }
 ```
 
+Start the preceding process by running `go run <filename>.go`.
+
 Notice that that the Task Queue name is the same as the name provided [when a new Worker is created](#).
 
 <!--
-<RelatedRead
-text="What is a Workflow Execution"
-goTo="#"
-tagChar="g"
-/>
-
-<RelatedRead
-text="How to customize the name of the Workflow Type"
-goTo="#"
-tagChar="g"
+<RelatedReadList
+readliststring="What is a Workflow Execution?#?g|
+How to customize the name of the Workflow Type?#?g"
 />
 -->
 
@@ -73,22 +66,10 @@ A Task Queue name is also provided to the Worker that is registered to execute t
 The Task Queue name must be the same for both.
 
 <!--
-<RelatedRead
-text="What are Workflow Execution Options"
-goTo="#"
-tagChar="e"
-/>
-
-<RelatedRead
-text="How to start a Worker"
-goTo="#"
-tagChar="g"
-/>
-
-<RelatedRead
-text="When to care about Task Queues"
-goTo="#"
-tagChar="g"
+<RelatedReadList
+readliststring="What are Workflow Execution Options?#?e|
+How to start a Worker?#?g|
+When to care about Task Queues?#?g"
 />
 -->
 
@@ -104,21 +85,9 @@ we, err := c.ExecuteWorkflow(context.Background(), workflowOptions, "YourWorkflo
 In Go, the name of the Workflow Type can be customized when the Workflow Definition is registered with a Worker.
 
 <!--
-<RelatedRead
-text="How to start a Worker"
-goTo="#"
-tagChar="g"
-/>
-
-<RelatedRead
-text="What is a Workflow Type"
-goTo="#"
-tagChar="e"
-/>
-
-<RelatedRead
-text="How to build a polyglot application"
-goTo="#"
-tagChar="t"
+<RelatedReadList
+readliststring="How to develop a Worker Process in Go?#?g|
+What is a Workflow Type?#?e|
+How to build a polyglot application?#?t"
 />
 -->

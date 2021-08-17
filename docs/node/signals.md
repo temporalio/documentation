@@ -20,95 +20,62 @@ import WhenToSignals from '../content/when-to-use-signals.md'
 
 To add Signal handlers to a Workflow, add a `signals` property to the exported Workflow object:
 
-<!-- prettier-ignore -->
-```ts
-// interface
-import {Workflow} from "@temporalio/workflow";
-export interface Interruptable extends Workflow {
-  main(): void;
-  signals: {
-    interrupt(reason: string): void;
-  };
-}
-```
+<!--SNIPSTART nodejs-blocked-interface-->
+<!--SNIPEND-->
 
 ### How to send a Signal
 
-You invoke a Signal with `workflow.signal.signalName(args)`. In the above case, we called our Signal `interrupt`, so we call `workflow.signal.interrupt("some string")`:
+You invoke a Signal with `workflow.signal.signalName(...args)`. In the above case, we called our Signal `unblock`, so we call `workflow.signal.unblock()`:
 
 <!-- prettier-ignore -->
 ```ts
 const client = new WorkflowClient();
-const workflow = client.stub<Interruptable>("interrupt-signal", {
-  taskQueue: "test",
-});
+const workflow = client.stub<Blocked>("blocked", {taskQueue: "test"});
 await workflow.start();
-await workflow.signal.interrupt("some string");
+await workflow.signal.unblock("some string");
 ```
 
 ### How to receive a Signal
 
-Signal handlers can return either `void` or `Promise<void>`. You may schedule Activities and Timers from a Signal handler.
+Signal handlers can be either synchronous or asynchronous, in this example, our Signal handler only modifies a variable so its return type can be `void`. You may schedule and await async operations like Activities and Timers from a Signal handler in which case its return type would change to `Promise<void>`.
+
+> Note that this example is a simplification of the recommended way to handle Signals [below](#triggers) since the Workflow cannot be cancelled unless it awaits a [cancellable operation](/docs/node/cancellation-scopes).
 
 <!-- prettier-ignore -->
 ```ts
 // implementation
-import {Interruptable} from "../interfaces";
-
-let interrupt: (reason?: any) => void | undefined;
-
-const signals = {
-  // Interrupt main by rejecting the awaited Promise
-  interrupt(reason: string): void {
-    if (interrupt !== undefined) {
-      interrupt(new Error(reason));
-    }
-  },
-};
-
-async function main(): Promise<void> {
-  // When this Promise is rejected the Workflow execution will fail
-  await new Promise<never>((_resolve, reject) => {
-    interrupt = reject;
-  });
-}
-
-export const workflow: Interruptable = {main, signals};
-```
-
-## Triggers
-
-[Triggers](https://nodejs.temporal.io/api/classes/workflow.trigger) are a concept unique to the Temporal Node SDK. They allow you to wait for a Signal to be received. Inside the Signal, the Trigger is resolved, which allows the Workflow to continue, or rejected, which throws an error.
-
-Triggers have a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)-like API which exposes `resolve` and `reject` methods.
-
-<!-- prettier-ignore -->
-```ts
-import {Trigger, CancelledError} from "@temporalio/workflow";
 import {Blocked} from "../interfaces";
 
-const unblocked = new Trigger<void>();
+let unblock: () => void;
 
 const signals = {
+  // Unblock main by resolving the awaited Promise
   unblock(): void {
-    unblocked.resolve(); // Trigger exposes resolve method
+    if (unblock !== undefined) {
+      unblock();
+    }
   },
 };
 
 async function main(): Promise<void> {
-  try {
-    console.log("Blocked");
-    await unblocked; // works because Trigger is Promise-like
-    console.log("Unblocked");
-  } catch (err) {
-    if (!(err instanceof CancelledError)) {
-      throw err;
-    }
-    console.log("Cancelled");
-  }
+  // This Promise is resolved when the Workflow handles the unblock signal.
+  await new Promise<void>((resolve, _reject) => {
+    unblock = resolve;
+  });
 }
 
 export const workflow: Blocked = {main, signals};
 ```
 
+## Triggers
+
+[Triggers](https://nodejs.temporal.io/api/classes/workflow.trigger) are a concept unique to the Temporal Node.js SDK.
+
+Triggers, like Promises, can be awaited and expose a `then` method. Unlike Promises they are triggered when their `resolve` or `reject` methods are called.
+
 `Trigger` is `CancellationScope`-aware. It is linked to the current scope on construction and throws when that scope is cancelled.
+
+We can replace the callback with a Trigger in the example above to allow the Workflow to be cancelled:
+
+<!--SNIPSTART nodejs-blocked-workflow-->
+<!--SNIPEND-->
