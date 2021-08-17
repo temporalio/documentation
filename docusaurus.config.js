@@ -290,9 +290,7 @@ module.exports = {
                     ) {
                       node.value = "// Not required in JavaScript";
                     } else if (node.lang === "js") {
-                      node.value = convertIndent4ToIndent2(
-                        node.value
-                      ).trim();
+                      node.value = convertIndent4ToIndent2(node.value).trim();
                     }
                   }
                   visit(tree, "code", visitor);
