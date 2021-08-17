@@ -20,7 +20,7 @@ A Workflow Id Reuse Policy has three possible values:
 
 This means that the Workflow Execution is allowed to spawn regardless of the Closed status of a previous Workflow Execution with the same Workflow Id.
 
-*This is the default policy, if one is not specified.*
+_This is the default policy, if one is not specified._
 
 Use this when it is OK to spawn a Workflow Execution with the same Workflow Id as a previous, but now Closed, Workflow Execution.
 

@@ -4,8 +4,6 @@ title: Temporal Go SDK developer guide - something
 sidebar_label: something
 ---
 
-
-
 ### How to set Worker Options
 
 ```go
@@ -14,9 +12,6 @@ rwo := workflow.RegisterOptions {
 }
 w.RegisterWorkflowWithOptions(dynamic.SampleGreetingsWorkflow, rwo)
 ```
-
-
-
 
 ## How to cancel a Workflow Execution
 
@@ -107,23 +102,6 @@ into its function is cancelled, which sets its channel’s closed state to `Done
 to perform any necessary cleanup and abort its execution. Cancellation is only delivered to Activities
 that call `RecordActivityHeartbeat`.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ### Registration
 
 To make the Activity visible to the Worker process hosting it, the Activity must be registered with the Worker.
@@ -172,25 +150,6 @@ Let's take a look at each component of this call.
 
                                                  |
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## How to call Timer APIs
 
 - `workflow.Now()` This is a replacement for `time.Now()`.
@@ -204,28 +163,19 @@ Let's take a look at each component of this call.
 
 ## How to use debugging tools
 
-
-
 ### What features are available to Go-based Workflows?
 
 The following Temporal Go SDK features a
 
 ## How to use loggers?
 
-
 - `workflow.GetLogger()` This is to ensure that the provided logger does not duplicate logs during a replay.
-
 
 ## How to create a Session
 
-
 ## How to use a Side Effect in a Workflow?
 
-
-
 ## SDK wrapped Go Channels
-
-
 
 ## How to Signal a Workflow Execution
 
@@ -242,20 +192,13 @@ Here we are sending a signal to a Workflow with type "simple-workflow-php" and s
 
 See our [Signals docs](https://docs.temporal.io/docs/go/signals) and [Temporal Polyglot example](https://github.com/tsurdilo/temporal-polyglot) for more.
 
-
-
-
-
-
 -
 - [Selectors](#)
-
 
 - [Signals](#)
 - [Queries](#)
 
   Use a [SideEffect](#side-effect), MutableSideEffect, or an Activity to load configuration values.
-
 
 - Workflow Definition code can not affect changes in external systems directly.
 - Workflow Definition code must use Go SDK APIs to handle things like time, logging, and goroutines.
@@ -266,12 +209,12 @@ However, the Go SDK provides a number of features to handle these restrictions w
 1. To interact with external systems and nondeterministic code, Workflows can execute [Activities](/docs/go/activities).
 2. To handle things like time, logging, and goroutines, as mentioned above, there are specific Go SDK APIs available, such as:
 
-
    - `workflow.Go()` This is a replacement for the the `go` statement.
    - `workflow.Channel` This is a replacement for the native `chan` type.
      Temporal provides support for both buffered and unbuffered channels.
    - `workflow.Selector` This is a replacement for the `select` statement. Learn more on the [Go SDK Selectors](https://docs.temporal.io/docs/go/selectors) page
    - `workflow.Context` This is a replacement for `context.Context`. Learn more on the [Go SDK Context Propagation](https://docs.temporal.io/docs/go/tracing) page.
+
 3. Additionally, for executing very small pieces of nondeterministic logic within the Workflow, you can use the [`workflow.SideEffect` API](/docs/go/side-effect).
 
 Below is a sample Workflow that is treated as a cron job by the Temporal Server.
@@ -280,10 +223,7 @@ It executes a single Activity and uses `workflow.Now()`.
 <!--SNIPSTART samples-go-cron-workflow-->
 <!--SNIPEND-->
 
-
-
 ## How to complete an Activity asynchronously
-
 
 This is like a callback.
 There are certain scenarios when you want to defer completing an Activity until much later.
@@ -343,12 +283,11 @@ Following are the parameters of the `CompleteActivity` function:
 
 If `error` is not null, the value of the `result` field is ignored.
 
-
 ### How to provide custom Activity Options
 
 An instance of `ActivityOptions` can be obtained from the `go.temporal.io/sdk/workflow` package.
-  The `ActivityOptions ` instance should then be added to the instance of `workflow.Context`, using `workflow.WithActivityOptions()`.
-  The instance of `workflow.Context` is then passed to the `ExecuteActivity()` call.
+The `ActivityOptions ` instance should then be added to the instance of `workflow.Context`, using `workflow.WithActivityOptions()`.
+The instance of `workflow.Context` is then passed to the `ExecuteActivity()` call.
 
 ```go
 func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (YourWorkflowResponse, error) {
@@ -361,7 +300,6 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (Your
 ```
 
 Any fields of the custom instance that do not have values specified, will inherit their values from default settings or Workflow Execution.
-
 
 Before calling `workflow.ExecuteActivity()`, you must configure `ActivityOptions` for the
 invocation. These options customize various execution timeouts, and are passed in by creating a child
@@ -388,11 +326,9 @@ are executed _at least once_, so an Activity either succeeds or fails with one o
 | `StartToCloseTimeout`    | Maximum time that a worker can take to process a task after it has received the task.                                                                                                                |
 | `ScheduleToStartTimeout` | Time a task can wait to be picked up by an Activity worker after a Workflow schedules it. If there are no workers available to process this task for the specified duration, the task will time out. |
 | `ScheduleToCloseTimeout` | Time a task can take to complete after it is scheduled by a Workflow. This is usually greater than the sum of `StartToClose` and `ScheduleToStart` timeouts.                                         |
-| `HeartbeatTimeout`       | If a task doesn't heartbeat to the Temporal service for this duration, it will be considered to have failed. This is useful for long-running tasks.
+| `HeartbeatTimeout`       | If a task doesn't heartbeat to the Temporal service for this duration, it will be considered to have failed. This is useful for long-running tasks.                                                  |
 
 ## How to provide custom Workflow Options
-
-
 
 ## How to invoke cron-based Workflow Executions
 
