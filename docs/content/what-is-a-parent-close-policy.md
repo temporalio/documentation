@@ -10,12 +10,19 @@ If a Workflow Execution is a Child Workflow Execution, a Parent Close Policy det
 
 If the Workflow Execution is not a Child Workflow Execution, a Parent Close Policy has no effect on the execution.
 
-A Parent Close Policy must be provided when the Workflow Execution is spawned.
+A Parent Close Policy must be provided when the Child Workflow Execution is spawned.
+Each Child Workflow Execution may have its own Parent Close Policy.
 
 A Parent Close Policy has three possible values:
 
-- `ABANDON`: When the Parent Closes, there is no effect to the Child Workflow Execution.
-- `TERMINATE`: When the Parent Closes, the Child Workflow Execution is Terminated.
-- `REQUEST_CANCEL`: When the Parent Closes, the Child Workflow Execution is Cancelled.
+**Abandon**
 
-Each Child Workflow Execution may have its own Parent Close Policy.
+This means that when the Parent Closes, there is no effect to the Child Workflow Execution.
+
+**Terminate**
+
+This means that, when the Parent Closes, the Child Workflow Execution is Terminated.
+
+**Request Cancel**
+
+This means that when the Parent Closes, the Child Workflow Execution is Cancelled.

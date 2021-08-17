@@ -10,7 +10,7 @@ A Workflow Id Reuse Policy determines whether the associated Workflow Execution 
 
 It is never possible for a new Workflow Execution to spawn with the same Workflow Id as another Open Workflow Execution.
 A Workflow Id Reuse Policy only applies if there is a Closed Workflow Execution with the same Workflow Id within the associated Namespace's retention period.
-For example, if the Namespace's retention period is 30 days, a Workflow Id Reuse Policy can only compare the Workflow Id against Closed Workflow Executions for the last 30 days.
+For example, if the Namespace's retention period is 30 days, a Workflow Id Reuse Policy can only compare the Workflow Id of the spawning Workflow Execution against the Closed Workflow Executions for the last 30 days.
 
 Any attempt to spawn a Workflow Execution that has a Workflow Id Reuse Policy that does not allow it, will Fail with a "Workflow execution already started" error.
 
@@ -18,7 +18,7 @@ A Workflow Id Reuse Policy has three possible values:
 
 **Allow Duplicate**
 
-This means that the Workflow Execution is allowed to spawn regardless of the Closed status of a previous Workflow Execution with the same Workflow Id.
+This policy means that the Workflow Execution is allowed to spawn regardless of the Closed status of a previous Workflow Execution with the same Workflow Id.
 
 _This is the default policy, if one is not specified._
 
