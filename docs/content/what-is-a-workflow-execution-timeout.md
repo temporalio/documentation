@@ -7,7 +7,7 @@ tags:
 
 This is the maximum time that a Workflow Execution can be executing (have an Open status) including retries and any usage of Continue As New.
 
-**The default value is ∞**
+**The default value is 10 years**
 
 If this timeout is reached then the Workflow Execution will change to a Timed Out status.
 

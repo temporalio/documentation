@@ -18,8 +18,8 @@ Workflow Option fields automatically inherit their values from the Parent Workfl
 If a custom `WorkflowID` is not set then one will be generated when the Child Workflow Execution is spawned.
 
 The `ExecuteChildWorkflow` call returns an instance of a [`ChildWorkflowFuture`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ChildWorkflowFuture).
-Call the `GetChildWorkflowExecution` method on the instance of the `ChildWorkflowFuture` which blocks until the Child Workflow Execution has spawned and returns a Future that can be used to get the result of the Child Workflow Execution.
-If the Parent makes the `ExecuteChildWorkflow` call and then immediately completes, the Child Workflow Execution will not spawn.
+
+Call the `.Get()` method on the instance of `ChildWorkflowFuture` to wait for the result.
 
 ```go
 func YourWorkflowDefinition(ctx workflow.Context, params ParentParams) (ParentResp, error) {
@@ -27,8 +27,42 @@ func YourWorkflowDefinition(ctx workflow.Context, params ParentParams) (ParentRe
   childWorkflowOptions := workflow.ChildWorkflowOptions{}
   ctx = workflow.WithChildOptions(ctx, childWorkflowOptions)
 
+  var result ChildResp
+  err := workflow.ExecuteChildWorkflow(ctx, YourOtherWorkflowDefinition, ChildParams{}).Get(ctx, &result)
+  if err != nil {
+    // ...
+  }
+  // ...
+  return resp, nil
+}
+```
+
+**Asynchronous execution**
+
+To asynchronously spawn a Child Workflow Execution, the Child Workflow must have an "Abandon" Parent Close Policy set in the Child Workflow Options.
+Additionally, the Parent Workflow Execution must wait for the "ChildWorkflowExecutionStarted" event to appear in its event history before it completes.
+
+If the Parent makes the `ExecuteChildWorkflow` call and then immediately completes, the Child Workflow Execution will not spawn.
+
+To be sure that the Child Workflow Execution has started, first call the `GetChildWorkflowExecution` method on the instance of the `ChildWorkflowFuture`, which will return a different Future.
+Then call the `Get()` method on that Future which is what will wait until the Child Workflow Execution has spawned.
+
+```go
+import (
+  // ...
+  "go.temporal.io/api/enums/v1"
+)
+
+func YourWorkflowDefinition(ctx workflow.Context, params ParentParams) (ParentResp, error) {
+
+  childWorkflowOptions := workflow.ChildWorkflowOptions{
+    ParentClosePolicy: enums.PARENT_CLOSE_POLICY_ABANDON,
+  }
+  ctx = workflow.WithChildOptions(ctx, childWorkflowOptions)
+
   childWorkflowFuture := workflow.ExecuteChildWorkflow(ctx, YourOtherWorkflowDefinition, ChildParams{})
-  future = childWorkflowFuture.GetChildWorkflowExecution().Get(ctx, nil)
+  // Wait for the Child Workflow Execution to spawn
+  _ = childWorkflowFuture.GetChildWorkflowExecution().Get(ctx, nil)
   // ...
   return resp, nil
 }

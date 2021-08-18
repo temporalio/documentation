@@ -25,4 +25,4 @@ This means that, when the Parent Closes, the Child Workflow Execution is Termina
 
 **Request Cancel**
 
-This means that when the Parent Closes, the Child Workflow Execution is Cancelled.
+This means that when the Parent Closes, a Cancellation request is sent to the Child Workflow Execution.
