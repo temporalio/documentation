@@ -81,7 +81,7 @@ Scaling will depend on your workload — for example, for a Task Queue with 500 
 Provided you tune the concurrency of your worker / number of pollers based on your application, it should be possible to scale workers based on standard resource utilization metrics (CPU, Memory, etc).
 
 It's possible to have too many workers.
-Monitor the poll success and poll timeout metrics:
+Monitor the poll success (`poll_success`/`poll_success_sync`) and `poll_timeouts` metrics:
 
 - if you see low `ScheduleToStart` latency / low percentage of poll success / high percentage of timeouts, you might have too many workers/pollers.
 - with 100% poll success and increasing `ScheduleToStart` latency, you need to scale up.
