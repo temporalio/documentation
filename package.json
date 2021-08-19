@@ -26,7 +26,8 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-player": "^2.6.0",
-    "snipsync": "1.5.0"
+    "snipsync": "1.5.0",
+    "uuid": "^8.3.2"
   },
   "browserslist": {
     "production": [

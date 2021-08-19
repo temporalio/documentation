@@ -1,19 +1,19 @@
 import React from "react";
+import { v4 as uuidv4 } from 'uuid';
 
 export default function CenteredImage({
   imagePath,
   imageSize,
   title,
-  legendstring,
+  legend,
 }) {
   const legendList = [];
-  if (legendstring != undefined) {
-    const items = legendstring.split("|");
-    for (const item of items) {
-      const parts = item.split("?");
+  if (legend.length > 0) {
+    for (const item of legend) {
       legendList.push({
-        symbol: parts[0],
-        description: parts[1],
+        id: uuidv4(),
+        symbol: item[0],
+        description: item[1],
       });
     }
   }
@@ -39,8 +39,8 @@ export default function CenteredImage({
       {legendList.length > 0 && (
         <div className={"docs-image-legend-wrapper"}>
           <ul className={"docs-image-legend-list"}>
-            {legendList.map(({symbol, description}) => (
-              <li>
+            {legendList.map(({id, symbol, description}) => (
+              <li key={id}>
                 <span className={"docs-image-legend-symbol"}>{symbol}</span> ={" "}
                 {description}
               </li>

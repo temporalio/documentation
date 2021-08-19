@@ -18,7 +18,9 @@ Temporal is a scalable and reliable runtime for Reentrant Processes called Tem
 imagePath="/diagrams/temporal-intro.svg"
 imageSize="50"
 title="The Temporal system"
-legendstring="π?Workflow Execution"
+legend={[
+  ["π","Workflow Execution"],
+]}
 />
 
 **Temporal Application**

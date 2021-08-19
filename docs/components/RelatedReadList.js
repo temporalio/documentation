@@ -1,12 +1,14 @@
 import React from "react";
 import clsx from "clsx";
 import Link from "@docusaurus/Link";
+import { v4 as uuidv4 } from 'uuid';
 
 export default function RelatedReadList({readlist}) {
   let readingList = [];
   for (const item of readlist) {
     const tagStuff = tagInfo(item[2]);
     readingList.push({
+      id: uuidv4(),
       text: item[0],
       goTo: item[1],
       tag: tagStuff.tag,
@@ -17,15 +19,15 @@ export default function RelatedReadList({readlist}) {
     return (
       <div className={"related-read-div"}>
         <span className={"related-read-label"}>Related 📚 </span>
-        {readingList.map(({text, goTo, tag, tagClass}) => (
-          <>
+        {readingList.map(({id, text, goTo, tag, tagClass}) => (
+          <span key={id}>
             <Link className={"related-read-link"} to={goTo}>
               {text}
             </Link>
             <span className={clsx("related-read-archetype-tag", tagClass)}>
               {tag}
             </span>
-          </>
+          </span>
         ))}
       </div>
     );
@@ -34,8 +36,8 @@ export default function RelatedReadList({readlist}) {
       <div className={"related-read-div"}>
         <span className={"related-read-label"}>Related 📚 </span>
         <ul className="related-read-list">
-          {readingList.map(({text, goTo, tag, tagClass}) => (
-            <li>
+          {readingList.map(({id, text, goTo, tag, tagClass}) => (
+            <li key={id}>
               <Link className={"related-read-link"} to={goTo}>
                 {text}
               </Link>
