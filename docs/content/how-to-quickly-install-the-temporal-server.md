@@ -33,6 +33,6 @@ To try other configurations (different dependencies and databases), or to try a 
 
 <RelatedReadList
 readlist={[
-["How to deploy the Temporal Server to Kubernetes for testing and development", "/docs/content/how-to-deploy-temporal-to-kubernetes-for-testing-and-development", "og"],
+["How to deploy the Temporal Server to Kubernetes for testing and development", "/docs/content/how-to-deploy-temporal-to-kubernetes-for-testing-and-development", "operation guide"],
 ]}
 />

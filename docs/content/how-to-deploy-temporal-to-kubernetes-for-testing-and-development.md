@@ -15,6 +15,6 @@ Deploying the Temporal Server with Helm is not recommended for a [production env
 <RelatedReadList
 readlist={[
 ["How to quickly install the Temporal Server for testing and local development",
-"/docs/content/how-to-quickly-install-the-temporal-server","og"]
+"/docs/content/how-to-quickly-install-the-temporal-server","operation guide"]
 ]}
 />

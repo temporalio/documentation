@@ -217,8 +217,12 @@ h4,
   margin-left: 7px;
 }
 
-.archetype-tag-guide {
+.archetype-tag-operation-guide {
   background-color: #CA1A7B;
+}
+
+.archetype-tag-developer-guide {
+  background-color: #CA811A;
 }
 
 .archetype-tag-tutorial {
