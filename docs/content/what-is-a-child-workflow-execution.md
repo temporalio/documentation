@@ -11,7 +11,11 @@ import RelatedReadList from '../components/RelatedReadList.js'
 
 A Child Workflow Execution is a Workflow Execution that is spawned from within another Workflow.
 
-A Parent Workflow Execution can monitor and impact the life-cycle of a Child Workflow Execution.
+A Child Workflow Execution can return to the Parent, or be spawned asynchronously.
+A Parent Workflow Execution can monitor and impact the life-cycle of a Child Workflow Execution as Child Workflow Execution Events are recorded in the Parent Workflow Execution Event History.
+
+A Workflow Execution can be both a Parent and a Child Workflow Execution.
+A single Parent can spawn as many Child Workflow Executions as needed.
 
 <CenteredImage
 imagePath="/diagrams/parent-child-workflow-execution.svg"
@@ -21,10 +25,6 @@ legendstring="π?Workflow Execution|
 p?Parent|
 c?Child"
 />
-
-A Workflow Execution can be both a Parent and a Child Workflow Execution.
-A Child Workflow Execution can return to the Parent.
-A single Parent can spawn as many Child Workflow Executions as needed.
 
 <RelatedReadList
 readliststring="How to spawn a Child Workflow Execution in Go?/docs/content/how-to-spawn-a-child-workflow-execution-in-go?dg"
