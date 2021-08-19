@@ -19,7 +19,7 @@ imagePath="/diagrams/temporal-intro.svg"
 imageSize="50"
 title="The Temporal system"
 legend={[
-  ["π","Workflow Execution"],
+["π","Workflow Execution"],
 ]}
 />
 

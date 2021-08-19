@@ -1,7 +1,7 @@
 import React from "react";
 import clsx from "clsx";
 import Link from "@docusaurus/Link";
-import { v4 as uuidv4 } from 'uuid';
+import {v4 as uuidv4} from "uuid";
 
 export default function RelatedReadList({readlist}) {
   let readingList = [];

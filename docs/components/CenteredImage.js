@@ -1,12 +1,7 @@
 import React from "react";
-import { v4 as uuidv4 } from 'uuid';
+import {v4 as uuidv4} from "uuid";
 
-export default function CenteredImage({
-  imagePath,
-  imageSize,
-  title,
-  legend,
-}) {
+export default function CenteredImage({imagePath, imageSize, title, legend}) {
   const legendList = [];
   if (legend != undefined) {
     for (const item of legend) {
