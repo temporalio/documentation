@@ -8,7 +8,7 @@ export default function CenteredImage({
   legend,
 }) {
   const legendList = [];
-  if (legend.length > 0) {
+  if (legend != undefined) {
     for (const item of legend) {
       legendList.push({
         id: uuidv4(),
