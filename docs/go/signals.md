@@ -67,7 +67,7 @@ if len(signalVal) > 0 && signalVal != "SOME_VALUE" {
 ```
 
 In the example above, the Workflow code uses **workflow.GetSignalChannel** to open a **workflow.Channel** for the named signal.
-We then use a [**workflow.Selector**](https://docs.temporal.io/docs/go/selectors) to wait on this channel and process the payload received with the signal.
+We then use a [**workflow.Selector**](https://docs.temporal.io/docs/go/selectors) and `AddReceive` to wait on this channel and process the payload received with the signal. A callback function is passed to `AddReceive` and is called to handle the payload once it's received. The `more` bool in the callback function indicates that channel is not closed and more deliveries are possible.
 
 ### Signal with structs
 
