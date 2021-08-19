@@ -6,7 +6,14 @@ import {v4 as uuidv4} from "uuid";
 export default function RelatedReadList({readlist}) {
   let readingList = [];
   for (const item of readlist) {
+    // validate 
+    const text = item[0];
+    if (text.startsWith('/') || text.startsWith('#')) throw new Error(`readlist item "${text}" looks like a URL, did you forget the sequence?`)
+    const goTo = item[1];
+    if (!goTo.startsWith('/') || !goTo.startsWith('#')) throw new Error(`goTo parameter ${goTo} doesnt start with / or #: was there a mistake?`)
     const tagStuff = tagInfo(item[2]);
+    if (tagStuff instanceof Error) throw tagStuff;
+    // form data structure
     readingList.push({
       id: uuidv4(),
       text: item[0],
@@ -72,9 +79,12 @@ function tagInfo(tagChar) {
       tagClass = "archetype-tag-explanation";
       tag = "explanation";
       break;
-    default:
+    case "r":
       tagClass = "archetype-tag-reference";
       tag = "reference";
+      break;
+    default:
+      return new Error('unrecognized tag class ' + tagChar)
   }
   return {tag: tag, tagClass: tagClass};
 }
