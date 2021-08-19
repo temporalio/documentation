@@ -2,15 +2,13 @@ import React from "react";
 import clsx from "clsx";
 import Link from "@docusaurus/Link";
 
-export default function RelatedRead({readliststring}) {
-  const items = readliststring.split("|");
+export default function RelatedReadList({readlist}) {
   let readingList = [];
-  for (const item of items) {
-    const parts = item.split("?");
-    const tagStuff = tagInfo(parts[2]);
+  for (const item of readlist) {
+    const tagStuff = tagInfo(item[2]);
     readingList.push({
-      text: parts[0],
-      goTo: parts[1],
+      text: item[0],
+      goTo: item[1],
       tag: tagStuff.tag,
       tagClass: tagStuff.tagClass,
     });

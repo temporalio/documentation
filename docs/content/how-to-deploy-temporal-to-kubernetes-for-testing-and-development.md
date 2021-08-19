@@ -13,5 +13,8 @@ Use [Temporal Helm Charts](https://github.com/temporalio/helm-charts) to deploy 
 Deploying the Temporal Server with Helm is not recommended for a [production environment](/docs/server/production-deployment), but it is a great way to test the system while developing Workflows.
 
 <RelatedReadList
-readliststring="How to quickly install the Temporal Server for testing and local development?/docs/content/how-to-quickly-install-the-temporal-server?og"
+readlist={[
+["How to quickly install the Temporal Server for testing and local development",
+"/docs/content/how-to-quickly-install-the-temporal-server","og"]
+]}
 />
