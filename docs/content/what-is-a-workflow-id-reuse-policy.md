@@ -6,7 +6,7 @@ description: todo
 
 import RelatedReadList from '../components/RelatedReadList.js'
 
-A Workflow Id Reuse Policy determines whether the associated Workflow Execution can spawn with a particular Workflow Id if that Workflow Id has been used with a previous, and now Closed, Workflow Execution.
+A Workflow Id Reuse Policy determines whether the operation to spawn a Workflow Execution with a particular Workflow Id is successful, if that Workflow Id has been used with a previous, and now Closed, Workflow Execution.
 
 It is never possible for a new Workflow Execution to spawn with the same Workflow Id as another Open Workflow Execution.
 A Workflow Id Reuse Policy only applies if there is a Closed Workflow Execution with the same Workflow Id within the associated Namespace's retention period.

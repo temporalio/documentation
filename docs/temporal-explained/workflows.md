@@ -5,6 +5,28 @@ description: todo
 sidebar_label: Workflows
 ---
 
+import WhatIsAWorkflow from "../content/what-is-a-workflow.md"
+
+<WhatIsAWorkflow/>
+
+## Workflow Execution
+
+import WhatIsAWorkflowExecution from "../content/what-is-a-workflow-execution.md"
+
+<WhatIsAWorkflowExecution/>
+
+## Workflow Type
+
+import WhatIsAWorkflowType from "../content/what-is-a-workflow-type.md"
+
+<WhatIsAWorkflowType/>
+
+## Workflow Definition
+
+import WhatIsAWorkflowDefinition from "../content/what-is-a-workflow-definition.md"
+
+<WhatIsAWorkflowDefinition/>
+
 ## Child Workflow
 
 import WhatIsAChildWorkflowExecution from "../content/what-is-a-child-workflow-execution.md"

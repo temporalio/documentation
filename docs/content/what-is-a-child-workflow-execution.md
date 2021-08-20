@@ -29,3 +29,8 @@ c?Child"
 <RelatedReadList
 readliststring="How to spawn a Child Workflow Execution in Go?/docs/content/how-to-spawn-a-child-workflow-execution-in-go?dg"
 />
+
+
+Can wait on start
+Can wait on result (completion)
+Can propagate cancellation requests and termination
