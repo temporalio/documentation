@@ -27,6 +27,7 @@ To add Signal handlers to a Workflow, add a `signals` property to the exported W
 
 You invoke a Signal with `workflow.signal.signalName(...args)`. In the above case, we called our Signal `unblock`, so we call `workflow.signal.unblock()`:
 
+<!-- prettier-ignore -->
 ```ts
 const client = new WorkflowClient();
 const workflow = client.stub<Blocked>("blocked", {taskQueue: "test"});
@@ -40,6 +41,7 @@ Signal handlers can be either synchronous or asynchronous, in this example, our 
 
 > Note that this example is a simplification of the recommended way to handle Signals [below](#triggers) since the Workflow cannot be cancelled unless it awaits a [cancellable operation](/docs/node/cancellation-scopes).
 
+<!-- prettier-ignore -->
 ```ts
 // implementation
 import {Blocked} from "../interfaces";
