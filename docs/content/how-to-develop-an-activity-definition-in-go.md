@@ -37,7 +37,9 @@ The rest of this guide will show Activities written as struct methods.
 
 <!--
 <RelatedReadList
-readliststring="What are Activities?/docs/concepts-new/introduction#workflow-definition?e"
+readlist={[
+["What are Activities?", "/docs/concepts-new/introduction#workflow-definition", "e"],
+]}
 />
 -->
 
@@ -68,8 +70,10 @@ There is no explicit limit to the amount of parameter data that can be passed to
 
 <!--
 <RelatedReadList
-readliststring="What is a Workflow Execution History?#?e|
-When to care about the size of your Workflow Execution History?#?g"
+readlist={[
+["What is a Workflow Execution History?","#","e"],
+["When to care about the size of your Workflow Execution History","#","g"],
+]}
 />
 -->
 
@@ -97,7 +101,9 @@ func (a *YourActivityStruct) YourActivityDefinition(ctx context.Context, param Y
 
 <!--
 <RelatedReadList
-readliststring="When to return an error from an Activity?#?g"
+readlist={[
+["When to return an error from an Activity","#","g"],
+]}
 />
 -->
 

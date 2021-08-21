@@ -8,7 +8,6 @@ tags:
 
 import RelatedReadList from '../components/RelatedReadList.js'
 import CenteredImage from "../components/CenteredImage.js"
-import LanguageLinkTabs from '../components/LanguageLinkTabs.js'
 
 > In day-to-day conversations, the term Worker is used to denote a Worker Process.
 
@@ -38,12 +37,13 @@ title="Entity relationship diagram (meta model) of Worker Processes, Task Queues
 />
 
 <RelatedReadList
-readliststring="
-What is a Task?#?e|
-What is a Task Queue?#?e|
-How to operate Worker Processes?#?og|
-How to develop a Worker Program in Go?/docs/content/how-to-develop-a-worker-program-in-go?dg|
-How to develop a Worker Program in Java?/docs/content/how-to-develop-a-worker-program-in-java?dg|
-How to develop a Worker Program in Node.js?/docs/content/how-to-develop-a-worker-program-in-node?dg|
-How to develop a Worker Program in PHP?/docs/content/how-to-develop-a-worker-program-in-php?dg"
+readlist={[
+["What is a Task","#","explanation"],
+["What is a Task Queue","#","explanation"],
+["How to operate Worker Processes","#","operation guide"],
+["How to develop a Worker Program in Go","/docs/content/how-to-develop-a-worker-program-in-go", "developer guide"],
+["How to develop a Worker Program in Java","/docs/content/how-to-develop-a-worker-program-in-java","developer guide"],
+["How to develop a Worker Program in Node.js","/docs/content/how-to-develop-a-worker-program-in-node","developer guide"],
+["How to develop a Worker Program in PHP","/docs/content/how-to-develop-a-worker-program-in-php","developer guide"],
+]}
 />

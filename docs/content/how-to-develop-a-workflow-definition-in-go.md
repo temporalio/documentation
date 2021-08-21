@@ -80,7 +80,9 @@ Returning a non-nil `error` from a Workflow indicates that an error was encounte
 
 <!--
 <RelatedReadList
-readliststring="When to return an error from a Workflow?#?og"
+readlist={[
+["When to return an error from a Workflow","#","og"],
+}]
 />
 -->
 
@@ -93,8 +95,10 @@ In Go specifically, Workflow Definition code can not directly do the following:
 
 <!--
 <RelatedReadList
-readliststring="General requirements for developing Workflow Definitions?/docs/application-operations/#what-are-general-requirements-for-writing-workflow-defintions?og|
-How to develop a Side Effect in Go?#?dg|
-How to develop an Activity Definition?#how-to-write-an-activity-definition?dg"
+readlist={[
+["General requirements for developing Workflow Definitions","/docs/application-operations/#what-are-general-requirements-for-writing-workflow-defintions","og"],
+["How to develop a Side Effect in Go","#","dg"],
+["How to develop an Activity Definition", "#how-to-write-an-activity-definition", "dg"],
+]}
 />
 -->

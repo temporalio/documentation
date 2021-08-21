@@ -32,5 +32,7 @@ The preceding steps start the Temporal Server using a default configuration.
 To try other configurations (different dependencies and databases), or to try a custom Docker image follow the [temporalio/docker-compose README](https://github.com/temporalio/docker-compose/blob/main/README.md).
 
 <RelatedReadList
-readliststring="How to deploy the Temporal Server to Kubernetes for testing and development?/docs/content/how-to-deploy-temporal-to-kubernetes-for-testing-and-development?og"
+readlist={[
+["How to deploy the Temporal Server to Kubernetes for testing and development", "/docs/content/how-to-deploy-temporal-to-kubernetes-for-testing-and-development", "operation guide"],
+]}
 />

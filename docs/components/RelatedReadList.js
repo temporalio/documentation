@@ -1,16 +1,18 @@
 import React from "react";
 import clsx from "clsx";
 import Link from "@docusaurus/Link";
+import {v4 as uuidv4} from "uuid";
 
-export default function RelatedRead({readliststring}) {
-  const items = readliststring.split("|");
+export default function RelatedReadList({readlist}) {
   let readingList = [];
-  for (const item of items) {
-    const parts = item.split("?");
-    const tagStuff = tagInfo(parts[2]);
+  for (const item of readlist) {
+    const tagStuff = tagInfo(item[2]);
+    if (tagStuff instanceof Error) throw tagStuff;
+    // form data structure
     readingList.push({
-      text: parts[0],
-      goTo: parts[1],
+      id: uuidv4(),
+      text: item[0],
+      goTo: item[1],
       tag: tagStuff.tag,
       tagClass: tagStuff.tagClass,
     });
@@ -19,15 +21,15 @@ export default function RelatedRead({readliststring}) {
     return (
       <div className={"related-read-div"}>
         <span className={"related-read-label"}>Related 📚 </span>
-        {readingList.map(({text, goTo, tag, tagClass}) => (
-          <>
+        {readingList.map(({id, text, goTo, tag, tagClass}) => (
+          <span key={id}>
             <Link className={"related-read-link"} to={goTo}>
               {text}
             </Link>
             <span className={clsx("related-read-archetype-tag", tagClass)}>
               {tag}
             </span>
-          </>
+          </span>
         ))}
       </div>
     );
@@ -36,8 +38,8 @@ export default function RelatedRead({readliststring}) {
       <div className={"related-read-div"}>
         <span className={"related-read-label"}>Related 📚 </span>
         <ul className="related-read-list">
-          {readingList.map(({text, goTo, tag, tagClass}) => (
-            <li>
+          {readingList.map(({id, text, goTo, tag, tagClass}) => (
+            <li key={id}>
               <Link className={"related-read-link"} to={goTo}>
                 {text}
               </Link>
@@ -52,29 +54,26 @@ export default function RelatedRead({readliststring}) {
   }
 }
 
-function tagInfo(tagChar) {
+function tagInfo(tag) {
   var tagClass;
-  var tag;
-  switch (tagChar) {
-    case "dg":
-      tagClass = "archetype-tag-guide";
-      tag = "developer guide";
+  switch (tag) {
+    case "developer guide":
+      tagClass = "archetype-tag-developer-guide";
       break;
-    case "og":
-      tagClass = "archetype-tag-guide";
-      tag = "operations guide";
+    case "operation guide":
+      tagClass = "archetype-tag-operation-guide";
       break;
-    case "t":
+    case "tutorial":
       tagClass = "archetype-tag-tutorial";
-      tag = "tutorial";
       break;
-    case "e":
+    case "explanation":
       tagClass = "archetype-tag-explanation";
-      tag = "explanation";
+      break;
+    case "reference":
+      tagClass = "archetype-tag-reference";
       break;
     default:
-      tagClass = "archetype-tag-reference";
-      tag = "reference";
+      return new Error("unrecognized tag: " + tag);
   }
   return {tag: tag, tagClass: tagClass};
 }
