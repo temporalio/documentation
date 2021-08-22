@@ -8,19 +8,19 @@ Interceptors are a mechanism for users to modify inbound and outbound SDK calls.
 Interceptors are commonly used to add tracing and authorization to the scheduling and execution of Workflows and Activities.
 You can compare these to "middleware" in other frameworks.
 
-The Node.js SDK comes with an optional interceptor package that adds tracing with [opentelemtry](https://www.npmjs.com/package/@temporalio/interceptors-opentelemetry). See how to use it in this [sample](https://github.com/temporalio/sdk-node/tree/main/samples/interceptors-opentelemetry).
+The Node.js SDK comes with an optional interceptor package that adds tracing with [opentelemetry](https://www.npmjs.com/package/@temporalio/interceptors-opentelemetry). See how to use it in this [sample](https://github.com/temporalio/sdk-node/tree/main/samples/interceptors-opentelemetry).
 
 ## Interceptor types
 
-- [WorkflowInboundCallsInterceptor](https://nodejs.temporal.io/api/interfaces/workflow.workflowinboundcallsinterceptor/) - Intercept Workflow inbound calls like execution, and signal and query handling.
-- [WorkflowOutboundCallsInterceptor](https://nodejs.temporal.io/api/interfaces/workflow.workflowoutboundcallsinterceptor/) - Intercept Workflow outbound calls to Temporal APIs like scheduling Activities and starting Timers
+- [WorkflowInboundCallsInterceptor](https://nodejs.temporal.io/api/interfaces/workflow.workflowinboundcallsinterceptor/) - Intercept Workflow inbound calls like execution, signals, and queries.
+- [WorkflowOutboundCallsInterceptor](https://nodejs.temporal.io/api/interfaces/workflow.workflowoutboundcallsinterceptor/) - Intercept Workflow outbound calls to Temporal APIs like scheduling Activities and starting Timers.
 - [ActivityInboundCallsInterceptor](https://nodejs.temporal.io/api/interfaces/worker.activityinboundcallsinterceptor) - Intercept inbound calls to an activity (e.g. execute).
-- [WorkflowClientCallsInterceptor](https://nodejs.temporal.io/api/interfaces/client.workflowclientcallsinterceptor/) - Intercept methods of [`WorkflowClient`](https://nodejs.temporal.io/api/classes/client.workflowclient/) and [`WorkflowStub`](https://nodejs.temporal.io/api/interfaces/client.workflowstub) like starting an signaling a Workflow
+- [WorkflowClientCallsInterceptor](https://nodejs.temporal.io/api/interfaces/client.workflowclientcallsinterceptor/) - Intercept methods of [`WorkflowClient`](https://nodejs.temporal.io/api/classes/client.workflowclient/) and [`WorkflowStub`](https://nodejs.temporal.io/api/interfaces/client.workflowstub) like starting or signaling a Workflow.
 
 ## How interceptors work
 
 Interceptors are run in a chain, all of the interceptors work in a similar manner, they accept 2 arguments: `input` and `next` where `next` calls the next interceptor in the chain.
-All interceptor methods are optional, it's up to the implementor to choose which methods to intercept.
+All interceptor methods are optional—it's up to the implementor to choose which methods to intercept.
 
 ## Interceptor examples
 
@@ -93,7 +93,7 @@ export class DumbWorkflowAuthInterceptor
 }
 ```
 
-To properly do authorization from Workflow code, the Workflow would need to access encryption keys and possibly authenticate against an external user database, that requires the Workflow to break isolation using [external dependencies](/docs/node/external-dependencies).
+To properly do authorization from Workflow code, the Workflow would need to access encryption keys and possibly authenticate against an external user database, which requires the Workflow to break isolation using [external dependencies](/docs/node/external-dependencies).
 
 ## Interceptor registration
 
