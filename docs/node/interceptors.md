@@ -105,7 +105,7 @@ To properly do authorization from Workflow code, the Workflow would need to acce
 
 ### Workflow interceptors registration
 
-Workflow interceptor registration is different than the other interceptors because they run in the Workflow isolate, to register workflow interceptors, export an `interceptors` variable from a file located in the `workflows` directory and provide the name of that file to the Worker on creation via [WorkerOptions](https://nodejs.temporal.io/api/interfaces/worker.workeroptions#interceptors).
+Workflow interceptor registration is different than the other interceptors because they run in the Workflow isolate. To register Workflow interceptors, export an `interceptors` variable from a file located in the `workflows` directory and provide the name of that file to the Worker on creation via [WorkerOptions](https://nodejs.temporal.io/api/interfaces/worker.workeroptions#interceptors).
 
 At the time of construction, the Workflow Context is already initialized for the current Workflow.
 Use [`Context.info`](https://nodejs.temporal.io/api/interfaces/workflow.workflowinfo) to add Workflow specific information in the interceptor.
