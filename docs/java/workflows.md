@@ -215,10 +215,10 @@ To learn about Workflow Activities visit [this page](/docs/java/activities).
 
 Besides Activities, a Workflow can also start other Workflows.
 
-import WhenToUse from '../content/when-to-use-child-workflows.md'
-
-<WhenToUse
-signalsLink="/docs/java/signals"
+<RelatedReadList
+readlist={[
+["What is a Child Workflow Execution?","/docs/content/what-is-a-child-workflow-execution","explanation"],  
+]}
 />
 
 ### Java Child Workflow API

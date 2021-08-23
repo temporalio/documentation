@@ -74,5 +74,7 @@ func YourOtherWorkflowDefinition(ctx workflow.Context, params ChildParams) (Chil
 ```
 
 <RelatedReadList
-readliststring="What is a Child Workflow Execution?/docs/content/how-to-spawn-a-child-workflow-execution-in-go?e"
+readlist={[
+["What is a Child Workflow Execution?","/docs/content/what-is-a-child-workflow-execution","explanation"],  
+]}
 />

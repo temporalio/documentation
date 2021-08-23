@@ -100,10 +100,10 @@ There is no official support for External Workflows in Node.js yet.
 Besides Activities, a Workflow can also start other Workflows.
 There is no official support for Child Workflows in Node.js yet.
 
-import WhenToUse from '../content/when-to-use-child-workflows.md'
-
-<WhenToUse
-signalsLink="/docs/go/signals"
+<RelatedReadList
+readlist={[
+["What is a Child Workflow Execution?","/docs/content/what-is-a-child-workflow-execution","explanation"],  
+]}
 />
 
 ## Large Event Histories

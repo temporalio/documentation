@@ -1,10 +1,12 @@
 ---
 id: what-is-a-parent-close-policy
 title: What is a Parent Close Policy
-description: todo
+description: If a Workflow Execution is a Child Workflow Execution, a Parent Close Policy determines what happens to the Workflow Execution should its Parent Workflow Execution change to a Closed status (Completed, Failed, Timed out).
 tags:
   - explanation
 ---
+
+import RelatedReadList from '../components/RelatedReadList.js'
 
 If a Workflow Execution is a Child Workflow Execution, a Parent Close Policy determines what happens to the Workflow Execution should its Parent Workflow Execution change to a Closed status (Completed, Failed, Timed out).
 
@@ -26,3 +28,10 @@ This means that, when the Parent Closes, the Child Workflow Execution is Termina
 **Request Cancel**
 
 This means that when the Parent Closes, a Cancellation request is sent to the Child Workflow Execution.
+
+<RelatedReadList
+readlist={[
+["What is a Child Workflow Execution", "/docs/content/what-is-a-child-workflow-execution", "explanation"],
+["How to set a Parent Close Policy in Go", "/docs/content/how-to-set-a-parent-close-policy-in-go", "developer guide"],  
+]}
+/>

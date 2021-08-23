@@ -8,7 +8,10 @@ import RelatedReadList from '../components/RelatedReadList.js'
 
 A Workflow Id Reuse Policy determines whether the operation to spawn a Workflow Execution with a particular Workflow Id is successful, if that Workflow Id has been used with a previous, and now Closed, Workflow Execution.
 
-It is never possible for a new Workflow Execution to spawn with the same Workflow Id as another Open Workflow Execution.
+import NoDuplicateWorklfowIdForOpenWorkflowExecution from "../reminders/note-cannot-duplicate-workflowid-of-open-workflow-execution.md"
+
+<NoDuplicateWorklfowIdForOpenWorkflowExecution/>
+
 A Workflow Id Reuse Policy only applies if there is a Closed Workflow Execution with the same Workflow Id within the associated Namespace's retention period.
 For example, if the Namespace's retention period is 30 days, a Workflow Id Reuse Policy can only compare the Workflow Id of the spawning Workflow Execution against the Closed Workflow Executions for the last 30 days.
 
@@ -37,5 +40,7 @@ This policy means that the associated Workflow Execution cannot spawn if there i
 Use this when there can only be one Workflow Execution per Workflow Id within a Namespace for the given retention period.
 
 <RelatedReadList
-readliststring="What is a Workflow Id?#?e"
+readlist={[
+["What is a Workflow Id?","#","explanation"],
+]}
 />

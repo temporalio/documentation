@@ -9,11 +9,11 @@ import WhatIsAWorkflow from "../content/what-is-a-workflow.md"
 
 <WhatIsAWorkflow/>
 
-## Workflow Execution
+## Workflow Definition
 
-import WhatIsAWorkflowExecution from "../content/what-is-a-workflow-execution.md"
+import WhatIsAWorkflowDefinition from "../content/what-is-a-workflow-definition.md"
 
-<WhatIsAWorkflowExecution/>
+<WhatIsAWorkflowDefinition/>
 
 ## Workflow Type
 
@@ -21,13 +21,13 @@ import WhatIsAWorkflowType from "../content/what-is-a-workflow-type.md"
 
 <WhatIsAWorkflowType/>
 
-## Workflow Definition
+## Workflow Execution
 
-import WhatIsAWorkflowDefinition from "../content/what-is-a-workflow-definition.md"
+import WhatIsAWorkflowExecution from "../content/what-is-a-workflow-execution.md"
 
-<WhatIsAWorkflowDefinition/>
+<WhatIsAWorkflowExecution/>
 
-## Child Workflow
+## Child Workflow Execution
 
 import WhatIsAChildWorkflowExecution from "../content/what-is-a-child-workflow-execution.md"
 
@@ -39,11 +39,11 @@ import WhatIsAParentClosePolicy from "../content/what-is-a-parent-close-policy.m
 
 <WhatIsAParentClosePolicy/>
 
-## Scheduled Workflow
+## Cron Workflow Execution
 
-import WhatIsAScheduledWorkflowExecution from "../content/what-is-a-scheduled-workflow-execution.md"
+import WhatIsACronWorkflowExecution from "../content/what-is-a-cron-workflow-execution.md"
 
-<WhatIsAScheduledWorkflowExecution/>
+<WhatIsACronWorkflowExecution/>
 
 ## Workflow Id Reuse Policy
 

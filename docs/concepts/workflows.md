@@ -243,14 +243,9 @@ You can also attach a non-indexed bit of information to a Workflow, known as a m
 
 ## Child Workflows
 
-If a Workflow is started by another Workflow, then it is considered a Child Workflow.
-The completion or failure of a Child Workflow is reported to the Workflow that started it (the Parent Workflow).
+import WhatIsAChildWorkflowExecution from '../content/what-is-a-child-workflow-execution.md'
 
-import WhenToUse from '../content/when-to-use-child-workflows.md'
-
-<WhenToUse
-signalsLink="/docs/concepts/signals"
-/>
+<WhatIsAChildWorkflowExecution/>
 
 ### ParentClosePolicy
 

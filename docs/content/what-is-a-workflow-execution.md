@@ -5,7 +5,8 @@ tags:
   - explanation
 ---
 
-import RowOfImages from "../components/RowOfImages.js"
+import CenteredImage from "../components/CenteredImage.js"
+import RelatedReadList from '../components/RelatedReadList.js'
 
 A Workflow Execution is a Reentrant Process; that is, a resumable, recoverable, and reactive process:
 
@@ -13,14 +14,24 @@ A Workflow Execution is a Reentrant Process; that is, a resumable, recoverabl
 - Recoverable: Ability of a process to continue execution after execution was suspended on a failure.
 - Reactive: Ability of a process to react to external events.
 
-<RowOfImages
-imagePath1="/diagrams/reentrant-process-characteristics.svg"
-imageSize1="75"
-imageTitle1="Reentrant Process characteristics"
-imagePath2="/diagrams/workflow-execution-progressing-and-suspended.svg"
-imageTitle2="Open Workflow Executions are suspended or progressing"
-imageSize2="100"
+<CenteredImage
+imagePath="/diagrams/reentrant-process-characteristics.svg"
+imageSize="50"
+title="Reentrant Process characteristics"
 />
 
-Each Workflow Execution has a set of properties that define its behavior.
-Many of these properties can be a set in Workflow Execution Options.
+<CenteredImage
+imagePath="/diagrams/workflow-execution-progressing-and-suspended.svg"
+imageSize="75"
+title="Open Workflow Executions are either progressing or suspended"
+/>
+
+A Workflow Execution has exclusive access to its local state, executes concurrently to all other Workflow Executions, and can communicate with other Workflow Executions using Signals.
+
+With a Workflow Id, a 1:1 mapping can exist between a Workflow Execution and some other resource.
+
+<RelatedReadList
+readlist={[
+["How to spawn a Workflow Execution in Go", "/docs/content/how-to-spawn-a-workflow-execution-in-go", "developer guide"],  
+]}
+/>

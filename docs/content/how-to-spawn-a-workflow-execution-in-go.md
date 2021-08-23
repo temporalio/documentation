@@ -10,11 +10,12 @@ import RelatedReadList from '../components/RelatedReadList.js'
 
 To spawn a Workflow Execution, use the `ExecuteWorkflow()` method on the Go SDK [`Client`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client#Client), which is available via [`NewClient()`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client#NewClient) in the [`go.temporal.io/sdk/client`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client) package.
 
-<!--
 <RelatedReadList
-readliststring="How to spawn a Child Workflow Execution?#?dg"
+readlist={[
+["What is a Workflow Execution?","docs/content/what-is-a-workflow-execution","explanation"],
+["How to spawn a Child Workflow Execution","docs/content/how-to-spawn-a-child-workflow-execution-in-go","developer guide"],
+]}
 />
--->
 
 The `ExecuteWorkflow()` API call requires an instance of [`context.Context`](https://pkg.go.dev/context#Context), an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client#StartWorkflowOptions), a Workflow Type name, and all variables to be passed to the Workflow Execution.
 The `ExecuteWorkflow()` call returns a Future, which can be used to get the result of the Workflow Execution.
@@ -52,11 +53,10 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (Your
 
 Start the preceding process by running `go run <filename>.go`.
 
-Notice that that the Task Queue name is the same as the name provided [when a new Worker is created](#).
+Notice that that the Task Queue name is the same as the name provided when a new Worker is created.
 
 <!--
 <RelatedReadList
-readliststring="What is a Workflow Execution?#?g|
 How to customize the name of the Workflow Type?#?g"
 />
 -->
