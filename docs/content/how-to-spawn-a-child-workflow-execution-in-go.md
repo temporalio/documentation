@@ -37,6 +37,25 @@ func YourWorkflowDefinition(ctx workflow.Context, params ParentParams) (ParentRe
 }
 ```
 
+**Parent Close Policy**
+
+In Go, a Parent Close Policy is set on the `ParentClosePolicy` field of an instance of [`workflow.ChildWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ChildWorkflowOptions).
+The possible values can be obtained from the [`go.temporal.io/api/enums/v1`](https://pkg.go.dev/go.temporal.io/api/enums/v1#ParentClosePolicy) package.
+
+- `PARENT_CLOSE_POLICY_ABANDON`
+- `PARENT_CLOSE_POLICY_TERMINATE`
+- `PARENT_CLOSE_POLICY_REQUEST_CANCEL`
+
+The Child Workflow Options are then applied to the the instance of `workflow.Context`, using the `WithChildOptions` API, which is then passed to the `ExecuteChildWorkflow()` call.
+
+See the **Asynchronous execution** section below for an example.
+
+<RelatedReadList
+readlist={[
+["What is a Parent Close Policy?","/docs/content/what-is-a-parent-close-policy","explanation"],  
+]}
+/>
+
 **Asynchronous execution**
 
 To asynchronously spawn a Child Workflow Execution, the Child Workflow must have an "Abandon" Parent Close Policy set in the Child Workflow Options.

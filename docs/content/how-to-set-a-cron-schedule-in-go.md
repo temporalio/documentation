@@ -22,6 +22,6 @@ we, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflow
 
 <RelatedReadList
 readlist={[
-["What is a Cron Workflow?","/docs/content/what-is-a-cron-workflow","explanation"],
+["What is a Cron Workflow Execution?","/docs/content/what-is-a-cron-workflow-execution","explanation"],
 ]}
 />

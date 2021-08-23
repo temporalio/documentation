@@ -12,8 +12,8 @@ To spawn a Workflow Execution, use the `ExecuteWorkflow()` method on the Go SDK 
 
 <RelatedReadList
 readlist={[
-["What is a Workflow Execution?","docs/content/what-is-a-workflow-execution","explanation"],
-["How to spawn a Child Workflow Execution","docs/content/how-to-spawn-a-child-workflow-execution-in-go","developer guide"],
+["What is a Workflow Execution?","/docs/content/what-is-a-workflow-execution","explanation"],
+["How to spawn a Child Workflow Execution","/docs/content/how-to-spawn-a-child-workflow-execution-in-go","developer guide"],
 ]}
 />
 

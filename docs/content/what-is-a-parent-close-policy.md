@@ -32,6 +32,6 @@ This means that when the Parent Closes, a Cancellation request is sent to the Ch
 <RelatedReadList
 readlist={[
 ["What is a Child Workflow Execution", "/docs/content/what-is-a-child-workflow-execution", "explanation"],
-["How to set a Parent Close Policy in Go", "/docs/content/how-to-set-a-parent-close-policy-in-go", "developer guide"],  
+["How to spawn a Child Workflow Execution in Go", "/docs/content/how-to-spawn-a-child-workflow-execution-in-go", "developer guide"],  
 ]}
 />
