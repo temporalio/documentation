@@ -53,17 +53,18 @@ readlist={[
 />
 
 - As all Workflow Executions, a Child Workflow Execution can create a 1:1 mapping with a resource.
-For example, if there is a Parent Workflow that manages host upgrades, it could spawn a Child Workflow Execution per host.
+  For example, if there is a Parent Workflow that manages host upgrades, it could spawn a Child Workflow Execution per host.
 
 **Things to remember**
 
 - A Parent Workflow Execution and a Child Workflow Execution do not share any local state.
-Workflow Executions can only communicate via asynchronous Signals.
+  Workflow Executions can only communicate via asynchronous Signals.
 - Child Workflow Executions overall incur more records in Event Histories than Activities.
-Since each entry in an Event History is a "cost" in terms of compute resources, this could become a factor in very large workloads.
+  Since each entry in an Event History is a "cost" in terms of compute resources, this could become a factor in very large workloads.
 - In general it is recommended to to start with a single Workflow implementation that uses Activities until there is a clear need for Child Workflow Executions.
 
 <!-- TODO convert Java & PHP docs to "how to spawn Child Workflow Executions in *" content and add links here-->
+
 <RelatedReadList
 readlist={[
 ["How to spawn a Child Workflow Execution in Go?","/docs/content/how-to-spawn-a-child-workflow-execution-in-go","developer guide"],
