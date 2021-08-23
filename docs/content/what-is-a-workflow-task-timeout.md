@@ -15,8 +15,9 @@ This timeout is primarily available to recognize whether a Worker has gone down 
 
 The main reason for increasing the default value would be to accommodate a Workflow Execution that has a very long Workflow Execution History that could take longer than 10 seconds for the Worker to load.
 
+<!-- TODO
 <RelatedReadList
 readlist={[
 ["How to set a Workflow Task Timeout in Go", "#", "developer guide"],
 ]}
-/>
+/> -->

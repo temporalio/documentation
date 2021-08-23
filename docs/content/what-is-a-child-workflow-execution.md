@@ -59,7 +59,7 @@ readlist={[
 
 - A Parent Workflow Execution and a Child Workflow Execution do not share any local state.
   Workflow Executions can only communicate via asynchronous Signals.
-- Child Workflow Executions overall incur more records in Event Histories than Activities.
+- Child Workflow Executions result in more overall Events recorded in Event Histories than Activities.
   Since each entry in an Event History is a "cost" in terms of compute resources, this could become a factor in very large workloads.
 - In general it is recommended to to start with a single Workflow implementation that uses Activities until there is a clear need for Child Workflow Executions.
 
