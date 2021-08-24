@@ -18,12 +18,12 @@ If, for example, a Node.js Workflow starts a Java Child Workflow which calls an 
 <!--TODO: use snipsync-->
 
 ```ts
-import {Context, Workflow} from "@temporalio/workflow";
+import { Context, Workflow } from '@temporalio/workflow';
 import {
   ActivityFailure,
   ApplicationFailure,
   ChildWorkflowFailure,
-} from "@temporalio/common";
+} from '@temporalio/common';
 
 // Define the TypeScript version of the Java Workflow interface
 // to get a type safe child WorkflowStub
@@ -32,7 +32,7 @@ interface JavaWorkflow extends Workflow {
 }
 
 async function main() {
-  const child = Context.child<JavaWorkflow>("RunAnActivityWorkflow");
+  const child = Context.child<JavaWorkflow>('RunAnActivityWorkflow');
   try {
     await child.execute();
   } catch (err) {
@@ -42,7 +42,7 @@ async function main() {
       err.cause.cause instanceof ApplicationFailure
     ) {
       console.log(
-        "Child workflow failure root cause was a failed activity",
+        'Child workflow failure root cause was a failed activity',
         err.cause.cause.message
       );
     }
@@ -50,7 +50,7 @@ async function main() {
   }
 }
 
-export const workflow = {main};
+export const workflow = { main };
 ```
 
 </details>
@@ -63,8 +63,8 @@ Failures are also used to represent <a href="/docs/node/cancellation-scopes#canc
 As explained above, cancellation might not be the immediate cause of failure, it might happen further down the chain, use the [`isCancellation`](https://nodejs.temporal.io/api/modules/workflow#iscancellation) helper function to inspect the chain recursively and look for a `CancelledFailure`.
 
 ```ts
-import {CancellationScope, isCancellation} from "@temporalio/workflow";
-import {httpGetJSON} from "@activities";
+import { CancellationScope, isCancellation } from '@temporalio/workflow';
+import { httpGetJSON } from '@activities';
 
 export async function main(urls: string[], timeoutMs: number): Promise<any[]> {
   try {
@@ -73,7 +73,7 @@ export async function main(urls: string[], timeoutMs: number): Promise<any[]> {
     );
   } catch (err) {
     if (isCancellation(err)) {
-      console.log("Deadline exceeded while waiting for activities to complete");
+      console.log('Deadline exceeded while waiting for activities to complete');
     }
     throw err;
   }
