@@ -75,12 +75,20 @@ With that said, here are some guidelines to some common bottlenecks:
 - [Multi-Cluster Replication](https://docs.temporal.io/docs/server/multi-cluster/) is an experimental feature you can explore for heavy reads.
 
 Finally you want to set up alerting and monitoring on Worker metrics.
-When workers are able to keep up, `ScheduleToStart` latency is close to zero.
-The default is 4 Workers, which should handle no more than 300 messages per second.
-Scaling will depend on your workload — for example, for a Task Queue with 500 messages per second, you might want to scale up to 10 workers.
-Provided you tune the concurrency of your worker / number of pollers based on your application, it should be possible to scale workers based on standard resource utilization metrics (CPU, Memory, etc).
+When Workers are able to keep up, `ScheduleToStart` latency is close to zero.
+The default is 4 Workers (aka pollers, as the Workers poll Task Queues), which should handle no more than 300 messages per second.
 
-It's possible to have too many workers.
+Specifically, the primary scaling metrics are located in the server's dynamic configs:
+
+- `MaxConcurrentActivityExecutionSize`: Defaults to 1000
+- `MaxConcurrentWorkflowTaskExecutionSize`: Defaults to 1000
+- `MaxConcurrentActivityTaskPollers`: Defaults to 4
+- `MaxConcurrentWorkflowTaskPollers`: Defaults to 4
+
+Scaling will depend on your workload — for example, for a Task Queue with 500 messages per second, you might want to scale up to 10 pollers.
+Provided you tune the concurrency of your pollers based on your application, it should be possible to scale them based on standard resource utilization metrics (CPU, Memory, etc).
+
+**It's possible to have too many workers.**
 Monitor the poll success (`poll_success`/`poll_success_sync`) and `poll_timeouts` metrics:
 
 - if you see low `ScheduleToStart` latency / low percentage of poll success / high percentage of timeouts, you might have too many workers/pollers.
