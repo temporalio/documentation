@@ -81,7 +81,7 @@ The default is 4 Workers (aka pollers, as the Workers poll Task Queues), which s
 Specifically, the primary scaling metrics are located in the server's dynamic configs:
 
 - `MaxConcurrentActivityTaskPollers` and `MaxConcurrentWorkflowTaskPollers`: [Defaults to 4](https://github.com/temporalio/temporal/blob/fe05751305b1cb50b68efa23f8aa5f1b34f45bc5/service/worker/service.go#L121)
-- `MaxConcurrentActivityExecutionSize` and ``MaxConcurrentWorkflowTaskExecutionSize`: [Defaults to 200](https://github.com/temporalio/sdk-java/blob/bef967639fcdbe14ca37b80ac816596412846e5f/temporal-sdk/src/main/java/io/temporal/worker/WorkerOptions.java#L51)
+- `MaxConcurrentActivityExecutionSize` and `MaxConcurrentWorkflowTaskExecutionSize`: [Defaults to 200](https://github.com/temporalio/sdk-java/blob/bef967639fcdbe14ca37b80ac816596412846e5f/temporal-sdk/src/main/java/io/temporal/worker/WorkerOptions.java#L51)
 
 Scaling will depend on your workload — for example, for a Task Queue with 500 messages per second, you might want to scale up to 10 pollers.
 Provided you tune the concurrency of your pollers based on your application, it should be possible to scale them based on standard resource utilization metrics (CPU, Memory, etc).
