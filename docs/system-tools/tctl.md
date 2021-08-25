@@ -1016,7 +1016,7 @@ This might be useful if only part of the Workflow state should be returned.
 
 ## Securing `tctl`
 
-`tctl` supports plugins which can be used to set headers on outgoing requests. 
+`tctl` supports plugins which can be used to set headers on outgoing requests.
 
 We ship an [example plugin](https://github.com/temporalio/temporal/blob/master/cmd/tools/cli/plugins/authorization/main.go) which supports HTTP Basic Auth headers (to be used in tandem with a [secure Temporal Server](https://docs.temporal.io/docs/server/security/). You can enable it with:
 
@@ -1024,5 +1024,5 @@ We ship an [example plugin](https://github.com/temporalio/temporal/blob/master/c
 tctl --headers_provider_plugin tctl-authorization-plugin
 ```
 
-The value `tctl-authorization-plugin` above is just a name of a binary - plugins are decoupled from `tctl` itself via Hashicorp's go-plugin interface. 
+The value `tctl-authorization-plugin` above is just a name of a binary - plugins are decoupled from `tctl` itself via Hashicorp's go-plugin interface.
 In other words, if you need to customize or add your own plugins, you don't have to rebuild `tctl` itself, just compile your plugin to a binary.
