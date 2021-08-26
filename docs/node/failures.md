@@ -60,7 +60,7 @@ export const workflow = { main };
 Failures are also used to represent <a href="/docs/node/cancellation-scopes#cancelledfailure">cancellation</a> of Activities and Child Workflows.
 </summary>
 
-As explained above, cancellation might not be the immediate cause of failure, it might happen further down the chain, use the [`isCancellation`](https://nodejs.temporal.io/api/modules/workflow#iscancellation) helper function to inspect the chain recursively and look for a `CancelledFailure`.
+As explained above, cancellation might not be the immediate cause of failure, it might happen further down the chain, use the [`isCancellation`](https://nodejs.temporal.io/api/namespaces/workflow#iscancellation) helper function to inspect the chain recursively and look for a `CancelledFailure`.
 
 ```ts
 import { CancellationScope, isCancellation } from '@temporalio/workflow';

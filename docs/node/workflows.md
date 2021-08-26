@@ -6,7 +6,7 @@ description: In the Temporal Node SDK programming model, a Workflow is an export
 image: /img/workflow.png
 ---
 
-[API reference](https://nodejs.temporal.io/api/modules/workflow)
+[API reference](https://nodejs.temporal.io/api/namespaces/workflow)
 
 Workflows are the core of the Temporal system. They abstract away the complexities of writing distributed programs.
 
@@ -40,7 +40,7 @@ In a Workflow, Activities can be imported and called as regular functions. At ru
 
 ## How to start a Workflow
 
-[API reference](https://nodejs.temporal.io/api/modules/client)
+[API reference](https://nodejs.temporal.io/api/namespaces/client)
 
 The `WorkflowClient` class is used to instantiate clients that schedule Workflows and send other requests to the Temporal Service.
 It can be used in any Node.js process (for example, an [Express](https://expressjs.com/) web server) and is separate from the Worker.
