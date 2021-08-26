@@ -78,3 +78,8 @@ async function main() {
 ```
 
 `v2` is safe to deploy once all `v2'` or earlier workflows are complete due to the assertion mentioned above.
+
+### Workflow dependencies
+
+Upgrading Workflow dependencies (such as ones installed into `node_modules`) _might_ break determinism in unpredictable ways.
+It is highly recommended to use a lock file (`package-lock.json` or `yarn.lock`) in order to fix Workflow dependency versions and gain control of when they're updated.
