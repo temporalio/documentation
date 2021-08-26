@@ -4,9 +4,21 @@ You can run "Hello Temporal" locally in under 5 minutes.
 
 ## Step 0: Prerequisites
 
-### Node
+### Node.js
 
-This project requires Node.js version 14 or later. Brew installation of Node.js versions 15.0 to 16.4 does not work with the SDK; instead, use `>=16.5` or `<15`. Or use `nvm`:
+This project requires Node.js version 14 or later.
+
+<details>
+<summary>
+macOS users: Brew installation of Node.js versions 15.0 to 16.4 does not work with the SDK; instead install the latest Node.js version or use nvm
+</summary>
+
+```bash
+brew update
+brew upgrade node
+```
+
+-- OR --
 
 ```bash
 nvm use 16
@@ -20,27 +32,25 @@ nvm install 16
 nvm use 16
 ```
 
+</details>
+
 ### node-gyp
 
-Install [node-gyp](https://github.com/nodejs/node-gyp#installation):
+Install node-gyp:
 
 ```bash
 npm install -g node-gyp
 ```
 
-### Temporal Server
+You may have to install some system dependencies first as documented [here](https://github.com/nodejs/node-gyp#installation).
 
-Run Temporal Server (requires [Docker](https://docs.docker.com/engine/install) and [Docker Compose](https://docs.docker.com/compose/install/)):
+_`node-gyp` is a requirement of [`isolated-vm`](https://github.com/laverdet/isolated-vm) the V8 Isolate library which powers this SDK's [deterministic runtime](/docs/node/determinism)_.
 
-```bash
-git clone https://github.com/temporalio/docker-compose.git temporal
-cd temporal/
-docker-compose up
-```
+### Temporal Core SDK
 
 <details>
 <summary>
-The Worker package embeds the <a href="https://github.com/temporalio/sdk-core">Temporal Core SDK</a>, it comes pre-compiled for most installations.
+The Worker package embeds the <a href="https://github.com/temporalio/sdk-core">Temporal Rust Core SDK</a>, it comes pre-compiled for most installations.
 </summary>
 
 We've provided pre-compiled binaries for:
@@ -53,6 +63,16 @@ We've provided pre-compiled binaries for:
 If you need to compile the Worker yourself, set up the Rust toolchain by following the instructions [here](https://rustup.rs/).
 
 </details>
+
+### Temporal Server
+
+Run Temporal Server (requires [Docker](https://docs.docker.com/engine/install) and [Docker Compose](https://docs.docker.com/compose/install/)):
+
+```bash
+git clone https://github.com/temporalio/docker-compose.git temporal
+cd temporal
+docker-compose up
+```
 
 ## Step 1: Create a new project
 
@@ -70,7 +90,7 @@ If you want a [sample for connecting to a Temporal Server instance secured with 
 
 :::note
 
-`init` triggers native module compilation which might take a while, npm 7 hides the compilation output so it may appear that the installation is stuck, to see the compilation progress export `NPM_CONFIG_FOREGROUND_SCRIPTS=true`.
+`npx` triggers native module compilation which might take a while, `npm` 7 hides the compilation output so it may appear that the installation is stuck, to see the compilation progress export `NPM_CONFIG_FOREGROUND_SCRIPTS=true`.
 
 :::
 

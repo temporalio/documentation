@@ -6,7 +6,7 @@ description: In the Temporal Node SDK programming model, a Workflow is an export
 image: /img/workflow.png
 ---
 
-[API reference](https://nodejs.temporal.io/api/modules/workflow)
+[API reference](https://nodejs.temporal.io/api/namespaces/workflow)
 
 Workflows are the core of the Temporal system. They abstract away the complexities of writing distributed programs.
 
@@ -40,7 +40,7 @@ In a Workflow, Activities can be imported and called as regular functions. At ru
 
 ## How to start a Workflow
 
-[API reference](https://nodejs.temporal.io/api/modules/client)
+[API reference](https://nodejs.temporal.io/api/namespaces/client)
 
 The `WorkflowClient` class is used to instantiate clients that schedule Workflows and send other requests to the Temporal Service.
 It can be used in any Node.js process (for example, an [Express](https://expressjs.com/) web server) and is separate from the Worker.
@@ -50,27 +50,28 @@ It can be used in any Node.js process (for example, an [Express](https://express
 <!--SNIPSTART nodejs-hello-client {"enable_source_link": false}-->
 <!--SNIPEND-->
 
-Workflows can be started with a range of [`BaseWorkflowOptions`](https://nodejs.temporal.io/api/interfaces/client.baseworkflowoptions/) (all optional):
+Workflows can be started with a range of [`WorkflowOptions`](https://nodejs.temporal.io/api/interfaces/client.workflowoptions/), commons options listed here:
 
-- `taskQueue: string` (most common): Task queue to use for workflow tasks. It should match a task queue specified when creating a Worker that hosts the workflow code.
-- `workflowId: string`: Workflow id to use when starting. If not specified a UUID is generated.
-- `workflowIdReusePolicy: WorkflowIdReusePolicy`: Specifies server behavior if a completed workflow with the same id exists. [More details](https://nodejs.temporal.io/api/interfaces/client.baseworkflowoptions/#workflowidreusepolicy)
-- `cronSchedule: string`: see "Scheduling Cron Workflows"
-- `memo: Record<string, any>`: Specifies additional non-indexed information in result of list workflow
-- `retryPolicy: IRetryPolicy`: the overall [RetryPolicy](https://nodejs.temporal.io/api/interfaces/proto.temporal.api.common.v1.iretrypolicy/) at the Workflow level
-- `searchAttributes: Record<string, string | number | boolean>`: Specifies additional indexed information in result of list workflow.
+- `taskQueue` (required): Task queue to use for workflow tasks. It should match a task queue specified when creating a Worker that hosts the workflow code.
+- `workflowId`: Workflow id to use when starting. If not specified a UUID is generated.
+- `workflowIdReusePolicy`: Specifies server behavior if a completed workflow with the same id exists. [More details](https://nodejs.temporal.io/api/interfaces/client.workflowoptions/#workflowidreusepolicy)
+- `cronSchedule`: see ["Scheduling Cron Workflows"](#scheduling-cron-workflows)
+- `retryPolicy`: the overall [RetryPolicy](https://nodejs.temporal.io/api/interfaces/proto.temporal.api.common.v1.iretrypolicy/) at the Workflow level
+- `searchAttributes`: Specifies additional indexed information in result of list workflow.
 
 ## How to cancel a Workflow
 
-To cancel a Workflow execution, call the `cancel()` method on a WorkflowStub.
+To cancel a Workflow execution, call the [`cancel()`](https://nodejs.temporal.io/api/interfaces/client.WorkflowStub#cancel) method on a WorkflowStub.
 
-<!-- prettier-ignore -->
 ```ts
 // Create a typed client using the Example Workflow interface,
-const example = client.stub<Example>("example", {taskQueue: "tutorial"});
-const result = await example.execute("Temporal");
-// ... later on, cancel the workflow
+const example = client.stub<Example>('example', { taskQueue: 'tutorial' });
+await example.start('Temporal');
+// ... Later on, cancel the workflow
 await example.cancel();
+// Optionally wait for the Workflow's result
+// (should throw WorkflowExecutionCancelledError)
+await example.result();
 ```
 
 Temporal gives you fine grained control over what happens when you cancel a workflow. See our docs on [Cancellation Scopes](/docs/node/cancellation-scopes) for detailes and examples.
@@ -79,34 +80,47 @@ Temporal gives you fine grained control over what happens when you cancel a work
 
 import DistributedCron from '../shared/distributed-cron.md'
 
-<DistributedCron docUrl="https://nodejs.temporal.io/api/interfaces/client.baseworkflowoptions/#cronschedule">
+<DistributedCron docUrl="https://nodejs.temporal.io/api/interfaces/client.workflowoptions/#cronschedule" typeName="WorkflowOptions">
 
 You can set each workflow to repeat on a schedule with the `cronSchedule` option:
 
-<!-- prettier-ignore -->
 ```ts
-const workflow = client.stub<WFInterface>("scheduled-workflow", {
-  taskQueue: "test",
-  cronSchedule: "* * * * *", // start every minute
+const workflow = client.stub<WFInterface>('scheduled-workflow', {
+  taskQueue: 'test',
+  cronSchedule: '* * * * *', // start every minute
 });
 ```
 
 </DistributedCron>
 
-## Executing External Workflows (stub)
+## External Workflows
 
-There is no official support for External Workflows in Node.js yet.
+From Workflow code you may signal or cancel an external Workflow.
 
-## Child Workflows (stub)
+```ts
+const workflow = Context.external<WFInterface>(workflowId, optionalRunId);
+await workflow.signal.someSignal(arg1, arg2);
+await workflow.cancel();
+```
+
+## Child Workflows
 
 Besides Activities, a Workflow can also start other Workflows.
-There is no official support for Child Workflows in Node.js yet.
+
+Execute a child workflow and await its completion:
+
+```ts
+const workflow = Context.child<WFInterface>(workflowId, optionalRunId);
+await workflow.execute(arg1, arg2);
+```
+
+[`Context.child`](https://nodejs.temporal.io/api/classes/workflow.ContextImpl#child) returns a [`ChildWorkflowStub`](https://nodejs.temporal.io/api/interfaces/workflow.ChildWorkflowStub) that can be used to signal the created child.
+
+Child Workflow executions are [`CancellationScope`](/docs/node/cancellation-scopes) aware and will automatically be cancelled when their containing scope is cancelled.
 
 import WhenToUse from '../content/when-to-use-child-workflows.md'
 
-<WhenToUse
-signalsLink="/docs/go/signals"
-/>
+<WhenToUse signalsLink="/docs/node/signals" />
 
 ## Large Event Histories
 
@@ -120,15 +134,17 @@ import SharedContinueAsNew from '../shared/continue-as-new.md'
 
 Use the `Context.continueAsNew` API to instruct the Node SDK to restart `main` with a new starting value and a new event history.
 
-<!-- prettier-ignore -->
 ```ts
-import {Context, sleep} from "@temporalio/workflow";
+import { Context, sleep } from '@temporalio/workflow';
 
 async function main(iteration = 0): Promise<void> {
-  if (iteration === 10) return;
-  console.log("Running Workflow iteration:", iteration);
+  if (iteration === 10) {
+    return;
+  }
+  console.log('Running Workflow iteration:', iteration);
   await sleep(1000);
-  await Context.continueAsNew<typeof main>(iteration + 1); // must match the arguments expected by `main`
+  // must match the arguments expected by `main`
+  await Context.continueAsNew<typeof main>(iteration + 1);
   // Unreachable code, continueAsNew is like `process.exit` and will stop execution once called.
 }
 ```

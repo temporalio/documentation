@@ -15,7 +15,7 @@ The SDK steers developers to write their Workflows and Activities in TypeScript 
 
 ### Activities
 
-[API reference](https://nodejs.temporal.io/api/modules/activity)
+[API reference](https://nodejs.temporal.io/api/namespaces/activity)
 
 Activities are called from Workflows in order to run non-deterministic code.
 
@@ -28,7 +28,7 @@ Activities are just async functions. They run like typical Node.js code, and the
 
 ### Workflows
 
-[API reference](https://nodejs.temporal.io/api/modules/workflow)
+[API reference](https://nodejs.temporal.io/api/namespaces/workflow)
 
 Workflows are the core of the Temporal system. They abstract away the complexities of writing distributed programs.
 
@@ -62,7 +62,7 @@ In a Workflow, Activities can be imported and called as regular functions. At ru
 
 ### Worker
 
-[API reference](https://nodejs.temporal.io/api/modules/worker)
+[API reference](https://nodejs.temporal.io/api/namespaces/worker)
 
 The Worker connects to Temporal Server and runs Workflows and Activities.
 `Worker.create()` accepts [these options](https://nodejs.temporal.io/api/interfaces/worker.workeroptions).
@@ -74,7 +74,7 @@ The Worker connects to Temporal Server and runs Workflows and Activities.
 
 ### Client
 
-[API reference](https://nodejs.temporal.io/api/modules/client)
+[API reference](https://nodejs.temporal.io/api/namespaces/client)
 
 The client can be used to schedule Workflows and send other requests to Temporal Server.
 It can be used in any Node.js process (for example, an [Express](https://expressjs.com/) web server) and is separate from the Worker.
