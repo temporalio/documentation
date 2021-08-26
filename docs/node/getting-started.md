@@ -44,7 +44,7 @@ npm install -g node-gyp
 
 You may have to install some system dependencies first as documented [here](https://github.com/nodejs/node-gyp#installation).
 
-_`node-gyp` is a requirement of [`isolated-vm`](https://github.com/laverdet/isolated-vm) the V8 Isolate library which power the [deterministic Workflow runtime](/docs/node/determinism)_
+_`node-gyp` is a requirement of [`isolated-vm`](https://github.com/laverdet/isolated-vm) the V8 Isolate library which powers this SDK's [deterministic runtime](/docs/node/determinism)_.
 
 ### Temporal Core SDK
 
