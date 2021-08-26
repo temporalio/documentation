@@ -26,30 +26,28 @@ The rationale behind this is to minimize Worker dependencies and allow SDK users
 
 #### Customizing the default logger
 
-<!-- prettier-ignore -->
 ```ts
-import {Worker, DefaultLogger} from "@temporalio/worker";
+import { Worker, DefaultLogger } from '@temporalio/worker';
 
 // Set up the DefaultLogger to log only WARNING and ERROR messages with a custom log function
-const logger = new DefaultLogger("WARNING", (severity, message, meta) => {
+const logger = new DefaultLogger('WARNING', (severity, message, meta) => {
   /* Implement this in order to generate custom log output */
 });
-const worker = await Worker.create({workDir: __dirname, logger});
+const worker = await Worker.create({ workDir: __dirname, logger });
 ```
 
 #### BYOL - Bring your own logger
 
 A common logging use case is logging to a file to be picked up by a collector like the [Datadog Agent](https://docs.datadoghq.com/logs/log_collection/nodejs/?tab=winston30).
 
-<!-- prettier-ignore -->
 ```ts
-import {Worker} from "@temporalio/worker";
-import winston from "winston";
+import { Worker } from '@temporalio/worker';
+import winston from 'winston';
 
 const logger = winston.createLogger({
-  level: "info",
+  level: 'info',
   format: winston.format.json(),
-  transports: [new transports.File({filename: "/path/to/worker.log"})],
+  transports: [new transports.File({ filename: '/path/to/worker.log' })],
 });
-const worker = await Worker.create({workDir: __dirname, logger});
+const worker = await Worker.create({ workDir: __dirname, logger });
 ```
