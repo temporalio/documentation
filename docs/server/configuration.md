@@ -19,7 +19,7 @@ Temporal Server configuration is found in `development.yaml` and may contain the
 
 **Note:** Changing any properties in `development.yaml` file requires a process restart for changes to take effect.
 
-**Note:** If you'd like to dig deeper and see how we actually parse this file, see our source code [here](https://github.com/temporalio/temporal/blob/master/common/service/config/config.go).
+**Note:** If you'd like to dig deeper and see how we actually parse this file, see our source code [here](https://github.com/temporalio/temporal/blob/master/common/config/config.go).
 
 ## global
 
