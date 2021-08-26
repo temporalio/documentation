@@ -12,15 +12,15 @@ Workflow, show Workflow history, and signal Workflow.
 
 You can run the CLI in four ways.
 
-1. Install locally using [Homebrew](https://brew.sh/): `brew install tctl`
-2. Run locally together with Temporal Server in [docker-compose](https://github.com/temporalio/docker-compose): `docker exec temporal-admin-tools tctl YOUR COMMANDS HERE`
+- Install locally using [Homebrew](https://brew.sh/): `brew install tctl`
+- Run locally together with Temporal Server in [docker-compose](https://github.com/temporalio/docker-compose): `docker exec temporal-admin-tools tctl YOUR COMMANDS HERE`
    - We recommend setting an alias: `alias tctl="docker exec temporal-admin-tools tctl"` so you can invoke `tctl` as though it is installed locally, eg `tctl namespace describe`
-3. Run the [temporal-admin-tools](https://hub.docker.com/r/temporalio/admin-tools) docker image:
+- Run the [temporal-admin-tools](https://hub.docker.com/r/temporalio/admin-tools) docker image:
    - On Linux: `docker run --rm -it --entrypoint tctl --network host --env TEMPORAL_CLI_ADDRESS=localhost:7233 temporalio/admin-tools:1.11.2`
    - On macOS/Windows: `docker run --rm -it --entrypoint tctl --env TEMPORAL_CLI_ADDRESS=host.docker.internal:7233 temporalio/admin-tools:1.11.2`
    - Change the value of `TEMPORAL_CLI_ADDRESS` if your Temporal Server is running on remote host.
    - You can also create a `tctl` alias to simplify command lines.
-4. Building it locally: clone the [Temporal server repo](https://github.com/temporalio/temporal) and run `make tctl`. This produces an executable called `tctl`.
+- Building it locally: clone the [Temporal server repo](https://github.com/temporalio/temporal) and run `make tctl`. This produces an executable called `tctl`.
    Copy this executable to any directory from `PATH` environment variable. For example, `/usr/bin/`.
 
 :::note
@@ -688,7 +688,7 @@ Started Workflow Id: HelloActivityWorker, run Id: ff015637-b5af-43e8-b3f6-8b6c7b
 ```
 
 The Workflow is started, but nothing visible happens.
-This is expected as the corresponding Worker is not running.
+This is expected because the corresponding Worker is not running.
 What are the options to understand the currently running Workflow state?
 
 ### `tctl workflow stack`
@@ -1016,13 +1016,13 @@ This might be useful if only part of the Workflow state should be returned.
 
 ## Securing `tctl`
 
-`tctl` supports plugins which can be used to set headers on outgoing requests.
+`tctl` supports plugins that can be used to set headers on outgoing requests.
 
-We ship an [example plugin](https://github.com/temporalio/temporal/blob/master/cmd/tools/cli/plugins/authorization/main.go) which supports HTTP Basic Auth headers (to be used in tandem with a [secure Temporal Server](https://docs.temporal.io/docs/server/security/). You can enable it with:
+We ship an [example plugin](https://github.com/temporalio/temporal/blob/master/cmd/tools/cli/plugins/authorization/main.go) that supports HTTP Basic Auth headers (to be used in tandem with a [secure Temporal Server](https://docs.temporal.io/docs/server/security/). You can enable it with:
 
 ```bash
 tctl --headers_provider_plugin tctl-authorization-plugin
 ```
 
 The value `tctl-authorization-plugin` above is just a name of a binary - plugins are decoupled from `tctl` itself via Hashicorp's go-plugin interface.
-In other words, if you need to customize or add your own plugins, you don't have to rebuild `tctl` itself, just compile your plugin to a binary.
+In other words, if you need to customize or add your own plugins, you don't have to rebuild `tctl` itself; just compile your plugin to a binary.
