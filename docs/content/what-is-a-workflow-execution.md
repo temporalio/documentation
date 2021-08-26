@@ -26,9 +26,8 @@ imageSize="75"
 title="Open Workflow Executions are either progressing or suspended"
 />
 
-A Workflow Execution has exclusive access to its local state, executes concurrently to all other Workflow Executions, and can communicate with other Workflow Executions using Signals.
-
-With a Workflow Id, a 1:1 mapping can exist between a Workflow Execution and some other resource.
+- A Workflow Execution has exclusive access to its local state, executes concurrently to all other Workflow Executions, and can communicate with other Workflow Executions using Signals.
+- With a Workflow Id, a 1:1 mapping can exist between a Workflow Execution and some other resource.
 
 <RelatedReadList
 readlist={[

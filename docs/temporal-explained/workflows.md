@@ -39,11 +39,11 @@ import WhatIsAParentClosePolicy from "../content/what-is-a-parent-close-policy.m
 
 <WhatIsAParentClosePolicy/>
 
-## Cron Workflow Execution
+## Temporal Cron Job
 
-import WhatIsACronWorkflowExecution from "../content/what-is-a-cron-workflow-execution.md"
+import WhatIsATemporalCronJob from "../content/what-is-a-temporal-cron-job.md"
 
-<WhatIsACronWorkflowExecution/>
+<WhatIsATemporalCronJob/>
 
 ## Workflow Id Reuse Policy
 

@@ -8,7 +8,7 @@ tags:
 
 import RelatedReadList from '../components/RelatedReadList.js'
 
-A Workflow Definition is the static code that defines the constraints of a Workflow Execution.
+A Workflow Definition is the code that defines the constraints of a Workflow Execution.
 It is highly recommended that a Workflow Definition is written in a language with a corresponding Temporal SDK.
 
 <RelatedReadList

@@ -1,23 +1,25 @@
 ---
-id: what-is-a-cron-workflow-execution
-title: What is a Cron Workflow Execution?
+id: what-is-a-temporal-cron-job
+title: What is a Temporal Cron Job?
 description: A Cron Workflow Execution is a Workflow Execution that spawns repeatedly, per a specified Cron Schedule.
 tags:
   - explanation
 ---
 
+import CenteredImage from "../components/CenteredImage.js"
 import RelatedReadList from '../components/RelatedReadList.js'
 
-A Cron Workflow Execution is a Workflow Execution that spawns repeatedly, per a specified Cron Schedule.
-A Cron Workflow Execution is very similar to a cron job.
-A Cron Schedule must be provided in the call to spawn a Workflow Execution.
-If provided, the Temporal Server will spawn an execution for the associated Workflow Type per the schedule.
+A Temporal Cron Job is similar to the well known Linux based "cron job", as a Cron Schedule determines the frequency that a specific Workflow Type is executed, with each execution using the same input parameters.
 
-Each execution within the series of scheduled executions is considered a Run.
-Currently Cron Workflow Executions utilize the Continue As New feature.
-A Cron Workflow Execution (and all subsequent Runs) will not stop spawning until it has been terminated or cancelled.
+<CenteredImage
+imagePath="/diagrams/temporal-cron-job-flow.svg"
+imageSize="100"
+title="Temporal Cron Job timeline"
+/>
 
-Schedules are set in UTC time, and must follow the Cron Schedule specification.
+
+- **A Cron Workflow Execution is very similar to a cron job**: For a Workflow Execution to become a Cron Workflow Execution, a Cron Schedule must be provided in the call to spawn the Workflow Execution.
+  If a Cron Schedule is provided, the Temporal Server will spawn an execution for the associated Workflow Type per the schedule.
 
 ```
 ┌───────────── minute (0 - 59)
@@ -29,6 +31,14 @@ Schedules are set in UTC time, and must follow the Cron Schedule specification.
 │ │ │ │ │
 * * * * *
 ```
+
+- **Continue As New** Each execution within the series of scheduled executions is considered a Run.
+  Currently Cron Workflow Executions utilize the Continue As New feature to jump from Run to Run.
+  A Cron Workflow Execution (and all subsequent Runs) will not stop spawning until it has been Terminated or a Cancellation has been requested.
+
+Schedules are set in UTC time, and must follow the Cron Schedule specification.
+
+
 
 For example, "15 8 \* \* \*" would cause a Workflow Execution to spawn daily at 8:15am UTC.
 Use the [crontab guru site](https://crontab.guru/) to test your cron expressions.
@@ -43,3 +53,7 @@ readlist={[
 ["How to set a Cron Schedule in Go","/docs/content/how-to-set-a-cron-schedule-in-go","developer guide"],
 ]}
 />
+
+The Temporal Server sees a Cron Schedule.
+
+Does every spawn Workflow Execution that spawn
