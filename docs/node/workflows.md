@@ -6,11 +6,9 @@ description: In the Temporal Node SDK programming model, a Workflow is an export
 image: /img/workflow.png
 ---
 
-
 import RelatedReadList from '../components/RelatedReadList.js'
 
 [API reference](https://nodejs.temporal.io/api/namespaces/workflow)
-
 
 Workflows are the core of the Temporal system. They abstract away the complexities of writing distributed programs.
 

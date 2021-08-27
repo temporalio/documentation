@@ -17,8 +17,8 @@ Any Workflow Execution that is spawned from within another Workflow is a Child W
 - A Workflow Execution can be both a Parent and a Child Workflow Execution.
 - If a Child Workflow Execution uses Continue As New, from the Parent Workflow Execution's perspective it is still a single Child Workflow Execution.
 - If a Parent Workflow Execution uses Continue As New without awaiting on the result of the Child Workflow Execution, then the Child Workflow Execution becomes an orphan.
-The Child Workflow Execution must have an Abandon Parent Close Policy when then happens or else it will Terminate when the Parent Continues As New.
-An orphan Child Workflow Execution will not have any Cancellation Requests or Terminations propagated to it.
+  The Child Workflow Execution must have an Abandon Parent Close Policy when then happens or else it will Terminate when the Parent Continues As New.
+  An orphan Child Workflow Execution will not have any Cancellation Requests or Terminations propagated to it.
 
 <CenteredImage
 imagePath="/diagrams/parent-child-workflow-execution-relationship.svg"
@@ -30,19 +30,19 @@ legend={[
 />
 
 **Consider Workflow Execution Event History size limits**: An individual Workflow Execution has an Event History size limit, which imposes a couple of considerations for using Child Workflows.
-  On one hand, because a Child Workflow Executions have their own Event Histories, they are often used to partition large workloads into smaller chunks.
-  For example, a single Workflow Execution does not have enough space in its Event History to spawn 100,000 Activity Executions. But a Parent Workflow Execution can spawn 1000 Child Workflow Executions that each spawn 1000 Activity Executions to achieve a total of 1,000,000 Activity Executions.
-  On the other hand, since a Parent Workflow Execution Event History contains Events that correspond to the status of the Child Workflow Execution, a single Parent should not spawn more than 1000 Child Workflow Executions.
-  In general, however, Child Workflow Executions result in more overall Events recorded in Event Histories than Activities.
-  Because each entry in an Event History is a "cost" in terms of compute resources, this could become a factor in very large workloads.
-  Therefore, we recommend starting with a single Workflow implementation that use Activities until there is a clear need for Child Workflows.
+On one hand, because a Child Workflow Executions have their own Event Histories, they are often used to partition large workloads into smaller chunks.
+For example, a single Workflow Execution does not have enough space in its Event History to spawn 100,000 Activity Executions. But a Parent Workflow Execution can spawn 1000 Child Workflow Executions that each spawn 1000 Activity Executions to achieve a total of 1,000,000 Activity Executions.
+On the other hand, since a Parent Workflow Execution Event History contains Events that correspond to the status of the Child Workflow Execution, a single Parent should not spawn more than 1000 Child Workflow Executions.
+In general, however, Child Workflow Executions result in more overall Events recorded in Event Histories than Activities.
+Because each entry in an Event History is a "cost" in terms of compute resources, this could become a factor in very large workloads.
+Therefore, we recommend starting with a single Workflow implementation that use Activities until there is a clear need for Child Workflows.
 
 **Consider Child Workflow Executions as a separate service**: Because a Child Workflow Execution can be processed by a completely separate set of Workers than the Parent Workflow Execution, it can act as an entirely separate service.
-  However, this also means that a Parent Workflow Execution and a Child Workflow Execution do not share any local state.
-  As all Workflow Executions, they can communicate only via asynchronous Signals.
+However, this also means that a Parent Workflow Execution and a Child Workflow Execution do not share any local state.
+As all Workflow Executions, they can communicate only via asynchronous Signals.
 
 **Consider that a single Child Workflow Execution can represent a single resource**: As all Workflow Executions, a Child Workflow Execution can create a 1:1 mapping with a resource.
-  For example, a Workflow that manages host upgrades could spawn a Child Workflow Execution per host.
+For example, a Workflow that manages host upgrades could spawn a Child Workflow Execution per host.
 
 <!-- TODO convert Java & PHP docs to "how to spawn Child Workflow Executions in *" content and add links here-->
 

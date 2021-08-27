@@ -24,4 +24,4 @@ A Workflow Id Reuse Policy has three possible values:
 For example, if the Namespace's retention period is 30 days, a Workflow Id Reuse Policy can only compare the Workflow Id of the spawning Workflow Execution against the Closed Workflow Executions for the last 30 days.
 
 **Violating the policy results in Termination**: Any Workflow Execution that is spawned with a Workflow Id Reuse Policy that does not allow it, with be Terminated immediately.
-  These Terminated Workflow Executions will appear in the Web UI.
+These Terminated Workflow Executions will appear in the Web UI.
