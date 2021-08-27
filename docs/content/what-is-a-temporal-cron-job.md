@@ -1,7 +1,7 @@
 ---
 id: what-is-a-temporal-cron-job
 title: What is a Temporal Cron Job?
-description: A Cron Workflow Execution is a Workflow Execution that spawns repeatedly, per a specified Cron Schedule.
+description: A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.
 tags:
   - explanation
 ---
