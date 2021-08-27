@@ -53,7 +53,7 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (Your
 
 Start the preceding process by running `go run <filename>.go`.
 
-Notice that that the Task Queue name is the same as the name provided when a new Worker is created.
+Notice that the Task Queue name is the same as the name provided when a Worker is created.
 
 <!--
 <RelatedReadList

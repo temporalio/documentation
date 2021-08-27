@@ -1,7 +1,7 @@
 ---
 id: what-is-a-workflow-definition
 title: What is a Workflow Definition?
-description: A Workflow Definition is the static code that defines the constraints of a Workflow Execution.
+description: A Workflow Definition is the code that defines the constraints of a Workflow Execution.
 tags:
   - explanation
 ---
@@ -9,7 +9,8 @@ tags:
 import RelatedReadList from '../components/RelatedReadList.js'
 
 A Workflow Definition is the code that defines the constraints of a Workflow Execution.
-It is highly recommended that a Workflow Definition is written in a language with a corresponding Temporal SDK.
+
+We strongly recommend that you write a Workflow Definition in a language that has a corresponding Temporal SDK.
 
 <RelatedReadList
 readlist={[

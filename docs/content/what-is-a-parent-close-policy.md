@@ -1,21 +1,21 @@
 ---
 id: what-is-a-parent-close-policy
-title: What is a Parent Close Policy
-description: If a Workflow Execution is a Child Workflow Execution, a Parent Close Policy determines what happens to the Workflow Execution should its Parent Workflow Execution change to a Closed status (Completed, Failed, Timed out).
+title: What is a Parent Close Policy?
+description: If a Workflow Execution is a Child Workflow Execution, a Parent Close Policy determines what happens to the Workflow Execution if its Parent Workflow Execution changes to a Closed status (Completed, Failed, Timed out).
 tags:
   - explanation
 ---
 
 import RelatedReadList from '../components/RelatedReadList.js'
 
-If a Workflow Execution is a Child Workflow Execution, a Parent Close Policy determines what happens to the Workflow Execution should its Parent Workflow Execution change to a Closed status (Completed, Failed, Timed out).
+If a Workflow Execution is a Child Workflow Execution, a Parent Close Policy determines what happens to the Workflow Execution if its Parent Workflow Execution changes to a Closed status (Completed, Failed, Timed out).
 
 A Parent Close Policy has three possible values:
 
-- **Abandon**: This means that when the Parent Closes, there is no effect to the Child Workflow Execution.
+- **Abandon**: When the Parent Closes, the Child Workflow Execution is not affected.
 - **Terminate**: **This is the default**.
-  This means that, when the Parent Closes, the Child Workflow Execution is Terminated.
-- **Request Cancel**: This means that when the Parent Closes, a Cancellation request is sent to the Child Workflow Execution.
+  When the Parent Closes, the Child Workflow Execution is Terminated.
+- **Request Cancel**: When the Parent Closes, a Cancellation request is sent to the Child Workflow Execution.
 
 Consideration the following when implementing:
 
