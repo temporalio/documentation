@@ -210,7 +210,7 @@ h4,
 }
 
 .related-read-archetype-tag {
-  padding:3px 6px;
+  padding: 3px 6px;
   color: #ffffff;
   font-size: 0.8em;
   border-radius: 6px;
@@ -218,43 +218,43 @@ h4,
 }
 
 .archetype-tag-operation-guide {
-  background-color: #CA1A7B;
+  background-color: #ca1a7b;
 }
 
 .archetype-tag-developer-guide {
-  background-color: #CA811A;
+  background-color: #ca811a;
 }
 
 .archetype-tag-tutorial {
-  background-color: #1AC9C7;
+  background-color: #1ac9c7;
 }
 
 .archetype-tag-explanation {
-  background-color: #78C91A;
+  background-color: #78c91a;
 }
 
 .archetype-tag-reference {
-  background-color: #CF8F19;
+  background-color: #cf8f19;
 }
 
-.docs-image-wrapper{
+.docs-image-wrapper {
   width: 100%;
   background-color: #efefef;
-  margin:0 0 15px 0;
-  padding:0;
+  margin: 0 0 15px 0;
+  padding: 0;
 }
 
 .docs-centered-image-wrapper {
   width: 100%;
   text-align: center;
-  margin:0;
-  padding:15px;
+  margin: 0;
+  padding: 15px;
 }
 
 .docs-image-title-wrapper {
-  width:100%;
-  margin:0;
-  padding:15px;
+  width: 100%;
+  margin: 0;
+  padding: 15px;
   text-align: left;
   font-size: 0.9em;
   font-weight: 300;
@@ -278,9 +278,9 @@ h4,
 }
 
 .docs-image-legend-wrapper {
-  width:100%;
-  margin:0;
-  padding:15px;
+  width: 100%;
+  margin: 0;
+  padding: 15px;
   text-align: left;
   font-size: 0.9em;
   font-weight: 300;
@@ -288,8 +288,8 @@ h4,
 }
 
 .docs-image-legend-list {
-  margin:0;
-  padding:0;
+  margin: 0;
+  padding: 0;
   list-style-type: none;
 }
 

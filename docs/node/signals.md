@@ -29,9 +29,9 @@ You invoke a Signal with `workflow.signal.signalName(...args)`. In the above cas
 
 ```ts
 const client = new WorkflowClient();
-const workflow = client.stub<Blocked>("blocked", {taskQueue: "test"});
+const workflow = client.stub<Blocked>('blocked', { taskQueue: 'test' });
 await workflow.start();
-await workflow.signal.unblock("some string");
+await workflow.signal.unblock('some string');
 ```
 
 ### How to receive a Signal
@@ -42,7 +42,7 @@ Signal handlers can be either synchronous or asynchronous, in this example, our 
 
 ```ts
 // implementation
-import {Blocked} from "../interfaces";
+import { Blocked } from '../interfaces';
 
 let unblock: () => void;
 
@@ -62,7 +62,7 @@ async function main(): Promise<void> {
   });
 }
 
-export const workflow: Blocked = {main, signals};
+export const workflow: Blocked = { main, signals };
 ```
 
 ## Triggers

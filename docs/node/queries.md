@@ -16,7 +16,7 @@ To add Query handlers to a Workflow, add a `queries` property to the exported Wo
 
 ```ts
 // interface
-import {Workflow} from "@temporalio/workflow";
+import { Workflow } from '@temporalio/workflow';
 
 export interface SimpleQuery extends Workflow {
   main(): void;
@@ -32,8 +32,8 @@ Query handlers can return any value.
 
 ```ts
 // implementation
-import {Trigger} from "@temporalio/workflow";
-import {SimpleQuery} from "../interfaces";
+import { Trigger } from '@temporalio/workflow';
+import { SimpleQuery } from '../interfaces';
 
 let blocked = true;
 const unblocked = new Trigger<void>();
@@ -55,7 +55,7 @@ async function main(): Promise<void> {
   blocked = false;
 }
 
-export const workflow: SimpleQuery = {main, queries, signals};
+export const workflow: SimpleQuery = { main, queries, signals };
 ```
 
 ### How to make a Query
@@ -64,7 +64,9 @@ Use the name of the function you defined:
 
 ```ts
 const client = new WorkflowClient();
-const workflow = client.stub<SimpleQuery>("simple-query", {taskQueue: "test"});
+const workflow = client.stub<SimpleQuery>('simple-query', {
+  taskQueue: 'test',
+});
 await workflow.start();
 await workflow.query.isBlocked(); // this gets data out of the Workflow
 ```

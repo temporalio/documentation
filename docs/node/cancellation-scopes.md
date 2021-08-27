@@ -26,7 +26,7 @@ Other APIs you can use:
 When a `CancellationScope` is cancelled, it propagates cancellation in any child scopes and of any _cancellable operations_ created within it, such as:
 
 - Activities
-- Timers (created with the [`sleep`](https://nodejs.temporal.io/api/modules/workflow#sleep) function)
+- Timers (created with the [`sleep`](https://nodejs.temporal.io/api/namespaces/workflow#sleep) function)
 - [`Trigger`](https://nodejs.temporal.io/api/classes/workflow.trigger)s
 
 ### [CancelledFailure](/docs/node/handling-failure/#cancelledfailure)
@@ -34,7 +34,7 @@ When a `CancellationScope` is cancelled, it propagates cancellation in any child
 `Timer`s and `Trigger`s throw `CancelledFailure` when cancelled while Activities and Child Workflows throw `ActivityFailure` and `ChildWorkflowFailure` with cause set to `CancelledFailure`.
 One exception is when an Activity or Child Workflow is scheduled in an already cancelled scope (or workflow) in which case they'll propagate the `CancelledFailure` that was thrown to cancel the scope.
 
-In order to simplify checking for cancellation, use the [`isCancellation(err)`](https://nodejs.temporal.io/api/modules/workflow#iscancellation) function.
+In order to simplify checking for cancellation, use the [`isCancellation(err)`](https://nodejs.temporal.io/api/namespaces/workflow#iscancellation) function.
 
 ## Internal cancellation example
 

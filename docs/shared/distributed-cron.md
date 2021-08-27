@@ -2,7 +2,7 @@ There are two ways that you can turn any Temporal Workflow into a repeatedly exe
 
 1. Start a Workflow Execution using the Temporal CLI with an optional cron schedule using the `--cron` argument.
 2. **Recommended**: Supply a cron schedule when starting the Workflow Execution using the CronSchedule.
-   parameter of <a href={props.docUrl}>StartWorkflowOptions</a>.
+   parameter of <a href={props.docUrl} children={props.typeName || "StartWorkflowOptions"}></a>.
 
 <div>{props.children}</div>
 
@@ -12,10 +12,10 @@ Some details to note:
   For example, cron schedule "15 8 \* \* \*" will run daily at 8:15am UTC.
 - **No Overlaps**: The Temporal Server only schedules the next Workflow Execution after the current execution has completed.
   If the next execution is due to occur while the Workflow is currently executing (including retries), then the next execution will be skipped.
-- **Mind the Retry Policy**: If a Workflow Execution failed and a RetryPolicy is supplied to the `StartWorkflowOptions`, the Workflow Execution will be retried based on the RetryPolicy.
+- **Mind the Retry Policy**: If a Workflow Execution failed and a RetryPolicy is supplied to the <code children={props.typeName || "StartWorkflowOptions"}></code>, the Workflow Execution will be retried based on the RetryPolicy.
   While the Workflow Execution is retrying, the Server will not schedule the next Workflow Execution.
 - **Cancellation applies to Cron**: Teminating or Canceling a Workflow Execution will also stop the cron scheduling.
-  A Cron Workflow will not stop until it is terminated or cancelled (by returning temporal.CanceledError).
+  A Cron Workflow will not stop until it is terminated or cancelled.
 
 Temporal supports the standard cron spec:
 

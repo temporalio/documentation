@@ -338,7 +338,6 @@ module.exports = {
         },
         "node/tls",
         "node/logging",
-        "node/versioning",
         {
           type: "category",
           label: "Advanced",
@@ -348,6 +347,7 @@ module.exports = {
             "node/external-dependencies",
             "node/handling-failure",
             "node/interceptors",
+            "node/versioning",
           ],
         },
       ],

@@ -33,7 +33,7 @@ import {
   ActivityInput,
   Next,
   WorkflowOutboundCallsInterceptor,
-} from "@temporalio/workflows";
+} from '@temporalio/workflows';
 
 export class ActivityLogInterceptor
   implements WorkflowOutboundCallsInterceptor
@@ -42,13 +42,13 @@ export class ActivityLogInterceptor
 
   async scheduleActivity(
     input: ActivityInput,
-    next: Next<WorkflowOutboundCallsInterceptor, "scheduleActivity">
+    next: Next<WorkflowOutboundCallsInterceptor, 'scheduleActivity'>
   ): Promise<unknown> {
-    console.log("Starting activity", {activityType: input.activityType});
+    console.log('Starting activity', { activityType: input.activityType });
     try {
       return await next(input);
     } finally {
-      console.log("Completed activity", {
+      console.log('Completed activity', {
         workflow: this.filename,
         activityType: input.activityType,
       });
@@ -65,7 +65,7 @@ import {
   Next,
   WorkflowInboundCallsInterceptor,
   WorkflowInput,
-} from "@temporalio/workflows";
+} from '@temporalio/workflows';
 
 /**
  * WARNING: This demo is meant as a simple auth example.
@@ -78,15 +78,15 @@ export class DumbWorkflowAuthInterceptor
 {
   public async execute(
     input: WorkflowInput,
-    next: Next<WorkflowInboundCallsInterceptor, "execute">
+    next: Next<WorkflowInboundCallsInterceptor, 'execute'>
   ): Promise<unknown> {
-    const authHeader = input.headers.get("auth");
-    const {user, password} = authHeader
+    const authHeader = input.headers.get('auth');
+    const { user, password } = authHeader
       ? await defaultDataConverter.fromPayload(authHeader)
       : undefined;
 
-    if (!(user === "admin" && password === "admin")) {
-      throw new Error("Unauthorized");
+    if (!(user === 'admin' && password === 'admin')) {
+      throw new Error('Unauthorized');
     }
     return await next(input);
   }
@@ -113,7 +113,7 @@ Use [`Context.info`](https://nodejs.temporal.io/api/interfaces/workflow.workflow
 `src/workflows/my-interceptors.ts`
 
 ```ts
-import {Context} from "@temporalio/workflow";
+import { Context } from '@temporalio/workflow';
 
 export const interceptors = {
   outbound: [new ActivityLogInterceptor(Context.info.filename)],
@@ -126,6 +126,6 @@ export const interceptors = {
 ```ts
 const worker = await Worker.create({
   workDir: __dirname,
-  interceptors: {workflowModules: ["my-interceptors"]},
+  interceptors: { workflowModules: ['my-interceptors'] },
 });
 ```
