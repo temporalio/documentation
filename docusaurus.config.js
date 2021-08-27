@@ -4,7 +4,7 @@ const path = require("path");
 const visit = require("unist-util-visit");
 
 module.exports = {
-  title: "Temporal documentation",
+  title: "Temporal Documentation",
   tagline: "Build invincible applications",
   url: "https://docs.temporal.io",
   baseUrl: "/",
@@ -13,6 +13,7 @@ module.exports = {
   favicon: "img/favicon.png",
   organizationName: "temporalio", // Usually your GitHub org/user name.
   projectName: "temporal-documentation", // Usually your repo name.
+  plugins: ["docusaurus-tailwindcss-loader"],
   themeConfig: {
     colorMode: {
       defaultMode: "light",
