@@ -5,6 +5,8 @@ sidebar_label: Workflows
 description: The core abstraction of the Temporal solution is a fault-oblivious stateful Workflow.
 ---
 
+import RelatedReadList from '../components/RelatedReadList.js'
+
 ## What is a Workflow?
 
 In PHP, a Workflow is a class method.
