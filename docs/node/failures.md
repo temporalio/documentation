@@ -63,8 +63,17 @@ Failures are also used to represent <a href="/docs/node/cancellation-scopes#canc
 As explained above, cancellation might not be the immediate cause of failure—it might happen further down the chain. Use the [`isCancellation`](https://nodejs.temporal.io/api/namespaces/workflow/#iscancellation) helper function to inspect the chain recursively and look for a `CancelledFailure`.
 
 ```ts
-import { CancellationScope, isCancellation } from '@temporalio/workflow';
-import { httpGetJSON } from '@activities';
+import {
+  Context,
+  CancellationScope,
+  isCancellation,
+} from '@temporalio/workflow';
+import * as activities from '../activities';
+
+const { httpGetJSON } = Context.setupActivities<typeof activities>({
+  type: 'remote',
+  startToCloseTimeout: '1m',
+});
 
 export async function main(urls: string[], timeoutMs: number): Promise<any[]> {
   try {

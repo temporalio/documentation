@@ -31,9 +31,7 @@ Workflow interface declarations are optional but recommended. They're only requi
 
 A Workflow implementation may export a `workflow` object, which can be type-checked using a pre-defined interface or `main` (and optionally [signals](/docs/node/signals) and [queries](/docs/node/queries)) directly.
 
-In a Workflow, Activities can be imported and called as regular functions. At runtime, the imported Activities (prefixed with `@activities`) are replaced with stubs that schedule Activities to be run.
-
-`@activities` is a TypeScript [path alias](https://www.typescriptlang.org/tsconfig#paths) set to `src/activities`.
+Use `Context.setupActivities` to create functions that schedule Activities in the system.
 
 `src/workflows/example.ts`
 

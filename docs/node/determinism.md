@@ -16,7 +16,6 @@ When an Activity completes, its result is stored in the Workflow history to be r
 ### Imports in Workflow code
 
 Workflow code is bundled on Worker creation using [Webpack](https://webpack.js.org), you may import any JS package, as long as it doesn't reference Node or DOM APIs.
-Webpack replaces `@activities/`-prefixed imports with stubs that schedule Activities to be run.
 
 ### Sources of non-determinism
 

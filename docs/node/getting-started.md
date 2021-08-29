@@ -135,7 +135,6 @@ $ npm start # this runs node lib/worker
 2021-05-19T17:27:33.178Z [INFO]   ./node_modules/ms/index.js 2.95 KiB [built] [code generated]
 2021-05-19T17:27:33.178Z [INFO] modules by path ../../../../../src/ 686 bytes
 2021-05-19T17:27:33.178Z [INFO]   ../../../../../src/main.js 362 bytes [built] [code generated]
-2021-05-19T17:27:33.178Z [INFO]   ../../../../../src/@activities/greeter.js 324 bytes [built] [code generated]
 2021-05-19T17:27:33.178Z [INFO] ./lib/workflows/example.js 398 bytes [built] [code generated]
 2021-05-19T17:27:33.178Z [INFO] webpack 5.37.1 compiled successfully in 1058 ms
 2021-05-19T17:27:33.408Z [INFO] Worker state changed { state: 'RUNNING' }

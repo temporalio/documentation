@@ -21,7 +21,7 @@ Activities are called from Workflows in order to run non-deterministic code.
 
 Activities are just async functions. They run like typical Node.js code, and they can be cancelled and report heartbeats.
 
-`src/activities/greeter.ts`
+`src/activities.ts`
 
 <!--SNIPSTART nodejs-hello-activity {"enable_source_link": false}-->
 <!--SNIPEND-->
@@ -51,9 +51,7 @@ Workflow interface declarations are optional but recommended. They're only requi
 
 A Workflow implementation may export a `workflow` object, which can be type-checked using a pre-defined interface or `main` (and optionally [signals](signals) and [queries](queries)) directly.
 
-In a Workflow, Activities can be imported and called as regular functions. At runtime, the imported Activities (prefixed with `@activities`) are replaced with stubs that schedule Activities to be run.
-
-`@activities` is a TypeScript [path alias](https://www.typescriptlang.org/tsconfig#paths) set to `src/activities`.
+Use `Context.setupActivities` to create functions that schedule Activities in the system.
 
 `src/workflows/example.ts`
 
