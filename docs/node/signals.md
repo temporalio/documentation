@@ -34,11 +34,13 @@ await workflow.start();
 await workflow.signal.unblock('some string');
 ```
 
+`workflow.signal.unblock('some string')` resolves when Temporal Server has persisted receipt of the Signal, before the Workflow's Signal handler is called. Signal handlers cannot return data to the caller.
+
 ### How to receive a Signal
 
-Signal handlers can be either synchronous or asynchronous, in this example, our Signal handler only modifies a variable so its return type can be `void`. You may schedule and await async operations like Activities and Timers from a Signal handler in which case its return type would change to `Promise<void>`.
+Signal handlers should either have a `void` return type, like in the below example, or a `Promise<void>` return type for `async` handlers (you may want to `await` async operations like Activities and Timers).
 
-> Note that this example is a simplification of the recommended way to handle Signals [below](#triggers) since the Workflow cannot be cancelled unless it awaits a [cancellable operation](/docs/node/cancellation-scopes).
+> Note that this example is a simplification of the recommended way to handle Signals (see [Triggers](#triggers) section below) since the Workflow cannot be cancelled unless it awaits a [cancellable operation](/docs/node/cancellation-scopes).
 
 ```ts
 // implementation
