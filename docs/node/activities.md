@@ -20,7 +20,7 @@ Note that we only import the type of our activities, the TypeScript compiler wil
 <!--SNIPSTART nodejs-hello-workflow {"enable_source_link": false}-->
 <!--SNIPEND-->
 
-The return value of `setupActivities` is a [`Proxy`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) object
+The return value of `configureActivities` is a [`Proxy`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) object
 with a `get` handler that returns a function that calls the Node SDK's internal `scheduleActivity()` function.
 
 ## Heartbeating

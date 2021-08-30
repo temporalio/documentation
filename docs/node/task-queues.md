@@ -37,13 +37,13 @@ const worker = await Worker.create({
 });
 ```
 
-3. Optionally, when calling an Activity, you can specify the task queue by passing the `taskQueue` option to `Context.setupActivities()`. If you do not specify a `taskQueue`, then the Node SDK places Activity Tasks in the same Task Queue as the Workflow Task Queue.
+3. Optionally, when calling an Activity, you can specify the task queue by passing the `taskQueue` option to `Context.configureActivities()`. If you do not specify a `taskQueue`, then the Node SDK places Activity Tasks in the same Task Queue as the Workflow Task Queue.
 
 ```ts
 import { Context } from '@temporalio/workflow';
 import * as activities from '../activities';
 
-const { greet } = Context.setupActivities<typeof activities>({
+const { greet } = Context.configureActivities<typeof activities>({
   taskQueue: 'my-other-task-queue',
   startToCloseTimeout: '1s',
 });

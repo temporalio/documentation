@@ -31,7 +31,7 @@ Workflow interface declarations are optional but recommended. They're only requi
 
 A Workflow implementation may export a `workflow` object, which can be type-checked using a pre-defined interface or `main` (and optionally [signals](/docs/node/signals) and [queries](/docs/node/queries)) directly.
 
-Use `Context.setupActivities` to create functions that schedule Activities in the system.
+Use `Context.configureActivities` to create functions that schedule Activities in the system.
 
 `src/workflows/example.ts`
 

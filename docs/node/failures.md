@@ -70,7 +70,7 @@ import {
 } from '@temporalio/workflow';
 import * as activities from '../activities';
 
-const { httpGetJSON } = Context.setupActivities<typeof activities>({
+const { httpGetJSON } = Context.configureActivities<typeof activities>({
   type: 'remote',
   startToCloseTimeout: '1m',
 });
