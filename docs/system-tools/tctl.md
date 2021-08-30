@@ -12,62 +12,20 @@ Workflow, show Workflow history, and signal Workflow.
 
 You can run the CLI in four ways.
 
-### Install locally with Brew
-
-You can install `tctl` by using [Homebrew](https://brew.sh/):
-
-```bash
-brew install tctl
-```
-
-### Run from docker-compose container
-
-If you are running Temporal Server locally by using [docker-compose](https://github.com/temporalio/docker-compose), you can run `tctl` from the `temporal-admin-tools` container.
-
-```bash
-docker exec temporal-admin-tools tctl
-```
-
-If you plan to run `tctl` command multiple times, you might want to create an alias:
-
-```bash
-alias tctl="docker exec temporal-admin-tools tctl"
-```
-
-...and then invoke `tctl` command as though it is installed locally. For example, to describe the default namespace:
-
-```bash
-tctl namespace describe
-```
-
-### Run from docker image
-
-You can use `tctl` directly from the [admin-tools](https://hub.docker.com/r/temporalio/admin-tools) docker image:
-
-- On Linux:
-
-```bash
-docker run --rm -it --entrypoint tctl --network host --env TEMPORAL_CLI_ADDRESS=localhost:7233 temporalio/admin-tools:1.11.2
-```
-
-- On macOS/Windows:
-
-```bash
-docker run --rm -it --entrypoint tctl --env TEMPORAL_CLI_ADDRESS=host.docker.internal:7233 temporalio/admin-tools:1.11.2
-```
-
-Change the value of `TEMPORAL_CLI_ADDRESS` if your Temporal Server is running on remote host.
-
-Same `tctl` alias can be created to simplify experience.
-
-### Build it locally
-
-To build the CLI tool locally, clone the [Temporal server repo](https://github.com/temporalio/temporal) and run `make tctl`. This produces an executable called `tctl`.
-Copy this executable to any directory from `PATH` environment variable. For example, `/usr/bin/`.
+- Install locally using [Homebrew](https://brew.sh/): `brew install tctl`
+- Run locally together with Temporal Server in [docker-compose](https://github.com/temporalio/docker-compose): `docker exec temporal-admin-tools tctl YOUR COMMANDS HERE`
+  - We recommend setting an alias: `alias tctl="docker exec temporal-admin-tools tctl"` so you can invoke `tctl` as though it is installed locally, eg `tctl namespace describe`
+- Run the [temporal-admin-tools](https://hub.docker.com/r/temporalio/admin-tools) docker image:
+  - On Linux: `docker run --rm -it --entrypoint tctl --network host --env TEMPORAL_CLI_ADDRESS=localhost:7233 temporalio/admin-tools:1.11.2`
+  - On macOS/Windows: `docker run --rm -it --entrypoint tctl --env TEMPORAL_CLI_ADDRESS=host.docker.internal:7233 temporalio/admin-tools:1.11.2`
+  - Change the value of `TEMPORAL_CLI_ADDRESS` if your Temporal Server is running on remote host.
+  - You can also create a `tctl` alias to simplify command lines.
+- Building it locally: clone the [Temporal server repo](https://github.com/temporalio/temporal) and run `make tctl`. This produces an executable called `tctl`.
+  Copy this executable to any directory from `PATH` environment variable. For example, `/usr/bin/`.
 
 :::note
 
-For brevity, the example commands that follow use `tctl` for brevity, which might be a binary or a pre-created alias as described earlier.
+Some opt-in upgrades to `tctl` are coming — see https://github.com/temporalio/tctl for instructions.
 
 :::
 
@@ -80,6 +38,7 @@ Setting environment variables for repeated parameters can shorten the CLI comman
 - **TEMPORAL_CLI_TLS_CA** - path to server Certificate Authority certificate file
 - **TEMPORAL_CLI_TLS_CERT** - path to public x509 certificate file for mutual TLS authentication
 - **TEMPORAL_CLI_TLS_KEY** - path to private key file for mutual TLS authentication
+- **TEMPORAL_CLI_AUTHORIZATION_TOKEN** - for HTTP Basic Authorization plugin (see below)
 
 ## Quick Start
 
@@ -719,9 +678,9 @@ OPTIONS:
    --search_attr_value value                   Optional search attributes value that can be be used in list query. If there are multiple keys, concatenate them and separate by |. If value is array, use json array like ["a","b"], [1,2], ["true","false"], ["2019-06-07T17:16:34-08:00","2019-06-07T18:16:34-08:00"]. Use 'cluster get-search-attr' cmd to list legal keys and value types
 ```
 
-## Random
+## Debugging with tctl
 
-Start a new Workflow execution:
+Start a new Workflow execution without a running Worker:
 
 ```bash
 $ tctl workflow start  --workflow_id "HelloActivityWorker" --taskqueue HelloWorldTaskQueue --workflow_type HelloWorld_sayHello --execution_timeout 3600 --input \"World\"
@@ -729,7 +688,10 @@ Started Workflow Id: HelloActivityWorker, run Id: ff015637-b5af-43e8-b3f6-8b6c7b
 ```
 
 The Workflow is started, but nothing visible happens.
-This is expected as the Activity worker is not running. What are the options to understand the currently running Workflow state?
+This is expected because the corresponding Worker is not running.
+What are the options to understand the currently running Workflow state?
+
+### `tctl workflow stack`
 
 The first option is look at the stack trace:
 
@@ -752,6 +714,8 @@ It shows that the Workflow code is blocked on the "say" method of a Proxy object
 You can restart the Workflow worker if you want to make sure that restarting it does not change that.
 It works for Activities of any duration.
 It is okay for the Workflow code to block on an Activity invocation for a month for example.
+
+### `tctl workflow show`
 
 Another way to see what exactly happened in the Workflow execution is to look at the Workflow execution history:
 
@@ -790,6 +754,8 @@ $ tctl workflow show  --workflow_id "HelloActivityWorker"
 
 The last event in the Workflow history is `ActivityTaskScheduled`.
 It is recorded when Workflow invoked the Activity, but it wasn't picked up by an Activity worker yet.
+
+### `tctl workflow describe`
 
 Another useful API is `DescribeWorkflowExecution` which, among other information, contains the list of outstanding Activities:
 
@@ -896,8 +862,6 @@ The Identity field contains the Id of the worker (you can set it to any value on
 
 _ActivityTaskCompleted_ event is recorded when Activity completes.
 It contains the result of the Activity execution.
-
-Let's look at various failure scenarios.
 
 ## Signals
 
@@ -1049,3 +1013,16 @@ Query result as JSON:
 
 The Query method can accept parameters.
 This might be useful if only part of the Workflow state should be returned.
+
+## Securing `tctl`
+
+`tctl` supports plugins that can be used to set headers on outgoing requests.
+
+We ship an [example plugin](https://github.com/temporalio/temporal/blob/master/cmd/tools/cli/plugins/authorization/main.go) that supports HTTP Basic Auth headers (to be used in tandem with a [secure Temporal Server](https://docs.temporal.io/docs/server/security/). You can enable it with:
+
+```bash
+tctl --headers_provider_plugin tctl-authorization-plugin
+```
+
+The value `tctl-authorization-plugin` above is just a name of a binary - plugins are decoupled from `tctl` itself via Hashicorp's go-plugin interface.
+In other words, if you need to customize or add your own plugins, you don't have to rebuild `tctl` itself; just compile your plugin to a binary.
