@@ -39,14 +39,16 @@ Since Workflows run in an [isolated environment](/docs/node/determinism) they mu
 
 The created project comes with some helper package scripts.
 
+- `npm start` - Run the Worker (does not require compilation)
+- `npm run start.watch` - Watch files and re-run Worker on change
 - `npm run build` - Compile TypeScript
 - `npm run build.watch` - Watch files and compile on change
+- `npm run workflow` - Execute a Workflow using the provided client
 
 #### Running the example
 
-- Compile the project with one of the commands above
 - Download, install, and run the [Temporal server][local-server] via docker-compose
-- Start the worker using `npm start`, or equivalently, `node lib/worker.js`
-- In a new terminal, use the provided client to start a Workflow `npm run workflow`, or equivalently, `node lib/exec-workflow.js`
+- Start the worker using `npm run start.watch`
+- In a new terminal, use the provided client to start a Workflow `npm run workflow`, or equivalently, `ts-node src/exec-workflow.ts`
 
 [local-server]: /docs/server/quick-install

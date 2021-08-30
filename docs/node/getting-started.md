@@ -94,32 +94,12 @@ If you want a [sample for connecting to a Temporal Server instance secured with 
 
 :::
 
-## Step 2: Compile TypeScript
-
-Use one of the provided helper package scripts to compile TypeScript.
-
-```bash
-# Watch files and compile on change
-# (recommended because it’s most convenient)
-npm run build.watch
-
-## OR compile TypeScript once
-## (you’ll need to rerun this every time you edit the code)
-# npm run build
-```
-
-:::note
-
-`ts-node` does not work with our project structure since it changes `__dirname` which affects the automatic Workflow and Activity [registration](/docs/node/hello-world/#worker) and we don't support running typescript directly in the [Workflow v8 isolates](/docs/node/determinism/#how-a-workflow-is-executed).
-
-:::
-
-## Step 3: Run your Workflow
+## Step 2: Run your Workflow
 
 Run the Worker:
 
 ```bash
-$ npm start # this runs node lib/worker.js
+$ npm run start.watch # this runs ts-node src/worker.ts with nodemon to auto-reload on changes
 
 # example successful output:
 2021-05-19T17:27:33.176Z [INFO] asset main.js 4.78 MiB [emitted] (name: main)
@@ -145,7 +125,7 @@ $ npm start # this runs node lib/worker.js
 Then start your Workflow:
 
 ```bash
-$ npm run workflow # alias to node lib/exec-workflow.js
+$ npm run workflow # alias to ts-node src/exec-workflow.ts
 Hello, Temporal!
 ```
 
