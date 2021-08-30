@@ -17,7 +17,7 @@ An instance of the Server is often referred to as a Cluster.
 
 <!-- TODO <RelatedReadList
 readlist={[
-["What is Multi-Cluster Replication", "/docs/content/what-is-multi-cluster-replication"]  
+["What is Multi-Cluster Replication", "/docs/content/what-is-multi-cluster-replication"]
 ]}
 /> -->
 
