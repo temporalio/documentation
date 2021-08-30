@@ -36,6 +36,22 @@ Once approved, we will merge your changes.
 
 As soon as your pull request is merged, a new build automatically occurs and your changes publish to [https://docs.temporal.io](https://docs.temporal.io).
 
+### Prettier
+
+Before submitting your pull request, make sure to reformat the code by using Prettier.
+
+To install:
+
+```
+yarn install
+```
+
+To reformat:
+
+```
+yarn prettier --write '**/*.{js,md}'
+```
+
 ## Style guidance
 
 In general, this content adheres to the [Google developers style guide](https://developers.google.com/style).
