@@ -40,6 +40,11 @@ Do **not** import your Activity by using the `'../activities/greeter'` path; oth
 
 :::
 
+
+## Activity Context
+
+`Context.info`
+
 ## Heartbeating
 
 Long running activities should heartbeat their progress back to the Workflow.
