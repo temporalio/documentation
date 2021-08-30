@@ -65,7 +65,7 @@ Use `Context.configureActivities` to create functions that schedule Activities i
 The Worker connects to Temporal Server and runs Workflows and Activities.
 `Worker.create()` accepts [these options](https://nodejs.temporal.io/api/interfaces/worker.workeroptions).
 
-`src/worker/index.ts`
+`src/worker.ts`
 
 <!--SNIPSTART nodejs-hello-worker {"enable_source_link": false}-->
 <!--SNIPEND-->
@@ -77,7 +77,7 @@ The Worker connects to Temporal Server and runs Workflows and Activities.
 The client can be used to schedule Workflows and send other requests to Temporal Server.
 It can be used in any Node.js process (for example, an [Express](https://expressjs.com/) web server) and is separate from the Worker.
 
-`src/worker/schedule-workflow.ts`
+`src/exec-workflow.ts`
 
 <!--SNIPSTART nodejs-hello-client {"enable_source_link": false}-->
 <!--SNIPEND-->

@@ -119,7 +119,7 @@ npm run build.watch
 Run the Worker:
 
 ```bash
-$ npm start # this runs node lib/worker
+$ npm start # this runs node lib/worker.js
 
 # example successful output:
 2021-05-19T17:27:33.176Z [INFO] asset main.js 4.78 MiB [emitted] (name: main)
@@ -145,13 +145,13 @@ $ npm start # this runs node lib/worker
 Then start your Workflow:
 
 ```bash
-$ node lib/worker/schedule-workflow.js
+$ npm run workflow # alias to node lib/exec-workflow.js
 Hello, Temporal!
 ```
 
 This "Hello, Temporal!" message comes from the combination of:
 
-- [`schedule-workflow.js`](https://github.com/temporalio/sdk-node/blob/03b0b3cd354da309aa6be1b1ff939f5fae007de2/packages/create-project/samples/client.ts) passing `'Temporal'` as an argument to the Workflow.
+- [`exec-workflow.js`](https://github.com/temporalio/sdk-node/blob/main/packages/create-project/samples/client.ts) passing `'Temporal'` as an argument to the Workflow.
 - The [Workflow](https://github.com/temporalio/sdk-node/blob/main/packages/create-project/samples/workflow.ts) passing the argument to the Activity.
 - The [Activity](https://github.com/temporalio/sdk-node/blob/main/packages/create-project/samples/activity.ts) taking the argument as `name` and returning `Hello, ${name}!`.
 

@@ -46,7 +46,7 @@ The created project comes with some helper package scripts.
 
 - Compile the project with one of the commands above
 - Download, install, and run the [Temporal server][local-server] via docker-compose
-- Start the worker using `npm start`, or equivalently, `node lib/worker`
-- In a new terminal, use the provided client to start a Workflow `node lib/worker/schedule-workflow.js`
+- Start the worker using `npm start`, or equivalently, `node lib/worker.js`
+- In a new terminal, use the provided client to start a Workflow `npm run workflow`, or equivalently, `node lib/exec-workflow.js`
 
 [local-server]: /docs/server/quick-install
