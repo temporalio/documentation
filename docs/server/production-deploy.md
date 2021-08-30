@@ -68,9 +68,29 @@ Every shard is low contention by design and it is very difficult to oversubscrib
 With that said, here are some guidelines to some common bottlenecks:
 
 - **Database**. The vast majority of the time the database will be the bottleneck. **We highly recommend setting alerts on `ScheduleToStart` latency** to look out for this. Also check if your database connection getting saturated.
-- **Internal services**. The next layer will be scaling the 4 internal services of Temporal ([Frontend, Matching, History, and Worker](https://docs.temporal.io/docs/server-architecture/)). Monitor each accordingly. The Frontend service is more CPU bound, whereas the History and Matching services require more memory.
+- **Internal services**. The next layer will be scaling the 4 internal services of Temporal ([Frontend, Matching, History, and Worker](https://docs.temporal.io/docs/server-architecture/)).
+  Monitor each accordingly. The Frontend service is more CPU bound, whereas the History and Matching services require more memory.
+  If you need more instances of each service, spin them up separately with different command line arguments. You can learn more cross referencing [our Helm chart](https://github.com/temporalio/helm-charts) with our [Server Configuration reference](https://docs.temporal.io/docs/server/configuration/).
 - See the **Server Limits** section below for other limits you will want to keep in mind when doing system design, including event history length.
 - [Multi-Cluster Replication](https://docs.temporal.io/docs/server/multi-cluster/) is an experimental feature you can explore for heavy reads.
+
+Finally you want to set up alerting and monitoring on Worker metrics.
+When Workers are able to keep up, `ScheduleToStart` latency is close to zero.
+The default is 4 Workers (aka pollers, as the Workers poll Task Queues), which should handle no more than 300 messages per second.
+
+Specifically, the primary scaling metrics are located in the server's dynamic configs:
+
+- `MaxConcurrentActivityTaskPollers` and `MaxConcurrentWorkflowTaskPollers`: [Defaults to 4](https://github.com/temporalio/temporal/blob/fe05751305b1cb50b68efa23f8aa5f1b34f45bc5/service/worker/service.go#L121)
+- `MaxConcurrentActivityExecutionSize` and `MaxConcurrentWorkflowTaskExecutionSize`: [Defaults to 200](https://github.com/temporalio/sdk-java/blob/bef967639fcdbe14ca37b80ac816596412846e5f/temporal-sdk/src/main/java/io/temporal/worker/WorkerOptions.java#L51)
+
+Scaling will depend on your workload — for example, for a Task Queue with 500 messages per second, you might want to scale up to 10 pollers.
+Provided you tune the concurrency of your pollers based on your application, it should be possible to scale them based on standard resource utilization metrics (CPU, Memory, etc).
+
+**It's possible to have too many workers.**
+Monitor the poll success (`poll_success`/`poll_success_sync`) and `poll_timeouts` metrics:
+
+- if you see low `ScheduleToStart` latency / low percentage of poll success / high percentage of timeouts, you might have too many workers/pollers.
+- with 100% poll success and increasing `ScheduleToStart` latency, you need to scale up.
 
 ### FAQ: Autoscaling Workers based on Task Queue load
 
@@ -78,10 +98,6 @@ Temporal does not yet support returning the number of tasks in a task queue.
 The main technical hurdle is that each task can have its own `ScheduleToStart` timeout, so just counting how many tasks were added and consumed is not enough.
 
 This is why we recommend tracking `ScheduleToStart` latency for determining if the task queue has a backlog (aka Workers are under-provisioned for a given Task Queue).
-When workers are able to keep up, the latency is close to zero.
-The default is 4 Workers, which should handle no more than 300 messages per second.
-Scaling will depend on your workload — for example, for a Task Queue with 500 messages per second, you might want to scale up to 10 workers.
-
 We do plan to add features that give more visibility into the task queue state in future.
 
 ## Server limits
