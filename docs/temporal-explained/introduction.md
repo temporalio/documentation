@@ -18,33 +18,11 @@ import WhatIsTemporal from '../content/what-is-temporal.md'
 
 <WhatIsTemporal/>
 
-## What is a Workflow?
+## Temporal vs traditional
 
-In day-to-day conversations, the term "Workflow" frequently denotes either a [Workflow Prototype](#what-is-a-workflow-prototype) or a [Workflow Execution](#what-is-a-workflow-execution). This document is explicit and differentiates between Prototype and Execution.
+import WhatAreTheDifferencesBetweenTemporalAndATraditionalSystem from '../content/what-are-the-differences-between-temporal-and-a-traditional-system.md'
 
-<img class="docs-image-centered docs-image-max-width-50" src="/img/prototype-execution-cardinality.png" />
-
-### Workflow Prototype
-
-Coming soon!
-
-### Workflow Definition
-
-Coming soon!
-
-### Workflow Execution
-
-A Workflow Execution is a Reentrant Process; that is, a resumable, recoverable, and reactive process:
-
-- Resumable: Ability of a process to continue execution after execution was suspended on an await-able.
-- Recoverable: Ability of a process to continue execution after execution was suspended on a failure.
-- Reactive: Ability of a process to react to external events.
-
-<img class="docs-image-centered docs-image-max-width-50" src="/img/reentrant.png" />
-<img class="docs-image-centered docs-image-max-width-50" src="/img/suspended.png" />
-
-Each Workflow Execution has a set of properties that define its behavior.
-Many of these properties can be a set in Workflow Execution Options.
+<WhatAreTheDifferencesBetweenTemporalAndATraditionalSystem/>
 
 ### Workflow Id
 
@@ -89,31 +67,6 @@ The following is a full list of all properties that can be customized for a Work
 A Workflow Execution has three unique timeout properties.
 A timeout property sets the maximum interval that is acceptable between two expected actions that must take place.
 Each timeout property has a default value, but can be customized in [Workflow Execution Options](#what-are-workflow-options)
-
-### Workflow Execution Timeout
-
-This is the maximum time that a Workflow Execution can be executing for (have an Open status) including retries and any usage of [Continue As New](#continue-as-new).
-**The default value is set to 10 years.**
-If this timeout is reached then the Workflow Execution will change to a Timed Out status.
-
-This timeout is most commonly used for stopping the execution of a [cron scheduled Workflow](#cron-schedule) after a certain amount of time has passed. This timeout is different from the [Workflow Run timeout](#workflow-run-timeout).
-
-### Workflow Run Timeout
-
-This is the maximum amount of time that a single Workflow Run is restricted to.
-**The default is set to the same value as the [Execution timeout](#execution-timeout).**
-
-This timeout is most commonly used to limit the execution time of a single [cron scheduled Workflow Execution](#cron-schedule).
-If this timeout is reached and there is an associated Retry Policy, the Workflow will be retried before any scheduling occurs.
-If there is no Retry Policy then the Workflow will be scheduled per the [cron schedule](#cron-schedule).
-
-### Workflow Task Timeout
-
-This is the maximum amount of time that the Server will wait for the Worker to start processing a [Workflow Task](#workflow-task) after the Task has been pulled from the Task Queue.
-**The default value is 10 seconds.**
-
-This timeout is primarily available to recognize whether a Worker has gone down so that the Workflow Execution can be recovered on a different Worker.
-The main reason for increasing the default value would be to accommodate a Workflow Execution that has a very long Workflow Execution History that could take longer than 10 seconds for the Worker to load.
 
 ### Workflow Task
 

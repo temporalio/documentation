@@ -6,18 +6,21 @@ tags:
   - explanation
 ---
 
+import CenteredImage from "../components/CenteredImage.js"
+
 The Temporal platform exists to facilitate Workflow Executions.
-This page compares a function execution in a traditional system and a Workflow Execution in Temporal.
+In a traditional system, a service exists to spawn function executions.
 
-![Diagram that shows traditional function execution and Temporal Workflow Execution](/img/diagrams/temporal-vs-traditional-high-level.svg)
-
-:::note Legend
-
-λ = traditional function execution  
-π = Temporal Workflow Execution  
-𝝈 = state
-
-:::
+<CenteredImage
+imagePath="/img/diagrams/temporal-vs-traditional-high-level.svg"
+imageSize="100"
+title="Traditional system vs Temporal"
+legend={[
+["λ","traditional function execution"],
+["π","Temporal Workflow Execution "],
+["𝝈","state"],
+]}
+/>
 
 Although the two systems seem similar at first glance, they differ in several significant ways.
 

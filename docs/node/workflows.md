@@ -6,6 +6,8 @@ description: In the Temporal Node SDK programming model, a Workflow is an export
 image: /img/workflow.png
 ---
 
+import RelatedReadList from '../components/RelatedReadList.js'
+
 [API reference](https://nodejs.temporal.io/api/namespaces/workflow)
 
 Workflows are the core of the Temporal system. They abstract away the complexities of writing distributed programs.
@@ -118,9 +120,11 @@ await workflow.execute(arg1, arg2);
 
 Child Workflow executions are [`CancellationScope`](/docs/node/cancellation-scopes) aware and will automatically be cancelled when their containing scope is cancelled.
 
-import WhenToUse from '../content/when-to-use-child-workflows.md'
-
-<WhenToUse signalsLink="/docs/node/signals" />
+<RelatedReadList
+readlist={[
+["What is a Child Workflow Execution?","/docs/content/what-is-a-child-workflow-execution","explanation"],  
+]}
+/>
 
 ## Large Event Histories
 

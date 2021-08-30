@@ -5,6 +5,8 @@ sidebar_label: Workflows
 description: The core abstraction of the Temporal solution is a fault-oblivious stateful Workflow.
 ---
 
+import RelatedReadList from '../components/RelatedReadList.js'
+
 ## What is a Workflow?
 
 Workflows are resilient programs, meaning that they will continue execution even in the presence of
@@ -215,10 +217,10 @@ To learn about Workflow Activities visit [this page](/docs/java/activities).
 
 Besides Activities, a Workflow can also start other Workflows.
 
-import WhenToUse from '../content/when-to-use-child-workflows.md'
-
-<WhenToUse
-signalsLink="/docs/java/signals"
+<RelatedReadList
+readlist={[
+["What is a Child Workflow Execution?","/docs/content/what-is-a-child-workflow-execution","explanation"],  
+]}
 />
 
 ### Java Child Workflow API

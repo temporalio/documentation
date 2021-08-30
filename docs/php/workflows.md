@@ -5,6 +5,8 @@ sidebar_label: Workflows
 description: The core abstraction of the Temporal solution is a fault-oblivious stateful Workflow.
 ---
 
+import RelatedReadList from '../components/RelatedReadList.js'
+
 ## What is a Workflow?
 
 In PHP, a Workflow is a class method.
@@ -352,10 +354,10 @@ var_dump($workflow->getResult());
 
 Besides Activities, a Workflow can also start other Workflows.
 
-import WhenToUse from '../content/when-to-use-child-workflows.md'
-
-<WhenToUse
-signalsLink="/docs/php/signals"
+<RelatedReadList
+readlist={[
+["What is a Child Workflow Execution?","/docs/content/what-is-a-child-workflow-execution","explanation"],  
+]}
 />
 
 ## PHP Child Workflow API
