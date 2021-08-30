@@ -224,7 +224,7 @@ Here is the above example rewritten to call download and upload Activity methods
 
 ## Invoking Activities via `Workflow.newUntypedActivityStub`
 
-It is also possible to inoke Activities inside Workflows using `Workflow.newUntypedActivityStub`, meaning you can
+It is also possible to invoke Activities inside Workflows using `Workflow.newUntypedActivityStub`, meaning you can
 invoke them without referencing an interface it implements.
 This is useful in scenarios where the Activity type is not known at compile time, or to invoke
 Activities implemented in different programming languages.
