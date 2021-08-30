@@ -25,7 +25,7 @@ Webpack replaces `@activities/`-prefixed imports with stubs that schedule Activi
 - `Date` - replaced by the runtime
   - `new Date()` and `Date.now()` are both set on the first invocation of the Workflow Task
 - `WeakRef | WeakMap | WeakSet` - cannot be used, as GC is non-deterministic; deleted by the runtime
-- Timers - `setTimeout` and `clearTimeout` are replaced by the runtime. 
+- Timers - `setTimeout` and `clearTimeout` are replaced by the runtime.
   - We recommend you use the `@temporal/workflow` package's exported `sleep` function because it plays well with [cancellation scopes](/docs/node/cancellation-scopes): `import { sleep } from '@temporalio/workflow'`
 - Activities - use to run non-deterministic code; results are replayed from history
 
