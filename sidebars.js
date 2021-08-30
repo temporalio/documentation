@@ -7,7 +7,6 @@ module.exports = {
       items: [
         "server/introduction",
         "server/quick-install",
-        "server-architecture",
         "server/versions-and-dependencies",
         "server/options",
         "server/configuration",

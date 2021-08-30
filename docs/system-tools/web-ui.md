@@ -137,7 +137,7 @@ It can be enabled it in 2 steps:
 Once you have the Temporal Server running locally (use the [quick install guide](/docs/server/quick-install)), you can view the Temporal Web UI at [http://localhost:8088](http://localhost:8088) (this is configurable with the `TEMPORAL_WEB_PORT` environment variable).
 
 > ⚠️ This is a basic guide to troubleshooting/debugging Temporal applications.
-> It is work-in-progress and we encourage [reading about our Architecture](https://docs.temporal.io/docs/server-architecture) for more detail.
+> It is work-in-progress and we encourage [reading about our Architecture](/docs/content/what-is-the-temporal-server) for more detail.
 > The better you understand how Temporal works, the better you will be at debugging Workflow Executions.
 
 If you have the time, we recommend [watching our 19 minute video guide on YouTube](https://youtu.be/PqcVKIxI0nU) which demonstrates the debugging explained below.

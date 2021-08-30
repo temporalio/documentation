@@ -471,6 +471,9 @@
   from = "/docs/server-workflow-search"
   to = "/docs/server/workflow-search"
 
+[[redirects]]
+  from = "/docs/server-architecture"
+  to = "/docs/content/what-is-the-temporal-server"
 #
 # System tools redirects
 #

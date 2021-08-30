@@ -11,7 +11,7 @@ It can be thought of as a layer in your technology stack that exists between you
 It is completely open source and can be run in a variety of cloud or on-premise environments.
 A single Server instance can be used for many different use cases simultaneously, or be tied to a single application.
 
-- Read the [system architecture](/docs/server-architecture) page to get a view of the server's topology.
+- Read the [system architecture](/docs/content/what-is-the-temporal-server) page to get a view of the server's topology.
 - Read the [Server versions and dependencies](/docs/server/versions-and-dependencies) page to see which dependencies are supported with the version of the Server you are using.
 
 ## Run the Server
