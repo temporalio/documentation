@@ -16,8 +16,8 @@ You can run the CLI in four ways.
 - Run locally together with Temporal Server in [docker-compose](https://github.com/temporalio/docker-compose): `docker exec temporal-admin-tools tctl YOUR COMMANDS HERE`
   - We recommend setting an alias: `alias tctl="docker exec temporal-admin-tools tctl"` so you can invoke `tctl` as though it is installed locally, eg `tctl namespace describe`
 - Run the [temporal-admin-tools](https://hub.docker.com/r/temporalio/admin-tools) docker image:
-  - On Linux: `docker run --rm -it --entrypoint tctl --network host --env TEMPORAL_CLI_ADDRESS=localhost:7233 temporalio/admin-tools:1.11.2`
-  - On macOS/Windows: `docker run --rm -it --entrypoint tctl --env TEMPORAL_CLI_ADDRESS=host.docker.internal:7233 temporalio/admin-tools:1.11.2`
+  - On Linux: `docker run --rm -it --entrypoint tctl --network host --env TEMPORAL_CLI_ADDRESS=localhost:7233 temporalio/admin-tools:1.12.0`
+  - On macOS/Windows: `docker run --rm -it --entrypoint tctl --env TEMPORAL_CLI_ADDRESS=host.docker.internal:7233 temporalio/admin-tools:1.12.0`
   - Change the value of `TEMPORAL_CLI_ADDRESS` if your Temporal Server is running on remote host.
   - You can also create a `tctl` alias to simplify command lines.
 - Building it locally: clone the [Temporal server repo](https://github.com/temporalio/temporal) and run `make tctl`. This produces an executable called `tctl`.
