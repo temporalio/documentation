@@ -131,13 +131,14 @@ role := authorization.RoleReader | authorization.RoleWriter
 
 Temporal offers a default JSON Web Token `ClaimMapper` that extracts claims from JWT access tokens and translates them into Temporal `Claims`.
 The default JWT `ClaimMapper` needs a public key to perform validation of tokens' digital signatures and expects [JWT tokens](https://tools.ietf.org/html/rfc7519) to be in the certain format [described below](#format-of-json-web-tokens).
-You can use the default as an example to build your own for translating a caller's authorization information from other formats and conventions into Temporal `Claims`.
+
+You can use the default JWT `ClaimMapper` as an example to build your own `ClaimMapper` for translating a caller's authorization information from other formats and conventions into Temporal `Claims`.
+
+To get an instance of the default JWT `ClaimMapper`, call `NewDefaultJWTClaimMapper` and provide it with an instance of a [`TokenKeyProvider`](#tokenkeyprovider), a pointer to a [`config.Authorization`](#configauthorization) config, and a logger.
 
 ```go
-claimMapper := authorization.NewDefaultJWTClaimMapper(provider, cfg, logger)
+claimMapper := authorization.NewDefaultJWTClaimMapper(tokenKeyProvider, authCfg, logger)
 ```
-
-Note that the default JWT `ClaimMapper` sets "permissions" as the `permissionsClaimName` if the `config.Config.Global.Authorization.PermissionsClaimName` property is not set as an override for the JWT tokens.
 
 #### `TokenKeyProvider`
 
@@ -161,19 +162,23 @@ Note that the `rsaTokenKeyProvider` returned by `NewRSAKeyProvider` only impleme
 `RefreshInterval` defines how frequently keys should be refreshed.
 For example, [Auth0](https://auth0.com/) exposes such endpoints as `https://YOUR_DOMAIN/.well-known/jwks.json`.
 
+#### `config.Authorization`
+
+- `permissionsClaimName`: Name of the [Permissions Claim](#format-of-json-web-tokens) to be used by the default JWT `ClaimMapper`. "permissions" is used as a default name. Use `config.Config.Global.Authorization.PermissionsClaimName` configuration property to override the name.
+
 #### Format of JSON Web Tokens
 
 The default JWT `ClaimMapper` expects authorization tokens to be in the following format:
 
 ```
-bearer <token>
+Bearer <token>
 ```
 
 - &lt;token&gt;: Must be the Base64 url-encoded value of the token.
 
-The default JWT claim mapper expects permission claims in the JWT tokens to be named "permissions", unless overridden in configuration.
+The default JWT `ClaimMapper` expects Permissions Claim in the JWT token to be named "permissions", unless overridden [in configuration](#configauthorization).
 
-Each individual claim is expected to be in the following format:
+Permissions Claim is expected to be a collection of Individual Permission Claims. Each Individual Permission Claim is expected to be in the following format:
 
 ```
 <namespace>:<permission>
@@ -189,6 +194,22 @@ Each individual claim is expected to be in the following format:
 The default JWT claim mapper converts these permissions into Temporal roles for the caller as described [above](#claims).
 
 Multiple permissions for the same namespace get OR'ed. For example, when `accounting:read` and `accounting:write` are found in a token, they are translated into `authorization.RoleReader | authorization.RoleWriter`.
+
+##### Example of a JWT payload for The Default JWT ClaimMapper
+
+```
+{
+   "permissions":[
+      "system:read",
+      "namespace1:write"
+   ],
+   "aud":[
+      "audience"
+   ],
+   "exp":1630295722,
+   "iss":"Issuer"
+}
+```
 
 ## Single sign-on integration
 
