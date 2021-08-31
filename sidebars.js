@@ -210,6 +210,7 @@ module.exports = {
         "java/side-effect",
         "java/distributed-cron",
         "java/testing-and-debugging",
+        "java/how-to-pass-authorization-header-in-java"
       ],
     },
     {
