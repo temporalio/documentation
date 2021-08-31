@@ -87,7 +87,7 @@ signalChan := workflow.GetSignalChannel(ctx, signalName)
 
 s := workflow.NewSelector(ctx)
 s.AddReceive(signalChan, func(c workflow.ReceiveChannel, more bool) {
-    var signalVal MyStruct
+    var signalVal MySignal
 	c.Receive(ctx, &signalVal)
 
     if err != nil {
