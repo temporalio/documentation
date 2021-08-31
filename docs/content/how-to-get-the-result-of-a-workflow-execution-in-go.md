@@ -44,8 +44,6 @@ The result of the Workflow Execution is available for as long as the Workflow Ex
 
 <!-- TODO (See [How long do Workflow Execution Histories persist](#)). -->
 
-
-
 Call the `GetWorkflow()` method on the an instance of the Go SDK Client and pass it the Workflow Id used to spawn the Workflow Execution.
 Then call the `Get()` method on the instance of `WorkflowRun` that is returned, passing it a pointer to populate the result.
 
