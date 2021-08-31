@@ -30,7 +30,7 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (Your
 }
 ```
 
-Use the `IsReady()` method to determine if result is ready prior to calling `Get()`.
+Use the `IsReady()` method first to make sure the `Get()` call doesn't cause the Workflow Execution to wait on the result.
 
 ```go
 func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (YourWorkflowResponse, error) {

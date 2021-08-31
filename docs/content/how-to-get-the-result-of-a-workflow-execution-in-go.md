@@ -6,10 +6,10 @@ tags:
   - guide
 ---
 
-The `ExecuteWorkflow` call returns an instance of [`WorkflowRun`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client#WorkflowRun), which is the `we` variable below.
+The `ExecuteWorkflow` call returns an instance of [`WorkflowRun`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client#WorkflowRun), which is the `workflowRun` variable below.
 
 ```go
-  we, err := c.ExecuteWorkflow(context.Background(), workflowOptions, app.YourWorkflowDefinition, param)
+  workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, app.YourWorkflowDefinition, param)
   if err != nil {
     // ...
   }
@@ -26,12 +26,12 @@ The instance of `WorkflowRun` has the following three methods:
 To wait on the result of Workflow Execution in the same process that invoked it, call `Get()` on the instance of `WorkflowRun` that is returned by the `ExecuteWorkflow()` call.
 
 ```go
-  we, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition, param)
+  workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition, param)
   if err != nil {
     // ...
   }
   var result YourWorkflowResponse
-  err = we.Get(context.Background(), &result)
+  err = workflowRun.Get(context.Background(), &result)
   if err != nil {
       // ...
   }
@@ -39,27 +39,25 @@ To wait on the result of Workflow Execution in the same process that invoked it,
 }
 ```
 
-However, the result of a Workflow Execution can be obtained from a completely different process, all that is needed is the [Workflow Id](#) and [Run Id](#).
-The result of the Workflow Execution is available for as long as it's Execution History remains in the system (See [How long do Workflow Execution Histories persist](#)).
+However, the result of a Workflow Execution can be obtained from a completely different process, all that is needed is the [Workflow Id](#) (a [Run Id](#) is optional if there is more than one closed Workflow Execution with the same Workflow Id).
+The result of the Workflow Execution is available for as long as the Workflow Execution History remains in the system.
 
-To get the Workflow Id and Run Id, call the `GetWorkflowID` and `GetRunId` on the instance of `WorkflowRun` that is returned by the `ExecuteWorkflow()` call and store the results.
-These values can then be used to get an instance of `WorkflowRun` again by calling `GetWorkflow()` on an instance of the Go SDK Client.
+<!-- TODO (See [How long do Workflow Execution Histories persist](#)). -->
+
+
+
+Call the `GetWorkflow()` method on the an instance of the Go SDK Client and pass it the Workflow Id used to spawn the Workflow Execution.
+Then call the `Get()` method on the instance of `WorkflowRun` that is returned, passing it a pointer to populate the result.
 
 ```go
-  we, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition, param)
-  if err != nil {
-    // ...
-  }
-  workflowID := we.GetID()
-  WorkflowRunID := we.GetRunID()
   // ...
-  we := c.GetWorkflow(context.Background, workflowID, workflowRunID)
+  workflowID := "Your-Custom-Workflow-Id"
+  workflowRun := c.GetWorkflow(context.Background, workflowID)
 
   var result YourWorkflowResponse
-  err = we.Get(context.Background(), &result)
+  err = workflowRun.Get(context.Background(), &result)
   if err != nil {
       // ...
   }
   // ...
-}
 ```

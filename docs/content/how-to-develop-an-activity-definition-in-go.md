@@ -28,10 +28,15 @@ type YourActivityStruct struct {
 }
 
 func(a *YourActivityStruct) YourActivityDefinition(ctx workflow.Context) error {
+  // ...
+}
 
+func(a *YourActivityStruct) YourActivityDefinitionTwo(ctx workflow.Context) error {
+  // ...
 }
 ```
 
+An "Activity struct" can have more than one method, with each method acting as a separate Activity Type.
 Activities written as struct methods can make use of shared struct variables.
 The rest of this guide will show Activities written as struct methods.
 
