@@ -433,7 +433,11 @@
 
 [[redirects]]
   from = "/docs/server-event-types"
-  to = "/docs/server/event-types"
+  to = "/docs/reference/history-events"
+
+[[redirects]]
+  from = "/docs/server/event-types"
+  to = "/docs/reference/history-events"
 
 [[redirects]]
   from = "/docs/server-introduction"

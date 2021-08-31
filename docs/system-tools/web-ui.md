@@ -198,7 +198,7 @@ Reading execution histories is one of the more reliable ways of debugging:
 
 Here, you can see the exact sequence of events that has happened so far, which includes the relevant state for each event and details about what went wrong or what is preventing the next correct event.
 There are about 40 system events in total.
-See our [Temporal Server Event Types reference](https://docs.temporal.io/docs/server/event-types/) for detailed descriptions.
+See our [Temporal Server Event Types reference](/docs/reference/history-events/) for detailed descriptions.
 
 ### Viewing Stack Traces on Temporal Web
 

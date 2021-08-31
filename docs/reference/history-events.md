@@ -1,6 +1,6 @@
 ---
-id: event-reference
-title: Workflow Execution Event reference
+id: history-events
+title: Workflow Execution History Event reference
 sidebar_label: Event reference
 ---
 
