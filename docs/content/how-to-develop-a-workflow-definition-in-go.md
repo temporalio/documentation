@@ -81,7 +81,6 @@ However, it is not possible to receive both a custom value and an error in the c
 The caller will receive either one or the other.
 Returning a non-nil `error` from a Workflow indicates that an error was encountered during its execution and the Workflow Execution should be [Terminated](#) and any custom return values will be ignored by the system.
 
-
 <!--
 <RelatedReadList
 readlist={[
