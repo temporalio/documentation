@@ -39,7 +39,9 @@ To wait on the result of Workflow Execution in the same process that invoked it,
 }
 ```
 
-However, the result of a Workflow Execution can be obtained from a completely different process, all that is needed is the [Workflow Id](#) (a [Run Id](#) is optional if there is more than one closed Workflow Execution with the same Workflow Id).
+However, the result of a Workflow Execution can be obtained from a completely different process.
+All that is needed is the [Workflow Id](#).
+(A [Run Id](#) is optional if more than one closed Workflow Execution has the same Workflow Id.)
 The result of the Workflow Execution is available for as long as the Workflow Execution History remains in the system.
 
 <!-- TODO (See [How long do Workflow Execution Histories persist](#)). -->
