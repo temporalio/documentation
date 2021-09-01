@@ -11,7 +11,8 @@ import RelatedReadList from '../components/RelatedReadList.js'
 To spawn a Workflow Execution, use the `ExecuteWorkflow()` method on the Go SDK [`Client`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client#Client), which is available via [`NewClient()`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client#NewClient) in the [`go.temporal.io/sdk/client`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client) package.
 
 The Go SDK Client should never be used inside a Workflow Definition.
-To spawn a Workflow Execution from within another Workflow, use the [`ExecuteChildWorkflow` API](/docs/content/how-to-spawn-a-child-workflow-execution-in-go).
+To spawn a Workflow Execution from within another Workflow, use the [`ExecuteChildWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ExecuteChildWorkflow) API.
+For more information, see [How to spawn a Child Workflow Execution in Go](/docs/content/how-to-spawn-a-child-workflow-execution-in-go).
 
 The `ExecuteWorkflow()` API call requires an instance of [`context.Context`](https://pkg.go.dev/context#Context), an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client#StartWorkflowOptions), a Workflow Type name, and all variables to be passed to the Workflow Execution.
 The `ExecuteWorkflow()` call returns a Future, which can be used to get the result of the Workflow Execution.
