@@ -64,7 +64,7 @@ A Task Queue name is also provided to the Worker that is registered to execute t
 The Task Queue name must be the same for both.
 
 We recommend supplying your own custom Workflow Id that can be used to get the result of the Workflow Execution asynchronously at another point in time.
-The Workflow Id is meant to be supplied by the user and correspond to some business-level identifier.
+A custom Workflow Id is intended to correspond to a business-level identifier.
 
 <!--
 <RelatedReadList
