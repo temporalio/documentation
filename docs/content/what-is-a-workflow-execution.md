@@ -15,19 +15,16 @@ A Workflow Execution is a Reentrant Process; that is, a resumable, recoverabl
 - Reactive: Ability of a process to react to external events.
 
 <CenteredImage
-imagePath="/diagrams/reentrant-process-characteristics.svg"
-imageSize="50"
-title="Reentrant Process characteristics"
-/>
-
-<CenteredImage
 imagePath="/diagrams/workflow-execution-progressing-and-suspended.svg"
 imageSize="75"
 title="Open Workflow Executions are either progressing or suspended"
 />
 
-- A Workflow Execution has exclusive access to its local state, executes concurrently to all other Workflow Executions, and can communicate with other Workflow Executions using Signals.
-- With a Workflow Id, a 1:1 mapping can exist between a Workflow Execution and some other resource.
+A Workflow Execution has exclusive access to its local state, executes concurrently to all other Workflow Executions, and can communicate with other Workflow Executions using Signals.
+
+A Workflow Execution is uniquely identified by its [Namespace](docs/server/namespaces), [Workflow Id](/docs/content/what-is-a-workflow-id), and [Run Id](/docs/content/what-is-a-run-id).
+
+The Workflow Id can be used to create a 1:1 mapping between a Workflow Execution and some other resource, such as a customer Id, order Id, or host Id.
 
 <RelatedReadList
 readlist={[
