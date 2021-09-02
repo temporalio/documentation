@@ -22,6 +22,7 @@ Just as a Linux based cron job accepts a command and a schedule on which to exec
 If a Cron Schedule is provided, the Temporal Server will spawn an execution for the associated Workflow Type per the schedule.
 
 Each Workflow Execution within the series is considered a Run.
+
 - Each Run receives the same input parameters as the initial Run.
 - Each Run inherits the same Workflow Options as the initial Run.
 
