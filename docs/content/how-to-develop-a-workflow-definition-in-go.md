@@ -76,7 +76,10 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (Your
 }
 ```
 
-Returning a non-nil `error` from a Workflow indicates that an error was encountered during its execution and the Workflow Execution should be [Terminated](#).
+A Workflow Definition written in Go can return both a custom value and an error.
+However, it is not possible to receive both a custom value and an error in the calling process as is normal in Go.
+The caller will receive either one or the other.
+Returning a non-nil `error` from a Workflow indicates that an error was encountered during its execution and the Workflow Execution should be [Terminated](#) and any custom return values will be ignored by the system.
 
 <!--
 <RelatedReadList
@@ -90,8 +93,9 @@ readlist={[
 
 In Go specifically, Workflow Definition code can not directly do the following:
 
-- Iterate over maps using `range`, because with `range` the order of the map's iteration is randomized (Use a Side Effect or an Activity.
-- Use the native `go` statement, `select` statement, or `chan` type (Use the [SDK Go API](#), [SDK Select API](#), and [SDK Channel API](#))
+- Iterate over maps using `range`, because with `range` the order of the map's iteration is randomized. (Use a Side Effect or an Activity instead.)
+- Use the native `go` statement, `select` statement, or `chan` type. (Use the [SDK Go API](#), [SDK Select API](#), or [SDK Channel API](#) instead.)
+- Call an external API, conduct a file I/O operation, talk to another service, etc. (Use an Activity for these.)
 
 <!--
 <RelatedReadList

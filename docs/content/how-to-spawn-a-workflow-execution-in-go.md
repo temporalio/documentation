@@ -10,12 +10,9 @@ import RelatedReadList from '../components/RelatedReadList.js'
 
 To spawn a Workflow Execution, use the `ExecuteWorkflow()` method on the Go SDK [`Client`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client#Client), which is available via [`NewClient()`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client#NewClient) in the [`go.temporal.io/sdk/client`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client) package.
 
-<RelatedReadList
-readlist={[
-["What is a Workflow Execution?","/docs/content/what-is-a-workflow-execution","explanation"],
-["How to spawn a Child Workflow Execution","/docs/content/how-to-spawn-a-child-workflow-execution-in-go","developer guide"],
-]}
-/>
+The Go SDK Client should never be used inside a Workflow Definition.
+To spawn a Workflow Execution from within another Workflow, use the [`ExecuteChildWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ExecuteChildWorkflow) API.
+For more information, see [How to spawn a Child Workflow Execution in Go](/docs/content/how-to-spawn-a-child-workflow-execution-in-go).
 
 The `ExecuteWorkflow()` API call requires an instance of [`context.Context`](https://pkg.go.dev/context#Context), an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client#StartWorkflowOptions), a Workflow Type name, and all variables to be passed to the Workflow Execution.
 The `ExecuteWorkflow()` call returns a Future, which can be used to get the result of the Workflow Execution.
@@ -37,9 +34,10 @@ func main() {
   defer c.Close()
   // ...
   workflowOptions := client.StartWorkflowOptions{
+    WorkflowID: "Your-Custom-Workflow-Id",
     TaskQueue: "your-task-queue",
   }
-  we, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition, param)
+  workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition, param)
   if err != nil {
     // ...
   }
@@ -65,6 +63,9 @@ The only field, of the `StartWorkflowOptions` instance, that requires a value is
 A Task Queue name is also provided to the Worker that is registered to execute that particular Workflow Type.
 The Task Queue name must be the same for both.
 
+We recommend supplying your own custom Workflow Id that can be used to get the result of the Workflow Execution asynchronously at another point in time.
+A custom Workflow Id is intended to correspond to a business-level identifier.
+
 <!--
 <RelatedReadList
 readliststring="What are Workflow Execution Options?#?e|
@@ -79,10 +80,16 @@ If the invocation process has access to the function directly, then the Workflow
 If the invocation process does not have direct access to the statically defined Workflow Definition, for example, if the Workflow Definition is in an un-importable package, or it is written in a completely different language, then the Workflow Type can be provided as a `string`.
 
 ```go
-we, err := c.ExecuteWorkflow(context.Background(), workflowOptions, "YourWorkflowDefinition", param)
+workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, "YourWorkflowDefinition", param)
 ```
 
 In Go, the name of the Workflow Type can be customized when the Workflow Definition is registered with a Worker.
+
+<RelatedReadList
+readlist={[
+["What is a Workflow Execution?","/docs/content/what-is-a-workflow-execution","explanation"],
+]}
+/>
 
 <!--
 <RelatedReadList
