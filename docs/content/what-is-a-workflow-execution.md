@@ -27,7 +27,7 @@ imageSize="75"
 title="Workflow Execution Status"
 />
 
-A Workflow Execution is uniquely identified by its [Namespace](docs/server/namespaces), [Workflow Id](/docs/content/what-is-a-workflow-id), and [Run Id](/docs/content/what-is-a-run-id).
+A Workflow Execution is uniquely identified by its [Namespace](/docs/server/namespaces), [Workflow Id](/docs/content/what-is-a-workflow-id), and [Run Id](/docs/content/what-is-a-run-id).
 
 The Workflow Id can be used to create a 1:1 mapping between a Workflow Execution and some other resource, such as a customer Id, order Id, or host Id.
 
