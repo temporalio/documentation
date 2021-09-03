@@ -58,3 +58,8 @@ Show notes as you read along:
     - [How To Deploy Temporal to Azure Kubernetes Service (AKS)](https://mikhail.io/2020/11/how-to-deploy-temporal-to-azure-kubernetes-aks/)
 
 As a result of this discussion, Dominik is leading an effort to clarify our [provided Helm charts](https://github.com/temporalio/helm-charts) so that they are easy to extend, rather than catering to every possible need.
+
+If you'd like to test run Temporal with Kubernetes locally, see Tiho's recent video on running Temporal with Minikube:
+
+
+<ResponsivePlayer url='https://youtu.be/f6N3ZcWHygU' />
