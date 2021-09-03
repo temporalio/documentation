@@ -27,6 +27,24 @@ import WhatIsAWorkflowExecution from "../content/what-is-a-workflow-execution.md
 
 <WhatIsAWorkflowExecution/>
 
+### Workflow Id
+
+import WhatIsAWorkflowId from "../content/what-is-a-workflow-id.md"
+
+<WhatIsAWorkflowId/>
+
+### Workflow Id Reuse Policy
+
+import WhatIsAWorkflowIdReUsePolicy from "../content/what-is-a-workflow-id-reuse-policy.md"
+
+<WhatIsAWorkflowIdReUsePolicy/>
+
+### Run Id
+
+import WhatIsARunId from "../content/what-is-a-run-id.md"
+
+<WhatIsARunId/>
+
 ## Child Workflow Execution
 
 import WhatIsAChildWorkflowExecution from "../content/what-is-a-child-workflow-execution.md"
@@ -44,12 +62,6 @@ import WhatIsAParentClosePolicy from "../content/what-is-a-parent-close-policy.m
 import WhatIsATemporalCronJob from "../content/what-is-a-temporal-cron-job.md"
 
 <WhatIsATemporalCronJob/>
-
-## Workflow Id Reuse Policy
-
-import WhatIsAWorkflowIdReUsePolicy from "../content/what-is-a-workflow-id-reuse-policy.md"
-
-<WhatIsAWorkflowIdReUsePolicy/>
 
 ## Workflow Execution Timeout
 

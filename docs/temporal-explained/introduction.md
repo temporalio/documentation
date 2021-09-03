@@ -24,20 +24,6 @@ import WhatAreTheDifferencesBetweenTemporalAndATraditionalSystem from '../conten
 
 <WhatAreTheDifferencesBetweenTemporalAndATraditionalSystem/>
 
-### Workflow Id
-
-A unique identifier for a [Workflow Execution](#workflow-execution).
-
-- Temporal guarantees the uniqueness of an Id within a [Namespace](#namespace).
-- An attempt to start a [Workflow](#workflow) with a duplicate Id results in an **already started** error if there is another open Workflow execution. However, this behavior depends on the `WorkflowIdReusePolicy` flag; if set to `ALLOW_DUPLICATE`, it is possible to start a new execution with the same Workflow Id.
-
-### Run Id
-
-A UUID that a Temporal service assigns to each [Workflow](#workflow) run.
-
-- Temporal guarantees that only one [Workflow Execution](#workflow-execution) with a given [Workflow Id](#workflow-id) can be open at a time. But after the [Workflow Execution](#workflow-execution) has completed, if allowed by a configured policy, you might be able to re-execute a [Workflow](#workflow) after it has closed or failed, using the same [Workflow Id](#workflow-id).
-- Each such re-execution is called a run. Run Id is used to uniquely identify a run even if it shares a [Workflow Id](#workflow-id) with others.
-
 ## What are Workflow Execution Options?
 
 Each SDK provides an API for customizing the properties of a Workflow Execution.

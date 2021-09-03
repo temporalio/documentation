@@ -1,23 +1,25 @@
 ---
 id: what-is-a-workflow-id
 title: What is a Workflow Id?
-description: A Workflow Id is an application-level identifier for a Workflow Execution that is unique within a Namespace.
+description: A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.
 tags:
   - explanation
 ---
 
 import RelatedReadList from '../components/RelatedReadList.js'
 
-A Workflow Id is an application-level identifier for a [Workflow Execution](#) that is unique within a [Namespace](docs/server/namespaces).
+A Workflow Id is a customizable, application-level identifier for a [Workflow Execution](/docs/content/what-is-a-workflow-execution) that is unique to an Open Workflow Execution within a [Namespace](/docs/server/namespaces).
 
-A [Workflow](#) is uniquely identified by its [Namespace](docs/server/namespaces), Workflow Id, and [Run Id](what-is-a-run-id).
+A Workflow Id is often a business-level customer ID or order ID.
 
-An attempt to start a [Workflow](#) with a duplicate Workflow Id results in an **already started** error if another open [Workflow Execution](#) has the same Workflow Id.
-However, this behavior depends on the `WorkflowIdReusePolicy` flag; if set to `ALLOW_DUPLICATE`, it is possible to start a new execution with the same Workflow Id.
+A [Workflow Id Reuse Policy](/docs/content/what-is-a-workflow-id-reuse-policy) can be used to manage whether a Workflow Id can be re-used.
 
-You can assign a custom Workflow Id to a [Workflow](#).
-Use a custom Workflow Id for business-level identification, such as a customer ID or an order ID.
+import NoDuplicateWorklfowIdForOpenWorkflowExecution from "../reminders/note-cannot-duplicate-workflowid-of-open-workflow-execution.md"
+
+<NoDuplicateWorklfowIdForOpenWorkflowExecution/>
 
 <RelatedReadList
-readliststring="What is a Workflow Id Reuse Policy?/docs/content/what-is-a-workflow-id-reuse-policy?e|What is a Run Id?/docs/content/what-is-a-run-id?e"
+readlist={[
+["What is a Run Id?","/docs/content/what-is-a-run-id","explanation"],
+]}
 />
