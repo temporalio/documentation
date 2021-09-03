@@ -2,7 +2,13 @@
 id: hello-world-tutorial
 title: Build a Temporal "Hello World!" app from scratch in Java
 sidebar_label: Build "Hello World!" app
-tags: helloworld, java, sdk, intellij, gradle, tutorial
+tags: 
+  - helloworld
+  - java
+  - sdk
+  - intellij
+  - gradle
+  - tutorial
 ---
 
 <img class="docs-image-centered" src="https://raw.githubusercontent.com/temporalio/documentation-images/main/static/astronaut-hello-java.jpg" />

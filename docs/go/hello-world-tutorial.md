@@ -2,7 +2,11 @@
 id: hello-world-tutorial
 title: Build a Temporal "Hello World!" app from scratch in Go
 sidebar_label: Build "Hello World!" app
-tags: helloworld, go, sdk, tutorial
+tags: 
+  - helloworld
+  - go
+  - sdk
+  - tutorial
 ---
 
 <img class="docs-image-centered" src="https://raw.githubusercontent.com/temporalio/documentation-images/main/static/astronaut-hello-go.jpg" />
