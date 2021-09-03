@@ -14,13 +14,18 @@ A Workflow Execution is a Reentrant Process; that is, a resumable, recoverabl
 - Recoverable: Ability of a process to continue execution after execution was suspended on a failure.
 - Reactive: Ability of a process to react to external events.
 
-<CenteredImage
-imagePath="/diagrams/workflow-execution-progressing-and-suspended.svg"
-imageSize="75"
-title="Open Workflow Executions are either progressing or suspended"
-/>
-
 A Workflow Execution has exclusive access to its local state, executes concurrently to all other Workflow Executions, and can communicate with other Workflow Executions using Signals.
+
+A Workflow Execution is either Running or Closed.
+When a Workflow Execution is Running, it is either actively progressing or suspended, awaiting on something.
+
+A Closed status means that the Workflow Execution has finished progressing, and has either Completed successfully, Continued As New, Failed, Timed Out, been Cancelled, or Terminated.
+
+<CenteredImage
+imagePath="/diagrams/workflow-execution-status.svg"
+imageSize="75"
+title="Workflow Execution Status"
+/>
 
 A Workflow Execution is uniquely identified by its [Namespace](docs/server/namespaces), [Workflow Id](/docs/content/what-is-a-workflow-id), and [Run Id](/docs/content/what-is-a-run-id).
 

@@ -8,7 +8,7 @@ tags:
 
 import RelatedReadList from '../components/RelatedReadList.js'
 
-A Workflow Id is a customizable, application-level identifier for a [Workflow Execution](/docs/content/what-is-a-workflow-execution) that is unique to an Open Workflow Execution within a [Namespace](docs/server/namespaces).
+A Workflow Id is a customizable, application-level identifier for a [Workflow Execution](/docs/content/what-is-a-workflow-execution) that is unique to an Open Workflow Execution within a [Namespace](/docs/server/namespaces).
 
 A Workflow Id is often a business-level customer ID or order ID.
 
