@@ -23,7 +23,7 @@ import { ResponsivePlayer } from '../src/components'
 
 <ResponsivePlayer url='https://www.youtube.com/watch?v=11I87HKS_NM' />
 
-Show notes as you read along:
+## Show notes
 
 - **Baseline Context**
     - #1 goal of Helm is for packaging apps
@@ -57,7 +57,11 @@ Show notes as you read along:
     - [How To Deploy Temporal to Azure Container Instances](https://mikhail.io/2020/10/how-to-deploy-temporal-to-azure-container-instances/)
     - [How To Deploy Temporal to Azure Kubernetes Service (AKS)](https://mikhail.io/2020/11/how-to-deploy-temporal-to-azure-kubernetes-aks/)
 
-As a result of this discussion, Dominik is leading an effort to clarify our [provided Helm charts](https://github.com/temporalio/helm-charts) so that they are easy to extend, rather than catering to every possible need.
+## Helm Charts
+
+As a result of this discussion, Dominik is leading an effort to clarify our [provided Helm charts](https://github.com/temporalio/helm-charts) so that they are easy to extend, rather than catering to every possible need. Watch that repo for updates and [join our Slack](https://temporal.io/slack) to get involved!
+
+## Minikube
 
 If you'd like to test run Temporal with Kubernetes locally, see Tiho's recent video on running Temporal with Minikube:
 
