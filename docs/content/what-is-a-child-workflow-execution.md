@@ -11,7 +11,7 @@ import RelatedReadList from '../components/RelatedReadList.js'
 
 A Child Workflow Execution is a Workflow Execution that is spawned from within another Workflow.
 
-A Workflow Execution can be both a Parent and a Child Workflow Execution, as any Workflow can spawn another Workflow.
+A Workflow Execution can be both a Parent and a Child Workflow Execution because any Workflow can spawn another Workflow.
 
 <CenteredImage
 imagePath="/diagrams/parent-child-workflow-execution-relationship.svg"
