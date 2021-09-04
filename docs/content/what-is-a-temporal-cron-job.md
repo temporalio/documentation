@@ -18,7 +18,7 @@ title="Temporal Cron Job timeline"
 />
 
 A Temporal Cron Job is very similar to a cron job.
-Just as a Linux based cron job accepts a command and a schedule on which to execute that command, a Cron Schedule can be provided with the call to spawn a Workflow Execution.
+Just as a Linux-based cron job accepts a command and a schedule on which to execute that command, a Cron Schedule can be provided with the call to spawn a Workflow Execution.
 If a Cron Schedule is provided, the Temporal Server will spawn an execution for the associated Workflow Type per the schedule.
 
 Each Workflow Execution within the series is considered a Run.
