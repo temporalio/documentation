@@ -69,7 +69,7 @@ Use the [crontab guru site](https://crontab.guru/) to test your cron expressions
 
 You can also pass any of the [predefined schedules](https://pkg.go.dev/github.com/robfig/cron#hdr-Predefined_schedules) or [intervals](https://pkg.go.dev/github.com/robfig/cron#hdr-Intervals) described in the [`robfig/cron` documentation](https://pkg.go.dev/github.com/robfig/cron).
 
-For example, "@weekly" would cause the a Workflow Execution to spawn once a week, midnight between Sat/Sun.
+For example, "@weekly" causes a Workflow Execution to spawn once a week at midnight between Saturday and Sunday.
 
 ### Stop Cron Job
 
