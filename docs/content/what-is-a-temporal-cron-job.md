@@ -75,7 +75,7 @@ For example, "@weekly" causes a Workflow Execution to spawn once a week at midni
 
 A Temporal Cron Job does not stop spawning Runs until it has been Terminated or until the [Workflow Execution Timeout](/docs/content/what-is-a-workflow-execution-timeout) is reached.
 
-A Cancellation Request will only affect the current Run.
+A Cancellation Request affects only the current Run.
 
 Use the Workflow Id in any requests to Cancel or Terminate.
 
