@@ -275,7 +275,7 @@ To trigger this behavior, the Workflow function should
 terminate by returning the special **ContinueAsNewError** error:
 
 ```go
-func SimpleWorkflow(workflow.Context ctx, value string) error {
+func SimpleWorkflow(ctx workflow.Context, value string) error {
     ...
     return workflow.NewContinueAsNewError(ctx, SimpleWorkflow, value)
 }
