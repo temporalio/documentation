@@ -77,7 +77,14 @@ It uses port 6939 for membership related communication.
 
 Cassandra, MySQL, and PostgreSQL schemas are supported and thus can be used as the Server's database.
 
-The database stores Tasks, Workflow data, Events, and visibility data.
+The database stores:
+
+ - **Tasks**: handling task dispatch
+ - **Workflow state**:
+	- **Execution** table: captures the mutable state tracked by Workflows
+	- **History** table: an append only log of events
+ - **Metadata**: for namespaces
+ - **Visibility data**: driving operations like "show all open workflow executions". In production we recommend using ElasticSearch for high throughput usage.
 
 <RelatedReadList
 readlist={[
