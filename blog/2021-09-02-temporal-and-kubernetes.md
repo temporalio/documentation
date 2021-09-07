@@ -31,7 +31,7 @@ import { ResponsivePlayer } from '../src/components'
     - We use helm charts to template
     - K8s has resources, no notion of application
 - **Is Kubernetes a good platform for deploying Temporal?**
-    - Yes for Temporal core service roles - [History, Matching, Frontend, Worker](https://docs.temporal.io/docs/server-architecture)
+    - Yes for Temporal core service roles - [History, Matching, Frontend, Worker](https://docs.temporal.io/docs/content/what-is-the-temporal-server)
     - No for Cassandra and ElasticSearch
     - "any general purpose container orchestration solution that allows cross container communication eg Kubernetes”
 - **Is Helm a good tool for deploying Temporal on Kubernetes?** [https://github.com/temporalio/helm-charts](https://github.com/temporalio/helm-charts)
