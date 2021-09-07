@@ -51,6 +51,7 @@ The Frontend Service has access to the hash rings that maintain service membersh
 Inbound call rate limiting is applied per host and per namespace.
 
 The Frontend service talks to the Matching service, History service, Worker service, the database, and Elasticsearch (if in use).
+
 - It uses the grpcPort 7233 to host the service handler.
 - It uses port 6933 for membership related communication.
 
@@ -71,11 +72,12 @@ Each shard maintains data (routing Ids, mutable state) and queues.
 There a three types of queues that the a History shard maintains:
 
 - Transfer queue: This is used to transfer internal tasks to the Matching Service.
-Whenever a new Workflow Task needs to be scheduled, the History Service transactionally dispatches it to the Matching Service.
+  Whenever a new Workflow Task needs to be scheduled, the History Service transactionally dispatches it to the Matching Service.
 - Timer queues: This is used to durably persist Timers.
 - Replicator queue: This is used only for the experimental Multi-Cluster feature
 
 The History service talks to the Matching Service and the Database.
+
 - It uses grpcPort 7234 to host the service handler.
 - It uses port 6934 for membership related communication.
 
@@ -93,6 +95,7 @@ It is responsible for matching Workers to Tasks and routing new tasks to the app
 This service can scale internally by having multiple instances.
 
 It talks to the Frontend service, History service, and the database.
+
 - It uses grpcPort 7235 to host the service handler.
 - It uses port 6935 for membership related communication.
 
@@ -107,6 +110,7 @@ title="Worker Service"
 />
 
 It talks to the Frontend service.
+
 - It uses grpcPort 7239 to host the service handler.
 - It uses port 6939 for membership related communication.
 
@@ -130,7 +134,7 @@ The database stores the following types of data:
   - **History table**: An append only log of Workflow Execution History Events.
 - **Namespace metadata**: Metadata of each Namespace in the Cluster.
 - **Visibility data**: Enables operations like "show all running Workflow Executions".
- For production environments, we recommend using ElasticSearch.
+  For production environments, we recommend using ElasticSearch.
 
 <RelatedReadList
 readlist={[
