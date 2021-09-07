@@ -10,7 +10,7 @@ import RelatedReadList from '../components/RelatedReadList.js'
 The Temporal Server is a highly scalable multi-tenant system that is capable of tracking the state of millions to billions of Workflows Executions concurrently.
 
 An instance of the Temporal Server is called a Cluster.
-A Temporal Cluster consists of several services and a database.
+A Temporal Cluster consists of several services (Frontend, Matching, History, and Worker) and a database.
 
 <CenteredImage
 imagePath="/diagrams/temporal-server-cluster.svg"
@@ -18,82 +18,119 @@ imageSize="75"
 title="The Temporal Server (Cluster)"
 />
 
-The processes can run independently or be grouped together into shared processes on one or more physical or virtual machines.
+The services can run independently or be grouped together into shared processes on one or more physical or virtual machines.
 For live (production) environments we recommend that each service runs independently, as each one has different scaling requirements, and troubleshooting becomes easier.
-A Temporal Cluster can scale in what is called [Multi-Cluster Replication].
-
-<!-- TODO <RelatedReadList
-readlist={[
-["What is Multi-Cluster Replication", "/docs/content/what-is-multi-cluster-replication"]
-]}
-/> -->
-
-<CenteredImage
-imagePath="/diagrams/temporal-system-entity-relationship.svg"
-imageSize="100"
-title="The Temporal Server topology"
-/>
+The History, Matching, and Worker services can scale horizontally within a Cluster.
+A Temporal Cluster can scale in what is called [Multi-Cluster Replication](#).
 
 Each service is aware of the others, including scaled instances, through a membership protocol.
 
 ### Frontend Service
 
-The Frontend service exposes a strongly typed [Proto API](https://github.com/temporalio/api/blob/master/temporal/api/workflowservice/v1/service.proto).
+The Frontend Service is a singleton (non-scalable) service that exposes a strongly typed [Proto API](https://github.com/temporalio/api/blob/master/temporal/api/workflowservice/v1/service.proto).
+The Frontend Service is responsible for rate limiting, authorizing, validating, and routing all in-bound calls.
 
-The Frontend service is responsible for all in-bound calls, including [Multi-cluster Replication](/docs/server/multi-cluster) related calls from a remote Cluster.
+<CenteredImage
+imagePath="/diagrams/temporal-frontend-service.svg"
+imageSize="50"
+title="Frontend Service"
+/>
 
-The Frontend service talks to the Matching service, History service, Worker service, and the database.
+Types of inbound calls include the following:
 
-It uses the grpcPort 7233 to host the service handler.
-It uses port 6933 for membership related communication with other hosts.
+- Domain CRUD
+- External events
+- Worker polls
+- Visibility requests
+- Admin operations via the CLI
+- [Multi-cluster Replication](/docs/server/multi-cluster) related calls from a remote Cluster
+
+Every inbound request related to a Workflow Execution must have a Workflow Id, which becomes hashed for routing purposes.
+The Frontend Service has access to the hash rings that maintain service membership information, including how many nodes (instances of each service) are in the Cluster.
+
+Inbound call rate limiting is applied per host and per namespace.
+
+The Frontend service talks to the Matching service, History service, Worker service, the database, and Elasticsearch (if in use).
+- It uses the grpcPort 7233 to host the service handler.
+- It uses port 6933 for membership related communication.
 
 ### History service
 
 The History Service tracks the state of Workflow Executions.
-Whenever a new Workflow Task needs to be scheduled, the History Server transactionally dispatches it to Matching via a transfer queue.
 
-The History Service scales horizontally via individual shards, configured during the Cluster's creation and remains static for the life of the Cluster (so you should plan for scale and over-provision).
+<CenteredImage
+imagePath="/diagrams/temporal-history-service.svg"
+imageSize="50"
+title="History Service"
+/>
 
-Each shard holds data (routing ID's, mutable state) and queues:
-	- Transfer queue: Every time we do an update, we have to do a single transaction that updates the state of a workflow and creates a task to be dispatched
-	- Timer queues: every time a Timer API is called, History creates a task to durably persist the timer
-	- Replicator queue: only used for the experimental Multi-Cluster feature
+The History Service scales horizontally via individual shards, configured during the Cluster's creation.
+The number of shards remains static for the life of the Cluster (so you should plan to scale and over-provision).
 
-It uses grpcPort 7234 to host the service handler.
-It uses port 6934 for membership related communication.
+Each shard maintains data (routing Ids, mutable state) and queues.
+There a three types of queues that the a History shard maintains:
+
+- Transfer queue: This is used to transfer internal tasks to the Matching Service.
+Whenever a new Workflow Task needs to be scheduled, the History Service transactionally dispatches it to the Matching Service.
+- Timer queues: This is used to durably persist Timers.
+- Replicator queue: This is used only for the experimental Multi-Cluster feature
+
+The History service talks to the Matching Service and the Database.
+- It uses grpcPort 7234 to host the service handler.
+- It uses port 6934 for membership related communication.
 
 ### Matching service
 
 The Matching Service is responsible for hosting Task Queues for Task dispatching.
+
+<CenteredImage
+imagePath="/diagrams/temporal-matching-service.svg"
+imageSize="50"
+title="Matching Service"
+/>
+
 It is responsible for matching Workers to Tasks and routing new tasks to the appropriate queue.
 This service can scale internally by having multiple instances.
 
 It talks to the Frontend service, History service, and the database.
-
-It uses grpcPort 7235 to host the service handler.
-It uses port 6935 for membership related communication.
+- It uses grpcPort 7235 to host the service handler.
+- It uses port 6935 for membership related communication.
 
 ### Worker service
 
 The Worker Service runs background processing for the replication queue, system Workflows, and in versions older than 1.5.0, the Kafka visibility processor.
 
-It talks to the Frontend service.
+<CenteredImage
+imagePath="/diagrams/temporal-worker-service.svg"
+imageSize="25"
+title="Worker Service"
+/>
 
-It uses grpcPort 7239 to host the service handler.
-It uses port 6939 for membership related communication.
+It talks to the Frontend service.
+- It uses grpcPort 7239 to host the service handler.
+- It uses port 6939 for membership related communication.
 
 ### Database
 
+The database provides storage for the system.
+
+<CenteredImage
+imagePath="/diagrams/temporal-database.svg"
+imageSize="50"
+title="Database database storage use cases"
+/>
+
 Cassandra, MySQL, and PostgreSQL schemas are supported and thus can be used as the Server's database.
 
-The database stores:
+The database stores the following types of data:
 
- - **Tasks**: handling task dispatch
- - **Workflow state**:
-	- **Execution** table: captures the mutable state tracked by Workflows
-	- **History** table: an append only log of events
- - **Metadata**: for namespaces
- - **Visibility data**: driving operations like "show all open workflow executions". In production we recommend using ElasticSearch for high throughput usage.
+- **Tasks**: Tasks to be dispatched.
+- **State of Workflow Executions**:
+  - **Execution table**: A capture of the mutable state of Workflow Executions.
+  - **History table**: An append only log of Workflow Execution History Events.
+- **Namespace metadata**: Metadata of each Namespace in the Cluster.
+- **Visibility data**: Enables operations like "show all running Workflow Executions".
+ For production environments, we recommend using ElasticSearch.
 
 <RelatedReadList
 readlist={[
