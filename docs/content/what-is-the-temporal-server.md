@@ -9,11 +9,18 @@ import RelatedReadList from '../components/RelatedReadList.js'
 
 The Temporal Server is a highly scalable multi-tenant system that is capable of tracking the state of millions to billions of Workflows Executions concurrently.
 
-An instance of the Temporal Server is a group of individually scalable services.
-These processes can run independently or be grouped together into shared processes on one or more physical or virtual machines.
-For live (production) environments we recommend that each service is running independently, as they have different scale out requirements and troubleshooting becomes easier.
+An instance of the Temporal Server is called a Cluster, and it consists of four services and a database.
+
+<CenteredImage
+imagePath="/diagrams/temporal-server-cluster.svg"
+imageSize="50"
+title="The Temporal Server (Cluster)"
+/>
+
+The four processes can run independently or be grouped together into shared processes on one or more physical or virtual machines.
+For live (production) environments we recommend that each service runs independently, as each one has different scaling requirements, and troubleshooting becomes easier.
+
 The Temporal Server employs various sharding techniques to ensure internal scalability.
-An instance of the Server is often referred to as a Cluster.
 
 <!-- TODO <RelatedReadList
 readlist={[
