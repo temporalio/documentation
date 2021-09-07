@@ -56,6 +56,7 @@ It uses port 6934 for membership related communication.
 ### Matching service
 
 The Matching Service is responsible for hosting Task Queues for Task dispatching.
+It is responsible for matching Workers to Tasks and routing new tasks to the appropriate queue.
 This service can scale internally by having multiple instances.
 
 It talks to the Frontend service, History service, and the database.
