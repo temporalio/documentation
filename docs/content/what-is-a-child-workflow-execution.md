@@ -48,7 +48,8 @@ legend={[
 
 An individual Workflow Execution has an Event History size limit, which imposes a couple of considerations for using Child Workflows.
 On one hand, because a Child Workflow Executions have their own Event Histories, they are often used to partition large workloads into smaller chunks.
-For example, a single Workflow Execution does not have enough space in its Event History to spawn 100,000 Activity Executions. But a Parent Workflow Execution can spawn 1000 Child Workflow Executions that each spawn 1000 Activity Executions to achieve a total of 1,000,000 Activity Executions.
+For example, a single Workflow Execution does not have enough space in its Event History to spawn 100,000 Activity Executions.
+But a Parent Workflow Execution can spawn 1000 Child Workflow Executions that each spawn 1000 Activity Executions to achieve a total of 1,000,000 Activity Executions.
 On the other hand, since a Parent Workflow Execution Event History contains Events that correspond to the status of the Child Workflow Execution, a single Parent should not spawn more than 1000 Child Workflow Executions.
 In general, however, Child Workflow Executions result in more overall Events recorded in Event Histories than Activities.
 Because each entry in an Event History is a "cost" in terms of compute resources, this could become a factor in very large workloads.
