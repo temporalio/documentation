@@ -9,18 +9,18 @@ import RelatedReadList from '../components/RelatedReadList.js'
 
 The Temporal Server is a highly scalable multi-tenant system that is capable of tracking the state of millions to billions of Workflows Executions concurrently.
 
-An instance of the Temporal Server is called a Cluster, and it consists of four services and a database.
+An instance of the Temporal Server is called a Cluster.
+A Temporal Cluster consists of several services and a database.
 
 <CenteredImage
 imagePath="/diagrams/temporal-server-cluster.svg"
-imageSize="50"
+imageSize="75"
 title="The Temporal Server (Cluster)"
 />
 
-The four processes can run independently or be grouped together into shared processes on one or more physical or virtual machines.
+The processes can run independently or be grouped together into shared processes on one or more physical or virtual machines.
 For live (production) environments we recommend that each service runs independently, as each one has different scaling requirements, and troubleshooting becomes easier.
-
-The Temporal Server employs various sharding techniques to ensure internal scalability.
+A Temporal Cluster can scale in what is called [Multi-Cluster Replication].
 
 <!-- TODO <RelatedReadList
 readlist={[
@@ -34,24 +34,26 @@ imageSize="100"
 title="The Temporal Server topology"
 />
 
+Each service is aware of the others, including scaled instances, through a membership protocol.
+
 ### Frontend Service
 
 The Frontend service exposes a strongly typed [Proto API](https://github.com/temporalio/api/blob/master/temporal/api/workflowservice/v1/service.proto).
 
-The Frontend service is responsible for all in-bound calls, including [Multi-cluster Replication](/docs/server/multi-cluster) related calls that are invoked by a remote cluster.
+The Frontend service is responsible for all in-bound calls, including [Multi-cluster Replication](/docs/server/multi-cluster) related calls from a remote Cluster.
 
-It talks to the Matching service, History service, Worker service, and the database.
+The Frontend service talks to the Matching service, History service, Worker service, and the database.
 
 It uses the grpcPort 7233 to host the service handler.
 It uses port 6933 for membership related communication with other hosts.
 
 ### History service
 
-The History Service manages the internal state machine for Workflow execution.
-When a new workflow task needs to be scheduled, History transactionally dispatches it to Matching via a transfer queue.
+The History Service tracks the state of Workflow Executions.
+Whenever a new Workflow Task needs to be scheduled, the History Server transactionally dispatches it to Matching via a transfer queue.
 
+The History Service scales horizontally via individual shards, configured during the Cluster's creation and remains static for the life of the Cluster (so you should plan for scale and over-provision).
 
-The History Service scales horizontally by individual shards, configured at cluster creation and static for the life of the cluster (so you should plan for scale and overprovision).
 Each shard holds data (routing ID's, mutable state) and queues:
 	- Transfer queue: Every time we do an update, we have to do a single transaction that updates the state of a workflow and creates a task to be dispatched
 	- Timer queues: every time a Timer API is called, History creates a task to durably persist the timer
