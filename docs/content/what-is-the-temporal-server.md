@@ -40,10 +40,15 @@ It uses port 6933 for membership related communication with other hosts.
 
 ### History service
 
-The History Service manages Workflow state transitions.
-This service can scale internally by having multiple instances.
+The History Service manages the internal state machine for Workflow execution.
+When a new workflow task needs to be scheduled, History transactionally dispatches it to Matching via a transfer queue.
 
-It talks to the Frontend service, Matching service, and the database.
+
+The History Service scales horizontally by individual shards, configured at cluster creation and static for the life of the cluster (so you should plan for scale and overprovision).
+Each shard holds data (routing ID's, mutable state) and queues:
+	- Transfer queue: Every time we do an update, we have to do a single transaction that updates the state of a workflow and creates a task to be dispatched
+	- Timer queues: every time a Timer API is called, History creates a task to durably persist the timer
+	- Replicator queue: only used for the experimental Multi-Cluster feature
 
 It uses grpcPort 7234 to host the service handler.
 It uses port 6934 for membership related communication.
