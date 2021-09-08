@@ -1,0 +1,108 @@
+{
+  "main": {
+    "id": "c381d966b1b477ba",
+    "type": "split",
+    "children": [
+      {
+        "id": "71fcd5bd99e2410c",
+        "type": "leaf",
+        "state": {
+          "type": "markdown",
+          "state": {
+            "file": "how-to-get-the-result-of-a-workflow-execution-in-go.md",
+            "mode": "source"
+          }
+        }
+      },
+      {
+        "id": "6681b29ca5e5cb87",
+        "type": "leaf",
+        "state": {
+          "type": "markdown",
+          "state": {
+            "file": "how-to-set-a-cron-schedule-in-go.md",
+            "mode": "source"
+          }
+        }
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "7fb310946f594836",
+    "type": "split",
+    "children": [
+      {
+        "id": "ffbc49f66db35063",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "d7ff5ddf3ab5a83e",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {}
+            }
+          },
+          {
+            "id": "ee7e9e44d64172e2",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "e2e241b086729c93",
+    "type": "split",
+    "children": [
+      {
+        "id": "fd17650f3db4d475",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "b37bdb04e2c72a69",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "how-to-get-the-result-of-a-workflow-execution-in-go.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "active": "71fcd5bd99e2410c",
+  "lastOpenFiles": [
+    "how-to-get-the-result-of-a-workflow-execution-in-go.md",
+    "how-to-set-a-cron-schedule-in-go.md",
+    "how-to-spawn-a-child-workflow-execution-in-go.md",
+    "what-is-a-command.md",
+    "how-to-develop-a-workflow-definition-in-go.md"
+  ]
+}
