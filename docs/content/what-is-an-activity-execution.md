@@ -4,7 +4,6 @@ title: What is an Activity Execution?
 description: todo
 ---
 
-
 A business-level function that implements your application logic, such as calling a service or transcoding a media file.
 
 - An Activity usually implements a single well-defined action; it can be short or long running.

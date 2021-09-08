@@ -4,7 +4,6 @@ title: What is an Activity Heartbeat?
 description: todo
 ---
 
-
 Provides to the Temporal server the status of an [Activity Task](#activity-task) that is being executed.
 
 - Activity Heartbeats help ensure that [Activity](#activity) execution failures and timeouts are identified quickly.
