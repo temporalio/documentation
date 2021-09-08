@@ -164,15 +164,14 @@ The solution is to remove `#[WorkflowInterface]` annotation from BaseWorkflow.
 The following is valid code:
 
 ```php
+#[WorkflowInterface]
 interface BaseWorkflow {
     #[WorkflowMethod]
     public function start();
 }
 
-#[WorkflowInterface]
 interface Workflow1 extends BaseWorkflow {}
 
-#[WorkflowInterface]
 interface Workflow2 extends BaseWorkflow {}
 ```
 
