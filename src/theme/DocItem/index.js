@@ -122,9 +122,9 @@ function DocItem(props) {
                 </div>
               </div>
             )}
-            <div className="margin-vert--lg">
-              <TemporalCloudForm />
-            </div>
+            // <div className="margin-vert--lg">
+            //   <TemporalCloudForm />
+            // </div>
             <div className="margin-vert--lg">
               <DocPaginator metadata={metadata} />
             </div>
