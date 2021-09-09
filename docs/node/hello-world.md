@@ -11,7 +11,7 @@ The Node SDK and associated documentation is in an Alpha stage and may change at
 In this tutorial, we'll go over the different components that make up a Temporal project.
 All of the code on this page is included in our package initializer skeleton, which we set up in [Getting started](/docs/node/getting-started).
 
-The SDK steers developers to write their Workflows and Activities in TypeScript but vanilla JS is also supported. All examples in the documentation are written in TypeScript.
+The SDK steers developers to write their Workflows and Activities in TypeScript but vanilla JS is also supported.
 
 ### Activities
 
@@ -19,7 +19,7 @@ The SDK steers developers to write their Workflows and Activities in TypeScript 
 
 Activities are called from Workflows in order to run non-deterministic code.
 
-Activities are just async functions. They run like typical Node.js code, and they can be cancelled and report heartbeats.
+Any async function can be used as an Activity as long as its parameters and return value can be (de)serialized using a [DataConverter](https://nodejs.temporal.io/api/interfaces/common.DataConverter). Activities run in the Node.js execution environment, they can be cancelled and report heartbeats.
 
 `src/activities.ts`
 
@@ -30,32 +30,26 @@ Activities are just async functions. They run like typical Node.js code, and the
 
 [API reference](https://nodejs.temporal.io/api/namespaces/workflow)
 
-Workflows are the core of the Temporal system. They abstract away the complexities of writing distributed programs.
-
-In the Node.js SDK, each Workflow runs in a separate V8 isolate in order to provide a [deterministic runtime](/docs/node/determinism).
-
-#### Interface
-
-A Workflow's interface is used for validating the implementation and generating a type safe [WorkflowClient](https://nodejs.temporal.io/api/interfaces/client.workflowclient) and `ChildWorkflow` (not yet implemented).
-
-Workflow interfaces are directly referenced by their implementation and may be written in sync or async form: for example, a method could return a `number` or a `Promise<number>`.
-
-Workflow interface declarations are optional but recommended. They're only required for generating type-safe clients.
-
-`src/interfaces/workflows.ts`
-
-<!--SNIPSTART nodejs-hello-workflow-interface {"enable_source_link": false}-->
-<!--SNIPEND-->
+In the Node.js SDK, each Workflow execution is run in a separate V8 isolate context in order to provide a [deterministic runtime](/docs/node/determinism).
 
 #### Implementation
 
-A Workflow implementation may export a `workflow` object, which can be type-checked using a pre-defined interface or `main` (and optionally [signals](signals) and [queries](queries)) directly.
+A Workflow implementation exposes handlers for executing the Workflow, processing [signals](signals) and responding to [queries](queries).
 
-Use `Context.configureActivities` to create functions that schedule Activities in the system.
+The snippet below uses `configureActivities` to create functions that, when called, schedule Activities in the system.
 
-`src/workflows/example.ts`
+`src/workflows.ts`
 
 <!--SNIPSTART nodejs-hello-workflow {"enable_source_link": false}-->
+<!--SNIPEND-->
+
+#### Type definitions
+
+Workflow type definitions are optional, they provide type safety in situations where the implementation cannot directly be referenced by a client such as cross service or cross language calls.
+
+`src/interfaces.ts`
+
+<!--SNIPSTART nodejs-hello-workflow-interface {"enable_source_link": false}-->
 <!--SNIPEND-->
 
 ### Worker
@@ -63,7 +57,7 @@ Use `Context.configureActivities` to create functions that schedule Activities i
 [API reference](https://nodejs.temporal.io/api/namespaces/worker)
 
 The Worker connects to Temporal Server and runs Workflows and Activities.
-`Worker.create()` accepts [these options](https://nodejs.temporal.io/api/interfaces/worker.workeroptions).
+See the list of [WorkerOptions](https://nodejs.temporal.io/api/interfaces/worker.workeroptions) for customizing Worker creation.
 
 `src/worker.ts`
 
@@ -74,7 +68,8 @@ The Worker connects to Temporal Server and runs Workflows and Activities.
 
 [API reference](https://nodejs.temporal.io/api/namespaces/client)
 
-The client can be used to schedule Workflows and send other requests to Temporal Server.
+The [`WorkflowClient`](https://nodejs.temporal.io/api/classes/client.workflowclient) class is used to interact with existing Workflows or to start new ones.
+
 It can be used in any Node.js process (for example, an [Express](https://expressjs.com/) web server) and is separate from the Worker.
 
 `src/exec-workflow.ts`

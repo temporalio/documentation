@@ -18,7 +18,7 @@ If, for example, a Node.js Workflow starts a Java Child Workflow which calls an 
 <!--TODO: use snipsync-->
 
 ```ts
-import { Context, Workflow } from '@temporalio/workflow';
+import { childWorkflow } from '@temporalio/workflow';
 import {
   ActivityFailure,
   ApplicationFailure,
@@ -27,12 +27,12 @@ import {
 
 // Define the TypeScript version of the Java Workflow interface
 // to get a type safe child WorkflowStub
-interface JavaWorkflow extends Workflow {
-  main(): void;
-}
+export type JavaWorkflow = () => {
+  execute(): Promise<void>;
+};
 
-async function main() {
-  const child = Context.child<JavaWorkflow>('RunAnActivityWorkflow');
+async function execute() {
+  const child = childWorkflow<JavaWorkflow>('RunAnActivityWorkflow');
   try {
     await child.execute();
   } catch (err) {
@@ -50,7 +50,7 @@ async function main() {
   }
 }
 
-export const workflow = { main };
+export const myWorkflow = () => ({ execute });
 ```
 
 </details>
@@ -64,28 +64,34 @@ As explained above, cancellation might not be the immediate cause of failure—i
 
 ```ts
 import {
-  Context,
   CancellationScope,
+  configureActivities,
   isCancellation,
 } from '@temporalio/workflow';
 import * as activities from '../activities';
 
-const { httpGetJSON } = Context.configureActivities<typeof activities>({
-  type: 'remote',
-  startToCloseTimeout: '1m',
-});
+export function myWorkflow(urls: string[], timeoutMs: number) {
+  const { httpGetJSON } = configureActivities<typeof activities>({
+    type: 'remote',
+    scheduleToCloseTimeout: timeoutMs,
+  });
 
-export async function main(urls: string[], timeoutMs: number): Promise<any[]> {
-  try {
-    return CancellationScope.withTimeout(timeoutMs, () =>
-      Promise.all(urls.map((url) => httpGetJSON(url)))
-    );
-  } catch (err) {
-    if (isCancellation(err)) {
-      console.log('Deadline exceeded while waiting for activities to complete');
-    }
-    throw err;
-  }
+  return {
+    async execute(): Promise<any[]> {
+      try {
+        return CancellationScope.withTimeout(timeoutMs, () =>
+          Promise.all(urls.map((url) => httpGetJSON(url)))
+        );
+      } catch (err) {
+        if (isCancellation(err)) {
+          console.log(
+            'Deadline exceeded while waiting for activities to complete'
+          );
+        }
+        throw err;
+      }
+    },
+  };
 }
 ```
 

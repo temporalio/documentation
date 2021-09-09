@@ -29,9 +29,9 @@ You invoke a Signal with `workflow.signal.signalName(...args)`. In the above cas
 
 ```ts
 const client = new WorkflowClient();
-const workflow = client.stub<Blocked>('blocked', { taskQueue: 'test' });
+const workflow = client.stub(unblockWithSignal, { taskQueue: 'test' });
 await workflow.start();
-await workflow.signal.unblock('some string');
+await workflow.signal.unblock();
 ```
 
 ### How to receive a Signal
@@ -41,28 +41,35 @@ Signal handlers can be either synchronous or asynchronous, in this example, our 
 > Note that this example is a simplification of the recommended way to handle Signals [below](#triggers) since the Workflow cannot be cancelled unless it awaits a [cancellable operation](/docs/node/cancellation-scopes).
 
 ```ts
-// implementation
 import { Blocked } from '../interfaces';
 
-let unblock: () => void;
+export const unblockWithSignal: Blocked = () => {
+  let blocked = true;
+  let unblock: () => void;
 
-const signals = {
-  // Unblock main by resolving the awaited Promise
-  unblock(): void {
-    if (unblock !== undefined) {
-      unblock();
-    }
-  },
+  return {
+    signals: {
+      // Unblock main by resolving the awaited Promise
+      unblock(): void {
+        if (unblock !== undefined) {
+          unblock();
+        }
+      },
+    },
+    queries: {
+      isBlocked(): boolean {
+        return blocked;
+      },
+    },
+    async main(): Promise<void> {
+      // This Promise is resolved when the Workflow handles the unblock signal.
+      await new Promise<void>((resolve, _reject) => {
+        unblock = resolve;
+      });
+      blocked = false;
+    },
+  };
 };
-
-async function main(): Promise<void> {
-  // This Promise is resolved when the Workflow handles the unblock signal.
-  await new Promise<void>((resolve, _reject) => {
-    unblock = resolve;
-  });
-}
-
-export const workflow: Blocked = { main, signals };
 ```
 
 ## Triggers

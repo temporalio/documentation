@@ -14,57 +14,25 @@ sidebar_label: Queries
 
 To add Query handlers to a Workflow, add a `queries` property to the exported Workflow object:
 
-```ts
-// interface
-import { Workflow } from '@temporalio/workflow';
-
-export interface SimpleQuery extends Workflow {
-  main(): void;
-  queries: {
-    isBlocked(): boolean;
-  };
-}
-```
+<!--SNIPSTART nodejs-blocked-interface-->
+<!--SNIPEND-->
 
 ### How to handle a Query
 
 Query handlers can return any value.
 
-```ts
-// implementation
-import { Trigger } from '@temporalio/workflow';
-import { SimpleQuery } from '../interfaces';
-
-let blocked = true;
-const unblocked = new Trigger<void>();
-
-const queries = {
-  isBlocked(): boolean {
-    return blocked;
-  },
-};
-
-const signals = {
-  unblock(): void {
-    unblocked.resolve();
-  },
-};
-
-async function main(): Promise<void> {
-  await unblocked;
-  blocked = false;
-}
-
-export const workflow: SimpleQuery = { main, queries, signals };
-```
+<!--SNIPSTART nodejs-blocked-workflow-->
+<!--SNIPEND-->
 
 ### How to make a Query
+
+> NOTE: You may query both running and completed Workflows.
 
 Use the name of the function you defined:
 
 ```ts
 const client = new WorkflowClient();
-const workflow = client.stub<SimpleQuery>('simple-query', {
+const workflow = client.stub(unblockOrCancel, {
   taskQueue: 'test',
 });
 await workflow.start();

@@ -31,16 +31,16 @@ Workflow code is bundled on Worker creation using [Webpack](https://webpack.js.o
 ### Examples
 
 ```js
-import { sleep } from '@temporalio/workflow
+import { sleep } from '@temporalio/workflow';
 
 // this prints the exact same timestamp repeatedly
 for (let x of y) {
-    console.log(Date.now())
+  console.log(Date.now());
 }
 
 // this prints timestamps strictly in increasing 1ms order
 for (let x of y) {
-    sleep(1)
-    console.log(Date.now())
+  await sleep(1);
+  console.log(Date.now());
 }
 ```
