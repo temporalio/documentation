@@ -1,24 +1,28 @@
 ---
-id: what-is-the-temporal-server
-title: What is the Temporal Server?
-description: The Temporal Server is a scalable multi-tenant entity made up of individually scalable services, that is capable of handling millions to billions of Workflows Executions concurrently.
+id: what-is-a-temporal-cluster
+title: What is a Temporal Cluster?
+description: A Temporal Cluster is the Temporal Server paired with persistence.
 ---
 
 import CenteredImage from "../components/CenteredImage.js"
 import RelatedReadList from '../components/RelatedReadList.js'
 
-The Temporal Server is a highly scalable multi-tenant system that is capable of tracking the state of millions to billions of Workflows Executions concurrently.
+A Temporal Cluster is the Temporal Server paired with persistence.
 
-An instance of the Temporal Server is called a Cluster.
-A Temporal Cluster consists of several services (Frontend, Matching, History, and Worker) and a database.
+The Temporal Server consists of four services:
+
+- Frontend gateway
+- Matching (queuing) subsystem
+- History (state management) subsystem
+- Worker service
 
 <CenteredImage
-imagePath="/diagrams/temporal-server-cluster.svg"
+imagePath="/diagrams/temporal-cluster.svg"
 imageSize="75"
-title="The Temporal Server (Cluster)"
+title="A Temporal Cluster (Server + persistence)"
 />
 
-The services can run independently or be grouped together into shared processes on one or more physical or virtual machines.
+The Temporal Server services can run independently or be grouped together into shared processes on one or more physical or virtual machines.
 For live (production) environments we recommend that each service runs independently, as each one has different scaling requirements, and troubleshooting becomes easier.
 The History, Matching, and Worker services can scale horizontally within a Cluster.
 A Temporal Cluster can scale in what is called [Multi-Cluster Replication](#).
@@ -27,12 +31,12 @@ Each service is aware of the others, including scaled instances, through a membe
 
 ### Frontend Service
 
-The Frontend Service is a singleton (non-scalable) service that exposes a strongly typed [Proto API](https://github.com/temporalio/api/blob/master/temporal/api/workflowservice/v1/service.proto).
+The Frontend Service is a singleton (non-scalable) gateway service that exposes a strongly typed [Proto API](https://github.com/temporalio/api/blob/master/temporal/api/workflowservice/v1/service.proto).
 The Frontend Service is responsible for rate limiting, authorizing, validating, and routing all in-bound calls.
 
 <CenteredImage
 imagePath="/diagrams/temporal-frontend-service.svg"
-imageSize="50"
+imageSize="75"
 title="Frontend Service"
 />
 
@@ -61,7 +65,7 @@ The History Service tracks the state of Workflow Executions.
 
 <CenteredImage
 imagePath="/diagrams/temporal-history-service.svg"
-imageSize="50"
+imageSize="75"
 title="History Service"
 />
 
@@ -87,7 +91,7 @@ The Matching Service is responsible for hosting Task Queues for Task dispatching
 
 <CenteredImage
 imagePath="/diagrams/temporal-matching-service.svg"
-imageSize="50"
+imageSize="75"
 title="Matching Service"
 />
 
@@ -105,7 +109,7 @@ The Worker Service runs background processing for the replication queue, system 
 
 <CenteredImage
 imagePath="/diagrams/temporal-worker-service.svg"
-imageSize="25"
+imageSize="50"
 title="Worker Service"
 />
 
@@ -120,20 +124,20 @@ The database provides storage for the system.
 
 <CenteredImage
 imagePath="/diagrams/temporal-database.svg"
-imageSize="50"
-title="Database database storage use cases"
+imageSize="75"
+title="Persistence"
 />
 
 Cassandra, MySQL, and PostgreSQL schemas are supported and thus can be used as the Server's database.
 
 The database stores the following types of data:
 
-- **Tasks**: Tasks to be dispatched.
-- **State of Workflow Executions**:
-  - **Execution table**: A capture of the mutable state of Workflow Executions.
-  - **History table**: An append only log of Workflow Execution History Events.
-- **Namespace metadata**: Metadata of each Namespace in the Cluster.
-- **Visibility data**: Enables operations like "show all running Workflow Executions".
+- Tasks: Tasks to be dispatched.
+- State of Workflow Executions:
+  - Execution table: A capture of the mutable state of Workflow Executions.
+  - History table: An append only log of Workflow Execution History Events.
+- Namespace metadata: Metadata of each Namespace in the Cluster.
+- Visibility data: Enables operations like "show all running Workflow Executions".
   For production environments, we recommend using ElasticSearch.
 
 <RelatedReadList
