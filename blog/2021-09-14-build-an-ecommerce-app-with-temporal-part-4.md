@@ -27,7 +27,7 @@ In this blog post, I'll demonstrate how you can build a RESTful API on top of Te
 
 ## API Setup
 
-For this tutorial, I'll be using [httpx](github.com/bojanz/httpx) along with [mux](https://github.com/gorilla/mux) for routing and [handlers](https://github.com/gorilla/handlers) for CORS.
+For this tutorial, I'll be using [httpx](https://github.com/bojanz/httpx) along with [mux](https://github.com/gorilla/mux) for routing and [handlers](https://github.com/gorilla/handlers) for CORS.
 
 ```go
 package main
