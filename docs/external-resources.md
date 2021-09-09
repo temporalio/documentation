@@ -12,7 +12,7 @@ If you have made a tutorial or explanation of Temporal, please [submit them here
 
 ## How Temporal works
 
-_Don't forget our own [Temporal Architecture docs](/docs/server-architecture/)!_
+_Don't forget our own [Temporal Cluster docs](/docs/content/what-is-a-temporal-cluster)!_
 
 - ⭐ [Designing a Workflow Engine from First Principles](https://docs.temporal.io/blog/workflow-engine-principles/) by Maxim Fateev (23 min talk given at Systems @ Scale 2021)
 - [A Practical Approach to Temporal Architecture](https://mikhail.io/2020/10/practical-approach-to-temporal-architecture/) by Mikhail Shilkov (4 min read)
