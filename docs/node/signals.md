@@ -29,7 +29,9 @@ You invoke a Signal with `workflow.signal.signalName(...args)`. In the above cas
 
 ```ts
 const client = new WorkflowClient();
-const workflow = client.stub(unblockWithSignal, { taskQueue: 'test' });
+const workflow = client.createWorkflowHandle(unblockWithSignal, {
+  taskQueue: 'test',
+});
 await workflow.start();
 await workflow.signal.unblock();
 ```
@@ -49,7 +51,7 @@ export const unblockWithSignal: Blocked = () => {
 
   return {
     signals: {
-      // Unblock main by resolving the awaited Promise
+      // Unblock execute by resolving the awaited Promise
       unblock(): void {
         if (unblock !== undefined) {
           unblock();
@@ -61,7 +63,7 @@ export const unblockWithSignal: Blocked = () => {
         return blocked;
       },
     },
-    async main(): Promise<void> {
+    async execute(): Promise<void> {
       // This Promise is resolved when the Workflow handles the unblock signal.
       await new Promise<void>((resolve, _reject) => {
         unblock = resolve;

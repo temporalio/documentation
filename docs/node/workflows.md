@@ -18,7 +18,7 @@ In the Node.js SDK, each Workflow runs in a separate V8 isolate context to provi
 
 Workflow are implemented using a factory function that returns a handlers object for `execute` and optionally [signals](signals) and [queries](queries).
 
-The snippet below uses `configureActivities` to create functions that, when called, schedule Activities in the system.
+The snippet below uses `createActivityHandle` to create functions that, when called, schedule Activities in the system.
 
 `src/workflows/index.ts`
 
@@ -58,11 +58,11 @@ Workflows can be started with a range of [`WorkflowOptions`](https://nodejs.temp
 
 ## How to cancel a Workflow
 
-To cancel a Workflow execution, call the [`cancel()`](https://nodejs.temporal.io/api/interfaces/client.WorkflowStub#cancel) method on a WorkflowStub.
+To cancel a Workflow execution, call the [`cancel()`](https://nodejs.temporal.io/api/interfaces/client.WorkflowHandle#cancel) method on a WorkflowHandle.
 
 ```ts
 // Create a typed client based on the example Workflow's type
-const example = client.stub(example, { taskQueue: 'tutorial' });
+const example = client.createWorkflowHandle(example, { taskQueue: 'tutorial' });
 // Start the Workflow without waiting its completion
 await example.start('Temporal');
 // ... Later on, cancel the workflow
@@ -83,7 +83,7 @@ import DistributedCron from '../shared/distributed-cron.md'
 You can set each workflow to repeat on a schedule with the `cronSchedule` option:
 
 ```ts
-const workflow = client.stub(scheduledWorkflow, {
+const workflow = client.createWorkflowHandle(scheduledWorkflow, {
   taskQueue: 'test',
   cronSchedule: '* * * * *', // start every minute
 });
@@ -96,12 +96,15 @@ const workflow = client.stub(scheduledWorkflow, {
 From Workflow code you may signal or cancel an external Workflow.
 
 ```ts
-const workflow = externalWorkflow<WFInterface>(workflowId, optionalRunId);
+const workflow = createExternalWorkflowHandle<WFInterface>(
+  workflowId,
+  optionalRunId
+);
 await workflow.signal.someSignal(arg1, arg2);
 await workflow.cancel();
 ```
 
-[`externalWorkflow`](https://nodejs.temporal.io/api/api/namespaces/workflow#externalworkflow) returns an [`ExternalWorkflowStub`](https://nodejs.temporal.io/api/interfaces/workflow.ExternalWorkflowStub) that can be used to interact with existing Workflows.
+[`createExternalWorkflowHandle`](https://nodejs.temporal.io/api/api/namespaces/workflow#newexternalworkflowhandle) returns an [`ExternalWorkflowHandle`](https://nodejs.temporal.io/api/interfaces/workflow.ExternalWorkflowHandle) that can be used to interact with existing Workflows.
 
 ## Child Workflows
 
@@ -112,7 +115,7 @@ Execute a child workflow and await its completion:
 <!--SNIPSTART nodejs-child-workflow-->
 <!--SNIPEND-->
 
-[`childWorkflow`](https://nodejs.temporal.io/api/api/namespaces/workflow#childworkflow) returns a [`ChildWorkflowStub`](https://nodejs.temporal.io/api/interfaces/workflow.ChildWorkflowStub) that can be used to start a new child Workflow, signal it and await its completion.
+[`createChildWorkflowHandle`](https://nodejs.temporal.io/api/api/namespaces/workflow#newchildworkflowhandle) returns a [`ChildWorkflowHandle`](https://nodejs.temporal.io/api/interfaces/workflow.ChildWorkflowHandle) that can be used to start a new child Workflow, signal it and await its completion.
 
 Child Workflow executions are [`CancellationScope`](/docs/node/cancellation-scopes) aware and will automatically be cancelled when their containing scope is cancelled.
 
@@ -132,7 +135,7 @@ import SharedContinueAsNew from '../shared/continue-as-new.md'
 
 ### The `ContinueAsNew` API
 
-Use the [`continueAsNew`](https://nodejs.temporal.io/api/namespaces/workflow#continueasnew) API to instruct the Node SDK to restart `main` with a new starting value and a new event history.
+Use the [`continueAsNew`](https://nodejs.temporal.io/api/namespaces/workflow#continueasnew) API to instruct the Node SDK to restart `loopingWorkflow` with a new starting value and a new event history.
 
 ```ts
 import { continueAsNew, sleep } from '@temporalio/workflow';

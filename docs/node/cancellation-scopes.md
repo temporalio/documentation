@@ -50,7 +50,7 @@ Alternatively, the preceding can be written as:
 
 Handle Workflow cancellation by an external client while an Activity is running:
 
-<!-- TODO: add a sample here of how this Workflow could be cancelled using a WorkflowStub -->
+<!-- TODO: add a sample here of how this Workflow could be cancelled using a WorkflowHandle -->
 
 <!--SNIPSTART nodejs-handle-external-workflow-cancellation-while-activity-running-->
 <!--SNIPEND-->

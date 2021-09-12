@@ -18,7 +18,7 @@ If, for example, a Node.js Workflow starts a Java Child Workflow which calls an 
 <!--TODO: use snipsync-->
 
 ```ts
-import { childWorkflow } from '@temporalio/workflow';
+import { createChildWorkflowHandle } from '@temporalio/workflow';
 import {
   ActivityFailure,
   ApplicationFailure,
@@ -26,13 +26,15 @@ import {
 } from '@temporalio/common';
 
 // Define the TypeScript version of the Java Workflow interface
-// to get a type safe child WorkflowStub
+// to get a type safe child WorkflowHandle
 export type JavaWorkflow = () => {
   execute(): Promise<void>;
 };
 
 async function execute() {
-  const child = childWorkflow<JavaWorkflow>('RunAnActivityWorkflow');
+  const child = createChildWorkflowHandle<JavaWorkflow>(
+    'RunAnActivityWorkflow'
+  );
   try {
     await child.execute();
   } catch (err) {
@@ -65,14 +67,13 @@ As explained above, cancellation might not be the immediate cause of failure—i
 ```ts
 import {
   CancellationScope,
-  configureActivities,
+  createActivityHandle,
   isCancellation,
 } from '@temporalio/workflow';
 import * as activities from '../activities';
 
 export function myWorkflow(urls: string[], timeoutMs: number) {
-  const { httpGetJSON } = configureActivities<typeof activities>({
-    type: 'remote',
+  const { httpGetJSON } = createActivityHandle<typeof activities>({
     scheduleToCloseTimeout: timeoutMs,
   });
 
@@ -97,7 +98,7 @@ export function myWorkflow(urls: string[], timeoutMs: number) {
 
 </details>
 
-Outside of Workflow code, failure classes are attached to the `cause` of [`WorkflowExecutionFailedError`](https://nodejs.temporal.io/api/classes/client.workflowexecutionfailederror), which is thrown when executing a Workflow with a [`WorkflowClient`](https://nodejs.temporal.io/api/classes/client.workflowclient/) or [`WorkflowStub`](https://nodejs.temporal.io/api/interfaces/client.workflowstub/).
+Outside of Workflow code, failure classes are attached to the `cause` of [`WorkflowExecutionFailedError`](https://nodejs.temporal.io/api/classes/client.workflowexecutionfailederror), which is thrown when executing a Workflow with a [`WorkflowClient`](https://nodejs.temporal.io/api/classes/client.workflowclient/) or [`WorkflowHandle`](https://nodejs.temporal.io/api/interfaces/client.workflowhandle/).
 
 ## Failures and retries
 

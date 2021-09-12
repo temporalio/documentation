@@ -32,7 +32,7 @@ Use the name of the function you defined:
 
 ```ts
 const client = new WorkflowClient();
-const workflow = client.stub(unblockOrCancel, {
+const workflow = client.createWorkflowHandle(unblockOrCancel, {
   taskQueue: 'test',
 });
 await workflow.start();

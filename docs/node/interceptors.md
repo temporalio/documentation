@@ -15,7 +15,7 @@ The Node.js SDK comes with an optional interceptor package that adds tracing wit
 - [WorkflowInboundCallsInterceptor](https://nodejs.temporal.io/api/interfaces/workflow.workflowinboundcallsinterceptor/) - Intercept Workflow inbound calls like execution, signals, and queries.
 - [WorkflowOutboundCallsInterceptor](https://nodejs.temporal.io/api/interfaces/workflow.workflowoutboundcallsinterceptor/) - Intercept Workflow outbound calls to Temporal APIs like scheduling Activities and starting Timers.
 - [ActivityInboundCallsInterceptor](https://nodejs.temporal.io/api/interfaces/worker.activityinboundcallsinterceptor) - Intercept inbound calls to an activity (e.g. execute).
-- [WorkflowClientCallsInterceptor](https://nodejs.temporal.io/api/interfaces/client.workflowclientcallsinterceptor/) - Intercept methods of [`WorkflowClient`](https://nodejs.temporal.io/api/classes/client.workflowclient/) and [`WorkflowStub`](https://nodejs.temporal.io/api/interfaces/client.workflowstub) like starting or signaling a Workflow.
+- [WorkflowClientCallsInterceptor](https://nodejs.temporal.io/api/interfaces/client.workflowclientcallsinterceptor/) - Intercept methods of [`WorkflowClient`](https://nodejs.temporal.io/api/classes/client.workflowclient/) and [`WorkflowHandle`](https://nodejs.temporal.io/api/interfaces/client.workflowhandle) like starting or signaling a Workflow.
 
 ## How interceptors work
 
@@ -80,7 +80,7 @@ export class DumbWorkflowAuthInterceptor
     input: WorkflowInput,
     next: Next<WorkflowInboundCallsInterceptor, 'execute'>
   ): Promise<unknown> {
-    const authHeader = input.headers.get('auth');
+    const authHeader = input.headers.auth;
     const { user, password } = authHeader
       ? await defaultDataConverter.fromPayload(authHeader)
       : undefined;
