@@ -50,7 +50,7 @@ The only required dependency is a database, and there are multiple types of data
 Temporal has built-in Workflow search functionality.
 To enhance this feature, Temporal supports an [integration with Elasticsearch](/docs/server/elasticsearch-setup).
 
-- Elasticsearch v7.7 is supported from Temporal version 1.7.0 onwards
+- Elasticsearch v7.10 is supported from Temporal version 1.7.0 onwards
 - Elasticsearch v6.8 is supported in all Temporal versions
 - Both versions are explicitly supported with AWS Elasticsearch
 
