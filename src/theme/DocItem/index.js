@@ -17,6 +17,7 @@ import clsx from "clsx";
 import styles from "./styles.module.css";
 import {useActivePlugin, useVersions} from "@theme/hooks/useDocs";
 import useWindowSize from "@theme/hooks/useWindowSize";
+import {Button} from "../../components/shared/Button";
 
 function DocItem(props) {
   const {content: DocContent, versionMetadata} = props;
@@ -72,14 +73,14 @@ function DocItem(props) {
         }}
       />
 
-      <div className="row">
+      <div id="tailwind" className="flex space-x-20">
         <div
           className={clsx("col", {
             [styles.docItemCol]: !hideTableOfContents,
           })}
         >
           <DocVersionBanner versionMetadata={versionMetadata} />
-          <div className={styles.docItemContainer}>
+          <div>
             <article>
               {showVersionBadge && (
                 <div>
@@ -89,14 +90,13 @@ function DocItem(props) {
                 </div>
               )}
 
-              {renderTocMobile && (
-                <TOCCollapsible
-                  toc={DocContent.toc}
-                  className={styles.tocMobile}
-                />
-              )}
-
-              <div className="markdown">
+              <article className="prose sm:prose md:prose-md mx-auto my-12">
+                {renderTocMobile && (
+                  <TOCCollapsible
+                    toc={DocContent.toc}
+                    className={clsx("mb-10 p-3 text-lg", styles.tocMobile)}
+                  />
+                )}
                 {/*
                   Title can be declared inside md content or declared through frontmatter and added manually
                   To make both cases consistent, the added title is added under the same div.markdown block
@@ -104,30 +104,32 @@ function DocItem(props) {
                   */}
                 {shouldAddTitle && <MainHeading>{title}</MainHeading>}
                 <DocContent />
-              </div>
-            </article>
-            {(editUrl || lastUpdatedAt || lastUpdatedBy) && (
-              <div className={styles.EditThisPage}>
-                <div className="row">
-                  <div className="col">
-                    {editUrl && <EditThisPage editUrl={editUrl} />}
+              </article>
+              <div>
+                {(editUrl || lastUpdatedAt || lastUpdatedBy) && (
+                  <div>
+                    <div className="edit">
+                      {editUrl && <EditThisPage editUrl={editUrl} />}
+                    </div>
+                    <div>
+                      {(lastUpdatedAt || lastUpdatedBy) && (
+                        <LastUpdated
+                          lastUpdatedAt={lastUpdatedAt}
+                          formattedLastUpdatedAt={formattedLastUpdatedAt}
+                          lastUpdatedBy={lastUpdatedBy}
+                        />
+                      )}
+                    </div>
                   </div>
-                  {(lastUpdatedAt || lastUpdatedBy) && (
-                    <LastUpdated
-                      lastUpdatedAt={lastUpdatedAt}
-                      formattedLastUpdatedAt={formattedLastUpdatedAt}
-                      lastUpdatedBy={lastUpdatedBy}
-                    />
-                  )}
+                )}
+                <div className="margin-vert--lg">
+                  <DocPaginator metadata={metadata} />
+                </div>
+                <div className="my-8 mx-auto max-w-screen-lg">
+                  <TemporalCloudForm />
                 </div>
               </div>
-            )}
-            <div className="margin-vert--lg">
-              <TemporalCloudForm />
-            </div>
-            <div className="margin-vert--lg">
-              <DocPaginator metadata={metadata} />
-            </div>
+            </article>
           </div>
         </div>
         {renderTocDesktop && (
@@ -142,8 +144,10 @@ function DocItem(props) {
 
 function TemporalCloudForm() {
   return (
-    <div className={styles.formFeature}>
-      <h2>Get notified of updates</h2>
+    <div className="max-w-xs my-20">
+      <h2 className="text-xl font-bold tracking-wide mb-4">
+        Get notified of updates
+      </h2>
       <form
         action="https://temporal.us17.list-manage.com/subscribe/post?u=2334a0f23e55fd1840613755d&amp;id=bbbbd4709f"
         method="post"
@@ -151,15 +155,14 @@ function TemporalCloudForm() {
         name="mc-embedded-subscribe-form"
         target="_blank"
         noValidate="novalidate"
-        className="validate"
       >
-        <div id="mc_embed_signup_scroll" className="signup_controls">
+        <div id="mc_embed_signup_scroll">
           <div className={styles.email_wrap}>
             <label htmlFor="mce-EMAIL" className="sr-only">
-              Email:
+              Email
             </label>
             <input
-              className="signUpInput"
+              className="p-3 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
               type="email"
               name="EMAIL"
               id="mce-EMAIL"
@@ -168,17 +171,16 @@ function TemporalCloudForm() {
             />
           </div>
           <span className="cta_text" style={{display: "none"}}>
-            You are in the waitlist!
+            You are on the waitlist!
           </span>
-          <input
+          <Button
+            className="mt-4"
             type="submit"
             name="waitlist"
             id="mc-embedded-waitlist"
-            className={clsx(
-              "button button--outline button-secondary button--md",
-              styles.cloudWaitlistSubmit
-            )}
-          />
+          >
+            Submit
+          </Button>
         </div>
       </form>
     </div>
