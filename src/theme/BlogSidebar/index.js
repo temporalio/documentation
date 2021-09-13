@@ -15,11 +15,8 @@ export default function BlogSidebar({sidebar, row}) {
 
   return (
     <div
-      className={clsx(
-        styles.sidebar,
-        "thin-scrollbar",
-        row && styles.sidebarRow
-      )}
+      id="tailwind"
+      className={clsx(styles.sidebar, row && styles.sidebarRow)}
     >
       <div className={row && "col col--4"}>
         <h3 className={styles.sidebarItemTitle}>Featured</h3>
@@ -90,20 +87,6 @@ export default function BlogSidebar({sidebar, row}) {
               #announcement
             </LinkWrapped>
           </li>
-          {/* <li>
-            <LinkWrapped href="/blog/tags/architecture">
-              #architecture
-            </LinkWrapped>
-          </li>
-          <li>
-            <LinkWrapped href="/blog/tags/code-first">#code-first</LinkWrapped>
-          </li>
-          <li>
-            <LinkWrapped href="/blog/tags/cloud">#cloud</LinkWrapped>
-          </li>
-          <li>
-            <LinkWrapped href="/blog/tags/stability">#stability</LinkWrapped>
-          </li> */}
           <li>
             <LinkWrapped href="/blog/tags">Browse all tags</LinkWrapped>
           </li>

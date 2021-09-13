@@ -5,13 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React from "react";
-import clsx from "clsx";
 import {MDXProvider} from "@mdx-js/react";
-import Translate, {translate} from "@docusaurus/Translate";
+import {translate} from "@docusaurus/Translate";
 import Link from "@docusaurus/Link";
 import MDXComponents from "@theme/MDXComponents";
 import Seo from "@theme/Seo";
-import styles from "./styles.module.css";
 import {usePluralForm} from "@docusaurus/theme-common"; // Very simple pluralization: probably good enough for now
 
 function useReadingTimePlural() {
@@ -50,64 +48,71 @@ function BlogPostItem(props) {
     title,
     image = "https://temporal.io/press/trim-banner-logo-text-white-on-black.png",
   } = frontMatter;
+
   const authorURL = frontMatter.author_url || frontMatter.authorURL;
   // const authorTitle = frontMatter.author_title || frontMatter.authorTitle;
   const authorImageURL =
     frontMatter.author_image_url || frontMatter.authorImageURL;
+
   const renderPostHeader = () => {
     const TitleHeading = isBlogPostPage ? "h1" : "h2";
     return (
-      <header>
-        <TitleHeading
-          className={clsx("margin-bottom--sm", styles.blogPostTitle)}
-        >
-          {isBlogPostPage ? title : <Link to={permalink}>{title}</Link>}
-        </TitleHeading>
-        <div className={styles.avatar}>
-          {authorImageURL && (
-            <Link className="avatar__photo-link avatar__photo" href={authorURL}>
-              <img src={authorImageURL} alt={author} />
+      <header
+        id="tailwind"
+        className="flex flex-col justify-center items-center post-header"
+      >
+        <TitleHeading className="mb-4 leading-relaxed text-3xl font-medium mx-auto">
+          {isBlogPostPage ? (
+            title
+          ) : (
+            <Link className="text-[color:var(--color)]" to={permalink}>
+              {title}
             </Link>
           )}
-          <div className="avatar__intro">
-            {author && (
-              <>
-                <h4 className={styles.avatar__name}>
-                  {authorURL ? (
-                    <Link href={authorURL}>{author}</Link>
-                  ) : (
-                    <span>{author}</span>
-                  )}
-                </h4>
-                {/* <small className="avatar__subtitle">{authorTitle}</small> */}
-                <time dateTime={date} className={styles.blogPostDate}>
-                  {formattedDate}
-                  {readingTime && (
-                    <>
-                      {" · "}
-                      {readingTimePlural(readingTime)}
-                    </>
-                  )}
-                </time>
-              </>
-            )}
-          </div>
-        </div>
-        <div className={styles.metadata}>
-          {(tags.length > 0 || truncated) && tags.length > 0 && (
-            <span className={styles.tagList}>
-              {tags.map(({label, permalink: tagPermalink}) => (
-                <Link
-                  key={tagPermalink}
-                  className="margin-horiz--sm"
-                  to={tagPermalink}
-                >
-                  #{label}
-                </Link>
-              ))}
-            </span>
+        </TitleHeading>
+        <div className="flex mb-4 items-center py-2 space-x-2">
+          {authorImageURL && (
+            <Link href={authorURL}>
+              <img
+                className="rounded-full w-10 h-10 shadow-md"
+                src={authorImageURL}
+                alt={author}
+              />
+            </Link>
+          )}
+          {author && (
+            <p className="font-medium py-1">
+              {authorURL ? (
+                <Link href={authorURL}>{author}</Link>
+              ) : (
+                <span>{author}</span>
+              )}
+            </p>
           )}
         </div>
+        <time dateTime={date} className="mb-4 block text-sm">
+          {formattedDate}
+          {readingTime && (
+            <>
+              {" · "}
+              {readingTimePlural(readingTime)}
+            </>
+          )}
+        </time>
+
+        {(tags.length > 0 || truncated) && tags.length > 0 && (
+          <span className="flex flex-wrap mb-5">
+            {tags.map(({label, permalink: tagPermalink}) => (
+              <Link
+                key={tagPermalink}
+                className="mr-2 my-2 no-underline inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-[color:var(--ifm-badge-background-color)] text-[color:var(--ifm-color)] hover:opacity-80"
+                to={tagPermalink}
+              >
+                {label}
+              </Link>
+            ))}
+          </span>
+        )}
       </header>
     );
   };
@@ -123,11 +128,15 @@ function BlogPostItem(props) {
         }}
       />
 
-      <article className={!isBlogPostPage ? styles.postBottom : undefined}>
+      <article
+        className={
+          !isBlogPostPage ? "mb-8 lg:mb-0 max-w-screen-lg mx-auto" : undefined
+        }
+      >
         {renderPostHeader()}
-        <div className="markdown">
+        <article className="prose sm:prose md:prose-md lg:prose-lg mx-auto">
           <MDXProvider components={MDXComponents}>{children}</MDXProvider>
-        </div>
+        </article>
       </article>
     </>
   );
