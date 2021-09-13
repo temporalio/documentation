@@ -224,7 +224,7 @@ Here is the above example rewritten to call download and upload Activity methods
 
 ## Invoking Activities via `Workflow.newUntypedActivityStub`
 
-It is also possible to inoke Activities inside Workflows using `Workflow.newUntypedActivityStub`, meaning you can
+It is also possible to invoke Activities inside Workflows using `Workflow.newUntypedActivityStub`, meaning you can
 invoke them without referencing an interface it implements.
 This is useful in scenarios where the Activity type is not known at compile time, or to invoke
 Activities implemented in different programming languages.
@@ -334,7 +334,7 @@ The `Activity.getExecutionContext().heartbeat()` can take an argument which repr
 If an Activity times out, the last heartbeat `details` will be included in the thrown `ActivityTimeoutException` which can be caught by the calling Workflow.
 The Workflow then can use the `details` information to pass to the next Activity invocation if needed.
 
-In the case of Activity retries, the last Heartbeat's `details` are available and can be extracted from the last fail attempt using `Activity.getExecutionContext().heartbeat(Class<V> detailsClass)`
+In the case of Activity retries, the last Heartbeat's `details` are available and can be extracted from the last fail attempt using `Activity.getExecutionContext().getHeartbeatDetails(Class<V> detailsClass)`
 
 Following is an example of using Activity heartbeat:
 

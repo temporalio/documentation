@@ -378,6 +378,10 @@ div[class^="sidebar_"] .button svg {
   width: 50%;
 }
 
+.docs-centered-image-size-25 {
+  width: 25%;
+}
+
 .docs-image-legend-wrapper {
   width: 100%;
   margin: 0;

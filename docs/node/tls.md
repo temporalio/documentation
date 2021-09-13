@@ -29,12 +29,12 @@ Follow this tutorial for setting up mTLS (Mutual TLS authentication) for a local
 - `export TEMPORAL_CLIENT_CERT_PATH=/path/to/customization-samples/tls/tls-simple/certs/client.pem`
 - `export TEMPORAL_CLIENT_KEY_PATH=/path/to/customization-samples/tls/tls-simple/certs/client.key`
 
-1. Run the Worker
+8. Run the Worker
 
 <!--SNIPSTART nodejs-mtls-worker -->
 <!--SNIPEND-->
 
-1. In a new terminal run the client to schedule a sample Workflow
+9. In a new terminal run the client to schedule a sample Workflow
 
 <!--SNIPSTART nodejs-mtls-client -->
 <!--SNIPEND-->

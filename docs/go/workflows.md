@@ -222,52 +222,9 @@ See our [Signals docs](https://docs.temporal.io/docs/go/signals) and [Temporal P
 
 ## Child Workflows
 
-If a Workflow Execution is started by another Workflow Execution, then it is considered a Child Workflow Execution.
-The completion or failure of a Child Workflow Execution is reported to the Workflow Execution that started it (the Parent Workflow Execution).
-The Parent Workflow Execution has the ability to monitor and impact the lifecycle of the Child Workflow Execution, similar to the way it does for Activities.
+import HowToSpawnAChildWorkflowExecutionInGo from '../content/how-to-spawn-a-child-workflow-execution-in-go.md'
 
-import WhenToUse from '../content/when-to-use-child-workflows.md'
-
-<WhenToUse
-signalsLink="/docs/go/signals"
-/>
-
-### Parent Workflow Definition
-
-The `workflow.ExecuteChildWorkflow` call is used to schedule Workflow Executions from within an executing Workflow.
-`ExecuteChildWorkflow` returns a `ChildWorkflowFuture` and you can either block on the Child Workflow starting ("asynchronous") or ending ("synchronous"):
-
-- Block until start: `workflow.ExecuteChildWorkflow(ctx, SampleChildWorkflow, "World").GetChildWorkflowExecution() `
-- Block until end: `workflow.ExecuteChildWorkflow(ctx, SampleChildWorkflow, "World").Get(...)`
-
-<!--SNIPSTART samples-go-child-workflow-example-parent-workflow-definition-->
-<!--SNIPEND-->
-
-By default, a Child Workflow Execution inherits the options provided to the Parent Workflow Execution, and the Temporal Server will automatically generate a Child Workflow ID.
-You can overwrite any of these options and specify a custom Child Workflow ID by customizing `ChildWorkflowOptions` and adding them to the execution context.
-
-`ChildWorkflowOptions` include the following parameters ([API reference](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/internal#ChildWorkflowOptions)):
-
-- Namespace
-- WorkflowID
-- TaskQueue
-- WorkflowExecutionTimeout
-- WorkflowRunTimeout
-- WorkflowTaskTimeout
-- WaitForCancellation
-- WorkflowIDReusePolicy
-- RetryPolicy
-- CronSchedule
-- Memo
-- SearchAttributes
-- ParentClosePolicy
-
-### Child Workflow Definition
-
-A Child Workflow is defined just like any other Workflow Definition.
-
-<!--SNIPSTART samples-go-child-workflow-example-child-workflow-definition-->
-<!--SNIPEND-->
+<HowToSpawnAChildWorkflowExecutionInGo/>
 
 ### Querying Workflow State
 
@@ -279,36 +236,6 @@ You can retrieve the result of the Workflow **from a completely different proces
 we = client.GetWorkflow(workflowID)
 var result string
 we.Get(ctx, &result)
-```
-
-### ParentClosePolicy
-
-When creating a Child Workflow, you can define a `ParentClosePolicy` that terminates, cancels, or abandons the Workflow Execution if the child's parent stops execution.
-
-- `ABANDON`: When the parent stops, don't do anything with the Child Workflow.
-- `TERMINATE`: When the parent stops, terminate the Child Workflow
-- `REQUEST_CANCEL`: When the parent stops, terminate the Child Workflow
-
-You can set policies per child, which means you can opt out of propagating terminates / cancels on a per-child basis.
-This is useful for starting Child Workflows asynchronously:
-
-1. Set `ChildWorkflowOptions.ParentClosePolicy` to `ABANDON` when creating a Child Workflow.
-2. Start the Child Workflow Execution asynchronously using `ExecuteChildWorkflow`.
-3. Call `GetChildWorkflowExecution` on the `ChildWorkflowFuture` returned by the `ChildWorkflowFuture`
-4. Wait for the `ChildWorkflowFuture`.
-   This indicates that the child successfully started (or start failed).
-5. Complete Parent Workflow Execution asynchronously.
-
-Steps 3 and 4 are needed to ensure that a Child Workflow Execution starts before the parent closes.
-If the parent initiates a Child Workflow Execution and then immediately completes, the child would never execute.
-
-```go
-func ParentWorkflow(ctx workflow.Context) error {
-    childWorkflow := workflow.ExecuteChildWorkflow(ctx, MyChildWorkflow)
-    // Wait for child to start
-    _ = childWorkflow.GetChildWorkflowExecution().Get(ctx, nil)
-    return nil
-}
 ```
 
 ## How to cancel a Workflow Execution
@@ -348,7 +275,7 @@ To trigger this behavior, the Workflow function should
 terminate by returning the special **ContinueAsNewError** error:
 
 ```go
-func SimpleWorkflow(workflow.Context ctx, value string) error {
+func SimpleWorkflow(ctx workflow.Context, value string) error {
     ...
     return workflow.NewContinueAsNewError(ctx, SimpleWorkflow, value)
 }

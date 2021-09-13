@@ -14,6 +14,9 @@ export default function CenteredImage({imagePath, imageSize, title, legend}) {
   }
   let imageClass = "";
   switch (imageSize) {
+    case "25":
+      imageClass = "docs-centered-image-size-25";
+      break;
     case "50":
       imageClass = "docs-centered-image-size-50";
       break;

@@ -25,7 +25,8 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (Your
   yourActivityParam := YourActivityParam{
     // ...
   }
-  future := workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam)
+  var activities *YourActivityStruct
+  future := workflow.ExecuteActivity(ctx, activities.YourActivityDefinition, yourActivityParam)
   // ...
 }
 

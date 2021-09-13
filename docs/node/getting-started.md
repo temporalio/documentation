@@ -94,32 +94,12 @@ If you want a [sample for connecting to a Temporal Server instance secured with 
 
 :::
 
-## Step 2: Compile TypeScript
-
-Use one of the provided helper package scripts to compile TypeScript.
-
-```bash
-# Watch files and compile on change
-# (recommended because it’s most convenient)
-npm run build.watch
-
-## OR compile TypeScript once
-## (you’ll need to rerun this every time you edit the code)
-# npm run build
-```
-
-:::note
-
-`ts-node` does not work with our project structure since it changes `__dirname` which affects the automatic Workflow and Activity [registration](/docs/node/hello-world/#worker) and we don't support running typescript directly in the [Workflow v8 isolates](/docs/node/determinism/#how-a-workflow-is-executed).
-
-:::
-
-## Step 3: Run your Workflow
+## Step 2: Run your Workflow
 
 Run the Worker:
 
 ```bash
-$ npm start # this runs node lib/worker
+$ npm run start.watch # this runs ts-node src/worker.ts with nodemon to auto-reload on changes
 
 # example successful output:
 2021-05-19T17:27:33.176Z [INFO] asset main.js 4.78 MiB [emitted] (name: main)
@@ -135,7 +115,6 @@ $ npm start # this runs node lib/worker
 2021-05-19T17:27:33.178Z [INFO]   ./node_modules/ms/index.js 2.95 KiB [built] [code generated]
 2021-05-19T17:27:33.178Z [INFO] modules by path ../../../../../src/ 686 bytes
 2021-05-19T17:27:33.178Z [INFO]   ../../../../../src/main.js 362 bytes [built] [code generated]
-2021-05-19T17:27:33.178Z [INFO]   ../../../../../src/@activities/greeter.js 324 bytes [built] [code generated]
 2021-05-19T17:27:33.178Z [INFO] ./lib/workflows/example.js 398 bytes [built] [code generated]
 2021-05-19T17:27:33.178Z [INFO] webpack 5.37.1 compiled successfully in 1058 ms
 2021-05-19T17:27:33.408Z [INFO] Worker state changed { state: 'RUNNING' }
@@ -146,13 +125,13 @@ $ npm start # this runs node lib/worker
 Then start your Workflow:
 
 ```bash
-$ node lib/worker/schedule-workflow.js
+$ npm run workflow # alias to ts-node src/exec-workflow.ts
 Hello, Temporal!
 ```
 
 This "Hello, Temporal!" message comes from the combination of:
 
-- [`schedule-workflow.js`](https://github.com/temporalio/sdk-node/blob/03b0b3cd354da309aa6be1b1ff939f5fae007de2/packages/create-project/samples/client.ts) passing `'Temporal'` as an argument to the Workflow.
+- [`exec-workflow.js`](https://github.com/temporalio/sdk-node/blob/main/packages/create-project/samples/client.ts) passing `'Temporal'` as an argument to the Workflow.
 - The [Workflow](https://github.com/temporalio/sdk-node/blob/main/packages/create-project/samples/workflow.ts) passing the argument to the Activity.
 - The [Activity](https://github.com/temporalio/sdk-node/blob/main/packages/create-project/samples/activity.ts) taking the argument as `name` and returning `Hello, ${name}!`.
 

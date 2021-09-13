@@ -6,6 +6,8 @@ description: In the Temporal Node SDK programming model, a Workflow is an export
 image: /img/workflow.png
 ---
 
+import RelatedReadList from '../components/RelatedReadList.js'
+
 [API reference](https://nodejs.temporal.io/api/namespaces/workflow)
 
 Workflows are the core of the Temporal system. They abstract away the complexities of writing distributed programs.
@@ -29,9 +31,7 @@ Workflow interface declarations are optional but recommended. They're only requi
 
 A Workflow implementation may export a `workflow` object, which can be type-checked using a pre-defined interface or `main` (and optionally [signals](/docs/node/signals) and [queries](/docs/node/queries)) directly.
 
-In a Workflow, Activities can be imported and called as regular functions. At runtime, the imported Activities (prefixed with `@activities`) are replaced with stubs that schedule Activities to be run.
-
-`@activities` is a TypeScript [path alias](https://www.typescriptlang.org/tsconfig#paths) set to `src/activities`.
+Use `Context.configureActivities` to create functions that schedule Activities in the system.
 
 `src/workflows/example.ts`
 
@@ -118,9 +118,11 @@ await workflow.execute(arg1, arg2);
 
 Child Workflow executions are [`CancellationScope`](/docs/node/cancellation-scopes) aware and will automatically be cancelled when their containing scope is cancelled.
 
-import WhenToUse from '../content/when-to-use-child-workflows.md'
-
-<WhenToUse signalsLink="/docs/node/signals" />
+<RelatedReadList
+readlist={[
+["What is a Child Workflow Execution?","/docs/content/what-is-a-child-workflow-execution","explanation"],  
+]}
+/>
 
 ## Large Event Histories
 

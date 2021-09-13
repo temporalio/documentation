@@ -183,8 +183,8 @@ You can configure how long Temporal will take while attempting to execute your A
 
 ```go
 ao := workflow.ActivityOptions{
-	StartToCloseTimeout: time.Minute * 5,
-	ScheduleToCloseTimeout: time.Minute,
+	StartToCloseTimeout: time.Minute,
+	ScheduleToCloseTimeout: time.Minute * 5,
 	RetryPolicy: &temporal.RetryPolicy{
 	  InitialInterval:    time.Second,
 	  BackoffCoefficient: 2.0,
