@@ -11,10 +11,10 @@ A Temporal Cluster is the Temporal Server paired with persistence.
 
 The Temporal Server consists of four services:
 
-- Frontend gateway
-- Matching (queuing) subsystem
-- History (state management) subsystem
-- Worker service
+- Frontend gateway: for routing
+- Matching subsystem: for task queues
+- History subsystem: for state management
+- Worker service: for internal workflows
 
 <CenteredImage
 imagePath="/diagrams/temporal-cluster.svg"
@@ -31,7 +31,7 @@ Each service is aware of the others, including scaled instances, through a membe
 
 ### Frontend Service
 
-The Frontend Service is a singleton (non-scalable) gateway service that exposes a strongly typed [Proto API](https://github.com/temporalio/api/blob/master/temporal/api/workflowservice/v1/service.proto).
+The Frontend Service is a stateless, highly horizontally scalable gateway service that exposes a strongly typed [Proto API](https://github.com/temporalio/api/blob/master/temporal/api/workflowservice/v1/service.proto).
 The Frontend Service is responsible for rate limiting, authorizing, validating, and routing all in-bound calls.
 
 <CenteredImage
