@@ -1,13 +1,15 @@
 import React from "react";
 import ReactPlayer from "react-player";
 
-import styles from "./ResponsivePlayer.module.css";
-
 function ResponsivePlayer({url, loop, playing}) {
   return (
-    <div className={styles.playerWrapper}>
+    <div
+      className="relative rounded-lg shadow-lg"
+      style={{paddingTop: "56.25%"}}
+    >
+      {/* /* Player ratio: 100 / (1280 / 720) */}
       <ReactPlayer
-        className={styles.player}
+        className="absolute top-0 left-0"
         url={url}
         loop={loop}
         playing={playing}
