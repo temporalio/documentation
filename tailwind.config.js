@@ -3,14 +3,66 @@ module.exports = {
   purge: [
     "./src/components/**/*.{js,ts,jsx,tsx}",
     "./src/pages/**/*.{js,ts,jsx,tsx}",
+    "./src/theme/**/*.{js,ts,jsx,tsx}",
   ],
-  corePlugins: {
-    preflight: false, // to use Docusaurus base styles
-    container: false, // use container style from docusaurus
-  },
-  important: "#tailwind", // incrementally adopt Tailwind by wrapping pages with <div id="tailwind"> </div>
+  // corePlugins: {
+  //   // preflight: false, // to use Docusaurus base styles
+  //   // container: false, // use container style from docusaurus
+  // },
+  // // important: "#tailwind", // incrementally adopt Tailwind by wrapping pages with <div id="tailwind"> </div>
   theme: {
     extend: {
+      typography: {
+        DEFAULT: {
+          css: {
+            color: "var(--ifm-color)",
+            h1: {
+              color: "var(--ifm-color)",
+            },
+            h2: {
+              color: "var(--ifm-color)",
+            },
+            h3: {
+              color: "var(--ifm-color)",
+            },
+            h4: {
+              color: "var(--ifm-color)",
+            },
+            li: {
+              color: "var(--ifm-color)",
+            },
+            strong: {
+              color: "var(--ifm-color)",
+            },
+            table: {
+              textAlign: "center",
+            },
+            blockquote: {
+              border: "none",
+              color: "var(--ifm-color)",
+              backgroundColor: "transparent",
+              fontSize: "inherit",
+              fontWeight: "medium",
+            },
+            img: {
+              borderRadius: "0.5rem",
+            },
+            "code::before": false,
+            "code::after": false,
+            code: {
+              color: "var(--ifm-color)",
+              "border-radius": "0.25rem",
+              padding: "0.15rem 0.3rem",
+            },
+            a: {
+              color: "#3182ce",
+              "&:hover": {
+                color: "#2c5282",
+              },
+            },
+          },
+        },
+      },
       transitionDelay: {
         3000: "3000ms",
       },
