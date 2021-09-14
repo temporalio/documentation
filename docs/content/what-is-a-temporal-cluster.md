@@ -31,9 +31,9 @@ Each service is aware of the others, including scaled instances, through a membe
 
 ### Frontend Service
 
-The Frontend Service is a singleton (non-scalable) gateway service that exposes a strongly typed [Proto API](https://github.com/temporalio/api/blob/master/temporal/api/workflowservice/v1/service.proto).
+The Frontend Service is a scalable gateway service that exposes a strongly typed [Proto API](https://github.com/temporalio/api/blob/master/temporal/api/workflowservice/v1/service.proto).
 The Frontend Service is responsible for rate limiting, authorizing, validating, and routing all in-bound calls.
-
+s
 <CenteredImage
 imagePath="/diagrams/temporal-frontend-service.svg"
 imageSize="75"
