@@ -19,12 +19,18 @@ A Workflow Execution has exclusive access to its local state, executes concurren
 A Workflow Execution is either Running or Closed.
 When a Workflow Execution is Running, it is either actively progressing or suspended, awaiting on something.
 
+<CenteredImage
+imagePath="/diagrams/workflow-execution-running-status.svg"
+imageSize="50"
+title="Workflow Execution Running status"
+/>
+
 A Closed status means that the Workflow Execution has finished progressing, and has either Completed successfully, Continued As New, Failed, Timed Out, been Cancelled, or Terminated.
 
 <CenteredImage
-imagePath="/diagrams/workflow-execution-status.svg"
+imagePath="/diagrams/workflow-execution-statuses.svg"
 imageSize="75"
-title="Workflow Execution Status"
+title="Workflow Execution statuses"
 />
 
 A Workflow Execution is uniquely identified by its [Namespace](/docs/server/namespaces), [Workflow Id](/docs/content/what-is-a-workflow-id), and [Run Id](/docs/content/what-is-a-run-id).

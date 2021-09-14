@@ -1,19 +1,18 @@
 ---
-id: what-is-an-activity-execution
-title: What is an Activity Execution?
+id: why-an-activity
+title: Why an Activity?
 description: todo
 ---
 
-A business-level function that implements your application logic, such as calling a service or transcoding a media file.
+The purpose of an Activity is usually a single, well-defined action that can be short, or long running.
+Example purposes are calling another service, transcoding a media file, or sending an email.
 
-- An Activity usually implements a single well-defined action; it can be short or long running.
 - An Activity can be implemented as a synchronous method or fully asynchronously involving multiple processes.
 - An Activity can be retried indefinitely according to the provided exponential retry policy.
 - If for any reason an Activity is not completed within the specified timeout, an error is reported to the [Workflow](#workflow), which decides how to handle it. The duration of an Activity has no limit.
 - Activities support an [Activity Heartbeat](#activity-heartbeat) that helps to identify timeouts faster in case the Activity execution fails.
 
-
-Temporal does not impose any system limit on Activity duration. It is up to the application to choose the timeouts for its execution. These are the configurable Activity timeouts:
+Temporal does not impose any system limit on Activity duration. It is up to the application to choose the timeouts for its execution.
 
 Activities are dispatched to workers through task queues. Task queues are queues that workers listen on. Task queues are highly dynamic and lightweight. They don't need to be explicitly registered. And it is okay to have one task queue per worker process. It is normal to have more than one Activity type to be invoked through a single task queue. And it is normal in some cases (like host routing) to invoke the same Activity type on multiple task queues.
 
