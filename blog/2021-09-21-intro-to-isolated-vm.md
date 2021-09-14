@@ -39,10 +39,12 @@ For example, suppose you tried to write a Workflow that recorded the time the Wo
 import { sleep } from '@temporalio/workflow';
 
 export const sleepWorkflow = () => {
-  async execute(): Promise<Date> {
-    const start = new Date();
-    await sleep(10 * 1000);
-    return start;
+  return {
+    async execute(): Promise<Date> {
+      const start = new Date();
+      await sleep(10 * 1000);
+      return start;
+    }
   }
 }
 ```
@@ -57,9 +59,11 @@ For example, suppose you wrote a Workflow that printed out the `Date` constructo
 
 ```ts
 export const testWorkflow = () => {
-  async execute(): Promise<Date> {
-    console.log(Date.toString());
-    return new Date();
+  return {
+    async execute(): Promise<Date> {
+      console.log(Date.toString());
+      return new Date();
+    }
   }
 }
 ```
@@ -128,16 +132,19 @@ For example, if you try to use `fs.readFileSync('./package.json')` in a Workflow
 Module not found: Error: Can't resolve 'fs' in '/path/to/lib/workflows'
 ```
 
-Because of this, do **not** use any npm modules that read from the file system or make HTTP requests in your Workflows.
+**Because of this, do not use any npm modules that read from the file system or make HTTP requests in your Workflows.**
 Furthermore, because these npm modules are unlikely to check for Temporal's runtime environment, they will most likely crash with hard-to-read error messages.
 For example, suppose you try to [make a GET request with Axios](https://masteringjs.io/tutorials/axios/get) from a Workflow as shown below.
 
 ```ts
 import axios from 'axios';
 
+// Don't make non-deterministic calls inside Workflows
 export const httpWorkflow = () => {
-  async execute(): Promise<void> {
-    await axios.get('http://httpbin.org/get');
+  return {
+    async execute(): Promise<void> {
+      return await axios.get('http://httpbin.org/get');
+    }
   }
 }
 ```
@@ -150,8 +157,9 @@ Activities run in a normal Node.js environment, **not** an isolate.
 ```ts
 import axios from 'axios';
 
+// Do place all side effects in Activities - Failures will be retried, use idempotency keys if necessary
 export async function makeHTTPRequest(): Promise<void> {
-  await axios.get('http://httpbin.org/get');
+  return await axios.get('http://httpbin.org/get');
 }
 ```
 
