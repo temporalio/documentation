@@ -11,10 +11,10 @@ A Temporal Cluster is the Temporal Server paired with persistence.
 
 The Temporal Server consists of four services:
 
-- Frontend gateway
-- Matching (queuing) subsystem
-- History (state management) subsystem
-- Worker service
+- Frontend gateway: for rate limiting, routing, authorizing
+- History subsystem: maintains data (mutable state, queues, and timers)
+- Matching subsystem: hosts Task Queues for dispatching
+- Worker service: for internal background workflows
 
 <CenteredImage
 imagePath="/diagrams/temporal-cluster.svg"
