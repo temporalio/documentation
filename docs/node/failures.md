@@ -18,7 +18,7 @@ If, for example, a Node.js Workflow starts a Java Child Workflow which calls an 
 <!--TODO: use snipsync-->
 
 ```ts
-import { Context, Workflow } from '@temporalio/workflow';
+import { createChildWorkflowHandle } from '@temporalio/workflow';
 import {
   ActivityFailure,
   ApplicationFailure,
@@ -26,13 +26,15 @@ import {
 } from '@temporalio/common';
 
 // Define the TypeScript version of the Java Workflow interface
-// to get a type safe child WorkflowStub
-interface JavaWorkflow extends Workflow {
-  main(): void;
-}
+// to get a type safe child WorkflowHandle
+export type JavaWorkflow = () => {
+  execute(): Promise<void>;
+};
 
-async function main() {
-  const child = Context.child<JavaWorkflow>('RunAnActivityWorkflow');
+async function execute() {
+  const child = createChildWorkflowHandle<JavaWorkflow>(
+    'RunAnActivityWorkflow'
+  );
   try {
     await child.execute();
   } catch (err) {
@@ -50,7 +52,7 @@ async function main() {
   }
 }
 
-export const workflow = { main };
+export const myWorkflow = () => ({ execute });
 ```
 
 </details>
@@ -64,34 +66,39 @@ As explained above, cancellation might not be the immediate cause of failure—i
 
 ```ts
 import {
-  Context,
   CancellationScope,
+  createActivityHandle,
   isCancellation,
 } from '@temporalio/workflow';
 import * as activities from '../activities';
 
-const { httpGetJSON } = Context.configureActivities<typeof activities>({
-  type: 'remote',
-  startToCloseTimeout: '1m',
-});
+export function myWorkflow(urls: string[], timeoutMs: number) {
+  const { httpGetJSON } = createActivityHandle<typeof activities>({
+    scheduleToCloseTimeout: timeoutMs,
+  });
 
-export async function main(urls: string[], timeoutMs: number): Promise<any[]> {
-  try {
-    return CancellationScope.withTimeout(timeoutMs, () =>
-      Promise.all(urls.map((url) => httpGetJSON(url)))
-    );
-  } catch (err) {
-    if (isCancellation(err)) {
-      console.log('Deadline exceeded while waiting for activities to complete');
-    }
-    throw err;
-  }
+  return {
+    async execute(): Promise<any[]> {
+      try {
+        return CancellationScope.withTimeout(timeoutMs, () =>
+          Promise.all(urls.map((url) => httpGetJSON(url)))
+        );
+      } catch (err) {
+        if (isCancellation(err)) {
+          console.log(
+            'Deadline exceeded while waiting for activities to complete'
+          );
+        }
+        throw err;
+      }
+    },
+  };
 }
 ```
 
 </details>
 
-Outside of Workflow code, failure classes are attached to the `cause` of [`WorkflowExecutionFailedError`](https://nodejs.temporal.io/api/classes/client.workflowexecutionfailederror), which is thrown when executing a Workflow with a [`WorkflowClient`](https://nodejs.temporal.io/api/classes/client.workflowclient/) or [`WorkflowStub`](https://nodejs.temporal.io/api/interfaces/client.workflowstub/).
+Outside of Workflow code, failure classes are attached to the `cause` of [`WorkflowExecutionFailedError`](https://nodejs.temporal.io/api/classes/client.workflowexecutionfailederror), which is thrown when executing a Workflow with a [`WorkflowClient`](https://nodejs.temporal.io/api/classes/client.workflowclient/) or [`WorkflowHandle`](https://nodejs.temporal.io/api/interfaces/client.workflowhandle/).
 
 ## Failures and retries
 

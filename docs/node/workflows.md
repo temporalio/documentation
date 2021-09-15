@@ -10,42 +10,39 @@ import RelatedReadList from '../components/RelatedReadList.js'
 
 [API reference](https://nodejs.temporal.io/api/namespaces/workflow)
 
-Workflows are the core of the Temporal system. They abstract away the complexities of writing distributed programs.
-
-In the Node.js SDK, each Workflow runs in a separate V8 isolate to provide a [deterministic runtime](/docs/node/determinism).
+In the Node.js SDK, each Workflow runs in a separate V8 isolate context to provide a [deterministic runtime](/docs/node/determinism).
 
 ## How to write Workflow code
 
-### Workflow Interface
-
-A Workflow's interface is used for validating the implementation and generating a type safe [WorkflowStub](https://nodejs.temporal.io/api/interfaces/client.workflowstub) and [child workflows](https://nodejs.temporal.io/api/classes/workflow.contextimpl#child).
-
-Workflow interface declarations are optional but recommended. They're only required for generating type-safe clients.
-
-`src/interfaces/workflows.ts`
-
-<!--SNIPSTART nodejs-hello-workflow-interface {"enable_source_link": false}-->
-<!--SNIPEND-->
-
 ### Workflow Implementation
 
-A Workflow implementation may export a `workflow` object, which can be type-checked using a pre-defined interface or `main` (and optionally [signals](/docs/node/signals) and [queries](/docs/node/queries)) directly.
+Workflow are implemented using a factory function that returns a handlers object for `execute` and optionally [signals](signals) and [queries](queries).
 
-Use `Context.configureActivities` to create functions that schedule Activities in the system.
+The snippet below uses `createActivityHandle` to create functions that, when called, schedule Activities in the system.
 
-`src/workflows/example.ts`
+`src/workflows/index.ts`
 
 <!--SNIPSTART nodejs-hello-workflow {"enable_source_link": false}-->
 <!--SNIPEND-->
 
+### Workflow Interface
+
+#### Type definitions
+
+Workflow type definitions are optional, they provide type safety in situations where the implementation cannot directly be referenced by a client such as cross service or cross language calls.
+
+`src/interfaces.ts`
+
+<!--SNIPSTART nodejs-hello-workflow-interface {"enable_source_link": false}-->
+<!--SNIPEND-->
+
 ## How to start a Workflow
 
-[API reference](https://nodejs.temporal.io/api/namespaces/client)
+The [`WorkflowClient`](https://nodejs.temporal.io/api/classes/client.workflowclient) class is used to interact with Workflows.
 
-The `WorkflowClient` class is used to instantiate clients that schedule Workflows and send other requests to the Temporal Service.
 It can be used in any Node.js process (for example, an [Express](https://expressjs.com/) web server) and is separate from the Worker.
 
-`src/worker/schedule-workflow.ts`
+`src/exec-workflow.ts`
 
 <!--SNIPSTART nodejs-hello-client {"enable_source_link": false}-->
 <!--SNIPEND-->
@@ -61,11 +58,12 @@ Workflows can be started with a range of [`WorkflowOptions`](https://nodejs.temp
 
 ## How to cancel a Workflow
 
-To cancel a Workflow execution, call the [`cancel()`](https://nodejs.temporal.io/api/interfaces/client.WorkflowStub#cancel) method on a WorkflowStub.
+To cancel a Workflow execution, call the [`cancel()`](https://nodejs.temporal.io/api/interfaces/client.WorkflowHandle#cancel) method on a WorkflowHandle.
 
 ```ts
-// Create a typed client using the Example Workflow interface,
-const example = client.stub<Example>('example', { taskQueue: 'tutorial' });
+// Create a typed client based on the example Workflow's type
+const example = client.createWorkflowHandle(example, { taskQueue: 'tutorial' });
+// Start the Workflow without waiting its completion
 await example.start('Temporal');
 // ... Later on, cancel the workflow
 await example.cancel();
@@ -85,7 +83,7 @@ import DistributedCron from '../shared/distributed-cron.md'
 You can set each workflow to repeat on a schedule with the `cronSchedule` option:
 
 ```ts
-const workflow = client.stub<WFInterface>('scheduled-workflow', {
+const workflow = client.createWorkflowHandle(scheduledWorkflow, {
   taskQueue: 'test',
   cronSchedule: '* * * * *', // start every minute
 });
@@ -98,10 +96,15 @@ const workflow = client.stub<WFInterface>('scheduled-workflow', {
 From Workflow code you may signal or cancel an external Workflow.
 
 ```ts
-const workflow = Context.external<WFInterface>(workflowId, optionalRunId);
+const workflow = createExternalWorkflowHandle<WFInterface>(
+  workflowId,
+  optionalRunId
+);
 await workflow.signal.someSignal(arg1, arg2);
 await workflow.cancel();
 ```
+
+[`createExternalWorkflowHandle`](https://nodejs.temporal.io/api/api/namespaces/workflow#newexternalworkflowhandle) returns an [`ExternalWorkflowHandle`](https://nodejs.temporal.io/api/interfaces/workflow.ExternalWorkflowHandle) that can be used to interact with existing Workflows.
 
 ## Child Workflows
 
@@ -109,12 +112,10 @@ Besides Activities, a Workflow can also start other Workflows.
 
 Execute a child workflow and await its completion:
 
-```ts
-const workflow = Context.child<WFInterface>(workflowId, optionalRunId);
-await workflow.execute(arg1, arg2);
-```
+<!--SNIPSTART nodejs-child-workflow-->
+<!--SNIPEND-->
 
-[`Context.child`](https://nodejs.temporal.io/api/classes/workflow.ContextImpl#child) returns a [`ChildWorkflowStub`](https://nodejs.temporal.io/api/interfaces/workflow.ChildWorkflowStub) that can be used to signal the created child.
+[`createChildWorkflowHandle`](https://nodejs.temporal.io/api/api/namespaces/workflow#newchildworkflowhandle) returns a [`ChildWorkflowHandle`](https://nodejs.temporal.io/api/interfaces/workflow.ChildWorkflowHandle) that can be used to start a new child Workflow, signal it and await its completion.
 
 Child Workflow executions are [`CancellationScope`](/docs/node/cancellation-scopes) aware and will automatically be cancelled when their containing scope is cancelled.
 
@@ -134,20 +135,24 @@ import SharedContinueAsNew from '../shared/continue-as-new.md'
 
 ### The `ContinueAsNew` API
 
-Use the `Context.continueAsNew` API to instruct the Node SDK to restart `main` with a new starting value and a new event history.
+Use the [`continueAsNew`](https://nodejs.temporal.io/api/namespaces/workflow#continueasnew) API to instruct the Node SDK to restart `loopingWorkflow` with a new starting value and a new event history.
 
 ```ts
-import { Context, sleep } from '@temporalio/workflow';
+import { continueAsNew, sleep } from '@temporalio/workflow';
 
-async function main(iteration = 0): Promise<void> {
-  if (iteration === 10) {
-    return;
-  }
-  console.log('Running Workflow iteration:', iteration);
-  await sleep(1000);
-  // must match the arguments expected by `main`
-  await Context.continueAsNew<typeof main>(iteration + 1);
-  // Unreachable code, continueAsNew is like `process.exit` and will stop execution once called.
+export async function loopingWorkflow(iteration = 0) {
+  return {
+    async execute() {
+      if (iteration === 10) {
+        return;
+      }
+      console.log('Running Workflow iteration:', iteration);
+      await sleep(1000);
+      // Must match the arguments expected by `loopingWorkflow`
+      await continueAsNew<typeof loopingWorkflow>(iteration + 1);
+      // Unreachable code, continueAsNew is like `process.exit` and will stop execution once called.
+    },
+  };
 }
 ```
 
