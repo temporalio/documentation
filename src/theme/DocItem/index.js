@@ -90,7 +90,7 @@ function DocItem(props) {
                 </div>
               )}
 
-              <article className="p§se sm:prose md:prose-md lg:prose-lg mx-auto my-12 text-red-500">
+              <article className="prose sm:prose md:prose-md lg:prose-lg mx-auto my-12">
                 {renderTocMobile && (
                   <TOCCollapsible
                     toc={DocContent.toc}
