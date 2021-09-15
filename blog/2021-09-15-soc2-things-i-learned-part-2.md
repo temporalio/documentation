@@ -1,0 +1,147 @@
+---
+slug: things-i-learned-from-soc2-part-2
+title: Things I learned about SOC 2 - Part II
+author: Cully Wakelin
+author_title: SDE Technical Writer
+author_image_url: https://avatars2.githubusercontent.com/u/34380806
+tags:
+  - compliance
+  - soc2
+date: 2021-09-15T00:00:00Z
+hide_table_of_contents: false
+---
+
+<!--truncate-->
+
+This is the second post in a series where I highlight some of the things I learned from my experience with the SOC 2 compliance process.
+
+## Keys to success
+
+These are my 5 key things to be successful at maintaining SOC 2 compliance.
+
+### 1. Do what we say we are doing
+
+This is at the heart of SOC 2.
+When we write a control statement, it must be one that is accurate and true.
+And we want to do it in a way where we can prove we did those things during a period of time.
+
+For example, if we have a control statement that says "The engineering team is notified whenever there is a release to production", then we should be able to prove that.
+
+But really think about this statement for moment, for it forces us to define the following things:
+- What is the "engineering team", who is in that scope?
+- What is our method/mechanism of notification?
+- What is considered a "release to production"?
+
+By ironing all of that out, and ensuring that there is a history of evidence to gather, this control statement, and the actions we take that are associated with it, can scale with the company for a very long time.
+And this is ultimately what the SOC 2 process does for an organization.
+
+### 2. Retain the advice of an expert to get ramped up
+
+Doing what we say we are doing is probably the most important key to success.
+
+However, one of the hardest parts is mapping what we are doing to SOC 2 criteria for auditing purposes.
+
+This is where the advice of an expert goes a very long way.
+If you do not have any experience with a SOC 2 audit, it would be a very hard challenge to do this on your own.
+But an expert can help you phrase your control statements such that they both capture the essence of what you are doing and make sure the way they are described satisfies any particular SOC 2 criteria.
+
+During Temporal's journey we tried both a third party company, [Strike Graph](https://www.strikegraph.com/), and a personalized consultant, [Martin Cozzi](https://www.marana.io/).
+
+#### Strike Graph pros
+
+The pros of companies like Strike Graph are that:
+- They can help you get up and going for a lot less money than a personalized consultant.
+- Their systems can provide a lot of context and boilerplate policies for your organization to utilize.
+
+#### Strike Graph cons
+
+However, for us, there were a couple of cons that impacted us significantly:
+- They were not in the business of understanding our business, and therefore they were not able to help with precision custom Control Statements that scaled for us.
+  This also meant that they were not always able to accurately translate the expectations of our auditing partner into action steps.
+- Using a third party system meant that it was yet another external system to login to and learn how to use.
+  Managing Control Statements and evidence outside of normal business tools, often meant "out of sight, out of mind" and greatly reduced visibility into the SOC 2 process internally.
+
+#### Martin Cozzi pros
+
+The pros of having the personalized attention of someone like Martin meant that:
+- He took the time to understand our business and the expectations of the auditing firm to craft a compliance strategy that best suited our company.
+This also meant that he could translate auditor expectations into action steps for us.
+- He customized Control Statements that accurately reflected what we were doing and mapped them to SOC 2 criteria.
+- He showed us how to easily manage our SOC 2 compliance materials using the project management tools that we already use.
+  Often just a simple spreadsheet is necessary.
+  This was important because it demonstrated that we didn't need a fancy UI to keep track of the state of our SOC 2 compliance efforts.
+
+#### Martin Cozzi cons
+
+The cons are that, someone like Martin usually costs significantly more upfront.
+
+For us though, we think the upfront cost was worth it, and that the savings in headaches in the long run will be huge.
+
+### 3. Internally manage control statements and resources
+
+Temporal uses [Notion](https://www.notion.so/) for just about all of our internal documentation and project management.
+
+With Martin's help we were able to utilize the same project management tools that we already use to track our compliance efforts.
+
+As it turns out, this was a pretty big deal.
+
+This is because everyone in the company has access to it.
+Everyone can see the control statements, what criteria those statements map to, the policies that we wrote for processes to adhere to, the progress of any given compliance effort, etc...
+It also means that we can easily see how any given internal task rolls up under a compliance related effort, or has been generated by it.
+Essentially, it puts the SOC 2 process right at the heart of our operating mind set, which is so critical for the long term.
+
+### 4. Use a reliable auditing partner
+
+There are many companies out there that offer this service.
+The truth is, finding the right one for your company can be a little hit or miss.
+That is because, each company does things a little differently.
+
+We have worked with two different ones so far, and for us we found our experience with [Schneider Downs](https://www.schneiderdowns.com/) to be really good.
+Martin recommended them, and has worked with them for a few years.
+
+They pros that we really liked were:
+- They were highly communicative.
+- They had previous experience with developer facing SaaS companies.
+- They had a polished system for evidence submission that gave us clear visibility into the status of our audit.
+
+I definitely can not say this is the case for the other companies we talked to our worked with previously.
+
+### 5. Spread out the workload
+
+While spreading out the workload helps to prevent any single person from getting overwhelmed, it is also about knowing the roles that individuals play in the compliance effort.
+For us, we found that any given person generally falls into one of three roles.
+
+#### The Department Head
+
+This is a very important role.
+The Department Head's responsibility is to make sure that people are doing the things we say we are doing.
+The Department Head must have a good sense of control statements that fall into their area.
+They are the "buck stops here" in terms of driving their department to think and care about the compliance process.
+
+In our last period we had four Department Heads who were heavily involved in the process:
+- HR
+- Engineering
+- Security
+- Product
+
+#### The Project Manager
+
+The Project Manager has the responsibility of organizing materials, scheduling meetings, and generally creating a structure to operate in.
+The Project Manager is also the auditor's point of contact with the organization, funneling and prioritizing communications.
+
+As the Project Manager for Temporal's SOC 2 efforts, I cultivated a section in Notion for all of our policies, control statements, and evidence aggregation
+I established a routine way of escalating requests for evidence and decision making sessions.
+I also worked very closely with Martin, picking his brain, to provide internal guidance when needed.
+
+#### The Evidence Gather
+
+The Evidence Gatherer is someone who captures evidence per an evidence request for the auditing process.
+
+An Evidence Gather must be someone who is familiar with the domain to know what to gather and how to gather it, working with both the Project Manager and the Department Heads to do that.
+
+In our last audit, we had to submit well over a hundred pieces of evidence, most of them unique, and some large in scope.
+We had at least a dozen evidence gathers, including Department Heads, and me as the Project Manager.
+
+---
+
+Stay tuned for the next post in this series.
