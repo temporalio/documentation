@@ -22,7 +22,7 @@ title="Start-To-Close period"
 
 An Activity Execution must have either this timeout (Start-To-Close) or the [Schedule-To-Close Timeout](/docs/content/what-is-a-schedule-to-close-timeout) set.
 We recommend always setting this timeout, however make sure that it is always set to be longer than the possible maximum time for the Activity Execution to take place.
-For long running Activity Executions, we recommend also using [Activity Heartbeats](/docs/what-is-an-activity-heartbeat) and [Heartbeat Timeouts](/docs/content/what-is-a-heartbeat-timeout).
+For long running Activity Executions, we recommend also using [Activity Heartbeats](/docs/content/what-is-an-activity-heartbeat) and [Heartbeat Timeouts](/docs/content/what-is-a-heartbeat-timeout).
 
 The main use case for the Start-To-Close timeout is to detect when a Worker crashes after it has started executing an Activity Task.
 

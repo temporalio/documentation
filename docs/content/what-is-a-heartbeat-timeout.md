@@ -4,7 +4,14 @@ title: What is a Heartbeat Timeout?
 description: todo
 ---
 
-Maximum time between Heartbeat requests.
-  When an Activity calls the Heartbeat API, the calls will not be sent to the service unless the Heartbeat Timeout is specified.
-  If a Heartbeat Timeout is specified then the Activity must call the Heartbeat API within this timeout.
-  See [Long Running Activities](#long-running-activities).
+import CenteredImage from "../components/CenteredImage.js"
+
+A Heartbeat Timeout is the maximum time between [Activity Heartbeats](/docs/content/what-is-an-activity-heartbeat).
+
+<CenteredImage
+imagePath="/diagrams/heartbeat-timeout.svg"
+imageSize="100"
+title="Heartbeat Timeout periods"
+/>
+
+If this timeout is reached, the Activity Execution changes to a [Failed](#) status, and will retry if a Retry Policy dictates it.

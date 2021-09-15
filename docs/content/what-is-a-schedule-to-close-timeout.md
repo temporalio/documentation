@@ -20,6 +20,6 @@ imageSize="100"
 title="Schedule-To-Close period with a retry"
 />
 
-An Activity Execution must have either this timeout (Schedule-To-Close) or [Start-To-Close](/docs/what-is-a-start-to-close-timeout) set.
+An Activity Execution must have either this timeout (Schedule-To-Close) or [Start-To-Close](/docs/content/what-is-a-start-to-close-timeout) set.
 By default an Activity Execution Retry Policy dictates that retries will occur for up to 10 years.
 This timeout can be used to reduce the overall time that has elapsed, without altering the default Retry Policy.
