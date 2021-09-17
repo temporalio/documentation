@@ -17,6 +17,7 @@ title="Schedule To Start period"
 />
 
 There are two primary uses case of this timeout:
+
 1. Detect whether an individual Worker has crashed.
 2. Detect whether the fleet of Workers polling the Task Queue is not able to keep up with the rate of Activity Tasks.
 

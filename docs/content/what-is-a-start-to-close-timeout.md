@@ -29,6 +29,7 @@ For long running Activity Executions, we recommend also using [Activity Heartbea
 The main use case for the Start-To-Close timeout is to detect when a Worker crashes after it has started executing an Activity Task.
 
 If this timeout is reached the following takes place:
+
 - An [ActivityTaskTimedOut](/docs/temporal-explained/event-reference/#activitytasktimedout) event is written to the Workflow Execution's mutable state.
 - If there is a Retry Policy that dictates a retry, then the Temporal Server schedules another Activity Task.
   - The attempt count increments by 1 in the Workflow Execution's mutable state.
