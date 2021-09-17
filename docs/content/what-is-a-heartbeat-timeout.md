@@ -1,7 +1,7 @@
 ---
 id: what-is-a-heartbeat-timeout
 title: What is a Heartbeat Timeout?
-description: todo
+description: A Heartbeat Timeout is the maximum time between Activity Heartbeats.
 ---
 
 import CenteredImage from "../components/CenteredImage.js"

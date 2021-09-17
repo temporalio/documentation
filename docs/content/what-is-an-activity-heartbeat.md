@@ -1,7 +1,9 @@
 ---
 id: what-is-an-activity-heartbeat
 title: What is an Activity Heartbeat?
-description: todo
+description: An Activity Heartbeat is ping, from the Worker that is executing the Activity to the Temporal Server, which serves as a way to ensure that the Activity Execution is making progress and the Worker has not crashed.
+tags:
+  - explanation
 ---
 
 An Activity Heartbeat is ping, from the Worker that is executing the Activity to the Temporal Server, which serves as a way to ensure that the Activity Execution is making progress and the Worker has not crashed.

@@ -1,7 +1,9 @@
 ---
 id: what-is-a-start-to-close-timeout
 title: What is a Start-To-Close Timeout?
-description: todo
+description: A Start-To-Close Timeout is the maximum time allowed for a single Activity Task Execution.
+tags:
+  - explanation
 ---
 
 import CenteredImage from "../components/CenteredImage.js"
@@ -17,7 +19,7 @@ title="Start To Close period"
 <CenteredImage
 imagePath="/diagrams/start-to-close-timeout-with-retry.svg"
 imageSize="100"
-title="Start-To-Close period"
+title="Start-To-Close period with retries"
 />
 
 An Activity Execution must have either this timeout (Start-To-Close) or the [Schedule-To-Close Timeout](/docs/content/what-is-a-schedule-to-close-timeout) set.

@@ -1,7 +1,7 @@
 ---
 id: what-is-asynchronous-activity-completion
 title: What is Asynchronous Activity Completion?
-description: todo
+description: Asynchronous Activity Completion is when the final result of a computation, started by an Activity, is provided to the Temporal System from an external system.
 tags:
   - explanation
 ---
