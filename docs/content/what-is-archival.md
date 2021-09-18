@@ -6,7 +6,7 @@ tags:
   - explanation
 ---
 
-Archival is a feature that automatically backs up [Event Histories](/docs/content/what-is-an-event-history) from Temporal Cluster persistence to a custom blob store after the [Workflow Execution](/docs/content/what-is-a-workflow-execution) retention period is reached.
+Archival is a feature that automatically backs up [Event Histories](/docs/content/what-is-an-event-history) from Temporal Cluster persistence to a custom blob store after the Closed [Workflow Execution](/docs/content/what-is-a-workflow-execution) retention period is reached.
 
 The purpose of Archival is to keep [Event Histories](#event-history) as long as needed while not overwhelming the persistence store.
 
