@@ -19,4 +19,4 @@ title="Workflow Run Timeout period"
 **The default is set to the same value as the [Workflow Execution Timeout](/docs/content/what-is-a-workflow-execution-timeout).**
 This timeout is most commonly used to limit the execution time of a single [Temporal Cron Job Execution](/docs/content/what-is-a-temporal-cron-job).
 
-If the Workflow Run Timeout is reached the Temporal Server automatically Terminates the Workflow Execution.
+If the Workflow Run Timeout is reached, the Temporal Server automatically Terminates the Workflow Execution.
