@@ -6,7 +6,15 @@ tags:
   - explanation
 ---
 
+import CenteredImage from "../components/CenteredImage.js"
+
 A Workflow Execution Timeout is the maximum time that a Workflow Execution can be executing (have an Open status) including retries and any usage of Continue As New.
+
+<CenteredImage
+imagePath="/diagrams/workflow-execution-timeout.svg"
+imageSize="100"
+title="Workflow Execution Timeout period"
+/>
 
 **The default value is ∞ (infinite)**
 If this timeout is reached, the Workflow Execution changes to a Timed Out status.
