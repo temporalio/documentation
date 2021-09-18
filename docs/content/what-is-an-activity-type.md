@@ -1,7 +1,7 @@
 ---
 id: what-is-an-activity-type
 title: What is an Activity Type?
-description: An Activity Type is the mapping of name to an Activity Definition.
+description: An Activity Type is the mapping of a name to an Activity Definition.
 tags:
   - explanation
 ---
