@@ -1,7 +1,7 @@
 ---
 id: why-an-activity
 title: Why an Activity?
-description: The purpose of an Activity is to execute a single, well-defined action that can be short, or long running such as calling another service, transcoding a media file, or sending an email.s
+description: The purpose of an Activity is to execute a single, well-defined action (either short or long running), such as calling another service, transcoding a media file, or sending an email.
 tags:
   - explanation
 ---
