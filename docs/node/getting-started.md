@@ -85,8 +85,8 @@ npx @temporalio/create@latest ./example
 cd example
 ```
 
-This will set up with [the basic Hello World sample](https://github.com/temporalio/sdk-node/blob/main/packages/create-project/samples/client.ts).
-If you want a [sample for connecting to a Temporal Server instance secured with mTLS](https://github.com/temporalio/sdk-node/blob/main/packages/create-project/samples/client-mtls.ts), you can use ` npx @temporalio/create@latest ./example --sample hello-world-mtls`.
+This will set up with [the basic Hello World sample](https://github.com/temporalio/samples-node/tree/main/hello-world).
+If you want a [sample for connecting to a Temporal Server instance secured with mTLS](https://github.com/temporalio/samples-node/tree/main/hello-world-mtls), you can use ` npx @temporalio/create@latest ./example --sample hello-world-mtls`.
 
 :::note
 
@@ -131,9 +131,9 @@ Hello, Temporal!
 
 This "Hello, Temporal!" message comes from the combination of:
 
-- [`exec-workflow.js`](https://github.com/temporalio/sdk-node/blob/main/packages/create-project/samples/client.ts) passing `'Temporal'` as an argument to the Workflow.
-- The [Workflow](https://github.com/temporalio/sdk-node/blob/main/packages/create-project/samples/workflow.ts) passing the argument to the Activity.
-- The [Activity](https://github.com/temporalio/sdk-node/blob/main/packages/create-project/samples/activity.ts) taking the argument as `name` and returning `Hello, ${name}!`.
+- [`execute-workflow.js`](https://github.com/temporalio/samples-node/blob/main/hello-world/src/execute-workflow.ts) passing `'Temporal'` as an argument to the Workflow.
+- The [Workflow](https://github.com/temporalio/samples-node/blob/main/hello-world/src/workflows.ts) passing the argument to the Activity.
+- The [Activity](https://github.com/temporalio/samples-node/blob/main/hello-world/src/activities.ts) taking the argument as `name` and returning `Hello, ${name}!`.
 
 as compiled from your `/src` to `/lib` folder by TypeScript.
 
