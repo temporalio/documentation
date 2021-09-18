@@ -6,6 +6,6 @@ tags:
   - explanation
 ---
 
-An Activity Type is the mapping of name to an Activity Definition.
+An Activity Type is the mapping of a name to an Activity Definition.
 
 Activity Types are scoped via Task Queues.
