@@ -6,7 +6,7 @@ tags:
   - explanation
 ---
 
-The purpose of an Activity is to execute a single, well-defined action that can be short, or long running such as calling another service, transcoding a media file, or sending an email.
+The purpose of an Activity is to execute a single, well-defined action (either short or long running), such as calling another service, transcoding a media file, or sending an email.
 
 - An Activity can be implemented as a synchronous method or fully asynchronously involving multiple processes.
 - An Activity can be retried indefinitely according to the provided exponential retry policy.
