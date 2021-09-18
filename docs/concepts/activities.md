@@ -12,34 +12,35 @@ Activities are invoked asynchronously through task queues. A task queue is essen
 
 ## Timeouts
 
-Temporal does not impose any system limit on Activity duration. It is up to the application to choose the timeouts for its execution. These are the configurable Activity timeouts:
+### Schedule To Start
 
-- `ScheduleToStart`: Maximum time from when an Activity Execution is called to when a Worker has started the Activity Execution.
-  The usual reason for this timeout to fire is when all Workers are down or they are not able to keep up with the request rate.
-  We recommend setting this timeout to the maximum time a Workflow is willing to wait for an Activity Execution in the presence of all possible Worker outages.
-  This timeout **does not** trigger any retries regardless of the Retry Policy.
-  Do not use this timeout unless you know what you are doing.
-- `StartToClose`: Maximum time for a single Activity Execution attempt.
-- `ScheduleToClose`: Maximum time for the overall Activity Execution, including the time from ScheduleToStart and retries.
-- `Heartbeat`: Maximum time between Heartbeat requests.
-  When an Activity calls the Heartbeat API, the calls will not be sent to the service unless the Heartbeat Timeout is specified.
-  If a Heartbeat Timeout is specified then the Activity must call the Heartbeat API within this timeout.
-  See [Long Running Activities](#long-running-activities).
+import WhatIsAScheduleToStartTimeout from "../content/what-is-a-schedule-to-start-timeout.md"
 
-Either `ScheduleToClose` or `StartToClose` timeouts are required.
-You can see our explainer on [the 4 types of Activity Timeouts](/blog/activity-timeouts) for why.
+<WhatIsAScheduleToStartTimeout/>
+
+### Start To Close
+
+import WhatIsAStartToCloseTimeout from "../content/what-is-a-start-to-close-timeout.md"
+
+<WhatIsAStartToCloseTimeout/>
+
+### Schedule To Close
+
+import WhatIsAScheduleToCloseTimeout from "../content/what-is-a-schedule-to-close-timeout.md"
+
+<WhatIsAScheduleToCloseTimeout/>
+
+### Heartbeat
+
+import WhatIsAHeartbeatTimeout from "../content/what-is-a-heartbeat-timeout.md"
+
+<WhatIsAHeartbeatTimeout/>
 
 ## Retries
 
-As Temporal doesn't recover an Activity's state and they can communicate to any external system, failures are expected. Therefore, Temporal supports automatic Activity retries. Any Activity when invoked can have an associated retry policy. Here are the retry policy parameters:
+import WhatIsARetryPolicy from "../content/what-is-a-retry-policy.md"
 
-- `InitialInterval` is a delay before the first retry.
-- `BackoffCoefficient`. Retry policies are exponential. The coefficient specifies how fast the retry interval is growing. The coefficient of 1 means that the retry interval is always equal to the `InitialInterval`.
-- `MaximumInterval` specifies the maximum interval between retries. Useful for coefficients more than 1.
-- `MaximumAttempts` specifies how many times to attempt to execute an Activity in the presence of failures. If this limit is exceeded, the error is returned back to the Workflow that invoked the Activity.
-- `NonRetryableErrorReasons` allows you to specify errors that shouldn't be retried. For example retrying invalid arguments error doesn't make sense in some scenarios.
-
-There are scenarios when not a single Activity but rather the whole part of a Workflow should be retried on failure. For example, a media encoding Workflow that downloads a file to a host, processes it, and then uploads the result back to storage. In this Workflow, if the host that hosts the worker dies, all three Activities should be retried on a different host. Such retries should be handled by the Workflow code as they are very use case specific.
+<WhatIsARetryPolicy/>
 
 ## Long Running Activities
 
@@ -84,17 +85,12 @@ Here are some use cases for employing multiple Activity task queues in a single 
 
 ## Asynchronous Activity Completion
 
-By default, an Activity is a function or method (depending on the language) that completes as soon as the function or method returns. But in some cases an Activity implementation is asynchronous. For example, the action could be forwarded to an external system through a message queue, and the result could come through a different queue.
+import WhatIsAsynchronousActivityCompletion from "../content/what-is-asynchronous-activity-completion.md"
 
-To support such use cases, Temporal allows Activity implementations that do not complete upon Activity function completions. A separate API should be used in this case to complete the Activity. This API can be called from any process, even in a different programming language, that the original Activity worker used.
+<WhatIsAsynchronousActivityCompletion/>
 
 ## Local Activities
 
-Some Activities are very short lived and do not need the queuing semantic, flow control, rate limiting and routing capabilities. For this case, Temporal supports a _local Activity_ feature. Local Activities are executed in the same worker process as the Workflow that invoked them. Consider using local Activities for functions that are:
+import WhatIsALocalActivity from "../content/what-is-a-local-activity.md"
 
-- no longer than a few seconds
-- do not require global rate limiting
-- do not require routing to specific workers or pools of workers
-- can be implemented in the same binary as the Workflow that invokes them
-
-The main benefit of local Activities is that they are much more efficient in utilizing Temporal service resources and have much lower latency overhead compared to the usual Activity invocation.
+<WhatIsALocalActivity/>

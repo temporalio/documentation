@@ -442,6 +442,7 @@ module.exports = {
       items: [
         "temporal-explained/introduction",
         "temporal-explained/workflows",
+        "temporal-explained/activities",
       ],
     },
   ],

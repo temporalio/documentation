@@ -1,12 +1,16 @@
 ---
 id: what-is-a-task
 title: What is a Task?
-description: todo
+description: A Task is the context needed to make progress with a specific Workflow Execution or Activity Execution.
+tags:
+  - explanation
 ---
 
-The context needed to execute a specific [Activity](#activity) or [Workflow](#workflow) state transition.
+A Task is the context needed to make progress with a specific [Workflow Execution](/docs/content/what-is-a-workflow-execution) or [Activity Execution](/docs/content/what-is-an-activity-execution).
 
-- There are two types of tasks:
-  - [Activity Task](#activity-task)
-  - [Workflow Task](#workflow-task)
-- A single [Activity](#activity) execution corresponds to a single [Activity Task](#activity-task), while a [Workflow Execution](#workflow-execution) employs multiple [Workflow Tasks](#workflow-task).
+There are two types of Tasks:
+
+- [Activity Task](/docs/content/what-is-an-activity-task)
+- [Workflow Task](/docs/content/what-is-a-workflow-task)
+
+A single Activity Execution corresponds to a single Activity Task, while a Workflow Execution may have many Workflow Tasks.

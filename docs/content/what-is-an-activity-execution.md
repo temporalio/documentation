@@ -1,13 +1,30 @@
 ---
 id: what-is-an-activity-execution
 title: What is an Activity Execution?
-description: todo
+description: An Activity Execution is the full chain of Activity Task Executions.
+tags:
+  - explanation
 ---
 
-A business-level function that implements your application logic, such as calling a service or transcoding a media file.
+import CenteredImage from "../components/CenteredImage.js"
+import RelatedReadList from '../components/RelatedReadList.js'
 
-- An Activity usually implements a single well-defined action; it can be short or long running.
-- An Activity can be implemented as a synchronous method or fully asynchronously involving multiple processes.
-- An Activity can be retried indefinitely according to the provided exponential retry policy.
-- If for any reason an Activity is not completed within the specified timeout, an error is reported to the [Workflow](#workflow), which decides how to handle it. The duration of an Activity has no limit.
-- Activities support an [Activity Heartbeat](#activity-heartbeat) that helps to identify timeouts faster in case the Activity execution fails.
+An Activity Execution is the full chain of [Activity Task Executions](/docs/content/what-is-an-activity-task-execution).
+
+<CenteredImage
+imagePath="/diagrams/activity-execution.svg"
+imageSize="100"
+title="Activity Execution"
+/>
+
+<CenteredImage
+imagePath="/diagrams/activity-execution-with-retry.svg"
+imageSize="100"
+title="Activity Execution with retries"
+/>
+
+<RelatedReadList
+readlist={[
+["How to spawn an Activity Execution in Go","/docs/content/how-to-spawn-an-activity-execution-in-go","developer guide"],
+]}
+/>
