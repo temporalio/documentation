@@ -12,5 +12,5 @@ The purpose of Archival is to keep [Event Histories](#event-history) as long as 
 
 You might want to keep [Event Histories](#event-history) after the retention period has passed for two reasons:
 
-1. Compliance: For legal reasons, [Event Histories](#event-history) may need to be stored for a long period of time.
+- Compliance: For legal reasons, [Event Histories](#event-history) may need to be stored for a long period of time.
 2. Debugging: Older [Event Histories](#event-history) can be referenced to help with debugging.
