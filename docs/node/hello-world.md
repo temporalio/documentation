@@ -79,7 +79,8 @@ It can be used in any Node.js process (for example, an [Express](https://express
 
 ### Testing
 
-There's no official support for testing Workflows and Activities.
+There's no official support for testing Workflows and Activities yet.
 
 - Since Activities are async functions, they should be testable as long as you avoid using [Context](https://nodejs.temporal.io/api/classes/activity.context) or are able to mock it.
 - You can test Workflows by running them with a [WorkflowClient](https://nodejs.temporal.io/api/classes/client.workflowclient).
+- Check [the SDK's own tests](https://github.com/temporalio/sdk-node/tree/52f67499860526cd180912797dc3e6d7fa4fc78f/packages/test/src) for more examples.
