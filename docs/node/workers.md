@@ -11,7 +11,6 @@ A Worker is an object that connects to the Temporal Server and executes [Workflo
 - Workers are run on user-controlled hosts and automatically registers Workflows and Activities for bundling using Webpack v5.
 - You can use the `@temporalio/worker` package's [`Worker`](https://nodejs.temporal.io/api/classes/worker.Worker) class to create and run as many Workers as your use case demands, across any number of hosts.
 - Workers poll [Task Queues](/docs/node/task-queues) for Tasks, execute chunks of code in response to those Tasks, and then communicate the results back to the Temporal Server.
-- The Node SDK handles all of the communication between the Worker and the Temporal Server behind the scenes - no port configuration is required.
 
 ## How to start a Worker
 
@@ -75,3 +74,13 @@ You can query Worker state with `worker.getState()`. A Worker is in one of 7 sta
   - `STOPPED` - Shutdown complete, `worker.run` resolves
 
 If you need advanced visibility into internal worker state, [see the API reference for more](https://nodejs.temporal.io/api/classes/worker.Worker).
+
+## Worker Security and Networking
+
+The Node SDK usually handles all of the communication between the Worker and the Temporal Server behind the scenes - no port configuration is required for development usecases.
+
+In production settings, [Temporal supports mTLS encryption](docs/server/security), required by Temporal Cloud.
+To configure this, this SDK exposes [the Rust Core SDK](https://github.com/temporalio/sdk-core) as `Core`, which you can configure before you run `workflow.create`:
+
+<!--SNIPSTART nodejs-hello-mtls-->
+<!--SNIPEND-->
