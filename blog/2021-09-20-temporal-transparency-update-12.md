@@ -21,11 +21,12 @@ Latest Release at Time of Writing: V1.12.1
 
 - Cadence support EOL date remains **September 29, 2021**
 - Node.js final stages before beta
+- UI update, nearing early alpha
 - Visibility improvements now available
-- Kubecon
-- Temporal meetup
+- We are giving two talks at Kubecon, have a booth and throwing an afterparty
+- Temporal meetups now have a set pace, next week very special guest
 
-Hey everyone, it's been a while and I hope things are well. There has been immense growth in our community over the last few months which couldn't make us happier. Over the last few months we've stayed pretty quiet as we've been heads down and focused on improving the product. This post will cover some highlights of that work.
+Hey everyone, it's been a while and I hope things are well. There has been immense growth in our community since our last update which couldn't make us happier. Over the last few months we've stayed pretty quiet and have been heads down and focused on improving the product. This post will cover some highlights of that work.
 
 ## Cadence support EOL reminder
 
@@ -35,7 +36,7 @@ If you are still running on Cadence and depend on our team or the support they p
 
 ## Kubecon
 
-Kubecon is here and 2021 will be the first year where Temporal has an official presence. We are engaged with Kubecon in a few ways:
+Kubecon is coming and 2021 will be the first year where Temporal has an official presence. We are engaged with Kubecon in a few ways:
 
 1. Our own [Dominik Tornow](https://www.linkedin.com/in/dtornow/) is giving a talk with our partners at [Chronosphere](https://chronosphere.io/) about Chronospheres Temporal usage in conjunction with Kubernetes. The talk focuses on the difficulties of dealing with stateful operations within Kubernetes operators, and how Temporal can supplement Kubernetes to provide a good stateful and stateless experience. 
 2. Our awesome Developer Advocate [Tihomir Surdilovic](https://www.linkedin.com/in/tihomir-surdilovic-5641361/) is the owner and author of the [CNCF Serverless Workflow Spec](https://serverlessworkflow.io/) which he has talk about. The twist is that this is still a Temporal talk. Tihomir recently spent the time to write a [Temporal sample](https://github.com/temporalio/samples-java/tree/master/src/main/java/io/temporal/samples/dsl) which can run the minimum specification for Serverless Workflows. His talk will partially focus on why Temporal is the best foundation for almost any DSL solution.
@@ -57,7 +58,7 @@ We're excited to have in-person presence at such a great conference. We really h
 
 ## Elasticsearch
 
-In the last update, we gave an overview of the exciting changes to our Visibility API that were nearing completion. Immense progress was made on this front and the improvements are available in the latest releases. The primary goal of the redesign was to simplify the configuration and usage of search attributes, as opposed to expanding the functionality. Our Visibility API already provides an immense amount of value, it's just that very few used it due to the barrier of entry. We believe that these updates change that story making our Visibility functionality a joy to use. Here are some of the specific highlights to look for:
+In the last update, we gave an overview of the exciting changes to our Visibility API that were nearing completion. Immense progress was made on this front and the improvements are available in the latest releases. The primary goal of the redesign was to simplify the configuration and usage of search attributes, as opposed to expanding the functionality. Our Visibility API already provides an immense amount of value, it's just that very few used it due to the barrier of entry. We believe these updates change that storym making our Visibility functionality a joy to use. Here are some specific highlights:
 
 * Improved query language for advanced visibility: ExecutionStatus is of string type, IS NULL support for missing search attributes.
 * New system search attributes for advanced visibility: HistoryLength, StateTransisionCount, ExecutionDuration.
@@ -66,7 +67,7 @@ In the last update, we gave an overview of the exciting changes to our Visibilit
 
 ## UI update
 
-*This section was guest written by our Front-End Architect, Steve Kinney*
+*This section was guest written by our Front-End Architect, [Steve Kinney](https://www.linkedin.com/in/stevekinney/)*
 
 **TL;DR;** “We went from nothing to almost a full something.”
 
@@ -81,7 +82,7 @@ The TypeScript SDK is nearly ready, on track for a public beta launch in October
 - We have pushed through a final API redesign based on community feedback. The latest API is inspired by React, with Workflows comparable to React Components.
 - Major missing features have been implemented, including a new `patched` API for migrating Workflows (replacing the legacy versioning process), Child Workflows, Signals, and Continue As New.
 - We are laying the groundwork for a major public push. Next.js, the most popular React framework, now has [a Temporal example](https://github.com/vercel/next.js/tree/canary/examples/with-temporal) (thanks to Loren), Val is on the blog and swyx is ramping up mentions on [podcasts](https://www.youtube.com/watch?v=H3h1WICelqs) and upcoming [conferences](https://reactnewyork.com/).
-- Besides our standing wait list of existing Temporal users like Descript, we are already getting inbound interest on the SDK from new-to-Temporal startups from Vercel to Stately.
+- Besides our list of existing Temporal users like Descript, we are already getting inbound interest on the SDK from new-to-Temporal startups from Vercel to Stately.
 
 ## Meetup
 
