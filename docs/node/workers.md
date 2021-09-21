@@ -45,10 +45,10 @@ For example, if you are working in monorepo style and want `node_modules` at you
 // this file is /temporal/src/worker.ts but node modules are at /node_modules
 
 const worker = await Worker.create({
-    workDir: __dirname,
-    nodeModulesPath: path.join(__dirname, '/../../node_modules'),
-    taskQueue: 'tutorial',
-  });
+  workDir: __dirname,
+  nodeModulesPath: path.join(__dirname, '/../../node_modules'),
+  taskQueue: 'tutorial',
+});
 ```
 
 More advanced options are available in [the API reference](https://nodejs.temporal.io/api/classes/worker.Worker).
