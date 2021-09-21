@@ -407,6 +407,7 @@ module.exports = {
         "external-resources",
         "cadence-to-temporal",
         "reference/glossary",
+        "reference/events",
       ],
     },
 
