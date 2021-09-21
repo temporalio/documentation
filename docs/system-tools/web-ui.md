@@ -148,7 +148,7 @@ The primary mechanism we recommend for debugging is [Temporal Web](https://githu
 
 ![6XkjmR](https://user-images.githubusercontent.com/6764957/110544958-71746480-8167-11eb-8152-8d3a3eb73d4e.gif)
 
-- [Workflows](https://docs.temporal.io/docs/reference/glossary/#workflow) are identified by their [**Workflow ID**](https://docs.temporal.io/docs/reference/glossary/#workflow-id), which you provide when creating the workflow. They also have a **Name** which is directly taken from your code.
+- [Workflow Executions](/docs/content/what-is-a-workflow-execution) are identified by their [**Workflow ID**](/docs/content/what-is-a-workflow-id), which you provide when creating the workflow. They also have a **Name** which is directly taken from your code.
 - Workflow **Status** is usually in one of a few states: Running, Completed, or Terminated, with **Start Time** and **End Time** shown accordingly.
 - Workflow ID's are are distinct from **Run ID's**, which uniquely identify one of potentially many Runs of Workflows with the same Workflow ID.
 
