@@ -1,9 +1,12 @@
 ---
 id: glossary
 title: Glossary
+description: The following terms have specific definitions within the context of the Temporal Platform.
+tags:
+  - reference
 ---
 
-These terms have specific definitions within the context of the Temporal product.
+The following terms have specific definitions within the context of the Temporal Platform.
 
 - [Activity](/docs/content/what-is-an-activity)
 - [Activity Execution](/docs/content/what-is-an-activity-execution)

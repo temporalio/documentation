@@ -12,7 +12,7 @@ It can be seen as an "inline" Activity.
 Something to note about `workflow.SideEffect` is that, unlike the Temporal guarantee of at-most-once execution for Activities, there is no such guarantee with `workflow.SideEffect`.
 Under certain failure conditions, `workflow.SideEffect` can end up executing a function more than once.
 
-The only way to fail `SideEffect` is to panic, which causes a [Command Task](/docs/glossary/#command) failure.
+The only way to fail `SideEffect` is to panic, which causes a [Command Task](/docs/reference/glossary/#command) failure.
 After the timeout, Temporal reschedules and then re-executes the Command Task, giving `SideEffect` another chance to succeed.
 Do not return any data from `SideEffect` other than through its recorded return value.
 

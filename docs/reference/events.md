@@ -1,7 +1,10 @@
 ---
-id: history-events
-title: Workflow Execution History Event reference
-sidebar_label: Event reference
+id: events
+title: Event reference
+description: The following is a complete list of all possible Events that could appear in a Workflow Execution History.
+sidebar_label: Events
+tags:
+  - reference
 ---
 
 The following is a complete list of all possible Events that could appear in a Workflow Execution History.

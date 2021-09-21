@@ -433,11 +433,11 @@
 
 [[redirects]]
   from = "/docs/server-event-types"
-  to = "/docs/reference/history-events"
+  to = "/docs/reference/events"
 
 [[redirects]]
   from = "/docs/server/event-types"
-  to = "/docs/reference/history-events"
+  to = "/docs/reference/events"
 
 [[redirects]]
   from = "/docs/server-introduction"
@@ -489,3 +489,7 @@
 [[redirects]]
   from = "/docs/system-tools"
   to = "/docs/system-tools/introduction"
+
+[[redirects]]
+  from = "/docs/glossary"
+  to = "/docs/reference/glossary"

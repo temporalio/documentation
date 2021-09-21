@@ -17,7 +17,6 @@ module.exports = {
         "server/namespaces",
         "server/multi-cluster",
         "server/archive-data",
-        "reference/history-events",
       ],
     },
     {
