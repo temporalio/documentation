@@ -56,6 +56,8 @@ Workflows can be started with a range of [`WorkflowOptions`](https://nodejs.temp
 - `retryPolicy`: the overall [RetryPolicy](https://nodejs.temporal.io/api/interfaces/proto.temporal.api.common.v1.iretrypolicy/) at the Workflow level
 - `searchAttributes`: Specifies additional indexed information in result of list workflow.
 
+You can also start a workflow with the `signalWithStart` API, if your workflow uses [Signals](/docs/node/signals).
+
 ## How to cancel a Workflow
 
 To cancel a Workflow execution, call the [`cancel()`](https://nodejs.temporal.io/api/interfaces/client.WorkflowHandle#cancel) method on a WorkflowHandle.
