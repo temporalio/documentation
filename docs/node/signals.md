@@ -46,15 +46,15 @@ If you're not sure if a Workflow is running, you can `signalWithStart` a Workflo
 // Signal With Start
 const client = new WorkflowClient();
 let workflow = client.createWorkflowHandle(
-  interruptSignal,                        // which Workflow to start
+  interruptSignal, // which Workflow to start
   { taskQueue: 'test' }
 );
 await workflow.signalWithStart(
-  'interrupt',                            // which Signal to send
-  ['interrupted from signalWithStart'],   // arguments to send with Signal
-  []                                      // arguments to start the Workflow if needed
+  'interrupt', // which Signal to send
+  ['interrupted from signalWithStart'], // arguments to send with Signal
+  [] // arguments to start the Workflow if needed
 );
-// 
+//
 
 // `interruptSignal` Workflow implementation with `interrupt` signal
 let interrupt: (reason?: any) => void | undefined;
