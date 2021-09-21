@@ -36,6 +36,8 @@ There are two required options to the `Worker.create()` function:
 
 ### Additional Worker Options
 
+This is a selected subset of options you are likely to use. More advanced options, particularly for performance tuning, are available in [the API reference](https://nodejs.temporal.io/api/classes/worker.Worker).
+
 | Options           | Description                                                                                                                                                        |
 | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `activities`      | Mapping of activity name to implementation. Automatically discovered from ${workDir}/activities if workDir is provided.                                            |
@@ -58,8 +60,6 @@ const worker = await Worker.create({
   taskQueue: 'tutorial',
 });
 ```
-
-More advanced options are available in [the API reference](https://nodejs.temporal.io/api/classes/worker.Worker).
 
 ## Programmatic access to Worker state
 
