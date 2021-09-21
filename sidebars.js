@@ -17,7 +17,6 @@ module.exports = {
         "server/namespaces",
         "server/multi-cluster",
         "server/archive-data",
-        "server/event-types",
       ],
     },
     {
@@ -407,7 +406,8 @@ module.exports = {
         "samples-library",
         "external-resources",
         "cadence-to-temporal",
-        "glossary",
+        "reference/glossary",
+        "reference/events",
       ],
     },
 

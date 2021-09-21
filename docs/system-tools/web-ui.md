@@ -148,11 +148,11 @@ The primary mechanism we recommend for debugging is [Temporal Web](https://githu
 
 ![6XkjmR](https://user-images.githubusercontent.com/6764957/110544958-71746480-8167-11eb-8152-8d3a3eb73d4e.gif)
 
-- [Workflows](https://docs.temporal.io/docs/glossary/#workflow) are identified by their [**Workflow ID**](https://docs.temporal.io/docs/glossary/#workflow-id), which you provide when creating the workflow. They also have a **Name** which is directly taken from your code.
+- [Workflow Executions](/docs/content/what-is-a-workflow-execution) are identified by their [**Workflow ID**](/docs/content/what-is-a-workflow-id), which you provide when creating the workflow. They also have a **Name** which is directly taken from your code.
 - Workflow **Status** is usually in one of a few states: Running, Completed, or Terminated, with **Start Time** and **End Time** shown accordingly.
 - Workflow ID's are are distinct from **Run ID's**, which uniquely identify one of potentially many Runs of Workflows with the same Workflow ID.
 
-> Tip: Don't confuse Runs with [Workflow Executions](https://docs.temporal.io/docs/glossary/#workflow-execution) - they are similar, but a long-running Workflow Execution can have multiple Runs. A Run is the atomic unit.
+> Tip: Don't confuse Runs with [Workflow Executions](/docs/content/what-is-a-workflow-execution)—they are similar, but a long-running Workflow Execution can have multiple Runs. A Run is the atomic unit.
 
 The full state of every Run is inspectable in Temporal Web:
 
@@ -198,7 +198,7 @@ Reading execution histories is one of the more reliable ways of debugging:
 
 Here, you can see the exact sequence of events that has happened so far, which includes the relevant state for each event and details about what went wrong or what is preventing the next correct event.
 There are about 40 system events in total.
-See our [Temporal Server Event Types reference](https://docs.temporal.io/docs/server/event-types/) for detailed descriptions.
+See our [Temporal Server Event Types reference](/docs/reference/events/) for detailed descriptions.
 
 ### Viewing Stack Traces on Temporal Web
 
