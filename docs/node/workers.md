@@ -1,3 +1,9 @@
+---
+id: workers
+title: Workers in Node
+sidebar_label: Workers
+---
+
 ## What is a Worker?
 
 A Worker is an object that connects to the Temporal Server and executes [Workflows](/docs/node/workflows) and [Activities](/docs/node/activities).
@@ -43,6 +49,8 @@ For example, if you are working in monorepo style and want `node_modules` at you
 
 ```js
 // this file is /temporal/src/worker.ts but node modules are at /node_modules
+// activities are at /temporal/src/activities.ts - as expected by workDir, no override needed
+// workflows are at /temporal/src/workflow/index.ts - as expected by workDir, no override needed
 
 const worker = await Worker.create({
   workDir: __dirname,
