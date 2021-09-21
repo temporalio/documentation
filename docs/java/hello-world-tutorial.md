@@ -112,7 +112,7 @@ Create HelloWorldWorkflowImpl.java and define the Workflow:
 
 ### Worker
 
-Our [Worker](/docs/reference/glossary/#worker) hosts Workflow and Activity functions and executes them one at a time. The Worker is instructed to execute the specific functions via information it gets from the Task Queue, and after execution, it communicates results back to the server.
+Our [Worker](/docs/content/what-is-a-worker) hosts Workflow and Activity functions and executes them one at a time. The Worker is instructed to execute the specific functions via information it gets from the Task Queue, and after execution, it communicates results back to the server.
 
 Create HelloWorldWorker.java and define the Worker:
 
