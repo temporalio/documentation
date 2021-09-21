@@ -8,7 +8,7 @@ tags:
 
 import CenteredImage from "../components/CenteredImage.js"
 
-A Workflow Task Timeout is the maximum amount of time that the Temporal Server will wait for a Worker to start processing a [Workflow Task](#workflow-task) after the Task has been pulled from the Task Queue.
+A Workflow Task Timeout is the maximum amount of time allowed, from the time a [Workflow Task](#workflow-task) is scheduled (placed in the Task Queue) to when a Worker to starts executing that Workflow Task.
 
 <CenteredImage
 imagePath="/diagrams/workflow-task-timeout.svg"
