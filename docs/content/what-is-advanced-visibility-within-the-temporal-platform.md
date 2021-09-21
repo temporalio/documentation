@@ -1,13 +1,13 @@
 ---
-id: what-is-advanced-visibility-within-the-temporal-platform
-title: What is Advanced Visibility within the Temporal Platform?
+id: what-is-advanced-listing-within-the-temporal-platform
+title: What is Advanced Listing within the Temporal Platform?
 description: todo
 tags:
   - explanation
 ---
 
-Advanced Visibility, within the Temporal Platform, is the feature that enables Advanced Visibility Queries, which lists Workflow Executions, filtering and sorting them via an SQL-like query.
-Advanced Visibility Queries accept additional [Search Attributes](/docs/content/what-is-a-search-attribute).
+Advanced Listing, within the Temporal Platform, is the feature that lists Workflow Executions, filtering and sorting them via SQL-like syntax.
+An Advanced Listing accepts additional [List Attributes](/docs/content/what-is-a-list-attribute).
 
 Example:
 
