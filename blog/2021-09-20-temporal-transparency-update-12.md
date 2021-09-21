@@ -111,6 +111,6 @@ Slack: [temporalio.slack.com](http://temporalio.slack.com/)
 
 Forum: [https://community.temporal.io/](https://community.temporal.io/)
 
-Join the Cloud waitlist!: temporal.io/subscribe
+Join the Cloud waitlist!: [temporal.io/subscribe](https://temporal.io/subscribe)
 
 Find an awesome job where you can use Temporal. Work for great companies like Wellhive and Descript: https://temporal.io/careers#external-jobs
