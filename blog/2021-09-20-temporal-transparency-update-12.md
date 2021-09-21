@@ -17,6 +17,8 @@ release_version: V1.12.1
 
 Latest Release at Time of Writing: V1.12.1
 
+> Note: please remember to keep your Temporal version up to date!
+
 **TL;DR;** 
 
 - Cadence support EOL date remains **September 29, 2021**
@@ -41,7 +43,8 @@ Kubecon is coming and 2021 will be the first year where Temporal has an official
 1. Our own [Dominik Tornow](https://www.linkedin.com/in/dtornow/) is giving a talk with our partners at [Chronosphere](https://chronosphere.io/) about Chronospheres Temporal usage in conjunction with Kubernetes. The talk focuses on the difficulties of dealing with stateful operations within Kubernetes operators, and how Temporal can supplement Kubernetes to provide a good stateful and stateless experience. 
 2. Our awesome Developer Advocate [Tihomir Surdilovic](https://www.linkedin.com/in/tihomir-surdilovic-5641361/) is the owner and author of the [CNCF Serverless Workflow Spec](https://serverlessworkflow.io/) which he has talk about. The twist is that this is still a Temporal talk. Tihomir recently spent the time to write a [Temporal sample](https://github.com/temporalio/samples-java/tree/master/src/main/java/io/temporal/samples/dsl) which can run the minimum specification for Serverless Workflows. His talk will partially focus on why Temporal is the best foundation for almost any DSL solution.
 3. We have a booth this year in the startup hall. Quite a few members of our team will be there to answer questions and engage with attendees. Please stop by for some free swag and Temporal related conversation. 
-4. Last but not least, we will be hosting an afterparty for Kubecon. Details below:
+4. We are now CNCF Sponsors and welcome ideas and invitations to talk about how Temporal can work with other CNCF ecosystem projects.
+5. Last but not least, we will be hosting an afterparty for Kubecon. Details below:
 
     **Location**: JW Marriott / The Mixing Room patio
 
@@ -56,7 +59,7 @@ Kubecon is coming and 2021 will be the first year where Temporal has an official
 We're excited to have in-person presence at such a great conference. We really hope to see you there!
 
 
-## Elasticsearch
+## Visibility
 
 In the last update, we gave an overview of the exciting changes to our Visibility API that were nearing completion. Immense progress was made on this front and the improvements are available in the latest releases. The primary goal of the redesign was to simplify the configuration and usage of search attributes, as opposed to expanding the functionality. Our Visibility API already provides an immense amount of value, it's just that very few used it due to the barrier of entry. We believe these updates change that storym making our Visibility functionality a joy to use. Here are some specific highlights:
 
@@ -73,7 +76,7 @@ In the last update, we gave an overview of the exciting changes to our Visibilit
 
 In the beginning of July, we started work on a new user interface distinct to Temporal. The new UI addresses many of the complaints that customers have about the current interface from Cadance and also sets us up to deliver features unique to Temporal Cloud. We outlined the MVP set of features and initial architecture. We built many of the core features in under three months and are preparing to go into an internal alpha in the next few weeks. The UI and Cloud teams have collaborated and drafted out an initial roadmap for delivering self-serve admin features in Q4 and the UI is on track to deliver those features.
 
-## Node.js
+## TypeScript SDK
 
 *This section was guest written by our Head of Developer Experience, Shawn Wang*
 
@@ -88,7 +91,9 @@ The TypeScript SDK is nearly ready, on track for a public beta launch in October
 
 We've landed on a consistent pace for our Meetup events and the format and content improves with each session. In the last few sessions, we've been fortunate enough to have members of our community present alongside our team members. This makes us super happy as we see Meetups as a platform for the community more than for our company. If you have any interest in presenting something Temporal related at a future meetup, please reach out (ryland@temporal.io, swyx@temporal.io).
 
-If you haven't already signed up, [here is the Luma link](https://lu.ma/temporal) that will keep you updated for each of these monthly events. We have a session next Tuesday 09/28/2021 at 9am PST. For those of you who are eagerly waiting, here is a sneak peak of the agenda (subject to change):
+If you haven't already signed up, [here is the Luma link](http://temporal.io/meetup) that will keep you updated for each of these monthly events. Worry not, if you miss a session they can be watched later on our Youtube channel. Here is a [link to the playlist](https://www.youtube.com/watch?v=gWjtjRavqWU&list=PLl9kRkvFJrlSM-s-s-8WbgjN-R3Y4L7WG).
+
+We have a session next Tuesday 09/28/2021 at 9am PST. For those of you who are eagerly waiting, here is a sneak peak of the agenda (subject to change):
 
 1. Talk about Server Workflow Spec and Temporal. This session will be especially great for those who can't watch the Kubecon talk Tiho gives.
 2. An update on the NodeJS SDK and the outline for our release plans.
@@ -105,3 +110,7 @@ Email: [ryland@temporal.io](mailto:ryland@temporal.io)
 Slack: [temporalio.slack.com](http://temporalio.slack.com/)
 
 Forum: [https://community.temporal.io/](https://community.temporal.io/)
+
+Join the Cloud waitlist!: temporal.io/subscribe
+
+Find an awesome job where you can use Temporal. Work for great companies like Wellhive and Descript: https://temporal.io/careers#external-jobs
