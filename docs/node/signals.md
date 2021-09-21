@@ -38,6 +38,46 @@ await workflow.signal.unblock();
 
 `workflow.signal.unblock('some string')` resolves when Temporal Server has persisted receipt of the Signal, before the Workflow's Signal handler is called. Signal handlers cannot return data to the caller.
 
+#### How to send a Signal and start a Workflow simultaneously
+
+If you're not sure if a Workflow is running, you can `signalWithStart` a Workflow to send it a Signal and optionally start the Workflow if it is not running.
+
+```ts
+// Signal With Start
+const client = new WorkflowClient();
+let workflow = client.createWorkflowHandle(
+  interruptSignal,                        // which Workflow to start
+  { taskQueue: 'test' }
+);
+await workflow.signalWithStart(
+  'interrupt',                            // which Signal to send
+  ['interrupted from signalWithStart'],   // arguments to send with Signal
+  []                                      // arguments to start the Workflow if needed
+);
+// 
+
+// `interruptSignal` Workflow implementation with `interrupt` signal
+let interrupt: (reason?: any) => void | undefined;
+
+const signals = {
+  // Interrupt execute by rejecting the awaited Promise
+  interrupt(reason: string): void {
+    if (interrupt !== undefined) {
+      interrupt(new Error(reason));
+    }
+  },
+};
+
+async function execute(): Promise<void> {
+  // When this Promise is rejected the Workflow execution will fail
+  await new Promise<never>((_resolve, reject) => {
+    interrupt = reject;
+  });
+}
+
+export const interruptSignal = () => ({ execute, signals });
+```
+
 ### How to receive a Signal
 
 Signal handlers should either have a `void` return type, like in the below example, or a `Promise<void>` return type for `async` handlers (you may want to `await` async operations like Activities and Timers).
