@@ -18,39 +18,42 @@ import TabItem from '@theme/TabItem';
 
 ## Introduction
 
-[Temporal's Node SDK](/docs/node/introduction) makes heavy use of the [isolated-vm npm package](https://www.npmjs.com/package/isolated-vm) to ensure your [Workflows are deterministic](/docs/node/determinism).
-Each Workflow runs in a separate _isolate_ that prevents your Workflow code from directly accessing any logic that may break Workflow determinism, like reading from the file system or generating a random number.
-In this blog post, I'll cover why the Node SDK uses isolated-vm, sketch out how the Node SDK uses isolated-vm, and describe what that means for how you write Workflows in Node.js.
+[Temporal's Node SDK](/docs/node/introduction) makes heavy use of V8 isolates via the [isolated-vm npm package](https://www.npmjs.com/package/isolated-vm) to ensure your [Workflows are deterministic](/docs/node/determinism).
+Each Workflow runs in an _isolate_ that prevents your Workflow code from directly accessing any logic that may break Workflow determinism, like reading from the file system or generating a random number.
+In this blog post, I'll cover why the Node SDK V8 isolates, sketch out how the Node SDK uses isolates, and describe what that means for how you write Workflows in Node.js.
 
 ## Why Isolates?
 
-The key idea behind Temporal is that each Workflow is stored in the Temporal server as an [_event history_](/blog/temporal-tips-tricks-1/#event-history).
-Instead of storing the "current state" of each Workflow, Temporal instead stores the Workflow's initial state, all Signals the Workflow has received, and the result of all Activities the Workflow executed.
+The key idea behind Temporal is that each Workflow is stored in the Temporal Server as an [_event history_](/blog/temporal-tips-tricks-1/#event-history).
+Instead of storing the "current state" of each Workflow, Temporal instead stores the entire history of the Workflow.
+That includes the Workflow's initial state, all Signals the Workflow has received, and the result of all Activities the Workflow executed.
 
-If the Temporal server wants to pause the Workflow and resume it on a different Worker, the Temporal server will replay the Workflow function from the beginning using the same Signals and Activity results.
+The [Temporal Server](https://docs.temporal.io/docs/server/introduction/) can pause the Workflow and resume it on a different Worker.
+For example, the Workflow may be evicted from the [Worker's cache if the cache is out of space](https://docs.temporal.io/docs/concepts/workflows/#faq).
+To restore the Workflow, The Temporal Server will replay the Workflow function from the beginning using the same Signals and Activity results.
 However, replaying event histories assumes that the Workflow is fully _deterministic_.
 That means the Workflow will be in the exact same state given the same initial state and same sequence of events.
 
 There are a lot of potential sources of non-determinism.
 Some are obvious, some are more subtle.
-For example, suppose you tried to write a Workflow that recorded the time the Workflow started, waited for a while, and then returned the time the Workflow started.
+For example, suppose you tried to write a Workflow that sleeps for a conditional amount of time based on the current time.
 
 ```ts
 import { sleep } from '@temporalio/workflow';
 
-export const sleepWorkflow = () => {
+export const sleepWorkflow = () => ({
   return {
-    async execute(): Promise<Date> {
-      const start = new Date();
-      await sleep(10 * 1000);
-      return start;
+    async execute(): Promise<void> {
+      const start = Date.now();
+      // Sleep until the end of the current second
+      await sleep(1000 - start.valueOf() % 1000);
     }
   }
-}
+})
 ```
 
-If `sleepWorkflow()` ran in vanilla Node.js, it would **not** be deterministic because of `new Date()`.
-If the Temporal server pauses the Workflow and later runs `execute()` to restart the Workflow, `start` will contain a different value than it would have if the Temporal server had not paused the Workflow.
+If `sleepWorkflow()` ran in vanilla Node.js, it would **not** be deterministic because `Date.now()` is not deterministic.
+If the Temporal Server pauses the Workflow and later runs `execute()` to restart the Workflow, the Workflow will sleep for a different amount of time unless the Temporal Server happens to restart the Workflow at exactly the right time.
 
 The Temporal Node SDK runs your Workflow code in an isolate to remove sources of non-determinism.
 Running in an isolate means each Workflow execution has its own memory, so there's no way for Workflows to share a singleton or any other form of shared state.
@@ -58,14 +61,14 @@ And the Temporal Node SDK can replace commonly used non-deterministic built-ins,
 For example, suppose you wrote a Workflow that printed out the `Date` constructor as a string as shown below.
 
 ```ts
-export const testWorkflow = () => {
+export const testWorkflow = () => ({
   return {
     async execute(): Promise<Date> {
       console.log(Date.toString());
       return new Date();
     }
   }
-}
+})
 ```
 
 Running `testWorkflow()` would print something like what you see below.
@@ -115,7 +118,7 @@ console.log(script.runSync(context)); // Prints "2"
 ```
 
 However, by creating a new context for every run, you can ensure that each `runSync()` call runs in an isolated environment, with no ability to interact with other `runSync()` calls.
-That's how the [Temporal Node SDK ensures Workflows can't interfere with each other](https://github.com/temporalio/sdk-node/blob/004c2846fe4e4312eb2c424da477bc0c280d6c48/packages/worker/src/isolate-context-provider.ts#L32-L40).
+That's how the [Temporal Node SDK ensures Workflows can't interfere with each other](https://github.com/temporalio/sdk-node/blob/5a0f780b9cb4c0dae265c08ca99fbc1f58c4ab83/packages/worker/src/isolate-context-provider.ts#L32-L40).
 
 How does the Temporal Node SDK handle overwriting the `Date()` constructor?
 It doesn't use isolated-vm contexts, it instead compiles your Workflows with [Webpack](https://www.npmjs.com/package/webpack) and creates an [entry script that overrides `Date()` before your Workflow starts](https://github.com/temporalio/sdk-node/blob/004c2846fe4e4312eb2c424da477bc0c280d6c48/packages/worker/src/isolate-builder.ts#L101-L127).
