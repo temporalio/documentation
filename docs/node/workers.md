@@ -36,14 +36,14 @@ There are two required options to the `Worker.create()` function:
 
 ### Additional Worker Options
 
-| Options           | Description                                                                                                                                                         |
-|-------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `activities`      | Mapping of activity name to implementation. Automatically discovered from ${workDir}/activities if workDir is provided.                                             |
-| `dataConverter`   | placeholder for future DataConverter feature                                                                                                                        |
-| `dependencies`    | Allows injection of external dependencies                                                                                                                           |
-| `interceptors`    | A mapping of interceptor type to a list of factories or module paths                                                                                                |
-| `nodeModulesPath` | Path for webpack to look up modules in for bundling the Workflow code. Automatically discovered if `workDir` is provided.  Defaults to `${workDir}/../node_modules` |
-| `workflowsPath`   | Path to look up workflows in. Automatically discovered if `workDir` is provided.   Defaults to `${workDir}/workflows`                                               |
+| Options           | Description                                                                                                                                                        |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `activities`      | Mapping of activity name to implementation. Automatically discovered from ${workDir}/activities if workDir is provided.                                            |
+| `dataConverter`   | placeholder for future DataConverter feature                                                                                                                       |
+| `dependencies`    | Allows injection of external dependencies                                                                                                                          |
+| `interceptors`    | A mapping of interceptor type to a list of factories or module paths                                                                                               |
+| `nodeModulesPath` | Path for webpack to look up modules in for bundling the Workflow code. Automatically discovered if `workDir` is provided. Defaults to `${workDir}/../node_modules` |
+| `workflowsPath`   | Path to look up workflows in. Automatically discovered if `workDir` is provided. Defaults to `${workDir}/workflows`                                                |
 
 More advanced options are available in [the API reference](https://nodejs.temporal.io/api/classes/worker.Worker).
 
