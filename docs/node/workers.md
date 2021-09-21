@@ -79,7 +79,7 @@ If you need advanced visibility into internal worker state, [see the API referen
 
 The Node SDK usually handles all of the communication between the Worker and the Temporal Server behind the scenes - no port configuration is required for development usecases.
 
-In production settings, [Temporal supports mTLS encryption](docs/server/security), required by Temporal Cloud.
+In production settings, [Temporal supports mTLS encryption](/docs/server/security), required by Temporal Cloud.
 To configure this, this SDK exposes [the Rust Core SDK](https://github.com/temporalio/sdk-core) as `Core`, which you can configure before you run `workflow.create`:
 
 <!--SNIPSTART nodejs-hello-mtls-->
