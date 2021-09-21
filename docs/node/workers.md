@@ -43,9 +43,9 @@ This is a selected subset of options you are likely to use. More advanced option
 | `activities`      | Mapping of activity name to implementation. Automatically discovered from ${workDir}/activities if workDir is provided.                                            |
 | `nodeModulesPath` | Path for webpack to look up modules in for bundling the Workflow code. Automatically discovered if `workDir` is provided. Defaults to `${workDir}/../node_modules` |
 | `workflowsPath`   | Path to look up workflows in. Automatically discovered if `workDir` is provided. Defaults to `${workDir}/workflows`                                                |
-| `dataConverter`   | placeholder for future DataConverter feature (pending feature)                                                                                                                      |
-| `dependencies`    | Allows injection of external dependencies  (Advanced feature: see [External Dependencies](/docs/node/external-dependencies))                                                                                                                         |
-| `interceptors`    | A mapping of interceptor type to a list of factories or module paths (Advanced feature: see [Interceptors](/docs/node/interceptors))                                                                                              |
+| `dataConverter`   | placeholder for future DataConverter feature (pending feature)                                                                                                     |
+| `dependencies`    | Allows injection of external dependencies (Advanced feature: see [External Dependencies](/docs/node/external-dependencies))                                        |
+| `interceptors`    | A mapping of interceptor type to a list of factories or module paths (Advanced feature: see [Interceptors](/docs/node/interceptors))                               |
 
 For example, if you are working in monorepo style and want `node_modules` at your project root, with all Temporal code inside a `/temporal/src` folder, you can force `nodeModulesPath`:
 
