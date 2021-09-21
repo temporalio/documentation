@@ -78,7 +78,7 @@ Create workflow.go and add the following code:
 
 ### Worker
 
-Our [Worker](/docs/reference/glossary/#worker) hosts Workflow and Activity functions and executes them one at a time. The Worker is instructed to execute a specific function via information it pulls from the Task Queue. After it runs the code, it communicates the results back to the server.
+Our [Worker](/docs/content/what-is-a-worker) hosts Workflow and Activity functions and executes them one at a time. The Worker is instructed to execute a specific function via information it pulls from the Task Queue. After it runs the code, it communicates the results back to the server.
 
 Create worker/main.go and add the following code:
 
