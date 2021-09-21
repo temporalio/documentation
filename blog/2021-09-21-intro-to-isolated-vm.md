@@ -121,7 +121,7 @@ However, by creating a new context for every run, you can ensure that each `runS
 That's how the [Temporal Node SDK ensures Workflows can't interfere with each other](https://github.com/temporalio/sdk-node/blob/5a0f780b9cb4c0dae265c08ca99fbc1f58c4ab83/packages/worker/src/isolate-context-provider.ts#L32-L40).
 
 How does the Temporal Node SDK handle overwriting the `Date()` constructor?
-It doesn't use isolated-vm contexts, it instead compiles your Workflows with [Webpack](https://www.npmjs.com/package/webpack) and creates an [entry script that overrides `Date()` before your Workflow starts](https://github.com/temporalio/sdk-node/blob/004c2846fe4e4312eb2c424da477bc0c280d6c48/packages/worker/src/isolate-builder.ts#L101-L127).
+The Temporal Node SDK compiles your Workflows with [Webpack](https://www.npmjs.com/package/webpack) and creates an [entry script that overrides `Date()` before your Workflow starts](https://github.com/temporalio/sdk-node/blob/5a0f780b9cb4c0dae265c08ca99fbc1f58c4ab83/packages/worker/src/isolate-builder.ts#L89-L125).
 Webpack also bundles dependencies, which means your Workflows can use `import` statements.
 
 ## Takeaways for Writing Workflows in Node.js
@@ -129,7 +129,7 @@ Webpack also bundles dependencies, which means your Workflows can use `import` s
 The Temporal Node SDK runs Workflows in a subset of Node.js that has several globals stubbed out, including [`Math.random()`, `Date()`, `setTimeout()`, and `clearTimeout()`](https://github.com/temporalio/sdk-node/blob/004c2846fe4e4312eb2c424da477bc0c280d6c48/packages/workflow/src/worker-interface.ts).
 In particular, accessing `WeakMap()`, `WeakSet()`, and `WeakRef()` throw errors, because garbage collection is non-deterministic.
 The Temporal Node SDK also explicitly prevents you from accessing several Node.js APIs, including `fs` and `http`.
-For example, if you try to use `fs.readFileSync('./package.json')` in a Workflow, your worker will fail with the below error message at startup.
+For example, if you try to import `fs` in a Workflow, your worker will fail with the below error message at startup.
 
 ```
 Module not found: Error: Can't resolve 'fs' in '/path/to/lib/workflows'
@@ -155,7 +155,7 @@ export const httpWorkflow = () => {
 The `await axios.get()` call will throw a `TypeError: adapter is not a function` error, because Axios doesn't recognize the Temporal Workflow isolate runtime.
 
 If you need to use an npm module that interacts with the outside world, like Axios or [Mongoose](https://mongoosejs.com/), you should create an Activity that uses the npm module.
-Activities run in a normal Node.js environment, **not** an isolate.
+Activities run in the normal Node.js environment, **not** an isolate.
 
 ```ts
 import axios from 'axios';
