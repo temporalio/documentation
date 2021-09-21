@@ -46,7 +46,7 @@ Once you have a client, you then create a "Handle" with [`client.createWorkflowH
 This is an overloaded function that can be used in two ways:
 
 - `createWorkflowHandle(workflowFunction, WorkflowOptions)`: to create a handle for a **new** Workflow.
-- `createWorkflowHandle(workflowId, runId)`: for retrieving a handle for an **existing** Workflow. 
+- `createWorkflowHandle(workflowId, runId)`: for retrieving a handle for an **existing** Workflow.
 
 The Workflow Handle [exposes a number of important APIs](https://nodejs.temporal.io/api/interfaces/client.WorkflowHandle) that you will use to externally control your Workflow:
 
