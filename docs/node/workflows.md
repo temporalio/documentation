@@ -64,7 +64,7 @@ The Workflow Handle [exposes a number of important APIs](https://nodejs.temporal
 | `query`             | A mapping of all queries exposed by a Workflow. Call to query a Workflow after it's been started even if it has already completed. `ts const value = await workflow.query.get(); ` |
 | `signal`            | A mapping of all Signals exposed by a Workflow. Call to signal a running Workflow. `ts await workflow.signal.increment(3); `                                                       |
 | `signalWithStart()` | Sends a signal to a running Workflow or starts a new one if not already running and immediately signals it. Useful when you're unsure of the run state.                            |
-| `workflowId`        | The workflowId of the current Workflow. NOT to be confused with the runId.                                                                                                         |
+| `workflowId`        | The workflowId of the current Workflow. The vast majority of the time, you can use this without the runId.                                                                                                         |
 | `cancel()`          | Cancel a running Workflow.                                                                                                                                                         |
 | `terminate()`       | Terminate a running Workflow                                                                                                                                                       |
 | `describe()`        | Describe the current workflow execution                                                                                                                                            |
@@ -97,20 +97,20 @@ Start a workflow and await completion: `const result = await workflow.execute(ar
 
 ### Start a Workflow (Non-Blocking)
 
-Start a workflow and return the `runId` of the Workflow Execution for future use: `const runId = workflow.start(args)`
+Start a workflow and return the `runId` of the Workflow Execution for future use: `workflow.start(args)`
 
-Once you have the `runId` of a Workflow Execution you can retrieve it later in a different process:
+Once you have the `workflowId` of a Workflow Execution you can retrieve it later in a different process:
 
 ```ts
 // In initial processs...
 const originalWF = client.createWorkflowHandle(workflowFn, runId);
-const runId = await originalWF.start(args);
+await originalWF.start(args);
 const workflowId = originalWF.workflowId;
 
 // save runId and workflowId somewhere...
 
 // In a different process...
-const workflow = client.createWorkflowHandle(workflowId, runId);
+const workflow = client.createWorkflowHandle(workflowId);
 
 // do stuff with the retrieved handle
 workflow.signal.foo(123);
@@ -145,15 +145,17 @@ You can retrieve the result of a completed Workflow Execution with `client.resul
 
 ```ts
 // In initial processs...
-const originalWF = client.createWorkflowHandle(workflowFn, runId);
-const runId = await originalWF.start(args);
+const originalWF = client.createWorkflowHandle(workflowFn, options);
+await originalWF.start(args);
 const workflowId = originalWF.workflowId;
 
-// save runId and workflowId somewhere...
+// save workflowId somewhere...
 
 // In a different process...
-const result = await client.result(workflowId, runId);
+const result = await client.result(workflowId);
 ```
+
+You will rarely ever need to specify the `runId`.
 
 ## Scheduling Cron Workflows
 
