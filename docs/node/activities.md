@@ -9,12 +9,32 @@ In Temporal, Activities are typically used to interact with external resources, 
 ## Overview
 
 Below is a simple Activity that accepts a string parameter, appends a word to it, and returns the result.
-The Temporal Node SDK looks for any `.js` files in the `lib/activities` directory, and automatically registers any exported functions as Activities.
 
 <!--SNIPSTART nodejs-hello-activity {"enable_source_link": false}-->
 <!--SNIPEND-->
 
-### Importing and Using
+## Activity Registration
+
+All activities must be registered by a Worker, or you will get an error that looks like `"Activity function myActivity is not registered on this Worker"` when you try to invoke it from a Workflow.
+
+
+- **Implicit registration**: By default, the Temporal Node SDK looks for any `.js` files in the `/activities` directory, and automatically registers any exported functions as Activities.
+- **Explicit registration**: You can also choose to explicitly register activities in a Worker:
+
+```ts
+import { Worker } from '@temporalio/worker';
+import * as activities from './activities';
+
+// ...
+const worker = await Worker.create({
+  // ...
+  activities, // explicit registration here
+});
+```
+
+See [the Worker docs](/docs/node/workers) for more details.
+
+## Importing and Using in Workflows
 
 You can call the above `greet()` Activity in a Workflow as shown below, assuming that the `greet` function is in the `lib/activities.js` file.
 Note that we only import the type of our activities, the TypeScript compiler will drop the import statement on compilation.
