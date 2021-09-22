@@ -29,7 +29,6 @@ with a `get` handler that returns a function that calls the Node SDK's internal 
 
 Long running activities should heartbeat their progress back to the Workflow.
 
-
 #### Example: Activity that fakes progress and can be cancelled
 
 > Note that [`Context.current().sleep`](https://nodejs.temporal.io/api/classes/activity.context#sleep) is cancellation aware.
@@ -39,7 +38,7 @@ Long running activities should heartbeat their progress back to the Workflow.
 
 ### Activity Cancellation
 
-**Activities may be cancelled only if they emit heartbeats.** 
+**Activities may be cancelled only if they emit heartbeats.**
 A Workflow can request to cancel an Activity by cancelling its containing [cancellation scope](/docs/node/cancellation-scopes).
 
 There are 2 ways to handle Activity cancellation:
