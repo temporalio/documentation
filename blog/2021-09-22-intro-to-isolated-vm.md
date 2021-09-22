@@ -2,7 +2,7 @@
 tags:
   - temporal
   - community
-posted_on_: 2021-09-14T00:00:00Z
+posted_on_: 2021-09-22T00:00:00Z
 slug: intro-to-isolated-vm
 title: Introduction to isolated-vm in Node.js
 author: Valeri Karpov
