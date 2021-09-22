@@ -41,12 +41,19 @@ Workflow type definitions are optional, they provide type safety in situations w
 The [`WorkflowClient`](https://nodejs.temporal.io/api/classes/client.workflowclient) class is used to interact with Workflows.
 It can be used in any Node.js process (for example, an [Express](https://expressjs.com/) web server) and is separate from the Worker.
 
-Once you have a client, you then create a "Handle" with [`client.createWorkflowHandle(workflow, WorkflowOptions)`](https://nodejs.temporal.io/api/classes/client.workflowclient/#createworkflowhandle).
-
+Once you have a client, you then create a "Handle" with [`client.createWorkflowHandle`](https://nodejs.temporal.io/api/classes/client.workflowclient/#createworkflowhandle).
 This is an overloaded function that can be used in two ways:
 
-- `createWorkflowHandle(workflowFunction, WorkflowOptions)`: to create a handle for a **new** Workflow.
-- `createWorkflowHandle(workflowId, runId)`: for retrieving a handle for an **existing** Workflow.
+```ts
+const client = new WorkflowClient(connection.service);
+
+// Method 1: create a handle for a NEW Workflow, given a reference to Workflow definition
+const workflow = client.createWorkflowHandle(exampleWorkflow, { taskQueue: 'tutorial' });
+
+
+// Method 2: retrieve a handle for an EXISTING Workflow, given it's workflowId
+const workflow = client.createWorkflowHandle(workflowId);
+```
 
 The Workflow Handle [exposes a number of important APIs](https://nodejs.temporal.io/api/interfaces/client.WorkflowHandle) that you will use to externally control your Workflow:
 
@@ -70,8 +77,8 @@ Workflow Options are set before a Workflow Execution is created, passed to `crea
 There are a range of [`WorkflowOptions`](https://nodejs.temporal.io/api/interfaces/client.workflowoptions/), notable ones listed here:
 
 - `taskQueue` (required): Task queue to use for workflow tasks. It should match a task queue specified when creating a Worker that hosts the workflow code.
-- `workflowId`: Workflow id to use when starting. If not specified a UUID is generated.
-- `workflowIdReusePolicy`: Specifies server behavior if a completed workflow with the same id exists. [More details](https://nodejs.temporal.io/api/interfaces/client.workflowoptions/#workflowidreusepolicy)
+- `workflowId`: Unique Workflow id to use when starting. If not specified, a UUID is generated, which you can access with `workflow.workflowId`
+- `workflowIdReusePolicy`: Specifies server behavior if a completed workflow with the same id exists. [More details on Workflow ID Reuse Policy](/docs/content/what-is-a-workflow-id-reuse-policy/).
 - `cronSchedule`: see ["Scheduling Cron Workflows"](#scheduling-cron-workflows)
 - `retryPolicy`: the overall [RetryPolicy](https://nodejs.temporal.io/api/interfaces/proto.temporal.api.common.v1.iretrypolicy/) at the Workflow level
 - `searchAttributes`: Specifies additional indexed information in result of list workflow.
