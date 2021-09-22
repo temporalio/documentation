@@ -33,18 +33,18 @@ This mutates Workflow state - do not do this:
 ```ts
 export const unblockOrCancel: Blocked = () => {
   let blocked = true;
-  let someState = 123
+  let someState = 123;
 
   return {
     queries: {
       isBlocked(): boolean {
-        someState++ // bad! don't do this!
+        someState++; // bad! don't do this!
         return blocked;
       },
     },
     // ...
-  }
-}
+  };
+};
 ```
 
 ### How to make a Query
