@@ -64,7 +64,7 @@ The Workflow Handle [exposes a number of important APIs](https://nodejs.temporal
 | `query`             | A mapping of all queries exposed by a Workflow. Call to query a Workflow after it's been started even if it has already completed. `ts const value = await workflow.query.get(); ` |
 | `signal`            | A mapping of all Signals exposed by a Workflow. Call to signal a running Workflow. `ts await workflow.signal.increment(3); `                                                       |
 | `signalWithStart()` | Sends a signal to a running Workflow or starts a new one if not already running and immediately signals it. Useful when you're unsure of the run state.                            |
-| `workflowId`        | The workflowId of the current Workflow. The vast majority of the time, you can use this without the runId.                                                                                                         |
+| `workflowId`        | The workflowId of the current Workflow. The vast majority of the time, you can use this without the runId.                                                                         |
 | `cancel()`          | Cancel a running Workflow.                                                                                                                                                         |
 | `terminate()`       | Terminate a running Workflow                                                                                                                                                       |
 | `describe()`        | Describe the current workflow execution                                                                                                                                            |
