@@ -13,7 +13,33 @@ Below is a simple Activity that accepts a string parameter, appends a word to it
 <!--SNIPSTART nodejs-hello-activity {"enable_source_link": false}-->
 <!--SNIPEND-->
 
-## Activity Registration
+## How to import and use Activities in Workflows
+
+You can call the above `greet()` Activity in a Workflow as shown below, assuming that the `greet` function is in the `lib/activities.js` file.
+Note that we only import the type of our activities, the TypeScript compiler will drop the import statement on compilation.
+
+<!--SNIPSTART nodejs-hello-workflow {"enable_source_link": false}-->
+<!--SNIPEND-->
+
+The return value of `createActivityHandle` is a [`Proxy`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) object
+with a `get` handler that returns a function that calls the Node SDK's internal `scheduleActivity()` function.
+
+### Activity Options
+
+The full set of options are available in [the API reference](https://nodejs.temporal.io/api/interfaces/worker.ActivityOptions), but here are selected ones you might use:
+
+| Activity Options         | Description                                                                                                                                                                                                                                                                      |
+|--------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `startToCloseTimeout`    | Maximum time of a single Activity execution attempt.                                                                                                                                                                                                                             |
+| `scheduleToCloseTimeout` | Total time that a workflow is willing to wait for Activity to complete.                                                                                                                                                                                                          |
+| `heartbeatTimeout`       | Activity must heartbeat before this interval passes after a last heartbeat or activity start.                                                                                                                                                                                    |
+| `retry`                  | [RetryOptions](https://nodejs.temporal.io/api/interfaces/worker.RetryOptions) that define how activity is retried in case of failure. If this is not set, then the server-defined default activity retry policy will be used. To ensure zero retries, set maximum attempts to 1. |
+| `activityId`             | Identifier to use for tracking the activity in Workflow history. The `activityId` can be accessed by the activity function. Does not need to be unique. Defaults to an incremental sequence number.                                                                             |
+| `taskQueue`              | Task queue name. defaults to current worker task queue.                                                                                                                                                                                                                          |
+
+To better understand Activity timeouts, refer to our blogpost on the [4 Types of Activity timeouts](https://docs.temporal.io/blog/activity-timeouts).
+
+## How to register an Activity
 
 All activities must be registered by a Worker, or you will get an error that looks like `"Activity function myActivity is not registered on this Worker"` when you try to invoke it from a Workflow.
 
@@ -33,20 +59,9 @@ const worker = await Worker.create({
 
 See [the Worker docs](/docs/node/workers) for more details.
 
-## Importing and Using in Workflows
-
-You can call the above `greet()` Activity in a Workflow as shown below, assuming that the `greet` function is in the `lib/activities.js` file.
-Note that we only import the type of our activities, the TypeScript compiler will drop the import statement on compilation.
-
-<!--SNIPSTART nodejs-hello-workflow {"enable_source_link": false}-->
-<!--SNIPEND-->
-
-The return value of `createActivityHandle` is a [`Proxy`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) object
-with a `get` handler that returns a function that calls the Node SDK's internal `scheduleActivity()` function.
-
 ## Heartbeating
 
-Long running activities should heartbeat their progress back to the Workflow.
+Long running activities should heartbeat their progress back to the Workflow for the dual purposes of reporting progress and earlier detection of stalled activities (with Heartbeat timeouts).
 
 #### Example: Activity that fakes progress and can be cancelled
 
