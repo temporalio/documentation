@@ -30,12 +30,28 @@ The full set of options are available in [the API reference](https://nodejs.temp
 
 | Activity Options         | Description                                                                                                                                                                                                                                                                      |
 | ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `startToCloseTimeout`    | Maximum time of a single Activity execution attempt.                                                                                                                                                                                                                             |
+| `startToCloseTimeout`    | Maximum time of a single Activity execution attempt. We recommend always setting this.                                                                                                                                                                  |
 | `scheduleToCloseTimeout` | Total time that a workflow is willing to wait for Activity to complete.                                                                                                                                                                                                          |
-| `heartbeatTimeout`       | Activity must heartbeat before this interval passes after a last heartbeat or activity start.                                                                                                                                                                                    |
+| `heartbeatTimeout`       | A best practice to set for long-running activities.                                                                                                                                                                                    |
 | `retry`                  | [RetryOptions](https://nodejs.temporal.io/api/interfaces/worker.RetryOptions) that define how activity is retried in case of failure. If this is not set, then the server-defined default activity retry policy will be used. To ensure zero retries, set maximum attempts to 1. |
 | `activityId`             | Identifier to use for tracking the activity in Workflow history. The `activityId` can be accessed by the activity function. Does not need to be unique. Defaults to an incremental sequence number.                                                                              |
 | `taskQueue`              | Task queue name. defaults to current worker task queue.                                                                                                                                                                                                                          |
+
+You can specify timeouts as number of milliseconds, or a string parsed to number of milliseconds by the [`ms`](https://www.npmjs.com/package/ms) package:
+
+```
+ms('2 days')   // 172800000
+ms('1d')       // 86400000
+ms('10h')      // 36000000
+ms('2.5 hrs')  // 9000000
+ms('2h')       // 7200000
+ms('2 hours')  // 7200000
+ms('1 minute') // 60000
+ms('1m')       // 60000
+ms('5s')       // 5000
+ms('1y')       // 31557600000
+ms('100')      // 100
+```
 
 To better understand Activity timeouts, refer to our blogpost on the [4 Types of Activity timeouts](https://docs.temporal.io/blog/activity-timeouts).
 
