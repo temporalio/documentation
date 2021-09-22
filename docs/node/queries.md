@@ -21,8 +21,31 @@ To add Query handlers to a Workflow, add a `queries` property to the exported Wo
 
 Query handlers can return any value.
 
+> 🚨 WARNING: NEVER mutate Workflow state inside a query! This would be a source of non-determinism.
+
 <!--SNIPSTART nodejs-blocked-workflow-->
 <!--SNIPEND-->
+
+#### How NOT to write a Query
+
+This mutates Workflow state - do not do this:
+
+```ts
+export const unblockOrCancel: Blocked = () => {
+  let blocked = true;
+  let someState = 123
+
+  return {
+    queries: {
+      isBlocked(): boolean {
+        someState++ // bad! don't do this!
+        return blocked;
+      },
+    },
+    // ...
+  }
+}
+```
 
 ### How to make a Query
 
