@@ -133,15 +133,18 @@ Temporal gives you fine grained control over what happens when you cancel a work
 
 ## How to wait for and retrieve the result an existing Workflow Execution
 
-You can retrieve the result of a completed Workflow Execution with `workflow.result(workflowId, runId?)`, or `await` it:
+You can retrieve the result of a completed Workflow Execution with `client.result(workflowId, runId?)`, or `await` it:
 
 ```ts
-await workflow.start(expenseId);
+// In initial processs...
+const originalWF = client.createWorkflowHandle(workflowFn, runId);
+const runId = await originalWF.start(args);
+const workflowId = originalWF.workflowId;
 
-await new Promise((resolve) => setTimeout(resolve, 50));
-await workflow.signal.approve();
+// save runId and workflowId somewhere...
 
-console.log('Done:', await workflow.result()); // Done: { status: 'COMPLETED' }
+// In a different process...
+const result = await client.result(workflowId, runId);
 ```
 
 ## Scheduling Cron Workflows
