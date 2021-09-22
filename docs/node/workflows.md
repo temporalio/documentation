@@ -103,11 +103,9 @@ Once you have the `workflowId` of a Workflow Execution you can retrieve it later
 
 ```ts
 // In initial processs...
-const originalWF = client.createWorkflowHandle(workflowFn, runId);
+const originalWF = client.createWorkflowHandle(workflowFn, options);
 await originalWF.start(args);
 const workflowId = originalWF.workflowId;
-
-// save runId and workflowId somewhere...
 
 // In a different process...
 const workflow = client.createWorkflowHandle(workflowId);
