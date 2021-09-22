@@ -8,7 +8,7 @@ sidebar_label: Workers
 
 A Worker is an object that connects to the Temporal Server and executes [Workflows](/docs/node/workflows) and [Activities](/docs/node/activities).
 
-- Workers are run on user-controlled hosts and automatically registers Workflows and Activities for bundling using Webpack v5.
+- Workers are run on user-controlled hosts and automatically discovers Workflows and Activities  based on `workDir` or specified paths, to be bundled using Webpack v5.
 - You can use the `@temporalio/worker` package's [`Worker`](https://nodejs.temporal.io/api/classes/worker.Worker) class to create and run as many Workers as your use case demands, across any number of hosts.
 - Workers poll [Task Queues](/docs/node/task-queues) for Tasks, execute chunks of code in response to those Tasks, and then communicate the results back to the Temporal Server.
 
