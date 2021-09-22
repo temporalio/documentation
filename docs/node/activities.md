@@ -17,7 +17,6 @@ Below is a simple Activity that accepts a string parameter, appends a word to it
 
 All activities must be registered by a Worker, or you will get an error that looks like `"Activity function myActivity is not registered on this Worker"` when you try to invoke it from a Workflow.
 
-
 - **Implicit registration**: By default, the Temporal Node SDK looks for any `.js` files in the `/activities` directory, and automatically registers any exported functions as Activities.
 - **Explicit registration**: You can also choose to explicitly register activities in a Worker:
 
