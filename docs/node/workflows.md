@@ -48,8 +48,9 @@ This is an overloaded function that can be used in two ways:
 const client = new WorkflowClient(connection.service);
 
 // Method 1: create a handle for a NEW Workflow, given a reference to Workflow definition
-const workflow = client.createWorkflowHandle(exampleWorkflow, { taskQueue: 'tutorial' });
-
+const workflow = client.createWorkflowHandle(exampleWorkflow, {
+  taskQueue: 'tutorial',
+});
 
 // Method 2: retrieve a handle for an EXISTING Workflow, given it's workflowId
 const workflow = client.createWorkflowHandle(workflowId);
