@@ -34,7 +34,7 @@ func main() {
   defer c.Close()
   // ...
   workflowOptions := client.StartWorkflowOptions{
-    WorkflowID: "Your-Custom-Workflow-Id",
+    ID: "Your-Custom-Workflow-Id",
     TaskQueue: "your-task-queue",
   }
   workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition, param)
