@@ -1,0 +1,95 @@
+---
+id: timers
+title: Timers in Node
+sidebar_label: Timers
+---
+
+## What is a Timer?
+
+> ⚠️ This doc is yet to be finalised - what you see below is a rough draft.
+
+The ability to set durable timers in Workflows is a core feature of Temporal that helps you write asynchronous code as easily as you do synchronous ones.
+
+The core Timer APIs relevant to the Node.js SDK are:
+
+- `setTimeout`: completely replaced by the Workflow's v8 isolate environment, including inside libraries that you use.
+- `sleep`: a more convenient way to sleep in terms of milliseconds: `import { sleep } from '@temporalio/workflow'`
+- `await`: not yet available in this SDK.
+
+Timers usually refer to Workflow code, but there is a separate [`sleep` utility function](https://nodejs.temporal.io/api/classes/activity.context/#sleep) available in Activity Context.
+
+Timers are unrelated to Scheduled/Cron Workflows, which are a Workflow option that you can set for recurring Workflows.
+
+## Why Durable Timers Are a Hard Problem
+
+JavaScript has a `setTimeout`, which seems relatively unremarkable.
+However, a lot of instrumentation is required to make these timeouts fully reliable (aka recoverable in case of outage.)
+Further engineering is needed to scale this - imagine 100,000 independently running timers in your system, firing every minute. That is the kind of scale Temporal handles.
+
+If you were to write your own Workflows with timers, you need to take care that it handles jumps of time.
+What we mean by "handling jumps": if you had timers that were supposed to go off at 1.15, 1.30, and 1.45pm, and your system goes down from 1pm to 2pm, then at 2pm when the system comes back up all 3 timers will fire at once. Your workflow code must not rely on the timers resolving in precise order.
+
+You can read more about [Temporal Node SDK's Determinism here](/docs/node/determinism).
+
+## Timer Design Patterns
+
+### Racing Timers
+
+Use `Promise.race` with Signals and Triggers to have a promise resolve at the earlier of either system time or human intervention.
+
+```ts
+import { Trigger, createActivityHandle, sleep } from '@temporalio/workflow';
+// // Only import the activity types
+import type * as activities from '../activities';
+
+const { checkoutItem, canceledPurchase } = createActivityHandle<
+  typeof activities
+>({
+  startToCloseTimeout: '1 minute',
+});
+
+type PurchaseState = 'PENDING' | 'CONFIRMED' | 'CANCELED';
+
+export const OneClickBuy = (itemId: string) => {
+  let itemToBuy = itemId;
+  let purchaseState: PurchaseState = 'PENDING';
+  const cancelTrigger = new Trigger<string>();
+  return {
+    signals: {
+      cancelPurchase(cancelReason: string): void {
+        cancelTrigger.reject(cancelReason);
+      },
+    },
+    queries: {
+      purchaseState(): null | PurchaseState {
+        return purchaseState;
+      },
+    },
+    async execute(): Promise<string> {
+      try {
+        await Promise.race([
+          cancelTrigger,
+          sleep(30 * 1000), // 30 seconds
+        ]);
+        return await checkoutItem(itemToBuy);
+      } catch (err) {
+        return await canceledPurchase(itemToBuy);
+      }
+    },
+  };
+};
+```
+
+Example usecases:
+
+- One click purchases
+
+### Reminder Timer pattern
+
+A variant of the Race Timer pattern where the promise resolves IF no Signal is received:
+
+- TODO: adapt go sample: Timer Futures: The sample starts a long running order processing operation and starts a Timer (workflow.NewTimer()). If the processing time is too long, a notification email is "sent" to the user regarding the delay (the execution does not cancel). If the operation finishes before the Timer fires, then the Timer is cancelled.
+
+### Updatable Timer
+
+TODO: adapt go sample: Updatable Timer: Demonstrates timer cancellation and use of a Selector to wait on a Future and a Channel simultaneously.

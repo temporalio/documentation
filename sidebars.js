@@ -314,7 +314,6 @@ module.exports = {
           label: "API reference",
           href: "https://nodejs.temporal.io",
         },
-        "node/getting-started",
         {
           type: "category",
           label: "Tutorials",
@@ -326,11 +325,11 @@ module.exports = {
           label: "Core APIs",
           collapsed: false,
           items: [
-            "node/package-initializer",
             "node/workflows",
             "node/activities",
-            "node/task-queues",
             "node/workers",
+            "node/task-queues",
+            "node/timers",
             "node/signals",
             "node/queries",
           ],
@@ -341,6 +340,7 @@ module.exports = {
           type: "category",
           label: "Advanced",
           items: [
+            "node/package-initializer",
             "node/cancellation-scopes",
             "node/determinism",
             "node/external-dependencies",

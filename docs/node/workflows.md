@@ -206,7 +206,7 @@ readlist={[
 ]}
 />
 
-## Large Event Histories
+## Extremely Long Running Workflows
 
 ### Why `ContinueAsNew` is needed
 

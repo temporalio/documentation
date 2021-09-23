@@ -6,74 +6,38 @@ sidebar_label: Workers
 
 ## What is a Worker?
 
-A Worker is an object that connects to the Temporal Server and executes [Workflows](/docs/node/workflows) and [Activities](/docs/node/activities).
+A Worker is an object that connects to the Temporal Server, polls **Task Queues** for Commands, and executes [Workflows](/docs/node/workflows) and [Activities](/docs/node/activities) in response to those Commands.
 
-- Workers are run on user-controlled hosts and automatically discovers Workflows and Activities based on `workDir` or specified paths, to be bundled using Webpack v5.
+- Workers are run on user-controlled hosts, an important security feature which means Temporal Server (or Temporal Cloud) never executes your Workflow or Activity code, and that Workers can have different hardware (e.g. custom GPUs for Machine Learning) than the rest of the system.
+- Workers automatically discover Workflows and Activities based on `workDir` or specified paths.
 - You can use the `@temporalio/worker` package's [`Worker`](https://nodejs.temporal.io/api/classes/worker.Worker) class to create and run as many Workers as your use case demands, across any number of hosts.
 - Workers poll [Task Queues](/docs/node/task-queues) for Tasks, execute chunks of code in response to those Tasks, and then communicate the results back to the Temporal Server.
+- You can check the status of Workers and the Task Queues they poll with Temporal Web.
 
-## How to start a Worker
+## How to develop a Worker
 
-First you create a Worker with `Worker.create()`, then call `worker.run()` on it.
+import Content from '../content/how-to-develop-a-worker-program-in-node.md'
 
-Below is an example of starting a Worker that polls the Task Queue named `tutorial`.
+<Content />
 
-<!--SNIPSTART nodejs-hello-worker {"enable_source_link": false}-->
-<!--SNIPEND-->
+## How to shut down a Worker and track its state
 
-### Required Worker Options
+You can programmatically shut down a worker with `worker.shutdown()`.
+Shut downs should be rare and often done manually in development (with `SIGINT` aka `^C`) but you may have a usecase for it when automating a fleet of workers.
 
-There are two required options to the `Worker.create()` function:
-
-1. The `workDir`. The Node SDK will automatically register:
-
-- Activities exported from `workDir + '/activities.ts'` or `workDir + '/activities/index.ts'` (or `.js` when using JavaScript).
-- Workflows exported from `workDir + '/workflows/index.ts'` (Or `.js`)
-- If you have an unusual folder structure setup, you can customize `activities`, `nodeModulesPath`, and `workflowsPath` in the options below to override the `workDir` derived defaults.
-
-2. The `taskQueue` the Worker should poll.
-
-### Additional Worker Options
-
-This is a selected subset of options you are likely to use. More advanced options, particularly for performance tuning, are available in [the API reference](https://nodejs.temporal.io/api/classes/worker.Worker).
-
-| Options           | Description                                                                                                                                                        |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `activities`      | Mapping of activity name to implementation. Automatically discovered from ${workDir}/activities if workDir is provided.                                            |
-| `nodeModulesPath` | Path for webpack to look up modules in for bundling the Workflow code. Automatically discovered if `workDir` is provided. Defaults to `${workDir}/../node_modules` |
-| `workflowsPath`   | Path to look up workflows in. Automatically discovered if `workDir` is provided. Defaults to `${workDir}/workflows`                                                |
-| `dataConverter`   | placeholder for future DataConverter feature (pending feature)                                                                                                     |
-| `dependencies`    | Allows injection of external dependencies (Advanced feature: see [External Dependencies](/docs/node/external-dependencies))                                        |
-| `interceptors`    | A mapping of interceptor type to a list of factories or module paths (Advanced feature: see [Interceptors](/docs/node/interceptors))                               |
-
-For example, if you are working in monorepo style and want `node_modules` at your project root, with all Temporal code inside a `/temporal/src` folder, you can force `nodeModulesPath`:
-
-```js
-// this file is /temporal/src/worker.ts but node modules are at /node_modules
-// activities are at /temporal/src/activities.ts - as expected by workDir, no override needed
-// workflows are at /temporal/src/workflow/index.ts - as expected by workDir, no override needed
-
-const worker = await Worker.create({
-  workDir: __dirname,
-  nodeModulesPath: path.join(__dirname, '/../../node_modules'),
-  taskQueue: 'tutorial',
-});
-```
-
-## Programmatic access to Worker state
-
-You can query Worker state with `worker.getState()`. A Worker is in one of 7 states at any given point:
+At any point in time you can query Worker state with `worker.getState()`.
+A Worker is in one of 7 states at any given point:
 
 - `INITIALIZED` - The initial state of the Worker after calling Worker.create and successful connection to the server
 - `RUNNING` - `worker.run` was called, polling task queues
 - `FAILED` - Worker encountered an unrecoverable error, `worker.run` should reject with the error
-- The last 4 states are related to the Worker shutdown process; often done manually in dev (with `SIGINT` aka `Ctrl + C`), but can be programmatically called with `worker.shutdown()`:
+- The last 4 states are related to the Worker shutdown process:
   - `STOPPING` - Worker.shutdown was called or received shutdown signal, worker will forcefully shutdown in shutdownGraceTime
   - `DRAINING` - Core has indicated that shutdown is complete and all Workflow tasks have been drained, waiting for activities and cached workflows eviction
   - `DRAINED` - All activities and workflows have completed, ready to shutdown
   - `STOPPED` - Shutdown complete, `worker.run` resolves
 
-If you need advanced visibility into internal worker state, [see the API reference for more](https://nodejs.temporal.io/api/classes/worker.Worker).
+If you need even more visibility into internal worker state, [see the API reference for more](https://nodejs.temporal.io/api/classes/worker.Worker).
 
 ## Worker Security and Networking
 
