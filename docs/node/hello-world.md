@@ -9,7 +9,7 @@ The Node SDK and associated documentation is in an Alpha stage and may change at
 </CustomWarning>
 
 In this tutorial, we'll go over the different components that make up a Temporal project.
-All of the code on this page is included in our package initializer skeleton, which we set up in [Getting started](/docs/node/getting-started).
+All of the code on this page is included in our package initializer skeleton, which we set up in [Getting started](/docs/node/introduction/#getting-started).
 
 The SDK steers developers to write their Workflows and Activities in TypeScript but vanilla JS is also supported.
 
