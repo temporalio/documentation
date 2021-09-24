@@ -81,6 +81,6 @@ Use the Workflow Id in any requests to Cancel or Terminate.
 
 <RelatedReadList
 readlist={[
-["How to set a Cron Schedule in Go","/docs/content/how-to-set-a-cron-schedule-in-go","developer guide"],
+["How to set a Cron Schedule in Go","/docs/content/how-to-set-start-workflow-options-in-go/#cronschedule","developer guide"],
 ]}
 />
