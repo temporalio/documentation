@@ -23,7 +23,7 @@ import Content from '../content/how-to-develop-a-worker-program-in-node.md'
 ## How to shut down a Worker and track its state
 
 You can programmatically shut down a worker with `worker.shutdown()`.
-Shut downs should be rare and often done manually in development (with `SIGINT` aka `^C`) but you may have a usecase for it when automating a fleet of workers.
+Shut downs should be rare and often done manually in development (with `SIGINT` aka `^C`) but you may do it in integration tests or in automating a fleet of workers.
 
 At any point in time you can query Worker state with `worker.getState()`.
 A Worker is in one of 7 states at any given point:
