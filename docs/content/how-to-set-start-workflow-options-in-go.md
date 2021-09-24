@@ -7,26 +7,25 @@ tags:
   - options
 ---
 
-
 import RelatedReadList from '../components/RelatedReadList.js'
 
 Create an instance of `StartWorkflowOptions` from the `go.temporal.io/sdk/client` package, and pass it to the `ExecuteWorkflow` call.
 
 The following fields are available:
 
-| Field | Required | Type | Example |
-| --- | --- | --- | --- |
-| [`ID`](/docs/content/what-is-a-workflow-id) | No | `string` | [👀](#id) |
-| [`TaskQueue`](/docs/content/what-is-a-task-queue) | **Yes** | `string` | [👀](#taskqueue) |
-| [`WorkflowExecutionTimeout`](/docs/content/what-is-a-workflow-execution-timeout) | No | `time.Duration` | [👀](#workflowexecutiontimeout) |
-| [`WorkflowRunTimeout`](/docs/content/what-is-a-workflow-run-timeout) | No | `time.Duration` | [👀](#workflowruntimeout) |
-| [`WorkflowTaskTimeout`](/docs/content/what-is-a-workflow-task-timeout) | No | `time.Duration` | [👀](#workflowtasktimeout) |
-| [`WorkflowIDReusePolicy`](/docs/content/what-is-a-workflow-id-reuse-policy) | No | [`WorkflowIdReusePolicy`](https://pkg.go.dev/go.temporal.io/api/enums/v1#WorkflowIdReusePolicy) | [👀](#workflowidreusepolicy) |
-| `WorkflowExecutionErrorWhenAlreadyStarted` | No | `bool` | [👀](#workflowexecutionerrorwhenalreadystarted) |
-| [`RetryPolicy`](/docs/content/what-is-a-retry-policy) | No | [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/temporal#RetryPolicy) | [👀](#retrypolicy) |
-| [`CronSchedule`](/docs/content/what-is-a-temporal-cron-job) | No | `string` | [👀](#cronschedule) |
-| [`Memo`](/docs/content/what-is-a-memo) | No | `map[string]interface{}` | [👀](#memo) |
-| [SearchAttributes](/docs/server/workflow-search) | No | `map[string]interface{}` | [👀](#searchattributes) |
+| Field                                                                            | Required | Type                                                                                            | Example                                         |
+| -------------------------------------------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------- |
+| [`ID`](/docs/content/what-is-a-workflow-id)                                      | No       | `string`                                                                                        | [👀](#id)                                       |
+| [`TaskQueue`](/docs/content/what-is-a-task-queue)                                | **Yes**  | `string`                                                                                        | [👀](#taskqueue)                                |
+| [`WorkflowExecutionTimeout`](/docs/content/what-is-a-workflow-execution-timeout) | No       | `time.Duration`                                                                                 | [👀](#workflowexecutiontimeout)                 |
+| [`WorkflowRunTimeout`](/docs/content/what-is-a-workflow-run-timeout)             | No       | `time.Duration`                                                                                 | [👀](#workflowruntimeout)                       |
+| [`WorkflowTaskTimeout`](/docs/content/what-is-a-workflow-task-timeout)           | No       | `time.Duration`                                                                                 | [👀](#workflowtasktimeout)                      |
+| [`WorkflowIDReusePolicy`](/docs/content/what-is-a-workflow-id-reuse-policy)      | No       | [`WorkflowIdReusePolicy`](https://pkg.go.dev/go.temporal.io/api/enums/v1#WorkflowIdReusePolicy) | [👀](#workflowidreusepolicy)                    |
+| `WorkflowExecutionErrorWhenAlreadyStarted`                                       | No       | `bool`                                                                                          | [👀](#workflowexecutionerrorwhenalreadystarted) |
+| [`RetryPolicy`](/docs/content/what-is-a-retry-policy)                            | No       | [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/temporal#RetryPolicy)             | [👀](#retrypolicy)                              |
+| [`CronSchedule`](/docs/content/what-is-a-temporal-cron-job)                      | No       | `string`                                                                                        | [👀](#cronschedule)                             |
+| [`Memo`](/docs/content/what-is-a-memo)                                           | No       | `map[string]interface{}`                                                                        | [👀](#memo)                                     |
+| [SearchAttributes](/docs/server/workflow-search)                                 | No       | `map[string]interface{}`                                                                        | [👀](#searchattributes)                         |
 
 ### `ID`
 
@@ -236,6 +235,7 @@ if err != nil {
   // ...
 }
 ```
+
 <!--TODO
 <RelatedReadList
 readlist={[
