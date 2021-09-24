@@ -19,11 +19,11 @@ Node.js SDK API reference is available here: https://nodejs.temporal.io
 
 You can run "Hello Temporal" locally in under 5 minutes.
 
-## Step 0: Prerequisites
+### Step 0: Prerequisites
 
-### Node.js
+#### Node.js
 
-This project requires Node.js version 14 or later.
+**This project requires Node.js version 14 or later.** We recommend Node 16.4.1 or later.
 
 <details>
 <summary>
@@ -51,7 +51,7 @@ nvm use 16
 
 </details>
 
-### node-gyp
+#### `node-gyp`
 
 Install node-gyp:
 
@@ -63,25 +63,7 @@ You may have to install some system dependencies first as documented [here](http
 
 _`node-gyp` is a requirement of [`isolated-vm`](https://github.com/laverdet/isolated-vm) the V8 Isolate library which powers this SDK's [deterministic runtime](/docs/node/determinism)_.
 
-### Temporal Core SDK
-
-<details>
-<summary>
-The Worker package embeds the <a href="https://github.com/temporalio/sdk-core">Temporal Rust Core SDK</a>, it comes pre-compiled for most installations.
-</summary>
-
-We've provided pre-compiled binaries for:
-
-- Mac with an Intel chip: `x86_64-apple-darwin`
-- Mac with an Apple chip: `aarch64-apple-darwin`
-- Linux with x86_64 architecture: `x86_64-unknown-linux-gnu`
-- Windows with x86_64 architecture: `x86_64-pc-windows-gnu` (Windows is not yet supported but it is a [priority for us](https://github.com/temporalio/sdk-node/issues/12)).
-
-If you need to compile the Worker yourself, set up the Rust toolchain by following the instructions [here](https://rustup.rs/).
-
-</details>
-
-### Temporal Server
+#### Temporal Server
 
 Run Temporal Server (requires [Docker](https://docs.docker.com/engine/install) and [Docker Compose](https://docs.docker.com/compose/install/)):
 
@@ -91,7 +73,7 @@ cd temporal
 docker-compose up
 ```
 
-## Step 1: Create a new project
+### Step 1: Create a new project
 
 > If you run into errors during installation, it is likely your environment is not properly set up (see [Step 0](#step-0-prerequisites)).
 
@@ -111,7 +93,7 @@ If you want a [sample for connecting to a Temporal Server instance secured with 
 
 :::
 
-## Step 2: Run your Workflow
+### Step 2: Run your Workflow
 
 Run the Worker:
 
@@ -161,3 +143,10 @@ You can verify this via the INPUT and RESULT fields in Temporal Web (available a
 ## Next Steps
 
 For a full code walkthrough of the Hello World example that you have spun up here, see our [Hello World documentation](/docs/node/hello-world).
+
+Then you should have a passing knowledge of our Core APIs:
+
+- [Workflows](/docs/node/workflows) and [Activities](/docs/node/activities): How to write Temporal's core orchestration code
+- [Workers](/docs/node/workers) and [Task Queues](/docs/node/task-queues): How Workflows and Activities are routed to and executed on machines you control
+- [Signals and Queries](/docs/node/signals-queries): Getting data in and out of a Workflow _while it is running_.
+- [Timers](/docs/node/timers): durable timers that are useful for racing human action against Signals, or sending reminders after inactivity

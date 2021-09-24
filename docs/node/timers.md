@@ -6,7 +6,7 @@ sidebar_label: Timers
 
 ## What is a Timer?
 
-> ⚠️ This doc is yet to be finalised - what you see below is a rough draft.
+> ⚠️ This doc is yet to be finalised - what you see below is a VERY rough draft.
 
 The ability to set durable timers in Workflows is a core feature of Temporal that helps you write asynchronous code as easily as you do synchronous ones.
 
@@ -16,15 +16,23 @@ The core Timer APIs relevant to the Node.js SDK are:
 - `sleep`: a more convenient way to sleep in terms of milliseconds: `import { sleep } from '@temporalio/workflow'`
 - `await`: not yet available in this SDK.
 
-Timers usually refer to Workflow code, but there is a separate [`sleep` utility function](https://nodejs.temporal.io/api/classes/activity.context/#sleep) available in Activity Context.
+:::note Preventing Confusion
 
-Timers are unrelated to Scheduled/Cron Workflows, which are a Workflow option that you can set for recurring Workflows.
+Temporal Timers are only available in Workflow code.
+
+There is an unrelated [`sleep` utility function](https://nodejs.temporal.io/api/classes/activity.context/#sleep) available in Activity Context that is not durable, but is cancellation aware. See [the Activities docs for details](/docs/node/activities).
+
+Timers are unrelated to Cron Workflows, which are a Workflow option that you can set for recurring Workflows. See [the Workflows docs for details](/docs/node/workflows).
+:::
 
 ## Why Durable Timers Are a Hard Problem
 
 JavaScript has a `setTimeout`, which seems relatively unremarkable.
-However, a lot of instrumentation is required to make these timeouts fully reliable (aka recoverable in case of outage.)
-Further engineering is needed to scale this - imagine 100,000 independently running timers in your system, firing every minute. That is the kind of scale Temporal handles.
+However, they are held in memory - if your system goes down, those timers are gone.
+
+A lot of careful code is required to make these timeouts fully reliable (aka recoverable in case of outage.)
+Beyond that, further engineering is needed to scale this - imagine 100,000 independently running timers in your system, firing every minute.
+That is the kind of scale Temporal handles.
 
 If you were to write your own Workflows with timers, you need to take care that it handles jumps of time.
 What we mean by "handling jumps": if you had timers that were supposed to go off at 1.15, 1.30, and 1.45pm, and your system goes down from 1pm to 2pm, then at 2pm when the system comes back up all 3 timers will fire at once. Your workflow code must not rely on the timers resolving in precise order.
@@ -32,6 +40,8 @@ What we mean by "handling jumps": if you had timers that were supposed to go off
 You can read more about [Temporal Node SDK's Determinism here](/docs/node/determinism).
 
 ## Timer Design Patterns
+
+There are only a few Timer APIs, but the important part is knowing how to use them to model asynchronous businses logic. Here are some examples we use the most; we welcome more if you can think of them!
 
 ### Racing Timers
 
@@ -88,7 +98,10 @@ Example usecases:
 
 A variant of the Race Timer pattern where the promise resolves IF no Signal is received:
 
-- TODO: adapt go sample: Timer Futures: The sample starts a long running order processing operation and starts a Timer (workflow.NewTimer()). If the processing time is too long, a notification email is "sent" to the user regarding the delay (the execution does not cancel). If the operation finishes before the Timer fires, then the Timer is cancelled.
+- TODO: The sample starts a long running order processing operation and starts a Timer. If the processing time is too long, a notification email is "sent" to the user regarding the delay (the execution does not cancel). If the operation finishes before the Timer fires, then the Timer is cancelled.
+
+<!-- SNIPSTART nodejs-timer-reminder-workflow -->
+<!--SNIPEND-->
 
 ### Updatable Timer
 

@@ -1,12 +1,16 @@
 ---
-id: signals
-title: Signals in Node
-sidebar_label: Signals
+id: signals-queries
+title: Signals and Queries in Node
+sidebar_label: Signals and Queries
 ---
 
-## What is a Signal?
+[**Signals**](/docs/concepts/signals) are a way to send data IN to a running Workflow.
+If a Workflow isn't running when a Signal is sent, we can send a `signalWithStart` to start a Workflow and send a Signal simultaneously.
 
-**Signals** provide a mechanism to send data directly into a running Workflow.
+[**Queries**](/docs/concepts/queries) are a way to read data OUT from a running Workflow.
+If a Query is made to a completed Workflow, the final value is returned.
+
+# Signals
 
 ## When to use Signals
 
@@ -128,3 +132,59 @@ We can replace the callback with a Trigger in the example above to allow the Wor
 
 <!--SNIPSTART nodejs-blocked-workflow-->
 <!--SNIPEND-->
+
+# Queries
+
+## How to use Queries
+
+### How to define a Query
+
+To add Query handlers to a Workflow, add a `queries` property to the exported Workflow object:
+
+<!--SNIPSTART nodejs-blocked-interface-->
+<!--SNIPEND-->
+
+### How to handle a Query
+
+Query handlers can return any value.
+
+> 🚨 WARNING: NEVER mutate Workflow state inside a query! This would be a source of non-determinism.
+
+<!--SNIPSTART nodejs-blocked-workflow-->
+<!--SNIPEND-->
+
+#### How NOT to write a Query
+
+This mutates Workflow state - do not do this:
+
+```ts
+export const unblockOrCancel: Blocked = () => {
+  let blocked = true;
+  let someState = 123;
+
+  return {
+    queries: {
+      isBlocked(): boolean {
+        someState++; // bad! don't do this!
+        return blocked;
+      },
+    },
+    // ...
+  };
+};
+```
+
+### How to make a Query
+
+> NOTE: You may query both running and completed Workflows.
+
+Use the name of the function you defined:
+
+```ts
+const client = new WorkflowClient();
+const workflow = client.createWorkflowHandle(unblockOrCancel, {
+  taskQueue: 'test',
+});
+await workflow.start();
+await workflow.query.isBlocked(); // this gets data out of the Workflow
+```

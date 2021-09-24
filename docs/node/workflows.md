@@ -116,7 +116,7 @@ workflow.signal.foo(123);
 
 ### Misc ways to start Workflows
 
-- If your workflow uses [Signals](/docs/node/signals), you can also send a Signal that might start a workflow using the `signalWithStart` API. See the [Signals docs](/docs/node/signals) for details.
+- If your workflow uses [Signals](/docs/concepts/signals), you can also send a Signal that might start a workflow using the `signalWithStart` API. See the [Signals docs](/docs/node/signals-queries) for details.
 - (For advanced usecases) You can also start or execute a Workflow directly from a [WorkflowClient](https://nodejs.temporal.io/api/classes/client.workflowclient/), without creating a Handle first.
 
 ## How to cancel a Workflow

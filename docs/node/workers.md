@@ -20,6 +20,22 @@ import Content from '../content/how-to-develop-a-worker-program-in-node.md'
 
 <Content />
 
+<details>
+<summary>
+The Worker package embeds the <a href="https://github.com/temporalio/sdk-core">Temporal Rust Core SDK</a>, it comes pre-compiled for most installations.
+</summary>
+
+We've provided pre-compiled binaries for:
+
+- Mac with an Intel chip: `x86_64-apple-darwin`
+- Mac with an Apple chip: `aarch64-apple-darwin`
+- Linux with x86_64 architecture: `x86_64-unknown-linux-gnu`
+- Windows with x86_64 architecture: `x86_64-pc-windows-gnu` (Windows is not yet supported but it is a [priority for us](https://github.com/temporalio/sdk-node/issues/12)).
+
+If you need to compile the Worker yourself, set up the Rust toolchain by following the instructions [here](https://rustup.rs/).
+
+</details>
+
 ## How to shut down a Worker and track its state
 
 You can programmatically shut down a worker with `worker.shutdown()`.
@@ -46,5 +62,5 @@ The Node SDK usually handles all of the communication between the Worker and the
 In production settings, [Temporal supports mTLS encryption](/docs/server/security), required by Temporal Cloud.
 To configure this, this SDK exposes [the Rust Core SDK](https://github.com/temporalio/sdk-core) as `Core`, which you can configure before you run `workflow.create`:
 
-<!--SNIPSTART nodejs-hello-mtls-->
+<!--SNIPSTART nodejs-mtls-worker-->
 <!--SNIPEND-->
