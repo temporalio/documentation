@@ -14,7 +14,7 @@ A Schedule To Start Timeout is the maximum amount of time that is allowed, from 
 <CenteredImage
 imagePath="/diagrams/schedule-to-start-timeout.svg"
 imageSize="50"
-title="Schedule To Start period"
+title="Schedule-To-Start Timeout period"
 />
 
 There are two primary uses case of this timeout:

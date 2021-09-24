@@ -14,13 +14,13 @@ A Schedule-To-Close Timeout is the maximum amount of time allowed for the overal
 <CenteredImage
 imagePath="/diagrams/schedule-to-close-timeout.svg"
 imageSize="50"
-title="Schedule-To-Close period"
+title="Schedule-To-Close Timeout period"
 />
 
 <CenteredImage
 imagePath="/diagrams/schedule-to-close-timeout-with-retry.svg"
 imageSize="100"
-title="Schedule-To-Close period with retries"
+title="Schedule-To-Close Timeout period with retries"
 />
 
 An Activity Execution must have either this timeout (Schedule-To-Close) or [Start-To-Close](/docs/content/what-is-a-start-to-close-timeout) set.
