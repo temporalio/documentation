@@ -16,7 +16,7 @@ In the Node.js SDK, each Workflow runs in a separate V8 isolate context to provi
 
 ### Workflow Implementation
 
-Workflow are implemented using a factory function that returns a handlers object for `execute` and optionally [signals](signals) and [queries](queries).
+Workflow are implemented using a factory function that returns a handlers object for `execute` and optionally [Signals](/docs/concepts/signals) and responding to [Queries](/docs/concepts/queries).
 
 The snippet below uses `createActivityHandle` to create functions that, when called, schedule Activities in the system.
 
@@ -36,25 +36,88 @@ Workflow type definitions are optional, they provide type safety in situations w
 <!--SNIPSTART nodejs-hello-workflow-interface {"enable_source_link": false}-->
 <!--SNIPEND-->
 
-## How to start a Workflow
+### Workflow Client and Handles
 
 The [`WorkflowClient`](https://nodejs.temporal.io/api/classes/client.workflowclient) class is used to interact with Workflows.
-
 It can be used in any Node.js process (for example, an [Express](https://expressjs.com/) web server) and is separate from the Worker.
 
-`src/exec-workflow.ts`
+Once you have a client, you then create a "Handle" with [`client.createWorkflowHandle`](https://nodejs.temporal.io/api/classes/client.workflowclient/#createworkflowhandle).
+This is an overloaded function that can be used in two ways:
+
+```ts
+const client = new WorkflowClient(connection.service);
+
+// Method 1: create a handle for a NEW Workflow, given a reference to Workflow definition
+const workflow = client.createWorkflowHandle(exampleWorkflow, {
+  taskQueue: 'tutorial',
+});
+
+// Method 2: retrieve a handle for an EXISTING Workflow, given it's workflowId
+const workflow = client.createWorkflowHandle(workflowId);
+```
+
+The Workflow Handle [exposes a number of important APIs](https://nodejs.temporal.io/api/interfaces/client.WorkflowHandle) that you will use to externally control your Workflow:
+
+| Handle API          | Description                                                                                                                                                                        |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `client`            | Readonly accessor to the underlying WorkflowClient.                                                                                                                                |
+| `query`             | A mapping of all queries exposed by a Workflow. Call to query a Workflow after it's been started even if it has already completed. `ts const value = await workflow.query.get(); ` |
+| `signal`            | A mapping of all Signals exposed by a Workflow. Call to signal a running Workflow. `ts await workflow.signal.increment(3); `                                                       |
+| `signalWithStart()` | Sends a signal to a running Workflow or starts a new one if not already running and immediately signals it. Useful when you're unsure of the run state.                            |
+| `workflowId`        | The workflowId of the current Workflow. The vast majority of the time, you can use this without the runId.                                                                         |
+| `cancel()`          | Cancel a running Workflow.                                                                                                                                                         |
+| `terminate()`       | Terminate a running Workflow                                                                                                                                                       |
+| `describe()`        | Describe the current workflow execution                                                                                                                                            |
+| `execute()`         | Start the Workflow with arguments, returns a Promise that resolves when the Workflow execution completes                                                                           |
+| `start()`           | Start the Workflow with arguments, returns a Promise that resolves with the execution runId                                                                                        |
+| `result()`          | Promise that resolves when Workflow execution completes                                                                                                                            |
+
+### Workflow Options
+
+Workflow Options are set before a Workflow Execution is created, passed to `createWorkflowHandle`.
+There are a range of [`WorkflowOptions`](https://nodejs.temporal.io/api/interfaces/client.workflowoptions/), notable ones listed here:
+
+- `taskQueue` (required): Task queue to use for workflow tasks. It should match a task queue specified when creating a Worker that hosts the workflow code.
+- `workflowId`: Unique Workflow id to use when starting. If not specified, a UUID is generated, which you can access with `workflow.workflowId`
+- `workflowIdReusePolicy`: Specifies server behavior if a completed workflow with the same id exists. [More details on Workflow ID Reuse Policy](/docs/content/what-is-a-workflow-id-reuse-policy/).
+- `cronSchedule`: see ["Scheduling Cron Workflows"](#scheduling-cron-workflows)
+- `retryPolicy`: the overall [RetryPolicy](https://nodejs.temporal.io/api/interfaces/proto.temporal.api.common.v1.iretrypolicy/) at the Workflow level
+- `searchAttributes`: Specifies additional indexed information in result of list workflow.
+
+## How to start a Workflow
+
+A new Workflow Execution can be created in a few main ways
+
+### Execute a Workflow (Blocking)
+
+Start a workflow and await completion: `const result = await workflow.execute(args)`
 
 <!--SNIPSTART nodejs-hello-client {"enable_source_link": false}-->
 <!--SNIPEND-->
 
-Workflows can be started with a range of [`WorkflowOptions`](https://nodejs.temporal.io/api/interfaces/client.workflowoptions/), commons options listed here:
+### Start a Workflow (Non-Blocking)
 
-- `taskQueue` (required): Task queue to use for workflow tasks. It should match a task queue specified when creating a Worker that hosts the workflow code.
-- `workflowId`: Workflow id to use when starting. If not specified a UUID is generated.
-- `workflowIdReusePolicy`: Specifies server behavior if a completed workflow with the same id exists. [More details](https://nodejs.temporal.io/api/interfaces/client.workflowoptions/#workflowidreusepolicy)
-- `cronSchedule`: see ["Scheduling Cron Workflows"](#scheduling-cron-workflows)
-- `retryPolicy`: the overall [RetryPolicy](https://nodejs.temporal.io/api/interfaces/proto.temporal.api.common.v1.iretrypolicy/) at the Workflow level
-- `searchAttributes`: Specifies additional indexed information in result of list workflow.
+Start a workflow and return the `runId` of the Workflow Execution for future use: `workflow.start(args)`
+
+Once you have the `workflowId` of a Workflow Execution you can retrieve it later in a different process:
+
+```ts
+// In initial processs...
+const originalWF = client.createWorkflowHandle(workflowFn, options);
+await originalWF.start(args);
+const workflowId = originalWF.workflowId;
+
+// In a different process...
+const workflow = client.createWorkflowHandle(workflowId);
+
+// do stuff with the retrieved handle
+workflow.signal.foo(123);
+```
+
+### Misc ways to start Workflows
+
+- If your workflow uses [Signals](/docs/concepts/signals), you can also send a Signal that might start a workflow using the `signalWithStart` API. See the [Signals docs](/docs/node/signals-queries) for details.
+- (For advanced usecases) You can also start or execute a Workflow directly from a [WorkflowClient](https://nodejs.temporal.io/api/classes/client.workflowclient/), without creating a Handle first.
 
 ## How to cancel a Workflow
 
@@ -73,6 +136,24 @@ await example.result();
 ```
 
 Temporal gives you fine grained control over what happens when you cancel a workflow. See our docs on [Cancellation Scopes](/docs/node/cancellation-scopes) for detailes and examples.
+
+## How to wait for and retrieve the result an existing Workflow Execution
+
+You can retrieve the result of a completed Workflow Execution with `client.result(workflowId, runId?)`, or `await` it:
+
+```ts
+// In initial processs...
+const originalWF = client.createWorkflowHandle(workflowFn, options);
+await originalWF.start(args);
+const workflowId = originalWF.workflowId;
+
+// save workflowId somewhere...
+
+// In a different process...
+const result = await client.result(workflowId);
+```
+
+You will rarely ever need to specify the `runId`.
 
 ## Scheduling Cron Workflows
 
@@ -125,7 +206,7 @@ readlist={[
 ]}
 />
 
-## Large Event Histories
+## Extremely Long Running Workflows
 
 ### Why `ContinueAsNew` is needed
 

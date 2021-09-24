@@ -1,4 +1,8 @@
-# Hello world in Node
+---
+id: hello-world
+title: Hello World Walkthrough in Node
+sidebar_label: Hello World Walkthrough
+---
 
 import CustomWarning from "../components/CustomWarning.js"
 
@@ -9,7 +13,7 @@ The Node SDK and associated documentation is in an Alpha stage and may change at
 </CustomWarning>
 
 In this tutorial, we'll go over the different components that make up a Temporal project.
-All of the code on this page is included in our package initializer skeleton, which we set up in [Getting started](/docs/node/getting-started).
+All of the code on this page is included in our package initializer skeleton, which we set up in [Getting started](/docs/node/introduction/#getting-started).
 
 The SDK steers developers to write their Workflows and Activities in TypeScript but vanilla JS is also supported.
 
@@ -34,7 +38,7 @@ In the Node.js SDK, each Workflow execution is run in a separate V8 isolate cont
 
 #### Implementation
 
-A Workflow implementation exposes handlers for executing the Workflow, processing [signals](signals) and responding to [queries](queries).
+A Workflow implementation exposes handlers for executing the Workflow, processing [Signals](/docs/concepts/signals) and responding to [Queries](/docs/concepts/queries).
 
 The snippet below uses `createActivityHandle` to create functions that, when called, schedule Activities in the system.
 
@@ -79,7 +83,7 @@ It can be used in any Node.js process (for example, an [Express](https://express
 
 ### Testing
 
-There's no official support for testing Workflows and Activities yet.
+There is no official test suite for Workflows and Activities yet.
 
 - Since Activities are async functions, they should be testable as long as you avoid using [Context](https://nodejs.temporal.io/api/classes/activity.context) or are able to mock it.
 - You can test Workflows by running them with a [WorkflowClient](https://nodejs.temporal.io/api/classes/client.workflowclient).

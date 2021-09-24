@@ -8,9 +8,9 @@ sidebar_label: Package Initializer
 
 [![NPM](https://img.shields.io/npm/v/@temporalio/create)](https://www.npmjs.com/package/@temporalio/create)
 
-Sets up a new Temporal project with a preset skeleton.
+An optional utility to set up a new Temporal project with a preset skeleton.
 
-> Make sure to follow the [getting started instructions](/docs/node/getting-started/#install-system-dependencies).
+> Make sure to follow the [getting started instructions](/docs/node/introduction/#getting-started).
 
 ### Usage
 
