@@ -308,7 +308,14 @@ module.exports = {
       label: "Node (alpha)",
       collapsed: false,
       items: [
-        "node/introduction",
+        {
+          type: "category",
+          label: "Tutorials",
+          items: [
+            "node/introduction",
+            "node/hello-world"
+          ],
+        },
         {
           type: "link",
           label: "API reference",
@@ -318,12 +325,6 @@ module.exports = {
           type: "link",
           label: "Github source",
           href: "https://github.com/temporalio/sdk-node",
-        },
-        {
-          type: "category",
-          label: "Tutorials",
-          collapsed: false,
-          items: ["node/hello-world"],
         },
         {
           type: "category",
@@ -337,20 +338,27 @@ module.exports = {
             "node/signals-queries",
           ],
         },
-        "node/task-queues",
-        "node/tls",
-        "node/logging",
         {
           type: "category",
-          label: "Advanced",
+          label: "Production Needs",
+          items: [
+            "node/security",
+            "node/testing",
+            "node/versioning",
+            "node/logging",
+          ]
+        },
+        {
+          type: "category",
+          label: "Advanced APIs",
           items: [
             "node/package-initializer",
+            "node/task-queues",
             "node/cancellation-scopes",
             "node/determinism",
             "node/external-dependencies",
             "node/handling-failure",
             "node/interceptors",
-            "node/versioning",
           ],
         },
       ],

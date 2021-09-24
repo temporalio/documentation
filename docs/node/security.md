@@ -1,4 +1,40 @@
-# TLS
+---
+id: security
+title: Security in Node
+sidebar_label: Security
+---
+
+import CustomWarning from "../components/CustomWarning.js"
+
+<CustomWarning>
+
+This SDK and associated documentation is in an Alpha stage and may change at any time.
+
+</CustomWarning>
+
+- **Namespaces** help isolate code from each other
+- **TLS Encryption** helps encrypt code in transit
+- **Data Converter** helps encrypt code at rest
+
+Temporal Server has [additional Security features](/docs/server/security), particularly Authorization.
+
+## Namespaces
+
+import Content from '../content/what-is-a-namespace.md'
+
+<Content />
+
+You set namespaces when you create a client in any of the SDKs (necessary whenever creating workers or starters). If not specified, this defaults to the default namespace.
+
+```ts
+const connection = new Connection();
+// https://nodejs.temporal.io/api/interfaces/client.WorkflowClientOptions
+const client = new WorkflowClient(connection.service, {
+  namespace: 'my-namespace-name',
+});
+```
+
+## TLS Encryption
 
 There are two classes in the SDK that connect to the Temporal server, the [Worker](https://nodejs.temporal.io/api/classes/worker.worker-1) and the client [Connection](https://nodejs.temporal.io/api/classes/client.connection/).
 When instantiating either of them, you may choose whether to connect securely or not.
@@ -48,3 +84,7 @@ When signing up to Temporal Cloud you should receive a namespace, a server addre
 - `TEMPORAL_NAMESPACE`
 - `TEMPORAL_CLIENT_CERT_PATH`
 - `TEMPORAL_CLIENT_KEY_PATH`
+
+## Data Converter
+
+Todo: insert what is a Data Converter here

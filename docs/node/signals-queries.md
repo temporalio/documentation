@@ -151,7 +151,7 @@ Query handlers can return any value.
 <!--SNIPSTART nodejs-blocked-workflow-->
 <!--SNIPEND-->
 
-#### How NOT to write a Query
+:::danger How NOT to write a Query
 
 This mutates Workflow state - do not do this:
 
@@ -171,6 +171,8 @@ export const unblockOrCancel: Blocked = () => {
   };
 };
 ```
+
+:::
 
 ### How to make a Query
 
