@@ -5,29 +5,29 @@ sidebar_label: Signals and Queries
 ---
 
 [**Signals**](/docs/concepts/signals) are a way to send data IN to a running Workflow.
-If a Workflow isn't running when a Signal is sent, we can send a `signalWithStart` to start a Workflow and send a Signal simultaneously.
+
+- If a Workflow isn't running when a Signal is sent, we can send a `signalWithStart` to start a Workflow and send a Signal simultaneously.
 
 [**Queries**](/docs/concepts/queries) are a way to read data OUT from a running Workflow.
-If a Query is made to a completed Workflow, the final value is returned.
 
-# Signals
+- If a Query is made to a completed Workflow, the final value is returned.
 
-## When to use Signals
+## Signals
 
 import WhenToSignals from '../content/when-to-use-signals.md'
 
 <WhenToSignals />
 
-## How to use Signals
+### How to use Signals
 
-### How to define a Signal
+#### How to define a Signal
 
 To add Signal handlers to a Workflow, add a `signals` property to the exported Workflow object:
 
 <!--SNIPSTART nodejs-blocked-interface-->
 <!--SNIPEND-->
 
-### How to send a Signal
+#### How to send a Signal
 
 You invoke a Signal with `workflow.signal.signalName(...args)`. In the above case, we called our Signal `unblock`, so we call `workflow.signal.unblock()`:
 
@@ -42,7 +42,7 @@ await workflow.signal.unblock();
 
 `workflow.signal.unblock('some string')` resolves when Temporal Server has persisted receipt of the Signal, before the Workflow's Signal handler is called. Signal handlers cannot return data to the caller.
 
-#### How to send a Signal and start a Workflow simultaneously
+### How to send a Signal and start a Workflow simultaneously
 
 If you're not sure if a Workflow is running, you can `signalWithStart` a Workflow to send it a Signal and optionally start the Workflow if it is not running.
 
@@ -133,9 +133,11 @@ We can replace the callback with a Trigger in the example above to allow the Wor
 <!--SNIPSTART nodejs-blocked-workflow-->
 <!--SNIPEND-->
 
-# Queries
+## Queries
 
-## How to use Queries
+import WhenToSignals from '../content/when-to-use-signals.md'
+
+<WhenToSignals />
 
 ### How to define a Query
 
