@@ -2,6 +2,9 @@
 id: what-is-a-schedule-to-close-timeout
 title: What is a Schedule-To-Close Timeout?
 description: A Schedule-To-Close Timeout is the maximum amount of time allowed for the overall Activity Execution, from when the first Activity Task is scheduled to when the last Activity Task, in the chain of Activity Tasks that make up the Activity Execution, reaches a Closed status.
+tags:
+  - explanation
+  - timeouts
 ---
 
 import CenteredImage from "../components/CenteredImage.js"
@@ -10,7 +13,7 @@ A Schedule-To-Close Timeout is the maximum amount of time allowed for the overal
 
 <CenteredImage
 imagePath="/diagrams/schedule-to-close-timeout.svg"
-imageSize="100"
+imageSize="50"
 title="Schedule-To-Close period"
 />
 

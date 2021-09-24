@@ -4,6 +4,7 @@ title: What is a Schedule To Start Timeout?
 description: A Schedule To Start Timeout is the maximum amount of time that is allowed, from when an Activity Task is scheduled to when a Worker starts executing the Activity Task.
 tags:
   - explanation
+  - timeouts
 ---
 
 import CenteredImage from "../components/CenteredImage.js"
@@ -12,7 +13,7 @@ A Schedule To Start Timeout is the maximum amount of time that is allowed, from 
 
 <CenteredImage
 imagePath="/diagrams/schedule-to-start-timeout.svg"
-imageSize="100"
+imageSize="50"
 title="Schedule To Start period"
 />
 

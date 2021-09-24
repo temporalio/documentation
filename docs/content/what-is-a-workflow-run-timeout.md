@@ -4,6 +4,7 @@ title: What is a Workflow Run Timeout?
 description: This is the maximum amount of time that a single Workflow Run is restricted to.
 tags:
   - explanation
+  - timeouts
 ---
 
 import CenteredImage from "../components/CenteredImage.js"
