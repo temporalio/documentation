@@ -8,13 +8,13 @@ sidebar_label: Timers
 
 > ⚠️ This doc is yet to be finalised - what you see below is a VERY rough draft.
 
-The ability to set durable timers in Workflows is a core feature of Temporal that helps you write asynchronous code as easily as you do synchronous ones.
+The ability to set durable timers in Workflows is a core feature of Temporal that helps you write durable asynchronous code as easily as you do synchronous ones.
 
 The core Timer APIs relevant to the Node.js SDK are:
 
-- `setTimeout`: completely replaced by the Workflow's v8 isolate environment, including inside libraries that you use.
-- `sleep`: a more convenient way to sleep in terms of milliseconds: `import { sleep } from '@temporalio/workflow'`
-- `await`: not yet available in this SDK.
+- [`setTimeout`](https://nodejs.temporal.io/api/namespaces/workflow/#timers): completely replaced by the Workflow's v8 isolate environment, including inside libraries that you use.
+- [`sleep`](https://nodejs.temporal.io/api/namespaces/workflow/#sleep): a more convenient Promise wrapper for setTimeout
+- `await`: resolve when a condition turns true. Not yet available in this SDK.
 
 :::note Preventing Confusion
 
