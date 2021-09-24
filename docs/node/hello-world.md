@@ -34,7 +34,7 @@ In the Node.js SDK, each Workflow execution is run in a separate V8 isolate cont
 
 #### Implementation
 
-A Workflow implementation exposes handlers for executing the Workflow, processing [signals](signals) and responding to [queries](queries).
+A Workflow implementation exposes handlers for executing the Workflow, processing [Signals](/docs/concepts/signals) and responding to [Queries](/docs/concepts/queries).
 
 The snippet below uses `createActivityHandle` to create functions that, when called, schedule Activities in the system.
 
