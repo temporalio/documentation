@@ -11,10 +11,6 @@ This SDK and associated documentation is in an Alpha stage and may change at any
 
 </CustomWarning>
 
-## API Reference
-
-Node.js SDK API reference is available here: https://nodejs.temporal.io
-
 ## Getting started
 
 You can run "Hello Temporal" locally in under 5 minutes.
@@ -150,3 +146,7 @@ Then you should have a passing knowledge of our Core APIs:
 - [Workers](/docs/node/workers) and [Task Queues](/docs/node/task-queues): How Workflows and Activities are routed to and executed on machines you control
 - [Signals and Queries](/docs/node/signals-queries): Getting data in and out of a Workflow _while it is running_.
 - [Timers](/docs/node/timers): durable timers that are useful for racing human action against Signals, or sending reminders after inactivity
+
+You can view the full API reference at: https://nodejs.temporal.io
+
+You can view the Node SDK source at: https://github.com/temporalio/sdk-node (give us a star!) [![GitHub stars](https://img.shields.io/github/stars/temporalio/sdk-node)](https://github.com/temporalio/sdk-node/stargazers)

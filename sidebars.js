@@ -315,6 +315,11 @@ module.exports = {
           href: "https://nodejs.temporal.io",
         },
         {
+          type: "link",
+          label: "GitHub source",
+          href: "https://github.com/temporalio/sdk-node",
+        },
+        {
           type: "category",
           label: "Tutorials",
           collapsed: false,
