@@ -135,10 +135,6 @@ We can replace the callback with a Trigger in the example above to allow the Wor
 
 ## Queries
 
-import WhenToSignals from '../content/when-to-use-signals.md'
-
-<WhenToSignals />
-
 ### How to define a Query
 
 To add Query handlers to a Workflow, add a `queries` property to the exported Workflow object:
