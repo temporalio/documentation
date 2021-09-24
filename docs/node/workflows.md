@@ -16,7 +16,7 @@ In the Node.js SDK, each Workflow runs in a separate V8 isolate context to provi
 
 ### Workflow Implementation
 
-Workflow are implemented using a factory function that returns a handlers object for `execute` and optionally [signals](signals) and [queries](queries).
+Workflow are implemented using a factory function that returns a handlers object for `execute` and optionally [Signals](/docs/concepts/signals) and responding to [Queries](/docs/concepts/queries).
 
 The snippet below uses `createActivityHandle` to create functions that, when called, schedule Activities in the system.
 
