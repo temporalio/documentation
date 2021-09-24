@@ -51,7 +51,7 @@ const sdks = [
   {
     title: "node SDK",
     imgUrl: "img/nodejs.svg",
-    goto: "/docs/node/hello-world",
+    goto: "/docs/node/introduction",
   },
 ];
 
