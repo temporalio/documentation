@@ -311,10 +311,7 @@ module.exports = {
         {
           type: "category",
           label: "Tutorials",
-          items: [
-            "node/introduction",
-            "node/hello-world"
-          ],
+          items: ["node/introduction", "node/hello-world"],
         },
         {
           type: "link",
@@ -346,7 +343,7 @@ module.exports = {
             "node/testing",
             "node/versioning",
             "node/logging",
-          ]
+          ],
         },
         {
           type: "category",
