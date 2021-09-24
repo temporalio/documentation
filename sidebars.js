@@ -316,7 +316,7 @@ module.exports = {
         },
         {
           type: "link",
-          label: "GitHub source",
+          label: "Github source",
           href: "https://github.com/temporalio/sdk-node",
         },
         {
@@ -333,11 +333,11 @@ module.exports = {
             "node/workflows",
             "node/activities",
             "node/workers",
-            "node/task-queues",
             "node/timers",
             "node/signals-queries",
           ],
         },
+        "node/task-queues",
         "node/tls",
         "node/logging",
         {

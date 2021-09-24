@@ -15,16 +15,14 @@ This SDK and associated documentation is in an Alpha stage and may change at any
 
 You can run "Hello Temporal" locally in under 5 minutes.
 
-### Step 0: Prerequisites
-
-#### Node.js
-
-**This project requires Node.js version 14 or later.** We recommend Node 16.4.1 or later.
+:::note Prerequisites
 
 <details>
 <summary>
-macOS users: Brew installation of Node.js versions 15.0 to 16.4 does not work with the SDK; instead install the latest Node.js version or use nvm
+<strong>Node.js 14+</strong>: This project requires Node.js version 14 or later.
 </summary>
+
+macOS users: Brew installation of Node.js versions 15.0 to 16.4 does not work with the SDK; instead install the latest Node.js version (16.4.1+) or use nvm
 
 ```bash
 brew update
@@ -46,8 +44,10 @@ nvm use 16
 ```
 
 </details>
-
-#### `node-gyp`
+<details>
+<summary>
+<strong>node-gyp</strong>: `npm install -g node-gyp`
+</summary>
 
 Install node-gyp:
 
@@ -59,7 +59,11 @@ You may have to install some system dependencies first as documented [here](http
 
 _`node-gyp` is a requirement of [`isolated-vm`](https://github.com/laverdet/isolated-vm) the V8 Isolate library which powers this SDK's [deterministic runtime](/docs/node/determinism)_.
 
-#### Temporal Server
+</details>
+<details>
+<summary>
+<strong>Temporal Server</strong>: make sure it is running locally!
+</summary>
 
 Run Temporal Server (requires [Docker](https://docs.docker.com/engine/install) and [Docker Compose](https://docs.docker.com/compose/install/)):
 
@@ -69,9 +73,13 @@ cd temporal
 docker-compose up
 ```
 
-### Step 1: Create a new project
+If you want to run Temporal without Docker, DataDog has created an experimental project called [temporalite](https://github.com/DataDog/temporalite) you can try.
 
-> If you run into errors during installation, it is likely your environment is not properly set up (see [Step 0](#step-0-prerequisites)).
+</details>
+
+:::
+
+### Step 1: Create a new project
 
 Use the [package initializer](./package-initializer) to create a new project:
 
@@ -115,7 +123,7 @@ $ npm run start.watch # this runs ts-node src/worker.ts with nodemon to auto-rel
 2021-05-19T17:27:33.408Z [INFO] Worker state changed { state: 'RUNNING' }
 ```
 
-> If this step fails, make sure you have the correct version of Node and other [dependencies](#step-0-prerequisites).
+> If this step fails, make sure you have the correct version of Node and other prerequisites listed above.
 
 Then start your Workflow:
 
@@ -149,4 +157,4 @@ Then you should have a passing knowledge of our Core APIs:
 
 You can view the full API reference at: https://nodejs.temporal.io
 
-You can view the Node SDK source at: https://github.com/temporalio/sdk-node (give us a star!) [![GitHub stars](https://img.shields.io/github/stars/temporalio/sdk-node)](https://github.com/temporalio/sdk-node/stargazers)
+You can view the Node SDK source at: https://github.com/temporalio/sdk-node [![GitHub stars](https://img.shields.io/github/stars/temporalio/sdk-node)](https://github.com/temporalio/sdk-node/stargazers) (give us a star!)
