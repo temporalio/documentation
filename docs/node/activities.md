@@ -1,4 +1,8 @@
-# Activities
+---
+id: activities
+title: Activities in Node.js
+sidebar_label: Activities
+---
 
 In Temporal, Activities are typically used to interact with external resources, like making an HTTP request.
 

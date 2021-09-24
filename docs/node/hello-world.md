@@ -1,4 +1,8 @@
-# Hello world in Node
+---
+id: hello-world
+title: Hello World Walkthrough in Node
+sidebar_label: Hello World Walkthrough
+---
 
 import CustomWarning from "../components/CustomWarning.js"
 
@@ -79,7 +83,7 @@ It can be used in any Node.js process (for example, an [Express](https://express
 
 ### Testing
 
-There's no official support for testing Workflows and Activities yet.
+There is no official test suite for Workflows and Activities yet.
 
 - Since Activities are async functions, they should be testable as long as you avoid using [Context](https://nodejs.temporal.io/api/classes/activity.context) or are able to mock it.
 - You can test Workflows by running them with a [WorkflowClient](https://nodejs.temporal.io/api/classes/client.workflowclient).

@@ -14,7 +14,11 @@ This SDK and associated documentation is in an Alpha stage and may change at any
 
 The Node.js SDK does not yet have a test suite that allows time skipping.
 
-However basic unit tests can still be written:
+- Since Activities are async functions, they should be testable as long as you avoid using [Context](https://nodejs.temporal.io/api/classes/activity.context) or are able to mock it.
+- You can test Workflows by running them with a [WorkflowClient](https://nodejs.temporal.io/api/classes/client.workflowclient).
+- Check [the SDK's own tests](https://github.com/temporalio/sdk-node/tree/52f67499860526cd180912797dc3e6d7fa4fc78f/packages/test/src) for more examples.
+
+However basic unit tests can still be written (see [samples](https://github.com/temporalio/samples-node/blob/main/activities-examples/test/workflow.test.ts)):
 
 ```ts
 import { Connection, WorkflowClient } from '@temporalio/client';

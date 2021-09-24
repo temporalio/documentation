@@ -11,6 +11,15 @@ This SDK and associated documentation is in an Alpha stage and may change at any
 
 </CustomWarning>
 
+The Node.js SDK is Temporal's newest client SDK for developing with Temporal.
+It is designed to work equally well with TypeScript or JavaScript in Node.js.
+
+You can view:
+
+- Node.js Code Samples: https://github.com/temporalio/samples-node
+- Full API reference: https://nodejs.temporal.io
+- Node.js SDK source: https://github.com/temporalio/sdk-node [![GitHub stars](https://img.shields.io/github/stars/temporalio/sdk-node)](https://github.com/temporalio/sdk-node/stargazers) (give us a star!)
+
 ## Getting started
 
 You can run "Hello Temporal" locally in under 5 minutes.
@@ -154,7 +163,3 @@ Then you should have a passing knowledge of our Core APIs:
 - [Workers](/docs/node/workers) and [Task Queues](/docs/node/task-queues): How Workflows and Activities are routed to and executed on machines you control
 - [Signals and Queries](/docs/node/signals-queries): Getting data in and out of a Workflow _while it is running_.
 - [Timers](/docs/node/timers): durable timers that are useful for racing human action against Signals, or sending reminders after inactivity
-
-You can view the full API reference at: https://nodejs.temporal.io
-
-You can view the Node SDK source at: https://github.com/temporalio/sdk-node [![GitHub stars](https://img.shields.io/github/stars/temporalio/sdk-node)](https://github.com/temporalio/sdk-node/stargazers) (give us a star!)
