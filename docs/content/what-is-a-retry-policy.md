@@ -6,6 +6,8 @@ tags:
   - explanation
 ---
 
+import RelatedReadList from '../components/RelatedReadList.js'
+
 A Retry Policy is collection of attributes that instructs the Temporal Server how to retry a failure of a [Workflow Execution](#workflow-execution) or an [Activity Execution](#activity-execution).
 
 - If a custom Retry Policy is to be used, it must be provided as an options parameter when a [Workflow Execution](#workflow-execution) or an [Activity Execution](#activity-execution) is invoked.
@@ -83,3 +85,9 @@ Non-Retryable Errors = []
   - If one of those errors occurs, the [Activity Task Execution](#activity-task-execution) or [Workflow Execution](#workflow-execution) is not retried.
 - **Use case**: There may be errors that you know of that should not trigger a retry.
   In this case you can specify them such that if they occur, the given execution will not be retried.
+
+  <RelatedReadList
+  readlist={[
+  ["How to specify a Retry Policy for a Workflow Execution in Go","/docs/content/how-to-set-start-workflow-options-in-go/#retrypolicy","developer guide"],
+  ]}
+  />
