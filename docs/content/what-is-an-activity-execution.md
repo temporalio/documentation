@@ -13,7 +13,7 @@ An Activity Execution is the full chain of [Activity Task Executions](/docs/cont
 
 <CenteredImage
 imagePath="/diagrams/activity-execution.svg"
-imageSize="100"
+imageSize="50"
 title="Activity Execution"
 />
 

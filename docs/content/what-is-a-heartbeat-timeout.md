@@ -2,6 +2,9 @@
 id: what-is-a-heartbeat-timeout
 title: What is a Heartbeat Timeout?
 description: A Heartbeat Timeout is the maximum time between Activity Heartbeats.
+tags:
+  - explanation
+  - timeouts
 ---
 
 import CenteredImage from "../components/CenteredImage.js"
@@ -10,7 +13,7 @@ A Heartbeat Timeout is the maximum time between [Activity Heartbeats](/docs/cont
 
 <CenteredImage
 imagePath="/diagrams/heartbeat-timeout.svg"
-imageSize="100"
+imageSize="75"
 title="Heartbeat Timeout periods"
 />
 
