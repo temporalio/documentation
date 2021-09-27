@@ -110,7 +110,7 @@ The full set of options are available in [the API reference](https://nodejs.temp
 
 All activities must be registered by a Worker, or you will get an error that looks like `"Activity function myActivity is not registered on this Worker"` when you try to invoke it from a Workflow.
 
-- **Implicit registration**: By default, the Temporal Node SDK looks for any `.js` files in the `/activities` directory, and automatically registers any exported functions as Activities.
+- **Implicit registration**: By default, the Temporal Node.js SDK looks for either `./activities.js` or `./activities/index.js` relative to the Worker code, and automatically registers any exported functions as Activities. When the Worker is run with `ts-node` the TypeScript sources will be registered instead.
 - **Explicit registration**: You can also choose to explicitly register activities in a Worker:
 
 ```ts
