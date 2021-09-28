@@ -3,7 +3,8 @@ id: how-to-develop-an-activity-definition-in-go
 title: How to develop an Activity Definition in Go
 description: In the Temporal Go SDK programming model, an Activity Definition is an exportable function or `stuct` method.
 tags:
-  - guide
+  - developer-guide
+  - go
 ---
 
 import RelatedReadList from '../components/RelatedReadList.js'

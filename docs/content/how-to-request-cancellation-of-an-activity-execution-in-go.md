@@ -4,4 +4,5 @@ title: How to request Cancellation of an Activity Execution in Go
 description: todo
 tags:
   - developer-guide
+  - go
 ---

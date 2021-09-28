@@ -4,7 +4,6 @@ title: What is a Memo?
 description: A Memo is a non-indexed user-supplied set of Workflow Execution metadata that is displayed with Filtered List results.
 tags:
   - explanation
-  - options
 ---
 
 A Memo is a non-indexed user-supplied set of Workflow Execution metadata that is displayed with Filtered List results.

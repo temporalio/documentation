@@ -1,7 +1,9 @@
 ---
 id: what-is-a-workflow-id-reuse-policy
 title: What is a Workflow Id Reuse Policy?
-description: todo
+description: A Workflow Id Reuse Policy determines whether a Workflow Execution is allowed to spawn with a particular Workflow Id, if that Workflow Id has been used with a previous, and now Closed, Workflow Execution.
+tags:
+  - explanation
 ---
 
 A Workflow Id Reuse Policy determines whether a Workflow Execution is allowed to spawn with a particular Workflow Id, if that Workflow Id has been used with a previous, and now Closed, Workflow Execution.
