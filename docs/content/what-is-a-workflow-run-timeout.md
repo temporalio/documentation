@@ -23,7 +23,6 @@ This timeout is most commonly used to limit the execution time of a single [Temp
 
 If the Workflow Run Timeout is reached, the Temporal Server automatically Terminates the Workflow Execution.
 
-
 <RelatedReadList
 readlist={[
 ["How to set a Workflow Run Timeout in Go","/docs/content/how-to-set-startworkflowoptions-in-go/#workflowruntimeout","developer guide"],

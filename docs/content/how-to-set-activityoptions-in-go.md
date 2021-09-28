@@ -13,17 +13,17 @@ Create an instance of [`ActivityOptions`](https://pkg.go.dev/go.temporal.io/sdk@
 
 The instance of `workflow.Context` is then passed to the `ExecuteActivity()` call.
 
-| Field | Required | Type | Example |
-| ----- | -------- | ---- | ------- |
-| [`ActivityID`](/docs/content/what-is-an-activity-id) | No | `string` | [👀](#activityid) |
-| [`TaskQueueName`](/docs/content/what-is-a-task-queue) | Yes | `string` | [👀](#taskqueuename) |
-| [`ScheduleToCloseTimeout`](/docs/content/what-is-a-schedule-to-close-timeout) | Yes (or `StartToCloseTimeout`) | `time.Duration` | [👀](#scheduletoclosetimeout) |
-| [`ScheduleToStartTimeout`](/docs/content/what-is-a-schedule-to-start-timeout) | No | `time.Duration` | [👀](#scheduletostarttimeout) |
-| [`StartToCloseTimeout`](/docs/content/what-is-a-start-to-close-timeout) | Yes (or `ScheduleToCloseTimeout`) | `time.Duration` | [👀](#scheduletoclosetimeout) |
-| [`HeartbeatTimeout`](/docs/content/what-is-a-heartbeat-timeout) | No | `time.Duration` | [👀](#heartbeattimeout) |
-| `WaitForCancellation` | No | `bool` | [👀](#waitforcancellation) |
-| `OriginalTaskQueueName` | No | `string` | [👀](#originaltaskqueuename) |
-| [`RetryPolicy`](/docs/content/what-is-a-retry-policy) | No | [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/temporal#RetryPolicy) | [👀](#retrypolicy) |
+| Field                                                                         | Required                          | Type                                                                                | Example                       |
+| ----------------------------------------------------------------------------- | --------------------------------- | ----------------------------------------------------------------------------------- | ----------------------------- |
+| [`ActivityID`](/docs/content/what-is-an-activity-id)                          | No                                | `string`                                                                            | [👀](#activityid)             |
+| [`TaskQueueName`](/docs/content/what-is-a-task-queue)                         | Yes                               | `string`                                                                            | [👀](#taskqueuename)          |
+| [`ScheduleToCloseTimeout`](/docs/content/what-is-a-schedule-to-close-timeout) | Yes (or `StartToCloseTimeout`)    | `time.Duration`                                                                     | [👀](#scheduletoclosetimeout) |
+| [`ScheduleToStartTimeout`](/docs/content/what-is-a-schedule-to-start-timeout) | No                                | `time.Duration`                                                                     | [👀](#scheduletostarttimeout) |
+| [`StartToCloseTimeout`](/docs/content/what-is-a-start-to-close-timeout)       | Yes (or `ScheduleToCloseTimeout`) | `time.Duration`                                                                     | [👀](#scheduletoclosetimeout) |
+| [`HeartbeatTimeout`](/docs/content/what-is-a-heartbeat-timeout)               | No                                | `time.Duration`                                                                     | [👀](#heartbeattimeout)       |
+| `WaitForCancellation`                                                         | No                                | `bool`                                                                              | [👀](#waitforcancellation)    |
+| `OriginalTaskQueueName`                                                       | No                                | `string`                                                                            | [👀](#originaltaskqueuename)  |
+| [`RetryPolicy`](/docs/content/what-is-a-retry-policy)                         | No                                | [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/temporal#RetryPolicy) | [👀](#retrypolicy)            |
 
 ### `ActivityID`
 
