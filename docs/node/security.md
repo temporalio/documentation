@@ -87,9 +87,9 @@ When signing up to Temporal Cloud you should receive a namespace, a server addre
 
 ## Data Converter
 
-Workflow method arguments and return values are serializable to a [Payload](https://github.com/temporalio/api/blob/4c2f6a281fa3fde8b0a24447de3e0d0f47d230b4/temporal/api/common/v1/message.proto#L49) protobuf that contains a bytearray as well as metadata map. 
+Workflow method arguments and return values are serializable to a [Payload](https://github.com/temporalio/api/blob/4c2f6a281fa3fde8b0a24447de3e0d0f47d230b4/temporal/api/common/v1/message.proto#L49) protobuf that contains a bytearray as well as metadata map.
 
-You can customize *how* this is serialized with [the SDK's DataConverter interface](https://github.com/temporalio/sdk-node/blob/ca6f4ee0868081e0c115ff05bda6a5e47c13493d/packages/common/src/converter/data-converter.ts) to do this, including using custom encryption at rest.
+You can customize _how_ this is serialized with [the SDK's DataConverter interface](https://github.com/temporalio/sdk-node/blob/ca6f4ee0868081e0c115ff05bda6a5e47c13493d/packages/common/src/converter/data-converter.ts) to do this, including using custom encryption at rest.
 The default implementation uses JSON serializer, but you can use any alternative serialization mechanism.
 
 If your arguments and return values are encrypted, you will have to run your custom Data Converter again when viewing it in the WebUI as well:
@@ -100,6 +100,6 @@ export TEMPORAL_CLI_PLUGIN_DATA_CONVERTER=<path to dataconverter plugin>
 ./tctl dataconverter web --web_ui_url http://localhost
 ```
 
-To configure your Web UI session to use the local data converter use this URL: http://localhost/data-converter/33977 
+To configure your Web UI session to use the local data converter use this URL: http://localhost/data-converter/33977
 
 Following this link from the output will enable dataconverter for Temporal Web. Temporal Web will communicate to `tctl` through websocket to decrypt the data and show it on the UI.

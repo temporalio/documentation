@@ -93,7 +93,7 @@ readlist={[
 
 In Go specifically, Workflow Definition code can not directly do the following:
 
-- Iterate over maps using `range`, because with `range` the order of the map's iteration is randomized. (Use a Side Effect or an Activity instead.)
+- Iterate over maps using `range`, because with `range` the order of the map's iteration is randomized. Instead you can collect the keys of the map, sort them, and then iterate over the sorted keys to access the map. This will give deterministic results. You can also use a Side Effect or an Activity to process the map instead.
 - Use the native `go` statement, `select` statement, or `chan` type. (Use the [SDK Go API](#), [SDK Select API](#), or [SDK Channel API](#) instead.)
 - Call an external API, conduct a file I/O operation, talk to another service, etc. (Use an Activity for these.)
 
