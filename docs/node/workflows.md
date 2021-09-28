@@ -53,7 +53,7 @@ const workflow = client.createWorkflowHandle(exampleWorkflow, {
 });
 
 // Method 2: retrieve a handle for an EXISTING Workflow, given it's workflowId
-const workflow = client.createWorkflowHandle(workflowId);
+const workflow = client.createWorkflowHandle({ workflowId: id });
 ```
 
 The Workflow Handle [exposes a number of important APIs](https://nodejs.temporal.io/api/interfaces/client.WorkflowHandle) that you will use to externally control your Workflow:
