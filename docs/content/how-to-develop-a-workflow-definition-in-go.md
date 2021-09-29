@@ -3,7 +3,8 @@ id: how-to-develop-a-workflow-definition-in-go
 title: How to develop a Workflow Definition in Go
 description: In the Temporal Go SDK programming model, a Workflow Definition is an exportable function.
 tags:
-  - guide
+  - developer-guide
+  - go
 ---
 
 import RelatedReadList from '../components/RelatedReadList.js'

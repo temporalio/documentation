@@ -3,7 +3,8 @@ id: how-to-use-the-temporal-go-sdk
 title: How to use the Temporal Go SDK
 description: Add the Temporal Go SDK to your project.
 tags:
-  - guide
+  - developer-guide
+  - go
 ---
 
 Add the [Temporal Go SDK](https://github.com/temporalio/sdk-go) to your project:

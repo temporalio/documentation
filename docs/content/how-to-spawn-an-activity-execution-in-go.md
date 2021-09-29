@@ -3,7 +3,8 @@ id: how-to-spawn-an-activity-execution-in-go
 title: How to spawn an Activity Execution in Go
 description: Use the `ExecuteActivity()` API call available from the `go.temporal.io/sdk/workflow` package.
 tags:
-  - guide
+  - developer-guide
+  - go
 ---
 
 import RelatedReadList from '../components/RelatedReadList.js'

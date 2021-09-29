@@ -8,6 +8,7 @@ tags:
 ---
 
 import CenteredImage from "../components/CenteredImage.js"
+import RelatedReadList from '../components/RelatedReadList.js'
 
 A Workflow Run Timeout is the maximum amount of time that a single Workflow Run is restricted to.
 
@@ -21,3 +22,9 @@ title="Workflow Run Timeout period"
 This timeout is most commonly used to limit the execution time of a single [Temporal Cron Job Execution](/docs/content/what-is-a-temporal-cron-job).
 
 If the Workflow Run Timeout is reached, the Temporal Server automatically Terminates the Workflow Execution.
+
+<RelatedReadList
+readlist={[
+["How to set a Workflow Run Timeout in Go","/docs/content/how-to-set-startworkflowoptions-in-go/#workflowruntimeout","developer guide"],
+]}
+/>

@@ -2,6 +2,8 @@
 id: what-is-a-temporal-cluster
 title: What is a Temporal Cluster?
 description: A Temporal Cluster is the Temporal Server paired with persistence.
+tags:
+  - explanation
 ---
 
 import CenteredImage from "../components/CenteredImage.js"

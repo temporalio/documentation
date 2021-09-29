@@ -3,7 +3,9 @@ id: how-to-develop-a-worker-program-in-node
 title: How to develop a Worker Program in Node.js
 description: Import a Worker from the `@temporalio/worker` module and call `Worker.create()` to create a new Worker in Node.js.
 tags:
-  - guide
+  - developer-guide
+  - workers
+  - nodejs
 ---
 
 First you create a Worker with `Worker.create()`, then call `worker.run()` on it.

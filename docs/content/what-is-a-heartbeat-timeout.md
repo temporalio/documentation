@@ -8,6 +8,7 @@ tags:
 ---
 
 import CenteredImage from "../components/CenteredImage.js"
+import RelatedReadList from '../components/RelatedReadList.js'
 
 A Heartbeat Timeout is the maximum time between [Activity Heartbeats](/docs/content/what-is-an-activity-heartbeat).
 
@@ -18,3 +19,9 @@ title="Heartbeat Timeout periods"
 />
 
 If this timeout is reached, the Activity Execution changes to a [Failed](#) status, and will retry if a Retry Policy dictates it.
+
+<RelatedReadList
+readlist={[
+["How to set a Heartbeat Timeout in Go","/docs/content/how-to-set-activityoptions-in-go/#heartbeattimeout","developer guide"],
+]}
+/>
