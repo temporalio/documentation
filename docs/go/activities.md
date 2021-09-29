@@ -257,6 +257,17 @@ Activities to complete by calling the `Get()` methods of the future at a later t
 
 To implement more complex wait conditions on returned future objects, use `workflow.Selector`. Learn more on the [Go SDK Selectors](https://docs.temporal.io/docs/go/selectors) page.
 
+### Sharing Dependencies between Activities
+
+You may often need to initialize expensive resources once per process (e.g. an application level DB pool or client connection to another service).
+In these situations, write activities as struct methods.
+
+<!--SNIPSTART samples-go-dependency-sharing-activities-->
+<!--SNIPEND-->
+
+<!--SNIPSTART samples-go-dependency-sharing-workflow-->
+<!--SNIPEND-->
+
 ## Asynchronous Activity Completion
 
 There are certain scenarios when you want to defer completing an Activity until much later.
