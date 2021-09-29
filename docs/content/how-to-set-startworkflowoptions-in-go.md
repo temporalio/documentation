@@ -1,7 +1,7 @@
 ---
 id: how-to-set-startworkflowoptions-in-go
 title: How to set StartWorkflowOptions in Go
-description: Create an instance of `StartWorkflowOptions` from the `go.temporal.io/sdk/client` package, and pass it to the `ExecuteWorkflow` call.
+description: Create an instance of `StartWorkflowOptions` from the `go.temporal.io/sdk/client` package, and pass the instance to the `ExecuteWorkflow` call.
 tags:
   - developer-guide
   - options
