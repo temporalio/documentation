@@ -208,6 +208,7 @@ module.exports = {
         "java/side-effect",
         "java/distributed-cron",
         "java/testing-and-debugging",
+        "content/how-to-provide-an-authorization-token-in-java",
       ],
     },
     {
