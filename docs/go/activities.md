@@ -34,7 +34,13 @@ In the Workflow Definition, to invoke this Activity use `worklow.ExecuteActivity
 
 Let's take a look at each component of this Activity.
 
-### Declaration
+### How to develop an Activity Definition in Go
+
+import ActivityDefinition from '../content/how-to-develop-an-activity-definition-in-go.md'
+
+<ActivityDefinition />
+
+## OLD stuff
 
 In the Temporal programing model, an Activity is implemented with a function. The function declaration specifies the parameters the Activity accepts as well as any values it might return. An Activity function can take zero or many Activity specific parameters and can return one or two values. It must always at least return an error value. The Activity function can accept as parameters and return as results any serializable type.
 
@@ -57,32 +63,7 @@ Activities are implemented as regular Go functions:
 
 There's no hard limit on what you can pass into or return from an Activity function, but keep in mind that all parameters and return values are recorded in the execution history.
 A large execution history can adversely impact the performance of your Workflows as the entire history is transferred to your workers with every event processed.
-No other limitations on Activity functions exist; you are free to use idiomatic loggers and metrics controllers, and the standard Go concurrency constructs.
-
-Activities can also be implemented as methods on Struct.
-
-```go
-type Activities struct {
-	Name     string
-	Greeting string
-}
-
-// GetName Activity.
-func (a *Activities) GetName() (string, error) {
-	return a.Name, nil
-}
-
-// GetGreeting Activity.
-func (a *Activities) GetGreeting() (string, error) {
-	return a.Greeting, nil
-}
-
-// SayGreeting Activity.
-func (a *Activities) SayGreeting(greeting string, name string) (string, error) {
-	result := fmt.Sprintf("Greeting: %s %s!\n", greeting, name)
-	return result, nil
-}
-```
+No other limitations on Activity functions exist; 
 
 #### Heart Beating
 
@@ -256,17 +237,6 @@ repeatedly call `workflow.ExecuteActivity()`, store the returned futures, and th
 Activities to complete by calling the `Get()` methods of the future at a later time.
 
 To implement more complex wait conditions on returned future objects, use `workflow.Selector`. Learn more on the [Go SDK Selectors](https://docs.temporal.io/docs/go/selectors) page.
-
-### Sharing Dependencies between Activities
-
-You may often need to initialize expensive resources once per process (e.g. an application level DB pool or client connection to another service).
-In these situations, write activities as struct methods.
-
-<!--SNIPSTART samples-go-dependency-sharing-activities-->
-<!--SNIPEND-->
-
-<!--SNIPSTART samples-go-dependency-sharing-workflow-->
-<!--SNIPEND-->
 
 ## Asynchronous Activity Completion
 
