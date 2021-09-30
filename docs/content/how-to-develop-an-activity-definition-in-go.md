@@ -42,7 +42,7 @@ func(a *YourActivityStruct) YourActivityDefinitionTwo(ctx workflow.Context) erro
 ```
 
 An "Activity struct" can have more than one method, with each method acting as a separate Activity Type.
-Activities written as struct methods can use shared struct variables such as: 
+Activities written as struct methods can use shared struct variables such as:
 
 - an application level DB pool
 - client connection to another service
@@ -127,7 +127,7 @@ readlist={[
 All native features of the Go programming language can be used within an Activity and there are no other limitations to Activity Definition logic:
 
 - **Performance**: Keep in mind that all parameters and return values are recorded in the execution history.
-A large execution history can adversely impact the performance of your Workflows as the entire history is transferred to your workers with every event processed.
+  A large execution history can adversely impact the performance of your Workflows as the entire history is transferred to your workers with every event processed.
 - **Idiomatic usage**: You are free to use:
   - your own loggers and metrics controllers
   - the standard Go concurrency constructs

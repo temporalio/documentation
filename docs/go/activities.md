@@ -63,7 +63,7 @@ Activities are implemented as regular Go functions:
 
 There's no hard limit on what you can pass into or return from an Activity function, but keep in mind that all parameters and return values are recorded in the execution history.
 A large execution history can adversely impact the performance of your Workflows as the entire history is transferred to your workers with every event processed.
-No other limitations on Activity functions exist; 
+No other limitations on Activity functions exist;
 
 #### Heart Beating
 
