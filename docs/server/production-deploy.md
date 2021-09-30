@@ -28,6 +28,16 @@ And, monitoring and observability are available with [Prometheus](https://promet
 
 See the [versions & dependencies page](/docs/server/versions-and-dependencies/) for precise versions we support together with these features.
 
+### IMP Note
+If you are planning to have multiple temporal deployments within the same k8s cluster, make sure about the following
+- Have separate persistence (database) for each deployment
+- cluster membership ports should be different for each deployment
+for eg: 
+- temporal1 services can have 7233 for frontend, 7234 for history, 7235 for matching
+- temporal2 services can have 8233 for frontend, 8234 for history, 8235 for matching
+
+[more details about the reason here](https://github.com/temporalio/temporal/issues/1234)
+
 ### Configuration
 
 At minimum, the `development.yaml` file needs to have the [`global`](/docs/server/configuration/#global) and [`persistence`](https://docs.temporal.io/docs/server/configuration/#persistence) parameters defined.
