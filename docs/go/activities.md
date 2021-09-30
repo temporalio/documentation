@@ -40,31 +40,6 @@ import ActivityDefinition from '../content/how-to-develop-an-activity-definition
 
 <ActivityDefinition />
 
-## OLD stuff
-
-In the Temporal programing model, an Activity is implemented with a function. The function declaration specifies the parameters the Activity accepts as well as any values it might return. An Activity function can take zero or many Activity specific parameters and can return one or two values. It must always at least return an error value. The Activity function can accept as parameters and return as results any serializable type.
-
-`func SimpleActivity(ctx context.Context, value string) (string, error)`
-
-The first parameter to the function is context.Context. This is an optional parameter and can be omitted. This parameter is the standard Go context.
-The second string parameter is a custom Activity specific parameter that can be used to pass data into the Activity on start. An Activity can have one or more such parameters. All parameters to an Activity function must be serializable, which essentially means that params can’t be channels, functions, variadic, or unsafe pointers.
-The Activity declares two return values: string and error. The string return value is used to return the result of the Activity. The error return value is used to indicate that an error was encountered during execution.
-
-### Implementation
-
-Activities are implemented as regular Go functions:
-
-- Parameters:
-  - Data can be passed directly to an Activity via function parameters. The parameters can be either basic types or structs (must be serializable).
-  - Though it is not required, we recommend that the first parameter of an Activity function is of type `context.Context`, in order to allow the Activity to interact with other framework methods.
-- Return values:
-  - The function must return an `error` value. To mark an Activity as failed, return an error here, instead of `nil`.
-  - The result value is optional, and can be either a basic type or a struct (must be serializable).
-
-There's no hard limit on what you can pass into or return from an Activity function, but keep in mind that all parameters and return values are recorded in the execution history.
-A large execution history can adversely impact the performance of your Workflows as the entire history is transferred to your workers with every event processed.
-No other limitations on Activity functions exist; 
-
 #### Heart Beating
 
 For long-running Activities, Temporal provides an API for the Activity code to report both liveness and
