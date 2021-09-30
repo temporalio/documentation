@@ -243,7 +243,6 @@ docker run --network=host --rm temporalio/tctl:latest wf show -w Greet_Samar_1
 
 </details>
 
-
 ## 3 Hour Intro Workshop
 
 > [Slides](https://sagikazarmark.hu/slides/workshops/temporal-intro/), [GitHub](https://github.com/sagikazarmark/temporal-intro-workshop)
