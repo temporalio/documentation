@@ -19,12 +19,11 @@ _Don't forget our own [Temporal Cluster docs](/docs/content/what-is-a-temporal-c
 - [Workflow Engine with Maxim Fateev](https://www.listennotes.com/podcasts/software/cadence-ubers-workflow-nNoaPiSfk7v/) on Software Engineering Daily (56 min listen)
 - [Temporal Product with Ryland Goldstein](https://softwareengineeringdaily.com/2021/05/08/temporal-product-managing-state-with-ryland-goldstein/) on Software Engineering Daily (53 min Podcast)
 - [Temporal Developer Experience with swyx](https://devtools.fm/episode/13) on Devtools.fm (56 min Podcast)
-- 🆕 [Maxim Fateev on Temporal Origin Story](/blog/oss-startups-podcast) on the OSS Startups Podcast (41 min listen)
+- [Maxim Fateev on Temporal Origin Story](/blog/oss-startups-podcast) on the OSS Startups Podcast (41 min listen)
+- 🆕 [Intro to Temporal Workshop](https://www.youtube.com/watch?v=UwdGmdTO3Ts) by Márk Sági-Kazár (3 hour full workshop)
 - Temporal's previous iteration was Cadence, which shares a lot of the same design principles:
   - [Cadence Architecture Talk](https://www.youtube.com/watch?v=5M5eiNBUf4Q) (24 min) by Samar Abbas at Uber Cadence meetup
   - [Cadence: Micro service Architecture Beyond Request/Response](https://www.youtube.com/watch?v=BJwFxqdSx4Y) (34 min) by Maxim Fateev at Data@Scale 2017
-  - [Intro to Cadence Slide Deck](https://sagikazarmark.hu/slides/workshops/cadence-intro/#/) by Márk Sági-Kazár
-  - [Intro to Temporal Slide Deck](https://sagikazarmark.hu/slides/workshops/temporal-intro/#/) by Márk Sági-Kazár
   - Note: we have documented [the difference between Cadence and Temporal](https://docs.temporal.io/docs/cadence-to-temporal) separately.
 
 ## Why Workflow Orchestration
