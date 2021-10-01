@@ -9,12 +9,12 @@ import RelatedReadList from '../components/RelatedReadList.js'
 
 A Temporal Cluster is the Temporal Server paired with persistence.
 
-The Temporal Server consists of four services:
+The Temporal Server consists of four independently scalable services:
 
-- Frontend gateway
-- Matching (queuing) subsystem
-- History (state management) subsystem
-- Worker service
+- Frontend gateway: for rate limiting, routing, authorizing
+- History subsystem: maintains data (mutable state, queues, and timers)
+- Matching subsystem: hosts Task Queues for dispatching
+- Worker service: for internal background workflows
 
 <CenteredImage
 imagePath="/diagrams/temporal-cluster.svg"
@@ -22,16 +22,18 @@ imageSize="75"
 title="A Temporal Cluster (Server + persistence)"
 />
 
+For example, a real life production deployment can have 5 Frontend, 15 History, 17 Matching, and 3 Worker services per cluster.
+
 The Temporal Server services can run independently or be grouped together into shared processes on one or more physical or virtual machines.
 For live (production) environments we recommend that each service runs independently, as each one has different scaling requirements, and troubleshooting becomes easier.
 The History, Matching, and Worker services can scale horizontally within a Cluster.
-A Temporal Cluster can scale in what is called [Multi-Cluster Replication](#).
+The Frontend Service scales differently than the others, because it has no sharding/partitioning, it is just stateless.
 
-Each service is aware of the others, including scaled instances, through a membership protocol.
+Each service is aware of the others, including scaled instances, through a membership protocol via [Ringpop](https://github.com/temporalio/ringpop-go).
 
 ### Frontend Service
 
-The Frontend Service is a singleton (non-scalable) gateway service that exposes a strongly typed [Proto API](https://github.com/temporalio/api/blob/master/temporal/api/workflowservice/v1/service.proto).
+The Frontend Service is a stateless gateway service that exposes a strongly typed [Proto API](https://github.com/temporalio/api/blob/master/temporal/api/workflowservice/v1/service.proto).
 The Frontend Service is responsible for rate limiting, authorizing, validating, and routing all in-bound calls.
 
 <CenteredImage
