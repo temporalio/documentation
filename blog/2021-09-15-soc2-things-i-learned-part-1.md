@@ -30,7 +30,7 @@ It is possible, but nearly improbable to maintain and scale best practices in su
 
 ### Service Organization Control 2 framework (SOC 2)
 
-While the name of the framework (SOC 2) is not very attractive me, the idea behind it is sound and simple.
+While the name of the framework (SOC 2) is not very attractive to me, the idea behind it is sound and simple.
 The SOC 2 framework is just a list of criteria, established by the technology service industry, that represents best practices and guiding principles.
 
 The idea is that an organization can map their current processes to the list of criteria as a way to validate what they are doing is ideal, or find gaps that could potentially leave them exposed.
