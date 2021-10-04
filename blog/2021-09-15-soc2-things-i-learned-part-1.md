@@ -57,7 +57,7 @@ The report that the auditor issues is subsequently, more often than not, an extr
 **Therefore, in recent years, a SOC 2 report has become a cornerstone factor in whether a customer decides to place their trust in the organization.
 In a lot of cases, many businesses won't even consider a B2B relationship if the other business is not SOC 2 compliant.**
 
-It's this exact reason why Temporal, as a startup-level business, decided to prioritize SOC 2 compliance early on.
+It's this exact reason why Temporal, as an entirely B2B startup offering mission-critical infrastructure to multi-billion-dollar publicly listed companies, decided to prioritize SOC 2 compliance early on.
 We knew that a SOC 2 report would serve as a confidence booster for our customers, and cut through a lot of the red tape that is otherwise associated with B2B relationships.
 We also hoped that the compliance process would help us organize ourselves internally to optimally reduce our exposure to risks and provide the best experience for our customers, which it did.
 
