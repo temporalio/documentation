@@ -72,7 +72,7 @@ For example if a Type 1 report is issued for March 31st 2021, then that means th
 When it comes to evidence gathering and analysis, it is easy to cherry pick in order to satisfy the control statement.
 For example, if the control statement states that "new employees agree to and sign an employee handbook", you really only need to provide one example of that happening to satisfy the audit.
 
-Because of this, there is usually a lot less friction in acquiring a SOC2 Type 1 report as a startup-level organization.
+Because of this, there is usually a lot less friction in acquiring a SOC2 Type 1 report as a startup.
 The lower friction of a Type 1 means that you can use the audit as an exercise to identify your processes that can be captured as a control, and build up around the gaps.
 
 ### Type 2
