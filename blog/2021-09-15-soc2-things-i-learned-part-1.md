@@ -85,7 +85,11 @@ The auditors may not review each an every one, but their sampling is random.
 
 ### How to choose
 
-My personal, high-level assessment here is that a startup-level organization should only really attempt a Type 2 of the gate, if the scope of the business is limited, there is minimal exposure to risk, and/or they have had enough time to establish and strictly adhere to internal processes that are industry standard best practices.
+My personal, high-level assessment here is that a startup-level organization should only really attempt a Type 2 out of the gate if:
+
+- the scope of the business is limited, 
+- there is minimal exposure to risk, and
+- they have had enough time to establish and strictly adhere to internal processes that are industry standard best practices.
 
 At Temporal, we started with a Type 1 and used it as a way to build up to our Type 2.
 
