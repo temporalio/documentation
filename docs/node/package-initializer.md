@@ -10,45 +10,44 @@ sidebar_label: Package Initializer
 
 An optional utility to set up a new Temporal project with a preset skeleton.
 
-> Make sure to follow the [getting started instructions](/docs/node/introduction/#getting-started).
-
 ### Usage
 
+First, follow [Getting started](/docs/node/introduction/#getting-started) to set up your environment. Then run:
+
 ```
-npx @temporalio/create@latest /path/to/project [--use-yarn] [--temporal-version TEMPORAL_VERSION] [--sample hello-world|hello-world-mtls]
+npx @temporalio/create@latest my-project-name
 ```
 
-#### Flags
+#### Optional flags
 
-- `--use-yarn` - configure the project with `yarn` (defaults to `npm`).
-- `--temporal-version` - use specified SDK version or `@latest` if not provided.
-- `--sample` - install specified sample (defaults to `hello-world`).
+- `--sample` — Which sample to bootstrap the app with. You can use the name of a sample
+  from [github.com/temporalio/samples-node](https://github.com/temporalio/samples-node) or use a GitHub URL. The URL can have a branch and/or subdirectory: for example, `https://github.com/temporalio/samples-node/tree/next/ecommerce-one-click/nextjs`.
+- `--list-samples` — List available sample projects.
+- `--use-yarn` — Use Yarn instead of npm.
 
-### Project Structure
+### Project structure
 
-The generated project consists of 4 main components
+The generated project consists of 4 main components:
 
 - Worker code
 - Workflow interfaces
 - Workflow implementations
 - Activity implementations
 
-Since Workflows run in an [isolated environment](/docs/node/determinism) they must not import from the Worker or Activity implementations as those contain non-deterministic code. It **is** safe to import types from the Worker and Activity implementations as the TypeScript compiler omits them from the generated JavaScript files.
+Since Workflows run in an [isolated environment](/docs/node/determinism), they must not import from the Worker or Activity implementations as those contain non-deterministic code. It **is** safe to import types from the Worker and Activity implementations as the TypeScript compiler omits them from the generated JavaScript files.
 
-### Working with the created project
+### Working with the project
 
-The created project comes with some helper package scripts.
+Most sample projects come with these scripts:
 
-- `npm start` - Run the Worker (does not require compilation)
-- `npm run start.watch` - Watch files and re-run Worker on change
-- `npm run build` - Compile TypeScript
-- `npm run build.watch` - Watch files and compile on change
-- `npm run workflow` - Execute a Workflow using the provided client
+- `npm start` — Run the Worker (does not require compilation)
+- `npm run start.watch` — Watch files and re-run Worker on change
+- `npm run build` — Compile TypeScript
+- `npm run build.watch` — Watch files and compile on change
+- `npm run workflow` — Execute the Workflow
 
-#### Running the example
+#### Running the project
 
-- Download, install, and run the [Temporal server][local-server] via docker-compose
-- Start the worker using `npm run start.watch`
-- In a new terminal, use the provided client to start a Workflow `npm run workflow`, or equivalently, `ts-node src/exec-workflow.ts`
-
-[local-server]: /docs/server/quick-install
+- Download, install, and run [Temporal Server](/docs/server/quick-install) via `docker-compose`
+- Start the Worker using `npm run start.watch`
+- In a new terminal, start a Workflow with `npm run workflow`
