@@ -1,0 +1,236 @@
+---
+slug: compliance-programs-that-dont-require-a-fancy-platform
+title: Compliance programs don't require a fancy platform
+author: Cully Wakelin
+author_title: SDE Technical Writer
+author_image_url: https://avatars2.githubusercontent.com/u/34380806
+tags:
+  - compliance
+  - soc2
+date: 2021-10-5T00:00:00Z
+---
+
+<!--truncate-->
+
+There are several companies out there that offer compliance automation platforms such as [Vanta](https://www.vanta.com/), [Strike Graph](https://www.strikegraph.com/), [Drata](https://drata.com/), and others.
+Depending on who you talk to, these platforms are either the best thing since sliced bread or they are selling snake oil.
+The truth, from my experience, is woven somewhere down the middle, with many of the pros and cons of these platforms shifting depending on your company's experience level.
+
+To be clear, SOC2 makes up most of my experience when it comes to compliance, so my current view is through that lens.
+But, I would argue that the goal of any compliance effort, whether that is SOC2, HIPAA, or ISO 27001, is the same: establishing customer trust (see the section below "Why compliance frameworks are important" for my take on this).
+
+<details>
+<summary> Why compliance frameworks are important
+</summary>
+
+
+If you already understand this, then feel free to skip this section.
+But if you are new to SOC2, for example, and are trying to figure why you should even care, and how it translates to customer trust, then this explanation might help you out.
+
+Let's start by saying that it's absolutely possible for a technology company to curate operating processes that optimally address security risks, processing integrity, product availability, user privacy, and user confidentiality without even thinking about compliance.
+
+But, practically, is it likely that will happen organically or be maintainable as the company grows, or adjusts to meet market demands?
+No, not really, and probably not.
+
+That would require significant levels of contribution, coordination, and discipline from many experienced individuals, routinely, even in a small 20-50 person company.
+People come and go, products change, processes change, user needs change.
+It is possible, but nearly improbable to maintain and scale best practices in such a dynamic environment without some sort of framework to fall back on.
+
+**Compliance frameworks**
+
+A compliance framework gives organizations something to fall back to.
+Let's take SOC2 for example, which stands for Service Organization Control 2 framework.
+The SOC 2 framework is just a list of criteria, established by the technology service industry, that represents best practices and guiding principles.
+
+The idea is that an organization can map their current processes to the list of criteria as a way to validate what they are doing is ideal, or find gaps that could potentially leave them exposed to some sort of risk (think data breach, or a malicious attack on a system's availability).
+To ensure that mapping is done in an objective fashion you can pay a third party auditor to review your organization's processes and issue a report on their findings.
+
+**Controls**
+
+A Control (particularly with SOC2) is a statement that captures the essence of what an organization does, the behavior, if you will, of some aspect of the organization.
+Controls can be broad, or extremely granular in scope.
+For example, a more broad Control might be one that declares that the "organization conducts a formal risk assessment every 6 months", while a more granular Control might declare that "a vulnerability scan is performed on the code base for every change that is requested to be merged into the main branch of the core SaaS repository".
+
+An auditor looks at the set of Controls that the organization has declared, maps them to the compliance framework criteria, ensures there are no gaps of coverage, and then analyzes evidence to determine whether the organization is adhering to their Control Statements.
+
+**The report**
+
+The auditor then issues a report.
+In their report they include their assessment of the controls and evidence, as well as a "system description" of the organization that describes the company and its products in a fairly high degree of detail.
+
+The report that the auditor issues is subsequently, more often than not, an extremely comprehensive analysis and honest view of the organization and how it operates.
+
+**Conclusion**
+
+**Therefore, in recent years, a compliance report (such as SOC2) has become a cornerstone factor in whether a customer decides to place their trust in the organization.
+In a lot of cases, many businesses won't even consider a B2B relationship if the other business is not compliant within a framework.**
+
+That is why you should care.
+Because if your organization is compliant within a framework, then it is following best practices to the best of its abilities, and thus your customers can feel good about placing their trust with you.
+
+</details>
+
+So what role do these platforms play in helping you do that?
+
+Well, each one has a slightly different angle.
+Almost all of them promote themselves as a way to "simplify" the compliance process by providing a set of tools to help you organize your resources and automate compliance processes, particularly around an audit.
+Personally, I think you should be wary of any of these platforms that say they can make things "simple" for you, because that is silly.
+This stuff is complex.
+What I do value, are the platforms that can help you understand how your internal operations map to compliance framework criteria.
+That is the art, the heart, and the best kept secret of this whole thing that is so often glazed over.
+
+Consider this well known maxim:
+
+> Give a man a fish, feed him for a day. Teach a man to fish, feed him for a lifetime.
+
+Most of these platforms teach only when they have to, as a means to the end of getting you to pay to use their tools.
+They don't want to teach, they want you to keep coming back to them.
+The truth is, once you learn how to parse compliance framework criteria language and learn how to map real-world operations to it, you don't need these platforms.
+
+Now, to be fair, learning this is not super easy.
+
+I recently asked a SOC2 expert I know, [Martin Cozzi](https://www.marana.io/), how he learned and he said it was the same way I was learning: through experience (he has been through 50+ audits).
+There is no course that he knows of that teaches this.
+
+And yet, the more you learn, the more it becomes apparent, at least to me, that what makes a compliance audit easy, versus a slogging and demoralizing haze, is not whether you have fancy automation tools, a fancy web ui, or an all-in-one auditing platform, its whether your company has embraced the framework against which you wish to be compliant and understands how your operations fit into it.
+Thats it.
+You either know what you are doing, or you don't.
+And the unfortunate truth is that many of these platforms take advantage of those who don't know what they are doing and sell them a set of tools that are still only really effective if you know what you are doing.
+
+What these platforms could (and should) be doing is teaching.
+
+## Keys to a successful compliance program
+
+I have now been through two SOC2 audits with Temporal Technologies.
+Throughout each of them I acted as the compliance lead, a sort of project manager.
+My primary responsibilities were to organize materials, gather evidence for audits, schedule meetings, and generally create a structure to operate in.
+I was also the auditor's point of contact with our company, funneling and prioritizing communications, and translating requirements into action items for our team.
+And I made sure to keep other key players up-to-date, or to push on them when deadlines closed in.
+
+I have worked with both [Strike Graph](https://www.strikegraph.com/), one of the compliance platforms, and [Martin Cozzi](https://www.marana.io/), an independent personalized consultant.
+
+From these experiences, here are my 5 key things that shaped our successful compliance program.
+
+### 1. Retain the help of an expert to get ramped up
+
+Unfortunately there is not a lot of room for trial and error when it comes to compliance programs, and a lot of pitfalls to overcome through self study.
+So, I definitely recommend getting the help of someone with experience.
+
+For startups and other small companies that do not have in-house experience yet, platforms like Strike Graph (for SOC2 at least) are actually not a bad way to go.
+They can help you get up and going for a lot less money than a personalized consultant.
+Strike Graph for example maintains a team of customer success agents who can steer you in the right direction by providing a lot of context and boilerplate policies for your organization to utilize.
+
+But just remember they are not in the business of understanding your business, and therefore they most likely will not be able to help with precision custom Control Statements that scale for you.
+And they may not be able to help accurately translate the expectations of your auditing partner into action steps.
+
+Also, something that all compliance platforms suffer from is that using an additional third party system means that it is yet another external system to login to and learn how to use.
+Think about it.
+Managing Control Statements and evidence outside of normal business tools, often means "out of sight, out of mind" and greatly reduces visibility into compliances processes internally.
+
+If you can afford a personalized consultant, such as Martin Cozzi, I would highly recommend that route.
+
+Consultants like Martin take the time to understand your business and the expectations of the auditing firm to craft a compliance strategy that is best suited to your company.
+This also means that they can translate auditor expectations into action steps for you.
+They can help write custom Control Statements that accurately reflect what you are doing and map them to compliance criteria.
+And my favorite part, consultants like Martin can show you how easy it is to manage compliance materials using the project management tools you **already use**.
+And if you don't use project management tools, then all you need is a Google spreadsheet.
+This is important because it shows once you are oriented in the compliance world, you don't need a fancy UI and tools to keep track of the state of your compliance efforts.
+
+### 2. Do what you say you are doing
+
+This is the next most important thing to do.
+When you write a Control Statement, it must be one that is accurate and true.
+And you want your implementation of that Control to be done in a way where you can prove that you did those things during a period of time.
+
+For example, if you have a Control Statement that says "The engineering team is notified whenever there is a release to production", then (A) that should absolutely be happening, and (B) you should be able to prove that.
+
+But really think about this statement for moment, for it forces you to define the following things:
+- What is the "engineering team", who is in that scope?
+- What is our method/mechanism of notification?
+- What is considered a "release to production"?
+
+By ironing all of that out, and ensuring that there is a history of evidence to gather, this Control Statement, and the actions you take that are associated with it, can scale with the company for a very long time.
+
+### 3. Internally manage Control Statements and resources
+
+This one piggybacks a bit on the first key to success.
+And it does draw a line in the sand for me when deciding whether to use a compliance platform.
+But I feel strongly about it because I have seen just how much more engagement there is across the company when Control Statements and resources are managed using "normal" and "routine" tools.
+
+For example, at Temporal Technologies we use [Notion](https://www.notion.so/) for just about all of our internal documentation and project management.
+With just a little bit of effort we were able to utilize the same project management tools in Notion, that we already use for Engineering and Product efforts, to track our compliance efforts.
+
+And again, as it turns out, this was a pretty big deal, because everyone in the company has access to it.
+Everyone can see the Control Statements, what criteria those statements map to, the policies that we wrote for processes to adhere to, the progress of any given compliance effort, etc...
+It also means that we can easily see how any given internal task rolls up under a compliance related effort, or has been generated by it.
+Essentially, it puts the compliance program right at the heart of our operating mind set, which is so critical for the long term.
+
+### 4. Use a reliable auditing partner
+
+There are many companies out there that offer this service.
+The truth is, finding the right one for your company can be a little hit or miss.
+That is because, each company does things a little differently.
+
+We have worked with two different ones so far, and for us we found our experience with [Schneider Downs](https://www.schneiderdowns.com/) to be really good.
+Martin recommended them, and has worked with them for a few years.
+
+They pros that we really liked were:
+- They were highly communicative.
+- They had previous experience with developer facing SaaS companies.
+- They had a polished system for evidence submission that gave us clear visibility into the status of our audit.
+
+I definitely can not say this is the case for the other companies we talked to our worked with previously.
+
+### 5. Spread out the workload
+
+While spreading out the workload helps to prevent any single person from getting overwhelmed, it is also about knowing the roles that individuals play in the compliance effort.
+For us, we found that any given person generally falls into one of three roles.
+
+#### The Department Head
+
+This is a very important role.
+The Department Head's responsibility is to make sure that people are doing the things we say we are doing.
+The Department Head must have a good sense of control statements that fall into their area.
+They are the "buck stops here" in terms of driving their department to think and care about the compliance process.
+
+In our last period we had four Department Heads who were heavily involved in the process:
+- HR
+- Engineering
+- Security
+- Product
+
+#### The Project Manager
+
+As I mentioned before, the Project Manager has the responsibility of generally creating a structure to operate in.
+- Organize materials, gather evidence for audits, and schedule meetings.
+- Auditor's point of contact with the company, funnel and prioritize communications, and translate requirements into action items for the team.
+- Keep other key players up-to-date and push on them when deadlines closed in.
+
+As the Project Manager for Temporal's SOC 2 efforts, I cultivated a section in Notion for all of our policies, Control Statements, and evidence aggregation.
+I established a routine way of escalating requests for evidence and decision making sessions.
+And I also worked very closely with Martin, picking his brain, to provide internal guidance when needed.
+
+#### The Evidence Gather
+
+The Evidence Gatherer is someone who captures evidence per an evidence request for the auditing process.
+
+An Evidence Gather must be someone who is familiar with the domain to know what to gather and how to gather it, working with both the Project Manager and the Department Heads to do that.
+
+In our last audit, we had to submit well over a hundred pieces of evidence, most of them unique, and some large in scope.
+We had at least a dozen evidence gathers, including Department Heads, and me as the Project Manager.
+
+## Summary
+
+So with all that said, if I had to reduce my sentiment to a single sentence it would be this:
+
+> Embrace and learn your compliance framework, do not outsource the responsibilities of understanding it.
+
+Does that mean you shouldn't ever use one of the compliance platforms with a shiny UI and automation tools?
+No, it just means that if you choose to use one, make sure it is integrated into the heart of your operating processes.
+And try to extract every ounce of knowledge from them as you can.
+Just like an individual needs to be their own advocate when it comes to their health and wealth, a company needs to be its own advocate when it comes to understanding it operating processes in the context of any given compliance framework.
+
+If you know what you are doing, a compliance platform could help you there.
+If you don't, it could just become another complex layer blocking you from figuring it all out.
+A good compliance program doesn't need fancy tools and a UI.
+It just needs internal accountability.
