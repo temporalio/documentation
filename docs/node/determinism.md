@@ -28,8 +28,8 @@ Workflow code is bundled on Worker creation using [Webpack](https://webpack.js.o
   - We recommend you use the `@temporal/workflow` package's exported `sleep` function because it plays well with [cancellation scopes](/docs/node/cancellation-scopes): `import { sleep } from '@temporalio/workflow'`
 - Activities - use to run non-deterministic code; results are replayed from history
 - Node built ins:
-  -  `process` global
-  -  `path` module, `fs` module
+  - `process` global
+  - `path` module, `fs` module
 
 ### Examples
 
