@@ -23,7 +23,6 @@ But, I would argue that the goal of any compliance effort, whether that is SOC2,
 <summary> Why compliance frameworks are important
 </summary>
 
-
 If you already understand this, then feel free to skip this section.
 But if you are new to SOC2, for example, and are trying to figure why you should even care, and how it translates to customer trust, then this explanation might help you out.
 
