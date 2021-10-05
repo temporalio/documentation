@@ -26,9 +26,9 @@ sidebar_label: PHP SDK introduction
   - (Russian) [Orchestration and Murphy's Law: Handling Errors-Business Processes](https://www.youtube.com/watch?v=0NCMEaFMj_M) (2 hour workshop)
   - (Russian) PHP Russia https://phprussia.ru/moscow/2021/abstracts/7390 (video pending)
   - (Russian) [FWDays Keynote: Fault Tolerant Workflow Orchestration on PHP](https://fwdays.com/en/event/php-fwdays-2021/review/fault-tolerant-workflow-orchestration-on-php) (video pending)
-- Roadrunner:
-  - PHPConf 2021 https://www.youtube.com/watch?v=mj6d-IGzSYE&t=5s
-  - [RoadRunner update](https://www.reddit.com/r/PHP/comments/pnexyy/roadrunner_240_queue_and_keyvalue_drivers/)
+  - PHPConf 2020: [Designing hybrid Go/PHP applications using RoadRunner](https://www.youtube.com/watch?v=mj6d-IGzSYE)
+  - 🆕 PHPConf 2021: [Fault tolerant workflow orchestration on PHP](https://www.youtube.com/watch?v=pdxHkIqX62A)
+- The PHP SDK is often used with [Roadrunner](https://roadrunner.dev/) (also maintained by SpiralScout)
 
 ## The basics
 
