@@ -1,6 +1,6 @@
 ---
-slug: compliance-programs-that-dont-require-a-fancy-platform
-title: Compliance programs don't require a fancy platform
+slug: compliance-programs-do-not-require-a-fancy-platform
+title: Compliance programs do not require a fancy platform
 author: Cully Wakelin
 author_title: SDE Technical Writer
 author_image_url: https://avatars2.githubusercontent.com/u/34380806
