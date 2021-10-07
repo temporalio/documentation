@@ -15,7 +15,7 @@ If you have made a tutorial or explanation of Temporal, please [submit them here
 _Don't forget our own [Temporal Cluster docs](/docs/content/what-is-a-temporal-cluster)!_
 
 - ⭐ [Designing a Workflow Engine from First Principles](https://docs.temporal.io/blog/workflow-engine-principles/) by Maxim Fateev (23 min talk given at Systems @ Scale 2021)
-- 🆕 [Maxim and Samar on Gremlin's podcast](https://share.transistor.fm/s/65974dd6) - Origin story, Choreography vs Orchestration, and Tips (21 min listen)
+- 🆕 [Maxim and Samar on Gremlin's podcast](https://docs.temporal.io/blog/gremlin-podcast) - Origin story, Choreography vs Orchestration, and Tips (21 min listen/read)
 - [Workflow Engine with Maxim Fateev](https://www.listennotes.com/podcasts/software/cadence-ubers-workflow-nNoaPiSfk7v/) on Software Engineering Daily (56 min listen)
 - [Maxim Fateev on Temporal Origin Story](/blog/oss-startups-podcast) on the OSS Startups Podcast (41 min listen)
 - [Temporal Product with Ryland Goldstein](https://softwareengineeringdaily.com/2021/05/08/temporal-product-managing-state-with-ryland-goldstein/) on Software Engineering Daily (53 min listen)
