@@ -37,6 +37,8 @@ The [Server configuration reference](/docs/server/configuration) has a more comp
 ### Before You Deploy: A Note on Shard Count
 
 A huge part of production deploy is understanding current and future scale - the **number of shards can't be changed after the cluster is in use** so this decision needs to be upfront. Shard count determines scaling to improve concurrency if you start getting lots of lock contention. 
+The default `numHistoryShards` is 4; deployments at scale can go up to 500-2000 shards.
+Please [consult our configuration docs](https://docs.temporal.io/docs/server/configuration/#persistence) and check with us for advice if you are worried about scaling.
 
 ### Scaling and Metrics
 
@@ -122,8 +124,8 @@ clusterMetadata:
 ### FAQ: Multiple deployments on a single cluster
 
 You may sometimes want to have multiple parallel deployments on the same cluster, eg:
-- when you want to split Temporal deployments based on namespaces, e.g. staging/dev/uat, or for different teams who need to share infrastructure
-- when you need a new deployment to change `NUM_HISTORY_SHARDS`
+- when you want to split Temporal deployments based on namespaces, e.g. staging/dev/uat, or for different teams who need to share common infrastructure.
+- when you need a new deployment to change `numHistoryShards`.
 
 If you are planning to have multiple temporal deployments within the same k8s cluster, double-check the following:
 
