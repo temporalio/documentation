@@ -34,6 +34,10 @@ The [Server configuration reference](/docs/server/configuration) has a more comp
 
 Make sure to set Workflow and Activity timeouts everywhere.
 
+### Before You Deploy: A Note on Shard Count
+
+A huge part of production deploy is understanding current and future scale - the **number of shards can't be changed after the cluster is in use** so this decision needs to be upfront. Shard count determines scaling to improve concurrency if you start getting lots of lock contention. 
+
 ### Scaling and Metrics
 
 The requirements of your Temporal system will vary widely based on your intended production workload.
@@ -79,7 +83,7 @@ We do plan to add features that give more visibility into the task queue state i
 
 ### High Availability Cluster Configuration
 
-You can set up a high availability deployment by running more than one instance of the server. Temporal also handles [membership and routing](https://docs.temporal.io/blog/workflow-engine-principles/#membership-and-routing-1350), as well as cross-cluster replication (an experimental feature). You can find more details in [the `clusterMetadata` section of the Server Configuration reference](https://docs.temporal.io/docs/server/configuration/#clustermetadata).
+You can set up a high availability deployment by running more than one instance of the server. Temporal also handles [membership and routing](https://docs.temporal.io/blog/workflow-engine-principles/#membership-and-routing-1350). You can find more details in [the `clusterMetadata` section of the Server Configuration reference](https://docs.temporal.io/docs/server/configuration/#clustermetadata).
 
 ```yaml
 clusterMetadata:
@@ -92,8 +96,6 @@ clusterMetadata:
       enabled: true
       initialFailoverVersion: 0
       rpcAddress: "127.0.0.1:7233"
-  #replicationConsumer:
-  #type: kafka
 ```
 
 ## Server limits
