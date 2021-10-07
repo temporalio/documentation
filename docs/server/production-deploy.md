@@ -28,23 +28,15 @@ And, monitoring and observability are available with [Prometheus](https://promet
 
 See the [versions & dependencies page](/docs/server/versions-and-dependencies/) for precise versions we support together with these features.
 
-### IMP Note
-If you are planning to have multiple temporal deployments within the same k8s cluster, make sure about the following
-- Have separate persistence (database) for each deployment
-- cluster membership ports should be different for each deployment
-for eg: 
-- temporal1 services can have 7233 for frontend, 7234 for history, 7235 for matching
-- temporal2 services can have 8233 for frontend, 8234 for history, 8235 for matching
-
-[more details about the reason here](https://github.com/temporalio/temporal/issues/1234)
-
 ### Configuration
 
 At minimum, the `development.yaml` file needs to have the [`global`](/docs/server/configuration/#global) and [`persistence`](https://docs.temporal.io/docs/server/configuration/#persistence) parameters defined.
 
 The [Server configuration reference](/docs/server/configuration) has a more complete list of possible parameters.
 
-Make sure to set Workflow and Activity timeouts everywhere.
+### Before You Deploy: A Note on Shard Count
+
+A huge part of production deploy is understanding current and future scale - the **number of shards can't be changed after the cluster is in use** so this decision needs to be upfront. Shard count determines scaling to improve concurrency if you start getting lots of lock contention. 
 
 ### Scaling and Metrics
 
@@ -109,6 +101,34 @@ The main technical hurdle is that each task can have its own `ScheduleToStart` t
 
 This is why we recommend tracking `ScheduleToStart` latency for determining if the task queue has a backlog (aka Workers are under-provisioned for a given Task Queue).
 We do plan to add features that give more visibility into the task queue state in future.
+
+### FAQ: High Availability cluster configuration
+
+You can set up a high availability deployment by running more than one instance of the server. Temporal also handles [membership and routing](https://docs.temporal.io/blog/workflow-engine-principles/#membership-and-routing-1350). You can find more details in [the `clusterMetadata` section of the Server Configuration reference](https://docs.temporal.io/docs/server/configuration/#clustermetadata).
+
+```yaml
+clusterMetadata:
+  enableGlobalNamespace: false
+  failoverVersionIncrement: 10
+  masterClusterName: "active"
+  currentClusterName: "active"
+  clusterInformation:
+    active:
+      enabled: true
+      initialFailoverVersion: 0
+      rpcAddress: "127.0.0.1:7233"
+```
+
+### FAQ: Multiple deployments on a single cluster
+
+If you are planning to have multiple temporal deployments within the same k8s cluster, doublecheck the following:
+
+- Have a separate persistence (database) for each deployment
+- Cluster membership ports should be different for each deployment. For example: 
+  - Temporal1 services can have 7233 for frontend, 7234 for history, 7235 for matching
+  - temporal2 services can have 8233 for frontend, 8234 for history, 8235 for matching
+
+[More details about the reason here](https://github.com/temporalio/temporal/issues/1234).
 
 ## Server limits
 
