@@ -7,17 +7,16 @@ module.exports = {
       items: [
         "server/introduction",
         "server/quick-install",
-        "server/production-deployment",
-        "server-architecture",
         "server/versions-and-dependencies",
-        "server/namespaces",
-        "server/workflow-search",
-        "server/elasticsearch-setup",
         "server/options",
-        "server/security",
         "server/configuration",
+        "server/production-deployment",
+        "server/security",
+        "server/elasticsearch-setup",
+        "server/workflow-search",
+        "server/namespaces",
+        "server/multi-cluster",
         "server/archive-data",
-        "server/event-types",
       ],
     },
     {
@@ -94,10 +93,16 @@ module.exports = {
       collapsed: false,
       items: [
         "go/introduction",
+        "go/getting-started",
         {
           type: "link",
           label: "Reference",
           href: "https://pkg.go.dev/go.temporal.io/sdk",
+        },
+        {
+          type: "link",
+          label: "Samples library",
+          href: "/docs/samples-library/#go",
         },
         {
           type: "category",
@@ -179,6 +184,11 @@ module.exports = {
           href: "https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/index.html",
         },
         {
+          type: "link",
+          label: "Samples library",
+          href: "/docs/samples-library/#java",
+        },
+        {
           type: "category",
           label: "Tutorials",
           collapsed: false,
@@ -198,6 +208,7 @@ module.exports = {
         "java/side-effect",
         "java/distributed-cron",
         "java/testing-and-debugging",
+        "content/how-to-provide-an-authorization-token-in-java",
       ],
     },
     {
@@ -240,6 +251,11 @@ module.exports = {
       collapsed: false,
       items: [
         "php/introduction",
+        {
+          type: "link",
+          label: "Samples library",
+          href: "/docs/samples-library/#php",
+        },
         "php/workflows",
         "php/activities",
         "php/task-queues",
@@ -289,32 +305,59 @@ module.exports = {
   nodejsSidebar: [
     {
       type: "category",
-      label: "Node",
+      label: "Node (alpha)",
       collapsed: false,
       items: [
-        "node/introduction",
-        {
-          type: "link",
-          label: "Reference",
-          href: "https://nodejs.temporal.io",
-        },
-        "node/getting-started",
         {
           type: "category",
           label: "Tutorials",
-          collapsed: false,
-          items: ["node/hello-world"],
+          items: ["node/introduction", "node/hello-world"],
         },
         {
-          type: "doc",
-          id: "node/package-initializer",
-          label: "Package initializer",
+          type: "link",
+          label: "API reference",
+          href: "https://nodejs.temporal.io",
         },
-        "node/tls",
-        "node/logging",
-        "node/determinism",
-        "node/versioning",
-        "node/workflow-scopes-and-cancellation",
+        {
+          type: "link",
+          label: "Github source",
+          href: "https://github.com/temporalio/sdk-node",
+        },
+        {
+          type: "category",
+          label: "Core APIs",
+          collapsed: false,
+          items: [
+            "node/workflows",
+            "node/activities",
+            "node/workers",
+            "node/timers",
+            "node/signals-queries",
+          ],
+        },
+        {
+          type: "category",
+          label: "Production Needs",
+          items: [
+            "node/security",
+            "node/testing",
+            "node/versioning",
+            "node/logging",
+          ],
+        },
+        {
+          type: "category",
+          label: "Advanced APIs",
+          items: [
+            "node/package-initializer",
+            "node/task-queues",
+            "node/cancellation-scopes",
+            "node/determinism",
+            "node/external-dependencies",
+            "node/handling-failure",
+            "node/interceptors",
+          ],
+        },
       ],
     },
     {
@@ -369,8 +412,15 @@ module.exports = {
       type: "category",
       label: "Additional resources",
       collapsed: false,
-      items: ["external-resources", "cadence-to-temporal", "glossary"],
+      items: [
+        "samples-library",
+        "external-resources",
+        "cadence-to-temporal",
+        "reference/glossary",
+        "reference/events",
+      ],
     },
+
     {
       type: "category",
       label: "Quick links",
@@ -391,6 +441,18 @@ module.exports = {
           label: "System tools",
           href: "/docs/system-tools/introduction",
         },
+      ],
+    },
+  ],
+  temporalExplained: [
+    {
+      type: "category",
+      label: "Temporal explained",
+      collapsed: true,
+      items: [
+        "temporal-explained/introduction",
+        "temporal-explained/workflows",
+        "temporal-explained/activities",
       ],
     },
   ],

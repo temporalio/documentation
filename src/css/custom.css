@@ -59,8 +59,8 @@ html[data-theme="light"] {
   font-display: swap;
 }
 
-/* 
-  CUSTOM SCROLLBARS! https://css-tricks.com/the-current-state-of-styling-scrollbars/ 
+/*
+  CUSTOM SCROLLBARS! https://css-tricks.com/the-current-state-of-styling-scrollbars/
   */
 body::-webkit-scrollbar-track {
   background-color: rgba(0, 0, 0, 0);
@@ -154,6 +154,10 @@ h4,
   width: 20%;
 }
 
+.docs-image-max-width-50 {
+  width: 50%;
+}
+
 .case-study-header {
   background-color: #000000;
 }
@@ -185,4 +189,111 @@ h4,
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border-width: 0;
+}
+
+#mc-embedded-waitlist {
+  margin-top: 15px;
+}
+
+.related-read-div {
+  border-width: 0;
+  padding: 7px var(--ifm-alert-padding-horizontal);
+  margin-bottom: 0.5em;
+}
+
+.related-read-label {
+  font-weight: 600;
+}
+
+.related-read-link {
+  margin-left: 7px;
+}
+
+.related-read-archetype-tag {
+  padding: 3px 6px;
+  color: #ffffff;
+  font-size: 0.8em;
+  border-radius: 6px;
+  margin-left: 7px;
+}
+
+.archetype-tag-operation-guide {
+  background-color: #ca1a7b;
+}
+
+.archetype-tag-developer-guide {
+  background-color: #ca811a;
+}
+
+.archetype-tag-tutorial {
+  background-color: #1ac9c7;
+}
+
+.archetype-tag-explanation {
+  background-color: #78c91a;
+}
+
+.archetype-tag-reference {
+  background-color: #cf8f19;
+}
+
+.docs-image-wrapper {
+  width: 100%;
+  background-color: #efefef;
+  margin: 0 0 15px 0;
+  padding: 0;
+}
+
+.docs-centered-image-wrapper {
+  width: 100%;
+  text-align: center;
+  margin: 0;
+  padding: 15px;
+}
+
+.docs-image-title-wrapper {
+  width: 100%;
+  margin: 0;
+  padding: 15px;
+  text-align: left;
+  font-size: 0.9em;
+  font-weight: 300;
+  color: #121212;
+}
+
+.docs-centered-image-size-100 {
+  width: 100%;
+}
+
+.docs-centered-image-size-75 {
+  width: 75%;
+}
+
+.docs-centered-image-size-50 {
+  width: 50%;
+}
+
+.docs-centered-image-size-25 {
+  width: 25%;
+}
+
+.docs-image-legend-wrapper {
+  width: 100%;
+  margin: 0;
+  padding: 15px;
+  text-align: left;
+  font-size: 0.9em;
+  font-weight: 300;
+  color: #121212;
+}
+
+.docs-image-legend-list {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.docs-image-legend-symbol {
+  font-size: 1.2em;
+  font-weight: 600;
 }

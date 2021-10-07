@@ -9,7 +9,7 @@ You should have a conceptual understanding of Temporal Activities before proceed
 
 ## Overview
 
-The following example demonstrates a simple Activity that accepts a string parameter, appends a word
+The following example demonstrates a simple Activity Definition that accepts a string parameter, appends a word
 to it, and then returns a result.
 
 ```go
@@ -18,45 +18,27 @@ package sample
 import (
 	"context"
 
-	"go.uber.org/zap"
-
 	"go.temporal.io/sdk/activity"
 )
 
-// SimpleActivity is a sample Temporal Activity function that takes one parameter and
+// SimpleActivity is a sample Temporal Activity Definition that takes one parameter and
 // returns a string containing the parameter value.
 func SimpleActivity(ctx context.Context, value string) (string, error) {
-	activity.GetLogger(ctx).Info("SimpleActivity called.", zap.String("Value", value))
-	return "Processed: " + value, nil
+	logger := activity.GetLogger(ctx)
+	logger.Info("SimpleActivity called.", "Value:", value)
+	return value, nil
 }
 ```
 
+In the Workflow Definition, to invoke this Activity use `worklow.ExecuteActivity(ctx, SimpleActivity)`.
+
 Let's take a look at each component of this Activity.
 
-### Declaration
+### How to develop an Activity Definition in Go
 
-In the Temporal programing model, an Activity is implemented with a function. The function declaration specifies the parameters the Activity accepts as well as any values it might return. An Activity function can take zero or many Activity specific parameters and can return one or two values. It must always at least return an error value. The Activity function can accept as parameters and return as results any serializable type.
+import ActivityDefinition from '../content/how-to-develop-an-activity-definition-in-go.md'
 
-`func SimpleActivity(ctx context.Context, value string) (string, error)`
-
-The first parameter to the function is context.Context. This is an optional parameter and can be omitted. This parameter is the standard Go context.
-The second string parameter is a custom Activity specific parameter that can be used to pass data into the Activity on start. An Activity can have one or more such parameters. All parameters to an Activity function must be serializable, which essentially means that params can’t be channels, functions, variadic, or unsafe pointers.
-The Activity declares two return values: string and error. The string return value is used to return the result of the Activity. The error return value is used to indicate that an error was encountered during execution.
-
-### Implementation
-
-Activities are implemented as regular Go functions:
-
-- Parameters:
-  - Data can be passed directly to an Activity via function parameters. The parameters can be either basic types or structs (must be serializable).
-  - Though it is not required, we recommend that the first parameter of an Activity function is of type `context.Context`, in order to allow the Activity to interact with other framework methods.
-- Return values:
-  - The function must return an `error` value. To mark an Activity as failed, return an error here, instead of `nil`.
-  - The result value is optional, and can be either a basic type or a struct (must be serializable).
-
-There's no hard limit on what you can pass into or return from an Activity function, but keep in mind that all parameters and return values are recorded in the execution history.
-A large execution history can adversely impact the performance of your Workflows as the entire history is transferred to your workers with every event processed.
-No other limitations on Activity functions exist; you are free to use idiomatic loggers and metrics controllers, and the standard Go concurrency constructs.
+<ActivityDefinition />
 
 #### Heart Beating
 
@@ -100,10 +82,9 @@ The parameters of the `RecordActivityHeartbeat` function are:
 
 #### Cancellation
 
-When an Activity is cancelled, or its Workflow execution has completed or failed, the context passed
-into its function is cancelled, which sets its channel’s closed state to `Done`. An Activity can use that
-to perform any necessary cleanup and abort its execution. Cancellation is only delivered to Activities
-that call `RecordActivityHeartbeat`.
+import WhatIsActivityCancellation from '../content/what-is-activity-cancellation.md'
+
+<WhatIsActivityCancellation />
 
 ### Registration
 
@@ -127,9 +108,9 @@ w.registerActivity(ActivityC)
 
 ## Synchronous Activity Execution
 
-The primary responsibility of a Workflow implementation is to schedule Activities for execution. The
-most straightforward way to do this is via the library method `workflow.ExecuteActivity`. The following
-sample code demonstrates making this call:
+The primary responsibility of a Workflow implementation is to schedule Activities for execution.
+The most straightforward way to do this is via the `workflow.ExecuteActivity` API.
+The following sample code demonstrates making this call:
 
 ```go
 ao := workflow.ActivityOptions{
@@ -171,7 +152,7 @@ You can refer to [our Retry Policy documentation](https://docs.temporal.io/docs/
 ### Activity timeouts
 
 There can be various kinds of timeouts associated with an Activity. Temporal guarantees that Activities
-are executed _at most once_, so an Activity either succeeds or fails with one of the following timeouts:
+are executed _at least once_, so an Activity either succeeds or fails with one of the following timeouts:
 
 | Timeout                  | Description                                                                                                                                                                                          |
 | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -186,7 +167,7 @@ The first parameter in the call is the required `workflow.Context` object. This 
 `context.Context` with the `Done()` method returning `workflow.Channel` instead of the native Go `chan`.
 
 The second parameter is the function that we registered as an Activity function. This parameter can
-also be a string representing the fully qualified name of the Activity function. The benefit of passing
+also be a string representing the name of the Activity function. The benefit of passing
 in the actual function object is that the framework can validate Activity parameters.
 
 The remaining parameters are passed to the Activity as part of the call. In our example, we have a
@@ -208,6 +189,8 @@ it like any normal result from a synchronous function call. The following sample
 you can use the result if it is a string value:
 
 ```go
+future := workflow.ExecuteActivity(ctx, ActivityName, param1)
+
 var result string
 if err := future.Get(ctx, &result); err != nil {
         return err
@@ -228,7 +211,7 @@ However, this is not necessary. If you want to execute multiple Activities in pa
 repeatedly call `workflow.ExecuteActivity()`, store the returned futures, and then wait for all
 Activities to complete by calling the `Get()` methods of the future at a later time.
 
-To implement more complex wait conditions on returned future objects, use the `workflow.Selector` class. Learn more on the [Go SDK Selectors](https://docs.temporal.io/docs/go/selectors) page.
+To implement more complex wait conditions on returned future objects, use `workflow.Selector`. Learn more on the [Go SDK Selectors](https://docs.temporal.io/docs/go/selectors) page.
 
 ## Asynchronous Activity Completion
 

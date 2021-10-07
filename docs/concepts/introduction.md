@@ -16,7 +16,7 @@ If so, you are likely familiar with the mixture of stateless services, databases
 However, these types of systems often come with a number of problems.
 It can be quite difficult to maintain the health of each individual component.
 Moreover, there is usually a large investment that has to be made in infrastructure to visualize the health of the overall system, define timeouts, and orchestrate retries.
-Scaling and maintaining these systems is challenging and costly effort.
+Scaling and maintaining these systems is a challenging and costly effort.
 
 ## Modern solution
 
@@ -41,7 +41,7 @@ In terms of CAP theorem, each Temporal cluster is eventually available and highl
 - Because Temporal makes it easy to retry Activities and horizontally scale resources, availability loss doesn't result in a fault, but in increased latency.
 - Network failures are prevented from reaching the application level.
   If persistence nodes are lost or unreachable, your Workflows will not progress, but the data will still be highly consistent.
-- The optional [multi-cluster replication feature](https://docs.temporal.io/docs/server/versions-and-dependencies/#multi-cluster-replication) greatly increases system availability.
+- The optional [Multi-cluster Replication feature](/docs/server/multi-cluster) greatly increases system availability.
 
 :::
 

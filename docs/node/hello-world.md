@@ -1,84 +1,90 @@
-# Hello world in Node
+---
+id: hello-world
+title: Hello World Walkthrough in Node
+sidebar_label: Hello World Walkthrough
+---
 
-In this tutorial we'll go over the different components that make up a Temporal project.
-All of the code in this page is included in our package initializer, set it up using the [getting started](/docs/node/getting-started) instructions.
+import CustomWarning from "../components/CustomWarning.js"
 
-The SDK steers developers to write their Workflows and Activities in TypeScript but vanilla JS is also supported. All examples in the documentation are written in TypeScript.
+<CustomWarning>
+
+The Node SDK and associated documentation is in an Alpha stage and may change at any time.
+
+</CustomWarning>
+
+In this tutorial, we'll go over the different components that make up a Temporal project.
+All of the code on this page is included in our package initializer skeleton, which we set up in [Getting started](/docs/node/introduction/#getting-started).
+
+The SDK steers developers to write their Workflows and Activities in TypeScript but vanilla JS is also supported.
 
 ### Activities
 
-[API reference](https://nodejs.temporal.io/api/modules/activity)
+[API reference](https://nodejs.temporal.io/api/namespaces/activity)
 
 Activities are called from Workflows in order to run non-deterministic code.
 
-Activities are just async functions, they run like typical NodeJS code and can be cancelled and report heartbeats.
+Any async function can be used as an Activity as long as its parameters and return value can be (de)serialized using a [DataConverter](https://nodejs.temporal.io/api/interfaces/common.DataConverter). Activities run in the Node.js execution environment, they can be cancelled and report heartbeats.
 
-`src/activities/greeter.ts`
+`src/activities.ts`
 
 <!--SNIPSTART nodejs-hello-activity {"enable_source_link": false}-->
 <!--SNIPEND-->
 
 ### Workflows
 
-[API reference](https://nodejs.temporal.io/api/modules/workflow)
+[API reference](https://nodejs.temporal.io/api/namespaces/workflow)
 
-Workflows are the core of the Temporal system, they abstract away the complexities of writing distributed programs.
-
-In the NodeJS SDK, each Workflow runs in a separate V8 isolate to provide a [deterministic runtime](./determinism).
-
-#### Interface
-
-A Workflow's interface is used for validating the implementation and generating a type safe [WorkflowClient](https://nodejs.temporal.io/api/interfaces/client.workflowclient) and `ChildWorkflow` (not yet implemented).
-
-Workflow interfaces are directly referenced by their implementation and may be written in sync or async form meaning a method could return `number` or it could return `Promise<number>`.
-
-Workflow interface declarations are optional, they're only required for generating type safe clients. It is considered good practice to declare an interface for each Workflow.
-
-`src/interfaces/workflows.ts`
-
-<!--SNIPSTART nodejs-hello-workflow-interface {"enable_source_link": false}-->
-<!--SNIPEND-->
+In the Node.js SDK, each Workflow execution is run in a separate V8 isolate context in order to provide a [deterministic runtime](/docs/node/determinism).
 
 #### Implementation
 
-A Workflow implmentation module may export a `workflow` object which can be type checked using a pre-defined interface or `main` - and optionally `signals` and `queries` - directly.
+A Workflow implementation exposes handlers for executing the Workflow, processing [Signals](/docs/concepts/signals) and responding to [Queries](/docs/concepts/queries).
 
-In a Workflow, Activities can be imported and called as regular functions. At runtime, the imported Activities (prefixed with `@activities`) are replaced with stubs which schedule Activities in the system.
+The snippet below uses `createActivityHandle` to create functions that, when called, schedule Activities in the system.
 
-`@activities` is a [typescript path alias](https://www.typescriptlang.org/tsconfig#paths) set to `src/activities`.
-
-`src/workflows/example.ts`
+`src/workflows.ts`
 
 <!--SNIPSTART nodejs-hello-workflow {"enable_source_link": false}-->
 <!--SNIPEND-->
 
+#### Type definitions
+
+Workflow type definitions are optional, they provide type safety in situations where the implementation cannot directly be referenced by a client such as cross service or cross language calls.
+
+`src/interfaces.ts`
+
+<!--SNIPSTART nodejs-hello-workflow-interface {"enable_source_link": false}-->
+<!--SNIPEND-->
+
 ### Worker
 
-[API reference](https://nodejs.temporal.io/api/modules/worker)
+[API reference](https://nodejs.temporal.io/api/namespaces/worker)
 
-The Worker connects to the Service and runs Workflows and Activities.
-`Worker.create()` accepts these [options](https://nodejs.temporal.io/api/interfaces/worker.workeroptions).
+The Worker connects to Temporal Server and runs Workflows and Activities.
+See the list of [WorkerOptions](https://nodejs.temporal.io/api/interfaces/worker.workeroptions) for customizing Worker creation.
 
-`src/worker/index.ts`
+`src/worker.ts`
 
 <!--SNIPSTART nodejs-hello-worker {"enable_source_link": false}-->
 <!--SNIPEND-->
 
 ### Client
 
-[API reference](https://nodejs.temporal.io/api/modules/client)
+[API reference](https://nodejs.temporal.io/api/namespaces/client)
 
-The client can be used to schedule Workflows and send other requests to the Temporal Service.
-It can be used in any NodeJS process e.g an express app and does not depend on the Worker.
+The [`WorkflowClient`](https://nodejs.temporal.io/api/classes/client.workflowclient) class is used to interact with existing Workflows or to start new ones.
 
-`src/worker/schedule-workflow.ts`
+It can be used in any Node.js process (for example, an [Express](https://expressjs.com/) web server) and is separate from the Worker.
+
+`src/exec-workflow.ts`
 
 <!--SNIPSTART nodejs-hello-client {"enable_source_link": false}-->
 <!--SNIPEND-->
 
 ### Testing
 
-There's no official support for testing Workflows and Activities.
+There is no official test suite for Workflows and Activities yet.
 
-- Since Activities are async functions they should be testable as long as you avoid using [Context](https://nodejs.temporal.io/api/classes/activity.context) or are able to mock it.
-- You can test Workflows by running them with a [WorkflowClient](https://nodejs.temporal.io/api/interfaces/client.workflowclient).
+- Since Activities are async functions, they should be testable as long as you avoid using [Context](https://nodejs.temporal.io/api/classes/activity.context) or are able to mock it.
+- You can test Workflows by running them with a [WorkflowClient](https://nodejs.temporal.io/api/classes/client.workflowclient).
+- Check [the SDK's own tests](https://github.com/temporalio/sdk-node/tree/52f67499860526cd180912797dc3e6d7fa4fc78f/packages/test/src) for more examples.

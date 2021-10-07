@@ -32,6 +32,29 @@ const features = [
   },
 ];
 
+const sdks = [
+  {
+    title: "go SDK",
+    imgUrl: "img/go-lang.svg",
+    goto: "/docs/go/run-your-first-app-tutorial",
+  },
+  {
+    title: "java SDK",
+    imgUrl: "img/java.svg",
+    goto: "/docs/java/run-your-first-app-tutorial",
+  },
+  {
+    title: "php SDK",
+    imgUrl: "img/php.svg",
+    goto: "/docs/php/introduction",
+  },
+  {
+    title: "node SDK",
+    imgUrl: "img/nodejs.svg",
+    goto: "/docs/node/introduction",
+  },
+];
+
 function Feature({imageUrl, title, description, goto}) {
   const imgUrl = useBaseUrl(imageUrl);
   return (
@@ -39,7 +62,7 @@ function Feature({imageUrl, title, description, goto}) {
       <h3>{title}</h3>
       <Link to={useBaseUrl(goto)}>
         {imgUrl && (
-          <div className="text--center">
+          <div className={clsx("text--center", styles.featureImageContainer)}>
             <img className={styles.featureImage} src={imgUrl} alt={title} />
           </div>
         )}
@@ -64,37 +87,49 @@ function Feature({imageUrl, title, description, goto}) {
 function SelectTutorial() {
   const [clicked, setClicked] = React.useState(false);
   return (
-    <div className="flex flex-col sm:flex-row justify-between mb-8 sm:mb-8 items-center">
-      {clicked ? (
-        <div className="inline-flex md:-mt-8">
-          <a className="mr-8" href="/docs/go/run-your-first-app-tutorial">
-            <img
-              aria-label="go SDK"
-              className={styles.sdkTakeMeToTutorialLogo}
-              src={useBaseUrl("img/logo-go.png")}
-              alt="logo"
-            />
-          </a>
-          <a className="" href="/docs/java-run-your-first-app">
-            <img
-              aria-label="java SDK"
-              className={styles.sdkTakeMeToTutorialLogo}
-              src={useBaseUrl("img/logo-java.png")}
-              alt="logo"
-            />
-          </a>
+    <div>
+      <div>
+        <div className={styles.buttons}>
+          <button
+            onClick={() => setClicked(!clicked)}
+            className={clsx(
+              "button button--outline button--secondary button--lg",
+              styles.getStarted
+            )}
+          >
+            Run my first app! →
+          </button>
         </div>
-      ) : (
-        <button
-          className={clsx(
-            "button button--outline button--secondary button--lg",
-            styles.getStarted
-          )}
-          onClick={() => setClicked(true)}
-        >
-          Run my first app! →
-        </button>
-      )}
+        {clicked && sdks.length > 0 && (
+          <section className={styles.features}>
+            <div className="container">
+              <div className={clsx("row", styles.justifyCenter)}>
+                {sdks.map(({title, imgUrl, goto}, idx) => (
+                  <div className="col col--2">
+                    <Link to={useBaseUrl(goto)}>
+                      {imgUrl && (
+                        <div
+                          className={clsx(
+                            "text--center",
+                            styles.featureImageContainer
+                          )}
+                        >
+                          <img
+                            className={styles.featureImage}
+                            src={imgUrl}
+                            alt={title}
+                            aria-label={title}
+                          />
+                        </div>
+                      )}
+                    </Link>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+      </div>
     </div>
   );
 }
@@ -117,7 +152,7 @@ function TemporalCloud() {
             operating the technology in production environments.
           </li>
           <li>
-            <strong>Scale</strong>: Our design partners are are highly valued
+            <strong>Scale</strong>: Our design partners are multibillion dollar
             publicly listed companies.
           </li>
           <li>
@@ -134,43 +169,18 @@ function TemporalCloud() {
         Temporal Cloud is working with early design partners today. Sign up to
         the waitlist and receive updates!
       </p>
-      <form
-        action="https://temporal.us17.list-manage.com/subscribe/post?u=2334a0f23e55fd1840613755d&amp;id=bbbbd4709f"
-        method="post"
-        id="mc-embedded-subscribe-form"
-        name="mc-embedded-subscribe-form"
-        target="_blank"
-        noValidate="novalidate"
-        className="validate"
+
+      <Link
+        className={clsx(
+          "button button--outline button--primary button--md",
+          styles.getStarted
+        )}
+        to={
+          "https://us17.list-manage.com/survey?u=2334a0f23e55fd1840613755d&id=f1895b6f4a"
+        }
       >
-        <div id="mc_embed_signup_scroll" className="signup_controls">
-          <div className="email_wrap">
-            <label htmlFor="mce-EMAIL" className="sr-only">
-              Email:
-            </label>
-            <input
-              className="signUpInput"
-              type="email"
-              name="EMAIL"
-              id="mce-EMAIL"
-              placeholder="Your email"
-              required="required"
-            />
-          </div>
-          <span className="cta_text" style={{display: "none"}}>
-            You are in the waitlist!
-          </span>
-          <input
-            type="submit"
-            name="waitlist"
-            id="mc-embedded-waitlist"
-            className={clsx(
-              "button button--outline button-secondary button--md",
-              styles.cloudWaitlistSubmit
-            )}
-          />
-        </div>
-      </form>
+        Book your place
+      </Link>
     </div>
   );
 }
@@ -184,9 +194,7 @@ export default function Home() {
         <div className="container">
           <h1 className="hero__title">{siteConfig.title}</h1>
           <p className="hero__subtitle">{siteConfig.tagline}</p>
-          <div className={styles.buttons}>
-            <SelectTutorial />
-          </div>
+          <SelectTutorial />
         </div>
       </header>
       <main>

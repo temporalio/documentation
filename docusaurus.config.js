@@ -1,5 +1,8 @@
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 
+const path = require("path");
+const visit = require("unist-util-visit");
+
 module.exports = {
   title: "Temporal documentation",
   tagline: "Build invincible applications",
@@ -16,7 +19,8 @@ module.exports = {
       disableSwitch: false,
     },
     prism: {
-      theme: require("prism-react-renderer/themes/dracula"),
+      theme: require("prism-react-renderer/themes/nightOwlLight"),
+      darkTheme: require("prism-react-renderer/themes/dracula"),
       additionalLanguages: ["java", "ruby", "php"],
     },
     hideableSidebar: true,
@@ -44,7 +48,8 @@ module.exports = {
             },
             {
               to: "/application-development",
-              activeBasePath: "/application-development",
+              activeBaseRegex:
+                "(/application-development)|(/docs/(go|java|php|node))",
               label: "SDKs",
             },
             {
@@ -73,6 +78,14 @@ module.exports = {
             {
               to: "/blog/descript-case-study",
               label: "Descript",
+            },
+            {
+              to: "/blog/zebra-medical-case-study",
+              label: "Zebra",
+            },
+            {
+              to: "/blog/airbyte-case-study",
+              label: "Airbyte",
             },
           ],
         },
@@ -126,7 +139,7 @@ module.exports = {
             },
             {
               label: "Glossary",
-              to: "/docs/glossary",
+              to: "/docs/reference/glossary",
             },
           ],
         },
@@ -143,6 +156,10 @@ module.exports = {
             {
               label: "Temporal Careers",
               href: "https://temporal.io/careers",
+            },
+            {
+              label: "Open Office Hours",
+              href: "https://lu.ma/temporal",
             },
           ],
         },
@@ -177,7 +194,7 @@ module.exports = {
         <span class="footer__separators"> | </span>
         <a class="footer__link-item" href="/privacy-policy">Privacy Policy</a>
         <span class="footer__separators"> | </span>
-        <a class="footer__link-item" href="https://docs.temporal.io/pdf/temporal-tos-2021-01-19.pdf">Terms of Service</a> 
+        <a class="footer__link-item" href="https://docs.temporal.io/pdf/temporal-tos-2021-07-24.pdf">Terms of Service</a>
       </div>
       `,
     },
@@ -218,6 +235,69 @@ module.exports = {
            */
           // excludeNextVersionDocs: false,
           includeCurrentVersion: true, // excludeNextVersionDocs is now deprecated
+          remarkPlugins: [
+            [
+              () =>
+                function addTSNoCheck(tree) {
+                  // Disable TS type checking for any TypeScript code blocks.
+                  // This is because imports are messy with snipsync: we don't
+                  // have a way to pull in a separate config for every example
+                  // snipsync pulls from.
+                  function visitor(node) {
+                    if (!/^ts$/.test(node.lang)) {
+                      return;
+                    }
+                    node.value = "// @ts-nocheck\n" + node.value.trim();
+                  }
+
+                  visit(tree, "code", visitor);
+                },
+              {},
+            ],
+            [
+              require("remark-typescript-tools").transpileCodeblocks,
+              {
+                compilerSettings: {
+                  tsconfig: path.join(
+                    __dirname,
+                    "docs",
+                    "node",
+                    "tsconfig.json"
+                  ),
+                  externalResolutions: {},
+                },
+                fileExtensions: [".md", ".mdx"],
+                // remark-typescript-tools automatically running prettier with a custom config that doesn't
+                // line up with ours. This disables any post processing, including the default prettier step.
+                postProcessTs: (files) => files,
+                postProcessTranspiledJs: (files) => files,
+              },
+            ],
+            [
+              () =>
+                function removeTSNoCheck(tree) {
+                  function visitor(node) {
+                    if (!/^ts$/.test(node.lang) && !/^js$/.test(node.lang)) {
+                      return;
+                    }
+                    if (node.value.startsWith("// @ts-nocheck\n")) {
+                      node.value = node.value.slice("// @ts-nocheck\n".length);
+                    }
+                    // If TS compiled output is empty, replace it with a more helpful comment
+                    if (
+                      node.lang === "js" &&
+                      node.value.trim() === "export {};"
+                    ) {
+                      node.value = "// Not required in JavaScript";
+                    } else if (node.lang === "js") {
+                      node.value = convertIndent4ToIndent2(node.value).trim();
+                    }
+                  }
+                  visit(tree, "code", visitor);
+                },
+              {},
+            ],
+          ],
         },
         // Will be passed to @docusaurus/plugin-content-blog
         // options: https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-blog
@@ -225,8 +305,7 @@ module.exports = {
           routeBasePath: "blog",
           path: "blog",
           postsPerPage: 10,
-          editUrl:
-            "https://github.com/temporalio/documentation/tree/master/blog",
+          editUrl: "https://github.com/temporalio/documentation/blob/master",
           blogTitle: "Temporal Blog",
           showReadingTime: true, // Show estimated reading time for the blog post.
           feedOptions: {
@@ -256,3 +335,11 @@ module.exports = {
     },
   ],
 };
+
+function convertIndent4ToIndent2(code) {
+  // TypeScript always outputs 4 space indent. This is a workaround.
+  // See https://github.com/microsoft/TypeScript/issues/4042
+  return code.replace(/^( {4})+/gm, (match) => {
+    return "  ".repeat(match.length / 4);
+  });
+}

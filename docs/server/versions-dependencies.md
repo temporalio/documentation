@@ -26,7 +26,9 @@ But if you are building Temporal or running it from source, [Go v1.16+ is requir
 
 **Temporal Cloud**
 
-- All customers will automatically be upgrade to the latest minor version.
+> Interested in a Temporal as a service? [Sign up for Temporal Cloud and join our monthly events](https://docs.temporal.io/#cloud)!
+
+- All customers will automatically be upgraded to the latest minor version.
 - Maintenance support, for major versions, will be provided for at least 18 months after a GA release, and there will be at least 6 months' notice before EOL/deprecating support.
 
 This versioning policy is intended to serve as a minimum set of guidelines for customers who rely on us for their critical business operations. If you have any further questions, please do not hesitate to reach out via community or customer channels.
@@ -48,14 +50,9 @@ The only required dependency is a database, and there are multiple types of data
 Temporal has built-in Workflow search functionality.
 To enhance this feature, Temporal supports an [integration with Elasticsearch](/docs/server/elasticsearch-setup).
 
-- **Elasticsearch**
-  - Elasticsearch v7.7 is supported from Temporal version 1.7.0 onwards
-  - Elasticsearch v6.8 is supported in all Temporal versions
-  - Both versions are explicitly supported with AWS Elasticsearch
-- **Kafka v2.1.1 & Zookeeper v3.4.6**
-  - Starting with Temporal Server version 1.5.4, the use of Kafka can be disabled using dynamic config settings.
-    See the [1.5.0 release notes](https://github.com/temporalio/temporal/releases/tag/v1.5.0) for details on how to disable it.
-  - Starting from Temporal Server version 1.8.0, Kafka and Zookeper are no longer required.
+- Elasticsearch v7.10 is supported from Temporal version 1.7.0 onwards
+- Elasticsearch v6.8 is supported in all Temporal versions
+- Both versions are explicitly supported with AWS Elasticsearch
 
 ### Monitoring & observation
 
@@ -64,25 +61,9 @@ Temporal emits metrics by default in a format that is supported by Prometheus. M
 - **Prometheus >= v2.0**
 - **Grafana >= v2.5**
 
-### Multi-cluster replication
-
-This is an experimental feature, most Temporal users do not need this.
-You should be on the latest Temporal version (v1.7+) to use this.
-Some Server versions require the use of event streaming software.
-See the note on event streaming dependency below.
-
-- **Zookeeper v3.4.6**
-
-:::note Note on event streaming dependency
-
-Event streaming software as a dependency is only required when Elasticsearch is being used or when Temporal is deployed across multiple data centers.
-However, in future releases of Temporal, third party event streaming software will likely cease to be needed as dependency for both.
-
-:::
-
 ## Upgrade your version of Temporal
 
-If there is a newer version of Temporal available, a notification will appear in the Temporal Web UI.
+If a newer version of Temporal is available, a notification appears in the Temporal Web UI.
 
 To use a more recent version of Temporal, first [check to see](https://github.com/temporalio/temporal/releases) if an upgrade to the database schema is required. Newer binaries can not run with older database schemas. Some releases require changes to the schema, and some do not. If you are using a version that is older than 1.0.0, reach out to us at [community.temporal.io](http://community.temporal.io) to ask how to upgrade.
 

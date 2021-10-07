@@ -12,6 +12,8 @@ That is because the set up of the Server depends very much on the intended use-c
 This page is dedicated to providing a "first principles" approach to self-hosting the Temporal Server.
 As a reminder, experts are accessible via the [Community forum](https://community.temporal.io/) and [Slack](https://join.slack.com/t/temporalio/shared_invite/zt-onhti57l-J0bl~Tr7MqSUnIc1upjRkw) should you have any questions.
 
+> Note: if you are interested in a managed service hosting Temporal Server, please [register your interest in Temporal Cloud](https://docs.temporal.io/#cloud).
+
 ## Setup principles
 
 ### Prerequisites
@@ -21,7 +23,7 @@ The Temporal Server is a Go application which you can [import](https://docs.temp
 The minimum dependency is a database.
 The Server supports [Cassandra](https://cassandra.apache.org/), [MySQL](https://www.mysql.com/), or [PostgreSQL](https://www.postgresql.org/).
 Further dependencies are only needed to support optional features.
-For example, enhanced Workflow search can be achieved using [ElasticSearch](/docs/server/elasticsearch-setup).
+For example, enhanced Workflow search can be achieved using [Elasticsearch](/docs/server/elasticsearch-setup).
 And, monitoring and observability are available with [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/).
 
 See the [versions & dependencies page](/docs/server/versions-and-dependencies/) for precise versions we support together with these features.
@@ -43,9 +45,11 @@ A huge part of production deploy is understanding current and future scale - the
 The requirements of your Temporal system will vary widely based on your intended production workload.
 You will want to run your own proof of concept tests and watch for key metrics to understand the system health and scaling needs.
 
-- **[Configure your metrics subsystem](https://docs.temporal.io/docs/server/configuration/#metrics).** Temporal supports three metrics providers out of the box: [StatsD](https://github.com/statsd/statsd), [Prometheus](https://prometheus.io/), and [M3](https://m3db.io/).
-- **Set up monitoring.** You can use these [Grafana dashboards](https://github.com/temporalio/dashboards) as a starting point.
-- **Load testing.** You can use [Maru](https://github.com/temporalio/maru/) ([author's guide here](https://mikhail.io/2021/03/maru-load-testing-tool-for-temporal-workflows/)) or write your own.
+- **[Configure your metrics subsystem](https://docs.temporal.io/docs/server/configuration/#metrics).** Temporal supports three metrics providers out of the box: [StatsD](https://github.com/statsd/statsd), [Prometheus](https://prometheus.io/), and [M3](https://m3db.io/), via [Uber's Tally](https://github.com/uber-go/tally) interface.
+  Tally offers [extensible custom metrics reporting](https://github.com/uber-go/tally#report-your-metrics), which we expose via [`temporal.WithCustomMetricsReporter`](https://docs.temporal.io/docs/server/options/#withcustommetricsreporter).
+  OpenTelemetry support is planned in future.
+- **Set up monitoring.** You can use these [Grafana dashboards](https://github.com/temporalio/dashboards) as a starting point. The single most important metric to track is `ScheduleToStart` latency - if you get a spike in workload and don't have enough workers, your tasks will get backlogged. **We strongly recommend setting alerts for this metric**.
+- **Load testing.** You can use [Maru](https://github.com/temporalio/maru/) ([author's guide here](https://mikhail.io/2021/03/maru-load-testing-tool-for-temporal-workflows/)), see how we ourselves [stress test Temporal](https://docs.temporal.io/blog/temporal-deep-dive-stress-testing/), or write your own.
 
 At a high level, you will want to track these 3 categories of metrics:
 
@@ -60,14 +64,37 @@ At a high level, you will want to track these 3 categories of metrics:
   These include the `namespace` tag.
   Additional information is available in [this forum post](https://community.temporal.io/t/metrics-for-monitoring-server-performance/536/3).
 
+### Checklist for Scaling Temporal
+
 Temporal is highly scalable due to its event sourced design.
 We have load tested up to 200 million concurrent Workflow Executions.
 Every shard is low contention by design and it is very difficult to oversubscribe to a Task Queue in the same cluster.
 With that said, here are some guidelines to some common bottlenecks:
 
-- Usually the limiting factor to scaling is the database connection getting saturated; therefore you will want to monitor `ScheduleToStart` latency to look out for this.
-- Temporal Server's Frontend service is more CPU bound, whereas the History and Matching services require more memory.
-- See the **Server Limits** section below for other limits you will want to monitor, including event history length.
+- **Database**. The vast majority of the time the database will be the bottleneck. **We highly recommend setting alerts on `ScheduleToStart` latency** to look out for this. Also check if your database connection getting saturated.
+- **Internal services**. The next layer will be scaling the 4 internal services of Temporal ([Frontend, Matching, History, and Worker](/docs/content/what-is-a-temporal-cluster)).
+  Monitor each accordingly. The Frontend service is more CPU bound, whereas the History and Matching services require more memory.
+  If you need more instances of each service, spin them up separately with different command line arguments. You can learn more cross referencing [our Helm chart](https://github.com/temporalio/helm-charts) with our [Server Configuration reference](https://docs.temporal.io/docs/server/configuration/).
+- See the **Server Limits** section below for other limits you will want to keep in mind when doing system design, including event history length.
+- [Multi-Cluster Replication](https://docs.temporal.io/docs/server/multi-cluster/) is an experimental feature you can explore for heavy reads.
+
+Finally you want to set up alerting and monitoring on Worker metrics.
+When Workers are able to keep up, `ScheduleToStart` latency is close to zero.
+The default is 4 Workers (aka pollers, as the Workers poll Task Queues), which should handle no more than 300 messages per second.
+
+Specifically, the primary scaling metrics are located in the server's dynamic configs:
+
+- `MaxConcurrentActivityTaskPollers` and `MaxConcurrentWorkflowTaskPollers`: [Defaults to 4](https://github.com/temporalio/temporal/blob/fe05751305b1cb50b68efa23f8aa5f1b34f45bc5/service/worker/service.go#L121)
+- `MaxConcurrentActivityExecutionSize` and `MaxConcurrentWorkflowTaskExecutionSize`: [Defaults to 200](https://github.com/temporalio/sdk-java/blob/bef967639fcdbe14ca37b80ac816596412846e5f/temporal-sdk/src/main/java/io/temporal/worker/WorkerOptions.java#L51)
+
+Scaling will depend on your workload — for example, for a Task Queue with 500 messages per second, you might want to scale up to 10 pollers.
+Provided you tune the concurrency of your pollers based on your application, it should be possible to scale them based on standard resource utilization metrics (CPU, Memory, etc).
+
+**It's possible to have too many workers.**
+Monitor the poll success (`poll_success`/`poll_success_sync`) and `poll_timeouts` metrics:
+
+- if you see low `ScheduleToStart` latency / low percentage of poll success / high percentage of timeouts, you might have too many workers/pollers.
+- with 100% poll success and increasing `ScheduleToStart` latency, you need to scale up.
 
 ### FAQ: Autoscaling Workers based on Task Queue load
 
@@ -75,10 +102,6 @@ Temporal does not yet support returning the number of tasks in a task queue.
 The main technical hurdle is that each task can have its own `ScheduleToStart` timeout, so just counting how many tasks were added and consumed is not enough.
 
 This is why we recommend tracking `ScheduleToStart` latency for determining if the task queue has a backlog (aka Workers are under-provisioned for a given Task Queue).
-When workers are able to keep up, the latency is close to zero.
-The default is 4 Workers, which should handle no more than 300 messages per second.
-Scaling will depend on your workload — for example, for a Task Queue with 500 messages per second, you might want to scale up to 10 workers.
-
 We do plan to add features that give more visibility into the task queue state in future.
 
 ### High Availability Cluster Configuration
@@ -103,7 +126,7 @@ clusterMetadata:
 Running into limits can cause unexpected failures, so be mindful when you design your systems.
 Here is a comprehensive list of all the hard (error) / soft (warn) server limits relevant to operating Temporal:
 
-- **GRPC**: GRPC has 4MB size limit ([per each message received](https://github.com/grpc/grpc/blob/v1.36.2/include/grpc/impl/codegen/grpc_types.h#L466))
+- **gRPC**: gRPC has 4MB size limit ([per each message received](https://github.com/grpc/grpc/blob/v1.36.2/include/grpc/impl/codegen/grpc_types.h#L466))
 - **Event Batch Size**: The `DefaultTransactionSizeLimit` limit is [4MB](https://github.com/temporalio/temporal/pull/1363).
   This is the largest transaction size we allow for event histories to be persisted.
   - This is configurable with `TransactionSizeLimit`, if you know what you are doing.
@@ -140,6 +163,12 @@ Recommended configuration debugging techniques for production Temporal Server se
 
 We recommend [using Temporal Web to debug your Workflow Executions](https://docs.temporal.io/docs/system-tools/web-ui) in development and production.
 
+### Tracing Workflows
+
+Temporal Web's tracing capabilities mainly track activity execution within a Temporal context. If you need custom tracing specific for your usecase, you should make use of context propagation to add tracing logic accordingly.
+
+- Example: [Tracing Temporal Workflows with DataDog](https://spiralscout.com/blog/tracing-temporal-workflow-with-datadog)
+
 ### Future content
 
 Topics this document will cover in future: (for now, please search/ask on the forum)
@@ -167,7 +196,7 @@ Topics this document will cover in future: (for now, please search/ask on the fo
 
 ## Further Reading
 
-Understanding the [Temporal Server architecture](https://docs.temporal.io/docs/server-architecture/) can help you debug and troubleshoot production deployment issues.
+Understanding the [Temporal Server architecture](/docs/content/what-is-a-temporal-cluster) can help you debug and troubleshoot production deployment issues.
 
 ## External Runbooks
 

@@ -11,7 +11,7 @@ It can be thought of as a layer in your technology stack that exists between you
 It is completely open source and can be run in a variety of cloud or on-premise environments.
 A single Server instance can be used for many different use cases simultaneously, or be tied to a single application.
 
-- Read the [system architecture](/docs/server-architecture) page to get a view of the server's topology.
+- Read the [system architecture](/docs/content/what-is-a-temporal-cluster) page to get a view of the server's topology.
 - Read the [Server versions and dependencies](/docs/server/versions-and-dependencies) page to see which dependencies are supported with the version of the Server you are using.
 
 ## Run the Server
@@ -27,5 +27,7 @@ Choose from the list below to get started:
 
 - [Namespaces](/docs/server/namespaces): Create basic logical separations within a Temporal cluster, or use Global Namespaces to enable failover across multi-cluster instances.
 - [Security](/docs/server/security): Learn how to keep your self-hosted instance secure with encryption and pluggable auth protocols.
-- [Enhanced Workflow search](/docs/server/workflow-search): Integrating ElasticSearch enables the use of customizable search attributes and complex search queries.
-- [Archiving data](/docs/server/archive-data): Want to back up your Workflow event history? You can with a cloud provider of your choice.
+- Experimental features:
+  - [Archival](/docs/server/archive-data): Want to back up your Workflow event history? You can with a cloud provider of your choice.
+  - [Multi-cluster Replication](/docs/server/multi-cluster): Increase availability by asynchronously replicating workflows from active cluster to other passive clusters.
+  - [Enhanced Workflow search](/docs/server/workflow-search): Integrating Elasticsearch enables the use of customizable search attributes and complex search queries.

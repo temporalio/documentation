@@ -119,7 +119,7 @@ There are a few important things to consider with Workflow timeout settings:
 
 #### Task timeout
 
-- **Description**: This is the maximum amount of time that the Server will wait for the Worker to start processing a [Workflow Task](/docs/glossary/#workflow-task) after the Task has been pulled from the Task Queue.
+- **Description**: This is the maximum amount of time that the Server will wait for the Worker to start processing a [Workflow Task](/docs/content/what-is-a-workflow-task) after the Task has been pulled from the Task Queue.
   The default value is 10 seconds.
 - **Use-case**: This is primarily available to recognize whether a Worker has gone down so that the Workflow can be recovered and continue executing on a different Worker.
   The main reason for increasing the default value would be to accommodate a Workflow that has a very long event history that could take longer than 10 seconds for the Worker to load.
@@ -243,20 +243,20 @@ You can also attach a non-indexed bit of information to a Workflow, known as a m
 
 ## Child Workflows
 
-If a Workflow is started by another Workflow, then it is considered a Child Workflow.
-The completion or failure of a Child Workflow is reported to the Workflow that started it (the Parent Workflow).
+import WhatIsAChildWorkflowExecution from '../content/what-is-a-child-workflow-execution.md'
 
-The following is a list of some of the more common reasons why you might want to break up code execution into Child Workflows:
+<WhatIsAChildWorkflowExecution/>
 
-- Execute code using a different set of Workers.
-- Enable invocation from multiple Workflows.
-- Workaround event history size limits.
-- Create one-to-one mappings between a Workflow Id and some other resource.
-- Execute some periodic logic.
+### ParentClosePolicy
 
-One of the main reasons you would not want to use a Child Workflow is the lack of a shared state with the Parent Workflow.
-A Parent and Child Workflow can communicate only through asynchronous signals.
-If the executing logic has tight coupling between Workflows, it may simply be easier to use a single Workflow that can rely on a shared object's state.
+When creating a Child Workflow, you can define a [`ParentClosePolicy`](https://github.com/temporalio/api/blob/c1f04d0856a3ba2995e92717607f83536b5a44f5/temporal/api/enums/v1/workflow.proto#L44) that terminates, cancels, or abandons the Workflow Execution if the child's parent stops execution:
+
+- `ABANDON`: When the parent stops, don't do anything with the Child Workflow Execution.
+- `TERMINATE`: When the parent stops, immediately terminate the Child Workflow Execution.
+- `REQUEST_CANCEL`: When the parent stops, request cancellation on the Child Workflow Execution.
+
+You can set policies per child, which means you can opt out of propagating terminates / cancels on a per-child basis.
+This is useful for starting Child Workflows asynchronously (see [relevant issue here](https://community.temporal.io/t/best-way-to-create-an-async-child-workflow/114) or the corresponding SDK docs).
 
 ## FAQ
 
@@ -292,3 +292,7 @@ However, the tradeoff is added latency.
 Workers are stateless, so any Workflow in a blocked state can be safely removed from a Worker.
 Later on, it can be resurrected on the same or different Worker when the need arises (in the form of an external event).
 Therefore, a single Worker can handle millions of open Workflow executions, assuming it can handle the update rate and that a slightly higher latency is not a concern.
+
+**How can I load test Workflow Executions?**
+
+The [Temporal stress testing blog post](https://docs.temporal.io/blog/temporal-deep-dive-stress-testing) covers many different scenarios under which we test Workflow Executions.

@@ -1,8 +1,16 @@
 ---
 id: archive-data
 title: Archive Workflow data
-sidebar_label: Archive data
+sidebar_label: Archival
 ---
+
+import CustomWarning from "../components/CustomWarning.js"
+
+<CustomWarning>
+
+Temporal's Archival feature is considered **experimental** and not subject to normal [versioning and support policy](/docs/server/versions-and-dependencies).
+
+</CustomWarning>
 
 This guide covers Temporal's archiving capabilities and how to setup the Archival feature.
 

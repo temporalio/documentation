@@ -36,9 +36,18 @@
   width: 100%;
 }
 
+.featureImageContainer {
+  display: inline-flex;
+  align-items: center;
+  align-content: center;
+  height: 6.25rem;
+  width: 6.25rem;
+  margin-bottom: 1rem;
+}
+
 .featureImage {
-  width: 100px;
-  margin-bottom: 15px;
+  width: 100%;
+  max-height: 100%;
 }
 
 .featuresMarginBottom {
@@ -113,6 +122,7 @@
 
 .justifyCenter {
   text-align: center;
+  justify-content: center;
 }
 
 .securityPageHeaders {
@@ -123,4 +133,9 @@
   .securityPageHeaders {
     text-align: left;
   }
+}
+
+.viewCompleteLibraryLink {
+  font-size: 2em;
+  color: var(--ifm-color-primary);
 }

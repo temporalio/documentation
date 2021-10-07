@@ -32,11 +32,11 @@ const features = [
 function Feature({imageUrl, title, goto}) {
   const imgUrl = useBaseUrl(imageUrl);
   return (
-    <div className={clsx("col col--3", styles.feature)}>
+    <div className="col col--3 margin-bottom--lg">
       <h3>{title}</h3>
       <Link to={goto}>
         {imgUrl && (
-          <div className="text--center">
+          <div className={clsx("text--center", styles.featureImageContainer)}>
             <img className={styles.featureImage} src={imgUrl} alt={title} />
           </div>
         )}
@@ -85,6 +85,16 @@ export default function ApplicationDevelopment() {
           </section>
         )}
       </main>
+      <div className="container">
+        <div className={styles.buttons}>
+          <Link
+            className={styles.viewCompleteLibraryLink}
+            to={"/docs/samples-library"}
+          >
+            View the complete library of samples
+          </Link>
+        </div>
+      </div>
       <div className={clsx("hero hero--secondary", styles.heroBanner)}>
         <div className="container">
           <h2 className="hero__title">Other SDKs</h2>

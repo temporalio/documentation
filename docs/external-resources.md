@@ -12,19 +12,26 @@ If you have made a tutorial or explanation of Temporal, please [submit them here
 
 ## How Temporal works
 
-_Don't forget our own [Temporal Architecture docs](/docs/server-architecture/)!_
+_Don't forget our own [Temporal Cluster docs](/docs/content/what-is-a-temporal-cluster)!_
 
 - ⭐ [Designing a Workflow Engine from First Principles](https://docs.temporal.io/blog/workflow-engine-principles/) by Maxim Fateev (23 min talk given at Systems @ Scale 2021)
+- 🆕 [Maxim and Samar on Gremlin's podcast](https://share.transistor.fm/s/65974dd6) - Origin story, Choreography vs Orchestration, and Tips (21 min listen)
+- [Workflow Engine with Maxim Fateev](https://www.listennotes.com/podcasts/software/cadence-ubers-workflow-nNoaPiSfk7v/) on Software Engineering Daily (56 min listen)
+- [Maxim Fateev on Temporal Origin Story](/blog/oss-startups-podcast) on the OSS Startups Podcast (41 min listen)
+- [Temporal Product with Ryland Goldstein](https://softwareengineeringdaily.com/2021/05/08/temporal-product-managing-state-with-ryland-goldstein/) on Software Engineering Daily (53 min listen)
+- [Temporal Developer Experience with swyx](https://devtools.fm/episode/13) on Devtools.fm (56 min listen)
+- 🆕 [Intro to Temporal Workshop](https://www.youtube.com/watch?v=UwdGmdTO3Ts) by Márk Sági-Kazár (3 hour full workshop)
 - [A Practical Approach to Temporal Architecture](https://mikhail.io/2020/10/practical-approach-to-temporal-architecture/) by Mikhail Shilkov (4 min read)
-- [Workflow Engine with Maxim Fateev](https://www.listennotes.com/podcasts/software/cadence-ubers-workflow-nNoaPiSfk7v/) on Software Engineering Daily (56 min Podcast)
-- 🆕 [Temporal Product with Ryland Goldstein](https://softwareengineeringdaily.com/2021/05/08/temporal-product-managing-state-with-ryland-goldstein/) on Software Engineering Daily (53 min Podcast)
 - Temporal's previous iteration was Cadence, which shares a lot of the same design principles:
   - [Cadence Architecture Talk](https://www.youtube.com/watch?v=5M5eiNBUf4Q) (24 min) by Samar Abbas at Uber Cadence meetup
   - [Cadence: Micro service Architecture Beyond Request/Response](https://www.youtube.com/watch?v=BJwFxqdSx4Y) (34 min) by Maxim Fateev at Data@Scale 2017
-  - [Intro to Cadence Slide Deck](https://sagikazarmark.hu/slides/workshops/cadence-intro/#/) by Márk Sági-Kazár
   - Note: we have documented [the difference between Cadence and Temporal](https://docs.temporal.io/docs/cadence-to-temporal) separately.
 
-## Why Workflows
+## Why Workflow Orchestration
+
+- [Build a Reliable System in a Microservices World](https://eng.snap.com/build_a_reliable_system_in_a_microservices_world_at_snap) on Snap Engineering Blog
+
+  > Building a reliable “simple” microservices system is not simple. It often requires engineers to think through edge cases and write boilerplate error handling logic in any places where systems are integrated. Beyond error handling, in certain systems like payment or billing systems if we are not able to track the application states, it could mean money loss or other worse consequences.
 
 - [Dealing with Failure](https://dev.to/temporalio/dealing-with-failure-5adf) on Dev.to
 
@@ -50,14 +57,15 @@ _Don't forget our own [Temporal Architecture docs](/docs/server-architecture/)!_
 
   > Just like actors provide the illusion of single-threaded, sequential execution, workflows provide the illusion of persistent method calls.
 
-## External tutorials
+## External content
 
 _Note: Each of [our SDK docs](/application-development) have a Hello World and Run Your First App tutorial!_
 
 - (Go) [Writing your first Workflow](https://www.youtube.com/watch?v=taKrIWt6KMY&feature=youtu.be) by Ryland Goldstein (20 min watch)
 - (Go) [Writing a Workflow, Simulating Failures, Comparing Retries with Apache Airflow, and Testing](https://www.jcheng.org/post/workflow-orchestration-1.2/) by Jon Cheng (8 min read)
-- [Writing your first Workflow](https://www.youtube.com/watch?v=taKrIWt6KMY&feature=youtu.be) by Ryland Goldstein (20 minutes)
 - (Español) [Construye aplicaciones invencibles con Temporal](https://sistecma.github.io/2021/02/04/aplicaciones-invencibles-con-temporal.html) y [Aplicando el patrón SAGA en tus microservicios construidos](https://sistecma.github.io/2021/03/04/aplicando-saga-en-microservicios-con-temporal.html) by Hernán Moreno
+- [Temporal - fault tolerant orchestration platform](https://www.youtube.com/watch?v=7dnutdT24MM&list=PLU1vS0speL2ZbTPg-aU2Rw2s6IPsTVoCF&index=49) at DevConf US by Tihomir Surdilovic (36 min talk + Q&A)
+- [Why Temporal - the iPhone of System Design](https://www.swyx.io/why-temporal/) by swyx (19 min read)
 - _submit yours [here](https://github.com/temporalio/documentation/edit/master/docs/external-resources.md)!_
 
 ## Temporal users

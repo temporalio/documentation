@@ -85,7 +85,6 @@ To enable retries for a Workflow, you need to provide a retry policy via `ChildW
 There are some subtle nuances to how Workflow's history events are recorded when a `RetryPolicy` is used.
 For an Activity with a `RetryPolicy`:
 
-- The `ActivityTaskScheduledEvent` will have extended `ScheduleToStartTimeout` and `ScheduleToCloseTimeout`.
 - The `ActivityTaskStartedEvent` will not show up in history until the Activity is completed or failed with no more retry.
   This is to avoid filling the history with noise records of intermittent failures and retries.
   For Activities being retried, `DescribeWorkflowExecution` will return a `PendingActivityInfo` that includes `attemptCount`.
@@ -94,4 +93,10 @@ For a Workflow with `RetryPolicy`:
 
 - If a Workflow fails and a retry policy is configured for it, the Workflow execution will be closed with a `ContinueAsNew` event.
   This event will have the `ContinueAsNewInitiator` field set to `RetryPolicy` and the new `RunId` for the next retry attempt.
-- The new attempt will be created immediately. But the first decision task won't be scheduled until the backoff duration. That duration is recorded as the `firstDecisionTaskBackoffSeconds` field of the new run's `WorkflowExecutionStartedEventAttributes` event.
+- The new attempt will be created immediately. But the first workflow task won't be scheduled until the backoff duration. That duration is recorded as the `firstWorkflowTaskBackoff` field of the new run's `WorkflowExecutionStartedEventAttributes` event.
+
+:::note
+
+Schedule-To-Close Timeout limits duration of retries for Activity Executions and ExecutionTimeout limits retries for Workflow Executions.
+
+:::

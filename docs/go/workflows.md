@@ -37,12 +37,15 @@ The only difference is that the `Done()` function provided by `workflow.Context`
 
 The second parameter, `string`, is a custom parameter that can be used to pass data into the Workflow when it starts.
 A Workflow can have one or more such parameters.
+However, we recommend having a single parameter that is of a struct type to support backward compatibility if new parameters are added.
 
 :::note
 
 All Workflow function parameters must be serializable, which essentially means that params can’t be channels, functions, variadic, or unsafe pointers.
 :::
 
+A Workflow can return an `err` or a `value, err`.
+Again, if there is a chance that the return value might change, use a struct type to hold the values.
 Returning an error from a Workflow is used to indicate that an error was encountered during its execution and the Workflow should be terminated.
 
 ## How to write Workflow code
@@ -52,7 +55,7 @@ This requirement stems from how the Temporal Server tracks the state of code exe
 
 In practical terms, this means the following:
 
-- Workflow code can only read and manipulate local variables or variables received as return values from Temporal Go SDK APIs.
+- Workflow code can only read and manipulate local variables or variables received as return values from Temporal Go SDK APIs. For example, Workflows should never read a configuration directly as it may change in the middle of a Workflow Execution, thus breaking "determinism". Use a [SideEffect](side-effect), MutableSideEffect, or an Activity to load configuration values.
 - Workflow code can not affect changes in external systems directly.
 - Workflow code must use Go SDK APIs to handle things like time, logging, and goroutines.
 - Workflow code can not directly iterate over maps using `range` because the order of the map's iteration is randomized.
@@ -169,70 +172,59 @@ More info in the [Distributed Cron](distributed-cron) docs.
 
 ### External Workflows
 
-You can execute workflows (including those from other language SDKs) purely by name:
+You can execute Workflows (including those from other language SDKs) by their type name:
 
 ```go
-// Call "SayHello" Java activity from Go workflow
-var result string
-aoj := workflow.ActivityOptions{
-    TaskQueue:           "simple-queue-java",
-    StartToCloseTimeout: 5 * time.Second,
+workflowID := "myworkflow_" + uuid.New()
+workflowOptions := client.StartWorkflowOptions{
+  ID:        workflowID,
+  TaskQueue: "mytaskqueue",
 }
-ctx = workflow.WithActivityOptions(ctx, aoj)
-err = workflow.ExecuteActivity(ctx, "SayHello", "GoWorkflow").Get(ctx, &result)
-logger.Info(fmt.Sprintf("Java Activity returns %v, %v", result, err))
 
+we, err := c.ExecuteWorkflow(context.Background(), workflowOptions, "MySimpleWorkflow")
+if err != nil {
+  log.Fatalln("Unable to execute workflow", err)
+}
+log.Println("Started workflow", "WorkflowID", we.GetID(), "RunID", we.GetRunID())
 ```
 
-And you can send signals to running workflows with `SignalExternalWorkflow`:
+Here we execute a workflow by its type name, namely `MySimpleWorkflow`. By default, the
+Workflow type is the name of the Workflow function, for example:
+
+```go
+func MySimpleWorkflow(ctx workflow.Context) error {
+ // Workflow code here...
+}
+```
+
+Note that you can also set the Workflow type via `RegisterWorkflowOptions` when registering your Workflow
+with the Worker, for example:
+
+```go
+rwo := workflow.RegisterOptions {
+   Name: "MyWorkflow", // Set "MyWorkflow" as the Workflow type
+}
+w.RegisterWorkflowWithOptions(dynamic.SampleGreetingsWorkflow, rwo)
+```
+
+Inside Workflow code you can also signal other workflows using their workflow type using `SignalExternalWorkflow`:
 
 ```go
 // Send 10 signals to PHP workflow
 for i := 0; i < 10; i++ {
-    workflow.SignalExternalWorkflow(ctx, "simple-workflow-php", "", "goMessage", "Hello from Go workflow: "+strconv.Itoa(i)).Get(ctx, nil)
+    err :=  workflow.SignalExternalWorkflow(ctx, "simple-workflow-php", "", "goMessage", "Hello from Go workflow: "+strconv.Itoa(i)).Get(ctx, nil)
 }
 ```
 
+Here we are sending a signal to a Workflow with type "simple-workflow-php" and signal name "goMessage".
+
 See our [Signals docs](https://docs.temporal.io/docs/go/signals) and [Temporal Polyglot example](https://github.com/tsurdilo/temporal-polyglot) for more.
 
-## Child Workflow Executions
+## Child Workflows
 
-If a Workflow Execution is started by another Workflow Execution, then it is considered a Child Workflow Execution.
-The completion or failure of a Child Workflow Execution is reported to the Workflow Execution that started it (the Parent Workflow Execution).
-The Parent Workflow Execution has the ability to monitor and impact the lifecycle of the Child Workflow Execution, similar to the way it does for Activities.
+import HowToSpawnAChildWorkflowExecutionInGo from '../content/how-to-spawn-a-child-workflow-execution-in-go.md'
 
-### When to use Child Workflows
-
-The following is a list of some of the more common reasons why you might want to do this:
-
-- Execute code using different Workers.
-- Enable execution from multiple Workflow Executions.
-- Workaround Event History size limits.
-- Create one-to-one mappings between a Workflow Id and some other resource.
-- Execute some periodic logic.
-
-### When not to use Child Workflows
-
-One of the main reasons you would not want to execute a Child Workflow is the lack of a shared state with the Parent Workflow Execution.
-Parent Workflow Executions and Child Workflow Executions can communicate only through asynchronous [Signals](/docs/go/signals).
-If the executing logic is tightly coupled between Workflow Executions, it may simply be easier to use a single Workflow Definition that can rely on a shared object's state.
-
-### Parent Workflow Definition
-
-The `workflow.ExecuteChildWorkflow` call is used to schedule Workflow Executions from within an executing Workflow.
-
-<!--SNIPSTART samples-go-child-workflow-example-parent-workflow-definition-->
-<!--SNIPEND-->
-
-By default, a Child Workflow Execution inherits the options provided to the Parent Workflow Execution, and the Temporal Server will automatically generate a Child Workflow ID.
-You can overwrite these options and specify a customer Child Workflow ID by customizing `ChildWorkflowOptions` and adding them to the execution context.
-
-### Child Workflow Definition
-
-A Child Workflow is defined just like any other Workflow Definition.
-
-<!--SNIPSTART samples-go-child-workflow-example-child-workflow-definition-->
-<!--SNIPEND-->
+<HowToSpawnAChildWorkflowExecutionInGo/>
 
 ### Querying Workflow State
 
@@ -248,13 +240,14 @@ we.Get(ctx, &result)
 
 ## How to cancel a Workflow Execution
 
-There are many scenarios where it is necessary and even ideal to be able to cancel a Workflow Execution.
 Use the `CancelWorkflow` API to cancel a Workflow Execution using its Id.
 
 <!--SNIPSTART samples-go-cancellation-cancel-workflow-execution-trigger-->
 <!--SNIPEND-->
 
-Workflow Definitions can be written to handle execution cancellation requests.
+### How to clean up after a Workflow is cancelled
+
+Workflow Definitions can be written to handle execution cancellation requests with Go's `defer` and the `workflow.NewDisconnectedContext` API.
 In the Workflow Definition below, there is a special Activity that handles clean up should the execution be cancelled.
 
 <!--SNIPSTART samples-go-cancellation-workflow-definition-->
@@ -262,9 +255,9 @@ In the Workflow Definition below, there is a special Activity that handles clean
 
 ## How to get data in or out of a running Workflow
 
-[Signals](/docs/go/signals) are the mechanism by which you can get data into already running Workflow.
+[Signals](/docs/go/signals) are the mechanism by which you can get data into an already running Workflow.
 
-[Queries](/docs/go/queries) are the mechanism by which you can get data out of currently running Workflow.
+[Queries](/docs/go/queries) are the mechanism by which you can get data out of a currently running Workflow.
 
 ## Custom Serialization and Workflow Security
 
@@ -282,7 +275,7 @@ To trigger this behavior, the Workflow function should
 terminate by returning the special **ContinueAsNewError** error:
 
 ```go
-func SimpleWorkflow(workflow.Context ctx, value string) error {
+func SimpleWorkflow(ctx workflow.Context, value string) error {
     ...
     return workflow.NewContinueAsNewError(ctx, SimpleWorkflow, value)
 }

@@ -10,7 +10,8 @@ import BlogPostItem from "@theme/BlogPostItem";
 import BlogPostPaginator from "@theme/BlogPostPaginator";
 import BlogSidebar from "@theme/BlogSidebar";
 import TOC from "@theme/TOC";
-import EditThisPage from "@theme/EditThisPage";
+import Translate from "@docusaurus/Translate";
+import IconEdit from "@theme/IconEdit";
 import {ThemeClassNames} from "@docusaurus/theme-common";
 
 function BlogPostPage(props) {
@@ -37,7 +38,19 @@ function BlogPostPage(props) {
               >
                 <BlogPostContents />
               </BlogPostItem>
-              <div>{editUrl && <EditThisPage editUrl={editUrl} />}</div>
+              <div style={{marginTop: "2rem"}}>
+                {editUrl && (
+                  <a href={editUrl} target="_blank" rel="noreferrer noopener">
+                    <IconEdit />
+                    <Translate
+                      id="theme.common.editThisPage"
+                      description="The link label to edit the current page"
+                    >
+                      Have a suggestion? Spotted an inaccuracy? Help us fix it!
+                    </Translate>
+                  </a>
+                )}
+              </div>
               {(nextItem || prevItem) && (
                 <div className="margin-vert--xl">
                   <BlogPostPaginator nextItem={nextItem} prevItem={prevItem} />

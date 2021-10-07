@@ -2,7 +2,11 @@
 id: hello-world-tutorial
 title: Build a Temporal "Hello World!" app from scratch in Go
 sidebar_label: Build "Hello World!" app
-tags: helloworld, go, sdk, tutorial
+tags:
+  - helloworld
+  - go
+  - sdk
+  - tutorial
 ---
 
 <img class="docs-image-centered" src="https://raw.githubusercontent.com/temporalio/documentation-images/main/static/astronaut-hello-go.jpg" />
@@ -29,15 +33,10 @@ All of the code in this tutorial is available in the [hello-world Go template re
 
 In a terminal, create a new project directory named "hello-world-project-template-go", or something similar and `cd` into it.
 
-From the root of your new project directory, initialize a new Go module. Make sure the module path (i.e. hello-world-project-template-go) matches that of the directory in which you are creating the module:
+From the root of your new project directory, initialize a new Go module. Make sure the module path (i.e. hello-world-project-template-go) matches that of the directory in which you are creating the module. Then, add the Temporal Go SDK as a project dependency:
 
-```
+```bash
 go mod init hello-world-project-template-go/app
-```
-
-Then, add the Temporal Go SDK as a project dependency:
-
-```
 go get go.temporal.io/sdk@latest
 ```
 
@@ -72,14 +71,14 @@ Create workflow.go and add the following code:
 
 ### Task Queue
 
-[Task Queues](/docs/glossary/#task-queue) are how the Temporal server supplies information to Workers. When you start a Workflow, you tell the server which Task Queue the Workflow and/or Activities use as an information queue. We will configure our Worker to listen to the same Task Queue that our Workflow and Activities use. Since the Task Queue name is used by multiple things, let's create shared.go and define our Task Queue name there:
+[Task Queues](/docs/content/what-is-a-task-queue) are how the Temporal server supplies information to Workers. When you start a Workflow, you tell the server which Task Queue the Workflow and/or Activities use as an information queue. We will configure our Worker to listen to the same Task Queue that our Workflow and Activities use. Since the Task Queue name is used by multiple things, let's create shared.go and define our Task Queue name there:
 
 <!--SNIPSTART hello-world-project-template-go-shared-->
 <!--SNIPEND-->
 
 ### Worker
 
-Our [Worker](/docs/glossary/#worker) hosts Workflow and Activity functions and executes them one at a time. The Worker is instructed to execute a specific function via information it pulls from the Task Queue. After it runs the code, it communicates the results back to the server.
+Our [Worker](/docs/content/what-is-a-worker) hosts Workflow and Activity functions and executes them one at a time. The Worker is instructed to execute a specific function via information it pulls from the Task Queue. After it runs the code, it communicates the results back to the server.
 
 Create worker/main.go and add the following code:
 

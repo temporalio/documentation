@@ -63,7 +63,7 @@ func main() {
 
 	// Run the Worker
 	err = w.Run(worker.InterruptCh())
-	if err != nil
+	if err != nil {
 		// log failure
 	}
 }

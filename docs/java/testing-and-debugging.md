@@ -4,6 +4,8 @@ title: Testing and Debugging
 sidebar_label: Testing and Debugging
 ---
 
+## Overview
+
 The Temporal Java SDK provides a test framework to facilitate Workflow unit and integration testing.
 The test framework provides a `TestWorkflowEnvironment` class which includes an in-memory implementation
 of the Temporal service that supports automatic time skipping. This allows you to
@@ -11,6 +13,32 @@ easily test long-running Workflows in seconds, without having to change your Wor
 
 You can use the provided `TestWorkflowEnvironment` with a Java unit testing framework of your choice,
 such as JUnit.
+
+## Setup testing dependency
+
+To start using the Java SDK test framework, you need to add [`io.temporal:temporal-testing`](https://search.maven.org/artifact/io.temporal/temporal-testing)
+as a dependency to your project:
+
+**[Apache Maven](https://maven.apache.org/)**:
+
+```maven
+<dependency>
+    <groupId>io.temporal</groupId>
+    <artifactId>temporal-testing</artifactId>
+    <version>1.2.0</version>
+    <scope>test</scope>
+</dependency>
+```
+
+**[Gradle Groovy DSL](https://gradle.org/)**:
+
+```groovy
+testImplementation group: 'io.temporal', name: 'temporal-testing', version: '1.2.0'
+```
+
+Make sure to set the version that matches your dependency version of the [Temporal Java SDK](https://github.com/temporalio/sdk-java).
+
+## Sample unit tests
 
 The following code implements unit tests for the `HelloActivity` sample:
 
@@ -110,6 +138,114 @@ public class HelloActivityTest {
 }
 ```
 
+## Testing with JUnit4
+
+For Junit4 tests, Temporal provides the TestWorkflowRule class which simplifies the Temporal test environment setup, as well as the
+creation and shutdown of Workflow Workers in your tests.
+
+To start using TestWorkflowRule in your tests, you need to add [`io.temporal:temporal-testing-junit4`](https://search.maven.org/artifact/io.temporal/temporal-testing-junit4)
+as a dependency to your project:
+
+**[Apache Maven](https://maven.apache.org/)**:
+
+```maven
+<dependency>
+    <groupId>io.temporal</groupId>
+    <artifactId>temporal-testing-junit4</artifactId>
+    <version>1.2.0</version>
+    <scope>test</scope>
+</dependency>
+```
+
+**[Gradle Groovy DSL](https://gradle.org/)**:
+
+```groovy
+testImplementation group: 'io.temporal', name: 'temporal-testing-junit4', version: '1.2.0'
+```
+
+Make sure to set the version that matches your dependency version of the [Temporal Java SDK](https://github.com/temporalio/sdk-java).
+
+We can now rewrite our above mentioned "HelloActivityTest" test class as follows:
+
+```java
+public class HelloActivityJUnit4Test {
+    @Rule
+    public TestWorkflowRule testWorkflowRule =
+            TestWorkflowRule.newBuilder()
+                    .setWorkflowTypes(GreetingWorkflowImpl.class)
+                    .setActivityImplementations(new GreetingActivitiesImpl())
+                    .build();
+
+    @Test
+    public void testActivityImpl() {
+        // Get a workflow stub using the same task queue the worker uses.
+        GreetingWorkflow workflow =
+                testWorkflowRule
+                        .getWorkflowClient()
+                        .newWorkflowStub(
+                                GreetingWorkflow.class,
+                                WorkflowOptions.newBuilder().setTaskQueue(testWorkflowRule.getTaskQueue()).build());
+        // Execute a workflow waiting for it to complete.
+        String greeting = workflow.getGreeting("World");
+        assertEquals("Hello World!", greeting);
+
+        testWorkflowRule.getTestEnvironment().shutdown();
+    }
+}
+```
+
+## Testing with JUnit5
+
+For Junit5 tests, Temporal also provides the TestWorkflowExtension helped class which can be used to simplify the Temporal test environment setup
+as well as Workflow Worker startup and shutdowns.
+
+To start using the JUnit5 TestWorkflowExtension in your tests, you need to add [`io.temporal:temporal-testing-junit5`](https://search.maven.org/artifact/io.temporal/temporal-testing-junit5)
+as a dependency to your project:
+
+**[Apache Maven](https://maven.apache.org/)**:
+
+```maven
+<dependency>
+    <groupId>io.temporal</groupId>
+    <artifactId>temporal-testing-junit5</artifactId>
+    <version>1.2.0</version>
+    <scope>test</scope>
+</dependency>
+```
+
+**[Gradle Groovy DSL](https://gradle.org/)**:
+
+```groovy
+testImplementation group: 'io.temporal', name: 'temporal-testing-junit5', version: '1.2.0'
+```
+
+Make sure to set the version that matches your dependency version of the [Temporal Java SDK](https://github.com/temporalio/sdk-java).
+
+We can now use JUnit5 and rewrite our above mentioned "HelloActivityTest" test class as follows:
+
+```java
+public class HelloActivityJUnit5Test {
+    @RegisterExtension
+    public static final TestWorkflowExtension testWorkflowExtension =
+            TestWorkflowExtension.newBuilder()
+                    .setWorkflowTypes(GreetingWorkflowImpl.class)
+                    .setActivityImplementations(new GreetingActivitiesImpl())
+                    .build();
+
+    @Test
+    public void testActivityImpl(
+            TestWorkflowEnvironment testEnv, Worker worker, GreetingWorkflow workflow) {
+        // Execute a workflow waiting for it to complete.
+        String greeting = workflow.getGreeting("World");
+        assertEquals("Hello World!", greeting);
+    }
+}
+```
+
+You can find all unit tests for the [Temporal Java samples](https://github.com/temporalio/samples-java) repository in [its test package](https://github.com/temporalio/samples-java/tree/master/src/test/java/io/temporal/samples).
+
+## Debugging
+
 In addition to writing unit and integration tests, debugging your Workflows is also a very
 valuable testing tool. You can debug your Workflow code using a debugger provided
 by your favorite Java IDE.
@@ -120,4 +256,4 @@ execution control. Because of this you can often encounter the `PotentialDeadloc
 Exception while stepping through Workflow code during debugging.
 
 To alleviate this issue, you can set the `TEMPORAL_DEBUG` environment variable to true before debugging your
-Workflow code.
+Workflow code. Make sure to set `TEMPORAL_DEBUG` to true only during debugging.
