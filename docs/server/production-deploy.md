@@ -34,8 +34,6 @@ At minimum, the `development.yaml` file needs to have the [`global`](/docs/serve
 
 The [Server configuration reference](/docs/server/configuration) has a more complete list of possible parameters.
 
-Make sure to set Workflow and Activity timeouts everywhere.
-
 ### Scaling and Metrics
 
 The requirements of your Temporal system will vary widely based on your intended production workload.

@@ -1,11 +1,15 @@
 ---
 id: glossary
 title: Glossary
+description: The following terms have specific definitions within the context of the Temporal Platform.
+tags:
+  - reference
 ---
 
-These terms have specific definitions within the context of the Temporal product.
+The following terms have specific definitions within the context of the Temporal Platform.
 
 - [Activity](/docs/content/what-is-an-activity)
+- [Activity Execution](/docs/content/what-is-an-activity-execution)
 - [Activity Heartbeat](/docs/content/what-is-an-activity-heartbeat)
 - [Activity Id](/docs/content/what-is-an-activity-id)
 - [Activity Task](/docs/content/what-is-an-activity-task)
@@ -21,7 +25,10 @@ These terms have specific definitions within the context of the Temporal product
 - [Query](/docs/content/what-is-a-query)
 - [Retry Policy](/docs/content/what-is-a-retry-policy)
 - [Run Id](/docs/content/what-is-a-run-id)
+- [Schedule-To-Close Timeout](/docs/content/what-is-a-schedule-to-close-timeout)
+- [Schedule-To-Start Timeout](/docs/content/what-is-a-schedule-to-start-timeout)
 - [Signal](/docs/content/what-is-a-signal)
+- [Start-To-Close Timeout](/docs/content/what-is-a-start-to-close-timeout)
 - [Task](/docs/content/what-is-a-task)
 - [Task Queue](/docs/content/what-is-a-task-queue)
 - [Task Token](/docs/content/what-is-a-task-token)

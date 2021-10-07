@@ -76,15 +76,29 @@ There are two ways to start a Workflow with Temporal, either via the SDK or via 
 <!--SNIPSTART money-transfer-project-template-java-workflow-initiator-->
 <!--SNIPEND-->
 
-Make sure the [Temporal server](/docs/server/quick-install) is running in a terminal, and then run the InitiateMoneyTransfer class within IntelliJ or from the project root using the following command:
+Run the InitiateMoneyTransfer class within IntelliJ or from the project root using the following command:
 
-```
+```bash
 ./gradlew initiateTransfer
 ```
 
+<details>
+<summary>Troubleshooting</summary>
+
+If you get `Connection refused: /127.0.0.1:7233` error, make sure the [Temporal server is running](/docs/server/quick-install).
+
+If you get `ALREADY_EXISTS: Workflow execution is already running. WorkflowId: money-transfer-workflow, RunId:<...>`, stop your Temporal docker-compose process [started earlier](/docs/server/quick-install) and recreate Temporal docker-compose containers using:
+
+```bash
+docker-compose rm -f
+docker-compose up
+```
+
+</details>
+
 ### State visibility
 
-OK, now it's time to check out one of the really cool value propositions offered by Temporal: application state visibility. Visit the [Temporal Web UI](localhost:8088) where you will see your Workflow listed.
+OK, now it's time to check out one of the really cool value propositions offered by Temporal: application state visibility. Visit the [Temporal Web UI](http://localhost:8088) where you will see your Workflow listed.
 
 Next, click the "Run Id" for your Workflow. Now we can see everything we want to know about the execution of the Workflow code we told the server to track, such as what parameter values it was given, timeout configurations, scheduled retries, number of attempts, stack traceable errors, and more.
 
@@ -116,7 +130,17 @@ Run the TransferMoneyWorker class from IntelliJ, or run the following command fr
 ./gradlew startWorker
 ```
 
-When you start the Worker it begins polling the Task Queue. The first Task the Worker finds is the one that tells it to execute the Workflow function. The Worker communicates the event back to the server which then causes the server to send Activity Tasks to the Task Queue as well. The Worker then grabs each of the Activity Tasks in their respective order from the Task Queue and executes each of the corresponding Activities.
+When you start the Worker it begins polling the Task Queue.
+The first Task the Worker finds is the one that tells it to execute the Workflow function.
+The Worker communicates the event back to the server which then causes the server to send Activity Tasks to the Task Queue as well.
+The Worker then grabs each of the Activity Tasks in their respective order from the Task Queue and executes each of the corresponding Activities.
+You will get a console output showing that both activity tasks were executed by the Worker:
+
+```
+Withdrawing $18.740000 from account 001-001. ReferenceId: 2ab46ccb-3791-4dd2-84e6-62319eb710a2
+
+Depositing $18.740000 into account 002-002. ReferenceId: 2ab46ccb-3791-4dd2-84e6-62319eb710a2
+```
 
 <img class="docs-image-centered docs-image-max-width-20" src="https://raw.githubusercontent.com/temporalio/documentation-images/main/static/confetti.png" />
 
@@ -132,21 +156,21 @@ Unlike many modern applications that require complex leader election processes a
 
 1. Start the Workflow again.
 2. Verify the Workflow is running in the UI.
-3. Shut down the Temporal server by either using 'Ctrl c' or via the Docker dashboard.
+3. Shut down the Temporal server by either using 'Ctrl+C' or via the Docker dashboard.
 4. After the Temporal server has stopped, restart it and visit the UI.
 
 Your Workflow is still there!
 
 ### Activity error
 
-Next let's simulate a bug in one of the Activity functions. Inside your project, open the AccountActivityImpl.java file and uncomment the line that throws an Exception in the `deposit()` method.
+Next let's simulate a bug in one of the Activity functions. Inside your project, open the `AccountActivityImpl.java` file and uncomment the line that throws an Exception in the `deposit()` method.
 
 <!--SNIPSTART money-transfer-project-template-java-activity-implementation-->
 <!--SNIPEND-->
 
 Save your changes and run the Worker. You will see the Worker complete the `withdraw()` Activity method, but throw the Exception when it attempts the `deposit()` Activity method. The important thing to note here is that the Worker keeps retrying the `deposit()` method.
 
-Yo can view more information about what is happening in the [UI](localhost:8088). Click on the RunId of the Workflow. You will see the pending Activity listed there with details such as its state, the number of times it has been attempted, and the next scheduled attempt.
+You can view more information about what is happening in the [UI](http://localhost:8088). Click on the RunId of the Workflow. You will see the pending Activity listed there with details such as its state, the number of times it has been attempted, and the next scheduled attempt.
 
 <ResponsivePlayer url='https://youtu.be/sMotKSI5xxE' loop='true' playing='true'/>
 

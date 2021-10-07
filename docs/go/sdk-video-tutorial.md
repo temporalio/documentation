@@ -6,6 +6,8 @@ description: Video tutorial to help you build your first Workflow using Go SDK
 
 import { ResponsivePlayer } from '../../src/components'
 
+## 15 Minute Simple Tutorial
+
 <ResponsivePlayer url='https://www.youtube.com/watch?v=Wo0y_Ce3d4I' />
 
 :::note `tctl` CLI commands
@@ -240,3 +242,28 @@ docker run --network=host --rm temporalio/tctl:latest wf show -w Greet_Samar_1
 ```
 
 </details>
+
+## 3 Hour Intro Workshop
+
+> [Slides](https://sagikazarmark.hu/slides/workshops/temporal-intro/), [GitHub](https://github.com/sagikazarmark/temporal-intro-workshop)
+
+<ResponsivePlayer url='https://www.youtube.com/watch?v=UwdGmdTO3Ts' />
+
+Covering:
+
+- [00:00:00](https://www.youtube.com/watch?v=UwdGmdTO3Ts&t=0s) - Intro to Mark and how he found Temporal
+- [00:06:30](https://www.youtube.com/watch?v=UwdGmdTO3Ts&t=390s) - The Orchestration and Long Running Process problem
+- [00:28:30](https://www.youtube.com/watch?v=UwdGmdTO3Ts&t=1710s) - What is Temporal?
+- [00:46:00](https://www.youtube.com/watch?v=UwdGmdTO3Ts&t=2760s) - Workshop Intro
+- [00:47:25](https://www.youtube.com/watch?v=UwdGmdTO3Ts&t=2845s) - Intro to Workflows and Workers
+- [00:53:40](https://www.youtube.com/watch?v=UwdGmdTO3Ts&t=3220s) - Example 1/2: Basic Workflow
+- [01:02:45](https://www.youtube.com/watch?v=UwdGmdTO3Ts&t=3765s) - Example 3/4: Testing
+- [01:15:30](https://www.youtube.com/watch?v=UwdGmdTO3Ts&t=4530s) - Workflow Determinism
+- [01:19:50](https://www.youtube.com/watch?v=UwdGmdTO3Ts&t=4790s) - Example 5: Context, Side Effects, and Timers
+- [01:29:45](https://www.youtube.com/watch?v=UwdGmdTO3Ts&t=5385s) - Example 6/7: Signals and Queries, and Go SDK Selectors
+- [01:48:50](https://www.youtube.com/watch?v=UwdGmdTO3Ts&t=6530s) - Workflow Replay and misc topics
+- [02:02:15](https://www.youtube.com/watch?v=UwdGmdTO3Ts&t=7335s) - Intro to Activities
+- [02:04:30](https://www.youtube.com/watch?v=UwdGmdTO3Ts&t=7470s) - Example 8: Activity Execution and Timeouts
+- [02:20:00](https://www.youtube.com/watch?v=UwdGmdTO3Ts&t=8400s) - Activity Q&A
+- [02:30:00](https://www.youtube.com/watch?v=UwdGmdTO3Ts&t=9000s) - Retries and ActivityInfo
+- [02:35:00](https://www.youtube.com/watch?v=UwdGmdTO3Ts&t=9300s) - Further Reading

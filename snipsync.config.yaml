@@ -18,7 +18,7 @@ origins:
   - owner: temporalio
     repo: samples-php
   - owner: temporalio
-    repo: sdk-node
+    repo: samples-node
   - owner: temporalio
     repo: samples-go
   - owner: temporalio

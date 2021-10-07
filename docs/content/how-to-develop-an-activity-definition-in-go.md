@@ -3,20 +3,25 @@ id: how-to-develop-an-activity-definition-in-go
 title: How to develop an Activity Definition in Go
 description: In the Temporal Go SDK programming model, an Activity Definition is an exportable function or `stuct` method.
 tags:
-  - guide
+  - developer-guide
+  - go
 ---
 
 import RelatedReadList from '../components/RelatedReadList.js'
 
-In the Temporal Go SDK programming model, an Activity Definition is an exportable function or `stuct` method.
+In the Temporal Go SDK programming model, an Activity Definition is an exportable function or `struct` method.
 
 **Function**:
 
 ```go
+// basic function signature
 func YourActivityDefinition(ctx workflow.Context) error {
   // ...
   return nil
 }
+
+// with parameters and return values
+func SimpleActivity(ctx context.Context, value string) (string, error)
 ```
 
 **Struct method**:
@@ -37,8 +42,14 @@ func(a *YourActivityStruct) YourActivityDefinitionTwo(ctx workflow.Context) erro
 ```
 
 An "Activity struct" can have more than one method, with each method acting as a separate Activity Type.
-Activities written as struct methods can use shared struct variables.
-The rest of this guide shows Activities written as struct methods.
+Activities written as struct methods can use shared struct variables such as:
+
+- an application level DB pool
+- client connection to another service
+- reusable utilities
+- any other expensive resources you only want to initialize once per process
+
+Because this is such a common need, the rest of this guide shows Activities written as struct methods.
 
 <!--
 <RelatedReadList
@@ -57,7 +68,7 @@ An Activity Definition can support as many other custom parameters as needed.
 However, all parameters must be serializable (parameters can’t be channels, functions, variadic, or unsafe pointers), and it is recommended to pass a single struct that can be updated later.
 
 ```go
-type YourActivityParam struct{
+type YourActivityParam struct {
   ActivityParamFieldOne string
   ActivityParamFieldTwo int
 }
@@ -85,8 +96,7 @@ readlist={[
 **Activity return values in Go**
 
 A Go-based Activity Definition can return either just an `error` or a `customValue, error` combination (same as a Workflow Definition).
-Again, the best practice here is to use a `struct` type to hold all custom values.
-Custom return values must be serializable.
+You may wish to use a `struct` type to hold all custom values, just keep in mind they must all be serializable.
 
 ```go
 type YourActivityResult struct{
@@ -112,10 +122,16 @@ readlist={[
 />
 -->
 
-**Activity logic requirements in Go**
+**Other notes for developing Activities**
 
-There are no other limitations to Activity Definition logic.
-All native features of the Go programming language can be used within an Activity, and it is idiomatic to use an Activity to make calls to other services across a network.
+All native features of the Go programming language can be used within an Activity and there are no other limitations to Activity Definition logic:
+
+- **Performance**: Keep in mind that all parameters and return values are recorded in the [Workflow Execution Event History](/docs/content/what-is-an-event-history).
+  A large Workflow Execution Event History can adversely impact the performance of your Workflow Executions, as the entire Event History is transferred to Worker Processes with every [Workflow Task](/docs/content/what-is-a-workflow-task).
+- **Idiomatic usage**: You are free to use:
+  - your own loggers and metrics controllers
+  - the standard Go concurrency constructs
+  - make calls to other services across a network
 
 <!--
 <RelatedReadList

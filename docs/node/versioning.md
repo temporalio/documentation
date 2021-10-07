@@ -1,4 +1,8 @@
-# Workflow versioning
+---
+id: versioning
+title: Versioning Node.js Workflows
+sidebar_label: Versioning (Migration)
+---
 
 Workflow code has to be [deterministic](/docs/node/determinism) by taking the same code path when replaying history events. Any Workflow code change that affects the order in which commands are generated breaks this assumption.
 The solution that allows updating code of already running Workflows is to keep both the old and new code.

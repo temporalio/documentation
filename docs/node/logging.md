@@ -1,5 +1,7 @@
 ---
-title: Logging
+id: logging
+title: Logging in Node
+sidebar_label: Logging
 ---
 
 ### Logging from Workflows and Activities
