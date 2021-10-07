@@ -4,7 +4,7 @@ tags:
   - podcast
 posted_on_: 2021-10-07T00:00:09Z
 slug: gremlin-podcast
-title: 'Maxim and Samar on Gremlin's Build Things Podcast'
+title: Maxim and Samar on Gremlin's Build Things Podcast
 author: swyx
 author_title: Head of Developer Experience
 author_image_url: https://avatars.githubusercontent.com/u/6764957?v=4
