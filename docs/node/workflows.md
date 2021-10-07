@@ -10,7 +10,7 @@ import RelatedReadList from '../components/RelatedReadList.js'
 
 [API reference](https://nodejs.temporal.io/api/namespaces/workflow)
 
-In the Node.js SDK, each Workflow runs in a separate V8 isolate context to provide a [deterministic runtime](/docs/node/determinism).
+In the Node.js SDK, each Workflow is bundled with dependencies and run in a separate V8 isolate context to provide a [deterministic runtime](/docs/node/determinism).
 
 ## How to write Workflow code
 
@@ -83,6 +83,15 @@ There are a range of [`WorkflowOptions`](https://nodejs.temporal.io/api/interfac
 - `cronSchedule`: see ["Scheduling Cron Workflows"](#scheduling-cron-workflows)
 - `retryPolicy`: the overall [RetryPolicy](https://nodejs.temporal.io/api/interfaces/proto.temporal.api.common.v1.iretrypolicy/) at the Workflow level
 - `searchAttributes`: Specifies additional indexed information in result of list workflow.
+
+### Workflow Limitations
+
+Workflow code must be [deterministic](/docs/node/determinism), and the Node SDK replaces common sources of nondeterminism for you, like `Date.now()`, `Math.random`, and `setTimeout`. However, less obvious implications constraints exist:
+
+- Node built-ins: like `process` or the `path` module or the `fs` module
+- "Pure" ESM Node modules like `node-fetch@3` (use `node-fetch@2` instead for now)
+
+These constraints don't apply inside activities and you should be able to write idiomatic Node.js otherwise.
 
 ## How to start a Workflow
 
