@@ -121,12 +121,17 @@ clusterMetadata:
 
 ### FAQ: Multiple deployments on a single cluster
 
-If you are planning to have multiple temporal deployments within the same k8s cluster, doublecheck the following:
+You may sometimes want to have multiple parallel deployments on the same cluster, eg:
+- when you want to split Temporal deployments based on namespaces, e.g. staging/dev/uat, or for different teams who need to share infrastructure
+- when you need a new deployment to change `NUM_HISTORY_SHARDS`
+
+If you are planning to have multiple temporal deployments within the same k8s cluster, double-check the following:
 
 - Have a separate persistence (database) for each deployment
-- Cluster membership ports should be different for each deployment. For example: 
+- Cluster membership ports should be different for each deployment (they can be set through environment variables). For example: 
   - Temporal1 services can have 7233 for frontend, 7234 for history, 7235 for matching
-  - temporal2 services can have 8233 for frontend, 8234 for history, 8235 for matching
+  - Temporal2 services can have 8233 for frontend, 8234 for history, 8235 for matching
+- There is no need to change gRPC ports.
 
 [More details about the reason here](https://github.com/temporalio/temporal/issues/1234).
 
