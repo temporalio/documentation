@@ -16,7 +16,7 @@ imageSize="100"
 title="Data Converter encodes and decodes data"
 />
 
-Data is encoded before it is sent to a Temporal Cluster, and it is decoded when it is to be used in Workflow Executions, Activity Executions, or returned to a process using an SDK Client.
+Data is encoded before it is sent to a Temporal Cluster, and it is decoded when it is to be used in Workflow Executions or Activity Executions or returned to a process by using an SDK Client.
 
 ### Default Data Converter
 
