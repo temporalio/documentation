@@ -21,7 +21,7 @@ Data is encoded before it is sent to a Temporal Cluster, and it is decoded when 
 ### Default Data Converter
 
 Each Temporal SDK includes a default Data Converter.
-The default Data Converter ensures data is encoded into a format that is supported by gRPC, a [Payload](https://github.com/temporalio/api/blob/2f980f7ce4349e808b16ec0f21e0fe675f79330f/temporal/api/common/v1/message.proto#L49) protobuf which consists of binary data plus key-value metadata.
+The default Data Converter ensures that data is encoded into a format that is supported by gRPC—specifically, a [Payload](https://github.com/temporalio/api/blob/2f980f7ce4349e808b16ec0f21e0fe675f79330f/temporal/api/common/v1/message.proto#L49) protobuf, which consists of binary data plus key-value metadata.
 
 ### Custom Data Converter
 
