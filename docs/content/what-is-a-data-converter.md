@@ -27,4 +27,4 @@ The default Data Converter ensures that data is encoded into a format that is su
 
 Applications can supply their own custom Data Converters to add layers of encoding, such as encryption.
 
-This gives application developers the ability to ensure that all data provided to their application is encrypted while moving about the Temporal System and is only transformed back to its original form within a Worker Process that is executing Workflows and Activities on hosts that the application developers control.
+This gives application developers the ability to ensure that all data provided to their application is encrypted while moving in the Temporal System and is transformed back to its original form only within a Worker Process that is executing Workflows and Activities on hosts that the application developers control.
