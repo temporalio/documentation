@@ -28,6 +28,8 @@ And, monitoring and observability are available with [Prometheus](https://promet
 
 See the [versions & dependencies page](/docs/server/versions-and-dependencies/) for precise versions we support together with these features.
 
+Kubernetes is not required for Temporal, but it is popular anyway. We do maintain [a Helm chart](https://github.com/temporalio/helm-charts) as a reference and we recently hosted a YouTube discussion on how we think about the Kubernetes ecosystem in relation to Temporal.
+
 ### Configuration
 
 At minimum, the `development.yaml` file needs to have the [`global`](/docs/server/configuration/#global) and [`persistence`](https://docs.temporal.io/docs/server/configuration/#persistence) parameters defined.
@@ -76,7 +78,6 @@ With that said, here are some guidelines to some common bottlenecks:
   Monitor each accordingly. The Frontend service is more CPU bound, whereas the History and Matching services require more memory.
   If you need more instances of each service, spin them up separately with different command line arguments. You can learn more cross referencing [our Helm chart](https://github.com/temporalio/helm-charts) with our [Server Configuration reference](https://docs.temporal.io/docs/server/configuration/).
 - See the **Server Limits** section below for other limits you will want to keep in mind when doing system design, including event history length.
-- [Multi-Cluster Replication](https://docs.temporal.io/docs/server/multi-cluster/) is an experimental feature you can explore for heavy reads.
 
 Finally you want to set up alerting and monitoring on Worker metrics.
 When Workers are able to keep up, `ScheduleToStart` latency is close to zero.
