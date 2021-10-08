@@ -20,6 +20,7 @@ Workflows are based on the concept of capturing and expressing our business proc
 All workflow technologies provide two core capabilities:
 1. Ways to define your workflows
 2. A runtime that executes them
+
 Additionally, most provide integrations with different frameworks, testing and debugging capabilities, visibility and observability features, etc.
 
 In the first of two articles, we will give a general introduction to workflows and their importance. We will also look into different, currently-relevant approaches of defining workflows and provide their pros and cons. In the subsequent article, we will dive deeper into this subject and provide more insight into developing a real-life workflow solution using these different approaches.
@@ -50,7 +51,7 @@ re 3. Further updates
 Notice that we used the adjectives “ok” and “bad” to describe traffic conditions. These adjectives correspond to what we think is ok or bad depending on things like the distance from our home to work, our current car condition, our driving abilities, etc. An important part of the way we define and think about workflows is very domain-specific, meaning that it is closely related to our own reasoning, how we process information, and our current circumstances.
 
 One thing we realize is that no matter how bullet-proof we think our workflow is, it often is not. Uncertainty and having to deal with unexpected issues is part of life.
-For example, let’s say we are making our breakfast burrito;it falls on the floor and our dog eats it. We can recover from this failure by making another one, while still maintaining the successful completion of our main goal. In the case we don’t have the ingredients any more to make another burrito, we can recover from this intermittent failure by making a sandwich instead.
+For example, let’s say we are making our breakfast burrito, it falls on the floor and our dog eats it. We can recover from this failure by making another one, while still maintaining the successful completion of our main goal. In the case we don’t have the ingredients any more to make another burrito, we can recover from this intermittent failure by making a sandwich instead.
 
 Adding all possible intermittent failures to our workflow definitions is not feasible. There are just too many of them, some of which we cannot predict. Our workflow needs to have the capability however to recover from any such intermittent failures. One possible way to recover is to retry a task that failed, another is to be able to compensate for a task that failed with one or more other ones, all while still being able to reach our goal.
 
