@@ -127,7 +127,7 @@ You may sometimes want to have multiple parallel deployments on the same cluster
 - when you want to split Temporal deployments based on namespaces, e.g. staging/dev/uat, or for different teams who need to share common infrastructure.
 - when you need a new deployment to change `numHistoryShards`.
 
-If you are planning to have multiple temporal deployments within the same k8s cluster, double-check the following:
+**We recommend not doing this if you can avoid it**. If you need to do it anyway, double-check the following:
 
 - Have a separate persistence (database) for each deployment
 - Cluster membership ports should be different for each deployment (they can be set through environment variables). For example: 
