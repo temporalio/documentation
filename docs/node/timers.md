@@ -200,7 +200,8 @@ export class UpdatableTimer implements PromiseLike<void> {
     return this.run().then(onfulfilled, onrejected);
   }
 
-  set_deadline(value: number) {
+  // javascript class setter
+  set deadline(value: number) {
     this.#deadline = value;
     this.deadlineUpdated = true;
   }
