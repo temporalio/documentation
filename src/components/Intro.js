@@ -9,7 +9,8 @@ export const Intro = () => {
         Get started with Temporal
       </h2>
       <p className="text-xl max-w-2xl">
-        Temporal consists of multiple components
+        Learn how to use Temporal, the open source platform for orchestrating
+        highly reliable, mission-critical applications at scale.
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 my-10">
