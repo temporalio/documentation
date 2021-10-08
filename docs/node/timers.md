@@ -107,7 +107,7 @@ await condition('30 days', () => x > 3)
 
 ## Timer Design Patterns
 
-There are only a few Timer APIs, but the important part is knowing how to use them to model asynchronous businses logic. Here are some examples we use the most; we welcome more if you can think of them!
+There are only a few Timer APIs, but the important part is knowing how to use them to model asynchronous business logic. Here are some examples we use the most; we welcome more if you can think of them!
 
 ### Racing Timers
 
