@@ -22,7 +22,7 @@ The core Timer APIs relevant to the Node.js SDK are:
 
 - [`setTimeout`](https://nodejs.temporal.io/api/namespaces/workflow/#timers): completely replaced by the Workflow's v8 isolate environment, including inside libraries that you use.
 - [`sleep`](https://nodejs.temporal.io/api/namespaces/workflow/#sleep): a more convenient Promise wrapper for setTimeout
-- `await`: resolve when a condition turns true. Not yet available in this SDK.
+- `condition`: A promise that resolves when a supplied function returns true. Comparable to `Workflow.await` in other SDKs.
 
 :::caution Preventing Confusion
 
@@ -48,6 +48,22 @@ What we mean by "handling jumps": if you had timers that were supposed to go off
 -->
 
 You can read more about [Temporal Node SDK's Determinism here](/docs/node/determinism).
+
+## API Examples
+
+```ts
+import { condition, sleep } from '@temporalio/workflow';
+
+// durably sleep for 30 days
+await sleep("30 days")
+
+// await a condition to be true
+let x = 0;
+await Promise.all([
+  sleep(1).then(() => (x = 1)),
+  condition(() => x === 1).then(() => (x = 2)),
+]);
+```
 
 ## Timer Design Patterns
 
