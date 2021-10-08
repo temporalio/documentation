@@ -73,64 +73,67 @@ function DocItem(props) {
         }}
       />
 
-      <div id="tailwind" className="flex space-x-20">
-        <div className="">
-          <DocVersionBanner versionMetadata={versionMetadata} />
-          <article>
-            {showVersionBadge && (
-              <div>
-                <span className="badge badge--secondary">
-                  Version: {versionMetadata.label}
-                </span>
-              </div>
-            )}
-
-            <article className="prose sm:prose md:prose-md lg:prose-lg mx-auto my-12">
-              {renderTocMobile && (
-                <TOCCollapsible
-                  toc={DocContent.toc}
-                  className={clsx("mb-10 p-3 text-lg", styles.tocMobile)}
-                />
-              )}
-              {/*
+      <div className="max-w-screen-lg mx-auto">
+        <DocVersionBanner versionMetadata={versionMetadata} />
+        <article>
+          {showVersionBadge && (
+            <div>
+              <span className="badge badge--secondary">
+                Version: {versionMetadata.label}
+              </span>
+            </div>
+          )}
+          <div className="flex space-x-20">
+            <div>
+              <article className="prose sm:prose md:prose-md lg:prose-lg mx-auto my-12">
+                {renderTocMobile && (
+                  <TOCCollapsible
+                    toc={DocContent.toc}
+                    className={clsx("mb-10 p-3 text-lg", styles.tocMobile)}
+                  />
+                )}
+                {/*
                    Title can be declared inside md content or declared through frontmatter and added manually
                    To make both cases consistent, the added title is added under the same div.markdown block
                    See https://github.com/facebook/docusaurus/pull/4882#issuecomment-853021120
                    */}
-              {shouldAddTitle && <MainHeading>{title}</MainHeading>}
-              <DocContent />
-            </article>
-            <div>
-              {(editUrl || lastUpdatedAt || lastUpdatedBy) && (
-                <div>
-                  <div className="edit">
-                    {editUrl && <EditThisPage editUrl={editUrl} />}
-                  </div>
+                {shouldAddTitle && <MainHeading>{title}</MainHeading>}
+                <DocContent />
+              </article>
+
+              <div>
+                {(editUrl || lastUpdatedAt || lastUpdatedBy) && (
                   <div>
-                    {(lastUpdatedAt || lastUpdatedBy) && (
-                      <LastUpdated
-                        lastUpdatedAt={lastUpdatedAt}
-                        formattedLastUpdatedAt={formattedLastUpdatedAt}
-                        lastUpdatedBy={lastUpdatedBy}
-                      />
-                    )}
+                    <div className="edit">
+                      {editUrl && <EditThisPage editUrl={editUrl} />}
+                    </div>
+                    <div>
+                      {(lastUpdatedAt || lastUpdatedBy) && (
+                        <LastUpdated
+                          lastUpdatedAt={lastUpdatedAt}
+                          formattedLastUpdatedAt={formattedLastUpdatedAt}
+                          lastUpdatedBy={lastUpdatedBy}
+                        />
+                      )}
+                    </div>
                   </div>
+                )}
+                <div className="margin-vert--lg">
+                  <DocPaginator metadata={metadata} />
                 </div>
-              )}
-              <div className="margin-vert--lg">
-                <DocPaginator metadata={metadata} />
-              </div>
-              <div className="my-8 mx-auto max-w-screen-lg">
-                <TemporalCloudForm />
+                <div className="my-8 mx-auto max-w-screen-lg">
+                  <TemporalCloudForm />
+                </div>
               </div>
             </div>
-          </article>
-        </div>
-        {renderTocDesktop && (
-          <div className="col col--3">
-            <TOC toc={DocContent.toc} />
+
+            {renderTocDesktop && (
+              <div className="">
+                <TOC toc={DocContent.toc} />
+              </div>
+            )}
           </div>
-        )}
+        </article>
       </div>
     </>
   );
