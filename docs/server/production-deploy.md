@@ -14,35 +14,38 @@ As a reminder, experts are accessible via the [Community forum](https://communit
 
 > Note: if you are interested in a managed service hosting Temporal Server, please [register your interest in Temporal Cloud](https://docs.temporal.io/#cloud).
 
-## Setup principles
-
-### Prerequisites
+## What is a Temporal Cluster?
 
 The Temporal Server is a Go application which you can [import](https://docs.temporal.io/docs/server/options) or run as a binary.
 
-The minimum dependency is a database.
-The Server supports [Cassandra](https://cassandra.apache.org/), [MySQL](https://www.mysql.com/), or [PostgreSQL](https://www.postgresql.org/).
-Further dependencies are only needed to support optional features.
-For example, enhanced Workflow search can be achieved using [Elasticsearch](/docs/server/elasticsearch-setup).
-And, monitoring and observability are available with [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/).
+import WhatIsCluster from "../content/what-is-a-temporal-cluster.md"
 
-See the [versions & dependencies page](/docs/server/versions-and-dependencies/) for precise versions we support together with these features.
+<WhatIsCluster />
 
-Kubernetes is not required for Temporal, but it is popular anyway. We do maintain [a Helm chart](https://github.com/temporalio/helm-charts) as a reference. We also [hosted a YouTube discussion](https://www.youtube.com/watch?v=11I87HKS_NM) on how we think about the Kubernetes ecosystem in relation to Temporal.
+## Minimum Requirements
 
-### Configuration
+- The minimum Temporal dependency is a database. The Server supports [Cassandra](https://cassandra.apache.org/), [MySQL](https://www.mysql.com/), or [PostgreSQL](https://www.postgresql.org/).
+- Further dependencies are only needed to support optional features. For example, enhanced Workflow search can be achieved using [Elasticsearch](/docs/server/elasticsearch-setup).
+- Monitoring and observability are available with [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/).
+- Each language SDK also has minimum version requirements. See the [versions & dependencies page](/docs/server/versions-and-dependencies/) for precise versions we support together with these features.
+
+Kubernetes is not required for Temporal, but it is a popular deployment platform anyway. 
+We do maintain [a Helm chart](https://github.com/temporalio/helm-charts) you can use as a reference, but you are responsible for customizing it to your needs.
+We also [hosted a YouTube discussion](https://www.youtube.com/watch?v=11I87HKS_NM) on how we think about the Kubernetes ecosystem in relation to Temporal.
+
+## Configuration
 
 At minimum, the `development.yaml` file needs to have the [`global`](/docs/server/configuration/#global) and [`persistence`](https://docs.temporal.io/docs/server/configuration/#persistence) parameters defined.
 
 The [Server configuration reference](/docs/server/configuration) has a more complete list of possible parameters.
 
-### Before you deploy: Reminder on shard count
+## Before you deploy: Reminder on shard count
 
 A huge part of production deploy is understanding current and future scale - the **number of shards can't be changed after the cluster is in use** so this decision needs to be upfront. Shard count determines scaling to improve concurrency if you start getting lots of lock contention. 
 The default `numHistoryShards` is 4; deployments at scale can go up to 500-2000 shards.
 Please [consult our configuration docs](https://docs.temporal.io/docs/server/configuration/#persistence) and check with us for advice if you are worried about scaling.
 
-### Scaling and Metrics
+## Scaling and Metrics
 
 The requirements of your Temporal system will vary widely based on your intended production workload.
 You will want to run your own proof of concept tests and watch for key metrics to understand the system health and scaling needs.
@@ -66,7 +69,7 @@ At a high level, you will want to track these 3 categories of metrics:
   These include the `namespace` tag.
   Additional information is available in [this forum post](https://community.temporal.io/t/metrics-for-monitoring-server-performance/536/3).
 
-### Checklist for Scaling Temporal
+## Checklist for Scaling Temporal
 
 Temporal is highly scalable due to its event sourced design.
 We have load tested up to 200 million concurrent Workflow Executions.
@@ -96,6 +99,8 @@ Monitor the poll success (`poll_success`/`poll_success_sync`) and `poll_timeouts
 
 - if you see low `ScheduleToStart` latency / low percentage of poll success / high percentage of timeouts, you might have too many workers/pollers.
 - with 100% poll success and increasing `ScheduleToStart` latency, you need to scale up.
+
+## FAQs
 
 ### FAQ: Autoscaling Workers based on Task Queue load
 
@@ -188,7 +193,7 @@ Temporal Web's tracing capabilities mainly track activity execution within a Tem
 
 ### Future content
 
-Topics this document will cover in future: (for now, please search/ask on the forum)
+Topics this document will cover in future: (for now, please search/ask on the forum, or open issues to ask questions about any of these)
 
 - Recommended Environment
   - Staging/Test
