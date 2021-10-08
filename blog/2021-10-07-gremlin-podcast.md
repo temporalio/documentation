@@ -24,13 +24,13 @@ What follows is a lightly edited transcript for readability.
 
 ***So, you started with Cadence, which was an internal framework at Uber, and decided to strike out on your own and build Temporal. What caused you to strike out on your own?*** 
 
-We built Cadence from the beginning as an open-source project. Uber management never came to us and said, “Let’s build this technology to run applications reliably,” or workflow technology or something like that. It was absolutely a bottoms-up creation. And we are super grateful to Uber that this type of project is even possible. We started it on our own, built the first version, and we got resources later.
+We built Cadence from the beginning as an open-source project and grew by bottoms-up adoption within Uber. **It grew from zero to over a hundred use cases within three years**. But because it was an open-source project from the beginning, **after a year or two we started to see companies like HashiCorp, Box, Coinbase, Checkr, adopt us**. And there are a lot of others, it’s just that not all of them are public. 
 
-And Cadence just grew by bottoms-up adoption within Uber. **It grew from zero to over a hundred use cases within three years**. But because it was an open-source project from the beginning, **after a year or two we started to see companies like HashiCorp, Box, Coinbase, Checkr, adopt us**. And there are a lot of others, it’s just that not all of them are public. 
+We believe this technology is very widely applicable, so we needed a separate entity, like a company, to actually drive the technology forward for the whole world. For example, Uber would never create a cloud offering, and everyone wanted us to host Temporal. So one thing led to another and we ended up leaving Uber and starting our own company. And that was the main reasoning — **we wanted to make this technology successful for everybody in the whole world**, not just within Uber. 
 
-We believe this technology is very widely applicable, so we needed a separate entity, like a company, to actually drive the technology forward for the whole world. Like the most obvious thing, you cannot have a hosted version of Temporal at Uber, right? Uber would never create a cloud offering, and everyone wanted us to host Temporal. So one thing led to another and we ended up leaving Uber and starting our own company. And that was the main reasoning — **we wanted to make this technology successful for everybody in the whole world**, not just within Uber. 
+Another benefit of starting Temporal was that **we had actually accumulated a pretty large technical debt when running Cadence**, just because we ran Cadence without single backwards-incompatible change since we first put it in production. Even after four years we were still on the same cluster with the same initial users. So, we had to do everything in backwards-compatible manner. 
 
-Another benefit of starting Temporal was that **we had actually accumulated a pretty large technical debt when running Cadence**, just because we ran Cadence for four years without single backwards-incompatible change since we first put it in production, we still were on the same cluster with the same initial users. So, we had to do everything in backwards-compatible manner. At Temporal, we could go and rethink that a little bit, and we spent almost a year just working on [Temporal v1.0](https://docs.temporal.io/blog/temporal-v1-announcement/) and doing a lot of fixes and tons of features which we couldn’t do otherwise. Because that was our only chance to do backwards-incompatible change. 
+At Temporal, we could rethink our design decisions, and we spent almost a year just working on [Temporal v1.0](https://docs.temporal.io/blog/temporal-v1-announcement/) and doing a lot of fixes and tons of features which we couldn’t do otherwise. Because that was our only chance to do backwards-incompatible change. 
 
 ## Lessons from Uber: Reliability on Rails
 
@@ -42,7 +42,7 @@ One funny story is that one of the early use cases moved onto Cadence was becaus
 
 ## Orchestration vs Choreography
 
-*W**hat’s different about using Temporal compared to distributed systems built with simple messaging like Kafka?***
+***What’s different about using Temporal compared to distributed systems built with simple messaging like Kafka?***
 
 A lot of systems are built with **choreography**: 
 
