@@ -9,6 +9,7 @@ import Link from '@docusaurus/Link';
 import CodeBlock from '@theme/CodeBlock';
 import Heading from '@theme/Heading';
 import Details from '@theme/Details';
+
 const MDXComponents = {
   code: (props) => {
     const { children } = props; // For retrocompatibility purposes (pretty rare use case)
@@ -60,7 +61,8 @@ const MDXComponents = {
 export default MDXComponents;
 
 
-function Preview({ page: {
+
+export function Preview({ page: {
   frontMatter,
   metadata,
   // contentTitle // doesnt seem to work yet
@@ -76,6 +78,7 @@ function Preview({ page: {
         position: 'absolute',
         zIndex: 1,
         width: 'max-content',
+        maxWidth: '350px',
         display: 'flex', flexDirection: 'column',
         borderRadius: '8px',
         backgroundColor: '#f2f2f2',
@@ -87,8 +90,7 @@ function Preview({ page: {
         style={{
           backgroundColor: '#f2f2f2',
           padding: 10,
-          fontSize: '0.8rem',
-          lineHeight: 0.5
+          fontSize: '0.8rem'
         }}
       >
         <span style={{}}>{metadata.description}</span>

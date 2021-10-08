@@ -7,7 +7,7 @@ tags:
   - options
 ---
 
-import RelatedReadList from '../components/RelatedReadList.js'
+import RelatedReadList, {RelatedReadContainer, RelatedReadItem} from '../components/RelatedReadList.js'
 
 Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, and pass the instance to the `ExecuteWorkflow` call.
 
@@ -39,6 +39,15 @@ if err != nil {
   // ...
 }
 ```
+
+<!-- prettier-ignore -->
+import * as WWID from './what-is-a-workflow-id.md'
+
+<RelatedReadContainer>
+  <RelatedReadItem page={WWID}>
+    hi cully
+  </RelatedReadItem>
+</RelatedReadContainer>
 
 <RelatedReadList
 readlist={[
