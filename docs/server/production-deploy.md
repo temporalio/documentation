@@ -227,5 +227,5 @@ Third party content that may help:
 - [Recommended Setup for Running Temporal with Cassandra on Production (Temporal Forums)](https://community.temporal.io/t/what-is-the-recommended-setup-for-running-cadence-temporal-with-cassandra-on-production/556)
 - [How To Deploy Temporal to Azure Container Instances](https://mikhail.io/2020/10/how-to-deploy-temporal-to-azure-container-instances/)
 - [How To Deploy Temporal to Azure Kubernetes Service (AKS)](https://mikhail.io/2020/11/how-to-deploy-temporal-to-azure-kubernetes-aks/)
-- ECS runbook (_to be completed_)
-- EKS runbook (_to be completed_)
+- AWS ECS runbook (_we are seeking external contributions, please let us know if you'd like to work on this_)
+- AWS EKS runbook (_we are seeking external contributions, please let us know if you'd like to work on this_)
