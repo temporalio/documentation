@@ -29,8 +29,7 @@ We intend to explain this in more detail in future system design and architectur
 
 ## Why Task Queues?
 
-Temporal Task Queues are a little bit different from commonly used queuing technologies.
-The main difference being that they do not require explicit registration and are created on demand.
+Temporal Task Queues are a little bit different from commonly used queuing technologies, the main difference being that they **do not require explicit registration and are created on demand**.
 Task Queues are very lightweight and there is no limit to the total number of Task Queues that the system can handle.
 
 There are multiple advantages of using a Task Queue to deliver Tasks to a Worker, instead of invoking actions via a synchronous RPC.
@@ -63,7 +62,7 @@ Let's say you have a Workflow with the following three Activities:
 In a real life scenario, you would want to have many Workers involved in order to scale the processing of many files simultaneously.
 
 The first Activity, to download the file, could occur on any Worker.
-However, the second and third Activities must be executed by a Worker on the same host where the first Activity downloaded the file.
+However, the second and third Activities **must be executed by a Worker on the same host** where the first Activity downloaded the file.
 
 You can use Task Queues and dedicated Workers to handle this scenario in an elegant way.
 
@@ -74,3 +73,16 @@ You can find implementation examples that illustrate this technique for the foll
 
 The Go SDK comes with a [Session](/docs/go/sessions) feature that abstracts the need to explicitly route tasks for this use case.
 The [Go file processing example](https://github.com/temporalio/samples-go/tree/master/fileprocessing) showcases that as well.
+
+## Traffic Routing
+
+[Advanced users can route production traffic](https://community.temporal.io/t/using-dynamic-task-queues-for-traffic-routing/3045) for a number of reasons:
+
+- For **development / debugging**, it can be helpful to send a slice of production traffic to your laptop to dig into end-to-end behaviors.
+- For **operations**, traffic routing rules can be used to dynamically shard workers by whatever rules you like. Let’s say you are writing a multi-cloud control plane. The task queue may be cloud-operations initially, but eventually you want to run each cloud provider on different worker infrastructure. With traffic routing, you could dynamically shard this traffic without making any code changes.
+
+:::caution
+
+It’s worth noting that having powerful functionality like this is also inherently dangerous: With a bad configuration, you can cause downtime.
+
+:::
