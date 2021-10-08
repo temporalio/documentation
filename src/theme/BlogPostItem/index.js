@@ -1,9 +1,3 @@
-/**
- * Copyright (c) Facebook, Inc. and its affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
 import React from "react";
 import {MDXProvider} from "@mdx-js/react";
 import {translate} from "@docusaurus/Translate";
@@ -58,10 +52,15 @@ function BlogPostItem(props) {
     const TitleHeading = isBlogPostPage ? "h1" : "h2";
     return (
       <header
-        id="tailwind"
-        className="flex flex-col justify-center items-center post-header"
+        className={`flex flex-col my-12 ${
+          isBlogPostPage ? "items-center justify-center" : ""
+        }`}
       >
-        <TitleHeading className="mb-4 leading-relaxed text-3xl font-medium mx-auto">
+        <TitleHeading
+          className={`mb-4 leading-relaxed text-3xl font-semibold  ${
+            isBlogPostPage ? "text-center max-w-lg" : ""
+          }`}
+        >
           {isBlogPostPage ? (
             title
           ) : (
@@ -129,9 +128,7 @@ function BlogPostItem(props) {
       />
 
       <article
-        className={
-          !isBlogPostPage ? "mb-8 lg:mb-0 max-w-screen-lg mx-auto" : undefined
-        }
+        className={!isBlogPostPage ? "mb-8 lg:mb-0 max-w-screen-lg" : undefined}
       >
         {renderPostHeader()}
         <article className="prose sm:prose md:prose-md lg:prose-lg mx-auto">

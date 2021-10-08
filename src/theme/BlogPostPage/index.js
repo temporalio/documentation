@@ -15,7 +15,7 @@ import IconEdit from "@theme/IconEdit";
 import {ThemeClassNames} from "@docusaurus/theme-common";
 
 function BlogPostPage(props) {
-  const {content: BlogPostContents, sidebar} = props;
+  const {content: BlogPostContents} = props;
   const {frontMatter, metadata} = BlogPostContents;
   const {title, description, nextItem, prevItem, editUrl} = metadata;
   const {hide_table_of_contents: hideTableOfContents} = frontMatter;
@@ -28,12 +28,9 @@ function BlogPostPage(props) {
         pageClassName={ThemeClassNames.page.blogPostPage}
       >
         {BlogPostContents && (
-          <div className="container my-14">
-            <div className="row">
-              <div className="col col--1 -mr-8"></div>
-              <main
-                className={`col ${hideTableOfContents ? "col--9" : " mx-auto"}`}
-              >
+          <div className="max-w-screen-lg p-6 md:pl-10 mx-auto my-14">
+            <div className="flex space-x-20">
+              <main className={`${hideTableOfContents ? "" : ""}`}>
                 <BlogPostItem
                   frontMatter={frontMatter}
                   metadata={metadata}
@@ -44,19 +41,22 @@ function BlogPostPage(props) {
                 <div className="mt-8">
                   {editUrl && (
                     <a
-                      className="block text-center"
+                      className="flex space-x-5 mt-20 items-center"
                       href={editUrl}
                       target="_blank"
                       rel="noreferrer noopener"
                     >
                       <IconEdit />
-                      <Translate
-                        id="theme.common.editThisPage"
-                        description="The link label to edit the current page"
-                      >
-                        Have a suggestion? Spotted an inaccuracy? Help us fix
-                        it!
-                      </Translate>
+
+                      <div>
+                        <Translate
+                          id="theme.common.editThisPage"
+                          description="The link label to edit the current page"
+                        >
+                          Have a suggestion? Spotted an inaccuracy? Help us fix
+                          it!
+                        </Translate>
+                      </div>
                     </a>
                   )}
                 </div>
@@ -69,18 +69,12 @@ function BlogPostPage(props) {
                   </div>
                 )}
               </main>
+
               {!hideTableOfContents &&
                 BlogPostContents.toc &&
                 BlogPostContents.toc.length > 1 && (
-                  <div className="col col--2 text-sm leading-normal pt-12">
-                    <TOC toc={BlogPostContents.toc} />
-                  </div>
+                  <TOC toc={BlogPostContents.toc} />
                 )}
-            </div>
-            <div className="row">
-              <div className="col">
-                <BlogSidebar sidebar={sidebar} row={true} />
-              </div>
             </div>
           </div>
         )}
