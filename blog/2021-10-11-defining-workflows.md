@@ -1,17 +1,16 @@
 ---
+slug: defining-workflows
+title: Defining Workflows
+author: Tihomir Surdilovic
+author_title: Developer Advocate
+author_image_url: https://avatars.githubusercontent.com/u/119422?v=4
 tags:
-- Temporal
-- Workflow
-- Community
-  posted_on_: 2021-10-11T00:00:00Z
-  slug: defining-workflows
-  title: 'Defining Workflows'
-  author: Tihomir Surdilovic
-  author_title: Product
-  author_image_url: https://avatars.githubusercontent.com/u/119422?v=4
-  image: https://avatars.githubusercontent.com/u/119422?v=4
-  release_version: V1.12.2
+- workflow
+- community
+  date: 2021-10-11T00:00:00Z
 ---
+
+<!--truncate-->
 
 ## Introduction
 
