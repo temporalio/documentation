@@ -44,16 +44,8 @@ if err != nil {
 import * as WWID from './what-is-a-workflow-id.md'
 
 <RelatedReadContainer>
-  <RelatedReadItem page={WWID}>
-    hi cully
-  </RelatedReadItem>
+  <RelatedReadItem page={WWID} />
 </RelatedReadContainer>
-
-<RelatedReadList
-readlist={[
-["What is a Workflow Id?","/docs/content/what-is-a-workflow-id","explanation"],
-]}
-/>
 
 ### `TaskQueue`
 
