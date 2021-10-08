@@ -74,7 +74,6 @@ await sleep(30 * 24 * 60 * 60 * 1000)
 
 ### `condition`
 
-
 `condition` blocks until its given function evaluates to `true`, or optionally, a timeout expires. 
 The timeout also uses the [ms](https://www.npmjs.com/package/ms) package to take either a string or number of milliseconds.
 
@@ -82,7 +81,7 @@ The timeout also uses the [ms](https://www.npmjs.com/package/ms) package to take
 /**
  * Returns a Promise that resolves when `fn` evaluates to `true` or `timeout` expires.
  *
- * @param timeou - formatted string or number of milliseconds
+ * @param timeout - formatted string or number of milliseconds
  *
  * @returns a boolean indicating whether the condition was true before the timeout expires
  */
@@ -172,4 +171,43 @@ A variant of the Race Timer pattern where the promise resolves IF no Signal is r
 
 ### Updatable Timer
 
-TODO: adapt go sample: Updatable Timer: Demonstrates timer cancellation and use of a Selector to wait on a Future and a Channel simultaneously.
+Here is how you can build an updatable timer with `condition`:
+
+```ts
+import { condition } from '@temporalio/workflow';
+
+export class UpdatableTimer implements PromiseLike<void> {
+  deadlineUpdated = false;
+  #deadline: number;
+
+  constructor(deadline: number) {
+    this.#deadline = deadline;
+  }
+
+  private async run(): Promise<void> {
+    while (true) {
+      this.deadlineUpdated = false;
+      if (await condition(this.#deadline - Date.now(), () => this.deadlineUpdated)) {
+        break;
+      }
+    }
+  }
+
+  then<TResult1 = void, TResult2 = never>(
+    onfulfilled?: (value: void) => TResult1 | PromiseLike<TResult1>,
+    onrejected?: (reason: any) => TResult2 | PromiseLike<TResult2>
+  ): PromiseLike<TResult1 | TResult2> {
+    return this.run().then(onfulfilled, onrejected);
+  }
+
+  set_deadline(value: number) {
+    this.#deadline = value;
+    this.deadlineUpdated = true;
+  }
+}
+
+// usage
+const timer = new UpdateableTimer(Date.now() + 10000);
+on(updateTimerSignal, (deadline) => (timer.deadline = deadline)); // send in new deadlines via Signal
+await timer;
+```
