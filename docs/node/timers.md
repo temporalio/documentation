@@ -20,9 +20,9 @@ The ability to set durable timers in Workflows is a core feature of Temporal tha
 
 The core Timer APIs relevant to the Node.js SDK are:
 
-- [`setTimeout`](https://nodejs.temporal.io/api/namespaces/workflow/#timers): completely replaced by the Workflow's v8 isolate environment, including inside libraries that you use.
-- [`sleep`](https://nodejs.temporal.io/api/namespaces/workflow/#sleep): a more convenient Promise wrapper for setTimeout
-- `condition`: A promise that resolves when a supplied function returns true. Comparable to `Workflow.await` in other SDKs.
+- [`setTimeout`](https://nodejs.temporal.io/api/namespaces/workflow/#timers) global: completely replaced by the Workflow's v8 isolate environment, including inside libraries that you use.
+- [`sleep(time)`](https://nodejs.temporal.io/api/namespaces/workflow/#sleep): a more convenient Promise wrapper for setTimeout
+- `condition(function)`: A promise that resolves when a supplied function returns true. Comparable to `Workflow.await` in other SDKs.
 
 :::caution Preventing Confusion
 
@@ -51,18 +51,59 @@ You can read more about [Temporal Node SDK's Determinism here](/docs/node/determ
 
 ## API Examples
 
+`setTimeout` works as normal in JavaScript.
+
+### `sleep`
+
+`sleep` uses the [ms](https://www.npmjs.com/package/ms) package to take either a string or number of milliseconds.
+
 ```ts
-import { condition, sleep } from '@temporalio/workflow';
+/**
+ * Asynchronous sleep. Schedules a timer on the Temporal service.
+ *
+ * @param ms sleep duration - formatted string or number of milliseconds
+ */
+export function sleep(ms: number | string): Promise<void> {
 
 // durably sleep for 30 days
+import { condition, sleep } from '@temporalio/workflow';
+
 await sleep("30 days")
+await sleep(30 * 24 * 60 * 60 * 1000)
+```
+
+### `condition`
+
+
+`condition` blocks until its given function evaluates to `true`, or optionally, a timeout expires. 
+The timeout also uses the [ms](https://www.npmjs.com/package/ms) package to take either a string or number of milliseconds.
+
+```ts
+/**
+ * Returns a Promise that resolves when `fn` evaluates to `true` or `timeout` expires.
+ *
+ * @param timeou - formatted string or number of milliseconds
+ *
+ * @returns a boolean indicating whether the condition was true before the timeout expires
+ */
+export function condition(timeout: number | string, fn: () => boolean): Promise<boolean>;
+
+/**
+ * Returns a Promise that resolves when `fn` evaluates to `true`.
+ */
+export function condition(fn: () => boolean): Promise<void>;
+
 
 // await a condition to be true
+import { condition } from '@temporalio/workflow';
+
 let x = 0;
-await Promise.all([
-  sleep(1).then(() => (x = 1)),
-  condition(() => x === 1).then(() => (x = 2)),
-]);
+// do stuff with x, eg increment every time you receive a signal
+await condition(() => x > 3)
+// you only reach here when x > 3
+
+// await earlier of condition to be true or 30 day timeout
+await condition('30 days', () => x > 3)
 ```
 
 ## Timer Design Patterns
