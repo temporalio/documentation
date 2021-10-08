@@ -3,8 +3,10 @@ import React from "react";
 export const Community = () => {
   return (
     <section className="my-20">
-      <h2 className="text-4xl mb-8">Join the Temporal community</h2>
-      <ul className="grid sm:grid-cols-2 gap-6 xl:gap-8">
+      <h2 className="text-3xl md:text-4xl mb-8 font-semibold">
+        Join the Temporal community
+      </h2>
+      <ul className="grid sm:grid-cols-2  gap-6 xl:gap-8">
         <li>
           <a
             href="https://community.temporal.io/"
@@ -29,7 +31,7 @@ export const Community = () => {
             </svg>
 
             <div className="flex-auto">
-              <h3 className="font-bold">Temporal Community</h3>
+              <h3 className="font-semibold">Temporal Community</h3>
               <p>
                 Join the Temporal community where you can start discussions and
                 ask questions
@@ -54,7 +56,7 @@ export const Community = () => {
               ></path>
             </svg>
             <div className="flex-auto">
-              <h3 className="font-bold">YouTube</h3>
+              <h3 className="font-semibold">YouTube</h3>
               <p>Watch tutorials and screencasts from the Temporal team</p>
             </div>
           </a>
@@ -76,8 +78,8 @@ export const Community = () => {
               ></path>
             </svg>
             <div className="flex-auto">
-              <h3 className="font-bold">Twitter</h3>
-              <p>Follow Temporal on Twitter to receive news and updates.</p>
+              <h3 className="font-semibold">Twitter</h3>
+              <p>Follow Temporal on Twitter to receive news and updates</p>
             </div>
           </a>
         </li>
@@ -99,12 +101,33 @@ export const Community = () => {
               ></path>
             </svg>
             <div className="flex-auto">
-              <h3 className="font-bold">GitHub</h3>
+              <h3 className="font-semibold">GitHub</h3>
               <p>Check out Temporal on GitHub</p>
             </div>
           </a>
         </li>
       </ul>
+
+      <h2 className="text-xl font-semibold tracking-wide mt-8 mb-8">
+        Community SDKs (unofficial)
+      </h2>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+        <a
+          href="https://github.com/coinbase/temporal-ruby"
+          className="flex space-x-5 items-center"
+        >
+          <img className="w-8 h-8" src="/img/ruby.svg" alt="Ruby logo" />
+          <p>Ruby</p>
+        </a>
+        <a
+          href="https://github.com/firdaus/temporal-python-sdk"
+          className="flex space-x-5 items-center"
+        >
+          <img className="w-8 h-8" src="/img/python.svg" alt="Python logo" />
+          <p>Python</p>
+        </a>
+      </div>
     </section>
   );
 };
