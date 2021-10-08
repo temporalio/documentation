@@ -12,24 +12,35 @@ That is because the set up of the Server depends very much on the intended use-c
 This page is dedicated to providing a "first principles" approach to self-hosting the Temporal Server.
 As a reminder, experts are accessible via the [Community forum](https://community.temporal.io/) and [Slack](https://join.slack.com/t/temporalio/shared_invite/zt-onhti57l-J0bl~Tr7MqSUnIc1upjRkw) should you have any questions.
 
-> Note: if you are interested in a managed service hosting Temporal Server, please [register your interest in Temporal Cloud](https://docs.temporal.io/#cloud).
+:::info
 
-## What is a Temporal Cluster?
+If you are interested in a fully managed service hosting Temporal Server, please [register your interest in Temporal Cloud](https://temporal.io/cloud). We have a waitlist for early Design Partners.
 
-The Temporal Server is a Go application which you can [import](https://docs.temporal.io/docs/server/options) or run as a binary.
+:::
+
+## Temporal Server
+
+Temporal Server is a Go application which you can [import](/docs/server/options) or run as a binary (we offer [builds with every release](https://github.com/temporalio/temporal/releases)).
+
+<details>
+<summary>
+Temporal Cluster Architecture
+</summary>
 
 import WhatIsCluster from "../content/what-is-a-temporal-cluster.md"
 
 <WhatIsCluster />
 
+</details>
+
 ## Minimum Requirements
 
-- The minimum Temporal dependency is a database. The Server supports [Cassandra](https://cassandra.apache.org/), [MySQL](https://www.mysql.com/), or [PostgreSQL](https://www.postgresql.org/).
+- The minimum Temporal Server dependency is a database. We supports [Cassandra](https://cassandra.apache.org/), [MySQL](https://www.mysql.com/), or [PostgreSQL](https://www.postgresql.org/), with [SQLite on the way](https://github.com/temporalio/temporal/pulls?q=is%3Apr+sort%3Aupdated-desc+sqlite+).
 - Further dependencies are only needed to support optional features. For example, enhanced Workflow search can be achieved using [Elasticsearch](/docs/server/elasticsearch-setup).
 - Monitoring and observability are available with [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/).
 - Each language SDK also has minimum version requirements. See the [versions & dependencies page](/docs/server/versions-and-dependencies/) for precise versions we support together with these features.
 
-Kubernetes is not required for Temporal, but it is a popular deployment platform anyway. 
+Kubernetes is not required for Temporal, but it is a popular deployment platform anyway.
 We do maintain [a Helm chart](https://github.com/temporalio/helm-charts) you can use as a reference, but you are responsible for customizing it to your needs.
 We also [hosted a YouTube discussion](https://www.youtube.com/watch?v=11I87HKS_NM) on how we think about the Kubernetes ecosystem in relation to Temporal.
 
@@ -39,11 +50,13 @@ At minimum, the `development.yaml` file needs to have the [`global`](/docs/serve
 
 The [Server configuration reference](/docs/server/configuration) has a more complete list of possible parameters.
 
-## Before you deploy: Reminder on shard count
+:::warning Before you deploy: Reminder on shard count
 
-A huge part of production deploy is understanding current and future scale - the **number of shards can't be changed after the cluster is in use** so this decision needs to be upfront. Shard count determines scaling to improve concurrency if you start getting lots of lock contention. 
+A huge part of production deploy is understanding current and future scale - the **number of shards can't be changed after the cluster is in use** so this decision needs to be upfront. Shard count determines scaling to improve concurrency if you start getting lots of lock contention.
 The default `numHistoryShards` is 4; deployments at scale can go up to 500-2000 shards.
 Please [consult our configuration docs](https://docs.temporal.io/docs/server/configuration/#persistence) and check with us for advice if you are worried about scaling.
+
+:::
 
 ## Scaling and Metrics
 
@@ -130,13 +143,14 @@ clusterMetadata:
 ### FAQ: Multiple deployments on a single cluster
 
 You may sometimes want to have multiple parallel deployments on the same cluster, eg:
+
 - when you want to split Temporal deployments based on namespaces, e.g. staging/dev/uat, or for different teams who need to share common infrastructure.
 - when you need a new deployment to change `numHistoryShards`.
 
 **We recommend not doing this if you can avoid it**. If you need to do it anyway, double-check the following:
 
 - Have a separate persistence (database) for each deployment
-- Cluster membership ports should be different for each deployment (they can be set through environment variables). For example: 
+- Cluster membership ports should be different for each deployment (they can be set through environment variables). For example:
   - Temporal1 services can have 7233 for frontend, 7234 for history, 7235 for matching
   - Temporal2 services can have 8233 for frontend, 8234 for history, 8235 for matching
 - There is no need to change gRPC ports.
@@ -227,5 +241,5 @@ Third party content that may help:
 - [Recommended Setup for Running Temporal with Cassandra on Production (Temporal Forums)](https://community.temporal.io/t/what-is-the-recommended-setup-for-running-cadence-temporal-with-cassandra-on-production/556)
 - [How To Deploy Temporal to Azure Container Instances](https://mikhail.io/2020/10/how-to-deploy-temporal-to-azure-container-instances/)
 - [How To Deploy Temporal to Azure Kubernetes Service (AKS)](https://mikhail.io/2020/11/how-to-deploy-temporal-to-azure-kubernetes-aks/)
-- ECS runbook (_to be completed_)
-- EKS runbook (_to be completed_)
+- AWS ECS runbook (_we are seeking external contributions, please let us know if you'd like to work on this_)
+- AWS EKS runbook (_we are seeking external contributions, please let us know if you'd like to work on this_)
