@@ -5,9 +5,10 @@ author: Tihomir Surdilovic
 author_title: Developer Advocate
 author_image_url: https://avatars.githubusercontent.com/u/119422?v=4
 tags:
-- workflow
-- community
-  date: 2021-10-11T00:00:00Z
+  - workflow
+  - community
+  - temporal
+date: 2021-10-11T00:00:00Z
 ---
 
 <!--truncate-->
