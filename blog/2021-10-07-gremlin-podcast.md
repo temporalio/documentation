@@ -71,7 +71,7 @@ Obviously, there is some magic there, in the sense that we need to be able to pe
 
 There is a lot more under the the hood:
 
-- **Task Queues**: We don’t invoke services directly, usually we invoke them from queues. But these queues are hidden in a sense, because when you call some API in Workflow code, it gets called asynchronously. But in your code, it’s not visible. It’s just a normal RPC call, but behind the scenes, it’s all asynchronous, has **infinite retries, exponential backoff, heartbeating for granular tasks**, and so on.
+- **Task Queues**: We don’t invoke services directly, usually we invoke them from queues. But these queues are hidden in a sense, because when you call some API in Workflow code, it gets called asynchronously. But in your code, it’s not visible. It’s just a normal RPC call, but behind the scenes, it’s all asynchronous, has **infinite retries, exponential backoff, heartbeating for long-running tasks**, and so on.
 - **Local State**. Workflows are stateful because you can keep state in variables and you don’t need to talk to a database.
 
 Imagine you want to implement the customer loyalty program for airline, so you need to implement a point system. So, you listen to external events, and every time your flight finished, and you will get an event to increment that. In a normal system, you need to get a database, queues, and so on. In our world, you would just increment local variables. And then when this counter reaches a hundred, for example, you will call some downstream service and say, “Okay, promote that person to the next tier.” And **you could write this type of application in 15, 20 minutes** on your desktop because all of the rest is taken care of by Temporal.
