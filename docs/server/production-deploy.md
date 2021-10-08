@@ -28,7 +28,7 @@ And, monitoring and observability are available with [Prometheus](https://promet
 
 See the [versions & dependencies page](/docs/server/versions-and-dependencies/) for precise versions we support together with these features.
 
-Kubernetes is not required for Temporal, but it is popular anyway. We do maintain [a Helm chart](https://github.com/temporalio/helm-charts) as a reference and we recently hosted a YouTube discussion on how we think about the Kubernetes ecosystem in relation to Temporal.
+Kubernetes is not required for Temporal, but it is popular anyway. We do maintain [a Helm chart](https://github.com/temporalio/helm-charts) as a reference. We also [hosted a YouTube discussion](https://www.youtube.com/watch?v=11I87HKS_NM) on how we think about the Kubernetes ecosystem in relation to Temporal.
 
 ### Configuration
 
@@ -36,7 +36,7 @@ At minimum, the `development.yaml` file needs to have the [`global`](/docs/serve
 
 The [Server configuration reference](/docs/server/configuration) has a more complete list of possible parameters.
 
-### Before You Deploy: A Note on Shard Count
+### Before you deploy: Reminder on shard count
 
 A huge part of production deploy is understanding current and future scale - the **number of shards can't be changed after the cluster is in use** so this decision needs to be upfront. Shard count determines scaling to improve concurrency if you start getting lots of lock contention. 
 The default `numHistoryShards` is 4; deployments at scale can go up to 500-2000 shards.
