@@ -28,8 +28,7 @@ In the first of two articles, we will give a general introduction to workflows a
 
 Workflows can be defined in many different ways. One way that we are probably most familiar with is by just using a pen and paper. As we are planning out our day, we can write all of our tasks as a list with some defined order. This list then represents our workflow, or our structured business plan for the day. Let’s say that we write the following initial outline of our morning tasks. Note this is actually our first workflow definition.
 
-![Initial workflow](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/w940u39v5snc2gg4m952.png)
-
+![Initial workflow](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ofupug76zsdoq64rdkrn.png)
 *Figure 1. Initial workflow*
 
 
@@ -37,15 +36,14 @@ Workflows typically have a set goal, the result we are trying to achieve. In our
 
 Our initial workflow is not perfect, and can be improved. For example, we notice that in order to give us more time to eat breakfast, we could shower and brush our teeth at the same time. Furthermore, we can make our breakfast while making coffee and lunch, as well as read our newspaper while eating. We can update our workflow to look like this:
 
-![Revised workflow](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/70fws1bxw00f8s3tnldv.png)
-
+![Revised workflow](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/80ea8yh5xqbl72uk0omk.png)
 *Figure 2. Revised workflow*
 
 
 Next thing we need to realize is that this plan represents a “perfect” scenario. It does not for example deal with failures that we know could happen. We need to update our workflow to deal with predictable failures. Updating workflows is an iterative process. Updates can be based on plain common sense, but also from experience gained over time. One update we want to add to our current workflow is to check the traffic report before driving to work. If the traffic is bad, we will need to notify our boss that we will be late:
 re 3. Further updates
 
-![Further updates](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/xzwmymagftaea6715pcb.png)
+![Further updates](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/zn3zogzvwphkgbnr98fk.png)
 
 *Figure 3. Further updates*
 
@@ -93,14 +91,14 @@ Both Flowchart-based and Form-based DSLs allow us to visually create our workflo
 
 Flowchart and Form-based workflow solutions have been around for many years and are in most cases suited to represent workflows of small to medium complexities.
 
-![Sample visual workflow](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/x88soov35h4wbspe7tc9.png)
+![Sample visual workflow](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/s66vvrvrq3an44w0aicn.png)
 
 *Figure 4. Sample visual workflow*
 
 
 Markup-based DSLs allow us to use light-weight formats such as JSON or YAML to define our workflows. They too target specific technology domains so are well suited for workflows of small to medium complexities. Markup-based DSLs do not rely on a visual representation; however many tools exist to provide this feature. In addition, they can be embedded inside resource definitions of many different frameworks and container-based solutions which use the same markup, making them attractive for integration into existing tech solutions.
 
-![Sample markup-based DSL workflow](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ae1qvcag202i3o6xk7dx.png)
+![Sample markup-based DSL workflow](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/lh8svxp3ah96wmpnv0n9.png)
 
 *Figure 5. Sample markup-based DSL workflow*
 
@@ -119,13 +117,13 @@ As mentioned, when writing workflows using DSLs we should focus on solving probl
 DSLs often run into issues when trying to use them for complex workflow definitions.
 For flowchart-based workflows, the visualization aspect can quickly lose its benefits and become hard to understand and reason over.
 
-![Example large flowchart-based workflow](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/bp2nn0xc36p6b2ad8a7k.png)
+![Example large flowchart-based workflow](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/lr5kkf8dy59hlitj79me.png)
 
 *Figure 6. Example large flowchart-based workflow*
 
 Another issue we can run into is the need to overuse programming language code that is embeddable into the visual workflow representations. Flowchart-based DSLs allow for embedding code as non-visual parameters of certain control-flow logic blocks. This code performs some aspects of the control-flow logic that cannot be expressed by visualization alone. For complex workflow definitions, we often need to add large amounts of code to define certain parts of our workflow logic that can lead to our visual model becoming misleading as to what our workflow is actually supposed to do.
 
-![Code inside flow-chart-based DSL](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/7evt4vw4rngt3h998ae9.png)
+![Code inside flow-chart-based DSL](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/qo4aor9twlbn4itzlh3l.png)
 
 *Figure 7. Code inside flow-chart-based DSL*
 
@@ -143,7 +141,7 @@ As the name implies, they also target a generic class of problems and can be lev
 
 When writing our workflow definitions using code, we can take advantage of many and often all of the programming languages features, and just like generic code that we write, our workflow definitions can scale along with their complexity.
 
-![Sample programming-language based workflow](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/mxk3himpdv4cnbgwzd9o.png)
+![Sample programming-language based workflow](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/5l9oer3kyyx395twh4ij.png)
 
 *Figure 8. Sample programming-language based workflow*
 
