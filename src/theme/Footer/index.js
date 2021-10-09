@@ -135,7 +135,6 @@ function Footer() {
           href: "https://temporal.io/careers",
         },
         {
-          label: "Temporal Careers",
           href: "https://temporal.io/cloud",
           html: `<a href="https://temporal.io/cloud" class="my-2 no-underline inline-flex items-center px-3 py-0.5 rounded-lg text-sm font-medium bg-[color:var(--ifm-color)] text-[color:var(--ifm-background-color)] hover:text-blue-500 hover:opacity-90">Temporal Cloud</a>`,
         },
