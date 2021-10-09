@@ -38,6 +38,7 @@ html[data-theme="dark"] {
   --collapse-button-bg-color-dark: transparent;
   --ifm-badge-background-color: #b2e7ea;
   --ifm-badge-background-color: hsl(210deg, 15%, 20%);
+  --card-color: rgba(17, 24, 39);
 }
 
 html[data-theme="light"] {
@@ -48,8 +49,10 @@ html[data-theme="light"] {
   --ifm-color: #141414;
   --ifm-background-color: rgb(249, 250, 251);
   --ifm-footer-background-color: #ffffff;
-  --ifm-card-background-color: transparent;
-  --ifm-badge-background-color: #b2e7ea;
+  --ifm-card-background-color: #ffffff;
+  --ifm-badge-background-color: rgba(239, 246, 255);
+
+  --card-color: rgba(239, 246, 255);
 }
 
 @font-face {
@@ -147,6 +150,8 @@ div[class^="sidebar_"] .button svg {
   text-align: center; /* needed so that blog post heading is centered in the single blog post view */
 }
 
+/*
+
 .blog-list-page {
   @apply max-w-screen-lg mx-auto px-10 my-16;
 }
@@ -156,7 +161,6 @@ div[class^="sidebar_"] .button svg {
 .blog-list-page aside {
   @apply text-sm mr-10 px-2;
 }
-/* class needed so that blog page can have a different layout than the individual blog post */
 .blog-list-page .post-header {
   @apply items-start;
 }
@@ -164,10 +168,7 @@ div[class^="sidebar_"] .button svg {
   @apply -mb-3 shadow-lg;
 }
 
-/* Tags Page */
-.blog-tags-post-page {
-  @apply max-w-screen-lg mx-auto px-10 my-16;
-}
+
 
 .blog-tags-post-page aside {
   @apply text-sm mr-10 px-2;
@@ -177,21 +178,22 @@ div[class^="sidebar_"] .button svg {
   @apply flex flex-col space-y-12 max-w-screen-lg mx-auto;
 }
 
-/* blog / docs navigation*/
+*/
+
+.blog-tags-post-page {
+  @apply max-w-screen-lg mx-auto px-10 my-16;
+}
+
+/* Pagination */
 .pagination-nav {
-  @apply flex flex-col md:flex-row space-y-5 md:space-y-0 space-x-0 md:space-x-10 items-center justify-center;
+  @apply flex flex-col md:flex-row space-y-5 md:space-y-0 space-x-0 md:space-x-10 items-start justify-center;
 }
 .pagination-nav__item {
   @apply max-w-md w-full;
 }
 .pagination-nav__link {
-  @apply border-0 shadow-lg rounded-lg p-5 text-lg flex-grow  bg-[color:var(--ifm-card-background-color)];
+  @apply border-0 shadow-lg rounded-lg p-5 text-lg flex-grow  bg-[color:var(--ifm-card-background-color)] hover:scale-105 transform transition-transform;
 }
-/* .pagination-nav__item a pagination-nav__sublabel {
-}
-
-.pagination-nav__item a pagination-nav__label {
-} */
 
 /* Navbar */
 .navbar__inner {
@@ -217,26 +219,11 @@ div[class^="sidebar_"] .button svg {
 }
 
 /* Footer */
-.footer.container {
-  background-color: var(--ifm-footer-background-color);
-  @apply max-w-screen-lg w-full mx-auto !important;
-}
-
-.footer a:hover {
-  @apply opacity-90;
-}
-.footer__links {
-  @apply max-w-screen-lg mx-auto px-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4;
-}
 
 .footer .footer__svg {
-  @apply inline;
+  @apply inline m-8 fill-current;
 }
 
-.footer .footer__copyright {
-  margin-bottom: 1rem;
-  opacity: 0.8;
-}
 .footer .footer__link-item span svg {
   @apply hidden;
 }
@@ -246,14 +233,9 @@ div[class^="sidebar_"] .button svg {
     display: none;
   }
 
-  .footer .footer__block {
+  /* .footer .footer__block {
     display: block;
-  }
-}
-
-.footer .footer__svg {
-  fill: currentColor;
-  margin: 2em;
+  } */
 }
 
 /* Docs */
@@ -407,10 +389,9 @@ div[class^="sidebar_"] .button svg {
   @apply transition transform hover:scale-105 motion-reduce:transition-none motion-reduce:transform-none;
 }
 
-.tippy-box[data-theme~="tooltip"] {
-  @apply bg-[color:var(--ifm-color)] text-[color:var(--ifm-background-color)] p-2 rounded-lg shadow;
-}
-.tippy-box[data-theme~="tooltip"][data-placement^="top"]
-  > .tippy-arrow::before {
-  @apply border-t-[color:var(--ifm-color)];
-}
+/* .tableOfContents {
+  max-height: calc(100vh - (var(--ifm-navbar-height) + 2rem));
+  overflow-y: auto;
+  position: sticky;
+  top: calc(var(--ifm-navbar-height) + 1rem);
+} */
