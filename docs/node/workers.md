@@ -6,53 +6,61 @@ sidebar_label: Workers
 
 ## What is a Worker?
 
-A Worker is an object that connects to the Temporal Server and executes Workflows and [Activities](/docs/node/activities) from [Task Queues](/docs/node/task-queues).
-Workers are run on user-controlled hosts.
-You can use the `@temporalio/worker` package's `Worker` class to create and run as many Workers as your use case demands, across any number of hosts.
+A Worker is an object that connects to the Temporal Server, polls **Task Queues** for Commands, and executes [Workflows](/docs/node/workflows) and [Activities](/docs/node/activities) in response to those Commands.
 
-Workers poll [Task Queues](/docs/node/task-queues) for Tasks, execute chunks of code in response to those Tasks, and then communicate the results back to the Temporal Server.
+- Workers are run on user-controlled hosts, an important security feature which means Temporal Server (or Temporal Cloud) never executes your Workflow or Activity code, and that Workers can have different hardware (e.g. custom GPUs for Machine Learning) than the rest of the system.
+- Workers automatically discover Workflows and Activities based on `workDir` or specified paths.
+- You can use the `@temporalio/worker` package's [`Worker`](https://nodejs.temporal.io/api/classes/worker.Worker) class to create and run as many Workers as your use case demands, across any number of hosts.
+- Workers poll [Task Queues](/docs/node/task-queues) for Tasks, execute chunks of code in response to those Tasks, and then communicate the results back to the Temporal Server.
+- You can check the status of Workers and the Task Queues they poll with Temporal Web.
 
-As a developer, running Workers is a fairly simple procedure because the Node SDK handles all of the communication between the Worker and the Temporal Server behind the scenes.
+## How to develop a Worker
 
-## How to start a Worker
+import Content from '../content/how-to-develop-a-worker-program-in-node.md'
 
-To start a Worker, you need to pass the following two options to the `Worker.create()` function:
+<Content />
 
-1. The `workDir`. The Node SDK will automatically register:
+<details>
+<summary>
+The Worker package embeds the <a href="https://github.com/temporalio/sdk-core">Temporal Rust Core SDK</a>, it comes pre-compiled for most installations.
+</summary>
 
-- Activities from any `.js` files in `workDir + '/../activities'`
-- Workflows from any `.js` files in `workDir + '/../workflows'`
+We've provided pre-compiled binaries for:
 
-2. The `taskQueue` the Worker should poll.
+- Mac with an Intel chip: `x86_64-apple-darwin`
+- Mac with an Apple chip: `aarch64-apple-darwin`
+- Linux with x86_64 architecture: `x86_64-unknown-linux-gnu`
+- Windows with x86_64 architecture: `x86_64-pc-windows-gnu` (Windows is not yet supported but it is a [priority for us](https://github.com/temporalio/sdk-node/issues/12)).
 
-Below is an example of starting a Worker that polls the Task Queue named 'tutorial'.
+If you need to compile the Worker yourself, set up the Rust toolchain by following the instructions [here](https://rustup.rs/).
 
-```ts
-import { Worker } from '@temporalio/worker';
+</details>
 
-main().catch((err) => {
-  console.log(err);
-  process.exit(1);
-});
+## How to shut down a Worker and track its state
 
-async function main() {
-  const worker = await Worker.create({
-    workDir: __dirname,
-    taskQueue: 'test',
-  });
-  await worker.run();
-}
-```
+You can programmatically shut down a worker with `worker.shutdown()`.
+Shut downs should be rare and often done manually in development (with `SIGINT` aka `^C`) but you may do it in integration tests or in automating a fleet of workers.
 
-In the above example, the Node SDK will look for `.js` files in `../workflows` that export a `workflow` property, and register their `main` property as Workflows.
-For example, suppose `../workflows/example.js`, relative to `workDir`, contains the below code.
+At any point in time you can query Worker state with `worker.getState()`.
+A Worker is in one of 7 states at any given point:
 
-```ts
-async function main(): Promise<string> {
-  return 'Hello, World!';
-}
+- `INITIALIZED` - The initial state of the Worker after calling Worker.create and successful connection to the server
+- `RUNNING` - `worker.run` was called, polling task queues
+- `FAILED` - Worker encountered an unrecoverable error, `worker.run` should reject with the error
+- The last 4 states are related to the Worker shutdown process:
+  - `STOPPING` - Worker.shutdown was called or received shutdown signal, worker will forcefully shutdown in shutdownGraceTime
+  - `DRAINING` - Core has indicated that shutdown is complete and all Workflow tasks have been drained, waiting for activities and cached workflows eviction
+  - `DRAINED` - All activities and workflows have completed, ready to shutdown
+  - `STOPPED` - Shutdown complete, `worker.run` resolves
 
-export const workflow = { main };
-```
+If you need even more visibility into internal worker state, [see the API reference for more](https://nodejs.temporal.io/api/classes/worker.Worker).
 
-The `Worker.create()` call will automatically register a Workflow named 'example' that returns the string 'Hello, World'.
+## Worker Security and Networking
+
+The Node SDK usually handles all of the communication between the Worker and the Temporal Server behind the scenes - no port configuration is required for development usecases.
+
+In production settings, [Temporal supports mTLS encryption](/docs/server/security), required by Temporal Cloud.
+To configure this, this SDK exposes [the Rust Core SDK](https://github.com/temporalio/sdk-core) as `Core`, which you can configure before you run `workflow.create`:
+
+<!--SNIPSTART nodejs-mtls-worker-->
+<!--SNIPEND-->

@@ -3,7 +3,7 @@ id: how-to-deploy-temporal-to-kubernetes-for-testing-and-development
 title: How to deploy the Temporal Server to Kubernetes for testing and development
 description: Use Temporal Helm Charts to deploy the Temporal Server to a Kubernetes cluster.
 tags:
-  - guide
+  - operation-guide
 ---
 
 import RelatedReadList from '../components/RelatedReadList.js'

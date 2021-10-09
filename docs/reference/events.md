@@ -1,16 +1,15 @@
 ---
-id: event-reference
-title: Workflow Execution Event reference
-sidebar_label: Event reference
+id: events
+title: Event reference
+description: The following is a complete list of all possible Events that could appear in a Workflow Execution History.
+sidebar_label: Events
+tags:
+  - reference
 ---
 
 The following is a complete list of all possible Events that could appear in a Workflow Execution History.
 
-:::note
-
 Each Event corresponds to an `enum` that is defined in the [Server API](https://github.com/temporalio/api/blob/master/temporal/api/enums/v1/event_type.proto).
-
-:::
 
 ### WorkflowExecutionStarted
 

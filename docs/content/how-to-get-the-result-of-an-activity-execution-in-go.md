@@ -3,7 +3,8 @@ id: how-to-get-the-result-of-an-activity-execution-in-go
 title: How to get the result of an Activity Execution in Go
 description: Use the Future returned from the `ExecuteActivity` API call to retrieve the result.
 tags:
-  - guide
+  - developer-guide
+  - go
 ---
 
 import RelatedReadList from '../components/RelatedReadList.js'

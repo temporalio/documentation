@@ -1,11 +1,18 @@
 ---
 id: what-is-an-activity-heartbeat
 title: What is an Activity Heartbeat?
-description: todo
+description: An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Server. Each ping informs the Temporal Server that the Activity Execution is making progress and the Worker has not crashed.
+tags:
+  - explanation
 ---
 
-Provides to the Temporal server the status of an [Activity Task](#activity-task) that is being executed.
+An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Server.
+Each ping informs the Temporal Server that the Activity Execution is making progress and the Worker has not crashed.
 
-- Activity Heartbeats help ensure that [Activity](#activity) execution failures and timeouts are identified quickly.
-- Activity Heartbeats are implemented in code and are recorded at the discretion of the [Workflow](#workflow) implementation.
-- Custom [Activity](#activity) progress information can be included in an Activity Heartbeat and can be used when the [Activity](#activity) is retried.
+Activity Heartbeats work in conjunction with a [Heartbeat Timeout](/docs/content/what-is-a-heartbeat-timeout).
+
+Activity Heartbeats are implemented within the Activity Definition.
+Custom progress information can be included in the Heartbeat which can then be used by the Activity Execution should a retry occur.
+
+An Activity Heartbeat can be recorded as often as needed (e.g. once a minute or every loop iteration).
+Temporal SDKs control the rate in which Heartbeats are sent to the Server.

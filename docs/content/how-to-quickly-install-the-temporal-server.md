@@ -3,7 +3,7 @@ id: how-to-quickly-install-the-temporal-server
 title: How to quickly install the Temporal Server for testing and local development
 description: Use `docker-compose` to quickly install and run the Temporal Server locally to test the system while developing Workflows.
 tags:
-  - guide
+  - operation-guide
 ---
 
 import RelatedReadList from '../components/RelatedReadList.js'

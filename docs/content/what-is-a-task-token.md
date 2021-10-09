@@ -1,9 +1,11 @@
 ---
 id: what-is-a-task-token
 title: What is a Task Token?
-description: todo
+description: A Task Token is a unique Id that correlates to an Activity Execution.
+tags:
+  - explanation
 ---
 
-A unique correlation Id for a Temporal [Activity](#activity).
+A Task Token is a unique Id that correlates to an [Activity Execution](/docs/content/what-is-an-activity-execution).
 
-- [Activity](#activity) completion calls take either a single Task Token, or the [Namespace](#namespace), [Workflow Id](#workflow-id), and [Activity Id](#activity-id) as a set of arguments.s
+Activity Execution completion calls take either a single Task Token, or the [Namespace](/docs/content/what-is-a-namespace), [Workflow Id](/docs/content/what-is-a-workflow-id), and [Activity Id](/docs/content/what-is-an-activity-id) as a set of arguments.s

@@ -6,7 +6,9 @@ tags:
   - explanation
 ---
 
-A Retry Policy is collection of attributes that instructs the Temporal Server how to retry a failure of a [Workflow Execution](#workflow-execution) or an [Activity Execution](#activity-execution).
+import RelatedReadList from '../components/RelatedReadList.js'
+
+A Retry Policy is collection of attributes that instructs the Temporal Server how to retry a failure of a [Workflow Execution](#workflow-execution) or an [Activity Task Execution](#activity-task-execution).
 
 - If a custom Retry Policy is to be used, it must be provided as an options parameter when a [Workflow Execution](#workflow-execution) or an [Activity Execution](#activity-execution) is invoked.
 
@@ -31,7 +33,7 @@ Retry Policies do not apply to [Workflow Task Executions](#workflow-task-executi
   - A cron Workflow or some other stateless, always-running Workflow Execution that can benefit from retries.
   - A file-processing or media-encoding Workflow Execution that downloads files to a host.
 
-- When an [Activity Execution](#activity-execution) is invoked, it is associated with a default Retry Policy, and thus [Activity Task Executions](#activity-execution) are retried by default.
+- When an [Activity Execution](#activity-execution) is spawned, it is associated with a default Retry Policy, and thus [Activity Task Executions](#activity-execution) are retried by default.
   When an [Activity Task Execution](#activity-execution) is retried, the Server places a new [Activity Task](#activity-task) into its respective [Activity Task Queue](#activity-task-queue), which results in a new [Activity Task Execution](#activity-task-execution).
 
 **Default values for Retry Policy**
@@ -83,3 +85,10 @@ Non-Retryable Errors = []
   - If one of those errors occurs, the [Activity Task Execution](#activity-task-execution) or [Workflow Execution](#workflow-execution) is not retried.
 - **Use case**: There may be errors that you know of that should not trigger a retry.
   In this case you can specify them such that if they occur, the given execution will not be retried.
+
+<RelatedReadList
+readlist={[
+["How to set a Retry Policy for a Workflow Execution in Go","/docs/content/how-to-set-startworkflowoptions-in-go/#retrypolicy","developer guide"],
+["How to set a custom Retry Policy for Activity Task Executions in Go","/docs/content/how-to-set-activityoptions-in-go/#retrypolicy","developer guide"]
+]}
+/>
