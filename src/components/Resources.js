@@ -4,29 +4,29 @@ import Link from "@docusaurus/Link";
 
 const links = [
   {
-    type: "video",
-    title: "How Temporal works",
-    length: "28 min watch",
-    url: "/docs/external-resources#how-temporal-works",
-  },
-  {
-    type: "video",
-    title: "A look at the temporal architecture",
-    length: "28 min watch",
-    url: "/docs/external-resources#how-temporal-works",
-  },
-  {
-    type: "video",
+    type: "article",
     title: "Why Temporal?",
-    length: "28 min watch",
-    url: "/docs/external-resources#how-temporal-works",
+    length: "3-20 min reads",
+    url: "/docs/external-resources#why-workflow-orchestration",
   },
   {
     type: "article",
-    title: "Why workflow orchestration",
-    length: "5 min read",
+    title: "Core Concepts",
+    length: "20 min read",
+    url: "/docs/concepts/introduction",
+  },
+  {
+    type: "video",
+    title: "Podcasts, Talks, and Workshops",
+    length: "23min - 3hr videos",
     url: "/docs/external-resources#how-temporal-works",
   },
+  {
+    type: "video",
+    title: "Temporal architecture deep dive",
+    length: "23 min watch",
+    url: "/blog/workflow-engine-principles/",
+  }
 ];
 
 export const Resources = () => {
@@ -65,7 +65,7 @@ export const Resources = () => {
             )}
 
             <Link className="flex-1" to={useBaseUrl(link.url)}>
-              {link.title} - {link.length}
+              {link.title} <span className="opacity-80 uppercase text-xs">{link.length}</span>
             </Link>
           </li>
         ))}

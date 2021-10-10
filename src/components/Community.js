@@ -57,11 +57,11 @@ export const Community = () => {
             </svg>
             <div className="flex-auto">
               <h3 className="font-semibold">YouTube</h3>
-              <p>Watch tutorials and screencasts from the Temporal team</p>
+              <p>Watch tutorials and meetups with Temporal users</p>
             </div>
           </a>
         </li>
-        <li>
+        {/* <li>
           <a
             href="https://twitter.com/temporalio"
             className="flex items-start space-x-4"
@@ -79,7 +79,24 @@ export const Community = () => {
             </svg>
             <div className="flex-auto">
               <h3 className="font-semibold">Twitter</h3>
-              <p>Follow Temporal on Twitter to receive news and updates</p>
+              <p>Follow for Temporal news and events!</p>
+            </div>
+          </a>
+        </li> */}
+        <li>
+          <a
+            href="https://temporal.io/meetup"
+            className="flex items-start space-x-4"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg"
+              ariaLabel="Zoom" role="img"
+              className="flex-none text-black w-12 h-12 bg-blue-500 rounded-lg"
+              viewBox="0 0 512 512"><rect
+                width="48" height="48" rx="12"
+                fill="#2D8CFF" /><path fill="#fff" d="M428 357c8 2 15-2 19-8 2-3 2-8 2-19V179c0-11 0-15-2-19-3-8-11-11-19-8-21 14-67 55-68 72-.8 3-.8 8-.8 15v38c0 8 0 11 .8 15 1 8 4 15 8 19 12 9 52 45 61 45zM64 187c0-15 0-23 3-27 2-4 8-8 11-11 4-3 11-3 27-3h129c38 0 57 0 72 8 11 8 23 15 30 30 8 15 8 34 8 72v68c0 15 0 23-3 27-2 4-8 8-11 11-4 3-11 3-27 3H174c-38 0-57 0-72-8-11-8-23-15-30-30-8-15-8-34-8-72z" /></svg>
+            <div className="flex-auto">
+              <h3 className="font-semibold">Meetup</h3>
+              <p>Join our monthly meetup and ask questions!</p>
             </div>
           </a>
         </li>
@@ -102,10 +119,57 @@ export const Community = () => {
             </svg>
             <div className="flex-auto">
               <h3 className="font-semibold">GitHub</h3>
-              <p>Check out Temporal on GitHub</p>
+              <p>Give Temporal a star on GitHub!</p>
             </div>
           </a>
         </li>
+      </ul>
+
+      <h2 className="text-xl font-semibold tracking-wide mt-8 mb-8">
+        Community Distros (Projects that build atop Temporal)
+      </h2>
+
+      <ul className="list-disc text-white pl-4 space-y-2">
+        <li>
+          <p className="flex space-x-5 items-center ">
+            <a
+              href="https://github.com/airbytehq/airbyte"
+              className="hover:underline"
+            >
+              Airbyte (ELT data pipeline platform)
+            </a>
+            <a
+              href="https://www.youtube.com/watch?v=K25Bt5asd8I"
+              className=" opacity-80 hover:underline"
+            >
+              meetup talk
+            </a>
+          </p>
+        </li>
+        <li><a
+          href="https://github.com/spiral/roadrunner"
+          className="flex space-x-5 items-center hover:underline"
+        >
+          <p>Roadrunner (PHP application server)</p>
+        </a></li>
+        <li><a
+          href="https://github.com/coinbase/temporal-ruby"
+          className="flex space-x-5 items-center hover:underline"
+        >
+          <p>Coinbase/temporal-ruby (Third party SDK in production use)</p>
+        </a></li>
+        <li><a
+          href="https://nunchi.studio/blacksmith/start/onboarding/how"
+          className="flex space-x-5 items-center hover:underline"
+        >
+          <p>Nunchi Blacksmith (ETL data platform)</p>
+        </a></li>
+        <li><a
+          href="https://github.com/DataDog/temporalite"
+          className="flex space-x-5 items-center hover:underline"
+        >
+          <p>DataDog/temporalite (Single binary, zero dependency Temporal)</p>
+        </a></li>
       </ul>
 
       <h2 className="text-xl font-semibold tracking-wide mt-8 mb-8">
