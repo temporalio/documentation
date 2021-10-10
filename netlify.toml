@@ -5,7 +5,6 @@
 
     skipPatterns = ["#", 
     "www.google-analytics.com", "www.googletagmanager.com", 
-    "/docs/glossary",
     "/docs/server/how-to-deploy-temporal-to-kubernetes-for-testing-and-development"
     ]
     pretty = true
