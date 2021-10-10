@@ -329,6 +329,7 @@ module.exports = {
               label: "Code Samples",
               href: "https://github.com/temporalio/samples-node",
             },
+            "node/package-initializer",
           ],
         },
         {
@@ -357,7 +358,6 @@ module.exports = {
           type: "category",
           label: "Advanced APIs",
           items: [
-            "node/package-initializer",
             "node/cancellation-scopes",
             "node/determinism",
             "node/external-dependencies",
