@@ -16,25 +16,15 @@ This SDK and associated documentation is in an Alpha stage and may change at any
 
 > ⚠️ This doc is yet to be finalised - what you see below is a VERY rough draft.
 
-The ability to set durable timers in Workflows is a core feature of Temporal that helps you write durable asynchronous code as easily as you do synchronous ones.
+The ability to set durable timers in Workflows is a core feature of Temporal that helps you write durable asynchronous code as easily as you do synchronous ones (often used closely with signals and queries).
+Temporal offers you a small set of primitives that you can use to build reusable workflow libraries and utilities.
 
-The core Timer APIs relevant to the Node.js SDK are:
+Some example design patterns are provided below to give you a head start.
 
-- The [`setTimeout`](https://nodejs.temporal.io/api/namespaces/workflow/#timers) global works as normal in JavaScript. 
-We recommend using our `sleep` API instead of `setTimeout` because it supports cancellation.
-- [`sleep(timeout)`](https://nodejs.temporal.io/api/namespaces/workflow/#sleep): a cancellation-aware Promise wrapper for `setTimeout`, that accepts either a string or integer timeout.
-- `condition(timeout?, function)`: A promise that resolves when a supplied function returns `true` or if an (optional) `timeout` happens first. Comparable to `Workflow.await` in other SDKs and useful when you don't know how long you need to wait.
-
-:::caution Disambiguating Confusion
-
-This document only covers Workflow Timers.
-
-- There is an unrelated [`sleep` utility function](https://nodejs.temporal.io/api/classes/activity.context/#sleep) available in Activity Context that is not durable, but is cancellation aware. See [the Activities docs for details](/docs/node/activities).
-- Timers are unrelated to Cron Workflows, which are a Workflow option that you can set for recurring Workflows. See [the Workflows docs for details](/docs/node/workflows).
-
-:::
-
-:::info Why Durable Timers Are a Hard Problem
+<details>
+<summary>
+Why Durable Timers Are a Hard Problem
+</summary>
 
 JavaScript has a `setTimeout`, which seems relatively unremarkable.
 However, they are held in memory - if your system goes down, those timers are gone.
@@ -50,14 +40,27 @@ What we mean by "handling jumps": if you had timers that were supposed to go off
 
 You can read more about [Temporal Node SDK's Determinism here](/docs/node/determinism).
 
+</details>
+
+:::caution Disambiguating Confusion
+
+This document only covers Workflow Timers.
+
+- There is an unrelated [`sleep` utility function](https://nodejs.temporal.io/api/classes/activity.context/#sleep) available in Activity Context that is not durable, but is cancellation aware. See [the Activities docs for details](/docs/node/activities).
+- Timers are unrelated to Cron Workflows, which are a Workflow option that you can set for recurring Workflows. See [the Workflows docs for details](/docs/node/workflows).
+
 :::
 
 ## API Examples
 
-The [`setTimeout`](https://nodejs.temporal.io/api/namespaces/workflow/#timers) global works as normal in JavaScript. 
-The Workflow's v8 isolate environment completely replaces it, including inside libraries that you use, to provide a complete JS runtime.
 
+The core Timer APIs relevant to the Node.js SDK are:
+
+- The [`setTimeout`](https://nodejs.temporal.io/api/namespaces/workflow/#timers) global works as normal in JavaScript. 
+The Workflow's v8 isolate environment completely replaces it, including inside libraries that you use, to provide a complete JS runtime.
 We recommend using our `sleep` API instead of `setTimeout` because it supports cancellation (see below).
+- [`sleep(timeout)`](https://nodejs.temporal.io/api/namespaces/workflow/#sleep): a cancellation-aware Promise wrapper for `setTimeout`, that accepts either a string or integer timeout.
+- `condition(timeout?, function)`: A promise that resolves when a supplied function returns `true` or if an (optional) `timeout` happens first. Comparable to `Workflow.await` in other SDKs and useful when you don't know how long you need to wait.
 
 ### `sleep`
 
@@ -88,7 +91,7 @@ await sleep("30 days").catch(() => {
 
 ### `condition`
 
-`condition` blocks until its given function evaluates to `true`, or optionally, a timeout expires. 
+[`condition`](https://nodejs.temporal.io/api/namespaces/workflow/#condition) blocks until its given function evaluates to `true`, or optionally, a timeout expires. 
 The timeout also uses the [ms](https://www.npmjs.com/package/ms) package to take either a string or number of milliseconds.
 
 ```ts
@@ -101,13 +104,11 @@ The timeout also uses the [ms](https://www.npmjs.com/package/ms) package to take
  */
 export function condition(timeout: number | string, fn: () => boolean): Promise<boolean>;
 
-/**
- * Returns a Promise that resolves when `fn` evaluates to `true`.
- */
+// Returns a Promise that resolves when `fn` evaluates to `true`.
 export function condition(fn: () => boolean): Promise<void>;
 
 
-// await a condition to be true
+// Usage
 import { condition } from '@temporalio/workflow';
 
 let x = 0;
@@ -188,6 +189,12 @@ A variant of the Race Timer pattern where the promise resolves IF no Signal is r
 Here is how you can build an updatable timer with `condition`:
 
 ```ts
+// desired API
+const timer = new UpdateableTimer(Date.now() + 10000);
+on(updateTimerSignal, (deadline) => (timer.deadline = deadline)); // send in new deadlines via Signal
+await timer;
+
+// Implementation
 import { condition } from '@temporalio/workflow';
 
 export class UpdatableTimer implements PromiseLike<void> {
@@ -220,9 +227,6 @@ export class UpdatableTimer implements PromiseLike<void> {
     this.deadlineUpdated = true;
   }
 }
-
-// usage
-const timer = new UpdateableTimer(Date.now() + 10000);
-on(updateTimerSignal, (deadline) => (timer.deadline = deadline)); // send in new deadlines via Signal
-await timer;
 ```
+
+If you are working on a Workflow or utility library, please [get in touch on Slack](https://temporal.io/slack), we would love to help you and promote your work.
