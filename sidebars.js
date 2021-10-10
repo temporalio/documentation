@@ -309,11 +309,6 @@ module.exports = {
       collapsed: false,
       items: [
         {
-          type: "category",
-          label: "Tutorials",
-          items: ["node/introduction", "node/hello-world"],
-        },
-        {
           type: "link",
           label: "API reference",
           href: "https://nodejs.temporal.io",
@@ -322,6 +317,19 @@ module.exports = {
           type: "link",
           label: "Github source",
           href: "https://github.com/temporalio/sdk-node",
+        },
+        {
+          type: "category",
+          label: "Tutorials",
+          items: [
+            "node/introduction",
+            "node/hello-world",
+            {
+              type: "link",
+              label: "Code Samples",
+              href: "https://github.com/temporalio/samples-node",
+            },
+          ],
         },
         {
           type: "category",
