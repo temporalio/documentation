@@ -35,7 +35,10 @@ import { Worker, DefaultLogger } from '@temporalio/worker';
 const logger = new DefaultLogger('WARNING', (severity, message, meta) => {
   console.log(`Custom logger: ${severity} — ${message}`);
 });
-const worker = await Worker.create({ workDir: __dirname, logger });
+const worker = await Worker.create({ 
+  workflowsPath: require.resolve('./workflows'), 
+  logger 
+});
 ```
 
 The log levels are [listed here](https://nodejs.temporal.io/api/modules/worker/#loglevel) in increasing order of severity.
@@ -53,5 +56,8 @@ const logger = winston.createLogger({
   format: winston.format.json(),
   transports: [new transports.File({ filename: '/path/to/worker.log' })],
 });
-const worker = await Worker.create({ workDir: __dirname, logger });
+const worker = await Worker.create({ 
+  workflowsPath: require.resolve('./workflows'),
+  logger 
+});
 ```

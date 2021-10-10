@@ -1,7 +1,7 @@
 ---
 id: workers
-title: Workers in Node
-sidebar_label: Workers
+title: Workers and Task Queues in Node
+sidebar_label: Workers and Task Queues
 ---
 
 ## What is a Worker?
@@ -9,10 +9,75 @@ sidebar_label: Workers
 A Worker is an object that connects to the Temporal Server, polls **Task Queues** for Commands, and executes [Workflows](/docs/node/workflows) and [Activities](/docs/node/activities) in response to those Commands.
 
 - Workers are run on user-controlled hosts, an important security feature which means Temporal Server (or Temporal Cloud) never executes your Workflow or Activity code, and that Workers can have different hardware (e.g. custom GPUs for Machine Learning) than the rest of the system.
-- Workers automatically discover Workflows and Activities based on `workDir` or specified paths.
+- Workers bundle Workflows based on `workflowsPath` and their dependencies from `nodeModulesPaths` with Webpack and register and run them inside v8 isolates.
+- Workers directly register `activities` inside the normal Node.js environment.
 - You can use the `@temporalio/worker` package's [`Worker`](https://nodejs.temporal.io/api/classes/worker.Worker) class to create and run as many Workers as your use case demands, across any number of hosts.
-- Workers poll [Task Queues](/docs/node/task-queues) for Tasks, execute chunks of code in response to those Tasks, and then communicate the results back to the Temporal Server.
+- Workers poll **Task Queues** for Tasks, execute chunks of code in response to those Tasks, and then communicate the results back to the Temporal Server.
 - You can check the status of Workers and the Task Queues they poll with Temporal Web.
+
+
+## What is a Task Queue?
+
+import SharedTaskQueuesBasic from '../shared/task-queues-basic.md'
+
+<SharedTaskQueuesBasic
+workflowLink="/docs/java/workflows"
+workerLink="/docs/java/workers"
+/>
+
+## Where Task Queues are used
+
+In Node, a Task Queue is represented in code by name, as a `string`.
+There are 3 places where the name of the Task Queue is supplied by the developer.
+
+<details>
+<summary>
+
+1. When starting a Workflow, you must pass the `taskQueue` option to the [WorkflowClient's `createWorkflowHandle()` method](https://nodejs.temporal.io/api/classes/client.workflowclient#newworkflowhandle).
+
+</summary>
+
+```ts
+const workflow = workflowClient.createWorkflowHandle(myWorkflow, {
+  taskQueue: 'my-task-queue',
+});
+
+const result = await workflow.execute();
+```
+
+</details>
+<details>
+<summary>
+
+2. When creating a Worker, you must pass the `taskQueue` option to the [`Worker.create()` function](https://nodejs.temporal.io/api/classes/worker.worker-1#create).
+
+</summary>
+
+```ts
+const worker = await Worker.create({
+  workflowsPath: require.resolve('./workflows'),
+  taskQueue: 'my-task-queue',
+});
+```
+
+</details>
+<details>
+<summary>
+
+3. Optionally, in Workflow code, when calling an Activity, you can specify the task queue by passing the `taskQueue` option to [`createActivityHandle()`](https://nodejs.temporal.io/api/namespaces/workflow#configureactivities). If you do not specify a `taskQueue`, then the Node SDK places Activity Tasks in the same Task Queue as the Workflow Task Queue.
+
+</summary>
+
+```ts
+const { greet } = createActivityHandle<typeof activities>({
+  taskQueue: 'my-other-task-queue',
+  startToCloseTimeout: '1s',
+});
+```
+
+</details>
+
+
 
 ## How to develop a Worker
 

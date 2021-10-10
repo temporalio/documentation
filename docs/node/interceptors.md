@@ -125,7 +125,7 @@ export const interceptors = () => ({
 
 ```ts
 const worker = await Worker.create({
-  workDir: __dirname,
+  workflowsPath: require.resolve('./workflows'),
   interceptors: { workflowModules: ['my-interceptors'] },
 });
 ```

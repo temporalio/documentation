@@ -350,7 +350,6 @@ module.exports = {
           label: "Advanced APIs",
           items: [
             "node/package-initializer",
-            "node/task-queues",
             "node/cancellation-scopes",
             "node/determinism",
             "node/external-dependencies",
