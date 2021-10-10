@@ -11,7 +11,7 @@ import {
 
 export default function Home() {
   const context = useDocusaurusContext();
-  const {siteConfig = {}} = context;
+  const { siteConfig = {} } = context;
   return (
     <div className="main">
       <Layout
