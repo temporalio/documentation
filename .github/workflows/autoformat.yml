@@ -12,19 +12,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout on push
-        # github object: https://docs.github.com/en/actions/learn-github-actions/contexts#github-context
-        # event names: https://docs.github.com/en/actions/learn-github-actions/events-that-trigger-workflows
-        if: "github.event_name == 'push'"
-        uses: actions/checkout@v2
-
-      - name: Checkout on PR
-        if: "github.event_name == 'pull_request'"
+      - name: Checkout
         uses: actions/checkout@v2
         with:
           # Make sure the actual branch is checked out when running on pull requests
-          # event.pull_request: https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#pull_request
-          ref: ${{ github.event.pull_request.head.sha }}
+          ref: ${{ github.head_ref }}
 
       - name: Prettify code
         uses: creyD/prettier_action@v3.3
