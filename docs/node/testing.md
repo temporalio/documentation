@@ -37,7 +37,7 @@ describe('example workflow', function () {
   before(async function () {
     this.timeout(10000);
     worker = await Worker.create({
-      workDir: `${__dirname}/../lib`,
+      workflowsPath: require.resolve('./workflows'),
       taskQueue: 'testhttp',
       logger: new DefaultLogger('ERROR'),
     });
