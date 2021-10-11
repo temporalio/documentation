@@ -75,7 +75,7 @@ We recommend using our `sleep` API instead of `setTimeout` because it supports c
 export function sleep(ms: number | string): Promise<void>
 
 // durably sleep for 30 days
-import { condition, sleep } from '@temporalio/workflow';
+import { sleep } from '@temporalio/workflow';
 
 await sleep("30 days") // string API
 await sleep(30 * 24 * 60 * 60 * 1000) // numerical API
