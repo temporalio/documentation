@@ -127,7 +127,8 @@ const worker = await Worker.create({
 <details>
 <summary>
 
-3. Optionally, in Workflow code, when calling an Activity, you can specify the task queue by passing the `taskQueue` option to [`createActivityHandle()`](https://nodejs.temporal.io/api/namespaces/workflow#configureactivities). If you do not specify a `taskQueue`, then the Node SDK places Activity Tasks in the same Task Queue as the Workflow Task Queue.
+3. Optionally, in Workflow code, when calling an Activity, you can specify the task queue by passing the `taskQueue` option to [`createActivityHandle()`](https://nodejs.temporal.io/api/namespaces/workflow/#createactivityhandle) or [`createChildWorkflowHandle()`](https://nodejs.temporal.io/api/namespaces/workflow/#createchildworkflowhandle).
+If you do not specify a `taskQueue`, then the Node SDK places Activity Tasks in the same Task Queue as the Workflow Task Queue.
 
 </summary>
 
