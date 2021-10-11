@@ -147,6 +147,6 @@ The database stores the following types of data:
 <RelatedReadList
 readlist={[
 ["How to quickly install the Temporal Server", "/docs/content/how-to-quickly-install-the-temporal-server", "developer guide"],
-["How to deploy the Temporal Server to Kubernetes for testing and development", "how-to-deploy-temporal-to-kubernetes-for-testing-and-development", "developer guide"],
+["How to deploy the Temporal Server to Kubernetes for testing and development", "/docs/content/how-to-deploy-temporal-to-kubernetes-for-testing-and-development", "developer guide"],
 ]}
 />
