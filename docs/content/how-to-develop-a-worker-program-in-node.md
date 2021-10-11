@@ -8,52 +8,37 @@ tags:
   - nodejs
 ---
 
-First you create a Worker with `Worker.create()`, then call `worker.run()` on it.
+First create a Worker with `Worker.create()`, then call `worker.run()` on it.
 
 Below is an example of starting a Worker that polls the Task Queue named `tutorial`.
 
 <!--SNIPSTART nodejs-hello-worker {"enable_source_link": false}-->
 <!--SNIPEND-->
 
-`taskQueue` is the only required option, and you can offer one of `workDir` or `activities`, `nodeModulesPath`, and `workflowsPath`.
+`taskQueue` is the only required option, but you will also use `workflowsPath` and `activities` to register Workflows and Activities with the Worker.
+See below for more Worker options.
 
 ### Workflow and Activity registration
 
 Workers bundle Workflow code and `node_modules` using Webpack v5 and execute them inside V8 isolates.
 Activities are directly required and run by Workers in the Node.js environment.
 
-When a `workDir` is specified (usually `__dirname`, which is [the system global in Node.js for the path to the directory of the currently executing file](https://www.digitalocean.com/community/tutorials/nodejs-how-to-use__dirname)), the Node SDK will automatically infer:
+Workers are very flexible - you can host any or all of your Workflows and Activities on a Worker, and you can host multiple Workers in a single machine.
 
-- `activities`: Activities exported from `workDir + '/activities.ts'` or `workDir + '/activities/index.ts'` (or `.js` when using JavaScript).
-- `nodeModulesPath`: Path for webpack to look up modules in for bundling the Workflow code. Automatically discovered if `workDir` is provided. Defaults to `${workDir}/../node_modules`
-- `workflowsPath`: Workflows exported from `workDir + '/workflows/index.js'`
+There are three things the Worker needs:
 
-If you have an unusual folder structure setup, you can override `activities`, `nodeModulesPath`, and `workflowsPath`.
-If you specify all three, then `workDir` is not needed.
+- `activities`: You import and supply these directly to the Worker.
+- `workflowsPath`: A path to your workflows file to pass to Webpack, e.g. `require.resolve('./workflows')`. Workflows will be bundled with their dependencies, which you can finetune with `nodeModulesPaths`.
+- `taskQueue`: the Task Queue to listen to.
 
 ### Additional Worker Options
 
-This is a selected subset of options you are likely to use. More advanced options, particularly for performance tuning, are available in [the API reference](https://nodejs.temporal.io/api/classes/worker.Worker).
+This is a selected subset of options you are likely to use. Even more advanced options, particularly for performance tuning, are available in [the API reference](https://nodejs.temporal.io/api/interfaces/worker.WorkerOptions).
 
-| Options           | Description                                                                                                                                                        |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `activities`      | Mapping of activity name to implementation. Automatically discovered from ${workDir}/activities if workDir is provided.                                            |
-| `nodeModulesPath` | Path for webpack to look up modules in for bundling the Workflow code. Automatically discovered if `workDir` is provided. Defaults to `${workDir}/../node_modules` |
-| `workflowsPath`   | Path to look up workflows in. Automatically discovered if `workDir` is provided. Defaults to `${workDir}/workflows`                                                |
-| `dataConverter`   | placeholder for future DataConverter feature (pending feature)                                                                                                     |
-| `dependencies`    | Allows injection of external dependencies (Advanced feature: see [External Dependencies](/docs/node/external-dependencies))                                        |
-| `interceptors`    | A mapping of interceptor type to a list of factories or module paths (Advanced feature: see [Interceptors](/docs/node/interceptors))                               |
-
-For example, if you are working in monorepo style and want `node_modules` at your project root, with all Temporal code inside a `/temporal/src` folder, you can force `nodeModulesPath`:
-
-```ts
-// this file is /temporal/src/worker.ts but node modules are at /node_modules
-// activities are at /temporal/src/activities.ts - as expected by workDir, no override needed
-// workflows are at /temporal/src/workflow/index.ts - as expected by workDir, no override needed
-
-const worker = await Worker.create({
-  workDir: __dirname,
-  nodeModulesPath: path.join(__dirname, "/../../node_modules"),
-  taskQueue: "tutorial",
-});
-```
+| Options            | Description                                                                                                                                                                        |
+| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `nodeModulesPaths` | Array of paths of Workflow dependencies to pass to Webpack. Defaults to the first encountered `node_modules` directory when scanning the filesystem starting with `workflowsPath`. |
+| `dataConverter`    | placeholder for future DataConverter feature (pending feature)                                                                                                                     |
+| `logger`           | Allows custom logging (Production feature: see [Logging](/docs/node/logging))                                                                                                      |
+| `dependencies`     | Allows injection of external dependencies (Advanced feature: see [External Dependencies](/docs/node/external-dependencies))                                                        |
+| `interceptors`     | A mapping of interceptor type to a list of factories or module paths (Advanced feature: see [Interceptors](/docs/node/interceptors))                                               |

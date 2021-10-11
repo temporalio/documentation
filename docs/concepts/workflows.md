@@ -119,7 +119,10 @@ There are a few important things to consider with Workflow timeout settings:
 
 #### Task timeout
 
-- **Description**: This is the maximum amount of time that the Server will wait for the Worker to start processing a [Workflow Task](/docs/content/what-is-a-workflow-task) after the Task has been pulled from the Task Queue.
+<!-- prettier-ignore -->
+import * as WorkflowTask from "../content/what-is-a-workflow-task.md"
+
+- **Description**: This is the maximum amount of time that the Server will wait for the Worker to start processing a <preview page={WorkflowTask}>Workflow Task</preview> after the Task has been pulled from the Task Queue.
   The default value is 10 seconds.
 - **Use-case**: This is primarily available to recognize whether a Worker has gone down so that the Workflow can be recovered and continue executing on a different Worker.
   The main reason for increasing the default value would be to accommodate a Workflow that has a very long event history that could take longer than 10 seconds for the Worker to load.

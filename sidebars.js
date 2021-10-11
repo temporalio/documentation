@@ -309,11 +309,6 @@ module.exports = {
       collapsed: false,
       items: [
         {
-          type: "category",
-          label: "Tutorials",
-          items: ["node/introduction", "node/hello-world"],
-        },
-        {
           type: "link",
           label: "API reference",
           href: "https://nodejs.temporal.io",
@@ -325,7 +320,21 @@ module.exports = {
         },
         {
           type: "category",
-          label: "Core APIs",
+          label: "Node Tutorials",
+          items: [
+            "node/introduction",
+            "node/hello-world",
+            {
+              type: "link",
+              label: "Code Samples",
+              href: "https://github.com/temporalio/samples-node",
+            },
+            "node/package-initializer",
+          ],
+        },
+        {
+          type: "category",
+          label: "Node Core APIs",
           collapsed: false,
           items: [
             "node/workflows",
@@ -337,7 +346,7 @@ module.exports = {
         },
         {
           type: "category",
-          label: "Production Needs",
+          label: "Node Production APIs",
           items: [
             "node/security",
             "node/testing",
@@ -347,10 +356,8 @@ module.exports = {
         },
         {
           type: "category",
-          label: "Advanced APIs",
+          label: "Node Advanced APIs",
           items: [
-            "node/package-initializer",
-            "node/task-queues",
             "node/cancellation-scopes",
             "node/determinism",
             "node/external-dependencies",
