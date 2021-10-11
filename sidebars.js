@@ -320,7 +320,7 @@ module.exports = {
         },
         {
           type: "category",
-          label: "Tutorials",
+          label: "Node Tutorials",
           items: [
             "node/introduction",
             "node/hello-world",
@@ -334,7 +334,7 @@ module.exports = {
         },
         {
           type: "category",
-          label: "Core APIs",
+          label: "Node Core APIs",
           collapsed: false,
           items: [
             "node/workflows",
@@ -346,7 +346,7 @@ module.exports = {
         },
         {
           type: "category",
-          label: "Production Needs",
+          label: "Node Production APIs",
           items: [
             "node/security",
             "node/testing",
@@ -356,7 +356,7 @@ module.exports = {
         },
         {
           type: "category",
-          label: "Advanced APIs",
+          label: "Node Advanced APIs",
           items: [
             "node/cancellation-scopes",
             "node/determinism",
