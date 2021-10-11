@@ -4,22 +4,22 @@ title: Workers and Task Queues in Node
 sidebar_label: Workers and Task Queues
 ---
 
-**Workers and Task Queues are a critical part of your overall Temporal system.** 
-Your Workflows will only progress if there are Workers polling the right Task Queues, and they must have the right Workflows and Activities registered to execute those Tasks. 
+**Workers and Task Queues are a critical part of your overall Temporal system.**
+Your Workflows will only progress if there are Workers polling the right Task Queues, and they must have the right Workflows and Activities registered to execute those Tasks.
 You can check the status of Workers and the Task Queues they poll, with [`tctl` or the Temporal Web UI](/docs/system-tools/introduction).
 
 ## What is a Worker?
 
 A Worker is an object that connects to the Temporal Server, polls **Task Queues** for Commands, and executes [Workflows](/docs/node/workflows) and [Activities](/docs/node/activities) in response to those Commands.
 
-- **Workers are run on user-controlled hosts.** 
+- **Workers are run on user-controlled hosts.**
   - This is an important security feature which means Temporal Server (or Temporal Cloud) never executes your Workflow or Activity code, and that Workers can have different hardware (e.g. custom GPUs for Machine Learning) than the rest of the system.
   - You can use the `@temporalio/worker` package's [`Worker`](https://nodejs.temporal.io/api/classes/worker.Worker) class to create and run as many Workers as your use case demands, across any number of hosts.
 - Node SDK Workers bundle Workflows based on `workflowsPath` and their dependencies from `nodeModulesPaths` with Webpack and run them inside v8 isolates.
 - Node SDK Workers directly run `activities` inside the normal Node.js environment.
 - Workers connect to the Temporal Server, poll their configured **Task Queue** for Tasks, execute chunks of code in response to those Tasks, and then communicate the results back.
-- Workers are stateless, and can be brought up and down with no data loss impact to your overall system. 
-To migrate to new versions of your Workflows and Activities, you restart your Workers with the new versions (and optionally use [the `patch` API to migrate](/docs/node/versioning) still-running workflows of the older version). 
+- Workers are stateless, and can be brought up and down with no data loss impact to your overall system.
+  To migrate to new versions of your Workflows and Activities, you restart your Workers with the new versions (and optionally use [the `patch` API to migrate](/docs/node/versioning) still-running workflows of the older version).
 
 ### How to develop a Worker
 

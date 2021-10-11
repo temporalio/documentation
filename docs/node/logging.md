@@ -35,10 +35,10 @@ import { Worker, DefaultLogger } from '@temporalio/worker';
 const logger = new DefaultLogger('WARNING', (severity, message, meta) => {
   console.log(`Custom logger: ${severity} — ${message}`);
 });
-const worker = await Worker.create({ 
-  workflowsPath: require.resolve('./workflows'), 
+const worker = await Worker.create({
+  workflowsPath: require.resolve('./workflows'),
   activities, // imported separately
-  logger 
+  logger,
 });
 ```
 
@@ -57,9 +57,9 @@ const logger = winston.createLogger({
   format: winston.format.json(),
   transports: [new transports.File({ filename: '/path/to/worker.log' })],
 });
-const worker = await Worker.create({ 
+const worker = await Worker.create({
   workflowsPath: require.resolve('./workflows'),
   activities, // imported separately
-  logger 
+  logger,
 });
 ```
