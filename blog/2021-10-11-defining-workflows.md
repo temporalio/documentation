@@ -4,6 +4,7 @@ title: Defining Workflows
 author: Tihomir Surdilovic
 author_title: Developer Advocate
 author_image_url: https://avatars.githubusercontent.com/u/119422?v=4
+image: https://avatars.githubusercontent.com/u/119422?v=4
 tags:
   - workflow
   - community
