@@ -53,12 +53,11 @@ This document only covers Workflow Timers.
 
 ## API Examples
 
-
 The core Timer APIs relevant to the Node.js SDK are:
 
-- The [`setTimeout`](https://nodejs.temporal.io/api/namespaces/workflow/#timers) global works as normal in JavaScript. 
-The Workflow's v8 isolate environment completely replaces it, including inside libraries that you use, to provide a complete JS runtime.
-We recommend using our `sleep` API instead of `setTimeout` because it supports cancellation (see below).
+- The [`setTimeout`](https://nodejs.temporal.io/api/namespaces/workflow/#timers) global works as normal in JavaScript.
+  The Workflow's v8 isolate environment completely replaces it, including inside libraries that you use, to provide a complete JS runtime.
+  We recommend using our `sleep` API instead of `setTimeout` because it supports cancellation (see below).
 - [`sleep(timeout)`](https://nodejs.temporal.io/api/namespaces/workflow/#sleep): a cancellation-aware Promise wrapper for `setTimeout`, that accepts either a string or integer timeout.
 - `condition(timeout?, function)`: A promise that resolves when a supplied function returns `true` or if an (optional) `timeout` happens first. Comparable to `Workflow.await` in other SDKs and useful when you don't know how long you need to wait.
 
@@ -72,26 +71,26 @@ We recommend using our `sleep` API instead of `setTimeout` because it supports c
  *
  * @param ms sleep duration - formatted string or number of milliseconds
  */
-export function sleep(ms: number | string): Promise<void>
+export function sleep(ms: number | string): Promise<void>;
 
 // durably sleep for 30 days
 import { sleep } from '@temporalio/workflow';
 
-await sleep("30 days") // string API
-await sleep(30 * 24 * 60 * 60 * 1000) // numerical API
+await sleep('30 days'); // string API
+await sleep(30 * 24 * 60 * 60 * 1000); // numerical API
 ```
 
 `sleep` is cancellation-aware, meaning that when the workflow gets cancelled, the `sleep` timer is canceled and the promise is rejected:
 
 ```ts
-await sleep("30 days").catch(() => {
+await sleep('30 days').catch(() => {
   // clean up code if workflow is canceled during sleep
-})
+});
 ```
 
 ### `condition`
 
-[`condition`](https://nodejs.temporal.io/api/namespaces/workflow/#condition) blocks until its given function evaluates to `true`, or optionally, a timeout expires. 
+[`condition`](https://nodejs.temporal.io/api/namespaces/workflow/#condition) blocks until its given function evaluates to `true`, or optionally, a timeout expires.
 The timeout also uses the [ms](https://www.npmjs.com/package/ms) package to take either a string or number of milliseconds.
 
 ```ts
@@ -102,22 +101,24 @@ The timeout also uses the [ms](https://www.npmjs.com/package/ms) package to take
  *
  * @returns a boolean indicating whether the condition was true before the timeout expires
  */
-export function condition(timeout: number | string, fn: () => boolean): Promise<boolean>;
+export function condition(
+  timeout: number | string,
+  fn: () => boolean
+): Promise<boolean>;
 
 // Returns a Promise that resolves when `fn` evaluates to `true`.
 export function condition(fn: () => boolean): Promise<void>;
-
 
 // Usage
 import { condition } from '@temporalio/workflow';
 
 let x = 0;
 // do stuff with x, eg increment every time you receive a signal
-await condition(() => x > 3)
+await condition(() => x > 3);
 // you only reach here when x > 3
 
 // await earlier of condition to be true or 30 day timeout
-await condition('30 days', () => x > 3)
+await condition('30 days', () => x > 3);
 ```
 
 ## Timer Design Patterns
@@ -208,7 +209,9 @@ export class UpdatableTimer implements PromiseLike<void> {
   private async run(): Promise<void> {
     while (true) {
       this.deadlineUpdated = false;
-      if (await condition(this.#deadline - Date.now(), () => this.deadlineUpdated)) {
+      if (
+        await condition(this.#deadline - Date.now(), () => this.deadlineUpdated)
+      ) {
         break;
       }
     }
