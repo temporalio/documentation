@@ -15,7 +15,7 @@ Below is an example of starting a Worker that polls the Task Queue named `tutori
 <!--SNIPSTART nodejs-hello-worker {"enable_source_link": false}-->
 <!--SNIPEND-->
 
-`taskQueue` is the only required option, and you can also specify `workflowsPath`, `activities` and `nodeModulesPaths`.
+`taskQueue` is the only required option, use `workflowsPath` and `activities` to register Workflows and Activities with the Worker. See below for more Worker options.
 
 ### Workflow and Activity registration
 
@@ -25,8 +25,8 @@ Activities are directly required and run by Workers in the Node.js environment.
 There are three things the Worker needs:
 
 - `activities`: You import and supply these directly to the Worker
-- `workflowsPath`: A path to your workflows file to pass to Webpack. Defaults to `require.resolve('../workflows')`
-- `nodeModulesPaths`: Array of paths of Workflow dependencies to pass to Webpack. Optional.
+- `workflowsPath`: A path to your workflows file to pass to Webpack, e.g. `require.resolve('./workflows')`
+- `nodeModulesPaths`: Array of paths of Workflow dependencies to pass to Webpack. Defaults to the first encountered `node_modules` directory when scanning the filesystem starting with `workflowsPath`.
 - you may also register `interceptors` in the same way (see the Interceptors docs)
 
 ### Additional Worker Options
@@ -35,9 +35,9 @@ This is a selected subset of options you are likely to use. More advanced option
 
 | Options           | Description                                                                                                                                                        |
 | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `activities`      | Mapping of activity name to implementation.                                     |
+| `activities`      | Mapping of Activity name to implementation.                                     |
 | `nodeModulesPaths` | Paths for webpack to look up modules in for bundling the Workflow code.  |
-| `workflowsPath`   | Path to look up workflows in.                                                 |
+| `workflowsPath`   | Path to look up Workflows in.                                                 |
 | `dataConverter`   | placeholder for future DataConverter feature (pending feature)                                                                                                     |
 | `dependencies`    | Allows injection of external dependencies (Advanced feature: see [External Dependencies](/docs/node/external-dependencies))                                        |
 | `interceptors`    | A mapping of interceptor type to a list of factories or module paths (Advanced feature: see [Interceptors](/docs/node/interceptors))                               |
@@ -54,7 +54,6 @@ import activities from './activities'
 const worker = await Worker.create({
   workflowsPath: require.resolve('./workflows'),
   activities,
-  nodeModulesPaths: [path.join(__dirname, "/../../node_modules")],
   taskQueue: "tutorial",
 });
 ```

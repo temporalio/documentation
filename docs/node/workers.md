@@ -5,8 +5,8 @@ sidebar_label: Workers and Task Queues
 ---
 
 **Workers and Task Queues are a critical part of your overall Temporal system.** 
-Your Workflows will not progress if no Workers listening on the right Task Queues are running, or if the Workers do not have the right Workflows and Activities registered. 
-You can check the status of Workers and the Task Queues they poll, with the Temporal Web UI.
+Your Workflows will only progress if there are Workers polling the right Task Queues, and they must have the right Workflows and Activities registered to execute those Tasks. 
+You can check the status of Workers and the Task Queues they poll, with [`tctl` or the Temporal Web UI](/docs/system-tools/introduction).
 
 ## What is a Worker?
 
@@ -15,10 +15,11 @@ A Worker is an object that connects to the Temporal Server, polls **Task Queues*
 - **Workers are run on user-controlled hosts.** 
   - This is an important security feature which means Temporal Server (or Temporal Cloud) never executes your Workflow or Activity code, and that Workers can have different hardware (e.g. custom GPUs for Machine Learning) than the rest of the system.
   - You can use the `@temporalio/worker` package's [`Worker`](https://nodejs.temporal.io/api/classes/worker.Worker) class to create and run as many Workers as your use case demands, across any number of hosts.
-- Node SDK Workers bundle Workflows based on `workflowsPath` and their dependencies from `nodeModulesPaths` with Webpack and register and run them inside v8 isolates.
-- Node SDK Workers directly register `activities` inside the normal Node.js environment.
-- Workers poll **Task Queues** for Tasks, execute chunks of code in response to those Tasks, and then communicate the results back to the Temporal Server.
-- Workers are stateless, and can be brought up and down with no data loss impact to your overall system. To migrate to new versions of your Workflows and Activities, you restart your Workers with the new versions (and optionally use the `patch` API to handle still-running workflows of the older version). 
+- Node SDK Workers bundle Workflows based on `workflowsPath` and their dependencies from `nodeModulesPaths` with Webpack and run them inside v8 isolates.
+- Node SDK Workers directly run `activities` inside the normal Node.js environment.
+- Workers connect to the Temporal Server, poll their configured **Task Queue** for Tasks, execute chunks of code in response to those Tasks, and then communicate the results back.
+- Workers are stateless, and can be brought up and down with no data loss impact to your overall system. 
+To migrate to new versions of your Workflows and Activities, you restart your Workers with the new versions (and optionally use [the `patch` API to migrate](/docs/node/versioning) still-running workflows of the older version). 
 
 ### How to develop a Worker
 
@@ -82,8 +83,8 @@ You can use the advanced [Interceptor and Data Converter](/docs/node/interceptor
 import SharedTaskQueuesBasic from '../shared/task-queues-basic.md'
 
 <SharedTaskQueuesBasic
-workflowLink="/docs/java/workflows"
-workerLink="/docs/java/workers"
+workflowLink="/docs/node/workflows"
+workerLink="/docs/node/workers"
 />
 
 ### Where Task Queues are used

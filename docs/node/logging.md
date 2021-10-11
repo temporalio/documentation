@@ -37,6 +37,7 @@ const logger = new DefaultLogger('WARNING', (severity, message, meta) => {
 });
 const worker = await Worker.create({ 
   workflowsPath: require.resolve('./workflows'), 
+  activities, // imported separately
   logger 
 });
 ```
@@ -58,6 +59,7 @@ const logger = winston.createLogger({
 });
 const worker = await Worker.create({ 
   workflowsPath: require.resolve('./workflows'),
+  activities, // imported separately
   logger 
 });
 ```
