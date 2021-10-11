@@ -66,7 +66,7 @@ If you need even more visibility into internal worker state, [see the API refere
 
 The Node SDK usually handles all of the communication between the Worker and the Temporal Server behind the scenes - no port configuration is required for development usecases.
 
-### Encryption at Rest
+### Encryption in Transit
 
 In production settings, [Temporal supports mTLS encryption](/docs/server/security), required by Temporal Cloud.
 To configure this, this SDK exposes [the Rust Core SDK](https://github.com/temporalio/sdk-core) as `Core`, which you can configure before you run `workflow.create`:
@@ -74,9 +74,10 @@ To configure this, this SDK exposes [the Rust Core SDK](https://github.com/tempo
 <!--SNIPSTART nodejs-mtls-worker-->
 <!--SNIPEND-->
 
-### Encryption in Transit
+### Encryption at Rest
 
-You can use the advanced [Interceptor and Data Converter](/docs/node/interceptors) features to encrypt your inbound and outbound Workflow and Activity calls.
+Temporal has a custom Data Converter feature that lets you implement customized serialization formats and encrypt and decrypt your data.
+However it is not yet supported in this SDK.
 
 ## What is a Task Queue?
 
@@ -100,11 +101,11 @@ There are 3 places where the name of the Task Queue is supplied by the developer
 </summary>
 
 ```ts
-const workflow = workflowClient.createWorkflowHandle(myWorkflow, {
+const handle = workflowClient.createWorkflowHandle(myWorkflow, {
   taskQueue: 'my-task-queue',
 });
 
-const result = await workflow.execute();
+const result = await handle.execute();
 ```
 
 </details>
@@ -117,7 +118,7 @@ const result = await workflow.execute();
 
 ```ts
 const worker = await Worker.create({
-  workflowsPath: require.resolve('./workflows'),
+  activities, // imported elsewhere
   taskQueue: 'my-task-queue',
 });
 ```
