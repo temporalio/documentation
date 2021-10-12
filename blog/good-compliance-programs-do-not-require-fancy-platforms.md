@@ -231,7 +231,7 @@ So with all that said, if I had to reduce my sentiment to a single sentence it w
 > Embrace and learn your compliance framework; do not outsource the responsibilities of understanding it.
 
 Does that mean you shouldn't ever use one of the compliance platforms with a shiny UI and automation tools?
-No, it just means that if you choose to use one, make sure it is integrated into the heart of your business and its operating processes
+No, it just means that if you choose to use one, make sure it is integrated into the heart of your business and its operating processes.
 Try to extract from them every ounce of knowledge you can.
 Just like an individual needs to be their own advocate when it comes to their health and wealth, a company needs to be its own advocate when it comes to understanding its operating processes in the context of any given compliance framework.
 
