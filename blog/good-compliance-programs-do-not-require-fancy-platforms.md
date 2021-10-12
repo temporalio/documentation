@@ -24,7 +24,7 @@ But I would argue that the goal of any compliance effort—SOC 2, HIPAA, or ISO 
 </summary>
 
 If you already understand this, then feel free to skip this section.
-But if you are new to SOC2, for example, and are trying to figure why you should even care, and how it translates to customer trust, then this explanation might help you out.
+But if you are new to compliance and are trying to figure why you should even care (and how it translates to customer trust), this explanation might help.
 
 Let's start by saying that it's absolutely possible for a technology company to curate operating processes that optimally address security risks, processing integrity, product availability, user privacy, and user confidentiality without even thinking about compliance.
 
