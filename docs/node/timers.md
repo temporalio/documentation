@@ -48,6 +48,7 @@ This document only covers Workflow Timers.
 
 - There is an unrelated [`sleep` utility function](https://nodejs.temporal.io/api/classes/activity.context/#sleep) available in Activity Context that is not durable, but is cancellation aware. See [the Activities docs for details](/docs/node/activities).
 - Timers are unrelated to Cron Workflows, which are a Workflow option that you can set for recurring Workflows. See [the Workflows docs for details](/docs/node/workflows).
+- If you need to block for an _indefinite_ period of time instead of a set time, you may want the `condition` API instead. See [the Signals and Queries docs for details](/docs/node/signals-queries).
 
 :::
 
@@ -59,7 +60,6 @@ The core Timer APIs relevant to the Node.js SDK are:
   The Workflow's v8 isolate environment completely replaces it, including inside libraries that you use, to provide a complete JS runtime.
   We recommend using our `sleep` API instead of `setTimeout` because it supports cancellation (see below).
 - [`sleep(timeout)`](https://nodejs.temporal.io/api/namespaces/workflow/#sleep): a cancellation-aware Promise wrapper for `setTimeout`, that accepts either a string or integer timeout.
-- `condition(timeout?, function)`: A promise that resolves when a supplied function returns `true` or if an (optional) `timeout` happens first. Comparable to `Workflow.await` in other SDKs and useful when you don't know how long you need to wait.
 
 ### `sleep`
 
@@ -86,39 +86,6 @@ await sleep(30 * 24 * 60 * 60 * 1000); // numerical API
 await sleep('30 days').catch(() => {
   // clean up code if workflow is canceled during sleep
 });
-```
-
-### `condition`
-
-[`condition`](https://nodejs.temporal.io/api/namespaces/workflow/#condition) blocks until its given function evaluates to `true`, or optionally, a timeout expires.
-The timeout also uses the [ms](https://www.npmjs.com/package/ms) package to take either a string or number of milliseconds.
-
-```ts
-/**
- * Returns a Promise that resolves when `fn` evaluates to `true` or `timeout` expires.
- *
- * @param timeout - formatted string or number of milliseconds
- *
- * @returns a boolean indicating whether the condition was true before the timeout expires
- */
-export function condition(
-  timeout: number | string,
-  fn: () => boolean
-): Promise<boolean>;
-
-// Returns a Promise that resolves when `fn` evaluates to `true`.
-export function condition(fn: () => boolean): Promise<void>;
-
-// Usage
-import { condition } from '@temporalio/workflow';
-
-let x = 0;
-// do stuff with x, eg increment every time you receive a signal
-await condition(() => x > 3);
-// you only reach here when x > 3
-
-// await earlier of condition to be true or 30 day timeout
-await condition('30 days', () => x > 3);
 ```
 
 ## Timer Design Patterns

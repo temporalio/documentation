@@ -4,47 +4,143 @@ title: Signals and Queries in Node
 sidebar_label: Signals and Queries
 ---
 
-[**Signals**](/docs/concepts/signals) are a way to send data IN to a running Workflow.
-
-- If a Workflow isn't running when a Signal is sent, we can send a `signalWithStart` to start a Workflow and send a Signal simultaneously.
-
-[**Queries**](/docs/concepts/queries) are a way to read data OUT from a running Workflow.
-
-- If a Query is made to a completed Workflow, the final value is returned.
-
-## Signals
+<details>
+<summary>
+  <a href="/docs/concepts/signals">Signals</a> are a way to send data IN to a running Workflow.
+</summary>
 
 import WhenToSignals from '../content/when-to-use-signals.md'
 
 <WhenToSignals />
 
-### How to use Signals
+</details>
 
-#### How to define a Signal
+<details>
+<summary>
+  <a href="/docs/concepts/queries">Queries</a> are a way to read data OUT from a running Workflow.
+</summary>
 
-To add Signal handlers to a Workflow, add a `signals` property to the exported Workflow object:
+- Queries can receive arguments, and return data, but must not mutate Workflow state.
+- If a Query is made to a completed Workflow, the final value is returned.
 
-<!--SNIPSTART nodejs-blocked-interface-->
+</details>
+
+Signals and Queries are almost always used together.
+If you wanted to send data in while a Workflow is running, you probably will want to read data out.
+
+## How to define and receive Signals and Queries
+
+- To add a Signal to a Workflow, call `defineSignal` with a name, and then attach a listener with `setListener`.
+- To add a Query to a Workflow, call `defineQuery` with a name, and then attach a listener with `setListener`.
+
+<!--SNIPSTART nodejs-blocked-workflow-->
 <!--SNIPEND-->
 
-#### How to send a Signal
+## How to send Signals and make Queries
 
-You invoke a Signal with `workflow.signal.signalName(...args)`. In the above case, we called our Signal `unblock`, so we call `workflow.signal.unblock()`:
+- You invoke a Signal with `workflow.signal(signal, ...args)`.
+  You can refer to it either by string name, or by exact definition.
+- You make a Query with `workflow.query(query, ...args)`.
+  You can refer to it either by string name, or by exact definition.
 
-```ts
+```js
 const client = new WorkflowClient();
-const workflow = client.createWorkflowHandle(unblockWithSignal, {
+const workflow = client.createWorkflowHandle(myWorkflow, {
   taskQueue: 'test',
 });
 await workflow.start();
-await workflow.signal.unblock();
+
+// these two are exactly equivalent
+await workflow.signal(unblock, ...args); // using the Signal Definition from `defineSignal`
+await workflow.signal('unblock', ...args); // using the Signal name
+
+// these two are exactly equivalent
+let state = await workflow.query(isBlocked, ...args);
+let state = await workflow.query('isBlocked', ...args);
 ```
 
-`workflow.signal.unblock('some string')` resolves when Temporal Server has persisted receipt of the Signal, before the Workflow's Signal handler is called. Signal handlers cannot return data to the caller.
+## The `condition` API
 
-### How to send a Signal and start a Workflow simultaneously
+`condition(timeout?, function)` returns a promise that resolves when a supplied function returns `true` or if an (optional) `timeout` happens first.
+This API is comparable to `Workflow.await` in other SDKs and often used to wait for Signals.
+
+The timeout also uses the [ms](https://www.npmjs.com/package/ms) package to take either a string or number of milliseconds.
+
+```ts
+/**
+ * Returns a Promise that resolves when `fn` evaluates to `true` or `timeout` expires.
+ *
+ * @param timeout - formatted string or number of milliseconds
+ *
+ * @returns a boolean indicating whether the condition was true before the timeout expires
+ */
+export function condition(
+  timeout: number | string,
+  fn: () => boolean
+): Promise<boolean>;
+
+// Returns a Promise that resolves when `fn` evaluates to `true`.
+export function condition(fn: () => boolean): Promise<void>;
+
+// Usage
+import { condition } from '@temporalio/workflow';
+
+let x = 0;
+// do stuff with x, eg increment every time you receive a signal
+await condition(() => x > 3);
+// you only reach here when x > 3
+
+// await earlier of condition to be true or 30 day timeout
+await condition('30 days', () => x > 3);
+```
+
+## Advanced Notes
+
+### Queries
+
+> 🚨 WARNING: NEVER mutate Workflow state inside a query! This would be a source of non-determinism.
+
+:::danger How NOT to write a Query
+
+This mutates Workflow state - do not do this:
+
+```js
+export function badExample() {
+  let someState = 123;
+  setListener(query, () => {
+    return someState++; // bad! don't do this!
+  });
+}
+```
+
+:::
+
+### Signals
+
+:::info Notes on Signals
+
+`workflow.signal` returns a Promise that only resolves when Temporal Server has persisted receipt of the Signal, before the Workflow's Signal handler is called.
+This Promise resolves with no value; **Signal handlers cannot return data to the caller.**
+
+:::
+
+:::info No Synchronous Updates
+
+A common request is for a Signal to be invoked with a bad argument, causing a validation error.
+However Temporal has no way to surface the error to the external invocation.
+Signals and Queries are always asynchronous, in other words, **a Signal always succeeds**.
+
+The solution to this is "Synchronous Update" and we plan to add it in future.
+
+For now [the best workaround](https://community.temporal.io/t/signalling-system-human-driven-workflows/160/2) is to use a Query to return Workflow state after signaling.
+Temporal guarantees read-after-write consistency of Signals-followed-by-Queries.
+
+:::
+
+### `signalWithStart`
 
 If you're not sure if a Workflow is running, you can `signalWithStart` a Workflow to send it a Signal and optionally start the Workflow if it is not running.
+Arguments for both are sent as needed.
 
 ```ts
 // Signal With Start
@@ -58,133 +154,12 @@ await workflow.signalWithStart(
   ['interrupted from signalWithStart'], // arguments to send with Signal
   [] // arguments to start the Workflow if needed
 );
-//
-
-// `interruptSignal` Workflow implementation with `interrupt` signal
-let interrupt: (reason?: any) => void | undefined;
-
-const signals = {
-  // Interrupt execute by rejecting the awaited Promise
-  interrupt(reason: string): void {
-    if (interrupt !== undefined) {
-      interrupt(new Error(reason));
-    }
-  },
-};
-
-async function execute(): Promise<void> {
-  // When this Promise is rejected the Workflow execution will fail
-  await new Promise<never>((_resolve, reject) => {
-    interrupt = reject;
-  });
-}
-
-export const interruptSignal = () => ({ execute, signals });
 ```
 
-### How to receive a Signal
+### Triggers
 
-Signal handlers should either have a `void` return type, like in the below example, or a `Promise<void>` return type for `async` handlers (you may want to `await` async operations like Activities and Timers).
-
-> Note that this example is a simplification of the recommended way to handle Signals (see [Triggers](#triggers) section below) since the Workflow cannot be cancelled unless it awaits a [cancellable operation](/docs/node/cancellation-scopes).
-
-```ts
-import { Blocked } from '../interfaces';
-
-export const unblockWithSignal: Blocked = () => {
-  let blocked = true;
-  let unblock: () => void;
-
-  return {
-    signals: {
-      // Unblock execute by resolving the awaited Promise
-      unblock(): void {
-        if (unblock !== undefined) {
-          unblock();
-        }
-      },
-    },
-    queries: {
-      isBlocked(): boolean {
-        return blocked;
-      },
-    },
-    async execute(): Promise<void> {
-      // This Promise is resolved when the Workflow handles the unblock signal.
-      await new Promise<void>((resolve, _reject) => {
-        unblock = resolve;
-      });
-      blocked = false;
-    },
-  };
-};
-```
-
-## Triggers
-
-[Triggers](https://nodejs.temporal.io/api/classes/workflow.trigger) are a concept unique to the Temporal Node.js SDK.
+[Triggers](https://nodejs.temporal.io/api/classes/workflow.trigger) are a concept unique to the Temporal Node.js SDK. They may be deprecated in future.
 
 Triggers, like Promises, can be awaited and expose a `then` method. Unlike Promises they are triggered when their `resolve` or `reject` methods are called.
 
 `Trigger` is `CancellationScope`-aware. It is linked to the current scope on construction and throws when that scope is cancelled.
-
-We can replace the callback with a Trigger in the example above to allow the Workflow to be cancelled:
-
-<!--SNIPSTART nodejs-blocked-workflow-->
-<!--SNIPEND-->
-
-## Queries
-
-### How to define a Query
-
-To add Query handlers to a Workflow, add a `queries` property to the exported Workflow object:
-
-<!--SNIPSTART nodejs-blocked-interface-->
-<!--SNIPEND-->
-
-### How to handle a Query
-
-Query handlers can return any value.
-
-> 🚨 WARNING: NEVER mutate Workflow state inside a query! This would be a source of non-determinism.
-
-<!--SNIPSTART nodejs-blocked-workflow-->
-<!--SNIPEND-->
-
-:::danger How NOT to write a Query
-
-This mutates Workflow state - do not do this:
-
-```ts
-export const unblockOrCancel: Blocked = () => {
-  let blocked = true;
-  let someState = 123;
-
-  return {
-    queries: {
-      isBlocked(): boolean {
-        someState++; // bad! don't do this!
-        return blocked;
-      },
-    },
-    // ...
-  };
-};
-```
-
-:::
-
-### How to make a Query
-
-> NOTE: You may query both running and completed Workflows.
-
-Use the name of the function you defined:
-
-```ts
-const client = new WorkflowClient();
-const workflow = client.createWorkflowHandle(unblockOrCancel, {
-  taskQueue: 'test',
-});
-await workflow.start();
-await workflow.query.isBlocked(); // this gets data out of the Workflow
-```
