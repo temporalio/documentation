@@ -13,7 +13,7 @@ date: 2021-10-5T00:00:00Z
 <!--truncate-->
 
 Several companies offer compliance automation platforms—[Vanta](https://www.vanta.com/), [Strike Graph](https://www.strikegraph.com/), [Drata](https://drata.com/), and others.
-Depending on who you talk to, these platforms are either the best thing since sliced bread or they are selling snake oil.
+Depending on who you ask, these platforms are either the best thing since sliced bread or they are selling snake oil.
 The truth, from my experience, is woven somewhere down the middle, with many of the pros and cons of these platforms shifting depending on your company's experience level.
 
 To be clear, SOC2 makes up most of my experience when it comes to compliance, so my current view is through that lens.
