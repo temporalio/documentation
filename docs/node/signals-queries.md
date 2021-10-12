@@ -94,6 +94,13 @@ await condition(() => x > 3);
 await condition('30 days', () => x > 3);
 ```
 
+:::warning `condition` Antipattern
+
+No time based condition functions are allowed in your function as this is very error prone.
+Use the optional `timeout` arg or a `sleep` timer.
+
+:::
+
 ## Advanced Notes
 
 ### Queries
