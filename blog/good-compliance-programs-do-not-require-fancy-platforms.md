@@ -80,48 +80,52 @@ Well, each one has a slightly different angle.
 Almost all of them promote themselves as a way to "simplify" the compliance process by providing a set of tools to help you organize your resources and automate compliance processes, particularly around an audit.
 Personally, I think you should be wary of any of these platforms that say they can make things "simple" for you, because that is silly.
 This stuff is complex.
-What I do value, are the platforms that can help you understand how your internal operations map to compliance framework criteria.
-That is the art, the heart, and the best kept secret of this whole thing that is so often glazed over.
+What I _do_ value are platforms that can help you understand how your internal operations map to compliance framework criteria.
+That is the art, the heart, and the best-kept secret of this whole thing that is so often glazed over.
 
-Consider this well known maxim:
+Consider this well-known adage:
 
 > Give a man a fish, feed him for a day. Teach a man to fish, feed him for a lifetime.
 
-Most of these platforms teach only when they have to, as a means to the end of getting you to pay to use their tools.
+Most of these platforms teach only when they have to, as a means of getting you to pay to use their tools.
 They don't want to teach, they want you to keep coming back to them.
-The truth is, once you learn how to parse compliance framework criteria language and learn how to map real-world operations to it, you don't need these platforms.
+The truth is, after you learn how to parse the language of compliance framework criteria and how to map real-world operations to it, you don't need these platforms.
 
 Now, to be fair, learning this is not super easy.
 
-I recently asked a SOC2 expert I know, [Martin Cozzi](https://www.marana.io/), how he learned and he said it was the same way I was learning: through experience (he has been through 50+ audits).
-There is no course that he knows of that teaches this.
+I recently asked a SOC 2 expert, [Martin Cozzi](https://www.marana.io/), how he learned. 
+He said it was the same way I was learning: through experience. 
+(He has been through more than 50 audits.)
+He knows of no course that teaches this.
 
-And yet, the more you learn, the more it becomes apparent, at least to me, that what makes a compliance audit easy, versus a slogging and demoralizing haze, is not whether you have fancy automation tools, a fancy web ui, or an all-in-one auditing platform, its whether your company has embraced the framework against which you wish to be compliant and understands how your operations fit into it.
-Thats it.
+To me, what makes a compliance audit easy (instead of a slogging and demoralizing haze) is not whether you have fancy automation tools, a fancy web UI, or an all-in-one auditing platform. 
+What matters is whether your company has embraced the framework against which you want to be compliant and understands how your operations fit into it.
+That's it.
 You either know what you are doing, or you don't.
-And the unfortunate truth is that many of these platforms take advantage of those who don't know what they are doing and sell them a set of tools that are still only really effective if you know what you are doing.
+And the unfortunate truth is that many of these platforms take advantage of those who don't know what they are doing and sell them a set of tools that are effective only if you know what you are doing.
 
 What these platforms could (and should) be doing is teaching.
 
 ## Keys to a successful compliance program
 
-I have now been through two SOC2 audits with Temporal Technologies.
+I have now been through two SOC 2 audits with Temporal Technologies.
 Throughout each of them I acted as the compliance lead, a sort of project manager.
 My primary responsibilities were to organize materials, gather evidence for audits, schedule meetings, and generally create a structure to operate in.
 I was also the auditor's point of contact with our company, funneling and prioritizing communications, and translating requirements into action items for our team.
-And I made sure to keep other key players up-to-date, or to push on them when deadlines closed in.
+I kept other key players up to date. 
+And if necessary, I pushed them when deadlines closed in.
 
-I have worked with both [Strike Graph](https://www.strikegraph.com/), one of the compliance platforms, and [Martin Cozzi](https://www.marana.io/), an independent personalized consultant.
+I have worked with both [Strike Graph](https://www.strikegraph.com/), one of the compliance platforms, and [Martin Cozzi](https://www.marana.io/), an independent consultant.
 
-From these experiences, here are my 5 key things that shaped our successful compliance program.
+From these experiences, here are my five key things that shaped our successful compliance program.
 
 ### 1. Retain the help of an expert to get ramped up
 
-Unfortunately there is not a lot of room for trial and error when it comes to compliance programs, and a lot of pitfalls to overcome through self study.
-So, I definitely recommend getting the help of someone with experience.
+Compliance programs offer little room for trial and error, and they have too many pitfalls to overcome through self study.
+So, I definitely recommend getting someone with experience to help.
 
-For startups and other small companies that do not have in-house experience yet, platforms like Strike Graph (for SOC2 at least) are actually not a bad way to go.
-They can help you get up and going for a lot less money than a personalized consultant.
+For startups and other small companies that do not have in-house experience yet, platforms like Strike Graph (for SOC 2 at least) are actually not a bad way to go.
+They can help you get going for a lot less money than a dedicated consultant.
 Strike Graph for example maintains a team of customer success agents who can steer you in the right direction by providing a lot of context and boilerplate policies for your organization to utilize.
 
 But just remember they are not in the business of understanding your business, and therefore they most likely will not be able to help with precision custom Control Statements that scale for you.
