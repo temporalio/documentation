@@ -17,7 +17,7 @@ Depending on who you ask, these platforms are either the best thing since sliced
 The truth, from my experience, is woven somewhere down the middle, with many of the pros and cons of these platforms shifting depending on your company's experience level.
 
 To be clear, SOC2 makes up most of my experience when it comes to compliance, so my current view is through that lens.
-But, I would argue that the goal of any compliance effort, whether that is SOC2, HIPAA, or ISO 27001, is the same: establishing customer trust (see the section below "Why compliance frameworks are important" for my take on this).
+But I would argue that the goal of any compliance effort—SOC 2, HIPAA, or ISO 27001—is the same: establishing customer trust. (See the following section, "Why compliance frameworks are important," for my take on this.)
 
 <details>
 <summary> Why compliance frameworks are important
