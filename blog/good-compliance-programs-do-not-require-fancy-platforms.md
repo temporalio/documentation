@@ -14,25 +14,25 @@ date: 2021-10-5T00:00:00Z
 
 Several companies offer compliance automation platforms—[Vanta](https://www.vanta.com/), [Strike Graph](https://www.strikegraph.com/), [Drata](https://drata.com/), and others.
 Depending on who you ask, these platforms are either the best thing since sliced bread or they are selling snake oil.
-The truth, from my experience, is woven somewhere down the middle, with many of the pros and cons of these platforms shifting depending on your company's experience level.
+The truth, from my experience, is somewhere in the middle, with many of the pros and cons of these platforms shifting depending on your company's experience level.
 
-To be clear, SOC2 makes up most of my experience when it comes to compliance, so my current view is through that lens.
+To be clear, System and Organization Controls (SOC) 2 makes up most of my experience when it comes to compliance, so my current view is through that lens.
 But I would argue that the goal of any compliance effort—SOC 2, HIPAA, or ISO 27001—is the same: establishing customer trust. (See the following section, "Why compliance frameworks are important," for my take on this.)
 
 <details>
 <summary> Why compliance frameworks are important
 </summary>
 
-If you already understand this, then feel free to skip this section.
+If you already understand this, feel free to skip this section.
 But if you are new to compliance and are trying to figure why you should even care (and how it translates to customer trust), this explanation might help.
 
 A technology company can have a great story around security, integrity, availability, privacy, and confidentiality without ever thinking about compliance.
 
-But, practically, is it likely that will happen organically or be maintainable as the company grows, or adjusts to meet market demands?
-No, not really, and probably not.
+Is it likely to happen organically or be maintainable as the business scales, or adjusts to meet market demands?
+Probably not.
 
-That would require significant levels of contribution, coordination, and discipline from many experienced individuals, routinely, even in a small 20-50 person company.
-People come and go, products change, processes change, user needs change.
+That would require significant levels of contribution, coordination, and discipline from many experienced individuals, routinely, even in a small (20–50 person) company.
+Personnel, products, processes, and user needs constantly change.
 It is possible, but nearly improbable to maintain and scale best practices in such a dynamic environment without some sort of framework to fall back on.
 
 **Compliance frameworks**
