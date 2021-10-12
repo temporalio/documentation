@@ -126,38 +126,37 @@ So, I definitely recommend getting someone with experience to help.
 
 For startups and other small companies that do not have in-house experience yet, platforms like Strike Graph (for SOC 2 at least) are actually not a bad way to go.
 They can help you get going for a lot less money than a dedicated consultant.
-Strike Graph for example maintains a team of customer success agents who can steer you in the right direction by providing a lot of context and boilerplate policies for your organization to utilize.
+As an example: Strike Graph maintains a team of customer success agents who can steer you in the right direction by providing a lot of context and boilerplate policies.
 
-But just remember they are not in the business of understanding your business, and therefore they most likely will not be able to help with precision custom Control Statements that scale for you.
-And they may not be able to help accurately translate the expectations of your auditing partner into action steps.
+But just remember they are not in the business of understanding your business, and therefore they most likely will not be able to help with precise custom Control Statements that scale for you.
+Additionally, they may not be able to help accurately translate the expectations of your auditing partner into action steps.
 
-Also, something that all compliance platforms suffer from is that using an additional third party system means that it is yet another external system to login to and learn how to use.
-Think about it.
-Managing Control Statements and evidence outside of normal business tools, often means "out of sight, out of mind" and greatly reduces visibility into compliances processes internally.
+And using a compliance platform means that you have yet another external, third-party system to sign in to
+and learn how to use.
+Managing Control Statements and evidence outside of normal business tools often means "out of sight, out of mind" and greatly reduces visibility into compliance processes internally.
 
 If you can afford a personalized consultant, such as Martin Cozzi, I would highly recommend that route.
 
-Consultants like Martin take the time to understand your business and the expectations of the auditing firm to craft a compliance strategy that is best suited to your company.
-This also means that they can translate auditor expectations into action steps for you.
+Consultants like Martin take the time to understand your business in conjunction with the expectations of the auditing firm, to craft a compliance strategy that is best suited to your company.
+This also means that they can translate auditor expectations into actionable steps for you.
 They can help write custom Control Statements that accurately reflect what you are doing and map them to compliance criteria.
-And my favorite part, consultants like Martin can show you how easy it is to manage compliance materials using the project management tools you **already use**.
-And if you don't use project management tools, then all you need is a Google spreadsheet.
-This is important because it shows once you are oriented in the compliance world, you don't need a fancy UI and tools to keep track of the state of your compliance efforts.
+And my favorite part: Consultants like Martin can show you how easy it is to manage compliance materials by using the project management tools that _you already use_.
+If you don't use project management tools, all you need is a spreadsheet.
+When you are oriented in the compliance world, you don't need a fancy UI and tools to keep track of the state of your compliance efforts.
 
 ### 2. Do what you say you are doing
 
-This is the next most important thing to do.
 When you write a Control Statement, it must be one that is accurate and true.
-And you want your implementation of that Control to be done in a way where you can prove that you did those things during a period of time.
+You want your implementation of that Control to be done in a way where you can prove that you did those things during a period of time.
 
-For example, if you have a Control Statement that says "The engineering team is notified whenever there is a release to production", then (A) that should absolutely be happening, and (B) you should be able to prove that.
+For example, if you have a Control Statement that says "The engineering team is notified whenever there is a release to production", then (A) that should actually be happening, and (B) you should be able to prove that.
 
-But really think about this statement for moment, for it forces you to define the following things:
-- What is the "engineering team", who is in that scope?
-- What is our method/mechanism of notification?
+But really think about this statement for moment, because it forces you to define the following:
+- What is the "engineering team"? Who is in that scope?
+- What is our method or mechanism of notification?
 - What is considered a "release to production"?
 
-By ironing all of that out, and ensuring that there is a history of evidence to gather, this Control Statement, and the actions you take that are associated with it, can scale with the company for a very long time.
+By ironing all of that out and ensuring that you have a history of evidence to gather, this Control Statement (and the associated actions you take) can scale with the company for a very long time.
 
 ### 3. Internally manage Control Statements and resources
 
