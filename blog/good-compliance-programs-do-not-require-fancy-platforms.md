@@ -217,25 +217,25 @@ I also worked very closely with Martin, picking his brain, to provide internal g
 
 #### The Evidence Gatherer
 
-The Evidence Gatherer is someone who captures evidence per an evidence request for the auditing process.
+The Evidence Gatherer is someone who captures evidence based on a request for the auditing process.
 
-An Evidence Gather must be someone who is familiar with the domain to know what to gather and how to gather it, working with both the Project Manager and the Department Heads to do that.
+An Evidence Gatherer must be someone who is familiar with the domain to know what to gather and how to gather it, working with both the Project Manager and the Department Heads to do that.
 
 In our last audit, we had to submit well over a hundred pieces of evidence, most of them unique, and some large in scope.
-We had at least a dozen evidence gathers, including Department Heads, and me as the Project Manager.
+We had at least a dozen Evidence Gatherers, including Department Heads, and me as the Project Manager.
 
 ## Summary
 
 So with all that said, if I had to reduce my sentiment to a single sentence it would be this:
 
-> Embrace and learn your compliance framework, do not outsource the responsibilities of understanding it.
+> Embrace and learn your compliance framework; do not outsource the responsibilities of understanding it.
 
 Does that mean you shouldn't ever use one of the compliance platforms with a shiny UI and automation tools?
-No, it just means that if you choose to use one, make sure it is integrated into the heart of your operating processes.
-And try to extract every ounce of knowledge from them as you can.
-Just like an individual needs to be their own advocate when it comes to their health and wealth, a company needs to be its own advocate when it comes to understanding it operating processes in the context of any given compliance framework.
+No, it just means that if you choose to use one, make sure it is integrated into the heart of your business and its operating processes
+Try to extract from them every ounce of knowledge you can.
+Just like an individual needs to be their own advocate when it comes to their health and wealth, a company needs to be its own advocate when it comes to understanding its operating processes in the context of any given compliance framework.
 
-If you know what you are doing, a compliance platform could help you there.
-If you don't, it could just become another complex layer blocking you from figuring it all out.
+If you know what you are doing, a compliance platform could help you.
+If you don't, it could become just another complex layer blocking you from figuring it all out.
 A good compliance program doesn't need fancy tools and a UI.
 It just needs internal accountability.
