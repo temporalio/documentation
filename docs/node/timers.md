@@ -96,52 +96,8 @@ There are only a few Timer APIs, but the important part is knowing how to use th
 
 Use `Promise.race` with Signals and Triggers to have a promise resolve at the earlier of either system time or human intervention.
 
-```ts
-import { Trigger, createActivityHandle, sleep } from '@temporalio/workflow';
-// // Only import the activity types
-import type * as activities from '../activities';
-
-const { checkoutItem, canceledPurchase } = createActivityHandle<
-  typeof activities
->({
-  startToCloseTimeout: '1 minute',
-});
-
-type PurchaseState = 'PENDING' | 'CONFIRMED' | 'CANCELED';
-
-export const OneClickBuy = (itemId: string) => {
-  let itemToBuy = itemId;
-  let purchaseState: PurchaseState = 'PENDING';
-  const cancelTrigger = new Trigger<string>();
-  return {
-    signals: {
-      cancelPurchase(cancelReason: string): void {
-        cancelTrigger.reject(cancelReason);
-      },
-    },
-    queries: {
-      purchaseState(): null | PurchaseState {
-        return purchaseState;
-      },
-    },
-    async execute(): Promise<string> {
-      try {
-        await Promise.race([
-          cancelTrigger,
-          sleep(30 * 1000), // 30 seconds
-        ]);
-        return await checkoutItem(itemToBuy);
-      } catch (err) {
-        return await canceledPurchase(itemToBuy);
-      }
-    },
-  };
-};
-```
-
-Example usecases:
-
-- One click purchases
+<!-- SNIPSTART nodejs-oneclick-buy -->
+<!--SNIPEND-->
 
 ### Reminder Timer pattern
 
@@ -156,47 +112,21 @@ A variant of the Race Timer pattern where the promise resolves IF no Signal is r
 
 Here is how you can build an updatable timer with `condition`:
 
-```ts
-// desired API
-const timer = new UpdateableTimer(Date.now() + 10000);
-on(updateTimerSignal, (deadline) => (timer.deadline = deadline)); // send in new deadlines via Signal
-await timer;
-
-// Implementation
-import { condition } from '@temporalio/workflow';
-
-export class UpdatableTimer implements PromiseLike<void> {
-  deadlineUpdated = false;
-  #deadline: number;
-
-  constructor(deadline: number) {
-    this.#deadline = deadline;
-  }
-
-  private async run(): Promise<void> {
-    while (true) {
-      this.deadlineUpdated = false;
-      if (
-        await condition(this.#deadline - Date.now(), () => this.deadlineUpdated)
-      ) {
-        break;
-      }
-    }
-  }
-
-  then<TResult1 = void, TResult2 = never>(
-    onfulfilled?: (value: void) => TResult1 | PromiseLike<TResult1>,
-    onrejected?: (reason: any) => TResult2 | PromiseLike<TResult2>
-  ): PromiseLike<TResult1 | TResult2> {
-    return this.run().then(onfulfilled, onrejected);
-  }
-
-  // javascript class setter
-  set deadline(value: number) {
-    this.#deadline = value;
-    this.deadlineUpdated = true;
-  }
-}
-```
+<!-- SNIPSTART nodejs-updatable-timer-impl -->
+<!-- SNIPEND-->
 
 If you are working on a Workflow or utility library, please [get in touch on Slack](https://temporal.io/slack), we would love to help you and promote your work.
+
+## Antipattern: Racing Sleep.then
+
+Be careful when racing a chained `sleep`. This may cause bugs.
+
+```js
+await Promise.race([
+  sleep('5s').then(() => (status = 'timed_out'),
+  somethingElse.then(() => (status = 'processed')),
+]);
+
+if (status === 'processed') await complete(); // takes more than 5 seconds
+// status = timed_out
+```
