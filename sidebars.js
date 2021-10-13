@@ -340,8 +340,7 @@ module.exports = {
             "node/workflows",
             "node/activities",
             "node/workers",
-            "node/timers",
-            "node/signals-queries",
+            "node/workflow-apis",
           ],
         },
         {

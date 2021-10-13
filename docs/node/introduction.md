@@ -161,5 +161,4 @@ Then you should have a passing knowledge of our Core APIs:
 
 - [Workflows](/docs/node/workflows) and [Activities](/docs/node/activities): How to write Temporal's core orchestration code
 - [Workers and Task Queues](/docs/node/workers): How Workflows and Activities are routed to and executed on machines you control
-- [Signals and Queries](/docs/node/signals-queries): Getting data in and out of a Workflow _while it is running_.
-- [Timers](/docs/node/timers): durable timers that are useful for racing human action against Signals, or sending reminders after inactivity
+- [Workflow APIs](/docs/node/workflow-apis): Signals, Queries, Timers, Child Workflows, Infinite Workflows, and more!
