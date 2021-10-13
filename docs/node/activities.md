@@ -4,6 +4,8 @@ title: Activities in Node.js
 sidebar_label: Activities
 ---
 
+> **@temporalio/activity** [![NPM](https://img.shields.io/npm/v/@temporalio/activity)](https://www.npmjs.com/package/@temporalio/activity) [API reference](https://nodejs.temporal.io/api/namespaces/activity) | [GitHub source](https://github.com/temporalio/sdk-node/tree/main/packages/activity)
+
 In Temporal, Activities are typically used to interact with external resources, like making an HTTP request.
 
 - Unlike [Workflows](/docs/node/determinism), Activities execute in the standard Node.js environment, not an [isolate](https://www.npmjs.com/package/isolated-vm). So any code that needs to talk to the outside world needs to be in an Activity.
@@ -178,3 +180,8 @@ The `sleep` method exported in `Context.current()` is comparable to a standard `
 
 <!--SNIPSTART nodejs-activity-cancellable-fetch-->
 <!--SNIPEND-->
+
+## Local Activities
+
+Temporal has an optimization feature called Local Activities.
+The Node.js SDK has not yet implemented this feature.

@@ -1,17 +1,23 @@
 ---
 id: workflows
-title: Workflows in Node.js
-sidebar_label: Workflows
+title: Workflows and Clients in Node.js
+sidebar_label: Workflows and Clients
 description: In the Temporal Node SDK programming model, a Workflow is an exportable function that adheres to a set of rules.
 image: /img/workflow.png
 ---
 
 import RelatedReadList from '../components/RelatedReadList.js'
 
-[API reference](https://nodejs.temporal.io/api/namespaces/workflow)
+:::note **@temporalio/client** [![NPM](https://img.shields.io/npm/v/@temporalio/client)](https://www.npmjs.com/package/@temporalio/client)
 
-In the Node.js SDK, each **Workflow Definition** is bundled with dependencies and run in a [Worker](/docs/node/workers).
-However, the Workflow Definition only becomes a **Workflow Execution** when started by a **Workflow Client**, for example, in a serverless function, Express.js API route handler or CLI/script run.
+[API reference](https://nodejs.temporal.io/api/namespaces/client) | [GitHub source](https://github.com/temporalio/sdk-node/tree/main/packages/client)
+
+:::
+
+**Workflows are the fundamental unit of business logic in Temporal**.
+
+- In the Node.js SDK, each **Workflow Definition** is bundled with dependencies and run in a [Worker](/docs/node/workers).
+- However, the Workflow Definition only becomes a **Workflow Execution** when started by a **Workflow Client**, for example, in a serverless function, Express.js API route handler or CLI/script run.
 
 ## How to write Workflow code
 
@@ -47,12 +53,12 @@ const connection = new Connection();
 const client = new WorkflowClient(connection.service);
 
 // Method 1: create a handle for a NEW Workflow, given a reference to Workflow definition
-const workflow = client.createWorkflowHandle(exampleWorkflow, {
+const handle = client.createWorkflowHandle(exampleWorkflow, {
   taskQueue: 'tutorial',
 });
 
 // Method 2: retrieve a handle for an EXISTING Workflow, given it's workflowId
-const workflow = client.createWorkflowHandle({ workflowId: id });
+const handle = client.createWorkflowHandle({ workflowId: id });
 ```
 
 The Workflow Handle [exposes a number of important APIs](https://nodejs.temporal.io/api/interfaces/client.WorkflowHandle) that you will use to externally control your Workflow:
@@ -171,7 +177,7 @@ import DistributedCron from '../shared/distributed-cron.md'
 You can set each workflow to repeat on a schedule with the `cronSchedule` option:
 
 ```ts
-const workflow = client.createWorkflowHandle(scheduledWorkflow, {
+const handle = client.createWorkflowHandle(scheduledWorkflow, {
   taskQueue: 'test',
   cronSchedule: '* * * * *', // start every minute
 });

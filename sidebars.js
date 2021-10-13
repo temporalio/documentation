@@ -338,8 +338,8 @@ module.exports = {
           collapsed: false,
           items: [
             "node/workflows",
-            "node/activities",
             "node/workers",
+            "node/activities",
             "node/workflow-apis",
           ],
         },
