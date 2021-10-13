@@ -315,13 +315,15 @@ Besides Activities, a Workflow can also start other Workflows.
 Child Workflows vs Activities
 </summary>
 
-Child Workflows are different from Activities in a few ways:
+Child Workflows and Activities are both started from Workflows, so you may feel confused about when to use which.
+Here are some important differences:
 
-- Child Workflows have access to all Workflow APIs, and are subject to [Workflow Limitations](/docs/node/workflows#workflow-limitations).
-- Child Workflows can continue on if their Parent is canceled, based on [ParentClosePolicy](/docs/content/what-is-a-parent-close-policy/), whereas Activities are always terminated when their Workflow is canceled (they may pass on a [cancellationSignal](/docs/node/activities#activity-cancellation)).
+- Child Workflows have access to all Workflow APIs, but are subject to [Workflow Limitations](/docs/node/workflows#workflow-limitations). Activities have the inverse pros and cons.
+- Child Workflows can continue on if their Parent is canceled, with a [ParentClosePolicy](/docs/content/what-is-a-parent-close-policy/) of `ABANDON`, whereas Activities are _always_ canceled when their Workflow is canceled (they may react to a [cancellationSignal](/docs/node/activities#activity-cancellation) for cleanup if canceled).
 - Temporal tracks all state changes within Child Workflows in Event History, whereas only the input, output, and retry attempts of Activities are tracked.
 
-When in doubt, use Activities.
+Activities usually model a single operation on the external world. Workflows are modeling composite operations that consist of multiple activities or other child workflows.
+**When in doubt, use Activities.**
 
 </details>
 
