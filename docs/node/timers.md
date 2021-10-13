@@ -88,6 +88,8 @@ await sleep('30 days').catch(() => {
 });
 ```
 
+You can read more on [the Cancellation Scopes doc](/docs/node/cancellation-scopes).
+
 ## Timer Design Patterns
 
 There are only a few Timer APIs, but the important part is knowing how to use them to model asynchronous business logic. Here are some examples we use the most; we welcome more if you can think of them!
