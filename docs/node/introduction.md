@@ -98,7 +98,9 @@ cd example
 ```
 
 This will set up with [the basic Hello World sample](https://github.com/temporalio/samples-node/tree/main/hello-world).
-If you want a [sample for connecting to a Temporal Server instance secured with mTLS](https://github.com/temporalio/samples-node/tree/main/hello-world-mtls), you can use ` npx @temporalio/create@latest ./example --sample hello-world-mtls`.
+If you want to start from a different sample, pass the `--sample <sample-name>` argument to the script. For example, running `npx @temporalio/create@latest ./example --sample hello-world-mtls` will download the [sample for connecting to a Temporal Server instance secured with mTLS](https://github.com/temporalio/samples-node/tree/main/hello-world-mtls).
+
+The list of official samples can be found in the [samples-node](https://github.com/temporalio/samples-node) repo.
 
 :::note
 

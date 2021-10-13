@@ -36,24 +36,13 @@ Any async function can be used as an Activity as long as its parameters and retu
 
 In the Node.js SDK, each Workflow execution is run in a separate V8 isolate context in order to provide a [deterministic runtime](/docs/node/determinism).
 
-#### Implementation
+A Workflow is defined as an async function, in its body you may set listeners for processing [Signals](/docs/concepts/signals) and responding to [Queries](/docs/concepts/queries).
 
-A Workflow implementation exposes handlers for executing the Workflow, processing [Signals](/docs/concepts/signals) and responding to [Queries](/docs/concepts/queries).
-
-The snippet below uses `createActivityHandle` to create functions that, when called, schedule Activities in the system.
+The snippet below uses `createActivityHandle` to create a function that, when called, schedules an Activity in the system.
 
 `src/workflows.ts`
 
 <!--SNIPSTART nodejs-hello-workflow {"enable_source_link": false}-->
-<!--SNIPEND-->
-
-#### Type definitions
-
-Workflow type definitions are optional, they provide type safety in situations where the implementation cannot directly be referenced by a client such as cross service or cross language calls.
-
-`src/interfaces.ts`
-
-<!--SNIPSTART nodejs-hello-workflow-interface {"enable_source_link": false}-->
 <!--SNIPEND-->
 
 ### Worker
