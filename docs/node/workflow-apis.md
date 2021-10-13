@@ -16,6 +16,7 @@ This package exports all the useful primitives that you can use in Workflows. Se
 | `createActivityHandle`       | Make idempotent side effects (like making a HTTP request) with Activities ([documented separately](/docs/node/activities)) |
 | `createChildWorkflowHandle`  | Spawn new [Child Workflows](#child-workflows) with the ability to cancel                                                   |
 | `continueAsNew`              | Truncate Event History for [infinitely long running Workflows](#infinite-workflows)                                        |
+| `patched`/`deprecatePatch`   | Migrate Workflows to new versions ([documented separately](/docs/node/versioning))                                         |
 
 We fully expect that developers will bundle these into their own reusable Workflow libraries.
 If you do, please [get in touch on Slack](https://temporal.io/slack), we would love to work with you and promote your work.
