@@ -12,6 +12,7 @@ import RelatedReadList, {RelatedReadContainer, RelatedReadItem} from '../compone
 <!-- prettier-ignore -->
 import * as WhatIsAdvancedVisibility from './what-is-advanced-visibility.md'
 import * as HowToListFilterInWebUI from './how-to-use-a-list-filter-in-the-temporal-web-ui.md'
+import * as WhatIsASearchAttribute from './what-is-a-search-attribute.md'
 
 A List Filter is the SQL-like string that is provided as the parameter to an <preview page={WhatIsAdvancedVisibility}>Advanced Visibility</preview> List API.
 
@@ -22,8 +23,6 @@ WorkflowType = "main.YourWorkflowDefinition" and ExecutionStatus != "Running" an
 ```
 
 A List Filter contains Search Attribute keys, Search Attribute values, and Operators.
-
-import \* as WhatIsASearchAttribute from './what-is-a-search-attribute.md'
 
 <RelatedReadContainer>
   <RelatedReadItem page={WhatIsASearchAttribute} />
