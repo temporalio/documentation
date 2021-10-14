@@ -8,6 +8,7 @@ tags:
 ---
 
 import RelatedReadList, {RelatedReadContainer, RelatedReadItem} from '../components/RelatedReadList.js'
+
 <!-- prettier-ignore -->
 import * as WhatIsAdvancedVisibility from './what-is-advanced-visibility.md'
 import * as HowToListFilterInWebUI from './how-to-use-a-list-filter-in-the-temporal-web-ui.md'
@@ -22,13 +23,14 @@ WorkflowType = "main.YourWorkflowDefinition" and ExecutionStatus != "Running" an
 
 A List Filter contains Search Attribute keys, Search Attribute values, and Operators.
 
-import * as WhatIsASearchAttribute from './what-is-a-search-attribute.md'
+import \* as WhatIsASearchAttribute from './what-is-a-search-attribute.md'
 
 <RelatedReadContainer>
   <RelatedReadItem page={WhatIsASearchAttribute} />
 </RelatedReadContainer>
 
 - The following operators are supported in List Filters:
+
   - **AND, OR, ()**
   - **=, !=, >, >=, <, <=**
   - **IN**
@@ -46,7 +48,7 @@ import * as WhatIsASearchAttribute from './what-is-a-search-attribute.md'
 - An Advanced List Filter API may take longer if it is retrieving a large number of Workflow Executions (10M+).
 
 - A `ListWorkflow` API supports pagination.
-Use the page token in the next call to the retrieve next page, continue until the page token is `null`/`nil`.
+  Use the page token in the next call to the retrieve next page, continue until the page token is `null`/`nil`.
 
 - To paginate through a large number of Workflow Executions without skipping or duplicating them, use the `ScanWorkflow` API.
 

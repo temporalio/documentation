@@ -8,6 +8,7 @@ tags:
 ---
 
 import RelatedReadList, {RelatedReadContainer, RelatedReadItem} from '../components/RelatedReadList.js'
+
 <!-- prettier-ignore -->
 import * as WWID from './what-is-a-workflow-id.md'
 import * as WhatIsASearchAttribute from './what-is-a-search-attribute.md'
@@ -28,7 +29,7 @@ The following fields are available:
 | [`RetryPolicy`](/docs/content/what-is-a-retry-policy)                            | No       | [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/temporal#RetryPolicy)             | [👀](#retrypolicy)                              |
 | [`CronSchedule`](/docs/content/what-is-a-temporal-cron-job)                      | No       | `string`                                                                                        | [👀](#cronschedule)                             |
 | [`Memo`](/docs/content/what-is-a-memo)                                           | No       | `map[string]interface{}`                                                                        | [👀](#memo)                                     |
-| [SearchAttributes](/docs/content/what-is-a-search-attribute)                                 | No       | `map[string]interface{}`                                                                        | [👀](#searchattributes)                         |
+| [SearchAttributes](/docs/content/what-is-a-search-attribute)                     | No       | `map[string]interface{}`                                                                        | [👀](#searchattributes)                         |
 
 ### `ID`
 

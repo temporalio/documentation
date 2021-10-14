@@ -8,6 +8,7 @@ tags:
 ---
 
 import RelatedReadList, {RelatedReadContainer, RelatedReadItem} from '../components/RelatedReadList.js'
+
 <!-- prettier-ignore -->
 import * as WhatIsAListFilter from './what-is-a-list-filter.md'
 import * as WhatIsATemporalCronJob from './what-is-a-temporal-cron-job.md'
@@ -24,6 +25,7 @@ You just will not be able to use Advanced Visibility List APIs and List Filters 
 :::
 
 <!--Link to What is Continue-As-New-->
+
 When using Continue-As-New or a <preview page={WhatIsATemporalCronJob}>Temporal Cron Job</preview>, Search Attributes are carried over to the new Run by default.
 
 ### Default Search Attributes
