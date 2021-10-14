@@ -8,9 +8,11 @@ tags:
 ---
 
 import RelatedReadList, {RelatedReadContainer, RelatedReadItem} from '../components/RelatedReadList.js'
+<!-- prettier-ignore -->
 import * as WhatIsAListFilter from './what-is-a-list-filter.md'
 import * as WhatIsATemporalCronJob from './what-is-a-temporal-cron-job.md'
-
+import * as HowToViewSearchAttribtuesUsingTCTL from './how-to-view-search-attributes-of-a-cluster-using-tctl.md'
+import * as HowToAddCustomSearchAttribute from "../content/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl.md"
 
 A Search Attribute is an indexed key used in a <preview page={WhatIsAListFilter}>List Filter</preview> to filter a list of Workflow Executions that have the Search Attribute as a piece of meta data.
 
@@ -61,8 +63,6 @@ These Search Attributes are created when the initial index is created.
 
 ### Custom Search Attributes
 
-import * as HowToAddCustomSearchAttribute from "../content/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl.md"
-
 Custom Search Attribute keys must be <preview page={HowToAddCustomSearchAttribute}>registered using `tctl`</preview>.
 Registering a Search Attribute key makes it available to use with Workflow Executions within that Cluster.
 
@@ -111,8 +111,6 @@ Note:
   - As a **Keyword** it would only be matched by `ProductId = "2dd29ab7-2dd8-4668-83e0-89cae261cfb1`.
   - As a **String** it would be matched by `ProductId = 2dd8`, which could cause unwanted matches.
 - The **String** type cannot be used in the "Order By" clause.
-
-import * as HowToViewSearchAttribtuesUsingTCTL from './how-to-view-search-attributes-of-a-cluster-using-tctl.md'
 
 <RelatedReadContainer>
   <RelatedReadItem page={HowToViewSearchAttribtuesUsingTCTL} />

@@ -7,6 +7,7 @@ tags:
   - filtered-lists
 ---
 
+<!-- prettier-ignore -->
 import * as WhatIsAListFilter from './what-is-a-list-filter.md'
 import * as HowToIntegrateElasticsearch from './how-to-integrate-elasticsearch-into-a-temporal-cluster.md'
 

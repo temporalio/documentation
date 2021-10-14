@@ -8,7 +8,9 @@ tags:
 ---
 
 import RelatedReadList, {RelatedReadContainer, RelatedReadItem} from '../components/RelatedReadList.js'
+<!-- prettier-ignore -->
 import * as WhatIsAdvancedVisibility from './what-is-advanced-visibility.md'
+import * as HowToListFilterInWebUI from './how-to-use-a-list-filter-in-the-temporal-web-ui.md'
 
 A List Filter is the SQL-like string that is provided as the parameter to an <preview page={WhatIsAdvancedVisibility}>Advanced Visibility</preview> List API.
 
@@ -49,8 +51,6 @@ Use the page token in the next call to the retrieve next page, continue until th
 - To paginate through a large number of Workflow Executions without skipping or duplicating them, use the `ScanWorkflow` API.
 
 - To efficiently count the number of Workflow Executions, use the `CountWorkflow` API.
-
-import * as HowToListFilterInWebUI from './how-to-use-a-list-filter-in-the-temporal-web-ui.md'
 
 <RelatedReadContainer>
   <RelatedReadItem page={HowToListFilterInWebUI} />
