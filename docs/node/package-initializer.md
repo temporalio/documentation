@@ -1,22 +1,19 @@
 ---
 id: package-initializer
-title: Node SDK Package Initializer
 sidebar_label: Package Initializer
 ---
 
 # @temporalio/create
 
-[![NPM](https://img.shields.io/npm/v/@temporalio/create)](https://www.npmjs.com/package/@temporalio/create)
+[![NPM](https://img.shields.io/npm/v/@temporalio/create?style=for-the-badge)](https://www.npmjs.com/package/@temporalio/create)
 
-An optional utility to set up a new Temporal project with a preset skeleton.
+A tool to set up a new Temporal project starting from a curated sample.
 
 ### Usage
 
-First, follow [Getting started](/docs/node/introduction/#getting-started) to set up your environment. Then run:
+> See the [Getting started](/docs/node/introduction/#getting-started) guide for basic usage and environment set up before running this tool.
 
-```
-npx @temporalio/create@latest my-project-name
-```
+`npx @temporalio/create@latest ./example`
 
 #### Optional flags
 
@@ -24,30 +21,24 @@ npx @temporalio/create@latest my-project-name
   from [github.com/temporalio/samples-node](https://github.com/temporalio/samples-node) or use a GitHub URL. The URL can have a branch and/or subdirectory: for example, `https://github.com/temporalio/samples-node/tree/next/ecommerce-one-click/nextjs`.
 - `--list-samples` — List available sample projects.
 - `--use-yarn` — Use Yarn instead of npm.
+- `--[no-]git-init` - Initalize an empty git repository
+- `--temporalio-version <version>` - Specify which version of the temporalio npm package to use
 
 ### Project structure
 
-The generated project consists of 4 main components:
+Typically the generated project consists of 4 main components:
 
-- Worker code
-- Workflow interfaces
-- Workflow implementations
-- Activity implementations
+- Worker
+- Workflows
+- Activities
+- A script to execute a Workflow
 
-Since Workflows run in an [isolated environment](/docs/node/determinism), they must not import from the Worker or Activity implementations as those contain non-deterministic code. It **is** safe to import types from the Worker and Activity implementations as the TypeScript compiler omits them from the generated JavaScript files.
-
-### Working with the project
+### Working with the created project
 
 Most sample projects come with these scripts:
 
-- `npm start` — Run the Worker (does not require compilation)
-- `npm run start.watch` — Watch files and re-run Worker on change
+- `npm start` — Run the Worker with `ts-node` (does not require a compilation step)
+- `npm run start.watch` — Watch files with `nodemon` and re-run Worker on change
 - `npm run build` — Compile TypeScript
 - `npm run build.watch` — Watch files and compile on change
-- `npm run workflow` — Execute the Workflow
-
-#### Running the project
-
-- Download, install, and run [Temporal Server](/docs/server/quick-install) via `docker-compose`
-- Start the Worker using `npm run start.watch`
-- In a new terminal, start a Workflow with `npm run workflow`
+- `npm run workflow` — Execute a Workflow
