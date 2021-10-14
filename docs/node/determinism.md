@@ -36,14 +36,14 @@ Workflow code is bundled on Worker creation using [Webpack](https://webpack.js.o
 ```js
 import { sleep } from '@temporalio/workflow';
 
-// this prints the exact same timestamp repeatedly
-for (let x of y) {
+// this prints the *exact* same timestamp repeatedly
+for (let x = 0; x < 10; ++i) {
   console.log(Date.now());
 }
 
-// this prints timestamps strictly in increasing 1ms order
-for (let x of y) {
-  await sleep(1);
+// this prints timestamps increasing roughly 1s each iteration
+for (let x = 0; x < 10; ++i) {
+  await sleep('1 second');
   console.log(Date.now());
 }
 ```

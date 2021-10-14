@@ -98,7 +98,9 @@ cd example
 ```
 
 This will set up with [the basic Hello World sample](https://github.com/temporalio/samples-node/tree/main/hello-world).
-If you want a [sample for connecting to a Temporal Server instance secured with mTLS](https://github.com/temporalio/samples-node/tree/main/hello-world-mtls), you can use ` npx @temporalio/create@latest ./example --sample hello-world-mtls`.
+If you want to start from a different sample, pass the `--sample <sample-name>` argument to the script. For example, running `npx @temporalio/create@latest ./example --sample hello-world-mtls` will download the [sample for connecting to a Temporal Server instance secured with mTLS](https://github.com/temporalio/samples-node/tree/main/hello-world-mtls).
+
+The list of official samples can be found in the [samples-node](https://github.com/temporalio/samples-node) repo.
 
 :::note
 
@@ -111,25 +113,45 @@ If you want a [sample for connecting to a Temporal Server instance secured with 
 Run the Worker:
 
 ```bash
-$ npm run start.watch # this runs ts-node src/worker.ts with nodemon to auto-reload on changes
+# this runs ts-node src/worker.ts with nodemon to auto-reload on changes
+$ npm run start.watch
 
-# example successful output:
-2021-05-19T17:27:33.176Z [INFO] asset main.js 4.78 MiB [emitted] (name: main)
-2021-05-19T17:27:33.178Z [INFO] runtime modules 891 bytes 4 modules
-2021-05-19T17:27:33.178Z [INFO] modules by path ./node_modules/ 4.66 MiB
-2021-05-19T17:27:33.178Z [INFO]   modules by path ./node_modules/@temporalio/ 4.54 MiB 14 modules
-2021-05-19T17:27:33.178Z [INFO]   modules by path ./node_modules/protobufjs/ 51.2 KiB
-2021-05-19T17:27:33.178Z [INFO]     modules by path ./node_modules/protobufjs/src/*.js 28.8 KiB 7 modules
-2021-05-19T17:27:33.178Z [INFO]     modules by path ./node_modules/protobufjs/src/util/*.js 17.7 KiB 2 modules
-2021-05-19T17:27:33.178Z [INFO]     2 modules
-2021-05-19T17:27:33.178Z [INFO]   modules by path ./node_modules/@protobufjs/ 23.7 KiB 7 modules
-2021-05-19T17:27:33.178Z [INFO]   ./node_modules/long/src/long.js 39.2 KiB [built] [code generated]
-2021-05-19T17:27:33.178Z [INFO]   ./node_modules/ms/index.js 2.95 KiB [built] [code generated]
-2021-05-19T17:27:33.178Z [INFO] modules by path ../../../../../src/ 686 bytes
-2021-05-19T17:27:33.178Z [INFO]   ../../../../../src/main.js 362 bytes [built] [code generated]
-2021-05-19T17:27:33.178Z [INFO] ./lib/workflows/example.js 398 bytes [built] [code generated]
-2021-05-19T17:27:33.178Z [INFO] webpack 5.37.1 compiled successfully in 1058 ms
-2021-05-19T17:27:33.408Z [INFO] Worker state changed { state: 'RUNNING' }
+> temporal-hello-world@0.1.0 start.watch
+> nodemon src/worker.ts
+
+[nodemon] 2.0.13
+[nodemon] to restart at any time, enter `rs`
+[nodemon] watching path(s): src/**/*
+[nodemon] watching extensions: ts
+[nodemon] starting `ts-node src/worker.ts`
+2021-10-14T00:31:39.875Z [INFO] [temporal_sdk_core] Registering worker task_queue="tutorial"
+2021-10-14T00:31:41.360Z [INFO] assets by path ./lib/*.map 605 bytes
+2021-10-14T00:31:41.360Z [INFO]   asset ./lib/workflows.d.ts.map 192 bytes [emitted]
+2021-10-14T00:31:41.360Z [INFO]   asset ./lib/activities.d.ts.map 181 bytes [emitted]
+2021-10-14T00:31:41.360Z [INFO]   asset ./lib/execute-workflow.d.ts.map 126 bytes [emitted]
+2021-10-14T00:31:41.360Z [INFO]   asset ./lib/worker.d.ts.map 106 bytes [emitted]
+2021-10-14T00:31:41.360Z [INFO] assets by path ./lib/*.ts 357 bytes
+2021-10-14T00:31:41.360Z [INFO]   asset ./lib/workflows.d.ts 151 bytes [emitted]
+2021-10-14T00:31:41.360Z [INFO]   asset ./lib/activities.d.ts 102 bytes [emitted]
+2021-10-14T00:31:41.360Z [INFO]   asset ./lib/execute-workflow.d.ts 57 bytes [emitted]
+2021-10-14T00:31:41.360Z [INFO]   asset ./lib/worker.d.ts 47 bytes [emitted]
+2021-10-14T00:31:41.360Z [INFO] asset main.js 7.47 MiB [emitted] (name: main)
+2021-10-14T00:31:41.360Z [INFO] runtime modules 891 bytes 4 modules
+2021-10-14T00:31:41.360Z [INFO] modules by path ./node_modules/ 2.92 MiB
+2021-10-14T00:31:41.360Z [INFO]   modules by path ./node_modules/@opentelemetry/api/build/esm/ 73.4 KiB 48 modules
+2021-10-14T00:31:41.360Z [INFO]   modules by path ./node_modules/@temporalio/ 2.74 MiB 31 modules
+2021-10-14T00:31:41.360Z [INFO]   modules by path ./node_modules/protobufjs/ 51.2 KiB
+2021-10-14T00:31:41.360Z [INFO]     modules by path ./node_modules/protobufjs/src/*.js 28.8 KiB 7 modules
+2021-10-14T00:31:41.360Z [INFO]     modules by path ./node_modules/protobufjs/src/util/*.js 17.7 KiB 2 modules
+2021-10-14T00:31:41.360Z [INFO]     2 modules
+2021-10-14T00:31:41.360Z [INFO]   modules by path ./node_modules/@protobufjs/ 23.7 KiB 7 modules
+2021-10-14T00:31:41.360Z [INFO]   ./node_modules/long/src/long.js 39.2 KiB [built] [code generated]
+2021-10-14T00:31:41.360Z [INFO]   ./node_modules/ms/index.js 2.95 KiB [built] [code generated]
+2021-10-14T00:31:41.360Z [INFO] ../../../../../src/main.js 462 bytes [built] [code generated]
+2021-10-14T00:31:41.360Z [INFO] ./src/workflows.ts 443 bytes [built] [code generated]
+2021-10-14T00:31:41.360Z [INFO] webpack 5.58.2 compiled successfully in 1293 ms
+2021-10-14T00:31:41.563Z [INFO] Worker state changed { state: 'RUNNING' }
+
 ```
 
 > If this step fails, make sure you have the correct version of Node and other prerequisites listed above.
@@ -143,11 +165,9 @@ Hello, Temporal!
 
 This "Hello, Temporal!" message comes from the combination of:
 
-- [`execute-workflow.js`](https://github.com/temporalio/samples-node/blob/main/hello-world/src/execute-workflow.ts) passing `'Temporal'` as an argument to the Workflow.
+- [`execute-workflow.ts`](https://github.com/temporalio/samples-node/blob/main/hello-world/src/execute-workflow.ts) passing `'Temporal'` as an argument to the Workflow.
 - The [Workflow](https://github.com/temporalio/samples-node/blob/main/hello-world/src/workflows.ts) passing the argument to the Activity.
 - The [Activity](https://github.com/temporalio/samples-node/blob/main/hello-world/src/activities.ts) taking the argument as `name` and returning `Hello, ${name}!`.
-
-as compiled from your `/src` to `/lib` folder by TypeScript.
 
 You can verify this via the INPUT and RESULT fields in Temporal Web (available at [`localhost:8088`](http://localhost:8088/) on the default [`docker-compose`](https://github.com/temporalio/docker-compose)):
 
@@ -161,5 +181,4 @@ Then you should have a passing knowledge of our Core APIs:
 
 - [Workflows](/docs/node/workflows) and [Activities](/docs/node/activities): How to write Temporal's core orchestration code
 - [Workers and Task Queues](/docs/node/workers): How Workflows and Activities are routed to and executed on machines you control
-- [Signals and Queries](/docs/node/signals-queries): Getting data in and out of a Workflow _while it is running_.
-- [Timers](/docs/node/timers): durable timers that are useful for racing human action against Signals, or sending reminders after inactivity
+- [Workflow APIs](/docs/node/workflow-apis): Signals, Queries, Timers, Child Workflows, Infinite Workflows, and more!

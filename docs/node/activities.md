@@ -4,6 +4,8 @@ title: Activities in Node.js
 sidebar_label: Activities
 ---
 
+> **@temporalio/activity** [![NPM](https://img.shields.io/npm/v/@temporalio/activity)](https://www.npmjs.com/package/@temporalio/activity) [API reference](https://nodejs.temporal.io/api/namespaces/activity) | [GitHub source](https://github.com/temporalio/sdk-node/tree/main/packages/activity)
+
 In Temporal, Activities are typically used to interact with external resources, like making an HTTP request.
 
 - Unlike [Workflows](/docs/node/determinism), Activities execute in the standard Node.js environment, not an [isolate](https://www.npmjs.com/package/isolated-vm). So any code that needs to talk to the outside world needs to be in an Activity.
@@ -13,12 +15,14 @@ In Temporal, Activities are typically used to interact with external resources, 
 ## How to write an Activity Function
 
 Activities are "just functions".
-Below is a simple Activity that accepts a string parameter, appends a word to it, and returns the result.
+Below is a simple Activity that accepts a string parameter and returns a string.
 
 <!--SNIPSTART nodejs-hello-activity {"enable_source_link": false}-->
 <!--SNIPEND-->
 
-## How to import and use Activities
+You may `import { Context } from '@temporalio/activity'` which offers useful utilities for Activity functions such as sleeping, heartbeating, cancellation, and retrieving metadata (see [docs on Activity Context utilities](#activity-context-utilities)).
+
+## How to import and use Activities in a Workflow
 
 You can call the above `greet()` Activity in a Workflow as shown below, assuming that the `greet` function is in the `lib/activities.js` file.
 Note that we only import the type of our activities, the TypeScript compiler will drop the import statement on compilation.
@@ -28,6 +32,12 @@ Note that we only import the type of our activities, the TypeScript compiler wil
 
 The return value of `createActivityHandle` is a [`Proxy`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) object
 with a `get` handler that returns a function that calls the Node SDK's internal `scheduleActivity()` function.
+
+## Activity Options
+
+When you write `createActivityHandle`, there are [a range of options](https://nodejs.temporal.io/api/interfaces/worker.activityoptions/) you can set, the most important of which are Timeouts and Retries.
+
+You can also specify `namespace`, `taskQueue`, `cancellationType`, and `activityId`, but most users will not need these.
 
 ### Activity Timeouts
 
@@ -97,21 +107,9 @@ const { greet } = createActivityHandle<typeof activities>({
 
 For a proper guide to each Retry Option, see the [RetryOptions API Reference](https://nodejs.temporal.io/api/interfaces/worker.RetryOptions).
 
-### Misc. Activity Options
-
-The full set of options are available in [the API reference](https://nodejs.temporal.io/api/interfaces/worker.ActivityOptions), but here are selected ones you might use:
-
-| Activity Options | Description                                                                                                                                                                                         |
-| ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `activityId`     | Identifier to use for tracking the activity in Workflow history. The `activityId` can be accessed by the activity function. Does not need to be unique. Defaults to an incremental sequence number. |
-| `taskQueue`      | Task queue name. defaults to current worker task queue.                                                                                                                                             |
-
-## How to register an Activity
+## How to register an Activity on a Worker
 
 All activities must be registered by a Worker, or you will get an error that looks like `"Activity function myActivity is not registered on this Worker"` when you try to invoke it from a Workflow.
-
-- **Implicit registration**: By default, the Temporal Node.js SDK looks for either `./activities.js` or `./activities/index.js` relative to the Worker code, and automatically registers any exported functions as Activities. When the Worker is run with `ts-node` the TypeScript sources will be registered instead.
-- **Explicit registration**: You can also choose to explicitly register activities in a Worker:
 
 ```ts
 import { Worker } from '@temporalio/worker';
@@ -141,7 +139,7 @@ When you register these in the Worker, pass your shared dependencies accordingly
 
 ## Activity Context utilities
 
-Temporal SDK also exports a [`Context`](https://nodejs.temporal.io/api/classes/activity.context/) class with useful features for activities: ` { Context } from '@temporalio/activity';`
+Temporal SDK also exports a [`Context`](https://nodejs.temporal.io/api/classes/activity.context/) class with useful features for activities: `import { Context } from '@temporalio/activity'`
 
 | Activity Context properties            | Description                                                                                                                                                                                    |
 | -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -157,7 +155,7 @@ Long running activities should heartbeat their progress back to the Workflow for
 
 #### Example: Activity that fakes progress and can be cancelled
 
-> Note that [`Context.current().sleep`](https://nodejs.temporal.io/api/classes/activity.context#sleep) is cancellation aware.
+The [`sleep`](https://nodejs.temporal.io/api/classes/activity.context#sleep) method exposed in `Context.current()` is comparable to a standard `sleep` function: `new Promise(resolve => setTimeout(resolve, sleepMS));` except that it also rejects if the activity is cancelled.
 
 <!--SNIPSTART nodejs-activity-fake-progress-->
 <!--SNIPEND-->
@@ -174,11 +172,12 @@ There are 2 ways to handle Activity cancellation:
 
 [`heartbeat()`](https://nodejs.temporal.io/api/classes/activity.context/#heartbeat) in the Node.js SDK is a background operation and does not propagate errors to the caller, such as when the scheduling Workflow has already completed or the Activity has been closed by the server (due to timeout for instance). These errors are translated into cancellation and can be handled using the methods above.
 
-#### Example: Sleep
-
-The `sleep` method exported in `Context.current()` is comparable to a standard `sleep` function: `new Promise(resolve => setTimeout(resolve, sleepMS));` except that it also rejects if the activity is cancelled.
-
 #### Example: Activity that makes a cancellable HTTP request
 
 <!--SNIPSTART nodejs-activity-cancellable-fetch-->
 <!--SNIPEND-->
+
+## Local Activities
+
+Temporal has an optimization feature called Local Activities.
+The Node.js SDK has not yet implemented this feature.

@@ -308,28 +308,28 @@ module.exports = {
       label: "Node (alpha)",
       collapsed: false,
       items: [
-        {
-          type: "link",
-          label: "API reference",
-          href: "https://nodejs.temporal.io",
-        },
-        {
-          type: "link",
-          label: "Github source",
-          href: "https://github.com/temporalio/sdk-node",
-        },
+        // {
+        //   type: "link",
+        //   label: "API reference",
+        //   href: "https://nodejs.temporal.io",
+        // },
+        // {
+        //   type: "link",
+        //   label: "Github source",
+        //   href: "https://github.com/temporalio/sdk-node",
+        // },
+        "node/introduction",
         {
           type: "category",
           label: "Node Tutorials",
           items: [
-            "node/introduction",
+            "node/package-initializer",
             "node/hello-world",
             {
               type: "link",
               label: "Code Samples",
               href: "https://github.com/temporalio/samples-node",
             },
-            "node/package-initializer",
           ],
         },
         {
@@ -338,10 +338,9 @@ module.exports = {
           collapsed: false,
           items: [
             "node/workflows",
-            "node/activities",
             "node/workers",
-            "node/timers",
-            "node/signals-queries",
+            "node/activities",
+            "node/workflow-apis",
           ],
         },
         {
@@ -350,7 +349,7 @@ module.exports = {
           items: [
             "node/security",
             "node/testing",
-            "node/versioning",
+            "node/patching",
             "node/logging",
           ],
         },
