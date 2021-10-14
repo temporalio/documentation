@@ -8,11 +8,8 @@ image: /img/workflow.png
 
 import RelatedReadList from '../components/RelatedReadList.js'
 
-:::note **@temporalio/client** [![NPM](https://img.shields.io/npm/v/@temporalio/client)](https://www.npmjs.com/package/@temporalio/client)
-
-[API reference](https://nodejs.temporal.io/api/namespaces/client) | [GitHub source](https://github.com/temporalio/sdk-node/tree/main/packages/client)
-
-:::
+> **@temporalio/client** [![NPM](https://img.shields.io/npm/v/@temporalio/client)](https://www.npmjs.com/package/@temporalio/client)
+> [API reference](https://nodejs.temporal.io/api/namespaces/client) | [GitHub source](https://github.com/temporalio/sdk-node/tree/main/packages/client)
 
 **Workflows are the fundamental unit of business logic in Temporal**.
 

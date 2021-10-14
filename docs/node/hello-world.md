@@ -4,16 +4,8 @@ title: Hello World Walkthrough in Node
 sidebar_label: Hello World Walkthrough
 ---
 
-import CustomWarning from "../components/CustomWarning.js"
-
-<CustomWarning>
-
-The Node SDK and associated documentation is in an Alpha stage and may change at any time.
-
-</CustomWarning>
-
 In this tutorial, we'll go over the different components that make up a Temporal project.
-All of the code on this page is included in our package initializer skeleton, which we set up in [Getting started](/docs/node/introduction/#getting-started).
+All of the code on this page is included in our [package initializer](/docs/node/package-initializer) skeleton, which we set up in our [Introduction](/docs/node/introduction/).
 
 The SDK steers developers to write their Workflows and Activities in TypeScript but vanilla JS is also supported.
 
