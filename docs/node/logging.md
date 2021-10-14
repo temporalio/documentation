@@ -29,31 +29,29 @@ The reason we only offer a default logger is to minimize Worker dependencies and
 
 Temporal ships a [`DefaultLogger`](https://nodejs.temporal.io/api/classes/worker.defaultlogger/) that implements the basic interface:
 
+#### Example: Set up the DefaultLogger to only log messages with level WARN and higher
+
 ```ts
-import { Worker, DefaultLogger, LogEntry } from '@temporalio/worker';
+import { Core, DefaultLogger, LogEntry } from '@temporalio/worker';
 
-// Set up the DefaultLogger to only log messages with level WARNING and higher with a custom log function
-const logger = new DefaultLogger('WARNING', (severity, message, meta) => {
-  console.log(`Custom logger: ${severity} — ${message}`);
+const logger = new DefaultLogger('WARN', ({ level, message }) => {
+  console.log(`Custom logger: ${level} — ${message}`);
 });
-const worker = await Worker.create({
-  workflowsPath: require.resolve('./workflows'),
-  activities, // imported separately
-  logger,
-});
+await Core.install({ logger });
+```
 
-// accumulate logs for testing/reporting
-const logs: Array<Omit<LogEntry, 'timestampNanos'>> = [];
-const log = new DefaultLogger('WARN', ({ level, message, meta }) =>
-  logs.push({ level, message, meta })
-);
+#### Example: Accumulate logs for testing/reporting
+
+```ts
+const logs: LogEntry[] = [];
+const logger = new DefaultLogger('TRACE', (entry) => logs.push(entry));
 log.debug('hey', { a: 1 });
 log.info('ho');
 log.warn('lets', { a: 1 });
 log.error('go');
 ```
 
-The log levels are [listed here](https://nodejs.temporal.io/api/modules/worker/#loglevel) in increasing order of severity.
+The log levels are [listed here](https://nodejs.temporal.io/api/namespaces/worker#loglevel) in increasing order of severity.
 
 ### Using a custom logger
 
@@ -68,13 +66,9 @@ const logger = winston.createLogger({
   format: winston.format.json(),
   transports: [new transports.File({ filename: '/path/to/worker.log' })],
 });
-const worker = await Worker.create({
-  workflowsPath: require.resolve('./workflows'),
-  activities, // imported separately
-  logger,
-});
+await Core.create({ logger });
 ```
 
-## OpenTelemetry Logging
+## OpenTelemetry Tracing
 
 We are in the process of documenting our OTel support, but meanwhile you can [view our tests](https://github.com/temporalio/sdk-node/blob/4505eee94e7d8a10bc187612977fd72bc6d740a6/packages/test/src/test-otel.ts) and get in touch if you need this.
