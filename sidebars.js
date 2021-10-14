@@ -364,6 +364,7 @@ module.exports = {
             "node/interceptors",
           ],
         },
+        "node/troubleshooting",
       ],
     },
     {
