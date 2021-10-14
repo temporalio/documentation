@@ -497,3 +497,7 @@
 [[redirects]]
   from = "/docs/typescript/*"
   to = "/docs/node/:splat"
+
+[[redirects]]
+  from = "/docs/server/workflow-search"
+  to = "docs/temporal-explained/visibility"

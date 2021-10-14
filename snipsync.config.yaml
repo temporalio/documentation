@@ -15,6 +15,7 @@ origins:
     repo: subscription-workflow-project-template-php
   - owner: temporalio
     repo: temporal
+    ref: 523e12be5c32421f7fb15e530b0f79b9b4254c3e
   - owner: temporalio
     repo: samples-php
   - owner: temporalio

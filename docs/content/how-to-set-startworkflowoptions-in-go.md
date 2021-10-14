@@ -224,11 +224,22 @@ readlist={[
 
 ### `SearchAttributes`
 
+Corresponding Search Attribute value types in Go:
+
+- Keyword = string
+- Int = int64
+- Double = float64
+- Bool = bool
+- Datetime = time.Time
+- String = string
+
 ```go
+searchAttributes := map[string]interface{}{
+  "CustomIntField": 1,
+  "MiscData": "yellow",
+}
 workflowOptions := client.StartWorkflowOptions{
-  SearchAttributes: map[string]interface{}{
-    "CustomIntField": 1,
-  },
+  SearchAttributes: searchAttributes,
   // ...
 }
 workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
@@ -237,10 +248,8 @@ if err != nil {
 }
 ```
 
-<!--TODO
-<RelatedReadList
-readlist={[
-["What is a Search Attribute?","/docs/content/what-is-a-search-attribute","explanation"],
-]}
-/>
--->
+import * as WhatIsASearchAttribute from './what-is-a-search-attribute.md'
+
+<RelatedReadContainer>
+  <RelatedReadItem page={WhatIsASearchAttribute} />
+</RelatedReadContainer>

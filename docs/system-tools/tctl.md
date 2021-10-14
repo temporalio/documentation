@@ -455,71 +455,17 @@ CLI output:
 Even for such a trivial Workflow, the history gives a lot of useful information about all steps that were executed and their inputs.
 For complex Workflows this is a really useful tool for production and development troubleshooting.
 
-### List search attributes
+### List Search Attributes
 
-You can query the list of search attributes with the following command:
+import HowToViewSearchAttributesOfAClusterUsingTCTL from '../content/how-to-view-search-attributes-of-a-cluster-using-tctl.md'
 
-```bash
-tctl cluster get-search-attributes
-```
+<HowToViewSearchAttributesOfAClusterUsingTCTL/>
 
-Here is some example output:
+### Add new Search Attributes
 
-```bash
-+-----------------------+----------+
-|         NAME          |   TYPE   |
-+-----------------------+----------+
-| BinaryChecksums       | Keyword  |
-| CloseTime             | Int      |
-| CustomBoolField       | Bool     |
-| CustomDatetimeField   | Datetime |
-| CustomDoubleField     | Double   |
-| CustomIntField        | Int      |
-| CustomKeywordField    | Keyword  |
-| CustomNamespace       | Keyword  |
-| CustomStringField     | String   |
-| ExecutionStatus       | Int      |
-| ExecutionTime         | Int      |
-| Operator              | Keyword  |
-| RunId                 | Keyword  |
-| StartTime             | Int      |
-| TaskQueue             | Keyword  |
-| TemporalChangeVersion | Keyword  |
-| WorkflowId            | Keyword  |
-| WorkflowType          | Keyword  |
-+-----------------------+----------+
-```
+import HowToAddCustomSearchAttributeToAClusterUsingTCTL from '../content/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl.md'
 
-There is also admin version of this command:
-
-```bash
-tctl admin cluster get-search-attributes
-```
-
-which will show you custom and system search attributes separately and also show underlying Elasticsearch index schema and system Workflow status.
-
-### Add new search attributes
-
-Here is how you add a new search attribute:
-
-```bash
-tctl admin cluster add-search-attributes --name ProductId --type Keyword
-```
-
-The possible values for `--type` are:
-
-- String
-- Keyword
-- Int
-- Double
-- Bool
-- Datetime
-
-:::note
-
-Due to Elasticsearch limitations you can only add new custom search attributes but not rename or remove existing ones.
-
-:::
+<HowToAddCustomSearchAttributeToAClusterUsingTCTL/>
 
 ### Remove search attributes
 
