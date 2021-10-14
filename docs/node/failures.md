@@ -27,11 +27,9 @@ import {
 
 // Define the TypeScript version of the Java Workflow interface
 // to get a type safe child WorkflowHandle
-export type JavaWorkflow = () => {
-  execute(): Promise<void>;
-};
+export type JavaWorkflow = () => Promise<void>;
 
-async function execute() {
+async function myWorkflow(): Promise<void> {
   const child = createChildWorkflowHandle<JavaWorkflow>(
     'RunAnActivityWorkflow'
   );
@@ -51,8 +49,6 @@ async function execute() {
     throw err;
   }
 }
-
-export const myWorkflow = () => ({ execute });
 ```
 
 </details>
@@ -72,27 +68,21 @@ import {
 } from '@temporalio/workflow';
 import * as activities from '../activities';
 
-export function myWorkflow(urls: string[], timeoutMs: number) {
+export function myWorkflow(urls: string[], timeoutMs: number): Promise<any[]> {
   const { httpGetJSON } = createActivityHandle<typeof activities>({
     scheduleToCloseTimeout: timeoutMs,
   });
 
-  return {
-    async execute(): Promise<any[]> {
-      try {
-        return CancellationScope.withTimeout(timeoutMs, () =>
-          Promise.all(urls.map((url) => httpGetJSON(url)))
-        );
-      } catch (err) {
-        if (isCancellation(err)) {
-          console.log(
-            'Deadline exceeded while waiting for activities to complete'
-          );
-        }
-        throw err;
-      }
-    },
-  };
+  try {
+    return CancellationScope.withTimeout(timeoutMs, () =>
+      Promise.all(urls.map((url) => httpGetJSON(url)))
+    );
+  } catch (err) {
+    if (isCancellation(err)) {
+      console.log('Deadline exceeded while waiting for activities to complete');
+    }
+    throw err;
+  }
 }
 ```
 

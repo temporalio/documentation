@@ -15,12 +15,12 @@ In Temporal, Activities are typically used to interact with external resources, 
 ## How to write an Activity Function
 
 Activities are "just functions".
-Below is a simple Activity that accepts a string parameter, appends a word to it, and returns the result.
+Below is a simple Activity that accepts a string parameter and returns a string.
 
 <!--SNIPSTART nodejs-hello-activity {"enable_source_link": false}-->
 <!--SNIPEND-->
 
-Inside your functions, you can `import { Context } from '@temporalio/activity'` which offers useful utilities for sleeping, heartbeating, cancellation, and retrieving metadata (see [docs on Activity Context utilities](#activity-context-utilities)).
+You may `import { Context } from '@temporalio/activity'` which offers useful utilities for Activity functions such as sleeping, heartbeating, cancellation, and retrieving metadata (see [docs on Activity Context utilities](#activity-context-utilities)).
 
 ## How to import and use Activities in a Workflow
 
@@ -155,7 +155,7 @@ Long running activities should heartbeat their progress back to the Workflow for
 
 #### Example: Activity that fakes progress and can be cancelled
 
-> Note that [`Context.current().sleep`](https://nodejs.temporal.io/api/classes/activity.context#sleep) is cancellation aware.
+The [`sleep`](https://nodejs.temporal.io/api/classes/activity.context#sleep) method exposed in `Context.current()` is comparable to a standard `sleep` function: `new Promise(resolve => setTimeout(resolve, sleepMS));` except that it also rejects if the activity is cancelled.
 
 <!--SNIPSTART nodejs-activity-fake-progress-->
 <!--SNIPEND-->
@@ -171,10 +171,6 @@ There are 2 ways to handle Activity cancellation:
 1. Pass the context's abort signal at [`Context.current().cancellationSignal`](https://nodejs.temporal.io/api/classes/activity.context#cancelled) to a library that supports it like `fetch`
 
 [`heartbeat()`](https://nodejs.temporal.io/api/classes/activity.context/#heartbeat) in the Node.js SDK is a background operation and does not propagate errors to the caller, such as when the scheduling Workflow has already completed or the Activity has been closed by the server (due to timeout for instance). These errors are translated into cancellation and can be handled using the methods above.
-
-#### Example: Sleep
-
-The `sleep` method exported in `Context.current()` is comparable to a standard `sleep` function: `new Promise(resolve => setTimeout(resolve, sleepMS));` except that it also rejects if the activity is cancelled.
 
 #### Example: Activity that makes a cancellable HTTP request
 

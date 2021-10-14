@@ -88,7 +88,7 @@ let state = await handle.query('isBlocked', ...args);
 
 This mutates Workflow state - do not do this:
 
-```js
+```ts
 export function badExample() {
   let someState = 123;
   setListener(query, () => {
@@ -103,7 +103,7 @@ export function badExample() {
 
 :::info Notes on Signals
 
-`workflow.signal` returns a Promise that only resolves when Temporal Server has persisted receipt of the Signal, before the Workflow's Signal handler is called.
+`WorkflowHandle.signal` returns a Promise that only resolves when Temporal Server has persisted receipt of the Signal, before the Workflow's Signal handler is called.
 This Promise resolves with no value; **Signal handlers cannot return data to the caller.**
 
 :::
@@ -130,11 +130,11 @@ Arguments for both are sent as needed.
 // Signal With Start
 const client = new WorkflowClient();
 let workflow = client.createWorkflowHandle(
-  interruptSignal, // which Workflow to start
+  interruptableWorkflow, // which Workflow to start
   { taskQueue: 'test' }
 );
 await workflow.signalWithStart(
-  'interrupt', // which Signal to send
+  interruptSignal, // which Signal to send
   ['interrupted from signalWithStart'], // arguments to send with Signal
   [] // arguments to start the Workflow if needed
 );
@@ -190,6 +190,8 @@ Use the optional `timeout` arg or a `sleep` timer.
 
 :::
 
+<!-- TODO: insert snippet showing real usage of condition -->
+
 ## Timers
 
 Timers help you write durable asynchronous code in Temporal.
@@ -216,8 +218,6 @@ That is the kind of scale Temporal handles.
 When writing Workflows with timers, you need to take care that it handles jumps of time.
 What we mean by "handling jumps": if you had timers that were supposed to go off at 1.15, 1.30, and 1.45pm, and your system goes down from 1pm to 2pm, then at 2pm when the system comes back up all 3 timers will fire at once. If your workflow code relies on the timers resolving in precise order, write these checks yourself.
 -->
-
-You can read more about [Temporal Node SDK's Determinism here](/docs/node/determinism).
 
 </details>
 
@@ -354,22 +354,20 @@ import SharedContinueAsNew from '../shared/continue-as-new.md'
 
 Use the [`continueAsNew`](https://nodejs.temporal.io/api/namespaces/workflow#continueasnew) API to instruct the Node SDK to restart `loopingWorkflow` with a new starting value and a new event history.
 
+<!-- TODO: convert to sample -->
+
 ```ts
 import { continueAsNew, sleep } from '@temporalio/workflow';
 
-export async function loopingWorkflow(iteration = 0) {
-  return {
-    async execute() {
-      if (iteration === 10) {
-        return;
-      }
-      console.log('Running Workflow iteration:', iteration);
-      await sleep(1000);
-      // Must match the arguments expected by `loopingWorkflow`
-      await continueAsNew<typeof loopingWorkflow>(iteration + 1);
-      // Unreachable code, continueAsNew is like `process.exit` and will stop execution once called.
-    },
-  };
+export async function loopingWorkflow(iteration = 0): Promise<void> {
+  if (iteration === 10) {
+    return;
+  }
+  console.log('Running Workflow iteration:', iteration);
+  await sleep(1000);
+  // Must match the arguments expected by `loopingWorkflow`
+  await continueAsNew<typeof loopingWorkflow>(iteration + 1);
+  // Unreachable code, continueAsNew is like `process.exit` and will stop execution once called.
 }
 ```
 

@@ -23,11 +23,11 @@ import { ResponsivePlayer } from '../../src/components'
 
 Given an initial Workflow version `v1`:
 
-```js
-export const myWorkflow = () => {
+```ts
+export async function myWorkflow(): Promise<void> {
   await activityA();
   await activityThatMustRunAfterA();
-};
+}
 ```
 
 We decide to update our code and run `activityB` instead.
@@ -36,10 +36,10 @@ We decide to update our code and run `activityB` instead.
 
 `v2`:
 
-```js
-export const myWorkflow = () => {
+```ts
+export async function myWorkflow(): Promise<void> {
   await activityB();
-};
+}
 ```
 
 :::
@@ -52,17 +52,17 @@ Instead we must deploy `v2'` (below) and use the [`patched`](https://nodejs.temp
 
 `v2'`:
 
-```js
+```ts
 import { patched } from '@temporalio/workflow';
 
-export const myWorkflow = () => {
+export async function myWorkflow(): Promise<void> {
   if (patched('my-change-id')) {
     await activityB();
   } else {
     await activityA();
     await activityThatMustRunAfterA();
   }
-};
+}
 ```
 
 Once we know that all Workflows started with `v1` code have completed we can [deprecate the patch](https://nodejs.temporal.io/api/namespaces/workflow#deprecatepatch).
@@ -72,13 +72,13 @@ If while we're deploying `v3` (below) there are still live Workers running `v2'`
 
 `v3`:
 
-```js
+```ts
 import { deprecatePatch } from '@temporalio/workflow';
 
-export const myWorkflow = () => {
+export async function myWorkflow(): Promise<void> {
   deprecatePatch('my-change-id');
   await activityB();
-};
+}
 ```
 
 `v2` is safe to deploy once all `v2'` or earlier workflows are complete due to the assertion mentioned above.
