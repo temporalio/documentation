@@ -33,6 +33,20 @@ Note that we only import the type of our activities, the TypeScript compiler wil
 The return value of `createActivityHandle` is a [`Proxy`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) object
 with a `get` handler that returns a function that calls the Node SDK's internal `scheduleActivity()` function.
 
+:::caution Wrong way to import activities
+
+You may be tempted to import activities directly instead of using `createActivityHandle`:
+
+```ts
+import { greet } from './activities';
+```
+
+This will result in an error, because the Temporal Worker will try to bundle this as part of the Workflow.
+Make sure you're using `createActivityHandle` to retrieve an Activity rather than calling the function directly.
+This indirection comes from the fact that Activities are run in the regular Node.js environment, not the deterministic `vm` where Workflows are run.
+
+:::
+
 ## Activity Options
 
 When you write `createActivityHandle`, there are [a range of options](https://nodejs.temporal.io/api/interfaces/worker.activityoptions/) you can set, the most important of which are Timeouts and Retries.
