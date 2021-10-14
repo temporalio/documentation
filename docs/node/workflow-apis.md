@@ -8,15 +8,15 @@ sidebar_label: Workflow APIs
 
 This package exports all the useful primitives that you can use in Workflows. See the [API reference](https://nodejs.temporal.io/api/namespaces/workflow) for the full list, but the main ones are:
 
-| APIs                         | Purpose                                                                                                                    |
-| ---------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `defineSignal`/`defineQuery` | [Signal and Query](#signals-and-queries) Workflows while they are running                                                  |
-| `sleep`                      | Primitive to build durable [Timers](#timers)                                                                               |
-| `condition`                  | Block until a [`condition`](#condition) is true. Often used with Signals                                                   |
-| `createActivityHandle`       | Make idempotent side effects (like making a HTTP request) with Activities ([documented separately](/docs/node/activities)) |
-| `createChildWorkflowHandle`  | Spawn new [Child Workflows](#child-workflows) with the ability to cancel                                                   |
-| `continueAsNew`              | Truncate Event History for [infinitely long running Workflows](#infinite-workflows)                                        |
-| `patched`/`deprecatePatch`   | Migrate Workflows to new versions ([documented separately](/docs/node/versioning))                                         |
+| APIs                         | Purpose                                                                                                                 |
+| ---------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `defineSignal`/`defineQuery` | [Signal and Query](#signals-and-queries) Workflows while they are running                                               |
+| `sleep`                      | Primitive to build durable [Timers](#timers)                                                                            |
+| `condition`                  | Block until a [`condition`](#condition) is true. Often used with Signals                                                |
+| `createActivityHandle`       | Make idempotent side effects (like making a HTTP request) with Activities ([see Activities doc](/docs/node/activities)) |
+| `createChildWorkflowHandle`  | Spawn new [Child Workflows](#child-workflows) with the ability to cancel                                                |
+| `continueAsNew`              | Truncate Event History for [infinitely long running Workflows](#infinite-workflows)                                     |
+| `patched`/`deprecatePatch`   | Migrate Workflows to new versions ([see Patching doc](/docs/node/patching))                                             |
 
 We fully expect that developers will bundle these into their own reusable Workflow libraries.
 If you do, please [get in touch on Slack](https://temporal.io/slack), we would love to work with you and promote your work.
@@ -183,10 +183,14 @@ await condition(() => x > 3);
 await condition('30 days', () => x > 3);
 ```
 
-:::warning `condition` Antipattern
+### `condition` Anti-patterns
 
-No time based condition functions are allowed in your function as this is very error prone.
-Use the optional `timeout` arg or a `sleep` timer.
+:::warning `condition` Antipatterns
+
+- No time based condition functions are allowed in your function as this is very error prone.
+  Use the optional `timeout` arg or a `sleep` timer.
+- `condition` only accepts **synchronous** functions that return a boolean.
+  Do not put async functions, like Activities, inside the `condition` function.
 
 :::
 
@@ -221,13 +225,13 @@ What we mean by "handling jumps": if you had timers that were supposed to go off
 
 </details>
 
-:::caution Disambiguating Confusion
+:::caution Preventing Confusion
 
 This section only covers Workflow Timers.
 
-- There is an unrelated [`sleep` utility function](https://nodejs.temporal.io/api/classes/activity.context/#sleep) available in Activity Context that is not durable, but is cancellation aware. See [the Activities docs for details](/docs/node/activities).
-- Timers are unrelated to Cron Workflows, which are a Workflow option that you can set for recurring Workflows. See [the Workflows docs for details](/docs/node/workflows).
-- If you need to block for an _indefinite_ period of time instead of a set time, you may want the `condition` API instead. See [the Workflow APIs docs for details](/docs/node/workflow-apis).
+- There is an unrelated [`sleep` utility function](https://nodejs.temporal.io/api/classes/activity.context/#sleep) available in **Activity Context** that is not durable, but is cancellation aware. See [the Activities docs for details](/docs/node/activities).
+- Timers are unrelated to **Cron Workflows**, which are a Workflow option that you can set for recurring Workflows. See [the Workflows docs for details](/docs/node/workflows).
+- If you need to block for an _indefinite_ period of time instead of a set time, you want the `condition` API instead of a timer. See [`condition` docs](#condition).
 
 :::
 
@@ -260,7 +264,7 @@ await sleep('30 days').catch(() => {
 
 You can read more on [the Cancellation Scopes doc](/docs/node/cancellation-scopes).
 
-### Timer Design Patterns
+### Timer design patterns
 
 There are only two Timer APIs, but the important part is knowing how to use them to model asynchronous business logic. Here are some examples we use the most; we welcome more if you can think of them!
 
@@ -334,13 +338,21 @@ To execute a child workflow and await its completion:
 
 [`createChildWorkflowHandle`](https://nodejs.temporal.io/api/api/namespaces/workflow#newchildworkflowhandle) returns a [`ChildWorkflowHandle`](https://nodejs.temporal.io/api/interfaces/workflow.ChildWorkflowHandle) that can be used to start a new child Workflow, signal it and await its completion.
 
+Child Workflow Option fields automatically inherit their values from the Parent Workflow Options if they are not explicitly set.
+
 Child Workflow executions are [`CancellationScope`](/docs/node/cancellation-scopes) aware and will automatically be cancelled when their containing scope is cancelled.
 
 <RelatedReadList
 readlist={[
-["What is a Child Workflow Execution?","/docs/content/what-is-a-child-workflow-execution","explanation"],  
+["What is a Child Workflow Execution?","/docs/content/what-is-a-child-workflow-execution","explanation"]
 ]}
 />
+
+### Parent Close Policy
+
+import PCP from '../content/what-is-a-parent-close-policy.md'
+
+<PCP />
 
 ## Infinite Workflows
 

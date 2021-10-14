@@ -8,25 +8,17 @@ tags:
 
 import RelatedReadList from '../components/RelatedReadList.js'
 
-If a Workflow Execution is a Child Workflow Execution, a Parent Close Policy determines what happens to the Workflow Execution if its Parent Workflow Execution changes to a Closed status (Completed, Failed, Timed out).
+A Parent Close Policy determines what happens to a Child Workflow Execution if its Parent changes to a Closed status (Completed, Failed, or Timed out).
+There are three possible values:
 
-A Parent Close Policy has three possible values:
+- **Abandon**: the Child Workflow Execution is not affected.
+- **Terminate** (default): the Child Workflow Execution is forcefully Terminated.
+- **Request Cancel**: a Cancellation request is sent to the Child Workflow Execution.
 
-- **Abandon**: When the Parent Closes, the Child Workflow Execution is not affected.
-- **Terminate**: **This is the default**.
-  When the Parent Closes, the Child Workflow Execution is Terminated.
-- **Request Cancel**: When the Parent Closes, a Cancellation request is sent to the Child Workflow Execution.
-
-Consideration the following when implementing:
-
-- If the Workflow Execution is not a Child Workflow Execution, a Parent Close Policy has no effect on the execution.
-- A Parent Close Policy must be provided when the Child Workflow Execution is spawned.
-- Each Child Workflow Execution may have its own Parent Close Policy.
-- **The default Parent Close Policy is Terminate** if one is not set and the Workflow Execution is a Child Workflow Execution.
+Each Child Workflow Execution may have its own Parent Close Policy. This policy only applies to Child Workflow Executions and has no effect otherwise.
 
 <RelatedReadList
 readlist={[
-["What is a Child Workflow Execution", "/docs/content/what-is-a-child-workflow-execution", "explanation"],
-["How to spawn a Child Workflow Execution in Go", "/docs/content/how-to-spawn-a-child-workflow-execution-in-go", "developer guide"],  
+["What is a Child Workflow Execution", "/docs/content/what-is-a-child-workflow-execution", "explanation"],  
 ]}
 />

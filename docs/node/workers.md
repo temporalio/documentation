@@ -17,7 +17,7 @@ A Worker is a process that connects to the Temporal Server, polls **Task Queues*
   - Workers connect to the Temporal Server, poll their configured **Task Queue** for Tasks, execute chunks of code in response to those Tasks, and then communicate the results back.
   - Workers are distinct from Clients and scaled independently of Temporal Server, which has its own internal services to scale.
   - Workers are stateless, and can be brought up and down with no data loss impact to your overall system.
-    To migrate to new versions of your Workflows and Activities, you restart your Workers with the new versions (and optionally use [the `patch` API to migrate](/docs/node/versioning) still-running workflows of the older version).
+    To migrate to new versions of your Workflows and Activities, you restart your Workers with the new versions (and optionally use [the `patch` API to migrate](/docs/node/patching) still-running workflows of the older version).
 - **Workers are run on user-controlled hosts.**
   - This is an important security feature which means Temporal Server (or Temporal Cloud) never executes your Workflow or Activity code, and that Workers can have different hardware (e.g. custom GPUs for Machine Learning) than the rest of the system.
   - You can use the `@temporalio/worker` package's [`Worker`](https://nodejs.temporal.io/api/classes/worker.Worker) class to create and run as many Workers as your use case demands, across any number of hosts.
