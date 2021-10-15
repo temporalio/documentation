@@ -20,11 +20,11 @@ Below is a simple Activity that accepts a string parameter and returns a string.
 <!--SNIPSTART nodejs-hello-activity {"enable_source_link": false}-->
 <!--SNIPEND-->
 
-You may `import { Context } from '@temporalio/activity'` which offers useful utilities for Activity functions such as sleeping, heartbeating, cancellation, and retrieving metadata (see [docs on Activity Context utilities](#activity-context-utilities)).
+You may `import { Context } from '@temporalio/activity'` which offers useful utilities for Activity functions such as sleeping, heartbeating, cancellation, and retrieving metadata (see [docs on Activity Context utilities](#activity-context-utilities) below).
 
 ## How to import and use Activities in a Workflow
 
-You can call the above `greet()` Activity in a Workflow as shown below, assuming that the `greet` function is in the `lib/activities.js` file.
+You must first retrieve an Activity from an "Activity Handle" before you can call it.
 Note that we only import the type of our activities, the TypeScript compiler will drop the import statement on compilation.
 
 <!--SNIPSTART nodejs-hello-workflow {"enable_source_link": false}-->
@@ -32,6 +32,19 @@ Note that we only import the type of our activities, the TypeScript compiler wil
 
 The return value of `createActivityHandle` is a [`Proxy`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) object
 with a `get` handler that returns a function that calls the Node SDK's internal `scheduleActivity()` function.
+
+Activities are Promises and you may retrieve multiple Activities from the same handle if they all share the same timeouts/retries/options:
+
+```ts
+export async function Workflow(name: string): Promise<string> {
+  const { act1, act2, act3 } = createActivityHandle<typeof activities>({
+    scheduleToCloseTimeout: '1 minute',
+    taskQueue: uniqueTaskQueue
+  });
+  await act1();
+  await Promise.all([act2, act3];
+}
+```
 
 :::caution Wrong way to import activities
 
@@ -165,7 +178,7 @@ Temporal SDK also exports a [`Context`](https://nodejs.temporal.io/api/classes/a
 
 ### Heartbeating
 
-Long running activities should heartbeat their progress back to the Workflow for the dual purposes of reporting progress and earlier detection of stalled activities (with Heartbeat timeouts).
+Long running activities (e.g. > 2mins) should heartbeat their progress back to the Workflow for the dual purposes of reporting progress and earlier detection of stalled activities (with Heartbeat timeouts).
 
 #### Example: Activity that fakes progress and can be cancelled
 
