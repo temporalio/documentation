@@ -26,7 +26,7 @@ The snippet above uses `createActivityHandle` to create functions that, when cal
 
 ### Workflow Limitations
 
-Workflow code must be [deterministic](/docs/node/determinism), and the Node SDK replaces common sources of nondeterminism for you, like `Date.now()`, `Math.random`, and `setTimeout` (we recommend using our [`sleep`](/docs/node/workflow-apis#sleep) API instead). 
+Workflow code must be [deterministic](/docs/node/determinism), and the Node SDK replaces common sources of nondeterminism for you, like `Date.now()`, `Math.random`, and `setTimeout` (we recommend using our [`sleep`](/docs/node/workflow-apis#sleep) API instead).
 However, there are other important limitations:
 
 - No Node built-ins like `process` or the `path` and `fs` modules
