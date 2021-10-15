@@ -26,14 +26,15 @@ The snippet above uses `createActivityHandle` to create functions that, when cal
 
 ### Workflow Limitations
 
-Workflow code must be [deterministic](/docs/node/determinism), and the Node SDK replaces common sources of nondeterminism for you, like `Date.now()`, `Math.random`, and `setTimeout`. However, there are other less obvious limitations:
+Workflow code must be [deterministic](/docs/node/determinism), and the Node SDK replaces common sources of nondeterminism for you, like `Date.now()`, `Math.random`, and `setTimeout` (we recommend using our [`sleep`](/docs/node/workflow-apis#sleep) API instead). 
+However, there are other important limitations:
 
-- Node built-ins like `process` or the `path` and `fs` modules are unavailable
+- No Node built-ins like `process` or the `path` and `fs` modules
 - No filesystem access
 - No network access
 
 These constraints don't apply inside Activities.
-If you need to ping an API, or access the filesystem (e.g. for building a CI/CD system), move that code into Activities.
+**If you need to ping an API, or access the filesystem (e.g. for building a CI/CD system), move that code into Activities.**
 
 ### Pure ESM Node Modules
 
