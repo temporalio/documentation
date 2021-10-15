@@ -9,7 +9,7 @@ tags:
 import RelatedReadList from '../components/RelatedReadList.js'
 
 The Temporal CLI (tctl) is a command-line tool that you can use to perform various tasks on a Temporal Server.
-It can perform Namespace operations (such as register, update, and describe) and Workflow operations (such as start
+It can perform [Namespace](/docs/content/what-is-a-namespace) operations (such as register, update, and describe) and [Workflow](/docs/content/what-is-a-workflow) operations (such as start
 Workflow, show Workflow History, and Signal Workflow).
 
 <RelatedReadList

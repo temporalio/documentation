@@ -18,7 +18,7 @@ You can install [tctl](/docs/content/what-is-tctl) in four ways.
   - On macOS or Windows: `docker run --rm -it --entrypoint tctl --env TEMPORAL_CLI_ADDRESS=host.docker.internal:7233 temporalio/admin-tools:1.12.0`
   - If your Temporal Server is running on a remote host, change the value of `TEMPORAL_CLI_ADDRESS`.
   - To simplify command lines, create a `tctl` alias.
-- Build it locally.
+- Build it locally:
   1. Clone the [Temporal Server repo](https://github.com/temporalio/temporal).
   1. Run `make tctl`.
   1. Copy the `tctl` executable to any directory that appears in the `PATH` environment variable; for example, `/usr/bin/`.
