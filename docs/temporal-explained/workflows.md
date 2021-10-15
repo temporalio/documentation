@@ -62,21 +62,3 @@ import WhatIsAParentClosePolicy from "../content/what-is-a-parent-close-policy.m
 import WhatIsATemporalCronJob from "../content/what-is-a-temporal-cron-job.md"
 
 <WhatIsATemporalCronJob/>
-
-## Workflow Execution Timeout
-
-import WhatIsAWorkflowExecutionTimeout from "../content/what-is-a-workflow-execution-timeout.md"
-
-<WhatIsAWorkflowExecutionTimeout/>
-
-## Workflow Run Timeout
-
-import WhatIsAWorkflowRunTimeout from "../content/what-is-a-workflow-run-timeout.md"
-
-<WhatIsAWorkflowRunTimeout/>
-
-## Workflow Task Timeout
-
-import WhatIsAWorkflowTaskTimeout from "../content/what-is-a-workflow-task-timeout.md"
-
-<WhatIsAWorkflowTaskTimeout/>

@@ -460,6 +460,7 @@ module.exports = {
         "temporal-explained/introduction",
         "temporal-explained/workflows",
         "temporal-explained/activities",
+        "temporal-explained/timeouts-and-retries",
       ],
     },
   ],
