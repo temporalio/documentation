@@ -188,18 +188,20 @@ What activities should heartbeat?
 Heartbeating is best thought about not in terms of time, but in terms of "How do you know you are making progress"?
 
 - If an operation is so short that it doesn't make any sense to say "i'm still working on this", then don't heartbeat.
-- If an operation takes long enough that you can say "I am still working on this", then do. 
-  
+- If an operation takes long enough that you can say "I am still working on this", then do.
+
 If your underlying task can report definite progress, that is ideal.
 However you may get something useful from just verifying that the Worker processing your Activity is at the very least "still alive" (has not run out of memory or silently crashed).
 
 Suitable for heartbeating:
-  - Read a rather large file from S3
-  - Run a ML training job on some local GPUs
-  
+
+- Read a rather large file from S3
+- Run a ML training job on some local GPUs
+
 Not suitable for heatbeating:
-  - Reading a small file from disk
-  - Making a quick API call
+
+- Reading a small file from disk
+- Making a quick API call
 
 </details>
 
