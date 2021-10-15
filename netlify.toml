@@ -493,3 +493,7 @@
 [[redirects]]
   from = "/docs/glossary"
   to = "/docs/reference/glossary"
+
+[[redirects]]
+  from = "/docs/typescript/*"
+  to = "/docs/node/:splat"
