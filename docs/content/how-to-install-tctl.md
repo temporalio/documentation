@@ -23,6 +23,17 @@ You can install [tctl](/docs/content/what-is-tctl) in four ways.
   1. Run `make tctl`.
   1. Copy the `tctl` executable to any directory that appears in the `PATH` environment variable; for example, `/usr/bin/`.
 
+**Note:** To use [tctl](/docs/content/what-is-tctl), you must have a Temporal Server running.
+
+To see help for [tctl](/docs/content/what-is-tctl) commands, enter the following commands.
+
+| Command | Description |
+| --- | --- |
+| `tctl -h` | Display help for top-level commands and global options |
+| `tctl namespace -h` | Display help for [Namespace](/docs/content/what-is-a-namespace) operations |
+| `tctl workflow -h` | Display help for [Workflow](/docs/content/what-is-a-workflow) operations |
+| `tctl taskqueue -h` | Display help for [Task Queue](/docs/content/what-is-a-task-queue) operations |
+
 <RelatedReadList
 readlist={[
 ["What is tctl?", "/docs/content/what-is-tctl", "operation guide"],
