@@ -178,7 +178,30 @@ Temporal SDK also exports a [`Context`](https://nodejs.temporal.io/api/classes/a
 
 ### Heartbeating
 
-Long running activities (e.g. > 2mins) should heartbeat their progress back to the Workflow for the dual purposes of reporting progress and earlier detection of stalled activities (with Heartbeat timeouts).
+Long running activities should heartbeat their progress back to the Workflow for the dual purposes of reporting progress and earlier detection of stalled activities (with Heartbeat timeouts).
+
+<details>
+<summary>
+What activities should heartbeat?
+</summary>
+
+Heartbeating is best thought about not in terms of time, but in terms of "How do you know you are making progress"?
+
+- If an operation is so short that it doesn't make any sense to say "i'm still working on this", then don't heartbeat.
+- If an operation takes long enough that you can say "I am still working on this", then do. 
+  
+If your underlying task can report definite progress, that is ideal.
+However you may get something useful from just verifying that the Worker processing your Activity is at the very least "still alive" (has not run out of memory or silently crashed).
+
+Suitable for heartbeating:
+  - Read a rather large file from S3
+  - Run a ML training job on some local GPUs
+  
+Not suitable for heatbeating:
+  - Reading a small file from disk
+  - Making a quick API call
+
+</details>
 
 #### Example: Activity that fakes progress and can be cancelled
 
