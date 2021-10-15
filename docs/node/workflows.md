@@ -10,16 +10,14 @@ import RelatedReadList from '../components/RelatedReadList.js'
 
 > **@temporalio/client** [![NPM](https://img.shields.io/npm/v/@temporalio/client)](https://www.npmjs.com/package/@temporalio/client) [API reference](https://nodejs.temporal.io/api/namespaces/client) | [GitHub source](https://github.com/temporalio/sdk-node/tree/main/packages/client)
 
-**Workflows are the fundamental unit of business logic in Temporal**.
+**Workflows are the fundamental unit of orchestration logic in Temporal**.
 
 - In the Node.js SDK, each **Workflow Definition** (code) is bundled with dependencies and run in a [Worker](/docs/node/workers).
 - However, the Workflow Definition only becomes a **Workflow Execution** when started by a **Workflow Client**. Clients are not bound to Workers and can be run in any Node.js application, for example, in a serverless function, Express.js API route handler or CLI/script run.
 
 ## How to write Workflow code
 
-Workflow Definitions are "just functions", which can store state, orchestrate [Activity functions](/docs/node/activities) with special [Workflow APIs](/docs/node/workflow-apis) including Timers, Signals, Queries, and Child Workflows (imported from [`@temporalio/workflow`](https://www.npmjs.com/package/@temporalio/workflow)).
-
-`src/workflows/index.ts`
+Workflow Definitions are "just functions", which can store state, and orchestrate [Activity functions](/docs/node/activities).
 
 <!--SNIPSTART nodejs-hello-workflow {"enable_source_link": false}-->
 <!--SNIPEND-->
@@ -31,9 +29,21 @@ The snippet above uses `createActivityHandle` to create functions that, when cal
 Workflow code must be [deterministic](/docs/node/determinism), and the Node SDK replaces common sources of nondeterminism for you, like `Date.now()`, `Math.random`, and `setTimeout`. However, there are other less obvious limitations:
 
 - Node built-ins like `process` or the `path` and `fs` modules are unavailable
-- "Pure" ESM Node modules like `node-fetch@3` are unsupported (use `node-fetch@2` instead for now) - see [#279](https://github.com/temporalio/sdk-node/issues/279)
+- No filesystem access
+- No network access
 
-These constraints don't apply inside activities and you should be able to write idiomatic Node.js otherwise.
+These constraints don't apply inside Activities.
+If you need to ping an API, or access the filesystem (e.g. for building a CI/CD system), move that code into Activities.
+
+### Pure ESM Node Modules
+
+The Node.js ecosystem is increasingly moving towards publishing ES Modules over CommonJS, for example `node-fetch@3` is ESM while `node-fetch@2` is CJS. If you are importing a pure ESM dependency, see our [fetch ESM](https://github.com/temporalio/samples-node/tree/main/fetch-esm) sample for necessary config changes.
+
+### Workflow APIs
+
+Workflow functions have access to special "Workflow APIs", including Timers, Signals, Queries, and Child Workflows. 
+
+See [the Workflow APIs docs](/docs/node/workflow-apis) for those APIs.
 
 ## How to start and interact with Workflows
 
