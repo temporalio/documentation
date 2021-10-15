@@ -55,6 +55,27 @@ If you wanted to send data in, you probably will want to read data out.
 <!--SNIPSTART nodejs-blocked-workflow-->
 <!--SNIPEND-->
 
+<details>
+  <summary>
+    Why <em>NOT</em> <code>new Signal</code> and <code>new Query</code>?
+  </summary>
+
+  The semantic of `defineSignal`/`defineQuery` is intentional, in that they return Signal/Query **Definitions**, not unique instances of Signals and Queries themselves.
+  Signals/Queries are only instantiated with `setListener` and are specific to a particular Workflow Execution.
+
+  These distinctions may seem minor, but they model how Temporal works under the hood, because Signals and Queries are messages identified by "just strings" and don't have meaning independent of the Workflow having a listener to handle them.
+
+</details>
+<details>
+  <summary>
+    Why <code>setListener</code> and not OTHER_API?
+  </summary>
+
+  We named it `setListener` instead of `subscribe` because Signals/Queries can only have one listener at a time, whereas `subscribe` could imply an Observable with multiple consumers.
+  If you are familiar with Rxjs, you are free to wrap your Signal and Query into Observables if you wish, or you could dynamically reassign the listener based on your business logic/Workflow state.
+
+</details>
+
 ### How to send Signals and make Queries
 
 - You invoke a Signal with `workflow.signal(signal, ...args)`.
