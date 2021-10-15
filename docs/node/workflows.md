@@ -41,7 +41,7 @@ The Node.js ecosystem is increasingly moving towards publishing ES Modules over 
 
 ### Workflow APIs
 
-Workflow functions have access to special "Workflow APIs", including Timers, Signals, Queries, and Child Workflows. 
+Workflow functions have access to special "Workflow APIs", including Timers, Signals, Queries, and Child Workflows.
 
 See [the Workflow APIs docs](/docs/node/workflow-apis) for those APIs.
 
