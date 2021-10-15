@@ -4,6 +4,7 @@ title: How to install tctl
 description: You can install tctl in four ways, described in this topic.
 tags:
   - operation-guide
+  - tctl
 ---
 
 import RelatedReadList from '../components/RelatedReadList.js'
