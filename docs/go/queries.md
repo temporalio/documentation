@@ -114,7 +114,7 @@ import (
 // ...
 
 // https://golang.org/doc/faq#convert_slice_of_interface
-args := [...]string{"foo"}
+_args := [...]string{"foo"}
 args := make([]interface{}, len(_args))
 for i, v := range _args {
 	args[i] = v
