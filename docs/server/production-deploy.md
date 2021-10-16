@@ -10,7 +10,7 @@ While a lot of effort has been made to easily run and test the Temporal Server i
 That is because the set up of the Server depends very much on the intended use-case and the hosting infrastructure.
 
 This page is dedicated to providing a "first principles" approach to self-hosting the Temporal Server.
-As a reminder, experts are accessible via the [Community forum](https://community.temporal.io/) and [Slack](https://join.slack.com/t/temporalio/shared_invite/zt-onhti57l-J0bl~Tr7MqSUnIc1upjRkw) should you have any questions.
+As a reminder, experts are accessible via the [Community forum](https://community.temporal.io/) and [Slack](https://temporal.io/slack) should you have any questions.
 
 :::info
 
@@ -183,6 +183,10 @@ Here is a comprehensive list of all the hard (error) / soft (warn) server limits
   - **Single Search Attribute Size**: 2KB
   - **Total Search Attribute Size**: 40KB
   - This is configurable with [`SearchAttributesNumberOfKeysLimit`, `SearchAttributesTotalSizeLimit` and `SearchAttributesSizeOfValueLimit`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L440-L442), if you know what you are doing.
+
+## Securing Temporal
+
+Please see our dedicated docs on [Temporal Server Security](docs/server/security).
 
 ## Debugging Temporal
 
