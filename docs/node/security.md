@@ -34,7 +34,7 @@ const client = new WorkflowClient(connection.service, {
 });
 ```
 
-## TLS Encryption
+## Encryption in transit with mTLS
 
 There are two classes in the SDK that connect to the Temporal server, the [Worker](https://nodejs.temporal.io/api/classes/worker.worker-1) and the client [Connection](https://nodejs.temporal.io/api/classes/client.connection/).
 When instantiating either of them, you may choose whether to connect securely or not.
@@ -85,7 +85,14 @@ When signing up to Temporal Cloud you should receive a namespace, a server addre
 - `TEMPORAL_CLIENT_CERT_PATH`
 - `TEMPORAL_CLIENT_KEY_PATH`
 
-## Data Converter
+## Encryption at rest with DataConverter
+
+:::warning Not yet implemented
+
+Temporal has a custom Data Converter feature that lets you implement customized serialization formats and encrypt and decrypt your data.
+However it is not yet supported in this SDK.
+
+:::
 
 Workflow method arguments and return values are serializable to a [Payload](https://github.com/temporalio/api/blob/4c2f6a281fa3fde8b0a24447de3e0d0f47d230b4/temporal/api/common/v1/message.proto#L49) protobuf that contains a bytearray as well as metadata map.
 
