@@ -1,7 +1,7 @@
 ---
 id: troubleshooting
 title: Troubleshooting Errors
-sidebar_label: Troubleshooting 🆘
+sidebar_label: Troubleshooting
 ---
 
 ## Webpack Errors

@@ -49,33 +49,84 @@ If you wanted to send data in, you probably will want to read data out.
 
 ### How to define and receive Signals and Queries
 
-- To add a Signal to a Workflow, call `defineSignal` with a name, and then attach a listener with `setListener`.
-- To add a Query to a Workflow, call `defineQuery` with a name, and then attach a listener with `setListener`.
+- To add a Signal to a Workflow, call [`defineSignal`](https://nodejs.temporal.io/api/namespaces/workflow/#definesignal) with a name, and then attach a listener with `setListener`.
+- To add a Query to a Workflow, call [`defineQuery`](https://nodejs.temporal.io/api/namespaces/workflow/#definequery) with a name, and then attach a listener with `setListener`.
 
 <!--SNIPSTART nodejs-blocked-workflow-->
 <!--SNIPEND-->
 
+Listeners for both Signals and Queries can take arguments, which can be used inside `setListener` to mutate state or compute return values respectively.
+
+<details>
+  <summary>
+    Why <em>NOT</em> <code>new Signal</code> and <code>new Query</code>?
+  </summary>
+
+The semantic of `defineSignal`/`defineQuery` is intentional, in that they return Signal/Query **Definitions**, not unique instances of Signals and Queries themselves.
+Signals/Queries are only instantiated with `setListener` and are specific to a particular Workflow Execution.
+
+These distinctions may seem minor, but they model how Temporal works under the hood, because Signals and Queries are messages identified by "just strings" and don't have meaning independent of the Workflow having a listener to handle them.
+
+</details>
+<details>
+  <summary>
+    Why <code>setListener</code> and not OTHER_API?
+  </summary>
+
+We named it `setListener` instead of `subscribe` because Signals/Queries can only have one listener at a time, whereas `subscribe` could imply an Observable with multiple consumers.
+If you are familiar with Rxjs, you are free to wrap your Signal and Query into Observables if you wish, or you could dynamically reassign the listener based on your business logic/Workflow state.
+
+</details>
+
 ### How to send Signals and make Queries
 
-- You invoke a Signal with `workflow.signal(signal, ...args)`.
-  You can refer to it either by string name, or by exact definition.
+- You invoke a Signal with `workflow.signal(signal, ...args)`. A Signal has no return value by definition.
 - You make a Query with `workflow.query(query, ...args)`.
-  You can refer to it either by string name, or by exact definition.
+- You can refer to either by string name, but you will lose type safety.
 
-```js
-const client = new WorkflowClient();
-const handle = client.createWorkflowHandle(myWorkflow, {
-  taskQueue: 'test',
-});
-await handle.start();
+```ts
+const increment = defineSignal<[number, /* more args can be added here */]>('increment');
+const count = defineQuery<number, /*, Arg[] can be added here */]>('count');
 
-// these two are exactly equivalent
-await handle.signal(unblock, ...args); // using the Signal Definition from `defineSignal`
-await handle.signal('unblock', ...args); // using the Signal name
+// these two are equivalent
+await handle.signal(increment, 1);
+await handle.signal<[number]>('increment', 1);
 
-// these two are exactly equivalent
-let state = await handle.query(isBlocked, ...args);
-let state = await handle.query('isBlocked', ...args);
+// these two are equivalent
+let state = await handle.query(count);
+let state = await handle.query<number>('count');
+```
+
+### Type-safe Signals and Queries
+
+The Signals and Queries API has been designed with type safety in mind:
+
+- `wf.defineQuery<Ret, Args>(name): QueryDefinition<Ret, Args>`
+- `wf.defineSignal<Args>(name): SignalDefinition<Args>`
+- `WorkflowHandle.query<Ret, Args>(def, ...args): Promise<Ret>`
+- `WorkflowHandle.signal<Args>(def, ...args): Promise<Ret>`
+
+You can either:
+
+- Define the argument type (and, for Queries, the return type) up front and import it for type inference with the `WorkflowHandle`
+- Define the expected type at the call site when you invoke the Signal/Query.
+
+```ts
+const increment = defineSignal<[number, /* more args can be added here */]>('increment');
+const count = defineQuery<number, /*, Arg[] can be added here */]>('count');
+
+// type safety inferred from definitions
+await handle.signal(increment, 1);
+await handle.signal(increment); // Expected 2 arguments, but got 1.
+await handle.signal(increment, '1'); // Argument of type 'string' is not assignable to parameter of type 'number'
+
+// common problems when you lack type safety
+await handle.signal('increment'); // No TS error but insufficient arguments
+await handle.signal('increment', '1'); // No TS error but sending in wrong type
+
+// add type safety at callsite
+await handle.signal<[number]>('increment'); // Expected 2 arguments, but got 1.
+let state = await handle.query<number, [string]>('print', 'Count: ');
 ```
 
 ### Advanced Notes
@@ -120,6 +171,30 @@ For now [the best workaround](https://community.temporal.io/t/signalling-system-
 Temporal guarantees read-after-write consistency of Signals-followed-by-Queries.
 
 :::
+
+#### Componentization
+
+Because Signal and Query Definitions are separate from Workflow Definitions, we can now compose them together:
+
+```js
+// basic reusable Workflow component
+export async function unblocked() {
+  let isBlocked = true;
+  setListener(unblockSignal, () => (isBlocked = false));
+  setListener(isBlockedQuery, () => isBlocked);
+  await condition(() => !isBlocked);
+}
+
+// usage: signals can be sent to each Workflow separately
+export async function myWorkflow1() {
+  await unblocked();
+}
+export async function myWorkflow2() {
+  await unblocked();
+}
+```
+
+Another example of componentization can be found in our [code samples](https://github.com/temporalio/samples-node/blob/854c78955601a6b63aa8ea412cfb5eaf61bd78ee/expense/src/workflows.ts#L19).
 
 #### `signalWithStart`
 
@@ -323,10 +398,11 @@ Child Workflows and Activities are both started from Workflows, so you may feel 
 Here are some important differences:
 
 - Child Workflows have access to all Workflow APIs, but are subject to [Workflow Limitations](/docs/node/workflows#workflow-limitations). Activities have the inverse pros and cons.
-- Child Workflows can continue on if their Parent is canceled, with a [ParentClosePolicy](/docs/content/what-is-a-parent-close-policy/) of `ABANDON`, whereas Activities are _always_ canceled when their Workflow is canceled (they may react to a [cancellationSignal](/docs/node/activities#activity-cancellation) for cleanup if canceled).
+- Child Workflows can continue on if their Parent is canceled, with a [ParentClosePolicy](/docs/content/what-is-a-parent-close-policy/) of `ABANDON`, whereas Activities are _always_ canceled when their Workflow is canceled (they may react to a [cancellationSignal](/docs/node/activities#activity-cancellation) for cleanup if canceled). The decision is roughly analogous to spawning a child process in a terminal to do work vs doing work in the same process.
 - Temporal tracks all state changes within Child Workflows in Event History, whereas only the input, output, and retry attempts of Activities are tracked.
 
 Activities usually model a single operation on the external world. Workflows are modeling composite operations that consist of multiple activities or other child workflows.
+
 **When in doubt, use Activities.**
 
 </details>
