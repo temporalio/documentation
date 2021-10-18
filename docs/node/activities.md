@@ -42,7 +42,7 @@ export async function Workflow(name: string): Promise<string> {
     taskQueue: uniqueTaskQueue
   });
   await act1();
-  await Promise.all([act2, act3];
+  await Promise.all([act2, act3]);
 }
 ```
 

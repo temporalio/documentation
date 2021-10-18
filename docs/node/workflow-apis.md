@@ -17,8 +17,8 @@ This package exports all the useful primitives that you can use in Workflows. Se
 | `createChildWorkflowHandle`                                                       | Spawn new [Child Workflows](#child-workflows) with the ability to cancel                                                |
 | `continueAsNew`                                                                   | Truncate Event History for [infinitely long running Workflows](#infinite-workflows)                                     |
 | `patched`/`deprecatePatch`                                                        | Migrate Workflows to new versions ([see Patching doc](/docs/node/patching))                                             |
-| [`uuid4`](https://nodejs.temporal.io/api/namespaces/workflow/#uuid4)              | Generate an RFC compliant V4 uuid without needing to call an Activity or Side Effect.                                   |
-| [`workflowInfo`](https://nodejs.temporal.io/api/interfaces/workflow.WorkflowInfo) | Get replay, namespace, ID, taskQueue, and type info about the current Workflow.                                         |
+| `uuid4`              | Generate an RFC compliant V4 [uuid](https://nodejs.temporal.io/api/namespaces/workflow/#uuid4) without needing to call an Activity or Side Effect.                                   |
+| APIs for advanced users |  including [`workflowInfo`](https://nodejs.temporal.io/api/namespaces/workflow#workflowinfo), [`isCancellation`](https://nodejs.temporal.io/api/namespaces/workflow#iscancellation), [`dependencies`](/docs/node/external-dependencies), [Cancellation Scopes](/docs/node/cancellation-scopes), [Failure](/docs/node/handling-failure), and [`createExternalWorkflowHandle`](https://nodejs.temporal.io/api/namespaces/workflow#createexternalworkflowhandle) |
 
 We fully expect that developers will bundle these into their own reusable Workflow libraries.
 If you do, please [get in touch on Slack](https://temporal.io/slack), we would love to work with you and promote your work.
