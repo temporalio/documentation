@@ -22,6 +22,7 @@ origins:
     repo: samples-node
   - owner: temporalio
     repo: samples-go
+    ref: c083d1e559d4332122ef3b767c4a9c212476b44c
   - owner: temporalio
     repo: samples-java
   - owner: temporalio
