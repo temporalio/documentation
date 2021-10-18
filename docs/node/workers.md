@@ -11,7 +11,7 @@ sidebar_label: Workers and Task Queues
 A Worker is a process that connects to the Temporal Server, polls **Task Queues** for Commands sent from Clients, and executes [Workflows](/docs/node/workflows) and [Activities](/docs/node/activities) in response to those Commands.
 
 - **Workers host Workflows and Activities.**
-  - Node SDK Workers bundle Workflows based on `workflowsPath` and their dependencies from `nodeModulesPaths` with Webpack and run them inside v8 isolates.
+  - Node SDK Workers bundle Workflows based on `workflowsPath` and their dependencies from `nodeModulesPaths` with [Webpack](https://webpack.js.org/) and run them inside v8 isolates.
   - Node SDK Workers directly run `activities` inside the normal Node.js environment.
 - **Workers are extremely scalable.**
   - Workers connect to the Temporal Server, poll their configured **Task Queue** for Tasks, execute chunks of code in response to those Tasks, and then communicate the results back.
