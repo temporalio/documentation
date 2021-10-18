@@ -186,7 +186,7 @@ Here is a comprehensive list of all the hard (error) / soft (warn) server limits
 
 ## Securing Temporal
 
-Please see our dedicated docs on [Temporal Server Security](docs/server/security).
+Please see our dedicated docs on [Temporal Server Security](/docs/server/security).
 
 ## Debugging Temporal
 
