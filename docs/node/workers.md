@@ -1,7 +1,7 @@
 ---
 id: workers
-title: Workers and Task Queues in Node
-sidebar_label: Workers and Task Queues
+title: Workers and Task Queues in Node.js
+sidebar_label: Workers
 ---
 
 > **@temporalio/worker** [![NPM](https://img.shields.io/npm/v/@temporalio/worker)](https://www.npmjs.com/package/@temporalio/worker) [API reference](https://nodejs.temporal.io/api/namespaces/worker) | [GitHub source](https://github.com/temporalio/sdk-node/tree/main/packages/worker)

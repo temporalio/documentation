@@ -13,4 +13,4 @@ You can learn about how to implement Signals within the context of the language 
 - [Go](/docs/go/signals)
 - [Java](/docs/java/signals)
 - [PHP](/docs/php/signals)
-- [Node.js](/docs/node/workflow-apis/#signals)
+- [Node.js](/docs/node/workflows/#signals)
