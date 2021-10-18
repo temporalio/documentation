@@ -75,22 +75,12 @@ A Worker is in one of 7 states at any given point:
 
 If you need even more visibility into internal worker state, [see the API reference for more](https://nodejs.temporal.io/api/classes/worker.Worker).
 
-### Worker Security and Networking
+### Worker Networking and Security
 
-The Node SDK usually handles all of the communication between the Worker and the Temporal Server behind the scenes - no port configuration is required for development usecases.
+In development, the Node SDK usually handles all of the communication between the Worker and the Temporal Server behind the scenes - no port configuration is required.
 
-### Encryption in Transit
-
-In production settings, [Temporal supports mTLS encryption](/docs/server/security), required by Temporal Cloud.
-To configure this, this SDK exposes [the Rust Core SDK](https://github.com/temporalio/sdk-core) as `Core`, which you can configure before you run `workflow.create`:
-
-<!--SNIPSTART nodejs-mtls-worker-->
-<!--SNIPEND-->
-
-### Encryption at Rest
-
-Temporal has a custom Data Converter feature that lets you implement customized serialization formats and encrypt and decrypt your data.
-However it is not yet supported in this SDK.
+In production settings, you can configure the `address` and `namespace` the Worker speaks to via [the Rust Core SDK](https://github.com/temporalio/sdk-core) as `Core`.
+Temporal also supports mTLS encryption (required by Temporal Cloud) this way - please read our [Security docs](/docs/server/security) for more information.
 
 ## What is a Task Queue?
 
