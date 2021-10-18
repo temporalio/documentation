@@ -6,7 +6,7 @@ sidebar_label: Activities
 
 > **@temporalio/activity** [![NPM](https://img.shields.io/npm/v/@temporalio/activity)](https://www.npmjs.com/package/@temporalio/activity) [API reference](https://nodejs.temporal.io/api/namespaces/activity) | [GitHub source](https://github.com/temporalio/sdk-node/tree/main/packages/activity)
 
-In Temporal, Activities are typically used to interact with external resources, like making an HTTP request.
+**Activities are the only way to interact with external resources in Temporal**, like making an HTTP request or accessing the file system.
 
 - Unlike [Workflows](/docs/node/determinism), Activities execute in the standard Node.js environment, not an [isolate](https://www.npmjs.com/package/isolated-vm). So any code that needs to talk to the outside world needs to be in an Activity.
 - Activities cannot be in the same file as Workflows (must be separately registered).
@@ -20,11 +20,11 @@ Below is a simple Activity that accepts a string parameter and returns a string.
 <!--SNIPSTART nodejs-hello-activity {"enable_source_link": false}-->
 <!--SNIPEND-->
 
-You may `import { Context } from '@temporalio/activity'` which offers useful utilities for Activity functions such as sleeping, heartbeating, cancellation, and retrieving metadata (see [docs on Activity Context utilities](#activity-context-utilities)).
+You may `import { Context } from '@temporalio/activity'` which offers useful utilities for Activity functions such as sleeping, heartbeating, cancellation, and retrieving metadata (see [docs on Activity Context utilities](#activity-context-utilities) below).
 
 ## How to import and use Activities in a Workflow
 
-You can call the above `greet()` Activity in a Workflow as shown below, assuming that the `greet` function is in the `lib/activities.js` file.
+You must first retrieve an Activity from an "Activity Handle" before you can call it.
 Note that we only import the type of our activities, the TypeScript compiler will drop the import statement on compilation.
 
 <!--SNIPSTART nodejs-hello-workflow {"enable_source_link": false}-->
@@ -32,6 +32,37 @@ Note that we only import the type of our activities, the TypeScript compiler wil
 
 The return value of `createActivityHandle` is a [`Proxy`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) object
 with a `get` handler that returns a function that calls the Node SDK's internal `scheduleActivity()` function.
+
+Activities are Promises and you may retrieve multiple Activities from the same handle if they all share the same timeouts/retries/options:
+
+```ts
+export async function Workflow(name: string): Promise<string> {
+  const { act1, act2, act3 } = createActivityHandle<typeof activities>({
+    scheduleToCloseTimeout: '1 minute',
+    taskQueue: uniqueTaskQueue,
+  });
+  await act1();
+  await Promise.all([act2, act3]);
+}
+```
+
+:::caution Wrong way to import activities
+
+You may be tempted to import activities directly instead of using `createActivityHandle`:
+
+```ts
+import { greet } from './activities';
+// error when you try to use the function in your code
+greet('Hello world');
+```
+
+This will result in a Webpack error, because the Temporal Worker will try to bundle this as part of the Workflow.
+Make sure you're using `createActivityHandle` to retrieve an Activity rather than calling the function directly.
+This indirection comes from the fact that Activities are run in the regular Node.js environment, not the deterministic `vm` where Workflows are run.
+
+See also our [docs on Webpack troubleshooting](/docs/node/troubleshooting/).
+
+:::
 
 ## Activity Options
 
@@ -152,6 +183,34 @@ Temporal SDK also exports a [`Context`](https://nodejs.temporal.io/api/classes/a
 ### Heartbeating
 
 Long running activities should heartbeat their progress back to the Workflow for the dual purposes of reporting progress and earlier detection of stalled activities (with Heartbeat timeouts).
+
+<details>
+<summary>
+What activities should heartbeat?
+</summary>
+
+Heartbeating is best thought about not in terms of time, but in terms of "How do you know you are making progress"?
+
+- If an operation is so short that it doesn't make any sense to say "i'm still working on this", then don't heartbeat.
+- If an operation takes long enough that you can say "I am still working on this", then do.
+
+If your underlying task can report definite progress, that is ideal.
+However you may get something useful from just verifying that the Worker processing your Activity is at the very least "still alive" (has not run out of memory or silently crashed).
+If your activity `StartToClose` has a 1 hour timeout, even if there is no progress to report, the heartbeat would give the Server a signal that it is still alive and could retry earlier. Otherwise, server would have to wait for 1hour before retry.
+
+Suitable for heartbeating:
+
+- Read a large file from S3
+- Run a ML training job on some local GPUs
+
+Not suitable for heatbeating:
+
+- Reading a small file from disk
+- Making a quick API call
+
+</details>
+
+TODO: document how to retrieve heartbeat payload.
 
 #### Example: Activity that fakes progress and can be cancelled
 

@@ -338,9 +338,9 @@ module.exports = {
           collapsed: false,
           items: [
             "node/workflows",
-            "node/workers",
             "node/activities",
-            "node/workflow-apis",
+            "node/workers",
+            "node/client",
           ],
         },
         {

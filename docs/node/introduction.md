@@ -180,5 +180,6 @@ For a full code walkthrough of the Hello World example that you have spun up her
 Then you should have a passing knowledge of our Core APIs:
 
 - [Workflows](/docs/node/workflows) and [Activities](/docs/node/activities): How to write Temporal's core orchestration code
+  - see [Workflow APIs](/docs/node/workflows) for Signals, Queries, Timers, Child Workflows, Infinite Workflows, and more!
 - [Workers and Task Queues](/docs/node/workers): How Workflows and Activities are routed to and executed on machines you control
-- [Workflow APIs](/docs/node/workflow-apis): Signals, Queries, Timers, Child Workflows, Infinite Workflows, and more!
+- [Clients](/docs/node/client): How to start, signal, query, cancel, or otherwise handle Workflows.
