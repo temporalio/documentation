@@ -8,15 +8,17 @@ sidebar_label: Workflow APIs
 
 This package exports all the useful primitives that you can use in Workflows. See the [API reference](https://nodejs.temporal.io/api/namespaces/workflow) for the full list, but the main ones are:
 
-| APIs                         | Purpose                                                                                                                 |
-| ---------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| `defineSignal`/`defineQuery` | [Signal and Query](#signals-and-queries) Workflows while they are running                                               |
-| `sleep`                      | Primitive to build durable [Timers](#timers)                                                                            |
-| `condition`                  | Block until a [`condition`](#condition) is true. Often used with Signals                                                |
-| `createActivityHandle`       | Make idempotent side effects (like making a HTTP request) with Activities ([see Activities doc](/docs/node/activities)) |
-| `createChildWorkflowHandle`  | Spawn new [Child Workflows](#child-workflows) with the ability to cancel                                                |
-| `continueAsNew`              | Truncate Event History for [infinitely long running Workflows](#infinite-workflows)                                     |
-| `patched`/`deprecatePatch`   | Migrate Workflows to new versions ([see Patching doc](/docs/node/patching))                                             |
+| APIs                                                                              | Purpose                                                                                                                 |
+| --------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `defineSignal`/`defineQuery`                                                      | [Signal and Query](#signals-and-queries) Workflows while they are running                                               |
+| `sleep`                                                                           | Primitive to build durable [Timers](#timers)                                                                            |
+| `condition`                                                                       | Block until a [`condition`](#condition) is true. Often used with Signals                                                |
+| `createActivityHandle`                                                            | Make idempotent side effects (like making a HTTP request) with Activities ([see Activities doc](/docs/node/activities)) |
+| `createChildWorkflowHandle`                                                       | Spawn new [Child Workflows](#child-workflows) with the ability to cancel                                                |
+| `continueAsNew`                                                                   | Truncate Event History for [infinitely long running Workflows](#infinite-workflows)                                     |
+| `patched`/`deprecatePatch`                                                        | Migrate Workflows to new versions ([see Patching doc](/docs/node/patching))                                             |
+| [`uuid4`](https://nodejs.temporal.io/api/namespaces/workflow/#uuid4)              | Generate an RFC compliant V4 uuid without needing to call an Activity or Side Effect.                                   |
+| [`workflowInfo`](https://nodejs.temporal.io/api/interfaces/workflow.WorkflowInfo) | Get replay, namespace, ID, taskQueue, and type info about the current Workflow.                                         |
 
 We fully expect that developers will bundle these into their own reusable Workflow libraries.
 If you do, please [get in touch on Slack](https://temporal.io/slack), we would love to work with you and promote your work.
@@ -85,8 +87,9 @@ If you are familiar with Rxjs, you are free to wrap your Signal and Query into O
 - You can refer to either by string name, but you will lose type safety.
 
 ```ts
-const increment = defineSignal<[number, /* more args can be added here */]>('increment');
-const count = defineQuery<number, /*, Arg[] can be added here */]>('count');
+const increment =
+  defineSignal<[number /* more args can be added here */]>('increment');
+const count = defineQuery<number /*, Arg[] can be added here */>('count');
 
 // these two are equivalent
 await handle.signal(increment, 1);
@@ -112,8 +115,9 @@ You can either:
 - Define the expected type at the call site when you invoke the Signal/Query.
 
 ```ts
-const increment = defineSignal<[number, /* more args can be added here */]>('increment');
-const count = defineQuery<number, /*, Arg[] can be added here */]>('count');
+const increment =
+  defineSignal<[number /* more args can be added here */]>('increment');
+const count = defineQuery<number /*, Arg[] can be added here */>('count');
 
 // type safety inferred from definitions
 await handle.signal(increment, 1);
@@ -361,7 +365,7 @@ Be careful when racing a chained `sleep`. This may cause bugs.
 
 ```js
 await Promise.race([
-  sleep('5s').then(() => (status = 'timed_out'),
+  sleep('5s').then(() => (status = 'timed_out')),
   somethingElse.then(() => (status = 'processed')),
 ]);
 
@@ -438,7 +442,7 @@ import SharedContinueAsNew from '../shared/continue-as-new.md'
 
 <SharedContinueAsNew />
 
-### The `ContinueAsNew` API
+### The `continueAsNew` API
 
 Use the [`continueAsNew`](https://nodejs.temporal.io/api/namespaces/workflow#continueasnew) API to instruct the Node SDK to restart `loopingWorkflow` with a new starting value and a new event history.
 
