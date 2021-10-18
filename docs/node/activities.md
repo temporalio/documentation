@@ -53,7 +53,7 @@ You may be tempted to import activities directly instead of using `createActivit
 ```ts
 import { greet } from './activities';
 // error when you try to use the function in your code
-greet('Hello world')
+greet('Hello world');
 ```
 
 This will result in a Webpack error, because the Temporal Worker will try to bundle this as part of the Workflow.

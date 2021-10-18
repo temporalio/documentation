@@ -109,7 +109,7 @@ The Signals and Queries API has been designed with type safety in mind:
 You can either:
 
 - Define the argument type (and, for Queries, the return type) up front and import it for type inference with the `WorkflowHandle`
-- Define the expected type at the call site when you invoke the Signal/Query. 
+- Define the expected type at the call site when you invoke the Signal/Query.
 
 ```ts
 const increment = defineSignal<[number, /* more args can be added here */]>('increment');
