@@ -7,7 +7,7 @@ author_image_url: https://avatars2.githubusercontent.com/u/34380806
 tags:
   - compliance
   - soc2
-date: 2021-10-5T00:00:00Z
+date: 2021-10-18T00:00:00Z
 ---
 
 <!--truncate-->
