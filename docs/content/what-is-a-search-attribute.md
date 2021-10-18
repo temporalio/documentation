@@ -71,6 +71,7 @@ These Search Attributes are created when the initial index is created.
 <!--TODO
 <preview page={HowToAddCustomSearchAttribute}>registered using `tctl`</preview>
 -->
+
 Custom Search Attribute keys must be registered using `tctl`.
 Registering a Search Attribute key makes it available to use with Workflow Executions within that Cluster.
 
