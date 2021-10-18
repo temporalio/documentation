@@ -60,7 +60,7 @@ This will result in a Webpack error, because the Temporal Worker will try to bun
 Make sure you're using `createActivityHandle` to retrieve an Activity rather than calling the function directly.
 This indirection comes from the fact that Activities are run in the regular Node.js environment, not the deterministic `vm` where Workflows are run.
 
-See also our [docs on Webpack troubleshooting](docs/node/troubleshooting/).
+See also our [docs on Webpack troubleshooting](/docs/node/troubleshooting/).
 
 :::
 
