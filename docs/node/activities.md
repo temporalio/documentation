@@ -52,11 +52,15 @@ You may be tempted to import activities directly instead of using `createActivit
 
 ```ts
 import { greet } from './activities';
+// error when you try to use the function in your code
+greet('Hello world')
 ```
 
-This will result in an error, because the Temporal Worker will try to bundle this as part of the Workflow.
+This will result in a Webpack error, because the Temporal Worker will try to bundle this as part of the Workflow.
 Make sure you're using `createActivityHandle` to retrieve an Activity rather than calling the function directly.
 This indirection comes from the fact that Activities are run in the regular Node.js environment, not the deterministic `vm` where Workflows are run.
+
+See also our [docs on Webpack troubleshooting](docs/node/troubleshooting/).
 
 :::
 
@@ -192,10 +196,11 @@ Heartbeating is best thought about not in terms of time, but in terms of "How do
 
 If your underlying task can report definite progress, that is ideal.
 However you may get something useful from just verifying that the Worker processing your Activity is at the very least "still alive" (has not run out of memory or silently crashed).
+If your activity `StartToClose` has a 1 hour timeout, even if there is no progress to report, the heartbeat would give the Server a signal that it is still alive and could retry earlier. Otherwise, server would have to wait for 1hour before retry.
 
 Suitable for heartbeating:
 
-- Read a rather large file from S3
+- Read a large file from S3
 - Run a ML training job on some local GPUs
 
 Not suitable for heatbeating:
@@ -204,6 +209,8 @@ Not suitable for heatbeating:
 - Making a quick API call
 
 </details>
+
+TODO: document how to retrieve heartbeat payload.
 
 #### Example: Activity that fakes progress and can be cancelled
 
