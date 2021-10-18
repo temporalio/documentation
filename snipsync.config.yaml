@@ -15,7 +15,7 @@ origins:
     repo: subscription-workflow-project-template-php
   - owner: temporalio
     repo: temporal
-    ref: flossypurse:snipwrappers
+    ref: 23ee9ff00703afb79fc44218a7b41c332fe204ea
   - owner: temporalio
     repo: samples-php
   - owner: temporalio
