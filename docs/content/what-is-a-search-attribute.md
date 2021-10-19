@@ -55,7 +55,7 @@ These Search Attributes are created when the initial index is created.
 | WorkflowType          | Keyword  |
 
 - All default Search Attributes are reserved and read-only.
-(You cannot create a custom one with the same name or alter the existing one.)
+  (You cannot create a custom one with the same name or alter the existing one.)
 
 - ExecutionStatus values correspond to Workflow Execution Statuses: Running, Completed, Failed, Canceled, Terminated, ContinuedAsNew, TimedOut.
 
