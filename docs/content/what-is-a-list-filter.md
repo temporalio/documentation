@@ -39,18 +39,18 @@ A List Filter contains Search Attribute keys, Search Attribute values, and Opera
   - **BETWEEN ... AND**
   - **ORDER BY**
 
-- A List Filter only applies to a single Namespace.
+- A List Filter applies to a single Namespace.
 
-- The range on a List Filter timestamp (StartTime, CloseTime, ExecutionTime) cannot be larger than 9223372036854775807 (maxInt64 - 1001)
+- The range of a List Filter timestamp (StartTime, CloseTime, ExecutionTime) cannot exceed 9223372036854775807 (that is, maxInt64 - 1001).
 
-- List Filters using a time range will have a 1ms resolution on Elasticsearch 6 and 1ns resolution on Elasticsearch 7.
+- A List Filter that uses a time range has a resolution of 1 ms on Elasticsearch 6 and 1 ns on Elasticsearch 7.
 
 - List Filter Search Attribute key names are case sensitive.
 
-- An Advanced List Filter API may take longer if it is retrieving a large number of Workflow Executions (10M+).
+- An Advanced List Filter API may take longer than expected if it is retrieving a large number of Workflow Executions (more than 10 million).
 
 - A `ListWorkflow` API supports pagination.
-  Use the page token in the next call to the retrieve next page, continue until the page token is `null`/`nil`.
+  Use the page token in the following call to retrieve the next page; continue until the page token is `null`/`nil`.
 
 - To paginate through a large number of Workflow Executions without skipping or duplicating them, use the `ScanWorkflow` API.
 
