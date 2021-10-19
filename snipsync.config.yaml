@@ -15,14 +15,12 @@ origins:
     repo: subscription-workflow-project-template-php
   - owner: temporalio
     repo: temporal
-    ref: 23ee9ff00703afb79fc44218a7b41c332fe204ea
   - owner: temporalio
     repo: samples-php
   - owner: temporalio
     repo: samples-node
   - owner: temporalio
     repo: samples-go
-    ref: c083d1e559d4332122ef3b767c4a9c212476b44c
   - owner: temporalio
     repo: samples-java
   - owner: temporalio
