@@ -108,7 +108,22 @@ workerOptions := worker.Options{
 
 ### `TaskQueueActivitiesPerSecond`
 
-Set the rate limiting on number of activities that can be executed per second
+Rate limits the number of Activity Executions that can be executed per second
+
+This is managed by the server and controls activities per second for your entire taskqueue
+	// whereas WorkerActivityTasksPerSecond controls activities only per worker.
+	// Notice that the number is represented in float, so that you can set it to less than
+	// 1 if needed. For example, set the number to 0.1 means you want your activity to be executed
+	// once for every 10 seconds. This can be used to protect down stream services from flooding.
+	// The zero value of this uses the default value.
+	// default: 100k
+
+```go
+workerOptions := worker.Options{
+	TaskQueueActivitiesPerSecond: 1000, // Important for a worker to participate in the session
+}
+	w := worker.New(c, "your_task_queue_name", workerOptions)
+```
 
 ### `MaxConcurrentActivityTaskPollers`
 

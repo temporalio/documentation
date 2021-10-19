@@ -6,6 +6,8 @@ sidebar_label: Timeouts & retries
 
 import CenteredImage from "../components/CenteredImage.js"
 
+Timeout and retry settings provide fine controls over the behavior of different steps of Workflow Executions and Activity Executions.
+
 <CenteredImage
 imagePath="/diagrams/workflow-execution-with-single-activity-execution.svg"
 imageSize="100"
