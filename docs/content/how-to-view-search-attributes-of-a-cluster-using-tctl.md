@@ -41,7 +41,7 @@ Example output:
 +-----------------------+----------+
 ```
 
-There is also admin version of this command which will show you default and custom Search Attributes separately, and also show the underlying Elasticsearch index schema and system Workflow status.
+The admin version of this command displays default and custom Search Attributes separately, and also shows the underlying Elasticsearch index schema and system Workflow status.
 
 ```bash
 tctl admin cluster get-search-attributes

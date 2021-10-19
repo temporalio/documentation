@@ -34,7 +34,6 @@ Due to Elasticsearch limitations you can only add new custom search attributes b
 
 :::note Local testing
 
-If you are adding custom Search Attributes to a Cluster running from the `docker-compose-es.yml` file in the [temporalio/docker-compose](https://github.com/temporalio/docker-compose) repo, make sure to increase the Docker memory to anything higher than 6GB.
-Navigate to Docker -> Preferences -> Advanced -> Memory.
+If you are adding custom Search Attributes to a Cluster running from the `docker-compose-es.yml` file in the [temporalio/docker-compose](https://github.com/temporalio/docker-compose) repo, make sure to increase the Docker memory to more than 6 GB.
 
 :::
