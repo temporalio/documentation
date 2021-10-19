@@ -165,7 +165,7 @@ You can also set this inside your Workflow code with `WorkflowOptions.WorkflowId
 
 Memos are immutable key/value pairs that can be attached to a workflow run when starting the workflow.
 These are visible when listing workflows.
-More information on memos can be found [here](/docs/server/workflow-search/#memo-vs-search-attributes).
+More information on memos can be found [here](/docs/content/what-is-a-memo).
 
 ```bash
 tctl workflow start \

@@ -472,8 +472,8 @@
   to = "/docs/server/versions-and-dependencies"
 
 [[redirects]]
-  from = "/docs/server-workflow-search"
-  to = "/docs/server/workflow-search"
+  from = "/docs/server/workflow-search"
+  to = "/docs/temporal-explained/visibility"
 
 [[redirects]]
   from = "/docs/server-architecture"
