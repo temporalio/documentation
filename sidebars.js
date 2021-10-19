@@ -12,7 +12,7 @@ module.exports = {
         "server/configuration",
         "server/production-deployment",
         "server/security",
-        "server/elasticsearch-setup",
+        "content/how-to-integrate-elasticsearch-into-a-temporal-cluster",
         "server/workflow-search",
         "server/namespaces",
         "server/multi-cluster",

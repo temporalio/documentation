@@ -36,7 +36,7 @@ import WhatIsCluster from "../content/what-is-a-temporal-cluster.md"
 ## Minimum Requirements
 
 - The minimum Temporal Server dependency is a database. We supports [Cassandra](https://cassandra.apache.org/), [MySQL](https://www.mysql.com/), or [PostgreSQL](https://www.postgresql.org/), with [SQLite on the way](https://github.com/temporalio/temporal/pulls?q=is%3Apr+sort%3Aupdated-desc+sqlite+).
-- Further dependencies are only needed to support optional features. For example, enhanced Workflow search can be achieved using [Elasticsearch](/docs/server/elasticsearch-setup).
+- Further dependencies are only needed to support optional features. For example, enhanced Workflow search can be achieved using [Elasticsearch](/docs/content/how-to-integrate-elasticsearch-into-a-temporal-cluster).
 - Monitoring and observability are available with [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/).
 - Each language SDK also has minimum version requirements. See the [versions & dependencies page](/docs/server/versions-and-dependencies/) for precise versions we support together with these features.
 

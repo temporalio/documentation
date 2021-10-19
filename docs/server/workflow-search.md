@@ -22,7 +22,7 @@ WorkflowType = "main.Workflow" and ExecutionStatus != "Running" and (StartTime >
 Without Elasticsearch, search functionality is limited to listing Workflows by Id and execution status (open/closed), and search queries are run directly against the Temporal Server database.
 Elasticsearch takes on the search query request load, relieving potential performance issues that can occur.
 This is why we highly recommend running Temporal with Elasticsearch for any use-case that spawns more than just a few Workflows.
-Follow the [Elasticsearch setup instructions](/docs/server/elasticsearch-setup) to do that.
+Follow the [Elasticsearch setup instructions](/docs/content/how-to-integrate-elasticsearch-into-a-temporal-cluster) to do that.
 The rest of this page assumes your instance of Temporal is integrated with Elasticsearch.
 
 ## Search attributes
