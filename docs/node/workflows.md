@@ -496,3 +496,16 @@ export async function loopingWorkflow(iteration = 0): Promise<void> {
 ```
 
 You can also call `continueAsNew` from a signal handler or `continueAsNew` to a different Workflow (or different Task Queue) using [`makeContinueAsNewFunc`](https://nodejs.temporal.io/api/namespaces/workflow/#makecontinueasnewfunc).
+
+If you need to know whether a Workflow was started via `continueAsNew`, you can pass an optional last argument as true:
+
+```ts
+import { continueAsNew } from '@temporalio/workflow';
+
+export async function loopingWorkflow(foo: any, isContinuedAsNew: boolean): Promise<void> {
+  
+  // some logic based on foo, branching on isContinuedAsNew
+  
+  await continueAsNew<typeof loopingWorkflow(foo, true);
+}
+```
