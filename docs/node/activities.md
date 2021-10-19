@@ -64,6 +64,15 @@ See also our [docs on Webpack troubleshooting](/docs/node/troubleshooting/).
 
 :::
 
+### Using pure ESM Node Modules
+
+The Node.js ecosystem is increasingly moving towards publishing ES Modules over CommonJS, for example `node-fetch@3` is ESM while `node-fetch@2` is CJS.
+If you are importing a pure ESM dependency, see our [fetch ESM](https://github.com/temporalio/samples-node/tree/main/fetch-esm) sample for necessary config changes you will need:
+
+- `package.json` must have `"type": "module"` attribute
+- `tsconfig.json` should output in `esnext` format
+- Imports [must](https://nodejs.org/api/esm.html#esm_mandatory_file_extensions) include the `.js` file extension
+
 ## Activity Options
 
 When you write `createActivityHandle`, there are [a range of options](https://nodejs.temporal.io/api/interfaces/worker.activityoptions/) you can set, the most important of which are Timeouts and Retries.

@@ -98,7 +98,10 @@ cd example
 ```
 
 This will set up with [the basic Hello World sample](https://github.com/temporalio/samples-node/tree/main/hello-world).
-If you want to start from a different sample, pass the `--sample <sample-name>` argument to the script. For example, running `npx @temporalio/create@latest ./example --sample hello-world-mtls` will download the [sample for connecting to a Temporal Server instance secured with mTLS](https://github.com/temporalio/samples-node/tree/main/hello-world-mtls).
+If you want to start from a different sample, pass the `--sample <sample-name>` argument to the script. For example:
+
+- running `npx @temporalio/create@latest ./example --sample hello-world-mtls` will download the [sample for connecting to a Temporal Server instance secured with mTLS](https://github.com/temporalio/samples-node/tree/main/hello-world-mtls)
+- running `npx @temporalio/create@latest ./example --sample fetch-esm` will download the [sample for using pure ESM Node Modules in activities](https://github.com/temporalio/samples-node/tree/main/fetch-esm) ([different configs are needed](https://github.com/temporalio/samples-node/tree/main/fetch-esm#fetch-esm))
 
 The list of official samples can be found in the [samples-node](https://github.com/temporalio/samples-node) repo.
 

@@ -32,10 +32,6 @@ However, there are other important limitations:
 These constraints don't apply inside Activities.
 **If you need to ping an API, or access the filesystem (e.g. for building a CI/CD system), move that code into Activities.**
 
-### Pure ESM Node Modules
-
-The Node.js ecosystem is increasingly moving towards publishing ES Modules over CommonJS, for example `node-fetch@3` is ESM while `node-fetch@2` is CJS. If you are importing a pure ESM dependency, see our [fetch ESM](https://github.com/temporalio/samples-node/tree/main/fetch-esm) sample for necessary config changes.
-
 ## How to Start and Cancel Workflows
 
 See the [Node.js SDK Client docs](/docs/node/client) for how to use `WorkflowHandle`s to do all that and more.
@@ -59,7 +55,7 @@ The `@temporalio/workflow` package exports all the useful primitives that you ca
 We fully expect that developers will bundle these into their own reusable Workflow libraries.
 If you do, please [get in touch on Slack](https://temporal.io/slack), we would love to work with you and promote your work.
 
-## Signals and Queries
+### Signals and Queries
 
 <details>
 <summary>
@@ -85,7 +81,7 @@ import WhenToSignals from '../content/when-to-use-signals.md'
 Signals and Queries are almost always used together.
 If you wanted to send data in, you probably will want to read data out.
 
-### How to define and receive Signals and Queries
+#### How to define and receive Signals and Queries
 
 - To add a Signal to a Workflow, call [`defineSignal`](https://nodejs.temporal.io/api/namespaces/workflow/#definesignal) with a name, and then attach a listener with `setListener`.
 - To add a Query to a Workflow, call [`defineQuery`](https://nodejs.temporal.io/api/namespaces/workflow/#definequery) with a name, and then attach a listener with `setListener`.
@@ -116,7 +112,7 @@ If you are familiar with Rxjs, you are free to wrap your Signal and Query into O
 
 </details>
 
-### How to send Signals and make Queries
+#### How to send Signals and make Queries
 
 - You invoke a Signal with `workflow.signal(signal, ...args)`. A Signal has no return value by definition.
 - You make a Query with `workflow.query(query, ...args)`.
@@ -136,7 +132,7 @@ let state = await handle.query(count);
 let state = await handle.query<number>('count');
 ```
 
-### Type-safe Signals and Queries
+#### Type-safe Signals and Queries
 
 The Signals and Queries API has been designed with type safety in mind:
 
@@ -169,9 +165,9 @@ await handle.signal<[number]>('increment'); // Expected 2 arguments, but got 1.
 let state = await handle.query<number, [string]>('print', 'Count: ');
 ```
 
-### Advanced Notes
+#### Advanced Notes
 
-#### Queries
+##### Queries
 
 > 🚨 WARNING: NEVER mutate Workflow state inside a query! This would be a source of non-determinism.
 
@@ -190,7 +186,7 @@ export function badExample() {
 
 :::
 
-#### Signals
+##### Signals
 
 :::info Notes on Signals
 
@@ -212,7 +208,7 @@ Temporal guarantees read-after-write consistency of Signals-followed-by-Queries.
 
 :::
 
-#### Componentization
+##### Componentization
 
 Because Signal and Query Definitions are separate from Workflow Definitions, we can now compose them together:
 
@@ -236,7 +232,7 @@ export async function myWorkflow2() {
 
 Another example of componentization can be found in our [code samples](https://github.com/temporalio/samples-node/blob/854c78955601a6b63aa8ea412cfb5eaf61bd78ee/expense/src/workflows.ts#L19).
 
-#### `signalWithStart`
+##### `signalWithStart`
 
 If you're not sure if a Workflow is running, you can `signalWithStart` a Workflow to send it a Signal and optionally start the Workflow if it is not running.
 Arguments for both are sent as needed.
@@ -255,7 +251,7 @@ await workflow.signalWithStart(
 );
 ```
 
-#### Triggers
+##### Triggers
 
 [Triggers](https://nodejs.temporal.io/api/classes/workflow.trigger) are a concept unique to the Temporal Node.js SDK. They may be deprecated in future.
 
@@ -263,7 +259,7 @@ Triggers, like Promises, can be awaited and expose a `then` method. Unlike Promi
 
 `Trigger` is `CancellationScope`-aware. It is linked to the current scope on construction and throws when that scope is cancelled.
 
-## `condition`
+### `condition`
 
 `condition(timeout?, function)` returns a promise that resolves when a supplied function returns `true` or if an (optional) `timeout` happens first.
 This API is comparable to `Workflow.await` in other SDKs and often used to wait for Signals.
@@ -298,7 +294,7 @@ await condition(() => x > 3);
 await condition('30 days', () => x > 3);
 ```
 
-### `condition` Anti-patterns
+#### `condition` Anti-patterns
 
 :::warning `condition` Antipatterns
 
@@ -311,7 +307,7 @@ await condition('30 days', () => x > 3);
 
 <!-- TODO: insert snippet showing real usage of condition -->
 
-## Timers
+### Timers
 
 Timers help you write durable asynchronous code in Temporal.
 Temporal offers you just two primitives — `setTimeout` and `sleep` — that you can use to build reusable workflow libraries and utilities:
@@ -350,7 +346,7 @@ This section only covers Workflow Timers.
 
 :::
 
-### `sleep`
+#### `sleep`
 
 `sleep` uses the [ms](https://www.npmjs.com/package/ms) package to take either a string or number of milliseconds, and returns a promise that you can `await`.
 
@@ -379,7 +375,7 @@ await sleep('30 days').catch(() => {
 
 You can read more on [the Cancellation Scopes doc](/docs/node/cancellation-scopes).
 
-### Timer design patterns
+#### Timer design patterns
 
 There are only two Timer APIs, but the important part is knowing how to use them to model asynchronous business logic. Here are some examples we use the most; we welcome more if you can think of them!
 
@@ -425,7 +421,7 @@ Here is how you can build an updatable timer with `condition`:
 
 </details>
 
-## Child Workflows
+### Child Workflows
 
 Besides Activities, a Workflow can also start other Workflows.
 
@@ -464,21 +460,21 @@ readlist={[
 ]}
 />
 
-### Parent Close Policy
+#### Parent Close Policy
 
 import PCP from '../content/what-is-a-parent-close-policy.md'
 
 <PCP />
 
-## Infinite Workflows
+### Infinite Workflows
 
-### Why `ContinueAsNew` is needed
+#### Why `ContinueAsNew` is needed
 
 import SharedContinueAsNew from '../shared/continue-as-new.md'
 
 <SharedContinueAsNew />
 
-### The `continueAsNew` API
+#### The `continueAsNew` API
 
 Use the [`continueAsNew`](https://nodejs.temporal.io/api/namespaces/workflow#continueasnew) API to instruct the Node SDK to restart `loopingWorkflow` with a new starting value and a new event history.
 
