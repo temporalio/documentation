@@ -502,10 +502,12 @@ If you need to know whether a Workflow was started via `continueAsNew`, you can 
 ```ts
 import { continueAsNew } from '@temporalio/workflow';
 
-export async function loopingWorkflow(foo: any, isContinuedAsNew: boolean): Promise<void> {
-  
+export async function loopingWorkflow(
+  foo: any,
+  isContinuedAsNew: boolean
+): Promise<void> {
   // some logic based on foo, branching on isContinuedAsNew
-  
-  await continueAsNew<typeof loopingWorkflow(foo, true);
+
+  (await continueAsNew) < typeof loopingWorkflow(foo, true);
 }
 ```
