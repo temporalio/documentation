@@ -457,5 +457,4 @@ apply the "ContinueAsNew" feature if needed.
 is not aware if its child Workflows called "ContinueAsNew". This way a child Workflow can call "ContinueAsNew" as many times
 as it needs, and the parent Workflow will get notified when the last run of the child Workflow completes or fails.
 
-
 If you need to know whether a Workflow was started via `continueAsNew`, you can check `Workflow.getInfo().getContinuedExecutionRunId().isPresent()`.
