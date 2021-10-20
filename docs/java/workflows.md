@@ -195,7 +195,7 @@ They shouldn't use any constructs that rely on system time.
 - Don't use any synchronization, locks, and other standard Java blocking concurrency-related classes besides those provided
   by the Workflow class. There is no need in explicit synchronization because multi-threaded code inside a Workflow is
   executed one thread at a time and under a global lock.
-  - Call `WorkflowThread.sleep` instead of `Thread.sleep`.
+  - Call `Workflow.sleep` instead of `Thread.sleep`.
   - Use `Promise` and `CompletablePromise` instead of `Future` and `CompletableFuture`.
   - Use `WorkflowQueue` instead of `BlockingQueue`.
 - Use `Workflow.getVersion` when making any changes to the Workflow code. Without this, any deployment of updated Workflow code
