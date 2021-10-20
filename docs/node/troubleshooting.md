@@ -4,6 +4,35 @@ title: Troubleshooting Issues with the Node.js SDK
 sidebar_label: Troubleshooting
 ---
 
+## Wrong Node.js version
+
+If you find segfaults when you execute code in Workers:
+
+```bash
+98602 segmentation fault  npm start
+```
+
+This comes from running the wrong Node.js version. 
+This SDK explicitly only supports Node 14.x, or Node 16.4.1+ (not Node 14.0 to 16.4).
+
+If you switch Node versions and now your Workers don't even run because of errors that look like this:
+
+```bash
+Error: The module '/YOUR_PATH/node_modules/isolated-vm/out/isolated_vm.node'
+was compiled against a different Node.js version using
+NODE_MODULE_VERSION 93. This version of Node.js requires
+NODE_MODULE_VERSION 88. Please try re-compiling or re-installing
+the module (for instance, using `npm rebuild` or `npm install`).
+```
+
+That is because you are now running Workers with a different Node version than the modules were built with.
+Rebuild them with `npm rebuild`.
+
+## Two Locations to Watch
+
+Workflow Errors are reflected in Temporal Web, whereas Worker errors and logs are reflected in the terminal.
+If something isn't behaving the way you expect, make sure to check both locations for helpful error messages.
+
 ## Stale Workflows
 
 If you are developing Workflows and finding that code isn't executing as expected, the first place to look is whether old Workflows are still running.
