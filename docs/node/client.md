@@ -66,7 +66,7 @@ There are a range of [`WorkflowOptions`](https://nodejs.temporal.io/api/interfac
 - `workflowId` (recommended): Specify unique Workflow ID to assign to the Workflow Execution.
   - We recommend assigning business-meaningful customer or order IDs here to prevent duplicate transactions.
   - Workflow ID is "unique" in that Temporal will guarantee only one Workflow Execution with this ID is run at any point in time (within a given namespace).
-    Advanced users can tweak this behavior with the [workflowIdReusePolicy](https://nodejs.temporal.io/api/interfaces/client.workflowoptions/#workflowidreusepolicy). 
+    Advanced users can tweak this behavior with the [workflowIdReusePolicy](https://nodejs.temporal.io/api/interfaces/client.workflowoptions/#workflowidreusepolicy).
   - If not specified, a UUID is generated, which you can access with `handle.workflowId`.
 - `cronSchedule`: see ["Scheduling Cron Workflows"](#scheduling-cron-workflows)
 - `searchAttributes`: Specifies additional indexed information for visibility/metadata (see our [Search docs](https://docs.temporal.io/docs/server/workflow-search/)).
