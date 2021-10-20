@@ -12,7 +12,7 @@ If you find segfaults when you execute code in Workers:
 98602 segmentation fault  npm start
 ```
 
-This comes from running the wrong Node.js version. 
+This comes from running the wrong Node.js version.
 This SDK explicitly only supports Node 14.x, or Node 16.4.1+ (not Node 14.0 to 16.4).
 
 If you switch Node versions and now your Workers don't even run because of errors that look like this:
