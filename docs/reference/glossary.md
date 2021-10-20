@@ -34,6 +34,8 @@ The following terms have specific definitions within the context of the Temporal
 - [Task Queue](/docs/content/what-is-a-task-queue)
 - [Task Token](/docs/content/what-is-a-task-token)
 - [Temporal](/docs/content/what-is-temporal)
+- [Temporal Platform](/docs/content/what-is-the-temporal-platform)
+- [Temporal SDK](/docs/content/what-is-a-temporal-sdk)
 - [Worker](/docs/content/what-is-a-worker)
 - [Workflow](/docs/content/what-is-a-workflow)
 - [Workflow Definition](/docs/content/what-is-a-workflow-definition)
