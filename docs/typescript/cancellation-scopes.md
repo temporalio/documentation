@@ -1,6 +1,6 @@
 # Cancellation Scopes
 
-In the Node SDK, Workflows are represented internally by a tree of **Cancellation Scopes**, each with cancellation behaviors you can specify.
+In the TypeScript SDK, Workflows are represented internally by a tree of **Cancellation Scopes**, each with cancellation behaviors you can specify.
 Everything runs in the "root" scope by default.
 
 Scopes are created using the [`CancellationScope`](https://nodejs.temporal.io/api/classes/workflow.cancellationscope) constructor, or one of 3 static helpers:
@@ -29,7 +29,7 @@ When a `CancellationScope` is cancelled, it propagates cancellation in any child
 - Timers (created with the [`sleep`](https://nodejs.temporal.io/api/namespaces/workflow#sleep) function)
 - [`Trigger`](https://nodejs.temporal.io/api/classes/workflow.trigger)s
 
-### [CancelledFailure](/docs/node/handling-failure/#cancelledfailure)
+### [CancelledFailure](/docs/typescript/handling-failure/#cancelledfailure)
 
 `Timer`s and `Trigger`s throw `CancelledFailure` when cancelled while Activities and Child Workflows throw `ActivityFailure` and `ChildWorkflowFailure` with cause set to `CancelledFailure`.
 One exception is when an Activity or Child Workflow is scheduled in an already cancelled scope (or workflow) in which case they'll propagate the `CancelledFailure` that was thrown to cancel the scope.

@@ -5,7 +5,7 @@ sidebar_label: Hello World Walkthrough
 ---
 
 In this tutorial, we'll go over the different components that make up a Temporal project.
-All of the code on this page is included in our [package initializer](/docs/node/package-initializer) skeleton, which we set up in our [Introduction](/docs/node/introduction/).
+All of the code on this page is included in our [package initializer](/docs/typescript/package-initializer) skeleton, which we set up in our [Introduction](/docs/typescript/introduction/).
 
 The SDK steers developers to write their Workflows and Activities in TypeScript but vanilla JS is also supported.
 
@@ -26,7 +26,7 @@ Any async function can be used as an Activity as long as its parameters and retu
 
 [API reference](https://nodejs.temporal.io/api/namespaces/workflow)
 
-In the Node.js SDK, each Workflow execution is run in a separate V8 isolate context in order to provide a [deterministic runtime](/docs/node/determinism).
+In the TypeScript SDK, each Workflow execution is run in a separate V8 isolate context in order to provide a [deterministic runtime](/docs/typescript/determinism).
 
 A Workflow is defined as an async function, in its body you may set listeners for processing [Signals](/docs/concepts/signals) and responding to [Queries](/docs/concepts/queries).
 

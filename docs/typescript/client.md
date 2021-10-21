@@ -1,8 +1,8 @@
 ---
 id: client
-title: Workflow Clients in Node.js
+title: Workflow Clients in TypeScript
 sidebar_label: Clients
-description: In the Temporal Node SDK programming model, a Workflow is an exportable function that adheres to a set of rules.
+description: In the Temporal TypeScript SDK programming model, a Workflow is an exportable function that adheres to a set of rules.
 image: /img/workflow.png
 ---
 
@@ -13,7 +13,7 @@ import RelatedReadList from '../components/RelatedReadList.js'
 **Clients connect to Temporal Server via gRPC and create Workflow Handles, which are the main way to start, signal, query, or cancel Workflows**.
 
 - Clients are not bound to Workers and can be run in any Node.js application, for example, in a serverless function, Express.js API route handler or CLI/script run.
-- This doc assumes that you have already written your Workflow code. See the dedicated [Workflow docs](/docs/node/workflows) if you need that.
+- This doc assumes that you have already written your Workflow code. See the dedicated [Workflow docs](/docs/typescript/workflows) if you need that.
 
 ## Full Example
 
@@ -138,7 +138,7 @@ This is useful for starting long lived workflows that you can interact with usin
 
 ### Misc ways to start Workflows
 
-- If your workflow uses [Signals](/docs/concepts/signals), you can also send a Signal that might start a workflow using the `signalWithStart` API. See the [Signals docs](/docs/node/workflows) for details.
+- If your workflow uses [Signals](/docs/concepts/signals), you can also send a Signal that might start a workflow using the `signalWithStart` API. See the [Signals docs](/docs/typescript/workflows) for details.
 - (For advanced usecases) You can also start or execute a Workflow directly from a [WorkflowClient](https://nodejs.temporal.io/api/classes/client.workflowclient/), without creating a Handle first.
 
 ## How to cancel a Workflow
@@ -157,7 +157,7 @@ await handle.cancel();
 With `cancel`, Timers and Child Workflows have the opportunity to execute cleanup code.
 If you wish to skip that, you can also `terminate` forcefully.
 
-Temporal gives you fine grained control over what happens when you cancel a workflow. See our docs on [Cancellation Scopes](/docs/node/cancellation-scopes) for details and examples.
+Temporal gives you fine grained control over what happens when you cancel a workflow. See our docs on [Cancellation Scopes](/docs/typescript/cancellation-scopes) for details and examples.
 
 ## Scheduling Cron Workflows
 

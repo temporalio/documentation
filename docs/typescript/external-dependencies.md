@@ -9,10 +9,10 @@ This is an advanced feature and requires a good grasp of the basic SDK concepts.
 </CustomWarning>
 
 Workflows in Temporal may be replayed from the beginning of their history when resumed.
-In order for Temporal to recreate the exact state Workflow code was in, the code is required to be [fully deterministic](/docs/node/determinism).
-To prevent breaking determinism, in the Node SDK, Workflow code runs in an isolated execution environment limited to functionality provided by the SDK.
+In order for Temporal to recreate the exact state Workflow code was in, the code is required to be [fully deterministic](/docs/typescript/determinism).
+To prevent breaking determinism, in the TypeScript SDK, Workflow code runs in an isolated execution environment limited to functionality provided by the SDK.
 
-External Dependencies is an isolation-breaking mechanism that allows injecting replay-aware functions from the main Node.js environment into a Workflow isolate.
+External Dependencies is an isolation-breaking mechanism that allows injecting replay-aware functions from the main TypeScript environment into a Workflow isolate.
 They are typically used in order to inject custom instrumentation (e.g. logger) functions into the isolate.
 
 ## [Injection configuration](https://nodejs.temporal.io/api/namespaces/worker#injecteddependencyfunction)

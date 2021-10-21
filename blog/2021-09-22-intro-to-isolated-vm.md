@@ -18,7 +18,7 @@ import TabItem from '@theme/TabItem';
 
 ## Introduction
 
-[Temporal's Node SDK](/docs/node/introduction) makes heavy use of V8 isolates via the [isolated-vm npm package](https://www.npmjs.com/package/isolated-vm) to ensure your [Workflows are deterministic](/docs/node/determinism).
+[Temporal's Node SDK](/docs/typescript/introduction) makes heavy use of V8 isolates via the [isolated-vm npm package](https://www.npmjs.com/package/isolated-vm) to ensure your [Workflows are deterministic](/docs/typescript/determinism).
 Each Workflow runs in an _isolate_ that prevents your Workflow code from directly accessing any logic that may break Workflow determinism, like reading from the file system or generating a random number.
 In this blog post, I'll cover why the Node SDK V8 isolates, sketch out how the Node SDK uses isolates, and describe what that means for how you write Workflows in Node.js.
 

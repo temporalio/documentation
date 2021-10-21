@@ -1,10 +1,10 @@
 ---
 id: patching
-title: Patching Node.js Workflows
+title: Patching TypeScript Workflows
 sidebar_label: Patching (Migrating)
 ---
 
-Workflow code has to be [deterministic](/docs/node/determinism) by taking the same code path when replaying history events.
+Workflow code has to be [deterministic](/docs/typescript/determinism) by taking the same code path when replaying history events.
 Any Workflow code change that affects the order in which commands are generated breaks this assumption.
 
 So we have to keep both the old and new code when migrating Workflows while they are still running:
@@ -20,7 +20,7 @@ We explain more in this optional 30 minute introduction:
 
 :::info
 
-In principle, the Node.js patching mechanism works similarly to the one presented in the video, however, the API is different.
+In principle, the TypeScript patching mechanism works similarly to the one presented in the video, however, the API is different.
 
 :::
 
@@ -28,7 +28,7 @@ import { ResponsivePlayer } from '../../src/components'
 
 <ResponsivePlayer url='https://www.youtube.com/watch?v=kkP899WxgzY' />
 
-## Node.js Patching API
+## TypeScript Patching API
 
 Given an initial Workflow version `v1`:
 

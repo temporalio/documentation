@@ -496,4 +496,4 @@
 
 [[redirects]]
   from = "/docs/typescript/*"
-  to = "/docs/node/:splat"
+  to = "/docs/typescript/:splat"

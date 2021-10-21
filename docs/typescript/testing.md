@@ -1,6 +1,6 @@
 ---
 id: testing
-title: Testing Node.js Workflows
+title: Testing TypeScript Workflows
 sidebar_label: Testing
 ---
 
@@ -12,7 +12,7 @@ This SDK and associated documentation is in an Alpha stage and may change at any
 
 </CustomWarning>
 
-The Node.js SDK does not yet have a test suite that allows time skipping.
+The TypeScript SDK does not yet have a test suite that allows time skipping.
 
 - Since Activities are async functions, they should be testable as long as you avoid using [Context](https://nodejs.temporal.io/api/classes/activity.context) or are able to mock it.
 - You can test Workflows by running them with a [WorkflowClient](https://nodejs.temporal.io/api/classes/client.workflowclient).

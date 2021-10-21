@@ -6,14 +6,14 @@ sidebar_label: Handling Failures
 
 Failures in Temporal are structured and typed. They represent a variety of failure scenarios across the different SDKs and the server.
 
-In the Node.js SDK, failures are represented by [`Error`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error) classes. They can be caught in both Workflow code and non-Workflow code.
+In the TypeScript SDK, failures are represented by [`Error`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error) classes. They can be caught in both Workflow code and non-Workflow code.
 
 <details>
 <summary>
 Failures are serializable over the network and chainable to enable root-cause analysis anywhere in the failure chain.
 </summary>
 
-If, for example, a Node.js Workflow starts a Java Child Workflow which calls an Activity in Golang and that activity fails, the Node.js Workflow will throw a `ChildWorkflowFailure` with `cause` set to an `ActivityFailure`, and the `ActivityFailure`'s `cause` is set to `ApplicationFailure`, which represents the error that occurred in the Golang Activity.
+If, for example, a TypeScript Workflow starts a Java Child Workflow which calls an Activity in Golang and that activity fails, the TypeScript Workflow will throw a `ChildWorkflowFailure` with `cause` set to an `ActivityFailure`, and the `ActivityFailure`'s `cause` is set to `ApplicationFailure`, which represents the error that occurred in the Golang Activity.
 
 <!--TODO: use snipsync-->
 
@@ -55,7 +55,7 @@ async function myWorkflow(): Promise<void> {
 
 <details>
 <summary>
-Failures are also used to represent <a href="/docs/node/cancellation-scopes#cancelledfailure">cancellation</a> of Activities and Child Workflows.
+Failures are also used to represent <a href="/docs/typescript/cancellation-scopes#cancelledfailure">cancellation</a> of Activities and Child Workflows.
 </summary>
 
 As explained above, cancellation might not be the immediate cause of failure—it might happen further down the chain. Use the [`isCancellation`](https://nodejs.temporal.io/api/namespaces/workflow/#iscancellation) helper function to inspect the chain recursively and look for a `CancelledFailure`.
@@ -116,7 +116,7 @@ Any unhandled exception that doesn't extend [`TemporalFailure`](#temporalfailure
 
 `CancelledFailure` is thrown in a Workflow when a cancellation scope or the entire Workflow has been cancelled or set as the cause for when a child Workflow or Activity has been cancelled.
 
-In an Activity, it may be thrown if the Activity was requested to be cancelled. More on activity cancellation [here](/docs/node/activities#activity-cancellation).
+In an Activity, it may be thrown if the Activity was requested to be cancelled. More on activity cancellation [here](/docs/typescript/activities#activity-cancellation).
 
 ### [ActivityFailure](https://nodejs.temporal.io/api/classes/client.activityfailure)
 

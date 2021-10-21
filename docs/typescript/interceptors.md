@@ -1,6 +1,6 @@
 ---
 id: interceptors
-title: Interceptors in Node
+title: Interceptors in TypeScript SDK
 sidebar_label: Interceptors
 ---
 
@@ -8,7 +8,7 @@ Interceptors are a mechanism for users to modify inbound and outbound SDK calls.
 Interceptors are commonly used to add tracing and authorization to the scheduling and execution of Workflows and Activities.
 You can compare these to "middleware" in other frameworks.
 
-The Node.js SDK comes with an optional interceptor package that adds tracing with [opentelemetry](https://www.npmjs.com/package/@temporalio/interceptors-opentelemetry). See how to use it in this [sample](https://github.com/temporalio/sdk-node/tree/main/samples/interceptors-opentelemetry).
+The TypeScript SDK comes with an optional interceptor package that adds tracing with [opentelemetry](https://www.npmjs.com/package/@temporalio/interceptors-opentelemetry). See how to use it in this [sample](https://github.com/temporalio/sdk-node/tree/main/samples/interceptors-opentelemetry).
 
 ## Interceptor types
 
@@ -93,7 +93,7 @@ export class DumbWorkflowAuthInterceptor
 }
 ```
 
-To properly do authorization from Workflow code, the Workflow would need to access encryption keys and possibly authenticate against an external user database, which requires the Workflow to break isolation using [external dependencies](/docs/node/external-dependencies).
+To properly do authorization from Workflow code, the Workflow would need to access encryption keys and possibly authenticate against an external user database, which requires the Workflow to break isolation using [external dependencies](/docs/typescript/external-dependencies).
 
 ## Interceptor registration
 

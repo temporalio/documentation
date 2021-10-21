@@ -1,6 +1,6 @@
 ---
 id: activities
-title: Activities in Node.js
+title: Activities in TypeScript
 sidebar_label: Activities
 ---
 
@@ -8,7 +8,7 @@ sidebar_label: Activities
 
 **Activities are the only way to interact with external resources in Temporal**, like making an HTTP request or accessing the file system.
 
-- Unlike [Workflows](/docs/node/determinism), Activities execute in the standard Node.js environment, not an [isolate](https://www.npmjs.com/package/isolated-vm). So any code that needs to talk to the outside world needs to be in an Activity.
+- Unlike [Workflows](/docs/typescript/determinism), Activities execute in the standard TypeScript environment, not an [isolate](https://www.npmjs.com/package/isolated-vm). So any code that needs to talk to the outside world needs to be in an Activity.
 - Activities cannot be in the same file as Workflows (must be separately registered).
 - Activities may be retried repeatedly, so you may need to use [idempotency keys](https://stripe.com/blog/idempotency) for critical side effects.
 
@@ -31,7 +31,7 @@ Note that we only import the type of our activities, the TypeScript compiler wil
 <!--SNIPEND-->
 
 The return value of `createActivityHandle` is a [`Proxy`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) object
-with a `get` handler that returns a function that calls the Node SDK's internal `scheduleActivity()` function.
+with a `get` handler that returns a function that calls the TypeScript SDK's internal `scheduleActivity()` function.
 
 Activities are Promises and you may retrieve multiple Activities from the same handle if they all share the same timeouts/retries/options:
 
@@ -60,13 +60,13 @@ This will result in a Webpack error, because the Temporal Worker will try to bun
 Make sure you're using `createActivityHandle` to retrieve an Activity rather than calling the function directly.
 This indirection comes from the fact that Activities are run in the regular Node.js environment, not the deterministic `vm` where Workflows are run.
 
-See also our [docs on Webpack troubleshooting](/docs/node/troubleshooting/).
+See also our [docs on Webpack troubleshooting](/docs/typescript/troubleshooting/).
 
 :::
 
 ### Using pure ESM Node Modules
 
-The Node.js ecosystem is increasingly moving towards publishing ES Modules over CommonJS, for example `node-fetch@3` is ESM while `node-fetch@2` is CJS.
+The TypeScript ecosystem is increasingly moving towards publishing ES Modules over CommonJS, for example `node-fetch@3` is ESM while `node-fetch@2` is CJS.
 If you are importing a pure ESM dependency, see our [fetch ESM](https://github.com/temporalio/samples-node/tree/main/fetch-esm) sample for necessary config changes you will need:
 
 - `package.json` must have `"type": "module"` attribute
@@ -162,7 +162,7 @@ const worker = await Worker.create({
 });
 ```
 
-See [the Worker docs](/docs/node/workers) for more details.
+See [the Worker docs](/docs/typescript/workers) for more details.
 
 ## Sharing dependencies in Activity functions
 
@@ -231,14 +231,14 @@ The [`sleep`](https://nodejs.temporal.io/api/classes/activity.context#sleep) met
 ### Activity Cancellation
 
 **Activities may be cancelled only if they emit heartbeats.**
-A Workflow can request to cancel an Activity by cancelling its containing [cancellation scope](/docs/node/cancellation-scopes).
+A Workflow can request to cancel an Activity by cancelling its containing [cancellation scope](/docs/typescript/cancellation-scopes).
 
 There are 2 ways to handle Activity cancellation:
 
 1. Await on [`Context.current().cancelled`](https://nodejs.temporal.io/api/classes/activity.context#cancelled)
 1. Pass the context's abort signal at [`Context.current().cancellationSignal`](https://nodejs.temporal.io/api/classes/activity.context#cancelled) to a library that supports it like `fetch`
 
-[`heartbeat()`](https://nodejs.temporal.io/api/classes/activity.context/#heartbeat) in the Node.js SDK is a background operation and does not propagate errors to the caller, such as when the scheduling Workflow has already completed or the Activity has been closed by the server (due to timeout for instance). These errors are translated into cancellation and can be handled using the methods above.
+[`heartbeat()`](https://nodejs.temporal.io/api/classes/activity.context/#heartbeat) in the TypeScript SDK is a background operation and does not propagate errors to the caller, such as when the scheduling Workflow has already completed or the Activity has been closed by the server (due to timeout for instance). These errors are translated into cancellation and can be handled using the methods above.
 
 #### Example: Activity that makes a cancellable HTTP request
 
@@ -248,4 +248,4 @@ There are 2 ways to handle Activity cancellation:
 ## Local Activities
 
 Temporal has an optimization feature called Local Activities.
-The Node.js SDK has not yet implemented this feature.
+The TypeScript SDK has not yet implemented this feature.

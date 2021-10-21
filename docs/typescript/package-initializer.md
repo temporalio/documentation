@@ -11,7 +11,7 @@ sidebar_label: Package Initializer
 
 ### Usage
 
-> See the [Getting started](/docs/node/introduction/#getting-started) guide for basic usage and environment set up before running this tool.
+> See the [Getting started](/docs/typescript/introduction/#getting-started) guide for basic usage and environment set up before running this tool.
 
 ```bash
 npx @temporalio/create@latest ./example
@@ -30,10 +30,10 @@ npx @temporalio/create@latest ./example
 
 Typically the generated project consists of 4 main components:
 
-- Worker
 - Workflows
 - Activities
-- A script to execute a Workflow
+- Worker that executes Workflows and Activities
+- A script to execute a Workflow (using a Temporal Client)
 
 ### Working with the created project
 

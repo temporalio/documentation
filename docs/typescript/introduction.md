@@ -1,5 +1,5 @@
 ---
-title: Node.js SDK introduction
+title: TypeScript SDK introduction
 sidebar_label: Introduction
 ---
 
@@ -11,14 +11,17 @@ This SDK and associated documentation is in an Alpha stage and may change at any
 
 </CustomWarning>
 
-The Node.js SDK is Temporal's newest client SDK for developing with Temporal.
-It is designed to work equally well with TypeScript or JavaScript in Node.js.
+The TypeScript SDK is Temporal's newest client SDK for developing with Temporal.
+It is designed with TypeScript-first developer experience in mind, but should work equally well with JavaScript.
+
+For now, this SDK only works with Node.js 14 and 16+.
+Other JS/TS runtimes may be considered in future.
 
 You can view:
 
-- Node.js Code Samples: https://github.com/temporalio/samples-node
 - Full API reference: https://nodejs.temporal.io
-- Node.js SDK source: https://github.com/temporalio/sdk-node [![GitHub stars](https://img.shields.io/github/stars/temporalio/sdk-node)](https://github.com/temporalio/sdk-node/stargazers) (give us a star!)
+- Code Samples: https://github.com/temporalio/samples-node
+- SDK source: https://github.com/temporalio/sdk-node [![GitHub stars](https://img.shields.io/github/stars/temporalio/sdk-node)](https://github.com/temporalio/sdk-node/stargazers) (give us a star!)
 
 ## Getting started
 
@@ -66,7 +69,7 @@ npm install -g node-gyp
 
 You may have to install some system dependencies first as documented [here](https://github.com/nodejs/node-gyp#installation).
 
-_`node-gyp` is a requirement of [`isolated-vm`](https://github.com/laverdet/isolated-vm) the V8 Isolate library which powers this SDK's [deterministic runtime](/docs/node/determinism)_.
+_`node-gyp` is a requirement of [`isolated-vm`](https://github.com/laverdet/isolated-vm) the V8 Isolate library which powers this SDK's [deterministic runtime](/docs/typescript/determinism)_.
 
 </details>
 <details>
@@ -178,11 +181,11 @@ You can verify this via the INPUT and RESULT fields in Temporal Web (available a
 
 ## Next Steps
 
-For a full code walkthrough of the Hello World example that you have spun up here, see our [Hello World documentation](/docs/node/hello-world).
+For a full code walkthrough of the Hello World example that you have spun up here, see our [Hello World documentation](/docs/typescript/hello-world).
 
 Then you should have a passing knowledge of our Core APIs:
 
-- [Workflows](/docs/node/workflows) and [Activities](/docs/node/activities): How to write Temporal's core orchestration code
-  - see [Workflow APIs](/docs/node/workflows) for Signals, Queries, Timers, Child Workflows, Infinite Workflows, and more!
-- [Workers and Task Queues](/docs/node/workers): How Workflows and Activities are routed to and executed on machines you control
-- [Clients](/docs/node/client): How to start, signal, query, cancel, or otherwise handle Workflows.
+- [Workflows](/docs/typescript/workflows) and [Activities](/docs/typescript/activities): How to write Temporal's core orchestration code
+  - see [Workflow APIs](/docs/typescript/workflows) for Signals, Queries, Timers, Child Workflows, Infinite Workflows, and more!
+- [Workers and Task Queues](/docs/typescript/workers): How Workflows and Activities are routed to and executed on machines you control
+- [Clients](/docs/typescript/client): How to start, signal, query, cancel, or otherwise handle Workflows.
