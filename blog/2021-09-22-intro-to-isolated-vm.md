@@ -18,9 +18,9 @@ import TabItem from '@theme/TabItem';
 
 ## Introduction
 
-[Temporal's Node SDK](/docs/typescript/introduction) makes heavy use of V8 isolates via the [isolated-vm npm package](https://www.npmjs.com/package/isolated-vm) to ensure your [Workflows are deterministic](/docs/typescript/determinism).
+[Temporal's TypeScript SDK](/docs/typescript/introduction) makes heavy use of V8 isolates via the [isolated-vm npm package](https://www.npmjs.com/package/isolated-vm) to ensure your [Workflows are deterministic](/docs/typescript/determinism).
 Each Workflow runs in an _isolate_ that prevents your Workflow code from directly accessing any logic that may break Workflow determinism, like reading from the file system or generating a random number.
-In this blog post, I'll cover why the Node SDK V8 isolates, sketch out how the Node SDK uses isolates, and describe what that means for how you write Workflows in Node.js.
+In this blog post, I'll cover why the TypeScript SDK V8 isolates, sketch out how the TypeScript SDK uses isolates, and describe what that means for how you write Workflows in TypeScript.
 
 ## Why Isolates?
 
@@ -55,9 +55,9 @@ export const sleepWorkflow = () => ({
 If `sleepWorkflow()` ran in vanilla Node.js, it would **not** be deterministic because `Date.now()` is not deterministic.
 If the Temporal Server pauses the Workflow and later runs `execute()` to restart the Workflow, the Workflow will sleep for a different amount of time unless the Temporal Server happens to restart the Workflow at exactly the right time.
 
-The Temporal Node SDK runs your Workflow code in an isolate to remove sources of non-determinism.
+The Temporal TypeScript SDK runs your Workflow code in an isolate to remove sources of non-determinism.
 Running in an isolate means each Workflow execution has its own memory, so there's no way for Workflows to share a singleton or any other form of shared state.
-And the Temporal Node SDK can replace commonly used non-deterministic built-ins, like the `Date` constructor, with Workflow-safe replacements.
+And the Temporal TypeScript SDK can replace commonly used non-deterministic built-ins, like the `Date` constructor, with Workflow-safe replacements.
 For example, suppose you wrote a Workflow that printed out the `Date` constructor as a string as shown below.
 
 ```ts
@@ -72,7 +72,7 @@ export const testWorkflow = () => ({
 ```
 
 Running `testWorkflow()` would print something like what you see below.
-Notice that `Date()` is now a stub that pulls the current time from the Temporal Node SDK's internal state, rather than the system time.
+Notice that `Date()` is now a stub that pulls the current time from the Temporal TypeScript SDK's internal state, rather than the system time.
 
 ```
 example 00363f1d-19c7-429f-aabb-6067b4df2bd2 > function () {
@@ -118,17 +118,17 @@ console.log(script.runSync(context)); // Prints "2"
 ```
 
 However, by creating a new context for every run, you can ensure that each `runSync()` call runs in an isolated environment, with no ability to interact with other `runSync()` calls.
-That's how the [Temporal Node SDK ensures Workflows can't interfere with each other](https://github.com/temporalio/sdk-node/blob/5a0f780b9cb4c0dae265c08ca99fbc1f58c4ab83/packages/worker/src/isolate-context-provider.ts#L32-L40).
+That's how the [Temporal TypeScript SDK ensures Workflows can't interfere with each other](https://github.com/temporalio/sdk-node/blob/5a0f780b9cb4c0dae265c08ca99fbc1f58c4ab83/packages/worker/src/isolate-context-provider.ts#L32-L40).
 
-How does the Temporal Node SDK handle overwriting the `Date()` constructor?
-The Temporal Node SDK compiles your Workflows with [Webpack](https://www.npmjs.com/package/webpack) and creates an [entry script that overrides `Date()` before your Workflow starts](https://github.com/temporalio/sdk-node/blob/5a0f780b9cb4c0dae265c08ca99fbc1f58c4ab83/packages/worker/src/isolate-builder.ts#L89-L125).
+How does the Temporal TypeScript SDK handle overwriting the `Date()` constructor?
+The Temporal TypeScript SDK compiles your Workflows with [Webpack](https://www.npmjs.com/package/webpack) and creates an [entry script that overrides `Date()` before your Workflow starts](https://github.com/temporalio/sdk-node/blob/5a0f780b9cb4c0dae265c08ca99fbc1f58c4ab83/packages/worker/src/isolate-builder.ts#L89-L125).
 Webpack also bundles dependencies, which means your Workflows can use `import` statements.
 
 ## Takeaways for Writing Workflows in Node.js
 
-The Temporal Node SDK runs Workflows in a subset of Node.js that has several globals stubbed out, including [`Math.random()`, `Date()`, `setTimeout()`, and `clearTimeout()`](https://github.com/temporalio/sdk-node/blob/004c2846fe4e4312eb2c424da477bc0c280d6c48/packages/workflow/src/worker-interface.ts).
+The Temporal TypeScript SDK runs Workflows in a subset of Node.js that has several globals stubbed out, including [`Math.random()`, `Date()`, `setTimeout()`, and `clearTimeout()`](https://github.com/temporalio/sdk-node/blob/004c2846fe4e4312eb2c424da477bc0c280d6c48/packages/workflow/src/worker-interface.ts).
 In particular, accessing `WeakMap()`, `WeakSet()`, and `WeakRef()` throw errors, because garbage collection is non-deterministic.
-The Temporal Node SDK also explicitly prevents you from accessing several Node.js APIs, including `fs` and `http`.
+The Temporal TypeScript SDK also explicitly prevents you from accessing several Node.js APIs, including `fs` and `http`.
 For example, if you try to import `fs` in a Workflow, your worker will fail with the below error message at startup.
 
 ```
@@ -168,7 +168,7 @@ export async function makeHTTPRequest(): Promise<void> {
 
 ## Moving On
 
-The Temporal Node SDK uses isolated-vm to ensure there's no way for developers to violate Workflow determinism.
+The Temporal TypeScript SDK uses isolated-vm to ensure there's no way for developers to violate Workflow determinism.
 Your Workflow will throw an error if you intentionally or unintentionally write some non-deterministic code.
-This makes the Node SDK different from some of Temporal's other SDKs, like the [Go SDK](https://docs.temporal.io/docs/go/workflows#how-to-write-workflow-code), which currently rely on developers to avoid using language built-ins that violate determinism.
-Workflow determinism is a critical assumption in Temporal, so making it impossible to accidentally break Workflow determinism is a major benefit of the Temporal Node SDK.
+This makes the TypeScript SDK different from some of Temporal's other SDKs, like the [Go SDK](https://docs.temporal.io/docs/go/workflows#how-to-write-workflow-code), which currently rely on developers to avoid using language built-ins that violate determinism.
+Workflow determinism is a critical assumption in Temporal, so making it impossible to accidentally break Workflow determinism is a major benefit of the Temporal TypeScript SDK.
