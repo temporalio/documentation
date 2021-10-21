@@ -12,11 +12,8 @@ import RelatedReadList, {RelatedReadContainer, RelatedReadItem} from '../compone
 <!-- prettier-ignore -->
 import * as WhatIsAListFilter from './what-is-a-list-filter.md'
 import * as WhatIsATemporalCronJob from './what-is-a-temporal-cron-job.md'
-
-<!--TODO
 import * as HowToViewSearchAttribtuesUsingTCTL from './how-to-view-search-attributes-of-a-cluster-using-tctl.md'
 import * as HowToAddCustomSearchAttribute from "../content/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl.md"
--->
 
 A Search Attribute is an indexed key used in a <preview page={WhatIsAListFilter}>List Filter</preview> to filter a list of Workflow Executions that have the Search Attribute in their metadata.
 
@@ -27,7 +24,7 @@ However, you won't be able to use Advanced Visibility List APIs and List Filters
 
 :::
 
-<!--Link to What is Continue-As-New-->
+<!--TODO Link to What is Continue-As-New-->
 
 When using Continue-As-New or a <preview page={WhatIsATemporalCronJob}>Temporal Cron Job</preview>, Search Attributes are carried over to the new Run by default.
 
@@ -69,12 +66,8 @@ These Search Attributes are created when the initial index is created.
 
 ### Custom Search Attributes
 
-<!--TODO
-<preview page={HowToAddCustomSearchAttribute}>registered using `tctl`</preview>
--->
-
-Custom Search Attribute keys must be registered using `tctl`.
-Registering a Search Attribute key makes it available to use with Workflow Executions within that Cluster.
+Custom Search Attribute keys must be <preview page={HowToAddCustomSearchAttribute}>added to a Temporal Cluster using `tctl`</preview>.
+Adding a Search Attribute key makes it available to use with Workflow Executions within that Cluster.
 
 There is no hard limit on the number of attributes you can add.
 However, we recommend enforcing the following limits:
@@ -122,11 +115,9 @@ Note:
   - As a **String** it would be matched by `ProductId = 2dd8`, which could cause unwanted matches.
 - The **String** type cannot be used in the "Order By" clause.
 
-<!--TODO
 <RelatedReadContainer>
   <RelatedReadItem page={HowToViewSearchAttribtuesUsingTCTL} />
 </RelatedReadContainer>
--->
 
 ### Search Attributes as Workflow Execution metadata
 
