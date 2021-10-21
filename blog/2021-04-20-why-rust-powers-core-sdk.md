@@ -70,6 +70,6 @@ There's one other reason that matters a lot to me personally: Rust is fun to wri
 
 In the future, we plan to support a larger selection of languages than we do currently, all based on top of the common core. We can expect Core to ensure a stable, well-tested basis for new languages SDKs where they all can benefit from the reliability and performance it provides.
 
-Keep your eyes peeled for the first alpha release of our [Node JS SDK](https://github.com/temporalio/sdk-node/) which will be coming quite soon. It is built on top of the Rust core that we've been developing in tandem. We'll announce that release here on the blog as well as other communication channels.
+Keep your eyes peeled for the first alpha release of our [Node JS SDK](https://github.com/temporalio/sdk-typescript/) which will be coming quite soon. It is built on top of the Rust core that we've been developing in tandem. We'll announce that release here on the blog as well as other communication channels.
 
 Lastly, we plan to port our existing Go SDK to it as well. We're excited to grow the number of languages supported by Temporal, and bring you rock-solid reliability while doing it!

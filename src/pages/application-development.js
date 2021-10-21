@@ -23,9 +23,9 @@ const features = [
     goto: "/docs/php/introduction",
   },
   {
-    title: <>Node (alpha)</>,
-    imageUrl: "img/nodejs.svg",
-    goto: "/docs/node/introduction",
+    title: <>TypeScript (alpha)</>,
+    imageUrl: "img/typescript.svg",
+    goto: "/docs/typescript/introduction",
   },
 ];
 

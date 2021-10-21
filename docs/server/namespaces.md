@@ -58,7 +58,7 @@ values={[
 
 ```java
   const connection = new Connection();
-  // https://nodejs.temporal.io/api/interfaces/client.WorkflowClientOptions
+  // https://typescript.temporal.io/api/interfaces/client.WorkflowClientOptions
   const client = new WorkflowClient(connection.service, {
     namespace: 'my-namespace-name'
   });

@@ -1,5 +1,5 @@
 ---
-title: Node.js SDK introduction
+title: TypeScript SDK introduction
 sidebar_label: Introduction
 ---
 
@@ -11,14 +11,17 @@ This SDK and associated documentation is in an Alpha stage and may change at any
 
 </CustomWarning>
 
-The Node.js SDK is Temporal's newest client SDK for developing with Temporal.
-It is designed to work equally well with TypeScript or JavaScript in Node.js.
+The TypeScript SDK is Temporal's newest client SDK for developing with Temporal.
+It is designed with TypeScript-first developer experience in mind, but should work equally well with JavaScript.
+
+For now, this SDK only works with Node.js 14 and 16+.
+Other JS/TS runtimes may be considered in future.
 
 You can view:
 
-- Node.js Code Samples: https://github.com/temporalio/samples-node
-- Full API reference: https://nodejs.temporal.io
-- Node.js SDK source: https://github.com/temporalio/sdk-node [![GitHub stars](https://img.shields.io/github/stars/temporalio/sdk-node)](https://github.com/temporalio/sdk-node/stargazers) (give us a star!)
+- Full API reference: https://typescript.temporal.io
+- Code Samples: https://github.com/temporalio/samples-typescript
+- SDK source: https://github.com/temporalio/sdk-typescript [![GitHub stars](https://img.shields.io/github/stars/temporalio/sdk-typescript)](https://github.com/temporalio/sdk-typescript/stargazers) (give us a star!)
 
 ## Getting started
 
@@ -66,7 +69,7 @@ npm install -g node-gyp
 
 You may have to install some system dependencies first as documented [here](https://github.com/nodejs/node-gyp#installation).
 
-_`node-gyp` is a requirement of [`isolated-vm`](https://github.com/laverdet/isolated-vm) the V8 Isolate library which powers this SDK's [deterministic runtime](/docs/node/determinism)_.
+_`node-gyp` is a requirement of [`isolated-vm`](https://github.com/laverdet/isolated-vm) the V8 Isolate library which powers this SDK's [deterministic runtime](/docs/typescript/determinism)_.
 
 </details>
 <details>
@@ -97,10 +100,13 @@ npx @temporalio/create@latest ./example
 cd example
 ```
 
-This will set up with [the basic Hello World sample](https://github.com/temporalio/samples-node/tree/main/hello-world).
-If you want to start from a different sample, pass the `--sample <sample-name>` argument to the script. For example, running `npx @temporalio/create@latest ./example --sample hello-world-mtls` will download the [sample for connecting to a Temporal Server instance secured with mTLS](https://github.com/temporalio/samples-node/tree/main/hello-world-mtls).
+This will set up with [the basic Hello World sample](https://github.com/temporalio/samples-typescript/tree/main/hello-world).
+If you want to start from a different sample, pass the `--sample <sample-name>` argument to the script. For example:
 
-The list of official samples can be found in the [samples-node](https://github.com/temporalio/samples-node) repo.
+- running `npx @temporalio/create@latest ./example --sample hello-world-mtls` will download the [sample for connecting to a Temporal Server instance secured with mTLS](https://github.com/temporalio/samples-typescript/tree/main/hello-world-mtls)
+- running `npx @temporalio/create@latest ./example --sample fetch-esm` will download the [sample for using pure ESM Node Modules in activities](https://github.com/temporalio/samples-typescript/tree/main/fetch-esm) ([different configs are needed](https://github.com/temporalio/samples-typescript/tree/main/fetch-esm#fetch-esm))
+
+The list of official samples can be found in the [samples-typescript](https://github.com/temporalio/samples-typescript) repo.
 
 :::note
 
@@ -165,9 +171,9 @@ Hello, Temporal!
 
 This "Hello, Temporal!" message comes from the combination of:
 
-- [`execute-workflow.ts`](https://github.com/temporalio/samples-node/blob/main/hello-world/src/execute-workflow.ts) passing `'Temporal'` as an argument to the Workflow.
-- The [Workflow](https://github.com/temporalio/samples-node/blob/main/hello-world/src/workflows.ts) passing the argument to the Activity.
-- The [Activity](https://github.com/temporalio/samples-node/blob/main/hello-world/src/activities.ts) taking the argument as `name` and returning `Hello, ${name}!`.
+- [`execute-workflow.ts`](https://github.com/temporalio/samples-typescript/blob/main/hello-world/src/execute-workflow.ts) passing `'Temporal'` as an argument to the Workflow.
+- The [Workflow](https://github.com/temporalio/samples-typescript/blob/main/hello-world/src/workflows.ts) passing the argument to the Activity.
+- The [Activity](https://github.com/temporalio/samples-typescript/blob/main/hello-world/src/activities.ts) taking the argument as `name` and returning `Hello, ${name}!`.
 
 You can verify this via the INPUT and RESULT fields in Temporal Web (available at [`localhost:8088`](http://localhost:8088/) on the default [`docker-compose`](https://github.com/temporalio/docker-compose)):
 
@@ -175,10 +181,11 @@ You can verify this via the INPUT and RESULT fields in Temporal Web (available a
 
 ## Next Steps
 
-For a full code walkthrough of the Hello World example that you have spun up here, see our [Hello World documentation](/docs/node/hello-world).
+For a full code walkthrough of the Hello World example that you have spun up here, see our [Hello World documentation](/docs/typescript/hello-world).
 
 Then you should have a passing knowledge of our Core APIs:
 
-- [Workflows](/docs/node/workflows) and [Activities](/docs/node/activities): How to write Temporal's core orchestration code
-- [Workers and Task Queues](/docs/node/workers): How Workflows and Activities are routed to and executed on machines you control
-- [Workflow APIs](/docs/node/workflow-apis): Signals, Queries, Timers, Child Workflows, Infinite Workflows, and more!
+- [Workflows](/docs/typescript/workflows) and [Activities](/docs/typescript/activities): How to write Temporal's core orchestration code
+  - see [Workflow APIs](/docs/typescript/workflows) for Signals, Queries, Timers, Child Workflows, Infinite Workflows, and more!
+- [Workers and Task Queues](/docs/typescript/workers): How Workflows and Activities are routed to and executed on machines you control
+- [Clients](/docs/typescript/client): How to start, signal, query, cancel, or otherwise handle Workflows.

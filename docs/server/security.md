@@ -6,11 +6,20 @@ sidebar_label: Security
 
 ## Overview
 
-A secured Temporal server has its network communication encrypted and has authentication and authorization protocols set up for API calls made to it. Without these your server could be accessed by unwanted entities.
+A secured Temporal server has its network communication encrypted and has authentication and authorization protocols set up for API calls made to it.
+Without these, your server could be accessed by unwanted entities.
+
 What is documented on this page are the built-in opt-in security measures that come with Temporal.
 However users may also choose to design their own security architecture with reverse proxies or run unsecured instances inside of a VPC environment.
 
-## Encryption of network traffic
+## Server Samples
+
+The https://github.com/temporalio/samples-server repo offers two examples, which are further explained below:
+
+- **TLS**: how to configure Transport Layer Security (TLS) to secure network communication with and within Temporal cluster.
+- **Authorizer**: how to inject a low-level authorizer component that can control access to all API calls.
+
+## Encryption in transit with mTLS
 
 Temporal supports Mutual TLS (mTLS) as a way of encrypting network traffic between the services of a cluster and also between application processes and a cluster.
 Self-signed or properly minted certificates can be used for mTLS.
@@ -21,6 +30,14 @@ The configuration includes two sections such that intra-cluster and external tra
 - `frontend`: Configuration for encrypting the Frontend's public endpoints.
 
 A customized configuration can be passed using either the [WithConfig](/docs/server/options/#withconfig) or [WithConfigLoader](/docs/server/options/#withconfigloader) server options.
+
+See https://github.com/temporalio/samples-server/blob/main/tls for a sample implementation
+
+## Encryption at rest with DataConverter
+
+import DataConverter from '../content/what-is-a-data-converter.md'
+
+<DataConverter />
 
 ## Authentication
 
@@ -52,6 +69,8 @@ Temporal offers two plugin interfaces for implementing API call authorization:
 
 The authorization and claim mapping logic is customizable, making it available to a variety of use cases and identity schemes.
 When these are provided the frontend invokes the implementation of these interfaces before executing the requested operation.
+
+See https://github.com/temporalio/samples-server/blob/main/extensibility/authorizer for a sample implementation.
 
 ![](/img/docs/frontend-authorization-order-of-operations.png)
 

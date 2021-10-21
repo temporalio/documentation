@@ -428,8 +428,8 @@
   to = "/docs/server/configuration"
 
 [[redirects]]
-  from = "/docs/server-elasticsearch-setup"
-  to = "/docs/server/elasticsearch-setup"
+  from = "/docs/server/elasticsearch-setup"
+  to = "/docs/content/how-to-integrate-elasticsearch-into-a-temporal-cluster"
 
 [[redirects]]
   from = "/docs/server-event-types"
@@ -472,8 +472,8 @@
   to = "/docs/server/versions-and-dependencies"
 
 [[redirects]]
-  from = "/docs/server-workflow-search"
-  to = "/docs/server/workflow-search"
+  from = "/docs/server/workflow-search"
+  to = "/docs/temporal-explained/visibility"
 
 [[redirects]]
   from = "/docs/server-architecture"
@@ -495,5 +495,5 @@
   to = "/docs/reference/glossary"
 
 [[redirects]]
-  from = "/docs/typescript/*"
-  to = "/docs/node/:splat"
+  from = "/docs/node/*"
+  to = "/docs/typescript/:splat"

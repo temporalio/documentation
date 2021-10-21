@@ -238,7 +238,7 @@ Scheduling is based on UTC time.
 ### Search attributes
 
 When you start a Workflow, you can configure it with search attributes that can be used in complex Workflow visibility search queries.
-Read the [search attributes guide](/docs/server/workflow-search) to learn how to enable search attributes in Workflows.
+Read the [search attributes guide](/docs/temporal-explained/visibility) to learn how to enable search attributes in Workflows.
 
 ### Memos
 
