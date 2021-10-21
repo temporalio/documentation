@@ -495,5 +495,5 @@
   to = "/docs/reference/glossary"
 
 [[redirects]]
-  from = "/docs/typescript/*"
+  from = "/docs/node/*"
   to = "/docs/typescript/:splat"
