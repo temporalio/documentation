@@ -159,11 +159,11 @@ The opaque `context deadline exceeded` error comes from `gRPC`:
 
 ```
 Error: 4 DEADLINE_EXCEEDED: context deadline exceeded
-    at Object.callErrorFromStatus (/Users/swyx/Work/Temporal/samples-node/nextjs-oneclick/node_modules/@grpc/grpc-js/build/src/call.js:31:26)
-    at Object.onReceiveStatus (/Users/swyx/Work/Temporal/samples-node/nextjs-oneclick/node_modules/@grpc/grpc-js/build/src/client.js:179:52)
-    at Object.onReceiveStatus (/Users/swyx/Work/Temporal/samples-node/nextjs-oneclick/node_modules/@grpc/grpc-js/build/src/client-interceptors.js:336:141)
-    at Object.onReceiveStatus (/Users/swyx/Work/Temporal/samples-node/nextjs-oneclick/node_modules/@grpc/grpc-js/build/src/client-interceptors.js:299:181)
-    at /Users/swyx/Work/Temporal/samples-node/nextjs-oneclick/node_modules/@grpc/grpc-js/build/src/call-stream.js:145:78
+    at Object.callErrorFromStatus (/Users/swyx/Work/Temporal/samples-typescript/nextjs-oneclick/node_modules/@grpc/grpc-js/build/src/call.js:31:26)
+    at Object.onReceiveStatus (/Users/swyx/Work/Temporal/samples-typescript/nextjs-oneclick/node_modules/@grpc/grpc-js/build/src/client.js:179:52)
+    at Object.onReceiveStatus (/Users/swyx/Work/Temporal/samples-typescript/nextjs-oneclick/node_modules/@grpc/grpc-js/build/src/client-interceptors.js:336:141)
+    at Object.onReceiveStatus (/Users/swyx/Work/Temporal/samples-typescript/nextjs-oneclick/node_modules/@grpc/grpc-js/build/src/client-interceptors.js:299:181)
+    at /Users/swyx/Work/Temporal/samples-typescript/nextjs-oneclick/node_modules/@grpc/grpc-js/build/src/call-stream.js:145:78
     at processTicksAndRejections (node:internal/process/task_queues:78:11) {
   code: 4,
   details: 'context deadline exceeded',

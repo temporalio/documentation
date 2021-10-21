@@ -3,13 +3,13 @@
 In the TypeScript SDK, Workflows are represented internally by a tree of **Cancellation Scopes**, each with cancellation behaviors you can specify.
 Everything runs in the "root" scope by default.
 
-Scopes are created using the [`CancellationScope`](https://nodejs.temporal.io/api/classes/workflow.cancellationscope) constructor, or one of 3 static helpers:
+Scopes are created using the [`CancellationScope`](https://typescript.temporal.io/api/classes/workflow.cancellationscope) constructor, or one of 3 static helpers:
 
-- [`cancellable(fn)`](https://nodejs.temporal.io/api/classes/workflow.cancellationscope#cancellable-1): children are automatically cancelled when their containing scope is cancelled.
+- [`cancellable(fn)`](https://typescript.temporal.io/api/classes/workflow.cancellationscope#cancellable-1): children are automatically cancelled when their containing scope is cancelled.
   - Equivalent to `new CancellationScope().run(fn)`.
-- [`nonCancellable(fn)`](https://nodejs.temporal.io/api/classes/workflow.cancellationscope#noncancellable): prevents cancellation from propagating to children.
+- [`nonCancellable(fn)`](https://typescript.temporal.io/api/classes/workflow.cancellationscope#noncancellable): prevents cancellation from propagating to children.
   - Equivalent to `new CancellationScope({ cancellable: false }).run(fn)`.
-- [`withTimeout(timeoutMs, fn)`](https://nodejs.temporal.io/api/classes/workflow.cancellationscope#withtimeout): if timeout triggers before `fn` resolves the scope will be cancelled, triggering cancellation of enclosed operations, such as activities and timers.
+- [`withTimeout(timeoutMs, fn)`](https://typescript.temporal.io/api/classes/workflow.cancellationscope#withtimeout): if timeout triggers before `fn` resolves the scope will be cancelled, triggering cancellation of enclosed operations, such as activities and timers.
   - Equivalent to `new CancellationScope({ cancellable: true, timeout: timeoutMs }).run(fn)`.
 
 Cancellations are applied to _cancellation scopes_, which can encompass an entire workflow or just part of one. Scopes can be nested, and cancellation propagates from outer scopes to inner ones. A Workflow's `main` function runs in the outermost scope. Cancellations are handled by catching `CancelledFailure`s
@@ -26,15 +26,15 @@ Other APIs you can use:
 When a `CancellationScope` is cancelled, it propagates cancellation in any child scopes and of any _cancellable operations_ created within it, such as:
 
 - Activities
-- Timers (created with the [`sleep`](https://nodejs.temporal.io/api/namespaces/workflow#sleep) function)
-- [`Trigger`](https://nodejs.temporal.io/api/classes/workflow.trigger)s
+- Timers (created with the [`sleep`](https://typescript.temporal.io/api/namespaces/workflow#sleep) function)
+- [`Trigger`](https://typescript.temporal.io/api/classes/workflow.trigger)s
 
 ### [CancelledFailure](/docs/typescript/handling-failure/#cancelledfailure)
 
 `Timer`s and `Trigger`s throw `CancelledFailure` when cancelled while Activities and Child Workflows throw `ActivityFailure` and `ChildWorkflowFailure` with cause set to `CancelledFailure`.
 One exception is when an Activity or Child Workflow is scheduled in an already cancelled scope (or workflow) in which case they'll propagate the `CancelledFailure` that was thrown to cancel the scope.
 
-In order to simplify checking for cancellation, use the [`isCancellation(err)`](https://nodejs.temporal.io/api/namespaces/workflow#iscancellation) function.
+In order to simplify checking for cancellation, use the [`isCancellation(err)`](https://typescript.temporal.io/api/namespaces/workflow#iscancellation) function.
 
 ## Internal cancellation example
 

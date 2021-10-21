@@ -4,7 +4,7 @@ title: Activities in TypeScript
 sidebar_label: Activities
 ---
 
-> **@temporalio/activity** [![NPM](https://img.shields.io/npm/v/@temporalio/activity)](https://www.npmjs.com/package/@temporalio/activity) [API reference](https://nodejs.temporal.io/api/namespaces/activity) | [GitHub source](https://github.com/temporalio/sdk-node/tree/main/packages/activity)
+> **@temporalio/activity** [![NPM](https://img.shields.io/npm/v/@temporalio/activity)](https://www.npmjs.com/package/@temporalio/activity) [API reference](https://typescript.temporal.io/api/namespaces/activity) | [GitHub source](https://github.com/temporalio/sdk-typescript/tree/main/packages/activity)
 
 **Activities are the only way to interact with external resources in Temporal**, like making an HTTP request or accessing the file system.
 
@@ -67,7 +67,7 @@ See also our [docs on Webpack troubleshooting](/docs/typescript/troubleshooting/
 ### Using pure ESM Node Modules
 
 The TypeScript ecosystem is increasingly moving towards publishing ES Modules over CommonJS, for example `node-fetch@3` is ESM while `node-fetch@2` is CJS.
-If you are importing a pure ESM dependency, see our [fetch ESM](https://github.com/temporalio/samples-node/tree/main/fetch-esm) sample for necessary config changes you will need:
+If you are importing a pure ESM dependency, see our [fetch ESM](https://github.com/temporalio/samples-typescript/tree/main/fetch-esm) sample for necessary config changes you will need:
 
 - `package.json` must have `"type": "module"` attribute
 - `tsconfig.json` should output in `esnext` format
@@ -75,7 +75,7 @@ If you are importing a pure ESM dependency, see our [fetch ESM](https://github.c
 
 ## Activity Options
 
-When you write `createActivityHandle`, there are [a range of options](https://nodejs.temporal.io/api/interfaces/worker.activityoptions/) you can set, the most important of which are Timeouts and Retries.
+When you write `createActivityHandle`, there are [a range of options](https://typescript.temporal.io/api/interfaces/worker.activityoptions/) you can set, the most important of which are Timeouts and Retries.
 
 You can also specify `namespace`, `taskQueue`, `cancellationType`, and `activityId`, but most users will not need these.
 
@@ -108,7 +108,7 @@ const { longRunningActivity } = createActivityHandle<typeof activities>({
 
 ### Activity Retry Policy
 
-You can set a `retry` policy with [RetryOptions](https://nodejs.temporal.io/api/interfaces/worker.RetryOptions) that define how activity is retried in case of failure.
+You can set a `retry` policy with [RetryOptions](https://typescript.temporal.io/api/interfaces/worker.RetryOptions) that define how activity is retried in case of failure.
 
 ```ts
 // Example 1 - default
@@ -145,7 +145,7 @@ const { greet } = createActivityHandle<typeof activities>({
 });
 ```
 
-For a proper guide to each Retry Option, see the [RetryOptions API Reference](https://nodejs.temporal.io/api/interfaces/worker.RetryOptions).
+For a proper guide to each Retry Option, see the [RetryOptions API Reference](https://typescript.temporal.io/api/interfaces/worker.RetryOptions).
 
 ## How to register an Activity on a Worker
 
@@ -179,14 +179,14 @@ When you register these in the Worker, pass your shared dependencies accordingly
 
 ## Activity Context utilities
 
-Temporal SDK also exports a [`Context`](https://nodejs.temporal.io/api/classes/activity.context/) class with useful features for activities: `import { Context } from '@temporalio/activity'`
+Temporal SDK also exports a [`Context`](https://typescript.temporal.io/api/classes/activity.context/) class with useful features for activities: `import { Context } from '@temporalio/activity'`
 
 | Activity Context properties            | Description                                                                                                                                                                                    |
 | -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `Context.current().cancellationSignal` | An `AbortSignal` which can be used to cancel requests on Activity cancellation. Typically used by the `fetch` and `child_process` libraries but is supported by a few other libraries as well. |
 | `Context.current().cancelled`          | Await this promise in an Activity to get notified of cancellation. This promise will never be resolved, it will only be rejected with a `CancelledFailure`.                                    |
 | `Context.current().heartbeat()`        | Send a heartbeat from an Activity.                                                                                                                                                             |
-| `Context.current().info`               | Holds [information](https://nodejs.temporal.io/api/interfaces/activity.Info) about the current executing Activity                                                                              |
+| `Context.current().info`               | Holds [information](https://typescript.temporal.io/api/interfaces/activity.Info) about the current executing Activity                                                                              |
 | `Context.current().sleep()`            | Helper function for sleeping in an Activity - resolves when deadline is reached or rejects when the Context is cancelled. Prefer this to `setTimeout`.                                         |
 
 ### Heartbeating
@@ -223,7 +223,7 @@ TODO: document how to retrieve heartbeat payload.
 
 #### Example: Activity that fakes progress and can be cancelled
 
-The [`sleep`](https://nodejs.temporal.io/api/classes/activity.context#sleep) method exposed in `Context.current()` is comparable to a standard `sleep` function: `new Promise(resolve => setTimeout(resolve, sleepMS));` except that it also rejects if the activity is cancelled.
+The [`sleep`](https://typescript.temporal.io/api/classes/activity.context#sleep) method exposed in `Context.current()` is comparable to a standard `sleep` function: `new Promise(resolve => setTimeout(resolve, sleepMS));` except that it also rejects if the activity is cancelled.
 
 <!--SNIPSTART nodejs-activity-fake-progress-->
 <!--SNIPEND-->
@@ -235,10 +235,10 @@ A Workflow can request to cancel an Activity by cancelling its containing [cance
 
 There are 2 ways to handle Activity cancellation:
 
-1. Await on [`Context.current().cancelled`](https://nodejs.temporal.io/api/classes/activity.context#cancelled)
-1. Pass the context's abort signal at [`Context.current().cancellationSignal`](https://nodejs.temporal.io/api/classes/activity.context#cancelled) to a library that supports it like `fetch`
+1. Await on [`Context.current().cancelled`](https://typescript.temporal.io/api/classes/activity.context#cancelled)
+1. Pass the context's abort signal at [`Context.current().cancellationSignal`](https://typescript.temporal.io/api/classes/activity.context#cancelled) to a library that supports it like `fetch`
 
-[`heartbeat()`](https://nodejs.temporal.io/api/classes/activity.context/#heartbeat) in the TypeScript SDK is a background operation and does not propagate errors to the caller, such as when the scheduling Workflow has already completed or the Activity has been closed by the server (due to timeout for instance). These errors are translated into cancellation and can be handled using the methods above.
+[`heartbeat()`](https://typescript.temporal.io/api/classes/activity.context/#heartbeat) in the TypeScript SDK is a background operation and does not propagate errors to the caller, such as when the scheduling Workflow has already completed or the Activity has been closed by the server (due to timeout for instance). These errors are translated into cancellation and can be handled using the methods above.
 
 #### Example: Activity that makes a cancellable HTTP request
 

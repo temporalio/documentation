@@ -11,11 +11,11 @@ The SDK steers developers to write their Workflows and Activities in TypeScript 
 
 ### Activities
 
-[API reference](https://nodejs.temporal.io/api/namespaces/activity)
+[API reference](https://typescript.temporal.io/api/namespaces/activity)
 
 Activities are called from Workflows in order to run non-deterministic code.
 
-Any async function can be used as an Activity as long as its parameters and return value can be (de)serialized using a [DataConverter](https://nodejs.temporal.io/api/interfaces/common.DataConverter). Activities run in the Node.js execution environment, they can be cancelled and report heartbeats.
+Any async function can be used as an Activity as long as its parameters and return value can be (de)serialized using a [DataConverter](https://typescript.temporal.io/api/interfaces/common.DataConverter). Activities run in the Node.js execution environment, they can be cancelled and report heartbeats.
 
 `src/activities.ts`
 
@@ -24,7 +24,7 @@ Any async function can be used as an Activity as long as its parameters and retu
 
 ### Workflows
 
-[API reference](https://nodejs.temporal.io/api/namespaces/workflow)
+[API reference](https://typescript.temporal.io/api/namespaces/workflow)
 
 In the TypeScript SDK, each Workflow execution is run in a separate V8 isolate context in order to provide a [deterministic runtime](/docs/typescript/determinism).
 
@@ -39,10 +39,10 @@ The snippet below uses `createActivityHandle` to create a function that, when ca
 
 ### Worker
 
-[API reference](https://nodejs.temporal.io/api/namespaces/worker)
+[API reference](https://typescript.temporal.io/api/namespaces/worker)
 
 The Worker connects to Temporal Server and runs Workflows and Activities.
-See the list of [WorkerOptions](https://nodejs.temporal.io/api/interfaces/worker.workeroptions) for customizing Worker creation.
+See the list of [WorkerOptions](https://typescript.temporal.io/api/interfaces/worker.workeroptions) for customizing Worker creation.
 
 `src/worker.ts`
 
@@ -51,9 +51,9 @@ See the list of [WorkerOptions](https://nodejs.temporal.io/api/interfaces/worker
 
 ### Client
 
-[API reference](https://nodejs.temporal.io/api/namespaces/client)
+[API reference](https://typescript.temporal.io/api/namespaces/client)
 
-The [`WorkflowClient`](https://nodejs.temporal.io/api/classes/client.workflowclient) class is used to interact with existing Workflows or to start new ones.
+The [`WorkflowClient`](https://typescript.temporal.io/api/classes/client.workflowclient) class is used to interact with existing Workflows or to start new ones.
 
 It can be used in any Node.js process (for example, an [Express](https://expressjs.com/) web server) and is separate from the Worker.
 
@@ -66,6 +66,6 @@ It can be used in any Node.js process (for example, an [Express](https://express
 
 There is no official test suite for Workflows and Activities yet.
 
-- Since Activities are async functions, they should be testable as long as you avoid using [Context](https://nodejs.temporal.io/api/classes/activity.context) or are able to mock it.
-- You can test Workflows by running them with a [WorkflowClient](https://nodejs.temporal.io/api/classes/client.workflowclient).
-- Check [the SDK's own tests](https://github.com/temporalio/sdk-node/tree/52f67499860526cd180912797dc3e6d7fa4fc78f/packages/test/src) for more examples.
+- Since Activities are async functions, they should be testable as long as you avoid using [Context](https://typescript.temporal.io/api/classes/activity.context) or are able to mock it.
+- You can test Workflows by running them with a [WorkflowClient](https://typescript.temporal.io/api/classes/client.workflowclient).
+- Check [the SDK's own tests](https://github.com/temporalio/sdk-typescript/tree/52f67499860526cd180912797dc3e6d7fa4fc78f/packages/test/src) for more examples.

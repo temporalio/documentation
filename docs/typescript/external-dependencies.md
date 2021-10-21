@@ -15,7 +15,7 @@ To prevent breaking determinism, in the TypeScript SDK, Workflow code runs in an
 External Dependencies is an isolation-breaking mechanism that allows injecting replay-aware functions from the main TypeScript environment into a Workflow isolate.
 They are typically used in order to inject custom instrumentation (e.g. logger) functions into the isolate.
 
-## [Injection configuration](https://nodejs.temporal.io/api/namespaces/worker#injecteddependencyfunction)
+## [Injection configuration](https://typescript.temporal.io/api/namespaces/worker#injecteddependencyfunction)
 
 The following configuration options are for controlling how an injected function is executed.
 
@@ -25,7 +25,7 @@ A boolean controling whether or not the injected function will be called during 
 
 ### ApplyMode
 
-The different modes for an injected function to be applied to the isolate are documented in the [API reference](https://nodejs.temporal.io/api/enums/worker.applymode).
+The different modes for an injected function to be applied to the isolate are documented in the [API reference](https://typescript.temporal.io/api/enums/worker.applymode).
 
 - `ASYNC`
 - `ASYNC_IGNORED`

@@ -118,15 +118,15 @@ console.log(script.runSync(context)); // Prints "2"
 ```
 
 However, by creating a new context for every run, you can ensure that each `runSync()` call runs in an isolated environment, with no ability to interact with other `runSync()` calls.
-That's how the [Temporal TypeScript SDK ensures Workflows can't interfere with each other](https://github.com/temporalio/sdk-node/blob/5a0f780b9cb4c0dae265c08ca99fbc1f58c4ab83/packages/worker/src/isolate-context-provider.ts#L32-L40).
+That's how the [Temporal TypeScript SDK ensures Workflows can't interfere with each other](https://github.com/temporalio/sdk-typescript/blob/5a0f780b9cb4c0dae265c08ca99fbc1f58c4ab83/packages/worker/src/isolate-context-provider.ts#L32-L40).
 
 How does the Temporal TypeScript SDK handle overwriting the `Date()` constructor?
-The Temporal TypeScript SDK compiles your Workflows with [Webpack](https://www.npmjs.com/package/webpack) and creates an [entry script that overrides `Date()` before your Workflow starts](https://github.com/temporalio/sdk-node/blob/5a0f780b9cb4c0dae265c08ca99fbc1f58c4ab83/packages/worker/src/isolate-builder.ts#L89-L125).
+The Temporal TypeScript SDK compiles your Workflows with [Webpack](https://www.npmjs.com/package/webpack) and creates an [entry script that overrides `Date()` before your Workflow starts](https://github.com/temporalio/sdk-typescript/blob/5a0f780b9cb4c0dae265c08ca99fbc1f58c4ab83/packages/worker/src/isolate-builder.ts#L89-L125).
 Webpack also bundles dependencies, which means your Workflows can use `import` statements.
 
 ## Takeaways for Writing Workflows in Node.js
 
-The Temporal TypeScript SDK runs Workflows in a subset of Node.js that has several globals stubbed out, including [`Math.random()`, `Date()`, `setTimeout()`, and `clearTimeout()`](https://github.com/temporalio/sdk-node/blob/004c2846fe4e4312eb2c424da477bc0c280d6c48/packages/workflow/src/worker-interface.ts).
+The Temporal TypeScript SDK runs Workflows in a subset of Node.js that has several globals stubbed out, including [`Math.random()`, `Date()`, `setTimeout()`, and `clearTimeout()`](https://github.com/temporalio/sdk-typescript/blob/004c2846fe4e4312eb2c424da477bc0c280d6c48/packages/workflow/src/worker-interface.ts).
 In particular, accessing `WeakMap()`, `WeakSet()`, and `WeakRef()` throw errors, because garbage collection is non-deterministic.
 The Temporal TypeScript SDK also explicitly prevents you from accessing several Node.js APIs, including `fs` and `http`.
 For example, if you try to import `fs` in a Workflow, your worker will fail with the below error message at startup.

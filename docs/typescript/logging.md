@@ -27,7 +27,7 @@ The reason we only offer a default logger is to minimize Worker dependencies and
 
 ### Customizing the default logger
 
-Temporal ships a [`DefaultLogger`](https://nodejs.temporal.io/api/classes/worker.defaultlogger/) that implements the basic interface:
+Temporal ships a [`DefaultLogger`](https://typescript.temporal.io/api/classes/worker.defaultlogger/) that implements the basic interface:
 
 #### Example: Set up the DefaultLogger to only log messages with level WARN and higher
 
@@ -51,7 +51,7 @@ log.warn('lets', { a: 1 });
 log.error('go');
 ```
 
-The log levels are [listed here](https://nodejs.temporal.io/api/namespaces/worker#loglevel) in increasing order of severity.
+The log levels are [listed here](https://typescript.temporal.io/api/namespaces/worker#loglevel) in increasing order of severity.
 
 ### Using a custom logger
 
@@ -71,4 +71,4 @@ await Core.create({ logger });
 
 ## OpenTelemetry Tracing
 
-We are in the process of documenting our OTel support, but meanwhile you can [view our tests](https://github.com/temporalio/sdk-node/blob/4505eee94e7d8a10bc187612977fd72bc6d740a6/packages/test/src/test-otel.ts) and get in touch if you need this.
+We are in the process of documenting our OTel support, but meanwhile you can [view our tests](https://github.com/temporalio/sdk-typescript/blob/4505eee94e7d8a10bc187612977fd72bc6d740a6/packages/test/src/test-otel.ts) and get in touch if you need this.

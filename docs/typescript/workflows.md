@@ -4,7 +4,7 @@ title: Workflows in TypeScript
 sidebar_label: Workflows
 ---
 
-> **@temporalio/workflow** [![NPM](https://img.shields.io/npm/v/@temporalio/workflow)](https://www.npmjs.com/package/@temporalio/workflow) [API reference](https://nodejs.temporal.io/api/namespaces/workflow) | [GitHub source](https://github.com/temporalio/sdk-node/tree/main/packages/workflow)
+> **@temporalio/workflow** [![NPM](https://img.shields.io/npm/v/@temporalio/workflow)](https://www.npmjs.com/package/@temporalio/workflow) [API reference](https://typescript.temporal.io/api/namespaces/workflow) | [GitHub source](https://github.com/temporalio/sdk-typescript/tree/main/packages/workflow)
 
 **Workflows are the fundamental unit of orchestration logic in Temporal**.
 
@@ -38,7 +38,7 @@ See the [TypeScript SDK Client docs](/docs/typescript/client) for how to use `Wo
 
 ## Workflow APIs
 
-The `@temporalio/workflow` package exports all the useful primitives that you can use in Workflows. See the [API reference](https://nodejs.temporal.io/api/namespaces/workflow) for the full list, but the main ones are:
+The `@temporalio/workflow` package exports all the useful primitives that you can use in Workflows. See the [API reference](https://typescript.temporal.io/api/namespaces/workflow) for the full list, but the main ones are:
 
 | APIs                         | Purpose                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -49,8 +49,8 @@ The `@temporalio/workflow` package exports all the useful primitives that you ca
 | `createChildWorkflowHandle`  | Spawn new [Child Workflows](#child-workflows) with the ability to cancel                                                                                                                                                                                                                                                                                                                                                                                                       |
 | `continueAsNew`              | Truncate Event History for [infinitely long running Workflows](#infinite-workflows)                                                                                                                                                                                                                                                                                                                                                                                            |
 | `patched`/`deprecatePatch`   | Migrate Workflows to new versions ([see Patching doc](/docs/typescript/patching))                                                                                                                                                                                                                                                                                                                                                                                              |
-| `uuid4`                      | Generate an RFC compliant V4 [uuid](https://nodejs.temporal.io/api/namespaces/workflow/#uuid4) without needing to call an Activity or Side Effect.                                                                                                                                                                                                                                                                                                                             |
-| APIs for advanced users      | including [`workflowInfo`](https://nodejs.temporal.io/api/namespaces/workflow#workflowinfo), [`isCancellation`](https://nodejs.temporal.io/api/namespaces/workflow#iscancellation), [`dependencies`](/docs/typescript/external-dependencies), [Cancellation Scopes](/docs/typescript/cancellation-scopes), [Failure](/docs/typescript/handling-failure), and [`createExternalWorkflowHandle`](https://nodejs.temporal.io/api/namespaces/workflow#createexternalworkflowhandle) |
+| `uuid4`                      | Generate an RFC compliant V4 [uuid](https://typescript.temporal.io/api/namespaces/workflow/#uuid4) without needing to call an Activity or Side Effect.                                                                                                                                                                                                                                                                                                                             |
+| APIs for advanced users      | including [`workflowInfo`](https://typescript.temporal.io/api/namespaces/workflow#workflowinfo), [`isCancellation`](https://typescript.temporal.io/api/namespaces/workflow#iscancellation), [`dependencies`](/docs/typescript/external-dependencies), [Cancellation Scopes](/docs/typescript/cancellation-scopes), [Failure](/docs/typescript/handling-failure), and [`createExternalWorkflowHandle`](https://typescript.temporal.io/api/namespaces/workflow#createexternalworkflowhandle) |
 
 We fully expect that developers will bundle these into their own reusable Workflow libraries.
 If you do, please [get in touch on Slack](https://temporal.io/slack), we would love to work with you and promote your work.
@@ -83,8 +83,8 @@ If you wanted to send data in, you probably will want to read data out.
 
 #### How to define and receive Signals and Queries
 
-- To add a Signal to a Workflow, call [`defineSignal`](https://nodejs.temporal.io/api/namespaces/workflow/#definesignal) with a name, and then attach a listener with `setListener`.
-- To add a Query to a Workflow, call [`defineQuery`](https://nodejs.temporal.io/api/namespaces/workflow/#definequery) with a name, and then attach a listener with `setListener`.
+- To add a Signal to a Workflow, call [`defineSignal`](https://typescript.temporal.io/api/namespaces/workflow/#definesignal) with a name, and then attach a listener with `setListener`.
+- To add a Query to a Workflow, call [`defineQuery`](https://typescript.temporal.io/api/namespaces/workflow/#definequery) with a name, and then attach a listener with `setListener`.
 
 <!--SNIPSTART nodejs-blocked-workflow-->
 <!--SNIPEND-->
@@ -230,7 +230,7 @@ export async function myWorkflow2() {
 }
 ```
 
-Another example of componentization can be found in our [code samples](https://github.com/temporalio/samples-node/blob/854c78955601a6b63aa8ea412cfb5eaf61bd78ee/expense/src/workflows.ts#L19).
+Another example of componentization can be found in our [code samples](https://github.com/temporalio/samples-typescript/blob/854c78955601a6b63aa8ea412cfb5eaf61bd78ee/expense/src/workflows.ts#L19).
 
 ##### `signalWithStart`
 
@@ -253,7 +253,7 @@ await workflow.signalWithStart(
 
 ##### Triggers
 
-[Triggers](https://nodejs.temporal.io/api/classes/workflow.trigger) are a concept unique to the Temporal TypeScript SDK. They may be deprecated in future.
+[Triggers](https://typescript.temporal.io/api/classes/workflow.trigger) are a concept unique to the Temporal TypeScript SDK. They may be deprecated in future.
 
 Triggers, like Promises, can be awaited and expose a `then` method. Unlike Promises they are triggered when their `resolve` or `reject` methods are called.
 
@@ -312,10 +312,10 @@ await condition('30 days', () => x > 3);
 Timers help you write durable asynchronous code in Temporal.
 Temporal offers you just two primitives — `setTimeout` and `sleep` — that you can use to build reusable workflow libraries and utilities:
 
-- The [`setTimeout`](https://nodejs.temporal.io/api/namespaces/workflow/#timers) global works as normal in JavaScript.
+- The [`setTimeout`](https://typescript.temporal.io/api/namespaces/workflow/#timers) global works as normal in JavaScript.
   The Workflow's v8 isolate environment completely replaces it, including inside libraries that you use, to provide a complete JS runtime.
   We recommend using our `sleep` API instead of `setTimeout` because it supports cancellation (see below).
-- [`sleep(timeout)`](https://nodejs.temporal.io/api/namespaces/workflow/#sleep): a cancellation-aware Promise wrapper for `setTimeout`, that accepts either a string or integer timeout.
+- [`sleep(timeout)`](https://typescript.temporal.io/api/namespaces/workflow/#sleep): a cancellation-aware Promise wrapper for `setTimeout`, that accepts either a string or integer timeout.
 
 <details>
 <summary>
@@ -340,7 +340,7 @@ What we mean by "handling jumps": if you had timers that were supposed to go off
 
 This section only covers Workflow Timers.
 
-- There is an unrelated [`sleep` utility function](https://nodejs.temporal.io/api/classes/activity.context/#sleep) available in **Activity Context** that is not durable, but is cancellation aware. See [the Activities docs for details](/docs/typescript/activities).
+- There is an unrelated [`sleep` utility function](https://typescript.temporal.io/api/classes/activity.context/#sleep) available in **Activity Context** that is not durable, but is cancellation aware. See [the Activities docs for details](/docs/typescript/activities).
 - Timers are unrelated to **Cron Workflows**, which are a Workflow option that you can set for recurring Workflows. See [the Workflows docs for details](/docs/typescript/workflows).
 - If you need to block for an _indefinite_ period of time instead of a set time, you want the `condition` API instead of a timer. See [`condition` docs](#condition).
 
@@ -448,7 +448,7 @@ To execute a child workflow and await its completion:
 <!--SNIPSTART nodejs-child-workflow-->
 <!--SNIPEND-->
 
-[`createChildWorkflowHandle`](https://nodejs.temporal.io/api/api/namespaces/workflow#newchildworkflowhandle) returns a [`ChildWorkflowHandle`](https://nodejs.temporal.io/api/interfaces/workflow.ChildWorkflowHandle) that can be used to start a new child Workflow, signal it and await its completion.
+[`createChildWorkflowHandle`](https://typescript.temporal.io/api/api/namespaces/workflow#newchildworkflowhandle) returns a [`ChildWorkflowHandle`](https://typescript.temporal.io/api/interfaces/workflow.ChildWorkflowHandle) that can be used to start a new child Workflow, signal it and await its completion.
 
 Child Workflow Option fields automatically inherit their values from the Parent Workflow Options if they are not explicitly set.
 
@@ -476,7 +476,7 @@ import SharedContinueAsNew from '../shared/continue-as-new.md'
 
 #### The `continueAsNew` API
 
-Use the [`continueAsNew`](https://nodejs.temporal.io/api/namespaces/workflow#continueasnew) API to instruct the TypeScript SDK to restart `loopingWorkflow` with a new starting value and a new event history.
+Use the [`continueAsNew`](https://typescript.temporal.io/api/namespaces/workflow#continueasnew) API to instruct the TypeScript SDK to restart `loopingWorkflow` with a new starting value and a new event history.
 
 <!-- TODO: convert to sample -->
 
@@ -495,4 +495,4 @@ export async function loopingWorkflow(iteration = 0): Promise<void> {
 }
 ```
 
-You can also call `continueAsNew` from a signal handler or `continueAsNew` to a different Workflow (or different Task Queue) using [`makeContinueAsNewFunc`](https://nodejs.temporal.io/api/namespaces/workflow/#makecontinueasnewfunc).
+You can also call `continueAsNew` from a signal handler or `continueAsNew` to a different Workflow (or different Task Queue) using [`makeContinueAsNewFunc`](https://typescript.temporal.io/api/namespaces/workflow/#makecontinueasnewfunc).

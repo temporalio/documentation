@@ -19,9 +19,9 @@ Other JS/TS runtimes may be considered in future.
 
 You can view:
 
-- Full API reference: https://nodejs.temporal.io
-- Code Samples: https://github.com/temporalio/samples-node
-- SDK source: https://github.com/temporalio/sdk-node [![GitHub stars](https://img.shields.io/github/stars/temporalio/sdk-node)](https://github.com/temporalio/sdk-node/stargazers) (give us a star!)
+- Full API reference: https://typescript.temporal.io
+- Code Samples: https://github.com/temporalio/samples-typescript
+- SDK source: https://github.com/temporalio/sdk-typescript [![GitHub stars](https://img.shields.io/github/stars/temporalio/sdk-typescript)](https://github.com/temporalio/sdk-typescript/stargazers) (give us a star!)
 
 ## Getting started
 
@@ -100,13 +100,13 @@ npx @temporalio/create@latest ./example
 cd example
 ```
 
-This will set up with [the basic Hello World sample](https://github.com/temporalio/samples-node/tree/main/hello-world).
+This will set up with [the basic Hello World sample](https://github.com/temporalio/samples-typescript/tree/main/hello-world).
 If you want to start from a different sample, pass the `--sample <sample-name>` argument to the script. For example:
 
-- running `npx @temporalio/create@latest ./example --sample hello-world-mtls` will download the [sample for connecting to a Temporal Server instance secured with mTLS](https://github.com/temporalio/samples-node/tree/main/hello-world-mtls)
-- running `npx @temporalio/create@latest ./example --sample fetch-esm` will download the [sample for using pure ESM Node Modules in activities](https://github.com/temporalio/samples-node/tree/main/fetch-esm) ([different configs are needed](https://github.com/temporalio/samples-node/tree/main/fetch-esm#fetch-esm))
+- running `npx @temporalio/create@latest ./example --sample hello-world-mtls` will download the [sample for connecting to a Temporal Server instance secured with mTLS](https://github.com/temporalio/samples-typescript/tree/main/hello-world-mtls)
+- running `npx @temporalio/create@latest ./example --sample fetch-esm` will download the [sample for using pure ESM Node Modules in activities](https://github.com/temporalio/samples-typescript/tree/main/fetch-esm) ([different configs are needed](https://github.com/temporalio/samples-typescript/tree/main/fetch-esm#fetch-esm))
 
-The list of official samples can be found in the [samples-node](https://github.com/temporalio/samples-node) repo.
+The list of official samples can be found in the [samples-typescript](https://github.com/temporalio/samples-typescript) repo.
 
 :::note
 
@@ -171,9 +171,9 @@ Hello, Temporal!
 
 This "Hello, Temporal!" message comes from the combination of:
 
-- [`execute-workflow.ts`](https://github.com/temporalio/samples-node/blob/main/hello-world/src/execute-workflow.ts) passing `'Temporal'` as an argument to the Workflow.
-- The [Workflow](https://github.com/temporalio/samples-node/blob/main/hello-world/src/workflows.ts) passing the argument to the Activity.
-- The [Activity](https://github.com/temporalio/samples-node/blob/main/hello-world/src/activities.ts) taking the argument as `name` and returning `Hello, ${name}!`.
+- [`execute-workflow.ts`](https://github.com/temporalio/samples-typescript/blob/main/hello-world/src/execute-workflow.ts) passing `'Temporal'` as an argument to the Workflow.
+- The [Workflow](https://github.com/temporalio/samples-typescript/blob/main/hello-world/src/workflows.ts) passing the argument to the Activity.
+- The [Activity](https://github.com/temporalio/samples-typescript/blob/main/hello-world/src/activities.ts) taking the argument as `name` and returning `Hello, ${name}!`.
 
 You can verify this via the INPUT and RESULT fields in Temporal Web (available at [`localhost:8088`](http://localhost:8088/) on the default [`docker-compose`](https://github.com/temporalio/docker-compose)):
 

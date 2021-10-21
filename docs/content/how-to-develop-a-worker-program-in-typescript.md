@@ -33,7 +33,7 @@ There are three things the Worker needs:
 
 ### Additional Worker Options
 
-This is a selected subset of options you are likely to use. Even more advanced options, particularly for performance tuning, are available in [the API reference](https://nodejs.temporal.io/api/interfaces/worker.WorkerOptions).
+This is a selected subset of options you are likely to use. Even more advanced options, particularly for performance tuning, are available in [the API reference](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions).
 
 | Options            | Description                                                                                                                                                                        |
 | ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

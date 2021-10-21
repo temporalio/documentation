@@ -4,7 +4,7 @@ title: Workers and Task Queues in TypeScript
 sidebar_label: Workers
 ---
 
-> **@temporalio/worker** [![NPM](https://img.shields.io/npm/v/@temporalio/worker)](https://www.npmjs.com/package/@temporalio/worker) [API reference](https://nodejs.temporal.io/api/namespaces/worker) | [GitHub source](https://github.com/temporalio/sdk-node/tree/main/packages/worker)
+> **@temporalio/worker** [![NPM](https://img.shields.io/npm/v/@temporalio/worker)](https://www.npmjs.com/package/@temporalio/worker) [API reference](https://typescript.temporal.io/api/namespaces/worker) | [GitHub source](https://github.com/temporalio/sdk-typescript/tree/main/packages/worker)
 
 ## What is a Worker?
 
@@ -20,7 +20,7 @@ A Worker is a process that connects to the Temporal Server, polls **Task Queues*
     To migrate to new versions of your Workflows and Activities, you restart your Workers with the new versions (and optionally use [the `patch` API to migrate](/docs/typescript/patching) still-running workflows of the older version).
 - **Workers are run on user-controlled hosts.**
   - This is an important security feature which means Temporal Server (or Temporal Cloud) never executes your Workflow or Activity code, and that Workers can have different hardware (e.g. custom GPUs for Machine Learning) than the rest of the system.
-  - You can use the `@temporalio/worker` package's [`Worker`](https://nodejs.temporal.io/api/classes/worker.Worker) class to create and run as many Workers as your use case demands, across any number of hosts.
+  - You can use the `@temporalio/worker` package's [`Worker`](https://typescript.temporal.io/api/classes/worker.Worker) class to create and run as many Workers as your use case demands, across any number of hosts.
 
 <details>
 <summary>
@@ -50,7 +50,7 @@ We've provided pre-compiled binaries for:
 - Mac with an Intel chip: `x86_64-apple-darwin`
 - Mac with an Apple chip: `aarch64-apple-darwin`
 - Linux with x86_64 architecture: `x86_64-unknown-linux-gnu`
-- Windows with x86_64 architecture: `x86_64-pc-windows-gnu` (Windows is not yet supported but it is a [priority for us](https://github.com/temporalio/sdk-node/issues/12)).
+- Windows with x86_64 architecture: `x86_64-pc-windows-gnu` (Windows is not yet supported but it is a [priority for us](https://github.com/temporalio/sdk-typescript/issues/12)).
 
 If you need to compile the Worker yourself, set up the Rust toolchain by following the instructions [here](https://rustup.rs/).
 
@@ -73,7 +73,7 @@ A Worker is in one of 7 states at any given point:
   - `DRAINED` - All activities and workflows have completed, ready to shutdown
   - `STOPPED` - Shutdown complete, `worker.run` resolves
 
-If you need even more visibility into internal worker state, [see the API reference for more](https://nodejs.temporal.io/api/classes/worker.Worker).
+If you need even more visibility into internal worker state, [see the API reference for more](https://typescript.temporal.io/api/classes/worker.Worker).
 
 ### Worker Networking and Security
 
@@ -99,7 +99,7 @@ There are 2 main places where the name of the Task Queue is supplied by the deve
 <details>
 <summary>
 
-When starting a Workflow, you **must** pass the `taskQueue` option to the [WorkflowClient's `createWorkflowHandle()` method](https://nodejs.temporal.io/api/classes/client.workflowclient#newworkflowhandle).
+When starting a Workflow, you **must** pass the `taskQueue` option to the [WorkflowClient's `createWorkflowHandle()` method](https://typescript.temporal.io/api/classes/client.workflowclient#newworkflowhandle).
 
 </summary>
 
@@ -115,7 +115,7 @@ const result = await handle.execute();
 <details>
 <summary>
 
-When creating a Worker, you **must** pass the `taskQueue` option to the [`Worker.create()` function](https://nodejs.temporal.io/api/classes/worker.worker-1#create).
+When creating a Worker, you **must** pass the `taskQueue` option to the [`Worker.create()` function](https://typescript.temporal.io/api/classes/worker.worker-1#create).
 
 </summary>
 
@@ -128,5 +128,5 @@ const worker = await Worker.create({
 
 </details>
 
-Optionally, in Workflow code, when calling an Activity, you can specify the task queue by passing the `taskQueue` option to [`createActivityHandle()`](https://nodejs.temporal.io/api/namespaces/workflow/#createactivityhandle) or [`createChildWorkflowHandle()`](https://nodejs.temporal.io/api/namespaces/workflow/#createchildworkflowhandle).
+Optionally, in Workflow code, when calling an Activity, you can specify the task queue by passing the `taskQueue` option to [`createActivityHandle()`](https://typescript.temporal.io/api/namespaces/workflow/#createactivityhandle) or [`createChildWorkflowHandle()`](https://typescript.temporal.io/api/namespaces/workflow/#createchildworkflowhandle).
 If you do not specify a `taskQueue`, then the TypeScript SDK places Activity and Child Workflow Tasks in the same Task Queue as the Workflow Task Queue.
