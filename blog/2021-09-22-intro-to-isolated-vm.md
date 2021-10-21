@@ -4,7 +4,7 @@ tags:
   - community
 posted_on_: 2021-09-22T00:00:00Z
 slug: intro-to-isolated-vm
-title: Introduction to isolated-vm in Node.js
+title: Introduction to isolated-vm in TypeScript
 author: Valeri Karpov
 author_title: Community Member
 author_image_url: https://avatars.githubusercontent.com/u/1620265?v=4
@@ -124,10 +124,10 @@ How does the Temporal TypeScript SDK handle overwriting the `Date()` constructor
 The Temporal TypeScript SDK compiles your Workflows with [Webpack](https://www.npmjs.com/package/webpack) and creates an [entry script that overrides `Date()` before your Workflow starts](https://github.com/temporalio/sdk-typescript/blob/5a0f780b9cb4c0dae265c08ca99fbc1f58c4ab83/packages/worker/src/isolate-builder.ts#L89-L125).
 Webpack also bundles dependencies, which means your Workflows can use `import` statements.
 
-## Takeaways for Writing Workflows in Node.js
+## Takeaways for Writing Workflows in TypeScript
 
-The Temporal TypeScript SDK runs Workflows in a subset of Node.js that has several globals stubbed out, including [`Math.random()`, `Date()`, `setTimeout()`, and `clearTimeout()`](https://github.com/temporalio/sdk-typescript/blob/004c2846fe4e4312eb2c424da477bc0c280d6c48/packages/workflow/src/worker-interface.ts).
-In particular, accessing `WeakMap()`, `WeakSet()`, and `WeakRef()` throw errors, because garbage collection is non-deterministic.
+The Temporal TypeScript SDK runs Workflows in a clean v8 runtime that has several globals stubbed out, including [`Math.random()`, `Date()`, `setTimeout()`, and `clearTimeout()`](https://github.com/temporalio/sdk-typescript/blob/004c2846fe4e4312eb2c424da477bc0c280d6c48/packages/workflow/src/worker-interface.ts).
+In particular, accessing `WeakRef()`, and `FinalizationRegistry` throw errors, because garbage collection is non-deterministic.
 The Temporal TypeScript SDK also explicitly prevents you from accessing several Node.js APIs, including `fs` and `http`.
 For example, if you try to import `fs` in a Workflow, your worker will fail with the below error message at startup.
 
