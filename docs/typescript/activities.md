@@ -186,7 +186,7 @@ Temporal SDK also exports a [`Context`](https://typescript.temporal.io/api/class
 | `Context.current().cancellationSignal` | An `AbortSignal` which can be used to cancel requests on Activity cancellation. Typically used by the `fetch` and `child_process` libraries but is supported by a few other libraries as well. |
 | `Context.current().cancelled`          | Await this promise in an Activity to get notified of cancellation. This promise will never be resolved, it will only be rejected with a `CancelledFailure`.                                    |
 | `Context.current().heartbeat()`        | Send a heartbeat from an Activity.                                                                                                                                                             |
-| `Context.current().info`               | Holds [information](https://typescript.temporal.io/api/interfaces/activity.Info) about the current executing Activity                                                                              |
+| `Context.current().info`               | Holds [information](https://typescript.temporal.io/api/interfaces/activity.Info) about the current executing Activity                                                                          |
 | `Context.current().sleep()`            | Helper function for sleeping in an Activity - resolves when deadline is reached or rejects when the Context is cancelled. Prefer this to `setTimeout`.                                         |
 
 ### Heartbeating
