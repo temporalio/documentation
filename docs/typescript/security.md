@@ -28,7 +28,7 @@ You set namespaces when you create a client in any of the SDKs (necessary whenev
 
 ```ts
 const connection = new Connection();
-// https://nodejs.temporal.io/api/interfaces/client.WorkflowClientOptions
+// https://typescript.temporal.io/api/interfaces/client.WorkflowClientOptions
 const client = new WorkflowClient(connection.service, {
   namespace: 'my-namespace-name',
 });
@@ -36,15 +36,15 @@ const client = new WorkflowClient(connection.service, {
 
 ## Encryption in transit with mTLS
 
-There are two classes in the SDK that connect to the Temporal server, the [Worker](https://nodejs.temporal.io/api/classes/worker.worker-1) and the client [Connection](https://nodejs.temporal.io/api/classes/client.connection/).
+There are two classes in the SDK that connect to the Temporal server, the [Worker](https://typescript.temporal.io/api/classes/worker.worker-1) and the client [Connection](https://typescript.temporal.io/api/classes/client.connection/).
 When instantiating either of them, you may choose whether to connect securely or not.
 
-In order to connect to the server using TLS, set a _truthy_ value (`true` or [TLSConfig](https://nodejs.temporal.io/api/interfaces/client.tlsconfig) for custom options) in the `tls` configuration option.
+In order to connect to the server using TLS, set a _truthy_ value (`true` or [TLSConfig](https://typescript.temporal.io/api/interfaces/client.tlsconfig) for custom options) in the `tls` configuration option.
 
-Use [`ServerOptions.tls`](https://nodejs.temporal.io/api/interfaces/worker.serveroptions#tls)When [creating](https://nodejs.temporal.io/api/classes/worker.worker-1#create) a new Worker and
-[`ConnectionOptions.tls`](https://nodejs.temporal.io/api/interfaces/client.connectionoptions#tls) for the [`Connection`](https://nodejs.temporal.io/api/classes/client.connection) constructor.
+Use [`ServerOptions.tls`](https://typescript.temporal.io/api/interfaces/worker.serveroptions#tls)When [creating](https://typescript.temporal.io/api/classes/worker.worker-1#create) a new Worker and
+[`ConnectionOptions.tls`](https://typescript.temporal.io/api/interfaces/client.connectionoptions#tls) for the [`Connection`](https://typescript.temporal.io/api/classes/client.connection) constructor.
 
-The client connection also accepts [gRPC credentials](https://grpc.github.io/grpc/node/grpc.credentials.html) at [`ConnectionOptions.credentials`](https://nodejs.temporal.io/api/interfaces/client.connectionoptions#tls) as long as `tls` is not also specified.
+The client connection also accepts [gRPC credentials](https://grpc.github.io/grpc/node/grpc.credentials.html) at [`ConnectionOptions.credentials`](https://typescript.temporal.io/api/interfaces/client.connectionoptions#tls) as long as `tls` is not also specified.
 
 ### mTLS tutorial
 
@@ -67,12 +67,12 @@ Follow this tutorial for setting up mTLS (Mutual TLS authentication) for a local
 
 8. Run the Worker
 
-<!--SNIPSTART nodejs-mtls-worker -->
+<!--SNIPSTART typescript-mtls-worker -->
 <!--SNIPEND-->
 
 9. In a new terminal run the client to schedule a sample Workflow
 
-<!--SNIPSTART nodejs-mtls-client -->
+<!--SNIPSTART typescript-mtls-client -->
 <!--SNIPEND-->
 
 ### Connecting to Temporal Cloud (with mTLS)
@@ -96,7 +96,7 @@ However it is not yet supported in this SDK.
 
 Workflow method arguments and return values are serializable to a [Payload](https://github.com/temporalio/api/blob/4c2f6a281fa3fde8b0a24447de3e0d0f47d230b4/temporal/api/common/v1/message.proto#L49) protobuf that contains a bytearray as well as metadata map.
 
-You can customize _how_ this is serialized with [the SDK's DataConverter interface](https://github.com/temporalio/sdk-node/blob/ca6f4ee0868081e0c115ff05bda6a5e47c13493d/packages/common/src/converter/data-converter.ts) to do this, including using custom encryption at rest.
+You can customize _how_ this is serialized with [the SDK's DataConverter interface](https://github.com/temporalio/sdk-typescript/blob/ca6f4ee0868081e0c115ff05bda6a5e47c13493d/packages/common/src/converter/data-converter.ts) to do this, including using custom encryption at rest.
 The default implementation uses JSON serializer, but you can use any alternative serialization mechanism.
 
 If your arguments and return values are encrypted, you will have to run your custom Data Converter again when viewing it in the WebUI as well:

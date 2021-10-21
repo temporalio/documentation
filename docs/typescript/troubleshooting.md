@@ -1,8 +1,10 @@
 ---
 id: troubleshooting
-title: Troubleshooting Issues with the Node.js SDK
+title: Troubleshooting Issues with the TypeScript SDK
 sidebar_label: Troubleshooting
 ---
+
+This document is a quick checklist of common user errors for your reference.
 
 ## Wrong Node.js version
 
@@ -12,7 +14,7 @@ If you find segfaults when you execute code in Workers:
 98602 segmentation fault  npm start
 ```
 
-This comes from running the wrong Node.js version.
+This comes from running the wrong Node version.
 This SDK explicitly only supports Node 14.x, or Node 16.4.1+ (not Node 14.0 to 16.4).
 
 If you switch Node versions and now your Workers don't even run because of errors that look like this:
@@ -30,7 +32,9 @@ Rebuild them with `npm rebuild`.
 
 ## Two Locations to Watch
 
-Workflow Errors are reflected in Temporal Web, whereas Worker errors and logs are reflected in the terminal.
+- Workflow Errors are reflected in Temporal Web
+- Worker errors and logs are reflected in the terminal.
+
 If something isn't behaving the way you expect, make sure to check both locations for helpful error messages.
 
 ## Stale Workflows
@@ -58,13 +62,13 @@ Please let us know if you have more error types to pattern match against.
 
 ## Webpack errors
 
-The Node.js SDK's [Worker](/docs/node/workers) bundles Workflows based on `workflowsPath` and their dependencies from `nodeModulesPaths` with [Webpack](https://webpack.js.org/) and run them inside v8 isolates.
+The TypeScript SDK's [Worker](/docs/typescript/workers) bundles Workflows based on `workflowsPath` and their dependencies from `nodeModulesPaths` with [Webpack](https://webpack.js.org/) and run them inside v8 isolates.
 
-If Webpack fails to create the bundle, the SDK will throw an error and emit webpack logs using the SDK's [logger](/docs/node/logging#logs-generated-by-sdk-components).
+If Webpack fails to create the bundle, the SDK will throw an error and emit webpack logs using the SDK's [logger](/docs/typescript/logging#logs-generated-by-sdk-components).
 
 If you do not see Webpack output in your terminal make sure that you have not disabled SDK logging (see reference to `Core.install()` in the link above).
 
-A common mistake for newcomers to the Node.js SDK is to try and use Node.js built-ins and modules in their Workflow code.
+**A common mistake for newcomers to the TypeScript SDK is to try and use Node.js built-ins and modules in their Workflow code.**
 
 Some common examples that will **not** work in the Workflow isolate:
 
@@ -155,11 +159,11 @@ The opaque `context deadline exceeded` error comes from `gRPC`:
 
 ```
 Error: 4 DEADLINE_EXCEEDED: context deadline exceeded
-    at Object.callErrorFromStatus (/Users/swyx/Work/Temporal/samples-node/nextjs-oneclick/node_modules/@grpc/grpc-js/build/src/call.js:31:26)
-    at Object.onReceiveStatus (/Users/swyx/Work/Temporal/samples-node/nextjs-oneclick/node_modules/@grpc/grpc-js/build/src/client.js:179:52)
-    at Object.onReceiveStatus (/Users/swyx/Work/Temporal/samples-node/nextjs-oneclick/node_modules/@grpc/grpc-js/build/src/client-interceptors.js:336:141)
-    at Object.onReceiveStatus (/Users/swyx/Work/Temporal/samples-node/nextjs-oneclick/node_modules/@grpc/grpc-js/build/src/client-interceptors.js:299:181)
-    at /Users/swyx/Work/Temporal/samples-node/nextjs-oneclick/node_modules/@grpc/grpc-js/build/src/call-stream.js:145:78
+    at Object.callErrorFromStatus (/Users/swyx/Work/Temporal/samples-typescript/nextjs-oneclick/node_modules/@grpc/grpc-js/build/src/call.js:31:26)
+    at Object.onReceiveStatus (/Users/swyx/Work/Temporal/samples-typescript/nextjs-oneclick/node_modules/@grpc/grpc-js/build/src/client.js:179:52)
+    at Object.onReceiveStatus (/Users/swyx/Work/Temporal/samples-typescript/nextjs-oneclick/node_modules/@grpc/grpc-js/build/src/client-interceptors.js:336:141)
+    at Object.onReceiveStatus (/Users/swyx/Work/Temporal/samples-typescript/nextjs-oneclick/node_modules/@grpc/grpc-js/build/src/client-interceptors.js:299:181)
+    at /Users/swyx/Work/Temporal/samples-typescript/nextjs-oneclick/node_modules/@grpc/grpc-js/build/src/call-stream.js:145:78
     at processTicksAndRejections (node:internal/process/task_queues:78:11) {
   code: 4,
   details: 'context deadline exceeded',

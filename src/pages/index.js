@@ -49,9 +49,9 @@ const sdks = [
     goto: "/docs/php/introduction",
   },
   {
-    title: "node SDK",
-    imgUrl: "img/nodejs.svg",
-    goto: "/docs/node/introduction",
+    title: "TypeScript SDK",
+    imgUrl: "img/typescript.svg",
+    goto: "/docs/typescript/introduction",
   },
 ];
 

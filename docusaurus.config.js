@@ -118,8 +118,8 @@ module.exports = {
               to: "/docs/php/introduction",
             },
             {
-              label: "Node SDK (alpha)",
-              to: "/docs/node/introduction",
+              label: "TypeScript SDK (alpha)",
+              to: "/docs/typescript/introduction",
             },
           ],
         },
