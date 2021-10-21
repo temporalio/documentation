@@ -17,7 +17,7 @@ sidebar_label: Activities
 Activities are "just functions".
 Below is a simple Activity that accepts a string parameter and returns a string.
 
-<!--SNIPSTART nodejs-hello-activity {"enable_source_link": false}-->
+<!--SNIPSTART typescript-hello-activity {"enable_source_link": false}-->
 <!--SNIPEND-->
 
 You may `import { Context } from '@temporalio/activity'` which offers useful utilities for Activity functions such as sleeping, heartbeating, cancellation, and retrieving metadata (see [docs on Activity Context utilities](#activity-context-utilities) below).
@@ -27,7 +27,7 @@ You may `import { Context } from '@temporalio/activity'` which offers useful uti
 You must first retrieve an Activity from an "Activity Handle" before you can call it.
 Note that we only import the type of our activities, the TypeScript compiler will drop the import statement on compilation.
 
-<!--SNIPSTART nodejs-hello-workflow {"enable_source_link": false}-->
+<!--SNIPSTART typescript-hello-workflow {"enable_source_link": false}-->
 <!--SNIPEND-->
 
 The return value of `createActivityHandle` is a [`Proxy`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) object
@@ -225,7 +225,7 @@ TODO: document how to retrieve heartbeat payload.
 
 The [`sleep`](https://typescript.temporal.io/api/classes/activity.context#sleep) method exposed in `Context.current()` is comparable to a standard `sleep` function: `new Promise(resolve => setTimeout(resolve, sleepMS));` except that it also rejects if the activity is cancelled.
 
-<!--SNIPSTART nodejs-activity-fake-progress-->
+<!--SNIPSTART typescript-activity-fake-progress-->
 <!--SNIPEND-->
 
 ### Activity Cancellation
@@ -242,7 +242,7 @@ There are 2 ways to handle Activity cancellation:
 
 #### Example: Activity that makes a cancellable HTTP request
 
-<!--SNIPSTART nodejs-activity-cancellable-fetch-->
+<!--SNIPSTART typescript-activity-cancellable-fetch-->
 <!--SNIPEND-->
 
 ## Local Activities

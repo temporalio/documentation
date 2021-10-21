@@ -12,7 +12,7 @@ First create a Worker with `Worker.create()`, then call `worker.run()` on it.
 
 Below is an example of starting a Worker that polls the Task Queue named `tutorial`.
 
-<!--SNIPSTART nodejs-hello-worker {"enable_source_link": false}-->
+<!--SNIPSTART typescript-hello-worker {"enable_source_link": false}-->
 <!--SNIPEND-->
 
 `taskQueue` is the only required option, but you will also use `workflowsPath` and `activities` to register Workflows and Activities with the Worker.

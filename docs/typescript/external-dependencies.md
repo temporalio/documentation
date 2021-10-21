@@ -50,21 +50,21 @@ Function configured to use `SYNC*` apply modes **always** copy their return valu
 
 Define the interface for your external dependencies
 
-<!--SNIPSTART nodejs-external-dependencies-logger-interface {"enable_source_link": false}-->
+<!--SNIPSTART typescript-external-dependencies-logger-interface {"enable_source_link": false}-->
 <!--SNIPEND-->
 
 #### `src/workflows/logger-example.ts`
 
 Call an external dependency function from a Workflow
 
-<!--SNIPSTART nodejs-external-dependencies-logger-workflow {"enable_source_link": false}-->
+<!--SNIPSTART typescript-external-dependencies-logger-workflow {"enable_source_link": false}-->
 <!--SNIPEND-->
 
 #### `src/worker/index.ts`
 
 Inject a function as a Workflow external dependency
 
-<!--SNIPSTART nodejs-external-dependencies-logger-worker {"enable_source_link": false}-->
+<!--SNIPSTART typescript-external-dependencies-logger-worker {"enable_source_link": false}-->
 <!--SNIPEND-->
 
 ## References

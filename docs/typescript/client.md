@@ -19,7 +19,7 @@ import RelatedReadList from '../components/RelatedReadList.js'
 
 Here is example Client code from our Hello World sample:
 
-<!--SNIPSTART nodejs-hello-client {"enable_source_link": false}-->
+<!--SNIPSTART typescript-hello-client {"enable_source_link": false}-->
 <!--SNIPEND-->
 
 The rest of this doc explains each step in detail with practical usage tips.

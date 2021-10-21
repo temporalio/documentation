@@ -38,12 +38,12 @@ In order to simplify checking for cancellation, use the [`isCancellation(err)`](
 
 ## Internal cancellation example
 
-<!--SNIPSTART nodejs-cancel-a-timer-from-workflow-->
+<!--SNIPSTART typescript-cancel-a-timer-from-workflow-->
 <!--SNIPEND-->
 
 Alternatively, the preceding can be written as:
 
-<!--SNIPSTART nodejs-cancel-a-timer-from-workflow-alternative-impl-->
+<!--SNIPSTART typescript-cancel-a-timer-from-workflow-alternative-impl-->
 <!--SNIPEND-->
 
 ## External cancellation example
@@ -52,28 +52,28 @@ Handle Workflow cancellation by an external client while an Activity is running:
 
 <!-- TODO: add a sample here of how this Workflow could be cancelled using a WorkflowHandle -->
 
-<!--SNIPSTART nodejs-handle-external-workflow-cancellation-while-activity-running-->
+<!--SNIPSTART typescript-handle-external-workflow-cancellation-while-activity-running-->
 <!--SNIPEND-->
 
 ## `nonCancellable` example
 
 `CancellationScope.nonCancellable` prevents cancellation from propagating to children:
 
-<!--SNIPSTART nodejs-non-cancellable-shields-children-->
+<!--SNIPSTART typescript-non-cancellable-shields-children-->
 <!--SNIPEND-->
 
 ## `withTimeout` example
 
 A very common operation is to cancel one or more activities if a deadline elapses, `withTimeout` creates a `CancellationScope` that is automatically cancelled after a given timeout.
 
-<!--SNIPSTART nodejs-multiple-activities-single-timeout-workflow-->
+<!--SNIPSTART typescript-multiple-activities-single-timeout-workflow-->
 <!--SNIPEND-->
 
 ## `scope.cancelRequested`
 
 You can await `cancelRequested` to make Workflow aware of cancellation while waiting on `nonCancellable` scopes:
 
-<!--SNIPSTART nodejs-cancel-requested-with-non-cancellable-->
+<!--SNIPSTART typescript-cancel-requested-with-non-cancellable-->
 <!--SNIPEND-->
 
 ## CancellationScopes and callbacks
@@ -81,22 +81,22 @@ You can await `cancelRequested` to make Workflow aware of cancellation while wai
 Callbacks are not particularly useful in Workflows because all meaningful asynchronous operations return Promises.
 In the rare case that user code utilizes callbacks and needs to handle cancellation, a callback can be used to consume the `CancellationScope.cancelRequested` `Promise`.
 
-<!--SNIPSTART nodejs-cancellation-scopes-with-callbacks-->
+<!--SNIPSTART typescript-cancellation-scopes-with-callbacks-->
 <!--SNIPEND-->
 
 ## Nesting Cancellation Scopes
 
 Complex flows may be achieved by nesting cancellation scopes:
 
-<!--SNIPSTART nodejs-nested-cancellation-scopes-->
+<!--SNIPSTART typescript-nested-cancellation-scopes-->
 <!--SNIPEND-->
 
 ## Sharing promises between scopes
 
 Operations like timers and Activities are cancelled by the cancellation scope they were created in. Promises returned by these operations can be awaited in different scopes.
 
-<!--SNIPSTART nodejs-shared-promise-scopes-->
+<!--SNIPSTART typescript-shared-promise-scopes-->
 <!--SNIPEND-->
 
-<!--SNIPSTART nodejs-shield-awaited-in-root-scope-->
+<!--SNIPSTART typescript-shield-awaited-in-root-scope-->
 <!--SNIPEND-->

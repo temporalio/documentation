@@ -19,7 +19,7 @@ Any async function can be used as an Activity as long as its parameters and retu
 
 `src/activities.ts`
 
-<!--SNIPSTART nodejs-hello-activity {"enable_source_link": false}-->
+<!--SNIPSTART typescript-hello-activity {"enable_source_link": false}-->
 <!--SNIPEND-->
 
 ### Workflows
@@ -34,7 +34,7 @@ The snippet below uses `createActivityHandle` to create a function that, when ca
 
 `src/workflows.ts`
 
-<!--SNIPSTART nodejs-hello-workflow {"enable_source_link": false}-->
+<!--SNIPSTART typescript-hello-workflow {"enable_source_link": false}-->
 <!--SNIPEND-->
 
 ### Worker
@@ -46,7 +46,7 @@ See the list of [WorkerOptions](https://typescript.temporal.io/api/interfaces/wo
 
 `src/worker.ts`
 
-<!--SNIPSTART nodejs-hello-worker {"enable_source_link": false}-->
+<!--SNIPSTART typescript-hello-worker {"enable_source_link": false}-->
 <!--SNIPEND-->
 
 ### Client
@@ -59,7 +59,7 @@ It can be used in any Node.js process (for example, an [Express](https://express
 
 `src/exec-workflow.ts`
 
-<!--SNIPSTART nodejs-hello-client {"enable_source_link": false}-->
+<!--SNIPSTART typescript-hello-client {"enable_source_link": false}-->
 <!--SNIPEND-->
 
 ### Testing

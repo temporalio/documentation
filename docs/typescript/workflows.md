@@ -15,7 +15,7 @@ sidebar_label: Workflows
 
 Workflow Definitions are "just functions", which can store state, and orchestrate [Activity functions](/docs/typescript/activities).
 
-<!--SNIPSTART nodejs-hello-workflow {"enable_source_link": false}-->
+<!--SNIPSTART typescript-hello-workflow {"enable_source_link": false}-->
 <!--SNIPEND-->
 
 The snippet above uses `createActivityHandle` to create functions that, when called, schedule a `greet` Activity in the system to say "Hello World".
@@ -86,7 +86,7 @@ If you wanted to send data in, you probably will want to read data out.
 - To add a Signal to a Workflow, call [`defineSignal`](https://typescript.temporal.io/api/namespaces/workflow/#definesignal) with a name, and then attach a listener with `setListener`.
 - To add a Query to a Workflow, call [`defineQuery`](https://typescript.temporal.io/api/namespaces/workflow/#definequery) with a name, and then attach a listener with `setListener`.
 
-<!--SNIPSTART nodejs-blocked-workflow-->
+<!--SNIPSTART typescript-blocked-workflow-->
 <!--SNIPEND-->
 
 Listeners for both Signals and Queries can take arguments, which can be used inside `setListener` to mutate state or compute return values respectively.
@@ -386,7 +386,7 @@ Racing Timers
 
 Use `Promise.race` with Signals and Triggers to have a promise resolve at the earlier of either system time or human intervention.
 
-<!-- SNIPSTART nodejs-oneclick-buy -->
+<!-- SNIPSTART typescript-oneclick-buy -->
 <!--SNIPEND-->
 
 You can invert this to create a Reminder pattern where the promise resolves IF no Signal is received.
@@ -416,7 +416,7 @@ Updatable Timer
 
 Here is how you can build an updatable timer with `condition`:
 
-<!-- SNIPSTART nodejs-updatable-timer-impl -->
+<!-- SNIPSTART typescript-updatable-timer-impl -->
 <!-- SNIPEND-->
 
 </details>
@@ -445,7 +445,7 @@ Activities usually model a single operation on the external world. Workflows are
 
 To execute a child workflow and await its completion:
 
-<!--SNIPSTART nodejs-child-workflow-->
+<!--SNIPSTART typescript-child-workflow-->
 <!--SNIPEND-->
 
 [`createChildWorkflowHandle`](https://typescript.temporal.io/api/api/namespaces/workflow#newchildworkflowhandle) returns a [`ChildWorkflowHandle`](https://typescript.temporal.io/api/interfaces/workflow.ChildWorkflowHandle) that can be used to start a new child Workflow, signal it and await its completion.

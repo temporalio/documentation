@@ -67,12 +67,12 @@ Follow this tutorial for setting up mTLS (Mutual TLS authentication) for a local
 
 8. Run the Worker
 
-<!--SNIPSTART nodejs-mtls-worker -->
+<!--SNIPSTART typescript-mtls-worker -->
 <!--SNIPEND-->
 
 9. In a new terminal run the client to schedule a sample Workflow
 
-<!--SNIPSTART nodejs-mtls-client -->
+<!--SNIPSTART typescript-mtls-client -->
 <!--SNIPEND-->
 
 ### Connecting to Temporal Cloud (with mTLS)
