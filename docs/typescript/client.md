@@ -12,7 +12,7 @@ import RelatedReadList from '../components/RelatedReadList.js'
 
 **Workflow Clients connect to Temporal Server via gRPC and create Workflow Handles, which are the main way to start, signal, query, or cancel Workflows**.
 
-- Workflow Clients are not bound to Workers and can be run in any Node.js application, for example: 
+- Workflow Clients are not bound to Workers and can be run in any Node.js application, for example:
   - in a serverless function
   - in a Next.js or Express.js API route handler
   - in a CLI or Node.js script
@@ -84,7 +84,7 @@ The Workflow Handle [exposes a number of important APIs](https://typescript.temp
 | Handle API          | Description                                                                                                                                             |
 | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `client`            | Readonly accessor to the underlying WorkflowClient.                                                                                                     |
-| `workflowId`        | The workflowId of the current Workflow.                                               |
+| `workflowId`        | The workflowId of the current Workflow.                                                                                                                 |
 | `query()`           | Call to query a Workflow after it's been started even if it has already completed. `const value = await workflow.query(getValue);`                      |
 | `signal()`          | Call to signal a _running_ Workflow. `await workflow.signal(increment, 1);`                                                                             |
 | `signalWithStart()` | Sends a signal to a running Workflow or starts a new one if not already running and immediately signals it. Useful when you're unsure of the run state. |
