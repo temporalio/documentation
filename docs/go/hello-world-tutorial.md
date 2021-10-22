@@ -105,10 +105,8 @@ Add the required `testify` packages to your `go.mod` file by running the followi
 
 ```
 go get github.com/stretchr/testify/mock
-```
-
-```
 go get github.com/stretchr/testify/require
+go mod
 ```
 
 Run this command from the project root to execute the unit tests:

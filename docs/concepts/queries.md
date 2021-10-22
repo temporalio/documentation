@@ -30,4 +30,4 @@ You can learn about how to implement Queries within the context of the language 
 - [Go](/docs/go/queries)
 - [Java](/docs/java/queries)
 - [PHP](/docs/php/queries)
-- [Node.js](/docs/node/signals-queries/#queries)
+- [TypeScript](/docs/typescript/workflows/#queries)

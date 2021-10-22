@@ -21,7 +21,7 @@ In this case, you can learn about how to implement Task Queues within the contex
 - [Go](/docs/go/task-queues)
 - [Java](/docs/java/task-queues)
 - [PHP](/docs/php/task-queues)
-- [Node.js](/docs/node/task-queues)
+- [TypeScript](/docs/typescript/workers)
 
 From the perspective of the system's design and how everything works under the hood, things get a little bit more complex.
 

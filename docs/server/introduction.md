@@ -30,4 +30,4 @@ Choose from the list below to get started:
 - Experimental features:
   - [Archival](/docs/server/archive-data): Want to back up your Workflow event history? You can with a cloud provider of your choice.
   - [Multi-cluster Replication](/docs/server/multi-cluster): Increase availability by asynchronously replicating workflows from active cluster to other passive clusters.
-  - [Enhanced Workflow search](/docs/server/workflow-search): Integrating Elasticsearch enables the use of customizable search attributes and complex search queries.
+  - [Enhanced Workflow search](/docs/temporal-explained/visibility): Integrating Elasticsearch enables the use of customizable search attributes and complex search queries.

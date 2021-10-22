@@ -16,3 +16,5 @@ Custom progress information can be included in the Heartbeat which can then be u
 
 An Activity Heartbeat can be recorded as often as needed (e.g. once a minute or every loop iteration).
 Temporal SDKs control the rate in which Heartbeats are sent to the Server.
+
+Heartbeating is not required from [Local Activites](/docs/content/what-is-a-local-activity), and does nothing.

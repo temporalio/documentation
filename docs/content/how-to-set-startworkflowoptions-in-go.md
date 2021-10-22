@@ -13,8 +13,8 @@ Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io
 
 The following fields are available:
 
-| Field                                                                            | Required | Type                                                                                            | Example                                         |
-| -------------------------------------------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------- |
+| Field                                                                            | Required | Type                                                                                            | Example                                        |
+| -------------------------------------------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------- | ---------------------------------------------- |
 | [`ID`](/docs/content/what-is-a-workflow-id)                                      | No       | `string`                                                                                        | [👀](#id)                                       |
 | [`TaskQueue`](/docs/content/what-is-a-task-queue)                                | **Yes**  | `string`                                                                                        | [👀](#taskqueue)                                |
 | [`WorkflowExecutionTimeout`](/docs/content/what-is-a-workflow-execution-timeout) | No       | `time.Duration`                                                                                 | [👀](#workflowexecutiontimeout)                 |
@@ -25,7 +25,7 @@ The following fields are available:
 | [`RetryPolicy`](/docs/content/what-is-a-retry-policy)                            | No       | [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/temporal#RetryPolicy)             | [👀](#retrypolicy)                              |
 | [`CronSchedule`](/docs/content/what-is-a-temporal-cron-job)                      | No       | `string`                                                                                        | [👀](#cronschedule)                             |
 | [`Memo`](/docs/content/what-is-a-memo)                                           | No       | `map[string]interface{}`                                                                        | [👀](#memo)                                     |
-| [SearchAttributes](/docs/server/workflow-search)                                 | No       | `map[string]interface{}`                                                                        | [👀](#searchattributes)                         |
+| [SearchAttributes](/docs/content/what-is-a-search-attribute)                     | No       | `map[string]interface{}`                                                                        | [👀](#searchattributes)                         |
 
 ### `ID`
 

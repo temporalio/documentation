@@ -67,6 +67,7 @@ _Note: Each of [our SDK docs](/application-development) have a Hello World and R
 - [Temporal - fault tolerant orchestration platform](https://www.youtube.com/watch?v=7dnutdT24MM&list=PLU1vS0speL2ZbTPg-aU2Rw2s6IPsTVoCF&index=49) at DevConf US by Tihomir Surdilovic (36 min talk + Q&A)
 - [Why Temporal - the iPhone of System Design](https://www.swyx.io/why-temporal/) by swyx (19 min read)
 - _submit yours [here](https://github.com/temporalio/documentation/edit/master/docs/external-resources.md)!_
+- (PHP) [Fault tolerant workflow orchestration on PHP](https://www.youtube.com/watch?v=pdxHkIqX62A) at PHPKonf 2021 by Anton Titov (37 min talk)
 
 ## Temporal users
 

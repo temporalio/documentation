@@ -20,6 +20,6 @@ readlist={[
 
 <!--TODO add content for these links:
 ["How develop a Workflow Definition in Java","/docs/content/how-to-develop-a-workflow-definition-in-java","developer guide"],
-["How develop a Workflow Definition in Node.js","/docs/content/how-to-develop-a-workflow-definition-in-node","developer guide"],
+["How develop a Workflow Definition in TypeScript","/docs/content/how-to-develop-a-workflow-definition-in-typescript","developer guide"],
 ["How develop a Workflow Definition in PHP","/docs/content/how-to-develop-a-workflow-definition-in-php","developer guide"],
 -->

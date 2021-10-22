@@ -1,0 +1,46 @@
+---
+id: package-initializer
+sidebar_label: Package Initializer
+---
+
+> **@temporalio/create** [![NPM](https://img.shields.io/npm/v/@temporalio/create)](https://www.npmjs.com/package/@temporalio/create)
+>
+> [GitHub source](https://github.com/temporalio/sdk-typescript/tree/main/packages/create-project)
+
+`@temporalio/create` is an optional tool to set up a new Temporal project starting from [our samples repo](https://github.com/temporalio/samples-typescript).
+
+### Usage
+
+> See the [Getting started](/docs/typescript/introduction/#getting-started) guide for basic usage and environment set up before running this tool.
+
+```bash
+npx @temporalio/create@latest ./example
+```
+
+#### Optional flags
+
+- `--sample` — Which sample to bootstrap the app with. You can use the name of a sample
+  from [github.com/temporalio/samples-typescript](https://github.com/temporalio/samples-typescript) or use a GitHub URL. The URL can have a branch and/or subdirectory: for example, `https://github.com/temporalio/samples-typescript/tree/next/ecommerce-one-click/nextjs`.
+- `--list-samples` — List available projects from [our samples repo](https://github.com/temporalio/samples-typescript).
+- `--use-yarn` — Use Yarn instead of npm.
+- `--[no-]git-init` - Initalize an empty git repository
+- `--temporalio-version <version>` - Specify which version of the temporalio npm package to use
+
+### Project structure
+
+Typically the generated project consists of 4 main components:
+
+- Workflows
+- Activities
+- Worker that executes Workflows and Activities
+- A script to execute a Workflow (using a Temporal Client)
+
+### Working with the created project
+
+Most sample projects come with these scripts:
+
+- `npm start` — Run the Worker with `ts-node` (does not require a compilation step)
+- `npm run start.watch` — Watch files with `nodemon` and re-run Worker on change
+- `npm run build` — Compile TypeScript
+- `npm run build.watch` — Watch files and compile on change
+- `npm run workflow` — Execute a Workflow

@@ -6,7 +6,7 @@ sidebar_label: Set up Elasticsearch
 
 ## Overview
 
-You can integrate [Elasticsearch](https://www.elastic.co/elasticsearch/) with the Temporal Server to enhance [Workflow search](/docs/server/workflow-search) functionality.
+You can integrate [Elasticsearch](https://www.elastic.co/elasticsearch/) with the Temporal Server to enhance [Visibility](/docs/temporal-explained/visibility) functionality.
 The [Server versions and dependencies](/docs/server/versions-and-dependencies/#workflow-search) page describes which versions of Elasticsearch are supported.
 
 Integration with Elasticsearch is defined in the Server configuration files: all you need to do is edit the `persistence` section.
