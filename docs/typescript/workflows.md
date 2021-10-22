@@ -10,10 +10,12 @@ sidebar_label: Workflows
 
 Each Workflow function has two parts:
   - The function name is known as the **Workflow Type**.
-  - The function implementation code is known as the **Workflow Definition**.
+  - The function implementation code (body) is known as the **Workflow Definition**.
   - Each Workflow Definition is bundled with any third party dependencies, and registered by Workflow Type in a [Worker](/docs/typescript/workers).
 
 A Workflow function only becomes a **Workflow Execution** (instance) when started from a [**Workflow Client**](/docs/typescript/client) using its Workflow Type.
+
+<!-- todo: we need a diagram here to show the relationship -->
 
 ## How to write a Workflow function
 
