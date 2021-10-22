@@ -77,7 +77,8 @@ Activities are Promises and you may retrieve multiple Activities from the same h
 
 ```ts
 export async function Workflow(name: string): Promise<string> {
-  const { act1, act2, act3 } = createActivityHandle<typeof activities>(/* activityOptions */);
+  const { act1, act2, act3 } =
+    createActivityHandle<typeof activities>(/* activityOptions */);
   await act1();
   await Promise.all([act2, act3]);
 }

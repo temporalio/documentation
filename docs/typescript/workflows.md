@@ -9,9 +9,10 @@ sidebar_label: Workflows
 **Workflows are async functions that can orchestrate Activities and access special Workflow APIs, subject to deterministic limitations**.
 
 Each Workflow function has two parts:
-  - The function name is known as the **Workflow Type**.
-  - The function implementation code (body) is known as the **Workflow Definition**.
-  - Each Workflow Definition is bundled with any third party dependencies, and registered by Workflow Type in a [Worker](/docs/typescript/workers).
+
+- The function name is known as the **Workflow Type**.
+- The function implementation code (body) is known as the **Workflow Definition**.
+- Each Workflow Definition is bundled with any third party dependencies, and registered by Workflow Type in a [Worker](/docs/typescript/workers).
 
 A Workflow function only becomes a **Workflow Execution** (instance) when started from a [**Workflow Client**](/docs/typescript/client) using its Workflow Type.
 
