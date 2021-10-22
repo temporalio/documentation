@@ -5,6 +5,7 @@ description: Advanced Visibility, within the Temporal Platform, is the subsystem
 tags:
   - explanation
   - filtered-lists
+  - visibility
 ---
 
 <!-- prettier-ignore -->

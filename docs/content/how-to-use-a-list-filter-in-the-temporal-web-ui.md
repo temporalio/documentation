@@ -6,6 +6,7 @@ tags:
   - operation-guide
   - web-ui
   - filtered-lists
+  - visibility
 ---
 
 import CenteredImage from "../components/CenteredImage.js"

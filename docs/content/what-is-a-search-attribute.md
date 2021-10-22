@@ -5,9 +5,10 @@ description: A Search Attribute is an indexed key used in List Filters to filter
 tags:
   - explanation
   - filtered-lists
+  - visibility
 ---
 
-import RelatedReadList, {RelatedReadContainer, RelatedReadItem} from '../components/RelatedReadList.js'
+import {RelatedReadContainer, RelatedReadItem} from '../components/RelatedReadList.js'
 
 <!-- prettier-ignore -->
 import * as WhatIsAListFilter from './what-is-a-list-filter.md'
