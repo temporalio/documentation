@@ -6,10 +6,14 @@ sidebar_label: Workflows
 
 > **@temporalio/workflow** [![NPM](https://img.shields.io/npm/v/@temporalio/workflow)](https://www.npmjs.com/package/@temporalio/workflow) [API reference](https://typescript.temporal.io/api/namespaces/workflow) | [GitHub source](https://github.com/temporalio/sdk-typescript/tree/main/packages/workflow)
 
-**Workflows are the fundamental unit of orchestration logic in Temporal**.
+**Workflows are async functions that can orchestrate Activities and access special Workflow APIs, subject to deterministic limitations**.
 
-- In the TypeScript SDK, each **Workflow Definition** (code) is bundled with dependencies and run in a [Worker](/docs/typescript/workers).
-- However, the Workflow Definition only instantiates into a **Workflow Execution** when started by a [**Workflow Client**](/docs/typescript/client).
+Each Workflow function has two parts:
+  - The function name is known as the **Workflow Type**.
+  - The function implementation code is known as the **Workflow Definition**.
+  - Each Workflow Definition is bundled with any third party dependencies, and registered by Workflow Type in a [Worker](/docs/typescript/workers).
+
+A Workflow function only becomes a **Workflow Execution** (instance) when started from a [**Workflow Client**](/docs/typescript/client) using its Workflow Type.
 
 ## How to write a Workflow function
 
@@ -34,7 +38,7 @@ These constraints don't apply inside Activities.
 
 ## How to Start and Cancel Workflows
 
-See the [TypeScript SDK Client docs](/docs/typescript/client) for how to use `WorkflowHandle`s to do all that and more.
+See the [TypeScript SDK Client docs](/docs/typescript/client) for how to use `WorkflowHandle`s to start, cancel, signal, query, describe and more.
 
 ## Workflow APIs
 
