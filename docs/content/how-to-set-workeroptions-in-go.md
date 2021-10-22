@@ -10,27 +10,27 @@ tags:
 
 Create an instance of [`Options`](https://pkg.go.dev/go.temporal.io/sdk/worker#Options) from the `go.temporal.io/sdk/worker` package, set any of the optional fields, and pass the instance to the [`New`](https://pkg.go.dev/go.temporal.io/sdk/worker#New) call.
 
-| Field | Required |  Type | Example |
-| ----- | -------- | ----- | ------- |
-| `MaxConcurrentActivityExecutionSize` | No | `int` | [👀](#maxconcurrentactivityexecutionsize) |
-| `WorkerActivitiesPerSecond` | No | `float64` | [👀](#workeractivitiespersecond) |
-| `MaxConcurrentLocalActivityExecutionSize` | No | `int` | [👀](#maxconcurrentlocalactivityexecutionsize) |
-| `WorkerLocalActivitiesPerSecond` | No | `float64` | [👀](#workerlocalactivitiespersecond) |
-| `TaskQueueActivitiesPerSecond` | No | `float64` | [👀](#taskqueueactivitiespersecond) |
-| `MaxConcurrentActivityTaskPollers` | No | `int` | [👀](#maxconcurrentactivitytaskpollers) |
-| `MaxConcurrentWorkflowTaskExecutionSize` | No | `int` | [👀](#maxconcurrentworkflowtaskexecutionsize) |
-| `MaxConcurrentWorkflowTaskPollers` | No | `int` | [👀](#maxconcurrentworkflowtaskpollers) |
-| `EnableLoggingInReplay` | No | `bool` | [👀](#enablelogginginreplay) |
-| `DisableStickyExecution` | No | `bool` | [👀](#disablestickyexecution) |
-| `StickyScheduleToStartTimeout` | No | [time.Duration](https://pkg.go.dev/time#Duration) | [👀](#stickyscheduletostarttimeout) |
-| `BackgroundActivityContext` | No | [context.Context](https://pkg.go.dev/context#Context) | [👀](#backgroundactivitycontext) |
-| `WorkflowPanicPolicy` | No | [WorkflowPanicPolicy](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/internal#WorkflowPanicPolicy) | [👀](#workflowpanicpolicy) |
-| `WorkerStopTimeout` | No | [time.Duration](https://pkg.go.dev/time#Duration) | [👀](#workerstoptimeout) |
-| `EnableSessionWorker` | No | `bool` | [👀](#enablesessionworker) |
-| `MaxConcurrentSessionExecutionSize` | No | `int` | [👀](#maxconcurrentsessionexecutionsize) |
-| `WorkflowInterceptorChainFactories` | No |  [`[]WorkflowInterceptor`](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/internal#WorkflowInterceptor) | [👀](#workflowinterceptorchainfactories) |
-| `LocalActivityWorkerOnly` | No | `bool` | [👀](#localactivityworkeronly) |
-| `Identity` | No | `string` | [👀](#identity) |
+| Field                                     | Required | Type                                                                                                  | Example                                        |
+| ----------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------- | ---------------------------------------------- |
+| `MaxConcurrentActivityExecutionSize`      | No       | `int`                                                                                                 | [👀](#maxconcurrentactivityexecutionsize)      |
+| `WorkerActivitiesPerSecond`               | No       | `float64`                                                                                             | [👀](#workeractivitiespersecond)               |
+| `MaxConcurrentLocalActivityExecutionSize` | No       | `int`                                                                                                 | [👀](#maxconcurrentlocalactivityexecutionsize) |
+| `WorkerLocalActivitiesPerSecond`          | No       | `float64`                                                                                             | [👀](#workerlocalactivitiespersecond)          |
+| `TaskQueueActivitiesPerSecond`            | No       | `float64`                                                                                             | [👀](#taskqueueactivitiespersecond)            |
+| `MaxConcurrentActivityTaskPollers`        | No       | `int`                                                                                                 | [👀](#maxconcurrentactivitytaskpollers)        |
+| `MaxConcurrentWorkflowTaskExecutionSize`  | No       | `int`                                                                                                 | [👀](#maxconcurrentworkflowtaskexecutionsize)  |
+| `MaxConcurrentWorkflowTaskPollers`        | No       | `int`                                                                                                 | [👀](#maxconcurrentworkflowtaskpollers)        |
+| `EnableLoggingInReplay`                   | No       | `bool`                                                                                                | [👀](#enablelogginginreplay)                   |
+| `DisableStickyExecution`                  | No       | `bool`                                                                                                | [👀](#disablestickyexecution)                  |
+| `StickyScheduleToStartTimeout`            | No       | [time.Duration](https://pkg.go.dev/time#Duration)                                                     | [👀](#stickyscheduletostarttimeout)            |
+| `BackgroundActivityContext`               | No       | [context.Context](https://pkg.go.dev/context#Context)                                                 | [👀](#backgroundactivitycontext)               |
+| `WorkflowPanicPolicy`                     | No       | [WorkflowPanicPolicy](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/internal#WorkflowPanicPolicy)     | [👀](#workflowpanicpolicy)                     |
+| `WorkerStopTimeout`                       | No       | [time.Duration](https://pkg.go.dev/time#Duration)                                                     | [👀](#workerstoptimeout)                       |
+| `EnableSessionWorker`                     | No       | `bool`                                                                                                | [👀](#enablesessionworker)                     |
+| `MaxConcurrentSessionExecutionSize`       | No       | `int`                                                                                                 | [👀](#maxconcurrentsessionexecutionsize)       |
+| `WorkflowInterceptorChainFactories`       | No       | [`[]WorkflowInterceptor`](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/internal#WorkflowInterceptor) | [👀](#workflowinterceptorchainfactories)       |
+| `LocalActivityWorkerOnly`                 | No       | `bool`                                                                                                | [👀](#localactivityworkeronly)                 |
+| `Identity`                                | No       | `string`                                                                                              | [👀](#identity)                                |
 
 ### `MaxConcurrentActivityExecutionSize`
 
@@ -96,8 +96,8 @@ Notice that the value type is a float so that the value can be less than 1 if ne
 For example, if set to 0.1, Local Activity Task Executions will happen once every ten seconds.
 This can be used to protect down stream services from flooding with requests.
 
- // The zero value of this uses the default value
- // default: 100k
+// The zero value of this uses the default value
+// default: 100k
 
 ```go
 workerOptions := worker.Options{
@@ -111,12 +111,12 @@ workerOptions := worker.Options{
 Rate limits the number of Activity Executions that can be executed per second
 
 This is managed by the server and controls activities per second for your entire taskqueue
-	// whereas WorkerActivityTasksPerSecond controls activities only per worker.
-	// Notice that the number is represented in float, so that you can set it to less than
-	// 1 if needed. For example, set the number to 0.1 means you want your activity to be executed
-	// once for every 10 seconds. This can be used to protect down stream services from flooding.
-	// The zero value of this uses the default value.
-	// default: 100k
+// whereas WorkerActivityTasksPerSecond controls activities only per worker.
+// Notice that the number is represented in float, so that you can set it to less than
+// 1 if needed. For example, set the number to 0.1 means you want your activity to be executed
+// once for every 10 seconds. This can be used to protect down stream services from flooding.
+// The zero value of this uses the default value.
+// default: 100k
 
 ```go
 workerOptions := worker.Options{
