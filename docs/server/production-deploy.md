@@ -67,8 +67,11 @@ You will want to run your own proof of concept tests and watch for key metrics t
   Tally offers [extensible custom metrics reporting](https://github.com/uber-go/tally#report-your-metrics), which we expose via [`temporal.WithCustomMetricsReporter`](https://docs.temporal.io/docs/server/options/#withcustommetricsreporter).
   OpenTelemetry support is planned in future.
 - **Set up monitoring.** You can use these [Grafana dashboards](https://github.com/temporalio/dashboards) as a starting point. The single most important metric to track is `ScheduleToStart` latency - if you get a spike in workload and don't have enough workers, your tasks will get backlogged. **We strongly recommend setting alerts for this metric**.
-- **Load testing.** You can use [Maru](https://github.com/temporalio/maru/) ([author's guide here](https://mikhail.io/2021/03/maru-load-testing-tool-for-temporal-workflows/)), see how we ourselves [stress test Temporal](https://docs.temporal.io/blog/temporal-deep-dive-stress-testing/), or write your own.
+  - Also set up monitoring/alerting for all Temporal Workers for standard metrics like CPU/Memory utilization.
+- **Load testing.** You can use [the Maru benchmarking tool](https://github.com/temporalio/maru/) ([author's guide here](https://mikhail.io/2021/03/maru-load-testing-tool-for-temporal-workflows/)), see how we ourselves [stress test Temporal](https://docs.temporal.io/blog/temporal-deep-dive-stress-testing/), or write your own.
 
+All metrics emitted by the server are [listed in Temporal's source](https://github.com/temporalio/temporal/blob/master/common/metrics/defs.go). 
+There are also equivalent metrics that you can configure from the client side.
 At a high level, you will want to track these 3 categories of metrics:
 
 - **Service metrics**: For each request made by the service handler we emit `service_requests`, `service_errors`, and `service_latency` metrics with `type`, `operation`, and `namespace` tags.
@@ -80,7 +83,11 @@ At a high level, you will want to track these 3 categories of metrics:
   These are useful in getting overall stats about Workflow Execution completions.
   Use `workflow_success`, `workflow_failed`, `workflow_timeout`, `workflow_terminate` and `workflow_cancel` counters for each type of Workflow Execution completion.
   These include the `namespace` tag.
-  Additional information is available in [this forum post](https://community.temporal.io/t/metrics-for-monitoring-server-performance/536/3).
+
+Please request any additional information in [our forum](https://community.temporal.io). Key discussions are here:
+
+- https://community.temporal.io/t/metrics-for-monitoring-server-performance/536/3
+- https://community.temporal.io/t/guidance-on-creating-and-interpreting-grafana-dashboards/493
 
 ## Checklist for Scaling Temporal
 
@@ -89,7 +96,7 @@ We have load tested up to 200 million concurrent Workflow Executions.
 Every shard is low contention by design and it is very difficult to oversubscribe to a Task Queue in the same cluster.
 With that said, here are some guidelines to some common bottlenecks:
 
-- **Database**. The vast majority of the time the database will be the bottleneck. **We highly recommend setting alerts on `ScheduleToStart` latency** to look out for this. Also check if your database connection getting saturated.
+- **Database**. The vast majority of the time the database will be the bottleneck. **We highly recommend setting alerts on [`ScheduleToStart` latency](https://github.com/temporalio/temporal/blob/6cbfa2a3a569fcc856788b37616876538d904b3d/common/metrics/defs.go#L2215)** to look out for this. Also check if your database connection is getting saturated.
 - **Internal services**. The next layer will be scaling the 4 internal services of Temporal ([Frontend, Matching, History, and Worker](/docs/content/what-is-a-temporal-cluster)).
   Monitor each accordingly. The Frontend service is more CPU bound, whereas the History and Matching services require more memory.
   If you need more instances of each service, spin them up separately with different command line arguments. You can learn more cross referencing [our Helm chart](https://github.com/temporalio/helm-charts) with our [Server Configuration reference](https://docs.temporal.io/docs/server/configuration/).
