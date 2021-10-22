@@ -70,7 +70,7 @@ You will want to run your own proof of concept tests and watch for key metrics t
   - Also set up monitoring/alerting for all Temporal Workers for standard metrics like CPU/Memory utilization.
 - **Load testing.** You can use [the Maru benchmarking tool](https://github.com/temporalio/maru/) ([author's guide here](https://mikhail.io/2021/03/maru-load-testing-tool-for-temporal-workflows/)), see how we ourselves [stress test Temporal](https://docs.temporal.io/blog/temporal-deep-dive-stress-testing/), or write your own.
 
-All metrics emitted by the server are [listed in Temporal's source](https://github.com/temporalio/temporal/blob/master/common/metrics/defs.go). 
+All metrics emitted by the server are [listed in Temporal's source](https://github.com/temporalio/temporal/blob/master/common/metrics/defs.go).
 There are also equivalent metrics that you can configure from the client side.
 At a high level, you will want to track these 3 categories of metrics:
 
