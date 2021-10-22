@@ -418,4 +418,22 @@ module.exports = {
       ],
     },
   ],
+<<<<<<< HEAD
+=======
+  temporalExplained: [
+    {
+      type: "category",
+      label: "Temporal explained",
+      collapsed: true,
+      items: [
+        "temporal-explained/introduction",
+        "temporal-explained/workflows",
+        "temporal-explained/activities",
+        "temporal-explained/task-queues-and-workers",
+        "temporal-explained/timeouts-and-retries",
+        "temporal-explained/clusters",
+      ],
+    },
+  ],
+>>>>>>> edits
 };
