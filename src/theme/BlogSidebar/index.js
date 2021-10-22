@@ -16,7 +16,7 @@ export default function BlogSidebar({sidebar, row}) {
     },
     {
       title: "bugs",
-      url: "/blog/tags/bugs",
+      url: "/blog/tags/bug",
     },
     {
       title: "announcement",

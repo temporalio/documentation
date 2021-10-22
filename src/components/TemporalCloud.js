@@ -22,12 +22,12 @@ export const TemporalCloud = () => {
       </svg>
       <p className="block my-3">
         Temporal Cloud is a fully managed cloud offering of the open-source
-        Server.{" "}
+        Server. We are currently accepting private Design Partners.{" "}
         <a
           href="https://temporal.us17.list-manage.com/subscribe/post?u=2334a0f23e55fd1840613755d&amp;id=bbbbd4709f"
           className="text-blue-500 underline"
         >
-          Sign up for updates!
+          Apply here!
         </a>
       </p>
     </section>

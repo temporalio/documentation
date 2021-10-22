@@ -90,7 +90,7 @@ function Footer() {
         },
         {
           label: "Glossary",
-          to: "/docs/glossary",
+          to: "/docs/reference/glossary",
         },
         {
           label: "Migrate from Cadence",
