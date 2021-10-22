@@ -30,7 +30,7 @@ The following terms have specific definitions within the context of the Temporal
 - [Run Id](/docs/content/what-is-a-run-id)
 - [Schedule-To-Close Timeout](/docs/content/what-is-a-schedule-to-close-timeout)
 - [Schedule-To-Start Timeout](/docs/content/what-is-a-schedule-to-start-timeout)
-- [Search Attribute](/docs/what-is-a-search-attribute)
+- [Search Attribute](/docs/content/what-is-a-search-attribute)
 - [Signal](/docs/content/what-is-a-signal)
 - [Standard Visibility](/docs/content/what-is-standard-visibility)
 - [Start-To-Close Timeout](/docs/content/what-is-a-start-to-close-timeout)
