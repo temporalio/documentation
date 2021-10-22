@@ -14,7 +14,7 @@ In a traditional system, a service exists to spawn function executions.
 <CenteredImage
 imagePath="/diagrams/temporal-vs-traditional.svg"
 imageSize="100"
-title="Traditional system vs Temporal"
+title="Temporal vs Traditional system"
 />
 
 Although the two systems seem similar at first glance, they differ in several significant ways.
