@@ -23,10 +23,7 @@ export const TemporalCloud = () => {
       <p className="block my-3">
         Temporal Cloud is a fully managed cloud offering of the open-source
         Server. We are currently accepting private Design Partners.{" "}
-        <a
-          href="https://temporal.us17.list-manage.com/subscribe/post?u=2334a0f23e55fd1840613755d&amp;id=bbbbd4709f"
-          className="text-blue-500 underline"
-        >
+        <a href="https://temporal.io/cloud" className="text-blue-500 underline">
           Apply here!
         </a>
       </p>
