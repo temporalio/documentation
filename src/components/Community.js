@@ -56,7 +56,7 @@ export const Community = () => {
             </svg>
             <div className="flex-auto">
               <h3 className="font-bold uppercase">YouTube</h3>
-              <p>Watch tutorials and meetups with Temporal users</p>
+              <p>Watch tutorials and meetups with Temporal users.</p>
             </div>
           </a>
         </li>
@@ -108,7 +108,7 @@ export const Community = () => {
             </svg>
             <div className="flex-auto">
               <h3 className="font-bold uppercase">GitHub</h3>
-              <p>Give Temporal a star on GitHub!</p>
+              <p>Give Temporal a star on GitHub (it helps!)</p>
             </div>
           </a>
         </li>
@@ -130,7 +130,7 @@ export const Community = () => {
             </svg>
             <div className="flex-auto">
               <h3 className="font-bold uppercase">Twitter</h3>
-              <p>Follow for Temporal news and events!</p>
+              <p>Follow <span className="text-blue-400">@temporalio</span> for Temporal news and events.</p>
             </div>
           </a>
         </li>
@@ -158,24 +158,27 @@ export const Community = () => {
             </svg>
             <div className="flex-auto">
               <h3 className="font-bold uppercase">Slack</h3>
-              <p>Join for live conversations and get support!</p>
+              <p>Join for live conversations and get support.</p>
             </div>
           </a>
         </li>
       </ul>
+      <p className="mt-8">We are happy to help you with your <a className="text-blue-400 hover:underline" href="https://temporal.io/careers">job listings</a>,
+        talks, blogposts (whether on our blog or yours) or anything else you want to try.
+        Just <a className="text-blue-400 hover:underline" href="mailto:swyx@temporal.io">get in touch</a>!</p>
 
       <div className="flex flex-col space-y-6 sm:space-y-0 sm:flex-row my-16">
         <div className="flex-1">
           <h2 className="text-xl uppercase font-semibold tracking-wide py-6">
             Community Distros
           </h2>
-          <span className="opacity-70">Projects that build atop Temporal</span>
-          <ul className="list-disc space-y-3 pl-4 mt-2">
+          <span className="opacity-70">External projects that build atop Temporal</span>
+          <ul className="list-disc space-y-3 pl-4 mt-8">
             <li className="list-disc">
               <p className="">
                 <a
                   href="https://github.com/airbytehq/airbyte"
-                  className="hover:underline"
+                  className="hover:underline font-semibold"
                 >
                   Airbyte
                 </a>
@@ -200,7 +203,7 @@ export const Community = () => {
             <li className="list-disc">
               <a
                 href="https://github.com/spiral/roadrunner"
-                className="hover:underline"
+                className="hover:underline font-semibold"
               >
                 Roadrunner
               </a>
@@ -210,17 +213,17 @@ export const Community = () => {
             <li className="list-disc">
               <a
                 href="https://github.com/coinbase/temporal-ruby"
-                className="hover:underline"
+                className="hover:underline font-semibold"
               >
                 Coinbase
               </a>
               <span> - </span>
-              <span className="opacity-80">Third party SDK in production use</span>
+              <span className="opacity-80">Third party client in production use</span>
             </li>
             <li className="list-disc">
               <a
                 href="https://nunchi.studio/blacksmith/start/onboarding/how"
-                className="hover:underline"
+                className="hover:underline font-semibold"
               >
                 Nunchi Blacksmith
               </a>
@@ -230,7 +233,7 @@ export const Community = () => {
             <li className="list-disc">
               <a
                 href="https://github.com/DataDog/temporalite"
-                className="hover:underline"
+                className="hover:underline font-semibold"
               >
                 DataDog/temporalite
               </a>
@@ -243,9 +246,9 @@ export const Community = () => {
           <h2 className="text-xl uppercase font-semibold tracking-wide py-6">
             Community SDKs
           </h2>
-          <span className="opacity-70">Unofficial Third Party SDKs</span>
+          <span className="opacity-70">Third Party SDKs</span>
           {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mt-2"> */}
-          <div className="flex flex-col space-y-4 mt-2">
+          <div className="flex flex-col space-y-4 mt-8">
             <a
               href="https://github.com/coinbase/temporal-ruby"
               className="flex space-x-5 items-center"

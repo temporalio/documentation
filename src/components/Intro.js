@@ -30,8 +30,12 @@ function SDKs() {
         </svg>
         <h3 className="text-xl font-semibold mb-4">SDKs</h3>
       </div>
-      <div className="flex flex-col space-y-4">
-        <Link
+      <p className="flex-grow mb-4">
+        Write Workflows and Activities, run Workers and embed Temporal Clients in your applications.
+      </p>
+      {/* <ul className="flex flex-col space-y-2 list-disc pl-4"> */}
+      <ul className="grid grid-cols-2 gap-6 xl:gap-8">
+        <li className=""><Link
           className="flex space-x-3 items-center hover:underline"
           to={useBaseUrl("/docs/go/run-your-first-app-tutorial")}
         >
@@ -41,26 +45,26 @@ function SDKs() {
             alt="Go lang logo"
           />
           <p className="font-semibold">Go</p>
-        </Link>
-        <Link
+        </Link></li>
+        <li className=""><Link
           className="flex space-x-3 items-center hover:underline"
           to={useBaseUrl("/docs/java/run-your-first-app-tutorial")}
         >
           <img className="w-8 h-8" src="/img/java.svg" alt="Java logo" />
           <p className="font-semibold">Java</p>
-        </Link>
-        <Link to={useBaseUrl("/docs/node/introduction")}>
+        </Link></li>
+        <li className=""><Link to={useBaseUrl("/docs/node/introduction")}>
           <div className="flex space-x-3 items-center hover:underline">
             <img
               className="w-8 h-8"
               src="/img/typescript.svg"
               alt="Typescript logo"
             />
-            <p className="font-semibold">TypeScript (alpha)</p>
+            <p className="font-semibold">TypeScript</p>
           </div>
-        </Link>
+        </Link></li>
 
-        <Link
+        <li className=""><Link
           className="flex space-x-5 items-center"
           to={useBaseUrl("/docs/php/introduction")}
         >
@@ -68,8 +72,8 @@ function SDKs() {
             <img className="w-8 h-8" src="/img/php.svg" alt="PHP logo" />
             <p className="font-semibold">PHP</p>{" "}
           </div>
-        </Link>
-      </div>
+        </Link></li>
+      </ul>
     </div>
 
   )
@@ -97,22 +101,34 @@ function Server() {
         </svg>
         <h3 className="text-xl font-semibold mb-4">Temporal Server</h3>
       </div>
-      <p className="flex-grow">
+      <p className="flex-grow mb-4">
         Learn Temporal's architecture and how to deploy your own instance of the Temporal
         Server.
       </p>
 
-      <Link
-        to={useBaseUrl("/docs/server/introduction")}
-        className="hover:underline flex mt-5 hover:space-x-2"
-      >
-        <span>Server Intro</span>
-      </Link>
-      <Link
+      <ul className="flex flex-col space-y-2 list-disc pl-4">
+        <li className="list-disc">
+          <Link
+            to={useBaseUrl("/docs/server/introduction")}
+            className="hover:underline"
+          >
+            <p className="font-semibold">Server Intro</p>
+          </Link>
+        </li>
+        <li className="list-disc">
+          <Link
+            to={useBaseUrl("/docs/server/quick-install")}
+            className="hover:underline"
+          >
+            <p className="font-semibold">Quick install</p>
+          </Link>
+        </li>
+        <li className="list-disc">
+          <Link
         to={"https://temporal.io/cloud"}
-        className="hover:underline flex items-center mt-5 space-x-2"
-      >
-        <span>Temporal Cloud Waitlist</span>
+            className="hover:underline"
+          >
+            <p className="font-semibold">Temporal Cloud Waitlist
         <svg
           className="w-4 h-4 inline"
           fill="currentColor"
@@ -121,21 +137,10 @@ function Server() {
         >
           <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
           <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
-        </svg>
-        {/* <svg
-        className="ml-1 mt-0.5 h-5 w-5"
-        fill="currentColor"
-        viewBox="0 0 20 20"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          fillRule="evenodd"
-          d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z"
-          clipRule="evenodd"
-          aria-hidden="true"
-        />
-      </svg> */}
-      </Link>
+              </svg></p>
+          </Link>
+        </li>
+      </ul>
     </div>
   )
 }
@@ -169,8 +174,8 @@ function Tools() {
 
         <h3 className="text-xl font-semibold mb-4">System Tools</h3>
       </div>
-      <p>Tools to interact with the Temporal Server and query or control state.</p>
-      <div className="mt-7">
+      <p className="flex-grow mb-4">Tools to interact with the Temporal Server and query or control state.</p>
+      <div className="">
         <div className="flex space-x-3 mb-3">
           <svg
             className="w-6 h-6"
@@ -218,9 +223,9 @@ function Tools() {
 
 export const Intro = () => {
   return (
-    <section className="mt-10 mb-14">
+    <section className="mt-1 mb-14">
       <h2 className="text-4xl md:text-5xl font-semibold tracking-wide mb-4">
-        Get started with Temporal
+        Temporal Documentation
       </h2>
       <p className="text-xl max-w-2xl">
         Learn how to use Temporal, the open source platform for orchestrating
@@ -228,8 +233,8 @@ export const Intro = () => {
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 my-10">
-        <Server />
         <SDKs />
+        <Server />
         <Tools />
       </div>
     </section>

@@ -18,13 +18,13 @@ const links = [
   {
     type: "video",
     title: "Podcasts, Talks, and Workshops",
-    length: "20 min - 3 hr videos",
+    length: "20 min - 3 hr listen/watch",
     url: "/docs/external-resources#how-temporal-works",
   },
   {
     type: "video",
     title: "Temporal architecture deep dive",
-    length: "23 min watch",
+    length: "20 min read/watch",
     url: "/blog/workflow-engine-principles/",
   }
 ];
