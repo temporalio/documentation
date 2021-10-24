@@ -5,11 +5,12 @@
 
     skipPatterns = ["#", 
     "www.google-analytics.com", "www.googletagmanager.com", 
-    "/docs/server/how-to-deploy-temporal-to-kubernetes-for-testing-and-development"
+    "/docs/server/how-to-deploy-temporal-to-kubernetes-for-testing-and-development",
+    "/docs/node/introduction"
     ]
     pretty = true
 
-#
+# DEAR TEMPORAL TEAM
 # if you are looking for redirects, they have been moved
 # to /static/_redirects where the syntax is more concise 
 # and manageable - swyx
