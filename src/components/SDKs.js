@@ -10,14 +10,14 @@ export const SDKs = () => {
         Find SDK tutorials and API references in the language of your choice.
       </p>
       <div className="grid grid-cols-1 md:grid-cols-2  gap-6 lg:gap-8">
-        <Link to={useBaseUrl("/docs/concepts/introduction")}>
+        <Link to={useBaseUrl("/docs/typescript/introduction")}>
           <div className=" justify-center text-center flex flex-col space-y-3 items-center scale shadow-lg rounded-lg p-6 bg-[color:var(--ifm-card-background-color)]">
             <img
               className="w-16 h-16"
-              src="/img/nodejs.svg"
-              alt="Node js logo"
+              src="/img/typescript.svg"
+              alt="TypeScript logo"
             />
-            <p className="text-lg">Node.js (alpha)</p>
+            <p className="text-lg">TypeScript (alpha)</p>
           </div>
         </Link>
         <Link

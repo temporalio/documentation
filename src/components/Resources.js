@@ -11,14 +11,14 @@ const links = [
   },
   {
     type: "article",
-    title: "Core Concepts",
+    title: "Temporal Core Concepts",
     length: "20 min read",
     url: "/docs/concepts/introduction",
   },
   {
     type: "video",
     title: "Podcasts, Talks, and Workshops",
-    length: "23min - 3hr videos",
+    length: "20 min - 3 hr videos",
     url: "/docs/external-resources#how-temporal-works",
   },
   {

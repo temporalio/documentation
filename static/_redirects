@@ -5,6 +5,7 @@
 /docs/get-started           /
 /docs/go-workflow-testing   /docs/go-testing
 /blog/tags/bugs             /blog/tags/bug
+/docs/typescript            /docs/typescript/introduction
 /docs/node/*                /docs/typescript/:splat
 
 #
