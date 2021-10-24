@@ -1,4 +1,13 @@
 #
+# General redirects
+#
+/docs/sdks-introduction     /application-development
+/docs/get-started           /
+/docs/go-workflow-testing   /docs/go-testing
+/blog/tags/bugs             /blog/tags/bug
+/docs/node/*                /docs/typescript/:splat
+
+#
 # Concept pages redirects
 #
 /docs/concepts            /docs/concepts/introduction
@@ -11,14 +20,6 @@
 /docs/task-queues         /docs/concepts/task-queues
 /docs/concept-workers     /docs/concepts/workers
 /docs/concept-namespaces  /docs/server-namespaces
-
-#
-# General redirects
-#
-/docs/sdks-introduction     /application-development
-/docs/get-started           /
-/docs/go-workflow-testing   /docs/go-testing
-/blog/tags/bugs             /blog/tags/bug
 
 #
 # Server pages redirects
