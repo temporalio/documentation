@@ -3,6 +3,31 @@ import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import BlogLayout from "@theme/BlogLayout";
 import BlogPostItem from "@theme/BlogPostItem";
 import BlogListPaginator from "@theme/BlogListPaginator";
+import Link from "@docusaurus/Link";
+
+import { translate } from "@docusaurus/Translate";
+import { usePluralForm } from "@docusaurus/theme-common"; // Very simple pluralization: probably good enough for now
+
+function useReadingTimePlural() {
+  const { selectMessage } = usePluralForm();
+  return (readingTimeFloat) => {
+    const readingTime = Math.ceil(readingTimeFloat);
+    return selectMessage(
+      readingTime,
+      translate(
+        {
+          id: "theme.blog.post.readingTime.plurals",
+          description:
+            'Pluralized label for "{readingTime} min read". Use as much plural forms (separated by "|") as your language support (see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)',
+          message: "One min read|{readingTime} min read",
+        },
+        {
+          readingTime,
+        }
+      )
+    );
+  };
+}
 
 function BlogListPage(props) {
   const {metadata, items, sidebar} = props;
@@ -25,9 +50,9 @@ function BlogListPage(props) {
       }}
       sidebar={sidebar}
     >
-      <div className="">
-        {items.map(({content: BlogPostContent}) => (
-          <BlogPostItem
+      <ul className="space-y-8">
+        {items.map(({ content: BlogPostContent }) => (
+          <BlogListPageItem
             key={BlogPostContent.metadata.permalink}
             frontMatter={BlogPostContent.frontMatter}
             assets={BlogPostContent.assets}
@@ -35,12 +60,62 @@ function BlogListPage(props) {
             truncated={BlogPostContent.metadata.truncated}
           >
             <BlogPostContent />
-          </BlogPostItem>
+          </BlogListPageItem>
         ))}
-      </div>
+      </ul>
       <BlogListPaginator metadata={metadata} />
     </BlogLayout>
   );
 }
 
 export default BlogListPage;
+
+// we fork the original BlogPostItem because it is not the look we want for the blog list
+function BlogListPageItem(props) {
+  const readingTimePlural = useReadingTimePlural();
+  const {
+    // children,
+    frontMatter,
+    metadata,
+    truncated,
+  } = props;
+  const { date, formattedDate, permalink, tags, readingTime } = metadata;
+  const {
+    // author,
+    title,
+  } = frontMatter;
+  return (<li>
+
+    <h3 className="font-bold text-xl leading-relaxed">
+      <Link className="text-[color:var(--color)]" to={permalink}>
+        {title}
+      </Link>
+    </h3>
+    <p className="text-sm py-1">
+      <time dateTime={date} className="text-sm">
+        {formattedDate}
+        {readingTime && (
+          <>
+            {" · "}
+            {readingTimePlural(readingTime)}
+          </>
+        )}
+      </time>
+    </p>
+
+    {(tags.length > 0 || truncated) && tags.length > 0 && (
+      <span className="flex flex-wrap mb-5">
+        {tags.map(({ label, permalink: tagPermalink }) => (
+          <Link
+            key={tagPermalink}
+            className="no-underline inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-[color:var(--ifm-badge-background-color)] text-[color:var(--ifm-color)] hover:opacity-80"
+            to={tagPermalink}
+          >
+            {label}
+          </Link>
+        ))}
+      </span>
+    )}
+    {props.children}
+  </li>)
+}
