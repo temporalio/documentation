@@ -137,93 +137,104 @@ export const Community = () => {
         </li>
       </ul>
 
-      <div className="my-16">
-        <h2 className="text-xl font-semibold tracking-wide mb-8">
-          Community Distros (Projects that build atop Temporal)
-        </h2>
-        <ul className="list-disc space-y-3 pl-4">
-          <li className="list-disc">
-            <p className="flex space-x-3 items-center ">
+      <div className="flex flex-col space-y-6 sm:space-y-0 sm:flex-row my-16">
+        <div className="flex-1">
+          <h2 className="text-xl uppercase font-semibold tracking-wide py-6">
+            Community Distros
+          </h2>
+          <span className="opacity-70">Projects that build atop Temporal</span>
+          <ul className="list-disc space-y-3 pl-4 mt-2">
+            <li className="list-disc">
+              <p className="">
+                <a
+                  href="https://github.com/airbytehq/airbyte"
+                  className="hover:underline"
+                >
+                  Airbyte
+                </a>
+                <span> - </span>
+                <a
+                  href="https://www.youtube.com/watch?v=K25Bt5asd8I"
+                  className=" opacity-80 hover:underline"
+                >
+                  ELT data pipeline platform (see talk){" "}
+                  <svg
+                    className="w-4 h-4 inline mb-1"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
+                    <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
+                  </svg>
+                </a>
+              </p>
+            </li>
+            <li className="list-disc">
               <a
-                href="https://github.com/airbytehq/airbyte"
+                href="https://github.com/spiral/roadrunner"
                 className="hover:underline"
               >
-                Airbyte (ELT data pipeline platform)
+                Roadrunner
               </a>
-              <span>-</span>
-
+              <span> - </span>
+              <span className="opacity-80">PHP application server</span>
+            </li>
+            <li className="list-disc">
               <a
-                href="https://www.youtube.com/watch?v=K25Bt5asd8I"
-                className=" opacity-80 hover:underline"
+                href="https://github.com/coinbase/temporal-ruby"
+                className="hover:underline"
               >
-                meetup talk{" "}
-                <svg
-                  className="w-4 h-4 inline mb-1"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
-                  <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
-                </svg>
+                Coinbase
               </a>
-            </p>
-          </li>
-          <li className="list-disc">
-            <a
-              href="https://github.com/spiral/roadrunner"
-              className="flex space-x-5 items-center hover:underline"
-            >
-              <p>Roadrunner (PHP application server)</p>
-            </a>
-          </li>
-          <li className="list-disc">
+              <span> - </span>
+              <span className="opacity-80">Third party SDK in production use</span>
+            </li>
+            <li className="list-disc">
+              <a
+                href="https://nunchi.studio/blacksmith/start/onboarding/how"
+                className="hover:underline"
+              >
+                Nunchi Blacksmith
+              </a>
+              <span> - </span>
+              <span className="opacity-80">ETL data platform</span>
+            </li>
+            <li className="list-disc">
+              <a
+                href="https://github.com/DataDog/temporalite"
+                className="hover:underline"
+              >
+                DataDog/temporalite
+              </a>
+              <span> - </span>
+              <span className="opacity-80">Single binary Temporal for CI</span>
+            </li>
+          </ul>
+        </div>
+        <div className="flex-1">
+          <h2 className="text-xl uppercase font-semibold tracking-wide py-6">
+            Community SDKs
+          </h2>
+          <span className="opacity-70">Unofficial Third Party SDKs</span>
+          {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mt-2"> */}
+          <div className="flex flex-col space-y-4 mt-2">
             <a
               href="https://github.com/coinbase/temporal-ruby"
-              className="flex space-x-5 items-center hover:underline"
+              className="flex space-x-5 items-center"
             >
-              <p>Coinbase/temporal-ruby (Third party SDK in production use)</p>
+              <img className="w-8 h-8" src="/img/ruby.svg" alt="Ruby logo" />
+              <p>Ruby</p>
             </a>
-          </li>
-          <li className="list-disc">
             <a
-              href="https://nunchi.studio/blacksmith/start/onboarding/how"
-              className="flex space-x-5 items-center hover:underline"
+              href="https://github.com/firdaus/temporal-python-sdk"
+              className="flex space-x-5 items-center"
             >
-              <p>Nunchi Blacksmith (ETL data platform)</p>
+              <img className="w-8 h-8" src="/img/python.svg" alt="Python logo" />
+              <p>Python</p>
             </a>
-          </li>
-          <li className="list-disc">
-            <a
-              href="https://github.com/DataDog/temporalite"
-              className="flex space-x-5 items-center hover:underline"
-            >
-              <p>
-                DataDog/temporalite (Single binary, zero dependency Temporal)
-              </p>
-            </a>
-          </li>
-        </ul>
-      </div>
-
-      <h2 className="text-xl font-semibold tracking-wide mt-8 mb-8">
-        Community SDKs (unofficial)
-      </h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-        <a
-          href="https://github.com/coinbase/temporal-ruby"
-          className="flex space-x-5 items-center"
-        >
-          <img className="w-8 h-8" src="/img/ruby.svg" alt="Ruby logo" />
-          <p>Ruby</p>
-        </a>
-        <a
-          href="https://github.com/firdaus/temporal-python-sdk"
-          className="flex space-x-5 items-center"
-        >
-          <img className="w-8 h-8" src="/img/python.svg" alt="Python logo" />
-          <p>Python</p>
-        </a>
+          </div>
+        </div>
       </div>
     </section>
   );
