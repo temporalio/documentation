@@ -67,8 +67,8 @@ You will want to run your own proof of concept tests and watch for key metrics t
 - **[Configure your metrics subsystem](https://docs.temporal.io/docs/server/configuration/#metrics).** Temporal supports three metrics providers out of the box: [StatsD](https://github.com/statsd/statsd), [Prometheus](https://prometheus.io/), and [M3](https://m3db.io/), via [Uber's Tally](https://github.com/uber-go/tally) interface.
   Tally offers [extensible custom metrics reporting](https://github.com/uber-go/tally#report-your-metrics), which we expose via [`temporal.WithCustomMetricsReporter`](https://docs.temporal.io/docs/server/options/#withcustommetricsreporter).
   OpenTelemetry support is planned in future.
-- **Set up monitoring.** You can use these [Grafana dashboards](https://github.com/temporalio/dashboards) as a starting point. 
-The single most important metric to track is `schedule_to_start_latency` - if you get a spike in workload and don't have enough workers, your tasks will get backlogged. **We strongly recommend setting alerts for this metric**. This is usually emitted in client SDKs as both `temporal_activity_schedule_to_start_latency_*` and `temporal_workflow_task_schedule_to_start_latency_*` variants - see [the Prometheus GO SDK example](https://github.com/temporalio/samples-go/pull/65) and the [Go SDK source](https://community.temporal.io/t/strategies-for-scaling-aws-services/1577) and there are [plans to add it on the Server](https://github.com/temporalio/temporal/issues/1754).
+- **Set up monitoring.** You can use these [Grafana dashboards](https://github.com/temporalio/dashboards) as a starting point.
+  The single most important metric to track is `schedule_to_start_latency` - if you get a spike in workload and don't have enough workers, your tasks will get backlogged. **We strongly recommend setting alerts for this metric**. This is usually emitted in client SDKs as both `temporal_activity_schedule_to_start_latency_*` and `temporal_workflow_task_schedule_to_start_latency_*` variants - see [the Prometheus GO SDK example](https://github.com/temporalio/samples-go/pull/65) and the [Go SDK source](https://community.temporal.io/t/strategies-for-scaling-aws-services/1577) and there are [plans to add it on the Server](https://github.com/temporalio/temporal/issues/1754).
   - Set up alerts for Workflow Task failures.
   - Also set up monitoring/alerting for all Temporal Workers for standard metrics like CPU/Memory utilization.
 - **Load testing.** You can use [the Maru benchmarking tool](https://github.com/temporalio/maru/) ([author's guide here](https://mikhail.io/2021/03/maru-load-testing-tool-for-temporal-workflows/)), see how we ourselves [stress test Temporal](https://docs.temporal.io/blog/temporal-deep-dive-stress-testing/), or write your own.
@@ -235,25 +235,25 @@ Please search for these topics in our forum or ask on Slack.
 
 ### Temporal Antipatterns
 
-*Please request elaboration on any of these*.
+_Please request elaboration on any of these_.
 
-  - Trying to implement a queue in a workflow (because people hear we replace queues)
-  - Serializing massive amounts of state into and out of the workflow.
-  - Treating everything as rigid/linear sequence of steps instead of dynamic logic
-  - Implementing a DSL which is actually just a generic schema based language
-  - Polling in activities instead of using signals
-  - Blocking on incredibly long RPC requests and not using heartbeats
-  - Failing/retrying workflows without a very very specific business reason
+- Trying to implement a queue in a workflow (because people hear we replace queues)
+- Serializing massive amounts of state into and out of the workflow.
+- Treating everything as rigid/linear sequence of steps instead of dynamic logic
+- Implementing a DSL which is actually just a generic schema based language
+- Polling in activities instead of using signals
+- Blocking on incredibly long RPC requests and not using heartbeats
+- Failing/retrying workflows without a very very specific business reason
 
 ### Temporal Best practices
 
-*Please request elaboration on any of these*.
+_Please request elaboration on any of these_.
 
-  - Mapping things to entities instead of traditional service design
-  - Testing: unit, integration
-  - Retries: figuring out right values for timeouts
-  - Versioning
-  - The Workflow is Temporal's fundamental unit of scalability - break things into workflows to scale, don't try to stuff everything in one workflow!
+- Mapping things to entities instead of traditional service design
+- Testing: unit, integration
+- Retries: figuring out right values for timeouts
+- Versioning
+- The Workflow is Temporal's fundamental unit of scalability - break things into workflows to scale, don't try to stuff everything in one workflow!
 
 ## External Runbooks
 

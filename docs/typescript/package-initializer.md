@@ -3,8 +3,7 @@ id: package-initializer
 sidebar_label: Package Initializer
 ---
 
-> **@temporalio/create** [![NPM](https://img.shields.io/npm/v/@temporalio/create)](https://www.npmjs.com/package/@temporalio/create)
-> [GitHub source](https://github.com/temporalio/sdk-typescript/tree/main/packages/create-project)
+> **@temporalio/create** [![NPM](https://img.shields.io/npm/v/@temporalio/create)](https://www.npmjs.com/package/@temporalio/create) > [GitHub source](https://github.com/temporalio/sdk-typescript/tree/main/packages/create-project)
 
 `@temporalio/create` is an optional tool to set up a new Temporal project starting from [our samples repo](https://github.com/temporalio/samples-typescript).
 
