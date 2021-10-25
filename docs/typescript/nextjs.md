@@ -1,6 +1,6 @@
 ---
 id: nextjs-tutorial
-title: Next.js One-Click Buy Tutorial
+title: Integrating Temporal into a Next.js Application
 sidebar_label: Next.js Tutorial
 ---
 
@@ -37,7 +37,7 @@ You should be able to skip some steps if you want to use vanilla JavaScript.
 You can install Temporal's packages with a single dependency, then set up folders to locate your Workflow, Activity, and Worker code:
 
 ```bash
-npm i temporalio # in the project root
+npm i temporalio # in Next.js project root
 mkdir temporal
 mkdir temporal/src
 cd temporal/src
@@ -154,7 +154,7 @@ It is out of scope for this tutorial but try `tctl workflow run --tq tutorial --
 We will use Next.js API routes to expose a serverless endpoint that can be called by our frontend and then communicate with Temporal on the backend:
 
 ```bash
-# assuming project root
+# in Next.js project root
 mkdir pages/api
 touch pages/api/startBuy.ts
 ```
@@ -222,9 +222,13 @@ Again, for a fully working example, you can check our [samples-typescript repo](
 
 Your Next.js app, including Next.js API Routes with Temporal Clients in them, can be deployed anywhere Next.js can be deployed, including in serverless environments like Vercel or Netlify.
 
-However, your Temporal Workers must be deployed in traditional "serverful" environments (e.g. with EC2, Digital Ocean or Render.com).
+:::important 
 
-Both Temporal Clients and Temporal Workers must be configured to communicate with a Temporal Server instance, whether self-hosted or by Temporal Cloud.
+However, your Temporal Workers **must** be deployed in traditional "serverful" environments (e.g. with EC2, Digital Ocean or Render, not a serverless environment).
+
+:::
+
+Both Temporal Clients and Temporal Workers must be configured to communicate with a Temporal Server instance, whether self-hosted or Temporal Cloud.
 You will need to configure connection address, namespace, and mTLS cert and key (strongly recommended).
 
 ```ts
@@ -264,7 +268,7 @@ You will need to configure connection address, namespace, and mTLS cert and key 
 
 As you move into production with your app, please review our docs on:
 
-- [Security](/docs/typescript/security)
+- [Securing](/docs/typescript/security)
 - [Testing](/docs/typescript/testing)
 - [Patching](/docs/typescript/patching) (aka migrating code to new versions)
 - [Logging](/docs/typescript/logging)
