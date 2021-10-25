@@ -21,6 +21,7 @@ If you are interested in a fully managed service hosting Temporal Server, please
 ## Temporal Server
 
 Temporal Server is a Go application which you can [import](/docs/server/options) or run as a binary (we offer [builds with every release](https://github.com/temporalio/temporal/releases)).
+Production deployments of Temporal Server should deploy each the 4 internal services separately (if you are using Kubernetes, one service per pod).
 
 <details>
 <summary>
@@ -66,7 +67,9 @@ You will want to run your own proof of concept tests and watch for key metrics t
 - **[Configure your metrics subsystem](https://docs.temporal.io/docs/server/configuration/#metrics).** Temporal supports three metrics providers out of the box: [StatsD](https://github.com/statsd/statsd), [Prometheus](https://prometheus.io/), and [M3](https://m3db.io/), via [Uber's Tally](https://github.com/uber-go/tally) interface.
   Tally offers [extensible custom metrics reporting](https://github.com/uber-go/tally#report-your-metrics), which we expose via [`temporal.WithCustomMetricsReporter`](https://docs.temporal.io/docs/server/options/#withcustommetricsreporter).
   OpenTelemetry support is planned in future.
-- **Set up monitoring.** You can use these [Grafana dashboards](https://github.com/temporalio/dashboards) as a starting point. The single most important metric to track is `ScheduleToStart` latency - if you get a spike in workload and don't have enough workers, your tasks will get backlogged. **We strongly recommend setting alerts for this metric**.
+- **Set up monitoring.** You can use these [Grafana dashboards](https://github.com/temporalio/dashboards) as a starting point. 
+The single most important metric to track is `schedule_to_start_latency` - if you get a spike in workload and don't have enough workers, your tasks will get backlogged. **We strongly recommend setting alerts for this metric**. This is usually emitted in client SDKs as both `temporal_activity_schedule_to_start_latency_*` and `temporal_workflow_task_schedule_to_start_latency_*` variants - see [the Prometheus GO SDK example](https://github.com/temporalio/samples-go/pull/65) and the [Go SDK source](https://community.temporal.io/t/strategies-for-scaling-aws-services/1577) and there are [plans to add it on the Server](https://github.com/temporalio/temporal/issues/1754).
+  - Set up alerts for Workflow Task failures.
   - Also set up monitoring/alerting for all Temporal Workers for standard metrics like CPU/Memory utilization.
 - **Load testing.** You can use [the Maru benchmarking tool](https://github.com/temporalio/maru/) ([author's guide here](https://mikhail.io/2021/03/maru-load-testing-tool-for-temporal-workflows/)), see how we ourselves [stress test Temporal](https://docs.temporal.io/blog/temporal-deep-dive-stress-testing/), or write your own.
 
@@ -96,15 +99,17 @@ We have load tested up to 200 million concurrent Workflow Executions.
 Every shard is low contention by design and it is very difficult to oversubscribe to a Task Queue in the same cluster.
 With that said, here are some guidelines to some common bottlenecks:
 
-- **Database**. The vast majority of the time the database will be the bottleneck. **We highly recommend setting alerts on [`ScheduleToStart` latency](https://github.com/temporalio/temporal/blob/6cbfa2a3a569fcc856788b37616876538d904b3d/common/metrics/defs.go#L2215)** to look out for this. Also check if your database connection is getting saturated.
+- **Database**. The vast majority of the time the database will be the bottleneck. **We highly recommend setting alerts on `schedule_to_start_latency`** to look out for this. Also check if your database connection is getting saturated.
 - **Internal services**. The next layer will be scaling the 4 internal services of Temporal ([Frontend, Matching, History, and Worker](/docs/content/what-is-a-temporal-cluster)).
   Monitor each accordingly. The Frontend service is more CPU bound, whereas the History and Matching services require more memory.
   If you need more instances of each service, spin them up separately with different command line arguments. You can learn more cross referencing [our Helm chart](https://github.com/temporalio/helm-charts) with our [Server Configuration reference](https://docs.temporal.io/docs/server/configuration/).
 - See the **Server Limits** section below for other limits you will want to keep in mind when doing system design, including event history length.
 
+### Scaling Workflow and Activity Workers
+
 Finally you want to set up alerting and monitoring on Worker metrics.
-When Workers are able to keep up, `ScheduleToStart` latency is close to zero.
-The default is 4 Workers (aka pollers, as the Workers poll Task Queues), which should handle no more than 300 messages per second.
+When Workers are able to keep up, `schedule_to_start_latency` is close to zero.
+The default is 4 Workers (each of which can have 2-4 pollers of Task Queues), which should handle no more than 300 messages per second.
 
 Specifically, the primary scaling metrics are located in the server's dynamic configs:
 
@@ -117,8 +122,10 @@ Provided you tune the concurrency of your pollers based on your application, it 
 **It's possible to have too many workers.**
 Monitor the poll success (`poll_success`/`poll_success_sync`) and `poll_timeouts` metrics:
 
-- if you see low `ScheduleToStart` latency / low percentage of poll success / high percentage of timeouts, you might have too many workers/pollers.
-- with 100% poll success and increasing `ScheduleToStart` latency, you need to scale up.
+- `poll_success_sync` indicates a "sync match", i.e. a poller waiting for a task to appear, isntead of a task waiting for a poller to appear.
+- Poll Success should be >90% in most cases - for high volume and low latency, try to target >95%
+- if you see low `schedule_to_start_latency` / low percentage of poll success / high percentage of timeouts, you might have too many workers/pollers.
+- with 100% poll success and increasing `schedule_to_start_latency`, you need to scale up.
 
 ## FAQs
 
@@ -127,7 +134,7 @@ Monitor the poll success (`poll_success`/`poll_success_sync`) and `poll_timeouts
 Temporal does not yet support returning the number of tasks in a task queue.
 The main technical hurdle is that each task can have its own `ScheduleToStart` timeout, so just counting how many tasks were added and consumed is not enough.
 
-This is why we recommend tracking `ScheduleToStart` latency for determining if the task queue has a backlog (aka Workers are under-provisioned for a given Task Queue).
+This is why we recommend tracking `schedule_to_start_latency` for determining if the task queue has a backlog (aka your Workflow and Activity Workers are under-provisioned for a given Task Queue).
 We do plan to add features that give more visibility into the task queue state in future.
 
 ### FAQ: High Availability cluster configuration
@@ -216,34 +223,37 @@ Temporal Web's tracing capabilities mainly track activity execution within a Tem
 
 - Example: [Tracing Temporal Workflows with DataDog](https://spiralscout.com/blog/tracing-temporal-workflow-with-datadog)
 
-### Future content
+## Further things to consider
 
-Topics this document will cover in future: (for now, please search/ask on the forum, or open issues to ask questions about any of these)
+:::warning
 
-- Recommended Environment
-  - Staging/Test
-  - using Temporal Web
-- More on Monitoring/Prometheus/Logging
-  - Give guidance on how to set up alerts on Metrics provided by SDK
-- Setting up alerts for Workflow Task failures
-- Temporal Antipatterns
+This document is still being written and we would welcome your questions and contributions.
+
+Please search for these topics in our forum or ask on Slack.
+
+:::
+
+### Temporal Antipatterns
+
+*Please request elaboration on any of these*.
+
   - Trying to implement a queue in a workflow (because people hear we replace queues)
   - Serializing massive amounts of state into and out of the workflow.
-  - Treating everything as incredibly rigid/linear sequence of steps instead of dynamic logic
+  - Treating everything as rigid/linear sequence of steps instead of dynamic logic
   - Implementing a DSL which is actually just a generic schema based language
   - Polling in activities instead of using signals
   - Blocking on incredibly long RPC requests and not using heartbeats
   - Failing/retrying workflows without a very very specific business reason
-- Temporal Best practices
+
+### Temporal Best practices
+
+*Please request elaboration on any of these*.
+
   - Mapping things to entities instead of traditional service design
   - Testing: unit, integration
   - Retries: figuring out right values for timeouts
   - Versioning
-  - WF as unit of scalability - break things into workflows to scale, don't stuff everything in one workflow!
-
-## Further Reading
-
-Understanding the [Temporal Server architecture](/docs/content/what-is-a-temporal-cluster) can help you debug and troubleshoot production deployment issues.
+  - The Workflow is Temporal's fundamental unit of scalability - break things into workflows to scale, don't try to stuff everything in one workflow!
 
 ## External Runbooks
 
