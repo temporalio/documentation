@@ -99,7 +99,7 @@ function Server() {
             fill="currentColor"
           />
         </svg>
-        <h3 className="text-xl font-semibold mb-4">Temporal Server</h3>
+        <h3 className="text-xl font-semibold mb-4">Temporal Cluster</h3>
       </div>
       <p className="flex-grow mb-4">
         Learn Temporal's architecture and how to deploy your own instance of the Temporal
