@@ -221,7 +221,7 @@ Again, for a fully working example, you can check our [samples-typescript repo](
 
 Your Next.js app, including Next.js API Routes with Temporal Clients in them, can be deployed anywhere Next.js can be deployed, including in serverless environments like Vercel or Netlify.
 
-:::important 
+:::important
 
 However, your Temporal Workers **must** be deployed in traditional "serverful" environments (e.g. with EC2, Digital Ocean or Render, not a serverless environment).
 
