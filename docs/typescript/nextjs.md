@@ -212,7 +212,7 @@ At this point, you have a working full stack example of a Temporal Workflow runn
 You can explore:
 
 - Adding [Activities](/docs/typescript/activities) to your Workflow to interact with the outside world
-- Adding [Signals and Queries](/docs/typescript/workflow-apis#signals-and-queries) to your Workflow
+- Adding [Signals and Queries](/docs/typescript/workflows/#signals-and-queries) to your Workflow
   - You can choose to set up one API Route per Signal or Query, or have one API Route handle all of them, Temporal has no opinion on setup
 
 Again, for a fully working example, you can check our [samples-typescript repo](https://github.com/temporalio/samples-typescript/tree/main/nextjs-ecommerce-oneclick).
