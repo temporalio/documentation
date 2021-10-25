@@ -102,8 +102,8 @@ function Server() {
         <h3 className="text-xl font-semibold mb-4">Temporal Cluster</h3>
       </div>
       <p className="flex-grow mb-4">
-        Learn Temporal's architecture and how to deploy your own instance of the Temporal
-        Server.
+        Learn Temporal's architecture and how to deploy your own instance of a Temporal
+        Cluster
       </p>
 
       <ul className="flex flex-col space-y-2 list-disc pl-4">
