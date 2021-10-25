@@ -314,6 +314,7 @@ module.exports = {
           items: [
             "typescript/package-initializer",
             "typescript/hello-world",
+            "typescript/nextjs-tutorial",
             {
               type: "link",
               label: "Code Samples",

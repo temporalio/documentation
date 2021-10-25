@@ -20,7 +20,7 @@ npx @temporalio/create@latest ./example
 #### Optional flags
 
 - `--sample` — Which sample to bootstrap the app with. You can use the name of a sample
-  from [github.com/temporalio/samples-typescript](https://github.com/temporalio/samples-typescript) or use a GitHub URL. The URL can have a branch and/or subdirectory: for example, `https://github.com/temporalio/samples-typescript/tree/next/ecommerce-one-click/nextjs`.
+  from [github.com/temporalio/samples-typescript](https://github.com/temporalio/samples-typescript) or use a GitHub URL. The URL can have a branch and/or subdirectory: for example, `https://github.com/your-org/your-app/tree/main/foo/bar`.
 - `--list-samples` — List available projects from [our samples repo](https://github.com/temporalio/samples-typescript).
 - `--use-yarn` — Use Yarn instead of npm.
 - `--[no-]git-init` - Initalize an empty git repository
