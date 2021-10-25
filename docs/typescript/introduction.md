@@ -189,3 +189,5 @@ Then you should have a passing knowledge of our Core APIs:
   - see [Workflow APIs](/docs/typescript/workflows) for Signals, Queries, Timers, Child Workflows, Infinite Workflows, and more!
 - [Workers and Task Queues](/docs/typescript/workers): How Workflows and Activities are routed to and executed on machines you control
 - [Clients](/docs/typescript/client): How to start, signal, query, cancel, or otherwise handle Workflows.
+
+If you want an example of what it's like to integrate Temporal into an existing full-stack app, check our [Next.js One-Click Buy Tutorial](/docs/typescript/nextjs-tutorial).

@@ -73,6 +73,35 @@ If you are importing a pure ESM dependency, see our [fetch ESM](https://github.c
 - `tsconfig.json` should output in `esnext` format
 - Imports [must](https://nodejs.org/api/esm.html#esm_mandatory_file_extensions) include the `.js` file extension
 
+Activities are Promises and you may retrieve multiple Activities from the same handle if they all share the same timeouts/retries/options:
+
+```ts
+export async function Workflow(name: string): Promise<string> {
+  const { act1, act2, act3 } =
+    createActivityHandle<typeof activities>(/* activityOptions */);
+  await act1();
+  await Promise.all([act2, act3]);
+}
+```
+
+:::caution Wrong way to import activities
+
+You may be tempted to import activities directly instead of using `createActivityHandle`:
+
+```ts
+import { greet } from './activities';
+// error when you try to use the function in your code
+greet('Hello world');
+```
+
+This will result in a Webpack error, because the Temporal Worker will try to bundle this as part of the Workflow.
+Make sure you're using `createActivityHandle` to retrieve an Activity rather than calling the function directly.
+This indirection comes from the fact that Activities are run in the regular Node.js environment, not the deterministic `vm` where Workflows are run.
+
+See also our [docs on Webpack troubleshooting](/docs/typescript/troubleshooting/).
+
+:::
+
 ## Activity Options
 
 When you write `createActivityHandle`, there are [a range of options](https://typescript.temporal.io/api/interfaces/worker.activityoptions/) you can set, the most important of which are Timeouts and Retries.
