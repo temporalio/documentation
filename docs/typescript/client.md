@@ -66,7 +66,7 @@ There are a range of [`WorkflowOptions`](https://typescript.temporal.io/api/inte
     Advanced users can finetune this behavior with the [workflowIdReusePolicy](https://typescript.temporal.io/api/interfaces/client.workflowoptions/#workflowidreusepolicy).
   - If not specified, a UUID is generated, which you can access with `handle.workflowId`.
 - `cronSchedule`: see ["Scheduling Cron Workflows"](#scheduling-cron-workflows)
-- `searchAttributes`: Specifies additional indexed information for visibility/metadata (see our [Search docs](https://docs.temporal.io/docs/server/workflow-search/)).
+- `searchAttributes`: Specifies additional indexed information for visibility/metadata (see [What is a Search Attribute](/docs/content/what-is-a-search-attribute)).
 
 Workflow-level Timeouts and Retries exist, but we do not recommend setting them (do them at the Activity level instead) unless you know what you are doing.
 

@@ -5,25 +5,25 @@ description: A List Filter is the SQL-like string that is provided as the parame
 tags:
   - explanation
   - filtered-lists
+  - visibility
 ---
 
-import RelatedReadList, {RelatedReadContainer, RelatedReadItem} from '../components/RelatedReadList.js'
+import {RelatedReadContainer, RelatedReadItem} from '../components/RelatedReadList.js'
 
 <!-- prettier-ignore -->
 import * as WhatIsAdvancedVisibility from './what-is-advanced-visibility.md'
 import * as WhatIsASearchAttribute from './what-is-a-search-attribute.md'
-
-<!--TODO
 import * as HowToListFilterInWebUI from './how-to-use-a-list-filter-in-the-temporal-web-ui.md'
--->
 
 A List Filter is the SQL-like string that is provided as the parameter to an <preview page={WhatIsAdvancedVisibility}>Advanced Visibility</preview> List API.
 
 The following is an example List Filter:
 
-```sql
+```
 WorkflowType = "main.YourWorkflowDefinition" and ExecutionStatus != "Running" and (StartTime > "2021-06-07T16:46:34.236-08:00" or CloseTime > "2021-06-07T16:46:34-08:00") order by StartTime desc
 ```
+
+[More example List Filters](#example-list-filters)
 
 A List Filter contains Search Attribute keys, Search Attribute values, and Operators.
 
@@ -56,8 +56,68 @@ A List Filter contains Search Attribute keys, Search Attribute values, and Opera
 
 - To efficiently count the number of Workflow Executions, use the `CountWorkflow` API.
 
-<!--TODO
 <RelatedReadContainer>
   <RelatedReadItem page={HowToListFilterInWebUI} />
 </RelatedReadContainer>
--->
+
+### Example List Filters
+
+```sql
+WorkflowId = 'wid'`
+```
+
+```sql
+`WorkflowId = 'wid' or WorkflowId = 'another-wid'`
+```
+
+```sql
+`WorkflowId = 'wid' order by StartTime desc`
+```
+
+```sql
+`WorkflowId = 'wid' and CloseTime = missing`
+```
+
+```sql
+`WorkflowId = 'wid' or CloseTime = missing`
+```
+
+```sql
+`CloseTime = missing order by CloseTime desc`
+```
+
+```sql
+`WorkflowId = 'wid' and StartTime > "2018-06-07T15:04:05+00:00"`
+```
+
+```sql
+ExecutionTime between 1 and 2`
+```
+
+```sql
+`ExecutionTime < 1000000 or ExecutionTime > 2000000`
+```
+
+```sql
+`order by ExecutionTime`
+```
+
+```sql
+`order by StartTime desc, CloseTime asc`
+```
+
+```sql
+`order by CustomStringField desc`
+```
+
+```sql
+`order by CustomIntField asc`
+```
+
+```sql
+`ExecutionTime < "unable to parse"`
+```
+
+```sql
+`WorkflowId = 'wid' union select * from dummy`
+```

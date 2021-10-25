@@ -383,158 +383,31 @@ Otherwise your workflow can't make any progress after auto-reset.
 `--tls_server_name=<server name>` command line argument that passes an override value for the target server that is used for TLS host verification.
 It also enables host verification. The value must be one of the DNS names listed in the server TLS certificate.
 
-TLS command line arguments can be provided via their respective environment variables to shorten the command line.
+TLS command-line arguments can be provided via their respective environment variables to shorten the command line.
 
-## Search Workflows
+## List Workflow Executions
 
-### List closed or open workflow executions
+import HowToListWorkflowExecutionsUsingTCTL from '../content/how-to-list-workflow-executions-using-tctl.md'
 
-```bash
-tctl workflow list
-```
+<HowToListWorkflowExecutionsUsingTCTL/>
 
-By default only one page is shown.
-To view more items, use the `--more` flag.
+## View Search Attributes of a Cluster
 
-```bash
-tctl workflow list --more
-```
+import HowToViewSearchAttributesOfAClusterUsingTCTL from '../content/how-to-view-search-attributes-of-a-cluster-using-tctl.md'
 
-Use the `--query` flag to list Workflows using an SQL-like query:
+<HowToViewSearchAttributesOfAClusterUsingTCTL/>
 
-```bash
-tctl workflow list \
-  --query "WorkflowType='main.SampleParentWorkflow' AND ExecutionStatus='Running'"
-```
+## Add custom Search Attribute to a Cluster
 
-This returns all open Workflows with `workflowType` as `main.SampleParentWorkflow`.
+import HowToAddACustomSearchAttributeToAClusterUsingTCTL from '../content/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl.md'
 
-```bash
-tctl workflow list
-```
+<HowToAddACustomSearchAttributeToAClusterUsingTCTL/>
 
-CLI output should be similar to:
+## Remove Search Attributes from a Cluster
 
-```text
-  WORKFLOW TYPE |             WORKFLOW ID              |                RUN ID                |     TASK QUEUE      | START TIME | EXECUTION TIME | END TIME
-  HelloWorld    | 08c0259f-c1d5-41d9-b51f-8c70c203ccca | f0c04163-833f-490b-99a9-ee48b6199213 | HelloWorldTaskQueue | 20:41:06   | 20:41:06       | 20:41:06
-  HelloWorld    | d58237c9-2ae7-4e17-9cbd-311beeedfbe2 | 7a948e0b-0b0a-4aea-9457-994821c7f7be | HelloWorldTaskQueue | 20:40:12   | 20:40:12       | 20:40:12
-```
+import HowToRemoveASearchAttributeFromAClusterUsingTCTL from '../content/how-to-remove-a-search-attribute-from-a-cluster-using-tctl.md'
 
-Looking at the Workflow execution history more closely:
-
-```bash
-tctl workflow showid 08c0259f-c1d5-41d9-b51f-8c70c203ccca
-```
-
-CLI output:
-
-```text
-  1  WorkflowExecutionStarted    {WorkflowType:{Name:HelloWorld}, ParentInitiatedEventId:0,
-                                  TaskQueue:{Name:HelloWorldTaskQueue, Kind:Normal},
-                                  Input:[Temporal], WorkflowExecutionTimeout:1h0m0s,
-                                  WorkflowRunTimeout:1h0m0s, WorkflowTaskTimeout:10s,
-                                  Initiator:Unspecified, LastCompletionResult:[],
-                                  OriginalExecutionRunId:f0c04163-833f-490b-99a9-ee48b6199213,
-                                  Identity:tctl@z0mb1e,
-                                  FirstExecutionRunId:f0c04163-833f-490b-99a9-ee48b6199213,
-                                  Attempt:1, WorkflowExecutionExpirationTime:2020-10-13
-                                  21:41:06.349 +0000 UTC, FirstWorkflowTaskBackoff:0s}
-  2  WorkflowTaskScheduled       {TaskQueue:{Name:HelloWorldTaskQueue,
-                                  Kind:Normal},
-                                  StartToCloseTimeout:10s, Attempt:1}
-  3  WorkflowTaskStarted         {ScheduledEventId:2, Identity:15079@z0mb1e,
-                                  RequestId:731f7b41-5ae4-42e4-9695-ecd857d571f1}
-  4  WorkflowTaskCompleted       {ScheduledEventId:2,
-                                  StartedEventId:3,
-                                  Identity:15079@z0mb1e}
-  5  WorkflowExecutionCompleted  {Result:[],
-                                  WorkflowTaskCompletedEventId:4}
-```
-
-Even for such a trivial Workflow, the history gives a lot of useful information about all steps that were executed and their inputs.
-For complex Workflows this is a really useful tool for production and development troubleshooting.
-
-### List search attributes
-
-You can query the list of search attributes with the following command:
-
-```bash
-tctl cluster get-search-attributes
-```
-
-Here is some example output:
-
-```bash
-+-----------------------+----------+
-|         NAME          |   TYPE   |
-+-----------------------+----------+
-| BinaryChecksums       | Keyword  |
-| CloseTime             | Int      |
-| CustomBoolField       | Bool     |
-| CustomDatetimeField   | Datetime |
-| CustomDoubleField     | Double   |
-| CustomIntField        | Int      |
-| CustomKeywordField    | Keyword  |
-| CustomNamespace       | Keyword  |
-| CustomStringField     | String   |
-| ExecutionStatus       | Int      |
-| ExecutionTime         | Int      |
-| Operator              | Keyword  |
-| RunId                 | Keyword  |
-| StartTime             | Int      |
-| TaskQueue             | Keyword  |
-| TemporalChangeVersion | Keyword  |
-| WorkflowId            | Keyword  |
-| WorkflowType          | Keyword  |
-+-----------------------+----------+
-```
-
-There is also admin version of this command:
-
-```bash
-tctl admin cluster get-search-attributes
-```
-
-which will show you custom and system search attributes separately and also show underlying Elasticsearch index schema and system Workflow status.
-
-### Add new search attributes
-
-Here is how you add a new search attribute:
-
-```bash
-tctl admin cluster add-search-attributes --name ProductId --type Keyword
-```
-
-The possible values for `--type` are:
-
-- String
-- Keyword
-- Int
-- Double
-- Bool
-- Datetime
-
-:::note
-
-Due to Elasticsearch limitations you can only add new custom search attributes but not rename or remove existing ones.
-
-:::
-
-### Remove search attributes
-
-Here is how you remove an existing search attribute:
-
-```bash
-tctl admin cluster remove-search-attributes --name ProductId
-```
-
-:::note
-
-Due to Elasticsearch limitations, this command removes search attributes only from cluster metadata (Workflows won't be able to use them).
-but not from the Elasticsearch index schema. You need to modify the Elasticsearch index manually; in most cases, this requires reindexing.
-
-:::
+<HowToRemoveASearchAttributeFromAClusterUsingTCTL/>
 
 ### Start Workflow with Search Attributes
 
@@ -548,33 +421,11 @@ tctl workflow start \
   --search_attr_value '5 | keyword1 | john test | true | 2019-06-07T16:16:36-08:00'
 ```
 
-### Search Workflows with List API
+## View Workflow Execution Event History
 
-```bash
-tctl workflow list \
-  --query '(CustomKeywordField = "keyword1" and CustomIntField >= 5) or CustomKeywordField = "keyword2"' \
-  --print_search_attr
-```
+import ViewWorkflowExecutionEventHistory from '../content/how-to-view-workflow-execution-event-history-using-tctl.md'
 
-```bash
-tctl workflow list \
-  --query 'CustomKeywordField in ("keyword2", "keyword1") and CustomIntField >= 5 and CloseTime between "2018-06-07T16:16:36-08:00" and "2019-06-07T16:46:34-08:00" order by CustomDatetimeField desc' \
-  --print_search_attr
-```
-
-To list only open Workflows, add `ExecutionStatus = "Running"` to the end of the query.
-
-Note that queries can support more than one type of filter:
-
-```bash
-tctl workflow list \
-  --query 'WorkflowType = "main.Workflow" and (WorkflowId = "1645a588-4772-4dab-b276-5f9db108b3a8" or RunId = "be66519b-5f09-40cd-b2e8-20e4106244dc")'
-```
-
-```bash
-tctl workflow list \
-  --query 'WorkflowType = "main.Workflow" StartTime > "2019-06-07T16:46:34-08:00" and ExecutionStatus = "Running"'
-```
+<ViewWorkflowExecutionEventHistory/>
 
 ### Workflow Id Uniqueness
 

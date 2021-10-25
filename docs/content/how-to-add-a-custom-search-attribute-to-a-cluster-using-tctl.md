@@ -6,10 +6,14 @@ description: Use the `tctl admin cluster add-search-attributes` command to add a
 tags:
   - operation-guides
   - filtered-lists
+  - visibility
   - tctl
 ---
 
-Use the `tctl admin cluster add-search-attributes` command to add a custom Search Attribute to your Temporal Cluster.
+<!-- prettier-ignore -->
+import * as WhatIsASearchAttribute from './what-is-a-search-attribute.md'
+
+Use the following command to add a custom <preview page={WhatIsASearchAttribute}>Search Attribute</preview> to your Temporal Cluster.
 
 ```bash
 tctl admin cluster add-search-attributes --name <SearchAttributeKeyName> --type <SearchAttributeValueType>

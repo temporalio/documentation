@@ -9,6 +9,9 @@ tags:
 
 import RelatedReadList, {RelatedReadContainer, RelatedReadItem} from '../components/RelatedReadList.js'
 
+<!-- prettier-ignore -->
+import * as WhatIsASearchAttribute from './what-is-a-search-attribute.md'
+
 Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, and pass the instance to the `ExecuteWorkflow` call.
 
 The following fields are available:
@@ -224,11 +227,23 @@ readlist={[
 
 ### `SearchAttributes`
 
+Search Attribute types are defined in the Elasticsearch Index Schema.
+These are the corresponding Search Attribute value types in Go:
+
+- Keyword = string
+- Int = int64
+- Double = float64
+- Bool = bool
+- Datetime = time.Time
+- String = string
+
 ```go
+searchAttributes := map[string]interface{}{
+  "CustomIntField": 1,
+  "MiscData": "yellow",
+}
 workflowOptions := client.StartWorkflowOptions{
-  SearchAttributes: map[string]interface{}{
-    "CustomIntField": 1,
-  },
+  SearchAttributes: searchAttributes,
   // ...
 }
 workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
@@ -237,10 +252,6 @@ if err != nil {
 }
 ```
 
-<!--TODO
-<RelatedReadList
-readlist={[
-["What is a Search Attribute?","/docs/content/what-is-a-search-attribute","explanation"],
-]}
-/>
--->
+<RelatedReadContainer>
+  <RelatedReadItem page={WhatIsASearchAttribute} />
+</RelatedReadContainer>
