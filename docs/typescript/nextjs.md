@@ -26,9 +26,9 @@ npx @temporalio/create@latest nextjs-temporal-app --sample nextjs-ecommerce-onec
 ```
 
 - We go through the setup assuming you want to use TypeScript.
-You should be able to skip some steps if you want to use vanilla JavaScript.
+  You should be able to skip some steps if you want to use vanilla JavaScript.
 - We also assume that you have [Temporal's prerequisites](/docs/typescript/introduction#getting-started) already set up.
-- Temporal doesn't prescribe folder structure; feel free to ignore or modify these instructions per your own needs. 
+- Temporal doesn't prescribe folder structure; feel free to ignore or modify these instructions per your own needs.
 
 :::
 
@@ -109,7 +109,6 @@ in a single `npm run dev` command.
 
 </details>
 
-
 ## Write your first Workflow and Worker
 
 Inside of `/temporal/src/workflows.ts` we'll write a simple Workflow function to start with:
@@ -117,7 +116,7 @@ Inside of `/temporal/src/workflows.ts` we'll write a simple Workflow function to
 ```ts
 // /temporal/src/workflows.ts
 export async function OneClickBuy(itemId: string) {
-  console.log('received id: ', itemId)
+  console.log('received id: ', itemId);
 }
 ```
 
@@ -144,7 +143,7 @@ You should now be able to run your Worker with `npm run build:temporal && npm ru
 
 :::tip Pro tip
 
-You actually *can* start a Workflow with [`tctl`](/docs/system-tools/tctl#workflow-operation-examples) with just a Worker running, and no Client code written.
+You actually _can_ start a Workflow with [`tctl`](/docs/system-tools/tctl#workflow-operation-examples) with just a Worker running, and no Client code written.
 It is out of scope for this tutorial but try `tctl workflow run --tq tutorial --wt OneClickBuy --et 60 -i '"temp123"'` if you enjoy developing with CLIs.
 
 :::
@@ -170,7 +169,7 @@ export default async function startBuy(req, res) {
   const { itemId } = req.body; // TODO: validate itemId and req.method
   const connection = new Connection();
   const client = new WorkflowClient(connection.service);
-  const handle = client.createWorkflowHandle(OneClickBuy, { 
+  const handle = client.createWorkflowHandle(OneClickBuy, {
     taskQueue: 'tutorial',
     // workflowId: // TODO: use business-meaningful user/transaction ID here
   });
@@ -201,14 +200,14 @@ fetch('/api/startBuy', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({ itemId }),
-})
+});
 ```
 
 We recommend tracking the state of this API call and possibly toasting success, [per our sample code](https://github.com/temporalio/samples-typescript/blob/1f76cb6f78ef494074b937268c14fcc078e36956/nextjs-ecommerce-oneclick/pages/index.tsx#L143), but of course it is up to you what UX you want to provide.
 
 ## Workflow Development
 
-At this point, you have a working full stack example of a Temporal Workflow running inside your Next.js app. 
+At this point, you have a working full stack example of a Temporal Workflow running inside your Next.js app.
 
 You can explore:
 
@@ -233,24 +232,10 @@ You will need to configure connection address, namespace, and mTLS cert and key 
 
 ```ts
 // before Worker.create call in worker.ts
-  await Core.install({
-    serverOptions: {
-      address,
-      namespace,
-      tls: {
-        serverNameOverride,
-        serverRootCACertificate,
-        clientCertPair: {
-          crt: fs.readFileSync(clientCertPath),
-          key: fs.readFileSync(clientKeyPath),
-        },
-      },
-    },
-  });
-
-// inside each Client call inside API Route
-  const connection = new Connection({
+await Core.install({
+  serverOptions: {
     address,
+    namespace,
     tls: {
       serverNameOverride,
       serverRootCACertificate,
@@ -259,7 +244,21 @@ You will need to configure connection address, namespace, and mTLS cert and key 
         key: fs.readFileSync(clientKeyPath),
       },
     },
-  });
+  },
+});
+
+// inside each Client call inside API Route
+const connection = new Connection({
+  address,
+  tls: {
+    serverNameOverride,
+    serverRootCACertificate,
+    clientCertPair: {
+      crt: fs.readFileSync(clientCertPath),
+      key: fs.readFileSync(clientKeyPath),
+    },
+  },
+});
 ```
 
 [See the mTLS tutorial](https://docs.temporal.io/docs/typescript/security#mtls-tutorial) for full details, or get in touch with us on Slack if you have reached this stage.
