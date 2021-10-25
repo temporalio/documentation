@@ -17,7 +17,7 @@ Use the following command to remove a <preview page={WhatIsASearchAttribute}>Sea
 tctl admin cluster remove-search-attributes --name <SearchAttributeKey>
 ```
 
-Only custom Search Attributes can be removed from a Cluster. 
+Only custom Search Attributes can be removed from a Cluster.
 Default Search Attributes cannot be removed.
 
 Removing a Search Attribute removes it from the Cluster's metadata but does not remove it from the Elasticsearch index.
