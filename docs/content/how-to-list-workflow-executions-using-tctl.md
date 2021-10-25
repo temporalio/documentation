@@ -43,7 +43,7 @@ The use of this flag will override all other filter flags.
 tctl workflow list --query "WorflowId=YourWorkflowId"
 ```
 
-More Examples:
+More examples:
 
 ```bash
 tctl workflow list \
