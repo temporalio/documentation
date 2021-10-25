@@ -12,5 +12,3 @@ There are two types of Tasks:
 
 - [Activity Task](/docs/content/what-is-an-activity-task)
 - [Workflow Task](/docs/content/what-is-a-workflow-task)
-
-A single Activity Execution corresponds to a single Activity Task, while a Workflow Execution may have many Workflow Tasks.

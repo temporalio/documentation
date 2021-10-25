@@ -10,7 +10,7 @@ tags:
 import * as WhatIsATask from './what-is-a-task.md'
 import * as WhatIsAWorker from './what-is-a-worker.md'
 
-A Task Queue is a first-in, first-out queue that a <preview page={WhatIsAWorker}>Worker</preview> polls for <preview page={WhatIsATask}>Tasks</preview>.
+A Task Queue is a first in, first out queue that a <preview page={WhatIsAWorker}>Worker</preview> polls for <preview page={WhatIsATask}>Tasks</preview>.
 
 Task Queues are very lightweight components.
 There is no limit to the number of Task Queues a Temporal Application can use or a Temporal Cluster can maintain.
