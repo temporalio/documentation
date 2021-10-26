@@ -5,6 +5,11 @@ sidebar_label: Workers
 description: A Worker is a process that connects to the Temporal Server, polls Task Queues for Commands sent from Clients, and executes Workflows and Activities in response to those Commands.
 ---
 
+import {RelatedReadContainer, RelatedReadItem} from '../components/RelatedReadList.js'
+
+<!-- prettier-ignore -->
+import * as WhatIsATaskQueue from '../content/what-is-a-task-queue.md'
+
 > **@temporalio/worker** [![NPM](https://img.shields.io/npm/v/@temporalio/worker)](https://www.npmjs.com/package/@temporalio/worker) [API reference](https://typescript.temporal.io/api/namespaces/worker) | [GitHub](https://github.com/temporalio/sdk-typescript/tree/main/packages/worker)
 
 ## What is a Worker?
@@ -110,18 +115,14 @@ In development, the TypeScript SDK usually handles all of the communication betw
 In production settings, you can configure the `address` and `namespace` the Worker speaks to via [the Rust Core SDK](https://github.com/temporalio/sdk-core) as `Core`.
 Temporal also supports mTLS encryption (required by Temporal Cloud) this way - please read our [Security docs](/docs/server/security) for more information.
 
-## What is a Task Queue?
-
-import SharedTaskQueuesBasic from '../shared/task-queues-basic.md'
-
-<SharedTaskQueuesBasic
-workflowLink="/docs/typescript/workflows"
-workerLink="/docs/typescript/workers"
-/>
-
 ### Where Task Queues are used
 
-In Temporal, a Task Queue is uniquely identified by its name, as a `string`.
+In Temporal, a Task Queue is represented in code by name, as a `string`.
+
+<RelatedReadContainer>
+  <RelatedReadItem page={WhatIsATaskQueue} />
+</RelatedReadContainer>
+
 There are 2 main places where the name of the Task Queue is supplied by the developer.
 
 <details>
