@@ -15,8 +15,8 @@ You can install [tctl](/docs/content/what-is-tctl) in four ways.
 - Run locally together with Temporal Server in [docker-compose](https://github.com/temporalio/docker-compose): `docker exec temporal-admin-tools tctl YOUR COMMANDS HERE`
   - To invoke [tctl](/docs/content/what-is-tctl) as though it is installed locally (such as `tctl namespace describe`), set an alias: `alias tctl="docker exec temporal-admin-tools tctl"`
 - Run the [temporal-admin-tools](https://hub.docker.com/r/temporalio/admin-tools) Docker image:
-  - On Linux: `docker run --rm -it --entrypoint tctl --network host --env TEMPORAL_CLI_ADDRESS=localhost:7233 temporalio/admin-tools:1.12.0`
-  - On macOS or Windows: `docker run --rm -it --entrypoint tctl --env TEMPORAL_CLI_ADDRESS=host.docker.internal:7233 temporalio/admin-tools:1.12.0`
+  - On Linux: `docker run --rm -it --entrypoint tctl --network host --env TEMPORAL_CLI_ADDRESS=localhost:7233 temporalio/admin-tools:1.13.0`
+  - On macOS or Windows: `docker run --rm -it --entrypoint tctl --env TEMPORAL_CLI_ADDRESS=host.docker.internal:7233 temporalio/admin-tools:1.13.0`
   - If your Temporal Server is running on a remote host, change the value of `TEMPORAL_CLI_ADDRESS`.
   - To simplify command lines, create a `tctl` alias.
 - Build it locally:
