@@ -2,6 +2,8 @@
 id: queries
 title: Queries in Java
 sidebar_label: Queries
+tags:
+  - java
 ---
 
 Workflow queries can be used to query a Workflow state by external processes at any time during its execution.

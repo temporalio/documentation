@@ -2,17 +2,18 @@
 id: signals
 title: Signals in PHP
 sidebar_label: Signals
+tags:
+  - php
 ---
 
-**Signals** provide a mechanism to send data directly into a running Workflow.
+import {RelatedReadContainer, RelatedReadItem} from '../components/RelatedReadList.js'
 
-## When to Use Signals
+<!-- prettier-ignore -->
+import * as WhatIsASignal from '../content/what-is-a-signal.md'
 
-import WhenToSignals from '../content/when-to-use-signals.md'
-
-<WhenToSignals />
-
-## How to use Signals
+<RelatedReadContainer>
+  <RelatedReadItem page={WhatIsASignal} />
+</RelatedReadContainer>
 
 ```php
 use Temporal\Workflow;

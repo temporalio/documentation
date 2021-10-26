@@ -2,19 +2,22 @@
 id: signals
 title: Signals in Go
 sidebar_label: Signals
+tags:
+  - go
 ---
 
-**Signals** provide a mechanism to send data directly **in** to a running Workflow.
-This is the conceptual opposite of [**Queries**](https://docs.temporal.io/docs/go/queries), which help you get data **out** of a running Workflow.
+import {RelatedReadContainer, RelatedReadItem} from '../components/RelatedReadList.js'
 
-- If you are unsure of the run state, you can send a `SignalWithStart` to start the Workflow and signal it at the same time.
-- Workflows can signal other workflows with `SignalExternalWorkflow`.
+<!-- prettier-ignore -->
+import * as WhatIsASignal from '../content/what-is-a-signal.md'
 
-## When to use Signals
+If you are unsure of the run state, you can send a `SignalWithStart` to start the Workflow and signal it at the same time.
+Workflows can signal other workflows with `SignalExternalWorkflow`.
+In the Go SDK, a Workflow can pause until it receives a Signal by blocking on a **Signal channel**.
 
-import WhenToSignals from '../content/when-to-use-signals.md'
-
-<WhenToSignals />
+<RelatedReadContainer>
+  <RelatedReadItem page={WhatIsASignal} />
+</RelatedReadContainer>
 
 ## Example Signal Code
 
