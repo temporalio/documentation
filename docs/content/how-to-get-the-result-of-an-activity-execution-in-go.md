@@ -7,7 +7,9 @@ tags:
   - go
 ---
 
+<!--TODO
 import RelatedReadList from '../components/RelatedReadList.js'
+-->
 
 The `ExecuteActivity` API call returns an instance of [`workflow.Future`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Futures) which has the following two methods:
 

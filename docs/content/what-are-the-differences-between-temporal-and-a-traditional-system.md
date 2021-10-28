@@ -8,30 +8,25 @@ tags:
 
 import CenteredImage from "../components/CenteredImage.js"
 
-The Temporal platform exists to facilitate Workflow Executions.
+The Temporal Platform exists to facilitate Workflow Executions.
 In a traditional system, a service exists to spawn function executions.
 
 <CenteredImage
-imagePath="/img/diagrams/temporal-vs-traditional-high-level.svg"
+imagePath="/diagrams/temporal-vs-traditional.svg"
 imageSize="100"
-title="Traditional system vs Temporal"
-legend={[
-["λ","traditional function execution"],
-["π","Temporal Workflow Execution "],
-["𝝈","state"],
-]}
+title="Temporal vs Traditional system"
 />
 
 Although the two systems seem similar at first glance, they differ in several significant ways.
 
 **Failure**
 
-With a traditional system, a service function execution (λ) is both volatile and short-lived.
+With a traditional system, a service function execution is both volatile and short-lived.
 
 - If a function execution fails, it's not resumable because all execution state is lost. The longer a function execution awaits, the higher the change of failure.
 - A traditional function execution typically has a limited lifespan, often measured in minutes.
 
-With Temporal, a Workflow Execution (π) is resumable.
+With Temporal, a Workflow Execution is resumable.
 
 - A Workflow Execution is fully resumable after a failure.
 - Temporal imposes no deadlines on Workflow Executions.

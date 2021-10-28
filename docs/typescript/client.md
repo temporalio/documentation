@@ -10,14 +10,14 @@ import RelatedReadList from '../components/RelatedReadList.js'
 
 > **@temporalio/client** [![NPM](https://img.shields.io/npm/v/@temporalio/client)](https://www.npmjs.com/package/@temporalio/client) [API reference](https://typescript.temporal.io/api/namespaces/client) | [GitHub source](https://github.com/temporalio/sdk-typescript/tree/main/packages/client)
 
-**Clients connect to Temporal Server via gRPC and create Workflow Handles, which are the main way to start, signal, query, or cancel Workflows**.
+**Workflow Clients connect to Temporal Server via gRPC and create Workflow Handles, which are the main way to start, signal, query, or cancel Workflows**.
 
-- Clients are not bound to Workers and can be run in any Node.js application, for example, in a serverless function, Express.js API route handler or CLI/script run.
+- Workflow Clients are not bound to Workers and can be run in any Node.js application, for example, in a serverless function, Express.js API route handler or CLI/script run.
 - This doc assumes that you have already written your Workflow code. See the dedicated [Workflow docs](/docs/typescript/workflows) if you need that.
 
 ## Full Example
 
-Here is example Client code from our Hello World sample:
+Here is example WorkflowClient code from our Hello World sample:
 
 <!--SNIPSTART typescript-hello-client {"enable_source_link": false}-->
 <!--SNIPEND-->
@@ -26,12 +26,12 @@ The rest of this doc explains each step in detail with practical usage tips.
 
 ## How to create Workflow Clients and Handles
 
-- **Workflow Clients** are a generic Client that is capable of starting, executing, and retrieving the results of any Workflow given its `workflowId`.
+- **Workflow Clients** are generic, capable of starting, executing, and retrieving the results of any Workflow given its `workflowId`.
 - **Workflow Handles** are created from Workflow Clients and are bound to a single Workflow instance. They can do everything Clients can do, plus signal, query, describe, cancel, or terminate their instance.
 
 We nudge you toward using Workflow Handles where possible as they are more specific and have access to more APIs.
 
-### Workflow Client
+### Create a new Workflow Client
 
 First, create a [`WorkflowClient`](https://typescript.temporal.io/api/classes/client.workflowclient) with the requisite [`Connection`](https://typescript.temporal.io/api/classes/client.Connection):
 
@@ -41,20 +41,17 @@ const connection = new Connection();
 const client = new WorkflowClient(connection.service);
 ```
 
-### Workflow Handle
+### Create a Handle for a new Workflow
 
-Once you have a Client, you then create a Handle with [`client.createWorkflowHandle`](https://typescript.temporal.io/api/classes/client.workflowclient/#createworkflowhandle).
+Once you have a WorkflowClient, you then create a Handle with [`client.createWorkflowHandle`](https://typescript.temporal.io/api/classes/client.workflowclient/#createworkflowhandle).
 This is an overloaded function that can be used in two ways:
 
 ```ts
-// Method 1: create a handle for a NEW Workflow, given a reference to Workflow definition
 const handle = client.createWorkflowHandle(exampleWorkflow, {
   taskQueue: 'tutorial',
+  // workflowId: 'your-unique-id-123' // recommended for production
   // other workflow options
 });
-
-// Method 2: retrieve a handle for an EXISTING Workflow, given it's workflowId
-const handle = client.createWorkflowHandle({ workflowId: id }); // no options needed
 ```
 
 #### Workflow Handle Options
@@ -63,13 +60,13 @@ Workflow Options are set before a Workflow Execution is created, passed to `crea
 There are a range of [`WorkflowOptions`](https://typescript.temporal.io/api/interfaces/client.workflowoptions/), notable ones listed here:
 
 - `taskQueue` (required): Task queue to use for workflow tasks. It should match a task queue specified when creating a Worker that hosts the workflow code.
-- `workflowId` (recommended): Specify unique Workflow ID to assign to the Workflow Execution.
+- `workflowId` (recommended): Specify unique [Workflow ID](/docs/concepts/workflows#workflow-id) to assign to the Workflow Execution.
   - We recommend assigning business-meaningful customer or order IDs here to prevent duplicate transactions.
   - Workflow ID is "unique" in that Temporal will guarantee only one Workflow Execution with this ID is run at any point in time (within a given namespace).
-    Advanced users can tweak this behavior with the [workflowIdReusePolicy](https://typescript.temporal.io/api/interfaces/client.workflowoptions/#workflowidreusepolicy).
+    Advanced users can finetune this behavior with the [workflowIdReusePolicy](https://typescript.temporal.io/api/interfaces/client.workflowoptions/#workflowidreusepolicy).
   - If not specified, a UUID is generated, which you can access with `handle.workflowId`.
 - `cronSchedule`: see ["Scheduling Cron Workflows"](#scheduling-cron-workflows)
-- `searchAttributes`: Specifies additional indexed information for visibility/metadata (see our [Search docs](https://docs.temporal.io/docs/server/workflow-search/)).
+- `searchAttributes`: Specifies additional indexed information for visibility/metadata (see [What is a Search Attribute](/docs/content/what-is-a-search-attribute)).
 
 Workflow-level Timeouts and Retries exist, but we do not recommend setting them (do them at the Activity level instead) unless you know what you are doing.
 
@@ -80,7 +77,7 @@ The Workflow Handle [exposes a number of important APIs](https://typescript.temp
 | Handle API          | Description                                                                                                                                             |
 | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `client`            | Readonly accessor to the underlying WorkflowClient.                                                                                                     |
-| `workflowId`        | The workflowId of the current Workflow. The vast majority of the time, you can use this without the runId.                                              |
+| `workflowId`        | The workflowId of the current Workflow.                                                                                                                 |
 | `query()`           | Call to query a Workflow after it's been started even if it has already completed. `const value = await workflow.query(getValue);`                      |
 | `signal()`          | Call to signal a _running_ Workflow. `await workflow.signal(increment, 1);`                                                                             |
 | `signalWithStart()` | Sends a signal to a running Workflow or starts a new one if not already running and immediately signals it. Useful when you're unsure of the run state. |
@@ -92,6 +89,16 @@ The Workflow Handle [exposes a number of important APIs](https://typescript.temp
 | `result()`          | Promise that resolves when Workflow execution completes                                                                                                 |
 
 The next section covers how to use many of these APIs, you will want to be fluent with them as they cover the basics of Workflow manipulation.
+
+### Create a Handle for an existing Workflow
+
+You can also use [`client.createWorkflowHandle`](https://typescript.temporal.io/api/classes/client.workflowclient/#createworkflowhandle) to create a handle for an EXISTING Workflow, given it's `workflowId`:
+
+```ts
+const handle = client.createWorkflowHandle({ workflowId: id }); // no options needed
+```
+
+No options are needed because the Workflow Handle will have the same options set at original creation.
 
 ## How to start a Workflow
 

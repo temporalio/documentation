@@ -5,6 +5,7 @@ description: Standard Visibility, within the Temporal Platform, is the subsystem
 tags:
   - explanation
   - filtered-lists
+  - visibility
 ---
 
 Standard Visibility, within the Temporal Platform, is the subsystem and APIs that list Workflow Executions by a predefined set of filters.

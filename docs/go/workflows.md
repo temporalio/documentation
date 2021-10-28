@@ -280,3 +280,5 @@ func SimpleWorkflow(ctx workflow.Context, value string) error {
     return workflow.NewContinueAsNewError(ctx, SimpleWorkflow, value)
 }
 ```
+
+If you need to know whether a Workflow was started via `continueAsNew`, you can check if `workflow.GetInfo(ctx).ContinuedExecutionRunID` is not nil.

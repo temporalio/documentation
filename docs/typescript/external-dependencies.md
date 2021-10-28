@@ -2,51 +2,28 @@
 
 import CustomWarning from "../components/CustomWarning.js"
 
-<CustomWarning title="Advanced feature" color="var(--ifm-color-info)">
+<CustomWarning title="Experimental API" color="var(--ifm-color-warning)">
 
-This is an advanced feature and requires a good grasp of the basic SDK concepts.
+This is an experimental API which is likely to change without prior notice.
 
 </CustomWarning>
 
-Workflows in Temporal may be replayed from the beginning of their history when resumed.
-In order for Temporal to recreate the exact state Workflow code was in, the code is required to be [fully deterministic](/docs/typescript/determinism).
-To prevent breaking determinism, in the TypeScript SDK, Workflow code runs in an isolated execution environment limited to functionality provided by the SDK.
+Workflows in Temporal may be replayed from the beginning of their history when resumed. In order for Temporal to recreate the exact state Workflow code was in, the code is required to be fully deterministic. To prevent breaking [determinism](/docs/typescript/determinism), in the TypeScript SDK, Workflow code runs in an isolated execution environment and may not use any of the Node.js APIs or communicate directly with the World.
 
-External Dependencies is an isolation-breaking mechanism that allows injecting replay-aware functions from the main TypeScript environment into a Workflow isolate.
-They are typically used in order to inject custom instrumentation (e.g. logger) functions into the isolate.
+External Dependencies is a mechanism to work around this limitation that allows exporting information from the Workflow to the Node.js environment.
+It is typically used in order to inject custom instrumentation (e.g. logger / metrics / tracing) functions into the isolate.
 
-## [Injection configuration](https://typescript.temporal.io/api/namespaces/worker#injecteddependencyfunction)
+## [InjectedDependencyFunction](https://typescript.temporal.io/api/interfaces/worker.InjectedDependencyFunction)
 
-The following configuration options are for controlling how an injected function is executed.
+Dependency function implementations are passed via [WorkerOptions](https://typescript.temporal.io/api/interfaces/worker.workeroptions/#dependencies),
+they accept [WorkflowInfo](https://typescript.temporal.io/api/interfaces/workflow.workflowinfo/) as their first argument along with additional arguments passed in from the Workflow side.
 
-### `callDuringReplay`
-
-A boolean controling whether or not the injected function will be called during Workflow replay. Defaults to `false`.
-
-### ApplyMode
-
-The different modes for an injected function to be applied to the isolate are documented in the [API reference](https://typescript.temporal.io/api/enums/worker.applymode).
-
-- `ASYNC`
-- `ASYNC_IGNORED`
-- `SYNC`
-- `SYNC_IGNORED`
-- `SYNC_PROMISE`
-
-:::warning
-Only `IGNORED` apply modes are safe to use since they cannot break determinism.<br/>
-Use other modes only if you're certain you know what you're doing.
-:::
-
-### Function arguments and return value
-
-Functions configured to use `ASYNC*` apply modes **always** copy their arguments and return value, which limits them to primitive types such as `number`, `string`, `array` and `object`.
-
-Function configured to use `SYNC*` apply modes **always** copy their return value and can control whether to copy their arguments or pass them in using [isolated-vm References](https://github.com/laverdet/isolated-vm#transferoptions).
+- The arguments and return value are copied between the isolated vm and the Node.js environment. This limits the usage to primitive types such as `number`, `string`, `array` and `object`.
+- You may specify whether or not you'd like the injected function to be called during Workflow replay with the `callDuringReplay` boolean.
 
 ## Example
 
-#### `src/interfaces/dependencies.ts`
+#### `src/workflows/definitions.ts`
 
 Define the interface for your external dependencies
 

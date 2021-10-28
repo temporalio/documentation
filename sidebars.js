@@ -314,6 +314,7 @@ module.exports = {
           items: [
             "typescript/package-initializer",
             "typescript/hello-world",
+            "typescript/nextjs-tutorial",
             {
               type: "link",
               label: "Code Samples",
@@ -450,6 +451,7 @@ module.exports = {
         "temporal-explained/workflows",
         "temporal-explained/activities",
         "temporal-explained/timeouts-and-retries",
+        "temporal-explained/clusters",
         "temporal-explained/visibility",
       ],
     },
