@@ -32,6 +32,6 @@ This timeout can be used to reduce the overall time that has elapsed, without al
 
 <RelatedReadList
 readlist={[
-["How to set a Schedule-To-Close Timeout in Go","/docs/content/how-to-set-activityoptions-in-go/#scheduletoclosetimeout","developer guide"],
+["How to set a Schedule-To-Close Timeout in Go","/docs/go/how-to-set-activityoptions-in-go/#scheduletoclosetimeout","developer guide"],
 ]}
 />

@@ -55,15 +55,15 @@
 #
 [[redirects]]
   from = "/docs/go"
-  to = "/docs/go/introduction"
+  to = "/docs/go/getting-started"
 
 [[redirects]]
   from = "/docs/go-sdk-overview"
   to = "/docs/go-sdk-introduction"
 
 [[redirects]]
-  from = "/docs/go-sdk-introduction"
-  to = "/docs/go/introduction"
+  from = "/docs/go/introduction"
+  to = "/docs/go/getting-started"
 
 [[redirects]]
   from = "/docs/go-activities"

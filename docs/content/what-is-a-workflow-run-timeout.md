@@ -25,6 +25,6 @@ If the Workflow Run Timeout is reached, the Temporal Server automatically Termin
 
 <RelatedReadList
 readlist={[
-["How to set a Workflow Run Timeout in Go","/docs/content/how-to-set-startworkflowoptions-in-go/#workflowruntimeout","developer guide"],
+["How to set a Workflow Run Timeout in Go","/docs/go/how-to-set-startworkflowoptions-in-go/#workflowruntimeout","developer guide"],
 ]}
 />

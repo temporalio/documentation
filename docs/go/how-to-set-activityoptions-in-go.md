@@ -1,6 +1,7 @@
 ---
 id: how-to-set-activityoptions-in-go
 title: How to set ActivityOptions in Go
+sidebar_label: ActivityOptions
 description: Create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package and use `WithActivityOptions()` to apply it to the instance of `workflow.Context`.
 tags:
   - developer-guide
@@ -9,7 +10,7 @@ tags:
 
 import RelatedReadList from '../components/RelatedReadList.js'
 
-Create an instance of [`ActivityOptions`](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/workflow#ActivityOptions) from the `go.temporal.io/sdk/workflow` package and use [`WithActivityOptions()`](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/workflow#WithActivityOptions) to apply it to the instance of `workflow.Context`.
+Create an instance of [`ActivityOptions`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ActivityOptions) from the `go.temporal.io/sdk/workflow` package and use [`WithActivityOptions()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#WithActivityOptions) to apply it to the instance of `workflow.Context`.
 
 The instance of `workflow.Context` is then passed to the `ExecuteActivity()` call.
 
@@ -23,7 +24,7 @@ The instance of `workflow.Context` is then passed to the `ExecuteActivity()` cal
 | [`HeartbeatTimeout`](/docs/content/what-is-a-heartbeat-timeout)               | No                                | `time.Duration`                                                                     | [👀](#heartbeattimeout)       |
 | `WaitForCancellation`                                                         | No                                | `bool`                                                                              | [👀](#waitforcancellation)    |
 | `OriginalTaskQueueName`                                                       | No                                | `string`                                                                            | [👀](#originaltaskqueuename)  |
-| [`RetryPolicy`](/docs/content/what-is-a-retry-policy)                         | No                                | [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/temporal#RetryPolicy) | [👀](#retrypolicy)            |
+| [`RetryPolicy`](/docs/content/what-is-a-retry-policy)                         | No                                | [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy) | [👀](#retrypolicy)            |
 
 ### `ActivityID`
 

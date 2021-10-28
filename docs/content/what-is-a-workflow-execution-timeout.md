@@ -25,6 +25,6 @@ This timeout is most commonly used for stopping the execution of a [Temporal Cro
 
 <RelatedReadList
 readlist={[
-["How to set a Workflow Execution Timeout in Go", "/docs/content/how-to-set-startworkflowoptions-in-go/#workflowexecutiontimeout", "developer guide"],
+["How to set a Workflow Execution Timeout in Go", "/docs/go/how-to-set-startworkflowoptions-in-go/#workflowexecutiontimeout", "developer guide"],
 ]}
 />

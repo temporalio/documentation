@@ -13,7 +13,7 @@ import UseGoSDKGuide from "../content/how-to-use-the-temporal-go-sdk.md"
 
 <UseGoSDKGuide/>
 
-## Run the Server locally
+## Run a local Temporal Cluster
 
 import QuickInstallServerGuide from "../content/how-to-quickly-install-the-temporal-server.md"
 

@@ -22,6 +22,6 @@ If this timeout is reached, the Activity Execution changes to a [Failed](#) stat
 
 <RelatedReadList
 readlist={[
-["How to set a Heartbeat Timeout in Go","/docs/content/how-to-set-activityoptions-in-go/#heartbeattimeout","developer guide"],
+["How to set a Heartbeat Timeout in Go","/docs/go/how-to-set-activityoptions-in-go/#heartbeattimeout","developer guide"],
 ]}
 />

@@ -1,6 +1,7 @@
 ---
 id: how-to-set-startworkflowoptions-in-go
 title: How to set StartWorkflowOptions in Go
+sidebar_label: StartWorkflowOptions
 description: Create an instance of `StartWorkflowOptions` from the `go.temporal.io/sdk/client` package, and pass the instance to the `ExecuteWorkflow` call.
 tags:
   - developer-guide
@@ -11,6 +12,7 @@ import RelatedReadList, {RelatedReadContainer, RelatedReadItem} from '../compone
 
 <!-- prettier-ignore -->
 import * as WhatIsASearchAttribute from './what-is-a-search-attribute.md'
+import * as WhatIsAWorkflowId from '../content/what-is-a-workflow-id.md'
 
 Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, and pass the instance to the `ExecuteWorkflow` call.
 
@@ -25,7 +27,7 @@ The following fields are available:
 | [`WorkflowTaskTimeout`](/docs/content/what-is-a-workflow-task-timeout)           | No       | `time.Duration`                                                                                 | [👀](#workflowtasktimeout)                      |
 | [`WorkflowIDReusePolicy`](/docs/content/what-is-a-workflow-id-reuse-policy)      | No       | [`WorkflowIdReusePolicy`](https://pkg.go.dev/go.temporal.io/api/enums/v1#WorkflowIdReusePolicy) | [👀](#workflowidreusepolicy)                    |
 | `WorkflowExecutionErrorWhenAlreadyStarted`                                       | No       | `bool`                                                                                          | [👀](#workflowexecutionerrorwhenalreadystarted) |
-| [`RetryPolicy`](/docs/content/what-is-a-retry-policy)                            | No       | [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/temporal#RetryPolicy)             | [👀](#retrypolicy)                              |
+| [`RetryPolicy`](/docs/content/what-is-a-retry-policy)                            | No       | [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy)             | [👀](#retrypolicy)                              |
 | [`CronSchedule`](/docs/content/what-is-a-temporal-cron-job)                      | No       | `string`                                                                                        | [👀](#cronschedule)                             |
 | [`Memo`](/docs/content/what-is-a-memo)                                           | No       | `map[string]interface{}`                                                                        | [👀](#memo)                                     |
 | [SearchAttributes](/docs/content/what-is-a-search-attribute)                     | No       | `map[string]interface{}`                                                                        | [👀](#searchattributes)                         |
@@ -43,11 +45,8 @@ if err != nil {
 }
 ```
 
-<!-- prettier-ignore -->
-import * as WWID from './what-is-a-workflow-id.md'
-
 <RelatedReadContainer>
-  <RelatedReadItem page={WWID} />
+  <RelatedReadItem page={WhatIsAWorkflowId} />
 </RelatedReadContainer>
 
 ### `TaskQueue`
@@ -161,7 +160,7 @@ if err != nil {
 
 ### `RetryPolicy`
 
-Create an instance of a [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/temporal#RetryPolicy) from the `go.temporal.io/sdk/temporal` package and provide it as the value to the `RetryPolicy` field of the instance of `StartWorkflowOptions`.
+Create an instance of a [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy) from the `go.temporal.io/sdk/temporal` package and provide it as the value to the `RetryPolicy` field of the instance of `StartWorkflowOptions`.
 
 ```go
 retrypolicy := &temporal.RetryPolicy{
