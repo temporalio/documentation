@@ -86,7 +86,7 @@ export const interruptSignal = () => ({ execute, signals });
 
 Signal handlers should either have a `void` return type, like in the below example, or a `Promise<void>` return type for `async` handlers (you may want to `await` async operations like Activities and Timers).
 
-> Note that this example is a simplification of the recommended way to handle Signals (see [Triggers](#triggers) section below) since the Workflow cannot be cancelled unless it awaits a [cancellable operation](/docs/node/cancellation-scopes).
+> Note that this example is a simplification of the recommended way to handle Signals (see [Triggers](#triggers) section below) since the Workflow cannot be cancelled unless it awaits a [cancellable operation](/docs/typescript/cancellation-scopes).
 
 ```ts
 import { Blocked } from '../interfaces';

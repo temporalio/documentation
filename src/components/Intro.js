@@ -53,7 +53,7 @@ function SDKs() {
           <img className="w-8 h-8" src="/img/java.svg" alt="Java logo" />
           <p className="font-semibold">Java</p>
         </Link></li>
-        <li className=""><Link to={useBaseUrl("/docs/node/introduction")}>
+        <li className=""><Link to={useBaseUrl("/docs/typescript/introduction")}>
           <div className="flex space-x-3 items-center hover:underline">
             <img
               className="w-8 h-8"

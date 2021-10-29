@@ -324,6 +324,10 @@ div[class^="sidebar_"] .button svg {
   background-color: #cf8f19;
 }
 
+.prose li > ul {
+  margin-top: 1rem !important; /* sorry cant figure out how else to do this, prose keeps overriding - swyx */
+}
+
 .docs-image-wrapper {
   width: 100%;
   background-color: #efefef;

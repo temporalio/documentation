@@ -69,7 +69,7 @@ function Footer() {
         },
         {
           label: "TypeScript SDK (alpha)",
-          to: "/docs/node/introduction",
+          to: "/docs/typescript/introduction",
         },
       ],
     },

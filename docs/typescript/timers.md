@@ -28,8 +28,8 @@ The core Timer APIs relevant to the Node.js SDK are:
 
 Temporal Timers are only available in Workflow code.
 
-- There is an unrelated [`sleep` utility function](https://nodejs.temporal.io/api/classes/activity.context/#sleep) available in Activity Context that is not durable, but is cancellation aware. See [the Activities docs for details](/docs/node/activities).
-- Timers are unrelated to Cron Workflows, which are a Workflow option that you can set for recurring Workflows. See [the Workflows docs for details](/docs/node/workflows).
+- There is an unrelated [`sleep` utility function](https://nodejs.temporal.io/api/classes/activity.context/#sleep) available in Activity Context that is not durable, but is cancellation aware. See [the Activities docs for details](/docs/typescript/activities).
+- Timers are unrelated to Cron Workflows, which are a Workflow option that you can set for recurring Workflows. See [the Workflows docs for details](/docs/typescript/workflows).
 
 :::
 
@@ -47,7 +47,7 @@ When writing Workflows with timers, you need to take care that it handles jumps 
 What we mean by "handling jumps": if you had timers that were supposed to go off at 1.15, 1.30, and 1.45pm, and your system goes down from 1pm to 2pm, then at 2pm when the system comes back up all 3 timers will fire at once. If your workflow code relies on the timers resolving in precise order, write these checks yourself.
 -->
 
-You can read more about [Temporal Node SDK's Determinism here](/docs/node/determinism).
+You can read more about [Temporal Node SDK's Determinism here](/docs/typescript/determinism).
 
 ## Timer Design Patterns
 

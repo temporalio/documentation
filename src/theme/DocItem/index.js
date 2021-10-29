@@ -73,7 +73,7 @@ function DocItem(props) {
         }}
       />
 
-      <div className="max-w-screen-lg mx-auto">
+      <div className="max-w-screen-lg lg:max-w-screen-xl xl:max-w-screen-2xl mx-auto">
         <DocVersionBanner versionMetadata={versionMetadata} />
         <article>
           {showVersionBadge && (
@@ -84,8 +84,8 @@ function DocItem(props) {
             </div>
           )}
           <div className="flex space-x-20">
-            <div>
-              <article className="prose sm:prose md:prose-md lg:prose-lg mx-auto my-12">
+            <div className="flex-1">
+              <article className="prose max-w-none md:prose-md lg:prose-lg mx-auto my-12">
                 {renderTocMobile && (
                   <TOCCollapsible
                     toc={DocContent.toc}
