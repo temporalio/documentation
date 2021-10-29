@@ -3,8 +3,7 @@
 
     [plugins.inputs]
 
-    skipPatterns = ["#", "www.google-analytics.com", "www.googletagmanager.com",
-    "/docs/typescript/client"]
+    skipPatterns = ["#", "www.google-analytics.com", "www.googletagmanager.com","https://coveralls.io/repos/github/temporalio/temporal-go-sdk/badge.svg?branch=master", "/docs/typescript/client"]
     pretty = true
 
 #

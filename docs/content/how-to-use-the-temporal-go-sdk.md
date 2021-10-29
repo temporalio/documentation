@@ -32,7 +32,7 @@ git clone git@github.com:temporalio/sdk-go.git
 **Are there executable code samples?**
 
 You can find a complete list of executable code samples in the [samples library](/docs/samples-library/#go), which includes Temporal Go SDK code samples from the [temporalio/samples-go](https://github.com/temporalio/samples-go) repo.
-Additionally, each of the Go SDK Tutorials in the [Temporal docs site](https://docs.temporal.io/docs/go) is backed by a fully executable template application.
+Additionally, each of the Go SDK Tutorials is backed by a fully executable template application.
 
 **Where is the Go SDK technical reference?**
 

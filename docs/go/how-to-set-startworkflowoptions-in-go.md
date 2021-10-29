@@ -11,7 +11,7 @@ tags:
 import RelatedReadList, {RelatedReadContainer, RelatedReadItem} from '../components/RelatedReadList.js'
 
 <!-- prettier-ignore -->
-import * as WhatIsASearchAttribute from './what-is-a-search-attribute.md'
+import * as WhatIsASearchAttribute from '../content/what-is-a-search-attribute.md'
 import * as WhatIsAWorkflowId from '../content/what-is-a-workflow-id.md'
 
 Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, and pass the instance to the `ExecuteWorkflow` call.

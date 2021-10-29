@@ -7,8 +7,6 @@ tags:
   - guide
 ---
 
-import RelatedReadList from '../components/RelatedReadList.js'
-
 import UseGoSDKGuide from "../content/how-to-use-the-temporal-go-sdk.md"
 
 <UseGoSDKGuide/>
