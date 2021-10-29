@@ -176,10 +176,10 @@ function Tools() {
           />
         </svg>
 
-        <h3 className="text-xl font-semibold mb-4">System Tools</h3>
+        <h3 className="text-xl font-semibold mb-4">Dev Tools</h3>
       </div>
       <p className="flex-grow mb-4">
-        Tools to interact with the Temporal Server and query or control state.
+        Tools to manage Workflow Execution lifecycles, manage your Cluster, visualize your application. and more.
       </p>
       <div className="">
         <div className="flex space-x-3 mb-3">
@@ -234,7 +234,7 @@ export const Intro = () => {
         Temporal Documentation
       </h2>
       <p className="text-xl max-w-2xl">
-        Learn how to use Temporal, the open source platform for orchestrating
+        Learn about Temporal, the open source platform for orchestrating
         highly reliable, mission-critical applications at scale.
       </p>
 
