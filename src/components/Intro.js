@@ -4,7 +4,6 @@ import useBaseUrl from "@docusaurus/useBaseUrl";
 
 function SDKs() {
   return (
-
     <div className="bg-[color:var(--ifm-card-background-color)] shadow rounded-lg p-5">
       <div className="flex space-x-4 items-center">
         <svg
@@ -31,57 +30,64 @@ function SDKs() {
         <h3 className="text-xl font-semibold mb-4">SDKs</h3>
       </div>
       <p className="flex-grow mb-4">
-        Write Workflows and Activities, run Workers and embed Temporal Clients in your applications.
+        Write Workflows and Activities, run Workers and embed Temporal Clients
+        in your applications.
       </p>
       {/* <ul className="flex flex-col space-y-2 list-disc pl-4"> */}
       <ul className="grid grid-cols-2 gap-6 xl:gap-8">
-        <li className=""><Link
-          className="flex space-x-3 items-center hover:underline"
-          to={useBaseUrl("/docs/go/run-your-first-app-tutorial")}
-        >
-          <img
-            className="w-8 h-8"
-            src="/img/go-lang.svg"
-            alt="Go lang logo"
-          />
-          <p className="font-semibold">Go</p>
-        </Link></li>
-        <li className=""><Link
-          className="flex space-x-3 items-center hover:underline"
-          to={useBaseUrl("/docs/java/run-your-first-app-tutorial")}
-        >
-          <img className="w-8 h-8" src="/img/java.svg" alt="Java logo" />
-          <p className="font-semibold">Java</p>
-        </Link></li>
-        <li className=""><Link to={useBaseUrl("/docs/typescript/introduction")}>
-          <div className="flex space-x-3 items-center hover:underline">
+        <li className="">
+          <Link
+            className="flex space-x-3 items-center hover:underline"
+            to={useBaseUrl("/docs/go/run-your-first-app-tutorial")}
+          >
             <img
               className="w-8 h-8"
-              src="/img/typescript.svg"
-              alt="Typescript logo"
+              src="/img/go-lang.svg"
+              alt="Go lang logo"
             />
-            <p className="font-semibold">TypeScript</p>
-          </div>
-        </Link></li>
+            <p className="font-semibold">Go</p>
+          </Link>
+        </li>
+        <li className="">
+          <Link
+            className="flex space-x-3 items-center hover:underline"
+            to={useBaseUrl("/docs/java/run-your-first-app-tutorial")}
+          >
+            <img className="w-8 h-8" src="/img/java.svg" alt="Java logo" />
+            <p className="font-semibold">Java</p>
+          </Link>
+        </li>
+        <li className="">
+          <Link to={useBaseUrl("/docs/typescript/introduction")}>
+            <div className="flex space-x-3 items-center hover:underline">
+              <img
+                className="w-8 h-8"
+                src="/img/typescript.svg"
+                alt="Typescript logo"
+              />
+              <p className="font-semibold">TypeScript</p>
+            </div>
+          </Link>
+        </li>
 
-        <li className=""><Link
-          className="flex space-x-5 items-center"
-          to={useBaseUrl("/docs/php/introduction")}
-        >
-          <div className="flex space-x-3 items-center hover:underline">
-            <img className="w-8 h-8" src="/img/php.svg" alt="PHP logo" />
-            <p className="font-semibold">PHP</p>{" "}
-          </div>
-        </Link></li>
+        <li className="">
+          <Link
+            className="flex space-x-5 items-center"
+            to={useBaseUrl("/docs/php/introduction")}
+          >
+            <div className="flex space-x-3 items-center hover:underline">
+              <img className="w-8 h-8" src="/img/php.svg" alt="PHP logo" />
+              <p className="font-semibold">PHP</p>{" "}
+            </div>
+          </Link>
+        </li>
       </ul>
     </div>
-
-  )
+  );
 }
 
 function Server() {
   return (
-
     <div className="bg-[color:var(--ifm-card-background-color)] flex flex-col shadow rounded-lg p-5">
       <div className="flex space-x-4 items-center">
         <svg
@@ -102,8 +108,8 @@ function Server() {
         <h3 className="text-xl font-semibold mb-4">Temporal Cluster</h3>
       </div>
       <p className="flex-grow mb-4">
-        Learn Temporal's architecture and how to deploy your own instance of a Temporal
-        Cluster
+        Learn Temporal's architecture and how to deploy your own instance of a
+        Temporal Cluster
       </p>
 
       <ul className="flex flex-col space-y-2 list-disc pl-4">
@@ -124,30 +130,28 @@ function Server() {
           </Link>
         </li>
         <li className="list-disc">
-          <Link
-        to={"https://temporal.io/cloud"}
-            className="hover:underline"
-          >
-            <p className="font-semibold">Temporal Cloud Waitlist
-        <svg
-          className="w-4 h-4 inline"
-          fill="currentColor"
-          viewBox="0 0 20 20"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
-          <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
-              </svg></p>
+          <Link to={"https://temporal.io/cloud"} className="hover:underline">
+            <p className="font-semibold">
+              Temporal Cloud Waitlist
+              <svg
+                className="w-4 h-4 inline"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
+                <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
+              </svg>
+            </p>
           </Link>
         </li>
       </ul>
     </div>
-  )
+  );
 }
 
 function Tools() {
   return (
-
     <div className="bg-[color:var(--ifm-card-background-color)] flex flex-col shadow rounded-lg p-5">
       <div className="flex space-x-4 items-center">
         <svg
@@ -174,7 +178,9 @@ function Tools() {
 
         <h3 className="text-xl font-semibold mb-4">System Tools</h3>
       </div>
-      <p className="flex-grow mb-4">Tools to interact with the Temporal Server and query or control state.</p>
+      <p className="flex-grow mb-4">
+        Tools to interact with the Temporal Server and query or control state.
+      </p>
       <div className="">
         <div className="flex space-x-3 mb-3">
           <svg
@@ -218,7 +224,7 @@ function Tools() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 export const Intro = () => {

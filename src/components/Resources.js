@@ -26,7 +26,7 @@ const links = [
     title: "Temporal architecture deep dive",
     length: "20 min read/watch",
     url: "/blog/workflow-engine-principles/",
-  }
+  },
 ];
 
 export const Resources = () => {
@@ -65,7 +65,10 @@ export const Resources = () => {
             )}
 
             <Link className="flex-1" to={useBaseUrl(link.url)}>
-              {link.title} <span className="opacity-80 uppercase text-xs">{link.length}</span>
+              {link.title}{" "}
+              <span className="opacity-80 uppercase text-xs">
+                {link.length}
+              </span>
             </Link>
           </li>
         ))}

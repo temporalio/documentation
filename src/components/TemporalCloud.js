@@ -2,7 +2,10 @@ import React from "react";
 
 export const TemporalCloud = () => {
   return (
-    <section id="cloud" className="max-w-7xl rounded-lg p-5 mt-24 mb-12 bg-[color:var(--ifm-card-background-color)] flex items-center space-x-5">
+    <section
+      id="cloud"
+      className="max-w-7xl rounded-lg p-5 mt-24 mb-12 bg-[color:var(--ifm-card-background-color)] flex items-center space-x-5"
+    >
       <svg
         className="flex-none w-12 h-12 "
         width="48"
@@ -23,7 +26,10 @@ export const TemporalCloud = () => {
       <p className="block my-3">
         Temporal Cloud is a fully managed cloud offering of the open-source
         Server. We are currently accepting private Design Partners.{" "}
-        <a href="https://temporal.io/cloud" className="text-blue-400 hover:text-blue-200 underline">
+        <a
+          href="https://temporal.io/cloud"
+          className="text-blue-400 hover:text-blue-200 underline"
+        >
           Apply here!
         </a>
       </p>

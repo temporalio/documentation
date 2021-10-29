@@ -16,8 +16,8 @@ Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io
 
 The following fields are available:
 
-| Field                                                                            | Required | Type                                                                                            | Example                                        |
-| -------------------------------------------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------- | ---------------------------------------------- |
+| Field                                                                            | Required | Type                                                                                            | Example                                         |
+| -------------------------------------------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------- |
 | [`ID`](/docs/content/what-is-a-workflow-id)                                      | No       | `string`                                                                                        | [👀](#id)                                       |
 | [`TaskQueue`](/docs/content/what-is-a-task-queue)                                | **Yes**  | `string`                                                                                        | [👀](#taskqueue)                                |
 | [`WorkflowExecutionTimeout`](/docs/content/what-is-a-workflow-execution-timeout) | No       | `time.Duration`                                                                                 | [👀](#workflowexecutiontimeout)                 |
