@@ -34,9 +34,11 @@ const MDXComponents = {
     }
 
     return (
-      <CodeBlock
-        {...(isValidElement(children) ? children?.props : {...props})}
-      />
+      <div className="max-w-xs sm:max-w-3xl">
+        <CodeBlock
+          {...(isValidElement(children) ? children?.props : { ...props })}
+        />
+      </div>
     );
   },
   details: (props) => {
