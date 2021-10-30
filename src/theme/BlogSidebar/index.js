@@ -1,112 +1,89 @@
-/**
- * Copyright (c) Facebook, Inc. and its affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
 import React from "react";
-import clsx from "clsx";
 import Link from "@docusaurus/Link";
-import styles from "./styles.module.css";
 export default function BlogSidebar({sidebar, row}) {
   if (sidebar.items.length === 0) {
     return null;
   }
 
-  return (
-    <div
-      className={clsx(
-        styles.sidebar,
-        "thin-scrollbar",
-        row && styles.sidebarRow
-      )}
-    >
-      <div className={row && "col col--4"}>
-        <h3 className={styles.sidebarItemTitle}>Featured</h3>
+  const tags = [
+    {
+      title: "community",
+      url: "/blog/tags/community",
+    },
+    {
+      title: "errors",
+      url: "/blog/tags/errors",
+    },
+    {
+      title: "bugs",
+      url: "/blog/tags/bug",
+    },
+    {
+      title: "announcement",
+      url: "/blog/tags/announcement",
+    },
+  ];
 
-        <ul className={styles.sidebarItemList}>
-          <li className={styles.sidebarItem}>
-            <LinkWrapped href="/blog/tags/case-study/">
-              Case Studies
-            </LinkWrapped>
-          </li>
-          <li className={styles.sidebarItem}>
-            <LinkWrapped href="/blog/tags/transparency/">
-              Transparency Reports
-            </LinkWrapped>
-          </li>
-          <li className={styles.sidebarItem}>
-            <LinkWrapped href="/blog/tags/architecture">
-              Temporal Architecture
-            </LinkWrapped>
-          </li>
-          <li className={styles.sidebarItem}>
-            <LinkWrapped href="/blog/funding-announcement/">
-              Series A Funding Announcement
-            </LinkWrapped>
-          </li>
-          <li className={styles.sidebarItem}>
-            <LinkWrapped href="/blog/tags/reflections">
-              Joining Temporal
-            </LinkWrapped>
-          </li>
+  const featured = [
+    {
+      title: "Transparency reports",
+      url: "/blog/tags/transparency/",
+    },
+    {
+      title: "Temporal Architecture",
+      url: "/blog/tags/architecture/",
+    },
+    {
+      title: "Funding announcement",
+      url: "/blog/funding-announcement",
+    },
+    {
+      title: "Joining Temporal",
+      url: "/blog/tags/reflections/",
+    },
+  ];
+  return (
+    <div>
+      <div className="mb-8">
+        <h3 className="mb-2 text-xl font-semibold">Featured</h3>
+        <ul className="flex flex-col space-y-2 mt-4">
+          {featured.map(({title, url}, i) => (
+            <li key={i} className="flex space-x-1 items-center">
+              <svg
+                className="w-4 h-4"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              <Link to={url} className="hover:underline" href={url}>
+                {title}
+              </Link>
+            </li>
+          ))}
         </ul>
       </div>
       <div className={row && "col col--4"}>
-        <a href="/blog">
-          <h3 className={styles.sidebarItemTitle}>{sidebar.title}</h3>
-        </a>
-        <ul className={styles.sidebarItemList}>
-          {sidebar.items.slice(0, 4).map((item) => {
-            return (
-              <li key={item.permalink} className={styles.sidebarItem}>
+        <h3 className="mb-2 text-xl font-semibold">Tags</h3>
+        <ul>
+          {
+            <span className="flex flex-wrap mb-5">
+              {tags.map(({title, url}) => (
                 <Link
-                  isNavLink
-                  to={item.permalink}
-                  className={styles.sidebarItemLink}
-                  activeClassName={styles.sidebarItemLinkActive}
+                  key={url}
+                  className="mr-2 my-2 no-underline inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-[color:var(--ifm-badge-background-color)] text-[color:var(--ifm-color)] hover:opacity-80"
+                  to={url}
                 >
-                  {item.title}
+                  {title}
                 </Link>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
-      <div className={row && "col col--4"}>
-        <h3 className={styles.sidebarItemTitle}>Tags</h3>
-        <ul className={clsx(styles.sidebarItemList, styles.tagsList)}>
-          <li>
-            <LinkWrapped href="/blog/tags/community">#community</LinkWrapped>
-          </li>
-          <li>
-            <LinkWrapped href="/blog/tags/errors">#errors</LinkWrapped>
-          </li>
-          <li>
-            <LinkWrapped href="/blog/tags/bug">#bug</LinkWrapped>
-          </li>
-          <li>
-            <LinkWrapped href="/blog/tags/announcement">
-              #announcement
-            </LinkWrapped>
-          </li>
-          {/* <li>
-            <LinkWrapped href="/blog/tags/architecture">
-              #architecture
-            </LinkWrapped>
-          </li>
-          <li>
-            <LinkWrapped href="/blog/tags/code-first">#code-first</LinkWrapped>
-          </li>
-          <li>
-            <LinkWrapped href="/blog/tags/cloud">#cloud</LinkWrapped>
-          </li>
-          <li>
-            <LinkWrapped href="/blog/tags/stability">#stability</LinkWrapped>
-          </li> */}
-          <li>
-            <LinkWrapped href="/blog/tags">Browse all tags</LinkWrapped>
-          </li>
+              ))}
+            </span>
+          }
         </ul>
         <div>Content request? Guest post?</div>
         <p>
@@ -114,18 +91,5 @@ export default function BlogSidebar({sidebar, row}) {
         </p>
       </div>
     </div>
-  );
-}
-
-function LinkWrapped({href, children}) {
-  return (
-    <Link
-      isNavLink
-      to={href}
-      className={styles.sidebarItemLink}
-      activeClassName={styles.sidebarItemLinkActive}
-    >
-      {children}
-    </Link>
   );
 }

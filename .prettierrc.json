@@ -17,9 +17,7 @@
   "useTabs": false,
   "overrides": [
     {
-      "files": [
-        "docs/typescript/**/*.md"
-      ],
+      "files": ["docs/typescript/**/*.md"],
       "options": {
         "bracketSpacing": true,
         "singleQuote": true

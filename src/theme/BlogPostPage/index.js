@@ -15,64 +15,71 @@ import IconEdit from "@theme/IconEdit";
 import {ThemeClassNames} from "@docusaurus/theme-common";
 
 function BlogPostPage(props) {
-  const {content: BlogPostContents, sidebar} = props;
+  const {content: BlogPostContents} = props;
   const {frontMatter, metadata} = BlogPostContents;
   const {title, description, nextItem, prevItem, editUrl} = metadata;
   const {hide_table_of_contents: hideTableOfContents} = frontMatter;
   return (
-    <Layout
-      title={title}
-      description={description}
-      wrapperClassName={ThemeClassNames.wrapper.blogPages}
-      pageClassName={ThemeClassNames.page.blogPostPage}
-    >
-      {BlogPostContents && (
-        <div className="container margin-vert--lg">
-          <div className="row">
-            <div className="col col--1"></div>
-            <main className="col col--9">
-              <BlogPostItem
-                frontMatter={frontMatter}
-                metadata={metadata}
-                isBlogPostPage
-              >
-                <BlogPostContents />
-              </BlogPostItem>
-              <div style={{marginTop: "2rem"}}>
-                {editUrl && (
-                  <a href={editUrl} target="_blank" rel="noreferrer noopener">
-                    <IconEdit />
-                    <Translate
-                      id="theme.common.editThisPage"
-                      description="The link label to edit the current page"
+    <div id="tailwind">
+      <Layout
+        title={title}
+        description={description}
+        wrapperClassName={ThemeClassNames.wrapper.blogPages}
+        pageClassName={ThemeClassNames.page.blogPostPage}
+      >
+        {BlogPostContents && (
+          <div className="max-w-screen-lg p-6 md:pl-10 mx-auto my-14">
+            <div className="flex space-x-20">
+              <main className={`${hideTableOfContents ? "" : ""}`}>
+                <BlogPostItem
+                  frontMatter={frontMatter}
+                  metadata={metadata}
+                  isBlogPostPage
+                >
+                  <BlogPostContents />
+                </BlogPostItem>
+                <div className="mt-8">
+                  {editUrl && (
+                    <a
+                      className="flex space-x-5 mt-20 items-center"
+                      href={editUrl}
+                      target="_blank"
+                      rel="noreferrer noopener"
                     >
-                      Have a suggestion? Spotted an inaccuracy? Help us fix it!
-                    </Translate>
-                  </a>
+                      <IconEdit />
+
+                      <div>
+                        <Translate
+                          id="theme.common.editThisPage"
+                          description="The link label to edit the current page"
+                        >
+                          Have a suggestion? Spotted an inaccuracy? Help us fix
+                          it!
+                        </Translate>
+                      </div>
+                    </a>
+                  )}
+                </div>
+                {(nextItem || prevItem) && (
+                  <div className="margin-vert--xl">
+                    <BlogPostPaginator
+                      nextItem={nextItem}
+                      prevItem={prevItem}
+                    />
+                  </div>
                 )}
-              </div>
-              {(nextItem || prevItem) && (
-                <div className="margin-vert--xl">
-                  <BlogPostPaginator nextItem={nextItem} prevItem={prevItem} />
-                </div>
-              )}
-            </main>
-            {!hideTableOfContents &&
-              BlogPostContents.toc &&
-              BlogPostContents.toc.length > 1 && (
-                <div className="col col--2">
+              </main>
+
+              {!hideTableOfContents &&
+                BlogPostContents.toc &&
+                BlogPostContents.toc.length > 1 && (
                   <TOC toc={BlogPostContents.toc} />
-                </div>
-              )}
-          </div>
-          <div className="row">
-            <div className="col">
-              <BlogSidebar sidebar={sidebar} row={true} />
+                )}
             </div>
           </div>
-        </div>
-      )}
-    </Layout>
+        )}
+      </Layout>
+    </div>
   );
 }
 

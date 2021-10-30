@@ -6,6 +6,9 @@
  */
 
 /* You can override the default Infima variables here. */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
   --ifm-color-primary: #127ae5;
@@ -16,7 +19,9 @@
   --ifm-color-primary-lighter: #84bdf5;
   --ifm-color-primary-lightest: #cae3fb;
   --ifm-code-font-size: 95%;
-  --ifm-color-hero-background-dark: #18191a;
+  --doc-sidebar-width: 275px !important;
+  --ifm-link-hover-decoration: none;
+  --ifm-link-hover-color: inherit;
 }
 
 html[data-theme="dark"] {
@@ -26,6 +31,14 @@ html[data-theme="dark"] {
   --ifm-toc-link-color: var(--ifm-color-primary-lighter);
   --ifm-blockquote-color: #eeeeee;
   --ifm-code-background: var(--ifm-color-primary-dark);
+  --ifm-color: #ffffff;
+  --ifm-background-color: #141414;
+  --ifm-footer-background-color: #000;
+  --ifm-card-background-color: #1a1a1a;
+  --collapse-button-bg-color-dark: transparent;
+  --ifm-badge-background-color: #b2e7ea;
+  --ifm-badge-background-color: hsl(210deg, 15%, 20%);
+  --card-color: rgba(17, 24, 39);
 }
 
 html[data-theme="light"] {
@@ -33,6 +46,13 @@ html[data-theme="light"] {
   --ifm-color-emphasis-300: #505050;
   --ifm-code-background: var(--ifm-color-primary-lightest);
   --ifm-color-input-background: #ffffff;
+  --ifm-color: #141414;
+  --ifm-background-color: rgb(249, 250, 251);
+  --ifm-footer-background-color: #ffffff;
+  --ifm-card-background-color: #ffffff;
+  --ifm-badge-background-color: rgba(239, 246, 255);
+
+  --card-color: rgba(239, 246, 255);
 }
 
 @font-face {
@@ -59,19 +79,16 @@ html[data-theme="light"] {
   font-display: swap;
 }
 
-/*
-  CUSTOM SCROLLBARS! https://css-tricks.com/the-current-state-of-styling-scrollbars/
-  */
-body::-webkit-scrollbar-track {
-  background-color: rgba(0, 0, 0, 0);
+li {
+  list-style: none; /* taken care of using Tailwind typography */
 }
-body::-webkit-scrollbar {
-  width: clamp(5px, 1vw, 20px);
+
+.docs-page {
+  @apply my-12;
 }
-body::-webkit-scrollbar-thumb {
-  /* background: linear-gradient(var(--ifm-color-primary), #127ae5); */
-  background: linear-gradient(#127ae5, #8f86da);
-  border-radius: 2px;
+
+.edit a svg {
+  @apply inline;
 }
 
 h1,
@@ -83,42 +100,132 @@ h4,
   font-family: "Aeonik", system-ui, -apple-system, BlinkMacSystemFont,
     "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  letter-spacing: 0.03em;
 }
 
-@media only screen and (max-width: 500px) {
-  .hero__title {
-    font-size: 2em;
-  }
+.menu__list {
+  @apply text-sm;
+  padding-right: calc(var(--ifm-menu-link-padding-horizontal) - 2px);
 }
 
-.markdown {
-  font-size: 1.1em;
+.menu__link--sublist:after {
+  background: var(--ifm-menu-link-sublist-icon) 50% / 1.5rem 1.5rem;
 }
 
-.hero--primary {
-  --ifm-hero-text-color: #ffffff;
+div[class^="sidebar_"]
+  .menu__link.menu__link--active:not(.menu__link--sublist) {
+  border-right: 2px solid var(--ifm-color-primary);
+  padding-right: calc(var(--ifm-menu-link-padding-horizontal) - 2px);
+}
+
+div[class^="sidebar_"] .button {
+  @apply border-0 mb-2 w-full mx-auto;
+}
+div[class^="sidebar_"] .button svg {
+  @apply mx-auto;
+}
+
+.table-of-contents {
+  @apply border-none pt-12;
+}
+
+.table-of-contents__link {
+  @apply text-[color:var(--ifm-color)] text-sm;
+}
+.table-of-contents__link--active {
+  @apply text-[color:var(--ifm-color-primary)] underline;
+}
+
+.docs-wrapper aside {
+  @apply border-0;
+}
+
+/* Blog List Page */
+
+.case-study-header {
+  background-color: #000000;
+  @apply rounded-lg w-full;
+}
+
+.center {
+  text-align: center; /* needed so that blog post heading is centered in the single blog post view */
+}
+
+/*
+
+.blog-list-page {
+  @apply max-w-screen-lg mx-auto px-10 my-16;
+}
+.blog-list-page main {
+  @apply flex flex-col space-y-12 max-w-screen-lg mx-auto;
+}
+.blog-list-page aside {
+  @apply text-sm mr-10 px-2;
+}
+.blog-list-page .post-header {
+  @apply items-start;
+}
+.blog-list-page article img {
+  @apply -mb-3 shadow-lg;
+}
+
+
+
+.blog-tags-post-page aside {
+  @apply text-sm mr-10 px-2;
+}
+
+.blog-tags-post-page main {
+  @apply flex flex-col space-y-12 max-w-screen-lg mx-auto;
+}
+
+*/
+
+.blog-tags-post-page {
+  @apply max-w-screen-lg mx-auto px-10 my-16;
+}
+
+/* Pagination */
+.pagination-nav {
+  @apply flex flex-col md:flex-row space-y-5 md:space-y-0 space-x-0 md:space-x-10 items-start justify-center;
+}
+.pagination-nav__item {
+  @apply max-w-md w-full;
+}
+.pagination-nav__link {
+  @apply border-0 shadow-lg rounded-lg p-5 text-lg flex-grow  bg-[color:var(--ifm-card-background-color)] hover:scale-105 transform transition-transform;
+}
+
+/* Navbar */
+.navbar__inner {
+  @apply max-w-screen-lg px-10  mx-auto shadow-none;
+}
+
+.navbar__items--right {
+  @apply flex-row-reverse;
+}
+
+.navbar__items--right > :last-child {
+  @apply pr-5;
+}
+
+/* Search */
+
+.DocSearch-Button {
+  @apply rounded-lg p-5 !important;
 }
 
 .button.button--secondary.button--outline:not(.button--active):not(:hover) {
   color: #ffffff;
 }
 
-.footer {
-  background-color: var(--ifm-color-primary-darkest);
+/* Footer */
+
+.footer .footer__svg {
+  @apply inline m-8 fill-current;
 }
 
-.footer a:hover {
-  color: #ffffff;
-}
-
-.footer .footer__col:first-child .footer__item:first-child {
-  font-weight: bold;
-}
-
-.footer .footer__copyright {
-  margin-bottom: 1rem;
-  opacity: 0.8;
+.footer .footer__link-item span svg {
+  @apply hidden;
 }
 
 @media (max-width: 996px) {
@@ -126,15 +233,12 @@ h4,
     display: none;
   }
 
-  .footer .footer__block {
+  /* .footer .footer__block {
     display: block;
-  }
+  } */
 }
 
-.footer .footer__svg {
-  fill: currentColor;
-  margin: 2em;
-}
+/* Docs */
 
 .docusaurus-highlight-code-line {
   background-color: rgb(72, 77, 91);
@@ -158,25 +262,8 @@ h4,
   width: 50%;
 }
 
-.case-study-header {
-  background-color: #000000;
-}
-
 .hero--primary {
   background-color: var(--ifm-color-hero-background-dark);
-  background-image: url("/backgrounds/StarBackgroundMuted.svg");
-  background-attachment: fixed;
-}
-
-.signUpInput {
-  width: 100%;
-  color: #5d6570;
-  border-width: 0px 0px 1px 0px;
-  border-style: solid;
-  border-color: #a2a2a2;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-  background-color: var(--ifm-color-input-background);
 }
 
 .sr-only {
@@ -235,6 +322,10 @@ h4,
 
 .archetype-tag-reference {
   background-color: #cf8f19;
+}
+
+.prose li > ul {
+  margin-top: 1rem !important; /* sorry cant figure out how else to do this, prose keeps overriding - swyx */
 }
 
 .docs-image-wrapper {
@@ -297,3 +388,14 @@ h4,
   font-size: 1.2em;
   font-weight: 600;
 }
+
+.scale {
+  @apply transition transform hover:scale-105 motion-reduce:transition-none motion-reduce:transform-none;
+}
+
+/* .tableOfContents {
+  max-height: calc(100vh - (var(--ifm-navbar-height) + 2rem));
+  overflow-y: auto;
+  position: sticky;
+  top: calc(var(--ifm-navbar-height) + 1rem);
+} */
