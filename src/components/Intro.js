@@ -33,16 +33,16 @@ function SDKs() {
         Write Workflows and Activities, run Workers and embed Temporal Clients
         in your applications.
       </p>
-      {/* <ul className="flex flex-col space-y-2 list-disc pl-4"> */}
-      <ul className="grid grid-cols-2 gap-6 xl:gap-8">
+      <ul className="flex flex-col space-y-2">
+        {/* <ul className="grid grid-cols-2 gap-6 xl:gap-8"> */}
         <li className="">
           <Link
             className="flex space-x-3 items-center hover:underline"
             to={useBaseUrl("/docs/go/run-your-first-app-tutorial")}
           >
             <img
-              className="w-8 h-8"
-              src="/img/go-lang.svg"
+              className="w-8 h-8 transition hover:scale-110"
+              src="/img/golang.svg"
               alt="Go lang logo"
             />
             <p className="font-semibold">Go</p>
@@ -53,20 +53,8 @@ function SDKs() {
             className="flex space-x-3 items-center hover:underline"
             to={useBaseUrl("/docs/java/run-your-first-app-tutorial")}
           >
-            <img className="w-8 h-8" src="/img/java.svg" alt="Java logo" />
+            <img className="w-8 h-8 transition hover:scale-110" src="/img/java.svg" alt="Java logo" />
             <p className="font-semibold">Java</p>
-          </Link>
-        </li>
-        <li className="">
-          <Link to={useBaseUrl("/docs/typescript/introduction")}>
-            <div className="flex space-x-3 items-center hover:underline">
-              <img
-                className="w-8 h-8"
-                src="/img/typescript.svg"
-                alt="Typescript logo"
-              />
-              <p className="font-semibold">TypeScript</p>
-            </div>
           </Link>
         </li>
 
@@ -76,8 +64,20 @@ function SDKs() {
             to={useBaseUrl("/docs/php/introduction")}
           >
             <div className="flex space-x-3 items-center hover:underline">
-              <img className="w-8 h-8" src="/img/php.svg" alt="PHP logo" />
+              <img className="w-8 h-8 transition hover:scale-110" src="/img/php.svg" alt="PHP logo" />
               <p className="font-semibold">PHP</p>{" "}
+            </div>
+          </Link>
+        </li>
+        <li className="">
+          <Link to={useBaseUrl("/docs/typescript/introduction")}>
+            <div className="flex space-x-3 items-center hover:underline">
+              <img
+                className="pl-1 w-7 h-7 transition hover:scale-110"
+                src="/img/typescript.svg"
+                alt="Typescript logo"
+              />
+              <p className="font-semibold">TypeScript</p>
             </div>
           </Link>
         </li>
@@ -123,13 +123,21 @@ function Server() {
         </li>
         <li className="list-disc">
           <Link
-            to={useBaseUrl("/docs/server/quick-install")}
+            to={useBaseUrl("/docs/content/what-is-a-temporal-cluster")}
             className="hover:underline"
           >
-            <p className="font-semibold">Quick install</p>
+            <p className="font-semibold">Cluster Architecture</p>
           </Link>
         </li>
         <li className="list-disc">
+          <Link
+            to={useBaseUrl("/docs/content/what-is-a-temporal-cluster")}
+            className="hover:underline"
+          >
+            <p className="font-semibold">Versions and Dependencies</p>
+          </Link>
+        </li>
+        {/* <li className="list-disc">
           <Link to={"https://temporal.io/cloud"} className="hover:underline">
             <p className="font-semibold">
               Temporal Cloud Waitlist
@@ -144,8 +152,14 @@ function Server() {
               </svg>
             </p>
           </Link>
-        </li>
+        </li> */}
       </ul>
+      <Link
+        to={useBaseUrl("/docs/server/quick-install")}
+        className="hover:underline mt-2 -ml-2"
+      >
+        <p className="font-semibold"><span className="mr-1">⭐</span>  Quick Install (with Docker)</p>
+      </Link>
     </div>
   );
 }
@@ -179,12 +193,15 @@ function Tools() {
         <h3 className="text-xl font-semibold mb-4">Dev Tools</h3>
       </div>
       <p className="flex-grow mb-4">
-        Tools to manage Workflow Execution lifecycles, manage your Cluster, visualize your application. and more.
+        Tools to manage Workflow Execution lifecycles, manage your Cluster, debug your application, and more.
       </p>
-      <div className="">
-        <div className="flex space-x-3 mb-3">
+      <div className="flex flex-col space-y-2">
+        <Link
+          to={useBaseUrl("/docs/system-tools/web-ui")}
+          className="hover:underline font-semibold flex space-x-3"
+        >
           <svg
-            className="w-6 h-6"
+            className="w-6 h-6 transition hover:scale-110"
             fill="currentColor"
             viewBox="0 0 20 20"
             xmlns="http://www.w3.org/2000/svg"
@@ -195,16 +212,16 @@ function Tools() {
               clipRule="evenodd"
             />
           </svg>
-          <Link
-            to={useBaseUrl("/docs/system-tools/web-ui")}
-            className="hover:underline font-semibold"
-          >
+          <div className="">
             Web UI
-          </Link>
-        </div>
-        <div className="flex space-x-3">
+          </div>
+        </Link>
+          <Link
+          to={useBaseUrl("/docs/system-tools/tctl")}
+          className="hover:underline font-semibold flex space-x-3"
+        >
           <svg
-            className="w-6 h-6"
+            className="w-6 h-6 transition hover:scale-110"
             fill="currentColor"
             viewBox="0 0 20 20"
             xmlns="http://www.w3.org/2000/svg"
@@ -215,13 +232,10 @@ function Tools() {
               clipRule="evenodd"
             />
           </svg>
-          <Link
-            to={useBaseUrl("/docs/system-tools/tctl")}
-            className="hover:underline font-semibold"
-          >
-            CLI{" "}
-          </Link>
-        </div>
+          <div>
+            CLI
+          </div>
+        </Link>
       </div>
     </div>
   );

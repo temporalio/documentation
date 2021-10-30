@@ -31,7 +31,7 @@ export const Community = () => {
             </svg>
 
             <div className="flex-auto">
-              <h3 className="font-bold uppercase">Community Forum</h3>
+              <h3 className="font-bold">Community Forum</h3>
               <p>Search frequently asked questions and ask your own.</p>
             </div>
           </a>
@@ -53,7 +53,7 @@ export const Community = () => {
               ></path>
             </svg>
             <div className="flex-auto">
-              <h3 className="font-bold uppercase">YouTube</h3>
+              <h3 className="font-bold">YouTube</h3>
               <p>Watch tutorials and meetups with Temporal users.</p>
             </div>
           </a>
@@ -82,7 +82,7 @@ export const Community = () => {
             </svg>
 
             <div className="flex-auto">
-              <h3 className="font-bold uppercase">Meetup</h3>
+              <h3 className="font-bold">Meetup</h3>
               <p>Join our monthly meetup and ask questions!</p>
             </div>
           </a>
@@ -105,7 +105,7 @@ export const Community = () => {
               ></path>
             </svg>
             <div className="flex-auto">
-              <h3 className="font-bold uppercase">GitHub</h3>
+              <h3 className="font-bold">GitHub</h3>
               <p>Give Temporal a star on GitHub (it helps!)</p>
             </div>
           </a>
@@ -127,7 +127,7 @@ export const Community = () => {
               ></path>
             </svg>
             <div className="flex-auto">
-              <h3 className="font-bold uppercase">Twitter</h3>
+              <h3 className="font-bold">Twitter</h3>
               <p>
                 Follow <span className="text-blue-400">@temporalio</span> for
                 Temporal news and events.
@@ -199,7 +199,7 @@ export const Community = () => {
               </g>
             </svg>
             <div className="flex-auto">
-              <h3 className="font-bold uppercase">Slack</h3>
+              <h3 className="font-bold">Slack</h3>
               <p>Join for live conversations and get support.</p>
             </div>
           </a>
