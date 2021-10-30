@@ -83,9 +83,9 @@ function DocItem(props) {
               </span>
             </div>
           )}
-          <div className="flex space-x-20">
+          <div className="md:flex md:space-x-20">
             <div className="flex-1">
-              <article className="prose max-w-7xl md:prose-md lg:prose-lg mx-auto my-12">
+              <article className="prose md:prose-md lg:prose-lg mx-auto my-12">
                 {renderTocMobile && (
                   <TOCCollapsible
                     toc={DocContent.toc}
