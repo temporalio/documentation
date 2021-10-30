@@ -53,7 +53,11 @@ function SDKs() {
             className="flex space-x-3 items-center hover:underline"
             to={useBaseUrl("/docs/java/run-your-first-app-tutorial")}
           >
-            <img className="w-8 h-8 transition hover:scale-110" src="/img/java.svg" alt="Java logo" />
+            <img
+              className="w-8 h-8 transition hover:scale-110"
+              src="/img/java.svg"
+              alt="Java logo"
+            />
             <p className="font-semibold">Java</p>
           </Link>
         </li>
@@ -64,7 +68,11 @@ function SDKs() {
             to={useBaseUrl("/docs/php/introduction")}
           >
             <div className="flex space-x-3 items-center hover:underline">
-              <img className="w-8 h-8 transition hover:scale-110" src="/img/php.svg" alt="PHP logo" />
+              <img
+                className="w-8 h-8 transition hover:scale-110"
+                src="/img/php.svg"
+                alt="PHP logo"
+              />
               <p className="font-semibold">PHP</p>{" "}
             </div>
           </Link>
@@ -158,7 +166,9 @@ function Server() {
         to={useBaseUrl("/docs/server/quick-install")}
         className="hover:underline mt-2 -ml-2"
       >
-        <p className="font-semibold"><span className="mr-1">⭐</span>  Quick Install (with Docker)</p>
+        <p className="font-semibold">
+          <span className="mr-1">⭐</span> Quick Install (with Docker)
+        </p>
       </Link>
     </div>
   );
@@ -193,7 +203,8 @@ function Tools() {
         <h3 className="text-xl font-semibold mb-4">Dev Tools</h3>
       </div>
       <p className="flex-grow mb-4">
-        Tools to manage Workflow Execution lifecycles, manage your Cluster, debug your application, and more.
+        Tools to manage Workflow Execution lifecycles, manage your Cluster,
+        debug your application, and more.
       </p>
       <div className="flex flex-col space-y-2">
         <Link
@@ -212,11 +223,9 @@ function Tools() {
               clipRule="evenodd"
             />
           </svg>
-          <div className="">
-            Web UI
-          </div>
+          <div className="">Web UI</div>
         </Link>
-          <Link
+        <Link
           to={useBaseUrl("/docs/system-tools/tctl")}
           className="hover:underline font-semibold flex space-x-3"
         >
@@ -232,9 +241,7 @@ function Tools() {
               clipRule="evenodd"
             />
           </svg>
-          <div>
-            CLI
-          </div>
+          <div>CLI</div>
         </Link>
       </div>
     </div>
@@ -248,8 +255,8 @@ export const Intro = () => {
         Temporal Documentation
       </h2>
       <p className="text-xl max-w-2xl">
-        Learn about Temporal, the open source platform for orchestrating
-        highly reliable, mission-critical applications at scale.
+        Learn about Temporal, the open source platform for orchestrating highly
+        reliable, mission-critical applications at scale.
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 my-10">

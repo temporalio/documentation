@@ -109,7 +109,7 @@ h4,
 
 /* otherwise external references in menu bar (see Go) have the icon screwed up */
 .menu__list-item > .menu__link > span {
-  display: flex
+  display: flex;
 }
 .menu__link--sublist:after {
   background: var(--ifm-menu-link-sublist-icon) 50% / 1.5rem 1.5rem;

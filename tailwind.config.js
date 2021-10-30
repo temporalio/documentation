@@ -1,10 +1,10 @@
 const round = (num) =>
   num
     .toFixed(7)
-    .replace(/(\.[0-9]+?)0+$/, '$1')
-    .replace(/\.0$/, '')
+    .replace(/(\.[0-9]+?)0+$/, "$1")
+    .replace(/\.0$/, "");
 // const rem = (px) => `${round(px / 16)}rem`
-const em = (px, base) => `${round(px / base)}em`
+const em = (px, base) => `${round(px / base)}em`;
 
 module.exports = {
   mode: "jit",
@@ -44,12 +44,12 @@ module.exports = {
             },
             table: {
               thead: {
-                'color': 'var(--ifm-color)',
+                color: "var(--ifm-color)",
               },
-              'thead th:first-child': {
+              "thead th:first-child": {
                 paddingLeft: em(8, 14),
               },
-              'tbody td:first-child': {
+              "tbody td:first-child": {
                 paddingLeft: em(8, 14),
               },
             },
@@ -61,15 +61,15 @@ module.exports = {
               fontStyle: "inherit",
               fontWeight: "medium",
             },
-            'blockquote p:first-of-type::before': {
-              content: '',
+            "blockquote p:first-of-type::before": {
+              content: "",
             },
-            'blockquote p:last-of-type::after': {
-              content: '',
+            "blockquote p:last-of-type::after": {
+              content: "",
             },
             img: {
               borderRadius: "0.5rem",
-              display: "inline"
+              display: "inline",
             },
             "code::before": false,
             "code::after": false,
@@ -79,7 +79,7 @@ module.exports = {
               padding: "0.15rem 0.3rem",
             },
             pre: {
-              borderWidth: '2px',
+              borderWidth: "2px",
             },
             a: {
               color: "#3182ce",
