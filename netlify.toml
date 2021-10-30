@@ -3,7 +3,8 @@
 
     [plugins.inputs]
 
-    skipPatterns = ["#", "www.google-analytics.com", "www.googletagmanager.com"]
+    skipPatterns = ["#", "www.google-analytics.com", "www.googletagmanager.com",
+    "/docs/typescript/client"]
     pretty = true
 
 #
