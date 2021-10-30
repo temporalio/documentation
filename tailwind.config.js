@@ -1,3 +1,11 @@
+const round = (num) =>
+  num
+    .toFixed(7)
+    .replace(/(\.[0-9]+?)0+$/, '$1')
+    .replace(/\.0$/, '')
+// const rem = (px) => `${round(px / 16)}rem`
+const em = (px, base) => `${round(px / base)}em`
+
 module.exports = {
   mode: "jit",
   purge: [
@@ -35,17 +43,33 @@ module.exports = {
               color: "var(--ifm-color)",
             },
             table: {
-              textAlign: "center",
+              thead: {
+                'color': 'var(--ifm-color)',
+              },
+              'thead th:first-child': {
+                paddingLeft: em(8, 14),
+              },
+              'tbody td:first-child': {
+                paddingLeft: em(8, 14),
+              },
             },
             blockquote: {
               border: "none",
               color: "var(--ifm-color)",
               backgroundColor: "transparent",
               fontSize: "inherit",
+              fontStyle: "inherit",
               fontWeight: "medium",
+            },
+            'blockquote p:first-of-type::before': {
+              content: '',
+            },
+            'blockquote p:last-of-type::after': {
+              content: '',
             },
             img: {
               borderRadius: "0.5rem",
+              display: "inline"
             },
             "code::before": false,
             "code::after": false,
@@ -53,6 +77,9 @@ module.exports = {
               color: "var(--ifm-color)",
               "border-radius": "0.25rem",
               padding: "0.15rem 0.3rem",
+            },
+            pre: {
+              borderWidth: '2px',
             },
             a: {
               color: "#3182ce",

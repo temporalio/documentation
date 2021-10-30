@@ -4,7 +4,7 @@ title: Workers and Task Queues in TypeScript
 sidebar_label: Workers
 ---
 
-> **@temporalio/worker** [![NPM](https://img.shields.io/npm/v/@temporalio/worker)](https://www.npmjs.com/package/@temporalio/worker) [API reference](https://typescript.temporal.io/api/namespaces/worker) | [GitHub source](https://github.com/temporalio/sdk-typescript/tree/main/packages/worker)
+> **@temporalio/worker** [![NPM](https://img.shields.io/npm/v/@temporalio/worker)](https://www.npmjs.com/package/@temporalio/worker) [API reference](https://typescript.temporal.io/api/namespaces/worker) | [GitHub](https://github.com/temporalio/sdk-typescript/tree/main/packages/worker)
 
 ## What is a Worker?
 

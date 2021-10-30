@@ -4,7 +4,7 @@ title: Activities in TypeScript
 sidebar_label: Activities
 ---
 
-> **@temporalio/activity** [![NPM](https://img.shields.io/npm/v/@temporalio/activity)](https://www.npmjs.com/package/@temporalio/activity) [API reference](https://typescript.temporal.io/api/namespaces/activity) | [GitHub source](https://github.com/temporalio/sdk-typescript/tree/main/packages/activity)
+> **@temporalio/activity** [![NPM](https://img.shields.io/npm/v/@temporalio/activity)](https://www.npmjs.com/package/@temporalio/activity) [API reference](https://typescript.temporal.io/api/namespaces/activity) | [GitHub](https://github.com/temporalio/sdk-typescript/tree/main/packages/activity)
 
 **Activities are the only way to interact with external resources in Temporal**, like making an HTTP request or accessing the file system.
 

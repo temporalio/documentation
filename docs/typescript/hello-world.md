@@ -1,7 +1,7 @@
 ---
 id: hello-world
-title: Hello World Walkthrough in Node
-sidebar_label: Hello World Walkthrough
+title: Hello World Walkthrough in TypeScript
+sidebar_label: Hello World
 ---
 
 In this tutorial, we'll go over the different components that make up a Temporal project.

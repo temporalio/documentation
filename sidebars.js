@@ -330,7 +330,7 @@ module.exports = {
             "typescript/workflows",
             "typescript/activities",
             "typescript/workers",
-            "typescript/client",
+            "typescript/clients",
           ],
         },
         {

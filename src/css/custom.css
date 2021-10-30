@@ -117,7 +117,6 @@ h4,
 
 div[class^="sidebar_"]
   .menu__link.menu__link--active:not(.menu__link--sublist) {
-  border-right: 2px solid var(--ifm-color-primary);
   padding-right: calc(var(--ifm-menu-link-padding-horizontal) - 2px);
 }
 
@@ -403,3 +402,17 @@ div[class^="sidebar_"] .button svg {
   position: sticky;
   top: calc(var(--ifm-navbar-height) + 1rem);
 } */
+
+/* hacks to counteract tailwind typography clashing with docusaurus tabs */
+.prose .tabs-container > .tabs > .tabs__item::before {
+  content: none;
+}
+.prose .tabs-container > .tabs > .tabs__item {
+  padding-left: 1em;
+}
+.prose .tabs-container ul {
+  margin: 0;
+}
+.prose .tabs-container > .margin-vert--md pre {
+  margin: 0;
+}
