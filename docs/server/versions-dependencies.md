@@ -39,11 +39,17 @@ Temporal offers official support for, and is tested against, dependencies with t
 
 ### Persistence
 
-The only required dependency is a database, and there are multiple types of databases that are supported.
+The only required Temporal Server dependency is a database, and there are multiple types of databases that are supported.
+Below we show specific versions used in our nightly test pipelines and actively tested before we release any version of Temporal.
 
 - **Cassandra v3.11**
 - **MySQL v5.7**
-- **PostgreSQL v9.6** (supported since Temporal v1.2.1)
+- **PostgreSQL v9.6** (will update to v10.18 when v9.6 EOLs)
+
+It is not feasible for us to test Temporal with every version, so we test with the **minimum** version of any supported persistence as part of our release infrastructure. 
+
+- We only rely on core database features, so compatibility should not break often and occasional testing of PostgresSQL v9.6 to v13.4 indicates that this is true.
+- We also don't run tests with vendors like Vitess and CockroachDB, so you rely on their compatibility claims if you use them.
 
 ### Workflow search
 
