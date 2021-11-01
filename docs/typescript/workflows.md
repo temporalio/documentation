@@ -62,9 +62,11 @@ The `@temporalio/workflow` package exports all the useful primitives that you ca
 We fully expect that developers will bundle these into their own reusable Workflow libraries.
 If you do, please [get in touch on Slack](https://temporal.io/slack), we would love to work with you and promote your work.
 
-### Signals and Queries
+## Signals and Queries
 
-<details>
+<!-- note to docs writers: specify id so that #signals and #queries anchor tags still work -->
+
+<details id="signals">
 <summary>
   <a href="/docs/concepts/signals">Signals</a> are a way to send data IN to a running Workflow.
 </summary>
@@ -75,12 +77,16 @@ import WhenToSignals from '../content/when-to-use-signals.md'
 
 </details>
 
-<details>
+<details id="queries">
 <summary>
   <a href="/docs/concepts/queries">Queries</a> are a way to read data OUT from a running Workflow.
 </summary>
 
-- Queries can receive arguments, and return data, but must not mutate Workflow state.
+**Queries are a fully asynchronous mechanism for getting data out of a running Workflow** (as opposed to waiting for the Workflow to complete and return a value, or calling an Activity from inside a Workflow to communicate with the outside world).
+
+- **Queries must not mutate Workflow state.** This would cause non-determinism errors in Temporal.
+- Queries typically return data, but can also receive arguments to modify what data is returned.
+- Queries are often used to check the execution state of a long running Workflow that can be signaled.
 - If a Query is made to a completed Workflow, the final value is returned.
 
 </details>
@@ -88,7 +94,7 @@ import WhenToSignals from '../content/when-to-use-signals.md'
 Signals and Queries are almost always used together.
 If you wanted to send data in, you probably will want to read data out.
 
-#### How to define and receive Signals and Queries
+### How to define and receive Signals and Queries
 
 - To add a Signal to a Workflow, call [`defineSignal`](https://typescript.temporal.io/api/namespaces/workflow/#definesignal) with a name, and then attach a listener with `setListener`.
 - To add a Query to a Workflow, call [`defineQuery`](https://typescript.temporal.io/api/namespaces/workflow/#definequery) with a name, and then attach a listener with `setListener`.
@@ -119,10 +125,10 @@ If you are familiar with Rxjs, you are free to wrap your Signal and Query into O
 
 </details>
 
-#### How to send Signals and make Queries
+### How to send Signals and make Queries
 
 - You invoke a Signal with `workflow.signal(signal, ...args)`. A Signal has no return value by definition.
-- You make a Query with `workflow.query(query, ...args)`.
+- You make a Query with `workflow.query(query, ...args)`. A Query needs a return value, but can also take args.
 - You can refer to either by string name, but you will lose type safety.
 
 ```ts
@@ -139,7 +145,7 @@ let state = await handle.query(count);
 let state = await handle.query<number>('count');
 ```
 
-#### Type-safe Signals and Queries
+### Type-safety for Signals and Queries
 
 The Signals and Queries API has been designed with type safety in mind:
 
@@ -172,9 +178,25 @@ await handle.signal<[number]>('increment'); // Expected 2 arguments, but got 1.
 let state = await handle.query<number, [string]>('print', 'Count: ');
 ```
 
-#### Advanced Notes
+### Notes on Signals
 
-##### Queries
+`WorkflowHandle.signal` returns a Promise that only resolves when Temporal Server has persisted receipt of the Signal, before the Workflow's Signal handler is called.
+This Promise resolves with no value; **Signal handlers cannot return data to the caller.**
+
+:::info No Synchronous Updates
+
+A common request is for a Signal to be invoked with a bad argument, causing a validation error.
+However Temporal has no way to surface the error to the external invocation.
+Signals and Queries are always asynchronous, in other words, **a Signal always succeeds**.
+
+The solution to this is "Synchronous Update" and we plan to add it in future.
+
+For now [the best workaround](https://community.temporal.io/t/signalling-system-human-driven-workflows/160/2) is to use a Query to return Workflow state after signaling.
+Temporal guarantees read-after-write consistency of Signals-followed-by-Queries.
+
+:::
+
+### Notes on Queries
 
 > 🚨 WARNING: NEVER mutate Workflow state inside a query! This would be a source of non-determinism.
 
@@ -193,29 +215,7 @@ export function badExample() {
 
 :::
 
-##### Signals
-
-:::info Notes on Signals
-
-`WorkflowHandle.signal` returns a Promise that only resolves when Temporal Server has persisted receipt of the Signal, before the Workflow's Signal handler is called.
-This Promise resolves with no value; **Signal handlers cannot return data to the caller.**
-
-:::
-
-:::info No Synchronous Updates
-
-A common request is for a Signal to be invoked with a bad argument, causing a validation error.
-However Temporal has no way to surface the error to the external invocation.
-Signals and Queries are always asynchronous, in other words, **a Signal always succeeds**.
-
-The solution to this is "Synchronous Update" and we plan to add it in future.
-
-For now [the best workaround](https://community.temporal.io/t/signalling-system-human-driven-workflows/160/2) is to use a Query to return Workflow state after signaling.
-Temporal guarantees read-after-write consistency of Signals-followed-by-Queries.
-
-:::
-
-##### Componentization
+### Reusing Signals and Queries in Libraries
 
 Because Signal and Query Definitions are separate from Workflow Definitions, we can now compose them together:
 
@@ -239,7 +239,7 @@ export async function myWorkflow2() {
 
 Another example of componentization can be found in our [code samples](https://github.com/temporalio/samples-typescript/blob/854c78955601a6b63aa8ea412cfb5eaf61bd78ee/expense/src/workflows.ts#L19).
 
-##### `signalWithStart`
+### `signalWithStart`
 
 If you're not sure if a Workflow is running, you can `signalWithStart` a Workflow to send it a Signal and optionally start the Workflow if it is not running.
 Arguments for both are sent as needed.
@@ -247,18 +247,15 @@ Arguments for both are sent as needed.
 ```ts
 // Signal With Start
 const client = new WorkflowClient();
-let workflow = client.createWorkflowHandle(
-  interruptableWorkflow, // which Workflow to start
-  { taskQueue: 'test' }
-);
-await workflow.signalWithStart(
-  interruptSignal, // which Signal to send
-  ['interrupted from signalWithStart'], // arguments to send with Signal
-  [] // arguments to start the Workflow if needed
-);
+await workflow.signalWithStart(MyWorkflow, {
+  args: [arg1, arg2],
+  signal: MySignal,
+  signalArgs: [arg3, arg4],
+  workflowId
+});
 ```
 
-##### Triggers
+### Triggers
 
 [Triggers](https://typescript.temporal.io/api/classes/workflow.trigger) are a concept unique to the Temporal TypeScript SDK. They may be deprecated in future.
 
@@ -266,7 +263,7 @@ Triggers, like Promises, can be awaited and expose a `then` method. Unlike Promi
 
 `Trigger` is `CancellationScope`-aware. It is linked to the current scope on construction and throws when that scope is cancelled.
 
-### `condition`
+## `condition`
 
 `condition(timeout?, function)` returns a promise that resolves when a supplied function returns `true` or if an (optional) `timeout` happens first.
 This API is comparable to `Workflow.await` in other SDKs and often used to wait for Signals.
@@ -301,7 +298,7 @@ await condition(() => x > 3);
 await condition('30 days', () => x > 3);
 ```
 
-#### `condition` Anti-patterns
+### `condition` Anti-patterns
 
 :::warning `condition` Antipatterns
 
@@ -314,7 +311,7 @@ await condition('30 days', () => x > 3);
 
 <!-- TODO: insert snippet showing real usage of condition -->
 
-### Timers
+## Timers
 
 Timers help you write durable asynchronous code in Temporal.
 Temporal offers you just two primitives — `setTimeout` and `sleep` — that you can use to build reusable workflow libraries and utilities:
@@ -353,7 +350,7 @@ This section only covers Workflow Timers.
 
 :::
 
-#### `sleep`
+### `sleep`
 
 `sleep` uses the [ms](https://www.npmjs.com/package/ms) package to take either a string or number of milliseconds, and returns a promise that you can `await`.
 
@@ -382,7 +379,7 @@ await sleep('30 days').catch(() => {
 
 You can read more on [the Cancellation Scopes doc](/docs/typescript/cancellation-scopes).
 
-#### Timer design patterns
+### Timer design patterns
 
 There are only two Timer APIs, but the important part is knowing how to use them to model asynchronous business logic. Here are some examples we use the most; we welcome more if you can think of them!
 
@@ -428,7 +425,7 @@ Here is how you can build an updatable timer with `condition`:
 
 </details>
 
-### Child Workflows
+## Child Workflows
 
 Besides Activities, a Workflow can also start other Workflows.
 
@@ -467,21 +464,21 @@ readlist={[
 ]}
 />
 
-#### Parent Close Policy
+### Parent Close Policy
 
 import PCP from '../content/what-is-a-parent-close-policy.md'
 
 <PCP />
 
-### Infinite Workflows
+## Infinite Workflows
 
-#### Why `ContinueAsNew` is needed
+### Why `ContinueAsNew` is needed
 
 import SharedContinueAsNew from '../shared/continue-as-new.md'
 
 <SharedContinueAsNew />
 
-#### The `continueAsNew` API
+### The `continueAsNew` API
 
 Use the [`continueAsNew`](https://typescript.temporal.io/api/namespaces/workflow#continueasnew) API to instruct the TypeScript SDK to restart `loopingWorkflow` with a new starting value and a new event history.
 

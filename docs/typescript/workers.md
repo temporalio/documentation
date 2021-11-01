@@ -99,16 +99,24 @@ There are 2 main places where the name of the Task Queue is supplied by the deve
 <details>
 <summary>
 
-When starting a Workflow, you **must** pass the `taskQueue` option to the [WorkflowClient's `createWorkflowHandle()` method](https://typescript.temporal.io/api/classes/client.workflowclient#newworkflowhandle).
+When scheduling a Workflow, a `taskQueue` must be specified either at client creation (with `workflowDefault`) or at the call site's `WorkflowOptions`.
 
 </summary>
 
 ```ts
-const handle = workflowClient.createWorkflowHandle(myWorkflow, {
-  taskQueue: 'my-task-queue',
+// Option 1
+import { Connection, WorkflowClient } from '@temporalio/client';
+const connection = new Connection();
+const client = new WorkflowClient(connection.service, {
+  workflowDefaults: { taskQueue: 'tutorial' },
 });
+const result = await client.execute(myWorkflow) // taskQueue will resolve to 'tutorial'
 
-const result = await handle.execute();
+
+// Option 2
+const result = await client.execute(myWorkflow, {
+  taskQueue: 'tutorial', // overrides wahtever was set as default
+});
 ```
 
 </details>
