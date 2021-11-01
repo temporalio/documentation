@@ -332,6 +332,7 @@ div[class^="sidebar_"] .button svg {
 }
 
 .docs-image-wrapper {
+  position: static;
   width: 100%;
   background-color: #efefef;
   margin: 0 0 15px 0;
@@ -353,6 +354,10 @@ div[class^="sidebar_"] .button svg {
   font-size: 0.9em;
   font-weight: 300;
   color: #121212;
+}
+
+.docs-image-title{
+  margin: 0px !important;
 }
 
 .docs-centered-image-size-100 {
@@ -382,7 +387,7 @@ div[class^="sidebar_"] .button svg {
 }
 
 .docs-image-legend-list {
-  margin: 0;
+  margin: 0px !important;
   padding: 0;
   list-style-type: none;
 }
