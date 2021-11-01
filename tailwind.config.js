@@ -52,6 +52,9 @@ module.exports = {
               "tbody td:first-child": {
                 paddingLeft: em(8, 14),
               },
+              "tbody td:last-child": {
+                paddingRight: em(8, 14),
+              },
             },
             blockquote: {
               border: "none",

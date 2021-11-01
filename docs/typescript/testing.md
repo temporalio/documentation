@@ -32,7 +32,7 @@ import sinon from 'sinon';
 describe('example workflow', function () {
   let runPromise = null;
   let worker = null;
-  let workflow = null;
+  let client = null;
 
   before(async function () {
     this.timeout(10000);
@@ -43,13 +43,10 @@ describe('example workflow', function () {
     });
 
     runPromise = worker.run();
-  });
-
-  beforeEach(function () {
     const connection = new Connection();
-    const client = new WorkflowClient(connection.service);
-
-    workflow = client.createWorkflowHandle(example, { taskQueue: 'testhttp' });
+    client = new WorkflowClient(connection.service, {
+      workflowDefaults: { taskQueue: 'testhttp' },
+    });
   });
 
   after(async function () {
@@ -62,7 +59,7 @@ describe('example workflow', function () {
   });
 
   it('returns correct result', async function () {
-    const result = await workflow.execute();
+    const result = await client.execute(example);
     assert.equal(result, 'The answer is 42');
   });
 
@@ -76,7 +73,7 @@ describe('example workflow', function () {
       return Promise.resolve({ data: { args: { answer: '88' } } });
     });
 
-    const result = await workflow.execute();
+    const result = await client.execute(example);
     assert.equal(result, 'The answer is 88');
   });
 
@@ -85,7 +82,7 @@ describe('example workflow', function () {
       .stub(axios, 'get')
       .callsFake(() => Promise.reject(new Error('example error')));
 
-    const err = await workflow.execute().then(
+    const err = await client.execute(example).then(
       () => null,
       (err) => err
     );

@@ -166,11 +166,11 @@ export default async function startBuy(req, res) {
   const { itemId } = req.body; // TODO: validate itemId and req.method
   const connection = new Connection();
   const client = new WorkflowClient(connection.service);
-  const handle = client.createWorkflowHandle(OneClickBuy, {
+  const handle = await client.start(OneClickBuy, {
     taskQueue: 'tutorial',
+    args: [itemId],
     // workflowId: // TODO: use business-meaningful user/transaction ID here
-  });
-  await handle.start(itemId); // kick off the purchase async
+  }); // kick off the purchase async
 
   res.status(200).json({ workflowId: handle.workflowId });
 }

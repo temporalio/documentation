@@ -135,7 +135,7 @@ div[class^="sidebar_"] .button svg {
   @apply text-[color:var(--ifm-color)] text-sm;
 }
 .table-of-contents__link--active {
-  @apply text-[color:var(--ifm-color-primary)] underline;
+  @apply text-[color:var(--ifm-color-primary)] font-bold;
 }
 
 .docs-wrapper aside {
@@ -415,4 +415,15 @@ div[class^="sidebar_"] .button svg {
 }
 .prose .tabs-container > .margin-vert--md pre {
   margin: 0;
+}
+
+.prose pre.prism-code {
+  margin: 0;
+}
+
+.codeBlockContainer_node_modules-\@docusaurus-theme-classic-lib-next-theme-CodeBlock-styles-module {
+  box-shadow: none !important;
+  margin: 0;
+  padding: 0;
+  font-size: 0.9em;
 }
