@@ -515,6 +515,6 @@ export async function loopingWorkflow(
 ): Promise<void> {
   // some logic based on foo, branching on isContinuedAsNew
 
-  (await continueAsNew) < typeof loopingWorkflow(foo, true);
+  (await continueAsNew) < typeof loopingWorkflow>(foo, true);
 }
 ```
