@@ -51,60 +51,26 @@ See also our [docs on Webpack troubleshooting](/docs/typescript/troubleshooting/
 The return value of `createActivityHandle` is not a normal object, it is a [`Proxy`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) object that calls the TypeScript SDK's internal `scheduleActivity()` function when you reference an activity.
 This is necessary due to the decoupled nature of Workflows and Activities, but also allows strong typing from a single import, and some nice patterns we explain below.
 
-### Importing multiple Activities at once
+### Activity Options
 
-Activities are Promises and you may retrieve multiple Activities from the same handle if they all share the same timeouts/retries/options:
+When you call `createActivityHandle` in a Workflow function, there are [a range of ActivityOptions](https://typescript.temporal.io/api/interfaces/worker.activityoptions/) you can set:
 
 ```ts
-export async function Workflow(name: string): Promise<string> {
-  const { 
-    act1, // destructuring multiple activities with the same options
-    act2,
-    act3 
-  } = createActivityHandle<typeof activities>(/* activityOptions */);
-  await act1();
-  await Promise.all([act2, act3]);
-}
+// Sample of typical options you can set
+const { greet } = createActivityHandle<typeof activities>({
+  startToCloseTimeout: '30s', // recommended
+  scheduleToCloseTimeout: '5m', // useful
+  retry: {
+    // default retry policy if not specified
+    initialInterval: '1s',
+    backoffCoefficient: 2,
+    maximumAttempts: Infinity,
+    maximumInterval: 100 * initialInterval,
+    nonRetryableErrorTypes: [],
+  },
+});
 ```
-
-### Dynamically referencing Activities
-
-Since, under the hood, Activities are only referenced by their string name, you can reference them dynamically if needed:
-
-```js
-export async function DynamicWorkflow(activityName, ...args) {
-  const acts = createActivityHandle(/* activityOptions */);
-
-  // these are equivalent
-  await acts.activity1();
-  await acts['activity1']();
-
-  // dynamic reference to activities using activityName
-  let result = await acts[activityName](...args);
-}
-```
-
-Type safety is still supported here, but you are encouraged to validate and handle mismatches in Activity names. An invalid Activity name will lead to a `NotFoundError` with a message that looks like: 
-
-```
-ApplicationFailure: Activity function fakeProgresss is not registered on this Worker, available activities: ["fakeProgress"]
-```
-
-### Using pure ESM Node Modules
-
-The TypeScript ecosystem is increasingly moving towards publishing ES Modules over CommonJS, for example `node-fetch@3` is ESM while `node-fetch@2` is CJS.
-If you are importing a pure ESM dependency, see our [fetch ESM](https://github.com/temporalio/samples-typescript/tree/main/fetch-esm) sample for necessary config changes you will need:
-
-- `package.json` must have `"type": "module"` attribute
-- `tsconfig.json` should output in `esnext` format
-- Imports [must](https://nodejs.org/api/esm.html#esm_mandatory_file_extensions) include the `.js` file extension
-
-
-## Activity Options
-
-When you write `createActivityHandle`, there are [a range of options](https://typescript.temporal.io/api/interfaces/worker.activityoptions/) you can set, the most important of which are Timeouts and Retries.
-
-You can also specify `namespace`, `taskQueue`, `cancellationType`, and `activityId`, but most users will not need these.
+We explain the Timeouts and Retries below. You can also specify `namespace`, `taskQueue`, `cancellationType`, and `activityId`, but most users will not need these.
 
 ### Activity Timeouts
 
@@ -112,7 +78,7 @@ Timeouts and Retries are the most immediate benefit of moving code onto Temporal
 There are [four Activity Timeouts](https://docs.temporal.io/blog/activity-timeouts) you can set.
 When a Timeout happens, your activity will be retried according to your [`RetryPolicy`](https://docs.temporal.io/docs/content/what-is-a-retry-policy/).
 
-- `startToCloseTimeout`: Maximum time of a single Activity execution attempt. We recommend always setting this. [More info](https://docs.temporal.io/docs/content/what-is-a-start-to-close-timeout/)
+- `startToCloseTimeout`: Maximum time of a single Activity execution attempt. **We recommend always setting this**. [More info](https://docs.temporal.io/docs/content/what-is-a-start-to-close-timeout/)
 - `scheduleToCloseTimeout`: Total time that a workflow is willing to wait for Activity to complete. [More info](https://docs.temporal.io/docs/content/what-is-a-schedule-to-close-timeout/)
 - `heartbeatTimeout`: A best practice to set for long-running activities. [More info](https://docs.temporal.io/docs/content/what-is-a-heartbeat-timeout/)
 - `scheduleToStartTimeout`: Not recommended; Only for task routing. [More info](https://docs.temporal.io/docs/content/what-is-a-schedule-to-start-timeout/)
@@ -173,6 +139,55 @@ const { greet } = createActivityHandle<typeof activities>({
 ```
 
 For a proper guide to each Retry Option, see the [RetryOptions API Reference](https://typescript.temporal.io/api/interfaces/worker.RetryOptions).
+
+### Importing multiple Activities at once
+
+Activities are Promises and you may retrieve multiple Activities from the same handle if they all share the same timeouts/retries/options:
+
+```ts
+export async function Workflow(name: string): Promise<string> {
+  const { 
+    act1, // destructuring multiple activities with the same options
+    act2,
+    act3 
+  } = createActivityHandle<typeof activities>(/* activityOptions */);
+  await act1();
+  await Promise.all([act2, act3]);
+}
+```
+
+### Dynamically referencing Activities
+
+Since, under the hood, Activities are only referenced by their string name, you can reference them dynamically if needed:
+
+```js
+export async function DynamicWorkflow(activityName, ...args) {
+  const acts = createActivityHandle(/* activityOptions */);
+
+  // these are equivalent
+  await acts.activity1();
+  await acts['activity1']();
+
+  // dynamic reference to activities using activityName
+  let result = await acts[activityName](...args);
+}
+```
+
+Type safety is still supported here, but you are encouraged to validate and handle mismatches in Activity names. An invalid Activity name will lead to a `NotFoundError` with a message that looks like: 
+
+```
+ApplicationFailure: Activity function fakeProgresss is not registered on this Worker, available activities: ["fakeProgress"]
+```
+
+### Using pure ESM Node Modules
+
+The TypeScript ecosystem is increasingly moving towards publishing ES Modules over CommonJS, for example `node-fetch@3` is ESM while `node-fetch@2` is CJS.
+
+**If you are importing a pure ESM dependency, see our [fetch ESM](https://github.com/temporalio/samples-typescript/tree/main/fetch-esm) sample** for necessary config changes you will need:
+
+- `package.json` must have `"type": "module"` attribute
+- `tsconfig.json` should output in `esnext` format
+- Imports [must](https://nodejs.org/api/esm.html#esm_mandatory_file_extensions) include the `.js` file extension
 
 ## How to register an Activity on a Worker
 
@@ -257,7 +272,7 @@ Activity Cancellation is an optional capability that lets you do graceful cleanu
 There are 3 ways to handle Activity cancellation:
 
 1. Await on [`Context.current().cancelled`](https://typescript.temporal.io/api/classes/activity.context#cancelled)
-2. Await on other "cancellation-aware" APIs like `Context.current().sleep`, which will throw a [`CancelledFailure`](https://docs.temporal.io/docs/typescript/handling-failure/) and can be checked with `isCancellation()`
+2. Catch a [`CancelledFailure`](https://docs.temporal.io/docs/typescript/handling-failure/) while awaiting "cancellation-aware" APIs like `Context.current().sleep`. Errors can be validated with the `isCancellation(err)` utility function (see example below)
 3. Pass the context's abort signal at [`Context.current().cancellationSignal`](https://typescript.temporal.io/api/classes/activity.context#cancelled) to a library that supports it like `fetch`
 
 [`heartbeat()`](https://typescript.temporal.io/api/classes/activity.context/#heartbeat) in the TypeScript SDK is a background operation and does not propagate errors to the caller, such as when the scheduling Workflow has already completed or the Activity has been closed by the server (due to timeout for instance). These errors are translated into cancellation and can be handled using the methods above.
