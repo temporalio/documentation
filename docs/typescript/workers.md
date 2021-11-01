@@ -110,8 +110,7 @@ const connection = new Connection();
 const client = new WorkflowClient(connection.service, {
   workflowDefaults: { taskQueue: 'tutorial' },
 });
-const result = await client.execute(myWorkflow) // taskQueue will resolve to 'tutorial'
-
+const result = await client.execute(myWorkflow); // taskQueue will resolve to 'tutorial'
 
 // Option 2
 const result = await client.execute(myWorkflow, {

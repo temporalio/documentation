@@ -16,6 +16,7 @@ Failures are serializable over the network and chainable to enable root-cause an
 If, for example, a TypeScript Workflow starts a Java Child Workflow which calls an Activity in Golang and that activity fails, the TypeScript Workflow will throw a `ChildWorkflowFailure` with `cause` set to an `ActivityFailure`, and the `ActivityFailure`'s `cause` is set to `ApplicationFailure`, which represents the error that occurred in the Golang Activity.
 
 <!--TODO: use snipsync-->
+
 ```ts
 import { executeChild } from '@temporalio/workflow';
 import {
@@ -30,9 +31,7 @@ export type JavaWorkflow = () => Promise<void>;
 
 async function myWorkflow(): Promise<void> {
   try {
-    await executeChild<JavaWorkflow>(
-      'RunAnActivityWorkflow'
-    );
+    await executeChild<JavaWorkflow>('RunAnActivityWorkflow');
   } catch (err) {
     if (
       err instanceof ChildWorkflowFailure &&

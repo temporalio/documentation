@@ -251,7 +251,7 @@ await workflow.signalWithStart(MyWorkflow, {
   args: [arg1, arg2],
   signal: MySignal,
   signalArgs: [arg3, arg4],
-  workflowId
+  workflowId,
 });
 ```
 
@@ -512,6 +512,6 @@ export async function loopingWorkflow(
 ): Promise<void> {
   // some logic based on foo, branching on isContinuedAsNew
 
-  (await continueAsNew) < typeof loopingWorkflow>(foo, true);
+  (await continueAsNew)<typeof loopingWorkflow>(foo, true);
 }
 ```

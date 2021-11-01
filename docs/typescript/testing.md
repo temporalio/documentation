@@ -49,7 +49,6 @@ describe('example workflow', function () {
     });
   });
 
-
   after(async function () {
     worker.shutdown();
     await runPromise;

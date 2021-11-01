@@ -168,7 +168,7 @@ export default async function startBuy(req, res) {
   const client = new WorkflowClient(connection.service);
   const handle = await client.start(OneClickBuy, {
     taskQueue: 'tutorial',
-    args: [itemId]
+    args: [itemId],
     // workflowId: // TODO: use business-meaningful user/transaction ID here
   }); // kick off the purchase async
 

@@ -13,7 +13,6 @@ sidebar_label: Activities
 - **Idempotency**: Activities may be retried repeatedly, so you may need to use [idempotency keys](https://stripe.com/blog/idempotency) for critical side effects.
 - The `'@temporalio/activity'` package offers useful utilities for Activity functions such as sleeping, heartbeating, cancellation, and retrieving metadata (see [docs on Activity Context utilities](#activity-context-utilities) below).
 
-
 ## How to write an Activity Function
 
 Activities are "just functions".
@@ -70,6 +69,7 @@ const { greet } = createActivityHandle<typeof activities>({
   },
 });
 ```
+
 We explain the Timeouts and Retries below. You can also specify `namespace`, `taskQueue`, `cancellationType`, and `activityId`, but most users will not need these.
 
 ### Activity Timeouts
@@ -146,10 +146,10 @@ Activities are Promises and you may retrieve multiple Activities from the same h
 
 ```ts
 export async function Workflow(name: string): Promise<string> {
-  const { 
+  const {
     act1, // destructuring multiple activities with the same options
     act2,
-    act3 
+    act3,
   } = createActivityHandle<typeof activities>(/* activityOptions */);
   await act1();
   await Promise.all([act2, act3]);
@@ -173,7 +173,7 @@ export async function DynamicWorkflow(activityName, ...args) {
 }
 ```
 
-Type safety is still supported here, but you are encouraged to validate and handle mismatches in Activity names. An invalid Activity name will lead to a `NotFoundError` with a message that looks like: 
+Type safety is still supported here, but you are encouraged to validate and handle mismatches in Activity names. An invalid Activity name will lead to a `NotFoundError` with a message that looks like:
 
 ```
 ApplicationFailure: Activity function fakeProgresss is not registered on this Worker, available activities: ["fakeProgress"]
