@@ -298,6 +298,12 @@ await condition(() => x > 3);
 await condition('30 days', () => x > 3);
 ```
 
+`condition` only returns true when the function evaluates to `true`; if the `condition` resolves as `false`, then a timeout has occurred. 
+This leads to some nice patterns, like placing `await condition` inside an `if`:
+
+<!-- SNIPSTART typescript-oneclick-buy -->
+<!--SNIPEND-->
+
 ### `condition` Anti-patterns
 
 :::warning `condition` Antipatterns
@@ -390,14 +396,35 @@ Racing Timers
 
 Use `Promise.race` with Signals and Triggers to have a promise resolve at the earlier of either system time or human intervention.
 
-<!-- SNIPSTART typescript-oneclick-buy -->
-<!--SNIPEND-->
+```js
+import { Trigger, sleep } from '@temporalio/workflow';
+import { sendReminderEmail } from '@activities';
+
+const DAY = 86400;
+const userInteraction = new Trigger<boolean>();
+
+export const signals = {
+  completeUserInteraction() {
+    userInteraction.resolve(true);
+  },
+};
+
+export async function main(userId: string) {
+  const userInteracted = await Promise.race([
+    userInteraction, 
+    sleep('30 days')
+  ]);
+  if (!userInteracted) {
+    await sendReminderEmail(userId);
+  }
+}
+```
 
 You can invert this to create a Reminder pattern where the promise resolves IF no Signal is received.
 
-:::warning Antipattern: Racing Sleep.then
+:::warning Antipattern: Racing sleep.then
 
-Be careful when racing a chained `sleep`. This may cause bugs.
+Be careful when racing a chained `sleep`. This may cause bugs because the chained `.then` will still continue to execute.
 
 ```js
 await Promise.race([

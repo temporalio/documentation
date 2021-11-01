@@ -149,11 +149,11 @@ This pattern is [in use at Netflix](https://www.youtube.com/watch?v=LliBP7YMGyA&
 The main strategy is:
 
 1. Create a `getUniqueTaskQueue` activity that generates a unique task queue name, (for example, `uniqueWorkerTaskQueue`).
-  It doesn't matter where this activity is run so this can be "non sticky" as per Temporal default behavior
+   It doesn't matter where this activity is run so this can be "non sticky" as per Temporal default behavior
 2. For Activities intended to be "sticky", register them in one Worker, and have that be the only Worker listening on that `uniqueWorkerTaskQueue`.
-    - Multiple Workers can be created inside the same process.
+   - Multiple Workers can be created inside the same process.
 3. Execute Workflows from the Client like normal.
-    - Activities will execute in sequence on the same machine because they are all routed by the `uniqueWorkerTaskQueue`.
+   - Activities will execute in sequence on the same machine because they are all routed by the `uniqueWorkerTaskQueue`.
 
 Workflow Code:
 
