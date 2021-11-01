@@ -56,6 +56,29 @@ If you need to compile the Worker yourself, set up the Rust toolchain by followi
 
 </details>
 
+### Prebuilt Workflow Bundles
+
+Advanced users can pass a prebuilt bundle instead of `workflowsPath`, or you can use Temporal's `bundleWorkflowCode` helper:
+
+```ts
+import { bundleWorkflowCode, Worker } from '@temporalio/worker';
+
+// Option 1: passing path to prebuilt bundle
+const worker = await Worker.create({
+  taskQueue,
+  workflowBundle: { path: './path-to-bundle.js' }
+});
+
+// Option 2: bundling code using Temporal's bundler settings
+const workflowBundle = await bundleWorkflowCode({
+  workflowsPath: require.resolve('./path-to-your-workflows'),
+});
+const worker = await Worker.create({
+  taskQueue,
+  workflowBundle,
+});
+```
+
 ### How to shut down a Worker and track its state
 
 You can programmatically shut down a worker with `worker.shutdown()`.
