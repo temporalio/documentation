@@ -44,6 +44,14 @@ Addition include scripts are available, after you select your version, here: [ht
 
 - [Build a "Hello World!" app from scratch](/docs/java/hello-world-tutorial)
 
+## Workshops
+
+- Intro to Temporal Java SDK
+
+import { ResponsivePlayer } from '../../src/components'
+
+<ResponsivePlayer url='https://www.youtube.com/watch?v=VoSiIwkvuX0' />
+
 ## The basics
 
 - [Workflows](/docs/java/workflows)
