@@ -204,7 +204,14 @@ const worker = await Worker.create({
 });
 ```
 
-See [the Worker docs](/docs/typescript/workers) for more details.
+:::tip Sticky Activities
+
+**Any matching Worker can pick up your Activity**, meaning your Activities are not guaranteed to execute on the same machine if you have a fleet of Workers.
+You can route tasks to specific machines with the [Sticky Queues pattern](/docs/typescript/workers#example-sticky-queues).
+
+:::
+
+For more on Activity and Workflow registration, see [the Worker docs](/docs/typescript/workers) for more details.
 
 ## Sharing dependencies in Activity functions
 
