@@ -29,7 +29,7 @@ export default function CenteredImage({imagePath, imageSize, title, legend}) {
   return (
     <div className={"docs-image-wrapper"}>
       <div className={"docs-image-title-wrapper"}>
-        <p>{title}</p>
+        <p className={"docs-image-title"}>{title}</p>
       </div>
       <div className={"docs-centered-image-wrapper"}>
         <img className={imageClass} src={imagePath} alt={title} />
