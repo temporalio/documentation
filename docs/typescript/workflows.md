@@ -375,6 +375,22 @@ await sleep('30 days'); // string API
 await sleep(30 * 24 * 60 * 60 * 1000); // numerical API
 ```
 
+You can convert a string representation of a future date with `date-fns`:
+
+```ts
+import differenceInMilliseconds from 'date-fns/differenceInMilliseconds';
+
+async function sleepUntil(futureDate, fromDate = new Date()) {
+  const timeUntilDate = differenceInMilliseconds(new Date(futureDate), fromDate);
+  return sleep(timeUntilDate);
+}
+
+sleepUntil('30 Sep ' + ((new Date()).getFullYear() + 1)) // wake up when September ends
+sleepUntil('5 Nov 2022 00:12:34 GMT') // wake up at specific time and timezone
+```
+
+You can check the valid ISO string formats on [MDN's Date docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse). The upcoming [ECMAScript Temporal API](https://tc39.es/proposal-temporal/docs/index.html) will offer more time utilities natively in JavaScript, alongside unfortunate name collision for Temporal developers.
+
 `sleep` is cancellation-aware, meaning that when the workflow gets cancelled, the `sleep` timer is canceled and the promise is rejected:
 
 ```ts
@@ -392,6 +408,17 @@ There are only two Timer APIs, but the important part is knowing how to use them
 <details>
 <summary>
 Racing Timers
+</summary>
+
+Use `Promise.race` with Timers to dynamically adjust delays.
+
+<!-- SNIPSTART typescript-timer-reminder-workflow -->
+<!-- SNIPEND-->
+
+</details>
+<details>
+<summary>
+Racing Signals
 </summary>
 
 Use `Promise.race` with Signals and Triggers to have a promise resolve at the earlier of either system time or human intervention.
@@ -445,7 +472,7 @@ if (status === 'processed') await complete(); // takes more than 5 seconds
 Updatable Timer
 </summary>
 
-Here is how you can build an updatable timer with `condition`:
+Here is how you can build an updatable timer with `condition` (warning: the code below has not been vetted, please check with us if you need to write something like this):
 
 <!-- SNIPSTART typescript-updatable-timer-impl -->
 <!-- SNIPEND-->
