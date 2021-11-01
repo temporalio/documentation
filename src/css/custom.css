@@ -135,7 +135,7 @@ div[class^="sidebar_"] .button svg {
   @apply text-[color:var(--ifm-color)] text-sm;
 }
 .table-of-contents__link--active {
-  @apply text-[color:var(--ifm-color-primary)] underline;
+  @apply text-[color:var(--ifm-color-primary)] font-bold;
 }
 
 .docs-wrapper aside {

@@ -1,6 +1,6 @@
 ---
 id: handling-failure
-title: Handling Failures in Node
+title: Handling Failures in TypeScript
 sidebar_label: Handling Failures
 ---
 
@@ -50,12 +50,21 @@ async function myWorkflow(): Promise<void> {
 
 </details>
 
-<details>
-<summary>
-Failures are also used to represent <a href="/docs/typescript/cancellation-scopes#cancelledfailure">cancellation</a> of Activities and Child Workflows.
-</summary>
+Outside of Workflow code, failure classes are attached to the `cause` of [`WorkflowExecutionFailedError`](https://typescript.temporal.io/api/classes/client.workflowexecutionfailederror), which is thrown when executing a Workflow with a [`WorkflowClient`](https://typescript.temporal.io/api/classes/client.workflowclient/) or [`WorkflowHandle`](https://typescript.temporal.io/api/interfaces/client.workflowhandle/).
 
-As explained above, cancellation might not be the immediate cause of failure—it might happen further down the chain. Use the [`isCancellation`](https://typescript.temporal.io/api/namespaces/workflow/#iscancellation) helper function to inspect the chain recursively and look for a `CancelledFailure`.
+## Failures and retries
+
+Activities and Workflows scheduled in the system have a configurable [retry policy](https://typescript.temporal.io/api/interfaces/proto.coresdk.common.iretrypolicy), which many contain an array of `nonRetryableErrorTypes`.
+
+When a Workflow or Activity fails with an unhandled error, Temporal checks if the error name is present in the array of `nonRetryableErrorTypes` and stops retrying if there's a match.
+
+Workflows and Activities may also throw [`ApplicationFailure.nonRetryable`](https://typescript.temporal.io/api/classes/client.applicationfailure#nonretryable-1) to expressly prevent retries.
+
+## `isCancellation` utility
+
+Failures are also used to represent <a href="/docs/typescript/cancellation-scopes#cancelledfailure">cancellation</a> of Activities and Child Workflows.
+
+As explained above, cancellation might not be the immediate cause of failure — it might happen further down the chain. Use the [`isCancellation`](https://typescript.temporal.io/api/namespaces/workflow/#iscancellation) helper function to inspect the chain recursively and look for a `CancelledFailure`.
 
 ```ts
 import {
@@ -83,19 +92,7 @@ export function myWorkflow(urls: string[], timeoutMs: number): Promise<any[]> {
 }
 ```
 
-</details>
-
-Outside of Workflow code, failure classes are attached to the `cause` of [`WorkflowExecutionFailedError`](https://typescript.temporal.io/api/classes/client.workflowexecutionfailederror), which is thrown when executing a Workflow with a [`WorkflowClient`](https://typescript.temporal.io/api/classes/client.workflowclient/) or [`WorkflowHandle`](https://typescript.temporal.io/api/interfaces/client.workflowhandle/).
-
-## Failures and retries
-
-Activities and Workflows scheduled in the system have a configurable [retry policy](https://typescript.temporal.io/api/interfaces/proto.coresdk.common.iretrypolicy), which many contain an array of `nonRetryableErrorTypes`.
-
-When a Workflow or Activity fails with an unhandled error, Temporal checks if the error name is present in the array of `nonRetryableErrorTypes` and stops retrying if there's a match.
-
-Workflows and Activities may also throw [`ApplicationFailure.nonRetryable`](https://typescript.temporal.io/api/classes/client.applicationfailure#nonretryable-1) to expressly prevent retries.
-
-## Failure classes
+## Failure classes reference
 
 ### [TemporalFailure](https://typescript.temporal.io/api/classes/client.temporalfailure)
 
