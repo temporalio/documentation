@@ -8,19 +8,19 @@ sidebar_label: Activities
 
 **Activities are the only way to interact with external resources in Temporal**, like making an HTTP request or accessing the file system.
 
-- Unlike [Workflows](/docs/typescript/determinism), Activities execute in the standard TypeScript environment, not an [isolate](https://www.npmjs.com/package/isolated-vm). So any code that needs to talk to the outside world needs to be in an Activity.
-- Activities cannot be in the same file as Workflows (must be separately registered).
-- Activities may be retried repeatedly, so you may need to use [idempotency keys](https://stripe.com/blog/idempotency) for critical side effects.
+- Unlike [Workflows](/docs/typescript/determinism), Activities execute in the standard Node.js environment, not a [V8 isolate](https://www.npmjs.com/package/isolated-vm). Any code that needs to talk to the outside world needs to be in an Activity, not a Workflow.
+- **Separate from Workflows**: Activities cannot be in the same file as Workflows and must be separately registered (see below for [How to register an Activity on a Worker](#how-to-register-an-activity-on-a-worker))
+- **Idempotency**: Activities may be retried repeatedly, so you may need to use [idempotency keys](https://stripe.com/blog/idempotency) for critical side effects.
+- The `'@temporalio/activity'` package offers useful utilities for Activity functions such as sleeping, heartbeating, cancellation, and retrieving metadata (see [docs on Activity Context utilities](#activity-context-utilities) below).
+
 
 ## How to write an Activity Function
 
 Activities are "just functions".
-Below is a simple Activity that accepts a string parameter and returns a string.
+Below is a simple Activity that accepts a string parameter and returns a string:
 
 <!--SNIPSTART typescript-hello-activity {"enable_source_link": false}-->
 <!--SNIPEND-->
-
-You may `import { Context } from '@temporalio/activity'` which offers useful utilities for Activity functions such as sleeping, heartbeating, cancellation, and retrieving metadata (see [docs on Activity Context utilities](#activity-context-utilities) below).
 
 ## How to import and use Activities in a Workflow
 
@@ -30,23 +30,7 @@ Note that we only import the type of our activities, the TypeScript compiler wil
 <!--SNIPSTART typescript-hello-workflow {"enable_source_link": false}-->
 <!--SNIPEND-->
 
-The return value of `createActivityHandle` is a [`Proxy`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) object
-with a `get` handler that returns a function that calls the TypeScript SDK's internal `scheduleActivity()` function.
-
-Activities are Promises and you may retrieve multiple Activities from the same handle if they all share the same timeouts/retries/options:
-
-```ts
-export async function Workflow(name: string): Promise<string> {
-  const { act1, act2, act3 } = createActivityHandle<typeof activities>({
-    scheduleToCloseTimeout: '1 minute',
-    taskQueue: uniqueTaskQueue,
-  });
-  await act1();
-  await Promise.all([act2, act3]);
-}
-```
-
-:::caution Wrong way to import activities
+:::danger Wrong way to import activities
 
 You may be tempted to import activities directly instead of using `createActivityHandle`:
 
@@ -63,6 +47,48 @@ This indirection comes from the fact that Activities are run in the regular Node
 See also our [docs on Webpack troubleshooting](/docs/typescript/troubleshooting/).
 
 :::
+
+The return value of `createActivityHandle` is not a normal object, it is a [`Proxy`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) object that calls the TypeScript SDK's internal `scheduleActivity()` function when you reference an activity.
+This is necessary due to the decoupled nature of Workflows and Activities, but also allows strong typing from a single import, and some nice patterns we explain below.
+
+### Importing multiple Activities at once
+
+Activities are Promises and you may retrieve multiple Activities from the same handle if they all share the same timeouts/retries/options:
+
+```ts
+export async function Workflow(name: string): Promise<string> {
+  const { 
+    act1, // destructuring multiple activities with the same options
+    act2,
+    act3 
+  } = createActivityHandle<typeof activities>(/* activityOptions */);
+  await act1();
+  await Promise.all([act2, act3]);
+}
+```
+
+### Dynamically referencing Activities
+
+Since, under the hood, Activities are only referenced by their string name, you can reference them dynamically if needed:
+
+```js
+export async function DynamicWorkflow(activityName, ...args) {
+  const acts = createActivityHandle(/* activityOptions */);
+
+  // these are equivalent
+  await acts.activity1();
+  await acts['activity1']();
+
+  // dynamic reference to activities using activityName
+  let result = await acts[activityName](...args);
+}
+```
+
+Type safety is still supported here, but you are encouraged to validate and handle mismatches in Activity names. An invalid Activity name will lead to a `NotFoundError` with a message that looks like: 
+
+```
+ApplicationFailure: Activity function fakeProgresss is not registered on this Worker, available activities: ["fakeProgress"]
+```
 
 ### Using pure ESM Node Modules
 
@@ -73,34 +99,6 @@ If you are importing a pure ESM dependency, see our [fetch ESM](https://github.c
 - `tsconfig.json` should output in `esnext` format
 - Imports [must](https://nodejs.org/api/esm.html#esm_mandatory_file_extensions) include the `.js` file extension
 
-Activities are Promises and you may retrieve multiple Activities from the same handle if they all share the same timeouts/retries/options:
-
-```ts
-export async function Workflow(name: string): Promise<string> {
-  const { act1, act2, act3 } =
-    createActivityHandle<typeof activities>(/* activityOptions */);
-  await act1();
-  await Promise.all([act2, act3]);
-}
-```
-
-:::caution Wrong way to import activities
-
-You may be tempted to import activities directly instead of using `createActivityHandle`:
-
-```ts
-import { greet } from './activities';
-// error when you try to use the function in your code
-greet('Hello world');
-```
-
-This will result in a Webpack error, because the Temporal Worker will try to bundle this as part of the Workflow.
-Make sure you're using `createActivityHandle` to retrieve an Activity rather than calling the function directly.
-This indirection comes from the fact that Activities are run in the regular Node.js environment, not the deterministic `vm` where Workflows are run.
-
-See also our [docs on Webpack troubleshooting](/docs/typescript/troubleshooting/).
-
-:::
 
 ## Activity Options
 
@@ -220,21 +218,22 @@ Temporal SDK also exports a [`Context`](https://typescript.temporal.io/api/class
 
 ### Heartbeating
 
-Long running activities should heartbeat their progress back to the Workflow for the dual purposes of reporting progress and earlier detection of stalled activities (with Heartbeat timeouts).
+Long running activities should heartbeat their progress back to the Workflow for earlier detection of stalled activities (with Heartbeat timeouts).
+
+For example, if your activity `StartToCloseTimeout` is 1 hour and the activity stalled, Temporal would have to wait out the 1 hour before retrying.
+
+If you set a `heartbeatTimeout` for 10 seconds, and used the heartbeat API, the absence of heartbeats in the `heartbeatTimeout` window would give the Server a signal that the activity has stalled and should be retried.
 
 <details>
 <summary>
 What activities should heartbeat?
 </summary>
 
-Heartbeating is best thought about not in terms of time, but in terms of "How do you know you are making progress"?
+Heartbeating is best thought about not in terms of time, but in terms of "How do you know you are making progress"? If an operation is so short that it doesn't make any sense to say "I am still working on this", then don't heartbeat. Vice versa for longer operations.
 
-- If an operation is so short that it doesn't make any sense to say "i'm still working on this", then don't heartbeat.
-- If an operation takes long enough that you can say "I am still working on this", then do.
-
-If your underlying task can report definite progress, that is ideal.
-However you may get something useful from just verifying that the Worker processing your Activity is at the very least "still alive" (has not run out of memory or silently crashed).
-If your activity `StartToClose` has a 1 hour timeout, even if there is no progress to report, the heartbeat would give the Server a signal that it is still alive and could retry earlier. Otherwise, server would have to wait for 1hour before retry.
+- If your underlying task can report definite progress, that is ideal.
+  - However, do note that your Workflow cannot read this progress information while the Activity is still executing (or it would have to store it in Event History). You may report progress to external sources if you need it exposed to the user.
+- Even without a "progress you may get something useful from just verifying that the Worker processing your Activity is at the very least "still alive" (has not run out of memory or silently crashed).
 
 Suitable for heartbeating:
 
@@ -248,7 +247,20 @@ Not suitable for heatbeating:
 
 </details>
 
-TODO: document how to retrieve heartbeat payload.
+### Activity Cancellation
+
+Activity Cancellation is an optional capability that lets you do graceful cleanup if it's originating Workflow is canceled. There are some additional usage notes:
+
+- Activities may be cancelled only if they emit heartbeats.
+- A Workflow can request to cancel an Activity by cancelling its containing [cancellation scope](/docs/typescript/cancellation-scopes).
+
+There are 3 ways to handle Activity cancellation:
+
+1. Await on [`Context.current().cancelled`](https://typescript.temporal.io/api/classes/activity.context#cancelled)
+2. Await on other "cancellation-aware" APIs like `Context.current().sleep`, which will throw a [`CancelledFailure`](https://docs.temporal.io/docs/typescript/handling-failure/) and can be checked with `isCancellation()`
+3. Pass the context's abort signal at [`Context.current().cancellationSignal`](https://typescript.temporal.io/api/classes/activity.context#cancelled) to a library that supports it like `fetch`
+
+[`heartbeat()`](https://typescript.temporal.io/api/classes/activity.context/#heartbeat) in the TypeScript SDK is a background operation and does not propagate errors to the caller, such as when the scheduling Workflow has already completed or the Activity has been closed by the server (due to timeout for instance). These errors are translated into cancellation and can be handled using the methods above.
 
 #### Example: Activity that fakes progress and can be cancelled
 
@@ -257,19 +269,9 @@ The [`sleep`](https://typescript.temporal.io/api/classes/activity.context#sleep)
 <!--SNIPSTART typescript-activity-fake-progress-->
 <!--SNIPEND-->
 
-### Activity Cancellation
+#### Example: Activity that makes a cancellable HTTP request with cancellationSignal
 
-**Activities may be cancelled only if they emit heartbeats.**
-A Workflow can request to cancel an Activity by cancelling its containing [cancellation scope](/docs/typescript/cancellation-scopes).
-
-There are 2 ways to handle Activity cancellation:
-
-1. Await on [`Context.current().cancelled`](https://typescript.temporal.io/api/classes/activity.context#cancelled)
-1. Pass the context's abort signal at [`Context.current().cancellationSignal`](https://typescript.temporal.io/api/classes/activity.context#cancelled) to a library that supports it like `fetch`
-
-[`heartbeat()`](https://typescript.temporal.io/api/classes/activity.context/#heartbeat) in the TypeScript SDK is a background operation and does not propagate errors to the caller, such as when the scheduling Workflow has already completed or the Activity has been closed by the server (due to timeout for instance). These errors are translated into cancellation and can be handled using the methods above.
-
-#### Example: Activity that makes a cancellable HTTP request
+The [`Context.current().cancellationSignal`](https://typescript.temporal.io/api/classes/activity.Context#cancellationsignal) returns an `AbortSignal` that is typically used by the `node_fetch` and `child_process` libraries but is supported by a few other libraries as well as the Web-standard [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController/signal).
 
 <!--SNIPSTART typescript-activity-cancellable-fetch-->
 <!--SNIPEND-->
