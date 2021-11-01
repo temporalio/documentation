@@ -296,9 +296,17 @@ await condition(() => x > 3);
 
 // await earlier of condition to be true or 30 day timeout
 await condition('30 days', () => x > 3);
+
+// track user progress with condition
+export async function trackStepChanges(): Promise<void> {
+  let step = 0;
+  wf.setListener(updateStep, (s) => void (step = s));
+  await wf.condition(() => step === 1);
+  await wf.condition(() => step === 2);
+}
 ```
 
-`condition` only returns true when the function evaluates to `true`; if the `condition` resolves as `false`, then a timeout has occurred. 
+`condition` only returns true when the function evaluates to `true`; if the `condition` resolves as `false`, then a timeout has occurred.
 This leads to some nice patterns, like placing `await condition` inside an `if`:
 
 <!-- SNIPSTART typescript-oneclick-buy -->
@@ -381,12 +389,15 @@ You can convert a string representation of a future date with `date-fns`:
 import differenceInMilliseconds from 'date-fns/differenceInMilliseconds';
 
 async function sleepUntil(futureDate, fromDate = new Date()) {
-  const timeUntilDate = differenceInMilliseconds(new Date(futureDate), fromDate);
+  const timeUntilDate = differenceInMilliseconds(
+    new Date(futureDate),
+    fromDate
+  );
   return sleep(timeUntilDate);
 }
 
-sleepUntil('30 Sep ' + ((new Date()).getFullYear() + 1)) // wake up when September ends
-sleepUntil('5 Nov 2022 00:12:34 GMT') // wake up at specific time and timezone
+sleepUntil('30 Sep ' + (new Date().getFullYear() + 1)); // wake up when September ends
+sleepUntil('5 Nov 2022 00:12:34 GMT'); // wake up at specific time and timezone
 ```
 
 You can check the valid ISO string formats on [MDN's Date docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse). The upcoming [ECMAScript Temporal API](https://tc39.es/proposal-temporal/docs/index.html) will offer more time utilities natively in JavaScript, alongside unfortunate name collision for Temporal developers.
@@ -438,7 +449,7 @@ export const signals = {
 
 export async function main(userId: string) {
   const userInteracted = await Promise.race([
-    userInteraction, 
+    userInteraction,
     sleep('30 days')
   ]);
   if (!userInteracted) {
@@ -530,45 +541,30 @@ import PCP from '../content/what-is-a-parent-close-policy.md'
 
 ## Infinite Workflows
 
-### Why `ContinueAsNew` is needed
+<details>
+<summary>Why ContinueAsNew is needed
+</summary>
 
 import SharedContinueAsNew from '../shared/continue-as-new.md'
 
 <SharedContinueAsNew />
 
+</details>
+
 ### The `continueAsNew` API
 
-Use the [`continueAsNew`](https://typescript.temporal.io/api/namespaces/workflow#continueasnew) API to instruct the TypeScript SDK to restart `loopingWorkflow` with a new starting value and a new event history.
+Use the [`continueAsNew`](https://typescript.temporal.io/api/namespaces/workflow#continueasnew) API to instruct the TypeScript SDK to restart a Workflow with a new starting value and a new event history.
 
-<!-- TODO: convert to sample -->
-
-```ts
-import { continueAsNew, sleep } from '@temporalio/workflow';
-
-export async function loopingWorkflow(iteration = 0): Promise<void> {
-  if (iteration === 10) {
-    return;
-  }
-  console.log('Running Workflow iteration:', iteration);
-  await sleep(1000);
-  // Must match the arguments expected by `loopingWorkflow`
-  await continueAsNew<typeof loopingWorkflow>(iteration + 1);
-  // Unreachable code, continueAsNew is like `process.exit` and will stop execution once called.
-}
-```
+<!--SNIPSTART typescript-continue-as-new-workflow-->
+<!--SNIPEND-->
 
 You can also call `continueAsNew` from a signal handler or `continueAsNew` to a different Workflow (or different Task Queue) using [`makeContinueAsNewFunc`](https://nodejs.temporal.io/api/namespaces/workflow/#makecontinueasnewfunc).
 
 If you need to know whether a Workflow was started via `continueAsNew`, you can pass an optional last argument as true:
 
 ```ts
-import { continueAsNew } from '@temporalio/workflow';
-
-export async function loopingWorkflow(
-  foo: any,
-  isContinuedAsNew: boolean
-): Promise<void> {
-  // some logic based on foo, branching on isContinuedAsNew
+export async function loopingWorkflow(foo: any, isContinued?: boolean) {
+  // some logic based on foo, branching on isContinued
 
   (await continueAsNew)<typeof loopingWorkflow>(foo, true);
 }

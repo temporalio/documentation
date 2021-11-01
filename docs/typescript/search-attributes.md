@@ -30,6 +30,7 @@ For more debugging and monitoring, you may wish add your own domain specific sea
 
 You can provide key-value pairs as searchAttributes in [StartWorkflowOptions](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions#searchattributes).
 In TypeScript, SearchAttributes are represented as `Record<string, string | number | boolean>`.
+
 - The value provided in the map must match what is registered in the dynamic config.
 - The type of value should be a primitive (e.g. string, number, boolean), for dates use `Date.toISOString()`.
 
