@@ -29,6 +29,7 @@ Or clone the Go SDK repo to your preferred location:
 ```bash
 git clone git@github.com:temporalio/sdk-go.git
 ```
+
 **Are there executable code samples?**
 
 You can find a complete list of executable code samples in the [samples library](/docs/samples-library/#go), which includes Temporal Go SDK code samples from the [temporalio/samples-go](https://github.com/temporalio/samples-go) repo.
