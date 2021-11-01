@@ -341,6 +341,7 @@ module.exports = {
             "typescript/testing",
             "typescript/patching",
             "typescript/logging",
+            "typescript/production-deploy",
           ],
         },
         {

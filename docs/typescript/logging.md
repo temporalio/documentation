@@ -1,6 +1,6 @@
 ---
 id: logging
-title: Logging in Node
+title: Logging in TypeScript SDK
 sidebar_label: Logging
 ---
 

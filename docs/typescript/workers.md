@@ -116,7 +116,7 @@ workerLink="/docs/typescript/workers"
 
 ### Where Task Queues are used
 
-In Node, a Task Queue is represented in code by name, as a `string`.
+In Temporal, a Task Queue is uniquely identified by its name, as a `string`.
 There are 2 main places where the name of the Task Queue is supplied by the developer.
 
 <details>

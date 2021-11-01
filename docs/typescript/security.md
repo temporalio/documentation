@@ -1,6 +1,6 @@
 ---
 id: security
-title: Security in Node
+title: Security in TypeScript SDK
 sidebar_label: Security
 ---
 
