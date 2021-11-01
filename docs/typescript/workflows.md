@@ -351,7 +351,7 @@ What we mean by "handling jumps": if you had timers that were supposed to go off
 This section only covers Workflow Timers.
 
 - There is an unrelated [`sleep` utility function](https://typescript.temporal.io/api/classes/activity.context/#sleep) available in **Activity Context** that is not durable, but is cancellation aware. See [the Activities docs for details](/docs/typescript/activities).
-- Timers are unrelated to **Cron Workflows**, which are a Workflow option that you can set for recurring Workflows. See [the Workflows docs for details](/docs/typescript/workflows).
+- Timers are unrelated to **Cron Workflows**, which are a Workflow option that you can set for recurring Workflows. See [the Cron Workflows docs for details](/docs/typescript/clients#scheduling-cron-workflows).
 - If you need to block for an _indefinite_ period of time instead of a set time, you want the `condition` API instead of a timer. See [`condition` docs](#condition).
 
 :::
@@ -501,16 +501,20 @@ Activities usually model a single operation on the external world. Workflows are
 
 </details>
 
-To execute a child workflow and await its completion:
+To execute a child workflow and await its completion, use [`executeChild`](https://typescript.temporal.io/api/namespaces/workflow/#executechild):
 
 <!--SNIPSTART typescript-child-workflow-->
 <!--SNIPEND-->
 
-[`createChildWorkflowHandle`](https://typescript.temporal.io/api/api/namespaces/workflow#newchildworkflowhandle) returns a [`ChildWorkflowHandle`](https://typescript.temporal.io/api/interfaces/workflow.ChildWorkflowHandle) that can be used to start a new child Workflow, signal it and await its completion.
+Child Workflows have similar semantics with [Temporal Clients](/docs/typescript/clients), including how to start/execute/handle them.
+[`startChild`](https://typescript.temporal.io/api/namespaces/workflow/#startchild) returns a [`ChildWorkflowHandle`](https://typescript.temporal.io/api/interfaces/workflow.ChildWorkflowHandle) that can be used to signal, query, cancel, terminate, or await its completion.
 
-Child Workflow Option fields automatically inherit their values from the Parent Workflow Options if they are not explicitly set.
+Special Notes:
 
-Child Workflow executions are [`CancellationScope`](/docs/typescript/cancellation-scopes) aware and will automatically be cancelled when their containing scope is cancelled.
+- Child Workflow Option fields automatically inherit their values from the Parent Workflow Options if they are not explicitly set. They have two advanced options unique to Child Workflows:
+  - [`cancellationType`](https://typescript.temporal.io/api/enums/proto.coresdk.child_workflow.ChildWorkflowCancellationType): Controls at which point to throw the CanceledFailure exception when a child workflow is cancelled
+  - `parentClosePolicy`: Explained below
+- Child Workflow executions are [`CancellationScope`](/docs/typescript/cancellation-scopes) aware and will automatically be cancelled when their containing scope is cancelled.
 
 <RelatedReadList
 readlist={[

@@ -351,6 +351,7 @@ module.exports = {
             "typescript/determinism",
             "typescript/external-dependencies",
             "typescript/handling-failure",
+            "typescript/search-attributes",
             "typescript/interceptors",
           ],
         },

@@ -172,6 +172,17 @@ Temporal gives you fine grained control over what happens when you cancel a work
 
 ## Scheduling Cron Workflows
 
+:::info Should I use Cron Workflows or Timers with Child Workflows?
+
+This section is specifically about [Temporal Cron Jobs](/docs/content/what-is-a-temporal-cron-job/), Workflows that have the `cronSchedule` option set in Temporal.
+Since Temporal Workflows have [Timers](/docs/typescript/workflows#timers), can loop indefinitely, and can spawn [Child Workflows](/docs/typescript/workflows#child-workflows), it is natural to ask when to use which.
+
+Cron Workflows are rigid and come with a lot of caveats (noted below).
+They are a great choice if you have Workflows that need to run as rigidly as the native Linux `cron` utility (except distributed and highly fault tolerant).
+However, if you have any advanced needs at all (including needing overlaps, or canceling individual executions without affecting the overall schedule), use Workflow APIs.
+
+:::
+
 import DistributedCron from '../shared/distributed-cron.md'
 
 <DistributedCron docUrl="https://typescript.temporal.io/api/interfaces/client.workflowoptions/#cronschedule" typeName="WorkflowOptions">
