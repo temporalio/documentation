@@ -4,7 +4,7 @@ title: Production Deploy Checklist for TypeScript SDK
 sidebar_label: Deploy Checklist
 ---
 
-Here is a non-exhaustive list of things we recommend doing before you deploy your Temporal app to production. 
+Here is a non-exhaustive list of things we recommend doing before you deploy your Temporal app to production.
 
 Note that this is separate from maintaining a production self-hosted Temporal Cluster, which has [its own checklist](https://docs.temporal.io/docs/server/production-deployment#checklist-for-scaling-temporal).
 
@@ -19,7 +19,7 @@ You should be able to test these new connections locally before proceeding on to
 
 ## Logging and Metrics
 
-*This section is yet to be written.* You will want to set up standard monitoring for all your Workers, and make sure that common Temporal exceptions (like `client.result` throwing on terminated workflows) are caught and handled as you prefer.
+_This section is yet to be written._ You will want to set up standard monitoring for all your Workers, and make sure that common Temporal exceptions (like `client.result` throwing on terminated workflows) are caught and handled as you prefer.
 
 Please read more in the [Logging docs](/docs/typescript/logging).
 
@@ -44,4 +44,3 @@ async function run() {
 ```
 
 In most samples, we have set up `npm run build` and npm run build-worker which runs a script that calls [`bundleWorkflowCode`](/docs/typescript/workers#prebuilt-workflow-bundles) and saves to a file.
-

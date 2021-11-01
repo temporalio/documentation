@@ -46,7 +46,7 @@ Below we show specific versions used in our nightly test pipelines and actively 
 - **MySQL v5.7**
 - **PostgreSQL v9.6** (will update to v10.18 when v9.6 EOLs)
 
-It is not feasible for us to test Temporal with every version, so we test with the **minimum** version of any supported persistence as part of our release infrastructure. 
+It is not feasible for us to test Temporal with every version, so we test with the **minimum** version of any supported persistence as part of our release infrastructure.
 
 - We only rely on core database features, so compatibility should not break often and occasional testing of PostgresSQL v9.6 to v13.4 indicates that this is true.
 - We also don't run tests with vendors like Vitess and CockroachDB, so you rely on their compatibility claims if you use them.

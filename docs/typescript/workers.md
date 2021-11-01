@@ -66,7 +66,7 @@ import { bundleWorkflowCode, Worker } from '@temporalio/worker';
 // Option 1: passing path to prebuilt bundle
 const worker = await Worker.create({
   taskQueue,
-  workflowBundle: { path: './path-to-bundle.js' }
+  workflowBundle: { path: './path-to-bundle.js' },
 });
 
 // Option 2: bundling code using Temporal's bundler settings
