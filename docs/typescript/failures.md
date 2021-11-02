@@ -69,13 +69,13 @@ As explained above, cancellation might not be the immediate cause of failure —
 ```ts
 import {
   CancellationScope,
-  createActivityHandle,
+  proxyActivities,
   isCancellation,
 } from '@temporalio/workflow';
 import * as activities from '../activities';
 
 export function myWorkflow(urls: string[], timeoutMs: number): Promise<any[]> {
-  const { httpGetJSON } = createActivityHandle<typeof activities>({
+  const { httpGetJSON } = proxyActivities<typeof activities>({
     scheduleToCloseTimeout: timeoutMs,
   });
 
