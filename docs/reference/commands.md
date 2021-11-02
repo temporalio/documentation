@@ -19,7 +19,7 @@ The Commands are batched and sent to the Cluster as part of the Workflow Task co
 ### CompleteWorkflowExecution
 
 - Description: This Command is triggered when the last Workflow Task of the Workflow Execution has finished executing successfully.
-Often this is when the last line of code in a Workflow Definition has been execution.
+  Often this is when the last line of code in a Workflow Definition has been execution.
 - Awaitable: No, a Workflow Execution can not await on the action resulting from this Command.
 - Corresponding Event: [WorkflowExecutionComplete](/docs/reference/events/#workflowexecutioncompleted)
 
