@@ -30,7 +30,7 @@ In the TypeScript SDK, each Workflow execution is run in a separate V8 isolate c
 
 A Workflow is defined as an async function, in its body you may set listeners for processing [Signals](/docs/concepts/signals) and responding to [Queries](/docs/concepts/queries).
 
-The snippet below uses `createActivityHandle` to create a function that, when called, schedules an Activity in the system.
+The snippet below uses `proxyActivities` to create a function that, when called, schedules an Activity in the system.
 
 `src/workflows.ts`
 
