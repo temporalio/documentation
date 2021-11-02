@@ -96,13 +96,13 @@ If you wanted to send data in, you probably will want to read data out.
 
 ### How to define and receive Signals and Queries
 
-- To add a Signal to a Workflow, call [`defineSignal`](https://typescript.temporal.io/api/namespaces/workflow/#definesignal) with a name, and then attach a listener with `setListener`.
-- To add a Query to a Workflow, call [`defineQuery`](https://typescript.temporal.io/api/namespaces/workflow/#definequery) with a name, and then attach a listener with `setListener`.
+- To add a Signal to a Workflow, call [`defineSignal`](https://typescript.temporal.io/api/namespaces/workflow/#definesignal) with a name, and then attach a listener with `setHandler`.
+- To add a Query to a Workflow, call [`defineQuery`](https://typescript.temporal.io/api/namespaces/workflow/#definequery) with a name, and then attach a listener with `setHandler`.
 
 <!--SNIPSTART typescript-blocked-workflow-->
 <!--SNIPEND-->
 
-Listeners for both Signals and Queries can take arguments, which can be used inside `setListener` to mutate state or compute return values respectively.
+Listeners for both Signals and Queries can take arguments, which can be used inside `setHandler` to mutate state or compute return values respectively.
 
 <details>
   <summary>
@@ -110,17 +110,17 @@ Listeners for both Signals and Queries can take arguments, which can be used ins
   </summary>
 
 The semantic of `defineSignal`/`defineQuery` is intentional, in that they return Signal/Query **Definitions**, not unique instances of Signals and Queries themselves.
-Signals/Queries are only instantiated with `setListener` and are specific to a particular Workflow Execution.
+Signals/Queries are only instantiated with `setHandler` and are specific to a particular Workflow Execution.
 
 These distinctions may seem minor, but they model how Temporal works under the hood, because Signals and Queries are messages identified by "just strings" and don't have meaning independent of the Workflow having a listener to handle them.
 
 </details>
 <details>
   <summary>
-    Why <code>setListener</code> and not OTHER_API?
+    Why <code>setHandler</code> and not OTHER_API?
   </summary>
 
-We named it `setListener` instead of `subscribe` because Signals/Queries can only have one listener at a time, whereas `subscribe` could imply an Observable with multiple consumers.
+We named it `setHandler` instead of `subscribe` because Signals/Queries can only have one listener at a time, whereas `subscribe` could imply an Observable with multiple consumers.
 If you are familiar with Rxjs, you are free to wrap your Signal and Query into Observables if you wish, or you could dynamically reassign the listener based on your business logic/Workflow state.
 
 </details>
@@ -207,7 +207,7 @@ This mutates Workflow state - do not do this:
 ```ts
 export function badExample() {
   let someState = 123;
-  setListener(query, () => {
+  setHandler(query, () => {
     return someState++; // bad! don't do this!
   });
 }
@@ -223,8 +223,8 @@ Because Signal and Query Definitions are separate from Workflow Definitions, we 
 // basic reusable Workflow component
 export async function unblocked() {
   let isBlocked = true;
-  setListener(unblockSignal, () => (isBlocked = false));
-  setListener(isBlockedQuery, () => isBlocked);
+  setHandler(unblockSignal, () => (isBlocked = false));
+  setHandler(isBlockedQuery, () => isBlocked);
   await condition(() => !isBlocked);
 }
 
@@ -300,7 +300,7 @@ await condition('30 days', () => x > 3);
 // track user progress with condition
 export async function trackStepChanges(): Promise<void> {
   let step = 0;
-  wf.setListener(updateStep, (s) => void (step = s));
+  wf.setHandler(updateStep, (s) => void (step = s));
   await wf.condition(() => step === 1);
   await wf.condition(() => step === 2);
 }
