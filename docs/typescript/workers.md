@@ -59,9 +59,13 @@ If you need to compile the Worker yourself, set up the Rust toolchain by followi
 ### How to shut down a Worker and track its state
 
 You can programmatically shut down a worker with `worker.shutdown()`.
-Shut downs should be rare and often done manually in development (with `SIGINT` aka `^C`) but you may do it in integration tests or in automating a fleet of workers.
+Shut downs should be rare and often done manually in development (by default, Workers shutdown if they receive any of these [`shutdownSignals`](https://typescript.temporal.io/api/interfaces/worker.workeroptions/#shutdownsignals): `['SIGINT', 'SIGTERM', 'SIGQUIT', 'SIGUSR2']`. You can customize these signals, or the [`shutdownGraceTime`](https://typescript.temporal.io/api/interfaces/worker.workeroptions/#shutdowngracetime) if needed). 
 
-At any point in time you can query Worker state with `worker.getState()`.
+However, you may want to programmatically shut down in integration tests or in automating a fleet of workers.
+
+#### Worker states
+
+At any point in time, you can query Worker state with `worker.getState()`.
 A Worker is in one of 7 states at any given point:
 
 - `INITIALIZED` - The initial state of the Worker after calling Worker.create and successful connection to the server
