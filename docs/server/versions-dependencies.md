@@ -45,15 +45,13 @@ As of time of writing, these specific versions used in our nightly test pipeline
 
 - Cassandra v3.11 and v4.0
 - PostgreSQL v10.18 and v13.4
-- MySQL v5.7
-- In future:
-  - MySQL v8.0 support
-  - [SQLite v3.x](https://github.com/temporalio/temporal/pulls?q=is%3Apr+sort%3Aupdated-desc+sqlite)
+- MySQL v5.7 (and v8.0 soon)
 
 We will update these support ranges once a year. Since Temporal Server primarily relies on core database functionality, we do not expect compatibility to break often.
 
 - We only rely on core database features, so compatibility should not break often and occasional testing of PostgresSQL v9.6 to v13.4 indicates that this is true.
 - We do not run tests with vendors like Vitess and CockroachDB, so you rely on their compatibility claims if you use them. Please feel free to discuss them with fellow users [in our forum](https://community.temporal.io/).
+- Temporal is [working on official SQLite v3.x persistence](https://github.com/temporalio/temporal/pulls?q=is%3Apr+sort%3Aupdated-desc+sqlite), but this is only meant for development and testing, not production usage.
 
 ### Workflow search
 
