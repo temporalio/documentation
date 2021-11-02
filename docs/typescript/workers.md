@@ -139,7 +139,7 @@ const worker = await Worker.create({
 
 </details>
 
-Optionally, in Workflow code, when calling an Activity, you can specify the task queue by passing the `taskQueue` option to [`createActivityHandle()`](https://typescript.temporal.io/api/namespaces/workflow/#createactivityhandle) or [`startChild/executeChild`](https://typescript.temporal.io/api/namespaces/workflow/#startchild).
+Optionally, in Workflow code, when calling an Activity, you can specify the task queue by passing the `taskQueue` option to [`proxyActivities()`](https://typescript.temporal.io/api/namespaces/workflow/#proxyActivities) or [`startChild/executeChild`](https://typescript.temporal.io/api/namespaces/workflow/#startchild).
 If you do not specify a `taskQueue`, then the TypeScript SDK places Activity and Child Workflow Tasks in the same Task Queue as the Workflow Task Queue.
 
 ### Example: Sticky Queues
