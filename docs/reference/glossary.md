@@ -16,7 +16,7 @@ The following terms have specific definitions within the context of the Temporal
 - [Activity Task Execution](/docs/content/what-is-an-activity-task-execution)
 - [Archival](/docs/content/what-is-archival)
 - [Child Workflow Execution](/docs/content/what-is-a-child-workflow-execution)
-- [Command](/docs/content/what-is-a-command)
+- [Command](/docs/reference/commands)
 - [Data Converter](/docs/content/what-is-a-data-converter)
 - [Event](/docs/content/what-is-an-event)
 - [Event History](/docs/content/what-is-an-event-history)
