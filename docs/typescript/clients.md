@@ -151,7 +151,7 @@ const result = await handle.result(); // block until the workflow completes, if 
 
 This isn't necessary with `handle.execute` by definition.
 
-- **Don't forget to handle errors here** - if you call `result()` on a Workflow that prematurely ended for some reason, it will [throw an Error](https://typescript.temporal.io/api/classes/client.WorkflowExecutionFailedError) reflecting that reason.
+- **Don't forget to handle errors here** - if you call `result()` on a Workflow that prematurely ended for some reason, it will [throw an Error](https://typescript.temporal.io/api/classes/client.WorkflowFailedError) reflecting that reason.
 - You can also specify a `runId`, but you will almost never need it, because most people only want the results of the latest run (a Workflow may run multiple times if failed or continued as new).
 
 ### How to cancel a Workflow
@@ -206,15 +206,14 @@ Hence their main documentation is on the [Workflow APIs documentation](/docs/typ
 However, a lot of the same concepts about starting, executing and controlling Workflow Executions apply:
 
 ```ts
-import { startChild } from '@temporalio/workflow';
-// similar for executeChild
+import { executeChild } from '@temporalio/workflow';
 
 export async function StartAllChildrenWorkflow(
   names: string[]
 ): Promise<string> {
   const responseArray = await Promise.all(
     names.map((name) => {
-      return startChild(childWorkflow, {
+      return executeChild(childWorkflow, {
         // other ChildWorkflowOptions here
         args: [name],
       });

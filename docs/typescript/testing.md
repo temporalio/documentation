@@ -86,7 +86,7 @@ describe('example workflow', function () {
       () => null,
       (err) => err
     );
-    assert.equal(err.name, 'WorkflowExecutionFailedError');
+    assert.equal(err.name, 'WorkflowFailedError');
     assert.equal(err.cause.cause.message, 'example error');
   });
 });

@@ -50,7 +50,7 @@ async function myWorkflow(): Promise<void> {
 
 </details>
 
-Outside of Workflow code, failure classes are attached to the `cause` of [`WorkflowExecutionFailedError`](https://typescript.temporal.io/api/classes/client.workflowexecutionfailederror), which is thrown when executing a Workflow with a [`WorkflowClient`](https://typescript.temporal.io/api/classes/client.workflowclient/) or [`WorkflowHandle`](https://typescript.temporal.io/api/interfaces/client.workflowhandle/).
+Outside of Workflow code, failure classes are attached to the `cause` of [`WorkflowFailedError`](https://typescript.temporal.io/api/classes/client.workflowfailederror), which is thrown when executing a Workflow with a [`WorkflowClient`](https://typescript.temporal.io/api/classes/client.workflowclient/) or [`WorkflowHandle`](https://typescript.temporal.io/api/interfaces/client.workflowhandle/).
 
 ## Failures and retries
 
