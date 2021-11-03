@@ -14,7 +14,7 @@ This SDK and associated documentation is in an Alpha stage and may change at any
 The TypeScript SDK is Temporal's newest client SDK for developing with Temporal.
 It is designed with TypeScript-first developer experience in mind, but should work equally well with JavaScript.
 
-:::tip Commencing Launch Sequence 🚀 
+:::tip Commencing Launch Sequence 🚀
 
 We are planning to move to Beta soon! Join:
 
@@ -106,7 +106,7 @@ If you want to run Temporal without Docker, DataDog has created an experimental 
 
 ### Step 1: Create a new project
 
-Use the [package initializer](./package-initializer) to create a new project:
+Use the [package initializer](/docs/typescript/package-initializer) to create a new project:
 
 ```bash
 npx @temporalio/create@latest ./example
@@ -178,7 +178,6 @@ $ npm run start.watch
 ```
 
 </details>
-
 
 > If this step fails, make sure you have the correct version of Node and other prerequisites listed above.
 
