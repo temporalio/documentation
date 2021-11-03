@@ -23,24 +23,44 @@ _This section is yet to be written._ You will want to set up standard monitoring
 
 Please read more in the [Logging docs](/docs/typescript/logging).
 
-## Prebuild the Worker
+## Pre-build code
 
-In our samples we use `ts-node` which compiles TypeScript on the fly.
-Workers also bundle Workflow and `node_modules` code from scratch every time.
-This can be optimized to improve startup time.
+In most of our samples:
 
-```ts
-// src/worker.ts
-import { readFile } from 'fs/promises';
+- We use `ts-node`, which compiles TypeScript on the fly.
+- Our Workers bundle Workflow code at runtime.
 
-async function run() {
-  const worker = await Worker.create({
-    ...(process.env.NODE_ENV === 'production'
-      ? { workflowBundle: await readFile('../worker-bundle') }
-      : { workflowsPath: require.resolve('./workflows') }),
-    activities,
-    taskQueue: 'tutorial',
-  });
+We can improve our Worker's startup time by building code in advance.
+The Worker code can be built and run with:
+
+```sh
+npm run build
+node lib/worker.js
 ```
 
-In most samples, we have set up `npm run build` and npm run build-worker which runs a script that calls [`bundleWorkflowCode`](/docs/typescript/workers#prebuilt-workflow-bundles) and saves to a file.
+You can programmatically bundle Workflow code on your own with [`bundleWorkflowCode`](/docs/typescript/workers#prebuilt-workflow-bundles):
+
+```ts
+const { code } = await bundleWorkflowCode({
+  workflowsPath: require.resolve('src/workflows'),
+});
+
+await writeFile(path.join(__dirname, 'workflow-bundle.js'), code);
+```
+
+And then the bundle can be passed to the Worker:
+
+```ts
+const worker = await Worker.create({
+  workflowBundle: { path: require.resolve('workflow-bundle.js') },
+  activities,
+  taskQueue,
+});
+```
+
+You can also bundle code on your own and pass it to the `workflowBundle`.
+
+We can see this process working in the [production sample](https://github.com/temporalio/samples-typescript/tree/main/production):
+
+<!--SNIPSTART typescript-production-worker-->
+<!--SNIPEND-->
