@@ -41,7 +41,7 @@ These constraints don't apply inside Activities.
 
 ## How to Start and Cancel Workflows
 
-See the [TypeScript SDK Client docs](/docs/typescript/client) for how to use `WorkflowHandle`s to start, cancel, signal, query, describe and more.
+See the [TypeScript SDK Client docs](/docs/typescript/clients) for how to use `WorkflowHandle`s to start, cancel, signal, query, describe and more.
 
 ## Workflow APIs
 
