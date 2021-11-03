@@ -12,7 +12,7 @@ import {RelatedReadContainer, RelatedReadItem} from '../components/RelatedReadLi
 
 <!-- prettier-ignore -->
 import * as WhatIsAdvancedVisibility from './what-is-advanced-visibility.md'
-import * as WhatIsASearchAttribute from './what-is-a-search-attribute.md'
+import * as WhatIsASearchAttribute from '../content/what-is-a-search-attribute.md'
 import * as HowToListFilterInWebUI from './how-to-use-a-list-filter-in-the-temporal-web-ui.md'
 
 A List Filter is the SQL-like string that is provided as the parameter to an <preview page={WhatIsAdvancedVisibility}>Advanced Visibility</preview> List API.

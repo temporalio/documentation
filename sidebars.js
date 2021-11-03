@@ -91,7 +91,6 @@ module.exports = {
       label: "Go",
       collapsed: false,
       items: [
-        "go/introduction",
         "go/getting-started",
         {
           type: "link",
@@ -135,6 +134,9 @@ module.exports = {
         "go/distributed-cron",
         "go/tracing",
         "go/search-apis",
+        "go/how-to-set-startworkflowoptions-in-go",
+        "go/how-to-set-activityoptions-in-go",
+        "go/how-to-set-workeroptions-in-go",
       ],
     },
     {

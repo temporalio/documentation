@@ -44,6 +44,6 @@ If this timeout is reached the following takes place:
 
 <RelatedReadList
 readlist={[
-["How to set a Start-To-Close Timeout in Go","/docs/content/how-to-set-activityoptions-in-go/#starttoclosetimeout","developer guide"],
+["How to set a Start-To-Close Timeout in Go","/docs/go/how-to-set-activityoptions-in-go/#starttoclosetimeout","developer guide"],
 ]}
 />
