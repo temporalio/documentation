@@ -422,6 +422,10 @@ div[class^="sidebar_"] .button svg {
   margin: 0;
 }
 
+.prose li img {
+  margin: 0;
+}
+
 .prose pre.prism-code {
   margin: 0;
 }
