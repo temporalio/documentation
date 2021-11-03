@@ -64,10 +64,10 @@ If you do, please [get in touch on Slack](https://temporal.io/slack), we would l
 
 The rest of this document explains the major Workflow APIs you should know:
 
-- Signals and Queries
-- Timers
-- Child Workflows
-- Infinite Workflows
+- Signals and Queries: `defineSignal`, `defineQuery`, and `setHandler`
+- Deferred Execution: `sleep` and `condition`
+- Child Workflows: `startChild` and `executeChild`
+- Infinite Workflows: `continueAsNew`
 
 ## Signals and Queries
 
@@ -279,39 +279,82 @@ Triggers, like Promises, can be awaited and expose a `then` method. Unlike Promi
 
 `Trigger` is `CancellationScope`-aware. It is linked to the current scope on construction and throws when that scope is cancelled.
 
-## Timers
+## Deferred Execution
 
-Timers help you write durable asynchronous code in Temporal by offering an easy to use Promise-like API, but deferring, persisting, and resuming execution behind the scenes.
+`sleep` and `condition` help you write durable asynchronous code in Temporal by offering an easy to use Promise-like API, but deferring, persisting, and resuming execution behind the scenes.
 
-Temporal offers you just two timers — `setTimeout` and `sleep` — that you can use to build reusable workflow libraries and utilities:
-
-- The [`setTimeout`](https://typescript.temporal.io/api/namespaces/workflow/#timers) global works as normal in JavaScript.
-  The Workflow's v8 isolate environment completely replaces it, including inside libraries that you use, to provide a complete JS runtime.
-  We recommend using our `sleep` API instead of `setTimeout` because it supports cancellation (see below).
-- [`sleep(timeout)`](https://typescript.temporal.io/api/namespaces/workflow/#sleep): a cancellation-aware Promise wrapper for `setTimeout`, that accepts either a string or integer timeout.
+The Temporal Workflow's v8 isolate environment completely replaces the JavaScript [`setTimeout`](https://typescript.temporal.io/api/namespaces/workflow/#timers) global including inside libraries that you use, to provide a complete JS runtime.
+We recommend using our [`sleep(timeout)`](https://typescript.temporal.io/api/namespaces/workflow/#sleep) API instead, as it is a cancellation-aware Promise wrapper for `setTimeout`.
 
 <details>
 <summary>
 Why Durable Timers Are a Hard Problem
 </summary>
 
-JavaScript has a `setTimeout`, which seems relatively unremarkable.
+JavaScript has a `setTimeout`, which seems relatively straightforward.
 However, they are held in memory - if your system goes down, those timers are gone.
 
 A lot of careful code is required to make these timeouts fully reliable (aka recoverable in case of outage.)
 Beyond that, further engineering is needed to scale this - imagine 100,000 independently running timers in your system, firing every minute.
 That is the kind of scale Temporal handles.
 
-<!-- Note: these are notes from Maxim - we should build out examples and recommend this as best practice in future.
+<!-- Note: these are rough Durable Timer notes from Maxim - we should build out examples and really hit home why you want to use us rather than write your own, in future.
 When writing Workflows with timers, you need to take care that it handles jumps of time.
 What we mean by "handling jumps": if you had timers that were supposed to go off at 1.15, 1.30, and 1.45pm, and your system goes down from 1pm to 2pm, then at 2pm when the system comes back up all 3 timers will fire at once. If your workflow code relies on the timers resolving in precise order, write these checks yourself.
 -->
 
 </details>
 
-:::caution Preventing Confusion
+### `sleep`
 
-This section only covers Workflow Timers.
+`sleep` uses the [ms](https://www.npmjs.com/package/ms) package to take either a string or number of milliseconds, and returns a promise that you can `await`.
+
+```ts
+/**
+ * Asynchronous sleep. Schedules a timer on the Temporal service.
+ *
+ * @param ms sleep duration - formatted string or number of milliseconds
+ */
+export function sleep(ms: number | string): Promise<void>;
+
+// durably sleep for 30 days
+import { sleep } from '@temporalio/workflow';
+
+await sleep('30 days'); // string API
+await sleep(30 * 24 * 60 * 60 * 1000); // numerical API
+```
+
+You can convert a string representation of a future date with `date-fns`:
+
+```ts
+import differenceInMilliseconds from 'date-fns/differenceInMilliseconds';
+
+async function sleepUntil(futureDate, fromDate = new Date()) {
+  const timeUntilDate = differenceInMilliseconds(
+    new Date(futureDate),
+    fromDate
+  );
+  return sleep(timeUntilDate);
+}
+
+sleepUntil('30 Sep ' + (new Date().getFullYear() + 1)); // wake up when September ends
+sleepUntil('5 Nov 2022 00:12:34 GMT'); // wake up at specific time and timezone
+```
+
+You can check the valid ISO string formats on [MDN's Date docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse). The upcoming [ECMAScript Temporal API](https://tc39.es/proposal-temporal/docs/index.html) will offer more time utilities natively in JavaScript, alongside unfortunate name collision for Temporal developers.
+
+`sleep` is cancellation-aware, meaning that when the workflow gets cancelled, the `sleep` timer is canceled and the promise is rejected:
+
+```ts
+await sleep('30 days').catch(() => {
+  // clean up code if workflow is canceled during sleep
+});
+```
+
+You can read more on [the Cancellation Scopes doc](/docs/typescript/cancellation-scopes).
+
+:::caution Preventing Confusion: Workflow sleep vs Activity sleep
+
 There is an unrelated [`sleep` utility function](https://typescript.temporal.io/api/classes/activity.context/#sleep) available in **Activity Context** that is not durable, but is cancellation aware. See [the Activities docs for details](/docs/typescript/activities).
 
 :::
@@ -378,57 +421,10 @@ This leads to some nice patterns, like placing `await condition` inside an `if`:
 
 <!-- TODO: insert snippet showing real usage of condition -->
 
-### `sleep`
+### Design patterns
 
-`sleep` uses the [ms](https://www.npmjs.com/package/ms) package to take either a string or number of milliseconds, and returns a promise that you can `await`.
-
-```ts
-/**
- * Asynchronous sleep. Schedules a timer on the Temporal service.
- *
- * @param ms sleep duration - formatted string or number of milliseconds
- */
-export function sleep(ms: number | string): Promise<void>;
-
-// durably sleep for 30 days
-import { sleep } from '@temporalio/workflow';
-
-await sleep('30 days'); // string API
-await sleep(30 * 24 * 60 * 60 * 1000); // numerical API
-```
-
-You can convert a string representation of a future date with `date-fns`:
-
-```ts
-import differenceInMilliseconds from 'date-fns/differenceInMilliseconds';
-
-async function sleepUntil(futureDate, fromDate = new Date()) {
-  const timeUntilDate = differenceInMilliseconds(
-    new Date(futureDate),
-    fromDate
-  );
-  return sleep(timeUntilDate);
-}
-
-sleepUntil('30 Sep ' + (new Date().getFullYear() + 1)); // wake up when September ends
-sleepUntil('5 Nov 2022 00:12:34 GMT'); // wake up at specific time and timezone
-```
-
-You can check the valid ISO string formats on [MDN's Date docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse). The upcoming [ECMAScript Temporal API](https://tc39.es/proposal-temporal/docs/index.html) will offer more time utilities natively in JavaScript, alongside unfortunate name collision for Temporal developers.
-
-`sleep` is cancellation-aware, meaning that when the workflow gets cancelled, the `sleep` timer is canceled and the promise is rejected:
-
-```ts
-await sleep('30 days').catch(() => {
-  // clean up code if workflow is canceled during sleep
-});
-```
-
-You can read more on [the Cancellation Scopes doc](/docs/typescript/cancellation-scopes).
-
-### Timer design patterns
-
-There are only two Timer APIs, but the important part is knowing how to use them to model asynchronous business logic. Here are some examples we use the most; we welcome more if you can think of them!
+The real value of `sleep` and `condition` is in knowing how to use them to model asynchronous business logic.
+Here are some examples we use the most; we welcome more if you can think of them!
 
 <details>
 <summary>
@@ -481,7 +477,7 @@ export const signals = {
 export async function main(userId: string) {
   const userInteracted = await Promise.race([
     userInteraction,
-    sleep('30 days')
+    sleep('30 days'),
   ]);
   if (!userInteracted) {
     await sendReminderEmail(userId);
@@ -545,7 +541,12 @@ export class UpdatableTimer implements PromiseLike<void> {
     /* eslint-disable no-constant-condition */
     while (true) {
       this.deadlineUpdated = false;
-      if (!(await condition(this.#deadline - Date.now(), () => this.deadlineUpdated))) {
+      if (
+        !(await condition(
+          this.#deadline - Date.now(),
+          () => this.deadlineUpdated
+        ))
+      ) {
         break;
       }
     }
@@ -600,6 +601,8 @@ To execute a child workflow and await its completion, use [`executeChild`](https
 
 Child Workflows have similar semantics with [Temporal Clients](/docs/typescript/clients), including how to start/execute/handle them.
 [`startChild`](https://typescript.temporal.io/api/namespaces/workflow/#startchild) returns a [`ChildWorkflowHandle`](https://typescript.temporal.io/api/interfaces/workflow.ChildWorkflowHandle) that can be used to signal, query, cancel, terminate, or await its completion.
+
+To retrieve a running Child Workflow, use [`getExternalWorkflowHandle(workflowId)`](https://typescript.temporal.io/api/namespaces/workflow/#getexternalworkflowhandle).
 
 Special Notes:
 
