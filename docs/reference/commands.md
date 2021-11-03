@@ -24,81 +24,83 @@ The action that the Cluster takes is recorded in the <preview page={WhatIsAWorkf
 During the execution of a Workflow Task there may be several Commands that are generated.
 The Commands are batched and sent to the Cluster as part of the Workflow Task completion request, after the Workflow Task has progressed as far as it can.
 
+The following Commands are defined for the gRPC API here: [https://github.com/temporalio/api/blob/master/temporal/api/command/v1/message.proto](https://github.com/temporalio/api/blob/master/temporal/api/command/v1/message.proto)
+
 ### CompleteWorkflowExecution
 
-- Description: This Command is triggered when the last Workflow Task of the Workflow Execution has finished executing successfully.
-  Often this is when the last line of code in a Workflow Definition has been execution.
+This Command is triggered when the Workflow function execution returns.
+
 - Awaitable: No, a Workflow Execution can not await on the action resulting from this Command.
 - Corresponding Event: [WorkflowExecutionComplete](/docs/reference/events/#workflowexecutioncompleted)
 
 ### ContinueAsNewWorkflowExecution
 
-- Description: This Command is triggered when there is a call to ContinueAsNew from within the Workflow.
+This Command is triggered when there is a call to ContinueAsNew from within the Workflow.
 - Awaitable: No, a Workflow Execution can not await on the action resulting from this Command.
 - Corresponding Event: [WorkflowExecutionContinuedAsNew](docs/reference/events/#workflowexecutioncontinuedasnew)
 
 ### FailWorkflowExecution
 
-- Description: This Command is triggered when the Workflow Execution returns an error or an exception is thrown.
+This Command is triggered when the Workflow Execution returns an error or an exception is thrown.
 - Awaitable: No, a Workflow Execution can not await on the action resulting from this Command.
 - Corresponding Event: [WorkflowExecutionFailed](/docs/reference/events/#workflowexecutionfailed)
 
 ### CancelWorkflowExecution
 
-- Description: This Command is triggered when the Workflow Execution has accepted the Cancellation Request.
+This Command is triggered when the Workflow Execution has accepted the Cancellation Request.
 - Awaitable: No, a Workflow Execution can not await on the action resulting from this Command.
 - Corresponding Event: [WorkflowExecutionCanceled](/docs/reference/events/#workflowexecutioncanceled)
 
 ### StartChildWorkflowExecution
 
-- Description: This Command is triggered by a call to spawn a Child Workflow Execution.
+This Command is triggered by a call to spawn a Child Workflow Execution.
 - Awaitable: Yes, a Workflow Execution can await on the action resulting from this Command.
 - Corresponding Event: [ChildWorkflowExecutionStarted](/docs/reference/events/#childworkflowexecutionstarted)
 
 ### SignalExternalWorkflowExecution
 
-- Description: This Command is triggered by a call to Signal another Workflow Execution.
+This Command is triggered by a call to Signal another Workflow Execution.
 - Awaitable: Yes, a Workflow Execution can await on the action resulting from this Command.
 - Corresponding Event: [SignalExternalWorkflowExecutionInitiated](/docs/reference/events/#signalexternalworkflowexecutioninitiated)
 
 ### RequestCancelExternalWorkflowExecution
 
-- Description: This Command is triggered by a call to request cancellation of another Workflow Execution.
+This Command is triggered by a call to request cancellation of another Workflow Execution.
 - Awaitable: Yes, a Workflow Execution can await on the action resulting from this Command.
 - Corresponding Event: [RequestCancelExternalWorkflowExecutionInitiated](/docs/reference/events/#requestcancelexternalworkflowexecutioninitiated)
 
 ### ScheduleActivityTask
 
-- Description: This Command is triggered by a call to execute an Activity.
+This Command is triggered by a call to execute an Activity.
 - Awaitable: Yes, a Workflow Execution can await on the action resulting from this Command.
 - Corresponding Event: [ActivityTaskScheduled](/docs/reference/events/#activitytaskscheduled)
 
 ### RequestCancelActivityTask
 
-- Description: This Command is triggered by a call to request the cancellation of an Activity Task.
+This Command is triggered by a call to request the cancellation of an Activity Task.
 - Awaitable: No, a Workflow Execution can not await on the action resulting from this Command.
 - Corresponding Event: [ActivityTaskCancelRequested](/docs/reference/events/#activitytaskcancelrequested)
 
 ### StartTimer
 
-- Description: This Command is triggered by a call to start a Timer.
+This Command is triggered by a call to start a Timer.
 - Awaitable: Yes, a Workflow Execution can await on the action resulting from this Command.
 - Corresponding Event: [TimerStarted](/docs/reference/events/#timerstarted)
 
 ### CancelTimer
 
-- Description: This Command is triggered by a call to cancel a Timer.
+This Command is triggered by a call to cancel a Timer.
 - Awaitable: No, a Workflow Execution can not await on the action resulting from this Command.
 - Corresponding Event: [TimerCanceled](/docs/reference/events/#timercanceled)
 
 ### RecordMarker
 
-- Description: This Command is triggered by the SDK.
+This Command is triggered by the SDK.
 - Awaitable: No, a Workflow Execution can not await on the action resulting from this Command.
 - Corresponding Event: [MarkerRecorded](/docs/reference/events/#markerrecorded)
 
 ### UpsertWorkflowSearchAttributes
 
-- Description: This Command is triggered by a call to "upsert" Workflow Search Attributes.
+This Command is triggered by a call to "upsert" Workflow Search Attributes.
 - Awaitable: No, a Workflow Execution can not await on the action resulting from this Command.
 - Corresponding Event: [UpsertWorkflowSearchAttributes](/docs/reference/events/#upsertworkflowsearchattributes)
