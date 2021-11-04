@@ -19,7 +19,7 @@ This tutorial is written for a reasonably experienced TypeScript/Next.js develop
 Whether you are using [Gatsby Functions](https://www.gatsbyjs.com/docs/reference/functions/), [Blitz.js API Routes](https://blitzjs.com/docs/api-routes) or just have a standard Express.js app, you should be able to adapt this tutorial with only minor modifications.
 If you run into trouble, you are welcome to reach out on the [Temporal Slack](https://temporal.io/slack) for help, but we cannot promise help with non-Temporal build tooling related questions.
 
-To skip straight to a fully working example, you can check our [samples-typescript repo](https://github.com/temporalio/samples-typescript/tree/main/nextjs-ecommerce-oneclick), which you can also clone from scratch with [package initializer](/docs/typescript/package-initializer) skeleton:
+**To skip straight to a fully working example, you can check our [samples-typescript repo](https://github.com/temporalio/samples-typescript/tree/main/nextjs-ecommerce-oneclick)**, which you can also clone from scratch with [package initializer](/docs/typescript/package-initializer) skeleton:
 
 ```bash
 npx @temporalio/create@latest nextjs-temporal-app --sample nextjs-ecommerce-oneclick
@@ -55,7 +55,7 @@ Sample `tsconfig.json` to get you started:
 ```js
 // /temporal/tsconfig.json
 {
-  "extends": "@tsconfig/node16/tsconfig.json",
+  "extends": "@tsconfig/node16/tsconfig.json", // optional but nice to have
   "version": "4.4.2",
   "compilerOptions": {
     "emitDecoratorMetadata": false,
@@ -106,18 +106,47 @@ in a single `npm run dev` command.
 
 </details>
 
-## Write your first Workflow and Worker
+## Write your first Workflow, Activity and Worker
 
-Inside of `/temporal/src/workflows.ts` we'll write a simple Workflow function to start with:
+Inside of `/temporal/src/activities.ts` we'll write a simple Activity function to start with:
 
 ```ts
-// /temporal/src/workflows.ts
-export async function OneClickBuy(itemId: string) {
-  console.log('received id: ', itemId);
+// /temporal/src/activities.ts
+import { Context } from '@temporalio/activity';
+
+export async function purchase(id: string): Promise<string> {
+  console.log(`Purchased ${id}!`);
+  return Context.current().info.activityId;
 }
 ```
 
-With this written, you can now fill out your Worker:
+Activities are the only way to interact with the outside world in Temporal (e.g. making API requests, or accessing the filesystem).
+See the [Activities docs](/docs/typescript/activities) for more info.
+
+Inside of `/temporal/src/workflows.ts` we'll write a Workflow function that calls this Activity:
+
+```ts
+// /temporal/src/workflows.ts
+import { proxyActivities } from '@temporalio/workflow';
+import { sleep } from '@temporalio/workflow';
+import type * as activities from './activities'; // purely for type safety
+
+const { purchase } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '1 minute',
+});
+
+export async function OneClickBuy(id: string): Promise<string> {
+  const result = await purchase(id); // calling the activity
+  await sleep('10 seconds'); // demo use of timer
+  console.log(`Activity ID: ${result} executed!`);
+}
+```
+
+Workflow code is bundled and run inside a [deterministic v8 isolate](https://docs.temporal.io/docs/typescript/determinism) so we can persist and replay every state change.
+This is why Workflow code must be separate from Activity code, and why we have to `proxyActivities` instead of directly importing them.
+Workflows also have access to a special set of [Workflow APIs](/docs/typescript/workflows#workflow-apis) which we recommend exploring next.
+
+With your Workflows and Activities done, you can now write the Worker that will host both and poll the `tutorial` Task Queue:
 
 ```ts
 // /temporal/src/worker.ts
@@ -128,20 +157,21 @@ run().catch((err) => console.log(err));
 
 async function run() {
   const worker = await Worker.create({
-    workflowsPath: require.resolve('./workflows'),
-    activities,
+    workflowsPath: require.resolve('./workflows'), // passed to Webpack for bundling
+    activities, // directly imported in Node.js
     taskQueue: 'tutorial',
   });
   await worker.run();
 }
 ```
 
+See the full [Worker docs](/docs/typescript/workers) for more info.
 You should now be able to run your Worker with `npm run build:temporal && npm run start:worker`, but it's not very exciting because you have no way to start a Workflow yet.
 
 :::tip Pro tip
 
-You actually _can_ start a Workflow with [`tctl`](/docs/system-tools/tctl#workflow-operation-examples) with just a Worker running, and no Client code written.
-It is out of scope for this tutorial but try `tctl workflow run --tq tutorial --wt OneClickBuy --et 60 -i '"temp123"'` if you enjoy developing with CLIs.
+You actually _can_ start a Workflow with [`tctl`](/docs/system-tools/tctl#workflow-operation-examples) with just a Worker running, and no Client code written!
+It is out of scope for this tutorial but try to `brew install tctl` and then `tctl workflow run --tq tutorial --wt OneClickBuy --et 60 -i '"Temporal CLI"'` if you enjoy developing with CLIs.
 
 :::
 
@@ -167,7 +197,7 @@ export default async function startBuy(req, res) {
   const connection = new Connection();
   const client = new WorkflowClient(connection.service);
   const handle = await client.start(OneClickBuy, {
-    taskQueue: 'tutorial',
+    taskQueue: 'tutorial', // must match the taskQueue polled by Worker above
     args: [itemId],
     // workflowId: // TODO: use business-meaningful user/transaction ID here
   }); // kick off the purchase async
@@ -183,7 +213,7 @@ npm run dev # start Temporal and Next.js in parallel
 curl -d '{"itemId":"item123"}' -H "Content-Type: application/json" -X POST http://localhost:3000/api/startBuy
 ```
 
-The terminal that has your Temporal Worker will print `received id: item123` if everything is working properly.
+The terminal that has your Temporal Worker will print `Purchased item123` if everything is working properly.
 
 ## Call the API Route from the Next.js frontend
 
@@ -202,18 +232,6 @@ fetch('/api/startBuy', {
 
 We recommend tracking the state of this API call and possibly toasting success, [per our sample code](https://github.com/temporalio/samples-typescript/blob/1f76cb6f78ef494074b937268c14fcc078e36956/nextjs-ecommerce-oneclick/pages/index.tsx#L143), but of course it is up to you what UX you want to provide.
 
-## Workflow Development
-
-At this point, you have a working full stack example of a Temporal Workflow running inside your Next.js app.
-
-You can explore:
-
-- Adding [Activities](/docs/typescript/activities) to your Workflow to interact with the outside world
-- Adding [Signals and Queries](/docs/typescript/workflows/#signals-and-queries) to your Workflow
-  - You can choose to set up one API Route per Signal or Query, or have one API Route handle all of them, Temporal has no opinion on setup
-
-Again, for a fully working example, you can check our [samples-typescript repo](https://github.com/temporalio/samples-typescript/tree/main/nextjs-ecommerce-oneclick).
-
 ## Deploying your Temporal + Next.js app
 
 Your Next.js app, including Next.js API Routes with Temporal Clients in them, can be deployed anywhere Next.js can be deployed, including in serverless environments like Vercel or Netlify.
@@ -224,8 +242,8 @@ However, your Temporal Workers **must** be deployed in traditional "serverful" e
 
 :::
 
-Both Temporal Clients and Temporal Workers must be configured to communicate with a Temporal Server instance, whether self-hosted or Temporal Cloud.
-You will need to configure connection address, namespace, and mTLS cert and key (strongly recommended).
+**Both Temporal Clients and Temporal Workers must be configured to communicate with a Temporal Server instance**, whether self-hosted or Temporal Cloud.
+You will need to configure gRPC connection address, namespace, and mTLS cert and key (strongly recommended).
 
 ```ts
 // before Worker.create call in worker.ts
@@ -268,5 +286,15 @@ As you move into production with your app, please review our docs on:
 - [Testing](/docs/typescript/testing)
 - [Patching](/docs/typescript/patching) (aka migrating code to new versions)
 - [Logging](/docs/typescript/logging)
+- [Production Deploy Checklist](/docs/typescript/production-deploy)
 
-You will also want to have a plan for monitoring and scaling the "serverful" Temporal Workers that host and execute your Activity and Workflow code (separately from monitoring and scaling Temporal Server itself).
+You will also want to have a plan for **monitoring and scaling your Temporal Workers** that host and execute your Activity and Workflow code (separately from monitoring and scaling Temporal Server itself).
+
+## Next Steps
+
+At this point, you have a working full stack example of a Temporal Workflow running inside your Next.js app.
+
+You can explore adding [Signals and Queries](/docs/typescript/workflows/#signals-and-queries) to your Workflow, then adding a new API Route to call them.
+You can choose to set up one API Route per Signal or Query, or have one API Route handle all of them, Temporal has no opinion on how you set up routing.
+
+Again, for a fully working example, you can check our [samples-typescript repo](https://github.com/temporalio/samples-typescript/tree/main/nextjs-ecommerce-oneclick).
