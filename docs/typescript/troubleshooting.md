@@ -47,9 +47,10 @@ You may get errors that make no sense to you because
 - Temporal is trying to execute old Workflow code that no longer exists in your codebase, or
 - your new Client code is expecting Temporal to execute old Workflow/Activity code it doesn't yet know about.
 
-The biggest sign that this is happening is if you notice Temporal is acting non-deterministically.
+The biggest sign that this is happening is if you notice Temporal is acting non-deterministically: running the same Workflow twice gets different results.
 
-If you need to terminate the old Workflows, you can do so with Temporal Web or `tctl`.
+Stale workflows are usually a non-issue because the errors generated are just noise from code you no longer want to run.
+If you need to terminate old stale Workflows, you can do so with Temporal Web or `tctl`.
 
 ## Workflow/Activity registration errors
 
@@ -204,4 +205,4 @@ Error: 4 DEADLINE_EXCEEDED: context deadline exceeded
 
 This happens for a number of reasons: Network hiccups, timeouts that are too short, server overloaded.
 
-This is not your fault and likely indicative of an SDK bug especially while it is in alpha. Please try to produce a minimal repro and we'll be glad to help.
+This is not your fault and likely indicative of an SDK bug. Please try to produce a minimal repro and we'll be glad to help.
