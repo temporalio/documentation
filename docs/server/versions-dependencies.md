@@ -47,7 +47,8 @@ As of time of writing, these specific versions used in our test pipelines and ac
 - **PostgreSQL v10.18 and v13.4**
 - **MySQL v5.7** (and v8.0 soon)
 
-We will update these support ranges once a year. Since Temporal Server primarily relies on core database functionality, we do not expect compatibility to break often.
+We will update these support ranges once a year and the release notes of each Temporal Server will declare when we plan to drop support for database versions reaching End of Life.
+Since Temporal Server primarily relies on core database functionality, we do not expect compatibility to break often.
 
 - We only rely on core database features, so compatibility should not break often. Temporal has no opinions on database upgrade paths; as long as you can upgrade your database according to each project's specifications, Temporal should work with any version within supported ranges.
 - We do not run tests with vendors like Vitess and CockroachDB, so you rely on their compatibility claims if you use them. Please feel free to discuss them with fellow users [in our forum](https://community.temporal.io/).
