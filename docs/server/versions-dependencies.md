@@ -40,16 +40,19 @@ Temporal offers official support for, and is tested against, dependencies with t
 ### Persistence
 
 The only required Temporal Server dependency is a database, and there are multiple types of databases that are supported.
-Below we show specific versions used in our nightly test pipelines and actively tested before we release any version of Temporal.
+Temporal tests compatibility by spanning the **minimum** and **maximum** stable non-EOL major versions for each supported database.
+As of time of writing, these specific versions used in our test pipelines and actively tested before we release any version of Temporal:
 
-- **Cassandra v3.11**
-- **MySQL v5.7**
-- **PostgreSQL v9.6** (will update to v10.18 when v9.6 EOLs)
+- **Cassandra v3.11 and v4.0**
+- **PostgreSQL v10.18 and v13.4**
+- **MySQL v5.7** (and v8.0 soon)
 
-It is not feasible for us to test Temporal with every version, so we test with the **minimum** version of any supported persistence as part of our release infrastructure.
+We will update these support ranges once a year and the release notes of each Temporal Server will declare when we plan to drop support for database versions reaching End of Life.
+Since Temporal Server primarily relies on core database functionality, we do not expect compatibility to break often.
 
-- We only rely on core database features, so compatibility should not break often and occasional testing of PostgresSQL v9.6 to v13.4 indicates that this is true.
-- We also don't run tests with vendors like Vitess and CockroachDB, so you rely on their compatibility claims if you use them.
+- We only rely on core database features, so compatibility should not break often. Temporal has no opinions on database upgrade paths; as long as you can upgrade your database according to each project's specifications, Temporal should work with any version within supported ranges.
+- We do not run tests with vendors like Vitess and CockroachDB, so you rely on their compatibility claims if you use them. Please feel free to discuss them with fellow users [in our forum](https://community.temporal.io/).
+- Temporal is [working on official SQLite v3.x persistence](https://github.com/temporalio/temporal/pulls?q=is%3Apr+sort%3Aupdated-desc+sqlite), but this is only meant for development and testing, not production usage.
 
 ### Workflow search
 
