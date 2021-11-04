@@ -161,10 +161,10 @@ The main strategy is:
 
 Workflow Code:
 
-<!-- SNIPSTART typescript-sticky-queues-workflow -->
+<!--SNIPSTART typescript-sticky-queues-workflow-->
 <!--SNIPEND-->
 
 Worker Code:
 
-<!-- SNIPSTART typescript-sticky-queues-worker -->
+<!--SNIPSTART typescript-sticky-queues-worker-->
 <!--SNIPEND-->
