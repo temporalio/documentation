@@ -13,7 +13,7 @@ release_version: V1.11.2
 
 <!--truncate-->
 
-Gremlin is at the forefront of the fast-rising Chaos Engineering movement. Chaos Engineering involves running thoughtful, planned experiments that teach us how our systems behave in the face of failure, and Temporal provides a testable, scalable solution to handle failures. Our co-founders Maxim Fateev and Samar Abbas recently joined the Gremlin's podcast for a rare double appearance to talk Temporal.
+Gremlin is at the forefront of the fast-rising Chaos Engineering movement. Chaos Engineering involves running thoughtful, planned experiments that teach us how our systems behave in the face of failure, and Temporal provides a testable, scalable solution to handle failures. Our co-founders Maxim Fateev and Samar Abbas recently joined Gremlin's podcast [Break Things on Purpose](https://www.gremlin.com/podcast/) for a rare double appearance to talk Temporal.
 [Listen to it here](https://www.listennotes.com/podcasts/break-things-on/maxim-fateev-and-samar-abbas-C1p42zDwLZX/)!
 
 <iframe src="https://www.listennotes.com/podcasts/break-things-on/maxim-fateev-and-samar-abbas-C1p42zDwLZX/embed/" height="170px" width="100%" style={{width: 1, minWidth: "100%", top: 0, position: 'sticky'}} loading="lazy" frameBorder="0" scrolling="no"></iframe>
