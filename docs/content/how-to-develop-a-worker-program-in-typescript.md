@@ -25,11 +25,13 @@ Activities are directly required and run by Workers in the Node.js environment.
 
 Workers are very flexible - you can host any or all of your Workflows and Activities on a Worker, and you can host multiple Workers in a single machine.
 
-There are three things the Worker needs:
+There are three main things the Worker needs:
 
-- `activities`: You import and supply these directly to the Worker.
-- `workflowsPath`: A path to your workflows file to pass to Webpack, e.g. `require.resolve('./workflows')`. Workflows will be bundled with their dependencies, which you can finetune with `nodeModulesPaths`.
-- `taskQueue`: the Task Queue to listen to.
+- `taskQueue`: the Task Queue to poll. This is the only required argument.
+- `activities`: Optional. Imported and supplied directly to the Worker. Not file path name.
+- Workflow bundle:
+  - Either specify a `workflowsPath` to your `workflows.ts` file to pass to Webpack, e.g. `require.resolve('./workflows')`. Workflows will be bundled with their dependencies, which you can finetune with `nodeModulesPaths`.
+  - Or pass a prebuilt bundle to `workflowBundle` instead if you prefer to handle the bundling yourself.
 
 ### Additional Worker Options
 

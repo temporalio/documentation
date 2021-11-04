@@ -50,6 +50,8 @@ Once you have a Workflow Client, you can schedule a new Workflow Execution in th
 - `client.start` ("Non-Blocking"): returns a handle immediately after Workflow starts
 - (Advanced) `client.signalWithStart`: signal a Workflow and optionally start one if there is none running. See the [Signals docs](/docs/typescript/workflows) for details.
 
+Any of these can be started on a recurring schedule with the `cronSchedule` option, but there are important caveats you should read in the [Cron Workflows section](#scheduling-cron-workflows).
+
 <details>
 <summary>Note: Scheduling is not the same as Starting
 </summary>
@@ -172,14 +174,23 @@ Temporal gives you fine grained control over what happens when you cancel a work
 
 ## Scheduling Cron Workflows
 
+You can set each workflow to repeat on a schedule with the `cronSchedule` option:
+
+```ts
+const handle = await client.start(scheduledWorkflow, {
+  taskQueue: 'test',
+  cronSchedule: '* * * * *', // start every minute
+});
+```
+
 :::info Should I use Cron Workflows or Timers with Child Workflows?
 
 This section is specifically about [Temporal Cron Jobs](/docs/content/what-is-a-temporal-cron-job/), Workflows that have the `cronSchedule` option set in Temporal.
 Since Temporal Workflows have [Timers](/docs/typescript/workflows#timers), can loop indefinitely, and can spawn [Child Workflows](/docs/typescript/workflows#child-workflows), it is natural to ask when to use which.
 
-Cron Workflows are rigid and come with a lot of caveats (noted below).
+Cron Workflows are rigid and come with a lot of caveats.
 They are a great choice if you have Workflows that need to run as rigidly as the native Linux `cron` utility (except distributed and highly fault tolerant).
-However, if you have any advanced needs at all (including needing overlaps, or canceling individual executions without affecting the overall schedule), use Workflow APIs.
+However, if you have any advanced needs (including needing overlaps, or canceling individual executions without affecting the overall schedule), use Timers.
 
 :::
 
@@ -223,7 +234,7 @@ export async function StartAllChildrenWorkflow(
 }
 ```
 
-The same ideas also apply to handling External Workflows:
+The same concept of "Workflow Handles" applies to retrieving handles for Child and External Workflows - as long as you have the Workflow ID:
 
 ```ts
 import { getExternalWorkflowHandle } from '@temporalio/workflow';
