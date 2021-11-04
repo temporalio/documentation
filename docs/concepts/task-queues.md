@@ -77,6 +77,8 @@ The [Go file processing example](https://github.com/temporalio/samples-go/tree/m
 
 ## Sticky Queues
 
+_This is an advanced concept and most users should not need to know this_.
+
 Workflow workers by default cache workflows they have recently executed.
 To efficiently make progress on cached workflows, Workers with the Workflow cache enabled (on by default) will automatically create a Task Queue specific to that Worker called a "Sticky Queue", and the server will send workflow tasks with incremental history updates (rather than entire histories) to that worker as long as it is still polling from this Sticky Queue.
 

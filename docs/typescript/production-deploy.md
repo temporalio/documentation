@@ -67,10 +67,14 @@ We can see this process working in the [production sample](https://github.com/te
 
 ## Performance Tuning
 
+If you are experiencing system performance issues, make sure that you have checked that the bottleneck is not with your Temporal Cluster before turning to the performance of your Workers.
+
 We endeavor to give you good defaults so you don't have to worry about them, but there are a few key settings you may want to explore if you are pushing system limits:
 
 - [Worker Options](https://typescript.temporal.io/api/interfaces/worker.workeroptions/#maxcachedworkflows), for example:
   - `maxCachedWorkflows` to limit Workflow cache size and trade memory for CPU (biggest lever for Worker performance)
   - `maxConcurrentActivityTaskExecutions` and other options for tuning concurrency
-  - `stickyQueueScheduleToStartTimeout` to determine how quickly workflow tasks can be moved to other workers
+  - `stickyQueueScheduleToStartTimeout` to determine how quickly Temporal stops trying to send work to Workers that are no longer present, via [Sticky Queues](/docs/concept/task-queues#sticky-queues)
+- [Activity Timeouts and Retries](https://docs.temporal.io/docs/typescript/activities#activity-timeouts) as you gain an understanding of Temporal and the services you rely on, you will likely want to adjust the timeouts and retry policy to reflect your desired behavior.
+  - Note that there are separate [timeouts and retry policy](https://typescript.temporal.io/api/interfaces/client.workflowoptions/#workflowruntimeout) at the Workflow level, but we do not encourage their usage unless you know what you are doing.
 - _to be completed as we get more user feedback_
