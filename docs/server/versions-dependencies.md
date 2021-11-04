@@ -43,9 +43,9 @@ The only required Temporal Server dependency is a database, and there are multip
 Temporal tests compatibility by spanning the **minimum** and **maximum** stable non-EOL major versions for each supported database. 
 As of time of writing, these specific versions used in our nightly test pipelines and actively tested before we release any version of Temporal:
 
-- Cassandra v3.11 and v4.0
-- PostgreSQL v10.18 and v13.4
-- MySQL v5.7 (and v8.0 soon)
+- **Cassandra v3.11 and v4.0**
+- **PostgreSQL v10.18 and v13.4**
+- **MySQL v5.7** (and v8.0 soon)
 
 We will update these support ranges once a year. Since Temporal Server primarily relies on core database functionality, we do not expect compatibility to break often.
 
