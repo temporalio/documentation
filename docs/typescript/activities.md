@@ -31,7 +31,7 @@ Note that we only import the type of our activities, the TypeScript compiler wil
 
 :::danger Wrong way to import activities
 
-You may be tempted to import activities directly instead of using `createActivityHandle`:
+You may be tempted to import activities directly instead of using `proxyActivities`:
 
 ```ts
 import { greet } from './activities';
@@ -40,23 +40,23 @@ greet('Hello world');
 ```
 
 This will result in a Webpack error, because the Temporal Worker will try to bundle this as part of the Workflow.
-Make sure you're using `createActivityHandle` to retrieve an Activity rather than calling the function directly.
+Make sure you're using `proxyActivities` to retrieve an Activity rather than calling the function directly.
 This indirection comes from the fact that Activities are run in the regular Node.js environment, not the deterministic `vm` where Workflows are run.
 
 See also our [docs on Webpack troubleshooting](/docs/typescript/troubleshooting/).
 
 :::
 
-The return value of `createActivityHandle` is not a normal object, it is a [`Proxy`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) object that calls the TypeScript SDK's internal `scheduleActivity()` function when you reference an activity.
+The return value of `proxyActivities` is not a normal object, it is a [`Proxy`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) object that calls the TypeScript SDK's internal `scheduleActivity()` function when you reference an activity.
 This is necessary due to the decoupled nature of Workflows and Activities, but also allows strong typing from a single import, and some nice patterns we explain below.
 
 ### Activity Options
 
-When you call `createActivityHandle` in a Workflow function, there are [a range of ActivityOptions](https://typescript.temporal.io/api/interfaces/worker.activityoptions/) you can set:
+When you call `proxyActivities` in a Workflow function, there are [a range of ActivityOptions](https://typescript.temporal.io/api/interfaces/worker.activityoptions/) you can set:
 
 ```ts
 // Sample of typical options you can set
-const { greet } = createActivityHandle<typeof activities>({
+const { greet } = proxyActivities<typeof activities>({
   startToCloseTimeout: '30s', // recommended
   scheduleToCloseTimeout: '5m', // useful
   retry: {
@@ -87,12 +87,12 @@ You can specify timeouts as number of milliseconds, or a string to be parsed to 
 
 ```ts
 // Example 1
-const { greet } = createActivityHandle<typeof activities>({
+const { greet } = proxyActivities<typeof activities>({
   startToCloseTimeout: '1 minute', // translates to 60000 ms
 });
 
 // Example 2
-const { longRunningActivity } = createActivityHandle<typeof activities>({
+const { longRunningActivity } = proxyActivities<typeof activities>({
   scheduleToCloseTimeout: '5m', // translates to 300000 ms
   startToCloseTimeout: '30s', // translates to 30000 ms
   heartbeatTimeout: 10000, // equivalent to '10 seconds'
@@ -105,7 +105,7 @@ You can set a `retry` policy with [RetryOptions](https://typescript.temporal.io/
 
 ```ts
 // Example 1 - default
-const { greet } = createActivityHandle<typeof activities>({
+const { greet } = proxyActivities<typeof activities>({
   startToCloseTimeout: '20s',
   retry: {
     // default retry policy if not specified
@@ -118,7 +118,7 @@ const { greet } = createActivityHandle<typeof activities>({
 });
 
 // Example 2 - no retries
-const { greet } = createActivityHandle<typeof activities>({
+const { greet } = proxyActivities<typeof activities>({
   startToCloseTimeout: '20s',
   retry: {
     // guarantee no retries
@@ -127,7 +127,7 @@ const { greet } = createActivityHandle<typeof activities>({
 });
 
 // Example 3 - linear retries up to 5x
-const { greet } = createActivityHandle<typeof activities>({
+const { greet } = proxyActivities<typeof activities>({
   startToCloseTimeout: '20s',
   retry: {
     // retry every 1s, no exponential backoff
@@ -150,7 +150,7 @@ export async function Workflow(name: string): Promise<string> {
     act1, // destructuring multiple activities with the same options
     act2,
     act3,
-  } = createActivityHandle<typeof activities>(/* activityOptions */);
+  } = proxyActivities<typeof activities>(/* activityOptions */);
   await act1();
   await Promise.all([act2, act3]);
 }
@@ -162,7 +162,7 @@ Since, under the hood, Activities are only referenced by their string name, you 
 
 ```js
 export async function DynamicWorkflow(activityName, ...args) {
-  const acts = createActivityHandle(/* activityOptions */);
+  const acts = proxyActivities(/* activityOptions */);
 
   // these are equivalent
   await acts.activity1();

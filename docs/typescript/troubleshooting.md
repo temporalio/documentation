@@ -138,13 +138,13 @@ You'll typically see an error in this form in the Webpack output:
 2021-10-14T19:46:52.731Z [INFO]         resolve.fallback: { "http": false }
 ```
 
-To properly call your Activities from Workflow code use `createActivityHandle` and make sure to only import the Activity types.
+To properly call your Activities from Workflow code use `proxyActivities` and make sure to only import the Activity types.
 
 ```ts
-import { createActivityHandle } from '@temporalio/workflow';
+import { proxyActivities } from '@temporalio/workflow';
 
 import type * as activities from './activities';
-const { makeHTTPRequest } = createActivityHandle<typeof activities>();
+const { makeHTTPRequest } = proxyActivities<typeof activities>();
 
 export async function myWorkflow(): Promise<string> {
   return await makeHTTPRequest('https://temporal.io');
