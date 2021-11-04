@@ -49,7 +49,7 @@ As of time of writing, these specific versions used in our test pipelines and ac
 
 We will update these support ranges once a year. Since Temporal Server primarily relies on core database functionality, we do not expect compatibility to break often.
 
-- We only rely on core database features, so compatibility should not break often.
+- We only rely on core database features, so compatibility should not break often. Temporal has no opinions on database upgrade paths; as long as you can upgrade your database according to each project's specifications, Temporal should work with any version within supported ranges.
 - We do not run tests with vendors like Vitess and CockroachDB, so you rely on their compatibility claims if you use them. Please feel free to discuss them with fellow users [in our forum](https://community.temporal.io/).
 - Temporal is [working on official SQLite v3.x persistence](https://github.com/temporalio/temporal/pulls?q=is%3Apr+sort%3Aupdated-desc+sqlite), but this is only meant for development and testing, not production usage.
 
