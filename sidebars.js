@@ -335,6 +335,7 @@ module.exports = {
             "typescript/clients",
           ],
         },
+        "typescript/troubleshooting",
         {
           type: "category",
           label: "TS Production APIs",
@@ -358,7 +359,6 @@ module.exports = {
             "typescript/interceptors",
           ],
         },
-        "typescript/troubleshooting",
       ],
     },
     {
