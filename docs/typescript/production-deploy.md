@@ -69,5 +69,8 @@ We can see this process working in the [production sample](https://github.com/te
 
 We endeavor to give you good defaults so you don't have to worry about them, but there are a few key settings you may want to explore if you are pushing system limits:
 
-- [Worker Options](https://typescript.temporal.io/api/interfaces/worker.workeroptions/#maxcachedworkflows) like `maxCachedWorkflows` to trade memory for CPU, as well as options for tuning concurrency and v8 isolates.
+- [Worker Options](https://typescript.temporal.io/api/interfaces/worker.workeroptions/#maxcachedworkflows), for example:
+  - `maxCachedWorkflows` to limit Workflow cache size and trade memory for CPU (biggest lever for Worker performance)
+  - `maxConcurrentActivityTaskExecutions` and other options for tuning concurrency
+  - `stickyQueueScheduleToStartTimeout` to determine how quickly workflow tasks can be moved to other workers
 - _to be completed as we get more user feedback_
