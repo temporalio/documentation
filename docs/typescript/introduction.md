@@ -113,7 +113,7 @@ npx @temporalio/create@latest ./example
 cd example
 ```
 
-This will set up with [the basic Hello World sample](https://github.com/temporalio/samples-typescript/tree/main/hello-world) using our [Package Initializer](/typescript/package-initializer) (think of it like `create-temporal-app`!)
+This will set up with [the basic Hello World sample](https://github.com/temporalio/samples-typescript/tree/main/hello-world) using our [Package Initializer](/docs/typescript/package-initializer) (think of it like `create-temporal-app`!)
 
 <details>
 <summary>Provided you have the `node-gyp` prerequisite, this will take a couple of minutes.
