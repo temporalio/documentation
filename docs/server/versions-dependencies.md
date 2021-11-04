@@ -40,7 +40,7 @@ Temporal offers official support for, and is tested against, dependencies with t
 ### Persistence
 
 The only required Temporal Server dependency is a database, and there are multiple types of databases that are supported.
-Temporal tests compatibility by spanning the **minimum** and **maximum** stable non-EOL major versions for each supported database. 
+Temporal tests compatibility by spanning the **minimum** and **maximum** stable non-EOL major versions for each supported database.
 As of time of writing, these specific versions used in our nightly test pipelines and actively tested before we release any version of Temporal:
 
 - **Cassandra v3.11 and v4.0**
