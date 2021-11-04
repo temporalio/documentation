@@ -161,13 +161,12 @@ const worker = await Worker.create({
 Optionally, in Workflow code, when calling an Activity, you can specify the task queue by passing the `taskQueue` option to [`createActivityHandle()`](https://typescript.temporal.io/api/namespaces/workflow/#createactivityhandle) or [`startChild/executeChild`](https://typescript.temporal.io/api/namespaces/workflow/#startchild).
 If you do not specify a `taskQueue`, then the TypeScript SDK places Activity and Child Workflow Tasks in the same Task Queue as the Workflow Task Queue.
 
-### Example: Sticky Queues
+### Example: Sticky Activities
 
 Any Worker that polls a Task Queue is allowed to pick up the next task; sometimes this is undesirable because you want tasks to execute sequentially on the same machine.
 
-Fortunately, there is a solution for this, because Task Queues are dynamically created and very lightweight.
-You can use them for task routing by creating a new task queue per machine.
-This pattern is [in use at Netflix](https://www.youtube.com/watch?v=LliBP7YMGyA&t=24s).
+Fortunately, there is a design pattern for this we call "Sticky Activities".
+Because Task Queues are dynamically created and very lightweight, you can use them for task routing by creating a new task queue per machine.
 
 The main strategy is:
 
@@ -187,3 +186,5 @@ Worker Code:
 
 <!-- SNIPSTART typescript-sticky-queues-worker -->
 <!--SNIPEND-->
+
+This pattern is [in use at Netflix](https://www.youtube.com/watch?v=LliBP7YMGyA&t=24s).
