@@ -46,7 +46,7 @@ There are multiple advantages of using a Task Queue to deliver Tasks to a Worker
 :::note
 
 All Workers listening to a given Task Queue must have identical registration of Activities/Workflows.
-The one exception to this is during a Server upgrade, where it is okay to have registration temporarily misaligned while the binary rolls out.
+The one exception to this is during a Worker upgrade, where it is okay to have registration temporarily misaligned while the binary rolls out.
 
 :::
 
@@ -74,3 +74,15 @@ You can find implementation examples that illustrate this technique for the foll
 
 The Go SDK comes with a [Session](/docs/go/sessions) feature that abstracts the need to explicitly route tasks for this use case.
 The [Go file processing example](https://github.com/temporalio/samples-go/tree/master/fileprocessing) showcases that as well.
+
+## Sticky Queues
+
+Workflow workers by default cache workflows they have recently executed. To efficiently make progress on cached workflows,
+Workers with the Workflow cache enabled (on by default) will automatically create a Task Queue specific to that Worker called a "Sticky Queue", and the server will send
+workflow tasks with incremental history updates (rather than entire histories) to that worker as long as it is still polling
+from this Sticky Queue.
+
+Sticky Queues are typically transparent to you as a user, but SDKs do expose a `stickyQueueScheduleToStartTimeout` option which
+defines how long a task will remain in a sticky queue before being shifted back to a normal task queue (with full history)
+to be picked up by any worker. Practically speaking, it defines how long it takes before the server considers a worker as no
+longer present.
