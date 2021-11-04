@@ -14,7 +14,7 @@ This SDK and associated documentation is in an Alpha stage and may change at any
 The TypeScript SDK is Temporal's newest client SDK for developing with Temporal.
 It is designed with TypeScript-first developer experience in mind, but should work equally well with JavaScript.
 
-:::tip Commencing Launch Sequence 🚀
+:::tip Commencing Launch Sequence
 
 We are planning to move to Beta soon! Join:
 
@@ -29,7 +29,7 @@ You can view:
 
 - Full API reference: https://typescript.temporal.io
 - Code Samples: https://github.com/temporalio/samples-typescript
-- SDK source: https://github.com/temporalio/sdk-typescript [![GitHub stars](https://img.shields.io/github/stars/temporalio/sdk-typescript)](https://github.com/temporalio/sdk-typescript/stargazers) (give us a 🌟!)
+- SDK source: https://github.com/temporalio/sdk-typescript [![GitHub stars](https://img.shields.io/github/stars/temporalio/sdk-typescript)](https://github.com/temporalio/sdk-typescript/stargazers) (give us a star!)
 
 ## Getting started
 
