@@ -47,18 +47,46 @@ You may get errors that make no sense to you because
 - Temporal is trying to execute old Workflow code that no longer exists in your codebase, or
 - your new Client code is expecting Temporal to execute old Workflow/Activity code it doesn't yet know about.
 
-The biggest sign that this is happening is if you notice Temporal is acting non-deterministically.
+The biggest sign that this is happening is if you notice Temporal is acting non-deterministically: running the same Workflow twice gets different results.
 
-If you need to terminate the old Workflows, you can do so with Temporal Web or `tctl`.
+Stale workflows are usually a non-issue because the errors generated are just noise from code you no longer want to run.
+If you need to terminate old stale Workflows, you can do so with Temporal Web or `tctl`.
 
 ## Workflow/Activity registration errors
 
-If your Workflows or Activities are not imported correctly or registered correctly, here are some errors we've seen:
+**If your Workflows or Activities are not imported or spelled correctly**, here are some errors we've seen:
 
 - `ApplicationFailure: 'MyFunction' is not a function`
 - `Workflow did not register a handler for MyQuery`
 
-Please let us know if you have more error types to pattern match against.
+Double check that your Workers are registering the right Workflow and Activity Definitions (function names) on the right Task Queues.
+
+**If you are running Temporal in a monorepo**, then your `node_modules` may be in a different location than where Temporal expects to find it by default, which results in errors like:
+
+```bash
+[ERROR] Module not found: Error: Can't resolve '@temporalio/workflow/lib/worker-interface.js' in '/src'
+```
+
+Our [Next.js tutorial](/docs/typescript/nextjs-tutorial) is written for people setting up Temporal **within an existing monorepo** which may be of use here.
+
+When you pass a `workflowsPath`, our Webpack config tries to find `node_modules` relative to it and expects `temporalio` to be installed there.
+You can explicitly specify `nodeModulesPaths` if you need to take over, and `find . -name @temporalio -type d` will help identify what path to use (typically it will require going up the right number of directories: `path.join(__dirname, '../../../node_modules')`
+
+**If you are custom bundling your own Workflows** you may get errors like these:
+
+```bash
+[ERROR] Failed to activate workflow {
+  runId: 'aaf84a83-51ce-462a-9ab7-6a641a703bff',
+  error: ReferenceError: exports is not defined
+      at workflow-isolate:11:23
+      at (<isolated-vm boundary>)
+      at getContext (/Users/fpods/Desktop/dev/work/railway/mono/node_modules/@temporalio/worker/lib/workflow/isolated-vm.js:82:22),
+  workflowExists: false
+}
+```
+
+Temporal Workflow Bundles need to [export a set of methods that fit the compiled `worker-interface.ts` from `@temporalio/workflow`](https://github.com/temporalio/sdk-typescript/blob/eaa2d205c9bc5ff4a3b17c0b34f2dcf6b1e0264a/packages/worker/src/workflow/bundler.ts#L81) as an entry point.
+We do offer a [bundleWorkflowCode](/docs/typescript/workers/#prebuilt-workflow-bundles) method to assist you with this, though it uses our Webpack settings.
 
 ## Webpack errors
 
@@ -177,4 +205,4 @@ Error: 4 DEADLINE_EXCEEDED: context deadline exceeded
 
 This happens for a number of reasons: Network hiccups, timeouts that are too short, server overloaded.
 
-This is not your fault and likely indicative of an SDK bug especially while it is in alpha. Please try to produce a minimal repro and we'll be glad to help.
+This is not your fault and likely indicative of an SDK bug. Please try to produce a minimal repro and we'll be glad to help.
