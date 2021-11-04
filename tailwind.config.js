@@ -57,9 +57,9 @@ module.exports = {
               },
             },
             blockquote: {
-              border: "none",
+              // border: "none",
               color: "var(--ifm-color)",
-              backgroundColor: "transparent",
+              // backgroundColor: "transparent",
               fontSize: "inherit",
               fontStyle: "inherit",
               fontWeight: "medium",

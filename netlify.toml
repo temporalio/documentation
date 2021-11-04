@@ -3,8 +3,7 @@
 
     [plugins.inputs]
 
-    skipPatterns = ["#", "www.google-analytics.com", "www.googletagmanager.com",
-    "/docs/typescript/client"]
+    skipPatterns = ["#", "www.google-analytics.com", "www.googletagmanager.com","https://coveralls.io/repos/github/temporalio/temporal-go-sdk/badge.svg?branch=master", "/docs/typescript/client"]
     pretty = true
 
 #
@@ -55,15 +54,15 @@
 #
 [[redirects]]
   from = "/docs/go"
-  to = "/docs/go/introduction"
+  to = "/docs/go/getting-started"
 
 [[redirects]]
   from = "/docs/go-sdk-overview"
   to = "/docs/go-sdk-introduction"
 
 [[redirects]]
-  from = "/docs/go-sdk-introduction"
-  to = "/docs/go/introduction"
+  from = "/docs/go/introduction"
+  to = "/docs/go/getting-started"
 
 [[redirects]]
   from = "/docs/go-activities"

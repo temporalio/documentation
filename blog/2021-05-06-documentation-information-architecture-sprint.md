@@ -195,7 +195,7 @@ We implemented a new SDK landing page, [docs.temporal.io/application-development
 
 And we created a much more immersive experience for the user personas that we identified above:
 
-- Go developers for example, [docs.temporal.io/go](/docs/go/introduction):
+- Go developers for example, [docs.temporal.io/go](/docs/go/getting-started):
 
 ![Go topic area](/img/go-topic-area.png)
 

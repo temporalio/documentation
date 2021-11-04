@@ -7,7 +7,9 @@ tags:
   - go
 ---
 
+<!--TODO
 import RelatedReadList from '../components/RelatedReadList.js'
+-->
 
 In the Temporal Go SDK programming model, a [Workflow Definition](/docs/temporal-explained/introduction#workflow-definition) is an exportable function.
 

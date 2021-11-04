@@ -33,6 +33,6 @@ In most cases, we recommend monitoring the `temporal_activity_schedule_to_start_
 
 <RelatedReadList
 readlist={[
-["How to set a Schedule-To-Start Timeout in Go", "/docs/content/how-to-set-activityoptions-in-go/#scheduletostarttimeout", "developer guide"],
+["How to set a Schedule-To-Start Timeout in Go", "/docs/go/how-to-set-activityoptions-in-go/#scheduletostarttimeout", "developer guide"],
 ]}
 />

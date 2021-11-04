@@ -82,9 +82,13 @@ const worker = await Worker.create({
 ### How to shut down a Worker and track its state
 
 You can programmatically shut down a worker with `worker.shutdown()`.
-Shut downs should be rare and often done manually in development (with `SIGINT` aka `^C`) but you may do it in integration tests or in automating a fleet of workers.
+Shut downs should be rare and often done manually in development (by default, Workers shutdown if they receive any of these [`shutdownSignals`](https://typescript.temporal.io/api/interfaces/worker.workeroptions/#shutdownsignals): `['SIGINT', 'SIGTERM', 'SIGQUIT', 'SIGUSR2']`. You can customize these signals, or the [`shutdownGraceTime`](https://typescript.temporal.io/api/interfaces/worker.workeroptions/#shutdowngracetime) if needed).
 
-At any point in time you can query Worker state with `worker.getState()`.
+However, you may want to programmatically shut down in integration tests or in automating a fleet of workers.
+
+#### Worker states
+
+At any point in time, you can query Worker state with `worker.getState()`.
 A Worker is in one of 7 states at any given point:
 
 - `INITIALIZED` - The initial state of the Worker after calling Worker.create and successful connection to the server
@@ -158,7 +162,7 @@ const worker = await Worker.create({
 
 </details>
 
-Optionally, in Workflow code, when calling an Activity, you can specify the task queue by passing the `taskQueue` option to [`createActivityHandle()`](https://typescript.temporal.io/api/namespaces/workflow/#createactivityhandle) or [`startChild/executeChild`](https://typescript.temporal.io/api/namespaces/workflow/#startchild).
+Optionally, in Workflow code, when calling an Activity, you can specify the task queue by passing the `taskQueue` option to [`proxyActivities()`](https://typescript.temporal.io/api/namespaces/workflow/#proxyActivities) or [`startChild/executeChild`](https://typescript.temporal.io/api/namespaces/workflow/#startchild).
 If you do not specify a `taskQueue`, then the TypeScript SDK places Activity and Child Workflow Tasks in the same Task Queue as the Workflow Task Queue.
 
 ### Example: Sticky Activities
@@ -179,12 +183,12 @@ The main strategy is:
 
 Workflow Code:
 
-<!-- SNIPSTART typescript-sticky-queues-workflow -->
+<!--SNIPSTART typescript-sticky-queues-workflow-->
 <!--SNIPEND-->
 
 Worker Code:
 
-<!-- SNIPSTART typescript-sticky-queues-worker -->
+<!--SNIPSTART typescript-sticky-queues-worker-->
 <!--SNIPEND-->
 
 This pattern is [in use at Netflix](https://www.youtube.com/watch?v=LliBP7YMGyA&t=24s).

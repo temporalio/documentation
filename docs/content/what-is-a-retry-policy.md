@@ -88,7 +88,7 @@ Non-Retryable Errors = []
 
 <RelatedReadList
 readlist={[
-["How to set a Retry Policy for a Workflow Execution in Go","/docs/content/how-to-set-startworkflowoptions-in-go/#retrypolicy","developer guide"],
-["How to set a custom Retry Policy for Activity Task Executions in Go","/docs/content/how-to-set-activityoptions-in-go/#retrypolicy","developer guide"]
+["How to set a Retry Policy for a Workflow Execution in Go","/docs/go/how-to-set-startworkflowoptions-in-go/#retrypolicy","developer guide"],
+["How to set a custom Retry Policy for Activity Task Executions in Go","/docs/go/how-to-set-activityoptions-in-go/#retrypolicy","developer guide"]
 ]}
 />
