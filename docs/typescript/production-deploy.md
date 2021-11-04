@@ -6,7 +6,7 @@ sidebar_label: Deploy Checklist
 
 Here is a non-exhaustive list of things we recommend doing before you deploy your Temporal app to production.
 
-Note that this is separate from maintaining a production self-hosted Temporal Cluster, which has [its own checklist](https://docs.temporal.io/docs/server/production-deployment#checklist-for-scaling-temporal).
+Note that this is separate from maintaining a production self-hosted Temporal **Cluster**, which has [its own checklist](https://docs.temporal.io/docs/server/production-deployment#checklist-for-scaling-temporal).
 
 ## Configure Connections and Namespaces
 
@@ -64,3 +64,10 @@ We can see this process working in the [production sample](https://github.com/te
 
 <!--SNIPSTART typescript-production-worker-->
 <!--SNIPEND-->
+
+## Performance Tuning
+
+We endeavor to give you good defaults so you don't have to worry about them, but there are a few key settings you may want to explore if you are pushing system limits:
+
+- [Worker Options](https://typescript.temporal.io/api/interfaces/worker.workeroptions/#maxcachedworkflows) like `maxCachedWorkflows` to trade memory for CPU, as well as options for tuning concurrency and v8 isolates.
+- *to be completed as we get more user feedback*
