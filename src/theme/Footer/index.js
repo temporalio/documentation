@@ -78,7 +78,7 @@ function Footer() {
       items: [
         {
           label: "Core concepts",
-          to: "/docs/concepts/introduction",
+          to: "/docs/temporal-explained/introduction",
         },
         {
           label: "Temporal Server",
