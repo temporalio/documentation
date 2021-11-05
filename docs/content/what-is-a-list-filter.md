@@ -63,61 +63,49 @@ A List Filter contains Search Attribute keys, Search Attribute values, and Opera
 ### Example List Filters
 
 ```sql
-WorkflowId = 'wid'`
+WorkflowId = '<workflow-id>'
 ```
 
 ```sql
-`WorkflowId = 'wid' or WorkflowId = 'another-wid'`
+WorkflowId = '<workflow-id>' or WorkflowId = '<another-workflow-id>'
 ```
 
 ```sql
-`WorkflowId = 'wid' order by StartTime desc`
+WorkflowId = '<workflow-id>' order by StartTime desc
 ```
 
 ```sql
-`WorkflowId = 'wid' and CloseTime = missing`
+WorkflowId = '<workflow-id>' and CloseTime = missing
 ```
 
 ```sql
-`WorkflowId = 'wid' or CloseTime = missing`
+WorkflowId = '<workflow-id>' or CloseTime = missing
 ```
 
 ```sql
-`CloseTime = missing order by CloseTime desc`
+CloseTime = missing order by CloseTime desc
 ```
 
 ```sql
-`WorkflowId = 'wid' and StartTime > "2018-06-07T15:04:05+00:00"`
+WorkflowId = '<workflow-id>' and StartTime > '2018-06-07T15:04:05+00:00'
 ```
 
 ```sql
-ExecutionTime between 1 and 2`
+ExecutionTime between 1 and 2
 ```
 
 ```sql
-`ExecutionTime < 1000000 or ExecutionTime > 2000000`
+ExecutionTime < 1000000 or ExecutionTime > 2000000
 ```
 
 ```sql
-`order by ExecutionTime`
+order by ExecutionTime
 ```
 
 ```sql
-`order by StartTime desc, CloseTime asc`
+order by StartTime desc, CloseTime asc
 ```
 
 ```sql
-`order by CustomStringField desc`
-```
-
-```sql
-`order by CustomIntField asc`
-```
-
-```sql
-`ExecutionTime < "unable to parse"`
-```
-
-```sql
-`WorkflowId = 'wid' union select * from dummy`
+order by CustomIntField asc
 ```

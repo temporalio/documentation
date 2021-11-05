@@ -407,6 +407,7 @@ module.exports = {
         "concepts/task-queues",
         "concepts/signals",
         "concepts/queries",
+        "temporal-explained/visibility",
       ],
     },
     {
@@ -456,7 +457,6 @@ module.exports = {
         "temporal-explained/activities",
         "temporal-explained/timeouts-and-retries",
         "temporal-explained/clusters",
-        "temporal-explained/visibility",
       ],
     },
   ],
