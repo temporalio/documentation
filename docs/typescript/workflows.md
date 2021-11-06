@@ -126,14 +126,50 @@ Listeners for both Signals and Queries can take arguments, which can be used ins
 
 #### Why not `new Signal` and `new Query`?
 
-The semantic of `defineSignal`/`defineQuery` is intentional, in that they return Signal/Query **Definitions**, not unique instances of Signals and Queries themselves.
-Signals/Queries are only instantiated with `setHandler` and are specific to a particular Workflow Execution.
+The semantic of `defineSignal`/`defineQuery` is intentional, in that they return Signal/Query **Definitions**, not unique instances of Signals and Queries themselves. [View source](https://github.com/temporalio/sdk-typescript/blob/fc658d3760e6653aec47732ab17a0062b7dd23fc/packages/workflow/src/workflow.ts#L884-L907):
+  
+```ts
+/**
+ * Define a signal method for a Workflow.
+ *
+ * Definitions are used to register handler in the Workflow via {@link setHandler} and to signal Workflows using a {@link WorkflowHandle}, {@link ChildWorkflowHandle} or {@link ExternalWorkflowHandle}.
+ * Definitions can be reused in multiple Workflows.
+ */
+export function defineSignal<Args extends any[] = []>(name: string): SignalDefinition<Args> {
+  return {
+    type: 'signal',
+    name,
+  };
+}
+
+/**
+ * Define a query method for a Workflow.
+ *
+ * Definitions are used to register handler in the Workflow via {@link setHandler} and to query Workflows using a {@link WorkflowHandle}.
+ * Definitions can be reused in multiple Workflows.
+ */
+export function defineQuery<Ret, Args extends any[] = []>(name: string): QueryDefinition<Ret, Args> {
+  return {
+    type: 'query',
+    name,
+  };
+}
+```
+  
+Signals/Queries are only instantiated in `setHandler` and are specific to a particular Workflow Execution.
 
 These distinctions may seem minor, but they model how Temporal works under the hood, because Signals and Queries are messages identified by "just strings" and don't have meaning independent of the Workflow having a listener to handle them.
+This will be clearer if you refer to to the Client-side APIs below.
 
 #### Why `setHandler` and not OTHER_API?
 
 We named it `setHandler` instead of `subscribe` because Signals/Queries can only have one listener at a time, whereas `subscribe` could imply an Observable with multiple consumers.
+
+  ```ts
+  setHandler(MySignal, handlerFn1);
+  setHandler(MySignal, handlerFn2); // replaces handlerFn1
+  ```
+  
 If you are familiar with Rxjs, you are free to wrap your Signal and Query into Observables if you wish, or you could dynamically reassign the listener based on your business logic/Workflow state.
 
 </details>
@@ -147,11 +183,12 @@ Sending Signals and making Queries requires having a Workflow handle from a [Tem
 - You can refer to either by string name, which is useful for dynamic reference, but you will lose type inference.
 
 ```ts
-// inside Client code
+// // inside Workflow code (or Client code)
 const increment =
   defineSignal<[number /* more args can be added here */]>('increment');
 const count = defineQuery<number /*, Arg[] can be added here */>('count');
 
+// // inside Workflow code
 // these two are equivalent
 await handle.signal(increment, 1);
 await handle.signal<[number]>('increment', 1);
@@ -159,6 +196,56 @@ await handle.signal<[number]>('increment', 1);
 // these two are equivalent
 let state = await handle.query(count);
 let state = await handle.query<number>('count');
+```
+  
+By design of these Workflow handles, two different Workflows can use the same Signal or Query and there is still no ambiguity, because you always have to specify which Workflow you are signalling (`workflowHandle1.signal(MySignal)` vs `workflowHandle2.signal(MySignal)`).
+
+### Signals and Queries design patterns
+
+Because Signals and Queries are intentionally flexible, you can wrap them up into reusable functions:
+
+```ts
+// implementation
+function QueryableState<T = any>(name: string, initialValue: T) {
+  const signal = defineSignal<[T]>(name);
+  const query = defineQuery<T>(name);
+  let state: T = initialValue;
+  setHandler(signal, (newValue: T) => void (state = newValue));
+  setHandler(query, () => state);
+  const getState = () => state; // need to use closure because function doesn't rerun unlike React Hooks
+  return { getState, signal, query };
+}
+
+// usage in Workflow file
+export const store = QueryableState('store', null)
+
+function MyWorkflow() {
+  const currentStore = store.getState();
+}
+  
+// usage in Client file
+await handle.signal(store.signal, 'new state');
+const storeState = handle.query(store.query);
+```
+  
+You can even conditionally set handlers, or set handlers inside handlers:
+  
+```ts
+function MyWorkflow(signallable: boolean, signalNames: string[]) {
+  // conditional setting of handlers
+  if (signallable) {
+    setHandler(MySignal, handler);
+  }
+  
+  // set same handler for an array of signals by name
+  signalNames.forEach(name => setHandler(name, handler));
+  
+  // signal handler that sets signal handlers
+  // // would be nice to send a function but we can't because it is not serializable
+  setHandler(MySignal, (handlerName) => {
+    setHandler(handlerName, handlers[handlerName])
+  })
+}
 ```
 
 ### Additional Signals and Queries Notes
@@ -425,7 +512,7 @@ This leads to some nice patterns, like placing `await condition` inside an `if`:
 
 <!-- TODO: insert snippet showing real usage of condition -->
 
-### Design patterns
+### Async design patterns
 
 The real value of `sleep` and `condition` is in knowing how to use them to model asynchronous business logic.
 Here are some examples we use the most; we welcome more if you can think of them!
