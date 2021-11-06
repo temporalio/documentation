@@ -10,12 +10,17 @@ import RelatedReadList from '../components/RelatedReadList.js'
 
 > **@temporalio/client** [![NPM](https://img.shields.io/npm/v/@temporalio/client)](https://www.npmjs.com/package/@temporalio/client) [API reference](https://typescript.temporal.io/api/namespaces/client) | [GitHub](https://github.com/temporalio/sdk-typescript/tree/main/packages/client)
 
-**Workflow Clients are embedded in your application code, and connect to Temporal Server via gRPC**. They are the only way to schedule new Workflow Executions with Temporal Server.
+**Workflow Clients are embedded in your application code, and connect to Temporal Server via gRPC**.
+They are the only way to schedule new Workflow Executions with Temporal Server.
 
-- Workflow Clients can be run in any Node.js application, for example, in a serverless function, Express.js API route handler or CLI/script run.
-- Specific Workflow Executions are controlled by **Workflow Handles**, which are the main way to signal, query, describe, cancel, terminate and await the result of Workflows. **We strongly recommend familiarising yourself with these APIs.**
-- Workflow Clients are completely separate and distinct from Workers, but communicate with them via Task Queues. See the dedicated [Workers and Task Queues docs](/docs/typescript/workers) for more info.
-- This doc assumes that you have already written your Workflow code. See the dedicated [Workflow docs](/docs/typescript/workflows) for more info.
+- Workflow Clients can run in any Node.js application, for example, in a serverless function, Express.js API route handler or CLI/script run.
+- The primary use of Workflow Clients is to `start` or `execute` new Workflow Executions (including [Cron Workflows](#scheduling-cron-workflows)).
+  Given a `workflowId`, Workflow Clients may also get a Handle to a running Workflow Execution or retrieve/wait for its result.
+- **Workflow Handles** are bindings to specific Workflow Executions that expose more APIs for control.
+  **We strongly recommend familiarising yourself with Workflow Handle APIs** as they are the main way you will signal, query, describe, cancel, terminate and await the result of running Workflow Executions.
+
+Workflow Clients are separate from Workers, but communicate with them via Task Queues to start Workflow Executions.
+See the dedicated [Workers and Task Queues docs](/docs/typescript/workers) and [Workflow docs](/docs/typescript/workflows) for more info.
 
 ## Full Example
 
@@ -26,7 +31,7 @@ Here is example WorkflowClient code from our Hello World sample:
 
 The rest of this doc explains each step in detail with practical usage tips.
 
-## How to create a new Workflow Client
+## Create a new Workflow Client
 
 Create a [`WorkflowClient`](https://typescript.temporal.io/api/classes/client.workflowclient) with the requisite gRPC [`Connection`](https://typescript.temporal.io/api/classes/client.Connection):
 
@@ -42,7 +47,7 @@ If you omit the connection and just call `new WorkflowClient()`, it creates a de
 
 You can set all default [WorkflowOptions](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions) inside [WorkflowClientOptions](https://typescript.temporal.io/api/interfaces/client.WorkflowClientOptions) with the `workflowDefaults` key; you can choose to set task queue here rather than at the callsite purely as a matter of personal preference.
 
-## How to schedule a Workflow Execution
+## Schedule a Workflow Execution
 
 Once you have a Workflow Client, you can schedule a new Workflow Execution in three ways:
 
@@ -58,8 +63,9 @@ Any of these can be started on a recurring schedule with the `cronSchedule` opti
 
 Calling `execute` or `start` merely sends a Command to Temporal Server to schedule a new Workflow Execution on the specified Task Queue; it does not actually start until a Worker (that has a matching Workflow Type) polling that Task Queue picks it up.
 
-You can test this by executing a Workflow Client command without a matching Worker, and seeing that Temporal Server acknowledges the command but does not make progress with the Workflow Execution until a matching Worker comes online.
-This queuing mechanic makes your application tolerant to outages in Workers but can be confusing to newcomers.
+You can test this by executing a Workflow Client command without a matching Worker, and seeing that Temporal Server records the command in Event History but does not make progress with the Workflow Execution until a Worker starts polling with a matching Task Queue and Workflow Definition.
+
+This queuing mechanic makes your application tolerant to outages and horizontally scalable, but can be confusing to newcomers if they expect that calling `client.execute(MyWorkflow)` directly executes the Workflow code on the same machine as the Client.
 
 </details>
 
@@ -68,17 +74,25 @@ This queuing mechanic makes your application tolerant to outages in Workers but 
 Start a Workflow and await completion:
 
 ```ts
+import { example } from './workflows';
+
 // If no args needed
-const result = await client.execute(workflowFn);
+const result = await client.execute(example);
 
 // With args, and workflowId
-const result = await client.execute(workflowFn, {
+const result = await client.execute(example, {
   workflowId, // use business-meaningful ID in production
   args: ['foo', 'bar', 'baz'], // this is typechecked against workflowFn's args
 });
+
+// Just using string name; no need to import Workflow, but less type safety
+const result = await client.execute<string>('example', {
+  args: [123] // not typechecked
+})
+// `result` of type string 
 ```
 
-This is useful for short lived workflows that you don't need to interact with after they start, beyond just waiting for a return value.
+`client.execute` is useful for short lived workflows that you don't need to interact with after they start, beyond just waiting for a return value.
 
 You can specify the Workflow's `args` and all [WorkflowOptions](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions) (including `taskQueue`, `cronSchedule`, and `searchAttributes`), in the second argument object.
 Notice that `workflowId` is optional but we recommend it in production as Temporal guarantees that only one Workflow with that `workflowId` will run at any given time, per namespace.
@@ -88,16 +102,23 @@ Notice that `workflowId` is optional but we recommend it in production as Tempor
 Start a workflow without blocking with `client.start`, and then retrieve it later with `client.getHandle`:
 
 ```ts
-// // STEP ONE: client.start
-// If no args needed
-const handle = await client.start(workflowFn);
-// you can access autogenerated workflowId with `handle.workflowId`
+import { example } from './workflows';
 
-// If need args, and workflowId, but not handle
-await client.start(workflowFn, {
+// // STEP ONE: client.start
+// Option 1: If no args needed
+const handle = await client.start(example);
+// return handle.workflowId // if you need to access autogenerated workflowId
+
+// Option 2: Specifying args and workflowId
+const handle = await client.start(example, {
   workflowId, // use business-meaningful ID in production
   args: ['foo', 'bar', 'baz'], // this is typechecked against workflowFn's args
 });
+
+// Option 3: Just using string name; no need to import Workflow, but less type safety
+const handle = await client.start<string>('example', {
+  args: [123] // not typechecked
+})
 
 // // STEP TWO: client.getHandle
 // Continue in a different process (e.g. in a serverless function)
@@ -105,7 +126,7 @@ const handle = client.getHandle(workflowId);
 await handle.cancel(); // see below for other Handle APIs
 ```
 
-This is useful for starting long lived workflows that you can interact with using Signals and Queries, while keeping things stateless on the API server.
+This is useful for starting long lived workflows that you can interact with using Signals and Queries, while keeping things stateless on your API server.
 
 ## Workflow Handle APIs
 
@@ -117,11 +138,11 @@ const handle = client.getHandle(workflowId);
 
 // Handle API quick examples
 await handle.cancel(); // gracefully cancel
-await handle.terminate(); // kill
-const result = await handle.result(); // block until the workflow completes, if you wish
+await handle.terminate(); // kill immediately
+const result = await handle.result(); // block until the workflow completes and/or get return value
 const WFdescription = await handle.describe(); // get Workflow Execution internal info
 await handle.signal<Args>(mySignal, ...args); // see Signal docs
-const query = await handle.query<ReturnType, Args>(myQuery, ...args); // see Query docs
+const queryResult = await handle.query<ReturnType, Args>(myQuery, ...args); // see Query docs
 ```
 
 The [Workflow Handle APIs](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle) let you externally control your Workflow:
@@ -140,7 +161,7 @@ The [Workflow Handle APIs](https://typescript.temporal.io/api/interfaces/client.
 
 The following covers how to use many of these APIs, you will want to be fluent with them as they cover the basics of Workflow manipulation.
 
-### How to get a Workflow's result
+### Get a Workflow's result
 
 Workflow functions may or may not return a result when they complete.
 
@@ -156,9 +177,9 @@ This isn't necessary with `handle.execute` by definition.
 - **Don't forget to handle errors here** - if you call `result()` on a Workflow that prematurely ended for some reason, it will [throw an Error](https://typescript.temporal.io/api/classes/client.WorkflowFailedError) reflecting that reason.
 - You can also specify a `runId`, but you will almost never need it, because most people only want the results of the latest run (a Workflow may run multiple times if failed or continued as new).
 
-### How to cancel a Workflow
+### Cancel a Workflow
 
-To cancel a Workflow execution, call the [`cancel()`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle#cancel) method on a WorkflowHandle.
+To cancel a Workflow execution, call the [`handle.cancel()`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle#cancel) method on a WorkflowHandle.
 
 ```ts
 // Start the Workflow without waiting its completion
@@ -167,8 +188,8 @@ await handle.start(args);
 await handle.cancel();
 ```
 
-With `cancel`, Timers and Child Workflows have the opportunity to execute cleanup code.
-If you wish to skip that, you can also `terminate` forcefully.
+With `handle.cancel()`, Timers and Child Workflows have the opportunity to execute cleanup code.
+If you wish to skip that, you can also [`handle.terminate()`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle#terminate) forcefully.
 
 Temporal gives you fine grained control over what happens when you cancel a workflow. See our docs on [Cancellation Scopes](/docs/typescript/cancellation-scopes) for details and examples.
 
@@ -183,13 +204,13 @@ const handle = await client.start(scheduledWorkflow, {
 });
 ```
 
-:::info Should I use Cron Workflows or Timers with Child Workflows?
+:::info Should I use Cron Workflows or Timers?
 
 This section is specifically about [Temporal Cron Jobs](/docs/content/what-is-a-temporal-cron-job/), Workflows that have the `cronSchedule` option set in Temporal.
 Since Temporal Workflows have [Timers](/docs/typescript/workflows#timers), can loop indefinitely, and can spawn [Child Workflows](/docs/typescript/workflows#child-workflows), it is natural to ask when to use which.
 
 Cron Workflows are rigid and come with a lot of caveats.
-They are a great choice if you have Workflows that need to run as rigidly as the native Linux `cron` utility (except distributed and highly fault tolerant).
+They are a great choice if you have Workflows that need to run as rigidly as the native Linux `cron` utility (except distributed and fault tolerant).
 However, if you have any advanced needs (including needing overlaps, or canceling individual executions without affecting the overall schedule), use Timers.
 
 :::
@@ -212,11 +233,12 @@ const handle = await client.start(scheduledWorkflow, {
 ## Note: Child Workflows and External Workflows
 
 You can only start Child Workflows from within another Workflow, not from a Client.
-Hence their main documentation is on the [Workflow APIs documentation](/docs/typescript/workflows#child-workflows).
+**Hence their main documentation is on the [Workflow APIs documentation](/docs/typescript/workflows#child-workflows)**.
 
 However, a lot of the same concepts about starting, executing and controlling Workflow Executions apply:
 
 ```ts
+// inside Workflow code
 import { executeChild } from '@temporalio/workflow';
 
 export async function StartAllChildrenWorkflow(
@@ -237,6 +259,7 @@ export async function StartAllChildrenWorkflow(
 The same concept of "Workflow Handles" applies to retrieving handles for Child and External Workflows - as long as you have the Workflow ID:
 
 ```ts
+// inside Workflow code
 import { getExternalWorkflowHandle } from '@temporalio/workflow';
 
 export async function CancelExternalWorkflow(wfId: string): void {
