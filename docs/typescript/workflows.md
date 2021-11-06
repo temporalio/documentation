@@ -127,7 +127,7 @@ Listeners for both Signals and Queries can take arguments, which can be used ins
 #### Why not `new Signal` and `new Query`?
 
 The semantic of `defineSignal`/`defineQuery` is intentional, in that they return Signal/Query **Definitions**, not unique instances of Signals and Queries themselves. [View source](https://github.com/temporalio/sdk-typescript/blob/fc658d3760e6653aec47732ab17a0062b7dd23fc/packages/workflow/src/workflow.ts#L884-L907):
-  
+
 ```ts
 /**
  * Define a signal method for a Workflow.
@@ -135,7 +135,9 @@ The semantic of `defineSignal`/`defineQuery` is intentional, in that they return
  * Definitions are used to register handler in the Workflow via {@link setHandler} and to signal Workflows using a {@link WorkflowHandle}, {@link ChildWorkflowHandle} or {@link ExternalWorkflowHandle}.
  * Definitions can be reused in multiple Workflows.
  */
-export function defineSignal<Args extends any[] = []>(name: string): SignalDefinition<Args> {
+export function defineSignal<Args extends any[] = []>(
+  name: string
+): SignalDefinition<Args> {
   return {
     type: 'signal',
     name,
@@ -148,14 +150,16 @@ export function defineSignal<Args extends any[] = []>(name: string): SignalDefin
  * Definitions are used to register handler in the Workflow via {@link setHandler} and to query Workflows using a {@link WorkflowHandle}.
  * Definitions can be reused in multiple Workflows.
  */
-export function defineQuery<Ret, Args extends any[] = []>(name: string): QueryDefinition<Ret, Args> {
+export function defineQuery<Ret, Args extends any[] = []>(
+  name: string
+): QueryDefinition<Ret, Args> {
   return {
     type: 'query',
     name,
   };
 }
 ```
-  
+
 Signals/Queries are only instantiated in `setHandler` and are specific to a particular Workflow Execution.
 
 These distinctions may seem minor, but they model how Temporal works under the hood, because Signals and Queries are messages identified by "just strings" and don't have meaning independent of the Workflow having a listener to handle them.
@@ -165,11 +169,11 @@ This will be clearer if you refer to to the Client-side APIs below.
 
 We named it `setHandler` instead of `subscribe` because Signals/Queries can only have one listener at a time, whereas `subscribe` could imply an Observable with multiple consumers.
 
-  ```ts
-  setHandler(MySignal, handlerFn1);
-  setHandler(MySignal, handlerFn2); // replaces handlerFn1
-  ```
-  
+```ts
+setHandler(MySignal, handlerFn1);
+setHandler(MySignal, handlerFn2); // replaces handlerFn1
+```
+
 If you are familiar with Rxjs, you are free to wrap your Signal and Query into Observables if you wish, or you could dynamically reassign the listener based on your business logic/Workflow state.
 
 </details>
@@ -197,7 +201,7 @@ await handle.signal<[number]>('increment', 1);
 let state = await handle.query(count);
 let state = await handle.query<number>('count');
 ```
-  
+
 By design of these Workflow handles, two different Workflows can use the same Signal or Query and there is still no ambiguity, because you always have to specify which Workflow you are signalling (`workflowHandle1.signal(MySignal)` vs `workflowHandle2.signal(MySignal)`).
 
 ### Signals and Queries design patterns
@@ -217,34 +221,34 @@ function QueryableState<T = any>(name: string, initialValue: T) {
 }
 
 // usage in Workflow file
-export const store = QueryableState('store', null)
+export const store = QueryableState('store', null);
 
 function MyWorkflow() {
   const currentStore = store.getState();
 }
-  
+
 // usage in Client file
 await handle.signal(store.signal, 'new state');
 const storeState = handle.query(store.query);
 ```
-  
+
 You can even conditionally set handlers, or set handlers inside handlers:
-  
+
 ```ts
 function MyWorkflow(signallable: boolean, signalNames: string[]) {
   // conditional setting of handlers
   if (signallable) {
     setHandler(MySignal, handler);
   }
-  
+
   // set same handler for an array of signals by name
-  signalNames.forEach(name => setHandler(name, handler));
-  
+  signalNames.forEach((name) => setHandler(name, handler));
+
   // signal handler that sets signal handlers
   // // would be nice to send a function but we can't because it is not serializable
   setHandler(MySignal, (handlerName) => {
-    setHandler(handlerName, handlers[handlerName])
-  })
+    setHandler(handlerName, handlers[handlerName]);
+  });
 }
 ```
 
