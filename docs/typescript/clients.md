@@ -87,9 +87,9 @@ const result = await client.execute(example, {
 
 // Just using string name; no need to import Workflow, but less type safety
 const result = await client.execute<string>('example', {
-  args: [123] // not typechecked
-})
-// `result` of type string 
+  args: [123], // not typechecked
+});
+// `result` of type string
 ```
 
 `client.execute` is useful for short lived workflows that you don't need to interact with after they start, beyond just waiting for a return value.
@@ -117,8 +117,8 @@ const handle = await client.start(example, {
 
 // Option 3: Just using string name; no need to import Workflow, but less type safety
 const handle = await client.start<string>('example', {
-  args: [123] // not typechecked
-})
+  args: [123], // not typechecked
+});
 
 // // STEP TWO: client.getHandle
 // Continue in a different process (e.g. in a serverless function)

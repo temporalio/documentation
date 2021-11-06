@@ -228,14 +228,13 @@ When you register these in the Worker, pass your shared dependencies accordingly
 
 <!--SNIPSTART typescript-activity-deps-worker {"enable_source_link": false}-->
 <!--SNIPEND-->
-  
+
 Since Activities are always referenced by name, inside the Workflow they can be proxied as normal, though the types need some adjustment:
 
 <!--SNIPSTART typescript-activity-deps-workflow-->
 <!--SNIPEND-->
-  
-</details>
 
+</details>
 
 ## Activity Context utilities
 
