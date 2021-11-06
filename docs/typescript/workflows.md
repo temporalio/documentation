@@ -132,7 +132,9 @@ The semantic of `defineSignal`/`defineQuery` is intentional, in that they return
 /**
  * Define a signal method for a Workflow.
  */
-export function defineSignal<Args extends any[] = []>(name: string): SignalDefinition<Args> {
+export function defineSignal<Args extends any[] = []>(
+  name: string
+): SignalDefinition<Args> {
   return {
     type: 'signal',
     name,
@@ -142,7 +144,9 @@ export function defineSignal<Args extends any[] = []>(name: string): SignalDefin
 /**
  * Define a query method for a Workflow.
  */
-export function defineQuery<Ret, Args extends any[] = []>( name: string): QueryDefinition<Ret, Args> {
+export function defineQuery<Ret, Args extends any[] = []>(
+  name: string
+): QueryDefinition<Ret, Args> {
   return {
     type: 'query',
     name,
