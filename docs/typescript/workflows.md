@@ -43,9 +43,11 @@ These constraints don't apply inside Activities.
 
 See the [TypeScript SDK Client docs](/docs/typescript/clients) for how to use `WorkflowHandle`s to start, cancel, signal, query, describe and more.
 
-## Workflow Options
+### Workflow Options
 
-Workflows have options that determine what Task Queue they run on, what Search Attributes they are tagged with, Cron schedule, and more, but they are only set in the [Temporal Client call](/docs/typescript/clients#execute-a-workflow-blocking) rather than _inside_ the Workflow code itself.
+Workflows have options that determine what Task Queue they run on, what Search Attributes they are tagged with, Cron schedule, and more, but they are only set in the Temporal Client call (i.e. when you start or execute a Workflow) rather than _inside_ the Workflow code itself.
+
+Please see the [Temporal Client docs](/docs/typescript/clients) or the [API Reference](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions) for more info on Workflow Options.
 
 ## Workflow APIs
 
@@ -450,50 +452,53 @@ There is an unrelated [`sleep` utility function](https://typescript.temporal.io/
 
 ### `condition`
 
-`condition(timeout?, function)` returns a promise that resolves:
+The `condition` API has two forms, both of which accept a predicate function (**must be synchronous**) that returns a boolean:
 
-- `true` when a supplied predicate function returns `true` or
+1. `condition(fn)` returns a promise that continually checks the given predicate function and resolves when it returns `true`.
+2. `condition(timeout?, fn)` returns a promise that resolves:
+
+- `true` when the given predicate function returns `true` or
 - `false` if an (optional) `timeout` happens first.
 
-This API is comparable to `Workflow.await` in other SDKs and often used to wait for Signals.
+This API is comparable to `Workflow.await` in other SDKs and often used to wait for Signals, since Signals are the main way to asynchronously update internal Workflow state (looped Activities are another).
 
 The timeout also uses the [ms](https://www.npmjs.com/package/ms) package to take either a string or number of milliseconds.
 
 ```ts
-/**
- * Returns a Promise that resolves when `fn` evaluates to `true` or `timeout` expires.
- *
- * @param timeout - formatted string or number of milliseconds
- *
- * @returns a boolean indicating whether the condition was true before the timeout expires
- */
+// type signature
 export function condition(
   timeout: number | string,
   fn: () => boolean
 ): Promise<boolean>;
-
-// Returns a Promise that resolves when `fn` evaluates to `true`.
 export function condition(fn: () => boolean): Promise<void>;
 
 // Usage
-import * as wf from '@temporalio/workflow';
+import { condition, setHandler } from '@temporalio/workflow';
 
 let x = 0;
 // do stuff with x, eg increment every time you receive a signal
-await wf.condition(() => x > 3);
+await condition(() => x > 3);
 // you only reach here when x > 3
 
 // await either x > 3 or 30 minute timeout, whichever comes first
-await wf.condition('30 mins', () => x > 3);
+if (await condition('30 mins', () => x > 3)) {
+  // reach here if predicate true
+} else {
+  // reach here if timed out
+}
 
 // track user progress with condition
 export async function trackStepChanges(): Promise<void> {
   let step = 0;
-  wf.setHandler(updateStep, (s) => void (step = s));
-  await wf.condition(() => step === 1);
-  await wf.condition(() => step === 2);
+  setHandler(updateStep, (s) => void (step = s));
+  setHandler(getStep, () => step);
+  await condition(() => step === 1);
+  await condition(() => step === 2);
 }
 ```
+
+<details>
+<summary>Example usage in our Next.js One-Click Buy code sample</summary>
 
 `condition` only returns true when the function evaluates to `true`; if the `condition` resolves as `false`, then a timeout has occurred.
 This leads to some nice patterns, like placing `await condition` inside an `if`:
@@ -501,7 +506,7 @@ This leads to some nice patterns, like placing `await condition` inside an `if`:
 <!--SNIPSTART typescript-oneclick-buy-->
 <!--SNIPEND-->
 
-#### `condition` Anti-patterns
+</details>
 
 :::warning `condition` Antipatterns
 
@@ -512,7 +517,7 @@ This leads to some nice patterns, like placing `await condition` inside an `if`:
 
 :::
 
-<!-- TODO: insert snippet showing real usage of condition -->
+<!--TODO: give an idea of what the bad code looks like and why its bad-->
 
 ### Async design patterns
 
@@ -603,7 +608,7 @@ if (status === 'processed') await complete(); // takes more than 5 seconds
 Updatable Timer
 </summary>
 
-Here is how you can build an updatable timer with `condition` (warning: the code below has not been vetted, please check with us if you need to write something like this):
+Here is how you can build an updatable timer with `condition`:
 
 ```ts
 // usage

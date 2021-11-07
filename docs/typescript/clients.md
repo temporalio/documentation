@@ -55,7 +55,7 @@ Once you have a Workflow Client, you can schedule a new Workflow Execution in th
 - `client.start` ("Non-Blocking"): returns a handle immediately after Workflow starts
 - (Advanced) `client.signalWithStart`: signal a Workflow and optionally start one if there is none running. See the [Signals docs](/docs/typescript/workflows) for details.
 
-Any of these can be started on a recurring schedule with the `cronSchedule` option, but there are important caveats you should read in the [Cron Workflows section](#scheduling-cron-workflows).
+You can specify [WorkflowOptions](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions) with any of these, though you will primarily be interested in setting the `workflowId`, `taskQueue`, `searchAttributes`, and perhaps the `cronSchedule` (with important caveats you should read in the [Cron Workflows section below](#scheduling-cron-workflows)).
 
 <details>
 <summary>Note: Scheduling is not the same as Starting
@@ -71,7 +71,7 @@ This queuing mechanic makes your application tolerant to outages and horizontall
 
 ### Execute a Workflow (Blocking)
 
-Start a Workflow and await completion:
+Start a Workflow (and specify [WorkflowOptions](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions)), and only resolve on Workflow completion:
 
 ```ts
 import { example } from './workflows';
@@ -85,11 +85,12 @@ const result = await client.execute(example, {
   args: ['foo', 'bar', 'baz'], // this is typechecked against workflowFn's args
 });
 
-// Just using string name; no need to import Workflow, but less type safety
+// Just using string name; no need to import Workflow, but no type inference
+import { WorkflowStartOptions } from '@temporalio/client';
+type WFType = (key: number) => Promise<string>; // arg types intentionally wrong to prove a point
 const result = await client.execute<string>('example', {
-  args: [123], // not typechecked
-});
-// `result` of type string
+  args: [123], // typechecked, but actually wrong at runtime because wrong type signature
+} as WorkflowStartOptions<WFType>);
 ```
 
 `client.execute` is useful for short lived workflows that you don't need to interact with after they start, beyond just waiting for a return value.
@@ -99,7 +100,8 @@ Notice that `workflowId` is optional but we recommend it in production as Tempor
 
 ### Start a Workflow (Non-Blocking)
 
-Start a workflow without blocking with `client.start`, and then retrieve it later with `client.getHandle`:
+Schedule the start of a workflow (and specify [WorkflowOptions](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions)) and resolve immediately once the Server acknowledges receipt.
+Then retrieve it later with `client.getHandle`:
 
 ```ts
 import { example } from './workflows';
@@ -115,10 +117,12 @@ const handle = await client.start(example, {
   args: ['foo', 'bar', 'baz'], // this is typechecked against workflowFn's args
 });
 
-// Option 3: Just using string name; no need to import Workflow, but less type safety
+// Option 3: Just using string name; no need to import Workflow, but no type inference
+import { WorkflowStartOptions } from '@temporalio/client';
+type WFType = (key: number) => Promise<string>; // arg types intentionally wrong to prove a point
 const handle = await client.start<string>('example', {
-  args: [123], // not typechecked
-});
+  args: [123], // typechecked, but actually wrong at runtime because wrong type signature
+} as WorkflowStartOptions<WFType>);
 
 // // STEP TWO: client.getHandle
 // Continue in a different process (e.g. in a serverless function)
