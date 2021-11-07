@@ -15,7 +15,7 @@ image: https://i.imgur.com/ezimJOr.png
 release_version: V1.11.3
 ---
 
-<img class="case-study-header" src='https://i.imgur.com/ezimJOr.png' />
+<img alt="Temporal and Airbyte logos" class="case-study-header" src='https://i.imgur.com/ezimJOr.png' />
 
 [Link to PDF version](http://temporal.io/case-studies/airbyte-case-study.pdf)
 

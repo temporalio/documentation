@@ -27,7 +27,7 @@ function SDKs() {
             fill="currentColor"
           />
         </svg>
-        <h3 className="text-xl font-semibold mb-4">SDKs</h3>
+        <h2 className="text-xl font-semibold mb-4">SDKs</h2>
       </div>
       <p className="flex-grow mb-4">
         Write Workflows and Activities, run Workers and embed Temporal Clients
@@ -113,7 +113,7 @@ function Server() {
             fill="currentColor"
           />
         </svg>
-        <h3 className="text-xl font-semibold mb-4">Temporal Cluster</h3>
+        <h2 className="text-xl font-semibold mb-4">Temporal Cluster</h2>
       </div>
       <p className="flex-grow mb-4">
         Learn Temporal's architecture and how to deploy your own instance of a
@@ -200,7 +200,7 @@ function Tools() {
           />
         </svg>
 
-        <h3 className="text-xl font-semibold mb-4">Dev Tools</h3>
+        <h2 className="text-xl font-semibold mb-4">Dev Tools</h2>
       </div>
       <p className="flex-grow mb-4">
         Tools to manage Workflow Execution lifecycles, manage your Cluster,
@@ -251,9 +251,9 @@ function Tools() {
 export const Intro = () => {
   return (
     <section className="mt-1 mb-14">
-      <h2 className="text-4xl md:text-5xl font-semibold tracking-wide mb-4">
+      <h1 className="text-4xl md:text-5xl font-semibold tracking-wide mb-4">
         Temporal Documentation
-      </h2>
+      </h1>
       <p className="text-xl max-w-2xl">
         Learn about Temporal, the open source platform for orchestrating highly
         reliable, mission-critical applications at scale.

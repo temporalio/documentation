@@ -35,7 +35,7 @@ That would require significant levels of contribution, coordination, and discipl
 Personnel, products, processes, and user needs constantly change.
 It is possible, but nearly improbable to maintain and scale best practices in such a dynamic environment without some sort of framework to fall back on.
 
-**Compliance frameworks**
+## Compliance frameworks
 
 A compliance framework gives organizations something to fall back to.
 Let's take SOC2 for example, which stands for Service Organization Control 2 framework.
@@ -44,7 +44,7 @@ The SOC 2 framework is just a list of criteria, established by the technology se
 The idea is that an organization can map their current processes to the list of criteria to validate that what they are doing is ideal, or to find gaps that could leave them exposed to some sort of risk (think data breach, or a malicious attack on a system's availability).
 To ensure that mapping is done in an objective fashion, you pay a third-party auditor to review your organization's processes and issue a report on their findings.
 
-**Controls**
+## Controls
 
 A Control (particularly with SOC 2) is a statement that captures the essence of what an organization does—the behavior, if you will, of some aspect of the organization.
 The scope of a Control can be broad or extremely granular.
@@ -57,17 +57,17 @@ An auditor then:
 * Identifies any gaps of coverage
 * Analyzes evidence to determine whether the organization is adhering to their Control Statements
 
-**The report**
+## The report
 
 The auditor then issues a report.
 In their report, they include their assessment of the Controls and evidence, as well as a "system description" of the organization that describes the company and its products in a fairly high degree of detail.
 
 The report that the auditor issues is—more often than not—an extremely comprehensive analysis and honest view of the organization and how it operates.
 
-**Conclusion**
+## Conclusion
 
-**In recent years, a compliance report (such as SOC 2) has become a cornerstone factor in whether a customer decides to place their trust in the organization.
-In a lot of cases, many businesses won't even consider a B2B relationship if the other business is not compliant within a framework.**
+**In recent years, a compliance report (such as SOC 2) has become a cornerstone factor in whether a customer decides to place their trust in the organization**.
+In a lot of cases, many businesses won't even consider a B2B relationship if the other business is not compliant within a framework
 
 That is why you should care.
 If your organization is compliant within a framework, it is following best practices to the best of its abilities, and thus your customers can feel good about placing their trust with you.

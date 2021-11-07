@@ -15,7 +15,7 @@ image: https://user-images.githubusercontent.com/6764957/116481376-a1adc900-a8b5
 release_version: V1.9.0
 ---
 
-<img class="case-study-header" src='https://user-images.githubusercontent.com/6764957/116481376-a1adc900-a8b5-11eb-8ae6-326a0fe90b1c.png' />
+<img alt="Temporal and Descript logos" class="case-study-header" src='https://user-images.githubusercontent.com/6764957/116481376-a1adc900-a8b5-11eb-8ae6-326a0fe90b1c.png' />
 
 [Link to PDF version](https://www.temporal.io/case-studies/Revolutionizing_Audio_with_Descript_and_Temporal.pdf)
 

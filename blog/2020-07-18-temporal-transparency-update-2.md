@@ -31,11 +31,11 @@ Hope everyone is having a great Friday. I'm happy to share our second V1 status 
 
 We're continuing to dedicate the majority of our time and energy to V1 code completion. Here are the items which we handled since the last update:
 
-![](/cms/dsadsd.png)
+![Completed items this week: 'Go SDK bench core framework changes'; 'Implement Go SDK bench test which reacts on signals'; 'Production build sometimes shows blank page (bug)'; 'Workflows page status dropdown not filtering workflows properly (github #57)'; 'TaskQueues Sharded Correctly'; 'Review github issues and create more stories if needed'; 'Remove EVENT_TYPE_REQUEST_CANCEL_EXTERNAL_WORKFLOW_EXECUTION_FAILED'; 'Rename DecisionTask and Decision'; 'Cassandra Consistency and SerialConsistency should be configurable'; 'CLI unable to show describe workflow output when it has heartbeat data'](/cms/dsadsd.png)
 
 While we did make serious progress on our previously defined tasks, we also ended up adding a considerable number of new items:
 
-![](/cms/screen-shot-2020-07-17-at-4-37-37-pm.png)
+![Several dozen issues either backlogged, ready for development, or in development](/cms/screen-shot-2020-07-17-at-4-37-37-pm.png)
 
 New items are the result of us triaging open issues in our public GitHub repos earlier in the week. While we didn't expect to have any additional items added before code completion, we're happy that they are now being tracked. To make it easier to track publicly, we've created a few GitHub project milestones with all of the newly discovered work:
 
