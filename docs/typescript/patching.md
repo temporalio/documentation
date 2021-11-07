@@ -34,11 +34,11 @@ export async function myWorkflow({ force }): Promise<void> {
 
 // to v2
 export async function myWorkflow(payload): Promise<void> {
-	let force = payload.force;
+  let force = payload.force;
 
-	setListener(updatePayloadSignal, (newPayload) => {
-  		force = newPayload.force;
-	});
+  setListener(updatePayloadSignal, (newPayload) => {
+    force = newPayload.force;
+  });
 
   await sleep('1 days');
   console.log('force', force);
@@ -59,7 +59,7 @@ import { something } from 'a-package-from-npm';
 export async function myWorkflow() {
   if (something()) {
     await sleep('1 day');
-  } 
+  }
   await runActivity();
 }
 ```
@@ -94,7 +94,7 @@ In principle, the TypeScript SDK's patching mechanism works in a similar "featur
 There are three steps to this reflecting three stages of migration:
 
 - Running v1 code with v2 patched in concurrently
-- Running v2 code with deprecation markers for v2 patches 
+- Running v2 code with deprecation markers for v2 patches
 - Running "just" v2 code.
 
 This is best explained in sequence (click through to follow along using our SDK sample).
