@@ -367,7 +367,7 @@ There is an unrelated [`sleep` utility function](https://typescript.temporal.io/
 
 `condition(timeout?, function)` returns a promise that resolves:
 
-- `true` when a supplied predicate function returns `true` or 
+- `true` when a supplied predicate function returns `true` or
 - `false` if an (optional) `timeout` happens first.
 
 This API is comparable to `Workflow.await` in other SDKs and often used to wait for Signals.
