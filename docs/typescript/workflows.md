@@ -161,7 +161,7 @@ This will be clearer if you refer to to the Client-side APIs below.
 
 #### Why `setHandler` and not OTHER_API?
 
-We named it `setHandler` instead of `subscribe` because Signals/Queries can only have one listener at a time, whereas `subscribe` could imply an Observable with multiple consumers.
+We named it `setHandler` instead of `subscribe` because Signals/Queries can only have one "handler" at a time, whereas `subscribe` could imply an Observable with multiple consumers, and is a higher level construct.
 
 ```ts
 setHandler(MySignal, handlerFn1);
