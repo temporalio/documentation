@@ -450,7 +450,11 @@ There is an unrelated [`sleep` utility function](https://typescript.temporal.io/
 
 ### `condition`
 
-`condition(timeout?, function)` returns a promise that resolves when a supplied function returns `true` or if an (optional) `timeout` happens first.
+`condition(timeout?, function)` returns a promise that resolves:
+
+- `true` when a supplied predicate function returns `true` or
+- `false` if an (optional) `timeout` happens first.
+
 This API is comparable to `Workflow.await` in other SDKs and often used to wait for Signals.
 
 The timeout also uses the [ms](https://www.npmjs.com/package/ms) package to take either a string or number of milliseconds.
@@ -472,15 +476,15 @@ export function condition(
 export function condition(fn: () => boolean): Promise<void>;
 
 // Usage
-import { condition } from '@temporalio/workflow';
+import * as wf from '@temporalio/workflow';
 
 let x = 0;
 // do stuff with x, eg increment every time you receive a signal
-await condition(() => x > 3);
+await wf.condition(() => x > 3);
 // you only reach here when x > 3
 
-// await earlier of condition to be true or 30 day timeout
-await condition('30 days', () => x > 3);
+// await either x > 3 or 30 minute timeout, whichever comes first
+await wf.condition('30 mins', () => x > 3);
 
 // track user progress with condition
 export async function trackStepChanges(): Promise<void> {
@@ -494,7 +498,7 @@ export async function trackStepChanges(): Promise<void> {
 `condition` only returns true when the function evaluates to `true`; if the `condition` resolves as `false`, then a timeout has occurred.
 This leads to some nice patterns, like placing `await condition` inside an `if`:
 
-<!-- SNIPSTART typescript-oneclick-buy -->
+<!--SNIPSTART typescript-oneclick-buy-->
 <!--SNIPEND-->
 
 #### `condition` Anti-patterns
