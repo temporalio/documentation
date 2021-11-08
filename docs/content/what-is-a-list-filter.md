@@ -75,11 +75,11 @@ WorkflowId = '<workflow-id>' order by StartTime desc
 ```
 
 ```sql
-WorkflowId = '<workflow-id>' and CloseTime = missing
+WorkflowId = '<workflow-id>' and ExecutionStatus = 'Running'
 ```
 
 ```sql
-WorkflowId = '<workflow-id>' or CloseTime = missing
+WorkflowId = '<workflow-id>' or ExecutionStatus = 'Running'
 ```
 
 ```sql
@@ -87,15 +87,15 @@ CloseTime = missing order by CloseTime desc
 ```
 
 ```sql
-WorkflowId = '<workflow-id>' and StartTime > '2018-06-07T15:04:05+00:00'
+WorkflowId = '<workflow-id>' and StartTime > '2021-08-22T15:04:05+00:00'
 ```
 
 ```sql
-ExecutionTime between 1 and 2
+ExecutionTime between '2021-08-22T15:04:05+00:00' and '2021-08-28T15:04:05+00:00'
 ```
 
 ```sql
-ExecutionTime < 1000000 or ExecutionTime > 2000000
+ExecutionTime < '2021-08-28T15:04:05+00:00' or ExecutionTime > '2021-08-22T15:04:05+00:00'
 ```
 
 ```sql
