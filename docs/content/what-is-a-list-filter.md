@@ -83,10 +83,6 @@ WorkflowId = '<workflow-id>' or ExecutionStatus = 'Running'
 ```
 
 ```sql
-CloseTime = missing order by CloseTime desc
-```
-
-```sql
 WorkflowId = '<workflow-id>' and StartTime > '2021-08-22T15:04:05+00:00'
 ```
 
