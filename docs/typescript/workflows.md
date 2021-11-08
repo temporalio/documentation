@@ -420,9 +420,7 @@ export async function myWorkflow2() {
 
 Another example of componentization can be found in our [code samples](https://github.com/temporalio/samples-typescript/blob/854c78955601a6b63aa8ea412cfb5eaf61bd78ee/expense/src/workflows.ts#L19).
 
-### Related APIs
-
-#### `signalWithStart`
+### `signalWithStart`
 
 If you're not sure if a Workflow is running, you can `signalWithStart` a Workflow to send it a Signal and optionally start the Workflow if it is not running.
 Arguments for both are sent as needed.
@@ -438,13 +436,7 @@ await workflow.signalWithStart(MyWorkflow, {
 });
 ```
 
-#### Triggers
-
-[Triggers](https://typescript.temporal.io/api/classes/workflow.trigger) are a concept unique to the Temporal TypeScript SDK. They may be deprecated in future.
-
-Triggers, like Promises, can be awaited and expose a `then` method. Unlike Promises they are triggered when their `resolve` or `reject` methods are called.
-
-`Trigger` is `CancellationScope`-aware. It is linked to the current scope on construction and throws when that scope is cancelled.
+See the [Workflow Client](/docs/typescript/workflows) docs for more notes on how starting Workflows and Workflow Options look like.
 
 ## Deferred Execution
 
@@ -636,19 +628,13 @@ Racing Signals
 Use `Promise.race` with Signals and Triggers to have a promise resolve at the earlier of either system time or human intervention.
 
 ```ts
-import { Trigger, sleep } from '@temporalio/workflow';
-import { sendReminderEmail } from '@activities';
+import { Trigger, sleep, defineSignal } from '@temporalio/workflow';
 
-const DAY = 86400;
 const userInteraction = new Trigger<boolean>();
+const completeUserInteraction = defineSignal('completeUserInteraction');
 
-export const signals = {
-  completeUserInteraction() {
-    userInteraction.resolve(true);
-  },
-};
-
-export async function main(userId: string) {
+export async function myWorkflow(userId: string) {
+  setHandler(completeUserInteraction, () => userInteraction.resolve(true);) // programmatic resolve
   const userInteracted = await Promise.race([
     userInteraction,
     sleep('30 days'),
@@ -745,6 +731,41 @@ export class UpdatableTimer implements PromiseLike<void> {
 ```
 
 </details>
+
+### Triggers
+
+[Triggers](https://typescript.temporal.io/api/classes/workflow.trigger) are an experimental Promise-like concept in the Temporal TypeScript SDK.
+
+<details>
+<summary>Triggers, like Promises, can be awaited and expose a `then` method.
+Unlike Promises, they export `resolve` or `reject` methods, so you can programmatically control them.
+</summary>
+
+Example:
+
+```ts
+import { Trigger, sleep, defineSignal } from '@temporalio/workflow';
+
+const userInteraction = new Trigger<boolean>();
+const completeUserInteraction = defineSignal('completeUserInteraction');
+
+export async function myWorkflow(userId: string) {
+  setHandler(completeUserInteraction, () => userInteraction.resolve(true);) // programmatic resolve
+  const userInteracted = await Promise.race([
+    userInteraction,
+    sleep('30 days'),
+  ]);
+  if (!userInteracted) {
+    await sendReminderEmail(userId);
+  }
+}
+```
+
+`Trigger` is `CancellationScope`-aware. It is linked to the current scope on construction and throws when that scope is cancelled.
+
+</details>
+
+In most cases, you should now be able to use `condition` instead of Triggers, and we may deprecate Triggers in future..
 
 ## Child Workflows
 
