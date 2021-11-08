@@ -8,6 +8,12 @@ import WhatIsTemporal from '../content/what-is-temporal.md'
 
 <WhatIsTemporal/>
 
+## Temporal Application
+
+import WhatIsATemporalApplication from '../content/what-is-a-temporal-application.md'
+
+<WhatIsATemporalApplication/>
+
 ## Temporal Platform
 
 import WhatIsTheTemporalPlatform from '../content/what-is-the-temporal-platform.md'

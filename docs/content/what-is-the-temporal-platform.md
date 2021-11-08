@@ -8,7 +8,11 @@ tags:
 
 import CenteredImage from "../components/CenteredImage.js"
 
-The Temporal Platform consists of a Temporal Cluster and Worker Processes.
+<!-- prettier-ignore -->
+import * as WhatIsATemporalCluster from '../content/what-is-a-temporal-cluster.md'
+import * as WhatIsAWorker from '../content/what-is-a-worker.md'
+
+The Temporal Platform consists of a <preview page={WhatIsATemporalCluster}>Temporal Cluster</preview> and <preview page={WhatIsAWorker}>Worker Processes</preview>.
 Together these components create a runtime for Workflow Executions.
 
 <CenteredImage

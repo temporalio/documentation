@@ -10,22 +10,28 @@ import CenteredImage from "../components/CenteredImage.js"
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Temporal exists to abstract the complexity of a distributed application.
-Distributed applications exist to scale computation across multiple machines as the potential load of an application changes.
+One of the aspects of the Temporal System is that it abstracts the complexity of a distributed system.
+Distributed systems exist to scale computation across multiple machines as the potential load of a system changes.
 In theory a distributed system facilitates a reliable and highly performant application.
+
+However there are a set of failures that can occur in a distributed application that can make things very complicated, especially at a large scale.
 
 <CenteredImage
 imagePath="/diagrams/basic-distributed-system.svg"
 imageSize="75"
-title="Basic distributed system"
+title="Basic distributed system failures"
 />
 
-Many modern traditional distributed systems consist of a mixture of stateless services, databases, cron jobs, and queues.
-As these systems scale, however, responding to multiple asynchronous events, communicating with unreliable external resources, or tracking the state of something very complex becomes very challenging.
+How is any downstream part of the application supposed to know if there was a failure before, failure during, failure between, or a failure after the changes to the state?
+How will the inconsistent state be reconciled if there was a failure between changes?
 
-A large investment must be made to maintain the health of each individual component, visualize the health of the overall system, define timeout constraints for computations, and orchestrate retries for computations that fail.
+In traditional systems, a large investment is often made to maintain the health of each individual component, visualize the health of the overall system, define timeout constraints for computations, orchestrate retries for computations that fail, and maintain a consistent state.
+
+These systems are often a mixture of stateless services, databases, cron jobs, and queues.
+And as these systems scale, responding to multiple asynchronous events, communicating with unreliable external resources, or tracking the state of something very complex becomes more and more challenging.
 
 Temporal reconfigures the use of services, databases, cron jobs, and queues into the Temporal Platform.
+The Temporal Platform addresses these failures head on and right out the box.
 
 In a traditional system the service exists to spawn function executions.
 The Temporal Platform exists to facilitate Workflow Executions.
@@ -42,7 +48,7 @@ Although the two systems seem similar at first glance, they differ in several si
 
 With a traditional system, a service function execution is both volatile and short-lived.
 
-- If a function execution fails, it's not resumable because all execution state is lost. The longer a function execution awaits, the higher the change of failure.
+- If a function execution fails, it's not resumable because all execution state is lost. The longer a function execution awaits, the higher the chance of failure.
 - A traditional function execution typically has a limited lifespan, often measured in minutes.
 
 With Temporal, a Workflow Execution is resumable.
@@ -71,18 +77,18 @@ Typically, it represents only a part of a business process.
 
 A Temporal Workflow Execution can represent a business process or an entire business object.
 
-### Example subscription use-case
+### Example subscription use case
 
-Let's look at a subscription-based use-case to compare the difference between a Temporal Application and other traditional modern approaches.
+Let's look at a subscription-based use case to compare the difference between a Temporal Application and other traditional approaches.
 
 The basic business steps are as follows:
 
 1. A customer signs up for a service that has a trial period.
-2. After the trial period, if the customer has not cancelled, they should be charged once a month, for up to X months.
+2. After the trial period, if the customer has not canceled, they should be charged once a month.
 3. The customer has to be notified via email about the charges and should be able to cancel the subscription at any time.
 
 This business logic is not very complicated and can be expressed in a few dozen lines of code.
-In addition to that, any practical implementation has to ensure that the business process is fault-tolerant and scalable.
+Any practical implementation also has to ensure that the business process is fault-tolerant and scalable.
 
 **Database-centric design approach**
 
@@ -107,7 +113,7 @@ While this approach has shown to scale a bit better, the programming model can b
 **Temporal design approach**
 
 The Temporal Platform approach aims to encapsulate and implement the entire business logic in a simple function or object method.
-Thanks to the Temporal Platform, the function/method is stateful, and the implementer doesn't need to employ any additional systems to ensure durability and fault tolerance.
+Thanks to the Temporal Platform, the function/method is durably stateful, and the implementer doesn't need to employ any additional systems to ensure consistency and fault tolerance.
 
 Here are example Workflow Definitions that implement the subscription management use case in Java, Go, and PHP:
 
@@ -116,6 +122,7 @@ defaultValue="java"
 values={[
 {label: 'Go', value: 'go'},
 {label: 'Java', value: 'java'},
+{label: 'Typescript', value: 'ts'},
 {label: 'PHP', value: 'php'},
 ]
 }>
@@ -132,6 +139,12 @@ values={[
 <!--SNIPEND-->
 
 </TabItem>
+<TabItem value="ts">
+
+<!--SNIPSTART subscription-ts-workflow-definition-->
+<!--SNIPEND-->
+
+</TabItem>
 <TabItem value="php">
 
 <!--SNIPSTART subscription-php-workflow-definition-implementation-->
@@ -145,6 +158,6 @@ If any of the operations (aka [Activities](/docs/concepts/activities)) take a lo
 
 It is completely okay to be blocked on `chargeCustomerForBillingPeriod` for a day or more if the downstream processing service is down or not responding.
 In the same way, it is a completely normal operation to sleep for 30 days directly inside the Workflow code.
-This is possible because infrastructure failures are not going to affect the Workflow state including threads, blocking calls, and any local or Workflow variables.
+This is possible because infrastructure failures are not going to affect the Workflow state – including threads, blocking calls, and any variables.
 
 The Temporal Platform has practically no scalability limits on the number of open Workflow Executions, so this code can be used over and over even if your application has hundreds of millions of customers.
