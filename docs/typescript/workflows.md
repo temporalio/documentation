@@ -43,25 +43,27 @@ These constraints don't apply inside Activities.
 
 See the [TypeScript SDK Client docs](/docs/typescript/clients) for how to use `WorkflowHandle`s to start, cancel, signal, query, describe and more.
 
-## Workflow Options
+### Workflow Options
 
-Workflows have options that determine what Task Queue they run on, what Search Attributes they are tagged with, Cron schedule, and more, but they are only set in the [Temporal Client call](/docs/typescript/clients#execute-a-workflow-blocking) rather than _inside_ the Workflow code itself.
+Workflows have options that determine what Task Queue they run on, what Search Attributes they are tagged with, Cron schedule, and more, but they are only set in the Temporal Client call (i.e. when you start or execute a Workflow) rather than _inside_ the Workflow code itself.
+
+Please see the [Temporal Client docs](/docs/typescript/clients) or the [API Reference](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions) for more info on Workflow Options.
 
 ## Workflow APIs
 
 The `@temporalio/workflow` package exports all the useful primitives that you can use in Workflows. See the [API reference](https://typescript.temporal.io/api/namespaces/workflow) for the full list, but the main ones are:
 
-| APIs                         | Purpose                                                                                                                                                                                                                                                                                                                                                                                                  |
-| ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `proxyActivities`            | Make idempotent side effects (like making a HTTP request) with Activities ([see Activities doc](/docs/typescript/activities))                                                                                                                                                                                                                                                                            |
-| `defineSignal`/`defineQuery` | [Signal and Query](#signals-and-queries) Workflows while they are running                                                                                                                                                                                                                                                                                                                                |
-| `condition`                  | Block until a [`condition`](#condition) is true. Often used with Signals                                                                                                                                                                                                                                                                                                                                 |
-| `sleep`                      | Primitive to build durable [Timers](#timers)                                                                                                                                                                                                                                                                                                                                                             |
-| `startChild`/`executeChild`  | Spawn new [Child Workflows](#child-workflows) with customizable ParentClosePolicy                                                                                                                                                                                                                                                                                                                        |
-| `continueAsNew`              | Truncate Event History for [infinitely long running Workflows](#infinite-workflows)                                                                                                                                                                                                                                                                                                                      |
-| `patched`/`deprecatePatch`   | Migrate Workflows to new versions ([see Patching doc](/docs/typescript/patching))                                                                                                                                                                                                                                                                                                                        |
-| `uuid4`                      | Generate an RFC compliant V4 [uuid](https://typescript.temporal.io/api/namespaces/workflow/#uuid4) without needing to call an Activity or Side Effect.                                                                                                                                                                                                                                                   |
-| APIs for advanced users      | including [`workflowInfo`](https://typescript.temporal.io/api/namespaces/workflow#workflowinfo), external [`dependencies`](/docs/typescript/external-dependencies), [Cancellation Scopes](/docs/typescript/cancellation-scopes), [Failure types](/docs/typescript/handling-failure), and [`getExternalWorkflowHandle`](https://typescript.temporal.io/api/namespaces/workflow#getexternalworkflowhandle) |
+| APIs                         | Purpose                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `proxyActivities`            | Make idempotent side effects (like making a HTTP request) with Activities ([see Activities doc](/docs/typescript/activities))                                                                                                                                                                                                                                                                                                            |
+| `defineSignal`/`defineQuery` | [Signal and Query](#signals-and-queries) Workflows while they are running                                                                                                                                                                                                                                                                                                                                                                |
+| `sleep`                      | Defer execution by [sleeping](#sleep) for fixed time                                                                                                                                                                                                                                                                                                                                                                                     |
+| `condition`                  | Defer execution until a [`condition`](#condition) is true, with optional timeout                                                                                                                                                                                                                                                                                                                                                         |
+| `startChild`/`executeChild`  | Spawn new [Child Workflows](#child-workflows) with customizable ParentClosePolicy                                                                                                                                                                                                                                                                                                                                                        |
+| `continueAsNew`              | Truncate Event History for [infinitely long running Workflows](#infinite-workflows)                                                                                                                                                                                                                                                                                                                                                      |
+| `patched`/`deprecatePatch`   | Migrate Workflows to new versions ([see Patching doc](/docs/typescript/patching))                                                                                                                                                                                                                                                                                                                                                        |
+| `uuid4`                      | Generate an RFC compliant V4 [uuid](https://typescript.temporal.io/api/namespaces/workflow/#uuid4) without needing to call an Activity or Side Effect.                                                                                                                                                                                                                                                                                   |
+| APIs for advanced users      | including [`workflowInfo`](https://typescript.temporal.io/api/namespaces/workflow#workflowinfo) (to retrieve Workflow metadata), external [`dependencies`](/docs/typescript/external-dependencies), [Cancellation Scopes](/docs/typescript/cancellation-scopes), [Failure types](/docs/typescript/handling-failure), and [`getExternalWorkflowHandle`](https://typescript.temporal.io/api/namespaces/workflow#getexternalworkflowhandle) |
 
 We fully expect that developers will bundle these into their own reusable Workflow libraries.
 If you do, please [get in touch on Slack](https://temporal.io/slack), we would love to work with you and promote your work.
@@ -126,14 +128,48 @@ Listeners for both Signals and Queries can take arguments, which can be used ins
 
 #### Why not `new Signal` and `new Query`?
 
-The semantic of `defineSignal`/`defineQuery` is intentional, in that they return Signal/Query **Definitions**, not unique instances of Signals and Queries themselves.
-Signals/Queries are only instantiated with `setHandler` and are specific to a particular Workflow Execution.
+The semantic of `defineSignal`/`defineQuery` is intentional, in that they return Signal/Query **Definitions**, not unique instances of Signals and Queries themselves. [View source](https://github.com/temporalio/sdk-typescript/blob/fc658d3760e6653aec47732ab17a0062b7dd23fc/packages/workflow/src/workflow.ts#L884-L907):
+
+```ts
+/**
+ * Define a signal method for a Workflow.
+ */
+export function defineSignal<Args extends any[] = []>(
+  name: string
+): SignalDefinition<Args> {
+  return {
+    type: 'signal',
+    name,
+  };
+}
+
+/**
+ * Define a query method for a Workflow.
+ */
+export function defineQuery<Ret, Args extends any[] = []>(
+  name: string
+): QueryDefinition<Ret, Args> {
+  return {
+    type: 'query',
+    name,
+  };
+}
+```
+
+Signals/Queries are only instantiated in `setHandler` and are specific to a particular Workflow Execution.
 
 These distinctions may seem minor, but they model how Temporal works under the hood, because Signals and Queries are messages identified by "just strings" and don't have meaning independent of the Workflow having a listener to handle them.
+This will be clearer if you refer to to the Client-side APIs below.
 
 #### Why `setHandler` and not OTHER_API?
 
-We named it `setHandler` instead of `subscribe` because Signals/Queries can only have one listener at a time, whereas `subscribe` could imply an Observable with multiple consumers.
+We named it `setHandler` instead of `subscribe` because Signals/Queries can only have one "handler" at a time, whereas `subscribe` could imply an Observable with multiple consumers, and is a higher level construct.
+
+```ts
+setHandler(MySignal, handlerFn1);
+setHandler(MySignal, handlerFn2); // replaces handlerFn1
+```
+
 If you are familiar with Rxjs, you are free to wrap your Signal and Query into Observables if you wish, or you could dynamically reassign the listener based on your business logic/Workflow state.
 
 </details>
@@ -147,11 +183,12 @@ Sending Signals and making Queries requires having a Workflow handle from a [Tem
 - You can refer to either by string name, which is useful for dynamic reference, but you will lose type inference.
 
 ```ts
-// inside Client code
+// // inside Workflow code (or Client code)
 const increment =
   defineSignal<[number /* more args can be added here */]>('increment');
 const count = defineQuery<number /*, Arg[] can be added here */>('count');
 
+// // inside Workflow code
 // these two are equivalent
 await handle.signal(increment, 1);
 await handle.signal<[number]>('increment', 1);
@@ -159,6 +196,132 @@ await handle.signal<[number]>('increment', 1);
 // these two are equivalent
 let state = await handle.query(count);
 let state = await handle.query<number>('count');
+```
+
+By design of these Workflow handles, two different Workflows can use the same Signal or Query and there is still no ambiguity, because you always have to specify which Workflow you are signalling (`workflowHandle1.signal(MySignal)` vs `workflowHandle2.signal(MySignal)`).
+
+### Signals and Queries design patterns
+
+Because Signals and Queries are intentionally flexible, you can wrap them up into reusable functions:
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs
+defaultValue="export"
+values={[
+{label: 'Exportable', value: 'export'},
+{label: 'Concise', value: 'short'},
+]
+}>
+
+<TabItem value="export">
+
+```ts
+// implementation of queryable + signallable State in Workflow file
+import {
+  defineSignal,
+  defineQuery,
+  setHandler,
+  sleep,
+} from '@temporalio/workflows';
+
+function useState<T = any>(name: string, initialValue: T) {
+  const signal = defineSignal<[T]>(name);
+  const query = defineQuery<T>(name);
+  let state: T = initialValue;
+  return {
+    signal,
+    query,
+    get value() {
+      // need to use closure because function doesn't rerun unlike React Hooks
+      return state;
+    },
+    set value(newVal: T) {
+      state = newVal;
+    },
+  };
+}
+
+// usage in Workflow file
+const store = useState('my-store', 10);
+function MyWorkflow() {
+  setHandler(store.signal, (newValue: T) => {
+    // console.log('updating ', name, newValue) // optional but useful for debugging
+    state = store.value;
+  });
+  setHandler(store.query, () => store.value);
+  while (true) {
+    console.log('sleeping for ', store.value);
+    sleep(store.value++ * 100); // you can mutate the value as well
+  }
+}
+
+// usage in Client file
+await handle.signal(store.signal, 30);
+const storeState = handle.query<number>(store.query); // 30
+```
+
+</TabItem>
+<TabItem value="short">
+
+```ts
+// alternative, more concise but slightly less safe implementation
+import * as wf from '@temporalio/workflows';
+
+function useState<T = any>(name: string, initialValue: T) {
+  const signal = wf.defineSignal<[T]>(name);
+  const query = wf.defineQuery<T>(name);
+  let state: T = initialValue;
+  wf.setHandler(signal, (newVal: T) => void (newVal = state));
+  wf.setHandler(query, () => state);
+  return {
+    signal,
+    query,
+    get value() {
+      return state;
+    },
+    set value(newVal: T) {
+      state = newVal;
+    },
+  };
+}
+
+// usage in Workflow file
+function MyWorkflow() {
+  const store = useState('my-store', 10); // needs to be inside because function uses setHandler
+  while (true) {
+    console.log('sleeping for ', store.value);
+    wf.sleep(store.value++ * 100); // you can mutate the value as well
+  }
+}
+
+// usage in Client file
+await handle.signal('my-store', 30);
+const storeState = handle.query<number>('my-store'); // 30
+```
+
+</TabItem>
+</Tabs>
+
+You can even conditionally set handlers, or set handlers inside handlers:
+
+```ts
+function MyWorkflow(signallable: boolean, signalNames: string[]) {
+  // conditional setting of handlers
+  if (signallable) {
+    setHandler(MySignal, handler);
+  }
+
+  // set same handler for an array of signals by name
+  signalNames.forEach((name) => setHandler(name, handler));
+
+  // signal handler that sets signal handlers
+  // // would be nice to send a function but we can't because it is not serializable
+  setHandler(MySignal, (handlerName) => {
+    setHandler(handlerName, handlers[handlerName]);
+  });
+}
 ```
 
 ### Additional Signals and Queries Notes
@@ -257,9 +420,7 @@ export async function myWorkflow2() {
 
 Another example of componentization can be found in our [code samples](https://github.com/temporalio/samples-typescript/blob/854c78955601a6b63aa8ea412cfb5eaf61bd78ee/expense/src/workflows.ts#L19).
 
-### Related APIs
-
-#### `signalWithStart`
+### `signalWithStart`
 
 If you're not sure if a Workflow is running, you can `signalWithStart` a Workflow to send it a Signal and optionally start the Workflow if it is not running.
 Arguments for both are sent as needed.
@@ -275,13 +436,7 @@ await workflow.signalWithStart(MyWorkflow, {
 });
 ```
 
-#### Triggers
-
-[Triggers](https://typescript.temporal.io/api/classes/workflow.trigger) are a concept unique to the Temporal TypeScript SDK. They may be deprecated in future.
-
-Triggers, like Promises, can be awaited and expose a `then` method. Unlike Promises they are triggered when their `resolve` or `reject` methods are called.
-
-`Trigger` is `CancellationScope`-aware. It is linked to the current scope on construction and throws when that scope is cancelled.
+See the [Workflow Client](/docs/typescript/workflows) docs for more notes on how starting Workflows and Workflow Options look like.
 
 ## Deferred Execution
 
@@ -365,50 +520,52 @@ There is an unrelated [`sleep` utility function](https://typescript.temporal.io/
 
 ### `condition`
 
-`condition(timeout?, function)` returns a promise that resolves:
+The `condition` API has two forms, both of which accept a predicate function (**must be synchronous**) that returns a boolean:
 
-- `true` when a supplied predicate function returns `true` or
-- `false` if an (optional) `timeout` happens first.
+1. `condition(fn)` returns a promise that continually checks the given predicate function and resolves when it returns `true`.
+2. `condition(timeout?, fn)` returns a promise that resolves:
+   - `true` when the given predicate function returns `true` or
+   - `false` if an (optional) `timeout` happens first.
 
-This API is comparable to `Workflow.await` in other SDKs and often used to wait for Signals.
+This API is comparable to `Workflow.await` in other SDKs and often used to wait for Signals, since Signals are the main way to asynchronously update internal Workflow state (looped Activities are another).
 
 The timeout also uses the [ms](https://www.npmjs.com/package/ms) package to take either a string or number of milliseconds.
 
 ```ts
-/**
- * Returns a Promise that resolves when `fn` evaluates to `true` or `timeout` expires.
- *
- * @param timeout - formatted string or number of milliseconds
- *
- * @returns a boolean indicating whether the condition was true before the timeout expires
- */
+// type signature
 export function condition(
   timeout: number | string,
   fn: () => boolean
 ): Promise<boolean>;
-
-// Returns a Promise that resolves when `fn` evaluates to `true`.
 export function condition(fn: () => boolean): Promise<void>;
 
 // Usage
-import * as wf from '@temporalio/workflow';
+import { condition, setHandler } from '@temporalio/workflow';
 
 let x = 0;
 // do stuff with x, eg increment every time you receive a signal
-await wf.condition(() => x > 3);
+await condition(() => x > 3);
 // you only reach here when x > 3
 
 // await either x > 3 or 30 minute timeout, whichever comes first
-await wf.condition('30 mins', () => x > 3);
+if (await condition('30 mins', () => x > 3)) {
+  // reach here if predicate true
+} else {
+  // reach here if timed out
+}
 
 // track user progress with condition
 export async function trackStepChanges(): Promise<void> {
   let step = 0;
-  wf.setHandler(updateStep, (s) => void (step = s));
-  await wf.condition(() => step === 1);
-  await wf.condition(() => step === 2);
+  setHandler(updateStep, (s) => void (step = s));
+  setHandler(getStep, () => step);
+  await condition(() => step === 1);
+  await condition(() => step === 2);
 }
 ```
+
+<details>
+<summary>Example usage in our Next.js One-Click Buy code sample</summary>
 
 `condition` only returns true when the function evaluates to `true`; if the `condition` resolves as `false`, then a timeout has occurred.
 This leads to some nice patterns, like placing `await condition` inside an `if`:
@@ -416,7 +573,7 @@ This leads to some nice patterns, like placing `await condition` inside an `if`:
 <!--SNIPSTART typescript-oneclick-buy-->
 <!--SNIPEND-->
 
-#### `condition` Anti-patterns
+</details>
 
 :::warning `condition` Antipatterns
 
@@ -427,9 +584,9 @@ This leads to some nice patterns, like placing `await condition` inside an `if`:
 
 :::
 
-<!-- TODO: insert snippet showing real usage of condition -->
+<!--TODO: give an idea of what the bad code looks like and why its bad-->
 
-### Design patterns
+### Async design patterns
 
 The real value of `sleep` and `condition` is in knowing how to use them to model asynchronous business logic.
 Here are some examples we use the most; we welcome more if you can think of them!
@@ -470,19 +627,13 @@ Racing Signals
 Use `Promise.race` with Signals and Triggers to have a promise resolve at the earlier of either system time or human intervention.
 
 ```ts
-import { Trigger, sleep } from '@temporalio/workflow';
-import { sendReminderEmail } from '@activities';
+import { Trigger, sleep, defineSignal } from '@temporalio/workflow';
 
-const DAY = 86400;
 const userInteraction = new Trigger<boolean>();
+const completeUserInteraction = defineSignal('completeUserInteraction');
 
-export const signals = {
-  completeUserInteraction() {
-    userInteraction.resolve(true);
-  },
-};
-
-export async function main(userId: string) {
+export async function myWorkflow(userId: string) {
+  setHandler(completeUserInteraction, () => userInteraction.resolve(true);) // programmatic resolve
   const userInteracted = await Promise.race([
     userInteraction,
     sleep('30 days'),
@@ -518,7 +669,7 @@ if (status === 'processed') await complete(); // takes more than 5 seconds
 Updatable Timer
 </summary>
 
-Here is how you can build an updatable timer with `condition` (warning: the code below has not been vetted, please check with us if you need to write something like this):
+Here is how you can build an updatable timer with `condition`:
 
 ```ts
 // usage
@@ -579,6 +730,42 @@ export class UpdatableTimer implements PromiseLike<void> {
 ```
 
 </details>
+
+### Triggers
+
+[Triggers](https://typescript.temporal.io/api/classes/workflow.trigger) are an experimental Promise-like concept in the TypeScript SDK.
+
+Triggers, like Promises, can be awaited and expose a `then` method.
+Unlike Promises, they export `resolve` or `reject` methods, so you can programmatically control them.
+
+<details>
+<summary>
+Trigger Code Example
+</summary>
+
+```ts
+import { Trigger, sleep, defineSignal } from '@temporalio/workflow';
+
+const userInteraction = new Trigger<boolean>();
+const completeUserInteraction = defineSignal('completeUserInteraction');
+
+export async function myWorkflow(userId: string) {
+  setHandler(completeUserInteraction, () => userInteraction.resolve(true);) // programmatic resolve
+  const userInteracted = await Promise.race([
+    userInteraction,
+    sleep('30 days'),
+  ]);
+  if (!userInteracted) {
+    await sendReminderEmail(userId);
+  }
+}
+```
+
+`Trigger` is `CancellationScope`-aware. It is linked to the current scope on construction and throws when that scope is cancelled.
+
+</details>
+
+In most cases, you should now be able to use `condition` instead of Triggers, and we may deprecate Triggers in future..
 
 ## Child Workflows
 
