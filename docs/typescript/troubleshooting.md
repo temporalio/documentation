@@ -204,5 +204,11 @@ Error: 4 DEADLINE_EXCEEDED: context deadline exceeded
 ```
 
 This happens for a number of reasons: Network hiccups, timeouts that are too short, server overloaded.
+Querying a workflow whose query handler causes an error can result in the query call timing out.
 
-This is not your fault and likely indicative of an SDK bug. Please try to produce a minimal repro and we'll be glad to help.
+Some troubleshooting actions you can take:
+* Verify the connection from your worker to the Temporal Server is working and doesn't have unusually high latency
+* If you are running Temporal Server yourself, check your [server metrics](/docs/server/production-deployment/#scaling-and-metrics) to ensure it's not overloaded
+* If what's timing out is a query, check the logs of your workers to see if they are having issues handling the query
+
+If none of the above actions help you discover why timeouts are occuring, please try to produce a minimal repro and we'll be glad to help.
