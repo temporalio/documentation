@@ -204,29 +204,105 @@ By design of these Workflow handles, two different Workflows can use the same Si
 
 Because Signals and Queries are intentionally flexible, you can wrap them up into reusable functions:
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs
+defaultValue="export"
+values={[
+{label: 'Exportable', value: 'export'},
+{label: 'Concise', value: 'short'},
+]
+}>
+
+<TabItem value="export">
+
 ```ts
-// implementation
-function QueryableState<T = any>(name: string, initialValue: T) {
+// implementation of queryable + signallable State in Workflow file
+import {
+  defineSignal,
+  defineQuery,
+  setHandler,
+  sleep,
+} from '@temporalio/workflows';
+
+function useState<T = any>(name: string, initialValue: T) {
   const signal = defineSignal<[T]>(name);
   const query = defineQuery<T>(name);
   let state: T = initialValue;
-  setHandler(signal, (newValue: T) => void (state = newValue));
-  setHandler(query, () => state);
-  const getState = () => state; // need to use closure because function doesn't rerun unlike React Hooks
-  return { getState, signal, query };
+  return {
+    signal,
+    query,
+    get value() {
+      // need to use closure because function doesn't rerun unlike React Hooks
+      return state;
+    },
+    set value(newVal: T) {
+      state = newVal;
+    },
+  };
 }
 
 // usage in Workflow file
-export const store = QueryableState('store', null);
-
+const store = useState('my-store', 10);
 function MyWorkflow() {
-  const currentStore = store.getState();
+  setHandler(store.signal, (newValue: T) => {
+    // console.log('updating ', name, newValue) // optional but useful for debugging
+    state = store.value;
+  });
+  setHandler(store.query, () => store.value);
+  while (true) {
+    console.log('sleeping for ', store.value);
+    sleep(store.value++ * 100); // you can mutate the value as well
+  }
 }
 
 // usage in Client file
-await handle.signal(store.signal, 'new state');
-const storeState = handle.query(store.query);
+await handle.signal(store.signal, 30);
+const storeState = handle.query<number>(store.query); // 30
 ```
+
+</TabItem>
+<TabItem value="short">
+
+```ts
+// alternative, more concise but slightly less safe implementation
+import * as wf from '@temporalio/workflows';
+
+function useState<T = any>(name: string, initialValue: T) {
+  const signal = wf.defineSignal<[T]>(name);
+  const query = wf.defineQuery<T>(name);
+  let state: T = initialValue;
+  wf.setHandler(signal, (newVal: T) => void (newVal = state));
+  wf.setHandler(query, () => state);
+  return {
+    signal,
+    query,
+    get value() {
+      return state;
+    },
+    set value(newVal: T) {
+      state = newVal;
+    },
+  };
+}
+
+// usage in Workflow file
+function MyWorkflow() {
+  const store = useState('my-store', 10); // needs to be inside because function uses setHandler
+  while (true) {
+    console.log('sleeping for ', store.value);
+    wf.sleep(store.value++ * 100); // you can mutate the value as well
+  }
+}
+
+// usage in Client file
+await handle.signal('my-store', 30);
+const storeState = handle.query<number>('my-store'); // 30
+```
+
+</TabItem>
+</Tabs>
 
 You can even conditionally set handlers, or set handlers inside handlers:
 
