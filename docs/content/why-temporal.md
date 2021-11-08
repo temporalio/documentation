@@ -10,6 +10,11 @@ import CenteredImage from "../components/CenteredImage.js"
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+<!-- prettier-ignore -->
+import * as WhatIsAWorkflowExecution from '../content/what-is-a-workflow-execution.md'
+import * as WhatIsASignal from '../content/what-is-a-signal.md'
+import * as WhatIsAQuery from '../content/what-is-a-query.md'
+
 One of the aspects of the Temporal System is that it abstracts the complexity of a distributed system.
 Distributed systems exist to scale computation across multiple machines as the potential load of a system changes.
 In theory a distributed system facilitates a reliable and highly performant application.
@@ -19,7 +24,7 @@ However there are a set of failures that can occur in a distributed application 
 <CenteredImage
 imagePath="/diagrams/basic-distributed-system.svg"
 imageSize="75"
-title="Basic distributed system failures"
+title="Distributed application failures"
 />
 
 How is any downstream part of the application supposed to know if there was a failure before, failure during, failure between, or a failure after the changes to the state?
@@ -34,7 +39,7 @@ Temporal reconfigures the use of services, databases, cron jobs, and queues into
 The Temporal Platform addresses these failures head on and right out the box.
 
 In a traditional system the service exists to spawn function executions.
-The Temporal Platform exists to facilitate Workflow Executions.
+The Temporal Platform exists to facilitate <preview page={WhatIsAWorkflowExecution}>Workflow Executions</preview>.
 
 <CenteredImage
 imagePath="/diagrams/temporal-vs-traditional.svg"
@@ -68,7 +73,7 @@ With Temporal, computation resumes from its _latest_ state. All progress is reta
 
 With a traditional system, you can't communicate with a function execution.
 
-With Temporal, Signals and Queries enable data to be sent to or extracted from a Workflow Execution.
+With Temporal, <preview page={WhatIsASignal}>Signals</preview> and <preview page={WhatIsAQuery}>Queries</preview> enable data to be sent to or extracted from a Workflow Execution.
 
 **Scope**
 
@@ -154,7 +159,7 @@ values={[
 </Tabs>
 
 Again, it is important to note that this is working application code that directly implements the business logic.
-If any of the operations (aka [Activities](/docs/concepts/activities)) take a long time, the code is not going to change.
+If any of the operations take a long time, the code is not going to change.
 
 It is completely okay to be blocked on `chargeCustomerForBillingPeriod` for a day or more if the downstream processing service is down or not responding.
 In the same way, it is a completely normal operation to sleep for 30 days directly inside the Workflow code.
