@@ -23,17 +23,17 @@ Create an instance of [`ActivityOptions`](https://pkg.go.dev/go.temporal.io/sdk/
 
 The instance of `workflow.Context` is then passed to the `ExecuteActivity()` call.
 
-| Field | Required | Type |
-| ------| -------- | ---- |
-| [`ActivityID`](#activityid) | No | `string`|
-| [`TaskQueueName`](#taskqueuename) | No | `string` |
-| [`ScheduleToCloseTimeout`](#scheduletoclosetimeout) | Yes (or `StartToCloseTimeout`)  | `time.Duration` |
-| [`ScheduleToStartTimeout`](#scheduletostarttimeout) | No | `time.Duration` |
-| [`StartToCloseTimeout`](#scheduletoclosetimeout) | Yes (or `ScheduleToCloseTimeout`) | `time.Duration` |
-| [`HeartbeatTimeout`](#heartbeattimeout) | No | `time.Duration` |
-| [`WaitForCancellation`](#waitforcancellation)  | No  | `bool` |
-| [`OriginalTaskQueueName`](#originaltaskqueuename)  | No | `string` |
-| [`RetryPolicy`](#retrypolicy)| No | [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy) |
+| Field                                               | Required                          | Type                                                                        |
+| --------------------------------------------------- | --------------------------------- | --------------------------------------------------------------------------- |
+| [`ActivityID`](#activityid)                         | No                                | `string`                                                                    |
+| [`TaskQueueName`](#taskqueuename)                   | No                                | `string`                                                                    |
+| [`ScheduleToCloseTimeout`](#scheduletoclosetimeout) | Yes (or `StartToCloseTimeout`)    | `time.Duration`                                                             |
+| [`ScheduleToStartTimeout`](#scheduletostarttimeout) | No                                | `time.Duration`                                                             |
+| [`StartToCloseTimeout`](#scheduletoclosetimeout)    | Yes (or `ScheduleToCloseTimeout`) | `time.Duration`                                                             |
+| [`HeartbeatTimeout`](#heartbeattimeout)             | No                                | `time.Duration`                                                             |
+| [`WaitForCancellation`](#waitforcancellation)       | No                                | `bool`                                                                      |
+| [`OriginalTaskQueueName`](#originaltaskqueuename)   | No                                | `string`                                                                    |
+| [`RetryPolicy`](#retrypolicy)                       | No                                | [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy) |
 
 ### `ActivityID`
 
