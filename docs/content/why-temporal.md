@@ -27,7 +27,7 @@ imageSize="75"
 title="Distributed application failures"
 />
 
-How is any downstream part of the application supposed to know if there was a failure before, failure during, failure between, or a failure after the changes to the state?
+How will a downstream part of the application know if there was a failure before, failure during, failure between, or a failure after the changes to the state?
 How will the inconsistent state be reconciled if there was a failure between changes?
 
 In traditional systems, a large investment is often made to maintain the health of each individual component, visualize the health of the overall system, define timeout constraints for computations, orchestrate retries for computations that fail, and maintain a consistent state.
