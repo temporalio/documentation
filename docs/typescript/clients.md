@@ -6,8 +6,6 @@ description: In the Temporal TypeScript SDK programming model, a Workflow is an 
 image: /img/workflow.png
 ---
 
-import RelatedReadList from '../components/RelatedReadList.js'
-
 > **@temporalio/client** [![NPM](https://img.shields.io/npm/v/@temporalio/client)](https://www.npmjs.com/package/@temporalio/client) [API reference](https://typescript.temporal.io/api/namespaces/client) | [GitHub](https://github.com/temporalio/sdk-typescript/tree/main/packages/client)
 
 **Workflow Clients are embedded in your application code, and connect to Temporal Server via gRPC**.

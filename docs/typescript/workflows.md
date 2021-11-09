@@ -4,6 +4,8 @@ title: Workflows in TypeScript
 sidebar_label: Workflows
 ---
 
+import RelatedReadList from '../components/RelatedReadList.js'
+
 > **@temporalio/workflow** [![NPM](https://img.shields.io/npm/v/@temporalio/workflow)](https://www.npmjs.com/package/@temporalio/workflow) [API reference](https://typescript.temporal.io/api/namespaces/workflow) | [GitHub](https://github.com/temporalio/sdk-typescript/tree/main/packages/workflow)
 
 **Workflows are async functions that can orchestrate Activities and access special Workflow APIs, subject to deterministic limitations**.
@@ -14,7 +16,7 @@ Each Workflow function has two parts:
 - The function implementation code (body) is known as the **Workflow Definition**.
 
 Each Workflow Definition is bundled with any third party dependencies, and registered by Workflow Type in a [Worker](/docs/typescript/workers).
-A Workflow function only becomes a **Workflow Execution** (instance) when started from a [**Workflow Client**](/docs/typescript/client) using its Workflow Type.
+A Workflow function only becomes a **Workflow Execution** (instance) when started from a [**Workflow Client**](/docs/typescript/clients) using its Workflow Type.
 
 <!-- todo: we need a diagram here to show the relationship -->
 

@@ -6,17 +6,18 @@ tags:
   - explanation
 ---
 
-import RelatedReadList from '../components/RelatedReadList.js'
+import {RelatedReadContainer, RelatedReadItem} from '../components/RelatedReadList.js'
+
+<!-- prettier-ignore -->
+import * as HowToDevelopAWorkflowDefinitionInGo from '../go/how-to-develop-a-workflow-definition-in-go.md'
 
 A Workflow Definition is the code that defines the constraints of a Workflow Execution.
 
 We strongly recommend that you write a Workflow Definition in a language that has a corresponding Temporal SDK.
 
-<RelatedReadList
-readlist={[
-["How to develop a Workflow Definition in Go","/docs/content/how-to-develop-a-workflow-definition-in-go","developer guide"],
-]}
-/>
+<RelatedReadContainer>
+  <RelatedReadItem page={HowToDevelopAWorkflowDefinitionInGo} />
+</RelatedReadContainer>
 
 <!--TODO add content for these links:
 ["How develop a Workflow Definition in Java","/docs/content/how-to-develop-a-workflow-definition-in-java","developer guide"],

@@ -34,12 +34,6 @@ In the Workflow Definition, to invoke this Activity use `worklow.ExecuteActivity
 
 Let's take a look at each component of this Activity.
 
-### How to develop an Activity Definition in Go
-
-import ActivityDefinition from '../content/how-to-develop-an-activity-definition-in-go.md'
-
-<ActivityDefinition />
-
 #### Heart Beating
 
 For long-running Activities, Temporal provides an API for the Activity code to report both liveness and

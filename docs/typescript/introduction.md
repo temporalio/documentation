@@ -222,6 +222,6 @@ These are the essential pages to have a passing knowledge of our Core APIs:
   - Workflows use [Activities](/docs/typescript/activities) to act on the outside world (e.g. call an API with retries and timeouts, or access the filesystem)
   - see [Workflow APIs](/docs/typescript/workflows) for Signals, Queries, Timers, Child Workflows, Infinite Workflows, and more!
 - [Workers and Task Queues](/docs/typescript/workers): How Workflows and Activities are routed to and executed on machines you control
-- [Clients](/docs/typescript/client): How to start, signal, query, cancel, or otherwise handle Workflows.
+- [Clients](/docs/typescript/clients): How to start, signal, query, cancel, or otherwise handle Workflows.
 
 </details>

@@ -38,7 +38,7 @@ title="Entity relationship diagram (meta model) of Worker Processes, Task Queues
 
 <RelatedReadList
 readlist={[
-["How to develop a Worker Program in Go","/docs/content/how-to-develop-a-worker-program-in-go", "developer guide"],
+["How to develop a Worker Program in Go","/docs/go/how-to-develop-a-worker-program-in-go", "developer guide"],
 ["How to develop a Worker Program in Java","/docs/content/how-to-develop-a-worker-program-in-java","developer guide"],
 ["How to develop a Worker Program in TypeScript","/docs/content/how-to-develop-a-worker-program-in-typescript","developer guide"],
 ["How to develop a Worker Program in PHP","/docs/content/how-to-develop-a-worker-program-in-php","developer guide"],

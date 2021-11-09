@@ -8,25 +8,37 @@ tags:
   - go
 ---
 
-import RelatedReadList from '../components/RelatedReadList.js'
+import {RelatedReadContainer, RelatedReadItem} from '../components/RelatedReadList.js'
+
+<!-- prettier-ignore -->
+import * as WhatIsAnActivityId from '../content/what-is-an-activity-id.md'
+import * as WhatIsATaskQueue from '../content/what-is-a-task-queue.md'
+import * as WhatIsAScheduleToCloseTimeout from '../content/what-is-a-schedule-to-close-timeout.md'
+import * as WhatIsAScheduleToStartTimeout from '../content/what-is-a-schedule-to-start-timeout.md'
+import * as WhatIsAStartToCloseTimeout from '../content/what-is-a-start-to-close-timeout.md'
+import * as WhatIsAHeartbeatTimeout from '../content/what-is-a-heartbeat-timeout.md'
+import * as WhatIsARetryPolicy from '../content/what-is-a-retry-policy.md'
 
 Create an instance of [`ActivityOptions`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ActivityOptions) from the `go.temporal.io/sdk/workflow` package and use [`WithActivityOptions()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#WithActivityOptions) to apply it to the instance of `workflow.Context`.
 
 The instance of `workflow.Context` is then passed to the `ExecuteActivity()` call.
 
-| Field                                                                         | Required                          | Type                                                                        | Example                       |
-| ----------------------------------------------------------------------------- | --------------------------------- | --------------------------------------------------------------------------- | ----------------------------- |
-| [`ActivityID`](/docs/content/what-is-an-activity-id)                          | No                                | `string`                                                                    | [👀](#activityid)             |
-| [`TaskQueueName`](/docs/content/what-is-a-task-queue)                         | Yes                               | `string`                                                                    | [👀](#taskqueuename)          |
-| [`ScheduleToCloseTimeout`](/docs/content/what-is-a-schedule-to-close-timeout) | Yes (or `StartToCloseTimeout`)    | `time.Duration`                                                             | [👀](#scheduletoclosetimeout) |
-| [`ScheduleToStartTimeout`](/docs/content/what-is-a-schedule-to-start-timeout) | No                                | `time.Duration`                                                             | [👀](#scheduletostarttimeout) |
-| [`StartToCloseTimeout`](/docs/content/what-is-a-start-to-close-timeout)       | Yes (or `ScheduleToCloseTimeout`) | `time.Duration`                                                             | [👀](#scheduletoclosetimeout) |
-| [`HeartbeatTimeout`](/docs/content/what-is-a-heartbeat-timeout)               | No                                | `time.Duration`                                                             | [👀](#heartbeattimeout)       |
-| `WaitForCancellation`                                                         | No                                | `bool`                                                                      | [👀](#waitforcancellation)    |
-| `OriginalTaskQueueName`                                                       | No                                | `string`                                                                    | [👀](#originaltaskqueuename)  |
-| [`RetryPolicy`](/docs/content/what-is-a-retry-policy)                         | No                                | [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy) | [👀](#retrypolicy)            |
+| Field | Required | Type |
+| ------| -------- | ---- |
+| [`ActivityID`](#activityid) | No | `string`|
+| [`TaskQueueName`](#taskqueuename) | No | `string` |
+| [`ScheduleToCloseTimeout`](#scheduletoclosetimeout) | Yes (or `StartToCloseTimeout`)  | `time.Duration` |
+| [`ScheduleToStartTimeout`](#scheduletostarttimeout) | No | `time.Duration` |
+| [`StartToCloseTimeout`](#scheduletoclosetimeout) | Yes (or `ScheduleToCloseTimeout`) | `time.Duration` |
+| [`HeartbeatTimeout`](#heartbeattimeout) | No | `time.Duration` |
+| [`WaitForCancellation`](#waitforcancellation)  | No  | `bool` |
+| [`OriginalTaskQueueName`](#originaltaskqueuename)  | No | `string` |
+| [`RetryPolicy`](#retrypolicy)| No | [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy) |
 
 ### `ActivityID`
+
+- Type: `string`
+- Default: None
 
 ```go
 activityoptions := workflow.ActivityOptions{
@@ -40,13 +52,14 @@ if err != nil {
 }
 ```
 
-<RelatedReadList
-readlist={[
-["What is an Activity Id?", "/docs/content/what-is-an-activity-id", "explanation"],
-]}
-/>
+<RelatedReadContainer>
+  <RelatedReadItem page={WhatIsAnActivityId} />
+</RelatedReadContainer>
 
 ### `TaskQueueName`
+
+- Type: `string`
+- Default: Inherits the TaskQueue name from the Workflow.
 
 ```go
 activityoptions := workflow.ActivityOptions{
@@ -60,13 +73,16 @@ if err != nil {
 }
 ```
 
-<RelatedReadList
-readlist={[
-["What is a Task Queue?", "/docs/content/what-is-a-task-queue", "explanation"],
-]}
-/>
+<RelatedReadContainer>
+  <RelatedReadItem page={WhatIsATaskQueue} />
+</RelatedReadContainer>
 
 ### `ScheduleToCloseTimeout`
+
+This or `ScheduleToStart` must be set.
+
+- Type: `time.Duration`
+- Default: ∞ (infinity - no limit)
 
 ```go
 activityoptions := workflow.ActivityOptions{
@@ -80,13 +96,16 @@ if err != nil {
 }
 ```
 
-<RelatedReadList
-readlist={[
-["What is a Schedule-To-Close Timeout?", "/docs/content/what-is-a-schedule-to-close-timeout", "explanation"],
-]}
-/>
+<RelatedReadContainer>
+  <RelatedReadItem page={WhatIsAScheduleToCloseTimeout} />
+</RelatedReadContainer>
 
 ### `ScheduleToStartTimeout`
+
+This or `ScheduleToClose` must be set.
+
+- Type: `time.Duration`
+- Default: ∞ (infinity - no limit)
 
 ```go
 activityoptions := workflow.ActivityOptions{
@@ -100,13 +119,14 @@ if err != nil {
 }
 ```
 
-<RelatedReadList
-readlist={[
-["What is a Schedule-To-Start Timeout?", "/docs/content/what-is-a-schedule-to-start-timeout", "explanation"],
-]}
-/>
+<RelatedReadContainer>
+  <RelatedReadItem page={WhatIsAScheduleToStartTimeout} />
+</RelatedReadContainer>
 
 ### `StartToCloseTimeout`
+
+- Type: `time.Duration`
+- Default: Same as the `ScheduleToCloseTimeout`
 
 ```go
 activityoptions := workflow.ActivityOptions{
@@ -120,11 +140,9 @@ if err != nil {
 }
 ```
 
-<RelatedReadList
-readlist={[
-["What is a Start-To-Close Timeout?", "/docs/content/what-is-a-start-to-close-timeout", "explanation"],
-]}
-/>
+<RelatedReadContainer>
+  <RelatedReadItem page={WhatIsAStartToCloseTimeout} />
+</RelatedReadContainer>
 
 ### `HeartbeatTimeout`
 
@@ -140,15 +158,16 @@ if err != nil {
 }
 ```
 
-<RelatedReadList
-readlist={[
-["What is a Heartbeat Timeout?", "/docs/content/what-is-a-heartbeat-timeout", "explanation"],
-]}
-/>
+<RelatedReadContainer>
+  <RelatedReadItem page={WhatIsAHeartbeatTimeout} />
+</RelatedReadContainer>
 
 ### `WaitForCancellation`
 
 If `true` the Activity Execution will finish executing should there be a Cancellation request.
+
+- Type: `bool`
+- Default: `false`
 
 ```go
 activityoptions := workflow.ActivityOptions{
@@ -178,8 +197,20 @@ if err != nil {
 
 ### `RetryPolicy`
 
-Activity Executions have a default Retry Policy.
-Providing one here is a customization, and overwrites the default.
+- Type: [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy)
+- Default:
+
+```go
+retrypolicy := &temporal.RetryPolicy{
+  InitialInterval:    time.Second,
+  BackoffCoefficient: 2.0,
+  MaximumInterval:    time.Second * 100, // 100 * InitialInterval
+  MaximumAttempts: 0, // Unlimited
+  NonRetryableErrorTypes: []string, // empty
+}
+```
+
+Providing a Retry Policy here is a customization, and overwrites individual Field defaults.
 
 ```go
 retrypolicy := &temporal.RetryPolicy{
@@ -199,8 +230,6 @@ if err != nil {
 }
 ```
 
-<RelatedReadList
-readlist={[
-["What is a Retry Policy?", "/docs/content/what-is-a-retry-policy", "explanation"],
-]}
-/>
+<RelatedReadContainer>
+  <RelatedReadItem page={WhatIsARetryPolicy} />
+</RelatedReadContainer>

@@ -51,7 +51,7 @@ This Command is triggered when there is a call to Continue-As-New from within th
 The corresponding Event for this Command is one of the few Events that will be the last in a Workflow Execution Event History.
 
 - Awaitable: No, a Workflow Execution can not await on the action resulting from this Command.
-- Corresponding Event: [WorkflowExecutionContinuedAsNew](docs/reference/events/#workflowexecutioncontinuedasnew)
+- Corresponding Event: [WorkflowExecutionContinuedAsNew](/docs/reference/events/#workflowexecutioncontinuedasnew)
 
 ### FailWorkflowExecution
 
