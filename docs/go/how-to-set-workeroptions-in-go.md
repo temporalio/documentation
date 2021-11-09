@@ -11,28 +11,28 @@ tags:
 
 Create an instance of [`Options`](https://pkg.go.dev/go.temporal.io/sdk/worker#Options) from the `go.temporal.io/sdk/worker` package, set any of the optional fields, and pass the instance to the [`New`](https://pkg.go.dev/go.temporal.io/sdk/worker#New) call.
 
-| Field                                                                                 | Required | Type                                                                                          |
-| ------------------------------------------------------------------------------------- | -------- | --------------------------------------------------------------------------------------------- |
-| [`MaxConcurrentActivityExecutionSize`](#maxconcurrentactivityexecutionsize)           | No       | `int`                                                                                         |
-| [`WorkerActivitiesPerSecond`](#workeractivitiespersecond)                             | No       | `float64`                                                                                     |
+| Field                                     | Required | Type                                                                                          |
+| ----------------------------------------- | -------- | --------------------------------------------------------------------------------------------- |
+| [`MaxConcurrentActivityExecutionSize`](#maxconcurrentactivityexecutionsize)      | No       | `int`                                                                                         |
+| [`WorkerActivitiesPerSecond`](#workeractivitiespersecond)              | No       | `float64`                                                                                     |
 | [`MaxConcurrentLocalActivityExecutionSize`](#maxconcurrentlocalactivityexecutionsize) | No       | `int`                                                                                         |
-| [`WorkerLocalActivitiesPerSecond`](#workerlocalactivitiespersecond)                   | No       | `float64`                                                                                     |
-| [`TaskQueueActivitiesPerSecond`](#taskqueueactivitiespersecond)                       | No       | `float64`                                                                                     |
-| [`MaxConcurrentActivityTaskPollers`](#maxconcurrentactivitytaskpollers)               | No       | `int`                                                                                         |
-| [`MaxConcurrentWorkflowTaskExecutionSize`](#maxconcurrentworkflowtaskexecutionsize)   | No       | `int`                                                                                         |
-| [`MaxConcurrentWorkflowTaskPollers`](#maxconcurrentworkflowtaskpollers)               | No       | `int`                                                                                         |
-| [`EnableLoggingInReplay`](#enablelogginginreplay)                                     | No       | `bool`                                                                                        |
-| [`DisableStickyExecution`](#disablestickyexecution)                                   | No       | `bool`                                                                                        |
-| [`StickyScheduleToStartTimeout`](#stickyscheduletostarttimeout)                       | No       | [`time.Duration`](https://pkg.go.dev/time#Duration)                                           |
-| [`BackgroundActivityContext`](#backgroundactivitycontext)                             | No       | [`context.Context`](https://pkg.go.dev/context#Context)                                       |
-| [`WorkflowPanicPolicy`](#workflowopanicpolicy)                                        | No       | [`WorkflowPanicPolicy`](https://pkg.go.dev/go.temporal.io/sdk/internal#WorkflowPanicPolicy)   |
-| [`WorkerStopTimeout`](#workerstoptimeout)                                             | No       | [`time.Duration`](https://pkg.go.dev/time#Duration)                                           |
-| [`EnableSessionWorker`](#enablesessionworker)                                         | No       | `bool`                                                                                        |
-| [`MaxConcurrentSessionExecutionSize`](#maxconcurrentsessionexecutionsize)             | No       | `int`                                                                                         |
-| [`WorkflowInterceptorChainFactories`](#workflowinterceptorchainfactories)             | No       | [`[]WorkflowInterceptor`](https://pkg.go.dev/go.temporal.io/sdk/internal#WorkflowInterceptor) |
-| [`LocalActivityWorkerOnly`](#localactivityworkeronly)                                 | No       | `bool`                                                                                        |
-| [`Identity`](#identity)                                                               | No       | `string`                                                                                      |
-| [`DeadlockDetectionTimeout`](#deadlockdetectiontimeout)                               | No       | [`time.Duration`](https://pkg.go.dev/time#Duration)                                           |
+| [`WorkerLocalActivitiesPerSecond`](#workerlocalactivitiespersecond)         | No       | `float64`                                                                                     |
+| [`TaskQueueActivitiesPerSecond`](#taskqueueactivitiespersecond)            | No       | `float64`                                                                                     |
+| [`MaxConcurrentActivityTaskPollers`](#maxconcurrentactivitytaskpollers)        | No       | `int`                                                                                         |
+| [`MaxConcurrentWorkflowTaskExecutionSize`](#maxconcurrentworkflowtaskexecutionsize)  | No       | `int`                                                                                         |
+| [`MaxConcurrentWorkflowTaskPollers`](#maxconcurrentworkflowtaskpollers)       | No       | `int`                                                                                         |
+| [`EnableLoggingInReplay`](#enablelogginginreplay)                   | No       | `bool`                                                                                        |
+| [`DisableStickyExecution`](#disablestickyexecution)                 | No       | `bool`                                                                                        |
+| [`StickyScheduleToStartTimeout`](#stickyscheduletostarttimeout)            | No       | [`time.Duration`](https://pkg.go.dev/time#Duration)                                           |
+| [`BackgroundActivityContext`](#backgroundactivitycontext)             | No       | [`context.Context`](https://pkg.go.dev/context#Context)                                       |
+| [`WorkflowPanicPolicy`](#workflowopanicpolicy)                     | No       | [`WorkflowPanicPolicy`](https://pkg.go.dev/go.temporal.io/sdk/internal#WorkflowPanicPolicy)   |
+| [`WorkerStopTimeout`](#workerstoptimeout)                       | No       | [`time.Duration`](https://pkg.go.dev/time#Duration)                                           |
+| [`EnableSessionWorker`](#enablesessionworker)                     | No       | `bool`                                                                                        |
+| [`MaxConcurrentSessionExecutionSize`](#maxconcurrentsessionexecutionsize)       | No       | `int`                                                                                         |
+| [`WorkflowInterceptorChainFactories`](#workflowinterceptorchainfactories)      | No       | [`[]WorkflowInterceptor`](https://pkg.go.dev/go.temporal.io/sdk/internal#WorkflowInterceptor) |
+| [`LocalActivityWorkerOnly`](#localactivityworkeronly)                | No       | `bool`                                                                                        |
+| [`Identity`](#identity)                                | No       | `string`                                                                                      |
+| [`DeadlockDetectionTimeout`](#deadlockdetectiontimeout)                | No       | [`time.Duration`](https://pkg.go.dev/time#Duration)                                           |
 
 ### `MaxConcurrentActivityExecutionSize`
 

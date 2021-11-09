@@ -26,19 +26,19 @@ Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io
 
 The following fields are available:
 
-| Field                                                                                   | Required | Type                                                                                            |
-| --------------------------------------------------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------- | ------------------------- |
-| [`ID`](#id)                                                                             | No       | `string`                                                                                        |
-| [`TaskQueue`](#taskqueue)                                                               | **Yes**  | `string`                                                                                        |
-| [`WorkflowExecutionTimeout`](#workflowexecutiontimeout)                                 | No       | `time.Duration`                                                                                 |
-| [`WorkflowRunTimeout`](#workflowruntimeout)                                             | No       | `time.Duration`                                                                                 | [👀](#workflowruntimeout) |
-| [`WorkflowTaskTimeout`](#workflowtasktimeout)                                           | No       | `time.Duration`                                                                                 |
-| [`WorkflowIDReusePolicy`](#workflowidreusepolicy)                                       | No       | [`WorkflowIdReusePolicy`](https://pkg.go.dev/go.temporal.io/api/enums/v1#WorkflowIdReusePolicy) |
-| [`WorkflowExecutionErrorWhenAlreadyStarted`](#workflowexecutionerrorwhenalreadystarted) | No       | `bool`                                                                                          |
-| [`RetryPolicy`](#retrypolicy)                                                           | No       | [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy)                     |
-| [`CronSchedule`](#cronschedule)                                                         | No       | `string`                                                                                        |
-| [`Memo`](#memo)                                                                         | No       | `map[string]interface{}`                                                                        |
-| [`SearchAttributes`](#searchattributes)                                                 | No       | `map[string]interface{}`                                                                        |
+| Field | Required | Type |
+| ----- | -------- | ---- |
+| [`ID`](#id)  | No  | `string` |
+| [`TaskQueue`](#taskqueue)  | **Yes**  | `string` |
+| [`WorkflowExecutionTimeout`](#workflowexecutiontimeout) | No | `time.Duration`|
+| [`WorkflowRunTimeout`](#workflowruntimeout) | No | `time.Duration` |
+| [`WorkflowTaskTimeout`](#workflowtasktimeout) | No | `time.Duration`  |
+| [`WorkflowIDReusePolicy`](#workflowidreusepolicy) | No | [`WorkflowIdReusePolicy`](https://pkg.go.dev/go.temporal.io/api/enums/v1#WorkflowIdReusePolicy)  |
+| [`WorkflowExecutionErrorWhenAlreadyStarted`](#workflowexecutionerrorwhenalreadystarted)  | No   | `bool`  |
+| [`RetryPolicy`](#retrypolicy) | No | [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy) |
+| [`CronSchedule`](#cronschedule)  | No   | `string`        |
+| [`Memo`](#memo)   | No       | `map[string]interface{}`        |
+| [`SearchAttributes`](#searchattributes)   | No       | `map[string]interface{}`   |
 
 ### `ID`
 
@@ -82,7 +82,7 @@ if err != nil {
 ### `WorkflowExecutionTimeout`
 
 - Type: `time.Duration`
-- Default: 10 years
+- Default:  10 years
 
 ```go
 workflowOptions := client.StartWorkflowOptions{
