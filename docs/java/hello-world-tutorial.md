@@ -180,7 +180,7 @@ To start the Workflow fromw Within IntelliJ, right click on InitiateHelloWorld a
 
 <br/>
 
-<img class="docs-image-centered docs-image-max-width-20" src="https://raw.githubusercontent.com/temporalio/documentation-images/main/static/confetti.png" />
+<img alt="Celebratory confetti" class="docs-image-centered docs-image-max-width-20" src="https://raw.githubusercontent.com/temporalio/documentation-images/main/static/confetti.png" />
 
 **Congratulations** you have successfully built a Temporal application from scratch!
 

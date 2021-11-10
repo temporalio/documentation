@@ -16,7 +16,7 @@ image: https://i.imgur.com/DsttqOf.png
 release_version: V1.0.0
 ---
 
-<img class="case-study-header" src='https://i.imgur.com/FQxs3KM.png' />
+<img alt="Temporal and Coinbase logos" class="case-study-header" src='https://i.imgur.com/FQxs3KM.png' />
 
 [Link to PDF version](http://temporal.io/case-studies/Reliable_crypto_transactions_at_Coinbase.pdf)
 

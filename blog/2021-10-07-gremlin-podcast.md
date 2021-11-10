@@ -16,7 +16,7 @@ release_version: V1.11.2
 Gremlin is at the forefront of the fast-rising Chaos Engineering movement. Chaos Engineering involves running thoughtful, planned experiments that teach us how our systems behave in the face of failure, and Temporal provides a testable, scalable solution to handle failures. Our co-founders Maxim Fateev and Samar Abbas recently joined Gremlin's podcast [Break Things on Purpose](https://www.gremlin.com/podcast/) for a rare double appearance to talk Temporal.
 [Listen to it here](https://www.listennotes.com/podcasts/break-things-on/maxim-fateev-and-samar-abbas-C1p42zDwLZX/)!
 
-<iframe src="https://www.listennotes.com/podcasts/break-things-on/maxim-fateev-and-samar-abbas-C1p42zDwLZX/embed/" height="170px" width="100%" style={{width: 1, minWidth: "100%", top: 0, position: 'sticky'}} loading="lazy" frameBorder="0" scrolling="no"></iframe>
+<iframe src="https://www.listennotes.com/podcasts/break-things-on/maxim-fateev-and-samar-abbas-C1p42zDwLZX/embed/" title="Listen Notes: Gremlin Podcast" height="170px" width="100%" style={{width: 1, minWidth: "100%", top: 0, position: 'sticky'}} loading="lazy" frameBorder="0" scrolling="no"></iframe>
 
 What follows is a lightly edited transcript for readability.
 
@@ -82,10 +82,10 @@ It assumes that you can have hundreds of millions of these objects simultaneousl
 
 ***If I wanted to implement Temporal within my application, what do I need to keep in mind to ensure that I have a good experience with it? Any tips?***
 
-**Redesign End-to-End**
+### Redesign End-to-End
 
 Maxim: Temporal does best when you also rethink how your application is structured. It’s kind of a new category of software, so you cannot just take your current design and directly port it over. One time, engineers from a payment system came to us and said, “We have a downstream dependency to a bank and in their SLA says they can be down for three days. Can we just start workflow on every message if the system is down, and keep retrying for three days?” Well, technically, answer is yes, but we eventually found out that they had this huge pipeline of queues, with enormous complexity, and they had hard time maintaining all that. So **we ended up redesigning the whole pipeline as just one workflow,** and instead of just doing it piece by piece, and it helped them tremendously. It completely simplified the way their application was designed and they removed a lot of code. You can do a small proof of concept piecemeal, but if you adopt Temporal end-to-end, you will get 10x benefits.
 
-**Durability**
+### Durability
 
 Samar: Think about how important durability is for your application. Do you have some state which needs to live beyond a single request/response? If the answer is yes, then I think Temporal is an awesome technology to help you deal with that complexity. It's better than the traditional way of building those applications, using databases, queues, retry mechanisms, and durable timers for retrying for three days. With Temporal, instead of building a sub-system which deals with all this retrying behavior, you can literally **just specify your retry policy** when you schedule an activity. So think holistically about your system, think about the statefulness and how important that state is. People have accepted that building this class of application is inherently complex, but Temporal is an amazing technology which makes this much more developer-friendly.
