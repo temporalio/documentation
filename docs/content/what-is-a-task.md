@@ -6,7 +6,7 @@ tags:
   - explanation
 ---
 
-A Task is the context that a Worker needs to make progress with a specific [Workflow Execution](/docs/content/what-is-a-workflow-execution) or [Activity Execution](/docs/content/what-is-an-activity-execution).
+A Task is the context that a Worker needs to progress with a specific [Workflow Execution](/docs/content/what-is-a-workflow-execution) or [Activity Execution](/docs/content/what-is-an-activity-execution).
 
 There are two types of Tasks:
 

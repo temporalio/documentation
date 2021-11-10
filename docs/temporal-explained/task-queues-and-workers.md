@@ -1,7 +1,7 @@
 ---
 id: task-queues-and-workers
 title: Temporal Task Queues and Workers
-description: TODO
+description: Temporal Task Queues and Workers are tightly coupled components.
 sidebar_label: Task Queues & Workers
 ---
 
@@ -19,8 +19,38 @@ import WhatIsATaskQueue from '../content/what-is-a-task-queue.md'
 
 <WhatIsATaskQueue/>
 
+## Sticky Queues
+
+import WhatIsAStickyQueue from '../content/what-is-a-sticky-queue.md'
+
+<WhatIsAStickyQueue/>
+
+## Task Routing
+
+import WhatIsTaskRouting from '../content/what-is-task-routing.md'
+
+<WhatIsTaskRouting/>
+
 ## Workers
 
 import WhatIsAWorker from '../content/what-is-a-worker.md'
 
 <WhatIsAWorker/>
+
+## Worker Program
+
+import WhatIsAWorkerProgram from '../content/what-is-a-worker-program.md'
+
+<WhatIsAWorkerProgram/>
+
+## Worker Process
+
+import WhatIsAWorkerProcess from '../content/what-is-a-worker-process.md'
+
+<WhatIsAWorkerProcess/>
+
+## Worker Entity
+
+import WhatIsAWorkerEntity from '../content/what-is-a-worker-entity.md'
+
+<WhatIsAWorkerEntity/>

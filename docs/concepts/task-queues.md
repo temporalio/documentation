@@ -16,6 +16,12 @@ import WhatIsATaskQueue from '../content/what-is-a-task-queue.md'
 
 <WhatIsATaskQueue/>
 
+## Sticky Queues
+
+import WhatIsAStickyQueue from '../content/what-is-a-sticky-queue.md'
+
+<WhatIsAStickyQueue/>
+
 ## Task Routing
 
 import WhatIsTaskRouting from '../content/what-is-task-routing.md'
