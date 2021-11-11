@@ -204,7 +204,7 @@ export async function SubscriptionWorkflow(
   let isCanceled = false;
   wf.setHandler(cancelSignal, () => void (isCanceled = true)); // new
   await acts.sendWelcomeEmail(email);
-  if (await wf.condition(() => isCanceled), trialPeriod) {
+  if ((await wf.condition(() => isCanceled), trialPeriod)) {
     // reach here if predicate function is true
     await acts.sendCancellationEmailDuringTrialPeriod(email);
   } else {
