@@ -2,6 +2,7 @@
 id: troubleshooting
 title: Troubleshooting Issues with the TypeScript SDK
 sidebar_label: Troubleshooting
+description: This document is a quick checklist of common user errors for your reference.
 ---
 
 This document is a quick checklist of common user errors for your reference.

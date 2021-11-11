@@ -2,9 +2,10 @@
 id: subscription-tutorial
 title: Workflow APIs Tutorial with a Subscription Workflow
 sidebar_label: Subscription Tutorial
+description: In this tutorial, we will tour all of the Workflow APIs you should know, primarily Signals, Queries, `condition`, and `sleep`, by building a realistic monthly subscription payments workflow that can be canceled and changed while it runs.
 ---
 
-In this tutorial, we will tour all of the [Workflow APIs](https://docs.temporal.io/docs/typescript/workflows#workflow-apis) you should know, primarily Signals, Queries, `condition`, and `sleep` (and eventually Child Workflows and `continueAsNew`).
+In this tutorial, we will tour all of the [Workflow APIs](https://docs.temporal.io/docs/typescript/workflows#workflow-apis) you should know, primarily Signals, Queries, `condition`, and `sleep` (and eventually Child Workflows and `continueAsNew`), by building a realistic monthly subscription payments workflow that can be canceled and changed while it runs.
 
 - The goal is to give you a more accessible introduction to these APIs by explaining them in context of a realistic application.
 - We also give an example of how you break down project requirements into Activities and Workflow logic.

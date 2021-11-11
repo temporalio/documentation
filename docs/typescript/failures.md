@@ -2,6 +2,7 @@
 id: handling-failure
 title: Handling Failures in TypeScript
 sidebar_label: Handling Failures
+description: Failures in Temporal are structured and typed. They represent a variety of failure scenarios across the different SDKs and the server.
 ---
 
 Failures in Temporal are structured and typed. They represent a variety of failure scenarios across the different SDKs and the server.

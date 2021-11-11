@@ -2,8 +2,7 @@
 id: clients
 title: Workflow Clients in TypeScript
 sidebar_label: Clients
-description: In the Temporal TypeScript SDK programming model, a Workflow is an exportable function that adheres to a set of rules.
-image: /img/workflow.png
+description: Workflow Clients are embedded in your application code, and connect to Temporal Server via gRPC. They are the only way to schedule new Workflow Executions with Temporal Server.
 ---
 
 import RelatedReadList from '../components/RelatedReadList.js'

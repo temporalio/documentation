@@ -2,6 +2,7 @@
 id: security
 title: Security in TypeScript SDK
 sidebar_label: Security
+description: A summary of the security features you should know as a TypeScript SDK user.
 ---
 
 import CustomWarning from "../components/CustomWarning.js"
