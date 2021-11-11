@@ -84,10 +84,8 @@ When signing up to Temporal Cloud you should receive a namespace, a server addre
 
 - `TEMPORAL_ADDRESS`: looks like `foo.bar.tmprl.cloud`
 - `TEMPORAL_NAMESPACE`: looks like `foo.bar`
-- `TEMPORAL_CLIENT_CERT_PATH`: e.g. `'/tls/ca.pem'`, a file that starts with `-----BEGIN CERTIFICATE-----
-MIIEsjCCApqgAwIBAgIUHUWAiXLVXS/qkWLRmJ48uLGOEcEwDQYJKoZIhvcNAQEL`
-- `TEMPORAL_CLIENT_KEY_PATH`: e.g. `'/tls/ca.key'`, a file that starts with `-----BEGIN PRIVATE KEY-----
-MIIJQwIBADANBgkqhkiG9w0BAQEFAA`
+- `TEMPORAL_CLIENT_CERT_PATH`: e.g. `'/tls/ca.pem'`, a file that starts with `-----BEGIN CERTIFICATE----- MIIEsjCCApqgAwIBAgIUHUWAiXLVXS/qkWLRmJ48uLGOEcEwDQYJKoZIhvcNAQEL`
+- `TEMPORAL_CLIENT_KEY_PATH`: e.g. `'/tls/ca.key'`, a file that starts with `-----BEGIN PRIVATE KEY----- MIIJQwIBADANBgkqhkiG9w0BAQEFAA`
 
 You can leave the remaining vars, like `TEMPORAL_SERVER_NAME_OVERRIDE` and `TEMPORAL_SERVER_ROOT_CA_CERT_PATH` blank.
 There is another var, `TEMPORAL_TASK_QUEUE`, which the example defaults to `'hello-world-mtls'` but you can customize as needed.
@@ -95,27 +93,27 @@ There is another var, `TEMPORAL_TASK_QUEUE`, which the example defaults to `'hel
 <details>
 <summary>Example environment settings</summary>
 
-  ```ts
+```ts
 export function getEnv(): Env {
   return {
-    address: "foo.bar.tmprl.cloud", // NOT web.foo.bar.tmprl.cloud
-    namespace: "foo.bar", // as assigned
-    clientCertPath: "foobar.pem", // in project root
-    clientKeyPath: "foobar.key", // in project root
+    address: 'foo.bar.tmprl.cloud', // NOT web.foo.bar.tmprl.cloud
+    namespace: 'foo.bar', // as assigned
+    clientCertPath: 'foobar.pem', // in project root
+    clientKeyPath: 'foobar.key', // in project root
     taskQueue: process.env.TEMPORAL_TASK_QUEUE || 'hello-world-mtls', // just to ensure task queue is same on client and worker, totally optional
     // // not usually needed
     // serverNameOverride: process.env.TEMPORAL_SERVER_NAME_OVERRIDE,
     // serverRootCACertificatePath: process.env.TEMPORAL_SERVER_ROOT_CA_CERT_PATH,
   };
 }
-  ```
-  
-</details>
+```
 
+</details>
 
 If you have misconfigured your connection somehow, you will get an opaque `[TransportError: transport error]` error. Read through your settings carefully and contact us if you are sure you have checked everything.
 
 Note the difference between the gRPC and Temporal Web endpoints:
+
 - The gRPC endpoint has a DNS address of `<Namespace ID>.tmprl.cloud`, for example: `accounting-production.f45a2.tmprl.cloud`.
 - The Temporal Web endpoint is `web.<Namespace ID>.tmprl.cloud`, for example: `https://web.accounting-production.f45a2.tmprl.cloud`.
 
