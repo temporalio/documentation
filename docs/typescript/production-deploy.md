@@ -12,11 +12,25 @@ Note that this is separate from maintaining a production self-hosted Temporal **
 ## Configure Connections and Namespaces
 
 Temporal Clients and Workers connect with Temporal Clusters via gRPC.
-While you were developing locally, all these connections were defaulted to localhost.
-In production, you will need to configure address, namespace, and encryption settings.
+- While you were developing locally, all these connections were set to [their default gRPC ports](http://localhost:3000/docs/content/what-is-a-temporal-cluster) on localhost.
+- In production, you will need to configure address, namespace, and encryption settings.
 
-Please read more in the [Security docs](/docs/typescript/security).
-You should be able to test these new connections locally before proceeding on to the rest of the instructions here.
+```ts
+export function getEnv(): Env {
+  return {
+    address: 'foo.bar.tmprl.cloud', // NOT web.foo.bar.tmprl.cloud
+    namespace: 'foo.bar', // as assigned
+    clientCertPath: 'foobar.pem', // in project root
+    clientKeyPath: 'foobar.key', // in project root
+    taskQueue: process.env.TEMPORAL_TASK_QUEUE || 'hello-world-mtls', // just to ensure task queue is same on client and worker, totally optional
+    // // not usually needed
+    // serverNameOverride: process.env.TEMPORAL_SERVER_NAME_OVERRIDE,
+    // serverRootCACertificatePath: process.env.TEMPORAL_SERVER_ROOT_CA_CERT_PATH,
+  };
+}
+```
+
+Please read more in the [Security docs](/docs/typescript/security#connecting-to-temporal-cloud-with-mtls).
 
 ## Logging and Metrics
 
