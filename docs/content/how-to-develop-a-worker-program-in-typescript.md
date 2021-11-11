@@ -8,7 +8,7 @@ tags:
   - typescript
 ---
 
-First create a Worker with `Worker.create()`, then call `worker.run()` on it.
+First create a Worker with `Worker.create()` (which establishes the initial gRPC connection), then call `worker.run()` on it (to start polling the Task Queue).
 
 Below is an example of starting a Worker that polls the Task Queue named `tutorial`.
 
