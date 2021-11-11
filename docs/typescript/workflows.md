@@ -54,17 +54,17 @@ Please see the [Temporal Client docs](/docs/typescript/clients) or the [API Refe
 
 The `@temporalio/workflow` package exports all the useful primitives that you can use in Workflows. See the [API reference](https://typescript.temporal.io/api/namespaces/workflow) for the full list, but the main ones are:
 
-| APIs                         | Purpose                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `proxyActivities`            | Make idempotent side effects (like making a HTTP request) with Activities ([see Activities doc](/docs/typescript/activities))                                                                                                                                                                                                                                                                                                            |
-| `defineSignal`/`defineQuery` | [Signal and Query](#signals-and-queries) Workflows while they are running                                                                                                                                                                                                                                                                                                                                                                |
-| `sleep`                      | Defer execution by [sleeping](#sleep) for fixed time                                                                                                                                                                                                                                                                                                                                                                                     |
-| `condition`                  | Defer execution until a [`condition`](#condition) is true, with optional timeout                                                                                                                                                                                                                                                                                                                                                         |
-| `startChild`/`executeChild`  | Spawn new [Child Workflows](#child-workflows) with customizable ParentClosePolicy                                                                                                                                                                                                                                                                                                                                                        |
-| `continueAsNew`              | Truncate Event History for [infinitely long running Workflows](#infinite-workflows)                                                                                                                                                                                                                                                                                                                                                      |
-| `patched`/`deprecatePatch`   | Migrate Workflows to new versions ([see Patching doc](/docs/typescript/patching))                                                                                                                                                                                                                                                                                                                                                        |
-| `uuid4`                      | Generate an RFC compliant V4 [uuid](https://typescript.temporal.io/api/namespaces/workflow/#uuid4) without needing to call an Activity or Side Effect.                                                                                                                                                                                                                                                                                   |
-| APIs for advanced users      | including [`workflowInfo`](https://typescript.temporal.io/api/namespaces/workflow#workflowinfo) (to retrieve Workflow metadata), external [`dependencies`](/docs/typescript/external-dependencies), [Cancellation Scopes](/docs/typescript/cancellation-scopes), [Failure types](/docs/typescript/handling-failure), and [`getExternalWorkflowHandle`](https://typescript.temporal.io/api/namespaces/workflow#getexternalworkflowhandle) |
+| APIs                         | Purpose                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `proxyActivities`            | Make idempotent side effects (like making a HTTP request) with Activities ([see Activities doc](/docs/typescript/activities))                                                                                                                                                                                                                                                                                            |
+| `defineSignal`/`defineQuery` | [Signal and Query](#signals-and-queries) Workflows while they are running                                                                                                                                                                                                                                                                                                                                                |
+| `sleep`                      | Defer execution by [sleeping](#sleep) for fixed time                                                                                                                                                                                                                                                                                                                                                                     |
+| `condition`                  | Defer execution until a [`condition`](#condition) is true, with optional timeout                                                                                                                                                                                                                                                                                                                                         |
+| `startChild`/`executeChild`  | Spawn new [Child Workflows](#child-workflows) with customizable ParentClosePolicy                                                                                                                                                                                                                                                                                                                                        |
+| `continueAsNew`              | Truncate Event History for [infinitely long running Workflows](#infinite-workflows)                                                                                                                                                                                                                                                                                                                                      |
+| `patched`/`deprecatePatch`   | Migrate Workflows to new versions ([see Patching doc](/docs/typescript/patching))                                                                                                                                                                                                                                                                                                                                        |
+| `uuid4`                      | Generate an RFC compliant V4 [uuid](https://typescript.temporal.io/api/namespaces/workflow/#uuid4) without needing to call an Activity or Side Effect.                                                                                                                                                                                                                                                                   |
+| APIs for advanced users      | including [`workflowInfo`](https://typescript.temporal.io/api/namespaces/workflow#workflowinfo) (to retrieve Workflow metadata), Workflow data [`Sinks`](/docs/typescript/logging), [Cancellation Scopes](/docs/typescript/cancellation-scopes), [Failure types](/docs/typescript/handling-failure), and [`getExternalWorkflowHandle`](https://typescript.temporal.io/api/namespaces/workflow#getexternalworkflowhandle) |
 
 We fully expect that developers will bundle these into their own reusable Workflow libraries.
 If you do, please [get in touch on Slack](https://temporal.io/slack), we would love to work with you and promote your work.
@@ -521,12 +521,10 @@ There is an unrelated [`sleep` utility function](https://typescript.temporal.io/
 
 ### `condition`
 
-The `condition` API has two forms, both of which accept a predicate function (**must be synchronous**) that returns a boolean:
+The `condition(fn, timeout?)` API returns a promise that resolves:
 
-1. `condition(fn)` returns a promise that continually checks the given predicate function and resolves when it returns `true`.
-2. `condition(timeout?, fn)` returns a promise that resolves:
-   - `true` when the given predicate function returns `true` or
-   - `false` if an (optional) `timeout` happens first.
+- `true` when the given predicate function (**must be synchronous**) returns `true` or
+- (optional) `false` if a timeout (given as a string or number of milliseconds) happens first.
 
 This API is comparable to `Workflow.await` in other SDKs and often used to wait for Signals, since Signals are the main way to asynchronously update internal Workflow state (looped Activities are another).
 
@@ -535,8 +533,8 @@ The timeout also uses the [ms](https://www.npmjs.com/package/ms) package to take
 ```ts
 // type signature
 export function condition(
-  timeout: number | string,
-  fn: () => boolean
+  fn: () => boolean,
+  timeout: number | string
 ): Promise<boolean>;
 export function condition(fn: () => boolean): Promise<void>;
 
@@ -549,7 +547,7 @@ await condition(() => x > 3);
 // you only reach here when x > 3
 
 // await either x > 3 or 30 minute timeout, whichever comes first
-if (await condition('30 mins', () => x > 3)) {
+if (await condition(() => x > 3, '30 mins')) {
   // reach here if predicate true
 } else {
   // reach here if timed out
@@ -703,8 +701,8 @@ export class UpdatableTimer implements PromiseLike<void> {
       this.deadlineUpdated = false;
       if (
         !(await condition(
-          this.#deadline - Date.now(),
           () => this.deadlineUpdated
+          this.#deadline - Date.now()
         ))
       ) {
         break;
