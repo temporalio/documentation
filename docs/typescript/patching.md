@@ -15,7 +15,55 @@ Before you explore our patching/versioning API, check if your needs can be addre
 1. Remove `Workflow1` code when none of them are running anymore
 
 This means Workflows running `Workflow1` code will never migrate to `Workflow2` code before they complete.
-If you would like to update `Workflow1` code while it is running, you will need to "patch in" code. Read on.
+If you would like to update `Workflow1` code while it is running, you may need to "patch in" code. Read on.
+
+## Do I need to Patch?
+
+You may need to patch if:
+
+- You want to change the remaining logic of a Workflow while it is still running
+- If your new logic can result in a different execution path
+
+This code does not need patching (i.e. since execution path does not change, you can update your Workflow and restart Workers straight away):
+
+```ts
+// from v1
+export async function myWorkflow({ force }): Promise<void> {
+  await sleep('1 days');
+  console.log('force', force);
+}
+
+// to v2
+export async function myWorkflow(payload): Promise<void> {
+  let force = payload.force;
+
+  setHandler(updatePayloadSignal, (newPayload) => {
+    force = newPayload.force;
+  });
+
+  await sleep('1 days');
+  console.log('force', force);
+}
+```
+
+This is an example of how npm packages can break determinism:
+
+```ts
+// from v1
+export async function myWorkflow() {
+  await runActivity();
+}
+
+// to v2
+import { something } from 'a-package-from-npm';
+
+export async function myWorkflow() {
+  if (something()) {
+    await sleep('1 day');
+  }
+  await runActivity();
+}
+```
 
 ## Migrating Workflows in Patches
 
@@ -102,3 +150,4 @@ If while we're deploying `v2deprecatedpatch` (below) there are still live Worker
 
 Upgrading Workflow dependencies (such as ones installed into `node_modules`) _might_ break determinism in unpredictable ways.
 It is highly recommended to use a lock file (`package-lock.json` or `yarn.lock`) in order to fix Workflow dependency versions and gain control of when they're updated.
+
