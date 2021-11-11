@@ -36,7 +36,7 @@ export async function myWorkflow({ force }): Promise<void> {
 export async function myWorkflow(payload): Promise<void> {
   let force = payload.force;
 
-  setListener(updatePayloadSignal, (newPayload) => {
+  setHandler(updatePayloadSignal, (newPayload) => {
     force = newPayload.force;
   });
 
@@ -45,7 +45,7 @@ export async function myWorkflow(payload): Promise<void> {
 }
 ```
 
-This is an example of code that will need patching:
+This is an example of how npm packages can break determinism:
 
 ```ts
 // from v1
@@ -150,4 +150,3 @@ If while we're deploying `v2deprecatedpatch` (below) there are still live Worker
 Upgrading Workflow dependencies (such as ones installed into `node_modules`) _might_ break determinism in unpredictable ways.
 It is highly recommended to use a lock file (`package-lock.json` or `yarn.lock`) in order to fix Workflow dependency versions and gain control of when they're updated.
 
-Be aware that any of your dependencies might do something non-deterministic, such as filesystem access or network calls.
