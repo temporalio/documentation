@@ -354,7 +354,7 @@ module.exports = {
           items: [
             "typescript/cancellation-scopes",
             "typescript/determinism",
-            "typescript/external-dependencies",
+            "typescript/sinks",
             "typescript/handling-failure",
             "typescript/search-attributes",
             "typescript/interceptors",
