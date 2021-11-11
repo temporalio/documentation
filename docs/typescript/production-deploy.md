@@ -12,6 +12,7 @@ Note that this is separate from maintaining a production self-hosted Temporal **
 ## Configure Connections and Namespaces
 
 Temporal Clients and Workers connect with Temporal Clusters via gRPC.
+
 - While you were developing locally, all these connections were set to [their default gRPC ports](http://localhost:3000/docs/content/what-is-a-temporal-cluster) on localhost.
 - In production, you will need to configure address, namespace, and encryption settings.
 
