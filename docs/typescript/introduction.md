@@ -1,6 +1,7 @@
 ---
 title: TypeScript SDK introduction
 sidebar_label: Introduction
+description: The TypeScript SDK lets TypeScript and JavaScript developers write highly scalable, reliable, annd long-running workflows without being a distributed systems expert.
 ---
 
 import CustomWarning from "../components/CustomWarning.js"
@@ -11,7 +12,7 @@ This SDK and associated documentation is in an Alpha stage and may change at any
 
 </CustomWarning>
 
-The TypeScript SDK is Temporal's newest client SDK for developing with Temporal.
+The Temporal TypeScript SDK lets TypeScript and JavaScript developers write highly scalable, reliable, annd long-running workflows without being a distributed systems expert.
 It is designed with TypeScript-first developer experience in mind, but should work equally well with JavaScript.
 
 :::note Commencing Launch Sequence
@@ -49,8 +50,8 @@ When you click on that link above, Gitpod will launch 4 terminals:
   - Left: [Temporal Server](https://github.com/temporalio/docker-compose) - always running
   - Right: [Temporal Web](https://docs.temporal.io/docs/system-tools/web-ui) and [Temporal `tctl` CLI](https://docs.temporal.io/docs/system-tools/tctl)
 - Pane 2: Hello World
-  - Left: Temporal Worker (`/hello-world/src/worker.ts`) - always running
-  - Right: Temporal Client (`/hello-world/src/execute-workflow.ts`)
+  - Left: [Temporal Worker](https://github.com/temporalio/samples-typescript/blob/main/hello-world/src/worker.ts) - always running
+  - Right: [Temporal Client](https://github.com/temporalio/samples-typescript/blob/main/hello-world/src/execute-workflow.ts)
 
 Once you have it up and running, you can use our [Hello World Walkthrough](/docs/typescript/hello-world) tutorial to orient you to the sample file structure.
 

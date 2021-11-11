@@ -2,6 +2,7 @@
 id: workflows
 title: Workflows in TypeScript
 sidebar_label: Workflows
+description: Workflows are async functions that can orchestrate Activities and access special Workflow APIs, subject to deterministic limitations.
 ---
 
 > **@temporalio/workflow** [![NPM](https://img.shields.io/npm/v/@temporalio/workflow)](https://www.npmjs.com/package/@temporalio/workflow) [API reference](https://typescript.temporal.io/api/namespaces/workflow) | [GitHub](https://github.com/temporalio/sdk-typescript/tree/main/packages/workflow)

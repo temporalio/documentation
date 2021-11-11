@@ -2,6 +2,7 @@
 id: production-deploy
 title: Production Deploy Checklist for TypeScript SDK
 sidebar_label: Deploy Checklist
+description: Here is a non-exhaustive list of things we recommend doing before you deploy your Temporal app to production. Note that this is separate from maintaining a production self-hosted Temporal Cluster, which has its own checklist.
 ---
 
 Here is a non-exhaustive list of things we recommend doing before you deploy your Temporal app to production.

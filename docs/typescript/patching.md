@@ -2,6 +2,7 @@
 id: patching
 title: Patching TypeScript Workflows
 sidebar_label: Patching (Migrating)
+description: Any Workflow code change that affects the order in which commands are generated breaks this assumption. So we have to keep both the old and new code when migrating Workflows while they are still running.
 ---
 
 ## Versioning Entire Workflows
