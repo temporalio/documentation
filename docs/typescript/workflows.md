@@ -16,7 +16,7 @@ Each Workflow function has two parts:
 - The function implementation code (body) is known as the **Workflow Definition**.
 
 Each Workflow Definition is bundled with any third party dependencies, and registered by Workflow Type in a [Worker](/docs/typescript/workers).
-A Workflow function only becomes a **Workflow Execution** (instance) when started from a [**Workflow Client**](/docs/typescript/clients) using its Workflow Type.
+A Workflow function becomes a **Workflow Execution** (instance) only when started from a [**Workflow Client**](/docs/typescript/clients) using its Workflow Type.
 
 <!-- todo: we need a diagram here to show the relationship -->
 

@@ -132,7 +132,7 @@ readlist={[
 All native features of the Go programming language can be used within an Activity and there are no other limitations to Activity Definition logic:
 
 - **Performance**: Keep in mind that all parameters and return values are recorded in the <preview page={EventHistory}>Workflow Execution Event History</preview>.
-  A large Workflow Execution Event History can adversely impact the performance of your Workflow Executions, as the entire Event History is transferred to Worker Processes with every <preview page={WhatIsAWorkflowTask}>Workflow Task</preview>.
+  A large Workflow Execution Event History can adversely impact the performance of your Workflow Executions, because the entire Event History is transferred to Worker Processes with every <preview page={WhatIsAWorkflowTask}>Workflow Task</preview>.
 - **Idiomatic usage**: You are free to use:
   - your own loggers and metrics controllers
   - the standard Go concurrency constructs

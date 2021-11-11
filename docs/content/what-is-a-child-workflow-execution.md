@@ -62,7 +62,7 @@ On one hand, because Child Workflow Executions have their own Event Histories, t
 For example, a single Workflow Execution does not have enough space in its Event History to spawn 100,000 <preview page={WhatIsAnActivityExecution}>Activity Executions</preview>.
 But a Parent Workflow Execution can spawn 1000 Child Workflow Executions that each spawn 1000 Activity Executions to achieve a total of 1,000,000 Activity Executions.
 
-On the other hand, since a Parent Workflow Execution Event History contains <preview page={WhatIsAnEvent}>Events</preview> that correspond to the status of the Child Workflow Execution, a single Parent should not spawn more than 1000 Child Workflow Executions.
+On the other hand, because a Parent Workflow Execution Event History contains <preview page={WhatIsAnEvent}>Events</preview> that correspond to the status of the Child Workflow Execution, a single Parent should not spawn more than 1000 Child Workflow Executions.
 
 In general, however, Child Workflow Executions result in more overall Events recorded in Event Histories than Activities.
 Because each entry in an Event History is a "cost" in terms of compute resources, this could become a factor in very large workloads.
