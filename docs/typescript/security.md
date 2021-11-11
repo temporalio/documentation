@@ -47,6 +47,8 @@ Use [`ServerOptions.tls`](https://typescript.temporal.io/api/interfaces/worker.s
 
 The client connection also accepts [gRPC credentials](https://grpc.github.io/grpc/node/grpc.credentials.html) at [`ConnectionOptions.credentials`](https://typescript.temporal.io/api/interfaces/client.connectionoptions#tls) as long as `tls` is not also specified.
 
+<span id="mtls-tutorial"></span>
+
 ### Connecting to Temporal Cloud (with mTLS)
 
 [The Hello World mTLS sample](https://github.com/temporalio/samples-node/tree/main/hello-world-mtls/) can be used to connect to a Temporal Cloud account.

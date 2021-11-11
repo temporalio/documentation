@@ -42,18 +42,19 @@ Choose your own adventure:
 Run "Hello Temporal" in the cloud (~2 minutes)
 </summary>
 
-[Open our Samples repo in Gitpod](https://gitpod.io/#https://github.com/temporalio/samples-typescript/) and login to try out our Hello World example on Gitpod with no need for local Docker setup.
+[Open our Samples repo in Gitpod](https://gitpod.io/#https://github.com/temporalio/samples-typescript/) and login to try out our Hello World example with no need for local Docker setup.
 
-When you click on that link above, Gitpod will launch 4 terminals:
+When you click on that link above and log in (there is a generous free tier), Gitpod will launch 4 terminals:
 
 - Pane 1: Temporal Cluster
   - Left: [Temporal Server](https://github.com/temporalio/docker-compose) - always running
   - Right: [Temporal Web](https://docs.temporal.io/docs/system-tools/web-ui) and [Temporal `tctl` CLI](https://docs.temporal.io/docs/system-tools/tctl)
 - Pane 2: Hello World
-  - Left: [Temporal Worker](https://github.com/temporalio/samples-typescript/blob/main/hello-world/src/worker.ts) - always running
-  - Right: [Temporal Client](https://github.com/temporalio/samples-typescript/blob/main/hello-world/src/execute-workflow.ts)
+  - Left: [Temporal Worker](https://github.com/temporalio/samples-typescript/blob/main/hello-world/src/worker.ts) - running and hot reloading
+  - Right: [Temporal Client](https://github.com/temporalio/samples-typescript/blob/main/hello-world/src/execute-workflow.ts) - run `npm run workflow`
 
-Once you have it up and running, you can use our [Hello World Walkthrough](/docs/typescript/hello-world) tutorial to orient you to the sample file structure.
+It takes ~3 minutes for the Docker Compose setup to start up.
+Once you have it up and running (Temporal Web should show the first Workflow Execution), you can use our [Hello World Walkthrough](/docs/typescript/hello-world) tutorial to orient you to the sample file structure.
 
 </details>
 
