@@ -27,7 +27,7 @@ imageSize="75"
 title="Distributed application failures"
 />
 
-How will a downstream part of the application know if there was a failure before, failure during, failure between, or a failure after the changes to the state?
+How will a downstream part of the application know if there was a failure before, failure during, failure between, or failure after the changes to the state?
 How will the inconsistent state be reconciled if there was a failure between changes?
 
 In traditional systems, a large investment is often made to maintain the health of each individual component, visualize the health of the overall system, define timeout constraints for computations, orchestrate retries for computations that fail, and maintain a consistent state.
@@ -38,7 +38,7 @@ And as these systems scale, responding to multiple asynchronous events, communic
 Temporal reconfigures the use of services, databases, cron jobs, and queues into the Temporal Platform.
 The Temporal Platform addresses these failures head on and right out the box.
 
-In a traditional system the service exists to spawn function executions.
+In a traditional system, the service exists to spawn function executions.
 The Temporal Platform exists to facilitate <preview page={WhatIsAWorkflowExecution}>Workflow Executions</preview>.
 
 <CenteredImage
@@ -163,6 +163,6 @@ If any of the operations take a long time, the code is not going to change.
 
 It is completely okay to be blocked on `chargeCustomerForBillingPeriod` for a day or more if the downstream processing service is down or not responding.
 In the same way, it is a completely normal operation to sleep for 30 days directly inside the Workflow code.
-This is possible because infrastructure failures are not going to affect the Workflow state – including threads, blocking calls, and any variables.
+This is possible because infrastructure failures won't affect the Workflow state—including threads, blocking calls, and any variables.
 
 The Temporal Platform has practically no scalability limits on the number of open Workflow Executions, so this code can be used over and over even if your application has hundreds of millions of customers.
