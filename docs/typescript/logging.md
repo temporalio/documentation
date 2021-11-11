@@ -15,18 +15,18 @@ Logging from Workflows is tricky for 2 reasons:
 
 1. Workflows run in an isolated JS environment and may not do any I/O
 1. Workflow code might get replayed generating duplicate log messages
-<!-- 
+<!--
 Workflows in Temporal may be replayed from the beginning of their history when resumed. In order for Temporal to recreate the exact state Workflow code was in, the code is required to be fully deterministic. To prevent breaking [determinism](/docs/typescript/determinism), in the TypeScript SDK, Workflow code runs in an isolated execution environment and may not use any of the Node.js APIs or communicate directly with the outside world. -->
- 
+
 Sinks are objects that contain Sink Functions, which enable one-way export of data from the Workflow isolate to the Node.js environment.
-They are necessary because the Workflow has no way to communicate with the outside World. 
+They are necessary because the Workflow has no way to communicate with the outside World.
 
 ```ts
 import { InjectedSinks, Sinks } from '@temporalio/worker';
 export interface LoggerSinks extends Sinks {
   logger: {
     info(message: string): void;
-  }
+  };
 }
 ```
 
