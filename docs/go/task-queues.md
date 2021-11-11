@@ -10,7 +10,7 @@ import SharedTaskQueuesBasic from '../shared/task-queues-basic.md'
 
 <SharedTaskQueuesBasic
 workflowLink="/docs/go/workflows"
-workerLink="/docs/go/workers"
+workerLink="/docs/go/how-to-develop-a-worker-program-in-go"
 />
 
 ## How to use Task Queues

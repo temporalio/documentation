@@ -23,7 +23,7 @@ If you need to process work sequentially on the same machine, the Go SDK also of
 
 See example Worker code for:
 
-- [Go SDK](/docs/go/workers)
+- [Go SDK](/docs/go/how-to-develop-a-worker-program-in-go)
 - [Java SDK](/docs/java/run-your-first-app-tutorial/#the-worker)
 - [PHP SDK](/docs/php/workers)
 - [TypeScript SDK](/docs/typescript/hello-world/#worker)
