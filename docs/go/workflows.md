@@ -56,12 +56,6 @@ Here we are sending a signal to a Workflow with type "simple-workflow-php" and s
 
 See our [Signals docs](https://docs.temporal.io/docs/go/signals) and [Temporal Polyglot example](https://github.com/tsurdilo/temporal-polyglot) for more.
 
-## Child Workflows
-
-import HowToSpawnAChildWorkflowExecutionInGo from '../go/how-to-spawn-a-child-workflow-execution-in-go.md'
-
-<HowToSpawnAChildWorkflowExecutionInGo/>
-
 ### Querying Workflow State
 
 When you start a Workflow with `ExecuteWorkflow`, a `WorkflowExecution` is returned (which is the `we` variable above).

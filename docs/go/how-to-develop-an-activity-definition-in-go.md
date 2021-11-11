@@ -1,6 +1,7 @@
 ---
 id: how-to-develop-an-activity-definition-in-go
 title: How to develop an Activity Definition in Go
+sidebar_label: Activity Definition
 description: In the Temporal Go SDK programming model, an Activity Definition is an exportable function or `stuct` method.
 tags:
   - developer-guide
@@ -15,7 +16,7 @@ import * as WhatIsAWorkflowTask from "../content/what-is-a-workflow-task.md"
 
 In the Temporal Go SDK programming model, an Activity Definition is an exportable function or `struct` method.
 
-**Function**:
+### Function
 
 ```go
 // basic function signature
@@ -28,7 +29,7 @@ func YourActivityDefinition(ctx workflow.Context) error {
 func SimpleActivity(ctx context.Context, value string) (string, error)
 ```
 
-**Struct method**:
+### Struct method
 
 ```go
 type YourActivityStruct struct {
@@ -63,7 +64,7 @@ readlist={[
 />
 -->
 
-**Activity parameters in Go**
+### Activity parameters in Go
 
 The first parameter of an Activity Definition is `context.Context`.
 This parameter is optional for an Activity Definition, though it is recommended especially if the Activity is expected to use other Go SDK APIs.
@@ -97,7 +98,7 @@ readlist={[
 />
 -->
 
-**Activity return values in Go**
+### Activity return values in Go
 
 A Go-based Activity Definition can return either just an `error` or a `customValue, error` combination (same as a Workflow Definition).
 You may wish to use a `struct` type to hold all custom values, just keep in mind they must all be serializable.
@@ -126,7 +127,7 @@ readlist={[
 />
 -->
 
-**Other notes for developing Activities**
+### Other notes for developing Activities
 
 All native features of the Go programming language can be used within an Activity and there are no other limitations to Activity Definition logic:
 
