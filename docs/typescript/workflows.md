@@ -524,9 +524,9 @@ There is an unrelated [`sleep` utility function](https://typescript.temporal.io/
 The `condition` API has two forms, both of which accept a predicate function (**must be synchronous**) that returns a boolean:
 
 1. `condition(fn)` returns a promise that continually checks the given predicate function and resolves when it returns `true`.
-2. `condition(timeout?, fn)` returns a promise that resolves:
+2. `condition(fn, timeout)` returns a promise that resolves:
    - `true` when the given predicate function returns `true` or
-   - `false` if an (optional) `timeout` happens first.
+   - `false` if a `timeout` happens first.
 
 This API is comparable to `Workflow.await` in other SDKs and often used to wait for Signals, since Signals are the main way to asynchronously update internal Workflow state (looped Activities are another).
 
@@ -535,8 +535,8 @@ The timeout also uses the [ms](https://www.npmjs.com/package/ms) package to take
 ```ts
 // type signature
 export function condition(
+  fn: () => boolean,
   timeout: number | string,
-  fn: () => boolean
 ): Promise<boolean>;
 export function condition(fn: () => boolean): Promise<void>;
 
@@ -549,7 +549,7 @@ await condition(() => x > 3);
 // you only reach here when x > 3
 
 // await either x > 3 or 30 minute timeout, whichever comes first
-if (await condition('30 mins', () => x > 3)) {
+if (await condition(() => x > 3', 30 mins')) {
   // reach here if predicate true
 } else {
   // reach here if timed out

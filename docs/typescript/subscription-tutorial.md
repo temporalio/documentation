@@ -204,7 +204,7 @@ export async function SubscriptionWorkflow(
   let isCanceled = false;
   wf.setHandler(cancelSignal, () => void (isCanceled = true)); // new
   await acts.sendWelcomeEmail(email);
-  if (await wf.condition(trialPeriod, () => isCanceled)) {
+  if (await wf.condition(() => isCanceled, trialPeriod)) {
     // reach here if predicate function is true
     await acts.sendCancellationEmailDuringTrialPeriod(email);
   } else {
@@ -260,7 +260,7 @@ export async function SubscriptionWorkflow(customer: Customer) {
   let trialCanceled = false;
   wf.setHandler(cancelSignal, () => void (trialCanceled = true));
   await acts.sendWelcomeEmail(customer);
-  if (await wf.condition(trialPeriod, () => trialCanceled)) {
+  if (await wf.condition(() => trialCanceled, trialPeriod)) {
     await acts.sendCancellationEmailDuringTrialPeriod(customer);
   } else {
     await BillingCycle(customer);
@@ -276,7 +276,7 @@ async function BillingCycle(customer: Customer) {
     await acts.chargeCustomerForBillingPeriod(customer);
     // Wait 1 billing period to charge customer or if they cancel subscription
     // whichever comes first
-    if (await wf.condition(customer.billingPeriod, () => isCanceled)) {
+    if (await wf.condition(() => isCanceled, customer.billingPeriod)) {
       // If customer cancelled their subscription send notification email
       await acts.sendCancellationEmailDuringActiveSubscription(customer);
       break;
@@ -339,7 +339,7 @@ export async function SubscriptionWorkflow(customer: Customer) {
   let trialCanceled = false;
   wf.setHandler(cancelSignal, () => void (trialCanceled = true));
   await acts.sendWelcomeEmail(customer.value.email);
-  if (await wf.condition(trialPeriod, () => trialCanceled)) {
+  if (await wf.condition(() => trialCanceled, trialPeriod)) {
     await acts.sendCancellationEmailDuringTrialPeriod(customer.value.email);
   } else {
     await BillingCycle(customer);
@@ -355,7 +355,7 @@ async function BillingCycle(_customer: Customer) {
     await acts.chargeCustomerForBillingPeriod(customer);
     // Wait 1 billing period to charge customer or if they cancel subscription
     // whichever comes first
-    if (await wf.condition(customer, () => isCanceled)) {
+    if (await wf.condition(() => isCanceled, customer.billingPeriod)) {
       // If customer cancelled their subscription send notification email
       await acts.sendCancellationEmailDuringActiveSubscription(customer);
       break;
