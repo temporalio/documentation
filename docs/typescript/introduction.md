@@ -14,22 +14,23 @@ This SDK and associated documentation is in an Alpha stage and may change at any
 The TypeScript SDK is Temporal's newest client SDK for developing with Temporal.
 It is designed with TypeScript-first developer experience in mind, but should work equally well with JavaScript.
 
-:::tip Commencing Launch Sequence
+:::note Commencing Launch Sequence
 
-We are planning to move to Beta soon! Join:
+We are moving to Beta soon! Join:
 
 - [Our launch meetup](https://temporal.io/meetup) on Nov 23
 - [Our live guided workshop](https://lu.ma/temporalintro) on Nov 30
 
-And of course you can [join the #typescript-sdk channel Slack](https://temporal.io/slack) to ask any questions as you get set up!
+And of course you can [join the #typescript-sdk channel](https://temporal.io/slack) to ask any questions as you get set up.
+Design partners are already putting us in production and we are eager to hear your feedback.
 
 :::
 
 You can view:
 
-- Full API reference: https://typescript.temporal.io
-- Code Samples: https://github.com/temporalio/samples-typescript
-- SDK source: https://github.com/temporalio/sdk-typescript [![GitHub stars](https://img.shields.io/github/stars/temporalio/sdk-typescript)](https://github.com/temporalio/sdk-typescript/stargazers) (give us a star!)
+- [TypeScript Samples on GitHub](https://github.com/temporalio/samples-typescript) [![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-908a85?logo=gitpod)](https://gitpod.io/#https://github.com/temporalio/samples-typescript/)
+- [Searchable Full API Reference](https://typescript.temporal.io)
+- [TS SDK source on GitHub](https://github.com/temporalio/sdk-typescript) [![GitHub stars](https://img.shields.io/github/stars/temporalio/sdk-typescript)](https://github.com/temporalio/sdk-typescript/stargazers) (give us a star!)
 
 ## Getting started
 
@@ -37,7 +38,27 @@ Choose your own adventure:
 
 <details>
 <summary>
-Run "Hello Temporal" locally (~5 minutes)
+Run "Hello Temporal" in the cloud (~2 minutes)
+</summary>
+
+[Open our Samples repo in Gitpod](https://gitpod.io/#https://github.com/temporalio/samples-typescript/) and login to try out our Hello World example on Gitpod with no need for local Docker setup.
+
+When you click on that link above, Gitpod will launch 4 terminals:
+
+- Pane 1: Temporal Cluster
+  - Left: [Temporal Server](https://github.com/temporalio/docker-compose) - always running
+  - Right: [Temporal Web](https://docs.temporal.io/docs/system-tools/web-ui) and [Temporal `tctl` CLI](https://docs.temporal.io/docs/system-tools/tctl)
+- Pane 2: Hello World
+  - Left: Temporal Worker (`/hello-world/src/worker.ts`) - always running
+  - Right: Temporal Client (`/hello-world/src/execute-workflow.ts`)
+
+Once you have it up and running, you can use our [Hello World Walkthrough](/docs/typescript/hello-world) tutorial to orient you to the sample file structure.
+
+</details>
+
+<details>
+<summary>
+Run "Hello Temporal" locally (~10 minutes)
 </summary>
 
 :::note Prerequisites
@@ -71,7 +92,7 @@ nvm use 16
 </details>
 <details>
 <summary>
-<strong>node-gyp</strong>: `npm install -g node-gyp`
+<strong>node-gyp</strong>: `npm install -g node-gyp` (for now)
 </summary>
 
 Install node-gyp:
@@ -82,7 +103,7 @@ npm install -g node-gyp
 
 You may have to install some system dependencies first as documented [here](https://github.com/nodejs/node-gyp#installation).
 
-_`node-gyp` is a requirement of [`isolated-vm`](https://github.com/laverdet/isolated-vm) the V8 Isolate library which powers this SDK's [deterministic runtime](/docs/typescript/determinism)_.
+_`node-gyp` is a requirement of [`isolated-vm`](https://github.com/laverdet/isolated-vm) the V8 Isolate library which powers this SDK's [deterministic runtime](/docs/typescript/determinism). **We plan to remove this requirement soon.**_
 
 </details>
 <details>

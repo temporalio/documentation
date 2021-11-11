@@ -321,7 +321,7 @@ module.exports = {
             {
               type: "link",
               label: "Code Samples",
-              href: "https://github.com/temporalio/samples-typescript",
+              href: "https://github.com/temporalio/samples-typescript#samples",
             },
           ],
         },
