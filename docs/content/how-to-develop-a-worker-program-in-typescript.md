@@ -41,5 +41,5 @@ This is a selected subset of options you are likely to use. Even more advanced o
 | ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `nodeModulesPaths` | Array of paths of Workflow dependencies to pass to Webpack. Defaults to the first encountered `node_modules` directory when scanning the filesystem starting with `workflowsPath`. |
 | `dataConverter`    | placeholder for future DataConverter feature (pending feature)                                                                                                                     |
-| `dependencies`     | Allows injection of external dependencies (Advanced feature: see [External Dependencies](/docs/typescript/external-dependencies))                                                  |
+| `sinks`     | Allows injection of Workflow Sinks (Advanced feature: see [Logging docs](/docs/typescript/logging))                                                  |
 | `interceptors`     | A mapping of interceptor type to a list of factories or module paths (Advanced feature: see [Interceptors](/docs/typescript/interceptors))                                         |

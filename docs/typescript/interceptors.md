@@ -94,7 +94,8 @@ export class DumbWorkflowAuthInterceptor
 }
 ```
 
-To properly do authorization from Workflow code, the Workflow would need to access encryption keys and possibly authenticate against an external user database, which requires the Workflow to break isolation using [external dependencies](/docs/typescript/external-dependencies).
+To properly do authorization from Workflow code, the Workflow would need to access encryption keys and possibly authenticate against an external user database, which requires the Workflow to break isolation.
+Please contact us if you need to discuss this further.
 
 ## Interceptor registration
 
