@@ -14,4 +14,3 @@ import * as TctlWorkflowShow from './workflow/show.md'
 The `tctl workflow` commands operate <preview page={WhatIsAWorkflowExecution}>Workflow Executions</preview>.
 
 - <preview page={TctlWorkflowShow}>show</preview>
-
