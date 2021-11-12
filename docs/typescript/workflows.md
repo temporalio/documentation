@@ -370,7 +370,7 @@ let state = await handle.query<number, [string]>('print', 'Count: ');
   However Temporal has no way to surface any error to the external invocation.
   Signals are always asynchronous, in other words, **a Signal always succeeds**.
   Long term, the solution to this is "Synchronous Update" and we plan to add it in future.
-  
+
 For now [the best workaround](https://community.temporal.io/t/signalling-system-human-driven-workflows/160/2) is to use a Query to return Workflow state after signaling.
 Temporal guarantees read-after-write consistency of Signals-followed-by-Queries.
 
