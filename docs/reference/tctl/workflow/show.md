@@ -48,7 +48,7 @@ The `tctl workflow show` command shows History for the specified <preview page={
 
 **Description** Print raw timestamp.
 
-| --output\_filename \<value\>, --of \<value\> | Serialize History event to a file. |
+| --output_filename \<value\>, --of \<value\> | Serialize History event to a file. |
 | --print*full, --pf | Print full event details. |
 | --print_event_version, --pev | Print event version. |
 | --event_id \<value\>, --eid \<value\> | Print details of specified event (default: 0). |
