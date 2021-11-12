@@ -1,5 +1,5 @@
 ---
-id: tctl-workflow-show
+id: show
 title: tctl workflow show
 description: How to show Workflow History using tctl.
 tags:
@@ -14,17 +14,15 @@ import * as WhatIsARunId from '../../../content/what-is-a-run-id.md'
 
 The `tctl workflow show` command shows History for the specified <preview page={WhatIsAWorkflowExecution}>Workflow Execution</preview>.
 
-## Syntax
+**Syntax** `tctl workflow show <command options> <arguments...>`
 
-`tctl workflow show <command options> <arguments...>`
-
-## Command options
+**Command options**
 
 ### `--workflow_id <value>`
 
-**Aliases** `--wid <value>`, `-w <value>`
+Specify the <preview page={WhatIsAWorkflowId}>Workflow Id</preview>.
 
-**Description** Specify the <preview page={WhatIsAWorkflowId}>Workflow Id</preview>.
+**Aliases** `--wid <value>`, `-w <value>`
 
 <!--
 **Example** `tctl workflow show --workflow_id 3ea6b242-b23c-4279-bb13-f215661b4717`
@@ -32,21 +30,21 @@ The `tctl workflow show` command shows History for the specified <preview page={
 
 ### `--run_id <value>`
 
-**Aliases** `--rid <value>`, `-r <value>`
+Specify the <preview page={WhatIsARunId}>Run Id</preview>.
 
-**Description** Specify the <preview page={WhatIsARunId}>Run Id</preview>.
+**Aliases** `--rid <value>`, `-r <value>`
 
 ### `--print_datetime`
 
-**Alias** `--pdt`
+Print timestamp.
 
-**Description** Print timestamp.
+**Alias** `--pdt`
 
 ### `--print_raw_time`
 
-**Alias** `--prt`
+Print raw timestamp.
 
-**Description** Print raw timestamp.
+**Alias** `--prt`
 
 <!-- prettier-ignore -->
 | --output\_filename \<value\>, --of \<value\> | Serialize History event to specified file. |

@@ -1,5 +1,5 @@
 ---
-id: tctl-workflow
+id: workflow
 title: tctl workflow
 description: How to operate Workflow Executions using tctl.
 tags:
