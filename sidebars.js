@@ -297,7 +297,7 @@ module.exports = {
             {
               type: "link",
               label: "Code Samples",
-              href: "https://github.com/temporalio/samples-typescript",
+              href: "https://github.com/temporalio/samples-typescript#samples",
             },
           ],
         },
@@ -330,7 +330,6 @@ module.exports = {
           items: [
             "typescript/cancellation-scopes",
             "typescript/determinism",
-            "typescript/external-dependencies",
             "typescript/handling-failure",
             "typescript/search-attributes",
             "typescript/interceptors",

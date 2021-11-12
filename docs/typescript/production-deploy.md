@@ -2,6 +2,7 @@
 id: production-deploy
 title: Production Deploy Checklist for TypeScript SDK
 sidebar_label: Deploy Checklist
+description: Here is a non-exhaustive list of things we recommend doing before you deploy your Temporal app to production. Note that this is separate from maintaining a production self-hosted Temporal Cluster, which has its own checklist.
 ---
 
 Here is a non-exhaustive list of things we recommend doing before you deploy your Temporal app to production.
@@ -11,11 +12,26 @@ Note that this is separate from maintaining a production self-hosted Temporal **
 ## Configure Connections and Namespaces
 
 Temporal Clients and Workers connect with Temporal Clusters via gRPC.
-While you were developing locally, all these connections were defaulted to localhost.
-In production, you will need to configure address, namespace, and encryption settings.
 
-Please read more in the [Security docs](/docs/typescript/security).
-You should be able to test these new connections locally before proceeding on to the rest of the instructions here.
+- While you were developing locally, all these connections were set to [their default gRPC ports](http://localhost:3000/docs/content/what-is-a-temporal-cluster) on localhost.
+- In production, you will need to configure address, namespace, and encryption settings.
+
+```ts
+export function getEnv(): Env {
+  return {
+    address: 'foo.bar.tmprl.cloud', // NOT web.foo.bar.tmprl.cloud
+    namespace: 'foo.bar', // as assigned
+    clientCertPath: 'foobar.pem', // in project root
+    clientKeyPath: 'foobar.key', // in project root
+    taskQueue: process.env.TEMPORAL_TASK_QUEUE || 'hello-world-mtls', // just to ensure task queue is same on client and worker, totally optional
+    // // not usually needed
+    // serverNameOverride: process.env.TEMPORAL_SERVER_NAME_OVERRIDE,
+    // serverRootCACertificatePath: process.env.TEMPORAL_SERVER_ROOT_CA_CERT_PATH,
+  };
+}
+```
+
+Please read more in the [Security docs](/docs/typescript/security#connecting-to-temporal-cloud-with-mtls).
 
 ## Logging and Metrics
 
@@ -74,7 +90,7 @@ We endeavor to give you good defaults so you don't have to worry about them, but
 - [Worker Options](https://typescript.temporal.io/api/interfaces/worker.workeroptions/#maxcachedworkflows), for example:
   - `maxCachedWorkflows` to limit Workflow cache size and trade memory for CPU (biggest lever for Worker performance)
   - `maxConcurrentActivityTaskExecutions` and other options for tuning concurrency
-  - `stickyQueueScheduleToStartTimeout` to determine how quickly Temporal stops trying to send work to Workers that are no longer present, via [Sticky Queues](/docs/concepts/task-queues/#sticky-queues)
-- [Activity Timeouts and Retries](https://docs.temporal.io/docs/typescript/activities#activity-timeouts) as you gain an understanding of Temporal and the services you rely on, you will likely want to adjust the timeouts and retry policy to reflect your desired behavior.
+  - `stickyQueueScheduleToStartTimeout` to determine how quickly Temporal stops trying to send work to Workers that are no longer present, via [Sticky Queues](/docs/concept/task-queues#sticky-queues)
+- [Activity Timeouts and Retries](/docs/typescript/activities#activity-timeouts) as you gain an understanding of Temporal and the services you rely on, you will likely want to adjust the timeouts and retry policy to reflect your desired behavior.
   - Note that there are separate [timeouts and retry policy](https://typescript.temporal.io/api/interfaces/client.workflowoptions/#workflowruntimeout) at the Workflow level, but we do not encourage their usage unless you know what you are doing.
 - _to be completed as we get more user feedback_

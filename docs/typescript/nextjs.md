@@ -1,7 +1,8 @@
 ---
 id: nextjs-tutorial
-title: Integrating Temporal into a Next.js Application
+title: Integrating Temporal into an Existing Next.js Application
 sidebar_label: Next.js Tutorial
+description: In this tutorial, we'll talk about how Temporal integrates into an existing Next.js application using Next.js API routes. This gives you the ability to write full-stack, long running applications end to end in TypeScript.
 ---
 
 :::caution
@@ -142,7 +143,7 @@ export async function OneClickBuy(id: string): Promise<string> {
 }
 ```
 
-Workflow code is bundled and run inside a [deterministic v8 isolate](https://docs.temporal.io/docs/typescript/determinism) so we can persist and replay every state change.
+Workflow code is bundled and run inside a [deterministic v8 isolate](/docs/typescript/determinism) so we can persist and replay every state change.
 This is why Workflow code must be separate from Activity code, and why we have to `proxyActivities` instead of directly importing them.
 Workflows also have access to a special set of [Workflow APIs](/docs/typescript/workflows#workflow-apis) which we recommend exploring next.
 
@@ -276,7 +277,7 @@ const connection = new Connection({
 });
 ```
 
-[See the mTLS tutorial](https://docs.temporal.io/docs/typescript/security#mtls-tutorial) for full details, or get in touch with us on Slack if you have reached this stage.
+[See the mTLS tutorial](/docs/typescript/security#mtls-tutorial) for full details, or get in touch with us on Slack if you have reached this stage.
 
 ## Production Concerns
 

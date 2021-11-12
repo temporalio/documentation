@@ -1,6 +1,7 @@
 ---
 id: package-initializer
 sidebar_label: Package Initializer
+description: temporalio/create is an optional tool to set up a new Temporal project starting from our samples repo. `npx @temporalio/create@latest ./example`
 ---
 
 > **@temporalio/create** [![NPM](https://img.shields.io/npm/v/@temporalio/create)](https://www.npmjs.com/package/@temporalio/create) | [GitHub](https://github.com/temporalio/sdk-typescript/tree/main/packages/create-project)

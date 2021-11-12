@@ -3,7 +3,6 @@ id: workflows
 title: Workflows in Go
 sidebar_label: Workflows
 description: In the Temporal Go SDK programming model, a Workflow is an exportable function that adheres to a set of rules.
-image: /img/workflow.png
 ---
 
 ### External Workflows

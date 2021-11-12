@@ -2,16 +2,17 @@
 id: hello-world
 title: Hello World Walkthrough in TypeScript
 sidebar_label: Hello World
+description: In this tutorial, we'll go over the different components that make up the Temporal Hello World code sample.
 ---
 
 In this tutorial, we'll go over the different components that make up a Temporal project.
-All of the code on this page is included in our [package initializer](/docs/typescript/package-initializer) skeleton, which we set up in our [Introduction](/docs/typescript/introduction/).
+All of the code on this page is included in our Hello World sample, which we set up in our [Getting Started](/docs/typescript/introduction/#getting-started) (we recommend [following along on GitPod](https://gitpod.io/#https://github.com/temporalio/samples-typescript/)).
 
 The SDK steers developers to write their Workflows and Activities in TypeScript but vanilla JS is also supported.
 
-### Activities
+### Activity
 
-[API reference](https://typescript.temporal.io/api/namespaces/activity)
+[@temporalio/activity API reference](https://typescript.temporal.io/api/namespaces/activity)
 
 Activities are called from Workflows in order to run non-deterministic code.
 
@@ -23,9 +24,9 @@ Activities run in the Node.js execution environment, meaning you can easily port
 <!--SNIPSTART typescript-hello-activity {"enable_source_link": false}-->
 <!--SNIPEND-->
 
-### Workflows
+### Workflow
 
-[API reference](https://typescript.temporal.io/api/namespaces/workflow)
+[@temporalio/workflow API reference](https://typescript.temporal.io/api/namespaces/workflow)
 
 In the TypeScript SDK, each Workflow execution is run in a separate V8 isolate context in order to provide a [deterministic runtime](/docs/typescript/determinism).
 
@@ -40,7 +41,7 @@ The snippet below uses `proxyActivities` to create a function that, when called,
 
 ### Worker
 
-[API reference](https://typescript.temporal.io/api/namespaces/worker)
+[@temporalio/worker API reference](https://typescript.temporal.io/api/namespaces/worker)
 
 The Worker hosts Workflows and Activities, connects to Temporal Server, and continually polls a Task Queue for Commands coming from Clients (see below).
 See the list of [WorkerOptions](https://typescript.temporal.io/api/interfaces/worker.workeroptions) for customizing Worker creation.
@@ -52,7 +53,7 @@ See the list of [WorkerOptions](https://typescript.temporal.io/api/interfaces/wo
 
 ### Client
 
-[API reference](https://typescript.temporal.io/api/namespaces/client)
+[@temporalio/client API reference](https://typescript.temporal.io/api/namespaces/client)
 
 The [`WorkflowClient`](https://typescript.temporal.io/api/classes/client.workflowclient) class is used to interact with existing Workflows or to start new ones.
 

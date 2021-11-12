@@ -2,6 +2,7 @@
 id: testing
 title: Testing TypeScript Workflows
 sidebar_label: Testing
+description: The TypeScript SDK does not yet have a test suite that allows time skipping.
 ---
 
 import CustomWarning from "../components/CustomWarning.js"

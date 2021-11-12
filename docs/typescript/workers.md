@@ -2,13 +2,14 @@
 id: workers
 title: Workers and Task Queues in TypeScript
 sidebar_label: Workers
+description: A Worker is a process that connects to the Temporal Server, polls Task Queues for Commands sent from Clients, and executes Workflows and Activities in response to those Commands.
 ---
 
 > **@temporalio/worker** [![NPM](https://img.shields.io/npm/v/@temporalio/worker)](https://www.npmjs.com/package/@temporalio/worker) [API reference](https://typescript.temporal.io/api/namespaces/worker) | [GitHub](https://github.com/temporalio/sdk-typescript/tree/main/packages/worker)
 
 ## What is a Worker?
 
-A Worker is a process that connects to the Temporal Server, polls **Task Queues** for Commands sent from Clients, and executes [Workflows](/docs/typescript/workflows) and [Activities](/docs/typescript/activities) in response to those Commands.
+A Worker is a process that connects to the Temporal Server, polls **Task Queues** for Tasks sent from Clients, and executes [Workflows](/docs/typescript/workflows) and [Activities](/docs/typescript/activities) in response.
 
 - **Workers host Workflows and Activities.**
   - TypeScript SDK Workers bundle Workflows based on `workflowsPath` and their dependencies from `nodeModulesPaths` with [Webpack](https://webpack.js.org/) and run them inside v8 isolates.
@@ -16,11 +17,10 @@ A Worker is a process that connects to the Temporal Server, polls **Task Queues*
 - **Workers are extremely scalable.**
   - Workers connect to the Temporal Server, poll their configured **Task Queue** for Tasks, execute chunks of code in response to those Tasks, and then communicate the results back.
   - Workers are distinct from Clients and scaled independently of Temporal Server, which has its own internal services to scale.
-  - Workers are stateless, and can be brought up and down with no data loss impact to your overall system.
+  - Workers are stateless, and can be brought up and down at any time with no Temporal data loss impact.
     To migrate to new versions of your Workflows and Activities, you restart your Workers with the new versions (and optionally use [the `patch` API to migrate](/docs/typescript/patching) still-running workflows of the older version).
-- **Workers are run on user-controlled hosts.**
-  - This is an important security feature which means Temporal Server (or Temporal Cloud) never executes your Workflow or Activity code, and that Workers can have different hardware (e.g. custom GPUs for Machine Learning) than the rest of the system.
-  - You can use the `@temporalio/worker` package's [`Worker`](https://typescript.temporal.io/api/classes/worker.Worker) class to create and run as many Workers as your use case demands, across any number of hosts.
+  - Use the `@temporalio/worker` package's [`Worker`](https://typescript.temporal.io/api/classes/worker.Worker) class to create and run as many Workers as your use case demands, across any number of hosts.
+- **Workers are run on user-controlled hosts.** This is an important security feature which means Temporal Server (or Temporal Cloud) never executes your Workflow or Activity code, and that Workers can have different hardware (e.g. custom GPUs for Machine Learning) than the rest of the system.
 
 <details>
 <summary>
