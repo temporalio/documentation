@@ -16,8 +16,7 @@ The `tctl workflow show` command shows History for the specified <preview page={
 
 **Syntax** `tctl workflow show <command options> <arguments...>`
 
-**Command options**  
-### workflow_id
+### --workflow_id
 
 Specify the <preview page={WhatIsAWorkflowId}>Workflow Id</preview>.
 
@@ -25,9 +24,13 @@ Specify the <preview page={WhatIsAWorkflowId}>Workflow Id</preview>.
 
 **Aliases** `--wid <value>`, `-w <value>`
 
-**Example** `tctl workflow show --workflow_id 3ea6b242-b23c-4279-bb13-f215661b4717`
+**Example**
 
-### run_id
+```
+tctl workflow show --workflow_id 3ea6b242-b23c-4279-bb13-f215661b4717
+```
+
+### --run_id
 
 Specify the <preview page={WhatIsARunId}>Run Id</preview>.
 
@@ -35,7 +38,7 @@ Specify the <preview page={WhatIsARunId}>Run Id</preview>.
 
 **Aliases** `--rid <value>`, `-r <value>`
 
-### print_datetime
+### --print_datetime
 
 Print timestamp.
 
@@ -43,7 +46,7 @@ Print timestamp.
 
 **Alias** `--pdt`
 
-### print_raw_time
+### --print_raw_time
 
 Print raw timestamp.
 
@@ -51,10 +54,48 @@ Print raw timestamp.
 
 **Alias** `--prt`
 
-<!-- prettier-ignore -->
-| --output\_filename \<value\>, --of \<value\> | Serialize History event to specified file. |
-| --print\_full, --pf | Print full event details. |
-| --print\_event\_version, --pev | Print event version. |
-| --event\_id \<value\>, --eid \<value\> | Print details of specified event (default: 0). |
-| --max\_field\_length \<value\>, --maxl \<value\> | Maximum length for each attribute field (default: 500). |
-| --reset\_points\_only | Show only events that are eligible for reset. |
+### --output_filename
+
+Serialize the event to the specified file.
+
+**Syntax** `--output_filename <value>`
+
+**Alias** `--of`
+
+### --print_full
+
+Print full event details.
+
+**Syntax** `--print_full`
+
+**Alias** `--pf`
+
+### --print_event_version
+
+Print the event version.
+
+**Syntax** `--print_event_version`
+
+**Alias** `--pev`
+
+### --event_id
+
+Print details of the specified event (default: 0).
+
+**Syntax** `--event_id <value>`
+
+**Alias** `--eid`
+
+### --max_field_length
+
+Specify the maximum length for each attribute field (default: 500).
+
+**Syntax** `--max_field_length <value>`
+
+**Alias** `--maxl`
+
+### --reset_points_only
+
+Show only events that are eligible for reset.
+
+**Syntax** `--reset_points_only`
