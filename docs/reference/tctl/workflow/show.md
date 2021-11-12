@@ -16,33 +16,38 @@ The `tctl workflow show` command shows History for the specified <preview page={
 
 **Syntax** `tctl workflow show <command options> <arguments...>`
 
-**Command options**
-
-### `--workflow_id <value>`
+**Command options**  
+### workflow_id
 
 Specify the <preview page={WhatIsAWorkflowId}>Workflow Id</preview>.
 
+**Syntax** `--workflow_id <value>`
+
 **Aliases** `--wid <value>`, `-w <value>`
 
-<!--
 **Example** `tctl workflow show --workflow_id 3ea6b242-b23c-4279-bb13-f215661b4717`
--->
 
-### `--run_id <value>`
+### run_id
 
 Specify the <preview page={WhatIsARunId}>Run Id</preview>.
 
+**Syntax** `--run_id <value>`
+
 **Aliases** `--rid <value>`, `-r <value>`
 
-### `--print_datetime`
+### print_datetime
 
 Print timestamp.
 
+**Syntax** `--print_datetime`
+
 **Alias** `--pdt`
 
-### `--print_raw_time`
+### print_raw_time
 
 Print raw timestamp.
+
+**Syntax** `--print_raw_time`
 
 **Alias** `--prt`
 
