@@ -48,9 +48,9 @@ The `tctl workflow show` command shows History for the specified <preview page={
 
 **Description** Print raw timestamp.
 
-| --output*filename \_value*, --of _value_ | Serialize History event to a file. |
+| --output\_filename \<value\>, --of \<value\> | Serialize History event to a file. |
 | --print*full, --pf | Print full event details. |
 | --print_event_version, --pev | Print event version. |
-| --event_id \_value*, --eid _value_ | Print details of specified event (default: 0). |
-| --max*field_length \_value*, --maxl _value_ | Maximum length for each attribute field (default: 500). |
+| --event_id \<value\>, --eid \<value\> | Print details of specified event (default: 0). |
+| --max*field_length \<value\>, --maxl \<value\> | Maximum length for each attribute field (default: 500). |
 | --reset_points_only | Show only events that are eligible for reset. |

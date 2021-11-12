@@ -21,9 +21,9 @@ This command is a shortcut of `show -w <wid> -r <rid>`.
 | --- | --- |
 | --print\_datetime, --pdt | Print timestamp. |
 | --print\_raw\_time, --prt | Print raw timestamp. |
-| --output\_filename <value>, --of <value> | Serialize History event to a file. |
+| --output\_filename \<value\>, --of \<value\> | Serialize History event to a file. |
 | --print\_full, --pf | Print full event details. |
 | --print\_event\_version, --pev | Print event version. |
-| --event\_id <value>, --eid <value> | Print details of specified event (default: 0). |
-| --max\_field\_length <value>, --maxl <value> | Maximum length for each attribute field (default: 500). |
+| --event\_id \<value\>, --eid \<value\> | Print details of specified event (default: 0). |
+| --max\_field\_length \<value\>, --maxl \<value\> | Maximum length for each attribute field (default: 500). |
 | --reset\_points\_only | Show only events that are eligible for reset. |
