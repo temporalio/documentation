@@ -2,6 +2,8 @@
 id: what-is-a-task-queue
 title: What is a Task Queue?
 description: todo
+tags:
+  - explanation
 ---
 
 A queue that a [Worker](#worker) subscribes to and polls to pick up tasks to execute.

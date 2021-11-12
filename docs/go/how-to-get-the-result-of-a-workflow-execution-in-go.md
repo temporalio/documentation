@@ -1,6 +1,7 @@
 ---
 id: how-to-get-the-result-of-a-workflow-execution-in-go
 title: How to get the result of a Workflow Execution in Go
+sidebar_label: Workflow Execution result
 description: Use the Future returned by `ExecuteWorkflow` API call to retrieve the result.
 tags:
   - developer-guide

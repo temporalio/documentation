@@ -16,7 +16,7 @@ The SDK contains the following tools:
 - APIs to use within your Workflows
 - APIs to create and manage Worker Entities and Worker Processes
 
-## How to use
+### Get the SDK
 
 Add the [Temporal Go SDK](https://github.com/temporalio/sdk-go) to your project:
 

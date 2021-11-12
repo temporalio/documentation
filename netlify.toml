@@ -169,8 +169,8 @@
   to = "/docs/go/workflows"
 
 [[redirects]]
-  from = "/docs/go-workers"
-  to = "/docs/go/workers"
+  from = "/docs/go/workers"
+  to = "/docs/go/how-to-develop-a-worker-program-in-go"
 
 [[redirects]]
   from = "/docs/go-execute-activity"

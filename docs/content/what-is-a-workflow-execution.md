@@ -6,7 +6,10 @@ tags:
 ---
 
 import CenteredImage from "../components/CenteredImage.js"
-import RelatedReadList from '../components/RelatedReadList.js'
+import {RelatedReadContainer, RelatedReadItem} from '../components/RelatedReadList.js'
+
+<!-- prettier-ignore -->
+import * as HowToSpawnAWorkflowExecutionInGo from '../go/how-to-spawn-a-workflow-execution-in-go.md'
 
 A Workflow Execution is a Reentrant Process; that is, a resumable, recoverable, and reactive process:
 
@@ -37,8 +40,6 @@ A Workflow Execution is uniquely identified by its [Namespace](/docs/server/name
 
 The Workflow Id can be used to create a 1:1 mapping between a Workflow Execution and some other resource, such as a customer Id, order Id, or host Id.
 
-<RelatedReadList
-readlist={[
-["How to spawn a Workflow Execution in Go", "/docs/content/how-to-spawn-a-workflow-execution-in-go", "developer guide"],  
-]}
-/>
+<RelatedReadContainer>
+  <RelatedReadItem page={HowToSpawnAWorkflowExecutionInGo}/>
+</RelatedReadContainer>

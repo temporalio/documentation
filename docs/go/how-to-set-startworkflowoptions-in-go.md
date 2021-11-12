@@ -8,31 +8,42 @@ tags:
   - options
 ---
 
-import RelatedReadList, {RelatedReadContainer, RelatedReadItem} from '../components/RelatedReadList.js'
+import {RelatedReadContainer, RelatedReadItem} from '../components/RelatedReadList.js'
 
 <!-- prettier-ignore -->
-import * as WhatIsASearchAttribute from '../content/what-is-a-search-attribute.md'
 import * as WhatIsAWorkflowId from '../content/what-is-a-workflow-id.md'
+import * as WhatIsATaskQueue from '../content/what-is-a-task-queue.md'
+import * as WhatIsAWorkflowExecutionTimeout from '../content/what-is-a-workflow-execution-timeout.md'
+import * as WhatIsAWorkflowRunTimeout from '../content/what-is-a-workflow-run-timeout.md'
+import * as WhatIsAWorkflowTaskTimeout from '../content/what-is-a-workflow-task-timeout.md'
+import * as WhatIsAWorkflowIdReusePolicy from '../content/what-is-a-workflow-id-reuse-policy.md'
+import * as WhatIsARetryPolicy from '../content/what-is-a-retry-policy.md'
+import * as WhatIsATemporalCronJob from '../content/what-is-a-temporal-cron-job.md'
+import * as WhatIsAMemo from '../content/what-is-a-memo.md'
+import * as WhatIsASearchAttribute from '../content/what-is-a-search-attribute.md'
 
 Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, and pass the instance to the `ExecuteWorkflow` call.
 
 The following fields are available:
 
-| Field                                                                            | Required | Type                                                                                            | Example                                         |
-| -------------------------------------------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------- |
-| [`ID`](/docs/content/what-is-a-workflow-id)                                      | No       | `string`                                                                                        | [👀](#id)                                       |
-| [`TaskQueue`](/docs/content/what-is-a-task-queue)                                | **Yes**  | `string`                                                                                        | [👀](#taskqueue)                                |
-| [`WorkflowExecutionTimeout`](/docs/content/what-is-a-workflow-execution-timeout) | No       | `time.Duration`                                                                                 | [👀](#workflowexecutiontimeout)                 |
-| [`WorkflowRunTimeout`](/docs/content/what-is-a-workflow-run-timeout)             | No       | `time.Duration`                                                                                 | [👀](#workflowruntimeout)                       |
-| [`WorkflowTaskTimeout`](/docs/content/what-is-a-workflow-task-timeout)           | No       | `time.Duration`                                                                                 | [👀](#workflowtasktimeout)                      |
-| [`WorkflowIDReusePolicy`](/docs/content/what-is-a-workflow-id-reuse-policy)      | No       | [`WorkflowIdReusePolicy`](https://pkg.go.dev/go.temporal.io/api/enums/v1#WorkflowIdReusePolicy) | [👀](#workflowidreusepolicy)                    |
-| `WorkflowExecutionErrorWhenAlreadyStarted`                                       | No       | `bool`                                                                                          | [👀](#workflowexecutionerrorwhenalreadystarted) |
-| [`RetryPolicy`](/docs/content/what-is-a-retry-policy)                            | No       | [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy)                     | [👀](#retrypolicy)                              |
-| [`CronSchedule`](/docs/content/what-is-a-temporal-cron-job)                      | No       | `string`                                                                                        | [👀](#cronschedule)                             |
-| [`Memo`](/docs/content/what-is-a-memo)                                           | No       | `map[string]interface{}`                                                                        | [👀](#memo)                                     |
-| [SearchAttributes](/docs/content/what-is-a-search-attribute)                     | No       | `map[string]interface{}`                                                                        | [👀](#searchattributes)                         |
+| Field                                                                                   | Required | Type                                                                                            |
+| --------------------------------------------------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------- |
+| [`ID`](#id)                                                                             | No       | `string`                                                                                        |
+| [`TaskQueue`](#taskqueue)                                                               | **Yes**  | `string`                                                                                        |
+| [`WorkflowExecutionTimeout`](#workflowexecutiontimeout)                                 | No       | `time.Duration`                                                                                 |
+| [`WorkflowRunTimeout`](#workflowruntimeout)                                             | No       | `time.Duration`                                                                                 |
+| [`WorkflowTaskTimeout`](#workflowtasktimeout)                                           | No       | `time.Duration`                                                                                 |
+| [`WorkflowIDReusePolicy`](#workflowidreusepolicy)                                       | No       | [`WorkflowIdReusePolicy`](https://pkg.go.dev/go.temporal.io/api/enums/v1#WorkflowIdReusePolicy) |
+| [`WorkflowExecutionErrorWhenAlreadyStarted`](#workflowexecutionerrorwhenalreadystarted) | No       | `bool`                                                                                          |
+| [`RetryPolicy`](#retrypolicy)                                                           | No       | [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy)                     |
+| [`CronSchedule`](#cronschedule)                                                         | No       | `string`                                                                                        |
+| [`Memo`](#memo)                                                                         | No       | `map[string]interface{}`                                                                        |
+| [`SearchAttributes`](#searchattributes)                                                 | No       | `map[string]interface{}`                                                                        |
 
 ### `ID`
+
+- Type: `string`
+- Default: System generated UUID
 
 ```go
 workflowOptions := client.StartWorkflowOptions{
@@ -51,6 +62,9 @@ if err != nil {
 
 ### `TaskQueue`
 
+- Type: `string`
+- Default: None, this is a required field to be set by the developer
+
 ```go
 workflowOptions := client.StartWorkflowOptions{
   TaskQueue: "your-task-queue",
@@ -61,17 +75,18 @@ if err != nil {
 }
 ```
 
-<RelatedReadList
-readlist={[
-["What is a Task Queue?","/docs/content/what-is-a-task-queue","explanation"],
-]}
-/>
+<RelatedReadContainer>
+  <RelatedReadItem page={WhatIsATaskQueue} />
+</RelatedReadContainer>
 
 ### `WorkflowExecutionTimeout`
 
+- Type: `time.Duration`
+- Default: 10 years
+
 ```go
 workflowOptions := client.StartWorkflowOptions{
-  WorkflowExecutionTimeout: time.Hour * 10,
+  WorkflowExecutionTimeout: time.Hours * 24 * 365 * 10,
   // ...
 }
 workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
@@ -80,17 +95,18 @@ if err != nil {
 }
 ```
 
-<RelatedReadList
-readlist={[
-["What is a Workflow Execution Timeout?","/docs/content/what-is-a-workflow-execution-timeout","explanation"],
-]}
-/>
+<RelatedReadContainer>
+  <RelatedReadItem page={WhatIsAWorkflowExecutionTimeout} />
+</RelatedReadContainer>
 
 ### `WorkflowRunTimeout`
 
+- Type: `time.Duration`
+- Default: Same as [`WorkflowExecutionTimeout`](#workflowexecutiontimeout)
+
 ```go
 workflowOptions := client.StartWorkflowOptions{
-  WorkflowRunTimeout: time.Hour * 10,
+  WorkflowRunTimeout: time.Hours * 24 * 365 * 10,
   // ...
 }
 workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
@@ -99,13 +115,14 @@ if err != nil {
 }
 ```
 
-<RelatedReadList
-readlist={[
-["What is a Workflow Run Timeout?","/docs/content/what-is-a-workflow-run-timeout","explanation"],
-]}
-/>
+<RelatedReadContainer>
+  <RelatedReadItem page={WhatIsAWorkflowRunTimeout} />
+</RelatedReadContainer>
 
 ### `WorkflowTaskTimeout`
+
+- Type: `time.Duration`
+- Default: `time.Seconds * 10`
 
 ```go
 workflowOptions := client.StartWorkflowOptions{
@@ -118,13 +135,14 @@ if err != nil {
 }
 ```
 
-<RelatedReadList
-readlist={[
-["What is a Workflow Task Timeout?","/docs/content/what-is-a-workflow-task-timeout","explanation"],
-]}
-/>
+<RelatedReadContainer>
+  <RelatedReadItem page={WhatIsAWorkflowTaskTimeout} />
+</RelatedReadContainer>
 
 ### `WorkflowIDReusePolicy`
+
+- Type: [`WorkflowIdReusePolicy`](https://pkg.go.dev/go.temporal.io/api/enums/v1#WorkflowIdReusePolicy)
+- Default: `enums.WORKFLOW_ID_REUSE_POLICY_ALLOW_DUPLICATE`
 
 Set a value from the `go.temporal.io/api/enums/v1` package.
 
@@ -139,13 +157,14 @@ if err != nil {
 }
 ```
 
-<RelatedReadList
-readlist={[
-["What is a Workflow Id Reuse Policy?","/docs/content/what-is-a-workflow-id-reuse-policy","explanation"],
-]}
-/>
+<RelatedReadContainer>
+  <RelatedReadItem page={WhatIsAWorkflowIdReusePolicy} />
+</RelatedReadContainer>
 
 ### `WorkflowExecutionErrorWhenAlreadyStarted`
+
+- Type: `bool`
+- Default: `false`
 
 ```go
 workflowOptions := client.StartWorkflowOptions{
@@ -161,6 +180,9 @@ if err != nil {
 ### `RetryPolicy`
 
 Create an instance of a [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy) from the `go.temporal.io/sdk/temporal` package and provide it as the value to the `RetryPolicy` field of the instance of `StartWorkflowOptions`.
+
+- Type: [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy)
+- Default: None
 
 ```go
 retrypolicy := &temporal.RetryPolicy{
@@ -178,13 +200,14 @@ if err != nil {
 }
 ```
 
-<RelatedReadList
-readlist={[
-["What is a Retry Policy?","/docs/content/what-is-a-retry-policy","explanation"],
-]}
-/>
+<RelatedReadContainer>
+  <RelatedReadItem page={WhatIsARetryPolicy} />
+</RelatedReadContainer>
 
 ### `CronSchedule`
+
+- Type: `string`
+- Default: None
 
 ```go
 workflowOptions := client.StartWorkflowOptions{
@@ -197,13 +220,14 @@ if err != nil {
 }
 ```
 
-<RelatedReadList
-readlist={[
-["What is a Temporal Cron Job?","/docs/content/what-is-a-temporal-cron-job","explanation"],
-]}
-/>
+<RelatedReadContainer>
+  <RelatedReadItem page={WhatIsATemporalCronJob} />
+</RelatedReadContainer>
 
 ### `Memo`
+
+- Type: `map[string]interface{}`
+- Default: Empty
 
 ```go
 workflowOptions := client.StartWorkflowOptions{
@@ -218,15 +242,15 @@ if err != nil {
 }
 ```
 
-<RelatedReadList
-readlist={[
-["What is a Memo?","/docs/content/what-is-a-memo","explanation"],
-]}
-/>
+<RelatedReadContainer>
+  <RelatedReadItem page={WhatIsAMemo} />
+</RelatedReadContainer>
 
 ### `SearchAttributes`
 
-Search Attribute types are defined in the Elasticsearch Index Schema.
+- Type: `map[string]interface{}`
+- Default: This depends on the Cluster. Search Attribute types are defined in the Elasticsearch Index Schema.
+
 These are the corresponding Search Attribute value types in Go:
 
 - Keyword = string

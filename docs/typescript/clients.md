@@ -5,8 +5,6 @@ sidebar_label: Clients
 description: Workflow Clients are embedded in your application code, and connect to Temporal Server via gRPC. They are the only way to schedule new Workflow Executions with Temporal Server.
 ---
 
-import RelatedReadList from '../components/RelatedReadList.js'
-
 > **@temporalio/client** [![NPM](https://img.shields.io/npm/v/@temporalio/client)](https://www.npmjs.com/package/@temporalio/client) [API reference](https://typescript.temporal.io/api/namespaces/client) | [GitHub](https://github.com/temporalio/sdk-typescript/tree/main/packages/client)
 
 **Workflow Clients are embedded in your application code, and connect to Temporal Server via gRPC**.

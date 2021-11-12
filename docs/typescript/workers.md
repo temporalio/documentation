@@ -192,4 +192,4 @@ Worker Code:
 <!--SNIPEND-->
 
 This pattern is [in use at Netflix](https://www.youtube.com/watch?v=LliBP7YMGyA&t=24s).
-Note that this is unrelated to [Sticky Queues](/docs/concept/task-queues#sticky-queues), which are an internal implementation detail.
+Note that this is unrelated to [Sticky Queues](/docs/concepts/task-queues/#sticky-queues), which are an internal implementation detail.
