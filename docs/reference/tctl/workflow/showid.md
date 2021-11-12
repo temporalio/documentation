@@ -1,9 +1,10 @@
 ---
 id: showid
-title: Temporal CLI - tctl workflow showid
-description: The `tctl workflow showid` command shows Workflow History for the specified Workflow Id and optional Run Id.
+title: tctl workflow showid
+description: How to show Workflow History for a specified Workflow Id and optional Run Id.
 tags:
   - reference
+  - tctl
 ---
 
 The `tctl workflow showid` command shows Workflow History for the specified [Workflow Id](/docs/content/what-is-a-workflow-id) and optional [Run Id](/docs/content/what-is-a-run-id).

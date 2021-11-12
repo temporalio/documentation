@@ -14,15 +14,15 @@ import * as WhatIsARunId from '../../../content/what-is-a-run-id.md'
 
 The `tctl workflow show` command shows History for the specified <preview page={WhatIsAWorkflowExecution}>Workflow Execution</preview>.
 
-**Syntax** `tctl workflow show <command options> <arguments...>`
+`tctl workflow show <command options> <arguments...>`
 
 ### --workflow_id
 
 Specify the <preview page={WhatIsAWorkflowId}>Workflow Id</preview>.
 
-**Syntax** `--workflow_id <value>`
+`--workflow_id <value>`
 
-**Aliases** `--wid <value>`, `-w <value>`
+Aliases `--wid <value>`, `-w <value>`
 
 **Example**
 
@@ -34,15 +34,15 @@ tctl workflow show --workflow_id 3ea6b242-b23c-4279-bb13-f215661b4717
 
 Specify the <preview page={WhatIsARunId}>Run Id</preview>.
 
-**Syntax** `--run_id <value>`
+`--run_id <value>`
 
-**Aliases** `--rid <value>`, `-r <value>`
+Aliases `--rid <value>`, `-r <value>`
 
 ### --print_datetime
 
 Print timestamp.
 
-**Syntax** `--print_datetime`
+`--print_datetime`
 
 **Alias** `--pdt`
 
@@ -50,7 +50,7 @@ Print timestamp.
 
 Print raw timestamp.
 
-**Syntax** `--print_raw_time`
+`--print_raw_time`
 
 **Alias** `--prt`
 
@@ -58,7 +58,7 @@ Print raw timestamp.
 
 Serialize the event to the specified file.
 
-**Syntax** `--output_filename <value>`
+`--output_filename <value>`
 
 **Alias** `--of`
 
@@ -66,7 +66,7 @@ Serialize the event to the specified file.
 
 Print full event details.
 
-**Syntax** `--print_full`
+`--print_full`
 
 **Alias** `--pf`
 
@@ -74,7 +74,7 @@ Print full event details.
 
 Print the event version.
 
-**Syntax** `--print_event_version`
+`--print_event_version`
 
 **Alias** `--pev`
 
@@ -82,7 +82,7 @@ Print the event version.
 
 Print details of the specified event (default: 0).
 
-**Syntax** `--event_id <value>`
+`--event_id <value>`
 
 **Alias** `--eid`
 
@@ -90,7 +90,7 @@ Print details of the specified event (default: 0).
 
 Specify the maximum length for each attribute field (default: 500).
 
-**Syntax** `--max_field_length <value>`
+`--max_field_length <value>`
 
 **Alias** `--maxl`
 
@@ -98,4 +98,4 @@ Specify the maximum length for each attribute field (default: 500).
 
 Show only events that are eligible for reset.
 
-**Syntax** `--reset_points_only`
+`--reset_points_only`

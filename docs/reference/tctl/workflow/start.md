@@ -1,9 +1,10 @@
 ---
 id: start
-title: Temporal CLI - tctl workflow start
-description: The `tctl workflow start` command starts a new Workflow Execution.
+title: tctl workflow start
+description: How to start a new Workflow Execution using tctl.
 tags:
   - reference
+  - tctl
 ---
 
 The `tctl workflow start` command starts a new [Workflow Execution](/docs/content/what-is-a-workflow-execution).
