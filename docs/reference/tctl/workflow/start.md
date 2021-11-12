@@ -7,20 +7,44 @@ tags:
   - tctl
 ---
 
-The `tctl workflow start` command starts a new [Workflow Execution](/docs/content/what-is-a-workflow-execution).
+<!-- prettier-ignore -->
+import * as WhatIsAWorkflowExecution from '../../../content/what-is-a-workflow-execution.md'
+import * as WhatIsATaskQueue from '../../../content/what-is-a-task-queue.md'
+import * as WhatIsAWorkflowId from '../../../content/what-is-a-workflow-id.md'
+import * as WhatIsAWorkflowType from '../../../content/what-is-a-workflow-type.md'
 
-## Syntax
+The `tctl workflow start` command starts a new <preview page={WhatIsAWorkflowExecution}>Workflow Execution</preview>.
 
 `tctl workflow start <command options> <arguments...>`
 
-## Command options
+### --taskqueue
+
+Specifies a <preview page={WhatIsATaskQueue}>Task Queue</preview>.
+
+`--taskqueue <value>`
+
+Alias `--tq`
+
+### --workflow_id
+
+Specify the <preview page={WhatIsAWorkflowId}>Workflow Id</preview>.
+
+`--workflow_id <value>`
+
+Aliases `--wid <value>`, `-w <value>`
+
+### --workflow_type
+
+Specify the name of a <preview page={WhatIsAWorkflowType}>Workflow Type</preview>.
+
+`--workflow_type <value>`
+
+Alias `--wt <value>`
+
+### ...more TK
 
 <!-- prettier-ignore -->
-| Option | Description |
-| --- | --- |
-| --taskqueue \<value\>, --tq \<value\> | Task Queue. |
-| --workflow\_id \<value\>, --wid \<value\>, -w \<value\> | [Workflow Id](/docs/content/what-is-a-workflow-id). |
-| --workflow\_type \<value\>, --wt \<value\> | Name of a [Workflow Type](/docs/content/what-is-a-workflow-type) |
+<!-- 
 | --execution\_timeout \<value\>, --et \<value\> | [Workflow Execution](/docs/content/what-is-a-workflow-execution) [Start-To-Close Timeout](https://docs.temporal.io/docs/content/what-is-a-start-to-close-timeout/) in seconds (default: 0). |
 | --workflow\_task_timeout \<value\>, --wtt \<value\> | [Workflow Task](/docs/content/what-is-a-workflow-task) [Start-To-Close Timeout](https://docs.temporal.io/docs/content/what-is-a-start-to-close-timeout/) in seconds (default: 10). |
 | --cron value | Optional cron schedule for the workflow. Cron spec is as follows: |
@@ -39,3 +63,4 @@ The `tctl workflow start` command starts a new [Workflow Execution](/docs/conten
 | --memo\_file \<value\> | Optional information, from a file in JSON format, that can be shown when the Workflow is listed. If there are multiple, concatenate them and separate by space or newline. The order must be same as in `memo_key`. |
 | --search\_attr\_key \<value\> | Optional search attribute key that can be used in list query. If there are multiple keys, concatenate them and separate by pipes (`|`). Use `cluster get-search-attr` command to list valid keys. |
 | --search\_attr\_value \<value\> | Optional search attribute value that can be be used in list query. If there are multiple keys, concatenate them and separate by pipes (`|`). If \<value\> is an array, use a JSON array, such as `["a","b"]`, `[1,2]`, `["true","false"]`, or `["2019-06-07T17:16:34-08:00","2019-06-07T18:16:34-08:00"]`. Use `cluster get-search-attr` command to list valid keys and value types. |
+-->

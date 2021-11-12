@@ -44,7 +44,7 @@ Print timestamp.
 
 `--print_datetime`
 
-**Alias** `--pdt`
+Alias `--pdt`
 
 ### --print_raw_time
 
@@ -52,7 +52,7 @@ Print raw timestamp.
 
 `--print_raw_time`
 
-**Alias** `--prt`
+Alias `--prt`
 
 ### --output_filename
 
@@ -60,7 +60,7 @@ Serialize the event to the specified file.
 
 `--output_filename <value>`
 
-**Alias** `--of`
+Alias `--of`
 
 ### --print_full
 
@@ -68,7 +68,7 @@ Print full event details.
 
 `--print_full`
 
-**Alias** `--pf`
+Alias `--pf`
 
 ### --print_event_version
 
@@ -76,7 +76,7 @@ Print the event version.
 
 `--print_event_version`
 
-**Alias** `--pev`
+Alias `--pev`
 
 ### --event_id
 
@@ -84,7 +84,7 @@ Print details of the specified event (default: 0).
 
 `--event_id <value>`
 
-**Alias** `--eid`
+Alias `--eid`
 
 ### --max_field_length
 
@@ -92,7 +92,7 @@ Specify the maximum length for each attribute field (default: 500).
 
 `--max_field_length <value>`
 
-**Alias** `--maxl`
+Alias `--maxl`
 
 ### --reset_points_only
 
