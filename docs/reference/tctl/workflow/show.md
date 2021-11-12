@@ -8,9 +8,9 @@ tags:
 ---
 
 <!-- prettier-ignore -->
-import * as WhatIsAWorkflowExecution from '../content/what-is-a-workflow-execution.md'
-import * as WhatIsAWorkflowId from '../content/what-is-a-workflow-id.md'
-import * as WhatIsARunId from '../content/what-is-a-run-id.md'
+import * as WhatIsAWorkflowExecution from '../../../content/what-is-a-workflow-execution.md'
+import * as WhatIsAWorkflowId from '../../../content/what-is-a-workflow-id.md'
+import * as WhatIsARunId from '../../../content/what-is-a-run-id.md'
 
 The `tctl workflow show` command shows History for the specified <preview page={WhatIsAWorkflowExecution}>Workflow Execution</preview>.
 
