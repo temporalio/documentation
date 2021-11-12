@@ -16,7 +16,8 @@ The `tctl workflow show` command shows History for the specified <preview page={
 
 **Syntax** `tctl workflow show <command options> <arguments...>`
 
-**Command options**  
+**Command options**
+
 ### workflow_id
 
 Specify the <preview page={WhatIsAWorkflowId}>Workflow Id</preview>.
