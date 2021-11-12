@@ -14,13 +14,13 @@ import * as WhatIsARunId from '../../../content/what-is-a-run-id.md'
 
 The `tctl workflow show` command shows History for the specified <preview page={WhatIsAWorkflowExecution}>Workflow Execution</preview>.
 
-`tctl workflow show <command options> <arguments...>`
+> `tctl workflow show <command options> <arguments...>`
 
 ### --workflow_id
 
 Specify the <preview page={WhatIsAWorkflowId}>Workflow Id</preview>.
 
-`--workflow_id <value>`
+> `--workflow_id <value>`
 
 Aliases `--wid <value>`, `-w <value>`
 
@@ -34,7 +34,7 @@ tctl workflow show --workflow_id 3ea6b242-b23c-4279-bb13-f215661b4717
 
 Specify the <preview page={WhatIsARunId}>Run Id</preview>.
 
-`--run_id <value>`
+> `--run_id <value>`
 
 Aliases `--rid <value>`, `-r <value>`
 
@@ -42,7 +42,7 @@ Aliases `--rid <value>`, `-r <value>`
 
 Print timestamp.
 
-`--print_datetime`
+> `--print_datetime`
 
 Alias `--pdt`
 
@@ -50,7 +50,7 @@ Alias `--pdt`
 
 Print raw timestamp.
 
-`--print_raw_time`
+> `--print_raw_time`
 
 Alias `--prt`
 
@@ -58,7 +58,7 @@ Alias `--prt`
 
 Serialize the event to the specified file.
 
-`--output_filename <value>`
+> `--output_filename <value>`
 
 Alias `--of`
 
@@ -66,7 +66,7 @@ Alias `--of`
 
 Print full event details.
 
-`--print_full`
+> `--print_full`
 
 Alias `--pf`
 
@@ -74,7 +74,7 @@ Alias `--pf`
 
 Print the event version.
 
-`--print_event_version`
+> `--print_event_version`
 
 Alias `--pev`
 
@@ -82,7 +82,7 @@ Alias `--pev`
 
 Print details of the specified event (default: 0).
 
-`--event_id <value>`
+> `--event_id <value>`
 
 Alias `--eid`
 
@@ -90,7 +90,7 @@ Alias `--eid`
 
 Specify the maximum length for each attribute field (default: 500).
 
-`--max_field_length <value>`
+> `--max_field_length <value>`
 
 Alias `--maxl`
 
@@ -98,4 +98,4 @@ Alias `--maxl`
 
 Show only events that are eligible for reset.
 
-`--reset_points_only`
+> `--reset_points_only`
