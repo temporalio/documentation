@@ -112,8 +112,8 @@ Follow this tutorial for setting up mTLS (Mutual TLS authentication) with Tempor
      export TEMPORAL_SERVER_ROOT_CA_CERT_PATH=/path/to/customization-samples/tls/tls-simple/certs/ca.cert
      export TEMPORAL_SERVER_NAME_OVERRIDE=tls-sample
      ```
-1. Test the connection with `npm run start.watch` and `npm run workflow`. 
-  You should see everything working as per the regular Hello World tutorial.
+1. Test the connection with `npm run start.watch` and `npm run workflow`.
+   You should see everything working as per the regular Hello World tutorial.
 
 Temporal has no opinions on production deployment strategy other than the connections and architecture displayed here.
 
