@@ -12,16 +12,18 @@ import * as WhatIsAWorkflowExecution from '../../../content/what-is-a-workflow-e
 import * as WhatIsATaskQueue from '../../../content/what-is-a-task-queue.md'
 import * as WhatIsAWorkflowId from '../../../content/what-is-a-workflow-id.md'
 import * as WhatIsAWorkflowType from '../../../content/what-is-a-workflow-type.md'
+import * as WhatIsAStartToCloseTimeout from '../../../content/what-is-a-start-to-close-timeout.md'
+import * as WhatIsAWorkflowTask from '../../../content/what-is-a-workflow-task.md'
 
 The `tctl workflow start` command starts a new <preview page={WhatIsAWorkflowExecution}>Workflow Execution</preview>.
 
-`tctl workflow start <command options> <arguments...>`
+> `tctl workflow start <command options> <arguments...>`
 
 ### --taskqueue
 
 Specifies a <preview page={WhatIsATaskQueue}>Task Queue</preview>.
 
-`--taskqueue <value>`
+> `--taskqueue <value>`
 
 Alias `--tq`
 
@@ -29,7 +31,7 @@ Alias `--tq`
 
 Specify the <preview page={WhatIsAWorkflowId}>Workflow Id</preview>.
 
-`--workflow_id <value>`
+> `--workflow_id <value>`
 
 Aliases `--wid <value>`, `-w <value>`
 
@@ -37,16 +39,30 @@ Aliases `--wid <value>`, `-w <value>`
 
 Specify the name of a <preview page={WhatIsAWorkflowType}>Workflow Type</preview>.
 
-`--workflow_type <value>`
+> `--workflow_type <value>`
 
 Alias `--wt <value>`
+
+### --execution_timeout
+
+Specify the <preview page={WhatIsAStartToCloseTimeout}>Start-To-Close Timeout</preview> of the <preview page={WhatIsAWorkflowExecution}>Workflow Execution</preview> in seconds (default: 0).
+
+> `--execution_timeout <value>`
+
+Alias `--et <value>`
+
+### --workflow_task_timeout
+
+Specify the <preview page={WhatIsAStartToCloseTimeout}>Start-To-Close Timeout</preview> of the <preview page={WhatIsAWorkflowTask}>Workflow Task</preview> in seconds (default: 10).
+
+> `--workflow_task_timeout <value>`
+
+Alias `--wtt <value>`
 
 ### ...more TK
 
 <!-- prettier-ignore -->
 <!-- 
-| --execution\_timeout \<value\>, --et \<value\> | [Workflow Execution](/docs/content/what-is-a-workflow-execution) [Start-To-Close Timeout](https://docs.temporal.io/docs/content/what-is-a-start-to-close-timeout/) in seconds (default: 0). |
-| --workflow\_task_timeout \<value\>, --wtt \<value\> | [Workflow Task](/docs/content/what-is-a-workflow-task) [Start-To-Close Timeout](https://docs.temporal.io/docs/content/what-is-a-start-to-close-timeout/) in seconds (default: 10). |
 | --cron value | Optional cron schedule for the workflow. Cron spec is as follows: |
 | | `┌───────────── minute (0–59)` |
 | | `│ ┌───────────── hour (0–23)` |

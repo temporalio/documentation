@@ -15,13 +15,13 @@ The `tctl workflow showid` command shows Workflow History for the specified <pre
 
 This command is a shortcut for `show --workflow_id <workflowid> --run_id <runid>`.
 
-`tctl workflow showid <workflow_id> [<run_id>] [<command options>] [<arguments...>]`
+> `tctl workflow showid <workflow_id> [<run_id>] [<command options>] [<arguments...>]`
 
 ### --print_datetime
 
 Print timestamp.
 
-`--print_datetime`
+> `--print_datetime`
 
 Alias `--pdt`
 
@@ -29,7 +29,7 @@ Alias `--pdt`
 
 Print raw timestamp.
 
-`--print_raw_time`
+> `--print_raw_time`
 
 Alias `--prt`
 
@@ -37,7 +37,7 @@ Alias `--prt`
 
 Serialize the event to the specified file.
 
-`--output_filename <value>`
+> `--output_filename <value>`
 
 Alias `--of`
 
@@ -45,7 +45,7 @@ Alias `--of`
 
 Print full event details.
 
-`--print_full`
+> `--print_full`
 
 Alias `--pf`
 
@@ -61,7 +61,7 @@ Alias `--pev`
 
 Print details of the specified event (default: 0).
 
-`--event_id <value>`
+> `--event_id <value>`
 
 Alias `--eid`
 
@@ -69,10 +69,12 @@ Alias `--eid`
 
 Specify the maximum length for each attribute field (default: 500).
 
-`--max_field_length <value>`
+> `--max_field_length <value>`
 
 Alias `--maxl`
 
 ### --reset_points_only
 
 Show only events that are eligible for reset.
+
+> `--reset_points_only`
