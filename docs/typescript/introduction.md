@@ -1,7 +1,7 @@
 ---
 title: TypeScript SDK introduction
 sidebar_label: Introduction
-description: The TypeScript SDK lets TypeScript and JavaScript developers write highly scalable, reliable, annd long-running workflows without being a distributed systems expert.
+description: The TypeScript SDK lets developers write highly scalable, reliable, annd long-running workflows without being a distributed systems expert.
 ---
 
 import CustomWarning from "../components/CustomWarning.js"
@@ -12,8 +12,8 @@ This SDK and associated documentation is in an Alpha stage and may change at any
 
 </CustomWarning>
 
-The Temporal TypeScript SDK lets TypeScript and JavaScript developers write highly scalable, reliable, annd long-running workflows without being a distributed systems expert.
-It is designed with TypeScript-first developer experience in mind, but should work equally well with JavaScript.
+The Temporal TypeScript SDK lets you write highly scalable and reliable long-running workflows without being a distributed systems expert.
+It is designed with TypeScript-first developer experience in mind, but works equally well with JavaScript.
 
 :::note Commencing Launch Sequence
 
@@ -29,9 +29,9 @@ Design partners are already putting us in production and we are eager to hear yo
 
 You can view:
 
-- [TypeScript Samples on GitHub](https://github.com/temporalio/samples-typescript) [![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-908a85?logo=gitpod)](https://gitpod.io/#https://github.com/temporalio/samples-typescript/)
-- [Searchable Full API Reference](https://typescript.temporal.io)
-- [TS SDK source on GitHub](https://github.com/temporalio/sdk-typescript) [![GitHub stars](https://img.shields.io/github/stars/temporalio/sdk-typescript)](https://github.com/temporalio/sdk-typescript/stargazers) (give us a star!)
+- [Code samples on GitHub](https://github.com/temporalio/samples-typescript) [![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-908a85?logo=gitpod)](https://gitpod.io/#https://github.com/temporalio/samples-typescript/)
+- [Searchable full API reference](https://typescript.temporal.io)
+- [SDK source on GitHub](https://github.com/temporalio/sdk-typescript) [![GitHub stars](https://img.shields.io/github/stars/temporalio/sdk-typescript)](https://github.com/temporalio/sdk-typescript/stargazers) (give us a star!)
 
 ## Getting started
 
