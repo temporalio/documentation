@@ -45,9 +45,7 @@ describe('example workflow', function () {
 
     runPromise = worker.run();
     const connection = new Connection();
-    client = new WorkflowClient(connection.service, {
-      workflowDefaults: { taskQueue: 'testhttp' },
-    });
+    client = new WorkflowClient(connection.service);
   });
 
   after(async function () {
@@ -60,7 +58,7 @@ describe('example workflow', function () {
   });
 
   it('returns correct result', async function () {
-    const result = await client.execute(example);
+    const result = await client.execute(example, { taskQueue: 'testhttp' });
     assert.equal(result, 'The answer is 42');
   });
 
@@ -83,7 +81,7 @@ describe('example workflow', function () {
       .stub(axios, 'get')
       .callsFake(() => Promise.reject(new Error('example error')));
 
-    const err = await client.execute(example).then(
+    const err = await client.execute(example, { taskQueue: 'testhttp' }).then(
       () => null,
       (err) => err
     );

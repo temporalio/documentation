@@ -432,10 +432,10 @@ Arguments for both are sent as needed.
 // Signal With Start
 const client = new WorkflowClient();
 await workflow.signalWithStart(MyWorkflow, {
+  workflowId,
   args: [arg1, arg2],
   signal: MySignal,
   signalArgs: [arg3, arg4],
-  workflowId,
 });
 ```
 
@@ -771,17 +771,12 @@ In most cases, you should now be able to use `condition` instead of Triggers, an
 ## Child Workflows
 
 Besides Activities, a Workflow can also start other, "Child" Workflows.
-Child Workflows have similar APIs with [Temporal Clients](/docs/typescript/clients), including how to start/execute/handle them.
-
-[`executeChild`](https://typescript.temporal.io/api/namespaces/workflow/#executechild) starts a child workflow and awaits (blocks until) its completion:
-
-<!--SNIPSTART typescript-child-workflow-->
-<!--SNIPEND-->
+Child Workflows have a subset of APIs from [Temporal Clients](/docs/typescript/clients), including how to start/execute/handle Workflows.
 
 [`startChild`](https://typescript.temporal.io/api/namespaces/workflow/#startchild) starts a child workflow without awaiting completion, and returns a [`ChildWorkflowHandle`](https://typescript.temporal.io/api/interfaces/workflow.ChildWorkflowHandle):
 
 ```ts
-import { executeChild } from '@temporalio/workflow';
+import { startChild } from '@temporalio/workflow';
 
 export async function parentWorkflow(names: string[]) {
   const childHandle = await startChild(childWorkflow, {
@@ -793,9 +788,19 @@ export async function parentWorkflow(names: string[]) {
       })
     )
   );
-  // you can use childHandle to signal, query, cancel, terminate, or get result here
+  // you can use childHandle to signal or get result here
+  await childHandle.signal('anySignal');
+  const result = childHandle.result();
+  // ...
 }
 ```
+
+You should use [cancellationScopes](/docs/typescript/cancellation-scopes) if you need to cancel Child Workflows.
+
+[`executeChild`](https://typescript.temporal.io/api/namespaces/workflow/#executechild) starts a child workflow and awaits (blocks until) its completion:
+
+<!--SNIPSTART typescript-child-workflow-->
+<!--SNIPEND-->
 
 To control any running Workflow from inside a Workflow, use [`getExternalWorkflowHandle(workflowId)`](https://typescript.temporal.io/api/namespaces/workflow/#getexternalworkflowhandle).
 
@@ -803,7 +808,7 @@ To control any running Workflow from inside a Workflow, use [`getExternalWorkflo
 import { getExternalWorkflowHandle, workflowInfo } from '@temporalio/workflow';
 
 export async function terminateWorkflow() {
-  const { workflowId } = workflowInfo();
+  const { workflowId } = workflowInfo(); // no await needed
   const handle = await getExternalWorkflowHandle(workflowId);
   await handle.terminate();
 }
@@ -811,7 +816,7 @@ export async function terminateWorkflow() {
 
 Special Notes:
 
-- Child Workflow Option fields automatically inherit their values from the Parent Workflow Options if they are not explicitly set. They have two advanced options unique to Child Workflows:
+- Child Workflow options automatically inherit their values from the Parent Workflow options if they are not explicitly set. They have two advanced options unique to Child Workflows:
   - [`cancellationType`](https://typescript.temporal.io/api/enums/proto.coresdk.child_workflow.ChildWorkflowCancellationType): Controls at which point to throw the CanceledFailure exception when a child workflow is cancelled
   - `parentClosePolicy`: Explained below
 - Child Workflow executions are [`CancellationScope`](/docs/typescript/cancellation-scopes) aware and will automatically be cancelled when their containing scope is cancelled.

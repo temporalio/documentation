@@ -94,7 +94,8 @@ import { SubscriptionWorkflow } from './workflows';
 
 // etc...
 const result = await client.execute(SubscriptionWorkflow, {
-  workflowId: 'SubscriptionsWorkflow',
+  workflowId: 'business-meaningful-id',
+  taskQueue: 'tutorial',
   args: ['foo@bar.com', '30 seconds'],
 });
 ```

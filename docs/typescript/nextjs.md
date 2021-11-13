@@ -195,9 +195,9 @@ import { OneClickBuy } from '../../temporal/lib/workflows.js';
 
 export default async function startBuy(req, res) {
   const { itemId } = req.body; // TODO: validate itemId and req.method
-  const connection = new Connection();
-  const client = new WorkflowClient(connection.service);
+  const client = new WorkflowClient();
   const handle = await client.start(OneClickBuy, {
+    workflowId: 'business-meaningful-id',
     taskQueue: 'tutorial', // must match the taskQueue polled by Worker above
     args: [itemId],
     // workflowId: // TODO: use business-meaningful user/transaction ID here

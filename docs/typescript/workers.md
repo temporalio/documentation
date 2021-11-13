@@ -126,22 +126,17 @@ There are 2 main places where the name of the Task Queue is supplied by the deve
 <details>
 <summary>
 
-When scheduling a Workflow, a `taskQueue` must be specified either at client creation (with `workflowDefault`) or at the call site's `WorkflowOptions`.
+When scheduling a Workflow, a `taskQueue` must be specified.
 
 </summary>
 
 ```ts
-// Option 1
 import { Connection, WorkflowClient } from '@temporalio/client';
 const connection = new Connection();
-const client = new WorkflowClient(connection.service, {
-  workflowDefaults: { taskQueue: 'tutorial' },
-});
-const result = await client.execute(myWorkflow); // taskQueue will resolve to 'tutorial'
-
-// Option 2
-const result = await client.execute(myWorkflow, {
-  taskQueue: 'tutorial', // overrides wahtever was set as default
+const client = new WorkflowClient();
+const result = await client.execute(myWorkflow, { 
+  taskQueue: 'testhttp' // required
+  workflowId: 'business-meaningful-id', // also required but not the point
 });
 ```
 
