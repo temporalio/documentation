@@ -66,7 +66,7 @@ const handle = await client.start<string>('example', {
 // Continue in a different process (e.g. in a serverless function)
 const handle = client.getHandle(workflowId);
 const result = await handle.result(); // wait for Workflow to complete and get result. See below for other Handle APIs
-const result = await client.execute(example, /*...*/) // Alternative API for starting and immediately waiting for Workflow completion
+const result = await client.execute(example /*...*/); // Alternative API for starting and immediately waiting for Workflow completion
 ```
 
 Apart from the three required options, you can specify other [WorkflowOptions](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions) like the `searchAttributes` and `cronSchedule` (with important caveats you should read in the [Cron Workflows section below](#scheduling-cron-workflows)).
@@ -98,7 +98,7 @@ const WFdescription = await handle.describe(); // get Workflow Execution interna
 await handle.signal<Args>(mySignal, ...args); // see Signal docs
 const queryResult = await handle.query<ReturnType, Args>(myQuery, ...args); // see Query docs
 const result = await handle.result(); // block until the workflow completes and/or get return value
-const result = await client.execute(example, /*...*/) // Alternative API for starting and immediately waiting for Workflow completion
+const result = await client.execute(example /*...*/); // Alternative API for starting and immediately waiting for Workflow completion
 ```
 
 The [Workflow Handle APIs](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle) let you externally control your Workflow:
@@ -205,10 +205,10 @@ export async function example(WFname: string, args: string[]): Promise<string> {
     // task queue and other options inherited from parent, can override
     args,
   });
-  const result = await childHandle.result()
+  const result = await childHandle.result();
   // // equivalent to
   // const result = await executeChild(WFname, /* ... */)
-  return result
+  return result;
 }
 ```
 
