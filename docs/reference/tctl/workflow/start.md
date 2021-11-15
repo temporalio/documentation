@@ -17,9 +17,11 @@ import * as WhatIsAWorkflowTask from '../../../content/what-is-a-workflow-task.m
 
 The `tctl workflow start` command starts a new <preview page={WhatIsAWorkflowExecution}>Workflow Execution</preview>.
 
-`tctl workflow start <command options> <arguments...>`
+`tctl workflow start <options> <arguments...>`
 
-### --taskqueue
+The following options modify the behavior of the command.
+
+### `--taskqueue`
 
 How to specify a <preview page={WhatIsATaskQueue}>Task Queue</preview>.
 
@@ -31,7 +33,7 @@ Alias: `--tq`
 tctl workflow start --taskqueue <value>
 ```
 
-### --workflow_id
+### `--workflow_id`
 
 How to specify a <preview page={WhatIsAWorkflowId}>Workflow Id</preview>.
 
@@ -43,7 +45,7 @@ Aliases: `--wid`, `-w`
 tctl workflow start --workflow_id <value>
 ```
 
-### --workflow_type
+### `--workflow_type`
 
 How to specify the name of a <preview page={WhatIsAWorkflowType}>Workflow Type</preview>.
 
@@ -55,7 +57,7 @@ Alias: `--wt`
 tctl workflow start --workflow_type <value>
 ```
 
-### --execution_timeout
+### `--execution_timeout`
 
 How to specify the <preview page={WhatIsAStartToCloseTimeout}>Start-To-Close Timeout</preview> of the <preview page={WhatIsAWorkflowExecution}>Workflow Execution</preview> in seconds. The default value is 0.
 
@@ -67,7 +69,7 @@ Alias: `--et`
 tctl workflow start --execution_timeout <value>
 ```
 
-### --workflow_task_timeout
+### `--workflow_task_timeout`
 
 How to specify the <preview page={WhatIsAStartToCloseTimeout}>Start-To-Close Timeout</preview> of the <preview page={WhatIsAWorkflowTask}>Workflow Task</preview> in seconds. The default value is 10.
 

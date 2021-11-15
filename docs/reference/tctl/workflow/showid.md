@@ -13,9 +13,11 @@ import * as WhatIsARunId from '../../../content/what-is-a-run-id.md'
 
 The `tctl workflow showid` command shows Workflow History for the specified <preview page={WhatIsAWorkflowId}>Workflow Id</preview> and optional <preview page={WhatIsARunId}>Run Id</preview>.
 
+`tctl workflow showid <workflow_id> [<run_id>] [<options>] [<arguments...>]`
+
 This command is a shortcut for `show --workflow_id <workflowid> --run_id <runid>`.
 
-`tctl workflow showid <workflow_id> [<run_id>] [<command options>] [<arguments...>]`
+The following options modify the behavior of the command.
 
 ### `--print_datetime`
 

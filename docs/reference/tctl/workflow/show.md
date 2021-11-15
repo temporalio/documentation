@@ -14,7 +14,9 @@ import * as WhatIsARunId from '../../../content/what-is-a-run-id.md'
 
 The `tctl workflow show` command shows History for the specified <preview page={WhatIsAWorkflowExecution}>Workflow Execution</preview>.
 
-`tctl workflow show <command options> <arguments...>`
+`tctl workflow show <options> <arguments...>`
+
+The following options modify the behavior of the command.
 
 ### `--workflow_id`
 
@@ -31,8 +33,6 @@ tctl workflow show --workflow_id <value>
 ### `--run_id`
 
 How to show the History of a <preview page={WhatIsAWorkflowExecution}>Workflow Execution</preview> by specifying a <preview page={WhatIsARunId}>Run Id</preview>.
-
-`--run_id <value>`
 
 Aliases: `--rid`, `-r`
 
