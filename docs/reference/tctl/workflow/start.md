@@ -30,7 +30,7 @@ Alias: `--tq`
 **Example**
 
 ```
-tctl workflow start --taskqueue <value>
+tctl workflow start --taskqueue <name>
 ```
 
 ### `--workflow_id`
@@ -42,7 +42,7 @@ Aliases: `--wid`, `-w`
 **Example**
 
 ```
-tctl workflow start --workflow_id <value>
+tctl workflow start --workflow_id <id>
 ```
 
 ### `--workflow_type`
@@ -54,7 +54,7 @@ Alias: `--wt`
 **Example**
 
 ```
-tctl workflow start --workflow_type <value>
+tctl workflow start --workflow_type <name>
 ```
 
 ### `--execution_timeout`
@@ -66,7 +66,7 @@ Alias: `--et`
 **Example**
 
 ```
-tctl workflow start --execution_timeout <value>
+tctl workflow start --execution_timeout <seconds>
 ```
 
 ### `--workflow_task_timeout`
@@ -78,21 +78,23 @@ Alias: `--wtt`
 **Example**
 
 ```
-tctl workflow start --workflow_task_timeout <value>
+tctl workflow start --workflow_task_timeout <seconds>
+```
+
+### `--cron`
+
+How to specify a [Cron Schedule](../../../content/what-is-a-temporal-cron-job/#cron-schedules).
+
+**Example**
+
+```
+tctl workflow start --cron <string>
 ```
 
 ### ...more options TK RSN
 
 <!-- prettier-ignore -->
 <!-- 
-| --cron value | Optional cron schedule for the workflow. Cron spec is as follows: |
-| | `┌───────────── minute (0–59)` |
-| | `│ ┌───────────── hour (0–23)` |
-| | `│ │ ┌───────────── day of the month (1–31)` |
-| | `│ │ │ ┌───────────── month (1–12)` |
-| | `│ │ │ │ ┌───────────── day of the week (0–6, with 0 = Sunday, 1 = Monday, and so on)` |
-| | `│ │ │ │ │` |
-| | `* * * * *` |
 | --workflowidreusepolicy \<value\>, --wrp \<value\> | Configure if the same [Workflow Id](/docs/content/what-is-a-workflow-id) is allowed for use in new [Workflow Execution](/docs/content/what-is-a-workflow-execution). Options: AllowDuplicate, AllowDuplicateFailedOnly, RejectDuplicate. |
 | --input \<value\>, -i \<value\> | Optional input for the Workflow in JSON format. If there are multiple, pass each as a separate input flag. Pass `null` for null values. |
 | --input\_file \<value\>, --if \<value\> | Optional input for the workflow from a JSON file. If there are multiple, concatenate them and separate by space or newline. Input from the file will be overwritten by input from command line. |

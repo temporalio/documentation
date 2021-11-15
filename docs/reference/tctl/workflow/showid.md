@@ -52,7 +52,7 @@ Alias: `--of`
 **Example**
 
 ```
-tctl workflow showid <workflow_id> --output_filename <value>
+tctl workflow showid <workflow_id> --output_filename <filename>
 ```
 
 ### `--print_full`
@@ -88,7 +88,7 @@ Alias: `--eid`
 **Example**
 
 ```
-tctl workflow showid <workflow_id> --event_id <value>
+tctl workflow showid <workflow_id> --event_id <id>
 ```
 
 ### `--max_field_length`
@@ -100,7 +100,7 @@ Alias: `--maxl`
 **Example**
 
 ```
-tctl workflow showid <workflow_id> --max_field_length <value>
+tctl workflow showid <workflow_id> --max_field_length <length>
 ```
 
 ### `--reset_points_only`

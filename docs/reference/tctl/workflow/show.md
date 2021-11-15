@@ -27,7 +27,7 @@ Aliases: `--wid`, `-w`
 **Example**
 
 ```
-tctl workflow show --workflow_id <value>
+tctl workflow show --workflow_id <id>
 ```
 
 ### `--run_id`
@@ -39,7 +39,7 @@ Aliases: `--rid`, `-r`
 **Example**
 
 ```
-tctl workflow show --run_id <value>
+tctl workflow show --run_id <id>
 ```
 
 ### `--print_datetime`
@@ -75,7 +75,7 @@ Alias: `--of`
 **Example**
 
 ```
-tctl workflow show --output_filename <value>
+tctl workflow show --output_filename <filename>
 ```
 
 ### `--print_full`
@@ -111,7 +111,7 @@ Alias: `--eid`
 **Example**
 
 ```
-tctl workflow show --event_id <value>
+tctl workflow show --event_id <id>
 ```
 
 ### `--max_field_length`
@@ -123,7 +123,7 @@ Alias: `--maxl`
 **Example**
 
 ```
-tctl workflow show --max_field_length <value>
+tctl workflow show --max_field_length <length>
 ```
 
 ### `--reset_points_only`
