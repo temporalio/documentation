@@ -14,6 +14,7 @@ import * as WhatIsAWorkflowId from '../../../content/what-is-a-workflow-id.md'
 import * as WhatIsAWorkflowType from '../../../content/what-is-a-workflow-type.md'
 import * as WhatIsAStartToCloseTimeout from '../../../content/what-is-a-start-to-close-timeout.md'
 import * as WhatIsAWorkflowTask from '../../../content/what-is-a-workflow-task.md'
+import * as WhatIsAWorkflowIdReusePolicy from '../../../content/what-is-a-workflow-id-reuse-policy.md'
 import * as WhatIsASearchAttribute from '../../../content/what-is-a-search-attribute.md'
 
 The `tctl workflow start` command starts a new <preview page={WhatIsAWorkflowExecution}>Workflow Execution</preview>.
@@ -94,7 +95,7 @@ tctl workflow start --cron <string>
 
 ### `--workflowidreusepolicy`
 
-How to specify a Workflow Id Reuse Policy. Configure if the same <preview page={WhatIsAWorkflowId}>Workflow Id</preview> is allowed for use in new <preview page={WhatIsAWorkflowExecution}>Workflow Executions</preview>.
+How to specify a <preview page={WhatIsAWorkflowIdReusePolicy}>Workflow Id Reuse Policy</preview>. Configure if the same <preview page={WhatIsAWorkflowId}>Workflow Id</preview> is allowed for use in new <preview page={WhatIsAWorkflowExecution}>Workflow Executions</preview>.
 
 Values: `AllowDuplicate`, `AllowDuplicateFailedOnly`, `RejectDuplicate`
 
@@ -130,7 +131,7 @@ Alias: `-if`
 tctl workflow start --input_file <filename>
 ```
 
-### `memo_key`
+### `--memo_key`
 
 How to pass a key for a memo. For multiple keys, concatenate them and use spaces as separators.
 
@@ -140,9 +141,9 @@ How to pass a key for a memo. For multiple keys, concatenate them and use spaces
 tctl workflow start --memo_key <key>
 ```
 
-### `memo`
+### `--memo`
 
-How to pass a memo. A memo is information in JSON format that can be shown when the Workflow is listed. For multiple memos, concatenate them and use spaces as separators. The order must match the order of keys in `memo_key`.
+How to pass a memo. A memo is information in JSON format that can be shown when the Workflow is listed. For multiple memos, concatenate them and use spaces as separators. The order must match the order of keys in `--memo_key`.
 
 **Example**
 
@@ -150,9 +151,9 @@ How to pass a memo. A memo is information in JSON format that can be shown when 
 tctl workflow start --memo <json>
 ```
 
-### `memo_file`
+### `--memo_file`
 
-How to pass information for a memo from a JSON file. For multiple JSON objects, concatenate them and use spaces or newline characters as separators. The order must match the order of keys in `memo_key`.
+How to pass information for a memo from a JSON file. For multiple JSON objects, concatenate them and use spaces or newline characters as separators. The order must match the order of keys in `--memo_key`.
 
 **Example**
 
@@ -160,7 +161,7 @@ How to pass information for a memo from a JSON file. For multiple JSON objects, 
 tctl workflow start --memo_file <filename>
 ```
 
-### `search_attr_key`
+### `--search_attr_key`
 
 How to specify a <preview page={WhatIsASearchAttribute}>Search Attribute</preview> key. For multiple keys, concatenate them and use pipes (`|`) as separators.
 
