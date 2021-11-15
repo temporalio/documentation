@@ -15,66 +15,98 @@ The `tctl workflow showid` command shows Workflow History for the specified <pre
 
 This command is a shortcut for `show --workflow_id <workflowid> --run_id <runid>`.
 
-> `tctl workflow showid <workflow_id> [<run_id>] [<command options>] [<arguments...>]`
+`tctl workflow showid <workflow_id> [<run_id>] [<command options>] [<arguments...>]`
 
-### --print_datetime
+### `--print_datetime`
 
-Print timestamp.
+How to print the timestamp.
 
-> `--print_datetime`
+Alias: `--pdt`
 
-Alias `--pdt`
+**Example**
 
-### --print_raw_time
+```
+tctl workflow showid <workflow_id> --print_datetime
+```
 
-Print raw timestamp.
+### `--print_raw_time`
 
-> `--print_raw_time`
+How to print the raw timestamp.
 
-Alias `--prt`
+Alias: `--prt`
 
-### --output_filename
+**Example**
 
-Serialize the event to the specified file.
+```
+tctl workflow showid <workflow_id> --print_raw_time
+```
 
-> `--output_filename <value>`
+### `--output_filename`
 
-Alias `--of`
+How to serialize an event to a file.
 
-### --print_full
+Alias: `--of`
 
-Print full event details.
+**Example**
 
-> `--print_full`
+```
+tctl workflow showid <workflow_id> --output_filename <value>
+```
 
-Alias `--pf`
+### `--print_full`
 
-### --print_event_version
+How to print full event details.
 
-Print the event version.
+Alias: `--pf`
 
-`--print_event_version`
+**Example**
 
-Alias `--pev`
+```
+tctl workflow showid <workflow_id> --print_full
+```
 
-### --event_id
+### `--print_event_version`
 
-Print details of the specified event (default: 0).
+How to print the event version.
 
-> `--event_id <value>`
+Alias: `--pev`
 
-Alias `--eid`
+**Example**
 
-### --max_field_length
+```
+tctl workflow showid <workflow_id> --print_event_version
+```
 
-Specify the maximum length for each attribute field (default: 500).
+### `--event_id`
 
-> `--max_field_length <value>`
+How to print the details of a specified event. The default value is 0.
 
-Alias `--maxl`
+Alias: `--eid`
 
-### --reset_points_only
+**Example**
 
-Show only events that are eligible for reset.
+```
+tctl workflow showid <workflow_id> --event_id <value>
+```
 
-> `--reset_points_only`
+### `--max_field_length`
+
+How to specify the maximum length for each attribute field. The default value is 500.
+
+Alias: `--maxl`
+
+**Example**
+
+```
+tctl workflow showid <workflow_id> --max_field_length <value>
+```
+
+### `--reset_points_only`
+
+How to show only events that are eligible for reset.
+
+**Example**
+
+```
+tctl workflow showid <workflow_id> --reset_points_only
+```

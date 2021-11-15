@@ -14,108 +14,124 @@ import * as WhatIsARunId from '../../../content/what-is-a-run-id.md'
 
 The `tctl workflow show` command shows History for the specified <preview page={WhatIsAWorkflowExecution}>Workflow Execution</preview>.
 
-> `tctl workflow show <command options> <arguments...>`
+`tctl workflow show <command options> <arguments...>`
 
-<hr>
+### `--workflow_id`
 
-### --workflow_id
+How to show the History of a <preview page={WhatIsAWorkflowExecution}>Workflow Execution</preview> by specifying a <preview page={WhatIsAWorkflowId}>Workflow Id</preview>.
 
-Specify the <preview page={WhatIsAWorkflowId}>Workflow Id</preview>.
-
-> `--workflow_id <value>`
-
-Aliases `--wid <value>`, `-w <value>`
+Aliases: `--wid`, `-w`
 
 **Example**
 
 ```
-tctl workflow show --workflow_id 3ea6b242-b23c-4279-bb13-f215661b4717
+tctl workflow show --workflow_id <value>
 ```
 
-<hr>
+### `--run_id`
 
-### --run_id
+How to show the History of a <preview page={WhatIsAWorkflowExecution}>Workflow Execution</preview> by specifying a <preview page={WhatIsARunId}>Run Id</preview>.
 
-Specify the <preview page={WhatIsARunId}>Run Id</preview>.
+`--run_id <value>`
 
-> `--run_id <value>`
+Aliases: `--rid`, `-r`
 
-Aliases `--rid <value>`, `-r <value>`
+**Example**
 
-<hr>
+```
+tctl workflow show --run_id <value>
+```
 
-### --print_datetime
+### `--print_datetime`
 
-Print timestamp.
+How to print the timestamp.
 
-> `--print_datetime`
+Alias: `--pdt`
 
-Alias `--pdt`
+**Example**
 
-<hr>
+```
+tctl workflow show --print_datetime
+```
 
-### --print_raw_time
+### `--print_raw_time`
 
-Print raw timestamp.
+How to print the raw timestamp.
 
-> `--print_raw_time`
+Alias: `--prt`
 
-Alias `--prt`
+**Example**
 
-<hr>
+```
+tctl workflow show --print_raw_time
+```
 
-### --output_filename
+### `--output_filename`
 
-Serialize the event to the specified file.
+How to serialize an event to a file.
 
-> `--output_filename <value>`
+Alias: `--of`
 
-Alias `--of`
+**Example**
 
-<hr>
+```
+tctl workflow show --output_filename <value>
+```
 
-### --print_full
+### `--print_full`
 
-Print full event details.
+How to print full event details.
 
-> `--print_full`
+Alias: `--pf`
 
-Alias `--pf`
+**Example**
 
-<hr>
+```
+tctl workflow show --print_full
+```
 
-### --print_event_version
+### `--print_event_version`
 
-Print the event version.
+How to print the event version.
 
-> `--print_event_version`
+Alias: `--pev`
 
-Alias `--pev`
+**Example**
 
-<hr>
+```
+tctl workflow show --print_event_version
+```
 
-### --event_id
+### `--event_id`
 
-Print details of the specified event (default: 0).
+How to print the details of a specified event. The default value is 0.
 
-> `--event_id <value>`
+Alias: `--eid`
 
-Alias `--eid`
+**Example**
 
-<hr>
+```
+tctl workflow show --event_id <value>
+```
 
-### --max_field_length
+### `--max_field_length`
 
-Specify the maximum length for each attribute field (default: 500).
+How to specify the maximum length for each attribute field. The default value is 500.
 
-> `--max_field_length <value>`
+Alias: `--maxl`
 
-Alias `--maxl`
+**Example**
 
-<hr>
+```
+tctl workflow show --max_field_length <value>
+```
 
-### --reset_points_only
+### `--reset_points_only`
 
-Show only events that are eligible for reset.
+How to show only events that are eligible for reset.
 
-> `--reset_points_only`
+**Example**
+
+```
+tctl workflow show --reset_points_only
+```
