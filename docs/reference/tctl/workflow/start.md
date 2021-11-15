@@ -14,6 +14,7 @@ import * as WhatIsAWorkflowId from '../../../content/what-is-a-workflow-id.md'
 import * as WhatIsAWorkflowType from '../../../content/what-is-a-workflow-type.md'
 import * as WhatIsAStartToCloseTimeout from '../../../content/what-is-a-start-to-close-timeout.md'
 import * as WhatIsAWorkflowTask from '../../../content/what-is-a-workflow-task.md'
+import * as WhatIsASearchAttribute from '../../../content/what-is-a-search-attribute.md'
 
 The `tctl workflow start` command starts a new <preview page={WhatIsAWorkflowExecution}>Workflow Execution</preview>.
 
@@ -91,16 +92,94 @@ How to specify a [Cron Schedule](../../../content/what-is-a-temporal-cron-job/#c
 tctl workflow start --cron <string>
 ```
 
-### ...more options TK RSN
+### `--workflowidreusepolicy`
 
-<!-- prettier-ignore -->
-<!-- 
-| --workflowidreusepolicy \<value\>, --wrp \<value\> | Configure if the same [Workflow Id](/docs/content/what-is-a-workflow-id) is allowed for use in new [Workflow Execution](/docs/content/what-is-a-workflow-execution). Options: AllowDuplicate, AllowDuplicateFailedOnly, RejectDuplicate. |
-| --input \<value\>, -i \<value\> | Optional input for the Workflow in JSON format. If there are multiple, pass each as a separate input flag. Pass `null` for null values. |
-| --input\_file \<value\>, --if \<value\> | Optional input for the workflow from a JSON file. If there are multiple, concatenate them and separate by space or newline. Input from the file will be overwritten by input from command line. |
-| --memo\_key \<value\> | Optional key of memo. If there are multiple keys, concatenate them and separate by space. |
-| --memo \<value\> | Optional information, specified in JSON format, that can be shown when the Workflow is listed. If there are multiple, concatenate them and separate by space. The order must be same as in `memo_key`. |
-| --memo\_file \<value\> | Optional information, from a file in JSON format, that can be shown when the Workflow is listed. If there are multiple, concatenate them and separate by space or newline. The order must be same as in `memo_key`. |
-| --search\_attr\_key \<value\> | Optional search attribute key that can be used in list query. If there are multiple keys, concatenate them and separate by pipes (`|`). Use `cluster get-search-attr` command to list valid keys. |
-| --search\_attr\_value \<value\> | Optional search attribute value that can be be used in list query. If there are multiple keys, concatenate them and separate by pipes (`|`). If \<value\> is an array, use a JSON array, such as `["a","b"]`, `[1,2]`, `["true","false"]`, or `["2019-06-07T17:16:34-08:00","2019-06-07T18:16:34-08:00"]`. Use `cluster get-search-attr` command to list valid keys and value types. |
--->
+How to specify a Workflow Id Reuse Policy. Configure if the same <preview page={WhatIsAWorkflowId}>Workflow Id</preview> is allowed for use in new <preview page={WhatIsAWorkflowExecution}>Workflow Executions</preview>.
+
+Values: `AllowDuplicate`, `AllowDuplicateFailedOnly`, `RejectDuplicate`
+
+**Examples**
+
+```
+tctl workflow start --workflowidreusepolicy AllowDuplicate
+tctl workflow start --workflowidreusepolicy AllowDuplicateFailedOnly
+tctl workflow start --workflowidreusepolicy RejectDuplicate
+```
+
+### `--input`
+
+How to pass input for the Workflow. Input must be in JSON format. For multiple JSON objects, pass each in a separate `--input` option. Use `null` for null values.
+
+Alias: `-i`
+
+**Example**
+
+```
+tctl workflow start --input <json>
+```
+
+### `--input_file`
+
+How to pass input for the Workflow from a JSON file. For multiple JSON objects, concatenate them and use spaces or newline characters as separators. Input from the command line overwrites input from the file.
+
+Alias: `-if`
+
+**Example**
+
+```
+tctl workflow start --input_file <filename>
+```
+
+### `memo_key`
+
+How to pass a key for a memo. For multiple keys, concatenate them and use spaces as separators.
+
+**Example**
+
+```
+tctl workflow start --memo_key <key>
+```
+
+### `memo`
+
+How to pass a memo. A memo is information in JSON format that can be shown when the Workflow is listed. For multiple memos, concatenate them and use spaces as separators. The order must match the order of keys in `memo_key`.
+
+**Example**
+
+```
+tctl workflow start --memo <json>
+```
+
+### `memo_file`
+
+How to pass information for a memo from a JSON file. For multiple JSON objects, concatenate them and use spaces or newline characters as separators. The order must match the order of keys in `memo_key`.
+
+**Example**
+
+```
+tctl workflow start --memo_file <filename>
+```
+
+### `search_attr_key`
+
+How to specify a <preview page={WhatIsASearchAttribute}>Search Attribute</preview> key. For multiple keys, concatenate them and use pipes (`|`) as separators.
+
+To list valid keys, use the `tctl cluster get-search-attr` command.
+
+**Example**
+
+```
+tctl workflow start --search_attr_key <key>
+```
+
+### `--search_attr_value`
+
+How to specify a <preview page={WhatIsASearchAttribute}>Search Attribute</preview> value. For multiple values, concatenate them and use pipes (`|`) as separators. If a value is an array, use JSON format, such as `["a","b"]`, `[1,2]`, `["true","false"]`, or `["2022-06-07T17:16:34-08:00","2022-06-07T18:16:34-08:00"]`.
+
+To list valid keys and value types, use the `tctl cluster get-search-attr` command.
+
+**Example**
+
+```
+tctl workflow start --search_attr_value <value>
+```

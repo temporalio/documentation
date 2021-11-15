@@ -12,22 +12,22 @@ import * as WhatIsAWorkflowExecution from '../../content/what-is-a-workflow-exec
 
 The `tctl workflow` commands operate <preview page={WhatIsAWorkflowExecution}>Workflow Executions</preview>.
 
-## tctl workflow show
+## `show`
 
 import TctlWorkflowShow from './workflow/show.md'
 
 <TctlWorkflowShow/>
 
-## tctl workflow showid
+## `showid`
 
 import TctlWorkflowShowid from './workflow/showid.md'
 
 <TctlWorkflowShowid/>
 
-## tctl workflow start
+## `start`
 
 import TctlWorkflowStart from './workflow/start.md'
 
 <TctlWorkflowStart/>
 
-## WIP; more pages TK...
+## _WIP; more pages TK..._
