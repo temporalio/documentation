@@ -1,12 +1,12 @@
 import React from "react";
 import Link from "@docusaurus/Link";
-import { useThemeConfig } from "@docusaurus/theme-common";
+import {useThemeConfig} from "@docusaurus/theme-common";
 import useBaseUrl from "@docusaurus/useBaseUrl";
 import isInternalUrl from "@docusaurus/isInternalUrl";
 import ThemedImage from "@theme/ThemedImage";
 import IconExternalLink from "@theme/IconExternalLink";
 
-function FooterLink({ to, href, label, prependBaseUrlToHref, ...props }) {
+function FooterLink({to, href, label, prependBaseUrlToHref, ...props}) {
   const toUrl = useBaseUrl(to);
   const normalizedHref = useBaseUrl(href, {
     forcePrependBaseUrl: true,
@@ -16,11 +16,11 @@ function FooterLink({ to, href, label, prependBaseUrlToHref, ...props }) {
       className="footer__link-item"
       {...(href
         ? {
-          href: prependBaseUrlToHref ? normalizedHref : href,
-        }
+            href: prependBaseUrlToHref ? normalizedHref : href,
+          }
         : {
-          to: toUrl,
-        })}
+            to: toUrl,
+          })}
       {...props}
     >
       {href && !isInternalUrl(href) ? (
@@ -35,13 +35,13 @@ function FooterLink({ to, href, label, prependBaseUrlToHref, ...props }) {
   );
 }
 
-const FooterLogo = ({ sources, alt }) => (
+const FooterLogo = ({sources, alt}) => (
   <ThemedImage className="footer__logo" alt={alt} sources={sources} />
 );
 
 function Footer() {
-  const { footer } = useThemeConfig();
-  const { copyright, logo = {} } = footer || {};
+  const {footer} = useThemeConfig();
+  const {copyright, logo = {}} = footer || {};
   const sources = {
     light: useBaseUrl(logo.src),
     dark: useBaseUrl(logo.srcDark || logo.src),
@@ -154,8 +154,8 @@ function Footer() {
                   <div className="footer__title">{linkItem.title}</div>
                 ) : null}
                 {linkItem.items != null &&
-                  Array.isArray(linkItem.items) &&
-                  linkItem.items.length > 0 ? (
+                Array.isArray(linkItem.items) &&
+                linkItem.items.length > 0 ? (
                   <ul className="footer__items">
                     {linkItem.items.map((item, key) =>
                       item.html ? (

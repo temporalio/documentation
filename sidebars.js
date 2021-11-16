@@ -51,11 +51,7 @@ module.exports = {
       type: "category",
       label: "DevTools",
       collapsed: false,
-      items: [
-        "devtools/introduction",
-        "devtools/tctl",
-        "devtools/web-ui",
-      ],
+      items: ["devtools/introduction", "devtools/tctl", "devtools/web-ui"],
     },
     {
       type: "category",
