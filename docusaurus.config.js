@@ -61,9 +61,9 @@ module.exports = {
               label: "Server",
             },
             {
-              to: "/docs/system-tools/introduction",
-              activeBasePath: "/docs/system-tools/",
-              label: "System Tools",
+              to: "/docs/devtools/introduction",
+              activeBasePath: "/docs/devtools/",
+              label: "DevTools",
             },
             {
               to: "/application-development",

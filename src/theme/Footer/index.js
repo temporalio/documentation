@@ -85,8 +85,8 @@ function Footer() {
           to: "/docs/server/introduction",
         },
         {
-          label: "System Tools",
-          to: "/docs/system-tools/introduction",
+          label: "DevTools",
+          to: "/docs/devtools/introduction",
         },
         {
           label: "Glossary",

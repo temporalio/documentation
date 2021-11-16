@@ -215,7 +215,7 @@ Recommended configuration debugging techniques for production Temporal Server se
 
 ### Debugging Workflows
 
-We recommend [using Temporal Web to debug your Workflow Executions](https://docs.temporal.io/docs/system-tools/web-ui) in development and production.
+We recommend [using Temporal Web to debug your Workflow Executions](https://docs.temporal.io/docs/devtools/web-ui) in development and production.
 
 ### Tracing Workflows
 

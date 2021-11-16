@@ -35,8 +35,8 @@ module.exports = {
         },
         {
           type: "link",
-          label: "System tools",
-          href: "/docs/system-tools/introduction",
+          label: "DevTools",
+          href: "/docs/devtools/introduction",
         },
         {
           type: "link",
@@ -49,13 +49,9 @@ module.exports = {
   toolingSidebar: [
     {
       type: "category",
-      label: "System Tools",
+      label: "DevTools",
       collapsed: false,
-      items: [
-        "system-tools/introduction",
-        "system-tools/tctl",
-        "system-tools/web-ui",
-      ],
+      items: ["devtools/introduction", "devtools/tctl", "devtools/web-ui"],
     },
     {
       type: "category",
@@ -210,8 +206,8 @@ module.exports = {
         },
         {
           type: "link",
-          label: "System tools",
-          href: "/docs/system-tools/introduction",
+          label: "DevTools",
+          href: "/docs/devtools/introduction",
         },
         {
           type: "link",
@@ -268,8 +264,8 @@ module.exports = {
         },
         {
           type: "link",
-          label: "System tools",
-          href: "/docs/system-tools/introduction",
+          label: "DevTools",
+          href: "/docs/devtools/introduction",
         },
         {
           type: "link",
@@ -359,8 +355,8 @@ module.exports = {
         },
         {
           type: "link",
-          label: "System tools",
-          href: "/docs/system-tools/introduction",
+          label: "DevTools",
+          href: "/docs/devtools/introduction",
         },
         {
           type: "link",
@@ -416,8 +412,8 @@ module.exports = {
         },
         {
           type: "link",
-          label: "System tools",
-          href: "/docs/system-tools/introduction",
+          label: "DevTools",
+          href: "/docs/devtools/introduction",
         },
       ],
     },
