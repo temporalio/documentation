@@ -123,7 +123,7 @@ tctl workflow start --input <json>
 
 How to pass input for the Workflow from a JSON file. For multiple JSON objects, concatenate them and use spaces or newline characters as separators. Input from the command line overwrites input from the file.
 
-Alias: `-if`
+Alias: `--if`
 
 **Example**
 
