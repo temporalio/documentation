@@ -7,7 +7,7 @@ description: Activities are the only way to interact with external resources in 
 
 > **@temporalio/activity** [![NPM](https://img.shields.io/npm/v/@temporalio/activity)](https://www.npmjs.com/package/@temporalio/activity) [API reference](https://typescript.temporal.io/api/namespaces/activity) | [GitHub](https://github.com/temporalio/sdk-typescript/tree/main/packages/activity)
 
-**Activities are the only way to interact with external resources in Temporal**, like making an HTTP request or accessing the file system.
+**Activities are the only way to interact with external resources in Temporal**, such as making an HTTP request or accessing the file system.
 
 - Unlike [Workflows](/docs/typescript/determinism), Activities execute in the standard Node.js environment, not a [V8 isolate](https://www.npmjs.com/package/isolated-vm). Any code that needs to talk to the outside world needs to be in an Activity, not a Workflow.
 - **Separate from Workflows**: Activities cannot be in the same file as Workflows and must be separately registered (see below for [How to register an Activity on a Worker](#how-to-register-an-activity-on-a-worker))
@@ -177,12 +177,12 @@ export async function DynamicWorkflow(activityName, ...args) {
 Type safety is still supported here, but you are encouraged to validate and handle mismatches in Activity names. An invalid Activity name will lead to a `NotFoundError` with a message that looks like:
 
 ```
-ApplicationFailure: Activity function fakeProgresss is not registered on this Worker, available activities: ["fakeProgress"]
+ApplicationFailure: Activity function fakeProgress is not registered on this Worker, available activities: ["fakeProgress"]
 ```
 
 ### Using pure ESM Node Modules
 
-The TypeScript ecosystem is increasingly moving towards publishing ES Modules over CommonJS, for example `node-fetch@3` is ESM while `node-fetch@2` is CJS.
+The JavaScript ecosystem is increasingly moving towards publishing ES Modules over CommonJS, for example `node-fetch@3` is ESM while `node-fetch@2` is CJS.
 
 **If you are importing a pure ESM dependency, see our [fetch ESM](https://github.com/temporalio/samples-typescript/tree/main/fetch-esm) sample** for necessary config changes you will need:
 
@@ -244,7 +244,7 @@ Temporal SDK also exports a [`Context`](https://typescript.temporal.io/api/class
 | Activity Context properties            | Description                                                                                                                                                                                    |
 | -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `Context.current().cancellationSignal` | An `AbortSignal` which can be used to cancel requests on Activity cancellation. Typically used by the `fetch` and `child_process` libraries but is supported by a few other libraries as well. |
-| `Context.current().cancelled`          | Await this promise in an Activity to get notified of cancellation. This promise will never be resolved, it will only be rejected with a `CancelledFailure`.                                    |
+| `Context.current().cancelled`          | Await this promise in an Activity to get notified of cancellation. This promise will never be resolved; it will only be rejected with a `CancelledFailure`.                                    |
 | `Context.current().heartbeat()`        | Send a heartbeat from an Activity.                                                                                                                                                             |
 | `Context.current().info`               | Holds [information](https://typescript.temporal.io/api/interfaces/activity.Info) about the current executing Activity                                                                          |
 | `Context.current().sleep()`            | Helper function for sleeping in an Activity - resolves when deadline is reached or rejects when the Context is cancelled. Prefer this to `setTimeout`.                                         |
@@ -273,7 +273,7 @@ Suitable for heartbeating:
 - Read a large file from S3
 - Run a ML training job on some local GPUs
 
-Not suitable for heatbeating:
+Not suitable for heartbeating:
 
 - Reading a small file from disk
 - Making a quick API call

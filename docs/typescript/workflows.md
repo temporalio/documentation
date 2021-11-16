@@ -684,7 +684,7 @@ export async function countdownWorkflow(): Promise<void> {
     console.log('timer now set for: ' + new Date(deadline).toString());
   });
   setListener(timeLeftQuery, () => timer.deadline - Date.now());
-  await timer; // if you send in a signal witha  new time, this timer will resolve earlier!
+  await timer; // if you send in a signal with a new time, this timer will resolve earlier!
   console.log('countdown done!');
 }
 
@@ -781,7 +781,7 @@ Child Workflows have similar APIs with [Temporal Clients](/docs/typescript/clien
 [`startChild`](https://typescript.temporal.io/api/namespaces/workflow/#startchild) starts a child workflow without awaiting completion, and returns a [`ChildWorkflowHandle`](https://typescript.temporal.io/api/interfaces/workflow.ChildWorkflowHandle):
 
 ```ts
-import { executeChild } from '@temporalio/workflow';
+import { startChild } from '@temporalio/workflow';
 
 export async function parentWorkflow(names: string[]) {
   const childHandle = await startChild(childWorkflow, {
