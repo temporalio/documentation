@@ -35,8 +35,7 @@ In traditional systems, a large investment is often made to maintain the health 
 These systems are often a mixture of stateless services, databases, cron jobs, and queues.
 And as these systems scale, responding to multiple asynchronous events, communicating with unreliable external resources, or tracking the state of something very complex becomes more and more challenging.
 
-Temporal reconfigures the use of services, databases, cron jobs, and queues into the Temporal Platform.
-The Temporal Platform addresses these failures head on and right out the box.
+Temporal restructures the use of services, databases, cron jobs, queues, host processes, and SDKs, into the Temporal Platform, and addresses failures head on.
 
 In a traditional system, the service exists to spawn function executions.
 The Temporal Platform exists to facilitate <preview page={WhatIsAWorkflowExecution}>Workflow Executions</preview>.
@@ -101,11 +100,11 @@ The first approach might be to center everything around a database where an appl
 
 However, there are various drawbacks.
 
-1. The most obvious one is that the application state machine of the customer's state quickly becomes extremely complicated.
+- The most obvious one is that the application state machine of the customer's state quickly becomes extremely complicated.
    For example, if a credit card charge attempt fails or sending an email fails due to a downstream system's unavailability, the state is now in limbo.
-2. Failed calls likely need to be retried for a long time, and these calls need to be throttled to not overload external resources.
-3. There needs to be logic to handle corrupted customer records to avoid blocking the whole process.
-4. Additionally, databases have performance and scalability limitations (eventually requiring sharding) and are not efficient for scenarios that require constant polling.
+- Failed calls likely need to be retried for a long time, and these calls need to be throttled to not overload external resources.
+- There needs to be logic to handle corrupted customer records to avoid blocking the whole process.
+- Additionally, databases have performance and scalability limitations (eventually requiring sharding) and are not efficient for scenarios that require constant polling.
 
 **Queue system design approach**
 

@@ -13,7 +13,7 @@ import * as WhatIsAWorkflowExecution from '../content/what-is-a-workflow-executi
 
 Temporal is a scalable and reliable runtime for Reentrant Processes called <preview page={WhatIsAWorkflowExecution}>Temporal Workflow Executions</preview>.
 
-:::note Temporal's tenth rule
+:::note [Temporal's tenth rule](https://en.wikipedia.org/wiki/Greenspun%27s_tenth_rule)
 
 Any sufficiently complex distributed system contains an ad-hoc, informally-specified, bug-ridden, slow implementation of half of temporal.io.
 
