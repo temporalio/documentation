@@ -364,21 +364,18 @@ let state = await handle.query<number, [string]>('print', 'Count: ');
 
 #### Notes on Signals
 
-`WorkflowHandle.signal` returns a Promise that only resolves when Temporal Server has persisted receipt of the Signal, before the Workflow's Signal handler is called.
-This Promise resolves with no value; **Signal handlers cannot return data to the caller.**
-
-:::info No Synchronous Updates
-
-A common request is for a Signal to be invoked with a bad argument, causing a validation error.
-However Temporal has no way to surface the error to the external invocation.
-Signals and Queries are always asynchronous, in other words, **a Signal always succeeds**.
-
-The solution to this is "Synchronous Update" and we plan to add it in future.
+- Signal handlers are only guaranteed to be called in order **per Signal Type**, not across all of them.
+  If you need strict ordering across multiple Signals, combine them into one Signal Type and use a `switch` statement.
+- `WorkflowHandle.signal` resolves as soon as Temporal Server has persisted the Signal, before the Workflow's Signal handler is called.
+- `WorkflowHandle.signal` Promise resolves with no value; **Signal handlers cannot return data to the caller.**
+- **No Synchronous Updates**.
+  Users often want Signals to return a value, for example, a validation error.
+  However Temporal has no way to surface any error to the external invocation.
+  Signals are always asynchronous, in other words, **a Signal always succeeds**.
+  Long term, the solution to this is "Synchronous Update" and we plan to add it in future.
 
 For now [the best workaround](https://community.temporal.io/t/signalling-system-human-driven-workflows/160/2) is to use a Query to return Workflow state after signaling.
 Temporal guarantees read-after-write consistency of Signals-followed-by-Queries.
-
-:::
 
 #### Notes on Queries
 
