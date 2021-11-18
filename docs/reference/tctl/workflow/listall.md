@@ -110,6 +110,7 @@ tctl workflow listall --open
 ### `--earliest_time`
 
 How to specify the earliest start time to list. Supported format are as follows:
+
 - `<year>-<month>-<day>T<hour>:<minute>:<second><+|-><offsethours>:<offsetminutes>`
 - Raw Unix Epoch time (the number of milliseconds since 0000 UTC on January 1, 1970).
 - `<n><duration`, where `<n>` is a value between 0 and 1000000, and `<duration>` is one of the following:
@@ -140,6 +141,7 @@ tctl workflow listall --earliest-time '15minute'
 ### `--latest_time`
 
 How to specify the latest start time to list. Supported formats are as follows:
+
 - `<year>-<month>-<day>T<hour>:<minute>:<second><+|-><offsethours>:<offsetminutes>`
 - Raw Unix Epoch time (the number of milliseconds since 0000 UTC on January 1, 1970).
 - `<n><duration`, where `<n>` is a value between 0 and 1000000, and `<duration>` is one of the following:
@@ -194,6 +196,7 @@ tctl workflow listall --workflow_type <name>
 ### `--status`
 
 How to specify the status of a <preview page={WhatIsAWorkflowExecution}>Workflow Executions</preview>. Supported values are as follows:
+
 - `completed`
 - `failed`
 - `canceled`
