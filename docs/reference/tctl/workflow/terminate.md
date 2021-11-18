@@ -8,6 +8,8 @@ tags:
 
 <!-- prettier-ignore -->
 import * as WhatIsAWorkflowExecution from '../../../content/what-is-a-workflow-execution.md'
+import * as WhatIsAWorkflowId from '../../../content/what-is-a-workflow-id.md'
+import * as WhatIsARunId from '../../../content/what-is-a-run-id.md'
 
 The `tctl workflow terminate` command terminates a <preview page={WhatIsAWorkflowExecution}>Workflow Execution</preview>.
 
