@@ -17,9 +17,9 @@ import * as WhatIsAQuery from '../content/what-is-a-query.md'
 
 One of the aspects of the Temporal System is that it abstracts the complexity of a distributed system.
 Distributed systems exist to scale computation across multiple machines as the potential load of a system changes.
-In theory a distributed system facilitates a reliable and highly performant application.
+In theory, a distributed system facilitates a reliable and highly performant application.
 
-However there are a set of failures that can occur in a distributed application that can make things very complicated, especially at a large scale.
+However any failure that leaves the downstream part of the application waiting for a response can make things very complicated, especially at a large scale.
 
 <CenteredImage
 imagePath="/diagrams/basic-distributed-system.svg"
@@ -27,8 +27,8 @@ imageSize="75"
 title="Distributed application failures"
 />
 
-How will a downstream part of the application know if there was a failure before, failure during, failure between, or failure after the changes to the state?
-How will the inconsistent state be reconciled if there was a failure between changes?
+How will a downstream part of the application know if there was a failure before or a failure after changes to the state if there is no response?
+How will the application track and reconcile an inconsistent state?
 
 In traditional systems, a large investment is often made to maintain the health of each individual component, visualize the health of the overall system, define timeout constraints for computations, orchestrate retries for computations that fail, and maintain a consistent state.
 
