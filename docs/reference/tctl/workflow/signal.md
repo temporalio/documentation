@@ -43,7 +43,7 @@ Aliases: `--rid`, `-r`
 tctl workflow signal --run_id <id>
 ```
 
-### `name`
+### `--name`
 
 How to specify the name of a <preview page={WhatIsASignal}>Signal</preview>.
 

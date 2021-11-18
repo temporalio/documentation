@@ -185,7 +185,7 @@ To list valid keys and value types, use the `tctl cluster get-search-attr` comma
 tctl workflow run --search_attr_value <value>
 ```
 
-### `show_detail`
+### `--show_detail`
 
 How to get event details.
 
