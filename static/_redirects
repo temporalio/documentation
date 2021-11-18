@@ -11,8 +11,9 @@
 #
 # Concept pages redirects
 #
-docs/concepts         docs/concepts/introduction
-/docs/concept-overview        /docs/concepts/introduction
+/docs/concepts         /docs/temporal-explained/introduction
+/docs/temporal-explained        /docs/temporal-explained/introduction
+/docs/concepts/introduction        /docs/temporal-explained/introduction
 /docs/concept-workflows         /docs/concepts/workflows
 /docs/concept-activities        /docs/concepts/activities
 /docs/concept-signals         /docs/concepts/signals

@@ -51,9 +51,9 @@ module.exports = {
           label: "Docs",
           items: [
             {
-              to: "/docs/concepts/introduction",
-              activeBasePath: "/docs/concepts/",
-              label: "Concepts",
+              to: "/docs/temporal-explained/introduction",
+              activeBasePath: "/docs/temporal-explained/",
+              label: "Explanation",
             },
             {
               to: "/docs/server/introduction",
