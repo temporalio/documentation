@@ -2,12 +2,12 @@
 id: how-to-set-registeractivityoptions-in-go
 title: How to set RegisterActivityOptions in Go
 sidebar_label: RegisterActivityOptions
-description: TODO
+description: Create an instance of a `RegisterOptions` from the `go.temporal.io/sdk/activity` package and pass it to the `RegisterActivityWithOptions` call when registering the Activity Type with the Worker.
 tags:
   - developer-guide
 ---
 
-Create an instance of a [`RegisterOptions`](https://pkg.go.dev/go.temporal.io/sdk/activity#RegisterOptions) from the `go.temporal.io/sdk/activity` package and pass it to the [`RegisterActivityWithOptions`](https://pkg.go.dev/go.temporal.io/sdk/worker#ActivityRegistry) call when registering the Activity with the Worker.
+Create an instance of a [`RegisterOptions`](https://pkg.go.dev/go.temporal.io/sdk/activity#RegisterOptions) from the `go.temporal.io/sdk/activity` package and pass it to the [`RegisterActivityWithOptions`](https://pkg.go.dev/go.temporal.io/sdk/worker#ActivityRegistry) call when registering the Activity Type with the Worker.
 
 Options for registering an activity
 
@@ -19,32 +19,56 @@ Options for registering an activity
 
 ### `Name`
 
-- Type: `string`
-- Default:
+Sets the Activity Type name.
 
-Sets the activity name (if other than function name needs to be set)
+- Type: `string`
+- Default: Function name
 
 ```go
+// ...
 w := worker.New(temporalClient, "your_task_queue_name", worker.Options{})
 registerOptions := activity.RegisterOptions{
   Name: "CoolActivityTypeName",
+  // ...
 }
 w.RegisterActivityWithOptions(a.YourActivityDefinition, registerOptions)
+// ...
 ```
 
 ### `DisableAlreadyRegisteredCheck`
 
+Disables the check to see if the Activity has already been registered.
+
 - Type: `bool`
-- Default:
+- Default: `true`
 
 Sets if already registered check should be disabled | bool |
+
+```go
+// ...
+w := worker.New(temporalClient, "your_task_queue_name", worker.Options{})
+registerOptions := activity.RegisterOptions{
+  DisableAlreadyRegisteredCheck: true,
+  // ...
+}
+w.RegisterActivityWithOptions(a.YourActivityDefinition, registerOptions)
+// ...
+```
 
 ### `SkipInvalidStructFunctions`
 
 - Type: `bool`
-- Default:
+- Default: `true`
 
 Sets to panic or skip when registering struct with activities and are not valid | bool |
 
 ```go
+// ...
+w := worker.New(temporalClient, "your_task_queue_name", worker.Options{})
+registerOptions := activity.RegisterOptions{
+  SkipInvalidStructFunctions: true,
+  // ...
+}
+w.RegisterActivityWithOptions(a.YourActivityDefinition, registerOptions)
+// ...
 ```

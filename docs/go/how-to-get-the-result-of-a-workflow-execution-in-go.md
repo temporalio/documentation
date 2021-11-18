@@ -8,7 +8,10 @@ tags:
   - go
 ---
 
-The `ExecuteWorkflow` call returns an instance of [`WorkflowRun`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client#WorkflowRun), which is the `workflowRun` variable below.
+<!-- prettier-ignore -->
+import * as WhatIsATemporalCronJob from '../content/what-is-a-temporal-cron-job.md'
+
+The `ExecuteWorkflow` call returns an instance of [`WorkflowRun`](https://pkg.go.dev/go.temporal.io/sdk/client#WorkflowRun), which is the `workflowRun` variable below.
 
 ```go
   workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, app.YourWorkflowDefinition, param)
@@ -44,7 +47,7 @@ To wait on the result of Workflow Execution in the same process that invoked it,
 However, the result of a Workflow Execution can be obtained from a completely different process.
 All that is needed is the [Workflow Id](#).
 (A [Run Id](#) is optional if more than one closed Workflow Execution has the same Workflow Id.)
-The result of the Workflow Execution is available for as long as the Workflow Execution History remains in the system.
+The result of the Workflow Execution is available for as long as the Workflow Execution Event History remains in the system.
 
 <!-- TODO (See [How long do Workflow Execution Histories persist](#)). -->
 
@@ -63,3 +66,35 @@ Then call the `Get()` method on the instance of `WorkflowRun` that is returned, 
   }
   // ...
 ```
+
+### Get last completion result
+
+In the case of a <preview page={WhatIsATemporalCronJob}>Temporal Cron Job</preview> you may need to get the result of the previous Workflow Run and use it in the current Workflow Run.
+
+To do this, use the [`HasLastCompletionResult`](https://pkg.go.dev/go.temporal.io/sdk/workflow#HasLastCompletionResult) and [`GetLastCompletionResult`](https://pkg.go.dev/go.temporal.io/sdk/workflow#GetLastCompletionResult) APIs available from the [go.temporal.io/sdk/workflow](https://pkg.go.dev/go.temporal.io/sdk/workflow) package, directly in your Workflow code.
+
+
+```go
+type CronResult struct {
+  Count int
+}
+
+func YourCronWorkflowDefinition(ctx workflow.Context) (CronResult, error) {
+  count := 1
+
+  if workflow.HasLastCompletionResult(ctx) {
+    var lastResult CronResult
+    if err := workflow.GetLastCompletionResult(ctx, &lastResult); err == nil {
+      count = count + lastResult.Count        
+    }
+  }
+
+  newResult := CronResult {
+    Count: count,
+  }  
+  return newResult, nil
+}
+```
+
+This will work even if one of the cron Workflow Runs fails.
+The next Workflow Run gets the result of the last successfully Completed Workflow Run.

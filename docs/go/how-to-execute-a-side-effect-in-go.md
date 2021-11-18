@@ -1,6 +1,11 @@
 ---
-id: side-effect
-title: SideEffect
+id: how-to-execute-a-side-effect-in-go
+title: How to execute a Side Effect in Go
+sidebar_label: Side Effect
+description: TODO
+tags:
+  - developer-guide
+  - go
 ---
 
 `workflow.SideEffect` is useful for short, nondeterministic code snippets, such as getting a random
