@@ -148,11 +148,8 @@ Activities are Promises and you may retrieve multiple Activities from the same h
 ```ts
 export async function Workflow(name: string): Promise<string> {
   // destructuring multiple activities with the same options
-  const {
-    act1,
-    act2,
-    act3,
-  } = proxyActivities<typeof activities>(/* activityOptions */);
+  const { act1, act2, act3 } =
+    proxyActivities<typeof activities>(/* activityOptions */);
   await act1();
   await Promise.all([act2, act3]);
 }
