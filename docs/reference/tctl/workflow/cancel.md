@@ -16,7 +16,7 @@ The `tctl workflow cancel` command cancels a <preview page={WhatIsAWorkflowExecu
 
 Canceling a running Workflow Execution records a `WorkflowExecutionCancelRequested` event in the History. A new command task will be scheduled. After cancellation, the Workflow Execution can perform cleanup work.
 
-See also [`tctl workflow terminate`](.\terminate.md).
+See also [`tctl workflow terminate`](./terminate.md).
 
 `tctl workflow cancel <options> <arguments...>`
 
