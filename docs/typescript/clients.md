@@ -5,6 +5,9 @@ sidebar_label: Clients
 description: Workflow Clients are embedded in your application code, and connect to Temporal Server via gRPC. They are the only way to schedule new Workflow Executions with Temporal Server.
 ---
 
+<!-- prettier-ignore -->
+import * as WhatIsATemporalCronJob from '../content/what-is-a-temporal-cron-job.md'
+
 > **@temporalio/client** [![NPM](https://img.shields.io/npm/v/@temporalio/client)](https://www.npmjs.com/package/@temporalio/client) [API reference](https://typescript.temporal.io/api/namespaces/client) | [GitHub](https://github.com/temporalio/sdk-typescript/tree/main/packages/client)
 
 **Workflow Clients are embedded in your application code, and connect to Temporal Server via gRPC**.
@@ -207,7 +210,7 @@ const handle = await client.start(scheduledWorkflow, {
 
 :::info Should I use Cron Workflows or Timers?
 
-This section is specifically about [Temporal Cron Jobs](/docs/content/what-is-a-temporal-cron-job/), Workflows that have the `cronSchedule` option set in Temporal.
+This section is specifically about <preview page={WhatIsATemporalCronJob}>Temporal Cron Jobs</preview>, Workflows that have the `cronSchedule` option set in Temporal.
 Since Temporal Workflows have [Timers](/docs/typescript/workflows#timers), can loop indefinitely, and can spawn [Child Workflows](/docs/typescript/workflows#child-workflows), it is natural to ask when to use which.
 
 Cron Workflows are rigid and come with a lot of caveats.
@@ -215,10 +218,6 @@ They are a great choice if you have Workflows that need to run as rigidly as the
 However, if you have any advanced needs (including needing overlaps, or canceling individual executions without affecting the overall schedule), use Timers.
 
 :::
-
-import DistributedCron from '../shared/distributed-cron.md'
-
-<DistributedCron docUrl="https://typescript.temporal.io/api/interfaces/client.workflowoptions/#cronschedule" typeName="WorkflowOptions">
 
 You can set each workflow to repeat on a schedule with the `cronSchedule` option:
 
@@ -229,7 +228,7 @@ const handle = await client.start(scheduledWorkflow, {
 });
 ```
 
-</DistributedCron>
+Typescript SDK `workflowOptions` source code: https://typescript.temporal.io/api/interfaces/client.workflowoptions/#cronschedule
 
 ## Note: Child Workflows and External Workflows
 

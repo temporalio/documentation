@@ -15,7 +15,7 @@ import * as HowToSetRegisterWorkflowOptionsInGo from './how-to-set-registerworkf
 import * as HowToSetRegisterActivityOptionsInGo from './how-to-set-registeractivityoptions-in-go.md'
 import * as HowToSpawnAWorkflowExecutionInGo from './how-to-spawn-a-workflow-execution-in-go.md'
 
-Create a new instance of a [`Worker`](https://pkg.go.dev/go.temporal.io/sdk/worker#Worker) by calling [`worker.New()`](https://pkg.go.dev/go.temporal.io/sdk/worker#New), available via the [`go.temporal.io/sdk/worker`](go.temporal.io/sdk/worker) package and pass it the following parameters:
+Create a new instance of a [`Worker`](https://pkg.go.dev/go.temporal.io/sdk/worker#Worker) by calling [`worker.New()`](https://pkg.go.dev/go.temporal.io/sdk/worker#New), available via the `go.temporal.io/sdk/worker` package and pass it the following parameters:
 
 1. An instance of the The Temporal Go SDK `Client`.
 2. The name of the Task Queue that it will poll.

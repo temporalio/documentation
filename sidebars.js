@@ -88,7 +88,6 @@ module.exports = {
       collapsed: false,
       items: [
         "go/getting-started",
-
         "go/how-to-develop-a-workflow-definition-in-go",
         "go/how-to-develop-an-activity-definition-in-go",
         "go/how-to-spawn-an-activity-execution-in-go",
@@ -114,7 +113,6 @@ module.exports = {
         "go/testing",
         "go/versioning",
         "go/sessions",
-        "go/distributed-cron",
         "go/tracing",
         "go/search-apis",
         {

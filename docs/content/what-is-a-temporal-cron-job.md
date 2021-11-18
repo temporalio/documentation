@@ -82,5 +82,8 @@ Use the Workflow Id in any requests to Cancel or Terminate.
 <RelatedReadList
 readlist={[
 ["How to set a Cron Schedule in Go","/docs/go/how-to-set-startworkflowoptions-in-go/#cronschedule","developer guide"],
+["How to set a Cron Schedule in Java", "/docs/java/distributed-cron", "developer guide"],
+["How to set a Cron Schedule in PHP", "/docs/php/distributed-cron", "developer guide"],
+["How to set a Cron Schedule in Typescript", "/docs/typescript/clients", "developer guide"],
 ]}
 />
