@@ -9,6 +9,9 @@ tags:
 
 <!-- prettier-ignore -->
 import * as WhatIsAWorkflowExecution from '../../../content/what-is-a-workflow-execution.md'
+import * as WhatIsASearchAttribute from '../../../content/what-is-a-search-attribute.md'
+import * as WhatIsAWorkflowId from '../../../content/what-is-a-workflow-id.md'
+import * as WhatIsAWorkflowType from '../../../content/what-is-a-workflow-type.md'
 
 The `tctl workflow listall` command lists all open or closed <preview page={WhatIsAWorkflowExecution}>Workflow Executions</preview>.
 
