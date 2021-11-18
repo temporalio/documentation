@@ -30,4 +30,28 @@ import TctlWorkflowStart from './workflow/start.md'
 
 <TctlWorkflowStart/>
 
+## `run`
+
+import TctlWorkflowRun from './workflow/run.md'
+
+<TctlWorkflowRun/>
+
+## `cancel`
+
+import TctlWorkflowCancel from './workflow/cancel.md'
+
+<TctlWorkflowCancel/>
+
+## `signal`
+
+import TctlWorkflowSignal from './workflow/signal.md'
+
+<TctlWorkflowSignal/>
+
+## `terminate`
+
+import TctlWorkflowTerminate from './workflow/terminate.md'
+
+<TctlWorkflowTerminate/>
+
 ## _WIP; more pages TK..._
