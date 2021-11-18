@@ -101,7 +101,7 @@ The first approach might be to center everything around a database where an appl
 However, there are various drawbacks.
 
 - The most obvious one is that the application state machine of the customer's state quickly becomes extremely complicated.
-   For example, if a credit card charge attempt fails or sending an email fails due to a downstream system's unavailability, the state is now in limbo.
+  For example, if a credit card charge attempt fails or sending an email fails due to a downstream system's unavailability, the state is now in limbo.
 - Failed calls likely need to be retried for a long time, and these calls need to be throttled to not overload external resources.
 - There needs to be logic to handle corrupted customer records to avoid blocking the whole process.
 - Additionally, databases have performance and scalability limitations (eventually requiring sharding) and are not efficient for scenarios that require constant polling.
