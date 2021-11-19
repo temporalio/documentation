@@ -9,11 +9,11 @@ tags:
 
 Options used to specify metadata for a session
 
-| Field | Required | Type |
-| ----- | -------- | ---- |
-| [`ExecutionTimeout`](#executiontimeout) | No | `time.Duration` |
-| [`CreationTimeout`](#creationtimeout) | No | `time.Duration` |
-| [`HeartbeatTimeout`](#heartbeattimeout) | No | `time.Duration` |
+| Field                                   | Required | Type            |
+| --------------------------------------- | -------- | --------------- |
+| [`ExecutionTimeout`](#executiontimeout) | No       | `time.Duration` |
+| [`CreationTimeout`](#creationtimeout)   | No       | `time.Duration` |
+| [`HeartbeatTimeout`](#heartbeattimeout) | No       | `time.Duration` |
 
 ### ExecutionTimeout
 

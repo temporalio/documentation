@@ -73,7 +73,6 @@ In the case of a <preview page={WhatIsATemporalCronJob}>Temporal Cron Job</previ
 
 To do this, use the [`HasLastCompletionResult`](https://pkg.go.dev/go.temporal.io/sdk/workflow#HasLastCompletionResult) and [`GetLastCompletionResult`](https://pkg.go.dev/go.temporal.io/sdk/workflow#GetLastCompletionResult) APIs available from the [go.temporal.io/sdk/workflow](https://pkg.go.dev/go.temporal.io/sdk/workflow) package, directly in your Workflow code.
 
-
 ```go
 type CronResult struct {
   Count int
@@ -85,13 +84,13 @@ func YourCronWorkflowDefinition(ctx workflow.Context) (CronResult, error) {
   if workflow.HasLastCompletionResult(ctx) {
     var lastResult CronResult
     if err := workflow.GetLastCompletionResult(ctx, &lastResult); err == nil {
-      count = count + lastResult.Count        
+      count = count + lastResult.Count
     }
   }
 
   newResult := CronResult {
     Count: count,
-  }  
+  }
   return newResult, nil
 }
 ```

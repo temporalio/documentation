@@ -95,11 +95,12 @@ Workflow Definition code can not directly do the following:
 - Call an external API, conduct a file I/O operation, talk to another service, etc. (Use an Activity for these.)
 
 Additionally the Temporal Go SDK offers APIs to handle equivalent Go constructs:
- - `workflow.Now()` This is a replacement for `time.Now()`.
- - `workflow.Sleep()` This is a replacement for `time.Sleep()`.
- - `workflow.GetLogger()` This is to ensure that the provided logger does not duplicate logs during a replay.
- - `workflow.Go()` This is a replacement for the the `go` statement.
- - `workflow.Channel` This is a replacement for the native `chan` type.
-   Temporal provides support for both buffered and unbuffered channels.
- - `workflow.Selector` This is a replacement for the `select` statement. Learn more on the [Go SDK Selectors](https://docs.temporal.io/docs/go/selectors) page
- - `workflow.Context` This is a replacement for `context.Context`. Learn more on the [Go SDK Context Propagation](https://docs.temporal.io/docs/go/tracing) page.
+
+- `workflow.Now()` This is a replacement for `time.Now()`.
+- `workflow.Sleep()` This is a replacement for `time.Sleep()`.
+- `workflow.GetLogger()` This is to ensure that the provided logger does not duplicate logs during a replay.
+- `workflow.Go()` This is a replacement for the the `go` statement.
+- `workflow.Channel` This is a replacement for the native `chan` type.
+  Temporal provides support for both buffered and unbuffered channels.
+- `workflow.Selector` This is a replacement for the `select` statement. Learn more on the [Go SDK Selectors](https://docs.temporal.io/docs/go/selectors) page
+- `workflow.Context` This is a replacement for `context.Context`. Learn more on the [Go SDK Context Propagation](https://docs.temporal.io/docs/go/tracing) page.

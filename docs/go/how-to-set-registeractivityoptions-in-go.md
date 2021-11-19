@@ -11,11 +11,11 @@ Create an instance of a [`RegisterOptions`](https://pkg.go.dev/go.temporal.io/sd
 
 Options for registering an activity
 
-| Field | Required | Type |
-| ----- | -------- | ---- |
-| [`Name`](#name) | No | `string` |
-| [`DisableAlreadyRegisteredCheck`](#disablealreadyregisteredcheck) | No | `bool` |
-| [`SkipInvalidStructFunctions`](#skipinvalidstructfunctions) | No | `bool` |
+| Field                                                             | Required | Type     |
+| ----------------------------------------------------------------- | -------- | -------- |
+| [`Name`](#name)                                                   | No       | `string` |
+| [`DisableAlreadyRegisteredCheck`](#disablealreadyregisteredcheck) | No       | `bool`   |
+| [`SkipInvalidStructFunctions`](#skipinvalidstructfunctions)       | No       | `bool`   |
 
 ### `Name`
 
