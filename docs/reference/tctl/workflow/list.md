@@ -242,7 +242,7 @@ Alias: `-m`
 tctl workflow list --more
 ```
 
-### `pagesize`
+### `--pagesize`
 
 How to specify the maximum number of <preview page={WhatIsAWorkflowExecution}>Workflow Executions</preview> to list on a page. (By default, the `tctl workflow list` command lists 10 Workflow Executions per page.)
 

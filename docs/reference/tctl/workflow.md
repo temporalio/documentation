@@ -54,4 +54,16 @@ import TctlWorkflowTerminate from './workflow/terminate.md'
 
 <TctlWorkflowTerminate/>
 
+## `list`
+
+import TctlWorkflowList from './workflow/list.md'
+
+<TctlWorkflowList/>
+
+## `listall`
+
+import TctlWorkflowListall from './workflow/listall.md'
+
+<TctlWorkflowListall/>
+
 ## _WIP; more pages TK..._
