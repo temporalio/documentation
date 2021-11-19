@@ -45,7 +45,7 @@ As of time of writing, these specific versions used in our test pipelines and ac
 
 - **Cassandra v3.11 and v4.0**
 - **PostgreSQL v10.18 and v13.4**
-- **MySQL v5.7** (and v8.0 soon)
+- **MySQL v5.7 and v8.0**
 
 We will update these support ranges once a year and the release notes of each Temporal Server will declare when we plan to drop support for database versions reaching End of Life.
 Since Temporal Server primarily relies on core database functionality, we do not expect compatibility to break often.
