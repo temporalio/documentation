@@ -42,7 +42,8 @@ import Content from '../content/how-to-develop-a-worker-program-in-typescript.md
 
 <details>
 <summary>
-The Worker package embeds the <a href="https://github.com/temporalio/sdk-core">Temporal Rust Core SDK</a>, it comes pre-compiled for most installations.
+The Worker package embeds the <a href="https://github.com/temporalio/sdk-core">Temporal Rust Core SDK</a>.
+It comes pre-compiled for most installations.
 </summary>
 
 We've provided pre-compiled binaries for:
@@ -141,7 +142,7 @@ const result = await client.execute(myWorkflow); // taskQueue will resolve to 't
 
 // Option 2
 const result = await client.execute(myWorkflow, {
-  taskQueue: 'tutorial', // overrides wahtever was set as default
+  taskQueue: 'tutorial', // overrides whatever was set as default
 });
 ```
 

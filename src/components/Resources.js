@@ -13,7 +13,7 @@ const links = [
     type: "article",
     title: "Temporal Core Concepts",
     length: "20 min read",
-    url: "/docs/concepts/introduction",
+    url: "/docs/temporal-explained/introduction",
   },
   {
     type: "video",

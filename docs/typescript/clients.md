@@ -34,6 +34,7 @@ Create a [`WorkflowClient`](https://typescript.temporal.io/api/classes/client.wo
 
 ```ts
 import { Connection, WorkflowClient } from '@temporalio/client';
+
 const connection = new Connection();
 const client = new WorkflowClient(connection.service, {
   workflowDefaults: { taskQueue: 'tutorial' },

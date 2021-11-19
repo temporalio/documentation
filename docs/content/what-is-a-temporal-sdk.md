@@ -12,6 +12,8 @@ A Temporal SDK is a language-specific library that offers APIs to do the followi
 2. Develop Workflow Definitions
 3. Develop Worker Programs
 
+A Temporal SDK enables you to write your application code using the full power of the programming language, while the Temporal Platform handles the durability, availability, and scalability of the application.
+
 SDKs are available in the following languages:
 
 - [Go](/docs/go/getting-started)

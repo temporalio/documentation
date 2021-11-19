@@ -400,7 +400,7 @@ export function badExample() {
 
 Because Signal and Query Definitions are separate from Workflow Definitions, we can now compose them together:
 
-```js
+```ts
 // basic reusable Workflow component
 export async function unblocked() {
   let isBlocked = true;
@@ -631,7 +631,7 @@ const userInteraction = new Trigger<boolean>();
 const completeUserInteraction = defineSignal('completeUserInteraction');
 
 export async function myWorkflow(userId: string) {
-  setHandler(completeUserInteraction, () => userInteraction.resolve(true);) // programmatic resolve
+  setHandler(completeUserInteraction, () => userInteraction.resolve(true)); // programmatic resolve
   const userInteracted = await Promise.race([
     userInteraction,
     sleep('30 days'),
@@ -681,7 +681,7 @@ export async function countdownWorkflow(): Promise<void> {
     console.log('timer now set for: ' + new Date(deadline).toString());
   });
   setListener(timeLeftQuery, () => timer.deadline - Date.now());
-  await timer; // if you send in a signal witha  new time, this timer will resolve earlier!
+  await timer; // if you send in a signal with a new time, this timer will resolve earlier!
   console.log('countdown done!');
 }
 
@@ -700,7 +700,7 @@ export class UpdatableTimer implements PromiseLike<void> {
       this.deadlineUpdated = false;
       if (
         !(await condition(
-          () => this.deadlineUpdated
+          () => this.deadlineUpdated,
           this.#deadline - Date.now()
         ))
       ) {
@@ -748,7 +748,7 @@ const userInteraction = new Trigger<boolean>();
 const completeUserInteraction = defineSignal('completeUserInteraction');
 
 export async function myWorkflow(userId: string) {
-  setHandler(completeUserInteraction, () => userInteraction.resolve(true);) // programmatic resolve
+  setHandler(completeUserInteraction, () => userInteraction.resolve(true)); // programmatic resolve
   const userInteracted = await Promise.race([
     userInteraction,
     sleep('30 days'),
@@ -778,18 +778,16 @@ Child Workflows have similar APIs with [Temporal Clients](/docs/typescript/clien
 [`startChild`](https://typescript.temporal.io/api/namespaces/workflow/#startchild) starts a child workflow without awaiting completion, and returns a [`ChildWorkflowHandle`](https://typescript.temporal.io/api/interfaces/workflow.ChildWorkflowHandle):
 
 ```ts
-import { executeChild } from '@temporalio/workflow';
+import { startChild } from '@temporalio/workflow';
 
 export async function parentWorkflow(names: string[]) {
   const childHandle = await startChild(childWorkflow, {
-        args: [name],
-        // workflowId, // add business-meaningful workflow id here
-        // // regular workflow options apply here, with two additions (defaults shown):
-        // cancellationType: ChildWorkflowCancellationType.WAIT_CANCELLATION_COMPLETED,
-        // parentClosePolicy: ParentClosePolicy.PARENT_CLOSE_POLICY_TERMINATE
-      })
-    )
-  );
+    args: [name],
+    // workflowId, // add business-meaningful workflow id here
+    // // regular workflow options apply here, with two additions (defaults shown):
+    // cancellationType: ChildWorkflowCancellationType.WAIT_CANCELLATION_COMPLETED,
+    // parentClosePolicy: ParentClosePolicy.PARENT_CLOSE_POLICY_TERMINATE
+  });
   // you can use childHandle to signal, query, cancel, terminate, or get result here
 }
 ```
