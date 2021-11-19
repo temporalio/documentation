@@ -8,31 +8,45 @@ tags:
   - go
 ---
 
-`workflow.SideEffect` is useful for short, nondeterministic code snippets, such as getting a random
-value or generating a UUID.
-It executes the provided function once and records its result into the Workflow history.
-`workflow.SideEffect` does not re-execute upon replay, but instead returns the recorded result.
-It can be seen as an "inline" Activity.
+<!-- prettier-ignore -->
+import * as WhatIsASideEffect from '../content/what-is-a-side-effect.md'
 
-Something to note about `workflow.SideEffect` is that, unlike the Temporal guarantee of at-most-once execution for Activities, there is no such guarantee with `workflow.SideEffect`.
-Under certain failure conditions, `workflow.SideEffect` can end up executing a function more than once.
+Use the [`SideEffect`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SideEffect) API from the `go.temporal.io/sdk/workflow` package to execute a <preview page={WhatIsASideEffect}>Side Effect</preview> directly in your Workflow.
 
-If a `SideEffect` fails, the [Workflow Task](/docs/content/what-is-a-workflow-task) fails.
-After the timeout, Temporal reschedules and then re-executes the Workflow Task, giving `SideEffect` another chance to succeed.
-Do not return any data from `SideEffect` other than through its recorded return value.
+Pass it an instance of `context.Context` and the function to execute.
 
-The following sample demonstrates how to use `SideEffect`:
+The SideEffect returns a Future, an instance of [`converter.EncodedValue`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SideEffect).
+
+Use the `Get` method on the Future to retrieve the result of the Side Effect.
+
+### Correct implementation
+
+The following example demonstrates the correct way to use `SideEffect`:
 
 ```go
 encodedRandom := workflow.SideEffect(ctx, func(ctx workflow.Context) interface{} {
-        return rand.Intn(100)
+  return rand.Intn(100)
 })
 
 var random int
 encodedRandom.Get(&random)
-if random < 50 {
-        ....
-} else {
-        ....
+// ...
 }
 ```
+
+### Incorrect implementation
+
+The following example demonstrates how NOT to use `SideEffect`:
+
+```go
+// Warning this is an incorrect example.
+// This code undeterministic
+var random int
+workflow.SideEffect(func(ctx workflow.Context) interface{} {
+       random = rand.Intn(100)
+       return nil
+})
+// random will always be 0 in replay, thus this code is non-deterministic
+```
+
+On replay the provided function is not executed, the random number will always be 0, and the Workflow Execution could take a different path, breaking determinism.

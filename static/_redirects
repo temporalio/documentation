@@ -35,7 +35,7 @@
 /docs/go/continue-as-new        /docs/go/workflows#large-event-histories
 /docs/go-create-workflows         /docs/go/create-workflows
 /docs/go/create-workflows         /docs/go/workflows
-/docs/go-distributed-cron         /docs/go/distributed-cron
+/docs/go/distributed-cron         /docs/content/what-is-a-temporal-cron-job
 /docs/go-error-handling         /docs/go/error-handling
 /docs/go-hello-world        /docs/go/hello-world-tutorial
 /docs/go-queries        /docs/go/queries
@@ -45,7 +45,7 @@
 /docs/go-search-apis        /docs/go/search-apis
 /docs/go-selectors        /docs/go/selectors
 /docs/go-sessions         /docs/go/sessions
-/docs/go-side-effects         /docs/go/side-effects
+/docs/go/side-effects         /docs/go/how-to-execute-a-side-effect-in-go
 /docs/go-signals        /docs/go/signals
 /docs/go-sync-vs-async-start        /docs/go/sync-vs-async-start
 /docs/go/sync-vs-async-start        /docs/go/workflows/#how-to-start-a-workflow
