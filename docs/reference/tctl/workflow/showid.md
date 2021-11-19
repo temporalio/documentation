@@ -1,7 +1,7 @@
 ---
 id: showid
 title: tctl workflow showid
-description: How to show Workflow History for a specified Workflow Id and optional Run Id.
+description: How to show Workflow History for a specified Workflow Id and optional Run Id using tctl.
 tags:
   - reference
   - tctl
@@ -15,7 +15,7 @@ The `tctl workflow showid` command shows Workflow History for the specified <pre
 
 `tctl workflow showid <workflow_id> [<run_id>] [<options>] [<arguments...>]`
 
-This command is a shortcut for `show --workflow_id <workflowid> --run_id <runid>`.
+This command is a shortcut for `tctl workflow show --workflow_id <workflowid> [--run_id <runid>]`.
 
 The following options modify the behavior of the command.
 

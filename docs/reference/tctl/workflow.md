@@ -66,4 +66,46 @@ import TctlWorkflowListall from './workflow/listall.md'
 
 <TctlWorkflowListall/>
 
+## `listarchived`
+
+import TctlWorkflowListarchived from './workflow/listarchived.md'
+
+<TctlWorkflowListarchived/>
+
+## `scan`
+
+import TctlWorkflowScan from './workflow/scan.md'
+
+<TctlWorkflowScan/>
+
+## `count`
+
+import TctlWorkflowCount from './workflow/count.md'
+
+<TctlWorkflowCount/>
+
+## `query`
+
+import TctlWorkflowQuery from './workflow/query.md'
+
+<TctlWorkflowQuery/>
+
+## `stack`
+
+import TctlWorkflowStack from './workflow/stack.md'
+
+<TctlWorkflowStack/>
+
+## `describe`
+
+import TctlWorkflowDescribe from './workflow/describe.md'
+
+<TctlWorkflowDescribe/>
+
+## `describeid`
+
+import TctlWorkflowDescribeid from './workflow/describeid.md'
+
+<TctlWorkflowDescribeid/>
+
 ## _WIP; more pages TK..._

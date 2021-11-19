@@ -1,6 +1,7 @@
 ---
+id: terminate
 title: tctl workflow terminate
-description: How to terminate a Workflow Execution.
+description: How to terminate a Workflow Execution using tctl.
 tags:
   - reference
   - tctl

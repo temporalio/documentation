@@ -1,7 +1,7 @@
 ---
 id: signal
 title: tctl workflow signal
-description: How to Signal a Workflow Execution.
+description: How to Signal a Workflow Execution using tctl.
 tags:
   - reference
   - tctl

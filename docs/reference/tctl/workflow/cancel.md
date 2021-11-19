@@ -1,7 +1,7 @@
 ---
 id: cancel
 title: tctl workflow cancel
-description: How to cancel a Workflow Execution.
+description: How to cancel a Workflow Execution using tctl.
 tags:
   - reference
   - tctl
