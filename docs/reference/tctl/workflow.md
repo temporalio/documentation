@@ -108,4 +108,20 @@ import TctlWorkflowDescribeid from './workflow/describeid.md'
 
 <TctlWorkflowDescribeid/>
 
-## _WIP; more pages TK..._
+## `observe`
+
+import TctlWorkflowObserve from './workflow/observe.md'
+
+<TctlWorkflowObserve/>
+
+## `reset`
+
+import TctlWorkflowReset from './workflow/reset.md'
+
+<TctlWorkflowReset/>
+
+## `reset-batch`
+
+import TctlWorkflowResetbatch from './workflow/reset-batch.md'
+
+<TctlWorkflowResetbatch/>

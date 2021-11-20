@@ -101,7 +101,8 @@ tctl workflow list --print_json
 
 ### `--open`
 
-How to list open <preview page={WhatIsAWorkflowExecution}>Workflow Executions</preview>. (By default, the `tctl workflow list` command lists closed Workflow Executions.)
+How to list open <preview page={WhatIsAWorkflowExecution}>Workflow Executions</preview>.
+(By default, the `tctl workflow list` command lists closed Workflow Executions.)
 
 Alias: `--op`
 
@@ -199,7 +200,8 @@ tctl workflow list --workflow_type <name>
 
 ### `--status`
 
-How to specify the status of a <preview page={WhatIsAWorkflowExecution}>Workflow Executions</preview>. Supported values are as follows:
+How to specify the status of a <preview page={WhatIsAWorkflowExecution}>Workflow Executions</preview>.
+Supported values are as follows:
 
 - `completed`
 - `failed`
@@ -232,7 +234,8 @@ tctl workflow list --query <value>
 
 ### `--more`
 
-How to list more than one page. (By default, the `tctl workflow list` command lists one page of results.)
+How to list more than one page.
+(By default, the `tctl workflow list` command lists one page of results.)
 
 Alias: `-m`
 
@@ -244,7 +247,8 @@ tctl workflow list --more
 
 ### `--pagesize`
 
-How to specify the maximum number of <preview page={WhatIsAWorkflowExecution}>Workflow Executions</preview> to list on a page. (By default, the `tctl workflow list` command lists 10 Workflow Executions per page.)
+How to specify the maximum number of <preview page={WhatIsAWorkflowExecution}>Workflow Executions</preview> to list on a page.
+(By default, the `tctl workflow list` command lists 10 Workflow Executions per page.)
 
 Alias: `--ps`
 

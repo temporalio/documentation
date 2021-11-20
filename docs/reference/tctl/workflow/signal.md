@@ -57,7 +57,8 @@ tctl workflow signal --name <name>
 
 ### `--input`
 
-How to pass input for the <preview page={WhatIsASignal}>Signal</preview>. Input must be in JSON format.
+How to pass input for the <preview page={WhatIsASignal}>Signal</preview>.
+Input must be in JSON format.
 
 Alias: `-i`
 

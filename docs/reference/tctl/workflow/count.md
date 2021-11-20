@@ -11,7 +11,8 @@ tags:
 import * as WhatIsAWorkflowExecution from '../../../content/what-is-a-workflow-execution.md'
 import * as WhatIsASearchAttribute from '../../../content/what-is-a-search-attribute.md'
 
-The `tctl workflow count` command counts <preview page={WhatIsAWorkflowExecution}>Workflow Executions</preview>. This command requires Elasticsearch to be enabled.
+The `tctl workflow count` command counts <preview page={WhatIsAWorkflowExecution}>Workflow Executions</preview>.
+This command requires Elasticsearch to be enabled.
 
 `tctl workflow count <option> <arguments...>`
 

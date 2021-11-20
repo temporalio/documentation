@@ -113,7 +113,8 @@ tctl workflow listarchived --query <value>
 
 ### `--pagesize`
 
-How to specify the maximum number of <preview page={WhatIsAWorkflowExecution}>Workflow Executions</preview> to list on a page. (By default, the `tctl workflow listarchived` command lists 100 Workflow Executions per page.)
+How to specify the maximum number of <preview page={WhatIsAWorkflowExecution}>Workflow Executions</preview> to list on a page.
+(By default, the `tctl workflow listarchived` command lists 100 Workflow Executions per page.)
 
 Alias: `--ps`
 

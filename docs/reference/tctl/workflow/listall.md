@@ -15,7 +15,8 @@ import * as WhatIsAWorkflowType from '../../../content/what-is-a-workflow-type.m
 
 The `tctl workflow listall` command lists all open or closed <preview page={WhatIsAWorkflowExecution}>Workflow Executions</preview>.
 
-By default, this command lists all closed Workflow Executions. To list open Workflow Executions, use the `--open` option.
+By default, this command lists all closed Workflow Executions.
+To list open Workflow Executions, use the `--open` option.
 
 See also [`tctl workflow list`](./list.md), [`tctl workflow listarchived`](./listarchived.md), and [`tctl workflow scan`](./scan.md).
 
@@ -97,7 +98,8 @@ tctl workflow listall --print_json
 
 ### `--open`
 
-How to list open <preview page={WhatIsAWorkflowExecution}>Workflow Executions</preview>. (By default, the `tctl workflow listall` command lists closed Workflow Executions.)
+How to list open <preview page={WhatIsAWorkflowExecution}>Workflow Executions</preview>.
+(By default, the `tctl workflow listall` command lists closed Workflow Executions.)
 
 Alias: `--op`
 
@@ -195,7 +197,8 @@ tctl workflow listall --workflow_type <name>
 
 ### `--status`
 
-How to specify the status of a <preview page={WhatIsAWorkflowExecution}>Workflow Executions</preview>. Supported values are as follows:
+How to specify the status of a <preview page={WhatIsAWorkflowExecution}>Workflow Executions</preview>.
+Supported values are as follows:
 
 - `completed`
 - `failed`

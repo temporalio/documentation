@@ -11,9 +11,11 @@ tags:
 import * as WhatIsAWorkflowExecution from '../../../content/what-is-a-workflow-execution.md'
 import * as WhatIsASearchAttribute from '../../../content/what-is-a-search-attribute.md'
 
-The `tctl workflow scan` command lists <preview page={WhatIsAWorkflowExecution}>Workflow Executions</preview>. It is faster than the `tctl workflow listall` command, but the results are not sorted.
+The `tctl workflow scan` command lists <preview page={WhatIsAWorkflowExecution}>Workflow Executions</preview>.
+It is faster than the `tctl workflow listall` command, but the results are not sorted.
 
-By default, this command lists a maximum of 2000 Workflow Executions. To set the size of a page, use the `--pagesize` option.
+By default, this command lists a maximum of 2000 Workflow Executions.
+To set the size of a page, use the `--pagesize` option.
 
 See also [`tctl workflow list`](./list.md), [`tctl workflow listall`](./listall.md), and [`tctl workflow listarchived`](./listarchived.md).
 
@@ -95,7 +97,8 @@ tctl workflow scan --print_json
 
 ### `--pagesize`
 
-How to specify the maximum number of <preview page={WhatIsAWorkflowExecution}>Workflow Executions</preview> to list on a page. (By default, the `tctl workflow scan` command lists 2000 Workflow Executions per page.)
+How to specify the maximum number of <preview page={WhatIsAWorkflowExecution}>Workflow Executions</preview> to list on a page.
+(By default, the `tctl workflow scan` command lists 2000 Workflow Executions per page.)
 
 Alias: `--ps`
 

@@ -14,7 +14,9 @@ import * as WhatIsARunId from '../../../content/what-is-a-run-id.md'
 
 The `tctl workflow cancel` command cancels a <preview page={WhatIsAWorkflowExecution}>Workflow Execution</preview>.
 
-Canceling a running Workflow Execution records a `WorkflowExecutionCancelRequested` event in the History. A new command task will be scheduled. After cancellation, the Workflow Execution can perform cleanup work.
+Canceling a running Workflow Execution records a `WorkflowExecutionCancelRequested` event in the History.
+A new command task will be scheduled.
+After cancellation, the Workflow Execution can perform cleanup work.
 
 See also [`tctl workflow terminate`](./terminate.md).
 

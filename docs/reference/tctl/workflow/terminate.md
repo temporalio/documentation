@@ -14,7 +14,8 @@ import * as WhatIsARunId from '../../../content/what-is-a-run-id.md'
 
 The `tctl workflow terminate` command terminates a <preview page={WhatIsAWorkflowExecution}>Workflow Execution</preview>.
 
-Terminating a running Workflow Execution records a `WorkflowExecutionTerminated` event as the closing event in the History. No more command tasks will be scheduled.
+Terminating a running Workflow Execution records a `WorkflowExecutionTerminated` event as the closing event in the History.
+No more command tasks will be scheduled.
 
 See also [`tctl workflow cancel`](./cancel.md).
 

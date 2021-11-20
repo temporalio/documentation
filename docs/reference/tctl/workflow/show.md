@@ -106,7 +106,8 @@ tctl workflow show --print_event_version
 
 ### `--event_id`
 
-How to print the details of a specified event. The default value is 0.
+How to print the details of a specified event.
+The default value is 0.
 
 Alias: `--eid`
 
@@ -118,7 +119,8 @@ tctl workflow show --event_id <id>
 
 ### `--max_field_length`
 
-How to specify the maximum length for each attribute field. The default value is 500.
+How to specify the maximum length for each attribute field.
+The default value is 500.
 
 Alias: `--maxl`
 
