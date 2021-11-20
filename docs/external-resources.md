@@ -49,7 +49,7 @@ _Don't forget our own [Temporal Cluster docs](/docs/content/what-is-a-temporal-c
 
 - [Polyglot Microservices with gRPC](https://www.redhat.com/architect/grpc-use-cases) on the Red Hat blog
 
-  > Temporal's benefit is that developers can implement activities easily in a variety of languages. Each activity sends its mission-critical data to a gRPC client that forwards it to a gRPC server. The gRPC server then passes all that data from those language-specific tasks onto the backend Temporal service. Temporal does the heavy lifting of ensuring execution in the face of danger, such as a momentary network outage or an unexpected slowdown in disk access. 
+  > Temporal's benefit is that developers can implement activities easily in a variety of languages. Each activity sends its mission-critical data to a gRPC client that forwards it to a gRPC server. The gRPC server then passes all that data from those language-specific tasks onto the backend Temporal service. Temporal does the heavy lifting of ensuring execution in the face of danger, such as a momentary network outage or an unexpected slowdown in disk access.
 
 - [Using Temporal to outsource operational concerns](https://www.jcheng.org/post/workflow-orchestration-1.1/) by Jon Cheng
 

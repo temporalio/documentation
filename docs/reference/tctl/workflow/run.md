@@ -1,7 +1,7 @@
 ---
-id: start
-title: tctl workflow start
-description: How to start a new Workflow Execution using tctl.
+id: run
+title: tctl workflow run
+description: How to start a new Workflow Execution and get Workflow progress using tctl.
 tags:
   - reference
   - tctl
@@ -17,9 +17,9 @@ import * as WhatIsAWorkflowTask from '../../../content/what-is-a-workflow-task.m
 import * as WhatIsAWorkflowIdReusePolicy from '../../../content/what-is-a-workflow-id-reuse-policy.md'
 import * as WhatIsASearchAttribute from '../../../content/what-is-a-search-attribute.md'
 
-The `tctl workflow start` command starts a new <preview page={WhatIsAWorkflowExecution}>Workflow Execution</preview>.
+The `tctl workflow run` command starts a new <preview page={WhatIsAWorkflowExecution}>Workflow Execution</preview> and can show Workflow progress.
 
-`tctl workflow start <options> <arguments...>`
+`tctl workflow run <options> <arguments...>`
 
 The following options modify the behavior of the command.
 
@@ -32,7 +32,7 @@ Alias: `--tq`
 **Example**
 
 ```
-tctl workflow start --taskqueue <name>
+tctl workflow run --taskqueue <name>
 ```
 
 ### `--workflow_id`
@@ -44,7 +44,7 @@ Aliases: `--wid`, `-w`
 **Example**
 
 ```
-tctl workflow start --workflow_id <id>
+tctl workflow run --workflow_id <id>
 ```
 
 ### `--workflow_type`
@@ -56,7 +56,7 @@ Alias: `--wt`
 **Example**
 
 ```
-tctl workflow start --workflow_type <name>
+tctl workflow run --workflow_type <name>
 ```
 
 ### `--execution_timeout`
@@ -69,7 +69,7 @@ Alias: `--et`
 **Example**
 
 ```
-tctl workflow start --execution_timeout <seconds>
+tctl workflow run --execution_timeout <seconds>
 ```
 
 ### `--workflow_task_timeout`
@@ -82,17 +82,17 @@ Alias: `--wtt`
 **Example**
 
 ```
-tctl workflow start --workflow_task_timeout <seconds>
+tctl workflow run --workflow_task_timeout <seconds>
 ```
 
 ### `--cron`
 
-How to specify a [Cron Schedule](/docs/content/what-is-a-temporal-cron-job/#cron-schedules).
+How to specify a [Cron Schedule](../../../content/what-is-a-temporal-cron-job/#cron-schedules).
 
 **Example**
 
 ```
-tctl workflow start --cron <string>
+tctl workflow run --cron <string>
 ```
 
 ### `--workflowidreusepolicy`
@@ -105,24 +105,23 @@ Values: `AllowDuplicate`, `AllowDuplicateFailedOnly`, `RejectDuplicate`
 **Examples**
 
 ```
-tctl workflow start --workflowidreusepolicy AllowDuplicate
-tctl workflow start --workflowidreusepolicy AllowDuplicateFailedOnly
-tctl workflow start --workflowidreusepolicy RejectDuplicate
+tctl workflow run --workflowidreusepolicy AllowDuplicate
+tctl workflow run --workflowidreusepolicy AllowDuplicateFailedOnly
+tctl workflow run --workflowidreusepolicy RejectDuplicate
 ```
 
 ### `--input`
 
 How to pass input for the Workflow.
 Input must be in JSON format.
-For multiple JSON objects, pass each in a separate `--input` option.
-Use `null` for null values.
+For multiple JSON objects, pass each in a separate `--input` option. Use `null` for null values.
 
 Alias: `-i`
 
 **Example**
 
 ```
-tctl workflow start --input <json>
+tctl workflow run --input <json>
 ```
 
 ### `--input_file`
@@ -136,7 +135,7 @@ Alias: `--if`
 **Example**
 
 ```
-tctl workflow start --input_file <filename>
+tctl workflow run --input_file <filename>
 ```
 
 ### `--memo_key`
@@ -147,7 +146,7 @@ For multiple keys, concatenate them and use spaces as separators.
 **Example**
 
 ```
-tctl workflow start --memo_key <key>
+tctl workflow run --memo_key <key>
 ```
 
 ### `--memo`
@@ -160,7 +159,7 @@ The order must match the order of keys in `--memo_key`.
 **Example**
 
 ```
-tctl workflow start --memo <json>
+tctl workflow run --memo <json>
 ```
 
 ### `--memo_file`
@@ -172,7 +171,7 @@ The order must match the order of keys in `--memo_key`.
 **Example**
 
 ```
-tctl workflow start --memo_file <filename>
+tctl workflow run --memo_file <filename>
 ```
 
 ### `--search_attr_key`
@@ -185,7 +184,7 @@ To list valid keys, use the `tctl cluster get-search-attr` command.
 **Example**
 
 ```
-tctl workflow start --search_attr_key <key>
+tctl workflow run --search_attr_key <key>
 ```
 
 ### `--search_attr_value`
@@ -199,5 +198,30 @@ To list valid keys and value types, use the `tctl cluster get-search-attr` comma
 **Example**
 
 ```
-tctl workflow start --search_attr_value <value>
+tctl workflow run --search_attr_value <value>
+```
+
+### `--show_detail`
+
+How to get event details.
+
+Alias: `--sd`
+
+**Example**
+
+```
+tctl workflow run --show_detail
+```
+
+### `--max_field_length`
+
+How to specify the maximum length for each attribute field.
+The default value is 0.
+
+Alias: `--maxl`
+
+**Example**
+
+```
+tctl workflow run --max_field_length <length>
 ```
