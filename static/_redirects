@@ -6,7 +6,6 @@
 /docs/sdks-introduction         /application-development
 /docs/get-started         /
 /docs/glossary        /docs/reference/glossary
-/docs/node/*        /docs/typescript/:splat
 
 #
 # Concept pages redirects
@@ -22,6 +21,12 @@
 /docs/task-queues         /docs/concepts/task-queues
 /docs/concept-workers         /docs/concepts/workers
 /docs/concept-namespaces        /docs/server-namespaces
+
+#
+# TS pages redirects
+#
+/docs/node/*        /docs/typescript/:splat
+/docs/typescript/getting-started        /docs/typescript/introduction#getting-started
 
 #
 # Go pages redirects

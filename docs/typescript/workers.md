@@ -136,7 +136,7 @@ import { Connection, WorkflowClient } from '@temporalio/client';
 const connection = new Connection();
 const client = new WorkflowClient();
 const result = await client.execute(myWorkflow, {
-  taskQueue: 'testhttp' // required
+  taskQueue: 'testhttp', // required
   workflowId: 'business-meaningful-id', // also required but not the point
 });
 ```

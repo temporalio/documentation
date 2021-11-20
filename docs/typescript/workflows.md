@@ -777,14 +777,12 @@ import { startChild } from '@temporalio/workflow';
 
 export async function parentWorkflow(names: string[]) {
   const childHandle = await startChild(childWorkflow, {
-        args: [name],
-        // workflowId, // add business-meaningful workflow id here
-        // // regular workflow options apply here, with two additions (defaults shown):
-        // cancellationType: ChildWorkflowCancellationType.WAIT_CANCELLATION_COMPLETED,
-        // parentClosePolicy: ParentClosePolicy.PARENT_CLOSE_POLICY_TERMINATE
-      })
-    )
-  );
+    args: [name],
+    // workflowId, // add business-meaningful workflow id here
+    // // regular workflow options apply here, with two additions (defaults shown):
+    // cancellationType: ChildWorkflowCancellationType.WAIT_CANCELLATION_COMPLETED,
+    // parentClosePolicy: ParentClosePolicy.PARENT_CLOSE_POLICY_TERMINATE
+  });
   // you can use childHandle to signal or get result here
   await childHandle.signal('anySignal');
   const result = childHandle.result();
