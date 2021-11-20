@@ -1,10 +1,10 @@
 ---
 id: introduction
-title: System tooling introduction
+title: Temporal Devtools introduction
 label: Introduction
 ---
 
 There are currently two ways, outside of application code, to visualize the state of things and interact with the Temporal system.
 
-- [`tctl` (CLI)](/docs/system-tools/tctl)
-- [Temporal Web UI](/docs/system-tools/web-ui)
+- [`tctl` (CLI)](/docs/devtools/tctl)
+- [Temporal Web UI](/docs/devtools/web-ui)

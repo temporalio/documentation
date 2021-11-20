@@ -27,13 +27,13 @@ To uniquely identify the Workflow, we need to pass in the `workflowID` and `runI
 Typically, we signal a Workflow from a different process, like a [starter](/docs/go/hello-world-tutorial/#workflow-starter).
 
 ```go
-temporal, err := client.NewClient(client.Options{})
+temporalClient, err := client.NewClient(client.Options{})
 if err != nil {
     log.Fatalln("Unable to create Temporal client", err)
     return
 }
 
-err = temporal.SignalWorkflow(context.Background(), workflowID, runID, signalName, signalVal)
+err = temporalClient.SignalWorkflow(context.Background(), workflowID, runID, signalName, signalVal)
 if err != nil {
 	log.Fatalln("Error signaling client", err)
 	return

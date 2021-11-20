@@ -78,15 +78,15 @@ function Footer() {
       items: [
         {
           label: "Core concepts",
-          to: "/docs/concepts/introduction",
+          to: "/docs/temporal-explained/introduction",
         },
         {
           label: "Temporal Server",
           to: "/docs/server/introduction",
         },
         {
-          label: "System Tools",
-          to: "/docs/system-tools/introduction",
+          label: "DevTools",
+          to: "/docs/devtools/introduction",
         },
         {
           label: "Glossary",

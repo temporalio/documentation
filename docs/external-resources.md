@@ -20,8 +20,6 @@ _Don't forget our own [Temporal Cluster docs](/docs/content/what-is-a-temporal-c
 - [Maxim Fateev on Temporal Origin Story](/blog/oss-startups-podcast) on the OSS Startups Podcast (41 min listen)
 - [Temporal Product with Ryland Goldstein](https://softwareengineeringdaily.com/2021/05/08/temporal-product-managing-state-with-ryland-goldstein/) on Software Engineering Daily (53 min listen)
 - [Temporal Developer Experience with swyx](https://devtools.fm/episode/13) on Devtools.fm (56 min listen)
-- 🆕 [Intro to Temporal Workshop](https://www.youtube.com/watch?v=UwdGmdTO3Ts) by Márk Sági-Kazár (3 hour full workshop)
-- [A Practical Approach to Temporal Architecture](https://mikhail.io/2020/10/practical-approach-to-temporal-architecture/) by Mikhail Shilkov (4 min read)
 - Temporal's previous iteration was Cadence, which shares a lot of the same design principles:
   - [Cadence Architecture Talk](https://www.youtube.com/watch?v=5M5eiNBUf4Q) (24 min) by Samar Abbas at Uber Cadence meetup
   - [Cadence: Micro service Architecture Beyond Request/Response](https://www.youtube.com/watch?v=BJwFxqdSx4Y) (34 min) by Maxim Fateev at Data@Scale 2017
@@ -49,6 +47,10 @@ _Don't forget our own [Temporal Cluster docs](/docs/content/what-is-a-temporal-c
 
   > Using code, it aims to hide the complexity of building with microservices across distributed systems. It employs **durable virtual memory not linked to a specific process that preserves the application state** despite a whole range of possible failures.
 
+- [Polyglot Microservices with gRPC](https://www.redhat.com/architect/grpc-use-cases) on the Red Hat blog
+
+  > Temporal's benefit is that developers can implement activities easily in a variety of languages. Each activity sends its mission-critical data to a gRPC client that forwards it to a gRPC server. The gRPC server then passes all that data from those language-specific tasks onto the backend Temporal service. Temporal does the heavy lifting of ensuring execution in the face of danger, such as a momentary network outage or an unexpected slowdown in disk access.
+
 - [Using Temporal to outsource operational concerns](https://www.jcheng.org/post/workflow-orchestration-1.1/) by Jon Cheng
 
   > Unlike Step Functions and Conductor, the entire Temporal Workflow is defined by code. This makes the behavior of the entire program easier to understand. Moreover, for users of the Go or Java SDK, the users may take advantage of the compiler to catch a wide array of errors as well as improve quality in a large team. Then code is guaranteed to execute as you specified on the Temporal Platform. **All of the operational stuff: Retries, recovery, persistent state, message queues, scaling, work distribution, tracing and monitoring are all handled by the platform itself.** This really is amazing stuff! If C simplified writng portable code, and GC simplified memory management, and serverless simplified scalable architectures, Temporal simplifies implementing a computer program on top of a fragile, distributed system.
@@ -61,13 +63,15 @@ _Don't forget our own [Temporal Cluster docs](/docs/content/what-is-a-temporal-c
 
 _Note: Each of [our SDK docs](/application-development) have a Hello World and Run Your First App tutorial!_
 
+- [A Practical Approach to Temporal Architecture](https://mikhail.io/2020/10/practical-approach-to-temporal-architecture/) by Mikhail Shilkov (4 min read)
 - (Go) [Writing your first Workflow](https://www.youtube.com/watch?v=taKrIWt6KMY&feature=youtu.be) by Ryland Goldstein (20 min watch)
 - (Go) [Writing a Workflow, Simulating Failures, Comparing Retries with Apache Airflow, and Testing](https://www.jcheng.org/post/workflow-orchestration-1.2/) by Jon Cheng (8 min read)
+- (Go) [Intro to Temporal Workshop](https://www.youtube.com/watch?v=UwdGmdTO3Ts) by Márk Sági-Kazár (3 hour full workshop)
 - (Español) [Construye aplicaciones invencibles con Temporal](https://sistecma.github.io/2021/02/04/aplicaciones-invencibles-con-temporal.html) y [Aplicando el patrón SAGA en tus microservicios construidos](https://sistecma.github.io/2021/03/04/aplicando-saga-en-microservicios-con-temporal.html) by Hernán Moreno
 - [Temporal - fault tolerant orchestration platform](https://www.youtube.com/watch?v=7dnutdT24MM&list=PLU1vS0speL2ZbTPg-aU2Rw2s6IPsTVoCF&index=49) at DevConf US by Tihomir Surdilovic (36 min talk + Q&A)
 - [Why Temporal - the iPhone of System Design](https://www.swyx.io/why-temporal/) by swyx (19 min read)
-- _submit yours [here](https://github.com/temporalio/documentation/edit/master/docs/external-resources.md)!_
 - (PHP) [Fault tolerant workflow orchestration on PHP](https://www.youtube.com/watch?v=pdxHkIqX62A) at PHPKonf 2021 by Anton Titov (37 min talk)
+- _submit yours [here](https://github.com/temporalio/documentation/edit/master/docs/external-resources.md)!_
 
 ## Temporal users
 

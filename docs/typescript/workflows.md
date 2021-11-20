@@ -364,21 +364,18 @@ let state = await handle.query<number, [string]>('print', 'Count: ');
 
 #### Notes on Signals
 
-`WorkflowHandle.signal` returns a Promise that only resolves when Temporal Server has persisted receipt of the Signal, before the Workflow's Signal handler is called.
-This Promise resolves with no value; **Signal handlers cannot return data to the caller.**
-
-:::info No Synchronous Updates
-
-A common request is for a Signal to be invoked with a bad argument, causing a validation error.
-However Temporal has no way to surface the error to the external invocation.
-Signals and Queries are always asynchronous, in other words, **a Signal always succeeds**.
-
-The solution to this is "Synchronous Update" and we plan to add it in future.
+- Signal handlers are only guaranteed to be called in order **per Signal Type**, not across all of them.
+  If you need strict ordering across multiple Signals, combine them into one Signal Type and use a `switch` statement.
+- `WorkflowHandle.signal` resolves as soon as Temporal Server has persisted the Signal, before the Workflow's Signal handler is called.
+- `WorkflowHandle.signal` Promise resolves with no value; **Signal handlers cannot return data to the caller.**
+- **No Synchronous Updates**.
+  Users often want Signals to return a value, for example, a validation error.
+  However Temporal has no way to surface any error to the external invocation.
+  Signals are always asynchronous, in other words, **a Signal always succeeds**.
+  Long term, the solution to this is "Synchronous Update" and we plan to add it in future.
 
 For now [the best workaround](https://community.temporal.io/t/signalling-system-human-driven-workflows/160/2) is to use a Query to return Workflow state after signaling.
 Temporal guarantees read-after-write consistency of Signals-followed-by-Queries.
-
-:::
 
 #### Notes on Queries
 
@@ -403,7 +400,7 @@ export function badExample() {
 
 Because Signal and Query Definitions are separate from Workflow Definitions, we can now compose them together:
 
-```js
+```ts
 // basic reusable Workflow component
 export async function unblocked() {
   let isBlocked = true;
@@ -634,7 +631,7 @@ const userInteraction = new Trigger<boolean>();
 const completeUserInteraction = defineSignal('completeUserInteraction');
 
 export async function myWorkflow(userId: string) {
-  setHandler(completeUserInteraction, () => userInteraction.resolve(true);) // programmatic resolve
+  setHandler(completeUserInteraction, () => userInteraction.resolve(true)); // programmatic resolve
   const userInteracted = await Promise.race([
     userInteraction,
     sleep('30 days'),
@@ -684,7 +681,7 @@ export async function countdownWorkflow(): Promise<void> {
     console.log('timer now set for: ' + new Date(deadline).toString());
   });
   setListener(timeLeftQuery, () => timer.deadline - Date.now());
-  await timer; // if you send in a signal witha  new time, this timer will resolve earlier!
+  await timer; // if you send in a signal with a new time, this timer will resolve earlier!
   console.log('countdown done!');
 }
 
@@ -703,7 +700,7 @@ export class UpdatableTimer implements PromiseLike<void> {
       this.deadlineUpdated = false;
       if (
         !(await condition(
-          () => this.deadlineUpdated
+          () => this.deadlineUpdated,
           this.#deadline - Date.now()
         ))
       ) {
@@ -751,7 +748,7 @@ const userInteraction = new Trigger<boolean>();
 const completeUserInteraction = defineSignal('completeUserInteraction');
 
 export async function myWorkflow(userId: string) {
-  setHandler(completeUserInteraction, () => userInteraction.resolve(true);) // programmatic resolve
+  setHandler(completeUserInteraction, () => userInteraction.resolve(true)); // programmatic resolve
   const userInteracted = await Promise.race([
     userInteraction,
     sleep('30 days'),
@@ -791,7 +788,7 @@ export async function parentWorkflow(names: string[]) {
   // you can use childHandle to signal or get result here
   await childHandle.signal('anySignal');
   const result = childHandle.result();
-  // ...
+  // you can use childHandle to signal, query, cancel, terminate, or get result here
 }
 ```
 

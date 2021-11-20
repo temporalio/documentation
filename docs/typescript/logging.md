@@ -22,7 +22,7 @@ Sinks are objects that contain Sink Functions, which enable one-way export of da
 They are necessary because the Workflow has no way to communicate with the outside World.
 
 ```ts
-import { InjectedSinks, Sinks } from '@temporalio/worker';
+import { Sinks } from '@temporalio/workflow';
 export interface LoggerSinks extends Sinks {
   logger: {
     info(message: string): void;

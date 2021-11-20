@@ -208,7 +208,7 @@ function Tools() {
       </p>
       <div className="flex flex-col space-y-2">
         <Link
-          to={useBaseUrl("/docs/system-tools/web-ui")}
+          to={useBaseUrl("/docs/devtools/web-ui")}
           className="hover:underline font-semibold flex space-x-3"
         >
           <svg
@@ -226,7 +226,7 @@ function Tools() {
           <div className="">Web UI</div>
         </Link>
         <Link
-          to={useBaseUrl("/docs/system-tools/tctl")}
+          to={useBaseUrl("/docs/devtools/tctl")}
           className="hover:underline font-semibold flex space-x-3"
         >
           <svg

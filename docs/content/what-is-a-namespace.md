@@ -16,4 +16,4 @@ Or you could use them to ensure workflows between different teams never communic
   For example, when a [Workflow](#workflow) is started, it starts within a specific Namespace.
 - **Uniqueness**: Temporal guarantees a unique [Workflow Id](#workflow-id) within a Namespace.
   Temporal supports running [Workflow Executions](#workflow-execution) that use the same [Workflow Id](#workflow-id) if they are in different Namespaces.
-- **Namespace Configuration**: Various configuration options like the retention period or [Archival](#archival) destination are configured per Namespace through a special CRUD API or through [`tctl`](/docs/system-tools/tctl/).
+- **Namespace Configuration**: Various configuration options like the retention period or [Archival](#archival) destination are configured per Namespace through a special CRUD API or through [`tctl`](/docs/devtools/tctl/).

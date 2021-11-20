@@ -28,7 +28,7 @@ Your Workflows will only progress if there are Workers polling the right Task Qu
 </summary>
 
 The TypeScript SDK uses TypeScript, but cannot completely protect you from typos.
-If you are experiencing issues, you can check the status of Workers and the Task Queues they poll with [`tctl` or the Temporal Web UI](/docs/system-tools/introduction).
+If you are experiencing issues, you can check the status of Workers and the Task Queues they poll with [`tctl` or the Temporal Web UI](/docs/devtools/introduction).
 
 ![Temporal Web Task Queues view](https://user-images.githubusercontent.com/6764957/126413160-18663430-bb7a-4d3a-874e-80598e1fa07d.png)
 
@@ -42,7 +42,8 @@ import Content from '../content/how-to-develop-a-worker-program-in-typescript.md
 
 <details>
 <summary>
-The Worker package embeds the <a href="https://github.com/temporalio/sdk-core">Temporal Rust Core SDK</a>, it comes pre-compiled for most installations.
+The Worker package embeds the <a href="https://github.com/temporalio/sdk-core">Temporal Rust Core SDK</a>.
+It comes pre-compiled for most installations.
 </summary>
 
 We've provided pre-compiled binaries for:

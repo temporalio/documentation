@@ -12,6 +12,8 @@ origins:
   - owner: temporalio
     repo: subscription-workflow-project-template-java
   - owner: temporalio
+    repo: subscription-workflow-project-template-typescript
+  - owner: temporalio
     repo: subscription-workflow-project-template-php
   - owner: temporalio
     repo: temporal
