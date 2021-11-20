@@ -42,7 +42,7 @@ If you omit the connection and just call `new WorkflowClient()`, it creates a de
 
 ## Start a Workflow Execution
 
-Once you have a Workflow Client, you can schedule the start of a workflow with `client.start`, specifying its `workflowId`, `taskQueue` and `args` and returning a Workflow Handle (see below) immediately once the Server acknowledges receipt.
+When you have a Workflow Client, you can schedule the start of a workflow with `client.start`, specifying `workflowId`, `taskQueue`, and `args` and returning a Workflow Handle (see below) immediately after the Server acknowledges receipt.
 
 ```ts
 // // STEP ONE: client.start
@@ -63,13 +63,13 @@ const handle = await client.start<string>('example', {
 } as WorkflowStartOptions<WFType>);
 
 // // STEP TWO: client.getHandle
-// Continue in a different process (e.g. in a serverless function)
+// Continue in a different process (such as a serverless function)
 const handle = client.getHandle(workflowId);
 const result = await handle.result(); // wait for Workflow to complete and get result. See below for other Handle APIs
 const result = await client.execute(example /*...*/); // Alternative API for starting and immediately waiting for Workflow completion
 ```
 
-Apart from the three required options, you can specify other [WorkflowOptions](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions) like the `searchAttributes` and `cronSchedule` (with important caveats you should read in the [Cron Workflows section below](#scheduling-cron-workflows)).
+Apart from the three required options, you can specify other [WorkflowOptions](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions) like `searchAttributes` and `cronSchedule` (with important caveats you should read in the [Cron Workflows](#scheduling-cron-workflows) section later in this topic).
 
 <details>
 <summary>Note: Scheduling is not the same as Starting
@@ -77,7 +77,8 @@ Apart from the three required options, you can specify other [WorkflowOptions](h
 
 Calling `client.execute` or `client.start` merely sends a Command to Temporal Server to schedule a new Workflow Execution on the specified Task Queue; it does not actually start until a Worker (that has a matching Workflow Type) polling that Task Queue picks it up.
 
-You can test this by executing a Workflow Client command without a matching Worker, and seeing that Temporal Server records the command in Event History but does not make progress with the Workflow Execution until a Worker starts polling with a matching Task Queue and Workflow Definition.
+You can test this by executing a Workflow Client command without a matching Worker.
+Temporal Server records the command in Event History but does not make progress with the Workflow Execution until a Worker starts polling with a matching Task Queue and Workflow Definition.
 
 This queuing mechanic makes your application tolerant to outages and horizontally scalable, but can be confusing to newcomers if they expect that calling `client.execute(MyWorkflow)` directly executes the Workflow code on the same machine as the Client.
 
@@ -189,11 +190,11 @@ const handle = await client.start(scheduledWorkflow, {
 
 ## Note: Child Workflows and External Workflows
 
-You can only start Child Workflows from within another Workflow, not from a Client.
+You can start Child Workflows only from within another Workflow, not from a Client.
 
-**Hence the main Child Workflows documentation is on the [Workflow APIs page](/docs/typescript/workflows#child-workflows)**.
+**Hence the main Child Workflows documentation is on the [Workflow APIs](/docs/typescript/workflows#child-workflows) page.**
 
-A lot of the same concepts about starting, executing and signalling Workflow Executions apply:
+A lot of the same concepts about starting, executing, and signaling Workflow Executions apply:
 
 ```ts
 // inside Workflow code
@@ -214,7 +215,7 @@ export async function example(WFname: string, args: string[]): Promise<string> {
 
 You should use [cancellationScopes](/docs/typescript/cancellation-scopes) if you need to cancel Child Workflows.
 
-The same concept of "Workflow Handles" applies to retrieving handles for Child and External Workflows - as long as you have the Workflow ID:
+The same concept of "Workflow Handles" applies to retrieving handles for Child and External Workflows—as long as you have the Workflow ID:
 
 ```ts
 // inside Workflow code
