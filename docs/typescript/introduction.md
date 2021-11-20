@@ -9,18 +9,19 @@ import CustomWarning from "../components/CustomWarning.js"
 <CustomWarning>
 
 This SDK and associated documentation is in an Alpha stage and may change at any time.
+Alpha users should keep up to date with [the CHANGELOG](https://github.com/temporalio/sdk-typescript/blob/HEAD/CHANGELOG.md).
 
 </CustomWarning>
 
 The Temporal TypeScript SDK lets you write highly scalable and reliable long-running workflows without being a distributed systems expert.
 It is designed with TypeScript-first developer experience in mind, but works equally well with JavaScript.
 
-:::note Commencing Launch Sequence
+:::note 🚀 Commencing Launch Sequence
 
 We are moving to Beta soon! Join:
 
 - [Our launch meetup](https://temporal.io/meetup) on Nov 23
-- [Our live guided workshop](https://lu.ma/temporalintro) on Nov 30
+- [Our 2hr intro workshop](https://lu.ma/temporalintro) on Nov 30
 
 And of course you can [join the #typescript-sdk channel](https://temporal.io/slack) to ask any questions as you get set up.
 Design partners are already putting us in production and we are eager to hear your feedback.
@@ -94,22 +95,6 @@ nvm use 16
 </details>
 <details>
 <summary>
-<strong>node-gyp</strong>: `npm install -g node-gyp` (for now)
-</summary>
-
-Install node-gyp:
-
-```bash
-npm install -g node-gyp
-```
-
-You may have to install some system dependencies first as documented [here](https://github.com/nodejs/node-gyp#installation).
-
-_`node-gyp` is a requirement of [`isolated-vm`](https://github.com/laverdet/isolated-vm) the V8 Isolate library which powers this SDK's [deterministic runtime](/docs/typescript/determinism). **We plan to remove this requirement soon.**_
-
-</details>
-<details>
-<summary>
 <strong>Temporal Server</strong>: make sure it is running locally!
 </summary>
 
@@ -138,13 +123,14 @@ cd example
 
 This will set up with [the basic Hello World sample](https://github.com/temporalio/samples-typescript/tree/main/hello-world) using our [Package Initializer](/docs/typescript/package-initializer) (think of it like `create-temporal-app`!)
 
+<!-- commented out for now as it seems we no longer need this
 <details>
 <summary>Provided you have the `node-gyp` prerequisite, this will take a couple of minutes.
 </summary>
 
 `npx` triggers native module compilation which might take a while, and `npm` 7 hides the compilation output so it may appear that the installation is stuck. To see the compilation progress, run `export NPM_CONFIG_FOREGROUND_SCRIPTS=true` first.
 
-</details>
+</details> -->
 
 ### Step 2: Run your Workflow
 

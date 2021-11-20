@@ -9,7 +9,7 @@ description: Activities are the only way to interact with external resources in 
 
 **Activities are the only way to interact with external resources in Temporal**, such as making an HTTP request or accessing the file system.
 
-- Unlike [Workflows](/docs/typescript/determinism), Activities execute in the standard Node.js environment, not a [V8 isolate](https://www.npmjs.com/package/isolated-vm). Any code that needs to talk to the outside world needs to be in an Activity, not a Workflow.
+- Unlike [Workflows](/docs/typescript/determinism), Activities execute in the standard Node.js environment. Any code that needs to talk to the outside world needs to be in an Activity, not a Workflow.
 - **Separate from Workflows**: Activities cannot be in the same file as Workflows and must be separately registered (see below for [How to register an Activity on a Worker](#how-to-register-an-activity-on-a-worker))
 - **Idempotency**: Activities may be retried repeatedly, so you may need to use [idempotency keys](https://stripe.com/blog/idempotency) for critical side effects.
 - The `'@temporalio/activity'` package offers useful utilities for Activity functions such as sleeping, heartbeating, cancellation, and retrieving metadata (see [docs on Activity Context utilities](#activity-context-utilities) below).

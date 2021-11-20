@@ -18,7 +18,8 @@ If you find segfaults when you execute code in Workers:
 This comes from running the wrong Node version.
 This SDK explicitly only supports Node 14.x, or Node 16.4.1+ (not Node 14.0 to 16.4).
 
-If you switch Node versions and now your Workers don't even run because of errors that look like this:
+<!-- delete in jan 2022 if not useful anymore -->
+<!-- If you switch Node versions and now your Workers don't even run because of errors that look like this:
 
 ```bash
 Error: The module '/YOUR_PATH/node_modules/isolated-vm/out/isolated_vm.node'
@@ -29,7 +30,7 @@ the module (for instance, using `npm rebuild` or `npm install`).
 ```
 
 That is because you are now running Workers with a different Node version than the modules were built with.
-Rebuild them with `npm rebuild`.
+Rebuild them with `npm rebuild`. -->
 
 ## Two Locations to Watch
 
@@ -78,10 +79,7 @@ You can explicitly specify `nodeModulesPaths` if you need to take over, and `fin
 ```bash
 [ERROR] Failed to activate workflow {
   runId: 'aaf84a83-51ce-462a-9ab7-6a641a703bff',
-  error: ReferenceError: exports is not defined
-      at workflow-isolate:11:23
-      at (<isolated-vm boundary>)
-      at getContext (/Users/fpods/Desktop/dev/work/railway/mono/node_modules/@temporalio/worker/lib/workflow/isolated-vm.js:82:22),
+  error: ReferenceError: exports is not defined,
   workflowExists: false
 }
 ```
