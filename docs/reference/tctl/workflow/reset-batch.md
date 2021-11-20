@@ -11,6 +11,7 @@ tags:
 import * as WhatIsAWorkflowExecution from '../../../content/what-is-a-workflow-execution.md'
 import * as WhatIsAWorkflowId from '../../../content/what-is-a-workflow-id.md'
 import * as WhatIsARunId from '../../../content/what-is-a-run-id.md'
+import * as WhatIsASearchAttribute from '../../../content/what-is-a-search-attribute.md'
 
 The `tctl workflow reset-batch` command resets a batch of <preview page={WhatIsAWorkflowExecution}>Workflow Executions</preview> by `resetType`.
 
