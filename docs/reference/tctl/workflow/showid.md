@@ -1,7 +1,7 @@
 ---
 id: showid
 title: tctl workflow showid
-description: How to show Workflow History for a specified Workflow Id and optional Run Id.
+description: How to show Workflow History for a specified Workflow Id and optional Run Id using tctl.
 tags:
   - reference
   - tctl
@@ -15,7 +15,7 @@ The `tctl workflow showid` command shows Workflow History for the specified <pre
 
 `tctl workflow showid <workflow_id> [<run_id>] [<options>] [<arguments...>]`
 
-This command is a shortcut for `show --workflow_id <workflowid> --run_id <runid>`.
+This command is a shortcut for `tctl workflow show --workflow_id <workflowid> [--run_id <runid>]`.
 
 The following options modify the behavior of the command.
 
@@ -81,7 +81,8 @@ tctl workflow showid <workflow_id> --print_event_version
 
 ### `--event_id`
 
-How to print the details of a specified event. The default value is 0.
+How to print the details of a specified event.
+The default value is 0.
 
 Alias: `--eid`
 
@@ -93,7 +94,8 @@ tctl workflow showid <workflow_id> --event_id <id>
 
 ### `--max_field_length`
 
-How to specify the maximum length for each attribute field. The default value is 500.
+How to specify the maximum length for each attribute field.
+The default value is 500.
 
 Alias: `--maxl`
 
