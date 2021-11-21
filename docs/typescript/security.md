@@ -40,9 +40,9 @@ const client = new WorkflowClient(connection.service, {
 There are two classes in the SDK that connect to the Temporal server, the [Worker](https://typescript.temporal.io/api/classes/worker.worker-1) and the client [Connection](https://typescript.temporal.io/api/classes/client.connection/).
 When instantiating either of them, you may choose whether to connect securely or not.
 
-In order to connect to the server using TLS, set a _truthy_ value (`true` or [TLSConfig](https://typescript.temporal.io/api/interfaces/client.tlsconfig) for custom options) in the `tls` configuration option.
+In order to connect to the server using TLS, set a _truthy_ value (`true` or [TLSConfig](https://typescript.temporal.io/api/interfaces/common.tlsconfig/) for custom options) in the `tls` configuration option.
 
-Use [`ServerOptions.tls`](https://typescript.temporal.io/api/interfaces/worker.serveroptions#tls)When [creating](https://typescript.temporal.io/api/classes/worker.worker-1#create) a new Worker and
+Use [`ServerOptions.tls`](https://typescript.temporal.io/api/interfaces/worker.serveroptions#tls)When [creating](https://typescript.temporal.io/api/classes/worker.worker/#create) a new Worker and
 [`ConnectionOptions.tls`](https://typescript.temporal.io/api/interfaces/client.connectionoptions#tls) for the [`Connection`](https://typescript.temporal.io/api/classes/client.connection) constructor.
 
 The client connection also accepts [gRPC credentials](https://grpc.github.io/grpc/node/grpc.credentials.html) at [`ConnectionOptions.credentials`](https://typescript.temporal.io/api/interfaces/client.connectionoptions#tls) as long as `tls` is not also specified.
