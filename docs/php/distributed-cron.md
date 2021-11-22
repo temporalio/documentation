@@ -28,9 +28,9 @@ This is how you set a Cron Schedule in PHP:
   }
 ```
 
-Setting `withCronSchedule` will turn the Workflow Execution into a <preview page={WhatIsATemporalCronJob}>Temporal Cron Job</preview>
+Setting `withCronSchedule` turns the Workflow Execution into a <preview page={WhatIsATemporalCronJob}>Temporal Cron Job</preview>
 
-You can [check our PHP Samples](https://github.com/temporalio/samples-php/tree/master/app/src/Cron) for example code.
+You can check our [PHP samples](https://github.com/temporalio/samples-php/tree/master/app/src/Cron) for example code.
 
 PHP SDK `WorkflowOptions` source code: https://github.com/temporalio/sdk-php/blob/master/src/Client/WorkflowOptions.php
 

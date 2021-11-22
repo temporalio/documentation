@@ -210,8 +210,8 @@ const handle = await client.start(scheduledWorkflow, {
 
 :::info Should I use Cron Workflows or Timers?
 
-This section is specifically about <preview page={WhatIsATemporalCronJob}>Temporal Cron Jobs</preview>, Workflows that have the `cronSchedule` option set in Temporal.
-Since Temporal Workflows have [Timers](/docs/typescript/workflows#timers), can loop indefinitely, and can spawn [Child Workflows](/docs/typescript/workflows#child-workflows), it is natural to ask when to use which.
+This section is specifically about <preview page={WhatIsATemporalCronJob}>Temporal Cron Jobs</preview>, which are Workflows that have the `cronSchedule` option set in Temporal.
+Because Temporal Workflows have [Timers](/docs/typescript/workflows#timers), can loop indefinitely, and can spawn [Child Workflows](/docs/typescript/workflows#child-workflows), it is natural to ask when to use which.
 
 Cron Workflows are rigid and come with a lot of caveats.
 They are a great choice if you have Workflows that need to run as rigidly as the native Linux `cron` utility (except distributed and fault tolerant).
@@ -219,7 +219,7 @@ However, if you have any advanced needs (including needing overlaps, or cancelin
 
 :::
 
-You can set each workflow to repeat on a schedule with the `cronSchedule` option:
+You can set each Workflow to repeat on a schedule with the `cronSchedule` option:
 
 ```ts
 const handle = await client.start(scheduledWorkflow, {

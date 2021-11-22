@@ -2,27 +2,27 @@
 id: how-to-set-registerworkflowoptions-in-go
 title: How to set RegsterWorkflowOptions in Go
 sidebar_label: RegisterWorkflowOptions
-description: Create an instance of a `RegisterOptions` from the `go.temporal.io/sdk/workflow` package and pass it to the `RegisterWorkflowWithOptions` call when registering the Workflow Type with the Worker
+description: Create an instance of `RegisterOptions` from the `go.temporal.io/sdk/workflow` package and pass it to the `RegisterWorkflowWithOptions` call when registering the Workflow Type with the Worker
 tags:
   - developer-guide
   - go
 ---
 
-Create an instance of a [`RegisterOptions`](https://pkg.go.dev/go.temporal.io/sdk/workflow#RegisterOptions) from the `go.temporal.io/sdk/workflow` package and pass it to the [`RegisterWorkflowWithOptions`](https://pkg.go.dev/go.temporal.io/sdk/worker#WorkflowRegistry) call when registering the Workflow Type with the Worker.
+Create an instance of [`RegisterOptions`](https://pkg.go.dev/go.temporal.io/sdk/workflow#RegisterOptions) from the `go.temporal.io/sdk/workflow` package and pass it to the [`RegisterWorkflowWithOptions`](https://pkg.go.dev/go.temporal.io/sdk/worker#WorkflowRegistry) call when registering the Workflow Type with the Worker.
 
 - Used to set options for registering a workflow
 
 | Field                                                             | Required | Type   |
 | ----------------------------------------------------------------- | -------- | ------ |
-| [`Name`](#name)                                                   | No       | string |
-| [`DisableAlreadyRegisteredCheck`](#disablealreadyregisteredcheck) | No       | bool   |
+| [`Name`](#name)                                                   | No       | `string` |
+| [`DisableAlreadyRegisteredCheck`](#disablealreadyregisteredcheck) | No       | `bool`   |
 
 ## `Name`
 
 Sets the name of the Workflow Type.
 
 - Type: `string`
-- Default: Function name
+- Default: function name
 
 ```go
 // ...

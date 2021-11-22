@@ -11,7 +11,7 @@ tags:
 <!-- prettier-ignore -->
 import * as WhatIsATemporalCronJob from '../content/what-is-a-temporal-cron-job.md'
 
-The `ExecuteWorkflow` call returns an instance of [`WorkflowRun`](https://pkg.go.dev/go.temporal.io/sdk/client#WorkflowRun), which is the `workflowRun` variable below.
+The `ExecuteWorkflow` call returns an instance of [`WorkflowRun`](https://pkg.go.dev/go.temporal.io/sdk/client#WorkflowRun), which is the `workflowRun` variable in the following line.
 
 ```go
   workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, app.YourWorkflowDefinition, param)
@@ -69,9 +69,9 @@ Then call the `Get()` method on the instance of `WorkflowRun` that is returned, 
 
 ### Get last completion result
 
-In the case of a <preview page={WhatIsATemporalCronJob}>Temporal Cron Job</preview> you may need to get the result of the previous Workflow Run and use it in the current Workflow Run.
+In the case of a <preview page={WhatIsATemporalCronJob}>Temporal Cron Job</preview>, you might need to get the result of the previous Workflow Run and use it in the current Workflow Run.
 
-To do this, use the [`HasLastCompletionResult`](https://pkg.go.dev/go.temporal.io/sdk/workflow#HasLastCompletionResult) and [`GetLastCompletionResult`](https://pkg.go.dev/go.temporal.io/sdk/workflow#GetLastCompletionResult) APIs available from the [go.temporal.io/sdk/workflow](https://pkg.go.dev/go.temporal.io/sdk/workflow) package, directly in your Workflow code.
+To do this, use the [`HasLastCompletionResult`](https://pkg.go.dev/go.temporal.io/sdk/workflow#HasLastCompletionResult) and [`GetLastCompletionResult`](https://pkg.go.dev/go.temporal.io/sdk/workflow#GetLastCompletionResult) APIs, available from the [`go.temporal.io/sdk/workflow`](https://pkg.go.dev/go.temporal.io/sdk/workflow) package, directly in your Workflow code.
 
 ```go
 type CronResult struct {

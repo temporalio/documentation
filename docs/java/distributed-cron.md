@@ -22,9 +22,9 @@ This is how you set a cron schedule in Java:
     GreetingWorkflow workflow = client.newWorkflowStub(GreetingWorkflow.class, workflowOptions);
 ```
 
-Setting `setCronSchedule` will turn the Workflow Execution into a <preview page={WhatIsATemporalCronJob}>Temporal Cron Job</preview>
+Setting `setCronSchedule` turns the Workflow Execution into a <preview page={WhatIsATemporalCronJob}>Temporal Cron Job</preview>
 
-You can [check our Java Samples](https://github.com/temporalio/samples-java/blob/master/src/main/java/io/temporal/samples/hello/HelloCron.java) for example code.
+You can check our [Java samples](https://github.com/temporalio/samples-java/blob/master/src/main/java/io/temporal/samples/hello/HelloCron.java) for example code.
 
 Java SDK `workflowOptions` source code: https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.html
 

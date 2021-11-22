@@ -17,21 +17,21 @@ Options used to specify metadata for a session
 
 ### ExecutionTimeout
 
-Specifies the maximum amount of time the session can run
+Specifies the maximum amount of time the session can run.
 
 - Type: `time.Duration`
 - Default:
 
 ### CreationTimeout
 
-Specifies how long session creation can take before returning an error
+Specifies how long session creation can take before returning an error.
 
 - Type: `time.Duration`
 - Default:
 
 ### HeartbeatTimeout
 
-Specifies the heartbeat timeout
+Specifies the heartbeat timeout.
 
 - Type: `time.Duration`
 - Default:
