@@ -3,9 +3,10 @@ id: distributed-cron
 title: Distributed CRON
 ---
 
-import DistributedCron from '../shared/distributed-cron.md'
+<!-- prettier-ignore -->
+import * as WhatIsATemporalCronJob from '../content/what-is-a-temporal-cron-job.md'
 
-<DistributedCron docUrl="https://github.com/temporalio/sdk-php/blob/master/src/Client/WorkflowOptions.php">
+This is how you set a Cron Schedule in PHP:
 
 ```php
   $workflow = $this->workflowClient->newWorkflowStub(
@@ -27,9 +28,11 @@ import DistributedCron from '../shared/distributed-cron.md'
   }
 ```
 
-You can [check our PHP Samples](https://github.com/temporalio/samples-php/tree/master/app/src/Cron) for example code.
+Setting `withCronSchedule` turns the Workflow Execution into a <preview page={WhatIsATemporalCronJob}>Temporal Cron Job</preview>
 
-</DistributedCron>
+You can check our [PHP samples](https://github.com/temporalio/samples-php/tree/master/app/src/Cron) for example code.
+
+PHP SDK `WorkflowOptions` source code: https://github.com/temporalio/sdk-php/blob/master/src/Client/WorkflowOptions.php
 
 ## Retrieve last successful result
 

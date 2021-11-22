@@ -8,11 +8,10 @@ tags:
   - go
 ---
 
-<!--TODO
-import RelatedReadList from '../components/RelatedReadList.js'
--->
+<!-- prettier-ignore -->
+import * as WhatIsAWorkflowDefinition from '../content/what-is-a-workflow-definition.md'
 
-In the Temporal Go SDK programming model, a [Workflow Definition](/docs/temporal-explained/introduction#workflow-definition) is an exportable function.
+In the Temporal Go SDK programming model, a <preview page={WhatIsAWorkflowDefinition}>Workflow Definition</preview> is an exportable function.
 
 ```go
 func YourWorkflowDefinition(ctx workflow.Context) error {
@@ -85,28 +84,23 @@ However, it is not possible to receive both a custom value and an error in the c
 The caller will receive either one or the other.
 Returning a non-nil `error` from a Workflow indicates that an error was encountered during its execution and the Workflow Execution should be [Terminated](#) and any custom return values will be ignored by the system.
 
-<!--
-<RelatedReadList
-readlist={[
-["When to return an error from a Workflow","#","og"],
-}]
-/>
--->
-
 ### Workflow logic requirements in Go
 
-In Go specifically, Workflow Definition code can not directly do the following:
+Workflow Definition code cannot directly do the following:
 
-- Iterate over maps using `range`, because with `range` the order of the map's iteration is randomized. Instead you can collect the keys of the map, sort them, and then iterate over the sorted keys to access the map. This will give deterministic results. You can also use a Side Effect or an Activity to process the map instead.
-- Use the native `go` statement, `select` statement, or `chan` type. (Use the [SDK Go API](#), [SDK Select API](#), or [SDK Channel API](#) instead.)
+- Iterate over maps using `range`, because with `range` the order of the map's iteration is randomized.
+  Instead you can collect the keys of the map, sort them, and then iterate over the sorted keys to access the map.
+  This technique provides deterministic results.
+  You can also use a Side Effect or an Activity to process the map instead.
 - Call an external API, conduct a file I/O operation, talk to another service, etc. (Use an Activity for these.)
 
-<!--
-<RelatedReadList
-readlist={[
-["General requirements for developing Workflow Definitions","/docs/application-operations/#what-are-general-requirements-for-writing-workflow-defintions","og"],
-["How to develop a Side Effect in Go","#","dg"],
-["How to develop an Activity Definition", "#how-to-write-an-activity-definition", "dg"],
-]}
-/>
--->
+Additionally the Temporal Go SDK offers APIs to handle equivalent Go constructs:
+
+- `workflow.Now()` This is a replacement for `time.Now()`.
+- `workflow.Sleep()` This is a replacement for `time.Sleep()`.
+- `workflow.GetLogger()` This ensures that the provided logger does not duplicate logs during a replay.
+- `workflow.Go()` This is a replacement for the `go` statement.
+- `workflow.Channel` This is a replacement for the native `chan` type.
+  Temporal provides support for both buffered and unbuffered channels.
+- `workflow.Selector` This is a replacement for the `select` statement. Learn more on the [Go SDK Selectors](https://docs.temporal.io/docs/go/selectors) page
+- `workflow.Context` This is a replacement for `context.Context`. Learn more on the [Go SDK Context Propagation](https://docs.temporal.io/docs/go/tracing) page.

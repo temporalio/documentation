@@ -88,7 +88,6 @@ module.exports = {
       collapsed: false,
       items: [
         "go/getting-started",
-
         "go/how-to-develop-a-workflow-definition-in-go",
         "go/how-to-develop-an-activity-definition-in-go",
         "go/how-to-spawn-an-activity-execution-in-go",
@@ -99,6 +98,8 @@ module.exports = {
         "go/how-to-get-the-result-of-a-workflow-execution-in-go",
         "go/how-to-develop-a-worker-program-in-go",
         "go/how-to-set-workeroptions-in-go",
+        "go/how-to-set-registerworkflowoptions-in-go",
+        "go/how-to-set-registeractivityoptions-in-go",
         "go/how-to-spawn-a-child-workflow-execution-in-go",
         "go/workflows",
         "go/activities",
@@ -108,11 +109,10 @@ module.exports = {
         "go/retries",
         "go/error-handling",
         "go/selectors",
-        "go/side-effect",
+        "go/how-to-execute-a-side-effect-in-go",
         "go/testing",
         "go/versioning",
         "go/sessions",
-        "go/distributed-cron",
         "go/tracing",
         "go/search-apis",
         {

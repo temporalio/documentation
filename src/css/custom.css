@@ -327,10 +327,6 @@ div[class^="sidebar_"] .button svg {
   background-color: #cf8f19;
 }
 
-.prose li > ul {
-  margin-top: 1rem !important; /* sorry cant figure out how else to do this, prose keeps overriding - swyx */
-}
-
 .docs-image-wrapper {
   position: static;
   width: 100%;
@@ -421,10 +417,21 @@ div[class^="sidebar_"] .button svg {
 .prose .tabs-container > .margin-vert--md pre {
   margin: 0;
 }
-
+/* otherwise tailwind typography gives very ugly margins on inline images */
 .prose li img {
   margin: 0;
 }
+/* otherwise tailwind typography gives very ugly margins on li children */
+.prose > ol > li > :first-child,
+.prose > ul > li > :first-child,
+.prose > ol > li > :last-child,
+.prose > ul > li > :last-child {
+  margin: 0 !important; /* sorry cant figure out how else to do this, prose @media overriding - swyx */
+}
+.prose li > ul {
+  margin-top: 1rem !important; /* sorry cant figure out how else to do this, prose @media overriding - swyx */
+}
+
 
 .prose pre.prism-code {
   margin: 0;

@@ -6,7 +6,10 @@ tags:
   - reference
 ---
 
-The following terms have specific definitions within the context of the Temporal Platform.
+<!-- prettier-ignore -->
+import * as WhatIsTheTemporalPlatform from '../content/what-is-the-temporal-platform.md'
+
+The following terms have specific definitions within the context of the <preview page={WhatIsTheTemporalPlatform}>Temporal Platform</preview>.
 
 - [Activity](/docs/content/what-is-an-activity)
 - [Activity Execution](/docs/content/what-is-an-activity-execution)
@@ -31,6 +34,7 @@ The following terms have specific definitions within the context of the Temporal
 - [Schedule-To-Close Timeout](/docs/content/what-is-a-schedule-to-close-timeout)
 - [Schedule-To-Start Timeout](/docs/content/what-is-a-schedule-to-start-timeout)
 - [Search Attribute](/docs/content/what-is-a-search-attribute)
+- [Side Effect](/docs/content/what-is-a-side-effect)
 - [Signal](/docs/content/what-is-a-signal)
 - [Standard Visibility](/docs/content/what-is-standard-visibility)
 - [Start-To-Close Timeout](/docs/content/what-is-a-start-to-close-timeout)

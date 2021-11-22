@@ -9,11 +9,17 @@ tags:
   - workers
 ---
 
-First, create a new instance of a [`Worker`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/worker#Worker) by calling `worker.New()`, available via the `go.temporal.io/sdk/worker` package and pass it the following parameters:
+<!-- prettier-ignore -->
+import * as HowToSetWorkerOptionsInGO from './how-to-set-workeroptions-in-go.md'
+import * as HowToSetRegisterWorkflowOptionsInGo from './how-to-set-registerworkflowoptions-in-go.md'
+import * as HowToSetRegisterActivityOptionsInGo from './how-to-set-registeractivityoptions-in-go.md'
+import * as HowToSpawnAWorkflowExecutionInGo from './how-to-spawn-a-workflow-execution-in-go.md'
 
-1. An instance of the The Temporal Go SDK `Client`.
+Create an instance of [`Worker`](https://pkg.go.dev/go.temporal.io/sdk/worker#Worker) by calling [`worker.New()`](https://pkg.go.dev/go.temporal.io/sdk/worker#New), available via the `go.temporal.io/sdk/worker` package, and pass it the following parameters:
+
+1. An instance of the Temporal Go SDK `Client`.
 2. The name of the Task Queue that it will poll.
-3. An instance of `worker.Options`, which can be empty.
+3. An instance of <preview page={HowToSetWorkerOptionsInGO}>`worker.Options`</preview>, which can be empty.
 
 Then, register the Workflow Types and the Activity Types that the Worker will be capable of executing.
 
@@ -54,7 +60,7 @@ func YourActivityDefinition(ctx context.Context, param YourActivityParam) (YourA
 }
 ```
 
-Start a Worker Process by running `go run <filename>.go`.
+Start the Worker Process by running `go run <filename>.go`.
 
 :::tip
 
@@ -69,10 +75,27 @@ gow run worker/main.go # automatically reload when file changed
 
 The `RegisterWorkflow()` and `RegisterActivity` calls essentially create an in-memory mapping between the Workflow Types and their implementations, inside the Worker process.
 
-Notice that that the Task Queue name is the same as the name provided [when the Workflow Execution is invoked](#).
+Notice that the Task Queue name is the same as the name provided when the <preview page={HowToSpawnAWorkflowExecutionInGo}>Workflow Execution is spawned</preview>.
 
 The name of the Task Queue that is provided to the Worker must be the same Task Queue name that is provided with the invocation of the Workflow Execution.
 
 import SharedWorkersTaskQueueRegistrationNote from '../reminders/note-workers-task-queue-registration-match.md'
 
 <SharedWorkersTaskQueueRegistrationNote />
+
+### Register multiple Types
+
+To register multiple Activity Types and/or Workflow Types with the Worker Entity, just make multiple Activity registration calls, but make sure each Activity Type name is unique:
+
+```go
+w.registerActivity(ActivityA)
+w.registerActivity(ActivityB)
+w.registerActivity(ActivityC)
+w.registerWorkflow(WorkflowA)
+w.registerWorkflow(WorkflowB)
+w.registerWorkflow(WorkflowC)
+```
+
+An Activity Type name can be customized to something other than the function name using the <preview page={HowToSetRegisterActivityOptionsInGo}>`RegisterActivityWithOptions`</preview> call.
+
+A Workflow Type name can be customized to something other than the function name using the <preview page={HowToSetRegisterWorkflowOptionsInGo}>`RegisterWorkflowWithOptions`</preview> call.

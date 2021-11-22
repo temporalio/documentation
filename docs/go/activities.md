@@ -80,26 +80,6 @@ import WhatIsActivityCancellation from '../content/what-is-activity-cancellation
 
 <WhatIsActivityCancellation />
 
-### Registration
-
-To make the Activity visible to the Worker process hosting it, the Activity must be registered with the Worker.
-
-```go
-w := worker.New(temporalClient, "your_task_queue", worker.Options{})
-w.RegisterActivity(YourActivity)
-```
-
-This call creates an in-memory mapping inside the Worker process between the function name and the function itself.
-If a Worker receives a request to start an Activity execution for an Activity function it does not know, it will fail that request.
-
-To register multiple Activities with the Worker, just make multiple Activity registration calls, but make sure each Activity function name is unique:
-
-```
-w.registerActivity(ActivityA)
-w.registerActivity(ActivityB)
-w.registerActivity(ActivityC)
-```
-
 ## Synchronous Activity Execution
 
 The primary responsibility of a Workflow implementation is to schedule Activities for execution.
