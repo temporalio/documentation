@@ -422,8 +422,10 @@ div[class^="sidebar_"] .button svg {
   margin: 0;
 }
 /* otherwise tailwind typography gives very ugly margins on li children */
-.prose > ol > li > :first-child.
-.prose > ol > li > :last-child {
+.prose > ol > li > :first-child,
+.prose > ul > li > :first-child,
+.prose > ol > li > :last-child,
+.prose > ul > li > :last-child {
   margin: 0;
 }
 .prose li > ul {
