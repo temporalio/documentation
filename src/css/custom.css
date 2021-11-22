@@ -421,8 +421,8 @@ div[class^="sidebar_"] .button svg {
 .prose .tabs-container > .margin-vert--md pre {
   margin: 0;
 }
-
-.prose li img {
+/* otherwise tailwind typography gives very ugly margins on inline images and spans */
+.prose li * {
   margin: 0;
 }
 
