@@ -40,13 +40,13 @@ w.RegisterActivityWithOptions(a.YourActivityDefinition, registerOptions)
 Disables the check to see if the Activity has already been registered.
 
 - Type: `bool`
-- Default: `true`
+- Default: `false`
 
 ```go
 // ...
 w := worker.New(temporalClient, "your_task_queue_name", worker.Options{})
 registerOptions := activity.RegisterOptions{
-  DisableAlreadyRegisteredCheck: true,
+  DisableAlreadyRegisteredCheck: false,
   // ...
 }
 w.RegisterActivityWithOptions(a.YourActivityDefinition, registerOptions)
@@ -59,13 +59,13 @@ When registering a struct that has Activities, skip functions that are not valid
 If false, registration panics.
 
 - Type: `bool`
-- Default: `true`
+- Default: `false`
 
 ```go
 // ...
 w := worker.New(temporalClient, "your_task_queue_name", worker.Options{})
 registerOptions := activity.RegisterOptions{
-  SkipInvalidStructFunctions: true,
+  SkipInvalidStructFunctions: false,
   // ...
 }
 w.RegisterActivityWithOptions(a.YourActivityDefinition, registerOptions)
