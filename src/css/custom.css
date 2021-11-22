@@ -426,10 +426,10 @@ div[class^="sidebar_"] .button svg {
 .prose > ul > li > :first-child,
 .prose > ol > li > :last-child,
 .prose > ul > li > :last-child {
-  margin: 0;
+  margin: 0 !important; /* sorry cant figure out how else to do this, prose @media overriding - swyx */
 }
 .prose li > ul {
-  margin-top: 1rem !important; /* sorry cant figure out how else to do this, prose keeps overriding - swyx */
+  margin-top: 1rem !important; /* sorry cant figure out how else to do this, prose @media overriding - swyx */
 }
 
 
