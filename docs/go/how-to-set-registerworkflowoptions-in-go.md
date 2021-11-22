@@ -12,8 +12,8 @@ Create an instance of [`RegisterOptions`](https://pkg.go.dev/go.temporal.io/sdk/
 
 - Used to set options for registering a workflow
 
-| Field                                                             | Required | Type   |
-| ----------------------------------------------------------------- | -------- | ------ |
+| Field                                                             | Required | Type     |
+| ----------------------------------------------------------------- | -------- | -------- |
 | [`Name`](#name)                                                   | No       | `string` |
 | [`DisableAlreadyRegisteredCheck`](#disablealreadyregisteredcheck) | No       | `bool`   |
 

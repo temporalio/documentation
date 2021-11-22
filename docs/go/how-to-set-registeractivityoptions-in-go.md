@@ -57,6 +57,7 @@ w.RegisterActivityWithOptions(a.YourActivityDefinition, registerOptions)
 
 When registering a struct that has Activities, skip functions that are not valid.
 If false, registration panics.
+
 - Type: `bool`
 - Default: `true`
 
