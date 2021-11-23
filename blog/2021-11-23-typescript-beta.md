@@ -8,10 +8,12 @@ title: Introducing the Temporal TypeScript SDK
 author: swyx
 author_title: Head of Developer Experience
 author_image_url: https://avatars.githubusercontent.com/u/6764957?v=4
-release_version: V1.11.2
+release_version: V1.13.0
 ---
 
-After 493 commits, hundreds of user questions, and a year of active research and development, we are excited to announce the public beta of our TypeScript SDK!
+After 493 commits, hundreds of user questions, and a year of active research and development, we are excited to announce the public beta of [our TypeScript SDK](https://temporal.io/ts)!
+
+<!--truncate-->
 
 ## Bottom Line Up Front
 
