@@ -22,7 +22,12 @@ The Temporal TypeScript SDK lets you write highly scalable and reliable long-run
 - Docs: [https://temporal.io/ts](https://temporal.io/ts)
 - [SDK source on GitHub](https://github.com/temporalio/sdk-typescript)  (give us a star!)
 
-The easiest way to get started is by running `npx @temporalio/create@latest` if you prefer developing locally with Docker, or by [using Gitpod](https://gitpod.io/#https://github.com/temporalio/samples-typescript/) for cloud development. The minimum Node.js version is 14 but we recommend using 16.4.1 and up.
+You can get started by: 
+
+- running `npx @temporalio/create@latest` if you prefer developing locally with Docker, or 
+- using our [prebuilt Gitpod environment](https://gitpod.io/#https://github.com/temporalio/samples-typescript/) for cloud development.
+ 
+The minimum Node.js version is 14 but we recommend using 16.4.1 and up.
 
 When you spin up a project, you will notice a single `temporalio` dependency, which actually bundles 4 other dependencies you will use:
 
@@ -56,7 +61,7 @@ const { greet } = proxyActivities<typeof activities>({
 
 export async function exampleWorkflow(name: string) {
   greet(`Hello ${name}, see you in a month`); // call activity
-	sleep('30 days'); // set durable timer
+  sleep('30 days'); // set durable timer
   greet(`Hi again, ${name}!`);
 }
 ```
