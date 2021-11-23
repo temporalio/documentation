@@ -9,15 +9,6 @@ description: Workflow Sinks allow you to export information from the Workflow ba
 
 Activities run in the standard Node.js environment and can use any Node.js logger.
 
-In order to add context to your activity logger you may use an Activity [interceptor](/docs/typescript/interceptors) as shown in the example below.
-
-Inject Activity context via interceptor
-
-<!--SNIPSTART typescript-logger-sink-workflow-->
-<!--SNIPEND-->
-
-Access logger
-
 ## Logging from Workflows with Workflow Sinks
 
 Logging from Workflows is tricky for 2 reasons:
