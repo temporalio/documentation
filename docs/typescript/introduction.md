@@ -16,7 +16,7 @@ You can view:
 
 :::note 🚀 Beta Launch Sequence
 
-Join our 2hr intro workshop](https://lu.ma/temporalintro) on Nov 30!
+Join [our 2hr intro workshop](https://lu.ma/temporalintro) on Nov 30!
 
 And of course you can [join the #typescript-sdk channel](https://temporal.io/slack) to ask any questions as you get set up.
 Design partners are already putting us in production and we are eager to hear your feedback.
