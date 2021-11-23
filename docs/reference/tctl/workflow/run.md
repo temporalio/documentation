@@ -87,7 +87,7 @@ tctl workflow run --workflow_task_timeout <seconds>
 
 ### `--cron`
 
-How to specify a [Cron Schedule](../../../content/what-is-a-temporal-cron-job/#cron-schedules).
+How to specify a [Cron Schedule](/docs/content/what-is-a-temporal-cron-job/#cron-schedules).
 
 **Example**
 

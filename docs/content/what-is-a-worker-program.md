@@ -9,7 +9,7 @@ tags:
 import {RelatedReadContainer, RelatedReadItem} from '../components/RelatedReadList.js'
 
 <!-- prettier-ignore -->
-import * as HowToDevelopAWorkerProgramInGo from '../content/how-to-develop-a-worker-program-in-go.md'
+import * as HowToDevelopAWorkerProgramInGo from '../go/how-to-develop-a-worker-program-in-go.md'
 import * as HowToDevelopAWorkerProgramInJava from '../content/how-to-develop-a-worker-program-in-java.md'
 import * as HowToDevelopAWorkerProgramInTS from '../content/how-to-develop-a-worker-program-in-typescript.md'
 import * as HowToDevelopAWorkerProgramInPHP from '../content/how-to-develop-a-worker-program-in-php.md'
