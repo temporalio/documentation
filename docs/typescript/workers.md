@@ -145,7 +145,7 @@ const result = await client.execute(myWorkflow, {
 <details>
 <summary>
 
-When creating a Worker, you **must** pass the `taskQueue` option to the [`Worker.create()` function](https://typescript.temporal.io/api/classes/worker.worker-1#create).
+When creating a Worker, you **must** pass the `taskQueue` option to the [`Worker.create()` function](https://typescript.temporal.io/api/classes/worker.worker#create).
 
 </summary>
 
