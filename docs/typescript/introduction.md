@@ -4,35 +4,24 @@ sidebar_label: Introduction
 description: The TypeScript SDK lets developers write highly scalable, reliable, annd long-running workflows without being a distributed systems expert.
 ---
 
-import CustomWarning from "../components/CustomWarning.js"
-
-<CustomWarning>
-
-This SDK and associated documentation is in an Alpha stage and may change at any time.
-Alpha users should keep up to date with [the CHANGELOG](https://github.com/temporalio/sdk-typescript/blob/HEAD/CHANGELOG.md).
-
-</CustomWarning>
-
-The Temporal TypeScript SDK lets you write highly scalable and reliable long-running workflows without being a distributed systems expert.
+The Temporal TypeScript SDK ([now in Beta](/blog/typescript-beta)) lets you write highly scalable and reliable long-running workflows without being a distributed systems expert.
 It is designed with TypeScript-first developer experience in mind, but works equally well with JavaScript.
-
-:::note 🚀 Commencing Launch Sequence
-
-We are moving to Beta soon! Join:
-
-- [Our launch meetup](https://temporal.io/meetup) on Nov 23
-- [Our 2hr intro workshop](https://lu.ma/temporalintro) on Nov 30
-
-And of course you can [join the #typescript-sdk channel](https://temporal.io/slack) to ask any questions as you get set up.
-Design partners are already putting us in production and we are eager to hear your feedback.
-
-:::
 
 You can view:
 
 - [Code samples on GitHub](https://github.com/temporalio/samples-typescript) [![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-908a85?logo=gitpod)](https://gitpod.io/#https://github.com/temporalio/samples-typescript/)
 - [Searchable full API reference](https://typescript.temporal.io)
 - [SDK source on GitHub](https://github.com/temporalio/sdk-typescript) [![GitHub stars](https://img.shields.io/github/stars/temporalio/sdk-typescript)](https://github.com/temporalio/sdk-typescript/stargazers) (give us a star!)
+- [See version diffs on our Changelog](https://github.com/temporalio/sdk-typescript/blob/HEAD/CHANGELOG.md)
+
+:::note 🚀 Beta Launch Sequence
+
+Join our 2hr intro workshop](https://lu.ma/temporalintro) on Nov 30!
+
+And of course you can [join the #typescript-sdk channel](https://temporal.io/slack) to ask any questions as you get set up.
+Design partners are already putting us in production and we are eager to hear your feedback.
+
+:::
 
 ## Getting started
 
