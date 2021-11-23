@@ -1,12 +1,12 @@
 ---
 id: what-is-task-routing
 title: What is Task Routing?
-description: TODO
+description: Task Routing is when a Task Queue is paired with one or more Worker Processes, primarily for Activity Task Executions.
 tags:
   - explanation
 ---
 
-Task Routing is the act of pairing up a Task Queue with one or more Worker Processes, primarily for Activity Task Executions.
+Task Routing is when a Task Queue is paired with one or more Worker Processes, primarily for Activity Task Executions.
 
 There are use cases, such as file processing, where an Activity Task must be routed to a specific Worker Process.
 For example, let's say you have a Workflow with the following three separate Activities:
