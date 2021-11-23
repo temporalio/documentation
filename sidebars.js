@@ -278,7 +278,7 @@ module.exports = {
   typescriptSidebar: [
     {
       type: "category",
-      label: "TypeScript (alpha)",
+      label: "TypeScript (beta)",
       collapsed: false,
       items: [
         "typescript/introduction",
