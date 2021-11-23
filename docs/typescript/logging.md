@@ -9,6 +9,15 @@ description: Workflow Sinks allow you to export information from the Workflow ba
 
 Activities run in the standard Node.js environment and can use any Node.js logger.
 
+In order to add context to your activity logger you may use an Activity [interceptor](/docs/typescript/interceptors) as shown in the example below.
+
+Inject Activity context via interceptor
+
+<!--SNIPSTART typescript-logger-sink-workflow-->
+<!--SNIPEND-->
+
+Access logger
+
 ## Logging from Workflows with Workflow Sinks
 
 Logging from Workflows is tricky for 2 reasons:
@@ -21,14 +30,8 @@ Workflows in Temporal may be replayed from the beginning of their history when r
 Sinks are objects that contain Sink Functions, which enable one-way export of data from the Workflow isolate to the Node.js environment.
 They are necessary because the Workflow has no way to communicate with the outside World.
 
-```ts
-import { Sinks } from '@temporalio/workflow';
-export interface LoggerSinks extends Sinks {
-  logger: {
-    info(message: string): void;
-  };
-}
-```
+<!--SNIPSTART typescript-logger-sink-interface-->
+<!--SNIPEND-->
 
 - Sinks are typically used for exporting logs, metrics and traces out from the Workflow into the isolate.
 - **Injected WorkflowInfo argument**: The first argument of a Sink Function implementation will be a [`workflowInfo` object](https://typescript.temporal.io/api/interfaces/workflow.workflowinfo/) that containing useful metadata.
