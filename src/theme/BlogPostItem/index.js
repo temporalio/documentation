@@ -40,7 +40,7 @@ function BlogPostItem(props) {
   const {
     author,
     title,
-    image = "https://temporal.io/press/trim-banner-logo-text-white-on-black.png",
+    image = "/img/temporal-logo-twitter-card.png",
   } = frontMatter;
 
   const authorURL = frontMatter.author_url || frontMatter.authorURL;
