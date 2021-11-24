@@ -137,7 +137,8 @@
 /docs/server-security         /docs/server/security
 /docs/server-versions-and-dependencies        /docs/server/versions-and-dependencies
 /docs/server/workflow-search        /docs/temporal-explained/visibility
-/docs/server-architecture         /docs/content/what-is-the-temporal-server
+/docs/server-architecture         /docs/content/what-is-a-temporal-cluster
+/docs/content/what-is-the-temporal-server /docs/content/what-is-a-temporal-cluster
 
 #
 # Dev tools redirects
