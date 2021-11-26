@@ -181,20 +181,20 @@ export async function myWorkflow(): Promise<string> {
 </details>
 
 ## Works in Dev, but not in Prod
-  
+
 ### Production Bundling
 
-If you are getting errors like this: 
+If you are getting errors like this:
 
-  ```
-  Error: 3 INVALID_ARGUMENT: WorkflowType is not set on request.
-  ```
+```
+Error: 3 INVALID_ARGUMENT: WorkflowType is not set on request.
+```
 
 This is due to your bundler stripping out Workflow function names, which we rely on to set the "Workflow Type" in Temporal. Turn it off and it should work.
-  
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-  
+
 <Tabs
 defaultValue="webpackterser"
 values={[
@@ -220,7 +220,7 @@ module.exports = {
   },
 };
 ```
-  
+
 </TabItem>
 <TabItem value="esbuild">
 
@@ -230,7 +230,7 @@ require('esbuild').buildSync({
   minify: true,
   keepNames: true,
   outfile: 'out.js',
-})
+});
 ```
 
 See esbuild docs: https://esbuild.github.io/api/#keep-names
@@ -241,11 +241,11 @@ See esbuild docs: https://esbuild.github.io/api/#keep-names
 ### Connecting to Temporal Server
 
 If you are trying to connect in production and getting this:
-  
+
 ```bash
 [TransportError: transport error]
 ```
-  
+
 It is a sign that something is wrong with your Cert/Key pair.
 Log it out and make sure it is an exact match with what is expected (often, the issue can be whitespace when injecting from your production secrets management environment).
 
