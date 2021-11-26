@@ -24,7 +24,7 @@ There can be multiple Query methods per Workflow interface.
 The `QueryMethod` annotation has an optional `name` property which can be used to define the query type.
 If not specified it defaults to the method name.
 
-Let's look at a Workflog implementation and its query method:
+Let's look at a Workflow implementation and its query method:
 
 ```java
   public static class HelloWorldImpl implements HelloWorld {
