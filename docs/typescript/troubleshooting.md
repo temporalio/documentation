@@ -181,7 +181,7 @@ export async function myWorkflow(): Promise<string> {
 </details>
 
 ## Works in Dev, but not in Prod
-  
+
 The two main sources of dev-prod discrepancies are in bundling and connecting.
 
 ### Production Bundling
@@ -239,7 +239,6 @@ See esbuild docs: https://esbuild.github.io/api/#keep-names
 
 </TabItem>
 </Tabs>
-
 
 ### Connecting to Temporal Server
 
