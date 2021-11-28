@@ -381,6 +381,7 @@ module.exports = {
         "concepts/workflows",
         "concepts/activities",
         "temporal-explained/task-queues-and-workers",
+        "temporal-explained/timeouts-and-retries",
         "concepts/signals",
         "concepts/queries",
         "temporal-explained/visibility",

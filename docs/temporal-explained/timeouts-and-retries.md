@@ -1,17 +1,18 @@
 ---
 id: timeouts-and-retries
-title: Timeouts and retries
-sidebar_label: Timeouts & retries
+title: Timeouts and Retry Policy
+sidebar_label: Timeouts & Retry Policy
+description: Timeout settings and a Retry Policy provide fine controls over specific steps of Workflow Executions and Activity Executions.
 ---
 
 import CenteredImage from "../components/CenteredImage.js"
 
-Timeout and retry settings provide fine controls over the behavior of different steps of Workflow Executions and Activity Executions.
+Timeout settings and a Retry Policy provide fine controls over specific steps of Workflow Executions and Activity Executions.
 
 <CenteredImage
 imagePath="/diagrams/workflow-execution-with-single-activity-execution.svg"
 imageSize="100"
-title="Workflow Execution with a single Activity Execution Timeout periods"
+title="Workflow Execution with a single Activity Execution: Timeout periods"
 />
 
 ## Workflow Execution Timeout
