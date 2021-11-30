@@ -1,6 +1,6 @@
 ---
 id: security
-title: Security in TypeScript SDK
+title: Connection and Encryption Security in TypeScript SDK
 sidebar_label: Security
 description: A summary of the security features you should know as a TypeScript SDK user.
 ---
@@ -38,28 +38,64 @@ const client = new WorkflowClient(connection.service, {
 ## Encryption in transit with mTLS
 
 There are two classes in the SDK that connect to the Temporal server, the [Worker](https://typescript.temporal.io/api/classes/worker.worker) and the client [Connection](https://typescript.temporal.io/api/classes/client.connection/).
-When instantiating either of them, you may choose whether to connect securely or not.
+Both connections need to be secured with mTLS.
 
-In order to connect to the server using TLS, set a _truthy_ value (`true` or [TLSConfig](https://typescript.temporal.io/api/interfaces/common.tlsconfig/) for custom options) in the `tls` configuration option.
-
-Use [`ServerOptions.tls`](https://typescript.temporal.io/api/interfaces/worker.serveroptions#tls)When [creating](https://typescript.temporal.io/api/classes/worker.worker/#create) a new Worker and
+- In order to connect to the server using TLS, set a _truthy_ value (`true` or [TLSConfig](https://typescript.temporal.io/api/interfaces/common.tlsconfig/) for custom options) in the `tls` configuration option.
+- Use [`ServerOptions.tls`](https://typescript.temporal.io/api/interfaces/worker.serveroptions#tls) when [creating](https://typescript.temporal.io/api/classes/worker.worker/#create) a new Worker and
 [`ConnectionOptions.tls`](https://typescript.temporal.io/api/interfaces/client.connectionoptions#tls) for the [`Connection`](https://typescript.temporal.io/api/classes/client.connection) constructor.
+- The client connection also accepts [gRPC credentials](https://grpc.github.io/grpc/node/grpc.credentials.html) at [`ConnectionOptions.credentials`](https://typescript.temporal.io/api/interfaces/client.connectionoptions#tls) as long as `tls` is not also specified.
 
-The client connection also accepts [gRPC credentials](https://grpc.github.io/grpc/node/grpc.credentials.html) at [`ConnectionOptions.credentials`](https://typescript.temporal.io/api/interfaces/client.connectionoptions#tls) as long as `tls` is not also specified.
+A full example for Clients looks like this:
+
+```js
+import { Connection, WorkflowClient } from '@temporalio/client';
+
+const connection = new Connection({
+  address: 'foo.bar.tmprl.cloud', // as provisioned
+  tls: { // See docs for other TLS options
+    clientCertPair: {
+      crt: clientCert,
+      key: clientKey
+    },
+  },
+});
+await connection.untilReady();
+const client = new WorkflowClient(connection.service, { namespace: 'foo.bar' });
+```
+
+A full example for Workers looks like this:
+
+```js
+import { Worker, Core } from '@temporalio/worker';
+await Core.install({
+  serverOptions: {
+    address: 'foo.bar.tmprl.cloud', // as provisioned
+    namespace: 'foo.bar', // as provisioned
+    tls: { // See docs for other TLS options
+      clientCertPair: {
+        crt: clientCert,
+        key: clientKey
+      },
+    },
+  },
+});
+
+const worker = await Worker.create({
+  // ...
+});
+```
 
 <span id="mtls-tutorial"></span>
 
 ### Connecting to Temporal Cloud (with mTLS)
 
-[The Hello World mTLS sample](https://github.com/temporalio/samples-node/tree/main/hello-world-mtls/) can be used to connect to a Temporal Cloud account.
+[The Hello World mTLS sample](https://github.com/temporalio/samples-node/tree/main/hello-world-mtls/) demonstrates sample code used to connect to a Temporal Cloud account.
 When signing up to Temporal Cloud you should receive a namespace, a server address and a client certificate and key. Use the following environment variables to set up the sample:
 
-- `TEMPORAL_ADDRESS`: looks like `foo.bar.tmprl.cloud`
-- `TEMPORAL_NAMESPACE`: looks like `foo.bar`
-- `TEMPORAL_CLIENT_CERT_PATH`: e.g. `/tls/ca.pem`
-  - starts with `-----BEGIN CERTIFICATE----- MIIEsjCCApqgAwIBAgIUHUWAiXLVXS/qkWLRmJ48uLGOEcEwDQYJKoZIhvcNAQEL`
-- `TEMPORAL_CLIENT_KEY_PATH`: e.g. `/tls/ca.key`
-  - starts with `-----BEGIN PRIVATE KEY----- MIIJQwIBADANBgkqhkiG9w0BAQEFAA`
+- **TEMPORAL_ADDRESS**: looks like `foo.bar.tmprl.cloud` (NOT web.foo.bar.tmprl.cloud)
+- **TEMPORAL_NAMESPACE**: looks like `foo.bar`
+- **TEMPORAL_CLIENT_CERT_PATH**: e.g. `/tls/ca.pem` (starts with -----BEGIN CERTIFICATE-----)
+- **TEMPORAL_CLIENT_KEY_PATH**: e.g. `/tls/ca.key` (starts with -----BEGIN PRIVATE KEY-----)
 
 You can leave the remaining vars, like `TEMPORAL_SERVER_NAME_OVERRIDE` and `TEMPORAL_SERVER_ROOT_CA_CERT_PATH` blank.
 There is another var, `TEMPORAL_TASK_QUEUE`, which the example defaults to `'hello-world-mtls'` but you can customize as needed.

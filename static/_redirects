@@ -28,6 +28,7 @@
 #
 /docs/node/*        /docs/typescript/:splat
 /docs/typescript/getting-started        /docs/typescript/introduction#getting-started
+/docs/typescript        /docs/typescript/introduction
 
 #
 # Go pages redirects

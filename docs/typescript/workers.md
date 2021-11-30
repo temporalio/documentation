@@ -107,8 +107,8 @@ If you need even more visibility into internal worker state, [see the API refere
 
 In development, the TypeScript SDK usually handles all of the communication between the Worker and the Temporal Server behind the scenes - no port configuration is required.
 
-In production settings, you can configure the `address` and `namespace` the Worker speaks to via [the Rust Core SDK](https://github.com/temporalio/sdk-core) as `Core`.
-Temporal also supports mTLS encryption (required by Temporal Cloud) this way - please read our [Security docs](/docs/server/security) for more information.
+In production settings, you can configure the `address` and `namespace` the Worker speaks to via [the Rust Core SDK](https://github.com/temporalio/sdk-core) as [`Core`](https://typescript.temporal.io/api/classes/worker.core/#install).
+Temporal also supports mTLS encryption (required by Temporal Cloud) this way - please read our [Security docs](/docs/typescript/security#encryption-in-transit-with-mtls) for more information.
 
 ## What is a Task Queue?
 
