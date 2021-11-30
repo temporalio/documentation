@@ -1,7 +1,7 @@
 ---
 id: logging
-title: Logging, Metrics, and Tracing in TypeScript SDK
-sidebar_label: Logging
+title: Logging and Sinks in TypeScript SDK
+sidebar_label: Logging and Sinks
 description: Workflow Sinks allow you to export information from the Workflow back to the Node.js environment, often used for logging, metrics, tracing.
 ---
 
@@ -112,6 +112,10 @@ const logger = winston.createLogger({
 });
 await Core.create({ logger });
 ```
+
+## Monitoring SDK Metrics
+
+We are in the process of building out our SDK metrics capabilities, for now please observe standard monitoring practices on your Workers in production.
 
 ## OpenTelemetry Tracing
 
