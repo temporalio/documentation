@@ -69,16 +69,16 @@ const handle = await client.start<string>('example', {
 // Continue in a different process (such as a serverless function)
 const handle = client.getHandle(workflowId);
 const result = await handle.result(); // wait for Workflow to complete and get result. See below for other Handle APIs
-const result = await client.execute(example /*...*/); // Alternative API for starting and immediately waiting for Workflow completion
+
+// alternative combination of STEP ONE + TWO
+const result = await client.execute(example, /*...*/); // start and immediately wait for Workflow to complete and get result
 ```
 
-Apart from the three required options, you can specify other [WorkflowOptions](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions) like `searchAttributes` and `cronSchedule` (with important caveats you should read in the [Cron Workflows](#scheduling-cron-workflows) section later in this topic).
-
 <details>
-<summary>Note: Scheduling is not the same as Starting
+<summary>Note: Scheduling is not the same as Starting Workflows
 </summary>
 
-Calling `client.execute` or `client.start` merely sends a Command to Temporal Server to schedule a new Workflow Execution on the specified Task Queue; it does not actually start until a Worker (that has a matching Workflow Type) polling that Task Queue picks it up.
+Calling `client.start` (or `client.execute`) merely sends a Command to Temporal Server to schedule a new Workflow Execution on the specified Task Queue; it does not actually start until a Worker (that has a matching Workflow Type) polling that Task Queue picks it up.
 
 You can test this by executing a Workflow Client command without a matching Worker.
 Temporal Server records the command in Event History but does not make progress with the Workflow Execution until a Worker starts polling with a matching Task Queue and Workflow Definition.
@@ -86,6 +86,25 @@ Temporal Server records the command in Event History but does not make progress 
 This queuing mechanic makes your application tolerant to outages and horizontally scalable, but can be confusing to newcomers if they expect that calling `client.execute(MyWorkflow)` directly executes the Workflow code on the same machine as the Client.
 
 </details>
+
+### Workflow Options
+
+A brief guide to the [WorkflowOptions](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions) available to you:
+
+- `workflowId`, `taskQueue`, and `args` (if required) are the main ones you will regularly use
+- Optional features:
+  - `memo` (simple annotation of Workflows)
+  - `searchAttributes` (see [Search Attributes](/docs/typescript/search-attributes))
+  - `cronSchedule` (see important notes in [Cron Workflows](#scheduling-cron-workflows) section below)
+- Advanced features you probably won't need: `followRuns` and `workflowIdReusePolicy`.
+
+:::caution Workflow-level Retries and Timeouts not recommended
+
+You will see that there are `workflowRunTimeout`, `workflowExecutionTimeout`, `workflowTaskTimeout`, and `retryPolicy` options in [WorkflowOptions](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions).
+We strongly recommend not using them unless you know what you are doing.
+Do not rely on Workflows to timeout or fail - you probably want to push this logic down to an Activity instead.
+
+:::
 
 ## Workflow Handle APIs
 
