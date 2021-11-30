@@ -38,7 +38,7 @@ const client = new WorkflowClient(connection.service, {
 ## Encryption in transit with mTLS
 
 There are two classes in the SDK that connect to the Temporal server, the [Worker](https://typescript.temporal.io/api/classes/worker.worker) and the client [Connection](https://typescript.temporal.io/api/classes/client.connection/).
-Both connections need to be secured with mTLS.
+When instantiating either of them, you may choose whether to connect securely or not.
 
 - In order to connect to the server using TLS, set a _truthy_ value (`true` or [TLSConfig](https://typescript.temporal.io/api/interfaces/common.tlsconfig/) for custom options) in the `tls` configuration option.
 - Use [`ServerOptions.tls`](https://typescript.temporal.io/api/interfaces/worker.serveroptions#tls) when [creating](https://typescript.temporal.io/api/classes/worker.worker/#create) a new Worker and
