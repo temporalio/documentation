@@ -42,7 +42,7 @@ Both connections need to be secured with mTLS.
 
 - In order to connect to the server using TLS, set a _truthy_ value (`true` or [TLSConfig](https://typescript.temporal.io/api/interfaces/common.tlsconfig/) for custom options) in the `tls` configuration option.
 - Use [`ServerOptions.tls`](https://typescript.temporal.io/api/interfaces/worker.serveroptions#tls) when [creating](https://typescript.temporal.io/api/classes/worker.worker/#create) a new Worker and
-[`ConnectionOptions.tls`](https://typescript.temporal.io/api/interfaces/client.connectionoptions#tls) for the [`Connection`](https://typescript.temporal.io/api/classes/client.connection) constructor.
+  [`ConnectionOptions.tls`](https://typescript.temporal.io/api/interfaces/client.connectionoptions#tls) for the [`Connection`](https://typescript.temporal.io/api/classes/client.connection) constructor.
 - The client connection also accepts [gRPC credentials](https://grpc.github.io/grpc/node/grpc.credentials.html) at [`ConnectionOptions.credentials`](https://typescript.temporal.io/api/interfaces/client.connectionoptions#tls) as long as `tls` is not also specified.
 
 A full example for Clients looks like this:
@@ -52,10 +52,11 @@ import { Connection, WorkflowClient } from '@temporalio/client';
 
 const connection = new Connection({
   address: 'foo.bar.tmprl.cloud', // as provisioned
-  tls: { // See docs for other TLS options
+  tls: {
+    // See docs for other TLS options
     clientCertPair: {
       crt: clientCert,
-      key: clientKey
+      key: clientKey,
     },
   },
 });
@@ -71,10 +72,11 @@ await Core.install({
   serverOptions: {
     address: 'foo.bar.tmprl.cloud', // as provisioned
     namespace: 'foo.bar', // as provisioned
-    tls: { // See docs for other TLS options
+    tls: {
+      // See docs for other TLS options
       clientCertPair: {
         crt: clientCert,
-        key: clientKey
+        key: clientKey,
       },
     },
   },
