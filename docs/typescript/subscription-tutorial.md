@@ -89,7 +89,7 @@ It does what it says; defers execution for a preset time (note that it accepts b
 To test this out, you will also have to modify your Client code accordingly:
 
 ```ts
-// /src/execute-workflow.ts
+// /src/client.ts
 import { SubscriptionWorkflow } from './workflows';
 
 // etc...
@@ -173,7 +173,7 @@ const handle = await client.getHandle('SubscriptionsWorkflow'); // match the nam
 await handle.signal(cancelSubscription);
 ```
 
-When you run this script while the main `execute-workflow` script is running, you should be able to see the Signal registered in the Event History when you pull up the Workflow on Temporal Web.
+When you run this script while the main `client` script is running, you should be able to see the Signal registered in the Event History when you pull up the Workflow on Temporal Web.
 
 **More importantly, there is a small bug with this code - the cancelation doesn't happen immediately when you cancel!**
 

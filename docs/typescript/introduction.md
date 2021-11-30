@@ -41,7 +41,7 @@ When you click on that link above and log in (there is a generous free tier), Gi
   - Right: [Temporal Web](https://docs.temporal.io/docs/devtools/web-ui) and [Temporal `tctl` CLI](https://docs.temporal.io/docs/devtools/tctl)
 - Pane 2: Hello World
   - Left: [Temporal Worker](https://github.com/temporalio/samples-typescript/blob/main/hello-world/src/worker.ts) - running and hot reloading
-  - Right: [Temporal Client](https://github.com/temporalio/samples-typescript/blob/main/hello-world/src/execute-workflow.ts) - run `npm run workflow`
+  - Right: [Temporal Client](https://github.com/temporalio/samples-typescript/blob/main/hello-world/src/client.ts) - run `npm run workflow`
 
 It takes ~3 minutes for the Docker Compose setup to start up.
 Once you have it up and running (Temporal Web should show the first Workflow Execution), you can use our [Hello World Walkthrough](/docs/typescript/hello-world) tutorial to orient you to the sample file structure.
@@ -149,12 +149,12 @@ $ npm run start.watch
 2021-10-14T00:31:41.360Z [INFO] assets by path ./lib/*.map 605 bytes
 2021-10-14T00:31:41.360Z [INFO]   asset ./lib/workflows.d.ts.map 192 bytes [emitted]
 2021-10-14T00:31:41.360Z [INFO]   asset ./lib/activities.d.ts.map 181 bytes [emitted]
-2021-10-14T00:31:41.360Z [INFO]   asset ./lib/execute-workflow.d.ts.map 126 bytes [emitted]
+2021-10-14T00:31:41.360Z [INFO]   asset ./lib/client.d.ts.map 126 bytes [emitted]
 2021-10-14T00:31:41.360Z [INFO]   asset ./lib/worker.d.ts.map 106 bytes [emitted]
 2021-10-14T00:31:41.360Z [INFO] assets by path ./lib/*.ts 357 bytes
 2021-10-14T00:31:41.360Z [INFO]   asset ./lib/workflows.d.ts 151 bytes [emitted]
 2021-10-14T00:31:41.360Z [INFO]   asset ./lib/activities.d.ts 102 bytes [emitted]
-2021-10-14T00:31:41.360Z [INFO]   asset ./lib/execute-workflow.d.ts 57 bytes [emitted]
+2021-10-14T00:31:41.360Z [INFO]   asset ./lib/client.d.ts 57 bytes [emitted]
 2021-10-14T00:31:41.360Z [INFO]   asset ./lib/worker.d.ts 47 bytes [emitted]
 2021-10-14T00:31:41.360Z [INFO] asset main.js 7.47 MiB [emitted] (name: main)
 2021-10-14T00:31:41.360Z [INFO] runtime modules 891 bytes 4 modules
@@ -188,7 +188,7 @@ Hello, Temporal! # success!
 
 This "Hello, Temporal!" message comes from the combination of:
 
-- [`execute-workflow.ts`](https://github.com/temporalio/samples-typescript/blob/main/hello-world/src/execute-workflow.ts) passing `'Temporal'` as an argument to the Workflow.
+- [`client.ts`](https://github.com/temporalio/samples-typescript/blob/main/hello-world/src/client.ts) passing `'Temporal'` as an argument to the Workflow.
 - The [Workflow](https://github.com/temporalio/samples-typescript/blob/main/hello-world/src/workflows.ts) passing the argument to the Activity.
 - The [Activity](https://github.com/temporalio/samples-typescript/blob/main/hello-world/src/activities.ts) taking the argument as `name` and returning `Hello, ${name}!`.
 
