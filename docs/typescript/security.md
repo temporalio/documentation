@@ -96,8 +96,8 @@ When signing up to Temporal Cloud you should receive a namespace, a server addre
 
 - **TEMPORAL_ADDRESS**: looks like `foo.bar.tmprl.cloud` (NOT web.foo.bar.tmprl.cloud)
 - **TEMPORAL_NAMESPACE**: looks like `foo.bar`
-- **TEMPORAL_CLIENT_CERT_PATH**: e.g. `/tls/ca.pem` (starts with -----BEGIN CERTIFICATE-----)
-- **TEMPORAL_CLIENT_KEY_PATH**: e.g. `/tls/ca.key` (starts with -----BEGIN PRIVATE KEY-----)
+- **TEMPORAL_CLIENT_CERT_PATH**: e.g. `/tls/ca.pem` (file contents start with -----BEGIN CERTIFICATE-----)
+- **TEMPORAL_CLIENT_KEY_PATH**: e.g. `/tls/ca.key` (file contents start with -----BEGIN PRIVATE KEY-----)
 
 You can leave the remaining vars, like `TEMPORAL_SERVER_NAME_OVERRIDE` and `TEMPORAL_SERVER_ROOT_CA_CERT_PATH` blank.
 There is another var, `TEMPORAL_TASK_QUEUE`, which the example defaults to `'hello-world-mtls'` but you can customize as needed.
