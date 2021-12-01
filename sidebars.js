@@ -331,6 +331,11 @@ module.exports = {
             "typescript/interceptors",
           ],
         },
+        {
+          type: "link",
+          label: "API Reference",
+          href: "https://typescript.temporal.io",
+        },
       ],
     },
     {
