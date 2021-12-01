@@ -2,17 +2,17 @@
 
 Temporal Workflows are executed differently than conventional code as they can be restored at any point.
 A Workflow can sleep for months, and even if your Worker crashes or Temporal Cluster is down, timers and timeouts are persisted and will fire as scheduled.
-As soon as your Worker and Cluster are back up, your code will *appear* to resume where it left off.
+As soon as your Worker and Cluster are back up, your code will _appear_ to resume where it left off.
 This also means that sleeping or retrying code does not tie up the process - you can run thousands of timers off a single Worker.
 
 ```js
-import * as wf from '@temporalio/workflow'
+import * as wf from '@temporalio/workflow';
 const { myActivity } = wf.proxyActivities({
   startToCloseTimeout: '1 week', // persisted
   retry: {
-    initialInterval: '1 day' // persisted
-  }
-})
+    initialInterval: '1 day', // persisted
+  },
+});
 
 export async function ExampleWorkflow() {
   let state = []; // mutable local state
