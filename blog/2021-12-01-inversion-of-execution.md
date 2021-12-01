@@ -11,7 +11,8 @@ title: 'Inversion of Execution'
 author: Sergey Bykov
 author_title: Engineering
 author_image_url: https://avatars2.githubusercontent.com/u/8248806?s=460&v=4
-image: https://avatars2.githubusercontent.com/u/8248806?s=460&v=4
+image: https://dev-to-uploads.s3.amazonaws.com/uploads/articles/uiniawopp0cgrloiy777.png
+description: Temporal doesn't execute application code at all. It "only" orchestrates execution of your code in order to drive workflows to completion. In other words, there is an **Inversion** of the standard **Execution** model we are used to!
 release_version: V1.13.1
 ---
 
