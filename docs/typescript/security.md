@@ -1,6 +1,6 @@
 ---
 id: security
-title: Connection and Encryption Security in TypeScript SDK
+title: Connection and Encryption in the TypeScript SDK
 sidebar_label: Security
 description: A summary of the security features you should know as a TypeScript SDK user.
 ---
