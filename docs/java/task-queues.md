@@ -4,7 +4,7 @@ title: Task Queues in Java
 sidebar_label: Task Queues
 ---
 
-In Java, a Task Queue is represented in code by name, as a `string`.
+In Java, a Task Queue is represented in code by its name as a `string`.
 There are four places where the name of the Task Queue is supplied by the developer.
 
 1. When starting a Workflow, a Task Queue name must be provided in the `StartWorkflowOptions`.

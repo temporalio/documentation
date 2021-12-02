@@ -117,13 +117,13 @@ Temporal also supports mTLS encryption (required by Temporal Cloud) this way - p
 
 ### Where Task Queues are used
 
-In Temporal, a Task Queue is represented in code by name, as a `string`.
+In Temporal, a Task Queue is represented in code by its name as a `string`.
 
 <RelatedReadContainer>
   <RelatedReadItem page={WhatIsATaskQueue} />
 </RelatedReadContainer>
 
-There are 2 main places where the name of the Task Queue is supplied by the developer.
+There are two main places where the name of the Task Queue is supplied by the developer.
 
 <details>
 <summary>
