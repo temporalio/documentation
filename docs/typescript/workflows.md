@@ -142,7 +142,7 @@ You may handle it in two ways:
 ```ts
 // "fat handler" solution
 wf.setHandler(`genericSignal`, (payload) => {
-  switch(payload.taskId) {
+  switch (payload.taskId) {
     case taskAId:
       // do task A things
       break;
@@ -150,13 +150,17 @@ wf.setHandler(`genericSignal`, (payload) => {
       // do task B things
       break;
     default:
-      throw new Error("Unexpected task.");
+      throw new Error('Unexpected task.');
   }
 });
 
 // "inline definition" solution
-wf.setHandler(wf.defineSignal(`task-${taskAId}`), payload => {/* do task A things */});
-wf.setHandler(wf.defineSignal(`task-${taskBId}`), payload => {/* do task B things */});
+wf.setHandler(wf.defineSignal(`task-${taskAId}`), (payload) => {
+  /* do task A things */
+});
+wf.setHandler(wf.defineSignal(`task-${taskBId}`), (payload) => {
+  /* do task B things */
+});
 ```
 
 <details>
