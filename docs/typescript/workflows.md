@@ -120,7 +120,7 @@ Since both involve communicating with a Workflow, using them is a two step proce
 
 - To add a Signal to a Workflow, call [`defineSignal`](https://typescript.temporal.io/api/namespaces/workflow/#definesignal) with a name, and then attach a listener with `setHandler`.
 - To add a Query to a Workflow, call [`defineQuery`](https://typescript.temporal.io/api/namespaces/workflow/#definequery) with a name, and then attach a listener with `setHandler`.
-- Handlers for both Signals and Queries can take arguments, which can be used inside `setHandler` logic. 
+- Handlers for both Signals and Queries can take arguments, which can be used inside `setHandler` logic.
 - Only Signal Handlers can mutate state, and only Query Handlers can return values.
 
 ### Define Signals and Queries Statically
@@ -227,7 +227,7 @@ const count = defineQuery<number /*, Arg[] can be added here */>('count');
 
 // // inside Client code
 const handle = client.getHandle(workflowId);
-  
+
 // these three are equivalent
 await handle.signal(increment, 1);
 await handle.signal<[number]>('increment', 1);
