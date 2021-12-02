@@ -17,4 +17,4 @@ Another Worker Entity can then resume the Workflow Execution, and can set up its
 
 - [How to set a `StickyScheduleToStartTimeout` on a Worker Entity in Go](/docs/go/how-to-set-workeroptions-in-go/#stickyscheduletostarttimeout)
 
-Workers creating Sticky Queues is the default behavior of the Temporal Platform as it facilitates fast performance.
+Sticky Executions are the default behavior of the Temporal Platform.
