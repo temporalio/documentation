@@ -87,6 +87,11 @@ module.exports = {
       label: "Go developer guide",
       collapsed: false,
       items: [
+        {
+          type: "link",
+          label: "Reference",
+          href: "https://pkg.go.dev/go.temporal.io/sdk",
+        },
         "go/getting-started",
         "go/how-to-develop-a-workflow-definition-in-go",
         "go/how-to-develop-an-activity-definition-in-go",
@@ -135,11 +140,6 @@ module.exports = {
           type: "link",
           label: "Samples library",
           href: "/docs/samples-library/#go",
-        },
-        {
-          type: "link",
-          label: "Reference",
-          href: "https://pkg.go.dev/go.temporal.io/sdk",
         },
       ],
     },
