@@ -10,7 +10,7 @@ A Sticky Execution is a when a Worker Entity caches the Workflow Execution Event
 
 A Sticky Execution occurs after a Worker Entity completes the first Workflow Task in the chain of Workflow Tasks for the Workflow Execution.
 
-The Worker Entity will have cached the Workflow Execution Event History and begin polling the Sticky Queue for Workflow Tasks that contain incremental updates, rather than the entire Event History.
+The Worker Entity caches the Workflow Execution Event History and begins polling the dedicated Task Queue for Workflow Tasks that contain updates, rather than the entire Event History.
 
 If the Worker Entity does not pick up a Workflow Task from the dedicated Task Queue in an appropriate amount of time, the Cluster will resume Scheduling Workflow Tasks on the original Task Queue.
 Another Worker Entity can then resume the Workflow Execution, and can set up its own Sticky Execution for future Workflow Tasks.
