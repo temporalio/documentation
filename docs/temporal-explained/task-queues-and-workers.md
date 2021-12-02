@@ -19,11 +19,11 @@ import WhatIsATaskQueue from '../content/what-is-a-task-queue.md'
 
 <WhatIsATaskQueue/>
 
-## Sticky Queues
+## Sticky Execution
 
-import WhatIsAStickyQueue from '../content/what-is-a-sticky-queue.md'
+import WhatIsAStickyExecution from '../content/what-is-a-sticky-execution.md'
 
-<WhatIsAStickyQueue/>
+<WhatIsAStickyExecution/>
 
 ## Task Routing
 

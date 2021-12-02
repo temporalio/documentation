@@ -21,15 +21,17 @@ Each Task Queue is capable of queuing both <preview page={WhatIsAnActivityTask}>
 
 <CenteredImage
 imagePath="/diagrams/task-queue.svg"
-title="Task Queues component"
+title="Task Queue component"
 imageSize="75"
 />
 
 Task Queues are very lightweight components.
-There is no limit to the number of Task Queues a Temporal Application can use or a Temporal Cluster can maintain.
-Task Queues do not require explicit registration but instead are created on demand when a Workflow Execution or Activity spawns or when a Worker Process subscribes to it.
 
-Task Queues offer many advantages over synchronous RPC:
+- Task Queues do not require explicit registration but instead are created on demand when a Workflow Execution or Activity spawns or when a Worker Process subscribes to it.
+- There is no limit to the number of Task Queues a Temporal Application can use or a Temporal Cluster can maintain.
+
+Workers poll for Tasks in Task Queues via synchronous RPC.
+This implementation offers several benefits:
 
 - Worker Processes do not need to have any open ports, which is more secure.
 - Worker Processes do not need to advertise themselves through DNS or any other network discovery mechanism.
