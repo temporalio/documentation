@@ -36,8 +36,8 @@ A Temporal Application can have as many Worker Processes as needed.
 A Worker Process can be both a Workflow Worker Process and an Activity Worker Process.
 Many SDKs support the ability to have multiple Worker Entities in a single Worker Process.
 (Worker entity creation and management differ between SDKs.)
-A single Worker entity can only listen to a single Task Queue.
-But if there are multiple Worker entities in a Worker Process, then a Worker Process could be listening to multiple Task Queues.
+A single Worker Entity can listen to only a single Task Queue.
+But if a Worker Process has multiple Worker Entities, the Worker Process could be listening to multiple Task Queues.
 
 <CenteredImage
 imagePath="/diagrams/worker-and-server-entity-relationship.svg"
