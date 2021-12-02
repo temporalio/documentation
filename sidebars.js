@@ -423,4 +423,28 @@ module.exports = {
       ],
     },
   ],
+  longRunningHumanDrivenProcessLearningPath: [
+    {
+      type: "category",
+      label: "Long Running Human Driven Workflow",
+      collapsed: false,
+      items: [
+        "learning-paths/long-running-human-driven-workflow/content/what-is-the-goal",
+        "learning-paths/long-running-human-driven-workflow/content/what-are-the-technical-concepts",
+        "learning-paths/long-running-human-driven-workflow/content/what-are-the-requirements",
+        "learning-paths/long-running-human-driven-workflow/content/how-do-we-build-this-with-temporal",
+        "learning-paths/long-running-human-driven-workflow/content/how-do-we-deploy-this-temporal-application",
+        {
+          type: "category",
+          label: "References",
+          collapsed: false,
+          items: [
+            "learning-paths/long-running-human-driven-workflow/reference/api",
+            "learning-paths/long-running-human-driven-workflow/reference/cli",
+          ],
+        },
+
+      ],
+    },
+  ],
 };
