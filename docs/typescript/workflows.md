@@ -6,6 +6,8 @@ description: Workflows are async functions that can orchestrate Activities and a
 ---
 
 import RelatedReadList from '../components/RelatedReadList.js'
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 > **@temporalio/workflow** [![NPM](https://img.shields.io/npm/v/@temporalio/workflow)](https://www.npmjs.com/package/@temporalio/workflow) [API reference](https://typescript.temporal.io/api/namespaces/workflow) | [GitHub](https://github.com/temporalio/sdk-typescript/tree/main/packages/workflow)
 
@@ -118,11 +120,44 @@ Since both involve communicating with a Workflow, using them is a two step proce
 
 - To add a Signal to a Workflow, call [`defineSignal`](https://typescript.temporal.io/api/namespaces/workflow/#definesignal) with a name, and then attach a listener with `setHandler`.
 - To add a Query to a Workflow, call [`defineQuery`](https://typescript.temporal.io/api/namespaces/workflow/#definequery) with a name, and then attach a listener with `setHandler`.
+- Handlers for both Signals and Queries can take arguments, which can be used inside `setHandler` logic. 
+- Only Signal Handlers can mutate state, and only Query Handlers can return values.
+
+### Define Signals and Queries Statically
+
+If you know the name of your signals and queries upfront, you can define them separately from where you handle them.
+This helps provide type safety, since you can export the type signature of the signal or query to be called on the clientside.
 
 <!--SNIPSTART typescript-blocked-workflow-->
 <!--SNIPEND-->
 
-Listeners for both Signals and Queries can take arguments, which can be used inside `setHandler` to mutate state or compute return values respectively.
+### Define Signals and Queries Dynamically
+
+For more flexible usecases, you may want a dynamic signal (such as a generated ID).
+You may handle it in two ways:
+
+- avoid making it dynamic by collapsing all signals in one handler and move the ID to the payload, or
+- actually make the signal name dynamic by inlining the signal definition per handler.
+
+```ts
+// "fat handler" solution
+wf.setHandler(`genericSignal`, (payload) => {
+  switch(payload.taskId) {
+    case taskAId:
+      // do task A things
+      break;
+    case taskBId:
+      // do task B things
+      break;
+    default:
+      throw new Error("Unexpected task.");
+  }
+});
+
+// "inline definition" solution
+wf.setHandler(wf.defineSignal(`task-${taskAId}`), (payload) => /* do task A things */);
+wf.setHandler(wf.defineSignal(`task-${taskBId}`), (payload) => /* do task B things */);
+```
 
 <details>
   <summary>
@@ -187,18 +222,21 @@ Sending Signals and making Queries requires having a Workflow handle from a [Tem
 
 ```ts
 // // inside Workflow code (or Client code)
-const increment =
-  defineSignal<[number /* more args can be added here */]>('increment');
+const increment = defineSignal<[number]>('increment');
 const count = defineQuery<number /*, Arg[] can be added here */>('count');
 
-// // inside Workflow code
-// these two are equivalent
+// // inside Client code
+const handle = client.getHandle(workflowId);
+  
+// these three are equivalent
 await handle.signal(increment, 1);
 await handle.signal<[number]>('increment', 1);
+await client.getHandle(workflowId).signal(increment, 1);
 
-// these two are equivalent
+// these three are equivalent
 let state = await handle.query(count);
 let state = await handle.query<number>('count');
+let state = await client.getHandle(workflowId).query(count);
 ```
 
 By design of these Workflow handles, two different Workflows can use the same Signal or Query and there is still no ambiguity, because you always have to specify which Workflow you are signalling (`workflowHandle1.signal(MySignal)` vs `workflowHandle2.signal(MySignal)`).
@@ -206,9 +244,6 @@ By design of these Workflow handles, two different Workflows can use the same Si
 ### Signals and Queries design patterns
 
 Because Signals and Queries are intentionally flexible, you can wrap them up into reusable functions:
-
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
 
 <Tabs
 defaultValue="export"
