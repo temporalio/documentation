@@ -155,8 +155,8 @@ wf.setHandler(`genericSignal`, (payload) => {
 });
 
 // "inline definition" solution
-wf.setHandler(wf.defineSignal(`task-${taskAId}`), (payload) => /* do task A things */);
-wf.setHandler(wf.defineSignal(`task-${taskBId}`), (payload) => /* do task B things */);
+wf.setHandler(wf.defineSignal(`task-${taskAId}`), (payload) => {/* do task A things */});
+wf.setHandler(wf.defineSignal(`task-${taskBId}`), (payload) => {/* do task B things */});
 ```
 
 <details>
