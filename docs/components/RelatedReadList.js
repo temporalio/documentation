@@ -4,13 +4,20 @@ import Link from "@docusaurus/Link";
 import {v4 as uuidv4} from "uuid";
 
 export function RelatedReadContainer({children}) {
+  let rl = [];
+  if (React.Children.count(children) > 1) {
+    React.Children.forEach(children, function (child) {
+      let id = uuidv4();
+      rl.push({id: id, child: child});
+    });
+  }
   return (
     <div className={"related-read-div"}>
       <span className={"related-read-label"}>Related 📚 </span>
-      {React.Children.count(children) > 1 ? (
+      {rl.length > 1 ? (
         <ul className="related-read-list">
-          {React.Children.forEach(children, (child) => (
-            <li>{child}</li>
+          {rl.map(({id, child}) => (
+            <li key={id}>{child}</li>
           ))}
         </ul>
       ) : (

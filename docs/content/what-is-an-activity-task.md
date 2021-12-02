@@ -1,9 +1,9 @@
 ---
 id: what-is-an-activity-task
 title: What is an Activity Task?
-description: todo
+description: An Activity Task is a Task that contains the context needed to make progress with an Activity Execution.
+tags:
+  - explanation
 ---
 
-A [Task](#task) that contains invocation information for an [Activity](#activity) that is delivered to an [Activity Worker](#worker) through a [Task Queue](#task-queue).
-
-- Upon receiving an [Activity Task](#activity-task), an [Activity Worker](#worker) executes the corresponding [Activity](#activity).
+An Activity Task is a Task that contains the context needed to make progress with an Activity Execution.
