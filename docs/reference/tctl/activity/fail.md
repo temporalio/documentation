@@ -19,7 +19,7 @@ The `tctl activity fail` command fails an <preview page={WhatIsAnActivityExecuti
 
 The following options modify the behavior of the command.
 
-### `workflow_id`
+### `--workflow_id`
 
 How to specify the <preview page={WhatIsAWorkflowId}>Workflow Id</preview> of an <preview page={WhatIsAnActivityExecution}>Activity Execution</preview> to fail using tctl.
 
@@ -55,7 +55,7 @@ Alias: `--aid`
 tctl activity fail --activity_id <id>
 ```
 
-### `reason`
+### `--reason`
 
 How to specify the reason for failing an <preview page={WhatIsAnActivityExecution}>Activity Execution</preview> when using tctl.
 
@@ -65,7 +65,7 @@ How to specify the reason for failing an <preview page={WhatIsAnActivityExecutio
 tctl activity fail --reason <value>
 ```
 
-### `detail`
+### `--detail`
 
 How to specify details of the reason for failing an <preview page={WhatIsAnActivityExecution}>Activity Execution</preview> when using tctl.
 
@@ -75,7 +75,7 @@ How to specify details of the reason for failing an <preview page={WhatIsAnActiv
 tctl activity fail --detail <value>
 ```
 
-### `identity`
+### `--identity`
 
 How to specify the identity of the operator when using tctl to fail an <preview page={WhatIsAnActivityExecution}>Activity Execution</preview>.
 

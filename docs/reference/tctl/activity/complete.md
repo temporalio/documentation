@@ -19,7 +19,7 @@ The `tctl activity complete` command completes an <preview page={WhatIsAnActivit
 
 The following options modify the behavior of the command.
 
-### `workflow_id`
+### `--workflow_id`
 
 How to specify the <preview page={WhatIsAWorkflowId}>Workflow Id</preview> of an <preview page={WhatIsAnActivityExecution}>Activity Execution</preview> to complete using tctl.
 
@@ -55,7 +55,7 @@ Alias: `--aid`
 tctl activity complete --activity_id <id>
 ```
 
-### `result`
+### `--result`
 
 How to specify the result of an <preview page={WhatIsAnActivityExecution}>Activity Execution</preview> when using tctl to complete the Activity Execution.
 
@@ -65,7 +65,7 @@ How to specify the result of an <preview page={WhatIsAnActivityExecution}>Activi
 tctl activity complete --result <value>
 ```
 
-### `identity`
+### `--identity`
 
 How to specify the identity of the operator when using tctl to complete an <preview page={WhatIsAnActivityExecution}>Activity Execution</preview>.
 

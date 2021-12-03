@@ -17,5 +17,5 @@ import WhatIsTctl from '/docs/content/what-is-tctl.md'
 
 ## tctl commands
 
-- <preview page={TctlWorkflow}>`tctl workflow`</preview>
-- <preview page={TctlActivity}>`tctl activity`</preview>
+- <preview page={TctlWorkflow}>tctl workflow</preview>
+- <preview page={TctlActivity}>tctl activity</preview>
