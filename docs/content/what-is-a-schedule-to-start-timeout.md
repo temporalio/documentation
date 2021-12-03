@@ -14,8 +14,17 @@ A Schedule To Start Timeout is the maximum amount of time that is allowed, from 
 
 <CenteredImage
 imagePath="/diagrams/schedule-to-start-timeout.svg"
-imageSize="50"
+imageSize="100"
 title="Schedule-To-Start Timeout period"
+/>
+
+A [Retry Policy](/docs/content/what-is-a-retry-policy) attached to an Activity Execution retries an Activity Task Execution.
+Thus the Schedule-To-Start Timeout is applied to each Activity Task Execution within an Activity Execution.
+
+<CenteredImage
+imagePath="/diagrams/schedule-to-start-timeout-with-retry.svg"
+imageSize="100"
+title="Start-To-Close Timeout period with retries"
 />
 
 There are two primary uses case of this timeout:

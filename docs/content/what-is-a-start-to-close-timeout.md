@@ -14,11 +14,11 @@ A Start-To-Close Timeout is the maximum time allowed for a single [Activity Task
 
 <CenteredImage
 imagePath="/diagrams/start-to-close-timeout.svg"
-imageSize="50"
+imageSize="100"
 title="Start-To-Close Timeout period"
 />
 
-A [Retry Policy](/docs/content/what-is-a-retry-policy) attached to an Activity Execution actually retries an Activity Task Execution.
+A [Retry Policy](/docs/content/what-is-a-retry-policy) attached to an Activity Execution retries an Activity Task Execution.
 Thus the Start-To-Close Timeout is applied to each Activity Task Execution within an Activity Execution.
 
 <CenteredImage

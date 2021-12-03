@@ -9,11 +9,18 @@ import CenteredImage from "../components/CenteredImage.js"
 
 Timeout settings and a Retry Policy provide fine controls over specific steps of Workflow Executions and Activity Executions.
 
+<details>
+<summary>
+Workflow Execution with a single Activity Execution: Timeout periods
+</summary>
+
 <CenteredImage
 imagePath="/diagrams/workflow-execution-with-single-activity-execution.svg"
 imageSize="100"
 title="Workflow Execution with a single Activity Execution: Timeout periods"
 />
+
+</details>
 
 ## Workflow Execution Timeout
 
