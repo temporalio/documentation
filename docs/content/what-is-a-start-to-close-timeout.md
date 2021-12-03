@@ -56,16 +56,11 @@ func(a *YourActivityStruct) YourActivityDefintion(ctx workflow.Context) error {
 </TabItem>
 <TabItem value="java">
 
-
-
 </TabItem>
 <TabItem value="ts">
 
-
-
 </TabItem>
 <TabItem value="php">
-
 
 </TabItem>
 </Tabs>
