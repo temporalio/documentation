@@ -70,6 +70,16 @@ The `@temporalio/workflow` package exports all the useful primitives that you ca
 | `uuid4`                      | Generate an RFC compliant V4 [uuid](https://typescript.temporal.io/api/namespaces/workflow/#uuid4) without needing to call an Activity or Side Effect.                                                                                                                                                                                                                                                                   |
 | APIs for advanced users      | including [`workflowInfo`](https://typescript.temporal.io/api/namespaces/workflow#workflowinfo) (to retrieve Workflow metadata), Workflow data [`Sinks`](/docs/typescript/logging), [Cancellation Scopes](/docs/typescript/cancellation-scopes), [Failure types](/docs/typescript/handling-failure), and [`getExternalWorkflowHandle`](https://typescript.temporal.io/api/namespaces/workflow#getexternalworkflowhandle) |
 
+You can import them individually or as a group:
+
+```ts
+// Option 1
+import { sleep } from '@temporalio/workflow'
+
+// Option 2
+import * as wf from '@temporalio/workflow'
+```
+
 We fully expect that developers will bundle these into their own reusable Workflow libraries.
 If you do, please [get in touch on Slack](https://temporal.io/slack), we would love to work with you and promote your work.
 
@@ -125,11 +135,12 @@ Since both involve communicating with a Workflow, using them is a two step proce
 
 #### Define Signals and Queries Statically
 
-If you know the name of your signals and queries upfront, you can define them separately from where you handle them.
-This helps provide type safety, since you can export the type signature of the signal or query to be called on the clientside.
+If you know the name of your signals and queries upfront, we recommend declaring them outside of the Workflow Definition.
 
 <!--SNIPSTART typescript-blocked-workflow-->
 <!--SNIPEND-->
+
+This helps provide type safety, since you can export the type signature of the signal or query to be called on the clientside.
 
 #### Define Signals and Queries Dynamically
 
@@ -140,6 +151,8 @@ You may handle it in two ways:
 - actually make the signal name dynamic by inlining the signal definition per handler.
 
 ```ts
+import * as wf from '@temporalio/workflow'
+
 // "fat handler" solution
 wf.setHandler(`genericSignal`, (payload) => {
   switch (payload.taskId) {
@@ -161,6 +174,12 @@ wf.setHandler(wf.defineSignal(`task-${taskAId}`), (payload) => {
 wf.setHandler(wf.defineSignal(`task-${taskBId}`), (payload) => {
   /* do task B things */
 });
+
+// utility "inline definition" helper
+const inlineSignal = (signalName, handler) => wf.setHandler(wf.defineSignal(signalName), handler);
+inlineSignal(`task-${taskBId}`, (payload) => {
+  /* do task B things */
+})
 ```
 
 <details>
@@ -170,7 +189,7 @@ wf.setHandler(wf.defineSignal(`task-${taskBId}`), (payload) => {
 
 #### Why not `new Signal` and `new Query`?
 
-The semantic of `defineSignal`/`defineQuery` is intentional, in that they return Signal/Query **Definitions**, not unique instances of Signals and Queries themselves. [View source](https://github.com/temporalio/sdk-typescript/blob/fc658d3760e6653aec47732ab17a0062b7dd23fc/packages/workflow/src/workflow.ts#L884-L907):
+The semantic of `defineSignal`/`defineQuery` is intentional, in that they return Signal/Query **Definitions**, not unique instances of Signals and Queries themselves. [This is their entire source code](https://github.com/temporalio/sdk-typescript/blob/fc658d3760e6653aec47732ab17a0062b7dd23fc/packages/workflow/src/workflow.ts#L884-L907):
 
 ```ts
 /**
@@ -208,8 +227,8 @@ This will be clearer if you refer to to the Client-side APIs below.
 We named it `setHandler` instead of `subscribe` because Signals/Queries can only have one "handler" at a time, whereas `subscribe` could imply an Observable with multiple consumers, and is a higher level construct.
 
 ```ts
-setHandler(MySignal, handlerFn1);
-setHandler(MySignal, handlerFn2); // replaces handlerFn1
+wf.setHandler(MySignal, handlerFn1);
+wf.setHandler(MySignal, handlerFn2); // replaces handlerFn1
 ```
 
 If you are familiar with Rxjs, you are free to wrap your Signal and Query into Observables if you wish, or you could dynamically reassign the listener based on your business logic/Workflow state.
@@ -225,11 +244,10 @@ Sending Signals and making Queries requires having a Workflow handle from a [Tem
 - You can refer to either by string name, which is useful for dynamic reference, but you will lose type inference.
 
 ```ts
-// // inside Workflow code (or Client code)
-const increment = defineSignal<[number]>('increment');
-const count = defineQuery<number /*, Arg[] can be added here */>('count');
-
-// // inside Client code
+// // inside Client code! not Workflow code!
+import { increment, count } from './workflow'
+  
+// init client code omitted - see Client docs
 const handle = client.getHandle(workflowId);
 
 // these three are equivalent
@@ -261,16 +279,11 @@ values={[
 
 ```ts
 // implementation of queryable + signallable State in Workflow file
-import {
-  defineSignal,
-  defineQuery,
-  setHandler,
-  sleep,
-} from '@temporalio/workflows';
+import * as wf from '@temporalio/workflow'
 
 function useState<T = any>(name: string, initialValue: T) {
-  const signal = defineSignal<[T]>(name);
-  const query = defineQuery<T>(name);
+  const signal = wf.defineSignal<[T]>(name);
+  const query = wf.defineQuery<T>(name);
   let state: T = initialValue;
   return {
     signal,
@@ -288,14 +301,14 @@ function useState<T = any>(name: string, initialValue: T) {
 // usage in Workflow file
 const store = useState('my-store', 10);
 function MyWorkflow() {
-  setHandler(store.signal, (newValue: T) => {
+  wf.setHandler(store.signal, (newValue: T) => {
     // console.log('updating ', name, newValue) // optional but useful for debugging
     state = store.value;
   });
-  setHandler(store.query, () => store.value);
+  wf.setHandler(store.query, () => store.value);
   while (true) {
     console.log('sleeping for ', store.value);
-    sleep(store.value++ * 100); // you can mutate the value as well
+    wf.sleep(store.value++ * 100); // you can mutate the value as well
   }
 }
 
@@ -349,19 +362,20 @@ const storeState = handle.query<number>('my-store'); // 30
 You can even conditionally set handlers, or set handlers inside handlers:
 
 ```ts
+import * as wf from '@temporalio/workflow';
 function MyWorkflow(signallable: boolean, signalNames: string[]) {
   // conditional setting of handlers
   if (signallable) {
-    setHandler(MySignal, handler);
+    wf.setHandler(MySignal, handler);
   }
 
   // set same handler for an array of signals by name
-  signalNames.forEach((name) => setHandler(name, handler));
+  signalNames.forEach((name) => wf.setHandler(name, handler));
 
   // signal handler that sets signal handlers
   // // would be nice to send a function but we can't because it is not serializable
-  setHandler(MySignal, (handlerName) => {
-    setHandler(handlerName, handlers[handlerName]);
+  wf.setHandler(MySignal, (handlerName) => {
+    wf.setHandler(handlerName, handlers[handlerName]);
   });
 }
 ```
@@ -374,8 +388,8 @@ The Signals and Queries API has been designed with type safety in mind:
 
 - `wf.defineQuery<Ret, Args>(name): QueryDefinition<Ret, Args>`
 - `wf.defineSignal<Args>(name): SignalDefinition<Args>`
-- `WorkflowHandle.query<Ret, Args>(def, ...args): Promise<Ret>`
-- `WorkflowHandle.signal<Args>(def, ...args): Promise<Ret>`
+- `handle.query<Ret, Args>(def, ...args): Promise<Ret>`
+- `handle.signal<Args>(def, ...args): Promise<Ret>`
 
 You can either:
 
@@ -384,8 +398,8 @@ You can either:
 
 ```ts
 const increment =
-  defineSignal<[number /* more args can be added here */]>('increment');
-const count = defineQuery<number /*, Arg[] can be added here */>('count');
+  wf.defineSignal<[number /* more args can be added here */]>('increment');
+const count = wf.defineQuery<number /*, Arg[] can be added here */>('count');
 
 // type safety inferred from definitions
 await handle.signal(increment, 1);
@@ -427,7 +441,7 @@ This mutates Workflow state - do not do this:
 ```ts
 export function badExample() {
   let someState = 123;
-  setHandler(query, () => {
+  wf.setHandler(query, () => {
     return someState++; // bad! don't do this!
   });
 }
@@ -443,9 +457,9 @@ Because Signal and Query Definitions are separate from Workflow Definitions, we 
 // basic reusable Workflow component
 export async function unblocked() {
   let isBlocked = true;
-  setHandler(unblockSignal, () => (isBlocked = false));
-  setHandler(isBlockedQuery, () => isBlocked);
-  await condition(() => !isBlocked);
+  wf.setHandler(unblockSignal, () => (isBlocked = false));
+  wf.setHandler(isBlockedQuery, () => isBlocked);
+  await wf.condition(() => !isBlocked);
 }
 
 // usage: signals can be sent to each Workflow separately
@@ -465,7 +479,7 @@ If you're not sure if a Workflow is running, you can `signalWithStart` a Workflo
 Arguments for both are sent as needed.
 
 ```ts
-// Signal With Start
+// Signal With Start in Client file
 const client = new WorkflowClient();
 await workflow.signalWithStart(MyWorkflow, {
   workflowId,
@@ -509,21 +523,14 @@ That is the kind of scale Temporal handles.
 
 ### `sleep`
 
-`sleep` uses the [ms](https://www.npmjs.com/package/ms) package to take either a string or number of milliseconds, and returns a promise that you can `await`.
+`sleep` sets a durable timer for a fixed time period (an "Updatable Timer" pattern is documented below).
+It uses the [ms](https://www.npmjs.com/package/ms) package to take either a string or number of milliseconds, and returns a promise that you can `await`, and `catch` when the Workflow Execution is cancelled.
 
 ```ts
-/**
- * Asynchronous sleep. Schedules a timer on the Temporal service.
- *
- * @param ms sleep duration - formatted string or number of milliseconds
- */
-export function sleep(ms: number | string): Promise<void>;
-
-// durably sleep for 30 days
 import { sleep } from '@temporalio/workflow';
 
 await sleep('30 days'); // string API
-await sleep(30 * 24 * 60 * 60 * 1000); // numerical API]
+await sleep(30 * 24 * 60 * 60 * 1000); // numerical API
 
 // `sleep` is cancellation-aware
 // when workflow gets canceled during sleep, promise is rejected
@@ -532,9 +539,10 @@ await sleep('30 days').catch(() => {
 });
 ```
 
-You can convert a string representation of a future date with `date-fns`:
+With this primitive, you can build other abstractions. For example, a `sleepUntil` function that converts absolute time to relative time with `date-fns`:
 
 ```ts
+import * as wf from '@temporalio/workflow';
 import differenceInMilliseconds from 'date-fns/differenceInMilliseconds';
 
 async function sleepUntil(futureDate, fromDate = new Date()) {
@@ -542,7 +550,7 @@ async function sleepUntil(futureDate, fromDate = new Date()) {
     new Date(futureDate),
     fromDate
   );
-  return sleep(timeUntilDate);
+  return wf.sleep(timeUntilDate);
 }
 
 sleepUntil('30 Sep ' + (new Date().getFullYear() + 1)); // wake up when September ends
@@ -577,15 +585,15 @@ export function condition(
 export function condition(fn: () => boolean): Promise<void>;
 
 // Usage
-import { condition, setHandler } from '@temporalio/workflow';
+import * as wf from '@temporalio/workflow';
 
 let x = 0;
 // do stuff with x, eg increment every time you receive a signal
-await condition(() => x > 3);
+await wf.condition(() => x > 3);
 // you only reach here when x > 3
 
 // await either x > 3 or 30 minute timeout, whichever comes first
-if (await condition(() => x > 3, '30 mins')) {
+if (await wf.condition(() => x > 3, '30 mins')) {
   // reach here if predicate true
 } else {
   // reach here if timed out
@@ -594,10 +602,10 @@ if (await condition(() => x > 3, '30 mins')) {
 // track user progress with condition
 export async function trackStepChanges(): Promise<void> {
   let step = 0;
-  setHandler(updateStep, (s) => void (step = s));
-  setHandler(getStep, () => step);
-  await condition(() => step === 1);
-  await condition(() => step === 2);
+  wf.setHandler(updateStep, (s) => void (step = s));
+  wf.setHandler(getStep, () => step);
+  await wf.condition(() => step === 1);
+  await wf.condition(() => step === 2);
 }
 ```
 
@@ -649,7 +657,6 @@ export async function processOrderWorkflow({
 
   if (processing) {
     await sendNotificationEmail();
-
     await processOrderPromise;
   }
 }
@@ -709,17 +716,19 @@ Updatable Timer
 Here is how you can build an updatable timer with `condition`:
 
 ```ts
+import * as wf from '@temporalio/workflow';
+
 // usage
 export async function countdownWorkflow(): Promise<void> {
   const target = Date.now() + 24 * 60 * 60 * 1000; // 1 day!!!
   const timer = new UpdatableTimer(target);
   console.log('timer set for: ' + new Date(target).toString());
-  setListener(setDeadlineSignal, (deadline) => {
+  wf.setListener(setDeadlineSignal, (deadline) => {
     // send in new deadlines via Signal
     timer.deadline = deadline;
     console.log('timer now set for: ' + new Date(deadline).toString());
   });
-  setListener(timeLeftQuery, () => timer.deadline - Date.now());
+  wf.setListener(timeLeftQuery, () => timer.deadline - Date.now());
   await timer; // if you send in a signal with a new time, this timer will resolve earlier!
   console.log('countdown done!');
 }
@@ -738,7 +747,7 @@ export class UpdatableTimer implements PromiseLike<void> {
     while (true) {
       this.deadlineUpdated = false;
       if (
-        !(await condition(
+        !(await wf.condition(
           () => this.deadlineUpdated,
           this.#deadline - Date.now()
         ))
