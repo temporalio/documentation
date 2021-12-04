@@ -14,15 +14,6 @@ You can view:
 - [SDK source on GitHub](https://github.com/temporalio/sdk-typescript) [![GitHub stars](https://img.shields.io/github/stars/temporalio/sdk-typescript)](https://github.com/temporalio/sdk-typescript/stargazers) (give us a star!)
 - [See version diffs on our Changelog](https://github.com/temporalio/sdk-typescript/blob/HEAD/CHANGELOG.md)
 
-:::note 🚀 Beta Launch Sequence
-
-Join [our 2hr intro workshop](https://lu.ma/temporalintro) on Nov 30!
-
-And of course you can [join the #typescript-sdk channel](https://temporal.io/slack) to ask any questions as you get set up.
-Design partners are already putting us in production and we are eager to hear your feedback.
-
-:::
-
 ## Getting started
 
 Choose your own adventure:
@@ -223,3 +214,14 @@ These are the essential pages to have a passing knowledge of our Core APIs:
 - [Clients](/docs/typescript/clients): How to start, signal, query, cancel, or otherwise handle Workflows.
 
 </details>
+
+## TS SDK Intro Workshop
+
+We held a 2hr intro workshop for 80 people in Nov 2021:
+
+import { ResponsivePlayer } from '../../src/components'
+
+<ResponsivePlayer url='https://www.youtube.com/watch?v=CeHSmv8oF_4&feature=youtu.be' />
+
+And of course you can [join the #typescript-sdk channel](https://temporal.io/slack) to ask any questions as you get set up.
+Design partners are already [putting us in production](https://youtu.be/GpbOkDjpeYU) and we are eager to hear your feedback.
