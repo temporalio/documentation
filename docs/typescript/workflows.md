@@ -116,14 +116,14 @@ Since both involve communicating with a Workflow, using them is a two step proce
 1. add them inside the Workflow code
 2. call them from the Client code
 
-### How to define Signals and Queries inside a Workflow
+### Define Signals and Queries inside a Workflow
 
 - To add a Signal to a Workflow, call [`defineSignal`](https://typescript.temporal.io/api/namespaces/workflow/#definesignal) with a name, and then attach a listener with `setHandler`.
 - To add a Query to a Workflow, call [`defineQuery`](https://typescript.temporal.io/api/namespaces/workflow/#definequery) with a name, and then attach a listener with `setHandler`.
 - Handlers for both Signals and Queries can take arguments, which can be used inside `setHandler` logic.
 - Only Signal Handlers can mutate state, and only Query Handlers can return values.
 
-### Define Signals and Queries Statically
+#### Define Signals and Queries Statically
 
 If you know the name of your signals and queries upfront, you can define them separately from where you handle them.
 This helps provide type safety, since you can export the type signature of the signal or query to be called on the clientside.
@@ -131,7 +131,7 @@ This helps provide type safety, since you can export the type signature of the s
 <!--SNIPSTART typescript-blocked-workflow-->
 <!--SNIPEND-->
 
-### Define Signals and Queries Dynamically
+#### Define Signals and Queries Dynamically
 
 For more flexible usecases, you may want a dynamic signal (such as a generated ID).
 You may handle it in two ways:
@@ -216,7 +216,7 @@ If you are familiar with Rxjs, you are free to wrap your Signal and Query into O
 
 </details>
 
-### How to invoke Signals and Queries from a Client
+### Invoke Signals and Queries from a Client
 
 Sending Signals and making Queries requires having a Workflow handle from a [Temporal Client](/docs/typescript/clients).
 
@@ -481,7 +481,10 @@ See the [Workflow Client](/docs/typescript/workflows) docs for more notes on how
 
 `sleep` and `condition` help you write durable asynchronous code in Temporal by offering an easy to use Promise-like API, but deferring, persisting, and resuming execution behind the scenes.
 
-The Temporal Workflow's v8 isolate environment completely replaces the JavaScript [`setTimeout`](https://typescript.temporal.io/api/namespaces/workflow/#timers) global including inside libraries that you use, to provide a complete JS runtime.
+- In other words, they do not "lock" the process, allowing one Worker to concurrently process hundreds of Workflows that sleep and await arbitrary conditions.
+- They are also "cancellation aware", allowing for graceful cleanup if the Workflow they are linked to is canceled. More in [Cancellation Scopes](/docs/typescript/cancellation-scopes).
+
+The Workflow's v8 isolate environment completely replaces the JavaScript [`setTimeout`](https://typescript.temporal.io/api/namespaces/workflow/#timers) global including inside libraries that you use, to provide a complete JS runtime.
 We recommend using our [`sleep(timeout)`](https://typescript.temporal.io/api/namespaces/workflow/#sleep) API instead, as it is a cancellation-aware Promise wrapper for `setTimeout`.
 
 <details>
@@ -492,14 +495,15 @@ Why Durable Timers Are a Hard Problem
 JavaScript has a `setTimeout`, which seems relatively straightforward.
 However, they are held in memory - if your system goes down, those timers are gone.
 
-A lot of careful code is required to make these timeouts fully reliable (aka recoverable in case of outage.)
-Beyond that, further engineering is needed to scale this - imagine 100,000 independently running timers in your system, firing every minute.
-That is the kind of scale Temporal handles.
+A lot of careful code is required to make these timeouts fully reliable (aka recoverable in case of outage) and cancellation aware.
 
 <!-- Note: these are rough Durable Timer notes from Maxim - we should build out examples and really hit home why you want to use us rather than write your own, in future.
 When writing Workflows with timers, you need to take care that it handles jumps of time.
 What we mean by "handling jumps": if you had timers that were supposed to go off at 1.15, 1.30, and 1.45pm, and your system goes down from 1pm to 2pm, then at 2pm when the system comes back up all 3 timers will fire at once. If your workflow code relies on the timers resolving in precise order, write these checks yourself.
 -->
+
+Beyond that, further engineering is needed to scale this - imagine 100,000 independently running timers in your system, firing every minute.
+That is the kind of scale Temporal handles.
 
 </details>
 
@@ -519,7 +523,13 @@ export function sleep(ms: number | string): Promise<void>;
 import { sleep } from '@temporalio/workflow';
 
 await sleep('30 days'); // string API
-await sleep(30 * 24 * 60 * 60 * 1000); // numerical API
+await sleep(30 * 24 * 60 * 60 * 1000); // numerical API]
+
+// `sleep` is cancellation-aware
+// when workflow gets canceled during sleep, promise is rejected
+await sleep('30 days').catch(() => {
+  // clean up code if workflow is canceled during sleep
+});
 ```
 
 You can convert a string representation of a future date with `date-fns`:
@@ -540,16 +550,6 @@ sleepUntil('5 Nov 2022 00:12:34 GMT'); // wake up at specific time and timezone
 ```
 
 You can check the valid ISO string formats on [MDN's Date docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse). The upcoming [ECMAScript Temporal API](https://tc39.es/proposal-temporal/docs/index.html) will offer more time utilities natively in JavaScript, alongside unfortunate name collision for Temporal developers.
-
-`sleep` is cancellation-aware, meaning that when the workflow gets cancelled, the `sleep` timer is canceled and the promise is rejected:
-
-```ts
-await sleep('30 days').catch(() => {
-  // clean up code if workflow is canceled during sleep
-});
-```
-
-You can read more on [the Cancellation Scopes doc](/docs/typescript/cancellation-scopes).
 
 :::caution Preventing Confusion: Workflow sleep vs Activity sleep
 
@@ -802,7 +802,7 @@ export async function myWorkflow(userId: string) {
 
 </details>
 
-In most cases, you should now be able to use `condition` instead of Triggers, and we may deprecate Triggers in future..
+In most cases, you should now be able to use `condition` instead of Triggers, and we may deprecate Triggers in future.
 
 ## Child Workflows
 
