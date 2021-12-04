@@ -74,10 +74,10 @@ You can import them individually or as a group:
 
 ```ts
 // Option 1
-import { sleep } from '@temporalio/workflow'
+import { sleep } from '@temporalio/workflow';
 
 // Option 2
-import * as wf from '@temporalio/workflow'
+import * as wf from '@temporalio/workflow';
 ```
 
 We fully expect that developers will bundle these into their own reusable Workflow libraries.
@@ -151,7 +151,7 @@ You may handle it in two ways:
 - actually make the signal name dynamic by inlining the signal definition per handler.
 
 ```ts
-import * as wf from '@temporalio/workflow'
+import * as wf from '@temporalio/workflow';
 
 // "fat handler" solution
 wf.setHandler(`genericSignal`, (payload) => {
@@ -176,10 +176,11 @@ wf.setHandler(wf.defineSignal(`task-${taskBId}`), (payload) => {
 });
 
 // utility "inline definition" helper
-const inlineSignal = (signalName, handler) => wf.setHandler(wf.defineSignal(signalName), handler);
+const inlineSignal = (signalName, handler) =>
+  wf.setHandler(wf.defineSignal(signalName), handler);
 inlineSignal(`task-${taskBId}`, (payload) => {
   /* do task B things */
-})
+});
 ```
 
 <details>
@@ -245,8 +246,8 @@ Sending Signals and making Queries requires having a Workflow handle from a [Tem
 
 ```ts
 // // inside Client code! not Workflow code!
-import { increment, count } from './workflow'
-  
+import { increment, count } from './workflow';
+
 // init client code omitted - see Client docs
 const handle = client.getHandle(workflowId);
 
@@ -279,7 +280,7 @@ values={[
 
 ```ts
 // implementation of queryable + signallable State in Workflow file
-import * as wf from '@temporalio/workflow'
+import * as wf from '@temporalio/workflow';
 
 function useState<T = any>(name: string, initialValue: T) {
   const signal = wf.defineSignal<[T]>(name);
