@@ -11,14 +11,14 @@ import * as WhatIsATemporalCronJob from '../content/what-is-a-temporal-cron-job.
 
 ## Overview
 
-Search attributes enable complex and business-logic-focused search queries for Workflow Executions.
+Search Attributes enable complex and business-logic-focused search queries for Workflow Executions.
 Most Search APIs are not yet available in the TypeScript SDK beta.
 These are often queried via the Web UI, but you can also query from within your workflow code (as we show below).
 
-There are many <preview page={WhatsSearchAttr}>search attributes</preview> that are added to Workflow Executions by default.
+There are many <preview page={WhatsSearchAttr}>Search Attributes</preview> that are added to Workflow Executions by default.
 But these are necessarily focused on Temporal internal state tracking.
 
-For more debugging and monitoring, you may wish add your own domain specific search attributes (e.g. `customerId` or `numItems`) that may serve as useful search filters.
+For more debugging and monitoring, you may wish add your own domain specific Search Attributes (e.g. `customerId` or `numItems`) that may serve as useful search filters.
 
 <details>
 <summary>What is a Search Attribute?
@@ -28,7 +28,7 @@ For more debugging and monitoring, you may wish add your own domain specific sea
 
 </details>
 
-## Tagging search attributes at workflow creation
+## Tagging Search Attributes at workflow creation
 
 You can provide key-value pairs as searchAttributes in [StartWorkflowOptions](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions#searchattributes).
 In TypeScript, SearchAttributes are represented as `Record<string, string | number | boolean>`.
@@ -41,12 +41,12 @@ This can be useful for tagging executions with useful attributes you may want to
 <!--SNIPSTART typescript-search-attributes-at-creation-->
 <!--SNIPEND-->
 
-## Future: Upsert search attributes during workflow execution
+## Future: Upsert Search Attributes during workflow execution
 
 In advanced cases, you may want to dynamically update these attributes as the workflow progresses.
 Temporal has an `UpsertSearchAttributes` capability but it is not yet supported in the TypeScript SDK.
 
-## Removing search attributes
+## Removing Search Attributes
 
 **There is no support for removing a field.**
 
@@ -54,14 +54,14 @@ However, to achieve a similar effect, set the field to some placeholder value.
 For example, you could set `CustomKeywordField` to `impossibleVal`.
 Then searching `CustomKeywordField != 'impossibleVal'` will match Workflows with `CustomKeywordField` not equal to `impossibleVal`, which includes Workflows without the `CustomKeywordField` set.
 
-## Future: Retrieving search attributes
+## Future: Retrieving Search Attributes
 
-Temporal supports using the `SearchAttributes` property of `workflow.GetInfo` to get a specific search attribute, however, this is not yet supported in the TypeScript SDK.
+Temporal supports using the `SearchAttributes` property of `workflow.GetInfo` to get a specific Search Attribute, however, this is not yet supported in the TypeScript SDK.
 
-## Future: Querying search attributes within a workflow
+## Future: Querying Search Attributes within a workflow
 
 You can programmatically retrieve attributes from a workflow execution with `GetSearchAttributes`, and log out all fields with `GetIndexedFields` in Temporal, however, this is not yet supported in the TypeScript SDK.
 
-## Future: Testing search attributes
+## Future: Testing Search Attributes
 
 Testing is not yet supported in the TypeScript SDK.

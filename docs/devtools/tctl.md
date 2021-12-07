@@ -397,19 +397,19 @@ import HowToViewSearchAttributesOfAClusterUsingTCTL from '../content/how-to-view
 
 <HowToViewSearchAttributesOfAClusterUsingTCTL/>
 
-## Add custom Search Attribute to a Cluster
+### Add custom Search Attribute to a Cluster
 
 import HowToAddACustomSearchAttributeToAClusterUsingTCTL from '../content/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl.md'
 
 <HowToAddACustomSearchAttributeToAClusterUsingTCTL/>
 
-## Remove Search Attributes from a Cluster
+### Remove Search Attributes from a Cluster's Metadata
 
 import HowToRemoveASearchAttributeFromAClusterUsingTCTL from '../content/how-to-remove-a-search-attribute-from-a-cluster-using-tctl.md'
 
 <HowToRemoveASearchAttributeFromAClusterUsingTCTL/>
 
-### Start Workflow with Search Attributes
+## Start Workflow with Search Attributes
 
 ```bash
 tctl workflow start \

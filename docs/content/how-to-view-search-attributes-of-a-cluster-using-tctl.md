@@ -1,7 +1,7 @@
 ---
 id: how-to-view-search-attributes-of-a-cluster-using-tctl
 title: How to view Search Attributes of a Cluster using tctl
-description: Use the `tctl cluster get-search-attributes` command to view Search Attribute keys currently indexed by the Cluster.
+description: Use the `tctl cluster get-search-attributes` command to view Search Attributes currently indexed by the Cluster.
 tags:
   - operation-guide
   - filtered-lists
@@ -12,7 +12,7 @@ tags:
 <!-- prettier-ignore -->
 import * as WhatIsASearchAttribute from './what-is-a-search-attribute.md'
 
-Use the following command to view the <preview page={WhatIsASearchAttribute}>Search Attribute</preview> keys currently indexed by the Cluster:
+Use the following command to view the <preview page={WhatIsASearchAttribute}>Search Attributes</preview> currently indexed by the Cluster:
 
 ```bash
 tctl cluster get-search-attributes

@@ -177,10 +177,10 @@ tctl workflow start --memo_file <filename>
 
 ### `--search_attr_key`
 
-How to specify a <preview page={WhatIsASearchAttribute}>Search Attribute</preview> key.
-For multiple keys, concatenate them and use pipes (`|`) as separators.
+How to specify a <preview page={WhatIsASearchAttribute}>Search Attribute</preview> name.
+For multiple names, concatenate them and use pipes (`|`) as separators.
 
-To list valid keys, use the `tctl cluster get-search-attr` command.
+To list valid Search Attributes, use the `tctl cluster get-search-attr` command.
 
 **Example**
 
@@ -194,7 +194,7 @@ How to specify a <preview page={WhatIsASearchAttribute}>Search Attribute</previe
 For multiple values, concatenate them and use pipes (`|`) as separators.
 If a value is an array, use JSON format, such as `["a","b"]`, `[1,2]`, `["true","false"]`, or `["2022-06-07T17:16:34-08:00","2022-06-07T18:16:34-08:00"]`.
 
-To list valid keys and value types, use the `tctl cluster get-search-attr` command.
+To list valid Search Attributes and value types, use the `tctl cluster get-search-attr` command.
 
 **Example**
 

@@ -39,6 +39,12 @@ tctl workflow list --more
 Use the `--query` flag to list Workflows using an SQL-like query.
 The use of this flag will override all other filter flags.
 
+:::note
+
+`--query` flag is supported only when advanced visibility is configured on the server.
+
+:::
+
 ```bash
 tctl workflow list --query "WorflowId=YourWorkflowId"
 ```

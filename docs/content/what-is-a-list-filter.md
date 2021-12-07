@@ -25,7 +25,7 @@ WorkflowType = "main.YourWorkflowDefinition" and ExecutionStatus != "Running" an
 
 [More example List Filters](#example-list-filters)
 
-A List Filter contains Search Attribute keys, Search Attribute values, and Operators.
+A List Filter contains Search Attribute names, Search Attribute values, and Operators.
 
 <RelatedReadContainer>
   <RelatedReadItem page={WhatIsASearchAttribute} />
@@ -45,7 +45,7 @@ A List Filter contains Search Attribute keys, Search Attribute values, and Opera
 
 - A List Filter that uses a time range has a resolution of 1 ms on Elasticsearch 6 and 1 ns on Elasticsearch 7.
 
-- List Filter Search Attribute key names are case sensitive.
+- List Filter Search Attribute key names are case-sensitive.
 
 - An Advanced List Filter API may take longer than expected if it is retrieving a large number of Workflow Executions (more than 10 million).
 

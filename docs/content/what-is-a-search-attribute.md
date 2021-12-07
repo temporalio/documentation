@@ -1,7 +1,7 @@
 ---
 id: what-is-a-search-attribute
 title: What is a Search Attribute?
-description: A Search Attribute is an indexed key used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.
+description: A Search Attribute is an indexed field used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.
 tags:
   - explanation
   - filtered-lists
@@ -16,7 +16,7 @@ import * as WhatIsATemporalCronJob from './what-is-a-temporal-cron-job.md'
 import * as HowToViewSearchAttribtuesUsingTCTL from './how-to-view-search-attributes-of-a-cluster-using-tctl.md'
 import * as HowToAddCustomSearchAttribute from "../content/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl.md"
 
-A Search Attribute is an indexed key used in a <preview page={WhatIsAListFilter}>List Filter</preview> to filter a list of Workflow Executions that have the Search Attribute in their metadata.
+A Search Attribute is an indexed field used in a <preview page={WhatIsAListFilter}>List Filter</preview> to filter a list of Workflow Executions that have the Search Attribute in their metadata.
 
 :::note
 
@@ -67,26 +67,26 @@ These Search Attributes are created when the initial index is created.
 
 ### Custom Search Attributes
 
-Custom Search Attribute keys must be <preview page={HowToAddCustomSearchAttribute}>added to a Temporal Cluster using `tctl`</preview>.
-Adding a Search Attribute key makes it available to use with Workflow Executions within that Cluster.
+Custom Search Attributes must be <preview page={HowToAddCustomSearchAttribute}>added to a Temporal Cluster using `tctl`</preview>.
+Adding a Search Attributes makes it available to use with Workflow Executions within that Cluster.
 
 There is no hard limit on the number of attributes you can add.
 However, we recommend enforcing the following limits:
 
-- Number of keys: 100 per Workflow
+- Number of Search Attributes: 100 per Workflow
 - Size of each value: 2 KB per value
-- Total size of keys and values: 40 KB per Workflow
+- Total size of names and values: 40 KB per Workflow
 
 :::note
 
 Due to Elasticsearch limitations, you can only add Search Attributes.
-It is not possible to rename Search Attribute keys or remove them from the index schema.
+It is not possible to rename Search Attributes or remove them from the index schema.
 
 :::
 
 Search Attributes must be one of the following types:
 
-- String
+- Text
 - Keyword
 - Int
 - Double
@@ -96,7 +96,7 @@ Search Attributes must be one of the following types:
 The [temporalio/auto-setup](https://hub.docker.com/r/temporalio/auto-setup) Docker image uses a pre-defined set of custom Search Attributes that are handy for testing.
 Their names indicate their types:
 
-- CustomStringField
+- CustomTextField
 - CustomKeywordField
 - CustomIntField
 - CustomDoubleField
@@ -108,13 +108,13 @@ Note:
 - **Double** is backed up by `scaled_float` Elasticsearch type with scale factor 10000 (4 decimal digits).
 - **Datetime** is backed up by `date` type with milliseconds precision in Elasticsearch 6 and `date_nanos` type with nanoseconds precision in Elasticsearch 7.
 - **Int** is 64-bit integer (`long` Elasticsearch type).
-- **Keyword** and **String** types are concepts taken from Elasticsearch. Each word in a **String** is considered a searchable keyword.
+- **Keyword** and **Text** types are concepts taken from Elasticsearch. Each word in a **Text** is considered a searchable keyword.
   For a UUID, that can be problematic because Elasticsearch indexes each portion of the UUID separately.
   To have the whole string considered as a searchable keyword, use the **Keyword** type.
   For example, if the key `ProductId` has the value of `2dd29ab7-2dd8-4668-83e0-89cae261cfb1`:
   - As a **Keyword** it would be matched only by `ProductId = "2dd29ab7-2dd8-4668-83e0-89cae261cfb1`.
-  - As a **String** it would be matched by `ProductId = 2dd8`, which could cause unwanted matches.
-- The **String** type cannot be used in the "Order By" clause.
+  - As a **Text** it would be matched by `ProductId = 2dd8`, which could cause unwanted matches.
+- The **Text** type cannot be used in the "Order By" clause.
 
 <RelatedReadContainer>
   <RelatedReadItem page={HowToViewSearchAttribtuesUsingTCTL} />
