@@ -429,11 +429,18 @@ module.exports = {
       label: "Long Running Human Driven Workflow",
       collapsed: false,
       items: [
-        "learning-paths/long-running-human-driven-workflow/content/what-is-the-goal",
-        "learning-paths/long-running-human-driven-workflow/content/what-are-the-technical-concepts",
-        "learning-paths/long-running-human-driven-workflow/content/what-are-the-requirements",
-        "learning-paths/long-running-human-driven-workflow/content/how-do-we-build-this-with-temporal",
-        "learning-paths/long-running-human-driven-workflow/content/how-do-we-deploy-this-temporal-application",
+        "learning-paths/long-running-human-driven-workflow/introduction",
+        "learning-paths/long-running-human-driven-workflow/how-to-use-the-background-check-application",
+        {
+          type: "category",
+          label: "Explanation",
+          collapsed: false,
+          items: [
+            "learning-paths/long-running-human-driven-workflow/explanation/what-are-the-application-requirements",
+            "learning-paths/long-running-human-driven-workflow/explanation/how-do-we-build-this-as-a-temporal-application",
+            "learning-paths/long-running-human-driven-workflow/explanation/how-do-we-deploy-this-temporal-application"
+          ],
+        },
         {
           type: "category",
           label: "References",

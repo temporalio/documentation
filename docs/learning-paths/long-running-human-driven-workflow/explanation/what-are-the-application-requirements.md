@@ -1,5 +1,5 @@
 ---
-id: what-are-the-requirements
+id: what-are-the-application-requirements
 title: What are the requirements of the Long Running Human Driven Process application?
 sidebar_label: Application requirements
 description: TODO
@@ -8,7 +8,7 @@ description: TODO
 import CenteredImage from "../../../components/CenteredImage.js"
 
 The application in this Learning Path is a simplified and scaled down implementation for the use case.
-As such the requirements will be simplified and scaled down to match it.
+As such the requirements are simplified and scaled down to match it.
 
 We can break down the application requirements in a few different ways.
 
@@ -24,7 +24,7 @@ There are 3 users we need to consider for this application:
 - **Candidate:** The Candidate is the user who is the subject of the Background Check. They will have to consent to the Background Check.
 - **Researcher:** The Researcher is the user who does some sort of manual "search" for information reg
 
-### Company experience requirements
+### what are the Company experience requirements?
 
 The HR person at the Company is the one who initiates the Background Check for a given Candidate. To start a Background Check they need the email address of the Candidate.
 
@@ -33,9 +33,9 @@ In real life, the HR Person would probably already have more of the Candidate's 
 The HR person must also be ready to select which checks need to be performed for the position the Candidate is being hired for. For this learning path we will assume that the HR person can select from just two packages:
 
 - Standard package
-- Deluxe package
+- Full package
 
-The Standard package will conduct two types of searches, while the Deluxe package will conduct 5 types of searches.
+The Standard package will conduct two types of searches, while the Full package will conduct 5 types of searches.
 
 You can probably already envision the basic, secured user interface that the HR person would be interacting with that contains a form for the Candidate information, a drop down to select the package, and a button that says "Start Background Check".
 
@@ -50,18 +50,18 @@ For this learning path, we will be simulating this experience through the use of
 
 The HR person will also have a separate option that is always available to them to list the metadata of Background Checks that are in the system, and filter them by Candidate, status, or Background Check Id.
 
-### Candidate experience requirements
+### What are the Candidate experience requirements?
 
 The Candidate must consent to the Background Check while simultaneously providing/confirming their name, address, DOB, & Social Security Number.
 Here you can envision the Candidate receiving an email with a link to a secured web form that has an input field for their SSN, a checkbox to confirm consent, a checkbox to confirm that their other information is correct, and a button that says "Submit" .
 
 For this learning path we will be simulating this experience through the use of the Candidate CLI.
 
-### Researcher experience requirements
+### What are the Researcher experience requirements?
 
 The Researcher is the other human in this long running process.
 
-## What are the application's functional requirements
+## What are the application's functional requirements?
 
 Already we can start to see some of the functional requirements take shape, such as application APIs, data encryption for PII, the ability to await on Candidate input for hours or days if needed, and the ability to conduct checks concurrently whenever possible.
 
@@ -101,7 +101,7 @@ Additionally there is no guarantee on how long each check might take.
 
 Therefor the application must be able to maintain the state of the Background Check over many days, and perhaps even weeks, awaiting on data.
 
-### Concurrent Background Checks searches
+### Concurrent Background Check Searches
 
 Many of the Background Check search should happen concurrently.
 
@@ -119,14 +119,14 @@ The Company HR Person will be able to select from two different packages of sear
 
 The initial search for either package is an SSN trace meant to find additional addresses associated with the Candidate. Those addresses are used in the other Individual checks. However, all checks beyond the SSN trace should be conducted in parallel to save as much time as possible.
 
-## Step by step flow
+## What is the step-by-step flow?
 
 Now we can envision the the high level step by step flow that we could expect from the application.
 
 <CenteredImage
-imagePath="/diagrams/step-by-step-flow-full.svg"
-imageSize="50"
-title="High level step-by-step flow"
+imagePath="/diagrams/learning-path-step-by-step-high-level-swim-lane.svg"
+imageSize="100"
+title="High level step-by-step 'Full package' flow"
 />
 
 1. A new Background Check is started by the Company HR person.
