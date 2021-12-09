@@ -397,7 +397,7 @@ import HowToViewSearchAttributesOfAClusterUsingTCTL from '../content/how-to-view
 
 <HowToViewSearchAttributesOfAClusterUsingTCTL/>
 
-### Add custom Search Attribute to a Cluster
+### Add custom Search Attributes to a Cluster
 
 import HowToAddACustomSearchAttributeToAClusterUsingTCTL from '../content/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl.md'
 

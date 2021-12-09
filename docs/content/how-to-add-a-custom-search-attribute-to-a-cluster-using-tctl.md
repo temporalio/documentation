@@ -1,7 +1,7 @@
 ---
 id: how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl
 title: How to add a custom Search Attribute to a Cluster using tctl
-description: Use the `tctl admin cluster add-search-attributes` command to add a custom Search Attributes to your Temporal Cluster.
+description: Use the `tctl admin cluster add-search-attributes` command to add a custom Search Attribute to your Temporal Cluster.
 
 tags:
   - operation-guides
@@ -13,7 +13,7 @@ tags:
 <!-- prettier-ignore -->
 import * as WhatIsASearchAttribute from './what-is-a-search-attribute.md'
 
-Use the following command to add a custom <preview page={WhatIsASearchAttribute}>Search Attributes</preview> to your Temporal Cluster.
+Use the following command to add a custom <preview page={WhatIsASearchAttribute}>Search Attribute</preview> to your Temporal Cluster.
 
 ```bash
 tctl admin cluster add-search-attributes --name <SearchAttributeName> --type <SearchAttributeValueType>

@@ -15,10 +15,10 @@ Search Attributes enable complex and business-logic-focused search queries for W
 Most Search APIs are not yet available in the TypeScript SDK beta.
 These are often queried via the Web UI, but you can also query from within your workflow code (as we show below).
 
-There are many <preview page={WhatsSearchAttr}>Search Attributes</preview> that are added to Workflow Executions by default.
+Many <preview page={WhatsSearchAttr}>Search Attributes</preview> are added to Workflow Executions by default.
 But these are necessarily focused on Temporal internal state tracking.
 
-For more debugging and monitoring, you may wish add your own domain specific Search Attributes (e.g. `customerId` or `numItems`) that may serve as useful search filters.
+For more debugging and monitoring, you might want to add your own domain-specific Search Attributes (such as `customerId` or `numItems`) that can serve as useful search filters.
 
 <details>
 <summary>What is a Search Attribute?

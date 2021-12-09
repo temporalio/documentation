@@ -1,7 +1,7 @@
 ---
 id: how-to-remove-a-search-attribute-from-a-cluster-using-tctl
 title: How to remove a Search Attribute from a Cluster's metadata using tctl
-description: Use the `tctl admin cluster remove-search-attributes` command to remove a Search Attributes from a Cluster's metadata.
+description: Use the `tctl admin cluster remove-search-attributes` command to remove a Search Attribute from a Cluster's metadata.
 tags:
   - tctl
   - visibility
@@ -11,7 +11,7 @@ tags:
 <!-- prettier-ignore -->
 import * as WhatIsASearchAttribute from './what-is-a-search-attribute.md'
 
-Use the following command to remove a <preview page={WhatIsASearchAttribute}>Search Attributes</preview> from a Cluster's metadata:
+Use the following command to remove a <preview page={WhatIsASearchAttribute}>Search Attribute</preview> from a Cluster's metadata:
 
 ```bash
 tctl admin cluster remove-search-attributes --name <SearchAttributeKey>

@@ -84,14 +84,15 @@ Ensure that the following privileges are granted for the Elasticsearch Temporal 
 
 ### Add custom Search Attributes (optional)
 
-This step is optional if you want to use custom Search Attributes.
+This step is optional.
+Here we are adding custom Search Attributes to your Cluster.
 
 Run the following `tctl` command to add `ProductId` custom Search Attributes to the Temporal Cluster (and Elasticsearch Temporal index):
 ```bash
 tctl admin cluster add-search-attributes --name ProductId --type Keyword
 ```
 
-Run the following `tctl` command to add custom Search Attributes used but samples and SDK integration tests:
+Run the following `tctl` command to add custom Search Attributes used by samples and SDK integration tests:
 
 <!--SNIPSTART add-custom-search-attributes-for-testing-command-->
 <!--SNIPEND-->

@@ -1,7 +1,7 @@
 ---
 id: what-is-a-search-attribute
 title: What is a Search Attribute?
-description: A Search Attribute is an indexed field used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.
+description: A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.
 tags:
   - explanation
   - filtered-lists
@@ -67,8 +67,8 @@ These Search Attributes are created when the initial index is created.
 
 ### Custom Search Attributes
 
-Custom Search Attributes must be <preview page={HowToAddCustomSearchAttribute}>added to a Temporal Cluster using `tctl`</preview>.
-Adding a Search Attributes makes it available to use with Workflow Executions within that Cluster.
+Custom Search Attributes can be <preview page={HowToAddCustomSearchAttribute}>added to a Temporal Cluster only by using `tctl`</preview>.
+Adding a Search Attribute makes it available to use with Workflow Executions within that Cluster.
 
 There is no hard limit on the number of attributes you can add.
 However, we recommend enforcing the following limits:
