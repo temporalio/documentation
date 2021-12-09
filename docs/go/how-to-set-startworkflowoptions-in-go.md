@@ -250,8 +250,10 @@ if err != nil {
 
 ### `SearchAttributes`
 
+<!-- TODO add link to How to add a custom Search Attribute to a Cluster -->
+
 - Type: `map[string]interface{}`
-- Default: This depends on the Cluster. Search Attribute types are defined in the Elasticsearch Index Schema.
+- Default: Empty.
 
 These are the corresponding Search Attribute value types in Go:
 
@@ -260,7 +262,7 @@ These are the corresponding Search Attribute value types in Go:
 - Double = float64
 - Bool = bool
 - Datetime = time.Time
-- String = string
+- Text = string
 
 ```go
 searchAttributes := map[string]interface{}{

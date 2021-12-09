@@ -209,4 +209,4 @@ This event type indicates that the Temporal Server cannot Signal the targeted Wo
 
 ### UpsertWorkflowSearchAttributes
 
-This event type indicates that the Workflow search attributes should be updated and synchronized with the visibility store.
+This event type indicates that the Workflow Search Attributes should be updated and synchronized with the visibility store.
