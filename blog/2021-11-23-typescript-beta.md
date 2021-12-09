@@ -123,7 +123,7 @@ run().catch((err) => {
 });
 ```
 
-The full Worker docs are [here](https://docs.temporal.io/docs/typescript/workers). In production, you will also want to [prebundle your Worflows](https://docs.temporal.io/docs/typescript/production-deploy/#pre-build-code) and [configure connection strings and security options](https://docs.temporal.io/docs/typescript/security#encryption-in-transit-with-mtls).
+The full Worker docs are [here](https://docs.temporal.io/docs/typescript/workers). In production, you will also want to [prebundle your Workflows](https://docs.temporal.io/docs/typescript/production-deploy/#pre-build-code) and [configure connection strings and security options](https://docs.temporal.io/docs/typescript/security#encryption-in-transit-with-mtls).
 
 ## Client
 

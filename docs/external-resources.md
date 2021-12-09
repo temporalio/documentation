@@ -15,12 +15,13 @@ If you have made a tutorial or explanation of Temporal, please [submit them here
 _Don't forget our own [Temporal Cluster docs](/docs/content/what-is-a-temporal-cluster)!_
 
 - ⭐ [Designing a Workflow Engine from First Principles](https://docs.temporal.io/blog/workflow-engine-principles/) by Maxim Fateev (23 min talk given at Systems @ Scale 2021)
-- 🆕 Fault Tolerant, Distributed Microservices Orchestration with Temporal ([slides](https://temporal-intro-and-demo.netlify.app/) by Maxim Fateev and Tihomir Surdilovic (TDC Conf 2021)
+- 🆕 Fault Tolerant, Distributed Microservices Orchestration with Temporal ([slides](https://temporal-intro-and-demo.netlify.app/)) by Maxim Fateev and Tihomir Surdilovic (TDC Conf 2021)
 - [Maxim and Samar on Gremlin's podcast](https://docs.temporal.io/blog/gremlin-podcast) - Origin story, Choreography vs Orchestration, and Tips (21 min listen/read)
 - [Workflow Engine with Maxim Fateev](https://www.listennotes.com/podcasts/software/cadence-ubers-workflow-nNoaPiSfk7v/) on Software Engineering Daily (56 min listen)
 - [Maxim Fateev on Temporal Origin Story](/blog/oss-startups-podcast) on the OSS Startups Podcast (41 min listen)
 - [Temporal Product with Ryland Goldstein](https://softwareengineeringdaily.com/2021/05/08/temporal-product-managing-state-with-ryland-goldstein/) on Software Engineering Daily (53 min listen)
 - [Temporal Developer Experience with swyx](https://devtools.fm/episode/13) on Devtools.fm (56 min listen)
+- 🆕 [Temporal Overview with swyx](https://mongodb.libsyn.com/ep-93-swyx-learn-in-public-and-temporal) on the MongoDB Podcast (33min listen, starts at 15min mark)
 - Temporal's previous iteration was Cadence, which shares a lot of the same design principles:
   - [Cadence Architecture Talk](https://www.youtube.com/watch?v=5M5eiNBUf4Q) (24 min) by Samar Abbas at Uber Cadence meetup
   - [Cadence: Micro service Architecture Beyond Request/Response](https://www.youtube.com/watch?v=BJwFxqdSx4Y) (34 min) by Maxim Fateev at Data@Scale 2017

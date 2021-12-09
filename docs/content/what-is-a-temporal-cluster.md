@@ -77,7 +77,7 @@ The History Service scales horizontally via individual shards, configured during
 The number of shards remains static for the life of the Cluster (so you should plan to scale and over-provision).
 
 Each shard maintains data (routing Ids, mutable state) and queues.
-There a three types of queues that the a History shard maintains:
+There are three types of queues that a History shard maintains:
 
 - Transfer queue: This is used to transfer internal tasks to the Matching Service.
   Whenever a new Workflow Task needs to be scheduled, the History Service transactionally dispatches it to the Matching Service.
