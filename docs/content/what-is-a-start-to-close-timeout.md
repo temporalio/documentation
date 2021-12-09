@@ -16,10 +16,10 @@ A Start-To-Close Timeout is the maximum time allowed for a single [Activity Task
 
 ### Details
 
-**The default Start-To-Close Timeout is the same as the [Schedule-To-Close Timeout](/docs/content/what-is-a-schedule-to-close-timeout).**
+**The default Start-To-Close Timeout is the same as the default [Schedule-To-Close Timeout](/docs/content/what-is-a-schedule-to-close-timeout).**
 
 An Activity Execution must have either this timeout (Start-To-Close) or the [Schedule-To-Close Timeout](/docs/content/what-is-a-schedule-to-close-timeout) set.
-We recommend always setting this timeout, however make sure that it is always set to be longer than the possible maximum time for the Activity Execution to take place.
+We recommend always setting this timeout; however, make sure that it is always set to be longer than the maximum possible time for the Activity Execution to take place.
 For long running Activity Executions, we recommend also using [Activity Heartbeats](/docs/content/what-is-an-activity-heartbeat) and [Heartbeat Timeouts](/docs/content/what-is-a-heartbeat-timeout).
 
 ### Use case
@@ -28,7 +28,7 @@ The main use case for the Start-To-Close timeout is to detect when a Worker cras
 
 ### Visualization
 
-The diagrams below are representative of Events that would occur given the following Activity Definition:
+The following diagrams are representative of Events that would occur given the following Activity Definition:
 
 <Tabs
 defaultValue="go"
@@ -84,10 +84,10 @@ title="Start-To-Close Timeout period with retries"
 
 ### Consequences
 
-If this timeout is reached the following takes place:
+If this timeout is reached, the following actions occur:
 
 - An [ActivityTaskTimedOut](/docs/reference/events/#activitytasktimedout) Event is written to the Workflow Execution's mutable state.
-- If there is a Retry Policy that dictates a retry, then the Temporal Cluster schedules another Activity Task.
+- If a Retry Policy dictates a retry, the Temporal Cluster schedules another Activity Task.
   - The attempt count increments by 1 in the Workflow Execution's mutable state.
   - The Start-To-Close Timeout timer is reset.
 
