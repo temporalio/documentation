@@ -9,17 +9,18 @@ import CustomWarning from "../components/CustomWarning.js"
 
 <CustomWarning>
 
-This SDK and associated documentation is in an Alpha stage and may change at any time.
+Full Testing support is still not available in the TypeScript SDK Beta and will be released before full launch.
 
 </CustomWarning>
 
-The TypeScript SDK does not yet have a test suite that allows time skipping.
+The TypeScript SDK does not yet have a test suite that allows time skipping, however, you might be able to get very far without it:
 
 - Since Activities are async functions, they should be testable as long as you avoid using [Context](https://typescript.temporal.io/api/classes/activity.context) or are able to mock it.
 - You can test Workflows by running them with a [WorkflowClient](https://typescript.temporal.io/api/classes/client.workflowclient).
 - Check [the SDK's own tests](https://github.com/temporalio/sdk-typescript/tree/52f67499860526cd180912797dc3e6d7fa4fc78f/packages/test/src) for more examples.
+- For time skipping, you can implement a multiplier, for example a constant that is `1` in local dev or production, but `0.000001` when testing. Note that `process.env` is unavailable from Worklows so it should be passed in as an argument for the time being.
 
-However basic unit tests can still be written (see [samples](https://github.com/temporalio/samples-typescript/blob/main/activities-examples/src/test/workflow.test.ts)):
+You can follow this format for writing basic unit tests can still be written (see [samples](https://github.com/temporalio/samples-typescript/blob/main/activities-examples/src/test/workflow.test.ts)):
 
 ```ts
 import { Connection, WorkflowClient } from '@temporalio/client';
