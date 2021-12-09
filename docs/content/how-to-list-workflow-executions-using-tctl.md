@@ -41,7 +41,7 @@ The use of this flag overrides all other filter flags.
 
 :::note
 
-`--query` flag is supported only when advanced visibility is configured on the server.
+The `--query` flag is supported only when Advanced Visibility is configured with the Cluster.
 
 :::
 

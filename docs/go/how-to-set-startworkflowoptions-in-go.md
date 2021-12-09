@@ -250,7 +250,7 @@ if err != nil {
 
 ### `SearchAttributes`
 
-Values of custom Search Attributes which must be [added](TODO:link to add search attributes here) to cluster first. 
+<!-- TODO add link to How to add a custom Search Attribute to a Cluster -->
 
 - Type: `map[string]interface{}`
 - Default: Empty.
