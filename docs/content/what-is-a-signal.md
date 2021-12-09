@@ -1,7 +1,7 @@
 ---
 id: what-is-a-signal
 title: What is a Signal?
-description: todo
+description: An external asynchronous request to a Workflow.
 ---
 
 An external asynchronous request to a [Workflow](#workflow).
