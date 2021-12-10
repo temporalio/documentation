@@ -21,6 +21,7 @@ import * as WhatIsARetryPolicy from '../content/what-is-a-retry-policy.md'
 import * as WhatIsATemporalCronJob from '../content/what-is-a-temporal-cron-job.md'
 import * as WhatIsAMemo from '../content/what-is-a-memo.md'
 import * as WhatIsASearchAttribute from '../content/what-is-a-search-attribute.md'
+import * as HowToAddACustomSearchAttributeToAClusterUsingTctl from '../content/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl.md'
 
 Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, and pass the instance to the `ExecuteWorkflow` call.
 
@@ -250,8 +251,6 @@ if err != nil {
 
 ### `SearchAttributes`
 
-<!-- TODO add link to How to add a custom Search Attribute to a Cluster -->
-
 - Type: `map[string]interface{}`
 - Default: Empty.
 
@@ -281,4 +280,5 @@ if err != nil {
 
 <RelatedReadContainer>
   <RelatedReadItem page={WhatIsASearchAttribute} />
+  <RelatedReadItem page={HowToAddACustomSearchAttributeToAClusterUsingTctl} />
 </RelatedReadContainer>
