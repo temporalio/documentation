@@ -4,7 +4,7 @@ title: How to add a custom Search Attribute to a Cluster using tctl
 description: Use the `tctl admin cluster add-search-attributes` command to add a custom Search Attribute to your Temporal Cluster.
 
 tags:
-  - operation-guides
+  - operation-guide
   - filtered-lists
   - visibility
   - tctl
