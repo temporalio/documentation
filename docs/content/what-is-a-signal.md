@@ -1,7 +1,7 @@
 ---
 id: what-is-a-signal
 title: What is a Signal?
-description: An external asynchronous request to a Workflow.
+description: A Signal is an external asynchronous request to a Workflow.
 ---
 
 A Signal is an external asynchronous request to a [Workflow](#workflow).
