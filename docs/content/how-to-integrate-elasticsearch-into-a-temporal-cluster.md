@@ -88,6 +88,7 @@ This step is optional.
 Here we are adding custom Search Attributes to your Cluster.
 
 Run the following `tctl` command to add `ProductId` custom Search Attributes to the Temporal Cluster (and Elasticsearch Temporal index):
+
 ```bash
 tctl admin cluster add-search-attributes --name ProductId --type Keyword
 ```
