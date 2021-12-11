@@ -128,7 +128,7 @@ function DocItem(props) {
             </div>
 
             {renderTocDesktop && (
-              <div className="w-[8rem]">
+              <div className="w-[14rem]">
                 <TOC toc={DocContent.toc} />
               </div>
             )}
