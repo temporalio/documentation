@@ -12,16 +12,16 @@ import LastUpdated from "@theme/LastUpdated";
 import TOC from "@theme/TOC";
 import TOCCollapsible from "@theme/TOCCollapsible";
 import EditThisPage from "@theme/EditThisPage";
-import {MainHeading} from "@theme/Heading";
+import { MainHeading } from "@theme/Heading";
 import clsx from "clsx";
 import styles from "./styles.module.css";
-import {useActivePlugin, useVersions} from "@theme/hooks/useDocs";
+import { useActivePlugin, useVersions } from "@theme/hooks/useDocs";
 import useWindowSize from "@theme/hooks/useWindowSize";
-import {Button} from "../../components/shared/Button";
+import { Button } from "../../components/shared/Button";
 
 function DocItem(props) {
-  const {content: DocContent, versionMetadata} = props;
-  const {metadata, frontMatter} = DocContent;
+  const { content: DocContent, versionMetadata } = props;
+  const { metadata, frontMatter } = DocContent;
   const {
     image,
     keywords,
@@ -36,7 +36,7 @@ function DocItem(props) {
     formattedLastUpdatedAt,
     lastUpdatedBy,
   } = metadata;
-  const {pluginId} = useActivePlugin({
+  const { pluginId } = useActivePlugin({
     failfast: true,
   });
   const versions = useVersions(pluginId); // If site is not versioned or only one version is included
@@ -85,7 +85,7 @@ function DocItem(props) {
           )}
           <div className="md:flex">
             <div className="flex-1">
-              <article className="prose md:prose-md lg:prose-lg mx-auto my-12">
+              <article className="prose md:prose-md lg:prose-lg mx-auto my-12 max-w-full px-6">
                 {renderTocMobile && (
                   <TOCCollapsible
                     toc={DocContent.toc}
@@ -128,7 +128,7 @@ function DocItem(props) {
             </div>
 
             {renderTocDesktop && (
-              <div className="">
+              <div className="w-[8rem]">
                 <TOC toc={DocContent.toc} />
               </div>
             )}
@@ -167,7 +167,7 @@ function TemporalCloudForm() {
               required="required"
             />
           </div>
-          <span className="cta_text" style={{display: "none"}}>
+          <span className="cta_text" style={{ display: "none" }}>
             You are on the waitlist!
           </span>
           <Button
