@@ -394,7 +394,7 @@ div[class^="sidebar_"] .button svg {
 }
 
 .scale {
-  @apply transition transform hover:scale-105 motion-reduce:transition-none motion-reduce:transform-none;
+  @apply transition hover:scale-105 motion-reduce:transition-none motion-reduce:transform-none;
 }
 
 /* .tableOfContents {
