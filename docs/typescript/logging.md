@@ -33,7 +33,7 @@ However, they differ from Activities in important ways:
 - Sink functions don't return promises
 - Sink calls are not recorded in Workflow histories (no timeouts or retries)
 - Sink functions are run on the same Worker that runs the Workflow they are called from
-  
+
 </details>
 
 ### Declaring The Sink Interface
@@ -57,7 +57,7 @@ Implementing Sinks is a two step process.
 <!--SNIPSTART typescript-logger-sink-worker-->
 <!--SNIPEND-->
 
-Note that you can control 
+Note that you can control
 
 #### Proxy and call a Sink function from a Workflow
 
