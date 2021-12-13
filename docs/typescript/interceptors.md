@@ -9,7 +9,7 @@ Interceptors are a mechanism for users to modify inbound and outbound SDK calls.
 Interceptors are commonly used to add tracing and authorization to the scheduling and execution of Workflows and Activities.
 You can compare these to "middleware" in other frameworks.
 
-The TypeScript SDK comes with an optional interceptor package that adds tracing with [opentelemetry](https://www.npmjs.com/package/@temporalio/interceptors-opentelemetry). See how to use it in this [sample](https://github.com/temporalio/sdk-typescript/tree/main/packages/interceptors-opentelemetry).
+The TypeScript SDK comes with an optional interceptor package that adds tracing with [opentelemetry](https://www.npmjs.com/package/@temporalio/interceptors-opentelemetry). See how to use it in this [sample](https://github.com/temporalio/samples-typescript/tree/main/interceptors-opentelemetry).
 
 ## Interceptor types
 
