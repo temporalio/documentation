@@ -60,18 +60,20 @@ To work around blocking the workflow task you can send the errors asynchronously
 
 ```ts
 const sinks: InjectedSinks<LoggerSinks> = {
-    reporter: {
-      error: {
-        fn(workflowInfo, err) {
-          (async () => {
-            try {
-              await sendErrorToSentry(workflowInfo, err)
-            } catch (sendError) { /* handle it yourself */ }
-          })();
-        },
+  reporter: {
+    error: {
+      fn(workflowInfo, err) {
+        (async () => {
+          try {
+            await sendErrorToSentry(workflowInfo, err);
+          } catch (sendError) {
+            /* handle it yourself */
+          }
+        })();
       },
     },
-  };
+  },
+};
 ```
 
 Note that if you are only logging Workflow failure errors, that can only happen once per workflow so you don't have to worry about the above.
