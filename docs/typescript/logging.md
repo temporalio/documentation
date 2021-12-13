@@ -13,32 +13,68 @@ Activities run in the standard Node.js environment and can use any Node.js logge
 
 Logging from Workflows is tricky for 2 reasons:
 
-1. Workflows run in an isolated JS environment and may not do any I/O
-1. Workflow code might get replayed generating duplicate log messages
+1. Workflows run in a sandboxed environment and may not do any I/O
+1. Workflow code might get replayed at any time, generating duplicate log messages
 <!--
 Workflows in Temporal may be replayed from the beginning of their history when resumed. In order for Temporal to recreate the exact state Workflow code was in, the code is required to be fully deterministic. To prevent breaking [determinism](/docs/typescript/determinism), in the TypeScript SDK, Workflow code runs in an isolated execution environment and may not use any of the Node.js APIs or communicate directly with the outside world. -->
 
-Sinks are objects that contain Sink Functions, which enable one-way export of data from the Workflow isolate to the Node.js environment.
+Sinks are written as objects with methods. Similar to Activities, they are declared in the Worker and then proxied in Workflow code, and it helps to share types between both.
+
+Sinks are different than Activities in that they enable one-way export of logs, metrics and traces out from the Workflow isolate to the Node.js environment.
 They are necessary because the Workflow has no way to communicate with the outside World.
+
+### Declaring The Sink Interface
+
+Explicitly declaring the interface is optional, but is useful for ensuring type safety in subsequent steps:
 
 <!--SNIPSTART typescript-logger-sink-interface-->
 <!--SNIPEND-->
 
-- Sinks are typically used for exporting logs, metrics and traces out from the Workflow into the isolate.
-- **Injected WorkflowInfo argument**: The first argument of a Sink Function implementation will be a [`workflowInfo` object](https://typescript.temporal.io/api/interfaces/workflow.workflowinfo/) that containing useful metadata.
+Some important features of this interface:
+
+- **Injected WorkflowInfo argument**: The first argument of a Sink function implementation will be a [`workflowInfo` object](https://typescript.temporal.io/api/interfaces/workflow.workflowinfo/) that containing useful metadata.
 - **No return value**: Sink functions may not return values to the Workflow in order to prevent breaking determinism.
 
-### Logger Sinks Example
+### Implementing Sinks
 
-Call a Sink function from a Workflow
+Implementing Sinks is a two step process.
+
+#### Inject the Sink function into a Worker
+
+<!--SNIPSTART typescript-logger-sink-worker-->
+<!--SNIPEND-->
+
+#### Proxy and call a Sink function from a Workflow
 
 <!--SNIPSTART typescript-logger-sink-workflow-->
 <!--SNIPEND-->
 
-Inject a function as a Workflow Sink
+#### Advanced: Performance Considerations and Non-blocking Sinks
 
-<!--SNIPSTART typescript-logger-sink-worker-->
-<!--SNIPEND-->
+Be aware that Sinks will take up part of the workflow execution time.
+
+- If you have a long running sink function, e.g. one tries to communicate with external services, you may start seeing workflow task timeouts.
+- The effect of this is multiplied when replaying long workflow histories because the workflow task timer starts when the first history page is delivered to the worker and the sink function will run every time the workflow is "activated".
+
+To work around blocking the workflow task you can send the errors asynchronously, e.g:
+
+```ts
+const sinks: InjectedSinks<LoggerSinks> = {
+    reporter: {
+      error: {
+        fn(workflowInfo, err) {
+          (async () => {
+            try {
+              await sendErrorToSentry(workflowInfo, err)
+            } catch (sendError) { /* handle it yourself */ }
+          })();
+        },
+      },
+    },
+  };
+```
+
+Note that if you are only logging Workflow failure errors, that can only happen once per workflow so you don't have to worry about the above.
 
 ### Sinks vs Activities
 
