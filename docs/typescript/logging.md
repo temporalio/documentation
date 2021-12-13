@@ -36,17 +36,12 @@ However, they differ from Activities in important ways:
 
 </details>
 
-### Declaring The Sink Interface
+### Extending The Sink Interface
 
-Explicitly declaring the interface is optional, but is useful for ensuring type safety in subsequent steps:
+Explicitly declaring a Sink's interface is optional, but is useful for ensuring type safety in subsequent steps:
 
 <!--SNIPSTART typescript-logger-sink-interface-->
 <!--SNIPEND-->
-
-Some important features of this interface:
-
-- **Injected WorkflowInfo argument**: The first argument of a Sink function implementation will be a [`workflowInfo` object](https://typescript.temporal.io/api/interfaces/workflow.workflowinfo/) that containing useful metadata.
-- **No return value**: Sink functions may not return values to the Workflow in order to prevent breaking determinism.
 
 ### Implementing Sinks
 
@@ -57,12 +52,19 @@ Implementing Sinks is a two step process.
 <!--SNIPSTART typescript-logger-sink-worker-->
 <!--SNIPEND-->
 
-Note that you can control
+- Sink function implementations are passed as an object into [WorkerOptions](https://typescript.temporal.io/api/interfaces/worker.workeroptions/#dependencies)
+- You may specify whether or not you'd like the injected function to be called during Workflow replay with the `callDuringReplay` boolean option.
 
 #### Proxy and call a Sink function from a Workflow
 
 <!--SNIPSTART typescript-logger-sink-workflow-->
 <!--SNIPEND-->
+
+Some important features of the [InjectedSinkFunction](https://typescript.temporal.io/api/interfaces/worker.InjectedSinkFunction) interface:
+
+- **Injected WorkflowInfo argument**: The first argument of a Sink function implementation will be a [`workflowInfo` object](https://typescript.temporal.io/api/interfaces/workflow.workflowinfo/) that containing useful metadata.
+- **Primitive arguments only**: The remaining Sink function arguments are copied between the isolated vm and the Node.js environment. This limits the usage to primitive types such as `number`, `string`, `array` and `object`.
+- **No return value**: Sink functions may not return values to the Workflow in order to prevent breaking determinism.
 
 #### Advanced: Performance Considerations and Non-blocking Sinks
 
@@ -92,14 +94,6 @@ const sinks: InjectedSinks<LoggerSinks> = {
 ```
 
 Note that if you are only logging Workflow failure errors, that can only happen once per workflow so you don't have to worry about the above.
-
-### [InjectedSinkFunction](https://typescript.temporal.io/api/interfaces/worker.InjectedSinkFunction) interface
-
-Dependency function implementations are passed via [WorkerOptions](https://typescript.temporal.io/api/interfaces/worker.workeroptions/#dependencies),
-they accept [WorkflowInfo](https://typescript.temporal.io/api/interfaces/workflow.workflowinfo/) as their first argument along with additional arguments passed in from the Workflow side.
-
-- The arguments and return value are copied between the isolated vm and the Node.js environment. This limits the usage to primitive types such as `number`, `string`, `array` and `object`.
-- You may specify whether or not you'd like the injected function to be called during Workflow replay with the `callDuringReplay` boolean option.
 
 ### Further References
 
@@ -159,7 +153,7 @@ await Core.create({ logger });
 
 ## Monitoring SDK Metrics
 
-We are in the process of building out our SDK metrics capabilities, for now please observe standard monitoring practices on your Workers in production.
+We are in the process of building out our SDK metrics capabilities, for now please observe standard monitoring practices on your Workers in production (CPU, memory utilization, health checks).
 
 ## OpenTelemetry Tracing
 
