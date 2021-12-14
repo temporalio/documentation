@@ -25,7 +25,7 @@ Workflows in Temporal may be replayed from the beginning of their history when r
 Sinks are written as objects with methods. Similar to Activities, they are declared in the Worker and then proxied in Workflow code, and it helps to share types between both.
 
 <details>
-  <summary>Comparing Sinks and Activities</summary>
+  <summary>Comparing Sinks, Activities and Interceptors</summary>
   
 Sinks are similar to Activities in that they are both registered on the Worker and proxied into the Workflow.
 However, they differ from Activities in important ways:
@@ -33,6 +33,9 @@ However, they differ from Activities in important ways:
 - Sink functions don't return promises.
 - Sink calls are not recorded in Workflow histories (no timeouts or retries).
 - Sink functions are run on the same Worker that runs the Workflow they are called from.
+
+If you need code to run on every activity invocation, you may also write [Interceptors](/docs/typescript/interceptors) that hands off errors to a Sink.
+Please contact us if you are exploring this pattern as we are still working on the interaction.
 
 </details>
 
