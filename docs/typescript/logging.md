@@ -64,8 +64,8 @@ Some important features of the [InjectedSinkFunction](https://typescript.tempora
 
 - **Injected WorkflowInfo argument**: The first argument of a Sink function implementation is a [`workflowInfo` object](https://typescript.temporal.io/api/interfaces/workflow.workflowinfo/) that contains useful metadata.
 - **Primitive arguments only**: The remaining Sink function arguments are copied between the isolated vm and the Node.js environment.
-This limits the usage to primitive types such as `number`, `string`, `array`, and `object`.
-- **No return value**: To prevent breaking determinism, Sink functions cannot return values to the Workflow. 
+  This limits the usage to primitive types such as `number`, `string`, `array`, and `object`.
+- **No return value**: To prevent breaking determinism, Sink functions cannot return values to the Workflow.
 
 #### Advanced: Performance considerations and non-blocking Sinks
 
