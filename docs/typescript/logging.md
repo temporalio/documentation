@@ -11,13 +11,13 @@ Activities run in the standard Node.js environment and can use any Node.js logge
 
 ## Logging from Workflows with Workflow Sinks
 
-Logging from Workflows is tricky for 2 reasons:
+Logging from Workflows is tricky for two reasons:
 
 1. Workflows run in a sandboxed environment and cannot do any I/O.
-1. Workflow code might get replayed at any time, generating duplicate log messages
+1. Workflow code might get replayed at any time, generating duplicate log messages.
 
 To solve these problems, we recommend using the Sinks feature in the TypeScript SDK.
-Sinks enable one-way export of logs, metrics and traces out from the Workflow isolate to the Node.js environment.
+Sinks enable one-way export of logs, metrics, and traces from the Workflow isolate to the Node.js environment.
 
 <!--
 Workflows in Temporal may be replayed from the beginning of their history when resumed. In order for Temporal to recreate the exact state Workflow code was in, the code is required to be fully deterministic. To prevent breaking [determinism](/docs/typescript/determinism), in the TypeScript SDK, Workflow code runs in an isolated execution environment and may not use any of the Node.js APIs or communicate directly with the outside world. -->
@@ -25,14 +25,14 @@ Workflows in Temporal may be replayed from the beginning of their history when r
 Sinks are written as objects with methods. Similar to Activities, they are declared in the Worker and then proxied in Workflow code, and it helps to share types between both.
 
 <details>
-  <summary>Comparing Sinks vs Activities</summary>
+  <summary>Comparing Sinks and Activities</summary>
   
 Sinks are similar to Activities in that they are both registered on the Worker and proxied into the Workflow.
 However, they differ from Activities in important ways:
 
-- Sink functions don't return promises
-- Sink calls are not recorded in Workflow histories (no timeouts or retries)
-- Sink functions are run on the same Worker that runs the Workflow they are called from
+- Sink functions don't return promises.
+- Sink calls are not recorded in Workflow histories (no timeouts or retries).
+- Sink functions are run on the same Worker that runs the Workflow they are called from.
 
 </details>
 
@@ -45,7 +45,7 @@ Explicitly declaring a Sink's interface is optional, but is useful for ensuring 
 
 ### Implementing Sinks
 
-Implementing Sinks is a two step process.
+Implementing Sinks is a two-step process.
 
 #### Implement and inject the Sink function into a Worker
 
@@ -53,7 +53,7 @@ Implementing Sinks is a two step process.
 <!--SNIPEND-->
 
 - Sink function implementations are passed as an object into [WorkerOptions](https://typescript.temporal.io/api/interfaces/worker.workeroptions/#dependencies)
-- You may specify whether or not you'd like the injected function to be called during Workflow replay with the `callDuringReplay` boolean option.
+- You can specify whether you want the injected function to be called during Workflow replay by setting the `callDuringReplay` boolean option.
 
 #### Proxy and call a Sink function from a Workflow
 
@@ -62,18 +62,19 @@ Implementing Sinks is a two step process.
 
 Some important features of the [InjectedSinkFunction](https://typescript.temporal.io/api/interfaces/worker.InjectedSinkFunction) interface:
 
-- **Injected WorkflowInfo argument**: The first argument of a Sink function implementation will be a [`workflowInfo` object](https://typescript.temporal.io/api/interfaces/workflow.workflowinfo/) that containing useful metadata.
-- **Primitive arguments only**: The remaining Sink function arguments are copied between the isolated vm and the Node.js environment. This limits the usage to primitive types such as `number`, `string`, `array` and `object`.
-- **No return value**: Sink functions may not return values to the Workflow in order to prevent breaking determinism.
+- **Injected WorkflowInfo argument**: The first argument of a Sink function implementation is a [`workflowInfo` object](https://typescript.temporal.io/api/interfaces/workflow.workflowinfo/) that contains useful metadata.
+- **Primitive arguments only**: The remaining Sink function arguments are copied between the isolated vm and the Node.js environment.
+This limits the usage to primitive types such as `number`, `string`, `array`, and `object`.
+- **No return value**: To prevent breaking determinism, Sink functions cannot return values to the Workflow. 
 
-#### Advanced: Performance Considerations and Non-blocking Sinks
+#### Advanced: Performance considerations and non-blocking Sinks
 
-Be aware that Sinks will take up part of the workflow execution time.
+Be aware that Sinks require part of the Workflow Execution time.
 
-- If you have a long running sink function, e.g. one tries to communicate with external services, you may start seeing workflow task timeouts.
-- The effect of this is multiplied when replaying long workflow histories because the workflow task timer starts when the first history page is delivered to the worker and the sink function will run every time the workflow is "activated".
+- If you have a long running sink function, such as one that tries to communicate with external services, you might start seeing workflow task timeouts.
+- The effect is multiplied when replaying long Workflow histories because the Workflow Task timer starts when the first history page is delivered to the Worker, and the Sink function runs every time the workflow is "activated."
 
-To work around blocking the workflow task you can send the errors asynchronously, e.g:
+To work around blocking the Workflow Task, you can send the errors asynchronously, such as in the following code.
 
 ```ts
 const sinks: InjectedSinks<LoggerSinks> = {
@@ -93,9 +94,9 @@ const sinks: InjectedSinks<LoggerSinks> = {
 };
 ```
 
-Note that if you are only logging Workflow failure errors, that can only happen once per workflow so you don't have to worry about the above.
+Note that if you log only Workflow failure errors, they can happen only once per workflow, so you don't have to worry about this issue.
 
-### Further References
+### Further references
 
 - [Proposal](https://github.com/temporalio/proposals/blob/master/node/logging-and-metrics-for-user-code.md)
 - [Sinks PR](https://github.com/temporalio/sdk-typescript/pull/370/files)
@@ -151,7 +152,7 @@ const logger = winston.createLogger({
 await Core.create({ logger });
 ```
 
-## Monitoring SDK Metrics
+## Monitoring SDK metrics
 
 We are in the process of building out our SDK metrics capabilities, for now please observe standard monitoring practices on your Workers in production (CPU, memory utilization, health checks).
 
