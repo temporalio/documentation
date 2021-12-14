@@ -13,7 +13,7 @@ Activities run in the standard Node.js environment and can use any Node.js logge
 
 Logging from Workflows is tricky for 2 reasons:
 
-1. Workflows run in a sandboxed environment and may not do any I/O
+1. Workflows run in a sandboxed environment and cannot do any I/O.
 1. Workflow code might get replayed at any time, generating duplicate log messages
 
 To solve these problems, we recommend using the Sinks feature in the TypeScript SDK.
