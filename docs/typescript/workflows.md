@@ -490,7 +490,7 @@ await workflow.signalWithStart(MyWorkflow, {
 });
 ```
 
-See the [Workflow Client](/docs/typescript/workflows) docs for more notes on how starting Workflows and Workflow Options look like.
+See the [Workflow Client](/docs/typescript/clients/#workflow-options) docs for more notes on how starting Workflows and Workflow Options look like.
 
 ## Deferred Execution
 
