@@ -24,7 +24,7 @@ import TctlBatchStart from './batch/start.md'
 
 import TctlBatchList from './batch/list.md'
 
-<TctlBatchStart/>
+<TctlBatchList/>
 
 ## `describe`
 

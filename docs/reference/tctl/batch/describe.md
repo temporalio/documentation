@@ -23,3 +23,4 @@ Alias: `--jid`
 
 ```
 tctl batch describe --job_id <id>
+```
