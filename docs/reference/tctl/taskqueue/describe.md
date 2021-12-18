@@ -3,8 +3,10 @@ id: describe
 title: tctl taskqueue describe
 description: How to operate Task Queues using tctl.
 tags:
-  - reference
-  - tctl
+
+- reference
+- tctl
+
 ---
 
 <!-- prettier-ignore -->
