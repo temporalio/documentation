@@ -79,10 +79,6 @@ html[data-theme="light"] {
   font-display: swap;
 }
 
-li {
-  list-style: none; /* taken care of using Tailwind typography */
-}
-
 .docs-page {
   @apply my-12;
 }
