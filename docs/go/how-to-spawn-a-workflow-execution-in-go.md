@@ -67,10 +67,48 @@ The Task Queue name must be the same for both.
 We recommend supplying your own custom Workflow Id that can be used to get the result of the Workflow Execution asynchronously at another point in time.
 A custom Workflow Id is intended to correspond to a business-level identifier.
 
+### External Workflows
+
+You can execute Workflows (including those from other language SDKs) by their type name:
+
+```go
+workflowID := "myworkflow_" + uuid.New()
+workflowOptions := client.StartWorkflowOptions{
+  ID:        workflowID,
+  TaskQueue: "mytaskqueue",
+}
+
+we, err := c.ExecuteWorkflow(context.Background(), workflowOptions, "MySimpleWorkflow")
+if err != nil {
+  log.Fatalln("Unable to execute workflow", err)
+}
+log.Println("Started workflow", "WorkflowID", we.GetID(), "RunID", we.GetRunID())
+```
+
+Here we execute a workflow by its type name, namely `MySimpleWorkflow`. By default, the
+Workflow type is the name of the Workflow function, for example:
+
+```go
+func MySimpleWorkflow(ctx workflow.Context) error {
+ // Workflow code here...
+}
+```
+
+Note that you can also set the Workflow type via `RegisterWorkflowOptions` when registering your Workflow
+with the Worker, for example:
+
+```go
+rwo := workflow.RegisterOptions {
+   Name: "MyWorkflow", // Set "MyWorkflow" as the Workflow type
+}
+w.RegisterWorkflowWithOptions(dynamic.SampleGreetingsWorkflow, rwo)
+```
+
+
 By default, the Workflow Type name is the same as the function name.
 If the invocation process has access to the function directly, then the Workflow Type name parameter can be passed as if the function name were a variable, without quotations.
 
-If the invocation process does not have direct access to the statically defined Workflow Definition, for example, if the Workflow Definition is in an un-importable package, or it is written in a completely different language, then the Workflow Type can be provided as a `string`.
+If the process does not have direct access to the statically defined Workflow Definition, for example, if the Workflow Definition is in an un-importable package, or it is written in a completely different language, then the Workflow Type can be provided as a `string`.
 
 ```go
 workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, "YourWorkflowDefinition", param)

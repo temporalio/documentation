@@ -57,8 +57,7 @@ Then call the `Get()` method on the instance of `WorkflowRun` that is returned, 
 ```go
   // ...
   workflowID := "Your-Custom-Workflow-Id"
-  workflowRun := c.GetWorkflow(context.Background, workflowID)
-
+  workflowRun := tempooralClient.GetWorkflow(workflowID)
   var result YourWorkflowResponse
   err = workflowRun.Get(context.Background(), &result)
   if err != nil {
@@ -66,6 +65,8 @@ Then call the `Get()` method on the instance of `WorkflowRun` that is returned, 
   }
   // ...
 ```
+
+This can be performed from any process that has access to a Temporal Client and the Workflow Id.
 
 ### Get last completion result
 

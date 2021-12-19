@@ -1,16 +1,12 @@
 ---
-id: how-to-request-cancellation-of-a-workflow-execution-in-go
-title: How to request Cancellation of a Workflow Execution in Go
-description: todo
+id: how-to-handle-a-cancellation-request-in-a-workflow-in-go
+title: How to handle a Cancellation Request in a Workflow in Go
+sidebar_label: Handling a Cancellation Request - Workflows
+description: TODO
 tags:
-  - developer-guide
   - go
+  - developer-guide
 ---
-
-Use the `CancelWorkflow` API to cancel a Workflow Execution using its Id.
-
-<!--SNIPSTART samples-go-cancellation-cancel-workflow-execution-trigger-->
-<!--SNIPEND-->
 
 ### How to clean up after a Workflow is cancelled
 
@@ -19,3 +15,6 @@ In the Workflow Definition below, there is a special Activity that handles clean
 
 <!--SNIPSTART samples-go-cancellation-workflow-definition-->
 <!--SNIPEND-->
+
+
+- [What is a Cancellation Request](/docs/content/what-is-a-cancellation-request)

@@ -905,7 +905,7 @@ import PCP from '../content/what-is-a-parent-close-policy.md'
 <summary>Why ContinueAsNew is needed
 </summary>
 
-import SharedContinueAsNew from '../shared/continue-as-new.md'
+[What is Continue-As-New](/docs/content/what-is-continue-as-new)
 
 <SharedContinueAsNew />
 

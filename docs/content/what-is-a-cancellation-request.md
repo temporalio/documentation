@@ -1,7 +1,7 @@
 ---
-id: what-is-activity-cancellation
-title: What is Activity Cancellation?
-description: Workflows can request to cancel an Activity, and the Activity should then perform cleanup.
+id: what-is-a-cancellation-request
+title: What is a Cancellation Request?
+description: TODO
 tags:
   - explanation
 ---

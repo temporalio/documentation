@@ -1,7 +1,11 @@
 ---
-id: signals
-title: Signals in Go
-sidebar_label: Signals
+id: how-to-handle-a-signal-in-a-workflow-in-go
+title: How to handle a Signal in a Workflow in Go
+sidebar_label: Handling Signals
+description: TODO
+tags:
+  - go
+  - developer-guide
 ---
 
 **Signals** provide a mechanism to send data directly **in** to a running Workflow.

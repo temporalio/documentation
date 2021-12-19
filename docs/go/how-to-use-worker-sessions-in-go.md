@@ -1,6 +1,11 @@
 ---
-id: sessions
-title: Sessions
+id: how-to-use-worker-sessions-in-go
+title: How to use worker Sessions in Go
+sidebar_label: Worker Session
+description: TODO
+tags:
+  - go
+  - developer-guide
 ---
 
 The session framework provides a straightforward interface for scheduling multiple Activities on a single worker without requiring you to manually specify the task queue name. It also includes features like **concurrent session limitation** and **worker failure detection**.

@@ -26,6 +26,8 @@ imageSize="100"
 title="Activity Execution with retries"
 />
 
+Temporal guarantees that Activities are executed _at least once_.
+
 <RelatedReadContainer>
   <RelatedReadItem page={HowToSpawnAnActivityExecutionInGo} />
 </RelatedReadContainer>

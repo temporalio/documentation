@@ -1,7 +1,11 @@
 ---
-id: testing
-title: Testing and debugging
-sidebar_label: Testing and debugging
+id: how-to-test-workflow-definitions-in-go
+title: How to test Workflow Definitions in Go
+sidebar_label: Testing Workflows
+description: TODO
+tags:
+  - go
+  - developer-guide
 ---
 
 ## Testing

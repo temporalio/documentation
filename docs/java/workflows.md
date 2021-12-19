@@ -413,9 +413,7 @@ See our [Temporal Polyglot example](https://github.com/tsurdilo/temporal-polyglo
 
 ## Large Event Histories
 
-import SharedContinueAsNew from '../shared/continue-as-new.md'
-
-<SharedContinueAsNew />
+- [What is Continue-As-New](/docs/content/what-is-continue-as-new)
 
 Temporal SDK allows you to manually use "ContinueAsNew" in a number of ways:
 

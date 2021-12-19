@@ -1,3 +1,11 @@
+---
+id: what-is-continue-as-new
+title: What is Continue-As-New
+description: TODO
+tags:
+  - explanation
+---
+
 Temporal stores the execution history of all Workflows.
 There is a maximum limit of this execution history (50,000 events).
 Even though Temporal Server emits warnings while your workflow are approaching this limit (every 10,000 events), you should make sure
@@ -14,3 +22,5 @@ get its own execution history.
 If your Workflows are running periodically using a Cron definition, the `ContinueAsNew`
 feature is used internally by Temporal.
 In this case, each Workflow execution as defined by the Cron definition will have its own Run Id and execution history.
+
+- [How to Continue-As-New in Go](/docs/go/how-to-continue-as-new-in-go)

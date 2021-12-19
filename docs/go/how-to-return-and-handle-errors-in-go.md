@@ -1,6 +1,11 @@
 ---
-id: error-handling
-title: Error Handling in Go
+id: how-to-return-and-handle-errors-in-go
+title: How to return and handle errors in Go
+sidebar_label: Returning & handling errors
+description: TODO
+tags:
+  - go
+  - developer-guide
 ---
 
 An Activity, or a child Workflow, might fail, and you could handle errors differently based on the different

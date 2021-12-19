@@ -362,9 +362,7 @@ public class FileProcessingActivitiesImpl implements FileProcessingActivities {
 
 ### Activity Cancellation
 
-import WhatIsActivityCancellation from '../content/what-is-activity-cancellation.md'
-
-<WhatIsActivityCancellation />
+- [What is a Cancellation Request](/docs/content/what-is-a-cancellation-request)
 
 ## Throwing Activity errors
 

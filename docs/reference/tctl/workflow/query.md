@@ -12,7 +12,7 @@ import * as WhatIsAWorkflowExecution from '../../../content/what-is-a-workflow-e
 import * as WhatIsAWorkflowId from '../../../content/what-is-a-workflow-id.md'
 import * as WhatIsARunId from '../../../content/what-is-a-run-id.md'
 
-The `tctl workflow query` command queries <preview page={WhatIsAWorkflowExecution}>Workflow Executions</preview>.
+The `tctl workflow query` command sends a Query to a <preview page={WhatIsAWorkflowExecution}>Workflow Execution</preview>.
 
 `tctl workflow query <option> <arguments...>`
 
@@ -53,6 +53,17 @@ Alias: `--qt`
 ```
 tctl workflow query --query_type <value>
 ```
+
+Currently there is a one built-in Query Type named `__stack_trace`.
+Use this to get the current call stack of the Workflow Execution.
+
+**Example**
+
+```
+tctl workflow query -r <run_id> -qt __stack_trace
+```
+
+Custom `--query_type` values are defined in the Workflow Definition.
 
 ### `--input`
 
