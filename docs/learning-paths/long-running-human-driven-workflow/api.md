@@ -1,7 +1,7 @@
 ---
 id: api
 title: Long Running Human Drive Process API reference
-sidebar_label: API
+sidebar_label: API reference
 ---
 
 ## `/checks` GET

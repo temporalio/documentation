@@ -5,7 +5,7 @@ sidebar_label: Application requirements
 description: TODO
 ---
 
-import CenteredImage from "../../../components/CenteredImage.js"
+import CenteredImage from "../../components/CenteredImage.js"
 
 The application in this Learning Path is a simplified and scaled down implementation for the use case.
 As such the requirements are simplified and scaled down to match it.
@@ -24,29 +24,29 @@ There are 3 users we need to consider for this application:
 - **Candidate:** The Candidate is the user who is the subject of the Background Check. They will have to consent to the Background Check.
 - **Researcher:** The Researcher is the user who does some sort of manual "search" for information reg
 
-### what are the Company experience requirements?
+### What are the Company experience requirements?
 
 The HR person at the Company is the one who initiates the Background Check for a given Candidate. To start a Background Check they need the email address of the Candidate.
 
-In real life, the HR Person would probably already have more of the Candidate's information such as, name, physical address, and date of birth. For this learning path the Candidate will enter that information at the same time that they accept/consent to the Background Check to simplify the experience.
+In real life, the HR Person would probably already have more of the Candidate's information such as, name, physical address, and date of birth. For this Learning Path the Candidate will enter that information at the same time that they accept/consent to the Background Check to simplify the experience.
 
-The HR person must also be ready to select which checks need to be performed for the position the Candidate is being hired for. For this learning path we will assume that the HR person can select from just two packages:
+The HR person must also be ready to select which checks need to be performed for the position the Candidate is being hired for. For this Learning Path we will assume that the HR person can select from just two packages:
 
 - Standard package
 - Full package
 
-The Standard package will conduct two types of searches, while the Full package will conduct 5 types of searches.
+The Standard package conducts two types of Searches, while the Full package conducts five types of Searches.
 
 You can probably already envision the basic, secured user interface that the HR person would be interacting with that contains a form for the Candidate information, a drop down to select the package, and a button that says "Start Background Check".
 
-After entering the information and clicking the button the HR person will have two options available to them:
+After entering the information and clicking the button the HR person has two options available to them:
 
 1. Cancel the Background Check
 2. View the status of the Background Check
 
 After the Background Check fully completes, the option to cancel will go away and all that will remain is the option to see the final status.
 
-For this learning path, we will be simulating this experience through the use of a CLI.
+For this Learning Path, we will be simulating this experience through the use of a shared mailbox and the [Company CLI](/docs/learning-paths/long-running-human-driven-workflow/cli#bgc-company).
 
 The HR person will also have a separate option that is always available to them to list the metadata of Background Checks that are in the system, and filter them by Candidate, status, or Background Check Id.
 
@@ -55,7 +55,7 @@ The HR person will also have a separate option that is always available to them 
 The Candidate must consent to the Background Check while simultaneously providing/confirming their name, address, DOB, & Social Security Number.
 Here you can envision the Candidate receiving an email with a link to a secured web form that has an input field for their SSN, a checkbox to confirm consent, a checkbox to confirm that their other information is correct, and a button that says "Submit" .
 
-For this learning path we will be simulating this experience through the use of the Candidate CLI.
+For this Learning Path we will be simulating this experience through the use of the Candidate CLI.
 
 ### What are the Researcher experience requirements?
 
@@ -77,13 +77,13 @@ Based on the experiences of the two user types, we know we will need APIs for th
 
 See the Application API Reference for API details:
 
-[Application API reference](/docs/learning-paths/long-running-human-driven-workflow/reference/api)
+[Application API reference](/docs/learning-paths/long-running-human-driven-workflow/api)
 
 ### CLIs
 
 We will need a CLI for each user type to represent the experience they would have from a user interface.
 
-[Application CLI reference](/docs/learning-paths/long-running-human-driven-workflow/reference/cli)
+[Application CLI reference](/docs/learning-paths/long-running-human-driven-workflow/cli)
 
 ### Handling PII
 

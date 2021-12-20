@@ -1,7 +1,7 @@
 ---
 id: cli
 title: Long Running Human Drive Process CLI reference
-sidebar_label: CLI
+sidebar_label: CLI reference
 ---
 
 For this Learning Path we use three distinct CLIs to represent the user interfaces (UI) that each user type would have to interact with.
@@ -9,6 +9,14 @@ For this Learning Path we use three distinct CLIs to represent the user interfac
 - [Company CLI](#bgc-company)
 - [Candidate CLI](#bgc-candidate)
 - [Researcher CLI](#bgc-researcher)
+
+The execute these CLI commands, prefix them with `./run-cli` while in the project root.
+
+Example:
+
+```
+./run-cli bgc-company list
+```
 
 ## `bgc-company`
 
@@ -75,14 +83,14 @@ Starts a new Background Check.
 Example:
 
 ```bash
-bgc-company start --candidate <candidate_email> --package <package_type>
+bgc-company start --email <candidate_email> --package <package_type>
 ```
 
 Output:
 
 If successful, shows a check Id.
 
-#### `--candidate` (required)
+#### `--email` (required)
 
 Email address of the Candidate
 

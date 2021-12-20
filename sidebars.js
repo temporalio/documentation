@@ -430,27 +430,12 @@ module.exports = {
       collapsed: false,
       items: [
         "learning-paths/long-running-human-driven-workflow/introduction",
+        "learning-paths/long-running-human-driven-workflow/what-are-the-application-requirements",
+        "learning-paths/long-running-human-driven-workflow/how-do-we-build-this-as-a-temporal-application",
+        "learning-paths/long-running-human-driven-workflow/how-do-we-deploy-this-temporal-application",
         "learning-paths/long-running-human-driven-workflow/how-to-use-the-background-check-application",
-        {
-          type: "category",
-          label: "Explanation",
-          collapsed: false,
-          items: [
-            "learning-paths/long-running-human-driven-workflow/explanation/what-are-the-application-requirements",
-            "learning-paths/long-running-human-driven-workflow/explanation/how-do-we-build-this-as-a-temporal-application",
-            "learning-paths/long-running-human-driven-workflow/explanation/how-do-we-deploy-this-temporal-application"
-          ],
-        },
-        {
-          type: "category",
-          label: "References",
-          collapsed: false,
-          items: [
-            "learning-paths/long-running-human-driven-workflow/reference/api",
-            "learning-paths/long-running-human-driven-workflow/reference/cli",
-          ],
-        },
-
+        "learning-paths/long-running-human-driven-workflow/api",
+        "learning-paths/long-running-human-driven-workflow/cli",
       ],
     },
   ],

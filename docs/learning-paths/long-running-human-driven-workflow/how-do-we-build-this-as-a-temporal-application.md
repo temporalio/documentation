@@ -4,10 +4,10 @@ title: How do we build this Long Running Human Driven Process application as a T
 sidebar_label: Building the application
 ---
 
-import CenteredImage from "../../../components/CenteredImage.js"
+import CenteredImage from "../../components/CenteredImage.js"
 
 <!-- prettier-ignore -->
-import * as WhatIsADataConverter from '../../../content/what-is-a-data-converter.md'
+import * as WhatIsADataConverter from '../../content/what-is-a-data-converter.md'
 
 ## What business processes are we mapping to Workflows?
 
