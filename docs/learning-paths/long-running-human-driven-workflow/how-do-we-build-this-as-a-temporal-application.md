@@ -79,16 +79,14 @@ title="Employment Verification Child Workflow Execution flow"
 
 ## Which steps within a business process are we mapping to Activities?
 
-
-
 ## Why use Workflows for Searches instead of Activities?
 
 For this Learning Path application we are using Workflows for searches for a few reasons.
 
 1. Each search could be long running: In a real life scenario, we won't know how long a search might take to give us a result. Individual searches and Background Checks overall can often take hours or days to complete. While Temporal supports long running Activities, an actual search is conducted by a third party system, and therefore Heartbeats are not very helpful here. An Activity will be the one to make the call to the third party system, but we can just set a timeout and let the Workflow Execution be the long running process.
 2. Division of responsibilities: In a real life scenario, you might have a team that is dedicated any particular search. The Background Check team can manages their Workflow Definition, while the the Federal criminal search team manages its own Workflow Definition, for example, to create a sort of inter-team distributed system that can work together to accomplish goals.
-    - Bug fixes
-    - CI/CD
+   - Bug fixes
+   - CI/CD
 3. The state of a Workflow is maintained: The results of an Activity are written to the Workflow Execution Event History. Instead of writing search results directly to our Background Check Workflow Execution, we can keep them separate in their own Workflow Execution and access them independently from Background Check Workflow.
 4. Reduces the need to version Workflows: Workflow Execution Event Histories are separated.
 
@@ -120,8 +118,6 @@ However, in real life, our application could use as many Worker Processes each w
 ## How do we ensure PII is encrypted in the Temporal Platform?
 
 To encrypt data in the Temporal Platform, we use a Data Converter.
-
-
 
 ## How do we know what the status of each Workflow Execution is?
 

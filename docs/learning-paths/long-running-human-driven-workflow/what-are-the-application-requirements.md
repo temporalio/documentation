@@ -108,14 +108,14 @@ Many of the Background Check search should happen concurrently.
 The Company HR Person will be able to select from two different packages of searches. The following are the predefined Background Check packages available to the Company HR Person to select when they kick off a Background Check for a Candidate.
 
 - Standard package
-    - SSN trace
-    - Federal criminal search
+  - SSN trace
+  - Federal criminal search
 - Full package
-    - SSN trace
-    - Motor vehicle report
-    - Federal criminal search
-    - Employment verification
-    - State criminal search
+  - SSN trace
+  - Motor vehicle report
+  - Federal criminal search
+  - Employment verification
+  - State criminal search
 
 The initial search for either package is an SSN trace meant to find additional addresses associated with the Candidate. Those addresses are used in the other Individual checks. However, all checks beyond the SSN trace should be conducted in parallel to save as much time as possible.
 
@@ -130,10 +130,10 @@ title="High level step-by-step 'Full package' flow"
 />
 
 1. A new Background Check is started by the Company HR person.
-They have entered the Candidates email address and selected a Background Check package, and clicked "Start".
+   They have entered the Candidates email address and selected a Background Check package, and clicked "Start".
 2. The application sends an email to the Candidate with instructions on how to accept the Background Check and waits, making no further progress.
-For the sake of this Learning Path, if the Candidate does not respond within 5 minutes, the Background Check is canceled.
-If the Candidate rejects the Background Check it is canceled.
+   For the sake of this Learning Path, if the Candidate does not respond within 5 minutes, the Background Check is canceled.
+   If the Candidate rejects the Background Check it is canceled.
 3. The Candidate follows the instructions to accept.
 4. The application initiates the first Search and waits on the results.
 5. The application initiates all remaining Searches in parallel, and waits on the results.

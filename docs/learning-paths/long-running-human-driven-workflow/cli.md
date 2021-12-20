@@ -115,7 +115,6 @@ bgc-company cancel --id <check_id>
 
 Output:
 
-
 #### `--id` (required)
 
 Background Check Id
