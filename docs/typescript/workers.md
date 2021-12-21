@@ -118,7 +118,10 @@ In production settings, you can configure the `address` and `namespace` the Work
 import { Worker, DefaultLogger, Core } from '@temporalio/worker';
 
 const logger = new DefaultLogger('DEBUG');
-await Core.install({ logger, telemetryOptions: { logForwardingLevel: 'INFO' } });
+await Core.install({
+  logger,
+  telemetryOptions: { logForwardingLevel: 'INFO' },
+});
 const worker = await Worker.create(/* standard Worker code from here */);
 ```
 
@@ -134,7 +137,6 @@ A Task Queue is a dynamic queue in Temporal Server polled by one or more Workers
 <WhatIsATaskQueue />
 
 </details>
-
 
 ### Where Task Queues are used
 
