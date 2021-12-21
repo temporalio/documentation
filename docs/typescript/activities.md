@@ -143,53 +143,6 @@ For a proper guide to each Retry Option, see the [RetryPolicy API Reference](htt
 
 As you customize your Workflow errors to be more descriptive, advanced users will want to become familiar with [Temporal's Failure classes](/docs/typescript/handling-failure).
 
-### Pattern: Importing multiple Activities at once
-
-Activities are Promises and you may retrieve multiple Activities from the same `proxyActivities` call if you want them to share the same timeouts/retries/options:
-
-```ts
-export async function Workflow(name: string): Promise<string> {
-  // destructuring multiple activities with the same options
-  const { act1, act2, act3 } =
-    proxyActivities<typeof activities>(/* activityOptions */);
-  await act1();
-  await Promise.all([act2, act3]);
-}
-```
-
-### Pattern: Dynamically referencing Activities
-
-Since, under the hood, Activities are only referenced by their string name, you can reference them dynamically if needed:
-
-```js
-export async function DynamicWorkflow(activityName, ...args) {
-  const acts = proxyActivities(/* activityOptions */);
-
-  // these are equivalent
-  await acts.activity1();
-  await acts['activity1']();
-
-  // dynamic reference to activities using activityName
-  let result = await acts[activityName](...args);
-}
-```
-
-Type safety is still supported here, but you are encouraged to validate and handle mismatches in Activity names. An invalid Activity name will lead to a `NotFoundError` with a message that looks like:
-
-```
-ApplicationFailure: Activity function fakeProgress is not registered on this Worker, available activities: ["fakeProgress"]
-```
-
-### Pattern: Using pure ESM Node Modules
-
-The JavaScript ecosystem is increasingly moving towards publishing ES Modules over CommonJS, for example `node-fetch@3` is ESM while `node-fetch@2` is CJS.
-
-**If you are importing a pure ESM dependency, see our [fetch ESM](https://github.com/temporalio/samples-typescript/tree/main/fetch-esm) sample** for necessary config changes you will need:
-
-- `package.json` must have `"type": "module"` attribute
-- `tsconfig.json` should output in `esnext` format
-- Imports [must](https://nodejs.org/api/esm.html#esm_mandatory_file_extensions) include the `.js` file extension
-
 ## How to register an Activity on a Worker
 
 All activities must be registered by a Worker, or you will get an error that looks like `"Activity function myActivity is not registered on this Worker"` when you try to invoke it from a Workflow.
@@ -214,10 +167,27 @@ You can route tasks to specific machines with the [Sticky Queues pattern](/docs/
 
 For more on Activity and Workflow registration, see [the Worker docs](/docs/typescript/workers) for more details.
 
-## Sharing dependencies in Activity functions
+### Using pure ESM Node Modules
+
+The JavaScript ecosystem is increasingly moving towards publishing ES Modules over CommonJS, for example `node-fetch@3` is ESM while `node-fetch@2` is CJS.
+
+**If you are importing a pure ESM dependency, see our [fetch ESM](https://github.com/temporalio/samples-typescript/tree/main/fetch-esm) sample** for necessary config changes you will need:
+
+- `package.json` must have `"type": "module"` attribute
+- `tsconfig.json` should output in `esnext` format
+- Imports [must](https://nodejs.org/api/esm.html#esm_mandatory_file_extensions) include the `.js` file extension
+
+## Important Design Patterns
+
+Here are some important (and frequently asked) patterns for using our Activities APIs, to illustrate common needs and usecases.
+
+### Sharing dependencies in Activity functions (Dependency Injection)
 
 Because Activities are "just" functions, you can also create functions that create Activities.
-This is a helpful pattern for using closures to store expensive dependencies for sharing, for example database connections.
+This is a helpful pattern for using closures to: 
+
+- store expensive dependencies for sharing, such as database connections
+- injecting secret keys (such as environment variables) from the Worker to the Activity
 
 <!--SNIPSTART typescript-activity-with-deps-->
 <!--SNIPEND-->
@@ -236,6 +206,44 @@ Since Activities are always referenced by name, inside the Workflow they can be 
 <!--SNIPEND-->
 
 </details>
+
+
+### Importing multiple Activities at once
+
+Activities are Promises and you may retrieve multiple Activities from the same `proxyActivities` call if you want them to share the same timeouts/retries/options:
+
+```ts
+export async function Workflow(name: string): Promise<string> {
+  // destructuring multiple activities with the same options
+  const { act1, act2, act3 } =
+    proxyActivities<typeof activities>(/* activityOptions */);
+  await act1();
+  await Promise.all([act2, act3]);
+}
+```
+
+### Dynamically referencing Activities
+
+Since, under the hood, Activities are only referenced by their string name, you can reference them dynamically if needed:
+
+```js
+export async function DynamicWorkflow(activityName, ...args) {
+  const acts = proxyActivities(/* activityOptions */);
+
+  // these are equivalent
+  await acts.activity1();
+  await acts['activity1']();
+
+  // dynamic reference to activities using activityName
+  let result = await acts[activityName](...args);
+}
+```
+
+Type safety is still supported here, but you are encouraged to validate and handle mismatches in Activity names. An invalid Activity name will lead to a `NotFoundError` with a message that looks like:
+
+```
+ApplicationFailure: Activity function fakeProgress is not registered on this Worker, available activities: ["fakeProgress"]
+```
 
 ## Activity Context utilities
 
@@ -309,7 +317,27 @@ The [`Context.current().cancellationSignal`](https://typescript.temporal.io/api/
 <!--SNIPSTART typescript-activity-cancellable-fetch-->
 <!--SNIPEND-->
 
-## Local Activities
+## Advanced Features
+
+These are Activity features that most users will not need, but are available for advanced users.
+Please get in touch with us if you find the need for them.
+
+### Async Activity Completion
+
+Normally, an Activity is started and ended in the same Worker, for example a short HTTP call.
+However, sometimes you may want to record an Activity completion in a different process than when you started it.
+
+> If you are modeling human actions, we recommend using Signals rather than Async Activity Completion.
+> This is because Activities only have one timeout for the entire process and you won't know if the activity is timing out on a human or the process that kicks it off.
+
+Async activity completion is done through a two step process:
+
+- Throw a `CompleteAsyncError` from an Activity
+- Use a `AsyncCompletionClient` to mark it as completed, failed, or more.
+
+You can [read the tests](https://github.com/temporalio/sdk-typescript/blob/7d47f501cb56cced27118b5f0abb320cc0ba03ef/packages/test/src/test-async-completion.ts#L40-L98) for more information.
+
+### Local Activities
 
 Temporal has an optimization feature called Local Activities.
 The TypeScript SDK has not yet implemented this feature.
