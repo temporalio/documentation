@@ -68,12 +68,12 @@
   .expandSidebarButtonIcon {
     transform: rotate(0);
   }
-  html[dir='rtl'] .expandSidebarButtonIcon {
+  html[dir="rtl"] .expandSidebarButtonIcon {
     transform: rotate(180deg);
   }
 
-  html[data-theme='dark'] .collapsedDocSidebar:hover,
-  html[data-theme='dark'] .collapsedDocSidebar:focus {
+  html[data-theme="dark"] .collapsedDocSidebar:hover,
+  html[data-theme="dark"] .collapsedDocSidebar:focus {
     background-color: var(--collapse-button-bg-color-dark);
   }
 

@@ -60,7 +60,7 @@ When you call `proxyActivities` in a Workflow function, there are [a range of Ac
 const { greet } = proxyActivities<typeof activities>({
   startToCloseTimeout: '30s', // recommended
   scheduleToCloseTimeout: '5m', // useful
-  retry: {
+  retryPolicy: {
     // default retry policy if not specified
     initialInterval: '1s',
     backoffCoefficient: 2,
@@ -102,13 +102,13 @@ const { longRunningActivity } = proxyActivities<typeof activities>({
 
 ### Activity Retry Policy
 
-You can set a `retry` policy with [RetryOptions](https://typescript.temporal.io/api/interfaces/worker.RetryOptions) that define how activity is retried in case of failure.
+You can set a `retry` policy with [RetryPolicy](https://typescript.temporal.io/api/interfaces/worker.RetryPolicy) that define how activity is retried in case of failure.
 
 ```ts
 // Example 1 - default
 const { greet } = proxyActivities<typeof activities>({
   startToCloseTimeout: '20s',
-  retry: {
+  retryPolicy: {
     // default retry policy if not specified
     initialInterval: '1s',
     backoffCoefficient: 2,
@@ -121,7 +121,7 @@ const { greet } = proxyActivities<typeof activities>({
 // Example 2 - no retries
 const { greet } = proxyActivities<typeof activities>({
   startToCloseTimeout: '20s',
-  retry: {
+  retryPolicy: {
     // guarantee no retries
     maximumAttempts: 1,
   },
@@ -130,7 +130,7 @@ const { greet } = proxyActivities<typeof activities>({
 // Example 3 - linear retries up to 5x
 const { greet } = proxyActivities<typeof activities>({
   startToCloseTimeout: '20s',
-  retry: {
+  retryPolicy: {
     // retry every 1s, no exponential backoff
     backoffCoefficient: 1,
     // max 5 attempts
@@ -139,11 +139,13 @@ const { greet } = proxyActivities<typeof activities>({
 });
 ```
 
-For a proper guide to each Retry Option, see the [RetryOptions API Reference](https://typescript.temporal.io/api/interfaces/worker.RetryOptions).
+For a proper guide to each Retry Option, see the [RetryPolicy API Reference](https://typescript.temporal.io/api/interfaces/worker.RetryPolicy).
 
-### Importing multiple Activities at once
+As you customize your Workflow errors to be more descriptive, advanced users will want to become familiar with [Temporal's Failure classes](/docs/typescript/handling-failure).
 
-Activities are Promises and you may retrieve multiple Activities from the same handle if they all share the same timeouts/retries/options:
+### Pattern: Importing multiple Activities at once
+
+Activities are Promises and you may retrieve multiple Activities from the same `proxyActivities` call if you want them to share the same timeouts/retries/options:
 
 ```ts
 export async function Workflow(name: string): Promise<string> {
@@ -155,7 +157,7 @@ export async function Workflow(name: string): Promise<string> {
 }
 ```
 
-### Dynamically referencing Activities
+### Pattern: Dynamically referencing Activities
 
 Since, under the hood, Activities are only referenced by their string name, you can reference them dynamically if needed:
 
@@ -178,7 +180,7 @@ Type safety is still supported here, but you are encouraged to validate and hand
 ApplicationFailure: Activity function fakeProgress is not registered on this Worker, available activities: ["fakeProgress"]
 ```
 
-### Using pure ESM Node Modules
+### Pattern: Using pure ESM Node Modules
 
 The JavaScript ecosystem is increasingly moving towards publishing ES Modules over CommonJS, for example `node-fetch@3` is ESM while `node-fetch@2` is CJS.
 
