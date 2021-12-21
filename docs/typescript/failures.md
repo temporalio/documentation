@@ -62,8 +62,8 @@ When a Workflow or Activity fails with an unhandled error, Temporal checks if th
 Workflows and Activities may also throw [`ApplicationFailure.nonRetryable`](https://typescript.temporal.io/api/classes/client.applicationfailure#nonretryable-1) to expressly prevent retries.
 
 > Before TypeScript SDK v0.17.0, throwing any error in a Workflow would cause the Workflow execution to fail - in other words, all errors were "non-retryable".
-> After v0.17.0, only the Workflow *task* fails on an error - so the Workflow will retry by default.
-> To fail the Workflow *execution* without retries, throw `ApplicationFailure.nonRetryable`.
+> After v0.17.0, only the Workflow _task_ fails on an error - so the Workflow will retry by default.
+> To fail the Workflow _execution_ without retries, throw `ApplicationFailure.nonRetryable`.
 
 ### Pattern: Intercept
 
