@@ -60,12 +60,41 @@ Activities and Workflows scheduled in the system have a configurable [retry poli
 When a Workflow or Activity fails with an unhandled error, Temporal checks if the error name is present in the array of `nonRetryableErrorTypes` and stops retrying if there's a match.
 
 Workflows and Activities may also throw [`ApplicationFailure.nonRetryable`](https://typescript.temporal.io/api/classes/client.applicationfailure#nonretryable-1) to expressly prevent retries.
+Note that propagated Activity and child Workflow failures are considered non retryable and will fail the workflow execution.
 
-> Before TypeScript SDK v0.17.0, throwing any error in a Workflow would cause the Workflow execution to fail - in other words, all errors were "non-retryable".
-> After v0.17.0, only the Workflow _task_ fails on an error - so the Workflow will retry by default.
-> To fail the Workflow _execution_ without retries, throw `ApplicationFailure.nonRetryable`.
+The expected behavior is:
 
-### Pattern: Intercept
+- Non retryable application failure -> fails the workflow and cannot be retried
+- Retryable application failure -> fails the workflow and can be retried according to the retry policy
+- Other TemporalFailures -> same as retryable application failure
+- Any other error -> fails the workflow task and can be retried
+
+> Note: Before TypeScript SDK v0.17.0, throwing any error in a Workflow would cause the Workflow execution to fail - in other words, all errors were "non-retryable". The semantics of this was corrected in v0.17.
+
+### Pattern: Intercepting Errors to make them NonRetryable
+
+To make other error types non retryable use the WorkflowInboundCallsInterceptor execute and handleSignal methods to catch errors thrown from the Workflow and convert them to non retryable failures, e.g:
+
+```ts
+class WorkflowErrorInterceptor implements WorkflowInboundCallsInterceptor {
+  async execute(
+    input: WorkflowExecuteInput,
+    next: Next<WorkflowInboundCallsInterceptor, 'execute'>
+  ): Promise<unknown> {
+    try {
+      return await next(input);
+    } catch (err) {
+      if (err instanceof MySpecialNonRetryableError) {
+        throw ApplicationFailure.nonRetryable(
+          err.message,
+          'MySpecialNonRetryableError'
+        );
+      }
+      throw err;
+    }
+  }
+}
+```
 
 ## `isCancellation` utility
 

@@ -60,7 +60,7 @@ When you call `proxyActivities` in a Workflow function, there are [a range of Ac
 const { greet } = proxyActivities<typeof activities>({
   startToCloseTimeout: '30s', // recommended
   scheduleToCloseTimeout: '5m', // useful
-  retryPolicy: {
+  retry: {
     // default retry policy if not specified
     initialInterval: '1s',
     backoffCoefficient: 2,
@@ -108,7 +108,7 @@ You can set a `retry` policy with [RetryPolicy](https://typescript.temporal.io/a
 // Example 1 - default
 const { greet } = proxyActivities<typeof activities>({
   startToCloseTimeout: '20s',
-  retryPolicy: {
+  retry: {
     // default retry policy if not specified
     initialInterval: '1s',
     backoffCoefficient: 2,
@@ -121,7 +121,7 @@ const { greet } = proxyActivities<typeof activities>({
 // Example 2 - no retries
 const { greet } = proxyActivities<typeof activities>({
   startToCloseTimeout: '20s',
-  retryPolicy: {
+  retry: {
     // guarantee no retries
     maximumAttempts: 1,
   },
@@ -130,7 +130,7 @@ const { greet } = proxyActivities<typeof activities>({
 // Example 3 - linear retries up to 5x
 const { greet } = proxyActivities<typeof activities>({
   startToCloseTimeout: '20s',
-  retryPolicy: {
+  retry: {
     // retry every 1s, no exponential backoff
     backoffCoefficient: 1,
     // max 5 attempts
@@ -209,7 +209,7 @@ Since Activities are always referenced by name, inside the Workflow they can be 
 
 ### Importing multiple Activities at once
 
-Activities are Promises and you may retrieve multiple Activities from the same `proxyActivities` call if you want them to share the same timeouts/retries/options:
+You may proxy multiple Activities from the same `proxyActivities` call if you want them to share the same timeouts/retries/options:
 
 ```ts
 export async function Workflow(name: string): Promise<string> {
