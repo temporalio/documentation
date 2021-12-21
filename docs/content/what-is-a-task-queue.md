@@ -55,4 +55,3 @@ The one exception is during a Server upgrade, where it is okay to have registrat
   In effect, this means that Temporal tries to be LIFO for performance, but falls back to a pure random strategy in high load situations.
   
 </details>
-
