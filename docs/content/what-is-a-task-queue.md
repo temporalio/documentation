@@ -15,7 +15,7 @@ import * as WhatIsAnActivityTask from './what-is-an-activity-task.md'
 import * as WhatIsAWorkflowTask from './what-is-a-workflow-task.md'
 import * as WhatIsTaskRouting from './what-is-task-routing.md'
 
-A Task Queue is a first-in, first-out queue that a <preview page={WhatIsAWorker}>Worker</preview> polls for <preview page={WhatIsATask}>Tasks</preview>.
+A Task Queue is lightweight, dynamically allocated queue that one or more <preview page={WhatIsAWorker}>Workers</preview> poll for <preview page={WhatIsATask}>Tasks</preview>.
 
 Each Task Queue is capable of queuing both <preview page={WhatIsAnActivityTask}>Activity Tasks</preview> and <preview page={WhatIsAWorkflowTask}>Workflow Tasks</preview>.
 
@@ -43,3 +43,16 @@ This implementation offers several benefits:
 
 All Workers listening to a given Task Queue must have identical registrations of Activities and/or Workflows.
 The one exception is during a Server upgrade, where it is okay to have registration temporarily misaligned while the binary rolls out.
+
+<details>
+  <summary>In what order does the Task Queue match Tasks? FIFO? LIFO? Random?</summary>
+  
+  Temporal offers no guarantees as to the order that Tasks are matched (popped) off the Task Queue.
+  There are two kinds of matching channels ("sync match" and "async match") based on where the tasks are located.
+  Tasks that fail to sync match will overflow to the persistence database, and be picked up in a separate channel.
+  Temporal then selects from both channels at random.
+  
+  In effect, this means that Temporal tries to be LIFO for performance, but falls back to a pure random strategy in high load situations.
+  
+</details>
+
