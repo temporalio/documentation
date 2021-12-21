@@ -184,7 +184,7 @@ Here are some important (and frequently asked) patterns for using our Activities
 ### Sharing dependencies in Activity functions (Dependency Injection)
 
 Because Activities are "just" functions, you can also create functions that create Activities.
-This is a helpful pattern for using closures to: 
+This is a helpful pattern for using closures to:
 
 - store expensive dependencies for sharing, such as database connections
 - injecting secret keys (such as environment variables) from the Worker to the Activity
@@ -206,7 +206,6 @@ Since Activities are always referenced by name, inside the Workflow they can be 
 <!--SNIPEND-->
 
 </details>
-
 
 ### Importing multiple Activities at once
 
