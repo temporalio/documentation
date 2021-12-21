@@ -5,11 +5,6 @@ sidebar_label: Workers
 description: A Worker is a process that connects to the Temporal Server, polls Task Queues for Commands sent from Clients, and executes Workflows and Activities in response to those Commands.
 ---
 
-import {RelatedReadContainer, RelatedReadItem} from '../components/RelatedReadList.js'
-
-<!-- prettier-ignore -->
-import * as WhatIsATaskQueue from '../content/what-is-a-task-queue.md'
-
 > **@temporalio/worker** [![NPM](https://img.shields.io/npm/v/@temporalio/worker)](https://www.npmjs.com/package/@temporalio/worker) [API reference](https://typescript.temporal.io/api/namespaces/worker) | [GitHub](https://github.com/temporalio/sdk-typescript/tree/main/packages/worker)
 
 ## What is a Worker?
@@ -128,6 +123,8 @@ const worker = await Worker.create(/* standard Worker code from here */);
 Temporal also supports mTLS encryption (required by Temporal Cloud) this way - please read our [Security docs](/docs/typescript/security#encryption-in-transit-with-mtls) for more information.
 
 ## Task Queues
+
+import WhatIsATaskQueue from '../content/what-is-a-task-queue.md'
 
 <details>
 <summary>
