@@ -17,7 +17,8 @@ import * as WhatIsTaskRouting from './what-is-task-routing.md'
 
 A Task Queue is lightweight, dynamically allocated queue that one or more <preview page={WhatIsAWorker}>Workers</preview> poll for <preview page={WhatIsATask}>Tasks</preview>.
 
-Each Task Queue is capable of queuing both <preview page={WhatIsAnActivityTask}>Activity Tasks</preview> and <preview page={WhatIsAWorkflowTask}>Workflow Tasks</preview>.
+There are two types of Task Queues, <preview page={WhatIsAnActivityTask}>Activity Task Queues</preview> and <preview page={WhatIsAWorkflowTask}>Workflow Task Queues</preview>.
+But one of each can exist with the same Task Queue name.
 
 <CenteredImage
 imagePath="/diagrams/task-queue.svg"
