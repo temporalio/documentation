@@ -60,7 +60,8 @@ Activities and Workflows scheduled in the system have a configurable [retry poli
 When a Workflow or Activity fails with an unhandled error, Temporal checks if the error name is present in the array of `nonRetryableErrorTypes` and stops retrying if there's a match.
 
 Workflows and Activities may also throw [`ApplicationFailure.nonRetryable`](https://typescript.temporal.io/api/classes/client.applicationfailure#nonretryable-1) to expressly prevent retries.
-Note that propagated Activity and child Workflow failures are considered non retryable and will fail the workflow execution.
+
+Propagated Activity and child Workflow failures are considered retryable and will be retried according to the parent Workflow's retry policy.
 
 The expected behavior is:
 
@@ -71,27 +72,29 @@ The expected behavior is:
 
 > Note: Before TypeScript SDK v0.17.0, throwing any error in a Workflow would cause the Workflow execution to fail - in other words, all errors were "non-retryable". The semantics of this was corrected in v0.17.
 
-### Pattern: Intercepting Errors to make them NonRetryable
+### Pattern: Wrapping Errors with Interceptors
 
-To make other error types non retryable use the WorkflowInboundCallsInterceptor execute and handleSignal methods to catch errors thrown from the Workflow and convert them to non retryable failures, e.g:
+To make other error types fail the workflow, use the WorkflowInboundCallsInterceptor methods (`execute` and `handleSignal`) to catch errors thrown from the Workflow and convert them to `ApplicationFailures`, e.g:
 
 ```ts
-class WorkflowErrorInterceptor implements WorkflowInboundCallsInterceptor {
-  async execute(
-    input: WorkflowExecuteInput,
-    next: Next<WorkflowInboundCallsInterceptor, 'execute'>
-  ): Promise<unknown> {
-    try {
-      return await next(input);
-    } catch (err) {
-      if (err instanceof MySpecialNonRetryableError) {
-        throw ApplicationFailure.nonRetryable(
-          err.message,
-          'MySpecialNonRetryableError'
-        );
-      }
-      throw err;
+async function wrapError<T>(fn: () => Promise<T>) {
+  try {
+    await fn();
+  } catch (err) {
+    if (err instanceof MySpecialRetryableError) {
+      throw ApplicationFailure.retryable(err.message, 'MySpecialRetryableError'); // can also make this nonRetryable if that is the intent. remember to change the error name.
     }
+    throw err;
+  }
+}
+
+class WorkflowErrorInterceptor implements WorkflowInboundCallsInterceptor {
+  async execute(input: WorkflowExecuteInput, next: Next<WorkflowInboundCallsInterceptor, 'execute'>): Promise<unknown> {
+    return await wrapError(() => next(input));
+  }
+
+  async handleSignal(input: SignalInput, next: Next<WorkflowInboundCallsInterceptor, 'handleSignal'>): Promise<void> {
+    return await wrapError(() => next(input));
   }
 }
 ```
