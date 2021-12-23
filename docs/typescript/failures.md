@@ -82,18 +82,27 @@ async function wrapError<T>(fn: () => Promise<T>) {
     await fn();
   } catch (err) {
     if (err instanceof MySpecialRetryableError) {
-      throw ApplicationFailure.retryable(err.message, 'MySpecialRetryableError'); // can also make this nonRetryable if that is the intent. remember to change the error name.
+      throw ApplicationFailure.retryable(
+        err.message,
+        'MySpecialRetryableError'
+      ); // can also make this nonRetryable if that is the intent. remember to change the error name.
     }
     throw err;
   }
 }
 
 class WorkflowErrorInterceptor implements WorkflowInboundCallsInterceptor {
-  async execute(input: WorkflowExecuteInput, next: Next<WorkflowInboundCallsInterceptor, 'execute'>): Promise<unknown> {
+  async execute(
+    input: WorkflowExecuteInput,
+    next: Next<WorkflowInboundCallsInterceptor, 'execute'>
+  ): Promise<unknown> {
     return await wrapError(() => next(input));
   }
 
-  async handleSignal(input: SignalInput, next: Next<WorkflowInboundCallsInterceptor, 'handleSignal'>): Promise<void> {
+  async handleSignal(
+    input: SignalInput,
+    next: Next<WorkflowInboundCallsInterceptor, 'handleSignal'>
+  ): Promise<void> {
     return await wrapError(() => next(input));
   }
 }
