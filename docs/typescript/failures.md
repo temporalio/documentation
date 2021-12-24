@@ -61,6 +61,53 @@ When a Workflow or Activity fails with an unhandled error, Temporal checks if th
 
 Workflows and Activities may also throw [`ApplicationFailure.nonRetryable`](https://typescript.temporal.io/api/classes/client.applicationfailure#nonretryable-1) to expressly prevent retries.
 
+Propagated Activity and child Workflow failures are considered retryable and will be retried according to the parent Workflow's retry policy.
+
+The expected behavior is:
+
+- Non retryable application failure -> fails the workflow and cannot be retried
+- Retryable application failure -> fails the workflow and can be retried according to the retry policy
+- Other TemporalFailures -> same as retryable application failure
+- Any other error -> fails the workflow task and can be retried
+
+> Note: Before TypeScript SDK v0.17.0, throwing any error in a Workflow would cause the Workflow execution to fail - in other words, all errors were "non-retryable". The semantics of this was corrected in v0.17.
+
+### Pattern: Wrapping Errors with Interceptors
+
+To make other error types fail the workflow, use the WorkflowInboundCallsInterceptor methods (`execute` and `handleSignal`) to catch errors thrown from the Workflow and convert them to `ApplicationFailures`, e.g:
+
+```ts
+async function wrapError<T>(fn: () => Promise<T>) {
+  try {
+    await fn();
+  } catch (err) {
+    if (err instanceof MySpecialRetryableError) {
+      throw ApplicationFailure.retryable(
+        err.message,
+        'MySpecialRetryableError'
+      ); // can also make this nonRetryable if that is the intent. remember to change the error name.
+    }
+    throw err;
+  }
+}
+
+class WorkflowErrorInterceptor implements WorkflowInboundCallsInterceptor {
+  async execute(
+    input: WorkflowExecuteInput,
+    next: Next<WorkflowInboundCallsInterceptor, 'execute'>
+  ): Promise<unknown> {
+    return await wrapError(() => next(input));
+  }
+
+  async handleSignal(
+    input: SignalInput,
+    next: Next<WorkflowInboundCallsInterceptor, 'handleSignal'>
+  ): Promise<void> {
+    return await wrapError(() => next(input));
+  }
+}
+```
+
 ## `isCancellation` utility
 
 Failures are also used to represent <a href="/docs/typescript/cancellation-scopes#cancelledfailure">cancellation</a> of Activities and Child Workflows.

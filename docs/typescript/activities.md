@@ -102,7 +102,7 @@ const { longRunningActivity } = proxyActivities<typeof activities>({
 
 ### Activity Retry Policy
 
-You can set a `retry` policy with [RetryOptions](https://typescript.temporal.io/api/interfaces/worker.RetryOptions) that define how activity is retried in case of failure.
+You can set a `retry` policy with [RetryPolicy](https://typescript.temporal.io/api/interfaces/client.retrypolicy/) that define how activity is retried in case of failure.
 
 ```ts
 // Example 1 - default
@@ -139,11 +139,77 @@ const { greet } = proxyActivities<typeof activities>({
 });
 ```
 
-For a proper guide to each Retry Option, see the [RetryOptions API Reference](https://typescript.temporal.io/api/interfaces/worker.RetryOptions).
+For a proper guide to each Retry Option, see the [RetryPolicy API Reference](https://typescript.temporal.io/api/interfaces/client.retrypolicy/).
+
+As you customize your Workflow errors to be more descriptive, advanced users will want to become familiar with [Temporal's Failure classes](/docs/typescript/handling-failure).
+
+## How to register an Activity on a Worker
+
+All activities must be registered by a Worker, or you will get an error that looks like `"Activity function myActivity is not registered on this Worker"` when you try to invoke it from a Workflow.
+
+```ts
+import { Worker } from '@temporalio/worker';
+import * as activities from './activities';
+
+// ...
+const worker = await Worker.create({
+  // ...
+  activities, // explicit registration here
+});
+```
+
+:::tip Sticky Activities
+
+**Any matching Worker can pick up your Activity**, meaning your Activities are not guaranteed to execute on the same machine if you have a fleet of Workers.
+You can route tasks to specific machines with the [Sticky Queues pattern](/docs/typescript/workers#example-sticky-queues).
+
+:::
+
+For more on Activity and Workflow registration, see [the Worker docs](/docs/typescript/workers) for more details.
+
+### Using pure ESM Node Modules
+
+The JavaScript ecosystem is increasingly moving towards publishing ES Modules over CommonJS, for example `node-fetch@3` is ESM while `node-fetch@2` is CJS.
+
+**If you are importing a pure ESM dependency, see our [fetch ESM](https://github.com/temporalio/samples-typescript/tree/main/fetch-esm) sample** for necessary config changes you will need:
+
+- `package.json` must have `"type": "module"` attribute
+- `tsconfig.json` should output in `esnext` format
+- Imports [must](https://nodejs.org/api/esm.html#esm_mandatory_file_extensions) include the `.js` file extension
+
+## Important Design Patterns
+
+Here are some important (and frequently asked) patterns for using our Activities APIs, to illustrate common needs and usecases.
+
+### Sharing dependencies in Activity functions (Dependency Injection)
+
+Because Activities are "just" functions, you can also create functions that create Activities.
+This is a helpful pattern for using closures to:
+
+- store expensive dependencies for sharing, such as database connections
+- injecting secret keys (such as environment variables) from the Worker to the Activity
+
+<!--SNIPSTART typescript-activity-with-deps-->
+<!--SNIPEND-->
+
+<details>
+  <summary>See full example</summary>
+
+When you register these in the Worker, pass your shared dependencies accordingly:
+
+<!--SNIPSTART typescript-activity-deps-worker {"enable_source_link": false}-->
+<!--SNIPEND-->
+
+Since Activities are always referenced by name, inside the Workflow they can be proxied as normal, though the types need some adjustment:
+
+<!--SNIPSTART typescript-activity-deps-workflow-->
+<!--SNIPEND-->
+
+</details>
 
 ### Importing multiple Activities at once
 
-Activities are Promises and you may retrieve multiple Activities from the same handle if they all share the same timeouts/retries/options:
+You may proxy multiple Activities from the same `proxyActivities` call if you want them to share the same timeouts/retries/options:
 
 ```ts
 export async function Workflow(name: string): Promise<string> {
@@ -177,63 +243,6 @@ Type safety is still supported here, but you are encouraged to validate and hand
 ```
 ApplicationFailure: Activity function fakeProgress is not registered on this Worker, available activities: ["fakeProgress"]
 ```
-
-### Using pure ESM Node Modules
-
-The JavaScript ecosystem is increasingly moving towards publishing ES Modules over CommonJS, for example `node-fetch@3` is ESM while `node-fetch@2` is CJS.
-
-**If you are importing a pure ESM dependency, see our [fetch ESM](https://github.com/temporalio/samples-typescript/tree/main/fetch-esm) sample** for necessary config changes you will need:
-
-- `package.json` must have `"type": "module"` attribute
-- `tsconfig.json` should output in `esnext` format
-- Imports [must](https://nodejs.org/api/esm.html#esm_mandatory_file_extensions) include the `.js` file extension
-
-## How to register an Activity on a Worker
-
-All activities must be registered by a Worker, or you will get an error that looks like `"Activity function myActivity is not registered on this Worker"` when you try to invoke it from a Workflow.
-
-```ts
-import { Worker } from '@temporalio/worker';
-import * as activities from './activities';
-
-// ...
-const worker = await Worker.create({
-  // ...
-  activities, // explicit registration here
-});
-```
-
-:::tip Sticky Activities
-
-**Any matching Worker can pick up your Activity**, meaning your Activities are not guaranteed to execute on the same machine if you have a fleet of Workers.
-You can route tasks to specific machines with the [Sticky Queues pattern](/docs/typescript/workers#example-sticky-queues).
-
-:::
-
-For more on Activity and Workflow registration, see [the Worker docs](/docs/typescript/workers) for more details.
-
-## Sharing dependencies in Activity functions
-
-Because Activities are "just" functions, you can also create functions that create Activities.
-This is a helpful pattern for using closures to store expensive dependencies for sharing, for example database connections.
-
-<!--SNIPSTART typescript-activity-with-deps-->
-<!--SNIPEND-->
-
-<details>
-  <summary>See full example</summary>
-
-When you register these in the Worker, pass your shared dependencies accordingly:
-
-<!--SNIPSTART typescript-activity-deps-worker {"enable_source_link": false}-->
-<!--SNIPEND-->
-
-Since Activities are always referenced by name, inside the Workflow they can be proxied as normal, though the types need some adjustment:
-
-<!--SNIPSTART typescript-activity-deps-workflow-->
-<!--SNIPEND-->
-
-</details>
 
 ## Activity Context utilities
 
@@ -307,7 +316,27 @@ The [`Context.current().cancellationSignal`](https://typescript.temporal.io/api/
 <!--SNIPSTART typescript-activity-cancellable-fetch-->
 <!--SNIPEND-->
 
-## Local Activities
+## Advanced Features
+
+These are Activity features that most users will not need, but are available for advanced users.
+Please get in touch with us if you find the need for them.
+
+### Async Activity Completion
+
+Normally, an Activity is started and ended in the same Worker, for example a short HTTP call.
+However, sometimes you may want to record an Activity completion in a different process than when you started it.
+
+> If you are modeling human actions, we recommend using Signals rather than Async Activity Completion.
+> This is because Activities only have one timeout for the entire process and you won't know if the activity is timing out on a human or the process that kicks it off.
+
+Async activity completion is done through a two step process:
+
+- Throw a `CompleteAsyncError` from an Activity
+- Use a `AsyncCompletionClient` to mark it as completed, failed, or more.
+
+You can [read the tests](https://github.com/temporalio/sdk-typescript/blob/7d47f501cb56cced27118b5f0abb320cc0ba03ef/packages/test/src/test-async-completion.ts#L40-L98) for more information.
+
+### Local Activities
 
 Temporal has an optimization feature called Local Activities.
 The TypeScript SDK has not yet implemented this feature.

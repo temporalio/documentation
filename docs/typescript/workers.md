@@ -5,11 +5,6 @@ sidebar_label: Workers
 description: A Worker is a process that connects to the Temporal Server, polls Task Queues for Commands sent from Clients, and executes Workflows and Activities in response to those Commands.
 ---
 
-import {RelatedReadContainer, RelatedReadItem} from '../components/RelatedReadList.js'
-
-<!-- prettier-ignore -->
-import * as WhatIsATaskQueue from '../content/what-is-a-task-queue.md'
-
 > **@temporalio/worker** [![NPM](https://img.shields.io/npm/v/@temporalio/worker)](https://www.npmjs.com/package/@temporalio/worker) [API reference](https://typescript.temporal.io/api/namespaces/worker) | [GitHub](https://github.com/temporalio/sdk-typescript/tree/main/packages/worker)
 
 ## What is a Worker?
@@ -108,20 +103,41 @@ A Worker is in one of 7 states at any given point:
 
 If you need even more visibility into internal worker state, [see the API reference for more](https://typescript.temporal.io/api/classes/worker.Worker).
 
-### Worker Networking and Security
+## Rust Core and Worker Networking
 
 In development, the TypeScript SDK usually handles all of the communication between the Worker and the Temporal Server behind the scenes - no port configuration is required.
 
-In production settings, you can configure the `address` and `namespace` the Worker speaks to via [the Rust Core SDK](https://github.com/temporalio/sdk-core) as [`Core`](https://typescript.temporal.io/api/classes/worker.core/#install).
+In production settings, you can configure the `address` and `namespace` the Worker speaks to via [the Rust Core SDK](https://github.com/temporalio/sdk-core) as [`Core`](https://typescript.temporal.io/api/classes/worker.core/#install), together with other [CoreOptions](https://typescript.temporal.io/api/interfaces/worker.CoreOptions):
+
+```js
+import { Worker, DefaultLogger, Core } from '@temporalio/worker';
+
+const logger = new DefaultLogger('DEBUG');
+await Core.install({
+  logger,
+  telemetryOptions: { logForwardingLevel: 'INFO' },
+});
+const worker = await Worker.create(/* standard Worker code from here */);
+```
+
 Temporal also supports mTLS encryption (required by Temporal Cloud) this way - please read our [Security docs](/docs/typescript/security#encryption-in-transit-with-mtls) for more information.
+
+## Task Queues
+
+import WhatIsATaskQueue from '../content/what-is-a-task-queue.md'
+
+<details>
+<summary>
+A Task Queue is a dynamic queue in Temporal Server polled by one or more Workers.
+</summary>
+
+<WhatIsATaskQueue />
+
+</details>
 
 ### Where Task Queues are used
 
 In Temporal, a Task Queue is represented in code by its name as a `string`.
-
-<RelatedReadContainer>
-  <RelatedReadItem page={WhatIsATaskQueue} />
-</RelatedReadContainer>
 
 There are two main places where the name of the Task Queue is supplied by the developer.
 
