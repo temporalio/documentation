@@ -170,7 +170,7 @@ To extend default and include the jaeger propagator, follow these steps:
 
 - At the top level of your Workflow code, add the following lines:
 
-  ```
+  ```js
   import { propagation } from '@opentelemetry/api';
   import { CompositePropagator, W3CTraceContextPropagator, W3CBaggagePropagator } from '@opentelemetry/core';
   import { JaegerPropagator } from '@opentelemetry/propagator-jaeger';
@@ -178,6 +178,5 @@ To extend default and include the jaeger propagator, follow these steps:
   propagation.setGlobalPropagator(new CompositePropagator(new CompositePropagator({
     propagators: [new W3CTraceContextPropagator(), new W3CBaggagePropagator(), new JaegerPropagator()]
   })));
-  ```
 
 - Similarly you may customize the OpenTelemetry Node SDK propagators by following the instructions on [this page](https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/opentelemetry-sdk-node#initialize-the-sdk)
