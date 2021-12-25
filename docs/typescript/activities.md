@@ -241,7 +241,7 @@ export async function DynamicWorkflow(activityName, ...args) {
 Type safety is still supported here, but you are encouraged to validate and handle mismatches in Activity names. An invalid Activity name will lead to a `NotFoundError` with a message that looks like:
 
 ```
-ApplicationFailure: Activity function fakeProgress is not registered on this Worker, available activities: ["fakeProgress"]
+ApplicationFailure: Activity function actC is not registered on this Worker, available activities: ["actA", "actB"]
 ```
 
 ## Activity Context utilities
@@ -327,7 +327,7 @@ Normally, an Activity is started and ended in the same Worker, for example a sho
 However, sometimes you may want to record an Activity completion in a different process than when you started it.
 
 > If you are modeling human actions, we recommend using Signals rather than Async Activity Completion.
-> This is because Activities only have one timeout for the entire process and you won't know if the activity is timing out on a human or the process that kicks it off.
+> This is because Activities only have one timeout and, if your Activity is split into two steps, one for kicking off the process (e.g. storing information in the DB), and one for human based resolution, it's best to use the timeout to detect failure in the former so it can be retried by the system.
 
 Async activity completion is done through a two step process:
 
