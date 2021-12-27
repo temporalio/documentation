@@ -266,12 +266,22 @@ export const Community = () => {
                 href="https://github.com/coinbase/temporal-ruby"
                 className="hover:underline font-semibold"
               >
-                Coinbase
+                Coinbase/temporal-ruby
               </a>
               <span> - </span>
               <span className="opacity-80">
-                Third party client in production use
+                Ruby SDK with <a href="https://github.com/milk-video/temporal-rails-example">Rails example</a>
               </span>
+            </li>
+            <li className="list-disc">
+              <a
+                href="https://github.com/DataDog/temporalite"
+                className="hover:underline font-semibold"
+              >
+                DataDog/temporalite
+              </a>
+              <span> - </span>
+              <span className="opacity-80">Single binary distro for CI (<a href="https://www.youtube.com/watch?v=Hz7ZZzafBoE">see talk</a>)</span>
             </li>
             <li className="list-disc">
               <a
@@ -282,16 +292,6 @@ export const Community = () => {
               </a>
               <span> - </span>
               <span className="opacity-80">ETL data platform</span>
-            </li>
-            <li className="list-disc">
-              <a
-                href="https://github.com/DataDog/temporalite"
-                className="hover:underline font-semibold"
-              >
-                DataDog/temporalite
-              </a>
-              <span> - </span>
-              <span className="opacity-80">Single binary Temporal for CI</span>
             </li>
           </ul>
         </div>
