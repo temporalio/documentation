@@ -271,11 +271,11 @@ export const Community = () => {
               <span> - </span>
               <span className="opacity-80">
                 Ruby SDK with{" "}
-                <a 
+                <a
                   className=" opacity-80 hover:underline"
                   href="https://github.com/milk-video/temporal-rails-example"
                 >
-                    Rails example{" "}
+                  Rails example{" "}
                   <svg
                     className="w-4 h-4 inline mb-1"
                     fill="currentColor"
@@ -296,7 +296,13 @@ export const Community = () => {
                 DataDog/temporalite
               </a>
               <span> - </span>
-              <span className="opacity-80">Single binary distro for CI (<a href="https://www.youtube.com/watch?v=Hz7ZZzafBoE">see talk</a>)</span>
+              <span className="opacity-80">
+                Single binary distro for CI (
+                <a href="https://www.youtube.com/watch?v=Hz7ZZzafBoE">
+                  see talk
+                </a>
+                )
+              </span>
             </li>
             <li className="list-disc">
               <a
