@@ -23,7 +23,7 @@ import {
   DocsSidebarProvider,
   useDocsSidebar,
   DocsVersionProvider,
-} from '@docusaurus/theme-common';
+} from "@docusaurus/theme-common";
 import Head from "@docusaurus/Head";
 
 function DocPageContent({currentDocRoute, versionMetadata, children}) {
@@ -158,8 +158,9 @@ function DocPage(props) {
           <DocPageContent
             currentDocRoute={currentDocRoute}
             versionMetadata={versionMetadata}
-            sidebarName={sidebarName}>
-            {renderRoutes(docRoutes, { versionMetadata })}
+            sidebarName={sidebarName}
+          >
+            {renderRoutes(docRoutes, {versionMetadata})}
           </DocPageContent>
         </DocsSidebarProvider>
       </DocsVersionProvider>
