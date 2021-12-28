@@ -30,7 +30,7 @@ html[data-theme="dark"] {
   --ifm-navbar-link-hover-color: var(--ifm-color-primary-lighter);
   --ifm-toc-link-color: var(--ifm-color-primary-lighter);
   --ifm-blockquote-color: #eeeeee;
-  --ifm-code-background: var(--ifm-color-primary-dark);
+  /* --ifm-code-background: var(--ifm-color-primary-dark); */
   --ifm-color: #ffffff;
   --ifm-background-color: #141414;
   --ifm-footer-background-color: #000;
@@ -44,7 +44,7 @@ html[data-theme="dark"] {
 html[data-theme="light"] {
   --ifm-blockquote-color: #000000;
   --ifm-color-emphasis-300: #505050;
-  --ifm-code-background: var(--ifm-color-primary-lightest);
+  /* --ifm-code-background: var(--ifm-color-primary-lightest); */
   --ifm-color-input-background: #ffffff;
   --ifm-color: #141414;
   --ifm-background-color: rgb(249, 250, 251);
