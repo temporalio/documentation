@@ -406,9 +406,21 @@ div[class^="sidebar_"] .button svg {
 }
 .prose .tabs-container > .tabs > .tabs__item {
   padding-left: 1em;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  margin-bottom: 0em;
+  opacity: 0.5;
+}
+.prose .tabs-container > .tabs > .tabs__item.tabs__item--active {
+  opacity: 1;
+}
+
+.prose .tabs {
+  padding: 0 !important;
 }
 .prose .tabs-container ul {
   margin: 0;
+  margin-bottom: -1.25rem;
 }
 .prose .tabs-container > .margin-vert--md pre {
   margin: 0;
@@ -437,4 +449,5 @@ div[class^="sidebar_"] .button svg {
   margin: 0;
   padding: 0;
   font-size: 0.95em;
+  
 }
