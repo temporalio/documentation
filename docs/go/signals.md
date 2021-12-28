@@ -81,6 +81,7 @@ Note that Temporal only serializes public fields.
 // letters are private in Go.
 MySignal struct {
 	Message string
+	message string
 }
 
 signalChan := workflow.GetSignalChannel(ctx, signalName)
