@@ -440,6 +440,10 @@ div[class^="sidebar_"] .button svg {
   margin-top: 1rem !important; /* sorry cant figure out how else to do this, prose @media overriding - swyx */
 }
 
+.prose :where(a code) {
+  color: unset;
+}
+
 .prose pre.prism-code {
   margin: 0;
 }
