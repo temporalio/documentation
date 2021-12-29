@@ -1,7 +1,7 @@
 ---
 id: security
 title: Connection and Encryption in the TypeScript SDK
-sidebar_label: Security
+sidebar_label: Connection & Security
 description: A summary of the security features you should know as a TypeScript SDK user.
 ---
 
@@ -15,11 +15,14 @@ The Connection API is not final and may change slightly before the full launch.
 
 </CustomWarning>
 
+Temporal Workers and Clients connect with your Temporal Cluster via gRPC, and must be configured securely for production.
+There are three main features to know:
+
 - **Namespaces** help isolate code from each other
 - **TLS Encryption** helps encrypt code in transit
-- **Data Converter** helps encrypt code at rest
+- **Data Converter** helps encrypt code at rest (available soon)
 
-Temporal Server has [additional Security features](/docs/server/security), particularly Authorization.
+Temporal Server internally has [additional Security features](/docs/server/security), particularly Authorization.
 
 ## Namespaces
 
@@ -27,13 +30,14 @@ import Content from '../content/what-is-a-namespace.md'
 
 <Content />
 
-You set namespaces when you create a client in any of the SDKs (necessary whenever creating workers or starters). If not specified, this defaults to the default namespace.
+All SDK connections (whether Workers or Clients) are to a specific namespace.
+If not specified in [WorkflowClientOptions](https://typescript.temporal.io/api/interfaces/client.WorkflowClientOptions), this defaults to the `default` namespace.
 
 ```ts
 const connection = new Connection();
-// https://typescript.temporal.io/api/interfaces/client.WorkflowClientOptions
+
 const client = new WorkflowClient(connection.service, {
-  namespace: 'my-namespace-name',
+  namespace: 'my-namespace-name', // defaults to 'default'
 });
 ```
 
@@ -54,6 +58,7 @@ import { Connection, WorkflowClient } from '@temporalio/client';
 
 const connection = new Connection({
   address: 'foo.bar.tmprl.cloud', // as provisioned
+  namespace: 'foo.bar', // as provisioned, explained above
   tls: {
     // See docs for other TLS options
     clientCertPair: {
@@ -88,6 +93,44 @@ const worker = await Worker.create({
   // ...
 });
 ```
+
+It is completely up to you how to get the `clientCert` and `clientKey` pair into your code, whether it is reading from filesystem, secrets manager, or both.
+Just keep in mind that they are whitespace sensitive and some environment variable systems have been known to cause frustration because they modify whitespace.
+
+<details>
+<summary>
+  Example code that works for local dev and for certs hosted on AWS S3
+</summary>
+  
+```ts
+let serverRootCACertificate: Buffer | undefined
+let clientCertificate: Buffer | undefined
+let clientKey: Buffer | undefined
+if (certificateS3Bucket) {
+  const s3 = new S3client({region: certificateS3BucketRegion})
+  serverRootCACertificate = await s3.getObject({
+    bucket: certificateS3Bucket,
+    key: serverRootCACertificatePath,
+  })
+  clientCertificate = await s3.getObject({
+    bucket: certificateS3Bucket,
+    key: clientCertPath,
+  })
+  clientKey = await s3.getObject({
+    bucket: certificateS3Bucket,
+    key: clientKeyPath,
+  })
+} else {
+  serverRootCACertificate = fs.readFileSync(serverRootCACertificatePath)
+  clientCertificate = fs.readFileSync(clientCertPath)
+  clientKey = fs.readFileSync(clientKeyPath)
+}
+```
+  
+*Thanks to our Design Partner [Mina Abadir](https://twitter.com/abadir_) for sharing this.*
+  
+</details>
+
 
 <span id="mtls-tutorial"></span>
 
