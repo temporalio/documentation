@@ -72,7 +72,7 @@ The `@temporalio/workflow` package exports all the useful primitives that you ca
 
 You can import them individually or as a group:
 
-```ts
+```js
 // Option 1
 import { sleep } from '@temporalio/workflow';
 
