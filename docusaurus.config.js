@@ -1,8 +1,9 @@
-/** @type {import('@docusaurus/types').DocusaurusConfig} */
-
+//@ts-check
 const path = require("path");
 const visit = require("unist-util-visit");
+const FontPreloadPlugin = require("webpack-font-preload-plugin");
 
+/** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
   title: "Temporal Documentation",
   tagline: "Build invincible applications",
@@ -13,7 +14,19 @@ module.exports = {
   favicon: "img/favicon.png",
   organizationName: "temporalio", // Usually your GitHub org/user name.
   projectName: "temporal-documentation", // Usually your repo name.
-  plugins: ["docusaurus-tailwindcss-loader"],
+  plugins: [
+    function preloadFontPlugin() {
+      return {
+        name: "preload-font-plugin",
+        configureWebpack() {
+          return {
+            plugins: [new FontPreloadPlugin()],
+          };
+        },
+      };
+    },
+    "docusaurus-tailwindcss-loader",
+  ],
   themeConfig: {
     colorMode: {
       defaultMode: "dark",
