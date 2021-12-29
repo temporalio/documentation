@@ -23,11 +23,16 @@ The application maps each of the following business processes to their own Workf
 
 ### Main Background Check
 
+This is the entry point of the Temporal Application.
+When a new Background Check is started, this is the function that begins executing, and all other actions and Events happen as a result of this
 <CenteredImage
 imagePath="/diagrams/learning-path-main-background-check.svg"
 imageSize="75"
 title="Main Background Check Workflow Execution flow"
 />
+
+<!--SNIPSTART background-checks-main-workflow-definition-->
+<!--SNIPEND-->
 
 ### Candidate Acceptance
 
@@ -36,6 +41,9 @@ imagePath="/diagrams/learning-path-candidate-accept-flow.svg"
 imageSize="100"
 title="Candidate Acceptance Child Workflow Execution flow"
 />
+
+<!--SNIPSTART background-checks-accept-workflow-definition-->
+<!--SNIPEND-->
 
 ### SSN Trace
 
@@ -53,6 +61,9 @@ imageSize="100"
 title="Federal Criminal Search Child Workflow Execution flow"
 />
 
+<!--SNIPSTART background-checks-federal-criminal-workflow-definition-->
+<!--SNIPEND-->
+
 ### State Criminal Search
 
 <CenteredImage
@@ -60,6 +71,9 @@ imagePath="/diagrams/learning-path-state-criminal-search-flow.svg"
 imageSize="100"
 title="State Criminal Search Child Workflow Execution flow"
 />
+
+<!--SNIPSTART background-checks-state-criminal-workflow-definition-->
+<!--SNIPEND-->
 
 ### Motor Vehicle Search
 
@@ -69,6 +83,9 @@ imageSize="100"
 title="State Criminal Search Child Workflow Execution flow"
 />
 
+<!--SNIPSTART background-checks-motor-vehicle-workflow-definition-->
+<!--SNIPEND-->
+
 ### Employment Verification
 
 <CenteredImage
@@ -77,7 +94,15 @@ imageSize="100"
 title="Employment Verification Child Workflow Execution flow"
 />
 
+<!--SNIPSTART background-checks-employment-verification-workflow-definition-->
+<!--SNIPEND-->
+
 ## Which steps within a business process are we mapping to Activities?
+
+The steps within the business processes that we are mapping to Activities are the following:
+
+- Sending emails
+- Calling third party APIs
 
 ## Why use Workflows for Searches instead of Activities?
 
