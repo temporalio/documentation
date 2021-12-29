@@ -22,7 +22,11 @@ There are three main features to know:
 - **TLS Encryption** helps encrypt code in transit
 - **Data Converter** helps encrypt code at rest (available soon)
 
-Temporal Server internally has [additional Security features](/docs/server/security), particularly Authorization.
+Temporal Server internally has [other Security features](/docs/server/security), particularly Authorization.
+
+An important part of Temporal's security model is that Temporal Server only manages state and time - it never actually sees or runs your Workflow/Activity code.
+Code is hosted by Temporal Workers that you run, and Temporal Server only sees inbound/outbound gRPC messages.
+This eliminates a whole class of problems particularly when providing Temporal to multiple teams in your company, or when working with Temporal Cloud as a customer.
 
 ## Namespaces
 
@@ -58,7 +62,6 @@ import { Connection, WorkflowClient } from '@temporalio/client';
 
 const connection = new Connection({
   address: 'foo.bar.tmprl.cloud', // as provisioned
-  namespace: 'foo.bar', // as provisioned, explained above
   tls: {
     // See docs for other TLS options
     clientCertPair: {
@@ -68,7 +71,7 @@ const connection = new Connection({
   },
 });
 await connection.untilReady();
-const client = new WorkflowClient(connection.service, { namespace: 'foo.bar' });
+const client = new WorkflowClient(connection.service, { namespace: 'foo.bar' }); // as explained above
 ```
 
 A full example for Workers looks like this:
@@ -130,7 +133,6 @@ if (certificateS3Bucket) {
 *Thanks to our Design Partner [Mina Abadir](https://twitter.com/abadir_) for sharing this.*
   
 </details>
-
 
 <span id="mtls-tutorial"></span>
 
