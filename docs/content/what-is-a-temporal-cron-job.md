@@ -78,7 +78,9 @@ You can change the time zone that a Cron Schedule is interpreted in by prefixing
 
 :::warning
 
-Using time zones in production introduces a surprising amount of complexity and failure modes! If at all possible, we recommend specifying Cron Schedules in UTC (the default). If you need to use time zones, here are a few edge cases to keep in mind:
+Consider that using time zones in production introduces a surprising amount of complexity and failure modes!
+If at all possible, we recommend specifying Cron Schedules in UTC (the default).
+If you need to use time zones, here are a few edge cases to keep in mind:
 
 - If a cron job is scheduled around the time when daylight saving time begins or ends, e.g. `30 2 * * *`, it may run zero, one, or two times in a day! The Cron library that we use does not do any special handling of DST transitions. Avoid schedules that include times in DST transitions.
 - If you deploy the Temporal Server yourself, you are responsible for ensuring that it has access to current tzdata files. The official Docker images are built with tzdata installed (provided by Alpine Linux), but ultimately you should be aware of how tzdata is deployed and updated in your infrastucture.
