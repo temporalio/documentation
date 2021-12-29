@@ -105,7 +105,6 @@ Just keep in mind that they are whitespace sensitive and some environment variab
   Example code that works for local dev and for certs hosted on AWS S3
 </summary>
 
-
 ```ts
 let serverRootCACertificate: Buffer | undefined;
 let clientCertificate: Buffer | undefined;
@@ -131,7 +130,7 @@ if (certificateS3Bucket) {
 }
 ```
 
-_Thanks to our Design Partner [Mina Abadir](https://twitter.com/abadir_) for sharing this._
+_Thanks to our Design Partner [Mina Abadir](https://twitter.com/abadir_) for sharing this.\_
 
 </details>
 
