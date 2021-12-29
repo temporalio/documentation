@@ -266,11 +266,42 @@ export const Community = () => {
                 href="https://github.com/coinbase/temporal-ruby"
                 className="hover:underline font-semibold"
               >
-                Coinbase
+                Coinbase/temporal-ruby
               </a>
               <span> - </span>
               <span className="opacity-80">
-                Third party client in production use
+                Ruby SDK with{" "}
+                <a
+                  className=" opacity-80 hover:underline"
+                  href="https://github.com/milk-video/temporal-rails-example"
+                >
+                  Rails example{" "}
+                  <svg
+                    className="w-4 h-4 inline mb-1"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
+                    <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
+                  </svg>
+                </a>
+              </span>
+            </li>
+            <li className="list-disc">
+              <a
+                href="https://github.com/DataDog/temporalite"
+                className="hover:underline font-semibold"
+              >
+                DataDog/temporalite
+              </a>
+              <span> - </span>
+              <span className="opacity-80">
+                Single binary distro for CI (
+                <a href="https://www.youtube.com/watch?v=Hz7ZZzafBoE">
+                  see talk
+                </a>
+                )
               </span>
             </li>
             <li className="list-disc">
@@ -282,16 +313,6 @@ export const Community = () => {
               </a>
               <span> - </span>
               <span className="opacity-80">ETL data platform</span>
-            </li>
-            <li className="list-disc">
-              <a
-                href="https://github.com/DataDog/temporalite"
-                className="hover:underline font-semibold"
-              >
-                DataDog/temporalite
-              </a>
-              <span> - </span>
-              <span className="opacity-80">Single binary Temporal for CI</span>
             </li>
           </ul>
         </div>

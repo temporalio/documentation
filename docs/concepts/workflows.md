@@ -6,7 +6,7 @@ description: The core abstraction of the Temporal solution is a fault-oblivious 
 ---
 
 When you start a Workflow, you can pass along parameters that tell the Temporal Server how to handle the Workflow.
-This includes the ability to set timeouts for Workflow execution, a Retry Policy, the Task Queue name, a data converter, search attributes, and Child Workflow options.
+This includes the ability to set timeouts for Workflow execution, a Retry Policy, the Task Queue name, a data converter, Search Attributes, and Child Workflow options.
 
 ### Timeout settings
 
@@ -152,10 +152,10 @@ Scheduling is based on UTC time.
 
 :::
 
-### Search attributes
+### Search Attributes
 
-When you start a Workflow, you can configure it with search attributes that can be used in complex Workflow visibility search queries.
-Read the [search attributes guide](/docs/temporal-explained/visibility) to learn how to enable search attributes in Workflows.
+When you start a Workflow, you can configure it with Search Attributes that can be used in complex Workflow visibility search queries.
+Read the [Search Attributes guide](/docs/temporal-explained/visibility) to learn how to enable Search Attributes in Workflows.
 
 ### Memos
 

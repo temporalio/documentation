@@ -15,9 +15,10 @@ import * as WhatIsAnActivityTask from './what-is-an-activity-task.md'
 import * as WhatIsAWorkflowTask from './what-is-a-workflow-task.md'
 import * as WhatIsTaskRouting from './what-is-task-routing.md'
 
-A Task Queue is a first-in, first-out queue that a <preview page={WhatIsAWorker}>Worker</preview> polls for <preview page={WhatIsATask}>Tasks</preview>.
+A Task Queue is lightweight, dynamically allocated queue that one or more <preview page={WhatIsAWorker}>Workers</preview> poll for <preview page={WhatIsATask}>Tasks</preview>.
 
-Each Task Queue is capable of queuing both <preview page={WhatIsAnActivityTask}>Activity Tasks</preview> and <preview page={WhatIsAWorkflowTask}>Workflow Tasks</preview>.
+There are two types of Task Queues, <preview page={WhatIsAnActivityTask}>Activity Task Queues</preview> and <preview page={WhatIsAWorkflowTask}>Workflow Task Queues</preview>.
+But one of each can exist with the same Task Queue name.
 
 <CenteredImage
 imagePath="/diagrams/task-queue.svg"
@@ -43,3 +44,10 @@ This implementation offers several benefits:
 
 All Workers listening to a given Task Queue must have identical registrations of Activities and/or Workflows.
 The one exception is during a Server upgrade, where it is okay to have registration temporarily misaligned while the binary rolls out.
+
+:::note
+
+Task Queues do not have any ordering guarantees.
+It is possible to have a task that stays in a queue for a long time if there is a backlog that wasn't drained for that time.
+
+:::

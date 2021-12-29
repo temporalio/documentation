@@ -21,12 +21,13 @@ import (
 	"go.temporal.io/sdk/activity"
 )
 
-// SimpleActivity is a sample Temporal Activity Definition that takes one parameter and
-// returns a string containing the parameter value.
+// SimpleActivity is a sample Temporal Activity Definition that takes one parameter, appends a word
+// to it, and then returns the value.
 func SimpleActivity(ctx context.Context, value string) (string, error) {
 	logger := activity.GetLogger(ctx)
 	logger.Info("SimpleActivity called.", "Value:", value)
-	return value, nil
+	result := value + " processed"
+	return result, nil
 }
 ```
 

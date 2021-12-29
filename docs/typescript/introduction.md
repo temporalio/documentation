@@ -14,15 +14,6 @@ You can view:
 - [SDK source on GitHub](https://github.com/temporalio/sdk-typescript) [![GitHub stars](https://img.shields.io/github/stars/temporalio/sdk-typescript)](https://github.com/temporalio/sdk-typescript/stargazers) (give us a star!)
 - [See version diffs on our Changelog](https://github.com/temporalio/sdk-typescript/blob/HEAD/CHANGELOG.md)
 
-:::note 🚀 Beta Launch Sequence
-
-Join [our 2hr intro workshop](https://lu.ma/temporalintro) on Nov 30!
-
-And of course you can [join the #typescript-sdk channel](https://temporal.io/slack) to ask any questions as you get set up.
-Design partners are already putting us in production and we are eager to hear your feedback.
-
-:::
-
 ## Getting started
 
 Choose your own adventure:
@@ -223,3 +214,27 @@ These are the essential pages to have a passing knowledge of our Core APIs:
 - [Clients](/docs/typescript/clients): How to start, signal, query, cancel, or otherwise handle Workflows.
 
 </details>
+
+## TS SDK Intro Workshop
+
+We held a 2hr intro workshop explaining every core concept from scratch:
+
+import { ResponsivePlayer } from '../../src/components'
+
+<ResponsivePlayer url='https://www.youtube.com/watch?v=CeHSmv8oF_4&feature=youtu.be' />
+
+Timestamps:
+
+- [00:00:00](https://www.youtube.com/watch?v=CeHSmv8oF_4&t=0s) Part 1: TS SDK Intro
+- [00:12:15](https://www.youtube.com/watch?v=CeHSmv8oF_4&t=735s) Part 2: Your First Workflow
+- [00:16:42](https://www.youtube.com/watch?v=CeHSmv8oF_4&t=1002s) Part 3: Workflows vs Activities
+- [00:23:52](https://www.youtube.com/watch?v=CeHSmv8oF_4&t=1432s) Live Code Demo
+- [00:36:00](https://www.youtube.com/watch?v=CeHSmv8oF_4&t=2160s) Part 4: Timeouts and Retries
+- [00:57:00](https://www.youtube.com/watch?v=CeHSmv8oF_4&t=3420s) Part 5: Workflow APIs
+- [01:24:00](https://www.youtube.com/watch?v=CeHSmv8oF_4&t=5040s) Signals and Queries
+- [01:29:40](https://www.youtube.com/watch?v=CeHSmv8oF_4&t=5380s) Fullstack Next.js App
+- [01:41:50](https://www.youtube.com/watch?v=CeHSmv8oF_4&t=6110s) Part 6: Workers and Task Queues
+- [01:45:19](https://www.youtube.com/watch?v=CeHSmv8oF_4&t=6319s) Recap and Q&A
+
+And of course you can [join the #typescript-sdk channel](https://temporal.io/slack) to ask any questions as you get set up.
+Design partners are already [putting us in production](https://youtu.be/GpbOkDjpeYU) and we are eager to hear your feedback.

@@ -17,7 +17,7 @@ export const SDKs = () => {
               src="/img/typescript.svg"
               alt="TypeScript logo"
             />
-            <p className="text-lg">TypeScript (alpha)</p>
+            <p className="text-lg">TypeScript (Beta)</p>
           </div>
         </Link>
         <Link

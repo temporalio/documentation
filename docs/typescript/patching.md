@@ -5,6 +5,16 @@ sidebar_label: Patching (Migrating)
 description: Any Workflow code change that affects the order in which commands are generated breaks this assumption. So we have to keep both the old and new code when migrating Workflows while they are still running.
 ---
 
+import CustomWarning from "../components/CustomWarning.js"
+
+<CustomWarning>
+
+Workflow versioning and patching is a standard SDK feature that is still in development in the TypeScript Beta.
+
+We are working to greatly improve the experience of this feature before GA launch.
+
+</CustomWarning>
+
 ## Versioning Entire Workflows
 
 Before you explore our patching/versioning API, check if your needs can be addressed by a simple copy-paste:

@@ -9,6 +9,13 @@ Here is a non-exhaustive list of things we recommend doing before you deploy you
 
 Note that this is separate from maintaining a production self-hosted Temporal **Cluster**, which has [its own checklist](https://docs.temporal.io/docs/server/production-deployment#checklist-for-scaling-temporal).
 
+## Linting and Types
+
+If you started from our package initializers, you should have been set up with our recommended TypeScript and ESLint configurations already.
+
+If you incrementally added Temporal to an existing app, we do recommend setting up linting and types as they will help catch bugs well before you ship them to production, and improve your development feedback loop.
+Take a look at [our recommended .eslintrc file](https://github.com/temporalio/samples-typescript/blob/main/.shared/.eslintrc.js) and tweak to taste.
+
 ## Configure Connections and Namespaces
 
 Temporal Clients and Workers connect with Temporal Clusters via gRPC.

@@ -21,6 +21,7 @@ import * as WhatIsARetryPolicy from '../content/what-is-a-retry-policy.md'
 import * as WhatIsATemporalCronJob from '../content/what-is-a-temporal-cron-job.md'
 import * as WhatIsAMemo from '../content/what-is-a-memo.md'
 import * as WhatIsASearchAttribute from '../content/what-is-a-search-attribute.md'
+import * as HowToAddACustomSearchAttributeToAClusterUsingTctl from '../content/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl.md'
 
 Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, and pass the instance to the `ExecuteWorkflow` call.
 
@@ -251,7 +252,7 @@ if err != nil {
 ### `SearchAttributes`
 
 - Type: `map[string]interface{}`
-- Default: This depends on the Cluster. Search Attribute types are defined in the Elasticsearch Index Schema.
+- Default: Empty.
 
 These are the corresponding Search Attribute value types in Go:
 
@@ -260,7 +261,7 @@ These are the corresponding Search Attribute value types in Go:
 - Double = float64
 - Bool = bool
 - Datetime = time.Time
-- String = string
+- Text = string
 
 ```go
 searchAttributes := map[string]interface{}{
@@ -279,4 +280,5 @@ if err != nil {
 
 <RelatedReadContainer>
   <RelatedReadItem page={WhatIsASearchAttribute} />
+  <RelatedReadItem page={HowToAddACustomSearchAttributeToAClusterUsingTctl} />
 </RelatedReadContainer>

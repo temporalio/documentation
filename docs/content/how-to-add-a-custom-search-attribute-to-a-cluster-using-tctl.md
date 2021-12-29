@@ -4,7 +4,7 @@ title: How to add a custom Search Attribute to a Cluster using tctl
 description: Use the `tctl admin cluster add-search-attributes` command to add a custom Search Attribute to your Temporal Cluster.
 
 tags:
-  - operation-guides
+  - operation-guide
   - filtered-lists
   - visibility
   - tctl
@@ -16,10 +16,10 @@ import * as WhatIsASearchAttribute from './what-is-a-search-attribute.md'
 Use the following command to add a custom <preview page={WhatIsASearchAttribute}>Search Attribute</preview> to your Temporal Cluster.
 
 ```bash
-tctl admin cluster add-search-attributes --name <SearchAttributeKeyName> --type <SearchAttributeValueType>
+tctl admin cluster add-search-attributes --name <SearchAttributeName> --type <SearchAttributeValueType>
 ```
 
-Search Attribute key names are case sensitive.
+Search Attribute names are case sensitive.
 
 The possible values for `--type` are:
 
@@ -32,7 +32,7 @@ The possible values for `--type` are:
 
 :::note
 
-Due to Elasticsearch limitations you can only add new custom search attributes but not rename or remove existing ones.
+Due to Elasticsearch limitations you can only add new custom Search Attributes but not rename or remove existing ones.
 
 :::
 

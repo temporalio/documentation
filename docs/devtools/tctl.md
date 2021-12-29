@@ -16,8 +16,8 @@ You can run the CLI in four ways.
 - Run locally together with Temporal Server in [docker-compose](https://github.com/temporalio/docker-compose): `docker exec temporal-admin-tools tctl YOUR COMMANDS HERE`
   - We recommend setting an alias: `alias tctl="docker exec temporal-admin-tools tctl"` so you can invoke `tctl` as though it is installed locally, eg `tctl namespace describe`
 - Run the [temporal-admin-tools](https://hub.docker.com/r/temporalio/admin-tools) docker image:
-  - On Linux: `docker run --rm -it --entrypoint tctl --network host --env TEMPORAL_CLI_ADDRESS=localhost:7233 temporalio/admin-tools:1.13.0`
-  - On macOS/Windows: `docker run --rm -it --entrypoint tctl --env TEMPORAL_CLI_ADDRESS=host.docker.internal:7233 temporalio/admin-tools:1.13.0`
+  - On Linux: `docker run --rm -it --entrypoint tctl --network host --env TEMPORAL_CLI_ADDRESS=localhost:7233 temporalio/admin-tools:1.14.0`
+  - On macOS/Windows: `docker run --rm -it --entrypoint tctl --env TEMPORAL_CLI_ADDRESS=host.docker.internal:7233 temporalio/admin-tools:1.14.0`
   - Change the value of `TEMPORAL_CLI_ADDRESS` if your Temporal Server is running on remote host.
   - You can also create a `tctl` alias to simplify command lines.
 - Building it locally: clone the [Temporal server repo](https://github.com/temporalio/temporal) and run `make tctl`. This produces an executable called `tctl`.
@@ -397,19 +397,19 @@ import HowToViewSearchAttributesOfAClusterUsingTCTL from '../content/how-to-view
 
 <HowToViewSearchAttributesOfAClusterUsingTCTL/>
 
-## Add custom Search Attribute to a Cluster
+### Add custom Search Attributes to a Cluster
 
 import HowToAddACustomSearchAttributeToAClusterUsingTCTL from '../content/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl.md'
 
 <HowToAddACustomSearchAttributeToAClusterUsingTCTL/>
 
-## Remove Search Attributes from a Cluster
+### Remove Search Attributes from a Cluster's Metadata
 
 import HowToRemoveASearchAttributeFromAClusterUsingTCTL from '../content/how-to-remove-a-search-attribute-from-a-cluster-using-tctl.md'
 
 <HowToRemoveASearchAttributeFromAClusterUsingTCTL/>
 
-### Start Workflow with Search Attributes
+## Start Workflow with Search Attributes
 
 ```bash
 tctl workflow start \

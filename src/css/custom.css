@@ -79,10 +79,6 @@ html[data-theme="light"] {
   font-display: swap;
 }
 
-li {
-  list-style: none; /* taken care of using Tailwind typography */
-}
-
 .docs-page {
   @apply my-12;
 }
@@ -394,7 +390,7 @@ div[class^="sidebar_"] .button svg {
 }
 
 .scale {
-  @apply transition transform hover:scale-105 motion-reduce:transition-none motion-reduce:transform-none;
+  @apply transition hover:scale-105 motion-reduce:transition-none motion-reduce:transform-none;
 }
 
 /* .tableOfContents {
@@ -440,5 +436,5 @@ div[class^="sidebar_"] .button svg {
   box-shadow: none !important;
   margin: 0;
   padding: 0;
-  font-size: 0.9em;
+  font-size: 0.95em;
 }
