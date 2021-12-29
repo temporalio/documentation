@@ -926,12 +926,14 @@ export async function loopingWorkflow(foo: any, isContinued?: boolean) {
 }
 ```
 
+<span id="putting-it-all-together-schedule-workflow-example" />
+
 ## Putting it all together
 
 Individually, the core Workflow APIs (Signals/Queries, sleep/condition, startChild/executeChild, and continueAsNew) are interesting, but they become truly powerful when wielded together.
 
 We can illustrate this by building an example Workflow that combines them.
-  
+
 ### Schedule Workflow Example
 
 One common request from users is for more powerful alternatives to [Cron Workflows](/docs/typescript/clients#scheduling-cron-workflows). We can try implementing them with the Workflow API primitives we have learned here.

@@ -104,34 +104,35 @@ Just keep in mind that they are whitespace sensitive and some environment variab
 <summary>
   Example code that works for local dev and for certs hosted on AWS S3
 </summary>
-  
+
+
 ```ts
-let serverRootCACertificate: Buffer | undefined
-let clientCertificate: Buffer | undefined
-let clientKey: Buffer | undefined
+let serverRootCACertificate: Buffer | undefined;
+let clientCertificate: Buffer | undefined;
+let clientKey: Buffer | undefined;
 if (certificateS3Bucket) {
-  const s3 = new S3client({region: certificateS3BucketRegion})
+  const s3 = new S3client({ region: certificateS3BucketRegion });
   serverRootCACertificate = await s3.getObject({
     bucket: certificateS3Bucket,
     key: serverRootCACertificatePath,
-  })
+  });
   clientCertificate = await s3.getObject({
     bucket: certificateS3Bucket,
     key: clientCertPath,
-  })
+  });
   clientKey = await s3.getObject({
     bucket: certificateS3Bucket,
     key: clientKeyPath,
-  })
+  });
 } else {
-  serverRootCACertificate = fs.readFileSync(serverRootCACertificatePath)
-  clientCertificate = fs.readFileSync(clientCertPath)
-  clientKey = fs.readFileSync(clientKeyPath)
+  serverRootCACertificate = fs.readFileSync(serverRootCACertificatePath);
+  clientCertificate = fs.readFileSync(clientCertPath);
+  clientKey = fs.readFileSync(clientKeyPath);
 }
 ```
-  
-*Thanks to our Design Partner [Mina Abadir](https://twitter.com/abadir_) for sharing this.*
-  
+
+_Thanks to our Design Partner [Mina Abadir](https://twitter.com/abadir_) for sharing this._
+
 </details>
 
 <span id="mtls-tutorial"></span>
