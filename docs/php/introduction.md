@@ -19,7 +19,9 @@ sidebar_label: PHP SDK introduction
 ## Resources
 
 - Join the `#php-sdk` channel on the [Temporal Slack](https://temporal.io/slack) or [open issues on GitHub](https://github.com/temporalio/sdk-php/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc).
-- [PHP SDK samples library](/docs/samples-library/#php)
+- PHP SDK samples 
+    - [Beginner-advanced library](https://github.com/temporalio/samples-php#samples)
+    - [Subscription Workflow sample](https://github.com/temporalio/subscription-workflow-project-template-php)
 - Talks
   - 🆕 PHPConf 2021: [Fault tolerant workflow orchestration on PHP](https://www.youtube.com/watch?v=pdxHkIqX62A)
   - PHPConf 2020: [Designing hybrid Go/PHP applications using RoadRunner](https://www.youtube.com/watch?v=mj6d-IGzSYE)
