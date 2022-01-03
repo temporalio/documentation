@@ -733,7 +733,11 @@ export async function countdownWorkflow(): Promise<void> {
   await timer; // if you send in a signal with a new time, this timer will resolve earlier!
   console.log('countdown done!');
 }
+```
 
+This is available in the third party [`temporal-time-utils`](https://www.npmjs.com/package/temporal-time-utils#user-content-updatabletimer) package where you can also see the implementation:
+
+```ts
 // implementation
 export class UpdatableTimer implements PromiseLike<void> {
   deadlineUpdated = false;
@@ -926,11 +930,15 @@ export async function loopingWorkflow(foo: any, isContinued?: boolean) {
 }
 ```
 
-## Putting it all together: Schedule Workflow Example
+<span id="putting-it-all-together-schedule-workflow-example" />
+
+## Putting it all together
 
 Individually, the core Workflow APIs (Signals/Queries, sleep/condition, startChild/executeChild, and continueAsNew) are interesting, but they become truly powerful when wielded together.
 
 We can illustrate this by building an example Workflow that combines them.
+
+### Schedule Workflow Example
 
 One common request from users is for more powerful alternatives to [Cron Workflows](/docs/typescript/clients#scheduling-cron-workflows). We can try implementing them with the Workflow API primitives we have learned here.
 
@@ -1236,6 +1244,8 @@ You can extend or add features as you please. For example, notice that we only i
 
 ### Workflow Utility Libraries
 
-As you build up strong opinions of how you'd like to compose behavior, you may want to publish reusable Temporal utility function libraries. Let us know and we'd be happy to feature them here!
+As you build up strong opinions of how you'd like to compose behavior, you may want to publish reusable Temporal utility function or Temporal Workflow libraries. Let us know and we'd be happy to feature them here!
 
-Just keep in mind the difference between utility functions (deterministic, but inlined into Workflows) and Workflow functions (subject to all Workflow limitations, including that all args and results must be JSON-serializable.)
+- [temporal-time-utils](https://www.npmjs.com/package/temporal-time-utils): Contains reusable versions of `sleepUntil`, `UpdatableTimer`, and `ScheduleWorkflow` described on this page.
+
+Just keep in mind the difference between utility functions (deterministic, uses Workflow APIs but have to be inlined into Workflows rather than used standalone) and Workflow functions (can be used standalone, and subject to all Workflow limitations, including that all args and results must be JSON-serializable.)
