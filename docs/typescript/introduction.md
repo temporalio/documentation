@@ -215,6 +215,12 @@ These are the essential pages to have a passing knowledge of our Core APIs:
 
 </details>
 
+## Beginner Office Hours
+
+We are experimenting with office hours every Friday where you can bring your questions to discuss live. [Sign up here!](https://lu.ma/temporal-ts).
+
+For long form/advanced questions, please use [the Temporal community forum](https://community.temporal.io/) instead.
+
 ## TS SDK Intro Workshop
 
 We held a 2hr intro workshop explaining every core concept from scratch:
