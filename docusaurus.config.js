@@ -95,7 +95,7 @@ module.exports = {
               label: "Checkr",
             },
             {
-              to: "/blog/Temporal-a-central-brain-for-Box",
+              to: "/blog/temporal-a-central-brain-for-box",
               label: "Box",
             },
             {

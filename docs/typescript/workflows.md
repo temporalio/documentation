@@ -724,12 +724,12 @@ export async function countdownWorkflow(): Promise<void> {
   const target = Date.now() + 24 * 60 * 60 * 1000; // 1 day!!!
   const timer = new UpdatableTimer(target);
   console.log('timer set for: ' + new Date(target).toString());
-  wf.setListener(setDeadlineSignal, (deadline) => {
+  wf.setHandler(setDeadlineSignal, (deadline) => {
     // send in new deadlines via Signal
     timer.deadline = deadline;
     console.log('timer now set for: ' + new Date(deadline).toString());
   });
-  wf.setListener(timeLeftQuery, () => timer.deadline - Date.now());
+  wf.setHandler(timeLeftQuery, () => timer.deadline - Date.now());
   await timer; // if you send in a signal with a new time, this timer will resolve earlier!
   console.log('countdown done!');
 }
@@ -857,8 +857,8 @@ import { getExternalWorkflowHandle, workflowInfo } from '@temporalio/workflow';
 
 export async function terminateWorkflow() {
   const { workflowId } = workflowInfo(); // no await needed
-  const handle = await getExternalWorkflowHandle(workflowId);
-  await handle.terminate();
+  const handle = getExternalWorkflowHandle(workflowId); // sync function, not async
+  await handle.cancel();
 }
 ```
 
