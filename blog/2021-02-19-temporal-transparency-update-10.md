@@ -105,11 +105,11 @@ For those who remember, we ran a survey a while back about Discord and Slack. So
 
 I've also included the results from the two primary questions in the survey. The first (image below): "Would you be open to trying Discord..." was only presented to users who said they had never tried Discord.
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d9aeb934-5827-4b4a-b45f-70637d62012a/Screen_Shot_2021-02-19_at_1.46.50_PM.png](../static/img/discord-0.png)
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d9aeb934-5827-4b4a-b45f-70637d62012a/Screen_Shot_2021-02-19_at_1.46.50_PM.png](/img/discord-0.png)
 
 While the second (image below), was conversely only shown to users who said they had tried Discord. The results of both questions indicate that the community is very willing to consider Discord in the future.
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/ad9a5eda-0668-40dd-acd9-d171e8cf7148/Screen_Shot_2021-02-19_at_1.44.46_PM.png](../static/img/discord-1.png)
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/ad9a5eda-0668-40dd-acd9-d171e8cf7148/Screen_Shot_2021-02-19_at_1.44.46_PM.png](/img/discord-1.png)
 
 ### Open office hours and other content
 

@@ -26,7 +26,7 @@ Imagine you are working with a variety of 3rd party IoT vendors to obtain sensor
 
 And finally, as this workflow becomes more complex and important, you want to ensure that the code remains maintainable, well tested, and that workflow executions scale easily as more workflows are triggered. 
 
-![Media Processing Workflow](../static/img/media-processing/media_processing_figure1.png "Media Processing Workflow")
+![Media Processing Workflow](/img/media-processing/media_processing_figure1.png "Media Processing Workflow")
 
 **Figure 1** A high level architecture of the problem being discussed.
 
@@ -63,7 +63,7 @@ There are a few points to highlight about the code structure. There are two plac
 
 The starting point for the workflow is in `MediaProcessingWorkflow`, which is located in `workflow.go`. It assembles together the business logic of the workflow steps. The activities are organized within the `MediaProcessingWorkflow` function as illustrated according to the transition diagram shown in Figure 2: 
 
-![Workflow Transition Diagram](../static/img/media-processing/workflow_activity_transitions_figure2.png "Workflow Transition Diagram")
+![Workflow Transition Diagram](/img/media-processing/workflow_activity_transitions_figure2.png "Workflow Transition Diagram")
 
 **Figure 2** The Workflow and Activity transition diagram for the media processing workflow.
 
@@ -257,12 +257,12 @@ If the workflow proceeds and completes according to the regular processing path 
 ## Runtime Observability of the Workflow 
 One useful feature of the Temporal service is the Web UI (located at `http://localhost:8088`) that provides run-time visibility of the workflow executions. This host and port pairing may only be true if following the typical Temporal install instructions. 
 
-![Temporal Web UI](../static/img/media-processing/workflow_ui_top_level.png "Temporal Web UI")
+![Temporal Web UI](/img/media-processing/workflow_ui_top_level.png "Temporal Web UI")
 **Figure 3** Temporal Web UI shows a catalog of recently-invoked workflows.
 
 Viewing the workflow run by clicking on the `Run ID` of the workflow will show a useful set of run time information (see Figure 4 below).
 
-![Temporal Web UI](../static/img/media-processing/workflow_run_web_ui.png "Temporal Web UI")
+![Temporal Web UI](/img/media-processing/workflow_run_web_ui.png "Temporal Web UI")
 **Figure 4** Internal information shows a bunch of useful details about the workflow that was triggered.
 
 A useful section of any workflow run is the graph that renders the timeline of the scheduling, start and completion times of the various activities. This is a useful part of the Web UI that allows for future optimizations. It provides a visual insight to parts of a workflow run that take the longest time. Another useful section is the table at the bottom of the timeline graph that shows a time-ordered list of events for the workflow. We can inspect this to see the various options that were used for the activities as well as the specific inputs and results from the activities. 
