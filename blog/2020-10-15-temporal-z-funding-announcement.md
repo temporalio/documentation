@@ -48,9 +48,9 @@ As some of you know, we are also working on a hosted version of Temporal. While 
 
 Along with the announcement of our funding we wanted to talk about the three case studies that were published today. Temporal had the opportunity to work with the amazing engineering talent behind Box, Checkr and Coinbase to learn exactly what benefits Temporal brought their teams. These case studies are not only great validation for users considering Temporal but they were also a learning experience for us at Temporal:
 
-- [Temporal, a central brain for Box](/blog/2020-10-15-temporal-a-central-brain-for-box)
-- [How Temporal simplified Checkr workflows](/blog/2020-10-15-how-temporal-simplified-checkr-workflows)
-- [Reliable crypto transactions at Coinbase](/blog/2020-10-15-reliable-crypto-transactions-at-coinbase)
+- [Temporal, a central brain for Box](/blog/temporal-a-central-brain-for-box)
+- [How Temporal simplified Checkr workflows](/blog/how-temporal-simplified-checkr-workflows)
+- [Reliable crypto transactions at Coinbase](/blog/reliable-crypto-transactions-at-coinbase)
 
 Last but definitely not least, we are looking to hire a bunch of talented people in a variety of engineering and product roles. Our team is incredibly intelligent, progressive and friendly and we pay well and have great benefits. We work with the best companies in the world to solve the hardest technical challenges facing developers today. Due to the open-source nature of Temporal you will always have an opportunity to give back and directly interact with passionate users. Even if you're just curious to know what it's like to work here, please reach out and someone from the team will be very happy to chat.
 
