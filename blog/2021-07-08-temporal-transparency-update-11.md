@@ -9,7 +9,7 @@ title: 'Temporal Transparency Update #11'
 author: Ryland Goldstein
 author_title: Temporals product person
 author_image_url: https://avatars2.githubusercontent.com/u/27736122?s=460&u=7b6a3e58ec7ed7157f23f51e91a2f4cd2028d606&v=4
-image: ../static/img/cloud-customers.png
+image: /img/cloud-customers.png
 release_version: V1.10.5
 
 ---
@@ -61,7 +61,7 @@ It's now been almost half a year since we onboarded our first design partner ont
 
 We are also fortunate to have public cloud customers. Each of these companies is world class at what they do and drive us to make the best developer experience possible.
 
-![cloud-customers](../static/img/cloud-customers.png)
+![cloud-customers](/img/cloud-customers.png)
 
 If you are interested in the cloud, we are still being selective with onboarding but are taking new partners. Please fill out our newly updated cloud survey to help us understand if your use case would be a good fit [https://us17.list-manage.com/survey?u=2334a0f23e55fd1840613755d&id=f1895b6f4a](https://us17.list-manage.com/survey?u=2334a0f23e55fd1840613755d&id=f1895b6f4a).
 
