@@ -22,24 +22,7 @@ It has been two weeks since our [last update](https://docs.temporal.io/blog/temp
 
 Before we get into the stabilization update there are a few other miscellaneous  Temporal announcements. In the last month we've had some amazing additions to the Temporal team 🎊. Derek, Manu and Vitaly joined our engineering effort which had a very immediate and positive impact. I'd also like to give a shoutout to Karl who recently joined to lead our recruiting/hiring effort. Karl will enable us to continuously acquire great people as we scale. If you're ever curious about who's on our team, we regularly update [our GitHub page](https://github.com/temporalio/team).
 
-As you may have heard, we are having our second open office hours on Aug 26. We are having the session twice (7am PST and 4:30pm PST) to accommodate users in different time zones. We would love to see you there. I've embedded the Calendly invite below.
-
-export const Calendly = () => {
-  return (
-    <div style={{ height: "700px" }}>
-      <iframe
-        src="https://calendly.com/rylandg/open-office-hours?month=2020-08&date=2020-08-26&hide_landing_page_details=1&hide_event_type_details=1"
-        width="100%"
-        height="100%"
-        frameBorder="0"
-        marginWidth="0"
-        marginHeight="0"
-      ></iframe>
-    </div>
-  );
-};
-
-<Calendly/>
+As you may have heard, we are having our second open office hours on Aug 26. We are having the session twice (7am PST and 4:30pm PST) to accommodate users in different time zones. We would love to see you there.
 
 # Update August, 24, 2020
 
