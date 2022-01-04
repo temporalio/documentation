@@ -115,7 +115,7 @@ Do not rely on Workflows to timeout or fail - you probably want to push this log
 const handle = client.getHandle(workflowId);
 
 // Handle API quick examples
-await handle.cancel(); // gracefully cancel
+await handle.cancel(); // cancel with cleanup
 await handle.terminate(); // kill immediately
 const WFdescription = await handle.describe(); // get Workflow Execution internal info
 await handle.signal<Args>(mySignal, ...args); // see Signal docs
@@ -147,7 +147,7 @@ Workflow functions may or may not return a result when they complete.
 If you started a Workflow with `handle.start`, you can choose to wait for the result anytime with `handle.result()`. This
 
 ```ts
-const handle = await client.getHandle(workflowId);
+const handle = client.getHandle(workflowId);
 const result = await handle.result(); // block until the workflow completes, if you wish
 ```
 

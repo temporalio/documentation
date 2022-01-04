@@ -169,7 +169,7 @@ To invoke the Signal from here, we have to get a handle to the running Workflow 
 import { cancelSubscription } from '../workflows';
 // ...
 
-const handle = await client.getHandle('SubscriptionsWorkflow'); // match the name
+const handle = client.getHandle('SubscriptionsWorkflow'); // match the name
 await handle.signal(cancelSubscription);
 ```
 

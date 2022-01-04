@@ -30,7 +30,7 @@ html[data-theme="dark"] {
   --ifm-navbar-link-hover-color: var(--ifm-color-primary-lighter);
   --ifm-toc-link-color: var(--ifm-color-primary-lighter);
   --ifm-blockquote-color: #eeeeee;
-  --ifm-code-background: var(--ifm-color-primary-dark);
+  /* --ifm-code-background: var(--ifm-color-primary-dark); */
   --ifm-color: #ffffff;
   --ifm-background-color: #141414;
   --ifm-footer-background-color: #000;
@@ -44,7 +44,7 @@ html[data-theme="dark"] {
 html[data-theme="light"] {
   --ifm-blockquote-color: #000000;
   --ifm-color-emphasis-300: #505050;
-  --ifm-code-background: var(--ifm-color-primary-lightest);
+  /* --ifm-code-background: var(--ifm-color-primary-lightest); */
   --ifm-color-input-background: #ffffff;
   --ifm-color: #141414;
   --ifm-background-color: rgb(249, 250, 251);
@@ -406,9 +406,21 @@ div[class^="sidebar_"] .button svg {
 }
 .prose .tabs-container > .tabs > .tabs__item {
   padding-left: 1em;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  margin-bottom: 0em;
+  opacity: 0.5;
+}
+.prose .tabs-container > .tabs > .tabs__item.tabs__item--active {
+  opacity: 1;
+}
+
+.prose .tabs {
+  padding: 0 !important;
 }
 .prose .tabs-container ul {
   margin: 0;
+  margin-bottom: -1.25rem;
 }
 .prose .tabs-container > .margin-vert--md pre {
   margin: 0;
@@ -428,6 +440,10 @@ div[class^="sidebar_"] .button svg {
   margin-top: 1rem !important; /* sorry cant figure out how else to do this, prose @media overriding - swyx */
 }
 
+.prose :where(a code) {
+  color: unset;
+}
+
 .prose pre.prism-code {
   margin: 0;
 }
@@ -437,4 +453,5 @@ div[class^="sidebar_"] .button svg {
   margin: 0;
   padding: 0;
   font-size: 0.95em;
+  
 }

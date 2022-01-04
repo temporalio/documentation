@@ -120,6 +120,6 @@ Check out these finished tutorials and see for yourself!
 
 ## Next steps
 
-<img alt="image" class="docs-image-centered docs-image-max-width-20" src="https://raw.githubusercontent.com/temporalio/documentation-images/main/static/steps.png" />
+<img alt="image" className="docs-image-centered docs-image-max-width-20" src="https://raw.githubusercontent.com/temporalio/documentation-images/main/static/steps.png" />
 
 At Temporal we understand that our documentation plays a very important role in our users' experience. And to get our docs into a world class state we have lots of work in front of us. In the near future we will be looking at the end-to-end journey through our documentation and how we can provide the best experience for every user. To validate any direction we take, we will be engaging with the community to hear what you think and help us dial things in. Any user can [schedule a 15 minute feedback session](https://calendly.com/cully-temporal/schedule-feedback-session) with me directly! We will also be preparing for all the new and exciting features around our hosted cloud offering that will enable all developers to build invincible applications.
