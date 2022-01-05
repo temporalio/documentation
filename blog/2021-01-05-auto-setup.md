@@ -87,7 +87,7 @@ Note that this script only handles setup - it doesn’t actually run the `tempor
 
 ## Temporal Schema Setup
 
-Database schema setup is only needed once for new databases being set up to work with Temporal Server, and is done with `[temporal-sql-tool](https://github.com/temporalio/temporal/blob/f355adc9505123c63ed1ad888449dcb89584f8cd/tools/sql/README.md)` or `[temporal-cassandra-tool](https://github.com/temporalio/temporal/tree/f355adc9505123c63ed1ad888449dcb89584f8cd/tools/cassandra)` depending on the type of database specified. 
+Database schema setup is only needed once for new databases being set up to work with Temporal Server, and is done with [temporal-sql-tool](https://github.com/temporalio/temporal/blob/f355adc9505123c63ed1ad888449dcb89584f8cd/tools/sql/README.md) or [temporal-cassandra-tool](https://github.com/temporalio/temporal/tree/f355adc9505123c63ed1ad888449dcb89584f8cd/tools/cassandra) depending on the type of database specified. 
 
 - Together with the `tctl` CLI, these binaries are available in the [temporalio/admin-tools](https://hub.docker.com/r/temporalio/admin-tools) Docker image.
 - These tools are also used for updating schemas when new Temporal versions are being rolled out to existing deployments.
