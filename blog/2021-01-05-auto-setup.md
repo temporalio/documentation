@@ -46,7 +46,7 @@ Our [basic Docker entrypoint](https://github.com/temporalio/temporal/blob/master
     2. **Register the `default` namespace** (unless opted out with `SKIP_DEFAULT_NAMESPACE_CREATION`)
     3. Add basic custom search attributes (unless opted out with `SKIP_ADD_CUSTOM_SEARCH_ATTRIBUTES`)
     
-- Note that this script only handles setup - it doesn’t actually run the `temporal-server` binary itself. That job is given to `start-temporal.sh`, whose main job is to run `temporal-server` with flags for given service roles (mainly specified by the `SERVICES` env var).
+Note that this script only handles setup - it doesn’t actually run the `temporal-server` binary itself. That job is given to `start-temporal.sh`, whose main job is to run `temporal-server` with flags for given service roles (mainly specified by the `SERVICES` env var).
     
     > Note that when we say to run each of these services separately in production so they can be independently scaled, this is the exact step where production differs from local development. You can run the same binary in multiple separate processes with different roles for each, as in:
     > 
