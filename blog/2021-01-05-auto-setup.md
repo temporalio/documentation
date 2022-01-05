@@ -11,21 +11,26 @@ author_image_url: https://avatars.githubusercontent.com/u/6764957?v=4
 release_version: V1.14.0
 ---
 
-We often say that “Temporal Server is a simple Go binary”, and [it's true](https://github.com/temporalio/temporal/releases/). Yet most users are insulated from using this binary directly. There are several layers of abstraction to get through (docker-compose or Helm Chart, Dockerfile, and the `auto-setup.sh` script) before you reach this baseline understanding of Temporal. Together they map out the environment requirements of Temporal:
+We often say that “Temporal Server is a simple Go binary”, and [it's true](https://github.com/temporalio/temporal/releases/): Each release includes 4 docker images, but also zipped versions of our `temporal-server` binary.
+
+![image](https://user-images.githubusercontent.com/6764957/148215905-ffb15e1a-75ba-4ddc-aa91-12d9e374f2d1.png)
+
+Yet most users are insulated from using this binary directly. There are several layers of abstraction to get through ([docker-compose](https://github.com/temporalio/docker-compose) or [Helm Chart](https://github.com/temporalio/helm-charts), Dockerfile, and the `auto-setup.sh` script) before you reach this baseline understanding of Temporal. Together they map out the environment requirements of Temporal:
 
 <!--truncate-->
 
 ![image](https://user-images.githubusercontent.com/6764957/147678999-883be1b4-4d32-4c89-84a4-00e8b701cdef.png)
 
-While the other pieces are industry standard formats with explanations available elsewhere, the auto-setup is the most proprietary of them, and so essential that we often recommend users just use the [temporalio/auto-setup](https://hub.docker.com/r/temporalio/auto-setup) Docker image, over our Docker image with Temporal Server itself (most beginners don’t even know this because we abstract it with docker-compose). 
+While the other pieces are industry standard formats with explanations available elsewhere, the `auto-setup` script is the most proprietary of them, and so essential that we often recommend beginners just use the [temporalio/auto-setup](https://hub.docker.com/r/temporalio/auto-setup) Docker image, over our Docker image with Temporal Server itself (most beginners don’t even know this because we abstract it with docker-compose). 
 
 It’s worth: 
 
-- knowing that the `auto-setup.sh` script exists and is an important part of the Temporal deployment model
-- understanding what it does to fill in the blanks between “it’s just a binary, any decent dev can figure it out from here right?” to production ready cluster
-- understanding what is optional so you can modify it when it is getting in your way, or have confidence throwing it out and writing your own.
+- knowing that the `auto-setup.sh` script exists and handles some critical pieces of the Temporal deployment model
+- understanding what it does to fill in the blanks between “it’s just a binary” to a zero configuration [Quick Install](https://docs.temporal.io/docs/server/quick-install) default developer experience
+- understanding what is optional - so you can modify it when it is getting in your way, or have confidence throwing it out and writing your own
 
-The goal of this post is ***not*** to explain every little detail (you can [read the code](https://github.com/temporalio/temporal/blob/master/docker/auto-setup.sh) yourself for that), but to highlight important pieces every self-hosted Temporal user should know.
+The goal of this post is ***not*** to explain every little detail (you can [read the code](https://github.com/temporalio/temporal/blob/master/docker/auto-setup.sh) yourself for that), but to highlight important pieces every self-hosted Temporal user should know. 
+This should give you some great first-principles knowledge to deploy Temporal to anything from a simple VPS to a full Kubernetes cluster.
 
 ## Auto-Setup at a High Level
 
