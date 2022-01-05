@@ -107,7 +107,7 @@ If enabled, Temporal’s Advanced Visibility Schema setup [works in a similar wa
 
 ## Temporal Server Setup
 
-Once the schema is setup, the `setup_server` function is started in a background process. This function waits for Temporal server to get started which happens in a meantime in the main process (in `start-temporal.sh`). When Temporal server is started, this function does one more important thing that users may take for granted - it registers the `default` namespace using the standard `tctl --ns default namespace register` command. 
+Once the schema is setup, the `setup_server` function is started in a background process. This function waits for Temporal server to get started which happens in a meantime in the main process (in `start-temporal.sh`). When Temporal server is started, this function does one more important thing that users may take for granted - **it registers the `default` namespace** using the standard `tctl --ns default namespace register` command. 
 
 - This is the namespace that most beginners are used to seeing when they start up Temporal inside docker-compose - because the `auto-setup.sh` script does it for them! Without this script running, Temporal Server doesn’t have any namespaces registered. This can come as a surprise to some users who assume the default namespace is a necessary part of Temporal.
 - All SDKs Workers and Clients, as well as Temporal Web, connect to the `default` namespace if not specified - most production deployments of Temporal will want to connect to specific namespaces. (try running [temporalite](https://github.com/DataDog/temporalite) without any namespaces to see how SDK code without namespaces specified stops working!)
@@ -126,3 +126,9 @@ tctl --auto_confirm admin cluster add-search-attributes \
 ```
 
 These are intentionally generically named, for demo purposes (eg [for code samples](https://github.com/temporalio/samples-go/blob/77728cf7c38570898b2c90bf6eb0720c7f5fb30d/searchattributes/searchattributes_workflow.go#L56-L63)) and for ease of use (since they are already set up, you don't have to add them when you find you need them later). As you advance in your usage, you may wish to drop this step in favor of better named and specified attributes - just keep in mind that you are [limited to a maximum of 100](https://docs.temporal.io/docs/server/production-deployment/#server-limits).
+
+## Closing Thoughts
+  
+Now that you have a better idea of where Temporal Server ends and optional tooling begins, you can hopefully better adapt Temporal to your preferred infrastructure and recovery/upgrade tooling, and have more confidence in debugging issues as you support Temporal at your company. We are also working on more one-click-deploy solutions to other vendors like [Render](https://github.com/sw-yx/temporal-render).
+  
+If you have followup questions, please feel free to ask on [Discourse](https://community.temporal.io) or [Slack](https://temporal.io/slack)!
