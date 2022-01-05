@@ -29,7 +29,7 @@ The goal of this post is ***not*** to explain every little detail (you can [read
 
 ## Auto-Setup at a High Level
 
-Our [basic Docker entrypoint](https://github.com/temporalio/temporal/blob/master/docker/entrypoint.sh) does some bindings, but most importantly, it runs `[auto-setup.sh](https://github.com/temporalio/temporal/blob/master/docker/auto-setup.sh)` then `[start-temporal.sh](https://github.com/temporalio/temporal/blob/master/docker/start-temporal.sh)`.  
+Our [basic Docker entrypoint](https://github.com/temporalio/temporal/blob/master/docker/entrypoint.sh) does some bindings, but most importantly, it runs [auto-setup.sh](https://github.com/temporalio/temporal/blob/master/docker/auto-setup.sh) then [start-temporal.sh](https://github.com/temporalio/temporal/blob/master/docker/start-temporal.sh).  
 
 `auto-setup.sh` does a few things (we will go deeper on the **bolded** parts):
 
@@ -42,7 +42,7 @@ Our [basic Docker entrypoint](https://github.com/temporalio/temporal/blob/master
     2. Waits for Elasticsearch to start (optionally, timed out with a `ES_SCHEMA_SETUP_TIMEOUT_IN_SECONDS` env var)
     3. Setup Temporal’s Enhanced Visibility Schema on that Elasticsearch instance
 3. Setup Temporal Server:
-    1. Wait for Temporal Server to start (from running `[start-temporal.sh](http://start-temporal.sh)` concurrently, and checked using `tctl cluster health | grep SERVING`
+    1. Wait for Temporal Server to start (from running [start-temporal.sh](http://start-temporal.sh) concurrently, and checked using `tctl cluster health | grep SERVING`
     2. **Register the `default` namespace** (unless opted out with `SKIP_DEFAULT_NAMESPACE_CREATION`)
     3. Add basic custom search attributes (unless opted out with `SKIP_ADD_CUSTOM_SEARCH_ATTRIBUTES`)
     
