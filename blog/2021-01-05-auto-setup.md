@@ -51,39 +51,42 @@ Our [basic Docker entrypoint](https://github.com/temporalio/temporal/blob/master
     2. **Register the `default` namespace** (unless opted out with `SKIP_DEFAULT_NAMESPACE_CREATION`)
     3. Add basic custom search attributes (unless opted out with `SKIP_ADD_CUSTOM_SEARCH_ATTRIBUTES`)
     
+<details>
+<summary>
 Note that this script only handles setup - it doesn’t actually run the `temporal-server` binary itself. That job is given to `start-temporal.sh`, whose main job is to run `temporal-server` with flags for given service roles (mainly specified by the `SERVICES` env var).
-    
-  > Note that when we say to run each of these services separately in production so they can be independently scaled, this is the exact step where production differs from local development. You can run the same binary in multiple separate processes with different roles for each, as in:
-  > 
-  > 
-  > ```tsx
-  > # process 1
-  > temporal-server start --service=history 
-  > 
-  > # process 2
-  > temporal-server start --service=frontend
-  > 
-  > # process 3
-  > temporal-server start --service=matching
-  > 
-  > # process 4
-  > temporal-server start --service=worker
-  > ```
-  > 
-  > You may also use the Docker container with the appropriate flags:
-  > 
-  > ```jsx
-  > docker run -e CASSANDRA_SEEDS=10.x.x.x                  -- csv of cassandra server ipaddrs
-  >     -e KEYSPACE=<keyspace>                              -- Cassandra keyspace
-  >     -e VISIBILITY_KEYSPACE=<visibility_keyspace>        -- Cassandra visibility keyspace
-  >     -e SKIP_SCHEMA_SETUP=true                           -- do not setup cassandra schema during startup
-  >     -e NUM_HISTORY_SHARDS=1024  \                       -- Number of history shards
-  >     -e SERVICES=history,matching \                      -- Spinup only the provided services
-  >     -e LOG_LEVEL=debug,info \                           -- Logging level
-  >     -e DYNAMIC_CONFIG_FILE_PATH=config/foo.yaml         -- Dynamic config file to be watched
-  >     temporalio/server:<tag>
-  > ```
-  > 
+</summary>
+
+Note that when we say to run each of these services separately in production so they can be independently scaled, this is the exact step where production differs from local development. You can run the same binary in multiple separate processes with different roles for each, as in:
+
+```tsx
+# process 1
+temporal-server start --service=history 
+
+# process 2
+temporal-server start --service=frontend
+
+# process 3
+temporal-server start --service=matching
+
+# process 4
+temporal-server start --service=worker
+```
+
+You may also use the Docker container with the appropriate flags:
+  
+```bash
+docker run -e CASSANDRA_SEEDS=10.x.x.x                  -- csv of cassandra server ipaddrs
+    -e KEYSPACE=<keyspace>                              -- Cassandra keyspace
+    -e VISIBILITY_KEYSPACE=<visibility_keyspace>        -- Cassandra visibility keyspace
+    -e SKIP_SCHEMA_SETUP=true                           -- do not setup cassandra schema during startup
+    -e NUM_HISTORY_SHARDS=1024  \                       -- Number of history shards
+    -e SERVICES=history,matching \                      -- Spinup only the provided services
+    -e LOG_LEVEL=debug,info \                           -- Logging level
+    -e DYNAMIC_CONFIG_FILE_PATH=config/foo.yaml         -- Dynamic config file to be watched
+    temporalio/server:<tag>
+```
+
+</details>
 
 ## Temporal Schema Setup
 
