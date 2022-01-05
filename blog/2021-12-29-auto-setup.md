@@ -25,7 +25,7 @@ It’s worth:
 - understanding what it does to fill in the blanks between “it’s just a binary, any decent dev can figure it out from here right?” to production ready cluster, and
 - understanding what is optional so you can modify it when it is getting in your way, or have confidence throwing it out and writing your own.
 
-The goal of this post is ***not*** to explain every little detail (you can [read the code](https://github.com/temporalio/temporal/blob/master/docker/auto-setup.sh) yourself for that), but to highlight important pieces every self-hosted Temporal user should know as essential system knowledge for deploying Temporal Server.
+The goal of this post is ***not*** to explain every little detail (you can [read the code](https://github.com/temporalio/temporal/blob/master/docker/auto-setup.sh) yourself for that), but to highlight important pieces every self-hosted Temporal user should know.
 
 ## Auto-Setup at a High Level
 
