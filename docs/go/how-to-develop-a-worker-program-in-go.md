@@ -86,9 +86,11 @@ import SharedWorkersTaskQueueRegistrationNote from '../reminders/note-workers-ta
 
 <SharedWorkersTaskQueueRegistrationNote />
 
-### Register multiple Types
+### Registering Actiity `structs`
 
-Use `RegisterActivity()` for an Activity struct to register all of its exported methods.
+Per [Activity Definition](/docs/how-to-develop-an-activity-definition-in-go) best practices, you may have an Activity struct that has multiple methods and fields. When an Activity is registered as a struct, that Worker has access to all exported methods.
+
+### Registering multiple Types
 
 To register multiple Activity Types and/or Workflow Types with the Worker Entity, just make multiple Activity registration calls, but make sure each Activity Type name is unique:
 
