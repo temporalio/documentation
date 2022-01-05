@@ -8,12 +8,15 @@ tags:
   - go
   - workers
 ---
+import {RelatedReadContainer, RelatedReadItem} from '../components/RelatedReadList.js'
 
 <!-- prettier-ignore -->
 import * as HowToSetWorkerOptionsInGO from './how-to-set-workeroptions-in-go.md'
 import * as HowToSetRegisterWorkflowOptionsInGo from './how-to-set-registerworkflowoptions-in-go.md'
 import * as HowToSetRegisterActivityOptionsInGo from './how-to-set-registeractivityoptions-in-go.md'
 import * as HowToSpawnAWorkflowExecutionInGo from './how-to-spawn-a-workflow-execution-in-go.md'
+import * as HowToDevelopAnActivityDefinitionInGo from './how-to-develop-an-activity-definition-in-go.md'
+import * as HowToDevelopAWorkflowDefinitionInGo from './how-to-develop-a-workflow-definition-in-go.md'
 
 Create an instance of [`Worker`](https://pkg.go.dev/go.temporal.io/sdk/worker#Worker) by calling [`worker.New()`](https://pkg.go.dev/go.temporal.io/sdk/worker#New), available via the `go.temporal.io/sdk/worker` package, and pass it the following parameters:
 
@@ -73,7 +76,7 @@ gow run worker/main.go # automatically reload when file changed
 
 :::
 
-The `RegisterWorkflow()` and `RegisterActivity` calls essentially create an in-memory mapping between the Workflow Types and their implementations, inside the Worker process.
+The `RegisterWorkflow()` and `RegisterActivity()` calls essentially create an in-memory mapping between the Workflow Types and their implementations, inside the Worker process.
 
 Notice that the Task Queue name is the same as the name provided when the <preview page={HowToSpawnAWorkflowExecutionInGo}>Workflow Execution is spawned</preview>.
 
@@ -84,6 +87,8 @@ import SharedWorkersTaskQueueRegistrationNote from '../reminders/note-workers-ta
 <SharedWorkersTaskQueueRegistrationNote />
 
 ### Register multiple Types
+
+Use `RegisterActivity()` for an Activity struct to register all of its exported methods.
 
 To register multiple Activity Types and/or Workflow Types with the Worker Entity, just make multiple Activity registration calls, but make sure each Activity Type name is unique:
 
@@ -99,3 +104,8 @@ w.registerWorkflow(WorkflowC)
 An Activity Type name can be customized to something other than the function name using the <preview page={HowToSetRegisterActivityOptionsInGo}>`RegisterActivityWithOptions`</preview> call.
 
 A Workflow Type name can be customized to something other than the function name using the <preview page={HowToSetRegisterWorkflowOptionsInGo}>`RegisterWorkflowWithOptions`</preview> call.
+
+<RelatedReadContainer>
+  <RelatedReadItem page={HowToDevelopAnActivityDefinitionInGo} />
+  <RelatedReadItem page={HowToDevelopAWorkflowDefinitionInGo} />
+</RelatedReadContainer>
