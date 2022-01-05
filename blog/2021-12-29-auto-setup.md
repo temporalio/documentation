@@ -17,7 +17,7 @@ We often say that “Temporal Server is a simple Go binary”, and yet most user
 
 ![image](https://user-images.githubusercontent.com/6764957/147678999-883be1b4-4d32-4c89-84a4-00e8b701cdef.png)
 
-While the other pieces are industry standard formats with explanations available elsewhere, the Auto-Setup is the most proprietary of them, and so essential that we often recommend users just use the [temporalio/auto-setup](https://hub.docker.com/r/temporalio/auto-setup) Docker image, over our Docker image with Temporal Server itself (most beginners don’t even know this because we abstract it with docker-compose). 
+While the other pieces are industry standard formats with explanations available elsewhere, the auto-setup is the most proprietary of them, and so essential that we often recommend users just use the [temporalio/auto-setup](https://hub.docker.com/r/temporalio/auto-setup) Docker image, over our Docker image with Temporal Server itself (most beginners don’t even know this because we abstract it with docker-compose). 
 
 It’s worth: 
 
