@@ -21,7 +21,7 @@ Yet most users are insulated from using this binary directly. There are several 
 
 ![image](https://user-images.githubusercontent.com/6764957/147678999-883be1b4-4d32-4c89-84a4-00e8b701cdef.png)
 
-While the other pieces are industry standard formats with explanations available elsewhere, the `auto-setup` script is the most proprietary of them, and so essential that we often recommend beginners just use the [temporalio/auto-setup](https://hub.docker.com/r/temporalio/auto-setup) Docker image, over our Docker image with Temporal Server itself (most beginners don’t even know this because we abstract it with docker-compose). 
+While the other pieces are industry standard formats with explanations available elsewhere, the `auto-setup` script is the most proprietary of them, and so essential that we often recommend beginners just use the [temporalio/auto-setup](https://hub.docker.com/r/temporalio/auto-setup) Docker image for getting started (most beginners don’t even know this because we abstract it with docker-compose), before migrating to just the Temporal Server Docker image without auto-setup for production (where you can account for schema migrations and other tooling needs specific to your environment).
 
 It’s worth: 
 
@@ -99,13 +99,15 @@ The schema setup process is pretty similar across all database types:
 3. Run the `update-schema` command with the `temporal-[db]-tool` with a specific schema for that combination of database + schema version  
 4. Create a new Standard Visibility database with `VISIBILITY_DBNAME`
 5. Run the `setup-schema` command with the `temporal-[db]-tool`
-6. Run the `update-schema` command with the `temporal-[db]-tool` with a specific Visibility schema for that combination of database + schema version  
+6. Run the `update-schema` command with the `temporal-[db]-tool` with a specific Visibility schema for that combination of database + schema version
 
+The schemas (both [for initial setup](https://github.com/temporalio/temporal/blob/master/schema/postgresql/v96/temporal/schema.sql) and [for updating](https://github.com/temporalio/temporal/tree/master/schema/postgresql/v96/temporal/versioned)) are worth browsing if you are interested in understanding Temporal at a database schema level, but be warned that these tables are considered Temporal internals and should not be relied on.
+  
 If enabled, Temporal’s Advanced Visibility Schema setup [works in a similar way](https://github.com/temporalio/temporal/tree/master/schema/elasticsearch/visibility) as described above.
 
 ## Temporal Server Setup
 
-Once the schema is setup, the `setup_server` function is started in a background. This function waits for Temporal server to get started which happens in a meantime in the main process (in `start-temporal.sh`). When Temporal server is started, this function does one more important thing that users may take for granted - it registers the `default` namespace using the standard `tctl --ns default namespace register` command. 
+Once the schema is setup, the `setup_server` function is started in a background process. This function waits for Temporal server to get started which happens in a meantime in the main process (in `start-temporal.sh`). When Temporal server is started, this function does one more important thing that users may take for granted - it registers the `default` namespace using the standard `tctl --ns default namespace register` command. 
 
 - This is the namespace that most beginners are used to seeing when they start up Temporal inside docker-compose - because the `auto-setup.sh` script does it for them! Without this script running, Temporal Server doesn’t have any namespaces registered. This can come as a surprise to some users who assume the default namespace is a necessary part of Temporal.
 - All SDKs Workers and Clients, as well as Temporal Web, connect to the `default` namespace if not specified - most production deployments of Temporal will want to connect to specific namespaces. (try running [temporalite](https://github.com/DataDog/temporalite) without any namespaces to see how SDK code without namespaces specified stops working!)
