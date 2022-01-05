@@ -2,7 +2,7 @@
 tags:
   - Temporal
   - Server
-posted_on_: 2021-12-29T00:00:09Z
+posted_on_: 2022-01-05T00:00:09Z
 slug: auto-setup
 title: How Temporal Auto-Setup Works
 author: swyx
@@ -11,7 +11,7 @@ author_image_url: https://avatars.githubusercontent.com/u/6764957?v=4
 release_version: V1.14.0
 ---
 
-We often say that “Temporal Server is a simple Go binary”, and yet most users are insulated from using this binary directly. There are several layers of abstraction to get through (docker-compose or Helm Chart, Dockerfile, and the auto-setup.sh script) before you reach this baseline understanding of Temporal. Together they comprise the environment requirements of Temporal:
+We often say that “Temporal Server is a simple Go binary”, and [it's true](https://github.com/temporalio/temporal/releases/). Yet most users are insulated from using this binary directly. There are several layers of abstraction to get through (docker-compose or Helm Chart, Dockerfile, and the `auto-setup.sh` script) before you reach this baseline understanding of Temporal. Together they map out the environment requirements of Temporal:
 
 <!--truncate-->
 
@@ -21,8 +21,8 @@ While the other pieces are industry standard formats with explanations available
 
 It’s worth: 
 
-- knowing that the `auto-setup.sh` script exists and is an important part of the Temporal deployment model,
-- understanding what it does to fill in the blanks between “it’s just a binary, any decent dev can figure it out from here right?” to production ready cluster, and
+- knowing that the `auto-setup.sh` script exists and is an important part of the Temporal deployment model
+- understanding what it does to fill in the blanks between “it’s just a binary, any decent dev can figure it out from here right?” to production ready cluster
 - understanding what is optional so you can modify it when it is getting in your way, or have confidence throwing it out and writing your own.
 
 The goal of this post is ***not*** to explain every little detail (you can [read the code](https://github.com/temporalio/temporal/blob/master/docker/auto-setup.sh) yourself for that), but to highlight important pieces every self-hosted Temporal user should know.
@@ -106,7 +106,7 @@ Once the schema is setup, the `setup_server` function is started in a background
 - All SDKs Workers and Clients, as well as Temporal Web, connect to the `default` namespace if not specified - most production deployments of Temporal will want to connect to specific namespaces. (try running [temporalite](https://github.com/DataDog/temporalite) without any namespaces to see how SDK code without namespaces specified stops working!)
 - The script allows you to customize the name and retention period with the `DEFAULT_NAMESPACE` and `DEFAULT_NAMESPACE_RETENTION` env vars if you wish, but a production setup may want to register a number of namespaces differently.
 
-The final part of the `auto-setup.sh` script also does registers some basic custom search attributes:
+The final part of the `auto-setup.sh` script also does registers some pre-defined custom search attributes (when running with Elasticsearch):
 
 ```tsx
 tctl --auto_confirm admin cluster add-search-attributes \
@@ -118,4 +118,4 @@ tctl --auto_confirm admin cluster add-search-attributes \
           --name CustomBoolField --type Bool
 ```
 
-But these are for demo purposes (eg [for code samples](https://github.com/temporalio/samples-go/blob/77728cf7c38570898b2c90bf6eb0720c7f5fb30d/searchattributes/searchattributes_workflow.go#L56-L63)) rather than illustrative of real usage - hence the extremely generic naming of these attributes. In practice, you are likely to drop this in favor of manual or custom setup of search attributes.
+These are intentionally generically named, for demo purposes (eg [for code samples](https://github.com/temporalio/samples-go/blob/77728cf7c38570898b2c90bf6eb0720c7f5fb30d/searchattributes/searchattributes_workflow.go#L56-L63)) and for ease of use (since they are already set up, you don't have to add them when you find you need them later). As you advance in your usage, you may wish to drop this step in favor of better named and specified attributes - just keep in mind that you are [limited to a maximum of 100](https://docs.temporal.io/docs/server/production-deployment/#server-limits).
