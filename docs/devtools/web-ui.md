@@ -214,6 +214,6 @@ Here we will discuss how to proceed once you have identified and fixed the code 
 
 If your activity code is deterministic, you might be able to simply restart the worker to pick up the changes. Execution will continue from where it last succeeded. In other words, we get "hotfixing for free" due to Temporal's execution model.
 
-However, if your activity is more complex, you will have to explicitly [version your workflows](https://docs.temporal.io/docs/go/versioning/) or even manually terminate and restart the workflows.
+However, if your activity is more complex, you will have to explicitly [version your workflows](https://docs.temporal.io/docs/go/how-to-create-workflow-versions-in-go) or even manually terminate and restart the workflows.
 
 _This section is still being written - if you have specific questions you'd like us to answer, please search or [ask on the Temporal Forum](https://community.temporal.io/)._

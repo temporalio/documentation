@@ -27,7 +27,8 @@ The Temporal client libraries expose some predefined queries out of the box. Cur
 
 You can learn about how to implement Queries within the context of the language you are writing your application in:
 
-- [Go](/docs/go/queries)
+- [How to send a Query to a Workflow Execution in Go](/docs/go/how-to-send-a-query-to-a-workflow-execution-in-go)
+- [How to handle a Query in a Workflow in Go](/docs/go/how-to-handle-a-query-in-a-workflow-in-go)
 - [Java](/docs/java/queries)
 - [PHP](/docs/php/queries)
 - [TypeScript](/docs/typescript/workflows/#queries)

@@ -36,7 +36,7 @@ import { ResponsivePlayer } from '../src/components'
 
 ## Testing Setup
 
-Below is a basic setup for testing a Temporal Workflow using `go test` and [Testify](https://github.com/stretchr/testify) based on [Temporal's Go testing docs](/docs/go/testing).
+Below is a basic setup for testing a Temporal Workflow using `go test` and [Testify](https://github.com/stretchr/testify) based on [Temporal's Go testing docs](/docs/go/how-to-test-workflow-definitions-in-go).
 You can find the full source code for the test suite in the `workflow_test.go` file.
 
 ```go
@@ -201,7 +201,7 @@ func (s *UnitTestSuite) Test_AddToCart() {
 		s.NoError(err)
 		err = res.Get(&cart)
 		s.NoError(err)
-		
+
     s.Equal(1, len(cart.Items))
     s.Equal(1, cart.Items[0].Quantity)
 	}, time.Millisecond*2)

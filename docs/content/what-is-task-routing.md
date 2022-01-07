@@ -25,4 +25,4 @@ Code samples:
 
 - [Java file processing example](https://github.com/temporalio/samples-java/tree/master/src/main/java/io/temporal/samples/fileprocessing)
 - [PHP file processing example](https://github.com/temporalio/samples-php/tree/master/app/src/FileProcessing)
-- [Go file processing example](https://github.com/temporalio/samples-go/tree/master/fileprocessing) - The Go SDK includes a [Session](/docs/go/sessions) feature that abstracts the need to explicitly route Tasks.
+- [Go file processing example](https://github.com/temporalio/samples-go/tree/master/fileprocessing) - The Go SDK includes a [Session](/docs/go/how-to-use-worker-sessions-in-go) feature that abstracts the need to explicitly route Tasks.

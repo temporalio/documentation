@@ -48,7 +48,7 @@ If you convert the template to a new repo, make sure you use the same repository
 
 ## ![](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/workflow.png) Application overview
 
-This project template mimics a "money transfer" application that has a single [Workflow function](/docs/go/workflows) which orchestrates the execution of `Withdraw()` and `Deposit()` functions, representing a transfer of money from one account to another. Temporal calls these particular functions [Activity functions](/docs/go/activities).
+This project template mimics a "money transfer" application that has a single [Workflow function](/docs/content/what-is-a-workflow-definition) which orchestrates the execution of `Withdraw()` and `Deposit()` functions, representing a transfer of money from one account to another. Temporal calls these particular functions [Activity functions](/docs/go/activities).
 
 To run the application you will do the following:
 
@@ -70,7 +70,7 @@ When you "start" a Workflow you are basically telling the Temporal server, "trac
 
 ### Initiate transfer
 
-There are two ways to start a Workflow with Temporal, either via the SDK or via the [CLI](/docs/devtools/tctl). For this tutorial we used the SDK to start the Workflow, which is how most Workflows get started in a live environment. The call to the Temporal server can be done [synchronously or asynchronously](/docs/go/workflows/#how-to-start-a-workflow). Here we do it asynchronously, so you will see the program run, tell you the transaction is processing, and exit.
+There are two ways to start a Workflow with Temporal, either via the SDK or via the [CLI](/docs/devtools/tctl). For this tutorial we used the SDK to start the Workflow, which is how most Workflows get started in a live environment. The call to the Temporal server can be done [synchronously or asynchronously](/docs/go/how-to-spawn-a-workflow-execution-in-go). Here we do it asynchronously, so you will see the program run, tell you the transaction is processing, and exit.
 
 <!--SNIPSTART money-transfer-project-template-go-start-workflow-->
 <!--SNIPEND-->
@@ -207,7 +207,7 @@ You can view more information about what is happening in the [UI](localhost:8088
 
 <br/>
 
-**Traditionally application developers are forced to implement timeout and retry logic within the service code itself.** This is repetitive and error prone. With Temporal, one of the key value propositions is that [timeout configurations](/docs/concepts/activities/#timeouts) and [retry policies](/docs/concepts/activities/#retries) are specified in the Workflow code as Activity options. In `workflow.go`, you can see that we have specified a `StartToCloseTimeout` for our Activities, and set a retry policy that tells the server to retry them up to 500 times. You can read more about [Activity and Workflow Retries](https://docs.temporal.io/docs/go/retries/) in our docs.
+**Traditionally application developers are forced to implement timeout and retry logic within the service code itself.** This is repetitive and error prone. With Temporal, one of the key value propositions is that [timeout configurations](/docs/concepts/activities/#timeouts) and [retry policies](/docs/concepts/activities/#retries) are specified in the Workflow code as Activity options. In `workflow.go`, you can see that we have specified a `StartToCloseTimeout` for our Activities, and set a retry policy that tells the server to retry them up to 500 times. You can read more about [Activity and Workflow Retries](/docs/content/what-is-a-retry-policy) in our docs.
 
 So, your Workflow is running, but only the `Withdraw()` Activity function has succeeded. In any other application, the whole process would likely have to be abandoned and rolled back. So, here is the last value proposition of this tutorial: With Temporal, we can debug the issue while the Workflow is running! Pretend that you found a potential fix for the issue; Switch the comments back on the return statements of the `Deposit()` function in the `activity.go` file and save your changes.
 

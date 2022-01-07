@@ -61,7 +61,7 @@ You can even leave comments to relevant documentation, like this:
 // @prefix RetryPolicy
 // @description simple retry policy
 
-// https://docs.temporal.io/docs/go/retries/
+// https://docs.temporal.io/docs/go/how-to-set-activityoptions-in-go/#retry-policy
     RetryPolicy: 			&temporal.RetryPolicy{
 			InitialInterval:    time.Second,
 			BackoffCoefficient: 2,
@@ -70,7 +70,7 @@ You can even leave comments to relevant documentation, like this:
 		},
 ```
 
-You can look up how to do this in [TextMate](https://macromates.com/manual/en/snippets), [Atom](https://flight-manual.atom.io/using-atom/sections/snippets/), and [Sublime Text](http://docs.sublimetext.info/en/latest/extensibility/snippets.html). 
+You can look up how to do this in [TextMate](https://macromates.com/manual/en/snippets), [Atom](https://flight-manual.atom.io/using-atom/sections/snippets/), and [Sublime Text](http://docs.sublimetext.info/en/latest/extensibility/snippets.html).
 
 In VS Code, you should try [the Easy Snippet extension](https://marketplace.visualstudio.com/items?itemName=inu1255.easy-snippet) to make writing [VS Code's User Defined Snippets](https://code.visualstudio.com/docs/editor/userdefinedsnippets) easier. Here's a [short video](https://twitter.com/swyx/status/1420772267772968960) demonstrating usage of Easy Snippet.
 

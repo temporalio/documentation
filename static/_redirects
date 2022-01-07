@@ -37,35 +37,29 @@
 /docs/go-sdk-overview         /docs/go-sdk-introduction
 /docs/go/introduction         /docs/go/getting-started
 /docs/go-activities         /docs/go/activities
-/docs/go/child-workflows        /docs/go/workflows/#child-workflow-executions
-/docs/go-continue-as-new        /docs/go/workflows#large-event-histories
-/docs/go/continue-as-new        /docs/go/workflows#large-event-histories
-/docs/go-create-workflows         /docs/go/create-workflows
-/docs/go/create-workflows         /docs/go/workflows
+/docs/go/child-workflows        /docs/go/how-to-spawn-a-child-workflow-execution-in-go
+/docs/go/continue-as-new        /docs/go/how-to-continue-as-new-in-go
 /docs/go/distributed-cron         /docs/content/what-is-a-temporal-cron-job
-/docs/go-error-handling         /docs/go/error-handling
+/docs/go/error-handling         /docs/go/how-to-return-and-handle-errors-in-go
 /docs/go-hello-world        /docs/go/hello-world-tutorial
-/docs/go-queries        /docs/go/queries
-/docs/go-retries        /docs/go/retries
+/docs/go/queries        /docs/how-to-send-a-query-to-a-workflow-execution-in-go
+/docs/go/retries        /docs/content/what-is-a-retry-policy
 /docs/go-run-your-first-app         /docs/go/run-your-first-app-tutorial
 /docs/go-sdk-video-tutorial         /docs/go/sdk-video-tutorial
 /docs/go-search-apis        /docs/go/search-apis
 /docs/go-selectors        /docs/go/selectors
-/docs/go-sessions         /docs/go/sessions
+/docs/go/sessions         /docs/go/how-to-use-worker-sessions-in-go
 /docs/go/side-effects         /docs/go/how-to-execute-a-side-effect-in-go
-/docs/go-signals        /docs/go/signals
-/docs/go-sync-vs-async-start        /docs/go/sync-vs-async-start
-/docs/go/sync-vs-async-start        /docs/go/workflows/#how-to-start-a-workflow
-/docs/go-task-queues        /docs/go/task-queues
-/docs/go-testing        /docs/go/testing
-/docs/go-workflow-testing         /docs/go/testing
+/docs/go/signals        /docs/go/how-to-send-a-signal-to-a-workflow-execution-in-go
+/docs/go/task-queues        /docs/content/what-is-a-task-queue
+/docs/go/testing       /docs/go/how-to-test-workflow-definitions-in-go
 /docs/go-tracing        /docs/go/tracing
-/docs/go-tutorial-prerequisites         /docs/go/tutorial-prerequisites
-/docs/go-versioning         /docs/go/versioning
-/docs/go-workflows        /docs/go/workflows
+/docs/go-tutorial-prerequisites         /docs/go/tutorial-prerequisites    
+/docs/go/workflows        /docs/go/how-to-develop-a-workflow-definition-in-go
 /docs/go/workers        /docs/go/how-to-develop-a-worker-program-in-go
-/docs/go-execute-activity         /docs/go/activities#executing-activities
 /docs/go-activity-async-completion        /docs/go/activities#asynchronous-activity-completion
+/docs/go/versioning        /docs/go/how-to-create-workflow-versions-in-go
+
 
 #
 # Java pages redirects

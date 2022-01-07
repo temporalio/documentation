@@ -17,7 +17,7 @@ Workers must have access to any resources needed to execute the actions defined 
 
 :::note
 
-If you need to process work sequentially on the same machine, the Go SDK also offers a [Sessions API](https://docs.temporal.io/docs/go/sessions/).
+If you need to process work sequentially on the same machine, the Go SDK also offers a [Sessions API](/docs/go/how-to-use-worker-sessions-in-go).
 
 :::
 

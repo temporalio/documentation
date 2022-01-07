@@ -907,8 +907,6 @@ import PCP from '../content/what-is-a-parent-close-policy.md'
 
 [What is Continue-As-New](/docs/content/what-is-continue-as-new)
 
-<SharedContinueAsNew />
-
 </details>
 
 ### The `continueAsNew` API

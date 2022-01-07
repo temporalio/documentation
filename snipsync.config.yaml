@@ -27,6 +27,7 @@ origins:
     repo: sdk-typescript
   - owner: temporalio
     repo: samples-go
+    ref: fixlink
   - owner: temporalio
     repo: samples-java
   - owner: temporalio

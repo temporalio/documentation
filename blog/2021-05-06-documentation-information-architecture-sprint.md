@@ -168,7 +168,7 @@ class SimpleWorkflow implements SimpleWorkflowInterface
 </TabItem>
 </Tabs>
 
-While, one could tabulate between languages within a concept like above, as you get into the details, it becomes much more complicated. Additionally, not all features are available across each language, like [Sessions in Go](/docs/go/sessions) for example.
+While, one could tabulate between languages within a concept like above, as you get into the details, it becomes much more complicated. Additionally, not all features are available across each language, like [Sessions in Go](/docs/go/how-to-use-worker-sessions-in-go) for example.
 And, because the implementation details and terminology can be so different from language to language, the obvious solution presented itself:
 
 1. Each language should be visually separated from the others as its own topic area.

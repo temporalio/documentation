@@ -107,35 +107,6 @@ if err != nil {
 
 Let's take a look at each component of this call.
 
-### Activity options
-
-Before calling `workflow.ExecuteActivity()`, you must configure `ActivityOptions` for the
-invocation. These options customize various execution timeouts, and are passed in by creating a child
-context from the initial context and overwriting the desired values. The child context is then passed
-into the `workflow.ExecuteActivity()` call. If multiple Activities are sharing the same option
-values, then the same context instance can be used when calling `workflow.ExecuteActivity()`.
-
-By default, Temporal retries failing Activities with these default values (exponential backoff starting from 1 second going up to 100 seconds):
-
-- `InitialInterval` of 1 second
-- `BackoffCoefficient` of 2.0
-- `MaximumInterval` of 100 seconds (100x multiple of `InitialInterval`)
-- `MaximumAttempts` of 0 (in other words, unlimited retries)
-
-You can refer to [our Retry Policy documentation](https://docs.temporal.io/docs/go/retries) for guidance on customizing your retry behavior.
-
-### Activity timeouts
-
-There can be various kinds of timeouts associated with an Activity. Temporal guarantees that Activities
-are executed _at least once_, so an Activity either succeeds or fails with one of the following timeouts:
-
-| Timeout                  | Description                                                                                                                                                                                          |
-| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `StartToCloseTimeout`    | Maximum time that a worker can take to process a task after it has received the task.                                                                                                                |
-| `ScheduleToStartTimeout` | Time a task can wait to be picked up by an Activity worker after a Workflow schedules it. If there are no workers available to process this task for the specified duration, the task will time out. |
-| `ScheduleToCloseTimeout` | Time a task can take to complete after it is scheduled by a Workflow. This is usually greater than the sum of `StartToClose` and `ScheduleToStart` timeouts.                                         |
-| `HeartbeatTimeout`       | If a task doesn't heartbeat to the Temporal service for this duration, it will be considered to have failed. This is useful for long-running tasks.                                                  |
-
 ### ExecuteActivity call
 
 The first parameter in the call is the required `workflow.Context` object. This type is a copy of

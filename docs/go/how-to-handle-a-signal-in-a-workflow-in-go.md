@@ -9,7 +9,7 @@ tags:
 ---
 
 **Signals** provide a mechanism to send data directly **in** to a running Workflow.
-This is the conceptual opposite of [**Queries**](https://docs.temporal.io/docs/go/queries), which help you get data **out** of a running Workflow.
+This is the conceptual opposite of [**Queries**](https://docs.temporal.io/docs/content/what-is-a-query), which help you get data **out** of a running Workflow.
 
 - If you are unsure of the run state, you can send a `SignalWithStart` to start the Workflow and signal it at the same time.
 - Workflows can signal other workflows with `SignalExternalWorkflow`.
@@ -103,17 +103,3 @@ s.AddReceive(signalChan, func(c workflow.ReceiveChannel, more bool) {
 })
 s.Select(ctx)
 ```
-
-## Signalling external Workflows
-
-Workflows can send signals to other workflows with `SignalExternalWorkflow`, including across namespace boundaries.
-
-This is in contrast to how signals are normally used, for example, messages from the application layer (eg an API endpoint handler) to the workflow.
-
-Sample code:
-
-```go
-workflow.SignalExternalWorkflow(ctx, "SimpleWorkflowJava", "", "receiveMessage", "Hello from Go")
-```
-
-See our [Temporal Polyglot example](https://github.com/tsurdilo/temporal-polyglot) for more.

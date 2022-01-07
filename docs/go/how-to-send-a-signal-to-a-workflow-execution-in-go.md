@@ -20,4 +20,4 @@ for i := 0; i < 10; i++ {
 
 Here we are sending a signal to a Workflow with type "simple-workflow-php" and signal name "goMessage".
 
-See our [Signals docs](https://docs.temporal.io/docs/go/signals) and [Temporal Polyglot example](https://github.com/tsurdilo/temporal-polyglot) for more.
+See [How to handle a Signal in a Workflow in Go](https://docs.temporal.io/docs/go/how-to-handle-a-signal-in-a-workflow-in-go) and [Temporal Polyglot example](https://github.com/tsurdilo/temporal-polyglot) for more.
