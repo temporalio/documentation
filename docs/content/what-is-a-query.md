@@ -17,8 +17,8 @@ Queries are available to expose the internal Workflow Execution state to the ext
 - A Query must never mutate the state of the Workflow Execution.
 - If a Query is sent to a completed Workflow Execution, the final value is returned.
 - Query handling logic is implemented as code within the Workflow.
-Query handling logic must be **read-only** and cannot change the Workflow Execution state in any way, or contain any blocking code.
-This means that Query handling logic can not spawn Activity Executions.
+  Query handling logic must be **read-only** and cannot change the Workflow Execution state in any way, or contain any blocking code.
+  This means that Query handling logic can not spawn Activity Executions.
 
 In many SDKs the Temporal Client exposes a predefined `_stack_track_` Query that returns the stack trace of all the threads owned by that Workflow Execution.
 This is a great way to troubleshoot a Workflow Execution in production.
