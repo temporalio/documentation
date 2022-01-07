@@ -9,10 +9,10 @@ tags:
 
 A Start-To-Close Timeout is the maximum time allowed for a single [Activity Task Execution](/docs/content/what-is-an-activity-task-execution).
 
-**The default Start-To-Close Timeout is the same as the [Schedule-To-Close Timeout](/docs/content/what-is-a-schedule-to-close-timeout).**
+**The default Start-To-Close Timeout is the same as the default [Schedule-To-Close Timeout](/docs/content/what-is-a-schedule-to-close-timeout).**
 
 An Activity Execution must have either this timeout (Start-To-Close) or the [Schedule-To-Close Timeout](/docs/content/what-is-a-schedule-to-close-timeout) set.
-We recommend always setting this timeout, however make sure that it is always set to be longer than the possible maximum time for the Activity Execution to take place.
+We recommend always setting this timeout; however, make sure that it is always set to be longer than the maximum possible time for the Activity Execution to take place.
 For long running Activity Executions, we recommend also using [Activity Heartbeats](/docs/content/what-is-an-activity-heartbeat) and [Heartbeat Timeouts](/docs/content/what-is-a-heartbeat-timeout).
 
 The main use case for the Start-To-Close timeout is to detect when a Worker crashes after it has started executing an Activity Task.
@@ -26,10 +26,10 @@ If the first Activity Task Execution returns an error the first time, then the f
 
 ![Start-To-Close Timeout period with retries](/diagrams/start-to-close-timeout-with-retry.svg)
 
-If the Start-To-Close timeout is reached the following takes place:
+If this timeout is reached, the following actions occur:
 
 - An [ActivityTaskTimedOut](/docs/reference/events/#activitytasktimedout) Event is written to the Workflow Execution's mutable state.
-- If there is a Retry Policy that dictates a retry, then the Temporal Cluster schedules another Activity Task.
+- If a Retry Policy dictates a retry, the Temporal Cluster schedules another Activity Task.
   - The attempt count increments by 1 in the Workflow Execution's mutable state.
   - The Start-To-Close Timeout timer is reset.
 
