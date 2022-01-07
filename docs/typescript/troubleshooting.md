@@ -204,7 +204,7 @@ Error: 4 DEADLINE_EXCEEDED: context deadline exceeded
 ```
 
 Several conditions can cause this error, including network hiccups, timeouts that are too short, and an overloaded server.
-Querying a Workflow whose query handler causes an error can result in the query call timing out.
+Querying a Workflow Execution whose query handler causes an error can result in the query call timing out.
 
 Some troubleshooting actions you can take:
 
