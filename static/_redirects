@@ -16,8 +16,8 @@
 /docs/concepts/introduction        /docs/temporal-explained/introduction
 /docs/concept-workflows         /docs/concepts/workflows
 /docs/concept-activities        /docs/concepts/activities
-/docs/concept-signals         /docs/concepts/signals
-/docs/concept-queries         /docs/concepts/queries
+/docs/concept/signals         /docs/temporal-explained/signals-and-queries
+/docs/concept/queries         /docs/temporal-explained/signals-and-queries
 /docs/concept-task-queues         /docs/concepts/task-queues
 /docs/task-queues         /docs/concepts/task-queues
 /docs/concept-workers         /docs/concepts/workers

@@ -2,6 +2,8 @@
 id: queries
 title: Queries in Go
 sidebar_label: Queries
+tags:
+  - go
 ---
 
 ## Stack Trace Query
