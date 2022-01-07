@@ -14,7 +14,7 @@ A Heartbeat Timeout is the maximum time between [Activity Heartbeats](/docs/cont
 
 <CenteredImage
 imagePath="/diagrams/heartbeat-timeout.svg"
-imageSize="75"
+imageSize="100"
 title="Heartbeat Timeout periods"
 />
 

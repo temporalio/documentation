@@ -5,9 +5,13 @@ sidebar_label: Workflows
 description: Workflows are async functions that can orchestrate Activities and access special Workflow APIs, subject to deterministic limitations.
 ---
 
-import RelatedReadList from '../components/RelatedReadList.js'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import RelatedReadList, {RelatedReadContainer, RelatedReadItem} from '../components/RelatedReadList.js'
+
+<!-- prettier-ignore -->
+import * as WhatIsASignal from '../content/what-is-a-signal.md'
+import * as WhatIsAQuery from '../content/what-is-a-query.md'
 
 > **@temporalio/workflow** [![NPM](https://img.shields.io/npm/v/@temporalio/workflow)](https://www.npmjs.com/package/@temporalio/workflow) [API reference](https://typescript.temporal.io/api/namespaces/workflow) | [GitHub](https://github.com/temporalio/sdk-typescript/tree/main/packages/workflow)
 
@@ -92,39 +96,12 @@ The rest of this document explains the major Workflow APIs you should know:
 
 ## Signals and Queries
 
-<!-- note to docs writers: specify id so that #signals and #queries anchor tags still work -->
+<RelatedReadContainer>
+  <RelatedReadItem page={WhatIsASignal} />
+  <RelatedReadItem page={WhatIsAQuery} />
+</RelatedReadContainer>
 
-<details id="signals">
-<summary>
-  <a href="/docs/concepts/signals">Signals</a> are a way to send data IN to a running Workflow.
-</summary>
-
-import WhenToSignals from '../content/when-to-use-signals.md'
-
-<WhenToSignals />
-
-</details>
-
-<details id="queries">
-<summary>
-  <a href="/docs/concepts/queries">Queries</a> are a way to read data OUT from a running Workflow.
-</summary>
-
-**Queries are a fully asynchronous mechanism for getting data out of a running Workflow** (as opposed to waiting for the Workflow to complete and return a value, or calling an Activity from inside a Workflow to communicate with the outside world).
-
-- **Queries must not mutate Workflow state.** This would cause non-determinism errors in Temporal.
-- Queries typically return data, but can also receive arguments to modify what data is returned.
-- Queries are often used to check the execution state of a long running Workflow that can be signaled.
-- If a Query is made to a completed Workflow, the final value is returned.
-
-</details>
-
-Signals and Queries are almost always used together.
-If you wanted to send data in, you probably will want to read data out.
-Since both involve communicating with a Workflow, using them is a two step process:
-
-1. add them inside the Workflow code
-2. call them from the Client code
+#### How to define and receive Signals and Queries
 
 ### Define Signals and Queries inside a Workflow
 
