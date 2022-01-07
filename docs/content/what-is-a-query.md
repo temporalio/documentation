@@ -2,6 +2,9 @@
 id: what-is-a-query
 title: What is a Query?
 description: A Query is a synchronous operation that is used to report the state of a Workflow Execution.
+tags:
+  - queries
+  - explanation
 ---
 
 A Query is a synchronous operation that is used to report the state of a [Workflow Execution](/docs/content/what-is-a-workflow-execution).
