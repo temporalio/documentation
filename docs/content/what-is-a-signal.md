@@ -33,6 +33,6 @@ Workflow functions listen for Signals by the Signal name.
 Signals are delivered in the order they are received.
 Workflow Execution can optionally await on a single Signal name or multiple Signal names.
 
-[How to use Signals in Go](/docs/go/signals)
-[How to use Signals in Java](/docs/java/signals)
-[How to use Signals in PHP](/docs/php/signals)
+- [How to use Signals in Go](/docs/go/signals)
+- [How to use Signals in Java](/docs/java/signals)
+- [How to use Signals in PHP](/docs/php/signals)
