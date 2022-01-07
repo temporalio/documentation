@@ -16,5 +16,4 @@ In the Workflow Definition below, there is a special Activity that handles clean
 <!--SNIPSTART samples-go-cancellation-workflow-definition-->
 <!--SNIPEND-->
 
-
 - [What is a Cancellation Request](/docs/content/what-is-a-cancellation-request)

@@ -8,7 +8,6 @@ tags:
   - developer-guide
 ---
 
-
 Inside Workflow code you can also signal other workflows using their workflow type using `SignalExternalWorkflow`:
 
 ```go

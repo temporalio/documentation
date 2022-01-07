@@ -29,8 +29,6 @@ Applications can supply their own custom Data Converters to add layers of encodi
 
 This gives application developers the ability to ensure that all data provided to their application is encrypted while moving in the Temporal System and is transformed back to its original form only within a Worker Process that is executing Workflows and Activities on hosts that the application developers control.
 
-
-
 Workflow method arguments and return values are serializable to a [Payload](https://github.com/temporalio/api/blob/4c2f6a281fa3fde8b0a24447de3e0d0f47d230b4/temporal/api/common/v1/message.proto#L49) protobuf that contains a bytearray as well as metadata map. You can use <a href={props.href}>the SDK's DataConverter interface</a> to do this.
 The default implementation uses JSON serializer, but you can use any alternative serialization mechanism.
 

@@ -104,7 +104,6 @@ rwo := workflow.RegisterOptions {
 w.RegisterWorkflowWithOptions(dynamic.SampleGreetingsWorkflow, rwo)
 ```
 
-
 By default, the Workflow Type name is the same as the function name.
 If the invocation process has access to the function directly, then the Workflow Type name parameter can be passed as if the function name were a variable, without quotations.
 

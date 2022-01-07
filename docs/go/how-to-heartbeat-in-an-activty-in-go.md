@@ -8,7 +8,6 @@ tags:
   - developer-guide
 ---
 
-
 #### Heart Beating
 
 For long-running Activities, Temporal provides an API for the Activity code to report both liveness and
