@@ -2,14 +2,13 @@
 id: how-to-continue-as-new-in-go
 title: How to Continue-As-New-in-Go
 sidebar_label: Continue-As-New
-description: TODO
+description: To cause a Workflow Execution to Continue-As-New, the Workflow function should return the result of the `NewContinueAsNewError()` API available from the `go.temporal.io/sdk/workflow` package.
 tags:
   - go
   - developer-guide
 ---
 
-To trigger this behavior, the Workflow function should
-terminate by returning the special **ContinueAsNewError** error:
+To cause a Workflow Execution to [Continue-As-New](/docs/content/what-is-continue-as-new), the Workflow function should return the result of the [`NewContinueAsNewError()` API](https://pkg.go.dev/go.temporal.io/sdk/workflow#NewContinueAsNewError) available from the `go.temporal.io/sdk/workflow` package.
 
 ```go
 func SimpleWorkflow(ctx workflow.Context, value string) error {
@@ -18,4 +17,4 @@ func SimpleWorkflow(ctx workflow.Context, value string) error {
 }
 ```
 
-If you need to know whether a Workflow was started via `continueAsNew`, you can check if `workflow.GetInfo(ctx).ContinuedExecutionRunID` is not nil.
+To check whether a Workflow Execution was spawned as a result of Continue-As-New, you can check if `workflow.GetInfo(ctx).ContinuedExecutionRunID` is not nil.

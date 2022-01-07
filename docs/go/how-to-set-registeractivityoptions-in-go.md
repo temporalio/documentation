@@ -9,6 +9,8 @@ tags:
 
 Create an instance of [`RegisterOptions`](https://pkg.go.dev/go.temporal.io/sdk/activity#RegisterOptions) from the `go.temporal.io/sdk/activity` package and pass it to the [`RegisterActivityWithOptions`](https://pkg.go.dev/go.temporal.io/sdk/worker#ActivityRegistry) call when registering the Activity Type with the Worker.
 
+`RegisterActivityWithOptions` registers the Activity function or struct pointer with options.
+
 Options for registering an activity
 
 | Field                                                             | Required | Type     |
@@ -26,18 +28,34 @@ Sets the Activity Type name.
 
 ```go
 // ...
-w := worker.New(temporalClient, "your_task_queue_name", worker.Options{})
+workerEntity := worker.New(temporalClient, "your_task_queue_name", worker.Options{})
 registerOptions := activity.RegisterOptions{
   Name: "CoolActivityTypeName",
   // ...
 }
-w.RegisterActivityWithOptions(a.YourActivityDefinition, registerOptions)
+workerEntity.RegisterActivityWithOptions(a.YourActivityDefinition, registerOptions)
 // ...
+```
+
+When registering the struct that implements Activity function methods, the name is added as a prefix to the Activity struct's method name.
+
+```go
+workerEntity.RegisterActivityWithOptions(&ActivityStruct{ ... }, RegisterActivityOptions{Name: "YourPrefix_"})
+```
+
+To override the specific name of each of the Activity struct's methods, register the methods one by one:
+
+```go
+activities := &Activities{ ... }
+workerEntity.RegisterActivityWithOptions(activities.SampleActivity1, RegisterActivityOptions{Name: "Sample1"})
+workerEntity.RegisterActivityWithOptions(activities.SampleActivity2, RegisterActivityOptions{Name: "Sample2"})
 ```
 
 ### `DisableAlreadyRegisteredCheck`
 
 Disables the check to see if the Activity has already been registered.
+
+This has been known to be useful for integration tests.
 
 - Type: `bool`
 - Default: `false`

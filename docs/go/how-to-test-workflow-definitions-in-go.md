@@ -8,8 +8,6 @@ tags:
   - developer-guide
 ---
 
-## Testing
-
 The Temporal Go SDK provides a test framework to facilitate testing Workflow implementations.
 The framework is suited for implementing unit tests as well as functional tests of the Workflow logic.
 
