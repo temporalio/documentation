@@ -89,7 +89,6 @@ import SharedWorkersTaskQueueRegistrationNote from '../reminders/note-workers-ta
 
 ### Registering Actiity `structs`
 
-
 Per [Activity Definition](/docs/go/how-to-develop-an-activity-definition-in-go) best practices, you may have an Activity struct that has multiple methods and fields. When you use `RegisterActivity()` for an Activity struct, that Worker has access to all exported methods.
 
 ### Registering multiple Types
