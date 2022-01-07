@@ -156,7 +156,7 @@ wf.setHandler(wf.defineSignal(`task-${taskBId}`), (payload) => {
 const inlineSignal = (signalName, handler) =>
   wf.setHandler(wf.defineSignal(signalName), handler);
 inlineSignal(`task-${taskBId}`, (payload) => {
-  /* do task B things */ 
+  /* do task B things */
 });
 ```
 
