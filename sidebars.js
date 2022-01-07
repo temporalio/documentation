@@ -382,6 +382,7 @@ module.exports = {
         "concepts/activities",
         "temporal-explained/task-queues-and-workers",
         "temporal-explained/signals-and-queries",
+        "temporal-explained/timeouts-and-retries",
         "temporal-explained/visibility",
       ],
     },
