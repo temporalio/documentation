@@ -22,7 +22,7 @@ export const SDKs = () => {
         </Link>
         <Link
           className=" justify-center text-center flex flex-col space-y-3 items-center scale shadow-lg rounded-lg p-6 bg-[color:var(--ifm-card-background-color)]"
-          to={useBaseUrl("/docs/go/run-your-first-app-tutorial")}
+          to={useBaseUrl("/docs/go/getting-started")}
         >
           <img
             className="w-16 h-16"

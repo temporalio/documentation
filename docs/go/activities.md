@@ -77,9 +77,9 @@ The parameters of the `RecordActivityHeartbeat` function are:
 
 #### Cancellation
 
-import WhatIsActivityCancellation from '../content/what-is-activity-cancellation.md'
+import WhatIsACancellationRequest from '../content/what-is-a-cancellation-request.md'
 
-<WhatIsActivityCancellation />
+<WhatIsACancellationRequest/>
 
 ## Synchronous Activity Execution
 

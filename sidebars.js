@@ -87,103 +87,11 @@ module.exports = {
       label: "Go developer guide",
       collapsed: false,
       items: [
-        {
-          type: "link",
-          label: "Reference",
-          href: "https://pkg.go.dev/go.temporal.io/sdk",
-        },
         "go/getting-started",
         {
           type: "category",
-          label: "Definitions",
-          collapsed: true,
-          items: [
-            "go/how-to-develop-a-workflow-definition-in-go",
-            "go/how-to-develop-an-activity-definition-in-go",
-          ],
-        },
-        {
-          type: "category",
-          label: "Executions",
-          collapsed: true,
-          items: [
-            "go/how-to-spawn-a-workflow-execution-in-go",
-            "go/how-to-get-the-result-of-a-workflow-execution-in-go",
-            "go/how-to-spawn-an-activity-execution-in-go",
-            "go/how-to-get-the-result-of-an-activity-execution-in-go",
-            "go/how-to-spawn-a-child-workflow-execution-in-go",
-            "go/how-to-execute-a-side-effect-in-go",
-          ],
-        },
-        "go/how-to-develop-a-worker-program-in-go",
-        {
-          type: "category",
-          label: "Options",
-          collapsed: true,
-          items: [
-            "go/how-to-set-activityoptions-in-go",
-            "go/how-to-set-startworkflowoptions-in-go",
-            "go/how-to-set-workeroptions-in-go",
-            "go/how-to-set-registerworkflowoptions-in-go",
-            "go/how-to-set-registeractivityoptions-in-go",
-            "go/how-to-set-childworkflowoptions-in-go",
-            "go/how-to-set-sessionoptions-in-go",
-            "go/how-to-set-clientoptions-in-go",
-            "go/how-to-set-connectionoptions-in-go",
-            "go/how-to-set-executelocalactivityoptions-in-go",
-          ],
-        },
-        {
-          type: "category",
-          label: "Signals & Queries",
-          collapsed: true,
-          items: [
-            "go/how-to-send-a-signal-to-a-workflow-execution-in-go",
-            "go/how-to-handle-a-signal-in-a-workflow-in-go",
-            "go/how-to-send-a-query-to-a-workflow-execution-in-go",
-            "go/how-to-handle-a-query-in-a-workflow-in-go",
-          ],
-        },
-        {
-          type: "category",
-          label: "Cancellation Requests",
-          collapsed: true,
-          items: [
-            "go/how-to-send-a-cancellation-request-to-a-workflow-execution-in-go",
-            "go/how-to-handle-a-cancellation-request-in-a-workflow-in-go",
-            "go/how-to-send-a-cancellation-request-to-an-activity-execution-in-go",
-            "go/how-to-handle-a-cancellation-request-in-an-activity-in-go",
-          ],
-        },
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        "go/how-to-use-timers-in-go",
-        "go/how-to-return-and-handle-errors-in-go",
-        "go/how-to-create-a-custom-data-converter-in-go",
-        "go/selectors",
-
-        "go/how-to-test-workflow-definitions-in-go",
-        "go/how-to-create-workflow-versions-in-go",
-        "go/how-to-use-worker-sessions-in-go",
-
-        "go/tracing",
-        "go/search-apis",
-        {
-          type: "category",
           label: "Tutorials",
-          collapsed: false,
+          collapsed: true,
           items: [
             "go/tutorial-prerequisites",
             "go/run-your-first-app-tutorial",
@@ -198,9 +106,50 @@ module.exports = {
         },
         {
           type: "link",
-          label: "Samples library",
-          href: "/docs/samples-library/#go",
+          label: "Reference",
+          href: "https://pkg.go.dev/go.temporal.io/sdk",
         },
+        {
+          type: "link",
+          label: "Samples library",
+          href: "https://docs.temporal.io/docs/samples-library/#go",
+        },
+        "go/how-to-develop-a-workflow-definition-in-go",
+        "go/how-to-develop-an-activity-definition-in-go",
+        "go/how-to-spawn-an-activity-execution-in-go",
+        "go/how-to-set-activityoptions-in-go",
+        "go/how-to-get-the-result-of-an-activity-execution-in-go",
+        "go/how-to-spawn-a-workflow-execution-in-go",
+        "go/how-to-set-startworkflowoptions-in-go",
+        "go/how-to-set-clientoptions-in-go",
+        "go/how-to-set-connectionoptions-in-go",
+        "go/how-to-get-the-result-of-a-workflow-execution-in-go",
+        "go/how-to-develop-a-worker-program-in-go",
+        "go/how-to-set-workeroptions-in-go",
+        "go/how-to-set-sessionoptions-in-go",
+        "go/how-to-set-registerworkflowoptions-in-go",
+        "go/how-to-set-registeractivityoptions-in-go",
+        "go/how-to-spawn-a-child-workflow-execution-in-go",
+        "go/how-to-set-childworkflowoptions-in-go",
+        "go/how-to-execute-a-side-effect-in-go",
+        "go/how-to-send-a-signal-to-a-workflow-execution-in-go",
+        "go/how-to-handle-a-signal-in-a-workflow-in-go",
+        "go/how-to-send-a-query-to-a-workflow-execution-in-go",
+        "go/how-to-handle-a-query-in-a-workflow-in-go",
+        "go/how-to-send-a-cancellation-request-to-a-workflow-execution-in-go",
+        "go/how-to-handle-a-cancellation-request-in-a-workflow-in-go",
+        "go/how-to-send-a-cancellation-request-to-an-activity-execution-in-go",
+        "go/how-to-handle-a-cancellation-request-in-an-activity-in-go",
+        "go/how-to-use-timers-in-go",
+        "go/how-to-return-and-handle-errors-in-go",
+        "go/how-to-create-a-custom-data-converter-in-go",
+        "go/selectors",
+        "go/how-to-test-workflow-definitions-in-go",
+        "go/how-to-create-workflow-versions-in-go",
+        "go/how-to-use-worker-sessions-in-go",
+        "go/tracing",
+        "go/search-apis",
+        "go/how-to-set-executelocalactivityoptions-in-go",
       ],
     },
   ],
