@@ -17,7 +17,7 @@ We often say that “Temporal Server is a simple Go binary”, and [it's true](h
 
 ![image](https://user-images.githubusercontent.com/6764957/148215905-ffb15e1a-75ba-4ddc-aa91-12d9e374f2d1.png)
 
-Yet most users are insulated from using this binary directly. There are several layers of abstraction to get through ([docker-compose](https://github.com/temporalio/docker-compose) or [Helm Chart](https://github.com/temporalio/helm-charts), Dockerfile, and the `auto-setup.sh` script) before you reach this baseline understanding of Temporal. Together they map out the environment requirements of Temporal:
+Yet most users are insulated from using this binary directly. There are several layers of abstraction to get through ([docker-compose](https://github.com/temporalio/docker-compose) or [Helm Chart](https://github.com/temporalio/helm-charts), Dockerfile, and the `auto-setup.sh` script) before you reach this baseline understanding of Temporal (you can [learn more in our Temporal Explained documentation](/docs/temporal-explained/introduction). Together they map out the environment requirements of Temporal:
 
 ![image](https://user-images.githubusercontent.com/6764957/147678999-883be1b4-4d32-4c89-84a4-00e8b701cdef.png)
 
