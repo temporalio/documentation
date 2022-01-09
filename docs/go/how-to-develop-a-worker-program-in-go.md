@@ -87,13 +87,13 @@ import SharedWorkersTaskQueueRegistrationNote from '../reminders/note-workers-ta
 
 <SharedWorkersTaskQueueRegistrationNote />
 
-### Registering Actiity `structs`
+### Registering Activity `structs`
 
 Per [Activity Definition](/docs/go/how-to-develop-an-activity-definition-in-go) best practices, you may have an Activity struct that has multiple methods and fields. When you use `RegisterActivity()` for an Activity struct, that Worker has access to all exported methods.
 
 ### Registering multiple Types
 
-To register multiple Activity Types and/or Workflow Types with the Worker Entity, just make multiple Activity registration calls, but make sure each Activity Type name is unique:
+To register multiple Activity Types and/or Workflow Types with the Worker Entity, just make multiple Activity registration calls, but make sure each Type name is unique:
 
 ```go
 w.registerActivity(ActivityA)
@@ -104,9 +104,13 @@ w.registerWorkflow(WorkflowB)
 w.registerWorkflow(WorkflowC)
 ```
 
-An Activity Type name can be customized to something other than the function name using the <preview page={HowToSetRegisterActivityOptionsInGo}>`RegisterActivityWithOptions`</preview> call.
+### Registering with options
 
-A Workflow Type name can be customized to something other than the function name using the <preview page={HowToSetRegisterWorkflowOptionsInGo}>`RegisterWorkflowWithOptions`</preview> call.
+Options can be applied when the Type is registered.
+
+For example, an Activity Type name can be customized to something other than the function name using the <preview page={HowToSetRegisterActivityOptionsInGo}>`RegisterActivityWithOptions`</preview> call.
+
+And a Workflow Type name can be customized to something other than the function name using the <preview page={HowToSetRegisterWorkflowOptionsInGo}>`RegisterWorkflowWithOptions`</preview> call.
 
 <RelatedReadContainer>
   <RelatedReadItem page={HowToDevelopAnActivityDefinitionInGo} />
