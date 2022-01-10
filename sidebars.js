@@ -290,6 +290,7 @@ module.exports = {
             "typescript/hello-world",
             "typescript/subscription-tutorial",
             "typescript/nextjs-tutorial",
+            "typescript/chatbot-tutorial",
             {
               type: "link",
               label: "Code Samples",
