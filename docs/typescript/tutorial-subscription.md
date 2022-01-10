@@ -1,6 +1,6 @@
 ---
 id: subscription-tutorial
-title: Workflow APIs Tutorial with a Subscription Workflow
+title: TypeScript Workflow APIs Tutorial with a Subscription Example
 sidebar_label: Subscription Tutorial
 description: In this tutorial, we will tour all of the Workflow APIs you should know, primarily Signals, Queries, `condition`, and `sleep`, by building a realistic monthly subscription payments workflow that can be canceled and changed while it runs.
 ---

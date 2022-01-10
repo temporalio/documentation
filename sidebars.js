@@ -289,8 +289,8 @@ module.exports = {
             "typescript/package-initializer",
             "typescript/hello-world",
             "typescript/subscription-tutorial",
-            "typescript/nextjs-tutorial",
             "typescript/chatbot-tutorial",
+            "typescript/nextjs-tutorial",
             {
               type: "link",
               label: "Code Samples",

@@ -1,9 +1,27 @@
 ---
 id: chatbot-tutorial
-title: Choose Your Own Adventure Bot Tutorial
-sidebar_label: Chatbot Tutorial
+title: Choose Your Own Adventure Bot Walkthrough in TypeScript
+sidebar_label: Chatbot Walkthrough
 description: In this tutorial, we'll integrate all the knowledge gained from Core and Production APIs in an end-to-end, complete demo application.
 ---
+
+In this tutorial, we'll integrate all the knowledge gained from Core and Logging APIs in an end-to-end, complete demo application - which happens to be a Choose Your Own Adventure game that you can play on Discord or Slack!
+
+This project will integrate and give context to your understanding of [Temporal SDK APIs](/docs/typescript/workflows): logging with Sinks, Activity dependency injection, Timer and Promise.race design patterns, Signals (and HTTP Servers for them), Polling patterns, and `continueAsNew` for indefinitely long running Workflows.
+
+Let's dive in!
+
+## Project Requirements
+
+- On `/instructions`, posts instructions to Slack/Discord and pins the message
+- Continuously runs the game until it reaches an end state:
+  - Every day, post the current entry as a poll
+  - Wait until the earlier of:
+    - Every day, check the poll results
+      - If there is consensus, determine next state
+      - If no consensus, remind people to vote
+    - Allow an admin to `/force` a choice any time
+- Report important game updates to a specified logger
 
 ## 25 minute Demo Walkthrough
 
@@ -11,6 +29,7 @@ import { ResponsivePlayer } from '../../src/components'
 
 <ResponsivePlayer url='https://www.youtube.com/watch?v=hGIhc6m2keQ' />
 
+<p>
 <a href="https://youtube.com/watch?v=hGIhc6m2keQ&amp;t=0s" dir="auto">00:00</a>
 <span> Project Intro and Demo</span><br />
 <a href="https://youtube.com/watch?v=hGIhc6m2keQ&amp;t=210s" dir="auto">03:30</a>
@@ -31,6 +50,7 @@ import { ResponsivePlayer } from '../../src/components'
 <span> HTTP Server for Signal</span><br />
 <a href="https://youtube.com/watch?v=hGIhc6m2keQ&amp;t=1380s" dir="auto">23:00</a>
 <span> ContinueAsNew</span><br />
+</p>
 
 ## Source and Setup Instructions
 
