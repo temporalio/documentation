@@ -5,9 +5,16 @@ sidebar_label: Hello World
 description: In this tutorial, we'll go over the different components that make up the Temporal Hello World code sample.
 ---
 
-In this tutorial, we'll go over the different components that make up a Temporal project.
+In this tutorial, we'll go over the different components that make up a Temporal project:
+
+- Temporal Client
+- Workflow and Activity Code
+- Temporal Worker (running with [RoadRunner](https://roadrunner.dev))
+
 All the code on this page is included in our [SimpleActivity](https://github.com/temporalio/samples-php/tree/master/app/src/SimpleActivity) sample, 
 from our [Samples repository](https://github.com/temporalio/samples-php).
+
+First we'll get you running code, and then we'll explain the code.
 
 ## Running this sample (using Docker)
 
@@ -17,10 +24,13 @@ $ git clone git@github.com:temporalio/samples-php.git
 $ cd samples-php
 ```
 
-**2. Start server and application containers.**
+**2. Start Temporal Server and application containers.**
 ```bash
 $ docker-compose up
 ```
+
+This starts Temporal Server with the [docker-compose.yml](https://github.com/temporalio/samples-php/blob/master/docker-compose.yml) that ships with the `samples-php` repo.
+When it is live, you can access [Temporal Web](/docs/devtools/web-ui) at http://localhost:8088 although you won't see any workflows run yet.
 
 **3. Run a sample**
 
@@ -35,15 +45,16 @@ At the end it will log the result:
 
 ```bash
 Starting GreetingWorkflow... 
-Started: WorkflowID=3520711c-7c8b-4d36-bd18-68328e60447b, RunID=25207ad9-ee9f-40a4-904a-3752c1cbce6a
+Started: WorkflowID=3520711c-7c8b-4d36-bd18-68328e60447b
 Result:
 Hello Antony
 ```
 
 ## Example structure
 
-The example above represents a console command that starts a workflow in
-an async mode:
+### Temporal Client
+
+The example above represents a console command that starts a workflow, prints its IDs, and then waits for its result:
 
 ```php
 class ExecuteCommand extends Command
@@ -66,9 +77,8 @@ class ExecuteCommand extends Command
 
         $output->writeln(
             sprintf(
-                'Started: WorkflowID=<fg=magenta>%s</fg=magenta>, RunID=<fg=magenta>%s</fg=magenta>',
+                'Started: WorkflowID=<fg=magenta>%s</fg=magenta>',
                 $run->getExecution()->getID(),
-                $run->getExecution()->getRunID(),
             )
         );
 
@@ -80,11 +90,15 @@ class ExecuteCommand extends Command
 }
 ```
 
-In the snippet above we use `WorkflowClientInterface` - an entry point to get access to workflows. Once you need 
-to create, retrieve, or start a workflow you should use an instance of WorkflowClientInterface. Here we create an 
-instance of `GreetingWorkflowInterface` with execution timeout of 1  minute.  
+In the snippet above we use `WorkflowClientInterface` - an entry point to get access to workflows.
+Once you need to create, retrieve, or start a workflow you should use an instance of `WorkflowClientInterface`. 
+Here we create an instance of `GreetingWorkflowInterface` with execution timeout of 1 minute.  
 
-Then we print some information and start the workflow. First, let's take a look at the workflow interface:
+Then we print some information and start the workflow.
+
+### Workflow interface and implementation
+
+First, let's take a look at the workflow interface:
 
 ```php
 #[WorkflowInterface]
@@ -101,10 +115,11 @@ interface GreetingWorkflowInterface
 }
 ```
 
-The important thing here - is attributes: `#[WorkflowInterface]` and `#[WorkflowMethod]`. Both of them define 
-the "workflow". The first one marks the class/interface, the second one marks the method in the class/interface. In
-our case the workflow is the method that accepts string `$name`. To see what it actually does we can continue to
-the implementation - class `GreetingWorkflow`:
+The important thing here - is attributes: `#[WorkflowInterface]` and `#[WorkflowMethod]`.
+Both of them define the "workflow".
+The first one marks the class/interface, the second one marks the method in the class/interface.
+In our case the workflow is the method that accepts string `$name`.
+To see what it actually does we can continue to the implementation - class `GreetingWorkflow`:
 
 ```php
 class GreetingWorkflow implements GreetingWorkflowInterface
@@ -132,13 +147,17 @@ class GreetingWorkflow implements GreetingWorkflowInterface
 }
 ```
 
-This is the implementation of our workflow. It communicates with one activity and delegates all the work to it. In
-the constructor we create an instance of the `GreetingActivityInterface` with maximum execution time of 2 seconds.
-In method `greet()` we call our activity. Here the workflow pauses and waits until the activity is done and only
-then returns the result. It is achieved with `yield` call. To instantiate an instance of the activity we use a static
-helper `Workflow::newActivityStub()`.
+This is the implementation of our workflow.
+It communicates with one activity and delegates all the work to it.
+In the constructor we create an instance of the `GreetingActivityInterface` with maximum execution time of 2 seconds.
+In method `greet()` we call our activity.
+Here the workflow pauses and waits until the activity is done and only then returns the result.
+It is achieved with `yield` call.
+To instantiate an instance of the activity we use a static helper `Workflow::newActivityStub()`.
 
-And at last the activity code. Consider it as a particular task in the business logic. As you have noticed we again use an interface to instantiate an object:
+### Activity interface and implementation
+
+And at last we arrive at the activity code. Consider it as a particular task in the business logic. As you have noticed we again use an interface to instantiate an object:
 
 ```php
 #[ActivityInterface(prefix: 'SimpleActivity.')]
@@ -152,10 +171,11 @@ interface GreetingActivityInterface
 }
 ```
 
-Activities and workflow classes in PHP are marked with special attributes. For activity, we use `#[ActivityInterface]` and
-`#[ActivityMethod]`. The first on marks this class/interface as an activity, the second one marks the activity method.
-Our activity consists of one method, which accepts two string arguments. The implementation of this interface is a very
-straight forward - just compose a new string of provided arguments:
+Activities and workflow classes in PHP are marked with special attributes.
+For activity, we use `#[ActivityInterface]` and `#[ActivityMethod]`.
+The first on marks this class/interface as an activity, the second one marks the activity method.
+Our activity consists of one method, which accepts two string arguments.
+The implementation of this interface is a very straight forward - just compose a new string of provided arguments:
 
 ```php
 class GreetingActivity implements GreetingActivityInterface
@@ -167,17 +187,17 @@ class GreetingActivity implements GreetingActivityInterface
 }
 ```
 
-So, let's recap what was done in this "Hello world" example. We have three main parts here:
-1. The main script, that instantiates an instance of `WorkflowClientInterface`, creates a workflow and starts it. 
-2. Workflow code.
-3. Activity code.
+Both workflow and activity code in our example have both interface and implementation.
+But we could skip interfaces and just mark classes with corresponding attributes and everything will continue working.
+But how does the workflow client know about interface implementations?
+How does Temporal know what PHP class should be executed?
 
-Both workflow and activity code in our example consist of interface and implementation. But it is not a requirement, we
-can skip interfaces and just mark classes with corresponding attributes and everything will continue working. But how
-does the workflow client know about interface implementations? How does Temporal know what PHP class should be executed?
-To answer this question we need to take a look at how an instance of `WorkflowClientInterface` is created. This is the
-part where [RoadRunner](https://roadrunner.dev) comes into a play. In our example under the hood RoadRunner executes
-`worker.php` script:
+### Roadrunner and Temporal Worker
+
+To answer this question we need to take a look at how an instance of `WorkflowClientInterface` is created. 
+This is the part where [RoadRunner](https://roadrunner.dev) comes into a play. 
+
+In our example under the hood RoadRunner executes `worker.php` script:
 
 ```php
 declare(strict_types=1);
@@ -211,10 +231,10 @@ foreach ($declarations->getActivityTypes() as $activityType) {
 $factory->run();
 ```
 
-You may consider this script as a bridge between your PHP application and Temporal. Temporal needs to know
-about our activity and workflow implementations. Thus, they need to be registered within the worker with 
-`registerWorkflowTypes()` and `registerActivityImplementations()`. The first one registers workflows and accepts a 
-list of classes:
+You may consider this script as a bridge between your PHP application and Temporal.
+Temporal needs to know about our activity and workflow implementations.
+Thus, they need to be registered within the worker with `registerWorkflowTypes()` and `registerActivityImplementations()`.
+The first one registers workflows and accepts a list of classes:
 
 ```php
 $worker->registerWorkflowTypes(HelloWorldWorkflow::class);
@@ -226,8 +246,18 @@ The second one registers activities and accepts a list of instantiated activity 
 $worker->registerActivityImplementations(new MyActivityImplementation());
 ```
 
-On the last line of the *worker script* we start the worker. From now, it starts communication with Temporal:
-receiving and sending data.
+On the last line of the *worker script* we start the worker.
+From now, it starts communication with Temporal: receiving and sending data.
 
-## Conclusion
+## Conclusion and Next Steps
 
+Let's recap what was done in this "Hello world" example:
+
+1. The main script, that instantiates an instance of `WorkflowClientInterface`, creates a workflow and starts it. 
+2. Workflow code.
+3. Activity code.
+4. Worker code with [RoadRunner](https://roadrunner.dev).
+
+These reflect the 4 main APIs of Temporal's PHP SDK.
+
+As for next steps, you can proceed to [read the Workflows docs](/docs/php/workflows) or [watch our longform workshops](/docs/php/introduction#resources). 
