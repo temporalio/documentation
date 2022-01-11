@@ -13,8 +13,7 @@ Temporal's Multi-cluster Replication feature is considered **experimental** and 
 </CustomWarning>
 
 This guide introduces Temporal's Multi-cluster Replication capabilities.
-You can set this up with [`clusterMetadata` configuration](/docs/server/configuration#clustermetadata), however this is only meant to be a conceptual guide rather than a detailed tutorial.
-Please reach out to us if you need to set this up.
+You can set this up with [`clusterMetadata` configuration](/docs/server/configuration#clustermetadata). Detailed examples can be found in below section [Cluster setup](#Cluster-setup)
 
 ## Overview
 
@@ -394,3 +393,98 @@ T = 2: task A is loaded.
 
 At this time, due to the rebuild of a Workflow Execution's mutable state (conflict resolution), task A is no longer relevant (task A's corresponding event belongs to non-current branch).
 Task processing logic will verify both the event ID and version of the task against a corresponding Workflow Execution's mutable state, then discard task A.
+
+## Cluster setup
+
+As mentioned in the [Version](#version) section, make sure the cluster metadata is configured for multi-cluster setup:
+1. Set enableGlobalNamespace to true.
+2. FailoverVersionIncrement has to be equal across connected clusters.
+3. InitialFailoverVersion in each cluster has to assign a different value. No equal value is allowed across connected clusters.
+
+After the above conditions are satisfied, you can start to setup multi-cluster.
+
+### Setup multi-cluster prior to release v1.14
+You can set this up with [`clusterMetadata` configuration](/docs/server/configuration#clustermetadata), however this is only meant to be a conceptual guide rather than a detailed tutorial.
+Please reach out to us if you need to set this up.
+
+For example:
+```yaml
+# cluster A
+clusterMetadata:
+  enableGlobalNamespace: false
+  failoverVersionIncrement: 100
+  masterClusterName: "clusterA"
+  currentClusterName: "clusterA"
+  clusterInformation:
+    clusterA:
+      enabled: true
+      initialFailoverVersion: 1
+      rpcAddress: "127.0.0.1:7233"
+    clusterB:
+      enabled: true
+      initialFailoverVersion: 2
+      rpcAddress: "127.0.0.1:8233"
+
+# cluster B
+clusterMetadata:
+  enableGlobalNamespace: false
+  failoverVersionIncrement: 100
+  masterClusterName: "clusterA"
+  currentClusterName: "clusterB"
+  clusterInformation:
+    clusterA:
+      enabled: true
+      initialFailoverVersion: 1
+      rpcAddress: "127.0.0.1:7233"
+    clusterB:
+      enabled: true
+      initialFailoverVersion: 2
+      rpcAddress: "127.0.0.1:8233"
+```
+
+### Setup multi-cluster in release v1.14+
+
+You still need to set up local cluster [`clusterMetadata` configuration](/docs/server/configuration#clustermetadata)
+
+For example:
+```yaml
+# cluster A
+clusterMetadata:
+  enableGlobalNamespace: false
+  failoverVersionIncrement: 100
+  masterClusterName: "clusterA"
+  currentClusterName: "clusterA"
+  clusterInformation:
+    clusterA:
+      enabled: true
+      initialFailoverVersion: 1
+      rpcAddress: "127.0.0.1:7233"
+
+# cluster B
+clusterMetadata:
+  enableGlobalNamespace: false
+  failoverVersionIncrement: 100
+  masterClusterName: "clusterB"
+  currentClusterName: "clusterB"
+  clusterInformation:
+    clusterB:
+      enabled: true
+      initialFailoverVersion: 2
+      rpcAddress: "127.0.0.1:8233"
+```
+Then you can use tctl admin tool to add cluster connection. All operations should be executed on both ends.
+
+```shell
+# Add cluster B connection into cluster A
+tctl -address 127.0.0.1:7233 admin cluster upsert-remote-cluster --frontend_address "localhost:8233"
+# Add cluster A connection into cluster B
+tctl -address 127.0.0.1:8233 admin cluster upsert-remote-cluster --frontend_address "localhost:7233"
+
+# Disable connections
+tctl -address 127.0.0.1:7233 admin cluster upsert-remote-cluster --frontend_address "localhost:8233" --enable_connection false
+tctl -address 127.0.0.1:8233 admin cluster upsert-remote-cluster --frontend_address "localhost:7233" --enable_connection false
+
+# Delete connections
+tctl -address 127.0.0.1:7233 admin cluster remove-remote-cluster --cluster "clusterB"
+tctl -address 127.0.0.1:8233 admin cluster remove-remote-cluster --cluster "clusterA"
+```
