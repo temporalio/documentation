@@ -402,7 +402,7 @@ As mentioned in the [Version](#version) section, make sure the cluster metadata 
 2. FailoverVersionIncrement has to be equal across connected clusters.
 3. InitialFailoverVersion in each cluster has to assign a different value. No equal value is allowed across connected clusters.
 
-After the above conditions are satisfied, you can start to setup multi-cluster.
+After the above conditions are satisfied, you can start to configure a multi-cluster setup.
 
 ### Setup multi-cluster prior to release v1.14
 
@@ -477,7 +477,7 @@ clusterMetadata:
       rpcAddress: "127.0.0.1:8233"
 ```
 
-Then you can use tctl admin tool to add cluster connection. All operations should be executed on both ends.
+Then you can use the `tctl admin` tool to add cluster connections. All operations should be executed on both ends.
 
 ```shell
 # Add cluster B connection into cluster A
