@@ -397,6 +397,7 @@ Task processing logic will verify both the event ID and version of the task agai
 ## Cluster setup
 
 As mentioned in the [Version](#version) section, make sure the cluster metadata is configured for multi-cluster setup:
+
 1. Set enableGlobalNamespace to true.
 2. FailoverVersionIncrement has to be equal across connected clusters.
 3. InitialFailoverVersion in each cluster has to assign a different value. No equal value is allowed across connected clusters.
@@ -404,10 +405,12 @@ As mentioned in the [Version](#version) section, make sure the cluster metadata 
 After the above conditions are satisfied, you can start to setup multi-cluster.
 
 ### Setup multi-cluster prior to release v1.14
+
 You can set this up with [`clusterMetadata` configuration](/docs/server/configuration#clustermetadata), however this is only meant to be a conceptual guide rather than a detailed tutorial.
 Please reach out to us if you need to set this up.
 
 For example:
+
 ```yaml
 # cluster A
 clusterMetadata:
@@ -447,6 +450,7 @@ clusterMetadata:
 You still need to set up local cluster [`clusterMetadata` configuration](/docs/server/configuration#clustermetadata)
 
 For example:
+
 ```yaml
 # cluster A
 clusterMetadata:
@@ -472,6 +476,7 @@ clusterMetadata:
       initialFailoverVersion: 2
       rpcAddress: "127.0.0.1:8233"
 ```
+
 Then you can use tctl admin tool to add cluster connection. All operations should be executed on both ends.
 
 ```shell
