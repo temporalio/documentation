@@ -1,24 +1,29 @@
 ---
 id: search-attributes
-title: Custom Search Attributes in TypeScript Workflows
+title: Default and Custom Search Attributes in TypeScript Workflows
 sidebar_label: Search Attributes
-description: Search attributes enable complex and business-logic-focused search queries for Workflow Executions. Most Search APIs are not yet available in the TypeScript SDK beta.
+description: Search Attributes enable eventually-consistent, business-logic-focused search and filter queries for Workflow Executions. Most Search APIs are not yet available in the TypeScript SDK beta.
 ---
 
 <!-- prettier-ignore -->
 import * as WhatsSearchAttr from '../content/what-is-a-search-attribute.md'
 import * as WhatIsATemporalCronJob from '../content/what-is-a-temporal-cron-job.md'
 
+:::caution This is an experimental API
+
+Most Search APIs are not yet available in the TypeScript SDK beta.
+
+:::
+
 ## Overview
 
-Search Attributes enable complex and business-logic-focused search queries for Workflow Executions.
-Most Search APIs are not yet available in the TypeScript SDK beta.
-These are often queried via the Web UI, but you can also query from within your workflow code (as we show below).
+The typical method of retrieving a Workflow Execution is by its Workflow ID.
+However, it can be useful to retrieve a range of Workflow Executions based on other properties, whether Temporal-defined or custom-defined by you.
 
-Many <preview page={WhatsSearchAttr}>Search Attributes</preview> are added to Workflow Executions by default.
-But these are necessarily focused on Temporal internal state tracking.
+Search Attributes enable eventually-consistent, business-logic-focused search and filter queries for Workflow Executions.
+For example, you could query for all Workflow Executions that have failed within a certain time range and run a batch operation to start new ones (you cannot "restart" a failed execution).
 
-For more debugging and monitoring, you might want to add your own domain-specific Search Attributes (such as `customerId` or `numItems`) that can serve as useful search filters.
+Search Attributes are often queried via the Web UI, but you can also query from within your workflow code (as we show below).
 
 <details>
 <summary>What is a Search Attribute?
@@ -27,6 +32,11 @@ For more debugging and monitoring, you might want to add your own domain-specifi
 <WhatsSearchAttr.default />
 
 </details>
+
+- <preview page={WhatsSearchAttr}>Default Search Attributes</preview> are added to Workflow Executions without any requirement for Elasticsearch.
+They are necessarily focused on Temporal internal state tracking, such as `StartTime`, `ExecutionStatus`, and `ExecutionDuration`.
+- You might want to add your own domain-specific **Custom** Search Attributes (such as `customerId` or `numItems`) that can serve as useful search filters. Custom Search Attributes require the addition of Elasticsearch to your Temporal Cluster, which comes default with Temporal Cloud. Temporal's [default Auto-Setup](/blog/auto-setup/#temporal-server-setup) also provisions some generic attributes (such as `CustomKeywordField` and `CustomIntField`) for convenience.
+
 
 ## Tagging Search Attributes at workflow creation
 
