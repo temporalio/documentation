@@ -34,9 +34,8 @@ Search Attributes are often queried via the Web UI, but you can also query from 
 </details>
 
 - <preview page={WhatsSearchAttr}>Default Search Attributes</preview> are added to Workflow Executions without any requirement for Elasticsearch.
-They are necessarily focused on Temporal internal state tracking, such as `StartTime`, `ExecutionStatus`, and `ExecutionDuration`.
+  They are necessarily focused on Temporal internal state tracking, such as `StartTime`, `ExecutionStatus`, and `ExecutionDuration`.
 - You might want to add your own domain-specific **Custom** Search Attributes (such as `customerId` or `numItems`) that can serve as useful search filters. Custom Search Attributes require the addition of Elasticsearch to your Temporal Cluster, which comes default with Temporal Cloud. Temporal's [default Auto-Setup](/blog/auto-setup/#temporal-server-setup) also provisions some generic attributes (such as `CustomKeywordField` and `CustomIntField`) for convenience.
-
 
 ## Tagging Search Attributes at workflow creation
 
