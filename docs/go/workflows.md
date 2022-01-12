@@ -17,7 +17,7 @@ workflowOptions := client.StartWorkflowOptions{
   TaskQueue: "mytaskqueue",
 }
 
-we, err := c.ExecuteWorkflow(context.Background(), workflowOptions, "MySimpleWorkflow")
+we, err := temporalClient.ExecuteWorkflow(context.Background(), workflowOptions, "MySimpleWorkflow")
 if err != nil {
   log.Fatalln("Unable to execute workflow", err)
 }
