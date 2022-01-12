@@ -18,6 +18,7 @@ They are the only way to schedule new Workflow Executions with Temporal Server.
   Given a `workflowId`, Workflow Clients may also get a Handle to a running Workflow Execution or retrieve/wait for its result.
 - **Workflow Handles** are bindings to specific Workflow Executions that expose more APIs for control.
   **We strongly recommend familiarising yourself with Workflow Handle APIs** as they are the main way you will signal, query, describe, cancel, terminate and await the result of running Workflow Executions.
+- Advanced users can also use the `WorkflowService` exposed by a Workflow Client to make **raw gRPC calls** (usually for introspection)
 
 Workflow Clients are separate from Workers, but communicate with them via Task Queues to start Workflow Executions.
 See the dedicated [Workers and Task Queues docs](/docs/typescript/workers) and [Workflow docs](/docs/typescript/workflows) for more info.
