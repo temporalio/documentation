@@ -155,18 +155,7 @@ const result = await handle.result(); // block until the workflow completes, if 
 Using a Workflow Handle isn't necessary with `client.execute` by definition.
 
 - **Don't forget to handle errors here** - if you call `result()` on a Workflow that prematurely ended for some reason, it will [throw an Error](https://typescript.temporal.io/api/classes/client.WorkflowFailedError) reflecting that reason.
-      ```ts
-      const handle = client.getHandle(workflowId);
-      try {
-        const result = await handle.result(); // block until the workflow completes, if you wish
-      } catch (err) {
-        if (err instanceOf WorkflowFailedError) {
-          throw new Error('Temporal workflow failed: ' + workflowId), err)
-        } else {
-          throw new Error('error from Temporal workflow ' + workflowId), err)
-        }
-      }
-      ```
+  `ts const handle = client.getHandle(workflowId); try { const result = await handle.result(); // block until the workflow completes, if you wish } catch (err) { if (err instanceOf WorkflowFailedError) { throw new Error('Temporal workflow failed: ' + workflowId), err) } else { throw new Error('error from Temporal workflow ' + workflowId), err) } } `
 - You can also specify a `runId`, but you will almost never need it, because most people only want the results of the latest run (a Workflow may run multiple times if failed or continued as new).
 
 ### Cancel a Workflow
