@@ -69,7 +69,7 @@ The `@temporalio/workflow` package exports all the useful primitives that you ca
 | `sleep`                      | Defer execution by [sleeping](#sleep) for fixed time                                                                                                                                                                                                                                                                                                                                                                     |
 | `condition`                  | Defer execution until a [`condition`](#condition) is true, with optional timeout                                                                                                                                                                                                                                                                                                                                         |
 | `startChild`/`executeChild`  | Spawn new [Child Workflows](#child-workflows) with customizable ParentClosePolicy                                                                                                                                                                                                                                                                                                                                        |
-| `continueAsNew`              | Truncate Event History for [Entity Workflows](#entity-workflows)                                                                                                                                                                                                                                                                                                                                      |
+| `continueAsNew`              | Truncate Event History for [Entity Workflows](#entity-workflows)                                                                                                                                                                                                                                                                                                                                                         |
 | `patched`/`deprecatePatch`   | Migrate Workflows to new versions ([see Patching doc](/docs/typescript/patching))                                                                                                                                                                                                                                                                                                                                        |
 | `uuid4`                      | Generate an RFC compliant V4 [uuid](https://typescript.temporal.io/api/namespaces/workflow/#uuid4) without needing to call an Activity or Side Effect.                                                                                                                                                                                                                                                                   |
 | APIs for advanced users      | including [`workflowInfo`](https://typescript.temporal.io/api/namespaces/workflow#workflowinfo) (to retrieve Workflow metadata), Workflow data [`Sinks`](/docs/typescript/logging), [Cancellation Scopes](/docs/typescript/cancellation-scopes), [Failure types](/docs/typescript/handling-failure), and [`getExternalWorkflowHandle`](https://typescript.temporal.io/api/namespaces/workflow#getexternalworkflowhandle) |
@@ -908,34 +908,41 @@ export async function loopingWorkflow(foo: any, isContinued?: boolean) {
   (await continueAsNew)<typeof loopingWorkflow>(foo, true);
 }
 ```
-  
+
 ### Don't overuse continueAsNew
 
 You should not try to call `continueAsNew` too often - if at all!
 It's primary purpose is to truncate event history, which if too large may slow down your workflows and eventually cause an error. Calling it too frequently to be preemptive can cause other performance issues as each new Workflow Execution has overhead.
-  
+
 Temporal's default limits are set to warn you at 10,000 events in a single Workflow Execution, and error at 50,000.
 This is sufficient for:
-  
+
 - If executing one activity a day, it can support an infinite loop for over 2 decades (27 years)
 - If executing one activity an hour, it can support an infinite loop for over 1 year (417 days)
 - If executing one activity a minute, it can support an infinite loop for over 1 week (7 days)
-  
+
 without even resorting to `continueAsNew`.
-  
+
 Our recommendation is to size it to continue as new between once a day to once a week, to ensure old version branches can be removed in a timely manner.
-  
+
 ### Entity Workflow Example
-  
+
 Here is a simple pattern that we recommend to represent a single entity. It keeps track of the number of iterations regardless of frequency, and calls `continueAsNew` while properly handling pending updates from Signals.
-  
+
 ```tsx
-interface Input { /* define your workflow input type here */ }
-interface Update { /* define your workflow update type here */ }
+interface Input {
+  /* define your workflow input type here */
+}
+interface Update {
+  /* define your workflow update type here */
+}
 
 const MAX_ITERATIONS = 1;
 
-export async function entityWorkflow(input: Input, isNew = true): Promise<void> {
+export async function entityWorkflow(
+  input: Input,
+  isNew = true
+): Promise<void> {
   try {
     const pendingUpdates = Array<Update>();
     setHandler(updateSignal, (updateCommand) => {
@@ -947,13 +954,13 @@ export async function entityWorkflow(input: Input, isNew = true): Promise<void> 
     }
 
     for (let iteration = 1; iteration <= MAX_ITERATIONS; ++iteration) {
-	    // Automatically continue as new after a day if no updates were received
-	    await condition(() => pendingUpdates.length > 0, '1 day');
-	
-	    while (pendingUpdates.length) {
-	      const update = pendingUpdates.shift();
-	      await runAnActivityOrChildWorkflow(update);
-	    }
+      // Automatically continue as new after a day if no updates were received
+      await condition(() => pendingUpdates.length > 0, '1 day');
+
+      while (pendingUpdates.length) {
+        const update = pendingUpdates.shift();
+        await runAnActivityOrChildWorkflow(update);
+      }
     }
   } catch (err) {
     if (isCancellation(err)) {
