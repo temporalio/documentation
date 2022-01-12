@@ -10,20 +10,22 @@ description: In the Temporal Go SDK programming model, a Workflow is an exportab
 You can execute Workflows (including those from other language SDKs) by their type name:
 
 ```go
+
 workflowID := "myworkflow_" + uuid.New()
 workflowOptions := client.StartWorkflowOptions{
   ID:        workflowID,
   TaskQueue: "mytaskqueue",
 }
 
-we, err := c.ExecuteWorkflow(context.Background(), workflowOptions, "MySimpleWorkflow")
+we, err := temporalClient.ExecuteWorkflow(context.Background(), workflowOptions, "MySimpleWorkflow")
 if err != nil {
   log.Fatalln("Unable to execute workflow", err)
 }
 log.Println("Started workflow", "WorkflowID", we.GetID(), "RunID", we.GetRunID())
 ```
 
-Here we execute a workflow by its type name, namely `MySimpleWorkflow`. By default, the
+In the above example, `client` is imported from the "go.temporal.io/sdk/client" package. And `temporalClient` is an instance of the Temporal Client instantiated outside of the snippet.
+Here we spawn a Workflow Execution by its Workflow Type name `MySimpleWorkflow`. By default, the
 Workflow type is the name of the Workflow function, for example:
 
 ```go
