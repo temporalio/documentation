@@ -24,7 +24,8 @@ if err != nil {
 log.Println("Started workflow", "WorkflowID", we.GetID(), "RunID", we.GetRunID())
 ```
 
-In the above example, client is imported from "go.temporal.io/sdk/client". 'c' is the temporal client instantiated outside of the snippet. Here we execute a workflow by its type name, namely `MySimpleWorkflow`. By default, the
+In the above example, `client` is imported from the "go.temporal.io/sdk/client" package. And `temporalClient` is an instance of the Temporal Client instantiated outside of the snippet.
+Here we spawn a Workflow Execution by its Workflow Type name `MySimpleWorkflow`. By default, the
 Workflow type is the name of the Workflow function, for example:
 
 ```go
