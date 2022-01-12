@@ -155,6 +155,18 @@ const result = await handle.result(); // block until the workflow completes, if 
 Using a Workflow Handle isn't necessary with `client.execute` by definition.
 
 - **Don't forget to handle errors here** - if you call `result()` on a Workflow that prematurely ended for some reason, it will [throw an Error](https://typescript.temporal.io/api/classes/client.WorkflowFailedError) reflecting that reason.
+      ```ts
+      const handle = client.getHandle(workflowId);
+      try {
+        const result = await handle.result(); // block until the workflow completes, if you wish
+      } catch (err) {
+        if (err instanceOf WorkflowFailedError) {
+          throw new Error('Temporal workflow failed: ' + workflowId), err)
+        } else {
+          throw new Error('error from Temporal workflow ' + workflowId), err)
+        }
+      }
+      ```
 - You can also specify a `runId`, but you will almost never need it, because most people only want the results of the latest run (a Workflow may run multiple times if failed or continued as new).
 
 ### Cancel a Workflow
@@ -247,3 +259,31 @@ export async function CancelExternalWorkflow(wfId: string): void {
 ```
 
 Again, see the [Workflow APIs documentation](/docs/typescript/workflows#external-workflows) for full details.
+
+## Advanced: Making raw gRPC calls
+
+Under the hood of a `WorkflowClient`, the `Connection` is actually powered by a `WorkflowService` driver that makes the raw gRPC calls to Temporal Server.
+This Service is capable of making a wider range of introspection calls (as per [the API reference](https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.WorkflowService-1#methods)):
+
+```ts
+import { Connection, WorkflowClient } from '@temporalio/client';
+
+const connection = new Connection(); // to configure connection for production
+
+// normal Workflow client
+const client = new WorkflowClient(connection.service);
+await client.start(/* etc */);
+
+// equivalent in raw gRPC calls
+// promise-based API
+await connection.service.startWorkflowExecution(/* etc */);
+// alternate Node callback-style API
+connection.service.startWorkflowExecution(/* options */, callbackFn);
+```
+
+Using gRPC calls is often the only way to access some of the more advanced queries you can make from Temporal Server.
+We highlight some queries of interest here:
+
+- [describeTaskQueue](https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.WorkflowService-1#describetaskqueue)
+- [getWorkflowExecutionHistory](https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.WorkflowService-1#getworkflowexecutionhistory)
+- [listWorkflowExecutions](https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.WorkflowService-1#listworkflowexecutions)
