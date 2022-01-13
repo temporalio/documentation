@@ -284,13 +284,68 @@ connection.service.startWorkflowExecution(/* options */, callbackFn);
 Using gRPC calls is often the only way to access some of the more advanced queries you can make from Temporal Server.
 We highlight some queries of interest here:
 
-- [describeTaskQueue](https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.WorkflowService-1#describetaskqueue)
-- [getWorkflowExecutionHistory](https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.WorkflowService-1#getworkflowexecutionhistory)
-- [listWorkflowExecutions](https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.WorkflowService-1#listworkflowexecutions)
+<details>
+<summary><a class="font-mono" href="https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.WorkflowService-1#getworkflowexecutionhistory">getWorkflowExecutionHistory</a>
+</summary>
 
 ```ts
-const res = await connection.service.listWorkflowExecutions({
-  namespace: 'default',
-});
-console.table(res.executions);
+  const res = await connection.service.getWorkflowExecutionHistory({ execution: { workflowId: 'my-business-id' }, namespace: 'default'})
+  console.log(res.history)
 ```
+
+Outputs:
+
+```
+{
+  events: [
+    HistoryEvent {
+      eventId: [Long],
+      eventTime: [Timestamp],
+      eventType: 1,
+      taskId: [Long],
+      workflowExecutionStartedEventAttributes: [WorkflowExecutionStartedEventAttributes]
+    },
+    HistoryEvent {
+      eventId: [Long],
+      eventTime: [Timestamp],
+      eventType: 5,
+      taskId: [Long],
+      workflowTaskScheduledEventAttributes: [WorkflowTaskScheduledEventAttributes]
+    },
+    HistoryEvent {
+      eventId: [Long],
+      eventTime: [Timestamp],
+      eventType: 6,
+      taskId: [Long],
+      workflowTaskStartedEventAttributes: [WorkflowTaskStartedEventAttributes]
+    }
+  ]
+}
+```
+
+</details>
+
+<details>
+<summary><a class="font-mono" href="https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.WorkflowService-1#listworkflowexecutions) (requires ElasticSearch">listWorkflowExecutions</a>
+</summary>
+
+```ts
+  const res = await connection.service.listWorkflowExecutions({ namespace: 'default'})
+  console.table(res.executions)
+```
+
+Outputs:
+
+```
+
+┌─────────┬───────────────────────────────────────────────────────────────────────────────────────────────────┬──────────────────────────────────┬─────────────────────────────────────────────────┬─────────────────────────────────────────────────┬────────┬───────────────┬─────────────────────────────────────────────────┬─────────────────────┬──────────────────────────────────────────────┬────────────┬──────────────────────┐
+│ (index) │                                             execution                                             │               type               │                    startTime                    │                    closeTime                    │ status │ historyLength │                  executionTime                  │        memo         │               searchAttributes               │ taskQueue  │ stateTransitionCount │
+├─────────┼───────────────────────────────────────────────────────────────────────────────────────────────────┼──────────────────────────────────┼─────────────────────────────────────────────────┼─────────────────────────────────────────────────┼────────┼───────────────┼─────────────────────────────────────────────────┼─────────────────────┼──────────────────────────────────────────────┼────────────┼──────────────────────┤
+│    0    │ WorkflowExecution { workflowId: 'my-business-id', runId: '2798482a-46d8-4f1e-ab87-1ba3f7ddda1c' } │ WorkflowType { name: 'example' } │ Timestamp { seconds: [Long], nanos: 125158275 } │ Timestamp { seconds: [Long], nanos: 263021256 } │   2    │    [Long]     │ Timestamp { seconds: [Long], nanos: 125158275 } │ Memo { fields: {} } │ SearchAttributes { indexedFields: [Object] } │ 'tutorial' │        [Long]        │
+│    1    │ WorkflowExecution { workflowId: 'my-business-id', runId: '76f1171b-7a73-46a3-ba66-b77bab0b73f8' } │ WorkflowType { name: 'example' } │ Timestamp { seconds: [Long], nanos: 841243925 } │ Timestamp { seconds: [Long], nanos: 935283589 } │   2    │    [Long]     │ Timestamp { seconds: [Long], nanos: 841243925 } │ Memo { fields: {} } │ SearchAttributes { indexedFields: [Object] } │ 'tutorial' │        [Long]        │
+│    2    │ WorkflowExecution { workflowId: 'my-business-id', runId: '6d1197b7-41b8-47be-89b4-f1ef3446de1a' } │ WorkflowType { name: 'example' } │ Timestamp { seconds: [Long], nanos: 425778697 } │ Timestamp { seconds: [Long], nanos: 523022091 } │   2    │    [Long]     │ Timestamp { seconds: [Long], nanos: 425778697 } │ Memo { fields: {} } │ SearchAttributes { indexedFields: [Object] } │ 'tutorial' │        [Long]        │
+└─────────┴───────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────────────────────────┴─────────────────────────────────────────────────┴─────────────────────────────────────────────────┴────────┴───────────────┴─────────────────────────────────────────────────┴─────────────────────┴──────────────────────────────────────────────┴────────────┴──────────────────────┘
+```
+
+
+</details>
