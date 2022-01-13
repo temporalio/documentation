@@ -161,9 +161,9 @@ Using a Workflow Handle isn't necessary with `client.execute` by definition.
     	const result = await handle.result(); // block until the workflow completes, if you wish
   	} catch (err) {
   	  if (err instanceOf WorkflowFailedError) {
-  	     throw new Error('Temporal workflow failed: ' + workflowId), err)
+  	     throw new Error('Temporal workflow failed: ' + workflowId, { cause: err})
       } else {
-         throw new Error('error from Temporal workflow ' + workflowId), err)
+         throw new Error('error from Temporal workflow ' + workflowId, {cause: err})
     }
    }
   ```
