@@ -289,8 +289,11 @@ We highlight some queries of interest here:
 </summary>
 
 ```ts
-  const res = await connection.service.getWorkflowExecutionHistory({ execution: { workflowId: 'my-business-id' }, namespace: 'default'})
-  console.log(res.history)
+const res = await connection.service.getWorkflowExecutionHistory({
+  execution: { workflowId: 'my-business-id' },
+  namespace: 'default',
+});
+console.log(res.history);
 ```
 
 Outputs:
@@ -330,8 +333,10 @@ Outputs:
 </summary>
 
 ```ts
-  const res = await connection.service.listWorkflowExecutions({ namespace: 'default'})
-  console.table(res.executions)
+const res = await connection.service.listWorkflowExecutions({
+  namespace: 'default',
+});
+console.table(res.executions);
 ```
 
 Outputs:
@@ -346,6 +351,5 @@ Outputs:
 │    2    │ WorkflowExecution { workflowId: 'my-business-id', runId: '6d1197b7-41b8-47be-89b4-f1ef3446de1a' } │ WorkflowType { name: 'example' } │ Timestamp { seconds: [Long], nanos: 425778697 } │ Timestamp { seconds: [Long], nanos: 523022091 } │   2    │    [Long]     │ Timestamp { seconds: [Long], nanos: 425778697 } │ Memo { fields: {} } │ SearchAttributes { indexedFields: [Object] } │ 'tutorial' │        [Long]        │
 └─────────┴───────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────────────────────────┴─────────────────────────────────────────────────┴─────────────────────────────────────────────────┴────────┴───────────────┴─────────────────────────────────────────────────┴─────────────────────┴──────────────────────────────────────────────┴────────────┴──────────────────────┘
 ```
-
 
 </details>
