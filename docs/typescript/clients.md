@@ -289,5 +289,8 @@ We highlight some queries of interest here:
 - [listWorkflowExecutions](https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.WorkflowService-1#listworkflowexecutions)
 
 ```ts
-  const res = await connection.service.listWorkflowExecutions({ namespace: 'default'})
-  console.table(res.executions)
+const res = await connection.service.listWorkflowExecutions({
+  namespace: 'default',
+});
+console.table(res.executions);
+```
