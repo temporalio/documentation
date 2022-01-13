@@ -173,7 +173,7 @@ $ npm run start.watch
 Then start your Workflow:
 
 ```bash
-$ npm run workflow # runs ts-node src/exec-workflow.ts
+$ npm run workflow # runs ts-node src/client.ts
 Hello, Temporal! # success!
 ```
 

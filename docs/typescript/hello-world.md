@@ -59,7 +59,7 @@ The [`WorkflowClient`](https://typescript.temporal.io/api/classes/client.workflo
 
 It can be used in any Node.js process (for example, an [Express](https://expressjs.com/) web server) and is separate from the Worker.
 
-`src/exec-workflow.ts`
+`src/client.ts`
 
 <!--SNIPSTART typescript-hello-client {"enable_source_link": false}-->
 <!--SNIPEND-->
