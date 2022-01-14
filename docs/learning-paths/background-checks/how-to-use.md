@@ -29,7 +29,7 @@ This starts up a new Docker Application with a stack of containers.
 
 **While pretending to be the Company HR person...**
 
-From the project root use `./run-cli` to execute the [`bgc-company start`](/docs/learning-paths/long-running-human-driven-workflow/cli/#start) command:
+From the project root use `./run-cli` to execute the [`bgc-company start`](/docs/learning-paths/background-checks/cli-reference/#start) command:
 
 ```bash
 ./run-cli bgc-company start --email your-email@example.com --package full

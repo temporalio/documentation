@@ -33,7 +33,6 @@ origins:
     repo: temporal-ecommerce
   - owner: temporalio
     repo: background-checks
-    ref: snippets
 
 targets:
   - docs

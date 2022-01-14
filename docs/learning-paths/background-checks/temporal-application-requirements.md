@@ -47,7 +47,7 @@ After entering the information and clicking the button the HR person has two opt
 
 After the Background Check fully completes, the option to cancel will go away and all that will remain is the option to see the final status.
 
-For this Learning Path, we will be simulating this experience through the use of a shared mailbox and the [Company CLI](/docs/learning-paths/long-running-human-driven-workflow/cli#bgc-company).
+For this Learning Path, we will be simulating this experience through the use of a shared mailbox and the [Company CLI](/docs/learning-paths/background-checks/cli-reference#bgc-company).
 
 The HR person will also have a separate option that is always available to them to list the metadata of Background Checks that are in the system, and filter them by Candidate, status, or Background Check Id.
 
@@ -79,13 +79,13 @@ Based on the experiences of the three user types, we know we will need APIs for 
 
 See the Application API Reference for API details:
 
-[Application API reference](/docs/learning-paths/long-running-human-driven-workflow/api)
+[Application API reference](/docs/learning-paths/background-checks/api-reference)
 
 ### CLIs
 
 We will need a CLI for each user type to represent the experience they would have from a user interface.
 
-[Application CLI reference](/docs/learning-paths/long-running-human-driven-workflow/cli)
+[Application CLI reference](/docs/learning-paths/background-checks/cli-reference)
 
 ### Handling PII
 
