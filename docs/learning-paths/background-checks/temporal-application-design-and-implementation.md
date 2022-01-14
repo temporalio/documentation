@@ -1,13 +1,8 @@
 ---
-id: how-do-we-build-this-as-a-temporal-application
-title: How do we build this Long Running Human Driven Process application as a Temporal Application?
+id: application-design
+title: How to design and implement a Long Running Human Driven Process application as a Temporal Application?
 sidebar_label: Building the application
 ---
-
-import CenteredImage from "../../components/CenteredImage.js"
-
-<!-- prettier-ignore -->
-import * as WhatIsADataConverter from '../../content/what-is-a-data-converter.md'
 
 ## What business processes are we mapping to Workflows?
 
@@ -24,77 +19,60 @@ The application maps each of the following business processes to their own Workf
 ### Main Background Check
 
 This is the entry point of the Temporal Application.
-When a new Background Check is started, this is the function that begins executing, and all other actions and Events happen as a result of this
-<CenteredImage
-imagePath="/diagrams/learning-path-main-background-check.svg"
-imageSize="75"
-title="Main Background Check Workflow Execution flow"
-/>
+When a new Background Check is started, this is the function that executes.
 
 <!--SNIPSTART background-checks-main-workflow-definition-->
+[Take me to the code](https://github.com/temporalio/background-checks/blob/main/workflows/background_check.go)
 <!--SNIPEND-->
+
+![Main Background Check Workflow Execution flow](/diagrams/background-checks/main-background-check.svg)
 
 ### Candidate Acceptance
 
-<CenteredImage
-imagePath="/diagrams/learning-path-candidate-accept-flow.svg"
-imageSize="100"
-title="Candidate Acceptance Child Workflow Execution flow"
-/>
+![Candidate Acceptance Child Workflow Execution flow](/diagrams/background-checks/candidate-accept-flow.svg)
 
 <!--SNIPSTART background-checks-accept-workflow-definition-->
+[Take me to the code](https://github.com/temporalio/background-checks/blob/main/workflows/accept.go)
 <!--SNIPEND-->
 
 ### SSN Trace
 
-<CenteredImage
-imagePath="/diagrams/learning-path-ssn-trace-flow.svg"
-imageSize="100"
-title="SSN Trace Child Workflow Execution flow"
-/>
+![SSN Trace Child Workflow Execution flow](/diagrams/background-checks/ssn-trace-flow.svg)
+
+<!--SNIPSTART background-checks-snn-trace-workflow-definition-->
+[Take me to the code](https://github.com/temporalio/background-checks/blob/main/workflows/ssn_trace.go)
+<!--SNIPEND-->
 
 ### Federal Criminal Search
 
-<CenteredImage
-imagePath="/diagrams/learning-path-federal-criminal-search-flow.svg"
-imageSize="100"
-title="Federal Criminal Search Child Workflow Execution flow"
-/>
+![Federal Criminal Search Child Workflow Execution flow](/diagrams/background-checks/federal-criminal-search-flow.svg)
 
 <!--SNIPSTART background-checks-federal-criminal-workflow-definition-->
+[Take me to the code](https://github.com/temporalio/background-checks/blob/main/workflows/federal_criminal_search.go)
 <!--SNIPEND-->
 
 ### State Criminal Search
 
-<CenteredImage
-imagePath="/diagrams/learning-path-state-criminal-search-flow.svg"
-imageSize="100"
-title="State Criminal Search Child Workflow Execution flow"
-/>
+![State Criminal Search Child Workflow Execution flow](/diagrams/background-checks/state-criminal-search-flow.svg)
 
 <!--SNIPSTART background-checks-state-criminal-workflow-definition-->
+[Take me to the code](https://github.com/temporalio/background-checks/blob/main/workflows/state_criminal_search.go)
 <!--SNIPEND-->
 
 ### Motor Vehicle Search
 
-<CenteredImage
-imagePath="/diagrams/learning-path-motor-vehicle-search-flow.svg"
-imageSize="100"
-title="State Criminal Search Child Workflow Execution flow"
-/>
+![State Criminal Search Child Workflow Execution flow"](/diagrams/background-checks/motor-vehicle-search-flow.svg)
 
 <!--SNIPSTART background-checks-motor-vehicle-workflow-definition-->
+[Take me to the code](https://github.com/temporalio/background-checks/blob/main/workflows/motor_vehicle_incident_search.go)
 <!--SNIPEND-->
 
 ### Employment Verification
 
-<CenteredImage
-imagePath="/diagrams/learning-path-employment-verification-flow.svg"
-imageSize="100"
-title="Employment Verification Child Workflow Execution flow"
-/>
+![Employment Verification Child Workflow Execution flow](/diagrams/background-checks/employment-verification-flow.svg)
 
 <!--SNIPSTART background-checks-employment-verification-workflow-definition-->
+[Take me to the code](https://github.com/temporalio/background-checks/blob/main/workflows/employment_verification.go)
 <!--SNIPEND-->
 
 ## Which steps within a business process are we mapping to Activities?
@@ -109,11 +87,15 @@ The steps within the business processes that we are mapping to Activities are th
 For this Learning Path application we are using Workflows for searches for a few reasons.
 
 1. Each search could be long running: In a real life scenario, we won't know how long a search might take to give us a result. Individual searches and Background Checks overall can often take hours or days to complete. While Temporal supports long running Activities, an actual search is conducted by a third party system, and therefore Heartbeats are not very helpful here. An Activity will be the one to make the call to the third party system, but we can just set a timeout and let the Workflow Execution be the long running process.
-2. Division of responsibilities: In a real life scenario, you might have a team that is dedicated any particular search. The Background Check team can manages their Workflow Definition, while the the Federal criminal search team manages its own Workflow Definition, for example, to create a sort of inter-team distributed system that can work together to accomplish goals.
+2. Division of responsibilities: In a real life scenario, you might have a team that is dedicated to a particular search. The Background Check team can manages their Workflow Definition, while the the Federal criminal search team manages its own Workflow Definition, for example, to create a sort of inter-team distributed system that can work together to accomplish goals.
    - Bug fixes
    - CI/CD
 3. The state of a Workflow is maintained: The results of an Activity are written to the Workflow Execution Event History. Instead of writing search results directly to our Background Check Workflow Execution, we can keep them separate in their own Workflow Execution and access them independently from Background Check Workflow.
 4. Reduces the need to version Workflows: Workflow Execution Event Histories are separated.
+
+## What happens if an Activity Execution fails?
+
+## What happens if an individual Search fails?
 
 ## Do we need a database?
 
@@ -127,11 +109,7 @@ In a real life scenario, to persist the Event History of the Background Check lo
 
 ## What does the component topology look like?
 
-<CenteredImage
-imagePath="/diagrams/long-running-human-driven-workflow-component-topology.svg"
-imageSize="75"
-title="Long running human driven Workflow component topology"
-/>
+![Long running human driven Workflow component topology](/diagrams/background-checks/long-running-human-driven-workflow-component-topology.svg)
 
 The Temporal Client communicates with the Temporal Cluster.
 
@@ -146,7 +124,7 @@ To encrypt data in the Temporal Platform, we use a Data Converter.
 
 ## How do we know what the status of each Workflow Execution is?
 
-We can use the Temporal Platform's build in List APIs to see the status of any of our Workflow Executions.
+We can use the Temporal Platform's built in List APIs to see the status of any of our Workflow Executions.
 
 ## How do we get data into a running Workflow Execution?
 

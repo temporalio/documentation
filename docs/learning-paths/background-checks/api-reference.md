@@ -1,6 +1,6 @@
 ---
-id: api
-title: Long Running Human Drive Process API reference
+id: api-reference
+title: background-checks API reference
 sidebar_label: API reference
 ---
 
@@ -8,16 +8,14 @@ sidebar_label: API reference
 
 ## `/checks` POST
 
-## `/checks/{email}`
+## `/checks/{email}` GET
 
 ## `/checks/{email}/cancel` POST
 
-## `/checks/{email}/report`
+## `/checks/{email}/report` GET
 
 ## `/checks/{id}/accept` POST
 
 ## `/checks/{id}/decline` POST
 
-## `/checks/{token}/search` POST
-
-## `/candidate/{email}`
+## `/checks/{id}/employmentverify` POST

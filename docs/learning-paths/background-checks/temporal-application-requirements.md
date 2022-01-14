@@ -1,11 +1,9 @@
 ---
-id: what-are-the-application-requirements
+id: application-requirements
 title: What are the requirements of the Long Running Human Driven Process application?
 sidebar_label: Application requirements
 description: TODO
 ---
-
-import CenteredImage from "../../components/CenteredImage.js"
 
 The application in this Learning Path is a simplified and scaled down implementation for the use case.
 As such the requirements are simplified and scaled down to match it.
@@ -20,9 +18,12 @@ We can break down the application requirements in a few different ways.
 
 There are 3 users we need to consider for this application:
 
-- **Company:** The Company user is typically the HR Person who is communicating with the Candidate and has their information. The Company HR Person is the one who initiates Background Checks.
-- **Candidate:** The Candidate is the user who is the subject of the Background Check. They will have to consent to the Background Check.
-- **Researcher:** The Researcher is the user who does some sort of manual "search" for information reg
+- **Company:** The Company user is typically the HR Person who is communicating with the Candidate and has their information.
+The Company HR Person is the one who initiates Background Checks.
+- **Candidate:** The Candidate is the user who is the subject of the Background Check.
+They will have to consent to the Background Check.
+- **Researcher:** The Researcher is the user who does some sort of manual "search" for information regarding the Candidate.
+In our application the Researcher is used to verify the Candidate's employment information.
 
 ### What are the Company experience requirements?
 
@@ -67,12 +68,13 @@ Already we can start to see some of the functional requirements take shape, such
 
 ### APIs
 
-Based on the experiences of the two user types, we know we will need APIs for the following:
+Based on the experiences of the three user types, we know we will need APIs for the following:
 
 - Start a Background Check
 - Accept Background Check
 - Cancel a Background Check
 - List Background Checks
+- Submit research
 - Get the report of a specific Background Check
 
 See the Application API Reference for API details:
@@ -123,11 +125,7 @@ The initial search for either package is an SSN trace meant to find additional a
 
 Now we can envision the the high level step by step flow that we could expect from the application.
 
-<CenteredImage
-imagePath="/diagrams/learning-path-step-by-step-high-level-swim-lane.svg"
-imageSize="100"
-title="High level step-by-step 'Full package' flow"
-/>
+![High level step-by-step 'Full package' flow"](/diagrams/background-checks/step-by-step-high-level-swim-lane.svg)
 
 1. A new Background Check is started by the Company HR person.
    They have entered the Candidates email address and selected a Background Check package, and clicked "Start".
