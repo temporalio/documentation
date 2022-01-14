@@ -22,7 +22,9 @@ This is the entry point of the Temporal Application.
 When a new Background Check is started, this is the function that executes.
 
 <!--SNIPSTART background-checks-main-workflow-definition-->
+
 [Take me to the code](https://github.com/temporalio/background-checks/blob/main/workflows/background_check.go)
+
 <!--SNIPEND-->
 
 ![Main Background Check Workflow Execution flow](/diagrams/background-checks/main-background-check.svg)
@@ -32,7 +34,9 @@ When a new Background Check is started, this is the function that executes.
 ![Candidate Acceptance Child Workflow Execution flow](/diagrams/background-checks/candidate-accept-flow.svg)
 
 <!--SNIPSTART background-checks-accept-workflow-definition-->
+
 [Take me to the code](https://github.com/temporalio/background-checks/blob/main/workflows/accept.go)
+
 <!--SNIPEND-->
 
 ### SSN Trace
@@ -40,7 +44,9 @@ When a new Background Check is started, this is the function that executes.
 ![SSN Trace Child Workflow Execution flow](/diagrams/background-checks/ssn-trace-flow.svg)
 
 <!--SNIPSTART background-checks-snn-trace-workflow-definition-->
+
 [Take me to the code](https://github.com/temporalio/background-checks/blob/main/workflows/ssn_trace.go)
+
 <!--SNIPEND-->
 
 ### Federal Criminal Search
@@ -48,7 +54,9 @@ When a new Background Check is started, this is the function that executes.
 ![Federal Criminal Search Child Workflow Execution flow](/diagrams/background-checks/federal-criminal-search-flow.svg)
 
 <!--SNIPSTART background-checks-federal-criminal-workflow-definition-->
+
 [Take me to the code](https://github.com/temporalio/background-checks/blob/main/workflows/federal_criminal_search.go)
+
 <!--SNIPEND-->
 
 ### State Criminal Search
@@ -56,7 +64,9 @@ When a new Background Check is started, this is the function that executes.
 ![State Criminal Search Child Workflow Execution flow](/diagrams/background-checks/state-criminal-search-flow.svg)
 
 <!--SNIPSTART background-checks-state-criminal-workflow-definition-->
+
 [Take me to the code](https://github.com/temporalio/background-checks/blob/main/workflows/state_criminal_search.go)
+
 <!--SNIPEND-->
 
 ### Motor Vehicle Search
@@ -64,7 +74,9 @@ When a new Background Check is started, this is the function that executes.
 ![State Criminal Search Child Workflow Execution flow"](/diagrams/background-checks/motor-vehicle-search-flow.svg)
 
 <!--SNIPSTART background-checks-motor-vehicle-workflow-definition-->
+
 [Take me to the code](https://github.com/temporalio/background-checks/blob/main/workflows/motor_vehicle_incident_search.go)
+
 <!--SNIPEND-->
 
 ### Employment Verification
@@ -72,7 +84,9 @@ When a new Background Check is started, this is the function that executes.
 ![Employment Verification Child Workflow Execution flow](/diagrams/background-checks/employment-verification-flow.svg)
 
 <!--SNIPSTART background-checks-employment-verification-workflow-definition-->
+
 [Take me to the code](https://github.com/temporalio/background-checks/blob/main/workflows/employment_verification.go)
+
 <!--SNIPEND-->
 
 ## Which steps within a business process are we mapping to Activities?

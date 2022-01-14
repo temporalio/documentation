@@ -19,11 +19,11 @@ We can break down the application requirements in a few different ways.
 There are 3 users we need to consider for this application:
 
 - **Company:** The Company user is typically the HR Person who is communicating with the Candidate and has their information.
-The Company HR Person is the one who initiates Background Checks.
+  The Company HR Person is the one who initiates Background Checks.
 - **Candidate:** The Candidate is the user who is the subject of the Background Check.
-They will have to consent to the Background Check.
+  They will have to consent to the Background Check.
 - **Researcher:** The Researcher is the user who does some sort of manual "search" for information regarding the Candidate.
-In our application the Researcher is used to verify the Candidate's employment information.
+  In our application the Researcher is used to verify the Candidate's employment information.
 
 ### What are the Company experience requirements?
 
