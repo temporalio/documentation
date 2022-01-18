@@ -8,9 +8,10 @@ sidebar_label: Metrics
 ## Worker/SDK Metrics
 
 The Temporal SDKs emit a largely common set of metrics. Note that all the below metrics are prefixed
-with `temporal_` before being exported to their configured destination(s). `Core` 
+with `temporal_` before being exported to their configured destination(s). `Core`
 
 ### Keys
+
 The metrics always have some keys/labels attached to them. Their definitions:
 
 - `task-queue` - Task queue the worker polls on
@@ -26,7 +27,7 @@ The metrics always have some keys/labels attached to them. Their definitions:
 Note that `Core` includes the Typescript SDK.
 
 | Name                                      | Desc                                                                                                                                                            | Metric Type | Exists In SDK                               | Keys                                                |
-|-------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|---------------------------------------------|-----------------------------------------------------|
+| ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- | ------------------------------------------- | --------------------------------------------------- |
 | activity_execution_cancelled              | An activity execution was cancelled                                                                                                                             | Counter     | Java                                        | activity_type, namespace, task_queue                |
 | activity_execution_failed                 | An activity execution failed                                                                                                                                    | Counter     | Core, Go, Java                              | activity_type, namespace, task_queue                |
 | activity_execution_latency                | Time it took to complete activity execution, from the time core generated the activity task, to the time lang responded with a completion (failure or success). | Histogram   | Core, Go, Java                              | activity_type, namespace, task_queue                |
