@@ -1,6 +1,6 @@
 ---
 id: how-to-test-workflow-definitions-in-go
-title: How to test Workflow Defitions in Go
+title: How to test Workflow defitions in Go
 sidebar_label: Testing and debugging
 ---
 
