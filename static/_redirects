@@ -57,8 +57,8 @@
 /docs/go-sync-vs-async-start        /docs/go/sync-vs-async-start
 /docs/go/sync-vs-async-start        /docs/go/workflows/#how-to-start-a-workflow
 /docs/go-task-queues        /docs/go/task-queues
-/docs/go-testing        /docs/go/testing
-/docs/go-workflow-testing         /docs/go/testing
+/docs/go-testing        /docs/go/how-to-test-workflow-definitions-in-go
+/docs/go-workflow-testing         /docs/go/how-to-test-workflows-definitions-in-go
 /docs/go-tracing        /docs/go/tracing
 /docs/go-tutorial-prerequisites         /docs/go/tutorial-prerequisites
 /docs/go-versioning         /docs/go/versioning
