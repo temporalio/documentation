@@ -1,5 +1,5 @@
 ---
-id: Metrics
+id: metrics
 title: Temporal Metrics
 description: Temporal and Workers both emit metrics| this page describes them
 sidebar_label: Metrics
