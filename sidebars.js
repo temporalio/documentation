@@ -115,7 +115,7 @@ module.exports = {
         "go/error-handling",
         "go/selectors",
         "go/how-to-execute-a-side-effect-in-go",
-        "go/testing",
+        "go/how-to-test-workflow-definitions-in-go",
         "go/versioning",
         "go/sessions",
         "go/tracing",
