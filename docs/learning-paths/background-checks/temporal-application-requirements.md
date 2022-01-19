@@ -56,17 +56,20 @@ The HR person will also have a separate option that is always available to them 
 The Candidate must consent to the Background Check while simultaneously providing/confirming their name, address, DOB, & Social Security Number.
 Here you can envision the Candidate receiving an email with a link to a secured web form that has an input field for their SSN, a checkbox to confirm consent, a checkbox to confirm that their other information is correct, and a button that says "Submit" .
 
-For this Learning Path we will be simulating this experience through the use of the Candidate CLI.
+For this application the experience can be simulated through either a UI or CLI.
 
 ### What are the Researcher experience requirements?
 
-The Researcher is the other human in this long running process.
+The Researcher investigates and verifies the employment history of a Candidate.
+They receive the request to verify via an email, and they must have a means to provide the results of their research.
+
+For this application the experience can be simulated through either a UI or CLI.
 
 ## What are the application's functional requirements?
 
 Already we can start to see some of the functional requirements take shape, such as application APIs, data encryption for PII, the ability to await on Candidate input for hours or days if needed, and the ability to conduct checks concurrently whenever possible.
 
-### APIs
+**APIs**
 
 Based on the experiences of the three user types, we know we will need APIs for the following:
 
@@ -81,18 +84,29 @@ See the Application API Reference for API details:
 
 [Application API reference](/docs/learning-paths/background-checks/api-reference)
 
-### CLIs
+**UIs**
 
-We will need a CLI for each user type to represent the experience they would have from a user interface.
+- The Company HR person needs a dedicated UI to start, cancel, or list Background Checks.
+- The Candidate needs a UI to accept the Background Check.
+- The Researcher needs a UI to provide the results of their research.
+
+**CLIs**
+
+As a back up, or alternative to using a UI, we can have a CLI for each user type that makes use of the same APIs that the the UIs do.
 
 [Application CLI reference](/docs/learning-paths/background-checks/cli-reference)
 
-### Handling PII
+**How we handle PII**
 
-Because we are dealing with PII (Personal Identifiable Information) the application must have a way to encrypt data while it is in transit, and at rest in the system.
+Because we are dealing with PII (Personal Identifiable Information) the application must have a way to encrypt and decrypt data.
 
-### Awaiting
+The PII that the application processes includes a Candidate's SSN, contact information, DOB, and personal addresses.
 
+**Wait on humans**
+
+There are two scenarios where the Background Check must wait on a human.
+
+The first is when a
 The Candidate needs a secure way to provide their SSN and confirm their consent.
 
 The Company would like this to happen all at the same time and it needs to be the first step in the Background Check process. That way, the checks can start immediately and automatically as soon as the Candidate confirms.
@@ -101,7 +115,7 @@ However, there is no guarantee of when the Candidate might take this step after 
 
 Additionally there is no guarantee on how long each check might take.
 
-Therefor the application must be able to maintain the state of the Background Check over many days, and perhaps even weeks, awaiting on data.
+Therefore the application must be able to maintain the state of the Background Check over many days, and perhaps even weeks, awaiting on data.
 
 ### Concurrent Background Check Searches
 

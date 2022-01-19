@@ -113,7 +113,7 @@ However, in real life, our application could use as many Worker Processes each w
 
 ## How do we ensure PII is encrypted in the Temporal Platform?
 
-To encrypt data in the Temporal Platform, we use a Data Converter.
+To encrypt data in the Temporal Platform, we use a customized [Data Converter](/docs/content/what-is-a-data-converter).
 
 ## How do we know what the status of each Workflow Execution is?
 
