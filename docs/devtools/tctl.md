@@ -8,6 +8,8 @@ The Temporal CLI is a command-line tool you can use to perform various tasks on 
 It can perform namespace operations such as register, update, and describe as well as Workflow operations like start
 Workflow, show Workflow history, and signal Workflow.
 
+A new reference is in progress: [tctl reference](/docs/reference/tctl)
+
 ## Run the CLI
 
 You can run the CLI in four ways.
