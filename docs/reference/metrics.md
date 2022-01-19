@@ -1,14 +1,15 @@
 ---
-id: metrics
-title: Temporal Metrics
-description: Temporal and Workers both emit metrics| this page describes them
-sidebar_label: Metrics
+id: worker-metrics
+title: Worker & SDK Metrics
+description: Temporal SDK Clients and Workers both emit metrics, this page describes them
+sidebar_label: Worker & SDK Metrics
 ---
 
-## Worker/SDK Metrics
+# Worker/SDK Metrics
 
 The Temporal SDKs emit a largely common set of metrics. Note that all the below metrics are prefixed
-with `temporal_` before being exported to their configured destination(s). `Core`
+with `temporal_` before being exported to their configured destination(s). The `Core` SDK type
+includes all SDKs based on it, which as of now is only the Typescript SDK.
 
 ### Keys
 
@@ -79,7 +80,3 @@ If you're curious about how the metrics are defined in source, see:
 
 - Histograms may have different buckets in different languages.
 - Some labels may not apply in every SDK
-
-## Server Metrics
-
-Documentation coming soon
