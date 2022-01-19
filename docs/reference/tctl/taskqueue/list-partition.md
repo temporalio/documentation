@@ -3,10 +3,8 @@ id: list-partition
 title: tctl taskqueue list-partition
 description: How to list Task Queue partitions and the hostname for partitions using tctl.
 tags:
-
-- reference
-- tctl
-
+  - reference
+  - tctl
 ---
 
 <!-- prettier-ignore -->
