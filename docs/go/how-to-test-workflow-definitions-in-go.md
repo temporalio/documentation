@@ -1,6 +1,6 @@
 ---
-id: testing
-title: Testing and debugging
+id: how-to-test-workflow-definitions-in-go
+title: How to test Workflow defitions in Go
 sidebar_label: Testing and debugging
 ---
 
@@ -91,6 +91,8 @@ the test environment in a setup method. For testing Workflows, we use a `testsui
 Next, we implement a `SetupTest` method to set up a new test environment before each test. Doing so
 ensures that each test runs in its own isolated sandbox. We also implement an `AfterTest` function
 where we assert that all mocks we set up were indeed called by invoking `s.env.AssertExpectations(s.T())`.
+
+Timeout for the entire test can be set using `SetTestTimeout` in the Workflow or Activity environment.
 
 Finally, we create a regular test function recognized by "go test" and pass the struct to `suite.Run`.
 
