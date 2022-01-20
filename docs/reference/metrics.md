@@ -1,5 +1,5 @@
 ---
-id: worker-metrics
+id: sdk-metrics
 title: Worker & SDK Metrics
 description: Temporal SDK Clients and Workers both emit metrics, this page describes them
 sidebar_label: Worker & SDK Metrics
