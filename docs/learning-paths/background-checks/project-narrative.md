@@ -58,9 +58,8 @@ In their search, they came across the Temporal Platform.
 
 ### Why is the Temporal Platform a great fit for this use case?
 
-Code based workflows appeal to developers.
-Business processes (Background Checks) map directly to Workflow functions.
-This results in a very close mapping of business requirements to code and vice versa.
+Code based workflows appeal to developers as business processes (Background Checks) map directly to Workflow functions.
+This results in a very close mapping of business requirements to code.
 
 The Temporal Platform has built in support to handle a wide set of failures so there isn’t a need to maintain infrastructure for that purpose.
 

@@ -27,7 +27,7 @@ This starts up a new Docker Application with a stack of containers.
 
 ## How to monitor the application
 
-Once the applications has started you can navigate to Grafana at http://localhost:3000/.
+Once the application has started you can navigate to Grafana at http://localhost:3000/.
 
 Click the Dashboards->Home button and click on the Temporal dashboard.
 This dashboards contains information about your Temporal server, as well as information about your workflows, activities, persistence, and service client information.
@@ -45,7 +45,7 @@ From the project root use `./run-cli` to execute the [`bgc-company start`](/docs
 The main Workflow Execution is now viewable in the [Temporal UI - http://localhost:8088/](http://localhost:8088/)
 
 The very first thing the Background Check application does is send an email to the Candidate.
-For this Learning Path we are using a single mailbox using a single mail server running in one of the Docker containers.
+In this application we are using a single mailbox running on a single mail server running in one of the Docker containers.
 This means that the Company HR person, Candidate, and Researcher personas receive their emails in this mailbox.
 Look at the "To" address to distinguish between personas in the mailbox.
 
@@ -65,7 +65,7 @@ If the "full" package is selected the Background Check application sends an emai
 
 Head back over to the mailbox to see the new email and follow the instructions inside to verify employment history and allow the Background Check to proceed.
 
-When all the Searches have completed, the Background Check application compiles a report and sends it in an email back to the Company HR person.
+When all the Searches have completed, the Background Check application sends an email to the Company HR person with the report in it.
 
 **While pretending to be the Company HR person...**
 
