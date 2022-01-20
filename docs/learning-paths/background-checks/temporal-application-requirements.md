@@ -1,6 +1,6 @@
 ---
 id: application-requirements
-title: What are the requirements of the Long Running Human Driven Process application?
+title: What are the requirements of the Background Check application?
 sidebar_label: Application requirements
 description: TODO
 ---
@@ -27,11 +27,13 @@ There are 3 users we need to consider for this application:
 
 ### What are the Company experience requirements?
 
-The HR person at the Company is the one who initiates the Background Check for a given Candidate. To start a Background Check they need the email address of the Candidate.
+The HR person at the Company is the one who initiates the Background Check for a given Candidate.
+To start a Background Check they need the email address of the Candidate.
 
-In real life, the HR Person would probably already have more of the Candidate's information such as, name, physical address, and date of birth. For this Learning Path the Candidate will enter that information at the same time that they accept/consent to the Background Check to simplify the experience.
+In real life, the HR Person would probably already have more of the Candidate's information such as, name, physical address, and date of birth. For this application the Candidate will enter that information at the same time that they accept the Background Check to simplify the experience.
 
-The HR person must also be ready to select which checks need to be performed for the position the Candidate is being hired for. For this Learning Path we will assume that the HR person can select from just two packages:
+The HR person must also be ready to select which checks need to be performed for the position the Candidate is being hired for.
+For this application we will assume that the HR person can select from just two packages:
 
 - Standard package
 - Full package
@@ -47,13 +49,14 @@ After entering the information and clicking the button the HR person has two opt
 
 After the Background Check fully completes, the option to cancel will go away and all that will remain is the option to see the final status.
 
-For this Learning Path, we will be simulating this experience through the use of a shared mailbox and the [Company CLI](/docs/learning-paths/background-checks/cli-reference#bgc-company).
+For this application, we will be simulating this experience through the use of a shared mailbox.
+A dedicated UI will be available to the HR Person as well as a [Company CLI](/docs/learning-paths/background-checks/cli-reference#bgc-company).
 
 The HR person will also have a separate option that is always available to them to list the metadata of Background Checks that are in the system, and filter them by Candidate, status, or Background Check Id.
 
 ### What are the Candidate experience requirements?
 
-The Candidate must consent to the Background Check while simultaneously providing/confirming their name, address, DOB, & Social Security Number.
+The Candidate must accept the Background Check while simultaneously providing/confirming their name, address, DOB, & Social Security Number.
 Here you can envision the Candidate receiving an email with a link to a secured web form that has an input field for their SSN, a checkbox to confirm consent, a checkbox to confirm that their other information is correct, and a button that says "Submit" .
 
 For this application the experience can be simulated through either a UI or CLI.
@@ -99,29 +102,32 @@ As a back up, or alternative to using a UI, we can have a CLI for each user type
 **How we handle PII**
 
 Because we are dealing with PII (Personal Identifiable Information) the application must have a way to encrypt and decrypt data.
-
 The PII that the application processes includes a Candidate's SSN, contact information, DOB, and personal addresses.
+There must be a consistent way to ensure data is encoded while it is in the Temporal Platform, but and decodable when needed.
 
 **Wait on humans**
 
 There are two scenarios where the Background Check must wait on a human.
 
-The first is when a
-The Candidate needs a secure way to provide their SSN and confirm their consent.
+The first is when a the Candidate must accept the Background Check.
+During this step, the Candidate must also need a secure way to provide their SSN and other PII.
+It is the first step of the Background Check, and once complete the additional Searches can start automatically.
 
-The Company would like this to happen all at the same time and it needs to be the first step in the Background Check process. That way, the checks can start immediately and automatically as soon as the Candidate confirms.
+The second is when a Researcher must respond to a Research Request.
+In our application, a Researcher is used to verify employment of the Candidate.
+We must pretend that, after receiving an email with the Research Request, the Researcher would make some phone calls and send some emails of their own to verify employment.
+They must then send their results back to the application.
 
-However, there is no guarantee of when the Candidate might take this step after the HR person has initiated the Background Check.
-
-Additionally there is no guarantee on how long each check might take.
-
-Therefore the application must be able to maintain the state of the Background Check over many days, and perhaps even weeks, awaiting on data.
+In both cases, there is no guarantee of when the Candidate or Researcher might take action.
+The email requesting action could sit in their inboxes, unnoticed for some time.
+Therefore the application must be able to maintain the state of the Background Check over many days, and perhaps even weeks, waiting on data.
 
 ### Concurrent Background Check Searches
 
-Many of the Background Check search should happen concurrently.
+Many of the Background Check Search should happen concurrently.
 
-The Company HR Person will be able to select from two different packages of searches. The following are the predefined Background Check packages available to the Company HR Person to select when they kick off a Background Check for a Candidate.
+The Company HR Person will be able to select from two different packages of Searches.
+The following are the predefined Background Check packages available to the Company HR Person to select when they kick off a Background Check for a Candidate.
 
 - Standard package
   - SSN trace
@@ -133,7 +139,9 @@ The Company HR Person will be able to select from two different packages of sear
   - Employment verification
   - State criminal search
 
-The initial search for either package is an SSN trace meant to find additional addresses associated with the Candidate. Those addresses are used in the other Individual checks. However, all checks beyond the SSN trace should be conducted in parallel to save as much time as possible.
+The initial Search for either package is an SSN trace meant to find additional addresses associated with the Candidate.
+Those addresses are used in the other Individual checks.
+However, all checks beyond the SSN trace should be conducted in parallel to save as much time as possible.
 
 ## What is the step-by-step flow?
 

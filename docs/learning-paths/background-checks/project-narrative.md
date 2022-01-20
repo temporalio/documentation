@@ -1,7 +1,7 @@
 ---
 id: project-narrative
-title: Welcome to the background-checks project
-description: TODO
+title: Welcome to the Background Check project
+description: The goal of this project is to teach you, the developer, how to think about building Temporal Applications that have Long Running Human Driven Workflows using a Temporal SDK, by leading you through a comprehensive implementation within the context of a real-life use case.
 sidebar_label: Introduction
 ---
 

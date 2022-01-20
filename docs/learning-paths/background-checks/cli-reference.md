@@ -1,6 +1,6 @@
 ---
 id: cli-reference
-title: background-checks CLI reference
+title: Background Checks CLI reference
 sidebar_label: CLI reference
 ---
 

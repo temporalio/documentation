@@ -1,7 +1,7 @@
 ---
 id: how-to-use
 title: How to use the Background Check application
-description: TODO
+description: Make sure you have Docker Desktop installed, clone the repo, and run `./start`.
 sidebar_label: How to run the app
 ---
 
@@ -25,7 +25,14 @@ cd background-checks
 
 This starts up a new Docker Application with a stack of containers.
 
-### How to run a Background Check
+## How to monitor the application
+
+Once the applications has started you can navigate to Grafana at http://localhost:3000/.
+
+Click the Dashboards->Home button and click on the Temporal dashboard.
+This dashboards contains information about your Temporal server, as well as information about your workflows, activities, persistence, and service client information.
+
+## How to run a Background Check
 
 **While pretending to be the Company HR person...**
 
@@ -80,4 +87,14 @@ You can see the status of specific Background Check by providing the `--email` m
 ./run-cli bgc-company list --email your-email@example.com
 ```
 
-### How to cancel a Background Check
+## How to cancel a Background Check
+
+**While pretending to be the Company HR Person...**
+
+Run the [`bgc-company cancel`](/docs/learning-paths/background-checks/cli-reference/#cancel) command.
+
+```
+./run-cli bgc-company cancel --email your-email@example.com --id <Run Id>
+```
+
+You can obtain the Run Id from the [Temporal Web UI - http://localhost:8088/](http://localhost:8088/)
