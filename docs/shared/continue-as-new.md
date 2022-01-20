@@ -1,6 +1,6 @@
 Temporal stores the execution history of all Workflows.
 There is a maximum limit of this execution history (50,000 events).
-Even though Temporal Server emits warnings while your workflow are approaching this limit (every 10,000 events), you should make sure
+Even though Temporal Server emits warnings while your Workflows are approaching this limit (every 10,000 events), you should make sure
 your workflows don't reach it.
 
 Workflows that periodically execute a number of Activities, for a long time, have the potential

@@ -83,7 +83,7 @@ function SDKs() {
               <img
                 className="pl-1 w-7 h-7 transition hover:scale-110"
                 src="/img/typescript.svg"
-                alt="Typescript logo"
+                alt="TypeScript logo"
               />
               <p className="font-semibold">TypeScript</p>
             </div>

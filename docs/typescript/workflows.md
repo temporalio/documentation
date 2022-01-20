@@ -880,6 +880,8 @@ import PCP from '../content/what-is-a-parent-close-policy.md'
 
 ## Entity Workflows
 
+An **Entity Workflow** is a Workflow that represents a single business entity (like a user) and runs indefinitely (for example, until the user deletes their account). Entity Workflows and other Workflows that run for a long period of time need to use `continueAsNew`.
+
 <details>
 <summary>Why ContinueAsNew is needed
 </summary>
