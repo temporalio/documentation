@@ -61,18 +61,19 @@ A full example for Clients looks like this:
 import { Connection, WorkflowClient } from '@temporalio/client';
 
 const connection = new Connection({
-    address: 'foo.bar.tmprl.cloud', // defaults port to 7233 if not specified
-    tls: { // set to true if TLS without mTLS
-        // See docs for other TLS options
-        clientCertPair: {
-            crt: clientCert,
-            key: clientKey,
-        },
+  address: 'foo.bar.tmprl.cloud', // defaults port to 7233 if not specified
+  tls: {
+    // set to true if TLS without mTLS
+    // See docs for other TLS options
+    clientCertPair: {
+      crt: clientCert,
+      key: clientKey,
     },
+  },
 });
 await connection.untilReady();
 const client = new WorkflowClient(connection.service, {
-  namespace: 'foo.bar' // as explained in Namespaces section
+  namespace: 'foo.bar', // as explained in Namespaces section
 });
 ```
 
@@ -83,24 +84,25 @@ import { Worker, Core } from '@temporalio/worker';
 import * as activities from './activities';
 
 async function run() {
-    await Core.install({
-        serverOptions: {
-            address: 'foo.bar.tmprl.cloud', // defaults port to 7233 if not specified
-            namespace: 'foo.bar', // as explained in Namespaces section
-            tls: { // set to true if TLS without mTLS
-              // See docs for other TLS options
-              clientCertPair: {
-                  crt: clientCert,
-                  key: clientKey,
-              },
-            },
+  await Core.install({
+    serverOptions: {
+      address: 'foo.bar.tmprl.cloud', // defaults port to 7233 if not specified
+      namespace: 'foo.bar', // as explained in Namespaces section
+      tls: {
+        // set to true if TLS without mTLS
+        // See docs for other TLS options
+        clientCertPair: {
+          crt: clientCert,
+          key: clientKey,
         },
-    });
+      },
+    },
+  });
 
-    const worker = await Worker.create({
-      // ...
-    });
-    await worker.run();
+  const worker = await Worker.create({
+    // ...
+  });
+  await worker.run();
 }
 
 run().catch((err) => {
