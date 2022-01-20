@@ -26,7 +26,7 @@ import { ResponsivePlayer } from '../src/components'
 
 <ResponsivePlayer url='https://www.youtube.com/watch?v=bKRIkbxrVjs' />
 
-## Operational Health Metrics - Monitoring and Alerting
+## Operational Health Metrics - Monitoring and Alerting (02:30)
 
 The great thing about Temporal is that you can develop against it locally without constraints (and it is getting even faster with [temporalite](https://github.com/DataDog/temporalite)). But when it comes to running your Temporal applicaiton in production, you are now dealing with a distributed system.
 
@@ -45,13 +45,13 @@ Temporal emits a lot of metrics, both client and server, which gives insights in
     - What is your Workflow Task latency?
     - **Set alerts for Workflow Task failure rate**
 - **Scaling**
-    - **Set alerts on [Activity Schedule to Start latency and Workflow Schedule to Start latency**](https://docs.temporal.io/docs/server/production-deployment/#scaling-and-metrics) and scale your Workers based on that
+    - **Set alerts on [Activity Schedule to Start latency and Workflow Schedule to Start latency](https://docs.temporal.io/docs/server/production-deployment/#scaling-and-metrics)** and scale your Workers based on that
 
 Our full reference on [SDK/Worker metrics is here](https://docs.temporal.io/docs/reference/sdk-metrics/).
 
 When you have ingested all these metrics and have set up a dashboard to give you visibility, at least now you can start getting a n overall picture of what’s going on with the system.
 
-## Incident Reponse & Tooling
+## Incident Reponse & Tooling (10:06)
 
 When Workflow Task Failure rates spike, you are now in incident response mode. There can be many possible causes, so the first thing an operator needs to do is to figure out whether the failure is from your application or Temporal Server. 
 
@@ -60,7 +60,7 @@ When Workflow Task Failure rates spike, you are now in incident response mode. T
 - **Execution History**. You should be able to tell whether your failures are coming from one particular workflow type, and to be able to isolate a specific workflow/run ID to investigate. You can then use **Temporal Web or Temporal CLI (tctl)** to look at the state and execution history of that workflow, which will reveal more datapoints on how to debug. In the history view, you should be able to see the entire call stack of the failure as well.
 - **Replay**. You can also **replay the Workflow** to investigate it, by downloading the execution history via the Web or CLI tool, and stepping through the code using a debugger on your local machine.
 
-## Upgrading and Versioning
+## Upgrading and Versioning (17:59)
 
 How do you migrate long running workflows that are still in flight? Most developers who hand roll their own job scheduling and orchestration frameworks don’t have anything better than “deploy and pray”, but Temporal offers a first class solution.
 
@@ -84,7 +84,7 @@ We have also published a **[30 min tutorial on versioning](https://www.youtube.c
 - **Use Task Queues for Short-Lived Workflows**: Think through your upgrade strategy - you may not even need versioning if your workflows are short-lived enough! If you just want to cut over to new code, you can run old code on the same Task Queue with a subset of Workers, and run new code on a different set of Workers with a new Task Queue!
 - **Worst Case**: When in doubt - take a breath - because of Temporal’s event sourced nature, if a migration is screwed up, **our worst case is that your Workflows don’t make progress** - latency will spike, but data will not be lost - just make sure you are fully familiar with metrics and logs to investigate issues!
 
-## Testing Failure Paths
+## Testing Failure Paths (24:38)
 
 Most people (including us) primarily code for happy paths when thinking about business logic. However there are some unhappy paths that are persistently overlooked:
 
