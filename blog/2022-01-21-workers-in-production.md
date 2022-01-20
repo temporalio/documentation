@@ -15,6 +15,8 @@ release_version: V1.14.3
 
 Whether you are self hosting Temporal Server or using Temporal Cloud, a key part of the operational model of Temporal is running your own Workers. We recently hosted a chat with Temporal CTO Samar Abbas on the 4 main areas to note when productionizing your Temporal Workers:
 
+<!--truncate-->
+
 - Operational Metrics - Monitoring and Alerting
 - Incident Response & Tooling
 - Upgrading and Versioning
