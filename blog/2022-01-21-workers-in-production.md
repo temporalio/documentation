@@ -20,6 +20,10 @@ Whether you are self hosting Temporal Server or using Temporal Cloud, a key part
 - Upgrading and Versioning
 - Testing Failure Paths
 
+import { ResponsivePlayer } from '../src/components'
+
+<ResponsivePlayer url='https://www.youtube.com/watch?v=bKRIkbxrVjs' />
+
 ## Operational Health Metrics - Monitoring and Alerting
 
 The great thing about Temporal is that you can develop against it locally without constraints (and it is getting even faster with [temporalite](https://github.com/DataDog/temporalite)). But when it comes to running your Temporal applicaiton in production, you are now dealing with a distributed system.
