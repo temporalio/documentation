@@ -93,3 +93,6 @@ Most people (including us) primarily code for happy paths when thinking about bu
 - **Capacity Planning**: End to end tests that include Worker outages not only help find edge cases like backlogs. When the system has a backlog, the system’s resource consumption is very different than under normal circumstances. Always do capacity planning accounting for cases where the system is going through heavy load due to backlog or spikes.
     - Note: we have also written about [how we do stress testing](https://docs.temporal.io/blog/temporal-deep-dive-stress-testing/) and [Maru is a third party load testing tool](https://mikhail.io/2021/03/maru-load-testing-tool-for-temporal-workflows/).
 - **Timeouts**: Temporal provides [4 kinds of Activity timeouts](https://docs.temporal.io/blog/activity-timeouts/) (we don’t recommend using Workflow timeouts) and a declarative [Retry Policy](https://docs.temporal.io/docs/concepts/activities/#retries) which are very flexible, which is powerful but can be a source of mistakes. We recommend explicitly unit- and integration-testing for these timeouts - don’t assume that the code you have written will behave as you intended.
+
+
+Did this discussion help with your production concerns? What other questions to you wish to ask? Email [swyx@temporal.io](mailto:swyx@temporal.io) to request the next topic!
