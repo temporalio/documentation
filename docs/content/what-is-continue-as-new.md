@@ -8,16 +8,16 @@ tags:
   - continue-as-new
 ---
 
-Continue-As-New is the mechanism by which all relevant state is passed to a new Workflow Execution with a fresh Event History.
+Continue-As-New is a mechanism by which the latest relevant state is passed to a new Workflow Execution, with a fresh Event History.
 
-The reason why this exists is to prevent a Workflow Execution Event History from becoming too large.
-As a precautionary measure, the Temporal Platform limits Event Histories to 50,000 and will warn you every 10,000 Events.
+As a precautionary measure, the Temporal Platform limits Event History to 50,000 Events, and will warn you every 10,000 Events.
+To prevent a Workflow Execution Event History from exceeding this limit and failing, use Continue-As-New to start a new Workflow Execution with a fresh Event History.
 
 All values passed to a Workflow Execution through parameters or returned through a result value are recorded into the Event History.
 A Temporal Cluster stores the full Event History of a Workflow Execution for duration of a Namespace's retention period.
 A Workflow Execution that periodically executes a large number of Activities has the potential of hitting the size limit.
 
-A very large Event History can adversely performance of a Workflow Execution.
+A very large Event History can adversely affect the performance of a Workflow Execution.
 For example, in the case of a Workflow Worker failure, the full Event History must be pulled from the Temporal Cluster and given to another Worker via a Workflow Task.
 If the Event history is very large, it may take some time to load it.
 
