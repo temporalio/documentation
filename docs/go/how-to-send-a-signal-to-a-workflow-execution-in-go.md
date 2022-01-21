@@ -2,7 +2,7 @@
 id: how-to-send-a-signal-to-a-workflow-execution-in-go
 title: How to send a Signal to a Workflow Execution in Go
 sidebar_label: Sending Signals
-description: todo
+description: Use the `SignalWorkflow()` method on and instance of the Go SDK Temporal Client to send a Signal to a Workflow Execution.
 tags:
   - go
   - developer-guide
