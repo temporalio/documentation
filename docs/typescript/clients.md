@@ -329,7 +329,7 @@ Outputs:
 </details>
 
 <details>
-<summary><a class="font-mono" href="https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.WorkflowService-1#listworkflowexecutions) (requires ElasticSearch">listWorkflowExecutions</a>
+<summary><a class="font-mono" href="https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.WorkflowService-1#listworkflowexecutions) (requires ElasticSearch)">listWorkflowExecutions</a>
 </summary>
 
 ```ts
