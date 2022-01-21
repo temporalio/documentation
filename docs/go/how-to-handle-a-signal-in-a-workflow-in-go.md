@@ -2,7 +2,7 @@
 id: how-to-handle-a-signal-in-a-workflow-in-go
 title: How to handle a Signal in a Workflow in Go
 sidebar_label: Handling Signals
-description: TODO
+description: Use the `GetSignalChannel()` API from the `go.temporal.io/sdk/workflow` package to get the Signal Channel.
 tags:
   - go
   - developer-guide
