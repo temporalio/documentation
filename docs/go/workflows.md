@@ -43,6 +43,7 @@ rwo := workflow.RegisterOptions {
 }
 w.RegisterWorkflowWithOptions(dynamic.SampleGreetingsWorkflow, rwo)
 ```
+
 ### Querying Workflow State
 
 When you start a Workflow with `ExecuteWorkflow`, a `WorkflowExecution` is returned (which is the `we` variable above).
