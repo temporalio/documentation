@@ -61,14 +61,14 @@ export default function Security() {
           </div>
           <div className="row">
             <div className={clsx("col col--5", styles.securityPageHeaders)}>
-              <h2>SOC2 Type 1</h2>
+              <h2>SOC2 Type 2</h2>
             </div>
             <div className={clsx("col col--4", styles.justifyLeft)}>
               <p>
-                Temporal Technologies Inc was issued a clean SOC2 Type 1 report
-                on Janurary 31st 2021 from{" "}
-                <a href="https://www.connor-consulting.com/">
-                  Connor Consulting
+                Temporal Technologies Inc was issued a clean SOC2 Type 2 report
+                on July 31, 2021 from{" "}
+                <a href="https://www.schneiderdowns.com/">
+                  Schneider Downs
                 </a>
               </p>
               <div className={styles.justifyCenter}>
