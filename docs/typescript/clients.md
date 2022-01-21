@@ -265,21 +265,8 @@ Again, see the [Workflow APIs documentation](/docs/typescript/workflows#external
 Under the hood of a `WorkflowClient`, the `Connection` is actually powered by a `WorkflowService` driver that makes the raw gRPC calls to Temporal Server.
 This Service is capable of making a wider range of introspection calls (as per [the API reference](https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.WorkflowService-1#methods)):
 
-```ts
-import { Connection, WorkflowClient } from '@temporalio/client';
-
-const connection = new Connection(); // to configure connection for production
-
-// normal Workflow client
-const client = new WorkflowClient(connection.service);
-await client.start(/* etc */);
-
-// equivalent in raw gRPC calls
-// promise-based API
-await connection.service.startWorkflowExecution(/* etc */);
-// alternate Node callback-style API
-connection.service.startWorkflowExecution(/* options */, callbackFn);
-```
+<!--SNIPSTART typescript-grpc-call-basic-->
+<!--SNIPEND-->
 
 Using gRPC calls is often the only way to access some of the more advanced queries you can make from Temporal Server.
 We highlight some queries of interest here:
@@ -288,13 +275,8 @@ We highlight some queries of interest here:
 <summary><a class="font-mono" href="https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.WorkflowService-1#getworkflowexecutionhistory">getWorkflowExecutionHistory</a>
 </summary>
 
-```ts
-const res = await connection.service.getWorkflowExecutionHistory({
-  execution: { workflowId: 'my-business-id' },
-  namespace: 'default',
-});
-console.log(res.history);
-```
+<!--SNIPSTART typescript-grpc-call-getWorkflowExecutionHistory-->
+<!--SNIPEND-->
 
 Outputs:
 
@@ -332,12 +314,8 @@ Outputs:
 <summary><a class="font-mono" href="https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.WorkflowService-1#listworkflowexecutions) (requires ElasticSearch)">listWorkflowExecutions</a>
 </summary>
 
-```ts
-const res = await connection.service.listWorkflowExecutions({
-  namespace: 'default',
-});
-console.table(res.executions);
-```
+<!--SNIPSTART typescript-grpc-call-listWorkflowExecutions-->
+<!--SNIPEND-->
 
 Outputs:
 
