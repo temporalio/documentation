@@ -66,7 +66,7 @@ export default function Security() {
             <div className={clsx("col col--4", styles.justifyLeft)}>
               <p>
                 Temporal Technologies Inc was issued a clean SOC2 Type 2 report
-                on July 31, 2021 from{" "}
+                on July 31, 2021, from{" "}
                 <a href="https://www.schneiderdowns.com/">Schneider Downs</a>
               </p>
               <div className={styles.justifyCenter}>
