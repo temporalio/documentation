@@ -21,7 +21,7 @@ sidebar_label: Samples library
 - [**eCommerce application example in Go**](https://github.com/temporalio/temporal-ecommerce): Showcases a per-user shopping cart–style Workflow Definition that includes an API for adding and removing items from the cart as well as a web UI.
   This application sample works in conjunction with the [eCommerce in Go tutorial](/blog/tags/go-ecommerce-tutorial).
 
-- [Go Samples repo](https://github.com/temporalio/samples-go#samples-directory)
+- [**Go Samples repo**](https://github.com/temporalio/samples-go#samples-directory)
 
 ## Java
 
