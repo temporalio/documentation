@@ -19,7 +19,7 @@ For the past 45 years, the database community has enjoyed an unparalleled develo
 
 Despite many advancements in the past 20 years, the distributed systems community has not enjoyed an equivalent developer experience: There is no abstraction that mitigates failure in totality on a platform level, guaranteeing correctness on an application level.
 
-However, [Temporal](temporal.io) changes that equation! 
+However, [Temporal](https://temporal.io/) changes that equation! 
 
 ## Introduction
 
