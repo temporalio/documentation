@@ -2,13 +2,13 @@
 tags:
   - v1
   - Temporal
-posted_on_: 2022-01-20T07:00:00Z
+posted_on_: 2022-01-24T07:00:00Z
 slug: dominik-workflow-part-1
 title: 'Introduction to Temporal Workflows'
 author: Dominik Tornow
 author_title: Engineering
 author_image_url: https://avatars.githubusercontent.com/u/580718?v=4
-image: https://dev-to-uploads.s3.amazonaws.com/uploads/articles/uiniawopp0cgrloiy777.png
+image: https://dev-to-uploads.s3.amazonaws.com/uploads/articles/hhvrdmolw4m39v0vqvrh.jpg
 description: Temporal 
 release_version: 
 ---
@@ -33,12 +33,12 @@ Our use case requires that our application sends a reminder email once a month t
 
 <pre>
   <code>
-<b>function</b> send monthly reminder (user) <b>do</b>
-  <b>while</b> user has not signed up <b>do</b>
-    send reminder to user
-    sleep for 1 month
-  <b>end</b>
-<b>end</b>
+<b>function</b> send monthly reminder (user) <b>do</b><br/>
+  <b>while</b> user has not signed up <b>do</b><br/>
+    send reminder to user<br/>
+    sleep for 1 month<br/>
+  <b>end</b><br/>
+<b>end</b><br/>
   </code>
 </pre>
 
@@ -128,7 +128,12 @@ const { sendReminderEmail, hasSignedUp } = proxyActivities({
 
 async function SendReminderEmail(user: string) {
     while(!await hasSignedUp(user)) {
-      await sendReminderEmail(user);
+      try {
+        await sendReminderEmail(user);
+      } catch(e) {
+        // Thanks to Temporal's retry policy, we already 
+        // tried twice, better luck next month 🍀
+      }
       await sleep("1 month");
     }
 }
@@ -139,3 +144,5 @@ async function SendReminderEmail(user: string) {
 Temporal Workflow Executions are to distributed systems what transactions are to databases: A great developer experience and (or maybe because of) peace of mind.
 
 Doubts? Disbelief? Check out Part II and Part III to explore how Temporal implements this game-changing execution model.
+
+Photo by <a href="https://unsplash.com/@8moments?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Simon Berger</a> on <a href="https://unsplash.com/s/photos/zen?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
