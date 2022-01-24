@@ -139,7 +139,7 @@ Get this from the email.
 
 #### `--ssn` (required)
 
-Social Security Number of the Candidate.
+Social Security number of the Candidate.
 
 #### `--address` (required)
 
