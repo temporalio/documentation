@@ -8,7 +8,7 @@ tags:
   - developer-guide
 ---
 
-Use the `SignalWorkflow()` method on and instance of the [Go SDK Temporal Client](https://pkg.go.dev/go.temporal.io/sdk/client#Client) to send a [Signal](/docs/content/what-is-a-signal) to a [Workflow Execution](/docs/content/what-is-a-workflow-execution).
+Use the `SignalWorkflow()` method on an instance of the [Go SDK Temporal Client](https://pkg.go.dev/go.temporal.io/sdk/client#Client) to send a [Signal](/docs/content/what-is-a-signal) to a [Workflow Execution](/docs/content/what-is-a-workflow-execution).
 
 Pass in both the [Workflow Id](/docs/content/what-is-a-workflow-id) and [Run Id](/docs/content/what-is-a-run-id) to uniquely identify the Workflow Execution.
 If just the Workflow Id is supplied (provide an empty string as the Run Id param), then the Workflow Execution that is Running will receive the Signal.
@@ -58,7 +58,7 @@ if err != nil {
 
 If you are unsure of the status of the Workflow Execution that you are sending the Signal to, you can use the `SignalWithStartWorkflow()` method on the Go SDK Temporal Client to start the Workflow Execution and give it the Signal it at the same time.
 
-This method does not take a Run Id as a parameter.
+Because the Workflow Execution may not exist, this method does not take a Run ID as a parameter
 
 ```go
 // ...
@@ -71,7 +71,7 @@ if err != nil {
 
 ### How to send a Signal from within a Workflow
 
-A Workflow can send a Signal to another Workflow Execution using the [`SignalExternalWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SignalExternalWorkflow) API from the `go.temporal.io/sdk/workflow` package.
+ A Signal can be sent from within a Workflow to a different Workflow Execution using the [`SignalExternalWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SignalExternalWorkflow) API from the `go.temporal.io/sdk/workflow` package.
 
 ```go
 // ...
