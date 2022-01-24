@@ -31,16 +31,14 @@ Let’s get to know Workflow Executions and contrast them to regular Function Ex
 
 Our use case requires that our application sends a reminder email once a month to any user who signed up for a trial period to upgrade their plan. In pseudo code our use case can be expressed as:
 
-<pre>
-  <code>
-<b>function</b> send monthly reminder (user) <b>do</b><br/>
-  <b>while</b> user has not signed up <b>do</b><br/>
-    send reminder to user<br/>
-    sleep for 1 month<br/>
-  <b>end</b><br/>
-<b>end</b><br/>
-  </code>
-</pre>
+```
+function send monthly reminder (user) do
+  while user has not signed up do
+    send reminder to user
+    sleep for 1 month
+  end
+end
+```
 
 ## Regular Functions
 
