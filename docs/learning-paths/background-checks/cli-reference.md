@@ -179,7 +179,7 @@ bgc-researcher employmentverify --token <token>
 
 **Output:**
 
-If successful the output will show "Employment verification received"
+If successful, the output shows "Employment verification received".
 
 #### `--token` (required)
 
