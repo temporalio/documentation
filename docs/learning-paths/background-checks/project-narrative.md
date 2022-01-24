@@ -38,7 +38,7 @@ Some of the more common Searches in a Background Check include:
 - Motor vehicle history
 - Drug and health screen
 
-If the Candidate (subject of the Background Check) is associated with multiple addresses, then multiple state level, county level, and municipal level Searches could occur.
+If the Candidate (the subject of the Background Check) is associated with multiple addresses, multiple state-level, county-level, and municipal-level Searches could occur.
 Some of the Searches can be done against public facing databases, others may require parsing PDFs or images.
 With each individual Search, there is an opportunity for something to happen that can cause a delay.
 
