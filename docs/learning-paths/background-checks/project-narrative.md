@@ -42,7 +42,11 @@ If the Candidate (the subject of the Background Check) is associated with multip
 Some of the Searches can be done against public-facing databases; others might require parsing images or PDF files.
 With each individual Search, there is an opportunity for something to happen that can cause a delay.
 
-Checkr needed to have solutions for problems like having a large volume of long-running business processes (hours, days, weeks) that often need to fall back to a human for input, communicating with thousands of external endpoints that are used to query for information, and correlating a large volume of messages from a variety of unreliable sources.
+Checkr needed to have solutions for problems such as:
+
+- Having a large volume of long-running business processes (hours, days, weeks) that often need to fall back to a human for input
+- Communicating with thousands of external endpoints that are used to query for information
+- Correlating a large volume of messages from a variety of unreliable sources.
 
 ### How did Checkr solve these problems before Temporal?
 
