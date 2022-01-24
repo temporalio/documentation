@@ -341,7 +341,7 @@ Async activity completion is done through a two step process:
 
 You can [read the tests](https://github.com/temporalio/sdk-typescript/blob/7d47f501cb56cced27118b5f0abb320cc0ba03ef/packages/test/src/test-async-completion.ts#L40-L98) for more information.
 
-## Activities calling Activities
+### Activities calling Activities
 
 It may sometimes seem convenient in code to have an activity call another activity.
 We generally recommend not to: activities are regular functions, so calling to one directly will not be seen -and therefore logged- by the Temporal service.
