@@ -36,7 +36,7 @@ Some of the more common Searches in a Background Check include:
 - Employment verification
 - Education verification
 - Motor vehicle history
-- Drug & health screen
+- Drug and health screen
 
 If the Candidate (subject of the Background Check) is associated with multiple addresses, then multiple state level, county level, and municipal level Searches could occur.
 Some of the Searches can be done against public facing databases, others may require parsing PDFs or images.
