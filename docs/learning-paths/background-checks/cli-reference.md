@@ -129,7 +129,7 @@ bgc-candidate accept --token <token> --ssn <ssn> --address <address> --dob <dob>
 
 **Output:**
 
-If successful the output will show "Accepted".
+If successful, the output shows "Accepted".
 
 #### `--token` (required)
 
