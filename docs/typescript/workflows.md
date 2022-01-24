@@ -886,9 +886,7 @@ An **Entity Workflow** is a Workflow that represents a single business entity (l
 <summary>Why ContinueAsNew is needed
 </summary>
 
-import SharedContinueAsNew from '../shared/continue-as-new.md'
-
-<SharedContinueAsNew />
+[What is Continue-As-New?](/docs/content/what-is-continue-as-new)
 
 </details>
 

@@ -89,27 +89,3 @@ In the Workflow Definition below, there is a special Activity that handles clean
 [Signals](/docs/go/signals) are the mechanism by which you can get data into an already running Workflow.
 
 [Queries](/docs/go/queries) are the mechanism by which you can get data out of a currently running Workflow.
-
-## Custom Serialization and Workflow Security
-
-import DataConverter from '../shared/dataconverter.md'
-
-<DataConverter href="https://pkg.go.dev/go.temporal.io/sdk@v1.6.0/converter#DataConverter" continueAsNewURL="#large-event-histories"/>
-
-## Large Event Histories
-
-import SharedContinueAsNew from '../shared/continue-as-new.md'
-
-<SharedContinueAsNew />
-
-To trigger this behavior, the Workflow function should
-terminate by returning the special **ContinueAsNewError** error:
-
-```go
-func SimpleWorkflow(ctx workflow.Context, value string) error {
-    ...
-    return workflow.NewContinueAsNewError(ctx, SimpleWorkflow, value)
-}
-```
-
-If you need to know whether a Workflow was started via `continueAsNew`, you can check if `workflow.GetInfo(ctx).ContinuedExecutionRunID` is not nil.
