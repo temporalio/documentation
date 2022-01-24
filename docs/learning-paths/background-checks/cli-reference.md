@@ -161,7 +161,7 @@ bgc-candidate decline --token <token>
 
 **Output:**
 
-If succesful the output will show "Declined".
+If successful, the output shows "Declined".
 
 ## `bgc-researcher`
 
