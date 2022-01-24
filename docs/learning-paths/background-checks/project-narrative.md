@@ -51,7 +51,7 @@ To address those problems Checkr implemented a complex state machine using stand
 But this approach introduced its own set of problems.
 
 - Testing and applying updates and features to the live system was very hard, and there were no official means by which to do it.
-- New engineers needed to understand the entire Checkr specific state machine architecture, regardless of the team or area they were working on.
+- New engineers needed to understand the entire Checkr-specific state machine architecture, regardless of the team or area they were working on.
 - Even when things went as expected, the percentage of issues and failures at that scale meant that it was not reliable as desired.
 
 Checkr understood that something needed to change to their approach and started looking for solutions.
