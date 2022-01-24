@@ -6,14 +6,14 @@ sidebar_label: Building the application
 
 ## What business processes are we mapping to Workflows?
 
-The application maps each of the following business processes to their own Workflow Definitions:
+The application maps each of the following business processes to its own Workflow Definition:
 
 - [Main Background Check](#main-background-check)
 - [Candidate Acceptance](#candidate-acceptance)
 - [SSN Trace](#ssn-trace)
-- [Federal criminal Search](#federal-criminal-search)
-- [State criminal Search](#state-criminal-search)
-- [Motor vehicle Search](#motor-vehicle-search)
+- [Federal Criminal Search](#federal-criminal-search)
+- [State Criminal Search](#state-criminal-search)
+- [Motor Vehicle Search](#motor-vehicle-search)
 - [Employment Verification](#employment-verification)
 
 ### Main Background Check
@@ -27,11 +27,11 @@ When a new Background Check is started, this is the function that executes.
 
 <!--SNIPEND-->
 
-![Main Background Check Workflow Execution flow](/diagrams/background-checks/main-background-check.svg)
+![Swim lane diagram of the Main Background Check Workflow Execution](/diagrams/background-checks/main-background-check.svg)
 
 ### Candidate Acceptance
 
-![Candidate Acceptance Child Workflow Execution flow](/diagrams/background-checks/candidate-accept-flow.svg)
+![Swim lane diagram of the Candidate Acceptance Child Workflow Execution](/diagrams/background-checks/candidate-accept-flow.svg)
 
 <!--SNIPSTART background-checks-accept-workflow-definition-->
 
@@ -41,7 +41,7 @@ When a new Background Check is started, this is the function that executes.
 
 ### SSN Trace
 
-![SSN Trace Child Workflow Execution flow](/diagrams/background-checks/ssn-trace-flow.svg)
+![Swim lane diagram of the SSN Trace Child Workflow Execution](/diagrams/background-checks/ssn-trace-flow.svg)
 
 <!--SNIPSTART background-checks-snn-trace-workflow-definition-->
 
@@ -51,7 +51,7 @@ When a new Background Check is started, this is the function that executes.
 
 ### Federal Criminal Search
 
-![Federal Criminal Search Child Workflow Execution flow](/diagrams/background-checks/federal-criminal-search-flow.svg)
+![Swim lane diagram of the Federal Criminal Search Child Workflow Execution](/diagrams/background-checks/federal-criminal-search-flow.svg)
 
 <!--SNIPSTART background-checks-federal-criminal-workflow-definition-->
 
@@ -61,7 +61,7 @@ When a new Background Check is started, this is the function that executes.
 
 ### State Criminal Search
 
-![State Criminal Search Child Workflow Execution flow](/diagrams/background-checks/state-criminal-search-flow.svg)
+![Swim lane diagram of the State Criminal Search Child Workflow Execution](/diagrams/background-checks/state-criminal-search-flow.svg)
 
 <!--SNIPSTART background-checks-state-criminal-workflow-definition-->
 
@@ -71,7 +71,7 @@ When a new Background Check is started, this is the function that executes.
 
 ### Motor Vehicle Search
 
-![State Criminal Search Child Workflow Execution flow"](/diagrams/background-checks/motor-vehicle-search-flow.svg)
+![Swim lane diagram of the State Criminal Search Child Workflow Execution](/diagrams/background-checks/motor-vehicle-search-flow.svg)
 
 <!--SNIPSTART background-checks-motor-vehicle-workflow-definition-->
 
@@ -81,7 +81,7 @@ When a new Background Check is started, this is the function that executes.
 
 ### Employment Verification
 
-![Employment Verification Child Workflow Execution flow](/diagrams/background-checks/employment-verification-flow.svg)
+![Swim lane diagram of the Employment Verification Child Workflow Execution](/diagrams/background-checks/employment-verification-flow.svg)
 
 <!--SNIPSTART background-checks-employment-verification-workflow-definition-->
 
@@ -93,18 +93,18 @@ When a new Background Check is started, this is the function that executes.
 
 The steps within the business processes that we are mapping to Activities are the following:
 
-- Sending emails
-- Calling third party APIs
+- Sending email
+- Calling third-party APIs
 
 ## Why use Workflows for Searches instead of Activities?
 
-For this Learning Path application we are using Workflows for searches for a few reasons.
+For this Learning Path application, we use Workflows for Searches for a few reasons.
 
-1. Each search could be long running: In a real life scenario, we won't know how long a search might take to give us a result.
-   Individual searches and Background Checks overall can often take hours or days to complete.
-   While Temporal supports long running Activities, an actual search is conducted by a third party system, and therefore Heartbeats are not very helpful here.
-   An Activity will be the one to make the call to the third party system, but we can just set a timeout and let the Workflow Execution be the long running process.
-2. Division of responsibilities: In a real life scenario, you might have a team that is dedicated to a particular search.
+1. Each Search could be long running: In a real-life scenario, we won't know how long a Search might take to give us a result.
+   Individual Searches and Background Checks overall can often take hours or days to complete.
+   Although Temporal supports long running Activities, an actual Search is conducted by a third-party system, so Heartbeats are not very helpful here.
+   An Activity does make the call to the third-party system, but we can set a Timeout and let the Workflow Execution be the long running process.
+2. Division of responsibilities: In a real-life scenario, you might have a team that is dedicated to a particular Search.
    The Background Check team can manages their Workflow Definition, while the the Federal criminal search team manages its own Workflow Definition, for example, to create a sort of inter-team distributed system that can work together to accomplish goals.
    - Bug fixes
    - CI/CD
@@ -114,7 +114,11 @@ For this Learning Path application we are using Workflows for searches for a few
 
 ## What happens if an Activity Execution fails?
 
+<!-- TODO -->
+
 ## What happens if an individual Search fails?
+
+<!-- TODO -->
 
 ## Do we need a database?
 
@@ -124,18 +128,19 @@ All of the application state is maintained by the Temporal Cluster.
 While a Workflow Execution is Running, its Event History (state) is perpetually maintained.
 Once a Workflow Execution reaches a Closed status the Temporal Cluster will persist its Event History per the retention period.
 
-In a real life scenario, to persist the Event History of the Background Check longer than the Temporal Cluster retention period, we would have an additional business process Workflow to store Background Checks in a database, and an additional business process Workflow to retrieve them. Since the default retention period for a Temporal Cluster is 7 days, this application will not support that.
+In a real-life scenario, to persist the Event History of the Background Check longer than the Temporal Cluster retention period, we would have an additional business process Workflow to store Background Checks in a database, and an additional business process Workflow to retrieve them.
+Because the default retention period for a Temporal Cluster is 7 days, this application will not support that.
 
 ## What does the component topology look like?
 
-![Long running human driven Workflow component topology](/diagrams/background-checks/component-topology.svg)
+![Diagram of component topology of long running human driven Workflow](/diagrams/background-checks/component-topology.svg)
 
 The Temporal Client communicates with the Temporal Cluster.
 
 The Temporal Cluster communicates with the Workers that execute our application code.
 Our application has one Worker Process and one Worker Entity.
 
-However, in real life, our application could use as many Worker Processes each with as many Worker Entities as needed.
+However, in real life, our application could use as many Worker Processes (each with multiple Worker Entities) as needed.
 
 ## How do we ensure PII is encrypted in the Temporal Platform?
 
@@ -145,7 +150,7 @@ A custom Data Converter works in conjunction with a Context Propagator.
 
 ## How do we know what the status of each Workflow Execution is?
 
-We can use the Temporal Platform's built in List APIs to see the status of any of our Workflow Executions.
+We can use the Temporal Platform's built-in List APIs to see the status of any of our Workflow Executions.
 
 ## How do we get data into a running Workflow Execution?
 
@@ -153,4 +158,4 @@ We use Signals to get data into a running Workflow Execution.
 
 ## How do we handle a Cancellation Request of a business process?
 
-Within a Workflow Definition, we have logic to explicitly handle a Cancellation Request, so that we may "clean up" anything we need to prior to cancelling.
+Within a Workflow Definition, we have logic to explicitly handle a Cancellation Request, so we can "clean up" anything we need to prior to cancelling.

@@ -103,7 +103,7 @@ For CLI details, see the [Application CLI reference](/docs/learning-paths/backgr
 
 Because we are dealing with PII, the application must have a way to encrypt and decrypt data.
 The PII that the application processes includes a Candidate's SSN, contact information, DOB, and personal addresses.
-There must be a consistent way to ensure data is encoded while it is in the Temporal Platform, but and decodable when needed.
+Data must be consistently encrypted while it is in the Temporal Platform but be decryptable when needed.
 
 **Wait on humans**
 
