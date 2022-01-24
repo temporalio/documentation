@@ -22,7 +22,7 @@ A [Temporal case study from October 2020](/blog/how-temporal-simplified-checkr-w
 The case study explores the interesting problem space that presented itself as demand scaled.
 
 Depending on the type of employment, the needs of a Background Checks for any given Candidate can vary.
-Often a single Background Check will result in a dozen individual Searches for information.
+Often a single Background Check results in a dozen individual Searches for information.
 Sometimes the only way to conduct or get the results of a Search is by taking a manual step, like making a phone call or uploading a file.
 
 Some of the more common Searches in a Background Check include:
