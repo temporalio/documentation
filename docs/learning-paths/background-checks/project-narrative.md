@@ -11,7 +11,7 @@ The goal of this project is to teach you, the developer, how to think about buil
 
 ## What is a Long Running Human Driven Workflow?
 
-A Long Running Human Driven Workflow is a Temporal Workflow Execution that could be Running (be in an Open state) for hours, days, weeks, or even years, and requires input from a real person to progress.
+A Long Running Human Driven Workflow is a Temporal Workflow Execution that could be Running (that is, in an Open state) for hours, days, weeks, or even years and that requires input from a real person to progress.
 
 ## What is the real-life use case?
 
