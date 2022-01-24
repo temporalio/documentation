@@ -26,12 +26,12 @@ Queries the state of the associated Workflow Execution.
 
 ## `/checks/{id}/accept` POST
 
-Sends a Signal with accept data, to the Workflow Execution with the matching Run Id.
+Sends a Signal with accept data to the Workflow Execution that has the specified Run Id.
 
 ## `/checks/{id}/decline` POST
 
-Sends a Signal with decline data, to the Workflow Execution with the matching Run Id.
+Sends a Signal with decline data to the Workflow Execution that has the specified Run Id.
 
 ## `/checks/{id}/employmentverify` POST
 
-Sends a Signal with verify data, to the Workflow Execution with the matching Run Id.
+Sends a Signal with verify data to the Workflow Execution that has the specified Run Id.

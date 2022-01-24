@@ -66,21 +66,21 @@ In their search, they came across the Temporal Platform.
 Code based workflows appeal to developers as business processes (Background Checks) map directly to Workflow functions.
 This results in a very close mapping of business requirements to code.
 
-The Temporal Platform has built in support to handle a wide set of failures so there isn’t a need to maintain infrastructure for that purpose.
+The Temporal Platform has built-in support to handle a wide set of failures, so there isn’t a need to maintain infrastructure for that purpose.
 
 Code is testable, and the Temporal Platform provides out-of-the-box Workflow function and Activity function testing capabilities while still enabling developers to use their existing testing and mocking frameworks to write unit and integration tests for mission critical code.
 
 Cancelling a Background Check and rolling back state (compensation) is defined within the Workflow code.
 
-It has built in debugging and troubleshooting tools such as “replays” that allow developers to step through an execution to see what happened.
+Temporal has built-in debugging and troubleshooting tools, such as “replays” that allow developers to step through an execution to see what happened.
 
 The Temporal Platform is designed to support business processes that could span decades, so maintaining the complex state of a Background becomes far more trivial
 
-And the Temporal Platform has built in Visibility APIs and to view the status and get the state of a given Workflow Execution at any time, as well as metric endpoints to monitor the health of the platform.
+And the Temporal Platform has built-in Visibility APIs to view the status and get the state of a Workflow Execution at any time, as well as metric endpoints to monitor the health of the platform.
 
 ## What are the technical concepts introduced in this project?
 
-The following concepts are introduce in this project:
+This project introduces the following concepts:
 
 - [Temporal Client](#)
 - [Workflow Definition](/docs/content/what-is-a-workflow-definition)

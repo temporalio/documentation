@@ -4,13 +4,13 @@ title: Background Checks CLI reference
 sidebar_label: CLI reference
 ---
 
-For this Learning Path we use three distinct CLIs to represent the user interfaces (UI) that each user type would have to interact with.
+For this Learning Path, we use three distinct CLIs to represent the user interfaces (UI) that each user type would interact with.
 
 - [Company CLI](#bgc-company)
 - [Candidate CLI](#bgc-candidate)
 - [Researcher CLI](#bgc-researcher)
 
-The execute these CLI commands, prefix them with `./run-cli` while in the project root.
+To execute these CLI commands, prefix them with `./run-cli` while in the project root.
 
 Example:
 
@@ -78,7 +78,7 @@ bgc-company start --email <candidate_email> --package <package_type>
 
 Output:
 
-If successful the output will show "Created check".
+If successful, the output shows "Created check".
 
 #### `--email` (required)
 

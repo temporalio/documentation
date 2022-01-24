@@ -1,6 +1,6 @@
 ---
 id: application-design
-title: How to design and implement the Background Check application?
+title: How to design and implement the Background Check application
 sidebar_label: Building the application
 ---
 
