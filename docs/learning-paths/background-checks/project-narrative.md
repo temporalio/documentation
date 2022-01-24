@@ -50,7 +50,7 @@ Checkr needed to have solutions for problems such as:
 
 ### How did Checkr solve these problems before Temporal?
 
-To address those problems Checkr implemented a complex state machine using stand alone databases, Kafka queues, and micro-services.
+To address those problems, Checkr implemented a complex state machine using standalone databases, Kafka queues, and microservices.
 
 But this approach introduced its own set of problems.
 
