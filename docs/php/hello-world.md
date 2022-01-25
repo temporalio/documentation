@@ -57,6 +57,7 @@ Hello Antony
 The example above represents a console command that starts a workflow, prints its IDs, and then waits for its result:
 
 <!--SNIPSTART php-hello-client {"enable_source_link": true}-->
+<!--SNIPEND-->
 
 In the snippet above we use `WorkflowClientInterface` - an entry point to get access to workflows.
 Once you need to create, retrieve, or start a workflow you should use an instance of `WorkflowClientInterface`. 
@@ -69,6 +70,7 @@ Then we print some information and start the workflow.
 First, let's take a look at the workflow interface:
 
 <!--SNIPSTART php-hello-workflow-interface {"enable_source_link": true}-->
+<!--SNIPEND-->
 
 The important thing here - is attributes: `#[WorkflowInterface]` and `#[WorkflowMethod]`.
 Both of them define the "workflow".
@@ -77,6 +79,7 @@ In our case the workflow is the method that accepts string `$name`.
 To see what it actually does we can continue to the implementation - class `GreetingWorkflow`:
 
 <!--SNIPSTART php-hello-workflow {"enable_source_link": true}-->
+<!--SNIPEND-->
 
 This is the implementation of our workflow.
 It communicates with one activity and delegates all the work to it.
@@ -91,6 +94,7 @@ To instantiate an instance of the activity we use a static helper `Workflow::new
 And at last we arrive at the activity code. Consider it as a particular task in the business logic. As you have noticed we again use an interface to instantiate an object:
 
 <!--SNIPSTART php-hello-activity-interface {"enable_source_link": true}-->
+<!--SNIPEND-->
 
 Activities and workflow classes in PHP are marked with special attributes.
 For activity, we use `#[ActivityInterface]` and `#[ActivityMethod]`.
@@ -99,6 +103,7 @@ Our activity consists of one method, which accepts two string arguments.
 The implementation of this interface is a very straight forward - just compose a new string of provided arguments:
 
 <!--SNIPSTART php-hello-activity {"enable_source_link": true}-->
+<!--SNIPEND-->
 
 Both workflow and activity code in our example have both interface and implementation.
 But we could skip interfaces and just mark classes with corresponding attributes and everything will continue working.
