@@ -87,6 +87,8 @@ docker run -e CASSANDRA_SEEDS=10.x.x.x                  -- csv of cassandra serv
 ```
 
 </details>
+  
+> Side note: It is called "auto setup" because [Márk Sági-Kazár](https://www.linkedin.com/feed/update/urn:li:activity:6885550647865958400?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A6885550647865958400%2C6891543183516667904%29), one of our early external contributors, coined it!
 
 ## Temporal Schema Setup
 
