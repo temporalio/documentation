@@ -15,13 +15,13 @@ They are the only way to schedule new Workflow Executions with Temporal Server.
 
 - Workflow Clients can run in any Node.js application, for example, in a serverless function, Express.js API route handler or CLI/script run.
 - The primary use of Workflow Clients is to start new Workflow Executions (including [Cron Workflows](#scheduling-cron-workflows)).
-  Given a `workflowId`, Workflow Clients may also get a Handle to a running Workflow Execution or retrieve/wait for its result.
+  Given a `workflowId`, a Workflow Client can also get a Handle to a running Workflow Execution or retrieve/wait for its result.
 - **Workflow Handles** are bindings to specific Workflow Executions that expose more APIs for control.
-  **We strongly recommend familiarising yourself with Workflow Handle APIs** as they are the main way you will signal, query, describe, cancel, terminate and await the result of running Workflow Executions.
-- Advanced users can also use the `WorkflowService` exposed by a Workflow Client to make **raw gRPC calls** (usually for introspection)
+  **We strongly recommend familiarising yourself with Workflow Handle APIs** because they are the main way you will signal, query, describe, cancel, terminate and await the result of running Workflow Executions.
+- Advanced users can also use the `WorkflowService` exposed by a Workflow Client to make **raw gRPC calls** (usually for introspection).
 
 Workflow Clients are separate from Workers, but communicate with them via Task Queues to start Workflow Executions.
-See the dedicated [Workers and Task Queues docs](/docs/typescript/workers) and [Workflow docs](/docs/typescript/workflows) for more info.
+For more information, see [Workers and Task Queues in TypeScript](/docs/typescript/workers) and [Workflows in TypeScript](/docs/typescript/workflows).
 
 ## Full Example
 
@@ -154,7 +154,8 @@ const result = await handle.result(); // block until the workflow completes, if 
 
 Using a Workflow Handle isn't necessary with `client.execute` by definition.
 
-- **Don't forget to handle errors here** - if you call `result()` on a Workflow that prematurely ended for some reason, it will [throw an Error](https://typescript.temporal.io/api/classes/client.WorkflowFailedError) reflecting that reason.
+- **Don't forget to handle errors here.**
+  If you call `result()` on a Workflow that prematurely ended for some reason, it throws a [WorkflowFailedError](https://typescript.temporal.io/api/classes/client.WorkflowFailedError) error that reflects that reason.
   ```ts
   const handle = client.getHandle(workflowId);
   try {
@@ -262,12 +263,12 @@ export async function CancelExternalWorkflow(wfId: string): void {
 }
 ```
 
-Again, see the [Workflow APIs documentation](/docs/typescript/workflows#external-workflows) for full details.
+Again, see [Workflows in TypeScript](/docs/typescript/workflows#external-workflows) for full details.
 
 ## Advanced: Making raw gRPC calls
 
 Under the hood of a `WorkflowClient`, the `Connection` is actually powered by a `WorkflowService` driver that makes the raw gRPC calls to Temporal Server.
-This Service is capable of making a wider range of introspection calls (as per [the API reference](https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.WorkflowService-1#methods)):
+This Service is capable of making a wider range of introspection calls. (For more information, see the Methods section of the [WorkflowService](https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.WorkflowService-1#methods)) API reference.
 
 <!--SNIPSTART typescript-grpc-call-basic-->
 <!--SNIPEND-->
