@@ -70,27 +70,3 @@ In the Workflow Definition below, there is a special Activity that handles clean
 
 <!--SNIPSTART samples-go-cancellation-workflow-definition-->
 <!--SNIPEND-->
-
-## Custom Serialization and Workflow Security
-
-import DataConverter from '../shared/dataconverter.md'
-
-<DataConverter href="https://pkg.go.dev/go.temporal.io/sdk@v1.6.0/converter#DataConverter" continueAsNewURL="#large-event-histories"/>
-
-## Large Event Histories
-
-import SharedContinueAsNew from '../shared/continue-as-new.md'
-
-<SharedContinueAsNew />
-
-To trigger this behavior, the Workflow function should
-terminate by returning the special **ContinueAsNewError** error:
-
-```go
-func SimpleWorkflow(ctx workflow.Context, value string) error {
-    ...
-    return workflow.NewContinueAsNewError(ctx, SimpleWorkflow, value)
-}
-```
-
-If you need to know whether a Workflow was started via `continueAsNew`, you can check if `workflow.GetInfo(ctx).ContinuedExecutionRunID` is not nil.

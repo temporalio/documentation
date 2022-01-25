@@ -205,9 +205,9 @@ They shouldn't use any constructs that rely on system time.
 
 ### Workflow Method Arguments
 
-import DataConverter from '../shared/dataconverter.md'
+- [What is a Data Converter?](/docs/content/what-is-a-data-converter)
 
-<DataConverter href="https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html" continueAsNewURL="#large-event-histories" />
+Java DataConverter reference: https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html
 
 ## Workflow Activities
 
@@ -413,11 +413,7 @@ See our [Temporal Polyglot example](https://github.com/tsurdilo/temporal-polyglo
 
 ## Large Event Histories
 
-import SharedContinueAsNew from '../shared/continue-as-new.md'
-
-<SharedContinueAsNew />
-
-Temporal SDK allows you to manually use "ContinueAsNew" in a number of ways:
+Temporal SDK allows you to manually use [Continue-As-New](/docs/content/what-is-continue-as-new) in a number of ways:
 
 If you are continuing execution of the same workflow that is currently running you can do:
 
