@@ -38,7 +38,7 @@ export const Resources = () => {
           <li key={i} className="flex items-center space-x-3 hover:underline">
             {link.type === "article" ? (
               <svg
-                className="w-7 h-7"
+                className="h-7 w-7"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -51,7 +51,7 @@ export const Resources = () => {
               </svg>
             ) : (
               <svg
-                className="w-7 h-7"
+                className="h-7 w-7"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -66,7 +66,7 @@ export const Resources = () => {
 
             <Link className="flex-1" to={useBaseUrl(link.url)}>
               {link.title}{" "}
-              <span className="opacity-80 uppercase text-xs">
+              <span className="text-xs uppercase opacity-80">
                 {link.length}
               </span>
             </Link>

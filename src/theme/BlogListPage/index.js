@@ -86,12 +86,12 @@ function BlogListPageItem(props) {
   } = frontMatter;
   return (
     <li>
-      <h3 className="font-bold text-xl leading-relaxed">
+      <h3 className="text-xl font-bold leading-relaxed">
         <Link className="text-[color:var(--color)]" to={permalink}>
           {title}
         </Link>
       </h3>
-      <p className="text-sm py-1">
+      <p className="py-1 text-sm">
         <time dateTime={date} className="text-sm">
           {formattedDate}
           {readingTime && (
@@ -104,11 +104,11 @@ function BlogListPageItem(props) {
       </p>
 
       {(tags.length > 0 || truncated) && tags.length > 0 && (
-        <span className="flex flex-wrap mb-5">
+        <span className="mb-5 flex flex-wrap">
           {tags.map(({label, permalink: tagPermalink}) => (
             <Link
               key={tagPermalink}
-              className="no-underline inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-[color:var(--ifm-badge-background-color)] text-[color:var(--ifm-color)] hover:opacity-80"
+              className="inline-flex items-center rounded-full bg-[color:var(--ifm-badge-background-color)] px-3 py-0.5 text-sm font-medium text-[color:var(--ifm-color)] no-underline hover:opacity-80"
               to={tagPermalink}
             >
               {label}
