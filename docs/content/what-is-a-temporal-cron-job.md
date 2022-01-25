@@ -75,9 +75,6 @@ For example, "@weekly" causes a Workflow Execution to spawn once a week at midni
 **Time zones** (in Temporal 1.15)
 
 You can change the time zone that a Cron Schedule is interpreted in by prefixing the specification with `CRON_TZ=America/New_York ` (or your desired time zone).
-
-:::warning
-
 Consider that using time zones in production introduces a surprising amount of complexity and failure modes!
 If at all possible, we recommend specifying Cron Schedules in UTC (the default).
 If you need to use time zones, here are a few edge cases to keep in mind:
