@@ -68,7 +68,7 @@ This results in a very close mapping of business requirements to code.
 
 The Temporal Platform has built-in support to handle a wide set of failures, so there isn’t a need to maintain infrastructure for that purpose.
 
-Code is testable, and the Temporal Platform provides out-of-the-box Workflow function and Activity function testing capabilities while still enabling developers to use their existing testing and mocking frameworks to write unit and integration tests for mission critical code.
+Code is testable, and the Temporal Platform includes the ability to test Workflow functions and Activity functions while still enabling developers to use their existing testing and mocking frameworks to write unit and integration tests for mission-critical code.
 
 Cancelling a Background Check and rolling back state (compensation) is defined within the Workflow code.
 

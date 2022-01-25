@@ -105,11 +105,11 @@ For this Learning Path application, we use Workflows for Searches for a few reas
    Although Temporal supports long running Activities, an actual Search is conducted by a third-party system, so Heartbeats are not very helpful here.
    An Activity does make the call to the third-party system, but we can set a Timeout and let the Workflow Execution be the long running process.
 2. Division of responsibilities: In a real-life scenario, you might have a team that is dedicated to a particular Search.
-   The Background Check team can manages their Workflow Definition, while the the Federal criminal search team manages its own Workflow Definition, for example, to create a sort of inter-team distributed system that can work together to accomplish goals.
+   The Background Check team manages their Workflow Definition, while the Federal Criminal Search team manages its own Workflow Definition, for example, to create a sort of inter-team distributed system that can work together to accomplish goals.
    - Bug fixes
    - CI/CD
 3. The state of a Workflow is maintained: The results of an Activity are written to the Workflow Execution Event History.
-   Instead of writing Search results directly to our Background Check Workflow Execution, we can keep them separate in their own Workflow Execution and access them independently from Background Check Workflow.
+   Instead of writing Search results directly to our Background Check Workflow Execution, we can keep them separate in their own Workflow Execution and access them independently from the Background Check Workflow.
 4. Reduces the need to version Workflows: Workflow Execution Event Histories are separated.
 
 ## What happens if an Activity Execution fails?
@@ -126,7 +126,7 @@ No, we will not need a database for this application.
 All of the application state is maintained by the Temporal Cluster.
 
 While a Workflow Execution is Running, its Event History (state) is perpetually maintained.
-Once a Workflow Execution reaches a Closed status the Temporal Cluster will persist its Event History per the retention period.
+When a Workflow Execution reaches a Closed status, the Temporal Cluster persists its Event History per the retention period.
 
 In a real-life scenario, to persist the Event History of the Background Check longer than the Temporal Cluster retention period, we would have an additional business process Workflow to store Background Checks in a database, and an additional business process Workflow to retrieve them.
 Because the default retention period for a Temporal Cluster is 7 days, this application will not support that.
