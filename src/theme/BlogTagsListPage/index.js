@@ -26,7 +26,7 @@ function BlogTagsListPage(props) {
       }}
       sidebar={sidebar}
     >
-      <h1 className="text-3xl mb-5 font-semibold">{title}</h1>
+      <h1 className="mb-5 text-3xl font-semibold">{title}</h1>
       <TagsListByLetter tags={Object.values(tags)} />
     </BlogLayout>
   );

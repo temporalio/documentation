@@ -73,7 +73,7 @@ function DocItem(props) {
         }}
       />
 
-      <div className="px-8 mx-auto">
+      <div className="mx-auto px-8">
         <DocVersionBanner versionMetadata={versionMetadata} />
         <article>
           {showVersionBadge && (
@@ -83,9 +83,9 @@ function DocItem(props) {
               </span>
             </div>
           )}
-          <div className="md:grid grid-cols-[minmax(900px,_1fr)_14rem]">
+          <div className="grid-cols-[minmax(900px,_1fr)_14rem] md:grid">
             <div className="">
-              <article className="prose md:prose-md lg:prose-lg mx-auto my-12 max-w-full px-6">
+              <article className="md:prose-md prose mx-auto my-12 max-w-full px-6 lg:prose-lg">
                 {renderTocMobile && (
                   <TOCCollapsible
                     toc={DocContent.toc}
@@ -141,8 +141,8 @@ function DocItem(props) {
 
 function TemporalCloudForm() {
   return (
-    <div className="max-w-xs my-20">
-      <h2 className="text-xl font-bold tracking-wide mb-4">
+    <div className="my-20 max-w-xs">
+      <h2 className="mb-4 text-xl font-bold tracking-wide">
         Get notified of updates
       </h2>
       <form
@@ -159,7 +159,7 @@ function TemporalCloudForm() {
               Email
             </label>
             <input
-              className="p-3 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+              className="mt-1 block w-full rounded-md border-gray-300 p-3 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
               type="email"
               name="EMAIL"
               id="mce-EMAIL"

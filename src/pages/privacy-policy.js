@@ -12,7 +12,7 @@ function PrivacyPolicy() {
       permalink="/privacy-policy"
       description="General information about Temporal's documentation."
     >
-      <main className="container margin-vert--lg">
+      <main className="margin-vert--lg container">
         <h1 id="temporal-technologies-inc-privacy-policy">
           Temporal Technologies, Inc. Privacy Policy
         </h1>

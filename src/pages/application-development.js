@@ -11,7 +11,7 @@ export default function ApplicationDevelopment() {
       title="Temporal application development"
       permalink="/application-development"
     >
-      <div className="max-w-screen-lg p-6 md:p-10 mx-auto mb-12">
+      <div className="mx-auto mb-12 max-w-screen-lg p-6 md:p-10">
         <SDKs />
       </div>
     </Layout>

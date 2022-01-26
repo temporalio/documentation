@@ -13,7 +13,7 @@ function BlogLayout(props) {
           {children}
         </main>
         {hasSidebar && (
-          <aside className="hidden md:inline sticky h-full top-24 mt-12">
+          <aside className="sticky top-24 mt-12 hidden h-full md:inline">
             <BlogSidebar sidebar={sidebar} />
           </aside>
         )}
