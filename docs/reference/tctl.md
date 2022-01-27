@@ -12,10 +12,10 @@ tags:
 ## tctl commands
 
 - `tctl namespace`
-- [`tctl workflow`](./tctl/workflow)
-- [`tctl activity`](./tctl/activity)
-- [`tctl taskqueue`](./tctl/taskqueue)
-- [`tctl batch`](./tctl/batch)
+- [`tctl workflow`](/docs/reference/tctl/workflow)
+- [`tctl activity`](/docs/reference/tctl/activity)
+- [`tctl taskqueue`](/docs/reference/tctl/taskqueue)
+- [`tctl batch`](/docs/reference/tctl/batch)
 - `tctl cluster`
 - `tctl dataconverter`
 - `tctl help`
@@ -33,5 +33,5 @@ tags:
 
 ## Related
 
-[How to install tctl](/docs/content/how-to-install-tctl)
-[Environment variables for tctl](./tctl/environment-variables.md)
+[How to install tctl](/docs/content/how-to-install-tctl)  
+[Environment variables for tctl](./tctl/environment-variables.md)  
