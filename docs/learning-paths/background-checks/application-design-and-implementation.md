@@ -44,20 +44,21 @@ For this Learning Path application, we use Workflows for Searches for a few reas
 We have a choice to make about how long we are willing to wait for something to
 An Activity Execution fails if it is unable to complete in 1 minute.
 To ensure that this happens
+
 <!-- TODO -->
 
 - What happens if an Activity Task Execution fails?
-    - Describe the “chaos” implementation that gives us 40% failure rate on third party API calls
-        - We use some HTTP middleware in our third party API simulator code that triggers failure on a percentage of API calls. We have also configured similar functionality in Mailhog that causes it to randomly fail SMTP requests from our application.
+  - Describe the “chaos” implementation that gives us 40% failure rate on third party API calls
+    - We use some HTTP middleware in our third party API simulator code that triggers failure on a percentage of API calls. We have also configured similar functionality in Mailhog that causes it to randomly fail SMTP requests from our application.
 - What happens if an Activity Execution fails?
-    - Why/how do we propagate that failure?
-        - The activity will be automatically retried as per our retry policy. If the retries are exhausted the error from the last attempt will be returned to the workflow which executed the activity. It’s then up to the workflow to decide what to do. In our current code should an activity fail we fail the workflow (or child workflow), returning the error from the activity.
+  - Why/how do we propagate that failure?
+    - The activity will be automatically retried as per our retry policy. If the retries are exhausted the error from the last attempt will be returned to the workflow which executed the activity. It’s then up to the workflow to decide what to do. In our current code should an activity fail we fail the workflow (or child workflow), returning the error from the activity.
 - What happens if a Child Workflow Execution (Search) fails?
-    - In our case an Activity Execution failure should result in the Child Workflow Execution returning an error - why/how?
-        - Our business logic is that should an individual search fail we should return as much of the report as we can and let the hiring manager know one of the searches failed. We include the error from the activity in the report to aid in debugging. The hiring manager can then make a decision as to whether the check should be re-run or not.
+  - In our case an Activity Execution failure should result in the Child Workflow Execution returning an error - why/how?
+    - Our business logic is that should an individual search fail we should return as much of the report as we can and let the hiring manager know one of the searches failed. We include the error from the activity in the report to aid in debugging. The hiring manager can then make a decision as to whether the check should be re-run or not.
 - Should the main Background Check ever “fail”?
-    - The main background check should never fail due to a failed search, or if a candidate declines the check. However, should the SSN trace fail the background check should fail as well as this is an unrecoverable situation which most likely requires operator action to fix. Once the issue with the SSN trace is fixed the failed workflow can be reset, resuming from the SSN trace.
-    - Regressions during a deploy of the main workflow will generally cause workflow task failure, but not failure of the main workflow. This is one of the features of Temporal and allows Temporal to keep trying to make progress until a fix is deployed without needing to restart all affected workflows manually.
+  - The main background check should never fail due to a failed search, or if a candidate declines the check. However, should the SSN trace fail the background check should fail as well as this is an unrecoverable situation which most likely requires operator action to fix. Once the issue with the SSN trace is fixed the failed workflow can be reset, resuming from the SSN trace.
+  - Regressions during a deploy of the main workflow will generally cause workflow task failure, but not failure of the main workflow. This is one of the features of Temporal and allows Temporal to keep trying to make progress until a fix is deployed without needing to restart all affected workflows manually.
 
 ## What happens if an individual Search fails?
 
