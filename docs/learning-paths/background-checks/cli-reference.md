@@ -105,6 +105,8 @@ bgc-company cancel --email <email> --id <check_id>
 
 Output:
 
+If successful the output shows "Cancelled check".
+
 #### `--id` (required)
 
 Background Check Id
