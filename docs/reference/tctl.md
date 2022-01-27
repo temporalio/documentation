@@ -12,10 +12,10 @@ tags:
 ## tctl commands
 
 - `tctl namespace`
-- [`tctl workflow`](./workflow)
-- [`tctl activity`](./activity)
-- [`tctl taskqueue`](./taskqueue)
-- [`tctl batch`](./batch)
+- [`tctl workflow`](./tctl/workflow)
+- [`tctl activity`](./tctl/activity)
+- [`tctl taskqueue`](./tctl/taskqueue)
+- [`tctl batch`](./tctl/batch)
 - `tctl cluster`
 - `tctl dataconverter`
 - `tctl help`
