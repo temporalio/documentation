@@ -34,4 +34,4 @@ tags:
 ## Related
 
 [How to install tctl](/docs/content/how-to-install-tctl)  
-[Environment variables for tctl](./tctl/environment-variables.md)  
+[Environment variables for tctl](./tctl/environment-variables.md)
