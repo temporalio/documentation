@@ -66,7 +66,7 @@ If the "full" package is selected, the Background Check application sends an ema
 
 Return to the mailbox to see the new email message and follow the instructions inside to verify employment history and allow the Background Check to proceed.
 
-When all the Searches have completed, the Background Check application sends an email to the Company HR person with the report in it.
+When all Searches have completed, the Background Check application sends an email message to the Company HR person with the report in it.
 
 **While pretending to be the Company HR person...**
 
