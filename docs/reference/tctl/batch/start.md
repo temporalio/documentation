@@ -11,7 +11,9 @@ The `tctl batch start` command starts a batch job.
 
 The following modifiers control the behavior of the command.
 
-### `--query` (required)
+### `--query`
+
+_Required modifier_
 
 How to specify the [Workflow Executions](/docs/content/what-is-a-workflow-execution) that this batch job should operate.
 

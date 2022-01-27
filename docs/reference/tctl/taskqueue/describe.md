@@ -11,7 +11,9 @@ The `tctl taskqueue describe` command describes the poller information of a [Tas
 
 The following modifiers control the behavior of the command.
 
-### `--taskqueue` (required)
+### `--taskqueue`
+
+_Required modifier_
 
 How to specify the description of the [Task Queue](/docs/content/what-is-a-task-queue).
 
