@@ -7,22 +7,15 @@ tags:
   - tctl
 ---
 
-<!-- prettier-ignore -->
-import * as WhatIsAWorkflowExecution from '../../../content/what-is-a-workflow-execution.md'
-import * as WhatIsASearchAttribute from '../../../content/what-is-a-search-attribute.md'
-import * as WhatIsASignal from '../../../content/what-is-a-signal.md'
-
 The `tctl batch start` command starts a batch job.
 
-`tctl batch start <options> <arguments...>`
+The following modifiers control the behavior of the command.
 
-The following options modify the behavior of the command.
+### `--query` (required)
 
-### `--query`
+How to specify the [Workflow Executions](/docs/content/what-is-a-workflow-execution) that this batch job should operate.
 
-How to specify the <preview page={WhatIsAWorkflowExecution}>Workflow Executions</preview> that this batch job should operate.
-
-The SQL-like query of <preview page={WhatIsASearchAttribute}>Search Attributes</preview> is the same as used by the `tctl workflow list --query` command.
+The SQL-like query of [Search Attributes](/docs/content/what-is-a-search-attribute) is the same as used by the `tctl workflow list --query` command.
 
 Alias: `-q`
 
@@ -41,7 +34,7 @@ Alias: `--re`
 **Example**
 
 ```
-tctl batch start --reason <string>
+tctl batch start --query <value> --reason <string>
 ```
 
 ### `--batch_type`
@@ -53,31 +46,31 @@ Alias: `--bt`
 **Example**
 
 ```
-tctl batch start --batch_type <operation>
+tctl batch start --query <value> --batch_type <operation>
 ```
 
 ### `--signal_name`
 
-How to specify the name of a <preview page={WhatIsASignal}>Signal</preview>. This option is required when `--batch_type` is `signal`.
+How to specify the name of a [Signal](/docs/content/what-is-a-signal). This modifier is required when `--batch_type` is `signal`.
 
 Alias: `--sig`
 
 **Example**
 
 ```
-tctl batch start --signal_name <name>
+tctl batch start --query <value> --batch_type signal --signal_name <name>
 ```
 
 ### `--input`
 
-How to pass input for the <preview page={WhatIsASignal}>Signal</preview>. Input must be in JSON format.
+How to pass input for the [Signal](/docs/content/what-is-a-signal). Input must be in JSON format.
 
 Alias: `-i`
 
 **Example**
 
 ```
-tctl batch start --input <json>
+tctl batch start --query <value> --input <json>
 ```
 
 ### `--rps`
@@ -87,7 +80,7 @@ How to specify RPS of processing. The default value is 50.
 **Example**
 
 ```
-tctl batch start --rps <value>
+tctl batch start --query <value> --rps <value>
 ```
 
 ### `--yes`
@@ -97,5 +90,10 @@ How to disable the confirmation prompt.
 **Example**
 
 ```
-tctl batch start --yes
+tctl batch start --query <value> --yes
 ```
+
+## Related
+
+- [`tctl batch`](../batch)
+- [tctl reference](/docs/reference/tctl)

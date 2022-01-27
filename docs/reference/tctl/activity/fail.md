@@ -76,3 +76,8 @@ How to specify the identity of the operator when using tctl to fail an [Activity
 ```
 tctl activity complete --identity <value>
 ```
+
+## Related
+
+- [`tctl activity`](../activity)
+- [tctl reference](/docs/reference/tctl)

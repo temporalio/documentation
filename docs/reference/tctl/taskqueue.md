@@ -7,19 +7,11 @@ tags:
   - tctl
 ---
 
-<!-- prettier-ignore -->
-import * as WhatIsATaskQueue from '/docs/content/what-is-a-task-queue.md'
+The `tctl taskqueue` commands operate [Task Queues](/docs/content/what-is-a-task-queue).
 
-The `tctl taskqueue` commands operate <preview page={WhatIsATaskQueue}>Task Queues</preview>.
+- [`tctl taskqueue describe`](./taskqueue/describe)
+- [`tctl taskqueue list-partition`](./taskqueue/list-partition)
 
-## `describe`
+## Related
 
-import TctlTaskqueueDescribe from './taskqueue/describe.md'
-
-<TctlTaskqueueDescribe/>
-
-## `list-partition`
-
-import TctlTaskqueueListpartition from './taskqueue/list-partition.md'
-
-<TctlTaskqueueListpartition/>
+- [tctl reference](/docs/reference/tctl)

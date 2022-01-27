@@ -7,18 +7,13 @@ tags:
   - tctl
 ---
 
-<!-- prettier-ignore -->
-import * as WhatIsATaskQueue from '/docs/content/what-is-a-task-queue.md'
+The `tctl taskqueue list-partition` command lists the partitions of a [Task Queue](/docs/content/what-is-a-task-queue) and the hostname for the partitions.
 
-The `tctl taskqueue list-partition` command lists the partitions of a <preview page={WhatIsATaskQueue}>Task Queue</preview> and the hostname for the partitions.
+The following modifier controls the behavior of the command.
 
-`tctl taskqueue list-partition <options> <arguments...>`
+### `taskqueue` (required)
 
-The following option modifies the behavior of the command.
-
-### `taskqueue`
-
-How to specify a <preview page={WhatIsATaskQueue}>Task Queue</preview>.
+How to specify a [Task Queue](/docs/content/what-is-a-task-queue).
 
 Alias: `--tq`
 
@@ -27,3 +22,8 @@ Alias: `--tq`
 ```
 tctl taskqueue list-partition --taskqueue <value>
 ```
+
+## Related
+
+- [`tctl taskqueue`](../taskqueue)
+- [tctl reference](/docs/reference/tctl)

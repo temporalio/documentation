@@ -7,33 +7,15 @@ tags:
   - tctl
 ---
 
-<!-- prettier-ignore -->
-import * as WhatIsAWorkflowExecution from '../../content/what-is-a-workflow-execution.md'
-
-The `tctl batch` commands operate batch jobs. A batch job can signal, cancel, or terminate <preview page={WhatIsAWorkflowExecution}>Workflow Executions</preview>.
+The `tctl batch` commands operate batch jobs. A batch job can signal, cancel, or terminate [Workflow Executions](/docs/content/what-is-a-workflow-execution).
 
 Terminating a batch job does not roll back the operation performed by the batch job. However, you can use `tctl workflow reset` to roll back Workflow Executions.
 
-## `start`
+- [`tctl batch start`](./batch/start)
+- [`tctl batch list`](./batch/list)
+- [`tctl batch describe`](./batch/describe)
+- [`tctl batch terminate`](./batch/terminate)
 
-import TctlBatchStart from './batch/start.md'
+## Related
 
-<TctlBatchStart/>
-
-## `list`
-
-import TctlBatchList from './batch/list.md'
-
-<TctlBatchList/>
-
-## `describe`
-
-import TctlBatchDescribe from './batch/describe.md'
-
-<TctlBatchDescribe/>
-
-## `terminate`
-
-import TctlBatchTerminate from './batch/terminate.md'
-
-<TctlBatchTerminate/>
+- [tctl reference](/docs/reference/tctl)

@@ -7,18 +7,13 @@ tags:
   - tctl
 ---
 
-<!-- prettier-ignore -->
-import * as WhatIsATaskQueue from '/docs/content/what-is-a-task-queue.md'
+The `tctl taskqueue describe` command describes the poller information of a [Task Queue](/docs/content/what-is-a-task-queue).
 
-The `tctl taskqueue describe` command describes the poller information of a <preview page={WhatIsATaskQueue}>Task Queue</preview>.
+The following modifiers control the behavior of the command.
 
-`tctl taskqueue describe <options> <arguments...>`
+### `--taskqueue` (required)
 
-The following options modify the behavior of the command.
-
-### `--taskqueue`
-
-How to specify the description of the <preview page={WhatIsATaskQueue}>Task Queue</preview>.
+How to specify the description of the [Task Queue](/docs/content/what-is-a-task-queue).
 
 Alias: `--tq`
 
@@ -30,12 +25,17 @@ tctl taskqueue describe --taskqueue <value>
 
 ### `--taskqueuetype`
 
-How to specify the type of the <preview page={WhatIsATaskQueue}>Task Queue</preview>. The type can be `workflow` or `activity`. The default is `workflow`.
+How to specify the type of the [Task Queue](/docs/content/what-is-a-task-queue). The type can be `workflow` or `activity`. The default is `workflow`.
 
 Alias: `--tqt`
 
 **Example**
 
 ```
-tctl taskqueue describe --taskqueuetype <type>
+tctl taskqueue describe --taskqueue <value> --taskqueuetype <type>
 ```
+
+## Related
+
+- [`tctl taskqueue`](../taskqueue)
+- [tctl reference](/docs/reference/tctl)

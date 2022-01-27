@@ -9,9 +9,7 @@ tags:
 
 The `tctl batch list` command lists all batch joba.
 
-`tctl batch list <options> <arguments...>`
-
-The following option modifies the behavior of the command.
+The following modifier controls the behavior of the command.
 
 ### `--pagesize`
 
@@ -24,3 +22,8 @@ Alias: `--ps`
 ```
 tctl batch list --pagesize <value>
 ```
+
+## Related
+
+- [`tctl batch`](../batch)
+- [tctl reference](/docs/reference/tctl)
