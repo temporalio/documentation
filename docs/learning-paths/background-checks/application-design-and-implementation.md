@@ -8,95 +8,22 @@ sidebar_label: Building the application
 
 The application maps each of the following business processes to its own Workflow Definition:
 
-- [Main Background Check](#main-background-check)
-- [Candidate Acceptance](#candidate-acceptance)
-- [SSN Trace](#ssn-trace)
-- [Federal Criminal Search](#federal-criminal-search)
-- [State Criminal Search](#state-criminal-search)
-- [Motor Vehicle Search](#motor-vehicle-search)
-- [Employment Verification](#employment-verification)
-
-### Main Background Check
-
-This is the entry point of the Temporal Application.
-When a new Background Check is started, this is the function that executes.
-
-<!--SNIPSTART background-checks-main-workflow-definition-->
-
-[Take me to the code](https://github.com/temporalio/background-checks/blob/main/workflows/background_check.go)
-
-<!--SNIPEND-->
-
-![Swim lane diagram of the Main Background Check Workflow Execution](/diagrams/background-checks/main-background-check.svg)
-
-### Candidate Acceptance
-
-![Swim lane diagram of the Candidate Acceptance Child Workflow Execution](/diagrams/background-checks/candidate-accept-flow.svg)
-
-<!--SNIPSTART background-checks-accept-workflow-definition-->
-
-[Take me to the code](https://github.com/temporalio/background-checks/blob/main/workflows/accept.go)
-
-<!--SNIPEND-->
-
-### SSN Trace
-
-![Swim lane diagram of the SSN Trace Child Workflow Execution](/diagrams/background-checks/ssn-trace-flow.svg)
-
-<!--SNIPSTART background-checks-snn-trace-workflow-definition-->
-
-[Take me to the code](https://github.com/temporalio/background-checks/blob/main/workflows/ssn_trace.go)
-
-<!--SNIPEND-->
-
-### Federal Criminal Search
-
-![Swim lane diagram of the Federal Criminal Search Child Workflow Execution](/diagrams/background-checks/federal-criminal-search-flow.svg)
-
-<!--SNIPSTART background-checks-federal-criminal-workflow-definition-->
-
-[Take me to the code](https://github.com/temporalio/background-checks/blob/main/workflows/federal_criminal_search.go)
-
-<!--SNIPEND-->
-
-### State Criminal Search
-
-![Swim lane diagram of the State Criminal Search Child Workflow Execution](/diagrams/background-checks/state-criminal-search-flow.svg)
-
-<!--SNIPSTART background-checks-state-criminal-workflow-definition-->
-
-[Take me to the code](https://github.com/temporalio/background-checks/blob/main/workflows/state_criminal_search.go)
-
-<!--SNIPEND-->
-
-### Motor Vehicle Search
-
-![Swim lane diagram of the State Criminal Search Child Workflow Execution](/diagrams/background-checks/motor-vehicle-search-flow.svg)
-
-<!--SNIPSTART background-checks-motor-vehicle-workflow-definition-->
-
-[Take me to the code](https://github.com/temporalio/background-checks/blob/main/workflows/motor_vehicle_incident_search.go)
-
-<!--SNIPEND-->
-
-### Employment Verification
-
-![Swim lane diagram of the Employment Verification Child Workflow Execution](/diagrams/background-checks/employment-verification-flow.svg)
-
-<!--SNIPSTART background-checks-employment-verification-workflow-definition-->
-
-[Take me to the code](https://github.com/temporalio/background-checks/blob/main/workflows/employment_verification.go)
-
-<!--SNIPEND-->
+- [Main Background Check](/docs/learning-paths/background-checks/main-background-check)
+- [Candidate Acceptance](/docs/learning-paths/background-checks/candidate-acceptance)
+- [SSN Trace](/docs/learning-paths/background-checks/ssn-trace)
+- [Federal Criminal Search](/docs/learning-paths/background-checks/federal-criminal-search)
+- [State Criminal Search](/docs/learning-paths/background-checks/state-criminal-search)
+- [Motor Vehicle Search](/docs/learning-paths/background-checks/motor-vehicle-search)
+- [Employment Verification](/docs/learning-paths/background-checks/employment-verification)
 
 ## Which steps within a business process are we mapping to Activities?
 
-The steps within the business processes that we are mapping to Activities are the following:
+In this application we are using Activities for the following business sub-processes:
 
 - Sending email
 - Calling third-party APIs
 
-## Why use Workflows for Searches instead of Activities?
+## Why use Child Workflows for Searches instead of Activities?
 
 For this Learning Path application, we use Workflows for Searches for a few reasons.
 
@@ -114,7 +41,23 @@ For this Learning Path application, we use Workflows for Searches for a few reas
 
 ## What happens if an Activity Execution fails?
 
+We have a choice to make about how long we are willing to wait for something to
+An Activity Execution fails if it is unable to complete in 1 minute.
+To ensure that this happens
 <!-- TODO -->
+
+- What happens if an Activity Task Execution fails?
+    - Describe the “chaos” implementation that gives us 40% failure rate on third party API calls
+        - We use some HTTP middleware in our third party API simulator code that triggers failure on a percentage of API calls. We have also configured similar functionality in Mailhog that causes it to randomly fail SMTP requests from our application.
+- What happens if an Activity Execution fails?
+    - Why/how do we propagate that failure?
+        - The activity will be automatically retried as per our retry policy. If the retries are exhausted the error from the last attempt will be returned to the workflow which executed the activity. It’s then up to the workflow to decide what to do. In our current code should an activity fail we fail the workflow (or child workflow), returning the error from the activity.
+- What happens if a Child Workflow Execution (Search) fails?
+    - In our case an Activity Execution failure should result in the Child Workflow Execution returning an error - why/how?
+        - Our business logic is that should an individual search fail we should return as much of the report as we can and let the hiring manager know one of the searches failed. We include the error from the activity in the report to aid in debugging. The hiring manager can then make a decision as to whether the check should be re-run or not.
+- Should the main Background Check ever “fail”?
+    - The main background check should never fail due to a failed search, or if a candidate declines the check. However, should the SSN trace fail the background check should fail as well as this is an unrecoverable situation which most likely requires operator action to fix. Once the issue with the SSN trace is fixed the failed workflow can be reset, resuming from the SSN trace.
+    - Regressions during a deploy of the main workflow will generally cause workflow task failure, but not failure of the main workflow. This is one of the features of Temporal and allows Temporal to keep trying to make progress until a fix is deployed without needing to restart all affected workflows manually.
 
 ## What happens if an individual Search fails?
 
@@ -133,7 +76,7 @@ Because the default retention period for a Temporal Cluster is 7 days, this appl
 
 ## What does the component topology look like?
 
-![Diagram of component topology of long running human driven Workflow](/diagrams/background-checks/component-topology.svg)
+![Diagram of component topology of the Temporal Application](/diagrams/background-checks/component-topology.svg)
 
 The Temporal Client communicates with the Temporal Cluster.
 

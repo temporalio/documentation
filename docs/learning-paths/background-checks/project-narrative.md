@@ -1,17 +1,17 @@
 ---
 id: project-narrative
 title: Welcome to the Background Check project
-description: The goal of this project is to teach you, the developer, how to think about building Temporal Applications that have Long Running Human Driven Workflows using a Temporal SDK, by leading you through a comprehensive implementation within the context of a real-life use case.
+description: The goal of this project is to teach you, the developer, how to think about building Temporal Applications that have Human-Driven Long-Running Workflows using a Temporal SDK, by leading you through a comprehensive implementation within the context of a real-life use case.
 sidebar_label: Introduction
 ---
 
 ## What is the goal of this project?
 
-The goal of this project is to teach you, the developer, how to think about building Temporal Applications that have Long Running Human Driven Workflows using a Temporal SDK, by leading you through a comprehensive implementation within the context of a real-life use case.
+The goal of this project is to teach you, the developer, how to think about building Temporal Applications that have Human-Driven Long-Running Workflows using a Temporal SDK, by leading you through a comprehensive implementation within the context of a real-life use case.
 
-## What is a Long Running Human Driven Workflow?
+## What is a Human-Driven Long-Running Workflow?
 
-A Long Running Human Driven Workflow is a Temporal Workflow Execution that could be Running (that is, in an Open state) for hours, days, weeks, or even years and that requires input from a real person to progress.
+A Human-Driven Long-Running Workflow is a Temporal Workflow Execution that could be Running (that is, in an Open state) for hours, days, weeks, or even years and that requires input from a real person to progress.
 
 ## What is the real-life use case?
 
@@ -82,22 +82,23 @@ And the Temporal Platform has built-in Visibility APIs to view the status and ge
 
 This project introduces the following concepts:
 
-- [Temporal Client](#)
-- [Workflow Definition](/docs/content/what-is-a-workflow-definition)
-- [Workflow Execution](/docs/content/what-is-a-workflow-execution)
-- [Workflow Type](/docs/content/what-is-a-workflow-type)
-- [Workflow Id](/docs/content/what-is-a-workflow-id)
-- [Workflow Id Reuse Policy](/docs/content/what-is-a-workflow-id-reuse-policy)
-- [Child Workflow Execution](/docs/content/what-is-a-child-workflow-execution)
 - [Activity Definition](/docs/content/what-is-an-activity-definition)
 - [Activity Execution](/docs/content/what-is-an-activity-execution)
-- [Worker](/docs/content/what-is-a-worker)
-- [Task Queue](/docs/content/what-is-a-task-queue)
 - [Advanced Visibility](/docs/content/what-is-advanced-visibility)
+- [Child Workflow Execution](/docs/content/what-is-a-child-workflow-execution)
+- [Custom Data Converter](/docs/content/what-is-a-data-converter)
 - [List Filters](/docs/content/what-is-a-list-filter)
 - [Search Attributes](/docs/content/what-is-a-search-attribute)
-- [Custom Data Converter](/docs/content/what-is-a-data-converter)
+- [Side Effect](/docs/content/what-is-a-side-effect)
+- [Task Queue](/docs/content/what-is-a-task-queue)
+- [Temporal Client](#)
 - [Temporal Web UI](#)
+- [Worker](/docs/content/what-is-a-worker)
+- [Workflow Definition](/docs/content/what-is-a-workflow-definition)
+- [Workflow Execution](/docs/content/what-is-a-workflow-execution)
+- [Workflow Id](/docs/content/what-is-a-workflow-id)
+- [Workflow Id Reuse Policy](/docs/content/what-is-a-workflow-id-reuse-policy)
+- [Workflow Type](/docs/content/what-is-a-workflow-type)
 
 ## What are the technical how-tos introduced in this application?
 
@@ -105,15 +106,17 @@ The following development "how-tos" provide a foundation for the development pat
 
 - [How to develop a Workflow Definition in Go](/docs/go/how-to-develop-a-workflow-definition-in-go)
 - [How to spawn a Workflow Execution in Go](/docs/go/how-to-spawn-a-workflow-execution-in-go)
-- [Getting the result of a Workflow Execution in Go](/docs/go/how-to-get-the-result-of-a-workflow-execution-in-go)
+- [How to set StartWorkflowOptions in Go](/docs/go/how-to-set-startworkflowoptions-in-go)
+- [How to get the result of a Workflow Execution in Go](/docs/go/how-to-get-the-result-of-a-workflow-execution-in-go)
 - [How to send a Cancellation Request to a Workflow Execution in Go](/docs/go/how-to-request-cancellation-of-a-workflow-execution-in-go)
-- [How to send a Signal to a Workflow Execution in Go](#)
-- [How to handle a Signal in a Workflow in Go](#)
+- [How to send a Signal to a Workflow Execution in Go](/docs/go/how-to-send-a-signal-to-a-workflow-execution-in-go)
+- [How to handle a Signal in a Workflow in Go](/docs/go/how-to-handle-a-signal-in-a-workflow-in-go)
 - [How to send a Query to a Workflow Execution in Go](#)
 - [How to handle a Query in a Workflow in Go](#)
-- [How to set StartWorkflowOptions in Go](/docs/go/how-to-set-startworkflowoptions-in-go)
-- [How to spawn an Activity Execution in Go](/docs/go/how-to-spawn-an-activity-execution-in-go)
 - [How to spawn a Child Workflow Execution in Go](/docs/go/how-to-spawn-a-child-workflow-execution-in-go)
+- [How to spawn an Activity Execution in Go](/docs/go/how-to-spawn-an-activity-execution-in-go)
+- [How to develop an Activity Definition in Go](/docs/go/how-to-develop-an-activity-definition-in-go)
 - [How to set ActivityOptions in Go](/docs/go/how-to-set-activityoptions-in-go)
-- [How to develop a Workflow Program in Go](/docs/go/how-to-develop-a-worker-program-in-go)
+- [How to develop a Worker Program in Go](/docs/go/how-to-develop-a-worker-program-in-go)
 - [How to provide a custom Data Converter in Go](#)
+- [How to execute a Side Effect in Go](/docs/go/how-to-execute-a-side-effect-in-go)
