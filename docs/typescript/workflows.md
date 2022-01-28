@@ -209,7 +209,7 @@ wf.setHandler(MySignal, handlerFn1);
 wf.setHandler(MySignal, handlerFn2); // replaces handlerFn1
 ```
 
-If you are familiar with Rxjs, you are free to wrap your Signal and Query into Observables if you wish, or you could dynamically reassign the listener based on your business logic/Workflow state.
+If you are familiar with [RxJS](https://rxjs.dev/), you are free to wrap your Signal and Query into Observables if you wish, or you could dynamically reassign the listener based on your business logic or Workflow state.
 
 </details>
 
@@ -474,10 +474,11 @@ See the [Workflow Client](/docs/typescript/clients/#workflow-options) docs for m
 `sleep` and `condition` help you write durable asynchronous code in Temporal by offering an easy to use Promise-like API, but deferring, persisting, and resuming execution behind the scenes.
 
 - In other words, they do not "lock" the process, allowing one Worker to concurrently process hundreds of Workflows that sleep and await arbitrary conditions.
-- They are also "cancellation aware", allowing for graceful cleanup if the Workflow they are linked to is canceled. More in [Cancellation Scopes](/docs/typescript/cancellation-scopes).
+- They are also "cancellation aware", allowing for graceful cleanup if the Workflow they are linked to is canceled.
+  For more information, see [Cancellation Scopes](/docs/typescript/cancellation-scopes).
 
-The Workflow's v8 isolate environment completely replaces the JavaScript [`setTimeout`](https://typescript.temporal.io/api/namespaces/workflow/#timers) global including inside libraries that you use, to provide a complete JS runtime.
-We recommend using our [`sleep(timeout)`](https://typescript.temporal.io/api/namespaces/workflow/#sleep) API instead, as it is a cancellation-aware Promise wrapper for `setTimeout`.
+The Workflow's V8 isolate environment completely replaces the JavaScript [`setTimeout`](https://typescript.temporal.io/api/namespaces/workflow/#timers) global, including inside libraries that you use, to provide a complete JavaScript runtime.
+We recommend using our [`sleep(timeout)`](https://typescript.temporal.io/api/namespaces/workflow/#sleep) API instead, because it is a cancellation-aware Promise wrapper for `setTimeout`.
 
 <details>
 <summary>
@@ -502,7 +503,7 @@ That is the kind of scale Temporal handles.
 ### `sleep`
 
 `sleep` sets a durable timer for a fixed time period (an "Updatable Timer" pattern is documented below).
-It uses the [ms](https://www.npmjs.com/package/ms) package to take either a string or number of milliseconds, and returns a promise that you can `await`, and `catch` when the Workflow Execution is cancelled.
+It uses the [ms](https://www.npmjs.com/package/ms) package to take either a string or number of milliseconds, and returns a promise that you can `await` and `catch` when the Workflow Execution is cancelled.
 
 ```ts
 import { sleep } from '@temporalio/workflow';
