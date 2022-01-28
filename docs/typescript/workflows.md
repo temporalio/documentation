@@ -475,7 +475,7 @@ See the [Workflow Client](/docs/typescript/clients/#workflow-options) docs for m
 
 - In other words, they do not "lock" the process, allowing one Worker to concurrently process hundreds of Workflows that sleep and await arbitrary conditions.
 - They are also "cancellation aware", allowing for graceful cleanup if the Workflow they are linked to is canceled.
- For more information, see [Cancellation Scopes](/docs/typescript/cancellation-scopes).
+  For more information, see [Cancellation Scopes](/docs/typescript/cancellation-scopes).
 
 The Workflow's V8 isolate environment completely replaces the JavaScript [`setTimeout`](https://typescript.temporal.io/api/namespaces/workflow/#timers) global, including inside libraries that you use, to provide a complete JavaScript runtime.
 We recommend using our [`sleep(timeout)`](https://typescript.temporal.io/api/namespaces/workflow/#sleep) API instead, because it is a cancellation-aware Promise wrapper for `setTimeout`.
