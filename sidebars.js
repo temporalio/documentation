@@ -429,6 +429,11 @@ module.exports = {
       label: "Background Checks",
       collapsible: false,
       items: [
+        {
+          type: "link",
+          label: "Project repo",
+          href: "https://github.com/temporalio/background-checks",
+        },
         "learning-paths/background-checks/project-narrative",
         "learning-paths/background-checks/how-to-use",
         "learning-paths/background-checks/application-requirements",
