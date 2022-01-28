@@ -5,12 +5,6 @@ sidebar_label: Next.js Tutorial
 description: In this tutorial, we'll talk about how Temporal integrates into an existing Next.js application using Next.js API routes. This gives you the ability to write full-stack, long running applications end to end in TypeScript.
 ---
 
-:::caution
-
-This tutorial is an untested work in progress, please proceed with caution and report any issues to us.
-
-:::
-
 In this tutorial, we'll talk about how Temporal integrates into an **existing Next.js application** using Next.js API routes.
 This gives you the ability to write full-stack, long running applications end to end in TypeScript.
 

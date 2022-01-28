@@ -194,7 +194,7 @@ This keeps the event history within limits, but continues the logic execution.
 
 :::note
 
-If you are using [Signals](/docs/concepts/signals) with the Go SDK, you should make sure to do an asynchronous drain on the Signal channel or the Signals will be lost.
+If you are using [Signals](/docs/content/what-is-a-signal) with the Go SDK, you should make sure to do an asynchronous drain on the Signal channel or the Signals will be lost.
 
 :::
 

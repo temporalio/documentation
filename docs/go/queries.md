@@ -2,6 +2,8 @@
 id: queries
 title: Queries in Go
 sidebar_label: Queries
+tags:
+  - go
 ---
 
 ## Stack Trace Query
@@ -164,8 +166,8 @@ In order to run a query using the go client do the following:
 
 ```go
 resp, err := client.QueryWorkflowWithOptions(ctx, &client.QueryWorkflowWithOptionsRequest{
-        WorkflowId:            workflowId,
-        RunId:                 runId,
+        WorkflowID:            workflowID,
+        RunID:                 runID,
         QueryType:             queryType,
         QueryConsistencyLevel: shared.QueryConsistencyLevelStrong.Ptr(),
 })

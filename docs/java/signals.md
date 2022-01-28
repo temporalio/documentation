@@ -2,17 +2,18 @@
 id: signals
 title: Signals in Java
 sidebar_label: Signals
+tags:
+  - java
 ---
 
-Workflow signals provide an asynchronous and durable mechanism for providing data to running Workflows.
+import {RelatedReadContainer, RelatedReadItem} from '../components/RelatedReadList.js'
 
-## When to use Signals
+<!-- prettier-ignore -->
+import * as WhatIsASignal from '../content/what-is-a-signal.md'
 
-import WhenToSignals from '../content/when-to-use-signals.md'
-
-<WhenToSignals />
-
-## How to use Signals
+<RelatedReadContainer>
+  <RelatedReadItem page={WhatIsASignal} />
+</RelatedReadContainer>
 
 Signal methods can only be defined inside Workflows Interfaces and are methods annotated with the `@SignalMethod` annotation, for example:
 

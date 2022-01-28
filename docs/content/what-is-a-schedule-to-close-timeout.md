@@ -14,14 +14,16 @@ A Schedule-To-Close Timeout is the maximum amount of time allowed for the overal
 
 <CenteredImage
 imagePath="/diagrams/schedule-to-close-timeout.svg"
-imageSize="50"
+imageSize="100"
 title="Schedule-To-Close Timeout period"
 />
+
+Example Schedule-To-Close Timeout period for an Activity Execution that has a chain Activity Task Executions:
 
 <CenteredImage
 imagePath="/diagrams/schedule-to-close-timeout-with-retry.svg"
 imageSize="100"
-title="Schedule-To-Close Timeout period with retries"
+title="Schedule-To-Close Timeout period with a retry"
 />
 
 **The default Schedule-To-Close Timeout is ∞ (infinity).**

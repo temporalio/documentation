@@ -19,4 +19,4 @@ SDKs are available in the following languages:
 - [Go](/docs/go/getting-started)
 - [Java](/docs/java/introduction)
 - [PHP](/docs/php/introduction)
-- [Typescript](/docs/typescript/introduction)
+- [TypeScript](/docs/typescript/introduction)

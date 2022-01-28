@@ -52,13 +52,13 @@ function BlogPostItem(props) {
     const TitleHeading = isBlogPostPage ? "h1" : "h2";
     return (
       <header
-        className={`flex flex-col my-12 ${
+        className={`my-12 flex flex-col ${
           isBlogPostPage ? "items-center justify-center" : ""
         }`}
       >
         <TitleHeading
-          className={`mb-4 leading-relaxed text-3xl font-semibold  ${
-            isBlogPostPage ? "text-center max-w-lg" : ""
+          className={`mb-4 text-3xl font-semibold leading-relaxed  ${
+            isBlogPostPage ? "max-w-lg text-center" : ""
           }`}
         >
           {isBlogPostPage ? (
@@ -69,18 +69,18 @@ function BlogPostItem(props) {
             </Link>
           )}
         </TitleHeading>
-        <div className="flex mb-4 items-center py-2 space-x-2">
+        <div className="mb-4 flex items-center space-x-2 py-2">
           {authorImageURL && (
             <Link href={authorURL}>
               <img
-                className="rounded-full w-10 h-10 shadow-md"
+                className="h-10 w-10 rounded-full shadow-md"
                 src={authorImageURL}
                 alt={author}
               />
             </Link>
           )}
           {author && (
-            <p className="font-medium py-1">
+            <p className="py-1 font-medium">
               {authorURL ? (
                 <Link href={authorURL}>{author}</Link>
               ) : (
@@ -100,11 +100,11 @@ function BlogPostItem(props) {
         </time>
 
         {(tags.length > 0 || truncated) && tags.length > 0 && (
-          <span className="flex flex-wrap mb-5">
+          <span className="mb-5 flex flex-wrap">
             {tags.map(({label, permalink: tagPermalink}) => (
               <Link
                 key={tagPermalink}
-                className="mr-2 my-2 no-underline inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-[color:var(--ifm-badge-background-color)] text-[color:var(--ifm-color)] hover:opacity-80"
+                className="my-2 mr-2 inline-flex items-center rounded-full bg-[color:var(--ifm-badge-background-color)] px-3 py-0.5 text-sm font-medium text-[color:var(--ifm-color)] no-underline hover:opacity-80"
                 to={tagPermalink}
               >
                 {label}
@@ -128,10 +128,10 @@ function BlogPostItem(props) {
       />
 
       <article
-        className={!isBlogPostPage ? "mb-8 lg:mb-0 max-w-screen-lg" : undefined}
+        className={!isBlogPostPage ? "mb-8 max-w-screen-lg lg:mb-0" : undefined}
       >
         {renderPostHeader()}
-        <article className="prose sm:prose md:prose-md lg:prose-lg mx-auto">
+        <article className="md:prose-md prose mx-auto sm:prose lg:prose-lg">
           <MDXProvider components={MDXComponents}>{children}</MDXProvider>
         </article>
       </article>

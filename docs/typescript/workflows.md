@@ -5,9 +5,13 @@ sidebar_label: Workflows
 description: Workflows are async functions that can orchestrate Activities and access special Workflow APIs, subject to deterministic limitations.
 ---
 
-import RelatedReadList from '../components/RelatedReadList.js'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import RelatedReadList, {RelatedReadContainer, RelatedReadItem} from '../components/RelatedReadList.js'
+
+<!-- prettier-ignore -->
+import * as WhatIsASignal from '../content/what-is-a-signal.md'
+import * as WhatIsAQuery from '../content/what-is-a-query.md'
 
 > **@temporalio/workflow** [![NPM](https://img.shields.io/npm/v/@temporalio/workflow)](https://www.npmjs.com/package/@temporalio/workflow) [API reference](https://typescript.temporal.io/api/namespaces/workflow) | [GitHub](https://github.com/temporalio/sdk-typescript/tree/main/packages/workflow)
 
@@ -65,7 +69,7 @@ The `@temporalio/workflow` package exports all the useful primitives that you ca
 | `sleep`                      | Defer execution by [sleeping](#sleep) for fixed time                                                                                                                                                                                                                                                                                                                                                                     |
 | `condition`                  | Defer execution until a [`condition`](#condition) is true, with optional timeout                                                                                                                                                                                                                                                                                                                                         |
 | `startChild`/`executeChild`  | Spawn new [Child Workflows](#child-workflows) with customizable ParentClosePolicy                                                                                                                                                                                                                                                                                                                                        |
-| `continueAsNew`              | Truncate Event History for [infinitely long running Workflows](#infinite-workflows)                                                                                                                                                                                                                                                                                                                                      |
+| `continueAsNew`              | Truncate Event History for [Entity Workflows](#entity-workflows)                                                                                                                                                                                                                                                                                                                                                         |
 | `patched`/`deprecatePatch`   | Migrate Workflows to new versions ([see Patching doc](/docs/typescript/patching))                                                                                                                                                                                                                                                                                                                                        |
 | `uuid4`                      | Generate an RFC compliant V4 [uuid](https://typescript.temporal.io/api/namespaces/workflow/#uuid4) without needing to call an Activity or Side Effect.                                                                                                                                                                                                                                                                   |
 | APIs for advanced users      | including [`workflowInfo`](https://typescript.temporal.io/api/namespaces/workflow#workflowinfo) (to retrieve Workflow metadata), Workflow data [`Sinks`](/docs/typescript/logging), [Cancellation Scopes](/docs/typescript/cancellation-scopes), [Failure types](/docs/typescript/handling-failure), and [`getExternalWorkflowHandle`](https://typescript.temporal.io/api/namespaces/workflow#getexternalworkflowhandle) |
@@ -88,43 +92,16 @@ The rest of this document explains the major Workflow APIs you should know:
 - Signals and Queries: `defineSignal`, `defineQuery`, and `setHandler`
 - Deferred Execution: `sleep` and `condition`
 - Child Workflows: `startChild` and `executeChild`
-- Infinite Workflows: `continueAsNew`
+- Entity (indefinitely long running) Workflows: `continueAsNew`
 
 ## Signals and Queries
 
-<!-- note to docs writers: specify id so that #signals and #queries anchor tags still work -->
+<RelatedReadContainer>
+  <RelatedReadItem page={WhatIsASignal} />
+  <RelatedReadItem page={WhatIsAQuery} />
+</RelatedReadContainer>
 
-<details id="signals">
-<summary>
-  <a href="/docs/concepts/signals">Signals</a> are a way to send data IN to a running Workflow.
-</summary>
-
-import WhenToSignals from '../content/when-to-use-signals.md'
-
-<WhenToSignals />
-
-</details>
-
-<details id="queries">
-<summary>
-  <a href="/docs/concepts/queries">Queries</a> are a way to read data OUT from a running Workflow.
-</summary>
-
-**Queries are a fully asynchronous mechanism for getting data out of a running Workflow** (as opposed to waiting for the Workflow to complete and return a value, or calling an Activity from inside a Workflow to communicate with the outside world).
-
-- **Queries must not mutate Workflow state.** This would cause non-determinism errors in Temporal.
-- Queries typically return data, but can also receive arguments to modify what data is returned.
-- Queries are often used to check the execution state of a long running Workflow that can be signaled.
-- If a Query is made to a completed Workflow, the final value is returned.
-
-</details>
-
-Signals and Queries are almost always used together.
-If you wanted to send data in, you probably will want to read data out.
-Because both involve communicating with a Workflow, using them is a two-step process:
-
-1. add the Signals and Queries inside the Workflow code
-2. call the Signals and Queries from the Client code
+#### How to define and receive Signals and Queries
 
 ### Define Signals and Queries inside a Workflow
 
@@ -900,21 +877,23 @@ import PCP from '../content/what-is-a-parent-close-policy.md'
 
 <PCP />
 
-## Infinite Workflows
+<span id="infinite-workflows" />
+
+## Entity Workflows
+
+An **Entity Workflow** is a Workflow that represents a single business entity (like a user) and runs indefinitely (for example, until the user deletes their account). Entity Workflows and other Workflows that run for a long period of time need to use `continueAsNew`.
 
 <details>
 <summary>Why ContinueAsNew is needed
 </summary>
 
-import SharedContinueAsNew from '../shared/continue-as-new.md'
-
-<SharedContinueAsNew />
+[What is Continue-As-New?](/docs/content/what-is-continue-as-new)
 
 </details>
 
 ### The `continueAsNew` API
 
-Use the [`continueAsNew`](https://typescript.temporal.io/api/namespaces/workflow#continueasnew) API to instruct the TypeScript SDK to restart a Workflow with a new starting value and a new event history.
+Use the [`continueAsNew`](https://typescript.temporal.io/api/namespaces/workflow#continueasnew) API to instruct the TypeScript SDK to stop the current Workflow Execution and start a new one with a new starting value and a new event history. Note that this is done immediately, so pending updates from Signals must be drained before proceeding or data may be lost.
 
 <!--SNIPSTART typescript-continue-as-new-workflow-->
 <!--SNIPEND-->
@@ -928,6 +907,71 @@ export async function loopingWorkflow(foo: any, isContinued?: boolean) {
   // some logic based on foo, branching on isContinued
 
   (await continueAsNew)<typeof loopingWorkflow>(foo, true);
+}
+```
+
+### Don't overuse continueAsNew
+
+You should not try to call `continueAsNew` too often - if at all!
+It's primary purpose is to truncate event history, which if too large may slow down your workflows and eventually cause an error. Calling it too frequently to be preemptive can cause other performance issues as each new Workflow Execution has overhead.
+
+Temporal's default limits are set to warn you at 10,000 events in a single Workflow Execution, and error at 50,000.
+This is sufficient for:
+
+- If executing one activity a day, it can support an infinite loop for over 2 decades (27 years)
+- If executing one activity an hour, it can support an infinite loop for over 1 year (417 days)
+- If executing one activity a minute, it can support an infinite loop for over 1 week (7 days)
+
+without even resorting to `continueAsNew`.
+
+Our recommendation is to size it to continue as new between once a day to once a week, to ensure old version branches can be removed in a timely manner.
+
+### Entity Workflow Example
+
+Here is a simple pattern that we recommend to represent a single entity. It keeps track of the number of iterations regardless of frequency, and calls `continueAsNew` while properly handling pending updates from Signals.
+
+```tsx
+interface Input {
+  /* define your workflow input type here */
+}
+interface Update {
+  /* define your workflow update type here */
+}
+
+const MAX_ITERATIONS = 1;
+
+export async function entityWorkflow(
+  input: Input,
+  isNew = true
+): Promise<void> {
+  try {
+    const pendingUpdates = Array<Update>();
+    setHandler(updateSignal, (updateCommand) => {
+      pendingUpdates.push(updateCommand);
+    });
+
+    if (isNew) {
+      await setup(input);
+    }
+
+    for (let iteration = 1; iteration <= MAX_ITERATIONS; ++iteration) {
+      // Automatically continue as new after a day if no updates were received
+      await condition(() => pendingUpdates.length > 0, '1 day');
+
+      while (pendingUpdates.length) {
+        const update = pendingUpdates.shift();
+        await runAnActivityOrChildWorkflow(update);
+      }
+    }
+  } catch (err) {
+    if (isCancellation(err)) {
+      await CancellationScope.nonCancellable(async () => {
+        await cleanup();
+      });
+    }
+    throw err;
+  }
+  await continueAsNew<typeof entityWorkflow>(input, false);
 }
 ```
 
