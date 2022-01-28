@@ -215,7 +215,7 @@ The `log` section is optional and contains the following possible values:
 
 ## clusterMetadata
 
-`clusterMetadata` contains the local cluster definition, including those which participate in [Multi-cluster Replication](/docs/server/multi-cluster).
+`clusterMetadata` contains the local cluster information. The information will be used in [Multi-cluster Replication](/docs/server/multi-cluster).
 
 An example `clusterMetadata` section:
 
