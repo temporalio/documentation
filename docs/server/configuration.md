@@ -215,7 +215,7 @@ The `log` section is optional and contains the following possible values:
 
 ## clusterMetadata
 
-`clusterMetadata` contains all cluster definitions, including those which participate in [Multi-cluster Replication](/docs/server/multi-cluster).
+`clusterMetadata` contains the local cluster definition, including those which participate in [Multi-cluster Replication](/docs/server/multi-cluster).
 
 An example `clusterMetadata` section:
 
@@ -239,7 +239,7 @@ clusterMetadata:
 - `replicationConsumer` - determines which method to use to consume replication tasks. The type may be either `kafka` or `rpc`.
 - `failoverVersionIncrement` - the increment of each cluster version when failover happens.
 - `masterClusterName` - the master cluster name, only the master cluster can register/update namespace. All clusters can do namespace failover.
-- `clusterInformation` - contains a map of cluster names to `ClusterInformation` definitions. `ClusterInformation` sections consist of:
+- `clusterInformation` - contains the local cluster name to `ClusterInformation` definition. The local cluster name should be consistent with `currentClusterName`. `ClusterInformation` sections consist of:
   - `enabled` - _boolean_ - whether a remote cluster is enabled for replication.
   - `initialFailoverVersion`
   - `rpcAddress` - indicate the remote service address (host:port). Host can be DNS name. Use `dns:///` prefix to enable round-robin between IP address for DNS name.
