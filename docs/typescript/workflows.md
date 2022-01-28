@@ -121,10 +121,10 @@ import WhenToSignals from '../content/when-to-use-signals.md'
 
 Signals and Queries are almost always used together.
 If you wanted to send data in, you probably will want to read data out.
-Since both involve communicating with a Workflow, using them is a two step process:
+Because both involve communicating with a Workflow, using them is a two-step process:
 
-1. add the signals and queries inside the Workflow code
-2. call the signals and queries from the Client code
+1. add the Signals and Queries inside the Workflow code
+2. call the Signals and Queries from the Client code
 
 ### Define Signals and Queries inside a Workflow
 
@@ -232,7 +232,7 @@ wf.setHandler(MySignal, handlerFn1);
 wf.setHandler(MySignal, handlerFn2); // replaces handlerFn1
 ```
 
-If you are familiar with [RxJS](https://rxjs.dev/), you are free to wrap your Signal and Query into Observables if you wish, or you could dynamically reassign the listener based on your business logic/Workflow state.
+If you are familiar with [RxJS](https://rxjs.dev/), you are free to wrap your Signal and Query into Observables if you wish, or you could dynamically reassign the listener based on your business logic or Workflow state.
 
 </details>
 
@@ -497,10 +497,11 @@ See the [Workflow Client](/docs/typescript/clients/#workflow-options) docs for m
 `sleep` and `condition` help you write durable asynchronous code in Temporal by offering an easy to use Promise-like API, but deferring, persisting, and resuming execution behind the scenes.
 
 - In other words, they do not "lock" the process, allowing one Worker to concurrently process hundreds of Workflows that sleep and await arbitrary conditions.
-- They are also "cancellation aware", allowing for graceful cleanup if the Workflow they are linked to is canceled. More in [Cancellation Scopes](/docs/typescript/cancellation-scopes).
+- They are also "cancellation aware", allowing for graceful cleanup if the Workflow they are linked to is canceled.
+ For more information, see [Cancellation Scopes](/docs/typescript/cancellation-scopes).
 
-The Workflow's v8 isolate environment completely replaces the JavaScript [`setTimeout`](https://typescript.temporal.io/api/namespaces/workflow/#timers) global, including inside libraries that you use, to provide a complete JS runtime.
-We recommend using our [`sleep(timeout)`](https://typescript.temporal.io/api/namespaces/workflow/#sleep) API instead, as it is a cancellation-aware Promise wrapper for `setTimeout`.
+The Workflow's V8 isolate environment completely replaces the JavaScript [`setTimeout`](https://typescript.temporal.io/api/namespaces/workflow/#timers) global, including inside libraries that you use, to provide a complete JavaScript runtime.
+We recommend using our [`sleep(timeout)`](https://typescript.temporal.io/api/namespaces/workflow/#sleep) API instead, because it is a cancellation-aware Promise wrapper for `setTimeout`.
 
 <details>
 <summary>
