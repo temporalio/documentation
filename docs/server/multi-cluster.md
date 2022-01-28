@@ -13,7 +13,7 @@ Temporal's Multi-cluster Replication feature is considered **experimental** and 
 </CustomWarning>
 
 This guide introduces Temporal's Multi-cluster Replication capabilities.
-You can set this up with `tctl admin cluster upsert-remote-cluster` command. A two -cluster-setup example can be found in below section [Cluster setup](#Cluster-setup)
+You can set this up with `tctl admin cluster upsert-remote-cluster` command. A two-cluster-setup example can be found in below section [Cluster setup](#Cluster-setup)
 
 ## Overview
 
