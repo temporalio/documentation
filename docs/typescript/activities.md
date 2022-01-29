@@ -343,10 +343,10 @@ You can [read the tests](https://github.com/temporalio/sdk-typescript/blob/7d47f
 
 ### Activities calling Activities
 
-It may sometimes seem convenient in code to have an activity call another activity.
-We generally recommend not to: activities are regular functions, so calling to one directly will not be seen -and therefore logged- by the Temporal service.
+For some use cases, having an Activity call another Activity might seem convenient.
+We generally recommend not doing so. Activities are regular functions, so calling one directly is not seen—and therefore not logged—by the Temporal Server.
 
-Instead, prefer moving logic out of the activities so that the parent workflow uses the result of one activity to call the other activity.
+Instead, move logic out of the Activities and have the parent Workflow use the result of one Activity to call the other Activity.
 
 
 ### Local Activities
