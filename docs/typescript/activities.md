@@ -341,14 +341,6 @@ Async activity completion is done through a two step process:
 
 You can [read the tests](https://github.com/temporalio/sdk-typescript/blob/7d47f501cb56cced27118b5f0abb320cc0ba03ef/packages/test/src/test-async-completion.ts#L40-L98) for more information.
 
-### Activities calling Activities
-
-For some use cases, having an Activity call another Activity might seem convenient.
-We generally recommend not doing so. Activities are regular functions, so calling one directly is not seen—and therefore not logged—by the Temporal Server.
-
-Instead, move logic out of the Activities and have the parent Workflow use the result of one Activity to call the other Activity.
-
-
 ### Local Activities
 
 Temporal has an optimization feature called Local Activities.
