@@ -7,7 +7,7 @@ tags:
   - tctl
 ---
 
-The `tctl workflow` commands enable [Workflow Execution](/docs/content/what-is-a-workflow-execution)  operations.
+The `tctl workflow` commands enable [Workflow Execution](/docs/content/what-is-a-workflow-execution) operations.
 
 - [`tctl workflow show`](./workflow/show)
 - [`tctl workflow showid`](./workflow/showid)
