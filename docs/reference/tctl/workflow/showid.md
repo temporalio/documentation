@@ -7,17 +7,13 @@ tags:
   - tctl
 ---
 
-<!-- prettier-ignore -->
-import * as WhatIsAWorkflowId from '../../../content/what-is-a-workflow-id.md'
-import * as WhatIsARunId from '../../../content/what-is-a-run-id.md'
+The `tctl workflow showid` command shows Workflow History for the specified [Workflow Id](/docs/content/what-is-a-workflow-id) and optional [Run Id](/docs/content/what-is-a-run-id).
 
-The `tctl workflow showid` command shows Workflow History for the specified <preview page={WhatIsAWorkflowId}>Workflow Id</preview> and optional <preview page={WhatIsARunId}>Run Id</preview>.
-
-`tctl workflow showid <workflow_id> [<run_id>] [<options>] [<arguments...>]`
+`tctl workflow showid <workflow_id> [<run_id>] [<modifiers>]`
 
 This command is a shortcut for `tctl workflow show --workflow_id <workflowid> [--run_id <runid>]`.
 
-The following options modify the behavior of the command.
+The following modifiers control the behavior of the command.
 
 ### `--print_datetime`
 
@@ -114,3 +110,8 @@ How to show only events that are eligible for reset.
 ```
 tctl workflow showid <workflow_id> --reset_points_only
 ```
+
+## Related
+
+- [`tctl workflow`](../workflow)
+- [tctl reference](/docs/reference/tctl)

@@ -7,25 +7,15 @@ tags:
   - tctl
 ---
 
-<!-- prettier-ignore -->
-import * as WhatIsAWorkflowExecution from '../../../content/what-is-a-workflow-execution.md'
-import * as WhatIsATaskQueue from '../../../content/what-is-a-task-queue.md'
-import * as WhatIsAWorkflowId from '../../../content/what-is-a-workflow-id.md'
-import * as WhatIsAWorkflowType from '../../../content/what-is-a-workflow-type.md'
-import * as WhatIsAStartToCloseTimeout from '../../../content/what-is-a-start-to-close-timeout.md'
-import * as WhatIsAWorkflowTask from '../../../content/what-is-a-workflow-task.md'
-import * as WhatIsAWorkflowIdReusePolicy from '../../../content/what-is-a-workflow-id-reuse-policy.md'
-import * as WhatIsASearchAttribute from '../../../content/what-is-a-search-attribute.md'
+The `tctl workflow run` command starts a new [Workflow Execution](/docs/content/what-is-a-workflow-execution) and can show Workflow progress.
 
-The `tctl workflow run` command starts a new <preview page={WhatIsAWorkflowExecution}>Workflow Execution</preview> and can show Workflow progress.
+`tctl workflow run [<modifiers>]`
 
-`tctl workflow run <options> <arguments...>`
-
-The following options modify the behavior of the command.
+The following modifiers control the behavior of the command.
 
 ### `--taskqueue`
 
-How to specify a <preview page={WhatIsATaskQueue}>Task Queue</preview>.
+How to specify a [Task Queue](/docs/content/what-is-a-task-queue).
 
 Alias: `--tq`
 
@@ -37,7 +27,7 @@ tctl workflow run --taskqueue <name>
 
 ### `--workflow_id`
 
-How to specify a <preview page={WhatIsAWorkflowId}>Workflow Id</preview>.
+How to specify a [Workflow Id](/docs/content/what-is-a-workflow-id).
 
 Aliases: `--wid`, `-w`
 
@@ -49,7 +39,7 @@ tctl workflow run --workflow_id <id>
 
 ### `--workflow_type`
 
-How to specify the name of a <preview page={WhatIsAWorkflowType}>Workflow Type</preview>.
+How to specify the name of a [Workflow Type](/docs/content/what-is-a-workflow-type).
 
 Alias: `--wt`
 
@@ -61,7 +51,7 @@ tctl workflow run --workflow_type <name>
 
 ### `--execution_timeout`
 
-How to specify the <preview page={WhatIsAStartToCloseTimeout}>Start-To-Close Timeout</preview> of the <preview page={WhatIsAWorkflowExecution}>Workflow Execution</preview> in seconds.
+How to specify the [Start-To-Close Timeout](/docs/content/what-is-a-start-to-close-timeout) of the [Workflow Execution](/docs/content/what-is-a-workflow-execution) in seconds.
 The default value is 0.
 
 Alias: `--et`
@@ -74,7 +64,7 @@ tctl workflow run --execution_timeout <seconds>
 
 ### `--workflow_task_timeout`
 
-How to specify the <preview page={WhatIsAStartToCloseTimeout}>Start-To-Close Timeout</preview> of the <preview page={WhatIsAWorkflowTask}>Workflow Task</preview> in seconds.
+How to specify the [Start-To-Close Timeout](/docs/content/what-is-a-start-to-close-timeout) of the [Workflow Task](/docs/content/what-is-a-workflow-task) in seconds.
 The default value is 10.
 
 Alias: `--wtt`
@@ -97,8 +87,8 @@ tctl workflow run --cron <string>
 
 ### `--workflowidreusepolicy`
 
-How to specify a <preview page={WhatIsAWorkflowIdReusePolicy}>Workflow Id Reuse Policy</preview>.
-Configure if the same <preview page={WhatIsAWorkflowId}>Workflow Id</preview> is allowed for use in new <preview page={WhatIsAWorkflowExecution}>Workflow Executions</preview>.
+How to specify a [Workflow Id Reuse Policy](/docs/content/what-is-a-workflow-id-reuse-policy).
+Configure if the same [Workflow Id](/docs/content/what-is-a-workflow-id) is allowed for use in new [Workflow Execution](/docs/content/what-is-a-workflow-execution).
 
 Values: `AllowDuplicate`, `AllowDuplicateFailedOnly`, `RejectDuplicate`
 
@@ -225,3 +215,8 @@ Alias: `--maxl`
 ```
 tctl workflow run --max_field_length <length>
 ```
+
+## Related
+
+- [`tctl workflow`](../workflow)
+- [tctl reference](/docs/reference/tctl)

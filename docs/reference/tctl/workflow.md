@@ -7,121 +7,28 @@ tags:
   - tctl
 ---
 
-<!-- prettier-ignore -->
-import * as WhatIsAWorkflowExecution from '../../content/what-is-a-workflow-execution.md'
+The `tctl workflow` commands enable [Workflow Execution](/docs/content/what-is-a-workflow-execution)  operations.
 
-The `tctl workflow` commands operate <preview page={WhatIsAWorkflowExecution}>Workflow Executions</preview>.
+- [`tctl workflow show`](./workflow/show)
+- [`tctl workflow showid`](./workflow/showid)
+- [`tctl workflow start`](./workflow/start)
+- [`tctl workflow run`](./workflow/run)
+- [`tctl workflow cancel`](./workflow/cancel)
+- [`tctl workflow signal`](./workflow/signal)
+- [`tctl workflow terminate`](./workflow/terminate)
+- [`tctl workflow list`](./workflow/list)
+- [`tctl workflow listall`](./workflow/listall)
+- [`tctl workflow listarchived`](./workflow/listarchived)
+- [`tctl workflow scan`](./workflow/scan)
+- [`tctl workflow count`](./workflow/count)
+- [`tctl workflow query`](./workflow/query)
+- [`tctl workflow stack`](./workflow/stack)
+- [`tctl workflow describe`](./workflow/describe)
+- [`tctl workflow describeid`](./workflow/describeid)
+- [`tctl workflow observe`](./workflow/observe)
+- [`tctl workflow reset`](./workflow/reset)
+- [`tctl workflow reset-batch`](./workflow/reset-batch)
 
-## `show`
+## Related
 
-import TctlWorkflowShow from './workflow/show.md'
-
-<TctlWorkflowShow/>
-
-## `showid`
-
-import TctlWorkflowShowid from './workflow/showid.md'
-
-<TctlWorkflowShowid/>
-
-## `start`
-
-import TctlWorkflowStart from './workflow/start.md'
-
-<TctlWorkflowStart/>
-
-## `run`
-
-import TctlWorkflowRun from './workflow/run.md'
-
-<TctlWorkflowRun/>
-
-## `cancel`
-
-import TctlWorkflowCancel from './workflow/cancel.md'
-
-<TctlWorkflowCancel/>
-
-## `signal`
-
-import TctlWorkflowSignal from './workflow/signal.md'
-
-<TctlWorkflowSignal/>
-
-## `terminate`
-
-import TctlWorkflowTerminate from './workflow/terminate.md'
-
-<TctlWorkflowTerminate/>
-
-## `list`
-
-import TctlWorkflowList from './workflow/list.md'
-
-<TctlWorkflowList/>
-
-## `listall`
-
-import TctlWorkflowListall from './workflow/listall.md'
-
-<TctlWorkflowListall/>
-
-## `listarchived`
-
-import TctlWorkflowListarchived from './workflow/listarchived.md'
-
-<TctlWorkflowListarchived/>
-
-## `scan`
-
-import TctlWorkflowScan from './workflow/scan.md'
-
-<TctlWorkflowScan/>
-
-## `count`
-
-import TctlWorkflowCount from './workflow/count.md'
-
-<TctlWorkflowCount/>
-
-## `query`
-
-import TctlWorkflowQuery from './workflow/query.md'
-
-<TctlWorkflowQuery/>
-
-## `stack`
-
-import TctlWorkflowStack from './workflow/stack.md'
-
-<TctlWorkflowStack/>
-
-## `describe`
-
-import TctlWorkflowDescribe from './workflow/describe.md'
-
-<TctlWorkflowDescribe/>
-
-## `describeid`
-
-import TctlWorkflowDescribeid from './workflow/describeid.md'
-
-<TctlWorkflowDescribeid/>
-
-## `observe`
-
-import TctlWorkflowObserve from './workflow/observe.md'
-
-<TctlWorkflowObserve/>
-
-## `reset`
-
-import TctlWorkflowReset from './workflow/reset.md'
-
-<TctlWorkflowReset/>
-
-## `reset-batch`
-
-import TctlWorkflowResetbatch from './workflow/reset-batch.md'
-
-<TctlWorkflowResetbatch/>
+- [tctl reference](/docs/reference/tctl)
