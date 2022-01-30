@@ -9,6 +9,8 @@ tags:
 
 The `tctl batch start` command starts a batch job.
 
+`tctl batch start --query <value> [<modifiers>]`
+
 The following modifiers control the behavior of the command.
 
 ### `--query`

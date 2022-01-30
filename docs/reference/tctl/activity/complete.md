@@ -9,6 +9,8 @@ tags:
 
 The `tctl activity complete` command completes an [Activity Execution](/docs/content/what-is-an-activity-execution).
 
+`tctl activity complete [<modifiers>]`
+
 The following modifiers control the behavior of the command.
 
 ### `--workflow_id`

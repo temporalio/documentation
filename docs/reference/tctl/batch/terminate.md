@@ -9,6 +9,8 @@ tags:
 
 The `tctl batch terminate` command terminates a batch job.
 
+`tctl batch terminate --job_id <id> [<modifiers>]`
+
 The following modifiers control the behavior of the command.
 
 ### `--job_id`

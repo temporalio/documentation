@@ -9,6 +9,8 @@ tags:
 
 The `tctl batch describe` command describes the progress of a batch job.
 
+`tctl batch describe --job_id <id>`
+
 The following modifier controls the behavior of the command.
 
 ### `--job_id`

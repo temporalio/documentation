@@ -9,6 +9,8 @@ tags:
 
 The `tctl taskqueue describe` command describes the poller information of a [Task Queue](/docs/content/what-is-a-task-queue).
 
+`tctl taskqueue describe --taskqueue <value> [<modifiers>]`
+
 The following modifiers control the behavior of the command.
 
 ### `--taskqueue`
