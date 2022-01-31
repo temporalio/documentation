@@ -72,9 +72,9 @@ Note that `Core` includes the Typescript SDK.
 
 If you're curious about how the metrics are defined in source, see:
 
-- Core - [SDK metrics](https://github.com/temporalio/sdk-core/blob/master/core/src/telemetry/metrics.rs) and [Client metrics](https://github.com/temporalio/sdk-core/blob/master/client/src/metrics.rs)
-- Java - [SDK metrics](https://github.com/temporalio/sdk-java/blob/master/temporal-sdk/src/main/java/io/temporal/internal/metrics/MetricsType.java) and [Client metrics](https://github.com/temporalio/sdk-java/blob/master/temporal-serviceclient/src/main/java/io/temporal/serviceclient/MetricsType.java)
-- Go - [SDK & Client metrics](https://github.com/temporalio/sdk-go/blob/c32b04729cc7691f80c16f80eed7f323ee5ce24f/internal/common/metrics/constants.go)
+- Core - [Worker metrics](https://github.com/temporalio/sdk-core/blob/master/core/src/telemetry/metrics.rs) and [Service Client metrics](https://github.com/temporalio/sdk-core/blob/master/client/src/metrics.rs)
+- Java - [Worker metrics](https://github.com/temporalio/sdk-java/blob/master/temporal-sdk/src/main/java/io/temporal/worker/MetricsType.java) and [Service Client metrics](https://github.com/temporalio/sdk-java/blob/master/temporal-serviceclient/src/main/java/io/temporal/serviceclient/MetricsType.java)
+- Go - [Worker & Service Client metrics](https://github.com/temporalio/sdk-go/blob/c32b04729cc7691f80c16f80eed7f323ee5ce24f/internal/common/metrics/constants.go)
 
 ### Notes on differences between SDKs
 
