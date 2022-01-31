@@ -2,6 +2,7 @@
 id: application-design
 title: How to design and implement the Background Check application
 sidebar_label: Building the application
+description: We start by mapping business process to Workflows.
 ---
 
 ## What business processes are we mapping to Workflows?
@@ -15,13 +16,6 @@ The application maps each of the following business processes to its own Workflo
 - [State Criminal Search](/docs/learning-paths/background-checks/state-criminal-search)
 - [Motor Vehicle Search](/docs/learning-paths/background-checks/motor-vehicle-search)
 - [Employment Verification](/docs/learning-paths/background-checks/employment-verification)
-
-## Which steps within a business process are we mapping to Activities?
-
-In this application we are using Activities for the following business sub-processes:
-
-- Sending email
-- Calling third-party APIs
 
 ## Why use Child Workflows for Searches instead of Activities?
 
@@ -39,7 +33,19 @@ For this Learning Path application, we use Workflows for Searches for a few reas
    Instead of writing Search results directly to our Background Check Workflow Execution, we can keep them separate in their own Workflow Execution and access them independently from the Background Check Workflow.
 4. Reduces the need to version Workflows: Workflow Execution Event Histories are separated.
 
+## Which steps within a business process are we mapping to Activities?
+
+In this application we are using Activities for the following business sub-processes:
+
+- Sending email
+- Calling third-party APIs
+
+Sending an email message and calling third party APIs are considered un-reliable steps in the business process.
+
 ## What happens if an Activity Execution fails?
+
+Perhaps there is an SMTP error or an HTTP request times out.
+If that happens, the step is retried for up to 1 minute.
 
 We have a choice to make about how long we are willing to wait for something to
 An Activity Execution fails if it is unable to complete in 1 minute.

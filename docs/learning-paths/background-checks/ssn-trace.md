@@ -5,7 +5,7 @@ sidebar_label: SSN Trace
 description: TODO
 ---
 
-<!--SNIPSTART background-checks-snn-trace-workflow-definition-->
+<!--SNIPSTART background-checks-ssn-trace-workflow-definition-->
 
 [Take me to the code](https://github.com/temporalio/background-checks/blob/main/workflows/ssn_trace.go)
 
