@@ -273,8 +273,8 @@ export async function SubscriptionWorkflow(customer: Customer) {
 async function BillingCycle(customer: Customer) {
   let isCanceled = false;
   wf.setHandler(cancelSignal, () => void (isCanceled = true)); // signals are reusable!
+  await acts.chargeCustomerForBillingPeriod(customer);
   for (let num = 0; num < customer.maxBillingPeriods; num++) {
-    await acts.chargeCustomerForBillingPeriod(customer);
     // Wait 1 billing period to charge customer or if they cancel subscription
     // whichever comes first
     if (await wf.condition(() => isCanceled, customer.billingPeriod)) {
@@ -352,8 +352,8 @@ async function BillingCycle(_customer: Customer) {
   const period = useState('period', 0); // same
   let isCanceled = false;
   wf.setHandler(cancelSignal, () => void (isCanceled = true));
+  await acts.chargeCustomerForBillingPeriod(customer);
   for (; period.value < customer.value.maxBillingPeriods; period.value++) {
-    await acts.chargeCustomerForBillingPeriod(customer);
     // Wait 1 billing period to charge customer or if they cancel subscription
     // whichever comes first
     if (await wf.condition(() => isCanceled, customer.billingPeriod)) {
