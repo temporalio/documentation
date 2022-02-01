@@ -1,7 +1,7 @@
 ---
-id: batch-old
+id: index
 title: tctl batch
-sidebar_label: batch index
+sidebar_label: Index
 description: How to operate batch jobs using tctl.
 tags:
   - reference
@@ -12,11 +12,7 @@ The `tctl batch` commands enable batch jobs. A batch job can signal, cancel, or 
 
 Terminating a batch job does not roll back the operation performed by the batch job. However, you can use `tctl workflow reset` to roll back Workflow Executions.
 
-- [`tctl batch start`](./batch/start)
-- [`tctl batch list`](./batch/list)
-- [`tctl batch describe`](./batch/describe)
-- [`tctl batch terminate`](./batch/terminate)
-
-## Related
-
-- [tctl reference](/docs/reference/tctl)
+- [`tctl batch start`](/docs/reference/tctl/batch/start)
+- [`tctl batch list`](/docs/reference/tctl/batch/list)
+- [`tctl batch describe`](/docs/reference/tctl/batch/describe)
+- [`tctl batch terminate`](/docs/reference/tctl/batch/terminate)

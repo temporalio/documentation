@@ -427,4 +427,32 @@ module.exports = {
       ],
     },
   ],
+  tctlReferenceMain: [
+    {
+      type: "category",
+      label: "tctl commands",
+      collapsible: false,
+      link: {
+        type: 'doc',
+        id: "reference/tctl/index",
+      },
+      items: [
+        {
+          type: "category",
+          label: "batch",
+          collapsible: false,
+          link: {
+            type: 'doc',
+            id: "reference/tctl/batch/index",
+          },
+          items: [
+            "reference/tctl/batch/describe",
+            "reference/tctl/batch/list",
+            "reference/tctl/batch/start",
+            "reference/tctl/batch/terminate",
+          ],
+        },
+      ],
+    },
+  ],
 };

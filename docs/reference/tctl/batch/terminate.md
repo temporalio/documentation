@@ -1,6 +1,7 @@
 ---
 id: terminate
 title: tctl batch terminate
+sidebar_label: terminate
 description: How to terminate a batch job using tctl.
 tags:
   - reference
@@ -38,8 +39,3 @@ Alias: `--re`
 ```
 tctl batch terminate --job_id <id> --reason <string>
 ```
-
-## Related
-
-- [`tctl batch`](../batch)
-- [tctl reference](/docs/reference/tctl)

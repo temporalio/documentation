@@ -1,15 +1,22 @@
 ---
-id: tctl-old
+id: index   
 title: tctl reference
-description: What are the tctl commands?
+sidebar_label: Main index
+description: The following is a complete index of all tctl commands and sub-commands.
 tags:
   - reference
   - tctl
 ---
 
-[What is tctl?](/docs/content/what-is-tctl)
+<!--
+# What are all the tctl commands?
+-->
 
-## tctl commands
+- [What is tctl?](/docs/content/what-is-tctl)
+- [How to install tctl](/docs/content/how-to-install-tctl)  
+- [Environment variables for tctl](/docs/reference/tctl/environment-variables)
+
+## `tctl` commands
 
 - `tctl namespace`
 - [`tctl workflow`](/docs/reference/tctl/workflow)
@@ -30,8 +37,3 @@ tags:
 - `tctl admin shard`
 - `tctl admin taskqueue`
 - `tctl admin workflow`
-
-## Related
-
-[How to install tctl](/docs/content/how-to-install-tctl)  
-[Environment variables for tctl](./tctl/environment-variables.md)

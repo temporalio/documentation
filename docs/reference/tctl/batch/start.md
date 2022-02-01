@@ -1,6 +1,7 @@
 ---
 id: start
 title: tctl batch start
+sidebar_label: start
 description: How to start a batch job using tctl.
 tags:
   - reference
@@ -96,8 +97,3 @@ How to disable the confirmation prompt.
 ```
 tctl batch start --query <value> --yes
 ```
-
-## Related
-
-- [`tctl batch`](../batch)
-- [tctl reference](/docs/reference/tctl)

@@ -1,6 +1,7 @@
 ---
 id: describe
 title: tctl batch describe
+sidebar_label: describe
 description: How to describe the progress of a batch job using tctl.
 tags:
   - reference
@@ -26,8 +27,3 @@ Alias: `--jid`
 ```
 tctl batch describe --job_id <id>
 ```
-
-## Related
-
-- [`tctl batch`](../batch)
-- [tctl reference](/docs/reference/tctl)
