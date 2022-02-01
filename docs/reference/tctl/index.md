@@ -1,5 +1,5 @@
 ---
-id: index   
+id: index
 title: tctl reference
 sidebar_label: Main index
 description: The following is a complete index of all tctl commands and sub-commands.
@@ -13,7 +13,7 @@ tags:
 -->
 
 - [What is tctl?](/docs/content/what-is-tctl)
-- [How to install tctl](/docs/content/how-to-install-tctl)  
+- [How to install tctl](/docs/content/how-to-install-tctl)
 - [Environment variables for tctl](/docs/reference/tctl/environment-variables)
 
 ## `tctl` commands

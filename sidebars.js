@@ -433,7 +433,7 @@ module.exports = {
       label: "tctl commands",
       collapsible: false,
       link: {
-        type: 'doc',
+        type: "doc",
         id: "reference/tctl/index",
       },
       items: [
@@ -442,7 +442,7 @@ module.exports = {
           label: "batch",
           collapsible: false,
           link: {
-            type: 'doc',
+            type: "doc",
             id: "reference/tctl/batch/index",
           },
           items: [
