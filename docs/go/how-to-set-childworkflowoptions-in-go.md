@@ -10,7 +10,7 @@ tags:
 
 - Used to set all child workflow specific options
 
-| Field                   | Description                                                                       | Type                   |
+| Field                    | Description                                                                       | Type                   |
 | ------------------------ | --------------------------------------------------------------------------------- | ---------------------- |
 | Namespace                | Set the namespace of the child workflow                                           | string                 |
 | WorkflowID               | Set the id of the child workflow to be scheduled                                  | string                 |

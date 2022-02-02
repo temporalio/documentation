@@ -10,19 +10,19 @@ tags:
 
 Create an instance of [`Options`](https://pkg.go.dev/go.temporal.io/sdk/client#Options) from the `go.temporal.io/sdk/client` package and pass it the call to create a new Temporal Client.
 
-| Field | Required | Type |
-| ----- | ----------- | ---- |
-| [`HostPort`](#hostport) | No | `string` |
-| [`Namespace`](#namespace) | No | `string` |
-| [`Logger`](#logger) | No | [`log.Logger`](https://pkg.go.dev/go.temporal.io/sdk/log#Logger) |
-| [`MetricsHandler`](#metricshandler) | No | [`metrics.Handler`](https://pkg.go.dev/go.temporal.io/sdk/internal/common/metrics#Handler) |
-| [`Identity`](#identify) | No | `string` |
-| [`DataConverter`](#dataconverter) | No | [`converter.DataConverter`](https://pkg.go.dev/go.temporal.io/sdk/converter#DataConverter) |
-| [`Tracer`](#tracer) | No | `opentracing.Tracer` |
-| [`ContextPropagators`](#contextpropagators) | No | `[]ContextPropagator` |
-| [`ConnectionOptions`](#connectionoptions) | No | `ConnectionOptions` |
-| [`HeadersProvider`](#headersprovider) | No | `HeadersProvider` |
-| [TrafficController](#trafficcontroller)  | No | `TrafficController` |
+| Field                                       | Required | Type                                                                                       |
+| ------------------------------------------- | -------- | ------------------------------------------------------------------------------------------ |
+| [`HostPort`](#hostport)                     | No       | `string`                                                                                   |
+| [`Namespace`](#namespace)                   | No       | `string`                                                                                   |
+| [`Logger`](#logger)                         | No       | [`log.Logger`](https://pkg.go.dev/go.temporal.io/sdk/log#Logger)                           |
+| [`MetricsHandler`](#metricshandler)         | No       | [`metrics.Handler`](https://pkg.go.dev/go.temporal.io/sdk/internal/common/metrics#Handler) |
+| [`Identity`](#identify)                     | No       | `string`                                                                                   |
+| [`DataConverter`](#dataconverter)           | No       | [`converter.DataConverter`](https://pkg.go.dev/go.temporal.io/sdk/converter#DataConverter) |
+| [`Tracer`](#tracer)                         | No       | `opentracing.Tracer`                                                                       |
+| [`ContextPropagators`](#contextpropagators) | No       | `[]ContextPropagator`                                                                      |
+| [`ConnectionOptions`](#connectionoptions)   | No       | `ConnectionOptions`                                                                        |
+| [`HeadersProvider`](#headersprovider)       | No       | `HeadersProvider`                                                                          |
+| [TrafficController](#trafficcontroller)     | No       | `TrafficController`                                                                        |
 
 ### `HostPort`
 
@@ -99,7 +99,7 @@ Sets opentracing Tracer that is to be used to emit tracing information
 
 ### `ContextPropagators`
 
-Sets ContextPropagators that allows users to control the context information passed through a workflow     
+Sets ContextPropagators that allows users to control the context information passed through a workflow
 
 - Type: `[]ContextPropagator`
 
