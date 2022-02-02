@@ -211,6 +211,7 @@ module.exports = {
         "go/how-to-set-registerworkflowoptions-in-go",
         "go/how-to-set-registeractivityoptions-in-go",
         "go/how-to-spawn-a-child-workflow-execution-in-go",
+        "go/how-to-set-clientoptions-in-go",
         "go/workflows",
         "go/activities",
         "go/task-queues",
