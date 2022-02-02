@@ -95,7 +95,7 @@ If Webpack fails to create the bundle, the SDK will throw an error and emit webp
 
 If you do not see Webpack output in your terminal make sure that you have not disabled SDK logging (see reference to `Core.install()` in the link above).
 
-**A common mistake for newcomers to the TypeScript SDK is to try and use Node.js built-ins and modules in their Workflow code.**
+**A common mistake for newcomers to the TypeScript SDK is trying to use Node.js built-ins and modules in their Workflow code.** Usually, the best thing to do is move that code to an Activity.
 
 Some common examples that will **not** work in the Workflow isolate:
 
