@@ -7,7 +7,7 @@ An Activity, or a Child Workflow, might fail, and you could handle errors differ
 error cases.
 
 If the Activity returns an error as `errors.New()` or `fmt.Errorf()`, that error will
-be converted to `*temporal.ApplicationError`.
+converted to `*temporal.ApplicationError`.
 
 If the Activity returns an error as `temporal.NewNonRetryableApplicationError("error message", details)`, that error is returned as `*temporal.ApplicationError`.
 
