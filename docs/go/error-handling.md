@@ -3,7 +3,7 @@ id: error-handling
 title: Error Handling in Go
 ---
 
-An Activity, or a child Workflow, might fail, and you could handle errors differently based on the different
+An Activity, or a Child Workflow, might fail, and you could handle errors differently based on the different
 error cases.
 
 If the Activity returns an error as `errors.New()` or `fmt.Errorf()`, that error will
