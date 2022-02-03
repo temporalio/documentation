@@ -11,7 +11,7 @@ In this tutorial, we'll go over the different components that make up a Temporal
 - Workflow and Activity Code
 - Temporal Worker (running with [RoadRunner](https://roadrunner.dev))
 
-All the code on this page is included in our [SimpleActivity](https://github.com/temporalio/samples-php/tree/master/app/src/SimpleActivity) sample, 
+All the code on this page is included in our [SimpleActivity](https://github.com/temporalio/samples-php/tree/master/app/src/SimpleActivity) sample,
 from our [Samples repository](https://github.com/temporalio/samples-php).
 
 First we'll get you running code, and then we'll explain the code.
@@ -19,12 +19,14 @@ First we'll get you running code, and then we'll explain the code.
 ## Running this sample (using Docker)
 
 **1. Download the repository.**
+
 ```bash
 $ git clone git@github.com:temporalio/samples-php.git
 $ cd samples-php
 ```
 
 **2. Start Temporal Server and application containers.**
+
 ```bash
 $ docker-compose up
 ```
@@ -44,7 +46,7 @@ This should log the Workflow ID (and corresponding Run ID) that is started, and 
 At the end it will log the result:
 
 ```bash
-Starting GreetingWorkflow... 
+Starting GreetingWorkflow...
 Started: WorkflowID=3520711c-7c8b-4d36-bd18-68328e60447b
 Result:
 Hello Antony
@@ -60,8 +62,8 @@ The example above represents a console command that starts a workflow, prints it
 <!--SNIPEND-->
 
 In the snippet above we use `WorkflowClientInterface` - an entry point to get access to workflows.
-Once you need to create, retrieve, or start a workflow you should use an instance of `WorkflowClientInterface`. 
-Here we create an instance of `GreetingWorkflowInterface` with execution timeout of 1 minute.  
+Once you need to create, retrieve, or start a workflow you should use an instance of `WorkflowClientInterface`.
+Here we create an instance of `GreetingWorkflowInterface` with execution timeout of 1 minute.
 
 Then we print some information and start the workflow.
 
@@ -112,8 +114,8 @@ How does Temporal know what PHP class should be executed?
 
 ### Roadrunner and Temporal Worker
 
-To answer this question we need to take a look at how an instance of `WorkflowClientInterface` is created. 
-This is the part where [RoadRunner](https://roadrunner.dev) comes into a play. 
+To answer this question we need to take a look at how an instance of `WorkflowClientInterface` is created.
+This is the part where [RoadRunner](https://roadrunner.dev) comes into a play.
 
 In our example under the hood RoadRunner executes `worker.php` script:
 
@@ -164,18 +166,18 @@ The second one registers activities and accepts a list of instantiated activity 
 $worker->registerActivityImplementations(new MyActivityImplementation());
 ```
 
-On the last line of the *worker script* we start the worker.
+On the last line of the _worker script_ we start the worker.
 From now, it starts communication with Temporal: receiving and sending data.
 
 ## Conclusion and Next Steps
 
 Let's recap what was done in this "Hello world" example:
 
-1. The main script, that instantiates an instance of `WorkflowClientInterface`, creates a workflow and starts it. 
+1. The main script, that instantiates an instance of `WorkflowClientInterface`, creates a workflow and starts it.
 2. Workflow code.
 3. Activity code.
 4. Worker code with [RoadRunner](https://roadrunner.dev), that instantiates the worker, registers workflow types and activity implementations.
 
 These reflect the 4 main APIs of Temporal's PHP SDK.
 
-As for next steps, you can proceed to [read the Workflows docs](/docs/php/workflows) or [watch our longform workshops](/docs/php/introduction#resources). 
+As for next steps, you can proceed to [read the Workflows docs](/docs/php/workflows) or [watch our longform workshops](/docs/php/introduction#resources).

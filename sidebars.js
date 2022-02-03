@@ -236,9 +236,7 @@ module.exports = {
           type: "category",
           label: "Tutorials",
           collapsed: false,
-          items: [
-            "php/hello-world",
-          ],
+          items: ["php/hello-world"],
         },
         "php/workflows",
         "php/activities",
