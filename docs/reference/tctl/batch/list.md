@@ -1,6 +1,7 @@
 ---
 id: list
 title: tctl batch list
+sidebar_label: list
 description: How to list batch jobs using tctl.
 tags:
   - reference
@@ -9,9 +10,9 @@ tags:
 
 The `tctl batch list` command lists all batch joba.
 
-`tctl batch list <options> <arguments...>`
+`tctl batch list [<modifiers>]`
 
-The following option modifies the behavior of the command.
+The following modifier controls the behavior of the command.
 
 ### `--pagesize`
 
