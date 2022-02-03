@@ -1,6 +1,7 @@
 ---
 id: start
 title: tctl workflow start
+sidebar_label: start
 description: How to start a new Workflow Execution using tctl.
 tags:
   - reference
@@ -191,8 +192,3 @@ To list valid Search Attributes and value types, use the `tctl cluster get-searc
 ```
 tctl workflow start --search_attr_value <value>
 ```
-
-## Related
-
-- [`tctl workflow`](../workflow)
-- [tctl reference](/docs/reference/tctl)

@@ -1,6 +1,7 @@
 ---
 id: run
 title: tctl workflow run
+sidebar_label: run
 description: How to start a new Workflow Execution and get Workflow progress using tctl.
 tags:
   - reference
@@ -215,8 +216,3 @@ Alias: `--maxl`
 ```
 tctl workflow run --max_field_length <length>
 ```
-
-## Related
-
-- [`tctl workflow`](../workflow)
-- [tctl reference](/docs/reference/tctl)

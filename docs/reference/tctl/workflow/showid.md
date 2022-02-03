@@ -1,6 +1,7 @@
 ---
 id: showid
 title: tctl workflow showid
+sidebar_label: showid
 description: How to show Workflow History for a specified Workflow Id and optional Run Id using tctl.
 tags:
   - reference
@@ -110,8 +111,3 @@ How to show only events that are eligible for reset.
 ```
 tctl workflow showid <workflow_id> --reset_points_only
 ```
-
-## Related
-
-- [`tctl workflow`](../workflow)
-- [tctl reference](/docs/reference/tctl)

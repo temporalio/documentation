@@ -1,6 +1,7 @@
 ---
 id: show
 title: tctl workflow show
+sidebar_label: show
 description: How to show Workflow History using tctl.
 tags:
   - reference
@@ -134,8 +135,3 @@ How to show only events that are eligible for reset.
 ```
 tctl workflow show --reset_points_only
 ```
-
-## Related
-
-- [`tctl workflow`](../workflow)
-- [tctl reference](/docs/reference/tctl)
