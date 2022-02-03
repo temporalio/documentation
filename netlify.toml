@@ -3,7 +3,7 @@
 
     [plugins.inputs]
 
-    skipPatterns = ["#", "www.google-analytics.com", "www.googletagmanager.com","https://coveralls.io/repos/github/temporalio/temporal-go-sdk/badge.svg?branch=master", "/docs/typescript/client"]
+    skipPatterns = ["#", "www.google-analytics.com", "www.googletagmanager.com", "Asset is used as both Html and Image", "/docs/typescript/client"]
     pretty = true
 
 ## Note: if you are looking for Redirects

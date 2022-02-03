@@ -1,6 +1,6 @@
 ---
 id: how-to-set-registerworkflowoptions-in-go
-title: How to set RegsterWorkflowOptions in Go
+title: How to set RegisterWorkflowOptions in Go
 sidebar_label: RegisterWorkflowOptions
 description: Create an instance of `RegisterOptions` from the `go.temporal.io/sdk/workflow` package and pass it to the `RegisterWorkflowWithOptions` call when registering the Workflow Type with the Worker
 tags:

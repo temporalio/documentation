@@ -1,28 +1,24 @@
 ---
 id: show
 title: tctl workflow show
+sidebar_label: show
 description: How to show Workflow History using tctl.
 tags:
   - reference
   - tctl
 ---
 
-<!-- prettier-ignore -->
-import * as WhatIsAWorkflowExecution from '../../../content/what-is-a-workflow-execution.md'
-import * as WhatIsAWorkflowId from '../../../content/what-is-a-workflow-id.md'
-import * as WhatIsARunId from '../../../content/what-is-a-run-id.md'
+The `tctl workflow show` command shows History for the specified [Workflow Execution](/docs/content/what-is-a-workflow-execution).
 
-The `tctl workflow show` command shows History for the specified <preview page={WhatIsAWorkflowExecution}>Workflow Execution</preview>.
+`tctl workflow show [<modifiers>]`
 
 See also [`tctl workflow showid`](./showid.md).
 
-`tctl workflow show <options> <arguments...>`
-
-The following options modify the behavior of the command.
+The following modifiers control the behavior of the command.
 
 ### `--workflow_id`
 
-How to show the History of a <preview page={WhatIsAWorkflowExecution}>Workflow Execution</preview> by specifying a <preview page={WhatIsAWorkflowId}>Workflow Id</preview>.
+How to show the History of a [Workflow Execution](/docs/content/what-is-a-workflow-execution) by specifying a [Workflow Id](/docs/content/what-is-a-workflow-id).
 
 Aliases: `--wid`, `-w`
 
@@ -34,7 +30,7 @@ tctl workflow show --workflow_id <id>
 
 ### `--run_id`
 
-How to show the History of a <preview page={WhatIsAWorkflowExecution}>Workflow Execution</preview> by specifying a <preview page={WhatIsARunId}>Run Id</preview>.
+How to show the History of a [Workflow Execution](/docs/content/what-is-a-workflow-execution) by specifying a [Run Id](/docs/content/what-is-a-run-id).
 
 Aliases: `--rid`, `-r`
 

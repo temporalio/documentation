@@ -4,10 +4,10 @@ export const TemporalCloud = () => {
   return (
     <section
       id="cloud"
-      className="max-w-7xl rounded-lg p-5 mt-24 mb-12 bg-[color:var(--ifm-card-background-color)] flex items-center space-x-5"
+      className="mt-24 mb-12 flex max-w-7xl items-center space-x-5 rounded-lg bg-[color:var(--ifm-card-background-color)] p-5"
     >
       <svg
-        className="flex-none w-12 h-12 "
+        className="h-12 w-12 flex-none "
         width="48"
         height="48"
         viewBox="0 0 48 48"
@@ -23,12 +23,12 @@ export const TemporalCloud = () => {
           fill="var(--ifm-background-color)"
         />
       </svg>
-      <p className="block my-3">
+      <p className="my-3 block">
         Temporal Cloud is a fully managed cloud offering of the open-source
         Server. We are currently accepting private Design Partners.{" "}
         <a
           href="https://temporal.io/cloud"
-          className="text-blue-400 hover:text-blue-200 underline"
+          className="text-blue-400 underline hover:text-blue-200"
         >
           Apply here!
         </a>

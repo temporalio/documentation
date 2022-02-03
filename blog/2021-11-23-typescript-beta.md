@@ -149,3 +149,9 @@ The 4 concepts of Workflow, Activity, Worker, and Client are a simple but powerf
 
 - If you would like to run code and understand this yourself, check [our Hello World tutorial](https://docs.temporal.io/docs/typescript/hello-world).
 - If you prefer a long form, guided Workshop with Q&A, [join our upcoming Intro Workshop on Nov 30](https://lu.ma/temporalintro)!
+
+> 2022 Edit - The workshop recording is up on YouTube!!
+
+import { ResponsivePlayer } from '../src/components'
+
+<ResponsivePlayer url='https://www.youtube.com/watch?v=CeHSmv8oF_4' />

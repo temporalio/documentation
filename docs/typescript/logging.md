@@ -112,7 +112,7 @@ Temporal ships a [`DefaultLogger`](https://typescript.temporal.io/api/classes/wo
 #### Example: Set up the DefaultLogger to only log messages with level WARN and higher
 
 ```ts
-import { Core, DefaultLogger, LogEntry } from '@temporalio/worker';
+import { Core, DefaultLogger } from '@temporalio/worker';
 
 const logger = new DefaultLogger('WARN', ({ level, message }) => {
   console.log(`Custom logger: ${level} — ${message}`);
@@ -123,6 +123,8 @@ await Core.install({ logger });
 #### Example: Accumulate logs for testing/reporting
 
 ```ts
+import { DefaultLogger, LogEntry } from '@temporalio/worker';
+
 const logs: LogEntry[] = [];
 const logger = new DefaultLogger('TRACE', (entry) => logs.push(entry));
 log.debug('hey', { a: 1 });
@@ -138,7 +140,7 @@ The log levels are [listed here](https://typescript.temporal.io/api/namespaces/w
 A common logging use case is logging to a file to be picked up by a collector like the [Datadog Agent](https://docs.datadoghq.com/logs/log_collection/nodejs/?tab=winston30).
 
 ```ts
-import { Worker } from '@temporalio/worker';
+import { Core } from '@temporalio/worker';
 import winston from 'winston';
 
 const logger = winston.createLogger({

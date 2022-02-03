@@ -12,13 +12,13 @@ function Tag(props) {
   return (
     <Link
       href={permalink}
-      className={`mr-2 my-2 no-underline inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-[color:var(--ifm-badge-background-color)] text-[color:var(--ifm-color)] hover:opacity-80 ${
+      className={`my-2 mr-2 inline-flex items-center rounded-full bg-[color:var(--ifm-badge-background-color)] px-3 py-1 text-sm font-medium text-[color:var(--ifm-color)] no-underline hover:opacity-80 ${
         count ? "" : ""
       }`}
     >
       {name}
       {count && (
-        <span className="ml-2 text-xs inline-flex items-center justify-center px-2 py-1 font-bold leading-none rounded-full text-[color:var(--ifm-badge-background-color)] bg-[color:var(--ifm-color)]">
+        <span className="ml-2 inline-flex items-center justify-center rounded-full bg-[color:var(--ifm-color)] px-2 py-1 text-xs font-bold leading-none text-[color:var(--ifm-badge-background-color)]">
           {count}
         </span>
       )}

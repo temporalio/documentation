@@ -46,11 +46,11 @@ export default function BlogSidebar({sidebar, row}) {
     <div>
       <div className="mb-8">
         <h3 className="mb-2 text-xl font-semibold">Featured</h3>
-        <ul className="flex flex-col space-y-2 mt-4">
+        <ul className="mt-4 flex flex-col space-y-2">
           {featured.map(({title, url}, i) => (
-            <li key={i} className="flex space-x-1 items-center">
+            <li key={i} className="flex items-center space-x-1">
               <svg
-                className="w-4 h-4"
+                className="h-4 w-4"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -72,11 +72,11 @@ export default function BlogSidebar({sidebar, row}) {
         <h3 className="mb-2 text-xl font-semibold">Tags</h3>
         <ul>
           {
-            <span className="flex flex-wrap mb-5">
+            <span className="mb-5 flex flex-wrap">
               {tags.map(({title, url}) => (
                 <Link
                   key={url}
-                  className="mr-2 my-2 no-underline inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-[color:var(--ifm-badge-background-color)] text-[color:var(--ifm-color)] hover:opacity-80"
+                  className="my-2 mr-2 inline-flex items-center rounded-full bg-[color:var(--ifm-badge-background-color)] px-3 py-0.5 text-sm font-medium text-[color:var(--ifm-color)] no-underline hover:opacity-80"
                   to={url}
                 >
                   {title}

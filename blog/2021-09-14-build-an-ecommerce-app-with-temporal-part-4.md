@@ -23,6 +23,7 @@ In [Part 1](/blog/build-an-ecommerce-app-with-temporal-part-1/), [Part 2](/blog/
 Workflows, Activities, and Temporal's testing utilities make it easy to build and maintain features that involve external services and time, like sending an email reminder when a user hasn't touched their cart in a while.
 
 Thus far, you've worked only with the Temporal SDK via [starters](/docs/go/hello-world-tutorial/#workflow-starter) and [unit tests](/docs/go/how-to-test-workflow-definitions-in-go), which invoke the Temporal SDK directly.
+
 In this blog post, I'll demonstrate how you can build a RESTful API on top of Temporal Workflows, so you can create web apps and mobile apps that store data in Temporal.
 
 ## API Setup

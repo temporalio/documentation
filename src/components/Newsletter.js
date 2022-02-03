@@ -3,11 +3,11 @@ import {Button} from "../components";
 
 export const Newsletter = () => {
   return (
-    <section className="max-w-7xl py-12 shadow-lg rounded-lg p-10 my-12 bg-[color:var(--ifm-card-background-color)]">
+    <section className="my-12 max-w-7xl rounded-lg bg-[color:var(--ifm-card-background-color)] p-10 py-12 shadow-lg">
       <h2 className="text-3xl font-extrabold tracking-wide sm:text-4xl">
         <span className="block">Sign up for the Temporal newsletter</span>
       </h2>
-      <p className="block my-3">
+      <p className="my-3 block">
         Sign up to receive updates about Temporal and get notified whenever we
         post new content or updates!
         <br />
@@ -30,7 +30,7 @@ export const Newsletter = () => {
           id="mce-EMAIL"
           required
           autoComplete="email"
-          className="px-5 py-3 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full sm:max-w-xs"
+          className="w-full rounded-md border-gray-300 px-5 py-3 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 sm:max-w-xs"
           placeholder="Enter your email"
         />
         <span className="cta_text" style={{display: "none"}}>

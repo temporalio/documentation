@@ -145,9 +145,9 @@ function Footer() {
 
   return (
     <footer className="footer">
-      <div className="max-w-screen-lg w-full mx-auto bg-[var(--ifm-footer-background-color)]">
+      <div className="bg-[var(--ifm-footer-background-color)] mx-auto w-full max-w-screen-lg">
         {links && links.length > 0 && (
-          <div className="row max-w-screen-lg mx-auto px-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+          <div className="row mx-auto grid max-w-screen-lg grid-cols-1 px-5 md:grid-cols-2 lg:grid-cols-4">
             {links.map((linkItem, i) => (
               <div key={i} className="col footer__col">
                 {linkItem.title != null ? (
@@ -182,7 +182,7 @@ function Footer() {
         {(logo || copyright) && (
           <div className="footer__bottom text--center">
             {logo && (logo.src || logo.srcDark) && (
-              <div className="margin-bottom--sm hover:opacity-90 inline">
+              <div className="margin-bottom--sm inline hover:opacity-90">
                 {logo.href ? (
                   <Link href={logo.href}>
                     <FooterLogo alt={logo.alt} sources={sources} />
