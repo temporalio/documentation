@@ -1,6 +1,7 @@
 ---
 id: fail
 title: tctl activity fail
+sidebar_label: fail
 description: How to fail an Activity Execution using tctl.
 tags:
   - reference
@@ -78,8 +79,3 @@ How to specify the identity of the operator when using tctl to fail an [Activity
 ```
 tctl activity complete --identity <value>
 ```
-
-## Related
-
-- [`tctl activity`](../activity)
-- [tctl reference](/docs/reference/tctl)

@@ -1,8 +1,7 @@
 ---
 id: index
 title: tctl reference
-sidebar_label: Main index
-description: The following is a complete index of all tctl commands and sub-commands.
+description: A complete index of all tctl commands and sub-commands.
 tags:
   - reference
   - tctl

@@ -1,7 +1,8 @@
 ---
 id: describe
 title: tctl taskqueue describe
-description: How to operate Task Queues using tctl.
+sidebar_label: describe
+description: How to describe the poller information of a Task Queue using tctl.
 tags:
   - reference
   - tctl
@@ -38,8 +39,3 @@ Alias: `--tqt`
 ```
 tctl taskqueue describe --taskqueue <value> --taskqueuetype <type>
 ```
-
-## Related
-
-- [`tctl taskqueue`](../taskqueue)
-- [tctl reference](/docs/reference/tctl)

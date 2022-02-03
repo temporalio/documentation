@@ -1,6 +1,7 @@
 ---
 id: list-partition
 title: tctl taskqueue list-partition
+sidebar_label: list-partition
 description: How to list Task Queue partitions and the hostname for partitions using tctl.
 tags:
   - reference
@@ -26,8 +27,3 @@ Alias: `--tq`
 ```
 tctl taskqueue list-partition --taskqueue <value>
 ```
-
-## Related
-
-- [`tctl taskqueue`](../taskqueue)
-- [tctl reference](/docs/reference/tctl)

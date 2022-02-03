@@ -1,5 +1,5 @@
 ---
-id: taskqueue
+id: index
 title: tctl taskqueue
 description: How to operate Task Queues using tctl.
 tags:
@@ -9,9 +9,5 @@ tags:
 
 The `tctl taskqueue` commands enable [Task Queue](/docs/content/what-is-a-task-queue) operations.
 
-- [`tctl taskqueue describe`](./taskqueue/describe)
-- [`tctl taskqueue list-partition`](./taskqueue/list-partition)
-
-## Related
-
-- [tctl reference](/docs/reference/tctl)
+- [`tctl taskqueue describe`](/docs/reference/tctl/taskqueue/describe)
+- [`tctl taskqueue list-partition`](/docs/reference/tctl/taskqueue/list-partition)

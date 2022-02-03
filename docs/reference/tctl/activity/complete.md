@@ -1,7 +1,8 @@
 ---
 id: complete
 title: tctl activity complete
-description: How to complete an Activity Execution using tctl.
+sidebar_label: complete
+description: How to provide a result and complete an Activity Execution using tctl.
 tags:
   - reference
   - tctl
@@ -68,8 +69,3 @@ How to specify the identity of the operator when using tctl to complete an [Acti
 ```
 tctl activity complete --identity <value>
 ```
-
-## Related
-
-- [`tctl activity`](../activity)
-- [tctl reference](/docs/reference/tctl)
