@@ -36,7 +36,7 @@ import { ResponsivePlayer } from '../src/components'
 
 ## Testing Setup
 
-Below is a basic setup for testing a Temporal Workflow using `go test` and [Testify](https://github.com/stretchr/testify) based on [Temporal's Go testing docs](/docs/go/testing).
+Below is a basic setup for testing a Temporal Workflow using `go test` and [Testify](https://github.com/stretchr/testify) based on [Temporal's Go testing docs](/docs/go/how-to-test-workflow-definitions-in-go).
 You can find the full source code for the test suite in the `workflow_test.go` file.
 
 ```go

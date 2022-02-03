@@ -47,7 +47,7 @@ Aliases: `--rid`, `-r`
 tctl workflow terminate --run_id <id>
 ```
 
-### `reason`
+### `--reason`
 
 How to specify a reason for terminating the <preview page={WhatIsAWorkflowExecution}>Workflow Execution</preview>.
 

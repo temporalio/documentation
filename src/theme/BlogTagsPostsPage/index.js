@@ -57,7 +57,7 @@ export default function BlogTagsPostsPage(props) {
       sidebar={sidebar}
     >
       <header className="margin-bottom--xl">
-        <h1 className="text-lg font-semibold mb-5">{title}</h1>
+        <h1 className="mb-5 text-lg font-semibold">{title}</h1>
 
         <Link href={allTagsPath}>
           <Translate

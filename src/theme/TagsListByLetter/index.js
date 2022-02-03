@@ -14,7 +14,7 @@ function TagLetterEntryItem({letterEntry}) {
       <h2 className="text-xl font-semibold">{letterEntry.letter}</h2>
       <ul className="mb-5">
         {letterEntry.tags.map((tag) => (
-          <li key={tag.permalink} className="inline-block mx-2 my-1">
+          <li key={tag.permalink} className="mx-2 my-1 inline-block">
             <Tag {...tag} />
           </li>
         ))}

@@ -42,7 +42,7 @@ Aliases: `--rid`, `-r`
 tctl workflow query --run_id <id>
 ```
 
-### `query_type`
+### `--query_type`
 
 How to specify the type of query to run.
 

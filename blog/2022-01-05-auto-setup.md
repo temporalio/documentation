@@ -88,6 +88,9 @@ docker run -e CASSANDRA_SEEDS=10.x.x.x                  -- csv of cassandra serv
 
 </details>
 
+
+> Side note: It is called "auto setup" because [Márk Sági-Kazár](https://www.linkedin.com/feed/update/urn:li:activity:6885550647865958400?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A6885550647865958400%2C6891543183516667904%29), one of our early external contributors, coined it!
+
 ## Temporal Schema Setup
 
 Database schema setup is only needed once for new databases being set up to work with Temporal Server, and is done with [temporal-sql-tool](https://github.com/temporalio/temporal/blob/f355adc9505123c63ed1ad888449dcb89584f8cd/tools/sql/README.md) or [temporal-cassandra-tool](https://github.com/temporalio/temporal/tree/f355adc9505123c63ed1ad888449dcb89584f8cd/tools/cassandra) depending on the type of database specified. 

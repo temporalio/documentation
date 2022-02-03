@@ -61,8 +61,9 @@ A full example for Clients looks like this:
 import { Connection, WorkflowClient } from '@temporalio/client';
 
 const connection = new Connection({
-  address: 'foo.bar.tmprl.cloud', // as provisioned
+  address: 'foo.bar.tmprl.cloud', // defaults port to 7233 if not specified
   tls: {
+    // set to true if TLS without mTLS
     // See docs for other TLS options
     clientCertPair: {
       crt: clientCert,
@@ -71,33 +72,46 @@ const connection = new Connection({
   },
 });
 await connection.untilReady();
-const client = new WorkflowClient(connection.service, { namespace: 'foo.bar' }); // as explained above
+const client = new WorkflowClient(connection.service, {
+  namespace: 'foo.bar', // as explained in Namespaces section
+});
 ```
 
 A full example for Workers looks like this:
 
 ```js
 import { Worker, Core } from '@temporalio/worker';
-await Core.install({
-  serverOptions: {
-    address: 'foo.bar.tmprl.cloud', // as provisioned
-    namespace: 'foo.bar', // as provisioned
-    tls: {
-      // See docs for other TLS options
-      clientCertPair: {
-        crt: clientCert,
-        key: clientKey,
+import * as activities from './activities';
+
+async function run() {
+  await Core.install({
+    serverOptions: {
+      address: 'foo.bar.tmprl.cloud', // defaults port to 7233 if not specified
+      namespace: 'foo.bar', // as explained in Namespaces section
+      tls: {
+        // set to true if TLS without mTLS
+        // See docs for other TLS options
+        clientCertPair: {
+          crt: clientCert,
+          key: clientKey,
+        },
       },
     },
-  },
-});
+  });
 
-const worker = await Worker.create({
-  // ...
+  const worker = await Worker.create({
+    // ...
+  });
+  await worker.run();
+}
+
+run().catch((err) => {
+  console.error(err);
+  process.exit(1);
 });
 ```
 
-It is completely up to you how to get the `clientCert` and `clientKey` pair into your code, whether it is reading from filesystem, secrets manager, or both.
+If you are using mTLS, is completely up to you how to get the `clientCert` and `clientKey` pair into your code, whether it is reading from filesystem, secrets manager, or both.
 Just keep in mind that they are whitespace sensitive and some environment variable systems have been known to cause frustration because they modify whitespace.
 
 <details>

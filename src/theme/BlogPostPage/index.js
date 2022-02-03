@@ -28,7 +28,7 @@ function BlogPostPage(props) {
         pageClassName={ThemeClassNames.page.blogPostPage}
       >
         {BlogPostContents && (
-          <div className="max-w-screen-lg p-6 md:pl-10 mx-auto my-14">
+          <div className="mx-auto my-14 max-w-screen-lg p-6 md:pl-10">
             <div className="flex space-x-20">
               <main className={`${hideTableOfContents ? "" : ""}`}>
                 <BlogPostItem
@@ -41,7 +41,7 @@ function BlogPostPage(props) {
                 <div className="mt-8">
                   {editUrl && (
                     <a
-                      className="flex space-x-5 mt-20 items-center"
+                      className="mt-20 flex items-center space-x-5"
                       href={editUrl}
                       target="_blank"
                       rel="noreferrer noopener"
