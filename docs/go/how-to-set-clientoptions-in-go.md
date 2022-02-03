@@ -18,11 +18,11 @@ Create an instance of [`Options`](https://pkg.go.dev/go.temporal.io/sdk/client#O
 | [`MetricsHandler`](#metricshandler)         | No       | [`metrics.Handler`](https://pkg.go.dev/go.temporal.io/sdk/internal/common/metrics#Handler) |
 | [`Identity`](#identify)                     | No       | `string`                                                                                   |
 | [`DataConverter`](#dataconverter)           | No       | [`converter.DataConverter`](https://pkg.go.dev/go.temporal.io/sdk/converter#DataConverter) |
-| [`ContextPropagators`](#contextpropagators) | No       | [`[]ContextPropagator`](https://pkg.go.dev/go.temporal.io/sdk/internal#ContextPropagator)                                                                      |
-| [`ConnectionOptions`](#connectionoptions)   | No       | [`ConnectionOptions`](https://pkg.go.dev/go.temporal.io/sdk/internal#ConnectionOptions)                                                                        |
-| [`HeadersProvider`](#headersprovider)       | No       | [`HeadersProvider`](https://pkg.go.dev/go.temporal.io/sdk/internal#HeadersProvider)                                                                          |
-| [TrafficController](#trafficcontroller)     | No       | [`TrafficController`](https://pkg.go.dev/go.temporal.io/sdk/internal#TrafficController)                                                                        |
-| [Interceptors](#interceptors) | No | [`[]ClientInterceptor`](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientInterceptor) |
+| [`ContextPropagators`](#contextpropagators) | No       | [`[]ContextPropagator`](https://pkg.go.dev/go.temporal.io/sdk/internal#ContextPropagator)  |
+| [`ConnectionOptions`](#connectionoptions)   | No       | [`ConnectionOptions`](https://pkg.go.dev/go.temporal.io/sdk/internal#ConnectionOptions)    |
+| [`HeadersProvider`](#headersprovider)       | No       | [`HeadersProvider`](https://pkg.go.dev/go.temporal.io/sdk/internal#HeadersProvider)        |
+| [TrafficController](#trafficcontroller)     | No       | [`TrafficController`](https://pkg.go.dev/go.temporal.io/sdk/internal#TrafficController)    |
+| [Interceptors](#interceptors)               | No       | [`[]ClientInterceptor`](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientInterceptor)  |
 
 ### `HostPort`
 
@@ -53,6 +53,7 @@ builder.InitialState(resolver.State{Addresses: []resolver.Address{{Addr: "1.2.3.
 resolver.Register(builder)
 temporalClient, err := client.NewClient(client.Options{HostPort: "myresolver:///ignoredvalue"})
 ```
+
 Other more advanced resolvers can also be registered.
 
 ### `Namespace`
