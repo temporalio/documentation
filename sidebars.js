@@ -232,6 +232,14 @@ module.exports = {
           label: "Samples library",
           href: "/docs/samples-library/#php",
         },
+        {
+          type: "category",
+          label: "Tutorials",
+          collapsed: false,
+          items: [
+            "php/hello-world",
+          ],
+        },
         "php/workflows",
         "php/activities",
         "php/task-queues",
