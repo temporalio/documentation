@@ -18,18 +18,18 @@ Create an instance of [`Options`](https://pkg.go.dev/go.temporal.io/sdk/client#O
 | [`MetricsHandler`](#metricshandler)         | No       | [`metrics.Handler`](https://pkg.go.dev/go.temporal.io/sdk/internal/common/metrics#Handler) |
 | [`Identity`](#identify)                     | No       | `string`                                                                                   |
 | [`DataConverter`](#dataconverter)           | No       | [`converter.DataConverter`](https://pkg.go.dev/go.temporal.io/sdk/converter#DataConverter) |
-| [`Tracer`](#tracer)                         | No       | `opentracing.Tracer`                                                                       |
-| [`ContextPropagators`](#contextpropagators) | No       | `[]ContextPropagator`                                                                      |
-| [`ConnectionOptions`](#connectionoptions)   | No       | `ConnectionOptions`                                                                        |
-| [`HeadersProvider`](#headersprovider)       | No       | `HeadersProvider`                                                                          |
-| [TrafficController](#trafficcontroller)     | No       | `TrafficController`                                                                        |
+| [`ContextPropagators`](#contextpropagators) | No       | [`[]ContextPropagator`](https://pkg.go.dev/go.temporal.io/sdk/internal#ContextPropagator)                                                                      |
+| [`ConnectionOptions`](#connectionoptions)   | No       | [`ConnectionOptions`](https://pkg.go.dev/go.temporal.io/sdk/internal#ConnectionOptions)                                                                        |
+| [`HeadersProvider`](#headersprovider)       | No       | [`HeadersProvider`](https://pkg.go.dev/go.temporal.io/sdk/internal#HeadersProvider)                                                                          |
+| [TrafficController](#trafficcontroller)     | No       | [`TrafficController`](https://pkg.go.dev/go.temporal.io/sdk/internal#TrafficController)                                                                        |
+| [Interceptors](#interceptors) | No | [`[]ClientInterceptor`](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientInterceptor) |
 
 ### `HostPort`
 
-Set the host:port for this client to connect to.
+Sets the host:port for this client to connect to.
 
 - Type: `string`
-- Default: `client.DefaultHostPort`
+- Default: [`client.DefaultHostPort`](https://pkg.go.dev/go.temporal.io/sdk/client#pkg-constants) (localhost:7233)
 
 ```go
 clientOptions := client.Options{
@@ -38,11 +38,29 @@ clientOptions := client.Options{
 temporalClient, err := client.NewClient(clientOptions)
 ```
 
+The `HostPort` value is a gRPC address and therefore can also support a special-formatted address of "<resolver>:///<value>" that will use a registered resolver.
+By default all hosts returned from the resolver will be used in a round-robin fashion.
+
+The "dns" resolver is registered by default.
+Using a "dns:///" prefixed address will cause a periodic round-robin resolution of all IPs for all DNS addresses.
+
+A custom resolver can be created to provide multiple hosts in other ways.
+For example, to manually provide multiple IPs to round-robin across, a google.golang.org/grpc/resolver/manual resolver can be created and registered with google.golang.org/grpc/resolver with a custom scheme:
+
+```go
+builder := manual.NewBuilderWithScheme("myresolver")
+builder.InitialState(resolver.State{Addresses: []resolver.Address{{Addr: "1.2.3.4:1234"},{Addr: "2.3.4.5:2345"}}})
+resolver.Register(builder)
+temporalClient, err := client.NewClient(client.Options{HostPort: "myresolver:///ignoredvalue"})
+```
+Other more advanced resolvers can also be registered.
+
 ### `Namespace`
 
-Set the namespace name for this client to work with
+Sets the [Namespace](/docs/content/what-is-a-namespace) name for this Temporal Client to work with.
 
 - Type: `string`
+- Default: default
 
 ### `Logger`
 
@@ -91,11 +109,7 @@ Sets an identify that can be used to track this host for debugging
 
 Sets DataConverter to customize serialization/deserialization of arguments in Temporal
 
-### `Tracer`
-
-Sets opentracing Tracer that is to be used to emit tracing information
-
-- Type: opentracing.Tracer
+- Type: [`converter.DataConverter`](https://pkg.go.dev/go.temporal.io/sdk/converter#DataConverter)
 
 ### `ContextPropagators`
 
@@ -120,3 +134,5 @@ Sets custom request headers
 Set to induce artificial failures in test scenarios
 
 - Type: `TrafficController`
+
+### Interceptors
