@@ -38,14 +38,14 @@ clientOptions := client.Options{
 temporalClient, err := client.NewClient(clientOptions)
 ```
 
-The `HostPort` value is a gRPC address and therefore can also support a special-formatted address of "<resolver>:///<value>" that will use a registered resolver.
+The `HostPort` value is a gRPC address and therefore can also support a special-formatted address of `<resolver>:///<value>` that will use a registered resolver.
 By default all hosts returned from the resolver will be used in a round-robin fashion.
 
 The "dns" resolver is registered by default.
-Using a "dns:///" prefixed address will cause a periodic round-robin resolution of all IPs for all DNS addresses.
+Using a `dns:///` prefixed address will cause a periodic round-robin resolution of all IPs for all DNS addresses.
 
 A custom resolver can be created to provide multiple hosts in other ways.
-For example, to manually provide multiple IPs to round-robin across, a google.golang.org/grpc/resolver/manual resolver can be created and registered with google.golang.org/grpc/resolver with a custom scheme:
+For example, to manually provide multiple IPs to round-robin across, a `google.golang.org/grpc/resolver/` manual resolver can be created and registered with a custom scheme:
 
 ```go
 builder := manual.NewBuilderWithScheme("myresolver")
