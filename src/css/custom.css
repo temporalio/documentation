@@ -353,19 +353,37 @@ div[class^="sidebar_"] .button svg {
 }
 
 .docs-centered-image-size-100 {
-  width: 100%;
+  max-width: 1024px;
 }
 
 .docs-centered-image-size-75 {
-  width: 75%;
+  max-width: 768px;
 }
 
 .docs-centered-image-size-50 {
-  width: 50%;
+  max-width: 640px;
 }
 
 .docs-centered-image-size-25 {
-  width: 25%;
+  max-width: 400px;
+}
+
+@media screen and (max-width: 1024px) {
+  .docs-centered-image-size-100 {
+    max-width: 100%;
+  }
+
+  .docs-centered-image-size-75 {
+    max-width: 75%;
+  }
+
+  .docs-centered-image-size-50 {
+    max-width: 50%;
+  }
+
+  .docs-centered-image-size-25 {
+    max-width: 25%;
+  }
 }
 
 .docs-image-legend-wrapper {
