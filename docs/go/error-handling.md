@@ -6,8 +6,7 @@ title: Error Handling in Go
 An Activity, or a Child Workflow, might fail, and you could handle errors differently based on the different
 error cases.
 
-If the Activity returns an error as `errors.New()` or `fmt.Errorf()`, that error is
-converted to `*temporal.ApplicationError`.
+If the Activity returns an error as `errors.New()` or `fmt.Errorf()`, that error is converted into `*temporal.ApplicationError`.
 
 If the Activity returns an error as `temporal.NewNonRetryableApplicationError("error message", details)`, that error is returned as `*temporal.ApplicationError`.
 
