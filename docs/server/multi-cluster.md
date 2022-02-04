@@ -13,7 +13,7 @@ Temporal's Multi-cluster Replication feature is considered **experimental** and 
 </CustomWarning>
 
 This guide introduces Temporal's Multi-cluster Replication capabilities.
-You can set this up with [`clusterMetadata` configuration](/docs/server/configuration#clustermetadata). Detailed examples can be found in below section [Cluster setup](#Cluster-setup)
+You can set this up with `tctl admin cluster upsert-remote-cluster` command. A two-cluster-setup example can be found in below section [Cluster setup](#Cluster-setup)
 
 ## Overview
 
@@ -477,7 +477,7 @@ clusterMetadata:
       rpcAddress: "127.0.0.1:8233"
 ```
 
-Then you can use the `tctl admin` tool to add cluster connections. All operations should be executed on both ends.
+Then you can use the `tctl admin` tool to add cluster connections. All operations should be executed in both clusters.
 
 ```shell
 # Add cluster B connection into cluster A
