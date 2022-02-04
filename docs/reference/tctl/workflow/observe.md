@@ -1,29 +1,24 @@
 ---
 id: observe
 title: tctl workflow observe
+sidebar_label: observe
 description: How to show the progress of the Event History of a Workflow Execution using tctl.
 tags:
   - reference
   - tctl
 ---
 
-<!-- prettier-ignore -->
-import * as WhatIsAnEventHistory from '../../../content/what-is-an-event-history.md'
-import * as WhatIsAWorkflowExecution from '../../../content/what-is-a-workflow-execution.md'
-import * as WhatIsAWorkflowId from '../../../content/what-is-a-workflow-id.md'
-import * as WhatIsARunId from '../../../content/what-is-a-run-id.md'
-
-The `tctl workflow observe` command shows the progress of the <preview page={WhatIsAnEventHistory}>Event History</preview> of a <preview page={WhatIsAWorkflowExecution}>Workflow Execution</preview>.
+The `tctl workflow observe` command shows the progress of the [Event History](/docs/content/what-is-an-event-history) of a [Workflow Execution](/docs/content/what-is-a-workflow-execution).
 
 See also [`tctl workflow observeid`](./observeid.md).
 
-`tctl workflow observe <option> <arguments...>`
+`tctl workflow observe [<modifiers>]`
 
-The following options modify the behavior of the command.
+The following modifiers control the behavior of the command.
 
 ### `--workflow_id`
 
-How to specify a <preview page={WhatIsAWorkflowId}>Workflow Id</preview>.
+How to specify a [Workflow Id](/docs/content/what-is-a-workflow-id).
 
 Aliases: `--wid`, `-w`
 
@@ -35,7 +30,7 @@ tctl workflow observe --workflow_id <id>
 
 ### `--run_id`
 
-How to specify a <preview page={WhatIsARunId}>Run Id</preview>.
+How to specify a [Run Id](/docs/content/what-is-a-run-id).
 
 Aliases: `--rid`, `-r`
 

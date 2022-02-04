@@ -1,28 +1,24 @@
 ---
 id: describe
 title: tctl workflow describe
+sidebar_label: describe
 description: How to show information about a Workflow Execution using tctl.
 tags:
   - reference
   - tctl
 ---
 
-<!-- prettier-ignore -->
-import * as WhatIsAWorkflowExecution from '../../../content/what-is-a-workflow-execution.md'
-import * as WhatIsAWorkflowId from '../../../content/what-is-a-workflow-id.md'
-import * as WhatIsARunId from '../../../content/what-is-a-run-id.md'
-
-The `tctl workflow describe` command shows information about a <preview page={WhatIsAWorkflowExecution}>Workflow Execution</preview>.
+The `tctl workflow describe` command shows information about a [Workflow Execution](/docs/content/what-is-a-workflow-execution).
 
 See also [`tctl workflow describeid`](./describeid.md).
 
-`tctl workflow describe <option> <arguments...>`
+`tctl workflow describe [<modifiers>]`
 
-The following options modify the behavior of the command.
+The following modifiers control the behavior of the command.
 
 ### `--workflow_id`
 
-How to specify a <preview page={WhatIsAWorkflowId}>Workflow Id</preview>.
+How to specify a [Workflow Id](/docs/content/what-is-a-workflow-id).
 
 Aliases: `--wid`, `-w`
 
@@ -34,7 +30,7 @@ tctl workflow describe --workflow_id <id>
 
 ### `--run_id`
 
-How to specify a <preview page={WhatIsARunId}>Run Id</preview>.
+How to specify a [Run Id](/docs/content/what-is-a-run-id).
 
 Aliases: `--rid`, `-r`
 

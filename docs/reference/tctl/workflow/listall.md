@@ -1,28 +1,23 @@
 ---
 id: listall
 title: tctl workflow listall
+sidebar_label: listall
 description: How to list all open or closed Workflow Executions using tctl.
 tags:
   - reference
   - tctl
 ---
 
-<!-- prettier-ignore -->
-import * as WhatIsAWorkflowExecution from '../../../content/what-is-a-workflow-execution.md'
-import * as WhatIsASearchAttribute from '../../../content/what-is-a-search-attribute.md'
-import * as WhatIsAWorkflowId from '../../../content/what-is-a-workflow-id.md'
-import * as WhatIsAWorkflowType from '../../../content/what-is-a-workflow-type.md'
-
-The `tctl workflow listall` command lists all open or closed <preview page={WhatIsAWorkflowExecution}>Workflow Executions</preview>.
+The `tctl workflow listall` command lists all open or closed [Workflow Executions](/docs/content/what-is-a-workflow-execution).
 
 By default, this command lists all closed Workflow Executions.
 To list open Workflow Executions, use the `--open` option.
 
 See also [`tctl workflow list`](./list.md), [`tctl workflow listarchived`](./listarchived.md), and [`tctl workflow scan`](./scan.md).
 
-`tctl workflow listall <options> <arguments...>`
+`tctl workflow listall [<modifiers>]`
 
-The following options modify the behavior of the command.
+The following modifiers control the behavior of the command.
 
 ### `--print_raw_time`
 
@@ -62,7 +57,7 @@ tctl workflow listall --print_memo
 
 ### `--print_search_attr`
 
-How to print the <preview page={WhatIsASearchAttribute}>Search Attributes</preview>.
+How to print the [Search Attributes](/docs/content/what-is-a-search-attribute).
 
 Alias: `--psa`
 
@@ -98,7 +93,7 @@ tctl workflow listall --print_json
 
 ### `--open`
 
-How to list open <preview page={WhatIsAWorkflowExecution}>Workflow Executions</preview>.
+How to list open [Workflow Executions](/docs/content/what-is-a-workflow-execution).
 (By default, the `tctl workflow listall` command lists closed Workflow Executions.)
 
 Alias: `--op`
@@ -173,7 +168,7 @@ tctl workflow listall --latest-time '10second'
 
 ### `--workflow_id`
 
-How to specify a <preview page={WhatIsAWorkflowId}>Workflow Id</preview>.
+How to specify a [Workflow Id](/docs/content/what-is-a-workflow-id).
 
 Aliases: `--wid`, `-w`
 
@@ -185,7 +180,7 @@ tctl workflow listall --workflow_id <id>
 
 ### `--workflow_type`
 
-How to specify the name of a <preview page={WhatIsAWorkflowType}>Workflow Type</preview>.
+How to specify the name of a [Workflow Type](/docs/content/what-is-a-workflow-type).
 
 Alias: `--wt`
 
@@ -197,7 +192,7 @@ tctl workflow listall --workflow_type <name>
 
 ### `--status`
 
-How to specify the status of a <preview page={WhatIsAWorkflowExecution}>Workflow Executions</preview>.
+How to specify the status of a [Workflow Execution](/docs/content/what-is-a-workflow-execution).
 Supported values are as follows:
 
 - `completed`
@@ -217,7 +212,7 @@ tctl workflow listall --status <value>
 
 ### `--query`
 
-How to specify an SQL-like query of <preview page={WhatIsASearchAttribute}>Search Attributes</preview>.
+How to specify an SQL-like query of [Search Attributes](/docs/content/what-is-a-search-attribute).
 
 Using the `--query` option causes tctl to ignore all other filter options, including `open`, `earliest_time`, `latest_time`, `workflow_id`, and `workflow_type`.
 
