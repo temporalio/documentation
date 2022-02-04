@@ -1,19 +1,14 @@
 ---
 id: list
 title: tctl workflow list
+sidebar_label: list
 description: How to list open or closed Workflow Executions using tctl.
 tags:
   - reference
   - tctl
 ---
 
-<!-- prettier-ignore -->
-import * as WhatIsAWorkflowExecution from '../../../content/what-is-a-workflow-execution.md'
-import * as WhatIsASearchAttribute from '../../../content/what-is-a-search-attribute.md'
-import * as WhatIsAWorkflowId from '../../../content/what-is-a-workflow-id.md'
-import * as WhatIsAWorkflowType from '../../../content/what-is-a-workflow-type.md'
-
-The `tctl workflow list` command lists open or closed <preview page={WhatIsAWorkflowExecution}>Workflow Executions</preview>.
+The `tctl workflow list` command lists open or closed [Workflow Executions](/docs/content/what-is-a-workflow-execution).
 
 By default, this command lists a maximum of 10 closed Workflow Executions.
 
@@ -23,9 +18,9 @@ By default, this command lists a maximum of 10 closed Workflow Executions.
 
 See also [`tctl workflow listall`](./listall.md), [`tctl workflow listarchived`](./listarchived.md), and [`tctl workflow scan`](./scan.md).
 
-`tctl workflow list <options> <arguments...>`
+`tctl workflow list [<modifiers>]`
 
-The following options modify the behavior of the command.
+The following modifiers control the behavior of the command.
 
 ### `--print_raw_time`
 
@@ -65,7 +60,7 @@ tctl workflow list --print_memo
 
 ### `--print_search_attr`
 
-How to print the <preview page={WhatIsASearchAttribute}>Search Attributes</preview>.
+How to print the [Search Attributes](/docs/content/what-is-a-search-attribute).
 
 Alias: `--psa`
 
@@ -101,7 +96,7 @@ tctl workflow list --print_json
 
 ### `--open`
 
-How to list open <preview page={WhatIsAWorkflowExecution}>Workflow Executions</preview>.
+How to list open [Workflow Executions](/docs/content/what-is-a-workflow-execution).
 (By default, the `tctl workflow list` command lists closed Workflow Executions.)
 
 Alias: `--op`
@@ -176,7 +171,7 @@ tctl workflow list --latest-time '10second'
 
 ### `--workflow_id`
 
-How to specify a <preview page={WhatIsAWorkflowId}>Workflow Id</preview>.
+How to specify a [Workflow Id](/docs/content/what-is-a-workflow-id).
 
 Aliases: `--wid`, `-w`
 
@@ -188,7 +183,7 @@ tctl workflow list --workflow_id <id>
 
 ### `--workflow_type`
 
-How to specify the name of a <preview page={WhatIsAWorkflowType}>Workflow Type</preview>.
+How to specify the name of a [Workflow Type](/docs/content/what-is-a-workflow-type).
 
 Alias: `--wt`
 
@@ -200,7 +195,7 @@ tctl workflow list --workflow_type <name>
 
 ### `--status`
 
-How to specify the status of a <preview page={WhatIsAWorkflowExecution}>Workflow Executions</preview>.
+How to specify the status of a [Workflow Execution](/docs/content/what-is-a-workflow-execution).
 Supported values are as follows:
 
 - `completed`
@@ -220,7 +215,7 @@ tctl workflow list --status <value>
 
 ### `--query`
 
-How to specify an SQL-like query of <preview page={WhatIsASearchAttribute}>Search Attributes</preview>.
+How to specify an SQL-like query of [Search Attributes](/docs/content/what-is-a-search-attribute).
 
 Using the `--query` option causes tctl to ignore all other filter options, including `open`, `earliest_time`, `latest_time`, `workflow_id`, and `workflow_type`.
 
@@ -247,7 +242,7 @@ tctl workflow list --more
 
 ### `--pagesize`
 
-How to specify the maximum number of <preview page={WhatIsAWorkflowExecution}>Workflow Executions</preview> to list on a page.
+How to specify the maximum number of [Workflow Executions](/docs/content/what-is-a-workflow-execution) to list on a page.
 (By default, the `tctl workflow list` command lists 10 Workflow Executions per page.)
 
 Alias: `--ps`
