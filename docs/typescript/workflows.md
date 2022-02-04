@@ -877,23 +877,20 @@ import PCP from '../content/what-is-a-parent-close-policy.md'
 
 <PCP />
 
-<span id="infinite-workflows" />
+<span id="continueasnew" />
 
-## Entity Workflows
+## `continueAsNew`
 
-An **Entity Workflow** is a Workflow that represents a single business entity (like a user) and runs indefinitely (for example, until the user deletes their account). Entity Workflows and other Workflows that run for a long period of time need to use `continueAsNew`.
+We need to call `continueAsNew` before our Workflow hits the 50,000 Event limit. [Events](../content/what-is-an-event) are generated when a Workflow does various things involving Temporal Server, including calling an Activity, receiving a Signal, or calling `sleep`, but not handling a Query.
 
 <details>
-<summary>Why ContinueAsNew is needed
-</summary>
+<summary>More info</summary>
 
 [What is Continue-As-New?](/docs/content/what-is-continue-as-new)
 
 </details>
 
-### The `continueAsNew` API
-
-Use the [`continueAsNew`](https://typescript.temporal.io/api/namespaces/workflow#continueasnew) API to instruct the TypeScript SDK to stop the current Workflow Execution and start a new one with a new starting value and a new event history. Note that this is done immediately, so pending updates from Signals must be drained before proceeding or data may be lost.
+[`continueAsNew`](https://typescript.temporal.io/api/namespaces/workflow#continueasnew) stops the current Workflow Execution and starts another one with new arguments and an empty Event History. Note that this is done immediately, so make sure that your Signal handlers have finished running before calling `continueAsNew`.
 
 <!--SNIPSTART typescript-continue-as-new-workflow-->
 <!--SNIPEND-->
@@ -910,7 +907,7 @@ export async function loopingWorkflow(foo: any, isContinued?: boolean) {
 }
 ```
 
-### Don't overuse continueAsNew
+### Don't overuse
 
 You should not try to call `continueAsNew` too often - if at all!
 It's primary purpose is to truncate event history, which if too large may slow down your workflows and eventually cause an error. Calling it too frequently to be preemptive can cause other performance issues as each new Workflow Execution has overhead.
@@ -926,7 +923,7 @@ without even resorting to `continueAsNew`.
 
 Our recommendation is to size it to continue as new between once a day to once a week, to ensure old version branches can be removed in a timely manner.
 
-### Entity Workflow Example
+### Example
 
 Here is a simple pattern that we recommend to represent a single entity. It keeps track of the number of iterations regardless of frequency, and calls `continueAsNew` while properly handling pending updates from Signals.
 
