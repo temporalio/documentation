@@ -47,7 +47,7 @@ Sending an email message and calling third party APIs are considered un-reliable
 ## What happens if an Activity Execution fails?
 
 Activities are meant to handle the unreliable steps of the business process.
-To simulate this, we have added some middleware that gives us about a 40% rate of failure on the third party API calls.
+To simulate unreliability, we have added some middleware that gives us about a 40% rate of failure on the third party API calls.
 We have also configured similar functionality with our Mailhog instance that causes random SMTP failures.
 
 Our Activities each use a default Retry Policy.
@@ -56,7 +56,7 @@ However, we have set a Schedule-To-Close Timeout of 1 minute for each Activity E
 This means we won't ever wait longer than 1 minute for any given Activity Execution to complete.
 Using a Schedule-To-Close Timeout to limit the overall execution time is often a better solution that using the Maximum Attempts setting on the Retry Policy, as it provides a clear time cutoff for real life use cases.
 
-If an Activity Execution does fail, it returns the error from the latest attempt is returned to the Workflow Execution that spawned it.
+If an Activity Execution does fail, it returns the error from the latest attempt to the Workflow Execution that spawned it.
 The Workflow then decides how to handle the fact that the Activity Execution failed.
 
 ## What happens if an individual Search fails?
@@ -93,7 +93,7 @@ However, in real life, our application could use as many Worker Processes (each 
 
 ## How do we ensure PII is encrypted in the Temporal Platform?
 
-To encrypt data in the Temporal Platform, we use a customized [Data Converter](/docs/content/what-is-a-data-converter).
+To ensure data is encrypted while in the Temporal Platform, we use a customized [Data Converter](/docs/content/what-is-a-data-converter).
 
 ## How do we know what the status of a Background Check is
 
