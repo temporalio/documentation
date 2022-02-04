@@ -13,7 +13,7 @@ import RelatedReadList from '../components/RelatedReadList.js'
 A Schedule-To-Start Timeout is the maximum amount of time that is allowed from when an [Activity Task](/docs/content/what-is-an-activity-task) is scheduled (that is, placed in a Task Queue) to when a [Worker](/docs/content/what-is-a-worker) starts (that is, picks up from the Task Queue) that Activity Task.
 In other words, it's a limit for how long an Activity Task can be enqueued.
 
-The moment that the Task is picked by the Worker from the task queue is considered to be the Start of the Activity Task for the Schedule To Start timeout and associated metrics.
+The moment that the Task is picked by the Worker from the Task Queue is considered to be the start of the Activity Task for the purposes of the Schedule-To-Start Timeout and associated metrics.
 This definition of "Start" avoids issues that a clock difference between the Temporal Cluster and a Worker might create.
 
 <CenteredImage
