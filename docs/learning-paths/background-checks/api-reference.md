@@ -2,6 +2,9 @@
 id: api-reference
 title: Background Checks API reference
 sidebar_label: API reference
+tags:
+  - reference
+  - learning-path
 ---
 
 ## `/checks` GET

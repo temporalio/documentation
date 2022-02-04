@@ -84,6 +84,11 @@ module.exports = {
                 "(/application-development)|(/docs/(go|java|php|node))",
               label: "SDKs",
             },
+            {
+              to: "/docs/learning-paths",
+              activeBasePath: "/docs/learning-paths",
+              label: "Learning Paths",
+            },
           ],
         },
         {

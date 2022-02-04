@@ -3,6 +3,8 @@ id: application-design
 title: How to design and implement the Background Check application
 sidebar_label: Building the application
 description: We start by mapping business process to Workflows.
+tags:
+  - learning-path
 ---
 
 ## What business processes are we mapping to Workflows?
@@ -44,31 +46,28 @@ Sending an email message and calling third party APIs are considered un-reliable
 
 ## What happens if an Activity Execution fails?
 
-Perhaps there is an SMTP error or an HTTP request times out.
-If that happens, the step is retried for up to 1 minute.
+Activities are meant to handle the unreliable steps of the business process.
+To simulate this, we have added some middleware that gives us about a 40% rate of failure on the third party API calls.
+We have also configured similar functionality with our Mailhog instance that causes random SMTP failures.
 
-We have a choice to make about how long we are willing to wait for something to
-An Activity Execution fails if it is unable to complete in 1 minute.
-To ensure that this happens
+Our Activities each use a default Retry Policy.
+So when an Activity Task Execution fails the Temporal Cluster will try to execute the code again.
+However, we have set a Schedule-To-Close Timeout of 1 minute for each Activity Execution that limits that overall execution time.
+This means we won't ever wait longer than 1 minute for any given Activity Execution to complete.
+Using a Schedule-To-Close Timeout to limit the overall execution time is often a better solution that using the Maximum Attempts setting on the Retry Policy, as it provides a clear time cutoff for real life use cases.
 
-<!-- TODO -->
-
-- What happens if an Activity Task Execution fails?
-  - Describe the “chaos” implementation that gives us 40% failure rate on third party API calls
-    - We use some HTTP middleware in our third party API simulator code that triggers failure on a percentage of API calls. We have also configured similar functionality in Mailhog that causes it to randomly fail SMTP requests from our application.
-- What happens if an Activity Execution fails?
-  - Why/how do we propagate that failure?
-    - The activity will be automatically retried as per our retry policy. If the retries are exhausted the error from the last attempt will be returned to the workflow which executed the activity. It’s then up to the workflow to decide what to do. In our current code should an activity fail we fail the workflow (or child workflow), returning the error from the activity.
-- What happens if a Child Workflow Execution (Search) fails?
-  - In our case an Activity Execution failure should result in the Child Workflow Execution returning an error - why/how?
-    - Our business logic is that should an individual search fail we should return as much of the report as we can and let the hiring manager know one of the searches failed. We include the error from the activity in the report to aid in debugging. The hiring manager can then make a decision as to whether the check should be re-run or not.
-- Should the main Background Check ever “fail”?
-  - The main background check should never fail due to a failed search, or if a candidate declines the check. However, should the SSN trace fail the background check should fail as well as this is an unrecoverable situation which most likely requires operator action to fix. Once the issue with the SSN trace is fixed the failed workflow can be reset, resuming from the SSN trace.
-  - Regressions during a deploy of the main workflow will generally cause workflow task failure, but not failure of the main workflow. This is one of the features of Temporal and allows Temporal to keep trying to make progress until a fix is deployed without needing to restart all affected workflows manually.
+If an Activity Execution does fail, it returns the error from the latest attempt is returned to the Workflow Execution that spawned it.
+The Workflow then decides how to handle the fact that the Activity Execution failed.
 
 ## What happens if an individual Search fails?
 
-<!-- TODO -->
+For demonstration purposes, if an Activity Execution does fail, the Workflow Execution (Or Child Workflow Execution) that spawned it returns the error that was returned from the Activity Execution, and the Workflow Execution closes with a Failed status
+
+Should an individual Search fail, the Background Check still returns as much of the report as it can.
+The error that caused a Search to fail is included in the report.
+The one exception to this is if the SSN Trace Child Workflow Execution fails, as the addresses that are returned from that Search are required to conduct the remaining Searches.
+
+If an individual Search fails, then the Company HR Person can choose to run another Background Check if they want.
 
 ## Do we need a database?
 
@@ -85,7 +84,7 @@ Because the default retention period for a Temporal Cluster is 7 days, this appl
 
 ![Diagram of component topology of the Temporal Application](/diagrams/background-checks/component-topology.svg)
 
-The Temporal Client communicates with the Temporal Cluster.
+The Temporal Client communicates with the Temporal Cluster (Temporal Server + Database + Elasticsearch).
 
 The Temporal Cluster communicates with the Workers that execute our application code.
 Our application has one Worker Process and one Worker Entity.
@@ -96,11 +95,27 @@ However, in real life, our application could use as many Worker Processes (each 
 
 To encrypt data in the Temporal Platform, we use a customized [Data Converter](/docs/content/what-is-a-data-converter).
 
-A custom Data Converter works in conjunction with a Context Propagator.
+## How do we know what the status of a Background Check is
 
-## How do we know what the status of each Workflow Execution is?
+The status refers to the whether a Background Check is Open or Closed.
 
-We can use the Temporal Platform's built-in List APIs to see the status of any of our Workflow Executions.
+We can use the Temporal Platform's [Visibility APIs](/docs/content/what-is-advanced-visibility) to see the status of any of our Workflow Executions.
+In this application we wrapped the `bgc-company list` command around these Visibility APIs.
+We also make sure to add custom Search Attributes to our Background Check Workflows.
+When we run `bgc-company list` we are using the Visibility APIs and passing a [List Filter](/docs/content/what-is-a-list-filter) that gives us back only the Background Check Workflow Executions.
+
+## How do we know what the state of a Background Check is?
+
+Not the same as "status", state refers to the values of variables in the Background Check Workflow Execution.
+We can know the state by sending a Query to a Background Check.
+The Background Check is developed to listen for a Query and provide data in response.
+Our Background Check actually provides the same object in response to a Query as it does when the function returns.
+Temporal automatically provides the result of the function if the Workflow Execution is in a closed state when the Query is processed by the Temporal Cluster.
+
+This means that we can use a Query to get the state of a Background Check at any time.
+We can see this implemented in the [Background Check Workflow Definition](/docs/learning-paths/background-checks/main-background-check) where the Query Handler is set.
+
+We also use a Query to get the details of the Candidate from the Employer Verification Workflow Execution when the Researcher uses the Web UI to load and verify the Candidate information.
 
 ## How do we get data into a running Workflow Execution?
 

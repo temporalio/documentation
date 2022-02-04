@@ -2,10 +2,10 @@
 id: application-requirements
 title: What are the requirements of the Background Check application?
 sidebar_label: Application requirements
-description: TODO
+description: The Background Check application is a simplified and scaled-down implementation for the use case. The requirements are simplified and scaled to match the implementation.
 ---
 
-The application in this Learning Path is a simplified and scaled-down implementation for the use case.
+The Background Check application is a simplified and scaled-down implementation for the use case.
 The requirements are simplified and scaled to match the implementation.
 
 We can break down the application requirements in various ways.
