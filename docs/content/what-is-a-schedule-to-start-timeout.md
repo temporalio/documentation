@@ -12,7 +12,9 @@ import RelatedReadList from '../components/RelatedReadList.js'
 
 A Schedule-To-Start Timeout is the maximum amount of time that is allowed from when an [Activity Task](/docs/content/what-is-an-activity-task) is scheduled (that is, placed in a Task Queue) to when a [Worker](/docs/content/what-is-a-worker) starts (that is, picks up from the Task Queue) that Activity Task.
 In other words, it's a limit for how long an Activity Task can be enqueued.
-The moment that the Task is picked by the Worker from the task queue is considered to be the start of the Activity Task for the Schedule To Start timeout and associated metrics to avoid clock difference between the Server and the Worker.
+
+The moment that the Task is picked by the Worker from the task queue is considered to be the Start of the Activity Task for the Schedule To Start timeout and associated metrics.
+This definition of "Start" avoids issues that a clock difference between the Temporal Cluster and a Worker might create.
 
 <CenteredImage
 imagePath="/diagrams/schedule-to-start-timeout.svg"
@@ -20,13 +22,18 @@ imageSize="100"
 title="Schedule-To-Start Timeout period"
 />
 
-"Schedule" in Schedule-To-Start and Schedule-To-Close both refer to the scheduling of an Activity Task.
-Schedule-To-Close refers to the scheduling of the *first* Activity Task in the set of Activity Tasks that make up the Activity Execution.
-"Schedule" in Schedule-To-Start refers to the scheduling of *any* Activity Task in the set of Activity Tasks that make up the Activity Execution.
-In other words, Schedule-To-Close Timeout is enforced once per Activity Execution, whereas Schedule-To-Start Timeout is enforced for each Activity Task.
-This is because a [Retry Policy](/docs/content/what-is-a-retry-policy) attached to an Activity Execution retries an Activity Task.
-Thus, the Schedule-To-Start Timeout and latency metrics are applied to each Activity Task separately within an Activity Execution.
 
+:::warning "Schedule" in Schedule-To-Start and Schedule-To-Close may reference different moments
+
+Schedule-To-Start Timeout is enforced for each Activity Task, whereas Schedule-To-Close Timeout is enforced once per Activity Execution.
+Thus, "Schedule" in Schedule-To-Start refers to the scheduling moment of *every* Activity Task in the sequence of Activity Tasks that make up the Activity Execution, while
+"Schedule" in Schedule-To-Close refers to the *first* Activity Task in that sequence.
+
+:::
+
+
+[Retry Policy](/docs/content/what-is-a-retry-policy) attached to an Activity Execution retries an Activity Task.
+ 
 <CenteredImage
 imagePath="/diagrams/schedule-to-start-timeout-with-retry.svg"
 imageSize="100"
