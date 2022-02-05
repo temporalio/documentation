@@ -399,4 +399,4 @@ Two paths from here:
 
 - **Go Full Stack**: Integrate the manually-run Temporal Client scripts you have written here into an Express.js app, or serverless function.
   Our [Next.js Tutorial](/docs/typescript/nextjs-tutorial) should help show you how to integrate this with a frontend app, and give indications on how to deploy.
-- **Learn More**: Explore using [Child Workflows and Infinite Workflows](/docs/typescript/workflows/) in your Workflow, so that your subscriptions can go on [well past the Event History Limit](/docs/typescript/workflows#continueasnew).
+- **Learn More**: Explore using [Child Workflows](/docs/typescript/workflows#child-workflows) and [`continueAsNew`](/docs/typescript/workflows#continueasnew) so that your subscriptions can keep running indefinitely.
