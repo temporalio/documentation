@@ -21,19 +21,18 @@ The application maps each of the following business processes to its own Workflo
 
 ## Why use Child Workflows for Searches instead of Activities?
 
-For this Learning Path application, we use Workflows for Searches for a few reasons.
+In this application, we use Child Workflows for Searches for a few reasons.
 
 1. Each Search could be long running: In a real-life scenario, we won't know how long a Search might take to give us a result.
    Individual Searches and Background Checks overall can often take hours or days to complete.
    Although Temporal supports long running Activities, an actual Search is conducted by a third-party system, so Heartbeats are not very helpful here.
-   An Activity does make the call to the third-party system, but we can set a Timeout and let the Workflow Execution be the long running process.
+   An Activity does make the call to the third-party system, but we can set a Timeout on the Activity Execution and let the Workflow Execution be the long running process.
 2. Division of responsibilities: In a real-life scenario, you might have a team that is dedicated to a particular Search.
    The Background Check team manages their Workflow Definition, while the Federal Criminal Search team manages its own Workflow Definition, for example, to create a sort of inter-team distributed system that can work together to accomplish goals.
-   - Bug fixes
-   - CI/CD
+   This makes it easier when it comes to delegating responsibilities around bug fixes and CI/CD pipelines.
 3. The state of a Workflow is maintained: The results of an Activity are written to the Workflow Execution Event History.
    Instead of writing Search results directly to our Background Check Workflow Execution, we can keep them separate in their own Workflow Execution and access them independently from the Background Check Workflow.
-4. Reduces the need to version Workflows: Workflow Execution Event Histories are separated.
+4. Reduces the need to version the main Background Check Workflow: Workflow Execution Event Histories are separated.
 
 ## Which steps within a business process are we mapping to Activities?
 
