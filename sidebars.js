@@ -433,6 +433,34 @@ module.exports = {
       ],
     },
   ],
+  longRunningHumanDrivenProcessLearningPath: [
+    {
+      type: "category",
+      label: "Background Checks",
+      collapsible: false,
+      items: [
+        {
+          type: "link",
+          label: "Project repo",
+          href: "https://github.com/temporalio/background-checks",
+        },
+        "learning-paths/background-checks/project-narrative",
+        "learning-paths/background-checks/how-to-use",
+        "learning-paths/background-checks/application-requirements",
+        "learning-paths/background-checks/application-design",
+        "learning-paths/background-checks/main-background-check",
+        "learning-paths/background-checks/candidate-acceptance",
+        "learning-paths/background-checks/ssn-trace",
+        "learning-paths/background-checks/federal-criminal-search",
+        "learning-paths/background-checks/state-criminal-search",
+        "learning-paths/background-checks/motor-vehicle-search",
+        "learning-paths/background-checks/employment-verification",
+        "learning-paths/background-checks/application-deployment",
+        "learning-paths/background-checks/api-reference",
+        "learning-paths/background-checks/cli-reference",
+      ],
+    },
+  ],
   tctlReferenceMain: [
     {
       type: "category",

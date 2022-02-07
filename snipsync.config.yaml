@@ -31,6 +31,8 @@ origins:
     repo: samples-java
   - owner: temporalio
     repo: temporal-ecommerce
+  - owner: temporalio
+    repo: background-checks
 
 targets:
   - docs
