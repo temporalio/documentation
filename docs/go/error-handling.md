@@ -3,13 +3,12 @@ id: error-handling
 title: Error Handling in Go
 ---
 
-An Activity, or a child Workflow, might fail, and you could handle errors differently based on the different
+An Activity, or a Child Workflow, might fail, and you could handle errors differently based on the different
 error cases.
 
-If the Activity returns an error as `errors.New()` or `fmt.Errorf()`, that error will
-be converted to `*temporal.ApplicationError` and wrapped inside `*temporal.ActivityTaskError` or `*temporal.ChildWorkflowExecutionError`.
+If the Activity returns an error as `errors.New()` or `fmt.Errorf()`, that error is converted into `*temporal.ApplicationError`.
 
-If the Activity returns an error as `temporal.NewNonRetryableApplicationError("error message", details)`, that error will be returned as `*temporal.ApplicationError`.
+If the Activity returns an error as `temporal.NewNonRetryableApplicationError("error message", details)`, that error is returned as `*temporal.ApplicationError`.
 
 There are other types of errors such as `*temporal.TimeoutError`, `*temporal.CanceledError` and
 `*temporal.PanicError`.
