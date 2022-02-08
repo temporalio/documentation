@@ -477,6 +477,22 @@ module.exports = {
         },
         {
           type: "category",
+          label: "namespace",
+          collapsible: true,
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "reference/tctl/namespace/index",
+          },
+          items: [
+            "reference/tctl/namespace/describe",
+            "reference/tctl/namespace/list",
+            "reference/tctl/namespace/register",
+            "reference/tctl/namespace/update",
+          ],
+        },
+        {
+          type: "category",
           label: "activity",
           collapsible: true,
           collapsed: true,
