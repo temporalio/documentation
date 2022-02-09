@@ -9,7 +9,8 @@ It is designed with TypeScript-first developer experience in mind, but works equ
 
 You can view:
 
-- [Code samples on GitHub](https://github.com/temporalio/samples-typescript) [![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-908a85?logo=gitpod)](https://gitpod.io/#https://github.com/temporalio/samples-typescript/)
+- [Code samples on GitHub](https://github.com/temporalio/samples-typescript)
+  - Fastest way to try these out is in the browser [![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-908a85?logo=gitpod)](https://gitpod.io/#https://github.com/temporalio/samples-typescript/) ([90 second demo](https://youtu.be/FdEQQC9EdfU))
 - [Searchable full API reference](https://typescript.temporal.io)
 - [SDK source on GitHub](https://github.com/temporalio/sdk-typescript) [![GitHub stars](https://img.shields.io/github/stars/temporalio/sdk-typescript)](https://github.com/temporalio/sdk-typescript/stargazers) (give us a star!)
 - [See version diffs on our Changelog](https://github.com/temporalio/sdk-typescript/blob/HEAD/CHANGELOG.md)
@@ -215,11 +216,11 @@ These are the essential pages to have a passing knowledge of our Core APIs:
 
 </details>
 
-## Beginner Office Hours
+## Getting Help
 
-We are experimenting with office hours every Friday where you can bring your questions to discuss live. [Sign up here!](https://lu.ma/temporal-ts).
+For quick questions, we are always available on [the Temporal Slack](https://temporal.io/slack).
 
-For long form/advanced questions, please use [the Temporal community forum](https://community.temporal.io/) instead.
+For long form/FAQs, please search and ask on [the Temporal community forum](https://community.temporal.io/) instead.
 
 ## TS SDK Intro Workshop
 
