@@ -12,6 +12,8 @@ image: https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Furthur_02.jpg/
 
 <!-- truncate -->
 
+![Further](https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Furthur_02.jpg/2880px-Furthur_02.jpg)
+
 In the summer of last year I had the good fortune to be offered the chance to join Temporal as the company’s Chief Product Officer.
 This was a very easy decision for me but not as obvious to friends and colleagues.
 I find this is common with Temporal; at first glance others might find the idea a bit abstruse, but once it clicks in their head, they realize the potential, see how far and wide it will go and then won’t want to think about anything else.
@@ -37,7 +39,7 @@ Scaling has become much simpler and less expensive.  Reuse is increasingly commo
 Of course there’s a catch.
 **Cloud architectures have unwittingly turned backend engineers into distributed systems engineers without anyone asking them.**
 Distributed applications present a different set of engineering concerns compared to those of a decade ago and the familiar tools and platforms of the past have few answers.
-Thanks to cloud architectures, engineering teams can almos take application deployment, scale and infrastructure automation for granted.
+Thanks to cloud architectures, engineering teams can almost take application deployment, scale and infrastructure automation for granted.
 But for these same applications, failure has become inevitable, and as they add more components and services, the mean time between failures will only decrease.
 
 The more cloud applications built, refactored or run, the more the hidden costs of being distributed compound.
@@ -70,10 +72,11 @@ In doing so applications become:
 - Easier to operate - Temporal helps users see how their production application executes its logic, consolidates errors and provides simple but powerful mechanisms to make fixes without interrupting the operation of the running application.
 
 At write time the Temporal SDK provides engineers a simple set of primitives native to their preferred language, the most central of which are Workflows.
-These primitives can be incorporated selectively or extensively into any kind of stateful application.  The more extensively they’re used the greater the benefit because these primitives enable developers to write durable code.
+These primitives can be incorporated selectively or extensively into any kind of stateful application.
+The more extensively they’re used the greater the benefit because **these primitives enable developers to write durable code**.
 
 At run time, the parts of an application written with Temporal are still just code that now talk periodically to the Temporal Server.
-This crucial design point, “what you write is what you run” means runtimes like Temporal meet engineering teams where they’re at, whereas most other platforms attempting to solve this problem require engineers to change their process, deployment, tools or other architectural decisions.
+This crucial design point, **“what you write is what you run” means runtimes like Temporal meet engineering teams where they’re at**, whereas most other platforms attempting to solve this problem require engineers to change their process, deployment, tools or other architectural decisions.
 
 **Commoditize and democratize**
 
@@ -89,7 +92,7 @@ Cloudera lowered the cost of scale by 2 orders of magnitude and today there are 
 This went on to have a large & positive impact on the world.
 Markets and businesses were created, new revenue and cost savings were unearthed, customer careers were made, and sometimes even lives were saved.
 
-In a similar way, Temporal is using open source and distributed systems to make reliability a ubiquitous commodity at any scale and this will have an even more substantial impact than commoditizing scale.
+In a similar way, **Temporal is using open source and distributed systems to make reliability a ubiquitous commodity at any scale and this will have an even more substantial impact than commoditizing scale**.
 Lowering the human and technical cost of reliability and reparability by orders of magnitude means we will come to expect these characteristics more often and in more places.
 Reliability as a commodity will give engineers freedom to take risks as they can now move fast and not break things.
 Engineers building more reliable and repairable software faster will lead to a more automated and productive world.
