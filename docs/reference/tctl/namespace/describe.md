@@ -10,15 +10,15 @@ tags:
 
 The `tctl namespace describe` command describes a Namespace.
 
-`tctl namespace describe --namespace-id <id>`
+`tctl namespace describe`
 
 The following modifier controls the behavior of the command.
 
 ### `--namespace-id`
 
-_Required modifier_
+How to specify the ID of a Namespace to describe.
 
-How to specify the ID of a Namespace.
+This modifier is required unless the `--namespace` modifier is specified (`tctl --namespace <name> describe`).
 
 **Example**
 
