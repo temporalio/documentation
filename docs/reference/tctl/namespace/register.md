@@ -8,7 +8,7 @@ tags:
   - tctl
 ---
 
-The `tctl namespace register` command registers a Namespace.
+The `tctl namespace register` command registers a [Namespace](/docs/content/what-is-a-namespace).
 
 `tctl namespace describe`
 
@@ -16,7 +16,7 @@ The following modifiers control the behavior of the command.
 
 ### `--active-cluster`
 
-How to specify the name of the active cluster when registering a Namespace in tctl.
+How to specify the name of the active [Temporal Cluster](https://docs.temporal.io/docs/content/what-is-a-temporal-cluster/) when registering a [Namespace](/docs/content/what-is-a-namespace) in tctl.
 
 Alias: `--ac`
 
@@ -28,9 +28,9 @@ tctl namespace register --active-cluster <name>
 
 ### `--clusters`
 
-How to specify a list of clusters when registering a Namespace in tctl.
+How to specify a list of [Temporal Clusters](https://docs.temporal.io/docs/content/what-is-a-temporal-cluster/) when registering a [Namespace](/docs/content/what-is-a-namespace) in tctl.
 
-The list contains the names of clusters (separated by spaces) to which the Namespace can fail over.
+The list contains the names of Clusters (separated by spaces) to which the Namespace can fail over.
 
 This modifier is valid only when the `--global-namespace` modifier is set to true.
 
@@ -44,7 +44,7 @@ tctl namespace register --clusters <names>
 
 ### `--description`
 
-How to specify a description when registering a Namespace in tctl.
+How to specify a description when registering a [Namespace](/docs/content/what-is-a-namespace) in tctl.
 
 Alias `--desc`
 
@@ -56,7 +56,7 @@ tctl namespace register --description <value>
 
 ### `--global-namespace`
 
-How to specify whether a Namespace is a Global Namespace.
+How to specify whether a [Namespace](/docs/content/what-is-a-namespace) is a Global Namespace.
 
 Alias `--gd`
 
@@ -68,7 +68,7 @@ tctl namespace register --global-namespace <boolean>
 
 ### `--history-archival-state`
 
-How to set the History Archival state. Valid values are `disabled` and `enabled`.
+How to set the state of [Archival](/docs/content/what-is-archival). Valid values are `disabled` and `enabled`.
 
 Alias `--has`
 
@@ -80,7 +80,7 @@ tctl namespace register --history-archival-state <value>
 
 ### `--history-uri`
 
-How to specify the URI for History Archival. The URI cannot be changed after Archival is first enabled.
+How to specify the URI for [Archival](/docs/content/what-is-archival). The URI cannot be changed after Archival is first enabled.
 
 Alias `--huri`
 
@@ -92,7 +92,7 @@ tctl namespace register --history-uri <uri>
 
 ### `--namespace-data`
 
-How to specify data for a Namespace in the form of key-value pairs (such as `k1:v1,k2:v2,k3:v3`).
+How to specify data for a [Namespace](/docs/content/what-is-a-namespace) in the form of key-value pairs (such as `k1:v1,k2:v2,k3:v3`).
 
 Alias `--dmd`
 
@@ -104,7 +104,7 @@ tctl namespace register --namespace-data <data>
 
 ### `--owner-email`
 
-How to specify the email address of the Namespace owner.
+How to specify the email address of the [Namespace](/docs/content/what-is-a-namespace) owner.
 
 Alias `--oe`
 
@@ -116,7 +116,7 @@ tctl namespace register --owner-email <value>
 
 ### `--retention`
 
-How to specify the number of days to retain Workflow Executions.
+How to specify the number of days to retain [Workflow Executions](/docs/content/what-is-a-workflow-execution).
 
 Alias `--rd`
 
@@ -128,7 +128,7 @@ tctl namespace register --retention <value>
 
 ### `--visibility-archival-state`
 
-How to set the visibility Archival state. Valid values are `disabled` and `enabled`.
+How to set the visibility state for [Archival](/docs/content/what-is-archival). Valid values are `disabled` and `enabled`.
 
 Alias `--vas`
 
@@ -140,7 +140,7 @@ tctl namespace register --visibility-archival-state <value>
 
 ### `--visibility-uri`
 
-How to specify the URI for visibility Archival. The URI cannot be changed after Archival is first enabled.
+How to specify the visibility URI for [Archival](/docs/content/what-is-archival). The URI cannot be changed after Archival is first enabled.
 
 Alias `--vuri`
 

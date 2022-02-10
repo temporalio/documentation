@@ -8,7 +8,7 @@ tags:
   - tctl
 ---
 
-The `tctl namespace list` command lists all Namespaces.
+The `tctl namespace list` command lists all [Namespaces](/docs/content/what-is-a-namespace).
 
 `tctl namespace list`
 
