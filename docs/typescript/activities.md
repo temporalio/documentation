@@ -53,7 +53,7 @@ This is necessary due to the decoupled nature of Workflows and Activities, but a
 
 ### Activity Options
 
-When you call `proxyActivities` in a Workflow function, there are [a range of ActivityOptions](https://typescript.temporal.io/api/interfaces/worker.activityoptions/) you can set:
+When you call `proxyActivities` in a Workflow function, there are [a range of ActivityOptions](https://typescript.temporal.io/api/interfaces/common.ActivityOptions) you can set:
 
 ```ts
 // Sample of typical options you can set
