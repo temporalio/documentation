@@ -14,4 +14,4 @@ Alias: `n`
 - [`tctl namespace describe`](/docs/reference/tctl/namespace/describe)
 - [`tctl namespace list`](/docs/reference/tctl/namespace/list)
 - [`tctl namespace register`](/docs/reference/tctl/namespace/register)
-- [`tctl namespace upgrade`](/docs/reference/tctl/namespace/upgrade)
+- [`tctl namespace update`](/docs/reference/tctl/namespace/update)
