@@ -116,7 +116,7 @@ tctl namespace register --owner-email <value>
 
 ### `--retention`
 
-How to specify the number of days to retain Workflow Executions. 
+How to specify the number of days to retain Workflow Executions.
 
 Alias `--rd`
 
@@ -141,7 +141,6 @@ tctl namespace register --visibility-archival-state <value>
 ### `--visibility-uri`
 
 How to specify the URI for visibility Archival. The URI cannot be changed after Archival is first enabled.
-
 
 Alias `--vuri`
 

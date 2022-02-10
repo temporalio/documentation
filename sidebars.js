@@ -497,9 +497,7 @@ module.exports = {
             type: "doc",
             id: "reference/tctl/data-converter/index",
           },
-          items: [
-            "reference/tctl/data-converter/web",
-          ],
+          items: ["reference/tctl/data-converter/web"],
         },
         {
           type: "category",
