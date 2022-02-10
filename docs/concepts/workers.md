@@ -4,6 +4,8 @@ title: Workers
 sidebar_label: Workers
 ---
 
+import RelatedReadList from '../components/RelatedReadList.js'
+
 A Worker is a service that does the following:
 
 - Hosts executable [Workflow](/docs/concepts/workflows) and/or [Activity](/docs/concepts/activities) code. (Either can be hosted independently)
@@ -53,3 +55,10 @@ It is solely responsible for orchestrating state transitions and dispatching mes
 While data transferred in the event histories is [secured by mTLS](https://docs.temporal.io/docs/server/security/#encryption-of-network-traffic), by default, it is still readable at rest in the Temporal Server.
 
 To solve this, Temporal SDKs offer a [Data Converter API](/docs/content/what-is-a-data-converter) that you can use to customize the serialization of data going out of and coming back in to a Worker, with the net effect of guaranteeing that the Temporal Server cannot read sensitive business data.
+
+<RelatedReadList
+readlist={[
+["Workers in production", "/blog/2022-01-21-workers-in-production.md", "operation guide"],
+["How to tune Workers", "/docs/content/how-to-tune-workers.md", "operation guide"]
+]}
+/>

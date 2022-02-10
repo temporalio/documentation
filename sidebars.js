@@ -433,6 +433,14 @@ module.exports = {
       ],
     },
   ],
+  operationalGuidesSidebar: [
+    {
+      type: "category",
+      label: "Operational Guides",
+      collapsed: false,
+      items: ["content/how-to-tune-workers.md"],
+    },
+  ],
   longRunningHumanDrivenProcessLearningPath: [
     {
       type: "category",

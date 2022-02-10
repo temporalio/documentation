@@ -4,6 +4,8 @@ title: Workers in Java
 sidebar_label: Workers
 ---
 
+import RelatedReadList from '../components/RelatedReadList.js'
+
 ## What is a Worker?
 
 A Worker is a service that executes [Workflows](/docs/java/workflows) and [Activities](/docs/java/activities).
@@ -69,3 +71,10 @@ to register an Activity instance.
 When you start a Workflow or when a Workflow needs to invoke an Activity, the Temporal Server adds
 a new task to the Workflows / Activity Task Queue. Any Worker polling that Task Queue and has that Workflow / Activity
 registered can pick up the new task and execute it.
+
+<RelatedReadList
+readlist={[
+["Workers in production", "/blog/2022-01-21-workers-in-production.md", "operation guide"],
+["How to tune Workers", "/docs/content/how-to-tune-workers.md", "operation guide"]
+]}
+/>
