@@ -476,6 +476,20 @@ module.exports = {
         },
         {
           type: "category",
+          label: "cluster",
+          collapsible: true,
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "reference/tctl/cluster/index",
+          },
+          items: [
+            "reference/tctl/cluster/health",
+            "reference/tctl/cluster/list-search-attributes",
+          ],
+        },
+        {
+          type: "category",
           label: "data-converter",
           collapsible: true,
           collapsed: true,
