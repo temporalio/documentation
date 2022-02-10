@@ -82,24 +82,23 @@ const worker = await Worker.create({
 
 ### How to shut down a Worker and track its state
 
-You can programmatically shut down a worker with `worker.shutdown()`.
-Shut downs should be rare and often done manually in development (by default, Workers shutdown if they receive any of these [`shutdownSignals`](https://typescript.temporal.io/api/interfaces/worker.workeroptions/#shutdownsignals): `['SIGINT', 'SIGTERM', 'SIGQUIT', 'SIGUSR2']`. You can customize these signals, or the [`shutdownGraceTime`](https://typescript.temporal.io/api/interfaces/worker.workeroptions/#shutdowngracetime) if needed).
+Workers shut down if they receive any of these [`shutdownSignals`](https://typescript.temporal.io/api/interfaces/worker.workeroptions/#shutdownsignals): `['SIGINT', 'SIGTERM', 'SIGQUIT', 'SIGUSR2']`. In development, we shut down Workers with `Ctrl-C` (`SIGINT`) or [`nodemon`](https://github.com/temporalio/samples-typescript/blob/c37bae3ea235d1b6956fcbe805478aa46af973ce/hello-world/package.json#L10) (`SIGUSR2`). In production, we usually want to give Workers a [`shutdownGraceTime`](https://typescript.temporal.io/api/interfaces/worker.workeroptions/#shutdowngracetime) long enough for them to finish any in-progress Activities.
 
-However, you may want to programmatically shut down in integration tests or in automating a fleet of workers.
+We may want to programmatically shut down Workers (with `worker.shutdown()`) in integration tests or when automating a fleet of Workers.
 
 #### Worker states
 
-At any point in time, you can query Worker state with `worker.getState()`.
+At any point in time, we can query Worker state with `worker.getState()`.
 A Worker is in one of 7 states at any given point:
 
 - `INITIALIZED` - The initial state of the Worker after calling Worker.create and successful connection to the server
-- `RUNNING` - `worker.run` was called, polling task queues
-- `FAILED` - Worker encountered an unrecoverable error, `worker.run` should reject with the error
+- `RUNNING` - `worker.run()` was called, polling task queues
+- `FAILED` - Worker encountered an unrecoverable error, `worker.run()` should reject with the error
 - The last 4 states are related to the Worker shutdown process:
-  - `STOPPING` - Worker.shutdown was called or received shutdown signal, worker will forcefully shutdown in shutdownGraceTime
+  - `STOPPING` - `worker.shutdown()` was called or received shutdown signal, worker will forcefully shutdown after `shutdownGraceTime`
   - `DRAINING` - Core has indicated that shutdown is complete and all Workflow tasks have been drained, waiting for activities and cached workflows eviction
   - `DRAINED` - All activities and workflows have completed, ready to shutdown
-  - `STOPPED` - Shutdown complete, `worker.run` resolves
+  - `STOPPED` - Shutdown complete, `worker.run()` resolves
 
 If you need even more visibility into internal worker state, [see the API reference for more](https://typescript.temporal.io/api/classes/worker.Worker).
 
