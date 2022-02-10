@@ -446,6 +446,79 @@ module.exports = {
       items: [
         {
           type: "category",
+          label: "activity",
+          collapsible: true,
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "reference/tctl/activity/index",
+          },
+          items: [
+            "reference/tctl/activity/complete",
+            "reference/tctl/activity/fail",
+          ],
+        },
+        {
+          type: "category",
+          label: "batch",
+          collapsible: true,
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "reference/tctl/batch/index",
+          },
+          items: [
+            "reference/tctl/batch/describe",
+            "reference/tctl/batch/list",
+            "reference/tctl/batch/start",
+            "reference/tctl/batch/terminate",
+          ],
+        },
+        {
+          type: "category",
+          label: "data-converter",
+          collapsible: true,
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "reference/tctl/data-converter/index",
+          },
+          items: [
+            "reference/tctl/data-converter/web",
+          ],
+        },
+        {
+          type: "category",
+          label: "namespace",
+          collapsible: true,
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "reference/tctl/namespace/index",
+          },
+          items: [
+            "reference/tctl/namespace/describe",
+            "reference/tctl/namespace/list",
+            "reference/tctl/namespace/register",
+            "reference/tctl/namespace/update",
+          ],
+        },
+        {
+          type: "category",
+          label: "taskqueue",
+          collapsible: true,
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "reference/tctl/taskqueue/index",
+          },
+          items: [
+            "reference/tctl/taskqueue/describe",
+            "reference/tctl/taskqueue/list-partition",
+          ],
+        },
+        {
+          type: "category",
           label: "workflow",
           collapsible: true,
           collapsed: true,
@@ -473,66 +546,6 @@ module.exports = {
             "reference/tctl/workflow/stack",
             "reference/tctl/workflow/start",
             "reference/tctl/workflow/terminate",
-          ],
-        },
-        {
-          type: "category",
-          label: "namespace",
-          collapsible: true,
-          collapsed: true,
-          link: {
-            type: "doc",
-            id: "reference/tctl/namespace/index",
-          },
-          items: [
-            "reference/tctl/namespace/describe",
-            "reference/tctl/namespace/list",
-            "reference/tctl/namespace/register",
-            "reference/tctl/namespace/update",
-          ],
-        },
-        {
-          type: "category",
-          label: "activity",
-          collapsible: true,
-          collapsed: true,
-          link: {
-            type: "doc",
-            id: "reference/tctl/activity/index",
-          },
-          items: [
-            "reference/tctl/activity/complete",
-            "reference/tctl/activity/fail",
-          ],
-        },
-        {
-          type: "category",
-          label: "taskqueue",
-          collapsible: true,
-          collapsed: true,
-          link: {
-            type: "doc",
-            id: "reference/tctl/taskqueue/index",
-          },
-          items: [
-            "reference/tctl/taskqueue/describe",
-            "reference/tctl/taskqueue/list-partition",
-          ],
-        },
-        {
-          type: "category",
-          label: "batch",
-          collapsible: true,
-          collapsed: true,
-          link: {
-            type: "doc",
-            id: "reference/tctl/batch/index",
-          },
-          items: [
-            "reference/tctl/batch/describe",
-            "reference/tctl/batch/list",
-            "reference/tctl/batch/start",
-            "reference/tctl/batch/terminate",
           ],
         },
       ],
