@@ -268,7 +268,7 @@ Again, see [Workflows in TypeScript](/docs/typescript/workflows#external-workflo
 ## Advanced: Making raw gRPC calls
 
 Under the hood of a `WorkflowClient`, the `Connection` is actually powered by a `WorkflowService` driver that makes the raw gRPC calls to Temporal Server.
-This Service is capable of making a wider range of introspection calls. 
+This Service is capable of making a wider range of introspection calls.
 
 **For the full list of gRPC calls, see the Methods section of the [WorkflowService](https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.WorkflowService-1#methods) API reference.**
 
