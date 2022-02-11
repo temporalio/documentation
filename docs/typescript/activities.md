@@ -259,11 +259,7 @@ Temporal SDK also exports a [`Context`](https://typescript.temporal.io/api/class
 
 ### Heartbeating
 
-Long running activities should heartbeat their progress back to the Workflow for earlier detection of stalled activities (with Heartbeat timeouts).
-
-For example, if your activity `StartToCloseTimeout` is 1 hour and the activity stalled, Temporal would have to wait out the 1 hour before retrying.
-
-If you set a `heartbeatTimeout` for 10 seconds, and used the heartbeat API, the absence of heartbeats in the `heartbeatTimeout` window would give the Server a signal that the activity has stalled and should be retried.
+Long running activities should heartbeat their progress back to the Workflow for earlier detection of stalled activities (with Heartbeat timeouts) and resuming stalled activities from checkpoints (with Heartbeat details).
 
 <details>
 <summary>
@@ -287,6 +283,40 @@ Not suitable for heartbeating:
 - Making a quick API call
 
 </details>
+
+```ts
+// activity implementation
+export async function example(sleepIntervalMs = 1000): Promise<void> {
+  for (let progress = 1; progress <= 1000; ++progress) {
+    await Context.current().sleep(sleepIntervalMs);
+    Context.current().heartbeat();
+  }
+}
+
+// workflow code calling activity
+const { example } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '1 hour',
+  heartbeatTimeout: '10s'
+});
+```
+
+Without heartbeating, if your activity `StartToCloseTimeout` is 1 hour and the activity stalled or activity worker died, Temporal would have to wait out the 1 hour before retrying.
+But if you used the heartbeat API, set a `heartbeatTimeout` for 10 seconds, the absence of heartbeats in the `heartbeatTimeout` window would give the Server a signal that the activity has stalled and should be retried right away rather than at the end of the `StartToCloseTimeout`.
+
+The second major benefit of heartbeating is being able to resume from failure by checkpointing data as `heartbeatDetails`.
+Extending the example above:
+
+```ts
+export async function example(sleepIntervalMs = 1000): Promise<void> {
+  const startingPoint = Context.current().info.heartbeatDetails || 1; // allow for resuming from heartbeat
+  for (let progress = startingPoint; progress <= 100; ++progress) {
+    await Context.current().sleep(sleepIntervalMs);
+    Context.current().heartbeat(progress);
+  }
+}
+```
+
+This way, if the Activity Worker experiences a `heartbeatTimeout`, when a retry happens, it will pick up where the previous attempt left off.
 
 ### Activity Cancellation
 
