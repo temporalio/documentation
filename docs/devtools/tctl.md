@@ -588,12 +588,12 @@ $ tctl workflow show  --workflow_id "HelloActivityWorker"
                                 StartToCloseTimeoutSeconds:10,
                                 Attempt:0}
   3  WorkflowTaskStarted       {ScheduledEventId:2,
-                                Identity:36234@maxim-C02XD0AAJGH6,
+                                Identity:36234@maxim-1234567890AB,
                                 RequestId:ef645576-7cee-4d2e-9892-597a08b7b01f}
   4  WorkflowTaskCompleted     {ExecutionContext:[],
                                 ScheduledEventId:2,
                                 StartedEventId:3,
-                                Identity:36234@maxim-C02XD0AAJGH6}
+                                Identity:36234@maxim-1234567890AB}
   5  ActivityTaskScheduled     {ActivityId:0,
                                 ActivityType:{Name:HelloWorldActivities_say},
                                 TaskQueue:{Name:HelloWorldTaskQueue},
