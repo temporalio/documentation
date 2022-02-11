@@ -119,7 +119,7 @@ While this approach has shown to scale a bit better, the programming model can b
 The Temporal Platform approach aims to encapsulate and implement the entire business logic in a simple function or object method.
 Thanks to the Temporal Platform, the function/method is durably stateful, and the implementer doesn't need to employ any additional systems to ensure consistency and fault tolerance.
 
-Here are example Workflow Definitions that implement the subscription management use case in Java, Go, and PHP:
+Here are example Workflow Definitions that implement the subscription management use case in Java, Go, Typescript and PHP:
 
 <Tabs
 defaultValue="java"
