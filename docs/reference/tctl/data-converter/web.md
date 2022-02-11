@@ -16,7 +16,8 @@ The following modifiers control the behavior of the command.
 
 ### `port`
 
-How to specify a port for the WebSocket URL of a custom [Data Converter](/docs/content/what-is-a-data-converter). The default value is 0.
+How to specify a port for the WebSocket URL of a custom [Data Converter](/docs/content/what-is-a-data-converter).
+The default value is 0.
 
 **Example**
 

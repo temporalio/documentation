@@ -68,7 +68,8 @@ tctl namespace register --global-namespace <boolean>
 
 ### `--history-archival-state`
 
-How to set the state of [Archival](/docs/content/what-is-archival). Valid values are `disabled` and `enabled`.
+How to set the state of [Archival](/docs/content/what-is-archival).
+Valid values are `disabled` and `enabled`.
 
 Alias `--has`
 
@@ -80,7 +81,8 @@ tctl namespace register --history-archival-state <value>
 
 ### `--history-uri`
 
-How to specify the URI for [Archival](/docs/content/what-is-archival). The URI cannot be changed after Archival is first enabled.
+How to specify the URI for [Archival](/docs/content/what-is-archival).
+The URI cannot be changed after Archival is first enabled.
 
 Alias `--huri`
 
@@ -128,7 +130,8 @@ tctl namespace register --retention <value>
 
 ### `--visibility-archival-state`
 
-How to set the visibility state for [Archival](/docs/content/what-is-archival). Valid values are `disabled` and `enabled`.
+How to set the visibility state for [Archival](/docs/content/what-is-archival).
+Valid values are `disabled` and `enabled`.
 
 Alias `--vas`
 
@@ -140,7 +143,8 @@ tctl namespace register --visibility-archival-state <value>
 
 ### `--visibility-uri`
 
-How to specify the visibility URI for [Archival](/docs/content/what-is-archival). The URI cannot be changed after Archival is first enabled.
+How to specify the visibility URI for [Archival](/docs/content/what-is-archival).
+The URI cannot be changed after Archival is first enabled.
 
 Alias `--vuri`
 
