@@ -17,13 +17,13 @@ tags:
 
 ## `tctl` commands
 
-- `tctl namespace`
-- [`tctl workflow`](/docs/reference/tctl/workflow)
 - [`tctl activity`](/docs/reference/tctl/activity)
-- [`tctl taskqueue`](/docs/reference/tctl/taskqueue)
 - [`tctl batch`](/docs/reference/tctl/batch)
-- `tctl cluster`
-- `tctl dataconverter`
+- [`tctl cluster`](/docs/reference/tctl/cluster)
+- [`tctl data-converter`](/docs/reference/tctl/data-converter)
+- [`tctl namespace`](/docs/reference/tctl/namespace)
+- [`tctl taskqueue`](/docs/reference/tctl/taskqueue)
+- [`tctl workflow`](/docs/reference/tctl/workflow)
 - `tctl help`
 - `tctl admin cluster`
 - `tctl admin db`
@@ -36,3 +36,5 @@ tags:
 - `tctl admin shard`
 - `tctl admin taskqueue`
 - `tctl admin workflow`
+
+<!-- ## Global modifiers -->
