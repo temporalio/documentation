@@ -29,12 +29,13 @@ Temporal is a marriage of the domains of both companies: transactional applicati
 
 Transactional and business process applications have been the backbone of the global economy for as long as there’s been software.
 All of the world’s materials, assets, locations, people, customers, money, and obligations arrive, move, evolve, and depart at the behest of these kinds of applications.
-Many of these are packaged applications written by SAP and its successors and even more of them are bespoke applications written by engineering teams working in companies of all shapes and sizes.
+Many of these are packaged applications written by SAP and its successors, and even more of them are bespoke applications written by engineering teams working in companies of all shapes and sizes.
 
 In the past 15 years, the infrastructure for how we run these applications has changed dramatically, and this has transformed how applications are built and architected.
 Cloud infrastructure—like containers, kubernetes, and PaaS—have made it easy and inexpensive to build applications from an ever greater number of discrete components.
 These cloud architectures have produced all sorts of benefits.  Ever-larger engineering teams can now develop & enhance applications with greater agility.
-Scaling has become much simpler and less expensive.  Reuse is increasingly common, with developers borrowing from neighboring applications or from commercial API’s that allow teams to efficiently outsource things like messaging, identity, or payment processing.
+Scaling has become much simpler and less expensive.
+Reuse is increasingly common, with developers borrowing from neighboring applications or from commercial APIs that allow teams to efficiently outsource things like messaging, identity, or payment processing.
 
 Of course there’s a catch.
 **Cloud architectures have unwittingly turned backend engineers into distributed systems engineers without anyone asking them.**
@@ -94,7 +95,7 @@ Markets and businesses were created, new revenue and cost savings were unearthed
 
 In a similar way, **Temporal is using open source and distributed systems to make reliability a ubiquitous commodity at any scale**, and this will have an even more substantial impact than commoditizing scale.
 Lowering the human and technical cost of reliability and reparability by orders of magnitude means we will come to expect these characteristics more often and in more places.
-Reliability as a commodity will give engineers freedom to take risks, as they can now move fast and not break things.
+Reliability as a commodity will give engineers freedom to take risks, because they can now move fast and not break things.
 Engineers building more reliable and repairable software faster will lead to a more automated and productive world.
 
 The software industry has grown by orders of magnitude since when I first graduated college, giving rise to many new software platforms, commonly segmented and specialized for one niche or another.
