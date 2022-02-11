@@ -268,7 +268,9 @@ Again, see [Workflows in TypeScript](/docs/typescript/workflows#external-workflo
 ## Advanced: Making raw gRPC calls
 
 Under the hood of a `WorkflowClient`, the `Connection` is actually powered by a `WorkflowService` driver that makes the raw gRPC calls to Temporal Server.
-This Service is capable of making a wider range of introspection calls. (For more information, see the Methods section of the [WorkflowService](https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.WorkflowService-1#methods)) API reference.
+This Service is capable of making a wider range of introspection calls. 
+
+**For the full list of gRPC calls, see the Methods section of the [WorkflowService](https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.WorkflowService-1#methods) API reference.**
 
 <!--SNIPSTART typescript-grpc-call-basic-->
 <!--SNIPEND-->
@@ -283,7 +285,7 @@ We highlight some queries of interest here:
 <!--SNIPSTART typescript-grpc-call-getWorkflowExecutionHistory-->
 <!--SNIPEND-->
 
-Outputs:
+Outputs something like:
 
 ```
 {
@@ -322,10 +324,9 @@ Outputs:
 <!--SNIPSTART typescript-grpc-call-listWorkflowExecutions-->
 <!--SNIPEND-->
 
-Outputs:
+Outputs something like:
 
 ```
-
 ┌─────────┬───────────────────────────────────────────────────────────────────────────────────────────────────┬──────────────────────────────────┬─────────────────────────────────────────────────┬─────────────────────────────────────────────────┬────────┬───────────────┬─────────────────────────────────────────────────┬─────────────────────┬──────────────────────────────────────────────┬────────────┬──────────────────────┐
 │ (index) │                                             execution                                             │               type               │                    startTime                    │                    closeTime                    │ status │ historyLength │                  executionTime                  │        memo         │               searchAttributes               │ taskQueue  │ stateTransitionCount │
 ├─────────┼───────────────────────────────────────────────────────────────────────────────────────────────────┼──────────────────────────────────┼─────────────────────────────────────────────────┼─────────────────────────────────────────────────┼────────┼───────────────┼─────────────────────────────────────────────────┼─────────────────────┼──────────────────────────────────────────────┼────────────┼──────────────────────┤
