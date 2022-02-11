@@ -13,7 +13,9 @@ import RelatedReadList, {RelatedReadContainer, RelatedReadItem} from '../compone
 import * as WhatIsASignal from '../content/what-is-a-signal.md'
 import * as WhatIsAQuery from '../content/what-is-a-query.md'
 
-> **@temporalio/workflow** [![NPM](https://img.shields.io/npm/v/@temporalio/workflow)](https://www.npmjs.com/package/@temporalio/workflow) [API reference](https://typescript.temporal.io/api/namespaces/workflow) | [GitHub](https://github.com/temporalio/sdk-typescript/tree/main/packages/workflow)
+**`@temporalio/workflow`** [![NPM](https://img.shields.io/npm/v/@temporalio/workflow)](https://www.npmjs.com/package/@temporalio/workflow) [API reference](https://typescript.temporal.io/api/namespaces/workflow) | [GitHub](https://github.com/temporalio/sdk-typescript/tree/main/packages/workflow)
+
+> _Background reading: [Workflows in Temporal](https://docs.temporal.io/docs/concepts/workflows/)_
 
 **Workflows are async functions that can orchestrate Activities and access special Workflow APIs, subject to deterministic limitations**.
 
