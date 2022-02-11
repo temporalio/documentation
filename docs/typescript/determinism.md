@@ -66,12 +66,12 @@ How `Date` is deterministic:
 import { sleep } from '@temporalio/workflow';
 
 // this prints the *exact* same timestamp repeatedly
-for (let x = 0; x < 10; ++i) {
+for (let x = 0; x < 10; ++x) {
   console.log(Date.now());
 }
 
 // this prints timestamps increasing roughly 1s each iteration
-for (let x = 0; x < 10; ++i) {
+for (let x = 0; x < 10; ++x) {
   await sleep('1 second');
   console.log(Date.now());
 }
