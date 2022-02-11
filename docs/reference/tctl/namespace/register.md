@@ -10,7 +10,7 @@ tags:
 
 The `tctl namespace register` command registers a [Namespace](/docs/content/what-is-a-namespace).
 
-`tctl namespace describe`
+`tctl namespace register`
 
 The following modifiers control the behavior of the command.
 
