@@ -8,8 +8,7 @@ module.exports = {
         type: "doc",
         id: "concepts/index",
       },
-      items:
-      [
+      items: [
         "concepts/what-is-an-activity",
         "concepts/what-is-an-activity-definition",
         "concepts/what-is-an-activity-execution",
