@@ -105,14 +105,14 @@ Create HelloWorldWorkflowImpl.java and define the Workflow:
 
 ### Task Queue
 
-[Task Queues](/docs/content/what-is-a-task-queue) are how the Temporal server supplies information to Workers. When you start a Workflow, you tell the server which Task Queue the Workflow and/or Activities use as an information queue. We will configure our Worker to listen to the same Task Queue that our Workflow and Activities use. Since the Task Queue name is used by multiple things, let's create Shared.java and define our Task Queue name there:
+[Task Queues](/docs/concepts/what-is-a-task-queue) are how the Temporal server supplies information to Workers. When you start a Workflow, you tell the server which Task Queue the Workflow and/or Activities use as an information queue. We will configure our Worker to listen to the same Task Queue that our Workflow and Activities use. Since the Task Queue name is used by multiple things, let's create Shared.java and define our Task Queue name there:
 
 <!--SNIPSTART hello-world-project-template-java-shared-constants-->
 <!--SNIPEND-->
 
 ### Worker
 
-Our [Worker](/docs/content/what-is-a-worker) hosts Workflow and Activity functions and executes them one at a time. The Worker is instructed to execute the specific functions via information it gets from the Task Queue, and after execution, it communicates results back to the server.
+Our [Worker](/docs/concepts/what-is-a-worker) hosts Workflow and Activity functions and executes them one at a time. The Worker is instructed to execute the specific functions via information it gets from the Task Queue, and after execution, it communicates results back to the server.
 
 Create HelloWorldWorker.java and define the Worker:
 

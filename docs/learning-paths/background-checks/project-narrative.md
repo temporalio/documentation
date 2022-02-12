@@ -82,23 +82,23 @@ And the Temporal Platform has built-in Visibility APIs to view the status and ge
 
 This project introduces the following concepts:
 
-- [Activity Definition](/docs/content/what-is-an-activity-definition)
-- [Activity Execution](/docs/content/what-is-an-activity-execution)
-- [Advanced Visibility](/docs/content/what-is-advanced-visibility)
-- [Child Workflow Execution](/docs/content/what-is-a-child-workflow-execution)
-- [Custom Data Converter](/docs/content/what-is-a-data-converter)
-- [List Filters](/docs/content/what-is-a-list-filter)
-- [Search Attributes](/docs/content/what-is-a-search-attribute)
-- [Side Effect](/docs/content/what-is-a-side-effect)
-- [Task Queue](/docs/content/what-is-a-task-queue)
+- [Activity Definition](/docs/concepts/what-is-an-activity-definition)
+- [Activity Execution](/docs/concepts/what-is-an-activity-execution)
+- [Advanced Visibility](/docs/concepts/what-is-advanced-visibility)
+- [Child Workflow Execution](/docs/concepts/what-is-a-child-workflow-execution)
+- [Custom Data Converter](/docs/concepts/what-is-a-data-converter)
+- [List Filters](/docs/concepts/what-is-a-list-filter)
+- [Search Attributes](/docs/concepts/what-is-a-search-attribute)
+- [Side Effect](/docs/concepts/what-is-a-side-effect)
+- [Task Queue](/docs/concepts/what-is-a-task-queue)
 - [Temporal Client](#)
 - [Temporal Web UI](#)
-- [Worker](/docs/content/what-is-a-worker)
-- [Workflow Definition](/docs/content/what-is-a-workflow-definition)
-- [Workflow Execution](/docs/content/what-is-a-workflow-execution)
-- [Workflow Id](/docs/content/what-is-a-workflow-id)
-- [Workflow Id Reuse Policy](/docs/content/what-is-a-workflow-id-reuse-policy)
-- [Workflow Type](/docs/content/what-is-a-workflow-type)
+- [Worker](/docs/concepts/what-is-a-worker)
+- [Workflow Definition](/docs/concepts/what-is-a-workflow-definition)
+- [Workflow Execution](/docs/concepts/what-is-a-workflow-execution)
+- [Workflow Id](/docs/concepts/what-is-a-workflow-id)
+- [Workflow Id Reuse Policy](/docs/concepts/what-is-a-workflow-id-reuse-policy)
+- [Workflow Type](/docs/concepts/what-is-a-workflow-type)
 
 ## What are the technical how-tos introduced in this application?
 

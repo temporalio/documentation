@@ -59,7 +59,7 @@ See the **Asynchronous execution** section below for an example.
 
 <RelatedReadList
 readlist={[
-["What is a Parent Close Policy?","/docs/content/what-is-a-parent-close-policy","explanation"],  
+["What is a Parent Close Policy?","/docs/concepts/what-is-a-parent-close-policy","explanation"],  
 ]}
 />
 
@@ -104,6 +104,6 @@ func YourOtherWorkflowDefinition(ctx workflow.Context, params ChildParams) (Chil
 
 <RelatedReadList
 readlist={[
-["What is a Child Workflow Execution?","/docs/content/what-is-a-child-workflow-execution","explanation"],  
+["What is a Child Workflow Execution?","/docs/concepts/what-is-a-child-workflow-execution","explanation"],  
 ]}
 />

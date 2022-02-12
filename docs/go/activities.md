@@ -75,12 +75,6 @@ The parameters of the `RecordActivityHeartbeat` function are:
   the Activity.
 - `details`: The serializable payload containing progress information.
 
-#### Cancellation
-
-import WhatIsActivityCancellation from '../content/what-is-activity-cancellation.md'
-
-<WhatIsActivityCancellation />
-
 ## Synchronous Activity Execution
 
 The primary responsibility of a Workflow implementation is to schedule Activities for execution.

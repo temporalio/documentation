@@ -8,7 +8,7 @@ tags:
   - tctl
 ---
 
-The `tctl workflow list` command lists open or closed [Workflow Executions](/docs/content/what-is-a-workflow-execution).
+The `tctl workflow list` command lists open or closed [Workflow Executions](/docs/concepts/what-is-a-workflow-execution).
 
 By default, this command lists a maximum of 10 closed Workflow Executions.
 
@@ -60,7 +60,7 @@ tctl workflow list --print_memo
 
 ### `--print_search_attr`
 
-How to print the [Search Attributes](/docs/content/what-is-a-search-attribute).
+How to print the [Search Attributes](/docs/concepts/what-is-a-search-attribute).
 
 Alias: `--psa`
 
@@ -96,7 +96,7 @@ tctl workflow list --print_json
 
 ### `--open`
 
-How to list open [Workflow Executions](/docs/content/what-is-a-workflow-execution).
+How to list open [Workflow Executions](/docs/concepts/what-is-a-workflow-execution).
 (By default, the `tctl workflow list` command lists closed Workflow Executions.)
 
 Alias: `--op`
@@ -171,7 +171,7 @@ tctl workflow list --latest-time '10second'
 
 ### `--workflow_id`
 
-How to specify a [Workflow Id](/docs/content/what-is-a-workflow-id).
+How to specify a [Workflow Id](/docs/concepts/what-is-a-workflow-id).
 
 Aliases: `--wid`, `-w`
 
@@ -183,7 +183,7 @@ tctl workflow list --workflow_id <id>
 
 ### `--workflow_type`
 
-How to specify the name of a [Workflow Type](/docs/content/what-is-a-workflow-type).
+How to specify the name of a [Workflow Type](/docs/concepts/what-is-a-workflow-type).
 
 Alias: `--wt`
 
@@ -195,7 +195,7 @@ tctl workflow list --workflow_type <name>
 
 ### `--status`
 
-How to specify the status of a [Workflow Execution](/docs/content/what-is-a-workflow-execution).
+How to specify the status of a [Workflow Execution](/docs/concepts/what-is-a-workflow-execution).
 Supported values are as follows:
 
 - `completed`
@@ -215,7 +215,7 @@ tctl workflow list --status <value>
 
 ### `--query`
 
-How to specify an SQL-like query of [Search Attributes](/docs/content/what-is-a-search-attribute).
+How to specify an SQL-like query of [Search Attributes](/docs/concepts/what-is-a-search-attribute).
 
 Using the `--query` option causes tctl to ignore all other filter options, including `open`, `earliest_time`, `latest_time`, `workflow_id`, and `workflow_type`.
 
@@ -242,7 +242,7 @@ tctl workflow list --more
 
 ### `--pagesize`
 
-How to specify the maximum number of [Workflow Executions](/docs/content/what-is-a-workflow-execution) to list on a page.
+How to specify the maximum number of [Workflow Executions](/docs/concepts/what-is-a-workflow-execution) to list on a page.
 (By default, the `tctl workflow list` command lists 10 Workflow Executions per page.)
 
 Alias: `--ps`

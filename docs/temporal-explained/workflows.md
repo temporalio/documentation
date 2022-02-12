@@ -5,60 +5,60 @@ description: todo
 sidebar_label: Workflows
 ---
 
-import WhatIsAWorkflow from "../content/what-is-a-workflow.md"
+import WhatIsAWorkflow from "../concepts/what-is-a-workflow.md"
 
 <WhatIsAWorkflow/>
 
 ## Workflow Definition
 
-import WhatIsAWorkflowDefinition from "../content/what-is-a-workflow-definition.md"
+import WhatIsAWorkflowDefinition from "../concepts/what-is-a-workflow-definition.md"
 
 <WhatIsAWorkflowDefinition/>
 
 ## Workflow Type
 
-import WhatIsAWorkflowType from "../content/what-is-a-workflow-type.md"
+import WhatIsAWorkflowType from "../concepts/what-is-a-workflow-type.md"
 
 <WhatIsAWorkflowType/>
 
 ## Workflow Execution
 
-import WhatIsAWorkflowExecution from "../content/what-is-a-workflow-execution.md"
+import WhatIsAWorkflowExecution from "../concepts/what-is-a-workflow-execution.md"
 
 <WhatIsAWorkflowExecution/>
 
 ### Workflow Id
 
-import WhatIsAWorkflowId from "../content/what-is-a-workflow-id.md"
+import WhatIsAWorkflowId from "../concepts/what-is-a-workflow-id.md"
 
 <WhatIsAWorkflowId/>
 
 ### Workflow Id Reuse Policy
 
-import WhatIsAWorkflowIdReUsePolicy from "../content/what-is-a-workflow-id-reuse-policy.md"
+import WhatIsAWorkflowIdReUsePolicy from "../concepts/what-is-a-workflow-id-reuse-policy.md"
 
 <WhatIsAWorkflowIdReUsePolicy/>
 
 ### Run Id
 
-import WhatIsARunId from "../content/what-is-a-run-id.md"
+import WhatIsARunId from "../concepts/what-is-a-run-id.md"
 
 <WhatIsARunId/>
 
 ## Child Workflow Execution
 
-import WhatIsAChildWorkflowExecution from "../content/what-is-a-child-workflow-execution.md"
+import WhatIsAChildWorkflowExecution from "../concepts/what-is-a-child-workflow-execution.md"
 
 <WhatIsAChildWorkflowExecution/>
 
 ### Parent Close Policy
 
-import WhatIsAParentClosePolicy from "../content/what-is-a-parent-close-policy.md"
+import WhatIsAParentClosePolicy from "../concepts/what-is-a-parent-close-policy.md"
 
 <WhatIsAParentClosePolicy/>
 
 ## Temporal Cron Job
 
-import WhatIsATemporalCronJob from "../content/what-is-a-temporal-cron-job.md"
+import WhatIsATemporalCronJob from "../concepts/what-is-a-temporal-cron-job.md"
 
 <WhatIsATemporalCronJob/>

@@ -35,7 +35,7 @@ See [TLS configuration reference](/docs/server/configuration/#tls) for more deta
 
 ## Encryption at rest with DataConverter
 
-import DataConverter from '../content/what-is-a-data-converter.md'
+import DataConverter from '../concepts/what-is-a-data-converter.md'
 
 <DataConverter />
 

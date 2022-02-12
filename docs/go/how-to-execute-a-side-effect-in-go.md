@@ -9,7 +9,7 @@ tags:
 ---
 
 <!-- prettier-ignore -->
-import * as WhatIsASideEffect from '../content/what-is-a-side-effect.md'
+import * as WhatIsASideEffect from '../concepts/what-is-a-side-effect.md'
 
 Use the [`SideEffect`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SideEffect) API from the `go.temporal.io/sdk/workflow` package to execute a <preview page={WhatIsASideEffect}>Side Effect</preview> directly in your Workflow.
 

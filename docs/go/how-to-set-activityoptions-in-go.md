@@ -11,13 +11,13 @@ tags:
 import {RelatedReadContainer, RelatedReadItem} from '../components/RelatedReadList.js'
 
 <!-- prettier-ignore -->
-import * as WhatIsAnActivityId from '../content/what-is-an-activity-id.md'
-import * as WhatIsATaskQueue from '../content/what-is-a-task-queue.md'
-import * as WhatIsAScheduleToCloseTimeout from '../content/what-is-a-schedule-to-close-timeout.md'
-import * as WhatIsAScheduleToStartTimeout from '../content/what-is-a-schedule-to-start-timeout.md'
-import * as WhatIsAStartToCloseTimeout from '../content/what-is-a-start-to-close-timeout.md'
-import * as WhatIsAHeartbeatTimeout from '../content/what-is-a-heartbeat-timeout.md'
-import * as WhatIsARetryPolicy from '../content/what-is-a-retry-policy.md'
+import * as WhatIsAnActivityId from '../concepts/what-is-an-activity-id.md'
+import * as WhatIsATaskQueue from '../concepts/what-is-a-task-queue.md'
+import * as WhatIsAScheduleToCloseTimeout from '../concepts/what-is-a-schedule-to-close-timeout.md'
+import * as WhatIsAScheduleToStartTimeout from '../concepts/what-is-a-schedule-to-start-timeout.md'
+import * as WhatIsAStartToCloseTimeout from '../concepts/what-is-a-start-to-close-timeout.md'
+import * as WhatIsAHeartbeatTimeout from '../concepts/what-is-a-heartbeat-timeout.md'
+import * as WhatIsARetryPolicy from '../concepts/what-is-a-retry-policy.md'
 
 Create an instance of [`ActivityOptions`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ActivityOptions) from the `go.temporal.io/sdk/workflow` package and use [`WithActivityOptions()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#WithActivityOptions) to apply it to the instance of `workflow.Context`.
 

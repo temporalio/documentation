@@ -131,7 +131,7 @@ function Server() {
         </li>
         <li className="list-disc">
           <Link
-            to={useBaseUrl("/docs/content/what-is-a-temporal-cluster")}
+            to={useBaseUrl("/docs/concepts/what-is-a-temporal-cluster")}
             className="hover:underline"
           >
             <p className="font-semibold">Cluster Architecture</p>

@@ -8,7 +8,7 @@ tags:
   - tctl
 ---
 
-The `tctl workflow run` command starts a new [Workflow Execution](/docs/content/what-is-a-workflow-execution) and can show Workflow progress.
+The `tctl workflow run` command starts a new [Workflow Execution](/docs/concepts/what-is-a-workflow-execution) and can show Workflow progress.
 
 `tctl workflow run [<modifiers>]`
 
@@ -16,7 +16,7 @@ The following modifiers control the behavior of the command.
 
 ### `--taskqueue`
 
-How to specify a [Task Queue](/docs/content/what-is-a-task-queue).
+How to specify a [Task Queue](/docs/concepts/what-is-a-task-queue).
 
 Alias: `--tq`
 
@@ -28,7 +28,7 @@ tctl workflow run --taskqueue <name>
 
 ### `--workflow_id`
 
-How to specify a [Workflow Id](/docs/content/what-is-a-workflow-id).
+How to specify a [Workflow Id](/docs/concepts/what-is-a-workflow-id).
 
 Aliases: `--wid`, `-w`
 
@@ -40,7 +40,7 @@ tctl workflow run --workflow_id <id>
 
 ### `--workflow_type`
 
-How to specify the name of a [Workflow Type](/docs/content/what-is-a-workflow-type).
+How to specify the name of a [Workflow Type](/docs/concepts/what-is-a-workflow-type).
 
 Alias: `--wt`
 
@@ -52,7 +52,7 @@ tctl workflow run --workflow_type <name>
 
 ### `--execution_timeout`
 
-How to specify the [Start-To-Close Timeout](/docs/content/what-is-a-start-to-close-timeout) of the [Workflow Execution](/docs/content/what-is-a-workflow-execution) in seconds.
+How to specify the [Start-To-Close Timeout](/docs/concepts/what-is-a-start-to-close-timeout) of the [Workflow Execution](/docs/concepts/what-is-a-workflow-execution) in seconds.
 The default value is 0.
 
 Alias: `--et`
@@ -65,7 +65,7 @@ tctl workflow run --execution_timeout <seconds>
 
 ### `--workflow_task_timeout`
 
-How to specify the [Start-To-Close Timeout](/docs/content/what-is-a-start-to-close-timeout) of the [Workflow Task](/docs/content/what-is-a-workflow-task) in seconds.
+How to specify the [Start-To-Close Timeout](/docs/concepts/what-is-a-start-to-close-timeout) of the [Workflow Task](/docs/concepts/what-is-a-workflow-task) in seconds.
 The default value is 10.
 
 Alias: `--wtt`
@@ -78,7 +78,7 @@ tctl workflow run --workflow_task_timeout <seconds>
 
 ### `--cron`
 
-How to specify a [Cron Schedule](/docs/content/what-is-a-temporal-cron-job/#cron-schedules).
+How to specify a [Cron Schedule](/docs/concepts/what-is-a-temporal-cron-job/#cron-schedules).
 
 **Example**
 
@@ -88,8 +88,8 @@ tctl workflow run --cron <string>
 
 ### `--workflowidreusepolicy`
 
-How to specify a [Workflow Id Reuse Policy](/docs/content/what-is-a-workflow-id-reuse-policy).
-Configure if the same [Workflow Id](/docs/content/what-is-a-workflow-id) is allowed for use in new [Workflow Execution](/docs/content/what-is-a-workflow-execution).
+How to specify a [Workflow Id Reuse Policy](/docs/concepts/what-is-a-workflow-id-reuse-policy).
+Configure if the same [Workflow Id](/docs/concepts/what-is-a-workflow-id) is allowed for use in new [Workflow Execution](/docs/concepts/what-is-a-workflow-execution).
 
 Values: `AllowDuplicate`, `AllowDuplicateFailedOnly`, `RejectDuplicate`
 
@@ -167,7 +167,7 @@ tctl workflow run --memo_file <filename>
 
 ### `--search_attr_key`
 
-How to specify a [Search Attribute](/docs/content/what-is-a-search-attribute) key.
+How to specify a [Search Attribute](/docs/concepts/what-is-a-search-attribute) key.
 For multiple keys, concatenate them and use pipes (`|`) as separators.
 
 To list valid keys, use the `tctl cluster get-search-attr` command.
@@ -180,7 +180,7 @@ tctl workflow run --search_attr_key <key>
 
 ### `--search_attr_value`
 
-How to specify a [Search Attribute](/docs/content/what-is-a-search-attribute) value.
+How to specify a [Search Attribute](/docs/concepts/what-is-a-search-attribute) value.
 For multiple values, concatenate them and use pipes (`|`) as separators.
 If a value is an array, use JSON format, such as `["a","b"]`, `[1,2]`, `["true","false"]`, or `["2022-06-07T17:16:34-08:00","2022-06-07T18:16:34-08:00"]`.
 

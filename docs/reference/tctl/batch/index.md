@@ -7,7 +7,7 @@ tags:
   - tctl
 ---
 
-The `tctl batch` commands enable batch jobs. A batch job can signal, cancel, or terminate [Workflow Executions](/docs/content/what-is-a-workflow-execution).
+The `tctl batch` commands enable batch jobs. A batch job can signal, cancel, or terminate [Workflow Executions](/docs/concepts/what-is-a-workflow-execution).
 
 Terminating a batch job does not roll back the operation performed by the batch job. However, you can use `tctl workflow reset` to roll back Workflow Executions.
 

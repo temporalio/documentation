@@ -69,6 +69,11 @@ module.exports = {
               label: "Explanation",
             },
             {
+              to: "/docs/concepts",
+              activeBasePath: "/docs/concepts/",
+              label: "Concepts",
+            },
+            {
               to: "/docs/server/introduction",
               activeBasePath: "/docs/server/",
               label: "Server",

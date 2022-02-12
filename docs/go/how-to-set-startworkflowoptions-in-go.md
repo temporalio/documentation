@@ -11,17 +11,17 @@ tags:
 import {RelatedReadContainer, RelatedReadItem} from '../components/RelatedReadList.js'
 
 <!-- prettier-ignore -->
-import * as WhatIsAWorkflowId from '../content/what-is-a-workflow-id.md'
-import * as WhatIsATaskQueue from '../content/what-is-a-task-queue.md'
-import * as WhatIsAWorkflowExecutionTimeout from '../content/what-is-a-workflow-execution-timeout.md'
-import * as WhatIsAWorkflowRunTimeout from '../content/what-is-a-workflow-run-timeout.md'
-import * as WhatIsAWorkflowTaskTimeout from '../content/what-is-a-workflow-task-timeout.md'
-import * as WhatIsAWorkflowIdReusePolicy from '../content/what-is-a-workflow-id-reuse-policy.md'
-import * as WhatIsARetryPolicy from '../content/what-is-a-retry-policy.md'
-import * as WhatIsATemporalCronJob from '../content/what-is-a-temporal-cron-job.md'
-import * as WhatIsAMemo from '../content/what-is-a-memo.md'
-import * as WhatIsASearchAttribute from '../content/what-is-a-search-attribute.md'
-import * as HowToAddACustomSearchAttributeToAClusterUsingTctl from '../content/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl.md'
+import * as WhatIsAWorkflowId from '../concepts/what-is-a-workflow-id.md'
+import * as WhatIsATaskQueue from '../concepts/what-is-a-task-queue.md'
+import * as WhatIsAWorkflowExecutionTimeout from '../concepts/what-is-a-workflow-execution-timeout.md'
+import * as WhatIsAWorkflowRunTimeout from '../concepts/what-is-a-workflow-run-timeout.md'
+import * as WhatIsAWorkflowTaskTimeout from '../concepts/what-is-a-workflow-task-timeout.md'
+import * as WhatIsAWorkflowIdReusePolicy from '../concepts/what-is-a-workflow-id-reuse-policy.md'
+import * as WhatIsARetryPolicy from '../concepts/what-is-a-retry-policy.md'
+import * as WhatIsATemporalCronJob from '../concepts/what-is-a-temporal-cron-job.md'
+import * as WhatIsAMemo from '../concepts/what-is-a-memo.md'
+import * as WhatIsASearchAttribute from '../concepts/what-is-a-search-attribute.md'
+import * as HowToAddACustomSearchAttributeToAClusterUsingTctl from '../tctl/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl.md'
 
 Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, and pass the instance to the `ExecuteWorkflow` call.
 

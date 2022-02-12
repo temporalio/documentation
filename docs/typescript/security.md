@@ -30,7 +30,7 @@ This eliminates a whole class of problems particularly when providing Temporal t
 
 ## Namespaces
 
-import Content from '../content/what-is-a-namespace.md'
+import Content from '../concepts/what-is-a-namespace.md'
 
 <Content />
 

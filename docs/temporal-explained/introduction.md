@@ -4,30 +4,30 @@ title: Introduction to Temporal
 sidebar_label: Introduction
 ---
 
-import WhatIsTemporal from '../content/what-is-temporal.md'
+import WhatIsTemporal from '../concepts/what-is-temporal.md'
 
 <WhatIsTemporal/>
 
 ## Temporal Application
 
-import WhatIsATemporalApplication from '../content/what-is-a-temporal-application.md'
+import WhatIsATemporalApplication from '../concepts/what-is-a-temporal-application.md'
 
 <WhatIsATemporalApplication/>
 
 ## Temporal Platform
 
-import WhatIsTheTemporalPlatform from '../content/what-is-the-temporal-platform.md'
+import WhatIsTheTemporalPlatform from '../concepts/what-is-the-temporal-platform.md'
 
 <WhatIsTheTemporalPlatform/>
 
 ## Temporal SDK
 
-import WhatIsATemporalSDK from '../content/what-is-a-temporal-sdk.md'
+import WhatIsATemporalSDK from '../concepts/what-is-a-temporal-sdk.md'
 
 <WhatIsATemporalSDK/>
 
 ## Why Temporal?
 
-import WhyTemporal from '../content/why-temporal.md'
+import WhyTemporal from '../concepts/why-temporal.md'
 
 <WhyTemporal/>

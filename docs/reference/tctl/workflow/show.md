@@ -8,7 +8,7 @@ tags:
   - tctl
 ---
 
-The `tctl workflow show` command shows History for the specified [Workflow Execution](/docs/content/what-is-a-workflow-execution).
+The `tctl workflow show` command shows History for the specified [Workflow Execution](/docs/concepts/what-is-a-workflow-execution).
 
 `tctl workflow show [<modifiers>]`
 
@@ -18,7 +18,7 @@ The following modifiers control the behavior of the command.
 
 ### `--workflow_id`
 
-How to show the History of a [Workflow Execution](/docs/content/what-is-a-workflow-execution) by specifying a [Workflow Id](/docs/content/what-is-a-workflow-id).
+How to show the History of a [Workflow Execution](/docs/concepts/what-is-a-workflow-execution) by specifying a [Workflow Id](/docs/concepts/what-is-a-workflow-id).
 
 Aliases: `--wid`, `-w`
 
@@ -30,7 +30,7 @@ tctl workflow show --workflow_id <id>
 
 ### `--run_id`
 
-How to show the History of a [Workflow Execution](/docs/content/what-is-a-workflow-execution) by specifying a [Run Id](/docs/content/what-is-a-run-id).
+How to show the History of a [Workflow Execution](/docs/concepts/what-is-a-workflow-execution) by specifying a [Run Id](/docs/concepts/what-is-a-run-id).
 
 Aliases: `--rid`, `-r`
 

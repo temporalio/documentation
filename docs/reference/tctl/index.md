@@ -11,7 +11,7 @@ tags:
 # What are all the tctl commands?
 -->
 
-- [What is tctl?](/docs/content/what-is-tctl)
+- [What is tctl?](/docs/tctl/what-is-tctl)
 - [How to install tctl](/docs/content/how-to-install-tctl)
 - [Environment variables for tctl](/docs/reference/tctl/environment-variables)
 

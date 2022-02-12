@@ -8,7 +8,7 @@ tags:
   - tctl
 ---
 
-The `tctl taskqueue list-partition` command lists the partitions of a [Task Queue](/docs/content/what-is-a-task-queue) and the hostname for the partitions.
+The `tctl taskqueue list-partition` command lists the partitions of a [Task Queue](/docs/concepts/what-is-a-task-queue) and the hostname for the partitions.
 
 `tctl taskqueue list-partition --taskqueue <value>`
 
@@ -18,7 +18,7 @@ The following modifier controls the behavior of the command.
 
 _Required modifier_
 
-How to specify a [Task Queue](/docs/content/what-is-a-task-queue).
+How to specify a [Task Queue](/docs/concepts/what-is-a-task-queue).
 
 Alias: `--tq`
 
