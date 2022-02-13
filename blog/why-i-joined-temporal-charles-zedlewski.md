@@ -72,7 +72,7 @@ In doing so, applications become:
 - **More productive to enhance:** It’s not uncommon to see examples of engineers implementing a feature in Temporal with 40-60% fewer lines of code than before, as they're outsourcing most of the distributed application concerns to Temporal.
 - **Easier to operate:** Temporal helps users see how their production application executes its logic, consolidates errors, and provides simple but powerful mechanisms to make fixes without interrupting the operation of the running application.
 
-At write time, the Temporal SDK provides engineers a simple set of primitives native to their preferred language, the most central of which are Workflows.
+During development, the Temporal SDK provides engineers a simple set of primitives native to their preferred language, the most central of which are Workflows.
 These primitives can be incorporated selectively or extensively into any kind of stateful application.
 The more extensively they’re used, the greater the benefit, because **these primitives enable developers to write durable code**.
 
