@@ -146,9 +146,7 @@ module.exports = {
       type: "category",
       label: "Operation guides",
       collapsed: true,
-      items: [
-        "operation/how-to-tune-workers",
-      ],
+      items: ["operation/how-to-tune-workers"],
     },
     {
       type: "category",
@@ -326,7 +324,7 @@ module.exports = {
         id: "tctl/index",
       },
       items: [
-        'tctl/how-to-install-tctl',
+        "tctl/how-to-install-tctl",
         {
           type: "category",
           label: "tctl commands",
