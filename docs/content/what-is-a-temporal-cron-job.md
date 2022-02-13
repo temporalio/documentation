@@ -63,26 +63,46 @@ This is what the "classic" specification looks like:
 * * * * *
 ```
 
-For example, "15 8 \* \* \*" causes a Workflow Execution to spawn daily at 8:15 AM UTC.
+For example, `15 8 * * *` causes a Workflow Execution to spawn daily at 8:15 AM UTC.
 Use the [crontab guru site](https://crontab.guru/) to test your cron expressions.
 
-**`robfig` predefined schedules**
+### `robfig` predefined schedules and intervals
 
 You can also pass any of the [predefined schedules](https://pkg.go.dev/github.com/robfig/cron/v3#hdr-Predefined_schedules) or [intervals](https://pkg.go.dev/github.com/robfig/cron/v3#hdr-Intervals) described in the [`robfig/cron` documentation](https://pkg.go.dev/github.com/robfig/cron/v3).
 
+```
+Schedules              | Description                                | Equivalent To
+-----                  | -----------                                | -------------
+@yearly (or @annually) | Run once a year, midnight, Jan. 1st        | 0 0 1 1 *
+@monthly               | Run once a month, midnight, first of month | 0 0 1 * *
+@weekly                | Run once a week, midnight between Sat/Sun  | 0 0 * * 0
+@daily (or @midnight)  | Run once a day, midnight                   | 0 0 * * *
+@hourly                | Run once an hour, beginning of hour        | 0 * * * *
+```
+
 For example, "@weekly" causes a Workflow Execution to spawn once a week at midnight between Saturday and Sunday.
 
-**Time zones** (in Temporal 1.15)
+Intervals just take a string that can be accepted by [time.ParseDuration](http://golang.org/pkg/time/#ParseDuration).
 
-You can change the time zone that a Cron Schedule is interpreted in by prefixing the specification with `CRON_TZ=America/New_York ` (or your desired time zone).
+```
+@every <duration>
+```
+
+### Time zones
+
+_This feature only applies in Temporal 1.15 and up_
+
+You can change the time zone that a Cron Schedule is interpreted in by prefixing the specification with `CRON_TZ=America/New_York ` (or your [desired time zone from tz](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)). `CRON_TZ=America/New_York 15 8 * * *` therefore spawns a Workflow Execution every day at 8:15 AM New York time, subject to caveats listed below.
+
 Consider that using time zones in production introduces a surprising amount of complexity and failure modes!
-If at all possible, we recommend specifying Cron Schedules in UTC (the default).
+**If at all possible, we recommend specifying Cron Schedules in UTC (the default)**.
+
 If you need to use time zones, here are a few edge cases to keep in mind:
 
-- **Beware Daylight Savings**: If a Temporal Cron Job is scheduled around the time when daylight saving time begins or ends, e.g. `30 2 * * *`, it may run zero, one, or two times in a day! The Cron library that we use does not do any special handling of DST transitions. Avoid schedules that include times in DST transitions.
-- **Self Hosting note**: If you manage your own Temporal Cluster, you are responsible for ensuring that it has access to current tzdata files. The official Docker images are built with tzdata installed (provided by Alpine Linux), but ultimately you should be aware of how tzdata is deployed and updated in your infrastucture.
+- **Beware Daylight Savings**: If a Temporal Cron Job is scheduled around the time when daylight saving time begins or ends, e.g. `30 2 * * *`, **it may run zero, one, or two times in a day**! The Cron library that we use does not do any special handling of DST transitions. Avoid schedules that include times that fall within DST transition periods.
+- **Self Hosting note**: If you manage your own Temporal Cluster, you are responsible for ensuring that it has access to current `tzdata` files. The official Docker images are built with [tzdata](https://docs.w3cub.com/go/time/tzdata/index) installed (provided by Alpine Linux), but ultimately you should be aware of how tzdata is deployed and updated in your infrastucture.
 - **Updating Temporal**: If you use the official Docker images, note that an upgrade of the Temporal Cluster may include an update to the tzdata files, which may change the meaning of your Cron Schedule. You should be aware of upcoming changes to the definitions of the time zones you use, particularly around daylight saving time start/end dates.
-- **Absolute Time Fixed at Start**: The absolute start time of the next Run is computed and stored in the database when the previous Run completes, and is not recomputed. This means that if you have a Cron Schedule that runs very infrequently, and the definition of the time zone changes in between one Run and the next, the Run might happen at the wrong time. For example, `CRON_TZ=America/Los_Angeles 0 12 11 11 *` means "noon in Los Angeles on November 11" (normally not in DST). If one year the government of California decides to move the end of DST one week later, or stay on permanent DST year-round, the meaning of that specification will change, but that first year, the Run will happen at the wrong time, because it was computed using the older definition.
+- **Absolute Time Fixed at Start**: The absolute start time of the next Run is computed and stored in the database when the previous Run completes, and is not recomputed. This means that if you have a Cron Schedule that runs very infrequently, and the definition of the time zone changes in between one Run and the next, the Run might happen at the wrong time. For example, `CRON_TZ=America/Los_Angeles 0 12 11 11 *` means "noon in Los Angeles on November 11" (normally not in DST). If at some point the government makes any chances (e.g. move the end of DST one week later, or stay on permanent DST year-round) the meaning of that specification will change. In that first year, the Run will happen at the wrong time, because it was computed using the older definition.
 
 ### Stop Cron Job
 
