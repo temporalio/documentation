@@ -1,9 +1,23 @@
 module.exports = {
-  conceptsSidebar: [
+  sidebar: [
+    {
+      type: "category",
+      label: "Temporal explained",
+      collapsed: true,
+      items: [
+        "temporal-explained/introduction",
+        "temporal-explained/workflows",
+        "temporal-explained/activities",
+        "temporal-explained/task-queues-and-workers",
+        "temporal-explained/signals-and-queries",
+        "temporal-explained/timeouts-and-retries",
+        "temporal-explained/visibility",
+      ],
+    },
     {
       type: "category",
       label: "Concepts",
-      collapsible: false,
+      collapsed: true,
       link: {
         type: "doc",
         id: "concepts/index",
@@ -68,12 +82,78 @@ module.exports = {
         "concepts/what-is-a-workflow-type",
       ],
     },
-  ],
-  serverSidebar: [
     {
       type: "category",
-      label: "Server",
-      collapsed: false,
+      label: "Learning paths",
+      collapsed: true,
+      items: [
+        {
+          type: "category",
+          label: "Run your first app",
+          collapsed: true,
+          items: [
+            "go/tutorial-prerequisites",
+            "go/run-your-first-app-tutorial",
+            "java/run-your-first-app-tutorial",
+            "go/sdk-video-tutorial",
+          ],
+        },
+        {
+          type: "category",
+          label: "Hello World",
+          collapsed: true,
+          items: [
+            "go/hello-world-tutorial",
+            "java/hello-world-tutorial",
+            "php/hello-world",
+            "typescript/hello-world",
+          ],
+        },
+        {
+          type: "link",
+          label: "eCommerce",
+          href: "/blog/tags/go-ecommerce-tutorial",
+        },
+        {
+          type: "category",
+          label: "Background Checks",
+          collapsed: true,
+          items: [
+            {
+              type: "link",
+              label: "Project repo",
+              href: "https://github.com/temporalio/background-checks",
+            },
+            "learning-paths/background-checks/project-narrative",
+            "learning-paths/background-checks/how-to-use",
+            "learning-paths/background-checks/application-requirements",
+            "learning-paths/background-checks/application-design",
+            "learning-paths/background-checks/main-background-check",
+            "learning-paths/background-checks/candidate-acceptance",
+            "learning-paths/background-checks/ssn-trace",
+            "learning-paths/background-checks/federal-criminal-search",
+            "learning-paths/background-checks/state-criminal-search",
+            "learning-paths/background-checks/motor-vehicle-search",
+            "learning-paths/background-checks/employment-verification",
+            "learning-paths/background-checks/application-deployment",
+            "learning-paths/background-checks/api-reference",
+            "learning-paths/background-checks/cli-reference",
+          ],
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Operation guides",
+      collapsed: true,
+      items: [
+        "operation/how-to-tune-workers",
+      ],
+    },
+    {
+      type: "category",
+      label: "Cluster how-tos",
+      collapsed: true,
       items: [
         "server/introduction",
         "server/quick-install",
@@ -90,72 +170,8 @@ module.exports = {
     },
     {
       type: "category",
-      label: "Quick links",
-      collapsed: false,
-      items: [
-        {
-          type: "link",
-          label: "Concepts",
-          href: "/docs/temporal-explained/introduction",
-        },
-        {
-          type: "link",
-          label: "SDKs",
-          href: "/application-development",
-        },
-        {
-          type: "link",
-          label: "DevTools",
-          href: "/docs/devtools/introduction",
-        },
-        {
-          type: "link",
-          label: "Additional resources",
-          href: "/docs/external-resources",
-        },
-      ],
-    },
-  ],
-  toolingSidebar: [
-    {
-      type: "category",
-      label: "DevTools",
-      collapsed: false,
-      items: ["devtools/introduction", "devtools/tctl", "devtools/web-ui"],
-    },
-    {
-      type: "category",
-      label: "Quick links",
-      collapsed: false,
-      items: [
-        {
-          type: "link",
-          label: "Concepts",
-          href: "/docs/temporal-explained/introduction",
-        },
-        {
-          type: "link",
-          label: "Server",
-          href: "/docs/server/introduction",
-        },
-        {
-          type: "link",
-          label: "SDKs",
-          href: "/application-development",
-        },
-        {
-          type: "link",
-          label: "Additional resources",
-          href: "/docs/external-resources",
-        },
-      ],
-    },
-  ],
-  goSidebar: [
-    {
-      type: "category",
-      label: "Go developer guide",
-      collapsed: false,
+      label: "Go how-tos",
+      collapsed: true,
       items: [
         {
           type: "link",
@@ -193,56 +209,18 @@ module.exports = {
         "go/sessions",
         "go/tracing",
         "go/search-apis",
-        {
-          type: "category",
-          label: "Tutorials",
-          collapsed: false,
-          items: [
-            "go/tutorial-prerequisites",
-            "go/run-your-first-app-tutorial",
-            "go/hello-world-tutorial",
-            "go/sdk-video-tutorial",
-            {
-              type: "link",
-              label: "Build an eCommerce app",
-              href: "/blog/tags/go-ecommerce-tutorial",
-            },
-          ],
-        },
-        {
-          type: "link",
-          label: "Samples library",
-          href: "/docs/samples-library/#go",
-        },
       ],
     },
-  ],
-  javaSidebar: [
     {
       type: "category",
-      label: "Java",
-      collapsed: false,
+      label: "Java how-tos",
+      collapsed: true,
       items: [
         "java/introduction",
         {
           type: "link",
           label: "Reference",
           href: "https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/index.html",
-        },
-        {
-          type: "link",
-          label: "Samples library",
-          href: "/docs/samples-library/#java",
-        },
-        {
-          type: "category",
-          label: "Tutorials",
-          collapsed: false,
-          items: [
-            "java/tutorial-prerequisites",
-            "java/run-your-first-app-tutorial",
-            "java/hello-world-tutorial",
-          ],
         },
         "java/workflows",
         "java/activities",
@@ -259,55 +237,10 @@ module.exports = {
     },
     {
       type: "category",
-      label: "Quick links",
-      collapsed: false,
-      items: [
-        {
-          type: "link",
-          label: "Concepts",
-          href: "/docs/temporal-explained/introduction",
-        },
-        {
-          type: "link",
-          label: "Server",
-          href: "/docs/server/introduction",
-        },
-        {
-          type: "link",
-          label: "SDKs",
-          href: "/application-development",
-        },
-        {
-          type: "link",
-          label: "DevTools",
-          href: "/docs/devtools/introduction",
-        },
-        {
-          type: "link",
-          label: "Additional resources",
-          href: "/docs/external-resources",
-        },
-      ],
-    },
-  ],
-  phpSidebar: [
-    {
-      type: "category",
-      label: "PHP",
-      collapsed: false,
+      label: "PHP how-tos",
+      collapsed: true,
       items: [
         "php/introduction",
-        {
-          type: "link",
-          label: "Samples library",
-          href: "/docs/samples-library/#php",
-        },
-        {
-          type: "category",
-          label: "Tutorials",
-          collapsed: false,
-          items: ["php/hello-world"],
-        },
         "php/workflows",
         "php/activities",
         "php/task-queues",
@@ -323,42 +256,8 @@ module.exports = {
     },
     {
       type: "category",
-      label: "Quick links",
-      collapsed: false,
-      items: [
-        {
-          type: "link",
-          label: "Concepts",
-          href: "/docs/temporal-explained/introduction",
-        },
-        {
-          type: "link",
-          label: "Server",
-          href: "/docs/server/introduction",
-        },
-        {
-          type: "link",
-          label: "SDKs",
-          href: "/application-development",
-        },
-        {
-          type: "link",
-          label: "DevTools",
-          href: "/docs/devtools/introduction",
-        },
-        {
-          type: "link",
-          label: "Additional resources",
-          href: "/docs/external-resources",
-        },
-      ],
-    },
-  ],
-  typescriptSidebar: [
-    {
-      type: "category",
-      label: "TypeScript (beta)",
-      collapsed: false,
+      label: "TypeScript how-tos",
+      collapsed: true,
       items: [
         "typescript/introduction",
         {
@@ -366,7 +265,7 @@ module.exports = {
           label: "TS Tutorials",
           items: [
             "typescript/package-initializer",
-            "typescript/hello-world",
+
             "typescript/subscription-tutorial",
             "typescript/chatbot-tutorial",
             "typescript/nextjs-tutorial",
@@ -380,7 +279,7 @@ module.exports = {
         {
           type: "category",
           label: "TS Core APIs",
-          collapsed: false,
+          collapsed: true,
           items: [
             "typescript/workflows",
             "typescript/activities",
@@ -420,245 +319,152 @@ module.exports = {
     },
     {
       type: "category",
-      label: "Quick links",
-      collapsed: false,
+      label: "tctl",
+      collapsed: true,
+      link: {
+        type: "doc",
+        id: "tctl/index",
+      },
       items: [
+        'tctl/how-to-install-tctl',
         {
-          type: "link",
-          label: "Concepts",
-          href: "/docs/temporal-explained/introduction",
-        },
-        {
-          type: "link",
-          label: "Server",
-          href: "/docs/server/introduction",
-        },
-        {
-          type: "link",
-          label: "SDKs",
-          href: "/application-development",
-        },
-        {
-          type: "link",
-          label: "DevTools",
-          href: "/docs/devtools/introduction",
-        },
-        {
-          type: "link",
-          label: "Additional resources",
-          href: "/docs/external-resources",
+          type: "category",
+          label: "tctl commands",
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "reference/tctl/index",
+          },
+          items: [
+            {
+              type: "category",
+              label: "activity",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "reference/tctl/activity/index",
+              },
+              items: [
+                "reference/tctl/activity/complete",
+                "reference/tctl/activity/fail",
+              ],
+            },
+            {
+              type: "category",
+              label: "batch",
+              collapsible: true,
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "reference/tctl/batch/index",
+              },
+              items: [
+                "reference/tctl/batch/describe",
+                "reference/tctl/batch/list",
+                "reference/tctl/batch/start",
+                "reference/tctl/batch/terminate",
+              ],
+            },
+            {
+              type: "category",
+              label: "cluster",
+              collapsible: true,
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "reference/tctl/cluster/index",
+              },
+              items: [
+                "reference/tctl/cluster/health",
+                "reference/tctl/cluster/list-search-attributes",
+              ],
+            },
+            {
+              type: "category",
+              label: "data-converter",
+              collapsible: true,
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "reference/tctl/data-converter/index",
+              },
+              items: ["reference/tctl/data-converter/web"],
+            },
+            {
+              type: "category",
+              label: "namespace",
+              collapsible: true,
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "reference/tctl/namespace/index",
+              },
+              items: [
+                "reference/tctl/namespace/describe",
+                "reference/tctl/namespace/list",
+                "reference/tctl/namespace/register",
+                "reference/tctl/namespace/update",
+              ],
+            },
+            {
+              type: "category",
+              label: "taskqueue",
+              collapsible: true,
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "reference/tctl/taskqueue/index",
+              },
+              items: [
+                "reference/tctl/taskqueue/describe",
+                "reference/tctl/taskqueue/list-partition",
+              ],
+            },
+            {
+              type: "category",
+              label: "workflow",
+              collapsible: true,
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "reference/tctl/workflow/index",
+              },
+              items: [
+                "reference/tctl/workflow/cancel",
+                "reference/tctl/workflow/count",
+                "reference/tctl/workflow/describe",
+                "reference/tctl/workflow/describeid",
+                "reference/tctl/workflow/list",
+                "reference/tctl/workflow/listall",
+                "reference/tctl/workflow/listarchived",
+                "reference/tctl/workflow/observe",
+                "reference/tctl/workflow/query",
+                "reference/tctl/workflow/reset",
+                "reference/tctl/workflow/reset-batch",
+                "reference/tctl/workflow/run",
+                "reference/tctl/workflow/scan",
+                "reference/tctl/workflow/show",
+                "reference/tctl/workflow/showid",
+                "reference/tctl/workflow/signal",
+                "reference/tctl/workflow/stack",
+                "reference/tctl/workflow/start",
+                "reference/tctl/workflow/terminate",
+              ],
+            },
+          ],
         },
       ],
     },
-  ],
-  temporalExplained: [
     {
       type: "category",
-      label: "Temporal explained",
-      collapsed: false,
+      label: "References",
+      collapsed: true,
       items: [
-        "temporal-explained/introduction",
-        "temporal-explained/workflows",
-        "temporal-explained/activities",
-        "temporal-explained/task-queues-and-workers",
-        "temporal-explained/signals-and-queries",
-        "temporal-explained/timeouts-and-retries",
-        "temporal-explained/visibility",
-      ],
-    },
-    {
-      type: "category",
-      label: "Additional resources",
-      collapsed: false,
-      items: [
-        "samples-library",
-        "external-resources",
-        "cadence-to-temporal",
-        "reference/glossary",
+        "reference/commands",
         "reference/events",
         "reference/sdk-metrics",
       ],
     },
-
-    {
-      type: "category",
-      label: "Quick links",
-      collapsed: false,
-      items: [
-        {
-          type: "link",
-          label: "Server",
-          href: "/docs/server/introduction",
-        },
-        {
-          type: "link",
-          label: "SDKs",
-          href: "/application-development",
-        },
-        {
-          type: "link",
-          label: "DevTools",
-          href: "/docs/devtools/introduction",
-        },
-      ],
-    },
-  ],
-  longRunningHumanDrivenProcessLearningPath: [
-    {
-      type: "category",
-      label: "Background Checks",
-      collapsible: false,
-      items: [
-        {
-          type: "link",
-          label: "Project repo",
-          href: "https://github.com/temporalio/background-checks",
-        },
-        "learning-paths/background-checks/project-narrative",
-        "learning-paths/background-checks/how-to-use",
-        "learning-paths/background-checks/application-requirements",
-        "learning-paths/background-checks/application-design",
-        "learning-paths/background-checks/main-background-check",
-        "learning-paths/background-checks/candidate-acceptance",
-        "learning-paths/background-checks/ssn-trace",
-        "learning-paths/background-checks/federal-criminal-search",
-        "learning-paths/background-checks/state-criminal-search",
-        "learning-paths/background-checks/motor-vehicle-search",
-        "learning-paths/background-checks/employment-verification",
-        "learning-paths/background-checks/application-deployment",
-        "learning-paths/background-checks/api-reference",
-        "learning-paths/background-checks/cli-reference",
-      ],
-    },
-  ],
-  tctlReferenceMain: [
-    {
-      type: "category",
-      label: "tctl commands",
-      collapsible: false,
-      collapsed: false,
-      link: {
-        type: "doc",
-        id: "reference/tctl/index",
-      },
-      items: [
-        {
-          type: "category",
-          label: "activity",
-          collapsible: true,
-          collapsed: true,
-          link: {
-            type: "doc",
-            id: "reference/tctl/activity/index",
-          },
-          items: [
-            "reference/tctl/activity/complete",
-            "reference/tctl/activity/fail",
-          ],
-        },
-        {
-          type: "category",
-          label: "batch",
-          collapsible: true,
-          collapsed: true,
-          link: {
-            type: "doc",
-            id: "reference/tctl/batch/index",
-          },
-          items: [
-            "reference/tctl/batch/describe",
-            "reference/tctl/batch/list",
-            "reference/tctl/batch/start",
-            "reference/tctl/batch/terminate",
-          ],
-        },
-        {
-          type: "category",
-          label: "cluster",
-          collapsible: true,
-          collapsed: true,
-          link: {
-            type: "doc",
-            id: "reference/tctl/cluster/index",
-          },
-          items: [
-            "reference/tctl/cluster/health",
-            "reference/tctl/cluster/list-search-attributes",
-          ],
-        },
-        {
-          type: "category",
-          label: "data-converter",
-          collapsible: true,
-          collapsed: true,
-          link: {
-            type: "doc",
-            id: "reference/tctl/data-converter/index",
-          },
-          items: ["reference/tctl/data-converter/web"],
-        },
-        {
-          type: "category",
-          label: "namespace",
-          collapsible: true,
-          collapsed: true,
-          link: {
-            type: "doc",
-            id: "reference/tctl/namespace/index",
-          },
-          items: [
-            "reference/tctl/namespace/describe",
-            "reference/tctl/namespace/list",
-            "reference/tctl/namespace/register",
-            "reference/tctl/namespace/update",
-          ],
-        },
-        {
-          type: "category",
-          label: "taskqueue",
-          collapsible: true,
-          collapsed: true,
-          link: {
-            type: "doc",
-            id: "reference/tctl/taskqueue/index",
-          },
-          items: [
-            "reference/tctl/taskqueue/describe",
-            "reference/tctl/taskqueue/list-partition",
-          ],
-        },
-        {
-          type: "category",
-          label: "workflow",
-          collapsible: true,
-          collapsed: true,
-          link: {
-            type: "doc",
-            id: "reference/tctl/workflow/index",
-          },
-          items: [
-            "reference/tctl/workflow/cancel",
-            "reference/tctl/workflow/count",
-            "reference/tctl/workflow/describe",
-            "reference/tctl/workflow/describeid",
-            "reference/tctl/workflow/list",
-            "reference/tctl/workflow/listall",
-            "reference/tctl/workflow/listarchived",
-            "reference/tctl/workflow/observe",
-            "reference/tctl/workflow/query",
-            "reference/tctl/workflow/reset",
-            "reference/tctl/workflow/reset-batch",
-            "reference/tctl/workflow/run",
-            "reference/tctl/workflow/scan",
-            "reference/tctl/workflow/show",
-            "reference/tctl/workflow/showid",
-            "reference/tctl/workflow/signal",
-            "reference/tctl/workflow/stack",
-            "reference/tctl/workflow/start",
-            "reference/tctl/workflow/terminate",
-          ],
-        },
-      ],
-    },
+    "samples-library",
   ],
 };

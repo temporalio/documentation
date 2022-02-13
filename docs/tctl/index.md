@@ -1,7 +1,7 @@
 ---
-id: what-is-tctl
+id: index
 title: What is tctl?
-description: The Temporal CLI (tctl) is a command-line tool that you can use to interact with a Temporal Cluster.
+description: tctl is a command-line tool that you can use to interact with a Temporal Cluster.
 tags:
   - operation-guide
   - tctl
