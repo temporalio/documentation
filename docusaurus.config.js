@@ -153,10 +153,10 @@ module.exports = {
       anonymizeIP: true, // Should IPs be anonymized?
     },
     algolia: {
-      apiKey: "14805ba2eb682edb2e719df4d5e03c8a",
+      apiKey: "cd527863e60d95ebe650cdd21c7a6f3f",
       indexName: "temporal",
       // contextualSearch: true, // Optional, If you different version of docs etc (v1 and v2) doesn't display dup results
-      // appId: 'app-id', // Optional, if you run the DocSearch crawler on your own
+      appId: "T5D6KNJCQS", // Optional, if you run the DocSearch crawler on your own
       // algoliaOptions: {}, // Optional, if provided by Algolia
     },
   },
