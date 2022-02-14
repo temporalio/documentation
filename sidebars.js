@@ -359,7 +359,7 @@ module.exports = {
       },
       items: [
         "tctl/how-to-install-tctl",
-        "tctl/environment-variables",        
+        "tctl/environment-variables",
         "tctl/how-to-use-tctl",
         "tctl/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl",
         {
@@ -381,10 +381,7 @@ module.exports = {
                 type: "doc",
                 id: "tctl/activity/index",
               },
-              items: [
-                "tctl/activity/complete",
-                "tctl/activity/fail",
-              ],
+              items: ["tctl/activity/complete", "tctl/activity/fail"],
             },
             {
               type: "category",
