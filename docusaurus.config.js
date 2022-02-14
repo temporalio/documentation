@@ -92,7 +92,7 @@ module.exports = {
             {
               to: "/docs/learning-paths",
               activeBasePath: "/docs/learning-paths",
-              label: "Learning Paths",
+              label: "Learning",
             },
           ],
         },

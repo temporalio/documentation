@@ -1,7 +1,7 @@
 ---
 id: hello-world-tutorial
 title: Build a Temporal "Hello World!" app from scratch in Go
-sidebar_label: Build "Hello World!" app
+sidebar_label: Go
 tags:
   - helloworld
   - go

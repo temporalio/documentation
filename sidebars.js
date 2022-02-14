@@ -1,9 +1,10 @@
 module.exports = {
-  sidebar: [
+  sidebarExplained: [
     {
       type: "category",
       label: "Temporal explained",
-      collapsed: true,
+      collapsible: false,
+      collapsed: false,
       items: [
         "temporal-explained/introduction",
         "temporal-explained/workflows",
@@ -14,10 +15,13 @@ module.exports = {
         "temporal-explained/visibility",
       ],
     },
+  ],
+  sidebarConcepts: [
     {
       type: "category",
       label: "Concepts",
-      collapsed: true,
+      collapsible: false,
+      collapsed: false,
       link: {
         type: "doc",
         id: "concepts/index",
@@ -82,10 +86,17 @@ module.exports = {
         "concepts/what-is-a-workflow-type",
       ],
     },
+  ],
+  sidebarLearningPaths: [
     {
       type: "category",
-      label: "Learning paths",
-      collapsed: true,
+      label: "Learning",
+      collapsible: false,
+      collapsed: false,
+      link: {
+        type: "doc",
+        id: "learning-paths/index",
+      },
       items: [
         {
           type: "category",
@@ -94,6 +105,7 @@ module.exports = {
           items: [
             "go/tutorial-prerequisites",
             "go/run-your-first-app-tutorial",
+            "java/tutorial-prerequisites",
             "java/run-your-first-app-tutorial",
             "go/sdk-video-tutorial",
           ],
@@ -142,16 +154,25 @@ module.exports = {
         },
       ],
     },
+
+  ],
+  sidebarOperations: [
     {
       type: "category",
       label: "Operation guides",
-      collapsed: true,
-      items: ["operation/how-to-tune-workers"],
+      collapsible: false,
+      collapsed: false,
+      items: [
+        "operation/how-to-tune-workers"
+      ],
     },
+  ],
+  sidebarCluster: [
     {
       type: "category",
-      label: "Cluster how-tos",
-      collapsed: true,
+      label: "Cluster",
+      collapsible: false,
+      collapsed: false,
       items: [
         "server/introduction",
         "server/quick-install",
@@ -166,10 +187,13 @@ module.exports = {
         "server/archive-data",
       ],
     },
+  ],
+  sidebarGo: [
     {
       type: "category",
       label: "Go how-tos",
-      collapsed: true,
+      collapsible: false,
+      collapsed: false,
       items: [
         {
           type: "link",
@@ -209,10 +233,13 @@ module.exports = {
         "go/search-apis",
       ],
     },
+  ],
+  sidebarJava: [
     {
       type: "category",
       label: "Java how-tos",
-      collapsed: true,
+      collapsible: false,
+      collapsed: false,
       items: [
         "java/introduction",
         {
@@ -233,10 +260,13 @@ module.exports = {
         "content/how-to-provide-an-authorization-token-in-java",
       ],
     },
+  ],
+  sidebarPHP: [
     {
       type: "category",
       label: "PHP how-tos",
-      collapsed: true,
+      collapsible: false,
+      collapsed: false,
       items: [
         "php/introduction",
         "php/workflows",
@@ -252,10 +282,13 @@ module.exports = {
         "php/distributed-cron",
       ],
     },
+  ],
+  sidebarTypeScript: [
     {
       type: "category",
       label: "TypeScript how-tos",
-      collapsed: true,
+      collapsible: false,
+      collapsed: false,
       items: [
         "typescript/introduction",
         {
@@ -263,7 +296,6 @@ module.exports = {
           label: "TS Tutorials",
           items: [
             "typescript/package-initializer",
-
             "typescript/subscription-tutorial",
             "typescript/chatbot-tutorial",
             "typescript/nextjs-tutorial",
@@ -289,6 +321,7 @@ module.exports = {
         {
           type: "category",
           label: "TS Production APIs",
+          collapsed: true,
           items: [
             "typescript/security",
             "typescript/testing",
@@ -300,6 +333,7 @@ module.exports = {
         {
           type: "category",
           label: "TS Advanced APIs",
+          collapsed: true,
           items: [
             "typescript/cancellation-scopes",
             "typescript/determinism",
@@ -315,10 +349,13 @@ module.exports = {
         },
       ],
     },
+  ],
+  sidebartctl: [
     {
       type: "category",
       label: "tctl",
-      collapsed: true,
+      collapsible: false,
+      collapsed: false,
       link: {
         type: "doc",
         id: "tctl/index",
@@ -453,6 +490,8 @@ module.exports = {
         },
       ],
     },
+  ],
+  sidebarRefs: [
     {
       type: "category",
       label: "References",
@@ -463,6 +502,5 @@ module.exports = {
         "reference/sdk-metrics",
       ],
     },
-    "samples-library",
   ],
 };
