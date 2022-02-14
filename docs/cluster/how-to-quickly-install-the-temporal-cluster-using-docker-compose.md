@@ -1,12 +1,12 @@
 ---
-id: how-to-quickly-install-the-temporal-server
-title: How to quickly install the Temporal Server for testing and local development
-description: Use `docker-compose` to quickly install and run the Temporal Server locally to test the system while developing Workflows.
+id: how-to-quickly-install-the-temporal-cluster-using-docker-compose
+title: How to quickly install the Temporal Cluster using Docker Compose for testing and local development
+sidebar_label: Docker Compose
+description: Use `docker-compose` to quickly install and run the Temporal Cluster locally to test the system while developing Workflows.
 tags:
-  - operation-guide
+  - how-to
+  - installation
 ---
-
-import RelatedReadList from '../components/RelatedReadList.js'
 
 Use `docker-compose` to quickly install and run the Temporal Server locally to test the system while developing Workflows.
 
@@ -23,16 +23,12 @@ cd  docker-compose
 docker-compose up
 ```
 
-When the Temporal Server is running, Workflow Executions can be invoked.
-The Temporal Server can be kept running in the background while applications are built.
+The Temporal Cluster must be running to spawn Workflow Executions.
+The Temporal Cluster can run in the background while applications are built.
 Workflow Execution details can be viewed in the Temporal Web UI via your browser: [localhost:8088](http://localhost:8088/).
 
 The preceding steps start the Temporal Server using a default configuration.
 
 To try other configurations (different dependencies and databases), or to try a custom Docker image follow the [temporalio/docker-compose README](https://github.com/temporalio/docker-compose/blob/main/README.md).
 
-<RelatedReadList
-readlist={[
-["How to deploy the Temporal Server to Kubernetes for testing and development", "/docs/content/how-to-deploy-temporal-to-kubernetes-for-testing-and-development", "operation guide"],
-]}
-/>
+- [How to deploy the Temporal Server to Kubernetes for testing and development](/docs/cluster/how-to-deploy-temporal-to-kubernetes-for-testing-and-development)
