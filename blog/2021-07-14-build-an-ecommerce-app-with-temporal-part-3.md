@@ -201,7 +201,7 @@ func (s *UnitTestSuite) Test_AddToCart() {
 		s.NoError(err)
 		err = res.Get(&cart)
 		s.NoError(err)
-		
+
     s.Equal(1, len(cart.Items))
     s.Equal(1, cart.Items[0].Quantity)
 	}, time.Millisecond*2)
@@ -321,7 +321,7 @@ func (s *UnitTestSuite) Test_Checkout() {
 What about testing the abandoned cart email?
 Normally, testing the abandoned cart email is tricky because it involves waiting for 10 minutes.
 The key insight is that Temporal's test environment advances time internally, and time in the test environment is **not** [wall-clock time](https://en.wikipedia.org/wiki/Elapsed_real_time).
-For example, Temporal Workflows time out after [10 years by default](/docs/concepts/workflows/#execution-timeout), so the previous examples would run for over a decade if the test environment used wall-clock time!
+For example, Temporal Workflows time out after [10 years by default](/docs/concepts/what-is-a-workflow-execution-timeout), so the previous examples would run for over a decade if the test environment used wall-clock time!
 
 The `RegisterDelayedCallback()` function ties into the test environment's internal notion of time.
 Calling `RegisterDelayedCallback(fn, time.Minute*5)` does **not** tell the test environment to wait for 5 minutes of wall-clock time.

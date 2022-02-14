@@ -9,24 +9,24 @@ The term Visibility, within the Temporal Platform, refers to the subsystems and 
 
 ## Standard Visibility
 
-import WhatIsStandardVisibility from "../content/what-is-standard-visibility.md"
+import WhatIsStandardVisibility from "../concepts/what-is-standard-visibility.md"
 
 <WhatIsStandardVisibility/>
 
 ## Advanced Visibility
 
-import WhatIsAdvancedVisibility from "../content/what-is-advanced-visibility.md"
+import WhatIsAdvancedVisibility from "../concepts/what-is-advanced-visibility.md"
 
 <WhatIsAdvancedVisibility/>
 
 ## List Filters
 
-import WhatIsAListFilter from "../content/what-is-a-list-filter.md"
+import WhatIsAListFilter from "../concepts/what-is-a-list-filter.md"
 
 <WhatIsAListFilter/>
 
 ## Search Attributes
 
-import WhatIsASearchAttribute from "../content/what-is-a-search-attribute.md"
+import WhatIsASearchAttribute from "../concepts/what-is-a-search-attribute.md"
 
 <WhatIsASearchAttribute/>

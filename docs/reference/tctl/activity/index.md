@@ -7,7 +7,7 @@ tags:
   - tctl
 ---
 
-The `tctl activity` commands enable [Activity Execution](/docs/content/what-is-an-activity-execution) operations.
+The `tctl activity` commands enable [Activity Execution](/docs/concepts/what-is-an-activity-execution) operations.
 
 - [`tctl activity complete`](/docs/reference/tctl/activity/complete)
 - [`tctl activity fail`](/docs/reference/tctl/activity/fail)

@@ -8,7 +8,7 @@ tags:
   - tctl
 ---
 
-The `tctl workflow signal` command [Signals](/docs/content/what-is-a-signal) a [Workflow Execution](/docs/content/what-is-a-workflow-execution).
+The `tctl workflow signal` command [Signals](/docs/concepts/what-is-a-signal) a [Workflow Execution](/docs/concepts/what-is-a-workflow-execution).
 
 `tctl workflow signal [<modifiers>]`
 
@@ -16,7 +16,7 @@ The following modifiers control the behavior of the command.
 
 ### `--workflow_id`
 
-How to specify a [Workflow Id](/docs/content/what-is-a-workflow-id).
+How to specify a [Workflow Id](/docs/concepts/what-is-a-workflow-id).
 
 Aliases: `--wid`, `-w`
 
@@ -28,7 +28,7 @@ tctl workflow signal --workflow_id <id>
 
 ### `--run_id`
 
-How to specify a [Run Id](/docs/content/what-is-a-run-id).
+How to specify a [Run Id](/docs/concepts/what-is-a-run-id).
 
 Aliases: `--rid`, `-r`
 
@@ -40,7 +40,7 @@ tctl workflow signal --run_id <id>
 
 ### `--name`
 
-How to specify the name of a [Signal](/docs/content/what-is-a-signal).
+How to specify the name of a [Signal](/docs/concepts/what-is-a-signal).
 
 Alias: `-n`
 
@@ -52,7 +52,7 @@ tctl workflow signal --name <name>
 
 ### `--input`
 
-How to pass input for the [Signal](/docs/content/what-is-a-signal).
+How to pass input for the [Signal](/docs/concepts/what-is-a-signal).
 Input must be in JSON format.
 
 Alias: `-i`
@@ -65,7 +65,7 @@ tctl workflow signal --input <json>
 
 ### `--input_file`
 
-How to pass input for the [Signal](/docs/content/what-is-a-signal) from a JSON file.
+How to pass input for the [Signal](/docs/concepts/what-is-a-signal) from a JSON file.
 
 Alias: `--if`
 

@@ -12,7 +12,7 @@ If you have made a tutorial or explanation of Temporal, please [submit them here
 
 ## How Temporal works
 
-_Don't forget our own [Temporal Cluster docs](/docs/content/what-is-a-temporal-cluster)!_
+_Don't forget our own [Temporal Cluster docs](/docs/concepts/what-is-a-temporal-cluster)!_
 
 - ⭐ [Designing a Workflow Engine from First Principles](https://docs.temporal.io/blog/workflow-engine-principles/) by Maxim Fateev (23 min talk given at Systems @ Scale 2021)
 - Fault Tolerant, Distributed Microservices Orchestration with Temporal ([slides](https://temporal-intro-and-demo.netlify.app/)) by Maxim Fateev and Tihomir Surdilovic (TDC Conf 2021)

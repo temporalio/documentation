@@ -10,7 +10,7 @@ tags:
 ---
 
 <!-- prettier-ignore -->
-import * as WhatIsAdvancedVisibility from './what-is-advanced-visibility.md'
+import * as WhatIsAdvancedVisibility from '../concepts/what-is-advanced-visibility.md'
 
 To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` section of your `development.yaml` configuration file and run the index schema setup commands.
 

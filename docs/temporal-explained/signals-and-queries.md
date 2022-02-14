@@ -11,12 +11,12 @@ Signals and Queries are frequently used together.
 
 ## Signals
 
-import WhatIsASignal from '../content/what-is-a-signal.md'
+import WhatIsASignal from '../concepts/what-is-a-signal.md'
 
 <WhatIsASignal/>
 
 ## Queries
 
-import WhatIsAQuery from '../content/what-is-a-query.md'
+import WhatIsAQuery from '../concepts/what-is-a-query.md'
 
 <WhatIsAQuery/>

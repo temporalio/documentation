@@ -8,7 +8,7 @@ tags:
   - tctl
 ---
 
-The `tctl workflow describe` command shows information about a [Workflow Execution](/docs/content/what-is-a-workflow-execution).
+The `tctl workflow describe` command shows information about a [Workflow Execution](/docs/concepts/what-is-a-workflow-execution).
 
 See also [`tctl workflow describeid`](./describeid.md).
 
@@ -18,7 +18,7 @@ The following modifiers control the behavior of the command.
 
 ### `--workflow_id`
 
-How to specify a [Workflow Id](/docs/content/what-is-a-workflow-id).
+How to specify a [Workflow Id](/docs/concepts/what-is-a-workflow-id).
 
 Aliases: `--wid`, `-w`
 
@@ -30,7 +30,7 @@ tctl workflow describe --workflow_id <id>
 
 ### `--run_id`
 
-How to specify a [Run Id](/docs/content/what-is-a-run-id).
+How to specify a [Run Id](/docs/concepts/what-is-a-run-id).
 
 Aliases: `--rid`, `-r`
 

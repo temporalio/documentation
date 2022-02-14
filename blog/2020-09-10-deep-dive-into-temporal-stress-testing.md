@@ -126,7 +126,7 @@ While the "rabbit" scenario was focused on generating a large burst of load on t
 
 ## Terminology
 
-[**Signals**](https://docs.temporal.io/docs/content/what-is-a-signal): A Workflow signal provides a mechanism for an external process to send arbitrary data to a Workflow. For example, if a customer submits a purchase order on your website, your backend architecture can construct a "purchase order event" and send it to the Workflow instance associated with that customer. Workflow logic can block on the receipt of a signal (or for a specific amount of time to elapse).
+[**Signals**](https://docs.temporal.io/docs/concepts/what-is-a-signal): A Workflow signal provides a mechanism for an external process to send arbitrary data to a Workflow. For example, if a customer submits a purchase order on your website, your backend architecture can construct a "purchase order event" and send it to the Workflow instance associated with that customer. Workflow logic can block on the receipt of a signal (or for a specific amount of time to elapse).
 
 [**Signal with start**](https://docs.temporal.io/docs/go/how-to-send-a-signal-to-a-workflow-execution-in-go/#signal-with-start) **-** A client can send a signal so that it routes it to a specified Workflow ID, or if no running Workflow exists with that ID, then creates a new Workflow Instance with that ID.
 

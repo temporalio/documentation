@@ -9,9 +9,6 @@ This is the entry point of the Temporal Application.
 When a new Background Check is started, this is the function that executes.
 
 <!--SNIPSTART background-checks-main-workflow-definition-->
-
-[Take me to the code](https://github.com/temporalio/background-checks/blob/main/workflows/background_check.go)
-
 <!--SNIPEND-->
 
 The sequence that the code defines can be represented in the following diagram:

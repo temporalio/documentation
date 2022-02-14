@@ -10,7 +10,7 @@ tags:
 ---
 
 <!-- prettier-ignore -->
-import * as WhatIsASearchAttribute from './what-is-a-search-attribute.md'
+import * as WhatIsASearchAttribute from '../concepts/what-is-a-search-attribute.md'
 
 Use the following command to view the <preview page={WhatIsASearchAttribute}>Search Attributes</preview> currently indexed by the Cluster:
 

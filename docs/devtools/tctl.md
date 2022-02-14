@@ -167,7 +167,7 @@ You can also set this inside your Workflow code with `WorkflowOptions.WorkflowId
 
 Memos are immutable key/value pairs that can be attached to a workflow run when starting the workflow.
 These are visible when listing workflows.
-More information on memos can be found [here](/docs/content/what-is-a-memo).
+More information on memos can be found [here](/docs/concepts/what-is-a-memo).
 
 ```bash
 tctl workflow start \
@@ -401,7 +401,7 @@ import HowToViewSearchAttributesOfAClusterUsingTCTL from '../content/how-to-view
 
 ### Add custom Search Attributes to a Cluster
 
-import HowToAddACustomSearchAttributeToAClusterUsingTCTL from '../content/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl.md'
+import HowToAddACustomSearchAttributeToAClusterUsingTCTL from '../tctl/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl.md'
 
 <HowToAddACustomSearchAttributeToAClusterUsingTCTL/>
 

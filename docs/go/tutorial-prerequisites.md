@@ -1,7 +1,7 @@
 ---
 id: tutorial-prerequisites
 title: Go SDK tutorial prerequisites
-sidebar_label: Tutorial prerequisites
+sidebar_label: Go prerequisites
 ---
 
 To follow the Go SDK tutorials we recommend that you have the following environments set up.

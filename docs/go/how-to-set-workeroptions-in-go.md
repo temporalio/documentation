@@ -80,7 +80,7 @@ w := worker.New(c, "your_task_queue_name", workerOptions)
 
 ### `MaxConcurrentLocalActivityExecutionSize`
 
-Set the maximum concurrent [Local Activity Executions](/docs/content/what-is-a-local-activity) for the Worker.
+Set the maximum concurrent [Local Activity Executions](/docs/concepts/what-is-a-local-activity) for the Worker.
 
 - Type: `int`
 - Default: `1000`

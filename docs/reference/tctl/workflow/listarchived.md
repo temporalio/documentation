@@ -8,7 +8,7 @@ tags:
   - tctl
 ---
 
-The `tctl workflow listarchived` command lists archived [Workflow Executions](/docs/content/what-is-a-workflow-execution).
+The `tctl workflow listarchived` command lists archived [Workflow Executions](/docs/concepts/what-is-a-workflow-execution).
 
 By default, this command lists a maximum of 100 Workflow Executions.
 
@@ -59,7 +59,7 @@ tctl workflow listarchived --print_memo
 
 ### `--print_search_attr`
 
-How to print the [Search Attributes](/docs/content/what-is-a-search-attribute).
+How to print the [Search Attributes](/docs/concepts/what-is-a-search-attribute).
 
 Alias: `--psa`
 
@@ -95,9 +95,9 @@ tctl workflow listarchived --print_json
 
 ### `--query`
 
-How to specify an SQL-like query of [Search Attributes](/docs/content/what-is-a-search-attribute).
+How to specify an SQL-like query of [Search Attributes](/docs/concepts/what-is-a-search-attribute).
 
-Consult the documentation of the visibility archiver that is used by your [Namespace](/docs/content/what-is-a-namespace) for detailed instructions.
+Consult the documentation of the visibility archiver that is used by your [Namespace](/docs/concepts/what-is-a-namespace) for detailed instructions.
 
 Alias: `-q`
 
@@ -109,7 +109,7 @@ tctl workflow listarchived --query <value>
 
 ### `--pagesize`
 
-How to specify the maximum number of [Workflow Executions](/docs/content/what-is-a-workflow-execution) to list on a page.
+How to specify the maximum number of [Workflow Executions](/docs/concepts/what-is-a-workflow-execution) to list on a page.
 (By default, the `tctl workflow listarchived` command lists 100 Workflow Executions per page.)
 
 Alias: `--ps`

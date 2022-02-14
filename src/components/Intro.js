@@ -38,7 +38,7 @@ function SDKs() {
         <li className="">
           <Link
             className="flex items-center space-x-3 hover:underline"
-            to={useBaseUrl("/docs/go/run-your-first-app-tutorial")}
+            to={useBaseUrl("/docs/go/getting-started")}
           >
             <img
               className="h-8 w-8 transition hover:scale-110"
@@ -51,7 +51,7 @@ function SDKs() {
         <li className="">
           <Link
             className="flex items-center space-x-3 hover:underline"
-            to={useBaseUrl("/docs/java/run-your-first-app-tutorial")}
+            to={useBaseUrl("/docs/java/introduction")}
           >
             <img
               className="h-8 w-8 transition hover:scale-110"
@@ -131,7 +131,7 @@ function Server() {
         </li>
         <li className="list-disc">
           <Link
-            to={useBaseUrl("/docs/content/what-is-a-temporal-cluster")}
+            to={useBaseUrl("/docs/concepts/what-is-a-temporal-cluster")}
             className="hover:underline"
           >
             <p className="font-semibold">Cluster Architecture</p>

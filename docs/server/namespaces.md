@@ -6,7 +6,7 @@ sidebar_label: Namespaces
 
 ## What is a Namespace?
 
-import Content from '../content/what-is-a-namespace.md'
+import Content from '../concepts/what-is-a-namespace.md'
 
 <Content />
 

@@ -9,7 +9,7 @@ tags:
 ---
 
 <!-- prettier-ignore -->
-import * as WhatIsAWorkflowDefinition from '../content/what-is-a-workflow-definition.md'
+import * as WhatIsAWorkflowDefinition from '../concepts/what-is-a-workflow-definition.md'
 
 In the Temporal Go SDK programming model, a <preview page={WhatIsAWorkflowDefinition}>Workflow Definition</preview> is an exportable function.
 
