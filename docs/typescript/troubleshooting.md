@@ -95,7 +95,7 @@ If Webpack fails to create the bundle, the SDK will throw an error and emit webp
 
 If you do not see Webpack output in your terminal make sure that you have not disabled SDK logging (see reference to `Core.install()` in the link above).
 
-**A common mistake for newcomers to the TypeScript SDK is to try and use Node.js built-ins and modules in their Workflow code.**
+**A common mistake for newcomers to the TypeScript SDK is trying to use Node.js built-ins and modules in their Workflow code.** Usually, the best thing to do is move that code to an Activity.
 
 Some common examples that will **not** work in the Workflow isolate:
 
@@ -273,6 +273,13 @@ Error: 4 DEADLINE_EXCEEDED: context deadline exceeded
 }
 ```
 
-This happens for a number of reasons: Network hiccups, timeouts that are too short, server overloaded.
+Several conditions can cause this error, including network hiccups, timeouts that are too short, and an overloaded server.
+Querying a Workflow Execution whose query handler causes an error can result in the query call timing out.
 
-This is not your fault and likely indicative of an SDK bug. Please try to produce a minimal repro and we'll be glad to help.
+Some troubleshooting actions you can take:
+
+- Verify the connection from your Worker to the Temporal Server is working and doesn't have unusually high latency
+- If you are running Temporal Server yourself, check your [server metrics](/docs/server/production-deployment/#scaling-and-metrics) to ensure it's not overloaded
+- If what's timing out is a query, check the logs of your Workers to see if they are having issues handling the query
+
+If none of the preceding actions help you discover why timeouts are occurring, please try to produce a minimal repro and we'll be glad to help.

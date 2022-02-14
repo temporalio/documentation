@@ -30,7 +30,7 @@ html[data-theme="dark"] {
   --ifm-navbar-link-hover-color: var(--ifm-color-primary-lighter);
   --ifm-toc-link-color: var(--ifm-color-primary-lighter);
   --ifm-blockquote-color: #eeeeee;
-  --ifm-code-background: var(--ifm-color-primary-dark);
+  /* --ifm-code-background: var(--ifm-color-primary-dark); */
   --ifm-color: #ffffff;
   --ifm-background-color: #141414;
   --ifm-footer-background-color: #000;
@@ -44,7 +44,7 @@ html[data-theme="dark"] {
 html[data-theme="light"] {
   --ifm-blockquote-color: #000000;
   --ifm-color-emphasis-300: #505050;
-  --ifm-code-background: var(--ifm-color-primary-lightest);
+  /* --ifm-code-background: var(--ifm-color-primary-lightest); */
   --ifm-color-input-background: #ffffff;
   --ifm-color: #141414;
   --ifm-background-color: rgb(249, 250, 251);
@@ -77,10 +77,6 @@ html[data-theme="light"] {
   font-weight: 300;
   font-style: normal;
   font-display: swap;
-}
-
-li {
-  list-style: none; /* taken care of using Tailwind typography */
 }
 
 .docs-page {
@@ -121,7 +117,7 @@ div[class^="sidebar_"]
 }
 
 div[class^="sidebar_"] .button {
-  @apply border-0 mb-2 w-full mx-auto;
+  @apply mx-auto mb-2 w-full border-0;
 }
 div[class^="sidebar_"] .button svg {
   @apply mx-auto;
@@ -132,10 +128,10 @@ div[class^="sidebar_"] .button svg {
 }
 
 .table-of-contents__link {
-  @apply text-[color:var(--ifm-color)] text-sm;
+  @apply text-sm text-[color:var(--ifm-color)];
 }
 .table-of-contents__link--active {
-  @apply text-[color:var(--ifm-color-primary)] font-bold;
+  @apply font-bold text-[color:var(--ifm-color-primary)];
 }
 
 .docs-wrapper aside {
@@ -146,7 +142,7 @@ div[class^="sidebar_"] .button svg {
 
 .case-study-header {
   background-color: #000000;
-  @apply rounded-lg w-full;
+  @apply w-full rounded-lg;
 }
 
 .center {
@@ -184,23 +180,23 @@ div[class^="sidebar_"] .button svg {
 */
 
 .blog-tags-post-page {
-  @apply max-w-screen-lg mx-auto px-10 my-16;
+  @apply mx-auto my-16 max-w-screen-lg px-10;
 }
 
 /* Pagination */
 .pagination-nav {
-  @apply flex flex-col md:flex-row space-y-5 md:space-y-0 space-x-0 md:space-x-10 items-start justify-center;
+  @apply flex flex-col items-start justify-center space-y-5 space-x-0 md:flex-row md:space-y-0 md:space-x-10;
 }
 .pagination-nav__item {
-  @apply max-w-md w-full;
+  @apply w-full max-w-md;
 }
 .pagination-nav__link {
-  @apply border-0 shadow-lg rounded-lg p-5 text-lg flex-grow  bg-[color:var(--ifm-card-background-color)] hover:scale-105 transform transition-transform;
+  @apply flex-grow transform rounded-lg border-0 bg-[color:var(--ifm-card-background-color)] p-5  text-lg shadow-lg transition-transform hover:scale-105;
 }
 
 /* Navbar */
 .navbar__inner {
-  @apply max-w-screen-lg px-10  mx-auto shadow-none;
+  @apply mx-auto max-w-screen-lg  px-10 shadow-none;
 }
 
 .navbar__items--right {
@@ -224,7 +220,7 @@ div[class^="sidebar_"] .button svg {
 /* Footer */
 
 .footer .footer__svg {
-  @apply inline m-8 fill-current;
+  @apply m-8 inline fill-current;
 }
 
 .footer .footer__link-item span svg {
@@ -357,19 +353,37 @@ div[class^="sidebar_"] .button svg {
 }
 
 .docs-centered-image-size-100 {
-  width: 100%;
+  max-width: 1024px;
 }
 
 .docs-centered-image-size-75 {
-  width: 75%;
+  max-width: 768px;
 }
 
 .docs-centered-image-size-50 {
-  width: 50%;
+  max-width: 640px;
 }
 
 .docs-centered-image-size-25 {
-  width: 25%;
+  max-width: 400px;
+}
+
+@media screen and (max-width: 1024px) {
+  .docs-centered-image-size-100 {
+    max-width: 100%;
+  }
+
+  .docs-centered-image-size-75 {
+    max-width: 75%;
+  }
+
+  .docs-centered-image-size-50 {
+    max-width: 50%;
+  }
+
+  .docs-centered-image-size-25 {
+    max-width: 25%;
+  }
 }
 
 .docs-image-legend-wrapper {
@@ -394,7 +408,7 @@ div[class^="sidebar_"] .button svg {
 }
 
 .scale {
-  @apply transition hover:scale-105 motion-reduce:transition-none motion-reduce:transform-none;
+  @apply transition hover:scale-105 motion-reduce:transform-none motion-reduce:transition-none;
 }
 
 /* .tableOfContents {
@@ -410,9 +424,21 @@ div[class^="sidebar_"] .button svg {
 }
 .prose .tabs-container > .tabs > .tabs__item {
   padding-left: 1em;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  margin-bottom: 0em;
+  opacity: 0.5;
+}
+.prose .tabs-container > .tabs > .tabs__item.tabs__item--active {
+  opacity: 1;
+}
+
+.prose .tabs {
+  padding: 0 !important;
 }
 .prose .tabs-container ul {
   margin: 0;
+  margin-bottom: -1.25rem;
 }
 .prose .tabs-container > .margin-vert--md pre {
   margin: 0;
@@ -430,6 +456,10 @@ div[class^="sidebar_"] .button svg {
 }
 .prose li > ul {
   margin-top: 1rem !important; /* sorry cant figure out how else to do this, prose @media overriding - swyx */
+}
+
+.prose :where(a code) {
+  color: unset;
 }
 
 .prose pre.prism-code {

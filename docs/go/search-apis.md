@@ -9,7 +9,7 @@ sidebar_label: Search Attributes
 Search attributes enable complex and business-logic-focused search queries for Workflow Executions.
 These are often queried via the Web UI, but you can also query from within your workflow code (as we show below).
 
-Many [Search Attributes](/docs/content/what-is-a-search-attribute) are added to Workflow Executions by default.
+Many [Search Attributes](/docs/concepts/what-is-a-search-attribute) are added to Workflow Executions by default.
 But these are necessarily focused on Temporal internal state tracking.
 
 For more debugging and monitoring, you might want to add your own domain-specific Search Attributes (such as `customerId` or `numItems`) that can serve as useful search filters.

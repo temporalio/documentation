@@ -11,8 +11,8 @@ tags:
 import RelatedReadList from '../components/RelatedReadList.js'
 
 <!-- prettier-ignore -->
-import * as EventHistory from "../content/what-is-an-event-history.md"
-import * as WhatIsAWorkflowTask from "../content/what-is-a-workflow-task.md"
+import * as EventHistory from "../concepts/what-is-an-event-history.md"
+import * as WhatIsAWorkflowTask from "../concepts/what-is-a-workflow-task.md"
 
 In the Temporal Go SDK programming model, an Activity Definition is an exportable function or `struct` method.
 
@@ -20,7 +20,7 @@ In the Temporal Go SDK programming model, an Activity Definition is an exportabl
 
 ```go
 // basic function signature
-func YourActivityDefinition(ctx workflow.Context) error {
+func YourActivityDefinition(ctx context.Context) error {
   // ...
   return nil
 }
@@ -37,11 +37,11 @@ type YourActivityStruct struct {
   ActivityFieldTwo int
 }
 
-func(a *YourActivityStruct) YourActivityDefinition(ctx workflow.Context) error {
+func(a *YourActivityStruct) YourActivityDefinition(ctx context.Context) error {
   // ...
 }
 
-func(a *YourActivityStruct) YourActivityDefinitionTwo(ctx workflow.Context) error {
+func(a *YourActivityStruct) YourActivityDefinitionTwo(ctx context.Context) error {
   // ...
 }
 ```

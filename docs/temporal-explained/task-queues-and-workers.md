@@ -9,48 +9,48 @@ Task Queues and Workers are tightly coupled components.
 
 ## Tasks
 
-import WhatIsATask from '../content/what-is-a-task.md'
+import WhatIsATask from '../concepts/what-is-a-task.md'
 
 <WhatIsATask/>
 
 ## Task Queues
 
-import WhatIsATaskQueue from '../content/what-is-a-task-queue.md'
+import WhatIsATaskQueue from '../concepts/what-is-a-task-queue.md'
 
 <WhatIsATaskQueue/>
 
 ## Sticky Execution
 
-import WhatIsAStickyExecution from '../content/what-is-a-sticky-execution.md'
+import WhatIsAStickyExecution from '../concepts/what-is-a-sticky-execution.md'
 
 <WhatIsAStickyExecution/>
 
 ## Task Routing
 
-import WhatIsTaskRouting from '../content/what-is-task-routing.md'
+import WhatIsTaskRouting from '../concepts/what-is-task-routing.md'
 
 <WhatIsTaskRouting/>
 
 ## Workers
 
-import WhatIsAWorker from '../content/what-is-a-worker.md'
+import WhatIsAWorker from '../concepts/what-is-a-worker.md'
 
 <WhatIsAWorker/>
 
 ## Worker Program
 
-import WhatIsAWorkerProgram from '../content/what-is-a-worker-program.md'
+import WhatIsAWorkerProgram from '../concepts/what-is-a-worker-program.md'
 
 <WhatIsAWorkerProgram/>
 
 ## Worker Process
 
-import WhatIsAWorkerProcess from '../content/what-is-a-worker-process.md'
+import WhatIsAWorkerProcess from '../concepts/what-is-a-worker-process.md'
 
 <WhatIsAWorkerProcess/>
 
 ## Worker Entity
 
-import WhatIsAWorkerEntity from '../content/what-is-a-worker-entity.md'
+import WhatIsAWorkerEntity from '../concepts/what-is-a-worker-entity.md'
 
 <WhatIsAWorkerEntity/>

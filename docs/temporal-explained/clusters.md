@@ -5,12 +5,12 @@ description: TODO
 sidebar_label: Clusters
 ---
 
-import WhatIsATemporalCluster from '../content/what-is-a-temporal-cluster.md'
+import WhatIsATemporalCluster from '../concepts/what-is-a-temporal-cluster.md'
 
 <WhatIsATemporalCluster/>
 
 ## Namespaces
 
-import WhatIsANamespace from '../content/what-is-a-namespace.md'
+import WhatIsANamespace from '../concepts/what-is-a-namespace.md'
 
 <WhatIsANamespace/>

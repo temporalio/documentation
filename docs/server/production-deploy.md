@@ -7,7 +7,7 @@ sidebar_label: Production deployment
 ## Overview
 
 While a lot of effort has been made to easily run and test the Temporal Server in a development environment (see the [Quick install guide](/docs/server/quick-install)), there is far less of an established framework for deploying Temporal to a live (production) environment.
-That is because the set up of the Server depends very much on the intended use-case and the hosting infrastructure.
+That is because the set up of the Server depends very much on your intended use-case and the hosting infrastructure.
 
 This page is dedicated to providing a "first principles" approach to self-hosting the Temporal Server.
 As a reminder, experts are accessible via the [Community forum](https://community.temporal.io/) and [Slack](https://temporal.io/slack) should you have any questions.
@@ -21,23 +21,42 @@ If you are interested in a fully managed service hosting Temporal Server, please
 ## Temporal Server
 
 Temporal Server is a Go application which you can [import](/docs/server/options) or run as a binary (we offer [builds with every release](https://github.com/temporalio/temporal/releases)).
-Production deployments of Temporal Server should deploy each the 4 internal services separately (if you are using Kubernetes, one service per pod).
+While Temporal can be run as a single Go binary, we recommend that production deployments of Temporal Server should deploy each of the 4 internal services separately (if you are using Kubernetes, one service per pod) so they can be scaled independently in future.
+
+See below for a refresher on the 4 internal services:
 
 <details>
 <summary>
 Temporal Cluster Architecture
 </summary>
 
-import WhatIsCluster from "../content/what-is-a-temporal-cluster.md"
+import WhatIsCluster from "../concepts/what-is-a-temporal-cluster.md"
 
 <WhatIsCluster />
 
 </details>
 
+In practice, this means you will run each container with a flag specifying each service, e.g.
+
+```bash
+docker run
+    # persistence/schema setup flags omitted
+    -e SERVICES=history \                      -- Spinup one or more of: history, matching, worker, frontend
+    -e LOG_LEVEL=debug,info \                           -- Logging level
+    -e DYNAMIC_CONFIG_FILE_PATH=config/foo.yaml         -- Dynamic config file to be watched
+    temporalio/server:<tag>
+```
+
+[See the Docker source file](https://github.com/temporalio/temporal/tree/master/docker) for more details.
+
+Each release also ships a `Server with Auto Setup` Docker image that includes [an `auto-setup.sh` script](https://github.com/temporalio/temporal/blob/master/docker/auto-setup.sh) we recommend using for initial schema setup of each supported database. You should familiarize yourself with [what auto-setup does](/blog/auto-setup), as you will likely be replacing every part of the script to customize for your own infrastructure and tooling choices.
+
+Though **neither are blessed for production use**, you can consult our [Docker-Compose repo](https://github.com/temporalio/docker-compose) or [Helm Charts](https://github.com/temporalio/helm-charts) for more hints on configuration options.
+
 ## Minimum Requirements
 
 - The minimum Temporal Server dependency is a database. We support [Cassandra](https://cassandra.apache.org/), [MySQL](https://www.mysql.com/), or [PostgreSQL](https://www.postgresql.org/), with [SQLite on the way](https://github.com/temporalio/temporal/pulls?q=is%3Apr+sort%3Aupdated-desc+sqlite+).
-- Further dependencies are only needed to support optional features. For example, enhanced Workflow search can be achieved using [Elasticsearch](/docs/content/how-to-integrate-elasticsearch-into-a-temporal-cluster).
+- Further dependencies are only needed to support optional features. For example, enhanced Workflow search can be achieved using [Elasticsearch](/docs/Human-Driven Long-Running Workflow/how-to-integrate-elasticsearch-into-a-temporal-cluster).
 - Monitoring and observability are available with [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/).
 - Each language SDK also has minimum version requirements. See the [versions & dependencies page](/docs/server/versions-and-dependencies/) for precise versions we support together with these features.
 
@@ -100,7 +119,7 @@ Every shard is low contention by design and it is very difficult to oversubscrib
 With that said, here are some guidelines to some common bottlenecks:
 
 - **Database**. The vast majority of the time the database will be the bottleneck. **We highly recommend setting alerts on `schedule_to_start_latency`** to look out for this. Also check if your database connection is getting saturated.
-- **Internal services**. The next layer will be scaling the 4 internal services of Temporal ([Frontend, Matching, History, and Worker](/docs/content/what-is-a-temporal-cluster)).
+- **Internal services**. The next layer will be scaling the 4 internal services of Temporal ([Frontend, Matching, History, and Worker](/docs/concepts/what-is-a-temporal-cluster)).
   Monitor each accordingly. The Frontend service is more CPU bound, whereas the History and Matching services require more memory.
   If you need more instances of each service, spin them up separately with different command line arguments. You can learn more cross referencing [our Helm chart](https://github.com/temporalio/helm-charts) with our [Server Configuration reference](https://docs.temporal.io/docs/server/configuration/).
 - See the **Server Limits** section below for other limits you will want to keep in mind when doing system design, including event history length.

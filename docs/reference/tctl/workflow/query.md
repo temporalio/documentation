@@ -1,26 +1,22 @@
 ---
 id: query
 title: tctl workflow query
+sidebar_label: query
 description: How to query Workflow Executions using tctl.
 tags:
   - reference
   - tctl
 ---
 
-<!-- prettier-ignore -->
-import * as WhatIsAWorkflowExecution from '../../../content/what-is-a-workflow-execution.md'
-import * as WhatIsAWorkflowId from '../../../content/what-is-a-workflow-id.md'
-import * as WhatIsARunId from '../../../content/what-is-a-run-id.md'
+The `tctl workflow query` command queries [Workflow Executions](/docs/concepts/what-is-a-workflow-execution).
 
-The `tctl workflow query` command queries <preview page={WhatIsAWorkflowExecution}>Workflow Executions</preview>.
+`tctl workflow query [<modifiers>]`
 
-`tctl workflow query <option> <arguments...>`
-
-The following options modify the behavior of the command.
+The following modifiers control the behavior of the command.
 
 ### `--workflow_id`
 
-How to specify a <preview page={WhatIsAWorkflowId}>Workflow Id</preview>.
+How to specify a [Workflow Id](/docs/concepts/what-is-a-workflow-id).
 
 Aliases: `--wid`, `-w`
 
@@ -32,7 +28,7 @@ tctl workflow query --workflow_id <id>
 
 ### `--run_id`
 
-How to specify a <preview page={WhatIsARunId}>Run Id</preview>.
+How to specify a [Run Id](/docs/concepts/what-is-a-run-id).
 
 Aliases: `--rid`, `-r`
 
@@ -42,7 +38,7 @@ Aliases: `--rid`, `-r`
 tctl workflow query --run_id <id>
 ```
 
-### `query_type`
+### `--query_type`
 
 How to specify the type of query to run.
 

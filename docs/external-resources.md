@@ -12,16 +12,17 @@ If you have made a tutorial or explanation of Temporal, please [submit them here
 
 ## How Temporal works
 
-_Don't forget our own [Temporal Cluster docs](/docs/content/what-is-a-temporal-cluster)!_
+_Don't forget our own [Temporal Cluster docs](/docs/concepts/what-is-a-temporal-cluster)!_
 
 - ⭐ [Designing a Workflow Engine from First Principles](https://docs.temporal.io/blog/workflow-engine-principles/) by Maxim Fateev (23 min talk given at Systems @ Scale 2021)
-- 🆕 Fault Tolerant, Distributed Microservices Orchestration with Temporal ([slides](https://temporal-intro-and-demo.netlify.app/)) by Maxim Fateev and Tihomir Surdilovic (TDC Conf 2021)
+- Fault Tolerant, Distributed Microservices Orchestration with Temporal ([slides](https://temporal-intro-and-demo.netlify.app/)) by Maxim Fateev and Tihomir Surdilovic (TDC Conf 2021)
 - [Maxim and Samar on Gremlin's podcast](https://docs.temporal.io/blog/gremlin-podcast) - Origin story, Choreography vs Orchestration, and Tips (21 min listen/read)
 - [Workflow Engine with Maxim Fateev](https://www.listennotes.com/podcasts/software/cadence-ubers-workflow-nNoaPiSfk7v/) on Software Engineering Daily (56 min listen)
 - [Maxim Fateev on Temporal Origin Story](/blog/oss-startups-podcast) on the OSS Startups Podcast (41 min listen)
 - [Temporal Product with Ryland Goldstein](https://softwareengineeringdaily.com/2021/05/08/temporal-product-managing-state-with-ryland-goldstein/) on Software Engineering Daily (53 min listen)
 - [Temporal Developer Experience with swyx](https://devtools.fm/episode/13) on Devtools.fm (56 min listen)
-- 🆕 [Temporal Overview with swyx](https://mongodb.libsyn.com/ep-93-swyx-learn-in-public-and-temporal) on the MongoDB Podcast (33min listen, starts at 15min mark)
+- [Temporal Overview](https://mongodb.libsyn.com/ep-93-swyx-learn-in-public-and-temporal) on the MongoDB Podcast (33min listen, starts at 15min mark)
+- 🆕 [Temporal vs the Serverless Ecosystem](https://www.serverlesschats.com/124/) on the Serverless Chats Podcast (65min listen)
 - Temporal's previous iteration was Cadence, which shares a lot of the same design principles:
   - [Cadence Architecture Talk](https://www.youtube.com/watch?v=5M5eiNBUf4Q) (24 min) by Samar Abbas at Uber Cadence meetup
   - [Cadence: Micro service Architecture Beyond Request/Response](https://www.youtube.com/watch?v=BJwFxqdSx4Y) (34 min) by Maxim Fateev at Data@Scale 2017
@@ -65,14 +66,20 @@ _Don't forget our own [Temporal Cluster docs](/docs/content/what-is-a-temporal-c
 
 _Note: Each of [our SDK docs](/application-development) have a Hello World and Run Your First App tutorial!_
 
+- [Why Temporal - the iPhone of System Design](https://www.swyx.io/why-temporal/) by swyx (19 min read)
+- [Temporal - fault tolerant orchestration platform](https://www.youtube.com/watch?v=7dnutdT24MM&list=PLU1vS0speL2ZbTPg-aU2Rw2s6IPsTVoCF&index=49) at DevConf US by Tihomir Surdilovic (36 min talk + Q&A)
 - [A Practical Approach to Temporal Architecture](https://mikhail.io/2020/10/practical-approach-to-temporal-architecture/) by Mikhail Shilkov (4 min read)
-- (Go) [Writing your first Workflow](https://www.youtube.com/watch?v=taKrIWt6KMY&feature=youtu.be) by Ryland Goldstein (20 min watch)
+- [Getting Started with YugabyteDB, Temporal, and the Temporal-Maru Benchmarking Tool](https://blog.yugabyte.com/getting-started-yugabytedb-temporal) by Eric Pratt (7 min read)
+- (Go) [Intro to Temporal](https://zerokspot.com/weblog/2021/12/18/intro-to-temporalio/) by Horst Gutmann (6 min read)
 - (Go) [Writing a Workflow, Simulating Failures, Comparing Retries with Apache Airflow, and Testing](https://www.jcheng.org/post/workflow-orchestration-1.2/) by Jon Cheng (8 min read)
 - (Go) [Intro to Temporal Workshop](https://www.youtube.com/watch?v=UwdGmdTO3Ts) by Márk Sági-Kazár (3 hour full workshop)
-- (Español) [Construye aplicaciones invencibles con Temporal](https://sistecma.github.io/2021/02/04/aplicaciones-invencibles-con-temporal.html) y [Aplicando el patrón SAGA en tus microservicios construidos](https://sistecma.github.io/2021/03/04/aplicando-saga-en-microservicios-con-temporal.html) by Hernán Moreno
-- [Temporal - fault tolerant orchestration platform](https://www.youtube.com/watch?v=7dnutdT24MM&list=PLU1vS0speL2ZbTPg-aU2Rw2s6IPsTVoCF&index=49) at DevConf US by Tihomir Surdilovic (36 min talk + Q&A)
-- [Why Temporal - the iPhone of System Design](https://www.swyx.io/why-temporal/) by swyx (19 min read)
+- (Go) [Creating a custom Temporal data convertor for encryption](https://nightfall.ai/creating-a-custom-temporal-data-convertor-for-encryption) by Chris Cowell and Rohan Sathe
+- (TypeScript) [Temporal - React for the Backend](https://changelog.com/jsparty/208) on JSParty (57 min listen)
 - (PHP) [Fault tolerant workflow orchestration on PHP](https://www.youtube.com/watch?v=pdxHkIqX62A) at PHPKonf 2021 by Anton Titov (37 min talk)
+- (Español) [Construye aplicaciones invencibles con Temporal](https://sistecma.github.io/2021/02/04/aplicaciones-invencibles-con-temporal.html) y [Aplicando el patrón SAGA en tus microservicios construidos](https://sistecma.github.io/2021/03/04/aplicando-saga-en-microservicios-con-temporal.html) by Hernán Moreno
+- (Türkçe) [Nedir Bu Temporal.IO?](https://alameddinc.medium.com/nedir-bu-temporal-io-680f3b242136) by Alameddin Çelik
+- (русский) [PHP Russia talks](https://docs.temporal.io/docs/php/introduction/#resources) by Anton Titov
+- (中文) [Temporal 简介](https://www.yuque.com/abser/txixor/oz3yav) by Abser Ari 杨鼎睿
 - _submit yours [here](https://github.com/temporalio/documentation/edit/master/docs/external-resources.md)!_
 
 ## Temporal users
@@ -103,6 +110,10 @@ _Note: Each of [our SDK docs](/application-development) have a Hello World and R
 - [Richard Kettelerij](https://twitter.com/rkettelerij/status/1320477838156435456?s=20), Mindloops
 
   > "Pretty awesome tech. **Allows you to express long running processes in a fault tolerant way** using Java (or Go) without explicit timers, queues, polling, etc. Like in this example: "pause" a method for 30 days, something you wouldn't normally do."
+
+- [Ido Shamun](https://twitter.com/idoshamun/status/1476530942739193860), Daily.dev
+
+  > "A fault-tolerant sleep statement is what caught my attention and convinced me to try @temporalio. This is so fun to use!"
 
 - [Guillermo Rauch](https://twitter.com/rauchg/status/1316808665370820609?s=20), Vercel
 

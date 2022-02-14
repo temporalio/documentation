@@ -4,11 +4,11 @@ import useBaseUrl from "@docusaurus/useBaseUrl";
 
 function SDKs() {
   return (
-    <div className="bg-[color:var(--ifm-card-background-color)] shadow rounded-lg p-5">
-      <div className="flex space-x-4 items-center">
+    <div className="rounded-lg bg-[color:var(--ifm-card-background-color)] p-5 shadow">
+      <div className="flex items-center space-x-4">
         <svg
           width="13"
-          className="w-10 h-10 bg-[color:var(--ifm-color)] text-[color:var(--ifm-background-color)] rounded-lg mb-4 p-2"
+          className="mb-4 h-10 w-10 rounded-lg bg-[color:var(--ifm-color)] p-2 text-[color:var(--ifm-background-color)]"
           height="14"
           viewBox="0 0 13 14"
           fill="none"
@@ -27,9 +27,9 @@ function SDKs() {
             fill="currentColor"
           />
         </svg>
-        <h2 className="text-xl font-semibold mb-4">SDKs</h2>
+        <h2 className="mb-4 text-xl font-semibold">SDKs</h2>
       </div>
-      <p className="flex-grow mb-4">
+      <p className="mb-4 flex-grow">
         Write Workflows and Activities, run Workers and embed Temporal Clients
         in your applications.
       </p>
@@ -37,11 +37,11 @@ function SDKs() {
         {/* <ul className="grid grid-cols-2 gap-6 xl:gap-8"> */}
         <li className="">
           <Link
-            className="flex space-x-3 items-center hover:underline"
-            to={useBaseUrl("/docs/go/run-your-first-app-tutorial")}
+            className="flex items-center space-x-3 hover:underline"
+            to={useBaseUrl("/docs/go/")}
           >
             <img
-              className="w-8 h-8 transition hover:scale-110"
+              className="h-8 w-8 transition hover:scale-110"
               src="/img/golang.svg"
               alt="Go lang logo"
             />
@@ -50,11 +50,11 @@ function SDKs() {
         </li>
         <li className="">
           <Link
-            className="flex space-x-3 items-center hover:underline"
-            to={useBaseUrl("/docs/java/run-your-first-app-tutorial")}
+            className="flex items-center space-x-3 hover:underline"
+            to={useBaseUrl("/docs/java")}
           >
             <img
-              className="w-8 h-8 transition hover:scale-110"
+              className="h-8 w-8 transition hover:scale-110"
               src="/img/java.svg"
               alt="Java logo"
             />
@@ -64,12 +64,12 @@ function SDKs() {
 
         <li className="">
           <Link
-            className="flex space-x-5 items-center"
+            className="flex items-center space-x-5"
             to={useBaseUrl("/docs/php/introduction")}
           >
-            <div className="flex space-x-3 items-center hover:underline">
+            <div className="flex items-center space-x-3 hover:underline">
               <img
-                className="w-8 h-8 transition hover:scale-110"
+                className="h-8 w-8 transition hover:scale-110"
                 src="/img/php.svg"
                 alt="PHP logo"
               />
@@ -79,11 +79,11 @@ function SDKs() {
         </li>
         <li className="">
           <Link to={useBaseUrl("/docs/typescript/introduction")}>
-            <div className="flex space-x-3 items-center hover:underline">
+            <div className="flex items-center space-x-3 hover:underline">
               <img
-                className="pl-1 w-7 h-7 transition hover:scale-110"
+                className="h-7 w-7 pl-1 transition hover:scale-110"
                 src="/img/typescript.svg"
-                alt="Typescript logo"
+                alt="TypeScript logo"
               />
               <p className="font-semibold">TypeScript</p>
             </div>
@@ -96,10 +96,10 @@ function SDKs() {
 
 function Server() {
   return (
-    <div className="bg-[color:var(--ifm-card-background-color)] flex flex-col shadow rounded-lg p-5">
-      <div className="flex space-x-4 items-center">
+    <div className="flex flex-col rounded-lg bg-[color:var(--ifm-card-background-color)] p-5 shadow">
+      <div className="flex items-center space-x-4">
         <svg
-          className="w-10 h-10 bg-[color:var(--ifm-color)] text-[color:var(--ifm-background-color)] rounded-lg mb-4 p-2"
+          className="mb-4 h-10 w-10 rounded-lg bg-[color:var(--ifm-color)] p-2 text-[color:var(--ifm-background-color)]"
           width="16"
           height="13"
           viewBox="0 0 16 13"
@@ -113,14 +113,14 @@ function Server() {
             fill="currentColor"
           />
         </svg>
-        <h2 className="text-xl font-semibold mb-4">Temporal Cluster</h2>
+        <h2 className="mb-4 text-xl font-semibold">Temporal Cluster</h2>
       </div>
-      <p className="flex-grow mb-4">
+      <p className="mb-4 flex-grow">
         Learn Temporal's architecture and how to deploy your own instance of a
         Temporal Cluster
       </p>
 
-      <ul className="flex flex-col space-y-2 list-disc pl-4">
+      <ul className="flex list-disc flex-col space-y-2 pl-4">
         <li className="list-disc">
           <Link
             to={useBaseUrl("/docs/server/introduction")}
@@ -131,7 +131,7 @@ function Server() {
         </li>
         <li className="list-disc">
           <Link
-            to={useBaseUrl("/docs/content/what-is-a-temporal-cluster")}
+            to={useBaseUrl("/docs/concepts/what-is-a-temporal-cluster")}
             className="hover:underline"
           >
             <p className="font-semibold">Cluster Architecture</p>
@@ -164,7 +164,7 @@ function Server() {
       </ul>
       <Link
         to={useBaseUrl("/docs/server/quick-install")}
-        className="hover:underline mt-2 -ml-2"
+        className="mt-2 -ml-2 hover:underline"
       >
         <p className="font-semibold">
           <span className="mr-1">⭐</span> Quick Install (with Docker)
@@ -176,10 +176,10 @@ function Server() {
 
 function Tools() {
   return (
-    <div className="bg-[color:var(--ifm-card-background-color)] flex flex-col shadow rounded-lg p-5">
-      <div className="flex space-x-4 items-center">
+    <div className="flex flex-col rounded-lg bg-[color:var(--ifm-card-background-color)] p-5 shadow">
+      <div className="flex items-center space-x-4">
         <svg
-          className="w-10 h-10 bg-[color:var(--ifm-color)] text-[color:var(--ifm-background-color)] rounded-lg mb-4 p-2"
+          className="mb-4 h-10 w-10 rounded-lg bg-[color:var(--ifm-color)] p-2 text-[color:var(--ifm-background-color)]"
           viewBox="0 0 15 15"
           fill="currentColor"
           xmlns="http://www.w3.org/2000/svg"
@@ -200,19 +200,19 @@ function Tools() {
           />
         </svg>
 
-        <h2 className="text-xl font-semibold mb-4">Dev Tools</h2>
+        <h2 className="mb-4 text-xl font-semibold">Dev Tools</h2>
       </div>
-      <p className="flex-grow mb-4">
+      <p className="mb-4 flex-grow">
         Tools to manage Workflow Execution lifecycles, manage your Cluster,
         debug your application, and more.
       </p>
       <div className="flex flex-col space-y-2">
         <Link
           to={useBaseUrl("/docs/devtools/web-ui")}
-          className="hover:underline font-semibold flex space-x-3"
+          className="flex space-x-3 font-semibold hover:underline"
         >
           <svg
-            className="w-6 h-6 transition hover:scale-110"
+            className="h-6 w-6 transition hover:scale-110"
             fill="currentColor"
             viewBox="0 0 20 20"
             xmlns="http://www.w3.org/2000/svg"
@@ -227,10 +227,10 @@ function Tools() {
         </Link>
         <Link
           to={useBaseUrl("/docs/devtools/tctl")}
-          className="hover:underline font-semibold flex space-x-3"
+          className="flex space-x-3 font-semibold hover:underline"
         >
           <svg
-            className="w-6 h-6 transition hover:scale-110"
+            className="h-6 w-6 transition hover:scale-110"
             fill="currentColor"
             viewBox="0 0 20 20"
             xmlns="http://www.w3.org/2000/svg"
@@ -251,15 +251,15 @@ function Tools() {
 export const Intro = () => {
   return (
     <section className="mt-1 mb-14">
-      <h1 className="text-4xl md:text-5xl font-semibold tracking-wide mb-4">
+      <h1 className="mb-4 text-4xl font-semibold tracking-wide md:text-5xl">
         Temporal Documentation
       </h1>
-      <p className="text-xl max-w-2xl">
+      <p className="max-w-2xl text-xl">
         Learn about Temporal, the open source platform for orchestrating highly
         reliable, mission-critical applications at scale.
       </p>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 my-10">
+      <div className="my-10 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
         <SDKs />
         <Server />
         <Tools />

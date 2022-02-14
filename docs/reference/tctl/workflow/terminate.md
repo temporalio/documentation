@@ -1,31 +1,27 @@
 ---
 id: terminate
 title: tctl workflow terminate
+sidebar_label: terminate
 description: How to terminate a Workflow Execution using tctl.
 tags:
   - reference
   - tctl
 ---
 
-<!-- prettier-ignore -->
-import * as WhatIsAWorkflowExecution from '../../../content/what-is-a-workflow-execution.md'
-import * as WhatIsAWorkflowId from '../../../content/what-is-a-workflow-id.md'
-import * as WhatIsARunId from '../../../content/what-is-a-run-id.md'
-
-The `tctl workflow terminate` command terminates a <preview page={WhatIsAWorkflowExecution}>Workflow Execution</preview>.
+The `tctl workflow terminate` command terminates a [Workflow Execution](/docs/concepts/what-is-a-workflow-execution).
 
 Terminating a running Workflow Execution records a `WorkflowExecutionTerminated` event as the closing event in the History.
 No more command tasks will be scheduled.
 
 See also [`tctl workflow cancel`](./cancel.md).
 
-`tctl workflow terminate <options> <arguments...>`
+`tctl workflow terminate [<modifiers>]`
 
-The following options modify the behavior of the command.
+The following modifiers control the behavior of the command.
 
 ### `--workflow_id`
 
-How to specify a <preview page={WhatIsAWorkflowId}>Workflow Id</preview>.
+How to specify a [Workflow Id](/docs/concepts/what-is-a-workflow-id).
 
 Aliases: `--wid`, `-w`
 
@@ -37,7 +33,7 @@ tctl workflow terminate --workflow_id <id>
 
 ### `--run_id`
 
-How to specify a <preview page={WhatIsARunId}>Run Id</preview>.
+How to specify a [Run Id](/docs/concepts/what-is-a-run-id).
 
 Aliases: `--rid`, `-r`
 
@@ -47,9 +43,9 @@ Aliases: `--rid`, `-r`
 tctl workflow terminate --run_id <id>
 ```
 
-### `reason`
+### `--reason`
 
-How to specify a reason for terminating the <preview page={WhatIsAWorkflowExecution}>Workflow Execution</preview>.
+How to specify a reason for terminating the [Workflow Execution](/docs/concepts/what-is-a-workflow-execution).
 
 Alias: `--re`
 

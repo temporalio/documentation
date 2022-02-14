@@ -12,7 +12,7 @@ function About() {
       permalink="/about"
       description="General information about Temporal's documentation."
     >
-      <main className="container margin-vert--lg">
+      <main className="margin-vert--lg container">
         <h1>About the docs</h1>
         <div className="margin-bottom--lg">
           <h2 id="latest">Documentation SLA</h2>

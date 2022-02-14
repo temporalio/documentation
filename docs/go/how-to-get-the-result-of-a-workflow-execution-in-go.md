@@ -9,7 +9,7 @@ tags:
 ---
 
 <!-- prettier-ignore -->
-import * as WhatIsATemporalCronJob from '../content/what-is-a-temporal-cron-job.md'
+import * as WhatIsATemporalCronJob from '../concepts/what-is-a-temporal-cron-job.md'
 
 The `ExecuteWorkflow` call returns an instance of [`WorkflowRun`](https://pkg.go.dev/go.temporal.io/sdk/client#WorkflowRun), which is the `workflowRun` variable in the following line.
 

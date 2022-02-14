@@ -195,12 +195,6 @@ class FileProcessingActivitiesImpl implements FileProcessingActivities
 }
 ```
 
-### Activity Cancellation
-
-import WhatIsActivityCancellation from '../content/what-is-activity-cancellation.md'
-
-<WhatIsActivityCancellation />
-
 ## Calling Activities
 
 `Workflow::newActivityStub` returns a client-side stub an implements an Activity interface.

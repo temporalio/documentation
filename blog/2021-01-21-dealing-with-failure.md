@@ -44,7 +44,7 @@ In our world of overly complicated systems, the value of simplicity is difficult
 * Partial failures are hard to deal with. When we need to update multiple external systems at once, there is almost never a way to do that in an all-or-nothing manner, i.e. atomically. So, we have to handle retries and rollbacks, side effects, and all the inevitable complexity.
 
 The last point I illustrated with the following picture:
-![Request-Reply](../static/img/dealing-failure/request-reply.png)
+![Request-Reply](/img/dealing-failure/request-reply.png)
 
 In this example, the client (square blue thing) makes a request to the server (round green thing). The server does not have the information locally to satisfy the client request and therefore needs to call two external services, blue and purple.
 
@@ -66,11 +66,11 @@ Cons:
 
 Putting a persistent queue between the client and server solves a number of problems. The client just needs to successfully send a request to the queue to ensure that it will eventually be processed.
 
-![Queue](../static/img/dealing-failure/queues.png)
+![Queue](/img/dealing-failure/queues.png)
 
 Assuming the server only deletes a request from the queue after it is successfully processed, we get a simple retry mechanism. Due to the queue, even if the server crashes and restarts in between the attempts, it will keep trying to process the request again and again. The fact that the client (producer) is completely decoupled from the server (consumer), means the client can enqueue requests even if the server is down. This is the main reason why the publisher-subscriber architecture is so popular. Separation of subsystems in space and time is a nice property.
 
-![Chang'e-5](../static/img/dealing-failure/moon-orbit.jpeg)
+![Chang'e-5](/img/dealing-failure/moon-orbit.jpeg)
 ###### *A simulated illustration of Chang'e-5 probe's orbiter-returner's separation from the ascender on the moon orbit, December 6, 2020. /CNSA*
 
 For streaming one-way events, queues are great. But how can the client get a response in a queue based architecture? There's no good answer to this question that I'm aware of. Responses need to be delivered (somehow) back to the client, usually over another queue. Then the client needs a way to correlate requests and responses, typically done via correlation IDs. There also needs to be timeout mechanisms for dealing with requests that never received a response.
@@ -96,7 +96,7 @@ Similar to queues, workflows take the burden of ensuring successful execution of
 * Tracking which steps of processing failed
 * Remembering how many retries have been made, etc
 
-![Workflow](../static/img/dealing-failure/workflows.png)
+![Workflow](/img/dealing-failure/workflows.png)
 
 Workflows have other important properties and use cases. They are a great way to implement long-running business processes, incorporate human operations and react to events. From the failure handling perspective, the most important aspect of workflows is the ability to be more intelligent when handling partial failures. Instead of being oblivious about what happened in the past, a workflow can keep a log of all relevant information and make informed decisions about what to retry and when.
 

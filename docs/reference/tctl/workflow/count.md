@@ -1,32 +1,31 @@
 ---
 id: count
 title: tctl workflow count
+sidebar_label: count
 description: How to count Workflow Executions using tctl.
 tags:
   - reference
   - tctl
 ---
 
-<!-- prettier-ignore -->
-import * as WhatIsAWorkflowExecution from '../../../content/what-is-a-workflow-execution.md'
-import * as WhatIsASearchAttribute from '../../../content/what-is-a-search-attribute.md'
-
-The `tctl workflow count` command counts <preview page={WhatIsAWorkflowExecution}>Workflow Executions</preview>.
+The `tctl workflow count` command counts [Workflow Executions](/docs/concepts/what-is-a-workflow-execution).
 This command requires Elasticsearch to be enabled.
 
-`tctl workflow count <option> <arguments...>`
+`tctl workflow count [<modifiers>]`
 
-The following option modifies the behavior of the command.
+The following modifier controls the behavior of the command.
 
 ### `--query`
 
-How to specify an SQL-like query of <preview page={WhatIsASearchAttribute}>Search Attributes</preview>.
+_Required modifier_
+
+How to specify an SQL-like query of [Search Attributes](/docs/concepts/what-is-a-search-attribute).
 
 Alias: `-q`
 
 **Example**
 
-To count all open <preview page={WhatIsAWorkflowExecution}>Workflow Executions</preview>:
+To count all open [Workflow Executions](/docs/concepts/what-is-a-workflow-execution):
 
 ```
 tctl workflow count --query 'CloseTime = missing'; 'WorkflowType="wtype" and CloseTime > 0'

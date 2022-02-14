@@ -33,9 +33,8 @@ The Temporal TypeScript SDK runs each Workflow in a separate v8 isolate — a "s
 
 - When we need to defer execution (such as for a timer or activity), we simply destroy the `vm` context.
 - When we need to continue execution, Temporal Server sends over the Event History and we replay through the code from the start until the end to restore state.
-  - The serialization takes time, which is why we recommend keeping Event History [under 10,000 events](/docs/server/production-deployment/#server-limits). ["Sticky" optimizations exist to make this faster for common situations](https://docs.temporal.io/docs/concepts/task-queues/#sticky-queues).
-  - If the execution logic has changed enough to effect Event History, you will
-    need to [patch new code](/docs/typescript/patching).
+  - The serialization takes time, which is why we recommend keeping Event History [under 10,000 events](/docs/server/production-deployment/#server-limits). ["Sticky" optimizations exist to make this faster for common situations](/docs/concepts/what-is-a-sticky-execution).
+  - If the execution logic has changed enough to affect Event History, you need to [patch new code](/docs/typescript/patching).
 - The Workflow runtime is completely deterministic: functions like `Math.random`, `Date`, and `setTimeout` are replaced by deterministic versions, and the only way for a Workflow to interact with the world is via Activities.
 - When an Activity completes, its result is stored in the Workflow history to be replayed in case a Workflow is restored.
 
@@ -67,12 +66,12 @@ How `Date` is deterministic:
 import { sleep } from '@temporalio/workflow';
 
 // this prints the *exact* same timestamp repeatedly
-for (let x = 0; x < 10; ++i) {
+for (let x = 0; x < 10; ++x) {
   console.log(Date.now());
 }
 
 // this prints timestamps increasing roughly 1s each iteration
-for (let x = 0; x < 10; ++i) {
+for (let x = 0; x < 10; ++x) {
   await sleep('1 second');
   console.log(Date.now());
 }

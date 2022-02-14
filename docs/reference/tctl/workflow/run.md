@@ -1,31 +1,22 @@
 ---
 id: run
 title: tctl workflow run
+sidebar_label: run
 description: How to start a new Workflow Execution and get Workflow progress using tctl.
 tags:
   - reference
   - tctl
 ---
 
-<!-- prettier-ignore -->
-import * as WhatIsAWorkflowExecution from '../../../content/what-is-a-workflow-execution.md'
-import * as WhatIsATaskQueue from '../../../content/what-is-a-task-queue.md'
-import * as WhatIsAWorkflowId from '../../../content/what-is-a-workflow-id.md'
-import * as WhatIsAWorkflowType from '../../../content/what-is-a-workflow-type.md'
-import * as WhatIsAStartToCloseTimeout from '../../../content/what-is-a-start-to-close-timeout.md'
-import * as WhatIsAWorkflowTask from '../../../content/what-is-a-workflow-task.md'
-import * as WhatIsAWorkflowIdReusePolicy from '../../../content/what-is-a-workflow-id-reuse-policy.md'
-import * as WhatIsASearchAttribute from '../../../content/what-is-a-search-attribute.md'
+The `tctl workflow run` command starts a new [Workflow Execution](/docs/concepts/what-is-a-workflow-execution) and can show Workflow progress.
 
-The `tctl workflow run` command starts a new <preview page={WhatIsAWorkflowExecution}>Workflow Execution</preview> and can show Workflow progress.
+`tctl workflow run [<modifiers>]`
 
-`tctl workflow run <options> <arguments...>`
-
-The following options modify the behavior of the command.
+The following modifiers control the behavior of the command.
 
 ### `--taskqueue`
 
-How to specify a <preview page={WhatIsATaskQueue}>Task Queue</preview>.
+How to specify a [Task Queue](/docs/concepts/what-is-a-task-queue).
 
 Alias: `--tq`
 
@@ -37,7 +28,7 @@ tctl workflow run --taskqueue <name>
 
 ### `--workflow_id`
 
-How to specify a <preview page={WhatIsAWorkflowId}>Workflow Id</preview>.
+How to specify a [Workflow Id](/docs/concepts/what-is-a-workflow-id).
 
 Aliases: `--wid`, `-w`
 
@@ -49,7 +40,7 @@ tctl workflow run --workflow_id <id>
 
 ### `--workflow_type`
 
-How to specify the name of a <preview page={WhatIsAWorkflowType}>Workflow Type</preview>.
+How to specify the name of a [Workflow Type](/docs/concepts/what-is-a-workflow-type).
 
 Alias: `--wt`
 
@@ -61,7 +52,7 @@ tctl workflow run --workflow_type <name>
 
 ### `--execution_timeout`
 
-How to specify the <preview page={WhatIsAStartToCloseTimeout}>Start-To-Close Timeout</preview> of the <preview page={WhatIsAWorkflowExecution}>Workflow Execution</preview> in seconds.
+How to specify the [Start-To-Close Timeout](/docs/concepts/what-is-a-start-to-close-timeout) of the [Workflow Execution](/docs/concepts/what-is-a-workflow-execution) in seconds.
 The default value is 0.
 
 Alias: `--et`
@@ -74,7 +65,7 @@ tctl workflow run --execution_timeout <seconds>
 
 ### `--workflow_task_timeout`
 
-How to specify the <preview page={WhatIsAStartToCloseTimeout}>Start-To-Close Timeout</preview> of the <preview page={WhatIsAWorkflowTask}>Workflow Task</preview> in seconds.
+How to specify the [Start-To-Close Timeout](/docs/concepts/what-is-a-start-to-close-timeout) of the [Workflow Task](/docs/concepts/what-is-a-workflow-task) in seconds.
 The default value is 10.
 
 Alias: `--wtt`
@@ -87,7 +78,7 @@ tctl workflow run --workflow_task_timeout <seconds>
 
 ### `--cron`
 
-How to specify a [Cron Schedule](/docs/content/what-is-a-temporal-cron-job/#cron-schedules).
+How to specify a [Cron Schedule](/docs/concepts/what-is-a-temporal-cron-job/#cron-schedules).
 
 **Example**
 
@@ -97,8 +88,8 @@ tctl workflow run --cron <string>
 
 ### `--workflowidreusepolicy`
 
-How to specify a <preview page={WhatIsAWorkflowIdReusePolicy}>Workflow Id Reuse Policy</preview>.
-Configure if the same <preview page={WhatIsAWorkflowId}>Workflow Id</preview> is allowed for use in new <preview page={WhatIsAWorkflowExecution}>Workflow Executions</preview>.
+How to specify a [Workflow Id Reuse Policy](/docs/concepts/what-is-a-workflow-id-reuse-policy).
+Configure if the same [Workflow Id](/docs/concepts/what-is-a-workflow-id) is allowed for use in new [Workflow Execution](/docs/concepts/what-is-a-workflow-execution).
 
 Values: `AllowDuplicate`, `AllowDuplicateFailedOnly`, `RejectDuplicate`
 
@@ -176,7 +167,7 @@ tctl workflow run --memo_file <filename>
 
 ### `--search_attr_key`
 
-How to specify a <preview page={WhatIsASearchAttribute}>Search Attribute</preview> key.
+How to specify a [Search Attribute](/docs/concepts/what-is-a-search-attribute) key.
 For multiple keys, concatenate them and use pipes (`|`) as separators.
 
 To list valid keys, use the `tctl cluster get-search-attr` command.
@@ -189,7 +180,7 @@ tctl workflow run --search_attr_key <key>
 
 ### `--search_attr_value`
 
-How to specify a <preview page={WhatIsASearchAttribute}>Search Attribute</preview> value.
+How to specify a [Search Attribute](/docs/concepts/what-is-a-search-attribute) value.
 For multiple values, concatenate them and use pipes (`|`) as separators.
 If a value is an array, use JSON format, such as `["a","b"]`, `[1,2]`, `["true","false"]`, or `["2022-06-07T17:16:34-08:00","2022-06-07T18:16:34-08:00"]`.
 

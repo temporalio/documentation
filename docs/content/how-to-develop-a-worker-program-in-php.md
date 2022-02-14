@@ -81,3 +81,7 @@ temporal:
 ```
 
 > You can serve HTTP endpoints using the same server setup.
+
+**Operation guides:**
+
+- [How to tune Workers](/docs/operation/how-to-tune-workers)

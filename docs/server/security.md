@@ -23,7 +23,7 @@ The https://github.com/temporalio/samples-server repo offers two examples, which
 
 Temporal supports Mutual TLS (mTLS) as a way of encrypting network traffic between the services of a cluster and also between application processes and a cluster.
 Self-signed or properly minted certificates can be used for mTLS.
-Mutual TLS is set in Temporal's [configuration](/docs/server/configuration/#tls).
+Mutual TLS is set in Temporal's [TLS configuration](/docs/server/configuration/#tls).
 The configuration includes two sections such that intra-cluster and external traffic can be encrypted with different sets of certificates and settings:
 
 - `internode`: Configuration for encrypting communication between nodes in the cluster.
@@ -31,11 +31,11 @@ The configuration includes two sections such that intra-cluster and external tra
 
 A customized configuration can be passed using either the [WithConfig](/docs/server/options/#withconfig) or [WithConfigLoader](/docs/server/options/#withconfigloader) server options.
 
-See https://github.com/temporalio/samples-server/blob/main/tls for a sample implementation
+See [TLS configuration reference](/docs/server/configuration/#tls) for more details.
 
 ## Encryption at rest with DataConverter
 
-import DataConverter from '../content/what-is-a-data-converter.md'
+import DataConverter from '../concepts/what-is-a-data-converter.md'
 
 <DataConverter />
 

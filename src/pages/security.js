@@ -25,51 +25,13 @@ export default function Security() {
         <div className="container">
           <div className="row">
             <div className={clsx("col col--5", styles.securityPageHeaders)}>
-              <h2>Our Stack</h2>
+              <h2>SOC2 Type 2</h2>
             </div>
             <div className={clsx("col col--4", styles.justifyLeft)}>
               <p>
-                The Temporal Cloud, an instance of our open source{" "}
-                <a href="https://github.com/temporalio/temporal">
-                  Temporal Server software
-                </a>
-                , is hosted on AWS and we use{" "}
-                <a href="https://www.datastax.com/products/datastax-astra">
-                  Astra Datastax
-                </a>{" "}
-                for data storage.
-              </p>
-            </div>
-          </div>
-          <div className="row">
-            <div className={clsx("col col--5", styles.securityPageHeaders)}>
-              <h2>Encryption</h2>
-            </div>
-            <div className={clsx("col col--4", styles.justifyLeft)}>
-              <p>
-                All traffic to and from the Temporal Cloud is encrypted with
-                mTLS.
-              </p>
-              <p>
-                Customers have access to{" "}
-                <a href="https://docs.temporal.io/docs/server/security">
-                  data encryption tools
-                </a>{" "}
-                to encrypt data at rest.
-              </p>
-            </div>
-          </div>
-          <div className="row">
-            <div className={clsx("col col--5", styles.securityPageHeaders)}>
-              <h2>SOC2 Type 1</h2>
-            </div>
-            <div className={clsx("col col--4", styles.justifyLeft)}>
-              <p>
-                Temporal Technologies Inc was issued a clean SOC2 Type 1 report
-                on Janurary 31st 2021 from{" "}
-                <a href="https://www.connor-consulting.com/">
-                  Connor Consulting
-                </a>
+                Temporal Technologies Inc was issued a clean SOC2 Type 2 report
+                on July 31, 2021, from{" "}
+                <a href="https://www.schneiderdowns.com/">Schneider Downs</a>
               </p>
               <div className={styles.justifyCenter}>
                 <img

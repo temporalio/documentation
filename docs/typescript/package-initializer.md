@@ -1,6 +1,7 @@
 ---
 id: package-initializer
-sidebar_label: Package Initializer
+title: '@temporalio/create Package Initializer'
+sidebar_label: '@temporalio/create'
 description: temporalio/create is an optional tool to set up a new Temporal project starting from our samples repo. `npx @temporalio/create@latest ./example`
 ---
 
@@ -43,3 +44,5 @@ Most sample projects come with these scripts:
 - `npm run build` — Compile TypeScript
 - `npm run build.watch` — Watch files and compile on change
 - `npm run workflow` — Execute a Workflow
+
+If you aren't familiar with the tradeoffs between these choices, we recommend primarily running `npm run start.watch` to have a live-reloading Worker good enough for most situations, and then `npm run workflow` to start individual Workflow executions.

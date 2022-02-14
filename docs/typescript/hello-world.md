@@ -30,7 +30,7 @@ Activities run in the Node.js execution environment, meaning you can easily port
 
 In the TypeScript SDK, each Workflow execution is run in a separate V8 isolate context in order to provide a [deterministic runtime](/docs/typescript/determinism).
 
-A Workflow is also an async function, but it has access to special Workflow APIs like [Signals](/docs/concepts/signals), [Queries](/docs/concepts/queries), Timers, and Child Workflows.
+A Workflow is also an async function, but it has access to special Workflow APIs like [Signals](/docs/concepts/what-is-a-signal), [Queries](/docs/concepts/what-is-a-query), Timers, and Child Workflows.
 
 The snippet below uses `proxyActivities` to create a function that, when called, schedules an Activity in the system.
 
@@ -59,7 +59,7 @@ The [`WorkflowClient`](https://typescript.temporal.io/api/classes/client.workflo
 
 It can be used in any Node.js process (for example, an [Express](https://expressjs.com/) web server) and is separate from the Worker.
 
-`src/exec-workflow.ts`
+`src/client.ts`
 
 <!--SNIPSTART typescript-hello-client {"enable_source_link": false}-->
 <!--SNIPEND-->

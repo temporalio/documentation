@@ -1,8 +1,9 @@
-/** @type {import('@docusaurus/types').DocusaurusConfig} */
-
+//@ts-check
 const path = require("path");
 const visit = require("unist-util-visit");
+const FontPreloadPlugin = require("webpack-font-preload-plugin");
 
+/** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
   title: "Temporal Documentation",
   tagline: "Build invincible applications",
@@ -13,7 +14,19 @@ module.exports = {
   favicon: "img/favicon.png",
   organizationName: "temporalio", // Usually your GitHub org/user name.
   projectName: "temporal-documentation", // Usually your repo name.
-  plugins: ["docusaurus-tailwindcss-loader"],
+  plugins: [
+    function preloadFontPlugin() {
+      return {
+        name: "preload-font-plugin",
+        configureWebpack() {
+          return {
+            plugins: [new FontPreloadPlugin()],
+          };
+        },
+      };
+    },
+    "docusaurus-tailwindcss-loader",
+  ],
   themeConfig: {
     colorMode: {
       defaultMode: "dark",
@@ -56,9 +69,14 @@ module.exports = {
               label: "Explanation",
             },
             {
+              to: "/docs/concepts",
+              activeBasePath: "/docs/concepts/",
+              label: "Concepts",
+            },
+            {
               to: "/docs/server/introduction",
               activeBasePath: "/docs/server/",
-              label: "Server",
+              label: "Cluster",
             },
             {
               to: "/docs/devtools/introduction",
@@ -71,6 +89,16 @@ module.exports = {
                 "(/application-development)|(/docs/(go|java|php|node))",
               label: "SDKs",
             },
+            {
+              to: "/docs/operation/",
+              activeBasePath: "operation",
+              label: "Operation guides",
+            },
+            {
+              to: "/docs/learning-paths",
+              activeBasePath: "/docs/learning-paths",
+              label: "Learning",
+            },
           ],
         },
         {
@@ -82,7 +110,7 @@ module.exports = {
               label: "Checkr",
             },
             {
-              to: "/blog/Temporal-a-central-brain-for-Box",
+              to: "/blog/temporal-a-central-brain-for-box",
               label: "Box",
             },
             {
@@ -135,10 +163,10 @@ module.exports = {
       anonymizeIP: true, // Should IPs be anonymized?
     },
     algolia: {
-      apiKey: "14805ba2eb682edb2e719df4d5e03c8a",
+      apiKey: "cd527863e60d95ebe650cdd21c7a6f3f",
       indexName: "temporal",
       // contextualSearch: true, // Optional, If you different version of docs etc (v1 and v2) doesn't display dup results
-      // appId: 'app-id', // Optional, if you run the DocSearch crawler on your own
+      appId: "T5D6KNJCQS", // Optional, if you run the DocSearch crawler on your own
       // algoliaOptions: {}, // Optional, if provided by Algolia
     },
   },

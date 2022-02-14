@@ -3,17 +3,17 @@ import React from "react";
 export const Community = () => {
   return (
     <section className="my-20">
-      <h2 className="text-3xl md:text-4xl mb-8 font-semibold">
+      <h2 className="mb-8 text-3xl font-semibold md:text-4xl">
         Join the Temporal community
       </h2>
-      <ul className="grid sm:grid-cols-2  gap-6 xl:gap-8">
+      <ul className="grid gap-6  sm:grid-cols-2 xl:gap-8">
         <li>
           <a
             href="https://community.temporal.io/"
             className="flex items-start space-x-4"
           >
             <svg
-              className="flex-none w-12 h-12 "
+              className="h-12 w-12 flex-none "
               width="48"
               height="48"
               viewBox="0 0 48 48"
@@ -43,7 +43,7 @@ export const Community = () => {
           >
             <svg
               fill="currentColor"
-              className="flex-none text-red-500 w-12 h-12 "
+              className="h-12 w-12 flex-none text-red-500 "
             >
               <rect width="48" height="48" rx="12"></rect>
               <path
@@ -67,7 +67,7 @@ export const Community = () => {
               width="512"
               height="512"
               viewBox="0 0 512 512"
-              className="flex-none text-black w-12 h-12 rounded-lg"
+              className="h-12 w-12 flex-none rounded-lg text-black"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
@@ -95,7 +95,7 @@ export const Community = () => {
           >
             <svg
               fill="currentColor"
-              className="flex-none text-black w-12 h-12 "
+              className="h-12 w-12 flex-none text-black "
             >
               <rect width="48" height="48" rx="12"></rect>
               <path
@@ -117,7 +117,7 @@ export const Community = () => {
           >
             <svg
               fill="currentColor"
-              className="flex-none text-blue-400 w-12 h-12 "
+              className="h-12 w-12 flex-none text-blue-400 "
             >
               <rect width="48" height="48" rx="12"></rect>
               <path
@@ -141,7 +141,7 @@ export const Community = () => {
             className="flex items-start space-x-4"
           >
             <svg
-              className="flex-none text-blue-400 w-12 h-12 "
+              className="h-12 w-12 flex-none text-blue-400 "
               viewBox="0 0 1610 1610"
             >
               <title>slack-logo-icon</title>
@@ -216,20 +216,20 @@ export const Community = () => {
         !
       </p>
 
-      <div className="flex flex-col space-y-6 sm:space-y-0 sm:flex-row my-16">
+      <div className="my-16 flex flex-col space-y-6 sm:flex-row sm:space-y-0">
         <div className="flex-1">
-          <h2 className="text-xl uppercase font-semibold tracking-wide py-6">
+          <h2 className="py-6 text-xl font-semibold uppercase tracking-wide">
             Community Distros
           </h2>
           <span className="opacity-70">
             External projects that build atop Temporal
           </span>
-          <ul className="list-disc space-y-3 pl-4 mt-8">
+          <ul className="mt-8 list-disc space-y-3 pl-4">
             <li className="list-disc">
               <p className="">
                 <a
                   href="https://github.com/airbytehq/airbyte"
-                  className="hover:underline font-semibold"
+                  className="font-semibold hover:underline"
                 >
                   Airbyte
                 </a>
@@ -240,7 +240,7 @@ export const Community = () => {
                 >
                   ELT data pipeline platform (see talk){" "}
                   <svg
-                    className="w-4 h-4 inline mb-1"
+                    className="mb-1 inline h-4 w-4"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -254,7 +254,7 @@ export const Community = () => {
             <li className="list-disc">
               <a
                 href="https://github.com/spiral/roadrunner"
-                className="hover:underline font-semibold"
+                className="font-semibold hover:underline"
               >
                 Roadrunner
               </a>
@@ -264,57 +264,78 @@ export const Community = () => {
             <li className="list-disc">
               <a
                 href="https://github.com/coinbase/temporal-ruby"
-                className="hover:underline font-semibold"
+                className="font-semibold hover:underline"
               >
-                Coinbase
+                Coinbase/temporal-ruby
               </a>
               <span> - </span>
               <span className="opacity-80">
-                Third party client in production use
+                Ruby SDK with{" "}
+                <a
+                  className=" opacity-80 hover:underline"
+                  href="https://github.com/milk-video/temporal-rails-example"
+                >
+                  Rails example{" "}
+                  <svg
+                    className="mb-1 inline h-4 w-4"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
+                    <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
+                  </svg>
+                </a>
+              </span>
+            </li>
+            <li className="list-disc">
+              <a
+                href="https://github.com/DataDog/temporalite"
+                className="font-semibold hover:underline"
+              >
+                DataDog/temporalite
+              </a>
+              <span> - </span>
+              <span className="opacity-80">
+                Single binary distro for CI (
+                <a href="https://www.youtube.com/watch?v=Hz7ZZzafBoE">
+                  see talk
+                </a>
+                )
               </span>
             </li>
             <li className="list-disc">
               <a
                 href="https://nunchi.studio/blacksmith/start/onboarding/how"
-                className="hover:underline font-semibold"
+                className="font-semibold hover:underline"
               >
                 Nunchi Blacksmith
               </a>
               <span> - </span>
               <span className="opacity-80">ETL data platform</span>
             </li>
-            <li className="list-disc">
-              <a
-                href="https://github.com/DataDog/temporalite"
-                className="hover:underline font-semibold"
-              >
-                DataDog/temporalite
-              </a>
-              <span> - </span>
-              <span className="opacity-80">Single binary Temporal for CI</span>
-            </li>
           </ul>
         </div>
         <div className="flex-1">
-          <h2 className="text-xl uppercase font-semibold tracking-wide py-6">
+          <h2 className="py-6 text-xl font-semibold uppercase tracking-wide">
             Community SDKs
           </h2>
           <span className="opacity-70">Third Party SDKs</span>
           {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mt-2"> */}
-          <div className="flex flex-col space-y-4 mt-8">
+          <div className="mt-8 flex flex-col space-y-4">
             <a
               href="https://github.com/coinbase/temporal-ruby"
-              className="flex space-x-5 items-center"
+              className="flex items-center space-x-5"
             >
-              <img className="w-8 h-8" src="/img/ruby.svg" alt="Ruby logo" />
+              <img className="h-8 w-8" src="/img/ruby.svg" alt="Ruby logo" />
               <p>Ruby</p>
             </a>
             <a
               href="https://github.com/firdaus/temporal-python-sdk"
-              className="flex space-x-5 items-center"
+              className="flex items-center space-x-5"
             >
               <img
-                className="w-8 h-8"
+                className="h-8 w-8"
                 src="/img/python.svg"
                 alt="Python logo"
               />

@@ -51,7 +51,7 @@ It eventually dawned on me that RPC and workflows are sort of yin and yang of in
 
 In the meantime, I heard through some mutual contacts that Maxim was now at Uber and was leading some ambitious project. Later I learned that it was called Cadence, yet another reliable workflow system that Maxim and Samar were working on, and it was open source. This put Cadence on my radar but in that “when have time to take a closer look” bucket. Somebody told me a few months ago that Maxim and Samar had started Temporal Technologies last fall. But I never considered startups to be my thing. However, as I began talking to them, my attitude rapidly started to change. As I learned more about the programming model of Temporal and descended down the rabbit hole of its implementation, I started seeing “workflows, workflows everywhere”, big and small, quick and long running, just like in that popular meme.
 
-![](../static/img/workflow-meme.png)
+![](/img/workflow-meme.png)
 
 If we could turn the six steps in the above list back into a few lines of trivial code, we would free developers from the burden of scaffolding, and enable them to focus on interesting problems. Workflows are somewhat like grains in Orleans - units of distribution, execution, and fault isolation. They are "just" executed differently - by the application supplied workers. I call this model Inversion of Execution, not sure if it will stick. There are, of course, other major architectural differences, but the high-level goals are the same - qualitatively reduce complexity of application code; make applications resilient (invincible) to inevitable failures; empower developers to solve more interesting problems than those we can take care of.
 

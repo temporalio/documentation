@@ -32,32 +32,32 @@ A few months ago, we started seeing strange behavior from the canary clusters we
 
 It's worth noting that Temporal is an incredibly well tested piece of technology, boasting thousands of unit, integration and scale tests. At the time the bug started appearing, we had also just moved to a new persistence vendor. This is why, we initially assumed that the bug was likely happening at the persistence level. So we reached out to the team who runs our persistence towards the end of December:
 
-![](../static/img/go-shadowing/shadowing0.png)
+![](/img/go-shadowing/shadowing0.png)
 *A concrete example. At this point we understood exactly what was wrong with the workflow. We just didn't know why.*
 
 At first, our persistence vendor agreed with the assessment. There had been some notable memory issues with the clusters running our persistence that seemed to directly correlate with the corruption we experienced. They very kindly quickly (and kindly) started investigating things on their side to root cause the out of memory issues. 
 
-![](../static/img/go-shadowing/shadowing1.png)
+![](/img/go-shadowing/shadowing1.png)
 *We discovered that there was a curious set of OOM (Out of memory) issues that corresponded closely with the corruptions we were experiencing with workflows.*
 
 After a short time, they got back to us with what seemed like concrete progress. Their investigation had indeed found a memory issue with the cluster. At this point all we needed to do was validate that the memory issues always correlated with our workflow corruptions and we were golden.
 
-![](../static/img/go-shadowing/shadowing2.png)
+![](/img/go-shadowing/shadowing2.png)
 *First formal identification of the OOM issue and how it correlates with the Temporal specific bugs. To validate that it was the root cause we started trying to correlate OOMs with Temporal corruptions.*
 
 They immediately began working on a solution for the OOM issue. Within a week they had produced fixes and deployed those patches to the clusters running our persistence. We were very happy to get this issue behind us and get back to working on our product. Unfortunately this was not the end of the issues...
 
-![](../static/img/go-shadowing/shadowing3.png)
+![](/img/go-shadowing/shadowing3.png)
 *Our team converging with vendor on the OOM issues. At this point it seemed that fixing the OOM was the root cause and therefore fixing it would address our issues.*
 
 Initially we had doubts about how much the fixes solved the memory issues. But it started to become clearer and clearer that something else was going on.
 
-![](../static/img/go-shadowing/shadowing4.png)
+![](/img/go-shadowing/shadowing4.png)
 *Our vendor explaining that the OOM fix was in place and functioning correctly. Temporal was still experiencing issues at this point which meant it was bigger than OOM.*
 
 There was still the open question of why OOM's correlated so highly with the workflow corruptions, but we had to accept that it wasn't the full story. Our team began putting all of their energy into combing through our source code for potential issues. After a prolonged period of stress and frustration, one of the awesome engineers from our persistence vendor found the root cause:
 
-![](../static/img/go-shadowing/shadowing5.png)
+![](/img/go-shadowing/shadowing5.png)
 *An amazing find by the engineer working for our vendor. We are super appreciative for their incredible dedication to helping us.*
 
 Yes, you read it correctly. This entire mess was caused by a Golang variable shadowing issue in one small part of our persistence code.
@@ -78,7 +78,7 @@ At the end of the day, even if the rationale had been good (it wasn't) it goes a
 
 Unfortunately, the story does not end at this point. We proceeded with releasing version 1.6.0 that included the fix, but failed to adequately call out the severity of the bug.
 
-![](../static/img/go-shadowing/shadowing6.png)
+![](/img/go-shadowing/shadowing6.png)
 
 ## Someone pays the price
 

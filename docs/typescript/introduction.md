@@ -9,7 +9,8 @@ It is designed with TypeScript-first developer experience in mind, but works equ
 
 You can view:
 
-- [Code samples on GitHub](https://github.com/temporalio/samples-typescript) [![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-908a85?logo=gitpod)](https://gitpod.io/#https://github.com/temporalio/samples-typescript/)
+- [Code samples on GitHub](https://github.com/temporalio/samples-typescript)
+  - Fastest way to try these out is in the browser [![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-908a85?logo=gitpod)](https://gitpod.io/#https://github.com/temporalio/samples-typescript/) ([90 second demo](https://youtu.be/FdEQQC9EdfU))
 - [Searchable full API reference](https://typescript.temporal.io)
 - [SDK source on GitHub](https://github.com/temporalio/sdk-typescript) [![GitHub stars](https://img.shields.io/github/stars/temporalio/sdk-typescript)](https://github.com/temporalio/sdk-typescript/stargazers) (give us a star!)
 - [See version diffs on our Changelog](https://github.com/temporalio/sdk-typescript/blob/HEAD/CHANGELOG.md)
@@ -173,7 +174,7 @@ $ npm run start.watch
 Then start your Workflow:
 
 ```bash
-$ npm run workflow # runs ts-node src/exec-workflow.ts
+$ npm run workflow # runs ts-node src/client.ts
 Hello, Temporal! # success!
 ```
 
@@ -214,6 +215,12 @@ These are the essential pages to have a passing knowledge of our Core APIs:
 - [Clients](/docs/typescript/clients): How to start, signal, query, cancel, or otherwise handle Workflows.
 
 </details>
+
+## Getting Help
+
+For quick questions, we are always available on [the Temporal Slack](https://temporal.io/slack).
+
+For long form/FAQs, please search and ask on [the Temporal community forum](https://community.temporal.io/) instead.
 
 ## TS SDK Intro Workshop
 

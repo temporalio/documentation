@@ -5,12 +5,9 @@ sidebar_label: Workers
 description: A Worker is a process that connects to the Temporal Server, polls Task Queues for Commands sent from Clients, and executes Workflows and Activities in response to those Commands.
 ---
 
-import {RelatedReadContainer, RelatedReadItem} from '../components/RelatedReadList.js'
+**`@temporalio/worker`** [![NPM](https://img.shields.io/npm/v/@temporalio/worker)](https://www.npmjs.com/package/@temporalio/worker) [API reference](https://typescript.temporal.io/api/namespaces/worker) | [GitHub](https://github.com/temporalio/sdk-typescript/tree/main/packages/worker)
 
-<!-- prettier-ignore -->
-import * as WhatIsATaskQueue from '../content/what-is-a-task-queue.md'
-
-> **@temporalio/worker** [![NPM](https://img.shields.io/npm/v/@temporalio/worker)](https://www.npmjs.com/package/@temporalio/worker) [API reference](https://typescript.temporal.io/api/namespaces/worker) | [GitHub](https://github.com/temporalio/sdk-typescript/tree/main/packages/worker)
+> _Background reading: [Workers in Temporal](https://docs.temporal.io/docs/temporal-explained/task-queues-and-workers)_
 
 ## What is a Worker?
 
@@ -87,41 +84,61 @@ const worker = await Worker.create({
 
 ### How to shut down a Worker and track its state
 
-You can programmatically shut down a worker with `worker.shutdown()`.
-Shut downs should be rare and often done manually in development (by default, Workers shutdown if they receive any of these [`shutdownSignals`](https://typescript.temporal.io/api/interfaces/worker.workeroptions/#shutdownsignals): `['SIGINT', 'SIGTERM', 'SIGQUIT', 'SIGUSR2']`. You can customize these signals, or the [`shutdownGraceTime`](https://typescript.temporal.io/api/interfaces/worker.workeroptions/#shutdowngracetime) if needed).
+Workers shut down if they receive any of these [`shutdownSignals`](https://typescript.temporal.io/api/interfaces/worker.workeroptions/#shutdownsignals): `['SIGINT', 'SIGTERM', 'SIGQUIT', 'SIGUSR2']`. In development, we shut down Workers with `Ctrl-C` (`SIGINT`) or [`nodemon`](https://github.com/temporalio/samples-typescript/blob/c37bae3ea235d1b6956fcbe805478aa46af973ce/hello-world/package.json#L10) (`SIGUSR2`). In production, we usually want to give Workers a [`shutdownGraceTime`](https://typescript.temporal.io/api/interfaces/worker.workeroptions/#shutdowngracetime) long enough for them to finish any in-progress Activities. As soon as they receive a shutdown signal or request, the Worker stops polling for new Tasks and allows in-flight Tasks to complete until `shutdownGraceTime` is reached. Any Activities that are still running at that time will stop running, and will be rescheduled by Temporal Server when an [Activity timeout](https://docs.temporal.io/docs/typescript/activities#activity-timeouts) occurs.
 
-However, you may want to programmatically shut down in integration tests or in automating a fleet of workers.
+We may want to programmatically shut down Workers (with `worker.shutdown()`) in integration tests or when automating a fleet of Workers.
 
 #### Worker states
 
-At any point in time, you can query Worker state with `worker.getState()`.
+At any point in time, we can query Worker state with `worker.getState()`.
 A Worker is in one of 7 states at any given point:
 
 - `INITIALIZED` - The initial state of the Worker after calling Worker.create and successful connection to the server
-- `RUNNING` - `worker.run` was called, polling task queues
-- `FAILED` - Worker encountered an unrecoverable error, `worker.run` should reject with the error
+- `RUNNING` - `worker.run()` was called, polling task queues
+- `FAILED` - Worker encountered an unrecoverable error, `worker.run()` should reject with the error
 - The last 4 states are related to the Worker shutdown process:
-  - `STOPPING` - Worker.shutdown was called or received shutdown signal, worker will forcefully shutdown in shutdownGraceTime
+  - `STOPPING` - `worker.shutdown()` was called or received shutdown signal, worker will forcefully shutdown after `shutdownGraceTime`
   - `DRAINING` - Core has indicated that shutdown is complete and all Workflow tasks have been drained, waiting for activities and cached workflows eviction
   - `DRAINED` - All activities and workflows have completed, ready to shutdown
-  - `STOPPED` - Shutdown complete, `worker.run` resolves
+  - `STOPPED` - Shutdown complete, `worker.run()` resolves
 
 If you need even more visibility into internal worker state, [see the API reference for more](https://typescript.temporal.io/api/classes/worker.Worker).
 
-### Worker Networking and Security
+## Rust Core and Worker Networking
 
 In development, the TypeScript SDK usually handles all of the communication between the Worker and the Temporal Server behind the scenes - no port configuration is required.
 
-In production settings, you can configure the `address` and `namespace` the Worker speaks to via [the Rust Core SDK](https://github.com/temporalio/sdk-core) as [`Core`](https://typescript.temporal.io/api/classes/worker.core/#install).
+In production settings, you can configure the `address` and `namespace` the Worker speaks to via [the Rust Core SDK](https://github.com/temporalio/sdk-core) as [`Core`](https://typescript.temporal.io/api/classes/worker.core/#install), together with other [CoreOptions](https://typescript.temporal.io/api/interfaces/worker.CoreOptions):
+
+```js
+import { Worker, DefaultLogger, Core } from '@temporalio/worker';
+
+const logger = new DefaultLogger('DEBUG');
+await Core.install({
+  logger,
+  telemetryOptions: { logForwardingLevel: 'INFO' },
+});
+const worker = await Worker.create(/* standard Worker code from here */);
+```
+
 Temporal also supports mTLS encryption (required by Temporal Cloud) this way - please read our [Security docs](/docs/typescript/security#encryption-in-transit-with-mtls) for more information.
+
+## Task Queues
+
+import WhatIsATaskQueue from '../concepts/what-is-a-task-queue.md'
+
+<details>
+<summary>
+A Task Queue is a dynamic queue in Temporal Server polled by one or more Workers.
+</summary>
+
+<WhatIsATaskQueue />
+
+</details>
 
 ### Where Task Queues are used
 
 In Temporal, a Task Queue is represented in code by its name as a `string`.
-
-<RelatedReadContainer>
-  <RelatedReadItem page={WhatIsATaskQueue} />
-</RelatedReadContainer>
 
 There are two main places where the name of the Task Queue is supplied by the developer.
 
@@ -189,4 +206,4 @@ Worker Code:
 <!--SNIPEND-->
 
 This pattern is [in use at Netflix](https://www.youtube.com/watch?v=LliBP7YMGyA&t=24s).
-Note that this is unrelated to [Sticky Queues](/docs/concepts/task-queues/#sticky-queues), which are an internal implementation detail.
+Note that this is unrelated to [Sticky Queues](/docs/concepts/what-is-a-sticky-execution), which are an internal implementation detail.

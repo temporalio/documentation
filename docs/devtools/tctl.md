@@ -8,6 +8,8 @@ The Temporal CLI is a command-line tool you can use to perform various tasks on 
 It can perform namespace operations such as register, update, and describe as well as Workflow operations like start
 Workflow, show Workflow history, and signal Workflow.
 
+A new reference is in progress: [tctl reference](/docs/reference/tctl)
+
 ## Run the CLI
 
 You can run the CLI in four ways.
@@ -165,7 +167,7 @@ You can also set this inside your Workflow code with `WorkflowOptions.WorkflowId
 
 Memos are immutable key/value pairs that can be attached to a workflow run when starting the workflow.
 These are visible when listing workflows.
-More information on memos can be found [here](/docs/content/what-is-a-memo).
+More information on memos can be found [here](/docs/concepts/what-is-a-memo).
 
 ```bash
 tctl workflow start \
@@ -399,7 +401,7 @@ import HowToViewSearchAttributesOfAClusterUsingTCTL from '../content/how-to-view
 
 ### Add custom Search Attributes to a Cluster
 
-import HowToAddACustomSearchAttributeToAClusterUsingTCTL from '../content/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl.md'
+import HowToAddACustomSearchAttributeToAClusterUsingTCTL from '../tctl/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl.md'
 
 <HowToAddACustomSearchAttributeToAClusterUsingTCTL/>
 
@@ -586,12 +588,12 @@ $ tctl workflow show  --workflow_id "HelloActivityWorker"
                                 StartToCloseTimeoutSeconds:10,
                                 Attempt:0}
   3  WorkflowTaskStarted       {ScheduledEventId:2,
-                                Identity:36234@maxim-C02XD0AAJGH6,
+                                Identity:36234@maxim-1234567890AB,
                                 RequestId:ef645576-7cee-4d2e-9892-597a08b7b01f}
   4  WorkflowTaskCompleted     {ExecutionContext:[],
                                 ScheduledEventId:2,
                                 StartedEventId:3,
-                                Identity:36234@maxim-C02XD0AAJGH6}
+                                Identity:36234@maxim-1234567890AB}
   5  ActivityTaskScheduled     {ActivityId:0,
                                 ActivityType:{Name:HelloWorldActivities_say},
                                 TaskQueue:{Name:HelloWorldTaskQueue},

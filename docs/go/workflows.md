@@ -10,20 +10,22 @@ description: In the Temporal Go SDK programming model, a Workflow is an exportab
 You can execute Workflows (including those from other language SDKs) by their type name:
 
 ```go
+
 workflowID := "myworkflow_" + uuid.New()
 workflowOptions := client.StartWorkflowOptions{
   ID:        workflowID,
   TaskQueue: "mytaskqueue",
 }
 
-we, err := c.ExecuteWorkflow(context.Background(), workflowOptions, "MySimpleWorkflow")
+we, err := temporalClient.ExecuteWorkflow(context.Background(), workflowOptions, "MySimpleWorkflow")
 if err != nil {
   log.Fatalln("Unable to execute workflow", err)
 }
 log.Println("Started workflow", "WorkflowID", we.GetID(), "RunID", we.GetRunID())
 ```
 
-Here we execute a workflow by its type name, namely `MySimpleWorkflow`. By default, the
+In the above example, `client` is imported from the "go.temporal.io/sdk/client" package. And `temporalClient` is an instance of the Temporal Client instantiated outside of the snippet.
+Here we spawn a Workflow Execution by its Workflow Type name `MySimpleWorkflow`. By default, the
 Workflow type is the name of the Workflow function, for example:
 
 ```go
@@ -41,19 +43,6 @@ rwo := workflow.RegisterOptions {
 }
 w.RegisterWorkflowWithOptions(dynamic.SampleGreetingsWorkflow, rwo)
 ```
-
-Inside Workflow code you can also signal other workflows using their workflow type using `SignalExternalWorkflow`:
-
-```go
-// Send 10 signals to PHP workflow
-for i := 0; i < 10; i++ {
-    err :=  workflow.SignalExternalWorkflow(ctx, "simple-workflow-php", "", "goMessage", "Hello from Go workflow: "+strconv.Itoa(i)).Get(ctx, nil)
-}
-```
-
-Here we are sending a signal to a Workflow with type "simple-workflow-php" and signal name "goMessage".
-
-See our [Signals docs](https://docs.temporal.io/docs/go/signals) and [Temporal Polyglot example](https://github.com/tsurdilo/temporal-polyglot) for more.
 
 ### Querying Workflow State
 
@@ -81,33 +70,3 @@ In the Workflow Definition below, there is a special Activity that handles clean
 
 <!--SNIPSTART samples-go-cancellation-workflow-definition-->
 <!--SNIPEND-->
-
-## How to get data in or out of a running Workflow
-
-[Signals](/docs/go/signals) are the mechanism by which you can get data into an already running Workflow.
-
-[Queries](/docs/go/queries) are the mechanism by which you can get data out of a currently running Workflow.
-
-## Custom Serialization and Workflow Security
-
-import DataConverter from '../shared/dataconverter.md'
-
-<DataConverter href="https://pkg.go.dev/go.temporal.io/sdk@v1.6.0/converter#DataConverter" continueAsNewURL="#large-event-histories"/>
-
-## Large Event Histories
-
-import SharedContinueAsNew from '../shared/continue-as-new.md'
-
-<SharedContinueAsNew />
-
-To trigger this behavior, the Workflow function should
-terminate by returning the special **ContinueAsNewError** error:
-
-```go
-func SimpleWorkflow(ctx workflow.Context, value string) error {
-    ...
-    return workflow.NewContinueAsNewError(ctx, SimpleWorkflow, value)
-}
-```
-
-If you need to know whether a Workflow was started via `continueAsNew`, you can check if `workflow.GetInfo(ctx).ContinuedExecutionRunID` is not nil.
