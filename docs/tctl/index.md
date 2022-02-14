@@ -13,27 +13,6 @@ Workflow, show Workflow History, and Signal Workflow).
 
 - [How to install tctl](/docs/tctl/how-to-install-tctl)
 - [Environment variables for tctl](/docs/tctl/environment-variables)
-
-## `tctl` commands
-
-- [`tctl activity`](/docs/tctl/activity)
-- [`tctl batch`](/docs/tctl/batch)
-- [`tctl cluster`](/docs/tctl/cluster)
-- [`tctl data-converter`](/docs/tctl/data-converter)
-- [`tctl namespace`](/docs/tctl/namespace)
-- [`tctl taskqueue`](/docs/tctl/taskqueue)
-- [`tctl workflow`](/docs/tctl/workflow)
-- `tctl help`
-- `tctl admin cluster`
-- `tctl admin db`
-- `tctl admin decode`
-- `tctl admin dlq`
-- `tctl admin elasticsearch`
-- `tctl admin history_host`
-- `tctl admin membership`
-- `tctl admin namespace`
-- `tctl admin shard`
-- `tctl admin taskqueue`
-- `tctl admin workflow`
-
-<!-- ## Global modifiers -->
+<!-- - [Global modifiers for tctl](docs/tctl/global-modifiers) -->
+- [How to use tctl](/docs/tctl/how-to-use-tctl)
+- [How to add a custom Search Attribute to a Cluster using tctl](/docs/tctl/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl)

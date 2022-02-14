@@ -142,5 +142,5 @@
 #
 # Dev tools redirects
 #
-/docs/tctl        /docs/devtools/tctl
+/docs/devtools/tctl        /docs/tctl
 /docs/system-tools/*        /docs/devtools/:splat
