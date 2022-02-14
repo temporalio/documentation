@@ -177,6 +177,7 @@ module.exports = {
       items: [
         "server/introduction",
         "server/quick-install",
+        "cluster/how-to-quickly-install-the-temporal-cluster-using-docker-compose",
         "cluster/how-to-deploy-temporal-to-kubernetes-for-testing-and-development",
         "server/versions-and-dependencies",
         "server/options",

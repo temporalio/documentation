@@ -7,15 +7,8 @@ tags:
   - operation-guide
 ---
 
-import RelatedReadList from '../components/RelatedReadList.js'
-
 Use [Temporal Helm Charts](https://github.com/temporalio/helm-charts) to deploy the Temporal Server to a [Kubernetes](https://kubernetes.io/) cluster.
 
-Deploying the Temporal Server with Helm is not recommended for a [production environment](/docs/server/production-deployment), but it is a great way to test the system while developing Workflows.
+Deploying the Temporal Cluster with Helm is not recommended for a [production environment](/docs/server/production-deployment), but it is a great way to test the system while developing Workflows.
 
-<RelatedReadList
-readlist={[
-["How to quickly install the Temporal Server for testing and local development",
-"/docs/content/how-to-quickly-install-the-temporal-server","operation guide"]
-]}
-/>
+[How to quickly install the Temporal Cluster using Docker Compose for testing and local development](/docs/cluster/how-to-quickly-install-the-temporal-cluster-using-docker-compose)

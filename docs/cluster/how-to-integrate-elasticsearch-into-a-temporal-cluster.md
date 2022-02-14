@@ -1,7 +1,7 @@
 ---
 id: how-to-integrate-elasticsearch-into-a-temporal-cluster
 title: How to integrate Elasticsearch into a Temporal Cluster
-sidebar_label: Elasticsearch integration
+sidebar_label: Elasticsearch
 description: To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` section of your `development.yaml` configuration file and run the index schema setup commands.
 tags:
   - operation-guide
