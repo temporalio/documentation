@@ -68,7 +68,7 @@
 #
 # Java pages redirects
 #
-/docs/java        /docs/java/introduction
+/docs/java/introduction        /docs/java
 /docs/java-sdk-overview         /docs/java-sdk-introduction
 /docs/java-sdk-introduction         /docs/java/introduction
 /docs/java-activities         /docs/java/activities
