@@ -38,7 +38,7 @@ function SDKs() {
         <li className="">
           <Link
             className="flex items-center space-x-3 hover:underline"
-            to={useBaseUrl("/docs/go/getting-started")}
+            to={useBaseUrl("/docs/go/")}
           >
             <img
               className="h-8 w-8 transition hover:scale-110"

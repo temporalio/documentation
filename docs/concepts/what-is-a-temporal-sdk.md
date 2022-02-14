@@ -15,9 +15,9 @@ A Temporal SDK is a language-specific library that offers APIs to do the followi
 
 A Temporal SDK enables you to write your application code using the full power of the programming language, while the Temporal Platform handles the durability, availability, and scalability of the application.
 
-SDKs are available in the following languages:
+SDK How-tos:
 
-- [Go](/docs/go/getting-started)
-- [Java](/docs/java)
-- [PHP](/docs/php/introduction)
-- [TypeScript](/docs/typescript/introduction)
+- [How to use the Go SDK](/docs/go/)
+- [How to use the Java SDK](/docs/java/)
+- [How to use the PHP SDK](/docs/php/introduction)
+- [How to use the TypeScript SDK](/docs/typescript/introduction)
