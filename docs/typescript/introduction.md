@@ -7,6 +7,12 @@ description: The TypeScript SDK lets developers write highly scalable, reliable,
 The Temporal TypeScript SDK ([now in Beta](/blog/typescript-beta)) lets you write highly scalable and reliable long-running workflows without being a distributed systems expert.
 It is designed with TypeScript-first developer experience in mind, but works equally well with JavaScript.
 
+import { ResponsivePlayer } from '../../src/components'
+
+<div style={{width: "50%"}}>
+  <ResponsivePlayer url='https://youtu.be/2HjnQlnA5eY'/>
+</div>
+
 You can view:
 
 - [Code samples on GitHub](https://github.com/temporalio/samples-typescript)
@@ -226,9 +232,9 @@ For long form/FAQs, please search and ask on [the Temporal community forum](http
 
 We held a 2hr intro workshop explaining every core concept from scratch:
 
-import { ResponsivePlayer } from '../../src/components'
-
-<ResponsivePlayer url='https://www.youtube.com/watch?v=CeHSmv8oF_4&feature=youtu.be' />
+<div style={{width: "50%"}}>
+  <ResponsivePlayer url='https://www.youtube.com/watch?v=CeHSmv8oF_4&feature=youtu.be' />
+</div>
 
 Timestamps:
 
