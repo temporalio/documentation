@@ -33,7 +33,7 @@ export const SDKs = () => {
         </Link>
         <Link
           className=" scale flex flex-col items-center justify-center space-y-3 rounded-lg bg-[color:var(--ifm-card-background-color)] p-6 text-center shadow-lg"
-          to={useBaseUrl("/docs/java/introduction")}
+          to={useBaseUrl("/docs/java")}
         >
           <img className="h-16 w-16" src="/img/java.svg" alt="Java logo" />
           <p className="text-lg">Java</p>

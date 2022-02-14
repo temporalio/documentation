@@ -237,8 +237,11 @@ module.exports = {
       label: "Java how-tos",
       collapsible: false,
       collapsed: false,
+      link: {
+        type: "doc",
+        id: "java/index",
+      },
       items: [
-        "java/introduction",
         {
           type: "link",
           label: "Reference",

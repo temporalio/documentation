@@ -18,6 +18,6 @@ A Temporal SDK enables you to write your application code using the full power o
 SDKs are available in the following languages:
 
 - [Go](/docs/go/getting-started)
-- [Java](/docs/java/introduction)
+- [Java](/docs/java)
 - [PHP](/docs/php/introduction)
 - [TypeScript](/docs/typescript/introduction)

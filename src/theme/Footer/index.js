@@ -61,7 +61,7 @@ function Footer() {
         },
         {
           label: "Java SDK",
-          to: "/docs/java/introduction",
+          to: "/docs/java",
         },
         {
           label: "PHP SDK",
