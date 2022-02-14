@@ -13,7 +13,7 @@ The `tctl workflow listall` command lists all open or closed [Workflow Execution
 By default, this command lists all closed Workflow Executions.
 To list open Workflow Executions, use the `--open` option.
 
-See also [`tctl workflow list`](./list.md), [`tctl workflow listarchived`](./listarchived.md), and [`tctl workflow scan`](./scan.md).
+See also [`tctl workflow list`](/docs/tctl/workflow/list), [`tctl workflow listarchived`](/docs/tctl/workflow/listarchived), and [`tctl workflow scan`](/docs/tctl/workflow/scan).
 
 `tctl workflow listall [<modifiers>]`
 

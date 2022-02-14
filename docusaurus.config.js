@@ -79,9 +79,13 @@ module.exports = {
               label: "Cluster",
             },
             {
-              to: "/docs/devtools/introduction",
-              activeBasePath: "/docs/devtools/",
-              label: "DevTools",
+              to: "/docs/tctl/",
+              activeBasePath: "/docs/tctl/",
+              label: "tctl",
+            },
+            {
+              to: "/docs/devtools/web-ui/",
+              label: "Web UI",
             },
             {
               to: "/application-development",

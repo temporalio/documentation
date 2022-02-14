@@ -1,46 +1,14 @@
 ---
-id: tctl
-title: Temporal CLI - tctl
-sidebar_label: CLI
+id: how-to-use-tctl
+title: How to use tctl
+sidebar_label: How to use
 ---
-
-The Temporal CLI is a command-line tool you can use to perform various tasks on a Temporal Server.
-It can perform namespace operations such as register, update, and describe as well as Workflow operations like start
-Workflow, show Workflow history, and signal Workflow.
-
-A new reference is in progress: [tctl reference](/docs/reference/tctl)
-
-## Run the CLI
-
-You can run the CLI in four ways.
-
-- Install locally using [Homebrew](https://brew.sh/): `brew install tctl`
-- Run locally together with Temporal Server in [docker-compose](https://github.com/temporalio/docker-compose): `docker exec temporal-admin-tools tctl YOUR COMMANDS HERE`
-  - We recommend setting an alias: `alias tctl="docker exec temporal-admin-tools tctl"` so you can invoke `tctl` as though it is installed locally, eg `tctl namespace describe`
-- Run the [temporal-admin-tools](https://hub.docker.com/r/temporalio/admin-tools) docker image:
-  - On Linux: `docker run --rm -it --entrypoint tctl --network host --env TEMPORAL_CLI_ADDRESS=localhost:7233 temporalio/admin-tools:1.14.0`
-  - On macOS/Windows: `docker run --rm -it --entrypoint tctl --env TEMPORAL_CLI_ADDRESS=host.docker.internal:7233 temporalio/admin-tools:1.14.0`
-  - Change the value of `TEMPORAL_CLI_ADDRESS` if your Temporal Server is running on remote host.
-  - You can also create a `tctl` alias to simplify command lines.
-- Building it locally: clone the [Temporal server repo](https://github.com/temporalio/temporal) and run `make tctl`. This produces an executable called `tctl`.
-  Copy this executable to any directory from `PATH` environment variable. For example, `/usr/bin/`.
 
 :::note
 
-Some opt-in upgrades to `tctl` are coming — see https://github.com/temporalio/tctl for instructions.
+This page is temporary. We plan to move the information to other pages.
 
 :::
-
-## Environment variables
-
-Setting environment variables for repeated parameters can shorten the CLI commands.
-
-- **TEMPORAL_CLI_ADDRESS** - host and port for Temporal frontend service (default: `127.0.0.1:7233`)
-- **TEMPORAL_CLI_NAMESPACE** - workflow namespace, so you don't need to specify `--namespace` (default namespace: `default`)
-- **TEMPORAL_CLI_TLS_CA** - path to server Certificate Authority certificate file
-- **TEMPORAL_CLI_TLS_CERT** - path to public x509 certificate file for mutual TLS authentication
-- **TEMPORAL_CLI_TLS_KEY** - path to private key file for mutual TLS authentication
-- **TEMPORAL_CLI_AUTHORIZATION_TOKEN** - for HTTP Basic Authorization plugin (see below)
 
 ## Quick Start
 

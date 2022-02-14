@@ -14,7 +14,7 @@ It is faster than the `tctl workflow listall` command, but the results are not s
 By default, this command lists a maximum of 2000 Workflow Executions.
 To set the size of a page, use the `--pagesize` option.
 
-See also [`tctl workflow list`](./list.md), [`tctl workflow listall`](./listall.md), and [`tctl workflow listarchived`](./listarchived.md).
+See also [`tctl workflow list`](/docs/tctl/workflow/list), [`tctl workflow listall`](/docs/tctl/workflow/listall), and [`tctl workflow listarchived`](/docs/tctl/workflow/listarchived).
 
 `tctl workflow scan [<modifiers>]`
 
