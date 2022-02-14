@@ -191,13 +191,16 @@ module.exports = {
       label: "Go how-tos",
       collapsible: false,
       collapsed: false,
+      link: {
+        type: "doc",
+        id: "go/index",
+      },
       items: [
         {
           type: "link",
           label: "Reference",
           href: "https://pkg.go.dev/go.temporal.io/sdk",
         },
-        "go/getting-started",
         "go/how-to-develop-a-workflow-definition-in-go",
         "go/how-to-develop-an-activity-definition-in-go",
         "go/how-to-spawn-an-activity-execution-in-go",
