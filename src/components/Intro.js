@@ -226,7 +226,7 @@ function Tools() {
           <div className="">Web UI</div>
         </Link>
         <Link
-          to={useBaseUrl("/docs/devtools/tctl")}
+          to={useBaseUrl("/docs/tctl")}
           className="flex space-x-3 font-semibold hover:underline"
         >
           <svg
@@ -241,7 +241,7 @@ function Tools() {
               clipRule="evenodd"
             />
           </svg>
-          <div>CLI</div>
+          <div>tctl (CLI)</div>
         </Link>
       </div>
     </div>
