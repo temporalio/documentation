@@ -80,8 +80,8 @@ module.exports = {
             },
             {
               to: "/docs/devtools/introduction",
-              activeBasePath: "/docs/devtools/",
-              label: "DevTools",
+              activeBasePath: "/docs/tctl/",
+              label: "tctl",
             },
             {
               to: "/application-development",
