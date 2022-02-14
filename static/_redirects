@@ -69,8 +69,6 @@
 # Java pages redirects
 #
 /docs/java/introduction        /docs/java
-/docs/java-sdk-overview         /docs/java-sdk-introduction
-/docs/java-sdk-introduction         /docs/java/introduction
 /docs/java-activities         /docs/java/activities
 /docs/java-distributed-cron         /docs/java/distributed-cron
 /docs/java-hello-world        /docs/java/hello-world-tutorial
