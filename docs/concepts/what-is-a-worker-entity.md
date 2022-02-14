@@ -20,3 +20,7 @@ However, the tradeoff is added latency.
 Workers are stateless, so any Workflow Execution in a blocked state can be safely removed from a Worker.
 Later on, it can be resurrected on the same or different Worker when the need arises (in the form of an external event).
 Therefore, a single Worker can handle millions of open Workflow Executions, assuming it can handle the update rate and that a slightly higher latency is not a concern.
+
+**Operation guides:**
+
+- [How to tune Workers](/docs/operation/how-to-tune-workers)

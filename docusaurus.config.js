@@ -76,7 +76,7 @@ module.exports = {
             {
               to: "/docs/server/introduction",
               activeBasePath: "/docs/server/",
-              label: "Server",
+              label: "Cluster",
             },
             {
               to: "/docs/devtools/introduction",
@@ -88,6 +88,11 @@ module.exports = {
               activeBaseRegex:
                 "(/application-development)|(/docs/(go|java|php|node))",
               label: "SDKs",
+            },
+            {
+              to: "/docs/operation/",
+              activeBasePath: "operation",
+              label: "Operation guides",
             },
             {
               to: "/docs/learning-paths",
