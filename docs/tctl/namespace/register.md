@@ -16,7 +16,7 @@ The following modifiers control the behavior of the command.
 
 ### `--active-cluster`
 
-How to specify the name of the active [Temporal Cluster](https://docs.temporal.io/docs/concepts/what-is-a-temporal-cluster/) when registering a [Namespace](/docs/concepts/what-is-a-namespace) in tctl.
+How to specify the name of the active [Temporal Cluster](/docs/concepts/what-is-a-temporal-cluster/) when registering a [Namespace](/docs/concepts/what-is-a-namespace) in tctl.
 
 Alias: `--ac`
 
@@ -28,7 +28,7 @@ tctl namespace register --active-cluster <name>
 
 ### `--clusters`
 
-How to specify a list of [Temporal Clusters](https://docs.temporal.io/docs/concepts/what-is-a-temporal-cluster/) when registering a [Namespace](/docs/concepts/what-is-a-namespace) in tctl.
+How to specify a list of [Temporal Clusters](/docs/concepts/what-is-a-temporal-cluster/) when registering a [Namespace](/docs/concepts/what-is-a-namespace) in tctl.
 
 The list contains the names of Clusters (separated by spaces) to which the Namespace can fail over.
 

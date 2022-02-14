@@ -9,5 +9,5 @@ tags:
 
 The `tctl activity` commands enable [Activity Execution](/docs/concepts/what-is-an-activity-execution) operations.
 
-- [`tctl activity complete`](/docs/reference/tctl/activity/complete)
-- [`tctl activity fail`](/docs/reference/tctl/activity/fail)
+- [`tctl activity complete`](/docs/tctl/activity/complete)
+- [`tctl activity fail`](/docs/tctl/activity/fail)

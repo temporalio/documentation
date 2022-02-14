@@ -10,7 +10,7 @@ tags:
 
 The `tctl workflow describe` command shows information about a [Workflow Execution](/docs/concepts/what-is-a-workflow-execution).
 
-See also [`tctl workflow describeid`](./describeid.md).
+See also [`tctl workflow describeid`](/docs/tctl/workflow/describeid.md).
 
 `tctl workflow describe [<modifiers>]`
 

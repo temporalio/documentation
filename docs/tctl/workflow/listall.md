@@ -1,24 +1,21 @@
 ---
-id: list
-title: tctl workflow list
-sidebar_label: list
-description: How to list open or closed Workflow Executions using tctl.
+id: listall
+title: tctl workflow listall
+sidebar_label: listall
+description: How to list all open or closed Workflow Executions using tctl.
 tags:
   - reference
   - tctl
 ---
 
-The `tctl workflow list` command lists open or closed [Workflow Executions](/docs/concepts/what-is-a-workflow-execution).
+The `tctl workflow listall` command lists all open or closed [Workflow Executions](/docs/concepts/what-is-a-workflow-execution).
 
-By default, this command lists a maximum of 10 closed Workflow Executions.
+By default, this command lists all closed Workflow Executions.
+To list open Workflow Executions, use the `--open` option.
 
-- To set the size of a page, use the `--pagesize` option.
-- To list multiple pages, use the `--more` option.
-- To list open Workflow Executions, use the `--open` option.
+See also [`tctl workflow list`](/docs/tctl/workflow/list.md), [`tctl workflow listarchived`](/docs/tctl/workflow/listarchived.md), and [`tctl workflow scan`](/docs/tctl/workflow/scan.md).
 
-See also [`tctl workflow listall`](./listall.md), [`tctl workflow listarchived`](./listarchived.md), and [`tctl workflow scan`](./scan.md).
-
-`tctl workflow list [<modifiers>]`
+`tctl workflow listall [<modifiers>]`
 
 The following modifiers control the behavior of the command.
 
@@ -31,7 +28,7 @@ Alias: `--prt`
 **Example**
 
 ```
-tctl workflow list --print_raw_time
+tctl workflow listall --print_raw_time
 ```
 
 ### `--print_datetime`
@@ -43,7 +40,7 @@ Alias: `--pdt`
 **Example**
 
 ```
-tctl workflow list --print_datetime
+tctl workflow listall --print_datetime
 ```
 
 ### `--print_memo`
@@ -55,7 +52,7 @@ Alias: `--pme`
 **Example**
 
 ```
-tctl workflow list --print_memo
+tctl workflow listall --print_memo
 ```
 
 ### `--print_search_attr`
@@ -67,7 +64,7 @@ Alias: `--psa`
 **Example**
 
 ```
-tctl workflow list --print_search_attr
+tctl workflow listall --print_search_attr
 ```
 
 ### `--print_full`
@@ -79,7 +76,7 @@ Alias: `--pf`
 **Example**
 
 ```
-tctl workflow list --print_full
+tctl workflow listall --print_full
 ```
 
 ### `--print_json`
@@ -91,20 +88,20 @@ Alias: `pjson`
 **Example**
 
 ```
-tctl workflow list --print_json
+tctl workflow listall --print_json
 ```
 
 ### `--open`
 
 How to list open [Workflow Executions](/docs/concepts/what-is-a-workflow-execution).
-(By default, the `tctl workflow list` command lists closed Workflow Executions.)
+(By default, the `tctl workflow listall` command lists closed Workflow Executions.)
 
 Alias: `--op`
 
 **Example**
 
 ```
-tctl workflow list --open
+tctl workflow listall --open
 ```
 
 ### `--earliest_time`
@@ -129,13 +126,13 @@ Alias: `--et`
 To specify 3:04:05 PM India Standard Time on January 2, 2022:
 
 ```
-tctl workflow list --earliest-time '2022-01-02T15:04:05+05:30'
+tctl workflow listall --earliest-time '2022-01-02T15:04:05+05:30'
 ```
 
 To specify 15 minutes before the current time:
 
 ```
-tctl workflow list --earliest-time '15minute'
+tctl workflow listall --earliest-time '15minute'
 ```
 
 ### `--latest_time`
@@ -160,13 +157,13 @@ Alias: `--lt`
 To specify 11:02:17 PM Pacific Daylight Time on April 13, 2022:
 
 ```
-tctl workflow list --latest-time '2022-04-13T23:02:17-07:00'
+tctl workflow listall --latest-time '2022-04-13T23:02:17-07:00'
 ```
 
 To specify 10 seconds before the current time:
 
 ```
-tctl workflow list --latest-time '10second'
+tctl workflow listall --latest-time '10second'
 ```
 
 ### `--workflow_id`
@@ -178,7 +175,7 @@ Aliases: `--wid`, `-w`
 **Example**
 
 ```
-tctl workflow list --workflow_id <id>
+tctl workflow listall --workflow_id <id>
 ```
 
 ### `--workflow_type`
@@ -190,7 +187,7 @@ Alias: `--wt`
 **Example**
 
 ```
-tctl workflow list --workflow_type <name>
+tctl workflow listall --workflow_type <name>
 ```
 
 ### `--status`
@@ -210,7 +207,7 @@ Alias: `-s`
 **Example**
 
 ```
-tctl workflow list --status <value>
+tctl workflow listall --status <value>
 ```
 
 ### `--query`
@@ -224,31 +221,5 @@ Alias: `-q`
 **Example**
 
 ```
-tctl workflow list --query <value>
-```
-
-### `--more`
-
-How to list more than one page.
-(By default, the `tctl workflow list` command lists one page of results.)
-
-Alias: `-m`
-
-**Example**
-
-```
-tctl workflow list --more
-```
-
-### `--pagesize`
-
-How to specify the maximum number of [Workflow Executions](/docs/concepts/what-is-a-workflow-execution) to list on a page.
-(By default, the `tctl workflow list` command lists 10 Workflow Executions per page.)
-
-Alias: `--ps`
-
-**Example**
-
-```
-tctl workflow list --pagesize <value>
+tctl workflow listall --query <value>
 ```
