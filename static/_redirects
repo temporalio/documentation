@@ -121,7 +121,6 @@
 /docs/server        /docs/server/introduction
 /docs/server-archive-data         /docs/server/archive-data
 /docs/server-configuration        /docs/server/configuration
-/docs/server/elasticsearch-setup        /docs/content/how-to-integrate-elasticsearch-into-a-temporal-cluster
 /docs/server-introduction         /docs/server/introduction
 /docs/server-namespaces         /docs/server/namespaces
 /docs/namespaces        /docs/server/namespaces
@@ -132,8 +131,10 @@
 /docs/server-security         /docs/server/security
 /docs/server-versions-and-dependencies        /docs/server/versions-and-dependencies
 /docs/server/workflow-search        /docs/temporal-explained/visibility
-/docs/server-architecture         /docs/content/what-is-a-temporal-cluster
-/docs/content/what-is-the-temporal-server /docs/content/what-is-a-temporal-cluster
+
+/docs/content/how-to-deploy-temporal-to-kubernetes-for-testing-and-development        /docs/cluster/how-to-deploy-temporal-to-kubernetes-for-testing-and-development
+/docs/content/how-to-integrate-elasticsearch-into-a-temporal-cluster        /docs/cluster/how-to-integrate-elasticsearch-into-a-temporal-cluster
+/docs/content/how-to-quickly-install-the-temporal-server        /docs/cluster/how-to-quickly-install-the-temporal-cluster-using-docker-compose
 
 #
 # Dev tools redirects
