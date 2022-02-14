@@ -154,7 +154,6 @@ module.exports = {
         },
       ],
     },
-
   ],
   sidebarOperations: [
     {
@@ -162,9 +161,7 @@ module.exports = {
       label: "Operation guides",
       collapsible: false,
       collapsed: false,
-      items: [
-        "operation/how-to-tune-workers"
-      ],
+      items: ["operation/how-to-tune-workers"],
     },
   ],
   sidebarCluster: [
