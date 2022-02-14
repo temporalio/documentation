@@ -508,8 +508,6 @@ module.exports = {
       label: "References",
       collapsed: true,
       items: [
-        "reference/commands",
-        "reference/events",
         "reference/sdk-metrics",
       ],
     },
