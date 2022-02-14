@@ -43,3 +43,7 @@ This is a selected subset of options you are likely to use. Even more advanced o
 | `dataConverter`    | placeholder for future DataConverter feature (pending feature)                                                                                                                     |
 | `sinks`            | Allows injection of Workflow Sinks (Advanced feature: see [Logging docs](/docs/typescript/logging))                                                                                |
 | `interceptors`     | A mapping of interceptor type to a list of factories or module paths (Advanced feature: see [Interceptors](/docs/typescript/interceptors))                                         |
+
+**Operation guides:**
+
+- [How to tune Workers](/docs/operation/how-to-tune-workers)

@@ -161,6 +161,10 @@ module.exports = {
       label: "Operation guides",
       collapsible: false,
       collapsed: false,
+      link: {
+        type: "doc",
+        id: "operation/index",
+      },
       items: ["operation/how-to-tune-workers"],
     },
   ],
