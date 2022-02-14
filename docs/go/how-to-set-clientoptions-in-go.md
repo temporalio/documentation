@@ -58,7 +58,7 @@ Other more advanced resolvers can also be registered.
 
 ### `Namespace`
 
-Sets the [Namespace](/docs/content/what-is-a-namespace) name for this Temporal Client to work with.
+Sets the [Namespace](/docs/concepts/what-is-a-namespace) name for this Temporal Client to work with.
 
 - Type: `string`
 - Default: default
