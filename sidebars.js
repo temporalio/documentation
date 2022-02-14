@@ -511,11 +511,7 @@ module.exports = {
       type: "category",
       label: "References",
       collapsed: true,
-      items: [
-        "reference/commands",
-        "reference/events",
-        "reference/sdk-metrics",
-      ],
+      items: ["reference/sdk-metrics"],
     },
   ],
 };

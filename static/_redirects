@@ -18,6 +18,8 @@
 /docs/concepts/signals         /docs/concepts/what-is-a-signal
 /docs/concepts/queries         /docs/concepts/what-is-a-query
 /docs/concepts/task-queues         /docs/concepts/what-is-a-task-queue
+/docs/reference/commands        /docs/concepts/what-is-a-command
+/docs/reference/events        /docs/concepts/what-is-an-event
 
 # CONTENT -> CONCEPTS
 /docs/content/what-is-*         /docs/concepts/what-is-:splat
@@ -119,8 +121,6 @@
 /docs/server        /docs/server/introduction
 /docs/server-archive-data         /docs/server/archive-data
 /docs/server-configuration        /docs/server/configuration
-/docs/server-event-types        /docs/reference/events
-/docs/server/event-types        /docs/reference/events
 /docs/server-introduction         /docs/server/introduction
 /docs/server-namespaces         /docs/server/namespaces
 /docs/namespaces        /docs/server/namespaces
