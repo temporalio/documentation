@@ -84,6 +84,10 @@ module.exports = {
               label: "tctl",
             },
             {
+              to: "/docs/devtools/web-ui/",
+              label: "Web UI",
+            },
+            {
               to: "/application-development",
               activeBaseRegex:
                 "(/application-development)|(/docs/(go|java|php|node))",
