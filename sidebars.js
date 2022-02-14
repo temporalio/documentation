@@ -509,9 +509,7 @@ module.exports = {
       type: "category",
       label: "References",
       collapsed: true,
-      items: [
-        "reference/sdk-metrics",
-      ],
+      items: ["reference/sdk-metrics"],
     },
   ],
 };
