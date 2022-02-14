@@ -238,7 +238,6 @@ module.exports = {
       collapsible: false,
       collapsed: false,
       items: [
-        "java/introduction",
         {
           type: "link",
           label: "Reference",
