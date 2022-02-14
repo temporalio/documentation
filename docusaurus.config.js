@@ -79,7 +79,7 @@ module.exports = {
               label: "Server",
             },
             {
-              to: "/docs/devtools/introduction",
+              to: "/docs/tctl/",
               activeBasePath: "/docs/tctl/",
               label: "tctl",
             },
