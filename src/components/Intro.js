@@ -51,7 +51,7 @@ function SDKs() {
         <li className="">
           <Link
             className="flex items-center space-x-3 hover:underline"
-            to={useBaseUrl("/docs/java/introduction")}
+            to={useBaseUrl("/docs/java")}
           >
             <img
               className="h-8 w-8 transition hover:scale-110"
