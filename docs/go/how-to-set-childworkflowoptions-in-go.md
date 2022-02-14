@@ -2,7 +2,7 @@
 id: how-to-set-childworkflowoptions-in-go
 title: How to set ChildWorkflowOptions in Go
 sidebar_label: ChildWorkflowOptions
-description: TODO
+description: Used to set all Child Workflow Execution specific options
 tags:
   - go
   - developer-guide

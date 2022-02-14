@@ -2,7 +2,7 @@
 id: how-to-set-connectionoptions-in-go
 title: How to set ConnectionOptions in Go
 sidebar_label: ConnectionOptions
-description: TODO
+description: Options to control optional connection params
 tags:
   - go
   - developer-guide

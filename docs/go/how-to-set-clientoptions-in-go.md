@@ -26,7 +26,7 @@ Create an instance of [`Options`](https://pkg.go.dev/go.temporal.io/sdk/client#O
 
 ### `HostPort`
 
-Sets the host:port for this client to connect to.
+**How to set the Temporal Client's host:port connection in Go**
 
 - Type: `string`
 - Default: [`client.DefaultHostPort`](https://pkg.go.dev/go.temporal.io/sdk/client#pkg-constants) (localhost:7233)
@@ -86,7 +86,7 @@ import (
 
 func main() {
   // ...
-	logger := logur.LoggerToKV(logrusadapter.New(logrus.New()))
+  logger := logur.LoggerToKV(logrusadapter.New(logrus.New()))
   clientOptions := client.Options{
     Logger: logger,
   }

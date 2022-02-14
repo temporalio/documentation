@@ -2,7 +2,7 @@
 id: how-to-set-executelocalactivityoptions-in-go
 title: How to set ExecuteLocalActivityOptions in Go
 sidebar_label: ExecuteLocalActivityOptions
-description: TODO
+description: Used to set local activity specific parameters that will be stored inside of a context
 tags:
   - go
   - developer-guide
