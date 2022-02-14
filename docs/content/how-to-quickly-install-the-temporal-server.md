@@ -6,8 +6,6 @@ tags:
   - operation-guide
 ---
 
-import RelatedReadList from '../components/RelatedReadList.js'
-
 Use `docker-compose` to quickly install and run the Temporal Server locally to test the system while developing Workflows.
 
 Make sure both Docker and `docker-compose` are installed.
@@ -31,8 +29,4 @@ The preceding steps start the Temporal Server using a default configuration.
 
 To try other configurations (different dependencies and databases), or to try a custom Docker image follow the [temporalio/docker-compose README](https://github.com/temporalio/docker-compose/blob/main/README.md).
 
-<RelatedReadList
-readlist={[
-["How to deploy the Temporal Server to Kubernetes for testing and development", "/docs/content/how-to-deploy-temporal-to-kubernetes-for-testing-and-development", "operation guide"],
-]}
-/>
+- [How to deploy the Temporal Server to Kubernetes for testing and development](/docs/cluster/how-to-deploy-temporal-to-kubernetes-for-testing-and-development)
