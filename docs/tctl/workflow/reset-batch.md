@@ -10,7 +10,7 @@ tags:
 
 The `tctl workflow reset-batch` command resets a batch of [Workflow Executions](/docs/concepts/what-is-a-workflow-execution) by `resetType`.
 
-See also [`tctl workflow reset`](/docs/tctl/workflow/reset.md).
+See also [`tctl workflow reset`](/docs/tctl/workflow/reset).
 
 `tctl workflow reset-batch [<modifiers>]`
 

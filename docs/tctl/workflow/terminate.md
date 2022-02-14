@@ -13,7 +13,7 @@ The `tctl workflow terminate` command terminates a [Workflow Execution](/docs/co
 Terminating a running Workflow Execution records a `WorkflowExecutionTerminated` event as the closing event in the History.
 No more command tasks will be scheduled.
 
-See also [`tctl workflow cancel`](/docs/tctl/workflow/cancel.md).
+See also [`tctl workflow cancel`](/docs/tctl/workflow/cancel).
 
 `tctl workflow terminate [<modifiers>]`
 

@@ -10,7 +10,7 @@ tags:
 
 The `tctl workflow observe` command shows the progress of the [Event History](/docs/concepts/what-is-an-event-history) of a [Workflow Execution](/docs/concepts/what-is-a-workflow-execution).
 
-See also [`tctl workflow observeid`](/docs/tctl/workflow/observeid.md).
+See also [`tctl workflow observeid`](/docs/tctl/workflow/observeid).
 
 `tctl workflow observe [<modifiers>]`
 

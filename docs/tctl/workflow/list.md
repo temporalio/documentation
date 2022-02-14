@@ -16,7 +16,7 @@ By default, this command lists a maximum of 10 closed Workflow Executions.
 - To list multiple pages, use the `--more` option.
 - To list open Workflow Executions, use the `--open` option.
 
-See also [`tctl workflow listall`](/docs/tctl/workflow/listall.md), [`tctl workflow listarchived`](/docs/tctl/workflow/listarchived.md), and [`tctl workflow scan`](/docs/tctl/workflow/scan.md).
+See also [`tctl workflow listall`](/docs/tctl/workflow/listall), [`tctl workflow listarchived`](/docs/tctl/workflow/listarchived), and [`tctl workflow scan`](/docs/tctl/workflow/scan).
 
 `tctl workflow list [<modifiers>]`
 

@@ -12,7 +12,7 @@ The `tctl workflow show` command shows History for the specified [Workflow Execu
 
 `tctl workflow show [<modifiers>]`
 
-See also [`tctl workflow showid`](/docs/tctl/workflow/showid.md).
+See also [`tctl workflow showid`](/docs/tctl/workflow/showid).
 
 The following modifiers control the behavior of the command.
 

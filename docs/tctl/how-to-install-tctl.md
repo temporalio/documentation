@@ -8,7 +8,7 @@ tags:
   - tctl
 ---
 
-You can install [tctl](/docs/tctl/what-is-tctl) in four ways.
+You can install [tctl](/docs/tctl) in four ways.
 
 - Install locally by using [Homebrew](https://brew.sh/): `brew install tctl`
 - Run locally together with Temporal Server in [docker-compose](https://github.com/temporalio/docker-compose): `docker exec temporal-admin-tools tctl YOUR COMMANDS HERE`
@@ -23,9 +23,9 @@ You can install [tctl](/docs/tctl/what-is-tctl) in four ways.
   1. Run `make tctl`.
   1. Copy the `tctl` executable to any directory that appears in the `PATH` environment variable; for example, `/usr/bin/`.
 
-**Note:** To use [tctl](/docs/tctl/what-is-tctl), you must have a Temporal Server running.
+**Note:** To use [tctl](/docs/tctl), you must have a Temporal Server running.
 
-To see help for [tctl](/docs/tctl/what-is-tctl) commands, enter the following commands.
+To see help for [tctl](/docs/tctl) commands, enter the following commands.
 
 | Command             | Description                                                                   |
 | ------------------- | ----------------------------------------------------------------------------- |

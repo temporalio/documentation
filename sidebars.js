@@ -381,7 +381,10 @@ module.exports = {
                 type: "doc",
                 id: "tctl/activity/index",
               },
-              items: ["tctl/activity/complete", "tctl/activity/fail"],
+              items: [
+                "tctl/activity/complete",
+                "tctl/activity/fail",
+              ],
             },
             {
               type: "category",
