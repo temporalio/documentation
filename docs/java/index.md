@@ -1,6 +1,6 @@
 ---
 id: index
-title: How to use the Temporal Java SDK 
+title: How to use the Temporal Java SDK
 sidebar_label: Java How-to
 description: Add the Temporal Java SDK to your project.
 tags:
@@ -19,25 +19,25 @@ The SDK contains the following tools:
 
 1. Add the [Temporal Java SDK](https://github.com/temporalio/sdk-java) to your project as a dependency:
 
-    **[Apache Maven](https://maven.apache.org/)**:
+   **[Apache Maven](https://maven.apache.org/)**:
 
-    ```maven
-    <dependency>
-      <groupId>io.temporal</groupId>
-      <artifactId>temporal-sdk</artifactId>
-      <version>1.5.0</version>
-    </dependency>
-    ```
+   ```maven
+   <dependency>
+     <groupId>io.temporal</groupId>
+     <artifactId>temporal-sdk</artifactId>
+     <version>1.5.0</version>
+   </dependency>
+   ```
 
-    **[Gradle Groovy DSL](https://gradle.org/)**:
+   **[Gradle Groovy DSL](https://gradle.org/)**:
 
-    ```groovy
-    implementation 'io.temporal:temporal-sdk:1.5.0'
-    ```
+   ```groovy
+   implementation 'io.temporal:temporal-sdk:1.5.0'
+   ```
 
-    **Other**:
+   **Other**:
 
-    Additional scripts for each SDK version are available here: [https://search.maven.org/artifact/io.temporal/temporal-sdk](https://search.maven.org/artifact/io.temporal/temporal-sdk). Select an SDK version to see available scripts.
+   Additional scripts for each SDK version are available here: [https://search.maven.org/artifact/io.temporal/temporal-sdk](https://search.maven.org/artifact/io.temporal/temporal-sdk). Select an SDK version to see available scripts.
 
 2. [Install and run the Temporal Server](/docs/server/quick-install) using `docker compose`.
 
