@@ -259,6 +259,7 @@ module.exports = {
           href: "https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/index.html",
         },
         "java/workflows",
+        "java/how-to-develop-a-workflow-definition-in-java",
         "java/activities",
         "java/workers",
         "java/task-queues",
