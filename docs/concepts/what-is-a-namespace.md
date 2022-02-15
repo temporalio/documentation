@@ -16,6 +16,8 @@ Or you could use them to ensure Workflow Executions between different teams neve
 - By default a Temporal Cluster has one "default" and one internal Namespace.
   All APIs and tools, such as the UI and CLI, default to the "default" Namespace if it is not specified.
   So, if you are not planning to use multiple Namespaces, we recommend using the default one.
+- **Case Insensitive**: Because of the DNS, namespaces are case insensitive on the network/routing part.
+  We recommend using lower case for namespace names to avoid potential issues.
 - **Membership**: [Task Queue](/docs/concepts/what-is-a-task-queue) names and [Workflow Ids](/docs/concepts/what-is-a-workflow-id) must all correspond to a specific Namespace.
   For example, when a Workflow Execution is spawned, it does so within a specific Namespace.
 - **Uniqueness**: Temporal guarantees a unique Workflow Id within a Namespace.
