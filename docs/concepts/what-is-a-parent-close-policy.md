@@ -18,7 +18,7 @@ There are three possible values:
 [`ParentClosePolicy` proto definition](https://github.com/temporalio/api/blob/c1f04d0856a3ba2995e92717607f83536b5a44f5/temporal/api/enums/v1/workflow.proto#L44
 
 Each Child Workflow Execution may have its own Parent Close Policy.
-This policy only applies to Child Workflow Executions and has no effect otherwise.
+This policy applies only to Child Workflow Executions and has no effect otherwise.
 
 ![Parent Close Policy entity relationship](/diagrams/parent-close-policy.svg)
 
