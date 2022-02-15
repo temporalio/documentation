@@ -9,7 +9,7 @@ It is designed with TypeScript-first developer experience in mind, but works equ
 
 import { ResponsivePlayer } from '../../src/components'
 
-<div style={{width: "50%"}}>
+<div style={{width: "50%", maxWidth: "100%"}}>
   <ResponsivePlayer url='https://youtu.be/2HjnQlnA5eY'/>
 </div>
 
@@ -232,7 +232,7 @@ For long form/FAQs, please search and ask on [the Temporal community forum](http
 
 We held a 2hr intro workshop explaining every core concept from scratch:
 
-<div style={{width: "50%"}}>
+<div style={{width: "50%", maxWidth: "100%"}}>
   <ResponsivePlayer url='https://www.youtube.com/watch?v=CeHSmv8oF_4&feature=youtu.be' />
 </div>
 
