@@ -5,8 +5,6 @@ sidebar_label: Workflow Definition
 description: In the Temporal Java SDK programming model, a Workflow is a class which implements a Workflow interface.
 ---
 
-import RelatedReadList from '../components/RelatedReadList.js'
-
 In the Temporal Java SDK programming model, a Workflow is a class which implements a Workflow interface:
 
 ```java

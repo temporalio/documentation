@@ -261,6 +261,7 @@ module.exports = {
         "java/workflows",
         "java/how-to-develop-a-workflow-definition-in-java",
         "java/how-to-spawn-a-workflow-execution-in-java",
+        "java/how-to-continue-as-new-in-java",
         "java/activities",
         "java/workers",
         "java/task-queues",

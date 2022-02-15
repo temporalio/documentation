@@ -5,8 +5,6 @@ sidebar_label: Workflow Execution
 description: Initialize an instance of a `WorkflowClient`, create a client side Workflow stub, and then call a Workflow method (annotated with the `@WorkflowMethod` annotation).
 ---
 
-import RelatedReadList from '../components/RelatedReadList.js'
-
 In the Temporal Java SDK, Workflows can be started both synchronously and asynchronously.
 To do either, you must initialize an instance of a `WorkflowClient`, create a client side Workflow stub, and then call a Workflow method (annotated with the `@WorkflowMethod` annotation).
 
