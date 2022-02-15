@@ -45,7 +45,7 @@
 /docs/go/distributed-cron         /docs/content/what-is-a-temporal-cron-job
 /docs/go-error-handling         /docs/go/error-handling
 /docs/go-hello-world        /docs/go/hello-world-tutorial
-/docs/go-queries        /docs/go/queries
+/docs/go/queries        /docs/go/how-to-handle-a-query-in-a-workflow-in-go
 /docs/go-retries        /docs/go/retries
 /docs/go-run-your-first-app         /docs/go/run-your-first-app-tutorial
 /docs/go-sdk-video-tutorial         /docs/go/sdk-video-tutorial
@@ -56,7 +56,7 @@
 /docs/go/signals        /docs/go/how-to-send-a-signal-to-a-workflow-execution-in-go
 /docs/go-sync-vs-async-start        /docs/go/sync-vs-async-start
 /docs/go/sync-vs-async-start        /docs/go/workflows/#how-to-start-a-workflow
-/docs/go-task-queues        /docs/go/task-queues
+/docs/go/task-queues        /docs/concepts/what-is-a-task-queue
 /docs/go/testing        /docs/go/how-to-test-workflow-definitions-in-go
 /docs/go-tracing        /docs/go/tracing
 /docs/go-tutorial-prerequisites         /docs/go/tutorial-prerequisites

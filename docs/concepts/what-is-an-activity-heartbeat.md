@@ -7,8 +7,8 @@ tags:
   - explanation
 ---
 
-An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Server.
-Each ping informs the Temporal Server that the Activity Execution is making progress and the Worker has not crashed.
+An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster.
+Each ping informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.
 
 Activity Heartbeats work in conjunction with a [Heartbeat Timeout](/docs/concepts/what-is-a-heartbeat-timeout).
 
@@ -19,3 +19,5 @@ An Activity Heartbeat can be recorded as often as needed (e.g. once a minute or 
 Temporal SDKs control the rate in which Heartbeats are sent to the Server.
 
 Heartbeating is not required from [Local Activites](/docs/concepts/what-is-a-local-activity), and does nothing.
+
+- [How to Heartbeat an Activity in Go](/docs/go/how-to-heartbeat-an-activity-in-go)
