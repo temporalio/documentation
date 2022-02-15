@@ -38,7 +38,7 @@ If you are experiencing issues, you can check the status of Workers and the Task
 
 ### How to develop a Worker
 
-import Content from '../content/how-to-develop-a-worker-program-in-typescript.md'
+import Content from '../typescript/how-to-develop-a-worker-program-in-typescript.md'
 
 <Content />
 

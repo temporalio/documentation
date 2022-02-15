@@ -1,6 +1,7 @@
 ---
 id: how-to-remove-a-search-attribute-from-a-cluster-using-tctl
 title: How to remove a Search Attribute from a Cluster's metadata using tctl
+sidebar_label: Remove Search Attribute
 description: Use the `tctl admin cluster remove-search-attributes` command to remove a Search Attribute from a Cluster's metadata.
 tags:
   - tctl
