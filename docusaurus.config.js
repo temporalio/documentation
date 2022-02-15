@@ -110,6 +110,10 @@ module.exports = {
           label: "Case Studies",
           items: [
             {
+              to: "/blog/how-datadog-ensures-database-reliability-with-temporal",
+              label: "Datadog",
+            },
+            {
               to: "/blog/how-temporal-simplified-checkr-workflows",
               label: "Checkr",
             },
