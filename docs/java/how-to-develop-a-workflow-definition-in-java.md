@@ -20,7 +20,7 @@ public class FileProcessingWorkflowImpl implements FileProcessingWorkflow {
 The Workflow interface is a Java interface and is annotated with `@WorkflowInterface`.
 Workflow interface methods must have one of the following annotations:
 
-- **@WorkflowMethod** denotes the starting point of Workflow Execution. Workflow Execution completes when this method returns.
+- **@WorkflowMethod** denotes the starting point of [Workflow Execution](/docs/concepts/what-is-a-workflow-execution). Workflow Execution completes when this method returns.
 - **@SignalMethod** indicates that this method is a [Signal](/docs/concepts/what-is-a-signal) handler method and that it can react to external Signals.
   It can have parameters which can contain the Signal payload.
   It does not return a value, so it must have a `void` return type.

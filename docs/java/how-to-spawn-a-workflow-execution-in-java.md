@@ -12,7 +12,7 @@ To do either, you must initialize an instance of a `WorkflowClient`, create a cl
 
 ### Asynchronous start
 
-An asynchronous start initiates a [Workflow Execution](docs/concepts/what-is-a-workflow-execution) and immediately returns a value to the caller.
+An asynchronous start initiates a [Workflow Execution](/docs/concepts/what-is-a-workflow-execution) and immediately returns a value to the caller.
 This is the most common way to start Workflows in a live environment.
 
 <!--SNIPSTART money-transfer-project-template-java-workflow-initiator-->
