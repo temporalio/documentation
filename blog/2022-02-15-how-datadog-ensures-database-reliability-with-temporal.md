@@ -10,7 +10,7 @@ author: Ryland Goldstein
 author_title: Head of Product
 author_image_url: https://avatars2.githubusercontent.com/u/27736122?s=460&u=7b6a3e58ec7ed715│     7f23f51e91a2f4cd2028d606&v=4
 image: https://i.imgur.com/UDZHVIp.png
-release_version: V1.14.5
+release_version: V1.15
 ---
 
 <img alt="Temporal and Datadog logos" class="case-study-header" src='https://i.imgur.com/UDZHVIp.png' />
