@@ -75,6 +75,7 @@ if err != nil {
 	return err
 }
 ```
+
 #### Consistency level
 
 Example:
@@ -86,3 +87,4 @@ resp, err := client.QueryWorkflowWithOptions(ctx, &client.QueryWorkflowWithOptio
         QueryType:             queryType,
         QueryConsistencyLevel: shared.QueryConsistencyLevelStrong.Ptr(),
 })
+```
