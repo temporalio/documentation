@@ -53,7 +53,7 @@ public interface FileProcessingWorkflow {
 ```
 
 The `@WorkflowMethod` annotation has a `name` parameter, such as `@WorkflowMethod(name = "MyWorkflowType")`.
-It can be used to denote the [Workflow Type](docs/concepts/what-is-a-workflow-type). If not set, the Workflow Type defaults to the short name of the Workflow interface. In the example above, the Workflow Type defaults to `FileProcessingWorkflow`.
+It can be used to denote the [Workflow Type](/docs/concepts/what-is-a-workflow-type). If not set, the Workflow Type defaults to the short name of the Workflow interface. In the example above, the Workflow Type defaults to `FileProcessingWorkflow`.
 A method annotated with `@WorkflowMethod` can have any number of parameters. We recommend passing a single parameter that contains all the input fields. This allows adding fields in a backward compatible manner.
 
 The `@QueryMethod` annotation also has a `name` parameter, such as `@QueryMethod(name = "history")`.
