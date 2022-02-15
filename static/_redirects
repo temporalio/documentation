@@ -30,6 +30,7 @@
 /docs/node/*        /docs/typescript/:splat
 /docs/typescript/getting-started        /docs/typescript/introduction#getting-started
 /docs/typescript        /docs/typescript/introduction
+/docs/content/how-to-develop-a-worker-program-in-typescript /docs/typescript/how-to-develop-a-worker-program-in-typescript
 
 #
 # Go pages redirects
@@ -88,6 +89,8 @@
 /docs/java/workflow-interface         /docs/java/workflows
 /docs/java-workflow-interface         /docs/java/workflows
 /docs/java/starting-workflow-executions         /docs/java/workflows
+/docs/content/how-to-provide-an-authorization-token-in-java        /docs/java/how-to-provide-an-authorization-token-in-java
+/docs/content/how-to-develop-a-worker-program-in-java        /docs/java/how-to-develop-a-worker-program-in-java
 
 #
 # PHP pages redirects
@@ -112,8 +115,7 @@
 /docs/php-signals         /docs/php/signals
 /docs/php-sync-vs-async-start         /docs/php/workflows/#starting-workflows
 /docs/php-task-queues         /docs/php/task-queues
-/docs/versioning        /docs/php/versioning
-/docs/workers         /docs/php/workers
+/docs/content/how-to-develop-a-worker-program-in-php        /docs/php/how-to-develop-a-worker-program-in-php
 
 #
 # Server pages redirects
@@ -141,3 +143,5 @@
 #
 /docs/devtools/tctl        /docs/tctl
 /docs/system-tools/*        /docs/devtools/:splat
+
+/docs/content/how-to-remove-a-search-attribute-from-a-cluster-using-tctl /docs/tctl/how-to-remove-a-search-attribute-from-a-cluster-using-tctl

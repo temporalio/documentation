@@ -215,7 +215,9 @@ tctl workflow list --status <value>
 
 ### `--query`
 
-How to specify an SQL-like query of [Search Attributes](/docs/concepts/what-is-a-search-attribute).
+**How to list and filter Workflow Executions with a [List Filter](/docs/concepts/what-is-a-list-filter) using tctl.**
+
+The `--query` flag is supported only when [Advanced Visibility](/docs/concepts/what-is-advanced-visibility) is configured with the Cluster.
 
 Using the `--query` option causes tctl to ignore all other filter options, including `open`, `earliest_time`, `latest_time`, `workflow_id`, and `workflow_type`.
 
@@ -223,8 +225,37 @@ Alias: `-q`
 
 **Example**
 
+```bash
+tctl workflow list --query "WorflowId=<your-workflow-id>"
 ```
-tctl workflow list --query <value>
+
+More examples:
+
+```bash
+tctl workflow list \
+  --query "WorkflowType='main.SampleParentWorkflow' AND ExecutionStatus='Running'"
+```
+
+```bash
+tctl workflow list \
+  --query '(CustomKeywordField = "keyword1" and CustomIntField >= 5) or CustomKeywordField = "keyword2"' \
+  --print_search_attr
+```
+
+```bash
+tctl workflow list \
+  --query 'CustomKeywordField in ("keyword2", "keyword1") and CustomIntField >= 5 and CloseTime between "2018-06-07T16:16:36-08:00" and "2019-06-07T16:46:34-08:00" order by CustomDatetimeField desc' \
+  --print_search_attr
+```
+
+```bash
+tctl workflow list \
+  --query 'WorkflowType = "main.Workflow" and (WorkflowId = "1645a588-4772-4dab-b276-5f9db108b3a8" or RunId = "be66519b-5f09-40cd-b2e8-20e4106244dc")'
+```
+
+```bash
+tctl workflow list \
+  --query 'WorkflowType = "main.Workflow" StartTime > "2019-06-07T16:46:34-08:00" and ExecutionStatus = "Running"'
 ```
 
 ### `--more`

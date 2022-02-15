@@ -355,29 +355,11 @@ It also enables host verification. The value must be one of the DNS names listed
 
 TLS command-line arguments can be provided via their respective environment variables to shorten the command line.
 
-## List Workflow Executions
-
-import HowToListWorkflowExecutionsUsingTCTL from '../content/how-to-list-workflow-executions-using-tctl.md'
-
-<HowToListWorkflowExecutionsUsingTCTL/>
-
-## View Search Attributes of a Cluster
-
-import HowToViewSearchAttributesOfAClusterUsingTCTL from '../content/how-to-view-search-attributes-of-a-cluster-using-tctl.md'
-
-<HowToViewSearchAttributesOfAClusterUsingTCTL/>
-
 ### Add custom Search Attributes to a Cluster
 
 import HowToAddACustomSearchAttributeToAClusterUsingTCTL from '../tctl/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl.md'
 
 <HowToAddACustomSearchAttributeToAClusterUsingTCTL/>
-
-### Remove Search Attributes from a Cluster's Metadata
-
-import HowToRemoveASearchAttributeFromAClusterUsingTCTL from '../content/how-to-remove-a-search-attribute-from-a-cluster-using-tctl.md'
-
-<HowToRemoveASearchAttributeFromAClusterUsingTCTL/>
 
 ## Start Workflow with Search Attributes
 
@@ -390,12 +372,6 @@ tctl workflow start \
   --search_attr_key 'CustomIntField | CustomKeywordField | CustomStringField | CustomBoolField | CustomDatetimeField' \
   --search_attr_value '5 | keyword1 | john test | true | 2019-06-07T16:16:36-08:00'
 ```
-
-## View Workflow Execution Event History
-
-import ViewWorkflowExecutionEventHistory from '../content/how-to-view-workflow-execution-event-history-using-tctl.md'
-
-<ViewWorkflowExecutionEventHistory/>
 
 ### Workflow Id Uniqueness
 
