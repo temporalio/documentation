@@ -42,15 +42,15 @@ There are four places where the name of the Task Queue can be set by the develop
 
 1. A Task Queue must be set when spawning a Workflow Execution:
 
-- [How to set `StartWorkflowOptions` in Go](/docs/go/how-to-set-startworkflowoptions-in-go/#taskqueue)
-- [How to spawn a Workflow Execution using tctl](/docs/tctl/workflow/start#--taskqueue)
+  - [How to set `StartWorkflowOptions` in Go](/docs/go/how-to-set-startworkflowoptions-in-go/#taskqueue)
+  - [How to spawn a Workflow Execution using tctl](/docs/tctl/workflow/start#--taskqueue)
 
 2. A Task Queue name must be set when starting a Worker Entity:
 
-- [How to develop a Worker Program in Go](/docs/go/how-to-develop-a-worker-program-in-go)
-- [How to develop a Worker Program in Java](/docs/java/how-to-develop-a-worker-program-in-java)
-- [How to develop a Worker Program in PHP](/docs/php/how-to-develop-a-worker-program-in-php)
-- [How to develop a Worker Program in TypeScript](/docs/typescript/how-to-develop-a-worker-program-in-typescript)
+  - [How to develop a Worker Program in Go](/docs/go/how-to-develop-a-worker-program-in-go)
+  - [How to develop a Worker Program in Java](/docs/java/how-to-develop-a-worker-program-in-java)
+  - [How to develop a Worker Program in PHP](/docs/php/how-to-develop-a-worker-program-in-php)
+  - [How to develop a Worker Program in TypeScript](/docs/typescript/how-to-develop-a-worker-program-in-typescript)
 
 Note that all Worker Entities listening to the same Task Queue name must be registered to handle the exact same Workflows Types and Activity Types.
 
@@ -62,11 +62,11 @@ However, the failure of the Task will not cause the associated Workflow Executio
 This is optional.
 An Activity Execution inherits the Task Queue name from its Workflow Execution if one is not provided.
 
-- [How to set `ActivityOptions` in Go](/docs/go/how-to-set-activityoptions-in-go/#taskqueue)
+  - [How to set `ActivityOptions` in Go](/docs/go/how-to-set-activityoptions-in-go/#taskqueue)
 
 4. A Task Queue name can be provided when spawning a Child Workflow Execution:
 
 This is optional.
 A Child Workflow Execution inherits the Task Queue name from its Parent Workflow Execution if one is not provided.
 
-- [How to set `ChildWorkflowOptions` in Go](#)
+  - [How to set `ChildWorkflowOptions` in Go](#)
