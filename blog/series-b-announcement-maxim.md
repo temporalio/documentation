@@ -14,7 +14,7 @@ image: /img/temporal-home-page-feb-2022.png
 
 <!--truncate-->
 
-Today Temporal Technologies announced the $103M round of financing led by Index Ventures with all our major investors (Sequoia, Amplify, Addition, Madrona) participating.
+Today Temporal Technologies announced the $103M round of financing [led by Index Ventures](https://www.indexventures.com/perspectives/everything-is-a-workflow-our-investment-in-temporal/) with all our major investors (Sequoia, Amplify, Addition, Madrona) participating.
 This brings the company to a 1.5 billion valuation.
 We welcomed [Mike Volpi](https://www.linkedin.com/in/mavolpi/) to the company board.
 We are really excited to leverage his vast experience helping to build iconic open source companies.
