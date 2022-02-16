@@ -21,77 +21,77 @@ The following examples show how to spawn a Child Workflow:
 
 - Spawn a Child Workflow from a Workflow:
 
-    ```java
-    // Child Workflow interface
-    @WorkflowInterface
-    public interface GreetingChild {
-    @WorkflowMethod
-    String composeGreeting(String greeting, String name);
-    }
-    // Child Workflow implementation not shown
+  ```java
+  // Child Workflow interface
+  @WorkflowInterface
+  public interface GreetingChild {
+  @WorkflowMethod
+  String composeGreeting(String greeting, String name);
+  }
+  // Child Workflow implementation not shown
 
-    // Parent Workflow implementation
-    public class GreetingWorkflowImpl implements GreetingWorkflow {
+  // Parent Workflow implementation
+  public class GreetingWorkflowImpl implements GreetingWorkflow {
 
-    @Override
-    public String getGreeting(String name) {
-        GreetingChild child = Workflow.newChildWorkflowStub(GreetingChild.class);
+  @Override
+  public String getGreeting(String name) {
+      GreetingChild child = Workflow.newChildWorkflowStub(GreetingChild.class);
 
-        // This is a blocking call that returns only after child has completed.
-        return child.composeGreeting("Hello", name );
-    }
-    }
-    ```
+      // This is a blocking call that returns only after child has completed.
+      return child.composeGreeting("Hello", name );
+  }
+  }
+  ```
 
 - Spawn two Child Workflows (with the same type) in parallel:
 
-    ```java
-    // Parent Workflow implementation
-    public class GreetingWorkflowImpl implements GreetingWorkflow {
+  ```java
+  // Parent Workflow implementation
+  public class GreetingWorkflowImpl implements GreetingWorkflow {
 
-        @Override
-        public String getGreeting(String name) {
+      @Override
+      public String getGreeting(String name) {
 
-            // Workflows are stateful, so a new stub must be created for each new child.
-            GreetingChild child1 = Workflow.newChildWorkflowStub(GreetingChild.class);
-            Promise<String> greeting1 = Async.function(child1::composeGreeting, "Hello", name);
+          // Workflows are stateful, so a new stub must be created for each new child.
+          GreetingChild child1 = Workflow.newChildWorkflowStub(GreetingChild.class);
+          Promise<String> greeting1 = Async.function(child1::composeGreeting, "Hello", name);
 
-            // Both children will run concurrently.
-            GreetingChild child2 = Workflow.newChildWorkflowStub(GreetingChild.class);
-            Promise<String> greeting2 = Async.function(child2::composeGreeting, "Bye", name);
+          // Both children will run concurrently.
+          GreetingChild child2 = Workflow.newChildWorkflowStub(GreetingChild.class);
+          Promise<String> greeting2 = Async.function(child2::composeGreeting, "Bye", name);
 
-            // Do something else here.
-            ...
-            return "First: " + greeting1.get() + ", second: " + greeting2.get();
-        }
-    }
-    ```
+          // Do something else here.
+          ...
+          return "First: " + greeting1.get() + ", second: " + greeting2.get();
+      }
+  }
+  ```
 
 - Send a Signal to a Child Workflow from the parent:
 
-    ```java
-    // Child Workflow interface
-    @WorkflowInterface
-    public interface GreetingChild {
-        @WorkflowMethod
-        String composeGreeting(String greeting, String name);
+  ```java
+  // Child Workflow interface
+  @WorkflowInterface
+  public interface GreetingChild {
+      @WorkflowMethod
+      String composeGreeting(String greeting, String name);
 
-        @SignalMethod
-        void updateName(String name);
-    }
+      @SignalMethod
+      void updateName(String name);
+  }
 
-    // Parent Workflow implementation
-    public class GreetingWorkflowImpl implements GreetingWorkflow {
+  // Parent Workflow implementation
+  public class GreetingWorkflowImpl implements GreetingWorkflow {
 
-        @Override
-        public String getGreeting(String name) {
-            GreetingChild child = Workflow.newChildWorkflowStub(GreetingChild.class);
-            Promise<String> greeting = Async.function(child::composeGreeting, "Hello", name);
-            child.updateName("Temporal");
-            return greeting.get();
-        }
-    }
-    ```
+      @Override
+      public String getGreeting(String name) {
+          GreetingChild child = Workflow.newChildWorkflowStub(GreetingChild.class);
+          Promise<String> greeting = Async.function(child::composeGreeting, "Hello", name);
+          child.updateName("Temporal");
+          return greeting.get();
+      }
+  }
+  ```
 
 - Sending a Query to Child Workflows from within the parent Workflow code is not supported. However, you can send a Query to Child Workflows from Activities using `WorkflowClient`.
 
