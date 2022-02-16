@@ -17,7 +17,8 @@ The default is `127.0.0.1:7233`.
 
 ### TEMPORAL_CLI_AUTHORIZATION_TOKEN
 
-Specify a token to be used by the HTTP Basic Authorization plugin. 
+Specify a token to be used by the HTTP Basic Authorization plugin.
+
 <!-- TODO: Add link to "Securing tctl" page or its equivalent when it exists. -->
 
 ### TEMPORAL_CLI_NAMESPACE
