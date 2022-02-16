@@ -8,10 +8,6 @@ tags:
   - go
 ---
 
-<!--TODO
-import RelatedReadList from '../components/RelatedReadList.js'
--->
-
 The `ExecuteActivity` API call returns an instance of [`workflow.Future`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Futures) which has the following two methods:
 
 - `Get()`: Takes an instance of the `workflow.Context`, that was passed to the Activity Execution, and a pointer as parameters.
@@ -53,11 +49,3 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (Your
 
 It is idiomatic to invoke multiple Activity Executions from within a Workflow.
 Therefore it is also idiomatic to either block on the results of any of the Activity Executions or continue on to execute additional logic, checking for the Activity Execution results at a later time.
-
-<!--
-<RelatedRead
-text="How to implement Selectors for complex wait conditions"
-goTo="#"
-tagChar="g"
-/>
--->
