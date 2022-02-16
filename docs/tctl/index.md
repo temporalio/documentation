@@ -49,11 +49,11 @@ The default value is 5.
 
 Alias: `--ct`
 
-### `--data_converter_plugin`
+### `--data-converter-plugin`
 
 Specify the name of the executable for a headers provider plugin.
 
-### `--headers_provider_plugin`
+### `--headers-provider-plugin`
 
 Specify the name of the executable for a custom Data Converter plugin.
 
@@ -71,24 +71,24 @@ The default Namespace is `default`.
 
 Alias: `--n`
 
-### `--tls_ca_path`
+### `--tls-ca-path`
 
 Specify the path to a server Certificate Authority (CA) certificate file.
 
-### `--tls_cert_path`
+### `--tls-cert-path`
 
 Specify the path to a public X.509 certificate file for mutual TLS authentication.
 
-### `--tls_disable_host_verification`
+### `--tls-disable-host-verification`
 
 Disable verification of the server certificate (and thus host verification).
 
-### `--tls_key_path`
+### `--tls-key-path`
 
 Specify the path to a private key file for mutual TLS authentication.
 If you use this modifier, you must also use the `--tls-cert-path` modifier.
 
-### `--tls_server_name`
+### `--tls-server-name`
 
 Specify an override for the name of the target server that is used for TLS host verification.
 The name must be one of the DNS names listed in the server TLS certificate.
