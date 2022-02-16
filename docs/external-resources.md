@@ -20,6 +20,8 @@ There have been many high-level descriptions of Temporal from our Series A and B
   - https://siliconangle.com/2022/02/16/temporal-raises-103-million-accelerate-development-stateful-cloud-applications/
   - https://dailyuknews.com/tech/temporal-raises-103m-in-series-b-funding/
   - https://finance.yahoo.com/news/temporal-io-raises-103-million-170000698.html
+  - https://www.computerweekly.com/blog/CW-Developer-Network/Temporal-calls-time-on-cloud-app-state-management
+  - https://www.indexventures.com/perspectives/everything-is-a-workflow-our-investment-in-temporal/
 - **Series A (2020)**: Linked in [our Series A blogpost](https://docs.temporal.io/blog/funding-announcement)
 
 ## How Temporal works
