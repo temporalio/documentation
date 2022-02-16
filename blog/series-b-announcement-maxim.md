@@ -65,5 +65,5 @@ How you can help us:
 
 If you’re reading this and are new to Temporal:
 
-- [Sign up](https://temporal.io/) for the live introductory sessions we’re running this week and next
+- [Sign up](https://calendly.com/community-temporal) for the live introductory sessions we’re running this week and next
 - Or explore some of the common Temporal [use cases](https://temporal.io/use-cases) and [get started](https://docs.temporal.io/).
