@@ -53,10 +53,10 @@ The new financing validates our business model and gives us the opportunity to p
 
 How we plan to use this new funding to help you:
 
-- Improve our open source software.  We’ll have one update on this later today if you join our live stream.
-- Create more and better public goods for the developer community adding education, conferences, community support to what we already do
-- Enhance our cloud service to make it available to everyone and anyone
-- Grow the ecosystem of technologies that work with or build on Temporal
+- **Improve our open source software**.  We’ll have one update on this later today if you [join our live stream](https://temporal-io.zoom.us/webinar/register/WN_VJvPQh8NSk-CyHfvPIZc9w).
+- Create more and better **public goods for the developer community** adding education, conferences, community support to what we already do
+- **Enhance our cloud service** to make it available to everyone and anyone
+- **Grow the ecosystem** of technologies that work with or build on Temporal
 
 How you can help us:
 
