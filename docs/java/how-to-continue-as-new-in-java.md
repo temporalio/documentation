@@ -34,3 +34,5 @@ continueAsNew.greet(input);
 ```
 
 Providing these options allows you to continue Workflow Execution as a new Workflow run, with a different Workflow Type, and on a different Task Queue.
+
+Java Workflow reference: <https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/package-summary.html>
