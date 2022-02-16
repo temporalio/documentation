@@ -34,16 +34,16 @@ Retry Policies do not apply to [Workflow Task Executions](/docs/concepts/what-is
 There are some subtle nuances to how Events are recorded to an Event History when a Retry Policy comes into play.
 
 - For an Activity Execution, the [ActivityTaskStarted](/docs/concepts/what-is-an-event#activitytaskstarted) Event will not show up in the Workflow Execution Event History until the Activity Execution has completed or failed (having exhausted all retries).
-This is to avoid filling the Event History with noise.
-Use the Describe API to get a pending Activity Execution's attempt count.
+  This is to avoid filling the Event History with noise.
+  Use the Describe API to get a pending Activity Execution's attempt count.
 
 - For a Workflow Execution with a Retry Policy, if the Workflow Execution fails, the Workflow Execution will [Continue-As-New](/docs/concepts/what-is-continue-as-new) and the associated Event is written to the Event History.
-The [WorkflowExecutionContinuedAsNew](/docs/concepts/what-is-an-event#workflowexecutioncontinuedasnew) Event will have an "initiator" field that will specify the Retry Policy as the value and the new Run Id for the next retry attempt.
-The new Workflow Execution is created immediately.
-But the first Workflow Task won't be scheduled until the backoff duration is exhausted.
-That duration is recorded as the `firstWorkflowTaskBackoff` field of the new run's `WorkflowExecutionStartedEventAttributes` event.
+  The [WorkflowExecutionContinuedAsNew](/docs/concepts/what-is-an-event#workflowexecutioncontinuedasnew) Event will have an "initiator" field that will specify the Retry Policy as the value and the new Run Id for the next retry attempt.
+  The new Workflow Execution is created immediately.
+  But the first Workflow Task won't be scheduled until the backoff duration is exhausted.
+  That duration is recorded as the `firstWorkflowTaskBackoff` field of the new run's `WorkflowExecutionStartedEventAttributes` event.
 
-### Default values for Retry Policy**
+### Default values for Retry Policy\*\*
 
 ```
 Initial Interval     = 1 second

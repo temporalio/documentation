@@ -99,7 +99,6 @@ You can get the token by calling the `GetRecreateToken()` method of the `Session
 token := workflow.GetSessionInfo(sessionCtx).GetRecreateToken()
 ```
 
-
 **Is there a complete example?**
 
 Yes, the [file processing example](https://github.com/temporalio/samples-go/tree/master/fileprocessing) in the [temporalio/samples-go](https://github.com/temporalio/samples-go) repo has been updated to use the session framework.
@@ -116,8 +115,8 @@ It's per worker process, so make sure there's only one worker process running on
 **Future Work**
 
 - Right now a Session is considered failed if the Worker Process dies.
-However, for some use cases, you may only care whether worker host is alive or not.
-For these uses cases, the Session should be automatically re-established if the Worker Process is restarted.
+  However, for some use cases, you may only care whether worker host is alive or not.
+  For these uses cases, the Session should be automatically re-established if the Worker Process is restarted.
 
 - The current implementation assumes that all Sessions are consuming the same type of resource and there's only one global limitation.
   Our plan is to allow you to specify what type of resource your Session will consume and enforce different limitations on different types of resources.
