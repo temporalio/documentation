@@ -33,7 +33,7 @@ We didn’t realize it back then, but all the stars had aligned to create someth
 We had the vision but still weren't prepared for how fast a strong community is going to form around the project.
 It was amazing to learn how software products and services  that all of us use daily rely on Temporal to power critical business use cases.
 We were really grateful to the early adopters.
-Their trust and enthusiasm encouraged and helped us to start Temporal
+Their trust and enthusiasm encouraged and helped us to start Temporal.
 
 The company is a little over 2 years old, the community has grown exponentially and it is just a beginning.
 We made a decision to keep the MIT license and to avoid having proprietary components (aka open core model).
