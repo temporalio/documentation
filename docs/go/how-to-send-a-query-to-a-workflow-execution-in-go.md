@@ -40,9 +40,9 @@ if err != nil {
 fmt.Printf("Response: %v\n", response) // "foo" + currentState + "baz"
 ```
 
-### The `QueryWorkflowWithOptions()` Function
+### `QueryWorkflowWithOptions()` API
 
-The `QueryWorkflowWithOptions()` function is an alternative way to send a query to a Workflow that has a few extra configuration options.
+The `QueryWorkflowWithOptions()` function is an alternative way to send a Query to a Workflow that has a few extra configuration options.
 
 ```go
 import (

@@ -16,7 +16,7 @@ Activity Heartbeats are implemented within the Activity Definition.
 Custom progress information can be included in the Heartbeat which can then be used by the Activity Execution should a retry occur.
 
 An Activity Heartbeat can be recorded as often as needed (e.g. once a minute or every loop iteration).
-Temporal SDKs control the rate in which Heartbeats are sent to the Server.
+Temporal SDKs control the rate at which Heartbeats are sent to the Cluster.
 
 Heartbeating is not required from [Local Activites](/docs/concepts/what-is-a-local-activity), and does nothing.
 

@@ -27,11 +27,10 @@ This is a great way to troubleshoot a Workflow Execution in production.
 ### Stack Trace Query
 
 There is a built in Query type named `__stack_trace`.
-If a Workflow Execution has been stuck at a state for longer than an expected period of time, you
-might want to send a Query to return the current call stack.
-You do not need to do any special handling in you Workflow code for the `__stack_trace` Query name.
+If a Workflow Execution has been stuck at a state for longer than an expected period of time, you can send a Query to return the current call stack.```
+The `__stack_trace` Query name does not require special handling in your Workflow code.
 
-## Consistent Query
+### Consistent Query
 
 A Query can be one of two consistency levels, eventual and strong.
 Consider if you were to send a Signal to a Workflow Execution with the intent to update its state, and then immediately send a Query to get the state.

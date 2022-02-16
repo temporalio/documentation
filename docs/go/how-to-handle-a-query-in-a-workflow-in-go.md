@@ -15,9 +15,8 @@ The handler must be a function that returns two values:
 1. A serializable result
 2. An error
 
-The handler function can receive any number of input parameters, but all input parameters must be
-serializable.
-The following sample code sets up a query handler that handles the query type of `current_state`:
+The handler function can receive any number of input parameters, but all input parameters must be serializable.
+The following sample code sets up a Query Handler that handles the `current_state` Query type:
 
 ```go
 func MyWorkflow(ctx workflow.Context, input string) error {
