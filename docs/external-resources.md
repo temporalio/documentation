@@ -10,6 +10,18 @@ Here, we list great blogposts and videos by Temporal staff and users that may be
 
 If you have made a tutorial or explanation of Temporal, please [submit them here](https://github.com/temporalio/documentation/edit/master/docs/external-resources.md) so that others can find it!
 
+## Press Announcements
+
+There have been many high-level descriptions of Temporal from our Series A and B PR. This may be helpful for non-technical or technical-adjacent audiences:
+
+- **Series B (2022)**
+  - https://www.geekwire.com/2022/temporal-is-a-unicorn-developer-productivity-startup-lands-120m-at-1-5b-valuation/
+  - https://www.theregister.com/2022/02/16/temporal_103m_funding/
+  - https://siliconangle.com/2022/02/16/temporal-raises-103-million-accelerate-development-stateful-cloud-applications/
+  - https://dailyuknews.com/tech/temporal-raises-103m-in-series-b-funding/
+  - https://finance.yahoo.com/news/temporal-io-raises-103-million-170000698.html
+- **Series A (2020)**: Linked in [our Series A blogpost](https://docs.temporal.io/blog/funding-announcement)
+
 ## How Temporal works
 
 _Don't forget our own [Temporal Cluster docs](/docs/concepts/what-is-a-temporal-cluster)!_
