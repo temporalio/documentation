@@ -8,7 +8,7 @@ tags:
   - developer-guide
 ---
 
-You can also issue a query from your Go code using the `QueryWorkflow()` function as shown below.
+You can send a Query from your Go code using the `QueryWorkflow()` API as shown below.
 
 ```go
 queryType := "current_state"
