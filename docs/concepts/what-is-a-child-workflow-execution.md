@@ -18,9 +18,7 @@ A Parent Workflow Execution must await on the Child Workflow Execution to spawn.
 The Parent can optionally await on the result of the Child Workflow Execution.
 Consider the Child's [Parent Close Policy](/docs/concepts/what-is-a-parent-close-policy) if the Parent does not await on the result of the Child, which includes any use of Continue-As-New by the Parent.
 
-When a Parent Workflow Execution reaches a Closed status, the Server propagates Cancellation Requests or Terminations to Child Workflow Executions depending on the Child's Parent Close Policy.
-
-![Parent Close Policy entity relationship](/diagrams/parent-close-policy.svg)
+When a Parent Workflow Execution reaches a Closed status, the Cluster propagates Cancellation Requests or Terminations to Child Workflow Executions depending on the Child's Parent Close Policy.
 
 If a Child Workflow Execution uses Continue-As-New, from the Parent Workflow Execution's perspective the entire chain of Runs is treated as a single execution.
 

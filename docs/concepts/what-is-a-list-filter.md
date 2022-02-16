@@ -46,8 +46,6 @@ A List Filter contains [Search Attribute](/docs/concepts/what-is-a-search-attrib
 
 - To efficiently count the number of Workflow Executions, use the `CountWorkflow` API.
 
-[How to use a List Filter in the Web UI](/docs/web-ui/how-to-use-a-list-filter-in-the-temporal-web-ui)
-
 ### Example List Filters
 
 ```sql
@@ -93,3 +91,8 @@ order by StartTime desc, CloseTime asc
 ```sql
 order by CustomIntField asc
 ```
+
+**Implementation guides:**
+
+- [How to list and filter Workflow Executions with a List Filter using tctl](/docs/tctl/workflow/list#--query)
+- [How to use a List Filter in the Web UI](/docs/web-ui/how-to-use-a-list-filter-in-the-temporal-web-ui)

@@ -518,6 +518,10 @@ await sleep(30 * 24 * 60 * 60 * 1000); // numerical API
 await sleep('30 days').catch(() => {
   // clean up code if workflow is canceled during sleep
 });
+
+// NOT VALID
+await sleep('1 month'); // ms package doesnt support "months" https://github.com/vercel/ms/issues/57
+// use date-fns and sleepUntil instead, see below
 ```
 
 With this primitive, you can build other abstractions. For example, a `sleepUntil` function that converts absolute time to relative time with `date-fns`:

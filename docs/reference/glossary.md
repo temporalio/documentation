@@ -20,7 +20,7 @@ The following terms have specific definitions within the context of the <preview
 - [Advanced Visibility](/docs/concepts/what-is-advanced-visibility)
 - [Archival](/docs/concepts/what-is-archival)
 - [Child Workflow Execution](/docs/concepts/what-is-a-child-workflow-execution)
-- [Command](/docs/reference/commands)
+- [Command](/docs/concepts/what-is-a-command)
 - [Continue-As-New](/docs/concepts/what-is-continue-as-new)
 - [Data Converter](/docs/concepts/what-is-a-data-converter)
 - [Event](/docs/concepts/what-is-an-event)

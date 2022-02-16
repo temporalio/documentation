@@ -165,7 +165,7 @@ You should now be able to run your Worker with `npm run build:temporal && npm ru
 
 :::tip Pro tip
 
-You actually _can_ start a Workflow with [`tctl`](/docs/devtools/tctl#workflow-operation-examples) with just a Worker running, and no Client code written!
+You actually _can_ start a Workflow with [`tctl`](/docs/tctl/workflow/start) with just a Worker running, and no Client code written!
 It is out of scope for this tutorial but try to `brew install tctl` and then `tctl workflow run --tq tutorial --wt OneClickBuy --et 60 -i '"Temporal CLI"'` if you enjoy developing with CLIs.
 
 :::

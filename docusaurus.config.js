@@ -29,7 +29,7 @@ module.exports = {
   ],
   themeConfig: {
     colorMode: {
-      defaultMode: "dark",
+      defaultMode: "light",
       disableSwitch: false,
       switchConfig: {
         darkIcon: "🌙",
@@ -79,9 +79,13 @@ module.exports = {
               label: "Cluster",
             },
             {
-              to: "/docs/devtools/introduction",
-              activeBasePath: "/docs/devtools/",
-              label: "DevTools",
+              to: "/docs/tctl/",
+              activeBasePath: "/docs/tctl/",
+              label: "tctl",
+            },
+            {
+              to: "/docs/devtools/web-ui/",
+              label: "Web UI",
             },
             {
               to: "/application-development",
@@ -105,6 +109,10 @@ module.exports = {
           activeBasePath: "none",
           label: "Case Studies",
           items: [
+            {
+              to: "/blog/how-datadog-ensures-database-reliability-with-temporal",
+              label: "Datadog",
+            },
             {
               to: "/blog/how-temporal-simplified-checkr-workflows",
               label: "Checkr",
