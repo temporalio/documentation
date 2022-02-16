@@ -2,7 +2,6 @@
 tags:
   - v1
   - temporal
-  - announcement
   - tutorials
 posted_on_: 2020-11-12T00:00:00
 slug: the-making-of-new-user-sdk-tutorials
