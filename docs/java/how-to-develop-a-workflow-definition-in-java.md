@@ -173,6 +173,8 @@ The following constraints apply when writing Workflow Definitions:
 - Do not access configuration APIs directly from a Workflow because changes in the configuration might affect a Workflow Execution path.
   Pass it as an argument to a Workflow function or use an Activity to load it.
 
+Java Workflow reference: <https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/package-summary.html>
+
 ### Workflow Method Arguments
 
 - [What is a Data Converter?](/docs/concepts/what-is-a-data-converter)
