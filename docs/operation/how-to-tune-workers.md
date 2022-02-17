@@ -48,6 +48,22 @@ The steps are arranged in the recommended order of execution.
 
 If currently provisioned Worker hosts are fully utilized (near full CPU usage, high load average, etc), additional Workers hosts have to be provisioned to increase the capacity of the Workers pool.
 
+**It's possible to have too many Workers**
+
+Monitor the poll success (`poll_success`/`poll_success_sync`) and poll timeout `poll_timeouts` Server metric counters.
+
+Poll Success Rate = (`poll_success` + `poll_success_sync`) / (`poll_success` + `poll_success_sync` + `poll_timeouts`)
+
+Poll Success Rate should be >90% in most cases of systems with a steady load. For high volume and low latency, try to target >95%.
+
+If you see
+
+1. low Poll Success Rate, and
+2. low `schedule_to_start_latency`, and
+3. low Worker hosts resource utilization at the same time,
+
+you might have too many workers, consider to size down.
+
 ### Worker Executor Slots sizing
 
 The main area of tuning should be the number of Worker Executor Slots. If:
@@ -104,7 +120,7 @@ Perform this sanity check after the adjustments to Worker settings.
 
 ## Drawbacks of putting just "large values everywhere"
 
-As with any multithreading system, specifying too large values without monitoring with the SDK and system metrics will lead to constant resources contention/stealing, which decreases the total throughput and increases latency jitter of the system.
+As with any multithreading system, specifying too large values without monitoring with the SDK and system metrics will lead to constant resource contention/stealing, which decreases the total throughput and increases latency jitter of the system.
 
 <RelatedReadList
 readlist={[
