@@ -10,21 +10,21 @@ description: Why workflows must be deterministic, and how you can ensure they ar
 Temporal Workflows must be deterministic. Stated using our terminology:
 
 > For a given [Workflow Type](/docs/concepts/what-is-a-workflow-type), its [Workflow Definition](/docs/concepts/what-is-a-workflow-definition)
-> (implementation) must produce the same sequence of [Commands](/docs/concepts/what-is-a-command.md) given the same [History](/docs/concepts/what-is-an-event-history.md)
+> (implementation) must produce the same sequence of [Commands](/docs/concepts/what-is-a-command) given the same [History](/docs/concepts/what-is-an-event-history)
 
 Less formally, this means a Workflow must always do the same thing given the same inputs.
 
 This requirement is important and necessary because it is how Temporal is able to ensure the state
-of your workflow is not lost if, for example, the [Worker](/docs/concepts/what-is-a-worker.md) running
+of your workflow is not lost if, for example, the [Worker](/docs/concepts/what-is-a-worker) running
 your workflow crashes.
 
 As your Workflow is executed, Commands are generated and appended to the History of the Workflow along
-with other [Events](/docs/concepts/what-is-an-event.md). If a Workflow's state needs to be re-created
-on a new Worker, the entire History for that [Workflow Execution](/docs/concepts/what-is-a-workflow-execution.md)
+with other [Events](/docs/concepts/what-is-an-event). If a Workflow's state needs to be re-created
+on a new Worker, the entire History for that [Workflow Execution](/docs/concepts/what-is-a-workflow-execution)
 is sent to the worker and replayed from the beginning. If the same sequence of Commands is emitted
 by the Worker's implementation of the workflow as exists in the History, that is how Temporal ensures
 that the Workflow Definition has recreated the same state that it would've had when executed by whatever
-Worker last completed a [Workflow Task](/docs/concepts/what-is-a-workflow-task.md).
+Worker last completed a [Workflow Task](/docs/concepts/what-is-a-workflow-task).
 
 If this Worker's Workflow Definition were to emit a _different_ Command than the one in the History
 at any given point during replay, the SDK is faced with an impossible choice. Because the implementation
@@ -77,7 +77,7 @@ You can in fact make changes to workflow code which will result in different int
 (different variable values, etc) without necessarily breaking determinism. However, if you were to
 change the order or type of commands based on that state, then determinism would again be broken. In
 effect, such "internal-only" changes produce no externally-visible difference
-([Queries](/docs/concepts/what-is-a-query.md) aside), and are thus acceptable (though not
+([Queries](/docs/concepts/what-is-a-query) aside), and are thus acceptable (though not
 recommended without good reason).
 
 Additionally, we make some practical allowances that permit some minor changes.
@@ -95,9 +95,9 @@ Workflows who are the first to reach the code emitting them will emit them with 
 In order to make changes safely, you can deploy new versions of Workflows to new Task Queues, or
 you can use the appropriate versioning API for your chosen language. See help for:
 
-- [TypeScript](/docs/typescript/patching.md)
-- [Java](/docs/java/versioning.md)
-- [Go](/docs/go/versioning.md)
+- [TypeScript](/docs/typescript/patching)
+- [Java](/docs/java/versioning)
+- [Go](/docs/go/versioning)
 
 ### Intrinsic
 
@@ -105,7 +105,7 @@ Intrinsic nondeterminism is when a Workflow, without any code change, does diffe
 executed with the same input.
 
 An obvious example is branching based on a random number (using a Temporal SDK's randomness
-API is fine, since the randomness is deterministic as a function of the workflow's [Run Id](/docs/concepts/what-is-a-run-id.md)).
+API is fine, since the randomness is deterministic as a function of the workflow's [Run Id](/docs/concepts/what-is-a-run-id)).
 
 A perhaps slightly less obvious example would be branching based on wall-clock time. For example
 (pseudocode):
