@@ -8,6 +8,7 @@ module.exports = {
       items: [
         "temporal-explained/introduction",
         "temporal-explained/workflows",
+        "temporal-explained/workflow-determinism",
         "temporal-explained/activities",
         "temporal-explained/task-queues-and-workers",
         "temporal-explained/signals-and-queries",
