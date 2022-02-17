@@ -9,7 +9,6 @@ description: Why workflows must be deterministic, and how you can ensure they ar
 
 Temporal Workflows must be deterministic. Stated using our terminology:
 
-
 > For a given [Workflow Type](/docs/concepts/what-is-a-workflow-type), its [Workflow Definition](/docs/concepts/what-is-a-workflow-definition)
 > (implementation) must produce the same sequence of [Commands](/docs/concepts/what-is-a-command.md) given the same [History](/docs/concepts/what-is-an-event-history.md)
 
@@ -51,6 +50,7 @@ the same input is not a backwards compatible change, and thus cannot be deployed
 queue without potentially breaking outstanding Workflow Executions.
 
 For example, if you have a Workflow which does the following:
+
 ```text
 1. Start a timer/sleep
 2. Start and wait on an activity
@@ -58,6 +58,7 @@ For example, if you have a Workflow which does the following:
 ```
 
 Which you then change to:
+
 ```text
 1. Start and wait on an activity
 2. Start a timer/sleep
@@ -70,7 +71,7 @@ they may be picked up by the Worker, and they will fail with nondeterminism erro
 The reason to fail in this situation is to ensure that your Workflows reach a consistent state
 given the same history. Ensuring the same command sequence is Temporal's best way to do so. We
 cannot actually compare state, as that would require snapshotting memory at the end of every Workflow
-Task, which is impractical for a number of reasons. 
+Task, which is impractical for a number of reasons.
 
 You can in fact make changes to workflow code which will result in different internal state
 (different variable values, etc) without necessarily breaking determinism. However, if you were to
@@ -79,22 +80,24 @@ effect, such "internal-only" changes produce no externally-visible difference
 ([Queries](/docs/concepts/what-is-a-query.md) aside), and are thus acceptable (though not
 recommended without good reason).
 
-Additionally, we make some practical allowances that permit some minor changes. 
+Additionally, we make some practical allowances that permit some minor changes.
 You may, without breaking determinism:
-* Change the duration of a timer
-* Change the arguments to:
-  * Activity (local or nonlocal)
-  * Child workflow
-  * Signal to external workflow
+
+- Change the duration of a timer
+- Change the arguments to:
+  - Activity (local or nonlocal)
+  - Child workflow
+  - Signal to external workflow
 
 Such changes will not take effect if replaying a History which already contains those Commands, but
 Workflows who are the first to reach the code emitting them will emit them with the new values.
 
 In order to make changes safely, you can deploy new versions of Workflows to new Task Queues, or
 you can use the appropriate versioning API for your chosen language. See help for:
-* [TypeScript](/docs/typescript/patching.md)
-* [Java](/docs/java/versioning.md)
-* [Go](/docs/go/versioning.md)
+
+- [TypeScript](/docs/typescript/patching.md)
+- [Java](/docs/java/versioning.md)
+- [Go](/docs/go/versioning.md)
 
 ### Intrinsic
 
@@ -106,6 +109,7 @@ API is fine, since the randomness is deterministic as a function of the workflow
 
 A perhaps slightly less obvious example would be branching based on wall-clock time. For example
 (pseudocode):
+
 ```text
 fn my_workflow() {
     if system_clock().is_before("12pm") {
@@ -117,7 +121,7 @@ fn my_workflow() {
 ```
 
 Here, `system_clock()` is a function returning wall clock time, rather than Workflow-defined time.
-If you do this, a Workflow which executed before 12pm will have produced a different sequence of 
+If you do this, a Workflow which executed before 12pm will have produced a different sequence of
 Commands than that same Workflow replayed at 1pm. Some language SDKs (just TypeScript for now) will
 prevent you from even importing/using disallowed APIs. In others, you must use Temporal-provided
 alternatives. For example, the right method to use in Java would be `Workflow.currentTimeMillis()`.
@@ -125,4 +129,3 @@ alternatives. For example, the right method to use in Java would be `Workflow.cu
 Generally speaking, any function which performs side effects should not be called from workflow code.
 All operations that do not purely mutate Workflow state should occur through Temporal SDK APIs. This
 ensures that your Workflow will always reach the same state with the same history.
-
