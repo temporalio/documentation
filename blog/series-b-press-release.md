@@ -6,6 +6,7 @@ author_title: Temporal
 tags:
   - announcement
   - funding
+  - press-release
 date: 2022-2-16T01:00:00Z
 ---
 
