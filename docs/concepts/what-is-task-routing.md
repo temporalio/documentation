@@ -7,9 +7,9 @@ tags:
   - explanation
 ---
 
-Task Routing is when a Task Queue is paired with one or more Worker Processes, primarily for Activity Task Executions.
+Task Routing is when a Task Queue is paired with one or more Workers, primarily for Activity Task Executions.
 
-In some use cases, such as file processing, an Activity Task must be routed to a specific Worker Process.
+In some use cases, such as file processing or machine learning model training, an Activity Task must be routed to a specific Worker Process or Worker Entity.
 For example, suppose that you have a Workflow with the following three separate Activities:
 
 - Download a file.
@@ -26,4 +26,11 @@ Code samples:
 
 - [Java file processing example](https://github.com/temporalio/samples-java/tree/master/src/main/java/io/temporal/samples/fileprocessing)
 - [PHP file processing example](https://github.com/temporalio/samples-php/tree/master/app/src/FileProcessing)
-- [Go file processing example](https://github.com/temporalio/samples-go/tree/master/fileprocessing) - The Go SDK includes a [Session](/docs/go/sessions) feature that abstracts the need to explicitly route Tasks.
+- [Go file processing example](https://github.com/temporalio/samples-go/tree/master/fileprocessing)
+
+### Sessions
+
+Some SDKs provide a Session API that provides a straightforward way to ensure that Activity Tasks are executed with the same Worker without requiring you to manually specifying Task Queue names.
+It also includes features like **concurrent session limitations** and **worker failure detection**.
+
+- [How to create Worker Sessions in Go](/docs/go/how-to-create-a-worker-session-in-go)
