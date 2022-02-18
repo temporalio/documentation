@@ -104,7 +104,7 @@ We endeavor to give you good defaults so you don't have to worry about them, but
 
 ## Do not use Alpine
 
-Alpine replaces glibc with musl which is officialy incompatible with Temporal's Rust core.
+Alpine replaces glibc with musl, which is officially incompatible with the Rust core of the TypeScript SDK.
 If you receive errors like below, it's probably because you are using Alpine.
 You can use the `slim` tag for the Docker image, if you are looking for a lightweight alternative.
 ```
