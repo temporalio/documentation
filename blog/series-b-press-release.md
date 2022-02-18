@@ -1,6 +1,6 @@
 ---
-slug: series-b-press-release
-title: Temporal Series B Press Release
+slug: series-b-press
+title: Temporal Series B Press
 author: Temporal Team
 author_title: Temporal
 tags:
@@ -11,6 +11,20 @@ date: 2022-2-16T01:00:00Z
 ---
 
 <!--truncate-->
+
+We have just announced our Series B fundraising, with a [letter from Maxim](/blog/series-b-announcement-open-letter), [announcement from Byran Offutt at Index Ventures](https://www.indexventures.com/perspectives/everything-is-a-workflow-our-investment-in-temporal/), a fun [teaser video](https://www.youtube.com/watch?v=RA7gRSXUXls) and [community Q&A](https://www.youtube.com/watch?v=E40KwlxZJFI)!
+
+Externally, we also enjoyed good press coverage. We collected them all here in one place for whoever is looking for this information in future:
+
+  - **[Geekwire](https://www.geekwire.com/2022/temporal-is-a-unicorn-developer-productivity-startup-lands-120m-at-1-5b-valuation/)**: "Temporal is riding tailwinds from the pandemic, which supercharged cloud adoption as more companies and consumers used digital services. The company said it is seeing 25-to-50% month-over-month growth in adoption. Snap, Netflix, Instacart, Qualtrics, and others are using Temporal, which now joins an elite unicorn group of Seattle companies that have eclipsed the $1 billion valuation."
+  - [**The Register**](https://www.theregister.com/2022/02/16/temporal_103m_funding/): "Temporal's technology is described as microservice orchestration platform that enables developers to build scalable applications without sacrificing productivity or reliability. It is already in use to solve state management challenges at companies such as Netflix, Snap, Box, Hashicorp, Coinbase, and others. Netflix has apparently chosen Temporal as the platform upon which to base its next-generation continuous integration and continuous delivery (CI/CD) developer service."
+  - [**Silicon Angle**](https://siliconangle.com/2022/02/16/temporal-raises-103-million-accelerate-development-stateful-cloud-applications/): "The new cash infusion brings Temporal’s total funding to more than $128 million. The money will be used primarily to “reinvest in the community,” Zedlewski said. That includes more research and development of the open-source platform, additional language support, educational resources and expansion of the developer advocate network."
+  - [**Daily UK**](https://dailyuknews.com/tech/temporal-raises-103m-in-series-b-funding/): "According to Temporal, one of the aspects of its system is that it abstracts the complexity of a distributed system. These are often a mixture of stateless services, databases, cron jobs, and queues, and as they scale, responding to multiple asynchronous events and tracking the state of everything becomes more and more challenging. Temporal effectively makes all these part of the platform and takes care of them itself."
+  - [**Computer Weekly**](https://www.computerweekly.com/blog/CW-Developer-Network/Temporal-calls-time-on-cloud-app-state-management): "The fact that cloud applications are getting into a (right old) state over their state management capabilities due to the inherent complexity they are now being constructed with should come as no major surprise i.e. we know that the intertask dependency management, scheduling and concurrency logic responsibilities and requirements that exist in an application’s inputs across multiple related data flows is no point-and-click fix… which is why Temporal exists."
+
+## Press Release
+
+We also shared a press release with some never-before-seen quotes from Max and our new boardmember **Mike Volpi**, and **notable users like Snap, Netflix, Descript, Datadog, and Instacart**. The full text is below.
 
 **Temporal.io Raises $100 Million Series B, Company Valuation Passes $1.5 Billion**
 
