@@ -131,13 +131,13 @@ has started. Then we start a trial for (let's say) 30 days. Once the period ends
 public function subscribe(string $userID)
 {
     yield $this->account->sendWelcomeEmail($userID);
-    yield Workflow::timer(CarbonInterval::days(30));
+    yield Workflow::timer(CarbonInterval::month());
     yield $this->account->sendEndOfTrialEmail($userID);
 }
 ```
 
 As you can see, we delegate email sending to the activity and use timer to wait for a trial period
-to finish. In other words, what happens here? The workflow sends the first email, then it *sleeps* for 30 days, 
+to finish. In other words, what happens here? The workflow sends the first email, then it *sleeps* for a month, 
 and then send one more email. Looks very elegant, right? You may think about it as a regular PHP `sleep()` call. 
 But inside the workflow we cannot use any functions that may cause side effects, thus we use timer here.
 
@@ -191,7 +191,7 @@ public function subscribe(string $userID)
     yield $this->account->sendWelcomeEmail($userID);
 
     try {
-        yield Workflow::timer(CarbonInterval::days(30));
+        yield Workflow::timer(CarbonInterval::month());
         yield $this->account->sendEndOfTrialEmail($userID);
     } catch (CanceledFailure $exception) {
          yield Workflow::asyncDetached(fn() => $this->account->sendSorryToSeeYouGoEmail($userID));
@@ -214,7 +214,7 @@ can wait with condition:
 
 ```php
 yield Workflow::awaitWithTimeout(
-    CarbonInterval::days(30),
+    CarbonInterval::month(),
     fn() => $this->isCancelled
 );
 ```
@@ -243,7 +243,7 @@ public function subscribe(string $userID)
     try {
         $isTrialPeriod = true;
         while (true) {
-            yield Workflow::timer(CarbonInterval::days(30));
+            yield Workflow::timer(CarbonInterval::month());
             yield $this->account->chargeMonthlyFee($userID);
 
             if ($isTrialPeriod === true) {
