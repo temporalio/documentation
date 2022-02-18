@@ -46,7 +46,7 @@ func YourWorkflowDefinition(ctx workflow.Context, fileID string) (err error) {
 }
 ```
 
-hen the `CreateSession` API is called, the Task queue name that is specified in the `ActivityOptions` is used (or in the `StartWorkflowOptions` if the Task Queue name is not specified in `ActivityOptions`), and a Session is created with one of the Workers polling that Task Queue.
+When the `CreateSession` API is called, the Task Queue name that is specified in the `ActivityOptions` is used (or in the `StartWorkflowOptions` if the Task Queue name is not specified in `ActivityOptions`), and a Session is created with one of the Workers polling that Task Queue.
 
 The Session Context is cancelled if the Worker executing this Session dies or `CompleteSession()` is called.
 When using the returned Session Context to spawn Activity Executions, a `workflow.ErrSessionFailed` error may be returned if the Session framework detects that the Worker executing this Session has died.
@@ -59,7 +59,7 @@ If all the Workers are currently busy and unable to handle new Session, the fram
 It will cancel the session context and therefore all the Activity Executions using that Session Context.
 Note that it's safe to call `CompleteSession()` on a failed Session, meaning that you can call it from a `defer` function after the Session is successfully created.
 
-### Session Metadata
+### Session metadata
 
 ```go
 type SessionInfo struct {
@@ -73,10 +73,10 @@ type SessionInfo struct {
 func GetSessionInfo(ctx Context) *SessionInfo
 ```
 
-The Session Context also stores some session metadata, which can be retrieved by the `GetSessionInfo()` API.
+The Session Context also stores some Session metadata, which can be retrieved by the `GetSessionInfo()` API.
 If the Context passed in doesn't contain any Session metadata, this API will return a `nil` pointer.
 
-### Concurrent Session Limitation
+### Limiting concurrent Sessions
 
 To limit the number of concurrent Sessions running on a Worker, set the `MaxConcurrentSessionExecutionSize` field of `worker.Options` to the desired value.
 By default this field is set to a very large value, so there's no need to manually set it if no limitation is needed.
@@ -105,17 +105,17 @@ Yes, the [file processing example](https://github.com/temporalio/samples-go/tree
 
 **What happens to my Activity if the Worker dies?**
 
-If your Activity has already been scheduled, it will be cancelled.
+If your Activity has already been scheduled, it will be canceled.
 If not, you will get a `workflow.ErrSessionFailed` error when you call `workflow.ExecuteActivity()`.
 
 **Is the concurrent session limitation per process or per host?**
 
-It's per worker process, so make sure there's only one worker process running on the host if you plan to use that feature.
+It's per Worker Process, so make sure there's only one Worker Process running on the host if you plan to use this feature.
 
 **Future Work**
 
 - Right now a Session is considered failed if the Worker Process dies.
-  However, for some use cases, you may only care whether worker host is alive or not.
+  However, for some use cases, you may only care whether the Worker host is alive or not.
   For these uses cases, the Session should be automatically re-established if the Worker Process is restarted.
 
 - The current implementation assumes that all Sessions are consuming the same type of resource and there's only one global limitation.
