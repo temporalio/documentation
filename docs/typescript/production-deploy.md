@@ -130,4 +130,3 @@ RUN apt update && apt install -y ca-certificates
 
 Make sure to run `npm i` when you build your Docker image.
 Using `npm i --only=prod` or its yarn counterpart `yarn install --production` does not install some of the necessary runtime packages for Temporal.
-This should be checked and confirmed by the TypeScript SDK team but for now this is advised to prevent runtime errors.
