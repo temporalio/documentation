@@ -126,7 +126,7 @@ Refer to this [Makefile](https://github.com/temporalio/temporal/blob/v1.4.1/Make
 
 #### PostgreSQL
 
-**Example default schema upgrade:\***
+**Example default schema upgrade:**        
 
 ```bash
 ./temporal-sql-tool \
