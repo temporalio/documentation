@@ -958,7 +958,9 @@ export async function entityWorkflow(
     }
 
     for (let iteration = 1; iteration <= MAX_ITERATIONS; ++iteration) {
-      // Automatically continue as new after a day if no updates were received
+      // Ensure that we don't block the Workflow Execution forever waiting
+      // for updates, which means that it will eventually Continue-As-New
+      // even if it does not receive updates.
       await condition(() => pendingUpdates.length > 0, '1 day');
 
       while (pendingUpdates.length) {
