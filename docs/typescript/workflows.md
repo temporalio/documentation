@@ -42,7 +42,7 @@ Workflow functions can support one or more arguments, but we encourage you to us
 ```ts
 export async function example({ name: string }): Promise<{ name: string }> {
   const greeting = await greet(name);
-  return { greeting }
+  return { greeting };
 }
 ```
 
