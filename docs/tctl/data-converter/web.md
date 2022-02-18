@@ -16,12 +16,12 @@ The following modifiers control the behavior of the command.
 
 ### `port`
 
-How to specify a port for the WebSocket URL of a custom [Data Converter](/docs/concepts/what-is-a-data-converter).
+Specify a port for the WebSocket URL of a custom [Data Converter](/docs/concepts/what-is-a-data-converter).
 The default value is 0.
 
 **Example**
 
-```
+```bash
 tctl data-converter web --web-ui-url <url> --port <value>
 ```
 
@@ -29,10 +29,10 @@ tctl data-converter web --web-ui-url <url> --port <value>
 
 _Required modifier_
 
-How to specify the WebSocket URL of a custom [Data Converter](/docs/concepts/what-is-a-data-converter).
+Specify the WebSocket URL of a custom [Data Converter](/docs/concepts/what-is-a-data-converter).
 
 **Example**
 
-```
+```bash
 tctl data-converter web --web-ui-url <url>
 ```

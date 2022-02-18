@@ -14,53 +14,55 @@ See also [`tctl workflow observeid`](/docs/tctl/workflow/observeid).
 
 `tctl workflow observe [<modifiers>]`
 
+Alias: `o`
+
 The following modifiers control the behavior of the command.
 
 ### `--workflow_id`
 
-How to specify a [Workflow Id](/docs/concepts/what-is-a-workflow-id).
+Specify a [Workflow Id](/docs/concepts/what-is-a-workflow-id).
 
 Aliases: `--wid`, `-w`
 
 **Example**
 
-```
+```bash
 tctl workflow observe --workflow_id <id>
 ```
 
 ### `--run_id`
 
-How to specify a [Run Id](/docs/concepts/what-is-a-run-id).
+Specify a [Run Id](/docs/concepts/what-is-a-run-id).
 
 Aliases: `--rid`, `-r`
 
 **Example**
 
-```
+```bash
 tctl workflow observe --run_id <id>
 ```
 
 ### `--show_detail`
 
-How to show event details.
+Show event details.
 
 Alias: `--sd`
 
 **Example**
 
-```
+```bash
 tctl workflow observe --show_detail
 ```
 
 ### `--max_field_length`
 
-How to specify the maximum length for each attribute field.
+Specify the maximum length for each attribute field.
 The default value is 0.
 
 Alias: `--maxl`
 
 **Example**
 
-```
+```bash
 tctl workflow observe --max_field_length <length>
 ```

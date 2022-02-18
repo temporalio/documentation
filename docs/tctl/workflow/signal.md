@@ -16,61 +16,61 @@ The following modifiers control the behavior of the command.
 
 ### `--workflow_id`
 
-How to specify a [Workflow Id](/docs/concepts/what-is-a-workflow-id).
+Specify a [Workflow Id](/docs/concepts/what-is-a-workflow-id).
 
 Aliases: `--wid`, `-w`
 
 **Example**
 
-```
+```bash
 tctl workflow signal --workflow_id <id>
 ```
 
 ### `--run_id`
 
-How to specify a [Run Id](/docs/concepts/what-is-a-run-id).
+Specify a [Run Id](/docs/concepts/what-is-a-run-id).
 
 Aliases: `--rid`, `-r`
 
 **Example**
 
-```
+```bash
 tctl workflow signal --run_id <id>
 ```
 
 ### `--name`
 
-How to specify the name of a [Signal](/docs/concepts/what-is-a-signal).
+Specify the name of a [Signal](/docs/concepts/what-is-a-signal).
 
 Alias: `-n`
 
 **Example**
 
-```
+```bash
 tctl workflow signal --name <name>
 ```
 
 ### `--input`
 
-How to pass input for the [Signal](/docs/concepts/what-is-a-signal).
+Pass input for the [Signal](/docs/concepts/what-is-a-signal).
 Input must be in JSON format.
 
 Alias: `-i`
 
 **Example**
 
-```
+```bash
 tctl workflow signal --input <json>
 ```
 
 ### `--input_file`
 
-How to pass input for the [Signal](/docs/concepts/what-is-a-signal) from a JSON file.
+Pass input for the [Signal](/docs/concepts/what-is-a-signal) from a JSON file.
 
 Alias: `--if`
 
 **Example**
 
-```
+```bash
 tctl workflow signal --input_file <filename>
 ```

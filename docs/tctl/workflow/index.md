@@ -9,6 +9,8 @@ tags:
 
 The `tctl workflow` commands enable [Workflow Execution](/docs/concepts/what-is-a-workflow-execution) operations.
 
+Alias: `w`
+
 - [`tctl workflow cancel`](/docs/tctl/workflow/cancel)
 - [`tctl workflow count`](/docs/tctl/workflow/count)
 - [`tctl workflow describe`](/docs/tctl/workflow/describe)

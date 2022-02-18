@@ -18,120 +18,120 @@ The following modifiers control the behavior of the command.
 
 ### `--workflow_id`
 
-How to show the History of a [Workflow Execution](/docs/concepts/what-is-a-workflow-execution) by specifying a [Workflow Id](/docs/concepts/what-is-a-workflow-id).
+Show the History of a [Workflow Execution](/docs/concepts/what-is-a-workflow-execution) by specifying a [Workflow Id](/docs/concepts/what-is-a-workflow-id).
 
 Aliases: `--wid`, `-w`
 
 **Example**
 
-```
+```bash
 tctl workflow show --workflow_id <id>
 ```
 
 ### `--run_id`
 
-How to show the History of a [Workflow Execution](/docs/concepts/what-is-a-workflow-execution) by specifying a [Run Id](/docs/concepts/what-is-a-run-id).
+Show the History of a [Workflow Execution](/docs/concepts/what-is-a-workflow-execution) by specifying a [Run Id](/docs/concepts/what-is-a-run-id).
 
 Aliases: `--rid`, `-r`
 
 **Example**
 
-```
+```bash
 tctl workflow show --run_id <id>
 ```
 
 ### `--print_datetime`
 
-How to print the timestamp.
+Print the timestamp.
 
 Alias: `--pdt`
 
 **Example**
 
-```
+```bash
 tctl workflow show --print_datetime
 ```
 
 ### `--print_raw_time`
 
-How to print the raw timestamp.
+Print the raw timestamp.
 
 Alias: `--prt`
 
 **Example**
 
-```
+```bash
 tctl workflow show --print_raw_time
 ```
 
 ### `--output_filename`
 
-How to serialize an event to a file.
+Serialize an event to a file.
 
 Alias: `--of`
 
 **Example**
 
-```
+```bash
 tctl workflow show --output_filename <filename>
 ```
 
 ### `--print_full`
 
-How to print full event details.
+Print full event details.
 
 Alias: `--pf`
 
 **Example**
 
-```
+```bash
 tctl workflow show --print_full
 ```
 
 ### `--print_event_version`
 
-How to print the event version.
+Print the event version.
 
 Alias: `--pev`
 
 **Example**
 
-```
+```bash
 tctl workflow show --print_event_version
 ```
 
 ### `--event_id`
 
-How to print the details of a specified event.
+Print the details of a specified event.
 The default value is 0.
 
 Alias: `--eid`
 
 **Example**
 
-```
+```bash
 tctl workflow show --event_id <id>
 ```
 
 ### `--max_field_length`
 
-How to specify the maximum length for each attribute field.
+Specify the maximum length for each attribute field.
 The default value is 500.
 
 Alias: `--maxl`
 
 **Example**
 
-```
+```bash
 tctl workflow show --max_field_length <length>
 ```
 
 ### `--reset_points_only`
 
-How to show only events that are eligible for reset.
+Show only events that are eligible for reset.
 
 **Example**
 
-```
+```bash
 tctl workflow show --reset_points_only
 ```

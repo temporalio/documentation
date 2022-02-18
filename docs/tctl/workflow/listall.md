@@ -21,92 +21,92 @@ The following modifiers control the behavior of the command.
 
 ### `--print_raw_time`
 
-How to print the raw timestamp.
+Print the raw timestamp.
 
 Alias: `--prt`
 
 **Example**
 
-```
+```bash
 tctl workflow listall --print_raw_time
 ```
 
 ### `--print_datetime`
 
-How to print the timestamp.
+Print the timestamp.
 
 Alias: `--pdt`
 
 **Example**
 
-```
+```bash
 tctl workflow listall --print_datetime
 ```
 
 ### `--print_memo`
 
-How to print a memo.
+Print a memo.
 
 Alias: `--pme`
 
 **Example**
 
-```
+```bash
 tctl workflow listall --print_memo
 ```
 
 ### `--print_search_attr`
 
-How to print the [Search Attributes](/docs/concepts/what-is-a-search-attribute).
+Print the [Search Attributes](/docs/concepts/what-is-a-search-attribute).
 
 Alias: `--psa`
 
 **Example**
 
-```
+```bash
 tctl workflow listall --print_search_attr
 ```
 
 ### `--print_full`
 
-How to print the full message without table formatting.
+Print the full message without table formatting.
 
 Alias: `--pf`
 
 **Example**
 
-```
+```bash
 tctl workflow listall --print_full
 ```
 
 ### `--print_json`
 
-How to print the raw JSON objects.
+Print the raw JSON objects.
 
 Alias: `pjson`
 
 **Example**
 
-```
+```bash
 tctl workflow listall --print_json
 ```
 
 ### `--open`
 
-How to list open [Workflow Executions](/docs/concepts/what-is-a-workflow-execution).
+List open [Workflow Executions](/docs/concepts/what-is-a-workflow-execution).
 (By default, the `tctl workflow listall` command lists closed Workflow Executions.)
 
 Alias: `--op`
 
 **Example**
 
-```
+```bash
 tctl workflow listall --open
 ```
 
 ### `--earliest_time`
 
-How to specify the earliest start time to list. Supported format are as follows:
+Specify the earliest start time to list. Supported format are as follows:
 
 - `<year>-<month>-<day>T<hour>:<minute>:<second><+|-><offsethours>:<offsetminutes>`
 - Raw Unix Epoch time (the number of milliseconds since 0000 UTC on January 1, 1970).
@@ -125,19 +125,19 @@ Alias: `--et`
 
 To specify 3:04:05 PM India Standard Time on January 2, 2022:
 
-```
+```bash
 tctl workflow listall --earliest-time '2022-01-02T15:04:05+05:30'
 ```
 
 To specify 15 minutes before the current time:
 
-```
+```bash
 tctl workflow listall --earliest-time '15minute'
 ```
 
 ### `--latest_time`
 
-How to specify the latest start time to list. Supported formats are as follows:
+Specify the latest start time to list. Supported formats are as follows:
 
 - `<year>-<month>-<day>T<hour>:<minute>:<second><+|-><offsethours>:<offsetminutes>`
 - Raw Unix Epoch time (the number of milliseconds since 0000 UTC on January 1, 1970).
@@ -156,43 +156,43 @@ Alias: `--lt`
 
 To specify 11:02:17 PM Pacific Daylight Time on April 13, 2022:
 
-```
+```bash
 tctl workflow listall --latest-time '2022-04-13T23:02:17-07:00'
 ```
 
 To specify 10 seconds before the current time:
 
-```
+```bash
 tctl workflow listall --latest-time '10second'
 ```
 
 ### `--workflow_id`
 
-How to specify a [Workflow Id](/docs/concepts/what-is-a-workflow-id).
+Specify a [Workflow Id](/docs/concepts/what-is-a-workflow-id).
 
 Aliases: `--wid`, `-w`
 
 **Example**
 
-```
+```bash
 tctl workflow listall --workflow_id <id>
 ```
 
 ### `--workflow_type`
 
-How to specify the name of a [Workflow Type](/docs/concepts/what-is-a-workflow-type).
+Specify the name of a [Workflow Type](/docs/concepts/what-is-a-workflow-type).
 
 Alias: `--wt`
 
 **Example**
 
-```
+```bash
 tctl workflow listall --workflow_type <name>
 ```
 
 ### `--status`
 
-How to specify the status of a [Workflow Execution](/docs/concepts/what-is-a-workflow-execution).
+Specify the status of a [Workflow Execution](/docs/concepts/what-is-a-workflow-execution).
 Supported values are as follows:
 
 - `completed`
@@ -206,13 +206,13 @@ Alias: `-s`
 
 **Example**
 
-```
+```bash
 tctl workflow listall --status <value>
 ```
 
 ### `--query`
 
-How to specify an SQL-like query of [Search Attributes](/docs/concepts/what-is-a-search-attribute).
+Specify an SQL-like query of [Search Attributes](/docs/concepts/what-is-a-search-attribute).
 
 Using the `--query` option causes tctl to ignore all other filter options, including `open`, `earliest_time`, `latest_time`, `workflow_id`, and `workflow_type`.
 
@@ -220,6 +220,6 @@ Alias: `-q`
 
 **Example**
 
-```
+```bash
 tctl workflow listall --query <value>
 ```
