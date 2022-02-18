@@ -60,7 +60,7 @@ Each of these subsections contain a `server` section and a `client` section. The
 - `clientCaFiles` - A list of paths to files containing the PEM-encoded public key of the Certificate Authorities you wish to trust for client authentication. This value is ignored if `requireClientAuth` is not enabled.
 
 :::tip
-See the [customization samples repo](https://github.com/temporalio/customization-samples/tree/master/tls) for sample TLS configurations.
+See the [server samples repo](https://github.com/temporalio/samples-server/tree/master/tls) for sample TLS configurations.
 :::
 
 Below is an example enabling Server TLS (https) between SDKs and the Frontend APIs:
