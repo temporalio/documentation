@@ -24,7 +24,7 @@ Workflow, show Workflow History, and Signal Workflow).
 - [`tctl cluster`](/docs/tctl/cluster)
 - [`tctl data-converter`](/docs/tctl/data-converter)
 - [`tctl namespace`](/docs/tctl/namespace)
-- [`tctl taskqueue`](/docs/tctl/task-queue)
+- [`tctl task-queue`](/docs/tctl/task-queue)
 - [`tctl workflow`](/docs/tctl/workflow)
 
 ## Global modifiers
