@@ -8,17 +8,6 @@ tags:
   - go
 ---
 
-import {RelatedReadContainer, RelatedReadItem} from '../components/RelatedReadList.js'
-
-<!-- prettier-ignore -->
-import * as WhatIsAnActivityId from '../content/what-is-an-activity-id.md'
-import * as WhatIsATaskQueue from '../content/what-is-a-task-queue.md'
-import * as WhatIsAScheduleToCloseTimeout from '../content/what-is-a-schedule-to-close-timeout.md'
-import * as WhatIsAScheduleToStartTimeout from '../content/what-is-a-schedule-to-start-timeout.md'
-import * as WhatIsAStartToCloseTimeout from '../content/what-is-a-start-to-close-timeout.md'
-import * as WhatIsAHeartbeatTimeout from '../content/what-is-a-heartbeat-timeout.md'
-import * as WhatIsARetryPolicy from '../content/what-is-a-retry-policy.md'
-
 Create an instance of [`ActivityOptions`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ActivityOptions) from the `go.temporal.io/sdk/workflow` package and use [`WithActivityOptions()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#WithActivityOptions) to apply it to the instance of `workflow.Context`.
 
 The instance of `workflow.Context` is then passed to the `ExecuteActivity()` call.
@@ -52,9 +41,7 @@ if err != nil {
 }
 ```
 
-<RelatedReadContainer>
-  <RelatedReadItem page={WhatIsAnActivityId} />
-</RelatedReadContainer>
+- [What is an Activity Id](/docs/concepts/what-is-an-activity-id)
 
 ### `TaskQueueName`
 
@@ -73,9 +60,7 @@ if err != nil {
 }
 ```
 
-<RelatedReadContainer>
-  <RelatedReadItem page={WhatIsATaskQueue} />
-</RelatedReadContainer>
+- [What is a Task Queue](/docs/concepts/what-is-a-task-queue)
 
 ### `ScheduleToCloseTimeout`
 
@@ -96,9 +81,7 @@ if err != nil {
 }
 ```
 
-<RelatedReadContainer>
-  <RelatedReadItem page={WhatIsAScheduleToCloseTimeout} />
-</RelatedReadContainer>
+- [What is a Schedule-To-Close Timeout](/docs/concepts/what-is-a-schedule-to-close-timeout)
 
 ### `ScheduleToStartTimeout`
 
@@ -119,9 +102,7 @@ if err != nil {
 }
 ```
 
-<RelatedReadContainer>
-  <RelatedReadItem page={WhatIsAScheduleToStartTimeout} />
-</RelatedReadContainer>
+- [What is a Schedule-To-Start Timeout](/docs/concepts/what-is-a-schedule-to-start-timeout)
 
 ### `StartToCloseTimeout`
 
@@ -140,9 +121,7 @@ if err != nil {
 }
 ```
 
-<RelatedReadContainer>
-  <RelatedReadItem page={WhatIsAStartToCloseTimeout} />
-</RelatedReadContainer>
+- [What is an Start-To-Close Timeout](/docs/concepts/what-is-a-start-to-close-timeout)
 
 ### `HeartbeatTimeout`
 
@@ -158,9 +137,7 @@ if err != nil {
 }
 ```
 
-<RelatedReadContainer>
-  <RelatedReadItem page={WhatIsAHeartbeatTimeout} />
-</RelatedReadContainer>
+- [What is a Heartbeat Timeout](/docs/concepts/what-is-a-heartbeat-timeout)
 
 ### `WaitForCancellation`
 
@@ -230,6 +207,4 @@ if err != nil {
 }
 ```
 
-<RelatedReadContainer>
-  <RelatedReadItem page={WhatIsARetryPolicy} />
-</RelatedReadContainer>
+- [What is a Retry Policy](/docs/concepts/what-is-a-retry-policy)

@@ -205,7 +205,7 @@ They shouldn't use any constructs that rely on system time.
 
 ### Workflow Method Arguments
 
-- [What is a Data Converter?](/docs/content/what-is-a-data-converter)
+- [What is a Data Converter?](/docs/concepts/what-is-a-data-converter)
 
 Java DataConverter reference: https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html
 
@@ -219,7 +219,7 @@ Besides Activities, a Workflow can also start other Workflows.
 
 <RelatedReadList
 readlist={[
-["What is a Child Workflow Execution?","/docs/content/what-is-a-child-workflow-execution","explanation"],  
+["What is a Child Workflow Execution?","/docs/concepts/what-is-a-child-workflow-execution","explanation"],  
 ]}
 />
 
@@ -413,7 +413,7 @@ See our [Temporal Polyglot example](https://github.com/tsurdilo/temporal-polyglo
 
 ## Large Event Histories
 
-Temporal SDK allows you to manually use [Continue-As-New](/docs/content/what-is-continue-as-new) in a number of ways:
+Temporal SDK allows you to manually use [Continue-As-New](/docs/concepts/what-is-continue-as-new) in a number of ways:
 
 If you are continuing execution of the same workflow that is currently running you can do:
 

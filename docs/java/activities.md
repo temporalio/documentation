@@ -360,12 +360,6 @@ public class FileProcessingActivitiesImpl implements FileProcessingActivities {
 }
 ```
 
-### Activity Cancellation
-
-import WhatIsActivityCancellation from '../content/what-is-activity-cancellation.md'
-
-<WhatIsActivityCancellation />
-
 ## Throwing Activity errors
 
 If there is a need to throw checked Exception from Activity methods which do not support re-throwing checked Exceptions in their signatures,

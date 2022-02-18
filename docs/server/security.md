@@ -35,7 +35,7 @@ See [TLS configuration reference](/docs/server/configuration/#tls) for more deta
 
 ## Encryption at rest with DataConverter
 
-import DataConverter from '../content/what-is-a-data-converter.md'
+import DataConverter from '../concepts/what-is-a-data-converter.md'
 
 <DataConverter />
 
@@ -49,7 +49,7 @@ To prevent spoofing and [MITM attacks](https://en.wikipedia.org/wiki/Man-in-the-
 This enables established connections to authenticate the endpoint, ensuring that the server certificate presented to any connecting client has the given server name in its CN property.
 It can be used for both `internode` and `frontend` endpoints.
 
-More guidance on mTLS setup can be found in [the `customization-samples` repo](https://github.com/temporalio/customization-samples/tree/master/tls) and you can reach out to us for further guidance.
+More guidance on mTLS setup can be found in [the `samples-server` repo](https://github.com/temporalio/samples-server/tree/master/tls) and you can reach out to us for further guidance.
 
 ### Client connections
 

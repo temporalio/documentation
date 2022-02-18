@@ -30,7 +30,7 @@ This eliminates a whole class of problems particularly when providing Temporal t
 
 ## Namespaces
 
-import Content from '../content/what-is-a-namespace.md'
+import Content from '../concepts/what-is-a-namespace.md'
 
 <Content />
 
@@ -196,8 +196,8 @@ Follow this tutorial for setting up mTLS (Mutual TLS authentication) with Tempor
 **For Temporal Cloud customers, there is a separate tutorial above.**
 
 1. Set up Temporal Server with mTLS encryption locally
-   - Clone the [customization samples repo](https://github.com/temporalio/customization-samples/) and change to the `tls/tls-simple` directory
-   - Follow [these instructions](https://github.com/temporalio/customization-samples/tree/master/tls/tls-simple#readme) to set up a local server with mTLS
+   - Clone the [server samples repo](https://github.com/temporalio/samples-server/) and change to the `tls/tls-simple` directory
+   - Follow [these instructions](https://github.com/temporalio/samples-server/tree/master/tls/tls-simple#readme) to set up a local server with mTLS
    - The sample does not register the default namespace on startup, register it with: `docker exec -it tls-simple_temporal-admin-tools_1 tctl n re --retention 1 default`
 1. Configure your Temporal Client and Worker to connect with mTLS
    - Scaffold a new Temporal project with `npx @temporalio/create@latest` using the `hello-world-mtls` template, or copy the relevant configuration from the snippets below into an existing project.
@@ -205,10 +205,10 @@ Follow this tutorial for setting up mTLS (Mutual TLS authentication) with Tempor
      ```bash
      export TEMPORAL_ADDRESS=localhost
      export TEMPORAL_NAMESPACE=default
-     export TEMPORAL_CLIENT_CERT_PATH=/path/to/customization-samples/tls/tls-simple/certs/client.pem
-     export TEMPORAL_CLIENT_KEY_PATH=/path/to/customization-samples/tls/tls-simple/certs/client.key
+     export TEMPORAL_CLIENT_CERT_PATH=/path/to/samples-server/tls/tls-simple/certs/client.pem
+     export TEMPORAL_CLIENT_KEY_PATH=/path/to/samples-server/tls/tls-simple/certs/client.key
      # just for the local mTLS sample
-     export TEMPORAL_SERVER_ROOT_CA_CERT_PATH=/path/to/customization-samples/tls/tls-simple/certs/ca.cert
+     export TEMPORAL_SERVER_ROOT_CA_CERT_PATH=/path/to/samples-server/tls/tls-simple/certs/ca.cert
      export TEMPORAL_SERVER_NAME_OVERRIDE=tls-sample
      ```
 1. Test the connection with `npm run start.watch` and `npm run workflow`.

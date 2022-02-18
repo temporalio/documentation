@@ -78,7 +78,7 @@ r.Handle("/cart/{workflowID}/email", http.HandlerFunc(UpdateEmailHandler)).Metho
 r.Handle("/cart/{workflowID}/checkout", http.HandlerFunc(CheckoutHandler)).Methods("PUT")
 ```
 
-In this case, the API server and the [Worker](/docs/content/what-is-a-worker) are separate processes.
+In this case, the API server and the [Worker](/docs/concepts/what-is-a-worker) are separate processes.
 The API server is just an intermediary between the Temporal server and your API server's clients.
 The event history representing the cart is stored in the Temporal server.
 

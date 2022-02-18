@@ -1,7 +1,7 @@
 ---
 id: tutorial-prerequisites
 title: Java SDK tutorial prerequisites
-sidebar_label: Tutorial prerequisites
+sidebar_label: Java prerequisites
 ---
 
 To follow the Java SDK tutorials we recommend that you have the following environments set up.

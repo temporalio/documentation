@@ -6,13 +6,13 @@ sidebar_label: Namespaces
 
 ## What is a Namespace?
 
-import Content from '../content/what-is-a-namespace.md'
+import Content from '../concepts/what-is-a-namespace.md'
 
 <Content />
 
 ## Querying Namespaces by CLI
 
-Some useful operations with [Temporal's CLI](/docs/devtools/tctl):
+Some useful operations with [tctl](/docs/tctl):
 
 - `tctl namespace list`: List all namespaces.
 - `tctl --namespace my-namespace-name namespace register`: Register a new namespace named "my-namespace-name"

@@ -11,17 +11,18 @@
 # Concept pages redirects
 #
 /docs/concepts         /docs/temporal-explained/introduction
-/docs/concept-overview         /docs/temporal-explained/introduction
 /docs/temporal-explained        /docs/temporal-explained/introduction
 /docs/concepts/introduction        /docs/temporal-explained/introduction
-/docs/concept-workflows         /docs/concepts/workflows
-/docs/concept-activities        /docs/concepts/activities
-/docs/concept/signals         /docs/temporal-explained/signals-and-queries
-/docs/concept/queries         /docs/temporal-explained/signals-and-queries
-/docs/concept-task-queues         /docs/concepts/task-queues
-/docs/task-queues         /docs/concepts/task-queues
-/docs/concept-workers         /docs/concepts/workers
-/docs/concept-namespaces        /docs/server-namespaces
+/docs/concepts/workflows         /docs/concepts/what-is-a-workflow
+/docs/concepts/activities      /docs/concepts/what-is-an-activity
+/docs/concepts/signals         /docs/concepts/what-is-a-signal
+/docs/concepts/queries         /docs/concepts/what-is-a-query
+/docs/concepts/task-queues         /docs/concepts/what-is-a-task-queue
+/docs/reference/commands        /docs/concepts/what-is-a-command
+/docs/reference/events        /docs/concepts/what-is-an-event
+
+# CONTENT -> CONCEPTS
+/docs/content/what-is-*         /docs/concepts/what-is-:splat
 
 #
 # TS pages redirects
@@ -29,13 +30,13 @@
 /docs/node/*        /docs/typescript/:splat
 /docs/typescript/getting-started        /docs/typescript/introduction#getting-started
 /docs/typescript        /docs/typescript/introduction
+/docs/content/how-to-develop-a-worker-program-in-typescript /docs/typescript/how-to-develop-a-worker-program-in-typescript
 
 #
 # Go pages redirects
 #
-/docs/go        /docs/go/getting-started
-/docs/go-sdk-overview         /docs/go-sdk-introduction
-/docs/go/introduction         /docs/go/getting-started
+/docs/go/getting-started        /docs/go
+/docs/go/introduction        /docs/go
 /docs/go-activities         /docs/go/activities
 /docs/go/child-workflows        /docs/go/workflows/#child-workflow-executions
 /docs/go-continue-as-new        /docs/go/workflows#large-event-histories
@@ -45,18 +46,18 @@
 /docs/go/distributed-cron         /docs/content/what-is-a-temporal-cron-job
 /docs/go-error-handling         /docs/go/error-handling
 /docs/go-hello-world        /docs/go/hello-world-tutorial
-/docs/go-queries        /docs/go/queries
-/docs/go-retries        /docs/go/retries
+/docs/go/queries        /docs/go/how-to-handle-a-query-in-a-workflow-in-go
+/docs/go/retries        /docs/concepts/what-is-a-retry-policy
 /docs/go-run-your-first-app         /docs/go/run-your-first-app-tutorial
 /docs/go-sdk-video-tutorial         /docs/go/sdk-video-tutorial
 /docs/go-search-apis        /docs/go/search-apis
 /docs/go-selectors        /docs/go/selectors
-/docs/go-sessions         /docs/go/sessions
+/docs/go/sessions         /docs/go/how-to-create-a-worker-session-in-go
 /docs/go/side-effects         /docs/go/how-to-execute-a-side-effect-in-go
 /docs/go/signals        /docs/go/how-to-send-a-signal-to-a-workflow-execution-in-go
 /docs/go-sync-vs-async-start        /docs/go/sync-vs-async-start
 /docs/go/sync-vs-async-start        /docs/go/workflows/#how-to-start-a-workflow
-/docs/go-task-queues        /docs/go/task-queues
+/docs/go/task-queues        /docs/concepts/what-is-a-task-queue
 /docs/go/testing        /docs/go/how-to-test-workflow-definitions-in-go
 /docs/go-tracing        /docs/go/tracing
 /docs/go-tutorial-prerequisites         /docs/go/tutorial-prerequisites
@@ -69,9 +70,7 @@
 #
 # Java pages redirects
 #
-/docs/java        /docs/java/introduction
-/docs/java-sdk-overview         /docs/java-sdk-introduction
-/docs/java-sdk-introduction         /docs/java/introduction
+/docs/java/introduction        /docs/java
 /docs/java-activities         /docs/java/activities
 /docs/java-distributed-cron         /docs/java/distributed-cron
 /docs/java-hello-world        /docs/java/hello-world-tutorial
@@ -91,6 +90,8 @@
 /docs/java/workflow-interface         /docs/java/workflows
 /docs/java-workflow-interface         /docs/java/workflows
 /docs/java/starting-workflow-executions         /docs/java/workflows
+/docs/content/how-to-provide-an-authorization-token-in-java        /docs/java/how-to-provide-an-authorization-token-in-java
+/docs/content/how-to-develop-a-worker-program-in-java        /docs/java/how-to-develop-a-worker-program-in-java
 
 #
 # PHP pages redirects
@@ -115,8 +116,7 @@
 /docs/php-signals         /docs/php/signals
 /docs/php-sync-vs-async-start         /docs/php/workflows/#starting-workflows
 /docs/php-task-queues         /docs/php/task-queues
-/docs/versioning        /docs/php/versioning
-/docs/workers         /docs/php/workers
+/docs/content/how-to-develop-a-worker-program-in-php        /docs/php/how-to-develop-a-worker-program-in-php
 
 #
 # Server pages redirects
@@ -124,9 +124,6 @@
 /docs/server        /docs/server/introduction
 /docs/server-archive-data         /docs/server/archive-data
 /docs/server-configuration        /docs/server/configuration
-/docs/server/elasticsearch-setup        /docs/content/how-to-integrate-elasticsearch-into-a-temporal-cluster
-/docs/server-event-types        /docs/reference/events
-/docs/server/event-types        /docs/reference/events
 /docs/server-introduction         /docs/server/introduction
 /docs/server-namespaces         /docs/server/namespaces
 /docs/namespaces        /docs/server/namespaces
@@ -137,11 +134,15 @@
 /docs/server-security         /docs/server/security
 /docs/server-versions-and-dependencies        /docs/server/versions-and-dependencies
 /docs/server/workflow-search        /docs/temporal-explained/visibility
-/docs/server-architecture         /docs/content/what-is-a-temporal-cluster
-/docs/content/what-is-the-temporal-server /docs/content/what-is-a-temporal-cluster
+
+/docs/content/how-to-deploy-temporal-to-kubernetes-for-testing-and-development        /docs/cluster/how-to-deploy-temporal-to-kubernetes-for-testing-and-development
+/docs/content/how-to-integrate-elasticsearch-into-a-temporal-cluster        /docs/cluster/how-to-integrate-elasticsearch-into-a-temporal-cluster
+/docs/content/how-to-quickly-install-the-temporal-server        /docs/cluster/how-to-quickly-install-the-temporal-cluster-using-docker-compose
 
 #
 # Dev tools redirects
 #
-/docs/tctl        /docs/devtools/tctl
+/docs/devtools/tctl        /docs/tctl
 /docs/system-tools/*        /docs/devtools/:splat
+
+/docs/content/how-to-remove-a-search-attribute-from-a-cluster-using-tctl /docs/tctl/how-to-remove-a-search-attribute-from-a-cluster-using-tctl

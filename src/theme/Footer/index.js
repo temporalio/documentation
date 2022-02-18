@@ -57,11 +57,11 @@ function Footer() {
       items: [
         {
           label: "Go SDK",
-          to: "/docs/go/getting-started",
+          to: "/docs/go",
         },
         {
           label: "Java SDK",
-          to: "/docs/java/introduction",
+          to: "/docs/java",
         },
         {
           label: "PHP SDK",

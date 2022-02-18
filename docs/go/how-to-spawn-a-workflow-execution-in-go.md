@@ -11,8 +11,8 @@ tags:
 import RelatedReadList from '../components/RelatedReadList.js'
 
 <!-- prettier-ignore -->
-import * as WhatIsAWorkflowExecution from '../content/what-is-a-workflow-execution.md'
-import * as WhatIsAWorkflowDefinition from '../content/what-is-a-workflow-definition.md'
+import * as WhatIsAWorkflowExecution from '../concepts/what-is-a-workflow-execution.md'
+import * as WhatIsAWorkflowDefinition from '../concepts/what-is-a-workflow-definition.md'
 import * as HowToSpawnAChildWorkflowExecutionInGo from './how-to-spawn-a-child-workflow-execution-in-go.md'
 
 To spawn a <preview page={WhatIsAWorkflowExecution}>Workflow Execution</preview>, use the `ExecuteWorkflow()` method on the Go SDK [`Client`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client#Client), which is available via [`NewClient()`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client#NewClient) in the [`go.temporal.io/sdk/client`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client) package.

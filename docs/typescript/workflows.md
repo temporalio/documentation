@@ -10,10 +10,12 @@ import TabItem from '@theme/TabItem';
 import RelatedReadList, {RelatedReadContainer, RelatedReadItem} from '../components/RelatedReadList.js'
 
 <!-- prettier-ignore -->
-import * as WhatIsASignal from '../content/what-is-a-signal.md'
-import * as WhatIsAQuery from '../content/what-is-a-query.md'
+import * as WhatIsASignal from '../concepts/what-is-a-signal.md'
+import * as WhatIsAQuery from '../concepts/what-is-a-query.md'
 
-> **@temporalio/workflow** [![NPM](https://img.shields.io/npm/v/@temporalio/workflow)](https://www.npmjs.com/package/@temporalio/workflow) [API reference](https://typescript.temporal.io/api/namespaces/workflow) | [GitHub](https://github.com/temporalio/sdk-typescript/tree/main/packages/workflow)
+**`@temporalio/workflow`** [![NPM](https://img.shields.io/npm/v/@temporalio/workflow)](https://www.npmjs.com/package/@temporalio/workflow) [API reference](https://typescript.temporal.io/api/namespaces/workflow) | [GitHub](https://github.com/temporalio/sdk-typescript/tree/main/packages/workflow)
+
+> _Background reading: [Workflows in Temporal](https://docs.temporal.io/docs/concepts/workflows/)_
 
 **Workflows are async functions that can orchestrate Activities and access special Workflow APIs, subject to deterministic limitations**.
 
@@ -516,6 +518,10 @@ await sleep(30 * 24 * 60 * 60 * 1000); // numerical API
 await sleep('30 days').catch(() => {
   // clean up code if workflow is canceled during sleep
 });
+
+// NOT VALID
+await sleep('1 month'); // ms package doesnt support "months" https://github.com/vercel/ms/issues/57
+// use date-fns and sleepUntil instead, see below
 ```
 
 With this primitive, you can build other abstractions. For example, a `sleepUntil` function that converts absolute time to relative time with `date-fns`:
@@ -856,7 +862,7 @@ Child Workflows and Activities are both started from Workflows, so you may feel 
 Here are some important differences:
 
 - Child Workflows have access to all Workflow APIs, but are subject to [Workflow Limitations](/docs/typescript/workflows#workflow-limitations). Activities have the inverse pros and cons.
-- Child Workflows can continue on if their Parent is canceled, with a [ParentClosePolicy](/docs/content/what-is-a-parent-close-policy/) of `ABANDON`, whereas Activities are _always_ canceled when their Workflow is canceled (they may react to a [cancellationSignal](/docs/typescript/activities#activity-cancellation) for cleanup if canceled). The decision is roughly analogous to spawning a child process in a terminal to do work vs doing work in the same process.
+- Child Workflows can continue on if their Parent is canceled, with a [ParentClosePolicy](/docs/concepts/what-is-a-parent-close-policy/) of `ABANDON`, whereas Activities are _always_ canceled when their Workflow is canceled (they may react to a [cancellationSignal](/docs/typescript/activities#activity-cancellation) for cleanup if canceled). The decision is roughly analogous to spawning a child process in a terminal to do work vs doing work in the same process.
 - Temporal tracks all state changes within Child Workflows in Event History, whereas only the input, output, and retry attempts of Activities are tracked.
 
 Activities usually model a single operation on the external world. Workflows are modeling composite operations that consist of multiple activities or other child workflows.
@@ -867,13 +873,13 @@ Activities usually model a single operation on the external world. Workflows are
 
 <RelatedReadList
 readlist={[
-["What is a Child Workflow Execution?","/docs/content/what-is-a-child-workflow-execution","explanation"]
+["What is a Child Workflow Execution?","/docs/concepts/what-is-a-child-workflow-execution","explanation"]
 ]}
 />
 
 ### Parent Close Policy
 
-import PCP from '../content/what-is-a-parent-close-policy.md'
+import PCP from '../concepts/what-is-a-parent-close-policy.md'
 
 <PCP />
 
@@ -881,12 +887,12 @@ import PCP from '../content/what-is-a-parent-close-policy.md'
 
 ## `continueAsNew`
 
-We need to call `continueAsNew` before our Workflow hits the 50,000 Event limit. [Events](../content/what-is-an-event) are generated when a Workflow does various things involving Temporal Server, including calling an Activity, receiving a Signal, or calling `sleep`, but not handling a Query.
+We need to call `continueAsNew` before our Workflow hits the 50,000 Event limit. [Events](../concepts/what-is-an-event) are generated when a Workflow does various things involving Temporal Server, including calling an Activity, receiving a Signal, or calling `sleep`, but not handling a Query.
 
 <details>
 <summary>More info</summary>
 
-[What is Continue-As-New?](/docs/content/what-is-continue-as-new)
+[What is Continue-As-New?](/docs/concepts/what-is-continue-as-new)
 
 </details>
 

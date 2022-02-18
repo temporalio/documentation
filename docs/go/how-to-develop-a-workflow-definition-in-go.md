@@ -8,10 +8,7 @@ tags:
   - go
 ---
 
-<!-- prettier-ignore -->
-import * as WhatIsAWorkflowDefinition from '../content/what-is-a-workflow-definition.md'
-
-In the Temporal Go SDK programming model, a <preview page={WhatIsAWorkflowDefinition}>Workflow Definition</preview> is an exportable function.
+In the Temporal Go SDK programming model, a [Workflow Definition](/docs/concepts/what-is-a-workflow-definition) is an exportable function.
 
 ```go
 func YourWorkflowDefinition(ctx workflow.Context) error {

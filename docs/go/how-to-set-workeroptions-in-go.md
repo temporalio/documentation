@@ -80,7 +80,7 @@ w := worker.New(c, "your_task_queue_name", workerOptions)
 
 ### `MaxConcurrentLocalActivityExecutionSize`
 
-Set the maximum concurrent [Local Activity Executions](/docs/content/what-is-a-local-activity) for the Worker.
+Set the maximum concurrent [Local Activity Executions](/docs/concepts/what-is-a-local-activity) for the Worker.
 
 - Type: `int`
 - Default: `1000`
@@ -346,7 +346,7 @@ Enables Sessions for Activity Workers.
 - Type: `bool`
 - Default: `false`
 
-When `true` the Activity Worker create a Session to sequentially process Activity Tasks for the given Task Queue.
+When `true` the Activity Worker creates a Session to sequentially process Activity Tasks for the given Task Queue.
 
 ```go
 // ...

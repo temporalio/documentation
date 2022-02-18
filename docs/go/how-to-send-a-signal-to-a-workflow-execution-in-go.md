@@ -8,9 +8,9 @@ tags:
   - developer-guide
 ---
 
-Use the `SignalWorkflow()` method on an instance of the [Go SDK Temporal Client](https://pkg.go.dev/go.temporal.io/sdk/client#Client) to send a [Signal](/docs/content/what-is-a-signal) to a [Workflow Execution](/docs/content/what-is-a-workflow-execution).
+Use the `SignalWorkflow()` method on an instance of the [Go SDK Temporal Client](https://pkg.go.dev/go.temporal.io/sdk/client#Client) to send a [Signal](/docs/concepts/what-is-a-signal) to a [Workflow Execution](/docs/concepts/what-is-a-workflow-execution).
 
-Pass in both the [Workflow Id](/docs/content/what-is-a-workflow-id) and [Run Id](/docs/content/what-is-a-run-id) to uniquely identify the Workflow Execution.
+Pass in both the [Workflow Id](/docs/concepts/what-is-a-workflow-id) and [Run Id](/docs/concepts/what-is-a-run-id) to uniquely identify the Workflow Execution.
 If just the Workflow Id is supplied (provide an empty string as the Run Id param), then the Workflow Execution that is Running will receive the Signal.
 
 ```go

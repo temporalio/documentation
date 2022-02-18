@@ -30,7 +30,7 @@ See below for a refresher on the 4 internal services:
 Temporal Cluster Architecture
 </summary>
 
-import WhatIsCluster from "../content/what-is-a-temporal-cluster.md"
+import WhatIsCluster from "../concepts/what-is-a-temporal-cluster.md"
 
 <WhatIsCluster />
 
@@ -56,7 +56,7 @@ Though **neither are blessed for production use**, you can consult our [Docker-C
 ## Minimum Requirements
 
 - The minimum Temporal Server dependency is a database. We support [Cassandra](https://cassandra.apache.org/), [MySQL](https://www.mysql.com/), or [PostgreSQL](https://www.postgresql.org/), with [SQLite on the way](https://github.com/temporalio/temporal/pulls?q=is%3Apr+sort%3Aupdated-desc+sqlite+).
-- Further dependencies are only needed to support optional features. For example, enhanced Workflow search can be achieved using [Elasticsearch](/docs/content/how-to-integrate-elasticsearch-into-a-temporal-cluster).
+- Further dependencies are only needed to support optional features. For example, enhanced Workflow search can be achieved using [Elasticsearch](/docs/Human-Driven Long-Running Workflow/how-to-integrate-elasticsearch-into-a-temporal-cluster).
 - Monitoring and observability are available with [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/).
 - Each language SDK also has minimum version requirements. See the [versions & dependencies page](/docs/server/versions-and-dependencies/) for precise versions we support together with these features.
 
@@ -119,32 +119,12 @@ Every shard is low contention by design and it is very difficult to oversubscrib
 With that said, here are some guidelines to some common bottlenecks:
 
 - **Database**. The vast majority of the time the database will be the bottleneck. **We highly recommend setting alerts on `schedule_to_start_latency`** to look out for this. Also check if your database connection is getting saturated.
-- **Internal services**. The next layer will be scaling the 4 internal services of Temporal ([Frontend, Matching, History, and Worker](/docs/content/what-is-a-temporal-cluster)).
+- **Internal services**. The next layer will be scaling the 4 internal services of Temporal ([Frontend, Matching, History, and Worker](/docs/concepts/what-is-a-temporal-cluster)).
   Monitor each accordingly. The Frontend service is more CPU bound, whereas the History and Matching services require more memory.
   If you need more instances of each service, spin them up separately with different command line arguments. You can learn more cross referencing [our Helm chart](https://github.com/temporalio/helm-charts) with our [Server Configuration reference](https://docs.temporal.io/docs/server/configuration/).
 - See the **Server Limits** section below for other limits you will want to keep in mind when doing system design, including event history length.
 
-### Scaling Workflow and Activity Workers
-
-Finally you want to set up alerting and monitoring on Worker metrics.
-When Workers are able to keep up, `schedule_to_start_latency` is close to zero.
-The default is 4 Workers (each of which can have 2-4 pollers of Task Queues), which should handle no more than 300 messages per second.
-
-Specifically, the primary scaling metrics are located in the server's dynamic configs:
-
-- `MaxConcurrentActivityTaskPollers` and `MaxConcurrentWorkflowTaskPollers`: [Defaults to 4](https://github.com/temporalio/temporal/blob/fe05751305b1cb50b68efa23f8aa5f1b34f45bc5/service/worker/service.go#L121)
-- `MaxConcurrentActivityExecutionSize` and `MaxConcurrentWorkflowTaskExecutionSize`: [Defaults to 200](https://github.com/temporalio/sdk-java/blob/bef967639fcdbe14ca37b80ac816596412846e5f/temporal-sdk/src/main/java/io/temporal/worker/WorkerOptions.java#L51)
-
-Scaling will depend on your workload — for example, for a Task Queue with 500 messages per second, you might want to scale up to 10 pollers.
-Provided you tune the concurrency of your pollers based on your application, it should be possible to scale them based on standard resource utilization metrics (CPU, Memory, etc).
-
-**It's possible to have too many workers.**
-Monitor the poll success (`poll_success`/`poll_success_sync`) and `poll_timeouts` metrics:
-
-- `poll_success_sync` indicates a "sync match", i.e. a poller waiting for a task to appear, isntead of a task waiting for a poller to appear.
-- Poll Success should be >90% in most cases - for high volume and low latency, try to target >95%
-- if you see low `schedule_to_start_latency` / low percentage of poll success / high percentage of timeouts, you might have too many workers/pollers.
-- with 100% poll success and increasing `schedule_to_start_latency`, you need to scale up.
+Please see the dedicated docs on [Tuning and Scaling Workers](/docs/operation/how-to-tune-workers).
 
 ## FAQs
 

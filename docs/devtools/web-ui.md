@@ -137,7 +137,7 @@ It can be enabled it in 2 steps:
 Once you have the Temporal Server running locally (use the [quick install guide](/docs/server/quick-install)), you can view the Temporal Web UI at [http://localhost:8088](http://localhost:8088) (this is configurable with the `TEMPORAL_WEB_PORT` environment variable).
 
 > ⚠️ This is a basic guide to troubleshooting/debugging Temporal applications.
-> It is work-in-progress and we encourage [reading about our Architecture](/docs/content/what-is-a-temporal-cluster) for more detail.
+> It is work-in-progress and we encourage [reading about our Architecture](/docs/concepts/what-is-a-temporal-cluster) for more detail.
 > The better you understand how Temporal works, the better you will be at debugging Workflow Executions.
 
 If you have the time, we recommend [watching our 19 minute video guide on YouTube](https://youtu.be/PqcVKIxI0nU) which demonstrates the debugging explained below.
@@ -148,11 +148,11 @@ The primary mechanism we recommend for debugging is [Temporal Web](https://githu
 
 ![6XkjmR](https://user-images.githubusercontent.com/6764957/110544958-71746480-8167-11eb-8152-8d3a3eb73d4e.gif)
 
-- [Workflow Executions](/docs/content/what-is-a-workflow-execution) are identified by their [**Workflow ID**](/docs/content/what-is-a-workflow-id), which you provide when creating the workflow. They also have a **Name** which is directly taken from your code.
+- [Workflow Executions](/docs/concepts/what-is-a-workflow-execution) are identified by their [**Workflow ID**](/docs/concepts/what-is-a-workflow-id), which you provide when creating the workflow. They also have a **Name** which is directly taken from your code.
 - Workflow **Status** is usually in one of a few states: Running, Completed, or Terminated, with **Start Time** and **End Time** shown accordingly.
 - Workflow ID's are are distinct from **Run ID's**, which uniquely identify one of potentially many Runs of Workflows with the same Workflow ID.
 
-> Tip: Don't confuse Runs with [Workflow Executions](/docs/content/what-is-a-workflow-execution)—they are similar, but a long-running Workflow Execution can have multiple Runs. A Run is the atomic unit.
+> Tip: Don't confuse Runs with [Workflow Executions](/docs/concepts/what-is-a-workflow-execution)—they are similar, but a long-running Workflow Execution can have multiple Runs. A Run is the atomic unit.
 
 The full state of every Run is inspectable in Temporal Web:
 
@@ -198,7 +198,7 @@ Reading execution histories is one of the more reliable ways of debugging:
 
 Here, you can see the exact sequence of events that has happened so far, which includes the relevant state for each event and details about what went wrong or what is preventing the next correct event.
 There are about 40 system events in total.
-See our [Temporal Server Event Types reference](/docs/reference/events/) for detailed descriptions.
+See our [Temporal Server Event Types reference](/docs/concepts/what-is-an-event/) for detailed descriptions.
 
 ### Viewing Stack Traces on Temporal Web
 

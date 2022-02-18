@@ -29,7 +29,7 @@ module.exports = {
   ],
   themeConfig: {
     colorMode: {
-      defaultMode: "dark",
+      defaultMode: "light",
       disableSwitch: false,
       switchConfig: {
         darkIcon: "🌙",
@@ -69,14 +69,23 @@ module.exports = {
               label: "Explanation",
             },
             {
-              to: "/docs/server/introduction",
-              activeBasePath: "/docs/server/",
-              label: "Server",
+              to: "/docs/concepts",
+              activeBasePath: "/docs/concepts/",
+              label: "Concepts",
             },
             {
-              to: "/docs/devtools/introduction",
-              activeBasePath: "/docs/devtools/",
-              label: "DevTools",
+              to: "/docs/server/introduction",
+              activeBasePath: "/docs/server/",
+              label: "Cluster",
+            },
+            {
+              to: "/docs/tctl/",
+              activeBasePath: "/docs/tctl/",
+              label: "tctl",
+            },
+            {
+              to: "/docs/devtools/web-ui/",
+              label: "Web UI",
             },
             {
               to: "/application-development",
@@ -85,9 +94,14 @@ module.exports = {
               label: "SDKs",
             },
             {
+              to: "/docs/operation/",
+              activeBasePath: "operation",
+              label: "Operation guides",
+            },
+            {
               to: "/docs/learning-paths",
               activeBasePath: "/docs/learning-paths",
-              label: "Learning Paths",
+              label: "Learning",
             },
           ],
         },
@@ -95,6 +109,10 @@ module.exports = {
           activeBasePath: "none",
           label: "Case Studies",
           items: [
+            {
+              to: "/blog/how-datadog-ensures-database-reliability-with-temporal",
+              label: "Datadog",
+            },
             {
               to: "/blog/how-temporal-simplified-checkr-workflows",
               label: "Checkr",
@@ -153,10 +171,10 @@ module.exports = {
       anonymizeIP: true, // Should IPs be anonymized?
     },
     algolia: {
-      apiKey: "14805ba2eb682edb2e719df4d5e03c8a",
+      apiKey: "cd527863e60d95ebe650cdd21c7a6f3f",
       indexName: "temporal",
       // contextualSearch: true, // Optional, If you different version of docs etc (v1 and v2) doesn't display dup results
-      // appId: 'app-id', // Optional, if you run the DocSearch crawler on your own
+      appId: "T5D6KNJCQS", // Optional, if you run the DocSearch crawler on your own
       // algoliaOptions: {}, // Optional, if provided by Algolia
     },
   },

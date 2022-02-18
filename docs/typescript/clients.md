@@ -6,9 +6,9 @@ description: Workflow Clients are embedded in your application code, and connect
 ---
 
 <!-- prettier-ignore -->
-import * as WhatIsATemporalCronJob from '../content/what-is-a-temporal-cron-job.md'
+import * as WhatIsATemporalCronJob from '../concepts/what-is-a-temporal-cron-job.md'
 
-> **@temporalio/client** [![NPM](https://img.shields.io/npm/v/@temporalio/client)](https://www.npmjs.com/package/@temporalio/client) [API reference](https://typescript.temporal.io/api/namespaces/client) | [GitHub](https://github.com/temporalio/sdk-typescript/tree/main/packages/client)
+**`@temporalio/client`** [![NPM](https://img.shields.io/npm/v/@temporalio/client)](https://www.npmjs.com/package/@temporalio/client) [API reference](https://typescript.temporal.io/api/namespaces/client) | [GitHub](https://github.com/temporalio/sdk-typescript/tree/main/packages/client)
 
 **Workflow Clients are embedded in your application code, and connect to Temporal Server via gRPC**.
 They are the only way to schedule new Workflow Executions with Temporal Server.
@@ -270,8 +270,6 @@ Again, see [Workflows in TypeScript](/docs/typescript/workflows#external-workflo
 Under the hood of a `WorkflowClient`, the `Connection` is actually powered by a `WorkflowService` driver that makes the raw gRPC calls to Temporal Server.
 This Service is capable of making a wider range of introspection calls.
 
-**For the full list of gRPC calls, see the Methods section of the [WorkflowService](https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.WorkflowService-1#methods) API reference.**
-
 <!--SNIPSTART typescript-grpc-call-basic-->
 <!--SNIPEND-->
 
@@ -337,3 +335,7 @@ Outputs something like:
 ```
 
 </details>
+
+**For the full list of gRPC calls, see the Methods section of the [WorkflowService](https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.WorkflowService-1#methods) API reference.**
+
+Note that if you are trying to do a lot of list-then-filter operations (e.g. `listClosedWorkflowExecutions`), the [Visibility APIs](https://docs.temporal.io/docs/typescript/search-attributes) are a better choice for Temporal deployments with [ElasticSearch enabled](https://docs.temporal.io/docs/cluster/how-to-integrate-elasticsearch-into-a-temporal-cluster/) (this is enabled by default for all Temporal Cloud customers).

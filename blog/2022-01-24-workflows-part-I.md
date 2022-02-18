@@ -97,7 +97,7 @@ function SendReminderEmail(event, context) : Message {
 
   return {
     message: { user: event.user, iter: event.iter + 1},
-    after: "1month"
+    after: "30 days"
   }
 }
 
@@ -132,7 +132,7 @@ async function SendReminderEmail(user: string) {
         // Thanks to Temporal's retry policy, we already 
         // tried twice, better luck next month 🍀
       }
-      await sleep("1 month");
+      await sleep("30 days");
     }
 }
 ```

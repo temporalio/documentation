@@ -4,83 +4,6 @@ title: Activities in Go
 sidebar_label: Activities
 ---
 
-An Activity is the implementation of a particular task in the business logic.
-You should have a conceptual understanding of Temporal Activities before proceeding.
-
-## Overview
-
-The following example demonstrates a simple Activity Definition that accepts a string parameter, appends a word
-to it, and then returns a result.
-
-```go
-package sample
-
-import (
-	"context"
-
-	"go.temporal.io/sdk/activity"
-)
-
-// SimpleActivity is a sample Temporal Activity Definition that takes one parameter, appends a word
-// to it, and then returns the value.
-func SimpleActivity(ctx context.Context, value string) (string, error) {
-	logger := activity.GetLogger(ctx)
-	logger.Info("SimpleActivity called.", "Value:", value)
-	result := value + " processed"
-	return result, nil
-}
-```
-
-In the Workflow Definition, to invoke this Activity use `worklow.ExecuteActivity(ctx, SimpleActivity)`.
-
-Let's take a look at each component of this Activity.
-
-#### Heart Beating
-
-For long-running Activities, Temporal provides an API for the Activity code to report both liveness and
-progress back to the Temporal managed service.
-
-```go
-progress := 0
-for hasWork {
-    // Send heartbeat message to the server.
-    activity.RecordHeartbeat(ctx, progress)
-    // Do some work.
-    ...
-    progress++
-}
-```
-
-When an Activity times out due to a missed heartbeat, the last value of the details (`progress` in the
-above sample) is returned from the `workflow.ExecuteActivity` function as the details field of `TimeoutError`
-with `TimeoutType` set to `Heartbeat`.
-
-You can also heartbeat an Activity from an external source:
-
-```go
-// The client is a heavyweight object that should be created once per process.
-serviceClient, err := client.NewClient(client.Options{
-    HostPort:     HostPort,
-    Namespace:   Namespace,
-    MetricsScope: scope,
-})
-
-// Record heartbeat.
-err := serviceClient.RecordActivityHeartbeat(ctx, taskToken, details)
-```
-
-The parameters of the `RecordActivityHeartbeat` function are:
-
-- `taskToken`: The value of the binary `TaskToken` field of the `ActivityInfo` struct retrieved inside
-  the Activity.
-- `details`: The serializable payload containing progress information.
-
-#### Cancellation
-
-import WhatIsActivityCancellation from '../content/what-is-activity-cancellation.md'
-
-<WhatIsActivityCancellation />
-
 ## Synchronous Activity Execution
 
 The primary responsibility of a Workflow implementation is to schedule Activities for execution.
@@ -106,35 +29,6 @@ if err != nil {
 ```
 
 Let's take a look at each component of this call.
-
-### Activity options
-
-Before calling `workflow.ExecuteActivity()`, you must configure `ActivityOptions` for the
-invocation. These options customize various execution timeouts, and are passed in by creating a child
-context from the initial context and overwriting the desired values. The child context is then passed
-into the `workflow.ExecuteActivity()` call. If multiple Activities are sharing the same option
-values, then the same context instance can be used when calling `workflow.ExecuteActivity()`.
-
-By default, Temporal retries failing Activities with these default values (exponential backoff starting from 1 second going up to 100 seconds):
-
-- `InitialInterval` of 1 second
-- `BackoffCoefficient` of 2.0
-- `MaximumInterval` of 100 seconds (100x multiple of `InitialInterval`)
-- `MaximumAttempts` of 0 (in other words, unlimited retries)
-
-You can refer to [our Retry Policy documentation](https://docs.temporal.io/docs/go/retries) for guidance on customizing your retry behavior.
-
-### Activity timeouts
-
-There can be various kinds of timeouts associated with an Activity. Temporal guarantees that Activities
-are executed _at least once_, so an Activity either succeeds or fails with one of the following timeouts:
-
-| Timeout                  | Description                                                                                                                                                                                          |
-| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `StartToCloseTimeout`    | Maximum time that a worker can take to process a task after it has received the task.                                                                                                                |
-| `ScheduleToStartTimeout` | Time a task can wait to be picked up by an Activity worker after a Workflow schedules it. If there are no workers available to process this task for the specified duration, the task will time out. |
-| `ScheduleToCloseTimeout` | Time a task can take to complete after it is scheduled by a Workflow. This is usually greater than the sum of `StartToClose` and `ScheduleToStart` timeouts.                                         |
-| `HeartbeatTimeout`       | If a task doesn't heartbeat to the Temporal service for this duration, it will be considered to have failed. This is useful for long-running tasks.                                                  |
 
 ### ExecuteActivity call
 
