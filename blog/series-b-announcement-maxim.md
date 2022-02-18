@@ -6,6 +6,7 @@ author_title: CEO
 author_image_url: https://avatars.githubusercontent.com/u/1463622
 tags:
   - announcement
+  - funding
 date: 2022-2-16T00:00:00Z
 image: /img/temporal-home-page-feb-2022.png
 ---
