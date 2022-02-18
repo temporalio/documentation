@@ -36,6 +36,7 @@
 # Go pages redirects
 #
 /docs/go/getting-started        /docs/go
+/docs/go/introduction        /docs/go
 /docs/go-activities         /docs/go/activities
 /docs/go/child-workflows        /docs/go/workflows/#child-workflow-executions
 /docs/go-continue-as-new        /docs/go/workflows#large-event-histories
