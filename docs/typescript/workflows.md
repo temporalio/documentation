@@ -37,10 +37,11 @@ Workflow Definitions are "just functions", which can store state, and orchestrat
 <!--SNIPEND-->
 
 The snippet above uses `proxyActivities` to create functions that, when called, schedule a `greet` Activity in the system to say "Hello World".
-Workflow functions can support one or more arguments, but we encourage you to use single parameter option objects, as that helps with backward compatibility:
+
+A Workflow function can have multiple parameters, but we encourage you to use a single object parameter, as that helps with backward compatibility:
 
 ```ts
-export async function example({ name: string }): Promise<{ name: string }> {
+export async function example({ name }: { name: string }): Promise<{ greeting: string }> {
   const greeting = await greet(name);
   return { greeting };
 }
