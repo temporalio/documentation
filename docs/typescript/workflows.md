@@ -41,7 +41,11 @@ The snippet above uses `proxyActivities` to create functions that, when called, 
 A Workflow function can have multiple parameters, but we encourage you to use a single object parameter, as that helps with backward compatibility:
 
 ```ts
-export async function example({ name }: { name: string }): Promise<{ greeting: string }> {
+export async function example({
+  name,
+}: {
+  name: string;
+}): Promise<{ greeting: string }> {
   const greeting = await greet(name);
   return { greeting };
 }
