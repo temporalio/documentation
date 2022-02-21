@@ -16,6 +16,13 @@ sidebar_label: PHP SDK introduction
 
 2. [Install and run the Temporal Server](/docs/server/quick-install) using `docker compose`.
 
+## Tutorials
+
+- You should orient yourself to the Hello World with [the PHP Hello World Walkthrough](/docs/php/hello-world)
+- For a more non-trivial discussion of an application, see [the Subscription Tutorial](/docs/php/subscription-tutorial) or [browse the code directly](https://github.com/temporalio/subscription-workflow-project-template-php).
+
+Much more detailed API samples can be viewed in [the Samples Repo](/docs/samples-library/#php).
+
 ## Resources
 
 - Join the `#php-sdk` channel on the [Temporal Slack](https://temporal.io/slack) or [open issues on GitHub](https://github.com/temporalio/sdk-php/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc).
@@ -30,7 +37,7 @@ sidebar_label: PHP SDK introduction
   - (Russian) [Orchestration and Murphy's Law: Handling Errors-Business Processes](https://www.youtube.com/watch?v=0NCMEaFMj_M) (2 hour workshop)
   - (Russian) PHP Russia https://phprussia.ru/moscow/2021/abstracts/7390 (video pending)
   - (Russian) [FWDays Keynote: Fault Tolerant Workflow Orchestration on PHP](https://fwdays.com/en/event/php-fwdays-2021/review/fault-tolerant-workflow-orchestration-on-php) (video pending)
-- The PHP SDK is often used with [Roadrunner](https://roadrunner.dev/) (also maintained by SpiralScout)
+- The PHP SDK is often used with [Roadrunner](https://roadrunner.dev/) (maintained by [SpiralScout](https://github.com/spiral?type=source), the maintainers of the PHP SDK)
 
 ## The basics
 

@@ -288,17 +288,6 @@ module.exports = {
       collapsed: false,
       items: [
         "php/introduction",
-        {
-          type: "link",
-          label: "Samples library",
-          href: "/docs/samples-library/#php",
-        },
-        {
-          type: "category",
-          label: "Tutorials",
-          collapsed: false,
-          items: ["php/hello-world", "php/subscription-tutorial"],
-        },
         "php/workflows",
         "php/activities",
         "php/task-queues",
