@@ -101,3 +101,36 @@ We endeavor to give you good defaults so you don't have to worry about them, but
 - [Activity Timeouts and Retries](/docs/typescript/activities#activity-timeouts) as you gain an understanding of Temporal and the services you rely on, you will likely want to adjust the timeouts and retry policy to reflect your desired behavior.
   - Note that there are separate [timeouts and retry policy](https://typescript.temporal.io/api/interfaces/client.workflowoptions/#workflowruntimeout) at the Workflow level, but we do not encourage their usage unless you know what you are doing.
 - _to be completed as we get more user feedback_
+
+## Do not use Alpine
+
+Alpine replaces glibc with musl, which is officially incompatible with the Rust core of the TypeScript SDK.
+If you receive errors like below, it's probably because you are using Alpine.
+You can use the `slim` tag for the Docker image, if you are looking for a lightweight alternative.
+
+```
+Error: Error loading shared library ld-linux-x86-64.so.2: No such file or directory (needed by /opt/app/node_modules/@temporalio/core-bridge/index.node)
+```
+
+Or like this:
+
+```
+Error: Error relocating /opt/app/node_modules/@temporalio/core-bridge/index.node: __register_atfork: symbol not found
+```
+
+## Install ca-certificates for TLS transport
+
+By default, Docker images do not come with `ca-certificates` installed.
+This might lead to a `[TransportError: transport error]` runtime error because the certificates cannot be verified.
+The `ca-certificates` package installs the common certificate authorities and fixes this issue.
+
+Add the following line to your Dockerfile if you use Debian based images:
+
+```
+RUN apt update && apt install -y ca-certificates
+```
+
+## Install all dependencies even in production
+
+Make sure to run `npm i` when you build your Docker image.
+Using `npm i --only=prod` or its yarn counterpart `yarn install --production` does not install some of the necessary runtime packages for Temporal.
