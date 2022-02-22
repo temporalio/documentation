@@ -64,8 +64,8 @@ There following are examples of some minor changes that would not take effect wh
 
 - Changing the duration of a Timer.
 - Changing the arguments to:
-  - Call to spawn an Activity Execution (local or nonlocal).
-  - Call to spawn a Child Workflow Execution.
+  - The Activity Options in a call to spawn an Activity Execution (local or nonlocal).
+  - The Child Workflow Options in a call to spawn a Child Workflow Execution.
   - Call to Signal an External Workflow Execution.
 
 #### Intrinsic non-deterministic logic
