@@ -19,7 +19,7 @@ We strongly recommend that you write a Workflow Definition in a language that ha
 A very important aspect of developing Workflow Definitions is making sure that the same Commands are emitted in the same order whenever a corresponding Workflow Function Execution (instance of the Function Definition) is re-executed.
 
 The execution semantics of a Workflow Execution include the re-execution of a Workflow Function.
-The use of Workflow APIs in the function generates the Commands.
+The use of Workflow APIs in the function generate the Commands.
 Commands tell the Cluster what Events to create and add to the Workflow Execution's Event History.
 Whenever a Workflow Function is executed, the Commands that are emitted are compared with the existing Event History.
 If a corresponding Event already exists within the Event History that maps to the generation of that Command in the same sequence, and some specific metadata of that Command matches with some specific metadata of the Event, then that Command is ignored.
