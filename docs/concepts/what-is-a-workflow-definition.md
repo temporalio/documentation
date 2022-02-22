@@ -70,7 +70,7 @@ The following are examples of some minor changes that would not take effect when
 
 #### Intrinsic non-deterministic logic
 
-Intrinsic non-determinism is when a Workflow Function Execution might emit a different of Commands each on re-execution regardless of whether all the input parameters are the same.
+Intrinsic non-determinism is when a Workflow Function Execution might emit a different sequence of Commands on re-execution, regardless of whether all the input parameters are the same.
 
 For example, a Workflow Definition can not have inline logic that branches (emits a different Command sequence) based off a wall-clock or a random number.
 Here is some representative pseudocode:
@@ -92,8 +92,8 @@ In other words, all operations that do not purely mutate the Workflow Execution'
 
 ### What is Workflow Versioning?
 
-Workflow Versioning is the feature that enables the creation of logical branching inside a Workflow Definition based on a developer specified version identifier.
-The feature is intended to be used when a Workflow Definition logic needs to be updated, but there are running Workflow Executions that currently depend on it.
+The Workflow Versioning feature enables the creation of logical branching inside a Workflow Definition based on a developer specified version identifier.
+Use this feature when a Workflow Definition logic needs to be updated, but there are running Workflow Executions that currently depend on it.
 
 - [How to version Workflow Definitions in Go](/docs/go/versioning)
 - [How to version Workflow Definitions in Java](/docs/java/versioning)
