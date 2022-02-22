@@ -45,25 +45,19 @@ There are some subtle nuances to how Events are recorded to an Event History whe
 
 ### Default Values
 
-#### Default Activity Retry Policy
+#### Activities Retry Policy
 
 ```
 Initial Interval     = 1 second
 Backoff Coefficient  = 2.0
-Maximum Interval     = 100 × Initial Interval
+Maximum Interval     = ∞
 Maximum Attempts     = ∞
 Non-Retryable Errors = []
 ```
 
-#### Default Workflow Retry Policy
+#### Workflow Execution Retry Policy
 
-```
-Initial Interval     = 1 second
-Backoff Coefficient  = 2.0
-Maximum Interval     = 100 × Initial Interval
-Maximum Attempts     = 1
-Non-Retryable Errors = []
-```
+There is no default Workflow Execution Retry Policy: unless the Client specifies a Retry Policy when it starts the Workflow Execution, the Execution will not be retried.
 
 ### Initial Interval
 
