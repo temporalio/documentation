@@ -16,12 +16,12 @@ We strongly recommend that you write a Workflow Definition in a language that ha
 
 ### Deterministic constraints
 
-A very important aspect of developing Workflow Definitions is making sure that the same Commands are emitted in the same order whenever a corresponding Workflow Execution (instance of the Definition) is re-executed.
+A very important aspect of developing Workflow Definitions is making sure that the same Commands are emitted in the same order whenever a corresponding Workflow Function Execution (instance of the Function Definition) is re-executed.
 
-The execution semantics of a Workflow Execution include the re-execution of a Workflow function.
+The execution semantics of a Workflow Execution include the re-execution of a Workflow Function.
 The use of Workflow APIs in the function generates the Commands.
 Commands tell the Cluster what Events to create and add to the Workflow Execution's Event History.
-Whenever a Workflow function is executed, the Commands that are emitted are compared with the existing Event History.
+Whenever a Workflow Function is executed, the Commands that are emitted are compared with the existing Event History.
 If a corresponding Event already exists within the Event History that maps to the generation of that Command in the same sequence, and some specific metadata of that Command matches with some specific metadata of the Event, then that Command is ignored.
 
 For example, using an SDKs "Execute Activity" API generates the [ScheduleActivityTask](/docs/concepts/what-is-a-command#scheduleactivitytask) Command.
@@ -55,7 +55,7 @@ Before the Timer is up, we change the Workflow Definition the following sequence
 2. Start and wait on a timer/sleep
 3. Complete
 
-When the Timer fires, the next Workflow Task will cause the Workflow function to re-execute.
+When the Timer fires, the next Workflow Task will cause the Workflow Function to re-execute.
 The first Command it sees would be be ScheduleActivityTask, which wouldn't match up to the expected ActivityTaskScheduled Event.
 
 The Workflow Execution would fail, and return the non-determinism error.
@@ -70,7 +70,7 @@ There following are examples of some minor changes that would not take effect wh
 
 #### Intrinsic non-deterministic logic
 
-Intrinsic non-determinism is when a Workflow function might emit a different of Commands each on re-execution regardless of whether all the input parameters are the same.
+Intrinsic non-determinism is when a Workflow Function Execution might emit a different of Commands each on re-execution regardless of whether all the input parameters are the same.
 
 For example, a Workflow Definition can not have inline logic that branches (emits a different Command sequence) based off a wall-clock or a random number.
 Here is some representative pseudocode:
@@ -86,7 +86,7 @@ fn my_workflow() {
 ```
 
 Each SDK offers APIs that enable Workflow Definitions to have logic that gets and uses time, random numbers, and data from unreliable resources.
-When those APIs are used, the results are stored as part of the Event History, which means that a re-executed Workflow function will issue the same sequence of Commands, even if there is branching involved.
+When those APIs are used, the results are stored as part of the Event History, which means that a re-executed Workflow Function will issue the same sequence of Commands, even if there is branching involved.
 
 In other words, all operations that do not purely mutate the Workflow Execution's state should occur via a Temporal SDK API.
 
