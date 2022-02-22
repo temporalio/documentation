@@ -49,14 +49,14 @@ For example, let's say we have a Workflow Definition that defines the following 
 We start a Worker and spawn a Workflow Execution that uses that Workflow Definition.
 The Worker would emit the [StartTimer](/docs/concepts/what-is-a-command/#starttimer) Command and the Workflow Execution would become suspended.
 
-Before the Timer is up, we change the Workflow Definition the following sequence:
+Before the Timer is up, we change the Workflow Definition to the following sequence:
 
-1. Spawn and wait on an Activity Execcution
-2. Start and wait on a timer/sleep
+1. Spawn and wait on an Activity Execution
+2. Start and wait on a Timer/sleep
 3. Complete
 
 When the Timer fires, the next Workflow Task will cause the Workflow Function to re-execute.
-The first Command it sees would be be ScheduleActivityTask, which wouldn't match up to the expected ActivityTaskScheduled Event.
+The first Command the Worker sees would be be ScheduleActivityTask Command, which wouldn't match up to the expected StartTimer Event.
 
 The Workflow Execution would fail, and return the non-determinism error.
 
