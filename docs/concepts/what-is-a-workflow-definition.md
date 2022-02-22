@@ -60,7 +60,7 @@ The first Command the Worker sees would be be ScheduleActivityTask Command, whic
 
 The Workflow Execution would fail, and return the non-determinism error.
 
-There following are examples of some minor changes that would not take effect when re-executing a History which already contain the Events:
+The following are examples of some minor changes that would not take effect when re-executing a History which already contain the Events:
 
 - Changing the duration of a Timer.
 - Changing the arguments to:
