@@ -130,7 +130,7 @@ Add the following line to your Dockerfile if you use Debian based images:
 RUN apt update && apt install -y ca-certificates
 ```
 
-## Missing dependencies in production
+## Install all dependencies even in production
 
-If you face this error: `Error: Cannot find module 'acorn'`, it's because you use the `workflowsPath` in production instead of `workflowBundle`.
-Please check the [pre-build Code section](#pre-build-code) for more information.
+Run `npm i --production=false` when you build your Docker image.
+Using `npm i --only=prod` or its yarn counterpart `yarn install --production` does not install some of the necessary runtime packages for Temporal (see [issue #489](https://github.com/temporalio/sdk-typescript/issues/489)).
