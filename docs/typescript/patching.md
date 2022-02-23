@@ -15,24 +15,33 @@ We are working to greatly improve the experience of this feature before GA launc
 
 </CustomWarning>
 
-## Versioning Entire Workflows
+## Alternatives
 
-Before you explore our patching/versioning API, check if your needs can be addressed by a simple rename:
+Before you explore our patching/versioning API, check if your needs can be addressed in other ways:
 
-1. Copy `Workflow1`'s code to a `Workflow2` function and change what you need
-1. Register `Workflow2` in your Workers alongside `Workflow1`
-1. Cut over your Clients to only call `Workflow2` from now on
-1. Remove `Workflow1` code when none of them are running anymore
+- [Version Task Queue](#version-task-queue)
+- [Version Workflow Name](#version-workflow-name)
 
-If you don't feel like renaming the Workflow type, you can also do similar with task queues:
+Both options mean that Workflows running `v1` code will never migrate to `v2` code: they will run `v1` code to completion.
+If you would like to update Workflows running `v1` _while they are still running_, you [may need to "patch in" code](#do-i-need-to-patch).
 
-1. Leave some Workers running your v1 `Workflow`, on the `queue1` task queue.
-1. Change your `Workflow` code and spin up new Workers that are polling a `queue2` task queue.
-1. Cut over your Clients to only call `Workflow` on `queue2` from now on
-1. Remove your v1 Workers when all the v1 Workflows have rolled off
+### Version Task Queue
 
-Either options means Workflows running `v1` code will never migrate to `v2` code before they complete.
-If you would like to update Workflows running `v1` _while they are still running_, you may need to "patch in" code. Read on.
+If we're currently running our v1 Workflow code on Workers that poll on `queue1`, we can run v2 Workflow code on Workers that poll on `queue2`:
+
+1. Leave some Workers running your v1 `Workflow`, on the `queue1` Task Queue.
+1. Change your `Workflow` code and spin up new Workers that are polling a `queue2` Task Queue.
+1. Cut over your Clients to only call `Workflow` on `queue2` from now on.
+1. Remove your v1 Workers when all the v1 Workflows have completed.
+
+### Version Workflow Name
+
+We can create a new version of a Workflow by changing its name:
+
+1. Copy `Workflow1`'s code to a `Workflow2` function and change what you need.
+1. Register `Workflow2` in your Workers alongside `Workflow1`.
+1. Cut over your Clients to only call `Workflow2` from now on.
+1. Remove `Workflow1` code when none of them are running anymore.
 
 ## Do I need to Patch?
 
