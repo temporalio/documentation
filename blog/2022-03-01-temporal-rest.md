@@ -21,15 +21,15 @@ In this blog post, I'll show how to use temporal-rest to create a couple of REST
 Counter API
 -----------
 
-The key idea of long-lived Workflows is that Workflow functions are _deterministic_, so Temporal can store the state of the Workflow by storing the Workflow's initial state and event history.
-For example, below is a Workflow that stores a single numeric counter.
-The Workflow listens for a Signal `increment` to increase the counter, and a Query `getCount` to get the current state of the counter.
+The key idea of long-lived Workflows is that Workflow functions are _deterministic_, so Temporal can persist the state of the Workflow by storing the Workflow's initial state and event history.
+For example, below is a Workflow that keeps a single numeric counter.
+The Workflow listens for an `increment` Signal to increase the counter, and a `getCount` Query to get the current value of the counter.
 
 ```ts
 import * as wf from '@temporalio/workflow';
 
-exports.incrementSignal = wf.defineSignal('increment');
-exports.getCountQuery = wf.defineQuery('getCount');
+export const incrementSignal = wf.defineSignal('increment');
+export const getCountQuery = wf.defineQuery('getCount');
 
 export async function counterWorkflow(): Promise<void> {
   let count = 0;
@@ -42,16 +42,14 @@ export async function counterWorkflow(): Promise<void> {
 }
 ```
 
-`counterWorkflow()` should run in a separate Worker process.
-To execute an instance of `counterWorkflow()`, you should create a Workflow handle from a separate function as shown below.
+To execute an instance of `counterWorkflow`, use `WorkflowClient` to start the Workflow:
 
 ```ts
-import { Connection, WorkflowClient } from '@temporalio/client';
+import { WorkflowClient } from '@temporalio/client';
 import { counterWorkflow } from './workflows';
 
 async function run() {
-  const connection = new Connection({});
-  const client = new WorkflowClient(connection.service, {});
+  const client = new WorkflowClient();
 
   const handle = await client.start(counterWorkflow, {
     taskQueue: 'tutorial',
@@ -71,19 +69,18 @@ run().catch(err => {
 });
 ```
 
-Running `counterWorkflow()` from a command line script is convenient for the sake of an example, but not very useful unless you're building a command line app.
-Enter temporal-rest, which you can use to create an Express API for these Workflows.
+Running `counterWorkflow` from this command-line script is convenient for the sake of an example, but not very useful unless you're building a command-line app.
+Enter `temporal-rest`, which you can use to create an Express API for `counterWorkflow`:
 
 ```ts
-import { Connection, WorkflowClient } from '@temporalio/client';
+import { WorkflowClient } from '@temporalio/client';
 import * as workflows from './workflows';
 
 import express from 'express';
 import { createExpressMiddleware } from 'temporal-rest';
 
 async function run() {
-  const connection = new Connection({});
-  const client = new WorkflowClient(connection.service, {});
+  const client = new WorkflowClient();
 
   const app = express();
 
@@ -101,13 +98,13 @@ run().catch((err) => {
 
 The `createExpressMiddleware()` function creates an Express router with 3 endpoints:
 
-1. `POST /workflow/counterWorkflow`: start a new instance of `counterWorkflow`
-2. `GET /query/getCount/:workflowId`: execute the `getCount` Query on the Workflow with the given id
-3. `PUT /signal/increment/:workflowId`: send an `increment` Signal to the Workflow with the given id
+1. `POST /workflow/counterWorkflow`: start a new instance of `counterWorkflow`.
+2. `GET /query/getCount/:workflowId`: execute the `getCount` Query on the Workflow with the given ID.
+3. `PUT /signal/increment/:workflowId`: send an `increment` Signal to the Workflow with the given ID.
 
-Below is an example of interacting with this API using [curl](https://thecodebarbarian.com/what-javascript-developers-should-know-about-curl.html).
-A POST to `/workflow/counterWorkflow` creates a new Workflow instance and returns the id.
-Then you can send a Signal to increment the counter, and execute a Query to get the current state of the counter.
+Below is an example of interacting with this API using [`curl`](https://thecodebarbarian.com/what-javascript-developers-should-know-about-curl.html).
+A POST to `/workflow/counterWorkflow` creates a new Workflow instance and returns the Workflow ID.
+Then you can send a Signal to increment the counter, and execute a Query to get the current state of the counter:
 
 ```
 $ curl -X POST http://localhost:3000/workflow/counterWorkflow
@@ -123,29 +120,29 @@ $ curl "http://localhost:3000/query/getCount/4cb1b1ea-b962-419e-840c-5c18ab5555a
 Query and Signal Arguments
 --------------------------
 
-You can also pass arguments to Signals and Queries using temporal-rest.
-By default, temporal-rest parses any JSON in the [Express request body](https://masteringjs.io/tutorials/express/body) and passes the parsed object as the first parameter to Signals, and passes the [Express query parameters](https://masteringjs.io/tutorials/express/query-parameters) as the first parameter to Queries.
+You can also pass arguments to Signals and Queries with `temporal-rest`.
+By default, `temporal-rest` parses any JSON in the [Express request body](https://masteringjs.io/tutorials/express/body) and passes the parsed object as the first parameter to Signals, and passes the [Express query parameters](https://masteringjs.io/tutorials/express/query-parameters) as the first parameter to Queries.
 
-For example, suppose your `counterWorkflow()` supports tracking multiple counters, each counter with a unique name.
+For example, suppose `counterWorkflow` supports tracking multiple counters, each one with a unique name:
 
 ```ts
 import * as wf from '@temporalio/workflow';
 
-exports.incrementSignal = wf.defineSignal('increment');
-exports.getCountQuery = wf.defineQuery('getCount');
+export const incrementSignal = wf.defineSignal('increment');
+export const getCountQuery = wf.defineQuery('getCount');
 
 export async function counterWorkflow(): Promise<void> {
   const counters = new Map<string, number>();
 
-  wf.setHandler(exports.incrementSignal, (args: { name: string }) => {
+  wf.setHandler(incrementSignal, (args: { name: string }) => {
     const count = counters.get(args.name);
     if (count !== undefined) {
-      counters.set(args.name,  + 1);
+      counters.set(args.name, count + 1);
     } else {
       counters.set(args.name, 1);
     }
   });
-  wf.setHandler(exports.getCountQuery, (args: { name: string }) => {
+  wf.setHandler(getCountQuery, (args: { name: string }) => {
     if (!counters.has(args.name)) {
       return 0;
     }
@@ -157,7 +154,7 @@ export async function counterWorkflow(): Promise<void> {
 }
 ```
 
-To create a new counter with this Workflow, you need to send an `increment` signal with an object containing the counter's `name` as shown below.
+To create a new counter with this Workflow, we send an `increment` Signal with an object containing the counter's `name`:
 
 ```ts
 const handle = await client.start(counterWorkflow, {
@@ -168,24 +165,24 @@ const handle = await client.start(counterWorkflow, {
 // Increment a new counter
 await handle.signal('increment', { name: 'test-counter' });
 
-// Prints "1"
 console.log(await handle.query('getCount', { name: 'test-counter' }));
-// Prints "0" because there's no counter named 'other-counter'
+// => "1"
+
 console.log(await handle.query('getCount', { name: 'other-counter' }));
+// => "0" because there's no counter named 'other-counter'
 ```
 
-You can expose this Workflow via RESTful API using the same temporal-rest script as before.
+You can expose this Workflow via a RESTful API with `temporal-rest` as we did before:
 
 ```ts
-import { Connection, WorkflowClient } from '@temporalio/client';
+import { WorkflowClient } from '@temporalio/client';
 import * as workflows from './workflows';
 
 import express from 'express';
 import { createExpressMiddleware } from 'temporal-rest';
 
 async function run() {
-  const connection = new Connection({});
-  const client = new WorkflowClient(connection.service, {});
+  const client = new WorkflowClient();
 
   const app = express();
 
@@ -201,8 +198,8 @@ run().catch((err) => {
 });
 ```
 
-To pass a parameter to the `increment` Signal, you should pass a JSON-encoded HTTP request body to the Signal's POST endpoint, and to pass a parameter to the `getCount` Query, you should add a query string to the Query's GET endpoint.
-Below is an example using curl.
+To pass a parameter to the `increment` Signal, we pass a JSON-encoded HTTP request body to the Signal's POST endpoint, and to pass a parameter to the `getCount` Query, we add a query string to the Query's GET endpoint.
+Here's an example using `curl`:
 
 ```
 $ curl -X POST http://localhost:3000/workflow/counterWorkflow
@@ -215,7 +212,7 @@ $ curl http://localhost:3000/query/getCount/cbc5924c-1afc-45e0-b7d6-e8fe1a250089
 {"result":0}
 ```
 
-Below is an alternative example of making requests to this API using the [Axios HTTP client](https://masteringjs.io/axios) in Node.js.
+Here's an alternative example of making requests to this API using the [Axios HTTP client](https://masteringjs.io/axios) in Node.js:
 
 ```ts
 let res = await axios.post('http://localhost:3000/workflow/counterWorkflow');
@@ -237,6 +234,6 @@ Moving On
 ---------
 
 Long-lived Workflows in Temporal let you build durable, scalable RESTful APIs without a traditional database.
-The [temporal-rest](https://www.npmjs.com/package/temporal-rest) package removes the boilerplate of wrapping Temporal Workflows, Queries, and Signals in an API.
-Just write your Workflows, and temporal-rest takes care of the Express API.
-Try temporal-rest out and let us know what you think in the comments or on [GitHub issues](https://github.com/vkarpov15/temporal-rest/issues).
+The [`temporal-rest`](https://www.npmjs.com/package/temporal-rest) package removes the boilerplate of wrapping Temporal Workflows, Queries, and Signals in an API.
+Just write your Workflows, and `temporal-rest` takes care of the Express API.
+Try `temporal-rest` out and let us know what you think in the comments or [GitHub issues](https://github.com/vkarpov15/temporal-rest/issues).
