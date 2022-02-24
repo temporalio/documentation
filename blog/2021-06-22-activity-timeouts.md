@@ -19,7 +19,7 @@ One benefit of moving business logic to Temporal is how Temporal implements retr
 
 This post (together with the embedded talk) aims to give you a solid mental model on what each Activity timeout does and when to use it.
 
-> Note: You can also set [Workflow timeouts](https://docs.temporal.io/docs/concepts/workflows#timeout-settings) and [retry policies](https://docs.temporal.io/docs/concepts/activities#retries) you can set. This post deals only with *Activity* timeouts.
+> Note: You can also set [Workflow timeouts](https://docs.temporal.io/docs/concepts/workflows#timeout-settings) and [Retry Policies](https://docs.temporal.io/docs/concepts/what-is-a-retry-policy) you can set. This post deals only with *Activity* timeouts.
 
 ## Talk version: whiteboard session
 
