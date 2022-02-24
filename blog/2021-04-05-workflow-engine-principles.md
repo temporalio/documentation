@@ -199,7 +199,7 @@ You also need a routing layer. You don't want to have a fat clientside library t
 
 ## The Task Queue Problem
 
-Sharding by workflow ID works, except for task queues. For example if you have activities which listen on a task queue named `foo`, how do you get activity tasks waiting to be executed? If you store those activity tasks in every shard, you need to go to all shards and ask if they have anything for task queue `foo` . If you want to allocate a large number of shards, these kinds of queries become impractical. We cannot even aggregate them over hosts because each shard requires a separate database query. Imagine if you have 10,000 shards, and every time you do a pull you fan our 10,000 database requests.
+Sharding by workflow ID works, except for task queues. For example if you have activities which listen on a task queue named `foo`, how do you get activity tasks waiting to be executed? If you store those activity tasks in every shard, you need to go to all shards and ask if they have anything for task queue `foo` . If you want to allocate a large number of shards, these kinds of queries become impractical. We cannot even aggregate them over hosts because each shard requires a separate database query. Imagine if you have 10,000 shards, and every time you do a pull you fan out 10,000 database requests.
 
 So a practical solution is to move the queue into its a separate component with its own persistence.
 
