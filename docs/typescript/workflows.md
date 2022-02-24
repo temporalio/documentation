@@ -43,9 +43,11 @@ A Workflow function can have multiple parameters, but we encourage you to use a 
 ```ts
 type ExampleArgs = {
   name: string;
-}
+};
 
-export async function example(args: ExampleArgs): Promise<{ greeting: string }> {
+export async function example(
+  args: ExampleArgs
+): Promise<{ greeting: string }> {
   const greeting = await greet(args.name);
   return { greeting };
 }
