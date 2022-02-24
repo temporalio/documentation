@@ -22,7 +22,7 @@ Performance tuning involves three important SDK metric groups:
 2. `workflow_task_schedule_to_start_latency` and `activity_schedule_to_start_latency` timers for Workflow Tasks and Activities correspondingly. For more information about `schedule_to_start` timeout and latency, see [https://docs.temporal.io/docs/concepts/what-is-a-schedule-to-start-timeout/](https://docs.temporal.io/docs/concepts/what-is-a-schedule-to-start-timeout/).
 3. `sticky_cache_size` and `workflow_active_thread_count` report the size of the Workflow cache and the number of cached Workflow threads.
 
-_Note: To have access to the metrics mentioned above, JavaSDK ≥ 1.8.0 is required._
+_Note: To have access to all the metrics mentioned above in the JavaSDK, version ≥ 1.8.0 is required._
 
 ## Configuration
 
