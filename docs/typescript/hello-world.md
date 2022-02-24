@@ -1,7 +1,7 @@
 ---
 id: hello-world
 title: Hello World Walkthrough in TypeScript
-sidebar_label: Hello World
+sidebar_label: Typescript
 description: In this tutorial, we'll go over the different components that make up the Temporal Hello World code sample.
 ---
 
