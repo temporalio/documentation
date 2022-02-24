@@ -16,56 +16,56 @@ The following modifiers control the behavior of the command.
 
 ### `--workflow_id`
 
-How to specify the [Workflow Id](/docs/concepts/what-is-a-workflow-id) of an [Activity Execution](/docs/concepts/what-is-an-activity-execution) to complete using tctl.
+Specify the [Workflow Id](/docs/concepts/what-is-a-workflow-id) of an [Activity Execution](/docs/concepts/what-is-an-activity-execution) to complete.
 
 Aliases: `--wid`, `-w`
 
 **Example**
 
-```
+```bash
 tctl activity complete --workflow_id <id>
 ```
 
 ### `--run_id`
 
-How to specify the [Run Id](/docs/concepts/what-is-a-run-id) of an [Activity Execution](/docs/concepts/what-is-an-activity-execution) to complete using tctl.
+Specify the [Run Id](/docs/concepts/what-is-a-run-id) of an [Activity Execution](/docs/concepts/what-is-an-activity-execution) to complete.
 
 Aliases: `--rid`, `-r`
 
 **Example**
 
-```
+```bash
 tctl activity complete --run_id <id>
 ```
 
 ### `--activity_id`
 
-How to specify the [Activity Id](/docs/concepts/what-is-an-activity-id) of an [Activity Execution](/docs/concepts/what-is-an-activity-execution) to complete using tctl.
+Specify the [Activity Id](/docs/concepts/what-is-an-activity-id) of an [Activity Execution](/docs/concepts/what-is-an-activity-execution) to complete.
 
 Alias: `--aid`
 
 **Example**
 
-```
+```bash
 tctl activity complete --activity_id <id>
 ```
 
 ### `--result`
 
-How to specify the result of an [Activity Execution](/docs/concepts/what-is-an-activity-execution) when using tctl to complete the Activity Execution.
+Specify the result of an [Activity Execution](/docs/concepts/what-is-an-activity-execution) when using tctl to complete the Activity Execution.
 
 **Example**
 
-```
+```bash
 tctl activity complete --result <value>
 ```
 
 ### `--identity`
 
-How to specify the identity of the operator when using tctl to complete an [Activity Execution](/docs/concepts/what-is-an-activity-execution).
+Specify the identity of the operator when using tctl to complete an [Activity Execution](/docs/concepts/what-is-an-activity-execution).
 
 **Example**
 
-```
+```bash
 tctl activity complete --identity <value>
 ```

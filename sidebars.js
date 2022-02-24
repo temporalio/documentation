@@ -466,16 +466,16 @@ module.exports = {
             },
             {
               type: "category",
-              label: "taskqueue",
+              label: "task-queue",
               collapsible: true,
               collapsed: true,
               link: {
                 type: "doc",
-                id: "tctl/taskqueue/index",
+                id: "tctl/task-queue/index",
               },
               items: [
-                "tctl/taskqueue/describe",
-                "tctl/taskqueue/list-partition",
+                "tctl/task-queue/describe",
+                "tctl/task-queue/list-partition",
               ],
             },
             {

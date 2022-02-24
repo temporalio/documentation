@@ -22,97 +22,97 @@ The following modifiers control the behavior of the command.
 
 ### `--print_raw_time`
 
-How to print the raw timestamp.
+Print the raw timestamp.
 
 Alias: `--prt`
 
 **Example**
 
-```
+```bash
 tctl workflow scan --print_raw_time
 ```
 
 ### `--print_datetime`
 
-How to print the timestamp.
+Print the timestamp.
 
 Alias: `--pdt`
 
 **Example**
 
-```
+```bash
 tctl workflow scan --print_datetime
 ```
 
 ### `--print_memo`
 
-How to print a memo.
+Print a memo.
 
 Alias: `--pme`
 
 **Example**
 
-```
+```bash
 tctl workflow scan --print_memo
 ```
 
 ### `--print_search_attr`
 
-How to print the [Search Attributes](/docs/concepts/what-is-a-search-attribute).
+Print the [Search Attributes](/docs/concepts/what-is-a-search-attribute).
 
 Alias: `--psa`
 
 **Example**
 
-```
+```bash
 tctl workflow scan --print_search_attr
 ```
 
 ### `--print_full`
 
-How to print the full message without table formatting.
+Print the full message without table formatting.
 
 Alias: `--pf`
 
 **Example**
 
-```
+```bash
 tctl workflow scan --print_full
 ```
 
 ### `--print_json`
 
-How to print the raw JSON objects.
+Print the raw JSON objects.
 
 Alias: `pjson`
 
 **Example**
 
-```
+```bash
 tctl workflow scan --print_json
 ```
 
 ### `--pagesize`
 
-How to specify the maximum number of [Workflow Execution](/docs/concepts/what-is-a-workflow-execution) to list on a page.
+Specify the maximum number of [Workflow Execution](/docs/concepts/what-is-a-workflow-execution) to list on a page.
 (By default, the `tctl workflow scan` command lists 2000 Workflow Executions per page.)
 
 Alias: `--ps`
 
 **Example**
 
-```
+```bash
 tctl workflow scan --pagesize <value>
 ```
 
 ### `--query`
 
-How to specify an SQL-like query of [Search Attributes](/docs/concepts/what-is-a-search-attribute).
+Specify an SQL-like query of [Search Attributes](/docs/concepts/what-is-a-search-attribute).
 
 Alias: `-q`
 
 **Example**
 
-```
+```bash
 tctl workflow scan --query <value>
 ```

@@ -18,24 +18,24 @@ The following modifiers control the behavior of the command.
 
 _Required modifier_
 
-How to specify the job ID of a batch job.
+Specify the job ID of a batch job.
 
 Alias: `--jid`
 
 **Example**
 
-```
+```bash
 tctl batch terminate --job_id <id>
 ```
 
 ### `--reason`
 
-How to specify a reason for terminating this batch job.
+Specify a reason for terminating this batch job.
 
 Alias: `--re`
 
 **Example**
 
-```
+```bash
 tctl batch terminate --job_id <id> --reason <string>
 ```

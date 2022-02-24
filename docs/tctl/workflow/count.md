@@ -19,7 +19,7 @@ The following modifier controls the behavior of the command.
 
 _Required modifier_
 
-How to specify an SQL-like query of [Search Attributes](/docs/concepts/what-is-a-search-attribute).
+Specify an SQL-like query of [Search Attributes](/docs/concepts/what-is-a-search-attribute).
 
 Alias: `-q`
 
@@ -27,6 +27,6 @@ Alias: `-q`
 
 To count all open [Workflow Executions](/docs/concepts/what-is-a-workflow-execution):
 
-```
+```bash
 tctl workflow count --query 'CloseTime = missing'; 'WorkflowType="wtype" and CloseTime > 0'
 ```

@@ -2,13 +2,13 @@
 id: query
 title: tctl workflow query
 sidebar_label: query
-description: How to query Workflow Executions using tctl.
+description: How to send a Query to a Workflow Execution using tctl.
 tags:
   - reference
   - tctl
 ---
 
-The `tctl workflow query` command queries [Workflow Executions](/docs/concepts/what-is-a-workflow-execution).
+The `tctl workflow query` command sends a Query to a [Workflow Executions](/docs/concepts/what-is-a-workflow-execution).
 
 `tctl workflow query [<modifiers>]`
 
@@ -16,43 +16,43 @@ The following modifiers control the behavior of the command.
 
 ### `--workflow_id`
 
-How to specify a [Workflow Id](/docs/concepts/what-is-a-workflow-id).
+Specify a [Workflow Id](/docs/concepts/what-is-a-workflow-id).
 
 Aliases: `--wid`, `-w`
 
 **Example**
 
-```
+```bash
 tctl workflow query --workflow_id <id>
 ```
 
 ### `--run_id`
 
-How to specify a [Run Id](/docs/concepts/what-is-a-run-id).
+Specify a [Run Id](/docs/concepts/what-is-a-run-id).
 
 Aliases: `--rid`, `-r`
 
 **Example**
 
-```
+```bash
 tctl workflow query --run_id <id>
 ```
 
 ### `--query_type`
 
-How to specify the type of query to run.
+Specify the type of Query to run.
 
 Alias: `--qt`
 
 **Example**
 
-```
+```bash
 tctl workflow query --query_type <value>
 ```
 
 ### `--input`
 
-How to pass input for the query.
+Pass input for the Query.
 Input must be in JSON format.
 For multiple JSON objects, concatenate them and use spaces as separators.
 
@@ -60,13 +60,13 @@ Alias: `-i`
 
 **Example**
 
-```
+```bash
 tctl workflow query --input <json>
 ```
 
 ### `--input_file`
 
-How to pass input for the query from a JSON file.
+Pass input for the Query from a JSON file.
 For multiple JSON objects, concatenate them and use spaces or newline characters as separators.
 Input from the command line overwrites input from the file.
 
@@ -74,19 +74,19 @@ Alias: `--if`
 
 **Example**
 
-```
+```bash
 tctl workflow query --input_file <filename>
 ```
 
 ### `--query_reject_condition`
 
-How to reject queries based on Workflow state.
+Reject Queries based on Workflow state.
 Valid values are `not_open` and `not_completed_cleanly`.
 
 Alias: `--qrc`
 
 **Example**
 
-```
+```bash
 tctl workflow query --query_reject_condition <value>
 ```
