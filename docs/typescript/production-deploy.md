@@ -132,5 +132,5 @@ RUN apt update && apt install -y ca-certificates
 
 ## Install all dependencies even in production
 
-Make sure to run `npm i` when you build your Docker image.
-Using `npm i --only=prod` or its yarn counterpart `yarn install --production` does not install some of the necessary runtime packages for Temporal.
+Run `npm i --production=false` when you build your Docker image.
+Using `npm i --only=prod` or its yarn counterpart `yarn install --production` does not install some of the necessary runtime packages for Temporal (see [issue #489](https://github.com/temporalio/sdk-typescript/issues/489)).
