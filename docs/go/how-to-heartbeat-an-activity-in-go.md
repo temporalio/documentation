@@ -12,7 +12,7 @@ To [Heartbeat](/docs/concepts/what-is-an-activity-heartbeat) in an Activity, use
 
 ```go
 progress := 0
-for hasWork {
+for progress < 100 {
     // Send heartbeat message to the server.
     activity.RecordHeartbeat(ctx, progress)
     // Do some work.
