@@ -80,7 +80,7 @@ The following are examples of minor changes that would not result in non-determi
 Intrinsic non-determinism is when a Workflow Function Execution might emit a different sequence of Commands on re-execution, regardless of whether all the input parameters are the same.
 
 For example, a Workflow Definition can not have inline logic that branches (emits a different Command sequence) based off a local time setting or a random number.
-In the representative pseudocode below, the `system_clock()` function returns the local time, rather than Temporal-defined time:
+In the representative pseudocode below, the `local_clock()` function returns the local time, rather than Temporal-defined time:
 
 ```text
 fn my_workflow() {
