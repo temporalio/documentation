@@ -9,6 +9,11 @@ tags:
 
 A Workflow Definition is the code that defines the constraints of a Workflow Execution.
 
+A Workflow Definition is often also referred to as a Workflow Function.
+In Temporal's documentation a Workflow Definition is more often used to refer to the source for the instance of a Workflow Execution, while a Workflow Function is the source for the instance of a Workflow Function Execution.
+
+A Workflow Execution effectively executes once to completion while a Workflow Function Execution occurs many times during the life of a Workflow Execution.
+
 We strongly recommend that you write a Workflow Definition in a language that has a corresponding Temporal SDK.
 
 - [How to develop a Workflow Definition in Go](/docs/go/how-to-develop-a-workflow-definition-in-go)
