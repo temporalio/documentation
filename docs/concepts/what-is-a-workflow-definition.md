@@ -26,7 +26,7 @@ We strongly recommend that you write a Workflow Definition in a language that ha
 A very important aspect of developing Workflow Definitions is that they exhibit certain deterministic traits – that is, making sure that the same Commands are emitted in the same sequence whenever a corresponding Workflow Function Execution (instance of the Function Definition) is re-executed.
 
 The execution semantics of a Workflow Execution include the re-execution of a Workflow Function.
-The use of Workflow APIs in the function generate the Commands.
+The use of Workflow APIs in the function is what generates [Commands](/docs/concepts/what-is-a-command).
 Commands tell the Cluster what Events to create and add to the Workflow Execution's Event History.
 Whenever a Workflow Function is executed, the Commands that are emitted are compared with the existing Event History.
 If a corresponding Event already exists within the Event History that maps to the generation of that Command in the same sequence, and some specific metadata of that Command matches with some specific metadata of the Event, then the Function Execution progresses.
@@ -67,7 +67,7 @@ The first Command the Worker sees would be be ScheduleActivityTask Command, whic
 
 The Workflow Execution would fail, and return the non-determinism error.
 
-The following are examples of some minor changes that would not take effect when re-executing a History which already contain the Events:
+The following are examples of minor changes that would not result in non-determinism errors when re-executing a History which already contain the Events:
 
 - Changing the duration of a Timer.
 - Changing the arguments to:
