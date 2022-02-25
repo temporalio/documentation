@@ -23,7 +23,7 @@ We strongly recommend that you write a Workflow Definition in a language that ha
 
 ### Deterministic constraints
 
-A very important aspect of developing Workflow Definitions is that they exhibit certain deterministic traits – that is, making sure that the same Commands are emitted in the same sequence whenever a corresponding Workflow Function Execution (instance of the Function Definition) is re-executed.
+A very important aspect of developing Workflow Definitions is making sure they exhibit certain deterministic traits – that is, making sure that the same Commands are emitted in the same sequence whenever a corresponding Workflow Function Execution (instance of the Function Definition) is re-executed.
 
 The execution semantics of a Workflow Execution include the re-execution of a Workflow Function.
 The use of Workflow APIs in the function is what generates [Commands](/docs/concepts/what-is-a-command).
