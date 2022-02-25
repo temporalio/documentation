@@ -84,7 +84,7 @@ In the representative pseudocode below, the `local_clock()` function returns the
 
 ```text
 fn my_workflow() {
-  if system_clock().is_before("12pm") {
+  if local_clock().is_before("12pm") {
     await workflow.sleep(duration_until("12pm"))
   } else {
     await my_afternoon_activity()
