@@ -13,16 +13,18 @@ We strongly recommend that you write a Workflow Definition in a language that ha
 
 - [How to develop a Workflow Definition in Go](/docs/go/how-to-develop-a-workflow-definition-in-go)
 - [How to develop a Workflow Definition in Java](/docs/java/how-to-develop-a-workflow-definition-in-java)
+- [How to develop a Workflow Definition in PHP](/docs/php/workflows)
+- [How to develop a Workflow Definition in TypeScript](/docs/typescript/workflows/#how-to-write-a-workflow-function)
 
 ### Deterministic constraints
 
-A very important aspect of developing Workflow Definitions is making sure that the same Commands are emitted in the same order whenever a corresponding Workflow Function Execution (instance of the Function Definition) is re-executed.
+A very important aspect of developing Workflow Definitions is that they exhibit certain deterministic traits – that is, making sure that the same Commands are emitted in the same sequence whenever a corresponding Workflow Function Execution (instance of the Function Definition) is re-executed.
 
 The execution semantics of a Workflow Execution include the re-execution of a Workflow Function.
 The use of Workflow APIs in the function generate the Commands.
 Commands tell the Cluster what Events to create and add to the Workflow Execution's Event History.
 Whenever a Workflow Function is executed, the Commands that are emitted are compared with the existing Event History.
-If a corresponding Event already exists within the Event History that maps to the generation of that Command in the same sequence, and some specific metadata of that Command matches with some specific metadata of the Event, then that Command is ignored.
+If a corresponding Event already exists within the Event History that maps to the generation of that Command in the same sequence, and some specific metadata of that Command matches with some specific metadata of the Event, then the Function Execution progresses.
 
 For example, using an SDKs "Execute Activity" API generates the [ScheduleActivityTask](/docs/concepts/what-is-a-command#scheduleactivitytask) Command.
 When this API is called upon re-execution, that Command is compared with the Event that is in the same location within the sequence.
@@ -33,9 +35,9 @@ If a Command is generated that doesn't match what it needs to in the existing Ev
 The following are the two reasons why a Command might be generated out of sequence or the wrong Command might be generated altogether:
 
 1. Code changes are made to a Workflow Definition that is in use by a running Workflow Execution.
-2. There is intrinsic non-deterministic logic (i.e. inline random branching logic).
+2. There is intrinsic non-deterministic logic (such as inline random branching).
 
-#### Non-deterministic code changes
+#### Code changes can cause non-deterministic behavior
 
 The Workflow Definition can change in very limited ways once there is a Workflow Execution depending on it.
 To alleviate non-deterministic issues that arise from code changes we recommend using [Workflow Versioning](#what-is-workflow-versioning).
@@ -72,8 +74,8 @@ The following are examples of some minor changes that would not take effect when
 
 Intrinsic non-determinism is when a Workflow Function Execution might emit a different sequence of Commands on re-execution, regardless of whether all the input parameters are the same.
 
-For example, a Workflow Definition can not have inline logic that branches (emits a different Command sequence) based off a wall-clock or a random number.
-Here is some representative pseudocode:
+For example, a Workflow Definition can not have inline logic that branches (emits a different Command sequence) based off a local time setting or a random number.
+In the representative pseudocode below, the `system_clock()` function returns the local time, rather than Temporal-defined time:
 
 ```text
 fn my_workflow() {
@@ -85,7 +87,7 @@ fn my_workflow() {
 }
 ```
 
-Each SDK offers APIs that enable Workflow Definitions to have logic that gets and uses time, random numbers, and data from unreliable resources.
+Each Temporal SDK offers APIs that enable Workflow Definitions to have logic that gets and uses time, random numbers, and data from unreliable resources.
 When those APIs are used, the results are stored as part of the Event History, which means that a re-executed Workflow Function will issue the same sequence of Commands, even if there is branching involved.
 
 In other words, all operations that do not purely mutate the Workflow Execution's state should occur via a Temporal SDK API.
@@ -93,15 +95,17 @@ In other words, all operations that do not purely mutate the Workflow Execution'
 ### What is Workflow Versioning?
 
 The Workflow Versioning feature enables the creation of logical branching inside a Workflow Definition based on a developer specified version identifier.
-Use this feature when a Workflow Definition logic needs to be updated, but there are running Workflow Executions that currently depend on it.
+This feature is useful for Workflow Definition logic needs to be updated, but there are running Workflow Executions that currently depends on it.
+It is important to note that a practical way to handle different versions of Workflow Definitions, without using the versioning API, is to run the different versions on separate Task Queues.
 
 - [How to version Workflow Definitions in Go](/docs/go/versioning)
 - [How to version Workflow Definitions in Java](/docs/java/versioning)
 - [How to version Workflow Definitions in TypeScript](/docs/typescript/patching)
 
-**How do I handle a Worker Process failure/restart in my Workflow Definition?**
+### Handling unreliable Worker Processes
 
-You do not.
-Workflow code is completely oblivious to any Worker failures or downtime.
-As soon as the Worker Process or the Temporal Cluster has recovered, the current state of the Workflow Execution is fully restored and the execution is continued.
-The only reason a Workflow Execution might fail is due to the Workflow business code throwing an exception, not underlying infrastructure outages.
+You do not handle Worker Process failure or restarts in a Workflow Definition.
+
+Workflow Function Executions are completely oblivious to the Worker Process in terms of failures or downtime.
+The Temporal Platform ensures that the state of a Workflow Execution is recovered and progress resumes if there is an outage of either Worker Processes or the Temporal Cluster itself.
+The only reason a Workflow Execution might fail is due to the code throwing an error or exception, not because of underlying infrastructure outages.
