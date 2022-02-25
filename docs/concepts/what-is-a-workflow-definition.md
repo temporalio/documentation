@@ -10,7 +10,7 @@ tags:
 A Workflow Definition is the code that defines the constraints of a Workflow Execution.
 
 A Workflow Definition is often also referred to as a Workflow Function.
-In Temporal's documentation a Workflow Definition is more often used to refer to the source for the instance of a Workflow Execution, while a Workflow Function is the source for the instance of a Workflow Function Execution.
+In Temporal's documentation a Workflow Definition is used to refer to the source for the instance of a Workflow Execution, while a Workflow Function is the source for the instance of a Workflow Function Execution.
 
 A Workflow Execution effectively executes once to completion while a Workflow Function Execution occurs many times during the life of a Workflow Execution.
 
@@ -23,7 +23,7 @@ We strongly recommend that you write a Workflow Definition in a language that ha
 
 ### Deterministic constraints
 
-A very important aspect of developing Workflow Definitions is making sure they exhibit certain deterministic traits – that is, making sure that the same Commands are emitted in the same sequence whenever a corresponding Workflow Function Execution (instance of the Function Definition) is re-executed.
+A critical aspect of developing Workflow Definitions is ensuring they exhibit certain deterministic traits – that is, making sure that the same Commands are emitted in the same sequence, whenever a corresponding Workflow Function Execution (instance of the Function Definition) is re-executed.
 
 The execution semantics of a Workflow Execution include the re-execution of a Workflow Function.
 The use of Workflow APIs in the function is what generates [Commands](/docs/concepts/what-is-a-command).
