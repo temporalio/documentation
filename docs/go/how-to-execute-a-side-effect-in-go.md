@@ -8,10 +8,7 @@ tags:
   - go
 ---
 
-<!-- prettier-ignore -->
-import * as WhatIsASideEffect from '../concepts/what-is-a-side-effect.md'
-
-Use the [`SideEffect`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SideEffect) API from the `go.temporal.io/sdk/workflow` package to execute a <preview page={WhatIsASideEffect}>Side Effect</preview> directly in your Workflow.
+Use the [`SideEffect`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SideEffect) API from the `go.temporal.io/sdk/workflow` package to execute a [Side Effect](/docs/concepts/what-is-a-side-effect) directly in your Workflow.
 
 Pass it an instance of `context.Context` and the function to execute.
 

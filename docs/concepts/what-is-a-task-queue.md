@@ -35,3 +35,38 @@ This implementation offers several benefits:
 
 All Workers listening to a given Task Queue must have identical registrations of Activities and/or Workflows.
 The one exception is during a Server upgrade, where it is okay to have registration temporarily misaligned while the binary rolls out.
+
+### Where to set Task Queues?
+
+There are four places where the name of the Task Queue can be set by the developer.
+
+1. A Task Queue must be set when spawning a Workflow Execution:
+
+- [How to set `StartWorkflowOptions` in Go](/docs/go/how-to-set-startworkflowoptions-in-go/#taskqueue)
+- [How to spawn a Workflow Execution using tctl](/docs/tctl/workflow/start#--taskqueue)
+
+2. A Task Queue name must be set when starting a Worker Entity:
+
+- [How to develop a Worker Program in Go](/docs/go/how-to-develop-a-worker-program-in-go)
+- [How to develop a Worker Program in Java](/docs/java/how-to-develop-a-worker-program-in-java)
+- [How to develop a Worker Program in PHP](/docs/php/how-to-develop-a-worker-program-in-php)
+- [How to develop a Worker Program in TypeScript](/docs/typescript/how-to-develop-a-worker-program-in-typescript)
+
+Note that all Worker Entities listening to the same Task Queue name must be registered to handle the exact same Workflows Types and Activity Types.
+
+If a Worker Entity polls a Task for a Workflow Type or Activity Type it does not know about, it will fail that Task.
+However, the failure of the Task will not cause the associated Workflow Execution to fail.
+
+3. A Task Queue name can be provided when spawning an Activity Execution:
+
+This is optional.
+An Activity Execution inherits the Task Queue name from its Workflow Execution if one is not provided.
+
+- [How to set `ActivityOptions` in Go](/docs/go/how-to-set-activityoptions-in-go/#taskqueue)
+
+4. A Task Queue name can be provided when spawning a Child Workflow Execution:
+
+This is optional.
+A Child Workflow Execution inherits the Task Queue name from its Parent Workflow Execution if one is not provided.
+
+- [How to set `ChildWorkflowOptions` in Go](#)

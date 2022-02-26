@@ -12,16 +12,18 @@ The `tctl namespace describe` command describes a [Namespace](/docs/concepts/wha
 
 `tctl namespace describe`
 
+Alias: `d`
+
 The following modifier controls the behavior of the command.
 
 ### `--namespace-id`
 
-How to specify the ID of a Namespace to describe.
+Specify the ID of a Namespace to describe.
 
-This modifier is required unless the `--namespace` modifier is specified (`tctl --namespace <name> describe`).
+This modifier is required unless the global `--namespace` modifier is specified (`tctl --namespace <name> describe`).
 
 **Example**
 
-```
+```bash
 tctl namespace describe --namespace-id <id>
 ```

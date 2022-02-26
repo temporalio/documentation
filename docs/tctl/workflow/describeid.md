@@ -18,22 +18,22 @@ The following modifiers control the behavior of the command.
 
 ### `--print_raw`
 
-How to print properties exactly as they are stored.
+Print properties exactly as they are stored.
 
 Alias: `--praw`
 
 **Example**
 
-```
+```bash
 tctl workflow describeid <workflow_id> --run_id <id>
 ```
 
 ### `--reset_points_only`
 
-How to show only events that are eligible for reset.
+Show only events that are eligible for reset.
 
 **Example**
 
-```
+```bash
 tctl workflow describeid <workflow_id> --reset_points_only
 ```

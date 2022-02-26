@@ -16,12 +16,12 @@ The following modifier controls the behavior of the command.
 
 ### `--pagesize`
 
-How to specify the maximum number of batch jobs to list on a page. The default value is 30.
+Specify the maximum number of batch jobs to list on a page. The default value is 30.
 
 Alias: `--ps`
 
 **Example**
 
-```
+```bash
 tctl batch list --pagesize <value>
 ```

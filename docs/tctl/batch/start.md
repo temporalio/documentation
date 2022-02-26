@@ -18,7 +18,7 @@ The following modifiers control the behavior of the command.
 
 _Required modifier_
 
-How to specify the [Workflow Executions](/docs/concepts/what-is-a-workflow-execution) that this batch job should operate.
+Specify the [Workflow Executions](/docs/concepts/what-is-a-workflow-execution) that this batch job should operate.
 
 The SQL-like query of [Search Attributes](/docs/concepts/what-is-a-search-attribute) is the same as used by the `tctl workflow list --query` command.
 
@@ -26,74 +26,74 @@ Alias: `-q`
 
 **Example**
 
-```
+```bash
 tctl batch start --query <value>
 ```
 
 ### `--reason`
 
-How to specify a reason for running this batch job.
+Specify a reason for running this batch job.
 
 Alias: `--re`
 
 **Example**
 
-```
+```bash
 tctl batch start --query <value> --reason <string>
 ```
 
 ### `--batch_type`
 
-How to specify the operation that this batch job performs. The supported operations are `signal`, `cancel`, and `terminate`.
+Specify the operation that this batch job performs. The supported operations are `signal`, `cancel`, and `terminate`.
 
 Alias: `--bt`
 
 **Example**
 
-```
+```bash
 tctl batch start --query <value> --batch_type <operation>
 ```
 
 ### `--signal_name`
 
-How to specify the name of a [Signal](/docs/concepts/what-is-a-signal). This modifier is required when `--batch_type` is `signal`.
+Specify the name of a [Signal](/docs/concepts/what-is-a-signal). This modifier is required when `--batch_type` is `signal`.
 
 Alias: `--sig`
 
 **Example**
 
-```
+```bash
 tctl batch start --query <value> --batch_type signal --signal_name <name>
 ```
 
 ### `--input`
 
-How to pass input for the [Signal](/docs/concepts/what-is-a-signal). Input must be in JSON format.
+Pass input for the [Signal](/docs/concepts/what-is-a-signal). Input must be in JSON format.
 
 Alias: `-i`
 
 **Example**
 
-```
+```bash
 tctl batch start --query <value> --input <json>
 ```
 
 ### `--rps`
 
-How to specify RPS of processing. The default value is 50.
+Specify RPS of processing. The default value is 50.
 
 **Example**
 
-```
+```bash
 tctl batch start --query <value> --rps <value>
 ```
 
 ### `--yes`
 
-How to disable the confirmation prompt.
+Disable the confirmation prompt.
 
 **Example**
 
-```
+```bash
 tctl batch start --query <value> --yes
 ```

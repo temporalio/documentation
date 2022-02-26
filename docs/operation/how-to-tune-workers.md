@@ -22,7 +22,7 @@ Performance tuning involves three important SDK metric groups:
 2. `workflow_task_schedule_to_start_latency` and `activity_schedule_to_start_latency` timers for Workflow Tasks and Activities correspondingly. For more information about `schedule_to_start` timeout and latency, see [https://docs.temporal.io/docs/concepts/what-is-a-schedule-to-start-timeout/](https://docs.temporal.io/docs/concepts/what-is-a-schedule-to-start-timeout/).
 3. `sticky_cache_size` and `workflow_active_thread_count` report the size of the Workflow cache and the number of cached Workflow threads.
 
-_Note: To have access to the metrics mentioned above, JavaSDK ≥ 1.8.0 is required._
+_Note: To have access to all the metrics mentioned above in the JavaSDK, version ≥ 1.8.0 is required._
 
 ## Configuration
 
@@ -47,6 +47,22 @@ The steps are arranged in the recommended order of execution.
 ### Hosts and Resources provisioning
 
 If currently provisioned Worker hosts are fully utilized (near full CPU usage, high load average, etc), additional Workers hosts have to be provisioned to increase the capacity of the Workers pool.
+
+**It's possible to have too many Workers**
+
+Monitor the poll success (`poll_success`/`poll_success_sync`) and poll timeout `poll_timeouts` Server metric counters.
+
+Poll Success Rate = (`poll_success` + `poll_success_sync`) / (`poll_success` + `poll_success_sync` + `poll_timeouts`)
+
+Poll Success Rate should be >90% in most cases of systems with a steady load. For high volume and low latency, try to target >95%.
+
+If you see
+
+1. low Poll Success Rate, and
+2. low `schedule_to_start_latency`, and
+3. low Worker hosts resource utilization at the same time,
+
+you might have too many workers, consider to size down.
 
 ### Worker Executor Slots sizing
 
@@ -104,7 +120,7 @@ Perform this sanity check after the adjustments to Worker settings.
 
 ## Drawbacks of putting just "large values everywhere"
 
-As with any multithreading system, specifying too large values without monitoring with the SDK and system metrics will lead to constant resources contention/stealing, which decreases the total throughput and increases latency jitter of the system.
+As with any multithreading system, specifying too large values without monitoring with the SDK and system metrics will lead to constant resource contention/stealing, which decreases the total throughput and increases latency jitter of the system.
 
 <RelatedReadList
 readlist={[

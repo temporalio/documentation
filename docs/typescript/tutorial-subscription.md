@@ -139,7 +139,7 @@ const acts = wf.proxyActivities<typeof activities>({
   startToCloseTimeout: '1 minute',
 });
 
-const cancelSubscription = wf.defineSignal('cancelSignal'); // new
+export const cancelSubscription = wf.defineSignal('cancelSignal'); // new
 
 export async function SubscriptionWorkflow(
   email: string,
@@ -169,7 +169,7 @@ To invoke the Signal from here, we have to get a handle to the running Workflow 
 import { cancelSubscription } from '../workflows';
 // ...
 
-const handle = client.getHandle('SubscriptionsWorkflow'); // match the name
+const handle = client.getHandle('business-meaningful-id'); // match the Workflow id
 await handle.signal(cancelSubscription);
 ```
 

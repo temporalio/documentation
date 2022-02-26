@@ -34,8 +34,8 @@ export default function BlogSidebar({sidebar, row}) {
       url: "/blog/tags/architecture/",
     },
     {
-      title: "Funding announcement",
-      url: "/blog/funding-announcement",
+      title: "Our Series A and B",
+      url: "/blog/tags/funding",
     },
     {
       title: "Joining Temporal",

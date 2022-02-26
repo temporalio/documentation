@@ -38,6 +38,21 @@ Workflow Definitions are "just functions", which can store state, and orchestrat
 
 The snippet above uses `proxyActivities` to create functions that, when called, schedule a `greet` Activity in the system to say "Hello World".
 
+A Workflow function can have multiple parameters, but we encourage you to use a single object parameter, as that helps with backward compatibility:
+
+```ts
+type ExampleArgs = {
+  name: string;
+};
+
+export async function example(
+  args: ExampleArgs
+): Promise<{ greeting: string }> {
+  const greeting = await greet(args.name);
+  return { greeting };
+}
+```
+
 ### Workflow Limitations
 
 Workflow code must be [deterministic](/docs/typescript/determinism), and the TypeScript SDK replaces common sources of nondeterminism for you, like `Date.now()`, `Math.random`, and `setTimeout` (we recommend using our [`sleep`](/docs/typescript/workflows#sleep) API instead).
@@ -958,7 +973,9 @@ export async function entityWorkflow(
     }
 
     for (let iteration = 1; iteration <= MAX_ITERATIONS; ++iteration) {
-      // Automatically continue as new after a day if no updates were received
+      // Ensure that we don't block the Workflow Execution forever waiting
+      // for updates, which means that it will eventually Continue-As-New
+      // even if it does not receive updates.
       await condition(() => pendingUpdates.length > 0, '1 day');
 
       while (pendingUpdates.length) {

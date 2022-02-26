@@ -18,24 +18,25 @@ The following modifiers control the behavior of the command.
 
 ### `--show_detail`
 
-How to show event details.
+Show event details.
 
 Alias: `--sd`
 
 **Example**
 
-```
+```bash
 tctl workflow observeid --show_detail
 ```
 
 ### `--max_field_length`
 
-How to specify the maximum length for each attribute field. The default value is 0.
+Specify the maximum length for each attribute field.
+The default value is 0.
 
 Alias: `--maxl`
 
 **Example**
 
-```
+```bash
 tctl workflow observeid --max_field_length <length>
 ```

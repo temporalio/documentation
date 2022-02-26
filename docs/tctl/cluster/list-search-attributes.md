@@ -12,7 +12,7 @@ The `tctl cluster list-search-attributes` command lists all [Search Attributes](
 
 **Example:**
 
-```
+```bash
 tctl cluster list-search-attributes
 ```
 
@@ -20,7 +20,7 @@ The command has no modifiers.
 
 Example output:
 
-```
+```text
 +-----------------------+----------+
 |         NAME          |   TYPE   |
 +-----------------------+----------+
