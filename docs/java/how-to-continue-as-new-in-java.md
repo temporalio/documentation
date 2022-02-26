@@ -3,6 +3,9 @@ id: how-to-continue-as-new-in-java
 title: How to Continue-As-New in Java
 sidebar_label: Continue-As-New
 description: To cause a Workflow to Continue-As-New, use `Workflow.continueAsNew()`.
+tags:
+  - java
+  - developer-guide
 ---
 
 Temporal SDK allows you to use [Continue-As-New](/docs/concepts/what-is-continue-as-new) in various ways.

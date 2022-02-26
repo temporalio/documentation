@@ -83,7 +83,7 @@ if err != nil {
 ### `WorkflowExecutionTimeout`
 
 - Type: `time.Duration`
-- Default: 10 years
+- Default: Unlimited
 
 ```go
 workflowOptions := client.StartWorkflowOptions{

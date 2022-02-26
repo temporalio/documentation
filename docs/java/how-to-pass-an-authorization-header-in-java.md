@@ -32,8 +32,6 @@ The instance of `AuthorizationTokenSupplier` is then passed to an instance `Auth
   WorkflowClient client = WorkflowClient.newInstance(service);
 ```
 
-<RelatedReadList
-readlist={[
-["How to secure a Temporal Cluster", "/docs/server/security", "operation guide"]  
-]}
-/>
+Related read:
+
+- [How to secure a Temporal Cluster](/docs/server/security]
