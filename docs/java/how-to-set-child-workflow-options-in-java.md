@@ -12,17 +12,17 @@ Set Child Workflow specific options with the `ChildWorkflowOptions.Builder` clas
 
 | Option | Required | Type |
 | --- | --- | --- |
-| [`setNamespace`](#Namespace) | No | String |
-| [`setWorkflowId`](#WorkflowId) | No | String |
-| [`setParentClosePolicy`](#ParentClosePolicy) | No | ChildWorkflowOptions.Builder |
-| [`setWorkflowIdReusePolicy`](#WorkflowIdReusePolicy) | No | WorkflowIdReusePolicy |
-| [`setWorkflowExecutionTimeout`](#WorkflowExecutionTimeout) | No | Duration |
-| [`setWorkflowRunTimeout`](#WorkflowRunTimeout) | No | Duration |
-| [`setWorkflowTaskTimeout`](#WorkflowTaskTimeout) | No | Duration |
-| [`setRetryOptions`](#RetryOptions) | No | RetryOptions |
-| [`setCronSchedule`](#CronSchedule) | No | String |
-| [`setMemo`](#Memo) | No | String |
-| [`setSearchAttributes`](#SearchAttributes) | No | Map<String, Object> |
+| [`Namespace`](#namespace) | No | String |
+| [`WorkflowId`](#workflowId) | No | String |
+| [`ParentClosePolicy`](#parentclosepolicy) | No | ChildWorkflowOptions.Builder |
+| [`WorkflowIdReusePolicy`](#workflowidreusepolicy) | No | WorkflowIdReusePolicy |
+| [`WorkflowExecutionTimeout`](#workflowexecutiontimeout) | No | Duration |
+| [`WorkflowRunTimeout`](#workflowruntimeout) | No | Duration |
+| [`WorkflowTaskTimeout`](#workflowtasktimeout) | No | Duration |
+| [`RetryOptions`](#retryoptions) | No | RetryOptions |
+| [`CronSchedule`](#cronschedule) | No | String |
+| [`Memo`](#memo) | No | String |
+| [`SearchAttributes`](#searchattributes) | No | Map<String, Object> |
 
 ### `Namespace`
 
