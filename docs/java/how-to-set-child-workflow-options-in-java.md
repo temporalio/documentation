@@ -8,21 +8,21 @@ tags:
   - developer-guide
 ---
 
-Set Child Workflow specific options with the `ChildWorkflowOptions.Builder` class and [methods](<https://www.javadoc.io/static/io.temporal/temporal-sdk/1.8.0/io/temporal/workflow/ChildWorkflowOptions.Builder.html>).
+Set Child Workflow specific options with the `ChildWorkflowOptions.Builder` class and [methods](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.8.0/io/temporal/workflow/ChildWorkflowOptions.Builder.html).
 
-| Option | Required | Type |
-| --- | --- | --- |
-| [`Namespace`](#namespace) | No | String |
-| [`WorkflowId`](#workflowId) | No | String |
-| [`ParentClosePolicy`](#parentclosepolicy) | No | ChildWorkflowOptions.Builder |
-| [`WorkflowIdReusePolicy`](#workflowidreusepolicy) | No | WorkflowIdReusePolicy |
-| [`WorkflowExecutionTimeout`](#workflowexecutiontimeout) | No | Duration |
-| [`WorkflowRunTimeout`](#workflowruntimeout) | No | Duration |
-| [`WorkflowTaskTimeout`](#workflowtasktimeout) | No | Duration |
-| [`RetryOptions`](#retryoptions) | No | RetryOptions |
-| [`CronSchedule`](#cronschedule) | No | String |
-| [`Memo`](#memo) | No | String |
-| [`SearchAttributes`](#searchattributes) | No | Map<String, Object> |
+| Option                                                  | Required | Type                         |
+| ------------------------------------------------------- | -------- | ---------------------------- |
+| [`Namespace`](#namespace)                               | No       | String                       |
+| [`WorkflowId`](#workflowId)                             | No       | String                       |
+| [`ParentClosePolicy`](#parentclosepolicy)               | No       | ChildWorkflowOptions.Builder |
+| [`WorkflowIdReusePolicy`](#workflowidreusepolicy)       | No       | WorkflowIdReusePolicy        |
+| [`WorkflowExecutionTimeout`](#workflowexecutiontimeout) | No       | Duration                     |
+| [`WorkflowRunTimeout`](#workflowruntimeout)             | No       | Duration                     |
+| [`WorkflowTaskTimeout`](#workflowtasktimeout)           | No       | Duration                     |
+| [`RetryOptions`](#retryoptions)                         | No       | RetryOptions                 |
+| [`CronSchedule`](#cronschedule)                         | No       | String                       |
+| [`Memo`](#memo)                                         | No       | String                       |
+| [`SearchAttributes`](#searchattributes)                 | No       | Map<String, Object>          |
 
 ### `Namespace`
 
@@ -99,7 +99,7 @@ See [What is a Parent Close Policy?](/docs/concepts/what-is-a-parent-close-polic
 - Type: `WorkflowIdReusePolicy`
 - Default: `enums.AllowDuplicateFailedOnly` is the default value. It means that workflow can start if previous run failed or was canceled or terminated.
 - Values: `AllowDuplicate` allows a new run independently of the previous run closure status.
-          `RejectDuplicate` doesn't allow a new run independently of the previous run closure status.
+  `RejectDuplicate` doesn't allow a new run independently of the previous run closure status.
 
 ```java
 
@@ -212,7 +212,7 @@ See [Cron Schedules](/docs/concepts/what-is-a-temporal-cron-job#cron-schedules)
 
 ```java
 private static void parentWorkflow() {
-        ChildWorkflowOptions childworkflowOptions = 
+        ChildWorkflowOptions childworkflowOptions =
                 ChildWorkflowOptions.newBuilder()
                         // You can set additional non-indexed info via memo
                         .setMemo(ImmutableMap.of(
@@ -230,7 +230,7 @@ See [What is a Memo?](/docs/concepts/what-is-a-memo)
 
 ```java
 private static void parentWorkflow() {
-        ChildWorkflowOptions childworkflowOptions = 
+        ChildWorkflowOptions childworkflowOptions =
                 ChildWorkflowOptions.newBuilder()
                         // You can set search attributes just like in WorkflowOptions
                         // make sure that these search attributes were added before
