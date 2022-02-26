@@ -73,7 +73,7 @@ The result was not only a successful migration, but also immediate visibility ab
 
 > Running the new pipeline allowed us to make sure that the studies we have are viable and safe to be used in our algorithms. We did find some errors in several scans (metadata inconsistency inside the scans).
 
-## **Q&A**
+## Q&A
 
 ### 1. How have things improved since migrating?
 

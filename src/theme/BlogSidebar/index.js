@@ -1,28 +1,37 @@
-import React from "react";
-import Link from "@docusaurus/Link";
-export default function BlogSidebar({sidebar, row}) {
+/**
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+import React from 'react';
+import clsx from 'clsx';
+import Link from '@docusaurus/Link';
+import styles from './styles.module.css';
+import { translate } from '@docusaurus/Translate';
+export default function BlogSidebar({ sidebar, row }) {
   if (sidebar.items.length === 0) {
     return null;
   }
 
-  const tags = [
-    {
-      title: "community",
-      url: "/blog/tags/community",
-    },
-    {
-      title: "errors",
-      url: "/blog/tags/errors",
-    },
-    {
-      title: "bugs",
-      url: "/blog/tags/bug",
-    },
-    {
-      title: "announcement",
-      url: "/blog/tags/announcement",
-    },
-  ];
+  // const tags = [
+  //   {
+  //     title: "community",
+  //     url: "/blog/tags/community",
+  //   },
+  //   {
+  //     title: "errors",
+  //     url: "/blog/tags/errors",
+  //   },
+  //   {
+  //     title: "bugs",
+  //     url: "/blog/tags/bug",
+  //   },
+  //   {
+  //     title: "announcement",
+  //     url: "/blog/tags/announcement",
+  //   },
+  // ];
 
   const featured = [
     {
@@ -43,7 +52,13 @@ export default function BlogSidebar({sidebar, row}) {
     },
   ];
   return (
-    <div>
+    <nav
+      className={clsx(styles.sidebar, 'thin-scrollbar')}
+      aria-label={translate({
+        id: 'theme.blog.sidebar.navAriaLabel',
+        message: 'Blog recent posts navigation',
+        description: 'The ARIA label for recent posts in the blog sidebar',
+      })}>
       <div className="mb-8">
         <h3 className="mb-2 text-xl font-semibold">Featured</h3>
         <ul className="mt-4 flex flex-col space-y-2">
@@ -68,7 +83,7 @@ export default function BlogSidebar({sidebar, row}) {
           ))}
         </ul>
       </div>
-      <div className={row && "col col--4"}>
+      {/* <div className={row && "col col--4"}>
         <h3 className="mb-2 text-xl font-semibold">Tags</h3>
         <ul>
           {
@@ -85,7 +100,23 @@ export default function BlogSidebar({sidebar, row}) {
             </span>
           }
         </ul>
+      </div> */}
+      <div className={clsx(styles.sidebarItemTitle, 'margin-bottom--md')}>
+        {sidebar.title}
       </div>
-    </div>
+      <ul className={styles.sidebarItemList}>
+        {sidebar.items.map((item) => (
+          <li key={item.permalink} className={styles.sidebarItem}>
+            <Link
+              isNavLink
+              to={item.permalink}
+              className={styles.sidebarItemLink}
+              activeClassName={styles.sidebarItemLinkActive}>
+              {item.title}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </nav>
   );
 }
