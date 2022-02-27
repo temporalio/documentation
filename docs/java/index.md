@@ -63,6 +63,10 @@ import { ResponsivePlayer } from '../../src/components'
 
 <ResponsivePlayer url='https://www.youtube.com/watch?v=VoSiIwkvuX0'/>
 
+Java SDK Workshop #2
+
+<ResponsivePlayer url='https://www.youtube.com/watch?v=h-TSDMULCf0'/>
+
 ## The basics
 
 - [Workflows](/docs/java/workflows)
