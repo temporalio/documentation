@@ -14,14 +14,7 @@ If you have made a tutorial or explanation of Temporal, please [submit them here
 
 There have been many high-level descriptions of Temporal from our Series A and B PR. This may be helpful for non-technical or technical-adjacent audiences:
 
-- **Series B (2022)**
-  - https://www.geekwire.com/2022/temporal-is-a-unicorn-developer-productivity-startup-lands-120m-at-1-5b-valuation/
-  - https://www.theregister.com/2022/02/16/temporal_103m_funding/
-  - https://siliconangle.com/2022/02/16/temporal-raises-103-million-accelerate-development-stateful-cloud-applications/
-  - https://dailyuknews.com/tech/temporal-raises-103m-in-series-b-funding/
-  - https://finance.yahoo.com/news/temporal-io-raises-103-million-170000698.html
-  - https://www.computerweekly.com/blog/CW-Developer-Network/Temporal-calls-time-on-cloud-app-state-management
-  - https://www.indexventures.com/perspectives/everything-is-a-workflow-our-investment-in-temporal/
+- **Series B (2022)** Linked in [our Series B press roundup](https://docs.temporal.io/blog/series-b-press)
 - **Series A (2020)**: Linked in [our Series A blogpost](https://docs.temporal.io/blog/funding-announcement)
 
 ## How Temporal works
@@ -87,6 +80,7 @@ _Note: Each of [our SDK docs](/application-development) have a Hello World and R
 - [Temporal - fault tolerant orchestration platform](https://www.youtube.com/watch?v=7dnutdT24MM&list=PLU1vS0speL2ZbTPg-aU2Rw2s6IPsTVoCF&index=49) at DevConf US by Tihomir Surdilovic (36 min talk + Q&A)
 - [A Practical Approach to Temporal Architecture](https://mikhail.io/2020/10/practical-approach-to-temporal-architecture/) by Mikhail Shilkov (4 min read)
 - [Getting Started with YugabyteDB, Temporal, and the Temporal-Maru Benchmarking Tool](https://blog.yugabyte.com/getting-started-yugabytedb-temporal) by Eric Pratt (7 min read)
+- [Just plug it in - Aiven & Temporal](https://aiven.io/blog/just-plug-it-in-aiven-and-temporal) by Andrew Staller (7 min read)
 - (Go) [Intro to Temporal](https://zerokspot.com/weblog/2021/12/18/intro-to-temporalio/) by Horst Gutmann (6 min read)
 - (Go) [Writing a Workflow, Simulating Failures, Comparing Retries with Apache Airflow, and Testing](https://www.jcheng.org/post/workflow-orchestration-1.2/) by Jon Cheng (8 min read)
 - (Go) [Intro to Temporal Workshop](https://www.youtube.com/watch?v=UwdGmdTO3Ts) by Márk Sági-Kazár (3 hour full workshop)
