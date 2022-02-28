@@ -14,9 +14,9 @@ release_version: V1.15
 <!--truncate-->
 
 You can use Temporal's long-lived Workflows to build [REST APIs without a conventional database](https://docs.temporal.io/blog/build-an-ecommerce-app-with-temporal-part-4-rest-api).
-Instead of explicitly making network calls to store user data in a database, you can write Workflows that store user data locally, and rely on Temporal to persist the state of your Workflow.
-While you can build a REST API on top of Temporal Workflows yourself, we created [temporal-rest](https://www.npmjs.com/package/temporal-rest) to make creating a RESTful API for your Workflows a one-liner with [ExpressJS](https://expressjs.com/).
-In this blog post, I'll show how to use temporal-rest to create a couple of RESTful APIs backed by long-lived Workflows.
+While you can build a REST API on top of Temporal Workflows yourself, we built [`temporal-rest`](https://www.npmjs.com/package/temporal-rest) to make creating a RESTful API for your Workflows a one-liner with [ExpressJS](https://expressjs.com/).
+
+In this blog post, I'll show how you can use `temporal-rest` to easily create RESTful APIs backed by long-lived Workflows.
 
 Counter API
 -----------
