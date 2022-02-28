@@ -1,5 +1,5 @@
 ---
-id: how-to-set-a-child-workflow-options-in-java
+id: how-to-set-child-workflow-options-in-java
 title: How to set ChildWorkflowOptions in Java
 sidebar_label: Child Workflow Options
 description: Set Child Workflow specific options with the `ChildWorkflowOptions` class.
