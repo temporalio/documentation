@@ -2,7 +2,7 @@
 tags:
   - temporal
   - community
-posted_on_: 2022-28-02T00:00:00Z
+posted_on_: 2022-02-28T00:00:00Z
 slug: temporal-rest
 title: 'REST APIs for every Temporal Workflow in one line of code'
 author: Valeri Karpov
