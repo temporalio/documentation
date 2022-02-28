@@ -2,9 +2,9 @@
 tags:
   - temporal
   - community
-posted_on_: 2022-03-01T00:00:00Z
-slug: introducing-temporal-rest
-title: 'Introducing Temporal-Rest'
+posted_on_: 2022-28-02T00:00:00Z
+slug: temporal-rest
+title: 'REST APIs for every Temporal Workflow in one line of code'
 author: Valeri Karpov
 author_title: Community Member
 author_image_url: https://avatars.githubusercontent.com/u/1620265?v=4
@@ -13,13 +13,14 @@ release_version: V1.15
 
 <!--truncate-->
 
-You can use Temporal's long-lived Workflows to build [REST APIs without a conventional database](https://docs.temporal.io/blog/build-an-ecommerce-app-with-temporal-part-4-rest-api).
-While you can build a REST API on top of Temporal Workflows yourself, we built [`temporal-rest`](https://www.npmjs.com/package/temporal-rest) to make creating a RESTful API for your Workflows a one-liner with [ExpressJS](https://expressjs.com/).
+I previously wrote about using Temporal's long-lived Workflows to build [REST APIs without a conventional database](https://docs.temporal.io/blog/build-an-ecommerce-app-with-temporal-part-4-rest-api), but the REST layer was written manually and with a lot of boilerplate.
+
+While you can always build a REST API on top of Temporal Workflows yourself, I've now built [`temporal-rest`](https://www.npmjs.com/package/temporal-rest) to make creating a RESTful API for your Workflows a one-liner with [ExpressJS](https://expressjs.com/).
+Just add middleware!
 
 In this blog post, I'll show how you can use `temporal-rest` to easily create RESTful APIs backed by long-lived Workflows.
 
-Counter API
------------
+## Temporal without REST
 
 The key idea of long-lived Workflows is that Workflow functions are _deterministic_, so Temporal can persist the state of the Workflow by storing the Workflow's initial state and event history.
 For example, below is a Workflow that keeps a single numeric counter.
@@ -69,6 +70,8 @@ run().catch(err => {
 });
 ```
 
+## Introducing `temporal-rest`
+
 Running `counterWorkflow` from this command-line script is convenient for the sake of an example, but not very useful unless you're building a command-line app.
 Enter `temporal-rest`, which you can use to create an Express API for `counterWorkflow`:
 
@@ -84,7 +87,7 @@ async function run() {
 
   const app = express();
 
-  app.use(createExpressMiddleware(workflows, client, 'tutorial'));
+  app.use(createExpressMiddleware(workflows, client, 'tutorial')); // this is the oneliner that does all the work!
 
   await app.listen(3000);
   console.log('Listening on port 3000');
@@ -117,10 +120,9 @@ $ curl "http://localhost:3000/query/getCount/4cb1b1ea-b962-419e-840c-5c18ab5555a
 {"result":1}
 ```
 
-Query and Signal Arguments
---------------------------
+## REST endpoints for Queries and Signals
 
-You can also pass arguments to Signals and Queries with `temporal-rest`.
+You can also invoke Signals and Queries with `temporal-rest`.
 By default, `temporal-rest` parses any JSON in the [Express request body](https://masteringjs.io/tutorials/express/body) and passes the parsed object as the first parameter to Signals, and passes the [Express query parameters](https://masteringjs.io/tutorials/express/query-parameters) as the first parameter to Queries.
 
 For example, suppose `counterWorkflow` supports tracking multiple counters, each one with a unique name:
@@ -154,7 +156,7 @@ export async function counterWorkflow(): Promise<void> {
 }
 ```
 
-To create a new counter with this Workflow, we send an `increment` Signal with an object containing the counter's `name`:
+To create a new counter with this Workflow, we would normally send an `increment` Signal with an object containing the counter's `name`:
 
 ```ts
 const handle = await client.start(counterWorkflow, {
@@ -172,30 +174,10 @@ console.log(await handle.query('getCount', { name: 'other-counter' }));
 // => "0" because there's no counter named 'other-counter'
 ```
 
-You can expose this Workflow via a RESTful API with `temporal-rest` as we did before:
+Instead, we can now expose these Signals via a RESTful API with the `temporal-rest` middleware the same as we did above:
 
 ```ts
-import { WorkflowClient } from '@temporalio/client';
-import * as workflows from './workflows';
-
-import express from 'express';
-import { createExpressMiddleware } from 'temporal-rest';
-
-async function run() {
-  const client = new WorkflowClient();
-
-  const app = express();
-
   app.use(createExpressMiddleware(workflows, client, 'tutorial'));
-
-  await app.listen(3000);
-  console.log('Listening on port 3000');
-}
-
-run().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
 ```
 
 To pass a parameter to the `increment` Signal, we pass a JSON-encoded HTTP request body to the Signal's POST endpoint, and to pass a parameter to the `getCount` Query, we add a query string to the Query's GET endpoint.
@@ -230,8 +212,7 @@ res = await axios.get('http://localhost:3000/query/getCount/' + workflowId, {
 console.log(res.data); // "{ result: 1 }"
 ```
 
-Moving On
----------
+## Moving On
 
 Long-lived Workflows in Temporal let you build durable, scalable RESTful APIs without a traditional database.
 The [`temporal-rest`](https://www.npmjs.com/package/temporal-rest) package removes the boilerplate of wrapping Temporal Workflows, Queries, and Signals in an API.
