@@ -266,7 +266,7 @@ module.exports = {
         "java/how-to-spawn-a-workflow-execution-in-java",
         "java/how-to-continue-as-new-in-java",
         "java/how-to-spawn-a-child-workflow-execution-in-java",
-        "java/how-to-set-a-child-workflow-options-in-java",
+        "java/how-to-set-child-workflow-options-in-java",
         "java/activities",
         "java/workers",
         "java/task-queues",
