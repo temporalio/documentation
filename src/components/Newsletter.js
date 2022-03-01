@@ -13,7 +13,7 @@ export const Newsletter = () => {
         <br />
       </p>
       <form
-        action="https://temporal.us17.list-manage.com/subscribe/post?u=2334a0f23e55fd1840613755d&amp;id=bbbbd4709f"
+        action="https://temporal.us17.list-manage.com/subscribe/post?u=2334a0f23e55fd1840613755d&amp;id=3475f910fc"
         method="post"
         id="mc-embedded-subscribe-form"
         name="mc-embedded-subscribe-form"
