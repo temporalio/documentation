@@ -77,7 +77,7 @@ Since switching to Temporal, the Airbyte team has seen huge improvements in thei
 
 > We got Temporal up and running and it kind of just... **stayed out of the way**. It seamlessly integrated into the Airbyte architecture and **always delivers** on the core functionality it provides. It made us much more confident about developing and operating the product.
 
-### **How do you feel about your decision post migration?**
+### How do you feel about your decision post migration?
 
 > Positive... There's always a worry when you pick something up that there will be a bunch of failures that come through that are impossible to understand. And it's just inherent in the tool that you're using and you basically have to become an expert on that tool. We haven't run into that with Temporal at all. We're in a situation where we have many different people trying Airbyte out, each on their own systems and they're operating under wildly different conditions usage scenarios. **The absence of pain has been really positive.**
 

@@ -1,10 +1,22 @@
+/**
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
 import React from "react";
+import clsx from "clsx";
 import {MDXProvider} from "@mdx-js/react";
-import {translate} from "@docusaurus/Translate";
+import Translate, {translate} from "@docusaurus/Translate";
 import Link from "@docusaurus/Link";
+import {useBaseUrlUtils} from "@docusaurus/useBaseUrl";
+import {usePluralForm} from "@docusaurus/theme-common";
+import {blogPostContainerID} from "@docusaurus/utils-common";
 import MDXComponents from "@theme/MDXComponents";
-import Seo from "@theme/Seo";
-import {usePluralForm} from "@docusaurus/theme-common"; // Very simple pluralization: probably good enough for now
+import EditThisPage from "@theme/EditThisPage";
+import styles from "./styles.module.css";
+import TagsListInline from "@theme/TagsListInline";
+import BlogPostAuthors from "@theme/BlogPostAuthors"; // Very simple pluralization: probably good enough for now
 
 function useReadingTimePlural() {
   const {selectMessage} = usePluralForm();
@@ -27,30 +39,46 @@ function useReadingTimePlural() {
   };
 }
 
-function BlogPostItem(props) {
+export default function BlogPostItem(props) {
   const readingTimePlural = useReadingTimePlural();
+  const {withBaseUrl} = useBaseUrlUtils();
   const {
     children,
     frontMatter,
+    assets,
     metadata,
     truncated,
     isBlogPostPage = false,
   } = props;
-  const {date, formattedDate, permalink, tags, readingTime} = metadata;
   const {
-    author,
+    date,
+    formattedDate,
+    permalink,
+    tags,
+    readingTime,
     title,
-    image = "/img/temporal-logo-twitter-card.png",
-  } = frontMatter;
-
+    editUrl,
+    // authors,
+  } = metadata;
+  const {author} = frontMatter;
   const authorURL = frontMatter.author_url || frontMatter.authorURL;
   // const authorTitle = frontMatter.author_title || frontMatter.authorTitle;
   const authorImageURL =
     frontMatter.author_image_url || frontMatter.authorImageURL;
 
-  const renderPostHeader = () => {
-    const TitleHeading = isBlogPostPage ? "h1" : "h2";
-    return (
+  const image =
+    assets.image ??
+    (frontMatter.image || "/img/temporal-logo-twitter-card.png");
+  const truncatedPost = !isBlogPostPage && truncated;
+  const tagsExists = tags.length > 0;
+  const TitleHeading = isBlogPostPage ? "h1" : "h2";
+  return (
+    <article
+      className={!isBlogPostPage ? "margin-bottom--xl" : undefined}
+      itemProp="blogPost"
+      itemScope
+      itemType="http://schema.org/BlogPosting"
+    >
       <header
         className={`my-12 flex flex-col ${
           isBlogPostPage ? "items-center justify-center" : ""
@@ -113,30 +141,79 @@ function BlogPostItem(props) {
           </span>
         )}
       </header>
-    );
-  };
 
-  return (
-    <>
-      <Seo
-        {...{
-          title,
-          description: metadata.description,
-          keywords: tags.map((x) => x.label).join(", "),
-          image,
-        }}
-      />
+      {image && (
+        <meta
+          itemProp="image"
+          content={withBaseUrl(image, {
+            absolute: true,
+          })}
+        />
+      )}
 
-      <article
-        className={!isBlogPostPage ? "mb-8 max-w-screen-lg lg:mb-0" : undefined}
+      <div // This ID is used for the feed generation to locate the main content
+        id={isBlogPostPage ? blogPostContainerID : undefined}
+        className="markdown md:prose-md prose mx-auto sm:prose lg:prose-lg"
+        itemProp="articleBody"
       >
-        {renderPostHeader()}
-        <article className="md:prose-md prose mx-auto sm:prose lg:prose-lg">
-          <MDXProvider components={MDXComponents}>{children}</MDXProvider>
-        </article>
-      </article>
-    </>
+        <MDXProvider components={MDXComponents}>{children}</MDXProvider>
+      </div>
+
+      {(tagsExists || truncated) && (
+        <footer
+          className={clsx("row docusaurus-mt-lg", {
+            [styles.blogPostDetailsFull]: isBlogPostPage,
+          })}
+        >
+          {tagsExists && (
+            <div
+              className={clsx("col", {
+                "col--9": truncatedPost,
+              })}
+            >
+              <TagsListInline tags={tags} />
+            </div>
+          )}
+
+          {isBlogPostPage && editUrl && (
+            <div className="col margin-top--sm">
+              <EditThisPage editUrl={editUrl} />
+            </div>
+          )}
+
+          {truncatedPost && (
+            <div
+              className={clsx("col text--right", {
+                "col--3": tagsExists,
+              })}
+            >
+              <Link
+                to={metadata.permalink}
+                aria-label={translate(
+                  {
+                    message: "Read more about {title}",
+                    id: "theme.blog.post.readMoreLabel",
+                    description:
+                      "The ARIA label for the link to full blog posts from excerpts",
+                  },
+                  {
+                    title,
+                  }
+                )}
+              >
+                <b>
+                  <Translate
+                    id="theme.blog.post.readMore"
+                    description="The label used in blog post item excerpts to link to full blog posts"
+                  >
+                    Read More
+                  </Translate>
+                </b>
+              </Link>
+            </div>
+          )}
+        </footer>
+      )}
+    </article>
   );
 }
-
-export default BlogPostItem;

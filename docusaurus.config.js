@@ -165,11 +165,6 @@ module.exports = {
       </div>
       `,
     },
-    gtag: {
-      trackingID: "UA-163137879-1",
-      // Optional fields.
-      anonymizeIP: true, // Should IPs be anonymized?
-    },
     algolia: {
       apiKey: "cd527863e60d95ebe650cdd21c7a6f3f",
       indexName: "temporal",
@@ -286,6 +281,11 @@ module.exports = {
         // Will be passed to @docusaurus/theme-classic.
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
+        },
+        gtag: {
+          trackingID: "UA-163137879-1",
+          // Optional fields.
+          anonymizeIP: true, // Should IPs be anonymized?
         },
         // Will be passed to @docusaurus/plugin-content-sitemap
         sitemap: {

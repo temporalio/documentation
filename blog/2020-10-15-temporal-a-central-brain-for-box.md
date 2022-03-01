@@ -74,7 +74,7 @@ Temporal has become a hot topic within Box. **An increasing number of teams are 
 
 > We have a **data platform team** that's working on the systems architecture, a **file systems team** that's building out the templates for doing traversals. We have a team that deals with **file and folder governance**, and they may need to traverse a tree in a depth first way for their use case. Well, they just pull the depth first traversal workflow and they plug in their activities, and it just all kind of magically fits together.
 
-### **Liked most about Temporal**
+### Liked most about Temporal
 
 > The idea of **workflow as code** was one of the main things that drew me to the model. It's a lot easier for our developers to use it. It's the way that it should be. Trying to define workflows as JSON and stuff is just... It's gnarly. Workflow as code, you're just like, "All right. This makes sense.". If I'm an engineer trying to implement some SAGA. It's very easy for me to look at this and be like, "Okay, this is how I'd do it."
 

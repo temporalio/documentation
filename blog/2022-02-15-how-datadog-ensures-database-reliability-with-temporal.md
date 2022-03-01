@@ -21,7 +21,7 @@ release_version: V1.15
 
 *This case study is based on an interview with [Kevin Devroede](https://www.linkedin.com/in/kevin-devroede-09288b27/?originalSubdomain=fr) who is a DRE leader and one of the earliest Temporal champions at Datadog.*
 
-## **Context**
+## Context
 
 **Datadog** is a monitoring, analytics, and security platform that helps companies improve the observability of their infrastructure and applications.
 
@@ -37,13 +37,13 @@ The scope of the DRE team is best defined using language from the job descriptio
 - Protect and ensure the consistency of customer data.
 - Work with developers to design data models, and choose the correct datastores, to support orders of magnitude more customer data and traffic.
 
-## **Problem**
+## Problem
 
 In the past few years Datadog has seen immense growth, resulting in the need for engineering teams to scale quickly and continuously. For the DRE team, this meant adding and managing more and more databases. Unfortunately, this also historically meant adding a proportional amount of new DRE members to handle the newly added databases. It quickly became clear that it was unsustainable to add new team members every time they created new databases.
 
 > We didn’t want to grow our team size **linearly** based on the number of datastores that we run.
 
-## **How was this problem solved before?**
+## How was this problem solved before?
 
 DRE is a partially reactive job function, requiring team members to handle dynamic incidents, upgrades, and other scenarios. Historically, the DRE team had a **collection of remediation, upgrade, and scale-out scripts that would be used manually** based on the circumstances. The correct sequence of scripts/steps to run in a given scenario was driven through runbooks. This meant that during incidents, the DRE team was required to **manually copy and paste remediation steps, often with little to no tweaks**.
 
@@ -51,13 +51,13 @@ DRE is a partially reactive job function, requiring team members to handle dynam
 
 In other words, **there had never been an automated approach to handling incidents**, so individual members of the team would often solve things in a one-off or unique way.
 
-## **Change is needed**
+## Change is needed
 
 After some reflection, the DRE team understood that **the deficits and gaps in their own processes and internal tools were the biggest contributor to the inability to scale databases** without hiring new people. Every time manual intervention was required, it introduced room for human error or unique choices that break the standard model other team members expect. This led to drift, which in turn led to **new hires immediately being burdened with an immense amount of scope and complexity**.
 
 > That led to a couple of problems, for example handling versions when doing a fix across hundreds of data stores. What happened was that configuration changes to fix databases drifted. So over time we diverged and had **almost one version per datastore** and that was far from the ideal.
 
-## **Migration**
+## Migration
 
 As a first step in the migration, **runbooks were converted to Temporal Workflows**, removing the need for a human to tie together or even execute individual steps. This greatly reduced the chance of drift between different systems and teams. As an example, if a runbook previously expected a human to run an operation on a Kubernetes cluster, the Temporal Workflow would instead execute an Activity that runs a K8s command on the cluster.
 
@@ -73,7 +73,7 @@ As things moved forward the DRE team began to realize that **the hardest part of
 
 It took some time for the team to trust the new Temporal solution. For a while they even ran the new system in parallel with the old one. Eventually this created enough trust that **the team felt safe completely moving to the Temporal-based solution**.
 
-## **Outcomes**
+## Outcomes
 
 The initial goal of the migration was to **move from almost completely manual runbooks to automated and highly reliable Workflows**. When the team developed trust in the Temporal solution, they almost immediately started seeing benefits of the switch. Temporal provided DRE the “glue” to tie together all of the critical work they were constantly doing behind the scenes.
 
@@ -93,13 +93,13 @@ This is only one example. As time moved on, the team continued to find more and 
 
 > **Versioning** is another relevant topic. The fact that we were mostly upgrading things in bash, **now we can do regular deployments fleet-wide that are spanning multiple days and more complex than they previously could be**. Take one cluster, change a version on GitHub, do a build, do a deployment. Wait for it to be deployed, make sure no monitors are firing, and rinse and repeat a lot of times. Obviously it's doable manually, but how long would it have taken? I think it wouldn't be possible to do that really. These use cases were unblocked by Temporal.
 
-### **How do you feel about your decision post migration?**
+### How do you feel about your decision post migration?
 
 Excitement and investment in Temporal at Datadog has only grown stronger since the initial migration. **The DRE team has immensely improved their processes with the Temporal solution leading to higher productivity and reliability**. After the first use case went into production, **usage rapidly expanded to more than 100 users across dozens of teams within just one year**, using Temporal for everything from CI/CD to human metadata aggregation to the datastore operations critical to DRE’s core function.
 
 > It's quite impressive to realize, less than a year ago we were using Temporal in production for the first time. Fast forward 10 months or something, we have many, many teams using it. We love to see it going in that direction. It definitely has a lot of interest.
 
-### **Areas to improve**
+### Areas to improve
 
 Nothing is perfect, and that includes Temporal. One of the wonderful benefits of working with partners like Datadog is the wealth of constructive feedback that helps drive our product forward.
 

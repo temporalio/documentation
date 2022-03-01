@@ -218,6 +218,9 @@ div[class^="sidebar_"] .button svg {
 }
 
 /* Footer */
+footer svg {
+  display: inline;
+}
 
 .footer .footer__svg {
   @apply m-8 inline fill-current;

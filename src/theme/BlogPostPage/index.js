@@ -5,82 +5,91 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React from "react";
-import Layout from "@theme/Layout";
+import Seo from "@theme/Seo";
+import BlogLayout from "@theme/BlogLayout";
 import BlogPostItem from "@theme/BlogPostItem";
 import BlogPostPaginator from "@theme/BlogPostPaginator";
-import BlogSidebar from "@theme/BlogSidebar";
-import TOC from "@theme/TOC";
-import Translate from "@docusaurus/Translate";
-import IconEdit from "@theme/IconEdit";
 import {ThemeClassNames} from "@docusaurus/theme-common";
-
-function BlogPostPage(props) {
-  const {content: BlogPostContents} = props;
-  const {frontMatter, metadata} = BlogPostContents;
-  const {title, description, nextItem, prevItem, editUrl} = metadata;
-  const {hide_table_of_contents: hideTableOfContents} = frontMatter;
+import TOC from "@theme/TOC";
+export default function BlogPostPage(props) {
+  const {content: BlogPostContents, sidebar} = props;
+  const {assets, metadata} = BlogPostContents;
+  const {
+    title,
+    description,
+    nextItem,
+    prevItem,
+    date,
+    tags,
+    authors,
+    frontMatter,
+  } = metadata;
+  const {
+    hide_table_of_contents: hideTableOfContents,
+    keywords,
+    toc_min_heading_level: tocMinHeadingLevel,
+    toc_max_heading_level: tocMaxHeadingLevel,
+  } = frontMatter;
+  const image = assets.image ?? frontMatter.image;
   return (
-    <div id="tailwind">
-      <Layout
+    <BlogLayout
+      wrapperClassName={ThemeClassNames.wrapper.blogPages}
+      pageClassName={ThemeClassNames.page.blogPostPage}
+      // sidebar={sidebar}
+      toc={
+        !hideTableOfContents &&
+        BlogPostContents.toc &&
+        BlogPostContents.toc.length > 0 ? (
+          <TOC
+            toc={BlogPostContents.toc}
+            minHeadingLevel={tocMinHeadingLevel}
+            maxHeadingLevel={tocMaxHeadingLevel}
+          />
+        ) : undefined
+      }
+    >
+      <Seo // TODO refactor needed: it's a bit annoying but Seo MUST be inside
+        // BlogLayout, otherwise default image (set by BlogLayout) would shadow
+        // the custom blog post image
         title={title}
         description={description}
-        wrapperClassName={ThemeClassNames.wrapper.blogPages}
-        pageClassName={ThemeClassNames.page.blogPostPage}
+        keywords={keywords}
+        image={image}
       >
-        {BlogPostContents && (
-          <div className="mx-auto my-14 max-w-screen-lg p-6 md:pl-10">
-            <div className="flex space-x-20">
-              <main className={`${hideTableOfContents ? "" : ""}`}>
-                <BlogPostItem
-                  frontMatter={frontMatter}
-                  metadata={metadata}
-                  isBlogPostPage
-                >
-                  <BlogPostContents />
-                </BlogPostItem>
-                <div className="mt-8">
-                  {editUrl && (
-                    <a
-                      className="mt-20 flex items-center space-x-5"
-                      href={editUrl}
-                      target="_blank"
-                      rel="noreferrer noopener"
-                    >
-                      <IconEdit />
+        <meta property="og:type" content="article" />
+        <meta property="article:published_time" content={date} />
 
-                      <div>
-                        <Translate
-                          id="theme.common.editThisPage"
-                          description="The link label to edit the current page"
-                        >
-                          Have a suggestion? Spotted an inaccuracy? Help us fix
-                          it!
-                        </Translate>
-                      </div>
-                    </a>
-                  )}
-                </div>
-                {(nextItem || prevItem) && (
-                  <div className="margin-vert--xl">
-                    <BlogPostPaginator
-                      nextItem={nextItem}
-                      prevItem={prevItem}
-                    />
-                  </div>
-                )}
-              </main>
-
-              {!hideTableOfContents &&
-                BlogPostContents.toc &&
-                BlogPostContents.toc.length > 1 && (
-                  <TOC toc={BlogPostContents.toc} />
-                )}
-            </div>
-          </div>
+        {/* TODO double check those article meta array syntaxes, see https://ogp.me/#array */}
+        {authors.some((author) => author.url) && (
+          <meta
+            property="article:author"
+            content={authors
+              .map((author) => author.url)
+              .filter(Boolean)
+              .join(",")}
+          />
         )}
-      </Layout>
-    </div>
+        {tags.length > 0 && (
+          <meta
+            property="article:tag"
+            content={tags.map((tag) => tag.label).join(",")}
+          />
+        )}
+      </Seo>
+      <div className="mx-auto my-14 max-w-screen-lg p-6 md:pl-10">
+        <BlogPostItem
+          frontMatter={frontMatter}
+          assets={assets}
+          metadata={metadata}
+          isBlogPostPage
+        >
+          <BlogPostContents />
+        </BlogPostItem>
+
+        {(nextItem || prevItem) && (
+          <BlogPostPaginator nextItem={nextItem} prevItem={prevItem} />
+        )}
+      </div>
+    </BlogLayout>
   );
 }
-
-export default BlogPostPage;
