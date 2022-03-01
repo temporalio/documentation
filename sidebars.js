@@ -123,6 +123,14 @@ module.exports = {
           ],
         },
         {
+          type: "category",
+          label: "Saga Pattern Tutorials",
+          collapsed: true,
+          items: [
+            "php/booking-saga-tutorial"
+          ],
+        },
+        {
           type: "link",
           label: "eCommerce",
           href: "/blog/tags/go-ecommerce-tutorial",
