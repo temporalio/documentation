@@ -8,31 +8,33 @@ description: In this tutorial, we'll go over the different components that make 
 ## The Project
 
 Imagine that we provide a service where people can book a trip. Booking a regular trip often consists of several steps:
-- Booking a taxi or a car.
+
+- Booking a car.
 - Booking a hotel.
 - Booking a flight.
 
-It is obvious that the customer either wants everything to be booked or nothing. There is no sense in booking a hotel
-without booking a plane. Also, chances high that each booking step in this transaction is represented via a dedicated
-service or microservice. Thus, we may consider the whole thing, all these steps as a distributed transaction. In our
-case, the transaction boundary crosses multiple services and databases. To ensure a successful booking, all three
-microservices must complete the individual local transactions. Where when any of the steps fail, all the completed
-preceding transactions should be rolled back to ensure data integrity.
+The customer either wants everything to be booked or nothing at all. 
+There is no sense in booking a hotel without booking a plane.
+Also, imagine that each booking step in this transaction is represented via a dedicated service or microservice.
+
+Thus, we may consider the whole thing, all these steps as a **distributed transaction** that crosses multiple services and databases. 
+To ensure a successful booking, all three microservices must complete the individual local transactions.
+If any of the steps fail, all the completed preceding transactions should be reversed accordingly.
+We cannot simply "delete" the prior transactions or "go back in time" - Particularly where money and bookings are concerned, it is important to have an immutable record of attempts and failures.
+
+Therefore, we should accumulate a list of compensating actions to execute when failure occurs.
 
 ## Saga Architecture Pattern
 
-Managing a distributed transaction is really a challenging thing. There are several ways to manage distributed
-transactions and Saga is one of them. Saga provides transaction management using a sequence of local transactions. A
-local transaction is the unit of work performed by a saga participant, a microservice. Every operation that is part of
-the Saga can be rolled back by a compensating transaction. Saga pattern guarantees that either all operations are
-completed successfully or the corresponding compensation transactions are run to undo the previously completed work.
+Managing distributed transactions can be difficult to do well. Sagas are one of the most [tried and tested](https://www.cs.cornell.edu/andru/cs711/2002fa/reading/sagas.pdf) design patterns for long running work:
 
-Implementing the Saga pattern is quite a complex thing even for senior architects and developers. But we are lucky that 
-Temporal provides native support for the Saga pattern. It means that handling all the rollbacks and running
-compensation transactions are performed internally by Temporal. Our job as developers is only to implement the business 
-logic. It means that we need to implement a flight booking service that can book and cancel a flight. And the same
-thing for a hotel and a car. That's it. Everything else will be done by Temporal. We just need to tell it via a workflow
-what activities and when should be called. 
+- A Saga provides transaction management using a sequence of local transactions. 
+- A local transaction is the unit of work performed by a saga participant, a microservice. 
+- Every operation that is part of the Saga can be rolled back by a compensating transaction. 
+- The Saga pattern guarantees that either all operations are completed successfully or the corresponding compensation transactions are run to undo the previously completed work.
+
+Implementing the Saga pattern can be complex, but fortunately, Temporal provides native support for the Saga pattern.
+It means that handling all the rollbacks and running compensation transactions are performed internally by Temporal.
 
 ![Booking saga flow](/img/tutorials/booking-saga-flow.png)
 
@@ -78,6 +80,8 @@ invoking the necessary compensating transactions. Temporal plays the role of suc
 
 :::
 
+### Writing the Saga
+
 ```php
 class TripBookingWorkflow implements TripBookingWorkflowInterface
 {
@@ -121,6 +125,8 @@ public function bookTrip(string $name)
     }
 }
 ```
+
+### Adding Compensations
 
 In the snippet above, we sequentially reserve a car, a hotel, and a flight. Each step here returns a corresponding ID.
 Later we will use this ID to make compensations:
