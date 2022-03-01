@@ -1,6 +1,6 @@
 ---
 id: booking-saga-tutorial 
-title: Booking Saga Walkthrough in PHP 
+title: Booking Saga Tutorial in PHP 
 sidebar_label: Booking Saga 
 description: In this tutorial, we'll go over the different components that make up the Temporal Booking Saga code sample.
 ---
@@ -100,10 +100,11 @@ class TripBookingWorkflow implements TripBookingWorkflowInterface
 }
 ```
 
-We start with a new object `Workflow\Saga`. It is an entry point to distributed transaction management. After that, we
-have an empty `try/catch` block. Consider everything inside `try` as a happy path, and if some steps within a distributed
-transaction fail, we go into `catch` block and run compensations. Now, let's fill our saga with some logic. First, we add
-booking steps:
+We start with a new object `Workflow\Saga`, and then stub out an empty `try/catch` block. 
+
+Consider everything inside `try` as a happy path. If some steps within a distributed transaction fail, we go into `catch` block and run compensations. 
+
+Now, let's fill our saga with some logic. First, we add booking steps:
 
 ```php
 public function bookTrip(string $name)
@@ -158,7 +159,11 @@ public function bookTrip(string $name)
 ```
 
 To add a compensation, we use `Saga::addCompensation()` method and provide a callable that should be used, once we want
-to roll back a distributed transaction. Having that, we can finish our saga and fill `catch` block:
+to roll back a distributed transaction. 
+
+### Running the compensation strategy
+
+Having that, we can finish our saga and fill `catch` block:
 
 
 ```php
@@ -188,20 +193,22 @@ public function bookTrip(string $name)
 }
 ```
 
-Inside `catch()` we call method `compensate()`, which starts compensation strategy and runs all previously registered
-compensation callbacks. Once done we throw an exception to understand what had happened. By default, compensations
-will run sequentially. You can tell Saga to run them in parallel by calling `$saga->setParallelCompensation(true)`.
+Inside `catch()` we call the `compensate()` method, which starts the compensation strategy and runs all previously registered compensation callbacks. 
+Once done, we rethrow the exception to understand what happened. 
+
+By default, **compensations will run sequentially**. You can tell Saga to run them in parallel by calling `$saga->setParallelCompensation(true)`.
 
 ## Conclusion
 
 In this tutorial, we covered the Saga architecture pattern to implement distributed transactions in a microservice-based application.
-Saga on its own is quite a complex thing. Temporal allows us to focus only on application details. All the hard work with
-Saga orchestration: calling microservices and invoking the necessary compensating transactions - is managed by Temporal. 
+Writing Sagas correctly can be complex - Temporal allows us to focus only on application details. 
+All the hard work with Saga orchestration: calling microservices and invoking the necessary compensating transactions - is managed by Temporal. 
 
 :::note Working example
 
-We don't cover activity implementation details in this tutorial. Activities may be written in different languages, and the
-main Saga workflow doesn't depend on them. If you want to test things you can find a fully working example in our 
+We don't cover activity implementation details in this tutorial.
+Activities may be written in different languages, and the main Saga workflow doesn't depend on them.
+If you want to test things you can find a fully working example in our 
 [Booking Saga Workflow repo](https://github.com/temporalio/samples-php/tree/master/app/src/BookingSaga).
 
 :::
