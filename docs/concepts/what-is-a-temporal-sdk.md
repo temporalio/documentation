@@ -70,7 +70,7 @@ Each metric may have some combination of the following keys attached to them:
 
 Some keys may not be available in every SDK, and Histogram metrics may have different buckets in each SDK.
 
-| Name | Metric Type | Availability |
+| Metric Name | Metric Type | Availability |
 | ---- | ------------| -------------|
 | [activity_execution_cancelled](#activity_execution_cancelled) | Counter | Java |
 | [activity_execution_failed](#activity_execution_failed) | Counter | Core, Go, Java |
@@ -148,6 +148,7 @@ An Activity Worker poll for an Activity Task timed out; There is no Activity Tas
 #### `activity_schedule_to_start_latency`
 
 The Schedule-To-Start time of an Activity Task in milliseconds.
+A [Schedule-To-Start Timeout](/docs/concepts/what-is-a-schedule-to-start-timeout) can be set when an Activity Execution is spawned.
 
 - Type: Histogram
 - Available in: Core, Go, Java
@@ -419,7 +420,8 @@ Time it takes to catch up on replaying a Workflow Task in milliseconds.
 
 #### `workflow_task_schedule_to_start_latency`
 
-Schedule-To-Start time of a Workflow Task in milliseconds.
+The Schedule-To-Start time of a Workflow Task in milliseconds.
+
 
 - Type: Histogram
 - Available in: Core, Go, Java
