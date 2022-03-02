@@ -124,10 +124,20 @@ module.exports = {
         },
         {
           type: "category",
-          label: "Saga Pattern Tutorials",
+          label: "Trip Booking (Sagas)",
           collapsed: true,
           items: [
             "php/booking-saga-tutorial"
+            {
+              type: "link",
+              label: "Sagas in PHP",
+              href: "php/booking-saga-tutorial",
+            },
+            {
+              type: "link",
+              label: "Sagas in Java",
+              href: "https://github.com/temporalio/samples-java/blob/main/src/main/java/io/temporal/samples/bookingsaga/TripBookingWorkflowImpl.java",
+            },
           ],
         },
         {
