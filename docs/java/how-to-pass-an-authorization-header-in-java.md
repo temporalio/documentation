@@ -1,6 +1,6 @@
 ---
 id: how-to-provide-an-authorization-token-in-java
-title: How to provide an Authorization Token in Java
+title: How to provide an Authorization Token in Java (JWT)
 description: Providing authorization header to Temporal Server in Java SDK including JWT tokens
 sidebar_label: Authorization
 tags:
@@ -11,11 +11,17 @@ tags:
 
 import RelatedReadList from '../components/RelatedReadList.js'
 
-Authorization Tokens are provided in the `WorkflowServiceStubsOptions` that are passed to the instance of the `WorkflowServiceStubs`.
+Temporal Server [expects](docs/server/security/#authinfo) an `authorization` gRPC header with an authorization token to be passed by SDKs if [requests authorization](docs/server/security/#authorization) is configured.
 
-Create an instance of `AuthorizationTokenSupplier` (available from the `io.temporal.serviceclient.WorkflowServiceStubsOptions` package) which is a header string that specifies a Base64 url-encoded value of your token.
+Authorization Tokens may be provided to Temporal JavaSDK by implementing a `io.temporal.authorization.AuthorizationTokenSupplier` interface.
+The implementation should be used to create `io.temporal.authorization.AuthorizationGrpcMetadataProvider` that may be configured on ServiceStub gRPC interceptors list.
 
-The instance of `AuthorizationTokenSupplier` is then passed to an instance `AuthorizationGrpcMetadataProvider` which is then added to an instance of `WorkflowServiceStubsOptions` via the `addGrpcMetadataProvider` method.
+The implementation is called for each SDK gRPC request and may supply dynamic tokens.
+
+**JWT**
+
+One of the token types that may be passed this way are JWT tokens.
+Temporal Server provides a [default implementation of JWT authentication](/docs/server/security/#default-jwt-claimmapper).
 
 **Example**
 
