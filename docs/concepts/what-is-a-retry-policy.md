@@ -17,7 +17,8 @@ Retry Policies do not apply to [Workflow Task Executions](/docs/concepts/what-is
 - **Workflow Execution**: When a Workflow Execution is spawned, it is not associated with a default Retry Policy and thus does not retry by default.
 The intention is that a Workflow Definition should be written to never fail due to intermittent issues; an Activity is designed to handle such issues.
 
-- **Activity Execution**: When an Activity Execution is spawned, it is associated with a default Retry Policy, and thus Activity Task Executions are retried by default. When an Activity Task Execution is retried, the Cluster places a new [Activity Task](/docs/concepts/what-is-an-activity-task) into its respective [Activity Task Queue](/docs/concepts/what-is-a-task-queue), which results in a new Activity Task Execution.
+- **Activity Execution**: When an Activity Execution is spawned, it is associated with a default Retry Policy, and thus Activity Task Executions are retried by default.
+When an Activity Task Execution is retried, the Cluster places a new [Activity Task](/docs/concepts/what-is-an-activity-task) into its respective [Activity Task Queue](/docs/concepts/what-is-a-task-queue), which results in a new Activity Task Execution.
 
 ### Custom Retry Policy
 
