@@ -9,7 +9,7 @@ assignees: ''
 
 # Brief description
 
-Provide a brief description of your documentation request (1-3 sentences)
+Provide a description of your documentation request.
 
 #  Your recommended content
 
