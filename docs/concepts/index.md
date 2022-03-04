@@ -15,6 +15,7 @@ The following terms have specific definitions within the context of the [Tempora
 - [Activity Id](/docs/concepts/what-is-an-activity-id)
 - [Activity Task](/docs/concepts/what-is-an-activity-task)
 - [Activity Task Execution](/docs/concepts/what-is-an-activity-task-execution)
+- [Activity Type](/docs/concepts/what-is-an-activity-type)
 - [Advanced Visibility](/docs/concepts/what-is-advanced-visibility)
 - [Archival](/docs/concepts/what-is-archival)
 - [Child Workflow Execution](/docs/concepts/what-is-a-child-workflow-execution)
