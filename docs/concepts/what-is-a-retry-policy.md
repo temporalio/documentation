@@ -31,7 +31,7 @@ To use a custom Retry Policy, provide it as an options parameter when starting a
 ```
 Initial Interval     = 1 second
 Backoff Coefficient  = 2.0
-Maximum Interval     = 100 × Initial Interval
+Maximum Interval     = ∞
 Maximum Attempts     = ∞
 Non-Retryable Errors = []
 ```

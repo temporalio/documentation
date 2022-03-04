@@ -84,6 +84,7 @@ _Note: Each of [our SDK docs](/application-development) have a Hello World and R
 - (Go) [Intro to Temporal](https://zerokspot.com/weblog/2021/12/18/intro-to-temporalio/) by Horst Gutmann (6 min read)
 - (Go) [Writing a Workflow, Simulating Failures, Comparing Retries with Apache Airflow, and Testing](https://www.jcheng.org/post/workflow-orchestration-1.2/) by Jon Cheng (8 min read)
 - (Go) [Intro to Temporal Workshop](https://www.youtube.com/watch?v=UwdGmdTO3Ts) by Márk Sági-Kazár (3 hour full workshop)
+- (Go) [How to migrate from Mailchimp to Postmark + Temporal](https://roelofjanelsinga.com/articles/migrate-from-mailchimp-postmark-temporal/) by Roelof Jan Elsinga (5 min tutorial)
 - (Go) [Creating a custom Temporal data convertor for encryption](https://nightfall.ai/creating-a-custom-temporal-data-convertor-for-encryption) by Chris Cowell and Rohan Sathe
 - (TypeScript) [Temporal - React for the Backend](https://changelog.com/jsparty/208) on JSParty (57 min listen)
 - (PHP) [Fault tolerant workflow orchestration on PHP](https://www.youtube.com/watch?v=pdxHkIqX62A) at PHPKonf 2021 by Anton Titov (37 min talk)

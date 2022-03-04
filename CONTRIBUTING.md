@@ -6,7 +6,7 @@ To ensure that each change is relevant and properly peer reviewed, we request th
 This means that if you are outside the Temporal organization, you must fork the repository and create pull requests from branches on your own fork.
 GitHub's [first-contributions repo README](https://github.com/firstcontributions/first-contributions) provides an example of how to do that.
 
-When it comes to crafting content, please follow our [style guidelines](style-guidance).
+When it comes to crafting content, please follow our [style guidance](#style-guidance).
 
 ## Preview changes locally
 
