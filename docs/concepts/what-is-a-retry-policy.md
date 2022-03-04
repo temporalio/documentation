@@ -43,12 +43,12 @@ There are some subtle nuances to how Events are recorded to an Event History whe
   But the first Workflow Task won't be scheduled until the backoff duration is exhausted.
   That duration is recorded as the `firstWorkflowTaskBackoff` field of the new run's `WorkflowExecutionStartedEventAttributes` event.
 
-### Default values for Retry Policy\*\*
+### Default values for Retry Policy
 
 ```
 Initial Interval     = 1 second
 Backoff Coefficient  = 2.0
-Maximum Interval     = 100 × Initial Interval
+Maximum Interval     = ∞
 Maximum Attempts     = ∞
 Non-Retryable Errors = []
 ```
