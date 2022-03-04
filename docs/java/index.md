@@ -57,11 +57,9 @@ The SDK contains the following tools:
 
 ## Workshops
 
-Intro to Temporal Java SDK
+- [Intro to Temporal Java SDK](https://www.youtube.com/watch?v=VoSiIwkvuX0)
 
-import { ResponsivePlayer } from '../../src/components'
-
-<ResponsivePlayer url='https://www.youtube.com/watch?v=VoSiIwkvuX0'/>
+- [Java SDK Workshop #2](https://www.youtube.com/watch?v=h-TSDMULCf0)
 
 ## The basics
 
