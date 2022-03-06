@@ -15,7 +15,7 @@ There are three possible values:
 - **Terminate** (default): the Child Workflow Execution is forcefully Terminated.
 - **Request Cancel**: a Cancellation request is sent to the Child Workflow Execution.
 
-[`ParentClosePolicy` proto definition](https://github.com/temporalio/api/blob/c1f04d0856a3ba2995e92717607f83536b5a44f5/temporal/api/enums/v1/workflow.proto#L44
+[`ParentClosePolicy` proto definition](https://github.com/temporalio/api/blob/c1f04d0856a3ba2995e92717607f83536b5a44f5/temporal/api/enums/v1/workflow.proto#L44)
 
 Each Child Workflow Execution may have its own Parent Close Policy.
 This policy applies only to Child Workflow Executions and has no effect otherwise.
