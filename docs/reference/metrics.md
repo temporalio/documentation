@@ -39,48 +39,47 @@ Each metric may have some combination of the following keys attached to them:
 
 Some keys may not be available in every SDK, and Histogram metrics may have different buckets in each SDK.
 
-| Metric Name | Metric Type | Availability |
-| ---- | ------------| -------------|
-| [activity_execution_cancelled](#activity_execution_cancelled) | Counter | Java |
-| [activity_execution_failed](#activity_execution_failed) | Counter | Core, Go, Java |
-| [activity_execution_latency](#activity_execution_latency) | Histogram   | Core, Go, Java |
-| [activity_poll_no_task](#activity_poll_no_task) | Counter | Core, Go, Java | activity_type, namespace, task_queue |
-| [activity_schedule_to_start_latency](#activity_schedule_to_start_latency) | Histogram   | Core, Go, Java |
-| [activity_task_error](#activity_task_error) | Counter | Go |
-| [corrupted_signals](#corrupted_signals) | Counter | Go, Java |
-| [local_activity_execution_cancelled](#local_activity_execution_cancelled) | Counter | Go, Java |
-| [local_activity_execution_failed](#local_activity_execution_failed) | Counter | Go, Java |
-| [local_activity_execution_latency](#local_activity_execution_latency) | Histogram | Go, Java |
-| [local_activity_succeeded_endtoend_latency](#local_activity_succeeded_endtoend_latency) | Histogram | Go, Java |
-| [local_activity_total](#local_activity_total) | Counter | Go, Java |
-| [long_request](#long_request) | Counter | Core, Go, Java |
-| [long_request_failure](#long_request_failure) | Counter | Core, Go, Java |
-| [long_request_latency](#long_request_latency) | Histogram | Core, Go, Java |
-| [num_pollers](#num_pollers) | Gauge | Core |
-| [poller_start](#poller_start) | Counter | Go, Java |
-| [request](#request) | Counter | Core, Go, Java |
-| [request_failure](#request_failure) | Counter | Core, Go, Java |
-| [request_latency](#request_latency) | Histogram | Core, Go, Java |
-| [sticky_cache_hit](#sticky_cache_hit) | Counter | Core, Go, Java |
-| [sticky_cache_miss](#sticky_cache_miss) | Counter | Core, Go, Java |
-| [sticky_cache_size](#sticky_cache_size) | Gauge | Core, Go, Java |
-| [sticky_cache_total_forced_eviction](#sticky_cache_total_forced_eviction) | Counter | Go, Java |
-| [unregistered_activity_invocation](#unregistered_activity_invocation) | Counter | Go |
-| [worker_start](#worker_start) | Counter | Core, Go, Java |
-| [worker_task_slots_available](#worker_task_slots_available) | Gauge | Go, Java |
-| [workflow_active_thread_count](#workflow_active_thread_count) | Gauge | Java |
-| [workflow_cancelled](#workflow_cancelled) | Counter | Core, Go, Java |
-| [workflow_completed](#workflow_completed) | Counter | Core, Go, Java |
-| [workflow_continue_as_new](#workflow_continue_as_new) | Counter | Core, Go, Java |
-| [workflow_endtoend_latency](#workflow_endtoend_latency) | Histogram | Core, Go, Java |
-| [workflow_failed](#workflow_failed) | Counter | Core, Go, Java |
-| [workflow_task_execution_failed](#workflow_task_execution_failed) | Counter | Core, Go, Java |
-| [workflow_task_execution_latency](#workflow_task_execution_latency) | Histogram | Core, Go, Java |
-| [workflow_task_queue_poll_empty](#workflow_task_queue_poll_empty) | Counter | Core, Go, Java |
-| [workflow_task_queue_poll_succeed](#workflow_task_queue_poll_succeed) | Counter | Core, Go, Java |
-| [workflow_task_replay_latency](#workflow_task_replay_latency) | Histogram | Core, Go, Java |
-| [workflow_task_schedule_to_start_latency](#workflow_task_schedule_to_start_latency) | Histogram | Core, Go, Java |
-
+| Metric Name                                                                             | Metric Type | Availability   |
+| --------------------------------------------------------------------------------------- | ----------- | -------------- | ------------------------------------ |
+| [activity_execution_cancelled](#activity_execution_cancelled)                           | Counter     | Java           |
+| [activity_execution_failed](#activity_execution_failed)                                 | Counter     | Core, Go, Java |
+| [activity_execution_latency](#activity_execution_latency)                               | Histogram   | Core, Go, Java |
+| [activity_poll_no_task](#activity_poll_no_task)                                         | Counter     | Core, Go, Java | activity_type, namespace, task_queue |
+| [activity_schedule_to_start_latency](#activity_schedule_to_start_latency)               | Histogram   | Core, Go, Java |
+| [activity_task_error](#activity_task_error)                                             | Counter     | Go             |
+| [corrupted_signals](#corrupted_signals)                                                 | Counter     | Go, Java       |
+| [local_activity_execution_cancelled](#local_activity_execution_cancelled)               | Counter     | Go, Java       |
+| [local_activity_execution_failed](#local_activity_execution_failed)                     | Counter     | Go, Java       |
+| [local_activity_execution_latency](#local_activity_execution_latency)                   | Histogram   | Go, Java       |
+| [local_activity_succeeded_endtoend_latency](#local_activity_succeeded_endtoend_latency) | Histogram   | Go, Java       |
+| [local_activity_total](#local_activity_total)                                           | Counter     | Go, Java       |
+| [long_request](#long_request)                                                           | Counter     | Core, Go, Java |
+| [long_request_failure](#long_request_failure)                                           | Counter     | Core, Go, Java |
+| [long_request_latency](#long_request_latency)                                           | Histogram   | Core, Go, Java |
+| [num_pollers](#num_pollers)                                                             | Gauge       | Core           |
+| [poller_start](#poller_start)                                                           | Counter     | Go, Java       |
+| [request](#request)                                                                     | Counter     | Core, Go, Java |
+| [request_failure](#request_failure)                                                     | Counter     | Core, Go, Java |
+| [request_latency](#request_latency)                                                     | Histogram   | Core, Go, Java |
+| [sticky_cache_hit](#sticky_cache_hit)                                                   | Counter     | Core, Go, Java |
+| [sticky_cache_miss](#sticky_cache_miss)                                                 | Counter     | Core, Go, Java |
+| [sticky_cache_size](#sticky_cache_size)                                                 | Gauge       | Core, Go, Java |
+| [sticky_cache_total_forced_eviction](#sticky_cache_total_forced_eviction)               | Counter     | Go, Java       |
+| [unregistered_activity_invocation](#unregistered_activity_invocation)                   | Counter     | Go             |
+| [worker_start](#worker_start)                                                           | Counter     | Core, Go, Java |
+| [worker_task_slots_available](#worker_task_slots_available)                             | Gauge       | Go, Java       |
+| [workflow_active_thread_count](#workflow_active_thread_count)                           | Gauge       | Java           |
+| [workflow_cancelled](#workflow_cancelled)                                               | Counter     | Core, Go, Java |
+| [workflow_completed](#workflow_completed)                                               | Counter     | Core, Go, Java |
+| [workflow_continue_as_new](#workflow_continue_as_new)                                   | Counter     | Core, Go, Java |
+| [workflow_endtoend_latency](#workflow_endtoend_latency)                                 | Histogram   | Core, Go, Java |
+| [workflow_failed](#workflow_failed)                                                     | Counter     | Core, Go, Java |
+| [workflow_task_execution_failed](#workflow_task_execution_failed)                       | Counter     | Core, Go, Java |
+| [workflow_task_execution_latency](#workflow_task_execution_latency)                     | Histogram   | Core, Go, Java |
+| [workflow_task_queue_poll_empty](#workflow_task_queue_poll_empty)                       | Counter     | Core, Go, Java |
+| [workflow_task_queue_poll_succeed](#workflow_task_queue_poll_succeed)                   | Counter     | Core, Go, Java |
+| [workflow_task_replay_latency](#workflow_task_replay_latency)                           | Histogram   | Core, Go, Java |
+| [workflow_task_schedule_to_start_latency](#workflow_task_schedule_to_start_latency)     | Histogram   | Core, Go, Java |
 
 ### `activity_execution_cancelled`
 
@@ -108,7 +107,7 @@ Time it took to complete an Activity Execution, from the time core generated the
 
 ### `activity_poll_no_task`
 
-An Activity Worker poll for an Activity Task timed out; There is no Activity Task to pick from the Task Queue.                                                 
+An Activity Worker poll for an Activity Task timed out; There is no Activity Task to pick from the Task Queue.
 
 - Type: Counter
 - Available in: Core, Go, Java
@@ -317,7 +316,7 @@ Workflow Execution ended because of a cancellation request.
 
 ### `workflow_completed`
 
- A Workflow Execution completed successfully.
+A Workflow Execution completed successfully.
 
 - Type: Counter
 - Available in: Core, Go, Java
