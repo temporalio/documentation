@@ -82,7 +82,7 @@ Some keys may not be available in every SDK, and Histogram metrics may have diff
 | [workflow_task_schedule_to_start_latency](#workflow_task_schedule_to_start_latency) | Histogram | Core, Go, Java |
 
 
-#### `activity_execution_cancelled`
+### `activity_execution_cancelled`
 
 An Activity Execution was cancelled.
 
@@ -90,7 +90,7 @@ An Activity Execution was cancelled.
 - Available in: Java
 - Available keys: `activity_type`, `namespace`, `task_queue`
 
-#### `activity_execution_failed`
+### `activity_execution_failed`
 
 An Activity Execution failed.
 
@@ -98,7 +98,7 @@ An Activity Execution failed.
 - Available in: Core, Go, Java
 - Available keys: `activity_type`, `namespace`, `task_queue`
 
-#### `activity_execution_latency`
+### `activity_execution_latency`
 
 Time it took to complete an Activity Execution, from the time core generated the activity task, to the time lang responded with a completion (failure or success).
 
@@ -106,7 +106,7 @@ Time it took to complete an Activity Execution, from the time core generated the
 - Available in: Core, Go, Java
 - Available keys: `activity_type`, `namespace`, `task_queue`
 
-#### `activity_poll_no_task`
+### `activity_poll_no_task`
 
 An Activity Worker poll for an Activity Task timed out; There is no Activity Task to pick from the Task Queue.                                                 
 
@@ -114,7 +114,7 @@ An Activity Worker poll for an Activity Task timed out; There is no Activity Tas
 - Available in: Core, Go, Java
 - Available keys: `activity_type`, `namespace`, `task_queue`
 
-#### `activity_schedule_to_start_latency`
+### `activity_schedule_to_start_latency`
 
 The Schedule-To-Start time of an Activity Task in milliseconds.
 A [Schedule-To-Start Timeout](/docs/concepts/what-is-a-schedule-to-start-timeout) can be set when an Activity Execution is spawned.
@@ -123,7 +123,7 @@ A [Schedule-To-Start Timeout](/docs/concepts/what-is-a-schedule-to-start-timeout
 - Available in: Core, Go, Java
 - Available keys: `activity_type`, `namespace`, `task_queue`
 
-#### `activity_task_error`
+### `activity_task_error`
 
 An internal error / panic occurred during Activity Task handling/execution
 
@@ -131,7 +131,7 @@ An internal error / panic occurred during Activity Task handling/execution
 - Available in: Go
 - Available keys: `activity_type`, `namespace`, `task_queue`, `workflow_type`
 
-#### `corrupted_signals`
+### `corrupted_signals`
 
 Number of Signals whose payload could not be deserialized.
 
@@ -139,7 +139,7 @@ Number of Signals whose payload could not be deserialized.
 - Available in: Go, Java
 - Available keys: `namespace`, `task_queue`, `workflow_type`
 
-#### `local_activity_execution_cancelled`
+### `local_activity_execution_cancelled`
 
 A local activity execution was cancelled
 
@@ -147,7 +147,7 @@ A local activity execution was cancelled
 - Available in: Go, Java
 - Available keys: `activity_type`, `namespace`, `task_queue`
 
-#### `local_activity_execution_failed`
+### `local_activity_execution_failed`
 
 A local activity execution failed
 
@@ -155,7 +155,7 @@ A local activity execution failed
 - Go, Java
 - Available keys: `activity_type`, `namespace`, `task_queue`
 
-#### `local_activity_execution_latency`
+### `local_activity_execution_latency`
 
 The time it is taking for Local Activity Executions to complete, from the time the first Activity Task is generated, to the time the SDK responds that the execution is complete.
 
@@ -163,7 +163,7 @@ The time it is taking for Local Activity Executions to complete, from the time t
 - Available in: Go, Java
 - Available keys: `activity_type`, `namespace`, `task_queue`
 
-#### `local_activity_succeeded_endtoend_latency`
+### `local_activity_succeeded_endtoend_latency`
 
 Total latency of successfully finished Local Activity Executions (from schedule to completion).
 
@@ -171,7 +171,7 @@ Total latency of successfully finished Local Activity Executions (from schedule 
 - Available in: Go, Java
 - Available keys: `activity_type`, `namespace`, `task_queue`
 
-#### `local_activity_total`
+### `local_activity_total`
 
 Total number of [Local Activity Executions](/docs/concepts/what-is-a-local-activity).
 
@@ -179,7 +179,7 @@ Total number of [Local Activity Executions](/docs/concepts/what-is-a-local-activ
 - Available in: Go, Java
 - Available keys: `activity_type`, `namespace`, `task_queue`
 
-#### `long_request`
+### `long_request`
 
 Temporal Client failed an RPC long poll request.
 
@@ -187,7 +187,7 @@ Temporal Client failed an RPC long poll request.
 - Available in: Core, Go, Java
 - Available keys: `namespace`, `operation`
 
-#### `long_request_failure`
+### `long_request_failure`
 
 Temporal Client made an RPC long poll request.
 
@@ -195,7 +195,7 @@ Temporal Client made an RPC long poll request.
 - Core-Client, Go, Java
 - Available keys: `namespace`, `operation`
 
-#### `long_request_latency`
+### `long_request_latency`
 
 Temporal Client gRPC long poll request latency.
 
@@ -203,7 +203,7 @@ Temporal Client gRPC long poll request latency.
 - Available in: Core, Go, Java
 - Available keys: `namespace`, `operation`
 
-#### `num_pollers`
+### `num_pollers`
 
 Current number of Worker Entities that are polling.
 
@@ -211,7 +211,7 @@ Current number of Worker Entities that are polling.
 - Available in: Core
 - Available keys: `namespace`, `poller_type`, `task_queue`
 
-#### `poller_start`
+### `poller_start`
 
 A Worker Entity poller was started.
 
@@ -219,7 +219,7 @@ A Worker Entity poller was started.
 - Available in: Go, Java
 - Available keys: `namespace`, `task_queue`
 
-#### `request`
+### `request`
 
 Temporal Client made an RPC request.
 
@@ -227,7 +227,7 @@ Temporal Client made an RPC request.
 - Available in: Core, Go, Java
 - Available keys: `namespace`, `operation`
 
-#### `request_failure`
+### `request_failure`
 
 Temporal Client failed an RPC request.
 
@@ -235,7 +235,7 @@ Temporal Client failed an RPC request.
 - Available in: Core, Go, Java
 - `namespace`, `operation`
 
-#### `request_latency`
+### `request_latency`
 
 Temporal Client gRPC request latency.
 
@@ -243,7 +243,7 @@ Temporal Client gRPC request latency.
 - Available in: Core, Go, Java
 - Available keys: `namespace`, `operation`
 
-#### `sticky_cache_hit`
+### `sticky_cache_hit`
 
 A Workflow Task found a cached Workflow Execution Event History to run against.
 
@@ -251,7 +251,7 @@ A Workflow Task found a cached Workflow Execution Event History to run against.
 - Available in: Core, Go, Java
 - Available keys: `namespace`, `task_queue`
 
-#### `sticky_cache_miss`
+### `sticky_cache_miss`
 
 A Workflow Task did not find a cached Workflow Worker.
 
@@ -259,7 +259,7 @@ A Workflow Task did not find a cached Workflow Worker.
 - Available in: Core, Go, Java
 - Available keys: `namespace`, `task_queue`
 
-#### `sticky_cache_size`
+### `sticky_cache_size`
 
 Current cache size in number of Workflow Executions.
 
@@ -267,7 +267,7 @@ Current cache size in number of Workflow Executions.
 - Available in: Core, Go, Java
 - Available keys: `namespace`(Core Only), `task_queue`
 
-#### `sticky_cache_total_forced_eviction`
+### `sticky_cache_total_forced_eviction`
 
 A Workflow Execution has been forced from the cache intentionally.
 
@@ -275,7 +275,7 @@ A Workflow Execution has been forced from the cache intentionally.
 - Available in: Go, Java
 - Available keys: `namespace`, `task_queue`
 
-#### `unregistered_activity_invocation`
+### `unregistered_activity_invocation`
 
 There was a request to spawn an Activity Execution that is not registered with the Worker.
 
@@ -283,7 +283,7 @@ There was a request to spawn an Activity Execution that is not registered with t
 - Available in: Go
 - Available keys: `activity_type`, `namespace`, `task_queue`, `workflow_type`
 
-#### `worker_start`
+### `worker_start`
 
 A Worker Entity has been registered/created/started.
 
@@ -291,7 +291,7 @@ A Worker Entity has been registered/created/started.
 - Available in: Core, Go, Java
 - Available keys: `namespace`, `task_queue`, `worker_type`
 
-#### `worker_task_slots_available`
+### `worker_task_slots_available`
 
 The total number of Workflow Task and Activity Task execution slots that are currently available.
 The `worker_type` key provides the ability to differentiate respectively (Workflow Workers execute Workflow Tasks, Activity Workers execute Activity Tasks).
@@ -300,14 +300,14 @@ The `worker_type` key provides the ability to differentiate respectively (Workfl
 - Available in: Go, Java
 - Available keys: `namespace`, `task_queue`, `worker_type`
 
-#### `workflow_active_thread_count`
+### `workflow_active_thread_count`
 
 Total amount of Workflow threads in the Worker Process
 
 - Type: Gauge
 - Available in: Java
 
-#### `workflow_cancelled`
+### `workflow_cancelled`
 
 Workflow Execution ended because of a cancellation request.
 
@@ -315,7 +315,7 @@ Workflow Execution ended because of a cancellation request.
 - Available in: Core, Go, Java
 - `namespace`, `task_queue`, `workflow_type`
 
-#### `workflow_completed`
+### `workflow_completed`
 
  A Workflow Execution completed successfully.
 
@@ -323,7 +323,7 @@ Workflow Execution ended because of a cancellation request.
 - Available in: Core, Go, Java
 - Available keys: `namespace`, `task_queue`, `workflow_type`
 
-#### `workflow_continue_as_new`
+### `workflow_continue_as_new`
 
 A workflow ended continued-as-new
 
@@ -331,7 +331,7 @@ A workflow ended continued-as-new
 - Available in: Core, Go, Java
 - Available keys: `namespace`, `task_queue`, `workflow_type`
 
-#### `workflow_endtoend_latency`
+### `workflow_endtoend_latency`
 
 Workflow total execution time in milliseconds
 
@@ -339,7 +339,7 @@ Workflow total execution time in milliseconds
 - Available in: Core, Go, Java
 - Available keys: `namespace`, `task_queue`, `workflow_type`
 
-#### `workflow_failed`
+### `workflow_failed`
 
 A workflow ended failed
 
@@ -347,7 +347,7 @@ A workflow ended failed
 - Available in: Core, Go, Java
 - `namespace`, `task_queue`, `workflow_type`
 
-#### `workflow_task_execution_failed`
+### `workflow_task_execution_failed`
 
 A workflow task execution failed
 
@@ -355,7 +355,7 @@ A workflow task execution failed
 - Available in: Core, Go, Java
 - `namespace`, `task_queue`, `workflow_type`
 
-#### `workflow_task_execution_latency`
+### `workflow_task_execution_latency`
 
 Workflow task execution time in milliseconds
 
@@ -363,7 +363,7 @@ Workflow task execution time in milliseconds
 - Available in: Core, Go, Java
 - Available keys: `namespace`, `task_queue`, `workflow_type`
 
-#### `workflow_task_queue_poll_empty`
+### `workflow_task_queue_poll_empty`
 
 A Workflow Worker polled a Task queue and timed out without picking up a Workflow Task.
 
@@ -371,7 +371,7 @@ A Workflow Worker polled a Task queue and timed out without picking up a Workflo
 - Available in: Core, Go, Java
 - Available keys: `namespace`, `task_queue`, `workflow_type`
 
-#### `workflow_task_queue_poll_succeed`
+### `workflow_task_queue_poll_succeed`
 
 A Workflow Worker polled a Task Queue and successfully picked up a Workflow Task.
 
@@ -379,7 +379,7 @@ A Workflow Worker polled a Task Queue and successfully picked up a Workflow Task
 - Available in: Core, Go, Java
 - Available keys: `namespace`, `task_queue`, `workflow_type`
 
-#### `workflow_task_replay_latency`
+### `workflow_task_replay_latency`
 
 Time it takes to catch up on replaying a Workflow Task in milliseconds.
 
@@ -387,7 +387,7 @@ Time it takes to catch up on replaying a Workflow Task in milliseconds.
 - Available in: Core, Go, Java
 - `namespace`, `task_queue`, `workflow_type`
 
-#### `workflow_task_schedule_to_start_latency`
+### `workflow_task_schedule_to_start_latency`
 
 The Schedule-To-Start time of a Workflow Task in milliseconds.
 
