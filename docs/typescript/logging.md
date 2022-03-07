@@ -168,7 +168,7 @@ Tracing is compatible between the different Temporal SDKs as long as compatible 
 
 The TypeScript SDK uses the global OpenTelemetry propagator.
 
-To extend the default and include the jaeger propagator, follow these steps:
+To extend the default and include the [Jaeger propagator](https://www.npmjs.com/package/@opentelemetry/propagator-jaeger), follow these steps:
 
 - `npm i @opentelemetry/propagator-jaeger`
 
