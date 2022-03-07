@@ -19,7 +19,7 @@ selector.AddReceive(signalChan, func(channel workflow.ReceiveChannel, more bool)
     channel.Receive(ctx, &signalVal)
     // ...
 })
-s.Select(ctx)
+signalChan.Select(ctx)
 
 if len(signalVal) > 0 && signalVal != "SOME_VALUE" {
     return errors.New("signalVal")
