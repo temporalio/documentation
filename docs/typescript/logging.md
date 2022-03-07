@@ -155,18 +155,20 @@ await Core.install({ logger });
 
 We are in the process of building out our SDK metrics capabilities, for now please observe standard monitoring practices on your Workers in production (CPU, memory utilization, health checks).
 
-## OpenTelemetry Tracing
+## OpenTelemetry tracing
 
-The instrumentation sample posted at the top of this page shows how to use the SDK's built-in OpenTelemetry tracing to trace everything from starting a Workflow from a client to Workflow execution to running an Activity from that Workflow.
+The [`interceptors-opentelemetry`](https://github.com/temporalio/samples-typescript/tree/main/interceptors-opentelemetry) sample shows how to use the SDK's built-in OpenTelemetry tracing to trace everything from starting a Workflow to Workflow Execution to running an Activity from that Workflow.
 
-The built-in tracing uses [protobuf message headers](https://github.com/temporalio/api/blob/b2b8ae6592a8730dd5be6d90569d1aea84e1712f/temporal/api/workflowservice/v1/request_response.proto#L161) to propagate the tracing information from the client to the Workflow and from the Workflow to its successors (when continued as new), children and Activities.
+The built-in tracing uses protobuf message headers (like [this one](https://github.com/temporalio/api/blob/b2b8ae6592a8730dd5be6d90569d1aea84e1712f/temporal/api/workflowservice/v1/request_response.proto#L161) when starting a Workflow) to propagate the tracing information from the client to the Workflow and from the Workflow to its successors (when Continued As New), children, and Activities.
 All of these executions will be linked with a single trace ID and will have the proper parent->child span relation.
 
-Tracing is compatible between the different Temporal SDKs as long as compatible context propagators are used.
+Tracing is compatible between the different Temporal SDKs as long as compatible [context propagators](https://opentelemetry.lightstep.com/core-concepts/context-propagation/) are used.
+
+### Context propagation
 
 The TypeScript SDK uses the global OpenTelemetry propagator.
 
-To extend default and include the jaeger propagator, follow these steps:
+To extend the default and include the jaeger propagator, follow these steps:
 
 - `npm i @opentelemetry/propagator-jaeger`
 
@@ -194,4 +196,4 @@ To extend default and include the jaeger propagator, follow these steps:
   );
   ```
 
-- Similarly you may customize the OpenTelemetry Node SDK propagators by following the instructions on [this page](https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/opentelemetry-sdk-node#initialize-the-sdk)
+- Similarly, you may customize the OpenTelemetry Node SDK propagators by following the instructions on [this page](https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/opentelemetry-sdk-node#initialize-the-sdk).
