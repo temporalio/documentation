@@ -184,15 +184,13 @@ To extend the default ([Trace Context](https://github.com/open-telemetry/opentel
   import { JaegerPropagator } from '@opentelemetry/propagator-jaeger';
 
   propagation.setGlobalPropagator(
-    new CompositePropagator(
-      new CompositePropagator({
-        propagators: [
-          new W3CTraceContextPropagator(),
-          new W3CBaggagePropagator(),
-          new JaegerPropagator(),
-        ],
-      })
-    )
+    new CompositePropagator({
+      propagators: [
+        new W3CTraceContextPropagator(),
+        new W3CBaggagePropagator(),
+        new JaegerPropagator(),
+      ],
+    })
   );
   ```
 
