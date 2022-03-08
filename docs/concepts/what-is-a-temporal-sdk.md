@@ -9,7 +9,7 @@ tags:
 
 A Temporal SDK is a language-specific library that offers APIs to do the following:
 
-1. Construct and use a [Temporal Client](#what-is-a-temporal-client).
+1. Construct and use a [Temporal Client](#what-is-a-temporal-client)
 2. Develop [Workflow Definitions](/docs/concepts/what-is-a-workflow-definition)
 3. Develop [Worker Programs](/docs/concepts/what-is-a-worker-program)
 
