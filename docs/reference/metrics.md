@@ -334,7 +334,7 @@ A Workflow ended with Continue-As-New.
 
 ### `workflow_endtoend_latency`
 
-Workflow total execution time in milliseconds
+Total Workflow Execution time in milliseconds.
 
 - Type: Histogram
 - Available in: Core, Go, Java
