@@ -2,7 +2,7 @@
 id: employment-verification
 title: What does the Employment Verification Workflow Definition look like?
 sidebar_label: Employment Verification
-description: TODO
+description: The Employment Verification Workflow sends email to a Researcher via an Activity Execution and waits on a Signal.
 ---
 
 <!--SNIPSTART background-checks-employment-verification-workflow-definition-->

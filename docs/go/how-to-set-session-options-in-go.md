@@ -2,12 +2,12 @@
 id: how-to-set-sessionoptions-in-go
 title: How to set SessionOptions in Go
 sidebar_label: SessionOptions
-description: TODO
+description: Create an instance of `SessionOptions` and pass it to the `CreateSession()` API call.
 tags:
   - developer-guide
 ---
 
-Options used to specify metadata for a session
+Create an instance of [`SessionOptions`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SessionOptions) and pass them to the [`CreateSession()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#CreateSession)
 
 | Field                                   | Required | Type            |
 | --------------------------------------- | -------- | --------------- |

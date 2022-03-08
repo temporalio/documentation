@@ -2,7 +2,7 @@
 id: how-to-send-a-query-to-a-workflow-execution-in-go
 title: How to send a Query to a Workflow Execution in Go
 sidebar_label: Sending Queries
-description: TODO
+description: Use the `QueryWorkflow()` API to send a Query to a Workflow in Go.
 tags:
   - go
   - developer-guide

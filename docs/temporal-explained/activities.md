@@ -2,7 +2,7 @@
 id: activities
 title: Temporal Activities
 sidebar_label: Activities
-description: todo
+description: Temporal Activities explained.
 ---
 
 import WhatIsAnActivity from "../concepts/what-is-an-activity.md"
