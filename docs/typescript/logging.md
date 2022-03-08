@@ -160,7 +160,7 @@ We are in the process of building out our SDK metrics capabilities. For now, ple
 The [`interceptors-opentelemetry`](https://github.com/temporalio/samples-typescript/tree/main/interceptors-opentelemetry) sample shows how to use the SDK's built-in OpenTelemetry tracing to trace everything from starting a Workflow to Workflow Execution to running an Activity from that Workflow.
 
 The built-in tracing uses protobuf message headers (like [this one](https://github.com/temporalio/api/blob/b2b8ae6592a8730dd5be6d90569d1aea84e1712f/temporal/api/workflowservice/v1/request_response.proto#L161) when starting a Workflow) to propagate the tracing information from the client to the Workflow and from the Workflow to its successors (when Continued As New), children, and Activities.
-All of these executions will be linked with a single trace ID and will have the proper parent->child span relation.
+All of these executions are linked with a single trace ID and have the proper parent->child span relation.
 
 Tracing is compatible between the different Temporal SDKs as long as compatible [context propagators](https://opentelemetry.lightstep.com/core-concepts/context-propagation/) are used.
 
