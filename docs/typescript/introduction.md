@@ -53,33 +53,8 @@ Run "Hello Temporal" locally (~10 minutes)
 
 :::note Prerequisites
 
-<details>
-<summary>
 <strong>Node.js 14+</strong>: This project requires Node.js version 14 or later.
-</summary>
 
-macOS users: Brew installation of Node.js versions 15.0 to 16.4 does not work with the SDK; instead install the latest Node.js version (16.4.1+) or use nvm
-
-```bash
-brew update
-brew upgrade node
-```
-
--- OR --
-
-```bash
-nvm use 16
-```
-
-If you don’t have `nvm` ([Node Version Manager](https://github.com/nvm-sh/nvm)), you can [install](https://github.com/nvm-sh/nvm#install--update-script) it with:
-
-```bash
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
-nvm install 16
-nvm use 16
-```
-
-</details>
 <details>
 <summary>
 <strong>Temporal Server</strong>: make sure it is running locally!

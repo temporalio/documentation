@@ -7,31 +7,6 @@ description: This document is a quick checklist of common user errors for your r
 
 This document is a quick checklist of common user errors for your reference.
 
-## Wrong Node.js version
-
-If you find segfaults when you execute code in Workers:
-
-```bash
-98602 segmentation fault  npm start
-```
-
-This comes from running the wrong Node version.
-This SDK explicitly only supports Node 14.x, or Node 16.4.1+ (not Node 14.0 to 16.4).
-
-<!-- delete in jan 2022 if not useful anymore -->
-<!-- If you switch Node versions and now your Workers don't even run because of errors that look like this:
-
-```bash
-Error: The module '/YOUR_PATH/node_modules/isolated-vm/out/isolated_vm.node'
-was compiled against a different Node.js version using
-NODE_MODULE_VERSION 93. This version of Node.js requires
-NODE_MODULE_VERSION 88. Please try re-compiling or re-installing
-the module (for instance, using `npm rebuild` or `npm install`).
-```
-
-That is because you are now running Workers with a different Node version than the modules were built with.
-Rebuild them with `npm rebuild`. -->
-
 ## Two Locations to Watch
 
 - Workflow Errors are reflected in Temporal Web
