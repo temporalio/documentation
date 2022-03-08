@@ -44,6 +44,10 @@ _Don't forget our own explainers on [What is Temporal](https://docs.temporal.io/
 
   > Building a reliable “simple” microservices system is not simple. It often requires engineers to think through edge cases and write boilerplate error handling logic in any places where systems are integrated. Beyond error handling, in certain systems like payment or billing systems if we are not able to track the application states, it could mean money loss or other worse consequences.
 
+- [How Chronosphere built a deployment system with Temporal](https://chronosphere.io/learn/how-chronosphere-built-a-deployment-system-with-temporal/) on Chronosphere Blog
+
+  > **Temporal has enabled Chronosphere to more safely and reliably automate complex, long-running tasks.** It has also enabled us to easily reuse common activities across different types of workflows. For example, the helper that pauses a workflow if an alert fires can be used by our deployment system and capacity tooling with just a few lines of code. This empowers engineers across different teams to ship features quickly while meeting our rigorous standards for safety and customer trust.
+
 - [Dealing with Failure](https://dev.to/temporalio/dealing-with-failure-5adf) on Dev.to
 
   > Dealing with failures is the most important aspect of any system. Oftentimes, it is what stands between a product that runs as expected and one that keeps producing surprises and causing investigations. **When done right, handling of failures is what differentiates a professional from an amateur.**
