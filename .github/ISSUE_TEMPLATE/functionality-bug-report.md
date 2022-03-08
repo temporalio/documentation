@@ -9,16 +9,16 @@ assignees: ''
 
 ## Required
 
-**Describe the issue:**
+**What is the issue?**
 
-**How to reproduce the issue:**
+**How can we reproduce the issue?**
 
-**What is the expected behavior:**
+**What is the expected behavior?**
 
-## Additional context (optoinal – the more we know the faster it goes)
+## Additional context (optional—the more we know, the faster it goes)
 
 **Screenshots:**
 
-**Browser & version:**
+**Browser and version:**
 
 **Device and screen size:**
