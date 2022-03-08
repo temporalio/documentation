@@ -6,14 +6,8 @@ tags:
   - explanation
 ---
 
-import CenteredImage from "../components/CenteredImage.js"
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-<!-- prettier-ignore -->
-import * as WhatIsAWorkflowExecution from '../concepts/what-is-a-workflow-execution.md'
-import * as WhatIsASignal from '../concepts/what-is-a-signal.md'
-import * as WhatIsAQuery from '../concepts/what-is-a-query.md'
 
 One of the aspects of the Temporal System is that it abstracts the complexity of a distributed system.
 Distributed systems exist to scale computation across multiple machines as the potential load of a system changes.
@@ -21,11 +15,7 @@ In theory, a distributed system facilitates a reliable and highly performant app
 
 However any failure that leaves the downstream part of the application waiting for a response can make things very complicated, especially at a large scale.
 
-<CenteredImage
-imagePath="/diagrams/basic-distributed-system.svg"
-imageSize="75"
-title="Distributed application failures"
-/>
+![Distributed application failures](/diagrams/basic-distributed-system.svg)
 
 How will a downstream part of the application know if there was a failure before or a failure after changes to the state if there is no response?
 How will the application track and reconcile an inconsistent state?
@@ -38,13 +28,9 @@ And as these systems scale, responding to multiple asynchronous events, communic
 Temporal restructures the use of services, databases, cron jobs, queues, host processes, and SDKs, into the Temporal Platform, and addresses failures head on.
 
 In a traditional system, the service exists to spawn function executions.
-The Temporal Platform exists to facilitate <preview page={WhatIsAWorkflowExecution}>Workflow Executions</preview>.
+The Temporal Platform exists to facilitate [Workflow Executions](/docs/concepts/what-is-a-workflow-execution).
 
-<CenteredImage
-imagePath="/diagrams/temporal-vs-traditional.svg"
-imageSize="100"
-title="Temporal vs Traditional system"
-/>
+![Temporal vs Traditional system](/diagrams/temporal-vs-traditional.svg)
 
 Although the two systems seem similar at first glance, they differ in several significant ways.
 
@@ -72,7 +58,7 @@ With Temporal, computation resumes from its _latest_ state. All progress is reta
 
 With a traditional system, you can't communicate with a function execution.
 
-With Temporal, <preview page={WhatIsASignal}>Signals</preview> and <preview page={WhatIsAQuery}>Queries</preview> enable data to be sent to or extracted from a Workflow Execution.
+With Temporal, [Signals](/docs/concepts/what-is-a-signal) and [Queries](/docs/concepts/what-is-a-query) enable data to be sent to or extracted from a Workflow Execution.
 
 **Scope**
 
