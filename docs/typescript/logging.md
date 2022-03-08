@@ -153,7 +153,7 @@ await Core.install({ logger });
 
 ## Monitoring SDK metrics
 
-We are in the process of building out our SDK metrics capabilities, for now please observe standard monitoring practices on your Workers in production (CPU, memory utilization, health checks).
+We are in the process of building out our SDK metrics capabilities. For now, please observe standard monitoring practices on your Workers in production (CPU, memory utilization, health checks).
 
 ## OpenTelemetry tracing
 
