@@ -1,7 +1,7 @@
 ---
 id: workflows
 title: Temporal Workflows
-description: todo
+description: Temporal Workflows explained.
 sidebar_label: Workflows
 ---
 

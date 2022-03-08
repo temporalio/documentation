@@ -1,7 +1,7 @@
 ---
 id: how-to-request-cancellation-of-a-workflow-execution-in-go
 title: How to request Cancellation of a Workflow Execution in Go
-description: todo
+description: Use the `CancelWorkflow` API to cancel a Workflow Execution using its Id.
 tags:
   - developer-guide
   - go

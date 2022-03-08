@@ -2,7 +2,7 @@
 id: ssn-trace
 title: What does the SSN Trace Workflow Definition look like?
 sidebar_label: SSN Trace
-description: TODO
+description: The SSN Trace Workflow calls an external API via an Activity Execution and returns the results.
 ---
 
 <!--SNIPSTART background-checks-ssn-trace-workflow-definition-->

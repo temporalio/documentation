@@ -2,7 +2,7 @@
 id: federal-criminal-search
 title: What does the Federal Criminal Search Workflow Definition look like?
 sidebar_label: Federal Criminal Search
-description: TODO
+description: The Federal Criminal Search Workflow calls an external API via an Activity Execution and returns the results.
 ---
 
 <!--SNIPSTART background-checks-federal-criminal-workflow-definition-->

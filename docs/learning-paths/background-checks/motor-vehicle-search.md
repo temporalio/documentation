@@ -2,7 +2,7 @@
 id: motor-vehicle-search
 title: What does the Motor Vehicle Search Workflow Definition look like?
 sidebar_label: Motor Vehicle
-description: TODO
+description: The Motor Vehicle Search Workflow calls an external API via an Activity Execution and returns the results.
 ---
 
 <!--SNIPSTART background-checks-motor-vehicle-workflow-definition-->

@@ -1,7 +1,7 @@
 ---
 id: clusters
 title: Temporal Clusters
-description: TODO
+description: Temporal Clusters explained.
 sidebar_label: Clusters
 ---
 
