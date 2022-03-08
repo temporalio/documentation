@@ -1,12 +1,13 @@
 ---
 id: sdk-metrics
 title: SDK metrics
-description: Temporal SDK Clients and Workers both emit metrics, this page describes them
+description: The Temporal SDKs emit metrics from Temporal Client usage and Worker Processes.
 sidebar_label: SDK metrics
 ---
 
 The Temporal SDKs emit a set of metrics from Temporal Client usage and Worker Processes.
-All metrics are prefixed with `temporal_` before being exported to their configured destination (The prefix has been removed in following reference).
+All metrics are prefixed with `temporal_` before being exported to their configured destination.
+(The prefix has been removed in the following reference.)
 Currently some metrics are specific to certain SDKs.
 
 **The Typescript SDK is built using the Core SDK and therefore emits all of the same metrics associated with the Core SDK.**
@@ -23,19 +24,19 @@ Metrics are defined in the following locations:
 
 Each metric may have some combination of the following keys attached to them:
 
-- `task-queue`: Task Queue that the Worker Entity is polling on
+- `task-queue`: Task Queue that the Worker Entity is polling
 - `namespace`: Namespace the Worker is bound to
-- `poller_type`: One of following:
+- `poller_type`: One of the following:
   - `workflow_task`
   - `activity_task`
   - `sticky_workflow_task`
 - `worker_type`: One of the following:
   - `ActivityWorker`
   - `WorkflowWorker`
-  - `LocalActivityWorker`: (Limited to Go and Java only)
-- `activity_type`: The name of the Activity Function the metric is associated with.
+  - `LocalActivityWorker` (Go and Java only)
+- `activity_type`: The name of the Activity Function the metric is associated with
 - `workflow_type`: The name of the Workflow Function the metric is associated with
-- `operation`: RPC method name, available for metrics related to Temporal Client gRPC requests.
+- `operation`: RPC method name; available for metrics related to Temporal Client gRPC requests
 
 Some keys may not be available in every SDK, and Histogram metrics may have different buckets in each SDK.
 
@@ -83,7 +84,7 @@ Some keys may not be available in every SDK, and Histogram metrics may have diff
 
 ### `activity_execution_cancelled`
 
-An Activity Execution was cancelled.
+An Activity Execution was canceled.
 
 - Type: Counter
 - Available in: Java
@@ -99,7 +100,7 @@ An Activity Execution failed.
 
 ### `activity_execution_latency`
 
-Time it took to complete an Activity Execution, from the time core generated the activity task, to the time lang responded with a completion (failure or success).
+Time to complete an Activity Execution, from the time the Core SDK generated the Activity Task to the time the language SDK responded with a completion (failure or success).
 
 - Type: Histogram
 - Available in: Core, Go, Java
@@ -107,7 +108,7 @@ Time it took to complete an Activity Execution, from the time core generated the
 
 ### `activity_poll_no_task`
 
-An Activity Worker poll for an Activity Task timed out; There is no Activity Task to pick from the Task Queue.
+An Activity Worker poll for an Activity Task timed out, and no Activity Task is available to pick from the Task Queue.
 
 - Type: Counter
 - Available in: Core, Go, Java
@@ -124,7 +125,7 @@ A [Schedule-To-Start Timeout](/docs/concepts/what-is-a-schedule-to-start-timeout
 
 ### `activity_task_error`
 
-An internal error / panic occurred during Activity Task handling/execution
+An internal error or kernel panic occurred during Activity Task handling or execution.
 
 - Type: Counter
 - Available in: Go
@@ -140,7 +141,7 @@ Number of Signals whose payload could not be deserialized.
 
 ### `local_activity_execution_cancelled`
 
-A local activity execution was cancelled
+A local activity execution was canceled.
 
 - Type: Counter
 - Available in: Go, Java
@@ -148,7 +149,7 @@ A local activity execution was cancelled
 
 ### `local_activity_execution_failed`
 
-A local activity execution failed
+A Local Activity Execution failed.
 
 - Type: Counter
 - Go, Java
@@ -156,7 +157,7 @@ A local activity execution failed
 
 ### `local_activity_execution_latency`
 
-The time it is taking for Local Activity Executions to complete, from the time the first Activity Task is generated, to the time the SDK responds that the execution is complete.
+Time to complete a Local Activity Execution, from the time the first Activity Task is generated to the time the SDK responds that the execution is complete.
 
 - Type: Histogram
 - Available in: Go, Java
@@ -196,7 +197,7 @@ Temporal Client made an RPC long poll request.
 
 ### `long_request_latency`
 
-Temporal Client gRPC long poll request latency.
+Latency of a Temporal Client gRPC long poll request.
 
 - Type: Histogram
 - Available in: Core, Go, Java
@@ -236,7 +237,7 @@ Temporal Client failed an RPC request.
 
 ### `request_latency`
 
-Temporal Client gRPC request latency.
+Latency of a Temporal Client gRPC request.
 
 - Type: Histogram
 - Available in: Core, Go, Java
@@ -260,7 +261,7 @@ A Workflow Task did not find a cached Workflow Worker.
 
 ### `sticky_cache_size`
 
-Current cache size in number of Workflow Executions.
+Current cache size, expressed in number of Workflow Executions.
 
 - Type: Gauge
 - Available in: Core, Go, Java
@@ -276,7 +277,7 @@ A Workflow Execution has been forced from the cache intentionally.
 
 ### `unregistered_activity_invocation`
 
-There was a request to spawn an Activity Execution that is not registered with the Worker.
+A request to spawn an Activity Execution is not registered with the Worker.
 
 - Type: Counter
 - Available in: Go
@@ -284,7 +285,7 @@ There was a request to spawn an Activity Execution that is not registered with t
 
 ### `worker_start`
 
-A Worker Entity has been registered/created/started.
+A Worker Entity has been registered, created, or started.
 
 - Type: Counter
 - Available in: Core, Go, Java
@@ -293,7 +294,8 @@ A Worker Entity has been registered/created/started.
 ### `worker_task_slots_available`
 
 The total number of Workflow Task and Activity Task execution slots that are currently available.
-The `worker_type` key provides the ability to differentiate respectively (Workflow Workers execute Workflow Tasks, Activity Workers execute Activity Tasks).
+Use the `worker_type` key to differentiate execution slots.
+(Workflow Workers execute Workflow Tasks; Activity Workers execute Activity Tasks.)
 
 - Type: Gauge
 - Available in: Go, Java
@@ -301,7 +303,7 @@ The `worker_type` key provides the ability to differentiate respectively (Workfl
 
 ### `workflow_active_thread_count`
 
-Total amount of Workflow threads in the Worker Process
+Total amount of Workflow threads in the Worker Process.
 
 - Type: Gauge
 - Available in: Java
@@ -324,7 +326,7 @@ A Workflow Execution completed successfully.
 
 ### `workflow_continue_as_new`
 
-A workflow ended continued-as-new
+A Workflow ended with Continue-As-New.
 
 - Type: Counter
 - Available in: Core, Go, Java
@@ -340,7 +342,7 @@ Workflow total execution time in milliseconds
 
 ### `workflow_failed`
 
-A workflow ended failed
+A Workflow Execution failed.
 
 - Type: Counter
 - Available in: Core, Go, Java
@@ -348,7 +350,7 @@ A workflow ended failed
 
 ### `workflow_task_execution_failed`
 
-A workflow task execution failed
+A Workflow Task Execution failed.
 
 - Type: Counter
 - Available in: Core, Go, Java
@@ -356,7 +358,7 @@ A workflow task execution failed
 
 ### `workflow_task_execution_latency`
 
-Workflow task execution time in milliseconds
+Workflow Task Execution time in milliseconds.
 
 - Type: Histogram
 - Available in: Core, Go, Java
@@ -364,7 +366,7 @@ Workflow task execution time in milliseconds
 
 ### `workflow_task_queue_poll_empty`
 
-A Workflow Worker polled a Task queue and timed out without picking up a Workflow Task.
+A Workflow Worker polled a Task Queue and timed out without picking up a Workflow Task.
 
 - Type: Counter
 - Available in: Core, Go, Java
@@ -380,7 +382,7 @@ A Workflow Worker polled a Task Queue and successfully picked up a Workflow Task
 
 ### `workflow_task_replay_latency`
 
-Time it takes to catch up on replaying a Workflow Task in milliseconds.
+Time to catch up on replaying a Workflow Task in milliseconds.
 
 - Type: Histogram
 - Available in: Core, Go, Java
