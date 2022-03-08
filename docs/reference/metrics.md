@@ -10,11 +10,7 @@ All metrics are prefixed with `temporal_` before being exported to their configu
 (The prefix has been removed in the following reference.)
 Currently some metrics are specific to certain SDKs.
 
-**The Typescript SDK is built using the Core SDK and therefore emits all of the same metrics associated with the Core SDK.**
-
-**The PHP SDK is built using the Go SDK and therefore emits all of the same metrics associated with the Go SDK.**
-
-Metrics are defined in the following locations:
+Metrics are defined in the following locations (The Typescript SDK metrics are defined in the Core SDK and PHP SDK metric are defined in the Go SDK):
 
 - [Core SDK Worker metrics](https://github.com/temporalio/sdk-core/blob/master/core/src/telemetry/metrics.rs)
 - [Core SDK Client metrics](https://github.com/temporalio/sdk-core/blob/master/client/src/metrics.rs)
@@ -41,46 +37,46 @@ Each metric may have some combination of the following keys attached to them:
 Some keys may not be available in every SDK, and Histogram metrics may have different buckets in each SDK.
 
 | Metric Name                                                                             | Metric Type | Availability   |
-| --------------------------------------------------------------------------------------- | ----------- | -------------- | ------------------------------------ |
+| --------------------------------------------------------------------------------------- | ----------- | -------------- |
 | [activity_execution_cancelled](#activity_execution_cancelled)                           | Counter     | Java           |
-| [activity_execution_failed](#activity_execution_failed)                                 | Counter     | Core, Go, Java |
-| [activity_execution_latency](#activity_execution_latency)                               | Histogram   | Core, Go, Java |
-| [activity_poll_no_task](#activity_poll_no_task)                                         | Counter     | Core, Go, Java | activity_type, namespace, task_queue |
-| [activity_schedule_to_start_latency](#activity_schedule_to_start_latency)               | Histogram   | Core, Go, Java |
-| [activity_task_error](#activity_task_error)                                             | Counter     | Go             |
-| [corrupted_signals](#corrupted_signals)                                                 | Counter     | Go, Java       |
-| [local_activity_execution_cancelled](#local_activity_execution_cancelled)               | Counter     | Go, Java       |
-| [local_activity_execution_failed](#local_activity_execution_failed)                     | Counter     | Go, Java       |
-| [local_activity_execution_latency](#local_activity_execution_latency)                   | Histogram   | Go, Java       |
-| [local_activity_succeeded_endtoend_latency](#local_activity_succeeded_endtoend_latency) | Histogram   | Go, Java       |
-| [local_activity_total](#local_activity_total)                                           | Counter     | Go, Java       |
-| [long_request](#long_request)                                                           | Counter     | Core, Go, Java |
-| [long_request_failure](#long_request_failure)                                           | Counter     | Core, Go, Java |
-| [long_request_latency](#long_request_latency)                                           | Histogram   | Core, Go, Java |
-| [num_pollers](#num_pollers)                                                             | Gauge       | Core           |
-| [poller_start](#poller_start)                                                           | Counter     | Go, Java       |
-| [request](#request)                                                                     | Counter     | Core, Go, Java |
-| [request_failure](#request_failure)                                                     | Counter     | Core, Go, Java |
-| [request_latency](#request_latency)                                                     | Histogram   | Core, Go, Java |
-| [sticky_cache_hit](#sticky_cache_hit)                                                   | Counter     | Core, Go, Java |
-| [sticky_cache_miss](#sticky_cache_miss)                                                 | Counter     | Core, Go, Java |
-| [sticky_cache_size](#sticky_cache_size)                                                 | Gauge       | Core, Go, Java |
-| [sticky_cache_total_forced_eviction](#sticky_cache_total_forced_eviction)               | Counter     | Go, Java       |
-| [unregistered_activity_invocation](#unregistered_activity_invocation)                   | Counter     | Go             |
-| [worker_start](#worker_start)                                                           | Counter     | Core, Go, Java |
-| [worker_task_slots_available](#worker_task_slots_available)                             | Gauge       | Go, Java       |
+| [activity_execution_failed](#activity_execution_failed)                                 | Counter     | TypeScript, Go, PHP, Java |
+| [activity_execution_latency](#activity_execution_latency)                               | Histogram   | TypeScript, Go, PHP, Java |
+| [activity_poll_no_task](#activity_poll_no_task)                                         | Counter     | TypeScript, Go, PHP, Java | activity_type, namespace, task_queue |
+| [activity_schedule_to_start_latency](#activity_schedule_to_start_latency)               | Histogram   | TypeScript, Go, PHP, Java |
+| [activity_task_error](#activity_task_error)                                             | Counter     | Go, PHP             |
+| [corrupted_signals](#corrupted_signals)                                                 | Counter     | Go, PHP, Java       |
+| [local_activity_execution_cancelled](#local_activity_execution_cancelled)               | Counter     | Go, PHP, Java       |
+| [local_activity_execution_failed](#local_activity_execution_failed)                     | Counter     | Go, PHP, Java       |
+| [local_activity_execution_latency](#local_activity_execution_latency)                   | Histogram   | Go, PHP, Java       |
+| [local_activity_succeeded_endtoend_latency](#local_activity_succeeded_endtoend_latency) | Histogram   | Go, PHP, Java       |
+| [local_activity_total](#local_activity_total)                                           | Counter     | Go, PHP, Java       |
+| [long_request](#long_request)                                                           | Counter     | TypeScript, Go, PHP, Java |
+| [long_request_failure](#long_request_failure)                                           | Counter     | TypeScript, Go, PHP, Java |
+| [long_request_latency](#long_request_latency)                                           | Histogram   | TypeScript, Go, PHP, Java |
+| [num_pollers](#num_pollers)                                                             | Gauge       | TypeScript           |
+| [poller_start](#poller_start)                                                           | Counter     | Go, PHP, Java       |
+| [request](#request)                                                                     | Counter     | TypeScript, Go, PHP, Java |
+| [request_failure](#request_failure)                                                     | Counter     | TypeScript, Go, PHP, Java |
+| [request_latency](#request_latency)                                                     | Histogram   | TypeScript, Go, PHP, Java |
+| [sticky_cache_hit](#sticky_cache_hit)                                                   | Counter     | TypeScript, Go, PHP, Java |
+| [sticky_cache_miss](#sticky_cache_miss)                                                 | Counter     | TypeScript, Go, PHP, Java |
+| [sticky_cache_size](#sticky_cache_size)                                                 | Gauge       | TypeScript, Go, PHP, Java |
+| [sticky_cache_total_forced_eviction](#sticky_cache_total_forced_eviction)               | Counter     | Go, PHP, Java       |
+| [unregistered_activity_invocation](#unregistered_activity_invocation)                   | Counter     | Go, PHP             |
+| [worker_start](#worker_start)                                                           | Counter     | TypeScript, Go, PHP, Java |
+| [worker_task_slots_available](#worker_task_slots_available)                             | Gauge       | Go, PHP, Java       |
 | [workflow_active_thread_count](#workflow_active_thread_count)                           | Gauge       | Java           |
-| [workflow_cancelled](#workflow_cancelled)                                               | Counter     | Core, Go, Java |
-| [workflow_completed](#workflow_completed)                                               | Counter     | Core, Go, Java |
-| [workflow_continue_as_new](#workflow_continue_as_new)                                   | Counter     | Core, Go, Java |
-| [workflow_endtoend_latency](#workflow_endtoend_latency)                                 | Histogram   | Core, Go, Java |
-| [workflow_failed](#workflow_failed)                                                     | Counter     | Core, Go, Java |
-| [workflow_task_execution_failed](#workflow_task_execution_failed)                       | Counter     | Core, Go, Java |
-| [workflow_task_execution_latency](#workflow_task_execution_latency)                     | Histogram   | Core, Go, Java |
-| [workflow_task_queue_poll_empty](#workflow_task_queue_poll_empty)                       | Counter     | Core, Go, Java |
-| [workflow_task_queue_poll_succeed](#workflow_task_queue_poll_succeed)                   | Counter     | Core, Go, Java |
-| [workflow_task_replay_latency](#workflow_task_replay_latency)                           | Histogram   | Core, Go, Java |
-| [workflow_task_schedule_to_start_latency](#workflow_task_schedule_to_start_latency)     | Histogram   | Core, Go, Java |
+| [workflow_cancelled](#workflow_cancelled)                                               | Counter     | TypeScript, Go, PHP, Java |
+| [workflow_completed](#workflow_completed)                                               | Counter     | TypeScript, Go, PHP, Java |
+| [workflow_continue_as_new](#workflow_continue_as_new)                                   | Counter     | TypeScript, Go, PHP, Java |
+| [workflow_endtoend_latency](#workflow_endtoend_latency)                                 | Histogram   | TypeScript, Go, PHP, Java |
+| [workflow_failed](#workflow_failed)                                                     | Counter     | TypeScript, Go, PHP, Java |
+| [workflow_task_execution_failed](#workflow_task_execution_failed)                       | Counter     | TypeScript, Go, PHP, Java |
+| [workflow_task_execution_latency](#workflow_task_execution_latency)                     | Histogram   | TypeScript, Go, PHP, Java |
+| [workflow_task_queue_poll_empty](#workflow_task_queue_poll_empty)                       | Counter     | TypeScript, Go, PHP, Java |
+| [workflow_task_queue_poll_succeed](#workflow_task_queue_poll_succeed)                   | Counter     | TypeScript, Go, PHP, Java |
+| [workflow_task_replay_latency](#workflow_task_replay_latency)                           | Histogram   | TypeScript, Go, PHP, Java |
+| [workflow_task_schedule_to_start_latency](#workflow_task_schedule_to_start_latency)     | Histogram   | TypeScript, Go, PHP, Java |
 
 ### `activity_execution_cancelled`
 
@@ -95,15 +91,15 @@ An Activity Execution was canceled.
 An Activity Execution failed.
 
 - Type: Counter
-- Available in: Core, Go, Java
+- Available in: TypeScript, Go, PHP, Java
 - Available keys: `activity_type`, `namespace`, `task_queue`
 
 ### `activity_execution_latency`
 
-Time to complete an Activity Execution, from the time the Core SDK generated the Activity Task to the time the language SDK responded with a completion (failure or success).
+Time to complete an Activity Execution, from the time the Activity Task is generated to the time the language SDK responded with a completion (failure or success).
 
 - Type: Histogram
-- Available in: Core, Go, Java
+- Available in: TypeScript, Go, PHP, Java
 - Available keys: `activity_type`, `namespace`, `task_queue`
 
 ### `activity_poll_no_task`
@@ -111,7 +107,7 @@ Time to complete an Activity Execution, from the time the Core SDK generated the
 An Activity Worker poll for an Activity Task timed out, and no Activity Task is available to pick from the Task Queue.
 
 - Type: Counter
-- Available in: Core, Go, Java
+- Available in: TypeScript, Go, PHP, Java
 - Available keys: `activity_type`, `namespace`, `task_queue`
 
 ### `activity_schedule_to_start_latency`
@@ -120,7 +116,7 @@ The Schedule-To-Start time of an Activity Task in milliseconds.
 A [Schedule-To-Start Timeout](/docs/concepts/what-is-a-schedule-to-start-timeout) can be set when an Activity Execution is spawned.
 
 - Type: Histogram
-- Available in: Core, Go, Java
+- Available in: TypeScript, Go, PHP, Java
 - Available keys: `activity_type`, `namespace`, `task_queue`
 
 ### `activity_task_error`
@@ -128,7 +124,7 @@ A [Schedule-To-Start Timeout](/docs/concepts/what-is-a-schedule-to-start-timeout
 An internal error or kernel panic occurred during Activity Task handling or execution.
 
 - Type: Counter
-- Available in: Go
+- Available in: Go, PHP
 - Available keys: `activity_type`, `namespace`, `task_queue`, `workflow_type`
 
 ### `corrupted_signals`
@@ -136,7 +132,7 @@ An internal error or kernel panic occurred during Activity Task handling or exec
 Number of Signals whose payload could not be deserialized.
 
 - Type: Counter
-- Available in: Go, Java
+- Available in: Go, PHP, Java
 - Available keys: `namespace`, `task_queue`, `workflow_type`
 
 ### `local_activity_execution_cancelled`
@@ -144,7 +140,7 @@ Number of Signals whose payload could not be deserialized.
 A local activity execution was canceled.
 
 - Type: Counter
-- Available in: Go, Java
+- Available in: Go, PHP, Java
 - Available keys: `activity_type`, `namespace`, `task_queue`
 
 ### `local_activity_execution_failed`
@@ -152,7 +148,7 @@ A local activity execution was canceled.
 A Local Activity Execution failed.
 
 - Type: Counter
-- Go, Java
+- Available in: Go, PHP, Java
 - Available keys: `activity_type`, `namespace`, `task_queue`
 
 ### `local_activity_execution_latency`
@@ -160,7 +156,7 @@ A Local Activity Execution failed.
 Time to complete a Local Activity Execution, from the time the first Activity Task is generated to the time the SDK responds that the execution is complete.
 
 - Type: Histogram
-- Available in: Go, Java
+- Available in: Go, PHP, Java
 - Available keys: `activity_type`, `namespace`, `task_queue`
 
 ### `local_activity_succeeded_endtoend_latency`
@@ -168,7 +164,7 @@ Time to complete a Local Activity Execution, from the time the first Activity Ta
 Total latency of successfully finished Local Activity Executions (from schedule to completion).
 
 - Type: Histogram
-- Available in: Go, Java
+- Available in: Go, PHP, Java
 - Available keys: `activity_type`, `namespace`, `task_queue`
 
 ### `local_activity_total`
@@ -176,7 +172,7 @@ Total latency of successfully finished Local Activity Executions (from schedule 
 Total number of [Local Activity Executions](/docs/concepts/what-is-a-local-activity).
 
 - Type: Counter
-- Available in: Go, Java
+- Available in: Go, PHP, Java
 - Available keys: `activity_type`, `namespace`, `task_queue`
 
 ### `long_request`
@@ -184,7 +180,7 @@ Total number of [Local Activity Executions](/docs/concepts/what-is-a-local-activ
 Temporal Client failed an RPC long poll request.
 
 - Type: Counter
-- Available in: Core, Go, Java
+- Available in: TypeScript, Go, PHP, Java
 - Available keys: `namespace`, `operation`
 
 ### `long_request_failure`
@@ -192,7 +188,7 @@ Temporal Client failed an RPC long poll request.
 Temporal Client made an RPC long poll request.
 
 - Type: Counter
-- Core-Client, Go, Java
+- Available in: TypeScript, Go, PHP, Java
 - Available keys: `namespace`, `operation`
 
 ### `long_request_latency`
@@ -200,7 +196,7 @@ Temporal Client made an RPC long poll request.
 Latency of a Temporal Client gRPC long poll request.
 
 - Type: Histogram
-- Available in: Core, Go, Java
+- Available in: TypeScript, Go, PHP, Java
 - Available keys: `namespace`, `operation`
 
 ### `num_pollers`
@@ -208,7 +204,7 @@ Latency of a Temporal Client gRPC long poll request.
 Current number of Worker Entities that are polling.
 
 - Type: Gauge
-- Available in: Core
+- Available in: TypeScript
 - Available keys: `namespace`, `poller_type`, `task_queue`
 
 ### `poller_start`
@@ -216,7 +212,7 @@ Current number of Worker Entities that are polling.
 A Worker Entity poller was started.
 
 - Type: Counter
-- Available in: Go, Java
+- Available in: Go, PHP, Java
 - Available keys: `namespace`, `task_queue`
 
 ### `request`
@@ -224,7 +220,7 @@ A Worker Entity poller was started.
 Temporal Client made an RPC request.
 
 - Type: Counter
-- Available in: Core, Go, Java
+- Available in: TypeScript, Go, PHP, Java
 - Available keys: `namespace`, `operation`
 
 ### `request_failure`
@@ -232,7 +228,7 @@ Temporal Client made an RPC request.
 Temporal Client failed an RPC request.
 
 - Type: Counter
-- Available in: Core, Go, Java
+- Available in: TypeScript, Go, PHP, Java
 - `namespace`, `operation`
 
 ### `request_latency`
@@ -240,7 +236,7 @@ Temporal Client failed an RPC request.
 Latency of a Temporal Client gRPC request.
 
 - Type: Histogram
-- Available in: Core, Go, Java
+- Available in: TypeScript, Go, PHP, Java
 - Available keys: `namespace`, `operation`
 
 ### `sticky_cache_hit`
@@ -248,7 +244,7 @@ Latency of a Temporal Client gRPC request.
 A Workflow Task found a cached Workflow Execution Event History to run against.
 
 - Type: Counter
-- Available in: Core, Go, Java
+- Available in: TypeScript, Go, PHP, Java
 - Available keys: `namespace`, `task_queue`
 
 ### `sticky_cache_miss`
@@ -256,7 +252,7 @@ A Workflow Task found a cached Workflow Execution Event History to run against.
 A Workflow Task did not find a cached Workflow Worker.
 
 - Type: Counter
-- Available in: Core, Go, Java
+- Available in: TypeScript, Go, PHP, Java
 - Available keys: `namespace`, `task_queue`
 
 ### `sticky_cache_size`
@@ -264,15 +260,15 @@ A Workflow Task did not find a cached Workflow Worker.
 Current cache size, expressed in number of Workflow Executions.
 
 - Type: Gauge
-- Available in: Core, Go, Java
-- Available keys: `namespace`(Core Only), `task_queue`
+- Available in: TypeScript, Go, PHP, Java
+- Available keys: `namespace`(TypeScript Only), `task_queue`
 
 ### `sticky_cache_total_forced_eviction`
 
 A Workflow Execution has been forced from the cache intentionally.
 
 - Type: Counter
-- Available in: Go, Java
+- Available in: Go, PHP, Java
 - Available keys: `namespace`, `task_queue`
 
 ### `unregistered_activity_invocation`
@@ -280,7 +276,7 @@ A Workflow Execution has been forced from the cache intentionally.
 A request to spawn an Activity Execution is not registered with the Worker.
 
 - Type: Counter
-- Available in: Go
+- Available in: Go, PHP
 - Available keys: `activity_type`, `namespace`, `task_queue`, `workflow_type`
 
 ### `worker_start`
@@ -288,7 +284,7 @@ A request to spawn an Activity Execution is not registered with the Worker.
 A Worker Entity has been registered, created, or started.
 
 - Type: Counter
-- Available in: Core, Go, Java
+- Available in: TypeScript, Go, PHP, Java
 - Available keys: `namespace`, `task_queue`, `worker_type`
 
 ### `worker_task_slots_available`
@@ -298,7 +294,7 @@ Use the `worker_type` key to differentiate execution slots.
 (Workflow Workers execute Workflow Tasks; Activity Workers execute Activity Tasks.)
 
 - Type: Gauge
-- Available in: Go, Java
+- Available in: Go, PHP, Java
 - Available keys: `namespace`, `task_queue`, `worker_type`
 
 ### `workflow_active_thread_count`
@@ -313,7 +309,7 @@ Total amount of Workflow threads in the Worker Process.
 Workflow Execution ended because of a cancellation request.
 
 - Type: Counter
-- Available in: Core, Go, Java
+- Available in: TypeScript, Go, PHP, Java
 - `namespace`, `task_queue`, `workflow_type`
 
 ### `workflow_completed`
@@ -321,7 +317,7 @@ Workflow Execution ended because of a cancellation request.
 A Workflow Execution completed successfully.
 
 - Type: Counter
-- Available in: Core, Go, Java
+- Available in: TypeScript, Go, PHP, Java
 - Available keys: `namespace`, `task_queue`, `workflow_type`
 
 ### `workflow_continue_as_new`
@@ -329,7 +325,7 @@ A Workflow Execution completed successfully.
 A Workflow ended with Continue-As-New.
 
 - Type: Counter
-- Available in: Core, Go, Java
+- Available in: TypeScript, Go, PHP, Java
 - Available keys: `namespace`, `task_queue`, `workflow_type`
 
 ### `workflow_endtoend_latency`
@@ -337,7 +333,7 @@ A Workflow ended with Continue-As-New.
 Total Workflow Execution time in milliseconds.
 
 - Type: Histogram
-- Available in: Core, Go, Java
+- Available in: TypeScript, Go, PHP, Java
 - Available keys: `namespace`, `task_queue`, `workflow_type`
 
 ### `workflow_failed`
@@ -345,7 +341,7 @@ Total Workflow Execution time in milliseconds.
 A Workflow Execution failed.
 
 - Type: Counter
-- Available in: Core, Go, Java
+- Available in: TypeScript, Go, PHP, Java
 - `namespace`, `task_queue`, `workflow_type`
 
 ### `workflow_task_execution_failed`
@@ -353,7 +349,7 @@ A Workflow Execution failed.
 A Workflow Task Execution failed.
 
 - Type: Counter
-- Available in: Core, Go, Java
+- Available in: TypeScript, Go, PHP, Java
 - `namespace`, `task_queue`, `workflow_type`
 
 ### `workflow_task_execution_latency`
@@ -361,7 +357,7 @@ A Workflow Task Execution failed.
 Workflow Task Execution time in milliseconds.
 
 - Type: Histogram
-- Available in: Core, Go, Java
+- Available in: TypeScript, Go, PHP, Java
 - Available keys: `namespace`, `task_queue`, `workflow_type`
 
 ### `workflow_task_queue_poll_empty`
@@ -369,7 +365,7 @@ Workflow Task Execution time in milliseconds.
 A Workflow Worker polled a Task Queue and timed out without picking up a Workflow Task.
 
 - Type: Counter
-- Available in: Core, Go, Java
+- Available in: TypeScript, Go, PHP, Java
 - Available keys: `namespace`, `task_queue`, `workflow_type`
 
 ### `workflow_task_queue_poll_succeed`
@@ -377,7 +373,7 @@ A Workflow Worker polled a Task Queue and timed out without picking up a Workflo
 A Workflow Worker polled a Task Queue and successfully picked up a Workflow Task.
 
 - Type: Counter
-- Available in: Core, Go, Java
+- Available in: TypeScript, Go, PHP, Java
 - Available keys: `namespace`, `task_queue`, `workflow_type`
 
 ### `workflow_task_replay_latency`
@@ -385,7 +381,7 @@ A Workflow Worker polled a Task Queue and successfully picked up a Workflow Task
 Time to catch up on replaying a Workflow Task in milliseconds.
 
 - Type: Histogram
-- Available in: Core, Go, Java
+- Available in: TypeScript, Go, PHP, Java
 - `namespace`, `task_queue`, `workflow_type`
 
 ### `workflow_task_schedule_to_start_latency`
@@ -393,5 +389,5 @@ Time to catch up on replaying a Workflow Task in milliseconds.
 The Schedule-To-Start time of a Workflow Task in milliseconds.
 
 - Type: Histogram
-- Available in: Core, Go, Java
+- Available in: TypeScript, Go, PHP, Java
 - Available keys: `namespace`, `task_queue`, `workflow_type`
