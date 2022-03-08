@@ -28,5 +28,5 @@ Alias: `-q`
 To count all open [Workflow Executions](/docs/concepts/what-is-a-workflow-execution):
 
 ```bash
-tctl workflow count --query 'CloseTime = missing'; 'WorkflowType="wtype" and CloseTime > 0'
+tctl workflow count --query 'ExecutionStatus="Running"';
 ```
