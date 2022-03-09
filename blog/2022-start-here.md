@@ -6,6 +6,7 @@ author_image_url: https://avatars.githubusercontent.com/u/6764957?v=4
 author_title: Head of Developer Experience
 tags:
   - Temporal
+  - funding
   - Tutorial
 date: 2022-3-10T01:00:00Z
 ---
@@ -15,11 +16,10 @@ date: 2022-3-10T01:00:00Z
 import { ResponsivePlayer } from '../src/components'
 import ReactPlayer from "react-player";
 
-When we [announced our Series B fundraising](https://www.youtube.com/watch?v=RA7gRSXUXls), we also decided to experiment with live Intro and Q&A sessions for the many people who would be hearing about us for the first time.
-We had a blast connecting with some of you individually and your feedback helps us improve for next time.
-But we also knew that most of you wouldn't be able to make it live, so we make a rule of recording it for you to catch up async! (Temporal is nothing if not good at async).
+When we [announced our Series B fundraising](https://www.youtube.com/watch?v=RA7gRSXUXls), we also decided to experiment with live Intro and Q&A sessions for the thousands of developers who would be hearing about us for the first time.
+We had a blast connecting with many of you individually and your feedback keeps us improving for next time!
 
-Here's what you missed ([full playlist here](https://www.youtube.com/watch?v=2HjnQlnA5eY&list=PLl9kRkvFJrlTbzEx02mzQP7H0HDGbuZuM)):
+We also knew that most of you wouldn't be able to make it live, so we make a rule of recording it for you to catch up async (Temporal is nothing if not good at async)! Here's what you missed ([full playlist here](https://www.youtube.com/watch?v=2HjnQlnA5eY&list=PLl9kRkvFJrlTbzEx02mzQP7H0HDGbuZuM)):
 
 ## Funding Livestream Q&A
 
