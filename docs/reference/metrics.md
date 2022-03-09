@@ -137,7 +137,7 @@ Number of Signals whose payload could not be deserialized.
 
 ### `local_activity_execution_cancelled`
 
-A local activity execution was canceled.
+A Local Activity Execution was canceled.
 
 - Type: Counter
 - Available in: Go, PHP, Java
