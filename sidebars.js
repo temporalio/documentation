@@ -127,7 +127,7 @@ module.exports = {
           label: "Trip Booking (Sagas)",
           collapsed: true,
           items: [
-            "php/booking-saga-tutorial"
+            "php/booking-saga-tutorial",
             {
               type: "link",
               label: "Sagas in PHP",
