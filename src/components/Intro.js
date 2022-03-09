@@ -121,28 +121,28 @@ function Server() {
       </p>
 
       <ul className="flex list-disc flex-col space-y-2 pl-4">
-        <li className="list-disc">
+        <li className="">
           <Link
             to={useBaseUrl("/docs/server/introduction")}
             className="hover:underline"
           >
-            <p className="font-semibold">Server Intro</p>
+            <a className="font-semibold">Server Intro</a>
           </Link>
         </li>
-        <li className="list-disc">
+        <li className="">
           <Link
             to={useBaseUrl("/docs/concepts/what-is-a-temporal-cluster")}
             className="hover:underline"
           >
-            <p className="font-semibold">Cluster Architecture</p>
+            <a className="font-semibold">Cluster Architecture</a>
           </Link>
         </li>
-        <li className="list-disc">
+        <li className="">
           <Link
             to={useBaseUrl("/docs/server/versions-and-dependencies")}
             className="hover:underline"
           >
-            <p className="font-semibold">Versions and Dependencies</p>
+            <a className="font-semibold">Versions and Dependencies</a>
           </Link>
         </li>
         {/* <li className="list-disc">
