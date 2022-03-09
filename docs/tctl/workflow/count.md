@@ -28,5 +28,5 @@ Alias: `-q`
 To count all open [Workflow Executions](/docs/concepts/what-is-a-workflow-execution):
 
 ```bash
-tctl workflow count --query 'ExecutionStatus="Running"';
+tctl workflow count --query 'ExecutionStatus="Running"'
 ```
