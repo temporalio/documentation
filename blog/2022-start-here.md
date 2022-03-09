@@ -13,6 +13,7 @@ date: 2022-3-10T01:00:00Z
 <!--truncate-->
 
 import { ResponsivePlayer } from '../src/components'
+import ReactPlayer from "react-player";
 
 When we [announced our Series B fundraising](https://www.youtube.com/watch?v=RA7gRSXUXls), we also decided to experiment with live Intro and Q&A sessions for the many people who would be hearing about us for the first time.
 We had a blast connecting with some of you individually and your feedback helps us improve for next time.
@@ -37,9 +38,27 @@ Topics covered:
 We also made intro sessions for each of our first party SDKs:
 
 <div style={{ display: "flex"}}>
-  <ResponsivePlayer url='https://www.youtube.com/watch?v=-KWutSkFda8' />
-  <ResponsivePlayer url='https://www.youtube.com/watch?v=1RY2lWSuJaA' />
-  <ResponsivePlayer url='https://www.youtube.com/watch?v=66zQ8nrW-mA' />
+  <ReactPlayer
+    className="absolute top-0 left-0"
+    url={"https://www.youtube.com/watch?v=-KWutSkFda8"}
+    width="100%"
+    height="100%"
+    controls
+  />
+  <ReactPlayer
+    className="absolute top-0 left-0"
+    url={"https://www.youtube.com/watch?v=1RY2lWSuJaA"}
+    width="100%"
+    height="100%"
+    controls
+  />
+  <ReactPlayer
+    className="absolute top-0 left-0"
+    url={"https://www.youtube.com/watch?v=66zQ8nrW-mA"}
+    width="100%"
+    height="100%"
+    controls
+  />
 </div>
 
 Each of them are subtly different so you get a "set bonus" if you watch them all:
