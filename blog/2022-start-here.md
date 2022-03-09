@@ -37,23 +37,20 @@ Topics covered:
 
 We also made intro sessions for each of our first party SDKs:
 
-<div style={{ display: "flex"}}>
+<div style={{ display: "flex" }}>
   <ReactPlayer
-    className="absolute top-0 left-0"
     url={"https://www.youtube.com/watch?v=-KWutSkFda8"}
     width="100%"
     height="100%"
     controls
   />
   <ReactPlayer
-    className="absolute top-0 left-0"
     url={"https://www.youtube.com/watch?v=1RY2lWSuJaA"}
     width="100%"
     height="100%"
     controls
   />
   <ReactPlayer
-    className="absolute top-0 left-0"
     url={"https://www.youtube.com/watch?v=66zQ8nrW-mA"}
     width="100%"
     height="100%"
