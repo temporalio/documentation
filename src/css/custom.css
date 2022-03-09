@@ -44,6 +44,7 @@ html[data-theme="dark"] {
 html[data-theme="light"] {
   --ifm-blockquote-color: #000000;
   --ifm-color-emphasis-300: #505050;
+
   /* --ifm-code-background: var(--ifm-color-primary-lightest); */
   --ifm-color-input-background: #ffffff;
   --ifm-color: #141414;
@@ -474,4 +475,8 @@ footer svg {
   margin: 0;
   padding: 0;
   font-size: 0.95em;
+}
+
+.prose :where(thead th) {
+  color: var(--ifm-color);
 }
