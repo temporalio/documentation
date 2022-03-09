@@ -194,4 +194,4 @@ To extend the default ([Trace Context](https://github.com/open-telemetry/opentel
   );
   ```
 
-- Similarly, you may customize the OpenTelemetry Node SDK propagators by following the instructions on [this page](https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/opentelemetry-sdk-node#initialize-the-sdk).
+Similarly, you can customize the OpenTelemetry `NodeSDK` propagators by following the instructions in the [Initialize the SDK](https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/opentelemetry-sdk-node#initialize-the-sdk) section of the README.
