@@ -35,7 +35,7 @@ Topics covered:
 
 We also made intro sessions for each of our first party SDKs:
 
-<div style="display: flex">
+<div style={{ display: "flex"}}>
   <ResponsivePlayer url='https://www.youtube.com/watch?v=-KWutSkFda8' />
   <ResponsivePlayer url='https://www.youtube.com/watch?v=1RY2lWSuJaA' />
   <ResponsivePlayer url='https://www.youtube.com/watch?v=66zQ8nrW-mA' />
