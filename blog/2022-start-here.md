@@ -2,6 +2,7 @@
 slug: 2022-start-here
 title: All our Series B Intro presentations are now up
 author: swyx
+author_image_url: https://avatars.githubusercontent.com/u/6764957?v=4
 author_title: Head of Developer Experience
 tags:
   - Temporal
