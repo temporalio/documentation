@@ -37,7 +37,7 @@ Topics covered:
 
 We also made intro sessions for each of our first party SDKs:
 
-<div style={{ display: "flex" }}>
+<div style={{ display: "flex", gap: "1rem" }}>
   <ReactPlayer
     url={"https://www.youtube.com/watch?v=-KWutSkFda8"}
     width="100%"
