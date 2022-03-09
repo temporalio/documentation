@@ -115,7 +115,7 @@ $ curl -X POST http://localhost:3000/workflow/counterWorkflow
 $ curl "http://localhost:3000/query/getCount/4cb1b1ea-b962-419e-840c-5c18ab5555a1"
 {"result":0}
 $ curl -X PUT "http://localhost:3000/signal/increment/4cb1b1ea-b962-419e-840c-5c18ab5555a1"
-{"ok":1}
+{"received":true}
 $ curl "http://localhost:3000/query/getCount/4cb1b1ea-b962-419e-840c-5c18ab5555a1"
 {"result":1}
 ```
@@ -187,7 +187,7 @@ Here's an example using `curl`:
 $ curl -X POST http://localhost:3000/workflow/counterWorkflow
 {"workflowId":"cbc5924c-1afc-45e0-b7d6-e8fe1a250089"}
 $ curl -X PUT -H "Content-Type: application/json" -d '{"name":"test-counter"}' http://localhost:3000/signal/increment/cbc5924c-1afc-45e0-b7d6-e8fe1a250089
-{"ok":1}
+{"received":true}
 $ curl http://localhost:3000/query/getCount/cbc5924c-1afc-45e0-b7d6-e8fe1a250089?name=test-counter
 {"result":1}
 $ curl http://localhost:3000/query/getCount/cbc5924c-1afc-45e0-b7d6-e8fe1a250089?name=other-counter
@@ -204,7 +204,7 @@ const { workflowId } = res.data;
 res = await axios.put('http://localhost:3000/signal/increment/' + workflowId, {
   name: 'test-counter'
 });
-console.log(res.data); // "{ ok: 1 }"
+console.log(res.data); // "{ received: true }"
 
 res = await axios.get('http://localhost:3000/query/getCount/' + workflowId, {
   params: { name: 'test-counter' }
