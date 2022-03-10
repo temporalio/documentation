@@ -197,7 +197,7 @@ module.exports = {
             },
             {
               label: "Case Studies",
-              href: "http://localhost:3000/blog/tags/case-study",
+              href: "https://docs.temporal.io/blog/tags/case-study/",
             },
             {
               label: "Blog",
@@ -208,7 +208,7 @@ module.exports = {
         {
           items: [
             {
-              label: "About the docs",
+              label: "About the Docs",
               href: "https://github.com/temporalio/documentation/blob/master/README.md",
             },
             {
@@ -228,11 +228,11 @@ module.exports = {
         {
           items: [
             {
-              label: "Join The Cloud Waitlist",
+              label: "Join the Cloud Waitlist",
               href: "https://us17.list-manage.com/survey?u=2334a0f23e55fd1840613755d&id=f1895b6f4a",
             },
             {
-              label: "Subscribe To The Newsletter",
+              label: "Subscribe to the Newsletter",
               href: "https://temporal.us17.list-manage.com/subscribe/post?u=2334a0f23e55fd1840613755d&id=3475f910fc",
             },
             {
