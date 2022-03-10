@@ -95,12 +95,12 @@ module.exports = {
             },
             {
               to: "/docs/operation/",
-              activeBasePath: "operation",
+              activeBasePath: "/docs/operation",
               label: "Operation guides",
             },
             {
               to: "/docs/learning-paths",
-              activeBasePath: "/docs/learning-paths",
+              activeBasePath: "/docs",
               label: "Learning",
             },
           ],
@@ -143,6 +143,11 @@ module.exports = {
           to: "/blog",
           activeBasePath: "/blog",
           label: "Blog",
+        },
+        {
+          to: "/docs/external-resources",
+          activeBasePath: "/docs/external-resources",
+          label: "External Resources",
         },
       ],
     },
