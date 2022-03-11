@@ -208,10 +208,6 @@ module.exports = {
         {
           items: [
             {
-              label: "About the Docs",
-              href: "https://github.com/temporalio/documentation/blob/master/README.md",
-            },
-            {
               label: "Security",
               to: "/security",
             },
@@ -238,6 +234,10 @@ module.exports = {
             {
               label: "We're Hiring",
               href: "https://temporal.io/careers",
+            },
+            {
+              label: "About the Docs",
+              href: "https://github.com/temporalio/documentation/blob/master/README.md",
             },
           ],
         },
