@@ -205,7 +205,7 @@ private static void parentWorkflow() {
 
 See [Cron Schedules](/docs/concepts/what-is-a-temporal-cron-job#cron-schedules)
 
-### Memo
+### `Memo`
 
 - Type: `String`
 - Default: None
