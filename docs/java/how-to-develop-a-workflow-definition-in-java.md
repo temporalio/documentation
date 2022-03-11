@@ -19,7 +19,7 @@ public class FileProcessingWorkflowImpl implements FileProcessingWorkflow {
 ## Workflow interface
 
 The Workflow interface is a Java interface and is annotated with `@WorkflowInterface`.
-Workflow interface methods must have one [`@WorkflowMethod`](# `@WorkflowMethod`).
+Workflow interface methods must have one [`@WorkflowMethod`](#workflowmethod).
 Use `@SignalMethod`, `@QueryMethod` for Signals, and Queries in the Workflow.
 To call Activities in your Workflow, see [Activities](/docs/java/activities).
 You can also invoke other Workflows as Child Workflows with `Workflow.newChildWorkflowStub()` within a Workflow Definition. See [Child Workflow Execution](/docs/java/how-to-spawn-a-child-workflow-execution-in-java) for more information.
