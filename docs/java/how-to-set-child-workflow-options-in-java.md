@@ -169,7 +169,7 @@ See [What is a Workflow Run Timeout?](/docs/concepts/what-is-a-workflow-run-time
 
 See [What is a Workflow Task Timeout?](/docs/concepts/what-is-a-workflow-task-timeout)
 
-### RetryOptions
+### `RetryOptions`
 
 - Type: `RetryOptions`
 - Default: `Null` which means no retries will be attempted.
