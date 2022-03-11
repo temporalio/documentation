@@ -223,7 +223,7 @@ private static void parentWorkflow() {
 
 See [What is a Memo?](/docs/concepts/what-is-a-memo)
 
-### SearchAttributes
+### `SearchAttributes`
 
 - Type: `Map<String, Object>`
 - Default: None
