@@ -20,7 +20,8 @@ public class FileProcessingWorkflowImpl implements FileProcessingWorkflow {
 
 The Workflow interface is a Java interface and is annotated with `@WorkflowInterface`.
 Workflow interface methods must have one [`@WorkflowMethod`](# `@WorkflowMethod`).
-Use `@ActivityMethod`, `@SignalMethod`, `@QueryMethod` for Activities, Signals, and Queries in the Workflow.
+Use `@SignalMethod`, `@QueryMethod` for Signals, and Queries in the Workflow.
+To call Activities in your Workflow, see [Activities](/docs/java/actities).
 You can also invoke other Workflows as Child Workflows with `Workflow.newChildWorkflowStub()` within a Workflow Definition. See [Child Workflow Execution](/docs/java/how-to-spawn-a-child-workflow-execution-in-java) for more information.
 
 The following example shows how the annotations can be used in a Workflow interface:
@@ -53,7 +54,7 @@ A Workflow interface can define only a single method annotated with `@WorkflowMe
 The `@WorkflowMethod` annotation has a `name` parameter, such as `@WorkflowMethod(name = "MyWorkflowType")`.
 It can be used to denote the [Workflow Type](/docs/concepts/what-is-a-workflow-type). If not set, the Workflow Type defaults to the short name of the Workflow interface. In the previous example, the Workflow Type defaults to `FileProcessingWorkflow`.
 A method annotated with `@WorkflowMethod` can have any number of parameters. We recommend passing a single parameter that contains all the input fields. This allows adding fields in a backward compatible manner.
-In the following Workflow interface example, the Workflow type is "NotifyUserAccounts".
+In the following Workflow interface example, the Workflow Type is "NotifyUserAccounts".
 
 ```java
   @WorkflowInterface
@@ -68,7 +69,7 @@ In the following Workflow interface example, the Workflow type is "NotifyUserAcc
 
 ```
 
-To overwrite this default naming and assign a custom Workflow type, use the `@WorkflowMethod` annotation with the `name` parameter, as shown in the following example:
+To overwrite this default naming and assign a custom Workflow Type, use the `@WorkflowMethod` annotation with the `name` parameter, as shown in the following example:
 
 ```java
   @WorkflowMethod(name = "Abc")
@@ -76,34 +77,9 @@ To overwrite this default naming and assign a custom Workflow type, use the `@Wo
 
 ```
 
-In this case the Workflow type will be “Abc”. When you set a Workflow type in this way, it does not have to start with an upper case letter.
-You can only register only a single, unique Workflow type with a Worker.
+In this case the Workflow Type will be “Abc”. When you set a Workflow Type in this way, it does not have to start with an upper case letter.
+You can only register a single, unique Workflow Type with a Worker.
 If you try to register multiple Workflow implementations of the same type, you will get an exception.
-
-### `@ActivityMethod`
-
-Activity Interfaces are Java Interfaces which are annotated with the `@ActivityInterface` annotation:
-
-```java
-@ActivityInterface
-public interface GreetingActivities {
-    String composeGreeting(String greeting, String language);
-}
-```
-
-Each method in the Actvity interface defines a separate Activity method. You can annotate each method in the Activity interface with the `@ActivityMethod` annotation, but this is completely optional, for example:
-
-```java
-@ActivityInterface
-public interface GreetingActivities {
-    @ActivityMethod(name = "greet")
-    String composeGreeting(String greeting, String language);
-}
-```
-
-Note that the `@AcitvityMethod` annotation is not required. By default, all methods defined in your Activity interface are considered Activities.
-
-See [Activities](/docs/java/activities) for more information.
 
 ### `@QueryMethod`
 
@@ -232,7 +208,7 @@ java.lang.IllegalStateException: BaseWorkflow workflow type is already registere
 
 ### Dynamic Workflow interface
 
-Use `DynamicWorkflow` to implement any number of Workflow types dynamically. When you register a Workflow implementation type that extends `DynamicWorkflow`, it can be used to implement any Workflow type that is not implicitly registered with the Worker. Only one Workflow type that implements `DynamicWorkflow` per Worker is allowed.
+Use `DynamicWorkflow` to implement any number of Workflow Types dynamically. When you register a Workflow implementation type that extends `DynamicWorkflow`, it can be used to implement any Workflow type that is not implicitly registered with the Worker. Only one Workflow type that implements `DynamicWorkflow` per Worker is allowed.
 
 The main use case for `DynamicWorkflow` is an implementation of custom Domain Specific Languages (DSLs). A single implementation can implement a Workflow Type which by definition is dynamically loaded from some external source.
 
@@ -287,12 +263,12 @@ Typed `WorkflowStub` are useful because they are type safe. You can invoke your 
 
 **Untyped `WorkflowStub`**
 
-An untyped `WorkflowStub` does not use the Workflow interface, and is not typesafe. It is more flexible because it has methods from the WorkflowStub interface, such as `start`, `signalWithStart`, `getResults` (sync and async), `query`, `signal`, `cancel` and `terminate`.
-Note that the Temporal Java SDK also provides typed WorkflowStub versions for these methods.
+An untyped `WorkflowStub` does not use the Workflow interface, and is not typesafe. It is more flexible because it has methods from the `WorkflowStub` interface, such as `start`, `signalWithStart`, `getResults` (sync and async), `query`, `signal`, `cancel` and `terminate`.
+Note that the Temporal Java SDK also provides typed `WorkflowStub` versions for these methods.
 
-See WorkflowStub.java Reference: <https://github.com/temporalio/sdk-java/blob/master/temporal-sdk/src/main/java/io/temporal/client/WorkflowStub.java>
+See the `WorkflowStub.java` reference: <https://github.com/temporalio/sdk-java/blob/master/temporal-sdk/src/main/java/io/temporal/client/WorkflowStub.java>
 
-When using untyped `WorkflowStubs`, we rely on the Workflow type, Activity type, Child Workflow type, as well as Query and Signal names.
+When using untyped `WorkflowStubs`, we rely on the Workflow Type, Activity Type, Child Workflow Type, as well as Query and Signal names.
 
 See [How to spawn a Workflow Execution in Java](/docs/java/how-to-spawn-a-workflow-execution-in-java).
 
