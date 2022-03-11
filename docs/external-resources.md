@@ -136,6 +136,19 @@ _Note: Each of [our SDK docs](/application-development) have a Hello World and R
 
   > "**Temporal does to backend and infra what React did to frontend.** If you're in the React world, you've forgotten about manually adding and removing DOM elements, updating attributes and their quirks, hooking up event listeners… It's not only been a boost in developer experience, but most importantly in _consistency and reliability_. In the backend world, this reliability problem is absurdly amplified as monoliths break into SaaS services, functions, containers… You have to carefully manage and create queues to capture each side effect, ensure everything gets retried, state is scattered all over the place. Temporal's engine is quite complex, much like React's, but the surface exposed to the developer is a beautiful "render()" function to organize your backend workflows."
 
+## Community distros
+
+- [Airbyte](https://github.com/airbytehq/airbyte) - [ELT data pipeline platform (see talk)](https://www.youtube.com/watch?v=K25Bt5asd8I)
+- [Roadrunner](https://github.com/roadrunner-server/roadrunner) - PHP application server
+- [Coinbase/temporal-ruby](https://github.com/coinbase/temporal-ruby) - Ruby SDK with Rails example
+- [DataDog/temporalite](https://github.com/DataDog/temporalite) - Single binary distro for CI (see talk)
+- [Nunchi Blacksmith](https://www.nunchi.studio/blacksmith/start/onboarding/how) - ETL data platform
+
+## Community SDKs
+
+- [Ruby](https://github.com/coinbase/temporal-ruby)
+- [Python](https://github.com/firdaus/temporal-python-sdk)
+
 ## Misc
 
 _Everything that doesn't fit above goes here._

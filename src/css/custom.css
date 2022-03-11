@@ -224,7 +224,7 @@ footer svg {
 }
 
 .footer .footer__svg {
-  @apply m-8 inline fill-current;
+  @apply m-2 inline fill-current;
 }
 
 .footer .footer__link-item span svg {
