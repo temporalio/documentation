@@ -107,7 +107,7 @@ See [What is a Parent Close Policy?](/docs/concepts/what-is-a-parent-close-polic
 
 See [What is a Workflow Id Reuse Policy?](/docs/concepts/what-is-a-workflow-id-reuse-policy)
 
-### WorkflowExecutionTimeout
+### `WorkflowExecutionTimeout`
 
 - Type: `time.Duration`
 - Default: Unlimited
