@@ -195,7 +195,12 @@ module.exports = {
         type: "doc",
         id: "operation/index",
       },
-      items: ["operation/how-to-tune-workers"],
+      items: [
+        "operation/temporal-application-foundations",
+        "operation/temporal-application-features",
+        "operation/temporal-application-analysis",
+        "operation/how-to-tune-workers",
+      ],
     },
   ],
   sidebarCluster: [
