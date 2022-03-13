@@ -27,7 +27,7 @@ Set Child Workflow specific options with the `ChildWorkflowOptions.Builder` clas
 ### `Namespace`
 
 - Type: `String`
-- Default: Inherits the `namespace` value set for the parent Workflow.
+- Default: Inherits the `namespace` value set from the parent Workflow.
 
 ```java
 public void parentWorkflow() {
@@ -102,8 +102,19 @@ See [What is a Parent Close Policy?](/docs/concepts/what-is-a-parent-close-polic
   `RejectDuplicate` doesn't allow a new run independently of the previous run closure status.
 
 ```java
-
-
+ private void parentWorkflow() {
+        ChildWorkflowOptions options = ChildWorkflowOptions.newBuilder()
+        .setWorkflowId("MyWorkflowId")
+        .setWorkflowRunTimeout(Duration.ofSeconds(5))
+        .setWorkflowIdReusePolicy(
+                WorkflowIdReusePolicy.WORKFLOW_ID_REUSE_POLICY_REJECT_DUPLICATE
+        )
+        .build();
+        // Get the Child Workflow stub
+        ChildWorkflow child = Workflow.newChildWorkflowStub(ChildWorkflow.class, childWorkflowOptions);
+        // invoke Child Workflow and wait for it to complete
+        child.executeChild();
+    }
 ```
 
 See [What is a Workflow Id Reuse Policy?](/docs/concepts/what-is-a-workflow-id-reuse-policy)
@@ -214,7 +225,7 @@ See [Cron Schedules](/docs/concepts/what-is-a-temporal-cron-job#cron-schedules)
 private static void parentWorkflow() {
         ChildWorkflowOptions childworkflowOptions =
                 ChildWorkflowOptions.newBuilder()
-                        // You can set additional non-indexed info via memo
+                        // You can set additional non-indexed info via Memo
                         .setMemo(ImmutableMap.of(
                                 "memoKey", "memoValue"
                         ))
