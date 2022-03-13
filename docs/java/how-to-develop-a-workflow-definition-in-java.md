@@ -49,12 +49,9 @@ public interface FileProcessingWorkflow {
 
 ### `@WorkflowMethod`
 
-**@WorkflowMethod** denotes the starting point of [Workflow Execution](/docs/concepts/what-is-a-workflow-execution). Workflow Execution completes when this method completes.
-A Workflow interface can define only a single method annotated with `@WorkflowMethod`.
-The `@WorkflowMethod` annotation has a `name` parameter, such as `@WorkflowMethod(name = "MyWorkflowType")`.
-It can be used to denote the [Workflow Type](/docs/concepts/what-is-a-workflow-type). If not set, the Workflow Type defaults to the short name of the Workflow interface. In the previous example, the Workflow Type defaults to `FileProcessingWorkflow`.
-A method annotated with `@WorkflowMethod` can have any number of parameters. We recommend passing a single parameter that contains all the input fields. This allows adding fields in a backward compatible manner.
-In the following Workflow interface example, the Workflow Type is "NotifyUserAccounts".
+The `@WorkflowMethod` identifies the method that is starting point of the Workflow Function Execution. The [Workflow Execution](/docs/concepts/what-is-a-workflow-execution) completes when this method completes.
+A Workflow Definition interface in Java can only have one method annotated with `@WorkflowMethod`. It can be used to denote the [Workflow Type](/docs/concepts/what-is-a-workflow-type).
+The Workflow Type defaults to the short name of the Workflow interface. In the following example, the Workflow Type defaults to "NotifyUserAccounts".
 
 ```java
   @WorkflowInterface
@@ -62,61 +59,64 @@ In the following Workflow interface example, the Workflow Type is "NotifyUserAcc
   public interface NotifyUserAccounts {
     @WorkflowMethod
     void notify(String[] accountIds);
-
-    @QueryMethod
-    int getCount();
 }
-
 ```
 
-To overwrite this default naming and assign a custom Workflow Type, use the `@WorkflowMethod` annotation with the `name` parameter, as shown in the following example:
+To overwrite this default naming and assign a custom Workflow Type, use the `@WorkflowMethod` annotation with the `name` parameter. In the following example, the Workflow Type is set to “Abc”.
 
 ```java
-  @WorkflowMethod(name = "Abc")
-  void notify(String[] accountIds)
+@WorkflowInterface
 
+  public interface NotifyUserAccounts {
+  @WorkflowMethod(name = "Abc")
+  void notify(String[] accountIds);
+  }
 ```
 
-In this case the Workflow Type will be “Abc”. When you set a Workflow Type in this way, it does not have to start with an upper case letter.
-You can only register a single, unique Workflow Type with a Worker.
+When setting the Workflow Type this way, the value of the `name` parameter does not have to start with an upper case letter.
+
+A method annotated with `@WorkflowMethod` can have any number of parameters. We recommend passing a single parameter that contains all the input fields. This allows adding fields in a backward compatible manner.
+A Workflow Type can only be registered once per Worker entity.
 If you try to register multiple Workflow implementations of the same type, you will get an exception.
 
 ### `@QueryMethod`
 
-`@QueryMethod` indicates that this method can be used to send a [Query](/docs/concepts/what-is-a-query) to the Workflow's state at any time during its execution.
-It can have parameters that can be used to filter a subset of the Workflow's state that it returns.
-Because it returns a value, it must have a return type that is not `void`.
-A Workflow interface can define any number of methods annotated with `@QueryMethod`, but the method names or the `name` parameters for each must be unique.
+The `@QueryMethod` annotation indicates that the method is used to handle a [Query](/docs/concepts/what-is-a-query) that is sent to the Workflow Execution.
+The method can have parameters that can be used to filter data that the Query returns.
+Because the method returns a value, it must have a return type that is not `void`.
 
-The `@QueryMethod` annotation also has a `name` parameter, such as `@QueryMethod(name = "history")`.
-It can be used to denote the Query name.
-If not set, the Query name defaults to the name of the method.
+The Query name defaults to the name of the method.
 In the following example, the Query name defaults to `getStatus`.
 
 ```java
 @WorkflowInterface
 public interface FileProcessingWorkflow {
-
-    @QueryMethod(name="history")
-    List<String> getHistory();
-
     @QueryMethod
     String getStatus();
 }
 ```
 
+To overwrite this default naming and assign a custom Query name, use the `@QueryMethod` annotation with the `name` parameter. In the following example, the Query name is set to "history".
+
+```java
+@WorkflowInterface
+public interface FileProcessingWorkflow {
+    @QueryMethod(name="history")
+    String getStatus();
+}
+```
+
+A Workflow Definition interface can define multiple methods annotated with `@QueryMethod`, but the method names or the `name` parameters for each must be unique.
+
 See [Queries](/docs/java/queries) for more information.
 
 ### `@SignalMethod`
 
-`@SignalMethod` indicates that this method is a [Signal](/docs/concepts/what-is-a-signal) handler method and that it can react to external Signals.
-It can have parameters which can contain the Signal payload.
-It does not return a value, so it must have a `void` return type.
-A Workflow interface can define any number of methods annotated with `@SignalMethod`, but the method names or the `name` parameters for each must be unique.
-The `@SignalMethod` also has a `name` parameter, such as `@SignalMethod(name = "mysignal")`.
-It can be used to denote the Signal type.
-If not set, the Signal type defaults to the name of the method.
-In the following example, the Signal type defaults to `retryNow` and `abandon`.
+The `@SignalMethod` annotation indicates that the method is used to handle [Signals](/docs/concepts/what-is-a-signal) and that it can react to external Signals.
+The method can have parameters that contain the Signal payload.
+This method does not return a value and must have a `void` return type.
+
+The Signal type defaults to the name of the method. In the following example, the Signal type defaults to `retryNow`.
 
 ```java
 @WorkflowInterface
@@ -127,11 +127,24 @@ public interface FileProcessingWorkflow {
 
     @SignalMethod
     void retryNow();
-
-    @SignalMethod
-    void abandon();
 }
 ```
+
+To overwrite this default naming and assign a custom Signal type, use the `@SignalMethod` annotation with the `name` parameter. In the following example, the Signal type is set to "retrysignal" .
+
+```java
+@WorkflowInterface
+public interface FileProcessingWorkflow {
+
+    @WorkflowMethod
+    String processFile(Arguments args);
+
+    @SignalMethod(name = "retrysignal")
+    void retryNow();
+}
+```
+
+A Workflow interface can define any number of methods annotated with `@SignalMethod`, but the method names or the `name` parameters for each must be unique.
 
 See [Signals](/docs/java/signals) for more information.
 

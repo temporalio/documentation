@@ -97,11 +97,12 @@ See [What is a Parent Close Policy?](/docs/concepts/what-is-a-parent-close-polic
 ### `WorkflowIdReusePolicy`
 
 - Type: `WorkflowIdReusePolicy`
-- Default: `enums.AllowDuplicateFailedOnly` is the default value. It means that workflow can start if previous run failed or was canceled or terminated.
+- Default: `enums.AllowDuplicateFailedOnly` is the default value. It means that the Workflow can start a new run if the previous run failed, was canceled, or was terminated.
 - Values: `AllowDuplicate` allows a new run independently of the previous run closure status.
   `RejectDuplicate` doesn't allow a new run independently of the previous run closure status.
 
 ```java
+
 
 ```
 
@@ -113,10 +114,10 @@ See [What is a Workflow Id Reuse Policy?](/docs/concepts/what-is-a-workflow-id-r
 - Default: Unlimited
 
 ```java
-private void parentWorkflow() {
+ private void parentWorkflow() {
         ChildWorkflowOptions childWorkflowOptions =
                 ChildWorkflowOptions.newBuilder()
-                        .setWorkflowRunTimeout(Duration.ofSeconds(4))
+                        .setWorkflowExecutionTimeout(Duration.ofSeconds(10))
                         .build();
         // Get the Child Workflow stub
         ChildWorkflow child = Workflow.newChildWorkflowStub(ChildWorkflow.class, childWorkflowOptions);
@@ -133,12 +134,11 @@ See [What is a Workflow Execution Timeout?](/docs/concepts/what-is-a-workflow-ex
 - Default: Same as [WorkflowExecutionTimeout](#WorkflowExecutionTimeout).
 
 ```java
- private void parentWorkflow() {
+private void parentWorkflow() {
         ChildWorkflowOptions childWorkflowOptions =
                 ChildWorkflowOptions.newBuilder()
-                        .setWorkflowExecutionTimeout(Duration.ofSeconds(10))
+                        .setWorkflowRunTimeout(Duration.ofSeconds(4))
                         .build();
-
         // Get the Child Workflow stub
         ChildWorkflow child = Workflow.newChildWorkflowStub(ChildWorkflow.class, childWorkflowOptions);
         // invoke Child Workflow and wait for it to complete
@@ -188,7 +188,7 @@ private static void parentWorkflow() {
 
 See [What is a Retry Policy?](/docs/concepts/what-is-a-retry-policy)
 
-### CronSchedule
+### `CronSchedule`
 
 - Type: `String`
 - Default: None
