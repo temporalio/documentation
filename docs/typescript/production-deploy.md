@@ -120,9 +120,10 @@ Error: Error relocating /opt/app/node_modules/@temporalio/core-bridge/index.node
 
 ## Install ca-certificates for TLS transport
 
-By default, Docker images do not come with `ca-certificates` installed.
+By default, the `slim` Docker images do not come with `ca-certificates` installed.
 This might lead to a `[TransportError: transport error]` runtime error because the certificates cannot be verified.
 The `ca-certificates` package installs the common certificate authorities and fixes this issue.
+This package is required even when connecting to a local Temporal Server, and when using a server connection config that doesn't explicitly use TLS.
 
 Add the following line to your Dockerfile if you use Debian based images:
 
