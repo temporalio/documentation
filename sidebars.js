@@ -130,7 +130,7 @@ module.exports = {
             {
               type: "link",
               label: "Sagas in PHP",
-              href: "php/booking-saga-tutorial",
+              href: "/docs/php/booking-saga-tutorial",
             },
             {
               type: "link",
