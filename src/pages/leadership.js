@@ -11,12 +11,12 @@ export default function Security() {
   const {siteConfig = {}} = context;
   return (
     <Layout title="Leadership" permalink="/Leadership" description="<head />">
-      <div className="w-auto mx-auto my-15">
+      <div className="my-15 mx-auto w-auto">
         <ul className="text-center">
           <li className="my-7">
-            <span className="font-semibold text-xl">Maxim Fateev CEO</span>
+            <span className="text-xl font-semibold">Maxim Fateev CEO</span>
             <img
-              className="w-40 mx-auto my-3"
+              className="mx-auto my-3 w-40"
               alt="Maxim Fateev"
               src="https://avatars.githubusercontent.com/u/1463622"
             />
@@ -25,9 +25,9 @@ export default function Security() {
             </a>
           </li>
           <li className="my-7">
-            <span className="font-semibold text-xl">Charles Zedlewski CPO</span>
+            <span className="text-xl font-semibold">Charles Zedlewski CPO</span>
             <img
-              className="w-40 mx-auto my-3"
+              className="mx-auto my-3 w-40"
               alt="Charles Zedlewski"
               src="https://media-exp1.licdn.com/dms/image/C5603AQGgvr2dqvuBsQ/profile-displayphoto-shrink_800_800/0/1610115430759?e=1649894400&v=beta&t=NSeRh4iGGhoNJqRun59E4ZxV5U6BT56zRsBgeVg90Mg"
             />
@@ -36,9 +36,9 @@ export default function Security() {
             </a>
           </li>
           <li className="my-7">
-            <span className="font-semibold text-xl">Samar Abbas CTO</span>
+            <span className="text-xl font-semibold">Samar Abbas CTO</span>
             <img
-              className="w-40 mx-auto my-3"
+              className="mx-auto my-3 w-40"
               alt="Samar Abbas"
               src="https://avatars2.githubusercontent.com/u/1766515?s=460&u=42e28f95a37b56ef80c55dbaaadd71bf3fc11261&v=4"
             />
@@ -47,11 +47,11 @@ export default function Security() {
             </a>
           </li>
           <li className="my-7">
-            <span className="font-semibold text-xl">
+            <span className="text-xl font-semibold">
               Ryland Goldstein Head of Product
             </span>
             <img
-              className="w-40 mx-auto my-3"
+              className="mx-auto my-3 w-40"
               alt="Ryland Goldstein"
               src="https://avatars2.githubusercontent.com/u/27736122?s=460&u=7b6a3e58ec7ed7157f23f51e91a2f4cd2028d606&v=4"
             />
