@@ -5,16 +5,6 @@ sidebar_label: Patching (Migrating)
 description: Any Workflow code change that affects the order in which commands are generated breaks this assumption. So we have to keep both the old and new code when migrating Workflows while they are still running.
 ---
 
-import CustomWarning from "../components/CustomWarning.js"
-
-<CustomWarning>
-
-Workflow versioning and patching is a standard SDK feature that is still in development in the TypeScript Beta.
-
-We are working to greatly improve the experience of this feature before GA launch.
-
-</CustomWarning>
-
 ## Alternatives
 
 Before you explore our patching/versioning API, check if your needs can be addressed in other ways:
@@ -36,7 +26,7 @@ If we're currently running our v1 Workflow code on Workers that poll on `queue1`
 
 ### Version Workflow Name
 
-We can create a new version of a Workflow by changing its name:
+While versioning the Task Queue is usually easier, we can also create a new version of a Workflow by copying it and changing its name:
 
 1. Copy `Workflow1`'s code to a `Workflow2` function and change what you need.
 1. Register `Workflow2` in your Workers alongside `Workflow1`.
