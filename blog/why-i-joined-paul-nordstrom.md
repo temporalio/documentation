@@ -5,7 +5,7 @@ author: Paul Nordstrom
 author_title: Software Engineer
 author_image_url: https://avatars.githubusercontent.com/u/85532575?v=4
 tags:
-  - tbd
+  - reflections
 date: 2022-3-15T00:00:00Z
 ---
 
