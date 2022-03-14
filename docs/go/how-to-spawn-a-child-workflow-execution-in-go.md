@@ -88,7 +88,7 @@ func YourWorkflowDefinition(ctx workflow.Context, params ParentParams) (ParentRe
 
   childWorkflowFuture := workflow.ExecuteChildWorkflow(ctx, YourOtherWorkflowDefinition, ChildParams{})
   // Wait for the Child Workflow Execution to spawn
-  var childWE WorkflowExecution
+  var childWE workflow.Execution
   if err := childWorkflowFuture.GetChildWorkflowExecution().Get(ctx, &childWE); err != nil {
      return err
   }
