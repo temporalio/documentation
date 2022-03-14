@@ -219,13 +219,6 @@ This registration fails with the following message:
 java.lang.IllegalStateException: BaseWorkflow workflow type is already registered with the worker
 ```
 
-### Dynamic Workflow interface
-
-Use `DynamicWorkflow` to implement any number of Workflow Types dynamically. When you register a Workflow implementation type that extends `DynamicWorkflow`, it can be used to implement any Workflow type that is not implicitly registered with the Worker. Only one Workflow type that implements `DynamicWorkflow` per Worker is allowed.
-
-The main use case for `DynamicWorkflow` is an implementation of custom Domain Specific Languages (DSLs). A single implementation can implement a Workflow Type which by definition is dynamically loaded from some external source.
-
-All the determinism rules still apply to Workflows that implement this interface.
 
 ## Workflow implementation
 
@@ -290,6 +283,100 @@ See [How to spawn a Workflow Execution in Java](/docs/java/how-to-spawn-a-workfl
 Workflows can invoke, and send Signals to, other Workflows purely by name. This helps particularly for executing Workflows written in other language SDKs.
 
 See the [Temporal Polyglot example](https://github.com/tsurdilo/temporal-polyglot) for more information.
+
+### Dynamic Workflows
+
+Use `DynamicWorkflow` to implement Workflow Types dynamically. When you register a Workflow implementation type that extends `DynamicWorkflow`, it can be used to implement any Workflow type that is not implicitly registered with the Worker.
+
+The main use case for `DynamicWorkflow` is an implementation of custom Domain Specific Languages (DSLs). A single implementation can implement a Workflow Type which by definition is dynamically loaded from some external source.
+You can also use `DynamicWorkflow` when you need a default Workflow that can handle all Workflow Types that are not registered with a Worker.
+
+The Dynamic Workflow interface is implemented with the `execute` method. This method takes in `EncodedValues` that are inputs to the Workflow Execution. These inputs can be specified by the Client when invoking the Workflow Execution.
+
+```Java
+public class MyDynamicWorkflow implements DynamicWorkflow {
+   @Override
+    public Object execute(EncodedValues args) {
+    }
+}
+```
+
+The `DynamicWorkflow` must be registered with a Worker.
+The following rules apply when registering a Dynamic Workflow with a Worker:
+
+- Only one Workflow implementation that extends `DynamicWorkflow` can be registered with a Worker.
+- You can register multiple type-specific Workflow implementations alongside a single `DynamicWorkflow` implementation.
+- Implement the `execute` method for Dynamic Workflow implementations. Do not specify a `@WorkflowMethod` when using Dynamic Workflows.
+- Implement Signals and Queries dynamically.
+
+  ```Java
+        Workflow.registerListener(
+          (DynamicSignalHandler)
+              (signalName, encodedArgs) -> name = encodedArgs.get(0, String.class));
+  ```
+
+- Since `DynamicWorkflow` can be invoked for different Workflow Types, to check what type is running when your Dynamic Workflow `execute` method runs, use:
+
+  ```Java
+  String type = Workflow.getInfo().getWorkflowType();
+  ```
+
+- All standard `WorkflowOptions` apply to Dynamic Workflows.
+- All the determinism rules apply to Workflows that implement this interface.
+
+The following example shows a Dynamic Workflow Implementation.
+
+  ```Java
+  // Dynamic Workflow Implementation
+  public static class DynamicGreetingWorkflowImpl implements DynamicWorkflow {
+    private String name;
+
+    @Override
+    public Object execute(EncodedValues args) {
+      String greeting = args.get(0, String.class);
+      String type = Workflow.getInfo().getWorkflowType();
+
+      // Register dynamic Signal handler
+      Workflow.registerListener(
+          (DynamicSignalHandler)
+              (signalName, encodedArgs) -> name = encodedArgs.get(0, String.class));
+  ```
+
+The following example shows how to register the Dynamic Workflow implementation with a Worker.
+
+```Java
+  public static void main(String[] arg) {
+
+    WorkflowServiceStubs service = WorkflowServiceStubs.newInstance();
+    WorkflowClient client = WorkflowClient.newInstance(service);
+    WorkerFactory factory = WorkerFactory.newInstance(client);
+    Worker worker = factory.newWorker(TASK_QUEUE);
+
+    /* Register the Dynamic Workflow implementation with the Worker. Workflow implementations 
+    ** must be known to the Worker at runtime in order to dispatch Workflow Tasks.
+    */
+    worker.registerWorkflowImplementationTypes(DynamicGreetingWorkflowImpl.class);
+
+    // Start all the Workers that are in this process. 
+    factory.start();
+
+    /* Create the Workflow stub. Note that the Workflow type is not explicitly registered with the Worker */
+    WorkflowOptions workflowOptions =
+        WorkflowOptions.newBuilder().setTaskQueue(TASK_QUEUE).setWorkflowId(WORKFLOW_ID).build();
+    WorkflowStub workflow = client.newUntypedWorkflowStub("DynamicWF", workflowOptions);
+
+    /* Start Workflow Execution and Signal right after. Pass in the Workflow args and Signal args */
+    workflow.signalWithStart("greetingSignal", new Object[] {"John"}, new Object[] {"Hello"});
+
+    // Wait for the Workflow to finish getting the results
+    String result = workflow.getResult(String.class);
+
+    System.out.println(result);
+
+    System.exit(0);
+  }
+}
+```
 
 ### Workflow implementation constraints
 
