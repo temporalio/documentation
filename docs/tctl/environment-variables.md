@@ -29,11 +29,11 @@ The default Namespace is `default`.
 
 ### TEMPORAL_CLI_PLUGIN_DATA_CONVERTER
 
-Specify the name of the executable for a headers provider plugin.
+Specify the name of the executable for a custom Data Converter plugin.
 
 ### TEMPORAL_CLI_PLUGIN_HEADERS_PROVIDER
 
-Specify the name of the executable for a custom Data Converter plugin.
+Specify the name of the executable for a headers provider plugin.
 
 ### TEMPORAL_CLI_TLS_CA
 
