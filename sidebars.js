@@ -123,6 +123,23 @@ module.exports = {
           ],
         },
         {
+          type: "category",
+          label: "Trip Booking (Sagas)",
+          collapsed: true,
+          items: [
+            {
+              type: "link",
+              label: "Sagas in PHP",
+              href: "/docs/php/booking-saga-tutorial",
+            },
+            {
+              type: "link",
+              label: "Sagas in Java",
+              href: "https://github.com/temporalio/samples-java/blob/main/src/main/java/io/temporal/samples/bookingsaga/TripBookingWorkflowImpl.java",
+            },
+          ],
+        },
+        {
           type: "link",
           label: "eCommerce",
           href: "/blog/tags/go-ecommerce-tutorial",
