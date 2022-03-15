@@ -25,9 +25,7 @@ function Explained() {
         </svg>
         <h2 className="mb-4 text-xl font-semibold">Temporal explained</h2>
       </div>
-      <p className="mb-4 flex font-medium">
-        Temporal core concepts explained.
-      </p>
+      <p className="mb-4 flex font-medium">Temporal core concepts explained.</p>
       <ul className="flex list-disc flex-col space-y-2 pl-4">
         <li className="">
           <Link
@@ -61,9 +59,7 @@ function Explained() {
             <a className="font-normal">Visibility</a>
           </Link>
         </li>
-
       </ul>
-
     </div>
   );
 }
@@ -101,70 +97,69 @@ function SDKs() {
       <div className="grid grid-cols-2">
         <div>
           <ul className="flex flex-col space-y-2">
-          {/* <ul className="grid grid-cols-2 gap-6 xl:gap-8"> */}
-          <li className="">
-            <Link
-              className="flex items-center space-x-3 hover:underline"
-              to={useBaseUrl("/docs/go/")}
-            >
-              <img
-                className="h-8 w-8 transition hover:scale-110"
-                src="/img/golang.svg"
-                alt="Go lang logo"
-              />
-              <p className="font-normal">Go</p>
-            </Link>
-          </li>
-          <li className="">
-            <Link
-              className="flex items-center space-x-3 hover:underline"
-              to={useBaseUrl("/docs/java")}
-            >
-              <img
-                className="h-8 w-8 transition hover:scale-110"
-                src="/img/java.svg"
-                alt="Java logo"
-              />
-              <p className="font-normal">Java</p>
-            </Link>
-          </li>
-        </ul>
+            {/* <ul className="grid grid-cols-2 gap-6 xl:gap-8"> */}
+            <li className="">
+              <Link
+                className="flex items-center space-x-3 hover:underline"
+                to={useBaseUrl("/docs/go/")}
+              >
+                <img
+                  className="h-8 w-8 transition hover:scale-110"
+                  src="/img/golang.svg"
+                  alt="Go lang logo"
+                />
+                <p className="font-normal">Go</p>
+              </Link>
+            </li>
+            <li className="">
+              <Link
+                className="flex items-center space-x-3 hover:underline"
+                to={useBaseUrl("/docs/java")}
+              >
+                <img
+                  className="h-8 w-8 transition hover:scale-110"
+                  src="/img/java.svg"
+                  alt="Java logo"
+                />
+                <p className="font-normal">Java</p>
+              </Link>
+            </li>
+          </ul>
         </div>
 
         <div>
-        <ul className="flex flex-col space-y-2">
-          {/* <ul className="grid grid-cols-2 gap-6 xl:gap-8"> */}
-          <li className="">
-            <Link
-              className="flex items-center space-x-5"
-              to={useBaseUrl("/docs/php/introduction")}
-            >
-              <div className="flex items-center space-x-3 hover:underline">
-                <img
-                  className="h-8 w-8 transition hover:scale-110"
-                  src="/img/php.svg"
-                  alt="PHP logo"
-                />
-                <p className="font-normal">PHP</p>{" "}
-              </div>
-            </Link>
-          </li>
-          <li className="">
-            <Link to={useBaseUrl("/docs/typescript/introduction")}>
-              <div className="flex items-center space-x-3 hover:underline">
-                <img
-                  className="h-7 w-7 pl-1 transition hover:scale-110"
-                  src="/img/typescript.svg"
-                  alt="TypeScript logo"
-                />
-                <p className="font-normal">TypeScript</p>
-              </div>
-            </Link>
-          </li>
-        </ul>
+          <ul className="flex flex-col space-y-2">
+            {/* <ul className="grid grid-cols-2 gap-6 xl:gap-8"> */}
+            <li className="">
+              <Link
+                className="flex items-center space-x-5"
+                to={useBaseUrl("/docs/php/introduction")}
+              >
+                <div className="flex items-center space-x-3 hover:underline">
+                  <img
+                    className="h-8 w-8 transition hover:scale-110"
+                    src="/img/php.svg"
+                    alt="PHP logo"
+                  />
+                  <p className="font-normal">PHP</p>{" "}
+                </div>
+              </Link>
+            </li>
+            <li className="">
+              <Link to={useBaseUrl("/docs/typescript/introduction")}>
+                <div className="flex items-center space-x-3 hover:underline">
+                  <img
+                    className="h-7 w-7 pl-1 transition hover:scale-110"
+                    src="/img/typescript.svg"
+                    alt="TypeScript logo"
+                  />
+                  <p className="font-normal">TypeScript</p>
+                </div>
+              </Link>
+            </li>
+          </ul>
         </div>
       </div>
-
     </div>
   );
 }
@@ -196,7 +191,9 @@ function Cluster() {
       <ul className="flex list-disc flex-col space-y-2 pl-4">
         <li className="">
           <Link
-            to={useBaseUrl("/docs/cluster/how-to-quickly-install-the-temporal-cluster-using-docker-compose")}
+            to={useBaseUrl(
+              "/docs/cluster/how-to-quickly-install-the-temporal-cluster-using-docker-compose"
+            )}
             className="hover:underline"
           >
             <a className="font-normal">Run a Cluster using Docker Compose</a>
@@ -204,10 +201,14 @@ function Cluster() {
         </li>
         <li className="">
           <Link
-            to={useBaseUrl("/docs/cluster/how-to-integrate-elasticsearch-into-a-temporal-cluster")}
+            to={useBaseUrl(
+              "/docs/cluster/how-to-integrate-elasticsearch-into-a-temporal-cluster"
+            )}
             className="hover:underline"
           >
-            <a className="font-normal">Integrate Elasticsearch into your Cluster</a>
+            <a className="font-normal">
+              Integrate Elasticsearch into your Cluster
+            </a>
           </Link>
         </li>
         <li className="">
@@ -220,7 +221,9 @@ function Cluster() {
         </li>
         <li className="">
           <Link
-            to={useBaseUrl("/docs/cluster/how-to-deploy-temporal-to-kubernetes-for-testing-and-development")}
+            to={useBaseUrl(
+              "/docs/cluster/how-to-deploy-temporal-to-kubernetes-for-testing-and-development"
+            )}
             className="hover:underline"
           >
             <a className="font-normal">Deploy to Kubernetes</a>
@@ -258,9 +261,7 @@ function Tools() {
         </svg>
         <h2 className="mb-4 text-xl font-semibold">Devtools</h2>
       </div>
-      <p className="mb-4 flex font-medium">
-        Tooling how-tos and examples.
-      </p>
+      <p className="mb-4 flex font-medium">Tooling how-tos and examples.</p>
       <ul className="flex flex-col space-y-2">
         {/* <ul className="grid grid-cols-2 gap-6 xl:gap-8"> */}
         <li className="">
@@ -308,7 +309,6 @@ function Tools() {
   );
 }
 
-
 function Operation() {
   return (
     <div className="flex flex-col rounded-lg bg-[color:var(--ifm-card-background-color)] p-5 shadow">
@@ -333,10 +333,20 @@ function Operation() {
       </p>
       <ul className="flex list-disc flex-col space-y-2 pl-4">
         <li className="">
-          <a href="/docs/operation/how-to-tune-workers" className="font-normal hover:underline">Tune Workers</a>
+          <a
+            href="/docs/operation/how-to-tune-workers"
+            className="font-normal hover:underline"
+          >
+            Tune Workers
+          </a>
         </li>
         <li className="">
-          <a href="/docs/server/production-deployment/" className="font-normal hover:underline">Deploy to production</a>
+          <a
+            href="/docs/server/production-deployment/"
+            className="font-normal hover:underline"
+          >
+            Deploy to production
+          </a>
         </li>
       </ul>
     </div>
@@ -363,13 +373,10 @@ function Learning() {
             d="m236.882 340.027-133.922-58.032c-3.302-1.431-6.988.99-6.988 4.588v57.404c0 53.83 70.28 96 160 96s160-42.17 160-96v-57.404c0-3.598-3.686-6.018-6.988-4.588l-133.932 58.032c-12.16 5.286-25.998 5.282-38.17 0z"
             fill="currentColor"
           />
-
         </svg>
         <h2 className="mb-4 text-xl font-semibold">Learning</h2>
       </div>
-      <p className="mb-4 flex font-medium">
-        Tutorials and learning materials.
-      </p>
+      <p className="mb-4 flex font-medium">Tutorials and learning materials.</p>
       <ul className="flex list-disc flex-col space-y-2 pl-4 content-start">
         <li className="">
           <Link
@@ -412,12 +419,12 @@ export const Intro = () => {
       </p>
 
       <div className="my-10 grid grid-cols-1 gap-6 md:grid-cols-2 lg:gap-8">
-      <Explained />
-      <Learning />
-      <SDKs />
-      <Tools />
-      <Cluster />
-      <Operation />
+        <Explained />
+        <Learning />
+        <SDKs />
+        <Tools />
+        <Cluster />
+        <Operation />
       </div>
     </section>
   );
