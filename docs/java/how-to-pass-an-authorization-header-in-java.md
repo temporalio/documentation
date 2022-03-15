@@ -11,7 +11,7 @@ tags:
 
 import RelatedReadList from '../components/RelatedReadList.js'
 
-Temporal Server [expects](docs/server/security/#authinfo) an `authorization` gRPC header with an authorization token to be passed by SDKs if [requests authorization](docs/server/security/#authorization) is configured.
+The Temporal Server  [expects](/docs/server/security/#authinfo) an `authorization` gRPC header with an authorization token to be passed with API calls if [requests authorization](docs/server/security/#authorization) is configured.
 
 Authorization Tokens may be provided to the Temporal Java SDK by implementing a `io.temporal.authorization.AuthorizationTokenSupplier` interface.
 The implementation should be used to create `io.temporal.authorization.AuthorizationGrpcMetadataProvider` that may be configured on ServiceStub gRPC interceptors list.
