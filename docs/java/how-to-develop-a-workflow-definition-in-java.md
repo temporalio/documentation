@@ -78,7 +78,7 @@ When you set the Workflow Type this way, the value of the `name` parameter does 
 
 A method annotated with `@WorkflowMethod` can have any number of parameters. We recommend passing a single parameter that contains all the input fields. This allows adding fields in a backward compatible manner.
 A Workflow Type can be registered only once per Worker entity.
-If you try to register multiple Workflow implementations of the same type, you will get an exception.
+If you try to register multiple Workflow implementations of the same type, you get an exception.
 
 ### `@QueryMethod`
 
