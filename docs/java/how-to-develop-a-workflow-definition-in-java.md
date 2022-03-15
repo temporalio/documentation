@@ -219,7 +219,6 @@ This registration fails with the following message:
 java.lang.IllegalStateException: BaseWorkflow workflow type is already registered with the worker
 ```
 
-
 ## Workflow implementation
 
 A Workflow implementation implements a Workflow interface.
@@ -326,21 +325,21 @@ The following rules apply when registering a Dynamic Workflow with a Worker:
 
 The following example shows a Dynamic Workflow Implementation.
 
-  ```Java
-  // Dynamic Workflow Implementation
-  public static class DynamicGreetingWorkflowImpl implements DynamicWorkflow {
-    private String name;
+```Java
+// Dynamic Workflow Implementation
+public static class DynamicGreetingWorkflowImpl implements DynamicWorkflow {
+  private String name;
 
-    @Override
-    public Object execute(EncodedValues args) {
-      String greeting = args.get(0, String.class);
-      String type = Workflow.getInfo().getWorkflowType();
+  @Override
+  public Object execute(EncodedValues args) {
+    String greeting = args.get(0, String.class);
+    String type = Workflow.getInfo().getWorkflowType();
 
-      // Register dynamic Signal handler
-      Workflow.registerListener(
-          (DynamicSignalHandler)
-              (signalName, encodedArgs) -> name = encodedArgs.get(0, String.class));
-  ```
+    // Register dynamic Signal handler
+    Workflow.registerListener(
+        (DynamicSignalHandler)
+            (signalName, encodedArgs) -> name = encodedArgs.get(0, String.class));
+```
 
 The following example shows how to register the Dynamic Workflow implementation with a Worker.
 
@@ -352,12 +351,12 @@ The following example shows how to register the Dynamic Workflow implementation 
     WorkerFactory factory = WorkerFactory.newInstance(client);
     Worker worker = factory.newWorker(TASK_QUEUE);
 
-    /* Register the Dynamic Workflow implementation with the Worker. Workflow implementations 
+    /* Register the Dynamic Workflow implementation with the Worker. Workflow implementations
     ** must be known to the Worker at runtime in order to dispatch Workflow Tasks.
     */
     worker.registerWorkflowImplementationTypes(DynamicGreetingWorkflowImpl.class);
 
-    // Start all the Workers that are in this process. 
+    // Start all the Workers that are in this process.
     factory.start();
 
     /* Create the Workflow stub. Note that the Workflow type is not explicitly registered with the Worker */
