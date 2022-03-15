@@ -62,7 +62,8 @@ The Workflow Type defaults to the short name of the Workflow interface. In the f
 }
 ```
 
-To overwrite this default naming and assign a custom Workflow Type, use the `@WorkflowMethod` annotation with the `name` parameter. In the following example, the Workflow Type is set to “Abc”.
+To overwrite this default naming and assign a custom Workflow Type, use the `@WorkflowMethod` annotation with the `name` parameter.
+In the following example, the Workflow Type is set to "Abc".
 
 ```java
 @WorkflowInterface
