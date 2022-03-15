@@ -103,6 +103,10 @@ module.exports = {
           type: "category",
           label: "Run your first app",
           collapsed: true,
+          link: {
+            type: "doc",
+            id: "learning-paths/run-your-first-app/index",
+          },
           items: [
             "go/tutorial-prerequisites",
             "go/run-your-first-app-tutorial",
@@ -115,6 +119,10 @@ module.exports = {
           type: "category",
           label: "Hello World",
           collapsed: true,
+          link: {
+            type: "doc",
+            id: "learning-paths/hello-world/index",
+          },
           items: [
             "go/hello-world-tutorial",
             "java/hello-world-tutorial",
@@ -131,6 +139,10 @@ module.exports = {
           type: "category",
           label: "Background Checks",
           collapsed: true,
+          link: {
+            type: "doc",
+            id: "learning-paths/background-checks/index",
+          },
           items: [
             {
               type: "link",
