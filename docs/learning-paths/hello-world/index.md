@@ -6,5 +6,5 @@ description: Build a Hello World! Temporal Application
 
 - [Go](/docs/go/hello-world-tutorial)
 - [Java](/docs/java/hello-world-tutorial)
-- [PHP](/docs/php/hello-World)
+- [PHP](/docs/php/hello-world)
 - [TypeScript](/docs/typescript/hello-world)
