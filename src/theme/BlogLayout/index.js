@@ -13,7 +13,7 @@ export default function BlogLayout(props) {
   const hasSidebar = sidebar && sidebar.items.length > 0;
   return (
     <Layout {...layoutProps}>
-      <div className="container margin-vert--lg">
+      <div className="margin-vert--lg container">
         {/* <div className="row"> */}
         <div className="flex space-x-20 ">
           {hasSidebar && (
