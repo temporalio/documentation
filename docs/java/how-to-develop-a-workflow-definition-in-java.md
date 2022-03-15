@@ -101,7 +101,7 @@ To overwrite this default naming and assign a custom Query name, use the `@Query
 ```java
 @WorkflowInterface
 public interface FileProcessingWorkflow {
-    @QueryMethod(name="history")
+    @QueryMethod(name = "history")
     String getStatus();
 }
 ```
