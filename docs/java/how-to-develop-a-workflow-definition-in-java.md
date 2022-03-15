@@ -50,7 +50,7 @@ public interface FileProcessingWorkflow {
 ### `@WorkflowMethod`
 
 The `@WorkflowMethod` identifies the method that is starting point of the Workflow Function Execution. The [Workflow Execution](/docs/concepts/what-is-a-workflow-execution) completes when this method completes.
-A Workflow Definition interface in Java can only have one method annotated with `@WorkflowMethod`. It can be used to denote the [Workflow Type](/docs/concepts/what-is-a-workflow-type).
+A Workflow Definition interface in Java can have only one method annotated with `@WorkflowMethod`. It can be used to denote the [Workflow Type](/docs/concepts/what-is-a-workflow-type).
 The Workflow Type defaults to the short name of the Workflow interface. In the following example, the Workflow Type defaults to "NotifyUserAccounts".
 
 ```java
