@@ -380,11 +380,6 @@ The following example shows how to register the Dynamic Workflow implementation 
 
 ### Workflow implementation constraints
 
-Temporal uses the [Event Sourcing pattern](https://docs.microsoft.com/en-us/azure/architecture/patterns/event-sourcing) to recover the state of a Workflow object including its threads and local variable values.
-In essence, every time a Workflow state is restored, its code is re-executed from the beginning.
-Note that, during replay, successfully executed Activities are not re-executed because their results are already recorded
-in the Event History of the Workflow Execution.
-
 The following constraints apply when writing Workflow Definitions:
 
 - Do not use mutable global variables in your Workflow implementations.
