@@ -138,7 +138,8 @@ public interface FileProcessingWorkflow {
 }
 ```
 
-To overwrite this default naming and assign a custom Signal type, use the `@SignalMethod` annotation with the `name` parameter. In the following example, the Signal type is set to "retrysignal" .
+To overwrite this default naming and assign a custom Signal type, use the `@SignalMethod` annotation with the `name` parameter.
+In the following example, the Signal type is set to "retrysignal".
 
 ```java
 @WorkflowInterface
