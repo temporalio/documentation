@@ -29,7 +29,7 @@ Long ago at Amazon, I had also taken a stab at building a Workflow processing fr
 What I had missed was Max’s unique and critical insight: that by making the logical processing deterministic, replay can recreate internal state in such a way that business logic can be written as a simple linear flow that can be made durable across any time period.
 
 This key insight is a thing of absolute beauty.
-It enables a developer using Temporal to turn a complicated mess of business logic, timers, retry, error-recovery and persistence calls into a simple and easy-to-understand sequence of instructions that look exactly like the business logic they implement.
+It enables a developer using Temporal to turn a complicated mess of business logic, timers, retry, error recovery, and persistence calls into a simple and easy-to-understand sequence of instructions that look exactly like the business logic they implement.
 Along with the reduced complexity comes the added bonus of a simple scheme for *repairing* damage done by any bugs that do creep in (not to mention a hugely reduced likelihood of bugs due to the simpler structure of the application).  Businesses and developers both value this experience very highly.
 It's not just cost savings ... in many many cases, it's the difference between feasible and infeasible.
 
