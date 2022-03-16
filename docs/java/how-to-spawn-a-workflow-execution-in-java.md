@@ -3,6 +3,9 @@ id: how-to-spawn-a-workflow-execution-in-java
 title: How to spawn a Workflow Execution in Java
 sidebar_label: Workflow Execution
 description: Initialize an instance of a `WorkflowClient`, create a client side Workflow stub, and then call a Workflow method (annotated with the `@WorkflowMethod` annotation).
+tags:
+  - java
+  - developer-guide
 ---
 
 In the Temporal Java SDK, Workflows can be started both synchronously and asynchronously.
@@ -51,6 +54,6 @@ You can start a Workflow Execution on a regular schedule with [the CronSchedule 
 
 ### External Workflows
 
-Workflows can execute (and signal to) other workflows purely by name.
+Workflows can execute (and send Signals to) other Workflows purely by name.
 This helps particularly for executing Workflows from other language SDKs.
 See our [Temporal Polyglot example](https://github.com/tsurdilo/temporal-polyglot) for more information.

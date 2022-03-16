@@ -3,6 +3,9 @@ id: how-to-spawn-a-child-workflow-execution-in-java
 title: How to spawn a Child Workflow Execution in Java
 sidebar_label: Child Workflow Execution
 description: The first call to the Child Workflow stub can be synchronous or asynchronous using `Async.function(Functions.Func)` or `Async.procedure(Functions.Proc)`, and must always be to a method annotated with `@WorkflowMethod`.
+tags:
+  - java
+  - developer-guide
 ---
 
 The first call to the Child Workflow stub must always be its Workflow method (method annotated with `@WorkflowMethod`).
@@ -95,41 +98,10 @@ The following examples show how to spawn a Child Workflow:
 
 - Sending a Query to Child Workflows from within the parent Workflow code is not supported. However, you can send a Query to Child Workflows from Activities using `WorkflowClient`.
 
-### ParentClosePolicy
+Related reads:
 
-When creating a Child Workflow, you can define a `ParentClosePolicy` that terminates, cancels, or abandons the Child Workflow Execution if the parent Workflow Execution stops.
+- [How to set a Child Workflow Options in Java](/docs/java/how-to-set-child-workflow-options-in-java)
 
-- `ABANDON`: When the parent stops, don't do anything with the Child Workflow.
-- `TERMINATE`: When the parent stops, terminate the Child Workflow
-- `REQUEST_CANCEL`: When the parent stops, terminate the Child Workflow
+- [How to develop a Workflow Definition in Java](/docs/java/how-to-develop-a-workflow-definition-in-java)
 
-You can set policies per Child Workflow, which means you can opt out of propagating terminations and cancellations on a per-child basis.
-This is useful for starting Child Workflows asynchronously, as shown in the following example:
-
-```java
-   public void parentWorkflow() {
-       ChildWorkflowOptions options =
-          ChildWorkflowOptions.newBuilder()
-              .setParentClosePolicy(ParentClosePolicy.PARENT_CLOSE_POLICY_ABANDON)
-              .build();
-       MyChildWorkflow child = Workflow.newChildWorkflowStub(MyChildWorkflow.class, options);
-       Async.procedure(child::<workflowMethod>, <args>...);
-       Promise<WorkflowExecution> childExecution = Workflow.getWorkflowExecution(child);
-       // Wait for child to start
-       childExecution.get()
-  }
-```
-
-In this example, we are:
-
-1. Setting `ChildWorkflowOptions.ParentClosePolicy` to `ABANDON` when creating a Child Workflow stub.
-2. Starting Child Workflow Execution asynchronously using `Async.function` or `Async.procedure`.
-3. Calling `Workflow.getWorkflowExecution(…)` on the child stub.
-4. Waiting for the `Promise` returned by `getWorkflowExecution` to complete.
-   This indicates whether the Child Workflow started successfully (or failed).
-5. Completing parent Workflow Execution asynchronously.
-
-Steps 3 and 4 are needed to ensure that a Child Workflow Execution starts before the parent closes.
-If the parent initiates a Child Workflow Execution and then immediately completes, the Child Workflow will never execute.
-
-Java Workflow reference: <https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/package-summary.html>
+- Java Workflow reference: <https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/package-summary.html>

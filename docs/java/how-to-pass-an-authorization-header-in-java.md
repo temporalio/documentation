@@ -38,8 +38,6 @@ Temporal Server provides a [default implementation of JWT authentication](/docs/
   WorkflowClient client = WorkflowClient.newInstance(service);
 ```
 
-<RelatedReadList
-readlist={[
-["How to secure a Temporal Cluster", "/docs/server/security", "operation guide"]  
-]}
-/>
+Related read:
+
+- [How to secure a Temporal Cluster](/docs/server/security]
