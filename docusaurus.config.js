@@ -100,12 +100,12 @@ module.exports = {
             },
             {
               to: "/docs/learning-paths",
-              activeBasePath: "/docs",
+              activeBasePath: "/docs/learning-paths",
               label: "Learning",
             },
             {
               to: "/docs/samples-library",
-              activeBasePath: "/docs",
+              activeBasePath: "/docs/samples-library",
               label: "Samples library",
             },
           ],
