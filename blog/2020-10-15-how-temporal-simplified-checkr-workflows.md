@@ -22,8 +22,11 @@ release_version: V1.0.0
 
 <!--truncate-->
 
-_This case study is based on an interview with [Ben Jacobson](https://www.linkedin.com/in/bjacobso/) who was a key player in Temporal* adoption within Checkr_
+_This case study is based on a 2020 interview with [Ben Jacobson](https://www.linkedin.com/in/bjacobso/) who was a key player in Temporal* adoption within Checkr. [Itay and Maria from Checkr also presented updated use cases](https://youtu.be/IBIJ7HAlzxI) at our Flagship Meetup in 2022._
 
+import { ResponsivePlayer } from '../src/components'
+
+<ResponsivePlayer url='https://www.youtube.com/watch?v=IBIJ7HAlzxI' />
 
 ## Problem:
 
