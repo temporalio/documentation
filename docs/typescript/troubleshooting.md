@@ -226,6 +226,17 @@ If you are trying to connect in production and getting this:
 It is a sign that something is wrong with your Cert/Key pair.
 Log it out and make sure it is an exact match with what is expected (often, the issue can be whitespace when injecting from your production secrets management environment).
 
+## Resetting Workflows to deal with logical bugs
+
+You can "rewind time" using the `tctl` CLI, resetting Workflow History to some previous point in time. You can read the CLI docs on:
+
+- [Restarting and resetting Workflows by ID](https://docs.temporal.io/docs/tctl/how-to-use-tctl/#restart-reset-workflow)
+- [Resetting all Workflows by binary checksum identifier](https://docs.temporal.io/docs/tctl/how-to-use-tctl/#recovery-from-bad-deployment----auto-reset-workflow)
+
+If you need to reset programmatically, the TS SDK does not have any high level APIs for this, but you can make raw gRPC calls to [resetWorkflowExecution](https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.workflowservice-1/#resetworkflowexecution).
+
+Resetting should only be used to deal with serious logical bugs in your code: it's not for handling transient failures, like a downstream service being unreachable. It should not be used in the course of normal application flows.
+
 ## gRPC call timeouts (context deadline exceeded)
 
 The opaque `context deadline exceeded` error comes from `gRPC`:
