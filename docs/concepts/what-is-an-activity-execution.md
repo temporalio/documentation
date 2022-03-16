@@ -11,10 +11,6 @@ An Activity Execution is the full chain of [Activity Task Executions](/docs/conc
 
 ![Activity Execution](/diagrams/activity-execution.svg)
 
-Activity Execution with Activity Task Execution retries.
-
-![Activity Execution with retries](/diagrams/activity-execution-with-retry.svg)
-
 ### Request Cancellation
 
 A Workflow can request to cancel an Actvity Execution.
