@@ -271,7 +271,7 @@ NotifyUserAccounts workflow = client.newWorkflowStub(
 }
 ```
 
-Typed `WorkflowStub` are useful because they are type safe. You can invoke your Workflow methods such as [`@WorkflowMethod`](#`@WorkflowMethod`), [`@QueryMethod`](#`@QueryMethod` ), and [`@SignalMethod`](#@SignalMethod`) directly.
+Typed `WorkflowStub` are useful because they are type safe. You can invoke your Workflow methods such as [`@WorkflowMethod`](#`@WorkflowMethod`), [`@QueryMethod`](#`@QueryMethod`), and [`@SignalMethod`](#@SignalMethod`) directly.
 
 **Untyped `WorkflowStub`**
 
@@ -315,7 +315,7 @@ The following rules apply when registering a Dynamic Workflow with a Worker:
 - You can register multiple type-specific Workflow implementations alongside a single `DynamicWorkflow` implementation.
 - Implement the `execute` method for Dynamic Workflow implementations. Do not specify a `@WorkflowMethod` when using Dynamic Workflows.
 - Implement Signals and Queries dynamically.
-  
+
   Example for implementing Signal handler dynamically:
 
   ```java
@@ -361,7 +361,7 @@ public static class DynamicGreetingWorkflowImpl implements DynamicWorkflow {
     Workflow.registerListener(
         (DynamicSignalHandler)
             (signalName, encodedArgs) -> name = encodedArgs.get(0, String.class));
-    
+
     // Register dynamic Query handler
     Workflow.registerListener(
     (DynamicQueryHandler)
