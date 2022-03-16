@@ -39,10 +39,9 @@ However, there is a guarantee that eventually the Query would return the actual 
 This is what it means for query to be eventually consistency.
 
 Query has another consistency level called strong consistency.
-A strongly consistent Query is guaranteed to return the state, which includes all Events that came before the Query was issued. An Event is considered to have come before a Query if the call creating the Event returned success before
-the Query was issued.
-Events that are created while the Query is outstanding may or may not
-be reflected in the Workflow state the Query result is based on.
+A strongly consistent Query is guaranteed to return the state, which includes all Events that came before the Query was issued.
+An Event is considered to have come before a Query if the call creating the Event returned success before the Query was issued.
+Events that are created while the Query is outstanding may or may not be reflected in the Workflow state the Query result is based on.
 
 When sending a strongly consistent Query you should expect higher latency than an eventually consistent Query.
 
