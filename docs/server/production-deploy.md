@@ -56,7 +56,7 @@ Though **neither are blessed for production use**, you can consult our [Docker-C
 ## Minimum Requirements
 
 - The minimum Temporal Server dependency is a database. We support [Cassandra](https://cassandra.apache.org/), [MySQL](https://www.mysql.com/), or [PostgreSQL](https://www.postgresql.org/), with [SQLite on the way](https://github.com/temporalio/temporal/pulls?q=is%3Apr+sort%3Aupdated-desc+sqlite+).
-- Further dependencies are only needed to support optional features. For example, enhanced Workflow search can be achieved using [Elasticsearch](/docs/Human-Driven Long-Running Workflow/how-to-integrate-elasticsearch-into-a-temporal-cluster).
+- Further dependencies are only needed to support optional features. For example, enhanced Workflow search can be achieved using [Elasticsearch](/docs/cluster/how-to-integrate-elasticsearch-into-a-temporal-cluster).
 - Monitoring and observability are available with [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/).
 - Each language SDK also has minimum version requirements. See the [versions & dependencies page](/docs/server/versions-and-dependencies/) for precise versions we support together with these features.
 
