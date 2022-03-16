@@ -336,7 +336,7 @@ The following rules apply when registering a Dynamic Workflow with a Worker:
 
   Note that `DynamicSignalHandler` and `DynamicQueryHandler` can also be implemented in regular Workflow implementations.
 
-- Since `DynamicWorkflow` can be invoked for different Workflow Types, to check what type is running when your Dynamic Workflow `execute` method runs, use:
+- Because `DynamicWorkflow` can be invoked for different Workflow Types, to check what type is running when your Dynamic Workflow `execute` method runs, use:
 
   ```java
   String type = Workflow.getInfo().getWorkflowType();
