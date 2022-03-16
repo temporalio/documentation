@@ -13,7 +13,7 @@ date: 2022-3-15T00:00:00Z
 
 Like many engineers (I think) I have wondered if the heyday of Internet engineering was over.
 I’m not suggesting that there isn't plenty of work left to be done ... really, we haven't scratched the surface of what software can do for society (unfortunately both harm and good).
-But while systems architecture has evolved over the last 10 years, I believe most of the change has been "solidification" of existing techniques, along with a vast migration to Cloud and OpenSource that has made things more democratic.
+But while systems architecture has evolved over the past 10 years, I believe most of the change has been "solidification" of existing techniques, along with a vast migration to Cloud and Open Source that has made things more democratic.
 In other words, advances in the last 10 years have been incremental rather than fundamental.
 
 As for me: I’ve helped build some of the larger pieces of the internet. I was the lead engineer on Amazon's V2 website architecture (Gurupa), and was also the TL on a significant piece of Google's computational infrastructure called Millwheel, along with quite a long list of smaller projects.
