@@ -189,8 +189,8 @@ See [What is a Workflow Task Timeout?](/docs/concepts/what-is-a-workflow-task-ti
 private static void parentWorkflow() {
         ChildWorkflowOptions childworkflowOptions =
                 ChildWorkflowOptions.newBuilder()
+                        .setWorkflowExecutionTimeout(Duration.ofSeconds(10)
                         .setRetryOptions(RetryOptions.newBuilder()
-                                .setMaximumAttempts(2)
                                 .build())
                         .build();
          ChildWorkflow child = Workflow.newChildWorkflowStub(ChildWorkflow.class, ChildworkflowOptions);

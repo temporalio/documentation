@@ -54,6 +54,6 @@ You can start a Workflow Execution on a regular schedule with [the CronSchedule 
 
 ### External Workflows
 
-Workflows can execute (and signal to) other workflows purely by name.
+Workflows can execute (and send Signals to) other Workflows purely by name.
 This helps particularly for executing Workflows from other language SDKs.
 See our [Temporal Polyglot example](https://github.com/tsurdilo/temporal-polyglot) for more information.

@@ -21,10 +21,13 @@ public class FileProcessingWorkflowImpl implements FileProcessingWorkflow {
 The Workflow interface is a Java interface and is annotated with `@WorkflowInterface`.
 Workflow interface methods must have one [`@WorkflowMethod`](#workflowmethod).
 Use `@SignalMethod`, `@QueryMethod` for Signals, and Queries in the Workflow.
-To call Activities in your Workflow, see [Activities](/docs/java/activities).
-You can also invoke other Workflows as Child Workflows with `Workflow.newChildWorkflowStub()` within a Workflow Definition. See [Child Workflow Execution](/docs/java/how-to-spawn-a-child-workflow-execution-in-java) for more information.
+You can Signal other running Workflows using `newExternalWorkflowStub`. See [How to spawn a Workflow Execution in Java](/docs/java/how-to-spawn-a-workflow-execution-in-java/#external-workflows).
 
-The following example shows how the annotations can be used in a Workflow interface:
+To call Activities in your Workflow, see [Activities](/docs/java/activities).
+
+You can also invoke other Workflows as Child Workflows with `Workflow.newChildWorkflowStub()` or `Workflow.newUntypedChildWorkflowStub()` within a Workflow Definition. See [Child Workflow Execution](/docs/java/how-to-spawn-a-child-workflow-execution-in-java) for more information.
+
+The following example shows how to use the annotations in a Workflow interface:
 
 ```java
 @WorkflowInterface
@@ -49,8 +52,10 @@ public interface FileProcessingWorkflow {
 
 ### `@WorkflowMethod`
 
-The `@WorkflowMethod` identifies the method that is starting point of the Workflow Function Execution. The [Workflow Execution](/docs/concepts/what-is-a-workflow-execution) completes when this method completes.
+The `@WorkflowMethod` identifies the method that is starting point of the Workflow Execution. The [Workflow Execution](/docs/concepts/what-is-a-workflow-execution) completes when this method completes.
+
 A Workflow Definition interface in Java can have only one method annotated with `@WorkflowMethod`. It can be used to denote the [Workflow Type](/docs/concepts/what-is-a-workflow-type).
+
 The Workflow Type defaults to the short name of the Workflow interface. In the following example, the Workflow Type defaults to "NotifyUserAccounts".
 
 ```java
@@ -76,9 +81,11 @@ In the following example, the Workflow Type is set to "Abc".
 
 When you set the Workflow Type this way, the value of the `name` parameter does not have to start with an uppercase letter.
 
-A method annotated with `@WorkflowMethod` can have any number of parameters. We recommend passing a single parameter that contains all the input fields. This allows adding fields in a backward compatible manner.
+A method annotated with `@WorkflowMethod` can have any number of parameters. We recommend passing a single parameter that contains all the input fields. This allows adding fields in a backward-compatible manner.
+Note that all inputs should be serializable by the default Jackson JSON Payload Converter.
+
 A Workflow Type can be registered only once per Worker entity.
-If you try to register multiple Workflow implementations of the same type, you get an exception.
+If you define multiple Workflow implementations of the same type, you get an exception at the time of registration.
 
 ### `@QueryMethod`
 
@@ -228,7 +235,6 @@ Then, one of the methods (depending on the Workflow Type of the instance) annota
 As soon as this method returns, the Workflow Execution is considered to be complete.
 
 Workflow methods annotated with `@QueryMethod` and `@SignalMethod` can be invoked during a Workflow Execution.
-
 Note that methods annotated with `@QueryMethod` can be invoked even when a Workflow is in the `Completed` state.
 
 ### Typed and Untyped `WorkflowStubs`
@@ -265,18 +271,19 @@ NotifyUserAccounts workflow = client.newWorkflowStub(
 }
 ```
 
-Typed `WorkflowStub` are useful because they are type safe. You can invoke your Workflow methods such as [`@WorkflowMethod`](# `@WorkflowMethod`), [`QueryMethod`](# `QueryMethod` ), and [`@SignalMethod`](# `QueryMethod`) directly.
+Typed `WorkflowStub` are useful because they are type safe. You can invoke your Workflow methods such as [`@WorkflowMethod`](#`@WorkflowMethod`), [`@QueryMethod`](#`@QueryMethod` ), and [`@SignalMethod`](#@SignalMethod`) directly.
 
 **Untyped `WorkflowStub`**
 
-An untyped `WorkflowStub` does not use the Workflow interface, and is not typesafe. It is more flexible because it has methods from the `WorkflowStub` interface, such as `start`, `signalWithStart`, `getResults` (sync and async), `query`, `signal`, `cancel` and `terminate`.
+An untyped `WorkflowStub` does not use the Workflow interface, and is not type safe. It is more flexible because it has methods from the `WorkflowStub` interface, such as `start`, `signalWithStart`, `getResults` (sync and async), `query`, `signal`, `cancel` and `terminate`.
 Note that the Temporal Java SDK also provides typed `WorkflowStub` versions for these methods.
-
-See the `WorkflowStub.java` reference: <https://github.com/temporalio/sdk-java/blob/master/temporal-sdk/src/main/java/io/temporal/client/WorkflowStub.java>
 
 When using untyped `WorkflowStubs`, we rely on the Workflow Type, Activity Type, Child Workflow Type, as well as Query and Signal names.
 
-See [How to spawn a Workflow Execution in Java](/docs/java/how-to-spawn-a-workflow-execution-in-java).
+Related references:
+
+- [How to spawn a Workflow Execution in Java](/docs/java/how-to-spawn-a-workflow-execution-in-java).
+- `WorkflowStub.java` reference: <https://github.com/temporalio/sdk-java/blob/master/temporal-sdk/src/main/java/io/temporal/client/WorkflowStub.java>
 
 ### Calling other Workflows
 
@@ -286,14 +293,14 @@ See the [Temporal Polyglot example](https://github.com/tsurdilo/temporal-polyglo
 
 ### Dynamic Workflows
 
-Use `DynamicWorkflow` to implement Workflow Types dynamically. When you register a Workflow implementation type that extends `DynamicWorkflow`, it can be used to implement any Workflow type that is not implicitly registered with the Worker.
+Use `DynamicWorkflow` to implement Workflow Types dynamically. When you register a Workflow implementation type that extends `DynamicWorkflow`, it can be used to implement any Workflow Type that is not explicitly registered with the Worker.
 
 The main use case for `DynamicWorkflow` is an implementation of custom Domain Specific Languages (DSLs). A single implementation can implement a Workflow Type which by definition is dynamically loaded from some external source.
 You can also use `DynamicWorkflow` when you need a default Workflow that can handle all Workflow Types that are not registered with a Worker.
 
 The Dynamic Workflow interface is implemented with the `execute` method. This method takes in `EncodedValues` that are inputs to the Workflow Execution. These inputs can be specified by the Client when invoking the Workflow Execution.
 
-```Java
+```java
 public class MyDynamicWorkflow implements DynamicWorkflow {
    @Override
     public Object execute(EncodedValues args) {
@@ -308,16 +315,30 @@ The following rules apply when registering a Dynamic Workflow with a Worker:
 - You can register multiple type-specific Workflow implementations alongside a single `DynamicWorkflow` implementation.
 - Implement the `execute` method for Dynamic Workflow implementations. Do not specify a `@WorkflowMethod` when using Dynamic Workflows.
 - Implement Signals and Queries dynamically.
+  
+  Example for implementing Signal handler dynamically:
 
-  ```Java
+  ```java
         Workflow.registerListener(
           (DynamicSignalHandler)
               (signalName, encodedArgs) -> name = encodedArgs.get(0, String.class));
   ```
 
+  Example for implementing Query handler dynamically:
+
+  ```java
+        Workflow.registerListener(
+          (DynamicQueryHandler)
+              (queryType, encodedArgs) -> {
+              return name;
+      });
+  ```
+
+  Note that `DynamicSignalHandler` and `DynamicQueryHandler` can also be implemented in regular Workflow implementations.
+
 - Since `DynamicWorkflow` can be invoked for different Workflow Types, to check what type is running when your Dynamic Workflow `execute` method runs, use:
 
-  ```Java
+  ```java
   String type = Workflow.getInfo().getWorkflowType();
   ```
 
@@ -326,7 +347,7 @@ The following rules apply when registering a Dynamic Workflow with a Worker:
 
 The following example shows a Dynamic Workflow Implementation.
 
-```Java
+```java
 // Dynamic Workflow Implementation
 public static class DynamicGreetingWorkflowImpl implements DynamicWorkflow {
   private String name;
@@ -340,11 +361,19 @@ public static class DynamicGreetingWorkflowImpl implements DynamicWorkflow {
     Workflow.registerListener(
         (DynamicSignalHandler)
             (signalName, encodedArgs) -> name = encodedArgs.get(0, String.class));
+    
+    // Register dynamic Query handler
+    Workflow.registerListener(
+    (DynamicQueryHandler)
+        (queryType, encodedArgs) -> {
+        return name;
+        });
+  }
 ```
 
-The following example shows how to register the Dynamic Workflow implementation with a Worker.
+The following example shows how to register the Dynamic Workflow implementation with a Worker and the Client code for how to start a Workflow Eecution.
 
-```Java
+```java
   public static void main(String[] arg) {
 
     WorkflowServiceStubs service = WorkflowServiceStubs.newInstance();
@@ -405,5 +434,4 @@ Java Workflow reference: <https://www.javadoc.io/doc/io.temporal/temporal-sdk/la
 ### Workflow Method Arguments
 
 - [What is a Data Converter?](/docs/concepts/what-is-a-data-converter)
-
-Java DataConverter reference: <https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html>
+- Java DataConverter reference: <https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html>
