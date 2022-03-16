@@ -38,4 +38,4 @@ It didn't take me long to realize that this conceptual advance would change the 
 
 This motivates me like nothing else does: a chance to help shape a solution to the problems faced by mankind.
 At its core, practically everything goal-oriented that needs doing, by man or machine, can be described as a Workflow (which I define as a sequence of steps needed to achieve a goal).
-I joined Temporal to be part of building this solution and I’m writing this blog in pursuit of that goal: in the hope that others with the relevant skills and passion will come across my words and see an opportunity to work on something incredibly meaningful, challenging, rewarding, and valuable, backed by a superb culture.
+I joined Temporal to be part of building this solution, and I’m writing this blog in pursuit of that goal: in the hope that others with the relevant skills and passion will come across my words and see an opportunity to work on something incredibly meaningful, challenging, rewarding, and valuable, backed by a superb culture.
