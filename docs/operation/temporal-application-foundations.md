@@ -7,9 +7,6 @@ tags:
   - developer-guide
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
 This guide covers the minimum set of concepts and implementation details needed to build and run a simple [Temporal Application](/docs/concepts/what-is-a-temporal-application).
 
 ## Run a Temporal Cluster
@@ -19,7 +16,7 @@ This guide covers the minimum set of concepts and implementation details needed 
 The very first thing that you need to do is make sure you have a Temporal Cluster running so that you can interact with it via Temporal Client APIs and tctl commands.
 
 - [How to run a local Temporal Cluster using Docker Compose](/docs/cluster/how-to-quickly-install-the-temporal-cluster-using-docker-compose)
-- [How to deploy the Temporal Server to Kubernetes for testing and development](/docs/cluster/how-to-deploy-temporal-to-kubernetes-for-testing-and-development)
+- [How to deploy a Temporal Cluster to Kubernetes for testing and development](/docs/cluster/how-to-deploy-temporal-to-kubernetes-for-testing-and-development)
 
 ## Develop Workflow Definitions
 
@@ -28,45 +25,10 @@ The very first thing that you need to do is make sure you have a Temporal Cluste
 Workflows are the fundamental unit of a Temporal Application.
 Develop a Workflow Definition in the language of your choice.
 
-import DevelopWorkflowDefinitionInGo from '../go/how-to-develop-a-workflow-definition-in-go.md'
-import DevelopWorkflowDefinitionInJava from '../java/how-to-develop-a-workflow-definition-in-java.md'
-
-<Tabs
-defaultValue="go"
-groupId="site-lang"
-values={[
-{label: 'Go', value: 'go'},
-{label: 'Java', value: 'java'},
-{label: 'PHP', value: 'php'},
-{label: 'Typescript', value: 'ts'},
-]
-}>
-
-<TabItem value="go">
-
-<DevelopWorkflowDefinitionInGo/>
-
-</TabItem>
-<TabItem value="java">
-
-<DevelopWorkflowDefinitionInJava/>
-
-</TabItem>
-<TabItem value="php">
-
-[How to develop a Workflow Definition in PHP](/docs/php/workflows)
-
-</TabItem>
-<TabItem value="ts">
-
-[How to develop a Workflow Definition in TypeScript](/docs/typescript/workflows/#how-to-write-a-workflow-function)
-
-</TabItem>
-</Tabs>
-
-<!--
 - [How to develop a Workflow Definition in Go](/docs/go/how-to-develop-a-workflow-definition-in-go)
-- [How to develop a Workflow Definition in Java](/docs/java/how-to-develop-a-workflow-definition-in-java) -->
+- [How to develop a Workflow Definition in Java](/docs/java/how-to-develop-a-workflow-definition-in-java)
+- [How to develop a Workflow Definition in PHP](/docs/php/workflows)
+- [How to develop a Workflow Definition in TypeScript](/docs/typescript/workflows/#how-to-write-a-workflow-function)
 
 ## Develop Activity Definitions
 
@@ -115,48 +77,10 @@ Each [Worker Entity](/docs/concepts/what-is-a-worker-entity) in the Worker Proce
 Each Worker Entity must also associate itself with exactly one [Task Queue](/docs/concepts/what-is-a-task-queue).
 Each Worker Entity polling the same Task Queue must be registered with the same Workflow Types and Activity Types.
 
-<!-- - [How to develop a Worker Program in Go](/docs/go/how-to-develop-a-worker-program-in-go)
+- [How to develop a Worker Program in Go](/docs/go/how-to-develop-a-worker-program-in-go)
 - [How to develop a Worker Program in Java](/docs/java/how-to-develop-a-worker-program-in-java)
 - [How to develop a Worker Program in PHP](/docs/php/how-to-develop-a-worker-program-in-php)
-- [How to develop a Worker Program in TypeScript](/docs/typescript/how-to-develop-a-worker-program-in-typescript) -->
-
-import DevelopWorkerInGo from '../go/how-to-develop-a-worker-program-in-go.md'
-import DevelopWorkerInJava from '../java/how-to-develop-a-worker-program-in-java.md'
-import DevelopWorkerInPHP from '../php/how-to-develop-a-worker-program-in-php.md'
-import DevelopWorkerInTypeScript from '../typescript/how-to-develop-a-worker-program-in-typescript.md'
-
-<Tabs
-defaultValue="go"
-groupId="site-lang"
-values={[
-{label: 'Go', value: 'go'},
-{label: 'Java', value: 'java'},
-{label: 'PHP', value: 'php'},
-{label: 'Typescript', value: 'ts'},
-]
-}>
-
-<TabItem value="go">
-
-<DevelopWorkerInGo/>
-
-</TabItem>
-<TabItem value="java">
-
-<DevelopWorkerInJava/>
-
-</TabItem>
-<TabItem value="php">
-
-<DevelopWorkerInPHP/>
-
-</TabItem>
-<TabItem value="ts">
-
-<DevelopWorkerInTypeScript/>
-
-</TabItem>
-</Tabs>
+- [How to develop a Worker Program in TypeScript](/docs/typescript/how-to-develop-a-worker-program-in-typescript)
 
 Each Worker Entity is created with the use of a Temporal Client.
 There are many customizations that can be set on the Client.
