@@ -2,6 +2,68 @@ import React from "react";
 import Link from "@docusaurus/Link";
 import useBaseUrl from "@docusaurus/useBaseUrl";
 
+function Explained() {
+  return (
+    <div className="flex flex-col rounded-lg bg-[color:var(--ifm-card-background-color)] p-5 shadow">
+      <div className="flex items-center space-x-4">
+        <svg
+          width="13"
+          className="mb-4 h-10 w-10 rounded-lg bg-[color:var(--ifm-color)] p-2 text-[color:var(--ifm-background-color)]"
+          height="14"
+          viewBox="0 0 491.52 491.52"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M445.44,33.792H261.12V15.36c0-8.704-6.656-15.36-15.36-15.36S230.4,6.656,230.4,15.36v18.432H46.08 c-8.704,0-15.36,6.656-15.36,15.36v257.536H460.8V49.152C460.8,40.448,454.144,33.792,445.44,33.792z"
+            fill="currentColor"
+          />
+          <path
+            d="M476.16,332.288H15.36c-8.192,0-15.36,7.168-15.36,15.36c0,8.704,6.656,15.36,15.36,15.36h199.168l-90.624,95.744 c-5.632,6.144-5.632,15.872,0.512,21.504c6.144,5.632,15.872,5.632,21.504-0.512l84.48-89.088v85.504 c0,8.704,6.656,15.36,15.36,15.36s15.36-6.656,15.36-15.36v-85.504l84.48,89.088c5.632,6.144,15.36,6.656,21.504,0.512 c6.144-5.632,6.656-15.36,0.512-21.504l-90.624-95.744H476.16c8.704,0,15.36-6.656,15.36-15.36 C491.52,338.944,484.864,332.288,476.16,332.288z"
+            fill="currentColor"
+          />
+        </svg>
+        <h2 className="mb-4 text-xl font-semibold">Temporal explained</h2>
+      </div>
+      <p className="mb-4 flex font-medium">Temporal core concepts explained.</p>
+      <ul className="flex list-disc flex-col space-y-2 pl-4">
+        <li className="">
+          <Link
+            to={useBaseUrl("/docs/temporal-explained/workflows")}
+            className="hover:underline"
+          >
+            <a className="font-normal">Temporal Workflows</a>
+          </Link>
+        </li>
+        <li className="">
+          <Link
+            to={useBaseUrl("/docs/temporal-explained/signals-and-queries")}
+            className="hover:underline"
+          >
+            <a className="font-normal">Signals & Queries</a>
+          </Link>
+        </li>
+        <li className="">
+          <Link
+            to={useBaseUrl("/docs/temporal-explained/timeouts-and-retries")}
+            className="hover:underline"
+          >
+            <a className="font-normal">Timeouts & retries</a>
+          </Link>
+        </li>
+        <li className="">
+          <Link
+            to={useBaseUrl("/docs/temporal-explained/visibility")}
+            className="hover:underline"
+          >
+            <a className="font-normal">Visibility</a>
+          </Link>
+        </li>
+      </ul>
+    </div>
+  );
+}
+
 function SDKs() {
   return (
     <div className="rounded-lg bg-[color:var(--ifm-card-background-color)] p-5 shadow">
@@ -27,74 +89,82 @@ function SDKs() {
             fill="currentColor"
           />
         </svg>
-        <h2 className="mb-4 text-xl font-semibold">SDKs</h2>
+        <h2 className="mb-4 text-xl font-semibold">SDK how-to guides</h2>
       </div>
-      <p className="mb-4 flex-grow">
-        Write Workflows and Activities, run Workers and embed Temporal Clients
-        in your applications.
+      <p className="mb-4 flex font-medium">
+        SDK specific implementation guides and examples.
       </p>
-      <ul className="flex flex-col space-y-2">
-        {/* <ul className="grid grid-cols-2 gap-6 xl:gap-8"> */}
-        <li className="">
-          <Link
-            className="flex items-center space-x-3 hover:underline"
-            to={useBaseUrl("/docs/go/")}
-          >
-            <img
-              className="h-8 w-8 transition hover:scale-110"
-              src="/img/golang.svg"
-              alt="Go lang logo"
-            />
-            <p className="font-semibold">Go</p>
-          </Link>
-        </li>
-        <li className="">
-          <Link
-            className="flex items-center space-x-3 hover:underline"
-            to={useBaseUrl("/docs/java")}
-          >
-            <img
-              className="h-8 w-8 transition hover:scale-110"
-              src="/img/java.svg"
-              alt="Java logo"
-            />
-            <p className="font-semibold">Java</p>
-          </Link>
-        </li>
+      <div className="grid grid-cols-2">
+        <div>
+          <ul className="flex flex-col space-y-2">
+            {/* <ul className="grid grid-cols-2 gap-6 xl:gap-8"> */}
+            <li className="">
+              <Link
+                className="flex items-center space-x-3 hover:underline"
+                to={useBaseUrl("/docs/go/")}
+              >
+                <img
+                  className="h-8 w-8 transition hover:scale-110"
+                  src="/img/golang.svg"
+                  alt="Go lang logo"
+                />
+                <p className="font-normal">Go</p>
+              </Link>
+            </li>
+            <li className="">
+              <Link
+                className="flex items-center space-x-3 hover:underline"
+                to={useBaseUrl("/docs/java")}
+              >
+                <img
+                  className="h-8 w-8 transition hover:scale-110"
+                  src="/img/java.svg"
+                  alt="Java logo"
+                />
+                <p className="font-normal">Java</p>
+              </Link>
+            </li>
+          </ul>
+        </div>
 
-        <li className="">
-          <Link
-            className="flex items-center space-x-5"
-            to={useBaseUrl("/docs/php/introduction")}
-          >
-            <div className="flex items-center space-x-3 hover:underline">
-              <img
-                className="h-8 w-8 transition hover:scale-110"
-                src="/img/php.svg"
-                alt="PHP logo"
-              />
-              <p className="font-semibold">PHP</p>{" "}
-            </div>
-          </Link>
-        </li>
-        <li className="">
-          <Link to={useBaseUrl("/docs/typescript/introduction")}>
-            <div className="flex items-center space-x-3 hover:underline">
-              <img
-                className="h-7 w-7 pl-1 transition hover:scale-110"
-                src="/img/typescript.svg"
-                alt="TypeScript logo"
-              />
-              <p className="font-semibold">TypeScript</p>
-            </div>
-          </Link>
-        </li>
-      </ul>
+        <div>
+          <ul className="flex flex-col space-y-2">
+            {/* <ul className="grid grid-cols-2 gap-6 xl:gap-8"> */}
+            <li className="">
+              <Link
+                className="flex items-center space-x-5"
+                to={useBaseUrl("/docs/php/introduction")}
+              >
+                <div className="flex items-center space-x-3 hover:underline">
+                  <img
+                    className="h-8 w-8 transition hover:scale-110"
+                    src="/img/php.svg"
+                    alt="PHP logo"
+                  />
+                  <p className="font-normal">PHP</p>{" "}
+                </div>
+              </Link>
+            </li>
+            <li className="">
+              <Link to={useBaseUrl("/docs/typescript/introduction")}>
+                <div className="flex items-center space-x-3 hover:underline">
+                  <img
+                    className="h-7 w-7 pl-1 transition hover:scale-110"
+                    src="/img/typescript.svg"
+                    alt="TypeScript logo"
+                  />
+                  <p className="font-normal">TypeScript</p>
+                </div>
+              </Link>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
   );
 }
 
-function Server() {
+function Cluster() {
   return (
     <div className="flex flex-col rounded-lg bg-[color:var(--ifm-card-background-color)] p-5 shadow">
       <div className="flex items-center space-x-4">
@@ -113,28 +183,32 @@ function Server() {
             fill="currentColor"
           />
         </svg>
-        <h2 className="mb-4 text-xl font-semibold">Temporal Cluster</h2>
+        <h2 className="mb-4 text-xl font-semibold">Cluster how-to guides</h2>
       </div>
-      <p className="mb-4 flex-grow">
-        Learn Temporal's architecture and how to deploy your own instance of a
-        Temporal Cluster
+      <p className="mb-4 flex font-medium">
+        Temporal Cluster how-to guides and examples.
       </p>
-
       <ul className="flex list-disc flex-col space-y-2 pl-4">
         <li className="">
           <Link
-            to={useBaseUrl("/docs/server/introduction")}
+            to={useBaseUrl(
+              "/docs/cluster/how-to-quickly-install-the-temporal-cluster-using-docker-compose"
+            )}
             className="hover:underline"
           >
-            <a className="font-semibold">Server Intro</a>
+            <a className="font-normal">Run a Cluster using Docker Compose</a>
           </Link>
         </li>
         <li className="">
           <Link
-            to={useBaseUrl("/docs/concepts/what-is-a-temporal-cluster")}
+            to={useBaseUrl(
+              "/docs/cluster/how-to-integrate-elasticsearch-into-a-temporal-cluster"
+            )}
             className="hover:underline"
           >
-            <a className="font-semibold">Cluster Architecture</a>
+            <a className="font-normal">
+              Integrate Elasticsearch into your Cluster
+            </a>
           </Link>
         </li>
         <li className="">
@@ -142,41 +216,27 @@ function Server() {
             to={useBaseUrl("/docs/server/versions-and-dependencies")}
             className="hover:underline"
           >
-            <a className="font-semibold">Versions and Dependencies</a>
+            <a className="font-normal">Upgrade a Cluster</a>
           </Link>
         </li>
-        {/* <li className="list-disc">
-          <Link to={"https://temporal.io/cloud"} className="hover:underline">
-            <p className="font-semibold">
-              Temporal Cloud Waitlist
-              <svg
-                className="w-4 h-4 inline"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
-                <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
-              </svg>
-            </p>
+        <li className="">
+          <Link
+            to={useBaseUrl(
+              "/docs/cluster/how-to-deploy-temporal-to-kubernetes-for-testing-and-development"
+            )}
+            className="hover:underline"
+          >
+            <a className="font-normal">Deploy to Kubernetes</a>
           </Link>
-        </li> */}
+        </li>
       </ul>
-      <Link
-        to={useBaseUrl("/docs/server/quick-install")}
-        className="mt-2 -ml-2 hover:underline"
-      >
-        <p className="font-semibold">
-          <span className="mr-1">⭐</span> Quick Install (with Docker)
-        </p>
-      </Link>
     </div>
   );
 }
 
 function Tools() {
   return (
-    <div className="flex flex-col rounded-lg bg-[color:var(--ifm-card-background-color)] p-5 shadow">
+    <div className="rounded-lg bg-[color:var(--ifm-card-background-color)] p-5 shadow">
       <div className="flex items-center space-x-4">
         <svg
           className="mb-4 h-10 w-10 rounded-lg bg-[color:var(--ifm-color)] p-2 text-[color:var(--ifm-background-color)]"
@@ -199,51 +259,150 @@ function Tools() {
             fill="currentColor"
           />
         </svg>
+        <h2 className="mb-4 text-xl font-semibold">Devtools</h2>
+      </div>
+      <p className="mb-4 flex font-medium">Tooling how-tos and examples.</p>
+      <ul className="flex flex-col space-y-2">
+        {/* <ul className="grid grid-cols-2 gap-6 xl:gap-8"> */}
+        <li className="">
+          <Link
+            className="flex items-center space-x-3 hover:underline"
+            to={useBaseUrl("/docs/tctl")}
+          >
+            <svg
+              className="h-8 w-8 transition hover:scale-110"
+              fill="currentColor"
+              viewBox="0 0 22 22"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fillRule="evenodd"
+                d="M2 5a2 2 0 012-2h12a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm3.293 1.293a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 01-1.414-1.414L7.586 10 5.293 7.707a1 1 0 010-1.414zM11 12a1 1 0 100 2h3a1 1 0 100-2h-3z"
+                clipRule="evenodd"
+              />
+            </svg>
+            <p className="font-normal">tctl (CLI)</p>
+          </Link>
+        </li>
+        <li className="">
+          <Link
+            className="flex items-center space-x-3 hover:underline"
+            to={useBaseUrl("/docs/devtools/web-ui")}
+          >
+            <svg
+              className="h-8 w-8 transition hover:scale-110"
+              fill="currentColor"
+              viewBox="0 0 22 22"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fillRule="evenodd"
+                d="M3 5a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2h-2.22l.123.489.804.804A1 1 0 0113 18H7a1 1 0 01-.707-1.707l.804-.804L7.22 15H5a2 2 0 01-2-2V5zm5.771 7H5V5h10v7H8.771z"
+                clipRule="evenodd"
+              />
+            </svg>
+            <p className="font-normal">Web UI</p>
+          </Link>
+        </li>
+      </ul>
+    </div>
+  );
+}
 
-        <h2 className="mb-4 text-xl font-semibold">Dev Tools</h2>
+function Operation() {
+  return (
+    <div className="flex flex-col rounded-lg bg-[color:var(--ifm-card-background-color)] p-5 shadow">
+      <div className="flex items-center space-x-4">
+        <svg
+          width="13"
+          className="mb-4 h-10 w-10 rounded-lg bg-[color:var(--ifm-color)] p-2 text-[color:var(--ifm-background-color)]"
+          height="14"
+          viewBox="0 0 512 512"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="m393.72 202.051c4.071 0 7.968-1.655 10.795-4.585l54.445-56.429c5.606-5.812 5.606-15.019 0-20.83l-54.445-56.429c-2.827-2.93-6.724-4.585-10.795-4.585h-92.933v-44.193c0-8.284-6.716-15-15-15h-59.574c-8.284 0-15 6.716-15 15v44.192h-122.127c-16.681 0-30.251 13.57-30.251 30.25v82.358c0 16.681 13.57 30.251 30.251 30.251h122.127v29.999h-92.933c-4.071 0-7.968 1.655-10.795 4.585l-54.445 56.429c-5.606 5.812-5.606 15.019 0 20.83l54.445 56.429c2.827 2.93 6.724 4.585 10.795 4.585h92.933v107.092h-15c-8.284 0-15 6.716-15 15s6.716 15 15 15h119.574c8.284 0 15-6.716 15-15s-6.716-15-15-15h-15v-107.092h122.127c16.681 0 30.251-13.57 30.251-30.25v-82.358c0-16.68-13.57-30.25-30.251-30.25h-122.127v-29.999z"
+            fill="currentColor"
+          />
+        </svg>
+        <h2 className="mb-4 text-xl font-semibold">Operation</h2>
       </div>
-      <p className="mb-4 flex-grow">
-        Tools to manage Workflow Execution lifecycles, manage your Cluster,
-        debug your application, and more.
+      <p className="mb-4 flex font-medium">
+        Practical operation guides and information.
       </p>
-      <div className="flex flex-col space-y-2">
-        <Link
-          to={useBaseUrl("/docs/devtools/web-ui")}
-          className="flex space-x-3 font-semibold hover:underline"
-        >
-          <svg
-            className="h-6 w-6 transition hover:scale-110"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
+      <ul className="flex list-disc flex-col space-y-2 pl-4">
+        <li className="">
+          <a
+            href="/docs/operation/how-to-tune-workers"
+            className="font-normal hover:underline"
           >
-            <path
-              fillRule="evenodd"
-              d="M3 5a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2h-2.22l.123.489.804.804A1 1 0 0113 18H7a1 1 0 01-.707-1.707l.804-.804L7.22 15H5a2 2 0 01-2-2V5zm5.771 7H5V5h10v7H8.771z"
-              clipRule="evenodd"
-            />
-          </svg>
-          <div className="">Web UI</div>
-        </Link>
-        <Link
-          to={useBaseUrl("/docs/tctl")}
-          className="flex space-x-3 font-semibold hover:underline"
-        >
-          <svg
-            className="h-6 w-6 transition hover:scale-110"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
+            Tune Workers
+          </a>
+        </li>
+        <li className="">
+          <a
+            href="/docs/server/production-deployment/"
+            className="font-normal hover:underline"
           >
-            <path
-              fillRule="evenodd"
-              d="M2 5a2 2 0 012-2h12a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm3.293 1.293a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 01-1.414-1.414L7.586 10 5.293 7.707a1 1 0 010-1.414zM11 12a1 1 0 100 2h3a1 1 0 100-2h-3z"
-              clipRule="evenodd"
-            />
-          </svg>
-          <div>tctl (CLI)</div>
-        </Link>
+            Deploy to production
+          </a>
+        </li>
+      </ul>
+    </div>
+  );
+}
+
+function Learning() {
+  return (
+    <div className="flex flex-col rounded-lg bg-[color:var(--ifm-card-background-color)] p-5 shadow">
+      <div className="flex items-center space-x-4">
+        <svg
+          width="13"
+          className="mb-4 h-10 w-10 rounded-lg bg-[color:var(--ifm-color)] p-2 text-[color:var(--ifm-background-color)]"
+          height="14"
+          viewBox="0 0 511.973 511.973"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="m502.332 177.307c-1.414-.614-35.889-15.549-240-104-4.06-1.76-8.66-1.76-12.72 0l-240 104c-12.878 5.569-12.754 23.849 0 29.36 46.624 20.201 122.845 53.234 240 104 4.036 1.75 8.636 1.771 12.72 0 11.125-4.821 162.711-70.509 169.64-73.51v170.381c0 8.618 6.626 16.031 15.235 16.431 9.188.428 16.765-6.888 16.765-15.982v-176.633c0-2.514-1.862-4.637-4.356-4.958-30.031-3.87-171.66-22.15-205.694-26.539-9.844-1.23-15.978-11.198-13.39-20.07 2.03-7.493 9.144-12.266 16.35-11.77.718.042 228.73 29.466 228.567 29.445 4.26.548 7.762 3.276 9.444 6.975 1.176 2.586 4.17 3.771 6.742 2.565 4.305-2.018 8.039-4.674 9.737-10.685 2.186-7.789-1.764-15.864-9.04-19.01z"
+            fill="currentColor"
+          />
+          <path
+            d="m236.882 340.027-133.922-58.032c-3.302-1.431-6.988.99-6.988 4.588v57.404c0 53.83 70.28 96 160 96s160-42.17 160-96v-57.404c0-3.598-3.686-6.018-6.988-4.588l-133.932 58.032c-12.16 5.286-25.998 5.282-38.17 0z"
+            fill="currentColor"
+          />
+        </svg>
+        <h2 className="mb-4 text-xl font-semibold">Learning</h2>
       </div>
+      <p className="mb-4 flex font-medium">Tutorials and learning materials.</p>
+      <ul className="flex list-disc flex-col space-y-2 pl-4 content-start">
+        <li className="">
+          <Link
+            to={useBaseUrl("/docs/learning-paths/run-your-first-app")}
+            className="hover:underline"
+          >
+            <a className="font-normal">Run your first app</a>
+          </Link>
+        </li>
+        <li className="">
+          <Link
+            to={useBaseUrl("/docs/learning-paths/hello-world")}
+            className="hover:underline"
+          >
+            <a className="font-normal">"Hello World!" from scratch</a>
+          </Link>
+        </li>
+        <li className="">
+          <Link
+            to={useBaseUrl("/docs/learning-paths/background-checks")}
+            className="hover:underline"
+          >
+            <a className="font-normal">Background Check project</a>
+          </Link>
+        </li>
+      </ul>
     </div>
   );
 }
@@ -259,10 +418,13 @@ export const Intro = () => {
         reliable, mission-critical applications at scale.
       </p>
 
-      <div className="my-10 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+      <div className="my-10 grid grid-cols-1 gap-6 md:grid-cols-2 lg:gap-8">
+        <Explained />
+        <Learning />
         <SDKs />
-        <Server />
         <Tools />
+        <Cluster />
+        <Operation />
       </div>
     </section>
   );
