@@ -39,7 +39,7 @@ This guide covers many of the features that are available to use in your [Tempor
 
 - [What is a Local Activity Execution](/docs/concepts/what-is-a-local-activity)
 
-- [How to set `ExecuteLocalActivityOptions` in Go](/docs/go/how-to-set-executelocalactivityoptions-in-go)
+- [How to set ExecuteLocalActivityOptions in Go](/docs/go/how-to-set-executelocalactivityoptions-in-go)
 
 ## Long-running Activities
 
@@ -55,7 +55,7 @@ This guide covers many of the features that are available to use in your [Tempor
 
 - [How to spawn a Child Workflow Execution in Go](/docs/go/how-to-spawn-a-child-workflow-execution-in-go)
 
-- [How to set `ChildWorkflowOptions` in Go](/docs/go/how-to-set-childworkflowoptions-in-go)
+- [How to set ChildWorkflowOptions in Go](/docs/go/how-to-set-childworkflowoptions-in-go)
 
 ## Temporal Cron Jobs
 

@@ -85,12 +85,12 @@ Each Worker Entity polling the same Task Queue must be registered with the same 
 Each Worker Entity is created with the use of a Temporal Client.
 There are many customizations that can be set on the Client.
 
-- [How to set `ClientOptions` in Go](/docs/go/how-to-set-clientoptions-in-go)
+- [How to set ClientOptions in Go](/docs/go/how-to-set-clientoptions-in-go)
 
 There are some customizations that can be set when registering Workflow Types and Activity Types.
 
-- [How to set `RegisterOptions` for Workflows in Go](/docs/go/how-to-set-registerworkflowoptions-in-go)
-- [How to set `RegisterOptions` for Activities in Go](/docs/go/how-to-set-registeractivityoptions-in-go)
+- [How to set RegisterOptions for Workflows in Go](/docs/go/how-to-set-registerworkflowoptions-in-go)
+- [How to set RegisterOptions for Activities in Go](/docs/go/how-to-set-registeractivityoptions-in-go)
 
 ## Spawn Workflow Executions
 

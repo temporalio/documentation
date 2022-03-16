@@ -13,5 +13,5 @@ tags:
 
 The Temporal Platform h Visibility features that allow you to list Workflow Executions.
 
-- [How to list Workflow Executions using tctl](/docs/tctl/workflows/list)
+- [How to list Workflow Executions using tctl](/docs/tctl/workflow/list)
 - [How to use a List Filter in the Temporal Web UI](/docs/web-ui/how-to-use-a-list-filter-in-the-temporal-web-ui)
