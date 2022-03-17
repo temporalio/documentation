@@ -73,9 +73,10 @@ Notice that the Task Queue name is the same as the name provided when the [Workf
 
 The name of the Task Queue that is provided to the Worker must be the same Task Queue name that is provided with the invocation of the Workflow Execution.
 
-import SharedWorkersTaskQueueRegistrationNote from '../reminders/note-workers-task-queue-registration-match.md'
+All Workers listening to the same Task Queue name must be registered to handle the exact same Workflows Types and Activity Types.
 
-<SharedWorkersTaskQueueRegistrationNote />
+If a Worker polls a Task for a Workflow Type or Activity Type it does not know about, it will fail that Task.
+However, the failure of the Task will not cause the associated Workflow Execution to fail.
 
 ### Registering Activity `structs`
 
