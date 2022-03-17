@@ -377,7 +377,7 @@ function Learning() {
         <h2 className="mb-4 text-xl font-semibold">Learning</h2>
       </div>
       <p className="mb-4 flex font-medium">Tutorials and learning materials.</p>
-      <ul className="flex list-disc flex-col space-y-2 pl-4 content-start">
+      <ul className="flex list-disc flex-col content-start space-y-2 pl-4">
         <li className="">
           <Link
             to={useBaseUrl("/docs/learning-paths/run-your-first-app")}
