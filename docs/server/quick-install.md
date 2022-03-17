@@ -9,7 +9,7 @@ sidebar_label: Quick install
 There are three ways to quickly install and run the Temporal Server:
 
 - [Docker](#docker): Using `docker-compose` makes it easy to develop Workflows locally.
-- [Render](#render): Our `docker-compose` has been translated to Render.com's Blueprint format for a cloud alternative to local connection.
+- [Render](#render): Our `docker-compose` has been translated to Render's Blueprint format for a cloud alternative to local connection.
 - [Helm Charts](#helm-charts): Deploying the Server to [Kubernetes](https://kubernetes.io/) is an easy way to test the system and develop Workflows.
 
 We do not recommend using any of these methods in a [full (production) environment](/docs/server/production-deployment).
@@ -53,6 +53,6 @@ Get started quickly by running a [Go sample](https://github.com/temporalio/sampl
 
 ## Render
 
-[temporal-render-simple](https://github.com/temporalio/temporal-render-simple) translates our docker-compose to Render.com - using the [Auto-Setup Docker image](https://docs.temporal.io/blog/auto-setup). This is not recommended for production, as all 4 Temporal internal services (Frontend, Matching, History, and Worker) are being run out of one process, but the benefit is that we get one click deploys.
+[temporal-render-simple](https://github.com/temporalio/temporal-render-simple) translates our docker-compose to Render - using the [Auto-Setup Docker image](https://docs.temporal.io/blog/auto-setup). This is not recommended for production, as all 4 Temporal internal services (Frontend, Matching, History, and Worker) are being run out of one process, but the benefit is that we get one click deploys.
 
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
