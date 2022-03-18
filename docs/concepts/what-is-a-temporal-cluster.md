@@ -100,7 +100,6 @@ The Worker Service runs background processing for the replication queue, system 
 
 It talks to the Frontend service.
 
-- It uses grpcPort 7239 to host the service handler.
 - It uses port 6939 for membership related communication.
 
 ### Database
