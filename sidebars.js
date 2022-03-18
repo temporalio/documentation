@@ -193,13 +193,15 @@ module.exports = {
       collapsed: false,
       link: {
         type: "doc",
-        id: "operation/index",
+        id: "operations/index",
       },
       items: [
-        "operation/temporal-application-foundations",
-        "operation/temporal-application-features",
-        "operation/temporal-application-analysis",
-        "operation/how-to-tune-workers",
+
+        "operations/temporal-application-foundations",
+        "operations/temporal-application-features",
+        "operations/temporal-application-analysis",
+        "operations/how-to-tune-workers",
+        "go/how-to-develop-a-workflow-definition-in-go",
       ],
     },
   ],

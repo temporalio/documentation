@@ -322,7 +322,7 @@ function Operation() {
             fill="currentColor"
           />
         </svg>
-        <h2 className="mb-4 text-xl font-semibold">Operation</h2>
+        <h2 className="mb-4 text-xl font-semibold">Operations</h2>
       </div>
       <p className="mb-4 flex font-medium">
         Practical operation guides and information.

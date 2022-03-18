@@ -152,3 +152,5 @@
 /docs/system-tools/*        /docs/devtools/:splat
 
 /docs/content/how-to-remove-a-search-attribute-from-a-cluster-using-tctl /docs/tctl/how-to-remove-a-search-attribute-from-a-cluster-using-tctl
+
+/docs/operation/how-to-tune-workers        /docs/operations/how-to-tune-workers

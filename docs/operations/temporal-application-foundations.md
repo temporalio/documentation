@@ -11,11 +11,11 @@ This guide covers the minimum set of concepts and implementation details needed 
 
 ## Run a Temporal Cluster
 
-**Core concept: [Temporal Cluster](/docs/concepts/what-is-a-temporal-cluster)**
+Whenever we are developing Temporal Applications, we want to have a [Temporal Cluster](/docs/concepts/what-is-a-temporal-cluster) up and running. We can interact with a Cluster via [Temporal Client](/docs/concepts/what-is-a-temporal-sdk/#what-is-a-temporal-client) APIs and [tctl](/docs/tctl) commands.
 
-The very first thing that you need to do is make sure you have a Temporal Cluster running so that you can interact with it via Temporal Client APIs and tctl commands.
+The fastest way to get a Temporal Cluster running locally for testing and development is to use Docker Compose.
 
-- [How to run a local Temporal Cluster using Docker Compose](/docs/cluster/how-to-quickly-install-the-temporal-cluster-using-docker-compose)
+- [Run a local Temporal Cluster using Docker Compose](/docs/cluster/how-to-quickly-install-the-temporal-cluster-using-docker-compose)
 - [How to deploy a Temporal Cluster to Kubernetes for testing and development](/docs/cluster/how-to-deploy-temporal-to-kubernetes-for-testing-and-development)
 
 ## Develop Workflow Definitions
