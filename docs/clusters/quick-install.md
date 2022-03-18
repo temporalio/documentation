@@ -43,11 +43,9 @@ To try other configurations (different dependencies and databases), or to try a 
 [temporal-render-simple](https://github.com/temporalio/temporal-render-simple) translates our docker-compose to Render - using the [Auto-Setup Docker image](https://docs.temporal.io/blog/auto-setup).
 This is not recommended for production, as all 4 Temporal internal services (Frontend, Matching, History, and Worker) are being run out of one process, but the benefit is that we get one click deploys.
 
-<<<<<<< HEAD
 <a href="https://render.com/deploy?repo=https://github.com/temporalio/temporal-render-simple">
 <img src="https://render.com/images/deploy-to-render-button.svg" alt="Deploy to Render">
 </a>
-=======
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
 
 ### Gitpod
@@ -60,5 +58,3 @@ A one-click deployment starts a Temporal Cluster using a Temporal Cluster Docker
 
 It can take up to a full minute for the one-click deployments to get fully up and running.
 Once it is up and running, you can customize the application samples.
-
-> > > > > > > 7ee09c6 (rm duplicate pages, update links, add gitpod)
