@@ -48,7 +48,7 @@ It’s clear we could substantially accelerate the development of new SDKs and i
 We knew any design would need to meet the following requirements:
 
 * Clean integration with other languages
-* Good ergonomics for the end user (i.e., avoid imposing new operational requirements)
+* Good ergonomics for the end user (avoid imposing new operational requirements)
 * High performance
 * Maintainable
 
