@@ -10,8 +10,6 @@ To follow the Go SDK tutorials we recommend that you have the following environm
 
 Make sure you have [Go](https://golang.org/doc/install) installed. These tutorials were produced using Go 1.14.
 
-## Temporal Cluster
+## Run a Temporal Cluster
 
-import QuickInstall from '../clusters/how-to-quickly-install-the-temporal-cluster-using-docker-compose.md'
-
-<QuickInstall />
+- [How to run a Temporal Cluster for local development using Docker Compose](/docs/clusters/quick-install/#docker-compose)

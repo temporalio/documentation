@@ -202,7 +202,7 @@ function Cluster() {
         <li className="">
           <Link
             to={useBaseUrl(
-              "/docs/cluster/how-to-integrate-elasticsearch-into-a-temporal-cluster"
+              "/docs/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster"
             )}
             className="hover:underline"
           >

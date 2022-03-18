@@ -121,10 +121,11 @@
 #
 # Server pages redirects
 #
-/docs/server        /docs/server/introduction
-/docs/server-archive-data         /docs/server/archive-data
+/docs/server        /docs/clusters/
+/docs/server-archive-data        /docs/server/archive-data
 /docs/server-configuration        /docs/server/configuration
-/docs/server-introduction         /docs/server/introduction
+/docs/server-introduction        /docs/clusters
+/docs/server/introduction        /docs/clusters
 /docs/server-namespaces         /docs/server/namespaces
 /docs/namespaces        /docs/server/namespaces
 /docs/server-options        /docs/server/options

@@ -48,6 +48,22 @@ In TypeScript, SearchAttributes are represented as `Record<string, string | numb
 This can be useful for tagging executions with useful attributes you may want to search up later. For example:
 
 <!--SNIPSTART typescript-search-attributes-at-creation-->
+[search-attributes/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/search-attributes/src/client.ts)
+```ts
+  const result = await client.execute(example, {
+    taskQueue: 'search-attributes',
+    workflowId: 'search-attributes-example-0',
+    searchAttributes: {
+      CustomIntField: 2, // update CustomIntField from 1 to 2, then insert other fields
+      CustomKeywordField: 'Update1',
+      CustomBoolField: true,
+      CustomDoubleField: 3.14,
+      CustomDatetimeField: new Date().toISOString(),
+      CustomStringField:
+        'String field is for text. When query, it will be tokenized for partial match. StringTypeField cannot be used in Order By',
+    },
+  });
+```
 <!--SNIPEND-->
 
 ## Future: Upsert Search Attributes during workflow execution

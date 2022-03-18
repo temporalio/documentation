@@ -4,23 +4,22 @@ title: How to quickly install a Temporal Cluster for testing and local developme
 sidebar_label: Quick install
 ---
 
-## Overview
-
 There are three ways to quickly install and run a Temporal Cluster:
 
 - [Docker](#docker): Using Docker Compose makes it easy to develop your Temporal Application locally.
 - [Render](#render): Our [temporalio/docker-compose](https://github.com/temporalio/docker-compose) experience has been translated to Render's Blueprint format for a an alternative cloud connection.
 - [Helm Charts](#helm-charts): Deploying a Cluster to [Kubernetes](https://kubernetes.io/) is an easy way to test the system and develop Temporal Applications.
+- [Gitpod](#gitpod): One-click deployments are available for Go and TypeScript.
 
 **We do not recommend using any of these methods in a [full (production) environment](/docs/server/production-deployment).**
 
-## Helm Charts
+### Helm Charts
 
 Use [Temporal Helm Charts](https://github.com/temporalio/helm-charts) to deploy the Temporal Server to a [Kubernetes](https://kubernetes.io/) cluster.
 
 Deploying the Temporal Cluster with Helm is not recommended for a production environment, but it is a great way to test the system while developing Workflows.
 
-## Docker Compose
+### Docker Compose
 
 Use Docker Compose and Temporal Cluster Docker Images to quickly install and run a Temporal Cluster locally while developing Workflows.
 
@@ -39,11 +38,26 @@ When the Temporal Cluster is running the Temporal Web UI becomes available in yo
 The preceding steps start and run a Temporal Cluster using a default configuration.
 To try other configurations (different dependencies and databases), or to try a custom Docker Image follow the [temporalio/docker-compose README](https://github.com/temporalio/docker-compose/blob/main/README.md).
 
-## Render
+### Render
 
 [temporal-render-simple](https://github.com/temporalio/temporal-render-simple) translates our docker-compose to Render - using the [Auto-Setup Docker image](https://docs.temporal.io/blog/auto-setup).
 This is not recommended for production, as all 4 Temporal internal services (Frontend, Matching, History, and Worker) are being run out of one process, but the benefit is that we get one click deploys.
 
+<<<<<<< HEAD
 <a href="https://render.com/deploy?repo=https://github.com/temporalio/temporal-render-simple">
   <img src="https://render.com/images/deploy-to-render-button.svg" alt="Deploy to Render">
 </a>
+=======
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
+
+### Gitpod
+
+You can run a Temporal Cluster and develop Temporal Applications in your browser using [Gitpod](https://www.gitpod.io/).
+
+One-click deployments are available for the [temporalio/samples-go](https://github.com/temporalio/samples-go) repo and the [temporalio/samples-typescript](https://github.com/temporalio/samples-typescript) repo.
+
+A one-click deployment starts a Temporal Cluster using a Temporal Cluster Docker Image, starts a Worker Process, and starts one of the application's sample Workflows.
+
+It can take up to a full minute for the one-click deployments to get fully up and running.
+Once it is up and running, you can customize the application samples.
+>>>>>>> 7ee09c6 (rm duplicate pages, update links, add gitpod)

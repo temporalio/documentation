@@ -201,14 +201,15 @@ module.exports = {
   sidebarCluster: [
     {
       type: "category",
-      label: "Cluster",
+      label: "Cluster how-tos",
       collapsible: false,
       collapsed: false,
+      link: {
+        type: "doc",
+        id: "clusters/index",
+      },
       items: [
-        "server/introduction",
         "clusters/quick-install",
-        "clusters/how-to-quickly-install-the-temporal-cluster-using-docker-compose",
-        "clusters/how-to-deploy-temporal-to-kubernetes-for-testing-and-development",
         "server/versions-and-dependencies",
         "server/options",
         "server/configuration",

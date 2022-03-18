@@ -74,9 +74,9 @@ module.exports = {
               label: "Concepts",
             },
             {
-              to: "/docs/server/introduction",
-              activeBasePath: "/docs/server/",
-              label: "Cluster",
+              to: "/docs/clusters",
+              activeBasePath: "/docs/clusters/",
+              label: "Clusters",
             },
             {
               to: "/docs/tctl/",

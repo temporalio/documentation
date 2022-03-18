@@ -199,7 +199,7 @@ And we created a much more immersive experience for the user personas that we id
 
 ![Go topic area](/img/go-topic-area.png)
 
-- Infra engineers for example, [docs.temporal.io/server](/docs/server/introduction):
+- Infra engineers for example, [docs.temporal.io/server](/docs/clusters):
 
 ![Server topic area](/img/server-topic-area.png)
 

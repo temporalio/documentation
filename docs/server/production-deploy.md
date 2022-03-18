@@ -6,7 +6,7 @@ sidebar_label: Production deployment
 
 ## Overview
 
-While a lot of effort has been made to easily run and test the Temporal Server in a development environment (see the [Quick install guide](/docs/server/quick-install)), there is far less of an established framework for deploying Temporal to a live (production) environment.
+While a lot of effort has been made to easily run and test the Temporal Server in a development environment (see the [Quick install guide](/docs/clusters/quick-install)), there is far less of an established framework for deploying Temporal to a live (production) environment.
 That is because the set up of the Server depends very much on your intended use-case and the hosting infrastructure.
 
 This page is dedicated to providing a "first principles" approach to self-hosting the Temporal Server.
