@@ -68,18 +68,6 @@ persistence:
 Run the following commands to create the index schema and index:
 
 <!--SNIPSTART setup-es-template-commands-->
-[docker/auto-setup.sh](https://github.com/temporalio/temporal/blob/master/docker/auto-setup.sh)
-```sh
-    # ES_SERVER is the URL of Elasticsearch server i.e. "http://localhost:9200".
-    SETTINGS_URL="${ES_SERVER}/_cluster/settings"
-    SETTINGS_FILE=${TEMPORAL_HOME}/schema/elasticsearch/visibility/cluster_settings_${ES_VERSION}.json
-    TEMPLATE_URL="${ES_SERVER}/_template/temporal_visibility_v1_template"
-    SCHEMA_FILE=${TEMPORAL_HOME}/schema/elasticsearch/visibility/index_template_${ES_VERSION}.json
-    INDEX_URL="${ES_SERVER}/${ES_VIS_INDEX}"
-    curl --fail --user "${ES_USER}":"${ES_PWD}" -X PUT "${SETTINGS_URL}" -H "Content-Type: application/json" --data-binary "@${SETTINGS_FILE}" --write-out "\n"
-    curl --fail --user "${ES_USER}":"${ES_PWD}" -X PUT "${TEMPLATE_URL}" -H 'Content-Type: application/json' --data-binary "@${SCHEMA_FILE}" --write-out "\n"
-    curl --user "${ES_USER}":"${ES_PWD}" -X PUT "${INDEX_URL}" --write-out "\n"
-```
 <!--SNIPEND-->
 
 ### Set Elasticsearch privileges
@@ -108,15 +96,4 @@ tctl admin cluster add-search-attributes --name ProductId --type Keyword
 Run the following `tctl` command to add custom Search Attributes used by samples and SDK integration tests:
 
 <!--SNIPSTART add-custom-search-attributes-for-testing-command-->
-[docker/auto-setup.sh](https://github.com/temporalio/temporal/blob/master/docker/auto-setup.sh)
-```sh
-      tctl --auto_confirm admin cluster add-search-attributes \
-          --name CustomKeywordField --type Keyword \
-          --name CustomStringField --type Text \
-          --name CustomTextField --type Text \
-          --name CustomIntField --type Int \
-          --name CustomDatetimeField --type Datetime \
-          --name CustomDoubleField --type Double \
-          --name CustomBoolField --type Bool
-```
 <!--SNIPEND-->
