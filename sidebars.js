@@ -447,9 +447,9 @@ module.exports = {
                 id: "tctl/batch/index",
               },
               items: [
-                "tctl/batch/describe",
-                "tctl/batch/list",
                 "tctl/batch/start",
+                "tctl/batch/list",
+                "tctl/batch/describe",
                 "tctl/batch/terminate",
               ],
             },
