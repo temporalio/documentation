@@ -12,6 +12,6 @@ Make sure you have [Go](https://golang.org/doc/install) installed. These tutoria
 
 ## Temporal Cluster
 
-import QuickInstall from '../cluster/how-to-quickly-install-the-temporal-cluster-using-docker-compose.md'
+import QuickInstall from '../clusters/how-to-quickly-install-the-temporal-cluster-using-docker-compose.md'
 
 <QuickInstall />

@@ -192,7 +192,7 @@ function Cluster() {
         <li className="">
           <Link
             to={useBaseUrl(
-              "/docs/cluster/how-to-quickly-install-the-temporal-cluster-using-docker-compose"
+              "/docs/clusters/quick-install/#docker-compose"
             )}
             className="hover:underline"
           >
@@ -222,7 +222,7 @@ function Cluster() {
         <li className="">
           <Link
             to={useBaseUrl(
-              "/docs/cluster/how-to-deploy-temporal-to-kubernetes-for-testing-and-development"
+              "/docs/clusters/quick-install/#helm-charts"
             )}
             className="hover:underline"
           >
