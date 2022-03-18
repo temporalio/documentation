@@ -45,7 +45,7 @@ This is not recommended for production, as all 4 Temporal internal services (Fro
 
 <<<<<<< HEAD
 <a href="https://render.com/deploy?repo=https://github.com/temporalio/temporal-render-simple">
-  <img src="https://render.com/images/deploy-to-render-button.svg" alt="Deploy to Render">
+<img src="https://render.com/images/deploy-to-render-button.svg" alt="Deploy to Render">
 </a>
 =======
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
@@ -60,4 +60,5 @@ A one-click deployment starts a Temporal Cluster using a Temporal Cluster Docker
 
 It can take up to a full minute for the one-click deployments to get fully up and running.
 Once it is up and running, you can customize the application samples.
->>>>>>> 7ee09c6 (rm duplicate pages, update links, add gitpod)
+
+> > > > > > > 7ee09c6 (rm duplicate pages, update links, add gitpod)
