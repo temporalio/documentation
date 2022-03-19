@@ -17,7 +17,7 @@ When starting a batch job, you must provide a [List Filter](/docs/concepts/what-
 Batch jobs run in the background and affect the Workflow Executions one at a time.
 
 The List Filter is used to identify the set of Workflow Executions that will be affected by the batch job.
-The batch command will show you how many Workflow Executions will be affect by the batch job and ask you to confirm to proceed.
+The batch command will show you how many Workflow Executions will be affected by the batch job and ask you to confirm to proceed.
 
 The batch type determines what other parameters you must provide and what is being affected.
 There are three types of batch jobs:
