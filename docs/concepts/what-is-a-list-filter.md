@@ -42,8 +42,6 @@ A List Filter contains [Search Attribute](/docs/concepts/what-is-a-search-attrib
 - A `ListWorkflow` API supports pagination.
   Use the page token in the following call to retrieve the next page; continue until the page token is `null`/`nil`.
 
-- To paginate through a large number of Workflow Executions without skipping or duplicating them, use the `ScanWorkflow` API.
-
 - To efficiently count the number of Workflow Executions, use the `CountWorkflow` API.
 
 ### Example List Filters
