@@ -17,17 +17,37 @@ The README in GitHub's [first-contributions repo](https://github.com/firstcontri
 The Temporal documentation site uses [Docusaurus 2](https://v2.docusaurus.io/), which is a static website generator.
 
 You can make changes locally without previewing them in the browser.
-However, if you want to build the site and preview changes in the browser, you need to have [Docusaurus 2 dependencies](https://v2.docusaurus.io/docs/installation/#requirements) installed.
+However, if you want to build the site and preview changes in the browser, do the following:
 
-Initialize Docusaurus 2 in the repo by running [`yarn`](https://classic.yarnpkg.com/en/docs/cli/) once in the root directory of the repo.
+- Install [Node.js version >= 14](https://nodejs.org/en/download/) (Mac: `brew install node@16`)
+- Download the repository and install dependencies with [`yarn`](https://classic.yarnpkg.com/en/docs/install#mac-stable)
 
-Now you can build and view the site locally:
+```bash
+git clone https://github.com/temporalio/documentation.git
+cd documentation/
+yarn
+```
+
+- Now you can build and view the site locally:
 
 ```bash
 yarn start
 ```
 
-The command starts a local development server and opens a browser window.
+This command starts a local development server and opens a browser window to [localhost:3000](http://localhost:3000/).
+
+### Snipsync
+
+To preview [snipsync](https://github.com/temporalio/snipsync) snippets like this:
+
+```
+<!--SNIPSTART typescript-hello-client -->
+<!--SNIPEND-->
+```
+
+Run `yarn snipsync`, which inserts the snippet contents (in this case, from [`samples-typescript`](https://github.com/temporalio/samples-typescript/blob/75bdcd613bd24f8f357cb96d1b83051353c5685a/hello-world/src/client.ts#L1)) between the two lines above.
+
+Before committing, run `yarn snipsync --clear` to remove the snippets.
 
 ## Prettier
 
@@ -42,7 +62,7 @@ yarn install
 To reformat:
 
 ```
-yarn prettier --write '**/*.{js,md}'
+yarn format
 ```
 
 ## Pull requests
