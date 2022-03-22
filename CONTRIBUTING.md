@@ -28,6 +28,8 @@ However, if you want to build the site and preview changes in the browser, do th
   cd documentation/
   yarn
 
+  ```
+
 - Now you can build and view the site locally:
 
 ```bash
