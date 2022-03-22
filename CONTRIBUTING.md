@@ -40,7 +40,7 @@ This command starts a local development server and opens a browser window to [lo
 
 ### Snipsync
 
-To preview [snipsync](https://github.com/temporalio/snipsync) snippets like this:
+In the documentation files, [snipsync](https://github.com/temporalio/snipsync) snippets appear like this:
 
 ```
 <!--SNIPSTART typescript-hello-client -->
