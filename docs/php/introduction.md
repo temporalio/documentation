@@ -14,7 +14,7 @@ sidebar_label: PHP SDK introduction
   },
 ```
 
-2. [Install and run the Temporal Server](/docs/server/quick-install) using `docker compose`.
+2. [Install and run the Temporal Server](/docs/clusters/quick-install) using `docker compose`.
 
 ## Tutorials
 

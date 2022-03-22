@@ -85,9 +85,9 @@ Run the InitiateMoneyTransfer class within IntelliJ or from the project root usi
 <details>
 <summary>Troubleshooting</summary>
 
-If you get `Connection refused: /127.0.0.1:7233` error, make sure the [Temporal server is running](/docs/server/quick-install).
+If you get `Connection refused: /127.0.0.1:7233` error, make sure the [Temporal server is running](/docs/clusters/quick-install).
 
-If you get `ALREADY_EXISTS: Workflow execution is already running. WorkflowId: money-transfer-workflow, RunId:<...>`, stop your Temporal docker-compose process [started earlier](/docs/server/quick-install) and recreate Temporal docker-compose containers using:
+If you get `ALREADY_EXISTS: Workflow execution is already running. WorkflowId: money-transfer-workflow, RunId:<...>`, stop your Temporal docker-compose process [started earlier](/docs/clusters/quick-install) and recreate Temporal docker-compose containers using:
 
 ```bash
 docker-compose rm -f

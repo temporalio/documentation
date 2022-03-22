@@ -39,7 +39,7 @@ The SDK contains the following tools:
 
    Additional scripts for each SDK version are available here: [https://search.maven.org/artifact/io.temporal/temporal-sdk](https://search.maven.org/artifact/io.temporal/temporal-sdk). Select an SDK version to see available scripts.
 
-2. [Install and run the Temporal Server](/docs/server/quick-install) using `docker compose`.
+2. [Install and run the Temporal Server](/docs/clusters/quick-install) using `docker compose`.
 
 ## Resources
 

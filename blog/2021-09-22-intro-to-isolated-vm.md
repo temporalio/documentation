@@ -28,7 +28,7 @@ The key idea behind Temporal is that each Workflow is stored in the Temporal Ser
 Instead of storing the "current state" of each Workflow, Temporal instead stores the entire history of the Workflow.
 That includes the Workflow's initial state, all Signals the Workflow has received, and the result of all Activities the Workflow executed.
 
-The [Temporal Server](https://docs.temporal.io/docs/server/introduction/) can pause the Workflow and resume it on a different Worker.
+The [Temporal Server](https://docs.temporal.io/docs/clusters/) can pause the Workflow and resume it on a different Worker.
 For example, the Workflow may be evicted from the [Worker's cache if the cache is out of space](https://docs.temporal.io/docs/concepts/workflows/#faq).
 To restore the Workflow, The Temporal Server will replay the Workflow function from the beginning using the same Signals and Activity results.
 However, replaying event histories assumes that the Workflow is fully _deterministic_.

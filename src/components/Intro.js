@@ -191,9 +191,7 @@ function Cluster() {
       <ul className="flex list-disc flex-col space-y-2 pl-4">
         <li className="">
           <Link
-            to={useBaseUrl(
-              "/docs/cluster/how-to-quickly-install-the-temporal-cluster-using-docker-compose"
-            )}
+            to={useBaseUrl("/docs/clusters/quick-install/#docker-compose")}
             className="hover:underline"
           >
             <a className="font-normal">Run a Cluster using Docker Compose</a>
@@ -202,7 +200,7 @@ function Cluster() {
         <li className="">
           <Link
             to={useBaseUrl(
-              "/docs/cluster/how-to-integrate-elasticsearch-into-a-temporal-cluster"
+              "/docs/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster"
             )}
             className="hover:underline"
           >
@@ -221,9 +219,7 @@ function Cluster() {
         </li>
         <li className="">
           <Link
-            to={useBaseUrl(
-              "/docs/cluster/how-to-deploy-temporal-to-kubernetes-for-testing-and-development"
-            )}
+            to={useBaseUrl("/docs/clusters/quick-install/#helm-charts")}
             className="hover:underline"
           >
             <a className="font-normal">Deploy to Kubernetes</a>
