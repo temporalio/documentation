@@ -26,7 +26,7 @@ However, if you want to build the site and preview changes in the browser, do th
   ```bash
   git clone https://github.com/temporalio/documentation.git
   cd documentation/
-yarn
+  yarn
 ```
 
 - Now you can build and view the site locally:
