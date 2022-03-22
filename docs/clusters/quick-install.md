@@ -2,9 +2,10 @@
 id: quick-install
 title: How to quickly install a Temporal Cluster for testing and local development
 sidebar_label: Quick install
+description: There are four ways to quickly install and run a Temporal Cluster.
 ---
 
-There are three ways to quickly install and run a Temporal Cluster:
+There are four ways to quickly install and run a Temporal Cluster:
 
 - [Docker](#docker): Using Docker Compose makes it easy to develop your Temporal Application locally.
 - [Render](#render): Our [temporalio/docker-compose](https://github.com/temporalio/docker-compose) experience has been translated to Render's Blueprint format for a an alternative cloud connection.
