@@ -134,7 +134,8 @@ It can be enabled it in 2 steps:
 
 ## Using Temporal Web for development
 
-Once you have the Temporal Server running locally (use the [quick install guide](/docs/clusters/quick-install)), you can view the Temporal Web UI at [http://localhost:8088](http://localhost:8088) (this is configurable with the `TEMPORAL_WEB_PORT` environment variable).
+When you have the Temporal Cluster running locally (use the [quick install guide](/docs/clusters/quick-install)), you can view the Temporal Web UI at [http://localhost:8088](http://localhost:8088).
+(You can configure the port number by setting the `TEMPORAL_WEB_PORT` environment variable.)
 
 > ⚠️ This is a basic guide to troubleshooting/debugging Temporal applications.
 > It is work-in-progress and we encourage [reading about our Architecture](/docs/concepts/what-is-a-temporal-cluster) for more detail.
