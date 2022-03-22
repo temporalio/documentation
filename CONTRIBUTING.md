@@ -27,16 +27,15 @@ However, if you want to build the site and preview changes in the browser, do th
   git clone https://github.com/temporalio/documentation.git
   cd documentation/
   yarn
-
   ```
 
 - Now you can build and view the site locally:
 
-```bash
-yarn start
-```
+  ```bash
+  yarn start
+  ```
 
-This command starts a local development server and opens a browser window to [localhost:3000](http://localhost:3000/).
+  This command starts a local development server and opens a browser window to [localhost:3000](http://localhost:3000/).
 
 ### Snipsync
 
