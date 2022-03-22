@@ -330,7 +330,7 @@ A Workflow ended with Continue-As-New.
 
 ### `workflow_endtoend_latency`
 
-Total Workflow Execution time from schedule to completion. Covers one Workflow Run. Workflow Retries are represented as different Runs. 
+Total Workflow Execution time from schedule to completion for a single Workflow Run (A retried Workflow Execution is a separate Run). 
 
 - Type: Histogram
 - Available in: TypeScript, Go, PHP, Java
