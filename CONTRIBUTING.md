@@ -24,7 +24,7 @@ However, if you want to build the site and preview changes in the browser, do th
 - Download the repository and install dependencies with [`yarn`](https://classic.yarnpkg.com/en/docs/install#mac-stable):
 
   ```bash
-git clone https://github.com/temporalio/documentation.git
+  git clone https://github.com/temporalio/documentation.git
 cd documentation/
 yarn
 ```
