@@ -47,7 +47,7 @@ In the documentation files, [snipsync](https://github.com/temporalio/snipsync) s
 <!--SNIPEND-->
 ```
 
-Run `yarn snipsync`, which inserts the snippet contents (in this case, from [`samples-typescript`](https://github.com/temporalio/samples-typescript/blob/75bdcd613bd24f8f357cb96d1b83051353c5685a/hello-world/src/client.ts#L1)) between the two lines above.
+To preview snipsync snippets, run `yarn snipsync`, which inserts the snippet contents (in this case, from [`samples-typescript`](https://github.com/temporalio/samples-typescript/blob/75bdcd613bd24f8f357cb96d1b83051353c5685a/hello-world/src/client.ts#L1)) between the `SNIPSTART` and `SNIPEND` tags.
 
 Before committing, run `yarn snipsync --clear` to remove the snippets.
 
