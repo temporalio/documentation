@@ -15,7 +15,7 @@ How and where you run a Cluster depends entirely on your use case, intended envi
 Choose from the following list to get started:
 
 - [Quick installation for Temporal Application development](/docs/clusters/quick-install)
-- [Deploy to a live (production) environment](/docs/server/production-deployment)
+- [Deployment to a live (production) environment](/docs/server/production-deployment)
 
 ### Features
 
