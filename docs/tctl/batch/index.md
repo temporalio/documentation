@@ -1,17 +1,41 @@
 ---
 id: index
 title: tctl batch
-description: How to operate batch jobs using tctl.
+description: A tctl batch command enables you to affect multiple existing Workflow Executions with a single command.
 tags:
   - reference
   - tctl
 ---
 
-The `tctl batch` commands enable batch jobs. A batch job can signal, cancel, or terminate [Workflow Executions](/docs/concepts/what-is-a-workflow-execution).
+**How to run a tctl batch command.**
 
-Terminating a batch job does not roll back the operation performed by the batch job. However, you can use `tctl workflow reset` to roll back Workflow Executions.
+A `tctl batch` command enables you to affect multiple existing [Workflow Executions](/docs/concepts/what-is-a-workflow-execution) with a single command.
+A batch job runs in the background and affects Workflow Executions one at a time.
 
-- [`tctl batch describe`](/docs/tctl/batch/describe)
-- [`tctl batch list`](/docs/tctl/batch/list)
+Use [tctl batch start](/docs/tctl/batch/start) to start a batch job.
+
+When starting a batch job, you must provide a [List Filter](/docs/concepts/what-is-a-list-filter) and the type of batch job that should occur.
+Batch jobs run in the background and affect Workflow Executions one at a time.
+
+The List Filter identifies the set of Workflow Executions to be affected by the batch job.
+The `tctl batch start` command shows you how many Workflow Executions will be affected by the batch job and asks you to confirm before proceeding.
+
+The batch type determines what other parameters you must provide and what is being affected.
+There are three types of batch jobs:
+
+- Signal: Send a Signal to the set of Workflow Executions that the List Filter specifies.
+- Cancel: Cancel the set of Workflow Executions that the List Filter specifies.
+- Terminate: Terminate the set of Workflow Executions that the List Filter specifies.
+
+A successfully started batch job returns a Job ID.
+You can use this Job ID in the `tctl batch describe` command, which describes the progress of a specific batch job.
+
+You can also use the Job ID to terminate the batch job itself.
+Terminating a batch job does not roll back the operations already performed by the batch job.
+
+### tctl batch commands
+
 - [`tctl batch start`](/docs/tctl/batch/start)
+- [`tctl batch list`](/docs/tctl/batch/list)
+- [`tctl batch describe`](/docs/tctl/batch/describe)
 - [`tctl batch terminate`](/docs/tctl/batch/terminate)
