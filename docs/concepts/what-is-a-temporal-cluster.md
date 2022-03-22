@@ -10,7 +10,7 @@ tags:
 A Temporal Cluster is the Temporal Server paired with persistence.
 
 - [How to quickly install the Temporal Cluster using Docker Compose](/docs/clusters/quick-install/#docker-compose)
-- [How to deploy the Temporal Server to Kubernetes for testing and development](/docs/clusters/#helm-charts)
+- [How to deploy the Temporal Server to Kubernetes for testing and development](/docs/clusters/quick-install/#helm-charts)
 
 The Temporal Server consists of four independently scalable services:
 

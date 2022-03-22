@@ -10,11 +10,11 @@ description: Temporal Cluster how-to guides.
 
 ### Running a Cluster
 
-How and where you run the Server depends entirely on your use-case, intended environment, and hosting infrastructure.
+How and where you run a Cluster depends entirely on your use case, intended environment, and hosting infrastructure.
 
-Choose from the list below to get started:
+Choose from the following list to get started:
 
-- [Quick install for Temporal Application development](/docs/clusters/quick-install)
+- [Quick installation for Temporal Application development](/docs/clusters/quick-install)
 - [Deploy to a live (production) environment](/docs/server/production-deployment)
 
 ### Features
