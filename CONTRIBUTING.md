@@ -21,7 +21,7 @@ However, if you want to build the site and preview changes in the browser, do th
 
 - Install version 14 or later of [Node.js](https://nodejs.org/en/download/).
  (On a Mac, use the command `brew install node@16`.)
-- Download the repository and install dependencies with [`yarn`](https://classic.yarnpkg.com/en/docs/install#mac-stable)
+- Download the repository and install dependencies with [`yarn`](https://classic.yarnpkg.com/en/docs/install#mac-stable):
 
 ```bash
 git clone https://github.com/temporalio/documentation.git
