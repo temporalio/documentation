@@ -20,7 +20,7 @@ You can make changes locally without previewing them in the browser.
 However, if you want to build the site and preview changes in the browser, do the following:
 
 - Install version 14 or later of [Node.js](https://nodejs.org/en/download/).
- (On a Mac, use the command `brew install node@16`.)
+  (On a Mac, use the command `brew install node@16`.)
 - Download the repository and install dependencies with [`yarn`](https://classic.yarnpkg.com/en/docs/install#mac-stable):
 
 ```bash
