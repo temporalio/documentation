@@ -23,7 +23,7 @@ However, if you want to build the site and preview changes in the browser, do th
   (On a Mac, use the command `brew install node@16`.)
 - Download the repository and install dependencies with [`yarn`](https://classic.yarnpkg.com/en/docs/install#mac-stable):
 
-```bash
+  ```bash
 git clone https://github.com/temporalio/documentation.git
 cd documentation/
 yarn
