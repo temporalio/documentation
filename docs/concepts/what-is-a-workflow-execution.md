@@ -65,6 +65,8 @@ Awaitables are provided when using APIs for the following:
 
 A Workflow Execution may be either Open or Closed.
 
+![Workflow Execution statuses](/diagrams/workflow-execution-statuses.svg)
+
 **Open**
 
 - Running: The only Open status for a Workflow Execution, when Running the Workflow Execution is When a Workflow Execution is either actively progressing or suspended, waiting on something.
