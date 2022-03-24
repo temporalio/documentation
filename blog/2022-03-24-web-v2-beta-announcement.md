@@ -16,7 +16,7 @@ We're excited to announce the public beta of the new Temporal UI, which is avail
 
 ![Screenshot of Web v2](https://user-images.githubusercontent.com/251000/159999018-d82dfe25-394b-4332-b6e8-a4fedeceec34.pn)
 
-The new Temporal UI is a ground-up re-write. This first release aims for parity with the current UI. Our goal was to lay the foundation for an architecture that we can iterate on. We'll continue to ship features and functionality of the foreseeable future. We also think it looks pretty nice.
+The new Temporal UI is a ground-up rewrite. This first release aims for parity with the current UI. Our goal was to lay the foundation for an architecture that we can iterate on. We'll continue to ship features and functionality for the foreseeable future. We also think it looks pretty nice.
 
 We addressed dozen of quality of life issues and improved the performance of the user interface. We built the new web experience with [Svelte](https://svelte.dev/), which supports many of the best practices of modern web development. Svelte does the majority of its magic at compile time which limits the amount of code shipped to operate the application at run time. The result is a significantly smaller application bundle and noticeably snappier performance.
 
