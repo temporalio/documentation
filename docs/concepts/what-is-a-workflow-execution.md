@@ -12,31 +12,27 @@ It is the main unit of execution of a [Temporal Application](/docs/concepts/what
 
 - [How to spawn a Workflow Execution in Go](/docs/go/how-to-spawn-a-workflow-execution-in-go)
 - [How to spawn a Workflow Execution in Java](/docs/java/how-to-spawn-a-workflow-execution-in-java)
+- [How to spawn a Workflow Execution in PHP](/docs/php/workflows/#starting-workflows)
+- [How to spawn a Workflow Execution in TypeScript](/docs/typescript/workflows#how-to-start-and-cancel-workflows)
 
-Each Temporal Workflow Execution has exclusive access to its local state, executes concurrently to all other Workflow Executions, and communicates with other Workflow Executions and the environment via message passing.
-
-A Temporal Application can consist of millions to billions of Workflow Executions.
-Workflow Executions are lightweight components.
-A Workflow Execution consumes few compute resources; in fact, if a Workflow Execution is suspended, such as when it is in a waiting state, the Workflow Execution consumes no compute resources at all.
+Each Temporal Workflow Execution has exclusive access to its local state, executes concurrently to all other Workflow Executions, and communicates with other Workflow Executions via [Signals](/docs/concepts/what-is-a-signal) and the environment via [Activities](/docs/concepts/what-is-an-activity). While a single Workflow Execution has limits on size and throughput, a Temporal Application can consist of millions to billions of Workflow Executions.
 
 **Durability**
 
-Durability is responsiveness over a period time.
+Durability is the absence of an imposed time limit.
 A Workflow Execution is durable because it executes a Temporal Workflow Definition, also called a Temporal Workflow Function, your application code, effectively once and to completion—whether your code executes for seconds or years.
-Durability is realized through the execution semantics of a Workflow Execution, which are carried out via Temporal's Event loop.
 
 **Reliability**
 
 Reliability is responsiveness in the presence of failure.
 A Workflow Execution is reliable, because it is fully recoverable after a failure.
-To be recoverable is the ability of a process to continue execution after the execution was suspended by a failure.
-Reliability is realized through the execution semantics of a Workflow Execution, which are carried out via Temporal's Event loop.
+The Temporal Platform ensures the state of the Workflow Execution persists in the face of failures and outages and resumes execution from the latest state.
 
 **Scalability**
 
 Scalability is responsiveness in the presence of load.
-A Workflow Execution is scalable because the Temporal Platform is capable of supporting millions to billions of them concurrently.
-This is realized by the design and nature of the [Temporal Cluster](/docs/concepts/what-is-a-temporal-cluster) and [Worker Processes](/docs/concepts/what-is-a-worker-process).
+A single Workflow Execution is limited in size and throughput but is scalable because it can [Continue-As-New](/docs/concepts/what-is-continue-as-new) in response to load.
+A Temporal Application is scalable because the Temporal Platform is capable of supporting millions to billions of Workflow Executions executing concurrently, which is realized by the design and nature of the [Temporal Cluster](/docs/concepts/what-is-a-temporal-cluster) and [Worker Processes](/docs/concepts/what-is-a-worker-process).
 
 ### Commands
 
