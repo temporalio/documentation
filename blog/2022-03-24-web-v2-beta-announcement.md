@@ -28,6 +28,6 @@ The new user interface will eventually be the default experience for working wit
 
 ![Event Full View](https://user-images.githubusercontent.com/251000/160000081-77f1b8b8-2c60-44b4-ab41-7461bcf9b558.png)
 
-Big changes to the user interface can be tricky when you’re running mission-critical software like Temporal in production. For the time being, you can run both experiences in parallel. We’ll continue to support the existing UI as we polish and iterate on the new UI. But, over the next few weeks, we’ll begin to direct new users to use the new UI. We’ll be releasing new versions multiple times a week as we get your feedback and solve for your use cases. On September 30, 2022, we’ll remove the current UI.
+Big changes to the user interface can be tricky when you’re running mission-critical software like Temporal in production. For the time being, you can run both experiences in parallel. We’ll continue to support the existing UI as we polish and iterate on the new UI. But, over the next few weeks, we’ll begin to direct new users to use the new UI. We’ll release new versions multiple times each week as we get your feedback and solve for your use cases. On September 30, 2022, we’ll remove the current UI.
 
 This is only the beginning for us. We have a lot of exciting features planned, now that we have this new architecture in place. We'd love to hear from you. If you encounter any issues or have any ideas for features that you'd like to see, file an issue in [our repository](https://github.com/temporalio/ui).
