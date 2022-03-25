@@ -220,17 +220,11 @@ values={[
 </TabItem>
 <TabItem value="java">
 
-
-
 </TabItem>
 <TabItem value="php">
 
-
-
 </TabItem>
 <TabItem value="ts">
-
-
 
 </TabItem>
 </Tabs>
@@ -263,17 +257,11 @@ values={[
 </TabItem>
 <TabItem value="java">
 
-
-
 </TabItem>
 <TabItem value="php">
 
-
-
 </TabItem>
 <TabItem value="ts">
-
-
 
 </TabItem>
 </Tabs>
@@ -305,17 +293,11 @@ values={[
 </TabItem>
 <TabItem value="java">
 
-
-
 </TabItem>
 <TabItem value="php">
 
-
-
 </TabItem>
 <TabItem value="ts">
-
-
 
 </TabItem>
 </Tabs>

@@ -1,4 +1,3 @@
-
 This or `ScheduleToClose` must be set.
 
 - Type: `time.Duration`
