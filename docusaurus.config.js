@@ -94,8 +94,8 @@ module.exports = {
               label: "SDKs",
             },
             {
-              to: "/docs/operation/",
-              activeBasePath: "/docs/operation",
+              to: "/docs/operations/",
+              activeBasePath: "/docs/operations",
               label: "Operation guides",
             },
             {

@@ -86,4 +86,4 @@ temporal:
 
 **Operation guides:**
 
-- [How to tune Workers](/docs/operation/how-to-tune-workers)
+- [How to tune Workers](/docs/operations/how-to-tune-workers)

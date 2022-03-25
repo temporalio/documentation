@@ -1,4 +1,27 @@
 module.exports = {
+  // monoSideBar: [
+  //   {
+  //     type: "category",
+  //     label: "App foundations",
+  //     collapsible: false,
+  //     collapsed: false,
+  //     items: [
+  //       {
+  //         type: "category",
+  //         label: "Workflow Definition",
+  //         collapsible: false,
+  //         link: {
+  //           type: "doc",
+  //           id: "concepts/what-is-a-workflow-definition",
+  //         },
+  //         items: [
+  //
+  //
+  //         ]
+  //       }
+  //     ],
+  //   },
+  // ],
   sidebarExplained: [
     {
       type: "category",
@@ -196,12 +219,8 @@ module.exports = {
         id: "operations/index",
       },
       items: [
-
-        "operations/temporal-application-foundations",
-        "operations/temporal-application-features",
-        "operations/temporal-application-analysis",
+        "operations/temporal-application-development",
         "operations/how-to-tune-workers",
-        "go/how-to-develop-a-workflow-definition-in-go",
       ],
     },
   ],

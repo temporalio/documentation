@@ -15,8 +15,8 @@ Whenever we are developing Temporal Applications, we want to have a [Temporal Cl
 
 The fastest way to get a Temporal Cluster running locally for testing and development is to use Docker Compose.
 
-- [Run a local Temporal Cluster using Docker Compose](/docs/cluster/how-to-quickly-install-the-temporal-cluster-using-docker-compose)
-- [How to deploy a Temporal Cluster to Kubernetes for testing and development](/docs/cluster/how-to-deploy-temporal-to-kubernetes-for-testing-and-development)
+- [Run a local Temporal Cluster using Docker Compose](/docs/clusters/quick-install/#docker-compose)
+- [How to deploy a Temporal Cluster to Kubernetes for testing and development](/docs/clusters/quick-install/#helm-charts)
 
 ## Develop Workflow Definitions
 
