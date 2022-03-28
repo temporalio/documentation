@@ -207,25 +207,9 @@ if err != nil {
 
 ### `CronSchedule`
 
-- Type: `string`
-- Default: None
+import CronSchedule from './startworkflowoptions/cron-schedule.md'
 
-```go
-workflowOptions := client.StartWorkflowOptions{
-  CronSchedule: "15 8 * * *",
-  // ...
-}
-workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
-if err != nil {
-  // ...
-}
-```
-
-<RelatedReadContainer>
-  <RelatedReadItem page={WhatIsATemporalCronJob} />
-</RelatedReadContainer>
-
-[Sample](https://github.com/temporalio/samples-go/tree/master/cron)
+<CronSchedule/>
 
 ### `Memo`
 

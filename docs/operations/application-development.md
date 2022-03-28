@@ -492,13 +492,41 @@ values={[
 - [How to use Queries in PHP](/docs/php/queries)
 - [How to send a Query to a Workflow Execution using tctl](/docs/tctl/workflow/query)
 
-### Set and react to Timers
+### Timers
 
-### Execute Side Effects
+### Side Effects
 
-- [What is a Side Effect?](/docs/concepts/what-is-a-side-effect)
+A [Side Effect](/docs/concepts/what-is-a-side-effect) is a great way to execute a short, nondeterministic code snippet, such as generating a UUID.
+The result is recorded into the Workflow Execution Event History as a [MarkerRecorded](/docs/concepts/what-is-an-event/#markerrecorded) Event.
 
-- [How to execute a Side Effect in Go](/docs/go/how-to-execute-a-side-effect-in-go)
+import SideEffectGo from '../go/how-to-execute-a-side-effect-in-go.md'
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[
+{label: 'Go', value: 'go'},
+{label: 'Java', value: 'java'},
+{label: 'PHP', value: 'php'},
+{label: 'Typescript', value: 'ts'},
+]
+}>
+
+<TabItem value="go">
+
+<SideEffectGo/>
+
+</TabItem>
+<TabItem value="java">
+
+</TabItem>
+<TabItem value="php">
+
+</TabItem>
+<TabItem value="ts">
+
+</TabItem>
+</Tabs>
 
 ### Local Activities
 
@@ -514,22 +542,88 @@ values={[
 
 - [How to set a Heartbeat Timeout in Go](/docs/go/how-to-set-activityoptions-in-go/#heartbeattimeout)
 
-### Spawn Child Workflow Executions
+### Child Workflow Executions
 
-- [What is a Child Workflow Execution?](/docs/concepts/what-is-a-child-workflow-execution)
+A [Child Workflow Execution](/docs/concepts/what-is-a-child-workflow-execution) is a Workflow Execution that is spawned from within another Workflow.
 
-- [How to spawn a Child Workflow Execution in Go](/docs/go/how-to-spawn-a-child-workflow-execution-in-go)
+To asynchronously spawn a Child Workflow Execution, the Child Workflow must have an "Abandon" [Parent Close Policy](/docs/concepts/what-is-a-parent-close-policy) set in the Child Workflow Options.
+Additionally, the Parent Workflow Execution must wait for the ChildWorkflowExecutionStarted event to appear in its event history before it completes.
 
-- [How to set ChildWorkflowOptions in Go](/docs/go/how-to-set-childworkflowoptions-in-go)
+If the Parent makes the call to spawn the Child Workflow Execution and then immediately completes, the Child Workflow Execution will not spawn.
+
+import ChildWorkflowExecutionGo from '../go/how-to-spawn-a-child-workflow-execution-in-go.md'
+import ChildWorkflowExecutionJava from '../java/how-to-spawn-a-child-workflow-execution-in-java.md'
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[
+{label: 'Go', value: 'go'},
+{label: 'Java', value: 'java'},
+{label: 'PHP', value: 'php'},
+{label: 'Typescript', value: 'ts'},
+]
+}>
+
+<TabItem value="go">
+
+<ChildWorkflowExecutionGo/>
+
+</TabItem>
+<TabItem value="java">
+
+<ChildWorkflowExecutionJava/>
+
+</TabItem>
+<TabItem value="php">
+
+</TabItem>
+<TabItem value="ts">
+
+</TabItem>
+</Tabs>
+
+<!-- - [How to set ChildWorkflowOptions in Go](/docs/go/how-to-set-childworkflowoptions-in-go) -->
 
 ### Temporal Cron Jobs
 
-**Core concept:** [Temporal Cron Job](/docs/concepts/what-is-a-temporal-cron-job)
+A [Temporal Cron Job](/docs/concepts/what-is-a-temporal-cron-job) is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.
 
-- [How to set a Cron Schedule in Go](/docs/go/how-to-set-startworkflowoptions-in-go/#cronschedule)
+A Cron Schedule is provided as an option when the call to spawn a Workflow Execution is made.
+
+import CronScheduleGo from '../go/startworkflowoptions/cron-schedule.md'
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[
+{label: 'Go', value: 'go'},
+{label: 'Java', value: 'java'},
+{label: 'PHP', value: 'php'},
+{label: 'Typescript', value: 'ts'},
+]
+}>
+
+<TabItem value="go">
+
+<CronScheduleGo/>
+
+</TabItem>
+<TabItem value="java">
+
+</TabItem>
+<TabItem value="php">
+
+</TabItem>
+<TabItem value="ts">
+
+</TabItem>
+</Tabs>
+
+<!-- - [How to set a Cron Schedule in Go](/docs/go/how-to-set-startworkflowoptions-in-go/#cronschedule)
 - [How to set a Cron Schedule in Java](/docs/java/distributed-cron)
 - [How to set a Cron Schedule in PHP](/docs/php/distributed-cron)
-- [How to set a Cron Schedule in Typescript](/docs/typescript/clients)
+- [How to set a Cron Schedule in Typescript](/docs/typescript/clients) -->
 
 ## Analysis
 

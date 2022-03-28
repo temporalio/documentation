@@ -8,7 +8,9 @@ tags:
   - developer-guide
 ---
 
-- Used to set all child workflow specific options
+Create an instance of [`workflow.ChildWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ChildWorkflowOptions).
+The Child Workflow Options are then applied to the the instance of `workflow.Context` by using the `WithChildOptions` API, which is then passed to the `ExecuteChildWorkflow()` call.
+
 
 | Field                    | Description                                                                       | Type                   |
 | ------------------------ | --------------------------------------------------------------------------------- | ---------------------- |
@@ -25,3 +27,15 @@ tags:
 | Memo                     | Set non-indexed info that will be shown in list child workflow                    | map[string]interface{} |
 | SearchAttributes         | Set indexed info that can be used in query of List/Scan/Count child workflow APIs | map[string]interface{} |
 | ParentClosePolicy        | Set policy to decide what to do for the child when the parent closes              | ParentClosePolicy      |
+
+### `CronSchedule`
+
+import CronSchedule from './startworkflowoptions/cron-schedule.md'
+
+<CronSchedule/>
+
+### `ParentClosePolicy`
+
+import ParentClosePolicy from './childworkflowoptions/parent-close-policy.md'
+
+<ParentClosePolicy/>

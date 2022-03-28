@@ -3,8 +3,6 @@ This or `ScheduleToStart` must be set.
 - Type: `time.Duration`
 - Default: ∞ (infinity - no limit)
 
-<br />
-
 ```go
 activityoptions := workflow.ActivityOptions{
   ScheduleToCloseTimeout: 10 * time.Second,
