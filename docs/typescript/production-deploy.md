@@ -5,7 +5,7 @@ sidebar_label: Deploy Checklist
 description: Recommended steps to take before deploying your Temporal app to production.
 ---
 
-Here is a non-exhaustive list of things we recommend doing before you deploy your Temporal app to production.
+The following are recommended steps to take before deploying your Temporal application to production.
 
 ## Production Temporal Cluster
 
@@ -43,7 +43,7 @@ Temporal Clients and Workers connect with Temporal Clusters via gRPC.
   }
   ```
 
-  Read more in the [Security docs](/docs/typescript/security#connecting-to-temporal-cloud-with-mtls).
+  For more information, see [Connecting to Temporal Cloud (with mTLS)](/docs/typescript/security#local-mtls-sample-tutorial).
 
 ## Pre-build code
 
@@ -96,7 +96,7 @@ We can see this process working in the [production sample](https://github.com/te
 
 Send logs and errors to a logging service, so that when things go wrong, you can see what happened.
 
-[Logging docs](/docs/typescript/logging)
+For more information about sending logs, see [Logging](/docs/typescript/logging).
 
 ## Metrics
 
