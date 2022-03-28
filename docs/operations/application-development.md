@@ -10,6 +10,13 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+:::caution
+
+This guide is a work in progress.
+Some sections may be incomplete or missing for some languages.
+
+:::
+
 This guide is meant to be a comprehensive resource for developing a [Temporal Application](/docs/concepts/what-is-a-temporal-application).
 
 It is broken down into four large sections:
@@ -440,11 +447,7 @@ This section covers many of the features that are available to use in your [Temp
 [Signals](/docs/concepts/what-is-a-signal) are a great way to get data into a running Workflow Execution.
 Signals can be sent from a Temporal Client or from within a Workflow.
 
-**Signal handler**
-
-Start by adding a Signal handler to your Workflow and defining your Signal types.
-
-import HandleSignalGo from '../go/how-to-handle-a-signal-in-a-workflow-in-go.md'
+import SignalsGo from '../go/how-to-use-signals-in-go.md'
 
 <Tabs
 defaultValue="go"
@@ -459,38 +462,7 @@ values={[
 
 <TabItem value="go">
 
-<HandleSignalGo/>
-
-</TabItem>
-<TabItem value="java">
-
-</TabItem>
-<TabItem value="php">
-
-</TabItem>
-<TabItem value="ts">
-
-</TabItem>
-</Tabs>
-
-**Send a Signal**
-
-import SendSignalGo from '../go/how-to-send-a-signal-to-a-workflow-execution-in-go.md'
-
-<Tabs
-defaultValue="go"
-groupId="site-lang"
-values={[
-{label: 'Go', value: 'go'},
-{label: 'Java', value: 'java'},
-{label: 'PHP', value: 'php'},
-{label: 'Typescript', value: 'ts'},
-]
-}>
-
-<TabItem value="go">
-
-<SendSignalGo/>
+<SignalsGo/>
 
 </TabItem>
 <TabItem value="java">
