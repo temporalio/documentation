@@ -68,7 +68,7 @@ persistence:
 Run the following commands to create the index schema and index:
 
 ```bash
-# ES_SERVER is the URL of Elasticsearch server i.e. "http://localhost:9200".
+# ES_SERVER is the URL of Elasticsearch server; for example, "http://localhost:9200".
 SETTINGS_URL="${ES_SERVER}/_cluster/settings"
 SETTINGS_FILE=${TEMPORAL_HOME}/schema/elasticsearch/visibility/cluster_settings_${ES_VERSION}.json
 TEMPLATE_URL="${ES_SERVER}/_template/temporal_visibility_v1_template"
