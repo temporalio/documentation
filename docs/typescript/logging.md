@@ -151,9 +151,9 @@ const logger = winston.createLogger({
 await Core.install({ logger });
 ```
 
-## Monitoring SDK metrics
+## Metrics
 
-We are in the process of building out our SDK metrics capabilities. For now, please observe standard monitoring practices on your Workers in production (CPU, memory utilization, health checks).
+See [Deploy Checklist > Metrics](/docs/typescript/production-deploy#metrics).
 
 ## OpenTelemetry tracing
 
