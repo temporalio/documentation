@@ -23,8 +23,10 @@ _Don't forget our own explainers on [What is Temporal](https://docs.temporal.io/
 
 - **Talks**
   - ⭐ [Designing a Workflow Engine from First Principles](https://docs.temporal.io/blog/workflow-engine-principles/) by Maxim Fateev (23 min talk given at Systems @ Scale 2021)
-  - 🆕 [Fault Tolerant, Distributed Microservices Orchestration with Temporal](https://www.youtube.com/watch?v=6T6zVZHU7_Q) ([slides](https://temporal-intro-and-demo.netlify.app/)) by Maxim Fateev and Tihomir Surdilovic (35 minute talk at TheDevConf 2021)
-  - 🆕 [Introduction to Temporal Architecture](https://www.youtube.com/watch?v=wMUKhtRhlmY) by Dominik Tornow (16 min talk + Q&A)
+  - 🆕 [Fault Tolerant, Distributed Microservices Orchestration with Temporal](https://www.youtube.com/watch?v=6T6zVZHU7_Q) ([slides](https://temporal-intro-and-demo.netlify.app/)) by Maxim Fateev and Tihomir Surdilovic (35 min talk at TheDevConf 2021)
+  - [State of Affairs or Affairs of State](https://www.youtube.com/watch?v=2P_aXee2qh4) by Sergey Bykov (35 min talk on Stateless vs Stateful, Orleans vs Temporal)
+  - [Introduction to Temporal Architecture](https://www.youtube.com/watch?v=wMUKhtRhlmY) by Dominik Tornow (16 min talk + Q&A)
+  - [Temporal in 7 Minutes - The TL;DR Intro](https://www.youtube.com/watch?v=2HjnQlnA5eY) by swyx (7 min presentation)
 - **Podcasts**
   - [Maxim and Samar on Gremlin's podcast](https://docs.temporal.io/blog/gremlin-podcast) - Origin story, Choreography vs Orchestration, and Tips (21 min listen/read)
   - [Workflow Engine with Maxim Fateev](https://www.listennotes.com/podcasts/software/cadence-ubers-workflow-nNoaPiSfk7v/) on Software Engineering Daily (56 min listen)
