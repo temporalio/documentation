@@ -263,7 +263,7 @@ module.exports = {
         // Will be passed to @docusaurus/plugin-content-docs
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
-          routeBasePath: "docs",
+          routeBasePath: "/",
           exclude: ["**/shared/**"], // do not render "shared" content
           editUrl: "https://github.com/temporalio/documentation/blob/master",
           /**
@@ -400,4 +400,15 @@ function convertIndent4ToIndent2(code) {
   return code.replace(/^( {4})+/gm, (match) => {
     return "  ".repeat(match.length / 4);
   });
-}
+};
+[
+  "@docusaurus/plugin-client-redirects",
+  /* Creating a redirect from the old path, /docs/, to the new path, /. */
+  {
+    createRedirects: path => {
+      if ( path.startsWith("/docs/") ) {
+        return [path.replace("/")];
+      }
+    }
+  }
+]
