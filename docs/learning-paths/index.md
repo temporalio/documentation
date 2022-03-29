@@ -1,9 +1,8 @@
 ---
 id: index
 title: Learning
+description: Collection of Temporal Platform learning content and tutorials.
 ---
-
-## Learning Paths
 
 - [Run your first app](/docs/learning-paths/run-your-first-app)
 - [Hello World from scratch](/docs/learning-paths/hello-world)
