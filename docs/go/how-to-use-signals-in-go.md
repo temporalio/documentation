@@ -1,7 +1,7 @@
 ---
 id: how-to-use-signals-in-go
-title: How to send a Signal to a Workflow Execution in Go
-sidebar_label: Sending Signals
+title: How to use Signals in Go
+sidebar_label: Signals
 description: Use the `SignalWorkflow()` method on and instance of the Go SDK Temporal Client to send a Signal to a Workflow Execution.
 tags:
   - go

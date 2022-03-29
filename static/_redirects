@@ -46,7 +46,9 @@
 /docs/go/distributed-cron         /docs/content/what-is-a-temporal-cron-job
 /docs/go-error-handling         /docs/go/error-handling
 /docs/go-hello-world        /docs/go/hello-world-tutorial
-/docs/go/queries        /docs/go/how-to-handle-a-query-in-a-workflow-in-go
+/docs/go/queries        /docs/go/how-to-use-queries-in-go
+/docs/go/how-to-handle-a-query-in-a-workflow-in-go        /docs/go/how-to-use-queries-in-go
+/docs/go/how-to-send-a-query-to-a-workflow-execution-in-go        /docs/go/how-to-use-queries-in-go
 /docs/go/retries        /docs/concepts/what-is-a-retry-policy
 /docs/go-run-your-first-app         /docs/go/run-your-first-app-tutorial
 /docs/go-sdk-video-tutorial         /docs/go/sdk-video-tutorial
@@ -55,6 +57,8 @@
 /docs/go/sessions         /docs/go/how-to-create-a-worker-session-in-go
 /docs/go/side-effects         /docs/go/how-to-execute-a-side-effect-in-go
 /docs/go/signals        /docs/go/how-to-send-a-signal-to-a-workflow-execution-in-go
+/docs/go/how-to-send-a-signal-to-a-workflow-execution-in-go        /docs/go/how-to-use-signals-in-go
+/docs/go/how-to-handle-a-signal-in-a-workflow-in-go        /docs/go/how-to-use-signals-in-go
 /docs/go-sync-vs-async-start        /docs/go/sync-vs-async-start
 /docs/go/sync-vs-async-start        /docs/go/workflows/#how-to-start-a-workflow
 /docs/go/task-queues        /docs/concepts/what-is-a-task-queue
