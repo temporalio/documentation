@@ -153,7 +153,7 @@ await Core.install({ logger });
 
 ## Metrics
 
-For more information about metrics, see the [Metrics section on the Deploy Checklist](/docs/typescript/production-deploy#metrics) page.
+For information about metrics, see the [Metrics section on the Deploy Checklist](/docs/typescript/production-deploy#metrics) page.
 
 ## OpenTelemetry tracing
 
