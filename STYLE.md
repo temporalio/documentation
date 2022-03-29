@@ -26,8 +26,8 @@ If you use an en dash in one range, use en dashes in all ranges.
 Do not mix words and en dashes (or hyphens, for that matter).
 
 - Correct: "5 to 10 GB"
+- Correct: "5&ndash;10 GB"
 - Correct: "5–10 GB"
-- Correct: "5-10 GB"
 - Incorrect: "from 5-10 GB"
 
 ## Headings
