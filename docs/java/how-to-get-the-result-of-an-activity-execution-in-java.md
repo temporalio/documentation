@@ -8,8 +8,6 @@ tags:
   - developer-guide
 ---
 
-## Asynchronous Activity Completion
-
 To get the results of an asynchronously invoked Activity method, use the `Promise` `get` method to block until the Activity method result is available.
 
 Sometimes an Activity lifecycle goes beyond a synchronous method invocation.

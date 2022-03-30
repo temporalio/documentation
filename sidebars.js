@@ -307,7 +307,7 @@ module.exports = {
         "java/how-to-get-the-result-of-an-activity-execution-in-java",
         "java/how-to-initialize-a-workflow-client-in-java",
         "java/how-to-set-workflowclientoptions-in-java",
-        "java/how-to-set-workflowservicestubsoptions-in-java",
+        "java/how-to-set-workflowservicestuboptions-in-java",
         "java/how-to-spawn-a-workflow-execution-in-java",
         "java/how-to-continue-as-new-in-java",
         "java/how-to-spawn-a-child-workflow-execution-in-java",
