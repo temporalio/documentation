@@ -1,5 +1,5 @@
 ---
-id: how-to-set-workflowservicestubsoptions-in-java
+id: how-to-set-workflowservicestuboptions-in-java
 title: How to set WorkflowServiceStubOptions in Java
 sidebar_label: WorkflowServiceStubOptions
 description: Set WorkflowServiceStubs specific options with the `WorkflowServiceStubsOptions` class.
