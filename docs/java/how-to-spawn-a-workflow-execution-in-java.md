@@ -59,13 +59,13 @@ You can start Workflow Executions asynchronously with either typed or untyped `W
 - **Untyped WorkflowStub Example**
 
   ```java
-  WorkflowStub untyped = client.newUntypedWorkflowStub("FileProcessingWorkflow", 
+  WorkflowStub untyped = client.newUntypedWorkflowStub("FileProcessingWorkflow",
                   WorkflowOptions.newBuilder()
                           .setWorkflowId(workflowId)
                           .setTaskQueue(taskQueue)
                           .build());
 
-  // blocks until Workflow Execution has been started (not until it completes)        
+  // blocks until Workflow Execution has been started (not until it completes)
   untyped.start(argument);
   ```
 

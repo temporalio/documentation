@@ -70,14 +70,14 @@ The following example shows how to set Activity options for Activity Types with 
 The following table lists all `ActivityOptions` that can be configured for an Activity invocation.
 
 | Option                                                 | Required                                           | Type                     |
-| -------------------------------------------------------| ---------------------------------------------------| ------------------------ |
+| ------------------------------------------------------ | -------------------------------------------------- | ------------------------ |
 | [`setScheduleToCloseTimeout`](#scheduletoclosetimeout) | Yes (if `StartToCloseTimeout` is not specified)    | Duration                 |
 | [`setScheduleToStartTimeout`](#scheduletostarttimeout) | No                                                 | Duration                 |
 | [`setStartToCloseTimeout`](#starttoclosetimeout)       | Yes (if `ScheduleToCloseTimeout` is not specified) | Duration                 |
 | [`setHeartbeatTimeout`](#heartbeattimeout)             | No                                                 | Duration                 |
 | [`setTaskQueue`](#taskqueue)                           | No                                                 | String                   |
 | [`setRetryOptions`](#retryoptions)                     | No                                                 | RetryOptions             |
-| [`setContextPropagators`](#contextpropagators)         | No                                                 | List< ContextPropagator>  |
+| [`setContextPropagators`](#contextpropagators)         | No                                                 | List< ContextPropagator> |
 | [`setCancellationType`](#cancellationtype)             | No                                                 | ActivityCancellationType |
 
 ### `ScheduleToCloseTimeout`

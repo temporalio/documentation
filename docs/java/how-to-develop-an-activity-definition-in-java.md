@@ -7,6 +7,7 @@ tags:
   - java
   - developer-guide
 ---
+
 In the Temporal Java SDK programming model, [Activities](/docs/what-is-an-activity) are classes which implement the Activity interface.
 
 ## Activity interface
