@@ -289,9 +289,9 @@ Related references:
 
 ### Calling other Workflows
 
-Workflows can invoke, and send Signals to, other Workflows purely by name. This helps particularly for executing Workflows written in other language SDKs.
+A Workflow can interact with other running Workflows (using Signals and Queries) or create instances of Child Workflows using `ExternalWorkflowStub`.
 
-See the [Temporal Polyglot example](https://github.com/tsurdilo/temporal-polyglot) for more information.
+See [Workflow Execution](/docs/java/how-to-spawn-a-workflow-execution-in-java).
 
 ### Dynamic Workflows
 
