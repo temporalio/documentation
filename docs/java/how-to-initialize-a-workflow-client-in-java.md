@@ -36,7 +36,7 @@ After the connection to the Temporal frontend service is established, create a c
 The Workflow client helps with client-side APIs and is required by Workers.
 
 Create an instance of a `WorkflowClient` for the Workflow service stub, and use `WorkflowClientOptions` to set options for the Workflow client.
-The following example shows how to create a `WorkflowClient` instance called "client" for the `WorkflowServiceStubs`  "service" that we created in the previous example, and set `Namespace` option for the `WorkflowClient`.
+The following example shows how to create a `WorkflowClient` instance called "client" for the `WorkflowServiceStubs` "service" that we created in the previous example, and set `Namespace` option for the `WorkflowClient`.
 
 ```java
 WorkflowClient client = WorkflowClient.newInstance(
