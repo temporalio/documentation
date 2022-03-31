@@ -34,19 +34,19 @@ Scalability is responsiveness in the presence of load.
 A single Workflow Execution is limited in size and throughput but is scalable because it can [Continue-As-New](/docs/concepts/what-is-continue-as-new) in response to load.
 A Temporal Application is scalable because the Temporal Platform is capable of supporting millions to billions of Workflow Executions executing concurrently, which is realized by the design and nature of the [Temporal Cluster](/docs/concepts/what-is-a-temporal-cluster) and [Worker Processes](/docs/concepts/what-is-a-worker-process).
 
-### Commands
+### Commands & awaitables
 
 A Workflow Execution does two things:
 
 1. Issue [Commands](/docs/concepts/what-is-a-command)
-2. Wait on an Awaitable created from the generation of Commands.
+2. Wait on an Awaitables (often called Futures)
 
 ![Command generation and waiting](/diagrams/workflow-execution-progession-simple.svg)
 
-Commands are issued by the use of Workflow APIs in the [Workflow Definition](/docs/concepts/what-is-a-workflow-definition).
+Commands are issued and Awaitables provided by the use of Workflow APIs in the [Workflow Definition](/docs/concepts/what-is-a-workflow-definition).
 
-Whenever the Workflow Function is executed, Commands are generated.
-The Worker Process supervises the Command generation and makes sure that it corresponds to the current Event History.
+Commands are generated whenever the Workflow Function is executed.
+The Worker Process supervises the Command generation and makes sure that it maps to the current Event History.
 (For more information, see [Deterministic constraints](/docs/concepts/what-is-a-workflow-definition/#deterministic-constraints).)
 The Worker Process batches the Commands and then suspends progress to send the Commands to the Cluster whenever the Workflow Function reaches a place where it can no longer progress without a result from a Awaitable.
 
@@ -57,6 +57,9 @@ Awaitables are provided when using APIs for the following:
 - Spawning an [Activity Execution](/docs/concepts/what-is-an-activity-execution)
 - Requesting cancellation of another Workflow Execution
 - Starting a Timer
+- Awaiting
+
+A Workflow Execution may only ever block progress on an Awaitable that is provided through a Temporal SDK API.
 
 ### Status
 
