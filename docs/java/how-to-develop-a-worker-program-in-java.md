@@ -18,9 +18,9 @@ Then register all Workflow Types and all Activity Types that the Worker can exec
 For Activities, since they are stateless and thread-safe, instances are used in the registration process instead of the Java Class.
 A Worker can be registered with just Workflows, just Activities, or both.
 
-## Create Worker
+#### Create Worker Entity
 
-A single Worker Process can contain many Worker Objects.
+A single [Worker Entity](/docs/concepts/what-is-a-worker-entity) can contain many Worker Objects.
 Call the `start()` method on the instance of the `WorkerFactory` to start all the Workers created in this process.
 
 ```java
@@ -47,7 +47,7 @@ public class YourWorker {
 }
 ```
 
-## Workflow Registration
+#### Register Workflow Types
 
 Workflows must be registered with a Worker.
 
@@ -60,7 +60,7 @@ The following example shows how to register a Workflow with the Worker created i
     worker.registerWorkflowImplementationTypes(GreetingWorkflowImpl.class);
 ```
 
-## Activity Registration
+#### Register Activity Types
 
 Like Workflows, Activities must be registered with a Worker.
 When registering Activities, we register an instance of the Activity implementation, and can pass any
