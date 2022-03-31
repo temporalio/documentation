@@ -108,7 +108,7 @@ The following table lists all `ActivityOptions` that can be configured for an Ac
                       .build();
   ```
 
-See [Schedule-to-Close Timeout](docs/concepts/what-is-a-schedule-to-close-timeout)
+See [Schedule-to-Close Timeout](/docs/concepts/what-is-a-schedule-to-close-timeout)
 
 ### `ScheduleToStartTimeout`
 

@@ -30,7 +30,7 @@ WorkflowServiceStubs service = WorkflowServiceStubs.newInstance(
 
 ```
 
-See [WorkflowServiceStubsOptions](docs/java/how-to-set-workflowservicestuboptions-in-java) for details.
+See [WorkflowServiceStubsOptions](/docs/java/how-to-set-workflowservicestuboptions-in-java) for details.
 
 After the connection to the Temporal frontend service is established, create a client for the service stub.
 The Workflow client helps with client-side APIs and is required by Workers.
