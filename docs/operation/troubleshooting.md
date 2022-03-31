@@ -4,8 +4,6 @@ title: Troubleshooting
 sidebar_label: Troubleshooting
 ---
 
-# Troubleshooting
-
 This section contains information to help you identify and resolve errors you may encounter.
 
 ### Nondeterministic
