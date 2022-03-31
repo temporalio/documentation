@@ -117,9 +117,9 @@ The [bundleWorkflowCode](/docs/typescript/workers/#prebuilt-workflow-bundles) me
 
 ## How to work with support
 
-If you are unable to solve your bug with any of the techniques in this document, and you believe it is the result of a bug in Temporal itself, Temporal support can be contacted via the [Community Forum](https://community.temporal.io/) or [Community Slack](https://temporal.io/slack).
+If none of these troubleshooting techniques helped, then contact us via the [Community Forum](https://community.temporal.io/) or [Community Slack](https://temporal.io/slack).
 
-If it's a Temporal bug, an issue or pull request can be opened on the appropriate Temporal GitHub project.
+Otherwise, sumbit an issue or a pull request on the appropriate Temporal GitHub repository.
 
 To help Temporal diagnose an issue, provide the following when communicating with support:
 
