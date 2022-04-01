@@ -330,10 +330,10 @@ function Operation() {
       <ul className="flex list-disc flex-col space-y-2 pl-4">
         <li className="">
           <a
-            href="/docs/operations/how-to-tune-workers"
+            href="/docs/operations/temporal-application-development"
             className="font-normal hover:underline"
           >
-            Tune Workers
+            Application development guide
           </a>
         </li>
         <li className="">

@@ -167,6 +167,8 @@ values={[
 ### Spawn Activity Executions
 
 Calls to spawn [Activity Executions](/docs/concepts/what-is-an-activity-execution) are written within a Workflow Definition.
+The call to spawn an Activity Execution generates the [ScheduleActivityTask](/docs/concepts/what-is-a-command#scheduleactivitytask) Command.
+This results in the set of [Activity Task](/docs/concepts/what-is-an-activity-task) related Events ([ActivityTaskScheduled](/docs/concepts/what-is-an-event/#activitytaskscheduled), [ActivityTaskStarted](/docs/concepts/what-is-an-event/#activitytaskstarted), and ActivityTask[Closed])in your Workflow Execution Event History
 
 <!-- - [How to spawn an Activity Execution in Go](/docs/go/how-to-spawn-an-activity-execution-in-go) -->
 
@@ -275,8 +277,8 @@ values={[
 
 ### Get Activity Execution results
 
-The call to spawn an [Activity Execution](/docs/concepts/what-is-an-activity-execution) generates the [ScheduleActivityTask Command](/docs/concepts/what-is-a-command/#scheduleactivitytask) and provides the Workflow Execution an Awaitable.
-Workflow Executions can either progress until the result is available via the Awaitable or continue progressing, making use of the result when it becomes available.
+The call to spawn an [Activity Execution](/docs/concepts/what-is-an-activity-execution) generates the [ScheduleActivityTask](/docs/concepts/what-is-a-command/#scheduleactivitytask) Command and provides the Workflow with an Awaitable.
+Workflow Executions can either block progress until the result is available via the Awaitable or continue progressing, making use of the result when it becomes available.
 
 <!-- - [How to get the results of an Activity Execution in Go](/docs/go/how-to-get-the-result-of-an-activity-execution-in-go) -->
 
@@ -536,11 +538,73 @@ values={[
 
 ### Long-running Activities
 
-- [What is an Activity Heartbeat?](/docs/concepts/what-is-an-activity-heartbeat)
+If your use-case demands long-running Activity Executions, [Activity Heartbeats](/docs/concepts/what-is-an-activity-heartbeat) provide a way to keep track of the progress.
 
-- [How to Heartbeat from an Activity in Go](/docs/go/how-to-heartbeat-an-activity-in-go)
+#### Record Heartbeats
 
-- [How to set a Heartbeat Timeout in Go](/docs/go/how-to-set-activityoptions-in-go/#heartbeattimeout)
+import HeartbeatActivityGo from '../go/how-to-heartbeat-an-activity-in-go.md'
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[
+{label: 'Go', value: 'go'},
+{label: 'Java', value: 'java'},
+{label: 'PHP', value: 'php'},
+{label: 'Typescript', value: 'ts'},
+]
+}>
+
+<TabItem value="go">
+
+<HeartbeatActivityGo/>
+
+</TabItem>
+<TabItem value="java">
+
+</TabItem>
+<TabItem value="php">
+
+</TabItem>
+<TabItem value="ts">
+
+</TabItem>
+</Tabs>
+
+#### Set Heartbeat Timeout
+
+A [Heartbeat Timeout](/docs/concepts/what-is-a-heartbeat-timeout) will cause the long-running Activity to timeout if too much time has elapsed between Heartbeats.
+
+import HeartbeatTimeoutGo from '../go/activityoptions/heartbeat-timeout.md'
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[
+{label: 'Go', value: 'go'},
+{label: 'Java', value: 'java'},
+{label: 'PHP', value: 'php'},
+{label: 'Typescript', value: 'ts'},
+]
+}>
+
+<TabItem value="go">
+
+<HeartbeatTimeoutGo/>
+
+</TabItem>
+<TabItem value="java">
+
+</TabItem>
+<TabItem value="php">
+
+</TabItem>
+<TabItem value="ts">
+
+</TabItem>
+</Tabs>
+
+<!-- - [How to set a Heartbeat Timeout in Go](/docs/go/how-to-set-activityoptions-in-go/#heartbeattimeout) -->
 
 ### Child Workflow Executions
 
@@ -627,9 +691,15 @@ values={[
 
 ## Analysis
 
+This section covers the features and customizations that enable us to observe many different aspects of the current state of the Temporal Application.
+
 ### Logging
 
+**In progress**
+
 ### Metrics
+
+**In progress**
 
 ### Visibility
 
@@ -641,3 +711,152 @@ The Temporal Platform h Visibility features that allow you to list Workflow Exec
 - [How to use a List Filter in the Temporal Web UI](/docs/web-ui/how-to-use-a-list-filter-in-the-temporal-web-ui)
 
 ## Scaling
+
+In this section breaks down some of the features, metrics, and other configurations available to tune the performance of your Temporal Application as both the throughput and total number of Workflow Executions and Activity Executions scales up. (See also [Workers in Production](/blog/workers-in-production) blog post)
+
+### Continue-As-New
+
+[Continue-As-New](/docs/concepts/what-is-continue-as-new) enables a Workflow Execution to close successfully and create a new Workflow Execution in a single an atomic operation if the number of Events in the Event History is becoming too large.
+The Workflow Execution spawned from the use of Continue-As-New has the same Workflow Id, a new Run Id, and a fresh Event History and is passed all the appropriate parameters.
+
+import ContinueAsNewGo from '../go/how-to-continue-as-new-in-go.md'
+import ContinueAsNewJava from '../java/how-to-continue-as-new-in-java.md'
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[
+{label: 'Go', value: 'go'},
+{label: 'Java', value: 'java'},
+{label: 'PHP', value: 'php'},
+{label: 'Typescript', value: 'ts'},
+]
+}>
+
+<TabItem value="go">
+
+<ContinueAsNewGo/>
+
+</TabItem>
+<TabItem value="java">
+
+<ContinueAsNewJava/>
+
+</TabItem>
+<TabItem value="php">
+
+</TabItem>
+<TabItem value="ts">
+
+</TabItem>
+</Tabs>
+
+### Worker Entity optimization
+
+_Note: All metrics in this article are prepended with the “temporal\_” prefix. The prefix is omitted in this article to make the names more descriptive._
+
+Performance tuning involves three important [SDK metric](/docs/reference/sdk-metrics) groups:
+
+1. `worker_task_slots_available` gauges tagged `worker_type=WorkflowWorker` and `worker_type=ActivityWorker` for Workflow Task and Activity Workers correspondingly. These gauges report how many executor “slots” are currently available (unoccupied) for each Worker type.
+2. `workflow_task_schedule_to_start_latency` and `activity_schedule_to_start_latency` timers for Workflow Tasks and Activities correspondingly. For more information about `schedule_to_start` timeout and latency, see [https://docs.temporal.io/docs/concepts/what-is-a-schedule-to-start-timeout/](https://docs.temporal.io/docs/concepts/what-is-a-schedule-to-start-timeout/).
+3. `sticky_cache_size` and `workflow_active_thread_count` report the size of the Workflow cache and the number of cached Workflow threads.
+
+_Note: To have access to all the metrics mentioned above in the JavaSDK, version ≥ 1.8.0 is required._
+
+#### Configuration
+
+The following options are defined on `WorkerOptions` and are applicable for each Worker separately:
+
+1. `maxConcurrentWorkflowTaskExecutionSize` and `maxConcurrentActivityExecutionSize` define the number of total available slots for that Worker.
+2. `maxConcurrentWorkflowTaskPollers` (JavaSDK: `workflowPollThreadCount`) and `maxConcurrentActivityTaskPollers` (JavaSDK: `activityPollThreadCount`) define the number of pollers performing poll requests waiting on Workflow / Activity task queue and delivering the tasks to the executors.
+
+The Workflow Cache is created and shared between all the workers. It’s designed to limit the amount of resources used by the cache for the whole host/process. So the options are defined on `WorkerFactoryOptions` in JavaSDK and in `worker` package in GoSDK:
+
+1. `WorkerFactoryOptions#workflowCacheSize` (GoSDK: `worker.setStickyWorkflowCacheSize`) defines the maximum number of cached Workflows Executions. Each cached Workflow contains at least one Workflow thread and its resources (memory, etc).
+2. `maxWorkflowThreadCount` defines the maximum number of Workflow threads.
+
+These options limit the resource consumption of the in-memory Workflow cache. Workflow cache options are shared between all Workers, because the Workflow cache is something that has to do with the resource consumption of the whole host, like memory and the total amount of threads, and should be limited per JVM.
+
+#### Task Queues Processing Tuning
+
+These steps and intended to make sure that there are no delays in the processing of Task Queues because of the under-provisioning of Workers or their unbalanced configuration.
+You should revisit these steps if you observe elevated `schedule_to_start` metrics.
+The steps are arranged in the recommended order of execution.
+
+##### Hosts and Resources provisioning
+
+If currently provisioned Worker hosts are fully utilized (near full CPU usage, high load average, etc), additional Workers hosts have to be provisioned to increase the capacity of the Workers pool.
+
+**It's possible to have too many Workers**
+
+Monitor the poll success (`poll_success`/`poll_success_sync`) and poll timeout `poll_timeouts` Server metric counters.
+
+Poll Success Rate = (`poll_success` + `poll_success_sync`) / (`poll_success` + `poll_success_sync` + `poll_timeouts`)
+
+Poll Success Rate should be >90% in most cases of systems with a steady load. For high volume and low latency, try to target >95%.
+
+If you see
+
+1. low Poll Success Rate, and
+2. low `schedule_to_start_latency`, and
+3. low Worker hosts resource utilization at the same time,
+
+you might have too many workers, consider to size down.
+
+##### Worker Executor Slots sizing
+
+The main area of tuning should be the number of Worker Executor Slots. If:
+
+1. the Worker hosts are underutilized (there are no bottlenecks on CPU, load average, etc), and
+2. the `worker_task_slots_available` metric from the corresponding Worker type often shows a depleted number of available Worker slots, and
+
+then consider increasing the maximum number of working slots by adjusting `maxConcurrentWorkflowTaskExecutionSize` or `maxConcurrentActivityExecutionSize`.
+
+##### Poller count
+
+_Note: Adjustments to pollers are rarely needed and rarely make a difference. Please consider this step only after adjusting Worker slots in the previous step. The only scenario in which the pollers’ adjustment makes sense is when there is a significant network latency between the Workers and Temporal Server._
+
+If:
+
+1. the `schedule_to_start` metric is abnormally long, and
+2. the Worker hosts are underutilized (there are no bottlenecks on CPU, load average, etc), and
+3. `worker_task_slots_available` metric from the corresponding Worker type shows that a significant percentage of Worker slots are available on a regular basis,
+
+then consider increasing the number of pollers by adjusting `maxConcurrentWorkflowTaskPollers` or `maxConcurrentActivityTaskPollers`, depending on which type of `schedule_to_start` metric is elevated.
+
+##### Rate Limiting
+
+If, after adjusting the poller and executors count as specified above, you still observe an elevated `schedule_to_start`, underutilized Worker hosts, or high `worker_task_slots_available`, you may want to check
+
+1. If server-side rate limiting per Task Queue is set by `WorkerOptions#maxTaskQueueActivitiesPerSecond` and remove the limit or adjust the value up.
+2. If Worker-side rate limiting per Worker is set by `WorkerOptions#maxWorkerActivitiesPerSecond` and remove the limit. [GoSDK only]
+
+#### Workflow Cache Tuning
+
+When the number of cached Workflow Executions reported by `sticky_cache_size` hits `workflowCacheSize` or the number of their threads reported by `workflow_active_thread_count` metrics gauge hits `maxWorkflowThreadCount`, Workflow Executions start to get “evicted” from the cache.
+An evicted workflow execution will need to be replayed when it gets any action that may advance it.
+
+If
+
+1. The Workflow Cache limits described above are hit, and
+2. Worker hosts have enough free RAM and are not close to reasonable thread limits,
+
+`workflowCacheSize` and `maxWorkflowThreadCount` limits may be increased to decrease the overall latency and cost of the replays in the system. If the opposite occurs, consider decreasing the limits.
+
+_Note: In CoreSDK based SDKs, like TypeScript, this metric works differently and should be monitored and adjusted on a per Worker / Task Queue basis._
+
+#### Invariants
+
+These properties should always be true for a Worker’s configuration.
+
+_These are applicable to JavaSDK only._
+
+Perform this sanity check after the adjustments to Worker settings.
+
+1. `workflowCacheSize` should be ≤ `maxWorkflowThreadCount`. Each Workflow has at least 1 Workflow thread.
+2. `maxConcurrentWorkflowTaskExecutionSize` should be ≤ `maxWorkflowThreadCount`. Having more Worker slots than the Workflow cache size will lead to resource contention/stealing between executors and unpredictable delays. It’s recommended that `maxWorkflowThreadCount` be at least 2x of `maxConcurrentWorkflowTaskExecutionSize`.
+3. `maxConcurrentWorkflowTaskExecutionSize` should be significantly ≤ `maxConcurrentWorkflowTaskPollers`. And `maxConcurrentActivityExecutionSize` should be significantly ≤ `maxConcurrentActivityTaskPollers`. The number of pollers should always be lower than the number of executors.
+
+#### Drawbacks of putting just "large values everywhere"
+
+As with any multithreading system, specifying too large values without monitoring with the SDK and system metrics will lead to constant resource contention/stealing, which decreases the total throughput and increases latency jitter of the system.

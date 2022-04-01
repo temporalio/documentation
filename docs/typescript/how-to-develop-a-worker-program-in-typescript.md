@@ -46,4 +46,4 @@ This is a selected subset of options you are likely to use. Even more advanced o
 
 **Operation guides:**
 
-- [How to tune Workers](/docs/operations/how-to-tune-workers)
+- [How to tune Workers](/docs/operations/temporal-application-development/#worker-entity-optimization)

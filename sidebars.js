@@ -220,7 +220,6 @@ module.exports = {
       },
       items: [
         "operations/temporal-application-development",
-        "operations/how-to-tune-workers",
       ],
     },
   ],

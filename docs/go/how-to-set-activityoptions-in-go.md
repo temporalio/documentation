@@ -99,19 +99,9 @@ if err != nil {
 
 ### `HeartbeatTimeout`
 
-```go
-activityoptions := workflow.ActivityOptions{
-  HeartbeatTimeout: 10 * time.Second,
-}
-ctx = workflow.WithActivityOptions(ctx, activityoptions)
-var yourActivityResult YourActivityResult
-err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
-if err != nil {
-  // ...
-}
-```
+import HeartbeatTimeoutGo from './activityoptions/heartbeat-timeout.md'
 
-- [What is a Heartbeat Timeout](/docs/concepts/what-is-a-heartbeat-timeout)
+<HeartbeatTimeoutGo/>
 
 ### `WaitForCancellation`
 

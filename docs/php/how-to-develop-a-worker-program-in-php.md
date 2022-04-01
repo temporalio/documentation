@@ -86,4 +86,4 @@ temporal:
 
 **Operation guides:**
 
-- [How to tune Workers](/docs/operations/how-to-tune-workers)
+- [How to tune Workers](/docs/operations/temporal-application-development/#worker-entity-optimization)
