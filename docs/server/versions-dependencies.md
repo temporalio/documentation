@@ -182,6 +182,6 @@ We recommend preparing a staging cluster and then do the following to verify the
 
 1. Create some simulation load on the staging cluster.
 2. Upgrade the database schema in the staging cluster.
-3. Wait and observe for few minutes to verify that there is no unstable behavior from both the server and the simulation load logic.
+3. Wait and observe for a few minutes to verify that there is no unstable behavior from both the server and the simulation load logic.
 4. Upgrade the server.
 5. Now do the same to the live environment cluster.
