@@ -28,7 +28,7 @@ This implementation offers several benefits:
 - Worker Processes do not need to have any open ports, which is more secure.
 - Worker Processes do not need to advertise themselves through DNS or any other network discovery mechanism.
 - When all Worker Processes are down, messages simply persist in a Task Queue, waiting for the Worker Processes to recover.
-- A Worker Processes polls for a message only when it has spare capacity, avoiding overloading itself.
+- A Worker Process polls for a message only when it has spare capacity, avoiding overloading itself.
 - In effect, Task Queues enable load balancing across a large number of Worker Processes.
 - Task Queues support server-side throttling, which enables you to limit the Task dispatching rate to the pool of Worker Processes while still supporting Task dispatching at higher rates when spikes happen.
 - Task Queues enable what we call [Task Routing](/docs/concepts/what-is-task-routing), which is the routing of specific Tasks to specific Worker Processes or even a specific process.
