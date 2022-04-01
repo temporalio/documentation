@@ -218,9 +218,7 @@ module.exports = {
         type: "doc",
         id: "operations/index",
       },
-      items: [
-        "operations/temporal-application-development",
-      ],
+      items: ["operations/temporal-application-development"],
     },
   ],
   sidebarCluster: [
