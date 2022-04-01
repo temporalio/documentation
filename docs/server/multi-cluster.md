@@ -295,7 +295,7 @@ When a Workflow Execution History diverges, proper conflict resolution should be
 
 In Multi-cluster Replication, Workflow Execution History entries (events) are modeled as a tree, as shown in the second example in [Version History](#version-history).
 
-Workflow Execution Histories that diverge will have more than one history branches.
+Workflow Execution Histories that diverge will have more than one history branch.
 Among all history branches, the history branch with the highest version is considered the `current branch` and the Workflow Execution's mutable state is a summary of the current branch.
 Whenever there is a switch between Workflow Execution History branches, a complete rebuild of the Workflow Execution's mutable state will occur.
 
