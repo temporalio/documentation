@@ -176,7 +176,7 @@ To start the Workflow, run this command from the project root:
 
 To start the Worker from within IntelliJ, right click on HelloWorldWorker and select Run.
 
-To start the Workflow fromw Within IntelliJ, right click on InitiateHelloWorld and select Run.
+To start the Workflow from Within IntelliJ, right click on InitiateHelloWorld and select Run.
 
 <br/>
 
