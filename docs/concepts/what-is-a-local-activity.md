@@ -9,7 +9,7 @@ tags:
 
 A Local Activity is an [Activity Execution](/docs/concepts/what-is-an-activity-execution) that executes in the same process as the [Workflow Execution](/docs/concepts/what-is-a-workflow-execution) that spawns it.
 
-Some Activity Executions are ver short-living and do not need the queuing semantic, flow control, rate limiting, and routing capabilities.
+Some Activity Executions are very short-living and do not need the queuing semantic, flow control, rate limiting, and routing capabilities.
 For this case, Temporal supports the Local Activity feature.
 
 The main benefit of Local Activities is that they use less Temporal service resources (e.g. lower state transitions) and have much lower latency overhead (because no need to roundtrip to the Cluster) compared to normal Activity Executions.
