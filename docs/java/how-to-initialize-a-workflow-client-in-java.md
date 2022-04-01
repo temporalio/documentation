@@ -1,6 +1,6 @@
 ---
 id: how-to-initialize-a-workflow-client-in-java
-title: How to initialize a Workflow client in Java
+title: How to initialize a Workflow Client in Java
 sidebar_label: Workflow Client Initialization
 description: Initialize an instance of a `WorkflowClient`, create a client side Workflow stub, and then call a Workflow method (annotated with the `@WorkflowMethod` annotation).
 tags:
