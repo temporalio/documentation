@@ -7,7 +7,7 @@ tags:
   - explanation
 ---
 
-A Task Queue is lightweight, dynamically allocated queue that one or more [Worker Entities](/docs/concepts/what-is-a-worker-entity) poll for [Tasks](/docs/concepts/what-is-a-task).
+A Task Queue is a lightweight, dynamically allocated queue that one or more [Worker Entities](/docs/concepts/what-is-a-worker-entity) poll for [Tasks](/docs/concepts/what-is-a-task).
 
 Task Queues do not have any ordering guarantees.
 It is possible to have a Task that stays in a Task Queue for a period of time, if there is a backlog that wasn't drained for that time.
