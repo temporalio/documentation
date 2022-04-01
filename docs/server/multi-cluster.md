@@ -17,7 +17,7 @@ You can set this up with `tctl admin cluster upsert-remote-cluster` command. A t
 
 ## Overview
 
-Multi-cluster Replication is a feature which asynchronously replicates Workflow Executions from active cluster to other passive clusters, for backup and state reconstruction.
+Multi-cluster Replication is a feature which asynchronously replicates Workflow Executions from active clusters to other passive clusters, for backup and state reconstruction.
 When necessary, for higher availability, Server administrators can failover to any of the clusters which have the backup.
 
 ## Version
