@@ -53,7 +53,7 @@ A Workflow Execution will fail with a nondeterminism error if the Workflow Funct
 
 For additional information on this requirement see the following:
 
-- [Deterministic constraints](https://www.notion.so/docs/temporal-explained/workflows#deterministic-constraints))
+- [Deterministic constraints](https://www.notion.so/docs/temporal-explained/workflows#deterministic-constraints)
 - [Workflow logic requirements in Go](/docs/go/how-to-develop-a-workflow-definition-in-go#workflow-logic-requirements-in-go)
 - [Workflow implementation constraints in Java](/docs/java/how-to-develop-a-workflow-definition-in-java#workflow-implementation-constraints)
 
