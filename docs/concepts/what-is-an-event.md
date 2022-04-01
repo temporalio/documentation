@@ -37,7 +37,7 @@ This event type indicates that a request has been made to cancel the Workflow ex
 
 ### WorkflowExecutionCanceled
 
-This event type indicates that the client has confirmed the cancellation request and the Workflow execution has been cancelled.
+This event type indicates that the client has confirmed the cancellation request and the Workflow execution has been canceled.
 
 ### WorkflowExecutionSignaled
 
@@ -126,7 +126,7 @@ The SDK client will be able to confirm cancellation of an Activity during an Act
 
 ### ActivityTaskCanceled
 
-This event type indicates that the Activity has been cancelled.
+This event type indicates that the Activity has been canceled.
 
 ### TimerStarted
 
@@ -138,7 +138,7 @@ This event type indicates a timer has fired.
 
 ### TimerCanceled
 
-This event type indicates a Timer has been cancelled.
+This event type indicates a Timer has been canceled.
 
 ### RequestCancelExternalWorkflowExecutionInitiated
 
@@ -189,7 +189,7 @@ This would also cause the [WorkflowExecutionFailed](#workflowexecutionfailed) to
 
 ### ChildWorkflowExecutionCanceled
 
-This event type indicates that the child Workflow execution has been cancelled.
+This event type indicates that the child Workflow execution has been canceled.
 This would also cause the [WorkflowExecutionCanceled](#workflowexecutioncanceled) to be recorded for the Workflow that was canceled.
 
 ### ChildWorkflowExecutionTimedOut
