@@ -23,7 +23,7 @@ npx @temporalio/create@latest ./example
   from [github.com/temporalio/samples-typescript](https://github.com/temporalio/samples-typescript) or use a GitHub URL. The URL can have a branch and/or subdirectory: for example, `https://github.com/your-org/your-app/tree/main/foo/bar`.
 - `--list-samples` — List available projects from [our samples repo](https://github.com/temporalio/samples-typescript).
 - `--use-yarn` — Use Yarn instead of npm.
-- `--[no-]git-init` - Initalize an empty git repository
+- `--[no-]git-init` - Initialize an empty git repository
 - `--temporalio-version <version>` - Specify which version of the temporalio npm package to use
 
 ### Project structure
