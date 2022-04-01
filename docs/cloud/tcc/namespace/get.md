@@ -39,5 +39,4 @@ Alias: `--n`
 
 ```bash
 tcc namespace list --account <account_id>  --namespace <namespace_id>
-``
 ```

@@ -4,7 +4,7 @@ title: What is tcc?
 description: tcc is a command-line tool that you can use to interact with Temporal Cloud.
 tags:
   - operation-guide
-  - tctl
+  - tcc
 ---
 
 The Temporal Cloud CLI (tcc) is a command-line tool that you can use to interact with Temporal Cloud.
