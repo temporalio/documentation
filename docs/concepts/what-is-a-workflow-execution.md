@@ -100,7 +100,7 @@ The [Workflow Run Timeout](/docs/concepts/what-is-a-workflow-run-timeout) applie
 
 ### Event loop
 
-A Workflow Execution is made up of a set of [Events](/docs/concepts/what-is-an-event) called an [Event History](/docs/concepts/what-is-an-event-history).
+A Workflow Execution is made up of a sequence of [Events](/docs/concepts/what-is-an-event) called an [Event History](/docs/concepts/what-is-an-event-history).
 Events are created by the Temporal Cluster in response to either Commands or actions requested by a Temporal Client (such as a request to spawn a Workflow Execution).
 
 ![Workflow Execution](/diagrams/workflow-execution-swim-lane-01.svg)
@@ -115,10 +115,11 @@ However, Workflow Executions intended to run indefinitely should be written with
 The Temporal Cluster stores the complete Event History for the entire lifecycle of a Workflow Execution.
 There is a hard limit of 50,000 Events in a Workflow Execution Event History, as well as a hard limit of 50 MB in terms of size.
 The Temporal Cluster logs a warning at every 10,000 Events.
+When the Event History reaches 50,000 Events or the size limit of 50MB, the Workflow Execution is forcefully terminated.
 
 To prevent "runaway" Workflow Executions, you can use the Workflow Execution Timeout, the Workflow Run Timeout, or both.
 A Workflow Execution Timeout can be used to limit the duration of Workflow Execution Chain, and a Workflow Run Timeout can be used to limit the duration an individual Workflow Execution (Run).
 
-You can use the [Continue-As-New](/docs/concepts/what-is-continue-as-new) feature to create a new Workflow Execution.
+You can use the [Continue-As-New](/docs/concepts/what-is-continue-as-new) feature to close the current Workflow Execution and create a new Workflow Execution in a single an atomic operation.
 The Workflow Execution spawned from Continue-As-New has the same Workflow Id, a new Run Id, and a fresh Event History and is passed all the appropriate parameters.
 For example, it may be reasonable to use Continue-As-New once per day for a long-running Workflow Execution that is generating a large Event History.
