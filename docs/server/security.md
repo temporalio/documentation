@@ -16,7 +16,7 @@ However users may also choose to design their own security architecture with rev
 
 The https://github.com/temporalio/samples-server repo offers two examples, which are further explained below:
 
-- **TLS**: how to configure Transport Layer Security (TLS) to secure network communication with and within Temporal cluster.
+- **TLS**: how to configure Transport Layer Security (TLS) to secure network communication with and within a Temporal cluster.
 - **Authorizer**: how to inject a low-level authorizer component that can control access to all API calls.
 
 ## Encryption in transit with mTLS
@@ -105,7 +105,7 @@ a := authorization.NewDefaultAuthorizer()
 
 Configure your `Authorizer` when you start the server via the `temporal.WithAuthorizer` [server option](/docs/server/options/#withauthorizer).
 
-If an `Authorizer` is not set in the server options, Temporal uses the `nopAuthority` authorizer that unconditionally allows all API call to pass through.
+If an `Authorizer` is not set in the server options, Temporal uses the `nopAuthority` authorizer that unconditionally allows all API calls to pass through.
 
 ### `ClaimMapper` plugin interface
 
