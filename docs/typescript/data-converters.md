@@ -5,7 +5,7 @@ sidebar_label: Data Converters
 description: Learn and customize how data is serialized in the TypeScript SDK
 ---
 
-> _Background reading: [Data Converters in Temporal](/docs/concepts/what-is-a-data-converter/)_
+> Background reading: [Data Converters in Temporal](/docs/concepts/what-is-a-data-converter/)
 
 ## Default Data Converter
 
@@ -185,7 +185,7 @@ interface PayloadCodec {
 
 #### Encryption
 
-> _Background: [Data Converter ➡️ Encryption](/docs/concepts/what-is-a-data-converter#encryption)_
+> Background: [Data Converter ➡️ Encryption](/docs/concepts/what-is-a-data-converter#encryption)
 
 Here's an example class that implements the `PayloadCodec` interface:
 

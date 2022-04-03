@@ -74,7 +74,7 @@ Common Payload Codec transformations are compression and encryption.
 
 In codec implementations, we recommended running the function (whether it be compressing, encrypting, etc) on the entire input Payload, and putting the result in a new Payload's `data` field. That way, the input Payload's headers are preserved. See, for example:
 
-- [`ZlibCodec`](https://github.com/temporalio/sdk-go/blob/706516c7077ba2e9b40304aeddbed47e25b2a68f/converter/codec.go#L77-L105) in Go SDK
+- [`ZlibCodec`](https://github.com/temporalio/sdk-go/blob/706516c7077ba2e9b40304aeddbed47e25b2a68f/converter/codec.go#L77-L105) in the Go SDK
 - [Encryption Data Converter](https://github.com/temporalio/samples-go/blob/15be864c80d4d983ebb8a8fbd3fa5263bcef6930/encryption/data_converter.go#L100-L126) in Go's encryption sample
 
 ### Encryption
@@ -87,7 +87,7 @@ Doing encryption in a custom Data Converter ensures that all application data is
 
 Then data only exists unencrypted in memory on the Client and in the Worker Process that is executing Workflows and Activities on hosts that the application developer controls.
 
-Our sample applications use AES GCM with 256-bit keys:
+Our encryption samples use AES GCM with 256-bit keys:
 
 - [TypeScript sample](https://github.com/temporalio/samples-typescript/tree/main/encryption)
 - [Go sample](https://github.com/temporalio/samples-go/tree/main/encryption)
