@@ -4,17 +4,17 @@ tags:
   - community
 posted_on_: 2022-02-28T00:00:00Z
 slug: temporal-ui-beta
-title: 'Temporal UI v2 is Now in Public Beta'
+title: Temporal UI v2 is Now in Public Beta
 author: Steve Kinney
 author_title: Head of Engineering, Frontend
 author_image_url: https://avatars.githubusercontent.com/u/251000?v=4
 ---
 
-# Temporal UI Beta is Now Available
-
 We're excited to announce the public beta of the new Temporal UI, which is available today as an opt-in feature for our open source users. We’d love [your feedback](https://github.com/temporalio/ui/issues).
 
-![Screenshot of Web v2](https://user-images.githubusercontent.com/251000/159999018-d82dfe25-394b-4332-b6e8-a4fedeceec34.pn)
+![Screenshot of Web v2](https://user-images.githubusercontent.com/251000/159999018-d82dfe25-394b-4332-b6e8-a4fedeceec34.png)
+
+<!--truncate-->
 
 The new Temporal UI is a ground-up rewrite. This first release aims for parity with the current UI. Our goal was to lay the foundation for an architecture that we can iterate on. We'll continue to ship features and functionality for the foreseeable future. We also think it looks pretty nice.
 
