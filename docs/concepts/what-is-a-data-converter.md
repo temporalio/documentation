@@ -57,6 +57,11 @@ To use a custom Data Converter, provide it to:
 - Temporal Web via [`tctl data-converter web`](/docs/tctl/data-converter/web) (for displaying decoded data in the Web UI)
 - `tctl` via [`--data-converter-plugin`](/docs/tctl/#--data-converter-plugin) (for displaying decoded headers in `tctl` output)
 
+Custom Data Converters are not applied to all data:
+
+- `searchAttributes` are always encoded with JSON
+- Headers are not encoded by the SDK (the one exception will be—once implemented—the SDK [running OTel baggage through custom Codecs](https://github.com/temporalio/sdk-typescript/issues/514))
+
 ### Payload Codecs
 
 In [TypeScript](/docs/typescript/data-converters#custom-data-converter) and [Go](https://pkg.go.dev/go.temporal.io/sdk/converter#PayloadCodec), data conversion happens in two stages:
