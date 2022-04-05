@@ -13,7 +13,7 @@ An Activity Execution is the full chain of [Activity Task Executions](/docs/conc
 
 ### Request Cancellation
 
-A Workflow can request to cancel an Actvity Execution.
+A Workflow can request to cancel an Activity Execution.
 When an Activity Execution is canceled, or its Workflow Execution has completed or failed, the context passed into its function is canceled, which also sets its channel’s closed state to `Done`.
 An Activity can use that to perform any necessary cleanup and abort its execution.
 

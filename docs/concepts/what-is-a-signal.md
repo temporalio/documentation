@@ -23,7 +23,7 @@ A Signal must include a destination (Namespace + Workflow Id).
 A Signal Header includes the following:
 
 - Recipient: Workflow Execution (Namespace + Workflow Id)
-- Id: The unique id of the Signal.
+- Id: The unique Id of the Signal.
 - Name: The queue in which the Signal will be added.
 
 A Signal Body includes the following:

@@ -51,7 +51,7 @@ This keeps the event history within limits, but continues the logic execution.
 
 **How can I load test Workflow Executions?**
 
-The [Temporal stress testing blog post](https://docs.temporal.io/blog/temporal-deep-dive-stress-testing) covers many different scenarios under which we test Workflow Executions.
+The [Temporal stress testing blog post](https://docs.temporal.io/blog/temporal-deep-dive-stress-testing) covers many scenarios under which we test Workflow Executions.
 
 **Implementation guides:**
 
