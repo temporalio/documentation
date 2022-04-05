@@ -9,7 +9,7 @@ description: Learn and customize how data is serialized in the TypeScript SDK
 
 ## Default Data Converter
 
-The default Data Converter supports:
+In TypeScript, the default Data Converter supports:
 
 - `undefined`
 - `Uint8Array`
@@ -28,6 +28,13 @@ Data Converters have [two parts](/docs/concepts/what-is-a-data-converter#payload
 
 - [`PayloadConverter`](#payloadconverter): sync methods that sometimes run inside the Workflow isolate (and are thus [limited](/docs/typescript/determinism#imports-in-workflow-code))
 - [`PayloadCodec`](#payloadcodec): async methods that are run outside the isolate
+
+```ts
+interface DataConverter {
+  payloadConverterPath?: string;
+  payloadCodec?: PayloadCodec;
+}
+```
 
 ### `PayloadConverter`
 
