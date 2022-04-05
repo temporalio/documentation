@@ -50,7 +50,7 @@ This event type indicates that the Workflow execution has been forcefully termin
 
 ### WorkflowExecutionContinuedAsNew
 
-This event type indicates that the Workflow has successfully completed and a new Workflow has been started within the same transaction.
+This event type indicates that the Workflow has successfully completed, and a new Workflow has been started within the same transaction.
 This event type contains last Workflow execution results as well as new Workflow execution inputs.
 
 ### WorkflowTaskScheduled

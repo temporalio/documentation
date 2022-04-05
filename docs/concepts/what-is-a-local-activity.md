@@ -23,5 +23,5 @@ Consider using Local Activities for functions that are the following:
 - can be implemented in the same binary as the Workflow that calls them.
 
 Using a Local Activity without understanding its limitations can cause various production issues.
-**We recommend using regular Activities unless your use case requires very high throughput and large Activity fan outs of very short lived Activities.**
+**We recommend using regular Activities unless your use case requires very high throughput and large Activity fan outs of very short-lived Activities.**
 More guidance in choosing between [Local Activity vs Activity](https://community.temporal.io/t/local-activity-vs-activity/290/3) is available in our forums.
