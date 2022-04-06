@@ -476,7 +476,7 @@ Arguments for both are sent as needed.
 ```ts
 // Signal With Start in Client file
 const client = new WorkflowClient();
-await workflow.signalWithStart(MyWorkflow, {
+await client.signalWithStart(MyWorkflow, {
   workflowId,
   args: [arg1, arg2],
   signal: MySignal,
