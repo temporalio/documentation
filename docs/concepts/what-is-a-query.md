@@ -38,7 +38,7 @@ Consider if you were to send a Signal to a Workflow Execution with the intent to
 
 The Query may or may not return the updated state that quickly.
 However, there is a guarantee that eventually the Query would return the actual state.
-This is what it means for query to be eventually consistency.
+This is what it means for a query to be eventually consistent.
 
 #### Strong consistency
 

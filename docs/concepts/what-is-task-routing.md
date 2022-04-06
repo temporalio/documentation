@@ -30,7 +30,7 @@ Code samples:
 
 ### Sessions
 
-Some SDKs provide a Session API that provides a straightforward way to ensure that Activity Tasks are executed with the same Worker without requiring you to manually specifying Task Queue names.
+Some SDKs provide a Session API that provides a straightforward way to ensure that Activity Tasks are executed with the same Worker without requiring you to manually specify Task Queue names.
 It also includes features like **concurrent session limitations** and **worker failure detection**.
 
 - [How to create Worker Sessions in Go](/docs/go/how-to-create-a-worker-session-in-go)

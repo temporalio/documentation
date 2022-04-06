@@ -28,7 +28,7 @@ npx @temporalio/create@latest ./example
 
 ### Project structure
 
-Typically the generated project consists of 4 main components:
+Typically, the generated project consists of 4 main components:
 
 - Workflows
 - Activities
