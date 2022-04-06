@@ -54,7 +54,7 @@ _**Note: The accompanying code for this post can be found in [this Github repo](
 
 Now that we have a good grasp of the steps in the business process, let’s see how this would look in Temporal. Each of the steps highlighted in the previous section can roughly be mapped over to [Activities](https://docs.temporal.io/docs/go/activities/) within Temporal.
  As prerequisites, ensure that
-- the Temporal service is running as specified in the [Quickstart](https://docs.temporal.io/docs/server/quick-install/) section of the Temporal docs.
+- the Temporal service is running as specified in the [Quickstart](https://docs.temporal.io/docs/clusters/quick-install/) section of the Temporal docs.
 - `ffmpeg` is installed. See instructions in the [official website](https://ffmpeg.org/download.html).
 
 The code has only been tested to work in certain Linux distributions and macOS.

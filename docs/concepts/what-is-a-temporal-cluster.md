@@ -9,8 +9,8 @@ tags:
 
 A Temporal Cluster is the Temporal Server paired with persistence.
 
-- [How to quickly install the Temporal Cluster using Docker Compose](/docs/cluster/how-to-quickly-install-the-temporal-cluster-using-docker-compose)
-- [How to deploy the Temporal Server to Kubernetes for testing and development](/docs/cluster/how-to-deploy-temporal-to-kubernetes-for-testing-and-development)
+- [How to quickly install the Temporal Cluster using Docker Compose](/docs/clusters/quick-install/#docker-compose)
+- [How to deploy the Temporal Server to Kubernetes for testing and development](/docs/clusters/quick-install/#helm-charts)
 
 The Temporal Server consists of four independently scalable services:
 
@@ -100,7 +100,6 @@ The Worker Service runs background processing for the replication queue, system 
 
 It talks to the Frontend service.
 
-- It uses grpcPort 7239 to host the service handler.
 - It uses port 6939 for membership related communication.
 
 ### Database

@@ -95,7 +95,7 @@ Some important features of the [InjectedSinkFunction](https://typescript.tempora
 
 The injected sink function contributes to the overall workflow task processing duration.
 
-- If you have a long running sink function, such as one that tries to communicate with external services, you might start seeing workflow task timeouts.
+- If you have a long-running sink function, such as one that tries to communicate with external services, you might start seeing workflow task timeouts.
 - The effect is multiplied when using `callDuringReplay: true` and replaying long Workflow histories because the Workflow Task timer starts when the first history page is delivered to the Worker.
 
 ## Logging in Workers and Clients
@@ -151,9 +151,9 @@ const logger = winston.createLogger({
 await Core.install({ logger });
 ```
 
-## Monitoring SDK metrics
+## Metrics
 
-We are in the process of building out our SDK metrics capabilities. For now, please observe standard monitoring practices on your Workers in production (CPU, memory utilization, health checks).
+For information about metrics, see the [Metrics section on the Deploy Checklist](/docs/typescript/production-deploy#metrics) page.
 
 ## OpenTelemetry tracing
 

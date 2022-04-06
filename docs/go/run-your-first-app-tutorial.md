@@ -31,7 +31,7 @@ Keep reading or follow along with this video walkthrough:
 ## ![](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/repair-tools.png) Project setup
 
 Before starting, make sure you have looked over the [tutorial prerequisites](/docs/go/tutorial-prerequisites).
-Basically, make sure the Temporal Server is running (using [Docker is the fastest way](https://docs.temporal.io/docs/server/quick-install)), and your Go version is above v1.14.
+Basically, make sure the Temporal Server is running (using [Docker is the fastest way](https://docs.temporal.io/docs/clusters/quick-install)), and your Go version is v1.14 or later.
 
 This tutorial uses a fully working template application which can be downloaded as a zip or converted to a new repository in your own Github account and cloned. Github's ["Creating a Repository from a Template" guide](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-from-a-template#creating-a-repository-from-a-template) will walk you through the steps.
 
@@ -77,7 +77,7 @@ There are two ways to start a Workflow with Temporal, either via the SDK or via 
 
 ### Running the Workflow
 
-Make sure the [Temporal server](/docs/server/quick-install) is running in a terminal, and then run start/main.go from the project root using the following command:
+Make sure the [Temporal server](/docs/clusters/quick-install) is running in a terminal, and then run start/main.go from the project root using the following command:
 
 ```bash
 go run start/main.go

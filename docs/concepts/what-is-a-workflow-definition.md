@@ -10,9 +10,9 @@ tags:
 A Workflow Definition is the code that defines the constraints of a Workflow Execution.
 
 A Workflow Definition is often also referred to as a Workflow Function.
-In Temporal's documentation a Workflow Definition is used to refer to the source for the instance of a Workflow Execution, while a Workflow Function is the source for the instance of a Workflow Function Execution.
+In Temporal's documentation, a Workflow Definition refers to the source for the instance of a Workflow Execution, while a Workflow Function refers to the source for the instance of a Workflow Function Execution.
 
-A Workflow Execution effectively executes once to completion while a Workflow Function Execution occurs many times during the life of a Workflow Execution.
+A Workflow Execution effectively executes once to completion, while a Workflow Function Execution occurs many times during the life of a Workflow Execution.
 
 We strongly recommend that you write a Workflow Definition in a language that has a corresponding Temporal SDK.
 
@@ -27,15 +27,15 @@ A critical aspect of developing Workflow Definitions is ensuring they exhibit ce
 
 The execution semantics of a Workflow Execution include the re-execution of a Workflow Function.
 The use of Workflow APIs in the function is what generates [Commands](/docs/concepts/what-is-a-command).
-Commands tell the Cluster what Events to create and add to the Workflow Execution's Event History.
-Whenever a Workflow Function is executed, the Commands that are emitted are compared with the existing Event History.
+Commands tell the Cluster which Events to create and add to the Workflow Execution's Event History.
+When a Workflow Function executes, the Commands that are emitted are compared with the existing Event History.
 If a corresponding Event already exists within the Event History that maps to the generation of that Command in the same sequence, and some specific metadata of that Command matches with some specific metadata of the Event, then the Function Execution progresses.
 
 For example, using an SDKs "Execute Activity" API generates the [ScheduleActivityTask](/docs/concepts/what-is-a-command#scheduleactivitytask) Command.
 When this API is called upon re-execution, that Command is compared with the Event that is in the same location within the sequence.
 The Event in the sequence must be an [ActivityTaskScheduled](/docs/concepts/what-is-an-event/#activitytaskscheduled) Event, where the Activity Name and the Task Queue name are the same as what is in the Command.
 
-If a Command is generated that doesn't match what it needs to in the existing Event History, then the Workflow Execution will return a "non-deterministic" error.
+If a generated Command doesn't match what it needs to in the existing Event History, then the Workflow Execution returns a _non-deterministic_ error.
 
 The following are the two reasons why a Command might be generated out of sequence or the wrong Command might be generated altogether:
 
@@ -45,7 +45,7 @@ The following are the two reasons why a Command might be generated out of sequen
 #### Code changes can cause non-deterministic behavior
 
 The Workflow Definition can change in very limited ways once there is a Workflow Execution depending on it.
-To alleviate non-deterministic issues that arise from code changes we recommend using [Workflow Versioning](#what-is-workflow-versioning).
+To alleviate non-deterministic issues that arise from code changes, we recommend using [Workflow Versioning](#what-is-workflow-versioning).
 
 For example, let's say we have a Workflow Definition that defines the following sequence:
 
@@ -63,7 +63,7 @@ Before the Timer is up, we change the Workflow Definition to the following seque
 3. Complete
 
 When the Timer fires, the next Workflow Task will cause the Workflow Function to re-execute.
-The first Command the Worker sees would be be ScheduleActivityTask Command, which wouldn't match up to the expected [TimerStarted](/docs/concepts/what-is-an-event#timerstarted] Event.
+The first Command the Worker sees would be be ScheduleActivityTask Command, which wouldn't match up to the expected [TimerStarted](/docs/concepts/what-is-an-event#timerstarted) Event.
 
 The Workflow Execution would fail, and return the non-determinism error.
 
@@ -95,7 +95,7 @@ fn my_workflow() {
 Each Temporal SDK offers APIs that enable Workflow Definitions to have logic that gets and uses time, random numbers, and data from unreliable resources.
 When those APIs are used, the results are stored as part of the Event History, which means that a re-executed Workflow Function will issue the same sequence of Commands, even if there is branching involved.
 
-In other words, all operations that do not purely mutate the Workflow Execution's state should occur via a Temporal SDK API.
+In other words, all operations that do not purely mutate the Workflow Execution's state should occur through a Temporal SDK API.
 
 ### What is Workflow Versioning?
 

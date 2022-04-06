@@ -151,7 +151,7 @@ Look for "BUILD SUCCESSFUL" in the output to confirm.
 
 ## ![](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/running.png) Run the app
 
-To run the app we need to start the Workflow and the Worker. You can start them in any order. Make sure you have the [Temporal server](https://docs.temporal.io/docs/server/quick-install) running in a terminal and have the [Temporal Web UI](localhost:8088) open in your browser
+To run the app we need to start the Workflow and the Worker. You can start them in any order. Make sure you have the [Temporal server](https://docs.temporal.io/docs/clusters/quick-install) running in a terminal and have the [Temporal Web UI](localhost:8088) open in your browser
 
 If you are using the terminal, add tasks to the build.gradle file so that you can run the main methods from there.
 
@@ -176,7 +176,7 @@ To start the Workflow, run this command from the project root:
 
 To start the Worker from within IntelliJ, right click on HelloWorldWorker and select Run.
 
-To start the Workflow fromw Within IntelliJ, right click on InitiateHelloWorld and select Run.
+To start the Workflow from Within IntelliJ, right click on InitiateHelloWorld and select Run.
 
 <br/>
 
@@ -186,7 +186,7 @@ To start the Workflow fromw Within IntelliJ, right click on InitiateHelloWorld a
 
 ## ![](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/wisdom.png) Lore check
 
-Great work! You now know how to build a Temporal Workflow application using the Java SDK and Gradle. Let's do a quick review to make sure you remember some fo the more important pieces.
+Great work! You now know how to build a Temporal Workflow application using the Java SDK and Gradle. Let's do a quick review to make sure you remember some of the more important pieces.
 
 ![One](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/one.png) &nbsp;&nbsp; **What are the minimum four pieces of a Temporal Workflow application?**
 

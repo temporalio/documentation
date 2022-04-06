@@ -51,7 +51,7 @@ WorkerFactory factory = WorkerFactory.newInstance(client);
 
 Worker worker = factory.newWorker(TASK_QUEUE_NAME);
 
-worker.registerWorkflowImplementationTypes(GreetingWorkflowImpl.class);
+worker.registerWorkflowImplementationTypes(EmployeeWorkflowImpl.class);
 ```
 
 Note that in order to execute our `EmployeeWorkflowImpl` Workflow implementation, there is no need to register any Activities.

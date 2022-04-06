@@ -20,7 +20,7 @@ When a Workflow Execution is Running, it is either actively progressing or suspe
 
 ![Workflow Execution Running status](/diagrams/workflow-execution-running-status.svg)
 
-A Closed status means that the Workflow Execution has finished progressing, and has either Completed successfully, Continued As New, Failed, Timed Out, been Cancelled, or Terminated.
+A Closed status means that the Workflow Execution has finished progressing, and has either Completed successfully, Continued As New, Failed, Timed Out, been Canceled, or Terminated.
 
 ![Workflow Execution statuses](/diagrams/workflow-execution-statuses.svg)
 
@@ -51,7 +51,7 @@ This keeps the event history within limits, but continues the logic execution.
 
 **How can I load test Workflow Executions?**
 
-The [Temporal stress testing blog post](https://docs.temporal.io/blog/temporal-deep-dive-stress-testing) covers many different scenarios under which we test Workflow Executions.
+The [Temporal stress testing blog post](https://docs.temporal.io/blog/temporal-deep-dive-stress-testing) covers many scenarios under which we test Workflow Executions.
 
 **Implementation guides:**
 

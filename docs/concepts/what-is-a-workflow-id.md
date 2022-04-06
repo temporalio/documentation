@@ -21,7 +21,10 @@ This Id is meant for business level identification such as a customer Id or an o
 The Temporal Server enforces the uniqueness of the Id, within a [Namespace](/docs/concepts/what-is-a-namespace) based on the Workflow Id re-use policy.
 
 Any attempt to start a Workflow that has the same Id of a Workflow with a re-use policy that does not allow it, is going to fail with a "Workflow execution already started" error.
-Note that, it is not possible to have two open Workflows with the same Workflow Id, regardless of the re-use policy.
+
+:::note
+It is not possible to have two open Workflows with the same Workflow Id, regardless of the re-use policy.
 The re-use policy applies only to closed Workflows.
+:::
 
 A Workflow is uniquely identified by its [Namespace](/docs/concepts/what-is-a-namespace), Workflow Id, and [Run Id](/docs/concepts/what-is-a-run-id).

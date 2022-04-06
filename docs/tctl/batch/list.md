@@ -8,7 +8,7 @@ tags:
   - tctl
 ---
 
-The `tctl batch list` command lists all batch joba.
+The `tctl batch list` command lists all batch jobs.
 
 `tctl batch list [<modifiers>]`
 

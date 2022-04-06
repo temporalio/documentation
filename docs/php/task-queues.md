@@ -45,9 +45,10 @@ $factory->run();
 A single Worker can listen to only one Task Queue.
 And, it is important to remember that the name of the Task Queue the Worker is listening to must match the name of the Task Queue provided in the options to any given Workflow or Activity.
 
-import SharedWorkersTaskQueueRegistrationNote from '../reminders/note-workers-task-queue-registration-match.md'
+All Workers listening to the same Task Queue name must be registered to handle the exact same Workflows Types and Activity Types.
 
-<SharedWorkersTaskQueueRegistrationNote />
+If a Worker polls a Task for a Workflow Type or Activity Type it does not know about, it will fail that Task.
+However, the failure of the Task will not cause the associated Workflow Execution to fail.
 
 3. Optionally, the name of a Task Queue can be provided in the `ActivityOptions` when calling an Activity from a Workflow.
 

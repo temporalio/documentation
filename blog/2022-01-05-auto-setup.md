@@ -26,7 +26,7 @@ While the other pieces are industry standard formats with explanations available
 It’s worth: 
 
 - knowing that the `auto-setup.sh` script exists and handles some critical pieces of the Temporal deployment model
-- understanding what it does to fill in the blanks between “it’s just a binary” to a zero configuration [Quick Install](https://docs.temporal.io/docs/server/quick-install) default developer experience
+- understanding what it does to fill in the blanks between “it’s just a binary” to a zero configuration [Quick Install](https://docs.temporal.io/docs/clusters/quick-install) default developer experience
 - understanding what is optional - so you can modify it when it is getting in your way, or have confidence throwing it out and writing your own
 
 The goal of this post is ***not*** to explain every little detail (you can [read the code](https://github.com/temporalio/temporal/blob/master/docker/auto-setup.sh) yourself for that), but to highlight important pieces every self-hosted Temporal user should know. 

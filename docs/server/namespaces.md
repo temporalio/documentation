@@ -167,7 +167,7 @@ a worker restart even without Global Namespaces.
 #### What happens when a start or signal API call is made to a standby cluster?
 
 Temporal will reject the call and return **NamespaceNotActiveError**. It is the responsibility of the application to forward
-the failed call to active cluster based on information provided in the error.
+the failed call to the active cluster based on information provided in the error.
 
 #### What is the recommended pattern to send external events to an active cluster?
 
