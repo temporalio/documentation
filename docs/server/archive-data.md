@@ -12,7 +12,7 @@ Temporal's Archival feature is considered **experimental** and not subject to no
 
 </CustomWarning>
 
-This guide covers Temporal's archiving capabilities and how to setup the Archival feature.
+This guide covers Temporal's archiving capabilities and how to set up the Archival feature.
 
 ## Overview
 
@@ -212,7 +212,7 @@ func(a * Archiver) Archive(ctx context.Context, URI string, request * ArchiveReq
 }
 ```
 
-**If my `Archive` method encounters an error which is non-retryable how do I indicate to the caller that should not retry?**
+**If my `Archive` method encounters an error which is non-retryable, how do I indicate to the caller that it should not retry?**
 
 ```go
 func(a * Archiver) Archive(ctx context.Context, URI string, request * ArchiveRequest, opts...ArchiveOption) error {

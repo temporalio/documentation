@@ -93,7 +93,7 @@ global:
           - /path/to/frontend/server/CA/files
 ```
 
-Below is an additional example of a fully secured cluster using mutual TLS for both frontend and internode communication with manually specified Cas:
+Below is an additional example of a fully secured cluster using mutual TLS for both frontend and internode communication with manually specified CAs:
 
 ```yaml
 global:

@@ -70,7 +70,7 @@ Temporal emits metrics by default in a format that is supported by Prometheus. M
 - **Prometheus >= v2.0**
 - **Grafana >= v2.5**
 
-## Upgrade your version of Temporal
+## Upgrading your version of Temporal
 
 If a newer version of Temporal is available, a notification appears in the Temporal Web UI.
 
@@ -82,7 +82,7 @@ If you are using a schema tools version prior to 1.8.0, we strongly recommend _n
 Using this option might lead to potential loss of data, as when using it will create a new database and drop your
 existing one. This flag was removed in the 1.8.0 release.
 
-### Upgrade Cassandra schema
+### Upgrading Cassandra schema
 
 You can use the `temporal-cassandra-tool` to upgrade both the default and visibility schemas for your Cassandra DB:
 
@@ -118,7 +118,7 @@ temporal_v1.2.1 $ temporal-cassandra-tool \
 
 ```
 
-### Upgrade MySQL / PostgreSQL schema
+### Upgrading MySQL / PostgreSQL schema
 
 Use the `temporal-sql-tool`, which works similarly to the `temporal-cassandra-tool`.
 
@@ -176,12 +176,12 @@ Refer to this [Makefile](https://github.com/temporalio/temporal/blob/v1.4.1/Make
 	--ep localhost -p 3036 -u root -pw root --pl mysql --db temporal_visibility update-schema -d ./schema/mysql/v57/visibility/versioned/
 ```
 
-### Manage cluster
+### Managing cluster
 
 We recommend preparing a staging cluster and then do the following to verify the upgrade is successful:
 
 1. Create some simulation load on the staging cluster.
 2. Upgrade the database schema in the staging cluster.
-3. Wait and observe for few minutes to verify that there is no unstable behavior from both the server and the simulation load logic.
+3. Wait and observe for a few minutes to verify that there is no unstable behavior from both the server and the simulation load logic.
 4. Upgrade the server.
 5. Now do the same to the live environment cluster.

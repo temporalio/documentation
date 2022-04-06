@@ -7,7 +7,7 @@ tags:
   - explanation
 ---
 
-A Task Queue is lightweight, dynamically allocated queue that one or more [Worker Entities](/docs/concepts/what-is-a-worker-entity) poll for [Tasks](/docs/concepts/what-is-a-task).
+A Task Queue is a lightweight, dynamically allocated queue that one or more [Worker Entities](/docs/concepts/what-is-a-worker-entity) poll for [Tasks](/docs/concepts/what-is-a-task).
 
 Task Queues do not have any ordering guarantees.
 It is possible to have a Task that stays in a Task Queue for a period of time, if there is a backlog that wasn't drained for that time.
@@ -28,7 +28,7 @@ This implementation offers several benefits:
 - Worker Processes do not need to have any open ports, which is more secure.
 - Worker Processes do not need to advertise themselves through DNS or any other network discovery mechanism.
 - When all Worker Processes are down, messages simply persist in a Task Queue, waiting for the Worker Processes to recover.
-- A Worker Processes polls for a message only when it has spare capacity, avoiding overloading itself.
+- A Worker Process polls for a message only when it has spare capacity, avoiding overloading itself.
 - In effect, Task Queues enable load balancing across a large number of Worker Processes.
 - Task Queues support server-side throttling, which enables you to limit the Task dispatching rate to the pool of Worker Processes while still supporting Task dispatching at higher rates when spikes happen.
 - Task Queues enable what we call [Task Routing](/docs/concepts/what-is-task-routing), which is the routing of specific Tasks to specific Worker Processes or even a specific process.
