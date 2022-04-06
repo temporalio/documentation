@@ -109,7 +109,7 @@ The rest of this document explains the major Workflow APIs you should know:
 - Signals and Queries: `defineSignal`, `defineQuery`, and `setHandler`
 - Deferred Execution: `sleep` and `condition`
 - Child Workflows: `startChild` and `executeChild`
-- Entity (indefinitely long running) Workflows: `continueAsNew`
+- Entity (indefinitely long-running) Workflows: `continueAsNew`
 
 ## Signals and Queries
 
@@ -215,7 +215,7 @@ export function defineQuery<Ret, Args extends any[] = []>(
 Signals/Queries are only instantiated in `setHandler` and are specific to a particular Workflow Execution.
 
 These distinctions may seem minor, but they model how Temporal works under the hood, because Signals and Queries are messages identified by "just strings" and don't have meaning independent of the Workflow having a listener to handle them.
-This will be clearer if you refer to to the Client-side APIs below.
+This will be clearer if you refer to the Client-side APIs below.
 
 #### Why `setHandler` and not OTHER_API?
 
