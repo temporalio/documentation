@@ -24,7 +24,7 @@ export async function ExampleWorkflow() {
 ```
 
 For this to be possible, Workflow code must be completely deterministic, meaning it does the exact same thing every time it is rerun.
-Determinism brings limitations: you can't just call an external service, get the current time, or generate a random number, as these are all dependant on the state of the world at the time they're called, and may produce different values.
+Determinism brings limitations: you can't just call an external service, get the current time, or generate a random number, as these are all dependent on the state of the world at the time they're called, and may produce different values.
 The Temporal SDKs come with a set of tools that allow you to overcome these limitations.
 
 ### How a Workflow is executed
@@ -32,7 +32,7 @@ The Temporal SDKs come with a set of tools that allow you to overcome these limi
 The Temporal TypeScript SDK runs each Workflow in a separate v8 isolate — a "sandbox" environment using Node's built in `vm` with its own global variables, just like in the browser.
 
 - When we need to defer execution (such as for a timer or activity), we simply destroy the `vm` context.
-- When we need to continue execution, Temporal Server sends over the Event History and we replay through the code from the start until the end to restore state.
+- When we need to continue execution, Temporal Server sends over the Event History, and we replay through the code from the start until the end to restore state.
   - The serialization takes time, which is why we recommend keeping Event History [under 10,000 events](/docs/server/production-deployment/#server-limits). ["Sticky" optimizations exist to make this faster for common situations](/docs/concepts/what-is-a-sticky-execution).
   - If the execution logic has changed enough to affect Event History, you need to [patch new code](/docs/typescript/patching).
 - The Workflow runtime is completely deterministic: functions like `Math.random`, `Date`, and `setTimeout` are replaced by deterministic versions, and the only way for a Workflow to interact with the world is via Activities.

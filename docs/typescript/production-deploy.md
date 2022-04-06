@@ -123,7 +123,7 @@ Here is the [full list of SDK metrics](/docs/reference/sdk-metrics/). Some of th
 
 If you are experiencing system performance issues, make sure that you have checked that the bottleneck is not with your Temporal Cluster before turning to the performance of your Workers.
 
-We endeavor to give you good defaults so you don't have to worry about them, but there are a few key settings you may want to explore if you are pushing system limits:
+We endeavor to give you good defaults, so you don't have to worry about them, but there are a few key settings you may want to explore if you are pushing system limits:
 
 - [Worker Options](https://typescript.temporal.io/api/interfaces/worker.workeroptions/#maxcachedworkflows), for example:
   - `maxCachedWorkflows` to limit Workflow cache size and trade memory for CPU (biggest lever for Worker performance)

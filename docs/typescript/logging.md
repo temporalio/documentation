@@ -95,7 +95,7 @@ Some important features of the [InjectedSinkFunction](https://typescript.tempora
 
 The injected sink function contributes to the overall workflow task processing duration.
 
-- If you have a long running sink function, such as one that tries to communicate with external services, you might start seeing workflow task timeouts.
+- If you have a long-running sink function, such as one that tries to communicate with external services, you might start seeing workflow task timeouts.
 - The effect is multiplied when using `callDuringReplay: true` and replaying long Workflow histories because the Workflow Task timer starts when the first history page is delivered to the Worker.
 
 ## Logging in Workers and Clients

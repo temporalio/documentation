@@ -96,7 +96,7 @@ So we have to keep both the old and new code when migrating Workflows while they
 <summary>30 Min Video: Introduction to Versioning
 </summary>
 
-Because we design for potentially long running workflows at scale, versioning with Temporal works differently than with other workflow systems.
+Because we design for potentially long-running workflows at scale, versioning with Temporal works differently than with other workflow systems.
 We explain more in this optional 30 minute introduction:
 
 import { ResponsivePlayer } from '../../src/components'
@@ -165,4 +165,4 @@ If while we're deploying `v2deprecatedpatch` (below) there are still live Worker
 ## Upgrading Workflow dependencies
 
 Upgrading Workflow dependencies (such as ones installed into `node_modules`) _might_ break determinism in unpredictable ways.
-It is highly recommended to use a lock file (`package-lock.json` or `yarn.lock`) in order to fix Workflow dependency versions and gain control of when they're updated.
+We recommended using a lock file (`package-lock.json` or `yarn.lock`) in order to fix Workflow dependency versions and gain control of when they're updated.
