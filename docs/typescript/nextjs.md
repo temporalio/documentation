@@ -242,17 +242,14 @@ You will need to configure gRPC connection address, namespace, and mTLS cert and
 
 ```ts
 // before Worker.create call in worker.ts
-await Core.install({
-  serverOptions: {
-    address,
-    namespace,
-    tls: {
-      serverNameOverride,
-      serverRootCACertificate,
-      clientCertPair: {
-        crt: fs.readFileSync(clientCertPath),
-        key: fs.readFileSync(clientKeyPath),
-      },
+const connection = await NativeConnection.create({
+  address,
+  tls: {
+    serverNameOverride,
+    serverRootCACertificate,
+    clientCertPair: {
+      crt: fs.readFileSync(clientCertPath),
+      key: fs.readFileSync(clientKeyPath),
     },
   },
 });
