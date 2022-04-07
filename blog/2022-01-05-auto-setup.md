@@ -29,12 +29,12 @@ It’s worth:
 - understanding what it does to fill in the blanks between “it’s just a binary” to a zero configuration [Quick Install](https://docs.temporal.io/docs/clusters/quick-install) default developer experience
 - understanding what is optional - so you can modify it when it is getting in your way, or have confidence throwing it out and writing your own
 
-The goal of this post is ***not*** to explain every little detail (you can [read the code](https://github.com/temporalio/temporal/blob/master/docker/auto-setup.sh) yourself for that), but to highlight important pieces every self-hosted Temporal user should know. 
+The goal of this post is ***not*** to explain every little detail (you can [read the code](https://github.com/temporalio/docker-builds/blob/main/docker/auto-setup.sh) yourself for that), but to highlight important pieces every self-hosted Temporal user should know. 
 This should give you some great first-principles knowledge to deploy Temporal to anything from a simple VPS to a full Kubernetes cluster.
 
 ## Auto-Setup at a High Level
 
-Our [basic Docker entrypoint](https://github.com/temporalio/temporal/blob/master/docker/entrypoint.sh) does some bindings, but most importantly, it runs [auto-setup.sh](https://github.com/temporalio/temporal/blob/master/docker/auto-setup.sh) then [start-temporal.sh](https://github.com/temporalio/temporal/blob/master/docker/start-temporal.sh).  
+Our [basic Docker entrypoint](https://github.com/temporalio/docker-builds/blob/main/docker/entrypoint.sh) does some bindings, but most importantly, it runs [auto-setup.sh](https://github.com/temporalio/docker-builds/blob/main/docker/auto-setup.sh) then [start-temporal.sh](https://github.com/temporalio/docker-builds/blob/main/docker/start-temporal.sh).  
 
 `auto-setup.sh` does a few things (we will go deeper on the **bolded** parts):
 
@@ -131,7 +131,7 @@ tctl --auto_confirm admin cluster add-search-attributes \
           --name CustomBoolField --type Bool
 ```
 
-These are intentionally generically named, for demo purposes (eg [for code samples](https://github.com/temporalio/samples-go/blob/77728cf7c38570898b2c90bf6eb0720c7f5fb30d/searchattributes/searchattributes_workflow.go#L56-L63)) and for ease of use (since they are already set up, you don't have to add them when you find you need them later). As you advance in your usage, you may wish to drop this step in favor of better named and specified attributes - just keep in mind that you are [limited to a maximum of 100](https://docs.temporal.io/docs/server/production-deployment/#server-limits).
+These are intentionally generically named, for demo purposes (e.g. [for code samples](https://github.com/temporalio/samples-go/blob/77728cf7c38570898b2c90bf6eb0720c7f5fb30d/searchattributes/searchattributes_workflow.go#L56-L63)) and for ease of use (since they are already set up, you don't have to add them when you find you need them later). As you advance in your usage, you may wish to drop this step in favor of better named and specified attributes - just keep in mind that you are [limited to a maximum of 100](https://docs.temporal.io/docs/server/production-deployment/#server-limits).
 
 ## Closing Thoughts
   
