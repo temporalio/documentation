@@ -102,7 +102,7 @@ For more information about sending logs, see [Logging](/docs/typescript/logging)
 
 ### Options
 
-Workers can emit metrics and traces. There are two [output options](https://github.com/temporalio/sdk-typescript/blob/9dd17554f3fa514f501d906da26cf710020bf34d/packages/core-bridge/index.d.ts#L74-L98) that can be provided to [`Core.install`](https://typescript.temporal.io/api/classes/worker.core/#install):
+Workers can emit metrics and traces. There are two [output options](https://github.com/temporalio/sdk-typescript/blob/9dd17554f3fa514f501d906da26cf710020bf34d/packages/core-bridge/index.d.ts#L74-L98) that can be provided to [`Runtime.install`](https://typescript.temporal.io/api/classes/worker.runtime/#install):
 
 - `oTelCollectorUrl`: The URL of a gRPC [OpenTelemetry collector](https://opentelemetry.io/docs/collector/).
 - `prometheusMetricsBindAddress`: Address on the Worker host that will have metrics for [Prometheus](https://prometheus.io/) to scrape.
