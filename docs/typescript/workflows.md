@@ -15,7 +15,7 @@ import * as WhatIsAQuery from '../concepts/what-is-a-query.md'
 
 **`@temporalio/workflow`** [![NPM](https://img.shields.io/npm/v/@temporalio/workflow)](https://www.npmjs.com/package/@temporalio/workflow) [API reference](https://typescript.temporal.io/api/namespaces/workflow) | [GitHub](https://github.com/temporalio/sdk-typescript/tree/main/packages/workflow)
 
-> _Background reading: [Workflows in Temporal](https://docs.temporal.io/docs/concepts/workflows/)_
+> _Background reading: [Workflows in Temporal](/docs/temporal-explained/workflows)_
 
 **Workflows are async functions that can orchestrate Activities and access special Workflow APIs, subject to deterministic limitations**.
 
@@ -112,6 +112,8 @@ The rest of this document explains the major Workflow APIs you should know:
 - Entity (indefinitely long-running) Workflows: `continueAsNew`
 
 ## Signals and Queries
+
+> _Background reading: [Signals and Queries in Temporal](/docs/temporal-explained/signals-and-queries)_
 
 <RelatedReadContainer>
   <RelatedReadItem page={WhatIsASignal} />

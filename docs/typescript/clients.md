@@ -17,7 +17,9 @@ They are the only way to schedule new Workflow Executions with Temporal Server.
 - The primary use of Workflow Clients is to start new Workflow Executions (including [Cron Workflows](#scheduling-cron-workflows)).
   Given a `workflowId`, a Workflow Client can also get a Handle to a running Workflow Execution or retrieve/wait for its result.
 - **Workflow Handles** are bindings to specific Workflow Executions that expose more APIs for control.
+
   **We strongly recommend familiarizing yourself with Workflow Handle APIs** because they are the main way you will signal, query, describe, cancel, terminate, and await the result of running Workflow Executions.
+
 - Advanced users can also use the `WorkflowService` exposed by a Workflow Client to make **raw gRPC calls** (usually for introspection).
 
 Workflow Clients are separate from Workers, but communicate with them through Task Queues to start Workflow Executions.
@@ -27,7 +29,7 @@ For more information, see [Workers and Task Queues in TypeScript](/docs/typescri
 
 The following code is a `WorkflowClient` example, from our Hello World sample:
 
-<!--SNIPSTART typescript-hello-client {"enable_source_link": false}-->
+<!--SNIPSTART typescript-hello-client -->
 <!--SNIPEND-->
 
 The rest of this document explains each step in detail with practical usage tips.
