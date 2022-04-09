@@ -7,6 +7,15 @@ description: Learn and customize how data is serialized in the TypeScript SDK
 
 > Background reading: [Data Converters in Temporal](/docs/concepts/what-is-a-data-converter/)
 
+Contents:
+
+import TOCInline from '@theme/TOCInline'
+
+<TOCInline
+  toc={toc}
+  maxHeadingLevel={4}
+/>
+
 ## Default Data Converter
 
 In TypeScript, the default Data Converter supports:
