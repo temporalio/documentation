@@ -128,7 +128,7 @@ export function myWorkflow(urls: string[], timeoutMs: number): Promise<any[]> {
   });
 
   try {
-    return CancellationScope.withTimeout(timeoutMs, () =>
+    return await CancellationScope.withTimeout(timeoutMs, () =>
       Promise.all(urls.map((url) => httpGetJSON(url)))
     );
   } catch (err) {
