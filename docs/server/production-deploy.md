@@ -49,7 +49,7 @@ docker run
 
 [See the Docker source file](https://github.com/temporalio/temporal/tree/master/docker) for more details.
 
-Each release also ships a `Server with Auto Setup` Docker image that includes [an `auto-setup.sh` script](https://github.com/temporalio/temporal/blob/master/docker/auto-setup.sh) we recommend using for initial schema setup of each supported database. You should familiarize yourself with [what auto-setup does](/blog/auto-setup), as you will likely be replacing every part of the script to customize for your own infrastructure and tooling choices.
+Each release also ships a `Server with Auto Setup` Docker image that includes [an `auto-setup.sh` script](https://github.com/temporalio/docker-builds/blob/main/docker/auto-setup.sh) we recommend using for initial schema setup of each supported database. You should familiarize yourself with [what auto-setup does](/blog/auto-setup), as you will likely be replacing every part of the script to customize for your own infrastructure and tooling choices.
 
 Though **neither are blessed for production use**, you can consult our [Docker-Compose repo](https://github.com/temporalio/docker-compose) or [Helm Charts](https://github.com/temporalio/helm-charts) for more hints on configuration options.
 
