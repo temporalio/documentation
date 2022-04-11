@@ -17,53 +17,90 @@ A list of all possible Events that could appear in a Workflow Execution Event Hi
 
 This is always the first Event in a Workflow Execution History. It indicates that the execution was invoked.
 
+| Event Name | Event Type | Definition |
+| --- | --- | --- |
+
 ### WorkflowExecutionCompleted
 
 This indicates that the Workflow Execution has successfully completed. The Event contains Workflow Execution results.
+
+| Event Name | Event Type | Definition |
+| --- | --- | --- |
 
 ### WorkflowExecutionFailed
 
 This event indicates that the Workflow execution has unsuccessfully completed and contains the Workflow execution error.
 
+| Event Name | Event Type | Definition |
+| --- | --- | --- |
+
 ### WorkflowExecutionTimedOut
 
 This event type indicates that the Workflow execution has timed out by the Temporal Server due to the Workflow having not been completed within timeout settings.
+
+| Event Name | Event Type | Definition |
+| --- | --- | --- |
 
 ### WorkflowExecutionCancelRequested
 
 This event type indicates that a request has been made to cancel the Workflow execution.
 
+| Event Name | Event Type | Definition |
+| --- | --- | --- |
+
 ### WorkflowExecutionCanceled
 
 This event type indicates that the client has confirmed the cancellation request and the Workflow execution has been canceled.
+
+| Event Name | Event Type | Definition |
+| --- | --- | --- |
 
 ### WorkflowExecutionSignaled
 
 This event type indicates the Workflow has received a Signal event.
 The event type contains the Signal name, as well as a Signal payload.
 
+| Event Name | Event Type | Definition |
+| --- | --- | --- |
+
 ### WorkflowExecutionTerminated
 
 This event type indicates that the Workflow execution has been forcefully terminated and that likely the terminate Workflow API was called.
+
+| Event Name | Event Type | Definition |
+| --- | --- | --- |
 
 ### WorkflowExecutionContinuedAsNew
 
 This event type indicates that the Workflow has successfully completed, and a new Workflow has been started within the same transaction.
 This event type contains last Workflow execution results as well as new Workflow execution inputs.
 
+| Event Name | Event Type | Definition |
+| --- | --- | --- |
+
 ### WorkflowTaskScheduled
 
 This event type indicates that the Workflow Task has been scheduled.
 The SDK client should now be able to process any new history events.
+
+| Event Name | Event Type | Definition |
+| --- | --- | --- |
 
 ### WorkflowTaskStarted
 
 This event type indicates that the Workflow Task has started.
 The SDK client has picked up the Workflow Task and is processing new history events.
 
+| Event Name | Event Type | Definition |
+| --- | --- | --- |
+
 ### WorkflowTaskCompleted
 
 This event type indicates that the Workflow Task completed.
+
+| Event Name | Event Type | Definition |
+| --- | --- | --- |
+
 The SDK client picked up the Workflow Task, processed new history events, and may or may not ask the Temporal Server to do additional work.
 It is possible for the following events to still occur:
 
@@ -84,11 +121,17 @@ It is possible for the following events to still occur:
 This event type indicates that the Workflow Task encountered a timeout.
 Either an SDK client with a local cache was not available at the time, or it took too long for the SDK client to process the task.
 
+| Event Name | Event Type | Definition |
+| --- | --- | --- |
+
 ### WorkflowTaskFailed
 
 This event type indicates that the Workflow Task encountered a failure.
 Usually this means that the Workflow was non-deterministic.
 However, the Workflow reset functionality also uses this event.
+
+| Event Name | Event Type | Definition |
+| --- | --- | --- |
 
 ### ActivityTaskScheduled
 
@@ -96,10 +139,16 @@ This event type indicates that an Activity Task was scheduled.
 The SDK client should pick up this activity task and execute.
 This event type contains activity inputs, as well as activity timeout configurations.
 
+| Event Name | Event Type | Definition |
+| --- | --- | --- |
+
 ### ActivityTaskStarted
 
 This event type indicates that the Activity Task has started executing.
 The SDK client has picked up the Activity Task and is processing the Activity invocation.
+
+| Event Name | Event Type | Definition |
+| --- | --- | --- |
 
 ### ActivityTaskCompleted
 
@@ -107,53 +156,89 @@ This event type indicates that the Activity Task has completed.
 The SDK client has picked up and successfully completed the Activity Task.
 This event type contains Activity execution results.
 
+| Event Name | Event Type | Definition |
+| --- | --- | --- |
+
 ### ActivityTaskFailed
 
 This event type indicates that the Activity Task has completed.
 The SDK picked up the Activity Task but unsuccessfully completed it.
 This event type contains Activity execution errors.
 
+| Event Name | Event Type | Definition |
+| --- | --- | --- |
+
 ### ActivityTaskTimedOut
 
 This event type indicates that the Activity has timed out according to the Temporal Server, due to the Activity having not completed within the timeout settings.
+
+| Event Name | Event Type | Definition |
+| --- | --- | --- |
 
 ### ActivityTaskCancelRequested
 
 This event type indicates that a request to cancel the Activity has occurred.
 The SDK client will be able to confirm cancellation of an Activity during an Activity heartbeat.
 
+| Event Name | Event Type | Definition |
+| --- | --- | --- |
+
 ### ActivityTaskCanceled
 
 This event type indicates that the Activity has been canceled.
+
+| Event Name | Event Type | Definition |
+| --- | --- | --- |
 
 ### TimerStarted
 
 This event type indicates a timer has started.
 
+| Event Name | Event Type | Definition |
+| --- | --- | --- |
+
 ### TimerFired
 
 This event type indicates a timer has fired.
+
+| Event Name | Event Type | Definition |
+| --- | --- | --- |
 
 ### TimerCanceled
 
 This event type indicates a Timer has been canceled.
 
+| Event Name | Event Type | Definition |
+| --- | --- | --- |
+
 ### RequestCancelExternalWorkflowExecutionInitiated
 
 This event type indicates that a Workflow has requested that the Temporal Server try to cancel another Workflow.
+
+| Event Name | Event Type | Definition |
+| --- | --- | --- |
 
 ### RequestCancelExternalWorkflowExecutionFailed
 
 This event type indicates that Temporal Server could not cancel the targeted Workflow.
 This is usually because the target Workflow could not be found.
 
+| Event Name | Event Type | Definition |
+| --- | --- | --- |
+
 ### ExternalWorkflowExecutionCancelRequested
 
 This event type indicates that the Temporal Server has successfully requested the cancellation of the target Workflow.
 
+| Event Name | Event Type | Definition |
+| --- | --- | --- |
+
 ### ExternalWorkflowExecutionSignaled
 
 This event type indicates that the Temporal Server has successfully Signaled the targeted Workflow.
+
+| Event Name | Event Type | Definition |
+| --- | --- | --- |
 
 ### MarkerRecorded
 
@@ -161,54 +246,90 @@ This event type is transparent to the Temporal Server.
 The Server will only store it and will not try to understand it.
 The SDK client may use it for local activities or side effects.
 
+| Event Name | Event Type | Definition |
+| --- | --- | --- |
+
 ### StartChildWorkflowExecutionInitiated
 
 This event type indicates that the Temporal Server will try to start a child Workflow.
+
+| Event Name | Event Type | Definition |
+| --- | --- | --- |
 
 ### StartChildWorkflowExecutionFailed
 
 This event type indicates a child Workflow execution cannot be started / triggered.
 It is usually due to a child Workflow ID collision.
 
+| Event Name | Event Type | Definition |
+| --- | --- | --- |
+
 ### ChildWorkflowExecutionStarted
 
 This event type indicates a child Workflow execution has successfully started / triggered.
 This would also cause the [WorkflowExecutionStarted](#workflowexecutionstarted) to be recorded for the Workflow that has started.
+
+| Event Name | Event Type | Definition |
+| --- | --- | --- |
 
 ### ChildWorkflowExecutionCompleted
 
 This event type indicates that the child Workflow execution has successfully completed.
 This would also cause the [WorkflowExecutionCompleted](#workflowexecutioncompleted) to be recorded for the Workflow that has completed.
 
+| Event Name | Event Type | Definition |
+| --- | --- | --- |
+
 ### ChildWorkflowExecutionFailed
 
 This event type indicates that the child Workflow execution has unsuccessfully completed.
 This would also cause the [WorkflowExecutionFailed](#workflowexecutionfailed) to be recorded for the Workflow that has failed.
+
+| Event Name | Event Type | Definition |
+| --- | --- | --- |
 
 ### ChildWorkflowExecutionCanceled
 
 This event type indicates that the child Workflow execution has been canceled.
 This would also cause the [WorkflowExecutionCanceled](#workflowexecutioncanceled) to be recorded for the Workflow that was canceled.
 
+| Event Name | Event Type | Definition |
+| --- | --- | --- |
+
 ### ChildWorkflowExecutionTimedOut
 
 This event type indicates that the child Workflow execution has timed out by the Temporal Server.
 This would also cause the [WorkflowExecutionTimeOut](#workflowexecutiontimedout) to be recorded for the Workflow that timed out.
+
+| Event Name | Event Type | Definition |
+| --- | --- | --- |
 
 ### ChildWorkflowExecutionTerminated
 
 This event type indicates that the child Workflow execution has been terminated.
 This would also cause the [WorkflowExecutionTerminated](#workflowexecutionterminated) to be recorded for the Workflow that was terminated.
 
+| Event Name | Event Type | Definition |
+| --- | --- | --- |
+
 ### SignalExternalWorkflowExecutionInitiated
 
 This event type indicates that the Temporal Server will try to Signal the targeted Workflow.
 This event type contains the Signal name, as well as a Signal payload.
 
+| Event Name | Event Type | Definition |
+| --- | --- | --- |
+
 ### SignalExternalWorkflowExecutionFailed
 
 This event type indicates that the Temporal Server cannot Signal the targeted Workflow, usually because the Workflow could not be found.
 
+| Event Name | Event Type | Definition |
+| --- | --- | --- |
+
 ### UpsertWorkflowSearchAttributes
 
 This event type indicates that the Workflow Search Attributes should be updated and synchronized with the visibility store.
+
+| Event Name | Event Type | Definition |
+| --- | --- | --- |
