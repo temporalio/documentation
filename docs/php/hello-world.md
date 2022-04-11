@@ -144,7 +144,7 @@ foreach ($declarations->getWorkflowTypes() as $workflowType) {
 
 foreach ($declarations->getActivityTypes() as $activityType) {
     // Activities are stateless and thread safe. So a shared instance is used.
-    $worker->registerActivityImplementations(new $activityType());
+    $worker->registerActivity($activityType);
 }
 
 // start primary loop
@@ -153,17 +153,17 @@ $factory->run();
 
 You may consider this script as a bridge between your PHP application and Temporal.
 Temporal needs to know about our activity and workflow implementations.
-Thus, they need to be registered within the worker with `registerWorkflowTypes()` and `registerActivityImplementations()`.
+Thus, they need to be registered within the worker with `registerWorkflowTypes()` and `registerActivity()`.
 The first one registers workflows and accepts a list of classes:
 
 ```php
 $worker->registerWorkflowTypes(HelloWorldWorkflow::class);
 ```
 
-The second one registers activities and accepts a list of instantiated activity objects, e.g.:
+The second one registers activities and accepts a list of activity classes, e.g.:
 
 ```php
-$worker->registerActivityImplementations(new MyActivityImplementation());
+$worker->registerActivity(MyActivity::class);
 ```
 
 On the last line of the _worker script_ we start the worker.
