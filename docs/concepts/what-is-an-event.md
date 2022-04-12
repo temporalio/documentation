@@ -1,4 +1,4 @@
-8---
+---
 id: what-is-an-event
 title: What is an Event?
 sidebar_label: Event
