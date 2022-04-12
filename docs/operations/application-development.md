@@ -33,7 +33,7 @@ This section covers the minimum set of concepts and implementation details neede
 ### Run a Temporal Cluster
 
 Whenever we are developing Temporal Applications, we want to have a [Temporal Cluster](/docs/concepts/what-is-a-temporal-cluster) up and running.
-We can interact with a Cluster via [Temporal Client](/docs/concepts/what-is-a-temporal-sdk/#what-is-a-temporal-client) APIs and [tctl](/docs/tctl) commands.
+We can interact with a Cluster through [Temporal Client](/docs/concepts/what-is-a-temporal-sdk/#what-is-a-temporal-client) APIs and [tctl](/docs/tctl) commands.
 
 <!-- The fastest way to get a Temporal Cluster running locally for testing and development is to use Docker Compose. -->
 
@@ -363,7 +363,7 @@ values={[
 
 ### Spawn Workflow Executions
 
-[Workflow Execution](/docs/concepts/what-is-a-workflow-execution) semantics rely on several parameters – that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language specific contextual data, and Workflow Function parameters.
+[Workflow Execution](/docs/concepts/what-is-a-workflow-execution) semantics rely on several parameters - that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language specific contextual data, and Workflow Function parameters.
 
 <!-- - [How to spawn a Workflow Execution using tctl](/docs/tctl/workflow/start)
 - [How to spawn a Workflow Execution in Go](/docs/go/how-to-spawn-a-workflow-execution-in-go)
@@ -610,8 +610,8 @@ values={[
 
 A [Child Workflow Execution](/docs/concepts/what-is-a-child-workflow-execution) is a Workflow Execution that is spawned from within another Workflow.
 
-To asynchronously spawn a Child Workflow Execution, the Child Workflow must have an "Abandon" [Parent Close Policy](/docs/concepts/what-is-a-parent-close-policy) set in the Child Workflow Options.
-Additionally, the Parent Workflow Execution must wait for the ChildWorkflowExecutionStarted event to appear in its event history before it completes.
+To asynchronously spawn a Child Workflow Execution, the Child Workflow must have an _Abandon_ [Parent Close Policy](/docs/concepts/what-is-a-parent-close-policy) set in the Child Workflow Options.
+Additionally, the Parent Workflow Execution must wait for the `ChildWorkflowExecutionStarted` Event to appear in its Event History before it completes.
 
 If the Parent makes the call to spawn the Child Workflow Execution and then immediately completes, the Child Workflow Execution will not spawn.
 
@@ -768,7 +768,7 @@ _Note: To have access to all the metrics mentioned above in the JavaSDK, version
 The following options are defined on `WorkerOptions` and are applicable for each Worker separately:
 
 1. `maxConcurrentWorkflowTaskExecutionSize` and `maxConcurrentActivityExecutionSize` define the number of total available slots for that Worker.
-2. `maxConcurrentWorkflowTaskPollers` (JavaSDK: `workflowPollThreadCount`) and `maxConcurrentActivityTaskPollers` (JavaSDK: `activityPollThreadCount`) define the number of pollers performing poll requests waiting on Workflow / Activity task queue and delivering the tasks to the executors.
+2. `maxConcurrentWorkflowTaskPollers` (JavaSDK: `workflowPollThreadCount`) and `maxConcurrentActivityTaskPollers` (JavaSDK: `activityPollThreadCount`) define the number of pollers performing poll requests waiting on Workflow / Activity Task Queue and delivering the tasks to the executors.
 
 The Workflow Cache is created and shared between all the workers. It’s designed to limit the amount of resources used by the cache for the whole host/process. So the options are defined on `WorkerFactoryOptions` in JavaSDK and in `worker` package in GoSDK:
 
@@ -834,7 +834,7 @@ If, after adjusting the poller and executors count as specified above, you still
 #### Workflow Cache Tuning
 
 When the number of cached Workflow Executions reported by `sticky_cache_size` hits `workflowCacheSize` or the number of their threads reported by `workflow_active_thread_count` metrics gauge hits `maxWorkflowThreadCount`, Workflow Executions start to get “evicted” from the cache.
-An evicted workflow execution will need to be replayed when it gets any action that may advance it.
+An evicted Workflow Execution will need to be replayed when it gets any action that may advance it.
 
 If
 
