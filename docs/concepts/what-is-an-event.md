@@ -111,7 +111,7 @@ This event type contains last Workflow execution results as well as new Workflow
 | last_completion_result           | Payloads               |                                                                                   |
 | header                           | Header                 |                                                                                   |
 | memo                             | Memo                   |                                                                                   |
-| search_attributes                | SearchAttributes       |                                                                                   | 
+| search_attributes                | SearchAttributes       |                                                                                   |
 
 ### WorkflowTaskScheduled
 
