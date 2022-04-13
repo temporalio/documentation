@@ -13,7 +13,7 @@ Temporal's Multi-cluster Replication feature is considered **experimental** and 
 </CustomWarning>
 
 This guide introduces Temporal's Multi-cluster Replication capabilities.
-You can set this up with `tctl admin cluster upsert-remote-cluster` command. A two-cluster-setup example can be found in below section [Cluster setup](#Cluster-setup)
+You can set this up with `tctl admin cluster upsert-remote-cluster` command. A two-cluster-setup example can be found in below section [Cluster setup](#cluster-setup)
 
 ## Overview
 
@@ -33,7 +33,7 @@ All participating clusters are pre-configured with a unique initial version, and
 
 - `initial version < shared version increment`
 
-When performing failover for a Namespace from one cluster to another cluster, the version attached to the Namespace will be changed by the following rule:
+When performing failover for a Namespace from one Cluster to another Cluster, the version attached to the Namespace will be changed by the following rule:
 
 - for all versions which follow `version % (shared version increment) == (active cluster's initial version)`, find the smallest version which has `version >= old version in namespace`
 
@@ -305,7 +305,7 @@ There is an existing contract that for any Namespace and Workflow Id combination
 
 Multi-cluster Replication aims to keep the Workflow Execution History as up-to-date as possible among all participating Clusters.
 
-Due to the nature of Multi-cluster Replication (i.e. Workflow Execution History events are replicated asynchronously) different Runs (same Namespace and Workflow Id) can arrive at the target Cluster at different times, sometimes out of order, as shown below:
+Due to the nature of Multi-cluster Replication (for example, Workflow Execution History events are replicated asynchronously) different Runs (same Namespace and Workflow Id) can arrive at the target Cluster at different times, sometimes out of order, as shown below:
 
 ```
 | ------------- |          | ------------- |          | ------------- |
@@ -332,7 +332,7 @@ Due to the nature of Multi-cluster Replication (i.e. Workflow Execution History 
 ```
 
 Since Run 2 appears in Cluster B first, Run 1 cannot be replicated as "runnable" due to the rule `at most one Run open` (see above), thus the "zombie" Workflow Execution state is introduced.
-A "zombie" state is one in which a Workflow Execution which cannot be actively mutated by a Cluster (assuming the corresponding Namespace is active in this Cluster). A zombie Workflow Execution can only be changed by a replication task.
+A "zombie" state is one in which a Workflow Execution which cannot be actively mutated by a Cluster (assuming the corresponding Namespace is active in this Cluster). A zombie Workflow Execution can only be changed by a replication Task.
 
 Run 1 will be replicated similar to Run 2, except when Run 1's execution will become a "zombie" before Run 1 reaches completion.
 
@@ -346,7 +346,7 @@ Tasks generated according to one history branch may become invalidated by switch
 
 Example:
 
-T = 0: task A is generated according to event ID: 4, version: 2
+T = 0: task A is generated according to Event Id: 4, version: 2
 
 ```
 | -------- | ------------- |
@@ -367,7 +367,7 @@ T = 0: task A is generated according to event ID: 4, version: 2
 | -------- | ------------- |
 ```
 
-T = 1: conflict resolution happens, Workflow Execution's mutable state is rebuilt and history event ID: 4, version: 3 is written down to persistence
+T = 1: conflict resolution happens, Workflow Execution's mutable state is rebuilt and history Event Id: 4, version: 3 is written down to persistence
 
 ```
                 | -------- | ------------- |
@@ -391,8 +391,8 @@ T = 1: conflict resolution happens, Workflow Execution's mutable state is rebuil
 
 T = 2: task A is loaded.
 
-At this time, due to the rebuild of a Workflow Execution's mutable state (conflict resolution), task A is no longer relevant (task A's corresponding event belongs to non-current branch).
-Task processing logic will verify both the event ID and version of the task against a corresponding Workflow Execution's mutable state, then discard task A.
+At this time, due to the rebuild of a Workflow Execution's mutable state (conflict resolution), Task A is no longer relevant (Task A's corresponding Event belongs to non-current branch).
+Task processing logic will verify both the Event Id and version of the Task against a corresponding Workflow Execution's mutable state, then discard task A.
 
 ## Cluster setup
 
