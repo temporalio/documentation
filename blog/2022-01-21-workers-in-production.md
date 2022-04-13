@@ -13,7 +13,7 @@ author_image_url: https://avatars.githubusercontent.com/u/6764957?v=4
 release_version: V1.14.3
 ---
 
-> Update: See also our new docs on [SDK metrics](https://docs.temporal.io/docs/reference/sdk-metrics/) and [Temporal Workers Tuning](https://docs.temporal.io/docs/operation/how-to-tune-workers/) for detailed instructions.
+> Update: See also our new docs on [SDK metrics](https://docs.temporal.io/docs/reference/sdk-metrics/) and [Temporal Workers Tuning](https://docs.temporal.io/docs/operations/how-to-tune-workers/) for detailed instructions.
 
 Whether you are self hosting Temporal Server or using Temporal Cloud, a key part of the operational model of Temporal is running your own Workers. We recently hosted a chat with Temporal CTO Samar Abbas on the 4 main areas to note when productionizing your Temporal Workers:
 
@@ -55,7 +55,7 @@ When you have ingested all these metrics and have set up a dashboard to give you
 
 ## Incident Reponse & Tooling (10:06)
 
-When Workflow Task Failure rates spike, you are now in incident response mode. There can be many possible causes, so the first thing an operator needs to do is to figure out whether the failure is from your application or Temporal Server. 
+When Workflow Task Failure rates spike, you are now in incident response mode. There can be many possible causes, so the first thing an operator needs to do is to figure out whether the failure is from your application or Temporal Server.
 
 - **Metrics**. The first metric to look at is the “service request” and “service error” metrics emitted by the Server. If you are seeing workflow tasks or activities failing, it is a strong indication that you should focus on the application side rather than Temporal Server.
 - **Logs**. The best tool for investigating application side failures is your logs - make sure your logs are stored and captured by your workers, and tagged with important structured data like workflow type, activity type, workflow ID, and run ID. Try to put as much information as tags to allow you to slice and dice logs on arbitrary criteria.
