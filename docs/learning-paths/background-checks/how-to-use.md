@@ -27,7 +27,7 @@ This starts a new Docker Application with a stack of containers.
 
 ## How to monitor the application
 
-Once the application has started you can navigate to Grafana at [http://localhost:8085/].
+When the application has started, you can navigate to Grafana at [http://localhost:8085/](http://localhost:8085/).
 
 Click on Dashboards -> Home -> Temporal.
 The Temporal dashboard contains information from metrics emitted from the Temporal Cluster and the Worker Process.

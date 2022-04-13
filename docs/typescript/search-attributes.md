@@ -53,7 +53,7 @@ This can be useful for tagging executions with useful attributes you may want to
 ## Future: Upsert Search Attributes during workflow execution
 
 In advanced cases, you may want to dynamically update these attributes as the workflow progresses.
-Temporal has an `UpsertSearchAttributes` capability but it is not yet supported in the TypeScript SDK.
+Temporal has an `UpsertSearchAttributes` capability, but it is not yet supported in the TypeScript SDK.
 
 ## Removing Search Attributes
 

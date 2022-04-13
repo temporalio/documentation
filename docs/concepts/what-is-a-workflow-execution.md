@@ -90,8 +90,7 @@ Each Workflow Run in the sequence is connected by one of the following:
 
 - [Temporal Cron Job](/docs/concepts/what-is-a-temporal-cron-job)
 - [Continue-As-New](/docs/concepts/what-is-continue-as-new)
-
-* [Retries](/docs/concepts/what-is-a-retry-policy)
+- [Retries](/docs/concepts/what-is-a-retry-policy)
 
 A Workflow Execution is uniquely identified by its [Namespace](/docs/concepts/what-is-a-namespace), [Workflow Id](/docs/concepts/what-is-a-workflow-id), and [Run Id](/docs/concepts/what-is-a-run-id).
 

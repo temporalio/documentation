@@ -74,7 +74,7 @@ The expected behavior is:
 
 ### Pattern: Wrapping Errors with Interceptors
 
-To make other error types fail the workflow, use the WorkflowInboundCallsInterceptor methods (`execute` and `handleSignal`) to catch errors thrown from the Workflow and convert them to `ApplicationFailures`, e.g:
+To make other error types fail the workflow, use the `WorkflowInboundCallsInterceptor` methods (`execute` and `handleSignal`) to catch errors thrown from the Workflow and convert them to `ApplicationFailures`, e.g:
 
 ```ts
 async function wrapError<T>(fn: () => Promise<T>): Promise<T> {
@@ -128,7 +128,7 @@ export function myWorkflow(urls: string[], timeoutMs: number): Promise<any[]> {
   });
 
   try {
-    return CancellationScope.withTimeout(timeoutMs, () =>
+    return await CancellationScope.withTimeout(timeoutMs, () =>
       Promise.all(urls.map((url) => httpGetJSON(url)))
     );
   } catch (err) {

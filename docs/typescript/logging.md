@@ -95,7 +95,7 @@ Some important features of the [InjectedSinkFunction](https://typescript.tempora
 
 The injected sink function contributes to the overall workflow task processing duration.
 
-- If you have a long running sink function, such as one that tries to communicate with external services, you might start seeing workflow task timeouts.
+- If you have a long-running sink function, such as one that tries to communicate with external services, you might start seeing workflow task timeouts.
 - The effect is multiplied when using `callDuringReplay: true` and replaying long Workflow histories because the Workflow Task timer starts when the first history page is delivered to the Worker.
 
 ## Logging in Workers and Clients
@@ -112,12 +112,12 @@ Temporal ships a [`DefaultLogger`](https://typescript.temporal.io/api/classes/wo
 #### Example: Set up the DefaultLogger to only log messages with level WARN and higher
 
 ```ts
-import { Core, DefaultLogger } from '@temporalio/worker';
+import { Runtime, DefaultLogger } from '@temporalio/worker';
 
 const logger = new DefaultLogger('WARN', ({ level, message }) => {
   console.log(`Custom logger: ${level} — ${message}`);
 });
-await Core.install({ logger });
+Runtime.install({ logger });
 ```
 
 #### Example: Accumulate logs for testing/reporting
@@ -140,7 +140,7 @@ The log levels are [listed here](https://typescript.temporal.io/api/namespaces/w
 A common logging use case is logging to a file to be picked up by a collector like the [Datadog Agent](https://docs.datadoghq.com/logs/log_collection/nodejs/?tab=winston30).
 
 ```ts
-import { Core } from '@temporalio/worker';
+import { Runtime } from '@temporalio/worker';
 import winston from 'winston';
 
 const logger = winston.createLogger({
@@ -148,12 +148,12 @@ const logger = winston.createLogger({
   format: winston.format.json(),
   transports: [new transports.File({ filename: '/path/to/worker.log' })],
 });
-await Core.install({ logger });
+Runtime.install({ logger });
 ```
 
-## Monitoring SDK metrics
+## Metrics
 
-We are in the process of building out our SDK metrics capabilities. For now, please observe standard monitoring practices on your Workers in production (CPU, memory utilization, health checks).
+For information about metrics, see the [Metrics section on the Deploy Checklist](/docs/typescript/production-deploy#metrics) page.
 
 ## OpenTelemetry tracing
 

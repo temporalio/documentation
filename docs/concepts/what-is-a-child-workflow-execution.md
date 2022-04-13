@@ -38,7 +38,7 @@ On the other hand, because a Parent Workflow Execution Event History contains [E
 
 In general, however, Child Workflow Executions result in more overall Events recorded in Event Histories than Activities.
 Because each entry in an Event History is a "cost" in terms of compute resources, this could become a factor in very large workloads.
-Therefore, we recommend starting with a single Workflow implementation that use Activities until there is a clear need for Child Workflows.
+Therefore, we recommend starting with a single Workflow implementation that uses Activities until there is a clear need for Child Workflows.
 
 **Consider each Child Workflow Execution as a separate service.**
 

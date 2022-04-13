@@ -205,7 +205,7 @@ For long form/FAQs, please search and ask on [the Temporal community forum](http
 
 ## TS SDK Intro Workshop
 
-We held a 2hr intro workshop explaining every core concept from scratch:
+We held a 2-hour introduction workshop explaining every core concept from scratch:
 
 <div style={{width: 500, maxWidth: "100%"}}>
   <ResponsivePlayer url='https://www.youtube.com/watch?v=CeHSmv8oF_4&feature=youtu.be' />
@@ -225,4 +225,4 @@ Timestamps:
 - [01:45:19](https://www.youtube.com/watch?v=CeHSmv8oF_4&t=6319s) Recap and Q&A
 
 And of course you can [join the #typescript-sdk channel](https://temporal.io/slack) to ask any questions as you get set up.
-Design partners are already [putting us in production](https://youtu.be/GpbOkDjpeYU) and we are eager to hear your feedback.
+Design partners are already [putting us in production](https://youtu.be/GpbOkDjpeYU), and we are eager to hear your feedback.

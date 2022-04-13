@@ -7,7 +7,7 @@ tags:
   - explanation
 ---
 
-In day-to-day conversations, the term "Activity" frequently denotes either an [Activity Type](/docs/concepts/what-is-an-activity-type), an [Activity Definition](/docs/concepts/what-is-an-activity-definition), or an [Activity Execution](/docs/concepts/what-is-an-activity-execution).
+In day-to-day conversations, the term _Activity_ frequently denotes either an [Activity Type](/docs/concepts/what-is-an-activity-type), an [Activity Definition](/docs/concepts/what-is-an-activity-definition), or an [Activity Execution](/docs/concepts/what-is-an-activity-execution).
 Temporal documentation aims to be explicit and differentiate between them.
 
 The purpose of an Activity is to execute a single, well-defined action (either short or long running), such as calling another service, transcoding a media file, or sending an email.
@@ -51,11 +51,11 @@ Here are some use cases for employing multiple Activity task queues in a single 
 - _Deploying a set of Activities independently_. Think about a service that hosts Activities and can be deployed independently from other Activities and Workflows. To send Activity tasks to this service, a separate task queue is needed.
 - _Workers with different capabilities_. For example, workers on GPU boxes vs non GPU boxes. Having two separate task queues in this case allows Workflows to pick which one to send Activity an execution request to.
 - _Routing Activity to a specific host_. For example, in the media encoding case the transform and upload Activity have to run on the same host as the download one.
-- _Routing Activity to a specific process_. For example, some Activities load large data sets and caches it in the process. The Activities that rely on this data set should be routed to the same process.
+- _Routing Activity to a specific process_. For example, some Activities load large data sets and cache them in the process. The Activities that rely on this data set should be routed to the same process.
 - _Multiple priorities_. One task queue per priority and having a worker pool per priority.
 - _Versioning_. A new backwards incompatible implementation of an Activity might use a different task queue.
 
-For long running Activities, we recommended that you specify a relatively short heartbeat timeout and constantly heartbeat. This way worker failures for even very long running Activities can be handled in a timely manner. An Activity that specifies the heartbeat timeout is expected to call the heartbeat method _periodically_ from its implementation.
+For long running Activities, we recommend that you specify a relatively short heartbeat timeout and constantly heartbeat. This way worker failures for even very long running Activities can be handled in a timely manner. An Activity that specifies the heartbeat timeout is expected to call the heartbeat method _periodically_ from its implementation.
 
 A heartbeat request can include application specific payload. This is useful to save Activity execution progress. If an Activity times out due to a missed heartbeat, the next attempt to execute it can access that progress and continue its execution from that point.
 

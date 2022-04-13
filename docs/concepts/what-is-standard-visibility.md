@@ -13,4 +13,4 @@ Standard Visibility, within the Temporal Platform, is the subsystem and APIs tha
 
 Open Workflow Executions can be filtered by a time constraint and either a Workflow Type, Workflow Id, or Run Id.
 
-Closed Workflow Executions can be filtered by a time constraint and either a Workflow Type, Workflow Id, Run Id, or Execution Status (Completed, Failed, Timed Out, Terminated, Cancelled, or Continued-As-New).
+Closed Workflow Executions can be filtered by a time constraint and either a Workflow Type, Workflow Id, Run Id, or Execution Status (Completed, Failed, Timed Out, Terminated, Canceled, or Continued-As-New).

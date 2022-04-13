@@ -19,7 +19,7 @@ Example Schedule-To-Close Timeout period for an Activity Execution that has a ch
 **The default Schedule-To-Close Timeout is ∞ (infinity).**
 
 An Activity Execution must have either this timeout (Schedule-To-Close) or [Start-To-Close](/docs/concepts/what-is-a-start-to-close-timeout) set.
-By default an Activity Execution Retry Policy dictates that retries will occur for up to 10 years.
+By default, an Activity Execution Retry Policy dictates that retries will occur for up to 10 years.
 This timeout can be used to reduce the overall time that has elapsed, without altering the default Retry Policy.
 
 **Implementation guides:**

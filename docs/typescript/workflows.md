@@ -15,7 +15,7 @@ import * as WhatIsAQuery from '../concepts/what-is-a-query.md'
 
 **`@temporalio/workflow`** [![NPM](https://img.shields.io/npm/v/@temporalio/workflow)](https://www.npmjs.com/package/@temporalio/workflow) [API reference](https://typescript.temporal.io/api/namespaces/workflow) | [GitHub](https://github.com/temporalio/sdk-typescript/tree/main/packages/workflow)
 
-> _Background reading: [Workflows in Temporal](https://docs.temporal.io/docs/concepts/workflows/)_
+> _Background reading: [Workflows in Temporal](/docs/temporal-explained/workflows)_
 
 **Workflows are async functions that can orchestrate Activities and access special Workflow APIs, subject to deterministic limitations**.
 
@@ -109,9 +109,11 @@ The rest of this document explains the major Workflow APIs you should know:
 - Signals and Queries: `defineSignal`, `defineQuery`, and `setHandler`
 - Deferred Execution: `sleep` and `condition`
 - Child Workflows: `startChild` and `executeChild`
-- Entity (indefinitely long running) Workflows: `continueAsNew`
+- Entity (indefinitely long-running) Workflows: `continueAsNew`
 
 ## Signals and Queries
+
+> _Background reading: [Signals and Queries in Temporal](/docs/temporal-explained/signals-and-queries)_
 
 <RelatedReadContainer>
   <RelatedReadItem page={WhatIsASignal} />
@@ -215,7 +217,7 @@ export function defineQuery<Ret, Args extends any[] = []>(
 Signals/Queries are only instantiated in `setHandler` and are specific to a particular Workflow Execution.
 
 These distinctions may seem minor, but they model how Temporal works under the hood, because Signals and Queries are messages identified by "just strings" and don't have meaning independent of the Workflow having a listener to handle them.
-This will be clearer if you refer to to the Client-side APIs below.
+This will be clearer if you refer to the Client-side APIs below.
 
 #### Why `setHandler` and not OTHER_API?
 
@@ -476,7 +478,7 @@ Arguments for both are sent as needed.
 ```ts
 // Signal With Start in Client file
 const client = new WorkflowClient();
-await workflow.signalWithStart(MyWorkflow, {
+await client.signalWithStart(MyWorkflow, {
   workflowId,
   args: [arg1, arg2],
   signal: MySignal,
@@ -1021,142 +1023,7 @@ Some desirable requirements:
   - the number of invocations so far
 - Allows manual trigger at any point
 
-Take some time to think about how you would implement these features, and then look at our suggested solutions below.
-
-:::caution
-
-Note that this code is for illustrative purposes only - please audit before putting it into production!
-
-:::
-
-<details>
-<summary>Example UnalignedScheduleWorkflow
-</summary>
-
-The desired clientside usage would look something like this:
-
-```ts
-// client.ts
-const handle = await client.start(MyScheduleWorkflow, {
-  args: [
-    {
-      every: '3 hours',
-      userId, // specified elsewhere
-    },
-  ],
-  taskQueue: 'scheduler',
-  workflowId: 'schedule-for-' + userId,
-});
-console.log(await handle.query(stateQuery)); // 'RUNNING'
-await handle.signal(stateSignal, 'PAUSED');
-console.log(await handle.query(futureScheduleQuery)); // array of future invocations
-await handle.signal(manualTriggerSignal);
-console.log(await handle.query(numInvocationsQuery)); // 1
-```
-
-This Workflow uses a simple `sleep` timer at its core to power the scheduling - ideal for implementing unaligned "run every X period" semantics.
-
-```ts
-import * as wf from '@temporalio/workflow';
-import addMilliseconds from 'date-fns/addMilliseconds';
-import ms from 'ms';
-
-// example atomic unit of work you are scheduling, can be workflow or activity or whatever
-async function spawnChild(
-  userId: string,
-  nextTime: string,
-  invocation: number
-) {
-  return wf.executeChild(childWorkflow, {
-    args: [userId],
-    workflowId: `childWorkflow-${invocation}-${nextTime}`,
-    // // regular workflow options apply here, with two additions (defaults shown):
-    // cancellationType: ChildWorkflowCancellationType.WAIT_CANCELLATION_COMPLETED,
-    // parentClosePolicy: ParentClosePolicy.PARENT_CLOSE_POLICY_TERMINATE
-  });
-}
-
-// queries and signals
-export const numInvocationsQuery = wf.defineQuery('numInvocationsQuery');
-export const futureScheduleQuery = wf.defineQuery('futureScheduleQuery');
-export const manualTriggerSignal = wf.defineSignal('manualTriggerSignal');
-export type ScheduleWorkflowState = 'RUNNING' | 'PAUSED' | 'STOPPED';
-export const stateSignal =
-  wf.defineSignal<[ScheduleWorkflowState]>('stateSignal');
-export const stateQuery = wf.defineQuery<ScheduleWorkflowState>('stateQuery');
-
-export async function UnalignedScheduleWorkflow(
-  args: {
-    every: string;
-    userId: string;
-  },
-  invocations = 1
-) {
-  // signal and query handlers
-  wf.setHandler(numInvocationsQuery, () => invocations);
-  let scheduleWorkflowState = 'RUNNING' as ScheduleWorkflowState;
-  wf.setHandler(stateQuery, () => scheduleWorkflowState);
-  wf.setHandler(stateSignal, (state) => void (scheduleWorkflowState = state));
-
-  const numMs = ms(args.every);
-  const nextTime = addMilliseconds(new Date(), numMs);
-  wf.setHandler(manualTriggerSignal, () =>
-    spawnChild(userId, nextTime.toString(), invocations++)
-  );
-  wf.setHandler(futureScheduleQuery, (numEntriesInFutureSchedule?: number) => {
-    let time = new Date();
-    return {
-      futureSchedule: genNextTimes(numEntriesInFutureSchedule, () => {
-        time = addMilliseconds(time, numMs);
-        return time;
-      }),
-      timeLeft: differenceInMilliseconds(nextTime, new Date()),
-    };
-  });
-
-  // timer logic
-  try {
-    if (args.jitterMs) {
-      await wf.sleep(Math.floor(Math.random() * (args.jitterMs + 1)));
-    }
-    await wf.sleep(args.every); // critical step!
-    if (scheduleWorkflowState === 'PAUSED') {
-      await wf.condition(() => scheduleWorkflowState === 'RUNNING');
-    }
-    await Promise.race([
-      // use a race so that the time it takes to do the callbackFn doesn't impact when the next one starts
-      spawnChild(userId, nextTime.toString(), invocations), // no need to increment invocations bc relying on continueAsNew for that
-      async function () {
-        if (args.maxInvocations && args.maxInvocations > invocations) {
-          await wf.continueAsNew<typeof UnalignedScheduleWorkflow>(
-            args,
-            invocations + 1
-          );
-        } else {
-          scheduleWorkflowState = 'STOPPED';
-        }
-      },
-    ]);
-  } catch (err) {
-    if (wf.isCancellation(err)) scheduleWorkflowState = 'STOPPED';
-    else throw err;
-  }
-}
-
-// utils
-function genNextTimes<T extends string | Date>(
-  number = 5,
-  getNextTimes: () => T
-): T[] {
-  const times = [];
-  for (let i = 0; i < number; i++) {
-    times.push(getNextTimes());
-  }
-  return times;
-}
-```
-
-</details>
+Take some time to think about how you would implement these features, and then look at our suggested solution below.
 
 <details>
 <summary>Example CronScheduleWorkflow

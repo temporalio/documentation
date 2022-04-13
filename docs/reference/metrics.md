@@ -330,7 +330,7 @@ A Workflow ended with Continue-As-New.
 
 ### `workflow_endtoend_latency`
 
-Total Workflow Execution time in milliseconds.
+Total Workflow Execution time from schedule to completion for a single Workflow Run. (A retried Workflow Execution is a separate Run.)
 
 - Type: Histogram
 - Available in: TypeScript, Go, PHP, Java
@@ -354,7 +354,7 @@ A Workflow Task Execution failed.
 
 ### `workflow_task_execution_latency`
 
-Workflow Task Execution time in milliseconds.
+Workflow Task Execution time.
 
 - Type: Histogram
 - Available in: TypeScript, Go, PHP, Java
@@ -378,7 +378,7 @@ A Workflow Worker polled a Task Queue and successfully picked up a Workflow Task
 
 ### `workflow_task_replay_latency`
 
-Time to catch up on replaying a Workflow Task in milliseconds.
+Time to catch up on replaying a Workflow Task.
 
 - Type: Histogram
 - Available in: TypeScript, Go, PHP, Java
@@ -386,7 +386,7 @@ Time to catch up on replaying a Workflow Task in milliseconds.
 
 ### `workflow_task_schedule_to_start_latency`
 
-The Schedule-To-Start time of a Workflow Task in milliseconds.
+The Schedule-To-Start time of a Workflow Task.
 
 - Type: Histogram
 - Available in: TypeScript, Go, PHP, Java

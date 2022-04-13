@@ -14,7 +14,7 @@ As a precautionary measure, the Temporal Platform limits Event History to 50,000
 To prevent a Workflow Execution Event History from exceeding this limit and failing, use Continue-As-New to start a new Workflow Execution with a fresh Event History.
 
 All values passed to a Workflow Execution through parameters or returned through a result value are recorded into the Event History.
-A Temporal Cluster stores the full Event History of a Workflow Execution for duration of a Namespace's retention period.
+A Temporal Cluster stores the full Event History of a Workflow Execution for the duration of a Namespace's retention period.
 A Workflow Execution that periodically executes a large number of Activities has the potential of hitting the size limit.
 
 A very large Event History can adversely affect the performance of a Workflow Execution.

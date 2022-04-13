@@ -18,6 +18,6 @@ Custom progress information can be included in the Heartbeat which can then be u
 An Activity Heartbeat can be recorded as often as needed (e.g. once a minute or every loop iteration).
 Temporal SDKs control the rate at which Heartbeats are sent to the Cluster.
 
-Heartbeating is not required from [Local Activites](/docs/concepts/what-is-a-local-activity), and does nothing.
+Heartbeating is not required from [Local Activities](/docs/concepts/what-is-a-local-activity), and does nothing.
 
 - [How to Heartbeat an Activity in Go](/docs/go/how-to-heartbeat-an-activity-in-go)

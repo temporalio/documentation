@@ -13,7 +13,7 @@ One of the aspects of the Temporal System is that it abstracts the complexity of
 Distributed systems exist to scale computation across multiple machines as the potential load of a system changes.
 In theory, a distributed system facilitates a reliable and highly performant application.
 
-However any failure that leaves the downstream part of the application waiting for a response can make things very complicated, especially at a large scale.
+However, any failure that leaves the downstream part of the application waiting for a response can make things very complicated, especially at a large scale.
 
 ![Distributed application failures](/diagrams/basic-distributed-system.svg)
 

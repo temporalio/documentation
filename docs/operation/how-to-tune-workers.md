@@ -40,7 +40,7 @@ These options limit the resource consumption of the in-memory Workflow cache. Wo
 
 ## Task Queues Processing Tuning
 
-These steps and intended to make sure that there are no delays in the processing of Task Queues because of the under-provisioning of Workers or their unbalanced configuration.
+These steps are intended to make sure that there are no delays in the processing of Task Queues because of the under-provisioning of Workers or their unbalanced configuration.
 You should revisit these steps if you observe elevated `schedule_to_start` metrics.
 The steps are arranged in the recommended order of execution.
 
@@ -62,7 +62,7 @@ If you see
 2. low `schedule_to_start_latency`, and
 3. low Worker hosts resource utilization at the same time,
 
-you might have too many workers, consider to size down.
+then you might have too many workers, consider sizing down.
 
 ### Worker Executor Slots sizing
 

@@ -23,8 +23,10 @@ _Don't forget our own explainers on [What is Temporal](https://docs.temporal.io/
 
 - **Talks**
   - ⭐ [Designing a Workflow Engine from First Principles](https://docs.temporal.io/blog/workflow-engine-principles/) by Maxim Fateev (23 min talk given at Systems @ Scale 2021)
-  - 🆕 [Fault Tolerant, Distributed Microservices Orchestration with Temporal](https://www.youtube.com/watch?v=6T6zVZHU7_Q) ([slides](https://temporal-intro-and-demo.netlify.app/)) by Maxim Fateev and Tihomir Surdilovic (35 minute talk at TheDevConf 2021)
-  - 🆕 [Introduction to Temporal Architecture](https://www.youtube.com/watch?v=wMUKhtRhlmY) by Dominik Tornow (16 min talk + Q&A)
+  - 🆕 [Fault Tolerant, Distributed Microservices Orchestration with Temporal](https://www.youtube.com/watch?v=6T6zVZHU7_Q) ([slides](https://temporal-intro-and-demo.netlify.app/)) by Maxim Fateev and Tihomir Surdilovic (35 min talk at TheDevConf 2021)
+  - [State of Affairs or Affairs of State](https://www.youtube.com/watch?v=2P_aXee2qh4) by Sergey Bykov (35 min talk on Stateless vs Stateful, Orleans vs Temporal)
+  - [Introduction to Temporal Architecture](https://www.youtube.com/watch?v=wMUKhtRhlmY) by Dominik Tornow (16 min talk + Q&A)
+  - [Temporal in 7 Minutes - The TL;DR Intro](https://www.youtube.com/watch?v=2HjnQlnA5eY) by swyx (7 min presentation)
 - **Podcasts**
   - [Maxim and Samar on Gremlin's podcast](https://docs.temporal.io/blog/gremlin-podcast) - Origin story, Choreography vs Orchestration, and Tips (21 min listen/read)
   - [Workflow Engine with Maxim Fateev](https://www.listennotes.com/podcasts/software/cadence-ubers-workflow-nNoaPiSfk7v/) on Software Engineering Daily (56 min listen)
@@ -80,23 +82,29 @@ _Don't forget our own explainers on [What is Temporal](https://docs.temporal.io/
 
 _Note: Each of [our SDK docs](/application-development) have a Hello World and Run Your First App tutorial!_
 
-- [Why Temporal - the iPhone of System Design](https://www.swyx.io/why-temporal/) by swyx (19 min read)
-- [Temporal - fault tolerant orchestration platform](https://www.youtube.com/watch?v=7dnutdT24MM&list=PLU1vS0speL2ZbTPg-aU2Rw2s6IPsTVoCF&index=49) at DevConf US by Tihomir Surdilovic (36 min talk + Q&A)
-- [A Practical Approach to Temporal Architecture](https://mikhail.io/2020/10/practical-approach-to-temporal-architecture/) by Mikhail Shilkov (4 min read)
-- [Getting Started with YugabyteDB, Temporal, and the Temporal-Maru Benchmarking Tool](https://blog.yugabyte.com/getting-started-yugabytedb-temporal) by Eric Pratt (7 min read)
-- [Just plug it in - Aiven & Temporal](https://aiven.io/blog/just-plug-it-in-aiven-and-temporal) by Andrew Staller (7 min read)
-- (Go) [Intro to Temporal](https://zerokspot.com/weblog/2021/12/18/intro-to-temporalio/) by Horst Gutmann (6 min read)
-- (Go) [Writing a Workflow, Simulating Failures, Comparing Retries with Apache Airflow, and Testing](https://www.jcheng.org/post/workflow-orchestration-1.2/) by Jon Cheng (8 min read)
-- (Go) [Intro to Temporal Workshop](https://www.youtube.com/watch?v=UwdGmdTO3Ts) by Márk Sági-Kazár (3 hour full workshop)
-- (Go) [How to migrate from Mailchimp to Postmark + Temporal](https://roelofjanelsinga.com/articles/migrate-from-mailchimp-postmark-temporal/) by Roelof Jan Elsinga (5 min tutorial)
-- (Go) [Passing Context with Temporal](https://spiralscout.com/blog/passing-context-with-temporal) by Aliaksei Novikau of SpiralScout (7 min read)
-- (Go) [Creating a custom Temporal data convertor for encryption](https://nightfall.ai/creating-a-custom-temporal-data-convertor-for-encryption) by Chris Cowell and Rohan Sathe
-- (TypeScript) [Temporal - React for the Backend](https://changelog.com/jsparty/208) on JSParty (57 min listen)
-- (PHP) [Fault tolerant workflow orchestration on PHP](https://www.youtube.com/watch?v=pdxHkIqX62A) at PHPKonf 2021 by Anton Titov (37 min talk)
-- (Español) [Construye aplicaciones invencibles con Temporal](https://sistecma.github.io/2021/02/04/aplicaciones-invencibles-con-temporal.html) y [Aplicando el patrón SAGA en tus microservicios construidos](https://sistecma.github.io/2021/03/04/aplicando-saga-en-microservicios-con-temporal.html) by Hernán Moreno
-- (Türkçe) [Nedir Bu Temporal.IO?](https://alameddinc.medium.com/nedir-bu-temporal-io-680f3b242136) by Alameddin Çelik
-- (русский) [PHP Russia talks](https://docs.temporal.io/docs/php/introduction/#resources) by Anton Titov
-- (中文) [Temporal 简介](https://www.yuque.com/abser/txixor/oz3yav) by Abser Ari 杨鼎睿
+- Architecture
+  - [Why Temporal - the iPhone of System Design](https://www.swyx.io/why-temporal/) by swyx (19 min read)
+  - [Temporal - fault tolerant orchestration platform](https://www.youtube.com/watch?v=7dnutdT24MM&list=PLU1vS0speL2ZbTPg-aU2Rw2s6IPsTVoCF&index=49) at DevConf US by Tihomir Surdilovic (36 min talk + Q&A)
+  - [A Practical Approach to Temporal Architecture](https://mikhail.io/2020/10/practical-approach-to-temporal-architecture/) by Mikhail Shilkov (4 min read)
+- Alternative Databases
+  - [Getting Started with YugabyteDB, Temporal, and the Temporal-Maru Benchmarking Tool](https://blog.yugabyte.com/getting-started-yugabytedb-temporal) by Eric Pratt (7 min read)
+  - [Just plug it in - Aiven & Temporal](https://aiven.io/blog/just-plug-it-in-aiven-and-temporal) by Andrew Staller (7 min read)
+  - [Easily Manage Workflows at Scale with Temporal.io and Astra DB](https://www.datastax.com/blog/easily-manage-workflows-at-scale-with-temporal-io-and-astra-db) by Melissa Herrera, Ranjan Melanta (10 min read)
+- Tutorials
+  - (Go) [Intro to Temporal](https://zerokspot.com/weblog/2021/12/18/intro-to-temporalio/) by Horst Gutmann (6 min read)
+  - (Go) [Writing a Workflow, Simulating Failures, Comparing Retries with Apache Airflow, and Testing](https://www.jcheng.org/post/workflow-orchestration-1.2/) by Jon Cheng (8 min read)
+  - (Go) [Intro to Temporal Workshop](https://www.youtube.com/watch?v=UwdGmdTO3Ts) by Márk Sági-Kazár (3 hour full workshop)
+  - (Go) [How to migrate from Mailchimp to Postmark + Temporal](https://roelofjanelsinga.com/articles/migrate-from-mailchimp-postmark-temporal/) by Roelof Jan Elsinga (5 min tutorial)
+  - (Go) [Passing Context with Temporal](https://spiralscout.com/blog/passing-context-with-temporal) by Aliaksei Novikau of SpiralScout (7 min read)
+  - (Go) [Creating a custom Temporal data convertor for encryption](https://nightfall.ai/creating-a-custom-temporal-data-convertor-for-encryption) by Chris Cowell and Rohan Sathe
+- Talks
+  - (TypeScript) [Temporal - React for the Backend](https://changelog.com/jsparty/208) on JSParty (57 min listen)
+  - (PHP) [Fault tolerant workflow orchestration on PHP](https://www.youtube.com/watch?v=pdxHkIqX62A) at PHPKonf 2021 by Anton Titov (37 min talk)
+- Other Languages
+  - (Español) [Construye aplicaciones invencibles con Temporal](https://sistecma.github.io/2021/02/04/aplicaciones-invencibles-con-temporal.html) y [Aplicando el patrón SAGA en tus microservicios construidos](https://sistecma.github.io/2021/03/04/aplicando-saga-en-microservicios-con-temporal.html) by Hernán Moreno
+  - (Türkçe) [Nedir Bu Temporal.IO?](https://alameddinc.medium.com/nedir-bu-temporal-io-680f3b242136) by Alameddin Çelik
+  - (русский) [PHP Russia talks](https://docs.temporal.io/docs/php/introduction/#resources) by Anton Titov
+  - (中文) [Temporal 简介](https://www.yuque.com/abser/txixor/oz3yav) by Abser Ari 杨鼎睿
 - _submit yours [here](https://github.com/temporalio/documentation/edit/master/docs/external-resources.md)!_
 
 ## Temporal users

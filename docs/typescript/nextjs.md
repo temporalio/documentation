@@ -2,11 +2,11 @@
 id: nextjs-tutorial
 title: Integrating Temporal into an Existing Next.js Application
 sidebar_label: Next.js Tutorial
-description: In this tutorial, we'll talk about how Temporal integrates into an existing Next.js application using Next.js API routes. This gives you the ability to write full-stack, long running applications end to end in TypeScript.
+description: In this tutorial, we'll talk about how Temporal integrates into an existing Next.js application using Next.js API routes. This gives you the ability to write full-stack, long-running applications end to end in TypeScript.
 ---
 
 In this tutorial, we'll talk about how Temporal integrates into an **existing Next.js application** using Next.js API routes.
-This gives you the ability to write full-stack, long running applications end to end in TypeScript.
+This gives you the ability to write full-stack, long-running applications end to end in TypeScript.
 
 :::info Notes to user
 
@@ -242,17 +242,14 @@ You will need to configure gRPC connection address, namespace, and mTLS cert and
 
 ```ts
 // before Worker.create call in worker.ts
-await Core.install({
-  serverOptions: {
-    address,
-    namespace,
-    tls: {
-      serverNameOverride,
-      serverRootCACertificate,
-      clientCertPair: {
-        crt: fs.readFileSync(clientCertPath),
-        key: fs.readFileSync(clientKeyPath),
-      },
+const connection = await NativeConnection.create({
+  address,
+  tls: {
+    serverNameOverride,
+    serverRootCACertificate,
+    clientCertPair: {
+      crt: fs.readFileSync(clientCertPath),
+      key: fs.readFileSync(clientKeyPath),
     },
   },
 });

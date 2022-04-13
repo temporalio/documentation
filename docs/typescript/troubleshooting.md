@@ -68,7 +68,7 @@ The TypeScript SDK's [Worker](/docs/typescript/workers) bundles Workflows based 
 
 If Webpack fails to create the bundle, the SDK will throw an error and emit webpack logs using the SDK's [logger](/docs/typescript/logging#logs-generated-by-sdk-components).
 
-If you do not see Webpack output in your terminal make sure that you have not disabled SDK logging (see reference to `Core.install()` in the link above).
+If you do not see Webpack output in your terminal make sure that you have not disabled SDK logging (see reference to `Runtime.install()` in the link above).
 
 **A common mistake for newcomers to the TypeScript SDK is trying to use Node.js built-ins and modules in their Workflow code.** Usually, the best thing to do is move that code to an Activity.
 

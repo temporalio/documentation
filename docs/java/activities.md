@@ -27,7 +27,7 @@ public interface GreetingActivities {
 }
 ```
 
-Each method defined in the Actvity interface defines a separate Activity method.
+Each method defined in the Activity interface defines a separate Activity method.
 You can annotate each method in the Activity interface with the `@ActivityMethod`
 annotation, but this is completely optional, for example:
 

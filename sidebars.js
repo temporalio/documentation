@@ -389,6 +389,7 @@ module.exports = {
             "typescript/cancellation-scopes",
             "typescript/determinism",
             "typescript/handling-failure",
+            "typescript/data-converters",
             "typescript/search-attributes",
             "typescript/interceptors",
           ],

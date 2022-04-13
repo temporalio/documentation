@@ -41,7 +41,7 @@ In this application we are using Activities for the following business sub-proce
 - Sending email
 - Calling third-party APIs
 
-Sending an email message and calling third party APIs are considered un-reliable steps in the business process.
+Sending an email message and calling third party APIs are considered unreliable steps in the business process.
 
 ## What happens if an Activity Execution fails?
 

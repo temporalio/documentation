@@ -2,16 +2,21 @@
 id: production-deploy
 title: Production Deploy Checklist for TypeScript SDK
 sidebar_label: Deploy Checklist
-description: Here is a non-exhaustive list of things we recommend doing before you deploy your Temporal app to production. Note that this is separate from maintaining a production self-hosted Temporal Cluster, which has its own checklist.
+description: Recommended steps to take before deploying your Temporal app to production.
 ---
 
-Here is a non-exhaustive list of things we recommend doing before you deploy your Temporal app to production.
+The following are recommended steps to take before deploying your Temporal application to production.
 
-Note that this is separate from maintaining a production self-hosted Temporal **Cluster**, which has [its own checklist](https://docs.temporal.io/docs/server/production-deployment#checklist-for-scaling-temporal).
+## Production Temporal Cluster
 
-## Linting and Types
+Either use Temporal Cloud ([join the waitlist](https://us17.list-manage.com/survey?u=2334a0f23e55fd1840613755d&id=f1895b6f4a)) or deploy a self-hosted Temporal Cluster:
 
-If you started from our package initializers, you should have been set up with our recommended TypeScript and ESLint configurations already.
+- [Deployment guide](/docs/server/production-deployment/)
+- [Scaling checklist](/docs/server/production-deployment#checklist-for-scaling-temporal)
+
+## Linting and types
+
+If you started your project with [`@temporalio/create`](/docs/typescript/package-initializer), you already have our recommended TypeScript and ESLint configurations.
 
 If you incrementally added Temporal to an existing app, we do recommend setting up linting and types as they will help catch bugs well before you ship them to production, and improve your development feedback loop.
 Take a look at [our recommended .eslintrc file](https://github.com/temporalio/samples-typescript/blob/main/.shared/.eslintrc.js) and tweak to taste.
@@ -20,31 +25,25 @@ Take a look at [our recommended .eslintrc file](https://github.com/temporalio/sa
 
 Temporal Clients and Workers connect with Temporal Clusters via gRPC.
 
-- While you were developing locally, all these connections were set to [their default gRPC ports](/docs/concepts/what-is-a-temporal-cluster) on localhost.
-- In production, you will need to configure address, namespace, and encryption settings.
+- While you were developing locally, all these connections were set to their [default gRPC ports](/docs/concepts/what-is-a-temporal-cluster) on localhost.
+- In production, you will need to configure address, namespace, and encryption settings:
 
-```ts
-export function getEnv(): Env {
-  return {
-    address: 'foo.bar.tmprl.cloud', // NOT web.foo.bar.tmprl.cloud
-    namespace: 'foo.bar', // as assigned
-    clientCertPath: 'foobar.pem', // in project root
-    clientKeyPath: 'foobar.key', // in project root
-    taskQueue: process.env.TEMPORAL_TASK_QUEUE || 'hello-world-mtls', // just to ensure task queue is same on client and worker, totally optional
-    // // not usually needed
-    // serverNameOverride: process.env.TEMPORAL_SERVER_NAME_OVERRIDE,
-    // serverRootCACertificatePath: process.env.TEMPORAL_SERVER_ROOT_CA_CERT_PATH,
-  };
-}
-```
+  ```ts
+  export function getEnv(): Env {
+    return {
+      address: 'foo.bar.tmprl.cloud', // NOT web.foo.bar.tmprl.cloud
+      namespace: 'foo.bar', // as assigned
+      clientCertPath: 'foobar.pem', // in project root
+      clientKeyPath: 'foobar.key', // in project root
+      taskQueue: process.env.TEMPORAL_TASK_QUEUE || 'hello-world-mtls', // just to ensure task queue is same on client and worker, totally optional
+      // not usually needed:
+      // serverNameOverride: process.env.TEMPORAL_SERVER_NAME_OVERRIDE,
+      // serverRootCACertificatePath: process.env.TEMPORAL_SERVER_ROOT_CA_CERT_PATH,
+    };
+  }
+  ```
 
-Please read more in the [Security docs](/docs/typescript/security#connecting-to-temporal-cloud-with-mtls).
-
-## Logging and Metrics
-
-_This section is yet to be written._ You will want to set up standard monitoring for all your Workers, and make sure that common Temporal exceptions (like `client.result` throwing on terminated workflows) are caught and handled as you prefer.
-
-Please read more in the [Logging docs](/docs/typescript/logging).
+  For more information, see [Connecting to Temporal Cloud (with mTLS)](/docs/typescript/security#local-mtls-sample-tutorial).
 
 ## Pre-build code
 
@@ -54,12 +53,17 @@ In most of our samples:
 - Our Workers bundle Workflow code at runtime.
 
 We can improve our Worker's startup time by building code in advance.
+
+### Worker code
+
 The Worker code can be built and run with:
 
 ```sh
 npm run build
 node lib/worker.js
 ```
+
+### Workflow code
 
 You can programmatically bundle Workflow code on your own with [`bundleWorkflowCode`](/docs/typescript/workers#prebuilt-workflow-bundles):
 
@@ -88,23 +92,51 @@ We can see this process working in the [production sample](https://github.com/te
 <!--SNIPSTART typescript-production-worker-->
 <!--SNIPEND-->
 
-## Performance Tuning
+## Logging
+
+Send logs and errors to a logging service, so that when things go wrong, you can see what happened.
+
+For more information about sending logs, see [Logging](/docs/typescript/logging).
+
+## Metrics
+
+### Options
+
+Workers can emit metrics and traces. There are two [output options](https://github.com/temporalio/sdk-typescript/blob/9dd17554f3fa514f501d906da26cf710020bf34d/packages/core-bridge/index.d.ts#L74-L98) that can be provided to [`Runtime.install`](https://typescript.temporal.io/api/classes/worker.runtime/#install):
+
+- `oTelCollectorUrl`: The URL of a gRPC [OpenTelemetry collector](https://opentelemetry.io/docs/collector/).
+- `prometheusMetricsBindAddress`: Address on the Worker host that will have metrics for [Prometheus](https://prometheus.io/) to scrape.
+
+There are three combinations of these options:
+
+- Only `oTelCollectorUrl` is specified: Metrics and traces are sent to the OpenTelemetry collector.
+- Both `oTelCollectorUrl` and `prometheusMetricsBindAddress` are specified: Traces are sent to the collector, and metrics are published for Prometheus.
+- Only `prometheusMetricsBindAddress` is specified: Only metrics are published for Prometheus.
+
+In addition to core tracing via `oTelCollectorUrl`, you can set up tracing of Workflows and Activities [with interceptors](/docs/typescript/logging#opentelemetry-tracing).
+
+### Monitoring
+
+Here is the [full list of SDK metrics](/docs/reference/sdk-metrics/). Some of them are used in the [Worker Tuning Guide](/docs/operation/how-to-tune-workers) to determine how to change your deployment configuration. The guide also assumes you track the host-level metrics that are important for measuring your application's load (for many applications, this is just CPU, but some applications may run into other bottlenecks—like with Activities that use a lot of memory, or open a lot of sockets). How you track host-level metrics depends on where you deploy your Workers.
+
+## Performance tuning
 
 If you are experiencing system performance issues, make sure that you have checked that the bottleneck is not with your Temporal Cluster before turning to the performance of your Workers.
 
-We endeavor to give you good defaults so you don't have to worry about them, but there are a few key settings you may want to explore if you are pushing system limits:
+We endeavor to give you good defaults, so you don't have to worry about them, but there are a few key settings you may want to explore if you are pushing system limits:
 
 - [Worker Options](https://typescript.temporal.io/api/interfaces/worker.workeroptions/#maxcachedworkflows), for example:
   - `maxCachedWorkflows` to limit Workflow cache size and trade memory for CPU (biggest lever for Worker performance)
   - `maxConcurrentActivityTaskExecutions` and other options for tuning concurrency
   - `stickyQueueScheduleToStartTimeout` to determine how quickly Temporal stops trying to send work to Workers that are no longer present, via [Sticky Queues](/docs/concepts/what-is-a-sticky-execution)
+  - See [Worker Tuning Guide](/docs/operation/how-to-tune-workers)
 - [Activity Timeouts and Retries](/docs/typescript/activities#activity-timeouts) as you gain an understanding of Temporal and the services you rely on, you will likely want to adjust the timeouts and retry policy to reflect your desired behavior.
   - Note that there are separate [timeouts and retry policy](https://typescript.temporal.io/api/interfaces/client.workflowoptions/#workflowruntimeout) at the Workflow level, but we do not encourage their usage unless you know what you are doing.
 - _to be completed as we get more user feedback_
 
 ## Do not use Alpine
 
-Alpine replaces glibc with musl, which is officially incompatible with the Rust core of the TypeScript SDK.
+Alpine replaces glibc with musl, which is incompatible with the Rust core of the TypeScript SDK.
 If you receive errors like below, it's probably because you are using Alpine.
 You can use the `slim` tag for the Docker image, if you are looking for a lightweight alternative.
 
@@ -125,7 +157,7 @@ This might lead to a `[TransportError: transport error]` runtime error because t
 The `ca-certificates` package installs the common certificate authorities and fixes this issue.
 This package is required even when connecting to a local Temporal Server, and when using a server connection config that doesn't explicitly use TLS.
 
-Add the following line to your Dockerfile if you use Debian based images:
+Add the following line to your Dockerfile if you use Debian-based images:
 
 ```
 RUN apt update && apt install -y ca-certificates
