@@ -19,6 +19,31 @@ This is always the first Event in a Workflow Execution History. It indicates tha
 
 | Field | Type | Definition |
 | ----- | ---- | ---------- |
+| workflow_type | WorkflowType | The name/type of Workflow that was initiated. |
+| parent_workflow_namespace | string | The namespace of the parent Workflow, if applicable. |
+| parent_workflow_execution | WorkflowExecution | Identifies the parent Workflow and the execution run. |
+| parent_initiated_event_id | int64 | Id of the 'START_WORKFLOW_EXECUTION_INITIATED' Event this Event corresponds to. |
+| task_queue | TaskQueue | The Task Queue that this Workflow Task was enqueued in.   |
+| input | Payloads | Information that is deserialized by the SDK to provide arguments to the Workflow function. |
+| workflow_execution_timeout | Duration | The total timeout period for Workflow execution, including retries and continue-as-new. |
+| workflow_run_timeout | Duration | Timeout of a single Workflow run. |
+| workflow_task_timeout | Duration | Timeout of a single Workflow Task. |
+| continued_execution_run_id | string | Run id of the previous Workflow which continued-as-new, retried or was executed by cron into this Workflow. |
+| initiator | ContinueAsNewInitiator | Allows the Workflow to continue as a new execution. |
+| continued_failure | Failure | Serialized result of a failure. |
+| last_completion_result | Payloads | Information from the previously completed Task, if applicable. |
+| original_execution_run_id | string | The Id of the original Workflow started. |
+| identity | string | Id of the Worker that requested the start of this Workflow.  |
+| first_execution_run_id | string | The first run Id, along the chain of ContinueAsNew and Reset.|
+| retry_policy | RetryPolicy | The amount of retries as determined by the service's dynamic configuration. Retries will happen until 'schedule_to_close_timeout' is reached. |
+| attempt | int32 | The number of attempts that have been made to complete this Task.  |
+| workflow_execution_expiration_time | Timestamp | The absolute time at which the Workflow will be timed out. |
+| cron_schedule | string | Displays the Workflow's cron schedule, if applicable. |
+| first_workflow_task_backoff | Duration | Contains the amount of time between when this iteration of the Workflow was scheduled, and when it should run next. Applies to cron scheduling. |
+| memo | Memo |  |
+| search_attributes | SearchAttributes | Provides data for setting up a Workflow's search attributes. |
+| prev_auto_reset_points | ResetPoints |  |
+| header | Header | Information passed by the sender of the Signal that is copied into the Workflow Task. |
 
 ### WorkflowExecutionCompleted
 
@@ -47,7 +72,7 @@ This event type indicates that the Workflow execution has timed out by the Tempo
 
 | Field                | Type       | Definition                                           |
 | -------------------- | ---------- | ---------------------------------------------------- |
-| retry_state          | RetryState |                                                      |
+| retry_state          | RetryState | The reason provided for whether the Task should or shouldn't be retried.                                                  |
 | new_execution_run_id | string     | The Id of the new workflow started by cron or Retry. |
 
 ### WorkflowExecutionCancelRequested
@@ -58,7 +83,7 @@ This event type indicates that a request has been made to cancel the Workflow ex
 | -------------------------------- | -------- | --------------------------------------------------------------------------------- |
 | cause | string    | The user-provided reason for the cancelation request. |
 | external_initiated_event_id | int64 | Id of the Event in the Workflow that requested cancelation, if applicable.     |
-| external_workflow__execution | WorkflowExecution |           |
+| external_workflow__execution | WorkflowExecution | Identifies the external Workflow and the run of the its execution.          |
 | identity | string | Id of the Worker that requested cancelation. |
 
 ### WorkflowExecutionCanceled
@@ -107,12 +132,11 @@ This event type contains last Workflow execution results as well as new Workflow
 | workflow_task_timeout            | Duration               | Timeout of a single Workflow task.                                                |
 | workflow_task_completed_event_id | int64                  | The Id of the 'WORKFLOW_TASK_COMPLETED' that the Event command was reported with. |
 | backoff_start_interval           | Duration               |                                                                                   |
-| initiator                        | ContinueAsNewInitiator |                                                                                   |
-| failure                          | Failure                | Serialized result of a Workflow failure. (note: deprecated. Follow up with David Reiss on this.) |
-| last_completion_result           | Payloads               |                                                                                   |
+| initiator                        | ContinueAsNewInitiator | Allows the Workflow to continue as a new execution.                               |
+| last_completion_result           | Payloads               | Information passed by the previously completed Task to the ongoing execution.                   |
 | header                           | Header                 | Information passed by the sender of the Signal that is copied into the Workflow Task. |
 | memo                             | Memo                   |                                                                                   |
-| search_attributes                | SearchAttributes       |                                                                                   |
+| search_attributes                | SearchAttributes       | Provides data for setting up a Workflow's search attributes.                      |
 
 ### WorkflowTaskScheduled
 
@@ -171,7 +195,7 @@ Either an SDK client with a local cache was not available at the time, or it too
 | ------------------ | ----------- | ------------------------------------------------------------------------------------- |
 | scheduled_event_id | int64       | The Id of the 'WORKFLOW_TASK_SCHEDULED' event that this Workflow Task corresponds to. |
 | started_event_id   | int64       | The Id of the 'WORKFLOW_TASK_STARTED' event that this Task corresponds to.            |
-| timeout_type       | TimeoutType |                                                                                       |
+| timeout_type       | TimeoutType | The type of timeout that has occurred.                                                                                      |
 
 ### WorkflowTaskFailed
 
@@ -183,7 +207,6 @@ However, the Workflow reset functionality also uses this event.
 | ------------------ | ----------------------- | -------------------------------------------------------------------------------------------------------------------------- |
 | scheduled_event_id | int64                   | The Id of the 'WORKFLOW_TASK_SCHEDULED' event that this Workflow Task corresponds to.                                      |
 | started_event_id   | int64                   | The Id of the 'WORKFLOW_TASK_STARTED' event that this Workflow Task corresponds to.                                        |
-| cause              | WorkflowTaskFailedCause | Note:deprecated                                                                                                            |
 | failure            | Failure                 | Details for the Workflow Task's failure.                                                                                   |
 | identity           | string                  | The identity of the Worker that failed this Task. The Worker must be explicitly defined to return a value for this field.  |
 | base_run_id        | string                  | The original run Id of the Workflow.                                                                                       |
@@ -210,7 +233,7 @@ This event type contains activity inputs, as well as activity timeout configurat
 | start_to_close_timeout           | Duration     | Maximum amount of execution time that an Activity is allowed after being picked up by a Worker. This timeout is retryable.                      |
 | heartbeat_timeout                | Duration     | Maximum amount of time allowed between successful Worker heartbeats.                                                                            |
 | workflow_task_completed_event_id | int64        | The Id of the 'WORKFLOW_TASK_COMPLETED' that the event command was reported with.                                                               |
-| retry_policy                     | RetryPolicy  | The amount of retries as determined by the service's dynamic configuration. Retries will happen until 'schedule_to_close_timeout' is reached.   |
+| retry_policy                     | RetryPolicy  | The amount of retries as determined by the service's dynamic configuration. Retries will happen until 'schedule_to_close_timeout' is reached. |
 
 ### ActivityTaskStarted
 
@@ -260,7 +283,7 @@ This event type indicates that the Activity has timed out according to the Tempo
 | failure            | Failure    | Serialized result of a Workflow failure.                                              |
 | scheduled_event_id | int64      | The Id of the 'ACTIVITY_TASK_SCHEDULED' event that this timeout Event corresponds to. |
 | started_event_id   | int64      | The Id of the 'ACTIVITY_TASK_STARTED' event that this timeout corresponds to.         |
-| retry_state        | RetryState |                                                                                       |
+| retry_state        | RetryState | The reason provided for whether the Task should or shouldn't be retried.              |
 
 ### ActivityTaskCancelRequested
 
@@ -321,8 +344,7 @@ This event type indicates that a Workflow has requested that the Temporal Server
 | -------------------------------- | ----------------- | --------------------------------------------------------------------------------- |
 | workflow_task_completed_event_id | int64             | The Id of the 'WORKFLOW_TASK_COMPLETED' that the event command was reported with. |
 | namespace                        | string            | Namespace of the Workflow that's going to be signaled for execution.                                                |
-| workflow_execution               | WorkflowExecution |                                                                         |
-| control                          | string            | Note: Deprecated.                                                                 |
+| workflow_execution               | WorkflowExecution | Identifies the Workflow and the run of the Workflow execution.                                          |
 | child_workflow_only              | bool              | Set to true if this Workflow is a child of the Workflow which issued the cancelation request.         |
 | reason                           | string            | Information provided by the user or client for Workflow cancelation.              |
 
@@ -333,12 +355,10 @@ This is usually because the target Workflow could not be found.
 
 | Field                            | Type                                       | Definition                                                                        |
 | -------------------------------- | ------------------------------------------ | --------------------------------------------------------------------------------- |
-| cause                            | CancelExternalWorkflowExecutionFailedCause | note: deprecated.                                                                        |
 | workflow_task_completed_event_id | int64                                      | The Id of the 'WORKFLOW_TASK_COMPLETED' that the Event was reported with. |
 | namespace                        | string                                     | Namespace of the Workflow that failed to cancel.                                               |
-| workflow_execution               | WorkflowExecution                          |                                                                         |
+| workflow_execution               | WorkflowExecution                          | Identifies the Workflow and the run of the Workflow execution.                         |
 | initiated_event_id               | int64                                      | Id of the 'REQUEST_CANCEL_EXTERNAL_WORKFLOW_EXECUTION_INITIATED' Event this failure corresponds to. |
-| control                          | string                                     | Note: Deprecated.                                                                                   |
 
 ### ExternalWorkflowExecutionCancelRequested
 
@@ -348,7 +368,7 @@ This event type indicates that the Temporal Server has successfully requested th
 | ------------------ | ----------------- | -------------------------------------------------------------------------------------------------------------------- |
 | initiated_event_id | int64             | Id of the 'REQUEST_CANCEL_EXTERNAL_WORKFLOW_EXECUTION_INITIATED' Event that this cancelation request corresponds to. |
 | namespace          | string            | Namespace of the Workflow that was requested tp cancel. |
-| workflow_execution | WorkflowExecution |                        |
+| workflow_execution | WorkflowExecution | Identifies the Workflow and the run of the Workflow execution.                       |
 
 ### ExternalWorkflowExecutionSignaled
 
@@ -359,7 +379,6 @@ This event type indicates that the Temporal Server has successfully Signaled the
 | initiated_event_id | int64             | Id of the 'SIGNAL_EXTERNAL_WORKFLOW_EXECUTION_INITIATED' Event this Event corresponds to.                       |
 | namespace          | string            | Namespace of the Workflow that was signaled to. |
 | workflow_execution | WorkflowExecution | Identifies the Workflow and the run of the Workflow execution.                       |
-| control            | string            | Note: Deprecated.                |
 
 ### MarkerRecorded
 
@@ -395,8 +414,6 @@ It is usually due to a child Workflow Id collision.
 | namespace                        | string                                 | Namespace of the child Workflow.                                                  |
 | workflow_id                      | string                                 | Identifies the child Workflow.                                                    |
 | workflow_type                    | WorkflowType                           | The name/type of Workflow that has failed.                                        |
-| cause                            | StartChildWorkflowExecutionFailedCause | note: deprecated.                                                                 |
-| control                          | string                                 | Note: Deprecated.                                                                 |
 | initiated_event_id               | int64                                  | Id of the 'START_CHILD_WORKFLOW_EXECUTION_INITIATED' Event this Event corresponds to.   |
 | workflow_task_completed_event_id | int64                                  | The Id of the 'WORKFLOW_TASK_COMPLETED' that the event command was reported with. |
 
@@ -468,7 +485,7 @@ This would also cause the [WorkflowExecutionTimeOut](#workflowexecutiontimedout)
 | workflow_type      | WorkflowType      | The name/type of Workflow that has timed out.                                         |
 | initiated_event_id | int64             | Id of the 'START_CHILD_WORKFLOW_EXECUTION_INITIATED' Event this Event corresponds to. |
 | started_event_id   | int64             | Id of the 'CHILD_WORKFLOW_EXECUTION_STARTED' Event that this timeout corresponds to.  |
-| retry_state        | RetryState        |                                                                                        |
+| retry_state        | RetryState        | The reason provided for whether the Task should or shouldn't be retried.              |
 
 ### ChildWorkflowExecutionTerminated
 
@@ -482,7 +499,7 @@ This would also cause the [WorkflowExecutionTerminated](#workflowexecutiontermin
 | workflow_type      | WorkflowType      | The name/type of Workflow that was terminated.                                           |
 | initiated_event_id | int64             | Id of the 'START_CHILD_WORKFLOW_EXECUTION_INITIATED' Event this Event corresponds to.    |
 | started_event_id   | int64             | Id of the 'CHILD_WORKFLOW_EXECUTION_STARTED' Event that this termination corresponds to. |
-| retry_state        | RetryState        |                                                                                          |
+| retry_state        | RetryState        | The reason provided for whether the Task should or shouldn't be retried.                               |
 
 ### SignalExternalWorkflowExecutionInitiated
 
@@ -493,10 +510,9 @@ This event type contains the Signal name, as well as a Signal payload.
 | -------------------------------- | ----------------- | --------------------------------------------------------------------------------- |
 | workflow_task_completed_event_id | int64             | The Id of the 'WORKFLOW_TASK_COMPLETED' that the event command was reported with. |
 | namespace                        | string            | Namespace of the Workflow that's to be signaled.                                  |
-| workflow_execution               | WorkflowExecution |                                                                                   |
+| workflow_execution               | WorkflowExecution | Identifies the Workflow and the run of the Workflow execution.                    |
 | signal_name                      | string            | The name/type of Signal to be fired.                                              |
 | input                            | Payloads          | Information that is deserialized by the SDK to provide arguments to the Workflow function. |
-| control                          | string            | Note: Deprecated.                                                                 |
 | child_workflow_only              | bool              | Set to true if this Workflow is a child of the Workflow which issued the cancelation request. |
 | header                           | Header            | Information to be passed from the Signal to the targeted Workflow. |
 
@@ -506,12 +522,10 @@ This event type indicates that the Temporal Server cannot Signal the targeted Wo
 
 | Field                            | Type                                       | Definition                                                                        |
 | -------------------------------- | ------------------------------------------ | --------------------------------------------------------------------------------- |
-| cause                            | SignalExternalWorkflowExecutionFailedCause | note: deprecated                                                                  |
 | workflow_task_completed_event_id | int64                                      | The Id of the 'WORKFLOW_TASK_COMPLETED' that the event command was reported with. |
 | namespace                        | string                                     | Namespace of the Workflow that failed to execute.                                 |
 | workflow_execution               | WorkflowExecution                          | Identifies the Workflow and the run of the Workflow execution.                    |
 | initiated_event_id               | int64                                      | Id of the 'REQUEST_CANCEL_EXTERNAL_WORKFLOW_EXECUTION_INITIATED' Event this failure signal corresponds to. |
-| control                          | string                                     | Note: Deprecated.                                                                                          |
 
 ### UpsertWorkflowSearchAttributes
 
