@@ -71,15 +71,6 @@ It is not possible to rename Search Attributes or remove them from the index sch
 
 :::
 
-Search Attributes must be one of the following types:
-
-- Text
-- Keyword
-- Int
-- Double
-- Bool
-- Datetime
-
 The [temporalio/auto-setup](https://hub.docker.com/r/temporalio/auto-setup) Docker image uses a pre-defined set of custom Search Attributes that are handy for testing.
 Their names indicate their types:
 
@@ -89,6 +80,17 @@ Their names indicate their types:
 - CustomDoubleField
 - CustomBoolField
 - CustomDatetimeField
+
+### Types
+
+Search Attributes must be one of the following types:
+
+- Text
+- Keyword
+- Int
+- Double
+- Bool
+- Datetime
 
 Note:
 
