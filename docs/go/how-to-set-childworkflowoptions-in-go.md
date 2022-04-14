@@ -13,7 +13,7 @@ tags:
 | Field                    | Description                                                                       | Type                   |
 | ------------------------ | --------------------------------------------------------------------------------- | ---------------------- |
 | Namespace                | Set the namespace of the child Workflow                                           | string                 |
-| WorkflowID               | Set the Id of the child Workflow to be scheduled                                  | string                 |
+| WorkflowID               | Set the Id of the Child Workflow to be scheduled                                  | string                 |
 | TaskQueue                | Set Task Queue that the child Workflow needs to be scheduled on                   | string                 |
 | WorkflowExecutionTimeout | Set the end to end timeout for the child Workflow execution including retries     | time.Duration          |
 | WorkflowRunTimeout       | Set the timeout for a single run of the child Workflow execution                  | time.Duration          |
