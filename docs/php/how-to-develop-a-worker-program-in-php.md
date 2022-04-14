@@ -41,7 +41,7 @@ $worker->registerActivity(App\DemoActivity::class);
 // In case an activity class requires some external dependencies provide a callback - factory
 // that creates or builds a new activity instance. The factory should be a callable which accepts
 // an instance of ReflectionClass with an activity class which should be created.
-$worker->registerActivity(App\DemoActivity::class, fn(ReflectionClass $class) => $container->create($class->getClass()));
+$worker->registerActivity(App\DemoActivity::class, fn(ReflectionClass $class) => $container->create($class->getName()));
 
 // start primary loop
 $factory->run();
