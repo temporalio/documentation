@@ -10,7 +10,7 @@ tags:
 
 Use the [worker.WorflowReplayer](https://pkg.go.dev/go.temporal.io/sdk/worker#WorkflowReplayer) to replay an existing Workflow Execution from an Event History to replicate errors.
 
-For example:
+For example, the following code retrieves the Event History of a Workflow:
 
 ```go
 import (
@@ -35,7 +35,9 @@ func GetWorkflowHistory(ctx context.Context, client client.Client, id, runID str
 }
 ```
 
-This history can then be used to _replay_, for example:
+This history can then be used to _replay_.
+For example, the following code creates a `WorkflowReplayer` and register the `MyWorkflow` Workflow function.
+Then it calls the `ReplayWorkflowHistory` to _replay_ the Event History and return an error code.
 
 ```go
 import (
@@ -56,6 +58,6 @@ func ReplayWorkflow(ctx context.Context, client client.Client, id, runID string)
 }
 ```
 
-This runs the exact same history that was generated in the original run.
-If a noticeably different code path was followed or some code caused a deadlock, it will be reported.
+This runs the exact same Event History that was generated in the original run.
+If a noticeably different code path was followed or some code caused a deadlock, it will be returned in the error code.
 Replaying a Workflow locally is a good way to see exactly what code path was taken for given input and events.
