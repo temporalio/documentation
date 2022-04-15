@@ -122,7 +122,6 @@ This event type indicates that the Workflow execution has been forcefully termin
 This event type indicates that the Workflow has successfully completed, and a new Workflow has been started within the same transaction.
 This event type contains last Workflow execution results as well as new Workflow execution inputs.
 
-<<<<<<< HEAD
 | Field | Type | Definition |
 | -------------------------------- | ---------------------- | --------------------------------------------------------------------------------- |
 | new_execution_run_id | string | The Id of the new workflow started by this Continue-As-New Event. |
