@@ -57,7 +57,7 @@ This indicates that the Workflow Execution has successfully completed. The Event
 
 ### WorkflowExecutionFailed
 
-This event indicates that the Workflow execution has unsuccessfully completed and contains the Workflow execution error.
+This Event indicates that the Workflow Execution has unsuccessfully completed and contains the error returned by the latest Workflow Function Execution.
 
 | Field                            | Description                                                                       |
 | -------------------------------- | --------------------------------------------------------------------------------- |
