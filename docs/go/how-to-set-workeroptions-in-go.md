@@ -245,7 +245,7 @@ Sticky Execution runs Workflow Tasks of a Workflow Execution on same host (could
 This is an optimization for Workflow Executions.
 When sticky execution is enabled, Worker keeps the Workflow state in memory.
 New Workflow Task contains the new history events will be dispatched to the same Worker.
-If this Worker crashes, the sticky Workflow Task will timeout after StickyScheduleToStartTimeout, and Temporal server will clear the stickiness for that Workflow execution and automatically reschedule a new Workflow Task that is available for any Worker to pick up and resume the progress.
+If this Worker crashes, the sticky Workflow Task will timeout after `StickyScheduleToStartTimeout`, and Temporal Cluster will clear the stickiness for that Workflow Execution and automatically reschedule a new Workflow Task that is available for any Worker to pick up and resume the progress.
 
 ```go
 // ...
