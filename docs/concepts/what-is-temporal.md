@@ -17,4 +17,4 @@ Any sufficiently complex distributed system contains an ad-hoc, informally-speci
 :::
 -->
 
-![The Temporal System](/diagrams/temporal-system-simple.svg)
+![The Temporal System](/static/diagrams/temporal-system-simple.svg)

@@ -18,7 +18,7 @@ A Human-Driven Long-Running Workflow is a Temporal Workflow Execution that could
 Checkr launched in 2014 and has since become the leading tech company in the Background Check industry.
 Checkr’s intention is to make Background Checks fast, easy, and efficient for countries around the world.
 
-A [Temporal case study from October 2020](/blog/how-temporal-simplified-checkr-workflows) touches on the demand for automated Background Checks due to a surge in gig economy employment.
+A [Temporal case study from October 2020](/blog/2020-10-15-how-temporal-simplified-checkr-workflows) touches on the demand for automated Background Checks due to a surge in gig economy employment.
 The case study explores the interesting problem space that presented itself as demand scaled.
 
 Depending on the type of employment, the needs of a Background Checks for any given Candidate can vary.

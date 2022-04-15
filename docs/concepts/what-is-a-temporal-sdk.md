@@ -36,4 +36,4 @@ The most common operations that a Temporal Client enables you to perform are the
 
 ### SDK metrics
 
-- [SDK metrics reference](/docs/reference/sdk-metrics)
+- [SDK metrics reference](/docs/reference/metrics)

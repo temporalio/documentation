@@ -14,7 +14,7 @@ In other words, it's a limit for how long an Activity Task can be enqueued.
 The moment that the Task is picked by the Worker from the Task Queue is considered to be the start of the Activity Task for the purposes of the Schedule-To-Start Timeout and associated metrics.
 This definition of "Start" avoids issues that a clock difference between the Temporal Cluster and a Worker might create.
 
-![Schedule-To-Start Timeout period](/diagrams/schedule-to-start-timeout.svg)
+![Schedule-To-Start Timeout period](/static/diagrams/schedule-to-start-timeout.svg)
 
 "Schedule" in Schedule-To-Start and Schedule-To-Close have different frequency guarantees.
 
@@ -24,7 +24,7 @@ Thus, "Schedule" in Schedule-To-Start refers to the scheduling moment of _every_
 
 A [Retry Policy](/docs/concepts/what-is-a-retry-policy) attached to an Activity Execution retries an Activity Task.
 
-![Start-To-Close Timeout period with retries](/diagrams/schedule-to-start-timeout-with-retry.svg)
+![Start-To-Close Timeout period with retries](/static/diagrams/schedule-to-start-timeout-with-retry.svg)
 
 This timeout has two primary use cases:
 
@@ -41,4 +41,4 @@ In most cases, we recommend monitoring the `temporal_activity_schedule_to_start_
 
 **Implementation guides:**
 
-[How to set a Schedule-To-Start Timeout in Go](/docs/go/how-to-set-activityoptions-in-go/#scheduletostarttimeout)
+[How to set a Schedule-To-Start Timeout in Go](/docs/go/how-to-set-activityoptions-in-go#scheduletostarttimeout)

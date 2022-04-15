@@ -36,7 +36,7 @@ Managing distributed transactions can be difficult to do well. Sagas are one of 
 Implementing the Saga pattern can be complex, but fortunately, Temporal provides native support for the Saga pattern.
 It means that handling all the rollbacks and running compensation transactions are performed internally by Temporal.
 
-![Booking saga flow](/img/tutorials/booking-saga-flow.png)
+![Booking saga flow](/static/img/tutorials/booking-saga-flow.png)
 
 The above diagram shows how to visualize the Saga pattern for the previously discussed online trip booking scenario.
 

@@ -8,4 +8,4 @@ description: The Motor Vehicle Search Workflow calls an external API via an Acti
 <!--SNIPSTART background-checks-motor-vehicle-workflow-definition-->
 <!--SNIPEND-->
 
-![Swim lane diagram of the State Criminal Search Child Workflow Execution](/diagrams/background-checks/motor-vehicle-search-flow.svg)
+![Swim lane diagram of the State Criminal Search Child Workflow Execution](/static/diagrams/background-checks/motor-vehicle-search-flow.svg)

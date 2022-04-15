@@ -8,4 +8,4 @@ description: The SSN Trace Workflow calls an external API via an Activity Execut
 <!--SNIPSTART background-checks-ssn-trace-workflow-definition-->
 <!--SNIPEND-->
 
-![Swim lane diagram of the SSN Trace Child Workflow Execution](/diagrams/background-checks/ssn-trace-flow.svg)
+![Swim lane diagram of the SSN Trace Child Workflow Execution](/static/diagrams/background-checks/ssn-trace-flow.svg)

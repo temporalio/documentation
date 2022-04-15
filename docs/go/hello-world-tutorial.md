@@ -87,7 +87,7 @@ Create worker/main.go and add the following code:
 
 ### Workflow starter
 
-There are two ways to start a Workflow, via the Temporal CLI or Temporal SDK. In this tutorial we use the SDK to start the Workflow which is how most Workflows are started in live environments. Additionally, the call to the Temporal server can be made [synchronously or asynchronously](/docs/go/workflows/#how-to-start-a-workflow). Here we do it synchronously, so you will see the caller wait for the result of the Workflow.
+There are two ways to start a Workflow, via the Temporal CLI or Temporal SDK. In this tutorial we use the SDK to start the Workflow which is how most Workflows are started in live environments. Additionally, the call to the Temporal server can be made [synchronously or asynchronously](/docs/go/workflows#how-to-start-a-workflow). Here we do it synchronously, so you will see the caller wait for the result of the Workflow.
 
 Create start/main.go and add the following code:
 

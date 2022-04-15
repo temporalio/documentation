@@ -45,7 +45,7 @@ The SDK contains the following tools:
 
 - [Java SDK API reference](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/index.html)
 
-- [Java SDK samples library](/docs/samples-library/#java)
+- [Java SDK samples library](/docs/samples-library#java)
 
 ### Tutorials
 

@@ -146,7 +146,7 @@ However, all checks beyond the SSN trace should be conducted in parallel to save
 
 Now we can envision the the high-level step-by-step flow that we could expect from the application.
 
-![Swim lane diagram of the high-level step-by-step flow for the Full package](/diagrams/background-checks/step-by-step-high-level-swim-lane.svg)
+![Swim lane diagram of the high-level step-by-step flow for the Full package](/static/diagrams/background-checks/step-by-step-high-level-swim-lane.svg)
 
 1. A new Background Check is started by the Company HR person.
    They entered the Candidate's email address, selected a Background Check package, and clicked "Start".

@@ -10,11 +10,11 @@ tags:
 
 A Schedule-To-Close Timeout is the maximum amount of time allowed for the overall [Activity Execution](/docs/concepts/what-is-an-activity-execution), from when the first [Activity Task](/docs/concepts/what-is-an-activity-task) is scheduled to when the last Activity Task, in the chain of Activity Tasks that make up the Activity Execution, reaches a Closed status.
 
-![Schedule-To-Close Timeout period](/diagrams/schedule-to-close-timeout.svg)
+![Schedule-To-Close Timeout period](/static/diagrams/schedule-to-close-timeout.svg)
 
 Example Schedule-To-Close Timeout period for an Activity Execution that has a chain Activity Task Executions:
 
-![Schedule-To-Close Timeout period with a retry](/diagrams/schedule-to-close-timeout-with-retry.svg)
+![Schedule-To-Close Timeout period with a retry](/static/diagrams/schedule-to-close-timeout-with-retry.svg)
 
 **The default Schedule-To-Close Timeout is ∞ (infinity).**
 
@@ -24,4 +24,4 @@ This timeout can be used to reduce the overall time that has elapsed, without al
 
 **Implementation guides:**
 
-- [How to set a Schedule-To-Close Timeout in Go](/docs/go/how-to-set-activityoptions-in-go/#scheduletoclosetimeout)
+- [How to set a Schedule-To-Close Timeout in Go](/docs/go/how-to-set-activityoptions-in-go#scheduletoclosetimeout)

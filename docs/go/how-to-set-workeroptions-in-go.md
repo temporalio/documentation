@@ -25,7 +25,7 @@ Create an instance of [`Options`](https://pkg.go.dev/go.temporal.io/sdk/worker#O
 | [`DisableStickyExecution`](#disablestickyexecution)                                   | No       | `bool`                                                                                        |
 | [`StickyScheduleToStartTimeout`](#stickyscheduletostarttimeout)                       | No       | [`time.Duration`](https://pkg.go.dev/time#Duration)                                           |
 | [`BackgroundActivityContext`](#backgroundactivitycontext)                             | No       | [`context.Context`](https://pkg.go.dev/context#Context)                                       |
-| [`WorkflowPanicPolicy`](#workflowopanicpolicy)                                        | No       | [`WorkflowPanicPolicy`](https://pkg.go.dev/go.temporal.io/sdk/internal#WorkflowPanicPolicy)   |
+| [`WorkflowPanicPolicy`](#workflowpanicpolicy)                                        | No       | [`WorkflowPanicPolicy`](https://pkg.go.dev/go.temporal.io/sdk/internal#WorkflowPanicPolicy)   |
 | [`WorkerStopTimeout`](#workerstoptimeout)                                             | No       | [`time.Duration`](https://pkg.go.dev/time#Duration)                                           |
 | [`EnableSessionWorker`](#enablesessionworker)                                         | No       | `bool`                                                                                        |
 | [`MaxConcurrentSessionExecutionSize`](#maxconcurrentsessionexecutionsize)             | No       | `int`                                                                                         |
@@ -131,7 +131,7 @@ Rate limits the number of Activity Executions that can be executed per second
 
 A value of `0` sets to the default value.
 
-This rate is managed by the Temporal Cluster and limits the Activity Tasks per second for the entire Task Queue. This is in contrast to [`WorkerActivityTasksPerSecond`](#workeractivitytaskspersecond) controls activities only per worker.
+This rate is managed by the Temporal Cluster and limits the Activity Tasks per second for the entire Task Queue. This is in contrast to [`WorkerActivitiesPerSecond`](#workeractivitiespersecond) controls activities only per worker.
 
 Notice that the number is represented in float, so that you can set it to less than 1 if needed.
 For example, set the number to 0.1 means you want your activity to be executed once for every 10 seconds.

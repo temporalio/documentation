@@ -242,7 +242,7 @@ At this moment we have a working trial period that can be cancelled. To finish o
 - send monthly charged email
 - process subscription cancellation
 
-If we assume that the subscription period is 30 days, and it should last until it is manually cancelled, then we can use an infinite loop here (subject to [Event History Limits](/docs/php/workflows/#large-event-histories), but don't worry about that for a monthly workflow).
+If we assume that the subscription period is 30 days, and it should last until it is manually cancelled, then we can use an infinite loop here (subject to [Event History Limits](/docs/php/workflows#large-event-histories), but don't worry about that for a monthly workflow).
 We "endlessly" wait for 30 days and charge monthly fee.
 Also, don't forget about the trial period at the beginning.
 

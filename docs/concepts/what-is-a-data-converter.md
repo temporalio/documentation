@@ -12,7 +12,7 @@ A Data Converter is a Temporal SDK component that encodes and decodes data enter
 - TypeScript: [Data Converters](/docs/typescript/data-converters)
 - Go: [Create a custom Data Converter](/docs/go/how-to-create-a-custom-data-converter-in-go)
 
-![Data Converter encodes and decodes data](/diagrams/default-data-converter.svg)
+![Data Converter encodes and decodes data](/static/diagrams/default-data-converter.svg)
 
 Data is encoded before it is sent to a Temporal Server, and it is decoded when it is received from a Temporal Server.
 

@@ -8,4 +8,4 @@ description: The Federal Criminal Search Workflow calls an external API via an A
 <!--SNIPSTART background-checks-federal-criminal-workflow-definition-->
 <!--SNIPEND-->
 
-![Swim lane diagram of the Federal Criminal Search Child Workflow Execution](/diagrams/background-checks/federal-criminal-search-flow.svg)
+![Swim lane diagram of the Federal Criminal Search Child Workflow Execution](/static/diagrams/background-checks/federal-criminal-search-flow.svg)

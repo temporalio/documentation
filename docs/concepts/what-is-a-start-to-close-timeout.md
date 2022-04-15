@@ -18,22 +18,22 @@ For long running Activity Executions, we recommend also using [Activity Heartbea
 
 The main use case for the Start-To-Close timeout is to detect when a Worker crashes after it has started executing an Activity Task.
 
-![Start-To-Close Timeout period](/diagrams/start-to-close-timeout.svg)
+![Start-To-Close Timeout period](/static/diagrams/start-to-close-timeout.svg)
 
 A [Retry Policy](/docs/concepts/what-is-a-retry-policy) attached to an Activity Execution retries an Activity Task Execution.
 Thus the Start-To-Close Timeout is applied to each Activity Task Execution within an Activity Execution.
 
 If the first Activity Task Execution returns an error the first time, then the full Activity Execution might look like this:
 
-![Start-To-Close Timeout period with retries](/diagrams/start-to-close-timeout-with-retry.svg)
+![Start-To-Close Timeout period with retries](/static/diagrams/start-to-close-timeout-with-retry.svg)
 
 If this timeout is reached, the following actions occur:
 
-- An [ActivityTaskTimedOut](/docs/concepts/what-is-an-event/#activitytasktimedout) Event is written to the Workflow Execution's mutable state.
+- An [ActivityTaskTimedOut](/docs/concepts/what-is-an-event#activitytasktimedout) Event is written to the Workflow Execution's mutable state.
 - If a Retry Policy dictates a retry, the Temporal Cluster schedules another Activity Task.
   - The attempt count increments by 1 in the Workflow Execution's mutable state.
   - The Start-To-Close Timeout timer is reset.
 
 **Implementation guides:**
 
-- [How to set a Start-To-Close Timeout in Go](/docs/go/how-to-set-activityoptions-in-go/#starttoclosetimeout)
+- [How to set a Start-To-Close Timeout in Go](/docs/go/how-to-set-activityoptions-in-go#starttoclosetimeout)

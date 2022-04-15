@@ -10,7 +10,7 @@ tags:
 
 A Workflow Task Timeout is the maximum amount of time allowed for a [Worker](/docs/concepts/what-is-a-worker) to execute a [Workflow Task](/docs/concepts/what-is-a-workflow-task) after the Worker has pulled that Workflow Task from the [Task Queue](/docs/concepts/what-is-a-task-queue).
 
-![Workflow Task Timeout period](/diagrams/workflow-task-timeout.svg)
+![Workflow Task Timeout period](/static/diagrams/workflow-task-timeout.svg)
 
 **The default value is 10 seconds.**
 This timeout is primarily available to recognize whether a Worker has gone down so that the Workflow Execution can be recovered on a different Worker.
@@ -18,4 +18,4 @@ The main reason for increasing the default value would be to accommodate a Workf
 
 **Implementation guides:**
 
-- [How to set a Workflow Task Timeout in Go](/docs/go/how-to-set-startworkflowoptions-in-go/#workflowtasktimeout)
+- [How to set a Workflow Task Timeout in Go](/docs/go/how-to-set-startworkflowoptions-in-go#workflowtasktimeout)

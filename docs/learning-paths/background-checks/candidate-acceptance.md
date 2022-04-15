@@ -8,4 +8,4 @@ description: The Candidate Acceptance Workflow sends email to the Candidate via 
 <!--SNIPSTART background-checks-accept-workflow-definition-->
 <!--SNIPEND-->
 
-![Swim lane diagram of the Candidate Acceptance Child Workflow Execution](/diagrams/background-checks/candidate-accept-flow.svg)
+![Swim lane diagram of the Candidate Acceptance Child Workflow Execution](/static/diagrams/background-checks/candidate-accept-flow.svg)

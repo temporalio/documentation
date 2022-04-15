@@ -9,7 +9,7 @@ tags:
 
 A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.
 
-![Temporal Cron Job timeline](/diagrams/temporal-cron-job.svg)
+![Temporal Cron Job timeline](/static/diagrams/temporal-cron-job.svg)
 
 A Temporal Cron Job is similar to a classic unix cron job.
 Just as a unix cron job accepts a command and a schedule on which to execute that command, a Cron Schedule can be provided with the call to spawn a Workflow Execution.
@@ -30,7 +30,7 @@ If the next Run, per the Cron Schedule, is due to spawn while the current Run is
 A [Workflow Run Timeout](/docs/concepts/what-is-a-workflow-run-timeout) is used to limit the maximum amount of time of individual Runs.
 Again, if the Workflow Run Timeout is reached and there is an associated Retry Policy, the Workflow is retried before the next Cron Scheduled spawn occurs.
 
-![Temporal Cron Job Run Failure with a Retry Policy](/diagrams/temporal-cron-job-failure-with-retry.svg)
+![Temporal Cron Job Run Failure with a Retry Policy](/static/diagrams/temporal-cron-job-failure-with-retry.svg)
 
 ### Cron Schedules
 
@@ -106,7 +106,7 @@ Use the Workflow Id in any requests to Cancel or Terminate.
 
 **Implementation guides:**
 
-- [How to set a Cron Schedule in Go](/docs/go/how-to-set-startworkflowoptions-in-go/#cronschedule)
+- [How to set a Cron Schedule in Go](/docs/go/how-to-set-startworkflowoptions-in-go#cronschedule)
 - [How to set a Cron Schedule in Java](/docs/java/distributed-cron)
 - [How to set a Cron Schedule in PHP](/docs/php/distributed-cron)
 - [How to set a Cron Schedule in Typescript](/docs/typescript/clients)

@@ -14,7 +14,7 @@ The application maps each of the following business processes to its own Workflo
 - [Main Background Check](/docs/learning-paths/background-checks/main-background-check)
 - [Candidate Acceptance](/docs/learning-paths/background-checks/candidate-acceptance)
 - [SSN Trace](/docs/learning-paths/background-checks/ssn-trace)
-- [Federal Criminal Search](/docs/learning-paths/background-checks/federal-criminal-search)
+- [Federal Criminal Search](/docs/learning-paths/background-checks/federal-criminal)
 - [State Criminal Search](/docs/learning-paths/background-checks/state-criminal-search)
 - [Motor Vehicle Search](/docs/learning-paths/background-checks/motor-vehicle-search)
 - [Employment Verification](/docs/learning-paths/background-checks/employment-verification)
@@ -81,7 +81,7 @@ Because the default retention period for a Temporal Cluster is 7 days, this appl
 
 ## What does the component topology look like?
 
-![Diagram of component topology of the Temporal Application](/diagrams/background-checks/component-topology.svg)
+![Diagram of component topology of the Temporal Application](/static/diagrams/background-checks/component-topology.svg)
 
 The Temporal Client communicates with the Temporal Cluster (Temporal Server + Database + Elasticsearch).
 

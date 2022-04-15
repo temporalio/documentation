@@ -8,4 +8,4 @@ description: The Employment Verification Workflow sends email to a Researcher vi
 <!--SNIPSTART background-checks-employment-verification-workflow-definition-->
 <!--SNIPEND-->
 
-![Swim lane diagram of the Employment Verification Child Workflow Execution](/diagrams/background-checks/employment-verification-flow.svg)
+![Swim lane diagram of the Employment Verification Child Workflow Execution](/static/diagrams/background-checks/employment-verification-flow.svg)

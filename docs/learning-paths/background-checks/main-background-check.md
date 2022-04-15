@@ -13,4 +13,4 @@ When a new Background Check is started, this is the function that executes.
 
 The sequence that the code defines can be represented in the following diagram:
 
-![Swim lane diagram of the Main Background Check Workflow Execution](/diagrams/background-checks/main-background-check.svg)
+![Swim lane diagram of the Main Background Check Workflow Execution](/static/diagrams/background-checks/main-background-check.svg)

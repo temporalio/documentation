@@ -20,7 +20,7 @@ There are three possible values:
 Each Child Workflow Execution may have its own Parent Close Policy.
 This policy applies only to Child Workflow Executions and has no effect otherwise.
 
-![Parent Close Policy entity relationship](/diagrams/parent-close-policy.svg)
+![Parent Close Policy entity relationship](/static/diagrams/parent-close-policy.svg)
 
 You can set policies per child, which means you can opt out of propagating terminates / cancels on a per-child basis.
 This is useful for starting Child Workflows asynchronously (see [relevant issue here](https://community.temporal.io/t/best-way-to-create-an-async-child-workflow/114) or the corresponding SDK docs).

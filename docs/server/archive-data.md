@@ -8,7 +8,7 @@ import CustomWarning from "../components/CustomWarning.js"
 
 <CustomWarning>
 
-Temporal's Archival feature is considered **experimental** and not subject to normal [versioning and support policy](/docs/server/versions-and-dependencies).
+Temporal's Archival feature is considered **experimental** and not subject to normal [versioning and support policy](/docs/server/versions-dependencies).
 
 </CustomWarning>
 
@@ -230,7 +230,7 @@ func(a * Archiver) Archive(ctx context.Context, URI string, request * ArchiveReq
 
 **How does my history archiver implementation read history?**
 
-The archiver package provides a utility called [HistoryIterator](https://github.com/temporalio/temporal/blob/master/common/archiver/historyIterator.go) which is a wrapper of [HistoryManager](https://github.com/temporalio/temporal/blob/master/common/persistence/historyStore.go). `HistoryIterator` is more simple than the `HistoryManager`, which is available in the BootstrapContainer, so archiver implementations can choose to use it when reading Workflow histories. See the [historyIterator.go](https://github.com/temporalio/temporal/blob/master/common/persistence/historyStore.go) file for more details. Use the [filestore historyArchiver implementation](https://github.com/temporalio/temporal/tree/master/common/archiver/filestore) as an example.
+The archiver package provides a utility called [HistoryIterator](https://github.com/temporalio/temporal/blob/master/common/archiver/historyIterator.go) which is a wrapper of [HistoryManager](https://github.com/temporalio/temporal/blob/master/common/persistence/tests/history_store.go). `HistoryIterator` is more simple than the `HistoryManager`, which is available in the BootstrapContainer, so archiver implementations can choose to use it when reading Workflow histories. See the [historyIterator.go](https://github.com/temporalio/temporal/blob/master/common/persistence/tests/history_store.go) file for more details. Use the [filestore historyArchiver implementation](https://github.com/temporalio/temporal/tree/master/common/archiver/filestore) as an example.
 
 **Should my archiver define its own error types?**
 

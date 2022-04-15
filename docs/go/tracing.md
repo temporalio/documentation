@@ -74,7 +74,7 @@ type ContextPropagator interface {
 - `Extract` picks select headers and put their values into the [context.Context](https://golang.org/pkg/context/#Context) object.
 - `ExtractToWorkflow` operates similar to `Extract` but write to a [workflow.Context](https://pkg.go.dev/go.temporal.io/sdk/internal#Context) object.
 
-The [tracing context propagator](https://github.com/temporalio/sdk-go/blob/master/internal/tracer.go) shows a sample implementation of a context propagator.
+The [tracing context propagator](https://github.com/temporalio/sdk-go/blob/master/internal/interceptortest/tracing.go) shows a sample implementation of a context propagator.
 
 ### Is there a complete example?
 

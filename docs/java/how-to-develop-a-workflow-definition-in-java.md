@@ -22,7 +22,7 @@ The Workflow interface is a Java interface and is annotated with `@WorkflowInter
 Each Workflow interface method must have one [`@WorkflowMethod`](#workflowmethod).
 Use `@SignalMethod` for Signals, and `@QueryMethod` for Queries in the Workflow.
 You can send signals to other running Workflows using `newExternalWorkflowStub`.
-See [How to spawn a Workflow Execution in Java](/docs/java/how-to-spawn-a-workflow-execution-in-java/#external-workflows).
+See [How to spawn a Workflow Execution in Java](/docs/java/how-to-spawn-a-workflow-execution-in-java#external-workflows).
 
 To call Activities in your Workflow, see [Activities](/docs/java/activities).
 
