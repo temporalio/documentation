@@ -25,7 +25,7 @@ Create an instance of [`Options`](https://pkg.go.dev/go.temporal.io/sdk/worker#O
 | [`DisableStickyExecution`](#disablestickyexecution)                                   | No       | `bool`                                                                                        |
 | [`StickyScheduleToStartTimeout`](#stickyscheduletostarttimeout)                       | No       | [`time.Duration`](https://pkg.go.dev/time#Duration)                                           |
 | [`BackgroundActivityContext`](#backgroundactivitycontext)                             | No       | [`context.Context`](https://pkg.go.dev/context#Context)                                       |
-| [`WorkflowPanicPolicy`](#workflowpanicpolicy)                                        | No       | [`WorkflowPanicPolicy`](https://pkg.go.dev/go.temporal.io/sdk/internal#WorkflowPanicPolicy)   |
+| [`WorkflowPanicPolicy`](#workflowpanicpolicy)                                         | No       | [`WorkflowPanicPolicy`](https://pkg.go.dev/go.temporal.io/sdk/internal#WorkflowPanicPolicy)   |
 | [`WorkerStopTimeout`](#workerstoptimeout)                                             | No       | [`time.Duration`](https://pkg.go.dev/time#Duration)                                           |
 | [`EnableSessionWorker`](#enablesessionworker)                                         | No       | `bool`                                                                                        |
 | [`MaxConcurrentSessionExecutionSize`](#maxconcurrentsessionexecutionsize)             | No       | `int`                                                                                         |

@@ -46,7 +46,6 @@ Because a Child Workflow Execution can be processed by a completely separate set
 However, this also means that a Parent Workflow Execution and a Child Workflow Execution do not share any local state.
 As all Workflow Executions, they can communicate only via asynchronous [Signals](/docs/concepts/what-is-a-signal).
 
-
 **Consider that a single Child Workflow Execution can represent a single resource.**
 
 As all Workflow Executions, a Child Workflow Execution can create a 1:1 mapping with a resource.

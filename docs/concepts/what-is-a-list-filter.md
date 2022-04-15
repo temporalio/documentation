@@ -1,5 +1,4 @@
 ---
-
 id: what-is-a-list-filter
 title: What is a List Filter?
 sidebar_label: List Filter

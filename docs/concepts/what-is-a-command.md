@@ -1,5 +1,4 @@
 ---
-
 id: what-is-a-command
 title: What is a Command?
 sidebar_label: Command
