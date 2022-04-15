@@ -9,7 +9,7 @@ tags:
 
 An Activity Execution is the full chain of [Activity Task Executions](/docs/concepts/what-is-an-activity-task-execution).
 
-![Activity Execution](/diagrams/activity-execution.svg)
+![Activity Execution](/static/diagrams/activity-execution.svg)
 
 ### Request Cancellation
 

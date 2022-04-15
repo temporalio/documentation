@@ -34,8 +34,8 @@ It is possible to implement an Activity fully asynchronously by completing it fr
 
 - An Activity can be implemented as a synchronous method or fully asynchronously involving multiple processes.
 - An Activity can be retried indefinitely according to the provided exponential retry policy.
-- If for any reason an Activity is not completed within the specified timeout, an error is reported to the [Workflow](#workflow), which decides how to handle it. The duration of an Activity has no limit.
-- Activities support an [Activity Heartbeat](#activity-heartbeat) that helps to identify timeouts faster in case the Activity execution fails.
+- If for any reason an Activity is not completed within the specified timeout, an error is reported to the [Workflow](/docs/concepts/what-is-a-workflow.md), which decides how to handle it. The duration of an Activity has no limit.
+- Activities support an [Activity Heartbeat](/docs/concepts/what-is-an-activity-heartbeat.md) that helps to identify timeouts faster in case the Activity execution fails.
 
 Temporal does not impose any system limit on Activity duration. It is up to the application to choose the timeouts for its execution.
 
