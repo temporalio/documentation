@@ -122,21 +122,21 @@ This event type indicates that the Workflow execution has been forcefully termin
 This event type indicates that the Workflow has successfully completed, and a new Workflow has been started within the same transaction.
 This event type contains last Workflow execution results as well as new Workflow execution inputs.
 
-| Field | Type | Definition |
-| -------------------------------- | ---------------------- | --------------------------------------------------------------------------------- |
-| new_execution_run_id | string | The Id of the new workflow started by this Continue-As-New Event. |
-| workflow_type | WorkflowType | The name/type of Workflow that was started by this Event. |
-| task_queue | TaskQueue | The Task Queue that this Workflow Task was enqueued in. |
-| input | Payloads | Information that is deserialized by the SDK to provide arguments to the Workflow. |
-| workflow_run_timeout | Duration | Timeout of a single Workflow run. |
-| workflow_task_timeout | Duration | Timeout of a single Workflow task. |
-| workflow_task_completed_event_id | int64 | The Id of the 'WORKFLOW_TASK_COMPLETED' that the Event command was reported with. |
-| backoff_start_interval | Duration | The amount of time to delay the beginning of the ContinuedAsNew Workflow,. |
-| initiator | ContinueAsNewInitiator | Allows the Workflow to continue as a new execution. |
-| last_completion_result | Payloads | Information passed by the previously completed Task to the ongoing execution. |
-| header | Header | Information passed by the sender of the Signal that is copied into the Workflow Task. |
-| memo | Memo | Non-indexed information to show in the Workflow. |
-| search_attributes | SearchAttributes | Provides data for setting up a Workflow's search attributes. |
+| Field                            | Type                   | Definition                                                                            |
+| -------------------------------- | ---------------------- | ------------------------------------------------------------------------------------- |
+| new_execution_run_id             | string                 | The Id of the new workflow started by this Continue-As-New Event.                     |
+| workflow_type                    | WorkflowType           | The name/type of Workflow that was started by this Event.                             |
+| task_queue                       | TaskQueue              | The Task Queue that this Workflow Task was enqueued in.                               |
+| input                            | Payloads               | Information that is deserialized by the SDK to provide arguments to the Workflow.     |
+| workflow_run_timeout             | Duration               | Timeout of a single Workflow run.                                                     |
+| workflow_task_timeout            | Duration               | Timeout of a single Workflow task.                                                    |
+| workflow_task_completed_event_id | int64                  | The Id of the 'WORKFLOW_TASK_COMPLETED' that the Event command was reported with.     |
+| backoff_start_interval           | Duration               | The amount of time to delay the beginning of the ContinuedAsNew Workflow,.            |
+| initiator                        | ContinueAsNewInitiator | Allows the Workflow to continue as a new execution.                                   |
+| last_completion_result           | Payloads               | Information passed by the previously completed Task to the ongoing execution.         |
+| header                           | Header                 | Information passed by the sender of the Signal that is copied into the Workflow Task. |
+| memo                             | Memo                   | Non-indexed information to show in the Workflow.                                      |
+| search_attributes                | SearchAttributes       | Provides data for setting up a Workflow's search attributes.                          |
 
 ### WorkflowTaskScheduled
 
