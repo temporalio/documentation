@@ -109,7 +109,7 @@ val := info.SearchAttributes.IndexedFields["CustomIntField"]
 
 ## Querying Search Attributes within a Workflow
 
-You can programmatically retrieve attributes from a Workflow execution with `GetSearchAttributes`, and log out all fields with `GetIndexedFields`:
+You can programmatically retrieve attributes from a Workflow Execution with `GetSearchAttributes`, and log out all fields with `GetIndexedFields`:
 
 ```go
 searchAttributes := workflowExecution.GetSearchAttributes()
