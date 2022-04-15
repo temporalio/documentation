@@ -43,7 +43,7 @@ A Workflow Execution does two things:
 
 ![Command generation and waiting](/diagrams/workflow-execution-progession-simple.svg)
 
-Commands are issued and Awaitables provided by the use of Workflow APIs in the [Workflow Definition](/docs/concepts/what-is-a-workflow-definition).
+Commands are issued and Awaitables are provided by the use of Workflow APIs in the [Workflow Definition](/docs/concepts/what-is-a-workflow-definition).
 
 Commands are generated whenever the Workflow Function is executed.
 The Worker Process supervises the Command generation and makes sure that it maps to the current Event History.
@@ -69,7 +69,8 @@ A Workflow Execution can be either Open or Closed.
 
 **Open**
 
-- Running: The only Open status for a Workflow Execution, when Running the Workflow Execution is when a Workflow Execution is either actively progressing or suspended because it is waiting on something.
+- Running: The only Open status for a Workflow Execution.
+When the Workflow Execution is Running, it is either actively progressing or suspended because it is waiting on something.
 
 **Closed**
 
