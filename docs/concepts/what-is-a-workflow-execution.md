@@ -70,7 +70,7 @@ A Workflow Execution can be either Open or Closed.
 **Open**
 
 - Running: The only Open status for a Workflow Execution.
-When the Workflow Execution is Running, it is either actively progressing or suspended because it is waiting on something.
+  When the Workflow Execution is Running, it is either actively progressing or suspended because it is waiting on something.
 
 **Closed**
 
