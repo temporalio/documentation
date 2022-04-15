@@ -49,11 +49,11 @@ This is always the first Event in a Workflow Execution History. It indicates tha
 
 This indicates that the Workflow Execution has successfully completed. The Event contains Workflow Execution results.
 
-| Field                            | Type     | Definition                                                                        |
-| -------------------------------- | -------- | --------------------------------------------------------------------------------- |
-| result                           | Payloads | Serialized result of completed Workflow.                                          |
-| workflow_task_completed_event_id | int64    | The Id of the 'WORKFLOW_TASK_COMPLETED' that the event command was reported with. |
-| new_execution_run_id             | string   | The Run Id of the next Workflow Execution in the Workflow Execution Chain (often a result of a Cron Schedule)                        |
+| Field                            | Type     | Definition                                                                                                    |
+| -------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------- |
+| result                           | Payloads | Serialized result of completed Workflow.                                                                      |
+| workflow_task_completed_event_id | int64    | The Id of the 'WORKFLOW_TASK_COMPLETED' that the event command was reported with.                             |
+| new_execution_run_id             | string   | The Run Id of the next Workflow Execution in the Workflow Execution Chain (often a result of a Cron Schedule) |
 
 ### WorkflowExecutionFailed
 
