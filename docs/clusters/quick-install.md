@@ -7,12 +7,12 @@ description: There are four ways to quickly install and run a Temporal Cluster.
 
 There are four ways to quickly install and run a Temporal Cluster:
 
+- [Helm charts](#helm-charts): Deploying a Cluster to [Kubernetes](https://kubernetes.io/) is an easy way to test the system and develop Temporal Applications.
 - [Docker](#docker): Using Docker Compose makes it easy to develop your Temporal Application locally.
 - [Render](#render): Our [temporalio/docker-compose](https://github.com/temporalio/docker-compose) experience has been translated to Render's Blueprint format for an alternative cloud connection.
-- [Helm charts](#helm-charts): Deploying a Cluster to [Kubernetes](https://kubernetes.io/) is an easy way to test the system and develop Temporal Applications.
 - [Gitpod](#gitpod): One-click deployments are available for Go and TypeScript.
 
-**We do not recommend using any of these methods in a [full (production) environment](/docs/server/production-deployment).**
+**We do not recommend using any of these methods in a [full (production) environment](/docs/server/production-deploy).**
 
 ### Helm charts
 

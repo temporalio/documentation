@@ -6,7 +6,7 @@ description: Temporal Cluster how-to guides.
 
 - [What is a Temporal Cluster?](/docs/concepts/what-is-a-temporal-cluster)
 
-- Read the [Server versions and dependencies](/docs/server/versions-and-dependencies) page to see which dependencies are supported with the version of the Server you are using.
+- Read the [Server versions and dependencies](/docs/server/versions-dependencies) page to see which dependencies are supported with the version of the Server you are using.
 
 ### Running a Cluster
 
@@ -15,7 +15,7 @@ How and where you run a Cluster depends entirely on your use case, intended envi
 Choose from the following list to get started:
 
 - [Quick installation for Temporal Application development](/docs/clusters/quick-install)
-- [Deployment to a live (production) environment](/docs/server/production-deployment)
+- [Deployment to a live (production) environment](/docs/server/production-deploy)
 
 ### Features
 
