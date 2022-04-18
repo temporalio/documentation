@@ -1,8 +1,8 @@
 #!/usr/bin/env node
-const fs = require('fs-extra');
-const readdirp = require('readdirp');
-const path = require('path');
-const graymatter = require('gray-matter');
+const fs = require("fs-extra");
+const readdirp = require("readdirp");
+const path = require("path");
+const graymatter = require("gray-matter");
 
 __dirname = path.resolve();
 
@@ -13,9 +13,7 @@ const FILE_EXTENSION = ".md";
 
 const CONCEPTS_CONFIG = require("./guide-configs/concepts.json");
 
-const GUIDE_CONFIGS = [
-  CONCEPTS_CONFIG,
-]
+const GUIDE_CONFIGS = [CONCEPTS_CONFIG];
 
 // File is the class that contains a filename and lines of the file
 class File {
@@ -40,10 +38,9 @@ async function run() {
   console.log(gfs[0].guide_string);
 
   await writeGuides(gfs);
-
 }
 
-async function getFilePaths(){
+async function getFilePaths() {
   const file_paths = [];
   for await (const entry of readdirp(DOCS_PATH)) {
     const file = new File(entry.basename, entry.path, entry.fullPath);
@@ -66,10 +63,9 @@ async function getFileContents(files) {
   return updated_files;
 }
 
-async function attachFiles(guide_configs, files){
+async function attachFiles(guide_configs, files) {
   let updated_configs = [];
-  for (let guide_config of guide_configs){
-
+  for (let guide_config of guide_configs) {
     guide_config = await findMatches(guide_config, files);
     updated_configs.push(guide_config);
   }
@@ -88,10 +84,10 @@ async function findMatches(guide_config, files) {
 }
 
 async function matchFilesToSection(h2_section, files) {
-  let updated_h2_section = h2_section
+  let updated_h2_section = h2_section;
   let updated_h3_sections = [];
   for (const h3_section of h2_section.h3_sections) {
-    const file = files.find(obj => {
+    const file = files.find((obj) => {
       return obj.path === `${h3_section.path}${FILE_EXTENSION}`;
     });
     h3_section.file = file;
@@ -103,7 +99,7 @@ async function matchFilesToSection(h2_section, files) {
 
 async function generateGuides(guide_configs) {
   updated_configs = [];
-  for(let guide_config of guide_configs) {
+  for (let guide_config of guide_configs) {
     guide_config = await generateGuide(guide_config);
     updated_configs.push(guide_config);
   }
@@ -138,7 +134,10 @@ function frontmatter(guide_config) {
 }
 
 async function writeGuides(guide_configs) {
-  for(const guide_config of guide_configs) {
-    fs.writeFile(path.join(DOCS_PATH, guide_config.file_name), guide_config.guide_string)
+  for (const guide_config of guide_configs) {
+    fs.writeFile(
+      path.join(DOCS_PATH, guide_config.file_name),
+      guide_config.guide_string
+    );
   }
 }
