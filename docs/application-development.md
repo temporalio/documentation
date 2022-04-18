@@ -3,6 +3,7 @@ id: application-development-guide
 title: Temporal Application development guide
 sidebar_label: App dev guide
 description: The Temporal Application development guide.
+toc_max_heading_level: 4
 tags:
   - developer-guide
 ---
@@ -53,6 +54,7 @@ groupId="site-lang"
 values={[
 {label: 'Go', value: 'go'},
 {label: 'Java', value: 'java'},
+{label: 'Python', value: 'python'},
 {label: 'PHP', value: 'php'},
 {label: 'Typescript', value: 'ts'},
 ]
@@ -64,6 +66,9 @@ values={[
 
 </TabItem>
 <TabItem value="java">
+
+</TabItem>
+<TabItem value="python">
 
 </TabItem>
 <TabItem value="php">
@@ -94,6 +99,7 @@ groupId="site-lang"
 values={[
 {label: 'Go', value: 'go'},
 {label: 'Java', value: 'java'},
+{label: 'Python', value: 'python'},
 {label: 'PHP', value: 'php'},
 {label: 'Typescript', value: 'ts'},
 ]
@@ -107,6 +113,9 @@ values={[
 <TabItem value="java">
 
 <DevelopWorkflowDefinitionInJava/>
+
+</TabItem>
+<TabItem value="python">
 
 </TabItem>
 <TabItem value="php">
@@ -137,6 +146,7 @@ groupId="site-lang"
 values={[
 {label: 'Go', value: 'go'},
 {label: 'Java', value: 'java'},
+{label: 'Python', value: 'python'},
 {label: 'PHP', value: 'php'},
 {label: 'Typescript', value: 'ts'},
 ]
@@ -150,6 +160,9 @@ values={[
 <TabItem value="java">
 
 [How to develop an Activity Definition in Java](/docs/java/activities)
+
+</TabItem>
+<TabItem value="python">
 
 </TabItem>
 <TabItem value="php">
@@ -180,6 +193,7 @@ groupId="site-lang"
 values={[
 {label: 'Go', value: 'go'},
 {label: 'Java', value: 'java'},
+{label: 'Python', value: 'python'},
 {label: 'PHP', value: 'php'},
 {label: 'Typescript', value: 'ts'},
 ]
@@ -191,6 +205,9 @@ values={[
 
 </TabItem>
 <TabItem value="java">
+
+</TabItem>
+<TabItem value="python">
 
 </TabItem>
 <TabItem value="php">
@@ -217,6 +234,7 @@ groupId="site-lang"
 values={[
 {label: 'Go', value: 'go'},
 {label: 'Java', value: 'java'},
+{label: 'Python', value: 'python'},
 {label: 'PHP', value: 'php'},
 {label: 'Typescript', value: 'ts'},
 ]
@@ -228,6 +246,9 @@ values={[
 
 </TabItem>
 <TabItem value="java">
+
+</TabItem>
+<TabItem value="python">
 
 </TabItem>
 <TabItem value="php">
@@ -254,6 +275,7 @@ groupId="site-lang"
 values={[
 {label: 'Go', value: 'go'},
 {label: 'Java', value: 'java'},
+{label: 'Python', value: 'python'},
 {label: 'PHP', value: 'php'},
 {label: 'Typescript', value: 'ts'},
 ]
@@ -265,6 +287,9 @@ values={[
 
 </TabItem>
 <TabItem value="java">
+
+</TabItem>
+<TabItem value="python">
 
 </TabItem>
 <TabItem value="php">
@@ -290,6 +315,7 @@ groupId="site-lang"
 values={[
 {label: 'Go', value: 'go'},
 {label: 'Java', value: 'java'},
+{label: 'Python', value: 'python'},
 {label: 'PHP', value: 'php'},
 {label: 'Typescript', value: 'ts'},
 ]
@@ -301,6 +327,9 @@ values={[
 
 </TabItem>
 <TabItem value="java">
+
+</TabItem>
+<TabItem value="python">
 
 </TabItem>
 <TabItem value="php">
@@ -329,6 +358,7 @@ groupId="site-lang"
 values={[
 {label: 'Go', value: 'go'},
 {label: 'Java', value: 'java'},
+{label: 'Python', value: 'python'},
 {label: 'PHP', value: 'php'},
 {label: 'Typescript', value: 'ts'},
 ]
@@ -342,6 +372,9 @@ values={[
 <TabItem value="java">
 
 <DevelopWorkerJava/>
+
+</TabItem>
+<TabItem value="python">
 
 </TabItem>
 <TabItem value="php">
@@ -378,6 +411,7 @@ groupId="site-lang"
 values={[
 {label: 'Go', value: 'go'},
 {label: 'Java', value: 'java'},
+{label: 'Python', value: 'python'},
 {label: 'PHP', value: 'php'},
 {label: 'Typescript', value: 'ts'},
 {label: 'tctl', value: 'tctl'},
@@ -392,6 +426,9 @@ values={[
 <TabItem value="java">
 
 <SpawnWorkflowExecutionJava/>
+
+</TabItem>
+<TabItem value="python">
 
 </TabItem>
 <TabItem value="php">
@@ -417,6 +454,7 @@ groupId="site-lang"
 values={[
 {label: 'Go', value: 'go'},
 {label: 'Java', value: 'java'},
+{label: 'Python', value: 'python'},
 {label: 'PHP', value: 'php'},
 {label: 'Typescript', value: 'ts'},
 ]
@@ -428,6 +466,9 @@ values={[
 
 </TabItem>
 <TabItem value="java">
+
+</TabItem>
+<TabItem value="python">
 
 </TabItem>
 <TabItem value="php">
@@ -457,6 +498,7 @@ groupId="site-lang"
 values={[
 {label: 'Go', value: 'go'},
 {label: 'Java', value: 'java'},
+{label: 'Python', value: 'python'},
 {label: 'PHP', value: 'php'},
 {label: 'Typescript', value: 'ts'},
 ]
@@ -468,6 +510,9 @@ values={[
 
 </TabItem>
 <TabItem value="java">
+
+</TabItem>
+<TabItem value="python">
 
 </TabItem>
 <TabItem value="php">
@@ -509,6 +554,7 @@ groupId="site-lang"
 values={[
 {label: 'Go', value: 'go'},
 {label: 'Java', value: 'java'},
+{label: 'Python', value: 'python'},
 {label: 'PHP', value: 'php'},
 {label: 'Typescript', value: 'ts'},
 ]
@@ -520,6 +566,9 @@ values={[
 
 </TabItem>
 <TabItem value="java">
+
+</TabItem>
+<TabItem value="python">
 
 </TabItem>
 <TabItem value="php">
@@ -550,6 +599,7 @@ groupId="site-lang"
 values={[
 {label: 'Go', value: 'go'},
 {label: 'Java', value: 'java'},
+{label: 'Python', value: 'python'},
 {label: 'PHP', value: 'php'},
 {label: 'Typescript', value: 'ts'},
 ]
@@ -561,6 +611,9 @@ values={[
 
 </TabItem>
 <TabItem value="java">
+
+</TabItem>
+<TabItem value="python">
 
 </TabItem>
 <TabItem value="php">
@@ -583,6 +636,7 @@ groupId="site-lang"
 values={[
 {label: 'Go', value: 'go'},
 {label: 'Java', value: 'java'},
+{label: 'Python', value: 'python'},
 {label: 'PHP', value: 'php'},
 {label: 'Typescript', value: 'ts'},
 ]
@@ -594,6 +648,9 @@ values={[
 
 </TabItem>
 <TabItem value="java">
+
+</TabItem>
+<TabItem value="python">
 
 </TabItem>
 <TabItem value="php">
@@ -624,6 +681,7 @@ groupId="site-lang"
 values={[
 {label: 'Go', value: 'go'},
 {label: 'Java', value: 'java'},
+{label: 'Python', value: 'python'},
 {label: 'PHP', value: 'php'},
 {label: 'Typescript', value: 'ts'},
 ]
@@ -637,6 +695,9 @@ values={[
 <TabItem value="java">
 
 <ChildWorkflowExecutionJava/>
+
+</TabItem>
+<TabItem value="python">
 
 </TabItem>
 <TabItem value="php">
@@ -663,6 +724,7 @@ groupId="site-lang"
 values={[
 {label: 'Go', value: 'go'},
 {label: 'Java', value: 'java'},
+{label: 'Python', value: 'python'},
 {label: 'PHP', value: 'php'},
 {label: 'Typescript', value: 'ts'},
 ]
@@ -674,6 +736,9 @@ values={[
 
 </TabItem>
 <TabItem value="java">
+
+</TabItem>
+<TabItem value="python">
 
 </TabItem>
 <TabItem value="php">
@@ -728,6 +793,7 @@ groupId="site-lang"
 values={[
 {label: 'Go', value: 'go'},
 {label: 'Java', value: 'java'},
+{label: 'Python', value: 'python'},
 {label: 'PHP', value: 'php'},
 {label: 'Typescript', value: 'ts'},
 ]
@@ -741,6 +807,9 @@ values={[
 <TabItem value="java">
 
 <ContinueAsNewJava/>
+
+</TabItem>
+<TabItem value="python">
 
 </TabItem>
 <TabItem value="php">
