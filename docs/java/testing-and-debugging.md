@@ -25,7 +25,7 @@ as a dependency to your project:
 <dependency>
     <groupId>io.temporal</groupId>
     <artifactId>temporal-testing</artifactId>
-    <version>1.2.0</version>
+    <version>1.9.1</version>
     <scope>test</scope>
 </dependency>
 ```
@@ -33,7 +33,13 @@ as a dependency to your project:
 **[Gradle Groovy DSL](https://gradle.org/)**:
 
 ```groovy
-testImplementation group: 'io.temporal', name: 'temporal-testing', version: '1.2.0'
+testImplementation group: 'io.temporal', name: 'temporal-testing', version: '1.9.1' {
+    capabilities {
+        // uncomment the gradle capability if using junit4 or junit5 respectively
+        // requireCapability("io.temporal:temporal-testing-junit4")
+        // requireCapability("io.temporal:temporal-testing-junit5")
+    }
+}
 ```
 
 Make sure to set the version that matches your dependency version of the [Temporal Java SDK](https://github.com/temporalio/sdk-java).
@@ -143,24 +149,14 @@ public class HelloActivityTest {
 For Junit4 tests, Temporal provides the TestWorkflowRule class which simplifies the Temporal test environment setup, as well as the
 creation and shutdown of Workflow Workers in your tests.
 
-To start using TestWorkflowRule in your tests, you need to add [`io.temporal:temporal-testing-junit4`](https://search.maven.org/artifact/io.temporal/temporal-testing-junit4)
-as a dependency to your project:
-
-**[Apache Maven](https://maven.apache.org/)**:
-
-```maven
-<dependency>
-    <groupId>io.temporal</groupId>
-    <artifactId>temporal-testing-junit4</artifactId>
-    <version>1.2.0</version>
-    <scope>test</scope>
-</dependency>
-```
-
-**[Gradle Groovy DSL](https://gradle.org/)**:
+To start using JUnit4 TestWorkflowRule in your tests using [Gradle]((https://gradle.org/)), you need to enable capability [`io.temporal:temporal-testing-junit4`]:
 
 ```groovy
-testImplementation group: 'io.temporal', name: 'temporal-testing-junit4', version: '1.2.0'
+testImplementation group: 'io.temporal', name: 'temporal-testing', version: '1.9.1' {
+    capabilities {
+         requireCapability("io.temporal:temporal-testing-junit4")
+    }
+}
 ```
 
 Make sure to set the version that matches your dependency version of the [Temporal Java SDK](https://github.com/temporalio/sdk-java).
@@ -199,24 +195,14 @@ public class HelloActivityJUnit4Test {
 For Junit5 tests, Temporal also provides the TestWorkflowExtension helped class which can be used to simplify the Temporal test environment setup
 as well as Workflow Worker startup and shutdowns.
 
-To start using the JUnit5 TestWorkflowExtension in your tests, you need to add [`io.temporal:temporal-testing-junit5`](https://search.maven.org/artifact/io.temporal/temporal-testing-junit5)
-as a dependency to your project:
-
-**[Apache Maven](https://maven.apache.org/)**:
-
-```maven
-<dependency>
-    <groupId>io.temporal</groupId>
-    <artifactId>temporal-testing-junit5</artifactId>
-    <version>1.2.0</version>
-    <scope>test</scope>
-</dependency>
-```
-
-**[Gradle Groovy DSL](https://gradle.org/)**:
+To start using JUnit5 TestWorkflowExtension in your tests with [Gradle]((https://gradle.org/)), you need to enable capability [`io.temporal:temporal-testing-junit5`]:
 
 ```groovy
-testImplementation group: 'io.temporal', name: 'temporal-testing-junit5', version: '1.2.0'
+testImplementation group: 'io.temporal', name: 'temporal-testing', version: '1.9.1' {
+    capabilities {
+         requireCapability("io.temporal:temporal-testing-junit5")
+    }
+}
 ```
 
 Make sure to set the version that matches your dependency version of the [Temporal Java SDK](https://github.com/temporalio/sdk-java).
