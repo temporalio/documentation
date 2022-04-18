@@ -1,0 +1,10 @@
+{
+	"file_name": "application-development-guide.md",
+	"guide_title": "Temporal conceptual guide",
+	"sidebar_label": "Application development",
+	"sections": [
+    {
+      "path": "concepts/what-is-temporal"
+    }
+  ]
+}
