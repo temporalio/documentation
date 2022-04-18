@@ -1,6 +1,6 @@
 module.exports = {
   sidebarExplained: [
-    "conceptual-guide",
+    "concepts-guide",
     {
       type: "category",
       label: "Temporal explained",

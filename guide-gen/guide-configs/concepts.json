@@ -1,10 +1,244 @@
 {
-	"file_name": "application-development-guide.md",
-	"guide_title": "Temporal conceptual guide",
-	"sidebar_label": "Application development",
-	"sections": [
-    {
-      "path": "concepts/what-is-temporal"
-    }
-  ]
+	"file_name": "concepts-guide.md",
+	"id": "concepts-guide",
+	"title": "Temporal conceptual guide",
+	"sidebar_label": "Concepts guide",
+	"description": "This guide is meant to be a comprehensive overview of Temporal concepts.",
+	"h2_sections": [{
+			"header": "Temporal",
+			"h3_sections": [{
+					"header": "none",
+					"path": "concepts/what-is-temporal"
+				},
+				{
+					"header": "Temporal Platform",
+					"path": "concepts/what-is-the-temporal-platform"
+				},
+				{
+					"header": "Temporal Application",
+					"path": "concepts/what-is-a-temporal-application"
+				},
+				{
+					"header": "Temporal SDK",
+					"path": "concepts/what-is-a-temporal-sdk"
+				}
+
+			]
+		},
+		{
+			"header": "Workflows",
+			"h3_sections": [{
+					"header": "none",
+					"path": "concepts/what-is-a-workflow"
+				},
+				{
+					"header": "Workflow Execution",
+					"path": "concepts/what-is-a-workflow-execution"
+				},
+				{
+					"header": "Workflow Definition",
+					"path": "concepts/what-is-a-workflow-definition"
+				},
+				{
+					"header": "Workflow Type",
+					"path": "concepts/what-is-a-workflow-type"
+				},
+				{
+					"header": "Workflow Id",
+					"path": "concepts/what-is-a-workflow-id"
+				},
+				{
+					"header": "Workflow Id Reuse Policy",
+					"path": "concepts/what-is-a-workflow-id-reuse-policy"
+				},
+				{
+					"header": "Run Id",
+					"path": "concepts/what-is-a-run-id"
+				},
+				{
+					"header": "Workflow Execution Timeout",
+					"path": "concepts/what-is-a-workflow-execution-timeout"
+				},
+				{
+					"header": "Workflow Run Timeout",
+					"path": "concepts/what-is-a-workflow-run-timeout"
+				},
+				{
+					"header": "Workflow Task",
+					"path": "concepts/what-is-a-workflow-task"
+				},
+				{
+					"header": "Workflow Task Execution",
+					"path": "concepts/what-is-a-workflow-task-execution"
+				},
+				{
+					"header": "Workflow Task Timeout",
+					"path": "concepts/what-is-a-workflow-task-timeout"
+				}
+			]
+		},
+		{
+			"header": "Activities",
+			"h3_sections": [{
+					"header": "none",
+					"path": "concepts/what-is-an-activity"
+				},
+				{
+					"header": "Activity Execution",
+					"path": "concepts/what-is-an-activity-execution"
+				},
+				{
+					"header": "Activity Definition",
+					"path": "concepts/what-is-an-activity-definition"
+				},
+				{
+					"header": "Activity Type",
+					"path": "concepts/what-is-an-activity-type"
+				},
+				{
+					"header": "Activity Id",
+					"path": "concepts/what-is-an-activity-id"
+				},
+				{
+					"header": "Schedule-To-Start Timeout",
+					"path": "concepts/what-is-a-schedule-to-start-timeout"
+				},
+				{
+					"header": "Start-To-Close Timeout",
+					"path": "concepts/what-is-a-start-to-close-timeout"
+				},
+				{
+					"header": "Schedule-To-Close Timeout",
+					"path": "concepts/what-is-a-schedule-to-close-timeout"
+				},
+				{
+					"header": "Activity Heartbeats",
+					"path": "concepts/what-is-an-activity-heartbeat"
+				},
+				{
+					"header": "Heartbeat Timeout",
+					"path": "concepts/what-is-a-heartbeat-timeout"
+				}
+			]
+		},
+		{
+			"header": "Retry Policy",
+			"h3_sections": [
+				{
+					"header": "none",
+					"path": "concepts/what-is-a-retry-policy"
+				}
+			]
+		},
+		{
+			"header": "Workers",
+			"h3_sections": [{
+					"header": "none",
+					"path": "concepts/what-is-a-worker"
+				},
+				{
+					"header": "Worker Program",
+					"path": "concepts/what-is-a-worker-program"
+				},
+				{
+					"header": "Worker Process",
+					"path": "concepts/what-is-a-worker-process"
+				},
+				{
+					"header": "Worker Entity",
+					"path": "concepts/what-is-a-worker-entity"
+				}
+			]
+		},
+		{
+			"header": "Tasks",
+			"h3_sections": [{
+					"header": "none",
+					"path": "concepts/what-is-a-task"
+				},
+				{
+					"header": "Task Queues",
+					"path": "concepts/what-is-a-task-queue"
+				},
+				{
+					"header": "Sticky Execution",
+					"path": "concepts/what-is-a-sticky-execution"
+				},
+				{
+					"header": "Task Routing",
+					"path": "concepts/what-is-task-routing"
+				}
+			]
+		},
+		{
+			"header": "Signals",
+			"h3_sections": [
+				{
+					"header": "none",
+					"path": "concepts/what-is-a-signal"
+				}
+			]
+		},
+		{
+			"header": "Queries",
+			"h3_sections": [
+				{
+					"header": "none",
+					"path": "concepts/what-is-a-query"
+				}
+			]
+		},
+		{
+			"header": "Child Workflows",
+			"h3_sections": [
+				{
+					"header": "none",
+					"path": "concepts/what-is-a-child-workflow-execution"
+				}
+			]
+		},
+		{
+			"header": "Temporal Cron Jobs",
+			"h3_sections": [
+				{
+					"header": "none",
+					"path": "concepts/what-is-a-temporal-cron-job"
+				}
+			]
+		},
+		{
+			"header": "Temporal Cron Jobs",
+			"h3_sections": [
+				{
+					"header": "none",
+					"path": "concepts/what-is-a-temporal-cron-job"
+				}
+			]
+		},
+		{
+			"header": "Visibility",
+			"h3_sections": [
+				{
+					"header": "none",
+					"path": "concepts/what-is-visibility"
+				},
+				{
+					"header": "Standard Visibility",
+					"path": "concepts/what-is-standard-visibility"
+				},
+				{
+					"header": "Advanced Visibility",
+					"path": "concepts/what-is-advanced-visibility"
+				},
+				{
+					"header": "List Filters",
+					"path": "concepts/what-is-a-list-filter"
+				},
+				{
+					"header": "Search Attributes",
+					"path": "concepts/what-is-a-search-attribute"
+				}
+			]
+		}
+	]
 }
