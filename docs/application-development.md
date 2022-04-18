@@ -1,8 +1,8 @@
 ---
-id: temporal-application-development
+id: application-development-guide
 title: Temporal Application development guide
-sidebar_label: Application development
-description: This is a Temporal Application developer guide.
+sidebar_label: App dev guide
+description: The Temporal Application development guide.
 tags:
   - developer-guide
 ---
@@ -30,7 +30,7 @@ It is broken down into four large sections:
 
 This section covers the minimum set of concepts and implementation details needed to build and run a simple [Temporal Application](/docs/concepts/what-is-a-temporal-application).
 
-### Run a Temporal Cluster
+### Run a dev Cluster
 
 Whenever we are developing Temporal Applications, we want to have a [Temporal Cluster](/docs/concepts/what-is-a-temporal-cluster) up and running.
 We can interact with a Cluster through [Temporal Client](/docs/concepts/what-is-a-temporal-sdk/#what-is-a-temporal-client) APIs and [tctl](/docs/tctl) commands.
@@ -39,13 +39,13 @@ We can interact with a Cluster through [Temporal Client](/docs/concepts/what-is-
 
 <!-- - [Run a local Temporal Cluster using Docker Compose](/docs/clusters/quick-install#docker-compose) -->
 
-import DockerCompose from '../clusters/quick-install/docker-compose.md'
+import DockerCompose from './clusters/quick-install.md'
 
 <DockerCompose/>
 
 ### Install your SDK
 
-import InstallGo from '../go/index.md'
+import InstallGo from './go/index.md'
 
 <Tabs
 defaultValue="go"
@@ -85,8 +85,8 @@ Workflows are the fundamental unit of a Temporal Application, and it all starts 
 - [How to develop a Workflow Definition in PHP](/docs/php/workflows)
 - [How to develop a Workflow Definition in TypeScript](/docs/typescript/workflows/#how-to-write-a-workflow-function) -->
 
-import DevelopWorkflowDefinitionInGo from '../go/how-to-develop-a-workflow-definition-in-go.md'
-import DevelopWorkflowDefinitionInJava from '../java/how-to-develop-a-workflow-definition-in-java.md'
+import DevelopWorkflowDefinitionInGo from './go/how-to-develop-a-workflow-definition-in-go.md'
+import DevelopWorkflowDefinitionInJava from './java/how-to-develop-a-workflow-definition-in-java.md'
 
 <Tabs
 defaultValue="go"
@@ -129,7 +129,7 @@ For the Workflow to be able to execute the Activity we must define the [Activity
 
 <!-- - [How to develop an Activity Definition in Go](/docs/go/how-to-develop-an-activity-definition-in-go) -->
 
-import DevelopActivityDefinitionInGo from '../go/how-to-develop-an-activity-definition-in-go.md'
+import DevelopActivityDefinitionInGo from './go/how-to-develop-an-activity-definition-in-go.md'
 
 <Tabs
 defaultValue="go"
@@ -172,7 +172,7 @@ This results in the set of [Activity Task](/docs/concepts/what-is-an-activity-ta
 
 <!-- - [How to spawn an Activity Execution in Go](/docs/go/how-to-spawn-an-activity-execution-in-go) -->
 
-import SpawnActivityExecutionInGo from '../go/how-to-spawn-an-activity-execution-in-go.md'
+import SpawnActivityExecutionInGo from './go/how-to-spawn-an-activity-execution-in-go.md'
 
 <Tabs
 defaultValue="go"
@@ -209,7 +209,7 @@ These parameters are set in the Activity Options.
 
 **Schedule-To-Close:**
 
-import ScheduleToCloseTimeoutGo from '../go/activityoptions/schedule-to-close-timeout.md'
+import ScheduleToCloseTimeoutGo from './go/activityoptions/schedule-to-close-timeout.md'
 
 <Tabs
 defaultValue="go"
@@ -246,7 +246,7 @@ values={[
 
 <!-- - [How to set a Start-To-Close Timeout in Go](/docs/go/how-to-set-activityoptions-in-go/#starttoclosetimeout) -->
 
-import StartToCloseTimeoutGo from '../go/activityoptions/start-to-close-timeout.md'
+import StartToCloseTimeoutGo from './go/activityoptions/start-to-close-timeout.md'
 
 <Tabs
 defaultValue="go"
@@ -282,7 +282,7 @@ Workflow Executions can either block progress until the result is available via 
 
 <!-- - [How to get the results of an Activity Execution in Go](/docs/go/how-to-get-the-result-of-an-activity-execution-in-go) -->
 
-import GetResultActivityExecutionGo from '../go/how-to-get-the-result-of-an-activity-execution-in-go.md'
+import GetResultActivityExecutionGo from './go/how-to-get-the-result-of-an-activity-execution-in-go.md'
 
 <Tabs
 defaultValue="go"
@@ -318,10 +318,10 @@ Each [Worker Entity](/docs/concepts/what-is-a-worker-entity) in the Worker Proce
 Each Worker Entity must also associate itself with exactly one [Task Queue](/docs/concepts/what-is-a-task-queue).
 Each Worker Entity polling the same Task Queue must be registered with the same Workflow Types and Activity Types.
 
-import DevelopWorkerGo from '../go/how-to-develop-a-worker-program-in-go.md'
-import DevelopWorkerJava from '../java/how-to-develop-a-worker-program-in-java.md'
-import DevelopWorkerPHP from '../php/how-to-develop-a-worker-program-in-php.md'
-import DevelopWorkerTypeScript from '../typescript/how-to-develop-a-worker-program-in-typescript.md'
+import DevelopWorkerGo from './go/how-to-develop-a-worker-program-in-go.md'
+import DevelopWorkerJava from './java/how-to-develop-a-worker-program-in-java.md'
+import DevelopWorkerPHP from './php/how-to-develop-a-worker-program-in-php.md'
+import DevelopWorkerTypeScript from './typescript/how-to-develop-a-worker-program-in-typescript.md'
 
 <Tabs
 defaultValue="go"
@@ -369,8 +369,8 @@ values={[
 - [How to spawn a Workflow Execution in Go](/docs/go/how-to-spawn-a-workflow-execution-in-go)
 - [How to spawn a Workflow Execution in Java](/docs/java/how-to-spawn-a-workflow-execution-in-java) -->
 
-import SpawnWorkflowExecutionGo from '../go/how-to-spawn-a-workflow-execution-in-go.md'
-import SpawnWorkflowExecutionJava from '../java/how-to-spawn-a-workflow-execution-in-java.md'
+import SpawnWorkflowExecutionGo from './go/how-to-spawn-a-workflow-execution-in-go.md'
+import SpawnWorkflowExecutionJava from './java/how-to-spawn-a-workflow-execution-in-java.md'
 
 <Tabs
 defaultValue="go"
@@ -409,7 +409,7 @@ The Temporal Cluster then creates the first Workflow Task resulting the first [W
 
 **Core concept: [Workflow Execution](/docs/concepts/what-is-a-workflow-execution)**
 
-import WorkflowExecutionResultGo from '../go/how-to-get-the-result-of-a-workflow-execution-in-go.md'
+import WorkflowExecutionResultGo from './go/how-to-get-the-result-of-a-workflow-execution-in-go.md'
 
 <Tabs
 defaultValue="go"
@@ -449,7 +449,7 @@ This section covers many of the features that are available to use in your [Temp
 [Signals](/docs/concepts/what-is-a-signal) are a great way to get data into a running Workflow Execution.
 Signals can be sent from a Temporal Client or from within a Workflow.
 
-import SignalsGo from '../go/how-to-use-signals-in-go.md'
+import SignalsGo from './go/how-to-use-signals-in-go.md'
 
 <Tabs
 defaultValue="go"
@@ -501,7 +501,7 @@ values={[
 A [Side Effect](/docs/concepts/what-is-a-side-effect) is a great way to execute a short, nondeterministic code snippet, such as generating a UUID.
 The result is recorded into the Workflow Execution Event History as a [MarkerRecorded](/docs/concepts/what-is-an-event/#markerrecorded) Event.
 
-import SideEffectGo from '../go/how-to-execute-a-side-effect-in-go.md'
+import SideEffectGo from './go/how-to-execute-a-side-effect-in-go.md'
 
 <Tabs
 defaultValue="go"
@@ -542,7 +542,7 @@ If your use-case demands long-running Activity Executions, [Activity Heartbeats]
 
 #### Record Heartbeats
 
-import HeartbeatActivityGo from '../go/how-to-heartbeat-an-activity-in-go.md'
+import HeartbeatActivityGo from './go/how-to-heartbeat-an-activity-in-go.md'
 
 <Tabs
 defaultValue="go"
@@ -575,7 +575,7 @@ values={[
 
 A [Heartbeat Timeout](/docs/concepts/what-is-a-heartbeat-timeout) will cause the long-running Activity to timeout if too much time has elapsed between Heartbeats.
 
-import HeartbeatTimeoutGo from '../go/activityoptions/heartbeat-timeout.md'
+import HeartbeatTimeoutGo from './go/activityoptions/heartbeat-timeout.md'
 
 <Tabs
 defaultValue="go"
@@ -615,8 +615,8 @@ Additionally, the Parent Workflow Execution must wait for the `ChildWorkflowExec
 
 If the Parent makes the call to spawn the Child Workflow Execution and then immediately completes, the Child Workflow Execution will not spawn.
 
-import ChildWorkflowExecutionGo from '../go/how-to-spawn-a-child-workflow-execution-in-go.md'
-import ChildWorkflowExecutionJava from '../java/how-to-spawn-a-child-workflow-execution-in-java.md'
+import ChildWorkflowExecutionGo from './go/how-to-spawn-a-child-workflow-execution-in-go.md'
+import ChildWorkflowExecutionJava from './java/how-to-spawn-a-child-workflow-execution-in-java.md'
 
 <Tabs
 defaultValue="go"
@@ -655,7 +655,7 @@ A [Temporal Cron Job](/docs/concepts/what-is-a-temporal-cron-job) is the series 
 
 A Cron Schedule is provided as an option when the call to spawn a Workflow Execution is made.
 
-import CronScheduleGo from '../go/startworkflowoptions/cron-schedule.md'
+import CronScheduleGo from './go/startworkflowoptions/cron-schedule.md'
 
 <Tabs
 defaultValue="go"
@@ -719,8 +719,8 @@ In this section breaks down some of the features, metrics, and other configurati
 [Continue-As-New](/docs/concepts/what-is-continue-as-new) enables a Workflow Execution to close successfully and create a new Workflow Execution in a single an atomic operation if the number of Events in the Event History is becoming too large.
 The Workflow Execution spawned from the use of Continue-As-New has the same Workflow Id, a new Run Id, and a fresh Event History and is passed all the appropriate parameters.
 
-import ContinueAsNewGo from '../go/how-to-continue-as-new-in-go.md'
-import ContinueAsNewJava from '../java/how-to-continue-as-new-in-java.md'
+import ContinueAsNewGo from './go/how-to-continue-as-new-in-go.md'
+import ContinueAsNewJava from './java/how-to-continue-as-new-in-java.md'
 
 <Tabs
 defaultValue="go"

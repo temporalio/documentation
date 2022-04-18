@@ -61,4 +61,4 @@ public static class YourActivityDefintionImpl implements YourActivityDefinition 
 
 **Operation guides:**
 
-- [How to tune Workers](/docs/operations/temporal-application-development/#worker-entity-optimization)
+- [How to tune Workers](/docs/application-development-guide/#worker-entity-optimization)

@@ -23,4 +23,4 @@ Therefore, a single Worker can handle millions of open Workflow Executions, assu
 
 **Operation guides:**
 
-- [How to tune Workers](/docs/operations/temporal-application-development/#worker-entity-optimization)
+- [How to tune Workers](/docs/application-development-guide/#worker-entity-optimization)

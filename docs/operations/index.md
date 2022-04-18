@@ -3,4 +3,4 @@ id: index
 title: Temporal operation guides
 ---
 
-- [Temporal Application development guide](/docs/operations/temporal-application-development)
+- [Temporal Application development guide](/docs/application-development-guide)
