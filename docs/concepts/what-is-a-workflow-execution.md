@@ -50,16 +50,15 @@ The Worker Process supervises the Command generation and makes sure that it maps
 (For more information, see [Deterministic constraints](/docs/concepts/what-is-a-workflow-definition/#deterministic-constraints).)
 The Worker Process batches the Commands and then suspends progress to send the Commands to the Cluster whenever the Workflow Function reaches a place where it can no longer progress without a result from a Awaitable.
 
+A Workflow Execution may only ever block progress on an Awaitable that is provided through a Temporal SDK API.
 Awaitables are provided when using APIs for the following:
 
-- Spawning a [Child Workflow Execution](/docs/concepts/what-is-a-child-workflow-execution)
-- Sending a [Signal](/docs/concepts/what-is-a-signal)
-- Spawning an [Activity Execution](/docs/concepts/what-is-an-activity-execution)
-- Requesting cancellation of another Workflow Execution
-- Starting a Timer
-- Awaiting
-
-A Workflow Execution may only ever block progress on an Awaitable that is provided through a Temporal SDK API.
+- Spawning a [Child Workflow Execution](/docs/concepts/what-is-a-child-workflow-execution): Progress can block on confirmation that the Child Workflow Execution started, and on the result of the Child Workflow Execution.
+- Sending a [Signal](/docs/concepts/what-is-a-signal): Progress can block on confirmation that the Signal sent.
+- Spawning an [Activity Execution](/docs/concepts/what-is-an-activity-execution): Progress can block on the result of the Activity Execution.
+- Requesting cancellation of another Workflow Execution: Progress can block on confirmation that the other Workflow Execution is cancelled.
+- Starting a Timer: Progress can block until the Timer fires.
+- Awaiting: Progress can block using explicit "Await" APIs.
 
 ### Status
 
