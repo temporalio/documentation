@@ -9,7 +9,7 @@ tags:
 
 Create an instance of [`RegisterOptions`](https://pkg.go.dev/go.temporal.io/sdk/activity#RegisterOptions) from the `go.temporal.io/sdk/activity` package and pass it to the [`RegisterActivityWithOptions`](https://pkg.go.dev/go.temporal.io/sdk/worker#ActivityRegistry) call when registering the Activity Type with the Worker.
 
-Options for registering an activity
+Options for registering an Activity
 
 | Field                                                             | Required | Type     |
 | ----------------------------------------------------------------- | -------- | -------- |

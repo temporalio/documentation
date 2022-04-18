@@ -114,7 +114,7 @@ Sets DataConverter to customize serialization/deserialization of arguments in Te
 
 ### `ContextPropagators`
 
-Sets ContextPropagators that allows users to control the context information passed through a workflow
+Sets ContextPropagators that allows users to control the context information passed through a Workflow
 
 - Type: `[]ContextPropagator`
 

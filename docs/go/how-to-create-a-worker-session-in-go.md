@@ -81,7 +81,7 @@ If the Context passed in doesn't contain any Session metadata, this API will ret
 To limit the number of concurrent Sessions running on a Worker, set the `MaxConcurrentSessionExecutionSize` field of `worker.Options` to the desired value.
 By default this field is set to a very large value, so there's no need to manually set it if no limitation is needed.
 
-If a worker hits this limitation, it won't accept any new `CreateSession()` requests until one of the existing sessions is completed. `CreateSession()` will return an error if the session can't be created within `CreationTimeout`.
+If a Worker hits this limitation, it won't accept any new `CreateSession()` requests until one of the existing sessions is completed. `CreateSession()` will return an error if the session can't be created within `CreationTimeout`.
 
 ### Recreate Session
 

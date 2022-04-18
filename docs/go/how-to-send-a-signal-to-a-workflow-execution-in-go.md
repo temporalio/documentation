@@ -58,7 +58,7 @@ if err != nil {
 
 If you are unsure of the status of the Workflow Execution that you are sending the Signal to, you can use the `SignalWithStartWorkflow()` method on the Go SDK Temporal Client to start the Workflow Execution and give it the Signal it at the same time.
 
-Because the Workflow Execution may not exist, this method does not take a Run ID as a parameter
+Because the Workflow Execution may not exist, this method does not take a Run Id as a parameter
 
 ```go
 // ...
