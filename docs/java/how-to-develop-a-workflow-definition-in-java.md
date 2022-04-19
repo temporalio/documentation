@@ -20,13 +20,17 @@ public class FileProcessingWorkflowImpl implements FileProcessingWorkflow {
 
 The Workflow interface is a Java interface and is annotated with `@WorkflowInterface`.
 Each Workflow interface method must have one [`@WorkflowMethod`](#workflowmethod).
+
 Use `@SignalMethod` for Signals, and `@QueryMethod` for Queries in the Workflow.
-You can send signals to other running Workflows using `newExternalWorkflowStub`.
-See [How to spawn a Workflow Execution in Java](/docs/java/how-to-spawn-a-workflow-execution-in-java/#external-workflows).
+See [Signals](/docs/java/signals) and [Queries](/docs/java/queries) for details.
 
-To call Activities in your Workflow, see [Activities](/docs/java/activities).
+Use `ExternalWorkflowStub` to start other Workflow Executions, or send Signals to other running Workflows.
+See [Workflow Execution](/docs/java/how-to-spawn-a-workflow-execution-in-java/#Using`ExternalWorkflowStub`) for details.
 
-You can also invoke other Workflows as Child Workflows with `Workflow.newChildWorkflowStub()` or `Workflow.newUntypedChildWorkflowStub()` within a Workflow Definition. See [Child Workflow Execution](/docs/java/how-to-spawn-a-child-workflow-execution-in-java) for more information.
+To call Activities in your Workflow, see [Activity Definition](/docs/java/how-to-develop-an-activity-definition-in-java) and [Activity Execution](/docs/java/how-to-spawn-an-activity-execution-in-java).
+
+You can also invoke other Workflows as Child Workflows with `Workflow.newChildWorkflowStub()` or `Workflow.newUntypedChildWorkflowStub()` within a Workflow Definition.
+See [Child Workflow Execution](/docs/java/how-to-spawn-a-child-workflow-execution-in-java) for details.
 
 The following example shows how to use the annotations in a Workflow interface:
 
@@ -53,7 +57,7 @@ public interface FileProcessingWorkflow {
 
 ### `@WorkflowMethod`
 
-The `@WorkflowMethod` identifies the method that is starting point of the Workflow Execution. The [Workflow Execution](/docs/concepts/what-is-a-workflow-execution) completes when this method completes.
+The `@WorkflowMethod` identifies the method that is the starting point of the Workflow Execution. The [Workflow Execution](/docs/concepts/what-is-a-workflow-execution) completes when this method completes.
 
 A Workflow Definition interface in Java can have only one method annotated with `@WorkflowMethod`. It can be used to denote the [Workflow Type](/docs/concepts/what-is-a-workflow-type).
 
@@ -88,80 +92,10 @@ Note that all inputs should be serializable by the default Jackson JSON Payload 
 A Workflow Type can be registered only once per Worker entity.
 If you define multiple Workflow implementations of the same type, you get an exception at the time of registration.
 
-### `@QueryMethod`
-
-The `@QueryMethod` annotation indicates that the method is used to handle a [Query](/docs/concepts/what-is-a-query) that is sent to the Workflow Execution.
-The method can have parameters that can be used to filter data that the Query returns.
-Because the method returns a value, it must have a return type that is not `void`.
-
-The Query name defaults to the name of the method.
-In the following example, the Query name defaults to `getStatus`.
-
-```java
-@WorkflowInterface
-public interface FileProcessingWorkflow {
-    @QueryMethod
-    String getStatus();
-}
-```
-
-To overwrite this default naming and assign a custom Query name, use the `@QueryMethod` annotation with the `name` parameter. In the following example, the Query name is set to "history".
-
-```java
-@WorkflowInterface
-public interface FileProcessingWorkflow {
-    @QueryMethod(name = "history")
-    String getStatus();
-}
-```
-
-A Workflow Definition interface can define multiple methods annotated with `@QueryMethod`, but the method names or the `name` parameters for each must be unique.
-
-See [Queries](/docs/java/queries) for more information.
-
-### `@SignalMethod`
-
-The `@SignalMethod` annotation indicates that the method is used to handle [Signals](/docs/concepts/what-is-a-signal) and that it can react to external Signals.
-The method can have parameters that contain the Signal payload.
-This method does not return a value and must have a `void` return type.
-
-The Signal type defaults to the name of the method. In the following example, the Signal type defaults to `retryNow`.
-
-```java
-@WorkflowInterface
-public interface FileProcessingWorkflow {
-
-    @WorkflowMethod
-    String processFile(Arguments args);
-
-    @SignalMethod
-    void retryNow();
-}
-```
-
-To overwrite this default naming and assign a custom Signal type, use the `@SignalMethod` annotation with the `name` parameter.
-In the following example, the Signal type is set to "retrysignal".
-
-```java
-@WorkflowInterface
-public interface FileProcessingWorkflow {
-
-    @WorkflowMethod
-    String processFile(Arguments args);
-
-    @SignalMethod(name = "retrysignal")
-    void retryNow();
-}
-```
-
-A Workflow interface can define any number of methods annotated with `@SignalMethod`, but the method names or the `name` parameters for each must be unique.
-
-See [Signals](/docs/java/signals) for more information.
-
 ### Workflow interface inheritance
 
 Workflow interfaces can form inheritance hierarchies, which can be useful for creating components that can be reused across multiple Workflow interfaces.
-For example, to implement a UI or CLI button that sends a `retryNow` Signal to any Workflow, redesign the preceding interface example as follows:
+For example, to implement a UI or CLI button that sends a `retryNow` Signal to any Workflow, define the method as follows:
 
 ```java
 public interface Retryable {
@@ -197,8 +131,7 @@ public interface MediaProcessingWorkflow extends Retryable {
 }
 ```
 
-Note that this approach does not apply to `@WorkflowMethod` annotations. This means that, when using a base interface, it should
-not include any `@WorkflowMethod` methods.
+Note that this approach does not apply to `@WorkflowMethod` annotations. This means that, when using a base interface, it should not include any `@WorkflowMethod` methods.
 To illustrate this, let's say that we define the following _invalid_ code:
 
 ```java
@@ -215,8 +148,8 @@ public interface Workflow1 extends BaseWorkflow {}
 public interface Workflow2 extends BaseWorkflow {}
 ```
 
-Attempting to register implementations of Workflow1 and Workflow2 with a Worker will fail.
-Let's say that we have:
+Attempting to register implementations of _Workflow1_ and _Workflow2_ with a Worker will fail.
+For example, if we tried to register the _Workflow1_ and _Workflow2_ as shown:
 
 ```java
 worker.registerWorkflowImplementationTypes(
@@ -289,9 +222,10 @@ Related references:
 
 ### Calling other Workflows
 
-A Workflow can interact with other running Workflows (using Signals and Queries) or create instances of Child Workflows using `ExternalWorkflowStub`.
+To interact with other running Workflow Executions from within the Workflow, use `ExternalWorkflowStub`.
+To interact with Child Workflows, use `ChildWorkflowStub`.
 
-See [Workflow Execution](/docs/java/how-to-spawn-a-workflow-execution-in-java).
+See [Workflow Execution](/docs/java/how-to-spawn-a-workflow-execution-in-java) and [Child Workflow Execution](/docs/java/how-to-spawn-a-child-workflow-execution-in-java) for details.
 
 ### Dynamic Workflows
 

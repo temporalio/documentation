@@ -2,13 +2,13 @@
 id: how-to-initialize-a-workflow-client-in-java
 title: How to initialize a Workflow Client in Java
 sidebar_label: Workflow Client Initialization
-description: Initialize an instance of a `WorkflowClient`, create a client side Workflow stub, and then call a Workflow method (annotated with the `@WorkflowMethod` annotation).
+description: To initialize a Workflow Client, create an instance of a `WorkflowClient`, create a client-side `WorkflowStub`, and then call a Workflow method (annotated with the `@WorkflowMethod` annotation).
 tags:
   - java
   - developer-guide
 ---
 
-Initialize an instance of a `WorkflowClient`, create a client side Workflow stub, and then call a Workflow method (annotated with the `@WorkflowMethod` annotation.
+To initialize a Workflow Client, create an instance of a `WorkflowClient`, create a client-side `WorkflowStub`, and then call a Workflow method (annotated with the `@WorkflowMethod` annotation).
 
 To start a Workflow Execution, your Temporal Server must be running, and your front-end service must be accepting gRPC calls.
 
@@ -32,10 +32,10 @@ WorkflowServiceStubs service = WorkflowServiceStubs.newInstance(
 
 See [WorkflowServiceStubsOptions](/docs/java/how-to-set-workflowservicestuboptions-in-java) for details.
 
-After the connection to the Temporal frontend service is established, create a client for the service stub.
-The Workflow client helps with client-side APIs and is required by Workers.
+After the connection to the Temporal frontend service is established, create a Client for the service stub.
+The Workflow Client helps with client-side APIs and is required by Workers.
 
-Create an instance of a `WorkflowClient` for the Workflow service stub, and use `WorkflowClientOptions` to set options for the Workflow client.
+Create an instance of a `WorkflowClient` for the Workflow service stub, and use `WorkflowClientOptions` to set options for the Workflow Client.
 The following example shows how to create a `WorkflowClient` instance called "client" for the `WorkflowServiceStubs` "service" that we created in the previous example, and set `Namespace` option for the `WorkflowClient`.
 
 ```java
@@ -53,5 +53,5 @@ See [WorkflowClientOptions](/docs/java/how-to-set-workflowclientoptions-in-java)
 
 With the Client defined, you can start interacting with the Temporal frontend service via the SDK APIs.
 
-Starting Workflows or sending Signals or Queries to Workflows must be done using `WorkflowStubs`.
+Starting Workflows or sending Signals or Queries to Workflows from within a Client must be done using `WorkflowStubs`.
 See [How to spawn a Workflow Execution in Java](/docs/java/how-to-spawn-a-workflow-execution-in-java) for details.

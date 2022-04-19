@@ -10,7 +10,7 @@ tags:
 
 To get the results of an asynchronously invoked Activity method, use the `Promise` `get` method to block until the Activity method result is available.
 
-Sometimes an Activity lifecycle goes beyond a synchronous method invocation.
+Sometimes an Activity Execution lifecycle goes beyond a synchronous method invocation.
 For example, a request can be put in a queue and later a reply comes and is picked up by a different Worker process.
 The whole request-reply interaction can be modeled as a single Activity.
 
@@ -30,6 +30,7 @@ public class FileProcessingActivitiesImpl implements FileProcessingActivities {
 
     // Used to correlate reply
     byte[] taskToken = ctx.getInfo().getTaskToken();
+   
     asyncDownloadFileFromS3(taskToken, bucketName, remoteName, localDirectory + localName);
     ctx.doNotCompleteOnReturn();
 

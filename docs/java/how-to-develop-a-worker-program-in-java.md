@@ -49,7 +49,7 @@ public class YourWorker {
 
 #### Register Workflow Types
 
-Workflows must be registered with a Worker.
+Workflow Types must be registered with a Worker.
 
 The following example shows how to register a Workflow with the Worker created in the previous example.
 

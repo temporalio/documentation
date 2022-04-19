@@ -31,9 +31,10 @@ GreetingActivities activities = Workflow.newActivityStub(GreetingActivities.clas
 
 ```
 
-Note that these Activity options will apply for all Activities within the Workflow.
+Note that these Activity options will apply for all the Activities defined in the _GreetingActivities_ Activity interface.
+You can create multiple Activity stubs within a Workflow, and each can have different Activity options defined.
 
-## Setting Ativity options within a Worker
+## Setting per-Ativity options when registering a Workflow with a Worker
 
 To set different options per Activity type, use `.setActivityOptions` with `WorkflowImplementationOptions`.
 Note that if you define options per Activity Type with `WorkflowImplementationOptions.setActivityOptions()`, setting them again specifically within `ActivityOptions` in a Workflow will override this setting.
@@ -63,6 +64,8 @@ The following example shows how to set Activity options for Activity Types with 
                                                                 .build())
                                                 .build()))
                         .build();
+// ...
+worker.registerWorkflowImplementationTypes(options, MyWorkflowImpl.class);
 ```
 
 ## Activity Options
@@ -83,7 +86,8 @@ The following table lists all `ActivityOptions` that can be configured for an Ac
 ### `ScheduleToCloseTimeout`
 
 - Type: `Duration`
-- Default: Unlimited
+- Default: Unlimited.
+  Note that if `WorkflowRunTimeout` and/or `WorkflowExecutionTimeout` are defined in the Workflow, all Activity retries will stop when either or both of these timeouts are reached.
 
 - With `ActivityStub`
 
@@ -113,7 +117,7 @@ See [Schedule-to-Close Timeout](/docs/concepts/what-is-a-schedule-to-close-timeo
 ### `ScheduleToStartTimeout`
 
 - Type: `Duration`
-- Default: Unlimited
+- Default: Unlimited. This timeout is non-retryable.
 
 - With `ActivityStub`
 
@@ -121,6 +125,9 @@ See [Schedule-to-Close Timeout](/docs/concepts/what-is-a-schedule-to-close-timeo
   GreetingActivities activities = Workflow.newActivityStub(GreetingActivities.class,
                   ActivityOptions.newBuilder()
                           .setScheduleToStartTimeout(Duration.ofSeconds(5))
+                          // note that either StartToCloseTimeout or ScheduleToCloseTimeout are 
+                          // required when setting Activity options.
+                          .setScheduletoCloseTimeout(Duration.ofSeconds(20))
                           .build());
   ```
 
@@ -183,6 +190,9 @@ See [Start-to-Close Timeout](/docs/concepts/what-is-a-start-to-close-timeout)
       Workflow.newActivityStub(
           GreetingActivities.class,
           ActivityOptions.newBuilder()
+              // note that either StartToCloseTimeout or ScheduleToCloseTimeout are 
+              // required when setting Activity options.
+              .setStartToCloseTimeout(Duration.ofSeconds(5))
               .setHeartbeatTimeout(Duration.ofSeconds(2))
               .build());
   ```
@@ -196,6 +206,9 @@ See [Start-to-Close Timeout](/docs/concepts/what-is-a-start-to-close-timeout)
                               ImmutableMap.of(
                                 "EmailCustomerGreeting",
                                       ActivityOptions.newBuilder()
+                                          // note that either StartToCloseTimeout or ScheduleToCloseTimeout are 
+                                          // required when setting Activity options.
+                                            .setStartToCloseTimeout(Duration.ofSeconds(5))
                                             .setHeartbeatTimeout(Duration.ofSeconds(2))
                                             .build()))
                       .build();
@@ -213,6 +226,9 @@ See [Heartbeat Timeout](/docs/concepts/what-is-a-heartbeat-timeout)
   ```java
   GreetingActivities activities = Workflow.newActivityStub(GreetingActivities.class,
                   ActivityOptions.newBuilder()
+                          // note that either StartToCloseTimeout or ScheduleToCloseTimeout are required when
+                          // setting Activity options.
+                          .setStartToCloseTimeout(Duration.ofSeconds(5))
                           .setTaskQueue("yourTaskQueue")
                           .build());
   ```
@@ -226,6 +242,9 @@ See [Heartbeat Timeout](/docs/concepts/what-is-a-heartbeat-timeout)
                               ImmutableMap.of(
                                 "EmailCustomerGreeting",
                                       ActivityOptions.newBuilder()
+                                            // note that either StartToCloseTimeout or ScheduleToCloseTimeout are 
+                                            // required when setting Activity options.
+                                            .setStartToCloseTimeout(Duration.ofSeconds(5))
                                             .setTaskQueue("yourTaskQueue")
                                             .build()))
                       .build();
@@ -243,6 +262,8 @@ See [Task Queue](/docs/concepts/what-is-a-task-queue)
   ```java
   private final ActivityOptions options =
       ActivityOptions.newBuilder()
+          // note that either StartToCloseTimeout or ScheduleToCloseTimeout are 
+          // required when setting Activity options.
           .setStartToCloseTimeout(Duration.ofSeconds(5))
           .setRetryOptions(
               RetryOptions.newBuilder()
@@ -261,6 +282,9 @@ See [Task Queue](/docs/concepts/what-is-a-task-queue)
                       ImmutableMap.of(
                           "EmailCustomerGreeting",
                           ActivityOptions.newBuilder()
+                                // note that either StartToCloseTimeout or ScheduleToCloseTimeout are 
+                                // required when setting Activity options.
+                                .setStartToCloseTimeout(Duration.ofSeconds(5))
                                 .setRetryOptions(
                                       RetryOptions.newBuilder()
                                           .setDoNotRetry(NullPointerException.class.getName())
