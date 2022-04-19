@@ -57,10 +57,29 @@ The SDK contains the following tools:
 
 ## Workshops
 
-- [Intro to Temporal Java SDK](https://www.youtube.com/watch?v=VoSiIwkvuX0)
+- [Java SDK Workshop #1](https://www.youtube.com/watch?v=VoSiIwkvuX0)
+   - Intro
+   - Workflows
+   - Activities
+   - Testing
+
 
 - [Java SDK Workshop #2](https://www.youtube.com/watch?v=h-TSDMULCf0)
+   - Client APIs
+   - Sleeping Durations (cron, periodic execution, time)
+   - Versioning
+   - Error Handling
+   - Dynamic Workflows / Activities
 
+   
+- [Java SDK Workshop #3](https://www.youtube.com/watch?v=8DFox0fGjzI)
+   - Workflow and Activity Types, Signal and Query Names
+   - Different types of Stubs
+   - Dynamic Signal/Query Handlers
+   - ContinueAsNew and Signals
+   - Client Error Handling
+   - Setting up client SSL/mTLS
+   
 ## The basics
 
 - [Workflows](/docs/java/workflows)
