@@ -4,6 +4,7 @@
 	"title": "Temporal conceptual guide",
 	"sidebar_label": "Concepts guide",
 	"description": "This guide is meant to be a comprehensive overview of Temporal concepts.",
+	"toc_max_heading_level": 4,
 	"add_tabs_support": true,
 	"h2_sections": [{
 			"header": "Temporal",

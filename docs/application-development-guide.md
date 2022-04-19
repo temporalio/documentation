@@ -3,12 +3,14 @@ id: application-development-guide
 title: Temporal Application development guide
 sidebar_label: Application development
 description: This guide is meant to be a comprehensive overview of Temporal concepts.
+toc_max_heading_level: 4
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 This guide is meant to be a comprehensive overview of Temporal concepts.
+
 
 import RelatedReadList from '../components/RelatedReadList.js'
 
@@ -79,3 +81,4 @@ workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, "Yo
 ```
 
 In Go, the name of the Workflow Type can be customized when the Workflow Definition is registered with a Worker Entity.
+
