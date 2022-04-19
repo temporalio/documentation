@@ -97,6 +97,7 @@ async function run() {
   });
 
   const worker = await Worker.create({
+    connection,
     namespace: 'foo.bar', // as explained in Namespaces section
     // ...
   });
