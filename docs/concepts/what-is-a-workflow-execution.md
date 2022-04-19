@@ -15,12 +15,14 @@ It is the main unit of execution of a [Temporal Application](/docs/concepts/what
 - [How to spawn a Workflow Execution in PHP](/docs/php/workflows/#starting-workflows)
 - [How to spawn a Workflow Execution in TypeScript](/docs/typescript/workflows#how-to-start-and-cancel-workflows)
 
-Each Temporal Workflow Execution has exclusive access to its local state, executes concurrently to all other Workflow Executions, and communicates with other Workflow Executions via [Signals](/docs/concepts/what-is-a-signal) and the environment via [Activities](/docs/concepts/what-is-an-activity). While a single Workflow Execution has limits on size and throughput, a Temporal Application can consist of millions to billions of Workflow Executions.
+Each Temporal Workflow Execution has exclusive access to its local state.
+It executes concurrently to all other Workflow Executions, and communicates with other Workflow Executions through [Signals](/docs/concepts/what-is-a-signal) and the environment through [Activities](/docs/concepts/what-is-an-activity). 
+While a single Workflow Execution has limits on size and throughput, a Temporal Application can consist of millions to billions of Workflow Executions.
 
 **Durability**
 
 Durability is the absence of an imposed time limit.
-A Workflow Execution is durable because it executes a Temporal Workflow Definition, also called a Temporal Workflow Function, your application code, effectively once and to completion—whether your code executes for seconds or years.
+A Workflow Execution is durable because it executes a Temporal Workflow Definition (also called a Temporal Workflow Function), your application code, effectively once and to completion—whether your code executes for seconds or years.
 
 **Reliability**
 
@@ -69,7 +71,7 @@ A Workflow Execution can be either Open or Closed.
 **Open**
 
 - Running: The only Open status for a Workflow Execution.
-  When the Workflow Execution is Running, it is either actively progressing or suspended because it is waiting on something.
+  When the Workflow Execution is Running, it is either actively progressing or is waiting on something.
 
 **Closed**
 
@@ -119,6 +121,6 @@ When the Event History reaches 50,000 Events or the size limit of 50MB, the Work
 To prevent "runaway" Workflow Executions, you can use the Workflow Execution Timeout, the Workflow Run Timeout, or both.
 A Workflow Execution Timeout can be used to limit the duration of Workflow Execution Chain, and a Workflow Run Timeout can be used to limit the duration an individual Workflow Execution (Run).
 
-You can use the [Continue-As-New](/docs/concepts/what-is-continue-as-new) feature to close the current Workflow Execution and create a new Workflow Execution in a single an atomic operation.
+You can use the [Continue-As-New](/docs/concepts/what-is-continue-as-new) feature to close the current Workflow Execution and create a new Workflow Execution in a single atomic operation.
 The Workflow Execution spawned from Continue-As-New has the same Workflow Id, a new Run Id, and a fresh Event History and is passed all the appropriate parameters.
 For example, it may be reasonable to use Continue-As-New once per day for a long-running Workflow Execution that is generating a large Event History.
