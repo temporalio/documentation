@@ -50,7 +50,7 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error
 }
 ```
 
-All Workflow Definition parameters must be serializable, regardless of whether pointers or regular type values are used. Parameters can’t be channels, functions, variadic, or unsafe pointers. 
+All Workflow Definition parameters must be serializable, regardless of whether pointers or regular type values are used. Parameters can’t be channels, functions, variadic, or unsafe pointers.
 
 ### Workflow return values in Go
 
