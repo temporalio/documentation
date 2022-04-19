@@ -17,7 +17,7 @@ The handler must be a function that returns two values:
 
 Do not include Side Effects or command generation within a query handler. This could mutate the Workflow state and lead to unexpected behaviors on subsequent runs.
 
-The handler function can receive any number of input parameters, but all input parameters must be serializable. 
+The handler function can receive any number of input parameters, but all input parameters must be serializable.
 The following sample code sets up a Query Handler that handles the `current_state` Query type:
 
 ```go
