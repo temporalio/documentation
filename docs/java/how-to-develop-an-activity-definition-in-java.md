@@ -10,7 +10,7 @@ tags:
 
 An [Activity Definition](/docs/concepts/what-is-an-activity) is a combination of the Temporal Java SDK [Activity](https://www.javadoc.io/static/io.temporal/temporal-sdk/0.19.0/io/temporal/activity/Activity.html) Class implementing a specially annotated interface.
 
-## Activity interface
+#### Activity interface
 
 Activity interface is a Java interface and is annotated with the `@ActivityInterface` annotation.
 
@@ -58,9 +58,9 @@ Public interface MyActivity {
 
 In this example, the Activity type for the first method is set to "A_DoSomething". The Activity type for the method annotated with `@ActivityMethod` is set to "A_abc".
 
-## Activity implementation
+#### Activity implementation
 
-An Activity implementation is Java class which implements an Activity Interface.
+An Activity implementation is a Java class that implements an Activity annotaged interface.
 Example:
 
 ```java
@@ -78,7 +78,7 @@ Example:
   }
 ```
 
-### Dynamic Activities
+#### Dynamic Activities
 
 Use `DynamicActivity` to implement any number of Activity types dynamically.
 When an Activity implementation that extends `DynamicActivity` is registered, it is called for any Activity type invocation that doesn't have an explicitly registered handler.
@@ -108,3 +108,5 @@ The Dynamic Activity interface is implemented with the `execute` method. This me
 Use `Activity.getExecutionContext()` to get information about the Activity type that should be implemented dynamically.
 
 You can only register one instance that implements `DynamicActivity` with a Worker.
+
+- [Dynamic Activity Reference](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/DynamicActivity.html)
