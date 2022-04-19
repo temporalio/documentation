@@ -212,7 +212,6 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-
 In the Temporal Go SDK programming model, a [Workflow Definition](#workflow-definition) is an exportable function.
 
 ```go
@@ -306,7 +305,6 @@ Additionally the Temporal Go SDK offers APIs to handle equivalent Go constructs:
   Temporal provides support for both buffered and unbuffered channels.
 - `workflow.Selector` This is a replacement for the `select` statement. Learn more on the [Go SDK Selectors](https://docs.temporal.io/docs/go/selectors) page
 - `workflow.Context` This is a replacement for `context.Context`. Learn more on the [Go SDK Context Propagation](https://docs.temporal.io/docs/go/tracing) page.
-
 
 </TabItem>
 <TabItem value="java">
@@ -1490,4 +1488,3 @@ To actually have results from the use of a [List Filter](#list-filters), Search 
 How to do this entirely depends on the method by which you spawn the Workflow Execution:
 
 - [How to set Search Attributes as Workflow Execution metadata in Go](/docs/go/how-to-set-startworkflowoptions-in-go/#searchattributes)
-
