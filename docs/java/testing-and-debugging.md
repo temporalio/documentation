@@ -149,7 +149,7 @@ public class HelloActivityTest {
 For Junit4 tests, Temporal provides the TestWorkflowRule class which simplifies the Temporal test environment setup, as well as the
 creation and shutdown of Workflow Workers in your tests.
 
-To start using JUnit4 TestWorkflowRule in your tests using [Gradle]((https://gradle.org/)), you need to enable capability [`io.temporal:temporal-testing-junit4`]:
+To start using JUnit4 TestWorkflowRule in your tests using [Gradle](https://gradle.org/), you need to enable capability [`io.temporal:temporal-testing-junit4`]:
 
 ```groovy
 testImplementation group: 'io.temporal', name: 'temporal-testing', version: '1.9.1' {
@@ -195,7 +195,7 @@ public class HelloActivityJUnit4Test {
 For Junit5 tests, Temporal also provides the TestWorkflowExtension helped class which can be used to simplify the Temporal test environment setup
 as well as Workflow Worker startup and shutdowns.
 
-To start using JUnit5 TestWorkflowExtension in your tests with [Gradle]((https://gradle.org/)), you need to enable capability [`io.temporal:temporal-testing-junit5`]:
+To start using JUnit5 TestWorkflowExtension in your tests with [Gradle](https://gradle.org/), you need to enable capability [`io.temporal:temporal-testing-junit5`]:
 
 ```groovy
 testImplementation group: 'io.temporal', name: 'temporal-testing', version: '1.9.1' {
