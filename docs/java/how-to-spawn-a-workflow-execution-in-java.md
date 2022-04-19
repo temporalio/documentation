@@ -10,7 +10,7 @@ tags:
 
 Use `WorkflowStub` to start a Workflow Execution from within a Client, and `ExternalWorkflowStub` to start a different Workflow Execution from within a Workflow.
 
-See [`SignalwithStart`](docs/java/signals) to start a Workflow Execution to receive a Signal from within another Workflow.
+See [`SignalwithStart`](/docs/java/signals) to start a Workflow Execution to receive a Signal from within another Workflow.
 
 ### Using `WorkflowStub`
 
