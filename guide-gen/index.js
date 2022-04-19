@@ -115,7 +115,7 @@ async function generateGuide(guide_config, files) {
       if (h3_section.type == "lang-tabs") {
         markdown = await generateLangTabs(h3_section, files);
       } else {
-        markdown = h3_section.file.raw_content
+        markdown = h3_section.file.raw_content;
       }
 
       if (h3_section.header != "none") {
@@ -140,7 +140,7 @@ async function generateLangTabs(h3_section, files) {
       } else {
         tab.markdown = "Content is not available";
       }
-      tabs[tab.lang] = tab
+      tabs[tab.lang] = tab;
     }
   }
   h3_section.tabs = tabs;
@@ -164,7 +164,7 @@ async function generateTabString(h3_section) {
   tab_string = `${tab_string}<TabItem value="typescript">\n\n`;
   tab_string = `${tab_string}${h3_section.tabs.typescript.markdown}\n\n`;
   tab_string = `${tab_string}</TabItem>\n`;
-  tab_string = `${tab_string}</Tabs>\n`
+  tab_string = `${tab_string}</Tabs>\n`;
   return tab_string;
 }
 
