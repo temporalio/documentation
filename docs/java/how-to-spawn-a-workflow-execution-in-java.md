@@ -71,11 +71,11 @@ A Workflow Execution can be started either synchronously or asynchronously.
     untyped.start(argument);
     ```
 
-See [Workflow Execution Result](/docs/java/how-to-get-the-result-of-a-workflow-execution-in-java) for details on how to get the Workflow Execution results.
+See [Workflow Execution Result](/docs/java/how-to-get-the-result-of-a-workflow-execution-in-java) for details on how to get the results of the Workflow Execution.
 
 ### Using `ExternalWorkflowStub`
 
-Use `ExternalWorkflowStub` within a Workflow to invoke, and send Signals to, other Workflows purely by type.
+Use `ExternalWorkflowStub` within a Workflow to invoke, and send Signals to, other Workflows by type.
 
 This helps particularly for executing Workflows written in other language SDKs, as shown in the following example.
 
