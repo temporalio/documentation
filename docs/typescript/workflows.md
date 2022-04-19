@@ -429,7 +429,7 @@ Temporal guarantees read-after-write consistency of Signals-followed-by-Queries.
 
 #### Notes on Queries
 
-> 🚨 WARNING: NEVER mutate Workflow state inside a query! This would be a source of non-determinism.
+> 🚨 WARNING: NEVER mutate Workflow state inside a query! Generating commands in query handlers can lead to unexpected behaviors on subsequent executions.
 
 :::danger How NOT to write a Query
 
