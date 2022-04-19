@@ -18,7 +18,9 @@ Then register all Workflow Types and all Activity Types that the Worker can exec
 For Activities, since they are stateless and thread-safe, instances are used in the registration process instead of the Java Class.
 A Worker can be registered with just Workflows, just Activities, or both.
 
-This single Worker Process can contain many Workers Objects.
+#### Create Worker Entity
+
+A single [Worker Entity](/docs/concepts/what-is-a-worker-entity) can contain many Worker Objects.
 Call the `start()` method on the instance of the `WorkerFactory` to start all the Workers created in this process.
 
 ```java
@@ -37,27 +39,44 @@ public class YourWorker {
     WorkerFactory factory = WorkerFactory.newInstance(client);
     Worker yourWorker = factory.newWorker("your_task_queue");
 
-    yourWorker.registerWorkflowImplementationTypes(YourWorkflowDefinitionImpl.class);
-    yourWorker.registerActivityImplementationTypes(new YourActivityDefinitionImpl());
+    // Register Workflow
+    // and/or register Activities
 
     factory.start();
   }
 }
-
-public static class YourWorkflowDefinitionImpl implements YourWorkflowDefinition {
-    // ...
-    public YourWorkflowResult yourWorkflowMethod(YourWorkflowParam param) {
-      // ...
-    }
-}
-
-public static class YourActivityDefintionImpl implements YourActivityDefinition {
-  // ...
-  public YourActivityResult yourActivityMethod(YourActivityParam param) {
-    // ...
-  }
-}
 ```
+
+#### Register Workflow Types
+
+Workflow Types must be registered with a Worker.
+
+The following example shows how to register a Workflow with the Worker created in the previous example.
+
+```java
+    Worker worker = workerFactory.newWorker("your_task_queue");
+    ...
+    // Register Workflow
+    worker.registerWorkflowImplementationTypes(GreetingWorkflowImpl.class);
+```
+
+#### Register Activity Types
+
+Like Workflows, Activities must be registered with a Worker.
+When registering Activities, we register an instance of the Activity implementation, and can pass any
+number of dependencies in its constructor, such as the database connections, services, etc.
+
+The following example shows how to register Activities with a Worker.
+
+```java
+    Worker worker = factory.newWorker("your_task_queue");
+   ...
+    // Register Activity
+   worker.registerActivitiesImplementations(new GreetingActivitiesImpl());
+```
+
+When you register a single instance of an Activity, you can have multiple instances of Workflow Executions calling the same Activity.
+Activity code must be thread-safe because the same instance of the Activity code is run for every Workflow Execution that calls it.
 
 **Operation guides:**
 
