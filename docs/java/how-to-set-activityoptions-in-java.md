@@ -80,7 +80,6 @@ The following table lists all `ActivityOptions` that can be configured for an Ac
 | [`setHeartbeatTimeout`](#heartbeattimeout)             | No                                                 | Duration                 |
 | [`setTaskQueue`](#taskqueue)                           | No                                                 | String                   |
 | [`setRetryOptions`](#retryoptions)                     | No                                                 | RetryOptions             |
-| [`setContextPropagators`](#contextpropagators)         | No                                                 | List< ContextPropagator> |
 | [`setCancellationType`](#cancellationtype)             | No                                                 | ActivityCancellationType |
 
 ### `ScheduleToCloseTimeout`
@@ -291,23 +290,6 @@ See [Task Queue](/docs/concepts/what-is-a-task-queue)
                                           .build())
                                 .build()))
                 .build();
-  ```
-
-### `ContextPropagators`
-
-- Type: `List<ContextPropagator>`
-- Default: None
-
-- With `ActivityStub`
-
-  ```java
-
-  ```
-
-- With `WorkflowImplementationOptions`
-
-  ```java
-
   ```
 
 ### `setCancellationType`
