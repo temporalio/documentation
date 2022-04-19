@@ -33,7 +33,7 @@ async function run() {
   // console.log(files);
   let gfs = await attachFiles(GUIDE_CONFIGS, files);
 
-  gfs = await generateGuides(gfs);
+  gfs = await generateGuides(gfs, files);
 
   console.log(gfs[0].guide_string);
 
@@ -97,29 +97,75 @@ async function matchFilesToSection(h2_section, files) {
   return updated_h2_section;
 }
 
-async function generateGuides(guide_configs) {
+async function generateGuides(guide_configs, files) {
   updated_configs = [];
   for (let guide_config of guide_configs) {
-    guide_config = await generateGuide(guide_config);
+    guide_config = await generateGuide(guide_config, files);
     updated_configs.push(guide_config);
   }
   return updated_configs;
 }
 
-async function generateGuide(guide_config) {
+async function generateGuide(guide_config, files) {
   let guide_string = frontmatter(guide_config);
   for (const h2_section of guide_config.h2_sections) {
     guide_string = `${guide_string}## ${h2_section.header}\n`;
     for (const h3_section of h2_section.h3_sections) {
+      let markdown = "";
+      if (h3_section.type == "lang-tabs") {
+        markdown = await generateLangTabs(h3_section, files);
+      } else {
+        markdown = h3_section.file.raw_content
+      }
+
       if (h3_section.header != "none") {
         guide_string = `${guide_string}### ${h3_section.header}\n`;
       }
-      guide_string = `${guide_string}${h3_section.file.raw_content}`;
+      guide_string = `${guide_string}${markdown}`;
       guide_string = `${guide_string}\n`;
     }
   }
   guide_config.guide_string = guide_string;
   return guide_config;
+}
+
+async function generateLangTabs(h3_section, files) {
+  let tabs = {};
+  for (const file of files) {
+    for (const tab of h3_section.langs) {
+      if (tab.path != "none") {
+        if (`${tab.path}${FILE_EXTENSION}` == file.path) {
+          tab.markdown = file.raw_content;
+        }
+      } else {
+        tab.markdown = "Content is not available";
+      }
+      tabs[tab.lang] = tab
+    }
+  }
+  h3_section.tabs = tabs;
+  return await generateTabString(h3_section);
+}
+
+async function generateTabString(h3_section) {
+  let tab_string = `<Tabs\n`;
+  tab_string = `${tab_string}defaultValue="go"\n`;
+  tab_string = `${tab_string}groupId="site-lang"\n`;
+  tab_string = `${tab_string}values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>\n\n`;
+  tab_string = `${tab_string}<TabItem value="go">\n\n`;
+  tab_string = `${tab_string}${h3_section.tabs.go.markdown}\n\n`;
+  tab_string = `${tab_string}</TabItem>\n`;
+  tab_string = `${tab_string}<TabItem value="java">\n\n`;
+  tab_string = `${tab_string}${h3_section.tabs.java.markdown}\n\n`;
+  tab_string = `${tab_string}</TabItem>\n`;
+  tab_string = `${tab_string}<TabItem value="php">\n\n`;
+  tab_string = `${tab_string}${h3_section.tabs.php.markdown}\n\n`;
+  tab_string = `${tab_string}</TabItem>\n`;
+  tab_string = `${tab_string}<TabItem value="typescript">\n\n`;
+  tab_string = `${tab_string}${h3_section.tabs.typescript.markdown}\n\n`;
+  tab_string = `${tab_string}</TabItem>\n`;
+  tab_string = `${tab_string}</Tabs>\n`
+  return tab_string;
 }
 
 function frontmatter(guide_config) {
@@ -130,6 +176,10 @@ function frontmatter(guide_config) {
   guide_string = `${guide_string}description: ${guide_config.description}\n`;
   guide_string = `${guide_string}---\n`;
   guide_string = `${guide_string}\n`;
+  if (guide_config.add_tabs_support) {
+    guide_string = `${guide_string}import Tabs from '@theme/Tabs';\n`;
+    guide_string = `${guide_string}import TabItem from '@theme/TabItem';\n\n`;
+  }
   return guide_string;
 }
 

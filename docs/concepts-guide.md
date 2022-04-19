@@ -5,6 +5,9 @@ sidebar_label: Concepts guide
 description: This guide is meant to be a comprehensive overview of Temporal concepts.
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 ## Temporal
 
 Temporal is a scalable and reliable runtime for Reentrant Processes called [Temporal Workflow Executions](/docs/concepts/what-is-a-workflow-execution).
@@ -88,58 +91,6 @@ The most common operations that a Temporal Client enables you to perform are the
 
 In day-to-day conversations, the term _Workflow_ frequently denotes either a [Workflow Type](/docs/concepts/what-is-a-workflow-type), a [Workflow Definition](/docs/concepts/what-is-a-workflow-definition), or a [Workflow Execution](/docs/concepts/what-is-a-workflow-execution).
 Temporal documentation aims to be explicit and differentiate between them.
-
-### Workflow Execution
-
-A Workflow Execution is a Reentrant Process; that is, a resumable, recoverable, and reactive process:
-
-- Resumable: Ability of a process to continue execution after execution was suspended on an await-able.
-- Recoverable: Ability of a process to continue execution after execution was suspended on a failure.
-- Reactive: Ability of a process to react to external events.
-
-A Workflow Execution has exclusive access to its local state, executes concurrently to all other Workflow Executions, and can communicate with other Workflow Executions using Signals.
-
-A Workflow Execution is either Running or Closed.
-When a Workflow Execution is Running, it is either actively progressing or suspended, awaiting on something.
-
-![Workflow Execution Running status](/diagrams/workflow-execution-running-status.svg)
-
-A Closed status means that the Workflow Execution has finished progressing, and has either Completed successfully, Continued As New, Failed, Timed Out, been Canceled, or Terminated.
-
-![Workflow Execution statuses](/diagrams/workflow-execution-statuses.svg)
-
-A Workflow Execution is uniquely identified by its [Namespace](/docs/concepts/what-is-a-namespace), [Workflow Id](/docs/concepts/what-is-a-workflow-id), and [Run Id](/docs/concepts/what-is-a-run-id).
-
-The Workflow Id can be used to create a 1:1 mapping between a Workflow Execution and some other resource, such as a customer Id, order Id, or host Id.
-
-**Is there a limit to how long Workflows can run?**
-
-It's sometimes necessary to limit the amount of time that a specific Workflow can run.
-Though, unlike [Activities](/docs/concepts/what-is-an-activity), Workflow timeouts are available primarily to protect the system from "runaway" Workflows that may end up consuming too many resources, and not intended to be used as a part of the business logic.
-There are a few important things to consider with Workflow timeout settings:
-
-1. When a Workflow times out, it is terminated without any notifications available to another application.
-2. You should always account for possible outages, such that if your Workers go down for an hour, all of your Workflows won't time out.
-   Start with infinite timeouts.
-3. The SDKs come equipped with timers and sleep APIs that can be used directly inside of Workflows to handle business logic related timeouts.
-
-Workflows intended to run indefinitely should be written with some care.
-Temporal stores the complete event history for the entire lifecycle of a Workflow Execution.
-There is a maximum limit of 50,000 events that is enforced by the Server, and you should try to avoid getting close to this limit; The Temporal Server puts out a warning at every 10,000 events.
-
-The idiomatic way to handle indefinitely running Workflows is to use the "Continue-as-new" feature, which is available in all SDKs.
-For example, a reasonable cutoff point might be once a day for high volume Workflows.
-
-The "Continue-as-new" feature completes the current Workflow execution and automatically starts a new execution with the same Workflow Id, but different run Id, passing it the appropriate parameters for it to continue.
-This keeps the event history within limits, but continues the logic execution.
-
-**How can I load test Workflow Executions?**
-
-The [Temporal stress testing blog post](https://docs.temporal.io/blog/temporal-deep-dive-stress-testing) covers many scenarios under which we test Workflow Executions.
-
-**Implementation guides:**
-
-- [How to spawn a Workflow Execution in Go](/docs/go/how-to-spawn-a-workflow-execution-in-go)
 
 ### Workflow Definition
 
@@ -251,6 +202,127 @@ Workflow Function Executions are completely oblivious to the Worker Process in t
 The Temporal Platform ensures that the state of a Workflow Execution is recovered and progress resumes if there is an outage of either Worker Processes or the Temporal Cluster itself.
 The only reason a Workflow Execution might fail is due to the code throwing an error or exception, not because of underlying infrastructure outages.
 
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+
+In the Temporal Go SDK programming model, a [Workflow Definition](/docs/concepts/what-is-a-workflow-definition) is an exportable function.
+
+```go
+func YourWorkflowDefinition(ctx workflow.Context) error {
+  // ...
+  return nil
+}
+```
+
+### Workflow parameters in Go
+
+The first parameter of a Go-based Workflow Definition must be of the [`workflow.Context`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/workflow#Context) type, as it is used by the Temporal Go SDK to pass around Workflow Execution context, and virtually all the Go SDK APIs that are callable from the Workflow require it.
+It is acquired from the [`go.temporal.io/sdk/workflow`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/workflow) package.
+
+```go
+import (
+    "go.temporal.io/sdk/workflow"
+)
+
+func YourWorkflowDefinition(ctx workflow.Context, param string) error {
+  // ...
+}
+```
+
+The `workflow.Context` entity operates similarly to the standard `context.Context` entity provided by Go.
+The only difference between `workflow.Context` and `context.Context` is that the `Done()` function, provided by `workflow.Context`, returns `workflow.Channel` instead of the standard Go `chan`.
+
+The second parameter, `string`, is a custom parameter that is passed to the Workflow when it is invoked.
+A Workflow Definition may support multiple custom parameters, or none.
+However, the best practice is to pass a single parameter that is of a `struct` type so there can be some backward compatibility if new parameters are added.
+
+```go
+type YourWorkflowParam struct {
+  WorkflowParamFieldOne string
+  WorkflowParamFieldTwo int
+}
+
+func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error {
+  // ...
+}
+```
+
+All Workflow Definition parameters must be serializable, which means that parameters can’t be channels, functions, variadic, or unsafe pointers.
+
+### Workflow return values in Go
+
+A Go-based Workflow Definition can return either just an `error` or a `customValue, error` combination.
+Again, the best practice here is to use a `struct` type to hold all custom values.
+
+```go
+type YourWorkflowResponse struct{
+  WorkflowResultFieldOne string
+  WorkflowResultFieldTwo int
+}
+
+func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (YourWorkflowResponse, error) {
+  // ...
+  if err != nil {
+    return "", err
+  }
+  responseVar := YourWorkflowResponse {
+    FieldOne: "super",
+    FieldTwo: 1,
+  }
+  return responseVar, nil
+}
+```
+
+A Workflow Definition written in Go can return both a custom value and an error.
+However, it is not possible to receive both a custom value and an error in the calling process as is normal in Go.
+The caller will receive either one or the other.
+Returning a non-nil `error` from a Workflow indicates that an error was encountered during its execution and the Workflow Execution should be [Terminated](#) and any custom return values will be ignored by the system.
+
+### Workflow logic requirements in Go
+
+Workflow Definition code cannot directly do the following:
+
+- Iterate over maps using `range`, because with `range` the order of the map's iteration is randomized.
+  Instead you can collect the keys of the map, sort them, and then iterate over the sorted keys to access the map.
+  This technique provides deterministic results.
+  You can also use a Side Effect or an Activity to process the map instead.
+- Call an external API, conduct a file I/O operation, talk to another service, etc. (Use an Activity for these.)
+
+Additionally the Temporal Go SDK offers APIs to handle equivalent Go constructs:
+
+- `workflow.Now()` This is a replacement for `time.Now()`.
+- `workflow.Sleep()` This is a replacement for `time.Sleep()`.
+- `workflow.GetLogger()` This ensures that the provided logger does not duplicate logs during a replay.
+- `workflow.Go()` This is a replacement for the `go` statement.
+- `workflow.Channel` This is a replacement for the native `chan` type.
+  Temporal provides support for both buffered and unbuffered channels.
+- `workflow.Selector` This is a replacement for the `select` statement. Learn more on the [Go SDK Selectors](https://docs.temporal.io/docs/go/selectors) page
+- `workflow.Context` This is a replacement for `context.Context`. Learn more on the [Go SDK Context Propagation](https://docs.temporal.io/docs/go/tracing) page.
+
+
+</TabItem>
+<TabItem value="java">
+
+Content is not available
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is not available
+
+</TabItem>
+</Tabs>
+
 ### Workflow Type
 
 A Workflow Type is a name that maps to a Workflow Definition.
@@ -260,6 +332,86 @@ A Workflow Type is a name that maps to a Workflow Definition.
   It is acceptable to have the same Workflow Type name map to different Workflow definitions if they are using completely different Workers.
 
 ![Workflow Type cardinality with Workflow Definitions and Workflow Executions](/diagrams/workflow-type-cardinality.svg)
+
+### Workflow Execution
+
+A Workflow Execution is a Reentrant Process; that is, a resumable, recoverable, and reactive process:
+
+- Resumable: Ability of a process to continue execution after execution was suspended on an await-able.
+- Recoverable: Ability of a process to continue execution after execution was suspended on a failure.
+- Reactive: Ability of a process to react to external events.
+
+A Workflow Execution has exclusive access to its local state, executes concurrently to all other Workflow Executions, and can communicate with other Workflow Executions using Signals.
+
+A Workflow Execution is either Running or Closed.
+When a Workflow Execution is Running, it is either actively progressing or suspended, awaiting on something.
+
+![Workflow Execution Running status](/diagrams/workflow-execution-running-status.svg)
+
+A Closed status means that the Workflow Execution has finished progressing, and has either Completed successfully, Continued As New, Failed, Timed Out, been Canceled, or Terminated.
+
+![Workflow Execution statuses](/diagrams/workflow-execution-statuses.svg)
+
+A Workflow Execution is uniquely identified by its [Namespace](/docs/concepts/what-is-a-namespace), [Workflow Id](/docs/concepts/what-is-a-workflow-id), and [Run Id](/docs/concepts/what-is-a-run-id).
+
+The Workflow Id can be used to create a 1:1 mapping between a Workflow Execution and some other resource, such as a customer Id, order Id, or host Id.
+
+**Is there a limit to how long Workflows can run?**
+
+It's sometimes necessary to limit the amount of time that a specific Workflow can run.
+Though, unlike [Activities](/docs/concepts/what-is-an-activity), Workflow timeouts are available primarily to protect the system from "runaway" Workflows that may end up consuming too many resources, and not intended to be used as a part of the business logic.
+There are a few important things to consider with Workflow timeout settings:
+
+1. When a Workflow times out, it is terminated without any notifications available to another application.
+2. You should always account for possible outages, such that if your Workers go down for an hour, all of your Workflows won't time out.
+   Start with infinite timeouts.
+3. The SDKs come equipped with timers and sleep APIs that can be used directly inside of Workflows to handle business logic related timeouts.
+
+Workflows intended to run indefinitely should be written with some care.
+Temporal stores the complete event history for the entire lifecycle of a Workflow Execution.
+There is a maximum limit of 50,000 events that is enforced by the Server, and you should try to avoid getting close to this limit; The Temporal Server puts out a warning at every 10,000 events.
+
+The idiomatic way to handle indefinitely running Workflows is to use the "Continue-as-new" feature, which is available in all SDKs.
+For example, a reasonable cutoff point might be once a day for high volume Workflows.
+
+The "Continue-as-new" feature completes the current Workflow execution and automatically starts a new execution with the same Workflow Id, but different run Id, passing it the appropriate parameters for it to continue.
+This keeps the event history within limits, but continues the logic execution.
+
+**How can I load test Workflow Executions?**
+
+The [Temporal stress testing blog post](https://docs.temporal.io/blog/temporal-deep-dive-stress-testing) covers many scenarios under which we test Workflow Executions.
+
+**Implementation guides:**
+
+- [How to spawn a Workflow Execution in Go](/docs/go/how-to-spawn-a-workflow-execution-in-go)
+
+### Workflow Execution Timeout
+
+A Workflow Execution Timeout is the maximum time that a Workflow Execution can be executing (have an Open status) including retries and any usage of Continue As New.
+
+![Workflow Execution Timeout period](/diagrams/workflow-execution-timeout.svg)
+
+**The default value is ∞ (infinite).**
+If this timeout is reached, the Workflow Execution changes to a Timed Out status.
+This timeout is different from the [Workflow Run Timeout](/docs/concepts/what-is-a-workflow-run-timeout).
+This timeout is most commonly used for stopping the execution of a [Temporal Cron Job](/docs/concepts/what-is-a-temporal-cron-job) after a certain amount of time has passed.
+
+- [How to set a Workflow Execution Timeout in Go](/docs/go/how-to-set-startworkflowoptions-in-go/#workflowexecutiontimeout)
+
+### Workflow Run Timeout
+
+A Workflow Run Timeout is the maximum amount of time that a single Workflow Run is restricted to.
+
+![Workflow Run Timeout period](/diagrams/workflow-run-timeout.svg)
+
+**The default is set to the same value as the [Workflow Execution Timeout](/docs/concepts/what-is-a-workflow-execution-timeout).**
+This timeout is most commonly used to limit the execution time of a single [Temporal Cron Job Execution](/docs/concepts/what-is-a-temporal-cron-job).
+
+If the Workflow Run Timeout is reached, the Temporal Server automatically Terminates the Workflow Execution.
+
+**Implementation guides:**
+
+- [How to set a Workflow Run Timeout in Go](/docs/go/how-to-set-startworkflowoptions-in-go/#workflowruntimeout)
 
 ### Workflow Id
 
@@ -317,34 +469,6 @@ For example, a Temporal Cron Job is a chain of Workflow Executions that all have
 Each Workflow Execution within the chain is considered a "Run".
 
 A Run Id uniquely identifies a Workflow Execution even if it shares a Workflow Id with other Workflow Executions.
-
-### Workflow Execution Timeout
-
-A Workflow Execution Timeout is the maximum time that a Workflow Execution can be executing (have an Open status) including retries and any usage of Continue As New.
-
-![Workflow Execution Timeout period](/diagrams/workflow-execution-timeout.svg)
-
-**The default value is ∞ (infinite).**
-If this timeout is reached, the Workflow Execution changes to a Timed Out status.
-This timeout is different from the [Workflow Run Timeout](/docs/concepts/what-is-a-workflow-run-timeout).
-This timeout is most commonly used for stopping the execution of a [Temporal Cron Job](/docs/concepts/what-is-a-temporal-cron-job) after a certain amount of time has passed.
-
-- [How to set a Workflow Execution Timeout in Go](/docs/go/how-to-set-startworkflowoptions-in-go/#workflowexecutiontimeout)
-
-### Workflow Run Timeout
-
-A Workflow Run Timeout is the maximum amount of time that a single Workflow Run is restricted to.
-
-![Workflow Run Timeout period](/diagrams/workflow-run-timeout.svg)
-
-**The default is set to the same value as the [Workflow Execution Timeout](/docs/concepts/what-is-a-workflow-execution-timeout).**
-This timeout is most commonly used to limit the execution time of a single [Temporal Cron Job Execution](/docs/concepts/what-is-a-temporal-cron-job).
-
-If the Workflow Run Timeout is reached, the Temporal Server automatically Terminates the Workflow Execution.
-
-**Implementation guides:**
-
-- [How to set a Workflow Run Timeout in Go](/docs/go/how-to-set-startworkflowoptions-in-go/#workflowruntimeout)
 
 ### Workflow Task
 
@@ -1469,3 +1593,4 @@ To actually have results from the use of a [List Filter](/docs/concepts/what-is-
 How to do this entirely depends on the method by which you spawn the Workflow Execution:
 
 - [How to set Search Attributes as Workflow Execution metadata in Go](/docs/go/how-to-set-startworkflowoptions-in-go/#searchattributes)
+

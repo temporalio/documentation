@@ -4,22 +4,27 @@
 	"title": "Temporal conceptual guide",
 	"sidebar_label": "Concepts guide",
 	"description": "This guide is meant to be a comprehensive overview of Temporal concepts.",
+	"add_tabs_support": true,
 	"h2_sections": [{
 			"header": "Temporal",
 			"h3_sections": [{
 					"header": "none",
+					"type": "explanation",
 					"path": "concepts/what-is-temporal"
 				},
 				{
 					"header": "Temporal Platform",
+					"type": "explanation",
 					"path": "concepts/what-is-the-temporal-platform"
 				},
 				{
 					"header": "Temporal Application",
+					"type": "explanation",
 					"path": "concepts/what-is-a-temporal-application"
 				},
 				{
 					"header": "Temporal SDK",
+					"type": "explanation",
 					"path": "concepts/what-is-a-temporal-sdk"
 				}
 
@@ -29,50 +34,87 @@
 			"header": "Workflows",
 			"h3_sections": [{
 					"header": "none",
+					"type": "explanation",
 					"path": "concepts/what-is-a-workflow"
 				},
 				{
-					"header": "Workflow Execution",
-					"path": "concepts/what-is-a-workflow-execution"
-				},
-				{
 					"header": "Workflow Definition",
+					"type": "explanation",
 					"path": "concepts/what-is-a-workflow-definition"
 				},
 				{
+					"header": "none",
+					"type": "lang-tabs",
+					"langs": [{
+							"lang": "go",
+							"title": "Go",
+							"path": "go/how-to-develop-a-workflow-definition-in-go"
+						},
+						{
+							"lang": "java",
+							"title": "Java",
+							"path": "none"
+						},
+						{
+							"lang": "php",
+							"title": "PHP",
+							"path": "none"
+						},
+						{
+							"lang": "typescript",
+							"title": "TypeScript",
+							"path": "none"
+						}
+					]
+				},
+				{
 					"header": "Workflow Type",
+					"type": "explanation",
 					"path": "concepts/what-is-a-workflow-type"
 				},
 				{
-					"header": "Workflow Id",
-					"path": "concepts/what-is-a-workflow-id"
-				},
-				{
-					"header": "Workflow Id Reuse Policy",
-					"path": "concepts/what-is-a-workflow-id-reuse-policy"
-				},
-				{
-					"header": "Run Id",
-					"path": "concepts/what-is-a-run-id"
+					"header": "Workflow Execution",
+					"type": "explanation",
+					"path": "concepts/what-is-a-workflow-execution"
 				},
 				{
 					"header": "Workflow Execution Timeout",
+					"type": "explanation",
 					"path": "concepts/what-is-a-workflow-execution-timeout"
 				},
 				{
 					"header": "Workflow Run Timeout",
+					"type": "explanation",
 					"path": "concepts/what-is-a-workflow-run-timeout"
 				},
 				{
+					"header": "Workflow Id",
+					"type": "explanation",
+					"path": "concepts/what-is-a-workflow-id"
+				},
+				{
+					"header": "Workflow Id Reuse Policy",
+					"type": "explanation",
+					"path": "concepts/what-is-a-workflow-id-reuse-policy"
+				},
+				{
+					"header": "Run Id",
+					"type": "explanation",
+					"path": "concepts/what-is-a-run-id"
+				},
+				{
 					"header": "Workflow Task",
+					"type": "explanation",
 					"path": "concepts/what-is-a-workflow-task"
 				},
 				{
 					"header": "Workflow Task Execution",
+					"type": "explanation",
 					"path": "concepts/what-is-a-workflow-task-execution"
 				},
 				{
 					"header": "Workflow Task Timeout",
+					"type": "explanation",
 					"path": "concepts/what-is-a-workflow-task-timeout"
 				}
 			]
@@ -81,71 +123,84 @@
 			"header": "Activities",
 			"h3_sections": [{
 					"header": "none",
+					"type": "explanation",
 					"path": "concepts/what-is-an-activity"
 				},
 				{
 					"header": "Activity Execution",
+					"type": "explanation",
 					"path": "concepts/what-is-an-activity-execution"
 				},
 				{
 					"header": "Activity Definition",
+					"type": "explanation",
 					"path": "concepts/what-is-an-activity-definition"
 				},
 				{
 					"header": "Activity Type",
+					"type": "explanation",
 					"path": "concepts/what-is-an-activity-type"
 				},
 				{
 					"header": "Activity Id",
+					"type": "explanation",
 					"path": "concepts/what-is-an-activity-id"
 				},
 				{
 					"header": "Schedule-To-Start Timeout",
+					"type": "explanation",
 					"path": "concepts/what-is-a-schedule-to-start-timeout"
 				},
 				{
 					"header": "Start-To-Close Timeout",
+					"type": "explanation",
 					"path": "concepts/what-is-a-start-to-close-timeout"
 				},
 				{
 					"header": "Schedule-To-Close Timeout",
+					"type": "explanation",
 					"path": "concepts/what-is-a-schedule-to-close-timeout"
 				},
 				{
 					"header": "Activity Heartbeats",
+					"type": "explanation",
 					"path": "concepts/what-is-an-activity-heartbeat"
 				},
 				{
 					"header": "Heartbeat Timeout",
+					"type": "explanation",
 					"path": "concepts/what-is-a-heartbeat-timeout"
 				}
 			]
 		},
 		{
 			"header": "Retry Policy",
-			"h3_sections": [
-				{
-					"header": "none",
-					"path": "concepts/what-is-a-retry-policy"
-				}
-			]
+			"h3_sections": [{
+				"header": "none",
+				"type": "explanation",
+				"path": "concepts/what-is-a-retry-policy"
+			}]
 		},
 		{
 			"header": "Workers",
 			"h3_sections": [{
 					"header": "none",
+					"type": "explanation",
 					"path": "concepts/what-is-a-worker"
 				},
 				{
 					"header": "Worker Program",
+					"type": "explanation",
 					"path": "concepts/what-is-a-worker-program"
 				},
 				{
 					"header": "Worker Process",
+					"type": "explanation",
 					"path": "concepts/what-is-a-worker-process"
 				},
 				{
 					"header": "Worker Entity",
+					"type": "explanation",
 					"path": "concepts/what-is-a-worker-entity"
 				}
 			]
@@ -154,88 +209,91 @@
 			"header": "Tasks",
 			"h3_sections": [{
 					"header": "none",
+					"type": "explanation",
 					"path": "concepts/what-is-a-task"
 				},
 				{
 					"header": "Task Queues",
+					"type": "explanation",
 					"path": "concepts/what-is-a-task-queue"
 				},
 				{
 					"header": "Sticky Execution",
+					"type": "explanation",
 					"path": "concepts/what-is-a-sticky-execution"
 				},
 				{
 					"header": "Task Routing",
+					"type": "explanation",
 					"path": "concepts/what-is-task-routing"
 				}
 			]
 		},
 		{
 			"header": "Signals",
-			"h3_sections": [
-				{
-					"header": "none",
-					"path": "concepts/what-is-a-signal"
-				}
-			]
+			"h3_sections": [{
+				"header": "none",
+				"type": "explanation",
+				"path": "concepts/what-is-a-signal"
+			}]
 		},
 		{
 			"header": "Queries",
-			"h3_sections": [
-				{
-					"header": "none",
-					"path": "concepts/what-is-a-query"
-				}
-			]
+			"h3_sections": [{
+				"header": "none",
+				"type": "explanation",
+				"path": "concepts/what-is-a-query"
+			}]
 		},
 		{
 			"header": "Child Workflows",
-			"h3_sections": [
-				{
-					"header": "none",
-					"path": "concepts/what-is-a-child-workflow-execution"
-				}
-			]
+			"h3_sections": [{
+				"header": "none",
+				"type": "explanation",
+				"path": "concepts/what-is-a-child-workflow-execution"
+			}]
 		},
 		{
 			"header": "Temporal Cron Jobs",
-			"h3_sections": [
-				{
-					"header": "none",
-					"path": "concepts/what-is-a-temporal-cron-job"
-				}
-			]
+			"h3_sections": [{
+				"header": "none",
+				"type": "explanation",
+				"path": "concepts/what-is-a-temporal-cron-job"
+			}]
 		},
 		{
 			"header": "Temporal Cron Jobs",
-			"h3_sections": [
-				{
-					"header": "none",
-					"path": "concepts/what-is-a-temporal-cron-job"
-				}
-			]
+			"h3_sections": [{
+				"header": "none",
+				"type": "explanation",
+				"path": "concepts/what-is-a-temporal-cron-job"
+			}]
 		},
 		{
 			"header": "Visibility",
-			"h3_sections": [
-				{
+			"h3_sections": [{
 					"header": "none",
+					"type": "explanation",
 					"path": "concepts/what-is-visibility"
 				},
 				{
 					"header": "Standard Visibility",
+					"type": "explanation",
 					"path": "concepts/what-is-standard-visibility"
 				},
 				{
 					"header": "Advanced Visibility",
+					"type": "explanation",
 					"path": "concepts/what-is-advanced-visibility"
 				},
 				{
 					"header": "List Filters",
+					"type": "explanation",
 					"path": "concepts/what-is-a-list-filter"
 				},
 				{
 					"header": "Search Attributes",
+					"type": "explanation",
 					"path": "concepts/what-is-a-search-attribute"
 				}
 			]
