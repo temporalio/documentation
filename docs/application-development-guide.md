@@ -10,7 +10,6 @@ import TabItem from '@theme/TabItem';
 
 This guide is meant to be a comprehensive overview of Temporal concepts.
 
-
 import RelatedReadList from '../components/RelatedReadList.js'
 
 <!-- prettier-ignore -->
@@ -80,4 +79,3 @@ workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, "Yo
 ```
 
 In Go, the name of the Workflow Type can be customized when the Workflow Definition is registered with a Worker Entity.
-

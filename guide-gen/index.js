@@ -15,10 +15,7 @@ const CONCEPTS_CONFIG = require("./guide-configs/concepts.json");
 const APP_DEV_CONFIG = require("./guide-configs/app-dev.json");
 
 const GUIDE_CONFIGS = {
-  "cfgs": [
-    CONCEPTS_CONFIG,
-    APP_DEV_CONFIG
-  ]
+  cfgs: [CONCEPTS_CONFIG, APP_DEV_CONFIG],
 };
 
 // File is the class that contains a filename and lines of the file
@@ -103,7 +100,7 @@ async function matchFilesToSection(h2_section, files) {
     if (h3_section.type == "lang-tabs") {
       let updated_langs = [];
       for (lang of h3_section.langs) {
-        if(lang.path != "none") {
+        if (lang.path != "none") {
           const file = files.find((obj) => {
             return obj.path === `${lang.path}${FILE_EXTENSION}`;
           });
@@ -160,7 +157,7 @@ async function generateGuide(guide_config) {
 
 async function generateLangTabs(h3_section) {
   let tabs = {};
-  for(const tab of h3_section.langs) {
+  for (const tab of h3_section.langs) {
     if (tab.path != "none") {
       tab.markdown = tab.file.raw_content;
     } else {
@@ -240,15 +237,15 @@ async function generateLinkIndex(guide_config) {
     for (const h3_section of h2_section.h3_sections) {
       if (h3_section.header == "none" && h3_section.type != "lang-tabs") {
         link_index.push({
-          "guide": guide_config.id,
-          "local_ref": localRef(h2_section.header),
-          "path": h3_section.path
+          guide: guide_config.id,
+          local_ref: localRef(h2_section.header),
+          path: h3_section.path,
         });
       } else if (h3_section.type != "lang-tabs") {
         link_index.push({
-          "guide": guide_config.id,
-          "local_ref": localRef(h3_section.header),
-          "path": h3_section.path
+          guide: guide_config.id,
+          local_ref: localRef(h3_section.header),
+          path: h3_section.path,
         });
       } else if (h3_section.type == "lang-tabs") {
         for (const lang of h3_section.langs) {
@@ -259,9 +256,9 @@ async function generateLinkIndex(guide_config) {
             header = h2_section.header;
           }
           link_index.push({
-            "guide": guide_config.id,
-            "local_ref": localRef(header),
-            "path": lang.path
+            guide: guide_config.id,
+            local_ref: localRef(header),
+            path: lang.path,
           });
         }
       }
@@ -297,14 +294,22 @@ async function prepToReplace(cfg, link_index) {
         updated_langs = [];
         for (lang of h3_section.langs) {
           // console.log(lang.file);
-          if(lang.path != "none") {
-            lang.file.raw_content = await parseAndReplace(lang.file.raw_content, link_index, cfg.id);
+          if (lang.path != "none") {
+            lang.file.raw_content = await parseAndReplace(
+              lang.file.raw_content,
+              link_index,
+              cfg.id
+            );
           }
           updated_langs.push(lang);
         }
         h3_section.langs = updated_langs;
       } else {
-        h3_section.file.raw_content = await parseAndReplace(h3_section.file.raw_content, link_index, cfg.id);
+        h3_section.file.raw_content = await parseAndReplace(
+          h3_section.file.raw_content,
+          link_index,
+          cfg.id
+        );
       }
       updated_h3_sections.push(h3_section);
     }
@@ -322,7 +327,7 @@ async function parseAndReplace(raw_content, link_index, current_guide_id) {
   let new_lines = [];
   for (let line of lines) {
     const line_links = line.match(docsLinkRegex);
-    if(line_links !== null) {
+    if (line_links !== null) {
       for (match of line_links) {
         const replaceable = match.substring(6);
         const link = link_index.find((obj) => {
@@ -337,7 +342,7 @@ async function parseAndReplace(raw_content, link_index, current_guide_id) {
     }
     new_lines.push(line);
   }
-  raw_content = new_lines.join('\n');
+  raw_content = new_lines.join("\n");
   return raw_content;
 
   async function replaceLinks(line, replaceable, link, current_guide_id) {
