@@ -125,7 +125,7 @@ See [Schedule-to-Close Timeout](/docs/concepts/what-is-a-schedule-to-close-timeo
   GreetingActivities activities = Workflow.newActivityStub(GreetingActivities.class,
                   ActivityOptions.newBuilder()
                           .setScheduleToStartTimeout(Duration.ofSeconds(5))
-                          // note that either StartToCloseTimeout or ScheduleToCloseTimeout are 
+                          // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
                           // required when setting Activity options.
                           .setScheduletoCloseTimeout(Duration.ofSeconds(20))
                           .build());
@@ -190,7 +190,7 @@ See [Start-to-Close Timeout](/docs/concepts/what-is-a-start-to-close-timeout)
       Workflow.newActivityStub(
           GreetingActivities.class,
           ActivityOptions.newBuilder()
-              // note that either StartToCloseTimeout or ScheduleToCloseTimeout are 
+              // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
               // required when setting Activity options.
               .setStartToCloseTimeout(Duration.ofSeconds(5))
               .setHeartbeatTimeout(Duration.ofSeconds(2))
@@ -206,7 +206,7 @@ See [Start-to-Close Timeout](/docs/concepts/what-is-a-start-to-close-timeout)
                               ImmutableMap.of(
                                 "EmailCustomerGreeting",
                                       ActivityOptions.newBuilder()
-                                          // note that either StartToCloseTimeout or ScheduleToCloseTimeout are 
+                                          // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
                                           // required when setting Activity options.
                                             .setStartToCloseTimeout(Duration.ofSeconds(5))
                                             .setHeartbeatTimeout(Duration.ofSeconds(2))
@@ -242,7 +242,7 @@ See [Heartbeat Timeout](/docs/concepts/what-is-a-heartbeat-timeout)
                               ImmutableMap.of(
                                 "EmailCustomerGreeting",
                                       ActivityOptions.newBuilder()
-                                            // note that either StartToCloseTimeout or ScheduleToCloseTimeout are 
+                                            // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
                                             // required when setting Activity options.
                                             .setStartToCloseTimeout(Duration.ofSeconds(5))
                                             .setTaskQueue("yourTaskQueue")
@@ -262,7 +262,7 @@ See [Task Queue](/docs/concepts/what-is-a-task-queue)
   ```java
   private final ActivityOptions options =
       ActivityOptions.newBuilder()
-          // note that either StartToCloseTimeout or ScheduleToCloseTimeout are 
+          // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
           // required when setting Activity options.
           .setStartToCloseTimeout(Duration.ofSeconds(5))
           .setRetryOptions(
@@ -282,7 +282,7 @@ See [Task Queue](/docs/concepts/what-is-a-task-queue)
                       ImmutableMap.of(
                           "EmailCustomerGreeting",
                           ActivityOptions.newBuilder()
-                                // note that either StartToCloseTimeout or ScheduleToCloseTimeout are 
+                                // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
                                 // required when setting Activity options.
                                 .setStartToCloseTimeout(Duration.ofSeconds(5))
                                 .setRetryOptions(

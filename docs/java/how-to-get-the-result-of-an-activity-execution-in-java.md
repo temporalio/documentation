@@ -30,7 +30,7 @@ public class FileProcessingActivitiesImpl implements FileProcessingActivities {
 
     // Used to correlate reply
     byte[] taskToken = ctx.getInfo().getTaskToken();
-   
+
     asyncDownloadFileFromS3(taskToken, bucketName, remoteName, localDirectory + localName);
     ctx.doNotCompleteOnReturn();
 
