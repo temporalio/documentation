@@ -16,7 +16,7 @@ It is the main unit of execution of a [Temporal Application](/docs/concepts/what
 - [How to spawn a Workflow Execution in TypeScript](/docs/typescript/workflows#how-to-start-and-cancel-workflows)
 
 Each Temporal Workflow Execution has exclusive access to its local state.
-It executes concurrently to all other Workflow Executions, and communicates with other Workflow Executions through [Signals](/docs/concepts/what-is-a-signal) and the environment through [Activities](/docs/concepts/what-is-an-activity). 
+It executes concurrently to all other Workflow Executions, and communicates with other Workflow Executions through [Signals](/docs/concepts/what-is-a-signal) and the environment through [Activities](/docs/concepts/what-is-an-activity).
 While a single Workflow Execution has limits on size and throughput, a Temporal Application can consist of millions to billions of Workflow Executions.
 
 **Durability**
