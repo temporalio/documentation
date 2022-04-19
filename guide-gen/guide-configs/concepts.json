@@ -262,14 +262,6 @@
 			}]
 		},
 		{
-			"header": "Temporal Cron Jobs",
-			"h3_sections": [{
-				"header": "none",
-				"type": "explanation",
-				"path": "concepts/what-is-a-temporal-cron-job"
-			}]
-		},
-		{
 			"header": "Visibility",
 			"h3_sections": [{
 					"header": "none",

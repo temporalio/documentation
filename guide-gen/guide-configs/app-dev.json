@@ -1,0 +1,20 @@
+{
+  "file_name": "application-development-guide.md",
+  "id": "application-development-guide",
+  "title": "Temporal Application development guide",
+  "sidebar_label": "Application development",
+  "description": "This guide is meant to be a comprehensive overview of Temporal concepts.",
+  "add_tabs_support": true,
+  "h2_sections" : [
+    {
+      "header": "none",
+      "h3_sections": [
+        {
+					"header": "none",
+					"type": "explanation",
+					"path": "go/how-to-spawn-a-workflow-execution-in-go"
+				}
+      ]
+    }
+  ]
+}
