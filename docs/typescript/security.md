@@ -217,5 +217,5 @@ Temporal has no opinions on production deployment strategy other than the connec
 
 ## Encryption at rest with Payload Codec
 
-- [Data Converter ➡️ Encryption]
-- [Data Converters in TypeScript ➡️ Encryption]
+- [Data Converter ➡️ Encryption](https://docs.temporal.io/docs/concepts/what-is-a-data-converter#encryption)
+- [Data Converters in TypeScript ➡️ Encryption](https://docs.temporal.io/docs/typescript/data-converters#encryption)
