@@ -118,6 +118,12 @@ previous active cluster. During such conflict resolution, Temporal re-injects an
 new history before discarding replication tasks. Even though some progress could rollback during failovers, Temporal
 provides the guarantee that Workflows won’t get stuck and will continue to make forward progress.
 
+## Automatic Forwarding on Namespaces
+
+Temporal supports automatic forwarding of Start, Signal, and Query requests to the active cluster. This feature must be enabled through a dynamic conflict flag for the given namespace.
+
+Once enabled, these Tasks will be sent to the Parent Task Queue partition that matches that namespace, if it exists.
+
 ### Visibility API
 
 All Visibility APIs are allowed on both active and standby clusters. This enables
