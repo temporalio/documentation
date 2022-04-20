@@ -8,18 +8,11 @@ tags:
   - go
 ---
 
-import RelatedReadList from '../components/RelatedReadList.js'
+To spawn a [Workflow Execution](/docs/concepts/what-is-a-workflow-execution), use the `ExecuteWorkflow()` method on the Go SDK [`Client`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client#Client), which is available via [`NewClient()`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client#NewClient) in the [`go.temporal.io/sdk/client`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client) package.
 
-<!-- prettier-ignore -->
-import * as WhatIsAWorkflowExecution from '../concepts/what-is-a-workflow-execution.md'
-import * as WhatIsAWorkflowDefinition from '../concepts/what-is-a-workflow-definition.md'
-import * as HowToSpawnAChildWorkflowExecutionInGo from './how-to-spawn-a-child-workflow-execution-in-go.md'
-
-To spawn a <preview page={WhatIsAWorkflowExecution}>Workflow Execution</preview>, use the `ExecuteWorkflow()` method on the Go SDK [`Client`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client#Client), which is available via [`NewClient()`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client#NewClient) in the [`go.temporal.io/sdk/client`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client) package.
-
-The Go SDK Temporal Client should never be used inside a <preview page={WhatIsAWorkflowDefinition}>Workflow Definition</preview>.
+The Go SDK Temporal Client should never be used inside a [Workflow Definition](/docs/concepts/what-is-a-workflow-definition).
 To spawn a Workflow Execution from within another Workflow, use the [`ExecuteChildWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ExecuteChildWorkflow) API.
-For more information, see <preview page={HowToSpawnAChildWorkflowExecutionInGo}>How to spawn a Child Workflow Execution in Go</preview>.
+For more information, see [How to spawn a Child Workflow Execution in Go](/docs/go/how-to-spawn-a-child-workflow-execution-in-go).
 
 The `ExecuteWorkflow()` API call requires an instance of [`context.Context`](https://pkg.go.dev/context#Context), an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client#StartWorkflowOptions), a Workflow Type name, and all variables to be passed to the Workflow Execution.
 The `ExecuteWorkflow()` call returns a Future, which can be used to get the result of the Workflow Execution.

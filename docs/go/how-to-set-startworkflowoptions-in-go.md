@@ -8,21 +8,6 @@ tags:
   - options
 ---
 
-import {RelatedReadContainer, RelatedReadItem} from '../components/RelatedReadList.js'
-
-<!-- prettier-ignore -->
-import * as WhatIsAWorkflowId from '../concepts/what-is-a-workflow-id.md'
-import * as WhatIsATaskQueue from '../concepts/what-is-a-task-queue.md'
-import * as WhatIsAWorkflowExecutionTimeout from '../concepts/what-is-a-workflow-execution-timeout.md'
-import * as WhatIsAWorkflowRunTimeout from '../concepts/what-is-a-workflow-run-timeout.md'
-import * as WhatIsAWorkflowTaskTimeout from '../concepts/what-is-a-workflow-task-timeout.md'
-import * as WhatIsAWorkflowIdReusePolicy from '../concepts/what-is-a-workflow-id-reuse-policy.md'
-import * as WhatIsARetryPolicy from '../concepts/what-is-a-retry-policy.md'
-import * as WhatIsATemporalCronJob from '../concepts/what-is-a-temporal-cron-job.md'
-import * as WhatIsAMemo from '../concepts/what-is-a-memo.md'
-import * as WhatIsASearchAttribute from '../concepts/what-is-a-search-attribute.md'
-import * as HowToAddACustomSearchAttributeToAClusterUsingTctl from '../tctl/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl.md'
-
 Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, and pass the instance to the `ExecuteWorkflow` call.
 
 The following fields are available:
@@ -43,6 +28,8 @@ The following fields are available:
 
 ### `ID`
 
+**How to set a custom Workflow Id in Go**
+
 - Type: `string`
 - Default: System generated UUID
 
@@ -56,10 +43,6 @@ if err != nil {
   // ...
 }
 ```
-
-<RelatedReadContainer>
-  <RelatedReadItem page={WhatIsAWorkflowId} />
-</RelatedReadContainer>
 
 ### `TaskQueue`
 
@@ -75,10 +58,6 @@ if err != nil {
   // ...
 }
 ```
-
-<RelatedReadContainer>
-  <RelatedReadItem page={WhatIsATaskQueue} />
-</RelatedReadContainer>
 
 ### `WorkflowExecutionTimeout`
 
@@ -96,10 +75,6 @@ if err != nil {
 }
 ```
 
-<RelatedReadContainer>
-  <RelatedReadItem page={WhatIsAWorkflowExecutionTimeout} />
-</RelatedReadContainer>
-
 ### `WorkflowRunTimeout`
 
 - Type: `time.Duration`
@@ -116,10 +91,6 @@ if err != nil {
 }
 ```
 
-<RelatedReadContainer>
-  <RelatedReadItem page={WhatIsAWorkflowRunTimeout} />
-</RelatedReadContainer>
-
 ### `WorkflowTaskTimeout`
 
 - Type: `time.Duration`
@@ -135,10 +106,6 @@ if err != nil {
   // ...
 }
 ```
-
-<RelatedReadContainer>
-  <RelatedReadItem page={WhatIsAWorkflowTaskTimeout} />
-</RelatedReadContainer>
 
 ### `WorkflowIDReusePolicy`
 
@@ -158,10 +125,6 @@ if err != nil {
 }
 ```
 
-<RelatedReadContainer>
-  <RelatedReadItem page={WhatIsAWorkflowIdReusePolicy} />
-</RelatedReadContainer>
-
 ### `WorkflowExecutionErrorWhenAlreadyStarted`
 
 - Type: `bool`
@@ -179,6 +142,8 @@ if err != nil {
 ```
 
 ### `RetryPolicy`
+
+**How to set a Retry Policy for a Workflow Execution in Go**
 
 Create an instance of a [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy) from the `go.temporal.io/sdk/temporal` package and provide it as the value to the `RetryPolicy` field of the instance of `StartWorkflowOptions`.
 
@@ -201,10 +166,6 @@ if err != nil {
 }
 ```
 
-<RelatedReadContainer>
-  <RelatedReadItem page={WhatIsARetryPolicy} />
-</RelatedReadContainer>
-
 ### `CronSchedule`
 
 - Type: `string`
@@ -220,10 +181,6 @@ if err != nil {
   // ...
 }
 ```
-
-<RelatedReadContainer>
-  <RelatedReadItem page={WhatIsATemporalCronJob} />
-</RelatedReadContainer>
 
 [Sample](https://github.com/temporalio/samples-go/tree/master/cron)
 
@@ -245,11 +202,9 @@ if err != nil {
 }
 ```
 
-<RelatedReadContainer>
-  <RelatedReadItem page={WhatIsAMemo} />
-</RelatedReadContainer>
-
 ### `SearchAttributes`
+
+**How to set Workflow Execution Search Attributes in Go**
 
 - Type: `map[string]interface{}`
 - Default: Empty.
@@ -277,8 +232,3 @@ if err != nil {
   // ...
 }
 ```
-
-<RelatedReadContainer>
-  <RelatedReadItem page={WhatIsASearchAttribute} />
-  <RelatedReadItem page={HowToAddACustomSearchAttributeToAClusterUsingTctl} />
-</RelatedReadContainer>

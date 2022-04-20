@@ -8,9 +8,7 @@ tags:
   - go
 ---
 
-import RelatedReadList from '../components/RelatedReadList.js'
-
-To spawn a Child Workflow Execution in Go, use the [`ExecuteChildWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ExecuteChildWorkflow) API, which is available from the `go.temporal.io/sdk/workflow` package.
+To spawn a [Child Workflow Execution](/docs/concepts/what-is-a-child-workflow-execution) in Go, use the [`ExecuteChildWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ExecuteChildWorkflow) API, which is available from the `go.temporal.io/sdk/workflow` package.
 
 The `ExecuteChildWorkflow` call requires an instance of [`workflow.Context`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/workflow#Context), with an instance of [`workflow.ChildWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ChildWorkflowOptions) applied to it, the Workflow Type, and any parameters that should be passed to the Child Workflow Execution.
 
@@ -44,7 +42,7 @@ func YourOtherWorkflowDefinition(ctx workflow.Context, params ChildParams) (Chil
 }
 ```
 
-### Parent Close Policy
+#### Parent Close Policy
 
 In Go, a Parent Close Policy is set on the `ParentClosePolicy` field of an instance of [`workflow.ChildWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ChildWorkflowOptions).
 The possible values can be obtained from the [`go.temporal.io/api/enums/v1`](https://pkg.go.dev/go.temporal.io/api/enums/v1#ParentClosePolicy) package.
@@ -57,13 +55,7 @@ The Child Workflow Options are then applied to the the instance of `workflow.Con
 
 See the **Asynchronous execution** section below for an example.
 
-<RelatedReadList
-readlist={[
-["What is a Parent Close Policy?","/docs/concepts/what-is-a-parent-close-policy","explanation"],  
-]}
-/>
-
-### Asynchronous execution
+#### Asynchronous execution
 
 To asynchronously spawn a Child Workflow Execution, the Child Workflow must have an "Abandon" Parent Close Policy set in the Child Workflow Options.
 Additionally, the Parent Workflow Execution must wait for the "ChildWorkflowExecutionStarted" event to appear in its event history before it completes.
@@ -101,9 +93,3 @@ func YourOtherWorkflowDefinition(ctx workflow.Context, params ChildParams) (Chil
   return resp, nil
 }
 ```
-
-<RelatedReadList
-readlist={[
-["What is a Child Workflow Execution?","/docs/concepts/what-is-a-child-workflow-execution","explanation"],  
-]}
-/>
