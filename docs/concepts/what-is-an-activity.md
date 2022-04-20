@@ -12,7 +12,7 @@ Temporal documentation aims to be explicit and differentiate between them.
 
 The purpose of an Activity is to execute a single, well-defined action (either short or long running), such as calling another service, transcoding a media file, or sending an email.
 
-## Activities calling Activities
+#### Activities calling Activities
 
 For some use cases, having an Activity call another Activity might seem convenient.
 We generally recommend not doing so. Activities are regular functions, so calling one directly is not seen—and therefore not logged—by the Temporal Server.
@@ -63,7 +63,7 @@ Long running Activities can be used as a special case of leader election. Tempor
 
 One common use case for such leader election is monitoring. An Activity executes an internal loop that periodically polls some API and checks for some condition. It also heartbeats on every iteration. If the condition is satisfied, the Activity completes which lets its Workflow to handle it. If the Activity worker dies, the Activity times out after the heartbeat interval is exceeded and is retried on a different worker. The same pattern works for polling for new files in Amazon S3 buckets or responses in REST or other synchronous APIs.
 
-:::note Cancellations are not immediate
+note Cancellations are not immediate
 
 `ctx.Done()` is only signaled when a heartbeat is sent to the service.
 Temporal's SDK throttles this so a heartbeat may not be sent to the service until 80% of the heartbeat timeout has elapsed.
@@ -71,7 +71,7 @@ Temporal's SDK throttles this so a heartbeat may not be sent to the service unti
 For example, if your heartbeat timeout is 20 seconds, `ctx.Done()` will not be signaled until 80% of 20 seconds (~16 seconds) has elapsed.
 To increase or decrease the delay of cancelation, modify the heartbeat timeout defined for the activity context.
 
-### Asynchronous Activity Completion
+#### Asynchronous Activity Completion
 
 Asynchronous Activity Completion occurs when the final result of a computation, started by an Activity, is provided to the Temporal System from an external system.
 
