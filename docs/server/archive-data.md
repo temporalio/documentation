@@ -139,7 +139,7 @@ If the retention period isn't set, then it defaults to 2 days.
 The minimum retention period is 1 day.
 The maximum retention period is 30 days.
 
-Setting the retention period to 0, results in the following error, _A valid retention period is not set on request_.
+Setting the retention period to 0 results in the error _A valid retention period is not set on request_.
 :::
 
 Next, run a sample Workflow such as the [helloworld temporal sample](https://github.com/temporalio/temporal-go-samples/tree/master/helloworld).
