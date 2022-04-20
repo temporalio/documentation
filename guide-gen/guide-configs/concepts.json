@@ -44,31 +44,6 @@
 					"path": "concepts/what-is-a-workflow-definition"
 				},
 				{
-					"header": "none",
-					"type": "lang-tabs",
-					"langs": [{
-							"lang": "go",
-							"title": "Go",
-							"path": "go/how-to-develop-a-workflow-definition-in-go"
-						},
-						{
-							"lang": "java",
-							"title": "Java",
-							"path": "none"
-						},
-						{
-							"lang": "php",
-							"title": "PHP",
-							"path": "none"
-						},
-						{
-							"lang": "typescript",
-							"title": "TypeScript",
-							"path": "none"
-						}
-					]
-				},
-				{
 					"header": "Workflow Type",
 					"type": "explanation",
 					"path": "concepts/what-is-a-workflow-type"

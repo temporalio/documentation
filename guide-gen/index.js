@@ -198,7 +198,7 @@ async function frontmatter(guide_config) {
   guide_string = `${guide_string}title: ${guide_config.title}\n`;
   guide_string = `${guide_string}sidebar_label: ${guide_config.sidebar_label}\n`;
   guide_string = `${guide_string}description: ${guide_config.description}\n`;
-  guide_string = `${guide_string}toc_max_heading_level: 4\n`;
+  guide_string = `${guide_string}toc_max_heading_level: ${guide_config.toc_max_heading_level}\n`;
   guide_string = `${guide_string}---\n`;
   guide_string = `${guide_string}\n`;
   if (guide_config.add_tabs_support) {
