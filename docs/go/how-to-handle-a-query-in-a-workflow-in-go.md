@@ -15,6 +15,9 @@ The handler must be a function that returns two values:
 1. A serializable result
 2. An error
 
+Do not include any logic that causes Command generation within a Query handler, such as Side Effects or local Activities.
+This will lead to unexpected behavior.
+
 The handler function can receive any number of input parameters, but all input parameters must be serializable.
 The following sample code sets up a Query Handler that handles the `current_state` Query type:
 
