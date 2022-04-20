@@ -36,7 +36,7 @@ The `workflow.Context` entity operates similarly to the standard `context.Contex
 The only difference between `workflow.Context` and `context.Context` is that the `Done()` function, provided by `workflow.Context`, returns `workflow.Channel` instead of the standard Go `chan`.
 
 The second parameter, `string`, is a custom parameter that is passed to the Workflow when it is invoked.
-A Workflow Definition may support multiple custom parameters, or none.
+A Workflow Definition may support multiple custom parameters, or none. These parameters can be regular type variabes or safe pointers.
 However, the best practice is to pass a single parameter that is of a `struct` type so there can be some backward compatibility if new parameters are added.
 
 ```go
@@ -50,7 +50,7 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error
 }
 ```
 
-All Workflow Definition parameters must be serializable, which means that parameters can’t be channels, functions, variadic, or unsafe pointers.
+All Workflow Definition parameters must be serializable, regardless of whether pointers or regular type values are used. Parameters can’t be channels, functions, variadic, or unsafe pointers.
 
 ### Workflow return values in Go
 
