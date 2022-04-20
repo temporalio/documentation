@@ -40,7 +40,7 @@ if err != nil {
 fmt.Printf("Response: %v\n", response) // "foo" + currentState + "baz"
 ```
 
-### `QueryWorkflowWithOptions()` API
+#### `QueryWorkflowWithOptions()` API
 
 The `QueryWorkflowWithOptions()` function is an alternative way to send a Query to a Workflow that has a few extra configuration options.
 
@@ -76,9 +76,7 @@ if err != nil {
 }
 ```
 
-#### Consistency level
-
-Example:
+Consistency level example:
 
 ```go
 resp, err := temporalClient.QueryWorkflowWithOptions(ctx, &client.QueryWorkflowWithOptionsRequest{

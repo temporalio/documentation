@@ -16,7 +16,7 @@ The SideEffect API returns a Future, an instance of [`converter.EncodedValue`](h
 
 Use the `Get` method on the Future to retrieve the result of the Side Effect.
 
-### Correct implementation
+#### Correct implementation
 
 The following example demonstrates the correct way to use `SideEffect`:
 
@@ -31,7 +31,7 @@ encodedRandom.Get(&random)
 }
 ```
 
-### Incorrect implementation
+#### Incorrect implementation
 
 The following example demonstrates how NOT to use `SideEffect`:
 

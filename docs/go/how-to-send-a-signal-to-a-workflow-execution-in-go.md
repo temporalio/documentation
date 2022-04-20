@@ -32,7 +32,7 @@ Possible errors:
 - `serviceerror.Internal`
 - `serviceerror.Unavailable`
 
-### Signal as a struct
+#### Signal as a struct
 
 Structs can be used as Signal data, as long as the struct is [serializable via the Data Converter](https://pkg.go.dev/go.temporal.io/sdk/converter#CompositeDataConverter.ToPayload).
 The `Receive()` method on the Data Converter decodes the data into the Struct within the Workflow ([How to handle a Signal in a Workflow in Go](https://docs.temporal.io/docs/go/how-to-handle-a-signal-in-a-workflow-in-go)).
@@ -54,7 +54,7 @@ if err != nil {
 }
 ```
 
-### Signal-With-Start
+#### Signal-With-Start
 
 If you are unsure of the status of the Workflow Execution that you are sending the Signal to, you can use the `SignalWithStartWorkflow()` method on the Go SDK Temporal Client to start the Workflow Execution and give it the Signal it at the same time.
 
@@ -69,7 +69,7 @@ if err != nil {
 }
 ```
 
-### How to send a Signal from within a Workflow
+#### How to send a Signal from within a Workflow
 
 A Signal can be sent from within a Workflow to a different Workflow Execution using the [`SignalExternalWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SignalExternalWorkflow) API from the `go.temporal.io/sdk/workflow` package.
 

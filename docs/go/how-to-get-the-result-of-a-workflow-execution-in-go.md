@@ -64,7 +64,7 @@ Then call the `Get()` method on the instance of `WorkflowRun` that is returned, 
   // ...
 ```
 
-### Get last completion result
+#### Get last completion result
 
 In the case of a [Temporal Cron Job](/docs/concepts/what-is-a-temporal-cron-job), you might need to get the result of the previous Workflow Run and use it in the current Workflow Run.
 
