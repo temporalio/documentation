@@ -135,7 +135,7 @@ Then register a new Namespace with Archival enabled.
 ```
 
 :::note
-If the retentionn period isn't set, then it defaults to 2 days.
+If the retention period isn't set, then it defaults to 2 days.
 The minimum retention period is 1 day.
 The maximum retention period is 30 days.
 
