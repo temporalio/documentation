@@ -1,21 +1,147 @@
 {
-  "file_name": "application-development-guide.md",
-  "id": "application-development-guide",
-  "title": "Temporal Application development guide",
-  "sidebar_label": "Application development",
-  "description": "This guide is meant to be a comprehensive overview of Temporal concepts.",
-  "toc_max_heading_level": 4,
-  "add_tabs_support": true,
-  "h2_sections" : [
-    {
-      "header": "none",
-      "h3_sections": [
-        {
+	"file_name": "application-development-guide.md",
+	"id": "application-development-guide",
+	"title": "Temporal Application development guide",
+	"sidebar_label": "Application development",
+	"description": "This guide is meant to be a comprehensive overview of Temporal concepts.",
+	"toc_max_heading_level": 3,
+	"add_tabs_support": true,
+	"h2_sections": [{
+			"header": "none",
+			"h3_sections": [{
+				"header": "none",
+				"type": "context",
+				"path": "app-dev-context/intro"
+			}]
+		},
+		{
+			"header": "Foundations",
+			"h3_sections": [{
 					"header": "none",
-					"type": "explanation",
-					"path": "go/how-to-spawn-a-workflow-execution-in-go"
+					"type": "context",
+					"path": "app-dev-context/foundations"
+				},
+        {
+          "header": "How to run a dev Cluster",
+          "type": "how-to",
+          "path": "clusters/quick-install"
+        },
+        {
+					"header": "How to add your SDK",
+					"type": "lang-tabs",
+					"langs": [{
+							"lang": "go",
+							"title": "Go",
+							"path": "go/index"
+						},
+						{
+							"lang": "java",
+							"title": "Java",
+							"path": "java/index"
+						},
+						{
+							"lang": "php",
+							"title": "PHP",
+							"path": "none"
+						},
+						{
+							"lang": "typescript",
+							"title": "TypeScript",
+							"path": "none"
+						}
+					]
+				},
+				{
+					"header": "How to develop Workflows",
+					"type": "context",
+					"path": "app-dev-context/developing-workflows"
+				},
+				{
+					"header": "none",
+					"type": "lang-tabs",
+					"langs": [{
+							"lang": "go",
+							"title": "Go",
+							"path": "go/how-to-develop-a-workflow-definition-in-go"
+						},
+						{
+							"lang": "java",
+							"title": "Java",
+							"path": "java/how-to-develop-a-workflow-definition-in-java"
+						},
+						{
+							"lang": "php",
+							"title": "PHP",
+							"path": "none"
+						},
+						{
+							"lang": "typescript",
+							"title": "TypeScript",
+							"path": "none"
+						}
+					]
+				},
+				{
+					"header": "How to develop Activities",
+					"type": "context",
+					"path": "app-dev-context/developing-activities"
+				},
+				{
+					"header": "none",
+					"type": "lang-tabs",
+					"langs": [{
+							"lang": "go",
+							"title": "Go",
+							"path": "go/how-to-develop-an-activity-definition-in-go"
+						},
+						{
+							"lang": "java",
+							"title": "Java",
+							"path": "java/how-to-develop-an-activity-definition-in-java"
+						},
+						{
+							"lang": "php",
+							"title": "PHP",
+							"path": "none"
+						},
+						{
+							"lang": "typescript",
+							"title": "TypeScript",
+							"path": "none"
+						}
+					]
+				},
+        {
+					"header": "How to spawn an Activity Execution",
+					"type": "context",
+					"path": "app-dev-context/spawning-activities"
+				},
+				{
+					"header": "none",
+					"type": "lang-tabs",
+					"langs": [{
+							"lang": "go",
+							"title": "Go",
+							"path": "go/how-to-spawn-an-activity-execution-in-go"
+						},
+						{
+							"lang": "java",
+							"title": "Java",
+							"path": "java/how-to-spawn-an-activity-execution-in-java"
+						},
+						{
+							"lang": "php",
+							"title": "PHP",
+							"path": "none"
+						},
+						{
+							"lang": "typescript",
+							"title": "TypeScript",
+							"path": "none"
+						}
+					]
 				}
-      ]
-    }
-  ]
+			]
+		}
+	]
 }
