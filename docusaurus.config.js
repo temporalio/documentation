@@ -25,7 +25,6 @@ module.exports = {
         },
       };
     },
-    "docusaurus-tailwindcss-loader",
   ],
   themeConfig: {
     colorMode: {
