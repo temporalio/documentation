@@ -68,6 +68,10 @@ html[data-theme="light"] {
 }
 .intro ul {
   list-style: none;
+  padding: 0;
+}
+.intro .pl-4 {
+  padding-left: 1rem;
 }
 main.p-6 {
   padding: 1.5rem;
