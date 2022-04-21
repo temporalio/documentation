@@ -8,7 +8,7 @@
 /* You can override the default Infima variables here. */
 
 :root {
-  --ifm-color-primary: #127ae5;
+  --ifm-color-primary: #18181b;
   --ifm-color-primary-dark: #0e60b2;
   --ifm-color-primary-darker: #093d71;
   --ifm-color-primary-darkest: #041a31;
@@ -53,8 +53,68 @@ html[data-theme="light"] {
   --card-color: rgba(239, 246, 255);
 }
 
+/* If we scope things with .intro we can attach to the tailwind styles on only the intro page */
+.intro .flex {
+  display: flex;
+}
+.intro .flex-col {
+  flex-direction: column;
+}
+.intro .grid {
+  display: grid;
+}
+.intro .gap-6 {
+  gap: 1.5rem;
+}
+.intro ul {
+  list-style: none;
+}
+main.p-6 {
+  padding: 1.5rem;
+}
+
+.intro .grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+.intro .grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.intro .list-disc {
+  list-style-type: disc;
+}
+
+@media (min-width: 768px) {
+  .intro .md\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .intro .md\:p-10 {
+    padding: 2.5rem;
+  }
+}
+
 .navbar__logo img {
   height: 35px;
+}
+
+.landing-card {
+  border-radius: 0.5rem;
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
+    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  --tw-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color),
+    0 1px 2px -1px var(--tw-shadow-color);
+  background-color: var(--ifm-card-background-color);
+  padding: 1.25rem;
+}
+
+.code-logo {
+  height: 32px;
+  width: 32px;
+}
+
+.icon {
+  width: 40px;
+  height: 40px;
 }
 
 @font-face {
