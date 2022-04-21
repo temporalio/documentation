@@ -1,7 +1,7 @@
 ---
 id: commands
-title: Command reference
-sidebar_label: Event
+title: Commands reference
+sidebar_label: Commands reference
 description: A Command is a requested action issued by a Worker to the Temporal Cluster after a Workflow Task Execution completes.
 tags:
   - reference
