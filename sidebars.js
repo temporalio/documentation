@@ -562,12 +562,12 @@ module.exports = {
       collapsible: false,
       link: {
         type: "doc",
-        id: "reference/index",
+        id: "references/index",
       },
       items: [
-        "reference/sdk-metrics",
-        "reference/commands",
-        "reference/events",
+        "references/sdk-metrics",
+        "references/commands",
+        "references/events",
         {
           type: "link",
           label: "Go SDK reference",
@@ -583,7 +583,7 @@ module.exports = {
           label: "TypeScript SDK reference",
           href: "https://typescript.temporal.io",
         },
-        "reference/glossary",
+        "references/glossary",
       ],
     },
   ],

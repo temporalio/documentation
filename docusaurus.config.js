@@ -109,8 +109,8 @@ module.exports = {
               label: "Samples library",
             },
             {
-              to: "/docs/reference",
-              activeBasePath: "/docs/reference",
+              to: "/docs/references",
+              activeBasePath: "/docs/references",
               label: "References",
             },
           ],

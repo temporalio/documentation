@@ -11,4 +11,4 @@ Events are created by the Temporal Cluster in response to external occurrences a
 
 All Events are recorded in the [Event History](/docs/concepts/what-is-an-event-history).
 
-A list of all possible Events that could appear in a Workflow Execution Event History is provided in the [Event reference](/docs/reference/events).
+A list of all possible Events that could appear in a Workflow Execution Event History is provided in the [Event reference](/docs/references/events).

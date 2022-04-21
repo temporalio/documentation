@@ -3,11 +3,11 @@ id: index
 title: Temporal Platform references
 ---
 
-[SDK metric reference](/docs/reference/sdk-metrics)
+[SDK metric reference](/docs/references/sdk-metrics)
 
-[Command reference](/docs/reference/commands)
+[Command reference](/docs/references/commands)
 
-[Event reference](/docs/reference/events)
+[Event reference](/docs/references/events)
 
 [Go SDK reference](https://pkg.go.dev/go.temporal.io/sdk)
 
@@ -15,4 +15,4 @@ title: Temporal Platform references
 
 [TypeScript reference](https://typescript.temporal.io")
 
-[Glossary](/docs/reference/glossary)
+[Glossary](/docs/references/glossary)
