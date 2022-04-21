@@ -12,6 +12,8 @@ A Temporal Cluster is the Temporal Server paired with persistence.
 - [How to quickly install the Temporal Cluster using Docker Compose](/docs/clusters/quick-install/#docker-compose)
 - [How to deploy the Temporal Server to Kubernetes for testing and development](/docs/clusters/quick-install/#helm-charts)
 
+### Temporal Server
+
 The Temporal Server consists of four independently scalable services:
 
 - Frontend gateway: for rate limiting, routing, authorizing
@@ -30,7 +32,7 @@ The Frontend Service scales differently than the others, because it has no shard
 
 Each service is aware of the others, including scaled instances, through a membership protocol via [Ringpop](https://github.com/temporalio/ringpop-go).
 
-### Frontend Service
+#### Frontend Service
 
 The Frontend Service is a stateless gateway service that exposes a strongly typed [Proto API](https://github.com/temporalio/api/blob/master/temporal/api/workflowservice/v1/service.proto).
 The Frontend Service is responsible for rate limiting, authorizing, validating, and routing all in-bound calls.
@@ -56,7 +58,7 @@ The Frontend service talks to the Matching service, History service, Worker serv
 - It uses the grpcPort 7233 to host the service handler.
 - It uses port 6933 for membership related communication.
 
-### History service
+#### History service
 
 The History Service tracks the state of Workflow Executions.
 
@@ -78,7 +80,7 @@ The History service talks to the Matching Service and the Database.
 - It uses grpcPort 7234 to host the service handler.
 - It uses port 6934 for membership related communication.
 
-### Matching service
+#### Matching service
 
 The Matching Service is responsible for hosting Task Queues for Task dispatching.
 
@@ -92,7 +94,7 @@ It talks to the Frontend service, History service, and the database.
 - It uses grpcPort 7235 to host the service handler.
 - It uses port 6935 for membership related communication.
 
-### Worker service
+#### Worker service
 
 The Worker Service runs background processing for the replication queue, system Workflows, and in versions older than 1.5.0, the Kafka visibility processor.
 

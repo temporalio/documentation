@@ -21,7 +21,7 @@ We strongly recommend that you write a Workflow Definition in a language that ha
 - [How to develop a Workflow Definition in PHP](/docs/php/workflows)
 - [How to develop a Workflow Definition in TypeScript](/docs/typescript/workflows/#how-to-write-a-workflow-function)
 
-### Deterministic constraints
+#### Deterministic constraints
 
 A critical aspect of developing Workflow Definitions is ensuring they exhibit certain deterministic traits – that is, making sure that the same Commands are emitted in the same sequence, whenever a corresponding Workflow Function Execution (instance of the Function Definition) is re-executed.
 
@@ -97,7 +97,7 @@ When those APIs are used, the results are stored as part of the Event History, w
 
 In other words, all operations that do not purely mutate the Workflow Execution's state should occur through a Temporal SDK API.
 
-### What is Workflow Versioning?
+#### Workflow Versioning
 
 The Workflow Versioning feature enables the creation of logical branching inside a Workflow Definition based on a developer specified version identifier.
 This feature is useful for Workflow Definition logic needs to be updated, but there are running Workflow Executions that currently depends on it.
@@ -107,7 +107,7 @@ It is important to note that a practical way to handle different versions of Wor
 - [How to version Workflow Definitions in Java](/docs/java/versioning)
 - [How to version Workflow Definitions in TypeScript](/docs/typescript/patching)
 
-### Handling unreliable Worker Processes
+#### Handling unreliable Worker Processes
 
 You do not handle Worker Process failure or restarts in a Workflow Definition.
 
