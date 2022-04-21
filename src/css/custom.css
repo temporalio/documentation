@@ -86,7 +86,10 @@ main.p-6 {
 .intro .list-disc {
   list-style-type: disc;
 }
-
+main.max-w-screen-lg {
+  max-width: 1024px;
+  margin: auto;
+}
 @media (min-width: 768px) {
   .intro .md\:grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
