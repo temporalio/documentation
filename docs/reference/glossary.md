@@ -2,14 +2,12 @@
 id: glossary
 title: Glossary
 description: The following terms have specific definitions within the context of the Temporal Platform.
+sidebar_label: Glossary
 tags:
   - reference
 ---
 
-<!-- prettier-ignore -->
-import * as WhatIsTheTemporalPlatform from '../concepts/what-is-the-temporal-platform.md'
-
-The following terms have specific definitions within the context of the <preview page={WhatIsTheTemporalPlatform}>Temporal Platform</preview>.
+The following terms are used in [Temporal Platform](/docs/concepts/what-is-the-temporal-platform) documentation.
 
 - [Activity](/docs/concepts/what-is-an-activity)
 - [Activity Execution](/docs/concepts/what-is-an-activity-execution)

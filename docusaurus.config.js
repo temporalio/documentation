@@ -108,6 +108,11 @@ module.exports = {
               activeBasePath: "/docs/samples-library",
               label: "Samples library",
             },
+            {
+              to: "/docs/reference",
+              activeBasePath: "/docs/reference",
+              label: "References",
+            },
           ],
         },
         {
