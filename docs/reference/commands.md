@@ -7,7 +7,6 @@ tags:
   - reference
 ---
 
-
 ### CompleteWorkflowExecution
 
 This Command is triggered when the Workflow function execution returns.
