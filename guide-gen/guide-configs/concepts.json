@@ -28,7 +28,6 @@
 					"type": "explanation",
 					"path": "concepts/what-is-a-temporal-sdk"
 				}
-
 			]
 		},
 		{
@@ -54,16 +53,73 @@
 					"path": "concepts/what-is-a-workflow-execution"
 				},
 				{
-					"header": "Workflow Execution Timeout",
+					"header": "Commands",
 					"type": "explanation",
-					"path": "concepts/what-is-a-workflow-execution-timeout"
+					"path": "concepts/what-is-a-command"
 				},
 				{
-					"header": "Workflow Run Timeout",
+					"header": "Event History",
 					"type": "explanation",
-					"path": "concepts/what-is-a-workflow-run-timeout"
+					"path": "concepts/what-is-an-event-history"
 				},
 				{
+					"header": "Events",
+					"type": "explanation",
+					"path": "concepts/what-is-an-event"
+				}
+			]
+		},
+		{
+			"header": "Activities",
+			"h3_sections": [{
+					"header": "none",
+					"type": "explanation",
+					"path": "concepts/what-is-an-activity"
+				},
+				{
+					"header": "Activity Definition",
+					"type": "explanation",
+					"path": "concepts/what-is-an-activity-definition"
+				},
+				{
+					"header": "Activity Type",
+					"type": "explanation",
+					"path": "concepts/what-is-an-activity-type"
+				},
+				{
+					"header": "Activity Execution",
+					"type": "explanation",
+					"path": "concepts/what-is-an-activity-execution"
+				}
+			]
+		},
+		{
+			"header": "Workers",
+			"h3_sections": [{
+					"header": "none",
+					"type": "explanation",
+					"path": "concepts/what-is-a-worker"
+				},
+				{
+					"header": "Worker Program",
+					"type": "explanation",
+					"path": "concepts/what-is-a-worker-program"
+				},
+				{
+					"header": "Worker Process",
+					"type": "explanation",
+					"path": "concepts/what-is-a-worker-process"
+				},
+				{
+					"header": "Worker Entity",
+					"type": "explanation",
+					"path": "concepts/what-is-a-worker-entity"
+				}
+			]
+		},
+		{
+			"header": "Application development features",
+			"h3_sections": [{
 					"header": "Workflow Id",
 					"type": "explanation",
 					"path": "concepts/what-is-a-workflow-id"
@@ -79,43 +135,19 @@
 					"path": "concepts/what-is-a-run-id"
 				},
 				{
-					"header": "Workflow Task",
+					"header": "Workflow Execution Timeout",
 					"type": "explanation",
-					"path": "concepts/what-is-a-workflow-task"
+					"path": "concepts/what-is-a-workflow-execution-timeout"
 				},
 				{
-					"header": "Workflow Task Execution",
+					"header": "Workflow Run Timeout",
 					"type": "explanation",
-					"path": "concepts/what-is-a-workflow-task-execution"
+					"path": "concepts/what-is-a-workflow-run-timeout"
 				},
 				{
 					"header": "Workflow Task Timeout",
 					"type": "explanation",
 					"path": "concepts/what-is-a-workflow-task-timeout"
-				}
-			]
-		},
-		{
-			"header": "Activities",
-			"h3_sections": [{
-					"header": "none",
-					"type": "explanation",
-					"path": "concepts/what-is-an-activity"
-				},
-				{
-					"header": "Activity Execution",
-					"type": "explanation",
-					"path": "concepts/what-is-an-activity-execution"
-				},
-				{
-					"header": "Activity Definition",
-					"type": "explanation",
-					"path": "concepts/what-is-an-activity-definition"
-				},
-				{
-					"header": "Activity Type",
-					"type": "explanation",
-					"path": "concepts/what-is-an-activity-type"
 				},
 				{
 					"header": "Activity Id",
@@ -146,38 +178,31 @@
 					"header": "Heartbeat Timeout",
 					"type": "explanation",
 					"path": "concepts/what-is-a-heartbeat-timeout"
-				}
-			]
-		},
-		{
-			"header": "Retry Policy",
-			"h3_sections": [{
-				"header": "none",
-				"type": "explanation",
-				"path": "concepts/what-is-a-retry-policy"
-			}]
-		},
-		{
-			"header": "Workers",
-			"h3_sections": [{
-					"header": "none",
-					"type": "explanation",
-					"path": "concepts/what-is-a-worker"
 				},
 				{
-					"header": "Worker Program",
+					"header": "Retry Policies",
 					"type": "explanation",
-					"path": "concepts/what-is-a-worker-program"
+					"path": "concepts/what-is-a-retry-policy"
 				},
 				{
-					"header": "Worker Process",
+					"header": "Signals",
 					"type": "explanation",
-					"path": "concepts/what-is-a-worker-process"
+					"path": "concepts/what-is-a-signal"
 				},
 				{
-					"header": "Worker Entity",
+					"header": "Queries",
 					"type": "explanation",
-					"path": "concepts/what-is-a-worker-entity"
+					"path": "concepts/what-is-a-query"
+				},
+				{
+					"header": "Child Workflows",
+					"type": "explanation",
+					"path": "concepts/what-is-a-child-workflow-execution"
+				},
+				{
+					"header": "Cron Jobs",
+					"type": "explanation",
+					"path": "concepts/what-is-a-temporal-cron-job"
 				}
 			]
 		},
@@ -202,40 +227,52 @@
 					"header": "Task Routing",
 					"type": "explanation",
 					"path": "concepts/what-is-task-routing"
+				},
+				{
+					"header": "Workflow Task",
+					"type": "explanation",
+					"path": "concepts/what-is-a-workflow-task"
+				},
+				{
+					"header": "Workflow Task Execution",
+					"type": "explanation",
+					"path": "concepts/what-is-a-workflow-task-execution"
+				},
+				{
+					"header": "Activity Task",
+					"type": "explanation",
+					"path": "concepts/what-is-a-workflow-task"
+				},
+				{
+					"header": "Activity Task Execution",
+					"type": "explanation",
+					"path": "concepts/what-is-a-workflow-task-execution"
 				}
 			]
 		},
 		{
-			"header": "Signals",
-			"h3_sections": [{
-				"header": "none",
-				"type": "explanation",
-				"path": "concepts/what-is-a-signal"
-			}]
+			"header": "Namespaces",
+			"h3_sections": [
+				{
+					"header": "none",
+					"type": "explanation",
+					"path": "concepts/what-is-a-namespace"
+				}
+			]
 		},
 		{
-			"header": "Queries",
+			"header": "Clusters",
 			"h3_sections": [{
-				"header": "none",
-				"type": "explanation",
-				"path": "concepts/what-is-a-query"
-			}]
-		},
-		{
-			"header": "Child Workflows",
-			"h3_sections": [{
-				"header": "none",
-				"type": "explanation",
-				"path": "concepts/what-is-a-child-workflow-execution"
-			}]
-		},
-		{
-			"header": "Temporal Cron Jobs",
-			"h3_sections": [{
-				"header": "none",
-				"type": "explanation",
-				"path": "concepts/what-is-a-temporal-cron-job"
-			}]
+					"header": "none",
+					"type": "explanation",
+					"path": "concepts/what-is-a-temporal-cluster"
+				},
+				{
+					"header": "Archival",
+					"type": "explanation",
+					"path": "concepts/what-is-archival"
+				}
+			]
 		},
 		{
 			"header": "Visibility",

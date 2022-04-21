@@ -38,3 +38,7 @@ Additionally, each of the Go SDK Tutorials is backed by a fully executable templ
 #### Where is the Go SDK technical reference?
 
 The [Temporal Go SDK API reference](https://pkg.go.dev/go.temporal.io/sdk) is published on [pkg.go.dev](https://pkg.go.dev/go.temporal.io/sdk)
+
+#### Where can I find video demos?
+
+[Temporal Go SDK YouTube playlist](https://www.youtube.com/playlist?list=PLl9kRkvFJrlRYHYaTPnsvE46szyMIZLdk)

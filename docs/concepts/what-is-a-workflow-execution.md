@@ -36,7 +36,7 @@ Scalability is responsiveness in the presence of load.
 A single Workflow Execution is limited in size and throughput but is scalable because it can [Continue-As-New](/docs/concepts/what-is-continue-as-new) in response to load.
 A Temporal Application is scalable because the Temporal Platform is capable of supporting millions to billions of Workflow Executions executing concurrently, which is realized by the design and nature of the [Temporal Cluster](/docs/concepts/what-is-a-temporal-cluster) and [Worker Processes](/docs/concepts/what-is-a-worker-process).
 
-### Commands & awaitables
+#### Commands & awaitables
 
 A Workflow Execution does two things:
 
@@ -62,7 +62,7 @@ Awaitables are provided when using APIs for the following:
 - Starting a Timer: Progress can block until the Timer fires.
 - Awaiting: Progress can block using explicit "Await" APIs.
 
-### Status
+#### Status
 
 A Workflow Execution can be either Open or Closed.
 
@@ -84,7 +84,7 @@ A Closed status means that the Workflow Execution cannot make further progress b
 - Failed: The Workflow Execution returned an error and failed.
 - Timed Out: The Workflow Execution reached a timeout limit.
 
-### Workflow Execution Chain
+#### Workflow Execution Chain
 
 A Workflow Execution Chain is a sequence of Workflow Executions that share the same Workflow Id.
 Each link in the Chain is often called a Workflow Run.
@@ -99,14 +99,14 @@ A Workflow Execution is uniquely identified by its [Namespace](/docs/concepts/wh
 The [Workflow Execution Timeout](/docs/concepts/what-is-a-workflow-execution-timeout) applies to a Workflow Execution Chain.
 The [Workflow Run Timeout](/docs/concepts/what-is-a-workflow-run-timeout) applies to a single Workflow Execution (Workflow Run).
 
-### Event loop
+#### Event loop
 
 A Workflow Execution is made up of a sequence of [Events](/docs/concepts/what-is-an-event) called an [Event History](/docs/concepts/what-is-an-event-history).
 Events are created by the Temporal Cluster in response to either Commands or actions requested by a Temporal Client (such as a request to spawn a Workflow Execution).
 
 ![Workflow Execution](/diagrams/workflow-execution-swim-lane-01.svg)
 
-### Time constraints
+#### Time constraints
 
 **Is there a limit to how long Workflows can run?**
 

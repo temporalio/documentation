@@ -16,7 +16,7 @@ public class FileProcessingWorkflowImpl implements FileProcessingWorkflow {
 }
 ```
 
-## Workflow interface
+#### Workflow interface
 
 The Workflow interface is a Java interface and is annotated with `@WorkflowInterface`.
 Each Workflow interface method must have one [`@WorkflowMethod`](#workflowmethod).
@@ -55,7 +55,7 @@ public interface FileProcessingWorkflow {
 }
 ```
 
-### `@WorkflowMethod`
+#### `@WorkflowMethod`
 
 The `@WorkflowMethod` identifies the method that is the starting point of the Workflow Execution. The [Workflow Execution](/docs/concepts/what-is-a-workflow-execution) completes when this method completes.
 
@@ -92,7 +92,7 @@ Note that all inputs should be serializable by the default Jackson JSON Payload 
 A Workflow Type can be registered only once per Worker entity.
 If you define multiple Workflow implementations of the same type, you get an exception at the time of registration.
 
-### Workflow interface inheritance
+#### Workflow interface inheritance
 
 Workflow interfaces can form inheritance hierarchies, which can be useful for creating components that can be reused across multiple Workflow interfaces.
 For example, to implement a UI or CLI button that sends a `retryNow` Signal to any Workflow, define the method as follows:
@@ -162,7 +162,7 @@ This registration fails with the following message:
 java.lang.IllegalStateException: BaseWorkflow workflow type is already registered with the worker
 ```
 
-## Workflow implementation
+#### Workflow implementation
 
 A Workflow implementation implements a Workflow interface.
 Each time a new Workflow Execution is started, an instance of the Workflow implementation object is created.
@@ -172,7 +172,7 @@ As soon as this method returns, the Workflow Execution is considered to be compl
 Workflow methods annotated with `@QueryMethod` and `@SignalMethod` can be invoked during a Workflow Execution.
 Note that methods annotated with `@QueryMethod` can be invoked even when a Workflow is in the `Completed` state.
 
-### Typed and Untyped `WorkflowStubs`
+#### Typed and Untyped `WorkflowStubs`
 
 A `WorkflowStub` is a proxy of your Workflow implementation. To start a Workflow Execution, we need to create a `WorkflowStub`.
 There are two types of `WorkflowStubs`: Typed and Untyped.
@@ -220,14 +220,14 @@ Related references:
 - [How to spawn a Workflow Execution in Java](/docs/java/how-to-spawn-a-workflow-execution-in-java).
 - `WorkflowStub.java` reference: <https://github.com/temporalio/sdk-java/blob/master/temporal-sdk/src/main/java/io/temporal/client/WorkflowStub.java>
 
-### Calling other Workflows
+#### Calling other Workflows
 
 To interact with other running Workflow Executions from within the Workflow, use `ExternalWorkflowStub`.
 To interact with Child Workflows, use `ChildWorkflowStub`.
 
 See [Workflow Execution](/docs/java/how-to-spawn-a-workflow-execution-in-java) and [Child Workflow Execution](/docs/java/how-to-spawn-a-child-workflow-execution-in-java) for details.
 
-### Dynamic Workflows
+#### Dynamic Workflows
 
 Use `DynamicWorkflow` to implement Workflow Types dynamically. When you register a Workflow implementation type that extends `DynamicWorkflow`, it can be used to implement any Workflow Type that is not explicitly registered with the Worker.
 
@@ -343,7 +343,7 @@ The following example shows how to register the Dynamic Workflow implementation 
 }
 ```
 
-### Workflow implementation constraints
+#### Workflow implementation constraints
 
 The following constraints apply when writing Workflow Definitions:
 
@@ -367,7 +367,7 @@ The following constraints apply when writing Workflow Definitions:
 
 Java Workflow reference: <https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/package-summary.html>
 
-### Workflow Method Arguments
+#### Workflow Method Arguments
 
 - [What is a Data Converter?](/docs/concepts/what-is-a-data-converter)
 - Java DataConverter reference: <https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html>

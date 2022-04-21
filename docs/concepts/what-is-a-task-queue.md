@@ -36,7 +36,7 @@ This implementation offers several benefits:
 All Workers listening to a given Task Queue must have identical registrations of Activities and/or Workflows.
 The one exception is during a Server upgrade, where it is okay to have registration temporarily misaligned while the binary rolls out.
 
-### Where to set Task Queues?
+#### Where to set Task Queues
 
 There are four places where the name of the Task Queue can be set by the developer.
 
