@@ -53,6 +53,10 @@ html[data-theme="light"] {
   --card-color: rgba(239, 246, 255);
 }
 
+.navbar__logo img {
+  height: 35px;
+}
+
 @font-face {
   font-family: "Aeonik";
   src: url("../fonts/Aeonik-Regular.woff");
