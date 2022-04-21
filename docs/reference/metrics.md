@@ -37,11 +37,11 @@ Each metric may have some combination of the following keys attached to them:
 Some keys may not be available in every SDK, and Histogram metrics may have different buckets in each SDK.
 
 | Metric Name                                                                             | Metric Type | Availability              |
-| --------------------------------------------------------------------------------------- | ----------- | ------------------------- | ------------------------------------ |
+| --------------------------------------------------------------------------------------- | ----------- | ------------------------- |
 | [activity_execution_cancelled](#activity_execution_cancelled)                           | Counter     | Java                      |
 | [activity_execution_failed](#activity_execution_failed)                                 | Counter     | TypeScript, Go, PHP, Java |
 | [activity_execution_latency](#activity_execution_latency)                               | Histogram   | TypeScript, Go, PHP, Java |
-| [activity_poll_no_task](#activity_poll_no_task)                                         | Counter     | TypeScript, Go, PHP, Java | activity_type, namespace, task_queue |
+| [activity_poll_no_task](#activity_poll_no_task)                                         | Counter     | TypeScript, Go, PHP, Java |
 | [activity_schedule_to_start_latency](#activity_schedule_to_start_latency)               | Histogram   | TypeScript, Go, PHP, Java |
 | [activity_task_error](#activity_task_error)                                             | Counter     | Go, PHP                   |
 | [corrupted_signals](#corrupted_signals)                                                 | Counter     | Go, PHP, Java             |
@@ -84,7 +84,7 @@ An Activity Execution was canceled.
 
 - Type: Counter
 - Available in: Java
-- Available keys: `activity_type`, `namespace`, `task_queue`
+- Tags: `activity_type`, `namespace`, `task_queue`
 
 ### `activity_execution_failed`
 
@@ -92,7 +92,7 @@ An Activity Execution failed.
 
 - Type: Counter
 - Available in: TypeScript, Go, PHP, Java
-- Available keys: `activity_type`, `namespace`, `task_queue`
+- Tags: `activity_type`, `namespace`, `task_queue`
 
 ### `activity_execution_latency`
 
@@ -100,7 +100,7 @@ Time to complete an Activity Execution, from the time the Activity Task is gener
 
 - Type: Histogram
 - Available in: TypeScript, Go, PHP, Java
-- Available keys: `activity_type`, `namespace`, `task_queue`
+- Tags: `activity_type`, `namespace`, `task_queue`
 
 ### `activity_poll_no_task`
 
@@ -108,7 +108,7 @@ An Activity Worker poll for an Activity Task timed out, and no Activity Task is 
 
 - Type: Counter
 - Available in: TypeScript, Go, PHP, Java
-- Available keys: `activity_type`, `namespace`, `task_queue`
+- Tags: `activity_type`, `namespace`, `task_queue`
 
 ### `activity_schedule_to_start_latency`
 
@@ -117,7 +117,7 @@ A [Schedule-To-Start Timeout](/docs/concepts/what-is-a-schedule-to-start-timeout
 
 - Type: Histogram
 - Available in: TypeScript, Go, PHP, Java
-- Available keys: `activity_type`, `namespace`, `task_queue`
+- Tags: `activity_type`, `namespace`, `task_queue`
 
 ### `activity_task_error`
 
@@ -125,7 +125,7 @@ An internal error or kernel panic occurred during Activity Task handling or exec
 
 - Type: Counter
 - Available in: Go, PHP
-- Available keys: `activity_type`, `namespace`, `task_queue`, `workflow_type`
+- Tags: `activity_type`, `namespace`, `task_queue`, `workflow_type`
 
 ### `corrupted_signals`
 
@@ -133,7 +133,7 @@ Number of Signals whose payload could not be deserialized.
 
 - Type: Counter
 - Available in: Go, PHP, Java
-- Available keys: `namespace`, `task_queue`, `workflow_type`
+- Tags: `namespace`, `task_queue`, `workflow_type`
 
 ### `local_activity_execution_cancelled`
 
@@ -141,7 +141,7 @@ A Local Activity Execution was canceled.
 
 - Type: Counter
 - Available in: Go, PHP, Java
-- Available keys: `activity_type`, `namespace`, `task_queue`
+- Tags: `activity_type`, `namespace`, `task_queue`
 
 ### `local_activity_execution_failed`
 
@@ -149,7 +149,7 @@ A Local Activity Execution failed.
 
 - Type: Counter
 - Available in: Go, PHP, Java
-- Available keys: `activity_type`, `namespace`, `task_queue`
+- Tags: `activity_type`, `namespace`, `task_queue`
 
 ### `local_activity_execution_latency`
 
@@ -157,7 +157,7 @@ Time to complete a Local Activity Execution, from the time the first Activity Ta
 
 - Type: Histogram
 - Available in: Go, PHP, Java
-- Available keys: `activity_type`, `namespace`, `task_queue`
+- Tags: `activity_type`, `namespace`, `task_queue`
 
 ### `local_activity_succeeded_endtoend_latency`
 
@@ -165,7 +165,7 @@ Total latency of successfully finished Local Activity Executions (from schedule 
 
 - Type: Histogram
 - Available in: Go, PHP, Java
-- Available keys: `activity_type`, `namespace`, `task_queue`
+- Tags: `activity_type`, `namespace`, `task_queue`
 
 ### `local_activity_total`
 
@@ -173,7 +173,7 @@ Total number of [Local Activity Executions](/docs/concepts/what-is-a-local-activ
 
 - Type: Counter
 - Available in: Go, PHP, Java
-- Available keys: `activity_type`, `namespace`, `task_queue`
+- Tags: `activity_type`, `namespace`, `task_queue`
 
 ### `long_request`
 
@@ -181,7 +181,7 @@ Temporal Client failed an RPC long poll request.
 
 - Type: Counter
 - Available in: TypeScript, Go, PHP, Java
-- Available keys: `namespace`, `operation`
+- Tags: `namespace`, `operation`
 
 ### `long_request_failure`
 
@@ -189,7 +189,7 @@ Temporal Client made an RPC long poll request.
 
 - Type: Counter
 - Available in: TypeScript, Go, PHP, Java
-- Available keys: `namespace`, `operation`
+- Tags: `namespace`, `operation`
 
 ### `long_request_latency`
 
@@ -197,7 +197,7 @@ Latency of a Temporal Client gRPC long poll request.
 
 - Type: Histogram
 - Available in: TypeScript, Go, PHP, Java
-- Available keys: `namespace`, `operation`
+- Tags: `namespace`, `operation`
 
 ### `num_pollers`
 
@@ -205,7 +205,7 @@ Current number of Worker Entities that are polling.
 
 - Type: Gauge
 - Available in: TypeScript
-- Available keys: `namespace`, `poller_type`, `task_queue`
+- Tags: `namespace`, `poller_type`, `task_queue`
 
 ### `poller_start`
 
@@ -213,7 +213,7 @@ A Worker Entity poller was started.
 
 - Type: Counter
 - Available in: Go, PHP, Java
-- Available keys: `namespace`, `task_queue`
+- Tags: `namespace`, `task_queue`
 
 ### `request`
 
@@ -221,7 +221,7 @@ Temporal Client made an RPC request.
 
 - Type: Counter
 - Available in: TypeScript, Go, PHP, Java
-- Available keys: `namespace`, `operation`
+- Tags: `namespace`, `operation`
 
 ### `request_failure`
 
@@ -229,7 +229,7 @@ Temporal Client failed an RPC request.
 
 - Type: Counter
 - Available in: TypeScript, Go, PHP, Java
-- `namespace`, `operation`
+- Tags: `namespace`, `operation`
 
 ### `request_latency`
 
@@ -237,7 +237,7 @@ Latency of a Temporal Client gRPC request.
 
 - Type: Histogram
 - Available in: TypeScript, Go, PHP, Java
-- Available keys: `namespace`, `operation`
+- Tags: `namespace`, `operation`
 
 ### `sticky_cache_hit`
 
@@ -245,7 +245,7 @@ A Workflow Task found a cached Workflow Execution Event History to run against.
 
 - Type: Counter
 - Available in: TypeScript, Go, PHP, Java
-- Available keys: `namespace`, `task_queue`
+- Tags: `namespace`, `task_queue`
 
 ### `sticky_cache_miss`
 
@@ -253,7 +253,7 @@ A Workflow Task did not find a cached Workflow Worker.
 
 - Type: Counter
 - Available in: TypeScript, Go, PHP, Java
-- Available keys: `namespace`, `task_queue`
+- Tags: `namespace`, `task_queue`
 
 ### `sticky_cache_size`
 
@@ -261,7 +261,7 @@ Current cache size, expressed in number of Workflow Executions.
 
 - Type: Gauge
 - Available in: TypeScript, Go, PHP, Java
-- Available keys: `namespace`(TypeScript Only), `task_queue`
+- Tags: `namespace` (TypeScript, Java), `task_queue` (TypeScript)
 
 ### `sticky_cache_total_forced_eviction`
 
@@ -269,7 +269,7 @@ A Workflow Execution has been forced from the cache intentionally.
 
 - Type: Counter
 - Available in: Go, PHP, Java
-- Available keys: `namespace`, `task_queue`
+- Tags: `namespace`, `task_queue`
 
 ### `unregistered_activity_invocation`
 
@@ -277,7 +277,7 @@ A request to spawn an Activity Execution is not registered with the Worker.
 
 - Type: Counter
 - Available in: Go, PHP
-- Available keys: `activity_type`, `namespace`, `task_queue`, `workflow_type`
+- Tags: `activity_type`, `namespace`, `task_queue`, `workflow_type`
 
 ### `worker_start`
 
@@ -285,7 +285,7 @@ A Worker Entity has been registered, created, or started.
 
 - Type: Counter
 - Available in: TypeScript, Go, PHP, Java
-- Available keys: `namespace`, `task_queue`, `worker_type`
+- Tags: `namespace`, `task_queue`, `worker_type`
 
 ### `worker_task_slots_available`
 
@@ -295,7 +295,7 @@ Use the `worker_type` key to differentiate execution slots.
 
 - Type: Gauge
 - Available in: Go, PHP, Java
-- Available keys: `namespace`, `task_queue`, `worker_type`
+- Tags: `namespace`, `task_queue`, `worker_type`
 
 ### `workflow_active_thread_count`
 
@@ -310,7 +310,7 @@ Workflow Execution ended because of a cancellation request.
 
 - Type: Counter
 - Available in: TypeScript, Go, PHP, Java
-- `namespace`, `task_queue`, `workflow_type`
+- Tags: `namespace`, `task_queue`, `workflow_type`
 
 ### `workflow_completed`
 
@@ -318,7 +318,7 @@ A Workflow Execution completed successfully.
 
 - Type: Counter
 - Available in: TypeScript, Go, PHP, Java
-- Available keys: `namespace`, `task_queue`, `workflow_type`
+- Tags: `namespace`, `task_queue`, `workflow_type`
 
 ### `workflow_continue_as_new`
 
@@ -326,7 +326,7 @@ A Workflow ended with Continue-As-New.
 
 - Type: Counter
 - Available in: TypeScript, Go, PHP, Java
-- Available keys: `namespace`, `task_queue`, `workflow_type`
+- Tags: `namespace`, `task_queue`, `workflow_type`
 
 ### `workflow_endtoend_latency`
 
@@ -334,7 +334,7 @@ Total Workflow Execution time from schedule to completion for a single Workflow 
 
 - Type: Histogram
 - Available in: TypeScript, Go, PHP, Java
-- Available keys: `namespace`, `task_queue`, `workflow_type`
+- Tags: `namespace`, `task_queue`, `workflow_type`
 
 ### `workflow_failed`
 
@@ -342,7 +342,7 @@ A Workflow Execution failed.
 
 - Type: Counter
 - Available in: TypeScript, Go, PHP, Java
-- `namespace`, `task_queue`, `workflow_type`
+- Tags: `namespace`, `task_queue`, `workflow_type`
 
 ### `workflow_task_execution_failed`
 
@@ -350,7 +350,7 @@ A Workflow Task Execution failed.
 
 - Type: Counter
 - Available in: TypeScript, Go, PHP, Java
-- `namespace`, `task_queue`, `workflow_type`
+- Tags: `namespace`, `task_queue`, `workflow_type`
 
 ### `workflow_task_execution_latency`
 
@@ -358,7 +358,7 @@ Workflow Task Execution time.
 
 - Type: Histogram
 - Available in: TypeScript, Go, PHP, Java
-- Available keys: `namespace`, `task_queue`, `workflow_type`
+- Tags: `namespace`, `task_queue`, `workflow_type`
 
 ### `workflow_task_queue_poll_empty`
 
@@ -366,7 +366,7 @@ A Workflow Worker polled a Task Queue and timed out without picking up a Workflo
 
 - Type: Counter
 - Available in: TypeScript, Go, PHP, Java
-- Available keys: `namespace`, `task_queue`, `workflow_type`
+- Tags: `namespace`, `task_queue`, `workflow_type`
 
 ### `workflow_task_queue_poll_succeed`
 
@@ -374,7 +374,7 @@ A Workflow Worker polled a Task Queue and successfully picked up a Workflow Task
 
 - Type: Counter
 - Available in: TypeScript, Go, PHP, Java
-- Available keys: `namespace`, `task_queue`, `workflow_type`
+- Tags: `namespace`, `task_queue`, `workflow_type`
 
 ### `workflow_task_replay_latency`
 
@@ -382,7 +382,7 @@ Time to catch up on replaying a Workflow Task.
 
 - Type: Histogram
 - Available in: TypeScript, Go, PHP, Java
-- `namespace`, `task_queue`, `workflow_type`
+- Tags: `namespace`, `task_queue`, `workflow_type`
 
 ### `workflow_task_schedule_to_start_latency`
 
@@ -390,4 +390,4 @@ The Schedule-To-Start time of a Workflow Task.
 
 - Type: Histogram
 - Available in: TypeScript, Go, PHP, Java
-- Available keys: `namespace`, `task_queue`, `workflow_type`
+- Tags: `namespace`, `task_queue`, `workflow_type`
