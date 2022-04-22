@@ -13,6 +13,6 @@ title: Temporal Platform references
 
 [Java SDK reference](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/index.html)
 
-[TypeScript reference](https://typescript.temporal.io")
+[TypeScript SDK reference](https://typescript.temporal.io")
 
 [Glossary](/docs/references/glossary)
