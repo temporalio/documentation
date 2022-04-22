@@ -29,7 +29,7 @@ If the first Activity Task Execution returns an error the first time, then the f
 
 If this timeout is reached, the following actions occur:
 
-- An [ActivityTaskTimedOut](/docs/concepts/what-is-an-event/#activitytasktimedout) Event is written to the Workflow Execution's mutable state.
+- An [ActivityTaskTimedOut](/docs/references/events/#activitytasktimedout) Event is written to the Workflow Execution's mutable state.
 - If a Retry Policy dictates a retry, the Temporal Cluster schedules another Activity Task.
   - The attempt count increments by 1 in the Workflow Execution's mutable state.
   - The Start-To-Close Timeout timer is reset.

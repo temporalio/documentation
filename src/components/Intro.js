@@ -344,6 +344,11 @@ function Operation() {
             Deploy to production
           </a>
         </li>
+        <li className="">
+          <a href="/docs/references/" className="font-normal hover:underline">
+            References
+          </a>
+        </li>
       </ul>
     </div>
   );

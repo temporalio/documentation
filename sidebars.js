@@ -558,8 +558,33 @@ module.exports = {
     {
       type: "category",
       label: "References",
-      collapsed: true,
-      items: ["reference/sdk-metrics"],
+      collapsed: false,
+      collapsible: false,
+      link: {
+        type: "doc",
+        id: "references/index",
+      },
+      items: [
+        "references/sdk-metrics",
+        "references/commands",
+        "references/events",
+        {
+          type: "link",
+          label: "Go SDK reference",
+          href: "https://pkg.go.dev/go.temporal.io/sdk",
+        },
+        {
+          type: "link",
+          label: "Java SDK reference",
+          href: "https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/index.html",
+        },
+        {
+          type: "link",
+          label: "TypeScript SDK reference",
+          href: "https://typescript.temporal.io",
+        },
+        "references/glossary",
+      ],
     },
   ],
 };

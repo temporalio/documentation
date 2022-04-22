@@ -2,7 +2,7 @@
 id: sdk-metrics
 title: SDK metrics
 description: The Temporal SDKs emit metrics from Temporal Client usage and Worker Processes.
-sidebar_label: SDK metrics
+sidebar_label: SDK metrics reference
 ---
 
 The Temporal SDKs emit a set of metrics from Temporal Client usage and Worker Processes.
