@@ -120,9 +120,10 @@ provides the guarantee that Workflows won’t get stuck and will continue to mak
 
 ## Automatic Forwarding on Namespaces
 
-Temporal supports automatic forwarding of Start, Signal, and Query requests to the active Cluster. This feature must be enabled through a dynamic conflict flag for the given Namespace.
+Temporal supports automatic forwarding of Start, Signal, and Query requests to the active Cluster.
+This feature must be enabled through a dynamic conflict flag for the given Namespace.
 
-Once enabled, these Tasks will be sent to the Parent Task Queue partition that matches that namespace, if it exists.
+Once enabled, Tasks are sent to the Parent Task Queue partition that matches that Namespace, if it exists.
 
 ### Visibility API
 
