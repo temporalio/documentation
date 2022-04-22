@@ -8,21 +8,29 @@ tags:
 ---
 
 An Activity Definition is the code that defines the constraints of an [Activity Task Execution](/docs/concepts/what-is-an-activity-task-execution).
+
 Activity Definitions are referred to by their [Activity Type](/docs/concepts/what-is-an-activity-type).
 
 In Temporal documentation, the term 'Activity Definition' is used to refer to an Activity Function Definition——the method or function that is invoked for an [Activity Task Execution](/docs/concepts/what-is-an-activity-task-execution).
+
 Some SDKs refer to Activity Definitions as Activity Functions, Activity Interfaces, or Activity Methods.
 All of these terms refer to the source of an instance of an execution, with an Activity Interface being a collective group of functions.
 
 ![Activity Definition](/diagrams/activity-definition.svg)
 
-## Constraints
+#### Constraints
 
-Temporal does not recover Activity state in the event of failure. Therefore, an Activity Definition has no restrictions on the code it contains.
+Activity Definitions are executed as normal functions.
 
-## Parameters
+In the event of failure, the function will begin at its initial state when retried (except when Activity Heartbeats are established).
 
-An Activity Definition can support as many parameters as needed. All values passed through these parameters are recorded in the [Event History](/docs/concepts/what-is-an-event-history).
+Therefore, an Activity Definition has no restrictions on the code it contains.
+
+#### Parameters
+
+An Activity Definition can support as many parameters as needed. 
+
+All values passed through these parameters are recorded in the Workflow Execution's [Event History](/docs/concepts/what-is-an-event-history). Return values are also captured in the Event History for the calling Workflow Execution.
 
 Activity Definitions must contain the following parameters:
 
@@ -32,7 +40,7 @@ Activity Definitions must contain the following parameters:
 
 Other parameters, such as retry policies and return values, can be seen in the implementation guides below.
 
-## Implementing Activity Definitions
+#### Implementing Activity Definitions
 
 We strongly recommend that you develop an Activity Definition in a language with a corresponding Temporal SDK.
 
