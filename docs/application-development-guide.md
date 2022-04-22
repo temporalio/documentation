@@ -526,7 +526,6 @@ Content is not available
 
 TODO
 
-
 <Tabs
 defaultValue="go"
 groupId="site-lang"
@@ -552,7 +551,6 @@ if err != nil {
   // ...
 }
 ```
-
 
 </TabItem>
 <TabItem value="java">
@@ -597,7 +595,6 @@ if err != nil {
   // ...
 }
 ```
-
 
 </TabItem>
 <TabItem value="java">
@@ -1142,8 +1139,6 @@ TODO
 
 ### Cron Jobs
 
-
-
 ### Local Activities
 
 TODO
@@ -1163,4 +1158,3 @@ TODO
 ## Testing
 
 TODO
-
