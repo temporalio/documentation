@@ -8,8 +8,6 @@ __dirname = path.resolve();
 
 const DOCS_PATH = `${__dirname}/docs`;
 const FILE_EXTENSION = ".md";
-// const A_HREF_REGEX = /<a href="([^\'\"]+)">/g;
-// const URL_REGEX = /([^\'\"]+)/g;
 
 const CONCEPTS_CONFIG = require("./guide-configs/concepts.json");
 const APP_DEV_CONFIG = require("./guide-configs/app-dev.json");
@@ -32,26 +30,22 @@ run();
 async function run() {
   // Search and identify files in the docs diretory
   let files = await getFilePaths();
-  //console.log(files);
   // Read all of the file contents
   files = await getFileContents(files);
-  // console.log(files);
   // Attach the file to the corresponding section in each guide
   let guide_configs = await attachFiles(GUIDE_CONFIGS, files);
   // Generate a full index of anchors in the guides
   guide_configs = await generateLinkIndexes(guide_configs);
-  // console.log(guide_configs.full_link_index);
   // Replace relevant links with guide anchors
   guide_configs = await replaceWithLocalRefs(guide_configs);
-  //console.log(guide_configs.full_link_index);
   // Generate the full Markdown for each guide
   guide_configs = await generateGuides(guide_configs);
-  //console.log(gfs[0].guide_string);
   // Write the Markdown guides to files
   await writeGuides(guide_configs);
 }
 
 async function getFilePaths() {
+  console.log("getting file paths to sections...")
   const file_paths = [];
   for await (const entry of readdirp(DOCS_PATH)) {
     const file = new File(entry.basename, entry.path, entry.fullPath);
@@ -61,6 +55,7 @@ async function getFilePaths() {
 }
 
 async function getFileContents(files) {
+  console.log("getting file contents...")
   const updated_files = [];
   for (const file of files) {
     const raw_content = await fs.readFile(`${file.fullpath}`);
@@ -85,6 +80,7 @@ async function attachFiles(guide_configs, files) {
 }
 
 async function findMatches(guide_config, files) {
+  console.log(`finding matches for ${guide_config.id}...`);
   let updated_h2_sections = [];
   for (let h2_section of guide_config.h2_sections) {
     h2_section = await matchFilesToSection(h2_section, files);
@@ -95,30 +91,48 @@ async function findMatches(guide_config, files) {
 }
 
 async function matchFilesToSection(h2_section, files) {
+  console.log("matching files to sections...")
   let updated_h3_sections = [];
   for (const h3_section of h2_section.h3_sections) {
     if (h3_section.type == "lang-tabs") {
-      let updated_langs = [];
-      for (lang of h3_section.langs) {
-        if (lang.path != "none") {
-          const file = files.find((obj) => {
-            return obj.path === `${lang.path}${FILE_EXTENSION}`;
-          });
-          lang.file = file;
-        }
-        updated_langs.push(lang);
-      }
-      h3_section.langs = updated_langs;
+      h3_section.langs = await matchLangTabs(h3_section.langs, files);
     } else {
-      const file = files.find((obj) => {
-        return obj.path === `${h3_section.path}${FILE_EXTENSION}`;
-      });
-      h3_section.file = file;
+      h3_section.file = await matchPath(h3_section.path, files);
+    }
+    if (h3_section.h4_sections != undefined) {
+      updated_h4_sections = [];
+      for (h4_section of h3_section.h4_sections) {
+        if (h4_section.type == "lang-tabs") {
+          h4_section.langs = await matchLangTabs(h4_section.langs, files);
+        } else {
+          h4_section.file = await matchPath(h4_section.path, files);
+        }
+        updated_h4_sections.push(h4_section);
+      }
+      h3_section.h4_sections = updated_h4_sections;
     }
     updated_h3_sections.push(h3_section);
   }
   h2_section.h3_sections = updated_h3_sections;
   return h2_section;
+}
+
+async function matchLangTabs(langs, files) {
+  let updated_langs = [];
+  for (lang of langs) {
+    if (lang.path != "none") {
+      lang.file = await matchPath(lang.path, files);
+    }
+    updated_langs.push(lang);
+  }
+  return updated_langs;
+}
+
+async function matchPath(path, files) {
+  const file = files.find((obj) => {
+    return obj.path === `${path}${FILE_EXTENSION}`;
+  });
+  return file;
 }
 
 async function generateGuides(guide_configs) {
@@ -132,6 +146,7 @@ async function generateGuides(guide_configs) {
 }
 
 async function generateGuide(guide_config) {
+  console.log("generating guide...")
   let guide_string = await frontmatter(guide_config);
   for (const h2_section of guide_config.h2_sections) {
     if (h2_section.header != "none") {
@@ -149,6 +164,20 @@ async function generateGuide(guide_config) {
       }
       guide_string = `${guide_string}${markdown}`;
       guide_string = `${guide_string}\n\n`;
+      if (h3_section.h4_sections != undefined) {
+        for (h4_section of h3_section.h4_sections) {
+          if (h4_section.type == "lang-tabs") {
+            markdown = await generateLangTabs(h4_section);
+          } else {
+            markdown = h4_section.file.raw_content;
+          }
+          if (h4_section.header != "none") {
+            guide_string = `${guide_string}#### ${h4_section.header}\n\n`;
+          }
+          guide_string = `${guide_string}${markdown}`;
+          guide_string = `${guide_string}\n\n`;
+        }
+      }
     }
   }
   guide_config.guide_string = guide_string;
@@ -171,7 +200,6 @@ async function generateLangTabs(h3_section) {
 }
 
 async function generateTabString(h3_section) {
-  // console.log(h3_section);
   let tab_string = `<Tabs\n`;
   tab_string = `${tab_string}defaultValue="go"\n`;
   tab_string = `${tab_string}groupId="site-lang"\n`;
@@ -232,6 +260,7 @@ async function generateLinkIndexes(guide_configs) {
 }
 
 async function generateLinkIndex(guide_config) {
+  console.log(`generating link index for ${guide_config.id}...`);
   let link_index = [];
   for (const h2_section of guide_config.h2_sections) {
     let h3_index = 0;
@@ -294,7 +323,6 @@ async function prepToReplace(cfg, link_index) {
       if (h3_section.type == "lang-tabs") {
         updated_langs = [];
         for (lang of h3_section.langs) {
-          // console.log(lang.file);
           if (lang.path != "none") {
             lang.file.raw_content = await parseAndReplace(
               lang.file.raw_content,
@@ -322,7 +350,6 @@ async function prepToReplace(cfg, link_index) {
 }
 
 async function parseAndReplace(raw_content, link_index, current_guide_id) {
-  //console.log("got here");
   const docsLinkRegex = /\/docs\/[a-zA-Z0-9-_]*\/[a-zA-Z0-9-_]*/gm;
   const lines = raw_content.toString().split("\n");
   let new_lines = [];
@@ -336,18 +363,15 @@ async function parseAndReplace(raw_content, link_index, current_guide_id) {
           return obj.path === replaceable;
         });
         if (link != undefined) {
-          // console.log(`Replacing ${replaceable} with ${link.local_ref}`);
           line = await replaceLinks(line, replaceable, link, current_guide_id);
-          // console.log(`Line is now:\n${line}`);
         }
       }
     }
     if (line == "" && (line_count == 0 || line_count == lines.length - 1)) {
-      console.log(`skipping: ${line}`);
+      // silently drop it on purpose
     } else {
       new_lines.push(line);
     }
-    //new_lines.push(line);
     line_count++;
   }
   raw_content = new_lines.join("\n");
@@ -355,7 +379,6 @@ async function parseAndReplace(raw_content, link_index, current_guide_id) {
 
   async function replaceLinks(line, replaceable, link, current_guide_id) {
     let updated = "";
-    // console.log(`${link.guide} - ${current_guide_id}`);
     if (link.guide != current_guide_id) {
       line = line.replaceAll(replaceable, `${link.guide}/#${link.local_ref}`);
     } else {

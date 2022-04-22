@@ -139,60 +139,61 @@
 							"title": "TypeScript",
 							"path": "none"
 						}
-					]
-				},
-				{
-					"header": "Required timeout",
-					"type": "context",
-					"path": "app-dev-context/required-timeout"
-				},
-				{
-					"header": "none",
-					"type": "lang-tabs",
-					"langs": [{
-							"lang": "go",
-							"title": "Go",
-							"path": "go/activity-options/schedule-to-close-timeout"
+					],
+					"h4_sections": [{
+							"header": "Required timeout",
+							"type": "context",
+							"path": "app-dev-context/required-activity-timeout"
 						},
 						{
-							"lang": "java",
-							"title": "Java",
-							"path": "none"
+							"header": "none",
+							"type": "lang-tabs",
+							"langs": [{
+									"lang": "go",
+									"title": "Go",
+									"path": "go/activity-options/schedule-to-close-timeout"
+								},
+								{
+									"lang": "java",
+									"title": "Java",
+									"path": "none"
+								},
+								{
+									"lang": "php",
+									"title": "PHP",
+									"path": "none"
+								},
+								{
+									"lang": "typescript",
+									"title": "TypeScript",
+									"path": "none"
+								}
+							]
 						},
 						{
-							"lang": "php",
-							"title": "PHP",
-							"path": "none"
-						},
-						{
-							"lang": "typescript",
-							"title": "TypeScript",
-							"path": "none"
-						}
-					]
-				},
-				{
-					"header": "none",
-					"type": "lang-tabs",
-					"langs": [{
-							"lang": "go",
-							"title": "Go",
-							"path": "go/activity-options/start-to-close-timeout"
-						},
-						{
-							"lang": "java",
-							"title": "Java",
-							"path": "none"
-						},
-						{
-							"lang": "php",
-							"title": "PHP",
-							"path": "none"
-						},
-						{
-							"lang": "typescript",
-							"title": "TypeScript",
-							"path": "none"
+							"header": "none",
+							"type": "lang-tabs",
+							"langs": [{
+									"lang": "go",
+									"title": "Go",
+									"path": "go/activity-options/start-to-close-timeout"
+								},
+								{
+									"lang": "java",
+									"title": "Java",
+									"path": "none"
+								},
+								{
+									"lang": "php",
+									"title": "PHP",
+									"path": "none"
+								},
+								{
+									"lang": "typescript",
+									"title": "TypeScript",
+									"path": "none"
+								}
+							]
 						}
 					]
 				},
@@ -421,31 +422,64 @@
 					"path": "app-dev-context/signals"
 				},
 				{
-					"header": "none",
-					"type": "lang-tabs",
-					"langs": [{
-							"lang": "go",
-							"title": "Go",
-							"path": "none"
-						},
-						{
-							"lang": "java",
-							"title": "Java",
-							"path": "none"
-						},
-						{
-							"lang": "php",
-							"title": "PHP",
-							"path": "none"
-						},
-						{
-							"lang": "typescript",
-							"title": "TypeScript",
-							"path": "none"
-						}
-					]
+					"header": "Queries",
+					"type": "context",
+					"path": "app-dev-context/queries"
+				},
+				{
+					"header": "Timers",
+					"type": "context",
+					"path": "app-dev-context/timers"
+				},
+				{
+					"header": "Child Workflows",
+					"type": "context",
+					"path": "app-dev-context/child-workflows"
+				},
+				{
+					"header": "Activity Heartbeats",
+					"type": "context",
+					"path": "app-dev-context/local-activities"
+				},
+				{
+					"header": "Cron Jobs",
+					"type": "context",
+					"path": "app-dev-context/cron-jobs"
+				},
+				{
+					"header": "Local Activities",
+					"type": "context",
+					"path": "app-dev-context/local-activities"
 				}
 			]
+		},
+		{
+			"header": "Observability",
+			"h3_sections": [{
+					"header": "none",
+					"type": "context",
+					"path": "app-dev-context/observability"
+				},
+				{
+					"header": "Logging",
+					"type": "context",
+					"path": "app-dev-context/logging"
+				},
+				{
+					"header": "Visibility",
+					"type": "context",
+					"path": "app-dev-context/visibility"
+				}
+
+			]
+		},
+		{
+			"header": "Testing",
+			"h3_sections": [{
+				"header": "none",
+				"type": "context",
+				"path": "app-dev-context/testing"
+			}]
 		}
 	]
 }
