@@ -1,4 +1,3 @@
-
 **How to set a [Schedule-To-Start Timeout](/docs/concepts/what-is-a-schedule-to-start-timeout) in Go**
 
 - Type: `time.Duration`

@@ -1,4 +1,3 @@
-
 **How to set a Schedule-To-Close Timeout in Go**
 
 This or `ScheduleToStart` must be set.
