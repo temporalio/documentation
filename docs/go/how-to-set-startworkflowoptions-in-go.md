@@ -46,18 +46,9 @@ if err != nil {
 
 ### `TaskQueue`
 
-- Type: `string`
-- Default: None, this is a required field to be set by the developer
+import TaskQueue from './workflow-options/task-queue.md'
 
-```go
-workflowOptions := client.StartWorkflowOptions{
-  TaskQueue: "your-task-queue",
-}
-workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
-if err != nil {
-  // ...
-}
-```
+<TaskQueue/>
 
 ### `WorkflowExecutionTimeout`
 

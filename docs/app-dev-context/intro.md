@@ -9,7 +9,7 @@ This guide is meant to be a comprehensive resource for developing a [Temporal Ap
 
 It is broken down into four large sections:
 
-- [Foundations](#application-foundations): The minimum things required to build and run a simple Workflow with a single Activity.
-- [Features](#application-features): All of the general features available to a Temporal Application.
-- [Analysis](#application-analysis): Features and tools available that give you insight into you application.
-- [Scaling](#application-scaling): Things to consider and look for when scaling a Temporal Application to millions or billions of Workflow Executions.
+- [Foundations](#foundations): The minimum things required to build and run a simple Workflow with a single Activity.
+- [Features](#features): All of the general features available to a Temporal Application.
+- [Analysis](#analysis): Features and tools available that give you insight into you application.
+- [Scaling](#scaling): Things to consider and look for when scaling a Temporal Application to millions or billions of Workflow Executions.

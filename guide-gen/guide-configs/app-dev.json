@@ -21,13 +21,13 @@
 					"type": "context",
 					"path": "app-dev-context/foundations"
 				},
-        {
-          "header": "How to run a dev Cluster",
-          "type": "how-to",
-          "path": "clusters/quick-install"
-        },
-        {
-					"header": "How to add your SDK",
+				{
+					"header": "Run a dev Cluster",
+					"type": "how-to",
+					"path": "clusters/quick-install"
+				},
+				{
+					"header": "Add your SDK",
 					"type": "lang-tabs",
 					"langs": [{
 							"lang": "go",
@@ -52,7 +52,7 @@
 					]
 				},
 				{
-					"header": "How to develop Workflows",
+					"header": "Develop Workflows",
 					"type": "context",
 					"path": "app-dev-context/developing-workflows"
 				},
@@ -67,7 +67,7 @@
 						{
 							"lang": "java",
 							"title": "Java",
-							"path": "java/how-to-develop-a-workflow-definition-in-java"
+							"path": "none"
 						},
 						{
 							"lang": "php",
@@ -82,7 +82,7 @@
 					]
 				},
 				{
-					"header": "How to develop Activities",
+					"header": "Develop Activities",
 					"type": "context",
 					"path": "app-dev-context/developing-activities"
 				},
@@ -97,7 +97,7 @@
 						{
 							"lang": "java",
 							"title": "Java",
-							"path": "java/how-to-develop-an-activity-definition-in-java"
+							"path": "none"
 						},
 						{
 							"lang": "php",
@@ -111,8 +111,8 @@
 						}
 					]
 				},
-        {
-					"header": "How to spawn an Activity Execution",
+				{
+					"header": "Spawn Activity Execution",
 					"type": "context",
 					"path": "app-dev-context/spawning-activities"
 				},
@@ -127,7 +127,311 @@
 						{
 							"lang": "java",
 							"title": "Java",
-							"path": "java/how-to-spawn-an-activity-execution-in-java"
+							"path": "none"
+						},
+						{
+							"lang": "php",
+							"title": "PHP",
+							"path": "none"
+						},
+						{
+							"lang": "typescript",
+							"title": "TypeScript",
+							"path": "none"
+						}
+					]
+				},
+				{
+					"header": "Required timeout",
+					"type": "context",
+					"path": "app-dev-context/required-timeout"
+				},
+				{
+					"header": "none",
+					"type": "lang-tabs",
+					"langs": [{
+							"lang": "go",
+							"title": "Go",
+							"path": "go/activity-options/schedule-to-close-timeout"
+						},
+						{
+							"lang": "java",
+							"title": "Java",
+							"path": "none"
+						},
+						{
+							"lang": "php",
+							"title": "PHP",
+							"path": "none"
+						},
+						{
+							"lang": "typescript",
+							"title": "TypeScript",
+							"path": "none"
+						}
+					]
+				},
+				{
+					"header": "none",
+					"type": "lang-tabs",
+					"langs": [{
+							"lang": "go",
+							"title": "Go",
+							"path": "go/activity-options/start-to-close-timeout"
+						},
+						{
+							"lang": "java",
+							"title": "Java",
+							"path": "none"
+						},
+						{
+							"lang": "php",
+							"title": "PHP",
+							"path": "none"
+						},
+						{
+							"lang": "typescript",
+							"title": "TypeScript",
+							"path": "none"
+						}
+					]
+				},
+				{
+					"header": "Get Activity results",
+					"type": "context",
+					"path": "app-dev-context/get-activity-results"
+				},
+				{
+					"header": "none",
+					"type": "lang-tabs",
+					"langs": [{
+							"lang": "go",
+							"title": "Go",
+							"path": "go/how-to-get-the-result-of-an-activity-execution-in-go"
+						},
+						{
+							"lang": "java",
+							"title": "Java",
+							"path": "none"
+						},
+						{
+							"lang": "php",
+							"title": "PHP",
+							"path": "none"
+						},
+						{
+							"lang": "typescript",
+							"title": "TypeScript",
+							"path": "none"
+						}
+					]
+				},
+				{
+					"header": "Create Temporal Clients",
+					"type": "context",
+					"path": "app-dev-context/creating-temporal-clients"
+				},
+				{
+					"header": "none",
+					"type": "lang-tabs",
+					"langs": [{
+							"lang": "go",
+							"title": "Go",
+							"path": "none"
+						},
+						{
+							"lang": "java",
+							"title": "Java",
+							"path": "none"
+						},
+						{
+							"lang": "php",
+							"title": "PHP",
+							"path": "none"
+						},
+						{
+							"lang": "typescript",
+							"title": "TypeScript",
+							"path": "none"
+						}
+					]
+				},
+				{
+					"header": "Run Worker Processes",
+					"type": "context",
+					"path": "app-dev-context/run-worker-processes"
+				},
+				{
+					"header": "none",
+					"type": "lang-tabs",
+					"langs": [{
+							"lang": "go",
+							"title": "Go",
+							"path": "go/how-to-develop-a-worker-program-in-go"
+						},
+						{
+							"lang": "java",
+							"title": "Java",
+							"path": "none"
+						},
+						{
+							"lang": "php",
+							"title": "PHP",
+							"path": "none"
+						},
+						{
+							"lang": "typescript",
+							"title": "TypeScript",
+							"path": "none"
+						}
+					]
+				},
+				{
+					"header": "Spawn Workflow Execution",
+					"type": "context",
+					"path": "app-dev-context/spawning-workflows"
+				},
+				{
+					"header": "none",
+					"type": "lang-tabs",
+					"langs": [{
+							"lang": "go",
+							"title": "Go",
+							"path": "go/how-to-spawn-a-workflow-execution-in-go"
+						},
+						{
+							"lang": "java",
+							"title": "Java",
+							"path": "none"
+						},
+						{
+							"lang": "php",
+							"title": "PHP",
+							"path": "none"
+						},
+						{
+							"lang": "typescript",
+							"title": "TypeScript",
+							"path": "none"
+						}
+					]
+				},
+				{
+					"header": "Set Task Queue",
+					"type": "context",
+					"path": "app-dev-context/set-task-queue"
+				},
+				{
+					"header": "none",
+					"type": "lang-tabs",
+					"langs": [{
+							"lang": "go",
+							"title": "Go",
+							"path": "none"
+						},
+						{
+							"lang": "java",
+							"title": "Java",
+							"path": "none"
+						},
+						{
+							"lang": "php",
+							"title": "PHP",
+							"path": "none"
+						},
+						{
+							"lang": "typescript",
+							"title": "TypeScript",
+							"path": "none"
+						}
+					]
+				},
+				{
+					"header": "Set Workflow Id",
+					"type": "context",
+					"path": "app-dev-context/set-workflow-id"
+				},
+				{
+					"header": "none",
+					"type": "lang-tabs",
+					"langs": [{
+							"lang": "go",
+							"title": "Go",
+							"path": "none"
+						},
+						{
+							"lang": "java",
+							"title": "Java",
+							"path": "none"
+						},
+						{
+							"lang": "php",
+							"title": "PHP",
+							"path": "none"
+						},
+						{
+							"lang": "typescript",
+							"title": "TypeScript",
+							"path": "none"
+						}
+					]
+				},
+				{
+					"header": "Get Workflow results",
+					"type": "context",
+					"path": "app-dev-context/set-workflow-id"
+				},
+				{
+					"header": "none",
+					"type": "lang-tabs",
+					"langs": [{
+							"lang": "go",
+							"title": "Go",
+							"path": "go/how-to-get-the-result-of-a-workflow-execution-in-go"
+						},
+						{
+							"lang": "java",
+							"title": "Java",
+							"path": "none"
+						},
+						{
+							"lang": "php",
+							"title": "PHP",
+							"path": "none"
+						},
+						{
+							"lang": "typescript",
+							"title": "TypeScript",
+							"path": "none"
+						}
+					]
+				}
+			]
+		},
+		{
+			"header": "Features",
+			"h3_sections": [{
+					"header": "none",
+					"type": "context",
+					"path": "app-dev-context/features"
+				},
+				{
+					"header": "Signals",
+					"type": "context",
+					"path": "app-dev-context/signals"
+				},
+				{
+					"header": "none",
+					"type": "lang-tabs",
+					"langs": [{
+							"lang": "go",
+							"title": "Go",
+							"path": "none"
+						},
+						{
+							"lang": "java",
+							"title": "Java",
+							"path": "none"
 						},
 						{
 							"lang": "php",
