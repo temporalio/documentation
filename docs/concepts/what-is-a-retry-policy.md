@@ -7,6 +7,8 @@ tags:
   - explanation
 ---
 
+import RetrySimulator from '../components/RetrySimulator';
+
 A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a [Workflow Execution](/docs/concepts/what-is-a-workflow-execution) or an [Activity Task Execution](/docs/concepts/what-is-an-activity-task-execution).
 (Retry Policies do not apply to [Workflow Task Executions](/docs/concepts/what-is-a-workflow-task-execution), which always retry indefinitely.)
 
@@ -105,3 +107,9 @@ There are some subtle nuances to how Events are recorded to an Event History whe
   The new Workflow Execution is created immediately.
   But the first Workflow Task won't be scheduled until the backoff duration is exhausted.
   That duration is recorded as the `firstWorkflowTaskBackoff` field of the new run's `WorkflowExecutionStartedEventAttributes` event.
+
+### Visualizing Retry Policies
+
+Below is a tool for experimenting with different Retry Policies.
+
+<RetrySimulator />
