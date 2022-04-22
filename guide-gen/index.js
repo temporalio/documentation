@@ -45,7 +45,7 @@ async function run() {
 }
 
 async function getFilePaths() {
-  console.log("getting file paths to sections...")
+  console.log("getting file paths to sections...");
   const file_paths = [];
   for await (const entry of readdirp(DOCS_PATH)) {
     const file = new File(entry.basename, entry.path, entry.fullPath);
@@ -55,7 +55,7 @@ async function getFilePaths() {
 }
 
 async function getFileContents(files) {
-  console.log("getting file contents...")
+  console.log("getting file contents...");
   const updated_files = [];
   for (const file of files) {
     const raw_content = await fs.readFile(`${file.fullpath}`);
@@ -91,7 +91,7 @@ async function findMatches(guide_config, files) {
 }
 
 async function matchFilesToSection(h2_section, files) {
-  console.log("matching files to sections...")
+  console.log("matching files to sections...");
   let updated_h3_sections = [];
   for (const h3_section of h2_section.h3_sections) {
     if (h3_section.type == "lang-tabs") {
@@ -146,7 +146,7 @@ async function generateGuides(guide_configs) {
 }
 
 async function generateGuide(guide_config) {
-  console.log("generating guide...")
+  console.log("generating guide...");
   let guide_string = await frontmatter(guide_config);
   for (const h2_section of guide_config.h2_sections) {
     if (h2_section.header != "none") {
