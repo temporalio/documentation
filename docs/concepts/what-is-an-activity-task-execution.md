@@ -7,6 +7,6 @@ tags:
   - explanation
 ---
 
-An Activity Task Execution is the execution of an Activity function.
+An Activity Task Execution results from .
 
 Activity Task Executions are retried per a Retry Policy.
