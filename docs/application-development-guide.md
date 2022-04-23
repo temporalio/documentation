@@ -1177,7 +1177,6 @@ Activity Execution semantics rely on several parameters.
 The only required custom value that needs to be set is either a [Schedule-To-Close Timeout](/docs/concepts/what-is-a-start-to-close-timeout) or a [Start-To-Close Timeout](/docs/concepts/what-is-a-start-to-close-timeout).
 These parameters are set in the Activity Options.
 
-
 <Tabs
 defaultValue="go"
 groupId="site-lang"
@@ -1203,7 +1202,6 @@ if err != nil {
   // ...
 }
 ```
-
 
 </TabItem>
 <TabItem value="java">
@@ -1248,7 +1246,6 @@ if err != nil {
   // ...
 }
 ```
-
 
 </TabItem>
 <TabItem value="java">
@@ -1636,7 +1633,6 @@ Content is not available
 
 TODO
 
-
 <Tabs
 defaultValue="go"
 groupId="site-lang"
@@ -1983,8 +1979,6 @@ TODO
 
 ### Cron Jobs
 
-
-
 ### Local Activities
 
 TODO
@@ -2004,4 +1998,3 @@ TODO
 ## Testing
 
 TODO
-
