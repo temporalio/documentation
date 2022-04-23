@@ -67,7 +67,7 @@
 						{
 							"lang": "java",
 							"title": "Java",
-							"path": "none"
+							"path": "java/how-to-develop-a-workflow-definition-in-java"
 						},
 						{
 							"lang": "php",
@@ -97,7 +97,7 @@
 						{
 							"lang": "java",
 							"title": "Java",
-							"path": "none"
+							"path": "java/how-to-develop-an-activity-definition-in-java"
 						},
 						{
 							"lang": "php",
@@ -127,7 +127,7 @@
 						{
 							"lang": "java",
 							"title": "Java",
-							"path": "none"
+							"path": "java/how-to-spawn-an-activity-execution-in-java"
 						},
 						{
 							"lang": "php",
@@ -213,7 +213,7 @@
 						{
 							"lang": "java",
 							"title": "Java",
-							"path": "none"
+							"path": "java/how-to-get-the-result-of-an-activity-execution-in-java"
 						},
 						{
 							"lang": "php",
@@ -315,35 +315,36 @@
 							"title": "TypeScript",
 							"path": "none"
 						}
-					]
-				},
-				{
-					"header": "Set Task Queue",
-					"type": "context",
-					"path": "app-dev-context/set-task-queue"
-				},
-				{
-					"header": "none",
-					"type": "lang-tabs",
-					"langs": [{
-							"lang": "go",
-							"title": "Go",
-							"path": "none"
+					],
+					"h4_sections": [{
+							"header": "Set Task Queue",
+							"type": "context",
+							"path": "app-dev-context/set-task-queue"
 						},
 						{
-							"lang": "java",
-							"title": "Java",
-							"path": "none"
-						},
-						{
-							"lang": "php",
-							"title": "PHP",
-							"path": "none"
-						},
-						{
-							"lang": "typescript",
-							"title": "TypeScript",
-							"path": "none"
+							"header": "none",
+							"type": "lang-tabs",
+							"langs": [{
+									"lang": "go",
+									"title": "Go",
+									"path": "none"
+								},
+								{
+									"lang": "java",
+									"title": "Java",
+									"path": "none"
+								},
+								{
+									"lang": "php",
+									"title": "PHP",
+									"path": "none"
+								},
+								{
+									"lang": "typescript",
+									"title": "TypeScript",
+									"path": "none"
+								}
+							]
 						}
 					]
 				},
@@ -420,6 +421,31 @@
 					"header": "Signals",
 					"type": "context",
 					"path": "app-dev-context/signals"
+				},
+				{
+					"header": "none",
+					"type": "lang-tabs",
+					"langs": [{
+							"lang": "go",
+							"title": "Go",
+							"path": "go/how-to-use-signals-in-go"
+						},
+						{
+							"lang": "java",
+							"title": "Java",
+							"path": "none"
+						},
+						{
+							"lang": "php",
+							"title": "PHP",
+							"path": "none"
+						},
+						{
+							"lang": "typescript",
+							"title": "TypeScript",
+							"path": "none"
+						}
+					]
 				},
 				{
 					"header": "Queries",
