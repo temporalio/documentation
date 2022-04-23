@@ -13,7 +13,7 @@ const CONCEPTS_CONFIG = require("./guide-configs/concepts.json");
 const APP_DEV_CONFIG = require("./guide-configs/app-dev.json");
 
 const GUIDE_CONFIGS = {
-  cfgs: [APP_DEV_CONFIG],
+  cfgs: [CONCEPTS_CONFIG, APP_DEV_CONFIG],
 };
 
 // File is the class that contains a filename and lines of the file
