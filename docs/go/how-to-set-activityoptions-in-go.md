@@ -1,7 +1,7 @@
 ---
-id: how-to-set-activityoptions-in-go
-title: How to set ActivityOptions in Go
-sidebar_label: ActivityOptions
+id: activityoptions-reference
+title: Go ActivityOptions reference
+sidebar_label: Activity Options reference
 description: Create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package and use `WithActivityOptions()` to apply it to the instance of `workflow.Context`.
 tags:
   - developer-guide
@@ -64,19 +64,19 @@ if err != nil {
 
 ### `ScheduleToCloseTimeout`
 
-import ScheduleToCloseTimeout from './activity-options/schedule-to-close-timeout.md'
+import ScheduleToCloseTimeout from './how-to-set-a-schedule-to-close-timeout-in-go.md'
 
 <ScheduleToCloseTimeout/>
 
 ### `ScheduleToStartTimeout`
 
-import ScheduleToStartTimeout from './activity-options/schedule-to-start-timeout.md'
+import ScheduleToStartTimeout from './how-to-set-a-schedule-to-start-timeout-in-go.md'
 
 <ScheduleToStartTimeout/>
 
 ### `StartToCloseTimeout`
 
-import StartToCloseTimeout from './activity-options/start-to-close-timeout.md'
+import StartToCloseTimeout from './how-to-set-a-start-to-close-timeout-in-go.md'
 
 <StartToCloseTimeout/>
 

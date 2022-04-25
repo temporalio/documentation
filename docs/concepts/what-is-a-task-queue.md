@@ -42,7 +42,7 @@ There are four places where the name of the Task Queue can be set by the develop
 
 1. A Task Queue must be set when spawning a Workflow Execution:
 
-- [How to set `StartWorkflowOptions` in Go](/docs/go/how-to-set-startworkflowoptions-in-go/#taskqueue)
+- [How to set `StartWorkflowOptions` in Go](/docs/go/startworkflowoptions-reference/#taskqueue)
 - [How to spawn a Workflow Execution using tctl](/docs/tctl/workflow/start#--taskqueue)
 
 2. A Task Queue name must be set when starting a Worker Entity:
@@ -62,7 +62,7 @@ However, the failure of the Task will not cause the associated Workflow Executio
 This is optional.
 An Activity Execution inherits the Task Queue name from its Workflow Execution if one is not provided.
 
-- [How to set `ActivityOptions` in Go](/docs/go/how-to-set-activityoptions-in-go/#taskqueue)
+- [How to set `ActivityOptions` in Go](/docs/go/activityoptions-reference/#taskqueue)
 
 4. A Task Queue name can be provided when spawning a Child Workflow Execution:
 

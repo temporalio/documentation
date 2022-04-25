@@ -1,7 +1,7 @@
 ---
-id: how-to-set-startworkflowoptions-in-go
-title: How to set StartWorkflowOptions in Go
-sidebar_label: StartWorkflowOptions
+id: startworkflowoptions-reference
+title: Go StartWorkflowOptions reference
+sidebar_label: Workflow Options reference
 description: Create an instance of `StartWorkflowOptions` from the `go.temporal.io/sdk/client` package, and pass the instance to the `ExecuteWorkflow` call.
 tags:
   - developer-guide
@@ -28,43 +28,21 @@ The following fields are available:
 
 ### `ID`
 
-**How to set a custom Workflow Id in Go**
+import ID from './how-to-set-a-workflow-id-in-go.md'
 
-- Type: `string`
-- Default: System generated UUID
-
-```go
-workflowOptions := client.StartWorkflowOptions{
-  ID: "Your-Custom-Workflow-Id",
-  // ...
-}
-workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
-if err != nil {
-  // ...
-}
-```
+<ID/>
 
 ### `TaskQueue`
 
-import TaskQueue from './workflow-options/task-queue.md'
+import TaskQueue from './how-to-set-a-workflow-task-queue-in-go.md'
 
 <TaskQueue/>
 
 ### `WorkflowExecutionTimeout`
 
-- Type: `time.Duration`
-- Default: Unlimited
+import WFETimeout from './how-to-set-a-workflow-execution-timeout-in-go.md'
 
-```go
-workflowOptions := client.StartWorkflowOptions{
-  WorkflowExecutionTimeout: time.Hours * 24 * 365 * 10,
-  // ...
-}
-workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
-if err != nil {
-  // ...
-}
-```
+<WFETimeout/>
 
 ### `WorkflowRunTimeout`
 
