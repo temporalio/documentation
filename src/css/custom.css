@@ -117,6 +117,10 @@ main.p-6,
   margin-bottom: 5rem;
   margin-top: 5rem;
 }
+.tailwindcss .my-10 {
+  margin-bottom: 2.5rem;
+  margin-top: 2.5rem;
+}
 .tailwindcss .h-10 {
   height: 2.5rem;
 }
@@ -129,6 +133,25 @@ main.p-6,
 .tailwindcss .w-16 {
   width: 4rem;
 }
+
+.tailwindcss .h-8 {
+  height: 2rem;
+}
+.tailwindcss .w-8 {
+  width: 2rem;
+}
+
+.tailwindcss .h-7 {
+  height: 1.75rem;
+}
+.tailwindcss .w-7 {
+  width: 1.75rem;
+}
+
+.tailwindcss .pl-1 {
+  padding-left: 0.25rem;
+}
+
 .tailwindcss .justify-center {
   justify-content: center;
 }
@@ -150,7 +173,11 @@ main.p-6,
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
     var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
-
+.tailwindcss .space-x-3 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-left: calc(0.75rem * (1 - var(--tw-space-x-reverse)));
+  margin-right: calc(0.75rem * var(--tw-space-x-reverse));
+}
 .tailwindcss .space-x-4 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-x-reverse: 0;
   margin-left: calc(1rem * (1 - var(--tw-space-x-reverse)));
@@ -160,6 +187,9 @@ main.p-6,
   --tw-space-y-reverse: 0;
   margin-bottom: calc(0.75rem * var(--tw-space-y-reverse));
   margin-top: calc(0.75rem * (1 - var(--tw-space-y-reverse)));
+}
+.tailwindcss p {
+  margin: 0;
 }
 
 main.max-w-screen-lg {
@@ -180,11 +210,15 @@ main.max-w-screen-lg {
   font-size: 1.875rem;
   line-height: 2.25rem;
 }
+.tailwindcss .text-5xl {
+  font-size: 3rem;
+  line-height: 1;
+}
 @media (min-width: 768px) {
   .tailwindcss .md\:grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-
+  main.md\:p-10,
   .tailwindcss .md\:p-10,
   .tailwindcss.md\:p-10 {
     padding: 2.5rem;
@@ -208,16 +242,6 @@ main.max-w-screen-lg {
     0 1px 2px -1px var(--tw-shadow-color);
   background-color: var(--ifm-card-background-color);
   padding: 1.25rem;
-}
-
-.code-logo {
-  height: 32px;
-  width: 32px;
-}
-
-.icon {
-  width: 40px;
-  height: 40px;
 }
 
 @font-face {
