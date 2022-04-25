@@ -55,7 +55,8 @@ async function run() {
 
   const handle = await client.start(counterWorkflow, {
     taskQueue: 'tutorial',
-    workflowId: 'workflow-' + crypto.randomUUID(),
+    // Usually, we use a business ID. In this example, we don't have one, so we generate an ID.
+    workflowId: 'counter-' + crypto.randomUUID(),
   });
 
   // Increment the counter
