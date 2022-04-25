@@ -405,7 +405,7 @@ function Learning() {
 
 export const Intro = () => {
   return (
-    <section className="mt-1 mb-14 intro">
+    <section className="mt-1 mb-14 tailwindcss">
       <h1 className="mb-4 text-4xl font-semibold tracking-wide md:text-5xl">
         Temporal Documentation
       </h1>

@@ -54,78 +54,144 @@ html[data-theme="light"] {
 }
 
 /* If we scope things with .intro we can attach to the tailwind styles on only the intro page */
-.intro .flex {
+.tailwindcss .flex {
   display: flex;
 }
-.intro .flex-col {
+.tailwindcss .flex-col {
   flex-direction: column;
 }
-.intro .grid {
-  display: grid;
-}
-.intro .gap-6 {
+
+.tailwindcss .gap-6 {
   gap: 1.5rem;
 }
-.intro ul {
+.tailwindcss ul {
   list-style: none;
   padding: 0;
 }
-.intro .pl-4 {
+.tailwindcss .pl-4 {
   padding-left: 1rem;
 }
-main.p-6 {
+main.p-6,
+.tailwindcss.p-6,
+.tailwindcss .p-6 {
   padding: 1.5rem;
 }
 
-.intro .grid-cols-1 {
+.tailwindcss .grid {
+  display: grid;
+}
+.tailwindcss .grid-cols-1 {
   grid-template-columns: repeat(1, minmax(0, 1fr));
 }
-.intro .grid-cols-2 {
+.tailwindcss .grid-cols-2 {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
-.intro .list-disc {
+.tailwindcss .gap-6 {
+  gap: 1.5rem;
+}
+.tailwindcss .lg\:gap-8 {
+  gap: 2rem;
+}
+.tailwindcss .list-disc {
   list-style-type: disc;
 }
-.intro .hover\:underline:hover {
+.tailwindcss .hover\:underline:hover {
   text-decoration: underline;
 }
-.intro .bg-\[color\:var\(--ifm-color\)\] {
+.tailwindcss .bg-\[color\:var\(--ifm-color\)\] {
   background-color: var(--ifm-color);
 }
-.intro .text-\[color\:var\(--ifm-background-color\)\] {
+.tailwindcss .text-\[color\:var\(--ifm-background-color\)\] {
   color: var(--ifm-background-color);
 }
-.intro .p-2 {
+.tailwindcss .p-2 {
   padding: 0.5rem;
 }
-.intro .rounded-lg {
+.tailwindcss .rounded-lg {
   border-radius: 0.5rem;
 }
-.intro .mb-4 {
+.tailwindcss .mb-4 {
   margin-bottom: 1rem;
 }
-.intro .h-10 {
+.tailwindcss .my-20 {
+  margin-bottom: 5rem;
+  margin-top: 5rem;
+}
+.tailwindcss .h-10 {
   height: 2.5rem;
 }
-.intro .w-10 {
-  height: 2.5rem;
+.tailwindcss .w-10 {
+  width: 2.5rem;
 }
-.space-x-4 > :not([hidden]) ~ :not([hidden]) {
+.tailwindcss .h-16 {
+  height: 4rem;
+}
+.tailwindcss .w-16 {
+  width: 4rem;
+}
+.tailwindcss .justify-center {
+  justify-content: center;
+}
+.tailwindcss .items-center {
+  align-items: center;
+}
+.tailwindcss .text-center {
+  text-align: center;
+}
+
+.tailwindcss .bg-\[color\:var\(--ifm-card-background-color\)\] {
+  background-color: var(--ifm-card-background-color);
+}
+.tailwindcss .shadow-lg {
+  --tw-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color),
+    0 4px 6px -4px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
+    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.tailwindcss .space-x-4 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-x-reverse: 0;
   margin-left: calc(1rem * (1 - var(--tw-space-x-reverse)));
   margin-right: calc(1rem * var(--tw-space-x-reverse));
+}
+.tailwindcss .space-y-3 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-bottom: calc(0.75rem * var(--tw-space-y-reverse));
+  margin-top: calc(0.75rem * (1 - var(--tw-space-y-reverse)));
 }
 
 main.max-w-screen-lg {
   max-width: 1024px;
   margin: auto;
 }
+.tailwindcss.max-w-screen-lg {
+  max-width: 1024px;
+}
+.tailwindcss.mx-auto {
+  margin: auto;
+}
+.tailwindcss .text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+.tailwindcss .text-3xl {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}
 @media (min-width: 768px) {
-  .intro .md\:grid-cols-2 {
+  .tailwindcss .md\:grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  .intro .md\:p-10 {
+
+  .tailwindcss .md\:p-10,
+  .tailwindcss.md\:p-10 {
     padding: 2.5rem;
+  }
+  .tailwindcss .md\:text-4xl {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
   }
 }
 
