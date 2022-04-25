@@ -494,7 +494,7 @@ A Worker Program is the static code that defines the constraints of the Worker P
 - [How to develop a Worker Program in Go](/docs/application-development-guide/#run-worker-processes)
 - [How to develop a Worker Program in Java](/docs/java/how-to-develop-a-worker-program-in-java)
 - [How to develop a Worker Program in PHP](/docs/php/how-to-develop-a-worker-program-in-php)
-- [How to develop a Worker Program in TypeScript](/docs/typescript/how-to-develop-a-worker-program-in-typescript)
+- [How to develop a Worker Program in TypeScript](/docs/application-development-guide/#run-worker-processes)
 
 ### Worker Process
 
@@ -1179,7 +1179,7 @@ There are four places where the name of the Task Queue can be set by the develop
 - [How to develop a Worker Program in Go](/docs/application-development-guide/#run-worker-processes)
 - [How to develop a Worker Program in Java](/docs/java/how-to-develop-a-worker-program-in-java)
 - [How to develop a Worker Program in PHP](/docs/php/how-to-develop-a-worker-program-in-php)
-- [How to develop a Worker Program in TypeScript](/docs/typescript/how-to-develop-a-worker-program-in-typescript)
+- [How to develop a Worker Program in TypeScript](/docs/application-development-guide/#run-worker-processes)
 
 Note that all Worker Entities listening to the same Task Queue name must be registered to handle the exact same Workflows Types and Activity Types.
 
@@ -1631,3 +1631,4 @@ To actually have results from the use of a [List Filter](#list-filters), Search 
 How to do this entirely depends on the method by which you spawn the Workflow Execution:
 
 - [How to set Search Attributes as Workflow Execution metadata in Go](/docs/go/how-to-set-startworkflowoptions-in-go/#searchattributes)
+
