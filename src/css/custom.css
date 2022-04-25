@@ -246,6 +246,7 @@ main.max-w-screen-lg {
   background-color: var(--ifm-card-background-color);
   padding: 1.25rem;
 }
+/* End Crazy Tailwind hax */
 
 @font-face {
   font-family: "Aeonik";
