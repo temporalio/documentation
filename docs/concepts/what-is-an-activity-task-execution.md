@@ -9,4 +9,8 @@ tags:
 
 An Activity Task Execution results from .
 
+From the API, users see an Activity being executed, and assume that it's run once. 
+
+In reality, the Activity is executed until it succeeds. 
+
 Activity Task Executions are retried per a Retry Policy.
