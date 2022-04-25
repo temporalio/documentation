@@ -66,6 +66,8 @@
 /docs/go/workers        /docs/go/how-to-develop-a-worker-program-in-go
 /docs/go-execute-activity         /docs/go/activities#executing-activities
 /docs/go-activity-async-completion        /docs/go/activities#asynchronous-activity-completion
+/docs/go/how-to-set-startworkflowoptions-in-go*        /docs/go/startworkflowoptions-reference:splat
+/docs/go/how-to-set-activityoptions-in-go*        /docs/go/activityoptions-reference:splat
 
 #
 # Java pages redirects

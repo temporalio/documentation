@@ -1171,12 +1171,13 @@ Content is not available
 </TabItem>
 </Tabs>
 
+<<<<<<< HEAD
+
 #### Required timeout
 
 Activity Execution semantics rely on several parameters.
 The only required custom value that needs to be set is either a [Schedule-To-Close Timeout](/docs/concepts/what-is-a-start-to-close-timeout) or a [Start-To-Close Timeout](/docs/concepts/what-is-a-start-to-close-timeout).
 These parameters are set in the Activity Options.
-
 
 <Tabs
 defaultValue="go"
@@ -1203,7 +1204,6 @@ if err != nil {
   // ...
 }
 ```
-
 
 </TabItem>
 <TabItem value="java">
@@ -1249,7 +1249,6 @@ if err != nil {
 }
 ```
 
-
 </TabItem>
 <TabItem value="java">
 
@@ -1267,6 +1266,10 @@ Content is not available
 
 </TabItem>
 </Tabs>
+
+=======
+
+> > > > > > > 292fb873a5c61c05ad5722c28274ad1c056530f6
 
 ### Get Activity results
 
@@ -1409,10 +1412,11 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
+<<<<<<< HEAD
 To create a new `WorflowClient`, use the following with the requisite gRPC `Connection`.
 
 ```typescript
-import { Connection, WorkflowClient } from '@temporalio/client';
+import {Connection, WorkflowClient} from "@temporalio/client";
 const connection = new Connection(); // to configure for production
 const client = new WorkflowClient(connection.service);
 ```
@@ -1422,6 +1426,10 @@ When you ommit the connection and just call the `new WorkflowClient()`, it creat
 :::note
 You will need to configure your connection and Namespace when [deploying to produciton](typescript/security#encryption-in-transit-with-mtls).
 :::
+=======
+Content is not available
+
+> > > > > > > 292fb873a5c61c05ad5722c28274ad1c056530f6
 
 </TabItem>
 </Tabs>
@@ -1994,8 +2002,6 @@ TODO
 
 ### Cron Jobs
 
-
-
 ### Local Activities
 
 TODO
@@ -2015,4 +2021,3 @@ TODO
 ## Testing
 
 TODO
-

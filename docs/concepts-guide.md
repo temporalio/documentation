@@ -1631,4 +1631,3 @@ To actually have results from the use of a [List Filter](#list-filters), Search 
 How to do this entirely depends on the method by which you spawn the Workflow Execution:
 
 - [How to set Search Attributes as Workflow Execution metadata in Go](/docs/go/how-to-set-startworkflowoptions-in-go/#searchattributes)
-

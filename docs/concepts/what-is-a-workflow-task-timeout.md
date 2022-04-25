@@ -18,4 +18,4 @@ The main reason for increasing the default value would be to accommodate a Workf
 
 **Implementation guides:**
 
-- [How to set a Workflow Task Timeout in Go](/docs/go/how-to-set-startworkflowoptions-in-go/#workflowtasktimeout)
+- [How to set a Workflow Task Timeout in Go](/docs/go/startworkflowoptions-reference/#workflowtasktimeout)
