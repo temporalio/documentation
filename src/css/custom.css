@@ -39,6 +39,10 @@ html[data-theme="dark"] {
 }
 
 html[data-theme="light"] {
+  --ifm-link-color: var(--ifm-color-primary-light);
+  --ifm-menu-color-active: var(--ifm-color-primary-light);
+  --ifm-navbar-link-hover-color: var(--ifm-color-primary-light);
+  --ifm-toc-link-color: var(--ifm-color-primary-light);
   --ifm-blockquote-color: #000000;
   --ifm-color-emphasis-300: #505050;
 
@@ -270,4 +274,28 @@ main.max-w-screen-lg {
   font-weight: 300;
   font-style: normal;
   font-display: swap;
+}
+
+/* Leadership page css */
+
+.leadership-container {
+  max-width: 800px;
+  margin: auto;
+  padding: 15px;
+  text-align: center;
+}
+.leadership-name {
+  font-size: 1.2em;
+  font-weight: 500;
+}
+.leadership-image {
+  max-width: 150px;
+}
+.leadership-list {
+  list-style-type: none;
+}
+.leadership-list-item {
+  margin-top: 15px;
+  padding-top: 15px;
+  padding-bottom: 15px;
 }
