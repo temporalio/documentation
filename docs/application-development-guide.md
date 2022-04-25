@@ -1171,100 +1171,6 @@ Content is not available
 </TabItem>
 </Tabs>
 
-#### Required timeout
-
-Activity Execution semantics rely on several parameters.
-The only required custom value that needs to be set is either a [Schedule-To-Close Timeout](/docs/concepts/what-is-a-start-to-close-timeout) or a [Start-To-Close Timeout](/docs/concepts/what-is-a-start-to-close-timeout).
-These parameters are set in the Activity Options.
-
-<Tabs
-defaultValue="go"
-groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
-
-<TabItem value="go">
-
-**How to set a Schedule-To-Close Timeout in Go**
-
-This or `ScheduleToStart` must be set.
-
-- Type: `time.Duration`
-- Default: ∞ (infinity - no limit)
-
-```go
-activityoptions := workflow.ActivityOptions{
-  ScheduleToCloseTimeout: 10 * time.Second,
-}
-ctx = workflow.WithActivityOptions(ctx, activityoptions)
-var yourActivityResult YourActivityResult
-err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
-if err != nil {
-  // ...
-}
-```
-
-</TabItem>
-<TabItem value="java">
-
-Content is not available
-
-</TabItem>
-<TabItem value="php">
-
-Content is not available
-
-</TabItem>
-<TabItem value="typescript">
-
-Content is not available
-
-</TabItem>
-</Tabs>
-
-<Tabs
-defaultValue="go"
-groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
-
-<TabItem value="go">
-
-**How to set a [Start-To-Close Timeout](/docs/concepts/what-is-a-start-to-close-timeout) in Go**
-
-This or `ScheduleToClose` must be set.
-
-- Type: `time.Duration`
-- Default: Same as the `ScheduleToCloseTimeout`
-
-```go
-activityoptions := workflow.ActivityOptions{
-  StartToCloseTimeout: 10 * time.Second,
-}
-ctx = workflow.WithActivityOptions(ctx, activityoptions)
-var yourActivityResult YourActivityResult
-err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
-if err != nil {
-  // ...
-}
-```
-
-</TabItem>
-<TabItem value="java">
-
-Content is not available
-
-</TabItem>
-<TabItem value="php">
-
-Content is not available
-
-</TabItem>
-<TabItem value="typescript">
-
-Content is not available
-
-</TabItem>
-</Tabs>
-
 ### Get Activity results
 
 The call to spawn an [Activity Execution](/docs/concepts-guide/#activity-execution) generates the [ScheduleActivityTask](/docs/concepts-guide/#commands/#scheduleactivitytask) Command and provides the Workflow with an Awaitable.
@@ -1969,6 +1875,156 @@ TODO
 
 TODO
 
+### Workflow timeouts & retries
+
+TODO
+
+### Activity timeouts & retries
+
+TODO
+
+#### Schedule-To-Close
+
+TODO
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+To set a [Schedule-To-Close Timeout](/docs/concepts-guide/#schedule-to-close-timeout), create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `ScheduleToCloseTimeout` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
+
+This or `ScheduleToStart` must be set.
+
+- Type: `time.Duration`
+- Default: ∞ (infinity - no limit)
+
+```go
+activityoptions := workflow.ActivityOptions{
+  ScheduleToCloseTimeout: 10 * time.Second,
+}
+ctx = workflow.WithActivityOptions(ctx, activityoptions)
+var yourActivityResult YourActivityResult
+err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
+if err != nil {
+  // ...
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+Content is not available
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is not available
+
+</TabItem>
+</Tabs>
+
+#### Start-To-Close
+
+
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+To set a [Start-To-Close Timeout](/docs/concepts-guide/#start-to-close-timeout), create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `StartToCloseTimeout` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
+
+This or `ScheduleToClose` must be set.
+
+- Type: `time.Duration`
+- Default: Same as the `ScheduleToCloseTimeout`
+
+```go
+activityoptions := workflow.ActivityOptions{
+  StartToCloseTimeout: 10 * time.Second,
+}
+ctx = workflow.WithActivityOptions(ctx, activityoptions)
+var yourActivityResult YourActivityResult
+err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
+if err != nil {
+  // ...
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+Content is not available
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is not available
+
+</TabItem>
+</Tabs>
+
+#### Schedule-To-Start
+
+TODO
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+To set a [Schedule-To-Start Timeout](/docs/concepts-guide/#schedule-to-start-timeout), create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `ScheduleToStartTimeout` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
+
+- Type: `time.Duration`
+- Default: ∞ (infinity - no limit)
+
+```go
+activityoptions := workflow.ActivityOptions{
+  ScheduleToStartTimeout: 10 * time.Second,
+}
+ctx = workflow.WithActivityOptions(ctx, activityoptions)
+var yourActivityResult YourActivityResult
+err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
+if err != nil {
+  // ...
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+Content is not available
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is not available
+
+</TabItem>
+</Tabs>
+
 ### Child Workflows
 
 TODO
@@ -1978,6 +2034,8 @@ TODO
 TODO
 
 ### Cron Jobs
+
+
 
 ### Local Activities
 
@@ -1998,3 +2056,4 @@ TODO
 ## Testing
 
 TODO
+

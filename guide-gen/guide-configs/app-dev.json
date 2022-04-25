@@ -139,62 +139,6 @@
 							"title": "TypeScript",
 							"path": "none"
 						}
-					],
-					"h4_sections": [{
-							"header": "Required timeout",
-							"type": "context",
-							"path": "app-dev-context/required-activity-timeout"
-						},
-						{
-							"header": "none",
-							"type": "lang-tabs",
-							"langs": [{
-									"lang": "go",
-									"title": "Go",
-									"path": "go/activity-options/schedule-to-close-timeout"
-								},
-								{
-									"lang": "java",
-									"title": "Java",
-									"path": "none"
-								},
-								{
-									"lang": "php",
-									"title": "PHP",
-									"path": "none"
-								},
-								{
-									"lang": "typescript",
-									"title": "TypeScript",
-									"path": "none"
-								}
-							]
-						},
-						{
-							"header": "none",
-							"type": "lang-tabs",
-							"langs": [{
-									"lang": "go",
-									"title": "Go",
-									"path": "go/activity-options/start-to-close-timeout"
-								},
-								{
-									"lang": "java",
-									"title": "Java",
-									"path": "none"
-								},
-								{
-									"lang": "php",
-									"title": "PHP",
-									"path": "none"
-								},
-								{
-									"lang": "typescript",
-									"title": "TypeScript",
-									"path": "none"
-								}
-							]
-						}
 					]
 				},
 				{
@@ -456,6 +400,108 @@
 					"header": "Timers",
 					"type": "context",
 					"path": "app-dev-context/timers"
+				},
+				{
+					"header": "Workflow timeouts & retries",
+					"type": "context",
+					"path": "app-dev-context/workflow-timeouts-and-retries",
+					"h4_sections": []
+				},
+				{
+					"header": "Activity timeouts & retries",
+					"type": "context",
+					"path": "app-dev-context/activity-timeouts-and-retries",
+					"h4_sections": [{
+							"header": "Schedule-To-Close",
+							"type": "context",
+							"path": "app-dev-context/schedule-to-close"
+						},
+						{
+							"header": "none",
+							"type": "lang-tabs",
+							"langs": [{
+									"lang": "go",
+									"title": "Go",
+									"path": "go/how-to-set-a-schedule-to-close-timeout-in-go"
+								},
+								{
+									"lang": "java",
+									"title": "Java",
+									"path": "none"
+								},
+								{
+									"lang": "php",
+									"title": "PHP",
+									"path": "none"
+								},
+								{
+									"lang": "typescript",
+									"title": "TypeScript",
+									"path": "none"
+								}
+							]
+						},
+						{
+							"header": "Start-To-Close",
+							"type": "context",
+							"path": "app-dev-context/start-to-close"
+						},
+						{
+							"header": "none",
+							"type": "lang-tabs",
+							"langs": [{
+									"lang": "go",
+									"title": "Go",
+									"path": "go/how-to-set-a-start-to-close-timeout-in-go"
+								},
+								{
+									"lang": "java",
+									"title": "Java",
+									"path": "none"
+								},
+								{
+									"lang": "php",
+									"title": "PHP",
+									"path": "none"
+								},
+								{
+									"lang": "typescript",
+									"title": "TypeScript",
+									"path": "none"
+								}
+							]
+						},
+						{
+							"header": "Schedule-To-Start",
+							"type": "context",
+							"path": "app-dev-context/schedule-to-start"
+						},
+						{
+							"header": "none",
+							"type": "lang-tabs",
+							"langs": [{
+									"lang": "go",
+									"title": "Go",
+									"path": "go/how-to-set-a-schedule-to-start-timeout-in-go"
+								},
+								{
+									"lang": "java",
+									"title": "Java",
+									"path": "none"
+								},
+								{
+									"lang": "php",
+									"title": "PHP",
+									"path": "none"
+								},
+								{
+									"lang": "typescript",
+									"title": "TypeScript",
+									"path": "none"
+								}
+							]
+						}
+					]
 				},
 				{
 					"header": "Child Workflows",

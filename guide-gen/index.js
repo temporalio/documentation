@@ -132,6 +132,9 @@ async function matchPath(path, files) {
   const file = files.find((obj) => {
     return obj.path === `${path}${FILE_EXTENSION}`;
   });
+  if (file == undefined) {
+    console.log(`Can't find a file for ${path}`);
+  }
   return file;
 }
 
@@ -292,6 +295,39 @@ async function generateLinkIndex(guide_config) {
           });
         }
       }
+      if (h3_section.h4_sections != undefined) {
+        let h4_index = 0;
+        for (h4_section of h3_section.h4_sections) {
+          if (h4_section.header == "none" && h4_section.type != "lang-tabs") {
+            link_index.push({
+              guide: guide_config.id,
+              local_ref: localRef(h3_section.header),
+              path: h4_section.path,
+            });
+          } else if (h4_section.type != "lang-tabs") {
+            link_index.push({
+              guide: guide_config.id,
+              local_ref: localRef(h4_section.header),
+              path: h4_section.path,
+            });
+          } else if (h4_section.type == "lang-tabs") {
+            for (const lang of h4_section.langs) {
+              let header = "";
+              if (h4_index > 0) {
+                header = h3_section.h4_sections[h4_index - 1].header;
+              } else {
+                header = h3_section.header;
+              }
+              link_index.push({
+                guide: guide_config.id,
+                local_ref: localRef(header),
+                path: lang.path,
+              });
+            }
+          }
+          h4_index++;
+        }
+      }
       h3_index++;
     }
   }
@@ -321,24 +357,29 @@ async function prepToReplace(cfg, link_index) {
     updated_h3_sections = [];
     for (h3_section of h2_section.h3_sections) {
       if (h3_section.type == "lang-tabs") {
-        updated_langs = [];
-        for (lang of h3_section.langs) {
-          if (lang.path != "none") {
-            lang.file.raw_content = await parseAndReplace(
-              lang.file.raw_content,
-              link_index,
-              cfg.id
-            );
-          }
-          updated_langs.push(lang);
-        }
-        h3_section.langs = updated_langs;
+        h3_section.langs = await parseLangs(h3_section.langs, link_index, cfg.id);
       } else {
         h3_section.file.raw_content = await parseAndReplace(
           h3_section.file.raw_content,
           link_index,
           cfg.id
         );
+      }
+      if (h3_section.h4_sections != undefined) {
+        let updated_h4_sections = [];
+        for (h4_section of h3_section.h4_sections) {
+          if (h4_section.type == "lang-tabs") {
+            h4_section.langs = await parseLangs(h4_section.langs, link_index, cfg.id);
+          } else {
+            h4_section.file.raw_content = await parseAndReplace(
+              h4_section.file.raw_content,
+              link_index,
+              cfg.id
+            );
+          }
+          updated_h4_sections.push(h4_section);
+        }
+        h3_section.h4_sections = updated_h4_sections;
       }
       updated_h3_sections.push(h3_section);
     }
@@ -347,6 +388,21 @@ async function prepToReplace(cfg, link_index) {
   }
   cfg.h2_sections = updated_h2_sections;
   return cfg;
+
+  async function parseLangs(langs, link_index, cfg_id) {
+    updated_langs = [];
+    for (lang of langs) {
+      if (lang.path != "none") {
+        lang.file.raw_content = await parseAndReplace(
+          lang.file.raw_content,
+          link_index,
+          cfg_id
+        );
+      }
+      updated_langs.push(lang);
+    }
+    return updated_langs;
+  }
 }
 
 async function parseAndReplace(raw_content, link_index, current_guide_id) {
