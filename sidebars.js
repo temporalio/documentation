@@ -1,4 +1,5 @@
 module.exports = {
+  monoSidebar: ["concepts-guide", "application-development-guide"],
   sidebarExplained: [
     {
       type: "category",

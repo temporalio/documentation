@@ -28,9 +28,9 @@ The following fields are available:
 
 ### `ID`
 
-import ID from './how-to-set-a-workflow-id-in-go.md'
+import WorkflowId from './workflow-options/workflow-id.md'
 
-<ID/>
+<WorkflowId/>
 
 ### `TaskQueue`
 
