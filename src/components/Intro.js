@@ -355,7 +355,7 @@ function Learning() {
       <div className="flex items-center space-x-4">
         <svg
           width="13"
-          className="mb-4 h-10 w-10 rounded-lg bg-[color:var(--ifm-color)] p-2 text-[color:var(--ifm-background-color)] icon landing-card"
+          className="mb-4 h-10 w-10 rounded-lg bg-[color:var(--ifm-color)] p-2 text-[color:var(--ifm-background-color)] icon "
           height="14"
           viewBox="0 0 511.973 511.973"
           fill="none"

@@ -86,6 +86,36 @@ main.p-6 {
 .intro .list-disc {
   list-style-type: disc;
 }
+.intro .hover\:underline:hover {
+  text-decoration: underline;
+}
+.intro .bg-\[color\:var\(--ifm-color\)\] {
+  background-color: var(--ifm-color);
+}
+.intro .text-\[color\:var\(--ifm-background-color\)\] {
+  color: var(--ifm-background-color);
+}
+.intro .p-2 {
+  padding: 0.5rem;
+}
+.intro .rounded-lg {
+  border-radius: 0.5rem;
+}
+.intro .mb-4 {
+  margin-bottom: 1rem;
+}
+.intro .h-10 {
+  height: 2.5rem;
+}
+.intro .w-10 {
+  height: 2.5rem;
+}
+.space-x-4 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-left: calc(1rem * (1 - var(--tw-space-x-reverse)));
+  margin-right: calc(1rem * var(--tw-space-x-reverse));
+}
+
 main.max-w-screen-lg {
   max-width: 1024px;
   margin: auto;
