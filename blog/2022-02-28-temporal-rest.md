@@ -162,7 +162,7 @@ To create a new counter with this Workflow, we would normally send an `increment
 ```ts
 const handle = await client.start(counterWorkflow, {
   taskQueue: 'tutorial',
-  workflowId: 'workflow-' + crypto.randomUUID(),
+  workflowId: 'counter-' + crypto.randomUUID(),
 });
 
 // Increment a new counter
