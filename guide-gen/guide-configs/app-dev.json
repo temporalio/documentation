@@ -538,9 +538,149 @@
 					"path": "app-dev-context/logging"
 				},
 				{
+					"header": "none",
+					"type": "lang-tabs",
+					"langs": [{
+							"lang": "go",
+							"title": "Go",
+							"path": "none"
+						},
+						{
+							"lang": "java",
+							"title": "Java",
+							"path": "none"
+						},
+						{
+							"lang": "php",
+							"title": "PHP",
+							"path": "none"
+						},
+						{
+							"lang": "typescript",
+							"title": "TypeScript",
+							"path": "none"
+						}
+					]
+				},
+				{
 					"header": "Visibility",
 					"type": "context",
 					"path": "app-dev-context/visibility"
+				},
+				{
+					"header": "none",
+					"type": "lang-tabs",
+					"langs": [{
+							"lang": "go",
+							"title": "Go",
+							"path": "none"
+						},
+						{
+							"lang": "java",
+							"title": "Java",
+							"path": "none"
+						},
+						{
+							"lang": "php",
+							"title": "PHP",
+							"path": "none"
+						},
+						{
+							"lang": "typescript",
+							"title": "TypeScript",
+							"path": "none"
+						}
+					]
+				},
+				{
+					"header": "Metrics",
+					"type": "context",
+					"path": "app-dev-context/metrics"
+				},
+				{
+					"header": "none",
+					"type": "lang-tabs",
+					"langs": [{
+							"lang": "go",
+							"title": "Go",
+							"path": "none"
+						},
+						{
+							"lang": "java",
+							"title": "Java",
+							"path": "none"
+						},
+						{
+							"lang": "php",
+							"title": "PHP",
+							"path": "none"
+						},
+						{
+							"lang": "typescript",
+							"title": "TypeScript",
+							"path": "none"
+						}
+					]
+				},
+				{
+					"header": "Tracing",
+					"type": "context",
+					"path": "app-dev-context/tracing"
+				},
+				{
+					"header": "none",
+					"type": "lang-tabs",
+					"langs": [{
+							"lang": "go",
+							"title": "Go",
+							"path": "none"
+						},
+						{
+							"lang": "java",
+							"title": "Java",
+							"path": "none"
+						},
+						{
+							"lang": "php",
+							"title": "PHP",
+							"path": "none"
+						},
+						{
+							"lang": "typescript",
+							"title": "TypeScript",
+							"path": "none"
+						}
+					]
+				},
+				{
+					"header": "Replays",
+					"type": "context",
+					"path": "app-dev-context/replays"
+				},
+				{
+					"header": "none",
+					"type": "lang-tabs",
+					"langs": [{
+							"lang": "go",
+							"title": "Go",
+							"path": "none"
+						},
+						{
+							"lang": "java",
+							"title": "Java",
+							"path": "none"
+						},
+						{
+							"lang": "php",
+							"title": "PHP",
+							"path": "none"
+						},
+						{
+							"lang": "typescript",
+							"title": "TypeScript",
+							"path": "none"
+						}
+					]
 				}
 
 			]
