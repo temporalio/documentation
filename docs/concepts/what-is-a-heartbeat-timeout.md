@@ -14,4 +14,4 @@ A Heartbeat Timeout is the maximum time between [Activity Heartbeats](/docs/conc
 
 If this timeout is reached, the Activity Execution changes to a Failed status, and will retry if a Retry Policy dictates it.
 
-- [How to set a Heartbeat Timeout in Go](/docs/go/how-to-set-activityoptions-in-go/#heartbeattimeout)
+- [How to set a Heartbeat Timeout in Go](/docs/go/activityoptions-reference/#heartbeattimeout)
