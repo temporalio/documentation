@@ -357,7 +357,11 @@ async function prepToReplace(cfg, link_index) {
     updated_h3_sections = [];
     for (h3_section of h2_section.h3_sections) {
       if (h3_section.type == "lang-tabs") {
-        h3_section.langs = await parseLangs(h3_section.langs, link_index, cfg.id);
+        h3_section.langs = await parseLangs(
+          h3_section.langs,
+          link_index,
+          cfg.id
+        );
       } else {
         h3_section.file.raw_content = await parseAndReplace(
           h3_section.file.raw_content,
@@ -369,7 +373,11 @@ async function prepToReplace(cfg, link_index) {
         let updated_h4_sections = [];
         for (h4_section of h3_section.h4_sections) {
           if (h4_section.type == "lang-tabs") {
-            h4_section.langs = await parseLangs(h4_section.langs, link_index, cfg.id);
+            h4_section.langs = await parseLangs(
+              h4_section.langs,
+              link_index,
+              cfg.id
+            );
           } else {
             h4_section.file.raw_content = await parseAndReplace(
               h4_section.file.raw_content,

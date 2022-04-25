@@ -1933,8 +1933,6 @@ Content is not available
 
 #### Start-To-Close
 
-
-
 <Tabs
 defaultValue="go"
 groupId="site-lang"
@@ -2035,8 +2033,6 @@ TODO
 
 ### Cron Jobs
 
-
-
 ### Local Activities
 
 TODO
@@ -2056,4 +2052,3 @@ TODO
 ## Testing
 
 TODO
-
