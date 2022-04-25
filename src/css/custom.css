@@ -113,6 +113,9 @@ main.p-6,
 .tailwindcss .mb-4 {
   margin-bottom: 1rem;
 }
+.tailwindcss .mb-8 {
+  margin-bottom: 2rem;
+}
 .tailwindcss .my-20 {
   margin-bottom: 5rem;
   margin-top: 5rem;
