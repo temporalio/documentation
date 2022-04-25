@@ -253,7 +253,7 @@
 						{
 							"lang": "typescript",
 							"title": "TypeScript",
-							"path": "none"
+							"path": "typescript/client/workflow-client"
 						}
 					]
 				},

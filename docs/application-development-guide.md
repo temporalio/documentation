@@ -526,6 +526,7 @@ Content is not available
 
 TODO
 
+
 <Tabs
 defaultValue="go"
 groupId="site-lang"
@@ -551,6 +552,7 @@ if err != nil {
   // ...
 }
 ```
+
 
 </TabItem>
 <TabItem value="java">
@@ -595,6 +597,7 @@ if err != nil {
   // ...
 }
 ```
+
 
 </TabItem>
 <TabItem value="java">
@@ -712,7 +715,19 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+To create a new `WorflowClient`, use the following with the requisite gRPC `Connection`.
+
+```typescript
+import { Connection, WorkflowClient } from '@temporalio/client';
+const connection = new Connection(); // to configure for production
+const client = new WorkflowClient(connection.service);
+```
+
+When you ommit the connection and just call the `new WorkflowClient()`, it creates a default connection that will work locally.
+
+:::note
+You will need to configure your connection and Namespace when [deploying to produciton](typescript/security#encryption-in-transit-with-mtls).
+:::
 
 </TabItem>
 </Tabs>
@@ -1139,6 +1154,8 @@ TODO
 
 ### Cron Jobs
 
+
+
 ### Local Activities
 
 TODO
@@ -1158,3 +1175,4 @@ TODO
 ## Testing
 
 TODO
+
