@@ -13,7 +13,7 @@ Activity Definitions are referred to by their [Activity Type](/docs/concepts/wha
 
 In Temporal documentation, the term 'Activity Definition' is used to refer to an Activity Function Definition——the method or function that is invoked for an [Activity Task Execution](/docs/concepts/what-is-an-activity-task-execution).
 
-Some SDKs refer to Activity Definitions as Activity Functions, Activity Interfaces, or Activity Methods.
+Temporal SDKs refer to Activity Definitions as Activity Functions, Activity Interfaces, or Activity Methods.
 All of these terms refer to the source of an instance of an execution, with an Activity Interface being a collective group of functions.
 
 ![Activity Definition](/diagrams/activity-definition.svg)
