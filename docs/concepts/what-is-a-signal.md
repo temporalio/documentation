@@ -36,8 +36,6 @@ Workflow Execution can optionally await on a single Signal name or multiple Sign
 
 If you are using Signals with the Go SDK, you should make sure to do an asynchronous drain on the Signal channel or the Signals will be lost.
 
-
-
 - [How to use Signals in Go](/docs/go/how-to-use-signals-in-go)
 - [How to use Signals in Java](/docs/java/signals)
 - [How to use Signals in PHP](/docs/php/signals)
