@@ -27,17 +27,17 @@ import (
 )
 
 func main() {
-  c, err := client.NewClient(client.Options{})
+  temporalClient, err := client.NewClient(client.Options{})
   if err != nil {
     // ...
   }
-  defer c.Close()
+  defer temporalClient.Close()
   // ...
   workflowOptions := client.StartWorkflowOptions{
     ID: "Your-Custom-Workflow-Id",
     TaskQueue: "your-task-queue",
   }
-  workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition, param)
+  workflowRun, err := temporalClient.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition, param)
   if err != nil {
     // ...
   }
