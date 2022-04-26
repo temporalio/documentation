@@ -3,6 +3,8 @@ name: CI
 on:
   pull_request:
     branches: [dprint]
+    tags:
+    - '*'
   push:
     branches: [dprint]
     tags:
@@ -16,7 +18,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Cache
-      uses: actions/cache@v3 s
+      uses: actions/cache@v3
     - uses: actions/setup-node@v3
       with:
         node-version: '16'
