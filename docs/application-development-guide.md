@@ -37,7 +37,7 @@ This section covers the minimum set of concepts and implementation details neede
 ### Run a dev Cluster
 
 Whenever we are developing Temporal Applications, we want to have a [Temporal Cluster](/docs/concepts-guide/#clusters) up and running.
-We can interact with a Cluster through [Temporal Client](/docs/concepts-guide/#temporal-sdk/#what-is-a-temporal-client) APIs and [tctl](/docs/tctl) commands.
+We can interact with a Cluster through [Temporal Client](/docs/concepts/what-is-a-temporal-client) APIs and [tctl](/docs/tctl) commands.
 
 There are four ways to quickly install and run a Temporal Cluster:
 
@@ -109,7 +109,7 @@ The SDK contains the following tools:
 - APIs to use within your Workflows
 - APIs to create and manage Worker Entities and Worker Processes
 
-#### Get the SDK
+**Get the SDK**
 
 Add the [Temporal Go SDK](https://github.com/temporalio/sdk-go) to your project:
 
@@ -123,16 +123,16 @@ Or clone the Go SDK repo to your preferred location:
 git clone git@github.com:temporalio/sdk-go.git
 ```
 
-#### Are there executable code samples?
+**Are there executable code samples?**
 
 You can find a complete list of executable code samples in the [samples library](/docs/samples-library/#go), which includes Temporal Go SDK code samples from the [temporalio/samples-go](https://github.com/temporalio/samples-go) repo.
 Additionally, each of the Go SDK Tutorials is backed by a fully executable template application.
 
-#### Where is the Go SDK technical reference?
+**Where is the Go SDK technical reference?**
 
 The [Temporal Go SDK API reference](https://pkg.go.dev/go.temporal.io/sdk) is published on [pkg.go.dev](https://pkg.go.dev/go.temporal.io/sdk)
 
-#### Where can I find video demos?
+**Where can I find video demos?**
 
 [Temporal Go SDK YouTube playlist](https://www.youtube.com/playlist?list=PLl9kRkvFJrlRYHYaTPnsvE46szyMIZLdk)
 
@@ -601,7 +601,9 @@ Content is not available
 
 #### Parameters
 
-TODO
+Temporal Workflows may have any number of custom parameters.
+However, it is strongly recommended that objects are used as parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow.
+All Workflow Definition parameters must be serializable.
 
 <Tabs
 defaultValue="go"
@@ -610,8 +612,8 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-The first parameter of a Go-based Workflow Definition must be of the [`workflow.Context`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/workflow#Context) type, as it is used by the Temporal Go SDK to pass around Workflow Execution context, and virtually all the Go SDK APIs that are callable from the Workflow require it.
-It is acquired from the [`go.temporal.io/sdk/workflow`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/workflow) package.
+The first parameter of a Go-based Workflow Definition must be of the [`workflow.Context`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Context) type, as it is used by the Temporal Go SDK to pass around Workflow Execution context, and virtually all the Go SDK APIs that are callable from the Workflow require it.
+It is acquired from the [`go.temporal.io/sdk/workflow`](https://pkg.go.dev/go.temporal.io/sdk/workflow) package.
 
 ```go
 import (
@@ -627,7 +629,8 @@ The `workflow.Context` entity operates similarly to the standard `context.Contex
 The only difference between `workflow.Context` and `context.Context` is that the `Done()` function, provided by `workflow.Context`, returns `workflow.Channel` instead of the standard Go `chan`.
 
 The second parameter, `string`, is a custom parameter that is passed to the Workflow when it is invoked.
-A Workflow Definition may support multiple custom parameters, or none. These parameters can be regular type variabes or safe pointers.
+A Workflow Definition may support multiple custom parameters, or none.
+These parameters can be regular type variables or safe pointers.
 However, the best practice is to pass a single parameter that is of a `struct` type so there can be some backward compatibility if new parameters are added.
 
 ```go
@@ -641,7 +644,8 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error
 }
 ```
 
-All Workflow Definition parameters must be serializable, regardless of whether pointers or regular type values are used. Parameters can’t be channels, functions, variadic, or unsafe pointers.
+All Workflow Definition parameters must be serializable, regardless of whether pointers or regular type values are used.
+Parameters can’t be channels, functions, variadic, or unsafe pointers.
 
 </TabItem>
 <TabItem value="java">
@@ -663,7 +667,9 @@ Content is not available
 
 #### Return values
 
-TODO
+Workflow return values must also be serializable.
+Returning results, returning errors, or throwing exceptions is fairly idiomatic in each language that is supported.
+However, Temporal APIs that must be used to get the result of a Workflow Execution will only ever receive one of either the result or the error.
 
 <Tabs
 defaultValue="go"
@@ -719,7 +725,9 @@ Content is not available
 
 #### Logic requirements
 
-TODO
+Workflow logic is constrained by [deterministic execution requirements](/docs/concepts-guide/#workflow-definition/#deterministic-constraints).
+Therefor each language is limited to the use of certain idiomatic techniques.
+However, each Temporal SDK provides a set of APIs that can be used inside your Workflow to interact with external (to the Workflow) application code.
 
 <Tabs
 defaultValue="go"
@@ -728,7 +736,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Workflow Definition code cannot directly do the following:
+In Go, Workflow Definition code cannot directly do the following:
 
 - Iterate over maps using `range`, because with `range` the order of the map's iteration is randomized.
   Instead you can collect the keys of the map, sort them, and then iterate over the sorted keys to access the map.
@@ -736,7 +744,7 @@ Workflow Definition code cannot directly do the following:
   You can also use a Side Effect or an Activity to process the map instead.
 - Call an external API, conduct a file I/O operation, talk to another service, etc. (Use an Activity for these.)
 
-Additionally the Temporal Go SDK offers APIs to handle equivalent Go constructs:
+The Temporal Go SDK has APIs to handle equivalent Go constructs:
 
 - `workflow.Now()` This is a replacement for `time.Now()`.
 - `workflow.Sleep()` This is a replacement for `time.Sleep()`.
@@ -1987,7 +1995,7 @@ TODO
 
 #### Schedule-To-Close
 
-TODO
+Use the [Schedule-To-Close Timeout](/docs/concepts-guide/#schedule-to-close-timeout) to limit the maximum duration of an [Activity Execution](/docs/concepts-guide/#activity-execution).
 
 <Tabs
 defaultValue="go"
@@ -2035,6 +2043,8 @@ Content is not available
 
 #### Start-To-Close
 
+Use the [Start-To-Close Timeout](/docs/concepts-guide/#start-to-close-timeout) to limit the maximum duration of a single [Activity Task Execution](/docs/concepts/what-is-an-activity-task-execution).
+
 <Tabs
 defaultValue="go"
 groupId="site-lang"
@@ -2081,7 +2091,7 @@ Content is not available
 
 #### Schedule-To-Start
 
-TODO
+Use the [Schedule-To-Start Timeout](/docs/concepts-guide/#schedule-to-start-timeout) to limit the maximum amount of time that an Activity Task can be enqueued to be picked up by a Worker.
 
 <Tabs
 defaultValue="go"
@@ -2134,6 +2144,8 @@ TODO
 TODO
 
 ### Cron Jobs
+
+
 
 ### Local Activities
 
@@ -2301,3 +2313,4 @@ Content is not available
 ## Testing
 
 TODO
+

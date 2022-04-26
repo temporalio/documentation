@@ -8,7 +8,7 @@ tags:
   - how-to
 ---
 
-Workflow Definition code cannot directly do the following:
+In Go, Workflow Definition code cannot directly do the following:
 
 - Iterate over maps using `range`, because with `range` the order of the map's iteration is randomized.
   Instead you can collect the keys of the map, sort them, and then iterate over the sorted keys to access the map.
@@ -16,7 +16,7 @@ Workflow Definition code cannot directly do the following:
   You can also use a Side Effect or an Activity to process the map instead.
 - Call an external API, conduct a file I/O operation, talk to another service, etc. (Use an Activity for these.)
 
-Additionally the Temporal Go SDK offers APIs to handle equivalent Go constructs:
+The Temporal Go SDK has APIs to handle equivalent Go constructs:
 
 - `workflow.Now()` This is a replacement for `time.Now()`.
 - `workflow.Sleep()` This is a replacement for `time.Sleep()`.
