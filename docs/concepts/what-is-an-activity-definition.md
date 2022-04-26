@@ -42,7 +42,7 @@ Other parameters, such as [Retry Policies](/docs/concepts/what-is-a-retry-policy
 
 #### Implementing Activity Definitions
 
-We strongly recommend that you develop an Activity Definition in a language with a corresponding Temporal SDK.
+We strongly recommend that you develop an Activity Definition in a language that has a corresponding Temporal SDK.
 
 **Implementation guides:**
 
