@@ -38,7 +38,7 @@ Activity Definitions must contain the following parameters:
 - Heartbeat: a notification from the Worker to the Temporal Cluster that the Activity Execution is progressing. Cancelations are allowed only if the Activity Definition permits Heartbeating.
 - Timeouts: intervals that control the execution and retrying of Activity Task Executions.
 
-Other parameters, such as retry policies and return values, can be seen in the implementation guides below.
+Other parameters, such as [Retry Policies](/docs/concepts/what-is-a-retry-policy) and return values, can be seen in the implementation guides, listed in the next section.
 
 #### Implementing Activity Definitions
 
