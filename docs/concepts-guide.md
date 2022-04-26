@@ -217,7 +217,7 @@ A Workflow Type is a name that maps to a Workflow Definition.
 A Temporal Workflow Execution is a durable, reliable, and scalable function execution.
 It is the main unit of execution of a [Temporal Application](#temporal-application).
 
-- [How to spawn a Workflow Execution in Go](/docs/application-development-guide/#spawn-workflow-execution)
+- [How to spawn a Workflow Execution in Go](/docs/application-development-guide/#start-workflow-execution)
 - [How to spawn a Workflow Execution in Java](/docs/java/how-to-spawn-a-workflow-execution-in-java)
 - [How to spawn a Workflow Execution in PHP](/docs/php/workflows/#starting-workflows)
 - [How to spawn a Workflow Execution in TypeScript](/docs/typescript/workflows#how-to-start-and-cancel-workflows)
@@ -473,7 +473,7 @@ Cancellation requests are only delivered to Activity Executions that Heartbeat:
 
 **Implementation guides:**
 
-- [How to spawn an Activity Execution in Go](/docs/application-development-guide/#spawn-activity-execution)
+- [How to spawn an Activity Execution in Go](/docs/application-development-guide/#start-activity-execution)
 
 ## Workers
 
@@ -891,10 +891,9 @@ Workflow Execution can optionally await on a single Signal name or multiple Sign
 
 If you are using Signals with the Go SDK, you should make sure to do an asynchronous drain on the Signal channel or the Signals will be lost.
 
-**Implementation guides:**
 
-- [How to send a Signal to a Workflow Execution in Go](/docs/go/how-to-send-a-signal-to-a-workflow-execution-in-go)
-- [How to handle a Signal in a Workflow in Go](/docs/go/how-to-handle-a-signal-in-a-workflow-in-go)
+
+- [How to use Signals in Go](/docs/go/how-to-use-signals-in-go)
 - [How to use Signals in Java](/docs/java/signals)
 - [How to use Signals in PHP](/docs/php/signals)
 
@@ -1610,3 +1609,4 @@ To actually have results from the use of a [List Filter](#list-filters), Search 
 How to do this entirely depends on the method by which you spawn the Workflow Execution:
 
 - [How to set Search Attributes as Workflow Execution metadata in Go](/docs/go/startworkflowoptions-reference/#searchattributes)
+

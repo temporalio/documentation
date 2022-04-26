@@ -1,0 +1,1 @@
+When a Signal is sent successfully from the Temporal Client you will see the [WorkflowExecutionSignaled](/docs/references/events#workflowexecutionsignaled) Event in the Event History of the Workflow that receives the Signal.

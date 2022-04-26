@@ -207,7 +207,7 @@
 					]
 				},
 				{
-					"header": "Spawn Activity Execution",
+					"header": "Start Activity Execution",
 					"type": "context",
 					"path": "app-dev-context/spawning-activities"
 				},
@@ -327,7 +327,7 @@
 					]
 				},
 				{
-					"header": "Spawn Workflow Execution",
+					"header": "Start Workflow Execution",
 					"type": "context",
 					"path": "app-dev-context/spawning-workflows"
 				},
@@ -459,30 +459,157 @@
 				{
 					"header": "Signals",
 					"type": "context",
-					"path": "app-dev-context/signals"
-				},
-				{
-					"header": "none",
-					"type": "lang-tabs",
-					"langs": [{
-							"lang": "go",
-							"title": "Go",
-							"path": "go/how-to-use-signals-in-go"
+					"path": "app-dev-context/signals",
+					"h4_sections": [
+						{
+							"header": "Define Signal",
+							"type": "context",
+							"path": "app-dev-context/define-signal"
 						},
 						{
-							"lang": "java",
-							"title": "Java",
-							"path": "none"
+							"header": "none",
+							"type": "lang-tabs",
+							"langs": [{
+									"lang": "go",
+									"title": "Go",
+									"path": "go/how-to-define-a-signal-in-go"
+								},
+								{
+									"lang": "java",
+									"title": "Java",
+									"path": "none"
+								},
+								{
+									"lang": "php",
+									"title": "PHP",
+									"path": "none"
+								},
+								{
+									"lang": "typescript",
+									"title": "TypeScript",
+									"path": "none"
+								}
+							]
 						},
 						{
-							"lang": "php",
-							"title": "PHP",
-							"path": "none"
+							"header": "Handle Signal",
+							"type": "context",
+							"path": "app-dev-context/handle-signal"
 						},
 						{
-							"lang": "typescript",
-							"title": "TypeScript",
-							"path": "none"
+							"header": "none",
+							"type": "lang-tabs",
+							"langs": [{
+									"lang": "go",
+									"title": "Go",
+									"path": "go/how-to-handle-a-signal-in-go"
+								},
+								{
+									"lang": "java",
+									"title": "Java",
+									"path": "none"
+								},
+								{
+									"lang": "php",
+									"title": "PHP",
+									"path": "none"
+								},
+								{
+									"lang": "typescript",
+									"title": "TypeScript",
+									"path": "none"
+								}
+							]
+						},
+						{
+							"header": "Send Signal from Client",
+							"type": "context",
+							"path": "app-dev-context/send-signal-from-client"
+						},
+						{
+							"header": "none",
+							"type": "lang-tabs",
+							"langs": [{
+									"lang": "go",
+									"title": "Go",
+									"path": "go/how-to-send-a-signal-from-a-client-in-go"
+								},
+								{
+									"lang": "java",
+									"title": "Java",
+									"path": "none"
+								},
+								{
+									"lang": "php",
+									"title": "PHP",
+									"path": "none"
+								},
+								{
+									"lang": "typescript",
+									"title": "TypeScript",
+									"path": "none"
+								}
+							]
+						},
+						{
+							"header": "Send Signal from Workflow",
+							"type": "context",
+							"path": "app-dev-context/send-signal-from-workflow"
+						},
+						{
+							"header": "none",
+							"type": "lang-tabs",
+							"langs": [{
+									"lang": "go",
+									"title": "Go",
+									"path": "go/how-to-send-a-signal-from-a-workflow-in-go"
+								},
+								{
+									"lang": "java",
+									"title": "Java",
+									"path": "none"
+								},
+								{
+									"lang": "php",
+									"title": "PHP",
+									"path": "none"
+								},
+								{
+									"lang": "typescript",
+									"title": "TypeScript",
+									"path": "none"
+								}
+							]
+						},
+						{
+							"header": "Send Signal-With-Start",
+							"type": "context",
+							"path": "app-dev-context/signal-with-start"
+						},
+						{
+							"header": "none",
+							"type": "lang-tabs",
+							"langs": [{
+									"lang": "go",
+									"title": "Go",
+									"path": "go/how-to-send-a-signal-with-start-in-go"
+								},
+								{
+									"lang": "java",
+									"title": "Java",
+									"path": "none"
+								},
+								{
+									"lang": "php",
+									"title": "PHP",
+									"path": "none"
+								},
+								{
+									"lang": "typescript",
+									"title": "TypeScript",
+									"path": "none"
+								}
+							]
 						}
 					]
 				},
