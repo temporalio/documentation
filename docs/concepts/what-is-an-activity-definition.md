@@ -35,7 +35,7 @@ All values passed through these parameters are recorded in the Workflow Executio
 Activity Definitions must contain the following parameters:
 
 - Context: an optional parameter that provides Activity context within multiple APIs.
-- Heartbeat: a notification from the Worker to the Temporal Cluster that the Activity Execution is progressing. Cancelations are only allowed if the Activity Definition permits Heartbeating.
+- Heartbeat: a notification from the Worker to the Temporal Cluster that the Activity Execution is progressing. Cancelations are allowed only if the Activity Definition permits Heartbeating.
 - Timeouts: intervals that control the execution and retrying of Activity Task Executions.
 
 Other parameters, such as retry policies and return values, can be seen in the implementation guides below.
