@@ -9,7 +9,7 @@ tags:
 
 An Activity Definition is the code that defines the constraints of an [Activity Task Execution](/docs/concepts/what-is-an-activity-task-execution).
 
-Activity Definitions are referred to by their [Activity Type](/docs/concepts/what-is-an-activity-type).
+Activity Definitions are named and referenced in code by their [Activity Type](/docs/concepts/what-is-an-activity-type).
 
 In Temporal documentation, the term 'Activity Definition' is used to refer to an Activity Function Definition——the method or function that is invoked for an [Activity Task Execution](/docs/concepts/what-is-an-activity-task-execution).
 
