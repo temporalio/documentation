@@ -31,6 +31,7 @@ Set these environment variables if you need to change their defaults:
 | TEMPORAL_EXTERNAL_SCRIPTS        | Additional JavaScript tags to serve in the UI                                   |                               |
 | TEMPORAL_GRPC_MAX_MESSAGE_LENGTH | gRPC max message length (bytes)                                                 | 4194304 (4mb)                 |
 
+<!-- dprint-ignore -->
 <details>
 <summary>
 Optional TLS configuration variables:
@@ -121,16 +122,16 @@ It can be enabled it in 2 steps:
    - **Keycloak**: https://www.keycloak.org/getting-started/getting-started-docker
    - please feel free to [PR or request more help on the Temporal Web repo](https://github.com/temporalio/web/)
 
-  <!-- prettier-ignore-end -->
+  <!-- dprint-ignore-end -->
 
 2.  You will need to provide a redirect URL to your OAuth Provider.
     If you are hosting Temporal Web at `http://localhost:8088` (this is configured by `callback_base_uri` in `server/config.yml`), then it is `http://localhost:8088/auth/sso_callback`.
 
-    By default, Temporal Web asks for 3 scopes, make sure your provider recognizes these or you may see scope-related errors:
+By default, Temporal Web asks for 3 scopes, make sure your provider recognizes these or you may see scope-related errors:
 
-    - `openid` required by some OIDC providers like [auth0](https://auth0.com/docs/scopes/openid-connect-scopes)
-    - `profile` for name
-    - `email` for email
+- `openid` required by some OIDC providers like [auth0](https://auth0.com/docs/scopes/openid-connect-scopes)
+- `profile` for name
+- `email` for email
 
 ## Using Temporal Web for development
 

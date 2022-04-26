@@ -5,6 +5,8 @@
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
+    "dprint": "dprint check",
+    "fmt-check": "dprint check",
     "build": "docusaurus build",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
@@ -15,9 +17,6 @@
     "format": "prettier --write .",
     "prepare": "husky install",
     "gen": "./guide-gen/index.js"
-  },
-  "lint-staged": {
-    "**/*": "prettier --write --ignore-unknown"
   },
   "dependencies": {
     "@docusaurus/core": "^2.0.0-beta.16",
@@ -50,10 +49,10 @@
     ]
   },
   "devDependencies": {
+    "dprint": "^0.27.0",
     "eslint": "^7.32.0",
     "eslint-plugin-react": "^7.23.2",
     "husky": "^6.0.0",
-    "lint-staged": "^11.1.2",
-    "prettier": "^2.5.1"
+    "lint-staged": "^11.1.2"
   }
 }

@@ -21,7 +21,6 @@ $yourWorkflow = $workflowClient->newWorkflowStub(
 );
 
 $result = $yourWorkflow->workflowMethod();
-
 ```
 
 2. A Task Queue name must be provided as a parameter when creating a Worker.
