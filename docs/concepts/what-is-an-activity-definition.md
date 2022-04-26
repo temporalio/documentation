@@ -22,7 +22,7 @@ All of these terms refer to the source of an instance of an execution, with an A
 
 Activity Definitions are executed as normal functions.
 
-In the event of failure, the function will begin at its initial state when retried (except when Activity Heartbeats are established).
+In the event of failure, the function begins at its initial state when retried (except when Activity Heartbeats are established).
 
 Therefore, an Activity Definition has no restrictions on the code it contains.
 
