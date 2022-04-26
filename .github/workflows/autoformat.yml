@@ -9,10 +9,13 @@ on:
 
 jobs:
   style:
+    name: CI
     runs-on: ubuntu-latest
-
-      - uses: actions/checkout@v2
-      - uses: dprint/check@v2.0
+    
+    steps:
+    - uses: actions/checkout@v3
+    - name: Cache
+      uses: actions/cache@v3
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   
