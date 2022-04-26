@@ -13,18 +13,9 @@ Signals can then be sent via the Temporal Client or from within a Workflow.
 
 #### Define Signal type
 
-**How to define a Signal Type in Go**
+import DefineSignal from './how-to-define-a-signal-in-go.md'
 
-Structs can be used as Signal data, as long as the struct is [serializable via the Data Converter](https://pkg.go.dev/go.temporal.io/sdk/converter#CompositeDataConverter.ToPayload).
-The `Receive()` method on the Data Converter decodes the data into the Struct within the Workflow ([Handling Signals](#handling-signals)).
-Only public fields are serializable.
-
-```go
-MySignal struct {
-	Message string // serializable
-	message string // not serializable
-}
-```
+<DefineSignal/>
 
 #### Handle Signal
 
