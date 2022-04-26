@@ -302,7 +302,3 @@ main.max-w-screen-lg {
 .menu__link, .navbar__link, .dropdown__link{
     font-weight: 400;
 }
-
-img {
-  width: 100%;
-}
