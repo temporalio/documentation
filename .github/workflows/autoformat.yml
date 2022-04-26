@@ -10,8 +10,7 @@ on:
 jobs:
   style:
     runs-on: ubuntu-latest
-    steps:
-      - name: dprint-check-action
+
       - uses: actions/checkout@v2
       - uses: dprint/check@v2.0
       env:
