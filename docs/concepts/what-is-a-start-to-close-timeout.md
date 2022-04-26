@@ -10,6 +10,8 @@ tags:
 
 A Start-To-Close Timeout is the maximum time allowed for a single [Activity Task Execution](/docs/concepts/what-is-an-activity-task-execution).
 
+- [How to set a Start-To-Close Timeout in Go](/docs/go/how-to-set-a-start-to-close-timeout-in-go)
+
 **The default Start-To-Close Timeout is the same as the default [Schedule-To-Close Timeout](/docs/concepts/what-is-a-schedule-to-close-timeout).**
 
 An Activity Execution must have either this timeout (Start-To-Close) or the [Schedule-To-Close Timeout](/docs/concepts/what-is-a-schedule-to-close-timeout) set.
@@ -29,11 +31,7 @@ If the first Activity Task Execution returns an error the first time, then the f
 
 If this timeout is reached, the following actions occur:
 
-- An [ActivityTaskTimedOut](/docs/concepts/what-is-an-event/#activitytasktimedout) Event is written to the Workflow Execution's mutable state.
+- An [ActivityTaskTimedOut](/docs/references/events/#activitytasktimedout) Event is written to the Workflow Execution's mutable state.
 - If a Retry Policy dictates a retry, the Temporal Cluster schedules another Activity Task.
   - The attempt count increments by 1 in the Workflow Execution's mutable state.
   - The Start-To-Close Timeout timer is reset.
-
-**Implementation guides:**
-
-- [How to set a Start-To-Close Timeout in Go](/docs/go/how-to-set-activityoptions-in-go/#starttoclosetimeout)

@@ -1,4 +1,5 @@
 module.exports = {
+  monoSidebar: ["concepts-guide", "application-development-guide"],
   sidebarExplained: [
     {
       type: "category",
@@ -238,13 +239,13 @@ module.exports = {
           label: "Reference",
           href: "https://pkg.go.dev/go.temporal.io/sdk",
         },
-        "go/how-to-develop-a-workflow-definition-in-go",
+        "go/how-to-develop-a-workflow-in-go",
         "go/how-to-develop-an-activity-definition-in-go",
         "go/how-to-spawn-an-activity-execution-in-go",
-        "go/how-to-set-activityoptions-in-go",
+        "go/activityoptions-reference",
         "go/how-to-get-the-result-of-an-activity-execution-in-go",
         "go/how-to-spawn-a-workflow-execution-in-go",
-        "go/how-to-set-startworkflowoptions-in-go",
+        "go/startworkflowoptions-reference",
         "go/how-to-get-the-result-of-a-workflow-execution-in-go",
         "go/how-to-develop-a-worker-program-in-go",
         "go/how-to-set-workeroptions-in-go",
@@ -558,8 +559,33 @@ module.exports = {
     {
       type: "category",
       label: "References",
-      collapsed: true,
-      items: ["reference/sdk-metrics"],
+      collapsed: false,
+      collapsible: false,
+      link: {
+        type: "doc",
+        id: "references/index",
+      },
+      items: [
+        "references/sdk-metrics",
+        "references/commands",
+        "references/events",
+        {
+          type: "link",
+          label: "Go SDK reference",
+          href: "https://pkg.go.dev/go.temporal.io/sdk",
+        },
+        {
+          type: "link",
+          label: "Java SDK reference",
+          href: "https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/index.html",
+        },
+        {
+          type: "link",
+          label: "TypeScript SDK reference",
+          href: "https://typescript.temporal.io",
+        },
+        "references/glossary",
+      ],
     },
   ],
 };

@@ -13,7 +13,8 @@
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
     "format": "prettier --write .",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "gen": "./guide-gen/index.js"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
@@ -49,18 +50,10 @@
     ]
   },
   "devDependencies": {
-    "@tailwindcss/typography": "^0.5.0",
-    "autoprefixer": "^10.4.0",
-    "docusaurus-tailwindcss-loader": "file:plugins/docusaurus-tailwindcss-loader",
     "eslint": "^7.32.0",
     "eslint-plugin-react": "^7.23.2",
     "husky": "^6.0.0",
     "lint-staged": "^11.1.2",
-    "postcss": "^8.4.4",
-    "postcss-import": "^14.0.2",
-    "postcss-preset-env": "^7.4.1",
-    "prettier": "^2.5.1",
-    "prettier-plugin-tailwindcss": "^0.1.4",
-    "tailwindcss": "^3.0.1"
+    "prettier": "^2.5.1"
   }
 }
