@@ -25,7 +25,11 @@ html[data-theme="dark"] {
   --ifm-link-color: var(--ifm-color-primary-lighter);
   --ifm-menu-color-active: var(--ifm-color-primary-lighter);
   --ifm-navbar-link-hover-color: var(--ifm-color-primary-lighter);
-  --ifm-toc-link-color: var(--ifm-color-primary-lighter);
+  --ifm-toc-link-color: #ffffff;
+  --ifm-toc-link-color-active: var(--ifm-color-primary-lighter);
+  --ifm-breadcrumb-color-active: var(--ifm-color-primary-lighter);
+  --ifm-tabs-color-active: var(--ifm-color-primary-lighter);
+
   --ifm-blockquote-color: #eeeeee;
   /* --ifm-code-background: var(--ifm-color-primary-dark); */
   --ifm-color: #ffffff;
@@ -42,7 +46,7 @@ html[data-theme="light"] {
   --ifm-link-color: var(--ifm-color-primary-light);
   --ifm-menu-color-active: var(--ifm-color-primary-light);
   --ifm-navbar-link-hover-color: var(--ifm-color-primary-light);
-  --ifm-toc-link-color: var(--ifm-color-primary-light);
+  --ifm-toc-link-color: var(--ifm-color-primary);
   --ifm-blockquote-color: #000000;
   --ifm-color-emphasis-300: #505050;
 
@@ -55,6 +59,10 @@ html[data-theme="light"] {
   --ifm-badge-background-color: rgba(239, 246, 255);
 
   --card-color: rgba(239, 246, 255);
+}
+
+.table-of-contents__link--active {
+  color: var(--ifm-color-primary-light)
 }
 
 /* If we scope things with .intro we can attach to the tailwind styles on only the intro page */
