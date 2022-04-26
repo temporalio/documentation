@@ -1,7 +1,8 @@
-:::caution
+:::info WORK IN PROGRESS
 
 This guide is a work in progress.
 Some sections may be incomplete or missing for some languages.
+Information may change at any time.
 
 :::
 

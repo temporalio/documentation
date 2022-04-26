@@ -2,11 +2,22 @@
 	"file_name": "concepts-guide.md",
 	"id": "concepts-guide",
 	"title": "Temporal conceptual guide",
-	"sidebar_label": "Concepts guide",
+	"sidebar_label": "Concepts",
 	"description": "This guide is meant to be a comprehensive overview of Temporal concepts.",
 	"toc_max_heading_level": 4,
 	"add_tabs_support": true,
-	"h2_sections": [{
+	"h2_sections": [
+		{
+			"header": "none",
+			"h3_sections": [
+				{
+					"header": "none",
+					"type": "context",
+					"path": "concept-context/intro"
+				}
+			]
+		},
+		{
 			"header": "Temporal",
 			"h3_sections": [{
 					"header": "none",

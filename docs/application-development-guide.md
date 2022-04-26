@@ -13,10 +13,11 @@ import TabItem from '@theme/TabItem';
 
 This guide is meant to be a comprehensive overview of Temporal concepts.
 
-:::caution
+:::info WORK IN PROGRESS
 
 This guide is a work in progress.
 Some sections may be incomplete or missing for some languages.
+Information may change at any time.
 
 :::
 
@@ -2145,6 +2146,8 @@ TODO
 
 ### Cron Jobs
 
+
+
 ### Local Activities
 
 TODO
@@ -2311,3 +2314,4 @@ Content is not available
 ## Testing
 
 TODO
+
