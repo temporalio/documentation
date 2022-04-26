@@ -9,15 +9,15 @@ tags:
 
 An Activity Task contains the context needed to proceed with an [Activity Task Execution](/docs/concepts/what-is-an-activity-task-execution). 
 
-Activity Tasks are meant to run an [Activity Definition]() once. Should this fail, the Activity Task is retried until it's completed successfully.
+Activity Tasks are meant to run an [Activity Definition](/docs/concepts/what-is-an-activity-definition) once. Should this fail, the Activity Task is retried until it's completed successfully.
 
 #### Scheduling Activity Tasks
 
-Activity Tasks are assigned to an Activity Task Queue upon an [ActivityTaskScheduled Event](). Once a Task is executed, an Activity's Events are run until the Activity successfully completes.
+Activity Tasks are assigned to an Activity Task Queue upon an [ActivityTaskScheduled Event](/docs/concepts/what-is-an-activity-task#scheduling-activity-tasks). Once a Task is executed, an Activity's Events are run until the Activity successfully completes.
 
 #### Context Events
 
-Activity Tasks contain Events that contain what's needed to execute the Activity. These events are found within the Activity Task's Context.
+Activity Tasks contain Events that contain what's needed to execute the Activity. These events are found within the Activity Task's [Context](/docs/concepts/what-is-an-activity-task#context-events).
 
 [event explanation?]
 
