@@ -6,7 +6,7 @@ description: There are four ways to quickly install and run a Temporal Cluster.
 ---
 
 Whenever we are developing Temporal Applications, we want to have a [Temporal Cluster](/docs/concepts/what-is-a-temporal-cluster) up and running.
-We can interact with a Cluster through [Temporal Client](/docs/concepts/what-is-a-temporal-sdk/#what-is-a-temporal-client) APIs and [tctl](/docs/tctl) commands.
+We can interact with a Cluster through [Temporal Client](/docs/concepts/what-is-a-temporal-client) APIs and [tctl](/docs/tctl) commands.
 
 There are four ways to quickly install and run a Temporal Cluster:
 

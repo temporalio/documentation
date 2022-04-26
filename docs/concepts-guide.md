@@ -63,7 +63,7 @@ Therefore, a Temporal Workflow Execution executes a [Temporal Workflow Definit
 
 A Temporal SDK is a language-specific library that offers APIs to do the following:
 
-1. Construct and use a [Temporal Client](#what-is-a-temporal-client)
+1. Construct and use a [Temporal Client](/docs/concepts/what-is-a-temporal-client)
 2. Develop [Workflow Definitions](#workflow-definition)
 3. Develop [Worker Programs](#worker-program)
 
@@ -71,26 +71,13 @@ A Temporal SDK enables you to write your application code using the full power o
 
 Temporal currently offers the following SDKs:
 
-- [How to use the Go SDK](/docs/go/)
+- [How to use the Go SDK](/docs/application-development-guide/#run-a-dev-cluster)
 - [How to use the Java SDK](/docs/java/)
 - [How to use the PHP SDK](/docs/php/introduction)
 - [How to use the TypeScript SDK](/docs/typescript/introduction)
 
-### What is a Temporal Client?
-
-A Temporal Client is available in each SDK and provides a set of APIs to communicate with a [Temporal Cluster](#clusters).
-
-The most common operations that a Temporal Client enables you to perform are the following:
-
-- Start a Workflow Execution.
-- Get the result of Workflow Execution.
-- Signal a Workflow Execution.
-- Query a Workflow Execution.
-- List Workflow Executions.
-
-### SDK metrics
-
-- [SDK metrics reference](/docs/references/sdk-metrics)
+Each SDK emits metrics which can be ingested into monitoring platforms.
+See the [SDK metrics reference](/docs/references/sdk-metrics) for a complete list.
 
 ## Workflows
 
