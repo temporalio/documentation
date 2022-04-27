@@ -28,7 +28,7 @@ The following fields are available:
 
 ### `ID`
 
-import WorkflowId from './workflow-options/workflow-id.md'
+import WorkflowId from './how-to-set-a-workflow-id-in-go.md'
 
 <WorkflowId/>
 

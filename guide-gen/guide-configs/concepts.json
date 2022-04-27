@@ -252,12 +252,12 @@
 				{
 					"header": "Activity Task",
 					"type": "explanation",
-					"path": "concepts/what-is-a-workflow-task"
+					"path": "concepts/what-is-an-activity-task"
 				},
 				{
 					"header": "Activity Task Execution",
 					"type": "explanation",
-					"path": "concepts/what-is-a-workflow-task-execution"
+					"path": "concepts/what-is-an-activity-task-execution"
 				}
 			]
 		},

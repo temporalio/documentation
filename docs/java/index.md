@@ -17,7 +17,7 @@ The SDK contains the following tools:
 - APIs to use within your Workflows
 - APIs to create and manage Worker Entities and Worker Processes
 
-#### Get the SDK
+**Get the SDK**
 
 Add the [Temporal Java SDK](https://github.com/temporalio/sdk-java) to your project as a dependency:
 
@@ -42,15 +42,15 @@ implementation 'io.temporal:temporal-sdk:1.9.1'
 Additional scripts for each SDK version are available here: [https://search.maven.org/artifact/io.temporal/temporal-sdk](https://search.maven.org/artifact/io.temporal/temporal-sdk).
 Select an SDK version to see available scripts.
 
-#### Are there executable code samples?\*\*
+**Are there executable code samples?**
 
 You can find a complete list of executable code samples in the [samples library](/docs/samples-library/#java), which includes Temporal Java SDK code samples from the temporalio/samples-java repo.
 Additionally, several of the [Java SDK Tutorials](/docs/learning-paths) are backed by a fully executable template application.
 
-#### Where is the Java SDK technical reference?\*\*
+**Where is the Java SDK technical reference?**
 
 The [Java SDK API reference](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/index.html) is published to [javadoc.io](https://www.javadoc.io/).
 
-#### Where can I find video demos?\*\*
+**Where can I find video demos?**
 
 [Temporal Java SDK YouTube playlist](https://www.youtube.com/playlist?list=PLl9kRkvFJrlQ8KsM6m9cFfCeQegq_B8x4)

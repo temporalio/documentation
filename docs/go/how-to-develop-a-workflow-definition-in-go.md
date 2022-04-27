@@ -16,3 +16,5 @@ func YourWorkflowDefinition(ctx workflow.Context) error {
   return nil
 }
 ```
+
+In Go, by default, the Workflow Type name is the same as the function name.
