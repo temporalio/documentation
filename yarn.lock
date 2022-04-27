@@ -3060,6 +3060,11 @@
   "resolved" "https://registry.npmjs.org/ci-info/-/ci-info-2.0.0.tgz"
   "version" "2.0.0"
 
+"ci@^2.1.1":
+  "integrity" "sha512-StBCU1G9zbhgVBqvslvOpT601zme9YfyZaUSjgXCtfnIynPuDBHX85WwnXv5cnh74bYo8S3xfPpI41yk1jZmRw=="
+  "resolved" "https://registry.npmjs.org/ci/-/ci-2.1.1.tgz"
+  "version" "2.1.1"
+
 "clean-css@^5.2.2", "clean-css@^5.2.4":
   "integrity" "sha512-nKseG8wCzEuji/4yrgM/5cthL9oTDc5UOQyFMvW/Q53oP6gLH690o1NbuTh6Y18nujr7BxlsFuS7gXLnLzKJGg=="
   "resolved" "https://registry.npmjs.org/clean-css/-/clean-css-5.2.4.tgz"
