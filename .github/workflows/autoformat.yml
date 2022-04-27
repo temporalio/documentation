@@ -1,13 +1,6 @@
 name: CI
 
-on:
-  pull_request:
-    tags:
-    - '*'
-  push:
-    tags:
-    - '*'
-
+on: [push, pull_request]
 jobs:
   build:
     name: CI
