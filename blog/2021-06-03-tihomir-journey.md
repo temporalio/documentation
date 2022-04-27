@@ -5,7 +5,7 @@ tags:
   - Reflections
 posted_on_: 2021-06-03T00:00:00Z
 slug: tihomir-journey-to-temporal
-title: 'My journey to Temporal'
+title: "My journey to Temporal"
 author: Tihomir Surdilovic
 author_title: Product
 author_image_url: https://avatars.githubusercontent.com/u/119422?v=4

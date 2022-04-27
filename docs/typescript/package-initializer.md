@@ -1,7 +1,7 @@
 ---
 id: package-initializer
-title: '@temporalio/create Package Initializer'
-sidebar_label: '@temporalio/create'
+title: "@temporalio/create Package Initializer"
+sidebar_label: "@temporalio/create"
 description: temporalio/create is an optional tool to set up a new Temporal project starting from our samples repo. `npx @temporalio/create@latest ./example`
 ---
 

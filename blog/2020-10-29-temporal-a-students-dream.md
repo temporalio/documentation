@@ -7,7 +7,7 @@ tags:
   - engineering
 posted_on_: 2020-10-29T00:06:09Z
 slug: temporal-a-students-dream
-title: 'Temporal - a students dream'
+title: "Temporal - a students dream"
 author: Manu Srivastava
 author_title: Engineering
 author_image_url: https://avatars2.githubusercontent.com/u/5552381?s=88&u=1ee5691d390f3281efecaa23dea30f471bc9230f&v=4

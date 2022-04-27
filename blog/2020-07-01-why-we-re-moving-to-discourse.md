@@ -1,12 +1,12 @@
 ---
 tags:
-- discourse
-- slack
-- temporal
-- chat
-- migration
-- community
-- workflow
+  - discourse
+  - slack
+  - temporal
+  - chat
+  - migration
+  - community
+  - workflow
 slug: discourse
 title: Why We're Moving to Discourse
 author: Ryland Goldstein
@@ -14,7 +14,6 @@ author_title: Temporals product person
 author_image_url: https://avatars2.githubusercontent.com/u/27736122?s=460&u=7b6a3e58ec7ed7157f23f51e91a2f4cd2028d606&v=4
 posted_on_: 2020-07-01T07:00:00Z
 release_version: 0.26.0
-
 ---
 
 Why Temporal is moving to Discourse for our knowledge DB needs.

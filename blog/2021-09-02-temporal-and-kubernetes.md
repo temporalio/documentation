@@ -5,7 +5,7 @@ tags:
   - Kubernetes
 posted_on_: 2021-09-02T00:00:09Z
 slug: temporal-and-kubernetes
-title: 'Self Hosting Temporal: To Kubernetes or Not To Kubernetes?'
+title: "Self Hosting Temporal: To Kubernetes or Not To Kubernetes?"
 author: swyx
 author_title: Head of Developer Experience
 author_image_url: https://avatars.githubusercontent.com/u/6764957?v=4

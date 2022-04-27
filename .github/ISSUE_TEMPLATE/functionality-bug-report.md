@@ -2,9 +2,8 @@
 name: Functionality bug report
 about: Create a bug report related to the functionality of the site to help us improve
 title: "[ Bug report ]"
-labels: ''
-assignees: ''
-
+labels: ""
+assignees: ""
 ---
 
 ## Required

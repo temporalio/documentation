@@ -3,8 +3,7 @@
   "typescript": {
     "quoteStyle": "alwaysSingle"
   },
-  "json": {
-  },
+  "json": {},
   "markdown": {
     "lineWidth": 80,
     "newLineKind": "lf",

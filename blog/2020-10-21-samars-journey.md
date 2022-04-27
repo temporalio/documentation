@@ -9,7 +9,7 @@ tags:
   - swf
 posted_on_: 2020-10-14T00:06:09Z
 slug: samars-journey
-title: 'A Journey'
+title: "A Journey"
 author: Samar Abbas
 author_title: Cofounder/CTO
 author_image_url: https://avatars2.githubusercontent.com/u/1766515?s=460&u=42e28f95a37b56ef80c55dbaaadd71bf3fc11261&v=4

@@ -5,7 +5,7 @@ tags:
   - go-ecommerce-tutorial
 posted_on_: 2021-07-14T00:00:00Z
 slug: build-an-ecommerce-app-with-temporal-part-3-testing
-title: 'Building an eCommerce web app with Temporal, Part 3: Testing'
+title: "Building an eCommerce web app with Temporal, Part 3: Testing"
 author: Valeri Karpov
 author_title: Community Member
 author_image_url: https://avatars.githubusercontent.com/u/1620265?v=4

@@ -7,7 +7,7 @@ tags:
   - case study
 posted_on_: 2021-05-17T04:20:00Z
 slug: descript-case-study
-title: 'Revolutionizing Audio with Descript and Temporal'
+title: "Revolutionizing Audio with Descript and Temporal"
 author: swyx
 author_title: Head of Developer Experience
 author_image_url: https://avatars.githubusercontent.com/u/6764957?v=4

@@ -7,7 +7,7 @@ tags:
   - errors
 posted_on_: 2021-01-21T00:00:09Z
 slug: dealing-with-failure
-title: 'Dealing with failure'
+title: "Dealing with failure"
 author: Sergey Bykov
 author_title: Engineering
 author_image_url: https://avatars2.githubusercontent.com/u/8248806?s=460&v=4

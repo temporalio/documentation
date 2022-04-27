@@ -54,4 +54,4 @@ Temporal’s underlying technology was built by its co-founders at Amazon, Micro
 
 The Temporal platform enables developers to create reliable applications using familiar tools that make them productive. Temporal is used by Netflix, Doordash, Snap, Box, Stripe, Hashicorp, Coinbase and others. Developers are empowered to build and operate resilient applications using developer-friendly primitives. Developers write business logic - not glue code - and Temporal takes care of the rest. More information is available at temporal.io.
 
-For more information:	Forrest Carman forrestc@owenmedia.com	206-859-3118
+For more information: Forrest Carman forrestc@owenmedia.com 206-859-3118

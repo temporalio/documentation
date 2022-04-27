@@ -5,7 +5,7 @@ tags:
   - golang
 posted_on_: 2021-07-14T00:00:00Z
 slug: media-processing-workflows
-title: 'Media processing workflows'
+title: "Media processing workflows"
 author: Nir Padmanabhan
 author_title: Engineering @ Stripe
 author_image_url: https://avatars.githubusercontent.com/u/56231878?v=4
@@ -39,6 +39,7 @@ Before writing a Temporal Workflow, let’s take a closer look at the business r
 1. Various triggers can start the workflow - a RPC by a microservice, an ad hoc trigger, or a distributed CRON schedule to periodically ping the vendors.
 
 2. Once the workflow is started, make a request to the vendor API to check if a particular IoT device has video footage. The API returns one of the following 3 statuses for the request:
+
    - `success`: the vendor has immediate access to the footage and we can download it immediately.
    - `pending`: the vendor servers have not decided whether the footage can be obtained. This can arise in cases where the vendor servers do not have connectivity with the device. In this case, our workflow will be kept alive and will check on the status of the footage at certain intervals over time.
    - `not_obtainable`: The vendor believes data is not obtainable now or in the future. Therefore, we perform any cleanup tasks and complete the workflow early.

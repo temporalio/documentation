@@ -8,7 +8,7 @@ tags:
   - case study
 posted_on_: 2020-10-15T15:06:09Z
 slug: how-temporal-simplified-checkr-workflows
-title: 'How Temporal simplified Checkr workflows'
+title: "How Temporal simplified Checkr workflows"
 author: Ryland Goldstein
 author_title: Head of Product
 author_image_url: https://avatars2.githubusercontent.com/u/27736122?s=460&u=7b6a3e58ec7ed715│       7f23f51e91a2f4cd2028d606&v=4
@@ -22,7 +22,7 @@ release_version: V1.0.0
 
 <!--truncate-->
 
-_This case study is based on a 2020 interview with [Ben Jacobson](https://www.linkedin.com/in/bjacobso/) who was a key player in Temporal* adoption within Checkr. [Itay and Maria from Checkr also presented updated use cases](https://youtu.be/IBIJ7HAlzxI) at our Flagship Meetup in 2022._
+_This case study is based on a 2020 interview with [Ben Jacobson](https://www.linkedin.com/in/bjacobso/) who was a key player in Temporal\* adoption within Checkr. [Itay and Maria from Checkr also presented updated use cases](https://youtu.be/IBIJ7HAlzxI) at our Flagship Meetup in 2022._
 
 import { ResponsivePlayer } from '../src/components'
 

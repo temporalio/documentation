@@ -5,7 +5,7 @@ tags:
   - go-ecommerce-tutorial
 posted_on_: 2021-06-08T00:00:00Z
 slug: build-an-ecommerce-app-with-temporal-part-2-reminder-emails
-title: 'Building an eCommerce web app with Temporal, Part 2: Reminder Emails'
+title: "Building an eCommerce web app with Temporal, Part 2: Reminder Emails"
 author: Valeri Karpov
 author_title: Community Member
 author_image_url: https://avatars.githubusercontent.com/u/1620265?v=4

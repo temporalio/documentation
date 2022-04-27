@@ -60,7 +60,7 @@ Note that when we say to run each of these services separately in production so 
 
 ```tsx
 # process 1
-temporal-server start --service=history 
+temporal-server start --service=history
 
 # process 2
 temporal-server start --service=frontend

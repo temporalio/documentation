@@ -5,7 +5,7 @@ tags:
   - workflow-engines
 posted_on_: 2021-04-05T00:00:09Z
 slug: workflow-engine-principles
-title: 'Designing A Workflow Engine from First Principles'
+title: "Designing A Workflow Engine from First Principles"
 author: swyx
 author_title: Head of Developer Experience
 author_image_url: https://avatars.githubusercontent.com/u/6764957?v=4

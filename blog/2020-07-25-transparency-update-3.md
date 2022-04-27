@@ -1,16 +1,15 @@
 ---
 tags:
-- v1
-- community
-- transparency
+  - v1
+  - community
+  - transparency
 posted_on_: 2020-07-25T00:03:40Z
 slug: transparency-update-3
-title: 'Temporal Transparency Update #3'
+title: "Temporal Transparency Update #3"
 author: Ryland Goldstein
 author_title: Temporals product person
 author_image_url: https://avatars2.githubusercontent.com/u/27736122?s=460&u=7b6a3e58ec7ed7157f23f51e91a2f4cd2028d606&v=4
 release_version: V0.27.0
-
 ---
 
 <!--truncate-->

@@ -6,7 +6,7 @@ tags:
   - site design
 posted_on_: 2021-05-06T00:00:00Z
 slug: docs-info-arch-2021
-title: 'How we structured docs for user personas'
+title: "How we structured docs for user personas"
 author: Cully Wakelin
 author_title: SDE Technical Writer
 author_image_url: https://avatars2.githubusercontent.com/u/34380806

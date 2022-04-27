@@ -5,7 +5,7 @@ tags:
   - timeouts
 posted_on_: 2021-06-22T00:00:09Z
 slug: activity-timeouts
-title: 'The 4 Types of Activity timeouts'
+title: "The 4 Types of Activity timeouts"
 author: swyx
 author_title: Head of Developer Experience
 author_image_url: https://avatars.githubusercontent.com/u/6764957?v=4

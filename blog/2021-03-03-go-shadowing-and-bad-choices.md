@@ -10,7 +10,7 @@ tags:
   - bug
 posted_on_: 2021-03-03T00:00:09Z
 slug: go-shadowing-bad-choices
-title: 'How Go shadowing and bad choices caused our first data loss bug in years'
+title: "How Go shadowing and bad choices caused our first data loss bug in years"
 author: Ryland Goldstein
 author_title: Head of Product (and some other stuff)
 author_image_url: https://avatars2.githubusercontent.com/u/27736122?s=460&u=7b6a3e58ec7ed7157f23f51e91a2f4cd2028d606&v=4
@@ -108,7 +108,7 @@ if request.IsNewBranch {
 	if err != nil {
 		return convertCommonErrors("AppendHistoryNodes", err)
 	}
-	
+
 	batch := h.session.NewBatch(gocql.LoggedBatch)
 	batch.Query(v2templateInsertTree,
 		branchInfo.TreeId, branchInfo.BranchId, treeInfoDataBlob.Data, treeInfoDataBlob.EncodingType.String())

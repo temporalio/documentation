@@ -4,13 +4,13 @@ tags:
   - Temporal
 posted_on_: 2022-01-24T07:00:00Z
 slug: dominik-workflow-part-1
-title: 'Introduction to Temporal Workflows'
+title: "Introduction to Temporal Workflows"
 author: Dominik Tornow
 author_title: Engineering
 author_image_url: https://avatars.githubusercontent.com/u/580718?v=4
 image: https://dev-to-uploads.s3.amazonaws.com/uploads/articles/hhvrdmolw4m39v0vqvrh.jpg
-description: Temporal 
-release_version: 
+description: Temporal
+release_version:
 ---
 
 <!--truncate-->
@@ -79,7 +79,7 @@ function SendReminderEmail(event, context) : Message {
 
     // Try at most twice
     if(kv.val < 2) {
-      // Conditionally set the key. If the tag does not 
+      // Conditionally set the key. If the tag does not
       // match we are racing with another instance of
       // SendReminderEmail
       if (Set(kv.key, kv.val + 1, kv.tag)) {

@@ -2,13 +2,13 @@
 tags:
   - v1
   - Temporal
-  - Reflections  
+  - Reflections
   - microservice-orchestration
   - microservices
   - orleans
 posted_on_: 2020-10-14T00:06:09Z
 slug: sergey-why-i-joined-temporal
-title: 'Why I joined Temporal'
+title: "Why I joined Temporal"
 author: Sergey Bykov
 author_title: Engineering
 author_image_url: https://avatars2.githubusercontent.com/u/8248806?s=460&v=4

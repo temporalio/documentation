@@ -8,7 +8,7 @@ tags:
   - case study
 posted_on_: 2020-10-15T23:06:09Z
 slug: reliable-crypto-transactions-at-coinbase
-title: 'Reliable crypto transactions at Coinbase'
+title: "Reliable crypto transactions at Coinbase"
 author: Ryland Goldstein
 author_title: Head of Product
 author_image_url: https://avatars2.githubusercontent.com/u/27736122?s=460&u=7b6a3e58ec7ed715│       7f23f51e91a2f4cd2028d606&v=4
@@ -22,7 +22,7 @@ release_version: V1.0.0
 
 <!--truncate-->
 
-_This case study is based on an interview with Anthony Dmitriyev who was a key player in Temporal* adoption within Coinbase_
+_This case study is based on an interview with Anthony Dmitriyev who was a key player in Temporal\* adoption within Coinbase_
 
 Coinbase’s mission is to create an open financial system for the world. Finding a solution which allows you to innovate without additional risk is critical and why Coinbase began re-architecting their core transaction workload.
 
@@ -57,7 +57,7 @@ Fortunately Temporal did not come with these drawbacks. Instead of requiring the
 
 **A slow transformation**
 
-When running sensitive workloads at Coinbase scale, it's generally not a great idea to migrate your entire system at once. So once the decision was made to move forward with Temporal*, a migration strategy was needed that would enable Coinbase to incrementally shift their critical transaction workload. The team began iteratively replacing each existing component with a Temporal* workflow. They relied on Coinbase's open source deployment system to build containers for each of the translated workflows and make them available via blue/green deployments. Each new workflow was put behind a feature flag until it had been running long enough for the team to feel confident putting it center stage. Before long, the majority of existing workflows had been successfully migrated to Temporal*.
+When running sensitive workloads at Coinbase scale, it's generally not a great idea to migrate your entire system at once. So once the decision was made to move forward with Temporal*, a migration strategy was needed that would enable Coinbase to incrementally shift their critical transaction workload. The team began iteratively replacing each existing component with a Temporal* workflow. They relied on Coinbase's open source deployment system to build containers for each of the translated workflows and make them available via blue/green deployments. Each new workflow was put behind a feature flag until it had been running long enough for the team to feel confident putting it center stage. Before long, the majority of existing workflows had been successfully migrated to Temporal\*.
 
 <blockquote>
 For every specific use case we migrated we used a very incremental process. We would take a single use case and translate it to be a Temporal* workflow. Then we would put it behind feature flag and do a progressive rollout.
@@ -71,7 +71,7 @@ Temporal maintains the high level of reliability offered by the homegrown system
 
 <blockquote> Temporal* brings a lot of visibility into what is happening which was not something we had with our previous system.</blockquote>
 
-Development velocity has also increased as developers can focus exclusively on writing code instead of maintaining a homegrown SAGA solution. Temporal* has opened up use cases which weren't even imaginable with the homegrown system.
+Development velocity has also increased as developers can focus exclusively on writing code instead of maintaining a homegrown SAGA solution. Temporal\* has opened up use cases which weren't even imaginable with the homegrown system.
 
 <blockquote>Temporal* opened up a lot of possibilities of what we could do with the system.</blockquote>
 
@@ -79,4 +79,4 @@ Things that seemed complex before don't really seem that way anymore.
 
 <blockquote>Things that we thought to be much more complex to implement on top of the old system feel like they are much easier with Temporal*.</blockquote>
 
-##### *As of the time of writing this article Coinbase is using Cadence (the Temporal predecessor) and is only evaluating a future migration to Temporal
+##### \*As of the time of writing this article Coinbase is using Cadence (the Temporal predecessor) and is only evaluating a future migration to Temporal

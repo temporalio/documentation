@@ -5,7 +5,7 @@ tags:
   - tips
 posted_on_: 2021-07-30T00:00:09Z
 slug: temporal-tips-tricks-1
-title: 'Tips and Tricks for Temporal Developer Productivity'
+title: "Tips and Tricks for Temporal Developer Productivity"
 author: swyx
 author_title: Head of Developer Experience
 author_image_url: https://avatars.githubusercontent.com/u/6764957?v=4

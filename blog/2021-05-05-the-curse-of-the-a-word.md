@@ -7,7 +7,7 @@ tags:
   - orleans
 posted_on_: 2021-05-05T07:00:00Z
 slug: sergey-the-curse-of-the-a-word
-title: 'The Curse of the A-word'
+title: "The Curse of the A-word"
 author: Sergey Bykov
 author_title: Engineering
 author_image_url: https://avatars2.githubusercontent.com/u/8248806?s=460&v=4

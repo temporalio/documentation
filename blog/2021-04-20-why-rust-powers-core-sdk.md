@@ -5,7 +5,7 @@ tags:
   - workflow-engines
 posted_on_: 2021-04-20T00:00:09Z
 slug: why-rust-powers-core-sdk
-title: 'Why Rust powers Temporal’s new Core SDK'
+title: "Why Rust powers Temporal’s new Core SDK"
 author: Spencer Judge & Vitaly Arbuzov
 author_title: Engineering
 author_image_url: /img/spencer-vitaly-wide.png

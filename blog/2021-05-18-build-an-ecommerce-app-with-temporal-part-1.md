@@ -5,7 +5,7 @@ tags:
   - go-ecommerce-tutorial
 posted_on_: 2021-05-18T00:00:00Z
 slug: build-an-ecommerce-app-with-temporal-part-1
-title: 'Build an eCommerce App With Temporal, Part 1: Getting Started'
+title: "Build an eCommerce App With Temporal, Part 1: Getting Started"
 author: Valeri Karpov
 author_title: Community Member
 author_image_url: https://avatars.githubusercontent.com/u/1620265?v=4

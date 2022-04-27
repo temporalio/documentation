@@ -7,7 +7,7 @@ tags:
   - case study
 posted_on_: 2021-08-11T23:06:09Z
 slug: airbyte-case-study
-title: 'Durable, scalable EL(T) with OSS Airbyte and Temporal'
+title: "Durable, scalable EL(T) with OSS Airbyte and Temporal"
 author: Ryland Goldstein
 author_title: Head of Product
 author_image_url: https://avatars2.githubusercontent.com/u/27736122?s=460&u=7b6a3e58ec7ed7157f23f51e91a2f4cd2028d606&v=4

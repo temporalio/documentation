@@ -7,20 +7,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Cache
-      uses: actions/cache@v3
-      with:
-        path: |
-          ~/.npm
-          ~/.cache/dprint
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json', '**/dprint.json') }}
-    - uses: actions/setup-node@v3
-      with:
-        node-version: '16'
-    - run: npm ci
-    - run: echo "$PWD"
-    - name: prettier
-      run: npm run prettier
-    - name: dprint w/ dprint-plugin-prettier
-      run: npm run dprint
+      - uses: actions/checkout@v3
+      - name: Cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.npm
+            ~/.cache/dprint
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json', '**/dprint.json') }}
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+      - run: npm ci
+      - run: echo "$PWD"
+      - name: prettier
+        run: npm run prettier
+      - name: dprint w/ dprint-plugin-prettier
+        run: npm run dprint

@@ -1,18 +1,17 @@
 ---
 tags:
-- v1
-- community
-- transparency
-- temporal
-- stability
+  - v1
+  - community
+  - transparency
+  - temporal
+  - stability
 posted_on_: 2020-08-21T00:42:18Z
 slug: temporal-transparency-6
-title: 'Temporal Transparency Update #6'
+title: "Temporal Transparency Update #6"
 author: Ryland Goldstein
 author_title: Temporals product person
 author_image_url: https://avatars2.githubusercontent.com/u/27736122?s=460&u=7b6a3e58ec7ed7157f23f51e91a2f4cd2028d606&v=4
 release_version: V0.29.0
-
 ---
 
 <!--truncate-->

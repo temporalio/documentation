@@ -9,7 +9,7 @@ tags:
   - bug
 posted_on_: 2021-04-01T00:00:09Z
 slug: cadence-eol-support
-title: 'Announcing EOL support for Cadence'
+title: "Announcing EOL support for Cadence"
 author: Ryland Goldstein
 author_title: Head of Product (and some other stuff)
 author_image_url: https://avatars2.githubusercontent.com/u/27736122?s=460&u=7b6a3e58ec7ed7157f23f51e91a2f4cd2028d606&v=4
@@ -52,7 +52,7 @@ At this time it is not possible to migrate live traffic from Cadence to Temporal
 
 Yes, we will always be happy to work with users who are interested in moving to Temporal. What will change is the level of specific support we provide for Cadence in that context.
 
-### Will the Cadence team _____?
+### Will the Cadence team **\_**?
 
 We are not the Cadence team and unfortunately cannot speak to anything they will or will not do.
 

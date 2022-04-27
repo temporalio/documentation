@@ -1,18 +1,17 @@
 ---
 tags:
-- v1
-- community
-- transparency
-- temporal
-- stability
+  - v1
+  - community
+  - transparency
+  - temporal
+  - stability
 posted_on_: 2020-08-08T00:42:18Z
 slug: temporal-transparency-5
-title: 'Temporal Transparency Update #5'
+title: "Temporal Transparency Update #5"
 author: Ryland Goldstein
 author_title: Temporals product person
 author_image_url: https://avatars2.githubusercontent.com/u/27736122?s=460&u=7b6a3e58ec7ed7157f23f51e91a2f4cd2028d606&v=4
 release_version: V0.28.0
-
 ---
 
 <!--truncate-->
@@ -57,9 +56,11 @@ Now entire team is focused on hardening the system. During this phase we are mak
 1. **Deployment Infrastructure**
 
    We have made a requirement to automate every new scenario that we add during stabilization. This means we want to have our release process completely automated. We are using Concourse to create fully automated CI/CD pipelines and have already made pretty great progress.
+
 2. **Scale Testing**
 
    This is where we really push the system hard in various dimensions and make sure it is able to keep up with the load gracefully.
+
 3. **Failure Testing**
 
    One of the most important areas during stabilization is making sure Temporal server can gracefully recover from various failure situations. Temporal is used in the critical path for many applications at various companies. It is super critical for us to make sure system is resilient to different kind of failures and workflows are able to make forward progress in the presence of failures.

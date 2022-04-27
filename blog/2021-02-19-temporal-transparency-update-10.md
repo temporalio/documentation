@@ -10,7 +10,7 @@ tags:
   - errors
 posted_on_: 2021-02-19T00:00:09Z
 slug: temporal-transparency-10
-title: 'Temporal Transparency Update #10'
+title: "Temporal Transparency Update #10"
 author: Ryland Goldstein
 author_title: Head of Product (and some other stuff)
 author_image_url: https://avatars2.githubusercontent.com/u/27736122?s=460&u=7b6a3e58ec7ed7157f23f51e91a2f4cd2028d606&v=4

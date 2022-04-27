@@ -4,7 +4,7 @@ tags:
   - podcast
 posted_on_: 2021-08-06T00:00:09Z
 slug: oss-startups-podcast
-title: 'Maxim Fateev on the OSS Startups Podcast'
+title: "Maxim Fateev on the OSS Startups Podcast"
 author: swyx
 author_title: Head of Developer Experience
 author_image_url: https://avatars.githubusercontent.com/u/6764957?v=4
@@ -113,7 +113,7 @@ I think we're in the same category for the type of application that Temporal sol
 
 Apart from pain, it's also because **my co-founder, Samar, and I have been doing these sort of systems for 20 years.** Even if you had the smartest engineers in the world, you'd need another 10, 15 years to get where we are.
 
-And this is the 6th reincarnation of that. Because we've already iterated so much, we've made every possible mistake out there. If somebody comes to me and says, "Why are you not doing \____?" I would say, "I'm not doing it, not because I know better, but because I already did it five years ago. And it didn't work for these reasons."
+And this is the 6th reincarnation of that. Because we've already iterated so much, we've made every possible mistake out there. If somebody comes to me and says, "Why are you not doing \_\_\_\_?" I would say, "I'm not doing it, not because I know better, but because I already did it five years ago. And it didn't work for these reasons."
 
 And then **running that at large scale at Uber for three years in production**. For highly critical systems also was a very good proof that this project is not a toy.
 We were extremely grateful, happy, and lucky that we worked at Uber, which paid well and let us work on an open source project of this quality. Obviously, Uber got something out of that. They have hundreds of applications running on top of this system. And I think Uber saved many years of building these applications because they use Cadence. But for us, this helped us start the company with half a million lines of production worthy, high-quality code, which is very unusual.

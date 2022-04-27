@@ -4,7 +4,7 @@ tags:
   - community
 posted_on_: 2022-02-28T00:00:00Z
 slug: temporal-rest
-title: 'REST APIs for every Temporal Workflow in one line of code'
+title: "REST APIs for every Temporal Workflow in one line of code"
 author: Valeri Karpov
 author_title: Community Member
 author_image_url: https://avatars.githubusercontent.com/u/1620265?v=4
@@ -111,7 +111,7 @@ Then you can send a Signal to increment the counter, and execute a Query to get 
 
 ```
 $ curl -X POST http://localhost:3000/workflow/counterWorkflow
-{"workflowId":"4cb1b1ea-b962-419e-840c-5c18ab5555a1"}$ 
+{"workflowId":"4cb1b1ea-b962-419e-840c-5c18ab5555a1"}$
 $ curl "http://localhost:3000/query/getCount/4cb1b1ea-b962-419e-840c-5c18ab5555a1"
 {"result":0}
 $ curl -X PUT "http://localhost:3000/signal/increment/4cb1b1ea-b962-419e-840c-5c18ab5555a1"

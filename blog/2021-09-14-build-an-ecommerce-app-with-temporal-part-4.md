@@ -5,7 +5,7 @@ tags:
   - go-ecommerce-tutorial
 posted_on_: 2021-09-14T00:00:00Z
 slug: build-an-ecommerce-app-with-temporal-part-4-rest-api
-title: 'Building an eCommerce web app with Temporal, Part 4: REST API'
+title: "Building an eCommerce web app with Temporal, Part 4: REST API"
 author: Valeri Karpov
 author_title: Community Member
 author_image_url: https://avatars.githubusercontent.com/u/1620265?v=4

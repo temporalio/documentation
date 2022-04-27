@@ -7,7 +7,7 @@ tags:
   - code-first
 posted_on_: 2020-09-29T23:06:09Z
 slug: temporal-v1-announcement
-title: 'Temporal V1 Announcement'
+title: "Temporal V1 Announcement"
 author: Ryland Goldstein
 author_title: Temporals product person
 author_image_url: https://avatars2.githubusercontent.com/u/27736122?s=460&u=7b6a3e58ec7ed715│       7f23f51e91a2f4cd2028d606&v=4

@@ -7,7 +7,7 @@ tags:
   - architecture
 posted_on_: 2021-12-01T07:00:00Z
 slug: sergey-inversion-of-execution
-title: 'Inversion of Execution'
+title: "Inversion of Execution"
 author: Sergey Bykov
 author_title: Engineering
 author_image_url: https://avatars2.githubusercontent.com/u/8248806?s=460&v=4

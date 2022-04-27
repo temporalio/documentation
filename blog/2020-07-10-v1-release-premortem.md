@@ -1,7 +1,7 @@
 ---
 tags:
-- Temporal
-- V1Release
+  - Temporal
+  - V1Release
 posted_on_: 2020-07-10T21:59:30Z
 slug: v1-release-premortem
 title: V1 Release Premortem
@@ -9,7 +9,6 @@ author: Samar Abbas
 author_title: Co-founder & CTO
 author_image_url: https://avatars2.githubusercontent.com/u/1766515?s=460&u=42e28f95a37b56ef80c55dbaaadd71bf3fc11261&v=4
 release_version: v0.26.0
-
 ---
 
 <!--truncate-->

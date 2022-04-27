@@ -1,8 +1,8 @@
 ---
 tags:
-- transparency
-- temporal
-- v1
+  - transparency
+  - temporal
+  - v1
 posted_on_: 2020-07-10T22:46:40Z
 slug: temporal-transparency-update
 title: Temporal Transparency Update
@@ -10,7 +10,6 @@ author: Ryland Goldstein
 author_title: Temporals product person
 author_image_url: https://avatars2.githubusercontent.com/u/27736122?s=460&u=7b6a3e58ec7ed7157f23f51e91a2f4cd2028d606&v=4
 release_version: v0.26.0
-
 ---
 
 <!--truncate-->

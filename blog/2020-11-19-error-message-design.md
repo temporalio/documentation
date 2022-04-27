@@ -1,7 +1,7 @@
 ---
 tags:
-- developer-experience
-- errors
+  - developer-experience
+  - errors
 posted_on_: 2020-11-19T23:06:09Z
 slug: error-message-design
 title: Write Errors That Don't Make Me Think
@@ -9,7 +9,6 @@ author: Swyx (Shawn Wang)
 author_title: Product Manager
 author_image_url: https://avatars2.githubusercontent.com/u/6764957?s=460&u=97ad815028595b73b06ee4b0510e66bbe391228d&v=4
 release_version: V1.3
-
 ---
 
 <!--truncate-->

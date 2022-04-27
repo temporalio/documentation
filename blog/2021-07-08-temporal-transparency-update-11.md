@@ -1,17 +1,16 @@
 ---
 tags:
-- transparency
-- temporal
-- v1
+  - transparency
+  - temporal
+  - v1
 posted_on_: 2021-07-08T00:02:32Z
 slug: temporal-transparency-update-11
-title: 'Temporal Transparency Update #11'
+title: "Temporal Transparency Update #11"
 author: Ryland Goldstein
 author_title: Temporals product person
 author_image_url: https://avatars2.githubusercontent.com/u/27736122?s=460&u=7b6a3e58ec7ed7157f23f51e91a2f4cd2028d606&v=4
 image: /img/cloud-customers.png
 release_version: V1.10.5
-
 ---
 
 <!--truncate-->
