@@ -16,18 +16,26 @@ jobs:
   
 
     steps:
-    - name: dprint-check-action
-    - uses: dprint/check@v2.0
-
-    - uses: actions/checkout@v3
-    - name: Cache
-      uses: actions/cache@v3
-    - uses: actions/setup-node@v3
-      with:
-        node-version: '16'
-    - run: npm autoformat
-    - name: dprint w/ dprint-plugin-prettier
-      run: npm run dprint
+    steps:
+  # check out the repository
+      - uses: actions/checkout@v3
+        # setup node.js
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+        # cache the node_modules folder
+      - name: Cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.npm
+            ~/.cache/dprint
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json', '**/dprint.json') }}
+        # install the packages in the package.json
+      - run: npm ci
+        # verify formatting
+      - name: dprint w/ dprint-plugin-prettier
+        run: npm run fmt-check
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   
