@@ -40,9 +40,7 @@
     "blogs",
     ".docusaurus/",
     ".github",
-    "/build",
-    "docs/devtools/web-ui.md",
-    "docs/php/workflows.md"
+    "/build"
   ],
   "incremental": false,
   "plugins": [
