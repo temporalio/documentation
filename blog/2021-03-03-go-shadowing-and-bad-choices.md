@@ -19,50 +19,50 @@ release_version: V1.7.0
 
 <!--truncate-->
 
-I'm Ryland from Temporal - an MIT OSS platform for building highly reliable distributed applications. We pride ourselves on the reliability and consistency Temporal provides to our users mission critical applications. As a testament to that, in the last two years a data-loss bug has never reached production. Until last week. 
+I'm Ryland from Temporal - an MIT OSS platform for building highly reliable distributed applications. We pride ourselves on the reliability and consistency Temporal provides to our users mission critical applications. As a testament to that, in the last two years a data-loss bug has never reached production. Until last week.
 
-* [Click here if you don't care about the narrative](#someone-pays-the-price) 
-* [Click here if you only care about the code](#the-bug)
+- [Click here if you don't care about the narrative](#someone-pays-the-price)
+- [Click here if you only care about the code](#the-bug)
 
 ### What happened?
 
-Before we get into the details of the bug, I want to talk about how everything played out. 
+Before we get into the details of the bug, I want to talk about how everything played out.
 
-A few months ago, we started seeing strange behavior from the canary clusters we run for our cloud service. Some workflows were occasionally being created without an initial event, which left them in a highly inconsistent (ie: corrupted) state. 
+A few months ago, we started seeing strange behavior from the canary clusters we run for our cloud service. Some workflows were occasionally being created without an initial event, which left them in a highly inconsistent (ie: corrupted) state.
 
 It's worth noting that Temporal is an incredibly well tested piece of technology, boasting thousands of unit, integration and scale tests. At the time the bug started appearing, we had also just moved to a new persistence vendor. This is why, we initially assumed that the bug was likely happening at the persistence level. So we reached out to the team who runs our persistence towards the end of December:
 
 ![](/img/go-shadowing/shadowing0.png)
-*A concrete example. At this point we understood exactly what was wrong with the workflow. We just didn't know why.*
+_A concrete example. At this point we understood exactly what was wrong with the workflow. We just didn't know why._
 
-At first, our persistence vendor agreed with the assessment. There had been some notable memory issues with the clusters running our persistence that seemed to directly correlate with the corruption we experienced. They very kindly quickly (and kindly) started investigating things on their side to root cause the out of memory issues. 
+At first, our persistence vendor agreed with the assessment. There had been some notable memory issues with the clusters running our persistence that seemed to directly correlate with the corruption we experienced. They very kindly quickly (and kindly) started investigating things on their side to root cause the out of memory issues.
 
 ![](/img/go-shadowing/shadowing1.png)
-*We discovered that there was a curious set of OOM (Out of memory) issues that corresponded closely with the corruptions we were experiencing with workflows.*
+_We discovered that there was a curious set of OOM (Out of memory) issues that corresponded closely with the corruptions we were experiencing with workflows._
 
 After a short time, they got back to us with what seemed like concrete progress. Their investigation had indeed found a memory issue with the cluster. At this point all we needed to do was validate that the memory issues always correlated with our workflow corruptions and we were golden.
 
 ![](/img/go-shadowing/shadowing2.png)
-*First formal identification of the OOM issue and how it correlates with the Temporal specific bugs. To validate that it was the root cause we started trying to correlate OOMs with Temporal corruptions.*
+_First formal identification of the OOM issue and how it correlates with the Temporal specific bugs. To validate that it was the root cause we started trying to correlate OOMs with Temporal corruptions._
 
 They immediately began working on a solution for the OOM issue. Within a week they had produced fixes and deployed those patches to the clusters running our persistence. We were very happy to get this issue behind us and get back to working on our product. Unfortunately this was not the end of the issues...
 
 ![](/img/go-shadowing/shadowing3.png)
-*Our team converging with vendor on the OOM issues. At this point it seemed that fixing the OOM was the root cause and therefore fixing it would address our issues.*
+_Our team converging with vendor on the OOM issues. At this point it seemed that fixing the OOM was the root cause and therefore fixing it would address our issues._
 
 Initially we had doubts about how much the fixes solved the memory issues. But it started to become clearer and clearer that something else was going on.
 
 ![](/img/go-shadowing/shadowing4.png)
-*Our vendor explaining that the OOM fix was in place and functioning correctly. Temporal was still experiencing issues at this point which meant it was bigger than OOM.*
+_Our vendor explaining that the OOM fix was in place and functioning correctly. Temporal was still experiencing issues at this point which meant it was bigger than OOM._
 
 There was still the open question of why OOM's correlated so highly with the workflow corruptions, but we had to accept that it wasn't the full story. Our team began putting all of their energy into combing through our source code for potential issues. After a prolonged period of stress and frustration, one of the awesome engineers from our persistence vendor found the root cause:
 
 ![](/img/go-shadowing/shadowing5.png)
-*An amazing find by the engineer working for our vendor. We are super appreciative for their incredible dedication to helping us.*
+_An amazing find by the engineer working for our vendor. We are super appreciative for their incredible dedication to helping us._
 
 Yes, you read it correctly. This entire mess was caused by a Golang variable shadowing issue in one small part of our persistence code.
 
-This explains why the workflows were corrupted, but why was the issue so hard to reproduce and why did it only happen with Cassandra? The answer is complex, but the TL;DR; is that workflows would only become corrupted when Cassandra returns a specific error from a failed transaction. 99.9% of the time, Cassandra is operating correctly and these errors are never returned. Therefore 99.9% of the time workflows aren't corrupted. But in cases where Cassandra is experiencing instability (ie: ring changes, or OOM), it is possible for these errors to be returned thereby triggering the bug which was in Temporals persistence code. While we still don't fully understand the exhaustive set of conditions required for this to happen, we knew enough to reproduce the issue reliably. 
+This explains why the workflows were corrupted, but why was the issue so hard to reproduce and why did it only happen with Cassandra? The answer is complex, but the TL;DR; is that workflows would only become corrupted when Cassandra returns a specific error from a failed transaction. 99.9% of the time, Cassandra is operating correctly and these errors are never returned. Therefore 99.9% of the time workflows aren't corrupted. But in cases where Cassandra is experiencing instability (ie: ring changes, or OOM), it is possible for these errors to be returned thereby triggering the bug which was in Temporals persistence code. While we still don't fully understand the exhaustive set of conditions required for this to happen, we knew enough to reproduce the issue reliably.
 
 Probably worth mentioning how we verified the fix. We asked the persistence provider to give us a cluster with OOM issue so we can run Temporal with the fix with frequent OOMs. We ran a stress workload for a 3 days with OOM every 1 hour and able to verified that no workflow executions were left in corrupted state.
 
@@ -74,7 +74,7 @@ Before I get into the details of the bug at a code level, I want to talk about h
 - The bug does not happen in 99% of cases, only when the underlying Cassandra cluster is experiencing instability. Specifically when someone is trying to scale the underlying Cassandra cluster.
 - The bug does not affect existing workflows and only applies to ones that are newly created. It's cringeworthy to think about now, but we even questioned whether this is "really dataloss".
 
-At the end of the day, even if the rationale had been good (it wasn't) it goes against the core values of our company and team. We believe transparency is a fundamental and inseparable part of Temporal and we were the opposite of transparent here. 
+At the end of the day, even if the rationale had been good (it wasn't) it goes against the core values of our company and team. We believe transparency is a fundamental and inseparable part of Temporal and we were the opposite of transparent here.
 
 Unfortunately, the story does not end at this point. We proceeded with releasing version 1.6.0 that included the fix, but failed to adequately call out the severity of the bug.
 
@@ -82,7 +82,7 @@ Unfortunately, the story does not end at this point. We proceeded with releasing
 
 ## Someone pays the price
 
-Last week, about 1 month after releasing 1.6.0 we received some very concerned messages from one of the largest OSS Temporal users. They had semi-recently moved into production and were noticing some errors which looked very similar to the corruption issues caused by the bug. After a bit of debugging, we confirmed that it was the same shadowing bug causing the issues. While we had properly fixed it in 1.6.0, they had not yet fully upgraded their Temporal deployment and therefore still had the broken code path. To be clear, the user should not be blamed at any level. If we had been more proactive about messaging in the first place, they would have definitely upgraded and never run into the issue. While we had made a lot of regrettable choices at this point, we decided to stop that trend the next day. An announcement was made to the entire community about the bug, and we backported the fix to all older versions. 
+Last week, about 1 month after releasing 1.6.0 we received some very concerned messages from one of the largest OSS Temporal users. They had semi-recently moved into production and were noticing some errors which looked very similar to the corruption issues caused by the bug. After a bit of debugging, we confirmed that it was the same shadowing bug causing the issues. While we had properly fixed it in 1.6.0, they had not yet fully upgraded their Temporal deployment and therefore still had the broken code path. To be clear, the user should not be blamed at any level. If we had been more proactive about messaging in the first place, they would have definitely upgraded and never run into the issue. While we had made a lot of regrettable choices at this point, we decided to stop that trend the next day. An announcement was made to the entire community about the bug, and we backported the fix to all older versions.
 
 That's nice and all, but it doesn't say anything about the future. Why won't this happen again? The short answer is that we are absolutely dedicated to this never happening again. We have a few actionable steps to make sure that ends up being the case:
 
@@ -91,7 +91,7 @@ That's nice and all, but it doesn't say anything about the future. Why won't thi
 - Improvements will be made so that it will be easier to remove (or fix if possible) corrupted workflows gracefully. As of now they put extra load on the system and add noise to the logs. [https://github.com/temporalio/temporal/pull/1312](https://github.com/temporalio/temporal/pull/1312)
 - Communication will be improved. In addition to being more transparent and vocal about such bugs over existing communication mediums, we will also add additional broadcast mechanisms to alert users of critical bugs ASAP. Specifically we will augment the version update mechanism of Temporal Web so it can alert users if they are running on Temporal versions with known issues. [https://github.com/temporalio/web/commit/45a7e9ccc36a7703f3270a664e40048cf077aeee](https://github.com/temporalio/web/commit/45a7e9ccc36a7703f3270a664e40048cf077aeee)
 
-For those curious about why the bug was encountered when I previously said it only happens in 1% of cases. The user in question was unfortunately resizing their Cassandra cluster before the upgrade to 1.6.0. This caused the underlying stability issues necessary for the bug to occur. 
+For those curious about why the bug was encountered when I previously said it only happens in 1% of cases. The user in question was unfortunately resizing their Cassandra cluster before the upgrade to 1.6.0. This caused the underlying stability issues necessary for the bug to occur.
 
 ## The bug
 
@@ -126,7 +126,8 @@ if err != nil {
 }
 return nil
 ```
-*Buggy code*
+
+_Buggy code_
 
 Above is the original code. As you can see, `err` is declared as a proper `var` within the top level scope:
 
@@ -145,12 +146,12 @@ if request.IsNewBranch {
 The intention of the author was that the subsequent call to `HistoryTreeInfoBlob` (purple) would set the previously defined `err` to the result of the operation err response. But in Golang, the `:=` operator is scoped. This means that because the call to `HistoryTreeInfoBlob` is within the `if` branch, a new variable `err` will be created. If the call succeeds, the code proceeds to `ExecuteBatch`:
 
 ```go
-	batch := h.session.NewBatch(gocql.LoggedBatch)
-	batch.Query(v2templateInsertTree,
-		branchInfo.TreeId, branchInfo.BranchId, treeInfoDataBlob.Data, treeInfoDataBlob.EncodingType.String())
-	batch.Query(v2templateUpsertData,
-		branchInfo.TreeId, branchInfo.BranchId, request.NodeID, request.TransactionID, request.Events.Data, request.Events.EncodingType.String())
-	err = h.session.ExecuteBatch(batch)
+batch := h.session.NewBatch(gocql.LoggedBatch)
+batch.Query(v2templateInsertTree,
+	branchInfo.TreeId, branchInfo.BranchId, treeInfoDataBlob.Data, treeInfoDataBlob.EncodingType.String())
+batch.Query(v2templateUpsertData,
+	branchInfo.TreeId, branchInfo.BranchId, request.NodeID, request.TransactionID, request.Events.Data, request.Events.EncodingType.String())
+err = h.session.ExecuteBatch(batch)
 ```
 
 If this call succeeds, all is well. But if it fails disaster strikes. The error will be assigned to the scoped version of `err`. The top level scope `err` will therefore not hold any value and the error handler guarding the return will not evaluate:
@@ -196,11 +197,12 @@ if err = h.session.ExecuteBatch(batch); err != nil {
 }
 return nil
 ```
-*Bug free code*
+
+_Bug free code_
 
 As bad as it sounds it's a surprisingly difficult bug to reproduce. Cassandra has to succeed with one operation and fail with another within a very short window of time. Under normal operation this is very rare. Regardless, the bug can and did happen.
 
-In general, we learned a big lesson about Golang shadowing. We know our Golang at Temporal, but many were still surprised about how shadowing works in all cases. Alex (our first engineer), confused all of this with the following example. 
+In general, we learned a big lesson about Golang shadowing. We know our Golang at Temporal, but many were still surprised about how shadowing works in all cases. Alex (our first engineer), confused all of this with the following example.
 
 **What do you think it prints?**
 
@@ -217,7 +219,9 @@ func test() (string, error){
 	return "str", errors.New("error")
 }
 ```
+
 **Output**
+
 ```go
 str error
 error
@@ -240,6 +244,7 @@ func test() (string, error){
 	return "str", errors.New("error")
 }
 ```
+
 **Output**
 
 ```go
@@ -247,12 +252,11 @@ str error
 <nil>
 ```
 
-As you can see, in the right circumstances shadowing can be a complete nightmare. 
+As you can see, in the right circumstances shadowing can be a complete nightmare.
 
 ## Conclusion
 
 As with most software failures, humans (us) were the weakest point in the design. That being said, Golang came in a not so distant second. This incident has only strengthened our internal processes and culture and we plan to actionably do better moving forward.
-
 
 As always, feel free to reach out with questions, comments or critical feedback via email, Slack or our community forum.
 

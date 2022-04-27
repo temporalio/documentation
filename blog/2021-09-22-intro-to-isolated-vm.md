@@ -104,7 +104,7 @@ You can share global values between runs by re-using the same context as shown b
 
 ```ts
 import ivm from 'isolated-vm';
-  
+
 const code = `++count;`;
 
 const isolate = new ivm.Isolate({ memoryLimit: 8 /* MB */ });
@@ -147,9 +147,9 @@ export const httpWorkflow = () => {
   return {
     async execute(): Promise<void> {
       return await axios.get('http://httpbin.org/get');
-    }
-  }
-}
+    },
+  };
+};
 ```
 
 The `await axios.get()` call will throw a `TypeError: adapter is not a function` error, because Axios doesn't recognize the Temporal Workflow isolate runtime.

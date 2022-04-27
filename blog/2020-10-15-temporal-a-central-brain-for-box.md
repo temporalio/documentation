@@ -15,6 +15,7 @@ author_image_url: https://avatars2.githubusercontent.com/u/27736122?s=460&u=7b6a
 image: https://i.imgur.com/5sfZdDf.png
 release_version: V1.0.0
 ---
+
 <img alt="Temporal and Box logos" class="case-study-header" src='https://i.imgur.com/Kn3I1sY.png' />
 
 [Link to PDF version](http://temporal.io/case-studies/Temporal_a_central_brain_for_Box.pdf)
@@ -53,7 +54,7 @@ As a first step of the search process, teams within Box collaborated on a "templ
 
 ### A smooth migration
 
-The value proposition of Temporal was so convincing that Box decided to not only port orchestration logic during the migration, but *also* the service level business logic. Regardless of the confidence in Temporal, Box was determined to approach the transition in a methodical and scientific way. A **gradual transition** was planned and two major criteria were chosen to evaluate success:
+The value proposition of Temporal was so convincing that Box decided to not only port orchestration logic during the migration, but _also_ the service level business logic. Regardless of the confidence in Temporal, Box was determined to approach the transition in a methodical and scientific way. A **gradual transition** was planned and two major criteria were chosen to evaluate success:
 
 1. Is the orchestration doing what we think it's doing or at least touching all of the same things that we expect it to touch?
 2. Is the logic that the orchestrator is orchestrating actually sound (considering that it's also been reimplemented with Temporal)?

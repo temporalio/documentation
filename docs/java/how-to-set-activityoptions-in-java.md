@@ -28,7 +28,6 @@ GreetingActivities activities = Workflow.newActivityStub(GreetingActivities.clas
                        .setRetryOptions(RetryOptions.newBuilder()
                                 .build())
                         .build());
-
 ```
 
 Note that these Activity options will apply for all the Activities defined in the _GreetingActivities_ Activity interface.

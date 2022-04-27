@@ -80,7 +80,6 @@ func MyActivity(ctx context.Context) error {
     logger.Info("MyActivity activity started")
     return nil
 }
-
 ```
 
 Once you are ready, you can run:

@@ -33,7 +33,7 @@ Many of these are packaged applications written by SAP and its successors, and e
 
 In the past 15 years, the infrastructure for how we run these applications has changed dramatically, and this has transformed how applications are built and architected.
 Cloud infrastructure—like containers, kubernetes, and PaaS—have made it easy and inexpensive to build applications from an ever greater number of discrete components.
-These cloud architectures have produced all sorts of benefits.  Ever-larger engineering teams can now develop & enhance applications with greater agility.
+These cloud architectures have produced all sorts of benefits. Ever-larger engineering teams can now develop & enhance applications with greater agility.
 Scaling has become much simpler and less expensive.
 Reuse is increasingly common, with developers borrowing from neighboring applications or from commercial APIs that allow teams to efficiently outsource things like messaging, identity, or payment processing.
 
@@ -101,7 +101,7 @@ Engineers building more reliable and repairable software faster will lead to a m
 The software industry has grown by orders of magnitude since when I first graduated college, giving rise to many new software platforms, commonly segmented and specialized for one niche or another.
 This made Temporal even more special to me.
 A new kind of platform that can offer a significant upgrade to such a universal need as writing and running software applications reliably.
-As much as software has eaten the world, it still has the potential to surprise itself with a seminal and broad-based renewal.   
+As much as software has eaten the world, it still has the potential to surprise itself with a seminal and broad-based renewal.
 
 Software is still the right industry to develop my craft, and Temporal is the best place to apply it.
 Maxim and Samar have manifested a singular vision, and it’s a privilege to help them build a singular company to match.

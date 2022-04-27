@@ -14,18 +14,18 @@ release_version: V1.8.1
 
 <!--truncate-->
 
-
 Perhaps you’ve heard that here at Temporal, we’re working on new SDKs to support more languages. We are engineers on the SDK team and wanted to elaborate on our challenges and how we’re meeting them.
 
 Temporal faces some unique challenges with respect to our client side libraries, namely:
 
-* The client side logic isn't just a thin wrapper over some HTTP/gRPC/etc calls. The SDK needs to handle the reconciliation of events and their related state changes, which may be generated at different times by different actors in the distributed system that is a Temporal deployment. More on this below.
-* We want to support as many languages as possible, while avoiding duplicating the complex logic in each language. On top of that, we need to present an idiomatic-to-their-language interface to our users.
-* We expect instances of the SDK (workflow and activity workers) to often be long lived, and hence the SDK must be extremely reliable.
+- The client side logic isn't just a thin wrapper over some HTTP/gRPC/etc calls. The SDK needs to handle the reconciliation of events and their related state changes, which may be generated at different times by different actors in the distributed system that is a Temporal deployment. More on this below.
+- We want to support as many languages as possible, while avoiding duplicating the complex logic in each language. On top of that, we need to present an idiomatic-to-their-language interface to our users.
+- We expect instances of the SDK (workflow and activity workers) to often be long lived, and hence the SDK must be extremely reliable.
 
 In this post, we'll dive into the points mentioned above. We will also explain why we chose to write the Core SDK in Rust to help meet these goals. Note that some familiarity with Temporal's programming model will be helpful. [Read more here](https://docs.temporal.io/docs/temporal-explained/introduction). A Temporal SDK provides the APIs in your language of choice needed to author [Workflows](https://docs.temporal.io/docs/concepts/workflows) and [Activities](https://docs.temporal.io/docs/concepts/activities), as well as the behind-the-scenes logic required to drive them. They allow you to write durable, long lived business logic without worrying about burdensome retries or other temporary failure concerns. This is all done in a way that feels natural to your language of choice.
 
 ### What's complex about it?
+
 From a 10,000 foot view, a Temporal worker follows this algorithm when running a workflow:
 
 1. Long poll the server for workflow tasks (for example, Server says "I need you to run the user's workflow code").
@@ -43,20 +43,22 @@ What may not be immediately clear is there’s nothing language-specific about t
 Yet, as it stands, each of our existing SDKs re-implement this difficult logic. Clearly, we don't want to repeat this for each language. We need some kind of **Core SDK** that all other language SDKs can be built upon.
 
 ### Towards a shared core
+
 It’s clear we could substantially accelerate the development of new SDKs and increase the maintainability of existing ones by building a shared common core library used by the language-specific SDKs.
 
 We knew any design would need to meet the following requirements:
 
-* Clean integration with other languages
-* Good ergonomics for the end user (avoid imposing new operational requirements)
-* High performance
-* Maintainable
+- Clean integration with other languages
+- Good ergonomics for the end user (avoid imposing new operational requirements)
+- High performance
+- Maintainable
 
 Those requirements are pretty restrictive. To expand on the operational requirements: it's desirable from a packaging and performance perspective to be able to live in the same process as the language-specific SDK. For an end user that means they can simply deploy one binary which will run their worker, rather than needing to deploy the core SDK separately.
 
 To implement the core and meet the requirements, we need a. We [need a hero](https://youtu.be/bWcASV2sey0?t=56) to rise to the challenge! Enter... Rust.
 
 ### Why Rust?
+
 There's a lot of good reasons to pick Rust; some of which could fill up entire separate blog posts. The same reasons it's gaining in popularity so quickly these days apply to why we chose it. "Fearless concurrency", "performance and safety", a quality type system, etc. These reasons check the “high performance” and “maintainable” boxes.
 
 When it comes to connecting multiple languages to a shared library, the traditional choice is often C, but Rust makes for a safer and more modern alternative. Having language SDKs directly link to the Rust core meets our end-user-ease goal and keeps overhead low.

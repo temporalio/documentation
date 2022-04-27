@@ -35,11 +35,11 @@ As they start coding, it quickly becomes clear that they have vastly underestima
 
 ![This is fine meme](/img/a-students-dream/this-is-fine.png)
 
-These questions touch upon a number of *key* Distributed Systems topics. But this was before cloud computing was the ubiquitous behemoth it is today. For two exhausted college students who were itching to call it quits on the semester, having to think through these problems at the 11th-hour was the absolute last thing they wanted to do.
+These questions touch upon a number of _key_ Distributed Systems topics. But this was before cloud computing was the ubiquitous behemoth it is today. For two exhausted college students who were itching to call it quits on the semester, having to think through these problems at the 11th-hour was the absolute last thing they wanted to do.
 
 Needless to say, in desperation, they took a number of shortcuts. They were able to cobble together a flimsy solution that yielded an answer; However, it would have fallen completely flat on its face at even the tiniest of network blips.
 
-At the end of the day, they spent 95%+ of the time focusing on the infrastructure *running* the algorithm as opposed to the algorithm itself. As they dragged themselves back from that final class, one of them made an offhand remark that it could be an interesting future project to potentially “solve this the right way.”
+At the end of the day, they spent 95%+ of the time focusing on the infrastructure _running_ the algorithm as opposed to the algorithm itself. As they dragged themselves back from that final class, one of them made an offhand remark that it could be an interesting future project to potentially “solve this the right way.”
 
 ![Rubiks cube](/img/a-students-dream/rubiks-cube.png)
 

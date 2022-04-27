@@ -11,10 +11,12 @@ author_image_url: https://avatars2.githubusercontent.com/u/6764957?s=460&u=97ad8
 release_version: V1.3
 
 ---
+
 <!--truncate-->
+
 There is nothing more frustrating than a cryptic error message.
 
-When something goes wrong, chances are you already knew it - all a cryptic error message does is confirm your suspicion *and* tell you that you're gonna need to read through a bunch of code to figure out your error.
+When something goes wrong, chances are you already knew it - all a cryptic error message does is confirm your suspicion _and_ tell you that you're gonna need to read through a bunch of code to figure out your error.
 
 As framework and library designers, we can and should do better for our users by carefully following a few design principles.
 
@@ -22,13 +24,13 @@ As framework and library designers, we can and should do better for our users by
 
 Who among us hasn't thrown up their hands at an unhelpful `Error: NullPointerException` or `undefined is not a function`? Of course, this is a [straw man](https://en.wikipedia.org/wiki/Straw_man) - unanticipated errors always leak internals. We should do our best to handle these errors as much as possible!
 
-The frustrating part comes from errors that were *anticipated* but obviously not given any thought:
+The frustrating part comes from errors that were _anticipated_ but obviously not given any thought:
 
 ![Example of unhelpful error message from Twitter screenshot](https://dev-to-uploads.s3.amazonaws.com/i/qiivj3cdvkbo07fwrxq6.png)
 
 This is particularly aggravating because it compounds an already unhappy situation with an even worse debugging and bug reporting experience.
 
-Thoughtful error message design is one of the less glamorous, but most important, parts of [Developer Exception Engineering](https://www.swyx.io/developer-exception/). Most framework developers instinctively write error messages that make sense to *them*, but a few minutes of extra effort can save DAYS of debugging for *everyone else* (including maintainers!).
+Thoughtful error message design is one of the less glamorous, but most important, parts of [Developer Exception Engineering](https://www.swyx.io/developer-exception/). Most framework developers instinctively write error messages that make sense to _them_, but a few minutes of extra effort can save DAYS of debugging for _everyone else_ (including maintainers!).
 
 We must acknowledge two things:
 

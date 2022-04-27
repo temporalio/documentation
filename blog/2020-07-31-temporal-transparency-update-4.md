@@ -12,8 +12,8 @@ author_image_url: https://avatars2.githubusercontent.com/u/27736122?s=460&u=7b6a
 release_version: V0.28.0
 
 ---
-<!--truncate-->
 
+<!--truncate-->
 
 **Latest Release at Time of Writing:** V0.28.0
 
@@ -34,13 +34,13 @@ It's been a productive week for Temporal and I hope the same is true for all of 
 
 We are now code complete for Temporal server and GoSDK. If you're interested in what has changed since Temporal was forked from Cadence, our awesome new technical writer/information architect Cully prepared a [change log](https://docs.temporal.io/blog/temporal-v0.28.0-changelog).
 
-We were not able to get the final JavaSDK changes in before code completion, so we've made the decision to delay this specific work until next week. While this isn't optimal, we assumed that users would appreciate having access to the major components today as opposed to blocking everything until the JavaSDK is ready.  Now that we are code complete for Temporal server and GoSDK, it means that there will be no more backwards incompatible API or code changes for those components moving forward. Any drastic changes made in the future will be made in a compatible way and put behind a deprecation schedule. Here is the state of our pipeline:
+We were not able to get the final JavaSDK changes in before code completion, so we've made the decision to delay this specific work until next week. While this isn't optimal, we assumed that users would appreciate having access to the major components today as opposed to blocking everything until the JavaSDK is ready. Now that we are code complete for Temporal server and GoSDK, it means that there will be no more backwards incompatible API or code changes for those components moving forward. Any drastic changes made in the future will be made in a compatible way and put behind a deprecation schedule. Here is the state of our pipeline:
 
 ![](/cms/cc-cicd.png)
 
-With the majority of changes for V1 in, we have shifted all of our focus onto stabilization. We have been ramping up our stabilization process in parallel to our code completion efforts, so we're already moving with significant momentum. As stated in previous updates, we do not feel comfortable giving out a hard date for stabilization. This is not because we lack confidence in our estimates or don't understand the scope of work. This choice was made because reliability is foundational for our product and business, and we will always opt for reliability over velocity. While we do not expect to encounter any critical bugs moving forward, should we discover them, we won't release until they are fixed. If this happens, there is a small chance that we will have to make breaking schema changes before the official V1 release. Again, this is not expected but we want to make it 100% clear that it's not impossible. We will announce our production ready V1 release when stabilization is complete. After the V1 production release, there will be no more breaking schema changes. 
+With the majority of changes for V1 in, we have shifted all of our focus onto stabilization. We have been ramping up our stabilization process in parallel to our code completion efforts, so we're already moving with significant momentum. As stated in previous updates, we do not feel comfortable giving out a hard date for stabilization. This is not because we lack confidence in our estimates or don't understand the scope of work. This choice was made because reliability is foundational for our product and business, and we will always opt for reliability over velocity. While we do not expect to encounter any critical bugs moving forward, should we discover them, we won't release until they are fixed. If this happens, there is a small chance that we will have to make breaking schema changes before the official V1 release. Again, this is not expected but we want to make it 100% clear that it's not impossible. We will announce our production ready V1 release when stabilization is complete. After the V1 production release, there will be no more breaking schema changes.
 
-Next Friday we will share our testing and validation plan for V1. The plan should make it much clearer what we inexpect from the stabilization effort. We will continue posting weekly stabilization updates until we reach a production V1 release. Post-V1 we will continue releasing transparency updates, but will be moving to a bi-weekly schedule. 
+Next Friday we will share our testing and validation plan for V1. The plan should make it much clearer what we inexpect from the stabilization effort. We will continue posting weekly stabilization updates until we reach a production V1 release. Post-V1 we will continue releasing transparency updates, but will be moving to a bi-weekly schedule.
 
 Everyone in the team put in a ton of extra effort over the last few weeks so we could meet the deadline. I'm personally so grateful to be working with such a dedicated and intelligent group. As always, feel free to reach out with questions, comments or critical feedback via email, Slack or our community forum.
 

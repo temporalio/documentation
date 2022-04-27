@@ -17,25 +17,26 @@ release_version: V1.8.1
 ---
 
 <!--truncate-->
-**This is not april fools related** 
 
-In the last year, Temporal has transformed from the wild dream of two Uber engineers, to a real business, community and product. In March 2020 there was no V1 release, no gRPC/PostgreSQL support, no authentication or authorization and Kafka was still a core dependency. Today things look a lot different. An amazing community formed around the project, we've validated our cloud strategy with paying customers and delivered a ton of critical features to the open source technology. 
+**This is not april fools related**
+
+In the last year, Temporal has transformed from the wild dream of two Uber engineers, to a real business, community and product. In March 2020 there was no V1 release, no gRPC/PostgreSQL support, no authentication or authorization and Kafka was still a core dependency. Today things look a lot different. An amazing community formed around the project, we've validated our cloud strategy with paying customers and delivered a ton of critical features to the open source technology.
 
 Every day Temporal feels more and more like its own entity, and less and less like a transformation of Cadence. This is not just ideological, at the code level there are constantly new differences introduced in both projects. For some critical changes it may be feasible to remain compatible, but in most cases it's just too much overhead. At a support level, the cost is also increasing. It's become harder and harder for our team to support Cadence users. When new employees join Temporal should they be expected to also ramp up on Cadence?
 
-The most compelling factor is reliability. As a company and team we pride ourselves on providing one of the most reliable experiences available. The question that is now being asked internally is, "how we can provide this reliability for a project we have no control over?". As an example, we recently put out guidelines regarding how long we support older versions of Temporal. This is something we have no control over for Cadence and is impossible to enforce. This means that when Cadence users reach out they could be running the Cadence 1.0.0 or their own custom fork. 
+The most compelling factor is reliability. As a company and team we pride ourselves on providing one of the most reliable experiences available. The question that is now being asked internally is, "how we can provide this reliability for a project we have no control over?". As an example, we recently put out guidelines regarding how long we support older versions of Temporal. This is something we have no control over for Cadence and is impossible to enforce. This means that when Cadence users reach out they could be running the Cadence 1.0.0 or their own custom fork.
 
-Cadence will always be an important part of our history. Today it is more than history, it requires time, energy and resources which we unfortunately cannot continue to spare. For this reason, we are announcing **end of life support for Cadence** users. The final day of support will be the anniversary of Temporal's first production release September 29. 
+Cadence will always be an important part of our history. Today it is more than history, it requires time, energy and resources which we unfortunately cannot continue to spare. For this reason, we are announcing **end of life support for Cadence** users. The final day of support will be the anniversary of Temporal's first production release September 29.
 
 ## What does this mean?
 
-For the last year we have been happy to provide free support to Cadence users. After **September 29th 2021**, we will no longer be providing support for any version of Cadence. While we understand that it may be difficult for some Cadence users to find time to migrate, we feel that 1 year is a reasonable amount of time for us to provide support for a project which we are not the owners of.  
+For the last year we have been happy to provide free support to Cadence users. After **September 29th 2021**, we will no longer be providing support for any version of Cadence. While we understand that it may be difficult for some Cadence users to find time to migrate, we feel that 1 year is a reasonable amount of time for us to provide support for a project which we are not the owners of.
 
 ## "Questions to get ahead of"
 
 ### Why not work with Cadence to create a common core?
 
-While this is something which was initially considered, the pace and direction of the projects have diverged enough to raise serious doubts about its value. Cadence is a wonderful project with a great team but they serve the needs of Uber. At Temporal we are fully focused on the core technology and all of the ways we can improve it to make developers lives better. There are also already fundamental differences at a code level which prevent compatibility. 
+While this is something which was initially considered, the pace and direction of the projects have diverged enough to raise serious doubts about its value. Cadence is a wonderful project with a great team but they serve the needs of Uber. At Temporal we are fully focused on the core technology and all of the ways we can improve it to make developers lives better. There are also already fundamental differences at a code level which prevent compatibility.
 
 ### What is the process of migrating to Temporal?
 
@@ -49,12 +50,11 @@ At this time it is not possible to migrate live traffic from Cadence to Temporal
 
 ### Will you still provide support for migration from Cadence?
 
-Yes, we will always be happy to work with users who are interested in moving to Temporal. What will change is the level of specific support we provide for Cadence in that context.  
+Yes, we will always be happy to work with users who are interested in moving to Temporal. What will change is the level of specific support we provide for Cadence in that context.
 
 ### Will the Cadence team _____?
 
 We are not the Cadence team and unfortunately cannot speak to anything they will or will not do.
-
 
 As always, feel free to reach out with questions, comments or critical feedback via email, Slack or our community forum.
 

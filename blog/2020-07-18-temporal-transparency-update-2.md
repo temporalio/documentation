@@ -12,6 +12,7 @@ author_image_url: https://avatars2.githubusercontent.com/u/27736122?s=460&u=7b6a
 release_version: V0.27.0
 
 ---
+
 <!--truncate-->
 
 **Latest Release at Time of Writing:** V0.27.0
@@ -22,12 +23,12 @@ Hope everyone is having a great Friday. I'm happy to share our second V1 status 
 
 **TL;DR;**
 
-* Code complete date remains unchanged, July 31, 2020
-* New tasks were generated from existing GitHub issues (check those out below)
-  * [https://github.com/temporalio/temporal/milestone/2](https://github.com/temporalio/temporal/milestone/2 "https://github.com/temporalio/temporal/milestone/2")
-  * [https://github.com/temporalio/go-sdk/milestone/1](https://github.com/temporalio/go-sdk/milestone/1 "https://github.com/temporalio/go-sdk/milestone/1")
-* Many tasks are in progress and things should start clearing up early next week
-* We have begun further prioritizing tasks so we can easily cut less important work as we near code completion
+- Code complete date remains unchanged, July 31, 2020
+- New tasks were generated from existing GitHub issues (check those out below)
+  - [https://github.com/temporalio/temporal/milestone/2](https://github.com/temporalio/temporal/milestone/2 "https://github.com/temporalio/temporal/milestone/2")
+  - [https://github.com/temporalio/go-sdk/milestone/1](https://github.com/temporalio/go-sdk/milestone/1 "https://github.com/temporalio/go-sdk/milestone/1")
+- Many tasks are in progress and things should start clearing up early next week
+- We have begun further prioritizing tasks so we can easily cut less important work as we near code completion
 
 We're continuing to dedicate the majority of our time and energy to V1 code completion. Here are the items which we handled since the last update:
 
@@ -39,8 +40,8 @@ While we did make serious progress on our previously defined tasks, we also ende
 
 New items are the result of us triaging open issues in our public GitHub repos earlier in the week. While we didn't expect to have any additional items added before code completion, we're happy that they are now being tracked. To make it easier to track publicly, we've created a few GitHub project milestones with all of the newly discovered work:
 
-* [https://github.com/temporalio/temporal/milestone/2](https://github.com/temporalio/temporal/milestone/2 "https://github.com/temporalio/temporal/milestone/2")
-* [https://github.com/temporalio/go-sdk/milestone/1](https://github.com/temporalio/go-sdk/milestone/1 "https://github.com/temporalio/go-sdk/milestone/1")
+- [https://github.com/temporalio/temporal/milestone/2](https://github.com/temporalio/temporal/milestone/2 "https://github.com/temporalio/temporal/milestone/2")
+- [https://github.com/temporalio/go-sdk/milestone/1](https://github.com/temporalio/go-sdk/milestone/1 "https://github.com/temporalio/go-sdk/milestone/1")
 
 We are very set on sticking with the date we initially defined for code completion (July 31, 2020). This means we will realistically end up cutting many items as we get closer to the deadline. Samar and I have begun to prioritize the remaining work, so we can cut intelligently when the time comes. Our belief is that a large number of in-progress items will be completed this week, which should result in a much more appealing status update next week.
 

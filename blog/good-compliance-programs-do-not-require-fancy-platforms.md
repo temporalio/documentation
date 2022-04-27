@@ -52,10 +52,10 @@ For example, a broad Control might be one that declares that the "organization c
 
 An auditor then:
 
-* Looks at the set of Controls that the organization has declared
-* Maps them to the compliance framework criteria
-* Identifies any gaps of coverage
-* Analyzes evidence to determine whether the organization is adhering to their Control Statements
+- Looks at the set of Controls that the organization has declared
+- Maps them to the compliance framework criteria
+- Identifies any gaps of coverage
+- Analyzes evidence to determine whether the organization is adhering to their Control Statements
 
 ## The report
 
@@ -93,12 +93,12 @@ The truth is, after you learn how to parse the language of compliance framework 
 
 Now, to be fair, learning this is not super easy.
 
-I recently asked a SOC 2 expert, [Martin Cozzi](https://www.marana.io/), how he learned. 
-He said it was the same way I was learning: through experience. 
+I recently asked a SOC 2 expert, [Martin Cozzi](https://www.marana.io/), how he learned.
+He said it was the same way I was learning: through experience.
 (He has been through more than 50 audits.)
 He knows of no course that teaches this.
 
-To me, what makes a compliance audit easy (instead of a slogging and demoralizing haze) is not whether you have fancy automation tools, a fancy web UI, or an all-in-one auditing platform. 
+To me, what makes a compliance audit easy (instead of a slogging and demoralizing haze) is not whether you have fancy automation tools, a fancy web UI, or an all-in-one auditing platform.
 What matters is whether your company has embraced the framework against which you want to be compliant and understands how your operations fit into it.
 That's it.
 You either know what you are doing, or you don't.
@@ -112,7 +112,7 @@ I have now been through two SOC 2 audits with Temporal Technologies.
 Throughout each of them I acted as the compliance lead, a sort of project manager.
 My primary responsibilities were to organize materials, gather evidence for audits, schedule meetings, and generally create a structure to operate in.
 I was also the auditor's point of contact with our company, funneling and prioritizing communications, and translating requirements into action items for our team.
-I kept other key players up to date. 
+I kept other key players up to date.
 And if necessary, I pushed them when deadlines closed in.
 
 I have worked with both [Strike Graph](https://www.strikegraph.com/), one of the compliance platforms, and [Martin Cozzi](https://www.marana.io/), an independent consultant.
@@ -152,6 +152,7 @@ You want your implementation of that Control to be done in a way where you can p
 For example, if you have a Control Statement that says "The engineering team is notified whenever there is a release to production", then (A) that should actually be happening, and (B) you should be able to prove that.
 
 But really think about this statement for moment, because it forces you to define the following:
+
 - What is the "engineering team"? Who is in that scope?
 - What is our method or mechanism of notification?
 - What is considered a "release to production"?
@@ -180,6 +181,7 @@ We have worked with two different auditors so far, and for us we found our exper
 Martin recommended them, and he has worked with them for a few years.
 
 The pros that we really liked were:
+
 - They were highly communicative.
 - They had previous experience with developer-facing SaaS companies.
 - They had a polished system for evidence submission that gave us clear visibility into the status of our audit.
@@ -199,6 +201,7 @@ The Department Head must have a good sense of Control Statements that fall into 
 They are the "buck stops here" person in terms of driving their department to think and care about the compliance process.
 
 In our last period we had four Department Heads who were heavily involved in the process:
+
 - HR
 - Engineering
 - Security
@@ -207,6 +210,7 @@ In our last period we had four Department Heads who were heavily involved in the
 #### The Project Manager
 
 As I mentioned before, the Project Manager has the responsibility of generally creating a structure to operate in.
+
 - Organize materials, gather evidence for audits, and schedule meetings.
 - Be the auditor's point of contact with the company, funnel and prioritize communications, and translate requirements into action items for the team.
 - Keep other key players up to date and push on them when deadlines close in.

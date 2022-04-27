@@ -67,17 +67,17 @@ See [What is a WorkflowId?](/docs/concepts/what-is-a-workflow-id)
 - Default: None.
 
 ```java
-   public void parentWorkflow() {
-       ChildWorkflowOptions options =
-          ChildWorkflowOptions.newBuilder()
-              .setParentClosePolicy(ParentClosePolicy.PARENT_CLOSE_POLICY_ABANDON)
-              .build();
-       MyChildWorkflow child = Workflow.newChildWorkflowStub(MyChildWorkflow.class, options);
-       Async.procedure(child::<workflowMethod>, <args>...);
-       Promise<WorkflowExecution> childExecution = Workflow.getWorkflowExecution(child);
-       // Wait for child to start
-       childExecution.get()
-  }
+ public void parentWorkflow() {
+     ChildWorkflowOptions options =
+        ChildWorkflowOptions.newBuilder()
+            .setParentClosePolicy(ParentClosePolicy.PARENT_CLOSE_POLICY_ABANDON)
+            .build();
+     MyChildWorkflow child = Workflow.newChildWorkflowStub(MyChildWorkflow.class, options);
+     Async.procedure(child::<workflowMethod>, <args>...);
+     Promise<WorkflowExecution> childExecution = Workflow.getWorkflowExecution(child);
+     // Wait for child to start
+     childExecution.get()
+}
 ```
 
 In this example, we are:
@@ -102,19 +102,19 @@ See [What is a Parent Close Policy?](/docs/concepts/what-is-a-parent-close-polic
   `RejectDuplicate` doesn't allow a new run independently of the previous run closure status.
 
 ```java
- private void parentWorkflow() {
-        ChildWorkflowOptions options = ChildWorkflowOptions.newBuilder()
-        .setWorkflowId("MyWorkflowId")
-        .setWorkflowRunTimeout(Duration.ofSeconds(5))
-        .setWorkflowIdReusePolicy(
-                WorkflowIdReusePolicy.WORKFLOW_ID_REUSE_POLICY_REJECT_DUPLICATE
-        )
-        .build();
-        // Get the Child Workflow stub
-        ChildWorkflow child = Workflow.newChildWorkflowStub(ChildWorkflow.class, childWorkflowOptions);
-        // invoke Child Workflow and wait for it to complete
-        child.executeChild();
-    }
+private void parentWorkflow() {
+       ChildWorkflowOptions options = ChildWorkflowOptions.newBuilder()
+       .setWorkflowId("MyWorkflowId")
+       .setWorkflowRunTimeout(Duration.ofSeconds(5))
+       .setWorkflowIdReusePolicy(
+               WorkflowIdReusePolicy.WORKFLOW_ID_REUSE_POLICY_REJECT_DUPLICATE
+       )
+       .build();
+       // Get the Child Workflow stub
+       ChildWorkflow child = Workflow.newChildWorkflowStub(ChildWorkflow.class, childWorkflowOptions);
+       // invoke Child Workflow and wait for it to complete
+       child.executeChild();
+   }
 ```
 
 See [What is a Workflow Id Reuse Policy?](/docs/concepts/what-is-a-workflow-id-reuse-policy)
@@ -125,16 +125,16 @@ See [What is a Workflow Id Reuse Policy?](/docs/concepts/what-is-a-workflow-id-r
 - Default: Unlimited
 
 ```java
- private void parentWorkflow() {
-        ChildWorkflowOptions childWorkflowOptions =
-                ChildWorkflowOptions.newBuilder()
-                        .setWorkflowExecutionTimeout(Duration.ofSeconds(10))
-                        .build();
-        // Get the Child Workflow stub
-        ChildWorkflow child = Workflow.newChildWorkflowStub(ChildWorkflow.class, childWorkflowOptions);
-        // invoke Child Workflow and wait for it to complete
-        child.executeChild();
-    }
+private void parentWorkflow() {
+       ChildWorkflowOptions childWorkflowOptions =
+               ChildWorkflowOptions.newBuilder()
+                       .setWorkflowExecutionTimeout(Duration.ofSeconds(10))
+                       .build();
+       // Get the Child Workflow stub
+       ChildWorkflow child = Workflow.newChildWorkflowStub(ChildWorkflow.class, childWorkflowOptions);
+       // invoke Child Workflow and wait for it to complete
+       child.executeChild();
+   }
 ```
 
 See [What is a Workflow Execution Timeout?](/docs/concepts/what-is-a-workflow-execution-timeout)
@@ -166,16 +166,16 @@ See [What is a Workflow Run Timeout?](/docs/concepts/what-is-a-workflow-run-time
 - Values: Maximum accepted value is 60 seconds.
 
 ```java
- private void parentWorkflow() {
-        ChildWorkflowOptions childWorkflowOptions =
-                ChildWorkflowOptions.newBuilder()
-                        .setWorkflowTaskTimeout(Duration.ofSeconds(10))
-                        .build();
-        // Get the Child Workflow stub
-        ChildWorkflow child = Workflow.newChildWorkflowStub(ChildWorkflow.class, childWorkflowOptions);
-        // invoke Child Workflow and wait for it to complete
-        child.executeChild();
-    }
+private void parentWorkflow() {
+       ChildWorkflowOptions childWorkflowOptions =
+               ChildWorkflowOptions.newBuilder()
+                       .setWorkflowTaskTimeout(Duration.ofSeconds(10))
+                       .build();
+       // Get the Child Workflow stub
+       ChildWorkflow child = Workflow.newChildWorkflowStub(ChildWorkflow.class, childWorkflowOptions);
+       // invoke Child Workflow and wait for it to complete
+       child.executeChild();
+   }
 ```
 
 See [What is a Workflow Task Timeout?](/docs/concepts/what-is-a-workflow-task-timeout)

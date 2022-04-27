@@ -12,6 +12,7 @@ author_image_url: https://avatars2.githubusercontent.com/u/27736122?s=460&u=7b6a
 release_version: V0.27.0
 
 ---
+
 <!--truncate-->
 
 **Latest Release at Time of Writing:** V0.27.0
@@ -22,10 +23,10 @@ Hope everyone had a productive and enjoyable week! I'm here to share our third u
 
 **TL;DR;**
 
-* Code complete date remains unchanged, July 31, 2020
-* Massive progress on remaining code completion items, 50% of tasks were completed
-* Based on this weeks progress, it's unlikely we will need to cut tasks to make the deadline
-* Team members who finish their work for code completion will begin immediately working on stabilization
+- Code complete date remains unchanged, July 31, 2020
+- Massive progress on remaining code completion items, 50% of tasks were completed
+- Based on this weeks progress, it's unlikely we will need to cut tasks to make the deadline
+- Team members who finish their work for code completion will begin immediately working on stabilization
 
 Based on the awesome effort from the team we were able to finish \~50% of the remaining items for code completion during the last week:
 

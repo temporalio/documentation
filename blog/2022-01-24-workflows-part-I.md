@@ -19,7 +19,7 @@ For the past 45 years, the database community has enjoyed an unparalleled develo
 
 Despite many advancements in the past 20 years, the distributed systems community has not enjoyed an equivalent developer experience: There is no abstraction that mitigates failure in totality on a platform level, guaranteeing correctness on an application level.
 
-However, [Temporal](https://temporal.io/) changes that equation! 
+However, [Temporal](https://temporal.io/) changes that equation!
 
 ## Introduction
 
@@ -55,8 +55,6 @@ On top of that, now we need to worry about failures, retries, duplication, and i
 An implementation on top of services like AWS Lambda Functions and like AWS Simple Queueing Service might look like:
 
 ```typescript
-
-
 // Lambda function is bound to
 // a. input queue "Reminder"
 // b. output queue "Reminder"
@@ -103,10 +101,9 @@ function SendReminderEmail(event, context) : Message {
 
 // Start by queueing the message {user: "<User>", iter: 0} on
 // the message queue "Reminder"
-
 ```
 
-Listing 2 looks nothing like the pseudo code in Listing 1. 
+Listing 2 looks nothing like the pseudo code in Listing 1.
 
 Listing 2 does not tell the story of our use case—while not overly long or verbose, it is obscure and hard to reason about.
 
@@ -121,19 +118,19 @@ import { proxyActivities, sleep } from '@temporalio/workflow';
 
 const { sendReminderEmail, hasSignedUp } = proxyActivities({
   scheduleToCloseTimeout: '10 seconds',
-  retry: { maximumAttempts: 2 }
+  retry: { maximumAttempts: 2 },
 });
 
 async function SendReminderEmail(user: string) {
-    while(!await hasSignedUp(user)) {
-      try {
-        await sendReminderEmail(user);
-      } catch(e) {
-        // Thanks to Temporal's retry policy, we already 
-        // tried twice, better luck next month 🍀
-      }
-      await sleep("30 days");
+  while (!(await hasSignedUp(user))) {
+    try {
+      await sendReminderEmail(user);
+    } catch (e) {
+      // Thanks to Temporal's retry policy, we already
+      // tried twice, better luck next month 🍀
     }
+    await sleep('30 days');
+  }
 }
 ```
 

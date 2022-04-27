@@ -57,11 +57,11 @@ func SampleWorkflow(ctx workflow.Context) error {
 You usually add `Future`s after `Activities`:
 
 ```go
-	// API Example: defer code execution until after an activity is done
-	work := workflow.ExecuteActivity(ctx, ExampleActivity)
-	selector.AddFuture(work, func(f workflow.Future) {
-		// deferred code omitted...
-	})
+// API Example: defer code execution until after an activity is done
+work := workflow.ExecuteActivity(ctx, ExampleActivity)
+selector.AddFuture(work, func(f workflow.Future) {
+	// deferred code omitted...
+})
 ```
 
 `selector.Select(ctx)` is the primary mechanism which blocks on and executes `Future` work.
@@ -121,13 +121,13 @@ We create timers with the `workflow.NewTimer` API.
 `selector.AddReceive(channel, func(c workflow.ReceiveChannel, more bool) {})` is the primary mechanism which receives messages from `Channels`.
 
 ```go
-	// API Example: receive information from a Channel
-	var signalVal string
-	channel := workflow.GetSignalChannel(ctx, channelName)
-	selector.AddReceive(channel, func(c workflow.ReceiveChannel, more bool) {
-		c.Receive(ctx, &signalVal)
-		// do something with received information
-	})
+// API Example: receive information from a Channel
+var signalVal string
+channel := workflow.GetSignalChannel(ctx, channelName)
+selector.AddReceive(channel, func(c workflow.ReceiveChannel, more bool) {
+	c.Receive(ctx, &signalVal)
+	// do something with received information
+})
 ```
 
 Merely matching on the channel doesn't consume the message; it has to be explicitly consumed with a `c.Receive(ctx, &signalVal)` call.

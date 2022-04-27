@@ -20,18 +20,20 @@ release_version: V1.1.0
 **Latest Release at Time of Writing:** V1.1.0
 
 **Update (10:36am PST) with current press:**
-* [TechCrunch](https://techcrunch.com/2020/10/15/temporal-raises-18-75m-for-its-microservices-orchestration-platform/)
-* [Business wire](https://www.businesswire.com/news/home/20201015005371/en/Temporal-Raises-18.75M-Series-A-Increases-Total-Raised-to-25.5M)
-* [Geekwire](https://www.geekwire.com/2020/aws-microsoft-uber-engineering-vets-raise-20m-top-vcs-seattle-startup-temporal/)
-* [SiliconAngle](https://siliconangle.com/2020/10/15/temporals-microservices-orchestrator-nets-startup-18-75m/)
-* [Yahoo News](https://au.news.yahoo.com/temporal-raises-18-75m-series-160000059.html)
-* [Mekhato](https://mekhato.com/aws-microsoft-uber-engineering-vets-raise-20m-from-top-vcs-for-seattle-startup-temporal/)
-* [Biz Journals](https://www.bizjournals.com/seattle/news/2020/10/15/temporal-series-a-madrona-sequoia-seattle-tech.html)
-- [Finsmes](https://www.finsmes.com/2020/10/temporal-raises-18-75m-in-series-a-funding.html)
+
+- [TechCrunch](https://techcrunch.com/2020/10/15/temporal-raises-18-75m-for-its-microservices-orchestration-platform/)
+- [Business wire](https://www.businesswire.com/news/home/20201015005371/en/Temporal-Raises-18.75M-Series-A-Increases-Total-Raised-to-25.5M)
+- [Geekwire](https://www.geekwire.com/2020/aws-microsoft-uber-engineering-vets-raise-20m-top-vcs-seattle-startup-temporal/)
+- [SiliconAngle](https://siliconangle.com/2020/10/15/temporals-microservices-orchestrator-nets-startup-18-75m/)
+- [Yahoo News](https://au.news.yahoo.com/temporal-raises-18-75m-series-160000059.html)
+- [Mekhato](https://mekhato.com/aws-microsoft-uber-engineering-vets-raise-20m-from-top-vcs-for-seattle-startup-temporal/)
+- [Biz Journals](https://www.bizjournals.com/seattle/news/2020/10/15/temporal-series-a-madrona-sequoia-seattle-tech.html)
+
+* [Finsmes](https://www.finsmes.com/2020/10/temporal-raises-18-75m-in-series-a-funding.html)
 
 ## Announcement
 
-Hey Temporal community, we have a big announcement for everyone. 
+Hey Temporal community, we have a big announcement for everyone.
 
 10 years ago two engineers at AWS started working on a project that would turn into something way bigger than either could have expected. In the time since then, the underlying idea has been iterated on and refined into something that brings businesses tons of value and developers love. The next step of that journey starts today. Temporal is proud to announce it has received a 18.75M A round led by Sequoia Capital and a 6.75M Seed round led by Amplify Partners.
 
@@ -39,10 +41,10 @@ Before we talk about the future it's important to be grateful for the past. With
 
 The funds will be primarily used for two efforts
 
-1. Open-source features, fixes and community growth 
+1. Open-source features, fixes and community growth
 2. Temporal cloud
 
-We won't go into too many specifics of what's coming in open-source but new languages, databases and a real security story are definitely things to look out for. Outside of direct contributions, we also plan to hire a number of developer advocates and user-facing engineers to improve our support. 
+We won't go into too many specifics of what's coming in open-source but new languages, databases and a real security story are definitely things to look out for. Outside of direct contributions, we also plan to hire a number of developer advocates and user-facing engineers to improve our support.
 
 As some of you know, we are also working on a hosted version of Temporal. While we don't have a timeline we are evaluating interested parties as our initial design partners. These design partners will be the first cloud users and have official support (SLA backed) along with prioritized features and bug fixes. If this is something interesting to your or your company, please reach out to ryland@temporal.io.
 

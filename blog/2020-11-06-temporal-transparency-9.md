@@ -14,11 +14,12 @@ author_image_url: https://avatars2.githubusercontent.com/u/6764957?s=460&u=97ad8
 release_version: V1.2
 
 ---
+
 <!--truncate-->
 
 **Latest Release at Time of Writing:** V1.2.1
 
-Hey Temporal community, it's Friday again! It's been a long week with *ahem* a lot of other things going on in real life, but work has continued apace on Temporal.
+Hey Temporal community, it's Friday again! It's been a long week with _ahem_ a lot of other things going on in real life, but work has continued apace on Temporal.
 
 # Update November 6, 2020
 
@@ -40,7 +41,7 @@ We're working on Authentication for Temporal Web, and are looking for beta teste
 ### Context
 
 Temporal is a highly critical system for many businesses, so security is paramount.
-Communication is already encrypted with [TLS](https://docs.temporal.io/docs/server/configuration/#tls), 
+Communication is already encrypted with [TLS](https://docs.temporal.io/docs/server/configuration/#tls),
 and you can put Temporal behind a reverse proxy. However,
 one of our longest standing requests has been for an authentication/authorization layer for Temporal.
 This is what we are tackling first,
@@ -52,7 +53,7 @@ It's not ready for release yet, but we'd like to share how we're shipping this m
 
 - **Diverge**:
   - **Collecting Requirements**: [Ryland](https://twitter.com/taillogs) had been meticulously collecting feedback from prospective customers for the past 6 months. Having this "CRM" (entirely done in Notion) ensured that we started with a strong idea of what our customers' most common requirements would be. For example, we realized that many companies use SAML and LDAP for authentication, but virtually everyone uses the OAuth/OpenID Connect (OIDC) open standard ([more info on OAuth and OIDC here](https://developer.okta.com/blog/2019/10/21/illustrated-guide-to-oauth-and-oidc)). We also wanted a solution that would work for both the self-hosted open-source version of Temporal, and for the coming Temporal Cloud offering.
-  - **Comparable Research**: Sometimes customers don't tell you what they want. It can help to supplement customer research with comparable products. This helps surface ideas and perspectives we hadn't considered. We did a broad search of peer tools. This offered an even broader range of options, including the controversial "[The Prometheus project takes the stance that server side security features are outside its scope]( https://www.robustperception.io/prometheus-security-authentication-authorization-and-encryption)". Our search also showed that a surprising number of tools offered Certificate Authority auth. I was quite impressed by [the wide range of auth options offered by Grafana](https://grafana.com/docs/grafana/latest/auth/).
+  - **Comparable Research**: Sometimes customers don't tell you what they want. It can help to supplement customer research with comparable products. This helps surface ideas and perspectives we hadn't considered. We did a broad search of peer tools. This offered an even broader range of options, including the controversial "[The Prometheus project takes the stance that server side security features are outside its scope](https://www.robustperception.io/prometheus-security-authentication-authorization-and-encryption)". Our search also showed that a surprising number of tools offered Certificate Authority auth. I was quite impressed by [the wide range of auth options offered by Grafana](https://grafana.com/docs/grafana/latest/auth/).
 - **Converge**:
   - **Narrowing Scope**: One of the most impactful things you can do to ship faster is to say no as much as possible during the design phase.
     - [Maxim](https://www.linkedin.com/in/fateev/) suggested offering authentication within the `tctl` CLI. However it would have involved crossing language and client-server boundaries that would have added undue complexity.

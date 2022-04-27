@@ -37,31 +37,31 @@ values={[
 <TabItem value="go">
 
 ```go
-	c, err := client.NewClient(client.Options{
-		Namespace: "my-namespace-name",
-	})
+c, err := client.NewClient(client.Options{
+	Namespace: "my-namespace-name",
+})
 ```
 
 </TabItem>
 <TabItem value="java">
 
 ```java
- WorkflowServiceStubs service = WorkflowServiceStubs.newInstance();
- // https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowClientOptions.Builder.html
- WorkflowOptions clientOptions = WorkflowClientOptions.newBuilder()
-    .setNamespace('my-namespace-name');
- WorkflowClient workflowClient =  WorkflowClient.newInstance(service, clientOptions);
+WorkflowServiceStubs service = WorkflowServiceStubs.newInstance();
+// https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowClientOptions.Builder.html
+WorkflowOptions clientOptions = WorkflowClientOptions.newBuilder()
+   .setNamespace('my-namespace-name');
+WorkflowClient workflowClient =  WorkflowClient.newInstance(service, clientOptions);
 ```
 
 </TabItem>
 <TabItem value="ts">
 
 ```java
-  const connection = new Connection();
-  // https://typescript.temporal.io/api/interfaces/client.WorkflowClientOptions
-  const client = new WorkflowClient(connection.service, {
-    namespace: 'my-namespace-name'
-  });
+const connection = new Connection();
+// https://typescript.temporal.io/api/interfaces/client.WorkflowClientOptions
+const client = new WorkflowClient(connection.service, {
+  namespace: 'my-namespace-name'
+});
 ```
 
 </TabItem>

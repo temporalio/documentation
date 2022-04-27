@@ -19,7 +19,7 @@ release_version: V1.15
 
 <!--truncate-->
 
-*This case study is based on an interview with [Kevin Devroede](https://www.linkedin.com/in/kevin-devroede-09288b27/?originalSubdomain=fr) who is a DRE leader and one of the earliest Temporal champions at Datadog.*
+_This case study is based on an interview with [Kevin Devroede](https://www.linkedin.com/in/kevin-devroede-09288b27/?originalSubdomain=fr) who is a DRE leader and one of the earliest Temporal champions at Datadog._
 
 ## Context
 

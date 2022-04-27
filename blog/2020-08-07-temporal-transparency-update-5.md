@@ -14,6 +14,7 @@ author_image_url: https://avatars2.githubusercontent.com/u/27736122?s=460&u=7b6a
 release_version: V0.28.0
 
 ---
+
 <!--truncate-->
 
 **Latest Release at Time of Writing:** V0.28.0
@@ -24,12 +25,12 @@ This was a crazy week for us in a good way. We harnessed the momentum of our cod
 
 **TL;DR;**
 
-* JavaSDK bugs were addressed and a PR is out
-* JavaSDK will be considered code complete after it has been reviewed
-* [Once JavaSDK PR is in, we will be fully code complete](https://github.com/temporalio/java-sdk/pull/172)
-* Almost all internal cycles have shifted to stabilization
-* No timeline, but plan outlines what work is remaining
-* We will continue updating regarding stabilization status until we reach the production V1 release
+- JavaSDK bugs were addressed and a PR is out
+- JavaSDK will be considered code complete after it has been reviewed
+- [Once JavaSDK PR is in, we will be fully code complete](https://github.com/temporalio/java-sdk/pull/172)
+- Almost all internal cycles have shifted to stabilization
+- No timeline, but plan outlines what work is remaining
+- We will continue updating regarding stabilization status until we reach the production V1 release
 
 ## JavaSDK
 

@@ -21,7 +21,7 @@ release_version: V1.11.3
 
 <!--truncate-->
 
-*This case study is based on an interview with [Nir Shirion](https://www.linkedin.com/in/nirshirion) who was a key player in Temporal adoption within Zebra Medical Vision*
+_This case study is based on an interview with [Nir Shirion](https://www.linkedin.com/in/nirshirion) who was a key player in Temporal adoption within Zebra Medical Vision_
 
 ### Problem
 

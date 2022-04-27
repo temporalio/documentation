@@ -79,5 +79,4 @@ Things that seemed complex before don't really seem that way anymore.
 
 <blockquote>Things that we thought to be much more complex to implement on top of the old system feel like they are much easier with Temporal*.</blockquote>
 
-
 ##### *As of the time of writing this article Coinbase is using Cadence (the Temporal predecessor) and is only evaluating a future migration to Temporal

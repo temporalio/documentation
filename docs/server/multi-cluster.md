@@ -50,7 +50,7 @@ A cluster can mutate a Workflow Execution History only if the following is true:
 <details>
 <summary>Namespace version change example
 </summary>
-  
+
 Assuming the following scenario:
 
 - Cluster A comes with initial version: 1
@@ -97,10 +97,10 @@ The Workflow Executions's mutable state will keep track of all history entries (
 <details>
 <summary>Version history example (without data conflict)
 </summary>
-  
-* Cluster A comes with initial version: 1
-* Cluster B comes with initial version: 2
-* Shared version increment: 10
+
+- Cluster A comes with initial version: 1
+- Cluster B comes with initial version: 2
+- Shared version increment: 10
 
 T = 0: adding event with event ID == 1 & version == 1
 
@@ -190,7 +190,7 @@ Since Temporal is AP, during failover (change of active Temporal Cluster Namespa
 <details>
 <summary>Version history example (with data conflict)
 </summary>
-  
+
 Below, shows version history of the same Workflow Execution in 2 different Clusters.
 
 - Cluster A comes with initial version: 1

@@ -10,6 +10,7 @@ tags:
 ---
 
 <!-- prettier-ignore -->
+
 import * as WhatIsASearchAttribute from '../concepts/what-is-a-search-attribute.md'
 
 Use the following command to remove a <preview page={WhatIsASearchAttribute}>Search Attribute</preview> from a Cluster's metadata:

@@ -14,13 +14,14 @@ author_image_url: https://avatars2.githubusercontent.com/u/27736122?s=460&u=7b6a
 release_version: V0.29.0
 
 ---
+
 <!--truncate-->
 
 **Latest Release at Time of Writing:** V0.29.0
 
-It has been two weeks since our [last update](https://docs.temporal.io/blog/temporal-transparency-5) which feels like a year in pandemic/startup time. We've been taking advantage of the time warping to make as much progress as possible on stabilization and the JavaSDK. 
+It has been two weeks since our [last update](https://docs.temporal.io/blog/temporal-transparency-5) which feels like a year in pandemic/startup time. We've been taking advantage of the time warping to make as much progress as possible on stabilization and the JavaSDK.
 
-Before we get into the stabilization update there are a few other miscellaneous  Temporal announcements. In the last month we've had some amazing additions to the Temporal team 🎊. Derek, Manu and Vitaly joined our engineering effort which had a very immediate and positive impact. I'd also like to give a shoutout to Karl who recently joined to lead our recruiting/hiring effort. Karl will enable us to continuously acquire great people as we scale. If you're ever curious about who's on our team, we regularly update [our GitHub page](https://github.com/temporalio/team).
+Before we get into the stabilization update there are a few other miscellaneous Temporal announcements. In the last month we've had some amazing additions to the Temporal team 🎊. Derek, Manu and Vitaly joined our engineering effort which had a very immediate and positive impact. I'd also like to give a shoutout to Karl who recently joined to lead our recruiting/hiring effort. Karl will enable us to continuously acquire great people as we scale. If you're ever curious about who's on our team, we regularly update [our GitHub page](https://github.com/temporalio/team).
 
 As you may have heard, we are having our second open office hours on Aug 26. We are having the session twice (7am PST and 4:30pm PST) to accommodate users in different time zones. We would love to see you there.
 
@@ -28,10 +29,10 @@ As you may have heard, we are having our second open office hours on Aug 26. We 
 
 **TL;DR;**
 
-  * JavaSDK rewrite is complete and has been fully reviewed
-  * JavaSDK was released (compatible with server V0.29.0)
-  * We are now code complete
-  * The team is completely focused on stabilization, things look positive
+- JavaSDK rewrite is complete and has been fully reviewed
+- JavaSDK was released (compatible with server V0.29.0)
+- We are now code complete
+- The team is completely focused on stabilization, things look positive
 
 ## JavaSDK
 
@@ -55,7 +56,7 @@ As of today we are looking at the layers with a slightly different lens:
 
 While deployment infrastructure remains unchanged conceptually, we realized that there was more work than originally expected. The tooling we rely on came into question and we're actively in the process of evaluating our options. To give some more context, Alex was kind enough to write a summary:
 
-"Failure testing is important step of our stabilization process. We need to know how our cluster and workers operate under the pressure of different failures: 
+"Failure testing is important step of our stabilization process. We need to know how our cluster and workers operate under the pressure of different failures:
 
 - peak CPU and memory usage
 - network failures
@@ -63,7 +64,7 @@ While deployment infrastructure remains unchanged conceptually, we realized that
 
 We need to ensure that we don't lose any data and that workflows continue to execute when failures are mitigated. We're evaluating [Gremlin](https://www.gremlin.com/) to inject different failures as it is fairly easy to setup, has amazing UI and API access. It also support k8s out of the box which we use for our test environments. This decision is not carved in stone yet, but looks promising. In the near future we should get the initial results of running benchmark tests for the cluster under different failures." - **Alex**
 
-For those who may have been curious about whether the JavaSDK delay would also delay testing on Java, worry not. Once we understood that the SDK needed serious refactoring, we immediately started working on the testing in parallel. This means that the JavaSDK work did not take resources/time away from the stabilization effort. The newly added tests for Java are especially exciting considering that these paths/scenarios have never been tested in the past, and are completely untested in Cadence. 
+For those who may have been curious about whether the JavaSDK delay would also delay testing on Java, worry not. Once we understood that the SDK needed serious refactoring, we immediately started working on the testing in parallel. This means that the JavaSDK work did not take resources/time away from the stabilization effort. The newly added tests for Java are especially exciting considering that these paths/scenarios have never been tested in the past, and are completely untested in Cadence.
 
 We are very content with our progress over the last few weeks and still are confident in our initial scoping. We've gone "timeline-less" internally so no specifics, but things look positive. As always, feel free to reach out with questions, comments or critical feedback via email, Slack or our community forum.
 

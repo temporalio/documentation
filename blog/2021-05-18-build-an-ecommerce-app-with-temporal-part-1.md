@@ -35,7 +35,7 @@ You can find the [full source code for this shopping cart on GitHub](https://git
 In a traditional web app architecture, a user's shopping cart is stored as a row or document in a database.
 While you can store shopping carts in a separate database using Temporal, you have another option: you can represent a shopping cart as a long-living Workflow.
 
-A Workflow is a Go function that takes 2 parameters: a Temporal Workflow context `ctx` and an arbitrary `value`. 
+A Workflow is a Go function that takes 2 parameters: a Temporal Workflow context `ctx` and an arbitrary `value`.
 It can run for an arbitrarily long period of time, as Temporal can handle pausing and restarting the Workflow.
 Lastly, it is able to share its state via _queries_ and modify its state in response to _signals_.
 

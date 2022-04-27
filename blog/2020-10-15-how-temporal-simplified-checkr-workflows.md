@@ -38,7 +38,7 @@ Running a background check is a multi-staged process which consists of both auto
 
 Although validation is a background process which can take days, it's often the blocker for slow background checks. This means validation is a critical process and Checkr needs a scalable method of managing a huge number of parallel validations. Furthermore, the moment any validation finishes, appropriate action needs to be taken based on the result.
 
-Until switching to Temporal,  Checkr solved this problem using an in-house solution powered by standalone databases and Kafka queues. As this was not a general purpose workflow system, Checkr developers were also required to implement a complex state machine to ensure the consistency of the validation process. It didn't take long for the true cost of this in-house solution to become apparent:
+Until switching to Temporal, Checkr solved this problem using an in-house solution powered by standalone databases and Kafka queues. As this was not a general purpose workflow system, Checkr developers were also required to implement a complex state machine to ensure the consistency of the validation process. It didn't take long for the true cost of this in-house solution to become apparent:
 
 - It's homegrown nature meant that there were no official mechanisms provided for updating the state machine running in the live system.
 - New hires were immediately required to study and understand the Checkr specific state machine architecture, regardless of the team/area they were hired for.

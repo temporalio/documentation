@@ -1,11 +1,20 @@
 {
+  "lineWidth": 80,
   "typescript": {
-    "bracketSpacing": true,
-    "singleQuote": true
+    "quoteStyle": "alwaysSingle"
   },
   "json": {
   },
   "markdown": {
+    "lineWidth": 80,
+    "newLineKind": "lf",
+    "textWrap": "maintain",
+    "emphasisKind": "underscores",
+    "strongKind": "asterisks",
+    "ignoreDirective": "dprint-ignore",
+    "ignoreFileDirective": "dprint-ignore-file",
+    "ignoreStartDirective": "dprint-ignore-start",
+    "ignoreEndDirective": "dprint-ignore-end"
   },
   "prettier": {
     "arrowParens": "always",
@@ -15,7 +24,6 @@
     "insertPragma": false,
     "jsxBracketSameLine": false,
     "jsxSingleQuote": false,
-    "printWidth": 80,
     "proseWrap": "preserve",
     "quoteProps": "as-needed",
     "requirePragma": false,

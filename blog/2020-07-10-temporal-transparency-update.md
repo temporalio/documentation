@@ -12,6 +12,7 @@ author_image_url: https://avatars2.githubusercontent.com/u/27736122?s=460&u=7b6a
 release_version: v0.26.0
 
 ---
+
 <!--truncate-->
 
 **Latest Release at Time of Writing:** V0.26.0
@@ -22,12 +23,12 @@ We recently announced that there would be some changes to our V1 release timelin
 
 **TL;DR;**
 
-* July 31, 2020 is our concrete date for being code complete.
-* After July 31 we will immediately begin stabilization efforts.
-* There is no guaranteed date for stabilization yet.
-* As we near code completion, we will release our stabilization tasks.
+- July 31, 2020 is our concrete date for being code complete.
+- After July 31 we will immediately begin stabilization efforts.
+- There is no guaranteed date for stabilization yet.
+- As we near code completion, we will release our stabilization tasks.
 
-The team is working hard on the remaining items needed for code completion. I've worked with Max and Samar to ensure that our estimates reflect the remaining work much more accurately than before. This accuracy greatly improves our confidence, enough that we feel comfortable giving a hard date for code completion of July 31. This means that after July 31 we do not intend to make any breaking API or interface changes. While we do not expect to encounter critical bugs which would require schemas to change, there will always be a possibility until we've reached a stable release. I've included a picture (below) which represents all the remaining tasks needed to reach code completion as of Today (July 10).  
+The team is working hard on the remaining items needed for code completion. I've worked with Max and Samar to ensure that our estimates reflect the remaining work much more accurately than before. This accuracy greatly improves our confidence, enough that we feel comfortable giving a hard date for code completion of July 31. This means that after July 31 we do not intend to make any breaking API or interface changes. While we do not expect to encounter critical bugs which would require schemas to change, there will always be a possibility until we've reached a stable release. I've included a picture (below) which represents all the remaining tasks needed to reach code completion as of Today (July 10).\
 ![](/cms/screen-shot-2020-07-10-at-9-48-49-am.png)
 
 In parallel to the code completion effort, we're also investing a lot of energy into understanding the scope of work needed for stabilization. We can't give a specific date yet for the stable release as there is still a chance that critical bugs will be discovered. Reliability is our #1 concern and therefore we will not release until all critical bugs are fixed. Although we can't provide a solidified timeline, we can be open and transparent about what we're working on and what we have left to work on. As we near code completion later this month, I will begin sharing updates about the stabilization, just like I did with code completion tasks pictured above. Until then, I'll occasionally share the status of our existing CI/CD pipeline (picture below):

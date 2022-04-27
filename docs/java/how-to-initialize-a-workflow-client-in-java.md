@@ -27,7 +27,6 @@ WorkflowServiceStubs service = WorkflowServiceStubs.newInstance(
                     WorkflowServiceStubsOptions.newBuilder()
                      .setTarget(TARGET_ENDPOINT)
                             .build());
-
 ```
 
 See [WorkflowServiceStubsOptions](/docs/java/how-to-set-workflowservicestuboptions-in-java) for details.
@@ -44,7 +43,6 @@ WorkflowClient client = WorkflowClient.newInstance(
                 WorkflowClientOptions.newBuilder()
                         .setNamespace(“Abc”)
                     .build());
-
 ```
 
 See [WorkflowClientOptions](/docs/java/how-to-set-workflowclientoptions-in-java) for details.

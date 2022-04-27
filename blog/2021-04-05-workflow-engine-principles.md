@@ -50,7 +50,6 @@ Our definition is that a workflow is a:
 - Reacts to External Events, including
 - Timers and timeouts
 
-
 **Resilient** means that the program will continue execution despite failures (like infrastructure outages and availability zones going down).
 
 Usually this program is organized as a **sequence of tasks** and it also has to **react to external events** and **deal with time**. Timers and timeouts are an important component of every business level process.
@@ -78,7 +77,7 @@ You can represent it with a sequence diagram like this:
 
 ![Designing Workflow Engine-v7-images 010](https://user-images.githubusercontent.com/6764957/113586830-9540a280-9660-11eb-84a0-67ded1fc1402.png)
 
-But to *implement* the workflow engine you need a core that will drive these workflows:
+But to _implement_ the workflow engine you need a core that will drive these workflows:
 
 ![Designing Workflow Engine-v7-images 011](https://user-images.githubusercontent.com/6764957/113586858-a093ce00-9660-11eb-8cbd-178a37d55777.png)
 
@@ -96,10 +95,7 @@ Walking through the diagram:
 
 In practical systems, you don't want to call tasks directly, because there can be issues with flow control, availability, or slowness. So using queues to dispatch tasks is a very common technique.
 
-
 ![Designing Workflow Engine-v7-images 012](https://user-images.githubusercontent.com/6764957/113586922-b73a2500-9660-11eb-81fe-758266691161.png)
-
-
 
 Every practical workflow engine uses queues to dispatch tasks to workers (working processes that host those tasks).
 
@@ -113,9 +109,7 @@ Time is important because:
 
 So you also need an external timer service or timer queue that durably stores and dispatches these timers.
 
-
 ![Designing Workflow Engine-v7-images 014](https://user-images.githubusercontent.com/6764957/113586984-c7ea9b00-9660-11eb-87ab-359b0b0b5d48.png)
-
 
 ## Consistency and the importance of Transactions (7:35)
 
@@ -128,9 +122,7 @@ We need to store the state of the workflow so that every time we start a workflo
 
 **These updates across multiple data sources must be transactional**.
 
-
 ![Designing Workflow Engine-v7-images 016](https://user-images.githubusercontent.com/6764957/113587041-d8027a80-9660-11eb-9d30-d21aaa50f685.png)
-
 
 **If you only remember one slide from this presentation, remember this one.**
 
@@ -157,16 +149,12 @@ What dimensions of scalability are important to us? How would we execute a milli
 
 We could naively create a single huge workflow that spawns multiple machines, e.g. MapReduce lets you write a single pipeline executed by thousands of machines. However, Temporal chose a different direction.
 
-- **Workflow as unit of scalability**. For Temporal's target usecases, we decided *not* to design for scaling up a single workflow instance. Every workflow should be limited in size, but we can infinitely scale out the number of workflows.
-    - So if you need to run a million tasks, don't implement them all inside a single workflow, have a single workflow that creates a thousand child workflows, each of which run a thousand tasks. This way, each of the instances will be bounded.
+- **Workflow as unit of scalability**. For Temporal's target usecases, we decided _not_ to design for scaling up a single workflow instance. Every workflow should be limited in size, but we can infinitely scale out the number of workflows.
+  - So if you need to run a million tasks, don't implement them all inside a single workflow, have a single workflow that creates a thousand child workflows, each of which run a thousand tasks. This way, each of the instances will be bounded.
 - **Multiple Hosts**. Once we can assume each instance has a limited size, we can start distributing them across multiple machines. Scaling out a fleet of machines becomes practical because each instance is guaranteed to fit within a single machine.
 - **Multiple Stores.** If you want to have a very, very large system, you need to scale out the database as well. A single database instance will be a bottleneck.
 
-
-
 ![Designing Workflow Engine-v7-images 023](https://user-images.githubusercontent.com/6764957/113587169-fff1de00-9660-11eb-9485-eadd3d2f3fd7.png)
-
-
 
 If you can handle a partitioned database and partitioned hosts you can get to a very scalable solution. The key problem here is we need to maintain transactionality - as soon as you start breaking persistence into multiple databases you would not be able to provide those guarantees, unless you do complex things like two-phase commits.
 
@@ -183,10 +171,7 @@ The standard way to solve this is to use **sharding**. Instead of physical hosts
 
 The same applies to shards within our hosts: you can hash workflows to a specific shard id and use consistent hashing to allocate a shard to a specific host.
 
-
 ![Designing Workflow Engine-v7-images 026](https://user-images.githubusercontent.com/6764957/113587251-16983500-9661-11eb-8b7d-edf47b3fb283.png)
-
-
 
 ## Membership and Routing (13:50)
 
@@ -196,16 +181,13 @@ You also need a routing layer. You don't want to have a fat clientside library t
 
 ![Designing Workflow Engine-v7-images 028](https://user-images.githubusercontent.com/6764957/113587298-26b01480-9661-11eb-8e42-aa719784b874.png)
 
-
 ## The Task Queue Problem
 
 Sharding by workflow ID works, except for task queues. For example if you have activities which listen on a task queue named `foo`, how do you get activity tasks waiting to be executed? If you store those activity tasks in every shard, you need to go to all shards and ask if they have anything for task queue `foo` . If you want to allocate a large number of shards, these kinds of queries become impractical. We cannot even aggregate them over hosts because each shard requires a separate database query. Imagine if you have 10,000 shards, and every time you do a pull you fan out 10,000 database requests.
 
 So a practical solution is to move the queue into its a separate component with its own persistence.
 
-
 ![Designing Workflow Engine-v7-images 029](https://user-images.githubusercontent.com/6764957/113587337-37f92100-9661-11eb-8992-00bfad1d5207.png)
-
 
 That solves the problem of routing, but it introduces other problems: as soon as queues live outside of core shards of workflow state, we don't have transactions across them anymore.
 
@@ -217,9 +199,7 @@ The way we solved it in Temporal is using Transfer Queues.
 
 The idea is that every shard which stores workflow state also stores a queue. 10,000 shards, 10,000 queues. Every time we make an update to a shard we can also make an update to the queue because it lives in the same partition.
 
-
 ![Designing Workflow Engine-v7-images 033](https://user-images.githubusercontent.com/6764957/113587393-4e9f7800-9661-11eb-961b-119524b420c6.png)
-
 
 So if we need to start a workflow, we:
 
@@ -229,9 +209,7 @@ So if we need to start a workflow, we:
 - This will be committed to the database atomically
 - a thread pulls from that queue and transfers that message to the queuing subsystem.
 
-
 ![Designing Workflow Engine-v7-images 035](https://user-images.githubusercontent.com/6764957/113587447-5e1ec100-9661-11eb-8c7a-19064279d07e.png)
-
 
 This way we have transactional commits with a later transfer to the queueing subsystem. (This transfer could fail and retry so duplicates can occur, but we have a separate part of the system which will do the deduping)
 
@@ -247,7 +225,6 @@ Going to all 10,000 shards and asking for this information, even with indexing, 
 
 ![Designing Workflow Engine-v7-images 038](https://user-images.githubusercontent.com/6764957/113587499-71319100-9661-11eb-8fdd-83ef5f62e2df.png)
 
-
 Any indexing technology could work; we use Elasticsearch because it is open source.
 
 We use the same transfer queue approach to commit "visibility records" into each shard and use the transfer queue to transfer them into Elasticsearch. This mechanism has an inherent delay, so the index is always some time behind the actual update. But, thanks to the transfer queue mechanism, there is a guarantee that if a commit happened, Elasticsearch will eventually be updated.
@@ -260,17 +237,13 @@ You could program this externally: make a list, get the id's save to a file and 
 
 ![Designing Workflow Engine-v7-images 040](https://user-images.githubusercontent.com/6764957/113587530-7ee71680-9661-11eb-852f-9c50972d42ea.png)
 
-
 So we now have a worker role that performs system workflows, like database scans and other long operations, using standard Temporal workflow abstractions.
 
 ## Temporal architecture (20:10)
 
 Now you can perhaps understand the full picture of Temporal's Architecture:
 
-
 ![Designing Workflow Engine-v7-images 041](https://user-images.githubusercontent.com/6764957/113587567-8c9c9c00-9661-11eb-8614-576a68caa8f1.png)
-
-
 
 We have:
 
@@ -296,17 +269,12 @@ But the system still has a single point of failure in terms of blast radius, bec
 
 If you want to provide very high availability, we have **multi-cluster deployment** with asynchronous replication.
 
-
-
 ![Designing Workflow Engine-v7-images 042](https://user-images.githubusercontent.com/6764957/113587607-9b834e80-9661-11eb-82ac-7b54f56a8219.png)
-
 
 Even a total meltdown of the cluster or unavailability of a region will not stop your workflows, because you will be able to fail over your execution to another cluster and continue. This is a pretty complex part of the system - perhaps for the next talk!
 
 ## Conclusion (22:15)
 
 Temporal's appeal, apart from the workflow-as-code programming model, is that it is highly **scalable** and **consistent**, and allows external activities and workflow implementations outside of the cluster, which allows very high **flexibility**.
-
-
 
 ![Designing Workflow Engine-v7-images 043](https://user-images.githubusercontent.com/6764957/113587641-ab029780-9661-11eb-9012-75b013e50574.png)

@@ -219,7 +219,7 @@ Besides Activities, a Workflow can also start other Workflows.
 
 <RelatedReadList
 readlist={[
-["What is a Child Workflow Execution?","/docs/concepts/what-is-a-child-workflow-execution","explanation"],  
+["What is a Child Workflow Execution?","/docs/concepts/what-is-a-child-workflow-execution","explanation"],\
 ]}
 />
 
@@ -333,17 +333,17 @@ You can set policies per child, which means you can opt out of propagating termi
 This is useful for starting Child Workflows asynchronously:
 
 ```java
-   public void parentWorkflow() {
-       ChildWorkflowOptions options =
-          ChildWorkflowOptions.newBuilder()
-              .setParentClosePolicy(ParentClosePolicy.PARENT_CLOSE_POLICY_ABANDON)
-              .build();
-       MyChildWorkflow child = Workflow.newChildWorkflowStub(MyChildWorkflow.class, options);
-       Async.procedure(child::<workflowMethod>, <args>...);
-       Promise<WorkflowExecution> childExecution = Workflow.getWorkflowExecution(child);
-       // Wait for child to start
-       childExecution.get()
-  }
+ public void parentWorkflow() {
+     ChildWorkflowOptions options =
+        ChildWorkflowOptions.newBuilder()
+            .setParentClosePolicy(ParentClosePolicy.PARENT_CLOSE_POLICY_ABANDON)
+            .build();
+     MyChildWorkflow child = Workflow.newChildWorkflowStub(MyChildWorkflow.class, options);
+     Async.procedure(child::<workflowMethod>, <args>...);
+     Promise<WorkflowExecution> childExecution = Workflow.getWorkflowExecution(child);
+     // Wait for child to start
+     childExecution.get()
+}
 ```
 
 1. Set `ChildWorkflowOptions.ParentClosePolicy` to `ABANDON` when creating a Child Workflow stub.

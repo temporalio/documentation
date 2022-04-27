@@ -255,19 +255,19 @@ The following rules apply when registering a Dynamic Workflow with a Worker:
   Example for implementing Signal handler dynamically:
 
   ```java
-        Workflow.registerListener(
-          (DynamicSignalHandler)
-              (signalName, encodedArgs) -> name = encodedArgs.get(0, String.class));
+  Workflow.registerListener(
+    (DynamicSignalHandler)
+        (signalName, encodedArgs) -> name = encodedArgs.get(0, String.class));
   ```
 
   Example for implementing Query handler dynamically:
 
   ```java
-        Workflow.registerListener(
-          (DynamicQueryHandler)
-              (queryType, encodedArgs) -> {
-              return name;
-      });
+    Workflow.registerListener(
+      (DynamicQueryHandler)
+          (queryType, encodedArgs) -> {
+          return name;
+  });
   ```
 
   Note that `DynamicSignalHandler` and `DynamicQueryHandler` can also be implemented in regular Workflow implementations.

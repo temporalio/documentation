@@ -16,6 +16,7 @@ posted_on_: 2020-07-01T07:00:00Z
 release_version: 0.26.0
 
 ---
+
 Why Temporal is moving to Discourse for our knowledge DB needs.
 
 <!--truncate-->
@@ -30,33 +31,33 @@ A couple months ago we reached the message limit on Slack and our community star
 
 Initially we were searching for a cheaper Slack alternative but we quickly realized that if we were considering a migration, it made sense to evaluate alternatives holistically and not just based on the fact that Slack costs more. To keep things consistent we defined a number of metrics to evaluate alternatives by:
 
-* Cost
-* Searchability
-* Indexed on the web
-* Responsiveness (real-time vs high latency)
-* Accessibility
-* Moderation and community safety
-* Onboarding overhead
-* Thread support
+- Cost
+- Searchability
+- Indexed on the web
+- Responsiveness (real-time vs high latency)
+- Accessibility
+- Moderation and community safety
+- Onboarding overhead
+- Thread support
 
 While these factors did not provide a clear answer to what our new solution should be, it did suggest that Slack was not going to work for us long term. Before I explain why Slack isn't a good fit for us, I want to say that there are a ton of really great things about Slack:
 
-* Responsive
-* Thread support
-* Searchable internally
-* Widely adopted
-* Great for teams
-* API
+- Responsive
+- Thread support
+- Searchable internally
+- Widely adopted
+- Great for teams
+- API
 
 On the other hand there are a ton of issues when using Slack for a community:
 
-* Incredibly expensive
-* Made for teams, not communities (this is an intentional choice by Slack)
-* Only searchable if you pay
-* Not indexed on the web
-* Zero to little moderation tools
-* Onboarding is tough
-* Not the most accessible
+- Incredibly expensive
+- Made for teams, not communities (this is an intentional choice by Slack)
+- Only searchable if you pay
+- Not indexed on the web
+- Zero to little moderation tools
+- Onboarding is tough
+- Not the most accessible
 
 ### Starting Our Search
 
@@ -71,18 +72,18 @@ To start our knowledge DB search we defined our core requirements for a tool. We
 
 After thorough research it seemed like a traditional forum was the only option which could meet all of our criteria. We evaluated a few solutions (Discourse, Flarum, Tribe) and eventually ended up going with Discourse because it's:
 
-* Widely adopted
-* Open source
-* Based around communities
-* A Ton of companies that we align with ideologically are using it (Netlify, Docker, Rust, Elastic, etc)
-* Robust moderation tools
-* Very accessible
-* Publicly indexed on the web
-* In-site search is awesome
-* Accepted answers feature
-* Fine grained notification controls
-* Great onboarding process - can even sign in with Google/SSO
-* Affordable
+- Widely adopted
+- Open source
+- Based around communities
+- A Ton of companies that we align with ideologically are using it (Netlify, Docker, Rust, Elastic, etc)
+- Robust moderation tools
+- Very accessible
+- Publicly indexed on the web
+- In-site search is awesome
+- Accepted answers feature
+- Fine grained notification controls
+- Great onboarding process - can even sign in with Google/SSO
+- Affordable
 
 Before fully committing to Discourse we trialed the tool internally. The more we used the product and became familiar the more we loved it. Furthermore, the support team at Discourse is seriously outstanding and they answer our questions in literal minutes. I hope this sheds some light on the decision making process behind this migration.
 

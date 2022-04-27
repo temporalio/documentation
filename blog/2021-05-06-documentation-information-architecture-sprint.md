@@ -82,12 +82,12 @@ Now that I was convinced that changes were needed to our information architectur
 At this stage, I was able to make the following connections:
 
 1. From an application development perspective, everything boils down to about six core concepts:
-    - Workflows
-    - Activities
-    - Workers
-    - Task Queues
-    - Signals
-    - Queries
+   - Workflows
+   - Activities
+   - Workers
+   - Task Queues
+   - Signals
+   - Queries
 2. The developer/software engineer persona is the one who is primarily concerned with internalizing and fully understanding these concepts.
 3. One can only fully describe any of these concepts within the context of a particular language.
 4. A developer is almost certainly only going to be interested in learning in a single language.
@@ -95,12 +95,12 @@ At this stage, I was able to make the following connections:
 Look at how a Workflow is defined across each language:
 
 <Tabs
-  defaultValue="go"
-  values={[
-    {label: 'Go', value: 'go'},
-    {label: 'Java', value: 'java'},
-    {label: 'PHP', value: 'php'},
-  ]
+defaultValue="go"
+values={[
+{label: 'Go', value: 'go'},
+{label: 'Java', value: 'java'},
+{label: 'PHP', value: 'php'},
+]
 }>
 
 <TabItem value="go">

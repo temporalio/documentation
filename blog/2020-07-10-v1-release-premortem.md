@@ -11,6 +11,7 @@ author_image_url: https://avatars2.githubusercontent.com/u/1766515?s=460&u=42e28
 release_version: v0.26.0
 
 ---
+
 <!--truncate-->
 
 We know that the recent delay caused some concern in the community. We empathize entirely and are seriously dedicated to correcting this going forward.
@@ -36,9 +37,9 @@ Although we did relatively well to navigate through this period of uncertainty, 
 
 As first time founders, bootstrapping the company was a huge learning experience for Maxim and I. We knew starting a company would be time consuming, but did not expect the time sink it turned out to be. There is a never ending stream of operational tasks such as:
 
-* Legal processes - setting up a business entity, contracts etc
-* Online accounts and services - payroll, benefits etc
-* Hiring and Recruiting - hours worth of screenings alone
+- Legal processes - setting up a business entity, contracts etc
+- Online accounts and services - payroll, benefits etc
+- Hiring and Recruiting - hours worth of screenings alone
 
 These tasks ended up eating a lot of our time meaning that we were left with only a fraction of the ideal day for actual release-relevant tasks. After this initial experience, we feel much better calibrated to provide realistic estimates which accounts for the operational overhead of running a startup.
 

@@ -13,8 +13,12 @@ jobs:
   style:
     name: CI
     runs-on: ubuntu-latest
+  
 
     steps:
+    - name: dprint-check-action
+    - uses: dprint/check@v2.0
+
     - uses: actions/checkout@v3
     - name: Cache
       uses: actions/cache@v3

@@ -14,6 +14,7 @@ author_image_url: https://avatars2.githubusercontent.com/u/27736122?s=460&u=7b6a
 release_version: V0.30.0
 
 ---
+
 <!--truncate-->
 
 **Latest Release at Time of Writing:** V0.30.0
@@ -24,17 +25,17 @@ Hey Temporal community, it's Friday! It's been a long week but the end is almost
 
 **TL;DR;**
 
-* We are now code complete for stabilization effort
-* All tests defined for V1 are now running in the pipeline
-* Some parts of the system already stabilized
-* Less and less bugs are being found and many identified bugs have been solved
-* The following features will be considered _experimental_ for the V1 release
-  * Archival
-  * Cross data center replication
-  * Batch operations (signal, terminate, cancel)
-  * Dynamic config
-  * Addition, removal and creation of searchable attributes with Elasticsearch
-* Confident in our original internal timeline for stabilization
+- We are now code complete for stabilization effort
+- All tests defined for V1 are now running in the pipeline
+- Some parts of the system already stabilized
+- Less and less bugs are being found and many identified bugs have been solved
+- The following features will be considered _experimental_ for the V1 release
+  - Archival
+  - Cross data center replication
+  - Batch operations (signal, terminate, cancel)
+  - Dynamic config
+  - Addition, removal and creation of searchable attributes with Elasticsearch
+- Confident in our original internal timeline for stabilization
 
 ## V1 Stabilization
 
@@ -44,9 +45,9 @@ We are officially code complete for our stabilization effort. This means that al
 
 Now that we have all the tests required for stabilization, the focus has now become continuously running those tests and identifying issues that pop up. When a new issue is discovered, we add it to a list and triage based on importance. Any issue that we consider even semi-critical is noted as a blocker and must be fixed before we consider that component stable. Through this process we've already successfully stabilized a few parts of the system. Over the next sprint we plan to continue with this approach and identify any remaining issues in non-stable components. I've linked some issues which have been identified and fixed below:
 
-* [Reduce Maximum Page Size when retrieving Workflow Execution History](https://github.com/temporalio/temporal/pull/732)
-* [Creating Workflows is unreliable when History Shards have recently moved around the cluster](https://github.com/temporalio/temporal/pull/734)
-* [Simultaneous SignalWithStarts for the Same WF ID randomly returns an Internal Server Error](https://github.com/temporalio/temporal/pull/719)
+- [Reduce Maximum Page Size when retrieving Workflow Execution History](https://github.com/temporalio/temporal/pull/732)
+- [Creating Workflows is unreliable when History Shards have recently moved around the cluster](https://github.com/temporalio/temporal/pull/734)
+- [Simultaneous SignalWithStarts for the Same WF ID randomly returns an Internal Server Error](https://github.com/temporalio/temporal/pull/719)
 
 If you're interested in learning more about how we approach stabilization, make sure to read the awesome post from Manu about our testing:
 
@@ -60,11 +61,11 @@ When scoping out the V1 stabilization work, we triaged features based on critica
 
 With this context, here are the features we consider experimental in the V1 release:
 
-* Archival
-* Cross data center replication
-* Batch operations (signal, terminate, cancel)
-* Dynamic config
-* Addition, removal and creation of searchable attributes with Elasticsearch
+- Archival
+- Cross data center replication
+- Batch operations (signal, terminate, cancel)
+- Dynamic config
+- Addition, removal and creation of searchable attributes with Elasticsearch
 
 In general, experimental features will not stay experimental and eventually make their way into production. In the case of the V1 experimental features listed above, we intend to productionize all of them following the initial release. In some cases we may choose to not move a feature forward if demand/value seems low.
 

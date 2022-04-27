@@ -64,7 +64,7 @@ async function run() {
   console.log(await handle.query('getCount'));
 }
 
-run().catch(err => {
+run().catch((err) => {
   console.error(err);
   process.exit(1);
 });
@@ -177,7 +177,7 @@ console.log(await handle.query('getCount', { name: 'other-counter' }));
 Instead, we can now expose these Signals via a RESTful API with the `temporal-rest` middleware the same as we did above:
 
 ```ts
-  app.use(createExpressMiddleware(workflows, client, 'tutorial'));
+app.use(createExpressMiddleware(workflows, client, 'tutorial'));
 ```
 
 To pass a parameter to the `increment` Signal, we pass a JSON-encoded HTTP request body to the Signal's POST endpoint, and to pass a parameter to the `getCount` Query, we add a query string to the Query's GET endpoint.
@@ -202,12 +202,12 @@ console.log(res.data); // "{ workflowId: '5232d34e-1c65-4d38-8470-39ec03b0eb02' 
 const { workflowId } = res.data;
 
 res = await axios.put('http://localhost:3000/signal/increment/' + workflowId, {
-  name: 'test-counter'
+  name: 'test-counter',
 });
 console.log(res.data); // "{ received: true }"
 
 res = await axios.get('http://localhost:3000/query/getCount/' + workflowId, {
-  params: { name: 'test-counter' }
+  params: { name: 'test-counter' },
 });
 console.log(res.data); // "{ result: 1 }"
 ```

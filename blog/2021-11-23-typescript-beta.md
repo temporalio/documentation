@@ -17,16 +17,16 @@ After 493 commits, hundreds of user questions, and a year of active research and
 
 ## Bottom Line Up Front
 
-The Temporal TypeScript SDK lets you write highly scalable and reliable long-running workflows without being a distributed systems expert. It is designed with TypeScript-first developer experience in mind, but works equally well with JavaScript. 
+The Temporal TypeScript SDK lets you write highly scalable and reliable long-running workflows without being a distributed systems expert. It is designed with TypeScript-first developer experience in mind, but works equally well with JavaScript.
 
 - Docs: [https://temporal.io/ts](https://temporal.io/ts)
-- [SDK source on GitHub](https://github.com/temporalio/sdk-typescript)  (give us a star!)
+- [SDK source on GitHub](https://github.com/temporalio/sdk-typescript) (give us a star!)
 
-You can get started by: 
+You can get started by:
 
-- running `npx @temporalio/create@latest` if you prefer developing locally with Docker, or 
+- running `npx @temporalio/create@latest` if you prefer developing locally with Docker, or
 - using our [prebuilt Gitpod environment](https://gitpod.io/#https://github.com/temporalio/samples-typescript/) for cloud development.
- 
+
 The minimum Node.js version is 14 but we recommend using 16.4.1 and up.
 
 When you spin up a project, you will notice a single `temporalio` dependency, which actually bundles 4 other dependencies you will use:
@@ -141,11 +141,11 @@ const handle = await client.start(exampleWorkflow, {
 });
 ```
 
-The full Client docs are [here](https://docs.temporal.io/docs/typescript/clients). 
+The full Client docs are [here](https://docs.temporal.io/docs/typescript/clients).
 
 ## Next Steps
 
-The 4 concepts of Workflow, Activity, Worker, and Client are a simple but powerful way to break down any distributed system design that you may need. 
+The 4 concepts of Workflow, Activity, Worker, and Client are a simple but powerful way to break down any distributed system design that you may need.
 
 - If you would like to run code and understand this yourself, check [our Hello World tutorial](https://docs.temporal.io/docs/typescript/hello-world).
 - If you prefer a long form, guided Workshop with Q&A, [join our upcoming Intro Workshop on Nov 30](https://lu.ma/temporalintro)!

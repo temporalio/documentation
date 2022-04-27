@@ -1,7 +1,7 @@
-import React from "react";
-import {v4 as uuidv4} from "uuid";
+import React from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
-export default function CenteredImage({imagePath, imageSize, title, legend}) {
+export default function CenteredImage({ imagePath, imageSize, title, legend }) {
   const legendList = [];
   if (legend != undefined) {
     for (const item of legend) {
@@ -12,34 +12,35 @@ export default function CenteredImage({imagePath, imageSize, title, legend}) {
       });
     }
   }
-  let imageClass = "";
+  let imageClass = '';
   switch (imageSize) {
-    case "25":
-      imageClass = "docs-centered-image-size-25";
+    case '25':
+      imageClass = 'docs-centered-image-size-25';
       break;
-    case "50":
-      imageClass = "docs-centered-image-size-50";
+    case '50':
+      imageClass = 'docs-centered-image-size-50';
       break;
-    case "75":
-      imageClass = "docs-centered-image-size-75";
+    case '75':
+      imageClass = 'docs-centered-image-size-75';
       break;
     default:
-      imageClass = "docs-centered-image-size-100";
+      imageClass = 'docs-centered-image-size-100';
   }
   return (
-    <div className={"docs-image-wrapper"}>
-      <div className={"docs-image-title-wrapper"}>
-        <p className={"docs-image-title"}>{title}</p>
+    <div className={'docs-image-wrapper'}>
+      <div className={'docs-image-title-wrapper'}>
+        <p className={'docs-image-title'}>{title}</p>
       </div>
-      <div className={"docs-centered-image-wrapper"}>
+      <div className={'docs-centered-image-wrapper'}>
         <img className={imageClass} src={imagePath} alt={title} />
       </div>
       {legendList.length > 0 && (
-        <div className={"docs-image-legend-wrapper"}>
-          <ul className={"docs-image-legend-list"}>
-            {legendList.map(({id, symbol, description}) => (
+        <div className={'docs-image-legend-wrapper'}>
+          <ul className={'docs-image-legend-list'}>
+            {legendList.map(({ id, symbol, description }) => (
               <li key={id}>
-                <span className={"docs-image-legend-symbol"}>{symbol}</span> ={" "}
+                <span className={'docs-image-legend-symbol'}>{symbol}</span> =
+                {' '}
                 {description}
               </li>
             ))}

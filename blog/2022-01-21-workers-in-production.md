@@ -37,17 +37,17 @@ The great thing about Temporal is that you can develop against it locally withou
 Temporal emits a lot of metrics, both client and server, which gives insights into how your application is performing: counters, latency, and metrics for server health and for each namespace. Temporal uses the [Tally library from Uber](https://github.com/uber-go/tally) to emit properly buffered metrics with nice reporting integration with m3, Prometheus, Statsd, and [Datadog via custom reporters](https://docs.temporal.io/docs/server/options/#withcustommetricsreporter), and provides [dashboards for Grafana users](https://github.com/temporalio/dashboards) to display them. We also recently co-presented about [Temporal and M3 with Chronosphere at KubeCon NA 2021](https://www.youtube.com/watch?v=8OCDPDGA_C0).
 
 - **Activity Worker Health**
-    - How many activities are getting started?
-    - How many activities are completing successfully?
-    - Which activities are failing?
-    - **Set alerts for Activity failure rate**
+  - How many activities are getting started?
+  - How many activities are completing successfully?
+  - Which activities are failing?
+  - **Set alerts for Activity failure rate**
 - **Workflow Worker Health**
-    - What rate are your Workflow Tasks happening at?
-    - Are your Workflow Tasks completing successfully?
-    - What is your Workflow Task latency?
-    - **Set alerts for Workflow Task failure rate**
+  - What rate are your Workflow Tasks happening at?
+  - Are your Workflow Tasks completing successfully?
+  - What is your Workflow Task latency?
+  - **Set alerts for Workflow Task failure rate**
 - **Scaling**
-    - **Set alerts on [Activity Schedule to Start latency and Workflow Schedule to Start latency](https://docs.temporal.io/docs/server/production-deployment/#scaling-and-metrics)** and scale your Workers based on that
+  - **Set alerts on [Activity Schedule to Start latency and Workflow Schedule to Start latency](https://docs.temporal.io/docs/server/production-deployment/#scaling-and-metrics)** and scale your Workers based on that
 
 Our full reference on [SDK/Worker metrics is here](https://docs.temporal.io/docs/references/sdk-metrics/).
 
@@ -55,7 +55,7 @@ When you have ingested all these metrics and have set up a dashboard to give you
 
 ## Incident Reponse & Tooling (10:06)
 
-When Workflow Task Failure rates spike, you are now in incident response mode. There can be many possible causes, so the first thing an operator needs to do is to figure out whether the failure is from your application or Temporal Server. 
+When Workflow Task Failure rates spike, you are now in incident response mode. There can be many possible causes, so the first thing an operator needs to do is to figure out whether the failure is from your application or Temporal Server.
 
 - **Metrics**. The first metric to look at is the “service request” and “service error” metrics emitted by the Server. If you are seeing workflow tasks or activities failing, it is a strong indication that you should focus on the application side rather than Temporal Server.
 - **Logs**. The best tool for investigating application side failures is your logs - make sure your logs are stored and captured by your workers, and tagged with important structured data like workflow type, activity type, workflow ID, and run ID. Try to put as much information as tags to allow you to slice and dice logs on arbitrary criteria.
@@ -91,10 +91,9 @@ We have also published a **[30 min tutorial on versioning](https://www.youtube.c
 Most people (including us) primarily code for happy paths when thinking about business logic. However there are some unhappy paths that are persistently overlooked:
 
 - **Backlogs**: A backlog happens when multiple Workflow tasks (mainly Timers) resolve together when some part of your system (say your Workers, or even the Server) is down. When Temporal recovers, it will still fire those timers, but it is not guaranteed to fire them in chronological order. However, happy-path code will typically assume that they do. **Always** test your system for backlogs.
-    - Specifically, when you write end-to-end tests for your production Temporal system, make sure to write some that **shuts down your Workers** for some time to create backlog of Workflow tasks, and then spin them up again to churn through the backlog. You can do it [programmatically within an SDK Worker API](https://docs.temporal.io/docs/typescript/workers#how-to-shut-down-a-worker-and-track-its-state) or externally through your infra automation tool of choice.
+  - Specifically, when you write end-to-end tests for your production Temporal system, make sure to write some that **shuts down your Workers** for some time to create backlog of Workflow tasks, and then spin them up again to churn through the backlog. You can do it [programmatically within an SDK Worker API](https://docs.temporal.io/docs/typescript/workers#how-to-shut-down-a-worker-and-track-its-state) or externally through your infra automation tool of choice.
 - **Capacity Planning**: End to end tests that include Worker outages not only help find edge cases like backlogs. When the system has a backlog, the system’s resource consumption is very different than under normal circumstances. Always do capacity planning accounting for cases where the system is going through heavy load due to backlog or spikes.
-    - Note: we have also written about [how we do stress testing](https://docs.temporal.io/blog/temporal-deep-dive-stress-testing/) and [Maru is a third party load testing tool](https://mikhail.io/2021/03/maru-load-testing-tool-for-temporal-workflows/).
+  - Note: we have also written about [how we do stress testing](https://docs.temporal.io/blog/temporal-deep-dive-stress-testing/) and [Maru is a third party load testing tool](https://mikhail.io/2021/03/maru-load-testing-tool-for-temporal-workflows/).
 - **Timeouts**: Temporal provides [4 kinds of Activity timeouts](https://docs.temporal.io/blog/activity-timeouts/) (we don’t recommend using Workflow timeouts) and a declarative [Retry Policy](https://docs.temporal.io/docs/concepts/activities/#retries) which are very flexible, which is powerful but can be a source of mistakes. We recommend explicitly unit- and integration-testing for these timeouts - don’t assume that the code you have written will behave as you intended.
-
 
 Did this discussion help with your production concerns? What other questions to you wish to ask? Email [swyx@temporal.io](mailto:swyx@temporal.io) to request the next topic!

@@ -12,7 +12,6 @@ author_image_url: https://avatars.githubusercontent.com/u/6764957?v=4
 release_version: V1.11.2
 ---
 
-
 <!--truncate-->
 
 Discussions about Temporal often get into very high-minded distributed systems debates, but sometimes it can be helpful to swap small tips that can have a huge impact on developer productivity!
@@ -21,9 +20,9 @@ Here's a small collection of 4 tips we put together for you.
 
 ## Auto-Restarting Workers
 
-When you write Activity or Workflow code, you often have to kill and restart the Workers that host them, so as to pick up the changes. Usually this is a manual `Ctrl+C` + rerun process. However, you can set up your workers to reload on every *file save*. Since Workers are stateless and Workflows are tolerant to Workers going down, this works just fine.
+When you write Activity or Workflow code, you often have to kill and restart the Workers that host them, so as to pick up the changes. Usually this is a manual `Ctrl+C` + rerun process. However, you can set up your workers to reload on every _file save_. Since Workers are stateless and Workflows are tolerant to Workers going down, this works just fine.
 
-There are many ways to achieve this. You can use [`gow`](https://github.com/mitranim/gow) as a drop in replacement for the go binary that reloads upon save.  `nodemon` from the JavaScript ecosystem is a nice fully cross-platform binary that watches files and executes scripts.
+There are many ways to achieve this. You can use [`gow`](https://github.com/mitranim/gow) as a drop in replacement for the go binary that reloads upon save. `nodemon` from the JavaScript ecosystem is a nice fully cross-platform binary that watches files and executes scripts.
 
 ```bash
 # using gow
@@ -110,6 +109,7 @@ func (s *replayTestSuite) TestReplayFromInitialVersion() {
 	require.NoError(s.T(), err)
 }
 ```
+
 To learn more, you can see [how Temporal tests our Workflow Replay feature](https://github.com/temporalio/sdk-go/tree/6580cbe0aa41a8b515791f95c2c15bb37db1dab1/test/replaytests) since we are open source!
 
 ## More tips?

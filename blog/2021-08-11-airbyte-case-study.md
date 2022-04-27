@@ -21,7 +21,7 @@ release_version: V1.11.3
 
 <!--truncate-->
 
-*This case study is based on an interview with [Abhi Vaidyanatha](https://www.linkedin.com/in/avaidyanatha/) and [Jared Rhizor](https://www.linkedin.com/in/jrhizor/) who were key players in Temporal adoption within Airbyte. They also [spoke at our Community Meetup](https://www.youtube.com/watch?v=K25Bt5asd8I&list=PLl9kRkvFJrlSM-s-s-8WbgjN-R3Y4L7WG&index=8) about their Airbyte integration.*
+_This case study is based on an interview with [Abhi Vaidyanatha](https://www.linkedin.com/in/avaidyanatha/) and [Jared Rhizor](https://www.linkedin.com/in/jrhizor/) who were key players in Temporal adoption within Airbyte. They also [spoke at our Community Meetup](https://www.youtube.com/watch?v=K25Bt5asd8I&list=PLl9kRkvFJrlSM-s-s-8WbgjN-R3Y4L7WG&index=8) about their Airbyte integration._
 
 ### Context
 

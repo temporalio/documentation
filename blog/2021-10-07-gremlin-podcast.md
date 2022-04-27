@@ -22,29 +22,29 @@ What follows is a lightly edited transcript for readability.
 
 ## Origin Story of Temporal
 
-***So, you started with Cadence, which was an internal framework at Uber, and decided to strike out on your own and build Temporal. What caused you to strike out on your own?*** 
+_**So, you started with Cadence, which was an internal framework at Uber, and decided to strike out on your own and build Temporal. What caused you to strike out on your own?**_
 
-We built Cadence from the beginning as an open-source project and grew by bottoms-up adoption within Uber. **It grew from zero to over a hundred use cases within three years**. But because it was an open-source project from the beginning, **after a year or two we started to see companies like HashiCorp, Box, Coinbase, Checkr, adopt us**. And there are a lot of others, it’s just that not all of them are public. 
+We built Cadence from the beginning as an open-source project and grew by bottoms-up adoption within Uber. **It grew from zero to over a hundred use cases within three years**. But because it was an open-source project from the beginning, **after a year or two we started to see companies like HashiCorp, Box, Coinbase, Checkr, adopt us**. And there are a lot of others, it’s just that not all of them are public.
 
-We believe this technology is very widely applicable, so we needed a separate entity, like a company, to actually drive the technology forward for the whole world. For example, Uber would never create a cloud offering, and everyone wanted us to host Temporal. So one thing led to another and we ended up leaving Uber and starting our own company. And that was the main reasoning — **we wanted to make this technology successful for everybody in the whole world**, not just within Uber. 
+We believe this technology is very widely applicable, so we needed a separate entity, like a company, to actually drive the technology forward for the whole world. For example, Uber would never create a cloud offering, and everyone wanted us to host Temporal. So one thing led to another and we ended up leaving Uber and starting our own company. And that was the main reasoning — **we wanted to make this technology successful for everybody in the whole world**, not just within Uber.
 
-Another benefit of starting Temporal was that **we had actually accumulated a pretty large technical debt when running Cadence**, just because we ran Cadence without single backwards-incompatible change since we first put it in production. Even after four years we were still on the same cluster with the same initial users. So, we had to do everything in backwards-compatible manner. 
+Another benefit of starting Temporal was that **we had actually accumulated a pretty large technical debt when running Cadence**, just because we ran Cadence without single backwards-incompatible change since we first put it in production. Even after four years we were still on the same cluster with the same initial users. So, we had to do everything in backwards-compatible manner.
 
-At Temporal, we could rethink our design decisions, and we spent almost a year just working on [Temporal v1.0](https://docs.temporal.io/blog/temporal-v1-announcement/) and doing a lot of fixes and tons of features which we couldn’t do otherwise. Because that was our only chance to do backwards-incompatible change. 
+At Temporal, we could rethink our design decisions, and we spent almost a year just working on [Temporal v1.0](https://docs.temporal.io/blog/temporal-v1-announcement/) and doing a lot of fixes and tons of features which we couldn’t do otherwise. Because that was our only chance to do backwards-incompatible change.
 
 ## Lessons from Uber: Reliability on Rails
 
 One of Uber's values was to **provide rides as reliable as running water**. And that translated into interesting system requirements for engineers. Most of the time, what ended up happening is product teams at Uber were spending a large amount of time building this resiliency and reliability into their applications, rather than going after building real features that the users of the platform cares about. This is the problem that we were trying to solve back at Uber, where let us give you that reliability baked into the platform.
 
-**Why does every engineer needs to be a distributed systems engineer to deal with all sorts of failure conditions?** We want application teams to be more focused on building amazing applications, which makes a lot of sense for the Uber platform in general. And this is the value proposition that we were going after with Cadence. It hit a nerve with all the developers out there, especially within Uber. 
+**Why does every engineer needs to be a distributed systems engineer to deal with all sorts of failure conditions?** We want application teams to be more focused on building amazing applications, which makes a lot of sense for the Uber platform in general. And this is the value proposition that we were going after with Cadence. It hit a nerve with all the developers out there, especially within Uber.
 
 One funny story is that one of the early use cases moved onto Cadence was because of a multi-day outage in one of the core parts of that system, and **the way they mitigated the outage is they rewrote that entire system on top of Cadence in a day**, and were able to port over that entire running system in production. And that’s how they mitigated that outage. That was the developer experience that we were striving for.
 
 ## Orchestration vs Choreography
 
-***What’s different about using Temporal compared to distributed systems built with simple messaging like Kafka?***
+_**What’s different about using Temporal compared to distributed systems built with simple messaging like Kafka?**_
 
-A lot of systems are built with **choreography**: 
+A lot of systems are built with **choreography**:
 
 - You have a bunch of callbacks which listen on queues, then update certain data sources’ databases, and then put messages into the queues back.
 - In a real system you also need to have durable timers, so you either build your own timer service, so you just poll your databases for messages to be in certain state to account for time. Getting this right is non-trivial.
@@ -55,12 +55,12 @@ This choreography in theory kind of works, but in practice is usually a mess:
 - **Business requirements are broken** into a thousand little pieces which need to work together, and all the other requirements about retries and so on are actually pretty hard to get right.
 - On top of that, you have very **poor visibility** into your system — if something goes wrong, good luck finding the problem.
 
-**Orchestration** means that you implement your business logic in one place and then you just call into these downstream services to implement the business logic: 
+**Orchestration** means that you implement your business logic in one place and then you just call into these downstream services to implement the business logic:
 
 - We know how to do that for short requests. Let’s say you get a request, your service makes the five downstream API calls, does something with those calls, then returns data. If this transactions takes, let’s say, a second, it's pretty easy to do, and you don’t care about reliability that much if it fails in the middle.
 - But as soon as any of those calls can fail for three minutes, or, a downstream call can take ten hours, you now have to break this nice piece of code into 50 callbacks, queues, and state tables in database, and so on.
 
-**Temporal helps you keep that code as is**. The main abstraction, which is non-obvious to people is that it makes your process **fully fault-tolerant, including stack variables**, threads, and so on. 
+**Temporal helps you keep that code as is**. The main abstraction, which is non-obvious to people is that it makes your process **fully fault-tolerant, including stack variables**, threads, and so on.
 
 - So, if you make a call that takes five hours, you’re still blocked in exactly the same line of code. And in five hours, this line of code returns and then continues.
 - If you’re calling `sleep` for one month, you’re blocked on this `sleep` line of code for one month, and then it just returns to the next line of code.
@@ -80,7 +80,7 @@ It assumes that you can have hundreds of millions of these objects simultaneousl
 
 ## Designing For Temporal
 
-***If I wanted to implement Temporal within my application, what do I need to keep in mind to ensure that I have a good experience with it? Any tips?***
+_**If I wanted to implement Temporal within my application, what do I need to keep in mind to ensure that I have a good experience with it? Any tips?**_
 
 ### Redesign End-to-End
 
