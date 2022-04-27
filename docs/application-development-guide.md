@@ -2,7 +2,7 @@
 id: application-development-guide
 title: Temporal Application development guide
 sidebar_label: Application development
-description: This guide is meant to be a comprehensive overview of Temporal concepts.
+description: This guide is meant to provide a comprehensive overview of the structures and primitives used in Temporal Application development.
 toc_max_heading_level: 3
 ---
 
@@ -11,7 +11,7 @@ toc_max_heading_level: 3
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-This guide is meant to be a comprehensive overview of Temporal concepts.
+This guide is meant to provide a comprehensive overview of the structures and primitives used in Temporal Application development.
 
 :::info WORK IN PROGRESS
 
@@ -242,7 +242,7 @@ See [Signals](/docs/java/signals) and [Queries](/docs/java/queries) for details.
 Use `ExternalWorkflowStub` to start other Workflow Executions, or send Signals to other running Workflows.
 See [Workflow Execution](/docs/java/how-to-spawn-a-workflow-execution-in-java/#Using`ExternalWorkflowStub`) for details.
 
-To call Activities in your Workflow, see [Activity Definition](#develop-activities) and [Activity Execution](#spawn-activity-execution).
+To call Activities in your Workflow, see [Activity Definition](#develop-activities) and [Activity Execution](#start-activity-execution).
 
 You can also invoke other Workflows as Child Workflows with `Workflow.newChildWorkflowStub()` or `Workflow.newUntypedChildWorkflowStub()` within a Workflow Definition.
 See [Child Workflow Execution](/docs/java/how-to-spawn-a-child-workflow-execution-in-java) for details.
@@ -1006,7 +1006,7 @@ Content is not available
 </TabItem>
 </Tabs>
 
-### Spawn Activity Execution
+### Start Activity Execution
 
 Calls to spawn [Activity Executions](/docs/concepts-guide/#activity-execution) are written within a Workflow Definition.
 The call to spawn an Activity Execution generates the [ScheduleActivityTask](/docs/concepts-guide/#commands#scheduleactivitytask) Command.
@@ -1502,7 +1502,7 @@ gow run worker/main.go # automatically reload when file changed
 
 The `RegisterWorkflow()` and `RegisterActivity()` calls essentially create an in-memory mapping between the Workflow Types and their implementations, inside the Worker process.
 
-Notice that the Task Queue name is the same as the name provided when the [Workflow Execution is spawned](#spawn-workflow-execution).
+Notice that the Task Queue name is the same as the name provided when the [Workflow Execution is spawned](#start-workflow-execution).
 
 The name of the Task Queue that is provided to the Worker must be the same Task Queue name that is provided with the invocation of the Workflow Execution.
 
@@ -1554,7 +1554,7 @@ Content is not available
 </TabItem>
 </Tabs>
 
-### Spawn Workflow Execution
+### Start Workflow Execution
 
 [Workflow Execution](/docs/concepts-guide/#workflow-execution) semantics rely on several parameters - that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language specific contextual data, and Workflow Function parameters.
 
@@ -1830,12 +1830,14 @@ This section covers many of the features that are available to use in your [Temp
 
 ### Signals
 
-First define your Signal type.
-Then add a Signal handler to your Workflow Definition.
+A [Signal](/docs/concepts-guide/#signals) is a message that delivers data to a running Workflow Execution.
 
-Signals can be sent to Workflow Executions via the Temporal Client or from within a Workflow.
+Signals are defined alongside your application code and handled in your Workflow Definition.
+Signals can be sent to Workflow Executions from a Temporal Client or from within a Workflow.
 
-Signal-With-Start can be used to start a Workflow Execution (if not already running) and pass it the Signal at the same time.
+#### Define Signal
+
+A Signal type and its data must be serializable.
 
 <Tabs
 defaultValue="go"
@@ -1844,15 +1846,8 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-To use Signals in Go, first define your Signal type and then add a Signal handler to your Workflow Definition.
-Signals can then be sent via the Temporal Client or from within a Workflow.
-
-#### Define Signal type
-
-**How to define a Signal Type in Go**
-
-Structs can be used as Signal data, as long as the struct is [serializable via the Data Converter](https://pkg.go.dev/go.temporal.io/sdk/converter#CompositeDataConverter.ToPayload).
-The `Receive()` method on the Data Converter decodes the data into the Struct within the Workflow ([Handling Signals](#handling-signals)).
+Structs should be used to define Signals and carry data, as long as the struct is [serializable via the Data Converter](https://pkg.go.dev/go.temporal.io/sdk/converter#CompositeDataConverter.ToPayload).
+The `Receive()` method on the Data Converter decodes the data into the Struct within the Workflow.
 Only public fields are serializable.
 
 ```go
@@ -1862,9 +1857,34 @@ MySignal struct {
 }
 ```
 
+</TabItem>
+<TabItem value="java">
+
+Content is not available
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is not available
+
+</TabItem>
+</Tabs>
+
 #### Handle Signal
 
-**How to handle a Signal in Go**
+Workflows listen for Signals by the Signal's name.
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+
+<TabItem value="go">
 
 Use the `GetSignalChannel()` API from the `go.temporal.io/sdk/workflow` package to get the Signal Channel.
 Get a new [`Selector`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Selector) and pass it the Signal Channel and a callback function to handle the payload.
@@ -1891,14 +1911,39 @@ In the example above, the Workflow code uses `workflow.GetSignalChannel` to open
 We then use a [`workflow.Selector`](https://docs.temporal.io/docs/go/selectors) and the `AddReceive()` to wait on a Signal from this channel.
 The `more` bool in the callback function indicates that channel is not closed and more deliveries are possible.
 
-#### Send Signal from Temporal Client
+</TabItem>
+<TabItem value="java">
 
-**How to send a Signal from a Temporal Client in Go**
+Content is not available
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is not available
+
+</TabItem>
+</Tabs>
+
+#### Send Signal from Client
+
+When a Signal is sent successfully from the Temporal Client, the [WorkflowExecutionSignaled](/docs/references/events#workflowexecutionsignaled) Event appears in the Event History of the Workflow that receives the Signal.
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+
+<TabItem value="go">
 
 Use the `SignalWorkflow()` method on an instance of the [Go SDK Temporal Client](https://pkg.go.dev/go.temporal.io/sdk/client#Client) to send a [Signal](/docs/concepts-guide/#signals) to a [Workflow Execution](/docs/concepts-guide/#workflow-execution).
 
 Pass in both the [Workflow Id](/docs/concepts-guide/#workflow-id) and [Run Id](/docs/concepts-guide/#run-id) to uniquely identify the Workflow Execution.
-If just the Workflow Id is supplied (provide an empty string as the Run Id param), then the Workflow Execution that is Running will receive the Signal.
+If only the Workflow Id is supplied (provide an empty string as the Run Id param), the Workflow Execution that is Running receives the Signal.
 
 ```go
 // ...
@@ -1919,9 +1964,36 @@ Possible errors:
 - `serviceerror.Internal`
 - `serviceerror.Unavailable`
 
-#### Send Signal from within a Workflow
+</TabItem>
+<TabItem value="java">
 
-**How to send a Signal from within a Workflow in Go**
+Content is not available
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is not available
+
+</TabItem>
+</Tabs>
+
+#### Send Signal from Workflow
+
+Sending a Signal from within a Workflow is often referred to as sending an External Signal.
+
+The [SignalExternalWorkflowExecutionInitiated](/docs/references/events#signalexternalworkflowexecutioninitiated) Event appears in the Workflow Execution Event History of the Workflow that sent the Signal, and the [WorkflowExecutionSignaled](/docs/references/events#workflowexecutionsignaled) Event appears in the Event History of the Workflow that receives the Signal.
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+
+<TabItem value="go">
 
 A Signal can be sent from within a Workflow to a different Workflow Execution using the [`SignalExternalWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SignalExternalWorkflow) API from the `go.temporal.io/sdk/workflow` package.
 
@@ -1940,13 +2012,38 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error
 }
 ```
 
-#### Signal-With-Start
+</TabItem>
+<TabItem value="java">
 
-**How to send a Signal-With-Start in Go**
+Content is not available
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is not available
+
+</TabItem>
+</Tabs>
+
+#### Send Signal-With-Start
+
+Signal-With-Start can be used to start a Workflow Execution (if not already running) and pass it the Signal at the same time.
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+
+<TabItem value="go">
 
 Use the `SignalWithStartWorkflow()` API on the Go SDK Temporal Client to start a Workflow Execution (if not already running) and pass it the Signal at the same time.
 
-Because the Workflow Execution may not exist, this API does not take a Run ID as a parameter
+Because the Workflow Execution might not exist, this API does not take a Run ID as a parameter
 
 ```go
 // ...
@@ -1992,9 +2089,10 @@ TODO
 
 ### Activity timeouts & retries
 
-TODO
+Each Activity timeout controls the maximum duration of a different aspect of an Activity Execution.
+A Retry Policy works in cooperation with the timeouts to provide fine controls to optimize the execution experience.
 
-#### Schedule-To-Close
+#### Schedule-To-Close Timeout
 
 Use the [Schedule-To-Close Timeout](/docs/concepts-guide/#schedule-to-close-timeout) to limit the maximum duration of an [Activity Execution](/docs/concepts-guide/#activity-execution).
 
@@ -2042,7 +2140,7 @@ Content is not available
 </TabItem>
 </Tabs>
 
-#### Start-To-Close
+#### Start-To-Close Timeout
 
 Use the [Start-To-Close Timeout](/docs/concepts-guide/#start-to-close-timeout) to limit the maximum duration of a single [Activity Task Execution](/docs/concepts/what-is-an-activity-task-execution).
 
@@ -2090,7 +2188,7 @@ Content is not available
 </TabItem>
 </Tabs>
 
-#### Schedule-To-Start
+#### Schedule-To-Start Timeout
 
 Use the [Schedule-To-Start Timeout](/docs/concepts-guide/#schedule-to-start-timeout) to limit the maximum amount of time that an Activity Task can be enqueued to be picked up by a Worker.
 

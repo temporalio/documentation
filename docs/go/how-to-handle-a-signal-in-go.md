@@ -1,28 +1,31 @@
 ---
-id: how-to-handle-a-signal-in-a-workflow-in-go
-title: How to handle a Signal in a Workflow in Go
-sidebar_label: Handling Signals
+id: how-to-handle-a-signal-in-go
+title: How to handle a Signal in Go
+sidebar_label: Handle Signal
 description: Use the `GetSignalChannel()` API from the `go.temporal.io/sdk/workflow` package to get the Signal Channel.
 tags:
   - go
-  - developer-guide
+  - how-to
 ---
 
 Use the `GetSignalChannel()` API from the `go.temporal.io/sdk/workflow` package to get the Signal Channel.
 Get a new [`Selector`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Selector) and pass it the Signal Channel and a callback function to handle the payload.
 
 ```go
-var signalVal MySignal
-signalChan := workflow.GetSignalChannel(ctx, "your-signal-name")
-selector := workflow.NewSelector(ctx)
-selector.AddReceive(signalChan, func(channel workflow.ReceiveChannel, more bool) {
-    channel.Receive(ctx, &signalVal)
-    // ...
-})
-selector.Select(ctx)
-
-if len(signalVal) > 0 && signalVal != "SOME_VALUE" {
-    return errors.New("signalVal")
+func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error {
+  // ...
+  var signal MySignal
+  signalChan := workflow.GetSignalChannel(ctx, "your-signal-name")
+  selector := workflow.NewSelector(ctx)
+  selector.AddReceive(signalChan, func(channel workflow.ReceiveChannel, more bool) {
+      channel.Receive(ctx, &signal)
+      // ...
+  })
+  selector.Select(ctx)
+  if len(signal.Message) > 0 && signal.Message != "SOME_VALUE" {
+      return errors.New("signal")
+  }
+  // ...
 }
 ```
 

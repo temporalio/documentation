@@ -54,7 +54,9 @@
 /docs/go-selectors        /docs/go/selectors
 /docs/go/sessions         /docs/go/how-to-create-a-worker-session-in-go
 /docs/go/side-effects         /docs/go/how-to-execute-a-side-effect-in-go
-/docs/go/signals        /docs/go/how-to-send-a-signal-to-a-workflow-execution-in-go
+/docs/go/signals        /docs/go/how-to-use-signals-in-go
+/docs/go/how-to-send-a-signal-to-a-workflow-execution-in-go        /docs/go/how-to-use-signals-in-go
+/docs/go/how-to-handle-a-signal-in-a-workflow-in-go       /docs/go/how-to-use-signals-in-go
 /docs/go-sync-vs-async-start        /docs/go/sync-vs-async-start
 /docs/go/sync-vs-async-start        /docs/go/workflows/#how-to-start-a-workflow
 /docs/go/task-queues        /docs/concepts/what-is-a-task-queue

@@ -217,7 +217,7 @@ A Workflow Type is a name that maps to a Workflow Definition.
 A Temporal Workflow Execution is a durable, reliable, and scalable function execution.
 It is the main unit of execution of a [Temporal Application](#temporal-application).
 
-- [How to spawn a Workflow Execution in Go](/docs/application-development-guide/#spawn-workflow-execution)
+- [How to spawn a Workflow Execution in Go](/docs/application-development-guide/#start-workflow-execution)
 - [How to spawn a Workflow Execution in Java](/docs/java/how-to-spawn-a-workflow-execution-in-java)
 - [How to spawn a Workflow Execution in PHP](/docs/php/workflows/#starting-workflows)
 - [How to spawn a Workflow Execution in TypeScript](/docs/typescript/workflows#how-to-start-and-cancel-workflows)
@@ -473,7 +473,7 @@ Cancellation requests are only delivered to Activity Executions that Heartbeat:
 
 **Implementation guides:**
 
-- [How to spawn an Activity Execution in Go](/docs/application-development-guide/#spawn-activity-execution)
+- [How to spawn an Activity Execution in Go](/docs/application-development-guide/#start-activity-execution)
 
 ## Workers
 
@@ -655,7 +655,7 @@ An Activity Id can be used to complete the Activity asynchronously.
 A Schedule-To-Start Timeout is the maximum amount of time that is allowed from when an [Activity Task](/docs/concepts/what-is-an-activity-task) is scheduled (that is, placed in a Task Queue) to when a [Worker](#workers) starts (that is, picks up from the Task Queue) that Activity Task.
 In other words, it's a limit for how long an Activity Task can be enqueued.
 
-[How to set a Schedule-To-Start Timeout in Go](/docs/application-development-guide/#schedule-to-start)
+[How to set a Schedule-To-Start Timeout in Go](/docs/application-development-guide/#schedule-to-start-timeout)
 
 The moment that the Task is picked by the Worker from the Task Queue is considered to be the start of the Activity Task for the purposes of the Schedule-To-Start Timeout and associated metrics.
 This definition of "Start" avoids issues that a clock difference between the Temporal Cluster and a Worker might create.
@@ -689,7 +689,7 @@ In most cases, we recommend monitoring the `temporal_activity_schedule_to_start_
 
 A Start-To-Close Timeout is the maximum time allowed for a single [Activity Task Execution](/docs/concepts/what-is-an-activity-task-execution).
 
-- [How to set a Start-To-Close Timeout in Go](/docs/application-development-guide/#start-to-close)
+- [How to set a Start-To-Close Timeout in Go](/docs/application-development-guide/#start-to-close-timeout)
 
 **The default Start-To-Close Timeout is the same as the default [Schedule-To-Close Timeout](#schedule-to-close-timeout).**
 
@@ -719,7 +719,7 @@ If this timeout is reached, the following actions occur:
 
 A Schedule-To-Close Timeout is the maximum amount of time allowed for the overall [Activity Execution](#activity-execution), from when the first [Activity Task](/docs/concepts/what-is-an-activity-task) is scheduled to when the last Activity Task, in the chain of Activity Tasks that make up the Activity Execution, reaches a Closed status.
 
-- [How to set a Schedule-To-Close Timeout in Go](/docs/application-development-guide/#schedule-to-close)
+- [How to set a Schedule-To-Close Timeout in Go](/docs/application-development-guide/#schedule-to-close-timeout)
 
 ![Schedule-To-Close Timeout period](/diagrams/schedule-to-close-timeout.svg)
 
@@ -891,10 +891,7 @@ Workflow Execution can optionally await on a single Signal name or multiple Sign
 
 If you are using Signals with the Go SDK, you should make sure to do an asynchronous drain on the Signal channel or the Signals will be lost.
 
-**Implementation guides:**
-
-- [How to send a Signal to a Workflow Execution in Go](/docs/go/how-to-send-a-signal-to-a-workflow-execution-in-go)
-- [How to handle a Signal in a Workflow in Go](/docs/go/how-to-handle-a-signal-in-a-workflow-in-go)
+- [How to use Signals in Go](/docs/go/how-to-use-signals-in-go)
 - [How to use Signals in Java](/docs/java/signals)
 - [How to use Signals in PHP](/docs/php/signals)
 
