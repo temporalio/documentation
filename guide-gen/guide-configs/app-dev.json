@@ -3,7 +3,7 @@
 	"id": "application-development-guide",
 	"title": "Temporal Application development guide",
 	"sidebar_label": "Application development",
-	"description": "This guide is meant to be a comprehensive overview of Temporal concepts.",
+	"description": "This guide is meant to provide a comprehensive overview of the structures and primitives used in Temporal Application development.",
 	"toc_max_heading_level": 3,
 	"add_tabs_support": true,
 	"h2_sections": [{
@@ -634,7 +634,7 @@
 					"type": "context",
 					"path": "app-dev-context/activity-timeouts-and-retries",
 					"h4_sections": [{
-							"header": "Schedule-To-Close",
+							"header": "Schedule-To-Close Timeout",
 							"type": "context",
 							"path": "app-dev-context/schedule-to-close"
 						},
@@ -664,7 +664,7 @@
 							]
 						},
 						{
-							"header": "Start-To-Close",
+							"header": "Start-To-Close Timeout",
 							"type": "context",
 							"path": "app-dev-context/start-to-close"
 						},
@@ -694,7 +694,7 @@
 							]
 						},
 						{
-							"header": "Schedule-To-Start",
+							"header": "Schedule-To-Start Timeout",
 							"type": "context",
 							"path": "app-dev-context/schedule-to-start"
 						},

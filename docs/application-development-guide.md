@@ -2,7 +2,7 @@
 id: application-development-guide
 title: Temporal Application development guide
 sidebar_label: Application development
-description: This guide is meant to be a comprehensive overview of Temporal concepts.
+description: This guide is meant to provide a comprehensive overview of the structures and primitives used in Temporal Application development.
 toc_max_heading_level: 3
 ---
 
@@ -11,7 +11,7 @@ toc_max_heading_level: 3
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-This guide is meant to be a comprehensive overview of Temporal concepts.
+This guide is meant to provide a comprehensive overview of the structures and primitives used in Temporal Application development.
 
 :::info WORK IN PROGRESS
 
@@ -1830,16 +1830,14 @@ This section covers many of the features that are available to use in your [Temp
 
 ### Signals
 
-First, define the structure of your Signal.
-Signals are handled in your Workflow Definition.
+A [Signal](/docs/concepts-guide/#signals) is a message that delivers data to a running Workflow Execution.
 
-Signals can be sent to Workflow Executions via the Temporal Client or from within a Workflow.
-
-Signal-With-Start can be used to start a Workflow Execution (if not already running) and pass it the Signal at the same time.
+Signals are defined alongside your application code and handled in your Workflow Definition.
+Signals can be sent to Workflow Executions from a Temporal Client or from within a Workflow.
 
 #### Define Signal
 
-TODO
+A Signal type and its data  must be serializable.
 
 <Tabs
 defaultValue="go"
@@ -1849,7 +1847,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 <TabItem value="go">
 
 Structs should be used to define Signals and carry data, as long as the struct is [serializable via the Data Converter](https://pkg.go.dev/go.temporal.io/sdk/converter#CompositeDataConverter.ToPayload).
-The `Receive()` method on the Data Converter decodes the data into the Struct within the Workflow. (See the Handle Signal section.)
+The `Receive()` method on the Data Converter decodes the data into the Struct within the Workflow.
 Only public fields are serializable.
 
 ```go
@@ -1879,7 +1877,7 @@ Content is not available
 
 #### Handle Signal
 
-TODO
+Workflows listen for Signals by the Signal's name.
 
 <Tabs
 defaultValue="go"
@@ -1933,7 +1931,7 @@ Content is not available
 
 #### Send Signal from Client
 
-When a Signal is sent successfully from the Temporal Client you will see the [WorkflowExecutionSignaled](/docs/references/events#workflowexecutionsignaled) Event in the Event History of the Workflow that receives the Signal.
+When a Signal is sent successfully from the Temporal Client, the [WorkflowExecutionSignaled](/docs/references/events#workflowexecutionsignaled) Event appears in the Event History of the Workflow that receives the Signal.
 
 <Tabs
 defaultValue="go"
@@ -1945,7 +1943,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 Use the `SignalWorkflow()` method on an instance of the [Go SDK Temporal Client](https://pkg.go.dev/go.temporal.io/sdk/client#Client) to send a [Signal](/docs/concepts-guide/#signals) to a [Workflow Execution](/docs/concepts-guide/#workflow-execution).
 
 Pass in both the [Workflow Id](/docs/concepts-guide/#workflow-id) and [Run Id](/docs/concepts-guide/#run-id) to uniquely identify the Workflow Execution.
-If just the Workflow Id is supplied (provide an empty string as the Run Id param), then the Workflow Execution that is Running will receive the Signal.
+If only the Workflow Id is supplied (provide an empty string as the Run Id param), the Workflow Execution that is Running receives the Signal.
 
 ```go
 // ...
@@ -1986,9 +1984,9 @@ Content is not available
 
 #### Send Signal from Workflow
 
-When a Signal is sent from within a Workflow it is often referred to as sending an External Signal.
+Sending a Signal from within a Workflow is often referred to as sending an External Signal.
 
-You will see the [SignalExternalWorkflowExecutionInitiated](/docs/references/events#signalexternalworkflowexecutioninitiated) Event in the Workflow Execution Event History of the Workflow that sent the Signal, and the [WorkflowExecutionSignaled](/docs/references/events#workflowexecutionsignaled) Event in the Event History of the Workflow that receives the Signal.
+The [SignalExternalWorkflowExecutionInitiated](/docs/references/events#signalexternalworkflowexecutioninitiated) Event appears in the Workflow Execution Event History of the Workflow that sent the Signal, and the [WorkflowExecutionSignaled](/docs/references/events#workflowexecutionsignaled) Event appears in the Event History of the Workflow that receives the Signal.
 
 <Tabs
 defaultValue="go"
@@ -2034,7 +2032,7 @@ Content is not available
 
 #### Send Signal-With-Start
 
-TODO
+Signal-With-Start can be used to start a Workflow Execution (if not already running) and pass it the Signal at the same time.
 
 <Tabs
 defaultValue="go"
@@ -2045,7 +2043,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 Use the `SignalWithStartWorkflow()` API on the Go SDK Temporal Client to start a Workflow Execution (if not already running) and pass it the Signal at the same time.
 
-Because the Workflow Execution may not exist, this API does not take a Run ID as a parameter
+Because the Workflow Execution might not exist, this API does not take a Run ID as a parameter
 
 ```go
 // ...
@@ -2091,9 +2089,10 @@ TODO
 
 ### Activity timeouts & retries
 
-TODO
+Each Activity timeout controls the maximum duration of a different aspect of an Activity Execution.
+A Retry Policy works in cooperation with the timeouts to provide fine controls to optimize the execution experience.
 
-#### Schedule-To-Close
+#### Schedule-To-Close Timeout
 
 Use the [Schedule-To-Close Timeout](/docs/concepts-guide/#schedule-to-close-timeout) to limit the maximum duration of an [Activity Execution](/docs/concepts-guide/#activity-execution).
 
@@ -2141,7 +2140,7 @@ Content is not available
 </TabItem>
 </Tabs>
 
-#### Start-To-Close
+#### Start-To-Close Timeout
 
 Use the [Start-To-Close Timeout](/docs/concepts-guide/#start-to-close-timeout) to limit the maximum duration of a single [Activity Task Execution](/docs/concepts/what-is-an-activity-task-execution).
 
@@ -2189,7 +2188,7 @@ Content is not available
 </TabItem>
 </Tabs>
 
-#### Schedule-To-Start
+#### Schedule-To-Start Timeout
 
 Use the [Schedule-To-Start Timeout](/docs/concepts-guide/#schedule-to-start-timeout) to limit the maximum amount of time that an Activity Task can be enqueued to be picked up by a Worker.
 
@@ -2244,6 +2243,8 @@ TODO
 TODO
 
 ### Cron Jobs
+
+
 
 ### Local Activities
 
@@ -2411,3 +2412,4 @@ Content is not available
 ## Testing
 
 TODO
+

@@ -655,7 +655,7 @@ An Activity Id can be used to complete the Activity asynchronously.
 A Schedule-To-Start Timeout is the maximum amount of time that is allowed from when an [Activity Task](/docs/concepts/what-is-an-activity-task) is scheduled (that is, placed in a Task Queue) to when a [Worker](#workers) starts (that is, picks up from the Task Queue) that Activity Task.
 In other words, it's a limit for how long an Activity Task can be enqueued.
 
-[How to set a Schedule-To-Start Timeout in Go](/docs/application-development-guide/#schedule-to-start)
+[How to set a Schedule-To-Start Timeout in Go](/docs/application-development-guide/#schedule-to-start-timeout)
 
 The moment that the Task is picked by the Worker from the Task Queue is considered to be the start of the Activity Task for the purposes of the Schedule-To-Start Timeout and associated metrics.
 This definition of "Start" avoids issues that a clock difference between the Temporal Cluster and a Worker might create.
@@ -689,7 +689,7 @@ In most cases, we recommend monitoring the `temporal_activity_schedule_to_start_
 
 A Start-To-Close Timeout is the maximum time allowed for a single [Activity Task Execution](/docs/concepts/what-is-an-activity-task-execution).
 
-- [How to set a Start-To-Close Timeout in Go](/docs/application-development-guide/#start-to-close)
+- [How to set a Start-To-Close Timeout in Go](/docs/application-development-guide/#start-to-close-timeout)
 
 **The default Start-To-Close Timeout is the same as the default [Schedule-To-Close Timeout](#schedule-to-close-timeout).**
 
@@ -719,7 +719,7 @@ If this timeout is reached, the following actions occur:
 
 A Schedule-To-Close Timeout is the maximum amount of time allowed for the overall [Activity Execution](#activity-execution), from when the first [Activity Task](/docs/concepts/what-is-an-activity-task) is scheduled to when the last Activity Task, in the chain of Activity Tasks that make up the Activity Execution, reaches a Closed status.
 
-- [How to set a Schedule-To-Close Timeout in Go](/docs/application-development-guide/#schedule-to-close)
+- [How to set a Schedule-To-Close Timeout in Go](/docs/application-development-guide/#schedule-to-close-timeout)
 
 ![Schedule-To-Close Timeout period](/diagrams/schedule-to-close-timeout.svg)
 
@@ -1607,3 +1607,4 @@ To actually have results from the use of a [List Filter](#list-filters), Search 
 How to do this entirely depends on the method by which you spawn the Workflow Execution:
 
 - [How to set Search Attributes as Workflow Execution metadata in Go](/docs/go/startworkflowoptions-reference/#searchattributes)
+
