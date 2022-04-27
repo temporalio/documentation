@@ -8,6 +8,12 @@
   display: flex;
 }
 
+.retryRow:not(:first-of-type) {
+  margin-top: 0.75em;
+  border-top: 1px solid #ddd;
+  padding-top: 1em;
+}
+
 .retryCol {
   border: 0;
   padding-top: 0px !important;
@@ -111,4 +117,8 @@
 
 .codeOutputWrap {
   vertical-align: top;
+}
+
+.addButton {
+  padding: 0.25em 0.5em;
 }
