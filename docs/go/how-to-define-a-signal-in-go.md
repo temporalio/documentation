@@ -9,7 +9,7 @@ tags:
 ---
 
 Structs should be used to define Signals and carry data, as long as the struct is [serializable via the Data Converter](https://pkg.go.dev/go.temporal.io/sdk/converter#CompositeDataConverter.ToPayload).
-The `Receive()` method on the Data Converter decodes the data into the Struct within the Workflow (See Handling Signals).
+The `Receive()` method on the Data Converter decodes the data into the Struct within the Workflow.
 Only public fields are serializable.
 
 ```go

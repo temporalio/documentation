@@ -10,7 +10,7 @@ tags:
 
 Use the `SignalWithStartWorkflow()` API on the Go SDK Temporal Client to start a Workflow Execution (if not already running) and pass it the Signal at the same time.
 
-Because the Workflow Execution may not exist, this API does not take a Run ID as a parameter
+Because the Workflow Execution might not exist, this API does not take a Run ID as a parameter
 
 ```go
 // ...

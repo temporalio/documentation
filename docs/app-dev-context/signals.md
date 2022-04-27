@@ -1,4 +1,4 @@
-First, Define the structure of your Signal.
+First, define the structure of your Signal.
 Signals are handled in your Workflow Definition.
 
 Signals can be sent to Workflow Executions via the Temporal Client or from within a Workflow.
