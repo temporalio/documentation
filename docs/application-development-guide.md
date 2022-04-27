@@ -1837,7 +1837,7 @@ Signals can be sent to Workflow Executions from a Temporal Client or from within
 
 #### Define Signal
 
-A Signal type and its data  must be serializable.
+A Signal type and its data must be serializable.
 
 <Tabs
 defaultValue="go"
@@ -2244,8 +2244,6 @@ TODO
 
 ### Cron Jobs
 
-
-
 ### Local Activities
 
 TODO
@@ -2412,4 +2410,3 @@ Content is not available
 ## Testing
 
 TODO
-
