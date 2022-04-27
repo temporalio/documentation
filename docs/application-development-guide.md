@@ -1580,8 +1580,6 @@ TODO
 
 ### Cron Jobs
 
-
-
 ### Local Activities
 
 TODO
@@ -1748,4 +1746,3 @@ Content is not available
 ## Testing
 
 TODO
-
