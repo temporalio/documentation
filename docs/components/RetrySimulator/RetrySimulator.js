@@ -200,7 +200,10 @@ export default function RetrySimulator() {
               );
             })}
           </div>
-          <button className={styles.addButton} onClick={() => addRetry(true, 1)}>
+          <button
+            className={styles.addButton}
+            onClick={() => addRetry(true, 1)}
+          >
             + Add
           </button>
         </div>
