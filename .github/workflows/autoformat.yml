@@ -2,9 +2,9 @@ name: CI
 
 on:
   pull_request:
-    branches: [main]
+    tags:
+    - '*'
   push:
-    branches: [main]
     tags:
     - '*'
 
