@@ -7,7 +7,7 @@ tags:
   - explanation
 ---
 
-An Activity Task contains the context needed to proceed with an [Activity Task Execution](/docs/concepts/what-is-an-activity-task-execution). 
+An Activity Task contains the context needed to proceed with an [Activity Task Execution](/docs/concepts/what-is-an-activity-task-execution).
 
 Activity Tasks are meant to run an [Activity Definition](/docs/concepts/what-is-an-activity-definition) once. Should this fail, the Activity Task is retried until it's completed successfully.
 
@@ -21,12 +21,8 @@ Activity Tasks contain Events that contain what's needed to execute the Activity
 
 [event explanation?]
 
-ActivityTaskScheduled prepares the Activity for execution. ActivityTaskStarted begins the Activity. 
+ActivityTaskScheduled prepares the Activity for execution. ActivityTaskStarted begins the Activity.
 
 Upon completion, the Activity Task responds to the cluster with an Event that indicates success or failure.
 
 [failure events may have retry?]
-
-
-
-
