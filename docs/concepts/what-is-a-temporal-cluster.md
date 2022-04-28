@@ -51,7 +51,7 @@ The Frontend Service has access to the hash rings that maintain service membersh
 
 Inbound call rate limiting is applied per host and per namespace.
 
-The Frontend service talks to the Matching service, History service, Worker service, the database, and Elasticsearch (if in use).
+The Frontend service talks to the Matching service, History service, Worker service, the database, and ElasticSearch (if in use).
 
 - It uses the grpcPort 7233 to host the service handler.
 - It uses port 6933 for membership related communication.
@@ -66,12 +66,13 @@ The History Service scales horizontally via individual shards, configured during
 The number of shards remains static for the life of the Cluster (so you should plan to scale and over-provision).
 
 Each shard maintains data (routing Ids, mutable state) and queues.
-There are three types of queues that a History shard maintains:
+There are four types of queues that a History shard maintains:
 
-- Transfer queue: This is used to transfer internal tasks to the Matching Service.
+- Transfer queue: used to transfer internal tasks to the Matching Service.
   Whenever a new Workflow Task needs to be scheduled, the History Service transactionally dispatches it to the Matching Service.
-- Timer queues: This is used to durably persist Timers.
-- Replicator queue: This is used only for the experimental Multi-Cluster feature
+- Timer queues: used to durably persist Timers.
+- Replicator queue: used only for the experimental Multi-Cluster feature.
+- Visibility queue: used to push data to the visibility index (ElasticSearch).
 
 The History service talks to the Matching Service and the Database.
 
