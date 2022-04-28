@@ -47,7 +47,7 @@
 						{
 							"lang": "typescript",
 							"title": "TypeScript",
-							"path": "none"
+							"path": "typescript/index"
 						}
 					]
 				},
@@ -77,7 +77,7 @@
 						{
 							"lang": "typescript",
 							"title": "TypeScript",
-							"path": "none"
+							"path": "typescript/how-to-develop-a-workflow-definition-in-typescript"
 						}
 					]
 				},
@@ -107,7 +107,7 @@
 						{
 							"lang": "typescript",
 							"title": "TypeScript",
-							"path": "none"
+							"path": "typescript/how-to-develop-an-activity-definition-in-typescript"
 						}
 					]
 				},
@@ -137,7 +137,7 @@
 						{
 							"lang": "typescript",
 							"title": "TypeScript",
-							"path": "none"
+							"path": "typescript/how-to-spawn-an-activity-execution-in-typescript"
 						}
 					]
 				},
@@ -167,7 +167,7 @@
 						{
 							"lang": "typescript",
 							"title": "TypeScript",
-							"path": "none"
+							"path": "typescript/how-to-get-the-result-of-an-activity-execution-in-typescript"
 						}
 					]
 				},
@@ -197,7 +197,7 @@
 						{
 							"lang": "typescript",
 							"title": "TypeScript",
-							"path": "none"
+							"path": "typescript/how-to-create-a-temporal-client-in-typescript"
 						}
 					]
 				},
@@ -257,7 +257,7 @@
 						{
 							"lang": "typescript",
 							"title": "TypeScript",
-							"path": "none"
+							"path": "typescript/how-to-spawn-a-workflow-execution-in-typescript"
 						}
 					],
 					"h4_sections": [{
@@ -318,7 +318,7 @@
 						{
 							"lang": "typescript",
 							"title": "TypeScript",
-							"path": "none"
+							"path": "typescript/how-to-set-a-workflow-id-in-typescript"
 						}
 					]
 				},
@@ -348,7 +348,7 @@
 						{
 							"lang": "typescript",
 							"title": "TypeScript",
-							"path": "none"
+							"path": "typescript/how-to-get-the-result-of-a-workflow-execution-in-typescript"
 						}
 					]
 				}
@@ -387,7 +387,7 @@
 						{
 							"lang": "typescript",
 							"title": "TypeScript",
-							"path": "none"
+							"path": "typescript/how-to-use-signals-in-typescript"
 						}
 					]
 				},
@@ -437,7 +437,7 @@
 								{
 									"lang": "typescript",
 									"title": "TypeScript",
-									"path": "none"
+									"path": "typescript/how-to-set-a-schedule-to-close-timeout-in-typescript"
 								}
 							]
 						},
@@ -467,7 +467,7 @@
 								{
 									"lang": "typescript",
 									"title": "TypeScript",
-									"path": "none"
+									"path": "typescript/how-to-set-a-start-to-close-timeout-in-typescript"
 								}
 							]
 						},

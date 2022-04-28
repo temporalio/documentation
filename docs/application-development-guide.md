@@ -194,7 +194,33 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+The Temporal TypeScript SDK provides a framework for Temporal Application development in the TypeScript language. The SDK contains the following tools:
+
+- A Temporal Client to communicate with a Temporal Cluster
+- APIs to use within your Workflows
+- APIs to create and manage Worker Entities and Worker Processes
+
+#### Get the SDK
+
+To download the latest version of the Temporal TypeScript Command, run the following command:
+
+```bash
+npm i temporalio
+```
+
+Or clone the Go SDK repo to your preferred location:
+
+```bash
+git clone git@github.com:temporalio/sdk-typescript.git
+```
+
+#### Are there executable code samples?​
+
+You can find a complete list of executable code samples in the samples library, which includes Temporal TypeScript SDK code samples from the [temporalio/samples-typscript](https://github.com/temporalio/samples-typescript) repo. Additionally, each of the TypeScript SDK Tutorials is backed by a fully executable template application.
+
+#### Where is the TypeScript SDK technical reference?​
+
+The Temporal TypeScript SDK API reference is published on [typescript.temporal.io](https://typescript.temporal.io).
 
 </TabItem>
 </Tabs>
@@ -679,7 +705,32 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+A Workflow Function has two parts:
+
+- The function name is known as the Workflow Type.
+- The function implementation code (body) is known as the Workflow Definition.
+
+Each Workflow Definition is bundled with any third party dependencies, and registered by Workflow Type in a Worker. A Workflow function becomes a Workflow Execution (instance) only when started from a Workflow Client using its Workflow Type.
+
+Workflow Definitions are _just functions_, which can store state, and orchestrate Activity Functions.
+The following code snippet uses `proxyActivities` to create functions to schedule a `greet` Activity in the system to say hello.
+
+A Workflow Function can have multiple parameters, however, we encourage you to use a single object parameter.
+
+```typescript
+type ExampleArgs = {
+  name: string;
+};
+
+export async function example(
+  args: ExampleArgs
+): Promise<{ greeting: string }> {
+  const greeting = await greet(args.name);
+  return { greeting };
+}
+```
+
+This Workflow Function takes the name of the parametera and assigns it to the variable name. Then it calls the function and pass the name of the varible as the argument. The funtion returns a promise with the value of `greeting`.
 
 </TabItem>
 </Tabs>
@@ -911,7 +962,17 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+- Activities execute in the standard Node.js environment.
+- Activities cannot be in the same file as Workflows and must be separately registered.
+- Activities may be retried repeatedly, so you may need to use idempotency keys for critical side effects.
+
+Activites are _just functions_. The following is an Activity that accepts a string parameter and returns a string.
+
+```typescript
+export async function greet(name: string): Promise<string> {
+  return `Hello, ${name}!`;
+}
+```
 
 </TabItem>
 </Tabs>
@@ -1166,7 +1227,24 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+To spawn an Activity Execution, you must retrieve the _Activitiy handle_ in you Workflow.
+
+```typescript
+import { proxyActivities } from '@temporalio/workflow';
+// Only import the activity types
+import type * as activities from './activities';
+
+const { greet } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '1 minute',
+});
+
+/** A workflow that calls an activity */
+export async function example(name: string): Promise<string> {
+  return await greet(name);
+}
+```
+
+This imports the indivuidal Activities and declares the type alias for each Activity.
 
 </TabItem>
 </Tabs>
@@ -1281,7 +1359,22 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+Since, Activities are referenced by their string name, you can reference them dynamically to get the result of an Activity Execution.
+
+```typescript
+export async function DynamicWorkflow(activityName, ...args) {
+  const acts = proxyActivities(/* activityOptions */);
+
+  // these are equivalent
+  await acts.activity1();
+  await acts['activity1']();
+
+  let result = await acts[activityName](...args);
+  return result;
+}
+```
+
+The `proxyActivities()` returns an object that calls the Activiites in the funciton. `acts[activityName]()` references the Activity using the Activity name, then it returns the results.
 
 </TabItem>
 </Tabs>
@@ -1312,7 +1405,21 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+Use a new `WorflowClient()` with the requisite gRPC `Connection` to create a new Client.
+
+```typescript
+import { Connection, WorkflowClient } from '@temporalio/client';
+const connection = new Connection(); // to configure for production
+const client = new WorkflowClient(connection.service);
+```
+
+This will create a new connection to the Temporal service.
+
+If you ommit the connection and just call the `new WorkflowClient()`, it creates a default connection that will work locally.
+
+:::note
+You will need to configure your connection and Namespace when [deploying to produciton](typescript/security#encryption-in-transit-with-mtls).
+:::
 
 </TabItem>
 </Tabs>
@@ -1530,7 +1637,21 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+When you have a Workflow Client, you can schedule the start of a Workflow with `client.start()`, specifying `workflowId`, `taskQueue`, and `args` and returning a Workflow handle immediately after the Server acknowledges the receipt.
+
+```typescript
+const handle = await client.start(example, {
+  workflowId: 'your-workflow-id',
+  taskQueue: 'your-task-queue',
+  args: ['argument01', 'argument02', 'argument03'], // this is typechecked against workflowFn's args
+});
+const handle = client.getHandle(workflowId);
+const result = await handle.result();
+```
+
+Calling `client.start()` and `client.execute()` send a command to Temporal Server to schedule a new Workflow Execution on the specified Task Queue. It does not actually start until a Worker, that has a matching Workflow Type, polling that Task Queue picks it up.
+
+You can test this by executing a Workflow Client command without a matching Worker. Temporal Server records the command in Event History but does not make progress with the Workflow Execution until a Worker starts polling with a matching Task Queue and Workflow Definition.
 
 </TabItem>
 </Tabs>
@@ -1592,7 +1713,17 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+You can set a Workflow Id in the Client of a Workflow.
+
+```typescript
+const handle = await client.start(example, {
+  workflowId: 'yourWorkflowId',
+  taskQueue: 'yourTaskQueue',
+  args: ['your', 'arg', 'uments'],
+});
+```
+
+This will start a new Client with the given Workflow Id, Task Queue name, and an argument.
 
 </TabItem>
 </Tabs>
@@ -1708,7 +1839,37 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+Workflow functions may or may not return a result when they complete.
+
+If you started a Workflow with `handle.start()`, you can choose to wait for the result anytime with handle.result().
+
+```typescript
+const handle = client.getHandle(workflowId);
+const result = await handle.result();
+```
+
+Using a Workflow Handle isn't necessary with `client.execute()`.
+
+Workflows that prematurely end will throw a `WorkflowFailedError` if you call `result()`.
+
+If you call `result()` on a Workflow that prematurely ended for some reason, it throws a [`WorkflowFailedError` error](https://typescript.temporal.io/api/classes/client.workflowfailederror/) that reflects the reason. For that reason, it is recommmened to catch that error.
+
+```typescript
+const handle = client.getHandle(workflowId);
+try {
+  const result = await handle.result();
+} catch (err) {
+  if (err instanceof WorkflowFailedError) {
+    throw new Error('Temporal workflow failed: ' + workflowId, {
+      cause: err,
+    });
+  } else {
+    throw new Error('error from Temporal workflow ' + workflowId, {
+      cause: err,
+    });
+  }
+}
+```
 
 </TabItem>
 </Tabs>
@@ -1862,7 +2023,105 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+To add a Signal to a Workflow, call `defineSignal()` with a name, and then attach a listener with `setHandler()`.
+
+- Handlers for take arguments, which can be used inside `setHandler()` logic.
+- Signal handlers can mutate state, Signal handlers cannot return valeus.
+
+#### Declare your Signal as constancts outside the Workflow Definition.
+
+```typescript
+import * as wf from '@temporalio/workflow';
+
+export const unblockSignal = wf.defineSignal('unblock');
+  let isBlocked = true;
+  wf.setHandler(unblockSignal, () => void (isBlocked = false));
+  console.log('Blocked');
+  try {
+    await wf.condition(() => !isBlocked);
+    console.log('Unblocked');
+  } catch (err) {
+    if (err instanceof wf.CancelledFailure) {
+      console.log('Cancelled');
+    }
+    throw err;
+  }
+}
+```
+
+This code defines a Signal as _unblock_ and declares the variable as _isBlocked_ as true. Then the code tries to execute the condition and print _Unblocked_ to the conosle if it becomes unblocked. Finally, the code catches any errors, and if the error is `CacelledFailure`, then it prints `Cacnelled` to the console.
+
+This helps provide type safety, since you can export the type signature of the signal or query to be called on the clientside.
+
+##### Declare your Signals dynamically
+
+For more flexible usecases, you may want a dynamic Signal, sucha as a generated ID. You may handle it in two ways:
+
+- avoid making it dynamic by collapsing all signals in one handler and move the ID to the payload.
+- actually make the signal name dynamic by inlining the signal definition per handler.
+
+```typescript
+import * as wf from '@temporalio/workflow';
+
+wf.setHandler(`genericSignal`, (payload) => {
+  switch (payload.taskId) {
+    case taskAId:
+      // do task A things
+      break;
+    case taskBId:
+      // do task B things
+      break;
+    default:
+      throw new Error('Unexpected task.');
+  }
+});
+
+// "inline definition" solution
+wf.setHandler(wf.defineSignal(`task-${taskAId}`), (payload) => {
+  /* do task A things */
+});
+wf.setHandler(wf.defineSignal(`task-${taskBId}`), (payload) => {
+  /* do task B things */
+});
+
+// utility "inline definition" helper
+const inlineSignal = (signalName, handler) =>
+  wf.setHandler(wf.defineSignal(signalName), handler);
+inlineSignal(`task-${taskBId}`, (payload) => {
+  /* do task B things */
+});
+```
+
+:::note
+
+The semantic of `defineSignal()` and `defineQuery()` is intentional, in that they return Signal/Query Definitions, not unique instances of Signals and Queries themselves.
+Signals and Queries are only instantiated in `setHandler()` and are specific to a particular Workflow Execution.
+
+These distinctions may seem minor, but they model how Temporal works under the hood, because Signals and Queries are messages identified by _just strings_ and don't have meaning independent of the Workflow having a listener to handle them.
+
+We named it `setHandler` instead of `subscribe` because Signals and Queries can only have one handler at a time, whereas `subscribe` could imply an observable with multiple consumers, and is a higher level construct.
+:::
+
+#### Start a Signal from the Client
+
+Sending Signals requires a Workflow handle from a Temporal Client.
+
+- You send a Signal with `handle.signal(signal, ...args)`. A Signal has no return value by definition.
+- You can refer to a Signal by string name, which is useful for dynamic reference, but you will lose type inference
+
+The following code is from inside the Client code.
+
+```typescript
+import { increment, count } from './workflow';
+
+// init client code omitted - see Client docs
+const handle = client.getHandle(workflowId);
+
+// these three are equivalent
+await handle.signal(increment, 1);
+await handle.signal<[number]>('increment', 1);
+await client.getHandle(workflowId).signal(increment, 1);
+```
 
 </TabItem>
 </Tabs>
@@ -1926,12 +2185,36 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+When you call `proxyActivities` in a Workflow Function, you can set a range of ActivityOptions.
+
+Either `scheduleToCloseTimeout` or `scheduleToStartTimeout` must be set.
+
+Type: time.Duration
+Default: ∞ (infinity - no limit)
+
+In this example, you can set the `scheduleToCloseTimeout` to 5 m.
+
+```typescript
+// Sample of typical options you can set
+const { greet } = proxyActivities<typeof activities>({
+  scheduleToCloseTimeout: '5m',
+  retry: {
+    // default retry policy if not specified
+    initialInterval: '1s',
+    backoffCoefficient: 2,
+    maximumAttempts: Infinity,
+    maximumInterval: 100 * initialInterval,
+    nonRetryableErrorTypes: [],
+  },
+});
+```
 
 </TabItem>
 </Tabs>
 
 #### Start-To-Close
+
+
 
 <Tabs
 defaultValue="go"
@@ -1972,7 +2255,29 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+When you call `proxyActivities` in a Workflow Function, you can set a range of ActivityOptions.
+
+Either `scheduleToCloseTimeout` or `scheduleToStartTimeout` must be set.
+
+Type: time.Duration
+Default: ∞ (infinity - no limit)
+
+In this example, you can set the `startToCloseTimeout` to 30 seconds.
+
+```typescript
+// Sample of typical options you can set
+const { greet } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '30s', // recommended
+  retry: {
+    // default retry policy if not specified
+    initialInterval: '1s',
+    backoffCoefficient: 2,
+    maximumAttempts: Infinity,
+    maximumInterval: 100 * initialInterval,
+    nonRetryableErrorTypes: [],
+  },
+});
+```
 
 </TabItem>
 </Tabs>
@@ -2032,6 +2337,8 @@ TODO
 TODO
 
 ### Cron Jobs
+
+
 
 ### Local Activities
 
@@ -2199,3 +2506,4 @@ Content is not available
 ## Testing
 
 TODO
+
