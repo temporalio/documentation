@@ -23,6 +23,6 @@ Activity Tasks contain Events that contain what's needed to execute the Activity
 
 ActivityTaskScheduled prepares the Activity for execution. ActivityTaskStarted begins the Activity.
 
-Upon completion, the Activity Task responds to the cluster with an Event that indicates success or failure.
+Upon completion, the Activity Task responds to the cluster with an Event status of _success_ or _failure_.
 
 [failure events may have retry?]
