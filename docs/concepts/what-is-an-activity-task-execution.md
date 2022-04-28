@@ -7,7 +7,7 @@ tags:
   - explanation
 ---
 
-An Activity Task Execution results from .
+An Activity Task Execution results from the invocation of .
 
 From the API, users see an Activity being executed, and assume that it's run once. 
 
