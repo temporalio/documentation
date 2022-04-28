@@ -11,6 +11,6 @@ An Activity Task Execution results from the invocation of .
 
 From the API, users see an Activity being executed, and assume that it's run once.
 
-In reality, the Activity is executed until it succeeds.
+In reality, the Activity executes until it succeeds.
 
 Activity Task Executions are retried per a Retry Policy.
