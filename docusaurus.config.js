@@ -183,7 +183,6 @@ module.exports = {
               label: "YouTube",
               href: "https://www.youtube.com/channel/UCGovZyy8OfFPNlNV0i1fI1g",
             },
-
           ],
         },
         {
