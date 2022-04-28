@@ -8,61 +8,74 @@
 /* You can override the default Infima variables here. */
 
 :root {
-  --ifm-color-primary: #18181b;
-  --ifm-color-primary-dark: #0e60b2;
-  --ifm-color-primary-darker: #093d71;
-  --ifm-color-primary-darkest: #041a31;
-  --ifm-color-primary-light: #3e97ef;
-  --ifm-color-primary-lighter: #84bdf5;
-  --ifm-color-primary-lightest: #cae3fb;
+  /* --ifm-color-primary: #f2633f;
+  --ifm-color-primary-dark: #111827; */
+  /* --ifm-color-primary-darker: #093d71;
+  --ifm-color-primary-darkest: #041a31; */
+  /* --ifm-color-primary-light: #1D4ED8;
+  --ifm-color-primary-lighter: #BFDBFE; */
+  /* --ifm-color-primary-lightest: #cae3fb; */
   --ifm-code-font-size: 95%;
-  --doc-sidebar-width: 275px !important;
+
+  /* --doc-sidebar-width: 275px !important;
   --ifm-link-hover-decoration: none;
-  --ifm-link-hover-color: inherit;
+  --ifm-link-hover-color: inherit; */
+
 }
 
 html[data-theme="dark"] {
-  --ifm-link-color: var(--ifm-color-primary-lighter);
-  --ifm-menu-color-active: var(--ifm-color-primary-lighter);
+  --ifm-color-primary: #BFDBFE;
+  --ifm-background-color: #141414;
+  --ifm-footer-background-color: #000000;
+  --ifm-navbar-background-color: #000000;
+  --ifm-color: #f9fafb;
+  --ifm-link-color: #f9fafb;
+  --ifm-link-hover-color: var(--ifm-color-primary);
+  /* --ifm-menu-color-active: var(--ifm-color-primary-lighter);
   --ifm-navbar-link-hover-color: var(--ifm-color-primary-lighter);
   --ifm-toc-link-color: #ffffff;
-  --ifm-toc-link-color-active: var(--ifm-color-primary-lighter);
   --ifm-breadcrumb-color-active: var(--ifm-color-primary-lighter);
   --ifm-tabs-color-active: var(--ifm-color-primary-lighter);
-
-  --ifm-blockquote-color: #eeeeee;
+  --ifm-blockquote-color: #eeeeee; */
   /* --ifm-code-background: var(--ifm-color-primary-dark); */
-  --ifm-color: #ffffff;
-  --ifm-background-color: #141414;
-  --ifm-footer-background-color: #000;
-  --ifm-card-background-color: #1a1a1a;
+  /* --ifm-card-background-color: #1a1a1a;
   --collapse-button-bg-color-dark: transparent;
   --ifm-badge-background-color: #b2e7ea;
-  --ifm-badge-background-color: hsl(210deg, 15%, 20%);
-  --card-color: rgba(17, 24, 39);
+  --ifm-badge-background-color: hsl(210deg, 15%, 20%); */
+  --ifm-card-background-color: #1a1a1a;
+  /* --card-color: var(--ifm-color-primary-dark); */
 }
 
 html[data-theme="light"] {
-  --ifm-link-color: var(--ifm-color-primary-light);
-  --ifm-menu-color-active: var(--ifm-color-primary-light);
-  --ifm-navbar-link-hover-color: var(--ifm-color-primary-light);
-  --ifm-toc-link-color: var(--ifm-color-primary);
-  --ifm-blockquote-color: #000000;
-  --ifm-color-emphasis-300: #505050;
+  --ifm-color-primary: #1D4ED8;
+  --ifm-background-color: #f9fafb;
+  --ifm-footer-background-color: #ffffff;
+  --ifm-navbar-background-color: #ffffff;
+  /* --ifm-color: var(--ifm-color-primary-dark); */
+  --ifm-link-color: #111827;
+  --ifm-link-hover-color: var(--ifm-color-primary);
 
+  /* --ifm-menu-color-active: var(--ifm-color-primary);
+  --ifm-navbar-link-hover-color: var(--ifm-color-primary);
+  --ifm-toc-link-color: var(--ifm-color-primary-dark);
+  --ifm-blockquote-color: #000000;
+  --ifm-color-emphasis-300: #505050; */
   /* --ifm-code-background: var(--ifm-color-primary-lightest); */
-  --ifm-color-input-background: #ffffff;
-  --ifm-color: #141414;
+  /* --ifm-color-input-background: #ffffff;
+  /* --ifm-color: var(--ifm-color-primary-dark);
   --ifm-background-color: rgb(249, 250, 251);
   --ifm-footer-background-color: #ffffff;
   --ifm-card-background-color: #ffffff;
-  --ifm-badge-background-color: rgba(239, 246, 255);
+  --ifm-badge-background-color: rgba(239, 246, 255); */
+  --card-color: #ffffff;
 
-  --card-color: rgba(239, 246, 255);
 }
 
-.table-of-contents__link--active {
-  color: var(--ifm-color-primary-light)
+  /* --ifm-background-surface-color: #000000;
+  --ifm-footer-link-color */
+
+a, a:hover {
+  text-decoration: underline;
 }
 
 /* If we scope things with .intro we can attach to the tailwind styles on only the intro page */
@@ -262,7 +275,7 @@ main.max-w-screen-lg {
 
 @font-face {
   font-family: "Aeonik";
-  src: url("../fonts/Aeonik-Regular.woff");
+  src: url("../fonts/Aeonik/Aeonik-Regular.woff");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -270,7 +283,7 @@ main.max-w-screen-lg {
 
 @font-face {
   font-family: "Aeonik-Bold";
-  src: url("../fonts/Aeonik-Bold.woff");
+  src: url("../fonts/Aeonik/Aeonik-Bold.woff");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -278,12 +291,26 @@ main.max-w-screen-lg {
 
 @font-face {
   font-family: "Aeonik-Light";
-  src: url("../fonts/Aeonik-Light.woff");
+  src: url("../fonts/Aeonik/Aeonik-Light.woff");
   font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
 
+@font-face {
+  font-family: "Poppins";
+  src: url("../fonts/Poppins/Poppins-Regular.ttf");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+h1, h2, h3, h4 {
+  font-family: "Poppins";
+}
+/* p {
+  font-family: "Aeonik";
+} */
 /* Leadership page css */
 
 .leadership-container {
@@ -309,4 +336,7 @@ main.max-w-screen-lg {
 }
 .menu__link, .navbar__link, .dropdown__link{
     font-weight: 400;
+}
+.menu__link, .navbar__link, .dropdown__link, .table-of-contents__link{
+    text-decoration: none;
 }

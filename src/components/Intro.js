@@ -8,7 +8,7 @@ function Explained() {
       <div className="flex items-center space-x-4">
         <svg
           width="13"
-          className="mb-4 h-10 w-10 rounded-lg bg-[color:var(--ifm-color)] p-2 text-[color:var(--ifm-background-color)] icon"
+          className="mb-4 h-10 w-10 rounded-lg bg-[color:var(--ifm-background-color)] p-2 text-[color:var(--ifm-color)] icon"
           height="14"
           viewBox="0 0 491.52 491.52"
           fill="none"
@@ -70,7 +70,7 @@ function SDKs() {
       <div className="flex items-center space-x-4">
         <svg
           width="13"
-          className="mb-4 h-10 w-10 rounded-lg bg-[color:var(--ifm-color)] p-2 text-[color:var(--ifm-background-color)] icon"
+          className="mb-4 h-10 w-10 rounded-lg bg-[color:var(--ifm-background-color)] p-2 text-[color:var(--ifm-color)] icon"
           height="14"
           viewBox="0 0 13 14"
           fill="none"
@@ -169,7 +169,7 @@ function Cluster() {
     <div className="flex flex-col rounded-lg bg-[color:var(--ifm-card-background-color)] p-5 shadow landing-card">
       <div className="flex items-center space-x-4">
         <svg
-          className="mb-4 h-10 w-10 rounded-lg bg-[color:var(--ifm-color)] p-2 text-[color:var(--ifm-background-color)] icon"
+          className="mb-4 h-10 w-10 rounded-lg bg-[color:var(--ifm-background-color)] p-2 text-[color:var(--ifm-color)] icon"
           width="16"
           height="13"
           viewBox="0 0 16 13"
@@ -235,7 +235,7 @@ function Tools() {
     <div className="rounded-lg bg-[color:var(--ifm-card-background-color)] p-5 shadow landing-card">
       <div className="flex items-center space-x-4">
         <svg
-          className="mb-4 h-10 w-10 rounded-lg bg-[color:var(--ifm-color)] p-2 text-[color:var(--ifm-background-color)] code-logo"
+          className="mb-4 h-10 w-10 rounded-lg bg-[color:var(--ifm-background-color)] p-2 text-[color:var(--ifm-color)] code-logo"
           viewBox="0 0 15 15"
           fill="currentColor"
           xmlns="http://www.w3.org/2000/svg"
@@ -311,7 +311,7 @@ function Operation() {
       <div className="flex items-center space-x-4">
         <svg
           width="13"
-          className="mb-4 h-10 w-10 rounded-lg bg-[color:var(--ifm-color)] p-2 text-[color:var(--ifm-background-color)] icon"
+          className="mb-4 h-10 w-10 rounded-lg bg-[color:var(--ifm-background-color)] p-2 text-[color:var(--ifm-color)] icon"
           height="14"
           viewBox="0 0 512 512"
           fill="none"
@@ -360,7 +360,7 @@ function Learning() {
       <div className="flex items-center space-x-4">
         <svg
           width="13"
-          className="mb-4 h-10 w-10 rounded-lg bg-[color:var(--ifm-color)] p-2 text-[color:var(--ifm-background-color)] icon "
+          className="mb-4 h-10 w-10 rounded-lg bg-[color:var(--ifm-background-color)] p-2 text-[color:var(--ifm-color)] icon "
           height="14"
           viewBox="0 0 511.973 511.973"
           fill="none"
