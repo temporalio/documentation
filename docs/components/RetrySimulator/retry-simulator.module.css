@@ -35,7 +35,7 @@
   padding-top: 15px;
   border: 1px solid #ddd;
   margin-bottom: 15px;
-  background-color: #f0f0f0;
+  background-color: var(--ifm-badge-background-color);
 }
 
 .retry {
@@ -59,6 +59,7 @@
 
 .success {
   background-color: #D4EDDC;
+  color: black;
 }
 
 .fail {
@@ -93,7 +94,7 @@
 .dropdown {
   padding: 0.25em 0.5em;
   border: 1px solid #ddd;
-  background-color: white;
+  background-color: var(--ifm-background-color);
   margin-bottom: 1em;
 }
 
