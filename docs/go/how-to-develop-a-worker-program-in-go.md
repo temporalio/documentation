@@ -78,11 +78,11 @@ All Workers listening to the same Task Queue name must be registered to handle t
 If a Worker polls a Task for a Workflow Type or Activity Type it does not know about, it will fail that Task.
 However, the failure of the Task will not cause the associated Workflow Execution to fail.
 
-### Registering Activity `structs`
+#### Registering Activity `structs`
 
 Per [Activity Definition](/docs/go/how-to-develop-an-activity-definition-in-go) best practices, you may have an Activity struct that has multiple methods and fields. When you use `RegisterActivity()` for an Activity struct, that Worker has access to all exported methods.
 
-### Registering multiple Types
+#### Registering multiple Types
 
 To register multiple Activity Types and/or Workflow Types with the Worker Entity, just make multiple Activity registration calls, but make sure each Type name is unique:
 
@@ -95,7 +95,7 @@ w.registerWorkflow(WorkflowB)
 w.registerWorkflow(WorkflowC)
 ```
 
-### Registering with options
+#### Registering with options
 
 Options can be applied when the Type is registered.
 

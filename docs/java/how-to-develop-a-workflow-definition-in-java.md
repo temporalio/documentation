@@ -299,7 +299,7 @@ public static class DynamicGreetingWorkflowImpl implements DynamicWorkflow {
 
 See [Dynamic Workflow Reference](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/DynamicWorkflow.html).
 
-### Workflow implementation constraints
+#### Workflow implementation constraints
 
 The following constraints apply when writing Workflow Definitions:
 
@@ -323,7 +323,7 @@ The following constraints apply when writing Workflow Definitions:
 
 Java Workflow reference: <https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/package-summary.html>
 
-### Workflow Method Arguments
+#### Workflow Method Arguments
 
 - [What is a Data Converter?](/docs/concepts/what-is-a-data-converter)
 - Java DataConverter reference: <https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html>

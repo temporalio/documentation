@@ -16,12 +16,12 @@ A Workflow Execution effectively executes once to completion, while a Workflow F
 
 We strongly recommend that you write a Workflow Definition in a language that has a corresponding Temporal SDK.
 
-- [How to develop a Workflow Definition in Go](/docs/go/how-to-develop-a-workflow-definition-in-go)
+- [How to develop a Workflow Definition in Go](/docs/go/how-to-develop-a-workflow-in-go)
 - [How to develop a Workflow Definition in Java](/docs/java/how-to-develop-a-workflow-definition-in-java)
 - [How to develop a Workflow Definition in PHP](/docs/php/workflows)
 - [How to develop a Workflow Definition in TypeScript](/docs/typescript/workflows/#how-to-write-a-workflow-function)
 
-### Deterministic constraints
+#### Deterministic constraints
 
 A critical aspect of developing Workflow Definitions is ensuring they exhibit certain deterministic traits – that is, making sure that the same Commands are emitted in the same sequence, whenever a corresponding Workflow Function Execution (instance of the Function Definition) is re-executed.
 
@@ -33,7 +33,7 @@ If a corresponding Event already exists within the Event History that maps to th
 
 For example, using an SDKs "Execute Activity" API generates the [ScheduleActivityTask](/docs/concepts/what-is-a-command#scheduleactivitytask) Command.
 When this API is called upon re-execution, that Command is compared with the Event that is in the same location within the sequence.
-The Event in the sequence must be an [ActivityTaskScheduled](/docs/concepts/what-is-an-event/#activitytaskscheduled) Event, where the Activity Name and the Task Queue name are the same as what is in the Command.
+The Event in the sequence must be an [ActivityTaskScheduled](/docs/references/events/#activitytaskscheduled) Event, where the Activity Name and the Task Queue name are the same as what is in the Command.
 
 If a generated Command doesn't match what it needs to in the existing Event History, then the Workflow Execution returns a _non-deterministic_ error.
 
@@ -54,7 +54,7 @@ For example, let's say we have a Workflow Definition that defines the following 
 3. Complete
 
 We start a Worker and spawn a Workflow Execution that uses that Workflow Definition.
-The Worker would emit the [StartTimer](/docs/concepts/what-is-a-command/#starttimer) Command and the Workflow Execution would become suspended.
+The Worker would emit the [StartTimer](/docs/references/commands/#starttimer) Command and the Workflow Execution would become suspended.
 
 Before the Timer is up, we change the Workflow Definition to the following sequence:
 
@@ -97,7 +97,7 @@ When those APIs are used, the results are stored as part of the Event History, w
 
 In other words, all operations that do not purely mutate the Workflow Execution's state should occur through a Temporal SDK API.
 
-### What is Workflow Versioning?
+#### Workflow Versioning
 
 The Workflow Versioning feature enables the creation of logical branching inside a Workflow Definition based on a developer specified version identifier.
 This feature is useful for Workflow Definition logic needs to be updated, but there are running Workflow Executions that currently depends on it.
@@ -107,7 +107,7 @@ It is important to note that a practical way to handle different versions of Wor
 - [How to version Workflow Definitions in Java](/docs/java/versioning)
 - [How to version Workflow Definitions in TypeScript](/docs/typescript/patching)
 
-### Handling unreliable Worker Processes
+#### Handling unreliable Worker Processes
 
 You do not handle Worker Process failure or restarts in a Workflow Definition.
 

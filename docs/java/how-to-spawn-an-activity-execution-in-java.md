@@ -27,7 +27,7 @@ Calling a method on the Activity interface schedules the Activity invocation wit
 
 Activities can be invoked synchronously or asynchronously.
 
-## Invoking Activities Synchronously
+#### Invoking Activities Synchronously
 
 In the following example, we use the type-safe `Workflow.newActivityStub` within the "FileProcessingWorkflow" Workflow implementation to create a client-side stub of the `FileProcessingActivities` class. We also define `ActivityOptions` and set `setStartToCloseTimeout` option to one hour.
 
@@ -99,7 +99,7 @@ This is useful when the Activity type is not known at compile time, or to invoke
     activity.execute("ComposeGreeting", String.class, "Hello World" , "Spanish");
 ```
 
-## Invoking Activities Asynchronously
+#### Invoking Activities Asynchronously
 
 Sometimes Workflows need to perform certain operations in parallel.
 The Temporal Java SDK provides the `Async` class which includes static methods used to invoke any Activity asynchronously.
@@ -160,7 +160,7 @@ The following example shows how to call two Activity methods, "download" and "up
   }
 ```
 
-## Activity Execution Context
+#### Activity Execution Context
 
 `ActivityExecutionContext` is a context object passed to each Activity implementation by default.
 You can access it in your Activity implementations via `Activity.getExecutionContext()`.

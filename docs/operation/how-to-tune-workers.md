@@ -125,6 +125,6 @@ As with any multithreading system, specifying too large values without monitorin
 <RelatedReadList
 readlist={[
 ["Workers in production", "/blog/workers-in-production", "operation guide"],
-["Full set of SDK Metrics", "/docs/reference/sdk-metrics", "reference"]
+["Full set of SDK Metrics", "/docs/references/sdk-metrics", "reference"]
 ]}
 />

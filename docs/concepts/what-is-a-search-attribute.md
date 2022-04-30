@@ -16,7 +16,7 @@ However, you won't be able to use Advanced Visibility List APIs and List Filters
 
 When using [Continue-As-New](/docs/concepts/what-is-continue-as-new) or a [Temporal Cron Job](/docs/concepts/what-is-a-temporal-cron-job), Search Attributes are carried over to the new Run by default.
 
-### Default Search Attributes
+#### Default Search Attributes
 
 A Temporal Cluster that is integrated with Elasticsearch has a set of default Search Attributes already available.
 These Search Attributes are created when the initial index is created.
@@ -52,7 +52,7 @@ These Search Attributes are created when the initial index is created.
 
 - ExecutionTime can differ from StartTime in retry and cron use cases.
 
-### Custom Search Attributes
+#### Custom Search Attributes
 
 Custom Search Attributes can be [added to a Temporal Cluster only by using `tctl`](/docs/tctl/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl).
 Adding a Search Attribute makes it available to use with Workflow Executions within that Cluster.
@@ -81,7 +81,7 @@ Their names indicate their types:
 - CustomBoolField
 - CustomDatetimeField
 
-### Types
+#### Types
 
 Search Attributes must be one of the following types:
 
@@ -107,9 +107,9 @@ Note:
 
 - [How to view Search Attributes using tctl](/docs/tctl/cluster/list-search-attributes)
 
-### Search Attributes as Workflow Execution metadata
+#### Search Attributes as Workflow Execution metadata
 
 To actually have results from the use of a [List Filter](/docs/concepts/what-is-a-list-filter), Search Attributes must be added to a Workflow Execution as metadata.
 How to do this entirely depends on the method by which you spawn the Workflow Execution:
 
-- [How to set Search Attributes as Workflow Execution metadata in Go](/docs/go/how-to-set-startworkflowoptions-in-go/#searchattributes)
+- [How to set Search Attributes as Workflow Execution metadata in Go](/docs/go/startworkflowoptions-reference/#searchattributes)

@@ -25,7 +25,6 @@ module.exports = {
         },
       };
     },
-    "docusaurus-tailwindcss-loader",
   ],
   themeConfig: {
     colorMode: {
@@ -107,6 +106,11 @@ module.exports = {
               to: "/docs/samples-library",
               activeBasePath: "/docs/samples-library",
               label: "Samples library",
+            },
+            {
+              to: "/docs/references",
+              activeBasePath: "/docs/references",
+              label: "References",
             },
           ],
         },

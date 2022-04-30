@@ -1,7 +1,7 @@
 ---
-id: how-to-set-activityoptions-in-go
-title: How to set ActivityOptions in Go
-sidebar_label: ActivityOptions
+id: activityoptions-reference
+title: Go ActivityOptions reference
+sidebar_label: Activity Options reference
 description: Create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package and use `WithActivityOptions()` to apply it to the instance of `workflow.Context`.
 tags:
   - developer-guide
@@ -64,64 +64,21 @@ if err != nil {
 
 ### `ScheduleToCloseTimeout`
 
-This or `ScheduleToStart` must be set.
+import ScheduleToCloseTimeout from './how-to-set-a-schedule-to-close-timeout-in-go.md'
 
-- Type: `time.Duration`
-- Default: ∞ (infinity - no limit)
-
-```go
-activityoptions := workflow.ActivityOptions{
-  ScheduleToCloseTimeout: 10 * time.Second,
-}
-ctx = workflow.WithActivityOptions(ctx, activityoptions)
-var yourActivityResult YourActivityResult
-err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
-if err != nil {
-  // ...
-}
-```
-
-- [What is a Schedule-To-Close Timeout](/docs/concepts/what-is-a-schedule-to-close-timeout)
+<ScheduleToCloseTimeout/>
 
 ### `ScheduleToStartTimeout`
 
-This or `ScheduleToClose` must be set.
+import ScheduleToStartTimeout from './how-to-set-a-schedule-to-start-timeout-in-go.md'
 
-- Type: `time.Duration`
-- Default: ∞ (infinity - no limit)
-
-```go
-activityoptions := workflow.ActivityOptions{
-  ScheduleToStartTimeout: 10 * time.Second,
-}
-ctx = workflow.WithActivityOptions(ctx, activityoptions)
-var yourActivityResult YourActivityResult
-err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
-if err != nil {
-  // ...
-}
-```
-
-- [What is a Schedule-To-Start Timeout](/docs/concepts/what-is-a-schedule-to-start-timeout)
+<ScheduleToStartTimeout/>
 
 ### `StartToCloseTimeout`
 
-- Type: `time.Duration`
-- Default: Same as the `ScheduleToCloseTimeout`
+import StartToCloseTimeout from './how-to-set-a-start-to-close-timeout-in-go.md'
 
-```go
-activityoptions := workflow.ActivityOptions{
-  StartToCloseTimeout: 10 * time.Second,
-}
-ctx = workflow.WithActivityOptions(ctx, activityoptions)
-var yourActivityResult YourActivityResult
-err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
-if err != nil {
-  // ...
-}
-```
-
-- [What is an Start-To-Close Timeout](/docs/concepts/what-is-a-start-to-close-timeout)
+<StartToCloseTimeout/>
 
 ### `HeartbeatTimeout`
 

@@ -117,7 +117,7 @@ In addition to core tracing via `oTelCollectorUrl`, you can set up tracing of Wo
 
 ### Monitoring
 
-Here is the [full list of SDK metrics](/docs/reference/sdk-metrics/). Some of them are used in the [Worker Tuning Guide](/docs/operation/how-to-tune-workers) to determine how to change your deployment configuration. The guide also assumes you track the host-level metrics that are important for measuring your application's load (for many applications, this is just CPU, but some applications may run into other bottlenecks—like with Activities that use a lot of memory, or open a lot of sockets). How you track host-level metrics depends on where you deploy your Workers.
+Here is the [full list of SDK metrics](/docs/references/sdk-metrics/). Some of them are used in the [Worker Tuning Guide](/docs/operation/how-to-tune-workers) to determine how to change your deployment configuration. The guide also assumes you track the host-level metrics that are important for measuring your application's load (for many applications, this is just CPU, but some applications may run into other bottlenecks—like with Activities that use a lot of memory, or open a lot of sockets). How you track host-level metrics depends on where you deploy your Workers.
 
 ## Performance tuning
 
