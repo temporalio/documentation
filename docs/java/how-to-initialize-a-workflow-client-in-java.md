@@ -49,6 +49,16 @@ WorkflowClient client = WorkflowClient.newInstance(
 
 See [WorkflowClientOptions](/docs/java/how-to-set-workflowclientoptions-in-java) for details.
 
+The following example shows how to register the Dynamic Workflow implementation in the Client code for how to start a Workflow Eecution.
+
+```java
+    WorkflowClient client = WorkflowClient.newInstance(service);
+    /* Create the Workflow stub. Note that the Workflow type is not explicitly registered with the Worker */
+    WorkflowOptions workflowOptions =
+        WorkflowOptions.newBuilder().setTaskQueue(TASK_QUEUE).setWorkflowId(WORKFLOW_ID).build();
+    WorkflowStub workflow = client.newUntypedWorkflowStub("DynamicWF", workflowOptions);
+```
+
 `WorkflowService` and `WorkflowClient` creation is a heavyweight operation, and will be resource-intensive if created each time you start a Workflow or send a Signal to it. The recommended way is to create them once and reuse where possible.
 
 With the Client defined, you can start interacting with the Temporal frontend service via the SDK APIs.

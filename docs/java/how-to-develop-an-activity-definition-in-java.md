@@ -109,4 +109,4 @@ Use `Activity.getExecutionContext()` to get information about the Activity type 
 
 You can only register one instance that implements `DynamicActivity` with a Worker.
 
-- [Dynamic Activity Reference](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/DynamicActivity.html)
+See [Dynamic Activity Reference](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/DynamicActivity.html).

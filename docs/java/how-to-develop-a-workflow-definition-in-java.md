@@ -16,16 +16,16 @@ public class FileProcessingWorkflowImpl implements FileProcessingWorkflow {
 }
 ```
 
-## Workflow interface
+#### Workflow interface
 
 The Workflow interface is a Java interface and is annotated with `@WorkflowInterface`.
 Each Workflow interface method must have one [`@WorkflowMethod`](#workflowmethod).
 
-Use `@SignalMethod` for Signals, and `@QueryMethod` for Queries in the Workflow.
+Use `@SignalMethod` to handle Signals, and `@QueryMethod` to handle Queries in the Workflow.
 See [Signals](/docs/java/signals) and [Queries](/docs/java/queries) for details.
 
-Use `ExternalWorkflowStub` to start other Workflow Executions, or send Signals to other running Workflows.
-See [Workflow Execution](/docs/java/how-to-spawn-a-workflow-execution-in-java/#Using`ExternalWorkflowStub`) for details.
+Use `ExternalWorkflowStub` to start or send Signals from within a Workflow to other running Workflow Executions.
+See [Using `ExternalWorkflowStub`](/docs/java/how-to-spawn-a-workflow-execution-in-java/#Using`ExternalWorkflowStub`) for details.
 
 To call Activities in your Workflow, see [Activity Definition](/docs/java/how-to-develop-an-activity-definition-in-java) and [Activity Execution](/docs/java/how-to-spawn-an-activity-execution-in-java).
 
@@ -54,8 +54,6 @@ public interface FileProcessingWorkflow {
     void abandon();
 }
 ```
-
-### `@WorkflowMethod`
 
 The `@WorkflowMethod` identifies the method that is the starting point of the Workflow Execution. The [Workflow Execution](/docs/concepts/what-is-a-workflow-execution) completes when this method completes.
 
@@ -86,13 +84,14 @@ In the following example, the Workflow Type is set to "Abc".
 
 When you set the Workflow Type this way, the value of the `name` parameter does not have to start with an uppercase letter.
 
-A method annotated with `@WorkflowMethod` can have any number of parameters. We recommend passing a single parameter that contains all the input fields. This allows adding fields in a backward-compatible manner.
+A method annotated with `@WorkflowMethod` can have any number of parameters.
+We recommend passing a single parameter that contains all the input fields. This allows adding fields in a backward-compatible manner.
 Note that all inputs should be serializable by the default Jackson JSON Payload Converter.
 
 A Workflow Type can be registered only once per Worker entity.
 If you define multiple Workflow implementations of the same type, you get an exception at the time of registration.
 
-### Workflow interface inheritance
+**Workflow interface inheritance**
 
 Workflow interfaces can form inheritance hierarchies, which can be useful for creating components that can be reused across multiple Workflow interfaces.
 For example, to implement a UI or CLI button that sends a `retryNow` Signal to any Workflow, define the method as follows:
@@ -162,7 +161,7 @@ This registration fails with the following message:
 java.lang.IllegalStateException: BaseWorkflow workflow type is already registered with the worker
 ```
 
-## Workflow implementation
+#### Workflow implementation
 
 A Workflow implementation implements a Workflow interface.
 Each time a new Workflow Execution is started, an instance of the Workflow implementation object is created.
@@ -172,10 +171,8 @@ As soon as this method returns, the Workflow Execution is considered to be compl
 Workflow methods annotated with `@QueryMethod` and `@SignalMethod` can be invoked during a Workflow Execution.
 Note that methods annotated with `@QueryMethod` can be invoked even when a Workflow is in the `Completed` state.
 
-### Typed and Untyped `WorkflowStubs`
-
 A `WorkflowStub` is a proxy of your Workflow implementation. To start a Workflow Execution, we need to create a `WorkflowStub`.
-There are two types of `WorkflowStubs`: Typed and Untyped.
+There are two types of `WorkflowStub`: Typed and Untyped.
 
 **Typed `WorkflowStubs`**
 
@@ -220,14 +217,7 @@ Related references:
 - [How to spawn a Workflow Execution in Java](/docs/java/how-to-spawn-a-workflow-execution-in-java).
 - `WorkflowStub.java` reference: <https://github.com/temporalio/sdk-java/blob/master/temporal-sdk/src/main/java/io/temporal/client/WorkflowStub.java>
 
-### Calling other Workflows
-
-To interact with other running Workflow Executions from within the Workflow, use `ExternalWorkflowStub`.
-To interact with Child Workflows, use `ChildWorkflowStub`.
-
-See [Workflow Execution](/docs/java/how-to-spawn-a-workflow-execution-in-java) and [Child Workflow Execution](/docs/java/how-to-spawn-a-child-workflow-execution-in-java) for details.
-
-### Dynamic Workflows
+#### Dynamic Workflows
 
 Use `DynamicWorkflow` to implement Workflow Types dynamically. When you register a Workflow implementation type that extends `DynamicWorkflow`, it can be used to implement any Workflow Type that is not explicitly registered with the Worker.
 
@@ -307,41 +297,7 @@ public static class DynamicGreetingWorkflowImpl implements DynamicWorkflow {
   }
 ```
 
-The following example shows how to register the Dynamic Workflow implementation with a Worker and the Client code for how to start a Workflow Eecution.
-
-```java
-  public static void main(String[] arg) {
-
-    WorkflowServiceStubs service = WorkflowServiceStubs.newInstance();
-    WorkflowClient client = WorkflowClient.newInstance(service);
-    WorkerFactory factory = WorkerFactory.newInstance(client);
-    Worker worker = factory.newWorker(TASK_QUEUE);
-
-    /* Register the Dynamic Workflow implementation with the Worker. Workflow implementations
-    ** must be known to the Worker at runtime in order to dispatch Workflow Tasks.
-    */
-    worker.registerWorkflowImplementationTypes(DynamicGreetingWorkflowImpl.class);
-
-    // Start all the Workers that are in this process.
-    factory.start();
-
-    /* Create the Workflow stub. Note that the Workflow type is not explicitly registered with the Worker */
-    WorkflowOptions workflowOptions =
-        WorkflowOptions.newBuilder().setTaskQueue(TASK_QUEUE).setWorkflowId(WORKFLOW_ID).build();
-    WorkflowStub workflow = client.newUntypedWorkflowStub("DynamicWF", workflowOptions);
-
-    /* Start Workflow Execution and Signal right after. Pass in the Workflow args and Signal args */
-    workflow.signalWithStart("greetingSignal", new Object[] {"John"}, new Object[] {"Hello"});
-
-    // Wait for the Workflow to finish getting the results
-    String result = workflow.getResult(String.class);
-
-    System.out.println(result);
-
-    System.exit(0);
-  }
-}
-```
+See [Dynamic Workflow Reference](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/DynamicWorkflow.html).
 
 ### Workflow implementation constraints
 
