@@ -1,7 +1,7 @@
 ---
 id: how-to-heartbeat-an-activity-in-java
 title: How to Heartbeat an Activity in Java
-sidebar_label: Activity Heartbeats
+sidebar_label: Activity Heartbeat
 description: Use `Activity.getExecutionContext().heartbeat()` in the Activity implementation code to send updates to the Temporal service that the Activity is still alive.
 tags:
   - java
