@@ -1,8 +1,8 @@
-import Chart from 'chart.js/auto';
+import Chart from "chart.js/auto";
 import CodeBlock from "@theme/CodeBlock";
-import React, { useState, useCallback, useEffect, useRef } from "react";
+import React, {useState, useCallback, useEffect, useRef} from "react";
 import styles from "./retry-simulator.module.css";
-import { useColorMode } from '@docusaurus/theme-common';
+import {useColorMode} from "@docusaurus/theme-common";
 
 const languageSamples = new Map([]);
 languageSamples.set(
@@ -46,7 +46,7 @@ func TestActivity(ctx context.Context, url string) error {
 
 export default function RetrySimulator() {
   const [state, setState] = useState({
-    retries: [{ success: true, runtimeMS: 1 }],
+    retries: [{success: true, runtimeMS: 1}],
     language: "typescript",
     scheduleToStartTimeout: 0,
     scheduleToCloseTimeout: 0,
@@ -58,7 +58,7 @@ export default function RetrySimulator() {
     maximumInterval: 0,
   });
   const chartCanvas = useRef(null);
-  const { isDarkTheme } = useColorMode();
+  const {isDarkTheme} = useColorMode();
 
   const addRetry = useCallback(function addRetry(success, runtimeMS) {
     const retries = [...state.retries];
@@ -68,10 +68,10 @@ export default function RetrySimulator() {
         success: false,
       };
     }
-    const retry = { success, runtimeMS };
+    const retry = {success, runtimeMS};
     retries.push(retry);
 
-    setState({ ...state, retries });
+    setState({...state, retries});
   });
 
   const updateRetry = useCallback(function updateRetry(index, update) {
@@ -82,14 +82,14 @@ export default function RetrySimulator() {
         delete update.runtimeMS;
       }
     }
-    retries[index] = { ...retries[index], ...update };
-    setState({ ...state, retries });
+    retries[index] = {...retries[index], ...update};
+    setState({...state, retries});
   });
 
   const deleteRetry = useCallback(function deleteRetry(index) {
     const retries = [...state.retries];
     retries.splice(index, 1);
-    setState({ ...state, retries });
+    setState({...state, retries});
   });
 
   const applyRetryScenario = useCallback(function applyRetryScenario(values) {
@@ -106,13 +106,13 @@ export default function RetrySimulator() {
       const runtimeMS =
         requestRuntimeMS +
         Math.round((Math.random() - 0.5) * (requestRuntimeMS / 2)); // +/- 50%
-      retries.push({ success, runtimeMS });
+      retries.push({success, runtimeMS});
       if (success) {
         break;
       }
     }
 
-    setState({ ...state, retries });
+    setState({...state, retries});
   });
 
   const updateRetryPolicyParam = useCallback(function updateRetryPolicyParam(
@@ -123,7 +123,7 @@ export default function RetrySimulator() {
     if (isNaN(value)) {
       return;
     }
-    setState({ ...state, [prop]: +value });
+    setState({...state, [prop]: +value});
     updateChart();
   });
 
@@ -133,18 +133,13 @@ export default function RetrySimulator() {
     }
     const chart = chartCanvas.current.chart;
 
-    const {
-      backoffCoefficient,
-      initialInterval
-    } = state;
-    let {
-      maximumInterval,
-      maximumAttempts
-    } = state;
+    const {backoffCoefficient, initialInterval} = state;
+    let {maximumInterval, maximumAttempts} = state;
     const labels = [];
     const values = [];
     maximumAttempts = maximumAttempts === 0 ? 10 : maximumAttempts;
-    maximumInterval = maximumInterval === 0 ? Number.POSITIVE_INFINITY : maximumInterval;
+    maximumInterval =
+      maximumInterval === 0 ? Number.POSITIVE_INFINITY : maximumInterval;
     let interval = initialInterval;
     for (let i = 0; i < maximumAttempts; ++i) {
       interval = Math.min(interval, maximumInterval);
@@ -156,59 +151,70 @@ export default function RetrySimulator() {
     if (labels.length > chart.data.labels.length) {
       chart.data.labels.push(...labels.slice(chart.data.labels.length));
     } else if (labels.length < chart.data.labels.length) {
-      chart.data.labels.splice(labels.length, chart.data.length - labels.length);
+      chart.data.labels.splice(
+        labels.length,
+        chart.data.length - labels.length
+      );
     }
     chart.data.labels = labels;
-    chart.data.datasets = [{
-      label: 'Interval after activity failure in ms',
-      backgroundColor: '#84bdf5',
-      borderColor: '#84bdf5',
-      data: values
-    }];
+    chart.data.datasets = [
+      {
+        label: "Interval after activity failure in ms",
+        backgroundColor: "#84bdf5",
+        borderColor: "#84bdf5",
+        data: values,
+      },
+    ];
     chart.update();
   });
 
   const updateLanguage = useCallback(function updateLanguage(language) {
-    setState({ ...state, language });
+    setState({...state, language});
   });
 
-  const { success, runtimeMS, reason } = calculateResult(state);
+  const {success, runtimeMS, reason} = calculateResult(state);
   const code = retryPolicyCode(state);
 
-  useEffect(function initializeChart() {
-    const chart = new Chart(chartCanvas.current, {
-      type: 'bar',
-      options: {
-        responsive: true,
-        scales: {
-          y: {
-            grid: {
-              color: '#ddd'
-            }
+  useEffect(
+    function initializeChart() {
+      const chart = new Chart(chartCanvas.current, {
+        type: "bar",
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              grid: {
+                color: "#ddd",
+              },
+            },
+            x: {
+              grid: {
+                color: "#ddd",
+              },
+            },
           },
-          x: {
-            grid: {
-              color: '#ddd'
-            }
-          }
-        }
+        },
+      });
+      chartCanvas.current.chart = chart;
+
+      updateChart();
+    },
+    [chartCanvas]
+  );
+
+  useEffect(
+    function updateChartDarkTheme() {
+      if (chartCanvas.current == null || chartCanvas.current.chart == null) {
+        return;
       }
-    });
-    chartCanvas.current.chart = chart;
+      const chart = chartCanvas.current.chart;
 
-    updateChart();
-  }, [chartCanvas]);
-
-  useEffect(function updateChartDarkTheme() {
-    if (chartCanvas.current == null || chartCanvas.current.chart == null) {
-      return;
-    }
-    const chart = chartCanvas.current.chart;
-
-    chart.options.scales.y.grid.color = isDarkTheme ? '#222' : '#ddd';
-    chart.options.scales.x.grid.color = isDarkTheme ? '#222' : '#ddd';
-    chart.update();
-  }, [isDarkTheme]);
+      chart.options.scales.y.grid.color = isDarkTheme ? "#222" : "#ddd";
+      chart.options.scales.x.grid.color = isDarkTheme ? "#222" : "#ddd";
+      chart.update();
+    },
+    [isDarkTheme]
+  );
 
   useEffect(() => updateChart(), [state]);
 
@@ -375,7 +381,7 @@ export default function RetrySimulator() {
   );
 }
 
-function RetryConfig({ retry, numRetries, index, updateRetry, deleteRetry }) {
+function RetryConfig({retry, numRetries, index, updateRetry, deleteRetry}) {
   return (
     <div className={styles.retry} key={"retry-" + index}>
       <div className={styles.inputContainer}>
@@ -384,7 +390,7 @@ function RetryConfig({ retry, numRetries, index, updateRetry, deleteRetry }) {
           disabled={index + 1 < numRetries}
           value={retry.success ? "succeeds" : "fails"}
           onChange={(ev) =>
-            updateRetry(index, { success: ev.target.value === "success" })
+            updateRetry(index, {success: ev.target.value === "success"})
           }
         >
           <option value="fails">Fails after</option>
@@ -394,7 +400,7 @@ function RetryConfig({ retry, numRetries, index, updateRetry, deleteRetry }) {
           type="number"
           className={styles.numberInput}
           value={retry.runtimeMS}
-          onChange={(ev) => updateRetry(index, { runtimeMS: ev.target.value })}
+          onChange={(ev) => updateRetry(index, {runtimeMS: ev.target.value})}
         />
         <span className={styles.removeRetry} onClick={() => deleteRetry(index)}>
           &times;
@@ -404,7 +410,7 @@ function RetryConfig({ retry, numRetries, index, updateRetry, deleteRetry }) {
         type="range"
         className={styles.slider}
         value={retry.runtimeMS}
-        onChange={(ev) => updateRetry(index, { runtimeMS: ev.target.value })}
+        onChange={(ev) => updateRetry(index, {runtimeMS: ev.target.value})}
         min="0"
         max="1000"
         step="5"
