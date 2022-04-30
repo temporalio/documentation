@@ -106,7 +106,7 @@ The following example shows how to use an untyped `ExternalWorkflowStub` in the 
         String responseTrigger = activity.greeting("Hello", name);
 
         // send a Signal from this sendGreeting Workflow to the other Workflow
-        // by calling the Signal method name "getGreetCall" defined in that Workflow. 
+        // by calling the Signal method name "getGreetCall" defined in that Workflow.
         callRespondWorkflow.signal("getGreetCall", responseTrigger);
 
         return responseTrigger;
