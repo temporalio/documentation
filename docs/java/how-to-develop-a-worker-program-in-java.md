@@ -8,7 +8,6 @@ tags:
   - workers
 ---
 
-
 Use the `newWorker` method on an instance of a [`WorkerFactory`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkerFactory.html) to create a new Worker in Java.
 
 Then register all Workflow Types and all Activity Types that the Worker can execute.
