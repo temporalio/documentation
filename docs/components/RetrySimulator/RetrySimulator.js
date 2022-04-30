@@ -1,5 +1,5 @@
 import CodeBlock from "@theme/CodeBlock";
-import React, { useState, useCallback } from "react";
+import React, {useState, useCallback} from "react";
 import styles from "./retry-simulator.module.css";
 
 const languageSamples = new Map([]);
@@ -44,7 +44,7 @@ func TestActivity(ctx context.Context, url string) error {
 
 export default function RetrySimulator() {
   const [state, setState] = useState({
-    retries: [{ success: true, runtimeMS: 1 }],
+    retries: [{success: true, runtimeMS: 1}],
     language: "typescript",
     scheduleToStartTimeout: 0,
     scheduleToCloseTimeout: 0,
@@ -64,10 +64,10 @@ export default function RetrySimulator() {
         success: false,
       };
     }
-    const retry = { success, runtimeMS };
+    const retry = {success, runtimeMS};
     retries.push(retry);
 
-    setState({ ...state, retries });
+    setState({...state, retries});
   });
 
   const updateRetry = useCallback(function updateRetry(index, update) {
@@ -78,14 +78,14 @@ export default function RetrySimulator() {
         delete update.runtimeMS;
       }
     }
-    retries[index] = { ...retries[index], ...update };
-    setState({ ...state, retries });
+    retries[index] = {...retries[index], ...update};
+    setState({...state, retries});
   });
 
   const deleteRetry = useCallback(function deleteRetry(index) {
     const retries = [...state.retries];
     retries.splice(index, 1);
-    setState({ ...state, retries });
+    setState({...state, retries});
   });
 
   const applyRetryScenario = useCallback(function applyRetryScenario(values) {
@@ -102,13 +102,13 @@ export default function RetrySimulator() {
       const runtimeMS =
         requestRuntimeMS +
         Math.round((Math.random() - 0.5) * (requestRuntimeMS / 2)); // +/- 50%
-      retries.push({ success, runtimeMS });
+      retries.push({success, runtimeMS});
       if (success) {
         break;
       }
     }
 
-    setState({ ...state, retries });
+    setState({...state, retries});
   });
 
   const updateRetryPolicyParam = useCallback(function updateRetryPolicyParam(
@@ -119,14 +119,14 @@ export default function RetrySimulator() {
     if (isNaN(value)) {
       return;
     }
-    setState({ ...state, [prop]: +value });
+    setState({...state, [prop]: +value});
   });
 
   const updateLanguage = useCallback(function updateLanguage(language) {
-    setState({ ...state, language });
+    setState({...state, language});
   });
 
-  const { success, runtimeMS, reason } = calculateResult(state);
+  const {success, runtimeMS, reason} = calculateResult(state);
   const code = retryPolicyCode(state);
 
   return (
@@ -288,7 +288,7 @@ export default function RetrySimulator() {
   );
 }
 
-function RetryConfig({ retry, numRetries, index, updateRetry, deleteRetry }) {
+function RetryConfig({retry, numRetries, index, updateRetry, deleteRetry}) {
   return (
     <div className={styles.retry} key={"retry-" + index}>
       <div className={styles.inputContainer}>
@@ -297,7 +297,7 @@ function RetryConfig({ retry, numRetries, index, updateRetry, deleteRetry }) {
           disabled={index + 1 < numRetries}
           value={retry.success ? "succeeds" : "fails"}
           onChange={(ev) =>
-            updateRetry(index, { success: ev.target.value === "success" })
+            updateRetry(index, {success: ev.target.value === "success"})
           }
         >
           <option value="fails">Fails after</option>
@@ -307,7 +307,7 @@ function RetryConfig({ retry, numRetries, index, updateRetry, deleteRetry }) {
           type="number"
           className={styles.numberInput}
           value={retry.runtimeMS}
-          onChange={(ev) => updateRetry(index, { runtimeMS: ev.target.value })}
+          onChange={(ev) => updateRetry(index, {runtimeMS: ev.target.value})}
         />
         <span className={styles.removeRetry} onClick={() => deleteRetry(index)}>
           &times;
@@ -317,7 +317,7 @@ function RetryConfig({ retry, numRetries, index, updateRetry, deleteRetry }) {
         type="range"
         className={styles.slider}
         value={retry.runtimeMS}
-        onChange={(ev) => updateRetry(index, { runtimeMS: ev.target.value })}
+        onChange={(ev) => updateRetry(index, {runtimeMS: ev.target.value})}
         min="0"
         max="1000"
         step="5"
