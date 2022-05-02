@@ -9,7 +9,8 @@ tags:
 
 An Activity Task contains the context needed to proceed with an [Activity Task Execution](/docs/concepts/what-is-an-activity-task-execution).
 
-Activity Tasks are meant to run an [Activity Definition](/docs/concepts/what-is-an-activity-definition) once. Should this fail, the Activity Task is retried until it's completed successfully.
+Activity Tasks are meant to run an [Activity Definition](/docs/concepts/what-is-an-activity-definition) once.
+If an Activity Task Execution fails, the Activity Task is retried in accordance with its Retry Policy.
 
 #### Scheduling Activity Tasks
 
