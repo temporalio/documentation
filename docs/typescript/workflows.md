@@ -415,7 +415,9 @@ let state = await handle.query<number, [string]>('print', 'Count: ');
 #### Notes on Signals
 
 - Signal handlers are only guaranteed to be called in order **per Signal Type**, not across all of them.
-  If you need strict ordering across multiple Signals, combine them into one Signal Type and use a `switch` statement.
+  If you need strict ordering across multiple Signals, either:
+  - Combine them into one Signal Type and use a `switch` statement.
+  - Register handlers statically (call `setHandler` outside of the Workflow function).
 - `WorkflowHandle.signal` resolves as soon as Temporal Server has persisted the Signal, before the Workflow's Signal handler is called.
 - `WorkflowHandle.signal` Promise resolves with no value; **Signal handlers cannot return data to the caller.**
 - **No Synchronous Updates**.
