@@ -70,9 +70,9 @@ There are four types of queues that a History shard maintains:
 
 - Transfer queue: used to transfer internal tasks to the Matching Service.
   Whenever a new Workflow Task needs to be scheduled, the History Service transactionally dispatches it to the Matching Service.
-- Timer queues: used to durably persist Timers.
-- Replicator queue: used only for the experimental Multi-Cluster feature.
-- Visibility queue: used to push data to the visibility index (ElasticSearch).
+- Timer queues: durably persists Timers.
+- Replicator queue: asynchronously replicates Workflow Executions from active Clusters to other passive Clusters (experimental Multi-Cluster feature).
+- Visibility queue: pushes data to the visibility index (ElasticSearch).
 
 The History service talks to the Matching Service and the Database.
 
