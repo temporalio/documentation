@@ -8,7 +8,7 @@ tags:
   - developer-guide
 ---
 
-- Used to set all child Workflow specific options
+Used to set all child Workflow specific options
 
 | Field                    | Description                                                                       | Type                   |
 | ------------------------ | --------------------------------------------------------------------------------- | ---------------------- |
@@ -25,3 +25,9 @@ tags:
 | Memo                     | Set non-indexed info that will be shown in list child Workflow                    | map[string]interface{} |
 | SearchAttributes         | Set indexed info that can be used in query of List/Scan/Count child Workflow APIs | map[string]interface{} |
 | ParentClosePolicy        | Set policy to decide what to do for the child when the parent closes              | ParentClosePolicy      |
+
+### Parent Close Policy
+
+import ParentClosePolicy from './how-to-set-a-parent-close-policy-in-go.md'
+
+<ParentClosePolicy/>
