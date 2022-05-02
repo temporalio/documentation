@@ -877,6 +877,9 @@ To spawn Workflow Executions from within other Workflow Executions, use either t
 
 See the [Customize Workflow Type](#customize-workflow-type) section to see how to customize the name of the Workflow Type.
 
+A request to spawn a Workflow Execution causes the Temporal Cluster to create the first Event ([WorkflowExecutionStarted](/docs/concepts-guide/#events#workflowexecutionstarted)) in the Workflow Execution Event History.
+The Temporal Cluster then creates the first Workflow Task resulting the first [WorkflowTaskScheduled](/docs/concepts-guide/#events/#workflowtaskscheduled) Event.
+
 <Tabs
 defaultValue="go"
 groupId="site-lang"
@@ -1572,13 +1575,22 @@ Content is not available
 
 ### Child Workflows
 
-TODO
+A [Child Workflow Execution](/docs/concepts-guide/#child-workflows) is a Workflow Execution that is spawned from within another Workflow.
+
+To asynchronously spawn a Child Workflow Execution, the Child Workflow must have an _Abandon_ [Parent Close Policy](/docs/concepts/what-is-a-parent-close-policy) set in the Child Workflow Options.
+Additionally, the Parent Workflow Execution must wait for the `ChildWorkflowExecutionStarted` Event to appear in its Event History before it completes.
+
+If the Parent makes the call to spawn the Child Workflow Execution and then immediately completes, the Child Workflow Execution will not spawn.
 
 ### Activity Heartbeats
 
 TODO
 
 ### Cron Jobs
+
+A [Temporal Cron Job](/docs/concepts-guide/#cron-jobs) is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.
+
+A Cron Schedule is provided as an option when the call to spawn a Workflow Execution is made.
 
 ### Local Activities
 
