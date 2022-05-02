@@ -14,7 +14,7 @@ If an Activity Task Execution fails, the Activity Task is retried in accordance 
 
 #### Scheduling Activity Tasks
 
-Activity Tasks are assigned to an Activity Task Queue upon an [ActivityTaskScheduled Event](/docs/concepts/what-is-an-activity-task#scheduling-activity-tasks). Once a Task is executed, an Activity's Events are run until the Activity successfully completes.
+Activity Tasks are assigned to an Activity Task Queue upon an [ActivityTaskScheduled Event](/docs/concepts/what-is-an-activity-task#scheduling-activity-tasks).
 
 #### Context Events
 
