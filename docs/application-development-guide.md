@@ -243,7 +243,7 @@ Content is not available
 </TabItem>
 </Tabs>
 
-#### Parameters
+#### Workflow parameters
 
 Temporal Workflows may have any number of custom parameters.
 However, it is strongly recommended that objects are used as parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow.
@@ -309,7 +309,7 @@ Content is not available
 </TabItem>
 </Tabs>
 
-#### Return values
+#### Workflow return values
 
 Workflow return values must also be serializable.
 Returning results, returning errors, or throwing exceptions is fairly idiomatic in each language that is supported.
@@ -367,7 +367,7 @@ Content is not available
 </TabItem>
 </Tabs>
 
-#### Logic requirements
+#### Workflow logic requirements
 
 Workflow logic is constrained by [deterministic execution requirements](/docs/concepts-guide/#workflow-definition/#deterministic-constraints).
 Therefor each language is limited to the use of certain idiomatic techniques.
@@ -432,7 +432,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 In the Temporal Go SDK programming model, an Activity Definition is an exportable function or a `struct` method.
 
-#### Function
+**Function**
 
 ```go
 // basic function signature
@@ -445,7 +445,7 @@ func YourActivityDefinition(ctx context.Context) error {
 func SimpleActivity(ctx context.Context, value string) (string, error)
 ```
 
-#### Struct method
+**Struct method**
 
 ```go
 type YourActivityStruct struct {
@@ -472,7 +472,37 @@ Activities written as struct methods can use shared struct variables such as:
 
 Because this is such a common need, the rest of this guide shows Activities written as `struct` methods.
 
-#### Activity parameters in Go
+</TabItem>
+<TabItem value="java">
+
+Content is not available
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is not available
+
+</TabItem>
+</Tabs>
+
+#### Activity parameters
+
+All Activity parameters must be serializable.
+
+There is no explicit limit to the amount of parameter data that can be passed to an Activity, but keep in mind that all parameters and return values are recorded in a [Workflow Execution Event History](/docs/concepts-guide/#event-history).
+A large Workflow Execution Event History can adversely impact the performance of your Workflow Executions, because the entire Event History is transferred to Worker Processes with every [Workflow Task](/docs/concepts-guide/#workflow-task).
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+
+<TabItem value="go">
 
 The first parameter of an Activity Definition is `context.Context`.
 This parameter is optional for an Activity Definition, though it is recommended especially if the Activity is expected to use other Go SDK APIs.
@@ -495,10 +525,36 @@ func (a *YourActivityStruct) YourActivityDefinition(ctx context.Context, param Y
 }
 ```
 
-There is no explicit limit to the amount of parameter data that can be passed to an Activity.
-However, all parameters are recorded in the Workflow Execution History and a large Workflow Execution History can adversely impact the performance of your Workflow Execution.
+</TabItem>
+<TabItem value="java">
 
-#### Activity return values in Go
+Content is not available
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is not available
+
+</TabItem>
+</Tabs>
+
+#### Activity return values
+
+All Activity results must be serializable.
+
+There is no explicit limit to the amount of data that can be returned by an Activity, but keep in mind that all return values are recorded in a [Workflow Execution Event History](/docs/concepts-guide/#event-history)
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+
+<TabItem value="go">
 
 A Go-based Activity Definition can return either just an `error` or a `customValue, error` combination (same as a Workflow Definition).
 You may wish to use a `struct` type to hold all custom values, just keep in mind they must all be serializable.
@@ -518,17 +574,6 @@ func (a *YourActivityStruct) YourActivityDefinition(ctx context.Context, param Y
   return result, nil
 }
 ```
-
-#### Other notes for developing Activities
-
-All native features of the Go programming language can be used within an Activity and there are no other limitations to Activity Definition logic:
-
-- **Performance**: Keep in mind that all parameters and return values are recorded in the [Workflow Execution Event History](/docs/concepts-guide/#event-history).
-  A large Workflow Execution Event History can adversely impact the performance of your Workflow Executions, because the entire Event History is transferred to Worker Processes with every [Workflow Task](/docs/concepts-guide/#workflow-task).
-- **Idiomatic usage**: You are free to use:
-  - your own loggers and metrics controllers
-  - the standard Go concurrency constructs
-  - make calls to other services across a network
 
 </TabItem>
 <TabItem value="java">
@@ -1573,6 +1618,113 @@ Content is not available
 </TabItem>
 </Tabs>
 
+#### Heartbeat Timeout
+
+A [Heartbeat Timeout](/docs/concepts-guide/#heartbeat-timeout) works in conjunction with Activity Heartbeats.
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+To set a [Heartbeat Timeout](/docs/concepts-guide/#heartbeat-timeout), Create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `RetryPolicy` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
+
+```go
+activityoptions := workflow.ActivityOptions{
+  HeartbeatTimeout: 10 * time.Second,
+}
+ctx = workflow.WithActivityOptions(ctx, activityoptions)
+var yourActivityResult YourActivityResult
+err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
+if err != nil {
+  // ...
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+Content is not available
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is not available
+
+</TabItem>
+</Tabs>
+
+#### Activity Retry Policy
+
+Activity Executions are automatically associated with a default [Retry Policy](/docs/concepts-guide/#retry-policies) if a custom one is not provided.
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+To set a [RetryPolicy](/docs/concepts-guide/#retry-policies), Create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `RetryPolicy` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
+
+- Type: [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy)
+- Default:
+
+```go
+retrypolicy := &temporal.RetryPolicy{
+  InitialInterval:    time.Second,
+  BackoffCoefficient: 2.0,
+  MaximumInterval:    time.Second * 100, // 100 * InitialInterval
+  MaximumAttempts: 0, // Unlimited
+  NonRetryableErrorTypes: []string, // empty
+}
+```
+
+Providing a Retry Policy here is a customization, and overwrites individual Field defaults.
+
+```go
+retrypolicy := &temporal.RetryPolicy{
+  InitialInterval:    time.Second,
+  BackoffCoefficient: 2.0,
+  MaximumInterval:    time.Second * 100,
+}
+
+activityoptions := workflow.ActivityOptions{
+  RetryPolicy: retrypolicy,
+}
+ctx = workflow.WithActivityOptions(ctx, activityoptions)
+var yourActivityResult YourActivityResult
+err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
+if err != nil {
+  // ...
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+Content is not available
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is not available
+
+</TabItem>
+</Tabs>
+
 ### Child Workflows
 
 A [Child Workflow Execution](/docs/concepts-guide/#child-workflows) is a Workflow Execution that is spawned from within another Workflow.
@@ -1580,7 +1732,7 @@ A [Child Workflow Execution](/docs/concepts-guide/#child-workflows) is a Workflo
 To asynchronously spawn a Child Workflow Execution, the Child Workflow must have an _Abandon_ [Parent Close Policy](/docs/concepts/what-is-a-parent-close-policy) set in the Child Workflow Options.
 Additionally, the Parent Workflow Execution must wait for the `ChildWorkflowExecutionStarted` Event to appear in its Event History before it completes.
 
-If the Parent makes the call to spawn the Child Workflow Execution and then immediately completes, the Child Workflow Execution will not spawn.
+If the Parent makes the call to spawn the Child Workflow Execution and then immediately completes, the Child Workflow Execution does not spawn.
 
 ### Activity Heartbeats
 
@@ -1758,3 +1910,4 @@ Content is not available
 ## Testing
 
 TODO
+

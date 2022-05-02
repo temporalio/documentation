@@ -85,17 +85,15 @@
 							"path": "none"
 						}
 					],
-					"h4_sections": [
-						{
-							"header": "Parameters",
+					"h4_sections": [{
+							"header": "Workflow parameters",
 							"type": "context",
 							"path": "app-dev-context/workflow-parameters"
 						},
 						{
 							"header": "none",
 							"type": "lang-tabs",
-							"langs": [
-								{
+							"langs": [{
 									"lang": "go",
 									"title": "Go",
 									"path": "go/how-to-define-workflow-parameters-in-go"
@@ -118,15 +116,14 @@
 							]
 						},
 						{
-							"header": "Return values",
+							"header": "Workflow return values",
 							"type": "context",
 							"path": "app-dev-context/workflow-return-values"
 						},
 						{
 							"header": "none",
 							"type": "lang-tabs",
-							"langs": [
-								{
+							"langs": [{
 									"lang": "go",
 									"title": "Go",
 									"path": "go/how-to-define-workflow-return-values-in-go"
@@ -149,15 +146,14 @@
 							]
 						},
 						{
-							"header": "Logic requirements",
+							"header": "Workflow logic requirements",
 							"type": "context",
 							"path": "app-dev-context/workflow-logic-requirements"
 						},
 						{
 							"header": "none",
 							"type": "lang-tabs",
-							"langs": [
-								{
+							"langs": [{
 									"lang": "go",
 									"title": "Go",
 									"path": "go/how-to-handle-workflow-logic-requirements-in-go"
@@ -208,6 +204,67 @@
 							"lang": "typescript",
 							"title": "TypeScript",
 							"path": "none"
+						}
+					],
+					"h4_sections": [{
+							"header": "Activity parameters",
+							"type": "context",
+							"path": "app-dev-context/activity-parameters"
+						},
+						{
+							"header": "none",
+							"type": "lang-tabs",
+							"langs": [{
+									"lang": "go",
+									"title": "Go",
+									"path": "go/how-to-define-activity-parameters-in-go"
+								},
+								{
+									"lang": "java",
+									"title": "Java",
+									"path": "none"
+								},
+								{
+									"lang": "php",
+									"title": "PHP",
+									"path": "none"
+								},
+								{
+									"lang": "typescript",
+									"title": "TypeScript",
+									"path": "none"
+								}
+							]
+						},
+						{
+							"header": "Activity return values",
+							"type": "context",
+							"path": "app-dev-context/activity-return-values"
+						},
+						{
+							"header": "none",
+							"type": "lang-tabs",
+							"langs": [{
+									"lang": "go",
+									"title": "Go",
+									"path": "go/how-to-define-activity-return-values-in-go"
+								},
+								{
+									"lang": "java",
+									"title": "Java",
+									"path": "none"
+								},
+								{
+									"lang": "php",
+									"title": "PHP",
+									"path": "none"
+								},
+								{
+									"lang": "typescript",
+									"title": "TypeScript",
+									"path": "none"
+								}
+							]
 						}
 					]
 				},
@@ -465,8 +522,7 @@
 					"header": "Signals",
 					"type": "context",
 					"path": "app-dev-context/signals",
-					"h4_sections": [
-						{
+					"h4_sections": [{
 							"header": "Define Signal",
 							"type": "context",
 							"path": "app-dev-context/define-signal"
@@ -710,6 +766,66 @@
 									"lang": "go",
 									"title": "Go",
 									"path": "go/how-to-set-a-schedule-to-start-timeout-in-go"
+								},
+								{
+									"lang": "java",
+									"title": "Java",
+									"path": "none"
+								},
+								{
+									"lang": "php",
+									"title": "PHP",
+									"path": "none"
+								},
+								{
+									"lang": "typescript",
+									"title": "TypeScript",
+									"path": "none"
+								}
+							]
+						},
+						{
+							"header": "Heartbeat Timeout",
+							"type": "context",
+							"path": "app-dev-context/heartbeat-timeout"
+						},
+						{
+							"header": "none",
+							"type": "lang-tabs",
+							"langs": [{
+									"lang": "go",
+									"title": "Go",
+									"path": "go/how-to-set-a-heartbeat-timeout-in-go"
+								},
+								{
+									"lang": "java",
+									"title": "Java",
+									"path": "none"
+								},
+								{
+									"lang": "php",
+									"title": "PHP",
+									"path": "none"
+								},
+								{
+									"lang": "typescript",
+									"title": "TypeScript",
+									"path": "none"
+								}
+							]
+						},
+						{
+							"header": "Activity Retry Policy",
+							"type": "context",
+							"path": "app-dev-context/activity-retry-policy"
+						},
+						{
+							"header": "none",
+							"type": "lang-tabs",
+							"langs": [{
+									"lang": "go",
+									"title": "Go",
+									"path": "go/how-to-set-an-activity-retry-policy-in-go"
 								},
 								{
 									"lang": "java",
