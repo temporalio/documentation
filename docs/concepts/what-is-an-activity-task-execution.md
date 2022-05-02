@@ -7,10 +7,8 @@ tags:
   - explanation
 ---
 
-An Activity Task Execution results from the invocation of Activity Function Definition.
+An Activity Task Execution is when the Worker uses the Context provided from the [Activity Task](/docs/concepts/what-is-an-activity-task) and executes the [Activity Definition](/docs/concepts/what-is-an-activity-definition). 
 
-From the API, users see an Activity being executed, and assume that it runs once.
+From the API, users see an Activity being executed and assume that it runs once.
 
-In reality, the Activity executes until it succeeds.
-
-Activity Task Executions are retried per a Retry Policy.
+In reality, the Activity can be retried per a Retry Policy until it achieves its expected result.
