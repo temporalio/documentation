@@ -15,7 +15,7 @@ To start a Workflow Execution, your Temporal Server must be running, and your fr
 To establish a connection with the front-end service, use `WorkflowServiceStubs`.
 
 ```java
-WorkflowServiceStubs service = WorkflowServiceStubs.newInstance();
+WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
 ```
 
 You can provide `WorkflowServiceStubsOptions` to override the default values for the gRPC calls.
@@ -23,7 +23,7 @@ You can provide `WorkflowServiceStubsOptions` to override the default values for
 For example, the default front-end service gRPC address is set to `127.0.0.1:7233`, where `7233` is the default port for the Temporal frontend service. If your server is running on a different host or port from the default, you can set it as shown in the following example.
 
 ```java
-WorkflowServiceStubs service = WorkflowServiceStubs.newInstance(
+WorkflowServiceStubs service = WorkflowServiceStubs.newServiceStubs(
                     WorkflowServiceStubsOptions.newBuilder()
                      .setTarget(TARGET_ENDPOINT)
                             .build());
@@ -39,7 +39,7 @@ Create an instance of a `WorkflowClient` for the Workflow service stub, and use 
 The following example shows how to create a `WorkflowClient` instance called "client" for the `WorkflowServiceStubs` "service" that we created in the previous example, and set `Namespace` option for the `WorkflowClient`.
 
 ```java
-WorkflowClient client = WorkflowClient.newInstance(
+WorkflowClient client = WorkflowClient.newServiceStubs(
                 service,
                 WorkflowClientOptions.newBuilder()
                         .setNamespace(“Abc”)
