@@ -1,4 +1,3 @@
-
 The tool below helps visualize total Activity Execution times through experimenting with different Activity timeouts and Retry Policies.
 
 The simulator is based on a common Activity use-case, which is to call a third party HTTP API and return the results.
