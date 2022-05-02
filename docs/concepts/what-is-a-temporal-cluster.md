@@ -51,7 +51,7 @@ The Frontend Service has access to the hash rings that maintain service membersh
 
 Inbound call rate limiting is applied per host and per namespace.
 
-The Frontend service talks to the Matching service, History service, Worker service, the database, and ElasticSearch (if in use).
+The Frontend service talks to the Matching service, History service, Worker service, the database, and Elasticsearch (if in use).
 
 - It uses the grpcPort 7233 to host the service handler.
 - It uses port 6933 for membership related communication.
