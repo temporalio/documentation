@@ -68,7 +68,7 @@ The number of shards remains static for the life of the Cluster (so you should p
 Each shard maintains data (routing Ids, mutable state) and queues.
 There are four types of queues that a History shard maintains:
 
-- Transfer queue: used to transfer internal tasks to the Matching Service.
+- Transfer queue: transfers internal tasks to the Matching Service.
   Whenever a new Workflow Task needs to be scheduled, the History Service transactionally dispatches it to the Matching Service.
 - Timer queues: durably persists Timers.
 - Replicator queue: asynchronously replicates Workflow Executions from active Clusters to other passive Clusters (experimental Multi-Cluster feature).
