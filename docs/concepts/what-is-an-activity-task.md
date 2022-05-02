@@ -8,22 +8,21 @@ tags:
 ---
 
 An Activity Task contains the context needed to proceed with an [Activity Task Execution](/docs/concepts/what-is-an-activity-task-execution).
+From the API, users see an Activity being executed and assume that it runs once.
 
-Activity Tasks are meant to run an [Activity Definition](/docs/concepts/what-is-an-activity-definition) once.
+An Activity Task is meant to run an [Activity Definition](/docs/concepts/what-is-an-activity-definition) once.
 If an Activity Task Execution fails, the Activity Task is retried in accordance with its Retry Policy.
-
-#### Scheduling Activity Tasks
-
-Activity Tasks are assigned to an Activity Task Queue upon an [ActivityTaskScheduled Event](/docs/concepts/what-is-an-activity-task#scheduling-activity-tasks).
 
 #### Context Events
 
 Activity Tasks contain Events that are needed to execute the Activity. These events are found within the Activity Task's [Context](/docs/concepts/what-is-an-activity-task#context-events).
 
-[event explanation?]
+The Temporal Cluster puts an Activity Task into the Task Queue. This correlates to the [ActivityTaskScheduled Event](/docs/concepts/what-is-an-activity-task#scheduling-activity-tasks) in the Activity Task's Context.
 
-ActivityTaskScheduled prepares the Activity for execution. ActivityTaskStarted begins the Activity.
+Upon completion, the Activity Task responds to the cluster with a specific Event:
+- ActivityTaskCompleted
+- ActivityTaskFailed
+- ActivityTaskTimedOut
+- ActivityTaskCanceled
+- ActivityTaskTerminated
 
-Upon completion, the Activity Task responds to the cluster with an Event status of _success_ or _failure_.
-
-[failure events may have retry?]
