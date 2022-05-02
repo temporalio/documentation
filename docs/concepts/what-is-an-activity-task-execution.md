@@ -9,7 +9,7 @@ tags:
 
 An Activity Task Execution results from the invocation of Activity Function Definition.
 
-From the API, users see an Activity being executed, and assume that it's run once.
+From the API, users see an Activity being executed, and assume that it runs once.
 
 In reality, the Activity executes until it succeeds.
 
