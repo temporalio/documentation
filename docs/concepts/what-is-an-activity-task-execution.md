@@ -7,7 +7,7 @@ tags:
   - explanation
 ---
 
-An Activity Task Execution is when the Worker uses the Context provided from the [Activity Task](/docs/concepts/what-is-an-activity-task) and executes the [Activity Definition](/docs/concepts/what-is-an-activity-definition). 
+An Activity Task Execution is when the Worker uses the Context provided from the [Activity Task](/docs/concepts/what-is-an-activity-task) and executes the [Activity Definition](/docs/concepts/what-is-an-activity-definition).
 
 From the API, users see an Activity being executed and assume that it runs once.
 

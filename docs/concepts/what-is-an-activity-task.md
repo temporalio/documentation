@@ -20,9 +20,9 @@ Activity Tasks contain Events that are needed to execute the Activity. These eve
 The Temporal Cluster puts an Activity Task into the Task Queue. This correlates to the [ActivityTaskScheduled Event](/docs/concepts/what-is-an-activity-task#scheduling-activity-tasks) in the Activity Task's Context.
 
 Upon completion, the Activity Task responds to the cluster with a specific Event:
+
 - ActivityTaskCompleted
 - ActivityTaskFailed
 - ActivityTaskTimedOut
 - ActivityTaskCanceled
 - ActivityTaskTerminated
-
