@@ -18,7 +18,7 @@ Activity Tasks are assigned to an Activity Task Queue upon an [ActivityTaskSched
 
 #### Context Events
 
-Activity Tasks contain Events that contain what's needed to execute the Activity. These events are found within the Activity Task's [Context](/docs/concepts/what-is-an-activity-task#context-events).
+Activity Tasks contain Events that are needed to execute the Activity. These events are found within the Activity Task's [Context](/docs/concepts/what-is-an-activity-task#context-events).
 
 [event explanation?]
 
