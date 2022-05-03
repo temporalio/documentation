@@ -9,6 +9,4 @@ tags:
 
 An Activity Task Execution is when the Worker uses the Context provided from the [Activity Task](/docs/concepts/what-is-an-activity-task) and executes the [Activity Definition](/docs/concepts/what-is-an-activity-definition).
 
-From the API, users see an Activity being executed and assume that it runs once.
-
-In reality, the Activity can be retried per a Retry Policy until it achieves its expected result.
+The API to schedule an Activity Execution provides an "effectively once" experience, even though there may be several Activity Task Executions that take place to successfully complete an Activity.
