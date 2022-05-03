@@ -70,7 +70,7 @@ type ContextPropagator interface {
 ```
 
 - `Inject` reads select context keys from a Go [context.Context](https://golang.org/pkg/context/#Context) object and writes them into the headers using the [HeaderWriter](https://pkg.go.dev/go.temporal.io/sdk/internal#HeaderWriter) interface.
-- `InjectFromWorkflow` operates similar to `Inject` but reads form a [workflow.Context](https://pkg.go.dev/go.temporal.io/sdk/internal#Context) object.
+- `InjectFromWorkflow` operates similar to `Inject` but reads from a [workflow.Context](https://pkg.go.dev/go.temporal.io/sdk/internal#Context) object.
 - `Extract` picks select headers and put their values into the [context.Context](https://golang.org/pkg/context/#Context) object.
 - `ExtractToWorkflow` operates similar to `Extract` but write to a [workflow.Context](https://pkg.go.dev/go.temporal.io/sdk/internal#Context) object.
 
