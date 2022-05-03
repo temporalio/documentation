@@ -1461,7 +1461,188 @@ Content is not available
 
 ### Queries
 
-TODO
+A [Query](/docs/concepts-guide/#queries) is a synchronous operation that is used to get the state of a Workflow Execution.
+
+#### Query name
+
+A Query name (also called Query type) is simply a string name.
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+In Go, a Query type, also called a Query name, is a `string` value.
+
+```go
+queryType := "your_query_name"
+```
+
+</TabItem>
+<TabItem value="java">
+
+Content is not available
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is not available
+
+</TabItem>
+</Tabs>
+
+#### Send Query
+
+Queries are sent from a Temporal Client.
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+Use the `QueryWorkflow()` API or the `QueryWorkflowWithOptions` API on the Temporal Client to send a Query to a Workflow Execution.
+
+```go
+// ...
+response, err := temporalClient.QueryWorkflow(context.Background(), workflowID, runID, queryType)
+if err != nil {
+  // ...
+}
+// ...
+```
+
+You can pass an arbitrary number of arguments to the `QueryWorkflow()` function.
+
+```go
+// ...
+response, err := temporalClient.QueryWorkflow(context.Background(), workflowID, runID, queryType, "foo", "baz")
+if err != nil {
+  // ...
+}
+// ...
+```
+
+The `QueryWorkflowWithOptions()` API provides similar functionality, but with the ability to set additional configurations through the [QueryWorkflowWithOptionsRequest](https://pkg.go.dev/go.temporal.io/sdk/client#QueryWorkflowWithOptionsRequest).
+When using this API you will also receive a structured [QueryWorkflowWithOptionsResponse](https://pkg.go.dev/go.temporal.io/sdk/client#QueryWorkflowWithOptionsResponse)
+
+```go
+// ...
+response, err := temporalClient.QueryWorkflowWithOptions(context.Background(), &client.QueryWorkflowWithOptionsRequest{
+    WorkflowID: workflowID,
+    RunID: runID,
+    QueryType: queryType,
+    Args: args,
+})
+if err != nil {
+  // ...
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+Content is not available
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is not available
+
+</TabItem>
+</Tabs>
+
+#### Handle Query
+
+Queries are handled by your Workflow.
+
+Do not include any logic that causes [Command](/docs/concepts-guide/#commands) generation within a Query handler (such as executing Activities). as this will lead to unexpected behavior.
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+Use the `SetQueryHandler` API from the `go.temporal.io/sdk/workflow` package to set a Query Handler that listens for a Query by name.
+
+The handler must be a function that returns two values:
+
+1. A serializable result
+2. An error
+
+The handler function can receive any number of input parameters, but all input parameters must be serializable.
+The following sample code sets up a Query Handler that handles the `current_state` Query type:
+
+```go
+func MyWorkflow(ctx workflow.Context, input string) error {
+  currentState := "started" // This could be any serializable struct.
+  queryType := "current_state"
+  err := workflow.SetQueryHandler(ctx, queryType, func() (string, error) {
+    return currentState, nil
+  })
+  if err != nil {
+    currentState = "failed to register query handler"
+    return err
+  }
+  // Your normal Workflow code begins here, and you update the currentState as the code makes progress.
+  currentState = "waiting timer"
+  err = NewTimer(ctx, time.Hour).Get(ctx, nil)
+  if err != nil {
+    currentState = "timer failed"
+    return err
+  }
+  currentState = "waiting activity"
+  ctx = WithActivityOptions(ctx, myActivityOptions)
+  err = ExecuteActivity(ctx, MyActivity, "my_input").Get(ctx, nil)
+  if err != nil {
+    currentState = "activity failed"
+    return err
+  }
+  currentState = "done"
+  return nil
+}
+```
+
+For example, suppose your query handler function takes 2 parameters:
+
+```go
+err := workflow.SetQueryHandler(ctx, "current_state", func(prefix string, suffix string) (string, error) {
+    return prefix + currentState + suffix, nil
+})
+```
+
+</TabItem>
+<TabItem value="java">
+
+Content is not available
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is not available
+
+</TabItem>
+</Tabs>
 
 ### Timers
 
@@ -2259,3 +2440,4 @@ Content is not available
 ## Testing
 
 TODO
+

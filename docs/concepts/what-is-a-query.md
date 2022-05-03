@@ -26,19 +26,18 @@ Queries are strongly consistent and are guaranteed to return the most recent sta
 This means that the data reflects the state of all confirmed Events that came in before the Query was sent.
 An Event is considered confirmed if the call creating the Event returned success.
 Events that are created while the Query is outstanding may or may not be reflected in the Workflow state the Query result is based on.
-Strongly consistent Queries may have a small amount of latency.
 
-A Query can carry arguments to specify which data it is requesting.
+A Query can carry arguments to specify the data it is requesting.
 And each Workflow can expose data to multiple types of Queries.
 
-A Query must never mutate the state of the Workflow Execution – that is, Queries are **read-only** and cannot contain any blocking code.
-This means that Query handling logic can not schedule Activity Executions for example.
+A Query must never mutate the state of the Workflow Execution—that is, Queries are _read-only_ and cannot contain any blocking code.
+This means, for example, that Query handling logic cannot schedule Activity Executions.
 
-If a Query is sent to a completed Workflow Execution, the final value is returned.
+Sending Queries to completed Workflow Executions is supported, though Query reject conditions can be configured per Query.
 
 #### Stack Trace Query
 
-In many SDKs the Temporal Client exposes a predefined `__stack_trace` Query that returns the stack trace of all the threads owned by that Workflow Execution.
+In many SDKs, the Temporal Client exposes a predefined `__stack_trace` Query that returns the stack trace of all the threads owned by that Workflow Execution.
 This is a great way to troubleshoot a Workflow Execution in production.
-If a Workflow Execution has been stuck at a state for longer than an expected period of time, for example, you can send a `__stack_trace` Query to return the current call stack.
+For example, if a Workflow Execution has been stuck at a state for longer than an expected period of time, you can send a `__stack_trace` Query to return the current call stack.
 The `__stack_trace` Query name does not require special handling in your Workflow code.
