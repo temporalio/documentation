@@ -48,7 +48,7 @@ func MyWorkflow(ctx workflow.Context, input string) error {
 }
 ```
 
-For example, suppose your query handler function takes 2 parameters:
+For example, suppose your query handler function takes two parameters:
 
 ```go
 err := workflow.SetQueryHandler(ctx, "current_state", func(prefix string, suffix string) (string, error) {
