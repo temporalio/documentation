@@ -1,4 +1,15 @@
-To spawn an Activity Execution, you must retrieve the _Activitiy handle_ in you Workflow.
+---
+id: how-to-spawn-an-activity-execution-in-typescript
+title: How to spawn an Activity Execution in Typescript
+sidebar_label: Spawn an Activity Execution
+description: Spawn an Activity Execution
+tags:
+  - developer-guide
+  - sdk
+  - typescript
+---
+
+To spawn an Activity Execution, you must retrieve the _Activity handle_ in your Workflow.
 
 ```typescript
 import { proxyActivities } from '@temporalio/workflow';
@@ -15,4 +26,4 @@ export async function example(name: string): Promise<string> {
 }
 ```
 
-This imports the indivuidal Activities and declares the type alias for each Activity.
+This imports the individual Activities and declares the type alias for each Activity.

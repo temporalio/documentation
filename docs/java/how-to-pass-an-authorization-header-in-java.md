@@ -34,7 +34,7 @@ Temporal Server provides a [default implementation of JWT authentication](/docs/
       //other service stub options
       .addGrpcMetadataProvider(new AuthorizationGrpcMetadataProvider(tokenSupplier))
       .build();
-  WorkflowServiceStubs service = WorkflowServiceStubs.newInstance(serviceStubOptions);
+  WorkflowServiceStubs service = WorkflowServiceStubs.newServiceStubs(serviceStubOptions);
   WorkflowClient client = WorkflowClient.newInstance(service);
 ```
 

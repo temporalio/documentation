@@ -1,9 +1,20 @@
-When you call `proxyActivities` in a Workflow Function, you can set a range of ActivityOptions.
+---
+id: how-to-set-a-schedule-to-close-timeout-in-typescript
+title: How to set a Schedule to Close Timeout in Typescript
+sidebar_label: Set a Schedule to Close Timeout
+description: Set a Schedule to Close Timeout
+tags:
+  - developer-guide
+  - sdk
+  - typescript
+---
+
+When you call `proxyActivities` in a Workflow Function, you can set a range of `ActivityOptions`.
 
 Either `scheduleToCloseTimeout` or `scheduleToStartTimeout` must be set.
 
 Type: time.Duration
-Default: ∞ (infinity - no limit)
+Default: ∞ (infinity – no limit)
 
 In this example, you can set the `scheduleToCloseTimeout` to 5 m.
 

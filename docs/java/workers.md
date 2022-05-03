@@ -45,7 +45,7 @@ public static class EmployeeWorkflowImpl implements EmployeeWorkflow {
 Our Workflow invokes `EmployeeActivities` Activities. We can register our Workflow with our Worker:
 
 ```java
-WorkflowServiceStubs service = WorkflowServiceStubs.newInstance();
+WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
 WorkflowClient client = WorkflowClient.newInstance(service);
 WorkerFactory factory = WorkerFactory.newInstance(client);
 

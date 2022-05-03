@@ -46,7 +46,7 @@ values={[
 <TabItem value="java">
 
 ```java
- WorkflowServiceStubs service = WorkflowServiceStubs.newInstance();
+ WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
  // https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowClientOptions.Builder.html
  WorkflowOptions clientOptions = WorkflowClientOptions.newBuilder()
     .setNamespace('my-namespace-name');

@@ -4,7 +4,7 @@ sidebar_label: Introduction
 description: The TypeScript SDK lets developers write highly scalable, reliable, annd long-running workflows without being a distributed systems expert.
 ---
 
-The Temporal TypeScript SDK ([now in Beta](/blog/typescript-beta)) lets you write highly scalable and reliable long-running workflows without being a distributed systems expert.
+The Temporal TypeScript SDK ([now in Beta](/blog/typescript-beta)) lets you write highly scalable and reliable long-running Workflows without being a distributed systems expert.
 It is designed with TypeScript-first developer experience in mind, but works equally well with JavaScript.
 
 import { ResponsivePlayer } from '../../src/components'
@@ -53,7 +53,7 @@ Run "Hello Temporal" locally (~10 minutes)
 
 :::note Prerequisites
 
-<strong>Node.js 14+</strong>: This project requires Node.js version 14 or later.
+<strong>Node.js 14+</strong>: this project requires Node.js version 14 or later.
 
 <details>
 <summary>

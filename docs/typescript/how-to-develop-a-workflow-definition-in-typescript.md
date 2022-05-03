@@ -1,3 +1,14 @@
+---
+id: how-to-develop-a-workflow-definition-in-typescript
+title: How to develop a Workflow definition in Typescript
+sidebar_label: Develop a Workflow definition
+description: Develop a Workflow definition
+tags:
+  - developer-guide
+  - sdk
+  - typescript
+---
+
 A Workflow Function has two parts:
 
 - The function name is known as the Workflow Type.
@@ -8,7 +19,7 @@ Each Workflow Definition is bundled with any third party dependencies, and regis
 Workflow Definitions are _just functions_, which can store state, and orchestrate Activity Functions.
 The following code snippet uses `proxyActivities` to create functions to schedule a `greet` Activity in the system to say hello.
 
-A Workflow Function can have multiple parameters, however, we encourage you to use a single object parameter.
+A Workflow Function can have multiple parameters, however, Temporal encourages you to use a single object parameter.
 
 ```typescript
 type ExampleArgs = {
@@ -23,4 +34,4 @@ export async function example(
 }
 ```
 
-This Workflow Function takes the name of the parametera and assigns it to the variable name. Then it calls the function and pass the name of the varible as the argument. The funtion returns a promise with the value of `greeting`.
+This Workflow Function takes the name of the parameters and assigns it to the variable name. Then it calls the function and pass the name of the variable as the argument. The function returns a promise with the value of `greeting`.

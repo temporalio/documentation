@@ -23,7 +23,7 @@ However, it can be useful to retrieve a range of Workflow Executions based on ot
 Search Attributes enable eventually-consistent, business-logic-focused search and filter queries for Workflow Executions.
 For example, you could query for all Workflow Executions that have failed within a certain time range and run a batch operation to start new ones (you cannot "restart" a failed execution).
 
-Search Attributes are often queried via the Web UI, but you can also query from within your workflow code (as we show below).
+Search Attributes are often queried via the Web UI, but you can also Query from within your Workflow code (as we show below).
 
 <details>
 <summary>What is a Search Attribute?
@@ -52,7 +52,7 @@ This can be useful for tagging executions with useful attributes you may want to
 
 ## Future: Upsert Search Attributes during workflow execution
 
-In advanced cases, you may want to dynamically update these attributes as the workflow progresses.
+In advanced cases, you may want to dynamically update these attributes as the Workflow progresses.
 Temporal has an `UpsertSearchAttributes` capability, but it is not yet supported in the TypeScript SDK.
 
 ## Removing Search Attributes
@@ -69,7 +69,7 @@ Temporal supports using the `SearchAttributes` property of `workflow.GetInfo` to
 
 ## Future: Querying Search Attributes within a workflow
 
-You can programmatically retrieve attributes from a workflow execution with `GetSearchAttributes`, and log out all fields with `GetIndexedFields` in Temporal, however, this is not yet supported in the TypeScript SDK.
+You can programmatically retrieve attributes from a Workflow Execution with `GetSearchAttributes`, and log out all fields with `GetIndexedFields` in Temporal, however, this is not yet supported in the TypeScript SDK.
 
 ## Future: Testing Search Attributes
 

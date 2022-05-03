@@ -28,7 +28,7 @@ The following fields are available:
 
 ### `ID`
 
-import WorkflowId from './workflow-options/workflow-id.md'
+import WorkflowId from './how-to-set-a-workflow-id-in-go.md'
 
 <WorkflowId/>
 
@@ -46,35 +46,15 @@ import WFETimeout from './how-to-set-a-workflow-execution-timeout-in-go.md'
 
 ### `WorkflowRunTimeout`
 
-- Type: `time.Duration`
-- Default: Same as [`WorkflowExecutionTimeout`](#workflowexecutiontimeout)
+import WFRTimeout from './how-to-set-a-workflow-run-timeout-in-go.md'
 
-```go
-workflowOptions := client.StartWorkflowOptions{
-  WorkflowRunTimeout: time.Hours * 24 * 365 * 10,
-  // ...
-}
-workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
-if err != nil {
-  // ...
-}
-```
+<WFRTimeout/>
 
 ### `WorkflowTaskTimeout`
 
-- Type: `time.Duration`
-- Default: `time.Seconds * 10`
+import WFTTimeout from './how-to-set-a-workflow-task-timeout-in-go.md'
 
-```go
-workflowOptions := client.StartWorkflowOptions{
-  WorkflowTaskTimeout: time.Second * 10,
-  //...
-}
-workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
-if err != nil {
-  // ...
-}
-```
+<WFTTimeout/>
 
 ### `WorkflowIDReusePolicy`
 
@@ -112,28 +92,9 @@ if err != nil {
 
 ### `RetryPolicy`
 
-**How to set a Retry Policy for a Workflow Execution in Go**
+import RetryPolicy from './how-to-set-a-workflow-retry-policy-in-go.md'
 
-Create an instance of a [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy) from the `go.temporal.io/sdk/temporal` package and provide it as the value to the `RetryPolicy` field of the instance of `StartWorkflowOptions`.
-
-- Type: [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy)
-- Default: None
-
-```go
-retrypolicy := &temporal.RetryPolicy{
-  InitialInterval:    time.Second,
-  BackoffCoefficient: 2.0,
-  MaximumInterval:    time.Second * 100,
-}
-workflowOptions := client.StartWorkflowOptions{
-  RetryPolicy: retrypolicy,
-  // ...
-}
-workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
-if err != nil {
-  // ...
-}
-```
+<RetryPolicy/>
 
 ### `CronSchedule`
 

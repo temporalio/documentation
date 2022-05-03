@@ -1,3 +1,11 @@
+The Temporal TypeScript PHP provides a framework for Temporal Application development in the PHP language. The SDK contains the following tools:
+
+- A Temporal Client to communicate with a Temporal Cluster
+- APIs to use within your Workflows
+- APIs to create and manage Worker Entities and Worker Processes
+
+**Get the SDK**
+
 The Temporal PHP SDK is available as composer package and can be installed using the following command in a root of your project:
 
 ```bash

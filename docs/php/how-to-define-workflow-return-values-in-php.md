@@ -1,0 +1,11 @@
+Workflow methods return a Generator. To properly typecast the Workflow's return value in the client code use the `#[ReturnType()]` annotation.
+
+```php
+#[WorkflowInterface]
+interface FileProcessingWorkflow {
+
+    #[WorkflowMethod]
+    #[ReturnType("string")]
+    public function processFile(Argument $args);
+}
+```

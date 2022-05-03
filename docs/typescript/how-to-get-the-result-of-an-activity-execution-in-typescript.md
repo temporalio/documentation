@@ -1,4 +1,15 @@
-Since, Activities are referenced by their string name, you can reference them dynamically to get the result of an Activity Execution.
+---
+id: how-to-get-the-result-of-an-activity-execution-in-typescript
+title: How to get the result of an Activity Execution in Typescript
+sidebar_label: Get the result of an Activity Execution
+description: Get the result of an Activity Execution
+tags:
+  - developer-guide
+  - sdk
+  - typescript
+---
+
+Since Activities are referenced by their string name, you can reference them dynamically to get the result of an Activity Execution.
 
 ```typescript
 export async function DynamicWorkflow(activityName, ...args) {
@@ -13,4 +24,4 @@ export async function DynamicWorkflow(activityName, ...args) {
 }
 ```
 
-The `proxyActivities()` returns an object that calls the Activiites in the funciton. `acts[activityName]()` references the Activity using the Activity name, then it returns the results.
+The `proxyActivities()` returns an object that calls the Activities in the function. `acts[activityName]()` references the Activity using the Activity name, then it returns the results.

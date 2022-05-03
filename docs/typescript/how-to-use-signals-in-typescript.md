@@ -1,39 +1,50 @@
+---
+id: how-to-use-signals-in-typescript
+title: How to use Signals in Typescript
+sidebar_label: Use Signals
+description: Use Signals
+tags:
+  - developer-guide
+  - sdk
+  - typescript
+---
+
 To add a Signal to a Workflow, call `defineSignal()` with a name, and then attach a listener with `setHandler()`.
 
-- Handlers for take arguments, which can be used inside `setHandler()` logic.
+- Handlers to take arguments, which can be used inside `setHandler()` logic.
 - Signal handlers can mutate state, Signal handlers cannot return valeus.
 
-#### Declare your Signal as constancts outside the Workflow Definition.
+**Declare your Signal as constants outside the Workflow Definition**
 
 ```typescript
 import * as wf from '@temporalio/workflow';
 
 export const unblockSignal = wf.defineSignal('unblock');
-  let isBlocked = true;
-  wf.setHandler(unblockSignal, () => void (isBlocked = false));
-  console.log('Blocked');
-  try {
-    await wf.condition(() => !isBlocked);
-    console.log('Unblocked');
-  } catch (err) {
-    if (err instanceof wf.CancelledFailure) {
-      console.log('Cancelled');
-    }
-    throw err;
-  }
+ let isBlocked = true;
+ wf.setHandler(unblockSignal, () => void (isBlocked = false));
+ console.log('Blocked');
+ try {
+   await wf.condition(() => !isBlocked);
+   console.log('Unblocked');
+ } catch (err) {
+   if (err instanceof wf.CancelledFailure) {
+     console.log('Cancelled');
+   }
+   throw err;
+ }
 }
 ```
 
-This code defines a Signal as _unblock_ and declares the variable as _isBlocked_ as true. Then the code tries to execute the condition and print _Unblocked_ to the conosle if it becomes unblocked. Finally, the code catches any errors, and if the error is `CacelledFailure`, then it prints `Cacnelled` to the console.
+This code defines a Signal as _unblock_ and declares the variable as _isBlocked_ as true. Then the code tries to execute the condition and print _Unblocked_ to the console if it becomes unblocked. Finally, the code catches any errors, and if the error is `CancelledFailure`, then it prints `Cancelled` to the console.
 
-This helps provide type safety, since you can export the type signature of the signal or query to be called on the clientside.
+This helps provide type safety, since you can export the type signature of the Signal or Query to be called on the client side.
 
 ##### Declare your Signals dynamically
 
-For more flexible usecases, you may want a dynamic Signal, sucha as a generated ID. You may handle it in two ways:
+For more flexible usecases, you may want a dynamic Signal, such as a generated identifier. You may handle it in two ways:
 
-- avoid making it dynamic by collapsing all signals in one handler and move the ID to the payload.
-- actually make the signal name dynamic by inlining the signal definition per handler.
+- avoid making it dynamic by collapsing all signals in one handler and move the identifier to the payload.
+- actually make the Signal name dynamic by inlining the Signal definition per handler.
 
 ```typescript
 import * as wf from '@temporalio/workflow';
@@ -69,7 +80,7 @@ inlineSignal(`task-${taskBId}`, (payload) => {
 
 :::note
 
-The semantic of `defineSignal()` and `defineQuery()` is intentional, in that they return Signal/Query Definitions, not unique instances of Signals and Queries themselves.
+The semantics of `defineSignal()` and `defineQuery()` is intentional, in that they return Signal/Query Definitions, not unique instances of Signals and Queries themselves.
 Signals and Queries are only instantiated in `setHandler()` and are specific to a particular Workflow Execution.
 
 These distinctions may seem minor, but they model how Temporal works under the hood, because Signals and Queries are messages identified by _just strings_ and don't have meaning independent of the Workflow having a listener to handle them.
