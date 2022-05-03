@@ -28,7 +28,8 @@ An Event is considered confirmed if the call creating the Event returned success
 Events that are created while the Query is outstanding may or may not be reflected in the Workflow state the Query result is based on.
 Strongly consistent Queries may have a small amount of latency.
 
-A Query can carry arguments to specify which data it is requesting, as every Workflow can expose data to multiple types of Queries.
+A Query can carry arguments to specify which data it is requesting.
+And each Workflow can expose data to multiple types of Queries.
 
 A Query must never mutate the state of the Workflow Execution – that is, Queries are **read-only** and cannot contain any blocking code.
 This means that Query handling logic can not schedule Activity Executions for example.
