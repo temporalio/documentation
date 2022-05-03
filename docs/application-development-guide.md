@@ -243,7 +243,7 @@ Content is not available
 </TabItem>
 </Tabs>
 
-#### Parameters
+#### Workflow parameters
 
 Temporal Workflows may have any number of custom parameters.
 However, it is strongly recommended that objects are used as parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow.
@@ -309,7 +309,7 @@ Content is not available
 </TabItem>
 </Tabs>
 
-#### Return values
+#### Workflow return values
 
 Workflow return values must also be serializable.
 Returning results, returning errors, or throwing exceptions is fairly idiomatic in each language that is supported.
@@ -367,7 +367,7 @@ Content is not available
 </TabItem>
 </Tabs>
 
-#### Logic requirements
+#### Workflow logic requirements
 
 Workflow logic is constrained by [deterministic execution requirements](/docs/concepts-guide/#workflow-definition/#deterministic-constraints).
 Therefor each language is limited to the use of certain idiomatic techniques.
@@ -432,7 +432,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 In the Temporal Go SDK programming model, an Activity Definition is an exportable function or a `struct` method.
 
-#### Function
+**Function**
 
 ```go
 // basic function signature
@@ -445,7 +445,7 @@ func YourActivityDefinition(ctx context.Context) error {
 func SimpleActivity(ctx context.Context, value string) (string, error)
 ```
 
-#### Struct method
+**Struct method**
 
 ```go
 type YourActivityStruct struct {
@@ -472,7 +472,37 @@ Activities written as struct methods can use shared struct variables such as:
 
 Because this is such a common need, the rest of this guide shows Activities written as `struct` methods.
 
-#### Activity parameters in Go
+</TabItem>
+<TabItem value="java">
+
+Content is not available
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is not available
+
+</TabItem>
+</Tabs>
+
+#### Activity parameters
+
+All Activity parameters must be serializable.
+
+There is no explicit limit to the amount of parameter data that can be passed to an Activity, but keep in mind that all parameters and return values are recorded in a [Workflow Execution Event History](/docs/concepts-guide/#event-history).
+A large Workflow Execution Event History can adversely impact the performance of your Workflow Executions, because the entire Event History is transferred to Worker Processes with every [Workflow Task](/docs/concepts-guide/#workflow-task).
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+
+<TabItem value="go">
 
 The first parameter of an Activity Definition is `context.Context`.
 This parameter is optional for an Activity Definition, though it is recommended especially if the Activity is expected to use other Go SDK APIs.
@@ -495,10 +525,36 @@ func (a *YourActivityStruct) YourActivityDefinition(ctx context.Context, param Y
 }
 ```
 
-There is no explicit limit to the amount of parameter data that can be passed to an Activity.
-However, all parameters are recorded in the Workflow Execution History and a large Workflow Execution History can adversely impact the performance of your Workflow Execution.
+</TabItem>
+<TabItem value="java">
 
-#### Activity return values in Go
+Content is not available
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is not available
+
+</TabItem>
+</Tabs>
+
+#### Activity return values
+
+All Activity results must be serializable.
+
+There is no explicit limit to the amount of data that can be returned by an Activity, but keep in mind that all return values are recorded in a [Workflow Execution Event History](/docs/concepts-guide/#event-history)
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+
+<TabItem value="go">
 
 A Go-based Activity Definition can return either just an `error` or a `customValue, error` combination (same as a Workflow Definition).
 You may wish to use a `struct` type to hold all custom values, just keep in mind they must all be serializable.
@@ -518,17 +574,6 @@ func (a *YourActivityStruct) YourActivityDefinition(ctx context.Context, param Y
   return result, nil
 }
 ```
-
-#### Other notes for developing Activities
-
-All native features of the Go programming language can be used within an Activity and there are no other limitations to Activity Definition logic:
-
-- **Performance**: Keep in mind that all parameters and return values are recorded in the [Workflow Execution Event History](/docs/concepts-guide/#event-history).
-  A large Workflow Execution Event History can adversely impact the performance of your Workflow Executions, because the entire Event History is transferred to Worker Processes with every [Workflow Task](/docs/concepts-guide/#workflow-task).
-- **Idiomatic usage**: You are free to use:
-  - your own loggers and metrics controllers
-  - the standard Go concurrency constructs
-  - make calls to other services across a network
 
 </TabItem>
 <TabItem value="java">
@@ -1424,7 +1469,196 @@ TODO
 
 ### Workflow timeouts & retries
 
-TODO
+Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.
+A Retry Policy can work in cooperation with the timeouts to provide fine controls to optimize the execution experience.
+
+#### Workflow Execution Timeout
+
+Use the [Workflow Execution Timeout](/docs/concepts-guide/#workflow-execution-timeout) to limit maximum time that a Workflow Execution can be executing (have an Open status) including retries and any usage of Continue As New.
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, set the `WorkflowExecutionTimeout` field, and pass the instance to the `ExecuteWorkflow` call.
+
+- Type: `time.Duration`
+- Default: Unlimited
+
+```go
+workflowOptions := client.StartWorkflowOptions{
+  // ...
+  WorkflowExecutionTimeout: time.Hours * 24 * 365 * 10,
+  // ...
+}
+workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
+if err != nil {
+  // ...
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+Content is not available
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is not available
+
+</TabItem>
+</Tabs>
+
+#### Workflow Run Timeout
+
+Use the [Workflow Execution Timeout](/docs/concepts-guide/#workflow-execution-timeout) to limit maximum time that a Workflow Execution can be executing (have an Open status) including retries and any usage of Continue As New.
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, set the `WorkflowRunTimeout` field, and pass the instance to the `ExecuteWorkflow` call.
+
+- Type: `time.Duration`
+- Default: Same as [`WorkflowExecutionTimeout`](#workflowexecutiontimeout)
+
+```go
+workflowOptions := client.StartWorkflowOptions{
+  WorkflowRunTimeout: time.Hours * 24 * 365 * 10,
+  // ...
+}
+workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
+if err != nil {
+  // ...
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+Content is not available
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is not available
+
+</TabItem>
+</Tabs>
+
+#### Workflow Task Timeout
+
+Use the [Workflow Execution Timeout](/docs/concepts-guide/#workflow-execution-timeout) to limit maximum time that a Workflow Execution can be executing (have an Open status) including retries and any usage of Continue As New.
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, set the `WorkflowTaskTimeout` field, and pass the instance to the `ExecuteWorkflow` call.
+
+- Type: `time.Duration`
+- Default: `time.Seconds * 10`
+
+```go
+workflowOptions := client.StartWorkflowOptions{
+  WorkflowTaskTimeout: time.Second * 10,
+  //...
+}
+workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
+if err != nil {
+  // ...
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+Content is not available
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is not available
+
+</TabItem>
+</Tabs>
+
+#### Workflow Retry Policy
+
+Use a [Retry Policy](/docs/concepts-guide/#retry-policies) to retry a Workflow Execution in the event of a failure.
+
+Workflow Executions do not retry by default and Retry Policies should only be used with Workflow Executions in certain situations.
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+Create an instance of a [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy) from the `go.temporal.io/sdk/temporal` package and provide it as the value to the `RetryPolicy` field of the instance of `StartWorkflowOptions`.
+
+- Type: [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy)
+- Default: None
+
+```go
+retrypolicy := &temporal.RetryPolicy{
+  InitialInterval:    time.Second,
+  BackoffCoefficient: 2.0,
+  MaximumInterval:    time.Second * 100,
+}
+workflowOptions := client.StartWorkflowOptions{
+  RetryPolicy: retrypolicy,
+  // ...
+}
+workflowRun, err := temporalClient.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
+if err != nil {
+  // ...
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+Content is not available
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is not available
+
+</TabItem>
+</Tabs>
 
 ### Activity timeouts & retries
 
@@ -1573,14 +1807,281 @@ Content is not available
 </TabItem>
 </Tabs>
 
+#### Heartbeat Timeout
+
+A [Heartbeat Timeout](/docs/concepts-guide/#heartbeat-timeout) works in conjunction with Activity Heartbeats.
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+To set a [Heartbeat Timeout](/docs/concepts-guide/#heartbeat-timeout), Create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `RetryPolicy` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
+
+```go
+activityoptions := workflow.ActivityOptions{
+  HeartbeatTimeout: 10 * time.Second,
+}
+ctx = workflow.WithActivityOptions(ctx, activityoptions)
+var yourActivityResult YourActivityResult
+err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
+if err != nil {
+  // ...
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+Content is not available
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is not available
+
+</TabItem>
+</Tabs>
+
+#### Activity Retry Policy
+
+Activity Executions are automatically associated with a default [Retry Policy](/docs/concepts-guide/#retry-policies) if a custom one is not provided.
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+To set a [RetryPolicy](/docs/concepts-guide/#retry-policies), Create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `RetryPolicy` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
+
+- Type: [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy)
+- Default:
+
+```go
+retrypolicy := &temporal.RetryPolicy{
+  InitialInterval:    time.Second,
+  BackoffCoefficient: 2.0,
+  MaximumInterval:    time.Second * 100, // 100 * InitialInterval
+  MaximumAttempts: 0, // Unlimited
+  NonRetryableErrorTypes: []string, // empty
+}
+```
+
+Providing a Retry Policy here is a customization, and overwrites individual Field defaults.
+
+```go
+retrypolicy := &temporal.RetryPolicy{
+  InitialInterval:    time.Second,
+  BackoffCoefficient: 2.0,
+  MaximumInterval:    time.Second * 100,
+}
+
+activityoptions := workflow.ActivityOptions{
+  RetryPolicy: retrypolicy,
+}
+ctx = workflow.WithActivityOptions(ctx, activityoptions)
+var yourActivityResult YourActivityResult
+err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
+if err != nil {
+  // ...
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+Content is not available
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is not available
+
+</TabItem>
+</Tabs>
+
 ### Child Workflows
 
-A [Child Workflow Execution](/docs/concepts-guide/#child-workflows) is a Workflow Execution that is spawned from within another Workflow.
+A [Child Workflow Execution](/docs/concepts-guide/#child-workflows) is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.
 
-To asynchronously spawn a Child Workflow Execution, the Child Workflow must have an _Abandon_ [Parent Close Policy](/docs/concepts/what-is-a-parent-close-policy) set in the Child Workflow Options.
-Additionally, the Parent Workflow Execution must wait for the `ChildWorkflowExecutionStarted` Event to appear in its Event History before it completes.
+When using a Child Workflow API, Child Workflow related Events ([StartChildWorkflowExecutionInitiated](/docs/references/events#startchildworkflowexecutioninitiated), [ChildWorkflowExecutionStarted](/docs/references/events#childworkflowexecutionstarted), [ChildWorkflowExecutionCompleted](/docs/references/events#childworkflowexecutioncompleted), etc...) are logged in the Workflow Execution Event History.
 
-If the Parent makes the call to spawn the Child Workflow Execution and then immediately completes, the Child Workflow Execution will not spawn.
+Always block progress until the [ChildWorkflowExecutionStarted](/docs/references/events#childworkflowexecutionstarted) Event is logged to the Event History to ensure the Child Workflow Execution has started.
+After that, Child Workflow Executions may be abandoned using the default _Abandon_ [Parent Close Policy](/docs/concepts/what-is-a-parent-close-policy) set in the Child Workflow Options.
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+To spawn a [Child Workflow Execution](/docs/concepts-guide/#child-workflows) in Go, use the [`ExecuteChildWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ExecuteChildWorkflow) API, which is available from the `go.temporal.io/sdk/workflow` package.
+
+The `ExecuteChildWorkflow` call requires an instance of [`workflow.Context`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Context), with an instance of [`workflow.ChildWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ChildWorkflowOptions) applied to it, the Workflow Type, and any parameters that should be passed to the Child Workflow Execution.
+
+`workflow.ChildWorkflowOptions` contain the same fields as `client.StartWorkflowOptions`.
+Workflow Option fields automatically inherit their values from the Parent Workflow Options if they are not explicitly set.
+If a custom `WorkflowID` is not set, one is generated when the Child Workflow Execution is spawned.
+Use the [`WithChildOptions`](https://pkg.go.dev/go.temporal.io/sdk/workflow#WithChildOptions) API to apply Child Workflow Options to the instance of `workflow.Context`.
+
+The `ExecuteChildWorkflow` call returns an instance of a [`ChildWorkflowFuture`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ChildWorkflowFuture).
+
+Call the `.Get()` method on the instance of `ChildWorkflowFuture` to wait for the result.
+
+```go
+func YourWorkflowDefinition(ctx workflow.Context, params ParentParams) (ParentResp, error) {
+
+  childWorkflowOptions := workflow.ChildWorkflowOptions{}
+  ctx = workflow.WithChildOptions(ctx, childWorkflowOptions)
+
+  var result ChildResp
+  err := workflow.ExecuteChildWorkflow(ctx, YourOtherWorkflowDefinition, ChildParams{}).Get(ctx, &result)
+  if err != nil {
+    // ...
+  }
+  // ...
+  return resp, nil
+}
+
+func YourOtherWorkflowDefinition(ctx workflow.Context, params ChildParams) (ChildResp, error) {
+  // ...
+  return resp, nil
+}
+```
+
+To asynchronously spawn a Child Workflow Execution, the Child Workflow must have an "Abandon" Parent Close Policy set in the Child Workflow Options.
+Additionally, the Parent Workflow Execution must wait for the "ChildWorkflowExecutionStarted" event to appear in its event history before it completes.
+
+If the Parent makes the `ExecuteChildWorkflow` call and then immediately completes, the Child Workflow Execution will not spawn.
+
+To be sure that the Child Workflow Execution has started, first call the `GetChildWorkflowExecution` method on the instance of the `ChildWorkflowFuture`, which will return a different Future.
+Then call the `Get()` method on that Future, which is what will wait until the Child Workflow Execution has spawned.
+
+```go
+import (
+  // ...
+  "go.temporal.io/api/enums/v1"
+)
+
+func YourWorkflowDefinition(ctx workflow.Context, params ParentParams) (ParentResp, error) {
+
+  childWorkflowOptions := workflow.ChildWorkflowOptions{
+    ParentClosePolicy: enums.PARENT_CLOSE_POLICY_ABANDON,
+  }
+  ctx = workflow.WithChildOptions(ctx, childWorkflowOptions)
+
+  childWorkflowFuture := workflow.ExecuteChildWorkflow(ctx, YourOtherWorkflowDefinition, ChildParams{})
+  // Wait for the Child Workflow Execution to spawn
+  var childWE workflow.Execution
+  if err := childWorkflowFuture.GetChildWorkflowExecution().Get(ctx, &childWE); err != nil {
+     return err
+  }
+  // ...
+  return resp, nil
+}
+
+func YourOtherWorkflowDefinition(ctx workflow.Context, params ChildParams) (ChildResp, error) {
+  // ...
+  return resp, nil
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+Content is not available
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is not available
+
+</TabItem>
+</Tabs>
+
+#### Parent Close Policy
+
+A [Parent Close Policy](/docs/concepts/what-is-a-parent-close-policy) determines what happens to a Child Workflow Execution if its Parent changes to a Closed status (Completed, Failed, or Timed out).
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+In Go, a Parent Close Policy is set on the `ParentClosePolicy` field of an instance of [`workflow.ChildWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ChildWorkflowOptions).
+The possible values can be obtained from the [`go.temporal.io/api/enums/v1`](https://pkg.go.dev/go.temporal.io/api/enums/v1#ParentClosePolicy) package.
+
+- `PARENT_CLOSE_POLICY_ABANDON`
+- `PARENT_CLOSE_POLICY_TERMINATE`
+- `PARENT_CLOSE_POLICY_REQUEST_CANCEL`
+
+The Child Workflow Options are then applied to the the instance of `workflow.Context` by using the `WithChildOptions` API, which is then passed to the `ExecuteChildWorkflow()` call.
+
+- Type: [`ParentClosePolicy`](https://pkg.go.dev/go.temporal.io/api/enums/v1#ParentClosePolicy)
+- Default: `PARENT_CLOSE_POLICY_ABANDON`
+
+```go
+import (
+  // ...
+  "go.temporal.io/api/enums/v1"
+)
+
+func YourWorkflowDefinition(ctx workflow.Context, params ParentParams) (ParentResp, error) {
+  // ...
+  childWorkflowOptions := workflow.ChildWorkflowOptions{
+    // ...
+    ParentClosePolicy: enums.PARENT_CLOSE_POLICY_ABANDON,
+  }
+  ctx = workflow.WithChildOptions(ctx, childWorkflowOptions)
+  childWorkflowFuture := workflow.ExecuteChildWorkflow(ctx, YourOtherWorkflowDefinition, ChildParams{})
+  // ...
+}
+
+func YourOtherWorkflowDefinition(ctx workflow.Context, params ChildParams) (ChildResp, error) {
+  // ...
+  return resp, nil
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+Content is not available
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is not available
+
+</TabItem>
+</Tabs>
 
 ### Activity Heartbeats
 

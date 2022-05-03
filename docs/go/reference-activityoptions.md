@@ -82,19 +82,9 @@ import StartToCloseTimeout from './how-to-set-a-start-to-close-timeout-in-go.md'
 
 ### `HeartbeatTimeout`
 
-```go
-activityoptions := workflow.ActivityOptions{
-  HeartbeatTimeout: 10 * time.Second,
-}
-ctx = workflow.WithActivityOptions(ctx, activityoptions)
-var yourActivityResult YourActivityResult
-err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
-if err != nil {
-  // ...
-}
-```
+import HeartbeatTimeout from './how-to-set-a-heartbeat-timeout-in-go.md'
 
-- [What is a Heartbeat Timeout](/docs/concepts/what-is-a-heartbeat-timeout)
+<HeartbeatTimeout/>
 
 ### `WaitForCancellation`
 
@@ -131,37 +121,6 @@ if err != nil {
 
 ### `RetryPolicy`
 
-- Type: [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy)
-- Default:
+import RetryPolicy from './how-to-set-an-activity-retry-policy-in-go.md'
 
-```go
-retrypolicy := &temporal.RetryPolicy{
-  InitialInterval:    time.Second,
-  BackoffCoefficient: 2.0,
-  MaximumInterval:    time.Second * 100, // 100 * InitialInterval
-  MaximumAttempts: 0, // Unlimited
-  NonRetryableErrorTypes: []string, // empty
-}
-```
-
-Providing a Retry Policy here is a customization, and overwrites individual Field defaults.
-
-```go
-retrypolicy := &temporal.RetryPolicy{
-  InitialInterval:    time.Second,
-  BackoffCoefficient: 2.0,
-  MaximumInterval:    time.Second * 100,
-}
-
-activityoptions := workflow.ActivityOptions{
-  RetryPolicy: retrypolicy,
-}
-ctx = workflow.WithActivityOptions(ctx, activityoptions)
-var yourActivityResult YourActivityResult
-err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
-if err != nil {
-  // ...
-}
-```
-
-- [What is a Retry Policy](/docs/concepts/what-is-a-retry-policy)
+<RetryPolicy/>
