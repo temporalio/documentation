@@ -677,7 +677,98 @@
 				{
 					"header": "Queries",
 					"type": "context",
-					"path": "app-dev-context/queries"
+					"path": "app-dev-context/queries",
+					"h4_sections": [{
+							"header": "Query name",
+							"type": "context",
+							"path": "app-dev-context/query-name"
+						},
+						{
+							"header": "none",
+							"type": "lang-tabs",
+							"langs": [{
+									"lang": "go",
+									"title": "Go",
+									"path": "go/how-to-define-a-query-type-in-go"
+								},
+								{
+									"lang": "java",
+									"title": "Java",
+									"path": "none"
+								},
+								{
+									"lang": "php",
+									"title": "PHP",
+									"path": "none"
+								},
+								{
+									"lang": "typescript",
+									"title": "TypeScript",
+									"path": "none"
+								}
+							]
+						},
+						{
+							"header": "Send Query",
+							"type": "context",
+							"path": "app-dev-context/send-query"
+						},
+						{
+							"header": "none",
+							"type": "lang-tabs",
+							"langs": [{
+									"lang": "go",
+									"title": "Go",
+									"path": "go/how-to-send-a-query-to-a-workflow-execution-in-go"
+								},
+								{
+									"lang": "java",
+									"title": "Java",
+									"path": "none"
+								},
+								{
+									"lang": "php",
+									"title": "PHP",
+									"path": "none"
+								},
+								{
+									"lang": "typescript",
+									"title": "TypeScript",
+									"path": "none"
+								}
+							]
+						},
+						{
+							"header": "Handle Query",
+							"type": "context",
+							"path": "app-dev-context/handle-query"
+						},
+						{
+							"header": "none",
+							"type": "lang-tabs",
+							"langs": [{
+									"lang": "go",
+									"title": "Go",
+									"path": "go/how-to-handle-a-query-in-a-workflow-in-go"
+								},
+								{
+									"lang": "java",
+									"title": "Java",
+									"path": "none"
+								},
+								{
+									"lang": "php",
+									"title": "PHP",
+									"path": "none"
+								},
+								{
+									"lang": "typescript",
+									"title": "TypeScript",
+									"path": "none"
+								}
+							]
+						}
+					]
 				},
 				{
 					"header": "Timers",
@@ -688,8 +779,7 @@
 					"header": "Workflow timeouts & retries",
 					"type": "context",
 					"path": "app-dev-context/workflow-timeouts-and-retries",
-					"h4_sections": [
-						{
+					"h4_sections": [{
 							"header": "Workflow Execution Timeout",
 							"type": "context",
 							"path": "app-dev-context/workflow-execution-timeout"
@@ -996,8 +1086,7 @@
 							"path": "none"
 						}
 					],
-					"h4_sections": [
-						{
+					"h4_sections": [{
 							"header": "Parent Close Policy",
 							"type": "context",
 							"path": "app-dev-context/parent-close-policy"
