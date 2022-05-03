@@ -12,8 +12,7 @@ A Query is a synchronous operation that is used to get the state of a [Workflow 
 The state of a running Workflow Execution is constantly changing.
 Queries are available to expose the internal Workflow Execution state to the external world.
 
-- [How to send a Query to a Workflow Execution in Go](/docs/go/how-to-send-a-query-to-a-workflow-execution-in-go)
-- [How to handle a Query in a Workflow in Go](/docs/go/how-to-handle-a-query-in-a-workflow-in-go)
+- [How to use Queries in Go](/docs/go/how-to-use-queries-in-go)
 - [How to use Queries in Java](/docs/java/queries)
 - [How to use Queries in PHP](/docs/php/queries)
 - [How to send a Query to a Workflow Execution using tctl](/docs/tctl/workflow/query)
