@@ -22,7 +22,7 @@ The Query method usually just returns a value derived from the fields of the Wor
 
 ```java
 public String myQuery() {
-      // Returns the "greeting" object value derived from the Workflow method
+      // Returns the "greeting" object value derived from the Workflow method.
       return greeting;
     }
 ```
