@@ -10,7 +10,6 @@ description: In the Temporal Go SDK programming model, a Workflow is an exportab
 You can execute Workflows (including those from other language SDKs) by their type name:
 
 ```go
-
 workflowID := "myworkflow_" + uuid.New()
 workflowOptions := client.StartWorkflowOptions{
   ID:        workflowID,

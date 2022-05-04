@@ -35,10 +35,11 @@
   "excludes": [
     "**/node_modules",
     "**/*-lock.json",
-    "blogs/**",
+    "blog/**",
     ".docusaurus/",
     ".github",
-    "/build"
+    "/build",
+    "sidebars.js"
   ],
   "incremental": false,
   "plugins": [

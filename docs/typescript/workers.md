@@ -112,10 +112,10 @@ In production settings, you can configure the `address` and `namespace` the Work
 
 ```js
 import {
-  Worker,
   DefaultLogger,
-  Runtime,
   NativeConnection,
+  Runtime,
+  Worker,
 } from '@temporalio/worker';
 
 const logger = new DefaultLogger('DEBUG');
@@ -127,7 +127,7 @@ const connection = await NativeConnection.create({
   address: 'temporal.myorg.io',
 });
 const worker = await Worker.create({
-  connection /* standard Worker options from here */,
+  connection, /* standard Worker options from here */
 });
 ```
 

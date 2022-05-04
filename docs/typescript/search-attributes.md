@@ -6,6 +6,7 @@ description: Search Attributes enable eventually-consistent, business-logic-focu
 ---
 
 <!-- prettier-ignore -->
+
 import * as WhatsSearchAttr from '../concepts/what-is-a-search-attribute.md'
 import * as WhatIsATemporalCronJob from '../concepts/what-is-a-temporal-cron-job.md'
 

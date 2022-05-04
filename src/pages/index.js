@@ -1,25 +1,25 @@
-import React from "react";
-import Layout from "@theme/Layout";
-import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
+import Layout from '@theme/Layout';
+import React from 'react';
 import {
   Community,
-  TemporalCloud,
   Intro,
-  Resources,
   Newsletter,
-} from "../components";
+  Resources,
+  TemporalCloud,
+} from '../components';
 
 export default function Home() {
   const context = useDocusaurusContext();
-  const {siteConfig = {}} = context;
+  const { siteConfig = {} } = context;
   return (
-    <div className="main">
+    <div className='main'>
       <Layout
-        className="my-2 mx-auto w-full max-w-screen-lg px-8 shadow-none"
+        className='my-2 mx-auto w-full max-w-screen-lg px-8 shadow-none'
         title={`${siteConfig.title}`}
         description={`${siteConfig.tagline}`}
       >
-        <main className="mx-auto max-w-screen-lg p-6 md:p-10">
+        <main className='mx-auto max-w-screen-lg p-6 md:p-10'>
           <Intro />
         </main>
       </Layout>

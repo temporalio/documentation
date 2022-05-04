@@ -1,12 +1,12 @@
-import Chart from "chart.js/auto";
-import CodeBlock from "@theme/CodeBlock";
-import React, {useState, useCallback, useEffect, useRef} from "react";
-import styles from "./retry-simulator.module.css";
-import {useColorMode} from "@docusaurus/theme-common";
+import { useColorMode } from '@docusaurus/theme-common';
+import CodeBlock from '@theme/CodeBlock';
+import Chart from 'chart.js/auto';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import styles from './retry-simulator.module.css';
 
 const languageSamples = new Map([]);
 languageSamples.set(
-  "typescript",
+  'typescript',
   `
 import axios from 'axios';
 
@@ -15,10 +15,10 @@ async function testActivity(url: string): Promise<void> {
 }
 
 export default testActivity;
-`.trim()
+`.trim(),
 );
 languageSamples.set(
-  "go",
+  'go',
   `
 package sample
 
@@ -41,13 +41,13 @@ func TestActivity(ctx context.Context, url string) error {
 
 	return nil
 }
-`.trim()
+`.trim(),
 );
 
 export default function RetrySimulator() {
   const [state, setState] = useState({
-    retries: [{success: true, runtimeMS: 1}],
-    language: "typescript",
+    retries: [{ success: true, runtimeMS: 1 }],
+    language: 'typescript',
     scheduleToStartTimeout: 0,
     scheduleToCloseTimeout: 0,
     startToCloseTimeout: 10000,
@@ -58,7 +58,7 @@ export default function RetrySimulator() {
     maximumInterval: 0,
   });
   const chartCanvas = useRef(null);
-  const {isDarkTheme} = useColorMode();
+  const { isDarkTheme } = useColorMode();
 
   const addRetry = useCallback(function addRetry(success, runtimeMS) {
     const retries = [...state.retries];
@@ -68,10 +68,10 @@ export default function RetrySimulator() {
         success: false,
       };
     }
-    const retry = {success, runtimeMS};
+    const retry = { success, runtimeMS };
     retries.push(retry);
 
-    setState({...state, retries});
+    setState({ ...state, retries });
   });
 
   const updateRetry = useCallback(function updateRetry(index, update) {
@@ -82,14 +82,14 @@ export default function RetrySimulator() {
         delete update.runtimeMS;
       }
     }
-    retries[index] = {...retries[index], ...update};
-    setState({...state, retries});
+    retries[index] = { ...retries[index], ...update };
+    setState({ ...state, retries });
   });
 
   const deleteRetry = useCallback(function deleteRetry(index) {
     const retries = [...state.retries];
     retries.splice(index, 1);
-    setState({...state, retries});
+    setState({ ...state, retries });
   });
 
   const applyRetryScenario = useCallback(function applyRetryScenario(values) {
@@ -103,27 +103,26 @@ export default function RetrySimulator() {
     const maxRetries = 20;
     for (let i = 0; i < maxRetries; ++i) {
       const success = Math.random() < successRate || i === maxRetries - 1;
-      const runtimeMS =
-        requestRuntimeMS +
-        Math.round((Math.random() - 0.5) * (requestRuntimeMS / 2)); // +/- 50%
-      retries.push({success, runtimeMS});
+      const runtimeMS = requestRuntimeMS
+        + Math.round((Math.random() - 0.5) * (requestRuntimeMS / 2)); // +/- 50%
+      retries.push({ success, runtimeMS });
       if (success) {
         break;
       }
     }
 
-    setState({...state, retries});
+    setState({ ...state, retries });
   });
 
   const updateRetryPolicyParam = useCallback(function updateRetryPolicyParam(
     prop,
-    ev
+    ev,
   ) {
     const value = getEventValue(ev);
     if (isNaN(value)) {
       return;
     }
-    setState({...state, [prop]: +value});
+    setState({ ...state, [prop]: +value });
     updateChart();
   });
 
@@ -133,13 +132,14 @@ export default function RetrySimulator() {
     }
     const chart = chartCanvas.current.chart;
 
-    const {backoffCoefficient, initialInterval} = state;
-    let {maximumInterval, maximumAttempts} = state;
+    const { backoffCoefficient, initialInterval } = state;
+    let { maximumInterval, maximumAttempts } = state;
     const labels = [];
     const values = [];
     maximumAttempts = maximumAttempts === 0 ? 10 : maximumAttempts;
-    maximumInterval =
-      maximumInterval === 0 ? Number.POSITIVE_INFINITY : maximumInterval;
+    maximumInterval = maximumInterval === 0
+      ? Number.POSITIVE_INFINITY
+      : maximumInterval;
     let interval = initialInterval;
     for (let i = 0; i < maximumAttempts; ++i) {
       interval = Math.min(interval, maximumInterval);
@@ -153,15 +153,15 @@ export default function RetrySimulator() {
     } else if (labels.length < chart.data.labels.length) {
       chart.data.labels.splice(
         labels.length,
-        chart.data.length - labels.length
+        chart.data.length - labels.length,
       );
     }
     chart.data.labels = labels;
     chart.data.datasets = [
       {
-        label: "Interval after activity failure in ms",
-        backgroundColor: "#84bdf5",
-        borderColor: "#84bdf5",
+        label: 'Interval after activity failure in ms',
+        backgroundColor: '#84bdf5',
+        borderColor: '#84bdf5',
         data: values,
       },
     ];
@@ -169,27 +169,27 @@ export default function RetrySimulator() {
   });
 
   const updateLanguage = useCallback(function updateLanguage(language) {
-    setState({...state, language});
+    setState({ ...state, language });
   });
 
-  const {success, runtimeMS, reason} = calculateResult(state);
+  const { success, runtimeMS, reason } = calculateResult(state);
   const code = retryPolicyCode(state);
 
   useEffect(
     function initializeChart() {
       const chart = new Chart(chartCanvas.current, {
-        type: "bar",
+        type: 'bar',
         options: {
           responsive: true,
           scales: {
             y: {
               grid: {
-                color: "#ddd",
+                color: '#ddd',
               },
             },
             x: {
               grid: {
-                color: "#ddd",
+                color: '#ddd',
               },
             },
           },
@@ -199,7 +199,7 @@ export default function RetrySimulator() {
 
       updateChart();
     },
-    [chartCanvas]
+    [chartCanvas],
   );
 
   useEffect(
@@ -209,11 +209,11 @@ export default function RetrySimulator() {
       }
       const chart = chartCanvas.current.chart;
 
-      chart.options.scales.y.grid.color = isDarkTheme ? "#222" : "#ddd";
-      chart.options.scales.x.grid.color = isDarkTheme ? "#222" : "#ddd";
+      chart.options.scales.y.grid.color = isDarkTheme ? '#222' : '#ddd';
+      chart.options.scales.x.grid.color = isDarkTheme ? '#222' : '#ddd';
       chart.update();
     },
-    [isDarkTheme]
+    [isDarkTheme],
   );
 
   useEffect(() => updateChart(), [state]);
@@ -222,7 +222,7 @@ export default function RetrySimulator() {
     <div className={styles.retrySimulator}>
       <div className={styles.retryRow}>
         <div className={styles.retryCol}>
-          <div className="retries">
+          <div className='retries'>
             <h3>Sample Activity</h3>
 
             <div>
@@ -230,8 +230,8 @@ export default function RetrySimulator() {
                 className={styles.dropdown}
                 onChange={(ev) => updateLanguage(ev.target.value)}
               >
-                <option value="typescript">TypeScript</option>
-                <option value="go">Go</option>
+                <option value='typescript'>TypeScript</option>
+                <option value='go'>Go</option>
               </select>
             </div>
 
@@ -245,7 +245,7 @@ export default function RetrySimulator() {
               className={styles.dropdown}
               onChange={(ev) => applyRetryScenario(ev.target.value)}
             >
-              <option value="">Generate a Scenario</option>
+              <option value=''>Generate a Scenario</option>
               <option value='{"requestRuntimeMS": 10, "successRate": 0.9}'>
                 Fast request (10ms), 90% success rate
               </option>
@@ -268,21 +268,21 @@ export default function RetrySimulator() {
               <input
                 className={styles.numberInput}
                 value={state.scheduleTime}
-                onChange={(ev) => updateRetryPolicyParam("scheduleTime", ev)}
-                type="number"
+                onChange={(ev) => updateRetryPolicyParam('scheduleTime', ev)}
+                type='number'
               />
             </div>
             <input
-              type="range"
+              type='range'
               value={state.scheduleTime}
-              onChange={(ev) => updateRetryPolicyParam("scheduleTime", ev)}
+              onChange={(ev) => updateRetryPolicyParam('scheduleTime', ev)}
               className={styles.slider}
-              min="0"
-              max="1000"
-              step="5"
+              min='0'
+              max='1000'
+              step='5'
             />
           </div>
-          <div className="retries-list">
+          <div className='retries-list'>
             {state.retries.map((retry, index) => {
               return (
                 <RetryConfig
@@ -306,21 +306,21 @@ export default function RetrySimulator() {
         <div className={styles.retryCol}>
           <h3>Activity Timeouts (in ms)</h3>
           <RetryPolicyParamInputs
-            param="startToCloseTimeout"
+            param='startToCloseTimeout'
             value={state.startToCloseTimeout}
             max={100000}
             step={100}
             updateRetryPolicyParam={updateRetryPolicyParam}
           />
           <RetryPolicyParamInputs
-            param="scheduleToStartTimeout"
+            param='scheduleToStartTimeout'
             value={state.scheduleToStartTimeout}
             max={100000}
             step={100}
             updateRetryPolicyParam={updateRetryPolicyParam}
           />
           <RetryPolicyParamInputs
-            param="scheduleToCloseTimeout"
+            param='scheduleToCloseTimeout'
             value={state.scheduleToCloseTimeout}
             max={100000}
             step={100}
@@ -328,26 +328,26 @@ export default function RetrySimulator() {
           />
           <h3>Retry Policy (in ms)</h3>
           <RetryPolicyParamInputs
-            param="backoffCoefficient"
+            param='backoffCoefficient'
             value={state.backoffCoefficient}
             min={1}
             max={10}
             updateRetryPolicyParam={updateRetryPolicyParam}
           />
           <RetryPolicyParamInputs
-            param="initialInterval"
+            param='initialInterval'
             value={state.initialInterval}
             max={10000}
             step={50}
             updateRetryPolicyParam={updateRetryPolicyParam}
           />
           <RetryPolicyParamInputs
-            param="maximumAttempts"
+            param='maximumAttempts'
             value={state.maximumAttempts}
             updateRetryPolicyParam={updateRetryPolicyParam}
           />
           <RetryPolicyParamInputs
-            param="maximumInterval"
+            param='maximumInterval'
             value={state.maximumInterval}
             max={100000}
             step={100}
@@ -358,13 +358,12 @@ export default function RetrySimulator() {
       <div className={styles.retryRow}>
         <div className={styles.retryCol}>
           <div
-            className={
-              styles.result + " " + (success ? styles.success : styles.fail)
-            }
+            className={styles.result + ' '
+              + (success ? styles.success : styles.fail)}
           >
             <h3 className={styles.resultText}>
-              {success ? "Success" : "Failed"} after {runtimeMS} ms
-              {success ? "" : ": " + reason}
+              {success ? 'Success' : 'Failed'} after {runtimeMS} ms
+              {success ? '' : ': ' + reason}
             </h3>
           </div>
         </div>
@@ -381,39 +380,38 @@ export default function RetrySimulator() {
   );
 }
 
-function RetryConfig({retry, numRetries, index, updateRetry, deleteRetry}) {
+function RetryConfig({ retry, numRetries, index, updateRetry, deleteRetry }) {
   return (
-    <div className={styles.retry} key={"retry-" + index}>
+    <div className={styles.retry} key={'retry-' + index}>
       <div className={styles.inputContainer}>
         <select
           className={styles.numberInputLabel}
           disabled={index + 1 < numRetries}
-          value={retry.success ? "succeeds" : "fails"}
+          value={retry.success ? 'succeeds' : 'fails'}
           onChange={(ev) =>
-            updateRetry(index, {success: ev.target.value === "success"})
-          }
+            updateRetry(index, { success: ev.target.value === 'success' })}
         >
-          <option value="fails">Fails after</option>
-          <option value="succeeds">Succeeds after</option>
+          <option value='fails'>Fails after</option>
+          <option value='succeeds'>Succeeds after</option>
         </select>
         <input
-          type="number"
+          type='number'
           className={styles.numberInput}
           value={retry.runtimeMS}
-          onChange={(ev) => updateRetry(index, {runtimeMS: ev.target.value})}
+          onChange={(ev) => updateRetry(index, { runtimeMS: ev.target.value })}
         />
         <span className={styles.removeRetry} onClick={() => deleteRetry(index)}>
           &times;
         </span>
       </div>
       <input
-        type="range"
+        type='range'
         className={styles.slider}
         value={retry.runtimeMS}
-        onChange={(ev) => updateRetry(index, {runtimeMS: ev.target.value})}
-        min="0"
-        max="1000"
-        step="5"
+        onChange={(ev) => updateRetry(index, { runtimeMS: ev.target.value })}
+        min='0'
+        max='1000'
+        step='5'
       />
     </div>
   );
@@ -435,13 +433,13 @@ function RetryPolicyParamInputs({
           value={value}
           onChange={(ev) => updateRetryPolicyParam(param, ev)}
           className={styles.numberInput}
-          type="number"
+          type='number'
         />
       </div>
       <input
         value={value}
         onChange={(ev) => updateRetryPolicyParam(param, ev)}
-        type="range"
+        type='range'
         className={styles.slider}
         min={min || 0}
         max={max || 100}
@@ -467,51 +465,50 @@ function calculateResult(state) {
     return {
       success: false,
       runtimeMS: scheduleToStartTimeout,
-      reason: "scheduleTime",
+      reason: 'scheduleTime',
     };
   }
   for (let i = 0; i < state.retries.length; ++i) {
     runtimeMS = Math.min(
       runtimeMS + state.retries[i].runtimeMS,
-      startToCloseTimeout
+      startToCloseTimeout,
     );
     if (!state.retries[i].success) {
       if (maximumAttempts > 0 && i + 1 >= maximumAttempts) {
         return {
           success: false,
           runtimeMS,
-          reason: "maximumAttempts",
+          reason: 'maximumAttempts',
         };
       }
       if (i + 1 >= state.retries.length) {
         return {
           success: false,
           runtimeMS,
-          reason: "All retries failed",
+          reason: 'All retries failed',
         };
       }
       runtimeMS = Math.min(runtimeMS + retryIntervalMS, startToCloseTimeout);
     }
-    retryIntervalMS =
-      maximumInterval > 0
-        ? Math.min(retryIntervalMS * backoffCoefficient, maximumInterval)
-        : retryIntervalMS * backoffCoefficient;
+    retryIntervalMS = maximumInterval > 0
+      ? Math.min(retryIntervalMS * backoffCoefficient, maximumInterval)
+      : retryIntervalMS * backoffCoefficient;
     if (runtimeMS >= startToCloseTimeout) {
       return {
         success: false,
         runtimeMS,
-        reason: "startToCloseTimeout",
+        reason: 'startToCloseTimeout',
       };
     }
     if (
-      scheduleToCloseTimeout > 0 &&
-      scheduleTime + runtimeMS >= scheduleToCloseTimeout
+      scheduleToCloseTimeout > 0
+      && scheduleTime + runtimeMS >= scheduleToCloseTimeout
     ) {
       let total = scheduleTime + runtimeMS;
       return {
         success: false,
         runtimeMS: total,
-        reason: "scheduleToCloseTimeout",
+        reason: 'scheduleToCloseTimeout',
       };
     }
   }
@@ -519,7 +516,7 @@ function calculateResult(state) {
     return {
       success: false,
       runtimeMS: 0,
-      reason: "No retries",
+      reason: 'No retries',
     };
   }
   return {
@@ -552,21 +549,21 @@ function retryPolicyCode(state) {
   if (value.scheduleToCloseTimeout === 0) {
     delete value.scheduleToCloseTimeout;
   }
-  if (state.language === "typescript") {
-    return JSON.stringify(value, null, "  ");
-  } else if (state.language === "go") {
+  if (state.language === 'typescript') {
+    return JSON.stringify(value, null, '  ');
+  } else if (state.language === 'go') {
     const val = [
-      "workflow.ActivityOptions{",
+      'workflow.ActivityOptions{',
       ...Object.keys(value)
-        .filter((key) => key !== "retryPolicy")
+        .filter((key) => key !== 'retryPolicy')
         .map((key) => `\t${capitalizeFirstLetter(key)}: ${value[key]},`),
-      "\tRetryPolicy: &temporal.RetryPolicy{",
+      '\tRetryPolicy: &temporal.RetryPolicy{',
       ...Object.keys(value.retryPolicy).map(
-        (key) => `\t\t${capitalizeFirstLetter(key)}: ${value.retryPolicy[key]}`
+        (key) => `\t\t${capitalizeFirstLetter(key)}: ${value.retryPolicy[key]}`,
       ),
-      "\t}",
-      "}",
-    ].join("\n");
+      '\t}',
+      '}',
+    ].join('\n');
     return val;
   }
 }

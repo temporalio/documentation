@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-export const Button = ({children, type, name, className}) => {
+export const Button = ({ children, type, name, className }) => {
   return (
     <button
       type={type}

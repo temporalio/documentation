@@ -141,7 +141,6 @@ Note that an attempt to start Workflow through a base interface annotated with `
 Let's look at the following **invalid** example:
 
 ```php
-
 // INVALID CODE!
 
 #[WorkflowInterface]
@@ -356,7 +355,7 @@ Besides Activities, a Workflow can also start other Workflows.
 
 <RelatedReadList
 readlist={[
-["What is a Child Workflow Execution?","/docs/concepts/what-is-a-child-workflow-execution","explanation"],  
+["What is a Child Workflow Execution?","/docs/concepts/what-is-a-child-workflow-execution","explanation"],\
 ]}
 />
 

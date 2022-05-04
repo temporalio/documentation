@@ -64,7 +64,7 @@ A nice first subset of the requirements is to send the email, wait for the trial
 
 ```ts
 // /src/workflows.ts
-import { sleep, proxyActivities } from '@temporalio/workflow';
+import { proxyActivities, sleep } from '@temporalio/workflow';
 import type * as activities from './activities';
 
 const { sendWelcomeEmail, sendSubscriptionOverEmail } = proxyActivities<
@@ -75,7 +75,7 @@ const { sendWelcomeEmail, sendSubscriptionOverEmail } = proxyActivities<
 
 export async function SubscriptionWorkflow(
   email: string,
-  trialPeriod: string | number
+  trialPeriod: string | number,
 ) {
   await sendWelcomeEmail(email);
   await sleep(trialPeriod);
@@ -143,7 +143,7 @@ export const cancelSubscription = wf.defineSignal('cancelSignal'); // new
 
 export async function SubscriptionWorkflow(
   email: string,
-  trialPeriod: string | number
+  trialPeriod: string | number,
 ) {
   let isCanceled = false; // internal variable to track cancel state
   wf.setHandler(cancelSubscription, () => void (isCanceled = true)); // new
@@ -200,7 +200,7 @@ This is such a common need that we built it in as `condition`'s optional timeout
 // ...
 export async function SubscriptionWorkflow(
   email: string,
-  trialPeriod: string | number
+  trialPeriod: string | number,
 ) {
   let isCanceled = false;
   wf.setHandler(cancelSignal, () => void (isCanceled = true)); // new
@@ -309,7 +309,7 @@ let amountCharged = customer.initialBillingPeriodCharge;
 wf.setHandler(amountChargedQuery, () => amountCharged);
 wf.setHandler(
   updateAmountCharged,
-  (newAmt: number) => void (newAmt = updateAmountCharged)
+  (newAmt: number) => void (newAmt = updateAmountCharged),
 );
 // do stuff with amountCharged
 ```

@@ -54,10 +54,10 @@ Workflow Types must be registered with a Worker.
 The following example shows how to register a Workflow with the Worker created in the previous example.
 
 ```java
-    Worker worker = workerFactory.newWorker("your_task_queue");
-    ...
-    // Register Workflow
-    worker.registerWorkflowImplementationTypes(GreetingWorkflowImpl.class);
+Worker worker = workerFactory.newWorker("your_task_queue");
+...
+// Register Workflow
+worker.registerWorkflowImplementationTypes(GreetingWorkflowImpl.class);
 ```
 
 #### Register Activity Types
@@ -69,10 +69,10 @@ number of dependencies in its constructor, such as the database connections, ser
 The following example shows how to register Activities with a Worker.
 
 ```java
-    Worker worker = factory.newWorker("your_task_queue");
-   ...
-    // Register Activity
-   worker.registerActivitiesImplementations(new GreetingActivitiesImpl());
+ Worker worker = factory.newWorker("your_task_queue");
+...
+ // Register Activity
+worker.registerActivitiesImplementations(new GreetingActivitiesImpl());
 ```
 
 When you register a single instance of an Activity, you can have multiple instances of Workflow Executions calling the same Activity.

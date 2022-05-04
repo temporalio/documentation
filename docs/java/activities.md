@@ -67,10 +67,10 @@ An Activity implementation is Java class which implements an Activity Interface,
 Just like Workflows, Activities need to be registered with a Worker, for example:
 
 ```java
-    Worker worker = factory.newWorker(TASK_QUEUE);
-    ...
-    // register the Activity
-    worker.registerActivitiesImplementations(new MultiLanguageGreeting(translationService));
+Worker worker = factory.newWorker(TASK_QUEUE);
+...
+// register the Activity
+worker.registerActivitiesImplementations(new MultiLanguageGreeting(translationService));
 ```
 
 Note that when registering Activities, we register an instance of the Activity implementation, and can pass any

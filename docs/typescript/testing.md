@@ -24,19 +24,19 @@ You can follow this format for writing basic unit tests can still be written (se
 
 ```ts
 import { Connection, WorkflowClient } from '@temporalio/client';
-import { Worker, DefaultLogger } from '@temporalio/worker';
-import { describe, before, after, afterEach, it } from 'mocha';
-import { example } from '../lib/workflows';
+import { DefaultLogger, Worker } from '@temporalio/worker';
 import assert from 'assert';
 import axios from 'axios';
+import { after, afterEach, before, describe, it } from 'mocha';
 import sinon from 'sinon';
+import { example } from '../lib/workflows';
 
-describe('example workflow', function () {
+describe('example workflow', function() {
   let runPromise = null;
   let worker = null;
   let client = null;
 
-  before(async function () {
+  before(async function() {
     this.timeout(10000);
     worker = await Worker.create({
       workflowsPath: require.resolve('./workflows'),
@@ -49,7 +49,7 @@ describe('example workflow', function () {
     client = new WorkflowClient(connection.service);
   });
 
-  after(async function () {
+  after(async function() {
     worker.shutdown();
     await runPromise;
   });
@@ -58,12 +58,12 @@ describe('example workflow', function () {
     axios.get.restore && axios.get.restore();
   });
 
-  it('returns correct result', async function () {
+  it('returns correct result', async function() {
     const result = await client.execute(example, { taskQueue: 'testhttp' });
     assert.equal(result, 'The answer is 42');
   });
 
-  it('retries one failure', async function () {
+  it('retries one failure', async function() {
     // Make the first request fail, but subsequent requests succeed
     let numCalls = 0;
     sinon.stub(axios, 'get').callsFake(() => {
@@ -77,14 +77,14 @@ describe('example workflow', function () {
     assert.equal(result, 'The answer is 88');
   });
 
-  it('bubbles up activity errors', async function () {
+  it('bubbles up activity errors', async function() {
     sinon
       .stub(axios, 'get')
       .callsFake(() => Promise.reject(new Error('example error')));
 
     const err = await client.execute(example, { taskQueue: 'testhttp' }).then(
       () => null,
-      (err) => err
+      (err) => err,
     );
     assert.equal(err.name, 'WorkflowFailedError');
     assert.equal(err.cause.cause.message, 'example error');

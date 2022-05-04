@@ -145,7 +145,6 @@ $ npm run start.watch
 2021-10-14T00:31:41.360Z [INFO] ./src/workflows.ts 443 bytes [built] [code generated]
 2021-10-14T00:31:41.360Z [INFO] webpack 5.58.2 compiled successfully in 1293 ms
 2021-10-14T00:31:41.563Z [INFO] Worker state changed { state: 'RUNNING' }
-
 ```
 
 </details>
