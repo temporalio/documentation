@@ -12,7 +12,7 @@ To send Signals to a Workflow Execution whose status is unknown, use `SignalWith
 This method ensures that if the Workflow Execution is in a closed state, a new Workflow Execution is spawned and the Signal is delivered to the running Workflow Execution.
 
 Note that when the `SignalwithStart` spawns a new Workflow Execution, the Signal is delivered before the call to your `@WorkflowMethod`.
-This means that in your Signal handler in your Workflow interface code will execute before the `@WorkfowMethod`.
+This means that the Signal handler in your Workflow interface code will execute before the `@WorkfowMethod`.
 You must ensure that your code logic can deal with this.
 
 In the following example, the Client code uses `SignalwithStart` to send the Signal "setCustomer" to the `UntypedWorkflowStub` named "GreetingWorkflow".

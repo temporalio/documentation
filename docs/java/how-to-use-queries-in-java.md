@@ -2,13 +2,13 @@
 id: how-to-use-queries-in-java
 title: How to use Queries in Java
 sidebar_label: Queries
-description: Define Query methods inside Workflows interfaces, annotated with the `@QueryMethod` annotation.
+description: Define a Query method inside the Workflow interface, annotated with the `@QueryMethod` annotation and call the method from an external process.
 tags:
   - java
   - developer-guide
 ---
 
-To use Queries to query the state of a Workflow at any stage of the Workflow Execution, create a Query handler using the `@QueryMethod` annotation in the Workflow interface and call the method in the Client code.
+To use Queries to query the state of a Workflow at any stage of the Workflow Execution, create a Query handler using the `@QueryMethod` annotation in the Workflow interface and call the method in your external process.
 
 You can send a Query to an open or closed Workflow Execution.
 

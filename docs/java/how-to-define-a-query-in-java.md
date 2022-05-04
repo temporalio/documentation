@@ -2,7 +2,7 @@
 id: how-to-define-a-query-in-java
 title: How to define a Query in Java
 sidebar_label: Define Query
-description: To define a Query, create a Query handler using the `@QueryMethod` annotation in the Workflow interface.
+description: Create a Query handler using the `@QueryMethod` annotation in the Workflow interface.
 tags:
   - java
   - developer-guide

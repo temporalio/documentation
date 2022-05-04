@@ -2,7 +2,7 @@
 id: how-to-use-signals-in-java
 title: How to use Signals in Java
 sidebar_label: Signals
-description: To use Signals in Java, initiate the Signal method with `@SignalMethod` annotation in the Workflow interface and call the Signal method either directly from the Client or from within another Workflow.
+description: Initiate the Signal method with `@SignalMethod` annotation in the Workflow interface and call it either directly from the Client or from within another Workflow.
 tags:
   - java
   - developer-guide

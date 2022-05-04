@@ -2,13 +2,13 @@
 id: how-to-send-a-query-to-a-workflow-in-java
 title: How to send a Query in Java
 sidebar_label: Send Query
-description: To send a Query from a Client to a Workflow Execution, call the Query method defined in the Workflow directly in the Client code.
+description: To send a Query to a Workflow Execution from an external process, call the Query method defined in the Workflow.
 tags:
   - java
   - developer-guide
 ---
 
-To send a Query from a Client to a Workflow Execution, call the Query method defined in the Workflow directly in the Client code.
+To send a Query to a Workflow Execution from an external process, call the Query method defined in the Workflow.
 
 For example, the following Client code calls a Query method `queryGreeting()` defined in the `GreetingWorkflow` Workflow interface.
 

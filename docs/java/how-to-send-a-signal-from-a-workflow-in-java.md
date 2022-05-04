@@ -2,13 +2,13 @@
 id: how-to-send-a-signal-from-a-workflow-in-java
 title: How to send a Signal from a Workflow in Java
 sidebar_label: Send Signal from Workflow
-description: To send a Signal to another Workflow's Workflow Execution, initiate a new `ExternalWorkflowStub` in the implementation of the current Workflow and call the Signal method defined in the other Workflow.
+description: To send a Signal from within a Workflow to a different Workflow Execution, initiate an `ExternalWorkflowStub` in the implementation of the current Workflow and call the Signal method defined in the other Workflow.
 tags:
   - java
   - developer-guide
 ---
 
-To send a Signal to another Workflow's Workflow Execution, initiate a new `ExternalWorkflowStub` in the implementation of the current Workflow and call the Signal method defined in the other Workflow.
+To send a Signal from within a Workflow to a different Workflow Execution, initiate an `ExternalWorkflowStub` in the implementation of the current Workflow and call the Signal method defined in the other Workflow.
 
 The following example shows how to use an untyped `ExternalWorkflowStub` in the Workflow implementation to send a Signal to another Workflow.
 
