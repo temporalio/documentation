@@ -47,12 +47,12 @@
 						{
 							"lang": "php",
 							"title": "PHP",
-							"path": "none"
+							"path": "php/index"
 						},
 						{
 							"lang": "typescript",
 							"title": "TypeScript",
-							"path": "none"
+							"path": "typescript/index"
 						}
 					]
 				},
@@ -77,12 +77,12 @@
 						{
 							"lang": "php",
 							"title": "PHP",
-							"path": "none"
+							"path": "php/how-to-develop-a-workflow-definition-in-php"
 						},
 						{
 							"lang": "typescript",
 							"title": "TypeScript",
-							"path": "none"
+							"path": "typescript/how-to-develop-a-workflow-definition-in-typescript"
 						}
 					],
 					"h4_sections": [{
@@ -111,7 +111,7 @@
 								{
 									"lang": "typescript",
 									"title": "TypeScript",
-									"path": "none"
+									"path": "typescript/how-to-define-workflow-parameters-in-typescript"
 								}
 							]
 						},
@@ -136,12 +136,12 @@
 								{
 									"lang": "php",
 									"title": "PHP",
-									"path": "none"
+									"path": "php/how-to-define-workflow-return-values-in-php"
 								},
 								{
 									"lang": "typescript",
 									"title": "TypeScript",
-									"path": "none"
+									"path": "typescript/how-to-define-workflow-return-values-in-typescript"
 								}
 							]
 						},
@@ -198,12 +198,12 @@
 						{
 							"lang": "php",
 							"title": "PHP",
-							"path": "none"
+							"path": "php/how-to-develop-an-activity-definition-in-php"
 						},
 						{
 							"lang": "typescript",
 							"title": "TypeScript",
-							"path": "none"
+							"path": "typescript/how-to-develop-an-activity-definition-in-typescript"
 						}
 					],
 					"h4_sections": [{
@@ -289,12 +289,12 @@
 						{
 							"lang": "php",
 							"title": "PHP",
-							"path": "none"
+							"path": "php/how-to-spawn-an-activity-execution-in-php"
 						},
 						{
 							"lang": "typescript",
 							"title": "TypeScript",
-							"path": "none"
+							"path": "typescript/how-to-spawn-an-activity-execution-in-typescript"
 						}
 					]
 				},
@@ -319,12 +319,12 @@
 						{
 							"lang": "php",
 							"title": "PHP",
-							"path": "none"
+							"path": "php/how-to-get-the-result-of-an-activity-execution-in-php"
 						},
 						{
 							"lang": "typescript",
 							"title": "TypeScript",
-							"path": "none"
+							"path": "typescript/how-to-get-the-result-of-an-activity-execution-in-typescript"
 						}
 					]
 				},
@@ -354,7 +354,7 @@
 						{
 							"lang": "typescript",
 							"title": "TypeScript",
-							"path": "none"
+							"path": "typescript/how-to-create-a-temporal-client-in-typescript"
 						}
 					]
 				},
@@ -384,7 +384,7 @@
 						{
 							"lang": "typescript",
 							"title": "TypeScript",
-							"path": "none"
+							"path": "typescript/how-to-develop-a-worker-program-in-typescript"
 						}
 					]
 				},
@@ -414,7 +414,7 @@
 						{
 							"lang": "typescript",
 							"title": "TypeScript",
-							"path": "none"
+							"path": "typescript/how-to-spawn-a-workflow-execution-in-typescript"
 						}
 					],
 					"h4_sections": [{
@@ -443,7 +443,7 @@
 								{
 									"lang": "typescript",
 									"title": "TypeScript",
-									"path": "none"
+									"path": "typescript/how-to-set-a-workflow-task-queue-in-typescript"
 								}
 							]
 						},
@@ -473,7 +473,7 @@
 								{
 									"lang": "typescript",
 									"title": "TypeScript",
-									"path": "none"
+									"path": "typescript/how-to-set-a-workflow-id-in-typescript"
 								}
 							]
 						}
@@ -505,7 +505,7 @@
 						{
 							"lang": "typescript",
 							"title": "TypeScript",
-							"path": "none"
+							"path": "typescript/how-to-get-the-result-of-a-workflow-execution-in-typescript"
 						}
 					]
 				}
@@ -805,7 +805,7 @@
 								{
 									"lang": "typescript",
 									"title": "TypeScript",
-									"path": "none"
+									"path": "typescript/how-to-set-a-workflow-execution-timeout-in-typescript"
 								}
 							]
 						},
@@ -931,7 +931,7 @@
 								{
 									"lang": "typescript",
 									"title": "TypeScript",
-									"path": "none"
+									"path": "typescript/how-to-set-a-schedule-to-close-timeout-in-typescript"
 								}
 							]
 						},
@@ -961,7 +961,7 @@
 								{
 									"lang": "typescript",
 									"title": "TypeScript",
-									"path": "none"
+									"path": "typescript/how-to-set-a-start-to-close-timeout-in-typescript"
 								}
 							]
 						},
@@ -991,7 +991,7 @@
 								{
 									"lang": "typescript",
 									"title": "TypeScript",
-									"path": "none"
+									"path": "typescript/how-to-set-a-schedule-to-start-timeout-in-typescript"
 								}
 							]
 						},
@@ -1124,6 +1124,31 @@
 					"path": "app-dev-context/local-activities"
 				},
 				{
+					"header": "none",
+					"type": "lang-tabs",
+					"langs": [{
+							"lang": "go",
+							"title": "Go",
+							"path": "none"
+						},
+						{
+							"lang": "java",
+							"title": "Java",
+							"path": "none"
+						},
+						{
+							"lang": "php",
+							"title": "PHP",
+							"path": "php/how-to-set-a-heartbeat-for-an-activity-in-php"
+						},
+						{
+							"lang": "typescript",
+							"title": "TypeScript",
+							"path": "none"
+						}
+					]
+				},
+				{
 					"header": "Cron Jobs",
 					"type": "context",
 					"path": "app-dev-context/cron-jobs"
@@ -1168,7 +1193,7 @@
 						{
 							"lang": "typescript",
 							"title": "TypeScript",
-							"path": "none"
+							"path": "typescript/how-to-set-the-default-logger-in-typescript"
 						}
 					]
 				},
@@ -1301,6 +1326,14 @@
 				"header": "none",
 				"type": "context",
 				"path": "app-dev-context/testing"
+			}]
+		},
+		{
+			"header": "Scaling",
+			"h3_sections": [{
+				"header": "none",
+				"type": "context",
+				"path": "app-dev-context/scaling"
 			}]
 		}
 	]

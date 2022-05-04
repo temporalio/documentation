@@ -193,12 +193,61 @@ The [Java SDK API reference](https://www.javadoc.io/doc/io.temporal/temporal-sdk
 </TabItem>
 <TabItem value="php">
 
-Content is not available
+The Temporal TypeScript PHP provides a framework for Temporal Application development in the PHP language. The SDK contains the following tools:
+
+- A Temporal Client to communicate with a Temporal Cluster
+- APIs to use within your Workflows
+- APIs to create and manage Worker Entities and Worker Processes
+
+**Get the SDK**
+
+The Temporal PHP SDK is available as composer package and can be installed using the following command in a root of your project:
+
+```bash
+composer require temporal/sdk
+```
+
+The Temporal PHP SDK requires the RoadRunner 2.0 application server and supervisor to run Activities and Workflows in a scalable way.
+
+Install RoadRunner manually by dowloading its binary from the [release page](https://github.com/roadrunner-server/roadrunner/releases/tag/v1.9.2).
+
+Or install RoadRunner through the CLI:
+
+```bash
+composer require spiral/roadrunner:v2.0 nyholm/psr7
+./vendor/bin/rr get-binary
+```
 
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+The Temporal TypeScript SDK provides a framework for Temporal Application development in the TypeScript language. The SDK contains the following tools:
+
+- A Temporal Client to communicate with a Temporal Cluster
+- APIs to use within your Workflows
+- APIs to create and manage Worker Entities and Worker Processes
+
+**Get the SDK**
+
+To download the latest version of the Temporal TypeScript Command, run the following command:
+
+```bash
+npm i temporalio
+```
+
+Or clone the Go SDK repo to your preferred location:
+
+```bash
+git clone git@github.com:temporalio/sdk-typescript.git
+```
+
+**Are there executable code samples?​**
+
+You can find a complete list of executable code samples in the samples' library, which includes Temporal TypeScript SDK code samples from the [temporalio/samples-typescript](https://github.com/temporalio/samples-typescript) repo. Additionally, each of the TypeScript SDK Tutorials is backed by a fully executable template application.
+
+**Where is the TypeScript SDK technical reference?​**
+
+The Temporal TypeScript SDK API reference is published on [typescript.temporal.io](https://typescript.temporal.io).
 
 </TabItem>
 </Tabs>
@@ -233,12 +282,50 @@ Content is not available
 </TabItem>
 <TabItem value="php">
 
-Content is not available
+In PHP, a Workflow is a class method. Classes must implement interfaces that are annotated with `#[WorkflowInterface]`. The method that is the Workflow must be annotated with `#[WorkflowMethod]`.
+
+```php
+use Temporal\Workflow\WorkflowInterface;
+use Temporal\Workflow\WorkflowMethod;
+
+#[WorkflowInterface]
+interface FileProcessingWorkflow
+{
+    #[WorkflowMethod]
+    public function processFile(Argument $args);
+
+}
+```
 
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+A Workflow Function has two parts:
+
+- The function name is known as the Workflow Type.
+- The function implementation code (body) is known as the Workflow Definition.
+
+Each Workflow Definition is bundled with any third party dependencies, and registered by Workflow Type in a Worker. A Workflow function becomes a Workflow Execution (instance) only when started from a Workflow Client using its Workflow Type.
+
+Workflow Definitions are _just functions_, which can store state, and orchestrate Activity Functions.
+The following code snippet uses `proxyActivities` to create functions to schedule a `greet` Activity in the system to say hello.
+
+A Workflow Function can have multiple parameters, however, Temporal encourages you to use a single object parameter.
+
+```typescript
+type ExampleArgs = {
+  name: string;
+};
+
+export async function example(
+  args: ExampleArgs
+): Promise<{ greeting: string }> {
+  const greeting = await greet(args.name);
+  return { greeting };
+}
+```
+
+This Workflow Function takes the name of the parameters and assigns it to the variable name. Then it calls the function and pass the name of the variable as the argument. The function returns a promise with the value of `greeting`.
 
 </TabItem>
 </Tabs>
@@ -304,7 +391,30 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+A Task Queue is a dynamic queue in Temporal polled by one or more Workers.
+
+When scheduling a Workflow, a `taskQueue` must be specified.
+
+```typescript
+import { Connection, WorkflowClient } from '@temporalio/client';
+const connection = new Connection();
+const client = new WorkflowClient();
+const result = await client.execute(myWorkflow, {
+  taskQueue: 'your-task-queue', // required
+  workflowId: 'your-workflow-id', // required
+});
+```
+
+When creating a Worker, you must pass the `taskQueue` option to the `Worker.create()` function.
+
+```typescript
+const worker = await Worker.create({
+  activities, // imported elsewhere
+  taskQueue: 'your-task-queue',
+});
+```
+
+Optionally, in Workflow code, when calling an Activity, you can specify the Task Queue by passing the `taskQueue` option to `proxyActivities()`, `startChild`, or `executeChild`. If you do not specify a `taskQueue`, then the TypeScript SDK places Activity and Child Workflow Tasks in the same Task Queue as the Workflow Task Queue.
 
 </TabItem>
 </Tabs>
@@ -357,12 +467,42 @@ Content is not available
 </TabItem>
 <TabItem value="php">
 
-Content is not available
+Workflow methods return a Generator. To properly typecast the Workflow's return value in the client code use the `#[ReturnType()]` annotation.
+
+```php
+#[WorkflowInterface]
+interface FileProcessingWorkflow {
+
+    #[WorkflowMethod]
+    #[ReturnType("string")]
+    public function processFile(Argument $args);
+}
+```
 
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+Only Query Handlers can return values inside a Workflow in TypeScript.
+
+You make a Query with `handle.query(query, ...args)`. A Query needs a return value, but can also take arguments.
+
+```typescript
+import * as wf from '@temporalio/workflow';
+
+function useState<T = any>(name: string, initialValue: T) {
+  const query = wf.defineQuery<T>(name);
+  let state: T = initialValue;
+  return {
+    query,
+    get value() {
+      return state;
+    },
+    set value(newVal: T) {
+      state = newVal;
+    },
+  };
+}
+```
 
 </TabItem>
 </Tabs>
@@ -480,12 +620,71 @@ Content is not available
 </TabItem>
 <TabItem value="php">
 
-Content is not available
+An Activity is a manifestation of a particular Task in the business logic.
+
+Activities are defined as methods of a plain PHP interface annotated with `#[ActivityInterface]` (you can use PHP 8 attributes
+in PHP 7 as well).
+
+Each method defines a single Activity type.
+A single Workflow can use more than one Activity interface and call more that one Activity method from the same interface.
+
+The only requirement is that Activity method arguments and return values are serializable to a byte array using the provided [DataConverter](https://github.com/temporalio/sdk-php/blob/master/src/DataConverter/DataConverterInterface.php) interface.
+The default implementation uses a JSON serializer, but an alternative implementation can be easily configured.
+
+Following is an example of an interface that defines four Activities:
+
+```php
+#[ActivityInterface]
+interface FileProcessingActivities
+{
+    public function upload(string $bucketName, string $localName, string $targetName): void;
+
+    #[ActivityMethod("transcode_file")]
+    public function download(string $bucketName, string $remoteName): void;
+
+    public function processFile(): string;
+
+    public function deleteLocalFile(string $fileName): void;
+}
+```
+
+We recommend to use a single value type argument for Activity methods.
+In this way, adding new arguments as fields to the value type is a backwards-compatible change.
+
+An optional `#[ActivityMethod]` annotation can be used to override a default Activity name.
+
+Option `prefix` of `ActivityInterface` annotation will allow you to define your own prefix for all activity names (by
+default it's empty).
+
+```php
+#[ActivityInterface("file_activities.")]
+interface FileProcessingActivities
+{
+    public function upload(string $bucketName, string $localName, string $targetName);
+
+    #[ActivityMethod("transcode_file")]
+    public function download(string $bucketName, string $remoteName);
+
+    public function processFile(): string;
+
+    public function deleteLocalFile(string $fileName);
+}
+```
 
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+- Activities execute in the standard Node.js environment.
+- Activities cannot be in the same file as Workflows and must be separately registered.
+- Activities may be retried repeatedly, so you may need to use idempotency keys for critical side effects.
+
+Activities are _just functions_. The following is an Activity that accepts a string parameter and returns a string.
+
+```typescript
+export async function greet(name: string): Promise<string> {
+  return `Hello, ${name}!`;
+}
+```
 
 </TabItem>
 </Tabs>
@@ -653,12 +852,85 @@ Content is not available
 </TabItem>
 <TabItem value="php">
 
-Content is not available
+Activity implementation is an implementation of an Activity interface.
+A single instance of the Activities implementation is shared across multiple simultaneous Activity invocations.
+Therefore, the Activity implementation code must be _stateless_.
+
+The values passed to Activities through invocation parameters or returned through a result value are recorded in the execution history.
+The entire execution history is transferred from the Temporal service to Workflow workers when a Workflow state needs to recover.
+A large execution history can thus adversely impact the performance of your Workflow.
+Therefore, be mindful of the amount of data you transfer via Activity invocation parameters or return values.
+
+Otherwise, no additional limitations exist on Activity implementations.
+
+```php
+class FileProcessingActivitiesImpl implements FileProcessingActivities {
+
+    private S3Client $s3Client;
+
+    private string $localDirectory;
+
+    public function __construct(S3Client $s3Client, string $localDirectory) {
+        $this->s3Client = $s3Client;
+        $this->localDirectory = $localDirectory;
+    }
+
+    public function upload(string $bucketName, string $localName, string $targetName): void
+    {
+        $this->s3Client->putObject(
+            $bucketName,
+            $targetName,
+            fopen($this->localDirectory . $localName, 'rb+')
+        );
+    }
+
+    public function download(
+        string $bucketName,
+        string $remoteName,
+        string $localName
+    ): void
+    {
+        $this->s3Client->downloadObject(
+            $bucketName,
+            $remoteName,
+            fopen($this->localDirectory .$localName, 'wb+')
+        );
+    }
+
+    public function processFile(string $localName): string
+    {
+        // Implementation omitted for brevity.
+        return compressFile($this->localDirectory . $localName);
+    }
+
+    public function deleteLocalFile(string $fileName): void
+    {
+        unlink($this->localDirectory . $fileName);
+    }
+}
+```
 
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+To spawn an Activity Execution, you must retrieve the _Activity handle_ in your Workflow.
+
+```typescript
+import { proxyActivities } from '@temporalio/workflow';
+// Only import the activity types
+import type * as activities from './activities';
+
+const { greet } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '1 minute',
+});
+
+/** A workflow that calls an activity */
+export async function example(name: string): Promise<string> {
+  return await greet(name);
+}
+```
+
+This imports the individual Activities and declares the type alias for each Activity.
 
 </TabItem>
 </Tabs>
@@ -725,12 +997,138 @@ Content is not available
 </TabItem>
 <TabItem value="php">
 
-Content is not available
+`Workflow::newActivityStub`returns a client-side stub an implements an Activity interface. The client-side stub can be used within the Workflow code. It takes the Activity's type and`ActivityOptions` as arguments.
+
+Calling (via `yield`) a method on this interface invokes an Activity that implements this method.
+An Activity invocation synchronously blocks until the Activity completes, fails, or times out.
+Even if Activity execution takes a few months, the Workflow code still sees it as a single synchronous invocation.
+It doesn't matter what happens to the processes that host the Workflow.
+The business logic code just sees a single method call.
+
+```php
+class GreetingWorkflow implements GreetingWorkflowInterface
+{
+    private $greetingActivity;
+
+    public function __construct()
+    {
+        $this->greetingActivity = Workflow::newActivityStub(
+            GreetingActivityInterface::class,
+            ActivityOptions::new()->withStartToCloseTimeout(\DateInterval::createFromDateString('30 seconds'))
+        );
+    }
+
+    public function greet(string $name): \Generator
+    {
+        // This is a blocking call that returns only after the activity has completed.
+        return yield $this->greetingActivity->composeGreeting('Hello', $name);
+    }
+}
+```
+
+If different Activities need different options, like timeouts or a task queue, multiple client-side stubs can be created with different options.
+
+```php
+$greetingActivity = Workflow::newActivityStub(
+    GreetingActivityInterface::class,
+    ActivityOptions::new()->withStartToCloseTimeout(\DateInterval::createFromDateString('30 seconds'))
+);
+
+$greetingActivity = Workflow::newActivityStub(
+    GreetingActivityInterface::class,
+    ActivityOptions::new()->withStartToCloseTimeout(\DateInterval::createFromDateString('30 minutes'))
+);
+```
+
+## Calling Activities Asynchronously
+
+Sometimes Workflows need to perform certain operations in parallel.
+
+Invoking activity stub without the use of `yield` will return the Activity result promise which can be resolved at later moment.
+Calling `yield` on promise blocks until a result is available.
+
+> Activity promise also exposes `then` method to construct promise chains.
+> Read more about Promises [here](https://github.com/reactphp/promise).
+
+Alternatively you can explicitly wrap your code (including `yield` constucts) using `Workflow::async` which will execute nested code in parallel with main Workflow code.
+Call `yeild` on Promise returned by `Workflow::async` to merge execution result back to primary Workflow method.
+
+```php
+public function greet(string $name): \Generator
+{
+    // Workflow::async runs it's activities and child workflows in a separate coroutine. Use keyword yield to merge
+    // it back to parent process.
+
+    $first = Workflow::async(
+        function () use ($name) {
+            $hello = yield $this->greetingActivity->composeGreeting('Hello', $name);
+            $bye = yield $this->greetingActivity->composeGreeting('Bye', $name);
+
+            return $hello . '; ' . $bye;
+        }
+    );
+
+    $second = Workflow::async(
+        function () use ($name) {
+            $hello = yield $this->greetingActivity->composeGreeting('Hola', $name);
+            $bye = yield $this->greetingActivity->composeGreeting('Chao', $name);
+
+            return $hello . '; ' . $bye;
+        }
+    );
+
+    // blocks until $first and $second complete
+    return (yield $first) . "\n" . (yield $second);
+}
+```
+
+#### Async completion
+
+There are certain scenarios when moving on from an Activity upon completion of its function is not possible or desirable.
+For example, you might have an application that requires user input to complete the Activity.
+You could implement the Activity with a polling mechanism, but a simpler and less resource-intensive implementation is to asynchronously complete a Temporal Activity.
+
+There are two parts to implementing an asynchronously completed Activity:
+
+1. The Activity provides the information necessary for completion from an external system and notifies the Temporal service that it is waiting for that outside callback.
+2. The external service calls the Temporal service to complete the Activity.
+
+The following example demonstrates the first part:
+
+<!--SNIPSTART samples-php-async-activity-completion-activity-class-->
+<!--SNIPEND-->
+
+The following code demonstrates how to complete the Activity successfully using `WorkflowClient`:
+
+<!--SNIPSTART samples-php-async-activity-completion-completebytoken-->
+<!--SNIPEND-->
+
+To fail the Activity, you would do the following:
+
+```php
+// Fail the Activity.
+$activityClient->completeExceptionallyByToken($taskToken, new \Error("activity failed"));
+```
 
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+Since Activities are referenced by their string name, you can reference them dynamically to get the result of an Activity Execution.
+
+```typescript
+export async function DynamicWorkflow(activityName, ...args) {
+  const acts = proxyActivities(/* activityOptions */);
+
+  // these are equivalent
+  await acts.activity1();
+  await acts['activity1']();
+
+  let result = await acts[activityName](...args);
+  return result;
+}
+```
+
+The `proxyActivities()` returns an object that calls the Activities in the function. `acts[activityName]()` references the Activity using the Activity name, then it returns the results.
 
 </TabItem>
 </Tabs>
@@ -782,7 +1180,135 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+Use a new `WorflowClient()` with the requisite gRPC `Connection` to create a new Client.
+
+```typescript
+import { Connection, WorkflowClient } from '@temporalio/client';
+const connection = new Connection(); // to configure for production
+const client = new WorkflowClient(connection.service);
+```
+
+Declaring the `WorflowClient()` creates a new connection to the Temporal service.
+
+If you ommit the connection and just call the `new WorkflowClient()`, you will create a default connection that works locally. However, configure your connection and Namespace when [deploying to production](typescript/security#encryption-in-transit-with-mtls).
+
+The following example, creates a Client, connects to an account, and declares your Namespace.
+
+```typescript
+import { Connection, WorkflowClient } from '@temporalio/client';
+
+const connection = new Connection({
+  address: '<Namespace ID>.tmprl.cloud', // defaults port to 7233 if not specified
+  tls: {
+    // set to true if TLS without mTLS
+    // See docs for other TLS options
+    clientCertPair: {
+      crt: clientCert,
+      key: clientKey,
+    },
+  },
+});
+await connection.untilReady();
+const client = new WorkflowClient(connection.service, {
+  namespace: 'your.namespace',
+});
+```
+
+A full example for Workers looks like this:
+
+```typescript
+import { Worker, NativeConnection } from '@temporalio/worker';
+import * as activities from './activities';
+
+async function run() {
+  const connection = await NativeConnection.create({
+    address: 'foo.bar.tmprl.cloud', // defaults port to 7233 if not specified
+    tls: {
+      // set to true if TLS without mTLS
+      // See docs for other TLS options
+      clientCertPair: {
+        crt: clientCert,
+        key: clientKey,
+      },
+    },
+  });
+
+  const worker = await Worker.create({
+    connection,
+    namespace: 'foo.bar', // as explained in Namespaces section
+    // ...
+  });
+  await worker.run();
+}
+
+run().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
+```
+
+[The Hello World mTLS sample](https://github.com/temporalio/samples-node/tree/main/hello-world-mtls/) demonstrates sample code used to connect to a Temporal Cloud account.
+When signing up to Temporal Cloud you should receive a Namespace, a Server address and a client certificate and key. Use the following environment variables to set up the sample:
+
+- **TEMPORAL_ADDRESS**: looks like `foo.bar.tmprl.cloud` (NOT web.foo.bar.tmprl.cloud)
+- **TEMPORAL_NAMESPACE**: looks like `foo.bar`
+- **TEMPORAL_CLIENT_CERT_PATH**: `/tls/ca.pem` (file contents start with -----BEGIN CERTIFICATE-----)
+- **TEMPORAL_CLIENT_KEY_PATH**: `/tls/ca.key` (file contents start with -----BEGIN PRIVATE KEY-----)
+
+You can leave the remaining vars, like `TEMPORAL_SERVER_NAME_OVERRIDE` and `TEMPORAL_SERVER_ROOT_CA_CERT_PATH` blank.
+There is another var, `TEMPORAL_TASK_QUEUE`, which the example defaults to `'hello-world-mtls'` but you can customize as needed.
+Example environment settings
+
+```typescript
+export function getEnv(): Env {
+  return {
+    address: 'web.<Namespace ID>.tmprl.cloud', // NOT web.foo.bar.tmprl.cloud
+    namespace: 'your.namespace', // as assigned
+    clientCertPath: 'foobar.pem', // in project root
+    clientKeyPath: 'foobar.key', // in project root
+    taskQueue: process.env.TEMPORAL_TASK_QUEUE || 'hello-world-mtls', // just to ensure task queue is same on client and worker, totally optional
+    // // not usually needed
+    // serverNameOverride: process.env.TEMPORAL_SERVER_NAME_OVERRIDE,
+    // serverRootCACertificatePath: process.env.TEMPORAL_SERVER_ROOT_CA_CERT_PATH,
+  };
+}
+```
+
+If you have misconfigured your connection somehow, you will get an opaque `[TransportError: transport error]` error. Read through your settings carefully and contact Temporal if you are sure you have checked everything.
+
+Note the difference between the gRPC and Temporal Web endpoints:
+
+- The gRPC endpoint has a DNS address of `<Namespace ID>.tmprl.cloud`, for example: `accounting-production.f45a2.tmprl.cloud`.
+- The Temporal Web endpoint is `web.<Namespace ID>.tmprl.cloud`, for example: `https://web.accounting-production.f45a2.tmprl.cloud`.
+
+If you are using mTLS, it is completely up to you how to get the `clientCert` and `clientKey` pair into your code, whether it is reading from file system, secrets manager, or both. Just keep in mind that they are whitespace sensitive, and some environment variable systems have been known to cause frustration because they modify whitespace.
+
+The following code example works for local development and for certifications hosted in an Amazon S3 bucket.
+
+```typescript
+let serverRootCACertificate: Buffer | undefined;
+let clientCertificate: Buffer | undefined;
+let clientKey: Buffer | undefined;
+if (certificateS3Bucket) {
+  const s3 = new S3client({ region: certificateS3BucketRegion });
+  serverRootCACertificate = await s3.getObject({
+    bucket: certificateS3Bucket,
+    key: serverRootCACertificatePath,
+  });
+  clientCertificate = await s3.getObject({
+    bucket: certificateS3Bucket,
+    key: clientCertPath,
+  });
+  clientKey = await s3.getObject({
+    bucket: certificateS3Bucket,
+    key: clientKeyPath,
+  });
+} else {
+  serverRootCACertificate = fs.readFileSync(serverRootCACertificatePath);
+  clientCertificate = fs.readFileSync(clientCertPath);
+  clientKey = fs.readFileSync(clientKeyPath);
+}
+```
 
 </TabItem>
 </Tabs>
@@ -908,7 +1434,45 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+First create a Worker with `Worker.create()` (which establishes the initial gRPC connection), then call `worker.run()` on it (to start polling the Task Queue).
+
+Below is an example of starting a Worker that polls the Task Queue named `tutorial`.
+
+<!--SNIPSTART typescript-hello-worker {"enable_source_link": false}-->
+<!--SNIPEND-->
+
+`taskQueue` is the only required option, but you will also use `workflowsPath` and `activities` to register Workflows and Activities with the Worker.
+See below for more Worker options.
+
+#### Workflow and Activity registration
+
+Workers bundle Workflow code and `node_modules` using Webpack v5 and execute them inside V8 isolates.
+Activities are directly required and run by Workers in the Node.js environment.
+
+Workers are very flexible – you can host any or all of your Workflows and Activities on a Worker, and you can host multiple Workers in a single machine.
+
+There are three main things the Worker needs:
+
+- `taskQueue`: the Task Queue to poll. This is the only required argument.
+- `activities`: Optional. Imported and supplied directly to the Worker. Not the path.
+- Workflow bundle:
+- Either specify a `workflowsPath` to your `workflows.ts` file to pass to Webpack, e.g., `require.resolve('./workflows')`. Workflows will be bundled with their dependencies, which you can fine-tune with `nodeModulesPaths`.
+- Or pass a prebuilt bundle to `workflowBundle` instead if you prefer to handle the bundling yourself.
+
+#### Additional Worker Options
+
+This is a selected subset of options you are likely to use. Even more advanced options, particularly for performance tuning, are available in [the API reference](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions).
+
+| Options            | Description                                                                                                                                                                        |
+| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `nodeModulesPaths` | Array of paths of Workflow dependencies to pass to Webpack. Defaults to the first encountered `node_modules` directory when scanning the filesystem starting with `workflowsPath`. |
+| `dataConverter`    | Encodes and decodes data entering and exiting a Temporal Server. Supports `undefined`, `UintBArray`, and JSON.                                                                     |
+| `sinks`            | Allows injection of Workflow Sinks (Advanced feature: see [Logging docs](/docs/typescript/logging))                                                                                |
+| `interceptors`     | A mapping of interceptor type to a list of factories or module paths (Advanced feature: see [Interceptors](/docs/typescript/interceptors))                                         |
+
+**Operation guides:**
+
+- [How to tune Workers](/docs/operation/how-to-tune-workers)
 
 </TabItem>
 </Tabs>
@@ -993,7 +1557,21 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+When you have a Workflow Client, you can schedule the start of a Workflow with `client.start()`, specifying `workflowId`, `taskQueue`, and `args` and returning a Workflow handle immediately after the Server acknowledges the receipt.
+
+```typescript
+const handle = await client.start(example, {
+  workflowId: 'your-workflow-id',
+  taskQueue: 'your-task-queue',
+  args: ['argument01', 'argument02', 'argument03'], // this is typechecked against workflowFn's args
+});
+const handle = client.getHandle(workflowId);
+const result = await handle.result();
+```
+
+Calling `client.start()` and `client.execute()` send a command to Temporal Server to schedule a new Workflow Execution on the specified Task Queue. It does not actually start until a Worker that has a matching Workflow Type, polling that Task Queue, picks it up.
+
+You can test this by executing a Workflow Client command without a matching Worker. Temporal Server records the command in Event History, but does not make progress with the Workflow Execution until a Worker starts polling with a matching Task Queue and Workflow Definition.
 
 </TabItem>
 </Tabs>
@@ -1041,7 +1619,49 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+Workers bundle Workflow code and node modules using Webpack v5 and execute them inside V8 isolates. Activities are directly required and run by Workers in the Node.js environment.
+
+Workers are very flexible – you can host any or all of your Workflows and Activities on a Worker, and you can host multiple Workers in a single machine.
+
+There are three main things the Worker needs:
+
+- `taskQueue`: the Task Queue to poll. This is the only required argument.
+
+- `activities`: Optional. Imported and supplied directly to the Worker.
+
+- Workflow bundle:
+- Either specify a `workflowsPath` to your `workflows.ts` file to pass to Webpack, for example, `require.resolve('./workflows')`. Workflows will be bundled with their dependencies, which you can finetune with `nodeModulesPaths`.
+- Or pass a prebuilt bundle to `workflowBundle` instead if you prefer to handle the bundling yourself.
+
+```typescript
+import { Worker } from '@temporalio/worker';
+import * as activities from './activities';
+
+async function run() {
+  // Step 1: Register Workflows and Activities with the Worker and connect to
+  // the Temporal server.
+  const worker = await Worker.create({
+    workflowsPath: require.resolve('./workflows'),
+    activities,
+    taskQueue: 'hello-world',
+  });
+  // Worker connects to localhost by default and uses console.error for logging.
+  // Customize the Worker by passing more options to create():
+  // https://typescript.temporal.io/api/classes/worker.Worker
+  // If you need to configure server connection parameters, see docs:
+  // https://docs.temporal.io/docs/typescript/security#encryption-in-transit-with-mtls
+
+  // Step 2: Start accepting tasks on the `tutorial` queue
+  await worker.run();
+}
+
+run().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
+```
+
+`taskQueue` is the only required option; however, use `workflowsPath` and `activities` to register Workflows and Activities with the Worker.
 
 </TabItem>
 </Tabs>
@@ -1087,7 +1707,28 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+You can set a Workflow Id in the Client of a Workflow.
+
+```typescript
+const handle = await client.start(example, {
+  workflowId: 'yourWorkflowId',
+  taskQueue: 'yourTaskQueue',
+  args: ['your', 'arg', 'uments'],
+});
+```
+
+This starts a new Client with the given Workflow Id, Task Queue name, and an argument.
+
+```typescript
+const handle = await client.start(example, {
+  args: ['Temporal'], // type inference works! args: [name: string]
+  taskQueue: 'your-task-queue',
+  // in practice, use a meaningful business id, eg customerId or transactionId
+  workflowId: 'your-workflow-id-',
+});
+```
+
+Connect to a Client with `client.start()` and any arguments. Then specify your `taskQueue` and set your `workflowId` to a meaningful business identifier.
 
 </TabItem>
 </Tabs>
@@ -1203,7 +1844,50 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+To return the results of a Workflow Execution:
+
+```typescript
+return (
+  'Completed ' +
+  wf.workflowInfo().workflowId +
+  ', Total Charged: ' +
+  totalCharged
+);
+```
+
+`totalCharged` is just a function declared in your code. For a full example, see [subscription-workflow-project-template-typescript/src/workflows.ts](https://github.com/temporalio/subscription-workflow-project-template-typescript/blob/main/src/workflows.ts).
+
+Workflow functions may or may not return a result when they complete.
+
+If you started a Workflow with `handle.start()`, you can choose to wait for the result anytime with handle.result().
+
+```typescript
+const handle = client.getHandle(workflowId);
+const result = await handle.result();
+```
+
+Using a Workflow Handle isn't necessary with `client.execute()`.
+
+Workflows that prematurely end will throw a `WorkflowFailedError` if you call `result()`.
+
+If you call `result()` on a Workflow that prematurely ended for some reason, it throws a [`WorkflowFailedError` error](https://typescript.temporal.io/api/classes/client.workflowfailederror/) that reflects the reason. For that reason, it is recommended to catch that error.
+
+```typescript
+const handle = client.getHandle(workflowId);
+try {
+  const result = await handle.result();
+} catch (err) {
+  if (err instanceof WorkflowFailedError) {
+    throw new Error('Temporal workflow failed: ' + workflowId, {
+      cause: err,
+    });
+  } else {
+    throw new Error('error from Temporal workflow ' + workflowId, {
+      cause: err,
+    });
+  }
+}
+```
 
 </TabItem>
 </Tabs>
@@ -1531,8 +2215,8 @@ if err != nil {
 // ...
 ```
 
-The `QueryWorkflowWithOptions()` API provides similar functionality, but with the ability to set additional configurations through the [QueryWorkflowWithOptionsRequest](https://pkg.go.dev/go.temporal.io/sdk/client#QueryWorkflowWithOptionsRequest).
-When using this API you will also receive a structured [QueryWorkflowWithOptionsResponse](https://pkg.go.dev/go.temporal.io/sdk/client#QueryWorkflowWithOptionsResponse)
+The `QueryWorkflowWithOptions()` API provides similar functionality, but with the ability to set additional configurations through [QueryWorkflowWithOptionsRequest](https://pkg.go.dev/go.temporal.io/sdk/client#QueryWorkflowWithOptionsRequest).
+When using this API, you will also receive a structured response of type [QueryWorkflowWithOptionsResponse](https://pkg.go.dev/go.temporal.io/sdk/client#QueryWorkflowWithOptionsResponse).
 
 ```go
 // ...
@@ -1618,7 +2302,7 @@ func MyWorkflow(ctx workflow.Context, input string) error {
 }
 ```
 
-For example, suppose your query handler function takes 2 parameters:
+For example, suppose your query handler function takes two parameters:
 
 ```go
 err := workflow.SetQueryHandler(ctx, "current_state", func(prefix string, suffix string) (string, error) {
@@ -1694,7 +2378,280 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+This function takes two function, a Workflow Id and an amount to charge the card.
+The following code is a Workflow that charges a card twice, 30 days apart.
+
+```typescript
+import { sleep } from '@temporalio/workflow';
+
+async funtion MyWorkflow(id, amount) {
+    await  chargeCard(id, amount);
+    await wf.sleep('30 days') // durable
+    await chargeCard(id, amount);
+}
+```
+
+`sleep` sets a durable timer for a fixed time period (an "Updatable Timer" pattern is documented below).
+It uses the [ms](https://www.npmjs.com/package/ms) package to take either a string or number of milliseconds, and returns a promise that you can `await` and `catch` when the Workflow Execution is cancelled.
+
+```ts
+import { sleep } from '@temporalio/workflow';
+
+await sleep('30 days'); // string API
+await sleep(30 * 24 * 60 * 60 * 1000); // numerical API
+
+// `sleep` is cancellation-aware
+// when workflow gets canceled during sleep, promise is rejected
+await sleep('30 days').catch(() => {
+  // clean up code if workflow is canceled during sleep
+});
+
+// NOT VALID
+await sleep('1 month'); // ms package doesnt support "months" https://github.com/vercel/ms/issues/57
+// use date-fns and sleepUntil instead, see below
+```
+
+With this primitive, you can build other abstractions. For example, a `sleepUntil` function that converts absolute time to relative time with `date-fns`:
+
+```ts
+import * as wf from '@temporalio/workflow';
+import differenceInMilliseconds from 'date-fns/differenceInMilliseconds';
+
+async function sleepUntil(futureDate, fromDate = new Date()) {
+  const timeUntilDate = differenceInMilliseconds(
+    new Date(futureDate),
+    fromDate
+  );
+  return wf.sleep(timeUntilDate);
+}
+
+sleepUntil('30 Sep ' + (new Date().getFullYear() + 1)); // wake up when September ends
+sleepUntil('5 Nov 2022 00:12:34 GMT'); // wake up at specific time and timezone
+```
+
+You can check the valid ISO string formats on [MDN's Date docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse). The upcoming [ECMAScript Temporal API](https://tc39.es/proposal-temporal/docs/index.html) will offer more time utilities natively in JavaScript, alongside unfortunate name collision for Temporal developers.
+
+:::caution Preventing Confusion: Workflow sleep vs Activity sleep
+
+There is an unrelated [`sleep` utility function](https://typescript.temporal.io/api/classes/activity.context/#sleep) available in **Activity Context** that is not durable, but is cancellation aware. See [the Activities docs for details](/docs/typescript/activities).
+
+:::
+
+### `condition`
+
+The `condition(fn, timeout?)` API returns a promise that resolves:
+
+- `true` when the given predicate function (**must be synchronous**) returns `true` or
+- (optional) `false` if a timeout (given as a string or number of milliseconds) happens first.
+
+This API is comparable to `Workflow.await` in other SDKs and often used to wait for Signals, since Signals are the main way to asynchronously update internal Workflow state (looped Activities are another).
+
+The timeout also uses the [ms](https://www.npmjs.com/package/ms) package to take either a string or number of milliseconds.
+
+```ts
+// type signature
+export function condition(
+  fn: () => boolean,
+  timeout: number | string
+): Promise<boolean>;
+export function condition(fn: () => boolean): Promise<void>;
+
+// Usage
+import * as wf from '@temporalio/workflow';
+
+let x = 0;
+// do stuff with x, eg increment every time you receive a signal
+await wf.condition(() => x > 3);
+// you only reach here when x > 3
+
+// await either x > 3 or 30 minute timeout, whichever comes first
+if (await wf.condition(() => x > 3, '30 mins')) {
+  // reach here if predicate true
+} else {
+  // reach here if timed out
+}
+
+// track user progress with condition
+export async function trackStepChanges(): Promise<void> {
+  let step = 0;
+  wf.setHandler(updateStep, (s) => void (step = s));
+  wf.setHandler(getStep, () => step);
+  await wf.condition(() => step === 1);
+  await wf.condition(() => step === 2);
+}
+```
+
+<details>
+<summary>Example usage in our Next.js One-Click Buy code sample</summary>
+
+`condition` only returns true when the function evaluates to `true`; if the `condition` resolves as `false`, then a timeout has occurred.
+This leads to some nice patterns, like placing `await condition` inside an `if`:
+
+<!--SNIPSTART typescript-oneclick-buy-->
+<!--SNIPEND-->
+
+</details>
+
+:::warning `condition` Antipatterns
+
+- No time based condition functions are allowed in your function as this is very error prone.
+  Use the optional `timeout` arg or a `sleep` timer.
+- `condition` only accepts **synchronous** functions that return a boolean.
+  Do not put async functions, like Activities, inside the `condition` function.
+
+:::
+
+<!--TODO: give an idea of what the bad code looks like and why its bad-->
+
+### Async design patterns
+
+The real value of `sleep` and `condition` is in knowing how to use them to model asynchronous business logic.
+Here are some examples we use the most; we welcome more if you can think of them!
+
+<details>
+<summary>
+Racing Timers
+</summary>
+
+Use `Promise.race` with Timers to dynamically adjust delays.
+
+```ts
+export async function processOrderWorkflow({
+  orderProcessingMS,
+  sendDelayedEmailTimeoutMS,
+}: ProcessOrderOptions): Promise<void> {
+  let processing = true;
+  const processOrderPromise = processOrder(orderProcessingMS).then(() => {
+    processing = false;
+  });
+
+  await Promise.race([processOrderPromise, sleep(sendDelayedEmailTimeoutMS)]);
+
+  if (processing) {
+    await sendNotificationEmail();
+    await processOrderPromise;
+  }
+}
+```
+
+</details>
+<details>
+<summary>
+Racing Signals
+</summary>
+
+Use `Promise.race` with Signals and Triggers to have a promise resolve at the earlier of either system time or human intervention.
+
+```ts
+import { Trigger, sleep, defineSignal } from '@temporalio/workflow';
+
+const userInteraction = new Trigger<boolean>();
+const completeUserInteraction = defineSignal('completeUserInteraction');
+
+export async function myWorkflow(userId: string) {
+  setHandler(completeUserInteraction, () => userInteraction.resolve(true)); // programmatic resolve
+  const userInteracted = await Promise.race([
+    userInteraction,
+    sleep('30 days'),
+  ]);
+  if (!userInteracted) {
+    await sendReminderEmail(userId);
+  }
+}
+```
+
+You can invert this to create a Reminder pattern where the promise resolves IF no Signal is received.
+
+:::warning Antipattern: Racing sleep.then
+
+Be careful when racing a chained `sleep`. This may cause bugs because the chained `.then` will still continue to execute.
+
+```js
+await Promise.race([
+  sleep('5s').then(() => (status = 'timed_out')),
+  somethingElse.then(() => (status = 'processed')),
+]);
+
+if (status === 'processed') await complete(); // takes more than 5 seconds
+// status = timed_out
+```
+
+:::
+
+</details>
+
+<details>
+<summary>
+Updatable Timer
+</summary>
+
+Here is how you can build an updatable timer with `condition`:
+
+```ts
+import * as wf from '@temporalio/workflow';
+
+// usage
+export async function countdownWorkflow(): Promise<void> {
+  const target = Date.now() + 24 * 60 * 60 * 1000; // 1 day!!!
+  const timer = new UpdatableTimer(target);
+  console.log('timer set for: ' + new Date(target).toString());
+  wf.setHandler(setDeadlineSignal, (deadline) => {
+    // send in new deadlines via Signal
+    timer.deadline = deadline;
+    console.log('timer now set for: ' + new Date(deadline).toString());
+  });
+  wf.setHandler(timeLeftQuery, () => timer.deadline - Date.now());
+  await timer; // if you send in a signal with a new time, this timer will resolve earlier!
+  console.log('countdown done!');
+}
+```
+
+This is available in the third party [`temporal-time-utils`](https://www.npmjs.com/package/temporal-time-utils#user-content-updatabletimer) package where you can also see the implementation:
+
+```ts
+// implementation
+export class UpdatableTimer implements PromiseLike<void> {
+  deadlineUpdated = false;
+  #deadline: number;
+
+  constructor(deadline: number) {
+    this.#deadline = deadline;
+  }
+
+  private async run(): Promise<void> {
+    /* eslint-disable no-constant-condition */
+    while (true) {
+      this.deadlineUpdated = false;
+      if (
+        !(await wf.condition(
+          () => this.deadlineUpdated,
+          this.#deadline - Date.now()
+        ))
+      ) {
+        break;
+      }
+    }
+  }
+
+  then<TResult1 = void, TResult2 = never>(
+    onfulfilled?: (value: void) => TResult1 | PromiseLike<TResult1>,
+    onrejected?: (reason: any) => TResult2 | PromiseLike<TResult2>
+  ): PromiseLike<TResult1 | TResult2> {
+    return this.run().then(onfulfilled, onrejected);
+  }
+
+  set deadline(value: number) {
+    this.#deadline = value;
+    this.deadlineUpdated = true;
+  }
+
+  get deadline(): number {
+    return this.#deadline;
+  }
+}
+```
+
+</details>
 
 </TabItem>
 </Tabs>
@@ -1889,7 +2846,29 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+When you call `proxyActivities` in a Workflow Function, you can set a range of `ActivityOptions`.
+
+Either `scheduleToCloseTimeout` or `scheduleToStartTimeout` must be set.
+
+Type: time.Duration
+Default: ∞ (infinity – no limit)
+
+In this example, you can set the `scheduleToCloseTimeout` to 5 m.
+
+```typescript
+// Sample of typical options you can set
+const { greet } = proxyActivities<typeof activities>({
+  scheduleToCloseTimeout: '5m',
+  retry: {
+    // default retry policy if not specified
+    initialInterval: '1s',
+    backoffCoefficient: 2,
+    maximumAttempts: Infinity,
+    maximumInterval: 100 * initialInterval,
+    nonRetryableErrorTypes: [],
+  },
+});
+```
 
 </TabItem>
 </Tabs>
@@ -1937,7 +2916,29 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+When you call `proxyActivities` in a Workflow Function, you can set a range of `ActivityOptions`.
+
+Either `scheduleToCloseTimeout` or `scheduleToStartTimeout` must be set.
+
+Type: time.Duration
+Default: ∞ (infinity – no limit)
+
+In this example, you can set the `startToCloseTimeout` to 30 seconds.
+
+```typescript
+// Sample of typical options you can set
+const { greet } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '30s', // recommended
+  retry: {
+    // default retry policy if not specified
+    initialInterval: '1s',
+    backoffCoefficient: 2,
+    maximumAttempts: Infinity,
+    maximumInterval: 100 * initialInterval,
+    nonRetryableErrorTypes: [],
+  },
+});
+```
 
 </TabItem>
 </Tabs>
@@ -1983,7 +2984,32 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+When you call `proxyActivities` in a Workflow Function, you can set a range of `ActivityOptions`.
+
+A Schedule-To-Start limits the maximum time that an Activity Task can sit in a Task Queue. It is used to identify whether a Worker is down or for Task routing.
+
+Either `scheduleToCloseTimeout` or `scheduleToStartTimeout` must be set.
+
+Type: time.Duration
+Default: ∞ (infinity – no limit)
+
+In this example, you can set the `ScheduleToStartTimeout` to 60 seconds.
+
+```typescript
+// Sample of typical options you can set
+const { greet } = proxyActivities<typeof activities>({
+  scheduleToCloseTimeout: '5m',
+  ScheduleToStartTimeout: '60s',
+  retry: {
+    // default retry policy if not specified
+    initialInterval: '1s',
+    backoffCoefficient: 2,
+    maximumAttempts: Infinity,
+    maximumInterval: 100 * initialInterval,
+    nonRetryableErrorTypes: [],
+  },
+});
+```
 
 </TabItem>
 </Tabs>
@@ -2268,6 +3294,72 @@ Content is not available
 
 TODO
 
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+Content is not available
+
+</TabItem>
+<TabItem value="java">
+
+Content is not available
+
+</TabItem>
+<TabItem value="php">
+
+Some Activities are long-running.
+To react to a crash quickly, use the Heartbeat mechanism, `Activity::heartbeat()`, which lets the Temporal Server know that the Activity is still alive.
+This acts as a periodic checkpoint mechanism for the progress of an Activity.
+
+You can piggyback `details` on an Activity Heartbeat.
+If an Activity times out, the last value of `details` is included in the `TimeoutFailure` delivered to a Workflow.
+Then the Workflow can pass the details to the next Activity invocation.
+Additionally, you can access the details from within an Activity via `Activity::getHeartbeatDetails`.
+When an Activity is retried after a failure `getHeartbeatDetails` enables you to get the value from the last successful Heartbeat.
+
+```php
+use Temporal\Activity;
+
+class FileProcessingActivitiesImpl implements FileProcessingActivities
+{
+    // ...
+    public function download(
+        string $bucketName,
+        string $remoteName,
+        string $localName
+    ): void
+    {
+        $this->dowloader->downloadWithProgress(
+            $bucketName,
+            $remoteName,
+            $localName,
+            // on progress
+            function ($progress) {
+                Activity::heartbeat($progress);
+            }
+        );
+
+        Activity::heartbeat(100); // download complete
+
+        // ...
+    }
+
+    // ...
+}
+```
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is not available
+
+</TabItem>
+</Tabs>
+
 ### Cron Jobs
 
 A [Temporal Cron Job](/docs/concepts-guide/#cron-jobs) is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.
@@ -2308,7 +3400,48 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+Set the `DefaultLogger` to one of the following: `'TRACE'` | `'DEBUG'` | `'INFO'` | `'WARN'` | `'ERROR'`.
+
+The following is an example of setting the `DefaultLogger` to `'Debug'`.
+
+```typescript
+Runtime.install({
+  logger: new DefaultLogger('DEBUG'),
+  telemetryOptions: {
+    logForwardingLevel: 'DEBUG',
+    tracingFilter: 'temporal_sdk_core=DEBUG',
+  },
+});
+```
+
+The following code sets the `DefaultLogger` to `'Debug'` and creates a Worker that can execute Activities or Workflows.
+
+```typescript
+import { Worker, Runtime, DefaultLogger } from '@temporalio/worker';
+import * as activities from './activities';
+async function main() {
+  const argv = arg({
+    '--debug': Boolean,
+  });
+  /* Setting the log level to DEBUG. */
+  if (argv['--debug']) {
+    Runtime.install({
+      logger: new DefaultLogger('DEBUG'),
+      telemetryOptions: {
+        logForwardingLevel: 'DEBUG',
+        tracingFilter: 'temporal_sdk_core=DEBUG',
+      },
+    });
+  }
+  const worker = await Worker.create({
+    activities,
+    workflowsPath: require.resolve('./workflows'),
+    taskQueue: 'test',
+  });
+  await worker.run();
+  console.log('Worker gracefully shutdown');
+}
+```
 
 </TabItem>
 </Tabs>
@@ -2440,3 +3573,8 @@ Content is not available
 ## Testing
 
 TODO
+
+## Scaling
+
+TODO
+
