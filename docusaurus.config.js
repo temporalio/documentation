@@ -271,7 +271,7 @@ module.exports = {
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
           routeBasePath: "docs",
-          exclude: ["**/app-dev-context/**", "**/concept-context/**"], // do not render "shared" content
+          exclude: ["**/app-dev-context/**", "**/concept-context/**"], // do not render context content
           editUrl: "https://github.com/temporalio/documentation/blob/master",
           /**
            * Whether to display the author who last updated the doc.
