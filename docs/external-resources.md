@@ -117,6 +117,7 @@ _Note: Each of [our SDK docs](/application-development) have a Hello World and R
 - [Software Delivery Building Blocks at Datadog](https://www.youtube.com/watch?v=eWFpl-nzGsY&feature=youtu.be) by Jacob LeGrone and Kevin Devroede (Datadog) (starting at 6min 30s)
 
   > Temporal lets [Datadog]:
+  >
   > 1. write "fault oblivious" stateful control flow and business logic, in the programming language of your choice,
   > 2. respond to external events,
   > 3. support very long running operations,

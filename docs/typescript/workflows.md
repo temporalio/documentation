@@ -10,7 +10,6 @@ import TabItem from '@theme/TabItem';
 import RelatedReadList, {RelatedReadContainer, RelatedReadItem} from '../components/RelatedReadList.js'
 
 <!-- prettier-ignore -->
-
 import * as WhatIsASignal from '../concepts/what-is-a-signal.md'
 import * as WhatIsAQuery from '../concepts/what-is-a-query.md'
 
@@ -47,7 +46,7 @@ type ExampleArgs = {
 };
 
 export async function example(
-  args: ExampleArgs,
+  args: ExampleArgs
 ): Promise<{ greeting: string }> {
   const greeting = await greet(args.name);
   return { greeting };
@@ -194,7 +193,7 @@ The semantic of `defineSignal`/`defineQuery` is intentional, in that they return
  * Define a signal method for a Workflow.
  */
 export function defineSignal<Args extends any[] = []>(
-  name: string,
+  name: string
 ): SignalDefinition<Args> {
   return {
     type: 'signal',
@@ -206,7 +205,7 @@ export function defineSignal<Args extends any[] = []>(
  * Define a query method for a Workflow.
  */
 export function defineQuery<Ret, Args extends any[] = []>(
-  name: string,
+  name: string
 ): QueryDefinition<Ret, Args> {
   return {
     type: 'query',
@@ -395,9 +394,8 @@ You can either:
 - Define the expected type at the call site when you invoke the Signal/Query.
 
 ```ts
-const increment = wf.defineSignal<[number /* more args can be added here */]>(
-  'increment',
-);
+const increment =
+  wf.defineSignal<[number /* more args can be added here */]>('increment');
 const count = wf.defineQuery<number /*, Arg[] can be added here */>('count');
 
 // type safety inferred from definitions
@@ -554,7 +552,7 @@ import differenceInMilliseconds from 'date-fns/differenceInMilliseconds';
 async function sleepUntil(futureDate, fromDate = new Date()) {
   const timeUntilDate = differenceInMilliseconds(
     new Date(futureDate),
-    fromDate,
+    fromDate
   );
   return wf.sleep(timeUntilDate);
 }
@@ -586,7 +584,7 @@ The timeout also uses the [ms](https://www.npmjs.com/package/ms) package to take
 // type signature
 export function condition(
   fn: () => boolean,
-  timeout: number | string,
+  timeout: number | string
 ): Promise<boolean>;
 export function condition(fn: () => boolean): Promise<void>;
 
@@ -759,7 +757,7 @@ export class UpdatableTimer implements PromiseLike<void> {
       if (
         !(await wf.condition(
           () => this.deadlineUpdated,
-          this.#deadline - Date.now(),
+          this.#deadline - Date.now()
         ))
       ) {
         break;
@@ -769,7 +767,7 @@ export class UpdatableTimer implements PromiseLike<void> {
 
   then<TResult1 = void, TResult2 = never>(
     onfulfilled?: (value: void) => TResult1 | PromiseLike<TResult1>,
-    onrejected?: (reason: any) => TResult2 | PromiseLike<TResult2>,
+    onrejected?: (reason: any) => TResult2 | PromiseLike<TResult2>
   ): PromiseLike<TResult1 | TResult2> {
     return this.run().then(onfulfilled, onrejected);
   }
@@ -966,7 +964,7 @@ const MAX_ITERATIONS = 1;
 
 export async function entityWorkflow(
   input: Input,
-  isNew = true,
+  isNew = true
 ): Promise<void> {
   try {
     const pendingUpdates = Array<Update>();
@@ -1069,7 +1067,7 @@ import differenceInMilliseconds from 'date-fns/differenceInMilliseconds';
 async function spawnChild(
   userId: string,
   nextTime: string,
-  invocation: number,
+  invocation: number
 ) {
   return wf.executeChild(childWorkflow, {
     args: [userId],
@@ -1083,7 +1081,7 @@ async function spawnChild(
 export async function sleepUntil(futureDate: string, fromDate = new Date()) {
   const timeUntilDate = differenceInMilliseconds(
     new Date(futureDate),
-    fromDate,
+    fromDate
   );
   return wf.sleep(timeUntilDate);
 }
@@ -1093,9 +1091,8 @@ export const numInvocationsQuery = wf.defineQuery('numInvocationsQuery');
 export const futureScheduleQuery = wf.defineQuery('futureScheduleQuery');
 export const manualTriggerSignal = wf.defineSignal('manualTriggerSignal');
 export type ScheduleWorkflowState = 'RUNNING' | 'PAUSED' | 'STOPPED';
-export const stateSignal = wf.defineSignal<[ScheduleWorkflowState]>(
-  'stateSignal',
-);
+export const stateSignal =
+  wf.defineSignal<[ScheduleWorkflowState]>('stateSignal');
 export const stateQuery = wf.defineQuery<ScheduleWorkflowState>('stateQuery');
 
 export async function CronScheduleWorkflow(
@@ -1109,13 +1106,12 @@ export async function CronScheduleWorkflow(
     jitterMs?: number;
     userId?: string;
   },
-  invocations = 1,
+  invocations = 1
 ) {
   // signal and query handlers
   wf.setHandler(numInvocationsQuery, () => invocations);
-  wf.setHandler(
-    manualTriggerSignal,
-    () => spawnChild(userId, nextTime.toString(), invocations++),
+  wf.setHandler(manualTriggerSignal, () =>
+    spawnChild(userId, nextTime.toString(), invocations++)
   );
   let scheduleWorkflowState = 'RUNNING' as ScheduleWorkflowState;
   wf.setHandler(stateQuery, () => scheduleWorkflowState);
@@ -1123,18 +1119,17 @@ export async function CronScheduleWorkflow(
 
   const interval = parser.parseExpression(
     args.cronParser.expression,
-    args.cronParser.options,
+    args.cronParser.options
   );
   const nextTime = interval.next().toString();
   wf.setHandler(futureScheduleQuery, (numEntriesInFutureSchedule?: number) => {
     const interval = parser.parseExpression(
       args.cronParser.expression,
-      args.cronParser.options,
+      args.cronParser.options
     ); // reset interval
     return {
-      futureSchedule: genNextTimes(
-        numEntriesInFutureSchedule,
-        () => interval.next().toString(),
+      futureSchedule: genNextTimes(numEntriesInFutureSchedule, () =>
+        interval.next().toString()
       ),
       timeLeft: differenceInMilliseconds(new Date(nextTime), new Date()),
     };
@@ -1153,7 +1148,7 @@ export async function CronScheduleWorkflow(
     if (args.maxInvocations && args.maxInvocations > invocations) {
       await wf.continueAsNew<typeof CronScheduleWorkflow>(
         args,
-        invocations + 1,
+        invocations + 1
       );
     } else {
       scheduleWorkflowState = 'STOPPED';
@@ -1167,7 +1162,7 @@ export async function CronScheduleWorkflow(
 // shared
 function genNextTimes<T extends string | Date>(
   number = 5,
-  getNextTimes: () => T,
+  getNextTimes: () => T
 ): T[] {
   const times = [];
   for (let i = 0; i < number; i++) {

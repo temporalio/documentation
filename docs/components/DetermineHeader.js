@@ -1,19 +1,19 @@
-import Link from '@docusaurus/Link';
-import clsx from 'clsx';
-import React from 'react';
+import Link from "@docusaurus/Link";
+import clsx from "clsx";
+import React from "react";
 
-export default function DetermineHeader({ hLevel, hText }) {
+export default function DetermineHeader({hLevel, hText}) {
   switch (hLevel) {
-    case '##':
+    case "##":
       return <h2>{hText}</h2>;
       break;
-    case '###':
+    case "###":
       return <h3>{hText}</h3>;
       break;
-    case '####':
+    case "####":
       return <h4>{hText}</h4>;
       break;
-    case '#####':
+    case "#####":
       return <h4>{hText}</h4>;
       break;
     default:

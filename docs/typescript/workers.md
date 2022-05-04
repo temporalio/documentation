@@ -127,7 +127,7 @@ const connection = await NativeConnection.create({
   address: 'temporal.myorg.io',
 });
 const worker = await Worker.create({
-  connection, /* standard Worker options from here */
+  connection /* standard Worker options from here */,
 });
 ```
 

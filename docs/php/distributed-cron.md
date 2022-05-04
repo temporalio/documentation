@@ -4,7 +4,6 @@ title: Distributed CRON
 ---
 
 <!-- prettier-ignore -->
-
 import * as WhatIsATemporalCronJob from '../concepts/what-is-a-temporal-cron-job.md'
 
 This is how you set a Cron Schedule in PHP:

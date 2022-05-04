@@ -154,7 +154,7 @@ export const payloadConverter = new CompositePayloadConverter(
   new UndefinedPayloadConverter(),
   new BinaryPayloadConverter(),
   new ProtobufBinaryPayloadConverter(root),
-  new JsonPayloadConverter(),
+  new JsonPayloadConverter()
 );
 ```
 

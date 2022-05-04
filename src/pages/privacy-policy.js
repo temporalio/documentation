@@ -1,36 +1,36 @@
-import useBaseUrl from '@docusaurus/useBaseUrl';
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import Layout from '@theme/Layout';
-import React from 'react';
+import useBaseUrl from "@docusaurus/useBaseUrl";
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
+import Layout from "@theme/Layout";
+import React from "react";
 
 function PrivacyPolicy() {
   const context = useDocusaurusContext();
-  const { siteConfig = {} } = context;
+  const {siteConfig = {}} = context;
   return (
     <Layout
-      title='Temporal Technologies, Inc. Privacy Policy'
-      permalink='/privacy-policy'
+      title="Temporal Technologies, Inc. Privacy Policy"
+      permalink="/privacy-policy"
       description="General information about Temporal's documentation."
     >
-      <main className='margin-vert--lg container'>
-        <h1 id='temporal-technologies-inc-privacy-policy'>
+      <main className="margin-vert--lg container">
+        <h1 id="temporal-technologies-inc-privacy-policy">
           Temporal Technologies, Inc. Privacy Policy
         </h1>
         <p>Last updated: January 20th, 2021</p>
         <p>
-          Temporal Technologies Inc. operates{' '}
-          <a href='https://temporal.io'>https://temporal.io</a> and{' '}
-          <a href='https://docs.temporal.io'>https://docs.temporal.io</a>{' '}
-          (the &quot;Sites&quot;). This page informs you of our policies
-          regarding the collection, use and disclosure of Personal Information
-          we receive from users of the Sites.
+          Temporal Technologies Inc. operates{" "}
+          <a href="https://temporal.io">https://temporal.io</a> and{" "}
+          <a href="https://docs.temporal.io">https://docs.temporal.io</a> (the
+          &quot;Sites&quot;). This page informs you of our policies regarding
+          the collection, use and disclosure of Personal Information we receive
+          from users of the Sites.
         </p>
         <p>
           We use your Personal Information only for providing and improving the
           Sites. By using the Sites, you agree to the collection and use of
           information in accordance with this policy.
         </p>
-        <h2 id='information-collection-and-use'>
+        <h2 id="information-collection-and-use">
           Information Collection And Use
         </h2>
         <p>
@@ -39,7 +39,7 @@ function PrivacyPolicy() {
           identify you. Personally identifiable information may include, but is
           not limited to your name (&quot;Personal Information&quot;).
         </p>
-        <h2 id='log-data'>Log Data</h2>
+        <h2 id="log-data">Log Data</h2>
         <p>
           Like many site operators, we collect information that your browser
           sends whenever you visit our Sites (&quot;Log Data&quot;). This Log
@@ -50,13 +50,13 @@ function PrivacyPolicy() {
           may use third party services such as Google Analytics that collect,
           monitor and analyze this data.
         </p>
-        <h2 id='communications'>Communications</h2>
+        <h2 id="communications">Communications</h2>
         <p>
           Depending on the method of collection, we may use your Personal
           Information to contact you with newsletters, marketing or promotional
           materials and other information that we believe is relevant for you.
         </p>
-        <h2 id='cookies'>Cookies</h2>
+        <h2 id="cookies">Cookies</h2>
         <p>
           Cookies are files with a small amount of data, which may include an
           anonymous unique identifier. Cookies are sent to your browser from a
@@ -68,7 +68,7 @@ function PrivacyPolicy() {
           when a cookie is being sent. However, if you do not accept cookies,
           you may not be able to use some portions of our Sites.
         </p>
-        <h2 id='security'>Security</h2>
+        <h2 id="security">Security</h2>
         <p>
           The security of your Personal Information is important to us, but
           remember that no method of transmission over the Internet, or method
@@ -76,7 +76,7 @@ function PrivacyPolicy() {
           commercially acceptable means to protect your Personal Information, we
           cannot guarantee its absolute security.
         </p>
-        <h2 id='changes-to-this-privacy-policy'>
+        <h2 id="changes-to-this-privacy-policy">
           Changes To This Privacy Policy
         </h2>
         <p>
@@ -98,7 +98,7 @@ function PrivacyPolicy() {
           you either through the email address you have provided us, or by
           placing a prominent notice on our website.
         </p>
-        <h2 id='contact-us'>Contact Us</h2>
+        <h2 id="contact-us">Contact Us</h2>
         <p>
           If you have any questions about this Privacy Policy, please contact
           us.
