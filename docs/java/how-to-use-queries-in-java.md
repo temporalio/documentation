@@ -19,7 +19,7 @@ When using Queries, the following restrictions apply:
 
 ### Define Query Method
 
-import  DefineQuery from './how-to-define-a-query-in-java.md'
+import DefineQuery from './how-to-define-a-query-in-java.md'
 
 <DefineQuery/>
 

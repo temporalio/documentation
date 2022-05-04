@@ -31,10 +31,10 @@ The Signal type defaults to the name of the method. In the following example, th
 ```java
 @WorkflowInterface
 public interface FileProcessingWorkflow {
- 
+
    @WorkflowMethod
    String processFile(Arguments args);
- 
+
    @SignalMethod
    void retryNow();
 }
@@ -46,10 +46,10 @@ In the following example, the Signal type is set to "retrysignal".
 ```java
 @WorkflowInterface
 public interface FileProcessingWorkflow {
- 
+
    @WorkflowMethod
    String processFile(Arguments args);
- 
+
    @SignalMethod(name = "retrysignal")
    void retryNow();
 }

@@ -12,7 +12,7 @@ To use Signals in Java, initiate the Signal method with `@SignalMethod` annotati
 
 ### Define Signal Method
 
-import  DefineSignal from './how-to-define-a-signal-in-java.md'
+import DefineSignal from './how-to-define-a-signal-in-java.md'
 
 <DefineSignal/>
 
