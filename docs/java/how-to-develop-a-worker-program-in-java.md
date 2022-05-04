@@ -30,7 +30,7 @@ public class YourWorker {
 
   public static void main(String[] args) {
 
-    WorkflowServiceStubs service = WorkflowServiceStubs.newInstance();
+    WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
     WorkflowClient client = WorkflowClient.newInstance(service);
     WorkerFactory factory = WorkerFactory.newInstance(client);
     Worker yourWorker = factory.newWorker("your_task_queue");

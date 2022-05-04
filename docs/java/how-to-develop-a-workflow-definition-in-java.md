@@ -299,7 +299,7 @@ public static class DynamicGreetingWorkflowImpl implements DynamicWorkflow {
   }
 ```
 
-For more details, see [Dynamic Workflow Reference](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/DynamicWorkflow.html).
+For details, see [Dynamic Workflow Reference](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/DynamicWorkflow.html).
 
 #### Workflow implementation constraints
 

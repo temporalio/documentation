@@ -68,12 +68,13 @@ The History Service scales horizontally via individual shards, configured during
 The number of shards remains static for the life of the Cluster (so you should plan to scale and over-provision).
 
 Each shard maintains data (routing Ids, mutable state) and queues.
-There are three types of queues that a History shard maintains:
+A History shard maintains four types of queues:
 
-- Transfer queue: This is used to transfer internal tasks to the Matching Service.
+- Transfer queue: transfers internal tasks to the Matching Service.
   Whenever a new Workflow Task needs to be scheduled, the History Service transactionally dispatches it to the Matching Service.
-- Timer queues: This is used to durably persist Timers.
-- Replicator queue: This is used only for the experimental Multi-Cluster feature
+- Timer queues: durably persists Timers.
+- Replicator queue: asynchronously replicates Workflow Executions from active Clusters to other passive Clusters (experimental Multi-Cluster feature).
+- Visibility queue: pushes data to the visibility index (ElasticSearch).
 
 The History service talks to the Matching Service and the Database.
 

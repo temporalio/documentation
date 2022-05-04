@@ -10,7 +10,7 @@ tags:
 
 To spawn a [Child Workflow Execution](/docs/concepts/what-is-a-child-workflow-execution) in Go, use the [`ExecuteChildWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ExecuteChildWorkflow) API, which is available from the `go.temporal.io/sdk/workflow` package.
 
-The `ExecuteChildWorkflow` call requires an instance of [`workflow.Context`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/workflow#Context), with an instance of [`workflow.ChildWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ChildWorkflowOptions) applied to it, the Workflow Type, and any parameters that should be passed to the Child Workflow Execution.
+The `ExecuteChildWorkflow` call requires an instance of [`workflow.Context`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Context), with an instance of [`workflow.ChildWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ChildWorkflowOptions) applied to it, the Workflow Type, and any parameters that should be passed to the Child Workflow Execution.
 
 `workflow.ChildWorkflowOptions` contain the same fields as `client.StartWorkflowOptions`.
 Workflow Option fields automatically inherit their values from the Parent Workflow Options if they are not explicitly set.
@@ -41,21 +41,6 @@ func YourOtherWorkflowDefinition(ctx workflow.Context, params ChildParams) (Chil
   return resp, nil
 }
 ```
-
-#### Parent Close Policy
-
-In Go, a Parent Close Policy is set on the `ParentClosePolicy` field of an instance of [`workflow.ChildWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ChildWorkflowOptions).
-The possible values can be obtained from the [`go.temporal.io/api/enums/v1`](https://pkg.go.dev/go.temporal.io/api/enums/v1#ParentClosePolicy) package.
-
-- `PARENT_CLOSE_POLICY_ABANDON`
-- `PARENT_CLOSE_POLICY_TERMINATE`
-- `PARENT_CLOSE_POLICY_REQUEST_CANCEL`
-
-The Child Workflow Options are then applied to the the instance of `workflow.Context` by using the `WithChildOptions` API, which is then passed to the `ExecuteChildWorkflow()` call.
-
-See the **Asynchronous execution** section below for an example.
-
-#### Asynchronous execution
 
 To asynchronously spawn a Child Workflow Execution, the Child Workflow must have an "Abandon" Parent Close Policy set in the Child Workflow Options.
 Additionally, the Parent Workflow Execution must wait for the "ChildWorkflowExecutionStarted" event to appear in its event history before it completes.

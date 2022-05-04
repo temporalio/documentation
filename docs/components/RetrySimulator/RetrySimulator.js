@@ -1,6 +1,8 @@
+import Chart from "chart.js/auto";
 import CodeBlock from "@theme/CodeBlock";
-import React, {useState, useCallback} from "react";
+import React, {useState, useCallback, useEffect, useRef} from "react";
 import styles from "./retry-simulator.module.css";
+import {useColorMode} from "@docusaurus/theme-common";
 
 const languageSamples = new Map([]);
 languageSamples.set(
@@ -55,6 +57,8 @@ export default function RetrySimulator() {
     maximumAttempts: 0,
     maximumInterval: 0,
   });
+  const chartCanvas = useRef(null);
+  const {isDarkTheme} = useColorMode();
 
   const addRetry = useCallback(function addRetry(success, runtimeMS) {
     const retries = [...state.retries];
@@ -72,6 +76,12 @@ export default function RetrySimulator() {
 
   const updateRetry = useCallback(function updateRetry(index, update) {
     const retries = [...state.retries];
+    if (update.runtimeMS != null) {
+      update.runtimeMS = +update.runtimeMS;
+      if (isNaN(update.runtimeMS)) {
+        delete update.runtimeMS;
+      }
+    }
     retries[index] = {...retries[index], ...update};
     setState({...state, retries});
   });
@@ -114,6 +124,48 @@ export default function RetrySimulator() {
       return;
     }
     setState({...state, [prop]: +value});
+    updateChart();
+  });
+
+  const updateChart = useCallback(function updateChart() {
+    if (chartCanvas.current == null || chartCanvas.current.chart == null) {
+      return;
+    }
+    const chart = chartCanvas.current.chart;
+
+    const {backoffCoefficient, initialInterval} = state;
+    let {maximumInterval, maximumAttempts} = state;
+    const labels = [];
+    const values = [];
+    maximumAttempts = maximumAttempts === 0 ? 10 : maximumAttempts;
+    maximumInterval =
+      maximumInterval === 0 ? Number.POSITIVE_INFINITY : maximumInterval;
+    let interval = initialInterval;
+    for (let i = 0; i < maximumAttempts; ++i) {
+      interval = Math.min(interval, maximumInterval);
+      labels.push(i + 1);
+      values.push(interval);
+      interval = interval * backoffCoefficient;
+    }
+
+    if (labels.length > chart.data.labels.length) {
+      chart.data.labels.push(...labels.slice(chart.data.labels.length));
+    } else if (labels.length < chart.data.labels.length) {
+      chart.data.labels.splice(
+        labels.length,
+        chart.data.length - labels.length
+      );
+    }
+    chart.data.labels = labels;
+    chart.data.datasets = [
+      {
+        label: "Interval after activity failure in ms",
+        backgroundColor: "#84bdf5",
+        borderColor: "#84bdf5",
+        data: values,
+      },
+    ];
+    chart.update();
   });
 
   const updateLanguage = useCallback(function updateLanguage(language) {
@@ -122,6 +174,49 @@ export default function RetrySimulator() {
 
   const {success, runtimeMS, reason} = calculateResult(state);
   const code = retryPolicyCode(state);
+
+  useEffect(
+    function initializeChart() {
+      const chart = new Chart(chartCanvas.current, {
+        type: "bar",
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              grid: {
+                color: "#ddd",
+              },
+            },
+            x: {
+              grid: {
+                color: "#ddd",
+              },
+            },
+          },
+        },
+      });
+      chartCanvas.current.chart = chart;
+
+      updateChart();
+    },
+    [chartCanvas]
+  );
+
+  useEffect(
+    function updateChartDarkTheme() {
+      if (chartCanvas.current == null || chartCanvas.current.chart == null) {
+        return;
+      }
+      const chart = chartCanvas.current.chart;
+
+      chart.options.scales.y.grid.color = isDarkTheme ? "#222" : "#ddd";
+      chart.options.scales.x.grid.color = isDarkTheme ? "#222" : "#ddd";
+      chart.update();
+    },
+    [isDarkTheme]
+  );
+
+  useEffect(() => updateChart(), [state]);
 
   return (
     <div className={styles.retrySimulator}>
@@ -144,7 +239,7 @@ export default function RetrySimulator() {
               {languageSamples.get(state.language)}
             </CodeBlock>
 
-            <h3>Activity Retries</h3>
+            <h3>Activity Retries (in ms)</h3>
 
             <select
               className={styles.dropdown}
@@ -196,6 +291,7 @@ export default function RetrySimulator() {
                   index={index}
                   updateRetry={updateRetry}
                   deleteRetry={deleteRetry}
+                  key={index}
                 />
               );
             })}
@@ -208,7 +304,7 @@ export default function RetrySimulator() {
           </button>
         </div>
         <div className={styles.retryCol}>
-          <h3>Activity Timeouts</h3>
+          <h3>Activity Timeouts (in ms)</h3>
           <RetryPolicyParamInputs
             param="startToCloseTimeout"
             value={state.startToCloseTimeout}
@@ -230,7 +326,7 @@ export default function RetrySimulator() {
             step={100}
             updateRetryPolicyParam={updateRetryPolicyParam}
           />
-          <h3>Retry Policy</h3>
+          <h3>Retry Policy (in ms)</h3>
           <RetryPolicyParamInputs
             param="backoffCoefficient"
             value={state.backoffCoefficient}
@@ -275,6 +371,9 @@ export default function RetrySimulator() {
         <div className={styles.retryCol}>
           <div>
             <CodeBlock language={state.language}>{code}</CodeBlock>
+          </div>
+          <div>
+            <canvas ref={chartCanvas}></canvas>
           </div>
         </div>
       </div>

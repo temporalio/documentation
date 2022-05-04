@@ -240,7 +240,7 @@ module.exports = {
           href: "https://pkg.go.dev/go.temporal.io/sdk",
         },
         "go/how-to-develop-a-workflow-in-go",
-        "go/how-to-develop-an-activity-definition-in-go",
+        "go/how-to-develop-an-activity-in-go",
         "go/how-to-spawn-an-activity-execution-in-go",
         "go/activityoptions-reference",
         "go/how-to-get-the-result-of-an-activity-execution-in-go",
