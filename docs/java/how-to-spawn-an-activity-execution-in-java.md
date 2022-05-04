@@ -192,4 +192,4 @@ public class FileProcessingActivitiesImpl implements FileProcessingActivities {
 }
 ```
 
-See [Activity Execution Result](/docs/java/how-to-get-the-result-of-an-activity-execution-in-java) for how to get the result of an Activity Execution.
+For details on getting the results of an Activity Execution, see [Activity Execution Result](/docs/java/how-to-get-the-result-of-an-activity-execution-in-java).

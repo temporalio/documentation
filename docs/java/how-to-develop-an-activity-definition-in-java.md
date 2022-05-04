@@ -107,6 +107,6 @@ The Dynamic Activity interface is implemented with the `execute` method. This me
 
 Use `Activity.getExecutionContext()` to get information about the Activity type that should be implemented dynamically.
 
-You can only register one instance that implements `DynamicActivity` with a Worker.
+You can register only one instance that implements `DynamicActivity` with a Worker.
 
-See [Dynamic Activity Reference](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/DynamicActivity.html).
+For more details, see [Dynamic Activity Reference](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/DynamicActivity.html).

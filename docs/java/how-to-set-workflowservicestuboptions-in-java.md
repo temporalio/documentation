@@ -2,13 +2,13 @@
 id: how-to-set-workflowservicestuboptions-in-java
 title: How to set WorkflowServiceStubOptions in Java
 sidebar_label: WorkflowServiceStubOptions
-description: Set WorkflowServiceStubs specific options with the `WorkflowServiceStubsOptions` class.
+description: Set `WorkflowServiceStub` specific options with the `WorkflowServiceStubOptions` class.
 tags:
   - java
   - developer-guide
 ---
 
-Set WorkflowServiceStubs specific options with the `WorkflowServiceStubsOptions` class.
+Set WorkflowServiceStubs specific options with the `WorkflowServiceStubOptions` class.
 The following table lists the options used to configure `WorkflowServiceStub`.
 
 | Option                             | Description                                                                                                      | Type            |

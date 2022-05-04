@@ -19,7 +19,7 @@ public class FileProcessingWorkflowImpl implements FileProcessingWorkflow {
 #### Workflow interface
 
 The Workflow interface is a Java interface and is annotated with `@WorkflowInterface`.
-Each Workflow interface method must have one [`@WorkflowMethod`](#workflowmethod).
+Each Workflow interface method must have one `@WorkflowMethod` annotated.
 
 Use `@SignalMethod` to handle Signals, and `@QueryMethod` to handle Queries in the Workflow.
 See [Signals](/docs/java/signals) and [Queries](/docs/java/queries) for details.
@@ -55,11 +55,14 @@ public interface FileProcessingWorkflow {
 }
 ```
 
-The `@WorkflowMethod` identifies the method that is the starting point of the Workflow Execution. The [Workflow Execution](/docs/concepts/what-is-a-workflow-execution) completes when this method completes.
+The `@WorkflowMethod` identifies the method that is the starting point of the Workflow Execution.
+The [Workflow Execution](/docs/concepts/what-is-a-workflow-execution) completes when this method completes.
 
-A Workflow Definition interface in Java can have only one method annotated with `@WorkflowMethod`. It can be used to denote the [Workflow Type](/docs/concepts/what-is-a-workflow-type).
+A Workflow Definition interface in Java can have only one method annotated with `@WorkflowMethod`.
+It can be used to denote the [Workflow Type](/docs/concepts/what-is-a-workflow-type).
 
-The Workflow Type defaults to the short name of the Workflow interface. In the following example, the Workflow Type defaults to "NotifyUserAccounts".
+The Workflow Type defaults to the short name of the Workflow interface.
+In the following example, the Workflow Type defaults to "NotifyUserAccounts".
 
 ```java
   @WorkflowInterface
@@ -85,13 +88,12 @@ In the following example, the Workflow Type is set to "Abc".
 When you set the Workflow Type this way, the value of the `name` parameter does not have to start with an uppercase letter.
 
 A method annotated with `@WorkflowMethod` can have any number of parameters.
-We recommend passing a single parameter that contains all the input fields. This allows adding fields in a backward-compatible manner.
+We recommend passing a single parameter that contains all the input fields.
+This technique allows adding fields in a backward-compatible manner.
 Note that all inputs should be serializable by the default Jackson JSON Payload Converter.
 
 A Workflow Type can be registered only once per Worker entity.
 If you define multiple Workflow implementations of the same type, you get an exception at the time of registration.
-
-**Workflow interface inheritance**
 
 Workflow interfaces can form inheritance hierarchies, which can be useful for creating components that can be reused across multiple Workflow interfaces.
 For example, to implement a UI or CLI button that sends a `retryNow` Signal to any Workflow, define the method as follows:
@@ -171,10 +173,10 @@ As soon as this method returns, the Workflow Execution is considered to be compl
 Workflow methods annotated with `@QueryMethod` and `@SignalMethod` can be invoked during a Workflow Execution.
 Note that methods annotated with `@QueryMethod` can be invoked even when a Workflow is in the `Completed` state.
 
-A `WorkflowStub` is a proxy of your Workflow implementation. To start a Workflow Execution, we need to create a `WorkflowStub`.
-There are two types of `WorkflowStub`: Typed and Untyped.
+A `WorkflowStub` is a proxy of your Workflow implementation.
+To start a Workflow Execution, we need to create either a typed or untyped `WorkflowStub`.
 
-**Typed `WorkflowStubs`**
+**Typed `WorkflowStub`**
 
 A typed `WorkflowStub` returns an implementation of your Workflow interface. For example consider the following Workflow interface:
 
@@ -203,18 +205,18 @@ NotifyUserAccounts workflow = client.newWorkflowStub(
 }
 ```
 
-Typed `WorkflowStub` are useful because they are type safe. You can invoke your Workflow methods such as [`@WorkflowMethod`](#`@WorkflowMethod`), [`@QueryMethod`](#`@QueryMethod`), and [`@SignalMethod`](#@SignalMethod`) directly.
+Typed `WorkflowStub` are useful because they are type safe, and allow you to invoke your Workflow methods such as `@WorkflowMethod`, `@QueryMethod`, and `@SignalMethod` directly.
 
 **Untyped `WorkflowStub`**
 
 An untyped `WorkflowStub` does not use the Workflow interface, and is not type safe. It is more flexible because it has methods from the `WorkflowStub` interface, such as `start`, `signalWithStart`, `getResults` (sync and async), `query`, `signal`, `cancel` and `terminate`.
 Note that the Temporal Java SDK also provides typed `WorkflowStub` versions for these methods.
 
-When using untyped `WorkflowStubs`, we rely on the Workflow Type, Activity Type, Child Workflow Type, as well as Query and Signal names.
+When using untyped `WorkflowStub`, we rely on the Workflow Type, Activity Type, Child Workflow Type, as well as Query and Signal names.
 
 Related references:
 
-- [How to spawn a Workflow Execution in Java](/docs/java/how-to-spawn-a-workflow-execution-in-java).
+- [How to spawn a Workflow Execution in Java](/docs/java/how-to-spawn-a-workflow-execution-in-java)
 - `WorkflowStub.java` reference: <https://github.com/temporalio/sdk-java/blob/master/temporal-sdk/src/main/java/io/temporal/client/WorkflowStub.java>
 
 #### Dynamic Workflows
@@ -297,7 +299,7 @@ public static class DynamicGreetingWorkflowImpl implements DynamicWorkflow {
   }
 ```
 
-See [Dynamic Workflow Reference](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/DynamicWorkflow.html).
+For more details, see [Dynamic Workflow Reference](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/DynamicWorkflow.html).
 
 #### Workflow implementation constraints
 
