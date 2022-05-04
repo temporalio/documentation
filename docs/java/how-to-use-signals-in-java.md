@@ -10,6 +10,11 @@ tags:
 
 To use Signals in Java, initiate the Signal method with `@SignalMethod` annotation in the Workflow interface and call the Signal method either directly from the Client or use `ExternalWorkflowStub` to call the Signal method from within another Workflow.
 
+A Signal method can be called from either a Client or another Workflow to send Signals to this Workflow.
+
+Note that you can send a Signal only to running Workflow Executions.
+You can use Signals to update the state of a running Workflow Execution.
+
 ### Define Signal Method
 
 import DefineSignal from './how-to-define-a-signal-in-java.md'

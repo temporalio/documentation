@@ -8,56 +8,25 @@ tags:
   - developer-guide
 ---
 
-To define a Signal, initiate the Signal method with `@SignalMethod` annotation in the Workflow interface and implement it in the Workflow implementation.
+The `@SignalMethod` annotation indicates that the method is used to handle and react to external Signals.
 
 ```java
-@WorkflowInterface
-public interface RespondWorkflowInterface {
-    @WorkflowMethod
-    String replyGreeting(String reply);
-
-    // define Signal method "getGreetCall" in the Workflow interface.
-    @SignalMethod
-    void getGreetCall(String answer);
-}
+ @SignalMethod
+    void mySignal(String signalName);
 ```
 
-The `@SignalMethod` annotation indicates that the method is used to handle [Signals](/docs/concepts/what-is-a-signal) and that it can react to external Signals.
-The method can have parameters that contain the Signal payload.
+The method can have parameters that contain the Signal payload and must be serializable by the default Jackson JSON Payload Converter.
+
+```java
+void mySignal(String signalName, Object... args);
+```
+
 This method does not return a value and must have a `void` return type.
 
-The Signal type defaults to the name of the method. In the following example, the Signal type defaults to `retryNow`.
+Things to consider when defining Signals:
 
-```java
-@WorkflowInterface
-public interface FileProcessingWorkflow {
-
-   @WorkflowMethod
-   String processFile(Arguments args);
-
-   @SignalMethod
-   void retryNow();
-}
-```
-
-To overwrite this default naming and assign a custom Signal type, use the `@SignalMethod` annotation with the `name` parameter.
-In the following example, the Signal type is set to "retrysignal".
-
-```java
-@WorkflowInterface
-public interface FileProcessingWorkflow {
-
-   @WorkflowMethod
-   String processFile(Arguments args);
-
-   @SignalMethod(name = "retrysignal")
-   void retryNow();
-}
-```
-
-A Workflow interface can define any number of methods annotated with `@SignalMethod`, but the method names or the `name` parameters for each must be unique.
-
-A Signal can be called from either a Client or another Workflow to send Signals to this Workflow.
-
-Note that you can send a Signal only to running Workflow Executions.
-You can use Signals to update the state of a running Workflow Execution.
+- Use Workflow object constructors and initialization blocks to initialize the internal data structures if possible.
+- Signals may be received by a Workflow before the Workflow method is executed. When implementing Signals in scenarios where this may occur, assume that no parts of Workflow code was run.
+  In some cases, Signal method implementation may require some initialization to be performed by the Workflow method code first.
+  For example, when the Signal processing depends on, and is defined by the Workflow input.
+  In this case, you can use a flag to define if the Workflow method is already triggered and if not, persist the Signal data into a collection for delayed processing by the Workflow method.

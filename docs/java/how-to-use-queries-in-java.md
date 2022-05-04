@@ -14,7 +14,7 @@ You can send a Query to an open or closed Workflow Execution.
 
 When using Queries, the following restrictions apply:
 
-- It can not modify Workflow state in any way.
+- It cannot modify Workflow state in any way.
 - It is not allowed to block its thread in any way.
 
 ### Define Query Method

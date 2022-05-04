@@ -16,7 +16,7 @@ The Workflow can then use the `details` information to pass to the next Activity
 
 In the case of Activity retries, the last Heartbeat's `details` are available and can be extracted from the last failed attempt by using `Activity.getExecutionContext().getHeartbeatDetails(Class<V> detailsClass)`
 
-The following code is an example for using Activity Heartbeat to check on the download progress for the `download` Activity method.
+The following example uses Activity Heartbeat to report the progress of the `download` Activity method.
 
 ```java
 public class FileProcessingActivitiesImpl implements FileProcessingActivities {
@@ -32,7 +32,7 @@ public class FileProcessingActivitiesImpl implements FileProcessingActivities {
         // Let the Temporal Server know about the download progress.
         Activity.getExecutionContext().heartbeat(totalRead);
       }
-    } finally{
+    } finally {
       inputStream.close();
     }
   }

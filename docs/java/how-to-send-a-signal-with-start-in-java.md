@@ -16,7 +16,7 @@ This means that in your Signal handler in your Workflow interface code will exec
 You must ensure that your code logic can deal with this.
 
 In the following example, the Client code uses `SignalwithStart` to send the Signal "setCustomer" to the `UntypedWorkflowStub` named "GreetingWorkflow".
-If the "GreetingWorkflow" Workflow Execution is not running, the `SignalwithStart` will start the Workflow Execution.
+If the "GreetingWorkflow" Workflow Execution is not running, the `SignalwithStart` starts the Workflow Execution.
 
 ```java
 ...

@@ -79,7 +79,7 @@ The following example shows how to register the Dynamic Workflow implementation 
         WorkflowOptions.newBuilder().setTaskQueue(TASK_QUEUE).setWorkflowId(WORKFLOW_ID).build();
     WorkflowStub workflow = client.newUntypedWorkflowStub("DynamicWF", workflowOptions);
 
-    /* Start Workflow Execution and immmediately send Signal. Pass in the Workflow args and Signal args */
+    /* Start Workflow Execution and immmediately send Signal. Pass in the Workflow args and Signal args. */
     workflow.signalWithStart("greetingSignal", new Object[] {"John"}, new Object[] {"Hello"});
 
     // Wait for the Workflow to finish getting the results.

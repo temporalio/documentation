@@ -8,7 +8,38 @@ tags:
   - developer-guide
 ---
 
-Use the `@SignalMethod` annotation to handle [Signals](/docs/concepts/what-is-a-signal) within the Workflow interface.
+Use the `@SignalMethod` annotation to handle Signals in the Workflow interface.
+
+The Signal type defaults to the name of the method. In the following example, the Signal type defaults to `retryNow`.
+
+```java
+@WorkflowInterface
+public interface FileProcessingWorkflow {
+
+   @WorkflowMethod
+   String processFile(Arguments args);
+
+   @SignalMethod
+   void retryNow();
+}
+```
+
+To overwrite this default naming and assign a custom Signal type, use the `@SignalMethod` annotation with the `name` parameter.
+In the following example, the Signal type is set to "retrysignal".
+
+```java
+@WorkflowInterface
+public interface FileProcessingWorkflow {
+
+   @WorkflowMethod
+   String processFile(Arguments args);
+
+   @SignalMethod(name = "retrysignal")
+   void retryNow();
+}
+```
+
+A Workflow interface can define any number of methods annotated with `@SignalMethod`, but the method names or the `name` parameters for each must be unique.
 
 In the following example, we define a Signal method "updateGreeting" to update the greeting in the Workflow.
 We set a `Workflow.await` in the Workflow implementation to block the current Workflow Execution until the provided unblock condition is evaluated to `true`.

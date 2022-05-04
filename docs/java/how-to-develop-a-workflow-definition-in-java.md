@@ -25,7 +25,7 @@ Use `@SignalMethod` to handle Signals, and `@QueryMethod` to handle Queries in t
 See [Signals](/docs/java/signals) and [Queries](/docs/java/queries) for details.
 
 Use `ExternalWorkflowStub` to start or send Signals from within a Workflow to other running Workflow Executions.
-See [Using `ExternalWorkflowStub`](/docs/java/how-to-spawn-a-workflow-execution-in-java/#Using`ExternalWorkflowStub`) for details.
+See [Using `ExternalWorkflowStub`](/docs/java/how-to-spawn-a-workflow-execution-in-java#using-externalworkflowstub) for details.
 
 To call Activities in your Workflow, see [Activity Definition](/docs/java/how-to-develop-an-activity-definition-in-java) and [Activity Execution](/docs/java/how-to-spawn-an-activity-execution-in-java).
 
@@ -205,7 +205,7 @@ NotifyUserAccounts workflow = client.newWorkflowStub(
 }
 ```
 
-Typed `WorkflowStub` are useful because they are type safe, and allow you to invoke your Workflow methods such as `@WorkflowMethod`, `@QueryMethod`, and `@SignalMethod` directly.
+Typed `WorkflowStub` are useful because they are type safe and allow you to invoke your Workflow methods such as `@WorkflowMethod`, `@QueryMethod`, and `@SignalMethod` directly.
 
 **Untyped `WorkflowStub`**
 
