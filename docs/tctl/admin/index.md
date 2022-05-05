@@ -23,4 +23,4 @@ Alias : adm
 - tctl decode
 
 #### Options
-show help: `tctl admin [--help | -h}`
+show help: `tctl admin [--help | -h]`
