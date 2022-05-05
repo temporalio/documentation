@@ -36,47 +36,47 @@ Each metric may have some combination of the following keys attached to them:
 
 Some keys may not be available in every SDK, and Histogram metrics may have different buckets in each SDK.
 
-| Metric Name                                                                             | Metric Type | Availability              |
-| --------------------------------------------------------------------------------------- | ----------- | ------------------------- |
-| [activity_execution_cancelled](#activity_execution_cancelled)                           | Counter     | Java                      |
-| [activity_execution_failed](#activity_execution_failed)                                 | Counter     | TypeScript, Go, PHP, Java |
-| [activity_execution_latency](#activity_execution_latency)                               | Histogram   | TypeScript, Go, PHP, Java |
-| [activity_poll_no_task](#activity_poll_no_task)                                         | Counter     | TypeScript, Go, PHP, Java |
-| [activity_schedule_to_start_latency](#activity_schedule_to_start_latency)               | Histogram   | TypeScript, Go, PHP, Java |
-| [activity_task_error](#activity_task_error)                                             | Counter     | Go, PHP                   |
-| [corrupted_signals](#corrupted_signals)                                                 | Counter     | Go, PHP, Java             |
-| [local_activity_execution_cancelled](#local_activity_execution_cancelled)               | Counter     | Go, PHP, Java             |
-| [local_activity_execution_failed](#local_activity_execution_failed)                     | Counter     | Go, PHP, Java             |
-| [local_activity_execution_latency](#local_activity_execution_latency)                   | Histogram   | Go, PHP, Java             |
-| [local_activity_succeeded_endtoend_latency](#local_activity_succeeded_endtoend_latency) | Histogram   | Go, PHP, Java             |
-| [local_activity_total](#local_activity_total)                                           | Counter     | Go, PHP, Java             |
-| [long_request](#long_request)                                                           | Counter     | TypeScript, Go, PHP, Java |
-| [long_request_failure](#long_request_failure)                                           | Counter     | TypeScript, Go, PHP, Java |
-| [long_request_latency](#long_request_latency)                                           | Histogram   | TypeScript, Go, PHP, Java |
-| [num_pollers](#num_pollers)                                                             | Gauge       | TypeScript                |
-| [poller_start](#poller_start)                                                           | Counter     | Go, PHP, Java             |
-| [request](#request)                                                                     | Counter     | TypeScript, Go, PHP, Java |
-| [request_failure](#request_failure)                                                     | Counter     | TypeScript, Go, PHP, Java |
-| [request_latency](#request_latency)                                                     | Histogram   | TypeScript, Go, PHP, Java |
-| [sticky_cache_hit](#sticky_cache_hit)                                                   | Counter     | TypeScript, Go, PHP, Java |
-| [sticky_cache_miss](#sticky_cache_miss)                                                 | Counter     | TypeScript, Go, PHP, Java |
-| [sticky_cache_size](#sticky_cache_size)                                                 | Gauge       | TypeScript, Go, PHP, Java |
-| [sticky_cache_total_forced_eviction](#sticky_cache_total_forced_eviction)               | Counter     | Go, PHP, Java             |
-| [unregistered_activity_invocation](#unregistered_activity_invocation)                   | Counter     | Go, PHP                   |
-| [worker_start](#worker_start)                                                           | Counter     | TypeScript, Go, PHP, Java |
-| [worker_task_slots_available](#worker_task_slots_available)                             | Gauge       | Go, PHP, Java             |
-| [workflow_active_thread_count](#workflow_active_thread_count)                           | Gauge       | Java                      |
-| [workflow_cancelled](#workflow_cancelled)                                               | Counter     | TypeScript, Go, PHP, Java |
-| [workflow_completed](#workflow_completed)                                               | Counter     | TypeScript, Go, PHP, Java |
-| [workflow_continue_as_new](#workflow_continue_as_new)                                   | Counter     | TypeScript, Go, PHP, Java |
-| [workflow_endtoend_latency](#workflow_endtoend_latency)                                 | Histogram   | TypeScript, Go, PHP, Java |
-| [workflow_failed](#workflow_failed)                                                     | Counter     | TypeScript, Go, PHP, Java |
-| [workflow_task_execution_failed](#workflow_task_execution_failed)                       | Counter     | TypeScript, Go, PHP, Java |
-| [workflow_task_execution_latency](#workflow_task_execution_latency)                     | Histogram   | TypeScript, Go, PHP, Java |
-| [workflow_task_queue_poll_empty](#workflow_task_queue_poll_empty)                       | Counter     | TypeScript, Go, PHP, Java |
-| [workflow_task_queue_poll_succeed](#workflow_task_queue_poll_succeed)                   | Counter     | TypeScript, Go, PHP, Java |
-| [workflow_task_replay_latency](#workflow_task_replay_latency)                           | Histogram   | TypeScript, Go, PHP, Java |
-| [workflow_task_schedule_to_start_latency](#workflow_task_schedule_to_start_latency)     | Histogram   | TypeScript, Go, PHP, Java |
+| Metric Name                                                                             | Module         | Metric Type | Availability              |
+| --------------------------------------------------------------------------------------- |----------------|-------------| ------------------------- |
+| [activity_execution_cancelled](#activity_execution_cancelled)                           | Worker         | Counter     | Java                      |
+| [activity_execution_failed](#activity_execution_failed)                                 | Worker         | Counter     | TypeScript, Go, PHP, Java |
+| [activity_execution_latency](#activity_execution_latency)                               | Worker         | Histogram   | TypeScript, Go, PHP, Java |
+| [activity_poll_no_task](#activity_poll_no_task)                                         | Worker         | Counter     | TypeScript, Go, PHP, Java |
+| [activity_schedule_to_start_latency](#activity_schedule_to_start_latency)               | Worker         | Histogram   | TypeScript, Go, PHP, Java |
+| [activity_task_error](#activity_task_error)                                             | Worker         | Counter     | Go, PHP                   |
+| [corrupted_signals](#corrupted_signals)                                                 | Worker         | Counter     | Go, PHP, Java             |
+| [local_activity_execution_cancelled](#local_activity_execution_cancelled)               | Worker         | Counter     | Go, PHP, Java             |
+| [local_activity_execution_failed](#local_activity_execution_failed)                     | Worker         | Counter     | Go, PHP, Java             |
+| [local_activity_execution_latency](#local_activity_execution_latency)                   | Worker         | Histogram   | Go, PHP, Java             |
+| [local_activity_succeeded_endtoend_latency](#local_activity_succeeded_endtoend_latency) | Worker         | Histogram   | Go, PHP, Java             |
+| [local_activity_total](#local_activity_total)                                           | Worker         | Counter     | Go, PHP, Java             |
+| [long_request](#long_request)                                                           | Service Client | Counter     | TypeScript, Go, PHP, Java |
+| [long_request_failure](#long_request_failure)                                           | Service Client | Counter     | TypeScript, Go, PHP, Java |
+| [long_request_latency](#long_request_latency)                                           | Service Client | Histogram   | TypeScript, Go, PHP, Java |
+| [num_pollers](#num_pollers)                                                             | Worker         | Gauge       | TypeScript                |
+| [poller_start](#poller_start)                                                           | Worker         | Counter     | Go, PHP, Java             |
+| [request](#request)                                                                     | Service Client | Counter     | TypeScript, Go, PHP, Java |
+| [request_failure](#request_failure)                                                     | Service Client | Counter     | TypeScript, Go, PHP, Java |
+| [request_latency](#request_latency)                                                     | Service Client | Histogram   | TypeScript, Go, PHP, Java |
+| [sticky_cache_hit](#sticky_cache_hit)                                                   | Worker         | Counter     | TypeScript, Go, PHP, Java |
+| [sticky_cache_miss](#sticky_cache_miss)                                                 | Worker         | Counter     | TypeScript, Go, PHP, Java |
+| [sticky_cache_size](#sticky_cache_size)                                                 | Worker         | Gauge       | TypeScript, Go, PHP, Java |
+| [sticky_cache_total_forced_eviction](#sticky_cache_total_forced_eviction)               | Worker         | Counter     | Go, PHP, Java             |
+| [unregistered_activity_invocation](#unregistered_activity_invocation)                   | Worker         | Counter     | Go, PHP                   |
+| [worker_start](#worker_start)                                                           | Worker         | Counter     | TypeScript, Go, PHP, Java |
+| [worker_task_slots_available](#worker_task_slots_available)                             | Worker         | Gauge       | Go, PHP, Java             |
+| [workflow_active_thread_count](#workflow_active_thread_count)                           | Worker         | Gauge       | Java                      |
+| [workflow_cancelled](#workflow_cancelled)                                               | Worker         | Counter     | TypeScript, Go, PHP, Java |
+| [workflow_completed](#workflow_completed)                                               | Worker         | Counter     | TypeScript, Go, PHP, Java |
+| [workflow_continue_as_new](#workflow_continue_as_new)                                   | Worker         | Counter     | TypeScript, Go, PHP, Java |
+| [workflow_endtoend_latency](#workflow_endtoend_latency)                                 | Worker         | Histogram   | TypeScript, Go, PHP, Java |
+| [workflow_failed](#workflow_failed)                                                     | Worker         | Counter     | TypeScript, Go, PHP, Java |
+| [workflow_task_execution_failed](#workflow_task_execution_failed)                       | Worker         | Counter     | TypeScript, Go, PHP, Java |
+| [workflow_task_execution_latency](#workflow_task_execution_latency)                     | Worker         | Histogram   | TypeScript, Go, PHP, Java |
+| [workflow_task_queue_poll_empty](#workflow_task_queue_poll_empty)                       | Worker         | Counter     | TypeScript, Go, PHP, Java |
+| [workflow_task_queue_poll_succeed](#workflow_task_queue_poll_succeed)                   | Worker         | Counter     | TypeScript, Go, PHP, Java |
+| [workflow_task_replay_latency](#workflow_task_replay_latency)                           | Worker         | Histogram   | TypeScript, Go, PHP, Java |
+| [workflow_task_schedule_to_start_latency](#workflow_task_schedule_to_start_latency)     | Worker         | Histogram   | TypeScript, Go, PHP, Java |
 
 ### `activity_execution_cancelled`
 
