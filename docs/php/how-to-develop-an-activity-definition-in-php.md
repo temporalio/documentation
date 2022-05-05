@@ -37,8 +37,8 @@ In this way, adding new arguments as fields to the value type is a backward-comp
 
 An optional `#[ActivityMethod]` annotation can be used to override a default Activity name.
 
-Option `prefix` of `ActivityInterface` annotation will allow you to define your own prefix for all activity names (by
-default it's empty).
+You can define your own prefix for all activity names by adding the `prefix` option to the `ActivityInterface` annotation.
+(The default prefix is empty.)
 
 ```php
 #[ActivityInterface("file_activities.")]
