@@ -177,7 +177,7 @@ Total number of [Local Activity Executions](/docs/concepts/what-is-a-local-activ
 
 ### `long_request`
 
-Temporal Client failed an RPC long poll request.
+Temporal Client made an RPC long poll request.
 
 - Type: Counter
 - Available in: TypeScript, Go, PHP, Java
@@ -185,7 +185,8 @@ Temporal Client failed an RPC long poll request.
 
 ### `long_request_failure`
 
-Temporal Client made an RPC long poll request.
+Temporal Client made an RPC long poll request that failed.
+This number is included into the total `long_request` counter for long poll RPC requests.
 
 - Type: Counter
 - Available in: TypeScript, Go, PHP, Java
@@ -225,7 +226,8 @@ Temporal Client made an RPC request.
 
 ### `request_failure`
 
-Temporal Client failed an RPC request.
+Temporal Client made an RPC request that failed.
+This number is included into the total `request` counter for RPC requests.
 
 - Type: Counter
 - Available in: TypeScript, Go, PHP, Java
