@@ -18,7 +18,7 @@ description: Activities are the only way to interact with external resources in 
 
 ## How to write an Activity Function
 
-Activities are _just functions_.
+Activities are _simply functions_.
 Below is a simple Activity that accepts a string parameter and returns a string:
 
 <!--SNIPSTART typescript-hello-activity {"enable_source_link": false}-->
