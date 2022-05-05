@@ -10,3 +10,10 @@ tags:
 ---
 
 The `tctl admin shard` commands enable admin-level operations on a specified shard.
+
+#### tctl admin shard commands
+- describe
+- describe_task
+- list_tasks
+- close_shard
+- remove_task
