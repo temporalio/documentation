@@ -303,7 +303,7 @@ const { example } = proxyActivities<typeof activities>({
 ```
 
 Without Heartbeating, if your activity `StartToCloseTimeout` is 1 hour and the activity stalled or activity worker died, Temporal would have to wait out the 1 hour before retrying.
-But if you used the Heartbeat API, set a `heartbeatTimeout` for 10 seconds, the absence of heartbeats in the `heartbeatTimeout` window would give the Server a Signal that the activity has stalled and should be retried right away rather than at the end of the `StartToCloseTimeout`.
+But if you used the Heartbeat API, set a `heartbeatTimeout` for 10 seconds, the absence of Heartbeats in the `heartbeatTimeout` window would inform the Server that the Activity has stalled and should be retried right away rather than at the end of the `StartToCloseTimeout`.
 
 The second major benefit of heartbeating is being able to resume from failure by checkpointing data as `heartbeatDetails`.
 Extending the example above:
