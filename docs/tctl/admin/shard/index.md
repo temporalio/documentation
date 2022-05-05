@@ -8,3 +8,5 @@ tags:
   - admin
   - shard
 ---
+
+The `tctl admin shard` commands enable admin-level operations on a specified shard.
