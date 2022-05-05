@@ -1,3 +1,14 @@
+---
+id: how-to-send-a-signal-from-a-workflow-in-typescript
+title: How to send a Signal from Workflow in Typescript
+sidebar_label: Send a Signal from Workflow
+description: Send a Signal from Workflow
+tags:
+  - developer-guide
+  - sdk
+  - typescript
+---
+
 First, define your Signal that can be sent to the Workflow.
 
 ```typescript

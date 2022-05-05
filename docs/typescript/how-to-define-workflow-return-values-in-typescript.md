@@ -9,7 +9,7 @@ tags:
   - typescript
 ---
 
-Only Query Handlers can return values inside a Workflow in TypeScript.
+Query Handlers can return values inside a Workflow in TypeScript.
 
 You make a Query with `handle.query(query, ...args)`. A Query needs a return value, but can also take arguments.
 

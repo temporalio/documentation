@@ -4,8 +4,6 @@ title: Develop an Activity Definition in PHP
 sidebar_label: Activity Definition
 ---
 
-An Activity is a manifestation of a particular Task in the business logic.
-
 Activities are defined as methods of a plain PHP interface annotated with `#[ActivityInterface]`.
 (You can also use PHP 8 attributes in PHP 7.)
 
