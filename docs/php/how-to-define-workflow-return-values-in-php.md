@@ -1,6 +1,6 @@
 ---
 id: how-to-define-workflow-return-values-in-php
-title: Define Workflow retun values in PHP
+title: Define Workflow return values in PHP
 sidebar_label: Workflow retun values
 ---
 
