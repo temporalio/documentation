@@ -317,9 +317,11 @@ type ExampleArgs = {
   name: string;
 };
 
-export async function example(args: ExampleArgs): Promise<{greeting: string}> {
+export async function example(
+  args: ExampleArgs
+): Promise<{ greeting: string }> {
   const greeting = await greet(args.name);
-  return {greeting};
+  return { greeting };
 }
 ```
 
@@ -394,12 +396,12 @@ A Task Queue is a dynamic queue in Temporal polled by one or more Workers.
 When scheduling a Workflow, a `taskQueue` must be specified.
 
 ```typescript
-import {Connection, WorkflowClient} from "@temporalio/client";
+import { Connection, WorkflowClient } from '@temporalio/client';
 const connection = new Connection();
 const client = new WorkflowClient();
 const result = await client.execute(myWorkflow, {
-  taskQueue: "your-task-queue", // required
-  workflowId: "your-workflow-id", // required
+  taskQueue: 'your-task-queue', // required
+  workflowId: 'your-workflow-id', // required
 });
 ```
 
@@ -408,7 +410,7 @@ When creating a Worker, you must pass the `taskQueue` option to the `Worker.crea
 ```typescript
 const worker = await Worker.create({
   activities, // imported elsewhere
-  taskQueue: "your-task-queue",
+  taskQueue: 'your-task-queue',
 });
 ```
 
@@ -465,7 +467,7 @@ Content is not available
 </TabItem>
 <TabItem value="php">
 
-Workflow methods return a Generator. To properly typecast the Workflow's return value in the client code use the `#[ReturnType()]` annotation.
+A Workflow method returns a Generator. To properly typecast the Workflow's return value in the client code, use the `#[ReturnType()]` annotation.
 
 ```php
 #[WorkflowInterface]
@@ -485,7 +487,7 @@ Only Query Handlers can return values inside a Workflow in TypeScript.
 You make a Query with `handle.query(query, ...args)`. A Query needs a return value, but can also take arguments.
 
 ```typescript
-import * as wf from "@temporalio/workflow";
+import * as wf from '@temporalio/workflow';
 
 function useState<T = any>(name: string, initialValue: T) {
   const query = wf.defineQuery<T>(name);
@@ -620,11 +622,11 @@ Content is not available
 
 An Activity is a manifestation of a particular Task in the business logic.
 
-Activities are defined as methods of a plain PHP interface annotated with `#[ActivityInterface]` (you can use PHP 8 attributes
-in PHP 7 as well).
+Activities are defined as methods of a plain PHP interface annotated with `#[ActivityInterface]`.
+(You can also use PHP 8 attributes in PHP 7.)
 
 Each method defines a single Activity type.
-A single Workflow can use more than one Activity interface and call more that one Activity method from the same interface.
+A single Workflow can use more than one Activity interface and call more than one Activity method from the same interface.
 
 The only requirement is that Activity method arguments and return values are serializable to a byte array using the provided [DataConverter](https://github.com/temporalio/sdk-php/blob/master/src/DataConverter/DataConverterInterface.php) interface.
 The default implementation uses a JSON serializer, but an alternative implementation can be easily configured.
@@ -647,12 +649,12 @@ interface FileProcessingActivities
 ```
 
 We recommend to use a single value type argument for Activity methods.
-In this way, adding new arguments as fields to the value type is a backwards-compatible change.
+In this way, adding new arguments as fields to the value type is a backward-compatible change.
 
 An optional `#[ActivityMethod]` annotation can be used to override a default Activity name.
 
-Option `prefix` of `ActivityInterface` annotation will allow you to define your own prefix for all activity names (by
-default it's empty).
+You can define your own prefix for all activity names by adding the `prefix` option to the `ActivityInterface` annotation.
+(The default prefix is empty.)
 
 ```php
 #[ActivityInterface("file_activities.")]
@@ -914,12 +916,12 @@ class FileProcessingActivitiesImpl implements FileProcessingActivities {
 To spawn an Activity Execution, you must retrieve the _Activity handle_ in your Workflow.
 
 ```typescript
-import {proxyActivities} from "@temporalio/workflow";
+import { proxyActivities } from '@temporalio/workflow';
 // Only import the activity types
-import type * as activities from "./activities";
+import type * as activities from './activities';
 
-const {greet} = proxyActivities<typeof activities>({
-  startToCloseTimeout: "1 minute",
+const { greet } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '1 minute',
 });
 
 /** A workflow that calls an activity */
@@ -1119,7 +1121,7 @@ export async function DynamicWorkflow(activityName, ...args) {
 
   // these are equivalent
   await acts.activity1();
-  await acts["activity1"]();
+  await acts['activity1']();
 
   let result = await acts[activityName](...args);
   return result;
@@ -1181,7 +1183,7 @@ Content is not available
 Use a new `WorflowClient()` with the requisite gRPC `Connection` to create a new Client.
 
 ```typescript
-import {Connection, WorkflowClient} from "@temporalio/client";
+import { Connection, WorkflowClient } from '@temporalio/client';
 const connection = new Connection(); // to configure for production
 const client = new WorkflowClient(connection.service);
 ```
@@ -1193,10 +1195,10 @@ If you ommit the connection and just call the `new WorkflowClient()`, you will c
 The following example, creates a Client, connects to an account, and declares your Namespace.
 
 ```typescript
-import {Connection, WorkflowClient} from "@temporalio/client";
+import { Connection, WorkflowClient } from '@temporalio/client';
 
 const connection = new Connection({
-  address: "<Namespace ID>.tmprl.cloud", // defaults port to 7233 if not specified
+  address: '<Namespace ID>.tmprl.cloud', // defaults port to 7233 if not specified
   tls: {
     // set to true if TLS without mTLS
     // See docs for other TLS options
@@ -1208,19 +1210,19 @@ const connection = new Connection({
 });
 await connection.untilReady();
 const client = new WorkflowClient(connection.service, {
-  namespace: "your.namespace",
+  namespace: 'your.namespace',
 });
 ```
 
 A full example for Workers looks like this:
 
 ```typescript
-import {Worker, NativeConnection} from "@temporalio/worker";
-import * as activities from "./activities";
+import { Worker, NativeConnection } from '@temporalio/worker';
+import * as activities from './activities';
 
 async function run() {
   const connection = await NativeConnection.create({
-    address: "foo.bar.tmprl.cloud", // defaults port to 7233 if not specified
+    address: 'foo.bar.tmprl.cloud', // defaults port to 7233 if not specified
     tls: {
       // set to true if TLS without mTLS
       // See docs for other TLS options
@@ -1233,7 +1235,7 @@ async function run() {
 
   const worker = await Worker.create({
     connection,
-    namespace: "foo.bar", // as explained in Namespaces section
+    namespace: 'foo.bar', // as explained in Namespaces section
     // ...
   });
   await worker.run();
@@ -1260,11 +1262,11 @@ Example environment settings
 ```typescript
 export function getEnv(): Env {
   return {
-    address: "web.<Namespace ID>.tmprl.cloud", // NOT web.foo.bar.tmprl.cloud
-    namespace: "your.namespace", // as assigned
-    clientCertPath: "foobar.pem", // in project root
-    clientKeyPath: "foobar.key", // in project root
-    taskQueue: process.env.TEMPORAL_TASK_QUEUE || "hello-world-mtls", // just to ensure task queue is same on client and worker, totally optional
+    address: 'web.<Namespace ID>.tmprl.cloud', // NOT web.foo.bar.tmprl.cloud
+    namespace: 'your.namespace', // as assigned
+    clientCertPath: 'foobar.pem', // in project root
+    clientKeyPath: 'foobar.key', // in project root
+    taskQueue: process.env.TEMPORAL_TASK_QUEUE || 'hello-world-mtls', // just to ensure task queue is same on client and worker, totally optional
     // // not usually needed
     // serverNameOverride: process.env.TEMPORAL_SERVER_NAME_OVERRIDE,
     // serverRootCACertificatePath: process.env.TEMPORAL_SERVER_ROOT_CA_CERT_PATH,
@@ -1288,7 +1290,7 @@ let serverRootCACertificate: Buffer | undefined;
 let clientCertificate: Buffer | undefined;
 let clientKey: Buffer | undefined;
 if (certificateS3Bucket) {
-  const s3 = new S3client({region: certificateS3BucketRegion});
+  const s3 = new S3client({ region: certificateS3BucketRegion });
   serverRootCACertificate = await s3.getObject({
     bucket: certificateS3Bucket,
     key: serverRootCACertificatePath,
@@ -1559,9 +1561,9 @@ When you have a Workflow Client, you can schedule the start of a Workflow with `
 
 ```typescript
 const handle = await client.start(example, {
-  workflowId: "your-workflow-id",
-  taskQueue: "your-task-queue",
-  args: ["argument01", "argument02", "argument03"], // this is typechecked against workflowFn's args
+  workflowId: 'your-workflow-id',
+  taskQueue: 'your-task-queue',
+  args: ['argument01', 'argument02', 'argument03'], // this is typechecked against workflowFn's args
 });
 const handle = client.getHandle(workflowId);
 const result = await handle.result();
@@ -1632,16 +1634,16 @@ There are three main things the Worker needs:
 - Or pass a prebuilt bundle to `workflowBundle` instead if you prefer to handle the bundling yourself.
 
 ```typescript
-import {Worker} from "@temporalio/worker";
-import * as activities from "./activities";
+import { Worker } from '@temporalio/worker';
+import * as activities from './activities';
 
 async function run() {
   // Step 1: Register Workflows and Activities with the Worker and connect to
   // the Temporal server.
   const worker = await Worker.create({
-    workflowsPath: require.resolve("./workflows"),
+    workflowsPath: require.resolve('./workflows'),
     activities,
-    taskQueue: "hello-world",
+    taskQueue: 'hello-world',
   });
   // Worker connects to localhost by default and uses console.error for logging.
   // Customize the Worker by passing more options to create():
@@ -1709,9 +1711,9 @@ You can set a Workflow Id in the Client of a Workflow.
 
 ```typescript
 const handle = await client.start(example, {
-  workflowId: "yourWorkflowId",
-  taskQueue: "yourTaskQueue",
-  args: ["your", "arg", "uments"],
+  workflowId: 'yourWorkflowId',
+  taskQueue: 'yourTaskQueue',
+  args: ['your', 'arg', 'uments'],
 });
 ```
 
@@ -1719,10 +1721,10 @@ This starts a new Client with the given Workflow Id, Task Queue name, and an arg
 
 ```typescript
 const handle = await client.start(example, {
-  args: ["Temporal"], // type inference works! args: [name: string]
-  taskQueue: "your-task-queue",
+  args: ['Temporal'], // type inference works! args: [name: string]
+  taskQueue: 'your-task-queue',
   // in practice, use a meaningful business id, eg customerId or transactionId
-  workflowId: "your-workflow-id-",
+  workflowId: 'your-workflow-id-',
 });
 ```
 
@@ -1846,9 +1848,9 @@ To return the results of a Workflow Execution:
 
 ```typescript
 return (
-  "Completed " +
+  'Completed ' +
   wf.workflowInfo().workflowId +
-  ", Total Charged: " +
+  ', Total Charged: ' +
   totalCharged
 );
 ```
@@ -1876,11 +1878,11 @@ try {
   const result = await handle.result();
 } catch (err) {
   if (err instanceof WorkflowFailedError) {
-    throw new Error("Temporal workflow failed: " + workflowId, {
+    throw new Error('Temporal workflow failed: ' + workflowId, {
       cause: err,
     });
   } else {
-    throw new Error("error from Temporal workflow " + workflowId, {
+    throw new Error('error from Temporal workflow ' + workflowId, {
       cause: err,
     });
   }
@@ -2094,7 +2096,7 @@ Content is not available
 First, define your Signal that can be sent to the Workflow.
 
 ```typescript
-const update = wf.defineSignal<number>("update");
+const update = wf.defineSignal<number>('update');
 ```
 
 Then create your Workflow. In this example, our Worklfow charges a user every month.
@@ -2119,7 +2121,7 @@ The following is the implemented code that sends a Signal from a Workflow.
 
 ```typescript
 // Defining a signal that can be sent to the workflow.
-const update = wf.defineSignal<number>("update");
+const update = wf.defineSignal<number>('update');
 // workflow
 async function SubscriptionWorkflow(id: string, amount: number) {
   wf.setHandler(update, (newAmt) => (amount = newAmt));
@@ -2419,280 +2421,7 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-This function takes two function, a Workflow Id and an amount to charge the card.
-The following code is a Workflow that charges a card twice, 30 days apart.
-
-```typescript
-import { sleep } from '@temporalio/workflow';
-
-async funtion MyWorkflow(id, amount) {
-    await  chargeCard(id, amount);
-    await wf.sleep('30 days') // durable
-    await chargeCard(id, amount);
-}
-```
-
-`sleep` sets a durable timer for a fixed time period (an "Updatable Timer" pattern is documented below).
-It uses the [ms](https://www.npmjs.com/package/ms) package to take either a string or number of milliseconds, and returns a promise that you can `await` and `catch` when the Workflow Execution is cancelled.
-
-```ts
-import {sleep} from "@temporalio/workflow";
-
-await sleep("30 days"); // string API
-await sleep(30 * 24 * 60 * 60 * 1000); // numerical API
-
-// `sleep` is cancellation-aware
-// when workflow gets canceled during sleep, promise is rejected
-await sleep("30 days").catch(() => {
-  // clean up code if workflow is canceled during sleep
-});
-
-// NOT VALID
-await sleep("1 month"); // ms package doesnt support "months" https://github.com/vercel/ms/issues/57
-// use date-fns and sleepUntil instead, see below
-```
-
-With this primitive, you can build other abstractions. For example, a `sleepUntil` function that converts absolute time to relative time with `date-fns`:
-
-```ts
-import * as wf from "@temporalio/workflow";
-import differenceInMilliseconds from "date-fns/differenceInMilliseconds";
-
-async function sleepUntil(futureDate, fromDate = new Date()) {
-  const timeUntilDate = differenceInMilliseconds(
-    new Date(futureDate),
-    fromDate
-  );
-  return wf.sleep(timeUntilDate);
-}
-
-sleepUntil("30 Sep " + (new Date().getFullYear() + 1)); // wake up when September ends
-sleepUntil("5 Nov 2022 00:12:34 GMT"); // wake up at specific time and timezone
-```
-
-You can check the valid ISO string formats on [MDN's Date docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse). The upcoming [ECMAScript Temporal API](https://tc39.es/proposal-temporal/docs/index.html) will offer more time utilities natively in JavaScript, alongside unfortunate name collision for Temporal developers.
-
-:::caution Preventing Confusion: Workflow sleep vs Activity sleep
-
-There is an unrelated [`sleep` utility function](https://typescript.temporal.io/api/classes/activity.context/#sleep) available in **Activity Context** that is not durable, but is cancellation aware. See [the Activities docs for details](/docs/typescript/activities).
-
-:::
-
-### `condition`
-
-The `condition(fn, timeout?)` API returns a promise that resolves:
-
-- `true` when the given predicate function (**must be synchronous**) returns `true` or
-- (optional) `false` if a timeout (given as a string or number of milliseconds) happens first.
-
-This API is comparable to `Workflow.await` in other SDKs and often used to wait for Signals, since Signals are the main way to asynchronously update internal Workflow state (looped Activities are another).
-
-The timeout also uses the [ms](https://www.npmjs.com/package/ms) package to take either a string or number of milliseconds.
-
-```ts
-// type signature
-export function condition(
-  fn: () => boolean,
-  timeout: number | string
-): Promise<boolean>;
-export function condition(fn: () => boolean): Promise<void>;
-
-// Usage
-import * as wf from "@temporalio/workflow";
-
-let x = 0;
-// do stuff with x, eg increment every time you receive a signal
-await wf.condition(() => x > 3);
-// you only reach here when x > 3
-
-// await either x > 3 or 30 minute timeout, whichever comes first
-if (await wf.condition(() => x > 3, "30 mins")) {
-  // reach here if predicate true
-} else {
-  // reach here if timed out
-}
-
-// track user progress with condition
-export async function trackStepChanges(): Promise<void> {
-  let step = 0;
-  wf.setHandler(updateStep, (s) => void (step = s));
-  wf.setHandler(getStep, () => step);
-  await wf.condition(() => step === 1);
-  await wf.condition(() => step === 2);
-}
-```
-
-<details>
-<summary>Example usage in our Next.js One-Click Buy code sample</summary>
-
-`condition` only returns true when the function evaluates to `true`; if the `condition` resolves as `false`, then a timeout has occurred.
-This leads to some nice patterns, like placing `await condition` inside an `if`:
-
-<!--SNIPSTART typescript-oneclick-buy-->
-<!--SNIPEND-->
-
-</details>
-
-:::warning `condition` Antipatterns
-
-- No time based condition functions are allowed in your function as this is very error prone.
-  Use the optional `timeout` arg or a `sleep` timer.
-- `condition` only accepts **synchronous** functions that return a boolean.
-  Do not put async functions, like Activities, inside the `condition` function.
-
-:::
-
-<!--TODO: give an idea of what the bad code looks like and why its bad-->
-
-### Async design patterns
-
-The real value of `sleep` and `condition` is in knowing how to use them to model asynchronous business logic.
-Here are some examples we use the most; we welcome more if you can think of them!
-
-<details>
-<summary>
-Racing Timers
-</summary>
-
-Use `Promise.race` with Timers to dynamically adjust delays.
-
-```ts
-export async function processOrderWorkflow({
-  orderProcessingMS,
-  sendDelayedEmailTimeoutMS,
-}: ProcessOrderOptions): Promise<void> {
-  let processing = true;
-  const processOrderPromise = processOrder(orderProcessingMS).then(() => {
-    processing = false;
-  });
-
-  await Promise.race([processOrderPromise, sleep(sendDelayedEmailTimeoutMS)]);
-
-  if (processing) {
-    await sendNotificationEmail();
-    await processOrderPromise;
-  }
-}
-```
-
-</details>
-<details>
-<summary>
-Racing Signals
-</summary>
-
-Use `Promise.race` with Signals and Triggers to have a promise resolve at the earlier of either system time or human intervention.
-
-```ts
-import {Trigger, sleep, defineSignal} from "@temporalio/workflow";
-
-const userInteraction = new Trigger<boolean>();
-const completeUserInteraction = defineSignal("completeUserInteraction");
-
-export async function myWorkflow(userId: string) {
-  setHandler(completeUserInteraction, () => userInteraction.resolve(true)); // programmatic resolve
-  const userInteracted = await Promise.race([
-    userInteraction,
-    sleep("30 days"),
-  ]);
-  if (!userInteracted) {
-    await sendReminderEmail(userId);
-  }
-}
-```
-
-You can invert this to create a Reminder pattern where the promise resolves IF no Signal is received.
-
-:::warning Antipattern: Racing sleep.then
-
-Be careful when racing a chained `sleep`. This may cause bugs because the chained `.then` will still continue to execute.
-
-```js
-await Promise.race([
-  sleep("5s").then(() => (status = "timed_out")),
-  somethingElse.then(() => (status = "processed")),
-]);
-
-if (status === "processed") await complete(); // takes more than 5 seconds
-// status = timed_out
-```
-
-:::
-
-</details>
-
-<details>
-<summary>
-Updatable Timer
-</summary>
-
-Here is how you can build an updatable timer with `condition`:
-
-```ts
-import * as wf from "@temporalio/workflow";
-
-// usage
-export async function countdownWorkflow(): Promise<void> {
-  const target = Date.now() + 24 * 60 * 60 * 1000; // 1 day!!!
-  const timer = new UpdatableTimer(target);
-  console.log("timer set for: " + new Date(target).toString());
-  wf.setHandler(setDeadlineSignal, (deadline) => {
-    // send in new deadlines via Signal
-    timer.deadline = deadline;
-    console.log("timer now set for: " + new Date(deadline).toString());
-  });
-  wf.setHandler(timeLeftQuery, () => timer.deadline - Date.now());
-  await timer; // if you send in a signal with a new time, this timer will resolve earlier!
-  console.log("countdown done!");
-}
-```
-
-This is available in the third party [`temporal-time-utils`](https://www.npmjs.com/package/temporal-time-utils#user-content-updatabletimer) package where you can also see the implementation:
-
-```ts
-// implementation
-export class UpdatableTimer implements PromiseLike<void> {
-  deadlineUpdated = false;
-  #deadline: number;
-
-  constructor(deadline: number) {
-    this.#deadline = deadline;
-  }
-
-  private async run(): Promise<void> {
-    /* eslint-disable no-constant-condition */
-    while (true) {
-      this.deadlineUpdated = false;
-      if (
-        !(await wf.condition(
-          () => this.deadlineUpdated,
-          this.#deadline - Date.now()
-        ))
-      ) {
-        break;
-      }
-    }
-  }
-
-  then<TResult1 = void, TResult2 = never>(
-    onfulfilled?: (value: void) => TResult1 | PromiseLike<TResult1>,
-    onrejected?: (reason: any) => TResult2 | PromiseLike<TResult2>
-  ): PromiseLike<TResult1 | TResult2> {
-    return this.run().then(onfulfilled, onrejected);
-  }
-
-  set deadline(value: number) {
-    this.#deadline = value;
-    this.deadlineUpdated = true;
-  }
-
-  get deadline(): number {
-    return this.#deadline;
-  }
-}
-```
-
-</details>
+Content is not available
 
 </TabItem>
 </Tabs>
@@ -2898,11 +2627,11 @@ In this example, you can set the `scheduleToCloseTimeout` to 5 m.
 
 ```typescript
 // Sample of typical options you can set
-const {greet} = proxyActivities<typeof activities>({
-  scheduleToCloseTimeout: "5m",
+const { greet } = proxyActivities<typeof activities>({
+  scheduleToCloseTimeout: '5m',
   retry: {
     // default retry policy if not specified
-    initialInterval: "1s",
+    initialInterval: '1s',
     backoffCoefficient: 2,
     maximumAttempts: Infinity,
     maximumInterval: 100 * initialInterval,
@@ -2968,11 +2697,11 @@ In this example, you can set the `startToCloseTimeout` to 30 seconds.
 
 ```typescript
 // Sample of typical options you can set
-const {greet} = proxyActivities<typeof activities>({
-  startToCloseTimeout: "30s", // recommended
+const { greet } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '30s', // recommended
   retry: {
     // default retry policy if not specified
-    initialInterval: "1s",
+    initialInterval: '1s',
     backoffCoefficient: 2,
     maximumAttempts: Infinity,
     maximumInterval: 100 * initialInterval,
@@ -3038,12 +2767,12 @@ In this example, you can set the `ScheduleToStartTimeout` to 60 seconds.
 
 ```typescript
 // Sample of typical options you can set
-const {greet} = proxyActivities<typeof activities>({
-  scheduleToCloseTimeout: "5m",
-  ScheduleToStartTimeout: "60s",
+const { greet } = proxyActivities<typeof activities>({
+  scheduleToCloseTimeout: '5m',
+  ScheduleToStartTimeout: '60s',
   retry: {
     // default retry policy if not specified
-    initialInterval: "1s",
+    initialInterval: '1s',
     backoffCoefficient: 2,
     maximumAttempts: Infinity,
     maximumInterval: 100 * initialInterval,
@@ -3447,10 +3176,10 @@ The following is an example of setting the `DefaultLogger` to `'Debug'`.
 
 ```typescript
 Runtime.install({
-  logger: new DefaultLogger("DEBUG"),
+  logger: new DefaultLogger('DEBUG'),
   telemetryOptions: {
-    logForwardingLevel: "DEBUG",
-    tracingFilter: "temporal_sdk_core=DEBUG",
+    logForwardingLevel: 'DEBUG',
+    tracingFilter: 'temporal_sdk_core=DEBUG',
   },
 });
 ```
@@ -3458,29 +3187,29 @@ Runtime.install({
 The following code sets the `DefaultLogger` to `'Debug'` and creates a Worker that can execute Activities or Workflows.
 
 ```typescript
-import {Worker, Runtime, DefaultLogger} from "@temporalio/worker";
-import * as activities from "./activities";
+import { Worker, Runtime, DefaultLogger } from '@temporalio/worker';
+import * as activities from './activities';
 async function main() {
   const argv = arg({
-    "--debug": Boolean,
+    '--debug': Boolean,
   });
   /* Setting the log level to DEBUG. */
-  if (argv["--debug"]) {
+  if (argv['--debug']) {
     Runtime.install({
-      logger: new DefaultLogger("DEBUG"),
+      logger: new DefaultLogger('DEBUG'),
       telemetryOptions: {
-        logForwardingLevel: "DEBUG",
-        tracingFilter: "temporal_sdk_core=DEBUG",
+        logForwardingLevel: 'DEBUG',
+        tracingFilter: 'temporal_sdk_core=DEBUG',
       },
     });
   }
   const worker = await Worker.create({
     activities,
-    workflowsPath: require.resolve("./workflows"),
-    taskQueue: "test",
+    workflowsPath: require.resolve('./workflows'),
+    taskQueue: 'test',
   });
   await worker.run();
-  console.log("Worker gracefully shutdown");
+  console.log('Worker gracefully shutdown');
 }
 ```
 
@@ -3618,3 +3347,4 @@ TODO
 ## Scaling
 
 TODO
+
