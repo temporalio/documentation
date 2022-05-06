@@ -405,7 +405,7 @@ A Synchronous start initiates a Workflow and then waits for its completion. The 
 
 ### Recurring start
 
-You can start a Workflow Execution on a regular schedule with [the CronSchedule option](distributed-cron).
+  You can start a Workflow Execution on a regular schedule with [the CronSchedule option](distributed-cron).
 
 ### External Workflows
 
