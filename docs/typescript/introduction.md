@@ -9,9 +9,7 @@ It is designed with TypeScript-first developer experience in mind, but works equ
 
 import { ResponsivePlayer } from '../../src/components'
 
-<div style={{width: 500, maxWidth: "100%"}}>
-  <ResponsivePlayer url='https://youtu.be/2HjnQlnA5eY'/>
-</div>
+<ResponsivePlayer url='https://youtu.be/2HjnQlnA5eY' />
 
 You can view:
 
@@ -207,9 +205,7 @@ For long form/FAQs, please search and ask on [the Temporal community forum](http
 
 We held a 2-hour introduction workshop explaining every core concept from scratch:
 
-<div style={{width: 500, maxWidth: "100%"}}>
-  <ResponsivePlayer url='https://www.youtube.com/watch?v=CeHSmv8oF_4&feature=youtu.be' />
-</div>
+<ResponsivePlayer url='https://www.youtube.com/watch?v=CeHSmv8oF_4&feature=youtu.be' />
 
 Timestamps:
 
