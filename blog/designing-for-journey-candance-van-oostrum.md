@@ -38,7 +38,7 @@ This is one simple and rather isolated example of issues that creep up in comple
 
 Organizations that have complex and distributed services become increasingly and informally dependent on the holistic operation of the product design team in order to have a deep knowledge of where these issues live and how to solve them. I started by saying that this was one of the best parts of the job, and it is, but it also has a dark side.
 
-When any new product designer joins a company, builds relationships with product and engineering and gains a deep product understanding, they ultimately come to the realization that design alone cannot fix failures in distributed systems. Putting bandaids, workarounds and half measures in place becomes overwhelming, uninspiring and a grind.
+When any new product designer joins a company, builds relationships with product and engineering and gains a deep product understanding, they ultimately come to the realization that design alone cannot fix failures in distributed systems. Putting bandages, workarounds, and half measures in place becomes overwhelming, uninspiring, and a grind.
 
 These constraints also have hidden implications for a designer’s career. At the onset of the create-workflow example mentioned earlier, the prod-eng team established KPIs and built the instrumentation to measure adoption and success of this effort. We were held accountable for improving this core feature and modernizing the user experience, even though we didn’t have access to the other services that interfered with our desired path. This dichotomy starts to seed into all initiatives, where there are no lack of high goals and aspirations but little actual ability to effect real change.
 
