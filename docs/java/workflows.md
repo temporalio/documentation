@@ -5,8 +5,6 @@ sidebar_label: Workflows
 description: The core abstraction of the Temporal solution is a fault-oblivious stateful Workflow.
 ---
 
-import RelatedReadList from '../components/RelatedReadList.js'
-
 ## What is a Workflow?
 
 Workflows are resilient programs, meaning that they will continue execution even in the presence of
@@ -216,6 +214,7 @@ To learn about Workflow Activities visit [this page](/docs/java/activities).
 ## Child Workflows
 
 Besides Activities, a Workflow can also start other Workflows.
+<<<<<<< HEAD
 
 <!-- dprint-ignore-start -->
 
@@ -224,6 +223,9 @@ readlist={[
 ["What is a Child Workflow Execution?","/docs/concepts/what-is-a-child-workflow-execution","explanation"],\
 ]}
 />
+=======
+
+> > > > > > > bc8c5e4 (removing mdx)
 
 ### Java Child Workflow API
 
@@ -405,7 +407,8 @@ A Synchronous start initiates a Workflow and then waits for its completion. The 
 
 ### Recurring start
 
-  You can start a Workflow Execution on a regular schedule with [the CronSchedule option](distributed-cron).
+You can start a Workflow Execution on a regular schedule with [the CronSchedule option](distributed-cron).
+g
 
 ### External Workflows
 
@@ -444,7 +447,11 @@ MyOtherWorkflow continueAsNew = Workflow.newContinueAsNewStub(MyOtherWorkflow.cl
 continueAsNew.greet(input);
 ```
 
-<!-- dprint-ignore-end -->
+<<<<<<< HEAD
+
+# <!-- dprint-ignore-end -->
+
+> > > > > > > bc8c5e4 (removing mdx)
 
 This allows you to continue workflow execution as a new Workflow run with a different Workflow type,
 and on a different Task Queue.

@@ -9,6 +9,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import RelatedReadList, {RelatedReadContainer, RelatedReadItem} from '../components/RelatedReadList.js'
 
+<!-- dprint-ignore-start -->
 <!-- prettier-ignore -->
 import * as WhatIsASignal from '../concepts/what-is-a-signal.md'
 import * as WhatIsAQuery from '../concepts/what-is-a-query.md'
@@ -1183,3 +1184,5 @@ As you build up strong opinions of how you'd like to compose behavior, you may w
 - [temporal-time-utils](https://www.npmjs.com/package/temporal-time-utils): Contains reusable versions of `sleepUntil`, `UpdatableTimer`, and `ScheduleWorkflow` described on this page.
 
 Just keep in mind the difference between utility functions (deterministic, uses Workflow APIs but have to be inlined into Workflows rather than used standalone) and Workflow functions (can be used standalone, and subject to all Workflow limitations, including that all args and results must be JSON-serializable.)
+
+<!-- dprint-ignore-end -->

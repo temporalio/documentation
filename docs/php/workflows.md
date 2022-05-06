@@ -353,12 +353,6 @@ var_dump($workflow->getResult());
 
 Besides Activities, a Workflow can also start other Workflows.
 
-<RelatedReadList
-readlist={[
-["What is a Child Workflow Execution?","/docs/concepts/what-is-a-child-workflow-execution","explanation"],\
-]}
-/>
-
 ## PHP Child Workflow API
 
 `Workflow::executeChildWorkflow` and `Workflow::newChildWorkflowStub` enables the scheduling of other Workflows from within a Workflow's implementation.
