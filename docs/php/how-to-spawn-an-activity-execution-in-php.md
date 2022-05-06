@@ -5,17 +5,12 @@ sidebar_label: Spawn an Activity Execution
 ---
 
 Activity implementation is an implementation of an Activity interface.
-A single instance of the Activities implementation is shared across multiple simultaneous Activity invocations.
-Therefore, the Activity implementation code must be _stateless_.
-
-The values passed to Activities through invocation parameters or returned through a result value are recorded in the execution history.
-The entire execution history is transferred from the Temporal service to Workflow workers when a Workflow state needs to recover.
-A large execution history can thus adversely impact the performance of your Workflow.
-Therefore, be mindful of the amount of data you transfer via Activity invocation parameters or return values.
-
-Otherwise, no additional limitations exist on Activity implementations.
+The following code example, uses a constructor that takes an Amazon S3 client and a local directory, and uploads a file to the S3 bucket.
+Then, the code uses a function to dowload a file from the S3 bucket passing a bucket name, remote name, and local name as arguments.
+Finally, it uses a function that takes a local file name as an argument and returns a string.
 
 ```php
+// An implementation of an Activity interface.
 class FileProcessingActivitiesImpl implements FileProcessingActivities {
 
     private S3Client $s3Client;
@@ -27,6 +22,7 @@ class FileProcessingActivitiesImpl implements FileProcessingActivities {
         $this->localDirectory = $localDirectory;
     }
 
+    // Uploading a file to S3.
     public function upload(string $bucketName, string $localName, string $targetName): void
     {
         $this->s3Client->putObject(
@@ -36,6 +32,7 @@ class FileProcessingActivitiesImpl implements FileProcessingActivities {
         );
     }
 
+// Downloading a file from S3.
     public function download(
         string $bucketName,
         string $remoteName,
@@ -49,6 +46,7 @@ class FileProcessingActivitiesImpl implements FileProcessingActivities {
         );
     }
 
+// A function that takes a local file name as an argument and returns a string.
     public function processFile(string $localName): string
     {
         // Implementation omitted for brevity.

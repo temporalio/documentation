@@ -17,6 +17,40 @@ Below is an example of starting a Worker that polls the Task Queue named `tutori
 <!--SNIPEND-->
 
 `taskQueue` is the only required option, but you will also use `workflowsPath` and `activities` to register Workflows and Activities with the Worker.
+
+A full example for Workers looks like this:
+
+```typescript
+import { Worker, NativeConnection } from '@temporalio/worker';
+import * as activities from './activities';
+
+async function run() {
+  const connection = await NativeConnection.create({
+    address: 'foo.bar.tmprl.cloud', // defaults port to 7233 if not specified
+    tls: {
+      // set to true if TLS without mTLS
+      // See docs for other TLS options
+      clientCertPair: {
+        crt: clientCert,
+        key: clientKey,
+      },
+    },
+  });
+
+  const worker = await Worker.create({
+    connection,
+    namespace: 'foo.bar', // as explained in Namespaces section
+    // ...
+  });
+  await worker.run();
+}
+
+run().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
+```
+
 See below for more Worker options.
 
 #### Workflow and Activity registration

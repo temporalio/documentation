@@ -9,3 +9,4 @@ A single Workflow can use more than one Activity interface and call more than on
 
 The only requirement is that Activity method arguments and return values are serializable to a byte array using the provided [DataConverter](https://github.com/temporalio/sdk-php/blob/master/src/DataConverter/DataConverterInterface.php) interface.
 The default implementation uses a JSON serializer, but an alternative implementation can be easily configured.
+

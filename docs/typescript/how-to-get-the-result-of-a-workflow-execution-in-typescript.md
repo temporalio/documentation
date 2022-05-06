@@ -22,7 +22,7 @@ return (
 
 `totalCharged` is just a function declared in your code. For a full example, see [subscription-workflow-project-template-typescript/src/workflows.ts](https://github.com/temporalio/subscription-workflow-project-template-typescript/blob/main/src/workflows.ts).
 
-A Workflow function may return a result. If it doesn’t (in which case the return type is `Promise<void>`), the result will be undefined.
+A Workflow function may return a result. If it doesn’t (in which case the return type is `Promise<void>`), the result will be `undefined`.
 
 If you started a Workflow with `handle.start()`, you can choose to wait for the result anytime with handle.result().
 

@@ -43,38 +43,7 @@ const client = new WorkflowClient(connection.service, {
 });
 ```
 
-A full example for Workers looks like this:
 
-```typescript
-import { Worker, NativeConnection } from '@temporalio/worker';
-import * as activities from './activities';
-
-async function run() {
-  const connection = await NativeConnection.create({
-    address: 'foo.bar.tmprl.cloud', // defaults port to 7233 if not specified
-    tls: {
-      // set to true if TLS without mTLS
-      // See docs for other TLS options
-      clientCertPair: {
-        crt: clientCert,
-        key: clientKey,
-      },
-    },
-  });
-
-  const worker = await Worker.create({
-    connection,
-    namespace: 'foo.bar', // as explained in Namespaces section
-    // ...
-  });
-  await worker.run();
-}
-
-run().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
-```
 
 [The Hello World mTLS sample](https://github.com/temporalio/samples-node/tree/main/hello-world-mtls/) demonstrates sample code used to connect to a Temporal Cloud account.
 When signing up to Temporal Cloud you should receive a Namespace, a Server address and a client certificate and key. Use the following environment variables to set up the sample:
