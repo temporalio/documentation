@@ -14,7 +14,7 @@ image: /img/an-error-occured.png
 
 <!-- truncate -->
 
-Why would a highly technical and backend engineering focused company even need a designer?
+Why would a highly technical and backend engineering–focused company even need a designer?
 
 When I first started my design career, there was no YouTube, Twitter or responsive design and frankly, designers and developers didn’t talk. Designers and developers were on different floors, in different buildings, and in different cities. This was quite problematic and co-locating teams became the norm to force and foster collaboration.
 
