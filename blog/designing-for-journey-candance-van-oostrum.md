@@ -16,7 +16,7 @@ image: /img/an-error-occured.png
 
 Why would a highly technical and backend engineering–focused company even need a designer?
 
-When I first started my design career, there was no YouTube, Twitter or responsive design and frankly, designers and developers didn’t talk. Designers and developers were on different floors, in different buildings, and in different cities. This was quite problematic and co-locating teams became the norm to force and foster collaboration.
+When I first started my design career, there was no YouTube, Twitter, or responsive design. Frankly, designers and developers didn’t talk. Designers and developers were on different floors, in different buildings, and in different cities. This was quite problematic, and co-locating teams became the norm to force and foster collaboration.
 
 In my earlier days I used to be insecure about being the only woman at the table and believed that I had to be territorial about my UX title. When engineers shared their opinions on what the user experience should be, I regrettably didn’t take their input very generously. I thought it was my job to be the expert and the sole person with an opinion on the UX.  Over the past 20 years I’ve had the privilege of working with some truly amazing engineers, solution architects, scrum masters, engineering managers, you name it. From those working experiences, I’ve really come to depend on my engineering counterparts to help shape and realize the UX vision.
 
