@@ -216,7 +216,9 @@ To learn about Workflow Activities visit [this page](/docs/java/activities).
 ## Child Workflows
 
 Besides Activities, a Workflow can also start other Workflows.
+
 <!-- dprint-ignore-start -->
+
 <RelatedReadList
 readlist={[
 ["What is a Child Workflow Execution?","/docs/concepts/what-is-a-child-workflow-execution","explanation"],\
@@ -441,6 +443,7 @@ MyOtherWorkflow continueAsNew = Workflow.newContinueAsNewStub(MyOtherWorkflow.cl
 // ...
 continueAsNew.greet(input);
 ```
+
 <!-- dprint-ignore-end -->
 
 This allows you to continue workflow execution as a new Workflow run with a different Workflow type,
