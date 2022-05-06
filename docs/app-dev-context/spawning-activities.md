@@ -8,5 +8,6 @@ Therefore, the Activity implementation code must be _stateless_.
 The values passed to Activities through invocation parameters or returned through a result value are recorded in the Execution history.
 The entire Execution history is transferred from the Temporal service to Workflow Workers when a Workflow state needs to recover.
 A large Execution history can thus adversely impact the performance of your Workflow.
+
 Therefore, be mindful of the amount of data you transfer through Activity invocation parameters or Return Values.
 Otherwise, no additional limitations exist on Activity implementations.
