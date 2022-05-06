@@ -5,10 +5,10 @@ function ResponsivePlayer({url, loop, playing}) {
   return (
     <div
       className="relative rounded-lg shadow-lg"
-      style={{position: "relative", paddingTop: "56.25%"}}
+      // https://github.com/CookPete/react-player#responsive-player
+      style={{position: "relative", paddingTop: "56.25%", marginBottom: 20}}
     >
       <ReactPlayer
-        className="absolute top-0 left-0"
         url={url}
         loop={loop}
         playing={playing}
