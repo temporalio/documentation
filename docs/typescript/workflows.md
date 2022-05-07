@@ -299,8 +299,8 @@ function useState<T = any>(name: string, initialValue: T) {
 const store = useState('my-store', 10);
 function MyWorkflow() {
   wf.setHandler(store.signal, (newValue: T) => {
-    // console.log('updating ', name, newValue) // optional but useful for debugging
-    state = store.value;
+    // console.log('updating', newValue) // optional but useful for debugging
+    store.value = newValue;
   });
   wf.setHandler(store.query, () => store.value);
   while (true) {
