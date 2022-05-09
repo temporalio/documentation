@@ -109,6 +109,7 @@ module.exports = {
             id: "cloud/tcld/index",
           },
           items: [
+            "cloud/tcld/login/index",
             {
               type: "category",
               label: "login",
