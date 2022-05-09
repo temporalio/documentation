@@ -99,6 +99,7 @@ module.exports = {
         id: "cloud/tcld/index",
       },
       items: [
+        "cloud/tcld/how-to-install-tcld",
         {
           type: "category",
           label: "tcld commands",

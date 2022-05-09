@@ -7,7 +7,15 @@ tags:
   - tcld
 ---
 
+:::note Beta release
+
+tcld is in beta, and access to Temporal Cloud via tcld is restricted.
+
+:::
+
 The Temporal Cloud CLI (tcld) is a command-line tool that you can use to interact with Temporal Cloud.
+
+- [How to install tcld](/docs/cloud/how-to-install-tcld)
 
 ## tcld commands
 
