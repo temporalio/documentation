@@ -109,17 +109,7 @@ module.exports = {
             id: "cloud/tcld/index",
           },
           items: [
-            "cloud/tcld/login/index",
-            {
-              type: "category",
-              label: "login",
-              collapsible: true,
-              collapsed: true,
-              link: {
-                type: "doc",
-                id: "cloud/tcld/login/index",
-              },
-            },
+            "cloud/tcld/login",
             {
               type: "category",
               label: "namespace",
@@ -184,16 +174,7 @@ module.exports = {
               },
               items: ["cloud/tcld/request/get"],
             },
-            {
-              type: "category",
-              label: "version",
-              collapsible: true,
-              collapsed: true,
-              link: {
-                type: "doc",
-                id: "cloud/tcld/version/index",
-              },
-            },
+            "cloud/tcld/version",
           ],
         },
       ],
