@@ -100,6 +100,7 @@ module.exports = {
       },
       items: [
         {
+          type: "category",
           label: "tcld commands",
           collapsible: true,
           collapsed: true,
