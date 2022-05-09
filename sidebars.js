@@ -181,9 +181,7 @@ module.exports = {
                 type: "doc",
                 id: "cloud/tcld/request/index",
               },
-              items: [
-                "cloud/tcld/request/get",
-              ],
+              items: ["cloud/tcld/request/get"],
             },
             {
               type: "category",
