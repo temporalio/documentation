@@ -33,5 +33,3 @@ export async function example(
   return { greeting };
 }
 ```
-
-This Workflow Function takes the name of the parameters and assigns it to the variable name. Then it calls the function and pass the name of the variable as the argument. The function returns a promise with the value of `greeting`.
