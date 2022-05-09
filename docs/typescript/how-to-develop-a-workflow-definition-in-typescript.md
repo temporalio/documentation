@@ -16,8 +16,8 @@ A Workflow Function has two parts:
 
 Each Workflow Definition is bundled with any third party dependencies, and registered by Workflow Type in a Worker. A Workflow function becomes a Workflow Execution (instance) only when started from a Workflow Client using its Workflow Type.
 
-Workflow Definitions are _just functions_, which can store state, and orchestrate Activity Functions.
-The following code snippet uses `proxyActivities` to create functions to schedule a `greet` Activity in the system to say hello.
+Workflow Functions are _just functions_, which can store state, and orchestrate Activity Functions.
+The following code snippet uses `proxyActivities` to schedule a `greet` Activity in the system to say hello.
 
 A Workflow Function can have multiple parameters, however, Temporal encourages you to use a single object parameter.
 
