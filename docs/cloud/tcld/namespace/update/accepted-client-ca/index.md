@@ -1,5 +1,5 @@
 ---
-id: accepted-client-ca
+id: index
 title: tcld namespace update accepted-client-ca
 description: How to manage the client CA certificate for a Namespace in Temporal Cloud using tcld.
 tags:

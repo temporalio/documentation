@@ -1,5 +1,5 @@
 ---
-id: index
+id: version
 title: tcld version
 description: How to get version information about tcld.
 tags:

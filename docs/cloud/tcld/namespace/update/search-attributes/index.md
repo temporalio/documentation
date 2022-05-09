@@ -1,5 +1,5 @@
 ---
-id: search-attributes
+id: index
 title: tcld namespace update search-attributes
 description: How to manage Search Attributes of a Namespace in Temporal Cloud using tcld.
 tags:

@@ -1,5 +1,5 @@
 ---
-id: update
+id: index
 title: tcld namespace update
 description: How to update Namespace attributes in Temporal Cloud using tcld.
 tags:

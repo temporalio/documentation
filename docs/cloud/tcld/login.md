@@ -1,5 +1,5 @@
 ---
-id: index
+id: login
 title: tcld login
 description: How to log in to Temporal Cloud using tcld.
 tags:
