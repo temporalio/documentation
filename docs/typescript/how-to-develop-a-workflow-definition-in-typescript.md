@@ -19,7 +19,7 @@ Workflow Functions are bundled with their dependencies and registered by name in
 Workflow Functions are _just functions_, which can store state, and orchestrate Activity Functions.
 The following code snippet uses `proxyActivities` to schedule a `greet` Activity in the system to say hello.
 
-A Workflow Function can have multiple parameters, however, Temporal encourages you to use a single object parameter.
+A Workflow Function can have multiple parameters; however, we recommend using a single object parameter.
 
 ```typescript
 type ExampleArgs = {
