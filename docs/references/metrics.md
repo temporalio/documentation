@@ -36,7 +36,7 @@ Each metric may have some combination of the following keys attached to them:
 
 Some keys may not be available in every SDK, and Histogram metrics may have different buckets in each SDK.
 
-| Metric Name                                                                             | Module         | Metric Type | Availability              |
+| Metric name                                                                             | Emitted by         | Metric type | Availability              |
 | --------------------------------------------------------------------------------------- |----------------|-------------| ------------------------- |
 | [activity_execution_cancelled](#activity_execution_cancelled)                           | Worker         | Counter     | Java                      |
 | [activity_execution_failed](#activity_execution_failed)                                 | Worker         | Counter     | TypeScript, Go, PHP, Java |
