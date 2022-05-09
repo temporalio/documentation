@@ -1,6 +1,6 @@
 ---
 id: how-to-install-tcld
-title: How to install tccl
+title: How to install tcld
 sidebar_label: Install
 description: You can install tcld by using Homebrew or building from source.
 tags:
@@ -8,7 +8,7 @@ tags:
   - tcld
 ---
 
-You can install [tcld](/docs/tcld) in two ways.
+You can install [tcld](/docs/cloud/tcld) in two ways.
 
 - Install tcld by using Homebrew.
 
