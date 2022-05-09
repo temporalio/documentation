@@ -1,8 +1,8 @@
 ---
 id: how-to-develop-a-workflow-definition-in-typescript
-title: How to develop a Workflow definition in Typescript
-sidebar_label: Develop a Workflow definition
-description: Develop a Workflow definition
+title: How to develop a Workflow Definition in TypeScript
+sidebar_label: Develop a Workflow Definition
+description: Develop a Workflow Definition
 tags:
   - developer-guide
   - sdk
