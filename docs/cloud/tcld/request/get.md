@@ -1,6 +1,7 @@
 ---
 id: get
 title: tcld request get
+sidebar_label: get
 description: How to get the status of an asynchronous request in Temporal Cloud using tcld.
 tags:
   - reference

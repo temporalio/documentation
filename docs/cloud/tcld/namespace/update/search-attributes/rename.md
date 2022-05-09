@@ -1,6 +1,7 @@
 ---
 id: rename
 title: tcld namespace update search-attributes rename
+sidebar_label: rename
 description: How to update the name of an existing custom Search Attribute in Temporal Cloud using tcld.
 tags:
   - reference

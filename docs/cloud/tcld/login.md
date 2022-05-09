@@ -1,6 +1,7 @@
 ---
 id: login
 title: tcld login
+sidebar_label: login
 description: How to log in to Temporal Cloud using tcld.
 tags:
   - reference

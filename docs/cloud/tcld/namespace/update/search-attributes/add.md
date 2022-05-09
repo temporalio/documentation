@@ -1,6 +1,7 @@
 ---
 id: add
 title: tcld namespace update search-attributes add
+sidebar_label: add
 description: How to add custom Search Attributes to a Namespace in Temporal Cloud using tcld.
 tags:
   - reference

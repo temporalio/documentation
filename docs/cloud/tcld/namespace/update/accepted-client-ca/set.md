@@ -1,6 +1,7 @@
 ---
 id: set
 title: tcld namespace update accepted-client-ca set
+sidebar_label: set
 description: How to set the accepted client CA certificate for a Namespace in Temporal Cloud using tcld.
 tags:
   - reference

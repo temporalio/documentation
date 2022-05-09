@@ -1,6 +1,7 @@
 ---
 id: get
 title: tcld namespace get
+sidebar_label: get
 description: How to get information about a Namespace in Temporal Cloud using tcld.
 tags:
   - reference

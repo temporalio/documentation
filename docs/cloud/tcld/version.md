@@ -1,6 +1,7 @@
 ---
 id: version
 title: tcld version
+sidebar_label: version
 description: How to get version information about tcld.
 tags:
   - reference
