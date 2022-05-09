@@ -8,7 +8,7 @@ tags:
   - developer-guide
 ---
 
-To define a Query, call the Query handler method by its name (as defined in the Workflow) in a `WorkflowStub` from the client code or any external process.
+To define a Query, define the method name and the result type of the Query.
 
 ```java
 query(String queryType, Class<R> resultClass, Type resultType, Object... args);
@@ -21,5 +21,7 @@ query(String queryType, Class<R> resultClass, Type resultType, Object... args);
 ```
 
 Query methods can take in any number of input parameters which can be used to limit the data that is returned.
+
+Use the Query method names to send and receive Queries.
 
 Query methods must never change any Workflow state including starting Activities or blocking threads in any way.
