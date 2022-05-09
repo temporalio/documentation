@@ -11,7 +11,9 @@ tags:
 
 The `tctl admin workflow` commands enable admin-level operations on Workflow Executions.
 
-#### tctl admin workflow commands
+Alias: `-wf`
+
+#### Commands
 
 show
 describe

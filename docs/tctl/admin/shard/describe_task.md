@@ -11,6 +11,8 @@ tags:
 
 The `tctl admin shard describe_task` command describes a specified Task's Task Id, Task type, shard Id, and task visibility timestamp.
 
+Alias: `-dt`
+
 ## Modifiers
 
 The modifiers below control the output and behavior of the command. Enter all modifiers after the command as such:

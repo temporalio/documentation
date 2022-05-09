@@ -13,7 +13,9 @@ The `tctl admin shard describe` command shows the Id for the specified shard.
 
 Alias: `d`
 
-#### Modifiers
+The modifier below controls the behavior of the command.
 
 `--share_id value`
-The Id of the shard to describe (default: 0)
+The Id of the shard to describe 
+
+Default: 0
