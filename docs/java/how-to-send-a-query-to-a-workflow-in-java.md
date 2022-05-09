@@ -19,7 +19,7 @@ For example, the following Client code calls a Query method `queryGreeting()` de
         .setWorkflowId(WORKFLOW_ID)
         .setTaskQueue(TASK_QUEUE).build();
 
-    // Create the workflow client stub. It is used to start our workflow execution.
+    // Create the Temporal client stub. It is used to start our workflow execution.
     GreetingWorkflow workflow = client.newWorkflowStub(GreetingWorkflow.class, workflowOptions);
 
     // Start our workflow asynchronously to not use another thread to query.
