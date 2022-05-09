@@ -14,7 +14,7 @@ A Workflow Function has two parts:
 - The function name is known as the Workflow Type.
 - The function implementation code (body) is known as the Workflow Definition.
 
-Each Workflow Definition is bundled with any third party dependencies, and registered by Workflow Type in a Worker. A Workflow function becomes a Workflow Execution (instance) only when started from a Workflow Client using its Workflow Type.
+Workflow Functions are bundled with their dependencies and registered by name in a Worker. A Workflow Function becomes a [Workflow Execution](/docs/concepts/what-is-a-workflow-execution) when it's started from a Workflow Client.
 
 Workflow Functions are _just functions_, which can store state, and orchestrate Activity Functions.
 The following code snippet uses `proxyActivities` to schedule a `greet` Activity in the system to say hello.
