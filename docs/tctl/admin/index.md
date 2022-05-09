@@ -7,11 +7,13 @@ tags:
   - tctl
   - admin
 ---
-A `tctl admin` command allows the user to run admin operations. 
+
+A `tctl admin` command allows the user to run admin operations.
 
 Alias : adm
 
 #### tctl admin commands
+
 - tctl admin workflow
 - tctl admin shard
 - tctl history_host
@@ -23,4 +25,5 @@ Alias : adm
 - tctl decode
 
 #### Options
+
 show help: `tctl admin [--help | -h]`

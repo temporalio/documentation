@@ -14,6 +14,7 @@ The `tctl admin shard` commands enable admin-level operations on a specified sha
 Alias: `-shar`
 
 #### tctl admin shard commands
+
 - describe
 - describe_task
 - list_tasks
