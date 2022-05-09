@@ -270,6 +270,26 @@ main.max-w-screen-lg {
   background-color: var(--ifm-card-background-color);
   padding: 1.25rem;
 }
+
+.landing-card-list {
+    margin-bottom: 1.5em;
+}
+
+.landing-card-list li {
+  display: inline-block;
+  margin-right: 8px;
+}
+
+.new-guide {
+  padding-left: 15px;
+  font-size: 0.9em;
+  font-weight: 400;
+}
+
+.landing-card-section {
+  margin-top: 1.2em;
+}
+
 /* End Crazy Tailwind hax */
 
 @font-face {
@@ -310,9 +330,10 @@ h3,
 h4 {
   font-family: "Poppins";
 }
-/* p {
+.menu__link {
   font-family: "Aeonik";
-} */
+}
+
 /* Leadership page css */
 
 .leadership-container {
