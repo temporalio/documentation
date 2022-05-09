@@ -11,7 +11,7 @@ tags:
 
 The `tctl admin shard list_tasks` command will list the Tasks available for a given shard Id and Task type.
 
-#### Modifiers
+## Modifiers
 The modifiers below affect the output and behavior of the command.
 
 ### `--more`
