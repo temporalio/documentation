@@ -43,8 +43,6 @@ const client = new WorkflowClient(connection.service, {
 });
 ```
 
-
-
 [The Hello World mTLS sample](https://github.com/temporalio/samples-node/tree/main/hello-world-mtls/) demonstrates sample code used to connect to a Temporal Cloud account.
 When signing up to Temporal Cloud you should receive a Namespace, a Server address and a client certificate and key. Use the following environment variables to set up the sample:
 
