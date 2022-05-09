@@ -140,11 +140,11 @@ This helps provide type safety, since you can export the type signature of the s
 
 #### Define Signals and Queries Dynamically
 
-For more flexible usecases, you may want a dynamic signal (such as a generated ID).
+For more flexible usecases, you may want a dynamic Signal (such as a generated ID).
 You may handle it in two ways:
 
 - avoid making it dynamic by collapsing all signals in one handler and move the ID to the payload, or
-- actually make the signal name dynamic by inlining the signal definition per handler.
+- actually make the Signal name dynamic by inlining the Signal definition per handler.
 
 ```ts
 import * as wf from '@temporalio/workflow';

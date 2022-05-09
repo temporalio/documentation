@@ -64,15 +64,15 @@ This project is based off the default [Hello World project](https://docs.tempora
 
 #### Worker
 
-The Temporal worker is set up in `src/worker.ts`.
+The Temporal Worker is set up in `src/worker.ts`.
 It uses two common Temporal patterns:
 
 - **Dependency Injection**: using the integration object created by `createIntegration` to provide APIs for the social platform being targeted (`Discord` or `Slack`) (see [Platforms](#platforms))
-- **Logging Sinks**: providing a `logger.sink` method for the workflows to log out to `console.log`
+- **Logging Sinks**: providing a `logger.sink` method for the Workflows to log out to `console.log`
 
 #### Workflows
 
-The client in `src/client.ts` will ask Temporal to run two different workflows:
+The client in `src/client.ts` will ask Temporal to run two different Workflows:
 
 1. **`instructions`**: Posts instructions to the social platform and pins the message
 2. **`runGame`**: Continuously runs the game state until the game is finished
@@ -91,7 +91,7 @@ Each iteration of the game (so, daily), `runGame` goes through these steps:
 
 #### Platforms
 
-The `platformFactory` function used in both workers and workflows reads from `process.env` to return the `createIntegration` and `createServer` methods for the social platform being targeted.
+The `platformFactory` function used in both workers and Workflows reads from `process.env` to return the `createIntegration` and `createServer` methods for the social platform being targeted.
 
 ##### Integrations
 
@@ -101,4 +101,4 @@ For example, the Slack integration uses the [Slack Bolt SDK](https://slack.dev/b
 #### Servers
 
 `createServer` creates the (generally Express) server that runs locally and receives webhook events from the social platform.
-Both the Discord and Slack servers use Ngrok to expose a local port on the public web, so that a `/force` command configured on the platform sends a message, it can signal to the workflow.
+Both the Discord and Slack servers use Ngrok to expose a local port on the public web, so that a `/force` command configured on the platform sends a message, it can Signal to the Workflow.
