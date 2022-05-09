@@ -8,14 +8,9 @@ tags:
 ---
 
 An Activity Task contains the context needed to proceed with an [Activity Task Execution](/docs/concepts/what-is-an-activity-task-execution).
-From the API, users see an Activity being executed and assume that it runs once.
 
 Activity Tasks contain Events that are needed to execute the Activity. These events are found within the Activity Task's `Context`.
 
-Upon completion, the Activity Task responds to the cluster with a specific Event:
+Activity Tasks largely represent the Activity Task Scheduled Event , which contains the data needed to execute an Activity Function.
 
-- ActivityTaskCompleted
-- ActivityTaskFailed
-- ActivityTaskTimedOut
-- ActivityTaskCanceled
-- ActivityTaskTerminated
+If Heartbeat data is being passed, an Activity Task will also contain the latest Heartbeat details.
