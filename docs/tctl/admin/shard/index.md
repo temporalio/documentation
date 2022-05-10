@@ -16,7 +16,7 @@ Alias: `-shar`
 #### tctl admin shard commands
 
 - describe
-- describe_task
-- list_tasks
-- close_shard
-- remove_task
+- describe-task
+- list-tasks
+- close-shard
+- remove-task

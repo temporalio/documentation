@@ -15,7 +15,7 @@ Alias: `d`
 
 The modifier below controls the behavior of the command.
 
-`--share_id value`
+`--share-id value`
 The Id of the shard to describe
 
 Default: 0

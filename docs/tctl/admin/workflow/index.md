@@ -17,5 +17,5 @@ Alias: `-wf`
 
 show
 describe
-refresh_tasks
+refresh-tasks
 delete
