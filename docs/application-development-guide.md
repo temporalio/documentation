@@ -333,6 +333,16 @@ interface FileProcessingWorkflow
 </TabItem>
 <TabItem value="typescript">
 
+<<<<<<< HEAD
+=======
+A Workflow Function has two parts:
+
+- The function name is the [Workflow Type](/concepts/what-is-a-workflow-type/).
+- The function implementation is the [Workflow Definition](/concepts/what-is-a-workflow-definition).
+
+Workflow Functions are bundled with their dependencies and registered by name in a Worker. A Workflow Function becomes a [Workflow Execution](/concepts/what-is-a-workflow-execution) when it's started from a Workflow Client.
+
+>>>>>>> 14298fc (updates per rebase)
 Workflow Functions are _just functions_, which can store state, and orchestrate Activity Functions.
 The following code snippet uses `proxyActivities` to schedule a `greet` Activity in the system to say hello.
 
@@ -343,9 +353,11 @@ type ExampleArgs = {
   name: string;
 };
 
-export async function example(args: ExampleArgs): Promise<{greeting: string}> {
+export async function example(
+  args: ExampleArgs
+): Promise<{ greeting: string }> {
   const greeting = await greet(args.name);
-  return {greeting};
+  return { greeting };
 }
 ```
 
@@ -581,12 +593,12 @@ A Task Queue is a dynamic queue in Temporal polled by one or more Workers.
 When scheduling a Workflow, a `taskQueue` must be specified.
 
 ```typescript
-import {Connection, WorkflowClient} from "@temporalio/client";
+import { Connection, WorkflowClient } from '@temporalio/client';
 const connection = new Connection();
 const client = new WorkflowClient();
 const result = await client.execute(myWorkflow, {
-  taskQueue: "your-task-queue", // required
-  workflowId: "your-workflow-id", // required
+  taskQueue: 'your-task-queue', // required
+  workflowId: 'your-workflow-id', // required
 });
 ```
 
@@ -595,7 +607,7 @@ When creating a Worker, you must pass the `taskQueue` option to the `Worker.crea
 ```typescript
 const worker = await Worker.create({
   activities, // imported elsewhere
-  taskQueue: "your-task-queue",
+  taskQueue: 'your-task-queue',
 });
 ```
 
@@ -681,7 +693,7 @@ Query Handlers can return values inside a Workflow in TypeScript.
 You make a Query with `handle.query(query, ...args)`. A Query needs a return value, but can also take arguments.
 
 ```typescript
-import * as wf from "@temporalio/workflow";
+import * as wf from '@temporalio/workflow';
 
 function useState<T = any>(name: string, initialValue: T) {
   const query = wf.defineQuery<T>(name);
@@ -1098,9 +1110,9 @@ Content is not available
 Import the types of the Activities defined in `./activities`. You must first retrieve an Activity from an _Activity Handle_ before you can call it, then define Return Types in your Activity.
 
 ```typescript
-import type * as activities from "./activities";
-const {greet} = proxyActivities<typeof activities>({
-  startToCloseTimeout: "1 minute",
+import type * as activities from './activities';
+const { greet } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '1 minute',
 });
 
 // A workflow that simply calls an activity
@@ -1254,12 +1266,12 @@ class FileProcessingActivitiesImpl implements FileProcessingActivities {
 To spawn an Activity Execution, you must retrieve the _Activity handle_ in your Workflow.
 
 ```typescript
-import {proxyActivities} from "@temporalio/workflow";
+import { proxyActivities } from '@temporalio/workflow';
 // Only import the activity types
-import type * as activities from "./activities";
+import type * as activities from './activities';
 
-const {greet} = proxyActivities<typeof activities>({
-  startToCloseTimeout: "1 minute",
+const { greet } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '1 minute',
 });
 
 // A workflow that calls an activity
@@ -1393,7 +1405,7 @@ export async function DynamicWorkflow(activityName, ...args) {
 
   // these are equivalent
   await acts.activity1();
-  await acts["activity1"]();
+  await acts['activity1']();
 
   let result = await acts[activityName](...args);
   return result;
@@ -1455,7 +1467,7 @@ Content is not available
 Use a new `WorflowClient()` with the requisite gRPC [`Connection`](https://typescript.temporal.io/api/classes/client.Connection#service) to create a new Client.
 
 ```typescript
-import {Connection, WorkflowClient} from "@temporalio/client";
+import { Connection, WorkflowClient } from '@temporalio/client';
 const connection = new Connection(); // to configure for production
 const client = new WorkflowClient(connection.service);
 ```
@@ -1467,10 +1479,10 @@ If you ommit the connection and just call the `new WorkflowClient()`, you will c
 The following example, creates a Client, connects to an account, and declares your Namespace.
 
 ```typescript
-import {Connection, WorkflowClient} from "@temporalio/client";
+import { Connection, WorkflowClient } from '@temporalio/client';
 
 const connection = new Connection({
-  address: "<Namespace ID>.tmprl.cloud", // defaults port to 7233 if not specified
+  address: '<Namespace ID>.tmprl.cloud', // defaults port to 7233 if not specified
   tls: {
     // set to true if TLS without mTLS
     // See docs for other TLS options
@@ -1482,7 +1494,7 @@ const connection = new Connection({
 });
 await connection.untilReady();
 const client = new WorkflowClient(connection.service, {
-  namespace: "your.namespace",
+  namespace: 'your.namespace',
 });
 ```
 
@@ -1501,11 +1513,11 @@ Example environment settings
 ```typescript
 export function getEnv(): Env {
   return {
-    address: "web.<Namespace ID>.tmprl.cloud", // NOT web.foo.bar.tmprl.cloud
-    namespace: "your.namespace", // as assigned
-    clientCertPath: "foobar.pem", // in project root
-    clientKeyPath: "foobar.key", // in project root
-    taskQueue: process.env.TEMPORAL_TASK_QUEUE || "hello-world-mtls", // just to ensure task queue is same on client and worker, totally optional
+    address: 'web.<Namespace ID>.tmprl.cloud', // NOT web.foo.bar.tmprl.cloud
+    namespace: 'your.namespace', // as assigned
+    clientCertPath: 'foobar.pem', // in project root
+    clientKeyPath: 'foobar.key', // in project root
+    taskQueue: process.env.TEMPORAL_TASK_QUEUE || 'hello-world-mtls', // just to ensure task queue is same on client and worker, totally optional
     // // not usually needed
     // serverNameOverride: process.env.TEMPORAL_SERVER_NAME_OVERRIDE,
     // serverRootCACertificatePath: process.env.TEMPORAL_SERVER_ROOT_CA_CERT_PATH,
@@ -1529,7 +1541,7 @@ let serverRootCACertificate: Buffer | undefined;
 let clientCertificate: Buffer | undefined;
 let clientKey: Buffer | undefined;
 if (certificateS3Bucket) {
-  const s3 = new S3client({region: certificateS3BucketRegion});
+  const s3 = new S3client({ region: certificateS3BucketRegion });
   serverRootCACertificate = await s3.getObject({
     bucket: certificateS3Bucket,
     key: serverRootCACertificatePath,
@@ -1701,12 +1713,12 @@ Below is an example of starting a Worker that polls the Task Queue named `tutori
 A full example for Workers looks like this:
 
 ```typescript
-import {Worker, NativeConnection} from "@temporalio/worker";
-import * as activities from "./activities";
+import { Worker, NativeConnection } from '@temporalio/worker';
+import * as activities from './activities';
 
 async function run() {
   const connection = await NativeConnection.create({
-    address: "foo.bar.tmprl.cloud", // defaults port to 7233 if not specified
+    address: 'foo.bar.tmprl.cloud', // defaults port to 7233 if not specified
     tls: {
       // set to true if TLS without mTLS
       // See docs for other TLS options
@@ -1719,7 +1731,7 @@ async function run() {
 
   const worker = await Worker.create({
     connection,
-    namespace: "foo.bar", // as explained in Namespaces section
+    namespace: 'foo.bar', // as explained in Namespaces section
     // ...
   });
   await worker.run();
@@ -1756,12 +1768,12 @@ This is a selected subset of options you are likely to use. Even more advanced o
 | ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `nodeModulesPaths` | Array of paths of Workflow dependencies to pass to Webpack. Defaults to the first encountered `node_modules` directory when scanning the filesystem starting with `workflowsPath`. |
 | `dataConverter`    | Encodes and decodes data entering and exiting a Temporal Server. Supports `undefined`, `UintBArray`, and JSON.                                                                     |
-| `sinks`            | Allows injection of Workflow Sinks (Advanced feature: see [Logging docs](/docs/typescript/logging))                                                                                |
-| `interceptors`     | A mapping of interceptor type to a list of factories or module paths (Advanced feature: see [Interceptors](/docs/typescript/interceptors))                                         |
+| `sinks`            | Allows injection of Workflow Sinks (Advanced feature: see [Logging docs](/typescript/logging))                                                                                |
+| `interceptors`     | A mapping of interceptor type to a list of factories or module paths (Advanced feature: see [Interceptors](/typescript/interceptors))                                         |
 
 **Operation guides:**
 
-- [How to tune Workers](/docs/operation/how-to-tune-workers)
+- [How to tune Workers](/operation/how-to-tune-workers)
 
 </TabItem>
 </Tabs>
@@ -1918,9 +1930,9 @@ When you have a Workflow Client, you can schedule the start of a Workflow with `
 
 ```typescript
 const handle = await client.start(example, {
-  workflowId: "your-workflow-id",
-  taskQueue: "your-task-queue",
-  args: ["argument01", "argument02", "argument03"], // this is typechecked against workflowFn's args
+  workflowId: 'your-workflow-id',
+  taskQueue: 'your-task-queue',
+  args: ['argument01', 'argument02', 'argument03'], // this is typechecked against workflowFn's args
 });
 const handle = client.getHandle(workflowId);
 const result = await handle.result();
@@ -1995,22 +2007,22 @@ There are three main things the Worker needs:
   - Or pass a prebuilt bundle to `workflowBundle`, if you prefer to handle the bundling yourself.
 
 ```typescript
-import {Worker} from "@temporalio/worker";
-import * as activities from "./activities";
+import { Worker } from '@temporalio/worker';
+import * as activities from './activities';
 
 async function run() {
   // Step 1: Register Workflows and Activities with the Worker and connect to
   // the Temporal server.
   const worker = await Worker.create({
-    workflowsPath: require.resolve("./workflows"),
+    workflowsPath: require.resolve('./workflows'),
     activities,
-    taskQueue: "hello-world",
+    taskQueue: 'hello-world',
   });
   // Worker connects to localhost by default and uses console.error for logging.
   // Customize the Worker by passing more options to create():
   // https://typescript.temporal.io/api/classes/worker.Worker
   // If you need to configure server connection parameters, see docs:
-  // https://docs.temporal.io/docs/typescript/security#encryption-in-transit-with-mtls
+  // https://docs.temporal.io/typescript/security#encryption-in-transit-with-mtls
 
   // Step 2: Start accepting tasks on the `tutorial` queue
   await worker.run();
@@ -2076,14 +2088,28 @@ Connect to a Client with `client.start()` and any arguments. Then specify your `
 
 ```typescript
 const handle = await client.start(example, {
-  workflowId: "yourWorkflowId",
-  taskQueue: "yourTaskQueue",
-  args: ["your", "arg", "uments"],
+  workflowId: 'yourWorkflowId',
+  taskQueue: 'yourTaskQueue',
+  args: ['your', 'arg', 'uments'],
 });
 ```
 
 This starts a new Client with the given Workflow Id, Task Queue name, and an argument.
 
+<<<<<<< HEAD
+=======
+```typescript
+const handle = await client.start(example, {
+  args: ['Temporal'], // type inference works! args: [name: string]
+  taskQueue: 'your-task-queue',
+  // in practice, use a meaningful business id, eg customerId or transactionId
+  workflowId: 'your-workflow-id-',
+});
+```
+
+Connect to a Client with `client.start()` and any arguments. Then specify your `taskQueue` and set your `workflowId` to a meaningful business identifier.
+
+>>>>>>> 14298fc (updates per rebase)
 </TabItem>
 </Tabs>
 
@@ -2206,9 +2232,9 @@ To return the results of a Workflow Execution:
 
 ```typescript
 return (
-  "Completed " +
+  'Completed ' +
   wf.workflowInfo().workflowId +
-  ", Total Charged: " +
+  ', Total Charged: ' +
   totalCharged
 );
 ```
@@ -2236,11 +2262,11 @@ try {
   const result = await handle.result();
 } catch (err) {
   if (err instanceof WorkflowFailedError) {
-    throw new Error("Temporal workflow failed: " + workflowId, {
+    throw new Error('Temporal workflow failed: ' + workflowId, {
       cause: err,
     });
   } else {
-    throw new Error("error from Temporal workflow " + workflowId, {
+    throw new Error('error from Temporal workflow ' + workflowId, {
       cause: err,
     });
   }
@@ -2468,7 +2494,7 @@ Content is not available
 First, define your Signal that can be sent to the Workflow.
 
 ```typescript
-const update = wf.defineSignal<number>("update");
+const update = wf.defineSignal<number>('update');
 ```
 
 Then create your Workflow. In this example, our Worklfow charges a user every month.
@@ -2493,7 +2519,7 @@ The following is the implemented code that sends a Signal from a Workflow.
 
 ```typescript
 // Defining a signal that can be sent to the workflow.
-const update = wf.defineSignal<number>("update");
+const update = wf.defineSignal<number>('update');
 // workflow
 async function SubscriptionWorkflow(id: string, amount: number) {
   wf.setHandler(update, (newAmt) => (amount = newAmt));
@@ -3040,11 +3066,11 @@ In this example, you can set the `scheduleToCloseTimeout` to 5 m.
 
 ```typescript
 // Sample of typical options you can set
-const {greet} = proxyActivities<typeof activities>({
-  scheduleToCloseTimeout: "5m",
+const { greet } = proxyActivities<typeof activities>({
+  scheduleToCloseTimeout: '5m',
   retry: {
     // default retry policy if not specified
-    initialInterval: "1s",
+    initialInterval: '1s',
     backoffCoefficient: 2,
     maximumAttempts: Infinity,
     maximumInterval: 100 * initialInterval,
@@ -3118,11 +3144,11 @@ In this example, you can set the `startToCloseTimeout` to 30 seconds.
 
 ```typescript
 // Sample of typical options you can set
-const {greet} = proxyActivities<typeof activities>({
-  startToCloseTimeout: "30s", // recommended
+const { greet } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '30s', // recommended
   retry: {
     // default retry policy if not specified
-    initialInterval: "1s",
+    initialInterval: '1s',
     backoffCoefficient: 2,
     maximumAttempts: Infinity,
     maximumInterval: 100 * initialInterval,
@@ -3194,12 +3220,12 @@ In this example, you can set the `ScheduleToStartTimeout` to 60 seconds.
 
 ```typescript
 // Sample of typical options you can set
-const {greet} = proxyActivities<typeof activities>({
-  scheduleToCloseTimeout: "5m",
-  ScheduleToStartTimeout: "60s",
+const { greet } = proxyActivities<typeof activities>({
+  scheduleToCloseTimeout: '5m',
+  ScheduleToStartTimeout: '60s',
   retry: {
     // default retry policy if not specified
-    initialInterval: "1s",
+    initialInterval: '1s',
     backoffCoefficient: 2,
     maximumAttempts: Infinity,
     maximumInterval: 100 * initialInterval,
@@ -3802,10 +3828,10 @@ The following is an example of setting the `DefaultLogger` to `'Debug'`.
 
 ```typescript
 Runtime.install({
-  logger: new DefaultLogger("DEBUG"),
+  logger: new DefaultLogger('DEBUG'),
   telemetryOptions: {
-    logForwardingLevel: "DEBUG",
-    tracingFilter: "temporal_sdk_core=DEBUG",
+    logForwardingLevel: 'DEBUG',
+    tracingFilter: 'temporal_sdk_core=DEBUG',
   },
 });
 ```
@@ -3813,29 +3839,29 @@ Runtime.install({
 The following code sets the `DefaultLogger` to `'Debug'` and creates a Worker that can execute Activities or Workflows.
 
 ```typescript
-import {Worker, Runtime, DefaultLogger} from "@temporalio/worker";
-import * as activities from "./activities";
+import { Worker, Runtime, DefaultLogger } from '@temporalio/worker';
+import * as activities from './activities';
 async function main() {
   const argv = arg({
-    "--debug": Boolean,
+    '--debug': Boolean,
   });
   /* Setting the log level to DEBUG. */
-  if (argv["--debug"]) {
+  if (argv['--debug']) {
     Runtime.install({
-      logger: new DefaultLogger("DEBUG"),
+      logger: new DefaultLogger('DEBUG'),
       telemetryOptions: {
-        logForwardingLevel: "DEBUG",
-        tracingFilter: "temporal_sdk_core=DEBUG",
+        logForwardingLevel: 'DEBUG',
+        tracingFilter: 'temporal_sdk_core=DEBUG',
       },
     });
   }
   const worker = await Worker.create({
     activities,
-    workflowsPath: require.resolve("./workflows"),
-    taskQueue: "test",
+    workflowsPath: require.resolve('./workflows'),
+    taskQueue: 'test',
   });
   await worker.run();
-  console.log("Worker gracefully shutdown");
+  console.log('Worker gracefully shutdown');
 }
 ```
 
@@ -3973,3 +3999,4 @@ TODO
 ## Scaling
 
 TODO
+

@@ -22,11 +22,6 @@ Activities run in the Node.js execution environment, meaning you can easily port
 `src/activities.ts`
 
 <!--SNIPSTART typescript-hello-activity {"enable_source_link": false}-->
-```ts
-export async function greet(name: string): Promise<string> {
-  return `Hello, ${name}!`;
-}
-```
 <!--SNIPEND-->
 
 ### Workflow
@@ -42,20 +37,6 @@ The snippet below uses `proxyActivities` to create a function that, when called,
 `src/workflows.ts`
 
 <!--SNIPSTART typescript-hello-workflow {"enable_source_link": false}-->
-```ts
-import { proxyActivities } from '@temporalio/workflow';
-// Only import the activity types
-import type * as activities from './activities';
-
-const { greet } = proxyActivities<typeof activities>({
-  startToCloseTimeout: '1 minute',
-});
-
-/** A workflow that simply calls an activity */
-export async function example(name: string): Promise<string> {
-  return await greet(name);
-}
-```
 <!--SNIPEND-->
 
 ### Worker
@@ -68,33 +49,6 @@ See the list of [WorkerOptions](https://typescript.temporal.io/api/interfaces/wo
 `src/worker.ts`
 
 <!--SNIPSTART typescript-hello-worker {"enable_source_link": false}-->
-```ts
-import { Worker } from '@temporalio/worker';
-import * as activities from './activities';
-
-async function run() {
-  // Step 1: Register Workflows and Activities with the Worker and connect to
-  // the Temporal server.
-  const worker = await Worker.create({
-    workflowsPath: require.resolve('./workflows'),
-    activities,
-    taskQueue: 'hello-world',
-  });
-  // Worker connects to localhost by default and uses console.error for logging.
-  // Customize the Worker by passing more options to create():
-  // https://typescript.temporal.io/api/classes/worker.Worker
-  // If you need to configure server connection parameters, see docs:
-  // https://docs.temporal.io/docs/typescript/security#encryption-in-transit-with-mtls
-
-  // Step 2: Start accepting tasks on the `tutorial` queue
-  await worker.run();
-}
-
-run().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
-```
 <!--SNIPEND-->
 
 ### Client
@@ -108,40 +62,6 @@ It can be used in any Node.js process (for example, an [Express](https://express
 `src/client.ts`
 
 <!--SNIPSTART typescript-hello-client {"enable_source_link": false}-->
-```ts
-import { Connection, WorkflowClient } from '@temporalio/client';
-import { example } from './workflows';
-import { nanoid } from 'nanoid';
-
-async function run() {
-  const connection = new Connection({
-    // // Connect to localhost with default ConnectionOptions.
-    // // In production, pass options to the Connection constructor to configure TLS and other settings:
-    // address: 'foo.bar.tmprl.cloud', // as provisioned
-    // tls: {} // as provisioned
-  });
-
-  const client = new WorkflowClient(connection.service, {
-    // namespace: 'default', // change if you have a different namespace
-  });
-
-  const handle = await client.start(example, {
-    args: ['Temporal'], // type inference works! args: [name: string]
-    taskQueue: 'hello-world',
-    // in practice, use a meaningful business id, eg customerId or transactionId
-    workflowId: 'workflow-' + nanoid(),
-  });
-  console.log(`Started workflow ${handle.workflowId}`);
-
-  // optional: wait for client result
-  console.log(await handle.result()); // Hello, Temporal!
-}
-
-run().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
-```
 <!--SNIPEND-->
 
 ### Testing

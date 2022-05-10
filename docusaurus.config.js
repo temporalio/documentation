@@ -89,7 +89,7 @@ module.exports = {
       //       {
       //         to: "/application-development",
       //         activeBaseRegex:
-      //           "(/application-development)|(/docs/(go|java|php|node))",
+      //           "(/application-development)|(/(go|java|php|node))",
       //         label: "SDKs",
       //       },
       //       {

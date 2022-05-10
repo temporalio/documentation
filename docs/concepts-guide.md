@@ -521,10 +521,10 @@ A Worker Program is the static code that defines the constraints of the Worker P
 
 **Implementation guides:**
 
-- [How to develop a Worker Program in Go](/application-development-guide/#run-worker-processes)
+- [How to develop a Worker Program in Go](/go/how-to-develop-a-worker-program-in-go)
 - [How to develop a Worker Program in Java](/java/how-to-develop-a-worker-program-in-java)
 - [How to develop a Worker Program in PHP](/php/how-to-develop-a-worker-program-in-php)
-- [How to develop a Worker Program in TypeScript](/application-development-guide/#run-worker-processes)
+- [How to develop a Worker Program in TypeScript](/typescript/how-to-develop-a-worker-program-in-typescript)
 
 ### Worker Process
 
@@ -1178,10 +1178,10 @@ There are four places where the name of the Task Queue can be set by the develop
 
 2. A Task Queue name must be set when starting a Worker Entity:
 
-- [How to develop a Worker Program in Go](/application-development-guide/#run-worker-processes)
+- [How to develop a Worker Program in Go](/go/how-to-develop-a-worker-program-in-go)
 - [How to develop a Worker Program in Java](/java/how-to-develop-a-worker-program-in-java)
 - [How to develop a Worker Program in PHP](/php/how-to-develop-a-worker-program-in-php)
-- [How to develop a Worker Program in TypeScript](/application-development-guide/#run-worker-processes)
+- [How to develop a Worker Program in TypeScript](/typescript/how-to-develop-a-worker-program-in-typescript)
 
 Note that all Worker Entities listening to the same Task Queue name must be registered to handle the exact same Workflows Types and Activity Types.
 
@@ -1261,13 +1261,30 @@ A Workflow Task Execution is when a Worker picks up a Worker Task and uses it to
 
 ### Activity Task
 
-An Activity Task is a Task that contains the context needed to make progress with an Activity Execution.
+An Activity Task contains the context needed to proceed with an [Activity Task Execution](/concepts/what-is-an-activity-task-execution).
+Activity Tasks largely represent the Activity Task Scheduled Event , which contains the data needed to execute an Activity Function.
+
+If Heartbeat data is being passed, an Activity Task will also contain the latest Heartbeat details.
 
 ### Activity Task Execution
 
-An Activity Task Execution is the execution of an Activity function.
+An Activity Task Execution is when the Worker uses the Context provided from the [Activity Task](/concepts/what-is-an-activity-task) and executes the [Activity Definition](/concepts/what-is-an-activity-definition) (also known as the Activity Function).
 
-Activity Task Executions are retried per a Retry Policy.
+The [ActivityTaskScheduled Event](/concepts/what-is-an-event#activitytaskscheduled) corresponds to when the Temporal Cluster puts the Activity Task into the Task Queue.
+
+The [ActivityTaskStarted Event](/concepts/what-is-an-event#activitytaskstarted) corresponds to when the Worker picks up the Activity Task from the Task Queue.
+
+Either [ActivityTaskCompleted](/concepts/what-is-an-event#activitytaskcompleted) or one of the other Closed Activity Task Events corresponds to when the Worker has yielded back to the Temporal Cluster.
+
+The API to schedule an Activity Execution provides an "effectively once" experience, even though there may be several Activity Task Executions that take place to successfully complete an Activity.
+
+Once an Activity Task finishes execution, the Worker responds to the Cluster with a specific Event:
+
+- ActivityTaskCompleted
+- ActivityTaskFailed
+- ActivityTaskTimedOut
+- ActivityTaskCanceled
+- ActivityTaskTerminated
 
 ## Namespaces
 
@@ -1632,3 +1649,4 @@ To actually have results from the use of a [List Filter](/concepts/what-is-a-lis
 How to do this entirely depends on the method by which you spawn the Workflow Execution:
 
 - [How to set Search Attributes as Workflow Execution metadata in Go](/go/startworkflowoptions-reference/#searchattributes)
+

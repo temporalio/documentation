@@ -14,33 +14,6 @@ Create a Worker with `Worker.create()` (which establishes the initial gRPC conne
 Below is an example of starting a Worker that polls the Task Queue named `tutorial`.
 
 <!--SNIPSTART typescript-hello-worker {"enable_source_link": false}-->
-```ts
-import { Worker } from '@temporalio/worker';
-import * as activities from './activities';
-
-async function run() {
-  // Step 1: Register Workflows and Activities with the Worker and connect to
-  // the Temporal server.
-  const worker = await Worker.create({
-    workflowsPath: require.resolve('./workflows'),
-    activities,
-    taskQueue: 'hello-world',
-  });
-  // Worker connects to localhost by default and uses console.error for logging.
-  // Customize the Worker by passing more options to create():
-  // https://typescript.temporal.io/api/classes/worker.Worker
-  // If you need to configure server connection parameters, see docs:
-  // https://docs.temporal.io/docs/typescript/security#encryption-in-transit-with-mtls
-
-  // Step 2: Start accepting tasks on the `tutorial` queue
-  await worker.run();
-}
-
-run().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
-```
 <!--SNIPEND-->
 
 `taskQueue` is the only required option, but you will also use `workflowsPath` and `activities` to register Workflows and Activities with the Worker.
