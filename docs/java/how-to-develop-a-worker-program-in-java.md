@@ -45,7 +45,7 @@ public class YourWorker {
 
 #### Register Workflow Types
 
-Workflow Types must be registered with a Worker.
+Workflow Types must be registered with a Worker. For `DynamicWorkflow`, only one Workflow implementation that extends `DynamicWorkflow` can be registered with a Worker.
 
 The following example shows how to register a Workflow with the Worker created in the previous example.
 
@@ -91,6 +91,8 @@ The following example shows how to register the Dynamic Workflow implementation 
   }
 }
 ```
+
+You can register multiple type-specific Workflow implementations alongside a single `DynamicWorkflow` implementation.
 
 #### Register Activity Types
 
