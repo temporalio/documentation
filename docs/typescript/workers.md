@@ -7,11 +7,11 @@ description: A Worker is a process that connects to the Temporal Server, polls T
 
 **`@temporalio/worker`** [![NPM](https://img.shields.io/npm/v/@temporalio/worker)](https://www.npmjs.com/package/@temporalio/worker) [API reference](https://typescript.temporal.io/api/namespaces/worker) | [GitHub](https://github.com/temporalio/sdk-typescript/tree/main/packages/worker)
 
-> _Background reading: [Workers in Temporal](/docs/temporal-explained/task-queues-and-workers)_
+> _Background reading: [Workers in Temporal](/temporal-explained/task-queues-and-workers)_
 
 ## What is a Worker?
 
-A Worker is a process that connects to the Temporal Server, polls **Task Queues** for Tasks sent from Clients, and executes [Workflows](/docs/typescript/workflows) and [Activities](/docs/typescript/activities) in response.
+A Worker is a process that connects to the Temporal Server, polls **Task Queues** for Tasks sent from Clients, and executes [Workflows](/typescript/workflows) and [Activities](/typescript/activities) in response.
 
 - **Workers host Workflows and Activities.**
   - TypeScript SDK Workers bundle Workflows based on `workflowsPath` and their dependencies from `nodeModulesPaths` with [Webpack](https://webpack.js.org/) and run them inside v8 isolates.
@@ -20,7 +20,7 @@ A Worker is a process that connects to the Temporal Server, polls **Task Queues*
   - Workers connect to the Temporal Server, poll their configured **Task Queue** for Tasks, execute chunks of code in response to those Tasks, and then communicate the results back.
   - Workers are distinct from Clients and scaled independently of Temporal Server, which has its own internal services to scale.
   - Workers are stateless, and can be brought up and down at any time with no Temporal data loss impact.
-    To migrate to new versions of your Workflows and Activities, you restart your Workers with the new versions (and optionally use [the `patch` API to migrate](/docs/typescript/patching) still-running Workflows of the older version).
+    To migrate to new versions of your Workflows and Activities, you restart your Workers with the new versions (and optionally use [the `patch` API to migrate](/typescript/patching) still-running Workflows of the older version).
   - Use the `@temporalio/worker` package's [`Worker`](https://typescript.temporal.io/api/classes/worker.Worker) class to create and run as many Workers as your use case demands, across any number of hosts.
 - **Workers are run on user-controlled hosts.** This is an important security feature which means Temporal Server (or Temporal Cloud) never executes your Workflow or Activity code, and that Workers can have different hardware (e.g. custom GPUs for Machine Learning) than the rest of the system.
 
@@ -30,7 +30,7 @@ Your Workflows will only progress if there are Workers polling the right Task Qu
 </summary>
 
 The TypeScript SDK uses TypeScript, but cannot completely protect you from typos.
-If you are experiencing issues, you can check the status of Workers and the Task Queues they poll with [`tctl` or the Temporal Web UI](/docs/devtools/introduction).
+If you are experiencing issues, you can check the status of Workers and the Task Queues they poll with [`tctl` or the Temporal Web UI](/devtools/introduction).
 
 ![Temporal Web Task Queues view](https://user-images.githubusercontent.com/6764957/126413160-18663430-bb7a-4d3a-874e-80598e1fa07d.png)
 
@@ -84,7 +84,7 @@ const worker = await Worker.create({
 
 ### How to shut down a Worker and track its state
 
-Workers shut down if they receive any of these [`shutdownSignals`](https://typescript.temporal.io/api/interfaces/worker.workeroptions/#shutdownsignals): `['SIGINT', 'SIGTERM', 'SIGQUIT', 'SIGUSR2']`. In development, we shut down Workers with `Ctrl-C` (`SIGINT`) or [`nodemon`](https://github.com/temporalio/samples-typescript/blob/c37bae3ea235d1b6956fcbe805478aa46af973ce/hello-world/package.json#L10) (`SIGUSR2`). In production, we usually want to give Workers a [`shutdownGraceTime`](https://typescript.temporal.io/api/interfaces/worker.workeroptions/#shutdowngracetime) long enough for them to finish any in-progress Activities. As soon as they receive a shutdown signal or request, the Worker stops polling for new Tasks and allows in-flight Tasks to complete until `shutdownGraceTime` is reached. Any Activities that are still running at that time will stop running, and will be rescheduled by Temporal Server when an [Activity timeout](https://docs.temporal.io/docs/typescript/activities#activity-timeouts) occurs.
+Workers shut down if they receive any of these [`shutdownSignals`](https://typescript.temporal.io/api/interfaces/worker.workeroptions/#shutdownsignals): `['SIGINT', 'SIGTERM', 'SIGQUIT', 'SIGUSR2']`. In development, we shut down Workers with `Ctrl-C` (`SIGINT`) or [`nodemon`](https://github.com/temporalio/samples-typescript/blob/c37bae3ea235d1b6956fcbe805478aa46af973ce/hello-world/package.json#L10) (`SIGUSR2`). In production, we usually want to give Workers a [`shutdownGraceTime`](https://typescript.temporal.io/api/interfaces/worker.workeroptions/#shutdowngracetime) long enough for them to finish any in-progress Activities. As soon as they receive a shutdown signal or request, the Worker stops polling for new Tasks and allows in-flight Tasks to complete until `shutdownGraceTime` is reached. Any Activities that are still running at that time will stop running, and will be rescheduled by Temporal Server when an [Activity timeout](https://docs.temporal.io/typescript/activities#activity-timeouts) occurs.
 
 We may want to programmatically shut down Workers (with `worker.shutdown()`) in integration tests or when automating a fleet of Workers.
 
@@ -131,7 +131,7 @@ const worker = await Worker.create({
 });
 ```
 
-Temporal also supports mTLS encryption (required by Temporal Cloud) this way - please read our [Security docs](/docs/typescript/security#encryption-in-transit-with-mtls) for more information.
+Temporal also supports mTLS encryption (required by Temporal Cloud) this way - please read our [Security docs](/typescript/security#encryption-in-transit-with-mtls) for more information.
 
 ## Task Queues
 
@@ -208,12 +208,70 @@ The main strategy is:
 Workflow Code:
 
 <!--SNIPSTART typescript-sticky-queues-workflow-->
+[activities-sticky-queues/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/activities-sticky-queues/src/workflows.ts)
+```ts
+const { getUniqueTaskQueue } = proxyActivities<ReturnType<typeof createNonStickyActivities>>({
+  startToCloseTimeout: '1 minute',
+});
+
+export async function fileProcessingWorkflow(maxAttempts = 5): Promise<void> {
+  for (let attempt = 1; attempt <= maxAttempts; ++attempt) {
+    try {
+      const uniqueWorkerTaskQueue = await getUniqueTaskQueue();
+      const activities = proxyActivities<ReturnType<typeof createStickyActivities>>({
+        taskQueue: uniqueWorkerTaskQueue,
+        // Note the use of scheduleToCloseTimeout.
+        // The reason this timeout type is used is because this task queue is unique
+        // to a single worker. When that worker goes away, there won't be a way for these
+        // activities to progress.
+        scheduleToCloseTimeout: '1 minute',
+      });
+
+      const downloadPath = `/tmp/${uuid4()}`;
+      await activities.downloadFileToWorkerFileSystem('https://temporal.io', downloadPath);
+      try {
+        await activities.workOnFileInWorkerFileSystem(downloadPath);
+      } finally {
+        await activities.cleanupFileFromWorkerFileSystem(downloadPath);
+      }
+      return;
+    } catch (err) {
+      if (attempt === maxAttempts) {
+        console.log(`Final attempt (${attempt}) failed, giving up`);
+        throw err;
+      }
+
+      console.log(`Attempt ${attempt} failed, retrying on a new Worker`);
+    }
+  }
+}
+```
 <!--SNIPEND-->
 
 Worker Code:
 
 <!--SNIPSTART typescript-sticky-queues-worker-->
+[activities-sticky-queues/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/master/activities-sticky-queues/src/worker.ts)
+```ts
+async function run() {
+  const uniqueWorkerTaskQueue = uuid();
+
+  const workers = await Promise.all([
+    Worker.create({
+      workflowsPath: require.resolve('./workflows'),
+      activities: createNonStickyActivities(uniqueWorkerTaskQueue),
+      taskQueue: 'sticky-activity-tutorial',
+    }),
+    Worker.create({
+      // No workflows for this queue
+      activities: createStickyActivities(),
+      taskQueue: uniqueWorkerTaskQueue,
+    }),
+  ]);
+  await Promise.all(workers.map((w) => w.run()));
+}
+```
 <!--SNIPEND-->
 
 This pattern is [in use at Netflix](https://www.youtube.com/watch?v=LliBP7YMGyA&t=24s).
-Note that this is unrelated to [Sticky Queues](/docs/concepts/what-is-a-sticky-execution), which are an internal implementation detail.
+Note that this is unrelated to [Sticky Queues](/concepts/what-is-a-sticky-execution), which are an internal implementation detail.

@@ -9,7 +9,7 @@ tags:
 
 ![Component diagram of a Worker Process and the Temporal Server](/diagrams/worker-and-server-component.svg)
 
-A Worker Process is responsible for polling a [Task Queue](/docs/concepts/what-is-a-task-queue), dequeueing a [Task](/docs/concepts/what-is-a-task), executing your code in response to a Task, and responding to the [Temporal Cluster](/docs/concepts/what-is-a-temporal-cluster) with the results.
+A Worker Process is responsible for polling a [Task Queue](/concepts/what-is-a-task-queue), dequeueing a [Task](/concepts/what-is-a-task), executing your code in response to a Task, and responding to the [Temporal Cluster](/concepts/what-is-a-temporal-cluster) with the results.
 
 More formally, a Worker Process is any process that implements the Task Queue Protocol and the Task Execution Protocol.
 
@@ -19,12 +19,12 @@ More formally, a Worker Process is any process that implements the Task Queue Pr
   An Activity Worker Process can listen on an arbitrary number of Activity Task Queues and can execute an arbitrary number of Activity Tasks.
 
 **Worker Processes are external to a Temporal Cluster.**
-Temporal Application developers are responsible for developing [Worker Programs](/docs/concepts/what-is-a-worker-program) and operating Worker Processes.
-Said another way, the [Temporal Cluster](/docs/concepts/what-is-a-temporal-cluster) (including the Temporal Cloud) doesn't execute any of your code (Workflow & Activity Definitions) on Temporal Cluster machines. The Cluster is solely responsible for orchestrating state transitions and providing Tasks to the next available Worker Entity.
+Temporal Application developers are responsible for developing [Worker Programs](/concepts/what-is-a-worker-program) and operating Worker Processes.
+Said another way, the [Temporal Cluster](/concepts/what-is-a-temporal-cluster) (including the Temporal Cloud) doesn't execute any of your code (Workflow & Activity Definitions) on Temporal Cluster machines. The Cluster is solely responsible for orchestrating state transitions and providing Tasks to the next available Worker Entity.
 
-While data transferred in Event Histories is [secured by mTLS](https://docs.temporal.io/docs/server/security/#encryption-of-network-traffic), by default, it is still readable at rest in the Temporal Cluster.
+While data transferred in Event Histories is [secured by mTLS](https://docs.temporal.io/server/security/#encryption-of-network-traffic), by default, it is still readable at rest in the Temporal Cluster.
 
-To solve this, Temporal SDKs offer a [Data Converter API](/docs/concepts/what-is-a-data-converter) that you can use to customize the serialization of data going out of and coming back in to a Worker Entity, with the net effect of guaranteeing that the Temporal Cluster cannot read sensitive business data.
+To solve this, Temporal SDKs offer a [Data Converter API](/concepts/what-is-a-data-converter) that you can use to customize the serialization of data going out of and coming back in to a Worker Entity, with the net effect of guaranteeing that the Temporal Cluster cannot read sensitive business data.
 
 In many of our tutorials, we show you how to run both a Temporal Cluster and one Worker on the same machine for local development.
 However, a production-grade Temporal Application typically has a _fleet_ of Worker Processes, all running on hosts external to the Temporal Cluster.

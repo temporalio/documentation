@@ -28,7 +28,7 @@ And as these systems scale, responding to multiple asynchronous events, communic
 Temporal restructures the use of services, databases, cron jobs, queues, host processes, and SDKs, into the Temporal Platform, and addresses failures head on.
 
 In a traditional system, the service exists to spawn function executions.
-The Temporal Platform exists to facilitate [Workflow Executions](/docs/concepts/what-is-a-workflow-execution).
+The Temporal Platform exists to facilitate [Workflow Executions](/concepts/what-is-a-workflow-execution).
 
 ![Temporal vs Traditional system](/diagrams/temporal-vs-traditional.svg)
 
@@ -58,7 +58,7 @@ With Temporal, computation resumes from its _latest_ state. All progress is reta
 
 With a traditional system, you can't communicate with a function execution.
 
-With Temporal, [Signals](/docs/concepts/what-is-a-signal) and [Queries](/docs/concepts/what-is-a-query) enable data to be sent to or extracted from a Workflow Execution.
+With Temporal, [Signals](/concepts/what-is-a-signal) and [Queries](/concepts/what-is-a-query) enable data to be sent to or extracted from a Workflow Execution.
 
 **Scope**
 
@@ -120,24 +120,498 @@ values={[
 <TabItem value="go">
 
 <!--SNIPSTART subscription-go-workflow-definition-->
+[workflow.go](https://github.com/temporalio/subscription-workflow-project-template-go/blob/master/workflow.go)
+```go
+package subscription
+
+import (
+	"log"
+	"time"
+
+	"go.temporal.io/sdk/workflow"
+)
+
+func SubscriptionWorkflow(ctx workflow.Context, customer Customer) (string, error) {
+	workflowCustomer := customer
+	subscriptionCancelled := false
+	billingPeriodNum := 0
+	actResult := ""
+
+	QueryCustomerIdName := "customerid"
+	QueryBillingPeriodNumberName := "billingperiodnumber"
+	QueryBillingPeriodChargeAmountName := "billingperiodchargeamount"
+
+	logger := workflow.GetLogger(ctx)
+
+	// Define query handlers
+	// Register query handler to return trip count
+	err := workflow.SetQueryHandler(ctx, QueryCustomerIdName, func() (string, error) {
+		return workflowCustomer.Id, nil
+	})
+	if err != nil {
+		logger.Info("QueryCustomerIdName handler failed.", "Error", err)
+		return "Error", err
+	}
+
+	err = workflow.SetQueryHandler(ctx, QueryBillingPeriodNumberName, func() (int, error) {
+		return billingPeriodNum, nil
+	})
+	if err != nil {
+		logger.Info("QueryBillingPeriodNumberName handler failed.", "Error", err)
+		return "Error", err
+	}
+
+	err = workflow.SetQueryHandler(ctx, QueryBillingPeriodChargeAmountName, func() (int, error) {
+		return workflowCustomer.Subscription.BillingPeriodCharge, nil
+	})
+	if err != nil {
+		logger.Info("QueryBillingPeriodChargeAmountName handler failed.", "Error", err)
+		return "Error", err
+	}
+	// end defining query handlers
+
+	// Define signal channels
+	// 1) billing period charge change signal
+	chargeSelector := workflow.NewSelector(ctx)
+	signalCh := workflow.GetSignalChannel(ctx, "billingperiodcharge")
+	chargeSelector.AddReceive(signalCh, func(ch workflow.ReceiveChannel, _ bool) {
+		var chargeSignal int
+		ch.Receive(ctx, &chargeSignal)
+		workflowCustomer.Subscription.BillingPeriodCharge = chargeSignal
+	})
+	// 2) cancel subscription signal
+	cancelSelector := workflow.NewSelector(ctx)
+	cancelCh := workflow.GetSignalChannel(ctx, "cancelsubscription")
+	cancelSelector.AddReceive(cancelCh, func(ch workflow.ReceiveChannel, _ bool) {
+		var cancelSubSignal bool
+		ch.Receive(ctx, &cancelSubSignal)
+		subscriptionCancelled = cancelSubSignal
+	})
+	// end defining signal channels
+
+	ao := workflow.ActivityOptions{
+		StartToCloseTimeout: time.Minute * 5,
+	}
+
+	ctx = workflow.WithActivityOptions(ctx, ao)
+	logger.Info("Subscription workflow started for: " + customer.Id)
+
+	var activities *Activities
+
+	// Send welcome email to customer
+	err = workflow.ExecuteActivity(ctx, activities.SendWelcomeEmail, workflowCustomer).Get(ctx, &actResult)
+	if err != nil {
+		log.Fatalln("Failure executing SendWelcomeEmail", err)
+	}
+
+	// Start the free trial period. User can still cancel subscription during this time
+	workflow.AwaitWithTimeout(ctx, workflowCustomer.Subscription.TrialPeriod, func() bool {
+		return subscriptionCancelled == true
+	})
+
+	// If customer cancelled their subscription during trial period, send notification email
+	if subscriptionCancelled == true {
+		err = workflow.ExecuteActivity(ctx, activities.SendCancellationEmailDuringTrialPeriod, workflowCustomer).Get(ctx, &actResult)
+		if err != nil {
+			log.Fatalln("Failure executing SendCancellationEmailDuringTrialPeriod", err)
+		}
+		// We have completed subscription for this customer.
+		// Finishing workflow execution
+		return "Subscription finished for: " + workflowCustomer.Id, err
+	}
+
+	// Trial period is over, start billing until
+	// we reach the max billing periods for the subscription
+	// or sub has been cancelled
+	for {
+		if billingPeriodNum >= workflowCustomer.Subscription.MaxBillingPeriods {
+			break
+		}
+
+		// Charge customer for the billing period
+		err = workflow.ExecuteActivity(ctx, activities.ChargeCustomerForBillingPeriod, workflowCustomer).Get(ctx, &actResult)
+		if err != nil {
+			log.Fatalln("Failure executing ChargeCustomerForBillingPeriod", err)
+		}
+		// Wait 1 billing period to charge customer or if they cancel subscription
+		// whichever comes first
+		workflow.AwaitWithTimeout(ctx, workflowCustomer.Subscription.BillingPeriod, cancelSelector.HasPending)
+
+		if subscriptionCancelled {
+			err = workflow.ExecuteActivity(ctx, activities.SendCancellationEmailDuringActiveSubscription, workflowCustomer).Get(ctx, &actResult)
+			if err != nil {
+				log.Fatalln("Failure executing SendCancellationEmailDuringActiveSubscription", err)
+			}
+			break
+		}
+
+		billingPeriodNum++
+
+		for chargeSelector.HasPending() {
+			chargeSelector.Select(ctx)
+		}
+	}
+
+	// if we get here the subscription period is over
+	// notify the customer to buy a new subscription
+	if !subscriptionCancelled {
+		err = workflow.ExecuteActivity(ctx, activities.SendSubscriptionOverEmail, workflowCustomer).Get(ctx, &actResult)
+		if err != nil {
+			log.Fatalln("Failure executing SendSubscriptionOverEmail", err)
+		}
+	}
+
+	return "Completed Subscription Workflow", err
+}
+```
 <!--SNIPEND-->
 
 </TabItem>
 <TabItem value="java">
 
 <!--SNIPSTART subscription-java-workflow-definition-implementation-->
+[src/main/java/io/temporal/sample/workflow/SubscriptionWorkflowImpl.java](https://github.com/temporalio/subscription-workflow-project-template-java/blob/master/src/main/java/io/temporal/sample/workflow/SubscriptionWorkflowImpl.java)
+```java
+package io.temporal.sample.workflow;
+
+import io.temporal.activity.ActivityOptions;
+import io.temporal.sample.activities.SubscriptionActivities;
+import io.temporal.sample.model.Customer;
+import io.temporal.workflow.Workflow;
+import java.time.Duration;
+
+/** Subscription Workflow implementation. Note this is just a POJO. */
+public class SubscriptionWorkflowImpl implements SubscriptionWorkflow {
+
+  private int billingPeriodNum;
+  private boolean subscriptionCancelled;
+  private Customer customer;
+
+  /*
+   * Define our Activity options:
+   * setStartToCloseTimeout: maximum Activity Execution time after it was sent to a Worker
+   */
+  private final ActivityOptions activityOptions =
+      ActivityOptions.newBuilder().setStartToCloseTimeout(Duration.ofSeconds(5)).build();
+
+  // Define subscription Activities stub
+  private final SubscriptionActivities activities =
+      Workflow.newActivityStub(SubscriptionActivities.class, activityOptions);
+
+  @Override
+  public void startSubscription(Customer customer) {
+    // Set the Workflow customer
+    this.customer = customer;
+
+    // Send welcome email to customer
+    activities.sendWelcomeEmail(customer);
+
+    // Start the free trial period. User can still cancel subscription during this time
+    Workflow.await(customer.getSubscription().getTrialPeriod(), () -> subscriptionCancelled);
+
+    // If customer cancelled their subscription during trial period, send notification email
+    if (subscriptionCancelled) {
+      activities.sendCancellationEmailDuringTrialPeriod(customer);
+      // We have completed subscription for this customer.
+      // Finishing Workflow Execution
+      return;
+    }
+
+    // Trial period is over, start billing until
+    // we reach the max billing periods for the subscription
+    // or sub has been cancelled
+    while (billingPeriodNum < customer.getSubscription().getMaxBillingPeriods()) {
+
+      // Charge customer for the billing period
+      activities.chargeCustomerForBillingPeriod(customer, billingPeriodNum);
+
+      // Wait 1 billing period to charge customer or if they cancel subscription
+      // whichever comes first
+      Workflow.await(customer.getSubscription().getBillingPeriod(), () -> subscriptionCancelled);
+
+      // If customer cancelled their subscription send notification email
+      if (subscriptionCancelled) {
+        activities.sendCancellationEmailDuringActiveSubscription(customer);
+
+        // We have completed subscription for this customer.
+        // Finishing Workflow Execution
+        break;
+      }
+
+      billingPeriodNum++;
+    }
+
+    // if we get here the subscription period is over
+    // notify the customer to buy a new subscription
+    if (!subscriptionCancelled) {
+      activities.sendSubscriptionOverEmail(customer);
+    }
+  }
+
+  @Override
+  public void cancelSubscription() {
+    subscriptionCancelled = true;
+  }
+
+  @Override
+  public void updateBillingPeriodChargeAmount(int billingPeriodChargeAmount) {
+    customer.getSubscription().setBillingPeriodCharge(billingPeriodChargeAmount);
+  }
+
+  @Override
+  public String queryCustomerId() {
+    return customer.getId();
+  }
+
+  @Override
+  public int queryBillingPeriodNumber() {
+    return billingPeriodNum;
+  }
+
+  @Override
+  public int queryBillingPeriodChargeAmount() {
+    return customer.getSubscription().getBillingPeriodCharge();
+  }
+}
+```
 <!--SNIPEND-->
 
 </TabItem>
 <TabItem value="ts">
 
 <!--SNIPSTART subscription-ts-workflow-definition-->
+[src/workflows.ts](https://github.com/temporalio/subscription-workflow-project-template-typescript/blob/master/src/workflows.ts)
+```ts
+import * as wf from "@temporalio/workflow";
+import type * as activitiesTypes from "./activities";
+import { Customer } from "./types";
+
+const activities = wf.proxyActivities<typeof activitiesTypes>({
+  startToCloseTimeout: "5s", // short only because we are just console.logging
+});
+
+export const cancelSubscription = wf.defineSignal("cancelSubscription");
+
+export async function SubscriptionWorkflow(
+  customer: Customer
+): Promise<string> {
+  let subscriptionCancelled = false;
+  let totalCharged = 0;
+
+  const CustomerIdName = querysignalState("CustomerIdName", "customerid");
+  const BillingPeriodNumber = querysignalState("BillingPeriodNumber", 0);
+  const BillingPeriodChargeAmount = querysignalState(
+    "BillingPeriodChargeAmount",
+    customer.Subscription.initialBillingPeriodCharge
+  );
+
+  wf.setHandler(CustomerIdName.query, () => customer.Id);
+  wf.setHandler(cancelSubscription, () => void (subscriptionCancelled = true));
+
+  // Send welcome email to customer
+  await activities.sendWelcomeEmail(customer);
+
+  // Start the free trial period. User can still cancel subscription during this time
+  if (
+    await wf.condition(
+      customer.Subscription.TrialPeriod,
+      () => subscriptionCancelled
+    )
+  ) {
+    // If customer cancelled their subscription during trial period, send notification email
+    await activities.sendCancellationEmailDuringTrialPeriod(customer);
+    // We have completed subscription for this customer.
+    // Finishing workflow execution
+    return "Subscription finished for: " + customer.Id;
+  } else {
+    // Trial period is over, start billing until
+    // we reach the max billing periods for the subscription
+    // or sub has been cancelled
+    // eslint-disable-next-line no-constant-condition
+    while (true) {
+      if (BillingPeriodNumber.value >= customer.Subscription.MaxBillingPeriods)
+        break;
+      console.log("charging", customer.Id, BillingPeriodChargeAmount.value);
+      await activities.chargeCustomerForBillingPeriod(
+        customer,
+        BillingPeriodChargeAmount.value
+      );
+      totalCharged += BillingPeriodChargeAmount.value;
+      // Wait 1 billing period to charge customer or if they cancel subscription
+      // whichever comes first
+      if (
+        await wf.condition(
+          customer.Subscription.BillingPeriod,
+          () => subscriptionCancelled
+        )
+      ) {
+        // If customer cancelled their subscription send notification email
+        await activities.sendCancellationEmailDuringActiveSubscription(
+          customer
+        );
+        break;
+      }
+      BillingPeriodNumber.value++;
+    }
+    // if we get here the subscription period is over
+    // notify the customer to buy a new subscription
+    if (!subscriptionCancelled) {
+      await activities.sendSubscriptionOverEmail(customer);
+    }
+    return (
+      "Completed " +
+      wf.workflowInfo().workflowId +
+      ", Total Charged: " +
+      totalCharged
+    );
+  }
+}
+
+function querysignalState<T = any>(name: string, initialValue: T) {
+  const signal = wf.defineSignal<[T]>(name);
+  const query = wf.defineQuery<T>(name);
+  let state: T = initialValue;
+  wf.setHandler(signal, (newValue: T) => {
+    console.log("updating ", name, newValue);
+    state = newValue;
+  });
+  wf.setHandler(query, () => state);
+  return {
+    signal,
+    query,
+    get value() {
+      // need to use closure because function doesn't rerun unlike React Hooks
+      return state;
+    },
+    set value(newVal: T) {
+      state = newVal;
+    },
+  };
+}
+```
 <!--SNIPEND-->
 
 </TabItem>
 <TabItem value="php">
 
 <!--SNIPSTART subscription-php-workflow-definition-implementation-->
+[src/subscription/SubscriptionWorkflow.php](https://github.com/temporalio/subscription-workflow-project-template-php/blob/master/src/subscription/SubscriptionWorkflow.php)
+```php
+declare(strict_types=1);
+
+namespace Temporal\Samples\Subscription;
+
+use Carbon\CarbonInterval;
+use Temporal\Activity\ActivityOptions;
+use Temporal\Workflow;
+
+class SubscriptionWorkflow implements SubscriptionWorkflowInterface
+{
+
+    private int $billingPeriodNum = 0;
+    private bool $subscriptionCancelled = false;
+    private Subscription $subscription;
+    private Customer $workflowCustomer;
+
+    private $subscriptionActivity;
+
+    public function __construct()
+    {
+        $this->subscriptionActivity = Workflow::newActivityStub(
+            SubscriptionActivityInterface::class,
+            ActivityOptions::new()
+                ->withStartToCloseTimeout(CarbonInterval::seconds(5))
+                ->withScheduleToCloseTimeout(CarbonInterval::seconds(10))
+                ->withTaskQueue("SubscriptionsTaskQueue")
+        );
+
+        $this->subscription = new Subscription(
+            CarbonInterval::seconds(10),
+            CarbonInterval::seconds(10),
+            24,
+            120
+        );
+    }
+
+    public function startSubscription(int $cid)
+    {
+        $this->workflowCustomer = new Customer(
+            "First Name" . $cid,
+            "Last Name" . $cid,
+            "Id-" . $cid,
+            "Email" . $cid,
+            $this->subscription
+        );
+
+        yield $this->subscriptionActivity->sendWelcomeEmail($cid);
+
+        yield Workflow::awaitWithTimeout(
+            $this->workflowCustomer->getSubscription()->getTrialPeriod(),
+            fn () => $this->subscriptionCancelled == true
+        );
+
+        if ($this->subscriptionCancelled) {
+            $this->subscriptionActivity->sendCancellationEmailDuringTrialPeriod($cid);
+            return;
+        }
+
+        while ($this->billingPeriodNum  < $this->workflowCustomer->getSubscription()->getMaxBillingPeriods()) {
+
+            // Charge customer for the billing period
+            $this->subscriptionActivity->chargeCustomerForBillingPeriod(
+                $cid,
+                $this->billingPeriodNum
+            );
+
+            // Wait 1 billing period to charge customer or if they cancel subscription
+            // whichever comes first
+            yield Workflow::awaitWithTimeout(
+                $this->workflowCustomer->getSubscription()->getBillingPeriod(),
+                fn () => $this->subscriptionCancelled == true
+            );
+
+            // If customer cancelled their subscription send notification email
+            if ($this->subscriptionCancelled) {
+                $this->subscriptionActivity->sendCancellationEmailDuringActiveSubscription($cid);
+                // We have completed subscription for this customer.
+                // Finishing workflow execution
+                break;
+            }
+
+            $this->billingPeriodNum++;
+        }
+
+        if (!$this->subscriptionCancelled) {
+            $this->subscriptionActivity->sendSubscriptionOverEmail($cid);
+        }
+    }
+
+    public function cancelSubscription(bool $cancel): void
+    {
+        $this->subscriptionCancelled = $cancel;
+    }
+
+    public function updateBillingPeriodChargeAmount(int $billingPeriodCharge): void
+    {
+        $this->workflowCustomer->getSubscription()->setBillingPeriodCharge($billingPeriodCharge);
+    }
+
+    public function getCustomerId(): string
+    {
+        return $this->workflowCustomer->getId();
+    }
+
+    public function getBillingPeriodNumber(): int
+    {
+        return $this->billingPeriodNum;
+    }
+
+    public function getBillingPeriodChargeAmount(): int
+    {
+        return $this->workflowCustomer->getSubscription()->getBillingPeriodCharge();
+    }
+}
+```
 <!--SNIPEND-->
 
 </TabItem>

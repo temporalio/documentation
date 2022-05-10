@@ -205,13 +205,13 @@ They shouldn't use any constructs that rely on system time.
 
 ### Workflow Method Arguments
 
-- [What is a Data Converter?](/docs/concepts/what-is-a-data-converter)
+- [What is a Data Converter?](/concepts/what-is-a-data-converter)
 
 Java DataConverter reference: https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html
 
 ## Workflow Activities
 
-To learn about Workflow Activities visit [this page](/docs/java/activities).
+To learn about Workflow Activities visit [this page](/java/activities).
 
 ## Child Workflows
 
@@ -219,7 +219,7 @@ Besides Activities, a Workflow can also start other Workflows.
 
 <RelatedReadList
 readlist={[
-["What is a Child Workflow Execution?","/docs/concepts/what-is-a-child-workflow-execution","explanation"],  
+["What is a Child Workflow Execution?","/concepts/what-is-a-child-workflow-execution","explanation"],  
 ]}
 />
 
@@ -368,6 +368,35 @@ An asynchronous start initiates a Workflow execution and immediately returns to 
 This is the most common way to start Workflows in a live environment.
 
 <!--SNIPSTART money-transfer-project-template-java-workflow-initiator-->
+[src/main/java/moneytransferapp/InitiateMoneyTransfer.java](https://github.com/temporalio/money-transfer-project-template-java/blob/master/src/main/java/moneytransferapp/InitiateMoneyTransfer.java)
+```java
+public class InitiateMoneyTransfer {
+
+    public static void main(String[] args) throws Exception {
+
+        // WorkflowServiceStubs is a gRPC stubs wrapper that talks to the local Docker instance of the Temporal server.
+        WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
+        WorkflowOptions options = WorkflowOptions.newBuilder()
+                .setTaskQueue(Shared.MONEY_TRANSFER_TASK_QUEUE)
+                // A WorkflowId prevents this it from having duplicate instances, remove it to duplicate.
+                .setWorkflowId("money-transfer-workflow")
+                .build();
+        // WorkflowClient can be used to start, signal, query, cancel, and terminate Workflows.
+        WorkflowClient client = WorkflowClient.newInstance(service);
+        // WorkflowStubs enable calls to methods as if the Workflow object is local, but actually perform an RPC.
+        MoneyTransferWorkflow workflow = client.newWorkflowStub(MoneyTransferWorkflow.class, options);
+        String referenceId = UUID.randomUUID().toString();
+        String fromAccount = "001-001";
+        String toAccount = "002-002";
+        double amount = 18.74;
+        // Asynchronous execution. This process will exit after making this call.
+        WorkflowExecution we = WorkflowClient.start(workflow::transfer, fromAccount, toAccount, referenceId, amount);
+        System.out.printf("\nTransfer of $%f from account %s to account %s is processing\n", amount, fromAccount, toAccount);
+        System.out.printf("\nWorkflowID: %s RunID: %s", we.getWorkflowId(), we.getRunId());
+        System.exit(0);
+    }
+}
+```
 <!--SNIPEND-->
 
 If you need to wait for the completion of a Workflow after an asynchronous start, the most straightforward way is to call the blocking Workflow instance again.
@@ -399,6 +428,33 @@ String result = workflowStub.getResult(String.class);
 A Synchronous start initiates a Workflow and then waits for its completion. The started Workflow will not rely on the invocation process and will continue executing even if the waiting process crashes or was stopped.
 
 <!--SNIPSTART hello-world-project-template-java-workflow-initiator-->
+[src/main/java/helloworldapp/InitiateHelloWorld.java](https://github.com/temporalio/hello-world-project-template-java/blob/master/src/main/java/helloworldapp/InitiateHelloWorld.java)
+```java
+package helloworldapp;
+
+import io.temporal.client.WorkflowClient;
+import io.temporal.client.WorkflowOptions;
+import io.temporal.serviceclient.WorkflowServiceStubs;
+
+public class InitiateHelloWorld {
+
+    public static void main(String[] args) throws Exception {
+        // This gRPC stubs wrapper talks to the local docker instance of the Temporal service.
+        WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
+        // WorkflowClient can be used to start, signal, query, cancel, and terminate Workflows.
+        WorkflowClient client = WorkflowClient.newInstance(service);
+        WorkflowOptions options = WorkflowOptions.newBuilder()
+                .setTaskQueue(Shared.HELLO_WORLD_TASK_QUEUE)
+                .build();
+        // WorkflowStubs enable calls to methods as if the Workflow object is local, but actually perform an RPC.
+        HelloWorldWorkflow workflow = client.newWorkflowStub(HelloWorldWorkflow.class, options);
+        // Synchronously execute the Workflow and wait for the response.
+        String greeting = workflow.getGreeting("World");
+        System.out.println(greeting);
+        System.exit(0);
+    }
+}
+```
 <!--SNIPEND-->
 
 ### Recurring start
@@ -413,7 +469,7 @@ See our [Temporal Polyglot example](https://github.com/tsurdilo/temporal-polyglo
 
 ## Large Event Histories
 
-Temporal SDK allows you to manually use [Continue-As-New](/docs/concepts/what-is-continue-as-new) in a number of ways:
+Temporal SDK allows you to manually use [Continue-As-New](/concepts/what-is-continue-as-new) in a number of ways:
 
 If you are continuing execution of the same workflow that is currently running you can do:
 

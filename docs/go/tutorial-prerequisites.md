@@ -12,4 +12,4 @@ Make sure you have [Go](https://golang.org/doc/install) installed. These tutoria
 
 ## Run a Temporal Cluster
 
-- [How to run a Temporal Cluster for local development using Docker Compose](/docs/clusters/quick-install/#docker-compose)
+- [How to run a Temporal Cluster for local development using Docker Compose](/clusters/quick-install/#docker-compose)

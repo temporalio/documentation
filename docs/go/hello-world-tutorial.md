@@ -23,9 +23,9 @@ tags:
 
 ## Overview
 
-This tutorial focuses on the practicalities of building an application from scratch. To better understand _why_ you should use Temporal, we recommend that you follow the tutorial where you [run a Temporal money transfer application](/docs/go/run-your-first-app-tutorial) to get a taste of its value propositions.
+This tutorial focuses on the practicalities of building an application from scratch. To better understand _why_ you should use Temporal, we recommend that you follow the tutorial where you [run a Temporal money transfer application](/go/run-your-first-app-tutorial) to get a taste of its value propositions.
 
-Before starting, make sure you have looked over the [tutorial prerequisites](/docs/go/tutorial-prerequisites).
+Before starting, make sure you have looked over the [tutorial prerequisites](/go/tutorial-prerequisites).
 
 All of the code in this tutorial is available in the [hello-world Go template repository](https://github.com/temporalio/hello-world-project-template-go).
 
@@ -58,6 +58,19 @@ In the Go SDK, an Activity function is just like any other [exported Go function
 Create activity.go in the project root and add the following code:
 
 <!--SNIPSTART hello-world-project-template-go-activity-->
+[activity.go](https://github.com/temporalio/hello-world-project-template-go/blob/master/activity.go)
+```go
+package app
+
+import (
+	"fmt"
+)
+
+func ComposeGreeting(name string) (string, error) {
+	greeting := fmt.Sprintf("Hello %s!", name)
+	return greeting, nil
+}
+```
 <!--SNIPEND-->
 
 ### Workflow
@@ -67,31 +80,131 @@ Next is our Workflow. Workflow functions are where you configure and organize th
 Create workflow.go and add the following code:
 
 <!--SNIPSTART hello-world-project-template-go-workflow-->
+[workflow.go](https://github.com/temporalio/hello-world-project-template-go/blob/master/workflow.go)
+```go
+package app
+
+import (
+	"time"
+
+	"go.temporal.io/sdk/workflow"
+)
+
+func GreetingWorkflow(ctx workflow.Context, name string) (string, error) {
+	options := workflow.ActivityOptions{
+		StartToCloseTimeout: time.Second * 5,
+	}
+	ctx = workflow.WithActivityOptions(ctx, options)
+	var result string
+	err := workflow.ExecuteActivity(ctx, ComposeGreeting, name).Get(ctx, &result)
+	return result, err
+}
+```
 <!--SNIPEND-->
 
 ### Task Queue
 
-[Task Queues](/docs/concepts/what-is-a-task-queue) are how the Temporal server supplies information to Workers. When you start a Workflow, you tell the server which Task Queue the Workflow and/or Activities use as an information queue. We will configure our Worker to listen to the same Task Queue that our Workflow and Activities use. Since the Task Queue name is used by multiple things, let's create shared.go and define our Task Queue name there:
+[Task Queues](/concepts/what-is-a-task-queue) are how the Temporal server supplies information to Workers. When you start a Workflow, you tell the server which Task Queue the Workflow and/or Activities use as an information queue. We will configure our Worker to listen to the same Task Queue that our Workflow and Activities use. Since the Task Queue name is used by multiple things, let's create shared.go and define our Task Queue name there:
 
 <!--SNIPSTART hello-world-project-template-go-shared-->
+[shared.go](https://github.com/temporalio/hello-world-project-template-go/blob/master/shared.go)
+```go
+package app
+
+const GreetingTaskQueue = "GREETING_TASK_QUEUE"
+```
 <!--SNIPEND-->
 
 ### Worker
 
-Our [Worker](/docs/concepts/what-is-a-worker) hosts Workflow and Activity functions and executes them one at a time. The Worker is instructed to execute a specific function via information it pulls from the Task Queue. After it runs the code, it communicates the results back to the server.
+Our [Worker](/concepts/what-is-a-worker) hosts Workflow and Activity functions and executes them one at a time. The Worker is instructed to execute a specific function via information it pulls from the Task Queue. After it runs the code, it communicates the results back to the server.
 
 Create worker/main.go and add the following code:
 
 <!--SNIPSTART hello-world-project-template-go-worker-->
+[worker/main.go](https://github.com/temporalio/hello-world-project-template-go/blob/master/worker/main.go)
+```go
+package main
+
+import (
+	"log"
+
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/worker"
+
+	"hello-world-project-template-go/app"
+)
+
+func main() {
+	// Create the client object just once per process
+	c, err := client.NewClient(client.Options{})
+	if err != nil {
+		log.Fatalln("unable to create Temporal client", err)
+	}
+	defer c.Close()
+	// This worker hosts both Workflow and Activity functions
+	w := worker.New(c, app.GreetingTaskQueue, worker.Options{})
+	w.RegisterWorkflow(app.GreetingWorkflow)
+	w.RegisterActivity(app.ComposeGreeting)
+	// Start listening to the Task Queue
+	err = w.Run(worker.InterruptCh())
+	if err != nil {
+		log.Fatalln("unable to start Worker", err)
+	}
+}
+```
 <!--SNIPEND-->
 
 ### Workflow starter
 
-There are two ways to start a Workflow, via the Temporal CLI or Temporal SDK. In this tutorial we use the SDK to start the Workflow which is how most Workflows are started in live environments. Additionally, the call to the Temporal server can be made [synchronously or asynchronously](/docs/go/workflows/#how-to-start-a-workflow). Here we do it synchronously, so you will see the caller wait for the result of the Workflow.
+There are two ways to start a Workflow, via the Temporal CLI or Temporal SDK. In this tutorial we use the SDK to start the Workflow which is how most Workflows are started in live environments. Additionally, the call to the Temporal server can be made [synchronously or asynchronously](/go/workflows/#how-to-start-a-workflow). Here we do it synchronously, so you will see the caller wait for the result of the Workflow.
 
 Create start/main.go and add the following code:
 
 <!--SNIPSTART hello-world-project-template-go-start-workflow-->
+[start/main.go](https://github.com/temporalio/hello-world-project-template-go/blob/master/start/main.go)
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"log"
+
+	"go.temporal.io/sdk/client"
+
+	"hello-world-project-template-go/app"
+)
+
+func main() {
+	// Create the client object just once per process
+	c, err := client.NewClient(client.Options{})
+	if err != nil {
+		log.Fatalln("unable to create Temporal client", err)
+	}
+	defer c.Close()
+	options := client.StartWorkflowOptions{
+		ID:        "greeting-workflow",
+		TaskQueue: app.GreetingTaskQueue,
+	}
+	name := "World"
+	we, err := c.ExecuteWorkflow(context.Background(), options, app.GreetingWorkflow, name)
+	if err != nil {
+		log.Fatalln("unable to complete Workflow", err)
+	}
+	var greeting string
+	err = we.Get(context.Background(), &greeting)
+	if err != nil {
+		log.Fatalln("unable to get Workflow result", err)
+	}
+	printResults(greeting, we.GetID(), we.GetRunID())
+}
+
+func printResults(greeting string, workflowID, runID string) {
+	fmt.Printf("\nWorkflowID: %s RunID: %s\n", workflowID, runID)
+	fmt.Printf("\n%s\n\n", greeting)
+}
+```
 <!--SNIPEND-->
 
 ## ![](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/check.png) Test the app
@@ -99,6 +212,31 @@ Create start/main.go and add the following code:
 Let's add a simple unit test to our application to make sure things are working as expected. Create workflow_test.go and add the following code:
 
 <!--SNIPSTART hello-world-project-template-go-workflow-test-->
+[workflow_test.go](https://github.com/temporalio/hello-world-project-template-go/blob/master/workflow_test.go)
+```go
+package app
+
+import (
+	"testing"
+
+	"github.com/stretchr/testify/mock"
+	"github.com/stretchr/testify/require"
+	"go.temporal.io/sdk/testsuite"
+)
+
+func Test_Workflow(t *testing.T) {
+	testSuite := &testsuite.WorkflowTestSuite{}
+	env := testSuite.NewTestWorkflowEnvironment()
+	// Mock activity implementation
+	env.OnActivity(ComposeGreeting, mock.Anything).Return("Hello World!", nil)
+	env.ExecuteWorkflow(GreetingWorkflow, "World")
+	require.True(t, env.IsWorkflowCompleted())
+	require.NoError(t, env.GetWorkflowError())
+	var greeting string
+	require.NoError(t, env.GetWorkflowResult(&greeting))
+	require.Equal(t, "Hello World!", greeting)
+}
+```
 <!--SNIPEND-->
 
 Add the required `testify` packages to your `go.mod` file by running the following:

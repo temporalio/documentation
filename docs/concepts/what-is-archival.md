@@ -7,7 +7,7 @@ tags:
   - explanation
 ---
 
-Archival is a feature that automatically backs up [Event Histories](/docs/concepts/what-is-an-event-history) and Visibility records from Temporal Cluster persistence to a custom blob store.
+Archival is a feature that automatically backs up [Event Histories](/concepts/what-is-an-event-history) and Visibility records from Temporal Cluster persistence to a custom blob store.
 
 - [How to set up Archival](/docs/clusters/how-to-set-up-archival)
 - [How to create a custom Archiver](/docs/clusters/how-to-create-a-custom-archiver)

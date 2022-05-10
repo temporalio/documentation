@@ -7,7 +7,7 @@ tags:
   - explanation
 ---
 
-In day-to-day conversations, the term _Activity_ frequently denotes either an [Activity Type](/docs/concepts/what-is-an-activity-type), an [Activity Definition](/docs/concepts/what-is-an-activity-definition), or an [Activity Execution](/docs/concepts/what-is-an-activity-execution).
+In day-to-day conversations, the term _Activity_ frequently denotes either an [Activity Type](/concepts/what-is-an-activity-type), an [Activity Definition](/concepts/what-is-an-activity-definition), or an [Activity Execution](/concepts/what-is-an-activity-execution).
 Temporal documentation aims to be explicit and differentiate between them.
 
 The purpose of an Activity is to execute a single, well-defined action (either short or long running), such as calling another service, transcoding a media file, or sending an email.

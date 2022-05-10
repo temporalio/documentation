@@ -8,10 +8,10 @@ tags:
   - timeouts
 ---
 
-A Schedule-To-Start Timeout is the maximum amount of time that is allowed from when an [Activity Task](/docs/concepts/what-is-an-activity-task) is scheduled (that is, placed in a Task Queue) to when a [Worker](/docs/concepts/what-is-a-worker) starts (that is, picks up from the Task Queue) that Activity Task.
+A Schedule-To-Start Timeout is the maximum amount of time that is allowed from when an [Activity Task](/concepts/what-is-an-activity-task) is scheduled (that is, placed in a Task Queue) to when a [Worker](/concepts/what-is-a-worker) starts (that is, picks up from the Task Queue) that Activity Task.
 In other words, it's a limit for how long an Activity Task can be enqueued.
 
-[How to set a Schedule-To-Start Timeout in Go](/docs/go/how-to-set-a-schedule-to-start-timeout-in-go)
+[How to set a Schedule-To-Start Timeout in Go](/go/how-to-set-a-schedule-to-start-timeout-in-go)
 
 The moment that the Task is picked by the Worker from the Task Queue is considered to be the start of the Activity Task for the purposes of the Schedule-To-Start Timeout and associated metrics.
 This definition of "Start" avoids issues that a clock difference between the Temporal Cluster and a Worker might create.
@@ -24,7 +24,7 @@ The Schedule-To-Start Timeout is enforced for each Activity Task, whereas the Sc
 Thus, "Schedule" in Schedule-To-Start refers to the scheduling moment of _every_ Activity Task in the sequence of Activity Tasks that make up the Activity Execution, while
 "Schedule" in Schedule-To-Close refers to the _first_ Activity Task in that sequence.
 
-A [Retry Policy](/docs/concepts/what-is-a-retry-policy) attached to an Activity Execution retries an Activity Task.
+A [Retry Policy](/concepts/what-is-a-retry-policy) attached to an Activity Execution retries an Activity Task.
 
 ![Start-To-Close Timeout period with retries](/diagrams/schedule-to-start-timeout-with-retry.svg)
 

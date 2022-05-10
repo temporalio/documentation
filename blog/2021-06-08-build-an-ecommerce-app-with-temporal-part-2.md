@@ -124,7 +124,7 @@ func CartWorkflow(ctx workflow.Context, state CartState) error {
 }
 ```
 
-Temporal's [GO SDK Selectors](https://docs.temporal.io/docs/go/selectors/) make it easy to orchestrate asynchronous signals in the Workflow logic, like responding to either user input or an abandoned cart timeout.
+Temporal's [GO SDK Selectors](https://docs.temporal.io/go/selectors/) make it easy to orchestrate asynchronous signals in the Workflow logic, like responding to either user input or an abandoned cart timeout.
 You do not need to implement a job queue, write a separate worker, or handle rescheduling jobs.
 All you need to do is create a new Selector after every signal and use `AddFuture()` to defer code that needs to happen after the associated timeout is selected.
 Temporal does the hard work of persisting and distributing the state of your Workflow for you.
@@ -134,7 +134,7 @@ Next, let's take a closer look at Activities and the `ExecuteActivity()` call ab
 ## Sending emails from an Activity
 
 You can think of Activities as an abstraction for side effects in Temporal.
-[Workflows should be pure, idempotent functions](https://docs.temporal.io/docs/go-create-workflows/#implementation) to allow Temporal to re-run a Workflow to recreate the Workflow's state.
+[Workflows should be pure, idempotent functions](https://docs.temporal.io/go-create-workflows/#implementation) to allow Temporal to re-run a Workflow to recreate the Workflow's state.
 Any side effects, like HTTP requests to the [Mailgun API](https://thecodebarbarian.com/sending-emails-using-the-mailgun-api.html), should be in an Activity.
 
 For example, the following blob of code contains the implementation of the `SendAbandonedCartEmail()` function.
@@ -178,7 +178,7 @@ workflow.ExecuteActivity(ctx, SendAbandonedCartEmail, state.Email).Get(ctx, nil)
 ```
 
 The `ExecuteActivity()` function also exposes some neat options.
-For example, since [Temporal automatically retries failed activities](https://docs.temporal.io/docs/concepts/what-is-a-retry-policy), it would automatically retry the `SendAbandonedCart()` Activity for up to 5 times if `SendAbandonedCart()` returns an error.
+For example, since [Temporal automatically retries failed activities](https://docs.temporal.io/concepts/what-is-a-retry-policy), it would automatically retry the `SendAbandonedCart()` Activity for up to 5 times if `SendAbandonedCart()` returns an error.
 You can configure how long Temporal will take while attempting to execute your Activity (including setting a retry policy), with `ScheduleToCloseTimeout`:
 
 ```go

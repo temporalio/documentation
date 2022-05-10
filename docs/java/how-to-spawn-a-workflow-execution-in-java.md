@@ -10,7 +10,7 @@ tags:
 
 Use `WorkflowStub` to start a Workflow Execution from within a Client, and `ExternalWorkflowStub` to start a different Workflow Execution from within a Workflow.
 
-See [`SignalwithStart`](/docs/java/how-to-send-a-signal-with-start-in-java) to start a Workflow Execution to receive a Signal from within another Workflow.
+See [`SignalwithStart`](/java/how-to-send-a-signal-with-start-in-java) to start a Workflow Execution to receive a Signal from within another Workflow.
 
 #### Using `WorkflowStub`
 
@@ -25,7 +25,7 @@ You can use a typed or untyped `WorkflowStub` in the client code.
 - An untyped `WorkflowStub` does not use the Workflow interface, and is not type safe. It is more flexible because it has methods from the `WorkflowStub` interface, such as `start`, `signalWithStart`, `getResults` (sync and async), `query`, `signal`, `cancel` and `terminate`.
   Note that the Temporal Java SDK also provides typed `WorkflowStub` versions for these methods.
   When using untyped `WorkflowStub`, we rely on the Workflow Type, Activity Type, Child Workflow Type, as well as Query and Signal names.
-  For details, see [Workflow Client Initialization](/docs/java/how-to-initialize-a-workflow-client-in-java).
+  For details, see [Workflow Client Initialization](/java/how-to-initialize-a-workflow-client-in-java).
 
 A Workflow Execution can be started either synchronously or asynchronously.
 
@@ -98,7 +98,7 @@ The following example shows how to call the Dynamic Workflow implementation in t
     WorkflowStub workflow = client.newUntypedWorkflowStub("DynamicWF", workflowOptions);
 ```
 
-See [Workflow Execution Result](/docs/java/how-to-get-the-result-of-a-workflow-execution-in-java) for details on how to get the results of the Workflow Execution.
+See [Workflow Execution Result](/java/how-to-get-the-result-of-a-workflow-execution-in-java) for details on how to get the results of the Workflow Execution.
 
 #### Using `ExternalWorkflowStub`
 
@@ -130,4 +130,4 @@ See the [Temporal Polyglot](https://github.com/tsurdilo/temporal-polyglot) code 
 
 #### Recurring start
 
-You can start a Workflow Execution on a regular schedule by using [`setCronSchedule`](/docs/java/distributed-cron) Workflow option in the Client code.
+You can start a Workflow Execution on a regular schedule by using [`setCronSchedule`](/java/distributed-cron) Workflow option in the Client code.

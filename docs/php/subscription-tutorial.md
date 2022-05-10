@@ -9,7 +9,7 @@ Let's build a realistic monthly subscription payments workflow that can be cance
 
 :::info Prerequisites
 
-We assume that you have gone through our [Hello World tutorial](/docs/php/hello-world) and understood the basics of
+We assume that you have gone through our [Hello World tutorial](/php/hello-world) and understood the basics of
 getting a Temporal PHP SDK project up and running. We don't assume knowledge of the Workflow APIs.
 
 :::
@@ -219,7 +219,7 @@ So, let's continue and finally implement subscription workflow.
 
 :::info Why not use a Signal?
 
-Another way to cancel the subscription is to send a [signal](/docs/php/signals) to the workflow. For example, we
+Another way to cancel the subscription is to send a [signal](/php/signals) to the workflow. For example, we
 can wait with condition:
 
 ```php
@@ -242,7 +242,7 @@ At this moment we have a working trial period that can be cancelled. To finish o
 - send monthly charged email
 - process subscription cancellation
 
-If we assume that the subscription period is 30 days, and it should last until it is manually cancelled, then we can use an infinite loop here (subject to [Event History Limits](/docs/php/workflows/#large-event-histories), but don't worry about that for a monthly workflow).
+If we assume that the subscription period is 30 days, and it should last until it is manually cancelled, then we can use an infinite loop here (subject to [Event History Limits](/php/workflows/#large-event-histories), but don't worry about that for a monthly workflow).
 We "endlessly" wait for 30 days and charge monthly fee.
 Also, don't forget about the trial period at the beginning.
 

@@ -3,6 +3,7 @@
 #
 # General redirects
 #
+/docs/*        /:splat
 /docs/sdks-introduction         /application-development
 /docs/other-sdks        /application-development
 /docs/get-started         /

@@ -8,13 +8,13 @@ tags:
   - tctl
 ---
 
-The `tctl workflow cancel` command cancels a [Workflow Execution](/docs/concepts/what-is-a-workflow-execution).
+The `tctl workflow cancel` command cancels a [Workflow Execution](/concepts/what-is-a-workflow-execution).
 
 Canceling a running Workflow Execution records a `WorkflowExecutionCancelRequested` event in the History.
 A new command task will be scheduled.
 After cancellation, the Workflow Execution can perform cleanup work.
 
-See also [`tctl workflow terminate`](/docs/tctl/workflow/terminate).
+See also [`tctl workflow terminate`](/tctl/workflow/terminate).
 
 `tctl workflow cancel [<modifiers>]`
 
@@ -22,7 +22,7 @@ The following modifiers control the behavior of the command.
 
 ### `--workflow_id`
 
-Specify a [Workflow Id](/docs/concepts/what-is-a-workflow-id).
+Specify a [Workflow Id](/concepts/what-is-a-workflow-id).
 
 Aliases: `--wid`, `-w`
 
@@ -34,7 +34,7 @@ tctl workflow cancel --workflow_id <id>
 
 ### `--run_id`
 
-Specify a [Run Id](/docs/concepts/what-is-a-run-id).
+Specify a [Run Id](/concepts/what-is-a-run-id).
 
 Aliases: `--rid`, `-r`
 

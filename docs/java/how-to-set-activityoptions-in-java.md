@@ -111,7 +111,7 @@ The following table lists all `ActivityOptions` that can be configured for an Ac
                       .build();
   ```
 
-See [Schedule-to-Close Timeout](/docs/concepts/what-is-a-schedule-to-close-timeout)
+See [Schedule-to-Close Timeout](/concepts/what-is-a-schedule-to-close-timeout)
 
 ### `ScheduleToStartTimeout`
 
@@ -144,7 +144,7 @@ See [Schedule-to-Close Timeout](/docs/concepts/what-is-a-schedule-to-close-timeo
                       .build();
   ```
 
-See [Schedule-To-Start Timeout](/docs/concepts/what-is-a-schedule-to-start-timeout)
+See [Schedule-To-Start Timeout](/concepts/what-is-a-schedule-to-start-timeout)
 
 ### `StartToCloseTimeout`
 
@@ -175,7 +175,7 @@ See [Schedule-To-Start Timeout](/docs/concepts/what-is-a-schedule-to-start-timeo
                       .build();
   ```
 
-See [Start-to-Close Timeout](/docs/concepts/what-is-a-start-to-close-timeout)
+See [Start-to-Close Timeout](/concepts/what-is-a-start-to-close-timeout)
 
 ### `HeartbeatTimeout`
 
@@ -213,7 +213,7 @@ See [Start-to-Close Timeout](/docs/concepts/what-is-a-start-to-close-timeout)
                       .build();
   ```
 
-See [Heartbeat Timeout](/docs/concepts/what-is-a-heartbeat-timeout)
+See [Heartbeat Timeout](/concepts/what-is-a-heartbeat-timeout)
 
 ### `TaskQueue`
 
@@ -249,7 +249,7 @@ See [Heartbeat Timeout](/docs/concepts/what-is-a-heartbeat-timeout)
                       .build();
   ```
 
-See [Task Queue](/docs/concepts/what-is-a-task-queue)
+See [Task Queue](/concepts/what-is-a-task-queue)
 
 ### `RetryOptions`
 

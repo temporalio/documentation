@@ -6,7 +6,7 @@ Information may change at any time.
 
 :::
 
-This guide is meant to be a comprehensive resource for developing a [Temporal Application](/docs/concepts/what-is-a-temporal-application).
+This guide is meant to be a comprehensive resource for developing a [Temporal Application](/concepts/what-is-a-temporal-application).
 
 It is broken down into five large sections:
 

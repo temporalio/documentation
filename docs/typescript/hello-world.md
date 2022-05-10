@@ -6,7 +6,7 @@ description: In this tutorial, we'll go over the different components that make 
 ---
 
 In this tutorial, we'll go over the different components that make up a Temporal project.
-All of the code on this page is included in our Hello World sample, which we set up in our [Getting Started](/docs/typescript/introduction/#getting-started) (we recommend [following along on GitPod](https://gitpod.io/#https://github.com/temporalio/samples-typescript/)).
+All of the code on this page is included in our Hello World sample, which we set up in our [Getting Started](/typescript/introduction/#getting-started) (we recommend [following along on GitPod](https://gitpod.io/#https://github.com/temporalio/samples-typescript/)).
 
 The SDK steers developers to write their Workflows and Activities in TypeScript but vanilla JS is also supported.
 
@@ -22,21 +22,40 @@ Activities run in the Node.js execution environment, meaning you can easily port
 `src/activities.ts`
 
 <!--SNIPSTART typescript-hello-activity {"enable_source_link": false}-->
+```ts
+export async function greet(name: string): Promise<string> {
+  return `Hello, ${name}!`;
+}
+```
 <!--SNIPEND-->
 
 ### Workflow
 
 [@temporalio/workflow API reference](https://typescript.temporal.io/api/namespaces/workflow)
 
-In the TypeScript SDK, each Workflow execution is run in a separate V8 isolate context in order to provide a [deterministic runtime](/docs/typescript/determinism).
+In the TypeScript SDK, each Workflow execution is run in a separate V8 isolate context in order to provide a [deterministic runtime](/typescript/determinism).
 
-A Workflow is also an async function, but it has access to special Workflow APIs like [Signals](/docs/concepts/what-is-a-signal), [Queries](/docs/concepts/what-is-a-query), Timers, and Child Workflows.
+A Workflow is also an async function, but it has access to special Workflow APIs like [Signals](/concepts/what-is-a-signal), [Queries](/concepts/what-is-a-query), Timers, and Child Workflows.
 
 The snippet below uses `proxyActivities` to create a function that, when called, schedules an Activity in the system.
 
 `src/workflows.ts`
 
 <!--SNIPSTART typescript-hello-workflow {"enable_source_link": false}-->
+```ts
+import { proxyActivities } from '@temporalio/workflow';
+// Only import the activity types
+import type * as activities from './activities';
+
+const { greet } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '1 minute',
+});
+
+/** A workflow that simply calls an activity */
+export async function example(name: string): Promise<string> {
+  return await greet(name);
+}
+```
 <!--SNIPEND-->
 
 ### Worker
@@ -49,6 +68,33 @@ See the list of [WorkerOptions](https://typescript.temporal.io/api/interfaces/wo
 `src/worker.ts`
 
 <!--SNIPSTART typescript-hello-worker {"enable_source_link": false}-->
+```ts
+import { Worker } from '@temporalio/worker';
+import * as activities from './activities';
+
+async function run() {
+  // Step 1: Register Workflows and Activities with the Worker and connect to
+  // the Temporal server.
+  const worker = await Worker.create({
+    workflowsPath: require.resolve('./workflows'),
+    activities,
+    taskQueue: 'hello-world',
+  });
+  // Worker connects to localhost by default and uses console.error for logging.
+  // Customize the Worker by passing more options to create():
+  // https://typescript.temporal.io/api/classes/worker.Worker
+  // If you need to configure server connection parameters, see docs:
+  // https://docs.temporal.io/docs/typescript/security#encryption-in-transit-with-mtls
+
+  // Step 2: Start accepting tasks on the `tutorial` queue
+  await worker.run();
+}
+
+run().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
+```
 <!--SNIPEND-->
 
 ### Client
@@ -62,6 +108,40 @@ It can be used in any Node.js process (for example, an [Express](https://express
 `src/client.ts`
 
 <!--SNIPSTART typescript-hello-client {"enable_source_link": false}-->
+```ts
+import { Connection, WorkflowClient } from '@temporalio/client';
+import { example } from './workflows';
+import { nanoid } from 'nanoid';
+
+async function run() {
+  const connection = new Connection({
+    // // Connect to localhost with default ConnectionOptions.
+    // // In production, pass options to the Connection constructor to configure TLS and other settings:
+    // address: 'foo.bar.tmprl.cloud', // as provisioned
+    // tls: {} // as provisioned
+  });
+
+  const client = new WorkflowClient(connection.service, {
+    // namespace: 'default', // change if you have a different namespace
+  });
+
+  const handle = await client.start(example, {
+    args: ['Temporal'], // type inference works! args: [name: string]
+    taskQueue: 'hello-world',
+    // in practice, use a meaningful business id, eg customerId or transactionId
+    workflowId: 'workflow-' + nanoid(),
+  });
+  console.log(`Started workflow ${handle.workflowId}`);
+
+  // optional: wait for client result
+  console.log(await handle.result()); // Hello, Temporal!
+}
+
+run().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
+```
 <!--SNIPEND-->
 
 ### Testing
@@ -79,5 +159,5 @@ You should now be familiar with the Hello World project, which is the main way w
 Two paths from here:
 
 - **Go Full Stack**: Integrate the manually-run Temporal Client scripts you have into an Express.js app, or serverless function.
-  Our [Next.js Tutorial](/docs/typescript/nextjs-tutorial) should help show you how to integrate with the frontend, and give indications on how to deploy.
-- **Learn More**: Explore using Signals, Queries and Timers in our [Subscription Workflow tutorial](/docs/typescript/subscription-tutorial/).
+  Our [Next.js Tutorial](/typescript/nextjs-tutorial) should help show you how to integrate with the frontend, and give indications on how to deploy.
+- **Learn More**: Explore using Signals, Queries and Timers in our [Subscription Workflow tutorial](/typescript/subscription-tutorial/).

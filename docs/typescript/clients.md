@@ -23,13 +23,48 @@ They are the only way to schedule new Workflow Executions with Temporal Server.
 - Advanced users can also use the `WorkflowService` exposed by a Workflow Client to make **raw gRPC calls** (usually for introspection).
 
 Workflow Clients are separate from Workers, but communicate with them through Task Queues to start Workflow Executions.
-For more information, see [Workers and Task Queues in TypeScript](/docs/typescript/workers) and [Workflows in TypeScript](/docs/typescript/workflows).
+For more information, see [Workers and Task Queues in TypeScript](/typescript/workers) and [Workflows in TypeScript](/typescript/workflows).
 
 ## Full Example
 
 The following code is a `WorkflowClient` example, from our Hello World sample:
 
 <!--SNIPSTART typescript-hello-client -->
+[hello-world/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/hello-world/src/client.ts)
+```ts
+import { Connection, WorkflowClient } from '@temporalio/client';
+import { example } from './workflows';
+import { nanoid } from 'nanoid';
+
+async function run() {
+  const connection = new Connection({
+    // // Connect to localhost with default ConnectionOptions.
+    // // In production, pass options to the Connection constructor to configure TLS and other settings:
+    // address: 'foo.bar.tmprl.cloud', // as provisioned
+    // tls: {} // as provisioned
+  });
+
+  const client = new WorkflowClient(connection.service, {
+    // namespace: 'default', // change if you have a different namespace
+  });
+
+  const handle = await client.start(example, {
+    args: ['Temporal'], // type inference works! args: [name: string]
+    taskQueue: 'hello-world',
+    // in practice, use a meaningful business id, eg customerId or transactionId
+    workflowId: 'workflow-' + nanoid(),
+  });
+  console.log(`Started workflow ${handle.workflowId}`);
+
+  // optional: wait for client result
+  console.log(await handle.result()); // Hello, Temporal!
+}
+
+run().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
+```
 <!--SNIPEND-->
 
 The rest of this document explains each step in detail with practical usage tips.
@@ -44,7 +79,7 @@ const connection = new Connection(); // to configure for production
 const client = new WorkflowClient(connection.service);
 ```
 
-If you omit the connection and just call `new WorkflowClient()`, it creates a default connection that will work locally. Just remember you will need to configure your Connection and Namespace when [deploying to production](/docs/typescript/security#encryption-in-transit-with-mtls).
+If you omit the connection and just call `new WorkflowClient()`, it creates a default connection that will work locally. Just remember you will need to configure your Connection and Namespace when [deploying to production](/typescript/security#encryption-in-transit-with-mtls).
 
 ## Start a Workflow Execution
 
@@ -97,7 +132,7 @@ A brief guide to the [WorkflowOptions](https://typescript.temporal.io/api/interf
 - `workflowId`, `taskQueue`, and `args` (if required) are the main ones you will regularly use
 - Optional features:
   - `memo` (simple annotation of Workflows)
-  - `searchAttributes` (see [Search Attributes](/docs/typescript/search-attributes))
+  - `searchAttributes` (see [Search Attributes](/typescript/search-attributes))
   - `cronSchedule` (see important notes in [Cron Workflows](#scheduling-cron-workflows) section below)
 - Advanced features you probably won't need: `followRuns` and `workflowIdReusePolicy`.
 
@@ -194,7 +229,7 @@ await handle.cancel();
 With `handle.cancel()`, Timers and Child Workflows have the opportunity to execute cleanup code.
 If you wish to skip that, you can also [`handle.terminate()`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle#terminate) forcefully.
 
-Temporal gives you fine grained control over what happens when you cancel a workflow. See our docs on [Cancellation Scopes](/docs/typescript/cancellation-scopes) for details and examples.
+Temporal gives you fine grained control over what happens when you cancel a workflow. See our docs on [Cancellation Scopes](/typescript/cancellation-scopes) for details and examples.
 
 ## Scheduling Cron Workflows
 
@@ -211,7 +246,7 @@ const handle = await client.start(scheduledWorkflow, {
 :::info Should I use Cron Workflows or Timers?
 
 This section is specifically about <preview page={WhatIsATemporalCronJob}>Temporal Cron Jobs</preview>, which are Workflows that have the `cronSchedule` option set in Temporal.
-Because Temporal Workflows have [Timers](/docs/typescript/workflows#timers), can loop indefinitely, and can spawn [Child Workflows](/docs/typescript/workflows#child-workflows), it is natural to ask when to use which.
+Because Temporal Workflows have [Timers](/typescript/workflows#timers), can loop indefinitely, and can spawn [Child Workflows](/typescript/workflows#child-workflows), it is natural to ask when to use which.
 
 Cron Workflows are rigid and come with a lot of caveats.
 They are a great choice if you have Workflows that need to run as rigidly as the native Linux `cron` utility (except distributed and fault tolerant).
@@ -234,7 +269,7 @@ For more information, see the Typescript SDK [`workflowOptions` source code](htt
 
 You can start Child Workflows only from within another Workflow, and not from a Client.
 
-**Hence the main Child Workflows documentation is on the [Workflow APIs](/docs/typescript/workflows#child-workflows) page.**
+**Hence the main Child Workflows documentation is on the [Workflow APIs](/typescript/workflows#child-workflows) page.**
 
 A lot of the same concepts about starting, executing, and signaling Workflow Executions apply:
 
@@ -255,7 +290,7 @@ export async function example(WFname: string, args: string[]): Promise<string> {
 }
 ```
 
-You should use [cancellationScopes](/docs/typescript/cancellation-scopes) if you need to cancel Child Workflows.
+You should use [cancellationScopes](/typescript/cancellation-scopes) if you need to cancel Child Workflows.
 
 The same concept of "Workflow Handles" applies to retrieving handles for Child and External Workflows—as long as you have the Workflow Id:
 
@@ -269,7 +304,7 @@ export async function CancelExternalWorkflow(wfId: string): void {
 }
 ```
 
-Again, see [Workflows in TypeScript](/docs/typescript/workflows#external-workflows) for full details.
+Again, see [Workflows in TypeScript](/typescript/workflows#external-workflows) for full details.
 
 ## Advanced: Making raw gRPC calls
 
@@ -277,6 +312,28 @@ Under the hood of a `WorkflowClient`, the `Connection` is actually powered by a 
 This Service is capable of making a wider range of introspection calls.
 
 <!--SNIPSTART typescript-grpc-call-basic-->
+[grpc-calls/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/grpc-calls/src/client.ts)
+```ts
+  const connection = new Connection();
+
+  // // normal way of starting a Workflow, with a WorkflowClient
+  // const client = new WorkflowClient(connection.service);
+  // await client.start(/* etc */);
+
+  // equivalent grpc call to client.start()
+  await connection.service.startWorkflowExecution({
+    namespace: 'default',
+    workflowId,
+    requestId,
+    taskQueue: { name: 'grpc-calls' },
+    workflowType: { name: 'example' },
+    input: {
+      // WorkflowClient passes data through Data Converter to convert to Payloads; with gRPC calls have to do it yourself
+      // import { defaultPayloadConverter, toPayloads } from '@temporalio/common';
+      payloads: toPayloads(defaultPayloadConverter, 'Temporal'),
+    },
+  });
+```
 <!--SNIPEND-->
 
 Using gRPC calls is often the only way to access some of the more advanced queries you can make from Temporal Server.
@@ -287,6 +344,15 @@ We highlight some queries of interest here:
 </summary>
 
 <!--SNIPSTART typescript-grpc-call-getWorkflowExecutionHistory-->
+[grpc-calls/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/grpc-calls/src/client.ts)
+```ts
+  // no equivalent call in client, this is only available as an SDK call
+  const res = await connection.service.getWorkflowExecutionHistory({
+    execution: { workflowId },
+    namespace: 'default',
+  });
+  console.log(res.history);
+```
 <!--SNIPEND-->
 
 Outputs something like:
@@ -326,6 +392,15 @@ Outputs something like:
 </summary>
 
 <!--SNIPSTART typescript-grpc-call-listWorkflowExecutions-->
+[grpc-calls/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/grpc-calls/src/client.ts)
+```ts
+  // no equivalent call in client, this is only available as an SDK call
+  // requires ElasticSearch
+  const results = await connection.service.listWorkflowExecutions({
+    namespace: 'default',
+  });
+  console.table(results.executions);
+```
 <!--SNIPEND-->
 
 Outputs something like:
@@ -344,4 +419,4 @@ Outputs something like:
 
 **For the full list of gRPC calls, see the Methods section of the [WorkflowService](https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.WorkflowService-1#methods) API reference.**
 
-Note that if you are trying to do a lot of list-then-filter operations (e.g. `listClosedWorkflowExecutions`), the [Visibility APIs](https://docs.temporal.io/docs/typescript/search-attributes) are a better choice for Temporal deployments with [ElasticSearch enabled](https://docs.temporal.io/docs/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster/) (this is enabled by default for all Temporal Cloud customers).
+Note that if you are trying to do a lot of list-then-filter operations (e.g. `listClosedWorkflowExecutions`), the [Visibility APIs](https://docs.temporal.io/typescript/search-attributes) are a better choice for Temporal deployments with [ElasticSearch enabled](https://docs.temporal.io/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster/) (this is enabled by default for all Temporal Cloud customers).

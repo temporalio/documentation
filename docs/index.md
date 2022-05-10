@@ -1,6 +1,6 @@
 ---
 id: index
-title: Temporal documentation
+title: Documentation.
 sidebar_label: Home
 ---
 

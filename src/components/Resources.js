@@ -7,19 +7,19 @@ const links = [
     type: "article",
     title: "Why Temporal?",
     length: "3-20 min reads",
-    url: "/docs/external-resources#why-workflow-orchestration",
+    url: "/external-resources#why-workflow-orchestration",
   },
   {
     type: "article",
     title: "Temporal Core Concepts",
     length: "20 min read",
-    url: "/docs/temporal-explained/introduction",
+    url: "/temporal-explained/introduction",
   },
   {
     type: "video",
     title: "Podcasts, Talks, and Workshops",
     length: "20 min - 3 hr listen/watch",
-    url: "/docs/external-resources#how-temporal-works",
+    url: "/external-resources#how-temporal-works",
   },
   {
     type: "video",

@@ -7,11 +7,11 @@ description: Activities are the only way to interact with external resources in 
 
 **`@temporalio/activity`** [![NPM](https://img.shields.io/npm/v/@temporalio/activity)](https://www.npmjs.com/package/@temporalio/activity) [API reference](https://typescript.temporal.io/api/namespaces/activity) | [GitHub](https://github.com/temporalio/sdk-typescript/tree/main/packages/activity)
 
-> _Background reading: [Activities in Temporal](/docs/temporal-explained/activities)_
+> _Background reading: [Activities in Temporal](/temporal-explained/activities)_
 
 **Activities are the only way to interact with external resources in Temporal**, such as making an HTTP request or accessing the file system.
 
-- Unlike [Workflows](/docs/typescript/determinism), Activities execute in the standard Node.js environment. Any code that needs to talk to the outside world needs to be in an Activity, not a Workflow.
+- Unlike [Workflows](/typescript/determinism), Activities execute in the standard Node.js environment. Any code that needs to talk to the outside world needs to be in an Activity, not a Workflow.
 - **Separate from Workflows**: Activities cannot be in the same file as Workflows and must be separately registered (see below for [How to register an Activity on a Worker](#how-to-register-an-activity-on-a-worker))
 - **Idempotency**: Activities may be retried repeatedly, so you may need to use [idempotency keys](https://stripe.com/blog/idempotency) for critical side effects.
 - The `'@temporalio/activity'` package offers useful utilities for Activity functions such as sleeping, Heartbeating, cancellation, and retrieving metadata (see [docs on Activity Context utilities](#activity-context-utilities) below).
@@ -22,6 +22,11 @@ Activities are _simply functions_.
 Below is a simple Activity that accepts a string parameter and returns a string:
 
 <!--SNIPSTART typescript-hello-activity {"enable_source_link": false}-->
+```ts
+export async function greet(name: string): Promise<string> {
+  return `Hello, ${name}!`;
+}
+```
 <!--SNIPEND-->
 
 ## How to import and use Activities in a Workflow
@@ -30,6 +35,20 @@ You must first retrieve an Activity from an "Activity Handle" before you can cal
 Note that we only import the type of our activities, the TypeScript compiler will drop the import statement on compilation.
 
 <!--SNIPSTART typescript-hello-workflow {"enable_source_link": false}-->
+```ts
+import { proxyActivities } from '@temporalio/workflow';
+// Only import the activity types
+import type * as activities from './activities';
+
+const { greet } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '1 minute',
+});
+
+/** A workflow that simply calls an activity */
+export async function example(name: string): Promise<string> {
+  return await greet(name);
+}
+```
 <!--SNIPEND-->
 
 :::danger Wrong way to import activities
@@ -46,7 +65,7 @@ This will result in a Webpack error, because the Temporal Worker will try to bun
 Make sure you're using `proxyActivities` to retrieve an Activity rather than calling the function directly.
 This indirection comes from the fact that Activities are run in the regular Node.js environment, not the deterministic `vm` where Workflows are run.
 
-See also our [docs on Webpack troubleshooting](/docs/typescript/troubleshooting/).
+See also our [docs on Webpack troubleshooting](/typescript/troubleshooting/).
 
 :::
 
@@ -80,12 +99,12 @@ We explain the Timeouts and Retries below. You can also specify `namespace`, `ta
 
 Timeouts and Retries are the most immediate benefit of moving code onto Temporal.
 There are [four Activity Timeouts](https://docs.temporal.io/blog/activity-timeouts) you can set.
-When a Timeout happens, your activity will be retried according to your [`RetryPolicy`](https://docs.temporal.io/docs/concepts/what-is-a-retry-policy/).
+When a Timeout happens, your activity will be retried according to your [`RetryPolicy`](https://docs.temporal.io/concepts/what-is-a-retry-policy/).
 
-- `startToCloseTimeout`: Maximum time of a single Activity execution attempt. **We recommend always setting this**. [More info](https://docs.temporal.io/docs/concepts/what-is-a-start-to-close-timeout/)
-- `scheduleToCloseTimeout`: Total time that a workflow is willing to wait for Activity to complete. [More info](https://docs.temporal.io/docs/concepts/what-is-a-schedule-to-close-timeout/)
-- `heartbeatTimeout`: A best practice to set for long-running activities. [More info](https://docs.temporal.io/docs/concepts/what-is-a-heartbeat-timeout/)
-- `scheduleToStartTimeout`: Not recommended; Only for task routing. [More info](https://docs.temporal.io/docs/concepts/what-is-a-schedule-to-start-timeout/)
+- `startToCloseTimeout`: Maximum time of a single Activity execution attempt. **We recommend always setting this**. [More info](https://docs.temporal.io/concepts/what-is-a-start-to-close-timeout/)
+- `scheduleToCloseTimeout`: Total time that a workflow is willing to wait for Activity to complete. [More info](https://docs.temporal.io/concepts/what-is-a-schedule-to-close-timeout/)
+- `heartbeatTimeout`: A best practice to set for long-running activities. [More info](https://docs.temporal.io/concepts/what-is-a-heartbeat-timeout/)
+- `scheduleToStartTimeout`: Not recommended; Only for task routing. [More info](https://docs.temporal.io/concepts/what-is-a-schedule-to-start-timeout/)
 
 You can specify timeouts as number of milliseconds, or a string to be parsed to number of milliseconds by the [`ms`](https://www.npmjs.com/package/ms) package:
 
@@ -144,7 +163,7 @@ const { greet } = proxyActivities<typeof activities>({
 
 For a proper guide to each Retry Option, see the [RetryPolicy API Reference](https://typescript.temporal.io/api/interfaces/client.retrypolicy/).
 
-As you customize your Workflow errors to be more descriptive, advanced users will want to become familiar with [Temporal's Failure classes](/docs/typescript/handling-failure).
+As you customize your Workflow errors to be more descriptive, advanced users will want to become familiar with [Temporal's Failure classes](/typescript/handling-failure).
 
 ## How to register an Activity on a Worker
 
@@ -164,12 +183,12 @@ const worker = await Worker.create({
 :::tip Sticky Activities
 
 **Any matching Worker can pick up your Activity**, meaning your Activities are not guaranteed to execute on the same machine if you have a fleet of Workers.
-You can route tasks to specific machines with the [Sticky Queues pattern](/docs/typescript/workers#example-sticky-queues).
+You can route tasks to specific machines with the [Sticky Queues pattern](/typescript/workers#example-sticky-queues).
 
 :::
 
-Advanced users can also register [Activity Interceptors](/docs/typescript/interceptors) here.
-For more on Activity and Workflow registration, see [the Worker docs](/docs/typescript/workers) for more details.
+Advanced users can also register [Activity Interceptors](/typescript/interceptors) here.
+For more on Activity and Workflow registration, see [the Worker docs](/typescript/workers) for more details.
 
 ### Using pure ESM Node Modules
 
@@ -194,6 +213,23 @@ This is a helpful pattern for using closures to:
 - injecting secret keys (such as environment variables) from the Worker to the Activity
 
 <!--SNIPSTART typescript-activity-with-deps-->
+[activities-dependency-injection/src/activities.ts](https://github.com/temporalio/samples-typescript/blob/master/activities-dependency-injection/src/activities.ts)
+```ts
+export interface DB {
+  get(key: string): Promise<string>;
+}
+
+export const createActivities = (db: DB) => ({
+  async greet(msg: string): Promise<string> {
+    const name = await db.get('name'); // simulate read from db
+    return `${msg}: ${name}`;
+  },
+  async greet_es(mensaje: string): Promise<string> {
+    const name = await db.get('name'); // simulate read from db
+    return `${mensaje}: ${name}`;
+  },
+});
+```
 <!--SNIPEND-->
 
 <details>
@@ -202,11 +238,45 @@ This is a helpful pattern for using closures to:
 When you register these in the Worker, pass your shared dependencies accordingly:
 
 <!--SNIPSTART typescript-activity-deps-worker {"enable_source_link": false}-->
+```ts
+import { createActivities } from './activities';
+
+async function run() {
+  // Mock DB connection initialization in Worker
+  const db = {
+    async get(_key: string) {
+      return 'Temporal';
+    },
+  };
+
+  const worker = await Worker.create({
+    taskQueue: 'dependency-injection',
+    workflowsPath: require.resolve('./workflows'),
+    activities: createActivities(db),
+  });
+
+  await worker.run();
+}
+
+run().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
+```
 <!--SNIPEND-->
 
 Since Activities are always referenced by name, inside the Workflow they can be proxied as normal, though the types need some adjustment:
 
 <!--SNIPSTART typescript-activity-deps-workflow-->
+[activities-dependency-injection/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/activities-dependency-injection/src/workflows.ts)
+```ts
+import type { createActivities } from './activities';
+
+// Note usage of ReturnType<> generic since createActivities is a factory function
+const { greet, greet_es } = proxyActivities<ReturnType<typeof createActivities>>({
+  startToCloseTimeout: '30 seconds',
+});
+```
 <!--SNIPEND-->
 
 </details>
@@ -326,12 +396,12 @@ This way, if the Activity Worker experiences a `heartbeatTimeout`, when a retry 
 Activity Cancellation is an optional capability that lets you do graceful cleanup if it's originating Workflow is canceled. There are some additional usage notes:
 
 - Activities may be cancelled only if they emit heartbeats.
-- A Workflow can request to cancel an Activity by cancelling its containing [cancellation scope](/docs/typescript/cancellation-scopes).
+- A Workflow can request to cancel an Activity by cancelling its containing [cancellation scope](/typescript/cancellation-scopes).
 
 There are 3 ways to handle Activity cancellation:
 
 1. Await on [`Context.current().cancelled`](https://typescript.temporal.io/api/classes/activity.context#cancelled)
-2. Catch a [`CancelledFailure`](/docs/typescript/handling-failure/) while awaiting "cancellation-aware" APIs like `Context.current().sleep`. Errors can be validated with the `isCancellation(err)` utility function (see example below)
+2. Catch a [`CancelledFailure`](/typescript/handling-failure/) while awaiting "cancellation-aware" APIs like `Context.current().sleep`. Errors can be validated with the `isCancellation(err)` utility function (see example below)
 3. Pass the context's abort Signal at [`Context.current().cancellationSignal`](https://typescript.temporal.io/api/classes/activity.context#cancelled) to a library that supports it like `fetch`
 
 [`heartbeat()`](https://typescript.temporal.io/api/classes/activity.context/#heartbeat) in the TypeScript SDK is a background operation and does not propagate errors to the caller, such as when the scheduling Workflow has already completed or the Activity has been closed by the Server (due to timeout for instance). These errors are translated into cancellation and can be handled using the methods above.
@@ -341,6 +411,32 @@ There are 3 ways to handle Activity cancellation:
 The [`sleep`](https://typescript.temporal.io/api/classes/activity.context#sleep) method exposed in `Context.current()` is comparable to a standard `sleep` function: `new Promise(resolve => setTimeout(resolve, sleepMS));` except that it also rejects if the Activity is cancelled.
 
 <!--SNIPSTART typescript-activity-fake-progress-->
+[activities-cancellation-heartbeating/src/activities.ts](https://github.com/temporalio/samples-typescript/blob/master/activities-cancellation-heartbeating/src/activities.ts)
+```ts
+import { Context } from '@temporalio/activity';
+import { CancelledFailure } from '@temporalio/common';
+
+export async function fakeProgress(sleepIntervalMs = 1000): Promise<void> {
+  try {
+    // allow for resuming from heartbeat
+    const startingPoint = Context.current().info.heartbeatDetails || 1;
+    console.log('Starting activity at progress:', startingPoint);
+    for (let progress = startingPoint; progress <= 100; ++progress) {
+      // simple utility to sleep in activity for given interval or throw if Activity is cancelled
+      // don't confuse with Workflow.sleep which is only used in Workflow functions!
+      console.log('Progress:', progress);
+      await Context.current().sleep(sleepIntervalMs);
+      Context.current().heartbeat(progress);
+    }
+  } catch (err) {
+    if (err instanceof CancelledFailure) {
+      console.log('Fake progress activity cancelled');
+      // Cleanup
+    }
+    throw err;
+  }
+}
+```
 <!--SNIPEND-->
 
 #### Example: Activity that makes a cancellable HTTP request with cancellationSignal
@@ -348,6 +444,32 @@ The [`sleep`](https://typescript.temporal.io/api/classes/activity.context#sleep)
 The [`Context.current().cancellationSignal`](https://typescript.temporal.io/api/classes/activity.Context#cancellationsignal) returns an `AbortSignal` that is typically used by the `node_fetch` and `child_process` libraries but is supported by a few other libraries as well as the Web-standard [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController/signal).
 
 <!--SNIPSTART typescript-activity-cancellable-fetch-->
+[activities-examples/src/activities/cancellable-fetch.ts](https://github.com/temporalio/samples-typescript/blob/master/activities-examples/src/activities/cancellable-fetch.ts)
+```ts
+import fetch from 'node-fetch';
+import { Context } from '@temporalio/activity';
+
+export async function cancellableFetch(url: string): Promise<Uint8Array> {
+  const response = await fetch(url, { signal: Context.current().cancellationSignal });
+  const contentLengthHeader = response.headers.get('Content-Length');
+  if (contentLengthHeader === null) {
+    throw new Error('expected Content-Length header to be set');
+  }
+  const contentLength = parseInt(contentLengthHeader);
+  let bytesRead = 0;
+  const chunks: Buffer[] = [];
+
+  for await (const chunk of response.body) {
+    if (!(chunk instanceof Buffer)) {
+      throw new TypeError('Expected Buffer');
+    }
+    bytesRead += chunk.length;
+    chunks.push(chunk);
+    Context.current().heartbeat(bytesRead / contentLength);
+  }
+  return Buffer.concat(chunks);
+}
+```
 <!--SNIPEND-->
 
 ## Advanced Features
@@ -357,7 +479,7 @@ Please get in touch with us if you find the need for them.
 
 ### Activity Interceptors
 
-Interceptors are a mechanism for users to modify inbound and outbound SDK calls. Interceptors are commonly used to add tracing and authorization to the scheduling and execution of Workflows and Activities, but you can also use them to run code after an Activity failure (and before the next retry). See the [Interceptors docs](/docs/typescript/interceptors) and the [SDK API Reference](https://typescript.temporal.io/api/interfaces/worker.ActivityInboundCallsInterceptor) for more information.
+Interceptors are a mechanism for users to modify inbound and outbound SDK calls. Interceptors are commonly used to add tracing and authorization to the scheduling and execution of Workflows and Activities, but you can also use them to run code after an Activity failure (and before the next retry). See the [Interceptors docs](/typescript/interceptors) and the [SDK API Reference](https://typescript.temporal.io/api/interfaces/worker.ActivityInboundCallsInterceptor) for more information.
 
 ### Async Activity Completion
 

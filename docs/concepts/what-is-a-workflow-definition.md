@@ -16,24 +16,24 @@ A Workflow Execution effectively executes once to completion, while a Workflow F
 
 We strongly recommend that you write a Workflow Definition in a language that has a corresponding Temporal SDK.
 
-- [How to develop a Workflow Definition in Go](/docs/go/how-to-develop-a-workflow-in-go)
-- [How to develop a Workflow Definition in Java](/docs/java/how-to-develop-a-workflow-definition-in-java)
-- [How to develop a Workflow Definition in PHP](/docs/php/workflows)
-- [How to develop a Workflow Definition in TypeScript](/docs/typescript/workflows/#how-to-write-a-workflow-function)
+- [How to develop a Workflow Definition in Go](/go/how-to-develop-a-workflow-in-go)
+- [How to develop a Workflow Definition in Java](/java/how-to-develop-a-workflow-definition-in-java)
+- [How to develop a Workflow Definition in PHP](/php/workflows)
+- [How to develop a Workflow Definition in TypeScript](/typescript/workflows/#how-to-write-a-workflow-function)
 
 ### Deterministic constraints
 
 A critical aspect of developing Workflow Definitions is ensuring they exhibit certain deterministic traits – that is, making sure that the same Commands are emitted in the same sequence, whenever a corresponding Workflow Function Execution (instance of the Function Definition) is re-executed.
 
 The execution semantics of a Workflow Execution include the re-execution of a Workflow Function.
-The use of Workflow APIs in the function is what generates [Commands](/docs/concepts/what-is-a-command).
+The use of Workflow APIs in the function is what generates [Commands](/concepts/what-is-a-command).
 Commands tell the Cluster which Events to create and add to the Workflow Execution's Event History.
 When a Workflow Function executes, the Commands that are emitted are compared with the existing Event History.
 If a corresponding Event already exists within the Event History that maps to the generation of that Command in the same sequence, and some specific metadata of that Command matches with some specific metadata of the Event, then the Function Execution progresses.
 
-For example, using an SDK's "Execute Activity" API generates the [ScheduleActivityTask](/docs/concepts/what-is-a-command#scheduleactivitytask) Command.
+For example, using an SDK's "Execute Activity" API generates the [ScheduleActivityTask](/concepts/what-is-a-command#scheduleactivitytask) Command.
 When this API is called upon re-execution, that Command is compared with the Event that is in the same location within the sequence.
-The Event in the sequence must be an [ActivityTaskScheduled](/docs/references/events/#activitytaskscheduled) Event, where the Activity Name and the Task Queue name are the same as what is in the Command.
+The Event in the sequence must be an [ActivityTaskScheduled](/references/events/#activitytaskscheduled) Event, where the Activity Name and the Task Queue name are the same as what is in the Command.
 
 If a generated Command doesn't match what it needs to in the existing Event History, then the Workflow Execution returns a _non-deterministic_ error.
 
@@ -54,7 +54,7 @@ For example, let's say we have a Workflow Definition that defines the following 
 3. Complete
 
 We start a Worker and spawn a Workflow Execution that uses that Workflow Definition.
-The Worker would emit the [StartTimer](/docs/references/commands/#starttimer) Command and the Workflow Execution would become suspended.
+The Worker would emit the [StartTimer](/references/commands/#starttimer) Command and the Workflow Execution would become suspended.
 
 Before the Timer is up, we change the Workflow Definition to the following sequence:
 
@@ -63,7 +63,7 @@ Before the Timer is up, we change the Workflow Definition to the following seque
 3. Complete
 
 When the Timer fires, the next Workflow Task will cause the Workflow Function to re-execute.
-The first Command the Worker sees would be be ScheduleActivityTask Command, which wouldn't match up to the expected [TimerStarted](/docs/concepts/what-is-an-event#timerstarted) Event.
+The first Command the Worker sees would be be ScheduleActivityTask Command, which wouldn't match up to the expected [TimerStarted](/concepts/what-is-an-event#timerstarted) Event.
 
 The Workflow Execution would fail, and return the non-determinism error.
 
@@ -103,9 +103,9 @@ The Workflow Versioning feature enables the creation of logical branching inside
 This feature is useful for Workflow Definition logic needs to be updated, but there are running Workflow Executions that currently depends on it.
 It is important to note that a practical way to handle different versions of Workflow Definitions, without using the versioning API, is to run the different versions on separate Task Queues.
 
-- [How to version Workflow Definitions in Go](/docs/go/versioning)
-- [How to version Workflow Definitions in Java](/docs/java/versioning)
-- [How to version Workflow Definitions in TypeScript](/docs/typescript/patching)
+- [How to version Workflow Definitions in Go](/go/versioning)
+- [How to version Workflow Definitions in Java](/java/versioning)
+- [How to version Workflow Definitions in TypeScript](/typescript/patching)
 
 ### Handling unreliable Worker Processes
 

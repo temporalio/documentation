@@ -19,7 +19,7 @@ _Note: All metrics in this article are prepended with the “temporal\_” prefi
 Performance tuning involves three important SDK metric groups:
 
 1. `worker_task_slots_available` gauges tagged `worker_type=WorkflowWorker` and `worker_type=ActivityWorker` for Workflow Task and Activity Workers correspondingly. These gauges report how many executor “slots” are currently available (unoccupied) for each Worker type.
-2. `workflow_task_schedule_to_start_latency` and `activity_schedule_to_start_latency` timers for Workflow Tasks and Activities correspondingly. For more information about `schedule_to_start` timeout and latency, see [https://docs.temporal.io/docs/concepts/what-is-a-schedule-to-start-timeout/](https://docs.temporal.io/docs/concepts/what-is-a-schedule-to-start-timeout/).
+2. `workflow_task_schedule_to_start_latency` and `activity_schedule_to_start_latency` timers for Workflow Tasks and Activities correspondingly. For more information about `schedule_to_start` timeout and latency, see [https://docs.temporal.io/concepts/what-is-a-schedule-to-start-timeout/](https://docs.temporal.io/concepts/what-is-a-schedule-to-start-timeout/).
 3. `sticky_cache_size` and `workflow_active_thread_count` report the size of the Workflow cache and the number of cached Workflow threads.
 
 _Note: To have access to all the metrics mentioned above in the JavaSDK, version ≥ 1.8.0 is required._
@@ -125,6 +125,6 @@ As with any multithreading system, specifying too large values without monitorin
 <RelatedReadList
 readlist={[
 ["Workers in production", "/blog/workers-in-production", "operation guide"],
-["Full set of SDK Metrics", "/docs/references/sdk-metrics", "reference"]
+["Full set of SDK Metrics", "/references/sdk-metrics", "reference"]
 ]}
 />

@@ -110,7 +110,7 @@ class WorkflowErrorInterceptor implements WorkflowInboundCallsInterceptor {
 
 ## `isCancellation` utility
 
-Failures are also used to represent <a href="/docs/typescript/cancellation-scopes#cancelledfailure">cancellation</a> of Activities and Child Workflows.
+Failures are also used to represent [cancellation](/typescript/cancellation-scopes#cancelledfailure) of Activities and Child Workflows.
 
 As explained above, cancellation might not be the immediate cause of failure — it might happen further down the chain. Use the [`isCancellation`](https://typescript.temporal.io/api/namespaces/workflow/#iscancellation) helper function to inspect the chain recursively and look for a `CancelledFailure`.
 
@@ -158,7 +158,7 @@ Any unhandled exception that doesn't extend [`TemporalFailure`](#temporalfailure
 
 `CancelledFailure` is thrown in a Workflow when a cancellation scope or the entire Workflow has been cancelled or set as the cause for when a child Workflow or Activity has been cancelled.
 
-In an Activity, it may be thrown if the Activity was requested to be cancelled. More on activity cancellation [here](/docs/typescript/activities#activity-cancellation).
+In an Activity, it may be thrown if the Activity was requested to be cancelled. More on activity cancellation [here](/typescript/activities#activity-cancellation).
 
 ### [ActivityFailure](https://typescript.temporal.io/api/classes/client.activityfailure)
 

@@ -41,7 +41,7 @@ if err != nil {
 }
 ```
 
-- [What is an Activity Id](/docs/concepts/what-is-an-activity-id)
+- [What is an Activity Id](/concepts/what-is-an-activity-id)
 
 ### `TaskQueueName`
 
@@ -60,7 +60,7 @@ if err != nil {
 }
 ```
 
-- [What is a Task Queue](/docs/concepts/what-is-a-task-queue)
+- [What is a Task Queue](/concepts/what-is-a-task-queue)
 
 ### `ScheduleToCloseTimeout`
 

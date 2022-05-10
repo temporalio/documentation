@@ -8,7 +8,7 @@ tags:
   - tctl
 ---
 
-The `tctl taskqueue describe` command describes the poller information of a [Task Queue](/docs/concepts/what-is-a-task-queue).
+The `tctl taskqueue describe` command describes the poller information of a [Task Queue](/concepts/what-is-a-task-queue).
 
 `tctl taskqueue describe --taskqueue <value> [<modifiers>]`
 
@@ -20,7 +20,7 @@ The following modifiers control the behavior of the command.
 
 _Required modifier_
 
-Specify a [Task Queue](/docs/concepts/what-is-a-task-queue).
+Specify a [Task Queue](/concepts/what-is-a-task-queue).
 
 Alias: `--tq`
 
@@ -32,7 +32,7 @@ tctl taskqueue describe --taskqueue <value>
 
 ### `--taskqueuetype`
 
-Specify the type of a [Task Queue](/docs/concepts/what-is-a-task-queue).
+Specify the type of a [Task Queue](/concepts/what-is-a-task-queue).
 The type can be `workflow` or `activity`.
 The default is `workflow`.
 

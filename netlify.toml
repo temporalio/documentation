@@ -3,7 +3,7 @@
 
     [plugins.inputs]
 
-    skipPatterns = ["#", "www.google-analytics.com", "www.googletagmanager.com", "Asset is used as both Html and Image", "/docs/typescript/client"]
+    skipPatterns = ["#", "www.google-analytics.com", "www.googletagmanager.com", "Asset is used as both Html and Image", "/typescript/client"]
     pretty = true
 
 ## Note: if you are looking for Redirects

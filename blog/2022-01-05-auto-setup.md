@@ -17,7 +17,7 @@ We often say that “Temporal Server is a simple Go binary”, and [it's true](h
 
 ![image](https://user-images.githubusercontent.com/6764957/148215905-ffb15e1a-75ba-4ddc-aa91-12d9e374f2d1.png)
 
-Yet most users are insulated from using this binary directly. There are several layers of abstraction to get through ([docker-compose](https://github.com/temporalio/docker-compose) or [Helm Chart](https://github.com/temporalio/helm-charts), Dockerfile, and the `auto-setup.sh` script) before you reach this baseline understanding of Temporal (you can [learn more in our Temporal Explained documentation](/docs/temporal-explained/introduction). Together they map out the environment requirements of Temporal:
+Yet most users are insulated from using this binary directly. There are several layers of abstraction to get through ([docker-compose](https://github.com/temporalio/docker-compose) or [Helm Chart](https://github.com/temporalio/helm-charts), Dockerfile, and the `auto-setup.sh` script) before you reach this baseline understanding of Temporal (you can [learn more in our Temporal Explained documentation](/temporal-explained/introduction). Together they map out the environment requirements of Temporal:
 
 ![image](https://user-images.githubusercontent.com/6764957/147678999-883be1b4-4d32-4c89-84a4-00e8b701cdef.png)
 
@@ -26,7 +26,7 @@ While the other pieces are industry standard formats with explanations available
 It’s worth: 
 
 - knowing that the `auto-setup.sh` script exists and handles some critical pieces of the Temporal deployment model
-- understanding what it does to fill in the blanks between “it’s just a binary” to a zero configuration [Quick Install](https://docs.temporal.io/docs/clusters/quick-install) default developer experience
+- understanding what it does to fill in the blanks between “it’s just a binary” to a zero configuration [Quick Install](https://docs.temporal.io/clusters/quick-install) default developer experience
 - understanding what is optional - so you can modify it when it is getting in your way, or have confidence throwing it out and writing your own
 
 The goal of this post is ***not*** to explain every little detail (you can [read the code](https://github.com/temporalio/docker-builds/blob/main/docker/auto-setup.sh) yourself for that), but to highlight important pieces every self-hosted Temporal user should know. 
@@ -131,7 +131,7 @@ tctl --auto_confirm admin cluster add-search-attributes \
           --name CustomBoolField --type Bool
 ```
 
-These are intentionally generically named, for demo purposes (e.g. [for code samples](https://github.com/temporalio/samples-go/blob/77728cf7c38570898b2c90bf6eb0720c7f5fb30d/searchattributes/searchattributes_workflow.go#L56-L63)) and for ease of use (since they are already set up, you don't have to add them when you find you need them later). As you advance in your usage, you may wish to drop this step in favor of better named and specified attributes - just keep in mind that you are [limited to a maximum of 100](https://docs.temporal.io/docs/server/production-deployment/#server-limits).
+These are intentionally generically named, for demo purposes (e.g. [for code samples](https://github.com/temporalio/samples-go/blob/77728cf7c38570898b2c90bf6eb0720c7f5fb30d/searchattributes/searchattributes_workflow.go#L56-L63)) and for ease of use (since they are already set up, you don't have to add them when you find you need them later). As you advance in your usage, you may wish to drop this step in favor of better named and specified attributes - just keep in mind that you are [limited to a maximum of 100](https://docs.temporal.io/server/production-deployment/#server-limits).
 
 ## Closing Thoughts
   
