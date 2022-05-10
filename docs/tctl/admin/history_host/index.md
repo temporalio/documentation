@@ -10,7 +10,7 @@ tags:
 ## NOTE
 > The Temporal tctl documentation covers version 1.16 of the Temporal CLI. This information should not be definitely used for any beta or pre-production tctl versions.
 
-The `tctl admin history_host` command describes the internal information of the history host.
+The `tctl admin history_host` command runs an admin-level operation on the history host.
 
 #### Usage
 `tctl admin history_host command [command options] [arguments...]`
