@@ -34,7 +34,7 @@ GreetingActivities activities = Workflow.newActivityStub(GreetingActivities.clas
 Note that these Activity options will apply for all the Activities defined in the _GreetingActivities_ Activity interface.
 You can create multiple Activity stubs within a Workflow, and each can have different Activity options defined.
 
-## Setting per-Ativity options when registering a Workflow with a Worker
+## Setting per-Activity options when registering a Workflow with a Worker
 
 To set different options per Activity type, use `.setActivityOptions` with `WorkflowImplementationOptions`.
 Note that if you define options per Activity Type with `WorkflowImplementationOptions.setActivityOptions()`, setting them again specifically within `ActivityOptions` in a Workflow will override this setting.
