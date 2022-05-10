@@ -12,13 +12,14 @@ You can install [tcld](/docs/cloud/tcld) in two ways.
 
 ### Install tcld by using Homebrew
 
-  ```bash
-  brew install temporalio/brew/tcld
-  ```
+```bash
+brew install temporalio/brew/tcld
+```
 
 ### Build tcld from source
 
-  1. Verify that you have Go 1.18 or later installed.
+1. Verify that you have Go 1.18 or later installed.
+
 
     ```bash
     go version
@@ -26,7 +27,8 @@ You can install [tcld](/docs/cloud/tcld) in two ways.
 
     If Go 1.18 or later is not installed, follow the [Download and install](https://go.dev/doc/install) instructions on the Go website.
 
-  1. Clone the tcld repository and run make.
+1. Clone the tcld repository and run make.
+
 
     ```bash
     git clone https://github.com/temporalio/tcld.git
@@ -34,13 +36,15 @@ You can install [tcld](/docs/cloud/tcld) in two ways.
     make
     ```
 
-  1. Copy the tcld executable to any directory that appears in the PATH environment variable, such as `/usr/local/bin`.
+1. Copy the tcld executable to any directory that appears in the PATH environment variable, such as `/usr/local/bin`.
+
 
     ```bash
     cp tcld /usr/local/bin/tcld
     ```
 
-  1. Verify that tcld is installed.
+1. Verify that tcld is installed.
+
 
     ```bash
     tcld version
