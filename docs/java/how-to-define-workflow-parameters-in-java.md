@@ -153,9 +153,9 @@ public class MyDynamicWorkflow implements DynamicWorkflow {
 `DynamicWorkflow` can be used to invoke different Workflow Types.
 To check what type is running when your Dynamic Workflow `execute` method runs, use `getWorkflowType()` in the implementation code.
 
-  ```java
-  String type = Workflow.getInfo().getWorkflowType();
-  ```
+```java
+String type = Workflow.getInfo().getWorkflowType();
+```
 
 The `DynamicWorkflow` implementation must be registered with a Worker.
 

@@ -91,7 +91,7 @@ The following example shows how to call the Dynamic Workflow implementation in t
       * in the Worker definition as:*/
     // worker.registerWorkflowImplementationTypes(DynamicGreetingWorkflowImpl.class);
 
-    /* Create the Workflow stub to call the dynamic Workflow. 
+    /* Create the Workflow stub to call the dynamic Workflow.
     * Note that the Workflow type is not explicitly registered with the Worker.*/
     WorkflowOptions workflowOptions =
         WorkflowOptions.newBuilder().setTaskQueue(TASK_QUEUE).setWorkflowId(WORKFLOW_ID).build();

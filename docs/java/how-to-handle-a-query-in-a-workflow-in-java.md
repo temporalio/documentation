@@ -80,11 +80,11 @@ You can also implement Query handlers dynamically. This is useful for library-le
 
 Use `Workflow.registerListener(Object)` to register an implementation of the `DynamicQueryListener` in the Workflow implementation code.
 
-  ```java
-        Workflow.registerListener(
-          (DynamicQueryHandler)
-              (queryName, encodedArgs) -> name = encodedArgs.get(0, String.class));
-  ```
+```java
+      Workflow.registerListener(
+        (DynamicQueryHandler)
+            (queryName, encodedArgs) -> name = encodedArgs.get(0, String.class));
+```
 
 When registered, any Queries sent to the Workflow without a defined handler will be delivered to the `DynamicQueryHandler`.
 Note that you can only register one `Workflow.registerListener(Object)` per Workflow Execution.
