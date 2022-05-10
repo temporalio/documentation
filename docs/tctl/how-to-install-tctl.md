@@ -8,6 +8,9 @@ tags:
   - tctl
 ---
 
+## NOTE
+> The Temporal tctl documentation covers version 1.16 of the Temporal CLI.
+
 You can install [tctl](/docs/tctl) in four ways.
 
 - Install locally by using [Homebrew](https://brew.sh/): `brew install tctl`
