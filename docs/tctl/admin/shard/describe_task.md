@@ -1,6 +1,6 @@
 ---
-id: describe-task
-title: tctl admin shard describe-task
+id: describe_task
+title: tctl admin shard describe_task
 description: displaying information on a Task within a shard
 tags:
   - reference
@@ -9,7 +9,7 @@ tags:
   - shard
 ---
 
-The `tctl admin shard describe-task` command describes a specified Task's Task Id, Task type, shard Id, and task visibility timestamp.
+The `tctl admin shard describe_task` command describes a specified Task's Task Id, Task type, shard Id, and task visibility timestamp.
 
 Alias: `-dt`
 
@@ -17,9 +17,9 @@ Alias: `-dt`
 
 The modifiers below control the output and behavior of the command. Enter all modifiers after the command as such:
 
-`tctl admin shard describe-task [<modifiers>]`
+`tctl admin shard describe_task [<modifiers>]`
 
-### `--db-engine value`
+### `--db_engine value`
 
 The type of database (DB) engine for the shard to use.
 
@@ -28,13 +28,13 @@ Values: "cassandra", "mysql", "postgres"
 
 <!-- todo: examples -->
 
-### `--db-address value`
+### `--db_address value`
 
 Persistence address for the database.
 
 Default: 127.0.0.1
 
-### `--db-port value`
+### `--db_port value`
 
 Persistence port for the database.
 
@@ -58,62 +58,62 @@ default: "temporal"
 
 Enables TLS over the database connection.
 
-### `--tls-cert-path value`
+### `--tls_cert_path value`
 
 DB tls client cert path.
 
 Note: tls must be enabled
 
-### `--tls-key-path value`
+### `--tls_key_path value`
 
 DB tls client key path
 
 Note: tls must be enabled
 
-### `--tls-ca-path value`
+### `--tls_ca_path value`
 
 DB tls client ca path
 
 Note: tls must be enabled
 
-### `--tls-server-name value`
+### `--tls_server_name value`
 
 DB tls server name
 
 Note: tls must be enabled
 
-### `--tls-disable-host-verification`
+### `--tls_disable_host_verification`
 
 DB tls verify hostname and server cert
 
 Note: tls must be enabled
 
-### `--shard-id value`
+### `--shard_id value`
 
 Identifies the specified shard.
 
 Default: 0
 
-### `--task-id value`
+### `--task_id value`
 
 Describes the task.
 
 Default: 0
 
-### `--task-type value`
+### `--task_type value`
 
 The kind of Task that is targeted within a shard.
 
 Default: transfer
 Values: transfer, timer, replication
 
-### `--task-timestamp value`
+### `--task_timestamp value`
 
 Task visibility timestamp in nanoseconds
 
 Default: 0
 
-### `--target-cluster value`
+### `--target_cluster value`
 
 Temporal cluster for the shard to use.
 

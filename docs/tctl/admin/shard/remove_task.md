@@ -1,6 +1,6 @@
 ---
-id: remove-task
-title: tctl admin shard remove-task
+id: remove_task
+title: tctl admin shard remove_task
 description: removing a Task with given information
 tags:
   - reference
@@ -9,9 +9,9 @@ tags:
   - shard
 ---
 
-The `tctl admin shard remove-task` command removes a Task from the shard.
+The `tctl admin shard remove_task` command removes a Task from the shard.
 
-`tctl admin shard remove-task [command options] [arguments...]`
+`tctl admin shard remove_task [command options] [arguments...]`
 
 The Task removed must have values that matches what is given in the command line.
 
@@ -19,26 +19,26 @@ The Task removed must have values that matches what is given in the command line
 
 The modifiers below change the behavior of the command.
 
-### `--shard-id value`
+### `--shard_id value`
 
 The shardId for the Task to be removed.
 
 Default: 0
 
-### `--task-id value`
+### `--task_id value`
 
 The taskId for the Task to be removed.
 
 Default: 0
 
-### `--task-type value`
+### `--task_type value`
 
 The type of Task to remove.
 
 Default: transfer
 Values: transfer, timer, replication
 
-### `--task-timestamp value`
+### `--task_timestamp value`
 
 The task visibility timestamp, given in nanoseconds.
 
