@@ -1,6 +1,6 @@
 ---
 id: describe
-title: tctl task-queue describe
+title: tctl taskqueue describe
 sidebar_label: describe
 description: How to describe the poller information of a Task Queue using tctl.
 tags:
@@ -8,15 +8,15 @@ tags:
   - tctl
 ---
 
-The `tctl task-queue describe` command describes the poller information of a [Task Queue](/docs/concepts/what-is-a-task-queue).
+The `tctl taskqueue describe` command describes the poller information of a [Task Queue](/docs/concepts/what-is-a-task-queue).
 
-`tctl task-queue describe --task-queue <value> [<modifiers>]`
+`tctl taskqueue describe --taskqueue <value> [<modifiers>]`
 
 Alias: `d`
 
 The following modifiers control the behavior of the command.
 
-### `--task-queue`
+### `--taskqueue`
 
 _Required modifier_
 
@@ -27,10 +27,10 @@ Alias: `--tq`
 **Example**
 
 ```bash
-tctl task-queue describe --task-queue <value>
+tctl taskqueue describe --taskqueue <value>
 ```
 
-### `--task-queue-type`
+### `--taskqueuetype`
 
 Specify the type of a [Task Queue](/docs/concepts/what-is-a-task-queue).
 The type can be `workflow` or `activity`.
@@ -41,5 +41,5 @@ Alias: `--tqt`
 **Example**
 
 ```bash
-tctl task-queue describe --task-queue <value> --task-queue-type <type>
+tctl taskqueue describe --taskqueue <value> --taskqueuetype <type>
 ```

@@ -21,7 +21,7 @@ We strongly recommend that you write a Workflow Definition in a language that ha
 - [How to develop a Workflow Definition in PHP](/docs/php/workflows)
 - [How to develop a Workflow Definition in TypeScript](/docs/typescript/workflows/#how-to-write-a-workflow-function)
 
-#### Deterministic constraints
+### Deterministic constraints
 
 A critical aspect of developing Workflow Definitions is ensuring they exhibit certain deterministic traits – that is, making sure that the same Commands are emitted in the same sequence, whenever a corresponding Workflow Function Execution (instance of the Function Definition) is re-executed.
 
@@ -42,7 +42,7 @@ The following are the two reasons why a Command might be generated out of sequen
 1. Code changes are made to a Workflow Definition that is in use by a running Workflow Execution.
 2. There is intrinsic non-deterministic logic (such as inline random branching).
 
-#### Code changes can cause non-deterministic behavior
+### Code changes can cause non-deterministic behavior
 
 The Workflow Definition can change in very limited ways once there is a Workflow Execution depending on it.
 To alleviate non-deterministic issues that arise from code changes, we recommend using [Workflow Versioning](#what-is-workflow-versioning).
@@ -75,7 +75,7 @@ The following are examples of minor changes that would not result in non-determi
   - The Child Workflow Options in a call to spawn a Child Workflow Execution.
   - Call to Signal an External Workflow Execution.
 
-#### Intrinsic non-deterministic logic
+### Intrinsic non-deterministic logic
 
 Intrinsic non-determinism is when a Workflow Function Execution might emit a different sequence of Commands on re-execution, regardless of whether all the input parameters are the same.
 
@@ -97,7 +97,7 @@ When those APIs are used, the results are stored as part of the Event History, w
 
 In other words, all operations that do not purely mutate the Workflow Execution's state should occur through a Temporal SDK API.
 
-#### Workflow Versioning
+### Workflow Versioning
 
 The Workflow Versioning feature enables the creation of logical branching inside a Workflow Definition based on a developer specified version identifier.
 This feature is useful for Workflow Definition logic needs to be updated, but there are running Workflow Executions that currently depends on it.
@@ -107,7 +107,7 @@ It is important to note that a practical way to handle different versions of Wor
 - [How to version Workflow Definitions in Java](/docs/java/versioning)
 - [How to version Workflow Definitions in TypeScript](/docs/typescript/patching)
 
-#### Handling unreliable Worker Processes
+### Handling unreliable Worker Processes
 
 You do not handle Worker Process failure or restarts in a Workflow Definition.
 
