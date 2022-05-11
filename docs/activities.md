@@ -1,6 +1,6 @@
 ---
 id: activities
-title: Temporal Activities
+title: Activities
 sidebar_label: Activities
 description: This guide is meant to be a comprehensive overview of Temporal Activities.
 toc_max_heading_level: 4
@@ -279,6 +279,28 @@ Custom progress information can be included in the Heartbeat which can then be u
 An Activity Heartbeat can be recorded as often as needed (e.g. once a minute or every loop iteration).
 Temporal SDKs control the rate at which Heartbeats are sent to the Cluster.
 
-Heartbeating is not required from [Local Activities](/docs/concepts/what-is-a-local-activity), and does nothing.
+Heartbeating is not required from [Local Activities](#local-activities), and does nothing.
 
-- [How to Heartbeat an Activity in Go](/docs/go/how-to-heartbeat-an-activity-in-go)
+- [How to Heartbeat an Activity in Go](/docs/application-development-guide/#activity-heartbeats)
+
+## Local Activities
+
+A Local Activity is an [Activity Execution](#activity-execution) that executes in the same process as the [Workflow Execution](/docs/workflows/#workflow-executions) that spawns it.
+
+Some Activity Executions are very short-living and do not need the queuing semantic, flow control, rate limiting, and routing capabilities.
+For this case, Temporal supports the Local Activity feature.
+
+The main benefit of Local Activities is that they use less Temporal service resources (e.g. lower state transitions) and have much lower latency overhead (because no need to roundtrip to the Cluster) compared to normal Activity Executions.
+However, Local Activities are subject to shorter durations and a lack of rate limiting.
+
+Consider using Local Activities for functions that are the following:
+
+- no longer than a few seconds, inclusive of retries (shorter than the Workflow Task Timeout, which is 10 seconds by default).
+- do not require global rate limiting.
+- do not require routing to a specific Worker or Worker pool.
+- can be implemented in the same binary as the Workflow that calls them.
+
+Using a Local Activity without understanding its limitations can cause various production issues.
+**We recommend using regular Activities unless your use case requires very high throughput and large Activity fan outs of very short-lived Activities.**
+More guidance in choosing between [Local Activity vs Activity](https://community.temporal.io/t/local-activity-vs-activity/290/3) is available in our forums.
+

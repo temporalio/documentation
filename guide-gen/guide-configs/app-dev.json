@@ -72,7 +72,7 @@
 						{
 							"lang": "java",
 							"title": "Java",
-							"path": "none"
+							"path": "java/how-to-develop-a-workflow-definition-in-java"
 						},
 						{
 							"lang": "php",
@@ -101,7 +101,7 @@
 								{
 									"lang": "java",
 									"title": "Java",
-									"path": "none"
+									"path": "java/how-to-define-workflow-parameters-in-java"
 								},
 								{
 									"lang": "php",
@@ -131,7 +131,7 @@
 								{
 									"lang": "java",
 									"title": "Java",
-									"path": "none"
+									"path": "java/how-to-define-workflow-return-values-in-java"
 								},
 								{
 									"lang": "php",
@@ -161,7 +161,7 @@
 								{
 									"lang": "java",
 									"title": "Java",
-									"path": "none"
+									"path": "java/how-to-handle-workflow-logic-requirements-in-java"
 								},
 								{
 									"lang": "php",
@@ -193,7 +193,7 @@
 						{
 							"lang": "java",
 							"title": "Java",
-							"path": "none"
+							"path": "java/how-to-develop-an-activity-definition-in-java"
 						},
 						{
 							"lang": "php",
@@ -222,7 +222,7 @@
 								{
 									"lang": "java",
 									"title": "Java",
-									"path": "none"
+									"path": "java/how-to-define-activity-parameters-in-java"
 								},
 								{
 									"lang": "php",
@@ -252,7 +252,7 @@
 								{
 									"lang": "java",
 									"title": "Java",
-									"path": "none"
+									"path": "java/how-to-define-activity-return-values-in-java"
 								},
 								{
 									"lang": "php",
@@ -369,7 +369,7 @@
 					"langs": [{
 							"lang": "go",
 							"title": "Go",
-							"path": "go/how-to-develop-a-worker-program-in-go"
+							"path": "go/how-to-create-a-worker-in-go"
 						},
 						{
 							"lang": "java",
@@ -385,6 +385,38 @@
 							"lang": "typescript",
 							"title": "TypeScript",
 							"path": "typescript/how-to-develop-a-worker-program-in-typescript"
+						}
+					],
+					"h4_sections": [
+						{
+							"header": "Register multiple types",
+							"type": "context",
+							"path": "app-dev-context/registering-types"
+						},
+						{
+							"header": "none",
+							"type": "lang-tabs",
+							"langs": [{
+									"lang": "go",
+									"title": "Go",
+									"path": "go/how-to-register-types-with-a-worker-in-go"
+								},
+								{
+									"lang": "java",
+									"title": "Java",
+									"path": "none"
+								},
+								{
+									"lang": "php",
+									"title": "PHP",
+									"path": "none"
+								},
+								{
+									"lang": "typescript",
+									"title": "TypeScript",
+									"path": "none"
+								}
+							]
 						}
 					]
 				},
@@ -1129,7 +1161,7 @@
 					"langs": [{
 							"lang": "go",
 							"title": "Go",
-							"path": "none"
+							"path": "go/how-to-heartbeat-an-activity-in-go"
 						},
 						{
 							"lang": "java",
@@ -1154,9 +1186,59 @@
 					"path": "app-dev-context/cron-jobs"
 				},
 				{
+					"header": "none",
+					"type": "lang-tabs",
+					"langs": [{
+							"lang": "go",
+							"title": "Go",
+							"path": "go/how-to-set-a-cron-schedule-in-go"
+						},
+						{
+							"lang": "java",
+							"title": "Java",
+							"path": "none"
+						},
+						{
+							"lang": "php",
+							"title": "PHP",
+							"path": "none"
+						},
+						{
+							"lang": "typescript",
+							"title": "TypeScript",
+							"path": "none"
+						}
+					]
+				},
+				{
 					"header": "Local Activities",
 					"type": "context",
 					"path": "app-dev-context/local-activities"
+				},
+				{
+					"header": "none",
+					"type": "lang-tabs",
+					"langs": [{
+							"lang": "go",
+							"title": "Go",
+							"path": "go/how-to-set-a-cron-schedule-in-go"
+						},
+						{
+							"lang": "java",
+							"title": "Java",
+							"path": "none"
+						},
+						{
+							"lang": "php",
+							"title": "PHP",
+							"path": "none"
+						},
+						{
+							"lang": "typescript",
+							"title": "TypeScript",
+							"path": "none"
+						}
+					]
 				}
 			]
 		},

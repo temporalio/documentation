@@ -36,7 +36,7 @@ A Workflow Execution effectively executes once to completion, while a Workflow F
 We strongly recommend that you write a Workflow Definition in a language that has a corresponding Temporal SDK.
 
 - [How to develop a Workflow Definition in Go](/docs/go/how-to-develop-a-workflow-in-go)
-- [How to develop a Workflow Definition in Java](/docs/java/how-to-develop-a-workflow-definition-in-java)
+- [How to develop a Workflow Definition in Java](/docs/application-development-guide/#develop-workflows)
 - [How to develop a Workflow Definition in PHP](/docs/php/workflows)
 - [How to develop a Workflow Definition in TypeScript](/docs/typescript/workflows/#how-to-write-a-workflow-function)
 
@@ -630,3 +630,4 @@ Use the Workflow Id in any requests to Cancel or Terminate.
 - [How to set a Cron Schedule in Java](/docs/java/distributed-cron)
 - [How to set a Cron Schedule in PHP](/docs/php/distributed-cron)
 - [How to set a Cron Schedule in Typescript](/docs/typescript/clients)
+
