@@ -58,8 +58,7 @@ This is necessary due to the decoupled nature of Workflows and Activities, but a
 When you call `proxyActivities` in a Workflow function, there are [a range of ActivityOptions](https://typescript.temporal.io/api/interfaces/common.ActivityOptions) you can set:
 
 ```ts
-// Sample of typical options you can set
-// Creating a proxy for the activities.
+// Sample of typical options you can set while creating a proxy for the `greet` Activity
 const { greet } = proxyActivities<typeof activities>({
   startToCloseTimeout: '30s', // recommended
   scheduleToCloseTimeout: '5m', // useful
