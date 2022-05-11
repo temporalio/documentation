@@ -62,9 +62,9 @@ When you call `proxyActivities` in a Workflow function, there are [a range of Ac
 const { greet } = proxyActivities<typeof activities>({
   startToCloseTimeout: '30s', // recommended
   scheduleToCloseTimeout: '5m', // useful
-  // The above code is a retry policy. It is used to retry the operation if it fails.
+  // The below is a Retry Policy. It is used to retry the Activity if it fails.
   retry: {
-    // default retry policy if not specified
+    // These are the values of the Default Retry Policy
     initialInterval: '1s',
     backoffCoefficient: 2,
     maximumAttempts: Infinity,
