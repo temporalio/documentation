@@ -58,12 +58,13 @@ This is necessary due to the decoupled nature of Workflows and Activities, but a
 When you call `proxyActivities` in a Workflow function, there are [a range of ActivityOptions](https://typescript.temporal.io/api/interfaces/common.ActivityOptions) you can set:
 
 ```ts
-// Sample of typical options you can set
+// Sample of typical options you can set while creating a proxy for the `greet` Activity
 const { greet } = proxyActivities<typeof activities>({
   startToCloseTimeout: '30s', // recommended
   scheduleToCloseTimeout: '5m', // useful
+  // The below is a Retry Policy. It is used to retry the Activity if it fails.
   retry: {
-    // default retry policy if not specified
+    // These are the values of the Default Retry Policy
     initialInterval: '1s',
     backoffCoefficient: 2,
     maximumAttempts: Infinity,
