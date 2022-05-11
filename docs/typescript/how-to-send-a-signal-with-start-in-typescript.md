@@ -9,7 +9,7 @@ tags:
   - typescript
 ---
 
-To a send a Signal to a Workflow, use the `signalWithStart()` to start a Workflow if it isn't already running.
+To send a Signal to a Workflow and start the Workflow if it isn't already running, use `signalWithStart()`.
 
 ```typescript
 const client = new WorkflowClient();
