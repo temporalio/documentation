@@ -5,7 +5,8 @@ sidebar_label: Set an Activity Retry Policy
 description: Set an Activity Retry Policy
 ---
 
-To set Activity Retry Policies in TypeScript, specify the `proxyActivities`, then add your configurable [Retry Policy](https://typescript.temporal.io/api/interfaces/proto.coresdk.common.iretrypolicy).
+To set Activity Retry Policies in TypeScript, pass [`ActivityOptions.retry`](https://typescript.temporal.io/api/interfaces/common.ActivityOptions#retry) to [`proxyActivities`](https://typescript.temporal.io/api/namespaces/workflow/#proxyactivities).
+
 
 ```typescript
 // Sample of typical options you can set

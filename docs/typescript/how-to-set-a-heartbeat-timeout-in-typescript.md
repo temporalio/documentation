@@ -9,7 +9,7 @@ tags:
   - typescript
 ---
 
-To set a Heartbeat Timeout, create an instance of `longRunningActivity` and set the `heartbeatTimeout` to a time that the Activity can take to complete. If it takes longer than that, the Activity fails.
+To set a Heartbeat Timeout, use [`ActivityOptions.heartbeatTimeout`](https://typescript.temporal.io/api/interfaces/common.ActivityOptions#heartbeattimeout). If the Activity takes longer than that between heartbeats, the Activity is failed.
 
 ```typescript
 // Creating a proxy for the activity.
