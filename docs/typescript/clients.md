@@ -141,7 +141,7 @@ The [Workflow Handle APIs](https://typescript.temporal.io/api/interfaces/client.
 | `cancel()`      | Cancels a running Workflow.                                                                                                               |
 | `terminate()`   | Terminates a running Workflow.                                                                                                            |
 | `describe()`    | Describes the current Workflow Execution.                                                                                                 |
-| `result()`      | Promise that resolves when Workflow Eecution completes.                                                                                   |
+| `result()`      | Promise that resolves when Workflow Execution completes.                                                                                   |
 
 The following covers how to use many of these APIs, you will want to be fluent with them as they cover the basics of Workflow manipulation.
 
