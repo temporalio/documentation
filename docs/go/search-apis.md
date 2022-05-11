@@ -6,13 +6,13 @@ sidebar_label: Search Attributes
 
 ## Overview
 
-Search attributes enable complex and business-logic-focused search queries for Workflow Executions.
-These are often queried via the Web UI, but you can also query from within your workflow code (as we show below).
+Search Attributes enable complex and business-logic-focused search queries for Workflow Executions.
+These are often queried through the Temporal Web UI, but you can also query from within your Workflow code.
 
 Many [Search Attributes](/docs/concepts/what-is-a-search-attribute) are added to Workflow Executions by default.
 But these are necessarily focused on Temporal internal state tracking.
 
-For more debugging and monitoring, you might want to add your own domain-specific Search Attributes (such as `customerId` or `numItems`) that can serve as useful search filters.
+For more debugging and monitoring, you might want to add your own domain-specific Search Attributes, such as `customerId` or `numItems`, that can serve as useful search filters.
 
 The [Go SDK Client](https://pkg.go.dev/go.temporal.io/sdk/client#Client) offers APIs for configuring Search Attributes.
 There are also APIs on the SDK client for listing Workflows by status.
@@ -20,7 +20,7 @@ Go samples for Search Attributes can be found at [`temporalio/samples-go`](https
 
 ## Value types
 
-Here are the Search Attribute value types and their corresponding types in Go:
+Here are the [Search Attribute value types](/docs/concepts/what-is-a-search-attribute/#types) and their corresponding types in Go:
 
 - Keyword = string
 - Int = int64
@@ -29,7 +29,7 @@ Here are the Search Attribute value types and their corresponding types in Go:
 - Datetime = time.Time
 - Text = string
 
-## Tagging Search Attributes at workflow creation
+## Tagging Search Attributes at Workflow creation
 
 You can provide key-value pairs as SearchAttributes in [StartWorkflowOptions](https://pkg.go.dev/go.temporal.io/sdk/internal#StartWorkflowOptions).
 In Go, Search Attributes are represented as `map[string]interface{}`.
@@ -54,9 +54,9 @@ func (c *Client) CallMyWorkflow(ctx context.Context, workflowID string, payload 
 }
 ```
 
-## Upsert Search Attributes during workflow execution
+## Upsert Search Attributes during Workflow Execution
 
-In advanced cases, you may want to dynamically update these attributes as the workflow progresses.
+In advanced cases, you may want to dynamically update these attributes as the Workflow progresses.
 [UpsertSearchAttributes](https://pkg.go.dev/go.temporal.io/sdk/workflow#UpsertSearchAttributes) is used to add or update Search Attributes from within Workflow code.
 
 `UpsertSearchAttributes` will merge attributes to the existing map in the Workflow.
@@ -107,9 +107,9 @@ info := workflow.GetInfo(ctx)
 val := info.SearchAttributes.IndexedFields["CustomIntField"]
 ```
 
-## Querying Search Attributes within a workflow
+## Querying Search Attributes within a Workflow
 
-You can programmatically retrieve attributes from a workflow execution with `GetSearchAttributes`, and log out all fields with `GetIndexedFields`:
+You can programmatically retrieve attributes from a Workflow Execution with `GetSearchAttributes`, and log out all fields with `GetIndexedFields`:
 
 ```go
 searchAttributes := workflowExecution.GetSearchAttributes()
@@ -165,4 +165,4 @@ func Test_Workflow(t *testing.T) {
 
 ## Full Search Attributes example code
 
-You can find full example Search Attributes sample code [in our `samples-go` repo](https://github.com/temporalio/samples-go/tree/master/searchattributes).
+You can find full example Search Attributes sample code [in the Temporal `samples-go` repo](https://github.com/temporalio/samples-go/tree/master/searchattributes).

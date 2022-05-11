@@ -11,6 +11,8 @@ tags:
 A Schedule-To-Start Timeout is the maximum amount of time that is allowed from when an [Activity Task](/docs/concepts/what-is-an-activity-task) is scheduled (that is, placed in a Task Queue) to when a [Worker](/docs/concepts/what-is-a-worker) starts (that is, picks up from the Task Queue) that Activity Task.
 In other words, it's a limit for how long an Activity Task can be enqueued.
 
+[How to set a Schedule-To-Start Timeout in Go](/docs/go/how-to-set-a-schedule-to-start-timeout-in-go)
+
 The moment that the Task is picked by the Worker from the Task Queue is considered to be the start of the Activity Task for the purposes of the Schedule-To-Start Timeout and associated metrics.
 This definition of "Start" avoids issues that a clock difference between the Temporal Cluster and a Worker might create.
 
@@ -38,7 +40,3 @@ This timeout **does not** trigger any retries regardless of the Retry Policy, as
 We do not recommend using this timeout unless you know what you are doing.
 
 In most cases, we recommend monitoring the `temporal_activity_schedule_to_start_latency` metric to know when Workers slow down picking up Activity Tasks, instead of setting this timeout.
-
-**Implementation guides:**
-
-[How to set a Schedule-To-Start Timeout in Go](/docs/go/how-to-set-activityoptions-in-go/#scheduletostarttimeout)

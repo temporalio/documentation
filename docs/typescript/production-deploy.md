@@ -23,10 +23,10 @@ Take a look at [our recommended .eslintrc file](https://github.com/temporalio/sa
 
 ## Configure Connections and Namespaces
 
-Temporal Clients and Workers connect with Temporal Clusters via gRPC.
+Temporal Clients and Workers connect with Temporal Clusters through gRPC.
 
 - While you were developing locally, all these connections were set to their [default gRPC ports](/docs/concepts/what-is-a-temporal-cluster) on localhost.
-- In production, you will need to configure address, namespace, and encryption settings:
+- In production, you will need to configure address, Namespace, and encryption settings:
 
   ```ts
   export function getEnv(): Env {
@@ -117,7 +117,7 @@ In addition to core tracing via `oTelCollectorUrl`, you can set up tracing of Wo
 
 ### Monitoring
 
-Here is the [full list of SDK metrics](/docs/reference/sdk-metrics/). Some of them are used in the [Worker Tuning Guide](/docs/operation/how-to-tune-workers) to determine how to change your deployment configuration. The guide also assumes you track the host-level metrics that are important for measuring your application's load (for many applications, this is just CPU, but some applications may run into other bottlenecks—like with Activities that use a lot of memory, or open a lot of sockets). How you track host-level metrics depends on where you deploy your Workers.
+Here is the [full list of SDK metrics](/docs/references/sdk-metrics/). Some of them are used in the [Worker Tuning Guide](/docs/operation/how-to-tune-workers) to determine how to change your deployment configuration. The guide also assumes you track the host-level metrics that are important for measuring your application's load (for many applications, this is just CPU, but some applications may run into other bottlenecks—like with Activities that use a lot of memory, or open a lot of sockets). How you track host-level metrics depends on where you deploy your Workers.
 
 ## Performance tuning
 
@@ -130,8 +130,8 @@ We endeavor to give you good defaults, so you don't have to worry about them, bu
   - `maxConcurrentActivityTaskExecutions` and other options for tuning concurrency
   - `stickyQueueScheduleToStartTimeout` to determine how quickly Temporal stops trying to send work to Workers that are no longer present, via [Sticky Queues](/docs/concepts/what-is-a-sticky-execution)
   - See [Worker Tuning Guide](/docs/operation/how-to-tune-workers)
-- [Activity Timeouts and Retries](/docs/typescript/activities#activity-timeouts) as you gain an understanding of Temporal and the services you rely on, you will likely want to adjust the timeouts and retry policy to reflect your desired behavior.
-  - Note that there are separate [timeouts and retry policy](https://typescript.temporal.io/api/interfaces/client.workflowoptions/#workflowruntimeout) at the Workflow level, but we do not encourage their usage unless you know what you are doing.
+- [Activity Timeouts and Retries](/docs/typescript/activities#activity-timeouts) as you gain an understanding of Temporal and the services you rely on, you will likely want to adjust the timeouts and Retry Policy to reflect your desired behavior.
+  - Note that there are separate [Timeouts and Retry Policy](https://typescript.temporal.io/api/interfaces/client.workflowoptions/#workflowruntimeout) at the Workflow level, but we do not encourage their usage unless you know what you are doing.
 - _to be completed as we get more user feedback_
 
 ## Do not use Alpine
@@ -140,13 +140,13 @@ Alpine replaces glibc with musl, which is incompatible with the Rust core of the
 If you receive errors like below, it's probably because you are using Alpine.
 You can use the `slim` tag for the Docker image, if you are looking for a lightweight alternative.
 
-```
+```sh
 Error: Error loading shared library ld-linux-x86-64.so.2: No such file or directory (needed by /opt/app/node_modules/@temporalio/core-bridge/index.node)
 ```
 
 Or like this:
 
-```
+```sh
 Error: Error relocating /opt/app/node_modules/@temporalio/core-bridge/index.node: __register_atfork: symbol not found
 ```
 
@@ -159,6 +159,6 @@ This package is required even when connecting to a local Temporal Server, and wh
 
 Add the following line to your Dockerfile if you use Debian-based images:
 
-```
+```sh
 RUN apt update && apt install -y ca-certificates
 ```

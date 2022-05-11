@@ -16,7 +16,7 @@ Activities run in the standard Node.js environment and can use any Node.js logge
 
 <details>
 <summary>
-Inject Activity context via interceptor and log all activity executions
+Inject Activity context via interceptor and log all Activity executions
 </summary>
 
 <!--SNIPSTART typescript-activity-logging-interceptor-->
@@ -93,9 +93,9 @@ Some important features of the [InjectedSinkFunction](https://typescript.tempora
 
 #### Advanced: Performance considerations and non-blocking Sinks
 
-The injected sink function contributes to the overall workflow task processing duration.
+The injected sink function contributes to the overall Workflow Task processing duration.
 
-- If you have a long-running sink function, such as one that tries to communicate with external services, you might start seeing workflow task timeouts.
+- If you have a long-running sink function, such as one that tries to communicate with external services, you might start seeing Workflow Task timeouts.
 - The effect is multiplied when using `callDuringReplay: true` and replaying long Workflow histories because the Workflow Task timer starts when the first history page is delivered to the Worker.
 
 ## Logging in Workers and Clients
@@ -160,7 +160,7 @@ For information about metrics, see the [Metrics section on the Deploy Checklist]
 The [`interceptors-opentelemetry`](https://github.com/temporalio/samples-typescript/tree/main/interceptors-opentelemetry) sample shows how to use the SDK's built-in OpenTelemetry tracing to trace everything from starting a Workflow to Workflow Execution to running an Activity from that Workflow.
 
 The built-in tracing uses protobuf message headers (like [this one](https://github.com/temporalio/api/blob/b2b8ae6592a8730dd5be6d90569d1aea84e1712f/temporal/api/workflowservice/v1/request_response.proto#L161) when starting a Workflow) to propagate the tracing information from the client to the Workflow and from the Workflow to its successors (when Continued As New), children, and Activities.
-All of these executions are linked with a single trace ID and have the proper parent->child span relation.
+All of these executions are linked with a single trace identifier and have the proper parent->child span relation.
 
 Tracing is compatible between different Temporal SDKs as long as compatible [context propagators](https://opentelemetry.lightstep.com/core-concepts/context-propagation/) are used.
 

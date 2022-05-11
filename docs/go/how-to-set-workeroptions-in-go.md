@@ -131,10 +131,10 @@ Rate limits the number of Activity Executions that can be executed per second
 
 A value of `0` sets to the default value.
 
-This rate is managed by the Temporal Cluster and limits the Activity Tasks per second for the entire Task Queue. This is in contrast to [`WorkerActivityTasksPerSecond`](#workeractivitytaskspersecond) controls activities only per worker.
+This rate is managed by the Temporal Cluster and limits the Activity Tasks per second for the entire Task Queue. This is in contrast to [`WorkerActivityTasksPerSecond`](#workeractivitytaskspersecond) controls activities only per Worker.
 
 Notice that the number is represented in float, so that you can set it to less than 1 if needed.
-For example, set the number to 0.1 means you want your activity to be executed once for every 10 seconds.
+For example, set the number to 0.1 means you want your Activity to be executed once for every 10 seconds.
 This can be used to protect down stream services from flooding.
 
 ```go
@@ -243,9 +243,9 @@ Set to disable Sticky Executions
 
 Sticky Execution runs Workflow Tasks of a Workflow Execution on same host (could be a different Worker, as long as it is on the same host).
 This is an optimization for Workflow Executions.
-When sticky execution is enabled, worker keeps the workflow state in memory.
-New workflow task contains the new history events will be dispatched to the same worker.
-If this worker crashes, the sticky workflow task will timeout after StickyScheduleToStartTimeout, and temporal server will clear the stickiness for that workflow execution and automatically reschedule a new workflow task that is available for any worker to pick up and resume the progress.
+When sticky execution is enabled, Worker keeps the Workflow state in memory.
+New Workflow Task contains the new history events will be dispatched to the same Worker.
+If this Worker crashes, the sticky Workflow Task will timeout after `StickyScheduleToStartTimeout`, and Temporal Cluster will clear the stickiness for that Workflow Execution and automatically reschedule a new Workflow Task that is available for any Worker to pick up and resume the progress.
 
 ```go
 // ...

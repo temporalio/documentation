@@ -13,8 +13,17 @@ Many of Temporal's core terms can be used in a generic way.
 To differentiate one of Temporal's core terms from a generic instance of a term, always treat the Temporal term as a proper noun in documentation.
 Generic versions of the same term should not be capitalized and should be used sparingly to avoid confusion.
 
-- Correct: "Next, register the Activity within the Workflow"
-- Incorrect: "Next, register the activity within the workflow"
+- Correct: "Next, register the Activity within the Workflow."
+- Incorrect: "Next, register the activity within the workflow."
+
+### Abbreviation of "identifier"
+
+In text, do not abbreviate the word "identifier" as "ID", "Id", or "id" unless it is part of a Temporal core term, such as "Workflow Id" or "Activity Id".
+
+- Correct: "You can provide an order identifier or customer identifier as a Workflow Id."
+- Incorrect: "You can provide an order ID or customer id as a Workflow Id."
+
+In code (and when quoting or referring to code in text), follow the conventions of each language.
 
 ### En dashes in ranges
 

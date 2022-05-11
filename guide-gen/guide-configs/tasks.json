@@ -1,0 +1,68 @@
+{
+	"file_name": "tasks.md",
+	"id": "tasks",
+	"title": "Tasks",
+	"sidebar_label": "Tasks",
+	"description": "Temporal Task Queues and Worker Processes are tightly coupled components.",
+	"toc_max_heading_level": 4,
+	"add_tabs_support": true,
+	"h2_sections": [{
+			"header": "none",
+			"h3_sections": [{
+					"header": "none",
+					"type": "explanation",
+					"path": "concept-context/intro"
+				},
+				{
+					"header": "none",
+					"type": "explanation",
+					"path": "concepts/what-is-a-task"
+				},
+				{
+					"header": "Workflow Task",
+					"type": "explanation",
+					"path": "concepts/what-is-a-workflow-task"
+				},
+				{
+					"header": "Workflow Task Execution",
+					"type": "explanation",
+					"path": "concepts/what-is-a-workflow-task-execution"
+				},
+				{
+					"header": "Activity Task",
+					"type": "explanation",
+					"path": "concepts/what-is-an-activity-task"
+				},
+				{
+					"header": "Activity Task Execution",
+					"type": "explanation",
+					"path": "concepts/what-is-an-activity-task-execution"
+				}
+			]
+		},
+		{
+			"header": "Task Queues",
+			"h3_sections": [{
+				"header": "none",
+				"type": "explanation",
+				"path": "concepts/what-is-a-task-queue"
+			}]
+		},
+		{
+			"header": "Sticky Execution",
+			"h3_sections": [{
+				"header": "none",
+				"type": "explanation",
+				"path": "concepts/what-is-a-sticky-execution"
+			}]
+		},
+		{
+			"header": "Task Routing",
+			"h3_sections": [{
+				"header": "none",
+				"type": "explanation",
+				"path": "concepts/what-is-task-routing"
+			}]
+		}
+	]
+}

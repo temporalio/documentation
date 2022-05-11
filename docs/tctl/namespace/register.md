@@ -118,7 +118,7 @@ tctl namespace register --owner-email <value>
 
 ### `--retention`
 
-Specify the number of days to retain [Workflow Executions](/docs/concepts/what-is-a-workflow-execution).
+Specify the number of days to retain closed [Workflow Executions](/docs/concepts/what-is-a-workflow-execution) per [Namespace](/docs/concepts/what-is-a-namespace).
 
 Alias `--rd`
 

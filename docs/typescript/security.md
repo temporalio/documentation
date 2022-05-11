@@ -97,6 +97,7 @@ async function run() {
   });
 
   const worker = await Worker.create({
+    connection,
     namespace: 'foo.bar', // as explained in Namespaces section
     // ...
   });
@@ -196,7 +197,7 @@ Follow this tutorial for setting up mTLS (Mutual TLS authentication) with Tempor
 1. Set up Temporal Server with mTLS encryption locally
    - Clone the [server samples repo](https://github.com/temporalio/samples-server/) and change to the `tls/tls-simple` directory
    - Follow [these instructions](https://github.com/temporalio/samples-server/tree/master/tls/tls-simple#readme) to set up a local server with mTLS
-   - The sample does not register the default namespace on startup, register it with: `docker exec -it tls-simple_temporal-admin-tools_1 tctl n re --retention 1 default`
+   - The sample does not register the default Namespace on startup, register it with: `docker exec -it tls-simple_temporal-admin-tools_1 tctl n re --retention 1 default`
 1. Configure your Temporal Client and Worker to connect with mTLS
    - Scaffold a new Temporal project with `npx @temporalio/create@latest` using the `hello-world-mtls` template, or copy the relevant configuration from the snippets below into an existing project.
    - Export the required environment variables:
@@ -216,5 +217,5 @@ Temporal has no opinions on production deployment strategy other than the connec
 
 ## Encryption at rest with Payload Codec
 
-- [Data Converter ➡️ Encryption]
-- [Data Converters in TypeScript ➡️ Encryption]
+- [Data Converter ➡️ Encryption](https://docs.temporal.io/docs/concepts/what-is-a-data-converter#encryption)
+- [Data Converters in TypeScript ➡️ Encryption](https://docs.temporal.io/docs/typescript/data-converters#encryption)

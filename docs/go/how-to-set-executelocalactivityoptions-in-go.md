@@ -14,4 +14,4 @@ tags:
 | ---------------------- | ------------------------------------------------------------------- | ------------- |
 | ScheduleToCloseTimeout | Set the end to end timeout for the local activity including retries | time.Duration |
 | StartToCloseTimeout    | Set timeout for a single execution of the local activity            | time.Duration |
-| RetryPolicy            | Set how to retry activity if error happens                          | time.Duration |
+| RetryPolicy            | Set how to retry Activity if error happens                          | time.Duration |

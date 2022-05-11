@@ -15,7 +15,7 @@ The TypeScript SDK comes with an optional interceptor package that adds tracing 
 
 - [WorkflowInboundCallsInterceptor](https://typescript.temporal.io/api/interfaces/workflow.workflowinboundcallsinterceptor/) - Intercept Workflow inbound calls like execution, signals, and queries.
 - [WorkflowOutboundCallsInterceptor](https://typescript.temporal.io/api/interfaces/workflow.workflowoutboundcallsinterceptor/) - Intercept Workflow outbound calls to Temporal APIs like scheduling Activities and starting Timers.
-- [ActivityInboundCallsInterceptor](https://typescript.temporal.io/api/interfaces/worker.activityinboundcallsinterceptor) - Intercept inbound calls to an activity (e.g. execute).
+- [ActivityInboundCallsInterceptor](https://typescript.temporal.io/api/interfaces/worker.activityinboundcallsinterceptor) - Intercept inbound calls to an Activity (for example, `execute`).
 - [WorkflowClientCallsInterceptor](https://typescript.temporal.io/api/interfaces/client.workflowclientcallsinterceptor/) - Intercept methods of [`WorkflowClient`](https://typescript.temporal.io/api/classes/client.workflowclient/) and [`WorkflowHandle`](https://typescript.temporal.io/api/interfaces/client.workflowhandle) like starting or signaling a Workflow.
 
 ## How interceptors work

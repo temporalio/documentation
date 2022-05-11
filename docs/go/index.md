@@ -16,7 +16,7 @@ The SDK contains the following tools:
 - APIs to use within your Workflows
 - APIs to create and manage Worker Entities and Worker Processes
 
-### Get the SDK
+**Get the SDK**
 
 Add the [Temporal Go SDK](https://github.com/temporalio/sdk-go) to your project:
 
@@ -30,11 +30,15 @@ Or clone the Go SDK repo to your preferred location:
 git clone git@github.com:temporalio/sdk-go.git
 ```
 
-### Are there executable code samples?
+**Are there executable code samples?**
 
 You can find a complete list of executable code samples in the [samples library](/docs/samples-library/#go), which includes Temporal Go SDK code samples from the [temporalio/samples-go](https://github.com/temporalio/samples-go) repo.
 Additionally, each of the Go SDK Tutorials is backed by a fully executable template application.
 
-### Where is the Go SDK technical reference?
+**Where is the Go SDK technical reference?**
 
 The [Temporal Go SDK API reference](https://pkg.go.dev/go.temporal.io/sdk) is published on [pkg.go.dev](https://pkg.go.dev/go.temporal.io/sdk)
+
+**Where can I find video demos?**
+
+[Temporal Go SDK YouTube playlist](https://www.youtube.com/playlist?list=PLl9kRkvFJrlRYHYaTPnsvE46szyMIZLdk)

@@ -46,7 +46,7 @@ values={[
 <TabItem value="java">
 
 ```java
- WorkflowServiceStubs service = WorkflowServiceStubs.newInstance();
+ WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
  // https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowClientOptions.Builder.html
  WorkflowOptions clientOptions = WorkflowClientOptions.newBuilder()
     .setNamespace('my-namespace-name');
@@ -117,6 +117,13 @@ for that execution cannot be applied. This results in loss of some progress made
 previous active cluster. During such conflict resolution, Temporal re-injects any external events like Signals to the
 new history before discarding replication tasks. Even though some progress could rollback during failovers, Temporal
 provides the guarantee that Workflows won’t get stuck and will continue to make forward progress.
+
+## Automatic Forwarding on Namespaces
+
+Temporal supports automatic forwarding of Start, Signal, and Query requests to the active Cluster.
+This feature must be enabled through a dynamic conflict flag for the given Namespace.
+
+Once enabled, Tasks are sent to the Parent Task Queue partition that matches that Namespace, if it exists.
 
 ### Visibility API
 

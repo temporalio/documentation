@@ -103,7 +103,7 @@ const result = await client.execute(SubscriptionWorkflow, {
 Notice that the `args` are typechecked against the signature of `SubscriptionWorkflow`.
 We also take the opportunity to specify the `workflowId`, which we recommend in production.
 
-Check that you can run the workflow (`npm run workflow`) and everything works as expected (if it is still printing "Hello Temporal", make sure you restart your Workers to pick up changes in your code, which you can automate with `npm run start.watch`).
+Check that you can run the Workflow (`npm run workflow`) and everything works as expected (if it is still printing "Hello Temporal", make sure you restart your Workers to pick up changes in your code, which you can automate with `npm run start.watch`).
 
 From here on we expect that you are comfortable with making changes to Workflows and rerunning them to verify that they work as expected after each change.
 
@@ -205,7 +205,7 @@ export async function SubscriptionWorkflow(
   let isCanceled = false;
   wf.setHandler(cancelSignal, () => void (isCanceled = true)); // new
   await acts.sendWelcomeEmail(email);
-  if ((await wf.condition(() => isCanceled), trialPeriod)) {
+  if (await wf.condition(() => isCanceled, trialPeriod)) {
     // reach here if predicate function is true
     await acts.sendCancellationEmailDuringTrialPeriod(email);
   } else {
@@ -251,7 +251,7 @@ We are now at Requirement 3:
 You should have all you need for writing the billing process code here; you are encouraged to take the exercise of writing this yourself.
 
 <details>
-<summary>Check your answer with ours
+<summary>Check your answer with ours.
 </summary>
 
 ```ts
@@ -292,7 +292,7 @@ async function BillingCycle(customer: Customer) {
 
 </details>
 
-Again, check that you can run your workflow, and everything works as expected, including cancelling halfway through the trial or the billing periods.
+Again, check that you can run your Workflow, and everything works as expected, including cancelling halfway through the trial or the billing periods.
 
 ## Queries and Reusable Functions
 
@@ -309,7 +309,7 @@ let amountCharged = customer.initialBillingPeriodCharge;
 wf.setHandler(amountChargedQuery, () => amountCharged);
 wf.setHandler(
   updateAmountCharged,
-  (newAmt: number) => void (newAmt = updateAmountCharged)
+  (newAmount: number) => void (amountCharged = newAmount)
 );
 // do stuff with amountCharged
 ```

@@ -59,7 +59,7 @@ If all the Workers are currently busy and unable to handle new Session, the fram
 It will cancel the session context and therefore all the Activity Executions using that Session Context.
 Note that it's safe to call `CompleteSession()` on a failed Session, meaning that you can call it from a `defer` function after the Session is successfully created.
 
-### Session metadata
+#### Session metadata
 
 ```go
 type SessionInfo struct {
@@ -76,14 +76,14 @@ func GetSessionInfo(ctx Context) *SessionInfo
 The Session Context also stores some Session metadata, which can be retrieved by the `GetSessionInfo()` API.
 If the Context passed in doesn't contain any Session metadata, this API will return a `nil` pointer.
 
-### Limiting concurrent Sessions
+#### Limiting concurrent Sessions
 
 To limit the number of concurrent Sessions running on a Worker, set the `MaxConcurrentSessionExecutionSize` field of `worker.Options` to the desired value.
 By default this field is set to a very large value, so there's no need to manually set it if no limitation is needed.
 
-If a worker hits this limitation, it won't accept any new `CreateSession()` requests until one of the existing sessions is completed. `CreateSession()` will return an error if the session can't be created within `CreationTimeout`.
+If a Worker hits this limitation, it won't accept any new `CreateSession()` requests until one of the existing sessions is completed. `CreateSession()` will return an error if the session can't be created within `CreationTimeout`.
 
-### Recreate Session
+#### Recreate Session
 
 For long-running Sessions, you may want to use the `ContinueAsNew` feature to split the Workflow into multiple runs when all Activities need to be executed by the same Worker.
 The `RecreateSession()` API is designed for such a use case.
