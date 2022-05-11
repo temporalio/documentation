@@ -133,15 +133,15 @@ The [Workflow Handle APIs](https://typescript.temporal.io/api/interfaces/client.
 
 | Handle API      | Description                                                                                                                               |
 | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| `client`        | Readonly accessor to the underlying WorkflowClient.                                                                                       |
+| `client`        | Readonly accessor to the underlying Workflow Client.                                                                                      |
 | `workflowId`    | The `workflowId` of the current Workflow.                                                                                                 |
 | `originalRunId` | The `runId` of the initial run of the bound Workflow.                                                                                     |
 | `query()`       | Call to query a Workflow after it's been started even if it has already completed. `const value = await handle.query(getValue, ...args);` |
 | `signal()`      | Call to signal a _running_ Workflow. `await handle.signal(increment, ...args);`                                                           |
 | `cancel()`      | Cancels a running Workflow.                                                                                                               |
-| `terminate()`   | Terminates a running Workflow                                                                                                             |
-| `describe()`    | Describes the current Workflow execution                                                                                                  |
-| `result()`      | Promise that resolves when Workflow execution completes                                                                                   |
+| `terminate()`   | Terminates a running Workflow.                                                                                                            |
+| `describe()`    | Describes the current Workflow Execution.                                                                                                 |
+| `result()`      | Promise that resolves when Workflow Eecution completes.                                                                                   |
 
 The following covers how to use many of these APIs, you will want to be fluent with them as they cover the basics of Workflow manipulation.
 
@@ -182,7 +182,7 @@ Using a Workflow Handle isn't necessary with `client.execute` by definition.
 
 ### Cancel a Workflow
 
-To cancel a Workflow execution, call the [`handle.cancel()`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle#cancel) method on a WorkflowHandle.
+To cancel a Workflow Execution, call the [`handle.cancel()`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle#cancel) method on a Workflow Handle.
 
 ```ts
 // Start the Workflow without waiting its completion
@@ -228,11 +228,11 @@ const handle = await client.start(scheduledWorkflow, {
 });
 ```
 
-Typescript SDK `workflowOptions` source code: https://typescript.temporal.io/api/interfaces/client.workflowoptions/#cronschedule
+For more information, see the Typescript SDK [`workflowOptions` source code](https://typescript.temporal.io/api/interfaces/client.workflowoptions/#cronschedule).
 
 ## Note: Child Workflows and External Workflows
 
-You can start Child Workflows only from within another Workflow, not from a Client.
+You can start Child Workflows only from within another Workflow, and not from a Client.
 
 **Hence the main Child Workflows documentation is on the [Workflow APIs](/docs/typescript/workflows#child-workflows) page.**
 

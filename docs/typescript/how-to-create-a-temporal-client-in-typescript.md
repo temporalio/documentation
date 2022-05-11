@@ -1,15 +1,15 @@
 ---
 id: how-to-create-a-temporal-client-in-typescript
 title: How to create a Temporal Client in Typescript
-sidebar_label: Create a temporal Client
-description: Create a temporal Client
+sidebar_label: Create a Temporal Client
+description: Create a Temporal Client
 tags:
   - developer-guide
   - sdk
   - typescript
 ---
 
-Use a new `WorflowClient()` with the requisite gRPC `Connection` to create a new Client.
+Use a new `WorflowClient()` with the requisite gRPC [`Connection`](https://typescript.temporal.io/api/classes/client.Connection#service) to create a new Client.
 
 ```typescript
 import { Connection, WorkflowClient } from '@temporalio/client';
@@ -44,7 +44,7 @@ const client = new WorkflowClient(connection.service, {
 ```
 
 [The Hello World mTLS sample](https://github.com/temporalio/samples-node/tree/main/hello-world-mtls/) demonstrates sample code used to connect to a Temporal Cloud account.
-When signing up to Temporal Cloud you should receive a Namespace, a Server address and a client certificate and key. Use the following environment variables to set up the sample:
+When signing up to Temporal Cloud you should receive a Namespace, a Server address and a Client certificate and key. Use the following environment variables to set up the sample:
 
 - **TEMPORAL_ADDRESS**: looks like `foo.bar.tmprl.cloud` (NOT web.foo.bar.tmprl.cloud)
 - **TEMPORAL_NAMESPACE**: looks like `foo.bar`

@@ -9,7 +9,7 @@ tags:
   - typescript
 ---
 
-You can set a Workflow Id in the Client of a Workflow.
+Connect to a Client with `client.start()` and any arguments. Then specify your `taskQueue` and set your `workflowId` to a meaningful business identifier.
 
 ```typescript
 const handle = await client.start(example, {
@@ -20,14 +20,3 @@ const handle = await client.start(example, {
 ```
 
 This starts a new Client with the given Workflow Id, Task Queue name, and an argument.
-
-```typescript
-const handle = await client.start(example, {
-  args: ['Temporal'], // type inference works! args: [name: string]
-  taskQueue: 'your-task-queue',
-  // in practice, use a meaningful business id, eg customerId or transactionId
-  workflowId: 'your-workflow-id-',
-});
-```
-
-Connect to a Client with `client.start()` and any arguments. Then specify your `taskQueue` and set your `workflowId` to a meaningful business identifier.

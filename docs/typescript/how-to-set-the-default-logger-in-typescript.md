@@ -9,7 +9,7 @@ tags:
   - typescript
 ---
 
-Set the `DefaultLogger` to one of the following: `'TRACE'` | `'DEBUG'` | `'INFO'` | `'WARN'` | `'ERROR'`.
+Set the [`DefaultLogger`](https://typescript.temporal.io/api/classes/worker.DefaultLogger) to one of the following log levels: `'TRACE'` | `'DEBUG'` | `'INFO'` | `'WARN'` | `'ERROR'`.
 
 The following is an example of setting the `DefaultLogger` to `'Debug'`.
 
