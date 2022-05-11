@@ -3443,7 +3443,6 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-
 Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, set the `CronSchedule` field, and pass the instance to the `ExecuteWorkflow` call.
 
 - Type: `string`
@@ -3460,7 +3459,6 @@ if err != nil {
 }
 ```
 
-
 </TabItem>
 <TabItem value="java">
 
@@ -3474,7 +3472,6 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-
 You can set each Workflow to repeat on a schedule with the `cronSchedule` option:
 
 ```typescript
@@ -3483,7 +3480,6 @@ const handle = await client.start(scheduledWorkflow, {
   cronSchedule: "* * * * *", // start every minute
 });
 ```
-
 
 </TabItem>
 </Tabs>
