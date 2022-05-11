@@ -1,0 +1,20 @@
+{
+	"file_name": "retry-policies.md",
+	"id": "retry-policies",
+	"title": "Retry Policies",
+	"sidebar_label": "Retry Policies",
+	"description": "A Retry Policy works in cooperation with the timeouts to provide fine controls to optimize the execution experience.",
+	"toc_max_heading_level": 4,
+	"add_tabs_support": true,
+	"h2_sections": [{
+			"header": "none",
+			"h3_sections": [
+        {
+  				"header": "none",
+  				"type": "explanation",
+  				"path": "concepts/what-is-a-retry-policy"
+  			}
+      ]
+		}
+	]
+}

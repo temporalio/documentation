@@ -7,14 +7,17 @@ const graymatter = require("gray-matter");
 __dirname = path.resolve();
 
 const DOCS_PATH = `${__dirname}/docs`;
+const GUIDE_CONFIGS_PATH = `${__dirname}/guide-gen/guide-configs`;
 const FILE_EXTENSION = ".md";
 
-const CONCEPTS_CONFIG = require("./guide-configs/concepts.json");
-const APP_DEV_CONFIG = require("./guide-configs/app-dev.json");
-
-const GUIDE_CONFIGS = {
-  cfgs: [CONCEPTS_CONFIG, APP_DEV_CONFIG],
-};
+// const WORKFLOW_CONCEPTS_CONFIG = require("./guide-configs/concepts.json");
+// const WORKFLOW_CONCEPTS_CONFIG = require("./guide-configs/concepts.json");
+//
+// const APP_DEV_CONFIG = require("./guide-configs/app-dev.json");
+//
+// const GUIDE_CONFIGS = {
+//   cfgs: [CONCEPTS_CONFIG, APP_DEV_CONFIG],
+// };
 
 // File is the class that contains a filename and lines of the file
 class File {
@@ -28,12 +31,13 @@ class File {
 run();
 
 async function run() {
+  let guide_configs = await getConfigs();
   // Search and identify files in the docs diretory
   let files = await getFilePaths();
   // Read all of the file contents
   files = await getFileContents(files);
   // Attach the file to the corresponding section in each guide
-  let guide_configs = await attachFiles(GUIDE_CONFIGS, files);
+  guide_configs = await attachFiles(guide_configs, files);
   // Generate a full index of anchors in the guides
   guide_configs = await generateLinkIndexes(guide_configs);
   // Replace relevant links with guide anchors
@@ -42,6 +46,22 @@ async function run() {
   guide_configs = await generateGuides(guide_configs);
   // Write the Markdown guides to files
   await writeGuides(guide_configs);
+}
+
+async function getConfigs() {
+  const file_paths = [];
+  const guide_configs = {
+    cfgs: [],
+  }
+  for await (const entry of readdirp(GUIDE_CONFIGS_PATH)) {
+    const file = new File(entry.basename, entry.path, entry.fullPath);
+    file_paths.push(file);
+  }
+  for (const file of file_paths) {
+    const raw_content = await fs.readFile(`${file.fullpath}`);
+    guide_configs.cfgs.push(JSON.parse(raw_content));
+  }
+  return guide_configs;
 }
 
 async function getFilePaths() {
@@ -268,7 +288,13 @@ async function generateLinkIndex(guide_config) {
   for (const h2_section of guide_config.h2_sections) {
     let h3_index = 0;
     for (const h3_section of h2_section.h3_sections) {
-      if (h3_section.header == "none" && h3_section.type != "lang-tabs") {
+      if (h3_section.header == "none" && h2_section.header == "none") {
+        link_index.push({
+          guide: guide_config.id,
+          local_ref: "",
+          path: h3_section.path,
+        });
+      } else if (h3_section.header == "none" && h3_section.type != "lang-tabs") {
         link_index.push({
           guide: guide_config.id,
           local_ref: localRef(h2_section.header),
