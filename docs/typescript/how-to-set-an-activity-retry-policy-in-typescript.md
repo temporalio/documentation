@@ -9,7 +9,7 @@ To set Activity Retry Policies in TypeScript, specify the `proxyActivities`, the
 
 ```typescript
 // Sample of typical options you can set
-const { greet } = proxyActivities<typeof activities>({
+const { yourActivity } = proxyActivities<typeof activities>({
   // ...
   retry: {
     // default retry policy if not specified
