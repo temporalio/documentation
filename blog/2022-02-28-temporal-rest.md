@@ -48,13 +48,15 @@ To execute an instance of `counterWorkflow`, use `WorkflowClient` to start the W
 ```ts
 import { WorkflowClient } from '@temporalio/client';
 import { counterWorkflow } from './workflows';
+import crypto from 'crypto';
 
 async function run() {
   const client = new WorkflowClient();
 
   const handle = await client.start(counterWorkflow, {
     taskQueue: 'tutorial',
-    workflowId: 'wf-id-' + Math.floor(Math.random() * 1000),
+    // Usually, we use a business ID. In this example, we don't have one, so we generate an ID.
+    workflowId: 'counter-' + crypto.randomUUID(),
   });
 
   // Increment the counter
@@ -161,7 +163,7 @@ To create a new counter with this Workflow, we would normally send an `increment
 ```ts
 const handle = await client.start(counterWorkflow, {
   taskQueue: 'tutorial',
-  workflowId: 'wf-id-' + Math.floor(Math.random() * 1000),
+  workflowId: 'counter-' + crypto.randomUUID(),
 });
 
 // Increment a new counter

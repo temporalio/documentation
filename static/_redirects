@@ -5,7 +5,7 @@
 #
 /docs/sdks-introduction         /application-development
 /docs/get-started         /
-/docs/glossary        /docs/reference/glossary
+/docs/glossary        /docs/references/glossary
 
 #
 # Concept pages redirects
@@ -18,8 +18,8 @@
 /docs/concepts/signals         /docs/concepts/what-is-a-signal
 /docs/concepts/queries         /docs/concepts/what-is-a-query
 /docs/concepts/task-queues         /docs/concepts/what-is-a-task-queue
-/docs/reference/commands        /docs/concepts/what-is-a-command
-/docs/reference/events        /docs/concepts/what-is-an-event
+/docs/references/commands        /docs/concepts/what-is-a-command
+/docs/references/events        /docs/concepts/what-is-an-event
 
 # CONTENT -> CONCEPTS
 /docs/content/what-is-*         /docs/concepts/what-is-:splat
@@ -54,7 +54,9 @@
 /docs/go-selectors        /docs/go/selectors
 /docs/go/sessions         /docs/go/how-to-create-a-worker-session-in-go
 /docs/go/side-effects         /docs/go/how-to-execute-a-side-effect-in-go
-/docs/go/signals        /docs/go/how-to-send-a-signal-to-a-workflow-execution-in-go
+/docs/go/signals        /docs/go/how-to-use-signals-in-go
+/docs/go/how-to-send-a-signal-to-a-workflow-execution-in-go        /docs/go/how-to-use-signals-in-go
+/docs/go/how-to-handle-a-signal-in-a-workflow-in-go       /docs/go/how-to-use-signals-in-go
 /docs/go-sync-vs-async-start        /docs/go/sync-vs-async-start
 /docs/go/sync-vs-async-start        /docs/go/workflows/#how-to-start-a-workflow
 /docs/go/task-queues        /docs/concepts/what-is-a-task-queue
@@ -66,6 +68,8 @@
 /docs/go/workers        /docs/go/how-to-develop-a-worker-program-in-go
 /docs/go-execute-activity         /docs/go/activities#executing-activities
 /docs/go-activity-async-completion        /docs/go/activities#asynchronous-activity-completion
+/docs/go/how-to-set-startworkflowoptions-in-go*        /docs/go/startworkflowoptions-reference:splat
+/docs/go/how-to-set-activityoptions-in-go*        /docs/go/activityoptions-reference:splat
 
 #
 # Java pages redirects
@@ -152,3 +156,5 @@
 /docs/system-tools/*        /docs/devtools/:splat
 
 /docs/content/how-to-remove-a-search-attribute-from-a-cluster-using-tctl /docs/tctl/how-to-remove-a-search-attribute-from-a-cluster-using-tctl
+
+/docs/reference/*        /docs/references/:splat

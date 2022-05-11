@@ -1,0 +1,51 @@
+{
+  "file_name": "workers.md",
+  "id": "workers",
+  "title": "Workers",
+  "sidebar_label": "Workers",
+  "description": "This guide is meant to be a comprehensive overview of Temporal Workers.",
+  "toc_max_heading_level": 4,
+  "add_tabs_support": true,
+  "h2_sections": [
+    {
+      "header": "none",
+      "h3_sections": [
+        {
+  				"header": "none",
+  				"type": "explanation",
+  				"path": "concept-context/intro"
+  			},
+        {
+          "header": "none",
+          "type": "explanation",
+          "path": "concepts/what-is-a-worker"
+        }
+      ]
+    },
+    {
+      "header": "Worker Program",
+      "h3_sections": [
+        {
+          "header": "none",
+          "type": "explanation",
+          "path": "concepts/what-is-a-worker-program"
+        },
+        {
+          "header": "Worker Entity",
+          "type": "explanation",
+          "path": "concepts/what-is-a-worker-entity"
+        }
+      ]
+    },
+    {
+      "header": "Worker Process",
+      "h3_sections": [
+        {
+          "header": "none",
+          "type": "explanation",
+          "path": "concepts/what-is-a-worker-process"
+        }
+      ]
+    }
+  ]
+}

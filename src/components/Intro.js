@@ -4,11 +4,11 @@ import useBaseUrl from "@docusaurus/useBaseUrl";
 
 function Explained() {
   return (
-    <div className="flex flex-col rounded-lg bg-[color:var(--ifm-card-background-color)] p-5 shadow">
+    <div className="flex flex-col rounded-lg bg-[color:var(--ifm-card-background-color)] p-5 shadow landing-card">
       <div className="flex items-center space-x-4">
         <svg
           width="13"
-          className="mb-4 h-10 w-10 rounded-lg bg-[color:var(--ifm-color)] p-2 text-[color:var(--ifm-background-color)]"
+          className="mb-4 h-10 w-10 rounded-lg bg-[color:var(--ifm-background-color)] p-2 text-[color:var(--ifm-color)] icon"
           height="14"
           viewBox="0 0 491.52 491.52"
           fill="none"
@@ -66,11 +66,11 @@ function Explained() {
 
 function SDKs() {
   return (
-    <div className="rounded-lg bg-[color:var(--ifm-card-background-color)] p-5 shadow">
+    <div className="rounded-lg bg-[color:var(--ifm-card-background-color)] p-5 shadow landing-card">
       <div className="flex items-center space-x-4">
         <svg
           width="13"
-          className="mb-4 h-10 w-10 rounded-lg bg-[color:var(--ifm-color)] p-2 text-[color:var(--ifm-background-color)]"
+          className="mb-4 h-10 w-10 rounded-lg bg-[color:var(--ifm-background-color)] p-2 text-[color:var(--ifm-color)] icon"
           height="14"
           viewBox="0 0 13 14"
           fill="none"
@@ -104,7 +104,7 @@ function SDKs() {
                 to={useBaseUrl("/docs/go/")}
               >
                 <img
-                  className="h-8 w-8 transition hover:scale-110"
+                  className="h-8 w-8 transition hover:scale-110 code-logo"
                   src="/img/golang.svg"
                   alt="Go lang logo"
                 />
@@ -117,7 +117,7 @@ function SDKs() {
                 to={useBaseUrl("/docs/java")}
               >
                 <img
-                  className="h-8 w-8 transition hover:scale-110"
+                  className="h-8 w-8 transition hover:scale-110 code-logo"
                   src="/img/java.svg"
                   alt="Java logo"
                 />
@@ -137,7 +137,7 @@ function SDKs() {
               >
                 <div className="flex items-center space-x-3 hover:underline">
                   <img
-                    className="h-8 w-8 transition hover:scale-110"
+                    className="h-8 w-8 transition hover:scale-110 code-logo"
                     src="/img/php.svg"
                     alt="PHP logo"
                   />
@@ -149,7 +149,7 @@ function SDKs() {
               <Link to={useBaseUrl("/docs/typescript/introduction")}>
                 <div className="flex items-center space-x-3 hover:underline">
                   <img
-                    className="h-7 w-7 pl-1 transition hover:scale-110"
+                    className="h-7 w-7 pl-1 transition hover:scale-110 code-logo"
                     src="/img/typescript.svg"
                     alt="TypeScript logo"
                   />
@@ -166,10 +166,10 @@ function SDKs() {
 
 function Cluster() {
   return (
-    <div className="flex flex-col rounded-lg bg-[color:var(--ifm-card-background-color)] p-5 shadow">
+    <div className="flex flex-col rounded-lg bg-[color:var(--ifm-card-background-color)] p-5 shadow landing-card">
       <div className="flex items-center space-x-4">
         <svg
-          className="mb-4 h-10 w-10 rounded-lg bg-[color:var(--ifm-color)] p-2 text-[color:var(--ifm-background-color)]"
+          className="mb-4 h-10 w-10 rounded-lg bg-[color:var(--ifm-background-color)] p-2 text-[color:var(--ifm-color)] icon"
           width="16"
           height="13"
           viewBox="0 0 16 13"
@@ -232,10 +232,10 @@ function Cluster() {
 
 function Tools() {
   return (
-    <div className="rounded-lg bg-[color:var(--ifm-card-background-color)] p-5 shadow">
+    <div className="rounded-lg bg-[color:var(--ifm-card-background-color)] p-5 shadow landing-card">
       <div className="flex items-center space-x-4">
         <svg
-          className="mb-4 h-10 w-10 rounded-lg bg-[color:var(--ifm-color)] p-2 text-[color:var(--ifm-background-color)]"
+          className="mb-4 h-10 w-10 rounded-lg bg-[color:var(--ifm-background-color)] p-2 text-[color:var(--ifm-color)] code-logo"
           viewBox="0 0 15 15"
           fill="currentColor"
           xmlns="http://www.w3.org/2000/svg"
@@ -266,7 +266,7 @@ function Tools() {
             to={useBaseUrl("/docs/tctl")}
           >
             <svg
-              className="h-8 w-8 transition hover:scale-110"
+              className="h-8 w-8 transition hover:scale-110 code-logo"
               fill="currentColor"
               viewBox="0 0 22 22"
               xmlns="http://www.w3.org/2000/svg"
@@ -286,7 +286,7 @@ function Tools() {
             to={useBaseUrl("/docs/devtools/web-ui")}
           >
             <svg
-              className="h-8 w-8 transition hover:scale-110"
+              className="h-8 w-8 transition hover:scale-110 code-logo"
               fill="currentColor"
               viewBox="0 0 22 22"
               xmlns="http://www.w3.org/2000/svg"
@@ -307,11 +307,11 @@ function Tools() {
 
 function Operation() {
   return (
-    <div className="flex flex-col rounded-lg bg-[color:var(--ifm-card-background-color)] p-5 shadow">
+    <div className="flex flex-col rounded-lg bg-[color:var(--ifm-card-background-color)] p-5 shadow landing-card">
       <div className="flex items-center space-x-4">
         <svg
           width="13"
-          className="mb-4 h-10 w-10 rounded-lg bg-[color:var(--ifm-color)] p-2 text-[color:var(--ifm-background-color)]"
+          className="mb-4 h-10 w-10 rounded-lg bg-[color:var(--ifm-background-color)] p-2 text-[color:var(--ifm-color)] icon"
           height="14"
           viewBox="0 0 512 512"
           fill="none"
@@ -344,6 +344,11 @@ function Operation() {
             Deploy to production
           </a>
         </li>
+        <li className="">
+          <a href="/docs/references/" className="font-normal hover:underline">
+            References
+          </a>
+        </li>
       </ul>
     </div>
   );
@@ -351,11 +356,11 @@ function Operation() {
 
 function Learning() {
   return (
-    <div className="flex flex-col rounded-lg bg-[color:var(--ifm-card-background-color)] p-5 shadow">
+    <div className="flex flex-col rounded-lg bg-[color:var(--ifm-card-background-color)] p-5 shadow landing-card">
       <div className="flex items-center space-x-4">
         <svg
           width="13"
-          className="mb-4 h-10 w-10 rounded-lg bg-[color:var(--ifm-color)] p-2 text-[color:var(--ifm-background-color)]"
+          className="mb-4 h-10 w-10 rounded-lg bg-[color:var(--ifm-background-color)] p-2 text-[color:var(--ifm-color)] icon "
           height="14"
           viewBox="0 0 511.973 511.973"
           fill="none"
@@ -405,8 +410,8 @@ function Learning() {
 
 export const Intro = () => {
   return (
-    <section className="mt-1 mb-14">
-      <h1 className="mb-4 text-4xl font-semibold tracking-wide md:text-5xl">
+    <section className="mt-1 mb-14 tailwindcss">
+      <h1 className="mb-4 text-5xl font-semibold tracking-wide ">
         Temporal Documentation
       </h1>
       <p className="max-w-2xl text-xl">

@@ -5,7 +5,7 @@ sidebar_label: Handling Queries
 description: Use the `SetQueryHandler` API to set a Query Handler that listens for a Query by name.
 tags:
   - go
-  - developer-guide
+  - how-to
 ---
 
 Use the `SetQueryHandler` API from the `go.temporal.io/sdk/workflow` package to set a Query Handler that listens for a Query by name.
@@ -46,4 +46,12 @@ func MyWorkflow(ctx workflow.Context, input string) error {
   currentState = "done"
   return nil
 }
+```
+
+For example, suppose your query handler function takes two parameters:
+
+```go
+err := workflow.SetQueryHandler(ctx, "current_state", func(prefix string, suffix string) (string, error) {
+    return prefix + currentState + suffix, nil
+})
 ```

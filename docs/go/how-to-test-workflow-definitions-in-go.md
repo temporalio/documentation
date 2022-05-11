@@ -4,8 +4,6 @@ title: How to test Workflow Definitions in Go
 sidebar_label: Testing and debugging
 ---
 
-## Testing
-
 The Temporal Go SDK provides a test framework to facilitate testing Workflow implementations.
 
 This framework is suited for implementing unit tests as well as functional tests of the Workflow logic.
@@ -80,7 +78,7 @@ func TestUnitTestSuite(t *testing.T) {
 }
 ```
 
-## Setup
+#### Setup
 
 To run unit tests, we first define a test suite struct that absorbs both the
 basic suite functionality from [testify](https://pkg.go.dev/github.com/stretchr/testify/suite)
@@ -97,7 +95,7 @@ Timeout for the entire test can be set using `SetTestTimeout` in the Workflow or
 
 Finally, we create a regular test function recognized by the `go test` command, and pass the struct to `suite.Run`.
 
-## A Simple Test
+#### A Simple Test
 
 The simplest test case we can write is to have the test environment execute the Workflow and then
 evaluate the results.
@@ -126,7 +124,7 @@ on the return value of `s.env.GetWorkflowError()`. If our Workflow returned a va
 retrieved that value via a call to `s.env.GetWorkflowResult(&value)` and had additional asserts on that
 value.
 
-## Activity mocking and overriding
+#### Activity mocking and overriding
 
 When running unit tests on Workflows, we want to test the Workflow logic in isolation. Additionally,
 we want to inject Activity errors during our test runs. The test framework provides two mechanisms
@@ -192,7 +190,7 @@ function matches the signature of the original Activity function.
 Since this can be an entire function, there is no limitation as to what we can do here. In this
 example, we assert that the `value` param has the same content as the value param we passed to the Workflow.
 
-## Queries
+#### Queries
 
 `TestWorkflowEnvironment` instances have a [`QueryWorkflow()` method](https://pkg.go.dev/go.temporal.io/temporal/internal#TestWorkflowEnvironment.QueryWorkflow) that lets you query the state of the currently running Workflow.
 For example, suppose you have a Workflow that lets you query the progress of a long running task as shown below.
@@ -251,17 +249,17 @@ func (s *UnitTestSuite) Test_ProgressWorkflow() {
 }
 ```
 
-## Debugging
+#### Debugging
 
 You can use a debugger tool provided by your favorite IDE to debug your Workflow Definitions prior to testing or executing them.
 
 The Temporal Go SDK includes deadlock detection which fails a Workflow Task in case the code blocks over a second without relinquishing execution control.
 Because of this you can often encounter a `PanicError: Potential deadlock detected` while stepping through Workflow Definitions during debugging.
 
-To alleviate this issue, you can set the TEMPORAL_DEBUG environment variable to `true` before debugging your Workflow Definition.
+To alleviate this issue, you can set the `TEMPORAL_DEBUG` environment variable to `true` before debugging your Workflow Definition.
 
 :::note
 
-Make sure to set TEMPORAL_DEBUG to true only during debugging.
+Make sure to set `TEMPORAL_DEBUG` to true only during debugging.
 
 :::

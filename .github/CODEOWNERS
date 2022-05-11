@@ -1,3 +1,4 @@
 * @flossypurse
-/docs @flossypurse @djmagee @aarohib @rachfop @DJSanti
-/blog/ @rylandg
+/docs/ @temporalio/docs
+/docs/typescript/ @temporalio/docs @lorensr
+/blog/ @temporalio/docs @rylandg

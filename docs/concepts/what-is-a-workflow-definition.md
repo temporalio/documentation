@@ -16,7 +16,7 @@ A Workflow Execution effectively executes once to completion, while a Workflow F
 
 We strongly recommend that you write a Workflow Definition in a language that has a corresponding Temporal SDK.
 
-- [How to develop a Workflow Definition in Go](/docs/go/how-to-develop-a-workflow-definition-in-go)
+- [How to develop a Workflow Definition in Go](/docs/go/how-to-develop-a-workflow-in-go)
 - [How to develop a Workflow Definition in Java](/docs/java/how-to-develop-a-workflow-definition-in-java)
 - [How to develop a Workflow Definition in PHP](/docs/php/workflows)
 - [How to develop a Workflow Definition in TypeScript](/docs/typescript/workflows/#how-to-write-a-workflow-function)
@@ -33,7 +33,7 @@ If a corresponding Event already exists within the Event History that maps to th
 
 For example, using an SDKs "Execute Activity" API generates the [ScheduleActivityTask](/docs/concepts/what-is-a-command#scheduleactivitytask) Command.
 When this API is called upon re-execution, that Command is compared with the Event that is in the same location within the sequence.
-The Event in the sequence must be an [ActivityTaskScheduled](/docs/concepts/what-is-an-event/#activitytaskscheduled) Event, where the Activity Name and the Task Queue name are the same as what is in the Command.
+The Event in the sequence must be an [ActivityTaskScheduled](/docs/references/events/#activitytaskscheduled) Event, where the Activity Name and the Task Queue name are the same as what is in the Command.
 
 If a generated Command doesn't match what it needs to in the existing Event History, then the Workflow Execution returns a _non-deterministic_ error.
 
@@ -42,7 +42,7 @@ The following are the two reasons why a Command might be generated out of sequen
 1. Code changes are made to a Workflow Definition that is in use by a running Workflow Execution.
 2. There is intrinsic non-deterministic logic (such as inline random branching).
 
-#### Code changes can cause non-deterministic behavior
+### Code changes can cause non-deterministic behavior
 
 The Workflow Definition can change in very limited ways once there is a Workflow Execution depending on it.
 To alleviate non-deterministic issues that arise from code changes, we recommend using [Workflow Versioning](#what-is-workflow-versioning).
@@ -54,7 +54,7 @@ For example, let's say we have a Workflow Definition that defines the following 
 3. Complete
 
 We start a Worker and spawn a Workflow Execution that uses that Workflow Definition.
-The Worker would emit the [StartTimer](/docs/concepts/what-is-a-command/#starttimer) Command and the Workflow Execution would become suspended.
+The Worker would emit the [StartTimer](/docs/references/commands/#starttimer) Command and the Workflow Execution would become suspended.
 
 Before the Timer is up, we change the Workflow Definition to the following sequence:
 
@@ -75,7 +75,7 @@ The following are examples of minor changes that would not result in non-determi
   - The Child Workflow Options in a call to spawn a Child Workflow Execution.
   - Call to Signal an External Workflow Execution.
 
-#### Intrinsic non-deterministic logic
+### Intrinsic non-deterministic logic
 
 Intrinsic non-determinism is when a Workflow Function Execution might emit a different sequence of Commands on re-execution, regardless of whether all the input parameters are the same.
 
@@ -97,7 +97,7 @@ When those APIs are used, the results are stored as part of the Event History, w
 
 In other words, all operations that do not purely mutate the Workflow Execution's state should occur through a Temporal SDK API.
 
-### What is Workflow Versioning?
+### Workflow Versioning
 
 The Workflow Versioning feature enables the creation of logical branching inside a Workflow Definition based on a developer specified version identifier.
 This feature is useful for Workflow Definition logic needs to be updated, but there are running Workflow Executions that currently depends on it.

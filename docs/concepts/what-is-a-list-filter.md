@@ -44,7 +44,7 @@ A List Filter contains [Search Attribute](/docs/concepts/what-is-a-search-attrib
 
 - To efficiently count the number of Workflow Executions, use the `CountWorkflow` API.
 
-### Example List Filters
+#### Example List Filters
 
 ```sql
 WorkflowId = '<workflow-id>'

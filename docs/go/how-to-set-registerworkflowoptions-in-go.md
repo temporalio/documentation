@@ -10,7 +10,7 @@ tags:
 
 Create an instance of [`RegisterOptions`](https://pkg.go.dev/go.temporal.io/sdk/workflow#RegisterOptions) from the `go.temporal.io/sdk/workflow` package and pass it to the [`RegisterWorkflowWithOptions`](https://pkg.go.dev/go.temporal.io/sdk/worker#WorkflowRegistry) call when registering the Workflow Type with the Worker.
 
-- Used to set options for registering a workflow
+- Used to set options for registering a Workflow
 
 | Field                                                             | Required | Type     |
 | ----------------------------------------------------------------- | -------- | -------- |

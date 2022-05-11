@@ -140,11 +140,11 @@ This helps provide type safety, since you can export the type signature of the s
 
 #### Define Signals and Queries Dynamically
 
-For more flexible usecases, you may want a dynamic signal (such as a generated ID).
+For more flexible usecases, you may want a dynamic Signal (such as a generated ID).
 You may handle it in two ways:
 
 - avoid making it dynamic by collapsing all signals in one handler and move the ID to the payload, or
-- actually make the signal name dynamic by inlining the signal definition per handler.
+- actually make the Signal name dynamic by inlining the Signal definition per handler.
 
 ```ts
 import * as wf from '@temporalio/workflow';
@@ -299,8 +299,8 @@ function useState<T = any>(name: string, initialValue: T) {
 const store = useState('my-store', 10);
 function MyWorkflow() {
   wf.setHandler(store.signal, (newValue: T) => {
-    // console.log('updating ', name, newValue) // optional but useful for debugging
-    state = store.value;
+    // console.log('updating', newValue) // optional but useful for debugging
+    store.value = newValue;
   });
   wf.setHandler(store.query, () => store.value);
   while (true) {
@@ -415,7 +415,9 @@ let state = await handle.query<number, [string]>('print', 'Count: ');
 #### Notes on Signals
 
 - Signal handlers are only guaranteed to be called in order **per Signal Type**, not across all of them.
-  If you need strict ordering across multiple Signals, combine them into one Signal Type and use a `switch` statement.
+  If you need strict ordering across multiple Signals, either:
+  - Combine them into one Signal Type and use a `switch` statement.
+  - Register handlers statically (call `setHandler` outside of the Workflow function).
 - `WorkflowHandle.signal` resolves as soon as Temporal Server has persisted the Signal, before the Workflow's Signal handler is called.
 - `WorkflowHandle.signal` Promise resolves with no value; **Signal handlers cannot return data to the caller.**
 - **No Synchronous Updates**.
@@ -429,7 +431,7 @@ Temporal guarantees read-after-write consistency of Signals-followed-by-Queries.
 
 #### Notes on Queries
 
-> 🚨 WARNING: NEVER mutate Workflow state inside a query! This would be a source of non-determinism.
+> 🚨 WARNING: NEVER mutate Workflow state inside a query! Generating Commands in Query handlers can lead to unexpected behaviors on subsequent executions.
 
 :::danger How NOT to write a Query
 

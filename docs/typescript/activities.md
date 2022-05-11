@@ -14,11 +14,11 @@ description: Activities are the only way to interact with external resources in 
 - Unlike [Workflows](/docs/typescript/determinism), Activities execute in the standard Node.js environment. Any code that needs to talk to the outside world needs to be in an Activity, not a Workflow.
 - **Separate from Workflows**: Activities cannot be in the same file as Workflows and must be separately registered (see below for [How to register an Activity on a Worker](#how-to-register-an-activity-on-a-worker))
 - **Idempotency**: Activities may be retried repeatedly, so you may need to use [idempotency keys](https://stripe.com/blog/idempotency) for critical side effects.
-- The `'@temporalio/activity'` package offers useful utilities for Activity functions such as sleeping, heartbeating, cancellation, and retrieving metadata (see [docs on Activity Context utilities](#activity-context-utilities) below).
+- The `'@temporalio/activity'` package offers useful utilities for Activity functions such as sleeping, Heartbeating, cancellation, and retrieving metadata (see [docs on Activity Context utilities](#activity-context-utilities) below).
 
 ## How to write an Activity Function
 
-Activities are "just functions".
+Activities are _simply functions_.
 Below is a simple Activity that accepts a string parameter and returns a string:
 
 <!--SNIPSTART typescript-hello-activity {"enable_source_link": false}-->
@@ -255,17 +255,17 @@ Temporal SDK also exports a [`Context`](https://typescript.temporal.io/api/class
 | -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `Context.current().cancellationSignal` | An `AbortSignal` which can be used to cancel requests on Activity cancellation. Typically used by the `fetch` and `child_process` libraries but is supported by a few other libraries as well. |
 | `Context.current().cancelled`          | Await this promise in an Activity to get notified of cancellation. This promise will never be resolved; it will only be rejected with a `CancelledFailure`.                                    |
-| `Context.current().heartbeat()`        | Send a heartbeat from an Activity.                                                                                                                                                             |
+| `Context.current().heartbeat()`        | Send a Heartbeat from an Activity.                                                                                                                                                             |
 | `Context.current().info`               | Holds [information](https://typescript.temporal.io/api/interfaces/activity.Info) about the current executing Activity                                                                          |
 | `Context.current().sleep()`            | Helper function for sleeping in an Activity - resolves when deadline is reached or rejects when the Context is cancelled. Prefer this to `setTimeout`.                                         |
 
 ### Heartbeating
 
-Long running activities should heartbeat their progress back to the Workflow for earlier detection of stalled activities (with Heartbeat timeouts) and resuming stalled activities from checkpoints (with Heartbeat details).
+Long running activities should Heartbeat their progress back to the Workflow for earlier detection of stalled activities (with Heartbeat timeouts) and resuming stalled activities from checkpoints (with Heartbeat details).
 
 <details>
 <summary>
-What activities should heartbeat?
+What activities should Heartbeat?
 </summary>
 
 Heartbeating is best thought about not in terms of time, but in terms of "How do you know you are making progress"? If an operation is so short that it doesn't make any sense to say "I am still working on this", then don't heartbeat. Vice versa for longer operations.
@@ -274,12 +274,12 @@ Heartbeating is best thought about not in terms of time, but in terms of "How do
   - However, do note that your Workflow cannot read this progress information while the Activity is still executing (or it would have to store it in Event History). You may report progress to external sources if you need it exposed to the user.
 - Even without a "progress you may get something useful from just verifying that the Worker processing your Activity is at the very least "still alive" (has not run out of memory or silently crashed).
 
-Suitable for heartbeating:
+Suitable for Heartbeating:
 
 - Read a large file from S3
 - Run a ML training job on some local GPUs
 
-Not suitable for heartbeating:
+Not suitable for Heartbeating:
 
 - Reading a small file from disk
 - Making a quick API call
@@ -302,10 +302,10 @@ const { example } = proxyActivities<typeof activities>({
 });
 ```
 
-Without heartbeating, if your activity `StartToCloseTimeout` is 1 hour and the activity stalled or activity worker died, Temporal would have to wait out the 1 hour before retrying.
-But if you used the heartbeat API, set a `heartbeatTimeout` for 10 seconds, the absence of heartbeats in the `heartbeatTimeout` window would give the Server a signal that the activity has stalled and should be retried right away rather than at the end of the `StartToCloseTimeout`.
+Without Heartbeating, if your activity `StartToCloseTimeout` is 1 hour and the activity stalled or activity worker died, Temporal would have to wait out the 1 hour before retrying.
+But if you used the Heartbeat API, set a `heartbeatTimeout` for 10 seconds, the absence of Heartbeats in the `heartbeatTimeout` window would inform the Server that the Activity has stalled and should be retried right away rather than at the end of the `StartToCloseTimeout`.
 
-The second major benefit of heartbeating is being able to resume from failure by checkpointing data as `heartbeatDetails`.
+The second major benefit of Heartbeating is being able to resume from failure by checkpointing data as `heartbeatDetails`.
 Extending the example above:
 
 ```ts
@@ -331,13 +331,13 @@ There are 3 ways to handle Activity cancellation:
 
 1. Await on [`Context.current().cancelled`](https://typescript.temporal.io/api/classes/activity.context#cancelled)
 2. Catch a [`CancelledFailure`](/docs/typescript/handling-failure/) while awaiting "cancellation-aware" APIs like `Context.current().sleep`. Errors can be validated with the `isCancellation(err)` utility function (see example below)
-3. Pass the context's abort signal at [`Context.current().cancellationSignal`](https://typescript.temporal.io/api/classes/activity.context#cancelled) to a library that supports it like `fetch`
+3. Pass the context's abort Signal at [`Context.current().cancellationSignal`](https://typescript.temporal.io/api/classes/activity.context#cancelled) to a library that supports it like `fetch`
 
-[`heartbeat()`](https://typescript.temporal.io/api/classes/activity.context/#heartbeat) in the TypeScript SDK is a background operation and does not propagate errors to the caller, such as when the scheduling Workflow has already completed or the Activity has been closed by the server (due to timeout for instance). These errors are translated into cancellation and can be handled using the methods above.
+[`heartbeat()`](https://typescript.temporal.io/api/classes/activity.context/#heartbeat) in the TypeScript SDK is a background operation and does not propagate errors to the caller, such as when the scheduling Workflow has already completed or the Activity has been closed by the Server (due to timeout for instance). These errors are translated into cancellation and can be handled using the methods above.
 
 #### Example: Activity that fakes progress and can be cancelled
 
-The [`sleep`](https://typescript.temporal.io/api/classes/activity.context#sleep) method exposed in `Context.current()` is comparable to a standard `sleep` function: `new Promise(resolve => setTimeout(resolve, sleepMS));` except that it also rejects if the activity is cancelled.
+The [`sleep`](https://typescript.temporal.io/api/classes/activity.context#sleep) method exposed in `Context.current()` is comparable to a standard `sleep` function: `new Promise(resolve => setTimeout(resolve, sleepMS));` except that it also rejects if the Activity is cancelled.
 
 <!--SNIPSTART typescript-activity-fake-progress-->
 <!--SNIPEND-->
@@ -364,9 +364,9 @@ Normally, an Activity is started and ended in the same Worker, for example a sho
 However, sometimes you may want to record an Activity completion in a different process than when you started it.
 
 > If you are modeling human actions, we recommend using Signals rather than Async Activity Completion.
-> This is because Activities only have one timeout and, if your Activity is split into two steps, one for kicking off the process (e.g. storing information in the DB), and one for human based resolution, it's best to use the timeout to detect failure in the former so it can be retried by the system.
+> This is because Activities only have one timeout and, if your Activity is split into two steps, one for kicking off the process (for example, storing information in the data base), and one for human based resolution, it's best to use the timeout to detect failure in the former so it can be retried by the system.
 
-Async activity completion is done through a two step process:
+Async Activity completion is done through a two step process:
 
 - Throw a `CompleteAsyncError` from an Activity
 - Use a `AsyncCompletionClient` to mark it as completed, failed, or more.

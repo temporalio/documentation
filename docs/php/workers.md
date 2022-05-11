@@ -30,15 +30,15 @@ $worker = $factory->newWorker();
 // Workflows are stateful. So you need a type to create instances.
 $worker->registerWorkflowTypes(App\DemoWorkflow::class);
 
-// Activities are stateless and thread safe. 
+// Activities are stateless and thread safe.
 $worker->registerActivity(App\DemoActivity::class);
 // In case an activity class requires some external dependencies provide a callback - factory
 // that creates or builds a new activity instance. The factory should be a callable which accepts
 // an instance of ReflectionClass with an activity class which should be created.
-$worker->registerActivity(App\DemoActivity::class, fn(ReflectionClass $class) => $container->create($class->getClass()));
+$worker->registerActivity(App\DemoActivity::class, fn(ReflectionClass $class) => $container->create($class->getName()));
 // If you want to clean up some resources after activity is done, you may register
 // a finalizer. This callback is called after each activity invocation.
-$worker->registerActivityFinalizer(fn () => $kernel->showtdown()); 
+$worker->registerActivityFinalizer(fn () => $kernel->showtdown());
 
 // start primary loop
 $factory->run();

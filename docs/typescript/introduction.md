@@ -4,14 +4,12 @@ sidebar_label: Introduction
 description: The TypeScript SDK lets developers write highly scalable, reliable, annd long-running workflows without being a distributed systems expert.
 ---
 
-The Temporal TypeScript SDK ([now in Beta](/blog/typescript-beta)) lets you write highly scalable and reliable long-running workflows without being a distributed systems expert.
+The Temporal TypeScript SDK ([now in Beta](/blog/typescript-beta)) lets you write highly scalable and reliable long-running Workflows without being a distributed systems expert.
 It is designed with TypeScript-first developer experience in mind, but works equally well with JavaScript.
 
 import { ResponsivePlayer } from '../../src/components'
 
-<div style={{width: 500, maxWidth: "100%"}}>
-  <ResponsivePlayer url='https://youtu.be/2HjnQlnA5eY'/>
-</div>
+<ResponsivePlayer url='https://youtu.be/2HjnQlnA5eY' />
 
 You can view:
 
@@ -53,7 +51,7 @@ Run "Hello Temporal" locally (~10 minutes)
 
 :::note Prerequisites
 
-<strong>Node.js 14+</strong>: This project requires Node.js version 14 or later.
+<strong>Node.js 14+</strong>: this project requires Node.js version 14 or later.
 
 <details>
 <summary>
@@ -84,15 +82,6 @@ cd example
 ```
 
 This will set up with [the basic Hello World sample](https://github.com/temporalio/samples-typescript/tree/main/hello-world) using our [Package Initializer](/docs/typescript/package-initializer) (think of it like `create-temporal-app`!)
-
-<!-- commented out for now as it seems we no longer need this
-<details>
-<summary>Provided you have the `node-gyp` prerequisite, this will take a couple of minutes.
-</summary>
-
-`npx` triggers native module compilation which might take a while, and `npm` 7 hides the compilation output so it may appear that the installation is stuck. To see the compilation progress, run `export NPM_CONFIG_FOREGROUND_SCRIPTS=true` first.
-
-</details> -->
 
 ### Step 2: Run your Workflow
 
@@ -207,9 +196,7 @@ For long form/FAQs, please search and ask on [the Temporal community forum](http
 
 We held a 2-hour introduction workshop explaining every core concept from scratch:
 
-<div style={{width: 500, maxWidth: "100%"}}>
-  <ResponsivePlayer url='https://www.youtube.com/watch?v=CeHSmv8oF_4&feature=youtu.be' />
-</div>
+<ResponsivePlayer url='https://www.youtube.com/watch?v=CeHSmv8oF_4&feature=youtu.be' />
 
 Timestamps:
 

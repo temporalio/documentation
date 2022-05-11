@@ -20,7 +20,7 @@ A Worker is a process that connects to the Temporal Server, polls **Task Queues*
   - Workers connect to the Temporal Server, poll their configured **Task Queue** for Tasks, execute chunks of code in response to those Tasks, and then communicate the results back.
   - Workers are distinct from Clients and scaled independently of Temporal Server, which has its own internal services to scale.
   - Workers are stateless, and can be brought up and down at any time with no Temporal data loss impact.
-    To migrate to new versions of your Workflows and Activities, you restart your Workers with the new versions (and optionally use [the `patch` API to migrate](/docs/typescript/patching) still-running workflows of the older version).
+    To migrate to new versions of your Workflows and Activities, you restart your Workers with the new versions (and optionally use [the `patch` API to migrate](/docs/typescript/patching) still-running Workflows of the older version).
   - Use the `@temporalio/worker` package's [`Worker`](https://typescript.temporal.io/api/classes/worker.Worker) class to create and run as many Workers as your use case demands, across any number of hosts.
 - **Workers are run on user-controlled hosts.** This is an important security feature which means Temporal Server (or Temporal Cloud) never executes your Workflow or Activity code, and that Workers can have different hardware (e.g. custom GPUs for Machine Learning) than the rest of the system.
 
@@ -90,19 +90,19 @@ We may want to programmatically shut down Workers (with `worker.shutdown()`) in 
 
 #### Worker states
 
-At any point in time, we can query Worker state with `worker.getState()`.
+At any point in time, we can Query Worker state with `worker.getState()`.
 A Worker is in one of 7 states at any given point:
 
 - `INITIALIZED` - The initial state of the Worker after calling Worker.create and successful connection to the server
-- `RUNNING` - `worker.run()` was called, polling task queues
+- `RUNNING` - `worker.run()` was called, polling Task Queues
 - `FAILED` - Worker encountered an unrecoverable error, `worker.run()` should reject with the error
 - The last 4 states are related to the Worker shutdown process:
-  - `STOPPING` - `worker.shutdown()` was called or received shutdown signal, worker will forcefully shutdown after `shutdownGraceTime`
-  - `DRAINING` - Core has indicated that shutdown is complete and all Workflow tasks have been drained, waiting for activities and cached workflows eviction
-  - `DRAINED` - All activities and workflows have completed, ready to shutdown
+  - `STOPPING` - `worker.shutdown()` was called or received shutdown Signal, Worker will forcefully shutdown after `shutdownGraceTime`
+  - `DRAINING` - Core has indicated that shutdown is complete and all Workflow tasks have been drained, waiting for activities and cached Workflows eviction
+  - `DRAINED` - All activities and Workflows have completed, ready to shutdown
   - `STOPPED` - Shutdown complete, `worker.run()` resolves
 
-If you need even more visibility into internal worker state, [see the API reference for more](https://typescript.temporal.io/api/classes/worker.Worker).
+If you need even more visibility into internal Worker state, [see the API reference for more](https://typescript.temporal.io/api/classes/worker.Worker).
 
 ## Rust Core and Worker Networking
 
@@ -186,21 +186,21 @@ const worker = await Worker.create({
 
 </details>
 
-Optionally, in Workflow code, when calling an Activity, you can specify the task queue by passing the `taskQueue` option to [`proxyActivities()`](https://typescript.temporal.io/api/namespaces/workflow/#proxyActivities) or [`startChild/executeChild`](https://typescript.temporal.io/api/namespaces/workflow/#startchild).
+Optionally, in Workflow code, when calling an Activity, you can specify the Task Queue by passing the `taskQueue` option to [`proxyActivities()`](https://typescript.temporal.io/api/namespaces/workflow/#proxyActivities) or [`startChild/executeChild`](https://typescript.temporal.io/api/namespaces/workflow/#startchild).
 If you do not specify a `taskQueue`, then the TypeScript SDK places Activity and Child Workflow Tasks in the same Task Queue as the Workflow Task Queue.
 
 ### Example: Sticky Activities
 
 Any Worker that polls a Task Queue is allowed to pick up the next task; sometimes this is undesirable because you want tasks to execute sequentially on the same machine.
 
-Fortunately, there is a design pattern for this we call "Sticky Activities".
-Because Task Queues are dynamically created and very lightweight, you can use them for task routing by creating a new task queue per machine.
+Fortunately, there is a design pattern for this we call _Sticky Activities_.
+Because Task Queues are dynamically created and very lightweight, you can use them for task routing by creating a new Task Queue per machine.
 
 The main strategy is:
 
-1. Create a `getUniqueTaskQueue` activity that generates a unique task queue name, (for example, `uniqueWorkerTaskQueue`).
-   It doesn't matter where this activity is run so this can be "non sticky" as per Temporal default behavior
-2. For Activities intended to be "sticky", register them in one Worker, and have that be the only Worker listening on that `uniqueWorkerTaskQueue`.
+1. Create a `getUniqueTaskQueue` Activity that generates a unique Task Queue name, (for example, `uniqueWorkerTaskQueue`).
+   It doesn't matter where this Activity is run so this can be "non sticky" as per Temporal default behavior
+2. For Activities intended to be _sticky_, register them in one Worker, and have that be the only Worker listening on that `uniqueWorkerTaskQueue`.
    - Multiple Workers can be created inside the same process.
 3. Execute Workflows from the Client like normal.
    - Activities will execute in sequence on the same machine because they are all routed by the `uniqueWorkerTaskQueue`.
