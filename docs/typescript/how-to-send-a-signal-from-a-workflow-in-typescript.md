@@ -46,7 +46,6 @@ async function SubscriptionWorkflow(id: string, amount: number) {
     await sleepTilNextMonth();
   }
 }
-
 // from client
 await handle.signal(update, 300);
 ```

@@ -20,7 +20,7 @@ const { greet } = proxyActivities<typeof activities>({
   startToCloseTimeout: '1 minute',
 });
 
-/** A workflow that calls an activity */
+// A workflow that calls an activity
 export async function example(name: string): Promise<string> {
   return await greet(name);
 }
