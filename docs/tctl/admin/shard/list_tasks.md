@@ -48,9 +48,27 @@ Default: transfer
 Values: transfer, timer, replication, visibility
 
 ### `--min_visibility_ts value`
+The minimum value that can be set as a Task Visibility timestamp.
 
-      Task visibility min timestamp. Supported formats are '2006-01-02T15:04:05+07:00', raw UnixNano and time range (N<duration>), where 0 < N < 1000000 and duration (full-notation/short-notation) can be second/s, minute/m, hour/h, day/d, week/w, month/M or year/y. For example, '15minute' or '15m' implies last 15 minutes. (default: "2020-01-01T00:00:00+00:00")
+#### Supported formats:
+- '2006-01-02T15:04:05+07:00'
+- Raw UnixNano
+- Time range (N-duration), where 0 < N < 1000000 and duration (full-notation/short-notation) can be:
+  - second/s
+  - minute/m 
+  - week/w
+  - month/m
+  - year/y
 
 ### `--max_visibility_ts value`
+The maximum value that can be set as a Task Visibility timestamp.
 
-Task visibility max timestamp. Supported formats are '2006-01-02T15:04:05+07:00', raw UnixNano and time range (N<duration>), where 0 < N < 1000000 and duration (full-notation/short-notation) can be second/s, minute/m, hour/h, day/d, week/w, month/M or year/y. For example, '15minute' or '15m' implies last 15 minutes. (default: "2035-01-01T00:00:00+00:00")
+#### Supported formats:
+- '2006-01-02T15:04:05+07:00'
+- Raw UnixNano
+- Time range (N-duration), where 0 < N < 1000000 and duration (full-notation/short-notation) can be:
+  - second/s
+  - minute/m 
+  - week/w
+  - month/m
+  - year/y
