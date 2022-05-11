@@ -1,5 +1,23 @@
 module.exports = {
-  monoSidebar: ["concepts-guide", "application-development-guide"],
+  monoSidebar: [
+    {
+      type: "category",
+      label: "Concepts",
+      collapsible: true,
+      collapsed: false,
+      items: [
+        "temporal",
+        "workflows",
+        "activities",
+        "retry-policies",
+        "workers",
+        "tasks",
+        "visibility",
+        "clusters",
+      ],
+    },
+    "application-development-guide",
+  ],
   sidebarExplained: [
     {
       type: "category",

@@ -1,0 +1,77 @@
+{
+	"file_name": "activities.md",
+	"id": "activities",
+	"title": "Activities",
+	"sidebar_label": "Activities",
+	"description": "This guide is meant to be a comprehensive overview of Temporal Activities.",
+	"toc_max_heading_level": 4,
+	"add_tabs_support": true,
+	"h2_sections": [{
+			"header": "none",
+			"h3_sections": [{
+					"header": "none",
+					"type": "explanation",
+					"path": "concept-context/intro"
+				},
+				{
+					"header": "none",
+					"type": "explanation",
+					"path": "concepts/what-is-an-activity"
+				}
+			]
+		},
+		{
+			"header": "Activity Definition",
+			"h3_sections": [{
+					"header": "none",
+					"type": "explanation",
+					"path": "concepts/what-is-an-activity-definition"
+				},
+				{
+					"header": "Activity Type",
+					"type": "explanation",
+					"path": "concepts/what-is-an-activity-type"
+				}
+			]
+		},
+		{
+			"header": "Activity Execution",
+			"h3_sections": [{
+					"header": "none",
+					"type": "explanation",
+					"path": "concepts/what-is-an-activity-execution"
+				},
+				{
+					"header": "Activity Id",
+					"type": "explanation",
+					"path": "concepts/what-is-an-activity-id"
+				},
+				{
+					"header": "Schedule-To-Start Timeout",
+					"type": "explanation",
+					"path": "concepts/what-is-a-schedule-to-start-timeout"
+				},
+				{
+					"header": "Start-To-Close Timeout",
+					"type": "explanation",
+					"path": "concepts/what-is-a-start-to-close-timeout"
+				},
+				{
+					"header": "Schedule-To-Close Timeout",
+					"type": "explanation",
+					"path": "concepts/what-is-a-schedule-to-close-timeout"
+				},
+				{
+					"header": "Heartbeat Timeout",
+					"type": "explanation",
+					"path": "concepts/what-is-a-heartbeat-timeout"
+				},
+				{
+					"header": "Activity Heartbeats",
+					"type": "explanation",
+					"path": "concepts/what-is-an-activity-heartbeat"
+				}
+			]
+		}
+	]
+}

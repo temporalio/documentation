@@ -1,0 +1,41 @@
+{
+	"file_name": "clusters.md",
+	"id": "clusters",
+	"title": "Clusters",
+	"sidebar_label": "Clusters",
+	"description": "Temporal Clusters explained.",
+	"toc_max_heading_level": 4,
+	"add_tabs_support": true,
+	"h2_sections": [{
+			"header": "none",
+			"h3_sections": [
+        {
+  				"header": "none",
+  				"type": "explanation",
+  				"path": "concept-context/intro"
+  			},
+        {
+  				"header": "none",
+  				"type": "explanation",
+  				"path": "concepts/what-is-a-temporal-cluster"
+  			}
+      ]
+		},
+		{
+			"header": "Namespaces",
+			"h3_sections": [{
+				"header": "none",
+				"type": "explanation",
+				"path": "concepts/what-is-a-namespace"
+			}]
+		},
+		{
+			"header": "Archival",
+			"h3_sections": [{
+				"header": "none",
+				"type": "explanation",
+				"path": "concepts/what-is-archival"
+			}]
+		}
+	]
+}

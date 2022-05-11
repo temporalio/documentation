@@ -1,0 +1,129 @@
+{
+	"file_name": "workflows.md",
+	"id": "workflows",
+	"title": "Workflows",
+	"sidebar_label": "Workflows",
+	"description": "This guide is meant to be a comprehensive overview of Temporal Workflows.",
+	"toc_max_heading_level": 4,
+	"add_tabs_support": true,
+	"h2_sections": [{
+			"header": "none",
+			"h3_sections": [{
+					"header": "none",
+					"type": "explanation",
+					"path": "concept-context/intro"
+				},
+				{
+					"header": "none",
+					"type": "explanation",
+					"path": "concepts/what-is-a-workflow"
+				}
+			]
+		},
+		{
+			"header": "Workflow Definitions",
+			"h3_sections": [{
+					"header": "none",
+					"type": "explanation",
+					"path": "concepts/what-is-a-workflow-definition"
+				},
+				{
+					"header": "Workflow Types",
+					"type": "explanation",
+					"path": "concepts/what-is-a-workflow-type"
+				}
+			]
+		},
+		{
+			"header": "Workflow Executions",
+			"h3_sections": [{
+					"header": "none",
+					"type": "explanation",
+					"path": "concepts/what-is-a-workflow-execution"
+				},
+				{
+					"header": "Commands",
+					"type": "explanation",
+					"path": "concepts/what-is-a-command"
+				},
+				{
+					"header": "Events",
+					"type": "explanation",
+					"path": "concepts/what-is-an-event"
+				},
+				{
+					"header": "Event History",
+					"type": "explanation",
+					"path": "concepts/what-is-an-event-history",
+					"h4_sections": [{
+						"header": "Continue-As-New",
+						"type": "explanation",
+						"path": "concepts/what-is-continue-as-new"
+					}]
+				},
+				{
+					"header": "Run Id",
+					"type": "explanation",
+					"path": "concepts/what-is-a-run-id"
+				},
+				{
+					"header": "Workflow Id",
+					"type": "explanation",
+					"path": "concepts/what-is-a-workflow-id",
+					"h4_sections": [{
+						"header": "Workflow Id Reuse Policy",
+						"type": "explanation",
+						"path": "concepts/what-is-a-workflow-id-reuse-policy"
+					}]
+				},
+				{
+					"header": "Workflow Execution Timeout",
+					"type": "explanation",
+					"path": "concepts/what-is-a-workflow-execution-timeout"
+				},
+				{
+					"header": "Workflow Run Timeout",
+					"type": "explanation",
+					"path": "concepts/what-is-a-workflow-run-timeout"
+				},
+				{
+					"header": "Workflow Task Timeout",
+					"type": "explanation",
+					"path": "concepts/what-is-a-workflow-task-timeout"
+				}
+			]
+		},
+		{
+			"header": "Signals",
+			"h3_sections": [{
+				"header": "none",
+				"type": "explanation",
+				"path": "concepts/what-is-a-signal"
+			}]
+		},
+		{
+			"header": "Queries",
+			"h3_sections": [{
+				"header": "none",
+				"type": "explanation",
+				"path": "concepts/what-is-a-query"
+			}]
+		},
+		{
+			"header": "Child Workflows",
+			"h3_sections": [{
+				"header": "none",
+				"type": "explanation",
+				"path": "concepts/what-is-a-child-workflow-execution"
+			}]
+		},
+		{
+			"header": "Cron Jobs",
+			"h3_sections": [{
+				"header": "none",
+				"type": "explanation",
+				"path": "concepts/what-is-a-temporal-cron-job"
+			}]
+		}
+	]
+}
