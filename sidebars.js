@@ -498,14 +498,14 @@ module.exports = {
             },
             {
               type: "category",
-              label: "data-converter",
+              label: "dataconverter",
               collapsible: true,
               collapsed: true,
               link: {
                 type: "doc",
-                id: "tctl/data-converter/index",
+                id: "tctl/dataconverter/index",
               },
-              items: ["tctl/data-converter/web"],
+              items: ["tctl/dataconverter/web"],
             },
             {
               type: "category",
@@ -525,16 +525,16 @@ module.exports = {
             },
             {
               type: "category",
-              label: "task-queue",
+              label: "taskqueue",
               collapsible: true,
               collapsed: true,
               link: {
                 type: "doc",
-                id: "tctl/task-queue/index",
+                id: "tctl/taskqueue/index",
               },
               items: [
-                "tctl/task-queue/describe",
-                "tctl/task-queue/list-partition",
+                "tctl/taskqueue/describe",
+                "tctl/taskqueue/list-partition",
               ],
             },
             {
