@@ -10,8 +10,7 @@ To set Activity Retry Policies in TypeScript, specify the `proxyActivities`, the
 ```typescript
 // Sample of typical options you can set
 const { greet } = proxyActivities<typeof activities>({
-  startToCloseTimeout: '30s', // recommended
-  scheduleToCloseTimeout: '5m', // useful
+  // ...
   retry: {
     // default retry policy if not specified
     initialInterval: '1s',
