@@ -14,7 +14,7 @@ A typical Temporal project written in TypeScript consists of the following compo
 - Workflows
 - Activities
 - Worker that executes Workflows and Activities
-- A script to execute a Workflow (using a Temporal Client)
+- Code that uses the Client to execute a Workflow
 
 Activities cannot be in the same file as Workflows and must be separately registered.
 Activities may be retried, so you may need to use [idempotency keys](https://stripe.com/blog/idempotency) for critical side effects.
