@@ -24,7 +24,7 @@ return (
 
 A Workflow function may return a result. If it doesn’t (in which case the return type is `Promise<void>`), the result will be `undefined`.
 
-If you started a Workflow with `handle.start()`, you can choose to wait for the result anytime with handle.result().
+If you started a Workflow with `handle.start()`, you can choose to wait for the result anytime with `handle.result()`.
 
 ```typescript
 const handle = client.getHandle(workflowId);

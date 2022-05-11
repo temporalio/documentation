@@ -1,6 +1,6 @@
 ---
 id: activities
-title: Temporal Activities
+title: Activities
 sidebar_label: Activities
 description: This guide is meant to be a comprehensive overview of Temporal Activities.
 toc_max_heading_level: 4

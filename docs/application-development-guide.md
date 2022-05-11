@@ -300,13 +300,6 @@ interface FileProcessingWorkflow
 </TabItem>
 <TabItem value="typescript">
 
-A Workflow Function has two parts:
-
-- The function name is the [Workflow Type](/docs/workflows/#workflow-types/).
-- The function implementation is the [Workflow Definition](/docs/workflows/#workflow-definitions).
-
-Workflow Functions are bundled with their dependencies and registered by name in a Worker. A Workflow Function becomes a [Workflow Execution](/docs/workflows/#workflow-executions) when it's started from a Workflow Client.
-
 Workflow Functions are _just functions_, which can store state, and orchestrate Activity Functions.
 The following code snippet uses `proxyActivities` to schedule a `greet` Activity in the system to say hello.
 
@@ -781,7 +774,7 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-To define Return Types in your Activity, retrieve an Activity from an _Activity Handle_ before you can call it. Import the types of the activities defined in `./activities`.
+Import the types of the Activities defined in `./activities`. You must first retrieve an Activity from an _Activity Handle_ before you can call it, then define Return Types in your Activity.
 
 ```typescript
 import type * as activities from "./activities";
@@ -789,7 +782,7 @@ const {greet} = proxyActivities<typeof activities>({
   startToCloseTimeout: "1 minute",
 });
 
-/** A workflow that simply calls an activity */
+// A workflow that simply calls an activity
 export async function example(name: string): Promise<string> {
   return await greet(name);
 }
@@ -938,7 +931,7 @@ const {greet} = proxyActivities<typeof activities>({
   startToCloseTimeout: "1 minute",
 });
 
-/** A workflow that calls an activity */
+// A workflow that calls an activity
 export async function example(name: string): Promise<string> {
   return await greet(name);
 }
@@ -1124,7 +1117,7 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Use a new `WorflowClient()` with the requisite gRPC `Connection` to create a new Client.
+Use a new `WorflowClient()` with the requisite gRPC [`Connection`](https://typescript.temporal.io/api/classes/client.Connection#service) to create a new Client.
 
 ```typescript
 import {Connection, WorkflowClient} from "@temporalio/client";
@@ -1159,7 +1152,7 @@ const client = new WorkflowClient(connection.service, {
 ```
 
 [The Hello World mTLS sample](https://github.com/temporalio/samples-node/tree/main/hello-world-mtls/) demonstrates sample code used to connect to a Temporal Cloud account.
-When signing up to Temporal Cloud you should receive a Namespace, a Server address and a client certificate and key. Use the following environment variables to set up the sample:
+When signing up to Temporal Cloud you should receive a Namespace, a Server address and a Client certificate and key. Use the following environment variables to set up the sample:
 
 - **TEMPORAL_ADDRESS**: looks like `foo.bar.tmprl.cloud` (NOT web.foo.bar.tmprl.cloud)
 - **TEMPORAL_NAMESPACE**: looks like `foo.bar`
@@ -1345,7 +1338,7 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-First create a Worker with `Worker.create()` (which establishes the initial gRPC connection), then call `worker.run()` on it (to start polling the Task Queue).
+Create a Worker with `Worker.create()` (which establishes the initial gRPC connection), then call `worker.run()` on it (to start polling the Task Queue).
 
 Below is an example of starting a Worker that polls the Task Queue named `tutorial`.
 
@@ -1518,6 +1511,8 @@ Calling `client.start()` and `client.execute()` send a command to Temporal Serve
 
 You can test this by executing a Workflow Client command without a matching Worker. Temporal Server records the command in Event History, but does not make progress with the Workflow Execution until a Worker starts polling with a matching Task Queue and Workflow Definition.
 
+Workflow Execution run in a separate V8 isolate context in order to provide a [deterministic runtime](/docs/typescript/determinism).
+
 </TabItem>
 </Tabs>
 
@@ -1566,17 +1561,15 @@ Content is not available
 
 Workers bundle Workflow code and node modules using Webpack v5 and execute them inside V8 isolates. Activities are directly required and run by Workers in the Node.js environment.
 
-Workers are very flexible – you can host any or all of your Workflows and Activities on a Worker, and you can host multiple Workers in a single machine.
+Workers are flexible. You can host any or all of your Workflows and Activities on a Worker, and you can host multiple Workers on a single machine.
 
 There are three main things the Worker needs:
 
 - `taskQueue`: the Task Queue to poll. This is the only required argument.
-
 - `activities`: Optional. Imported and supplied directly to the Worker.
-
-- Workflow bundle:
-- Either specify a `workflowsPath` to your `workflows.ts` file to pass to Webpack, for example, `require.resolve('./workflows')`. Workflows will be bundled with their dependencies, which you can finetune with `nodeModulesPaths`.
-- Or pass a prebuilt bundle to `workflowBundle` instead if you prefer to handle the bundling yourself.
+- Workflow bundle, specify one of the following options:
+  - a `workflowsPath` to your `workflows.ts` file to pass to Webpack. For example, `require.resolve('./workflows')`. Workflows will be bundled with their dependencies, which you can finetune with `nodeModulesPaths`.
+  - Or pass a prebuilt bundle to `workflowBundle`, if you prefer to handle the bundling yourself.
 
 ```typescript
 import {Worker} from "@temporalio/worker";
@@ -1652,7 +1645,7 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-You can set a Workflow Id in the Client of a Workflow.
+Connect to a Client with `client.start()` and any arguments. Then specify your `taskQueue` and set your `workflowId` to a meaningful business identifier.
 
 ```typescript
 const handle = await client.start(example, {
@@ -1663,17 +1656,6 @@ const handle = await client.start(example, {
 ```
 
 This starts a new Client with the given Workflow Id, Task Queue name, and an argument.
-
-```typescript
-const handle = await client.start(example, {
-  args: ["Temporal"], // type inference works! args: [name: string]
-  taskQueue: "your-task-queue",
-  // in practice, use a meaningful business id, eg customerId or transactionId
-  workflowId: "your-workflow-id-",
-});
-```
-
-Connect to a Client with `client.start()` and any arguments. Then specify your `taskQueue` and set your `workflowId` to a meaningful business identifier.
 
 </TabItem>
 </Tabs>
@@ -1804,7 +1786,7 @@ return (
 
 A Workflow function may return a result. If it doesn’t (in which case the return type is `Promise<void>`), the result will be `undefined`.
 
-If you started a Workflow with `handle.start()`, you can choose to wait for the result anytime with handle.result().
+If you started a Workflow with `handle.start()`, you can choose to wait for the result anytime with `handle.result()`.
 
 ```typescript
 const handle = client.getHandle(workflowId);
@@ -2075,7 +2057,6 @@ async function SubscriptionWorkflow(id: string, amount: number) {
     await sleepTilNextMonth();
   }
 }
-
 // from client
 await handle.signal(update, 300);
 ```
@@ -2126,7 +2107,17 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+To send a Signal to a Workflow and start the Workflow if it isn't already running, use `signalWithStart()`.
+
+```typescript
+const client = new WorkflowClient();
+await client.signalWithStart(YourWorkflow, {
+  workflowId,
+  args: [arg1, arg2],
+  signal: YourSignal,
+  signalArgs: [arg3, arg4],
+});
+```
 
 </TabItem>
 </Tabs>
@@ -2701,8 +2692,6 @@ Content is not available
 
 When you call `proxyActivities` in a Workflow Function, you can set a range of `ActivityOptions`.
 
-A Schedule-To-Start limits the maximum time that an Activity Task can sit in a Task Queue. It is used to identify whether a Worker is down or for Task routing.
-
 Either `scheduleToCloseTimeout` or `scheduleToStartTimeout` must be set.
 
 Type: time.Duration
@@ -2767,7 +2756,16 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+To set a Heartbeat Timeout, use [`ActivityOptions.heartbeatTimeout`](https://typescript.temporal.io/api/interfaces/common.ActivityOptions#heartbeattimeout). If the Activity takes longer than that between heartbeats, the Activity is failed.
+
+```typescript
+// Creating a proxy for the activity.
+const {longRunningActivity} = proxyActivities<typeof activities>({
+  scheduleToCloseTimeout: "5m", // translates to 300000 ms
+  startToCloseTimeout: "30s", // translates to 30000 ms
+  heartbeatTimeout: 10000, // equivalent to '10 seconds'
+});
+```
 
 </TabItem>
 </Tabs>
@@ -2831,7 +2829,22 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+To set Activity Retry Policies in TypeScript, pass [`ActivityOptions.retry`](https://typescript.temporal.io/api/interfaces/common.ActivityOptions#retry) to [`proxyActivities`](https://typescript.temporal.io/api/namespaces/workflow/#proxyactivities).
+
+```typescript
+// Sample of typical options you can set
+const {yourActivity} = proxyActivities<typeof activities>({
+  // ...
+  retry: {
+    // default retry policy if not specified
+    initialInterval: "1s",
+    backoffCoefficient: 2,
+    maximumAttempts: Infinity,
+    maximumInterval: 100 * initialInterval,
+    nonRetryableErrorTypes: [],
+  },
+});
+```
 
 </TabItem>
 </Tabs>
@@ -3081,6 +3094,40 @@ A [Temporal Cron Job](/docs/workflows/#cron-jobs) is the series of Workflow Exec
 
 A Cron Schedule is provided as an option when the call to spawn a Workflow Execution is made.
 
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+Content is not available
+
+</TabItem>
+<TabItem value="java">
+
+Content is not available
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+You can set each Workflow to repeat on a schedule with the `cronSchedule` option:
+
+```typescript
+const handle = await client.start(scheduledWorkflow, {
+  // ...
+  cronSchedule: "* * * * *", // start every minute
+});
+```
+
+</TabItem>
+</Tabs>
+
 ### Local Activities
 
 TODO
@@ -3115,7 +3162,7 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Set the `DefaultLogger` to one of the following: `'TRACE'` | `'DEBUG'` | `'INFO'` | `'WARN'` | `'ERROR'`.
+Set the [`DefaultLogger`](https://typescript.temporal.io/api/classes/worker.DefaultLogger) to one of the following log levels: `'TRACE'` | `'DEBUG'` | `'INFO'` | `'WARN'` | `'ERROR'`.
 
 The following is an example of setting the `DefaultLogger` to `'Debug'`.
 

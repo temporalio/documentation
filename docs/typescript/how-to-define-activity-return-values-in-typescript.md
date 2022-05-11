@@ -1,4 +1,15 @@
-To define Return Types in your Activity, retrieve an Activity from an _Activity Handle_ before you can call it. Import the types of the activities defined in `./activities`.
+---
+id: how-to-define-activity-return-values-in-typescript
+title: How to define Activity Return Values in Typescript
+sidebar_label: Define Activity Return Values
+description: Define Activity Return Values
+tags:
+  - developer-guide
+  - sdk
+  - typescript
+---
+
+Import the types of the Activities defined in `./activities`. You must first retrieve an Activity from an _Activity Handle_ before you can call it, then define Return Types in your Activity.
 
 ```typescript
 import type * as activities from './activities';
@@ -6,7 +17,7 @@ const { greet } = proxyActivities<typeof activities>({
   startToCloseTimeout: '1 minute',
 });
 
-/** A workflow that simply calls an activity */
+// A workflow that simply calls an activity
 export async function example(name: string): Promise<string> {
   return await greet(name);
 }
