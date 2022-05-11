@@ -52,7 +52,7 @@ async function getConfigs() {
   const file_paths = [];
   const guide_configs = {
     cfgs: [],
-  }
+  };
   for await (const entry of readdirp(GUIDE_CONFIGS_PATH)) {
     const file = new File(entry.basename, entry.path, entry.fullPath);
     file_paths.push(file);
@@ -294,7 +294,10 @@ async function generateLinkIndex(guide_config) {
           local_ref: "",
           path: h3_section.path,
         });
-      } else if (h3_section.header == "none" && h3_section.type != "lang-tabs") {
+      } else if (
+        h3_section.header == "none" &&
+        h3_section.type != "lang-tabs"
+      ) {
         link_index.push({
           guide: guide_config.id,
           local_ref: localRef(h2_section.header),
