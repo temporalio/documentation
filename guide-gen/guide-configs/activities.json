@@ -72,6 +72,15 @@
 					"path": "concepts/what-is-an-activity-heartbeat"
 				}
 			]
+		},
+		{
+			"header": "Local Activities",
+			"h3_sections": [{
+					"header": "none",
+					"type": "explanation",
+					"path": "concepts/what-is-a-local-activity"
+				}
+			]
 		}
 	]
 }

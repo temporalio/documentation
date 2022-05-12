@@ -10,8 +10,6 @@ tags:
 
 A Java-based Activity definition comprises a Activity interface annotated with `@ActivityInterface` and an Activity implementation that implements the Activity interface.
 
-#### Activity interface parameters
-
 Activity interface is a Java interface and is annotated with the `@ActivityInterface` annotation.
 
 ```java
@@ -33,8 +31,6 @@ public interface GreetingActivities {
 }
 ```
 
-#### Activity implementation parameters
-
 An Activity implementation is a Java class that implements an Activity annotated interface.
 
 ```java
@@ -49,8 +45,6 @@ An Activity implementation is a Java class that implements an Activity annotated
 
 When implementing Activities, be mindful of the amount of data that you transfer using the Activity invocation parameters or return values as these are recorded in the Workflow Execution Events History.
 Large Events Histories can adversely impact performance.
-
-#### Dynamic Activity parameters
 
 Use `DynamicActivity` to implement any number of Activity types dynamically.
 When an Activity implementation that extends `DynamicActivity` is registered, it is called for any Activity type invocation that doesn't have an explicitly registered handler.
