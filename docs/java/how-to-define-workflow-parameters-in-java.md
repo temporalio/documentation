@@ -10,8 +10,6 @@ tags:
 
 A Java-based Workflow definition comprises a Workflow interface annotated with `@WorkflowInterface` and a Workflow implementation that implements the Workflow interface.
 
-#### Workflow interface parameters
-
 The Workflow interface is a Java interface and is annotated with `@WorkflowInterface`.
 Each Workflow interface method must have one `@WorkflowMethod` annotated.
 
@@ -113,8 +111,6 @@ Related references:
 Use `@SignalMethod` to handle Signals, and `@QueryMethod` to handle Queries in the Workflow.
 See [Signals](/docs/java/how-to-use-signals-in-java) and [Queries](/docs/java/how-to-use-queries-in-java) for details.
 
-#### Workflow implementation parameters
-
 A Workflow implementation implements a Workflow interface.
 
 ```java
@@ -132,8 +128,6 @@ See [Using `ExternalWorkflowStub`](/docs/java/how-to-spawn-a-workflow-execution-
 
 You can also invoke other Workflows as Child Workflows with `Workflow.newChildWorkflowStub()` or `Workflow.newUntypedChildWorkflowStub()` within a Workflow Definition.
 See [Child Workflow Execution](/docs/java/how-to-spawn-a-child-workflow-execution-in-java) for details.
-
-#### Dynamic Workflow implemnentation parameters
 
 Use `DynamicWorkflow` to implement Workflow Types dynamically. When you register a Workflow implementation type that extends `DynamicWorkflow`, it can be used to implement any Workflow Type that is not explicitly registered with the Worker.
 
