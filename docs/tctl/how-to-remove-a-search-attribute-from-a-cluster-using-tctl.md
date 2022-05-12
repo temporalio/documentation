@@ -9,9 +9,11 @@ tags:
   - filtered-lists
 ---
 
-## NOTE
+:::note
 
-> The Temporal tctl documentation covers version 1.16 of the Temporal CLI.
+The Temporal tctl documentation covers version 1.16 of the Temporal CLI.
+
+:::
 
 <!-- prettier-ignore -->
 import * as WhatIsASearchAttribute from '../concepts/what-is-a-search-attribute.md'
