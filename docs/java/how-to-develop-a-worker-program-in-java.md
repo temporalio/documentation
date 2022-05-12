@@ -10,12 +10,6 @@ tags:
 
 Use the `newWorker` method on an instance of a [`WorkerFactory`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkerFactory.html) to create a new Worker in Java.
 
-Then register all Workflow Types and all Activity Types that the Worker can execute.
-For Activities, since they are stateless and thread-safe, instances are used in the registration process instead of the Java Class.
-A Worker can be registered with just Workflows, just Activities, or both.
-
-#### Create Worker Entity
-
 A single [Worker Entity](/docs/concepts/what-is-a-worker-entity) can contain many Worker Objects.
 Call the `start()` method on the instance of the `WorkerFactory` to start all the Workers created in this process.
 
@@ -42,6 +36,10 @@ public class YourWorker {
   }
 }
 ```
+
+After creating the Worker entity, register all Workflow Types and all Activity Types that the Worker can execute.
+For Activities, since they are stateless and thread-safe, instances are used in the registration process instead of the Java Class.
+A Worker can be registered with just Workflows, just Activities, or both.
 
 #### Register Workflow Types
 

@@ -309,6 +309,7 @@ module.exports = {
         "java/how-to-set-workflowclientoptions-in-java",
         "java/how-to-set-workflowservicestuboptions-in-java",
         "java/how-to-spawn-a-workflow-execution-in-java",
+        "java/workflowoptions-reference",
         "java/how-to-get-the-result-of-a-workflow-execution-in-java",
         "java/how-to-use-signals-in-java",
         "java/how-to-use-queries-in-java",

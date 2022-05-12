@@ -31,5 +31,8 @@ The following constraints apply when writing Workflow Definitions:
 - Do not access configuration APIs directly from a Workflow because changes in the configuration might affect a Workflow Execution path.
   Pass it as an argument to a Workflow function or use an Activity to load it.
 - All standard `WorkflowOptions` and determinism rules apply to Dynamic Workflow implementations.
+- Use `DynamicWorkflow` when you need a default Workflow that can handle all Workflow Types that are not registered with a Worker.
+  A single implementation can implement a Workflow Type which by definition is dynamically loaded from some external source.
+- All Workflow implementations, including `DynamicWorkflow` implementation, must be registered with a Worker.
 
 Java Workflow reference: <https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/package-summary.html>

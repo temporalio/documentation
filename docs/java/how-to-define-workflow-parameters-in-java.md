@@ -10,10 +10,10 @@ tags:
 
 A Java-based Workflow definition comprises a Workflow interface annotated with `@WorkflowInterface` and a Workflow implementation that implements the Workflow interface.
 
-#### Workflow interface parameters
-
+**Workflow Interface**
 The Workflow interface is a Java interface and is annotated with `@WorkflowInterface`.
-Each Workflow interface method must have one `@WorkflowMethod` annotated.
+Each Workflow interface must have only one method annotated with `@WorkflowMethod`.
+The method name can be used to denote the [Workflow Type](/docs/concepts/what-is-a-workflow-type).
 
 However, when using Dynamic Workflows, do not specify a `@WorkflowMethod`, and implement the `DynamicWorkflow` directly in the Workflow implementation code.
 
@@ -30,9 +30,6 @@ public interface FileProcessingWorkflow {
 
 The `@WorkflowMethod` identifies the method that is the starting point of the Workflow Execution.
 The [Workflow Execution](/docs/concepts/what-is-a-workflow-execution) completes when this method completes.
-
-A Workflow Definition interface in Java can have only one method annotated with `@WorkflowMethod`.
-It can be used to denote the [Workflow Type](/docs/concepts/what-is-a-workflow-type).
 
 A method annotated with `@WorkflowMethod` can have any number of parameters.
 We recommend passing a single parameter that contains all the input fields to allow for adding fields in a backward-compatible manner.
@@ -55,9 +52,6 @@ public interface FileProcessingWorkflow extends Retryable {
 
     @WorkflowMethod
     String processFile(Arguments args);
-
-    @QueryMethod(name="history")
-    List<String> getHistory();
 
     @QueryMethod
     String getStatus();
@@ -109,11 +103,7 @@ This registration fails with the following message:
 java.lang.IllegalStateException: BaseWorkflow workflow type is already registered with the worker
 ```
 
-Related references:
-Use `@SignalMethod` to handle Signals, and `@QueryMethod` to handle Queries in the Workflow.
-See [Signals](/docs/java/how-to-use-signals-in-java) and [Queries](/docs/java/how-to-use-queries-in-java) for details.
-
-#### Workflow implementation parameters
+**Workflow Implementation**
 
 A Workflow implementation implements a Workflow interface.
 
@@ -133,14 +123,11 @@ See [Using `ExternalWorkflowStub`](/docs/java/how-to-spawn-a-workflow-execution-
 You can also invoke other Workflows as Child Workflows with `Workflow.newChildWorkflowStub()` or `Workflow.newUntypedChildWorkflowStub()` within a Workflow Definition.
 See [Child Workflow Execution](/docs/java/how-to-spawn-a-child-workflow-execution-in-java) for details.
 
-#### Dynamic Workflow implemnentation parameters
+Use [`DynamicWorkflow`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/DynamicWorkflow.html) to implement Workflow Types dynamically.
+When you register a Workflow implementation type that extends `DynamicWorkflow`, it can be used to implement any Workflow Type that is not explicitly registered with the Worker.
 
-Use `DynamicWorkflow` to implement Workflow Types dynamically. When you register a Workflow implementation type that extends `DynamicWorkflow`, it can be used to implement any Workflow Type that is not explicitly registered with the Worker.
-
-The main use case for `DynamicWorkflow` is an implementation of custom Domain Specific Languages (DSLs). A single implementation can implement a Workflow Type which by definition is dynamically loaded from some external source.
-You can also use `DynamicWorkflow` when you need a default Workflow that can handle all Workflow Types that are not registered with a Worker.
-
-The Dynamic Workflow interface is implemented with the `execute` method. This method takes in `EncodedValues` that are inputs to the Workflow Execution. These inputs can be specified by the Client when invoking the Workflow Execution.
+The Dynamic Workflow interface is implemented with the `execute` method. This method takes in `EncodedValues` that are inputs to the Workflow Execution.
+These inputs can be specified by the Client when invoking the Workflow Execution.
 
 ```java
 public class MyDynamicWorkflow implements DynamicWorkflow {
@@ -157,8 +144,6 @@ To check what type is running when your Dynamic Workflow `execute` method runs, 
 String type = Workflow.getInfo().getWorkflowType();
 ```
 
-The `DynamicWorkflow` implementation must be registered with a Worker.
-
 The following example shows a Dynamic Workflow Implementation.
 
 ```java
@@ -172,9 +157,3 @@ public static class DynamicGreetingWorkflowImpl implements DynamicWorkflow {
     String type = Workflow.getInfo().getWorkflowType();
   }
 ```
-
-Related references:
-
-- [How to spawn a Workflow Execution in Java](/docs/java/how-to-spawn-a-workflow-execution-in-java)
-- `WorkflowStub.java` reference: <https://github.com/temporalio/sdk-java/blob/master/temporal-sdk/src/main/java/io/temporal/client/WorkflowStub.java>
-- [Dynamic Workflow Reference](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/DynamicWorkflow.html).
