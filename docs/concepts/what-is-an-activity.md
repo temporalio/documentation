@@ -70,7 +70,7 @@ Long running Activities can be used as a special case of leader election. Tempor
 
 One common use case for such leader election is monitoring. An Activity executes an internal loop that periodically polls some API and checks for some condition. It also heartbeats on every iteration. If the condition is satisfied, the Activity completes which lets its Workflow to handle it. If the Activity worker dies, the Activity times out after the heartbeat interval is exceeded and is retried on a different worker. The same pattern works for polling for new files in Amazon S3 buckets or responses in REST or other synchronous APIs.
 
-:::note 
+:::note
 
 Cancellations are not immediate.
 
