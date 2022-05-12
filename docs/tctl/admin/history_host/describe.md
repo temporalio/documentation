@@ -1,7 +1,7 @@
 ---
 id: describe
 title: tctl admin history_host describe
-description: 
+description:
 tags:
   - reference
   - tctl
@@ -12,6 +12,7 @@ The `tctl admin history_host describe` command describes the internal informatio
 Alias: `-desc`
 
 ### Modifiers
+
 The following modifiers change the behavior of the command .
 
 #### `--workflow_id value`
