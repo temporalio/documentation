@@ -11,6 +11,7 @@ tags:
 A Java-based Workflow definition comprises a Workflow interface annotated with `@WorkflowInterface` and a Workflow implementation that implements the Workflow interface.
 
 **Workflow Interface**
+
 The Workflow interface is a Java interface and is annotated with `@WorkflowInterface`.
 Each Workflow interface must have only one method annotated with `@WorkflowMethod`.
 The method name can be used to denote the [Workflow Type](/docs/concepts/what-is-a-workflow-type).

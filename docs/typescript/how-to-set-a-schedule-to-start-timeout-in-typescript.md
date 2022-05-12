@@ -11,8 +11,6 @@ tags:
 
 When you call `proxyActivities` in a Workflow Function, you can set a range of `ActivityOptions`.
 
-A Schedule-To-Start limits the maximum time that an Activity Task can sit in a Task Queue. It is used to identify whether a Worker is down or for Task routing.
-
 Either `scheduleToCloseTimeout` or `scheduleToStartTimeout` must be set.
 
 Type: time.Duration

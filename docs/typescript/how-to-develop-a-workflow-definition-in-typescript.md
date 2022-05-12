@@ -9,13 +9,6 @@ tags:
   - typescript
 ---
 
-A Workflow Function has two parts:
-
-- The function name is the [Workflow Type](/docs/concepts/what-is-a-workflow-type/).
-- The function implementation is the [Workflow Definition](/docs/concepts/what-is-a-workflow-definition).
-
-Workflow Functions are bundled with their dependencies and registered by name in a Worker. A Workflow Function becomes a [Workflow Execution](/docs/concepts/what-is-a-workflow-execution) when it's started from a Workflow Client.
-
 Workflow Functions are _just functions_, which can store state, and orchestrate Activity Functions.
 The following code snippet uses `proxyActivities` to schedule a `greet` Activity in the system to say hello.
 
