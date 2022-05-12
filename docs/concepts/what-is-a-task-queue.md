@@ -12,8 +12,7 @@ A Task Queue is a lightweight, dynamically allocated queue that one or more [Wor
 Task Queues do not have any ordering guarantees.
 It is possible to have a Task that stays in a Task Queue for a period of time, if there is a backlog that wasn't drained for that time.
 
-There are two types of Task Queues, Activity Task Queues and Workflow Task Queues.
-But one of each can exist with the same Task Queue name.
+There are two types of Task Queues, Activity Task Queues and Workflow Task Queues. Task Queue names must be unique across both Activities and Workflows.
 
 ![Task Queue component](/diagrams/task-queue.svg)
 
