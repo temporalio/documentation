@@ -1,7 +1,7 @@
 ---
 id: describe
 title: tctl admin history_host describe
-description: 
+description: Describing the information in a history host
 tags:
   - reference
   - tctl

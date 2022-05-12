@@ -1,7 +1,7 @@
 ---
 id: index
 title: tctl admin history_host
-description: 
+description: Overview of history_host commands
 tags:
   - reference
   - tctl
