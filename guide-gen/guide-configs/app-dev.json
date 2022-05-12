@@ -1232,6 +1232,32 @@
           "header": "Local Activities",
           "type": "context",
           "path": "app-dev-context/local-activities"
+        },
+        {
+          "header": "none",
+          "type": "lang-tabs",
+          "langs": [
+            {
+              "lang": "go",
+              "title": "Go",
+              "path": "none"
+            },
+            {
+              "lang": "java",
+              "title": "Java",
+              "path": "none"
+            },
+            {
+              "lang": "php",
+              "title": "PHP",
+              "path": "php/how-to-create-local-activities-in-php"
+            },
+            {
+              "lang": "typescript",
+              "title": "TypeScript",
+              "path": "none"
+            }
+          ]
         }
       ]
     },
