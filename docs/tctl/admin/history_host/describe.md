@@ -13,7 +13,7 @@ Alias: `-desc`
 
 ### Modifiers
 
-The following modifiers change the behavior of the command .
+The following modifiers change the behavior of the command.
 
 #### `--workflow_id value`
 
