@@ -249,6 +249,11 @@ func (s *UnitTestSuite) Test_ProgressWorkflow() {
 }
 ```
 
+:::note
+`RegisterDelayedCallback` can also be used to send [Signals](/docs/concepts/what-is-a-signal).
+When using "signal-with-start", set the delay to `0`.
+:::
+
 #### Debugging
 
 You can use a debugger tool provided by your favorite IDE to debug your Workflow Definitions prior to testing or executing them.
