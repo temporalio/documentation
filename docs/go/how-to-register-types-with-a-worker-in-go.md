@@ -2,7 +2,7 @@
 id: how-to-register-types-with-a-worker-in-go
 title: How to register types with a Worker in Go
 sidebar_label: Register Types
-description: Create a new instance of a Worker by calling `worker.New()`, available via the `go.temporal.io/sdk/worker` package.
+description: The `RegisterWorkflow()` and `RegisterActivity()` calls create an in-memory mapping between the Workflow Types and their implementations.
 tags:
   - developer-guide
   - go
@@ -13,7 +13,8 @@ The `RegisterWorkflow()` and `RegisterActivity()` calls essentially create an in
 
 **Registering Activity `structs`**
 
-Per [Activity Definition](/docs/go/how-to-develop-an-activity-definition-in-go) best practices, you may have an Activity struct that has multiple methods and fields. When you use `RegisterActivity()` for an Activity struct, that Worker has access to all exported methods.
+Per [Activity Definition](/docs/go/how-to-develop-an-activity-definition-in-go) best practices, you might have an Activity struct that has multiple methods and fields.
+When you use `RegisterActivity()` for an Activity struct, that Worker has access to all exported methods.
 
 **Registering multiple Types**
 

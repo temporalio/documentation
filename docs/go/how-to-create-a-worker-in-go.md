@@ -2,7 +2,7 @@
 id: how-to-create-a-worker-in-go
 title: How to create a Worker in Go
 sidebar_label: Create Worker
-description: Create a new instance of a Worker by calling `worker.New()`, available via the `go.temporal.io/sdk/worker` package.
+description: Create an instance of a Worker by calling `worker.New()`, available via the `go.temporal.io/sdk/worker` package.
 tags:
   - developer-guide
   - go
