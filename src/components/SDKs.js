@@ -9,7 +9,7 @@ export const SDKs = () => {
       <p className="mb-8">
         Find SDK tutorials and API references in the language of your choice.
       </p>
-      <div className="grid grid-cols-1 gap-6  md:grid-cols-2 lg:gap-8">
+      <div className="grid grid-cols-1 gap-6  md:grid-cols-2 lg:gap-8 mb-8">
         <Link to={useBaseUrl("/docs/typescript/introduction")}>
           <div className=" scale flex flex-col items-center justify-center space-y-3 rounded-lg bg-[color:var(--ifm-card-background-color)] p-6 text-center shadow-lg">
             <img
@@ -46,6 +46,20 @@ export const SDKs = () => {
           <p className="text-lg">PHP</p>
         </Link>
       </div>
+      <p className="mb-8">
+        SDKs for other languages are in development (in alpha/pre-alpha stage):{" "}
+        <Link to="https://github.com/temporalio/sdk-python">Python</Link>,{" "}
+        <Link to="https://github.com/temporalio/sdk-dotnet">.NET</Link>,{" "}
+        <Link to="https://github.com/temporalio/sdk-core">Rust</Link>, and{" "}
+        <Link to="https://github.com/temporalio/proposals/pull/57">Ruby</Link>.
+      </p>
+      <p className="mb-8">
+        Third-party SDKs:{" "}
+        <Link to="https://github.com/coinbase/temporal-ruby">
+          <code>coinbase/temporal-ruby</code>
+        </Link>
+        .
+      </p>
     </section>
   );
 };
