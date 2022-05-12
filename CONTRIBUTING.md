@@ -66,6 +66,22 @@ To reformat:
 yarn format
 ```
 
+To reformat incremental changes:
+
+```
+yarn prettier --write .prettierrc.json
+```
+
+## Guide generation
+
+The [Concepts](https://docs.temporal.io/docs/temporal/#) and [Application development](https://docs.temporal.io/docs/application-development-guide) guides are generated through the [index.js](guide-gen/index.js) script. 
+
+To update the Concept or Application development guide, make your changes in the source file first then run the following command:
+
+```bash
+yarn gen
+```
+
 ## Pull requests
 
 You can preview the changes made by your PR by clicking "Details" next to the Netlify deploy-preview check.
