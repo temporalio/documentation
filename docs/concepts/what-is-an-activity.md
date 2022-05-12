@@ -26,10 +26,15 @@ In its simplest form, a Temporal Activity is a function or an object method in o
 Temporal does not recover Activity state in case of failures.
 Therefore an Activity function is allowed to contain any code without restrictions.
 
-Activities are invoked asynchronously through task queues.
-A task queue is essentially a queue used to store an Activity task until it is picked up by an available worker.
-The worker processes an Activity by invoking its implementation function.
+#### Invoke Activities through Task Queues
+
+Activities are invoked asynchronously through Task Queues.
+A Task Queue is essentially a queue used to store an Activity task until it is picked up by an available Worker.
+The Worker processes an Activity by invoking its implementation function.
 When the function returns, the worker reports the result back to the Temporal service which in turn notifies the Workflow about completion.
+
+#### Implement an Activity asynchronously
+
 It is possible to implement an Activity fully asynchronously by completing it from a different process.
 
 - An Activity can be implemented as a synchronous method or fully asynchronously involving multiple processes.
@@ -39,12 +44,14 @@ It is possible to implement an Activity fully asynchronously by completing it fr
 
 Temporal does not impose any system limit on Activity duration. It is up to the application to choose the timeouts for its execution.
 
-Activities are dispatched to workers through task queues.
-Task queues are queues that workers listen on.
-Task queues are highly dynamic and lightweight.
-They don't need to be explicitly registered. And it is okay to have one task queue per worker process. It is normal to have more than one Activity type to be invoked through a single task queue. And it is normal in some cases (like host routing) to invoke the same Activity type on multiple task queues.
+Activities are dispatched to Workers through Task Queues.
+Task Queues are queues that Workers listen on.
+Task Queues are highly dynamic and lightweight.
+They don't need to be explicitly registered. And it is okay to have one Task Queue per Worker process. It is normal to have more than one Activity type to be invoked through a single task queue. And it is normal in some cases (like host routing) to invoke the same Activity type on multiple Task Queues.
 
-Here are some use cases for employing multiple Activity task queues in a single Workflow:
+#### Employ Activity Task Queues in a single Workflow
+
+Here are some use cases for employing multiple Activity Task Queues in a single Workflow:
 
 - _Flow control_. A worker that consumes from a task queue asks for an Activity task only when it has available capacity. So workers are never overloaded by request spikes. If Activity executions are requested faster than workers can process them, they are backlogged in the task queue.
 - _Throttling_. Each Activity worker can specify the maximum rate it is allowed to process Activities on a task queue. It does not exceed this limit even if it has spare capacity. There is also support for global task queue rate limiting. This limit works across all workers for the given task queue. It is frequently used to limit load on a downstream service that an Activity calls into.
@@ -63,7 +70,11 @@ Long running Activities can be used as a special case of leader election. Tempor
 
 One common use case for such leader election is monitoring. An Activity executes an internal loop that periodically polls some API and checks for some condition. It also heartbeats on every iteration. If the condition is satisfied, the Activity completes which lets its Workflow to handle it. If the Activity worker dies, the Activity times out after the heartbeat interval is exceeded and is retried on a different worker. The same pattern works for polling for new files in Amazon S3 buckets or responses in REST or other synchronous APIs.
 
-note Cancellations are not immediate
+:::note 
+
+Cancellations are not immediate.
+
+:::
 
 `ctx.Done()` is only signaled when a heartbeat is sent to the service.
 Temporal's SDK throttles this so a heartbeat may not be sent to the service until 80% of the heartbeat timeout has elapsed.
