@@ -74,7 +74,7 @@ yarn prettier --write .prettierrc.json
 
 ## Guide generation
 
-The [Concepts](https://docs.temporal.io/docs/temporal/#) and [Application development](https://docs.temporal.io/docs/application-development-guide) guides are generated through the [index.js](guide-gen/index.js) script. 
+The [Concepts](https://docs.temporal.io/docs/temporal/#) and [Application development](https://docs.temporal.io/docs/application-development-guide) guides are generated through the [index.js](guide-gen/index.js) script.
 
 To update the Concept or Application development guide, make your changes in the source file first then run the following command:
 
