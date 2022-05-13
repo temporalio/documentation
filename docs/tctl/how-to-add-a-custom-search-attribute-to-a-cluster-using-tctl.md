@@ -11,9 +11,11 @@ tags:
   - tctl
 ---
 
-## NOTE
+::: NOTE
 
-> The Temporal tctl documentation covers version 1.16 of the Temporal CLI.
+ The Temporal tctl documentation covers version 1.16 of the Temporal CLI.
+
+ :::
 
 Use the following command to add a custom [Search Attribute](/docs/concepts/what-is-a-search-attribute) to your Temporal Cluster.
 
