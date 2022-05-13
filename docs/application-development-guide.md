@@ -3162,7 +3162,7 @@ interface YourActivityInterface
 }
 ```
 
-Local activity requires `LocalActivityOptions`:
+Local Activities requires `LocalActivityOptions`:
 
 ```php
 $greetingActivity = Workflow::newActivityStub(
