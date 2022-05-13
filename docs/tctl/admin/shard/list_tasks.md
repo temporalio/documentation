@@ -11,7 +11,6 @@ tags:
 
 The `tctl admin shard list_tasks` command will list the Tasks available for a given shard Id and Task type.
 
-
 ## Modifiers
 
 The modifiers below affect the output and behavior of the command.
@@ -67,7 +66,7 @@ Supported formats include:
 
 The maximum value that can be set as a Task Visibility timestamp.
 
- Supported formats:
+Supported formats:
 
 - '2006-01-02T15:04:05+07:00'
 - Raw UnixNano

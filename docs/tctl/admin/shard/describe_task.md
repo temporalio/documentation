@@ -35,23 +35,19 @@ Persistence address for the database.
 
 Default: 127.0.0.1
 
-
 #### `--db_port value`
 
 Persistence port for the database.
 
 Default: 9042
 
-
 #### `--username value`
 
 Username entered into the database.
 
-
 #### `--password value`
 
 Password entered into the database.
-
 
 #### `--keyspace value`
 
@@ -59,11 +55,9 @@ Keyspace for the database.
 
 default: "temporal"
 
-
 #### `--tls`
 
 Enables TLS over the database connection.
-
 
 #### `--tls_cert_path value`
 
@@ -71,13 +65,11 @@ DB tls client cert path.
 
 Note: tls must be enabled
 
-
 #### `--tls_server_name value`
 
 DB tls server name
 
 Note: tls must be enabled
-
 
 #### `--tls_disable_host_verification`
 
@@ -85,20 +77,17 @@ DB tls verify hostname and server cert
 
 Note: tls must be enabled
 
-
 #### `--shard_id value`
 
 Identifies the specified shard.
 
 Default: 0
 
-
 #### `--task_id value`
 
 Describes the task.
 
 Default: 0
-
 
 #### `--task_type value`
 
@@ -108,13 +97,11 @@ Default: transfer
 
 Values: transfer, timer, replication
 
-
 #### `--task_timestamp value`
 
 Task visibility timestamp in nanoseconds
 
 Default: 0
-
 
 #### `--target_cluster value`
 
