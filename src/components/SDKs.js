@@ -51,7 +51,7 @@ export const SDKs = () => {
         <Link to="https://github.com/temporalio/sdk-python">Python</Link>,{" "}
         <Link to="https://github.com/temporalio/sdk-dotnet">.NET</Link>,{" "}
         <Link to="https://github.com/temporalio/sdk-core">Rust</Link>, and{" "}
-        <Link to="https://github.com/temporalio/proposals/pull/57">Ruby</Link>.
+        <Link to="https://github.com/temporalio/sdk-ruby">Ruby</Link>.
       </p>
       <p className="mb-8">
         Third-party SDKs:{" "}
