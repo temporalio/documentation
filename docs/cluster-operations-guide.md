@@ -376,4 +376,3 @@ You can retrieve archived Event Histories by copying the `workflowId` and `runId
 ```bash
 ./temporal --ns samples-namespace wf show --wid <workflowId> --rid <runId>
 ```
-
