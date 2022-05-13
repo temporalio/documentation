@@ -21,5 +21,5 @@ The `tctl admin cluster` command runs admin operations on a given Cluster.
 - [`get-search-attributes`](/docs/tctl/admin/cluster/get-search-attributes)
 - [`describe`](/docs/tctl/admin/cluster/describe)
 - [`list`](/docs/tctl/admin/cluster/list)
-- [`upsert-remote-cluster`](/docs/tctl/admin/cluster/upsert-remove-cluster)
-- [`remove-remote-cluster`](/docs/tctl/admin/cluster/upsert-remove-cluster)
+- [`upsert-remote-cluster`](/docs/tctl/admin/cluster/upsert-remote-cluster)
+- [`remove-remote-cluster`](/docs/tctl/admin/cluster/upsert-remote-cluster)
