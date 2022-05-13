@@ -74,12 +74,24 @@ yarn prettier --write .prettierrc.json
 
 ## Guide generation
 
-The [Concepts](https://docs.temporal.io/docs/temporal/#) and [Application development](https://docs.temporal.io/docs/application-development-guide) guides are generated through the [index.js](guide-gen/index.js) script.
+The guide generation script is an Alpha state.
 
-To update the Concept or Application development guide, make your changes in the source file first then run the following command:
+Each json file in [guide-gen/guide-configs](guide-gen/guide-configs) releates to a specific concept that's expressed by a declartive configuiration reperesented by conglomerate of related markdown files. These configuration files generate the [Concepts](https://docs.temporal.io/docs/temporal/#) and [Application development](https://docs.temporal.io/docs/application-development-guide) guides by means of the [index.js](guide-gen/index.js) script.
+
+To update the Concept or Application development guide, make your changes in the source file. For example, if you found a typo on the Concept section _What is a Task_, you would open [docs/concepts/what-is-a-task.md](docs/concepts/what-is-a-task.md) and make the edit directly there. Then rebuild the Concept guide by running the following commands:
+
+```bash
+yarn
+```
 
 ```bash
 yarn gen
+```
+
+To build and view the site locally run:
+
+```bash
+yarn start
 ```
 
 ## Pull requests
