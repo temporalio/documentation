@@ -14,8 +14,7 @@ The `tctl admin workflow` commands enable admin-level operations on Workflow Exe
 Alias: `-wf`
 
 #### Commands
-
-show
-describe
-refresh-tasks
-delete
+- show
+- describe
+- refresh-tasks
+- delete

@@ -10,11 +10,13 @@ tags:
 
 The `tctl admin cluster` command runs admin operations on a given Cluster.
 
+
 ### Usage
 `tctl admin cluster command [command modifiers] [arguments...]`
 
+
 ### Commands
-- [`add-search-attributes](/docs/tctl/admin/cluster/add-search-attributes)
+- [`add-search-attributes`](/docs/tctl/admin/cluster/add-search-attributes)
 - [`remove-search-attributes`](/docs/tctl/admin/cluster/remove-search-attributes)
 - [`get-search-attributes`](/docs/tctl/admin/cluster/get-search-attributes)
 - [`describe`](/docs/tctl/admin/cluster/describe)
