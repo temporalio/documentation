@@ -11,7 +11,7 @@ The `tctl admin history_host get_shardid` command gets the shardId for a given n
 
 Alias: `gsh`
 
-### Modifiers
+## Modifiers
 
 The modifiers listed below change the behavior of this command.
 
