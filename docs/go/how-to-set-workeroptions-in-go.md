@@ -55,7 +55,7 @@ w := worker.New(c, "your_task_queue_name", workerOptions)
 
 ### `WorkerActivitiesPerSecond`
 
-Rate limits the number of Activity Task Executions per second for the Worker.
+Rate limits the number of Activity Task Executions started per second for the Worker.
 
 - Type: `float64`
 - Default: `100000`
@@ -124,7 +124,7 @@ w := worker.New(c, "your_task_queue_name", workerOptions)
 
 ### `TaskQueueActivitiesPerSecond`
 
-Rate limits the number of Activity Executions that can be executed per second
+Rate limits the number of Activity Executions that can be started per second.
 
 - Type: `float64`
 - Default: `100000`
