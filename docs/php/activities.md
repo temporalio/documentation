@@ -314,7 +314,6 @@ $activityClient->completeExceptionallyByToken($taskToken, new \Error("activity f
 
 ## Local Activity
 
-
 In Temporal there is a concept of [Local Activity](/docs/concepts/what-is-a-local-activity).
 To create a Local Activity you should use `#[LocalActivityInterface]` (instead of `#[ActivityInterface]`):
 
