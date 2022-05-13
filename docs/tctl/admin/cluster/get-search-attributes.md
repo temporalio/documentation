@@ -10,11 +10,10 @@ tags:
 
 The `tctl admin cluster get-search-attributes` command retrieves existing search attributes for a given Cluster.
 
-
 The following modifier will change the behavior of the command:
 
 - `--print_json value`
 
-    Alias: `--pjson value`
+  Alias: `--pjson value`
 
-    Prints the existing search attributes in JSON format.
+  Prints the existing search attributes in JSON format.

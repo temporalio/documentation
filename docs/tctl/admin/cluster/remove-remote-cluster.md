@@ -10,7 +10,7 @@ tags:
 
 The `tctl admin cluster remove-remote-cluster` command removes remote Cluster information from the current Cluster.
 
-
 The modifier below changes the behavior of the operation:
+
 - `--cluster value`
-The name of the remote cluster to remove.
+  The name of the remote cluster to remove.
