@@ -88,9 +88,9 @@ The Workflow Executions's mutable state will keep track of all history entries (
 <summary>Version history example (without data conflict)
 </summary>
 
-* Cluster A comes with initial version: 1
-* Cluster B comes with initial version: 2
-* Shared version increment: 10
+- Cluster A comes with initial version: 1
+- Cluster B comes with initial version: 2
+- Shared version increment: 10
 
 T = 0: adding event with event ID == 1 & version == 1
 

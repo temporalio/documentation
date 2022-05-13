@@ -239,9 +239,9 @@ The Workflow Executions's mutable state will keep track of all history entries (
 <summary>Version history example (without data conflict)
 </summary>
 
-* Cluster A comes with initial version: 1
-* Cluster B comes with initial version: 2
-* Shared version increment: 10
+- Cluster A comes with initial version: 1
+- Cluster B comes with initial version: 2
+- Shared version increment: 10
 
 T = 0: adding event with event ID == 1 & version == 1
 
@@ -534,4 +534,3 @@ T = 2: task A is loaded.
 
 At this time, due to the rebuild of a Workflow Execution's mutable state (conflict resolution), Task A is no longer relevant (Task A's corresponding Event belongs to non-current branch).
 Task processing logic will verify both the Event Id and version of the Task against a corresponding Workflow Execution's mutable state, then discard task A.
-
