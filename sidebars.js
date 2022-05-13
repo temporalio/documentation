@@ -14,9 +14,11 @@ module.exports = {
         "tasks",
         "visibility",
         "clusters",
+        "namespaces",
       ],
     },
     "application-development-guide",
+    "cluster-operations-guide",
   ],
   sidebarExplained: [
     {

@@ -233,7 +233,7 @@ Each Workflow Run in the sequence is connected by one of the following:
 - [Continue-As-New](#continue-as-new)
 - [Retries](/docs/retry-policies/#)
 
-A Workflow Execution is uniquely identified by its [Namespace](/docs/clusters/#namespaces), [Workflow Id](#workflow-id), and [Run Id](#run-id).
+A Workflow Execution is uniquely identified by its [Namespace](/docs/namespaces/#), [Workflow Id](#workflow-id), and [Run Id](#run-id).
 
 The [Workflow Execution Timeout](#workflow-execution-timeout) applies to a Workflow Execution Chain.
 The [Workflow Run Timeout](#workflow-run-timeout) applies to a single Workflow Execution (Workflow Run).
@@ -337,12 +337,12 @@ A Workflow Id is a customizable, application-level identifier for a [Workflow Ex
 A Workflow Id is meant to be a business-process identifier such as customer identifier or order identifier.
 
 A [Workflow Id Reuse Policy](#workflow-id-reuse-policy) can be used to manage whether a Workflow Id can be re-used.
-The Temporal Platform guarantees uniqueness of the Workflow Id within a [Namespace](/docs/clusters/#namespaces) based on the Workflow Id Reuse Policy.
+The Temporal Platform guarantees uniqueness of the Workflow Id within a [Namespace](/docs/namespaces/#) based on the Workflow Id Reuse Policy.
 
 It is never possible for a new Workflow Execution to spawn with the same Workflow Id as another Open Workflow Execution, regardless of the Workflow Id Reuse Policy.
 An attempt to spawn a Workflow Execution with a Workflow Id that is the same as the Id of a currently Open Workflow Execution results in a "Workflow execution already started" error.
 
-A Workflow Execution can be uniquely identified across all Namespaces by its [Namespace](/docs/clusters/#namespaces), Workflow Id, and [Run Id](#run-id).
+A Workflow Execution can be uniquely identified across all Namespaces by its [Namespace](/docs/namespaces/#), Workflow Id, and [Run Id](#run-id).
 
 #### Workflow Id Reuse Policy
 
@@ -630,3 +630,4 @@ Use the Workflow Id in any requests to Cancel or Terminate.
 - [How to set a Cron Schedule in Java](/docs/java/distributed-cron)
 - [How to set a Cron Schedule in PHP](/docs/php/distributed-cron)
 - [How to set a Cron Schedule in Typescript](/docs/typescript/clients)
+

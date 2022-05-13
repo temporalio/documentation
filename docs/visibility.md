@@ -35,7 +35,7 @@ Closed Workflow Executions can be filtered by a time constraint and either a Wor
 
 Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through a custom SQL-like [List Filter](#list-filters).
 
-To use Advanced Visibility, your Temporal Cluster must be [integrated with Elasticsearch](/docs/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster).
+To use Advanced Visibility, your Temporal Cluster must be [integrated with Elasticsearch](/docs/cluster-operations-guide/#advanced-visibility).
 We highly recommend operating a Temporal Cluster with Elasticsearch for any use case that spawns more than just a few Workflow Executions.
 Elasticsearch takes on the Visibility request load, relieving potential performance issues.
 
@@ -233,3 +233,4 @@ To actually have results from the use of a [List Filter](#list-filters), Search 
 How to do this entirely depends on the method by which you spawn the Workflow Execution:
 
 - [How to set Search Attributes as Workflow Execution metadata in Go](/docs/go/startworkflowoptions-reference/#searchattributes)
+

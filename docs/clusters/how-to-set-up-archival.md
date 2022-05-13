@@ -19,7 +19,7 @@ Take the following steps to set up Archival:
 2. [Configure Archival](#configuration).
 3. [Create a Namespace](#namespace-creation) that uses a valid URI and has Archival enabled.
 
-### Providers
+#### Providers
 
 Temporal supports several providers out of the box:
 
@@ -30,7 +30,7 @@ Temporal supports several providers out of the box:
 
 Make sure that you save the provider's storage location URI in a place where you can reference it later, as it is passed as a parameter when you [create a Namespace](#namespace-creation).
 
-### Configuration
+#### Configuration
 
 Archival configuration is defined in the [`config/development.yaml`](https://github.com/temporalio/temporal/blob/master/config/development.yaml#L81) file. Let's look at an example configuration below:
 
@@ -88,13 +88,13 @@ The following table showcases acceptable values for each configuration and what 
 | `namespaceDefaults.archival.history.state`     | `enabled`, `disabled`                                                              | Default state of the Archival feature whenever a new Namespace is created without specifying the Archival state.             |
 | `namespaceDefaults.archival.history.URI`       | Valid URI                                                                          | Must be a URI of the file store location and match a schema that correlates to a provider.                                   |
 
-### Namespace creation
+#### Namespace creation
 
 While Archival is configured at the cluster level, it operates independently within each Namespace. When a Namespace is created, if an Archival URI is not specified then the Namespace will use the value of `defaultNamespace.archival.history.URI` from the `config/development.yaml` file. The Archival URI can not be changed once the Namespace is created. Each Namespace supports just a single Archival URI, but each Namespace can use a different URI. A Namespace can safely switch Archival between `enabled` and `disabled` states as long as Archival is enabled at the cluster level.
 
 Archival is supported in global Namespaces (Namespaces spanning multiple clusters). When Archival is running in a global Namepsace, it will first run on the active cluster and then some time later it will run on the standby cluster. Before archiving, a history check is done to see what has been previously archived.
 
-### Test setup
+#### Test setup
 
 To test Archival locally, start by running a Temporal server:
 
@@ -109,18 +109,20 @@ Then register a new Namespace with Archival enabled.
 ```
 
 :::note
+
 If the retention period isn't set, then it defaults to 2 days.
 The minimum retention period is 1 day.
 The maximum retention period is 30 days.
 
 Setting the retention period to 0 results in the error _A valid retention period is not set on request_.
+
 :::
 
 Next, run a sample Workflow such as the [helloworld temporal sample](https://github.com/temporalio/temporal-go-samples/tree/master/helloworld).
 
 Once execution has finished Archival will occur.
 
-### Retrieve archives
+#### Retrieve archives
 
 You can retrieve archived Event Histories by copying the `workflowId` and `runId` of the completed Workflow from the log output and running:
 

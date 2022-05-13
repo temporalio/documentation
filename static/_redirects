@@ -126,7 +126,8 @@
 # Server pages redirects
 #
 /docs/server        /docs/clusters/
-/docs/server-archive-data        /docs/server/archive-data
+/docs/server-archive-data        /docs/concepts/what-is-archival
+/docs/server/archive-data        /docs/concepts/what-is-archival
 /docs/server-configuration        /docs/server/configuration
 /docs/server-introduction        /docs/clusters
 /docs/server/introduction        /docs/clusters
