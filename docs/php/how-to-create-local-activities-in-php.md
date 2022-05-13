@@ -26,4 +26,4 @@ $greetingActivity = Workflow::newActivityStub(
 );
 ```
 
-Local Activities have a limited set of options, including: `ScheduleToCloseTimeout`, `StartToCloseTimeout`, `RetryPolicy`.
+Local Activities have a limited set of options, including: `ScheduleToCloseTimeout`, `StartToCloseTimeout`, and `RetryPolicy`.
