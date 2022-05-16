@@ -7,7 +7,6 @@ tags:
   - tctl
 ---
 
-
 This documentation reflects tctl version 1.16.
 
 The Temporal CLI (tctl) is a command-line tool that you can use to interact with a Temporal Cluster.
