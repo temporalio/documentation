@@ -10,8 +10,7 @@ tags:
 
 The `tctl admin dlq read` command reads out messages from the dead-letter queue (DLQ).
 
-----------
-
+---
 
 ## Modifiers
 
@@ -45,6 +44,6 @@ Default: 0
 
 #### `--output_filename value`
 
-Provides a file to write output to. 
+Provides a file to write output to.
 
 Output is written to stdout on default.
