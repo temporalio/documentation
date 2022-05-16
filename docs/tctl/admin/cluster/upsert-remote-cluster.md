@@ -8,7 +8,7 @@ tags:
   - admin
 ---
 
-The `tctl admin cluster upsert-remote-cluster` command adds or updates remote Cluster informaation in the current Cluster.
+The `tctl admin cluster upsert-remote-cluster` command adds or updates remote Cluster information in the current Cluster.
 
 ### Modifiers
 
