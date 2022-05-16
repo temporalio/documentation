@@ -88,7 +88,7 @@ yarn
 yarn gen
 ```
 
-To build and view the site locally run:
+To build and view the site locally, run:
 
 ```bash
 yarn start
