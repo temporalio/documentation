@@ -8,7 +8,7 @@ tags:
   - admin
 ---
 
-The `tctl admin cluster upsert-remote-cluster` command adds or updates remote Cluster informaation in the current Cluster.
+The `tctl admin cluster upsert-remote-cluster` command adds or updates remote Cluster information in the current Cluster.
 
 ### Modifiers
 
@@ -16,7 +16,7 @@ The `tctl admin cluster upsert-remote-cluster` command adds or updates remote Cl
 
 Alias: `--fad value`
 
-Remote Cluster frontend address.
+The remote Cluster frontend address.
 
 #### `--enable_connection`
 

@@ -8,7 +8,7 @@ tags:
   - admin
 ---
 
-The `tctl admin cluster` command runs admin operations on a given Cluster.
+The `tctl admin cluster` command runs the administrator-level operations on a given Cluster.
 
 ### Usage
 
