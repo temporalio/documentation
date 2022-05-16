@@ -14,6 +14,6 @@ The following modifier will change the behavior of the command:
 
 #### `--print_json value`
 
-  Alias: `--pjson value`
+Alias: `--pjson value`
 
-  Prints the existing search attributes in JSON format.
+Prints the existing search attributes in JSON format.

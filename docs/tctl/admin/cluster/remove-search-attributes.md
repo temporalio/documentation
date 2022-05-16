@@ -15,4 +15,5 @@ This operation has no effect on Elasticsearch index schema.
 The following modifier changes the behavior of the operation:
 
 #### `--name value`
-  Name of the search attribute to remove.
+
+Name of the search attribute to remove.
