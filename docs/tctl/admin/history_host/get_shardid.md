@@ -13,7 +13,7 @@ Alias: `gsh`
 
 ## Modifiers
 
-The modifiers listed below change the behavior of this command.
+The following modifiers change the behavior of this command.
 
 #### `--namespace_id value`
 
