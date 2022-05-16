@@ -81,10 +81,6 @@ Each JSON configuration file in [guide-gen/guide-configs](guide-gen/guide-config
 To update a guide, make your changes in the source files that are named in the matching configuration file. For example, if you found a typo in the Concept section _What is a Task?_, you would open [docs/concepts/what-is-a-task.md](docs/concepts/what-is-a-task.md) and make the edit directly there. Then rebuild the Concept guide by running the following commands:
 
 ```bash
-yarn
-```
-
-```bash
 yarn gen
 ```
 
