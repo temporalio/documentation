@@ -1,5 +1,5 @@
 ---
-id: how-to-create-local-activities-in-php
+id: how-to-execute-a-local-activity-in-php
 title: How to execute a Local Activity in PHP
 sidebar_label: Local Activity
 ---
