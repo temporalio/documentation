@@ -4,6 +4,7 @@
 # General redirects
 #
 /docs/sdks-introduction         /application-development
+/docs/other-sdks        /application-development
 /docs/get-started         /
 /docs/glossary        /docs/references/glossary
 
