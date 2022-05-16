@@ -15,7 +15,7 @@ The following modifiers change the behavior of the command.
 
 #### `--heartbeated_within value`
 
-Filters the list by last heartbeat time.
+Filters the list by last Heartbeat time.
 
 <!-- todo: add supported format list-->
 
