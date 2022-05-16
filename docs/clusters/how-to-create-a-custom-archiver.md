@@ -13,7 +13,8 @@ To use a provider that is not currently supported, you can create your own Archi
 
 #### Create a new package
 
-The first step is to create a new package for your implementation in [/common/archiver](https://github.com/temporalio/temporal/tree/master/common/archiver). Create a new directory in the archiver folder and arrange the structure to look like the following:
+The first step is to create a new package for your implementation in [/common/archiver](https://github.com/temporalio/temporal/tree/master/common/archiver).
+Create a directory in the archiver folder and arrange the structure to look like the following:
 
 ```
 temporal/common/archiver
@@ -29,7 +30,7 @@ temporal/common/archiver
 
 #### Archiver interfaces
 
-Next, define objects that implement the [HistoryArchiver](https://github.com/temporalio/temporal/blob/master/common/archiver/interface.go#L80) and the [VisibilityArchiver](https://github.com/temporalio/temporal/blob/master/common/archiver/interface.go#L109) interfaces.
+Next, define objects that implement the [HistoryArchiver](https://github.com/temporalio/temporal/blob/master/common/archiver/interface.go#L80) and the [VisibilityArchiver](https://github.com/temporalio/temporal/blob/master/common/archiver/interface.go#L121) interfaces.
 
 The objects should live in `historyArchiver.go` and `visibilityArchiver.go` respectively.
 
