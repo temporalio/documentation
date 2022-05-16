@@ -37,4 +37,4 @@ The Id of the shard that belongs to the history host.
 
 Alias: `--pf`
 
-Print a fully detailed summary of the history host.
+Print a full and detailed summary of the history host.
