@@ -8,7 +8,7 @@ tags:
   - admin
 ---
 
-The `tctl admin cluster get-search-attributes` command retrieves existing search attributes for a given Cluster.
+The `tctl admin cluster get-search-attributes` command retrieves existing Search Attributes for a given Cluster.
 
 The following modifier will change the behavior of the command:
 
