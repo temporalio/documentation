@@ -17,7 +17,7 @@ The following modifiers change the behavior of this command.
 
 #### `--namespace_id value`
 
-The namespaceId of the history host where we're getting the shardId.
+The `namespaceId` of the history host where we're getting the `shardId`.
 
 #### `--workflow_id value`
 
