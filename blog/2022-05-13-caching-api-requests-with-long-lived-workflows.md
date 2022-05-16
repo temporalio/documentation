@@ -13,19 +13,19 @@ release_version: V1.15
 
 <!--truncate-->
 
-There is no time limit on [Temporal Workflow Executions](https://docs.temporal.io/docs/concepts/what-is-a-workflow-execution).
-You can write a Workflow that runs forever, storing some state and responding to Signals and Queries that come in, as long as you remember to [Continue As New](https://docs.temporal.io/docs/concepts/what-is-continue-as-new).
+A [Temporal Workflow Execution](https://docs.temporal.io/docs/concepts/what-is-a-workflow-execution) has no time limit.
+You can write a Workflow that runs forever, storing some state and responding to Signals and Queries, as long as you remember to use [Continue-As-New](https://docs.temporal.io/docs/concepts/what-is-continue-as-new).
 One neat use case for long-lived Workflows is caching API requests.
 
-For example, suppose you want to display prices in different currencies based on cached exchange rates.
+For example, suppose you want to display prices in various currencies based on cached exchange rates.
 Exchange rate APIs are often expensive for high volumes of requests, so caching can be worthwhile as long as stale data isn't a problem for your use case.
-You can create a single Temporal Workflow that makes 1 API request per day to get the latest exchange rates for a set of currencies, and stores the most recent result, with no explicit database calls or cron jobs.
+You can create a single Temporal Workflow that makes one API request per day to get the latest exchange rates for a set of currencies and stores the most recent result, with no explicit database calls or cron jobs.
 In this blog post, I'll describe how you can write an API caching Workflow for the [moneyconvert.net API](https://moneyconvert.net/) with the Temporal TypeScript SDK.
-You can find the [full source code for this example on GitHub](https://github.com/vkarpov15/temporal-api-caching-example).
+You can find the full source code for this example in [vkarpov/temporal-api-caching-example](https://github.com/vkarpov15/temporal-api-caching-example) on GitHub.
 
 ## Getting Started
 
-When you make an HTTP GET request to https://cdn.moneyconvert.net/api/latest.json, the API returns JSON that looks like what you see below.
+When you make an HTTP GET request to https://cdn.moneyconvert.net/api/latest.json, the API returns JSON that looks like the following:
 
 ```
 {
@@ -43,7 +43,7 @@ When you make an HTTP GET request to https://cdn.moneyconvert.net/api/latest.jso
 
 Because Temporal Workflows must be deterministic, you can't make an API request directly from a Workflow.
 You need to create an Activity that makes an API request, and call that Activity from your Workflow.
-Below is an [`activities.ts` file](https://github.com/vkarpov15/temporal-api-caching-example/blob/main/src/activities.ts) that makes an HTTP request to the above API endpoint, and returns the exchange rates.
+Following is an [`activities.ts`](https://github.com/vkarpov15/temporal-api-caching-example/blob/main/src/activities.ts) file that makes an HTTP request to the preceding API endpoint and returns the exchange rates.
 
 ```ts
 import axios from 'axios';
@@ -56,7 +56,7 @@ export async function getExchangeRates(): Promise<any> {
 
 Next, let's write a Workflow that calls this Activity once per day.
 With Temporal Workflows, you can simply write a `while (true) {}` loop with a [JavaScript sleep](https://masteringjs.io/tutorials/fundamentals/sleep) that pauses the Workflow until the next time you need to refresh exchange rates.
-Writing the Workflow this way may seem counterintuitive, because we've all had to learn over the course of our careers that writing applications isn't this easy.
+Writing the Workflow this way might seem counterintuitive, because we've all had to learn over the course of our careers that writing applications isn't this easy.
 But, with Temporal, it actually is this easy!
 
 ```ts
@@ -97,12 +97,12 @@ export async function exchangeRatesWorkflow(): Promise<any> {
 
 That's the entire Workflow for caching exchange rates.
 The full source code is available in [this GitHub repo](https://github.com/vkarpov15/temporal-api-caching-example).
-Notice there's no explicit references to a database or job queue.
+Notice that the code has no explicit references to a database or job queue.
 This Workflow is almost pure business logic, with a minimum of references to frameworks or services.
 
 To run this Workflow, you can run a `start-workflow.ts` script as shown below.
 This script starts a Workflow and exits, leaving the Workflow running on the Worker.
-Note that only one Workflow with a given `workflowId` can run at any given time, so the below code also ensures that only one copy of this Workflow is running at any given time.
+Note that only one Workflow with a given `workflowId` can run at any given time, so the following code also ensures that only one copy of this Workflow is running at any particular time.
 
 ```ts
 import { WorkflowClient } from '@temporalio/client';
@@ -124,7 +124,7 @@ async function run() {
 }
 ```
 
-Note that there is one key detail that this Workflow is missing: a [Continue As New](https://docs.temporal.io/docs/concepts/what-is-continue-as-new).
+This Workflow is missing one key detail: a [Continue-As-New](https://docs.temporal.io/docs/concepts/what-is-continue-as-new).
 There's more about that later in this blog post.
 
 ## Storing Historical Data
@@ -132,7 +132,7 @@ There's more about that later in this blog post.
 You can do more than just store the latest exchange rates.
 You can also store previous exchange rates.
 For example, suppose you want to store up to 30 days worth of historical exchange rates.
-You can store the rates in an in-memory JavaScript map in your Workflow as shown below.
+You can store the rates in an in-memory JavaScript map in your Workflow, as shown in the following code.
 
 ```ts
 const maxNumRates = 30;
@@ -172,25 +172,25 @@ Temporal makes `ratesByDay` durable, even though `ratesByDay` is just a normal J
 That's because Temporal stores the entire history of events for this Workflow.
 If the machine running `exchangeRatesWorkflow()` crashes, Temporal can resume the Workflow on another machine by replaying the entire event history.
 
-## Continue As New
+## Continue-As-New
 
 The `exchangeRatesWorkflow` can run for an unlimited period of time: days, months, even years.
-However, Temporal caps a Workflow at [50,000 events](https://docs.temporal.io/docs/temporal-explained/workflows/#:~:text=There%20is%20a%20hard%20limit,Workflow%20Execution%20is%20forcefully%20terminated.).
-In the `exchangeRatesWorkflow`, there are 4 events fired at every iteration of the `while` loop, assuming no API errors.
+However, Temporal caps a Workflow at 50,000 events. (See the [Time constraints](https://docs.temporal.io/docs/temporal-explained/workflows/#time-constraints) section in [Temporal Workflows](https://docs.temporal.io/docs/temporal-explained/workflows).)
+In the `exchangeRatesWorkflow`, four events are fired at every iteration of the `while` loop, assuming no API errors.
 
 1. `EVENT_TYPE_TIMER_FIRED`: the `setTimeout()` resolved and it's time to refresh the exchange rates
 2. `EVENT_TYPE_ACTIVITY_TASK_STARTED`: the `getExchangeRates()` activity started executing
 3. `EVENT_TYPE_ACTIVITY_TASK_COMPLETED`: the `getExchangeRates()` activity completed successfully
 4. `EVENT_TYPE_TIMER_STARTED`: the Workflow used `setTimeout()` to pause until tomorrow
 
-With 1 API request per day, the `exchangeRatesWorkflow()` can run for almost 12,500 days (approximately 34 years) before running into the 50,000 event limit.
+With one API request per day, the `exchangeRatesWorkflow()` can run for almost 12,500 days (approximately 34 years) before running into the 50,000 event limit.
 However, you should still handle this limit.
-And that's what Continue As New is for.
+And that's what Continue-As-New is for.
 
-You can think of Continue As New as restarting your Workflow with from an initial state.
-The only data that `exchangeRatesWorkflow()` needs to respond to queries is the `ratesByDay` map, so `exchangeRatesWorkflow()` needs to Continue As New with a serialized version of the `ratesByDay` map.
+You can think of Continue-As-New as restarting your Workflow from an initial state.
+The only data that `exchangeRatesWorkflow()` needs to respond to queries is the `ratesByDay` map, so `exchangeRatesWorkflow()` needs to Continue-As-New with a serialized version of the `ratesByDay` map.
 The `exchangeRatesWorkflow()` also needs to be able to resume from a previous state.
-Continue As New just calls `exchangeRatesWorkflow()` with an initial state.
+Continue-As-New just calls `exchangeRatesWorkflow()` with an initial state.
 Below is 
 
 ```ts
