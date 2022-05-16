@@ -9,7 +9,7 @@ tags:
 
 ::: NOTE
 
-The Temporal tctl documentation covers version 1.16 of the Temporal CLI. This information should not be definitely used for any beta or pre-production tctl versions.
+This documentation reflects tctl version 1.16.
 
 :::
 
