@@ -4,7 +4,7 @@ title: How to execute a Local Activity in PHP
 sidebar_label: Local Activity
 ---
 
-To create a local Activity, use `#[LocalActivityInterface]`.
+To execute a Local Activity, use `#[LocalActivityInterface]`.
 
 ```php
 use Temporal\Activity\LocalActivityInterface;
