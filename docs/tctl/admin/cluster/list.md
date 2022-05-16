@@ -8,7 +8,7 @@ tags:
   - admin
 ---
 
-The `tctl admin cluster list` command lists Cluster information for the current Cluster.
+The `tctl admin cluster list` command lists Cluster information on the given Cluster.
 
 Default: 100
 
