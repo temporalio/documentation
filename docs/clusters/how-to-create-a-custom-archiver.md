@@ -32,11 +32,9 @@ temporal/common/archiver
 
 Next, define objects that implement the [HistoryArchiver](https://github.com/temporalio/temporal/blob/master/common/archiver/interface.go#L80) and the [VisibilityArchiver](https://github.com/temporalio/temporal/blob/master/common/archiver/interface.go#L121) interfaces.
 
-The objects should live in `historyArchiver.go` and `visibilityArchiver.go` respectively.
+The objects should live in `historyArchiver.go` and `visibilityArchiver.go`, respectively.
 
 #### Update provider
-
-Update provider to enable access to your implementation by modifying the
 
 Update the `GetHistoryArchiver` and `GetVisibilityArchiver` methods of the `archiverProvider` object in the [/common/archiver/provider/provider.go](https://github.com/temporalio/temporal/blob/master/common/archiver/provider/provider.go) file so that it knows how to create an instance of your archiver.
 
