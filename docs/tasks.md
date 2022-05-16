@@ -21,19 +21,19 @@ Information may change at any time.
 
 :::
 
-A Task is the context that a Worker needs to progress with a specific [Workflow Execution](/docs/workflows/#workflow-executions) or [Activity Execution](/docs/activities/#activity-execution).
+A Task is the context that a Worker needs to progress with a specific [Workflow Execution](/concepts/what-is-a-workflow-execution) or [Activity Execution](/concepts/what-is-an-activity-execution).
 
 There are two types of Tasks:
 
-- [Activity Task](#activity-task)
-- [Workflow Task](#workflow-task)
+- [Activity Task](/concepts/what-is-an-activity-task)
+- [Workflow Task](/concepts/what-is-a-workflow-task)
 
 ### Workflow Task
 
 A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.
 
 - Every time a new external event that might affect a Workflow state is recorded, a Workflow Task that contains the event is added to a Task Queue and then picked up by a Workflow Worker.
-- After the new event is handled, the Workflow Task is completed with a list of [Commands](/docs/workflows/#commands).
+- After the new event is handled, the Workflow Task is completed with a list of [Commands](/concepts/what-is-a-command).
 - Handling of a Workflow Task is usually very fast and is not related to the duration of operations that the Workflow invokes.
 
 ### Workflow Task Execution
@@ -42,20 +42,20 @@ A Workflow Task Execution is when a Worker picks up a Worker Task and uses it to
 
 ### Activity Task
 
-An Activity Task contains the context needed to proceed with an [Activity Task Execution](#activity-task-execution).
+An Activity Task contains the context needed to proceed with an [Activity Task Execution](/concepts/what-is-an-activity-task-execution).
 Activity Tasks largely represent the Activity Task Scheduled Event , which contains the data needed to execute an Activity Function.
 
 If Heartbeat data is being passed, an Activity Task will also contain the latest Heartbeat details.
 
 ### Activity Task Execution
 
-An Activity Task Execution is when the Worker uses the Context provided from the [Activity Task](#activity-task) and executes the [Activity Definition](/docs/activities/#activity-definition) (also known as the Activity Function).
+An Activity Task Execution is when the Worker uses the Context provided from the [Activity Task](/concepts/what-is-an-activity-task) and executes the [Activity Definition](/concepts/what-is-an-activity-definition) (also known as the Activity Function).
 
-The [ActivityTaskScheduled Event](/docs/workflows/#events#activitytaskscheduled) corresponds to when the Temporal Cluster puts the Activity Task into the Task Queue.
+The [ActivityTaskScheduled Event](/concepts/what-is-an-event#activitytaskscheduled) corresponds to when the Temporal Cluster puts the Activity Task into the Task Queue.
 
-The [ActivityTaskStarted Event](/docs/workflows/#events#activitytaskstarted) corresponds to when the Worker picks up the Activity Task from the Task Queue.
+The [ActivityTaskStarted Event](/concepts/what-is-an-event#activitytaskstarted) corresponds to when the Worker picks up the Activity Task from the Task Queue.
 
-Either [ActivityTaskCompleted](/docs/workflows/#events#activitytaskcompleted) or one of the other Closed Activity Task Events corresponds to when the Worker has yielded back to the Temporal Cluster.
+Either [ActivityTaskCompleted](/concepts/what-is-an-event#activitytaskcompleted) or one of the other Closed Activity Task Events corresponds to when the Worker has yielded back to the Temporal Cluster.
 
 The API to schedule an Activity Execution provides an "effectively once" experience, even though there may be several Activity Task Executions that take place to successfully complete an Activity.
 
@@ -69,7 +69,7 @@ Once an Activity Task finishes execution, the Worker responds to the Cluster wit
 
 ## Task Queues
 
-A Task Queue is a lightweight, dynamically allocated queue that one or more [Worker Entities](/docs/workers/#worker-entity) poll for [Tasks](#).
+A Task Queue is a lightweight, dynamically allocated queue that one or more [Worker Entities](/concepts/what-is-a-worker-entity) poll for [Tasks](/concepts/what-is-a-task).
 
 Task Queues do not have any ordering guarantees.
 It is possible to have a Task that stays in a Task Queue for a period of time, if there is a backlog that wasn't drained for that time.
@@ -93,7 +93,7 @@ This implementation offers several benefits:
 - A Worker Process polls for a message only when it has spare capacity, avoiding overloading itself.
 - In effect, Task Queues enable load balancing across a large number of Worker Processes.
 - Task Queues support server-side throttling, which enables you to limit the Task dispatching rate to the pool of Worker Processes while still supporting Task dispatching at higher rates when spikes happen.
-- Task Queues enable what we call [Task Routing](#task-routing), which is the routing of specific Tasks to specific Worker Processes or even a specific process.
+- Task Queues enable what we call [Task Routing](/concepts/what-is-task-routing), which is the routing of specific Tasks to specific Worker Processes or even a specific process.
 
 All Workers listening to a given Task Queue must have identical registrations of Activities and/or Workflows.
 The one exception is during a Server upgrade, where it is okay to have registration temporarily misaligned while the binary rolls out.
@@ -104,15 +104,15 @@ There are four places where the name of the Task Queue can be set by the develop
 
 1. A Task Queue must be set when spawning a Workflow Execution:
 
-- [How to set `StartWorkflowOptions` in Go](/docs/go/startworkflowoptions-reference/#taskqueue)
-- [How to spawn a Workflow Execution using tctl](/docs/tctl/workflow/start#--taskqueue)
+- [How to set `StartWorkflowOptions` in Go](/go/startworkflowoptions-reference/#taskqueue)
+- [How to spawn a Workflow Execution using tctl](/tctl/workflow/start#--taskqueue)
 
 2. A Task Queue name must be set when starting a Worker Entity:
 
-- [How to develop a Worker Program in Go](/docs/go/how-to-develop-a-worker-program-in-go)
-- [How to develop a Worker Program in Java](/docs/java/how-to-develop-a-worker-program-in-java)
-- [How to develop a Worker Program in PHP](/docs/php/how-to-develop-a-worker-program-in-php)
-- [How to develop a Worker Program in TypeScript](/docs/application-development-guide/#run-worker-processes)
+- [How to develop a Worker Program in Go](/go/how-to-develop-a-worker-program-in-go)
+- [How to develop a Worker Program in Java](/java/how-to-develop-a-worker-program-in-java)
+- [How to develop a Worker Program in PHP](/php/how-to-develop-a-worker-program-in-php)
+- [How to develop a Worker Program in TypeScript](/typescript/how-to-develop-a-worker-program-in-typescript)
 
 Note that all Worker Entities listening to the same Task Queue name must be registered to handle the exact same Workflows Types and Activity Types.
 
@@ -124,7 +124,7 @@ However, the failure of the Task will not cause the associated Workflow Executio
 This is optional.
 An Activity Execution inherits the Task Queue name from its Workflow Execution if one is not provided.
 
-- [How to set `ActivityOptions` in Go](/docs/go/activityoptions-reference/#taskqueue)
+- [How to set `ActivityOptions` in Go](/go/activityoptions-reference/#taskqueue)
 
 4. A Task Queue name can be provided when spawning a Child Workflow Execution:
 
@@ -144,7 +144,7 @@ The Worker Entity caches the Workflow Execution Event History and begins polling
 If the Worker Entity does not pick up a Workflow Task from the dedicated Task Queue in an appropriate amount of time, the Cluster will resume Scheduling Workflow Tasks on the original Task Queue.
 Another Worker Entity can then resume the Workflow Execution, and can set up its own Sticky Execution for future Workflow Tasks.
 
-- [How to set a `StickyScheduleToStartTimeout` on a Worker Entity in Go](/docs/go/how-to-set-workeroptions-in-go/#stickyscheduletostarttimeout)
+- [How to set a `StickyScheduleToStartTimeout` on a Worker Entity in Go](/go/how-to-set-workeroptions-in-go/#stickyscheduletostarttimeout)
 
 Sticky Executions are the default behavior of the Temporal Platform.
 
@@ -176,4 +176,5 @@ Code samples:
 Some SDKs provide a Session API that provides a straightforward way to ensure that Activity Tasks are executed with the same Worker without requiring you to manually specify Task Queue names.
 It also includes features like **concurrent session limitations** and **worker failure detection**.
 
-- [How to create Worker Sessions in Go](/docs/go/how-to-create-a-worker-session-in-go)
+- [How to create Worker Sessions in Go](/go/how-to-create-a-worker-session-in-go)
+

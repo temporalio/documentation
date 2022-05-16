@@ -33,15 +33,15 @@ Closed Workflow Executions can be filtered by a time constraint and either a Wor
 
 ## Advanced Visibility
 
-Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through a custom SQL-like [List Filter](#list-filters).
+Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through a custom SQL-like [List Filter](/concepts/what-is-a-list-filter).
 
-To use Advanced Visibility, your Temporal Cluster must be [integrated with Elasticsearch](/docs/cluster-deployment-guide/#advanced-visibility).
+To use Advanced Visibility, your Temporal Cluster must be [integrated with Elasticsearch](/cluster-deployment-guide/#advanced-visibility).
 We highly recommend operating a Temporal Cluster with Elasticsearch for any use case that spawns more than just a few Workflow Executions.
 Elasticsearch takes on the Visibility request load, relieving potential performance issues.
 
 ### List Filters
 
-A List Filter is the SQL-like string that is provided as the parameter to an [Advanced Visibility](#advanced-visibility) List API.
+A List Filter is the SQL-like string that is provided as the parameter to an [Advanced Visibility](/concepts/what-is-advanced-visibility) List API.
 
 The following is an example List Filter:
 
@@ -51,7 +51,7 @@ WorkflowType = "main.YourWorkflowDefinition" and ExecutionStatus != "Running" an
 
 [More example List Filters](#example-list-filters)
 
-A List Filter contains [Search Attribute](#search-attributes) names, Search Attribute values, and Operators.
+A List Filter contains [Search Attribute](/concepts/what-is-a-search-attribute) names, Search Attribute values, and Operators.
 
 - The following operators are supported in List Filters:
 
@@ -124,17 +124,17 @@ order by CustomIntField asc
 
 **Implementation guides:**
 
-- [How to list and filter Workflow Executions with a List Filter using tctl](/docs/tctl/workflow/list#--query)
-- [How to use a List Filter in the Web UI](/docs/web-ui/how-to-use-a-list-filter-in-the-temporal-web-ui)
+- [How to list and filter Workflow Executions with a List Filter using tctl](/tctl/workflow/list#--query)
+- [How to use a List Filter in the Web UI](/web-ui/how-to-use-a-list-filter-in-the-temporal-web-ui)
 
 ### Search Attributes
 
-A Search Attribute is an indexed field used in a [List Filter](#list-filters) to filter a list of Workflow Executions that have the Search Attribute in their metadata.
+A Search Attribute is an indexed field used in a [List Filter](/concepts/what-is-a-list-filter) to filter a list of Workflow Executions that have the Search Attribute in their metadata.
 
 If a Temporal Cluster does not have Elasticsearch integrated, but a Workflow Execution is spawned and tagged with Search Attributes, no errors occur.
 However, you won't be able to use Advanced Visibility List APIs and List Filters to find and list the Workflow Execution.
 
-When using [Continue-As-New](/docs/workflows/#continue-as-new) or a [Temporal Cron Job](/docs/workflows/#cron-jobs), Search Attributes are carried over to the new Run by default.
+When using [Continue-As-New](/concepts/what-is-continue-as-new) or a [Temporal Cron Job](/concepts/what-is-a-temporal-cron-job), Search Attributes are carried over to the new Run by default.
 
 #### Default Search Attributes
 
@@ -174,7 +174,7 @@ These Search Attributes are created when the initial index is created.
 
 #### Custom Search Attributes
 
-Custom Search Attributes can be [added to a Temporal Cluster only by using `tctl`](/docs/tctl/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl).
+Custom Search Attributes can be [added to a Temporal Cluster only by using `tctl`](/tctl/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl).
 Adding a Search Attribute makes it available to use with Workflow Executions within that Cluster.
 
 There is no hard limit on the number of attributes you can add.
@@ -225,11 +225,11 @@ Note:
   - As a **Text** it would be matched by `ProductId = 2dd8`, which could cause unwanted matches.
 - The **Text** type cannot be used in the "Order By" clause.
 
-- [How to view Search Attributes using tctl](/docs/tctl/cluster/list-search-attributes)
+- [How to view Search Attributes using tctl](/tctl/cluster/list-search-attributes)
 
 #### Search Attributes as Workflow Execution metadata
 
-To actually have results from the use of a [List Filter](#list-filters), Search Attributes must be added to a Workflow Execution as metadata.
+To actually have results from the use of a [List Filter](/concepts/what-is-a-list-filter), Search Attributes must be added to a Workflow Execution as metadata.
 How to do this entirely depends on the method by which you spawn the Workflow Execution:
 
-- [How to set Search Attributes as Workflow Execution metadata in Go](/docs/go/startworkflowoptions-reference/#searchattributes)
+- [How to set Search Attributes as Workflow Execution metadata in Go](/go/startworkflowoptions-reference/#searchattributes)

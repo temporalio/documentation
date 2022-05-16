@@ -21,7 +21,7 @@ Information may change at any time.
 
 :::
 
-In day-to-day conversations, the term Worker is used to denote either a [Worker Program](#worker-program), a [Worker Process](#worker-process), or a [Worker Entity](#worker-entity).
+In day-to-day conversations, the term Worker is used to denote either a [Worker Program](/concepts/what-is-a-worker-program), a [Worker Process](/concepts/what-is-a-worker-process), or a [Worker Entity](/concepts/what-is-a-worker-entity).
 Temporal documentation aims to be explicit and differentiate between them.
 
 ## Worker Program
@@ -30,10 +30,10 @@ A Worker Program is the static code that defines the constraints of the Worker P
 
 **Implementation guides:**
 
-- [How to develop a Worker Program in Go](/docs/go/how-to-develop-a-worker-program-in-go)
-- [How to develop a Worker Program in Java](/docs/java/how-to-develop-a-worker-program-in-java)
-- [How to develop a Worker Program in PHP](/docs/php/how-to-develop-a-worker-program-in-php)
-- [How to develop a Worker Program in TypeScript](/docs/application-development-guide/#run-worker-processes)
+- [How to develop a Worker Program in Go](/go/how-to-develop-a-worker-program-in-go)
+- [How to develop a Worker Program in Java](/java/how-to-develop-a-worker-program-in-java)
+- [How to develop a Worker Program in PHP](/php/how-to-develop-a-worker-program-in-php)
+- [How to develop a Worker Program in TypeScript](/typescript/how-to-develop-a-worker-program-in-typescript)
 
 ### Worker Entity
 
@@ -53,13 +53,13 @@ Therefore, a single Worker can handle millions of open Workflow Executions, assu
 
 **Operation guides:**
 
-- [How to tune Workers](/docs/operation/how-to-tune-workers)
+- [How to tune Workers](/operation/how-to-tune-workers)
 
 ## Worker Process
 
 ![Component diagram of a Worker Process and the Temporal Server](/diagrams/worker-and-server-component.svg)
 
-A Worker Process is responsible for polling a [Task Queue](/docs/tasks/#task-queues), dequeueing a [Task](/docs/tasks/#), executing your code in response to a Task, and responding to the [Temporal Cluster](/docs/clusters/#) with the results.
+A Worker Process is responsible for polling a [Task Queue](/concepts/what-is-a-task-queue), dequeueing a [Task](/concepts/what-is-a-task), executing your code in response to a Task, and responding to the [Temporal Cluster](/concepts/what-is-a-temporal-cluster) with the results.
 
 More formally, a Worker Process is any process that implements the Task Queue Protocol and the Task Execution Protocol.
 
@@ -69,12 +69,12 @@ More formally, a Worker Process is any process that implements the Task Queue Pr
   An Activity Worker Process can listen on an arbitrary number of Activity Task Queues and can execute an arbitrary number of Activity Tasks.
 
 **Worker Processes are external to a Temporal Cluster.**
-Temporal Application developers are responsible for developing [Worker Programs](#worker-program) and operating Worker Processes.
-Said another way, the [Temporal Cluster](/docs/clusters/#) (including the Temporal Cloud) doesn't execute any of your code (Workflow & Activity Definitions) on Temporal Cluster machines. The Cluster is solely responsible for orchestrating state transitions and providing Tasks to the next available Worker Entity.
+Temporal Application developers are responsible for developing [Worker Programs](/concepts/what-is-a-worker-program) and operating Worker Processes.
+Said another way, the [Temporal Cluster](/concepts/what-is-a-temporal-cluster) (including the Temporal Cloud) doesn't execute any of your code (Workflow & Activity Definitions) on Temporal Cluster machines. The Cluster is solely responsible for orchestrating state transitions and providing Tasks to the next available Worker Entity.
 
-While data transferred in Event Histories is [secured by mTLS](https://docs.temporal.io/docs/server/security/#encryption-of-network-traffic), by default, it is still readable at rest in the Temporal Cluster.
+While data transferred in Event Histories is [secured by mTLS](https://docs.temporal.io/server/security/#encryption-of-network-traffic), by default, it is still readable at rest in the Temporal Cluster.
 
-To solve this, Temporal SDKs offer a [Data Converter API](/docs/concepts/what-is-a-data-converter) that you can use to customize the serialization of data going out of and coming back in to a Worker Entity, with the net effect of guaranteeing that the Temporal Cluster cannot read sensitive business data.
+To solve this, Temporal SDKs offer a [Data Converter API](/concepts/what-is-a-data-converter) that you can use to customize the serialization of data going out of and coming back in to a Worker Entity, with the net effect of guaranteeing that the Temporal Cluster cannot read sensitive business data.
 
 In many of our tutorials, we show you how to run both a Temporal Cluster and one Worker on the same machine for local development.
 However, a production-grade Temporal Application typically has a _fleet_ of Worker Processes, all running on hosts external to the Temporal Cluster.
@@ -96,3 +96,4 @@ Worker Processes executing Activity Tasks must have access to any resources need
 
 The Temporal Cluster itself has [internal workers](https://docs.temporal.io/blog/workflow-engine-principles/#system-workflows-1910) for system Workflow Executions.
 However, these internal workers are not visible to the developer.
+

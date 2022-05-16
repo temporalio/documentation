@@ -11,7 +11,7 @@ A Temporal Cluster is the group of services, known as the [Temporal Server](/con
 
 ![A Temporal Cluster (Server + persistence)](/diagrams/temporal-cluster.svg)
 
-- [How to quickly install a Temporal Cluster for testing and development](/docs/clusters/quick-install)
+- [How to quickly install a Temporal Cluster for testing and development](/clusters/quick-install)
 
 #### Persistence
 
@@ -31,4 +31,4 @@ The database stores the following types of data:
 - Visibility data: Enables operations like "show all running Workflow Executions".
   For production environments, we recommend using Elasticsearch.
 
-An Elasticsearch database can be added to enable [Advanced Visibility](/docs/concepts/what-is-advanced-visibility).
+An Elasticsearch database can be added to enable [Advanced Visibility](/concepts/what-is-advanced-visibility).

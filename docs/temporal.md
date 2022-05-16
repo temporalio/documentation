@@ -21,7 +21,7 @@ Information may change at any time.
 
 :::
 
-Temporal is a scalable and reliable runtime for Reentrant Processes called [Temporal Workflow Executions](/docs/workflows/#workflow-executions).
+Temporal is a scalable and reliable runtime for Reentrant Processes called [Temporal Workflow Executions](/concepts/what-is-a-workflow-execution).
 
 <!-- TODO content more appropriate for blog
 :::note [Temporal's tenth rule](https://en.wikipedia.org/wiki/Greenspun%27s_tenth_rule)
@@ -35,7 +35,7 @@ Any sufficiently complex distributed system contains an ad-hoc, informally-speci
 
 ## Temporal Platform
 
-The Temporal Platform consists of a [Temporal Cluster](/docs/clusters/#) and [Worker Processes](/docs/workers/#worker-process).
+The Temporal Platform consists of a [Temporal Cluster](/concepts/what-is-a-temporal-cluster) and [Worker Processes](/concepts/what-is-a-worker-process).
 Together these components create a runtime for Workflow Executions.
 
 ![The Temporal Platform (runtime)](/diagrams/temporal-platform-simple.svg)
@@ -48,7 +48,7 @@ They communicate with a Temporal Cluster via gRPC.
 
 ## Temporal Application
 
-A Temporal Application is a set of [Temporal Workflow Executions](/docs/workflows/#workflow-executions).
+A Temporal Application is a set of [Temporal Workflow Executions](/concepts/what-is-a-workflow-execution).
 Each Temporal Workflow Execution has exclusive access to its local state, executes concurrently to all other Workflow Executions, and communicates with other Workflow Executions and the environment via message passing.
 
 A Temporal Application can consist of millions to billions of Workflow Executions.
@@ -63,11 +63,11 @@ A Temporal Workflow Execution is a Reentrant Process. A Reentrant Process is re
 - Recoverable: Ability of a process to continue execution after execution was suspended on a _failure_.
 - Reactive: Ability of a process to react to external events.
 
-Therefore, a Temporal Workflow Execution executes a [Temporal Workflow Definition](/docs/workflows/#workflow-definitions), also called a Temporal Workflow Function, your application code, exactly once and to completion—whether your code executes for seconds or years, in the presence of arbitrary load and arbitrary failures.
+Therefore, a Temporal Workflow Execution executes a [Temporal Workflow Definition](/concepts/what-is-a-workflow-definition), also called a Temporal Workflow Function, your application code, exactly once and to completion—whether your code executes for seconds or years, in the presence of arbitrary load and arbitrary failures.
 
 #### Temporal Client
 
-A Temporal Client is available in each SDK and provides a set of APIs to communicate with a [Temporal Cluster](/docs/clusters/#).
+A Temporal Client is available in each SDK and provides a set of APIs to communicate with a [Temporal Cluster](/concepts/what-is-a-temporal-cluster).
 
 The most common operations that a Temporal Client enables you to perform are the following:
 
@@ -81,18 +81,19 @@ The most common operations that a Temporal Client enables you to perform are the
 
 A Temporal SDK is a language-specific library that offers APIs to do the following:
 
-1. Construct and use a [Temporal Client](#temporal-client)
-2. Develop [Workflow Definitions](/docs/workflows/#workflow-definitions)
-3. Develop [Worker Programs](/docs/workers/#worker-program)
+1. Construct and use a [Temporal Client](/concepts/what-is-a-temporal-client)
+2. Develop [Workflow Definitions](/concepts/what-is-a-workflow-definition)
+3. Develop [Worker Programs](/concepts/what-is-a-worker-program)
 
 A Temporal SDK enables you to write your application code using the full power of the programming language, while the Temporal Platform handles the durability, reliability, and scalability of the application.
 
 Temporal currently offers the following SDKs:
 
-- [How to use the Go SDK](/docs/application-development-guide/#add-your-sdk)
-- [How to use the Java SDK](/docs/java/)
-- [How to use the PHP SDK](/docs/php/introduction)
-- [How to use the TypeScript SDK](/docs/typescript/introduction)
+- [How to use the Go SDK](/go/index)
+- [How to use the Java SDK](/java/)
+- [How to use the PHP SDK](/php/introduction)
+- [How to use the TypeScript SDK](/typescript/introduction)
 
 Each SDK emits metrics which can be ingested into monitoring platforms.
-See the [SDK metrics reference](/docs/references/sdk-metrics) for a complete list.
+See the [SDK metrics reference](/references/sdk-metrics) for a complete list.
+

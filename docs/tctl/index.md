@@ -19,7 +19,7 @@ Workflow, show Workflow History, and Signal Workflow).
 ## tctl commands
 
 - [`tctl activity`](/tctl/activity)
-<!-- - [`tctl admin`](/docs/tctl/admin) -->
+<!-- - [`tctl admin`](/tctl/admin) -->
 - [`tctl batch`](/tctl/batch)
 - [`tctl cluster`](/tctl/cluster)
 - [`tctl dataconverter`](/tctl/dataconverter)

@@ -21,7 +21,7 @@ Information may change at any time.
 
 :::
 
-In day-to-day conversations, the term _Activity_ frequently denotes either an [Activity Type](#activity-type), an [Activity Definition](#activity-definition), or an [Activity Execution](#activity-execution).
+In day-to-day conversations, the term _Activity_ frequently denotes either an [Activity Type](/concepts/what-is-an-activity-type), an [Activity Definition](/concepts/what-is-an-activity-definition), or an [Activity Execution](/concepts/what-is-an-activity-execution).
 Temporal documentation aims to be explicit and differentiate between them.
 
 The purpose of an Activity is to execute a single, well-defined action (either short or long running), such as calling another service, transcoding a media file, or sending an email.
@@ -95,12 +95,12 @@ To support such use cases, Temporal allows Activity implementations that do not 
 
 ## Activity Definition
 
-An Activity Definition is the code that defines the constraints of an [Activity Task Execution](/docs/tasks/#activity-task-execution).
+An Activity Definition is the code that defines the constraints of an [Activity Task Execution](/concepts/what-is-an-activity-task-execution).
 
-The term 'Activity Definition' is used to refer to the full set of primitives in any given language SDK that provides an access point to an Activity Function Definition——the method or function that is invoked for an [Activity Task Execution](/docs/tasks/#activity-task-execution).
+The term 'Activity Definition' is used to refer to the full set of primitives in any given language SDK that provides an access point to an Activity Function Definition——the method or function that is invoked for an [Activity Task Execution](/concepts/what-is-an-activity-task-execution).
 Therefore, the terms Activity Function and Activity Method refer to the source of an instance of an execution.
 
-Activity Definitions are named and referenced in code by their [Activity Type](#activity-type).
+Activity Definitions are named and referenced in code by their [Activity Type](/concepts/what-is-an-activity-type).
 
 ![Activity Definition](/diagrams/activity-definition.svg)
 
@@ -116,7 +116,7 @@ Therefore, an Activity Definition has no restrictions on the code it contains.
 
 An Activity Definition can support as many parameters as needed.
 
-All values passed through these parameters are recorded in the [Event History](/docs/workflows/#event-history) of the Workflow Execution.
+All values passed through these parameters are recorded in the [Event History](/concepts/what-is-an-event-history) of the Workflow Execution.
 Return values are also captured in the Event History for the calling Workflow Execution.
 
 Activity Definitions must contain the following parameters:
@@ -125,7 +125,7 @@ Activity Definitions must contain the following parameters:
 - Heartbeat: a notification from the Worker to the Temporal Cluster that the Activity Execution is progressing. Cancelations are allowed only if the Activity Definition permits Heartbeating.
 - Timeouts: intervals that control the execution and retrying of Activity Task Executions.
 
-Other parameters, such as [Retry Policies](/docs/retry-policies/#) and return values, can be seen in the implementation guides, listed in the next section.
+Other parameters, such as [Retry Policies](/concepts/what-is-a-retry-policy) and return values, can be seen in the implementation guides, listed in the next section.
 
 #### Implementing Activity Definitions
 
@@ -133,10 +133,10 @@ We strongly recommend that you develop an Activity Definition in a language that
 
 **Implementation guides:**
 
-- [How to develop an Activity Definition in Go](/docs/application-development-guide/#develop-activities)
-- [How to develop an Activity Interface in Java](/docs/java/activities/#activity-interface)
-- [How to develop an Activity Interface in PHP](/docs/php/activities/#activity-interface)
-- [How to develop an Activity Interface in TypeScript](/docs/typescript/activities/#how-to-write-an-activity-function)
+- [How to develop an Activity Definition in Go](/go/how-to-develop-an-activity-definition-in-go)
+- [How to develop an Activity Interface in Java](/java/activities/#activity-interface)
+- [How to develop an Activity Interface in PHP](/php/activities/#activity-interface)
+- [How to develop an Activity Interface in TypeScript](/typescript/activities/#how-to-write-an-activity-function)
 
 ### Activity Type
 
@@ -146,7 +146,7 @@ Activity Types are scoped via Task Queues.
 
 ## Activity Execution
 
-An Activity Execution is the full chain of [Activity Task Executions](/docs/tasks/#activity-task-execution).
+An Activity Execution is the full chain of [Activity Task Executions](/concepts/what-is-an-activity-task-execution).
 
 ![Activity Execution](/diagrams/activity-execution.svg)
 
@@ -165,20 +165,20 @@ Cancellation requests are only delivered to Activity Executions that Heartbeat:
 
 **Implementation guides:**
 
-- [How to spawn an Activity Execution in Go](/docs/application-development-guide/#start-activity-execution)
+- [How to spawn an Activity Execution in Go](/go/how-to-spawn-an-activity-execution-in-go)
 
 ### Activity Id
 
-A unique identifier for an [Activity Execution](#activity-execution).
+A unique identifier for an [Activity Execution](/concepts/what-is-an-activity-execution).
 The identifier can be generated by the system, or it can be provided by the Workflow code that spawns the Activity Execution.
 An Activity Id can be used to complete the Activity asynchronously.
 
 ### Schedule-To-Start Timeout
 
-A Schedule-To-Start Timeout is the maximum amount of time that is allowed from when an [Activity Task](/docs/tasks/#activity-task) is scheduled (that is, placed in a Task Queue) to when a [Worker](/docs/workers/#) starts (that is, picks up from the Task Queue) that Activity Task.
+A Schedule-To-Start Timeout is the maximum amount of time that is allowed from when an [Activity Task](/concepts/what-is-an-activity-task) is scheduled (that is, placed in a Task Queue) to when a [Worker](/concepts/what-is-a-worker) starts (that is, picks up from the Task Queue) that Activity Task.
 In other words, it's a limit for how long an Activity Task can be enqueued.
 
-[How to set a Schedule-To-Start Timeout in Go](/docs/application-development-guide/#schedule-to-start-timeout)
+[How to set a Schedule-To-Start Timeout in Go](/go/how-to-set-a-schedule-to-start-timeout-in-go)
 
 The moment that the Task is picked by the Worker from the Task Queue is considered to be the start of the Activity Task for the purposes of the Schedule-To-Start Timeout and associated metrics.
 This definition of "Start" avoids issues that a clock difference between the Temporal Cluster and a Worker might create.
@@ -191,7 +191,7 @@ The Schedule-To-Start Timeout is enforced for each Activity Task, whereas the Sc
 Thus, "Schedule" in Schedule-To-Start refers to the scheduling moment of _every_ Activity Task in the sequence of Activity Tasks that make up the Activity Execution, while
 "Schedule" in Schedule-To-Close refers to the _first_ Activity Task in that sequence.
 
-A [Retry Policy](/docs/retry-policies/#) attached to an Activity Execution retries an Activity Task.
+A [Retry Policy](/concepts/what-is-a-retry-policy) attached to an Activity Execution retries an Activity Task.
 
 ![Start-To-Close Timeout period with retries](/diagrams/schedule-to-start-timeout-with-retry.svg)
 
@@ -210,21 +210,21 @@ In most cases, we recommend monitoring the `temporal_activity_schedule_to_start_
 
 ### Start-To-Close Timeout
 
-A Start-To-Close Timeout is the maximum time allowed for a single [Activity Task Execution](/docs/tasks/#activity-task-execution).
+A Start-To-Close Timeout is the maximum time allowed for a single [Activity Task Execution](/concepts/what-is-an-activity-task-execution).
 
-- [How to set a Start-To-Close Timeout in Go](/docs/application-development-guide/#start-to-close-timeout)
+- [How to set a Start-To-Close Timeout in Go](/go/how-to-set-a-start-to-close-timeout-in-go)
 
-**The default Start-To-Close Timeout is the same as the default [Schedule-To-Close Timeout](#schedule-to-close-timeout).**
+**The default Start-To-Close Timeout is the same as the default [Schedule-To-Close Timeout](/concepts/what-is-a-schedule-to-close-timeout).**
 
-An Activity Execution must have either this timeout (Start-To-Close) or the [Schedule-To-Close Timeout](#schedule-to-close-timeout) set.
+An Activity Execution must have either this timeout (Start-To-Close) or the [Schedule-To-Close Timeout](/concepts/what-is-a-schedule-to-close-timeout) set.
 We recommend always setting this timeout; however, make sure that it is always set to be longer than the maximum possible time for the Activity Execution to take place.
-For long running Activity Executions, we recommend also using [Activity Heartbeats](#activity-heartbeats) and [Heartbeat Timeouts](#heartbeat-timeout).
+For long running Activity Executions, we recommend also using [Activity Heartbeats](/concepts/what-is-an-activity-heartbeat) and [Heartbeat Timeouts](/concepts/what-is-a-heartbeat-timeout).
 
 The main use case for the Start-To-Close timeout is to detect when a Worker crashes after it has started executing an Activity Task.
 
 ![Start-To-Close Timeout period](/diagrams/start-to-close-timeout.svg)
 
-A [Retry Policy](/docs/retry-policies/#) attached to an Activity Execution retries an Activity Task Execution.
+A [Retry Policy](/concepts/what-is-a-retry-policy) attached to an Activity Execution retries an Activity Task Execution.
 Thus the Start-To-Close Timeout is applied to each Activity Task Execution within an Activity Execution.
 
 If the first Activity Task Execution returns an error the first time, then the full Activity Execution might look like this:
@@ -233,16 +233,16 @@ If the first Activity Task Execution returns an error the first time, then the f
 
 If this timeout is reached, the following actions occur:
 
-- An [ActivityTaskTimedOut](/docs/references/events/#activitytasktimedout) Event is written to the Workflow Execution's mutable state.
+- An [ActivityTaskTimedOut](/references/events/#activitytasktimedout) Event is written to the Workflow Execution's mutable state.
 - If a Retry Policy dictates a retry, the Temporal Cluster schedules another Activity Task.
   - The attempt count increments by 1 in the Workflow Execution's mutable state.
   - The Start-To-Close Timeout timer is reset.
 
 ### Schedule-To-Close Timeout
 
-A Schedule-To-Close Timeout is the maximum amount of time allowed for the overall [Activity Execution](#activity-execution), from when the first [Activity Task](/docs/tasks/#activity-task) is scheduled to when the last Activity Task, in the chain of Activity Tasks that make up the Activity Execution, reaches a Closed status.
+A Schedule-To-Close Timeout is the maximum amount of time allowed for the overall [Activity Execution](/concepts/what-is-an-activity-execution), from when the first [Activity Task](/concepts/what-is-an-activity-task) is scheduled to when the last Activity Task, in the chain of Activity Tasks that make up the Activity Execution, reaches a Closed status.
 
-- [How to set a Schedule-To-Close Timeout in Go](/docs/application-development-guide/#schedule-to-close-timeout)
+- [How to set a Schedule-To-Close Timeout in Go](/go/how-to-set-a-schedule-to-close-timeout-in-go)
 
 ![Schedule-To-Close Timeout period](/diagrams/schedule-to-close-timeout.svg)
 
@@ -252,26 +252,26 @@ Example Schedule-To-Close Timeout period for an Activity Execution that has a ch
 
 **The default Schedule-To-Close Timeout is ∞ (infinity).**
 
-An Activity Execution must have either this timeout (Schedule-To-Close) or [Start-To-Close](#start-to-close-timeout) set.
+An Activity Execution must have either this timeout (Schedule-To-Close) or [Start-To-Close](/concepts/what-is-a-start-to-close-timeout) set.
 By default, an Activity Execution Retry Policy dictates that retries will occur for up to 10 years.
 This timeout can be used to control the overall duration of an Activity Execution in the face of failures (repeated Activity Task Executions), without altering the Maximum Attempts field of the Retry Policy.
 
 ### Heartbeat Timeout
 
-A Heartbeat Timeout is the maximum time between [Activity Heartbeats](#activity-heartbeats).
+A Heartbeat Timeout is the maximum time between [Activity Heartbeats](/concepts/what-is-an-activity-heartbeat).
 
 ![Heartbeat Timeout periods](/diagrams/heartbeat-timeout.svg)
 
 If this timeout is reached, the Activity Execution changes to a Failed status, and will retry if a Retry Policy dictates it.
 
-- [How to set a Heartbeat Timeout in Go](/docs/go/activityoptions-reference/#heartbeattimeout)
+- [How to set a Heartbeat Timeout in Go](/go/activityoptions-reference/#heartbeattimeout)
 
 ### Activity Heartbeats
 
 An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster.
 Each ping informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.
 
-Activity Heartbeats work in conjunction with a [Heartbeat Timeout](#heartbeat-timeout).
+Activity Heartbeats work in conjunction with a [Heartbeat Timeout](/concepts/what-is-a-heartbeat-timeout).
 
 Activity Heartbeats are implemented within the Activity Definition.
 Custom progress information can be included in the Heartbeat which can then be used by the Activity Execution should a retry occur.
@@ -279,13 +279,13 @@ Custom progress information can be included in the Heartbeat which can then be u
 An Activity Heartbeat can be recorded as often as needed (e.g. once a minute or every loop iteration).
 Temporal SDKs control the rate at which Heartbeats are sent to the Cluster.
 
-Heartbeating is not required from [Local Activities](#local-activities), and does nothing.
+Heartbeating is not required from [Local Activities](/concepts/what-is-a-local-activity), and does nothing.
 
-- [How to Heartbeat an Activity in Go](/docs/application-development-guide/#activity-heartbeats)
+- [How to Heartbeat an Activity in Go](/go/how-to-heartbeat-an-activity-in-go)
 
 ## Local Activities
 
-A Local Activity is an [Activity Execution](#activity-execution) that executes in the same process as the [Workflow Execution](/docs/workflows/#workflow-executions) that spawns it.
+A Local Activity is an [Activity Execution](/concepts/what-is-an-activity-execution) that executes in the same process as the [Workflow Execution](/concepts/what-is-a-workflow-execution) that spawns it.
 
 Some Activity Executions are very short-living and do not need the queuing semantic, flow control, rate limiting, and routing capabilities.
 For this case, Temporal supports the Local Activity feature.
@@ -303,3 +303,4 @@ Consider using Local Activities for functions that are the following:
 Using a Local Activity without understanding its limitations can cause various production issues.
 **We recommend using regular Activities unless your use case requires very high throughput and large Activity fan outs of very short-lived Activities.**
 More guidance in choosing between [Local Activity vs Activity](https://community.temporal.io/t/local-activity-vs-activity/290/3) is available in our forums.
+

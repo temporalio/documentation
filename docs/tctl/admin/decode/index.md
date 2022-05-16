@@ -16,8 +16,8 @@ The `tctl admin decode` command allows the user to decode payloads sent and rece
 
 ## Commands
 
-- [`proto`](/docs/tctl/admin/decode/proto)
-- [`base64`](/docs/tctl/admin/decode/base64)
+- [`proto`](/tctl/admin/decode/proto)
+- [`base64`](/tctl/admin/decode/base64)
 
 ## Modifiers
 

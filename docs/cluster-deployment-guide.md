@@ -20,7 +20,7 @@ Information may change at any time.
 
 ## Advanced Visibility
 
-[Advanced Visibility](/docs/visibility/#advanced-visibility) features depend on an integration with Elasticsearch.
+[Advanced Visibility](/concepts/what-is-advanced-visibility) features depend on an integration with Elasticsearch.
 
 To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` section of your `development.yaml` configuration file and run the index schema setup commands.
 
@@ -125,11 +125,11 @@ tctl --auto_confirm admin cluster add-search-attributes \
 
 ## Archival
 
-[Archival](/docs/clusters/#archival) is a feature that automatically backs up Workflow Execution Event Histories and Visibility data from Temporal Cluster persistence to a custom blob store.
+[Archival](/concepts/what-is-archival) is a feature that automatically backs up Workflow Execution Event Histories and Visibility data from Temporal Cluster persistence to a custom blob store.
 
 ### Set up
 
-[Archival](/docs/clusters/#archival) consists of the following elements:
+[Archival](/concepts/what-is-archival) consists of the following elements:
 
 - **Configuration**: Archival is controlled by the [server configuration](https://github.com/temporalio/temporal/blob/master/config/development.yaml#L81) (i.e. the `config/development.yaml` file).
 - **Provider**: Location where the data should be archived. Supported providers are S3, GCloud, and the local file system.
@@ -219,7 +219,7 @@ The Archival URI cannot be changed after the Namespace is created.
 Each Namespace supports only a single Archival URI, but each Namespace can use a different URI.
 A Namespace can safely switch Archival between `enabled` and `disabled` states as long as Archival is enabled at the cluster level.
 
-Archival is supported in [Global Namespaces](/docs/concepts/what-is-a-global-namespace/) (Namespaces that span multiple clusters).
+Archival is supported in [Global Namespaces](/concepts/what-is-a-global-namespace/) (Namespaces that span multiple clusters).
 When Archival is running in a Global Namespace, it first runs on the active cluster; later it runs on the standby cluster. Before archiving, a history check is done to see what has been previously archived.
 
 #### Test setup
@@ -260,7 +260,7 @@ You can retrieve archived Event Histories by copying the `workflowId` and `runId
 
 ### Custom Archiver
 
-[Archival](/docs/clusters/#archival) consists of the following elements:
+[Archival](/concepts/what-is-archival) consists of the following elements:
 
 - **Configuration**: Archival is controlled by the [server configuration](https://github.com/temporalio/temporal/blob/master/config/development.yaml#L81) (i.e. the `config/development.yaml` file).
 - **Provider**: Location where the data should be archived. Supported providers are S3, GCloud, and the local file system.
@@ -350,7 +350,7 @@ The Archival URI cannot be changed after the Namespace is created.
 Each Namespace supports only a single Archival URI, but each Namespace can use a different URI.
 A Namespace can safely switch Archival between `enabled` and `disabled` states as long as Archival is enabled at the cluster level.
 
-Archival is supported in [Global Namespaces](/docs/concepts/what-is-a-global-namespace/) (Namespaces that span multiple clusters).
+Archival is supported in [Global Namespaces](/concepts/what-is-a-global-namespace/) (Namespaces that span multiple clusters).
 When Archival is running in a Global Namespace, it first runs on the active cluster; later it runs on the standby cluster. Before archiving, a history check is done to see what has been previously archived.
 
 #### Test setup

@@ -25,7 +25,7 @@ A Temporal Cluster is the group of services, known as the [Temporal Server](#tem
 
 ![A Temporal Cluster (Server + persistence)](/diagrams/temporal-cluster.svg)
 
-- [How to quickly install a Temporal Cluster for testing and development](/docs/application-development-guide/#run-a-dev-cluster)
+- [How to quickly install a Temporal Cluster for testing and development](/clusters/quick-install)
 
 #### Persistence
 
@@ -45,7 +45,7 @@ The database stores the following types of data:
 - Visibility data: Enables operations like "show all running Workflow Executions".
   For production environments, we recommend using Elasticsearch.
 
-An Elasticsearch database can be added to enable [Advanced Visibility](/docs/visibility/#advanced-visibility).
+An Elasticsearch database can be added to enable [Advanced Visibility](/concepts/what-is-advanced-visibility).
 
 ## Temporal Server
 
@@ -78,8 +78,13 @@ Types of inbound calls include the following:
 - External events
 - Worker polls
 - Visibility requests
+<<<<<<< HEAD
 - Admin operations via [tctl](/docs/tctl) (the Temporal CLI)
 - [Multi-cluster Replication](#multi-cluster-replication) related calls from a remote Cluster
+=======
+- Admin operations via [tctl](/tctl) (the Temporal CLI)
+- [Multi-cluster Replication](/clusters/#multi-cluster-replication) related calls from a remote Cluster
+>>>>>>> 2df68c9 (rebasing and updating per recent changes)
 
 Every inbound request related to a Workflow Execution must have a Workflow Id, which is hashed for routing purposes.
 The Frontend Service has access to the hash rings that maintain service membership information, including how many nodes (instances of each service) are in the Cluster.
@@ -140,19 +145,24 @@ It talks to the Frontend service.
 
 ## Archival
 
-Archival is a feature that automatically backs up [Event Histories](/docs/workflows/#event-history) and Visibility records from Temporal Cluster persistence to a custom blob store.
+Archival is a feature that automatically backs up [Event Histories](/concepts/what-is-an-event-history) and Visibility records from Temporal Cluster persistence to a custom blob store.
 
+<<<<<<< HEAD
 - [How to set up Archival](/docs/cluster-deployment-guide/#set-up)
 - [How to create a custom Archiver](/docs/clusters/how-to-create-a-custom-archiver)
+=======
+- [How to set up Archival](/clusters/how-to-set-up-archival)
+- [How to create a custom Archiver](/clusters/how-to-create-a-custom-archiver)
+>>>>>>> 2df68c9 (rebasing and updating per recent changes)
 
-Workflow Execution Event Histories are backed up after the [Retention Period](/docs/namespaces/#/#retention-period) is reached.
+Workflow Execution Event Histories are backed up after the [Retention Period](/concepts/what-is-a-namespace/#retention-period) is reached.
 Visibility records are backed up immediately after a Workflow Execution reaches a Closed status.
 
 Archival enables Workflow Execution data to persist as long as needed, while not overwhelming the Cluster's persistence store.
 
 This feature is helpful for compliance and debugging.
 
-Temporal's Archival feature is considered **experimental** and not subject to normal [versioning and support policy](/docs/server/versions-and-dependencies).
+Temporal's Archival feature is considered **experimental** and not subject to normal [versioning and support policy](/server/versions-and-dependencies).
 
 Archival is not supported when running Temporal via docker-compose and is disabled by default when installing the system manually and when deploying via [helm charts](https://github.com/temporalio/helm-charts/blob/master/templates/server-configmap.yaml) (but can be enabled in the [config](https://github.com/temporalio/temporal/blob/master/config/development.yaml)).
 

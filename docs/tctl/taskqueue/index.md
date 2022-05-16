@@ -7,9 +7,9 @@ tags:
   - tctl
 ---
 
-The `tctl taskqueue` commands enable [Task Queue](/docs/concepts/what-is-a-task-queue) operations.
+The `tctl taskqueue` commands enable [Task Queue](/concepts/what-is-a-task-queue) operations.
 
 Alias: `tq`
 
-- [`tctl taskqueue describe`](/docs/tctl/taskqueue/describe)
-- [`tctl taskqueue list-partition`](/docs/tctl/taskqueue/list-partition)
+- [`tctl taskqueue describe`](/tctl/taskqueue/describe)
+- [`tctl taskqueue list-partition`](/tctl/taskqueue/list-partition)

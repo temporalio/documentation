@@ -1,5 +1,6 @@
 module.exports = {
   monoSidebar: [
+    "index",
     {
       type: "category",
       label: "Concepts",
