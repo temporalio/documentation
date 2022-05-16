@@ -9,7 +9,7 @@ tags:
   - db
 ---
 
-The `tctl admin db clean` command cleans corrupted [Workflows](/docs/concepts/what-is-a-workflow) from the targeted database.
+The `tctl admin db clean` command cleans corrupted [Workflow Executions](/docs/concepts/what-is-a-workflow-execution) from the targeted database.
 
 ### Modifiers
 The modifiers below change the behavior of the command.
