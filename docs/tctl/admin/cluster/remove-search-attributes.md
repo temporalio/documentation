@@ -8,7 +8,7 @@ tags:
   - admin
 ---
 
-The `tctl admin cluster remove-search-attributes` command removes custom search metadata from a given Cluster.
+The `tctl admin cluster remove-search-attributes` command removes custom Search Attribute metadata from a given Cluster.
 
 This operation has no effect on Elasticsearch index schema.
 
