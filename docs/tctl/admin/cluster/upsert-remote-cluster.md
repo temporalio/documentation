@@ -16,7 +16,7 @@ The `tctl admin cluster upsert-remote-cluster` command adds or updates remote Cl
 
 Alias: `--fad value`
 
-Remote Cluster frontend address.
+The remote Cluster frontend address.
 
 #### `--enable_connection`
 
