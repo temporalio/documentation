@@ -12,7 +12,7 @@ The `tctl admin cluster get-search-attributes` command retrieves existing search
 
 The following modifier will change the behavior of the command:
 
-- `--print_json value`
+#### `--print_json value`
 
   Alias: `--pjson value`
 

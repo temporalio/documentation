@@ -12,7 +12,7 @@ The `tctl admin cluster describe` command provides information for the current C
 
 The following modifier changes the behavior of the command:
 
-- `cluster value`
+#### `cluster value`
 
 The name of the remote Cluster within the current Cluster.
 
