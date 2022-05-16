@@ -36,7 +36,7 @@ A Workflow Execution effectively executes once to completion, while a Workflow F
 We strongly recommend that you write a Workflow Definition in a language that has a corresponding Temporal SDK.
 
 - [How to develop a Workflow Definition in Go](/docs/go/how-to-develop-a-workflow-in-go)
-- [How to develop a Workflow Definition in Java](/docs/java/how-to-develop-a-workflow-definition-in-java)
+- [How to develop a Workflow Definition in Java](/docs/application-development-guide/#develop-workflows)
 - [How to develop a Workflow Definition in PHP](/docs/php/workflows)
 - [How to develop a Workflow Definition in TypeScript](/docs/typescript/workflows/#how-to-write-a-workflow-function)
 
@@ -50,7 +50,7 @@ Commands tell the Cluster which Events to create and add to the Workflow Executi
 When a Workflow Function executes, the Commands that are emitted are compared with the existing Event History.
 If a corresponding Event already exists within the Event History that maps to the generation of that Command in the same sequence, and some specific metadata of that Command matches with some specific metadata of the Event, then the Function Execution progresses.
 
-For example, using an SDKs "Execute Activity" API generates the [ScheduleActivityTask](#commands#scheduleactivitytask) Command.
+For example, using an SDK's "Execute Activity" API generates the [ScheduleActivityTask](#commands#scheduleactivitytask) Command.
 When this API is called upon re-execution, that Command is compared with the Event that is in the same location within the sequence.
 The Event in the sequence must be an [ActivityTaskScheduled](/docs/references/events/#activitytaskscheduled) Event, where the Activity Name and the Task Queue name are the same as what is in the Command.
 
@@ -64,7 +64,7 @@ The following are the two reasons why a Command might be generated out of sequen
 ### Code changes can cause non-deterministic behavior
 
 The Workflow Definition can change in very limited ways once there is a Workflow Execution depending on it.
-To alleviate non-deterministic issues that arise from code changes, we recommend using [Workflow Versioning](#what-is-workflow-versioning).
+To alleviate non-deterministic issues that arise from code changes, we recommend using [Workflow Versioning](#workflow-versioning).
 
 For example, let's say we have a Workflow Definition that defines the following sequence:
 
@@ -233,7 +233,7 @@ Each Workflow Run in the sequence is connected by one of the following:
 - [Continue-As-New](#continue-as-new)
 - [Retries](/docs/retry-policies/#)
 
-A Workflow Execution is uniquely identified by its [Namespace](/docs/clusters/#namespaces), [Workflow Id](#workflow-id), and [Run Id](#run-id).
+A Workflow Execution is uniquely identified by its [Namespace](/docs/namespaces/#), [Workflow Id](#workflow-id), and [Run Id](#run-id).
 
 The [Workflow Execution Timeout](#workflow-execution-timeout) applies to a Workflow Execution Chain.
 The [Workflow Run Timeout](#workflow-run-timeout) applies to a single Workflow Execution (Workflow Run).
@@ -337,12 +337,12 @@ A Workflow Id is a customizable, application-level identifier for a [Workflow Ex
 A Workflow Id is meant to be a business-process identifier such as customer identifier or order identifier.
 
 A [Workflow Id Reuse Policy](#workflow-id-reuse-policy) can be used to manage whether a Workflow Id can be re-used.
-The Temporal Platform guarantees uniqueness of the Workflow Id within a [Namespace](/docs/clusters/#namespaces) based on the Workflow Id Reuse Policy.
+The Temporal Platform guarantees uniqueness of the Workflow Id within a [Namespace](/docs/namespaces/#) based on the Workflow Id Reuse Policy.
 
 It is never possible for a new Workflow Execution to spawn with the same Workflow Id as another Open Workflow Execution, regardless of the Workflow Id Reuse Policy.
 An attempt to spawn a Workflow Execution with a Workflow Id that is the same as the Id of a currently Open Workflow Execution results in a "Workflow execution already started" error.
 
-A Workflow Execution can be uniquely identified across all Namespaces by its [Namespace](/docs/clusters/#namespaces), Workflow Id, and [Run Id](#run-id).
+A Workflow Execution can be uniquely identified across all Namespaces by its [Namespace](/docs/namespaces/#), Workflow Id, and [Run Id](#run-id).
 
 #### Workflow Id Reuse Policy
 
@@ -630,3 +630,4 @@ Use the Workflow Id in any requests to Cancel or Terminate.
 - [How to set a Cron Schedule in Java](/docs/java/distributed-cron)
 - [How to set a Cron Schedule in PHP](/docs/php/distributed-cron)
 - [How to set a Cron Schedule in Typescript](/docs/typescript/clients)
+

@@ -26,7 +26,7 @@ $greetingActivity = Workflow::newActivityStub(
 );
 ```
 
-Local Activity Execution options include the following: 
+Local Activity Execution options include the following:
 
 - `ScheduleToCloseTimeout`
 - `StartToCloseTimeout`

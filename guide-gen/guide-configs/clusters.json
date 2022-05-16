@@ -23,12 +23,12 @@
       ]
     },
     {
-      "header": "Namespaces",
+      "header": "Temporal Server",
       "h3_sections": [
         {
           "header": "none",
           "type": "explanation",
-          "path": "concepts/what-is-a-namespace"
+          "path": "concepts/what-is-the-temporal-server"
         }
       ]
     },
@@ -39,6 +39,16 @@
           "header": "none",
           "type": "explanation",
           "path": "concepts/what-is-archival"
+        }
+      ]
+    },
+    {
+      "header": "Multi-Cluster Replication",
+      "h3_sections": [
+        {
+          "header": "none",
+          "type": "explanation",
+          "path": "concepts/what-is-multi-cluster-replication"
         }
       ]
     }
