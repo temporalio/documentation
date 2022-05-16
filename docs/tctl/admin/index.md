@@ -12,7 +12,7 @@ A `tctl admin` command allows the user to run admin operations.
 
 Alias : `adm`
 
-#### tctl admin commands
+## tctl admin commands
 
 - tctl admin workflow
 - tctl admin shard
@@ -24,6 +24,6 @@ Alias : `adm`
 - tctl db
 - tctl decode
 
-#### Options
+## Modifiers
 
 Help: `tctl admin [--help | -h]`

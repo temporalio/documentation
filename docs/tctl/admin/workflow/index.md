@@ -9,13 +9,22 @@ tags:
   - workflow
 ---
 
-The `tctl admin workflow` commands enable admin-level operations on Workflow Executions.
-
 Alias: `-wf`
 
-#### Commands
+The `tctl admin workflow` commands enable administrator-level operations on Workflow Executions.
 
-show
-describe
-refresh-tasks
-delete
+## Usage
+
+`tctl admin workflow command [modifiers] [arguments...]`
+
+## Commands
+
+#### `--show`
+
+#### `--describe`
+
+#### `refresh-tasks`
+
+#### `delete`
+
+## Modifiers
