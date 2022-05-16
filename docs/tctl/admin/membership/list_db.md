@@ -1,7 +1,7 @@
 ---
 id: list_db
 title: tctl admin membership list_db
-description: describing cluster membership items
+description: How to describe Cluster membership items
 tags:
   - operation-guide
   - tctl
