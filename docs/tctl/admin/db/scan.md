@@ -17,8 +17,8 @@ The `tctl admin db scan` command scans concrete executions in a given database, 
 
 Type of DB engine to use
 
-Default: cassandra
-Value: cassandra, mysql, postgres
+Default: `cassandra`
+Value: `cassandra` | `mysql` | `postgres`
 
 #### `--db_address value`
 
