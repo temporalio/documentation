@@ -7,7 +7,7 @@ tags:
   - tctl
 ---
 
-The `tctl admin membership list_db` command lists the cluster items in a targeted membership.
+The `tctl admin membership list_db` command lists the Cluster items in a targeted membership.
 
 ## Modifiers
 
