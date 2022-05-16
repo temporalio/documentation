@@ -50,7 +50,7 @@ Commands tell the Cluster which Events to create and add to the Workflow Executi
 When a Workflow Function executes, the Commands that are emitted are compared with the existing Event History.
 If a corresponding Event already exists within the Event History that maps to the generation of that Command in the same sequence, and some specific metadata of that Command matches with some specific metadata of the Event, then the Function Execution progresses.
 
-For example, using an SDKs "Execute Activity" API generates the [ScheduleActivityTask](#commands#scheduleactivitytask) Command.
+For example, using an SDK's "Execute Activity" API generates the [ScheduleActivityTask](#commands#scheduleactivitytask) Command.
 When this API is called upon re-execution, that Command is compared with the Event that is in the same location within the sequence.
 The Event in the sequence must be an [ActivityTaskScheduled](/docs/references/events/#activitytaskscheduled) Event, where the Activity Name and the Task Queue name are the same as what is in the Command.
 
@@ -64,7 +64,7 @@ The following are the two reasons why a Command might be generated out of sequen
 ### Code changes can cause non-deterministic behavior
 
 The Workflow Definition can change in very limited ways once there is a Workflow Execution depending on it.
-To alleviate non-deterministic issues that arise from code changes, we recommend using [Workflow Versioning](#what-is-workflow-versioning).
+To alleviate non-deterministic issues that arise from code changes, we recommend using [Workflow Versioning](#workflow-versioning).
 
 For example, let's say we have a Workflow Definition that defines the following sequence:
 
@@ -630,3 +630,4 @@ Use the Workflow Id in any requests to Cancel or Terminate.
 - [How to set a Cron Schedule in Java](/docs/java/distributed-cron)
 - [How to set a Cron Schedule in PHP](/docs/php/distributed-cron)
 - [How to set a Cron Schedule in Typescript](/docs/typescript/clients)
+

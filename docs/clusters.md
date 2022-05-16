@@ -167,3 +167,4 @@ You might want to keep Event Histories after the retention period has passed for
 
 - Compliance: For legal reasons, Event Histories may need to be stored for a long period of time.
 - Debugging: Older Event Histories can be referenced to help with debugging.
+
