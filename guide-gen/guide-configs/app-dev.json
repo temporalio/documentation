@@ -700,7 +700,7 @@
 								{
 									"lang": "typescript",
 									"title": "TypeScript",
-									"path": "none"
+									"path": "typescript/how-to-send-a-signal-with-start-in-typescript"
 								}
 							]
 						}
@@ -1053,7 +1053,7 @@
 								{
 									"lang": "typescript",
 									"title": "TypeScript",
-									"path": "none"
+									"path": "typescript/how-to-set-a-heartbeat-timeout-in-typescript"
 								}
 							]
 						},
@@ -1083,7 +1083,7 @@
 								{
 									"lang": "typescript",
 									"title": "TypeScript",
-									"path": "none"
+									"path": "typescript/how-to-set-an-activity-retry-policy-in-typescript"
 								}
 							]
 						}
@@ -1206,7 +1206,7 @@
 						{
 							"lang": "typescript",
 							"title": "TypeScript",
-							"path": "none"
+							"path": "typescript/how-to-set-a-cron-job-in-typescript"
 						}
 					]
 				},

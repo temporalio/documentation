@@ -14,9 +14,11 @@ module.exports = {
         "tasks",
         "visibility",
         "clusters",
+        "namespaces",
       ],
     },
     "application-development-guide",
+    "cluster-operations-guide",
   ],
   sidebarExplained: [
     {
@@ -237,7 +239,8 @@ module.exports = {
         "clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster",
         "server/namespaces",
         "server/multi-cluster",
-        "server/archive-data",
+        "clusters/how-to-set-up-archival",
+        "clusters/how-to-create-a-custom-archiver",
       ],
     },
   ],

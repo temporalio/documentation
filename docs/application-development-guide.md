@@ -1505,9 +1505,10 @@ Each Worker Entity polling the same Task Queue must be registered with the same 
 
 A [Worker Entity](/docs/workers/#worker-entity) is the component within a Worker Process that listens to a specific Task Queue.
 
-While it is possible to have multiple Worker Entities in a single Worker Process, a single Worker Entity Worker Process may be perfectly sufficient (See the [Worker tuning guide](/docs/operation/how-to-tune-workers))
+Although multiple Worker Entities can be in a single Worker Process, a single Worker Entity Worker Process may be perfectly sufficient.
+(See the [Worker tuning guide](/docs/operation/how-to-tune-workers).)
 
-A Worker Entity contains both a Workflow Worker and an Activity Worker so that it may make progress of either a Workflow Execution or an Activity Execution.
+A Worker Entity contains both a Workflow Worker and an Activity Worker so that it can make progress for either a Workflow Execution or an Activity Execution.
 
 <Tabs
 defaultValue="go"
@@ -1655,8 +1656,8 @@ This is a selected subset of options you are likely to use. Even more advanced o
 
 All Workers listening to the same Task Queue name must be registered to handle the exact same Workflows Types and Activity Types.
 
-If a Worker polls a Task for a Workflow Type or Activity Type it does not know about, it will fail that Task.
-However, the failure of the Task will not cause the associated Workflow Execution to fail.
+If a Worker polls a Task for a Workflow Type or Activity Type it does not know about, it fails that Task.
+However, the failure of the Task does not cause the associated Workflow Execution to fail.
 
 <Tabs
 defaultValue="go"
@@ -1669,7 +1670,8 @@ The `RegisterWorkflow()` and `RegisterActivity()` calls essentially create an in
 
 **Registering Activity `structs`**
 
-Per [Activity Definition](#develop-activities) best practices, you may have an Activity struct that has multiple methods and fields. When you use `RegisterActivity()` for an Activity struct, that Worker has access to all exported methods.
+Per [Activity Definition](#develop-activities) best practices, you might have an Activity struct that has multiple methods and fields.
+When you use `RegisterActivity()` for an Activity struct, that Worker has access to all exported methods.
 
 **Registering multiple Types**
 
