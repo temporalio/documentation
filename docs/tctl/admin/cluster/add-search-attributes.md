@@ -1,7 +1,7 @@
 ---
 id: add-search-attributes
 title: tctl admin cluster add-search-attributes
-description: Adding custom search attrubutes to a cluster.
+description: Adding custom Search Attributes to a Cluster.
 tags:
   - reference
   - tctl
