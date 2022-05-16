@@ -19,8 +19,8 @@ The modifiers below change the behavior of the command.
 
 Type of DB engine to use
 
-Default: cassandra
-Value: cassandra, mysql, postgres
+Default: `cassandra`
+Value: `cassandra` | `mysql` | `postgres`
 
 #### `--db_address value`
 
