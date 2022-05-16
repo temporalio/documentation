@@ -9,7 +9,7 @@ tags:
 
 The `tctl admin membership list_gossip` command lists the ringpop membership items present on the targeted membership.
 
-The modifier below changes the behavior of the command:
+The following modifier changes the behavior of the command:
 
 `--role value` — filters the results by membership role
 
