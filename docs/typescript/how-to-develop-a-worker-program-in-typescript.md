@@ -76,8 +76,8 @@ This is a selected subset of options you are likely to use. Even more advanced o
 | ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `nodeModulesPaths` | Array of paths of Workflow dependencies to pass to Webpack. Defaults to the first encountered `node_modules` directory when scanning the filesystem starting with `workflowsPath`. |
 | `dataConverter`    | Encodes and decodes data entering and exiting a Temporal Server. Supports `undefined`, `UintBArray`, and JSON.                                                                     |
-| `sinks`            | Allows injection of Workflow Sinks (Advanced feature: see [Logging docs](/typescript/logging))                                                                                |
-| `interceptors`     | A mapping of interceptor type to a list of factories or module paths (Advanced feature: see [Interceptors](/typescript/interceptors))                                         |
+| `sinks`            | Allows injection of Workflow Sinks (Advanced feature: see [Logging docs](/typescript/logging))                                                                                     |
+| `interceptors`     | A mapping of interceptor type to a list of factories or module paths (Advanced feature: see [Interceptors](/typescript/interceptors))                                              |
 
 **Operation guides:**
 

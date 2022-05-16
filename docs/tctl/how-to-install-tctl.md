@@ -27,9 +27,9 @@ You can install [tctl](/tctl) in four ways.
 
 To see help for [tctl](/tctl) commands, enter the following commands.
 
-| Command             | Description                                                                   |
-| ------------------- | ----------------------------------------------------------------------------- |
-| `tctl -h`           | Display help for top-level commands and global options                        |
+| Command             | Description                                                              |
+| ------------------- | ------------------------------------------------------------------------ |
+| `tctl -h`           | Display help for top-level commands and global options                   |
 | `tctl namespace -h` | Display help for [Namespace](/concepts/what-is-a-namespace) operations   |
 | `tctl workflow -h`  | Display help for [Workflow](/concepts/what-is-a-workflow) operations     |
 | `tctl taskqueue -h` | Display help for [Task Queue](/concepts/what-is-a-task-queue) operations |
