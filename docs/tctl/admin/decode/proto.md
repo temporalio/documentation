@@ -12,18 +12,18 @@ The `tctl admin decode proto` command decodes the Payload to proto format.
 
 ## Modifiers
 
-- #### `--type value`
+#### `--type value`
 
     The full name of the proto type to decode the Payload to.
 
-- #### `--hex_data value`
+#### `--hex_data value`
 
     Decodes the data to hex format.
 
-- #### `--hex_file value`
+#### `--hex_file value`
 
     Creates a file with the decoded hex data.
 
-- #### `--binary_file value`
+#### `--binary_file value`
 
     Creates a file with the decoded binary data.
