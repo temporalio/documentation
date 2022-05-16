@@ -7,7 +7,7 @@ tags:
   - explanation
 ---
 
-A Temporal Cluster is the group of services, known as the [Temporal Server](/docs/concepts/what-is-the-temporal-server), combined with persistence stores, that together, act as a component of the Temporal Platform.
+A Temporal Cluster is the group of services, known as the [Temporal Server](/docs/concepts/what-is-the-temporal-server), combined with persistence stores, that together act as a component of the Temporal Platform.
 
 ![A Temporal Cluster (Server + persistence)](/diagrams/temporal-cluster.svg)
 
@@ -29,6 +29,6 @@ The database stores the following types of data:
   - History table: An append only log of Workflow Execution History Events.
 - Namespace metadata: Metadata of each Namespace in the Cluster.
 - Visibility data: Enables operations like "show all running Workflow Executions".
-  For production environments, we recommend using ElasticSearch.
+  For production environments, we recommend using Elasticsearch.
 
 An Elasticsearch database can be added to enable [Advanced Visibility](/docs/concepts/what-is-advanced-visibility).

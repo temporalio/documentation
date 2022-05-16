@@ -40,13 +40,14 @@ Update the `GetHistoryArchiver` and `GetVisibilityArchiver` methods of the `arch
 
 #### Add configs
 
-Add configs for you archiver to the `config/development.yaml` file and then modify the [HistoryArchiverProvider](https://github.com/temporalio/temporal/blob/master/common/service/config/config.go#L403) and [VisibilityArchiverProvider](https://github.com/temporalio/temporal/blob/master/common/service/config/config.go#L421) struct in `/common/service/config.go` accordingly.
+Add configs for your archiver to the `config/development.yaml` file and then modify the [HistoryArchiverProvider](https://github.com/temporalio/temporal/blob/master/common/config/config.go#L376) and [VisibilityArchiverProvider](https://github.com/temporalio/temporal/blob/master/common/config/config.go#L393) structs in `/common/common/config.go` accordingly.
 
 #### Custom archiver FAQ
 
 **If my custom Archive method can automatically be retried by the caller, how can I record and access progress between retries?**
 
-Handle this using the `ArchiverOptions`. Here is an example:
+Handle this situation by using `ArchiverOptions`.
+Here is an example:
 
 ```go
 func(a * Archiver) Archive(ctx context.Context, URI string, request * ArchiveRequest, opts...ArchiveOption) error {
@@ -72,7 +73,7 @@ func(a * Archiver) Archive(ctx context.Context, URI string, request * ArchiveReq
 }
 ```
 
-**If my `Archive` method encounters an error which is non-retryable, how do I indicate to the caller that it should not retry?**
+**If my `Archive` method encounters an error that is non-retryable, how do I indicate to the caller that it should not retry?**
 
 ```go
 func(a * Archiver) Archive(ctx context.Context, URI string, request * ArchiveRequest, opts...ArchiveOption) error {
@@ -90,15 +91,21 @@ func(a * Archiver) Archive(ctx context.Context, URI string, request * ArchiveReq
 
 **How does my history archiver implementation read history?**
 
-The archiver package provides a utility called [HistoryIterator](https://github.com/temporalio/temporal/blob/master/common/archiver/historyIterator.go) which is a wrapper of [HistoryManager](https://github.com/temporalio/temporal/blob/master/common/persistence/historyStore.go). `HistoryIterator` is more simple than the `HistoryManager`, which is available in the BootstrapContainer, so archiver implementations can choose to use it when reading Workflow histories. See the [historyIterator.go](https://github.com/temporalio/temporal/blob/master/common/persistence/historyStore.go) file for more details. Use the [filestore historyArchiver implementation](https://github.com/temporalio/temporal/tree/master/common/archiver/filestore) as an example.
+The archiver package provides a utility called [HistoryIterator](https://github.com/temporalio/temporal/blob/master/common/archiver/historyIterator.go) which is a wrapper of [ExecutionManager](https://github.com/temporalio/temporal/blob/master/common/persistence/dataInterfaces.go#L1014).
+`HistoryIterator` is more simple than the `HistoryManager`, which is available in the BootstrapContainer, so archiver implementations can choose to use it when reading Workflow histories.
+See the [historyIterator.go](https://github.com/temporalio/temporal/blob/master/common/archiver/historyIterator.go) file for more details.
+Use the [filestore historyArchiver implementation](https://github.com/temporalio/temporal/tree/master/common/archiver/filestore) as an example.
 
 **Should my archiver define its own error types?**
 
-Each archiver is free to define and return its own errors. However many common errors which exist between archivers are already defined in [common/archiver/constants.go](https://github.com/temporalio/temporal/blob/master/common/archiver/constants.go).
+Each archiver is free to define and return its own errors.
+However, many common errors that exist between archivers are already defined in [common/archiver/constants.go](https://github.com/temporalio/temporal/blob/master/common/archiver/constants.go).
 
 **Is there a generic query syntax for the visibility archiver?**
 
-Currently no. But this is something we plan to do in the future. As for now, try to make your syntax similar to the one used by our advanced list Workflow API.
+Currently, no.
+But this is something we plan to do in the future.
+As for now, try to make your syntax similar to the one used by our advanced list Workflow API.
 
 - [s3store](https://github.com/temporalio/temporal/tree/master/common/archiver/s3store#visibility-query-syntax)
 - [gcloud](https://github.com/temporalio/temporal/tree/master/common/archiver/gcloud#visibility-query-syntax)

@@ -17,7 +17,7 @@ Visibility records are backed up immediately after a Workflow Execution reaches 
 
 Archival enables Workflow Execution data to persist as long as needed, while not overwhelming the Cluster's persistence store.
 
-This feature is helpful for compliance, and debugging.
+This feature is helpful for compliance and debugging.
 
 Temporal's Archival feature is considered **experimental** and not subject to normal [versioning and support policy](/docs/server/versions-and-dependencies).
 
