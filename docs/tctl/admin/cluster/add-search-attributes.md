@@ -24,7 +24,7 @@ This will only register in metadata.
 
 Alias: `-n value`
 
-The name of the search attribute to add. Multiple values are supported.
+The name of the Search Attribute to add. Multiple values are supported.
 
 #### `--type value`
 
