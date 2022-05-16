@@ -11,7 +11,7 @@ The `tctl admin membership list_db` command lists the cluster items in a targete
 
 ## Modifiers
 
-The modifiers below change the behavior of the command.
+The following modifiers change the behavior of the command.
 
 #### `--heartbeated_within value`
 
