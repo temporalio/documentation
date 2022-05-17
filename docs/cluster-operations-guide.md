@@ -396,7 +396,7 @@ The [Multi-Cluster Replication](/docs/clusters/#multi-cluster-replication) featu
 1. `enableGlobalNamespace` must be set to `true`.
 2. `failoverVersionIncrement` has to be equal across connected Clusters.
 3. `initialFailoverVersion` in each Cluster has to assign a different value.
-No equal value is allowed across connected Clusters.
+   No equal value is allowed across connected Clusters.
 
 After the above conditions are satisfied, you can start to configure a multi-cluster setup.
 
@@ -489,4 +489,3 @@ tctl -address 127.0.0.1:8233 admin cluster upsert-remote-cluster --frontend_addr
 tctl -address 127.0.0.1:7233 admin cluster remove-remote-cluster --cluster "clusterB"
 tctl -address 127.0.0.1:8233 admin cluster remove-remote-cluster --cluster "clusterA"
 ```
-

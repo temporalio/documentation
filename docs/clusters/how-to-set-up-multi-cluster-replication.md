@@ -13,7 +13,7 @@ The [Multi-Cluster Replication](/docs/concepts/what-is-multi-cluster-replication
 1. `enableGlobalNamespace` must be set to `true`.
 2. `failoverVersionIncrement` has to be equal across connected Clusters.
 3. `initialFailoverVersion` in each Cluster has to assign a different value.
-No equal value is allowed across connected Clusters.
+   No equal value is allowed across connected Clusters.
 
 After the above conditions are satisfied, you can start to configure a multi-cluster setup.
 
