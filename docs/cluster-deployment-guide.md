@@ -389,6 +389,7 @@ You can retrieve archived Event Histories by copying the `workflowId` and `runId
 ./temporal --ns samples-namespace wf show --wid <workflowId> --rid <runId>
 ```
 
+<<<<<<< HEAD:docs/cluster-deployment-guide.md
 ## Multi-Cluster Replication
 
 The [Multi-Cluster Replication](/docs/clusters/#multi-cluster-replication) feature asynchronously replicates Workflow Execution Event Histories from active Clusters to other passive Clusters, and can be enabled by setting the appropriate values in the `clusterMetadata` section of your configuration file.
@@ -489,3 +490,5 @@ tctl -address 127.0.0.1:8233 admin cluster upsert-remote-cluster --frontend_addr
 tctl -address 127.0.0.1:7233 admin cluster remove-remote-cluster --cluster "clusterB"
 tctl -address 127.0.0.1:8233 admin cluster remove-remote-cluster --cluster "clusterA"
 ```
+=======
+>>>>>>> fdb5770 (rebased, yarn gen):docs/cluster-operations-guide.md

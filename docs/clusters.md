@@ -21,7 +21,7 @@ Information may change at any time.
 
 :::
 
-A Temporal Cluster is the group of services, known as the [Temporal Server](#temporal-server), combined with persistence stores, that together act as a component of the Temporal Platform.
+A Temporal Cluster is the group of services, known as the [Temporal Server](/concepts/what-is-the-temporal-server), combined with persistence stores, that together act as a component of the Temporal Platform.
 
 ![A Temporal Cluster (Server + persistence)](/diagrams/temporal-cluster.svg)
 
@@ -78,13 +78,8 @@ Types of inbound calls include the following:
 - External events
 - Worker polls
 - Visibility requests
-<<<<<<< HEAD
-- Admin operations via [tctl](/docs/tctl) (the Temporal CLI)
-- [Multi-cluster Replication](#multi-cluster-replication) related calls from a remote Cluster
-=======
 - Admin operations via [tctl](/tctl) (the Temporal CLI)
-- [Multi-cluster Replication](/clusters/#multi-cluster-replication) related calls from a remote Cluster
->>>>>>> 2df68c9 (rebasing and updating per recent changes)
+- [Multi-cluster Replication](#multi-cluster-replication) related calls from a remote Cluster
 
 Every inbound request related to a Workflow Execution must have a Workflow Id, which is hashed for routing purposes.
 The Frontend Service has access to the hash rings that maintain service membership information, including how many nodes (instances of each service) are in the Cluster.
@@ -147,13 +142,8 @@ It talks to the Frontend service.
 
 Archival is a feature that automatically backs up [Event Histories](/concepts/what-is-an-event-history) and Visibility records from Temporal Cluster persistence to a custom blob store.
 
-<<<<<<< HEAD
-- [How to set up Archival](/docs/cluster-deployment-guide/#set-up)
-- [How to create a custom Archiver](/docs/clusters/how-to-create-a-custom-archiver)
-=======
 - [How to set up Archival](/clusters/how-to-set-up-archival)
 - [How to create a custom Archiver](/clusters/how-to-create-a-custom-archiver)
->>>>>>> 2df68c9 (rebasing and updating per recent changes)
 
 Workflow Execution Event Histories are backed up after the [Retention Period](/concepts/what-is-a-namespace/#retention-period) is reached.
 Visibility records are backed up immediately after a Workflow Execution reaches a Closed status.
