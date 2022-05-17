@@ -261,24 +261,30 @@ main.max-w-screen-lg {
 }
 
 .landing-card {
-  border-radius: 0.5rem;
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
-    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-  --tw-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
-  --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color),
-    0 1px 2px -1px var(--tw-shadow-color);
-  background-color: var(--ifm-card-background-color);
-  padding-left: 1.25rem;
+
+
+  /* padding-left: 1.25rem; */
   padding-right: 1.25rem;
   padding-bottom: 1.25rem;
 }
 
 .landing-card-list {
-    margin-bottom: 1.5em;
+    padding-bottom: 1.5em;
+    margin-right: 1.5em;
+    width: 20em;
+    display: inline-block;
+}
+
+.landing-card-list-b {
+
+}
+
+.landing-card-list-b li {
+  display: inline-block;
+  padding-right: 1.5em;
 }
 
 .landing-card-list li {
-  display: inline-block;
   margin-right: 8px;
 }
 
@@ -289,7 +295,9 @@ main.max-w-screen-lg {
 }
 
 .landing-card-section {
-  margin-top: 2.8em;
+  padding-top: 1.25em;
+
+
 }
 
 .code-logo-list {

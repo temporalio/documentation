@@ -6,7 +6,7 @@ function Explained() {
   return (
     <div className="landing-card">
       <div className="landing-card-section">
-        <h2>Temporal core concepts</h2>
+        <h2>Concepts</h2>
         <ul className="landing-card-list">
           <li className="">
             <Link to={useBaseUrl("/temporal")} className="hover:underline">
@@ -24,8 +24,30 @@ function Explained() {
             </Link>
           </li>
           <li className="">
+            <Link to={useBaseUrl("/retry-policies")} className="hover:underline">
+              <a className="font-normal">Retry Policies</a>
+            </Link>
+          </li>
+        </ul>
+        <ul className="landing-card-list">
+          <li className="">
+            <Link to={useBaseUrl("/clusters")} className="hover:underline">
+              <a className="font-normal">Clusters</a>
+            </Link>
+          </li>
+          <li className="">
+            <Link to={useBaseUrl("/workers")} className="hover:underline">
+              <a className="font-normal">Workers</a>
+            </Link>
+          </li>
+          <li className="">
             <Link to={useBaseUrl("/visibility")} className="hover:underline">
               <a className="font-normal">Visibility</a>
+            </Link>
+          </li>
+          <li className="">
+            <Link to={useBaseUrl("/namespaces")} className="hover:underline">
+              <a className="font-normal">Namespaces</a>
             </Link>
           </li>
         </ul>
@@ -34,7 +56,7 @@ function Explained() {
         <a className="header-link" href="/application-development-guide">
           <h2>Application development guide</h2>
         </a>
-        <ul className="landing-card-list code-logo-list">
+        <ul className="landing-card-list-b">
           <li>
             <img
               className="h-8 w-8 pl-1 transition hover:scale-110 code-logo"
@@ -81,6 +103,8 @@ function Explained() {
               <a className="font-normal">Features</a>
             </Link>
           </li>
+        </ul>
+        <ul className="landing-card-list">
           <li className="">
             <Link
               to={useBaseUrl("/application-development-guide/#observability")}
@@ -97,18 +121,10 @@ function Explained() {
               <a className="font-normal">Testing</a>
             </Link>
           </li>
-          <li className="">
-            <Link
-              to={useBaseUrl("/operation/how-to-tune-workers")}
-              className="hover:underline"
-            >
-              <a className="font-normal">Worker performance tuning</a>
-            </Link>
-          </li>
         </ul>
       </div>
       <div className="landing-card-section">
-        <h4>Legacy SDK docs</h4>
+        <a className="header-link" href="/application-development"><h4>Legacy SDK docs</h4></a>
         <ul className="landing-card-list">
           <li className="">
             <Link to={useBaseUrl("/go")} className="hover:underline">
@@ -120,6 +136,8 @@ function Explained() {
               <a className="font-normal">Java</a>
             </Link>
           </li>
+        </ul>
+        <ul className="landing-card-list">
           <li className="">
             <Link
               to={useBaseUrl("/php/introduction")}
@@ -139,37 +157,42 @@ function Explained() {
         </ul>
       </div>
       <div className="landing-card-section">
-        <h4>Tutorials</h4>
-        <ul className="landing-card-list">
-          <li className="">
-            <Link
-              to={useBaseUrl("/learning-paths/hello-world")}
-              className="hover:underline"
-            >
-              <a className="font-normal">"Hello World" from scratch</a>
-            </Link>
-          </li>
-          <li className="">
-            <Link
-              to={useBaseUrl("/learning-paths/run-your-first-app")}
-              className="hover:underline"
-            >
-              <a className="font-normal">Run your first application</a>
-            </Link>
-          </li>
-          <li className="">
-            <Link
-              to={useBaseUrl("/learning-paths/background-checks")}
-              className="hover:underline"
-            >
-              <a className="font-normal">Background Checks</a>
-            </Link>
-          </li>
-        </ul>
+      <a className="header-link" href="/operation/how-to-tune-workers"><h2>Worker performance tuning</h2></a>
+      <ul className="landing-card-list">
+        <li className="">
+          <Link
+            to={useBaseUrl("/operation/how-to-tune-workers#metrics")}
+            className="hover:underline"
+          >
+            <a className="font-normal">Metrics</a>
+          </Link>
+        </li>
+        <li className="">
+          <Link to={useBaseUrl("/operation/how-to-tune-workers#configuration")} className="hover:underline">
+            <a className="font-normal">Configuration</a>
+          </Link>
+        </li>
+      </ul>
+      <ul className="landing-card-list">
+        <li className="">
+          <Link
+            to={useBaseUrl("/operation/how-to-tune-workers#workflow-cache-tuning")}
+            className="hover:underline"
+          >
+            <a className="font-normal">Workflow cache</a>
+          </Link>
+        </li>
+        <li className="">
+          <Link to={useBaseUrl("/operation/how-to-tune-workers#task-queues-processing-tuning")} className="hover:underline">
+            <a className="font-normal">Task Queues</a>
+          </Link>
+        </li>
+
+      </ul>
       </div>
       <div className="landing-card-section">
         <a className="header-link" href="/cluster-operations-guide">
-          <h2>Cluster operations guide</h2>
+          <h2>Cluster deployment guide</h2>
         </a>
         <ul className="landing-card-list">
           <li className="">
@@ -188,6 +211,8 @@ function Explained() {
               <a className="font-normal">Archival</a>
             </Link>
           </li>
+        </ul>
+        <ul className="landing-card-list">
           <li className="">
             <Link
               to={useBaseUrl(
@@ -201,6 +226,38 @@ function Explained() {
         </ul>
       </div>
       <div className="landing-card-section">
+        <h2>Tutorials</h2>
+        <ul className="landing-card-list">
+          <li className="">
+            <Link
+              to={useBaseUrl("/learning-paths/hello-world")}
+              className="hover:underline"
+            >
+              <a className="font-normal">"Hello World" from scratch</a>
+            </Link>
+          </li>
+          <li className="">
+            <Link
+              to={useBaseUrl("/learning-paths/run-your-first-app")}
+              className="hover:underline"
+            >
+              <a className="font-normal">Run your first application</a>
+            </Link>
+          </li>
+        </ul>
+        <ul className="landing-card-list">
+          <li className="">
+            <Link
+              to={useBaseUrl("/learning-paths/background-checks")}
+              className="hover:underline"
+            >
+              <a className="font-normal">Background Checks</a>
+            </Link>
+          </li>
+        </ul>
+      </div>
+
+      <div className="landing-card-section">
         <h2>Devtools</h2>
         <ul className="landing-card-list">
           <li className="">
@@ -208,6 +265,8 @@ function Explained() {
               <a className="font-normal">tctl</a>
             </Link>
           </li>
+        </ul>
+        <ul className="landing-card-list">
           <li className="">
             <Link
               to={useBaseUrl("/devtools/web-ui")}
@@ -219,7 +278,7 @@ function Explained() {
         </ul>
       </div>
       <div className="landing-card-section">
-        <h2>Reference</h2>
+        <h2>References</h2>
         <ul className="landing-card-list">
           <li className="">
             <Link
@@ -237,6 +296,8 @@ function Explained() {
               <a className="font-normal">Commands</a>
             </Link>
           </li>
+        </ul>
+        <ul className="landing-card-list">
           <li className="">
             <Link
               to={useBaseUrl("/references/sdk-metrics")}

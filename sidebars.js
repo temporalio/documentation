@@ -301,7 +301,6 @@ module.exports = {
         },
       ],
     },
-    "cluster-operations-guide",
     {
       type: "category",
       label: "tctl",
