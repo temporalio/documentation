@@ -39,4 +39,3 @@ This or `ScheduleToClose` must be set.
                                             .build()))
                       .build();
   ```
-  

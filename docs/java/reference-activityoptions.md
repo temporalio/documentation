@@ -29,7 +29,6 @@ import ScheduleToCloseTimeout from './how-to-set-a-schedule-to-close-timeout-in-
 
 <ScheduleToCloseTimeout/>
 
-
 ### `ScheduleToStartTimeout`
 
 import ScheduleToStartTimeout from './how-to-set-a-schedule-to-start-timeout-in-java.md'

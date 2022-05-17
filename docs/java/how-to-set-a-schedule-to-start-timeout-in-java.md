@@ -8,6 +8,7 @@ tags:
   - how-to
   - developer-guide
 ---
+
 To set a [Schedule-To-Start Timeout](/docs/concepts/what-is-a-schedule-to-start-timeout), use [`ActivityOptions.newBuilder.setScheduleToStartTimeout​`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
 
 - Type: `Duration`
@@ -38,4 +39,3 @@ To set a [Schedule-To-Start Timeout](/docs/concepts/what-is-a-schedule-to-start-
                                     .build()))
                       .build();
   ```
-  

@@ -85,7 +85,7 @@ The following example shows how to register the `DynamicWorkflow` and `DynamicAc
         WorkflowOptions.newBuilder().setTaskQueue(TASK_QUEUE).setWorkflowId(WORKFLOW_ID).build();
     WorkflowStub workflow = client.newUntypedWorkflowStub("DynamicWF", workflowOptions);
     /**
-     * Register Dynamic Activity implementation with the Worker. Since Activities are stateless 
+     * Register Dynamic Activity implementation with the Worker. Since Activities are stateless
      * and thread-safe, we need to register a shared instance.
     */
     worker.registerActivitiesImplementations(new DynamicGreetingActivityImpl());

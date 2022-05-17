@@ -44,4 +44,3 @@ To set a [Heartbeat Timeout](/docs/concepts/what-is-a-heartbeat-timeout), use [`
                                             .build()))
                       .build();
   ```
-  
