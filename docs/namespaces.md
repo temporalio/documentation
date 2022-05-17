@@ -34,7 +34,7 @@ The Retention Period is the amount of time a Workflow Execution Event History re
 
 Retention Periods are per Namespace.
 A Retention Period is set for the Namespace when the Namespace is created.
-If the retention period isn't set, then it defaults to 2 days.
+If the retention period isn't set, it defaults to 2 days.
 The minimum retention period is 1 day.
 The maximum retention period is 30 days.
 Setting the retention period to 0 results in the error _A valid retention period is not set on request_.
