@@ -2,7 +2,7 @@
 id: how-to-tune-workers
 title: How to tune Workers
 description: Guide into Workers Tuning
-sidebar_label: Workers Tuning
+sidebar_label: Worker performance
 tags:
   - operation-guide
   - workers

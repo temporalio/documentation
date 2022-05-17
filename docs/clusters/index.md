@@ -21,7 +21,7 @@ Choose from the following list to get started:
 
 - [Namespaces](/server/namespaces): Create basic logical separations within a Temporal cluster, or use Global Namespaces to enable failover across multi-cluster instances.
 - [Security](/server/security): Learn how to keep your self-hosted instance secure with encryption and pluggable auth protocols.
-- [Advanced Workflow search](/temporal-explained/visibility): Integrating Elasticsearch enables the use of customizable Search Attributes and complex search queries.
+- [Advanced Workflow search](/visibility): Integrating Elasticsearch enables the use of customizable Search Attributes and complex search queries.
 - Experimental features:
   - [Archival](/cluster/how-to-set-up-archival): Want to back up your Workflow event history? You can with a cloud provider of your choice.
   - [Multi-cluster Replication](/concepts/what-is-multi-cluster-replication): Increase availability by asynchronously replicating workflows from an active cluster to other passive clusters.

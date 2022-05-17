@@ -268,7 +268,9 @@ main.max-w-screen-lg {
   --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color),
     0 1px 2px -1px var(--tw-shadow-color);
   background-color: var(--ifm-card-background-color);
-  padding: 1.25rem;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  padding-bottom: 1.25rem;
 }
 
 .landing-card-list {
@@ -290,6 +292,17 @@ main.max-w-screen-lg {
   margin-top: 1.2em;
 }
 
+.code-logo-list {
+  margin-bottom: 0;
+}
+
+.code-logo {
+
+}
+
+.header-link {
+  text-decoration: none;
+}
 /* End Crazy Tailwind hax */
 
 @font-face {

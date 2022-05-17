@@ -7,7 +7,7 @@ description: A Worker is a process that connects to the Temporal Server, polls T
 
 **`@temporalio/worker`** [![NPM](https://img.shields.io/npm/v/@temporalio/worker)](https://www.npmjs.com/package/@temporalio/worker) [API reference](https://typescript.temporal.io/api/namespaces/worker) | [GitHub](https://github.com/temporalio/sdk-typescript/tree/main/packages/worker)
 
-> _Background reading: [Workers in Temporal](/temporal-explained/task-queues-and-workers)_
+> _Background reading: [Workers in Temporal](/workers)_
 
 ## What is a Worker?
 

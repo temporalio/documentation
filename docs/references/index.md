@@ -15,4 +15,4 @@ title: Temporal Platform references
 
 [TypeScript SDK reference](https://typescript.temporal.io")
 
-[Glossary](/references/glossary)
+[Glossary](/glossary)

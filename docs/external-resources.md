@@ -19,7 +19,7 @@ There have been many high-level descriptions of Temporal from our Series A and B
 
 ## How Temporal works
 
-_Don't forget our own explainers on [What is Temporal](https://docs.temporal.io/temporal-explained/introduction)!_
+_Don't forget our own explainers on [What is Temporal](/temporal)!_
 
 - **Talks**
   - ⭐ [Designing a Workflow Engine from First Principles](https://docs.temporal.io/blog/workflow-engine-principles/) by Maxim Fateev (23 min talk given at Systems @ Scale 2021)

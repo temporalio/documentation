@@ -4,24 +4,32 @@
 # General redirects
 #
 /docs/*        /:splat
-/docs/sdks-introduction         /application-development
-/docs/other-sdks        /application-development
+/reference/*        /references/:splat
+/system-tools/*        /devtools/:splat
+/devtools/tctl        /tctl
+/docs/sdks-introduction         /application-development-guide
+/docs/other-sdks        /application-development-guide
+/docs/application-development /application-development-guide
 /docs/get-started         /
-/docs/glossary        /docs/references/glossary
+/docs/glossary        /glossary
 
 #
 # Concept pages redirects
 #
-/docs/concepts         /docs/temporal-explained/introduction
-/docs/temporal-explained        /docs/temporal-explained/introduction
-/docs/concepts/introduction        /docs/temporal-explained/introduction
-/docs/concepts/workflows         /docs/concepts/what-is-a-workflow
-/docs/concepts/activities      /docs/concepts/what-is-an-activity
-/docs/concepts/signals         /docs/concepts/what-is-a-signal
-/docs/concepts/queries         /docs/concepts/what-is-a-query
-/docs/concepts/task-queues         /docs/concepts/what-is-a-task-queue
-/docs/references/commands        /docs/concepts/what-is-a-command
-/docs/references/events        /docs/concepts/what-is-an-event
+/docs/temporal-explained        /docs/temporal
+/docs/concepts/introduction        /temporal
+/docs/concepts/workflows         /workflows
+/docs/concepts/activities      /activities
+/docs/concepts/signals         /signals
+/docs/concepts/queries         /queries
+/docs/concepts/task-queues         /tasks
+/docs/temporal-explained/introduction        /temporal
+/docs/temporal-explained/workflows        /workflows
+/docs/temporal-explained/activities        /activities
+/docs/temporal-explained/task-queues-and-workers        /workers
+/docs/temporal-explained/signals-and-queries        /signals
+/docs/temporal-explained/timeouts-and-retries        /retry-policies
+/docs/temporal-explained/visibility        /visibility
 
 # CONTENT -> CONCEPTS
 /docs/content/what-is-*         /docs/concepts/what-is-:splat
@@ -150,14 +158,6 @@
 
 /docs/server-security         /docs/server/security
 /docs/server-versions-and-dependencies        /docs/server/versions-and-dependencies
-/docs/server/workflow-search        /docs/temporal-explained/visibility
-
-#
-# Dev tools redirects
-#
-/docs/devtools/tctl        /docs/tctl
-/docs/system-tools/*        /docs/devtools/:splat
+/docs/server/workflow-search        /visibility
 
 /docs/content/how-to-remove-a-search-attribute-from-a-cluster-using-tctl /docs/tctl/how-to-remove-a-search-attribute-from-a-cluster-using-tctl
-
-/docs/reference/*        /docs/references/:splat

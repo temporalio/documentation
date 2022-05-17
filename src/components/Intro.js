@@ -29,7 +29,7 @@ function Explained() {
       <ul className="flex list-disc flex-col space-y-2 pl-4">
         <li className="">
           <Link
-            to={useBaseUrl("/temporal-explained/workflows")}
+            to={useBaseUrl("/workflows")}
             className="hover:underline"
           >
             <a className="font-normal">Temporal Workflows</a>
@@ -37,23 +37,23 @@ function Explained() {
         </li>
         <li className="">
           <Link
-            to={useBaseUrl("/temporal-explained/signals-and-queries")}
+            to={useBaseUrl("/workflows/#signals")}
             className="hover:underline"
           >
-            <a className="font-normal">Signals & Queries</a>
+            <a className="font-normal">Signals</a>
           </Link>
         </li>
         <li className="">
           <Link
-            to={useBaseUrl("/temporal-explained/timeouts-and-retries")}
+            to={useBaseUrl("/retry-policies")}
             className="hover:underline"
           >
-            <a className="font-normal">Timeouts & retries</a>
+            <a className="font-normal">Retries</a>
           </Link>
         </li>
         <li className="">
           <Link
-            to={useBaseUrl("/temporal-explained/visibility")}
+            to={useBaseUrl("/visibility")}
             className="hover:underline"
           >
             <a className="font-normal">Visibility</a>

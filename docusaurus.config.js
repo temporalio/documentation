@@ -59,6 +59,11 @@ module.exports = {
       },
       items: [
         {
+          to: "/",
+          activeBasePath: "none",
+          label: "Docs",
+        },
+        {
           activeBasePath: "none",
           label: "Case Studies",
           items: [

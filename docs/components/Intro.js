@@ -4,62 +4,272 @@ import useBaseUrl from "@docusaurus/useBaseUrl";
 
 function Explained() {
   return (
-    <div className="flex flex-col rounded-lg bg-[color:var(--ifm-card-background-color)] p-5 shadow landing-card">
-      <div className="flex items-center space-x-4">
-        <svg
-          width="13"
-          className="mb-4 h-10 w-10 rounded-lg bg-[color:var(--ifm-background-color)] p-2 text-[color:var(--ifm-color)] icon"
-          height="14"
-          viewBox="0 0 491.52 491.52"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M445.44,33.792H261.12V15.36c0-8.704-6.656-15.36-15.36-15.36S230.4,6.656,230.4,15.36v18.432H46.08 c-8.704,0-15.36,6.656-15.36,15.36v257.536H460.8V49.152C460.8,40.448,454.144,33.792,445.44,33.792z"
-            fill="currentColor"
-          />
-          <path
-            d="M476.16,332.288H15.36c-8.192,0-15.36,7.168-15.36,15.36c0,8.704,6.656,15.36,15.36,15.36h199.168l-90.624,95.744 c-5.632,6.144-5.632,15.872,0.512,21.504c6.144,5.632,15.872,5.632,21.504-0.512l84.48-89.088v85.504 c0,8.704,6.656,15.36,15.36,15.36s15.36-6.656,15.36-15.36v-85.504l84.48,89.088c5.632,6.144,15.36,6.656,21.504,0.512 c6.144-5.632,6.656-15.36,0.512-21.504l-90.624-95.744H476.16c8.704,0,15.36-6.656,15.36-15.36 C491.52,338.944,484.864,332.288,476.16,332.288z"
-            fill="currentColor"
-          />
-        </svg>
-        <h2 className="mb-4 text-xl font-semibold">Temporal explained</h2>
+    <div className="landing-card">
+      <div className="landing-card-section">
+        <h2>Temporal core concepts</h2>
+        <ul className="landing-card-list">
+          <li className="">
+            <Link
+              to={useBaseUrl("/temporal")}
+              className="hover:underline"
+            >
+              <a className="font-normal">Temporal</a>
+            </Link>
+          </li>
+          <li className="">
+            <Link
+              to={useBaseUrl("/workflows")}
+              className="hover:underline"
+            >
+              <a className="font-normal">Workflows</a>
+            </Link>
+          </li>
+          <li className="">
+            <Link
+              to={useBaseUrl("/activities")}
+              className="hover:underline"
+            >
+              <a className="font-normal">Activities</a>
+            </Link>
+          </li>
+          <li className="">
+            <Link
+              to={useBaseUrl("/visibility")}
+              className="hover:underline"
+            >
+              <a className="font-normal">Visibility</a>
+            </Link>
+          </li>
+        </ul>
       </div>
-      <p className="mb-4 flex font-medium">Temporal core concepts explained.</p>
-      <ul className="flex list-disc flex-col space-y-2 pl-4">
-        <li className="">
-          <Link
-            to={useBaseUrl("/temporal-explained/workflows")}
-            className="hover:underline"
-          >
-            <a className="font-normal">Temporal Workflows</a>
-          </Link>
-        </li>
-        <li className="">
-          <Link
-            to={useBaseUrl("/temporal-explained/signals-and-queries")}
-            className="hover:underline"
-          >
-            <a className="font-normal">Signals & Queries</a>
-          </Link>
-        </li>
-        <li className="">
-          <Link
-            to={useBaseUrl("/temporal-explained/timeouts-and-retries")}
-            className="hover:underline"
-          >
-            <a className="font-normal">Timeouts & retries</a>
-          </Link>
-        </li>
-        <li className="">
-          <Link
-            to={useBaseUrl("/temporal-explained/visibility")}
-            className="hover:underline"
-          >
-            <a className="font-normal">Visibility</a>
-          </Link>
-        </li>
-      </ul>
+      <div className="landing-card-section">
+        <a className="header-link" href="/application-development-guide"><h2>Application development guide</h2></a>
+        <ul className="landing-card-list code-logo-list">
+          <li>
+          <img
+            className="h-8 w-8 pl-1 transition hover:scale-110 code-logo"
+            src="/img/golang.svg"
+            alt="Go lang logo"
+          />
+          </li>
+          <li>
+          <img
+            className="h-7 w-7 pl-1 transition hover:scale-110 code-logo"
+            src="/img/java.svg"
+            alt="Java logo"
+          />
+          </li>
+          <li>
+          <img
+            className="h-8 w-8 pl-1 transition hover:scale-110 code-logo"
+            src="/img/php.svg"
+            alt="PHP logo"
+          />
+          </li>
+          <li>
+          <img
+            className="h-7 w-7 pl-1 transition hover:scale-110 code-logo"
+            src="/img/typescript.svg"
+            alt="TypeScript logo"
+          />
+          </li>
+        </ul>
+        <ul className="landing-card-list">
+          <li className="">
+            <Link
+              to={useBaseUrl("/application-development-guide/#foundations")}
+              className="hover:underline"
+            >
+              <a className="font-normal">Foundations</a>
+            </Link>
+          </li>
+          <li className="">
+            <Link
+              to={useBaseUrl("/application-development-guide/#features")}
+              className="hover:underline"
+            >
+              <a className="font-normal">Features</a>
+            </Link>
+          </li>
+          <li className="">
+            <Link
+              to={useBaseUrl("/application-development-guide/#observability")}
+              className="hover:underline"
+            >
+              <a className="font-normal">Observability</a>
+            </Link>
+          </li>
+          <li className="">
+            <Link
+              to={useBaseUrl("/application-development-guide/#testing")}
+              className="hover:underline"
+            >
+              <a className="font-normal">Testing</a>
+            </Link>
+          </li>
+          <li className="">
+            <Link
+              to={useBaseUrl("/operation/how-to-tune-workers")}
+              className="hover:underline"
+            >
+              <a className="font-normal">Worker performance tuning</a>
+            </Link>
+          </li>
+        </ul>
+      </div>
+      <div className="landing-card-section">
+        <h4>Legacy SDK docs</h4>
+        <ul className="landing-card-list">
+          <li className="">
+            <Link
+              to={useBaseUrl("/go")}
+              className="hover:underline"
+            >
+              <a className="font-normal">Go</a>
+            </Link>
+          </li>
+          <li className="">
+            <Link
+              to={useBaseUrl("/java")}
+              className="hover:underline"
+            >
+              <a className="font-normal">Java</a>
+            </Link>
+          </li>
+          <li className="">
+            <Link
+              to={useBaseUrl("/php/introduction")}
+              className="hover:underline"
+            >
+              <a className="font-normal">PHP</a>
+            </Link>
+          </li>
+          <li className="">
+            <Link
+              to={useBaseUrl("/typescript/introduction")}
+              className="hover:underline"
+            >
+              <a className="font-normal">TypeScript</a>
+            </Link>
+          </li>
+        </ul>
+      </div>
+      <div className="landing-card-section">
+        <h4>Tutorials</h4>
+        <ul className="landing-card-list">
+          <li className="">
+            <Link
+              to={useBaseUrl("/learning-paths/hello-world")}
+              className="hover:underline"
+            >
+              <a className="font-normal">"Hello World" from scratch</a>
+            </Link>
+          </li>
+          <li className="">
+            <Link
+              to={useBaseUrl("/learning-paths/run-your-first-app")}
+              className="hover:underline"
+            >
+              <a className="font-normal">Run your first application</a>
+            </Link>
+          </li>
+          <li className="">
+            <Link
+              to={useBaseUrl("/learning-paths/background-checks")}
+              className="hover:underline"
+            >
+              <a className="font-normal">Background Checks</a>
+            </Link>
+          </li>
+        </ul>
+      </div>
+      <div className="landing-card-section">
+        <a className="header-link" href="/cluster-operations-guide"><h2>Cluster operations guide</h2></a>
+        <ul className="landing-card-list">
+          <li className="">
+            <Link
+              to={useBaseUrl("/cluster-operations-guide/#advanced-visibility")}
+              className="hover:underline"
+            >
+              <a className="font-normal">Visibility</a>
+            </Link>
+          </li>
+          <li className="">
+            <Link
+              to={useBaseUrl("/cluster-operations-guide/#archival")}
+              className="hover:underline"
+            >
+              <a className="font-normal">Archival</a>
+            </Link>
+          </li>
+          <li className="">
+            <Link
+              to={useBaseUrl("/cluster-operations-guide/#multi-cluster-replication")}
+              className="hover:underline"
+            >
+              <a className="font-normal">Multi-Cluster Replication</a>
+            </Link>
+          </li>
+        </ul>
+      </div>
+      <div className="landing-card-section">
+        <h2>Devtools</h2>
+        <ul className="landing-card-list">
+          <li className="">
+            <Link
+              to={useBaseUrl("/tctl")}
+              className="hover:underline"
+            >
+              <a className="font-normal">tctl</a>
+            </Link>
+          </li>
+          <li className="">
+            <Link
+              to={useBaseUrl("/devtools/web-ui")}
+              className="hover:underline"
+            >
+              <a className="font-normal">Web UI</a>
+            </Link>
+          </li>
+        </ul>
+      </div>
+      <div className="landing-card-section">
+        <h2>Reference</h2>
+        <ul className="landing-card-list">
+          <li className="">
+            <Link
+              to={useBaseUrl("/references/events")}
+              className="hover:underline"
+            >
+              <a className="font-normal">Events</a>
+            </Link>
+          </li>
+          <li className="">
+            <Link
+              to={useBaseUrl("/references/commands")}
+              className="hover:underline"
+            >
+              <a className="font-normal">Commands</a>
+            </Link>
+          </li>
+          <li className="">
+            <Link
+              to={useBaseUrl("/references/sdk-metrics")}
+              className="hover:underline"
+            >
+              <a className="font-normal">SDK metrics</a>
+            </Link>
+          </li>
+          <li className="">
+            <Link
+              to={useBaseUrl("/server/configuration")}
+              className="hover:underline"
+            >
+              <a className="font-normal">Cluster configuration</a>
+            </Link>
+          </li>
+        </ul>
+      </div>
     </div>
   );
 }
@@ -89,7 +299,7 @@ function SDKs() {
             fill="currentColor"
           />
         </svg>
-        <h2 className="mb-4 text-xl font-semibold">SDK how-to guides</h2>
+        <h2 className="mb-4 text-xl font-semibold">SDK how-to guides (Legacy)</h2>
       </div>
       <p className="mb-4 flex font-medium">
         SDK specific implementation guides and examples.
@@ -411,13 +621,8 @@ function Learning() {
 export const Intro = () => {
   return (
     <section className="mt-1 mb-14 tailwindcss">
-      <div className="my-10 grid grid-cols-1 gap-6 md:grid-cols-2 lg:gap-8">
+      <div className=" grid grid-cols-1 gap-6 lg:gap-8">
         <Explained />
-        <Learning />
-        <SDKs />
-        <Tools />
-        <Cluster />
-        <Operation />
       </div>
     </section>
   );
