@@ -21,7 +21,7 @@ Set these environment variables if you need to change their defaults:
 | Variable                         | Description                                                                     | Default                       |
 | -------------------------------- | ------------------------------------------------------------------------------- | ----------------------------- |
 | TEMPORAL_GRPC_ENDPOINT           | String representing server gRPC endpoint                                        | 127.0.0.1:7233                |
-| TEMPORAL_WEB_PORT                | HTTP port to serve on                                                           | 8088                          |
+| TEMPORAL_WEB_PORT                | HTTP port to serve on                                                           | 8080                          |
 | TEMPORAL_CONFIG_PATH             | Path to config file, see [configurations](#configuring-authentication-optional) | ./server/config.yml           |
 | TEMPORAL_PERMIT_WRITE_API        | Boolean to permit write API methods such as Terminating Workflows               | true                          |
 | TEMPORAL_WEB_ROOT_PATH           | The root path to serve the app under                                            | /                             |
@@ -73,7 +73,7 @@ It can be enabled it in 2 steps:
          client_secret: xxxxxxxxxxxxxxxxxxxxxxx
          scope: openid profile email
          audience: temporal # identifier of the audience for an issued token (optional)
-         callback_base_uri: http://localhost:8088
+         callback_base_uri: http://localhost:8080
          pass_id_token: false # adds ID token as 'authorization-extras' header with every request to server
    ```
 
@@ -124,7 +124,7 @@ It can be enabled it in 2 steps:
   <!-- prettier-ignore-end -->
 
 2.  You will need to provide a redirect URL to your OAuth Provider.
-    If you are hosting Temporal Web at `http://localhost:8088` (this is configured by `callback_base_uri` in `server/config.yml`), then it is `http://localhost:8088/auth/sso_callback`.
+    If you are hosting Temporal Web at `http://localhost:8080` (this is configured by `callback_base_uri` in `server/config.yml`), then it's `http://localhost:8080/auth/sso_callback`.
 
     By default, Temporal Web asks for 3 scopes, make sure your provider recognizes these or you may see scope-related errors:
 
@@ -134,7 +134,7 @@ It can be enabled it in 2 steps:
 
 ## Using Temporal Web for development
 
-When you have the Temporal Cluster running locally (use the [quick install guide](/docs/clusters/quick-install)), you can view the Temporal Web UI at [http://localhost:8088](http://localhost:8088).
+When you have the Temporal Cluster running locally (use the [quick install guide](/docs/clusters/quick-install)), you can view the Temporal Web UI at [http://localhost:8080](http://localhost:8080).
 (You can configure the port number by setting the `TEMPORAL_WEB_PORT` environment variable.)
 
 > ⚠️ This is a basic guide to troubleshooting/debugging Temporal applications.

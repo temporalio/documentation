@@ -151,7 +151,7 @@ Look for "BUILD SUCCESSFUL" in the output to confirm.
 
 ## ![](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/running.png) Run the app
 
-To run the app we need to start the Workflow and the Worker. You can start them in any order. Make sure you have the [Temporal server](https://docs.temporal.io/docs/clusters/quick-install) running in a terminal and have the [Temporal Web UI](localhost:8088) open in your browser
+To run the app we need to start the Workflow and the Worker. You can start them in any order. Make sure you have the [Temporal server](https://docs.temporal.io/docs/clusters/quick-install) running in a terminal and have the [Temporal Web UI](localhost:8080) open in your browser
 
 If you are using the terminal, add tasks to the build.gradle file so that you can run the main methods from there.
 
