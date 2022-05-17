@@ -2,15 +2,44 @@
 id: set
 title: tcld namespace update accepted-client-ca set
 sidebar_label: set
-description: How to set the accepted client CA certificate for a Namespace in Temporal Cloud using tcld.
+description: How to set the accepted client CA certificates for a Namespace in Temporal Cloud using tcld.
 tags:
   - reference
   - tcld
 ---
 
-The `tcld namespace update accepted-client-ca set` command sets the accepted client CA certificate for a [Namespace](/docs/concepts/what-is-a-namespace) in Temporal Cloud.
+The `tcld namespace update accepted-client-ca set` command sets the accepted client CA certificates for a [Namespace](/docs/concepts/what-is-a-namespace) in Temporal Cloud.
 
 `tcld namespace update accepted-client-ca set --ca-certificate <value>`
+
+<!--- How to rollover accepted client CA certificates in Temporal Cloud using tcld --->
+
+When updating CA certificates, it's important to follow a rollover process.
+Doing so enables your Namespace to serve both CA certificates for a period of time until traffic to your old CA certificate ceases.
+
+1. Create a single file that contains both your old and new CA certificate PEM blocks.
+Just concatenate the PEM blocks on adjacent lines.
+
+   ```
+   -----BEGIN CERTIFICATE-----
+   ... old CA cert ...
+   -----END CERTIFICATE-----
+   -----BEGIN CERTIFICATE-----
+   ... new CA cert ...
+   -----END CERTIFICATE-----
+   ```
+
+1. Run the `tcld namespace update accepted-client-ca set` command with the CA certificate bundle file.
+
+   ```bash
+   tcld namespace update accepted-client-ca set --ca-certificate-file <path>
+   ```
+
+1. Monitor traffic to your old certificate until it ceases.
+
+1. Create another file that contains only the new CA certificate.
+
+1. Run the `tcld namespace update accepted-client-ca set` command again with the updated CA certificate bundle file.
 
 The following modifiers control the behavior of the command.
 
@@ -54,7 +83,7 @@ tcld namespace update accepted-client-ca set --resource-version <etag> --ca-cert
 
 _Required modifier unless `--ca-certificate-file` is specified_
 
-Specify a base64-encoded CA certificate.
+Specify a base64-encoded string of a CA certificate PEM file.
 
 If both `--ca-certificate` and `--ca-certificate-file` are specified, only `--ca-certificate` is used.
 
@@ -70,7 +99,7 @@ tcld namespace update accepted-client-ca set --ca-certificate <encoded_certifica
 
 _Required modifier unless `--ca-certificate` is specified_
 
-Specify a path to a PEM file that contains a base64-encoded CA certificate.
+Specify a path to a CA certificate PEM file.
 
 If both `--ca-certificate` and `--ca-certificate-file` are specified, only `--ca-certificate` is used.
 

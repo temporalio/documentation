@@ -68,5 +68,5 @@ Alias: `--sa`
 **Example**
 
 ```bash
-tcld namespace update search-attributes add --search-attribute "Category=Text" --search-attribute "LengthOverall=Double"
+tcld namespace update search-attributes add --search-attribute "YourSearchAttribute1=Text" --search-attribute "YourSearchAttribute2=Double"
 ```
