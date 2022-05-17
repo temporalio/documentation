@@ -32,7 +32,7 @@ $ docker-compose up
 ```
 
 This starts Temporal Server with the [docker-compose.yml](https://github.com/temporalio/samples-php/blob/master/docker-compose.yml) that ships with the `samples-php` repo.
-When it is live, you can access [Temporal Web](/docs/devtools/web-ui) at http://localhost:8088 although you won't see any workflows run yet.
+When it's live, you can access [Temporal Web](/docs/devtools/web-ui) at http://localhost:8080 although you won't see any Workflows run yet.
 
 **3. Run a sample**
 

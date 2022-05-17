@@ -69,7 +69,7 @@ cd  docker-compose
 docker-compose up
 ```
 
-When the Temporal Cluster is running, the Temporal Web UI becomes available in your browser: [localhost:8088](http://localhost:8088/)
+When the Temporal Cluster is running, the Temporal Web UI becomes available in your browser: [localhost:8080](http://localhost:8080/)
 
 The preceding steps start and run a Temporal Cluster using a default configuration.
 To try other configurations (different dependencies and databases), or to try a custom Docker image, follow the [temporalio/docker-compose README](https://github.com/temporalio/docker-compose/blob/main/README.md).
@@ -1505,9 +1505,10 @@ Each Worker Entity polling the same Task Queue must be registered with the same 
 
 A [Worker Entity](/docs/workers/#worker-entity) is the component within a Worker Process that listens to a specific Task Queue.
 
-While it is possible to have multiple Worker Entities in a single Worker Process, a single Worker Entity Worker Process may be perfectly sufficient (See the [Worker tuning guide](/docs/operation/how-to-tune-workers))
+Although multiple Worker Entities can be in a single Worker Process, a single Worker Entity Worker Process may be perfectly sufficient.
+(See the [Worker tuning guide](/docs/operation/how-to-tune-workers).)
 
-A Worker Entity contains both a Workflow Worker and an Activity Worker so that it may make progress of either a Workflow Execution or an Activity Execution.
+A Worker Entity contains both a Workflow Worker and an Activity Worker so that it can make progress for either a Workflow Execution or an Activity Execution.
 
 <Tabs
 defaultValue="go"
@@ -1655,8 +1656,8 @@ This is a selected subset of options you are likely to use. Even more advanced o
 
 All Workers listening to the same Task Queue name must be registered to handle the exact same Workflows Types and Activity Types.
 
-If a Worker polls a Task for a Workflow Type or Activity Type it does not know about, it will fail that Task.
-However, the failure of the Task will not cause the associated Workflow Execution to fail.
+If a Worker polls a Task for a Workflow Type or Activity Type it does not know about, it fails that Task.
+However, the failure of the Task does not cause the associated Workflow Execution to fail.
 
 <Tabs
 defaultValue="go"
@@ -1669,7 +1670,8 @@ The `RegisterWorkflow()` and `RegisterActivity()` calls essentially create an in
 
 **Registering Activity `structs`**
 
-Per [Activity Definition](#develop-activities) best practices, you may have an Activity struct that has multiple methods and fields. When you use `RegisterActivity()` for an Activity struct, that Worker has access to all exported methods.
+Per [Activity Definition](#develop-activities) best practices, you might have an Activity struct that has multiple methods and fields.
+When you use `RegisterActivity()` for an Activity struct, that Worker has access to all exported methods.
 
 **Registering multiple Types**
 
@@ -2394,17 +2396,7 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-To send a Signal to a Workflow and start the Workflow if it isn't already running, use `signalWithStart()`.
-
-```typescript
-const client = new WorkflowClient();
-await client.signalWithStart(YourWorkflow, {
-  workflowId,
-  args: [arg1, arg2],
-  signal: YourSignal,
-  signalArgs: [arg3, arg4],
-});
-```
+Content is not available
 
 </TabItem>
 </Tabs>
@@ -3043,16 +3035,7 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-To set a Heartbeat Timeout, use [`ActivityOptions.heartbeatTimeout`](https://typescript.temporal.io/api/interfaces/common.ActivityOptions#heartbeattimeout). If the Activity takes longer than that between heartbeats, the Activity is failed.
-
-```typescript
-// Creating a proxy for the activity.
-const {longRunningActivity} = proxyActivities<typeof activities>({
-  scheduleToCloseTimeout: "5m", // translates to 300000 ms
-  startToCloseTimeout: "30s", // translates to 30000 ms
-  heartbeatTimeout: 10000, // equivalent to '10 seconds'
-});
-```
+Content is not available
 
 </TabItem>
 </Tabs>
@@ -3116,22 +3099,7 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-To set Activity Retry Policies in TypeScript, pass [`ActivityOptions.retry`](https://typescript.temporal.io/api/interfaces/common.ActivityOptions#retry) to [`proxyActivities`](https://typescript.temporal.io/api/namespaces/workflow/#proxyactivities).
-
-```typescript
-// Sample of typical options you can set
-const {yourActivity} = proxyActivities<typeof activities>({
-  // ...
-  retry: {
-    // default retry policy if not specified
-    initialInterval: "1s",
-    backoffCoefficient: 2,
-    maximumAttempts: Infinity,
-    maximumInterval: 100 * initialInterval,
-    nonRetryableErrorTypes: [],
-  },
-});
-```
+Content is not available
 
 </TabItem>
 </Tabs>
@@ -3472,14 +3440,7 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-You can set each Workflow to repeat on a schedule with the `cronSchedule` option:
-
-```typescript
-const handle = await client.start(scheduledWorkflow, {
-  // ...
-  cronSchedule: "* * * * *", // start every minute
-});
-```
+Content is not available
 
 </TabItem>
 </Tabs>

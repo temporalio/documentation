@@ -151,8 +151,8 @@ _Thanks to our Design Partner [Mina Abadir](https://twitter.com/abadir_) for sha
 
 ### Connecting to Temporal Cloud (with mTLS)
 
-[The Hello World mTLS sample](https://github.com/temporalio/samples-node/tree/main/hello-world-mtls/) demonstrates sample code used to connect to a Temporal Cloud account.
-When signing up to Temporal Cloud you should receive a namespace, a server address and a client certificate and key. Use the following environment variables to set up the sample:
+[The Hello World mTLS sample](https://github.com/temporalio/samples-node/tree/main/hello-world-mtls/) shows how to connect to a Temporal Cloud account.
+After signing up for Temporal Cloud, you should have a namespace, a server address, and a client certificate and key. Use the following environment variables to set up the sample:
 
 - **TEMPORAL_ADDRESS**: looks like `foo.bar.tmprl.cloud` (NOT web.foo.bar.tmprl.cloud)
 - **TEMPORAL_NAMESPACE**: looks like `foo.bar`
