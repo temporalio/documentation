@@ -90,7 +90,7 @@ clusterMetadata:
       rpcAddress: "127.0.0.1:8233"
 ```
 
-Then you can use the `tctl admin` tool to add cluster connections. All operations should be executed in both clusters.
+Then you can use the `tctl admin` tool to add cluster connections. All operations should be executed in both Clusters.
 
 ```shell
 # Add cluster B connection into cluster A
