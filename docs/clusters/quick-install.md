@@ -37,7 +37,7 @@ cd  docker-compose
 docker-compose up
 ```
 
-When the Temporal Cluster is running, the Temporal Web UI becomes available in your browser: [localhost:8088](http://localhost:8088/)
+When the Temporal Cluster is running, the Temporal Web UI becomes available in your browser: [localhost:8080](http://localhost:8080/)
 
 The preceding steps start and run a Temporal Cluster using a default configuration.
 To try other configurations (different dependencies and databases), or to try a custom Docker image, follow the [temporalio/docker-compose README](https://github.com/temporalio/docker-compose/blob/main/README.md).
