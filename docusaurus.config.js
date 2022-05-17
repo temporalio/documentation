@@ -57,103 +57,47 @@ module.exports = {
         src: "img/temporal-logo-dark.svg",
         srcDark: "img/temporal-logo.svg",
       },
-      // items: [
-      //   {
-      //     activeBasePath: "/docs",
-      //     label: "Docs",
-      //     items: [
-      //       {
-      //         to: "/docs/temporal-explained/introduction",
-      //         activeBasePath: "/docs/temporal-explained/",
-      //         label: "Explanation",
-      //       },
-      //       {
-      //         to: "/docs/concepts",
-      //         activeBasePath: "/docs/concepts/",
-      //         label: "Concepts",
-      //       },
-      //       {
-      //         to: "/docs/clusters",
-      //         activeBasePath: "/docs/clusters/",
-      //         label: "Clusters",
-      //       },
-      //       {
-      //         to: "/docs/tctl/",
-      //         activeBasePath: "/docs/tctl/",
-      //         label: "tctl",
-      //       },
-      //       {
-      //         to: "/docs/devtools/web-ui/",
-      //         label: "Web UI",
-      //       },
-      //       {
-      //         to: "/application-development",
-      //         activeBaseRegex:
-      //           "(/application-development)|(/(go|java|php|node))",
-      //         label: "SDKs",
-      //       },
-      //       {
-      //         to: "/docs/operation/",
-      //         activeBasePath: "/docs/operation",
-      //         label: "Operation guides",
-      //       },
-      //       {
-      //         to: "/docs/learning-paths",
-      //         activeBasePath: "/docs/learning-paths",
-      //         label: "Learning",
-      //       },
-      //       {
-      //         to: "/docs/samples-library",
-      //         activeBasePath: "/docs/samples-library",
-      //         label: "Samples library",
-      //       },
-      //       {
-      //         to: "/docs/references",
-      //         activeBasePath: "/docs/references",
-      //         label: "References",
-      //       },
-      //     ],
-      //   },
-      //   {
-      //     activeBasePath: "none",
-      //     label: "Case Studies",
-      //     items: [
-      //       {
-      //         to: "/blog/how-datadog-ensures-database-reliability-with-temporal",
-      //         label: "Datadog",
-      //       },
-      //       {
-      //         to: "/blog/how-temporal-simplified-checkr-workflows",
-      //         label: "Checkr",
-      //       },
-      //       {
-      //         to: "/blog/temporal-a-central-brain-for-box",
-      //         label: "Box",
-      //       },
-      //       {
-      //         to: "/blog/reliable-crypto-transactions-at-coinbase",
-      //         label: "Coinbase",
-      //       },
-      //       {
-      //         to: "/blog/descript-case-study",
-      //         label: "Descript",
-      //       },
-      //       {
-      //         to: "/blog/zebra-medical-case-study",
-      //         label: "Zebra",
-      //       },
-      //       {
-      //         to: "/blog/airbyte-case-study",
-      //         label: "Airbyte",
-      //       },
-      //     ],
-      //   },
-      //   {
-      //     to: "/blog",
-      //     activeBasePath: "/blog",
-      //     label: "Blog",
-      //   },
-      // ],
+      items: [
+        {
+          activeBasePath: "none",
+          label: "Case Studies",
+          items: [
+            {
+              to: "/blog/how-datadog-ensures-database-reliability-with-temporal",
+              label: "Datadog",
+            },
+            {
+              to: "/blog/how-temporal-simplified-checkr-workflows",
+              label: "Checkr",
+            },
+            {
+              to: "/blog/temporal-a-central-brain-for-box",
+              label: "Box",
+            },
+            {
+              to: "/blog/reliable-crypto-transactions-at-coinbase",
+              label: "Coinbase",
+            },
+            {
+              to: "/blog/descript-case-study",
+              label: "Descript",
+            },
+            {
+              to: "/blog/zebra-medical-case-study",
+              label: "Zebra",
+            },
+            {
+              to: "/blog/airbyte-case-study",
+              label: "Airbyte",
+            },
+          ],
+        },
+        {
+          to: "/blog",
+          activeBasePath: "/blog",
+          label: "Blog",
+        },
+      ],
     },
     footer: {
       logo: {
