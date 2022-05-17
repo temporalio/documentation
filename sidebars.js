@@ -109,6 +109,99 @@ module.exports = {
       ],
     },
   ],
+  sidebarCloud: [
+    {
+      type: "category",
+      label: "Temporal Cloud",
+      collapsible: false,
+      collapsed: false,
+      link: {
+        type: "doc",
+        id: "cloud/tcld/index",
+      },
+      items: [
+        "cloud/tcld/how-to-install-tcld",
+        {
+          type: "category",
+          label: "tcld commands",
+          collapsible: true,
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "cloud/tcld/index",
+          },
+          items: [
+            "cloud/tcld/login",
+            {
+              type: "category",
+              label: "namespace",
+              collapsible: true,
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "cloud/tcld/namespace/index",
+              },
+              items: [
+                "cloud/tcld/namespace/get",
+                "cloud/tcld/namespace/list",
+                {
+                  type: "category",
+                  label: "update",
+                  collapsible: true,
+                  collapsed: true,
+                  link: {
+                    type: "doc",
+                    id: "cloud/tcld/namespace/update/index",
+                  },
+                  items: [
+                    {
+                      type: "category",
+                      label: "accepted-client-ca",
+                      collapsible: true,
+                      collapsed: true,
+                      link: {
+                        type: "doc",
+                        id: "cloud/tcld/namespace/update/accepted-client-ca/index",
+                      },
+                      items: [
+                        "cloud/tcld/namespace/update/accepted-client-ca/set",
+                      ],
+                    },
+                    {
+                      type: "category",
+                      label: "search-attributes",
+                      collapsible: true,
+                      collapsed: true,
+                      link: {
+                        type: "doc",
+                        id: "cloud/tcld/namespace/update/search-attributes/index",
+                      },
+                      items: [
+                        "cloud/tcld/namespace/update/search-attributes/add",
+                        "cloud/tcld/namespace/update/search-attributes/rename",
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              type: "category",
+              label: "request",
+              collapsible: true,
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "cloud/tcld/request/index",
+              },
+              items: ["cloud/tcld/request/get"],
+            },
+            "cloud/tcld/version",
+          ],
+        },
+      ],
+    },
+  ],
   sidebarLearningPaths: [
     {
       type: "category",
