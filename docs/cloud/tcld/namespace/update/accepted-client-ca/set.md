@@ -18,7 +18,7 @@ When updating CA certificates, it's important to follow a rollover process.
 Doing so enables your Namespace to serve both CA certificates for a period of time until traffic to your old CA certificate ceases.
 
 1. Create a single file that contains both your old and new CA certificate PEM blocks.
-Just concatenate the PEM blocks on adjacent lines.
+   Just concatenate the PEM blocks on adjacent lines.
 
    ```
    -----BEGIN CERTIFICATE-----
