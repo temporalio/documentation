@@ -37,7 +37,7 @@ Types of inbound calls include the following:
 - Worker polls
 - Visibility requests
 - Admin operations via [tctl](/docs/tctl) (the Temporal CLI)
-- [Multi-cluster Replication](/docs/server/multi-cluster) related calls from a remote Cluster
+- [Multi-cluster Replication](/docs/concepts/what-is-multi-cluster-replication) related calls from a remote Cluster
 
 Every inbound request related to a Workflow Execution must have a Workflow Id, which is hashed for routing purposes.
 The Frontend Service has access to the hash rings that maintain service membership information, including how many nodes (instances of each service) are in the Cluster.

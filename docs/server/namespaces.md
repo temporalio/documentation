@@ -4,100 +4,6 @@ title: Temporal Server Namespaces
 sidebar_label: Namespaces
 ---
 
-## What is a Namespace?
-
-import Content from '../concepts/what-is-a-namespace.md'
-
-<Content />
-
-## Querying Namespaces by CLI
-
-Some useful operations with [tctl](/docs/tctl):
-
-- `tctl namespace list`: List all namespaces.
-- `tctl --namespace my-namespace-name namespace register`: Register a new namespace named "my-namespace-name"
-- `tctl --namespace my-namespace-name namespace describe`: View "my-namespace-name" details
-
-## Assigning Namespaces on Clients
-
-You set namespaces when you create a client in any of the SDKs (necessary whenever creating workers or starters). If not specified, this defaults to the `default` namespace.
-
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
-<Tabs
-defaultValue="go"
-values={[
-{label: 'Go', value: 'go'},
-{label: 'Java', value: 'java'},
-{label: 'TypeScript', value: 'ts'},
-]
-}>
-
-<TabItem value="go">
-
-```go
-	c, err := client.NewClient(client.Options{
-		Namespace: "my-namespace-name",
-	})
-```
-
-</TabItem>
-<TabItem value="java">
-
-```java
- WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
- // https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowClientOptions.Builder.html
- WorkflowOptions clientOptions = WorkflowClientOptions.newBuilder()
-    .setNamespace('my-namespace-name');
- WorkflowClient workflowClient =  WorkflowClient.newInstance(service, clientOptions);
-```
-
-</TabItem>
-<TabItem value="ts">
-
-```java
-  const connection = new Connection();
-  // https://typescript.temporal.io/api/interfaces/client.WorkflowClientOptions
-  const client = new WorkflowClient(connection.service, {
-    namespace: 'my-namespace-name'
-  });
-```
-
-</TabItem>
-</Tabs>
-
-## Global Namespaces
-
-import CustomWarning from "../components/CustomWarning.js"
-
-<CustomWarning>
-
-This feature is related to Temporal's experimental Multi-cluster Replication feature which is considered **experimental** and not subject to normal [versioning and support policy](/docs/server/versions-and-dependencies).
-
-</CustomWarning>
-
-The Temporal Global Namespace feature provides clients with the capability to continue their Workflow execution from another cluster in the event of a datacenter failover.
-
-Although you can configure a Global Namespace to be replicated to any number of
-clusters, it is only considered active in a single cluster.
-
-### Global Namespaces Architecture
-
-Temporal has introduced a new top level entity, Global Namespaces, which provides support for replication of Workflow
-execution across clusters (aka [Multi-Cluster Replication](/docs/server/multi-cluster)).
-Client applications need to run workers polling on Activity/Workflow tasks on all clusters.
-Temporal will only dispatch tasks on the current active cluster; workers on the standby cluster will sit idle
-until the Global Namespace is failed over.
-
-Because Temporal is a service that provides highly consistent semantics, we only allow external events like
-**StartWorkflowExecution**, **SignalWorkflowExecution**, etc. on an active cluster. Global Namespaces relies on light-weight
-transactions (paxos) on the local cluster (Local_Quorum) to update the Workflow execution state and create replication
-tasks which are applied asynchronously to replicate state across clusters. If an application makes these API calls on a
-cluster where Global Namespace is in standby mode, Temporal will reject those calls with **NamespaceNotActiveError**, which
-contains the name of the current active cluster. It is the responsibility of the application to forward the external
-event to the cluster that is currently active.
-
 ### Global Namespaces Config
 
 | Config              | Description                                                                                                                                                                                                                                                                                           |
@@ -110,7 +16,7 @@ event to the cluster that is currently active.
 ### Conflict Resolution
 
 Unlike local namespaces which provide at-most-once semantics for Activity execution, Global Namespaces can only support at-least-once
-semantics. [Temporal Multi-cluster Replication](/docs/server/multi-cluster) relies on asynchronous replication of events across clusters, so in the event of a failover
+semantics. [Temporal Multi-cluster Replication](/docs/concepts/what-is-multi-cluster-replication) relies on asynchronous replication of events across clusters, so in the event of a failover
 it is possible that Activity gets dispatched again on the new active cluster due to a replication task lag. This also
 means that whenever Workflow execution is updated after a failover by the new cluster, any previous replication tasks
 for that execution cannot be applied. This results in loss of some progress made by the Workflow execution in the
