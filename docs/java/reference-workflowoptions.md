@@ -2,11 +2,8 @@
 id: reference-workflowoptions
 title: Java WorkflowOptions reference
 sidebar_label: Workflow Options reference
-<<<<<<< HEAD:docs/java/reference-workflowoptions.md
 description: Create a `newWorkflowStub` in the Temporal Client code, call the instance of the Workflow, and set the Workflow options with the `WorkflowOptions.Builder` class.
-=======
-description:
->>>>>>> f8d5aadeb7160a7d77abda546239973bb3ba9a92:docs/java/workflowoptions-reference.md
+
 tags:
   - developer-guide
   - options
