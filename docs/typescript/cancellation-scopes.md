@@ -12,8 +12,7 @@ Scopes are created using the [`CancellationScope`](https://typescript.temporal.i
 - [`withTimeout(timeoutMs, fn)`](https://typescript.temporal.io/api/classes/workflow.cancellationscope#withtimeout): if timeout triggers before `fn` resolves the scope will be cancelled, triggering cancellation of enclosed operations, such as activities and timers.
   - Equivalent to `new CancellationScope({ cancellable: true, timeout: timeoutMs }).run(fn)`.
 
-Cancellations are applied to _cancellation scopes_, which can encompass an entire workflow or just part of one. Scopes can be nested, and cancellation propagates from outer scopes to inner ones. A Workflow's `main` function runs in the outermost scope. Cancellations are handled by catching `CancelledFailure`s
-thrown by _cancellable operations_ (see below).
+Cancellations are applied to _cancellation scopes_, which can encompass an entire workflow or just part of one. Scopes can be nested, and cancellation propagates from outer scopes to inner ones. A Workflow's `main` function runs in the outermost scope. Cancellations are handled by catching `CancelledFailure`s thrown by _cancellable operations_ (see below).
 
 `CancellationScope.run()` and the static helpers mentioned above all return native JS Promises, so you can use the familiar Promise APIs like `Promise.all` and `Promise.race` to model your async logic.
 Other APIs you can use:

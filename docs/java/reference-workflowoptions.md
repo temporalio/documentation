@@ -2,7 +2,11 @@
 id: reference-workflowoptions
 title: Java WorkflowOptions reference
 sidebar_label: Workflow Options reference
+<<<<<<< HEAD:docs/java/reference-workflowoptions.md
 description: Create a `newWorkflowStub` in the Temporal Client code, call the instance of the Workflow, and set the Workflow options with the `WorkflowOptions.Builder` class.
+=======
+description:
+>>>>>>> f8d5aadeb7160a7d77abda546239973bb3ba9a92:docs/java/workflowoptions-reference.md
 tags:
   - developer-guide
   - options
@@ -12,18 +16,18 @@ Create a [`newWorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk
 
 The following fields are available:
 
-| Option                                                  | Required              | Type                  |
-| --------------------------------------------------------| --------------------- | --------------------- |
-| [`WorkflowId`](#id)                                     | No (but recommended)  | String                |
-| [`TaskQueue`](#taskqueue)                               | **Yes**               | String                |
-| [`WorkflowExecutionTimeout`](#workflowexecutiontimeout) | No                    | `Duration`            |
-| [`WorkflowRunTimeout`](#workflowruntimeout)             | No                    | `Duration`            |
-| [`WorkflowTaskTimeout`](#workflowtasktimeout)           | No                    | `Duration`            |
-|[`WorkflowIdReusePolicy`](#workflowidreusepolicy)        | No                    | `WorkflowIdReusePolicy` |
-| [`RetryOptions`](#retryoptions)                         | No                    | [`RetryOptions`](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.11.0/io/temporal/common/RetryOptions.html)          |
-| [`CronSchedule`](#cronschedule)                         | No                    | String                |
-| [`Memo`](#memo)                                         | No                    | string                |
-| [`SearchAttributes`](#searchattributes)                 | No                    | Map<String, Object>   |
+| Option                                                  | Required             | Type                                                                                                                 |
+| ------------------------------------------------------- | -------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| [`WorkflowId`](#id)                                     | No (but recommended) | String                                                                                                               |
+| [`TaskQueue`](#taskqueue)                               | **Yes**              | String                                                                                                               |
+| [`WorkflowExecutionTimeout`](#workflowexecutiontimeout) | No                   | `Duration`                                                                                                           |
+| [`WorkflowRunTimeout`](#workflowruntimeout)             | No                   | `Duration`                                                                                                           |
+| [`WorkflowTaskTimeout`](#workflowtasktimeout)           | No                   | `Duration`                                                                                                           |
+| [`WorkflowIdReusePolicy`](#workflowidreusepolicy)       | No                   | `WorkflowIdReusePolicy`                                                                                              |
+| [`RetryOptions`](#retryoptions)                         | No                   | [`RetryOptions`](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.11.0/io/temporal/common/RetryOptions.html) |
+| [`CronSchedule`](#cronschedule)                         | No                   | String                                                                                                               |
+| [`Memo`](#memo)                                         | No                   | string                                                                                                               |
+| [`SearchAttributes`](#searchattributes)                 | No                   | Map<String, Object>                                                                                                  |
 
 ### `Id`
 
@@ -62,7 +66,7 @@ import WFTTimeout from './how-to-set-a-workflow-task-timeout-in-java.md'
 - Values: `AllowDuplicate` allows a new run independently of the previous run closure status.
   `RejectDuplicate` doesn't allow a new run independently of the previous run closure status.
 
-```java
+````java
 ```java
 //create Workflow stub for GreetWorkflowInterface
 GreetWorkflowInterface workflow1 =
@@ -75,7 +79,7 @@ GreetWorkflowInterface workflow1 =
                 .setWorkflowIdReusePolicy(
                         WorkflowIdReusePolicy.WORKFLOW_ID_REUSE_POLICY_REJECT_DUPLICATE)
                 .build());
-```
+````
 
 ### `RetryOptions`
 

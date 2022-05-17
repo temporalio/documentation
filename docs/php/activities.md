@@ -311,3 +311,30 @@ To fail the Activity, you would do the following:
 // Fail the Activity.
 $activityClient->completeExceptionallyByToken($taskToken, new \Error("activity failed"));
 ```
+
+## Local Activity
+
+In Temporal there is a concept of [Local Activity](/docs/concepts/what-is-a-local-activity). To create a local
+Activity you should use `#[LocalActivityInterface]` (instead of `#[ActivityInterface]`):
+
+```php
+use Temporal\Activity\LocalActivityInterface;
+
+#[ActivityInterface]
+interface GreetingActivityInterface
+{
+    #[ActivityMethod("greet")]
+    public function greet(): string;
+}
+```
+
+Local activity requires `LocalActivityOptions`:
+
+```php
+$greetingActivity = Workflow::newActivityStub(
+    GreetingActivityInterface::class,
+    LocalActivityOptions::new()->withStartToCloseTimeout(\DateInterval::createFromDateString('30 seconds'))
+);
+```
+
+Local Activities have a limited set of options, including: `ScheduleToCloseTimeout`, `StartToCloseTimeout`, `RetryPolicy`.

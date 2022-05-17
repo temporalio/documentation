@@ -24,3 +24,5 @@ const result = await handle.result();
 Calling `client.start()` and `client.execute()` send a command to Temporal Server to schedule a new Workflow Execution on the specified Task Queue. It does not actually start until a Worker that has a matching Workflow Type, polling that Task Queue, picks it up.
 
 You can test this by executing a Workflow Client command without a matching Worker. Temporal Server records the command in Event History, but does not make progress with the Workflow Execution until a Worker starts polling with a matching Task Queue and Workflow Definition.
+
+Workflow Execution run in a separate V8 isolate context in order to provide a [deterministic runtime](/docs/typescript/determinism).

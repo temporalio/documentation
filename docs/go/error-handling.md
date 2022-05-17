@@ -29,7 +29,7 @@ if err != nil {
 		applicationErr.Details(&detailMsg) // extract strong typed details
 
 		// handle Activity errors (errors created other than using NewApplicationError() API)
-		switch err.Type() {
+		switch applicationErr.Type() {
 		case "CustomErrTypeA":
 			// handle CustomErrTypeA
 		case CustomErrTypeB:
