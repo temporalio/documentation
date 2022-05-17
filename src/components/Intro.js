@@ -28,10 +28,7 @@ function Explained() {
       <p className="mb-4 flex font-medium">Temporal core concepts explained.</p>
       <ul className="flex list-disc flex-col space-y-2 pl-4">
         <li className="">
-          <Link
-            to={useBaseUrl("/workflows")}
-            className="hover:underline"
-          >
+          <Link to={useBaseUrl("/workflows")} className="hover:underline">
             <a className="font-normal">Temporal Workflows</a>
           </Link>
         </li>
@@ -44,18 +41,12 @@ function Explained() {
           </Link>
         </li>
         <li className="">
-          <Link
-            to={useBaseUrl("/retry-policies")}
-            className="hover:underline"
-          >
+          <Link to={useBaseUrl("/retry-policies")} className="hover:underline">
             <a className="font-normal">Retries</a>
           </Link>
         </li>
         <li className="">
-          <Link
-            to={useBaseUrl("/visibility")}
-            className="hover:underline"
-          >
+          <Link to={useBaseUrl("/visibility")} className="hover:underline">
             <a className="font-normal">Visibility</a>
           </Link>
         </li>

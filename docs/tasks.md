@@ -177,4 +177,3 @@ Some SDKs provide a Session API that provides a straightforward way to ensure th
 It also includes features like **concurrent session limitations** and **worker failure detection**.
 
 - [How to create Worker Sessions in Go](/go/how-to-create-a-worker-session-in-go)
-

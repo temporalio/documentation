@@ -9,69 +9,59 @@ function Explained() {
         <h2>Temporal core concepts</h2>
         <ul className="landing-card-list">
           <li className="">
-            <Link
-              to={useBaseUrl("/temporal")}
-              className="hover:underline"
-            >
+            <Link to={useBaseUrl("/temporal")} className="hover:underline">
               <a className="font-normal">Temporal</a>
             </Link>
           </li>
           <li className="">
-            <Link
-              to={useBaseUrl("/workflows")}
-              className="hover:underline"
-            >
+            <Link to={useBaseUrl("/workflows")} className="hover:underline">
               <a className="font-normal">Workflows</a>
             </Link>
           </li>
           <li className="">
-            <Link
-              to={useBaseUrl("/activities")}
-              className="hover:underline"
-            >
+            <Link to={useBaseUrl("/activities")} className="hover:underline">
               <a className="font-normal">Activities</a>
             </Link>
           </li>
           <li className="">
-            <Link
-              to={useBaseUrl("/visibility")}
-              className="hover:underline"
-            >
+            <Link to={useBaseUrl("/visibility")} className="hover:underline">
               <a className="font-normal">Visibility</a>
             </Link>
           </li>
         </ul>
       </div>
       <div className="landing-card-section">
-        <a className="header-link" href="/application-development-guide"><h2>Application development guide</h2></a>
+        <a className="header-link" href="/application-development-guide">
+          <h2>Application development guide</h2>
+        </a>
         <ul className="landing-card-list code-logo-list">
           <li>
-          <img
-            className="h-8 w-8 pl-1 transition hover:scale-110 code-logo"
-            src="/img/golang.svg"
-            alt="Go lang logo"
-          />
+            <img
+              className="h-8 w-8 pl-1 transition hover:scale-110 code-logo"
+              src="/img/golang.svg"
+              alt="Go lang logo"
+            />
           </li>
           <li>
-          <img
-            className="h-7 w-7 pl-1 transition hover:scale-110 code-logo"
-            src="/img/java.svg"
-            alt="Java logo"
-          />
+            <img
+              className="h-7 w-7 pl-1 transition hover:scale-110 code-logo"
+              src="/img/java.svg"
+              alt="Java logo"
+            />
           </li>
           <li>
-          <img
-            className="h-8 w-8 pl-1 transition hover:scale-110 code-logo"
-            src="/img/php.svg"
-            alt="PHP logo"
-          />
+            <img
+              className="h-8 w-8 pl-1 transition hover:scale-110 code-logo"
+              src="/img/php.svg"
+              alt="PHP logo"
+            />
           </li>
           <li>
-          <img
-            className="h-7 w-7 pl-1 transition hover:scale-110 code-logo"
-            src="/img/typescript.svg"
-            alt="TypeScript logo"
-          />
+            <img
+              className="h-7 w-7 pl-1 transition hover:scale-110 code-logo"
+              src="/img/typescript.svg"
+              alt="TypeScript logo"
+            />
           </li>
         </ul>
         <ul className="landing-card-list">
@@ -121,18 +111,12 @@ function Explained() {
         <h4>Legacy SDK docs</h4>
         <ul className="landing-card-list">
           <li className="">
-            <Link
-              to={useBaseUrl("/go")}
-              className="hover:underline"
-            >
+            <Link to={useBaseUrl("/go")} className="hover:underline">
               <a className="font-normal">Go</a>
             </Link>
           </li>
           <li className="">
-            <Link
-              to={useBaseUrl("/java")}
-              className="hover:underline"
-            >
+            <Link to={useBaseUrl("/java")} className="hover:underline">
               <a className="font-normal">Java</a>
             </Link>
           </li>
@@ -184,7 +168,9 @@ function Explained() {
         </ul>
       </div>
       <div className="landing-card-section">
-        <a className="header-link" href="/cluster-operations-guide"><h2>Cluster operations guide</h2></a>
+        <a className="header-link" href="/cluster-operations-guide">
+          <h2>Cluster operations guide</h2>
+        </a>
         <ul className="landing-card-list">
           <li className="">
             <Link
@@ -204,7 +190,9 @@ function Explained() {
           </li>
           <li className="">
             <Link
-              to={useBaseUrl("/cluster-operations-guide/#multi-cluster-replication")}
+              to={useBaseUrl(
+                "/cluster-operations-guide/#multi-cluster-replication"
+              )}
               className="hover:underline"
             >
               <a className="font-normal">Multi-Cluster Replication</a>
@@ -216,10 +204,7 @@ function Explained() {
         <h2>Devtools</h2>
         <ul className="landing-card-list">
           <li className="">
-            <Link
-              to={useBaseUrl("/tctl")}
-              className="hover:underline"
-            >
+            <Link to={useBaseUrl("/tctl")} className="hover:underline">
               <a className="font-normal">tctl</a>
             </Link>
           </li>
@@ -299,7 +284,9 @@ function SDKs() {
             fill="currentColor"
           />
         </svg>
-        <h2 className="mb-4 text-xl font-semibold">SDK how-to guides (Legacy)</h2>
+        <h2 className="mb-4 text-xl font-semibold">
+          SDK how-to guides (Legacy)
+        </h2>
       </div>
       <p className="mb-4 flex font-medium">
         SDK specific implementation guides and examples.
