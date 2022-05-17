@@ -41,20 +41,28 @@ After creating the Worker entity, register all Workflow Types and all Activity T
 For Activities, since they are stateless and thread-safe, instances are used in the registration process instead of the Java Class.
 A Worker can be registered with just Workflows, just Activities, or both.
 
-#### Register Workflow Types
+#### Register Types
 
-Workflow Types must be registered with a Worker. For `DynamicWorkflow`, only one Workflow implementation that extends `DynamicWorkflow` can be registered with a Worker.
+Use `worker.registerWorkflowImplementationTypes` to register Workflow type and `worker.registerActivitiesImplementations` to register Activity implementation with Workers.
+When registering Activities, we register an instance of the Activity implementation, and can pass any
+number of dependencies in its constructor, such as the database connections, services, etc.
 
-The following example shows how to register a Workflow with the Worker created in the previous example.
+The following example shows how to register a Workflow and an Activity with a Worker.
 
 ```java
     Worker worker = workerFactory.newWorker("your_task_queue");
     ...
     // Register Workflow
     worker.registerWorkflowImplementationTypes(GreetingWorkflowImpl.class);
+    // Register Activity
+    worker.registerActivitiesImplementations(new GreetingActivitiesImpl());
 ```
 
-The following example shows how to register the Dynamic Workflow implementation with a Worker.
+When you register a single instance of an Activity, you can have multiple instances of Workflow Executions calling the same Activity.
+Activity code must be thread-safe because the same instance of the Activity code is run for every Workflow Execution that calls it.
+
+For `DynamicWorkflow`, only one Workflow implementation that extends `DynamicWorkflow` can be registered with a Worker.
+The following example shows how to register the `DynamicWorkflow` and `DynamicActivity` implementation with a Worker.
 
 ```java
   public static void main(String[] arg) {
@@ -76,6 +84,11 @@ The following example shows how to register the Dynamic Workflow implementation 
     WorkflowOptions workflowOptions =
         WorkflowOptions.newBuilder().setTaskQueue(TASK_QUEUE).setWorkflowId(WORKFLOW_ID).build();
     WorkflowStub workflow = client.newUntypedWorkflowStub("DynamicWF", workflowOptions);
+    /**
+     * Register Dynamic Activity implementation with the Worker. Since Activities are stateless 
+     * and thread-safe, we need to register a shared instance.
+    */
+    worker.registerActivitiesImplementations(new DynamicGreetingActivityImpl());
 
     /* Start Workflow Execution and immmediately send Signal. Pass in the Workflow args and Signal args. */
     workflow.signalWithStart("greetingSignal", new Object[] {"John"}, new Object[] {"Hello"});
@@ -91,24 +104,6 @@ The following example shows how to register the Dynamic Workflow implementation 
 ```
 
 You can register multiple type-specific Workflow implementations alongside a single `DynamicWorkflow` implementation.
-
-#### Register Activity Types
-
-Like Workflows, Activities must be registered with a Worker.
-When registering Activities, we register an instance of the Activity implementation, and can pass any
-number of dependencies in its constructor, such as the database connections, services, etc.
-
-The following example shows how to register Activities with a Worker.
-
-```java
-    Worker worker = factory.newWorker("your_task_queue");
-   ...
-    // Register Activity
-   worker.registerActivitiesImplementations(new GreetingActivitiesImpl());
-```
-
-When you register a single instance of an Activity, you can have multiple instances of Workflow Executions calling the same Activity.
-Activity code must be thread-safe because the same instance of the Activity code is run for every Workflow Execution that calls it.
 
 **Operation guides:**
 

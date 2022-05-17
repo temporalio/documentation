@@ -1,14 +1,14 @@
 ---
-id: workflowoptions-reference
+id: reference-workflowoptions
 title: Java WorkflowOptions reference
 sidebar_label: Workflow Options reference
-description: 
+description: Create a `newWorkflowStub` in the Temporal Client code, call the instance of the Workflow, and set the Workflow options with the `WorkflowOptions.Builder` class.
 tags:
   - developer-guide
   - options
 ---
 
-Create a new [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) in the Temporal Client code, call the instance of the Workflow, and set the Workflow options with the [`WorkflowOptions.Builder`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html) class.
+Create a [`newWorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) in the Temporal Client code, call the instance of the Workflow, and set the Workflow options with the [`WorkflowOptions.Builder`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html) class.
 
 The following fields are available:
 
@@ -79,7 +79,7 @@ GreetWorkflowInterface workflow1 =
 
 ### `RetryOptions`
 
-import RetryOptions from './how-to-set-a-workflow-retry-options-in-java.md'
+import RetryOptions from './how-to-set-workflow-retry-options-in-java.md'
 
 <RetryOptions/>
 

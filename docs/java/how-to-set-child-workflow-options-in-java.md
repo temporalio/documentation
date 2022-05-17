@@ -63,36 +63,9 @@ See [What is a WorkflowId?](/docs/concepts/what-is-a-workflow-id)
 
 ### `ParentClosePolicy`
 
-- Type: `ChildWorkflowOptions.Builder`
-- Default: None.
+import ParentClosePolicy from './how-to-set-a-parent-close-policy-in-java.md'
 
-```java
-   public void parentWorkflow() {
-       ChildWorkflowOptions options =
-          ChildWorkflowOptions.newBuilder()
-              .setParentClosePolicy(ParentClosePolicy.PARENT_CLOSE_POLICY_ABANDON)
-              .build();
-       MyChildWorkflow child = Workflow.newChildWorkflowStub(MyChildWorkflow.class, options);
-       Async.procedure(child::<workflowMethod>, <args>...);
-       Promise<WorkflowExecution> childExecution = Workflow.getWorkflowExecution(child);
-       // Wait for child to start
-       childExecution.get()
-  }
-```
-
-In this example, we are:
-
-1. Setting `ChildWorkflowOptions.ParentClosePolicy` to `ABANDON` when creating a Child Workflow stub.
-2. Starting Child Workflow Execution asynchronously using `Async.function` or `Async.procedure`.
-3. Calling `Workflow.getWorkflowExecution(…)` on the child stub.
-4. Waiting for the `Promise` returned by `getWorkflowExecution` to complete.
-   This indicates whether the Child Workflow started successfully (or failed).
-5. Completing parent Workflow Execution asynchronously.
-
-Steps 3 and 4 are needed to ensure that a Child Workflow Execution starts before the parent closes.
-If the parent initiates a Child Workflow Execution and then completes immediately after, the Child Workflow will never execute.
-
-See [What is a Parent Close Policy?](/docs/concepts/what-is-a-parent-close-policy)
+<ParentClosePolicy/>
 
 ### `WorkflowIdReusePolicy`
 

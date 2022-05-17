@@ -1,6 +1,6 @@
 ---
-id: how-to-set-a-workflow-retry-options-in-java
-title: How to set a Workflow Retry Options in Java
+id: how-to-set-workflow-retry-options-in-java
+title: How to set Workflow Retry Options in Java
 sidebar_label: Workflow Retry Options
 description: In the `WorkflowStub` instance for the Workflow in the Client code, use `WorkflowOptions.Builder.setWorkflowRetryOptions​` to set the Workflow Retry Options.
 tags:

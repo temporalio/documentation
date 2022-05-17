@@ -1,7 +1,7 @@
 ---
-id: how-to-initialize-a-workflow-client-in-java
-title: How to initialize a Workflow Client in Java
-sidebar_label: Workflow Client Initialization
+id: how-to-create-a-temporal-client-in-java
+title: How to create a Temporal Client in Java
+sidebar_label: Temporal Client
 description: To initialize a Workflow Client, create an instance of a `WorkflowClient`, create a client-side `WorkflowStub`, and then call a Workflow method (annotated with the `@WorkflowMethod` annotation).
 tags:
   - java
