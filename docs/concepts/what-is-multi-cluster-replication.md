@@ -10,16 +10,18 @@ tags:
 Multi-Cluster Replication is a feature which asynchronously replicates Workflow Executions from active Clusters to other passive Clusters, for backup and state reconstruction.
 When necessary, for higher availability, Cluster operators can failover to any of the backup Clusters.
 
-#### Versions
+Temporal's Multi-Cluster Replication feature is considered **experimental** and not subject to normal [versioning and support policy](/docs/server/versions-and-dependencies).
 
-A **version** is a concept in Multi-cluster Replication which describes the chronological order of events per Namespace.
+#### Namespace Versions
+
+A _version_ is a concept in Multi-Cluster Replication that describes the chronological order of events per Namespace.
 
 With Multi-Cluster Replication, all Namespace change events and Workflow Execution History events are replicated asynchronously for high throughput.
 This means that data across clusters is **not** strongly consistent.
 To guarantee that Namespace data and Workflow Execution data will achieve eventual consistency (especially when there is a data conflict during a failover), a **version** is introduced and attached to Namespaces.
 All Workflow Execution History entries generated in a Namespace will also come with the version attached to that Namespace.
 
-All participating clusters are pre-configured with a unique initial version, and a shared version increment:
+All participating Clusters are pre-configured with a unique initial version and a shared version increment:
 
 - `initial version < shared version increment`
 

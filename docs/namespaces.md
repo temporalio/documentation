@@ -10,7 +10,14 @@ toc_max_heading_level: 4
 
 Namespaces are a logical unit of isolation within the Temporal Platform.
 
-A Namespace is the unit of isolation within the Temporal Platform.
+A Namespace is a unit of isolation within the Temporal Platform.
+
+- [How to register a new Namespace using tctl](/docs/tctl/namespace/register)
+- [How to list Namespaces in a Cluster using tctl](/docs/tctl/namespace/list)
+- [How to view Namespace metadata and details using tctl](/docs/tctl/namespace/describe)
+- [How to set the Namespace for a Temporal Client in Go](/docs/go/how-to-set-the-namespace-for-a-temporal-client-in-go)
+- [How to set the Namespace for a Temporal Client in Java](/docs/java/how-to-set-the-namespace-for-a-temporal-client-in-java)
+- [How to set the Namespace for a Temporal Client in Typescript](/docs/typescript/how-to-set-the-namespace-for-a-temporal-client-in-typescript)
 
 A single Namespace is still multi-tenant.
 You can use Namespaces to match the development lifecycle; for example, having separate `dev` and `prod` Namespaces.
@@ -27,14 +34,3 @@ Or you could use them to ensure Workflow Executions between different teams neve
 - **Uniqueness**: Temporal guarantees a unique Workflow Id within a Namespace.
   Workflow Executions may have the same Workflow Id if they are in different Namespaces.
 - **Namespace Configuration**: Various configuration options like the retention period and the [Archival](/docs/clusters/#archival) destination are configured per Namespace through a special CRUD API or through [`tctl`](/docs/tctl).
-
-#### Retention Period
-
-The Retention Period is the amount of time a Workflow Execution Event History remains in the Cluster's persistence store.
-
-Retention Periods are per Namespace.
-A Retention Period is set for the Namespace when the Namespace is created.
-If the retention period isn't set, it defaults to 2 days.
-The minimum retention period is 1 day.
-The maximum retention period is 30 days.
-Setting the retention period to 0 results in the error _A valid retention period is not set on request_.

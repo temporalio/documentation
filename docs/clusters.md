@@ -79,7 +79,7 @@ Types of inbound calls include the following:
 - Worker polls
 - Visibility requests
 - Admin operations via [tctl](/docs/tctl) (the Temporal CLI)
-- [Multi-cluster Replication](/docs/server/multi-cluster) related calls from a remote Cluster
+- [Multi-cluster Replication](#multi-cluster-replication) related calls from a remote Cluster
 
 Every inbound request related to a Workflow Execution must have a Workflow Id, which is hashed for routing purposes.
 The Frontend Service has access to the hash rings that maintain service membership information, including how many nodes (instances of each service) are in the Cluster.
@@ -142,7 +142,7 @@ It talks to the Frontend service.
 
 Archival is a feature that automatically backs up [Event Histories](/docs/workflows/#event-history) and Visibility records from Temporal Cluster persistence to a custom blob store.
 
-- [How to set up Archival](/docs/cluster-operations-guide/#set-up)
+- [How to set up Archival](/docs/cluster-deployment-guide/#set-up)
 - [How to create a custom Archiver](/docs/clusters/how-to-create-a-custom-archiver)
 
 Workflow Execution Event Histories are backed up after the [Retention Period](/docs/namespaces/#/#retention-period) is reached.
@@ -161,7 +161,9 @@ Archival is not supported when running Temporal via docker-compose and is disabl
 Multi-Cluster Replication is a feature which asynchronously replicates Workflow Executions from active Clusters to other passive Clusters, for backup and state reconstruction.
 When necessary, for higher availability, Cluster operators can failover to any of the backup Clusters.
 
-#### Versions
+Temporal's Multi-cluster Replication feature is considered **experimental** and not subject to normal [versioning and support policy](/docs/server/versions-and-dependencies).
+
+#### Namespace Versions
 
 A **version** is a concept in Multi-cluster Replication which describes the chronological order of events per Namespace.
 
@@ -170,7 +172,7 @@ This means that data across clusters is **not** strongly consistent.
 To guarantee that Namespace data and Workflow Execution data will achieve eventual consistency (especially when there is a data conflict during a failover), a **version** is introduced and attached to Namespaces.
 All Workflow Execution History entries generated in a Namespace will also come with the version attached to that Namespace.
 
-All participating clusters are pre-configured with a unique initial version, and a shared version increment:
+All participating Clusters are pre-configured with a unique initial version, and a shared version increment:
 
 - `initial version < shared version increment`
 
