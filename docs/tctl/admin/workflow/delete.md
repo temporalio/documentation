@@ -9,6 +9,8 @@ tags:
   - workflow
 ---
 
+Alias: `del`
+
 The `tctl admin workflow delete` command deletes the current [Workflow Execution](/docs/concepts/what-is-a-workflow-execution) and the mutableState record.
 
 ## Modifiers

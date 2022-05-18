@@ -9,6 +9,8 @@ tags:
   - workflow
 ---
 
+Alias: `rt`
+
 The `tctl admin workflow refresh_tasks` command refreshes all the [Tasks](/docs/concepts/what-is-a-task) in a [Workflow](/docs/concepts/what-is-a-workflow).
 
 ## Modifiers
