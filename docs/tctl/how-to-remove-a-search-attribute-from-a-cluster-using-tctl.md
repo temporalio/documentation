@@ -9,8 +9,6 @@ tags:
   - filtered-lists
 ---
 
-## NOTE
-
 > The Temporal tctl documentation covers version 1.16 of the Temporal CLI.
 
 <!-- prettier-ignore -->
