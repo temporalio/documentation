@@ -31,9 +31,10 @@ Keep reading or follow along with this video walkthrough:
 ## ![](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/repair-tools.png) Project setup
 
 Before starting, make sure you have looked over the [tutorial prerequisites](/docs/go/tutorial-prerequisites).
-* Ensure the Temporal Server is running (using [Docker is the fastest way](https://docs.temporal.io/docs/clusters/quick-install))
-* Ensure you're using Go version v1.14 or later.
-* Ensure you have Git installed to clone the project.
+
+- Ensure the Temporal Server is running (using [Docker is the fastest way](https://docs.temporal.io/docs/clusters/quick-install))
+- Ensure you're using Go version v1.14 or later.
+- Ensure you have Git installed to clone the project.
 
 This tutorial uses a fully working template application which can be downloaded as a zip or converted to a new repository in your own Github account and cloned. Github's ["Creating a Repository from a Template" guide](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-from-a-template#creating-a-repository-from-a-template) will walk you through the steps.
 
@@ -139,10 +140,7 @@ Run worker/main.go from the project root using the following command:
 go run worker/main.go
 ```
 
-When you start the Worker it begins polling the Task Queue. 
-
-
-
+When you start the Worker it begins polling the Task Queue.
 
 The terminal output will look like this:
 
@@ -195,14 +193,14 @@ Your Workflow is still listed:
 
 ### Recover from an Activity error
 
-Next you'll simulate a bug in the `Deposit()` Activity function.  Let your Workflow continue to run but don't start the Worker yet.
+Next you'll simulate a bug in the `Deposit()` Activity function. Let your Workflow continue to run but don't start the Worker yet.
 
 Open the `activity.go` file and switch out the comments on the `return` statements such that the `Deposit()` function returns an error.
 
 <!--SNIPSTART money-transfer-project-template-go-activity-->
 <!--SNIPEND-->
 
-Save your changes and run the Worker. 
+Save your changes and run the Worker.
 
 ```bash
 go run worker/main.go
@@ -234,8 +232,7 @@ You can view more information about what is happening in the [UI](localhost:8080
 
 ![The next activity](/img/tutorials/go/run-your-first-app-tutorial/activity_failure.png)
 
-Select the **Show Details** link to see more details including  its state, the number of times it has been attempted, and the next scheduled run time:
-
+Select the **Show Details** link to see more details including its state, the number of times it has been attempted, and the next scheduled run time:
 
 ![More details about the activity](/img/tutorials/go/run-your-first-app-tutorial/activity_failure_details.png)
 
@@ -245,13 +242,13 @@ Select the **Show Details** link to see more details including  its state, the n
 
 With Temporal, one of the key value propositions is that timeout configurations ([Schedule-To-Start Timeout](/docs/concepts/what-is-a-schedule-to-start-timeout), [Schedule-To-Close Timeout](/docs/concepts/what-is-a-schedule-to-close-timeout), [Start-To-Close Timeout](/docs/concepts/what-is-a-start-to-close-timeout), and [Heartbeat Timeout](/docs/concepts/what-is-a-heartbeat-timeout)) and [Retry Policies](/docs/concepts/what-is-a-retry-policy) are specified in the Workflow code as Activity options. In `workflow.go`, you can see that we have specified a `StartToCloseTimeout` for our Activities, and set a retry policy that tells the server to retry them up to 500 times. You can read more about [Retries](/docs/concepts/what-is-a-retry-policy) in our docs.
 
-Your Workflow is running, but only the `Withdraw()` Activity function has succeeded. In any other application, the whole process would likely have to be abandoned and rolled back. So, here is the last value proposition of this tutorial: With Temporal, you can debug and fix the issue while the Workflow is running! 
+Your Workflow is running, but only the `Withdraw()` Activity function has succeeded. In any other application, the whole process would likely have to be abandoned and rolled back. So, here is the last value proposition of this tutorial: With Temporal, you can debug and fix the issue while the Workflow is running!
 
 Pretend that you found a fix for the issue; Switch the comments back on the return statements of the `Deposit()` function in the `activity.go` file and save your changes.
 
 How can you possibly update a Workflow that is already halfway complete? You restart the Worker!
 
-First, cancel the worker with `CTRL+C`. 
+First, cancel the worker with `CTRL+C`.
 
 ```bash
 # continuing logs from previous retries...
@@ -284,8 +281,7 @@ Visit the [UI](http://localhost:8080) again and you'll see the workflow has comp
 
 ![Both workflows completed successfully](/img/tutorials/go/run-your-first-app-tutorial/completed_workflows.png)
 
-
-You now know how to run a Temporal Workflow and understand some of the key values Temporal offers. 
+You now know how to run a Temporal Workflow and understand some of the key values Temporal offers.
 
 <img alt="Business person blasting off with a backpack rocket" class="docs-image-centered docs-image-max-width-20" src="https://raw.githubusercontent.com/temporalio/documentation-images/main/static/boost.png" />
 
@@ -318,7 +314,6 @@ Use the same Task Queue.
 
 </details>
 
-
 <details>
 <summary>
 
@@ -327,4 +322,5 @@ Use the same Task Queue.
 </summary>
 
 Restart the Worker.
+
 </details>
