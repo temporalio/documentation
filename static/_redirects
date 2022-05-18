@@ -127,12 +127,13 @@
 # Server pages redirects
 #
 /docs/server        /docs/clusters/
-/docs/server-archive-data        /docs/server/archive-data
+/docs/server-archive-data        /docs/concepts/what-is-archival
+/docs/server/archive-data        /docs/concepts/what-is-archival
 /docs/server-configuration        /docs/server/configuration
 /docs/server-introduction        /docs/clusters
 /docs/server/introduction        /docs/clusters
 /docs/server-namespaces         /docs/server/namespaces
-/docs/namespaces        /docs/server/namespaces
+/docs/server/multi-cluster        /docs/concepts/what-is-multi-cluster-replication
 /docs/server-options        /docs/server/options
 /docs/server-production-deploy        /docs/server/production-deploy
 /docs/server-production-deployment  /docs/server/production-deploy

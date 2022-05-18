@@ -95,7 +95,7 @@ WorkflowID: transfer-money-workflow RunID: 0730a9a3-d17b-4cb5-a4a0-279c9759dfa1
 
 ### State visibility
 
-OK, now it's time to check out one of the really cool value propositions offered by Temporal: application state visibility. Visit the [Temporal Web UI](http://localhost:8088) where you will see your Workflow listed.
+OK, now it's time to check out one of the really cool value propositions offered by Temporal: application state visibility. Visit the [Temporal Web UI](http://localhost:8080) where you will see your Workflow listed.
 
 Next, click the "Run Id" for your Workflow. Now we can see everything we want to know about the execution of the Workflow code we told the server to track, such as what parameter values it was given, timeout configurations, scheduled retries, number of attempts, stack traceable errors, and more.
 
@@ -150,7 +150,7 @@ Withdrawing $54.990002 from account 001-001. ReferenceId: 8e37aafe-5fb8-4649-99e
 > - This causes the server to send Activity Tasks to the Task Queue.
 > - The Worker then grabs each of the Activity Tasks in their respective order from the Task Queue and executes each of the corresponding Activities.
 >
-> Each of these are **History Events** that can be audited in Temporal Web (under the `History` tab next to `Summary`). Once a workflow is completed and closed, the full history will persist for a set retention period (typically 7-30 days) before being deleted. You can set up [the Archival feature](https://docs.temporal.io/docs/server/archive-data/) to send them to long term storage for compliance/audit needs.
+> Each of these are **History Events** that can be audited in Temporal Web (under the `History` tab next to `Summary`). Once a workflow is completed and closed, the full history will persist for a set retention period (typically 7-30 days) before being deleted. You can set up [the Archival feature](https://docs.temporal.io/docs/concepts/what-is-archival) to send them to long term storage for compliance/audit needs.
 
 :::
 
@@ -201,7 +201,7 @@ Depositing $54.990002 into account 002-002. ReferenceId: 1a203da3-f5ea-4c17-b5cf
 # it keeps retrying... with the RetryPolicy specified in workflow.go
 ```
 
-You can view more information about what is happening in the [UI](localhost:8088). Click on the RunId of the Workflow. You will see the pending Activity listed there with details such as its state, the number of times it has been attempted, and the next scheduled attempt.
+You can view more information about what is happening in the [UI](localhost:8080). Click on the `RunId` of the Workflow. You will see the pending Activity listed there with details such as its state, the number of times it has been attempted, and the next scheduled attempt.
 
 <ResponsivePlayer url='https://youtu.be/sMotKSI5xxE' loop='true' playing='true'/>
 

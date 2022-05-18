@@ -1,35 +1,27 @@
 ---
-id: multi-cluster
-title: Multi-cluster Replication
-sidebar_label: Multi-cluster Replication
+id: what-is-multi-cluster-replication
+title: What is Multi-Cluster Replication?
+sidebar_label: Multi-Cluster Replication
+description: todo
+tags:
+  - explanation
 ---
 
-import CustomWarning from "../components/CustomWarning.js"
+Multi-Cluster Replication is a feature which asynchronously replicates Workflow Executions from active Clusters to other passive Clusters, for backup and state reconstruction.
+When necessary, for higher availability, Cluster operators can failover to any of the backup Clusters.
 
-<CustomWarning>
+Temporal's Multi-Cluster Replication feature is considered **experimental** and not subject to normal [versioning and support policy](/docs/server/versions-and-dependencies).
 
-Temporal's Multi-cluster Replication feature is considered **experimental** and not subject to normal [versioning and support policy](/docs/server/versions-and-dependencies).
+#### Namespace Versions
 
-</CustomWarning>
+A _version_ is a concept in Multi-Cluster Replication that describes the chronological order of events per Namespace.
 
-This guide introduces Temporal's Multi-cluster Replication capabilities.
-You can set this up with `tctl admin cluster upsert-remote-cluster` command. A two-cluster-setup example can be found in below section [Cluster setup](#cluster-setup)
-
-## Overview
-
-Multi-cluster Replication is a feature which asynchronously replicates Workflow Executions from active clusters to other passive clusters, for backup and state reconstruction.
-When necessary, for higher availability, Server administrators can failover to any of the clusters which have the backup.
-
-## Version
-
-A **version** is a concept in Multi-cluster Replication which describes the chronological order of events per Namespace.
-
-With Multi-cluster Replication, all Namespace change events and Workflow Execution History events are replicated asynchronously for high throughput.
+With Multi-Cluster Replication, all Namespace change events and Workflow Execution History events are replicated asynchronously for high throughput.
 This means that data across clusters is **not** strongly consistent.
 To guarantee that Namespace data and Workflow Execution data will achieve eventual consistency (especially when there is a data conflict during a failover), a **version** is introduced and attached to Namespaces.
 All Workflow Execution History entries generated in a Namespace will also come with the version attached to that Namespace.
 
-All participating clusters are pre-configured with a unique initial version, and a shared version increment:
+All participating Clusters are pre-configured with a unique initial version and a shared version increment:
 
 - `initial version < shared version increment`
 
@@ -50,7 +42,7 @@ A cluster can mutate a Workflow Execution History only if the following is true:
 <details>
 <summary>Namespace version change example
 </summary>
-  
+
 Assuming the following scenario:
 
 - Cluster A comes with initial version: 1
@@ -87,7 +79,7 @@ all workflows events generated within this namespace, will come with version 11
 
 </details>
 
-## Version history
+#### Version history
 
 Version history is a concept which provides a high level summary of version information in regards to Workflow Execution History.
 
@@ -97,10 +89,10 @@ The Workflow Executions's mutable state will keep track of all history entries (
 <details>
 <summary>Version history example (without data conflict)
 </summary>
-  
-* Cluster A comes with initial version: 1
-* Cluster B comes with initial version: 2
-* Shared version increment: 10
+
+- Cluster A comes with initial version: 1
+- Cluster B comes with initial version: 2
+- Shared version increment: 10
 
 T = 0: adding event with event ID == 1 & version == 1
 
@@ -190,7 +182,7 @@ Since Temporal is AP, during failover (change of active Temporal Cluster Namespa
 <details>
 <summary>Version history example (with data conflict)
 </summary>
-  
+
 Below, shows version history of the same Workflow Execution in 2 different Clusters.
 
 - Cluster A comes with initial version: 1
@@ -289,7 +281,7 @@ T = 2: replication task from Cluster B arrives in Cluster C, same as above
 
 </details>
 
-## Workflow Execution History conflict resolution
+#### Conflict resolution
 
 When a Workflow Execution History diverges, proper conflict resolution should be applied.
 
@@ -299,7 +291,7 @@ Workflow Execution Histories that diverge will have more than one history branch
 Among all history branches, the history branch with the highest version is considered the `current branch` and the Workflow Execution's mutable state is a summary of the current branch.
 Whenever there is a switch between Workflow Execution History branches, a complete rebuild of the Workflow Execution's mutable state will occur.
 
-## Zombie Workflows
+#### Zombie Workflows
 
 There is an existing contract that for any Namespace and Workflow Id combination, there can be at most one run (Namespace + Workflow Id + Run Id) open / executing.
 
@@ -336,7 +328,7 @@ A "zombie" state is one in which a Workflow Execution which cannot be actively m
 
 Run 1 will be replicated similar to Run 2, except when Run 1's execution will become a "zombie" before Run 1 reaches completion.
 
-## Workflow Task processing
+#### Workflow Task processing
 
 In the context of Multi-cluster Replication, a Workflow Execution's mutable state is an entity which tracks all pending tasks.
 Prior to the introduction of Multi-cluster Replication, Workflow Execution History entries (events) are from a single branch, and the Temporal Server will only append new entries (events) to the Workflow Execution History.
@@ -393,103 +385,3 @@ T = 2: task A is loaded.
 
 At this time, due to the rebuild of a Workflow Execution's mutable state (conflict resolution), Task A is no longer relevant (Task A's corresponding Event belongs to non-current branch).
 Task processing logic will verify both the Event Id and version of the Task against a corresponding Workflow Execution's mutable state, then discard task A.
-
-## Cluster setup
-
-As mentioned in the [Version](#version) section, make sure the cluster metadata is configured for multi-cluster setup:
-
-1. Set enableGlobalNamespace to true.
-2. FailoverVersionIncrement has to be equal across connected clusters.
-3. InitialFailoverVersion in each cluster has to assign a different value. No equal value is allowed across connected clusters.
-
-After the above conditions are satisfied, you can start to configure a multi-cluster setup.
-
-### Setup multi-cluster prior to release v1.14
-
-You can set this up with [`clusterMetadata` configuration](/docs/server/configuration#clustermetadata), however this is only meant to be a conceptual guide rather than a detailed tutorial.
-Please reach out to us if you need to set this up.
-
-For example:
-
-```yaml
-# cluster A
-clusterMetadata:
-  enableGlobalNamespace: false
-  failoverVersionIncrement: 100
-  masterClusterName: "clusterA"
-  currentClusterName: "clusterA"
-  clusterInformation:
-    clusterA:
-      enabled: true
-      initialFailoverVersion: 1
-      rpcAddress: "127.0.0.1:7233"
-    clusterB:
-      enabled: true
-      initialFailoverVersion: 2
-      rpcAddress: "127.0.0.1:8233"
-
-# cluster B
-clusterMetadata:
-  enableGlobalNamespace: false
-  failoverVersionIncrement: 100
-  masterClusterName: "clusterA"
-  currentClusterName: "clusterB"
-  clusterInformation:
-    clusterA:
-      enabled: true
-      initialFailoverVersion: 1
-      rpcAddress: "127.0.0.1:7233"
-    clusterB:
-      enabled: true
-      initialFailoverVersion: 2
-      rpcAddress: "127.0.0.1:8233"
-```
-
-### Setup multi-cluster in release v1.14+
-
-You still need to set up local cluster [`clusterMetadata` configuration](/docs/server/configuration#clustermetadata)
-
-For example:
-
-```yaml
-# cluster A
-clusterMetadata:
-  enableGlobalNamespace: false
-  failoverVersionIncrement: 100
-  masterClusterName: "clusterA"
-  currentClusterName: "clusterA"
-  clusterInformation:
-    clusterA:
-      enabled: true
-      initialFailoverVersion: 1
-      rpcAddress: "127.0.0.1:7233"
-
-# cluster B
-clusterMetadata:
-  enableGlobalNamespace: false
-  failoverVersionIncrement: 100
-  masterClusterName: "clusterB"
-  currentClusterName: "clusterB"
-  clusterInformation:
-    clusterB:
-      enabled: true
-      initialFailoverVersion: 2
-      rpcAddress: "127.0.0.1:8233"
-```
-
-Then you can use the `tctl admin` tool to add cluster connections. All operations should be executed in both clusters.
-
-```shell
-# Add cluster B connection into cluster A
-tctl -address 127.0.0.1:7233 admin cluster upsert-remote-cluster --frontend_address "localhost:8233"
-# Add cluster A connection into cluster B
-tctl -address 127.0.0.1:8233 admin cluster upsert-remote-cluster --frontend_address "localhost:7233"
-
-# Disable connections
-tctl -address 127.0.0.1:7233 admin cluster upsert-remote-cluster --frontend_address "localhost:8233" --enable_connection false
-tctl -address 127.0.0.1:8233 admin cluster upsert-remote-cluster --frontend_address "localhost:7233" --enable_connection false
-
-# Delete connections
-tctl -address 127.0.0.1:7233 admin cluster remove-remote-cluster --cluster "clusterB"
-tctl -address 127.0.0.1:8233 admin cluster remove-remote-cluster --cluster "clusterA"
-```

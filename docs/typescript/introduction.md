@@ -158,7 +158,7 @@ This "Hello, Temporal!" message comes from the combination of:
 <summary>Viewing your Workflow Execution in Temporal Web
 </summary>
 
-You can verify execution in Temporal Web (available at [`localhost:8088`](http://localhost:8088/) on the default [`docker-compose`](https://github.com/temporalio/docker-compose)):
+You can verify execution in Temporal Web (available at [`localhost:8080](http://localhost:8080/) on the default [`docker-compose`](https://github.com/temporalio/docker-compose)):
 
 ![image](https://user-images.githubusercontent.com/6764957/118865735-d7255f80-b913-11eb-8ace-a7dbdc351f8e.png)
 
