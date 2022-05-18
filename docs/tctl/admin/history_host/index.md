@@ -6,6 +6,7 @@ tags:
   - reference
   - tctl
 ---
+
 The `tctl admin history_host` command runs an admin-level operation on the history host.
 
 ## Usage
