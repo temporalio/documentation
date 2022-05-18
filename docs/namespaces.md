@@ -34,4 +34,3 @@ Or you could use them to ensure Workflow Executions between different teams neve
 - **Uniqueness**: Temporal guarantees a unique Workflow Id within a Namespace.
   Workflow Executions may have the same Workflow Id if they are in different Namespaces.
 - **Namespace Configuration**: Various configuration options like the retention period and the [Archival](/docs/clusters/#archival) destination are configured per Namespace through a special CRUD API or through [`tctl`](/docs/tctl).
-
