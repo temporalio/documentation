@@ -30,6 +30,7 @@ The name of the Search Attribute to add. Multiple values are supported.
 
 Alias: `-t value`
 
-The type of search attribute to add. Multiple values can be added at once.
+The type of Search Attribute to add.
+Multiple values can be added at once.
 
 Values: Text, Keyword, Int, Double, Bool, Datetime
