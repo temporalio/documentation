@@ -18,7 +18,7 @@ module.exports = {
       ],
     },
     "application-development-guide",
-    "cluster-operations-guide",
+    "cluster-deployment-guide",
   ],
   sidebarExplained: [
     {

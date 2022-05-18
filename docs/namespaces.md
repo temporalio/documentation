@@ -35,13 +35,3 @@ Or you could use them to ensure Workflow Executions between different teams neve
   Workflow Executions may have the same Workflow Id if they are in different Namespaces.
 - **Namespace Configuration**: Various configuration options like the retention period and the [Archival](/docs/clusters/#archival) destination are configured per Namespace through a special CRUD API or through [`tctl`](/docs/tctl).
 
-#### Retention Period
-
-The Retention Period is the amount of time a Workflow Execution Event History remains in the Cluster's persistence store.
-
-Retention Periods are per Namespace.
-A Retention Period is set for the Namespace when the Namespace is created.
-If the retention period isn't set, it defaults to 2 days.
-The minimum retention period is 1 day.
-The maximum retention period is 30 days.
-Setting the retention period to 0 results in the error _A valid retention period is not set on request_.

@@ -79,11 +79,7 @@ Types of inbound calls include the following:
 - Worker polls
 - Visibility requests
 - Admin operations via [tctl](/docs/tctl) (the Temporal CLI)
-<<<<<<< HEAD
-- [Multi-cluster Replication](/docs/server/multi-cluster) related calls from a remote Cluster
-=======
 - [Multi-cluster Replication](#multi-cluster-replication) related calls from a remote Cluster
->>>>>>> 90b0894 (breaking up cluster op content)
 
 Every inbound request related to a Workflow Execution must have a Workflow Id, which is hashed for routing purposes.
 The Frontend Service has access to the hash rings that maintain service membership information, including how many nodes (instances of each service) are in the Cluster.
@@ -146,7 +142,7 @@ It talks to the Frontend service.
 
 Archival is a feature that automatically backs up [Event Histories](/docs/workflows/#event-history) and Visibility records from Temporal Cluster persistence to a custom blob store.
 
-- [How to set up Archival](/docs/cluster-operations-guide/#set-up)
+- [How to set up Archival](/docs/cluster-deployment-guide/#set-up)
 - [How to create a custom Archiver](/docs/clusters/how-to-create-a-custom-archiver)
 
 Workflow Execution Event Histories are backed up after the [Retention Period](/docs/namespaces/#/#retention-period) is reached.
@@ -540,3 +536,4 @@ T = 2: task A is loaded.
 
 At this time, due to the rebuild of a Workflow Execution's mutable state (conflict resolution), Task A is no longer relevant (Task A's corresponding Event belongs to non-current branch).
 Task processing logic will verify both the Event Id and version of the Task against a corresponding Workflow Execution's mutable state, then discard task A.
+
