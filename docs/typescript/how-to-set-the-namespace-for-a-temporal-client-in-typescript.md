@@ -8,7 +8,7 @@ tags:
   - typescript
 ---
 
-Set the `namespace` field n the options object.
+Set the `namespace` field on the options object.
 
 ```ts
 const connection = new Connection();

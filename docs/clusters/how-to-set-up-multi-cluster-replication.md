@@ -17,9 +17,9 @@ The [Multi-Cluster Replication](/docs/concepts/what-is-multi-cluster-replication
 
 After the above conditions are satisfied, you can start to configure a multi-cluster setup.
 
-#### Setup multi-cluster prior to release v1.14
+#### Set up Multi-Cluster Replication prior to v1.14
 
-You can set this up with [`clusterMetadata` configuration](/docs/server/configuration#clustermetadata), however this is only meant to be a conceptual guide rather than a detailed tutorial.
+You can set this up with [`clusterMetadata` configuration](/docs/server/configuration#clustermetadata); however, this is meant to be only a conceptual guide rather than a detailed tutorial.
 Please reach out to us if you need to set this up.
 
 For example:
@@ -58,7 +58,7 @@ clusterMetadata:
       rpcAddress: "127.0.0.1:8233"
 ```
 
-#### Setup multi-cluster in release v1.14+
+#### Set up Multi-Cluster Replication in v1.14 and later
 
 You still need to set up local cluster [`clusterMetadata` configuration](/docs/server/configuration#clustermetadata)
 

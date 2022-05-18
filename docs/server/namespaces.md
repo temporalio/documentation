@@ -16,7 +16,7 @@ sidebar_label: Namespaces
 ### Conflict Resolution
 
 Unlike local namespaces which provide at-most-once semantics for Activity execution, Global Namespaces can only support at-least-once
-semantics. [Temporal Multi-cluster Replication](/docs/concepts/what-is-multi-cluster-replication) relies on asynchronous replication of events across clusters, so in the event of a failover
+semantics. Temporal [Multi-Cluster Replication](/docs/concepts/what-is-multi-cluster-replication) relies on asynchronous replication of events across clusters, so in the event of a failover
 it is possible that Activity gets dispatched again on the new active cluster due to a replication task lag. This also
 means that whenever Workflow execution is updated after a failover by the new cluster, any previous replication tasks
 for that execution cannot be applied. This results in loss of some progress made by the Workflow execution in the

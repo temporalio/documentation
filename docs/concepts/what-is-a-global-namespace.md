@@ -2,12 +2,12 @@
 id: what-is-a-global-namespace
 title: What is a Global Namespace?
 sidebar_label: Global Namespace
-description: A Global Namespace is a Namespace that exists across Clusters when the Multi-Cluster Replication is set up.
+description: A Global Namespace is a Namespace that exists across Clusters when Multi-Cluster Replication is set up.
 tags:
   - explanation
 ---
 
-A Global Namespace is a [Namespace](/docs/concepts/what-is-a-namespace) that exists across Clusters when the [Multi-Cluster Replication](/docs/concepts/what-is-multi-cluster-replication) is set up.
+A Global Namespace is a [Namespace](/docs/concepts/what-is-a-namespace) that exists across Clusters when [Multi-Cluster Replication](/docs/concepts/what-is-multi-cluster-replication) is set up.
 
 The Global Namespace feature enables Workflow Executions to progress through another Cluster in the event of a failover.
 
@@ -19,4 +19,4 @@ Only the active Cluster dispatches [Tasks](/docs/concepts/what-is-a-task).
 Worker Processes on the standby Clusters are idle until a failover occurs and their Cluster becomes active.
 
 Temporal Application API calls made to a non-active Cluster are rejected with a **NamespaceNotActiveError** which contains the name of the current active Cluster.
-It is the responsibility of the Temporal Application to the call the Cluster that is currently active.
+It is the responsibility of the Temporal Application to call the Cluster that is currently active.
