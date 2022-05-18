@@ -54,5 +54,15 @@ The recommended way is to create them once and reuse where possible.
 
 With the Client defined, you can start interacting with the Temporal Frontend Service using the SDK APIs.
 
+To initialize a Workflow in the Client, create a `WorkflowStub`, and start the Workflow Execution with `WorkflowClient.start()`.
 Starting Workflows or sending Signals or Queries to Workflows from within a Client must be done using `WorkflowStubs`.
-See [How to spawn a Workflow Execution in Java](/docs/java/how-to-spawn-a-workflow-execution-in-java) for details.
+
+```java
+WorkflowClient workflowClient =  WorkflowClient.newInstance(service, clientOptions);
+ // Create a Workflow stub.
+ YourWorkflow workflow = workflowClient.newWorkflowStub(YourWorkflow.class);
+ // Start Workflow asynchronously and call its "yourWFMethod" Workflow method
+ WorkflowClient.start(workflow::yourWFMethod);
+```
+
+For details, see [How to spawn a Workflow Execution in Java](/docs/java/how-to-spawn-a-workflow-execution-in-java).
