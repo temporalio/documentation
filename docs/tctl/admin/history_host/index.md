@@ -6,13 +6,6 @@ tags:
   - reference
   - tctl
 ---
-
-::: NOTE
-
-This documentation reflects tctl version 1.16.
-
-:::
-
 The `tctl admin history_host` command runs an admin-level operation on the history host.
 
 ## Usage
