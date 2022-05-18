@@ -14,6 +14,9 @@ To set a [Schedule-To-Start Timeout](/docs/concepts/what-is-a-schedule-to-start-
 - Type: `Duration`
 - Default: Unlimited. This timeout is non-retryable.
 
+You can set Activity Options using an `ActivityStub` within a Workflow implementation, or per-Activity using `WorkflowImplementationOptions` within a Worker.
+Note that if you define options per-Activity Type options with `WorkflowImplementationOptions.setActivityOptions()`, setting them again specifically with `ActivityStub` in a Workflow will override this setting.
+
 - With `ActivityStub`
 
   ```java

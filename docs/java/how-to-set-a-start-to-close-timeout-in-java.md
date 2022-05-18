@@ -16,6 +16,9 @@ This or `ScheduleToClose` must be set.
 - Type: `Duration`
 - Default: Defaults to [`ScheduleToCloseTimeout`](#scheduletoclosetimeout) value
 
+You can set Activity Options using an `ActivityStub` within a Workflow implementation, or per-Activity using `WorkflowImplementationOptions` within a Worker.
+Note that if you define options per-Activity Type options with `WorkflowImplementationOptions.setActivityOptions()`, setting them again specifically with `ActivityStub` in a Workflow will override this setting.
+
 - With `ActivityStub`
 
   ```java

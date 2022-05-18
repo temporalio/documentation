@@ -11,6 +11,9 @@ tags:
 
 Use [`ActivityOptions`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html) to configure how to invoke an Activity Execution.
 
+You can set Activity Options using an `ActivityStub` within a Workflow implementation, or per-Activity using `WorkflowImplementationOptions` within a Worker.
+Note that if you define options per-Activity Type options with `WorkflowImplementationOptions.setActivityOptions()`, setting them again specifically with `ActivityStub` in a Workflow will override this setting.
+
 The following table lists all `ActivityOptions` that can be configured for an Activity invocation.
 
 | Option                                                 | Required                                           | Type                     |
