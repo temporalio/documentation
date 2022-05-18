@@ -15,7 +15,7 @@ Alias: `-wf`
 
 #### Commands
 
-show
-describe
-refresh-tasks
-delete
+- show
+- describe
+- refresh-tasks
+- delete

@@ -133,7 +133,7 @@
 /docs/server-introduction        /docs/clusters
 /docs/server/introduction        /docs/clusters
 /docs/server-namespaces         /docs/server/namespaces
-/docs/namespaces        /docs/server/namespaces
+/docs/server/multi-cluster        /docs/concepts/what-is-multi-cluster-replication
 /docs/server-options        /docs/server/options
 /docs/server-production-deploy        /docs/server/production-deploy
 /docs/server-production-deployment  /docs/server/production-deploy

@@ -2396,7 +2396,17 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+To send a Signal to a Workflow and start the Workflow if it isn't already running, use `signalWithStart()`.
+
+```typescript
+const client = new WorkflowClient();
+await client.signalWithStart(YourWorkflow, {
+  workflowId,
+  args: [arg1, arg2],
+  signal: YourSignal,
+  signalArgs: [arg3, arg4],
+});
+```
 
 </TabItem>
 </Tabs>
@@ -3035,7 +3045,16 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+To set a Heartbeat Timeout, use [`ActivityOptions.heartbeatTimeout`](https://typescript.temporal.io/api/interfaces/common.ActivityOptions#heartbeattimeout). If the Activity takes longer than that between heartbeats, the Activity is failed.
+
+```typescript
+// Creating a proxy for the activity.
+const {longRunningActivity} = proxyActivities<typeof activities>({
+  scheduleToCloseTimeout: "5m", // translates to 300000 ms
+  startToCloseTimeout: "30s", // translates to 30000 ms
+  heartbeatTimeout: 10000, // equivalent to '10 seconds'
+});
+```
 
 </TabItem>
 </Tabs>
@@ -3099,7 +3118,22 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+To set Activity Retry Policies in TypeScript, pass [`ActivityOptions.retry`](https://typescript.temporal.io/api/interfaces/common.ActivityOptions#retry) to [`proxyActivities`](https://typescript.temporal.io/api/namespaces/workflow/#proxyactivities).
+
+```typescript
+// Sample of typical options you can set
+const {yourActivity} = proxyActivities<typeof activities>({
+  // ...
+  retry: {
+    // default retry policy if not specified
+    initialInterval: "1s",
+    backoffCoefficient: 2,
+    maximumAttempts: Infinity,
+    maximumInterval: 100 * initialInterval,
+    nonRetryableErrorTypes: [],
+  },
+});
+```
 
 </TabItem>
 </Tabs>
@@ -3440,7 +3474,14 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+You can set each Workflow to repeat on a schedule with the `cronSchedule` option:
+
+```typescript
+const handle = await client.start(scheduledWorkflow, {
+  // ...
+  cronSchedule: "* * * * *", // start every minute
+});
+```
 
 </TabItem>
 </Tabs>
