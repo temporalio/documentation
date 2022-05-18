@@ -7,9 +7,9 @@ tags:
   - tcld
 ---
 
-The `tcld namespace update` commands update attributes of the specified [Namespace](/docs/concepts/what-is-a-namespace) in Temporal Cloud.
+The `tcld namespace update` commands update attributes of the specified [Namespace](/concepts/what-is-a-namespace) in Temporal Cloud.
 
 Alias: `u`
 
-- [`tcld namespace update accepted-client-ca`](/docs/cloud/tcld/namespace/update/accepted-client-ca)
-- [`tcld namespace update search-attributes`](/docs/cloud/tcld/namespace/update/search-attributes)
+- [`tcld namespace update accepted-client-ca`](/cloud/tcld/namespace/update/accepted-client-ca)
+- [`tcld namespace update search-attributes`](/cloud/tcld/namespace/update/search-attributes)

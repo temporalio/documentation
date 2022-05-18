@@ -13,14 +13,6 @@ import TabItem from '@theme/TabItem';
 
 The Temporal Platform explained.
 
-:::info WORK IN PROGRESS
-
-This guide is a work in progress.
-Some sections may be incomplete.
-Information may change at any time.
-
-:::
-
 Temporal is a scalable and reliable runtime for Reentrant Processes called [Temporal Workflow Executions](/concepts/what-is-a-workflow-execution).
 
 <!-- TODO content more appropriate for blog
@@ -96,3 +88,4 @@ Temporal currently offers the following SDKs:
 
 Each SDK emits metrics which can be ingested into monitoring platforms.
 See the [SDK metrics reference](/references/sdk-metrics) for a complete list.
+

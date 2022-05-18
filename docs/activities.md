@@ -13,14 +13,6 @@ import TabItem from '@theme/TabItem';
 
 This guide is meant to be a comprehensive overview of Temporal Activities.
 
-:::info WORK IN PROGRESS
-
-This guide is a work in progress.
-Some sections may be incomplete.
-Information may change at any time.
-
-:::
-
 In day-to-day conversations, the term _Activity_ frequently denotes either an [Activity Type](/concepts/what-is-an-activity-type), an [Activity Definition](/concepts/what-is-an-activity-definition), or an [Activity Execution](/concepts/what-is-an-activity-execution).
 Temporal documentation aims to be explicit and differentiate between them.
 
@@ -303,3 +295,4 @@ Consider using Local Activities for functions that are the following:
 Using a Local Activity without understanding its limitations can cause various production issues.
 **We recommend using regular Activities unless your use case requires very high throughput and large Activity fan outs of very short-lived Activities.**
 More guidance in choosing between [Local Activity vs Activity](https://community.temporal.io/t/local-activity-vs-activity/290/3) is available in our forums.
+

@@ -191,13 +191,13 @@ function Explained() {
       </ul>
       </div>
       <div className="landing-card-section">
-        <a className="header-link" href="/cluster-operations-guide">
+        <a className="header-link" href="/cluster-deployment-guide">
           <h2>Cluster deployment guide</h2>
         </a>
         <ul className="landing-card-list">
           <li className="">
             <Link
-              to={useBaseUrl("/cluster-operations-guide/#advanced-visibility")}
+              to={useBaseUrl("/cluster-deployment-guide/#advanced-visibility")}
               className="hover:underline"
             >
               <a className="font-normal">Visibility</a>
@@ -205,7 +205,7 @@ function Explained() {
           </li>
           <li className="">
             <Link
-              to={useBaseUrl("/cluster-operations-guide/#archival")}
+              to={useBaseUrl("/cluster-deployment-guide/#archival")}
               className="hover:underline"
             >
               <a className="font-normal">Archival</a>
@@ -216,11 +216,24 @@ function Explained() {
           <li className="">
             <Link
               to={useBaseUrl(
-                "/cluster-operations-guide/#multi-cluster-replication"
+                "/cluster-deployment-guide/#multi-cluster-replication"
               )}
               className="hover:underline"
             >
               <a className="font-normal">Multi-Cluster Replication</a>
+            </Link>
+          </li>
+        </ul>
+      </div>
+      <div className="landing-card-section">
+        <h2>Temporal Cloud</h2>
+        <ul className="landing-card-list">
+          <li className="">
+            <Link
+              to={useBaseUrl("/cloud/tcld")}
+              className="hover:underline"
+            >
+              <a className="font-normal">tcld</a>
             </Link>
           </li>
         </ul>

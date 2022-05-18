@@ -13,14 +13,6 @@ import TabItem from '@theme/TabItem';
 
 This guide is meant to be a comprehensive overview of Temporal Workflows.
 
-:::info WORK IN PROGRESS
-
-This guide is a work in progress.
-Some sections may be incomplete.
-Information may change at any time.
-
-:::
-
 In day-to-day conversations, the term _Workflow_ frequently denotes either a [Workflow Type](/concepts/what-is-a-workflow-type), a [Workflow Definition](/concepts/what-is-a-workflow-definition), or a [Workflow Execution](/concepts/what-is-a-workflow-execution).
 Temporal documentation aims to be explicit and differentiate between them.
 
@@ -630,3 +622,4 @@ Use the Workflow Id in any requests to Cancel or Terminate.
 - [How to set a Cron Schedule in Java](/java/distributed-cron)
 - [How to set a Cron Schedule in PHP](/php/distributed-cron)
 - [How to set a Cron Schedule in Typescript](/typescript/clients)
+

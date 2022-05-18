@@ -13,14 +13,6 @@ import TabItem from '@theme/TabItem';
 
 This guide is meant to be a comprehensive overview of Temporal Visibility.
 
-:::info WORK IN PROGRESS
-
-This guide is a work in progress.
-Some sections may be incomplete.
-Information may change at any time.
-
-:::
-
 The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.
 
 ## Standard Visibility
@@ -35,7 +27,7 @@ Closed Workflow Executions can be filtered by a time constraint and either a Wor
 
 Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through a custom SQL-like [List Filter](/concepts/what-is-a-list-filter).
 
-To use Advanced Visibility, your Temporal Cluster must be [integrated with Elasticsearch](/cluster-deployment-guide/#advanced-visibility).
+To use Advanced Visibility, your Temporal Cluster must be [integrated with Elasticsearch](/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster).
 We highly recommend operating a Temporal Cluster with Elasticsearch for any use case that spawns more than just a few Workflow Executions.
 Elasticsearch takes on the Visibility request load, relieving potential performance issues.
 
@@ -233,3 +225,4 @@ To actually have results from the use of a [List Filter](/concepts/what-is-a-lis
 How to do this entirely depends on the method by which you spawn the Workflow Execution:
 
 - [How to set Search Attributes as Workflow Execution metadata in Go](/go/startworkflowoptions-reference/#searchattributes)
+

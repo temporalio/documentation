@@ -13,14 +13,6 @@ import TabItem from '@theme/TabItem';
 
 This guide is meant to be a comprehensive overview of Temporal Workers.
 
-:::info WORK IN PROGRESS
-
-This guide is a work in progress.
-Some sections may be incomplete.
-Information may change at any time.
-
-:::
-
 In day-to-day conversations, the term Worker is used to denote either a [Worker Program](/concepts/what-is-a-worker-program), a [Worker Process](/concepts/what-is-a-worker-process), or a [Worker Entity](/concepts/what-is-a-worker-entity).
 Temporal documentation aims to be explicit and differentiate between them.
 
@@ -96,3 +88,4 @@ Worker Processes executing Activity Tasks must have access to any resources need
 
 The Temporal Cluster itself has [internal workers](https://docs.temporal.io/blog/workflow-engine-principles/#system-workflows-1910) for system Workflow Executions.
 However, these internal workers are not visible to the developer.
+

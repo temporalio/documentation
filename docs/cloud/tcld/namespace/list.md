@@ -8,7 +8,7 @@ tags:
   - tcld
 ---
 
-The `tcld namespace list` command lists all [Namespaces](/docs/concepts/what-is-a-namespace) in Temporal Cloud.
+The `tcld namespace list` command lists all [Namespaces](/concepts/what-is-a-namespace) in Temporal Cloud.
 
 Alias: `l`
 

@@ -13,14 +13,6 @@ import TabItem from '@theme/TabItem';
 
 Temporal Clusters explained.
 
-:::info WORK IN PROGRESS
-
-This guide is a work in progress.
-Some sections may be incomplete.
-Information may change at any time.
-
-:::
-
 A Temporal Cluster is the group of services, known as the [Temporal Server](/concepts/what-is-the-temporal-server), combined with persistence stores, that together act as a component of the Temporal Platform.
 
 ![A Temporal Cluster (Server + persistence)](/diagrams/temporal-cluster.svg)
@@ -79,7 +71,7 @@ Types of inbound calls include the following:
 - Worker polls
 - Visibility requests
 - Admin operations via [tctl](/tctl) (the Temporal CLI)
-- [Multi-cluster Replication](#multi-cluster-replication) related calls from a remote Cluster
+- Calls from a remote Cluster related to [Multi-Cluster Replication](/concepts/what-is-multi-cluster-replication)
 
 Every inbound request related to a Workflow Execution must have a Workflow Id, which is hashed for routing purposes.
 The Frontend Service has access to the hash rings that maintain service membership information, including how many nodes (instances of each service) are in the Cluster.
@@ -161,18 +153,18 @@ Archival is not supported when running Temporal via docker-compose and is disabl
 Multi-Cluster Replication is a feature which asynchronously replicates Workflow Executions from active Clusters to other passive Clusters, for backup and state reconstruction.
 When necessary, for higher availability, Cluster operators can failover to any of the backup Clusters.
 
-Temporal's Multi-cluster Replication feature is considered **experimental** and not subject to normal [versioning and support policy](/docs/server/versions-and-dependencies).
+Temporal's Multi-Cluster Replication feature is considered **experimental** and not subject to normal [versioning and support policy](/server/versions-and-dependencies).
 
 #### Namespace Versions
 
-A **version** is a concept in Multi-cluster Replication which describes the chronological order of events per Namespace.
+A _version_ is a concept in Multi-Cluster Replication that describes the chronological order of events per Namespace.
 
 With Multi-Cluster Replication, all Namespace change events and Workflow Execution History events are replicated asynchronously for high throughput.
 This means that data across clusters is **not** strongly consistent.
 To guarantee that Namespace data and Workflow Execution data will achieve eventual consistency (especially when there is a data conflict during a failover), a **version** is introduced and attached to Namespaces.
 All Workflow Execution History entries generated in a Namespace will also come with the version attached to that Namespace.
 
-All participating Clusters are pre-configured with a unique initial version, and a shared version increment:
+All participating Clusters are pre-configured with a unique initial version and a shared version increment:
 
 - `initial version < shared version increment`
 
@@ -536,3 +528,4 @@ T = 2: task A is loaded.
 
 At this time, due to the rebuild of a Workflow Execution's mutable state (conflict resolution), Task A is no longer relevant (Task A's corresponding Event belongs to non-current branch).
 Task processing logic will verify both the Event Id and version of the Task against a corresponding Workflow Execution's mutable state, then discard task A.
+

@@ -7,6 +7,7 @@
 /reference/*        /references/:splat
 /system-tools/*        /devtools/:splat
 /devtools/tctl        /tctl
+/devtools/introduction        /devtools
 /docs/sdks-introduction         /application-development-guide
 /docs/other-sdks        /application-development-guide
 /docs/application-development /application-development-guide

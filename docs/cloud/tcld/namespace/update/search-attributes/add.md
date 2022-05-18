@@ -8,7 +8,7 @@ tags:
   - tcld
 ---
 
-The `tcld namespace update search-attributes add` command adds custom [Search Attributes](/docs/concepts/what-is-a-search-attribute) to a Namespace in Temporal Cloud.
+The `tcld namespace update search-attributes add` command adds custom [Search Attributes](/concepts/what-is-a-search-attribute) to a Namespace in Temporal Cloud.
 
 `tcld namespace update search-attributes add --search-attribute <value>`
 

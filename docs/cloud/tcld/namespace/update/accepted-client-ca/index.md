@@ -7,8 +7,8 @@ tags:
   - tcld
 ---
 
-The `tcld namespace update accepted-client-ca` commands manage the client CA certificate of the specified [Namespace](/docs/concepts/what-is-a-namespace) in Temporal Cloud. The certificate is used to verify client connections.
+The `tcld namespace update accepted-client-ca` commands manage the client CA certificate of the specified [Namespace](/concepts/what-is-a-namespace) in Temporal Cloud. The certificate is used to verify client connections.
 
 Alias: `ca`
 
-- [`tcld namespace update accepted-client-ca set`](/docs/cloud/tcld/namespace/update/accepted-client-ca/set)
+- [`tcld namespace update accepted-client-ca set`](/cloud/tcld/namespace/update/accepted-client-ca/set)

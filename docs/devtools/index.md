@@ -1,5 +1,5 @@
 ---
-id: introduction
+id: index
 title: Temporal Devtools introduction
 label: Introduction
 ---
