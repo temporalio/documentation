@@ -4,8 +4,6 @@ title: How to use tctl
 sidebar_label: How to use
 ---
 
-## NOTE
-
 > The Temporal tctl documentation covers version 1.16 of the Temporal CLI.
 
 :::note
