@@ -12,6 +12,8 @@ When defining Workflows using the Temporal Java SDK, the Workflow code must be w
 
 The following constraints apply when writing Workflow Definitions:
 
+- A Workflow Type can be registered only once per Worker entity.
+  If you define multiple Workflow implementations of the same type, you get an exception at the time of registration.
 - Do not use mutable global variables in your Workflow implementations.
   This will ensure that multiple Workflow instances are fully isolated.
 - Your Workflow code must be deterministic.

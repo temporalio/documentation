@@ -98,6 +98,13 @@ The following example shows how to call the Dynamic Workflow implementation in t
     WorkflowStub workflow = client.newUntypedWorkflowStub("DynamicWF", workflowOptions);
 ```
 
+`DynamicWorkflow` can be used to invoke different Workflow Types.
+To check what type is running when your Dynamic Workflow `execute` method runs, use `getWorkflowType()` in the implementation code.
+
+```java
+String type = Workflow.getInfo().getWorkflowType();
+```
+
 See [Workflow Execution Result](/docs/java/how-to-get-the-result-of-a-workflow-execution-in-java) for details on how to get the results of the Workflow Execution.
 
 #### Using `ExternalWorkflowStub`
@@ -108,22 +115,9 @@ This helps particularly for executing Workflows written in other language SDKs, 
 
 ```java
 @Override
-    public String exec() {
-
-        ExternalWorkflowStub externalGoWorkflowStub = Workflow.newUntypedExternalWorkflowStub("simple-workflow-go");
-
-        // Send 10 signals to Go Workflow
-        for(int i=0; i < 10; i++) {
-            externalGoWorkflowStub.signal("simplesignal", "Hello from Java Workflow: " + i);
-        }
-
-        // Receive 10 signals from Go Workflow
-        Workflow.await(() -> messageQueue.size() == 10);
-
-        String result = "";
-        for(String m : messageQueue) {
-            result += m + "\n";
-        }
+  public String yourWFMethod(String name) {
+      ExternalWorkflowStub callOtherWorkflow = Workflow.newUntypedExternalWorkflowStub("OtherWFId");
+    }
 ```
 
 See the [Temporal Polyglot](https://github.com/tsurdilo/temporal-polyglot) code for examples of executing Workflows written in other language SDKs.

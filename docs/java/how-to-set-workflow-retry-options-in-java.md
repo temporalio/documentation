@@ -2,14 +2,14 @@
 id: how-to-set-workflow-retry-options-in-java
 title: How to set Workflow Retry Options in Java
 sidebar_label: Workflow Retry Options
-description: In the `WorkflowStub` instance for the Workflow in the Client code, use `WorkflowOptions.Builder.setWorkflowRetryOptions​` to set the Workflow Retry Options.
+description: Set Workflow Retry Options in the `WorkflowStub` instance using `WorkflowOptions.Builder.setWorkflowRetryOptions`.
 tags:
   - java
   - how-to
   - developer-guide
 ---
 
-In the [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) instance for the Workflow in the Client code, use [`WorkflowOptions.Builder.setWorkflowRetryOptions`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html) to set the Workflow Retry Options.
+Set Workflow Retry Options in the [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) instance using [`WorkflowOptions.Builder.setWorkflowRetryOptions`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
 
 - Type: `RetryOptions`
 - Default: `Null` which means no retries will be attempted.
