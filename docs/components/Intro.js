@@ -24,7 +24,10 @@ function Explained() {
             </Link>
           </li>
           <li className="">
-            <Link to={useBaseUrl("/retry-policies")} className="hover:underline">
+            <Link
+              to={useBaseUrl("/retry-policies")}
+              className="hover:underline"
+            >
               <a className="font-normal">Retry Policies</a>
             </Link>
           </li>
@@ -124,7 +127,9 @@ function Explained() {
         </ul>
       </div>
       <div className="landing-card-section">
-        <a className="header-link" href="/application-development"><h4>Legacy SDK docs</h4></a>
+        <a className="header-link" href="/application-development">
+          <h4>Legacy SDK docs</h4>
+        </a>
         <ul className="landing-card-list">
           <li className="">
             <Link to={useBaseUrl("/go")} className="hover:underline">
@@ -157,38 +162,49 @@ function Explained() {
         </ul>
       </div>
       <div className="landing-card-section">
-      <a className="header-link" href="/operation/how-to-tune-workers"><h2>Worker performance tuning</h2></a>
-      <ul className="landing-card-list">
-        <li className="">
-          <Link
-            to={useBaseUrl("/operation/how-to-tune-workers#metrics")}
-            className="hover:underline"
-          >
-            <a className="font-normal">Metrics</a>
-          </Link>
-        </li>
-        <li className="">
-          <Link to={useBaseUrl("/operation/how-to-tune-workers#configuration")} className="hover:underline">
-            <a className="font-normal">Configuration</a>
-          </Link>
-        </li>
-      </ul>
-      <ul className="landing-card-list">
-        <li className="">
-          <Link
-            to={useBaseUrl("/operation/how-to-tune-workers#workflow-cache-tuning")}
-            className="hover:underline"
-          >
-            <a className="font-normal">Workflow cache</a>
-          </Link>
-        </li>
-        <li className="">
-          <Link to={useBaseUrl("/operation/how-to-tune-workers#task-queues-processing-tuning")} className="hover:underline">
-            <a className="font-normal">Task Queues</a>
-          </Link>
-        </li>
-
-      </ul>
+        <a className="header-link" href="/operation/how-to-tune-workers">
+          <h2>Worker performance tuning</h2>
+        </a>
+        <ul className="landing-card-list">
+          <li className="">
+            <Link
+              to={useBaseUrl("/operation/how-to-tune-workers#metrics")}
+              className="hover:underline"
+            >
+              <a className="font-normal">Metrics</a>
+            </Link>
+          </li>
+          <li className="">
+            <Link
+              to={useBaseUrl("/operation/how-to-tune-workers#configuration")}
+              className="hover:underline"
+            >
+              <a className="font-normal">Configuration</a>
+            </Link>
+          </li>
+        </ul>
+        <ul className="landing-card-list">
+          <li className="">
+            <Link
+              to={useBaseUrl(
+                "/operation/how-to-tune-workers#workflow-cache-tuning"
+              )}
+              className="hover:underline"
+            >
+              <a className="font-normal">Workflow cache</a>
+            </Link>
+          </li>
+          <li className="">
+            <Link
+              to={useBaseUrl(
+                "/operation/how-to-tune-workers#task-queues-processing-tuning"
+              )}
+              className="hover:underline"
+            >
+              <a className="font-normal">Task Queues</a>
+            </Link>
+          </li>
+        </ul>
       </div>
       <div className="landing-card-section">
         <a className="header-link" href="/cluster-deployment-guide">
@@ -229,10 +245,7 @@ function Explained() {
         <h2>Temporal Cloud</h2>
         <ul className="landing-card-list">
           <li className="">
-            <Link
-              to={useBaseUrl("/cloud/tcld")}
-              className="hover:underline"
-            >
+            <Link to={useBaseUrl("/cloud/tcld")} className="hover:underline">
               <a className="font-normal">tcld</a>
             </Link>
           </li>
