@@ -15,7 +15,7 @@ Set the Workflow Task Queue with the [`WorkflowStub`](https://www.javadoc.io/doc
 - Default: none
 
 ```java
-//create Workflow stub for GreetWorkflowInterface
+//create Workflow stub for YourWorkflowInterface
 YourWorkflowInterface workflow1 =
     WorkerGreet.greetclient.newWorkflowStub(
         GreetWorkflowInterface.class,
