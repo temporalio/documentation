@@ -86,23 +86,9 @@ import RetryOptions from './how-to-set-workflow-retry-options-in-java.md'
 
 ### `CronSchedule`
 
-- Type: `String`
-- Default: None
+import CronSchedule from './how-to-set-a-cron-schedule-in-java.md'
 
-```java
-//create Workflow stub for GreetWorkflowInterface
-GreetWorkflowInterface workflow1 =
-    WorkerGreet.greetclient.newWorkflowStub(
-        GreetWorkflowInterface.class,
-        WorkflowOptions.newBuilder()
-                .setWorkflowId("GreetWF")
-                .setTaskQueue(WorkerGreet.TASK_QUEUE)
-                // Set Cron Schedule
-                .setCronSchedule("@every 10s")
-                .build());
-```
-
-[Sample](https://github.com/temporalio/samples-java/blob/main/src/main/java/io/temporal/samples/hello/HelloCron.java)
+<CronSchedule/>
 
 ### `Memo`
 
