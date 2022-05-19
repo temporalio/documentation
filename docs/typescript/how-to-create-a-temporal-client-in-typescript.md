@@ -1,6 +1,6 @@
 ---
 id: how-to-create-a-temporal-client-in-typescript
-title: How to create a Temporal Client in Typescript
+title: How to create a Temporal Client in TypeScript
 sidebar_label: Create a Temporal Client
 description: Create a Temporal Client
 tags:

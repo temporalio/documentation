@@ -1,6 +1,6 @@
 ---
 id: how-to-define-activity-return-values-in-typescript
-title: How to define Activity Return Values in Typescript
+title: How to define Activity Return Values in TypeScript
 sidebar_label: Define Activity Return Values
 description: Define Activity Return Values
 tags:

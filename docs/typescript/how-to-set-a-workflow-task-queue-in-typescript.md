@@ -1,6 +1,6 @@
 ---
 id: how-to-set-a-workflow-task-queue-in-typescript
-title: How to set a Workflow Task Queue in Typescript
+title: How to set a Workflow Task Queue in TypeScript
 sidebar_label: Set a Workflow Task Queue
 description: Set a Workflow Task Queue
 tags:

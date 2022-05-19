@@ -1,6 +1,6 @@
 ---
 id: how-to-develop-a-worker-program-in-typescript
-title: How to develop a Worker program in Typescript
+title: How to develop a Worker program in TypeScript
 sidebar_label: Develop a Worker program
 description: Develop a Worker program
 tags:

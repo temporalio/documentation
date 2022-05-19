@@ -1,6 +1,6 @@
 ---
 id: how-to-spawn-a-workflow-execution-in-typescript
-title: How to spawn a Workflow Execution in Typescript
+title: How to spawn a Workflow Execution in TypeScript
 sidebar_label: Spawn a Workflow Execution
 description: Spawn a Workflow Execution
 tags:

@@ -261,22 +261,19 @@ main.max-w-screen-lg {
 }
 
 .landing-card {
-
-
   /* padding-left: 1.25rem; */
   padding-right: 1.25rem;
   padding-bottom: 1.25rem;
 }
 
 .landing-card-list {
-    padding-bottom: 1.5em;
-    margin-right: 1.5em;
-    width: 20em;
-    display: inline-block;
+  padding-bottom: 1.5em;
+  margin-right: 1.5em;
+  width: 20em;
+  display: inline-block;
 }
 
 .landing-card-list-b {
-
 }
 
 .landing-card-list-b li {
@@ -296,8 +293,6 @@ main.max-w-screen-lg {
 
 .landing-card-section {
   padding-top: 1.25em;
-
-
 }
 
 .code-logo-list {
@@ -305,7 +300,6 @@ main.max-w-screen-lg {
 }
 
 .code-logo {
-
 }
 
 .header-link {

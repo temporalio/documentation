@@ -226,7 +226,7 @@ async function generateTabString(h3_section) {
   let tab_string = `<Tabs\n`;
   tab_string = `${tab_string}defaultValue="go"\n`;
   tab_string = `${tab_string}groupId="site-lang"\n`;
-  tab_string = `${tab_string}values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>\n\n`;
+  tab_string = `${tab_string}values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>\n\n`;
   tab_string = `${tab_string}<TabItem value="go">\n\n`;
   tab_string = `${tab_string}${h3_section.tabs.go.markdown}\n\n`;
   tab_string = `${tab_string}</TabItem>\n`;
