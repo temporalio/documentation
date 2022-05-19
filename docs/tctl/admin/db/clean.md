@@ -1,7 +1,7 @@
 ---
 id: clean
 title: tctl admin db clean
-description: Cleaning up corrupted Workflows
+description: How to clean up corrupted Workflows using tctl.
 tags:
   - reference
   - tctl
