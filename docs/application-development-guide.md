@@ -305,10 +305,10 @@ interface FileProcessingWorkflow
 </TabItem>
 <TabItem value="typescript">
 
-Workflow Functions are _just functions_, which can store state, and orchestrate Activity Functions.
+Workflow Definitions are _just functions_, which can store state and orchestrate Activity Functions.
 The following code snippet uses `proxyActivities` to schedule a `greet` Activity in the system to say hello.
 
-A Workflow Function can have multiple parameters; however, we recommend using a single object parameter.
+A Workflow Definition can have multiple parameters; however, we recommend using a single object parameter.
 
 ```typescript
 type ExampleArgs = {
@@ -1050,7 +1050,7 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Import the types of the Activities defined in `./activities`. You must first retrieve an Activity from an _Activity Handle_ before you can call it, then define Return Types in your Activity.
+To import the types of the Activities defined in `./activities`, you must first retrieve an Activity from an _Activity Handle_ before you can call it, then define Return Types in your Activity.
 
 ```typescript
 import type * as activities from "./activities";
