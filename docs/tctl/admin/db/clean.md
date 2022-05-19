@@ -44,7 +44,7 @@ DB password.
 
 #### `--keyspace value`
 
-DB keyspace
+Database keyspace
 
 Default: "temporal"
 
