@@ -9,7 +9,7 @@ tags:
   - db
 ---
 
-The `tctl admin db scan` command scans concrete executions in a given database, and detects corrupted executions.
+The `tctl admin db scan` command scans concrete Workflow Executions in a given database, and detects corrupted ones.
 
 ### Modifiers
 
