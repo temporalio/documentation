@@ -2,56 +2,151 @@ import React from "react";
 import Link from "@docusaurus/Link";
 import useBaseUrl from "@docusaurus/useBaseUrl";
 
+function BookSVG() {
+  return (
+    <svg
+      className="rounded-lg p-2 text-[color:var(--ifm-color)] landing-page-book"
+      viewBox="0 0 512 512"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+
+
+    <path d="M487.085,411.037V117.064c0.074-0.709,0.074-1.424,0-2.133c0.046-0.568,0.046-1.139,0-1.707l-1.067-1.707l-1.28-1.707,h-1.493l-1.92-1.28c-11.762-4.15-23.723-7.71-35.84-10.667v-49.92c0-5.891-4.776-10.667-10.667-10.667,c-75.559,0.77-146.326,37.142-190.933,98.133c-44.179-61.043-114.73-97.467-190.08-98.133c-5.891,0-10.667,4.776-10.667,10.667,V96.37c-12.2,2.993-24.234,6.625-36.053,10.88l-2.133,1.28H3.458l-1.28,1.707l-1.067,1.707c-0.045,0.568-0.045,1.139,0,1.707,c-0.451,0.735-0.809,1.523-1.067,2.347V411.25c-0.06,0.639-0.06,1.281,0,1.92c0.173,0.514,0.387,1.014,0.64,1.493,c0.338,0.76,0.768,1.477,1.28,2.133v1.28l1.707,1.28l1.707,1.067h1.493h2.56h1.707h1.92,c75.287-25.316,158.012-14.867,224.64,28.373l1.92,1.067h3.2h3.2h1.92c66.641-42.418,148.854-52.528,223.787-27.52h1.92h1.707,h2.56h1.493l1.92-1.28l1.493-1.067v-1.493c1.753-0.857,3.231-2.187,4.267-3.84c0.049-0.568,0.049-1.139,0-1.707,C487.145,412.318,487.145,411.676,487.085,411.037z M21.165,396.744V124.957c6.684-2.276,13.796-4.409,21.333-6.4V334.45,c-0.011,5.891,4.756,10.675,10.647,10.686c0.22,0,0.44-0.006,0.659-0.019l0.213,0.213c55.18-0.018,108.116,21.847,147.2,60.8,C143.775,383.706,80.629,380.415,21.165,396.744z M233.218,408.477c-41.743-50.798-102.882-81.755-168.533-85.333V58.824,c68.305,4.623,130.582,40.728,168.533,97.707V408.477z M254.765,409.33v-252.8c38.312-56.698,100.501-92.706,168.747-97.707h0.213,v265.173C357.971,327.639,296.724,358.572,254.765,409.33z M466.392,396.744c-59.407-16.191-122.441-12.901-179.84,9.387,c39.246-38.997,92.3-60.924,147.627-61.013c5.891,0,10.667-4.776,10.667-10.667V118.557c7.111,1.849,14.293,3.982,21.547,6.4,V396.744z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
+function HatSVG() {
+  return (
+    <svg
+      className="rounded-lg p-2 text-[color:var(--ifm-color)] landing-page-hat"
+      viewBox="0 0 125 125"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+    <path
+    d="m64 76.82a2 2 0 0 1 -.85-.19l-62-29.17a2 2 0 0 1 0-3.62l62-29.18a2 2 0 0 1 1.7 0l62 29.18a2 2 0 0 1 0 3.62l-62 29.17a2 2 0 0 1 -.85.19zm-57.3-31.17 57.3 27 57.3-27-57.3-26.97z"
+    fill="currentColor"
+    />
+    <path
+    d="m24 80a2 2 0 0 1 -2-2v-21a2 2 0 0 1 4 0v21a2 2 0 0 1 -2 2z"
+    fill="currentColor"
+    /><path d="m104 80a2 2 0 0 1 -2-2v-21a2 2 0 0 1 4 0v21a2 2 0 0 1 -2 2z"/>
+    <path
+    d="m64 100.53c-22.62 0-42-12.39-42-22.53a2 2 0 0 1 4 0c0 6.34 16 18.53 38 18.53s38-12.19 38-18.53a2 2 0 0 1 4 0c0 10.14-19.38 22.53-42 22.53z"
+    fill="currentColor"
+    />
+    <path d="m94 101a2 2 0 0 1 -2-2v-37.76l-28.89-14.45a2 2 0 1 1 1.78-3.58l30 15a2 2 0 0 1 1.11 1.79v39a2 2 0 0 1 -2 2z"
+    fill="currentColor"
+    />
+    <path d="m94 110a6 6 0 1 1 6-6 6 6 0 0 1 -6 6zm0-8a2 2 0 1 0 2 2 2 2 0 0 0 -2-2z"
+    fill="currentColor"
+    />
+    <path d="m97 122h-6a2 2 0 0 1 -2-2.17l1-12a2 2 0 0 1 4 .15 2 2 0 0 1 4-.15l1 12a2 2 0 0 1 -2 2.17zm-3.83-4h1.66l-.83-9.83a.76.76 0 0 1 0-.15.76.76 0 0 1 0 .15z"
+    fill="currentColor"
+    />
+    </svg>
+  );
+}
+
+function WrenchSVG() {
+  return (
+    <svg
+      className="rounded-lg p-2 text-[color:var(--ifm-color)] landing-page-book"
+      viewBox="0 0 512 512"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+    <path d="m499.261 84.264c-2.809-7.233-8.899-12.48-16.291-14.036-7.555-1.595-15.448.841-21.112 6.506l-52.817 52.816-25.79-25.79 56.174-56.174c5.848-5.848 8.358-13.992 6.718-21.786-1.604-7.62-7.017-13.898-14.477-16.795-49.024-19.044-104.726-7.321-141.908 29.86-19.577 19.577-32.359 44.296-36.976 71.5-.987 4.627-1.943 9.541-2.954 14.738-5.906 30.358-13.256 68.14-34.807 89.689l-192.957 192.958c-23.826 23.826-23.826 62.596 0 86.423 11.914 11.913 27.563 17.869 43.212 17.869 15.648 0 31.298-5.956 43.211-17.869l192.956-192.957c21.551-21.551 59.332-28.9 89.69-34.807 5.198-1.011 10.111-1.967 14.739-2.954 27.204-4.617 51.923-17.399 71.5-36.976 5.776-5.777 7.448-13.618 5.056-20.589 26.215-34.726 32.74-80.67 16.833-121.626zm-23.261 6.611c.881-.88 1.92-1.274 2.851-1.076.799.168 1.393.742 1.768 1.705 12.785 32.919 8.366 69.667-11.27 98.354l-46.166-46.166zm-12.771 121.463c-16.67 16.67-37.727 27.538-60.893 31.432-.146.024-.29.052-.435.083-4.508.964-9.404 1.916-14.588 2.925-33.031 6.426-74.141 14.423-100.014 40.296l-192.954 192.956c-16.027 16.029-42.108 16.028-58.138-.001-16.028-16.028-16.028-42.108 0-58.137l192.957-192.957c25.873-25.872 33.87-66.981 40.296-100.013 1.009-5.184 1.961-10.08 2.925-14.588.031-.145.059-.289.084-.436 3.891-23.164 14.76-44.221 31.432-60.892 21.53-21.531 50.367-33.007 79.74-33.007 13.707 0 27.536 2.501 40.785 7.647 1.205.468 1.927 1.232 2.146 2.271.247 1.173-.223 2.458-1.289 3.523l-63.245 63.245c-3.905 3.905-3.905 10.237 0 14.143l101.246 101.246c.036.035.067.068.094.099-.039.051-.088.104-.149.165z"
+        fill="currentColor"
+      />
+
+    <path d="m347.893 124.974c-1.876-1.875-4.419-2.929-7.071-2.929s-5.196 1.054-7.071 2.929l-28.283 28.284c-3.905 3.905-3.905 10.237 0 14.143l39.932 39.933c1.875 1.875 4.419 2.929 7.071 2.929s5.196-1.054 7.071-2.929l28.284-28.284c3.905-3.905 3.905-10.237 0-14.143zm4.577 61.145-25.79-25.79 14.142-14.142 25.79 25.79z"/><path d="m72.345 443.888c-3.906-3.906-10.235-3.901-14.14.003-3.905 3.905-3.903 10.239.002 14.145 1.953 1.952 4.512 2.929 7.071 2.929s5.118-.977 7.071-2.929c3.905-3.905 3.905-10.237 0-14.143z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
 function Explained() {
   return (
     <div className="landing-card">
       <div className="landing-card-section">
-        <h2>Concepts</h2>
+        <h2>Temporal core concepts</h2>
+        <p className="landing-card-p">Temporal terminology, system architecture, and key components explained.</p>
         <ul className="landing-card-list">
           <li className="">
+          <div className="landing-card-list-item">
+            <BookSVG />
             <Link to={useBaseUrl("/temporal")} className="hover:underline">
               <a className="font-normal">Temporal</a>
             </Link>
+          </div>
+
           </li>
           <li className="">
+            <div className="landing-card-list-item">
+            <BookSVG />
             <Link to={useBaseUrl("/workflows")} className="hover:underline">
               <a className="font-normal">Workflows</a>
             </Link>
+            </div>
           </li>
           <li className="">
+            <div className="landing-card-list-item">
+            <BookSVG />
             <Link to={useBaseUrl("/activities")} className="hover:underline">
               <a className="font-normal">Activities</a>
             </Link>
+            </div>
           </li>
           <li className="">
+            <div className="landing-card-list-item">
+            <BookSVG />
             <Link
               to={useBaseUrl("/retry-policies")}
               className="hover:underline"
             >
               <a className="font-normal">Retry Policies</a>
             </Link>
+            </div>
           </li>
         </ul>
         <ul className="landing-card-list">
           <li className="">
+            <div className="landing-card-list-item">
+            <BookSVG />
             <Link to={useBaseUrl("/clusters")} className="hover:underline">
               <a className="font-normal">Clusters</a>
             </Link>
+            </div>
           </li>
           <li className="">
+            <div className="landing-card-list-item">
+            <BookSVG />
             <Link to={useBaseUrl("/workers")} className="hover:underline">
               <a className="font-normal">Workers</a>
             </Link>
+            </div>
           </li>
           <li className="">
+            <div className="landing-card-list-item">
+            <BookSVG />
             <Link to={useBaseUrl("/visibility")} className="hover:underline">
               <a className="font-normal">Visibility</a>
             </Link>
+            </div>
           </li>
           <li className="">
+            <div className="landing-card-list-item">
+            <BookSVG />
             <Link to={useBaseUrl("/namespaces")} className="hover:underline">
               <a className="font-normal">Namespaces</a>
             </Link>
+            </div>
           </li>
         </ul>
       </div>
@@ -59,6 +154,7 @@ function Explained() {
         <a className="header-link" href="/application-development-guide">
           <h2>Application development guide</h2>
         </a>
+        <p className="landing-card-p">A day-to-day how-to guide for Temporal Application developers. <span className="bold">New.</span></p>
         <ul className="landing-card-list-b">
           <li>
             <img
@@ -91,73 +187,77 @@ function Explained() {
         </ul>
         <ul className="landing-card-list">
           <li className="">
+            <div className="landing-card-list-item">
+            <BookSVG />
             <Link
               to={useBaseUrl("/application-development-guide/#foundations")}
               className="hover:underline"
             >
               <a className="font-normal">Foundations</a>
             </Link>
+            </div>
           </li>
+
+        </ul>
+        <ul className="landing-card-list">
           <li className="">
+            <div className="landing-card-list-item">
+            <BookSVG />
             <Link
               to={useBaseUrl("/application-development-guide/#features")}
               className="hover:underline"
             >
               <a className="font-normal">Features</a>
             </Link>
-          </li>
-        </ul>
-        <ul className="landing-card-list">
-          <li className="">
-            <Link
-              to={useBaseUrl("/application-development-guide/#observability")}
-              className="hover:underline"
-            >
-              <a className="font-normal">Observability</a>
-            </Link>
-          </li>
-          <li className="">
-            <Link
-              to={useBaseUrl("/application-development-guide/#testing")}
-              className="hover:underline"
-            >
-              <a className="font-normal">Testing</a>
-            </Link>
+            </div>
           </li>
         </ul>
       </div>
       <div className="landing-card-section">
         <a className="header-link" href="/application-development">
-          <h4>Legacy SDK docs</h4>
+          <h2>Legacy SDK docs</h2>
         </a>
+        <p className="landing-card-p">Application development by language. <span className="bold">Deprecated.</span></p>
         <ul className="landing-card-list">
           <li className="">
+            <div className="landing-card-list-item">
+            <BookSVG />
             <Link to={useBaseUrl("/go")} className="hover:underline">
               <a className="font-normal">Go</a>
             </Link>
+            </div>
           </li>
           <li className="">
+            <div className="landing-card-list-item">
+            <BookSVG />
             <Link to={useBaseUrl("/java")} className="hover:underline">
               <a className="font-normal">Java</a>
             </Link>
+            </div>
           </li>
         </ul>
         <ul className="landing-card-list">
           <li className="">
+            <div className="landing-card-list-item">
+            <BookSVG />
             <Link
               to={useBaseUrl("/php/introduction")}
               className="hover:underline"
             >
               <a className="font-normal">PHP</a>
             </Link>
+            </div>
           </li>
           <li className="">
+            <div className="landing-card-list-item">
+            <BookSVG />
             <Link
               to={useBaseUrl("/typescript/introduction")}
               className="hover:underline"
             >
               <a className="font-normal">TypeScript</a>
             </Link>
+            </div>
           </li>
         </ul>
       </div>
@@ -165,26 +265,36 @@ function Explained() {
         <a className="header-link" href="/operation/how-to-tune-workers">
           <h2>Worker performance tuning</h2>
         </a>
+        <p className="landing-card-p">Optimize the performance of your Worker Processes.</p>
         <ul className="landing-card-list">
           <li className="">
+            <div className="landing-card-list-item">
+            <BookSVG />
             <Link
               to={useBaseUrl("/operation/how-to-tune-workers#metrics")}
               className="hover:underline"
             >
               <a className="font-normal">Metrics</a>
             </Link>
+            </div>
           </li>
           <li className="">
+            <div className="landing-card-list-item">
+            <BookSVG />
             <Link
               to={useBaseUrl("/operation/how-to-tune-workers#configuration")}
               className="hover:underline"
             >
               <a className="font-normal">Configuration</a>
             </Link>
+            </div>
           </li>
         </ul>
         <ul className="landing-card-list">
+
           <li className="">
+            <div className="landing-card-list-item">
+            <BookSVG />
             <Link
               to={useBaseUrl(
                 "/operation/how-to-tune-workers#workflow-cache-tuning"
@@ -193,8 +303,11 @@ function Explained() {
             >
               <a className="font-normal">Workflow cache</a>
             </Link>
+            </div>
           </li>
           <li className="">
+            <div className="landing-card-list-item">
+            <BookSVG />
             <Link
               to={useBaseUrl(
                 "/operation/how-to-tune-workers#task-queues-processing-tuning"
@@ -203,6 +316,7 @@ function Explained() {
             >
               <a className="font-normal">Task Queues</a>
             </Link>
+            </div>
           </li>
         </ul>
       </div>
@@ -210,26 +324,35 @@ function Explained() {
         <a className="header-link" href="/cluster-deployment-guide">
           <h2>Cluster deployment guide</h2>
         </a>
+        <p className="landing-card-p">Temporal Cluster deployment information and how-to guides.</p>
         <ul className="landing-card-list">
           <li className="">
+            <div className="landing-card-list-item">
+            <BookSVG />
             <Link
               to={useBaseUrl("/cluster-deployment-guide/#advanced-visibility")}
               className="hover:underline"
             >
               <a className="font-normal">Visibility</a>
             </Link>
+            </div>
           </li>
           <li className="">
+            <div className="landing-card-list-item">
+            <BookSVG />
             <Link
               to={useBaseUrl("/cluster-deployment-guide/#archival")}
               className="hover:underline"
             >
               <a className="font-normal">Archival</a>
             </Link>
+            </div>
           </li>
         </ul>
         <ul className="landing-card-list">
           <li className="">
+            <div className="landing-card-list-item">
+            <BookSVG />
             <Link
               to={useBaseUrl(
                 "/cluster-deployment-guide/#multi-cluster-replication"
@@ -238,47 +361,75 @@ function Explained() {
             >
               <a className="font-normal">Multi-Cluster Replication</a>
             </Link>
+            </div>
           </li>
         </ul>
       </div>
       <div className="landing-card-section">
-        <h2>Temporal Cloud</h2>
+        <a className="header-link" href="/cloud">
+          <h2>Temporal Cloud</h2>
+        </a>
+        <p className="landing-card-p">Tools and Temporal Cloud service information.</p>
         <ul className="landing-card-list">
           <li className="">
+            <div className="landing-card-list-item">
+            <WrenchSVG />
             <Link to={useBaseUrl("/cloud/tcld")} className="hover:underline">
               <a className="font-normal">tcld</a>
             </Link>
+            </div>
           </li>
         </ul>
       </div>
       <div className="landing-card-section">
         <h2>Tutorials</h2>
+        <p className="landing-card-p">Learning oriented tutorials across multiple SDKs.</p>
         <ul className="landing-card-list">
           <li className="">
-            <Link
-              to={useBaseUrl("/learning-paths/hello-world")}
-              className="hover:underline"
-            >
-              <a className="font-normal">"Hello World" from scratch</a>
-            </Link>
-          </li>
-          <li className="">
+            <div className="landing-card-list-item">
+            <HatSVG />
             <Link
               to={useBaseUrl("/learning-paths/run-your-first-app")}
               className="hover:underline"
             >
               <a className="font-normal">Run your first application</a>
             </Link>
+            </div>
+          </li>
+          <li className="">
+            <div className="landing-card-list-item">
+            <HatSVG />
+            <Link
+              to={useBaseUrl("/learning-paths/hello-world")}
+              className="hover:underline"
+            >
+              <a className="font-normal">"Hello World" from scratch</a>
+            </Link>
+            </div>
           </li>
         </ul>
         <ul className="landing-card-list">
           <li className="">
+            <div className="landing-card-list-item">
+            <HatSVG />
             <Link
               to={useBaseUrl("/learning-paths/background-checks")}
               className="hover:underline"
             >
               <a className="font-normal">Background Checks</a>
             </Link>
+            </div>
+          </li>
+          <li className="">
+            <div className="landing-card-list-item">
+            <HatSVG />
+            <Link
+              to={useBaseUrl("/blog/tags/go-ecommerce-tutorial")}
+              className="hover:underline"
+            >
+              <a className="font-normal">e-Commerce series</a>
+            </Link>
+            </div>
           </li>
         </ul>
       </div>
@@ -287,19 +438,25 @@ function Explained() {
         <h2>Devtools</h2>
         <ul className="landing-card-list">
           <li className="">
+            <div className="landing-card-list-item">
+            <WrenchSVG />
             <Link to={useBaseUrl("/tctl")} className="hover:underline">
               <a className="font-normal">tctl</a>
             </Link>
+            </div>
           </li>
         </ul>
         <ul className="landing-card-list">
           <li className="">
+            <div className="landing-card-list-item">
+            <WrenchSVG />
             <Link
               to={useBaseUrl("/devtools/web-ui")}
               className="hover:underline"
             >
               <a className="font-normal">Web UI</a>
             </Link>
+            </div>
           </li>
         </ul>
       </div>
@@ -307,38 +464,50 @@ function Explained() {
         <h2>References</h2>
         <ul className="landing-card-list">
           <li className="">
+            <div className="landing-card-list-item">
+            <BookSVG />
             <Link
               to={useBaseUrl("/references/events")}
               className="hover:underline"
             >
               <a className="font-normal">Events</a>
             </Link>
+            </div>
           </li>
           <li className="">
+            <div className="landing-card-list-item">
+            <BookSVG />
             <Link
               to={useBaseUrl("/references/commands")}
               className="hover:underline"
             >
               <a className="font-normal">Commands</a>
             </Link>
+            </div>
           </li>
         </ul>
         <ul className="landing-card-list">
           <li className="">
+            <div className="landing-card-list-item">
+            <BookSVG />
             <Link
               to={useBaseUrl("/references/sdk-metrics")}
               className="hover:underline"
             >
               <a className="font-normal">SDK metrics</a>
             </Link>
+            </div>
           </li>
           <li className="">
+            <div className="landing-card-list-item">
+            <BookSVG />
             <Link
               to={useBaseUrl("/server/configuration")}
               className="hover:underline"
             >
               <a className="font-normal">Cluster configuration</a>
             </Link>
+            </div>
           </li>
         </ul>
       </div>
@@ -603,6 +772,10 @@ function Operation() {
         >
           <path
             d="m393.72 202.051c4.071 0 7.968-1.655 10.795-4.585l54.445-56.429c5.606-5.812 5.606-15.019 0-20.83l-54.445-56.429c-2.827-2.93-6.724-4.585-10.795-4.585h-92.933v-44.193c0-8.284-6.716-15-15-15h-59.574c-8.284 0-15 6.716-15 15v44.192h-122.127c-16.681 0-30.251 13.57-30.251 30.25v82.358c0 16.681 13.57 30.251 30.251 30.251h122.127v29.999h-92.933c-4.071 0-7.968 1.655-10.795 4.585l-54.445 56.429c-5.606 5.812-5.606 15.019 0 20.83l54.445 56.429c2.827 2.93 6.724 4.585 10.795 4.585h92.933v107.092h-15c-8.284 0-15 6.716-15 15s6.716 15 15 15h119.574c8.284 0 15-6.716 15-15s-6.716-15-15-15h-15v-107.092h122.127c16.681 0 30.251-13.57 30.251-30.25v-82.358c0-16.68-13.57-30.25-30.251-30.25h-122.127v-29.999z"
+            fill="currentColor"
+          />
+
+          <path d="M404.72,82.944c-0.027,0-0.054,0-0.08,0h0h-27.12v-9.28c0.146-3.673-2.23-6.974-5.76-8,c-18.828-4.934-38.216-7.408-57.68-7.36c-32,0-75.6,7.2-107.84,40c-32-33.12-75.92-40-107.84-40,c-19.464-0.048-38.852,2.426-57.68,7.36c-3.53,1.026-5.906,4.327-5.76,8v9.2H8c-4.418,0-8,3.582-8,8v255.52c0,4.418,3.582,8,8,8,c1.374-0.004,2.724-0.362,3.92-1.04c0.8-0.4,80.8-44.16,192.48-16h1.2h0.72c0.638,0.077,1.282,0.077,1.92,0,c112-28.4,192,15.28,192.48,16c2.475,1.429,5.525,1.429,8,0c2.46-1.42,3.983-4.039,4-6.88V90.944,C412.72,86.526,409.139,82.944,404.72,82.944z M16,333.664V98.944h19.12v200.64c-0.05,4.418,3.491,8.04,7.909,8.09,c0.432,0.005,0.864-0.025,1.291-0.09c16.55-2.527,33.259-3.864,50-4c23.19-0.402,46.283,3.086,68.32,10.32,C112.875,307.886,62.397,314.688,16,333.664z M94.32,287.664c-14.551,0.033-29.085,0.968-43.52,2.8V79.984,c15.576-3.47,31.482-5.241,47.44-5.28c29.92,0,71.2,6.88,99.84,39.2l0.24,199.28C181.68,302.304,149.2,287.664,94.32,287.664z,M214.32,113.904c28.64-32,69.92-39.2,99.84-39.2c15.957,0.047,31.863,1.817,47.44,5.28v210.48,c-14.354-1.849-28.808-2.811-43.28-2.88c-54.56,0-87.12,14.64-104,25.52V113.904z M396.64,333.664,c-46.496-19.028-97.09-25.831-146.96-19.76c22.141-7.26,45.344-10.749,68.64-10.32c16.846,0.094,33.663,1.404,50.32,3.92,c4.368,0.663,8.447-2.341,9.11-6.709c0.065-0.427,0.095-0.859,0.09-1.291V98.944h19.12L396.64,333.664z"
             fill="currentColor"
           />
         </svg>

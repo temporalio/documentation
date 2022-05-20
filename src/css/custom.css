@@ -269,7 +269,7 @@ main.max-w-screen-lg {
 .landing-card-list {
   padding-bottom: 1.5em;
   margin-right: 1.5em;
-  width: 20em;
+  width: 15em;
   display: inline-block;
 }
 
@@ -285,6 +285,29 @@ main.max-w-screen-lg {
   margin-right: 8px;
 }
 
+.landing-page-book {
+  height: 2.2rem;;
+  width: 2.2rem;
+  margin: 0;
+  padding-top: 1 rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+.landing-page-hat {
+  height: 2.2rem;;
+  width: 2.2rem;
+  margin: 0;
+  padding-top: 1 rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.landing-card-list-item {
+  display: flex;
+  align-items: center;
+  vertical-align: middle;
+}
+
 .new-guide {
   padding-left: 15px;
   font-size: 0.9em;
@@ -293,6 +316,13 @@ main.max-w-screen-lg {
 
 .landing-card-section {
   padding-top: 1.25em;
+}
+.landing-card-section h2 {
+  margin-bottom: 0.4rem;
+}
+.landing-card-p {
+  font-style: italic;
+  margin-bottom: 1em;
 }
 
 .code-logo-list {
@@ -304,6 +334,9 @@ main.max-w-screen-lg {
 
 .header-link {
   text-decoration: none;
+}
+.bold {
+  font-weight: 500;
 }
 /* End Crazy Tailwind hax */
 
