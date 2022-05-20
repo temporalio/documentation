@@ -75,7 +75,9 @@ then consider increasing the maximum number of working slots by adjusting `maxCo
 
 ### Poller count
 
-_Note: Adjustments to pollers are rarely needed and rarely make a difference. Please consider this step only after adjusting Worker slots in the previous step. The only scenario in which the pollers’ adjustment makes sense is when there is a significant network latency between the Workers and Temporal Server._
+:::note
+Adjustments to pollers are rarely needed and rarely make a difference. Please consider this step only after adjusting Worker slots in the previous step. The only scenario in which the pollers’ adjustment makes sense is when there is a significant network latency between the Workers and Temporal Server.
+:::
 
 If:
 
@@ -94,7 +96,7 @@ If, after adjusting the poller and executors count as specified earlier, you sti
 
 ## Workflow Cache Tuning
 
-When the number of cached Workflow Executions reported by `sticky_cache_size` hits `workflowCacheSize` or the number of their threads reported by `workflow_active_thread_count` metrics gauge hits `maxWorkflowThreadCount`, Workflow Executions start to get “evicted” from the cache.
+When the number of cached Workflow Executions reported by `sticky_cache_size` hits `workflowCacheSize` or the number of their threads reported by `workflow_active_thread_count` metrics gauge hits `maxWorkflowThreadCount`, Workflow Executions start to get _evicted_ from the cache.
 An evicted workflow execution will need to be replayed when it gets any action that may advance it.
 
 If
@@ -104,7 +106,9 @@ If
 
 `workflowCacheSize` and `maxWorkflowThreadCount` limits may be increased to decrease the overall latency and cost of the replays in the system. If the opposite occurs, consider decreasing the limits.
 
-_Note: In CoreSDK based SDKs, like TypeScript, this metric works differently and should be monitored and adjusted on a per Worker / Task Queue basis._
+:::note
+In CoreSDK based SDKs, like TypeScript, this metric works differently and should be monitored and adjusted on a per Worker and Task Queue basis.
+:::
 
 ## Invariants
 
@@ -122,9 +126,7 @@ Perform this sanity check after the adjustments to Worker settings.
 
 As with any multithreading system, specifying too large values without monitoring with the SDK and system metrics will lead to constant resource contention/stealing, which decreases the total throughput and increases latency jitter of the system.
 
-<RelatedReadList
-readlist={[
-["Workers in production", "/blog/workers-in-production", "operation guide"],
-["Full set of SDK Metrics", "/references/sdk-metrics", "reference"]
-]}
-/>
+**Related**
+
+- [Workers in production operation guide](/blog/workers-in-production)
+- [Full set of SDK Metrics reference](/references/metrics.md)
