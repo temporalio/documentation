@@ -21,23 +21,23 @@ When using [Continue-As-New](/docs/concepts/what-is-continue-as-new) or a [Tempo
 A Temporal Cluster that is integrated with Elasticsearch has a set of default Search Attributes already available.
 These Search Attributes are created when the initial index is created.
 
-| NAME                  | TYPE     |
-| --------------------- | -------- |
-| BatcherNamespace      | Keyword  |
-| BatcherUser           | Keyword  |
-| BinaryChecksums       | Keyword  |
-| CloseTime             | Datetime |
-| ExecutionDuration     | Int      |
-| ExecutionStatus       | Keyword  |
-| ExecutionTime         | Datetime |
-| HistoryLength         | Int      |
-| RunId                 | Keyword  |
-| StartTime             | Datetime |
-| StateTransitionCount  | Int      |
-| TaskQueue             | Keyword  |
-| TemporalChangeVersion | Keyword  |
-| WorkflowId            | Keyword  |
-| WorkflowType          | Keyword  |
+| NAME                  | TYPE     | DEFINITION |
+| --------------------- | -------- | --- |
+| BatcherNamespace      | Keyword  | Batcher namespace. |
+| BatcherUser           | Keyword  | Batcher username. |
+| BinaryChecksums       | Keyword  | Binary Id of a given Worker. |
+| CloseTime             | Datetime | The time at which the Workflow Execution closes. |
+| ExecutionDuration     | Int      | The time needed to run the Workflow Execution. |
+| ExecutionStatus       | Keyword  | The current state of the Execution. |
+| ExecutionTime         | Datetime | The time spent running the Execution. |
+| HistoryLength         | Int      | Length of the History Host. |
+| RunId                 | Keyword  | Identifies the current Run. |
+| StartTime             | Datetime | The time at which the Workflow Execution began running. |
+| StateTransitionCount  | Int      | The number of times that a stage transition has occurred. |
+| TaskQueue             | Keyword  | Task Queue in use. |
+| TemporalChangeVersion | Keyword  | Current version of Temporal. |
+| WorkflowId            | Keyword  | Identifies the Workflow. |
+| WorkflowType          | Keyword  | The type of Workflow currently running. |
 
 - All default Search Attributes are reserved and read-only.
   (You cannot create a custom one with the same name or alter the existing one.)
