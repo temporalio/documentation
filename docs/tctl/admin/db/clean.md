@@ -24,7 +24,7 @@ Value: `cassandra` | `mysql` | `postgres`
 
 #### `--db_address value`
 
-Persistence address for the Database.
+Persistence address for the database.
 
 Default: 127.0.0.1
 
