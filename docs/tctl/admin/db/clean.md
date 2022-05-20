@@ -40,7 +40,7 @@ DB username.
 
 #### `--password value`
 
-DB password.
+Database password.
 
 #### `--keyspace value`
 
