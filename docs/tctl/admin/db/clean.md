@@ -36,7 +36,7 @@ Default: 9042
 
 #### `--username value`
 
-DB username.
+Database username.
 
 #### `--password value`
 
