@@ -112,8 +112,6 @@ GreetWorkflowInterface workflow1 =
 
 ### `SearchAttributes`
 
-**How to set Workflow Execution Search Attributes in Java**
-
 Search Attributes are additional indexed information attributed to Workflow and used for search and visibility.
 These can be used in a query of List/Scan/Count Workflow APIs.
 The key and its value type must be registered on Temporal server side.
