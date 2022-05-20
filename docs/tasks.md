@@ -13,19 +13,19 @@ import TabItem from '@theme/TabItem';
 
 Temporal Task Queues and Worker Processes are tightly coupled components.
 
-A Task is the context that a Worker needs to progress with a specific [Workflow Execution](/concepts/what-is-a-workflow-execution) or [Activity Execution](/concepts/what-is-an-activity-execution).
+A Task is the context that a Worker needs to progress with a specific [Workflow Execution](/workflows/#workflow-executions) or [Activity Execution](/activities/#activity-execution).
 
 There are two types of Tasks:
 
-- [Activity Task](/concepts/what-is-an-activity-task)
-- [Workflow Task](/concepts/what-is-a-workflow-task)
+- [Activity Task](#activity-task)
+- [Workflow Task](#workflow-task)
 
 ### Workflow Task
 
 A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.
 
 - Every time a new external event that might affect a Workflow state is recorded, a Workflow Task that contains the event is added to a Task Queue and then picked up by a Workflow Worker.
-- After the new event is handled, the Workflow Task is completed with a list of [Commands](/concepts/what-is-a-command).
+- After the new event is handled, the Workflow Task is completed with a list of [Commands](/workflows/#commands).
 - Handling of a Workflow Task is usually very fast and is not related to the duration of operations that the Workflow invokes.
 
 ### Workflow Task Execution
@@ -34,14 +34,14 @@ A Workflow Task Execution is when a Worker picks up a Worker Task and uses it to
 
 ### Activity Task
 
-An Activity Task contains the context needed to proceed with an [Activity Task Execution](/concepts/what-is-an-activity-task-execution).
+An Activity Task contains the context needed to proceed with an [Activity Task Execution](#activity-task-execution).
 Activity Tasks largely represent the Activity Task Scheduled Event , which contains the data needed to execute an Activity Function.
 
 If Heartbeat data is being passed, an Activity Task will also contain the latest Heartbeat details.
 
 ### Activity Task Execution
 
-An Activity Task Execution is when the Worker uses the Context provided from the [Activity Task](/concepts/what-is-an-activity-task) and executes the [Activity Definition](/concepts/what-is-an-activity-definition) (also known as the Activity Function).
+An Activity Task Execution is when the Worker uses the Context provided from the [Activity Task](#activity-task) and executes the [Activity Definition](/activities/#activity-definition) (also known as the Activity Function).
 
 The [ActivityTaskScheduled Event](/concepts/what-is-an-event#activitytaskscheduled) corresponds to when the Temporal Cluster puts the Activity Task into the Task Queue.
 
@@ -61,7 +61,7 @@ Once an Activity Task finishes execution, the Worker responds to the Cluster wit
 
 ## Task Queues
 
-A Task Queue is a lightweight, dynamically allocated queue that one or more [Worker Entities](/concepts/what-is-a-worker-entity) poll for [Tasks](/concepts/what-is-a-task).
+A Task Queue is a lightweight, dynamically allocated queue that one or more [Worker Entities](/workers/#worker-entity) poll for [Tasks](#).
 
 Task Queues do not have any ordering guarantees.
 It is possible to have a Task that stays in a Task Queue for a period of time, if there is a backlog that wasn't drained for that time.
@@ -85,7 +85,7 @@ This implementation offers several benefits:
 - A Worker Process polls for a message only when it has spare capacity, avoiding overloading itself.
 - In effect, Task Queues enable load balancing across a large number of Worker Processes.
 - Task Queues support server-side throttling, which enables you to limit the Task dispatching rate to the pool of Worker Processes while still supporting Task dispatching at higher rates when spikes happen.
-- Task Queues enable what we call [Task Routing](/concepts/what-is-task-routing), which is the routing of specific Tasks to specific Worker Processes or even a specific process.
+- Task Queues enable what we call [Task Routing](#task-routing), which is the routing of specific Tasks to specific Worker Processes or even a specific process.
 
 All Workers listening to a given Task Queue must have identical registrations of Activities and/or Workflows.
 The one exception is during a Server upgrade, where it is okay to have registration temporarily misaligned while the binary rolls out.
@@ -104,7 +104,7 @@ There are four places where the name of the Task Queue can be set by the develop
 - [How to develop a Worker Program in Go](/go/how-to-develop-a-worker-program-in-go)
 - [How to develop a Worker Program in Java](/java/how-to-develop-a-worker-program-in-java)
 - [How to develop a Worker Program in PHP](/php/how-to-develop-a-worker-program-in-php)
-- [How to develop a Worker Program in TypeScript](/typescript/how-to-develop-a-worker-program-in-typescript)
+- [How to develop a Worker Program in TypeScript](/application-development-guide/#run-worker-processes)
 
 Note that all Worker Entities listening to the same Task Queue name must be registered to handle the exact same Workflows Types and Activity Types.
 

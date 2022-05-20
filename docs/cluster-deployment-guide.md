@@ -22,7 +22,7 @@ Legacy production deployment information is available [here](/server/production-
 
 ## Advanced Visibility
 
-[Advanced Visibility](/concepts/what-is-advanced-visibility) features depend on an integration with Elasticsearch.
+[Advanced Visibility](/visibility/#advanced-visibility) features depend on an integration with Elasticsearch.
 
 To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` section of your `development.yaml` configuration file and run the index schema setup commands.
 
@@ -127,11 +127,11 @@ tctl --auto_confirm admin cluster add-search-attributes \
 
 ## Archival
 
-[Archival](/concepts/what-is-archival) is a feature that automatically backs up Workflow Execution Event Histories and Visibility data from Temporal Cluster persistence to a custom blob store.
+[Archival](/clusters/#archival) is a feature that automatically backs up Workflow Execution Event Histories and Visibility data from Temporal Cluster persistence to a custom blob store.
 
 ### Set up
 
-[Archival](/concepts/what-is-archival) consists of the following elements:
+[Archival](/clusters/#archival) consists of the following elements:
 
 - **Configuration**: Archival is controlled by the [server configuration](https://github.com/temporalio/temporal/blob/master/config/development.yaml#L81) (i.e. the `config/development.yaml` file).
 - **Provider**: Location where the data should be archived. Supported providers are S3, GCloud, and the local file system.
@@ -262,7 +262,7 @@ You can retrieve archived Event Histories by copying the `workflowId` and `runId
 
 ### Custom Archiver
 
-[Archival](/concepts/what-is-archival) consists of the following elements:
+[Archival](/clusters/#archival) consists of the following elements:
 
 - **Configuration**: Archival is controlled by the [server configuration](https://github.com/temporalio/temporal/blob/master/config/development.yaml#L81) (i.e. the `config/development.yaml` file).
 - **Provider**: Location where the data should be archived. Supported providers are S3, GCloud, and the local file system.
@@ -393,7 +393,7 @@ You can retrieve archived Event Histories by copying the `workflowId` and `runId
 
 ## Multi-Cluster Replication
 
-The [Multi-Cluster Replication](/concepts/what-is-multi-cluster-replication) feature asynchronously replicates Workflow Execution Event Histories from active Clusters to other passive Clusters, and can be enabled by setting the appropriate values in the `clusterMetadata` section of your configuration file.
+The [Multi-Cluster Replication](/clusters/#multi-cluster-replication) feature asynchronously replicates Workflow Execution Event Histories from active Clusters to other passive Clusters, and can be enabled by setting the appropriate values in the `clusterMetadata` section of your configuration file.
 
 1. `enableGlobalNamespace` must be set to `true`.
 2. `failoverVersionIncrement` has to be equal across connected Clusters.

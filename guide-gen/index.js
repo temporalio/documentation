@@ -279,6 +279,8 @@ async function generateLinkIndexes(guide_configs) {
   }
   guide_configs.cfgs = updated_cfgs;
   guide_configs.full_link_index = full_index;
+  fs.writeFile("log.txt", JSON.stringify(full_index));
+  //console.log(full_index);
   return guide_configs;
 }
 
@@ -454,11 +456,11 @@ async function parseAndReplace(raw_content, link_index, current_guide_id) {
       for (match of line_links) {
         // const replaceable = match.substring(6);
         const link = link_index.find((obj) => {
-          console.log(`Index path: ${obj.path} Match: ${match}`);
-          return obj.path === match;
+          //console.log(`Index path: ${obj.path} Match: ${match}`);
+          return `/${obj.path}` === match;
         });
         if (link != undefined) {
-          line = await replaceLinks(line, replaceable, link, current_guide_id);
+          line = await replaceLinks(line, match, link, current_guide_id);
         }
       }
     }
@@ -473,12 +475,21 @@ async function parseAndReplace(raw_content, link_index, current_guide_id) {
   return raw_content;
 
   async function replaceLinks(line, replaceable, link, current_guide_id) {
+    console.log(`LINE: ${line}`);
+    console.log(`REPLACE: ${replaceable}`);
+    console.log(`LINK: ${JSON.stringify(link)}`);
+    console.log(`CURRENT GUIDE ID: ${current_guide_id}`);
     let updated = "";
     if (link.guide != current_guide_id) {
-      line = line.replaceAll(replaceable, `${link.guide}/#${link.local_ref}`);
+      line = line.replaceAll(replaceable, `/${link.guide}/#${link.local_ref}`);
+      console.log(`NEW LINE: ${line}`);
+      console.log("EXTERNAL");
     } else {
-      line = line.replaceAll(`/docs/${replaceable}`, `#${link.local_ref}`);
+      line = line.replaceAll(`${replaceable}`, `#${link.local_ref}`);
+      console.log(`NEW LINE: ${line}`);
+      console.log("INTERNAL");
     }
+    console.log("\n\n");
     return line;
   }
 }
