@@ -22,7 +22,7 @@ Each Workflow Execution within the series is considered a Run.
 
 The Temporal Server spawns the first Workflow Execution in the chain of Runs immediately.
 However, it calculates and applies a backoff (`firstWorkflowTaskBackoff`) so that the first Workflow Task of the Workflow Execution does not get placed into a Task Queue until the scheduled time.
-After each Run Completes, Fails, or reaches the [Workflow Run Timeout](/docs/concepts/what-is-a-workflow-run-timeout), the same thing happens: the next run will be created immediately with a new `firstWorkflowTaskBackoff` that is calculated based on the current Server time and the defined Cron Schedule.
+After each Run Completes, Fails, or reaches the [Workflow Run Timeout](/concepts/what-is-a-workflow-run-timeout), the same thing happens: the next run will be created immediately with a new `firstWorkflowTaskBackoff` that is calculated based on the current Server time and the defined Cron Schedule.
 
 The Temporal Server spawns the next Run only after the current Run has Completed, Failed, or has reached the Workflow Run Timeout.
 This means that, if a Retry Policy has also been provided, and a Run Fails or reaches the Workflow Run Timeout, the Run will first be retried per the Retry Policy until the Run Completes or the Retry Policy has been exhausted.
