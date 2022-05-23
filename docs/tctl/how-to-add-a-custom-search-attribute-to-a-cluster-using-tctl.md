@@ -11,7 +11,7 @@ tags:
   - tctl
 ---
 
-Use the following command to add a custom [Search Attribute](/docs/concepts/what-is-a-search-attribute) to your Temporal Cluster.
+Use the following command to add a custom [Search Attribute](/concepts/what-is-a-search-attribute) to your Temporal Cluster.
 
 ```bash
 tctl admin cluster add-search-attributes --name <SearchAttributeName> --type <SearchAttributeValueType>

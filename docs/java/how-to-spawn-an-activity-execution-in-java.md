@@ -13,17 +13,17 @@ Activities are not executable on their own. You cannot start an Activity Executi
 
 Note that before an Activity Execution is invoked:
 
-- Activity options (either [`setStartToCloseTimeout`](/docs/concepts/what-is-a-start-to-close-timeout) or [`ScheduleToCloseTimeout`](/docs/concepts/what-is-a-schedule-to-close-timeout) are required) must be set for the Activity.
-  See [Activity Options](/docs/java/how-to-set-activityoptions-in-java).
+- Activity options (either [`setStartToCloseTimeout`](/concepts/what-is-a-start-to-close-timeout) or [`ScheduleToCloseTimeout`](/concepts/what-is-a-schedule-to-close-timeout) are required) must be set for the Activity.
+  See [Activity Options](/java/how-to-set-activityoptions-in-java).
 - The Activity must be registered with a Worker.
-  See [Worker Program](/docs/java/how-to-develop-a-worker-program-in-java)
+  See [Worker Program](/java/how-to-develop-a-worker-program-in-java)
 - Activity code must be thread-safe.
 
 Activities should only be instantiated using stubs from within a Workflow.
 An `ActivityStub` returns a client-side stub that implements an Activity interface.
 You can invoke Activities using `Workflow.newActivityStub`(type-safe) or `Workflow.newUntypedActivityStub` (untyped).
 
-Calling a method on the Activity interface schedules the Activity invocation with the Temporal service, and generates an [`ActivityTaskScheduled` Event](/docs/concepts/what-is-an-event#activitytaskscheduled).
+Calling a method on the Activity interface schedules the Activity invocation with the Temporal service, and generates an [`ActivityTaskScheduled` Event](/concepts/what-is-an-event#activitytaskscheduled).
 
 Activities can be invoked synchronously or asynchronously.
 
@@ -192,4 +192,4 @@ public class FileProcessingActivitiesImpl implements FileProcessingActivities {
 }
 ```
 
-For details on getting the results of an Activity Execution, see [Activity Execution Result](/docs/java/how-to-get-the-result-of-an-activity-execution-in-java).
+For details on getting the results of an Activity Execution, see [Activity Execution Result](/java/how-to-get-the-result-of-an-activity-execution-in-java).

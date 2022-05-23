@@ -19,7 +19,7 @@ One benefit of moving business logic to Temporal is how Temporal implements retr
 
 This post (together with the embedded talk) aims to give you a solid mental model on what each Activity timeout does and when to use it.
 
-> Note: You can also set [Workflow timeouts](https://docs.temporal.io/docs/concepts/workflows#timeout-settings) and [Retry Policies](https://docs.temporal.io/docs/concepts/what-is-a-retry-policy) you can set. This post deals only with *Activity* timeouts.
+> Note: You can also set [Workflow timeouts](https://docs.temporal.io/concepts/workflows#timeout-settings) and [Retry Policies](https://docs.temporal.io/concepts/what-is-a-retry-policy) you can set. This post deals only with *Activity* timeouts.
 
 ## Talk version: whiteboard session
 
@@ -114,7 +114,7 @@ public static class SimpleWorkflowImpl implements SimpleWorkflow {
 </Tabs>
 
 Behind the scenes, the SDK transforms this into a `ScheduleActivity` Command, which is sent to the Temporal Server. 
-This Command includes various metadata, including the activity type (`SimpleActivity`), activity task queue (`sampleTaskQueue`), and activity ID. If a `RetryPolicy` is not specified, Temporal uses [the default Retry Policy](https://docs.temporal.io/docs/concepts/workflows#retry-policy).
+This Command includes various metadata, including the activity type (`SimpleActivity`), activity task queue (`sampleTaskQueue`), and activity ID. If a `RetryPolicy` is not specified, Temporal uses [the default Retry Policy](https://docs.temporal.io/concepts/workflows#retry-policy).
 
 ### Step 2 - Temporal Server
 
@@ -226,7 +226,7 @@ The SDKs throttle the Heartbeats that get sent back to the Server anyway.
 ## Schedule-To-Start Timeout
 
 The Schedule-To-Start Timeout sets a limit on the amount of time that an Activity Task can sit in a Task Queue.
-We recommend that most users monitor the `temporal_activity_schedule_to_start_latency` metric and set alerts for that as a [production scaling](https://docs.temporal.io/docs/server/production-deployment/#faq-autoscaling-workers-based-on-task-queue-load) metric, rather than setting an explicit timeout for it.
+We recommend that most users monitor the `temporal_activity_schedule_to_start_latency` metric and set alerts for that as a [production scaling](https://docs.temporal.io/server/production-deployment/#faq-autoscaling-workers-based-on-task-queue-load) metric, rather than setting an explicit timeout for it.
 
 ![image](https://user-images.githubusercontent.com/6764957/122290279-287e3a00-cf26-11eb-8dd6-3133016a0bd9.png)
 
@@ -258,4 +258,4 @@ To resolve this, we could think about setting some timeout policies (for clarity
 
 ![image](https://user-images.githubusercontent.com/6764957/122290324-359b2900-cf26-11eb-93a6-5027fc98593b.png)
 
-Should we set a Schedule-To-Start timeout? You could imagine candidates sitting a queue waiting to be interviewed, with not enough interviewer "Workers" to process them. A timeout here wouldn't help much, because there's no other queue to put them on. Better to set up monitoring and alerting on Schedule-To-Start latency, and scale up workers accordingly as needed (autoscaling is [currently not possible](https://docs.temporal.io/docs/server/production-deployment/#faq-autoscaling-workers-based-on-task-queue-load)).
+Should we set a Schedule-To-Start timeout? You could imagine candidates sitting a queue waiting to be interviewed, with not enough interviewer "Workers" to process them. A timeout here wouldn't help much, because there's no other queue to put them on. Better to set up monitoring and alerting on Schedule-To-Start latency, and scale up workers accordingly as needed (autoscaling is [currently not possible](https://docs.temporal.io/server/production-deployment/#faq-autoscaling-workers-based-on-task-queue-load)).

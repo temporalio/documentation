@@ -30,7 +30,7 @@ WorkflowServiceStubs service = WorkflowServiceStubs.newServiceStubs(
 
 ```
 
-See [WorkflowServiceStubsOptions](/docs/java/how-to-set-workflowservicestuboptions-in-java) for details.
+See [WorkflowServiceStubsOptions](/java/how-to-set-workflowservicestuboptions-in-java) for details.
 
 After the connection to the Temporal frontend service is established, create a Client for the service stub.
 The Workflow Client helps with client-side APIs and is required by Workers.
@@ -47,7 +47,7 @@ WorkflowClient client = WorkflowClient.newServiceStubs(
 
 ```
 
-See [WorkflowClientOptions](/docs/java/how-to-set-workflowclientoptions-in-java) for details.
+See [WorkflowClientOptions](/java/how-to-set-workflowclientoptions-in-java) for details.
 
 `WorkflowService` and `WorkflowClient` creation is a heavyweight operation, and will be resource-intensive if created each time you start a Workflow or send a Signal to it.
 The recommended way is to create them once and reuse where possible.
@@ -55,4 +55,4 @@ The recommended way is to create them once and reuse where possible.
 With the Client defined, you can start interacting with the Temporal Frontend Service using the SDK APIs.
 
 Starting Workflows or sending Signals or Queries to Workflows from within a Client must be done using `WorkflowStubs`.
-See [How to spawn a Workflow Execution in Java](/docs/java/how-to-spawn-a-workflow-execution-in-java) for details.
+See [How to spawn a Workflow Execution in Java](/java/how-to-spawn-a-workflow-execution-in-java) for details.

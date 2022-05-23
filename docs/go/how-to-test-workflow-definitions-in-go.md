@@ -251,7 +251,7 @@ func (s *UnitTestSuite) Test_ProgressWorkflow() {
 
 :::note
 
-`RegisterDelayedCallback` can also be used to send [Signals](/docs/concepts/what-is-a-signal).
+`RegisterDelayedCallback` can also be used to send [Signals](/concepts/what-is-a-signal).
 When using "Signal-With-Start", set the delay to `0`.
 :::
 

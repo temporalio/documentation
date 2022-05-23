@@ -13,7 +13,7 @@ Create an instance of [`Worker`](https://pkg.go.dev/go.temporal.io/sdk/worker#Wo
 
 1. An instance of the Temporal Go SDK `Client`.
 2. The name of the Task Queue that it will poll.
-3. An instance of [`worker.Options`](/docs/go/how-to-set-workeroptions-in-go), which can be empty.
+3. An instance of [`worker.Options`](/go/how-to-set-workeroptions-in-go), which can be empty.
 
 Then, register the Workflow Types and the Activity Types that the Worker will be capable of executing.
 
@@ -69,7 +69,7 @@ gow run worker/main.go # automatically reload when file changed
 
 The `RegisterWorkflow()` and `RegisterActivity()` calls essentially create an in-memory mapping between the Workflow Types and their implementations, inside the Worker process.
 
-Notice that the Task Queue name is the same as the name provided when the [Workflow Execution is spawned](/docs/go/how-to-spawn-a-workflow-execution-in-go).
+Notice that the Task Queue name is the same as the name provided when the [Workflow Execution is spawned](/go/how-to-spawn-a-workflow-execution-in-go).
 
 The name of the Task Queue that is provided to the Worker must be the same Task Queue name that is provided with the invocation of the Workflow Execution.
 
@@ -80,7 +80,7 @@ However, the failure of the Task will not cause the associated Workflow Executio
 
 #### Registering Activity `structs`
 
-Per [Activity Definition](/docs/go/how-to-develop-an-activity-definition-in-go) best practices, you may have an Activity struct that has multiple methods and fields. When you use `RegisterActivity()` for an Activity struct, that Worker has access to all exported methods.
+Per [Activity Definition](/go/how-to-develop-an-activity-definition-in-go) best practices, you may have an Activity struct that has multiple methods and fields. When you use `RegisterActivity()` for an Activity struct, that Worker has access to all exported methods.
 
 #### Registering multiple Types
 
@@ -99,6 +99,6 @@ w.registerWorkflow(WorkflowC)
 
 Options can be applied when the Type is registered.
 
-For example, an Activity Type name can be customized to something other than the function name using the [`RegisterActivityWithOptions`](/docs/go/how-to-set-registeractivityoptions-in-go) call.
+For example, an Activity Type name can be customized to something other than the function name using the [`RegisterActivityWithOptions`](/go/how-to-set-registeractivityoptions-in-go) call.
 
-And a Workflow Type name can be customized to something other than the function name using the [`RegisterWorkflowWithOptions`](/docs/go/how-to-set-registerworkflowoptions-in-go) call.
+And a Workflow Type name can be customized to something other than the function name using the [`RegisterWorkflowWithOptions`](/go/how-to-set-registerworkflowoptions-in-go) call.

@@ -13,7 +13,7 @@ Create an instance of [`Worker`](https://pkg.go.dev/go.temporal.io/sdk/worker#Wo
 
 1. An instance of the Temporal Go SDK `Client`.
 2. The name of the Task Queue that it will poll.
-3. An instance of [`worker.Options`](/docs/go/how-to-set-workeroptions-in-go), which can be empty.
+3. An instance of [`worker.Options`](/go/how-to-set-workeroptions-in-go), which can be empty.
 
 Then, register the Workflow Types and the Activity Types that the Worker will be capable of executing.
 

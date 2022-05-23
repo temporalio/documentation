@@ -9,7 +9,7 @@ sidebar_label: Search Attributes
 Search Attributes enable complex and business-logic-focused search queries for Workflow Executions.
 These are often queried through the Temporal Web UI, but you can also query from within your Workflow code.
 
-Many [Search Attributes](/docs/concepts/what-is-a-search-attribute) are added to Workflow Executions by default.
+Many [Search Attributes](/concepts/what-is-a-search-attribute) are added to Workflow Executions by default.
 But these are necessarily focused on Temporal internal state tracking.
 
 For more debugging and monitoring, you might want to add your own domain-specific Search Attributes, such as `customerId` or `numItems`, that can serve as useful search filters.
@@ -20,7 +20,7 @@ Go samples for Search Attributes can be found at [`temporalio/samples-go`](https
 
 ## Value types
 
-Here are the [Search Attribute value types](/docs/concepts/what-is-a-search-attribute/#types) and their corresponding types in Go:
+Here are the [Search Attribute value types](/concepts/what-is-a-search-attribute/#types) and their corresponding types in Go:
 
 - Keyword = string
 - Int = int64

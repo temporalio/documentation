@@ -7,7 +7,7 @@ tags:
   - how-to
 ---
 
-To archive data with a given provider, using the [Archival](/docs/concepts/what-is-archival) feature, Temporal must have a corresponding Archiver component installed.
+To archive data with a given provider, using the [Archival](/concepts/what-is-archival) feature, Temporal must have a corresponding Archiver component installed.
 The platform does not limit you to the existing providers.
 To use a provider that is not currently supported, you can create your own Archiver.
 

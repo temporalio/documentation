@@ -8,7 +8,7 @@ tags:
   - developer-guide
 ---
 
-Temporal SDK allows you to use [Continue-As-New](/docs/concepts/what-is-continue-as-new) in various ways.
+Temporal SDK allows you to use [Continue-As-New](/concepts/what-is-continue-as-new) in various ways.
 
 To continue execution of the same Workflow that is currently running, use:
 

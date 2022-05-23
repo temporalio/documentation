@@ -8,7 +8,7 @@ tags:
   - tcld
 ---
 
-The `tcld namespace update search-attributes rename` command updates the name of an custom [Search Attributes](/docs/concepts/what-is-a-search-attribute) in Temporal Cloud.
+The `tcld namespace update search-attributes rename` command updates the name of an custom [Search Attributes](/concepts/what-is-a-search-attribute) in Temporal Cloud.
 
 `tcld namespace update search-attributes rename --existing-name <value> --new-name <value>`
 

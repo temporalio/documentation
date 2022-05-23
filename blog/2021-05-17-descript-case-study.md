@@ -58,8 +58,8 @@ Temporal has helped Descript solve fundamental reliability issues with its core 
 Testing is important, but Temporal opened up more opportunities since migration:
 
 - **Orchestration of multiple Workflows**: you can flexibly **reuse a workflow** once it is written, allowing the transcription workflow to be easily composed with other APIs. This helped Descript develop a major transcription correction feature much more quickly than with the previous architecture.
-- **Specialized Compute for Machine Learning**: Some parts of the transcription process use Python components that generate CUDA instructions - these must be run on workers with GPUs, and then reliably merged back into a general data processing workflow. Temporal's ability to route activities to multiple [Task Queues](/docs/concepts/what-is-a-task-queue) made this straightforward.
-- **Session Routing for Stateful Execution**: You can finetune the execution of sequential activities on the same worker, using [Go SDK Sessions](https://docs.temporal.io/docs/go/how-to-create-a-worker-session-in-go/), which Descript will need (but doesn't yet use).
+- **Specialized Compute for Machine Learning**: Some parts of the transcription process use Python components that generate CUDA instructions - these must be run on workers with GPUs, and then reliably merged back into a general data processing workflow. Temporal's ability to route activities to multiple [Task Queues](/concepts/what-is-a-task-queue) made this straightforward.
+- **Session Routing for Stateful Execution**: You can finetune the execution of sequential activities on the same worker, using [Go SDK Sessions](https://docs.temporal.io/go/how-to-create-a-worker-session-in-go/), which Descript will need (but doesn't yet use).
 
 An unexpected advantage that Descript is enjoying is better observability of workflows, which **helps improve customer service** even when Descript is not at fault.
 

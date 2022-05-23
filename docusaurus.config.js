@@ -51,7 +51,7 @@ module.exports = {
     },
     // hideableSidebar: true,
     navbar: {
-      hideOnScroll: true,
+      hideOnScroll: false,
       logo: {
         alt: "Temporal logo",
         src: "img/temporal-logo-dark.svg",
@@ -59,60 +59,9 @@ module.exports = {
       },
       items: [
         {
-          activeBasePath: "/docs",
+          to: "/",
+          activeBasePath: "none",
           label: "Docs",
-          items: [
-            {
-              to: "/docs/temporal-explained/introduction",
-              activeBasePath: "/docs/temporal-explained/",
-              label: "Explanation",
-            },
-            {
-              to: "/docs/concepts",
-              activeBasePath: "/docs/concepts/",
-              label: "Concepts",
-            },
-            {
-              to: "/docs/clusters",
-              activeBasePath: "/docs/clusters/",
-              label: "Clusters",
-            },
-            {
-              to: "/docs/tctl/",
-              activeBasePath: "/docs/tctl/",
-              label: "tctl",
-            },
-            {
-              to: "/docs/devtools/web-ui/",
-              label: "Web UI",
-            },
-            {
-              to: "/application-development",
-              activeBaseRegex:
-                "(/application-development)|(/docs/(go|java|php|node))",
-              label: "SDKs",
-            },
-            {
-              to: "/docs/operation/",
-              activeBasePath: "/docs/operation",
-              label: "Operation guides",
-            },
-            {
-              to: "/docs/learning-paths",
-              activeBasePath: "/docs/learning-paths",
-              label: "Learning",
-            },
-            {
-              to: "/docs/samples-library",
-              activeBasePath: "/docs/samples-library",
-              label: "Samples library",
-            },
-            {
-              to: "/docs/references",
-              activeBasePath: "/docs/references",
-              label: "References",
-            },
-          ],
         },
         {
           activeBasePath: "none",
@@ -152,11 +101,6 @@ module.exports = {
           to: "/blog",
           activeBasePath: "/blog",
           label: "Blog",
-        },
-        {
-          to: "/docs/external-resources",
-          activeBasePath: "/docs/external-resources",
-          label: "External Resources",
         },
       ],
     },
@@ -270,7 +214,7 @@ module.exports = {
         // Will be passed to @docusaurus/plugin-content-docs
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
-          routeBasePath: "docs",
+          routeBasePath: "/",
           exclude: ["**/app-dev-context/**", "**/concept-context/**"], // do not render context content
           editUrl: "https://github.com/temporalio/documentation/blob/master",
           /**

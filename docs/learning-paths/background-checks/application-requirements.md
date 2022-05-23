@@ -52,7 +52,7 @@ After the Background Check fully completes, the option to cancel goes away.
 All that remains is the option to see the final status.
 
 For this application, we simulate this experience through the use of a shared mailbox.
-A dedicated UI is available to the HR person as well as a [Company CLI](/docs/learning-paths/background-checks/cli-reference#bgc-company).
+A dedicated UI is available to the HR person as well as a [Company CLI](/learning-paths/background-checks/cli-reference#bgc-company).
 
 The HR person also has a separate option that is always available to them to list the metadata of Background Checks that are in the system and filter them by Candidate, status, or Background Check Id.
 
@@ -85,7 +85,7 @@ Based on the experiences of the three user types, we know we need APIs for the f
 - Submit research
 - Get the report of a specific Background Check
 
-For API details, see the [Application API reference](/docs/learning-paths/background-checks/api-reference).
+For API details, see the [Application API reference](/learning-paths/background-checks/api-reference).
 
 **UIs**
 
@@ -97,7 +97,7 @@ For API details, see the [Application API reference](/docs/learning-paths/backgr
 
 As a backup, or an alternative to using a UI, we can have a CLI for each user type that uses the same APIs that the UIs do.
 
-For CLI details, see the [Application CLI reference](/docs/learning-paths/background-checks/cli-reference).
+For CLI details, see the [Application CLI reference](/learning-paths/background-checks/cli-reference).
 
 **How we handle PII**
 

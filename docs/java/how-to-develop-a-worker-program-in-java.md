@@ -16,7 +16,7 @@ A Worker can be registered with just Workflows, just Activities, or both.
 
 #### Create Worker Entity
 
-A single [Worker Entity](/docs/concepts/what-is-a-worker-entity) can contain many Worker Objects.
+A single [Worker Entity](/concepts/what-is-a-worker-entity) can contain many Worker Objects.
 Call the `start()` method on the instance of the `WorkerFactory` to start all the Workers created in this process.
 
 ```java
@@ -114,4 +114,4 @@ Activity code must be thread-safe because the same instance of the Activity code
 
 **Operation guides:**
 
-- [How to tune Workers](/docs/operation/how-to-tune-workers)
+- [How to tune Workers](/operation/how-to-tune-workers)

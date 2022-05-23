@@ -32,7 +32,7 @@ Keep reading or follow along with this video walkthrough:
 
 ## ![](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/repair-tools.png) Project setup
 
-Before starting, make sure you have looked over the [tutorial prerequisites](/docs/java/tutorial-prerequisites) setup.
+Before starting, make sure you have looked over the [tutorial prerequisites](/java/tutorial-prerequisites) setup.
 
 This tutorial uses a fully working template application which can be downloaded as a zip or converted to a new repository in your own Github account and cloned. Github's [creating a repository from a template guide](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-from-a-template#creating-a-repository-from-a-template) will walk you through the steps.
 
@@ -49,7 +49,7 @@ Once your project has finished building, you are ready to go.
 
 ## ![](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/workflow.png) Application overview
 
-This project template mimics a "money transfer" application that has a single [Workflow function](/docs/java/workflows) which orchestrates the execution of an Account object's `withdraw()` and `deposit()` methods, representing a transfer of money from one account to another. Temporal calls these particular methods [Activity functions](/docs/java/activities).
+This project template mimics a "money transfer" application that has a single [Workflow function](/java/workflows) which orchestrates the execution of an Account object's `withdraw()` and `deposit()` methods, representing a transfer of money from one account to another. Temporal calls these particular methods [Activity functions](/java/activities).
 
 To run the application you will do the following:
 
@@ -71,7 +71,7 @@ When you "start" a Workflow you are basically telling the Temporal server, "trac
 
 ### Initiate transfer
 
-There are two ways to start a Workflow with Temporal, either via the SDK or via the [CLI](/docs/tctl). For this tutorial we used the SDK to start the Workflow, which is how most Workflows get started in a live environment. The call to the Temporal server can be done [synchronously or asynchronously](/docs/java/workflows). Here we do it asynchronously, so you will see the program run, tell you the transaction is processing, and exit.
+There are two ways to start a Workflow with Temporal, either via the SDK or via the [CLI](/tctl). For this tutorial we used the SDK to start the Workflow, which is how most Workflows get started in a live environment. The call to the Temporal server can be done [synchronously or asynchronously](/java/workflows). Here we do it asynchronously, so you will see the program run, tell you the transaction is processing, and exit.
 
 <!--SNIPSTART money-transfer-project-template-java-workflow-initiator-->
 <!--SNIPEND-->
@@ -85,9 +85,9 @@ Run the InitiateMoneyTransfer class within IntelliJ or from the project root usi
 <details>
 <summary>Troubleshooting</summary>
 
-If you get `Connection refused: /127.0.0.1:7233` error, make sure the [Temporal server is running](/docs/clusters/quick-install).
+If you get `Connection refused: /127.0.0.1:7233` error, make sure the [Temporal server is running](/clusters/quick-install).
 
-If you get `ALREADY_EXISTS: Workflow execution is already running. WorkflowId: money-transfer-workflow, RunId:<...>`, stop your Temporal docker-compose process [started earlier](/docs/clusters/quick-install) and recreate Temporal docker-compose containers using:
+If you get `ALREADY_EXISTS: Workflow execution is already running. WorkflowId: money-transfer-workflow, RunId:<...>`, stop your Temporal docker-compose process [started earlier](/clusters/quick-install) and recreate Temporal docker-compose containers using:
 
 ```bash
 docker-compose rm -f
@@ -176,7 +176,7 @@ You can view more information about what is happening in the [UI](http://localho
 
 <br/>
 
-Traditionally application developers are forced to implement timeout and retry logic within the business code itself. With Temporal, one of the key value propositions is that timeout configurations ([Schedule-To-Start Timeout](/docs/concepts/what-is-a-schedule-to-start-timeout), [Schedule-To-Close Timeout](/docs/concepts/what-is-a-schedule-to-close-timeout), [Start-To-Close Timeout](/docs/concepts/what-is-a-start-to-close-timeout), and [Heartbeat Timeout](/docs/concepts/what-is-a-heartbeat-timeout)) and [Retry Policies](/docs/concepts/what-is-a-retry-policy) are specified in the Workflow code as Activity options. In our Workflow code you can see that we have specified a setStartToCloseTimeout for our Activities, and set a retry policy that tells the server to retry them up to 500 times. But we did that as an example for this tutorial, as Temporal automatically uses a default retry policy if one isn't specified!
+Traditionally application developers are forced to implement timeout and retry logic within the business code itself. With Temporal, one of the key value propositions is that timeout configurations ([Schedule-To-Start Timeout](/concepts/what-is-a-schedule-to-start-timeout), [Schedule-To-Close Timeout](/concepts/what-is-a-schedule-to-close-timeout), [Start-To-Close Timeout](/concepts/what-is-a-start-to-close-timeout), and [Heartbeat Timeout](/concepts/what-is-a-heartbeat-timeout)) and [Retry Policies](/concepts/what-is-a-retry-policy) are specified in the Workflow code as Activity options. In our Workflow code you can see that we have specified a setStartToCloseTimeout for our Activities, and set a retry policy that tells the server to retry them up to 500 times. But we did that as an example for this tutorial, as Temporal automatically uses a default retry policy if one isn't specified!
 
 So, your Workflow is running, but only the `withdraw()` Activity method succeeded. In any other application, the whole process would likely have to be abandoned and rolled back. So, here is the last value proposition of this tutorial: With Temporal, we can debug the issue while the Workflow is running! Pretend that you found a potential fix for the issue; Re-comment the Exception in the AccountActivityImpl.java file and save your changes. How can we possibly update Workflow code that is already halfway complete? With Temporal, it is actually very simple: just restart the Worker!
 

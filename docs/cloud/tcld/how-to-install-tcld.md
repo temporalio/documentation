@@ -8,7 +8,7 @@ tags:
   - tcld
 ---
 
-You can install [tcld](/docs/cloud/tcld) in two ways.
+You can install [tcld](/cloud/tcld) in two ways.
 
 ### Install tcld by using Homebrew
 

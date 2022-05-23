@@ -16,10 +16,10 @@ The `tctl admin cluster` command runs the administrator-level operations on a gi
 
 ### Commands
 
-- [`add-search-attributes`](/docs/tctl/admin/cluster/add-search-attributes)
-- [`remove-search-attributes`](/docs/tctl/admin/cluster/remove-search-attributes)
-- [`get-search-attributes`](/docs/tctl/admin/cluster/get-search-attributes)
-- [`describe`](/docs/tctl/admin/cluster/describe)
-- [`list`](/docs/tctl/admin/cluster/list)
-- [`upsert-remote-cluster`](/docs/tctl/admin/cluster/upsert-remote-cluster)
-- [`remove-remote-cluster`](/docs/tctl/admin/cluster/upsert-remote-cluster)
+- [`add-search-attributes`](/tctl/admin/cluster/add-search-attributes)
+- [`remove-search-attributes`](/tctl/admin/cluster/remove-search-attributes)
+- [`get-search-attributes`](/tctl/admin/cluster/get-search-attributes)
+- [`describe`](/tctl/admin/cluster/describe)
+- [`list`](/tctl/admin/cluster/list)
+- [`upsert-remote-cluster`](/tctl/admin/cluster/upsert-remote-cluster)
+- [`remove-remote-cluster`](/tctl/admin/cluster/upsert-remote-cluster)

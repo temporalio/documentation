@@ -8,7 +8,7 @@ tags:
   - tctl
 ---
 
-The `tctl namespace describe` command describes a [Namespace](/docs/concepts/what-is-a-namespace).
+The `tctl namespace describe` command describes a [Namespace](/concepts/what-is-a-namespace).
 
 `tctl namespace describe`
 
