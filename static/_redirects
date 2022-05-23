@@ -8,157 +8,156 @@
 /system-tools/*        /devtools/:splat
 /devtools/tctl        /tctl
 /devtools/introduction        /devtools
-/docs/sdks-introduction         /application-development-guide
-/docs/other-sdks        /application-development-guide
-/docs/application-development /application-development-guide
-/docs/get-started         /
-/docs/glossary        /glossary
+/sdks-introduction         /application-development-guide
+/other-sdks        /application-development-guide
+/get-started         /
+/references/glossary        /glossary
 
 #
 # Concept pages redirects
 #
-/docs/temporal-explained        /docs/temporal
-/docs/concepts/introduction        /temporal
-/docs/concepts/workflows         /workflows
-/docs/concepts/activities      /activities
-/docs/concepts/signals         /signals
-/docs/concepts/queries         /queries
-/docs/concepts/task-queues         /tasks
-/docs/temporal-explained/introduction        /temporal
-/docs/temporal-explained/workflows        /workflows
-/docs/temporal-explained/activities        /activities
-/docs/temporal-explained/task-queues-and-workers        /workers
-/docs/temporal-explained/signals-and-queries        /signals
-/docs/temporal-explained/timeouts-and-retries        /retry-policies
-/docs/temporal-explained/visibility        /visibility
+/temporal-explained        /temporal
+/concepts/introduction        /temporal
+/concepts/workflows         /workflows
+/concepts/activities      /activities
+/concepts/signals         /signals
+/concepts/queries         /workflows#queries
+/concepts/task-queues         /tasks
+/temporal-explained/introduction        /temporal
+/temporal-explained/workflows        /workflows
+/temporal-explained/activities        /activities
+/temporal-explained/task-queues-and-workers        /workers
+/temporal-explained/signals-and-queries        /workflows#signals
+/temporal-explained/timeouts-and-retries        /retry-policies
+/temporal-explained/visibility        /visibility
 
 # CONTENT -> CONCEPTS
-/docs/content/what-is-*         /docs/concepts/what-is-:splat
+/content/what-is-*         /concepts/what-is-:splat
 
 #
 # TS pages redirects
 #
-/docs/node/*        /docs/typescript/:splat
-/docs/typescript/getting-started        /docs/typescript/introduction#getting-started
-/docs/typescript        /docs/typescript/introduction
-/docs/content/how-to-develop-a-worker-program-in-typescript /docs/typescript/how-to-develop-a-worker-program-in-typescript
+/node/*        /typescript/:splat
+/typescript/getting-started        /typescript/introduction#getting-started
+/typescript        /typescript/introduction
+/content/how-to-develop-a-worker-program-in-typescript /typescript/how-to-develop-a-worker-program-in-typescript
 
 #
 # Go pages redirects
 #
-/docs/go/getting-started        /docs/go
-/docs/go/introduction        /docs/go
-/docs/go-activities         /docs/go/activities
-/docs/go/child-workflows        /docs/go/workflows/#child-workflow-executions
-/docs/go-continue-as-new        /docs/go/workflows#large-event-histories
-/docs/go/continue-as-new        /docs/go/workflows#large-event-histories
-/docs/go-create-workflows         /docs/go/create-workflows
-/docs/go/create-workflows         /docs/go/workflows
-/docs/go/distributed-cron         /docs/content/what-is-a-temporal-cron-job
-/docs/go-error-handling         /docs/go/error-handling
-/docs/go-hello-world        /docs/go/hello-world-tutorial
-/docs/go/queries        /docs/go/how-to-handle-a-query-in-a-workflow-in-go
-/docs/go/retries        /docs/concepts/what-is-a-retry-policy
-/docs/go-run-your-first-app         /docs/go/run-your-first-app-tutorial
-/docs/go-sdk-video-tutorial         /docs/go/sdk-video-tutorial
-/docs/go-search-apis        /docs/go/search-apis
-/docs/go-selectors        /docs/go/selectors
-/docs/go/sessions         /docs/go/how-to-create-a-worker-session-in-go
-/docs/go/side-effects         /docs/go/how-to-execute-a-side-effect-in-go
-/docs/go/signals        /docs/go/how-to-use-signals-in-go
-/docs/go/how-to-send-a-signal-to-a-workflow-execution-in-go        /docs/go/how-to-use-signals-in-go
-/docs/go/how-to-handle-a-signal-in-a-workflow-in-go       /docs/go/how-to-use-signals-in-go
-/docs/go-sync-vs-async-start        /docs/go/sync-vs-async-start
-/docs/go/sync-vs-async-start        /docs/go/workflows/#how-to-start-a-workflow
-/docs/go/task-queues        /docs/concepts/what-is-a-task-queue
-/docs/go/testing        /docs/go/how-to-test-workflow-definitions-in-go
-/docs/go-tracing        /docs/go/tracing
-/docs/go-tutorial-prerequisites         /docs/go/tutorial-prerequisites
-/docs/go-versioning         /docs/go/versioning
-/docs/go-workflows        /docs/go/workflows
-/docs/go/workers        /docs/go/how-to-develop-a-worker-program-in-go
-/docs/go-execute-activity         /docs/go/activities#executing-activities
-/docs/go-activity-async-completion        /docs/go/activities#asynchronous-activity-completion
-/docs/go/how-to-set-startworkflowoptions-in-go*        /docs/go/startworkflowoptions-reference:splat
-/docs/go/how-to-set-activityoptions-in-go*        /docs/go/activityoptions-reference:splat
+/go/getting-started        /go
+/go/introduction        /go
+/go-activities         /application-development-guide#develop-activities
+/go/child-workflows        /application-development-guide#child-workflows
+/go-continue-as-new        /go/how-to-continue-as-new-in-go
+/go/continue-as-new        /go/how-to-continue-as-new-in-go
+/go-create-workflows         /application-development-guide#develop-workflows
+/go/create-workflows         /application-development-guide#develop-workflows
+/go/distributed-cron         /application-development-guide#cron-jobs
+/go-error-handling         /go/error-handling
+/go-hello-world        /go/hello-world-tutorial
+/go/queries        /application-development-guide#queries
+/go/retries        /application-development-guide#activity-timeouts--retries
+/go-run-your-first-app         /go/run-your-first-app-tutorial
+/go-sdk-video-tutorial         /go/sdk-video-tutorial
+/go-search-apis        /go/search-apis
+/go-selectors        /go/selectors
+/go/sessions         /go/how-to-create-a-worker-session-in-go
+/go/side-effects         /go/how-to-execute-a-side-effect-in-go
+/go/signals        /go/how-to-use-signals-in-go
+/go/how-to-send-a-signal-to-a-workflow-execution-in-go        /go/how-to-use-signals-in-go
+/go/how-to-handle-a-signal-in-a-workflow-in-go       /go/how-to-use-signals-in-go
+/go-sync-vs-async-start        /go/sync-vs-async-start
+/go/sync-vs-async-start        /go/workflows/#how-to-start-a-workflow
+/go/task-queues        /concepts/what-is-a-task-queue
+/go/testing        /go/how-to-test-workflow-definitions-in-go
+/go-tracing        /go/tracing
+/go-tutorial-prerequisites         /go/tutorial-prerequisites
+/go-versioning         /go/versioning
+/go-workflows        /go/workflows
+/go/workers        /go/how-to-develop-a-worker-program-in-go
+/go-execute-activity         /application-development-guide#start-activity-execution
+/go-activity-async-completion        /go/activities#asynchronous-activity-completion
+/go/how-to-set-startworkflowoptions-in-go*        /go/startworkflowoptions-reference:splat
+/go/how-to-set-activityoptions-in-go*        /go/activityoptions-reference:splat
 
 #
 # Java pages redirects
 #
-/docs/java/introduction        /docs/java
-/docs/java-activities         /docs/java/activities
-/docs/java-distributed-cron         /docs/java/distributed-cron
-/docs/java-hello-world        /docs/java/hello-world-tutorial
-/docs/java/implementing-workflows         /docs/java/workflows
-/docs/java-implementing-workflows         /docs/java/workflows
-/docs/java-queries        /docs/java/queries
-/docs/java-quick-start        /docs/java/quick-start
-/docs/java-run-your-first-app         /docs/java/run-your-first-app-tutorial
-/docs/java-signals        /docs/java/signals
-/docs/java-start-workflow-execution         /docs/java/workflows
-/docs/java/start-workflow-execution         /docs/java/workflows
-/docs/java-task-queues        /docs/java/task-queues
-/docs/java-testing-and-debugging        /docs/java/testing-and-debugging
-/docs/java-sdk-tutorial-prerequisites         /docs/java/tutorial-prerequisites
-/docs/java-versioning         /docs/java/versioning
-/docs/java-workers        /docs/java/workers
-/docs/java/workflow-interface         /docs/java/workflows
-/docs/java-workflow-interface         /docs/java/workflows
-/docs/java/starting-workflow-executions         /docs/java/workflows
-/docs/content/how-to-provide-an-authorization-token-in-java        /docs/java/how-to-provide-an-authorization-token-in-java
-/docs/content/how-to-develop-a-worker-program-in-java        /docs/java/how-to-develop-a-worker-program-in-java
+/java/introduction        /java
+/java-activities         /java/activities
+/java-distributed-cron         /java/distributed-cron
+/java-hello-world        /java/hello-world-tutorial
+/java/implementing-workflows         /java/workflows
+/java-implementing-workflows         /java/workflows
+/java-queries        /java/queries
+/java-quick-start        /java/quick-start
+/java-run-your-first-app         /java/run-your-first-app-tutorial
+/java-signals        /java/signals
+/java-start-workflow-execution         /java/workflows
+/java/start-workflow-execution         /java/workflows
+/java-task-queues        /java/task-queues
+/java-testing-and-debugging        /java/testing-and-debugging
+/java-sdk-tutorial-prerequisites         /java/tutorial-prerequisites
+/java-versioning         /java/versioning
+/java-workers        /java/workers
+/java/workflow-interface         /java/workflows
+/java-workflow-interface         /java/workflows
+/java/starting-workflow-executions         /java/workflows
+/content/how-to-provide-an-authorization-token-in-java        /java/how-to-provide-an-authorization-token-in-java
+/content/how-to-develop-a-worker-program-in-java        /java/how-to-develop-a-worker-program-in-java
 
 #
 # PHP pages redirects
 #
-/docs/php         /docs/php/introduction
-/docs/php-sdk-overview        /docs/php/introduction
-/docs/php-sdk-introduction        /docs/php/introduction
-/docs/php-activities        /docs/php/activities
-/docs/php-activity-async-completion         /docs/php/activities/#async-completion
-/docs/php-activity-interface        /docs/php/activities/#activity-interface
-/docs/php-child-workflows         /docs/php/workflows/#child-workflows
-/docs/php-continue-as-new         /docs/php/workflows/#large-event-histories
-/docs/php-distributed-cron        /docs/php/distributed-cron
-/docs/php-error-handling        /docs/php/error-handling
-/docs/php-implementing-activities         /docs/php/activities/#implementing-activities
-/docs/php-implementing-workflows        /docs/php/workflows/#implementing-workflows
-/docs/workflow-interface        /docs/php/workflows
-/docs/php-workflows         /docs/php/workflows
-/docs/php-queries         /docs/php/queries
-/docs/php-retries         /docs/php/retries
-/docs/php-side-effect         /docs/php/side-effect
-/docs/php-signals         /docs/php/signals
-/docs/php-sync-vs-async-start         /docs/php/workflows/#starting-workflows
-/docs/php-task-queues         /docs/php/task-queues
-/docs/content/how-to-develop-a-worker-program-in-php        /docs/php/how-to-develop-a-worker-program-in-php
+/php         /php/introduction
+/php-sdk-overview        /php/introduction
+/php-sdk-introduction        /php/introduction
+/php-activities        /php/activities
+/php-activity-async-completion         /php/activities/#async-completion
+/php-activity-interface        /php/activities/#activity-interface
+/php-child-workflows         /php/workflows/#child-workflows
+/php-continue-as-new         /php/workflows/#large-event-histories
+/php-distributed-cron        /php/distributed-cron
+/php-error-handling        /php/error-handling
+/php-implementing-activities         /php/activities/#implementing-activities
+/php-implementing-workflows        /php/workflows/#implementing-workflows
+/workflow-interface        /php/workflows
+/php-workflows         /php/workflows
+/php-queries         /php/queries
+/php-retries         /php/retries
+/php-side-effect         /php/side-effect
+/php-signals         /php/signals
+/php-sync-vs-async-start         /php/workflows/#starting-workflows
+/php-task-queues         /php/task-queues
+/content/how-to-develop-a-worker-program-in-php        /php/how-to-develop-a-worker-program-in-php
 
 #
 # Server pages redirects
 #
-/docs/server        /docs/clusters/
-/docs/server-archive-data        /docs/concepts/what-is-archival
-/docs/server/archive-data        /docs/concepts/what-is-archival
-/docs/server-configuration        /docs/server/configuration
-/docs/server-introduction        /docs/clusters
-/docs/server/introduction        /docs/clusters
-/docs/server-namespaces         /docs/server/namespaces
-/docs/server/multi-cluster        /docs/concepts/what-is-multi-cluster-replication
-/docs/server-options        /docs/server/options
-/docs/server-production-deploy        /docs/server/production-deploy
-/docs/server-production-deployment  /docs/server/production-deploy
-/docs/server-quick-install        /docs/clusters/quick-install
-/docs/server/quick-install        /docs/clusters/quick-install
-/docs/cluster/how-to-deploy-temporal-to-kubernetes-for-testing-and-development        /docs/clusters/quick-install/#helm-charts
-/docs/cluster/how-to-quickly-install-the-temporal-cluster-using-docker-compose        /docs/clusters/quick-install/#docker-compose
-/docs/content/how-to-deploy-temporal-to-kubernetes-for-testing-and-development        /docs/clusters/quick-install/#helm-charts
-/docs/content/how-to-quickly-install-the-temporal-server        /docs/clusters/quick-install
+/server        /clusters/
+/server-archive-data        /concepts/what-is-archival
+/server/archive-data        /concepts/what-is-archival
+/server-configuration        /server/configuration
+/server-introduction        /clusters
+/server/introduction        /clusters
+/server-namespaces         /server/namespaces
+/server/multi-cluster        /concepts/what-is-multi-cluster-replication
+/server-options        /server/options
+/server-production-deploy        /server/production-deploy
+/server-production-deployment  /server/production-deploy
+/server-quick-install        /clusters/quick-install
+/server/quick-install        /clusters/quick-install
+/cluster/how-to-deploy-temporal-to-kubernetes-for-testing-and-development        /clusters/quick-install/#helm-charts
+/cluster/how-to-quickly-install-the-temporal-cluster-using-docker-compose        /clusters/quick-install/#docker-compose
+/content/how-to-deploy-temporal-to-kubernetes-for-testing-and-development        /clusters/quick-install/#helm-charts
+/content/how-to-quickly-install-the-temporal-server        /clusters/quick-install
 
-/docs/content/how-to-integrate-elasticsearch-into-a-temporal-cluster        /docs/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster
-/docs/cluster/how-to-integrate-elasticsearch-into-a-temporal-cluster        /docs/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster
+/content/how-to-integrate-elasticsearch-into-a-temporal-cluster        /clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster
+/cluster/how-to-integrate-elasticsearch-into-a-temporal-cluster        /clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster
 
-/docs/server-security         /docs/server/security
-/docs/server-versions-and-dependencies        /docs/server/versions-and-dependencies
-/docs/server/workflow-search        /visibility
+/server-security         /server/security
+/server-versions-and-dependencies        /server/versions-and-dependencies
+/server/workflow-search        /visibility
 
-/docs/content/how-to-remove-a-search-attribute-from-a-cluster-using-tctl /docs/tctl/how-to-remove-a-search-attribute-from-a-cluster-using-tctl
+/content/how-to-remove-a-search-attribute-from-a-cluster-using-tctl   /tctl/how-to-remove-a-search-attribute-from-a-cluster-using-tctl
