@@ -8,7 +8,7 @@ tags:
   - tcld
 ---
 
-The `tcld namespace get` command gets information about the specified [Namespace](/docs/concepts/what-is-a-namespace) in Temporal Cloud.
+The `tcld namespace get` command gets information about the specified [Namespace](/concepts/what-is-a-namespace) in Temporal Cloud.
 
 Alias: `g`
 

@@ -22,7 +22,7 @@ There are three main features to know:
 - **TLS Encryption** helps encrypt code in transit
 - **Data Converter** helps encrypt code at rest (available soon)
 
-Temporal Server internally has [other Security features](/docs/server/security), particularly Authorization.
+Temporal Server internally has [other Security features](/server/security), particularly Authorization.
 
 An important part of Temporal's security model is that Temporal Server only manages state and time - it never actually sees or runs your Workflow/Activity code.
 Code is hosted by Temporal Workers that you run, and Temporal Server only sees inbound/outbound gRPC messages.
@@ -217,5 +217,5 @@ Temporal has no opinions on production deployment strategy other than the connec
 
 ## Encryption at rest with Payload Codec
 
-- [Data Converter ➡️ Encryption](https://docs.temporal.io/docs/concepts/what-is-a-data-converter#encryption)
-- [Data Converters in TypeScript ➡️ Encryption](https://docs.temporal.io/docs/typescript/data-converters#encryption)
+- [Data Converter ➡️ Encryption](https://docs.temporal.io/concepts/what-is-a-data-converter#encryption)
+- [Data Converters in TypeScript ➡️ Encryption](https://docs.temporal.io/typescript/data-converters#encryption)

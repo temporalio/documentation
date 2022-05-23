@@ -1,1 +1,1 @@
-Use the [Workflow Execution Timeout](/docs/concepts/what-is-a-workflow-execution-timeout) to limit maximum time that a Workflow Execution can be executing (have an Open status) including retries and any usage of Continue As New.
+Use the [Workflow Execution Timeout](/concepts/what-is-a-workflow-execution-timeout) to limit maximum time that a Workflow Execution can be executing (have an Open status) including retries and any usage of Continue As New.

@@ -8,7 +8,7 @@ tags:
   - tctl
 ---
 
-The `tctl workflow stack` command queries [Workflow Execution](/docs/concepts/what-is-a-workflow-execution) with `__stack_trace` as the query type.
+The `tctl workflow stack` command queries [Workflow Execution](/concepts/what-is-a-workflow-execution) with `__stack_trace` as the query type.
 
 `tctl workflow stack [<modifiers>]`
 
@@ -16,7 +16,7 @@ The following modifiers control the behavior of the command.
 
 ### `--workflow_id`
 
-Specify a [Workflow Id](/docs/concepts/what-is-a-workflow-id).
+Specify a [Workflow Id](/concepts/what-is-a-workflow-id).
 
 Aliases: `--wid`, `-w`
 
@@ -28,7 +28,7 @@ tctl workflow stack --workflow_id <id>
 
 ### `--run_id`
 
-Specify a [Run Id](/docs/concepts/what-is-a-run-id).
+Specify a [Run Id](/concepts/what-is-a-run-id).
 
 Aliases: `--rid`, `-r`
 

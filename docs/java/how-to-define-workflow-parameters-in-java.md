@@ -17,11 +17,11 @@ Note that all inputs should be serializable by the default Jackson JSON Payload 
 You can create a custom object and pass it to the Workflow method, as shown in the following example.
 
 ```java
-...
+//...
 @WorkflowInterface
 public interface YourWorkflow {
     @WorkflowMethod
     String yourWFMethod(CustomObj customobj);
-...
+// ...
 }
 ```

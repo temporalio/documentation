@@ -29,7 +29,7 @@ This means that, if a Retry Policy has also been provided, and a Run Fails or re
 If the next Run, per the Cron Schedule, is due to spawn while the current Run is still Open (including retries), the Server automatically starts the new Run after the current Run completes successfully.
 The start time for this new Run and the Cron definitions are used to calculate the `firstWorkflowTaskBackoff` that is applied to the new Run.
 
-A [Workflow Execution Timeout](/docs/concepts/what-is-a-workflow-execution-timeout) is used to limit how long a Workflow can be executing (have an Open status), including retries and any usage of Continue As New.
+A [Workflow Execution Timeout](/concepts/what-is-a-workflow-execution-timeout) is used to limit how long a Workflow can be executing (have an Open status), including retries and any usage of Continue As New.
 The Cron Schedule runs until the Workflow Execution Timeout is reached or you terminate the Workflow.
 
 ![Temporal Cron Job Run Failure with a Retry Policy](/diagrams/temporal-cron-job-failure-with-retry.svg)
@@ -100,7 +100,7 @@ If you need to use time zones, here are a few edge cases to keep in mind:
 
 ### How to stop a Temporal Cron Job
 
-A Temporal Cron Job does not stop spawning Runs until it has been Terminated or until the [Workflow Execution Timeout](/docs/concepts/what-is-a-workflow-execution-timeout) is reached.
+A Temporal Cron Job does not stop spawning Runs until it has been Terminated or until the [Workflow Execution Timeout](/concepts/what-is-a-workflow-execution-timeout) is reached.
 
 A Cancellation Request affects only the current Run.
 
@@ -108,7 +108,7 @@ Use the Workflow Id in any requests to Cancel or Terminate.
 
 **Implementation guides:**
 
-- [How to set a Cron Schedule in Go](/docs/go/startworkflowoptions-reference/#cronschedule)
-- [How to set a Cron Schedule in Java](/docs/java/distributed-cron)
-- [How to set a Cron Schedule in PHP](/docs/php/distributed-cron)
-- [How to set a Cron Schedule in Typescript](/docs/typescript/clients)
+- [How to set a Cron Schedule in Go](/go/startworkflowoptions-reference/#cronschedule)
+- [How to set a Cron Schedule in Java](/java/distributed-cron)
+- [How to set a Cron Schedule in PHP](/php/distributed-cron)
+- [How to set a Cron Schedule in Typescript](/typescript/clients)

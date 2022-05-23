@@ -1,7 +1,7 @@
 ---
 id: configuration
 title: Configure the Temporal Server
-sidebar_label: Configuration reference
+sidebar_label: Cluster configuration
 ---
 
 Temporal Server configuration is found in `development.yaml` and may contain the following possible sections:
@@ -215,7 +215,7 @@ The `log` section is optional and contains the following possible values:
 
 ## clusterMetadata
 
-`clusterMetadata` contains the local cluster information. The information is used in [Multi-Cluster Replication](/docs/concepts/what-is-multi-cluster-replication).
+`clusterMetadata` contains the local cluster information. The information is used in [Multi-Cluster Replication](/concepts/what-is-multi-cluster-replication).
 
 An example `clusterMetadata` section:
 

@@ -96,3 +96,4 @@ WorkflowClient workflowClient =  WorkflowClient.newInstance(service, clientOptio
 ```
 
 For details, see [How to spawn a Workflow Execution in Java](/java/how-to-spawn-a-workflow-execution-in-java).
+See [How to spawn a Workflow Execution in Java](/java/how-to-spawn-a-workflow-execution-in-java) for details.

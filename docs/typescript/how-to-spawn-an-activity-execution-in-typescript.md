@@ -1,6 +1,6 @@
 ---
 id: how-to-spawn-an-activity-execution-in-typescript
-title: How to spawn an Activity Execution in Typescript
+title: How to spawn an Activity Execution in TypeScript
 sidebar_label: Spawn an Activity Execution
 description: Spawn an Activity Execution
 tags:

@@ -168,7 +168,7 @@ I think **the hardest part was migrating the community** because when you have r
 
 What helped is that Samar and I, are the heads of the project. Every user knew us personally. We talked to most people and they trusted us. They understand that we are doing it for good. And long term, this was a very good thing for the community and for the software. So we got very good support from the community, didn't get any pushback on us forking it and actually moving it forward. 
 
-Finally, we added [many cool features on our fork](https://docs.temporal.io/docs/cadence-to-temporal). The most basic one is we added GRPC support where before it was only on a custom Uber protocol, which didn't even support TLS. Most of the community have moved to us and right now we have most new users are starting with Temporal right away.
+Finally, we added [many cool features on our fork](https://docs.temporal.io/cadence-to-temporal). The most basic one is we added GRPC support where before it was only on a custom Uber protocol, which didn't even support TLS. Most of the community have moved to us and right now we have most new users are starting with Temporal right away.
 
 ## Temporal Cloud
 

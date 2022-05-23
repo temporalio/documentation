@@ -28,34 +28,25 @@ function Explained() {
       <p className="mb-4 flex font-medium">Temporal core concepts explained.</p>
       <ul className="flex list-disc flex-col space-y-2 pl-4">
         <li className="">
-          <Link
-            to={useBaseUrl("/docs/temporal-explained/workflows")}
-            className="hover:underline"
-          >
+          <Link to={useBaseUrl("/workflows")} className="hover:underline">
             <a className="font-normal">Temporal Workflows</a>
           </Link>
         </li>
         <li className="">
           <Link
-            to={useBaseUrl("/docs/temporal-explained/signals-and-queries")}
+            to={useBaseUrl("/workflows/#signals")}
             className="hover:underline"
           >
-            <a className="font-normal">Signals & Queries</a>
+            <a className="font-normal">Signals</a>
           </Link>
         </li>
         <li className="">
-          <Link
-            to={useBaseUrl("/docs/temporal-explained/timeouts-and-retries")}
-            className="hover:underline"
-          >
-            <a className="font-normal">Timeouts & retries</a>
+          <Link to={useBaseUrl("/retry-policies")} className="hover:underline">
+            <a className="font-normal">Retries</a>
           </Link>
         </li>
         <li className="">
-          <Link
-            to={useBaseUrl("/docs/temporal-explained/visibility")}
-            className="hover:underline"
-          >
+          <Link to={useBaseUrl("/visibility")} className="hover:underline">
             <a className="font-normal">Visibility</a>
           </Link>
         </li>
@@ -101,7 +92,7 @@ function SDKs() {
             <li className="">
               <Link
                 className="flex items-center space-x-3 hover:underline"
-                to={useBaseUrl("/docs/go/")}
+                to={useBaseUrl("/go/")}
               >
                 <img
                   className="h-8 w-8 transition hover:scale-110 code-logo"
@@ -114,7 +105,7 @@ function SDKs() {
             <li className="">
               <Link
                 className="flex items-center space-x-3 hover:underline"
-                to={useBaseUrl("/docs/java")}
+                to={useBaseUrl("/java")}
               >
                 <img
                   className="h-8 w-8 transition hover:scale-110 code-logo"
@@ -133,7 +124,7 @@ function SDKs() {
             <li className="">
               <Link
                 className="flex items-center space-x-5"
-                to={useBaseUrl("/docs/php/introduction")}
+                to={useBaseUrl("/php/introduction")}
               >
                 <div className="flex items-center space-x-3 hover:underline">
                   <img
@@ -146,7 +137,7 @@ function SDKs() {
               </Link>
             </li>
             <li className="">
-              <Link to={useBaseUrl("/docs/typescript/introduction")}>
+              <Link to={useBaseUrl("/typescript/introduction")}>
                 <div className="flex items-center space-x-3 hover:underline">
                   <img
                     className="h-7 w-7 pl-1 transition hover:scale-110 code-logo"
@@ -191,7 +182,7 @@ function Cluster() {
       <ul className="flex list-disc flex-col space-y-2 pl-4">
         <li className="">
           <Link
-            to={useBaseUrl("/docs/clusters/quick-install/#docker-compose")}
+            to={useBaseUrl("/clusters/quick-install/#docker-compose")}
             className="hover:underline"
           >
             <a className="font-normal">Run a Cluster using Docker Compose</a>
@@ -200,7 +191,7 @@ function Cluster() {
         <li className="">
           <Link
             to={useBaseUrl(
-              "/docs/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster"
+              "/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster"
             )}
             className="hover:underline"
           >
@@ -211,7 +202,7 @@ function Cluster() {
         </li>
         <li className="">
           <Link
-            to={useBaseUrl("/docs/server/versions-and-dependencies")}
+            to={useBaseUrl("/server/versions-and-dependencies")}
             className="hover:underline"
           >
             <a className="font-normal">Upgrade a Cluster</a>
@@ -219,7 +210,7 @@ function Cluster() {
         </li>
         <li className="">
           <Link
-            to={useBaseUrl("/docs/clusters/quick-install/#helm-charts")}
+            to={useBaseUrl("/clusters/quick-install/#helm-charts")}
             className="hover:underline"
           >
             <a className="font-normal">Deploy to Kubernetes</a>
@@ -263,7 +254,7 @@ function Tools() {
         <li className="">
           <Link
             className="flex items-center space-x-3 hover:underline"
-            to={useBaseUrl("/docs/tctl")}
+            to={useBaseUrl("/tctl")}
           >
             <svg
               className="h-8 w-8 transition hover:scale-110 code-logo"
@@ -283,7 +274,7 @@ function Tools() {
         <li className="">
           <Link
             className="flex items-center space-x-3 hover:underline"
-            to={useBaseUrl("/docs/devtools/web-ui")}
+            to={useBaseUrl("/devtools/web-ui")}
           >
             <svg
               className="h-8 w-8 transition hover:scale-110 code-logo"
@@ -330,7 +321,7 @@ function Operation() {
       <ul className="flex list-disc flex-col space-y-2 pl-4">
         <li className="">
           <a
-            href="/docs/operation/how-to-tune-workers"
+            href="/operation/how-to-tune-workers"
             className="font-normal hover:underline"
           >
             Tune Workers
@@ -338,14 +329,14 @@ function Operation() {
         </li>
         <li className="">
           <a
-            href="/docs/server/production-deployment/"
+            href="/server/production-deployment/"
             className="font-normal hover:underline"
           >
             Deploy to production
           </a>
         </li>
         <li className="">
-          <a href="/docs/references/" className="font-normal hover:underline">
+          <a href="/references/" className="font-normal hover:underline">
             References
           </a>
         </li>
@@ -381,7 +372,7 @@ function Learning() {
       <ul className="flex list-disc flex-col content-start space-y-2 pl-4">
         <li className="">
           <Link
-            to={useBaseUrl("/docs/learning-paths/run-your-first-app")}
+            to={useBaseUrl("/learning-paths/run-your-first-app")}
             className="hover:underline"
           >
             <a className="font-normal">Run your first app</a>
@@ -389,7 +380,7 @@ function Learning() {
         </li>
         <li className="">
           <Link
-            to={useBaseUrl("/docs/learning-paths/hello-world")}
+            to={useBaseUrl("/learning-paths/hello-world")}
             className="hover:underline"
           >
             <a className="font-normal">"Hello World!" from scratch</a>
@@ -397,7 +388,7 @@ function Learning() {
         </li>
         <li className="">
           <Link
-            to={useBaseUrl("/docs/learning-paths/background-checks")}
+            to={useBaseUrl("/learning-paths/background-checks")}
             className="hover:underline"
           >
             <a className="font-normal">Background Check project</a>

@@ -226,7 +226,7 @@ async function generateTabString(h3_section) {
   let tab_string = `<Tabs\n`;
   tab_string = `${tab_string}defaultValue="go"\n`;
   tab_string = `${tab_string}groupId="site-lang"\n`;
-  tab_string = `${tab_string}values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>\n\n`;
+  tab_string = `${tab_string}values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>\n\n`;
   tab_string = `${tab_string}<TabItem value="go">\n\n`;
   tab_string = `${tab_string}${h3_section.tabs.go.markdown}\n\n`;
   tab_string = `${tab_string}</TabItem>\n`;
@@ -279,6 +279,8 @@ async function generateLinkIndexes(guide_configs) {
   }
   guide_configs.cfgs = updated_cfgs;
   guide_configs.full_link_index = full_index;
+  //fs.writeFile("log.txt", JSON.stringify(full_index));
+  //console.log(full_index);
   return guide_configs;
 }
 
@@ -443,7 +445,8 @@ async function prepToReplace(cfg, link_index) {
 }
 
 async function parseAndReplace(raw_content, link_index, current_guide_id) {
-  const docsLinkRegex = /\/docs\/[a-zA-Z0-9-_]*\/[a-zA-Z0-9-_]*/gm;
+  // const docsLinkRegex = /\/docs\/[a-zA-Z0-9-_]*\/[a-zA-Z0-9-_]*/gm;
+  const docsLinkRegex = /\/[a-zA-Z0-9-_]+[a-zA-Z0-9-_#/]*/gm;
   const lines = raw_content.toString().split("\n");
   let new_lines = [];
   let line_count = 0;
@@ -451,12 +454,13 @@ async function parseAndReplace(raw_content, link_index, current_guide_id) {
     const line_links = line.match(docsLinkRegex);
     if (line_links !== null) {
       for (match of line_links) {
-        const replaceable = match.substring(6);
+        // const replaceable = match.substring(6);
         const link = link_index.find((obj) => {
-          return obj.path === replaceable;
+          //console.log(`Index path: ${obj.path} Match: ${match}`);
+          return `/${obj.path}` === match;
         });
         if (link != undefined) {
-          line = await replaceLinks(line, replaceable, link, current_guide_id);
+          line = await replaceLinks(line, match, link, current_guide_id);
         }
       }
     }
@@ -473,9 +477,9 @@ async function parseAndReplace(raw_content, link_index, current_guide_id) {
   async function replaceLinks(line, replaceable, link, current_guide_id) {
     let updated = "";
     if (link.guide != current_guide_id) {
-      line = line.replaceAll(replaceable, `${link.guide}/#${link.local_ref}`);
+      line = line.replaceAll(replaceable, `/${link.guide}/#${link.local_ref}`);
     } else {
-      line = line.replaceAll(`/docs/${replaceable}`, `#${link.local_ref}`);
+      line = line.replaceAll(`${replaceable}`, `#${link.local_ref}`);
     }
     return line;
   }

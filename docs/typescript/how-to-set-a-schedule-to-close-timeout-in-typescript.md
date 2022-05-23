@@ -1,6 +1,6 @@
 ---
 id: how-to-set-a-schedule-to-close-timeout-in-typescript
-title: How to set a Schedule to Close Timeout in Typescript
+title: How to set a Schedule to Close Timeout in TypeScript
 sidebar_label: Set a Schedule to Close Timeout
 description: Set a Schedule to Close Timeout
 tags:

@@ -8,13 +8,13 @@ tags:
   - tctl
 ---
 
-The `tctl workflow scan` command lists [Workflow Executions](/docs/concepts/what-is-a-workflow-execution).
+The `tctl workflow scan` command lists [Workflow Executions](/concepts/what-is-a-workflow-execution).
 It is faster than the `tctl workflow listall` command, but the results are not sorted.
 
 By default, this command lists a maximum of 2000 Workflow Executions.
 To set the size of a page, use the `--pagesize` option.
 
-See also [`tctl workflow list`](/docs/tctl/workflow/list), [`tctl workflow listall`](/docs/tctl/workflow/listall), and [`tctl workflow listarchived`](/docs/tctl/workflow/listarchived).
+See also [`tctl workflow list`](/tctl/workflow/list), [`tctl workflow listall`](/tctl/workflow/listall), and [`tctl workflow listarchived`](/tctl/workflow/listarchived).
 
 `tctl workflow scan [<modifiers>]`
 
@@ -58,7 +58,7 @@ tctl workflow scan --print_memo
 
 ### `--print_search_attr`
 
-Print the [Search Attributes](/docs/concepts/what-is-a-search-attribute).
+Print the [Search Attributes](/concepts/what-is-a-search-attribute).
 
 Alias: `--psa`
 
@@ -94,7 +94,7 @@ tctl workflow scan --print_json
 
 ### `--pagesize`
 
-Specify the maximum number of [Workflow Execution](/docs/concepts/what-is-a-workflow-execution) to list on a page.
+Specify the maximum number of [Workflow Execution](/concepts/what-is-a-workflow-execution) to list on a page.
 (By default, the `tctl workflow scan` command lists 2000 Workflow Executions per page.)
 
 Alias: `--ps`
@@ -107,7 +107,7 @@ tctl workflow scan --pagesize <value>
 
 ### `--query`
 
-Specify an SQL-like query of [Search Attributes](/docs/concepts/what-is-a-search-attribute).
+Specify an SQL-like query of [Search Attributes](/concepts/what-is-a-search-attribute).
 
 Alias: `-q`
 

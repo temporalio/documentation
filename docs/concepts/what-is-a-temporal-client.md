@@ -7,7 +7,7 @@ tags:
   - explanation
 ---
 
-A Temporal Client is available in each SDK and provides a set of APIs to communicate with a [Temporal Cluster](/docs/concepts/what-is-a-temporal-cluster).
+A Temporal Client is available in each SDK and provides a set of APIs to communicate with a [Temporal Cluster](/concepts/what-is-a-temporal-cluster).
 
 The most common operations that a Temporal Client enables you to perform are the following:
 

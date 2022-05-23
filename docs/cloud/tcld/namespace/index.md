@@ -7,10 +7,10 @@ tags:
   - tcld
 ---
 
-The `tcld namespace` commands enable [Namespace](/docs/concepts/what-is-a-namespace) operations in Temporal Cloud.
+The `tcld namespace` commands enable [Namespace](/concepts/what-is-a-namespace) operations in Temporal Cloud.
 
 Alias: `n`
 
-- [`tcld namespace get`](/docs/cloud/tcld/namespace/get)
-- [`tcld namespace list`](/docs/cloud/tcld/namespace/list)
-- [`tcld namespace update`](/docs/cloud/tcld/namespace/update)
+- [`tcld namespace get`](/cloud/tcld/namespace/get)
+- [`tcld namespace list`](/cloud/tcld/namespace/list)
+- [`tcld namespace update`](/cloud/tcld/namespace/update)

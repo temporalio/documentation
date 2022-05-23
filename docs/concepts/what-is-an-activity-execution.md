@@ -7,7 +7,7 @@ tags:
   - explanation
 ---
 
-An Activity Execution is the full chain of [Activity Task Executions](/docs/concepts/what-is-an-activity-task-execution).
+An Activity Execution is the full chain of [Activity Task Executions](/concepts/what-is-an-activity-task-execution).
 
 ![Activity Execution](/diagrams/activity-execution.svg)
 
@@ -26,4 +26,4 @@ Cancellation requests are only delivered to Activity Executions that Heartbeat:
 
 **Implementation guides:**
 
-- [How to spawn an Activity Execution in Go](/docs/go/how-to-spawn-an-activity-execution-in-go)
+- [How to spawn an Activity Execution in Go](/go/how-to-spawn-an-activity-execution-in-go)

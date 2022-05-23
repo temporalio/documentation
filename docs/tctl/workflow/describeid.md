@@ -8,7 +8,7 @@ tags:
   - tctl
 ---
 
-The `tctl workflow describeid` command shows information about a [Workflow Execution](/docs/concepts/what-is-a-workflow-execution) for the specified [Workflow Id](/docs/concepts/what-is-a-workflow-id) and optional [Run Id](/docs/concepts/what-is-a-run-id).
+The `tctl workflow describeid` command shows information about a [Workflow Execution](/concepts/what-is-a-workflow-execution) for the specified [Workflow Id](/concepts/what-is-a-workflow-id) and optional [Run Id](/concepts/what-is-a-run-id).
 
 `tctl workflow describeid <workflow_id> [<run_id>] [<modifiers>]`
 

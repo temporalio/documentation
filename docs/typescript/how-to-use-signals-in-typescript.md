@@ -1,6 +1,6 @@
 ---
 id: how-to-use-signals-in-typescript
-title: How to use Signals in Typescript
+title: How to use Signals in TypeScript
 sidebar_label: Use Signals
 description: Use Signals
 tags:

@@ -7,9 +7,9 @@ tags:
   - tcld
 ---
 
-The `tcld namespace update search-attributes` commands manage [Search Attributes](/docs/concepts/what-is-a-search-attribute) of the specified [Namespace](/docs/concepts/what-is-a-namespace) in Temporal Cloud.
+The `tcld namespace update search-attributes` commands manage [Search Attributes](/concepts/what-is-a-search-attribute) of the specified [Namespace](/concepts/what-is-a-namespace) in Temporal Cloud.
 
 Alias: `sa`
 
-- [`tcld namespace update search-attributes add`](/docs/cloud/tcld/namespace/update/search-attributes/add)
-- [`tcld namespace update search-attributes rename`](/docs/cloud/tcld/namespace/update/search-attributes/rename)
+- [`tcld namespace update search-attributes add`](/cloud/tcld/namespace/update/search-attributes/add)
+- [`tcld namespace update search-attributes rename`](/cloud/tcld/namespace/update/search-attributes/rename)

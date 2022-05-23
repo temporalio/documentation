@@ -1,6 +1,6 @@
 ---
 id: how-to-develop-an-activity-definition-in-typescript
-title: How to develop an Activity Definition in Typescript
+title: How to develop an Activity Definition in TypeScript
 sidebar_label: Develop an Activity Definition
 description: Develop an Activity Definition
 tags:

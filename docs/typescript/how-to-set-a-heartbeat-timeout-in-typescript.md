@@ -1,6 +1,6 @@
 ---
 id: how-to-set-a-heartbeat-timeout-in-typescript
-title: How to set a Heartbeat Timeout in Typescript
+title: How to set a Heartbeat Timeout in TypeScript
 sidebar_label: Set a Heartbeat Timeout
 description: Set a Heartbeat Timeout
 tags:

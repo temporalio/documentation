@@ -57,7 +57,7 @@ Since Temporal Server primarily relies on core database functionality, we do not
 ### Workflow search
 
 Temporal has built-in Workflow search functionality.
-To enhance this feature, Temporal supports an [integration with Elasticsearch](/docs/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster).
+To enhance this feature, Temporal supports an [integration with Elasticsearch](/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster).
 
 - Elasticsearch v7.10 is supported from Temporal version 1.7.0 onwards
 - Elasticsearch v6.8 is supported in all Temporal versions

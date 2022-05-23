@@ -35,7 +35,7 @@ The final and biggest challenge of documenting Temporal is that it is fundamenta
 
 <img alt="image" class="docs-image-centered" src="https://raw.githubusercontent.com/temporalio/documentation-images/main/static/temporal-server-and-sdk-icons.png" />
 
-At a high level, there are two parts to Temporal: the backend and a client-side SDK. Configuring, deploying, and operating the Temporal backend for a live environment is no small task. On the other hand, it is really easy to [get Temporal running on your local machine](/docs/clusters/quick-install) in a Docker container. In fact, you can do it with just two terminal commands.
+At a high level, there are two parts to Temporal: the backend and a client-side SDK. Configuring, deploying, and operating the Temporal backend for a live environment is no small task. On the other hand, it is really easy to [get Temporal running on your local machine](/clusters/quick-install) in a Docker container. In fact, you can do it with just two terminal commands.
 
 The Docker route definitely simplifies running the backend, which means the majority of friction for new users comes from our SDKs ([Go](https://github.com/temporalio/sdk-go), [Java](https://github.com/temporalio/sdk-java)). While an SDK is meant to abstract the complexities of interacting with the server API, Temporal flips a lot of the preconceived notions of modern application development on their head. The SDK docs needed to do more than just provide example usage. They also needed to show the "why" to enable the user to grasp the concepts that Temporal is promoting. So we went about scoping something that we could realistically accomplish within that time frame and still be relatively effective.
 
@@ -114,8 +114,8 @@ This is the direction that we decided to send new users. If a user can wrap thei
 
 Check out these finished tutorials and see for yourself!
 
-- [Go: Run your first Temporal application](/docs/go/run-your-first-app-tutorial)
-- [Java: Run your first Temporal application](/docs/java/run-your-first-app-tutorial)
+- [Go: Run your first Temporal application](/go/run-your-first-app-tutorial)
+- [Java: Run your first Temporal application](/java/run-your-first-app-tutorial)
 
 ## Next steps
 

@@ -36,7 +36,7 @@ import { ResponsivePlayer } from '../src/components'
 
 ## Testing Setup
 
-Below is a basic setup for testing a Temporal Workflow using `go test` and [Testify](https://github.com/stretchr/testify) based on [Temporal's Go testing docs](/docs/go/how-to-test-workflow-definitions-in-go).
+Below is a basic setup for testing a Temporal Workflow using `go test` and [Testify](https://github.com/stretchr/testify) based on [Temporal's Go testing docs](/go/how-to-test-workflow-definitions-in-go).
 You can find the full source code for the test suite in the `workflow_test.go` file.
 
 ```go
@@ -321,7 +321,7 @@ func (s *UnitTestSuite) Test_Checkout() {
 What about testing the abandoned cart email?
 Normally, testing the abandoned cart email is tricky because it involves waiting for 10 minutes.
 The key insight is that Temporal's test environment advances time internally, and time in the test environment is **not** [wall-clock time](https://en.wikipedia.org/wiki/Elapsed_real_time).
-For example, Temporal Workflows time out after [10 years by default](/docs/concepts/what-is-a-workflow-execution-timeout), so the previous examples would run for over a decade if the test environment used wall-clock time!
+For example, Temporal Workflows time out after [10 years by default](/concepts/what-is-a-workflow-execution-timeout), so the previous examples would run for over a decade if the test environment used wall-clock time!
 
 The `RegisterDelayedCallback()` function ties into the test environment's internal notion of time.
 Calling `RegisterDelayedCallback(fn, time.Minute*5)` does **not** tell the test environment to wait for 5 minutes of wall-clock time.

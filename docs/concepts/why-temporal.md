@@ -28,7 +28,7 @@ And as these systems scale, responding to multiple asynchronous events, communic
 Temporal restructures the use of services, databases, cron jobs, queues, host processes, and SDKs, into the Temporal Platform, and addresses failures head on.
 
 In a traditional system, the service exists to spawn function executions.
-The Temporal Platform exists to facilitate [Workflow Executions](/docs/concepts/what-is-a-workflow-execution).
+The Temporal Platform exists to facilitate [Workflow Executions](/concepts/what-is-a-workflow-execution).
 
 ![Temporal vs Traditional system](/diagrams/temporal-vs-traditional.svg)
 
@@ -58,7 +58,7 @@ With Temporal, computation resumes from its _latest_ state. All progress is reta
 
 With a traditional system, you can't communicate with a function execution.
 
-With Temporal, [Signals](/docs/concepts/what-is-a-signal) and [Queries](/docs/concepts/what-is-a-query) enable data to be sent to or extracted from a Workflow Execution.
+With Temporal, [Signals](/concepts/what-is-a-signal) and [Queries](/concepts/what-is-a-query) enable data to be sent to or extracted from a Workflow Execution.
 
 **Scope**
 
