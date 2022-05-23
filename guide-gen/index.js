@@ -279,7 +279,7 @@ async function generateLinkIndexes(guide_configs) {
   }
   guide_configs.cfgs = updated_cfgs;
   guide_configs.full_link_index = full_index;
-  fs.writeFile("log.txt", JSON.stringify(full_index));
+  //fs.writeFile("log.txt", JSON.stringify(full_index));
   //console.log(full_index);
   return guide_configs;
 }
