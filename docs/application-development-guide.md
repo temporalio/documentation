@@ -1069,8 +1069,8 @@ export async function example(name: string): Promise<string> {
 
 ### Start Activity Execution
 
-Calls to spawn [Activity Executions](/activities/#activity-execution) are written within a Workflow Definition.
-The call to spawn an Activity Execution generates the [ScheduleActivityTask](/concepts/what-is-a-command#scheduleactivitytask) Command.
+Calls to spawn [Activity Executions](/activities/#activity-execution) are written within a [Workflow Definition](/workflows/#workflow-definitions).
+The call to spawn an Activity Execution generates the [ScheduleActivityTask](/references/commands/#scheduleactivitytask) Command.
 This results in the set of three [Activity Task](/tasks/#activity-task) related Events ([ActivityTaskScheduled](/references/events/#activitytaskscheduled), [ActivityTaskStarted](/references/events/#activitytaskstarted), and ActivityTask[Closed])in your Workflow Execution Event History.
 
 A single instance of the Activities implementation is shared across multiple simultaneous Activity invocations.
@@ -1220,7 +1220,7 @@ This imports the individual Activities and declares the type alias for each Acti
 
 #### Get Activity results
 
-The call to spawn an [Activity Execution](/activities/#activity-execution) generates the [ScheduleActivityTask](/concepts/what-is-a-command/#scheduleactivitytask) Command and provides the Workflow with an Awaitable.
+The call to spawn an [Activity Execution](/activities/#activity-execution) generates the [ScheduleActivityTask](/references/commands/#scheduleactivitytask) Command and provides the Workflow with an Awaitable.
 Workflow Executions can either block progress until the result is available via the Awaitable or continue progressing, making use of the result when it becomes available.
 
 <Tabs
@@ -1703,15 +1703,15 @@ Content is not available
 
 ### Start Workflow Execution
 
-[Workflow Execution](/workflows/#workflow-executions) semantics rely on several parameters - that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language specific contextual data, and Workflow Function parameters.
+[Workflow Execution](/workflows/#workflow-executions) semantics rely on several parameters - that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
 
 In the examples below, all Workflow Executions are started using a Temporal Client.
 To spawn Workflow Executions from within other Workflow Executions, use either the [Child Workflow](#child-workflows) or External Workflow APIs.
 
 See the [Customize Workflow Type](#customize-workflow-type) section to see how to customize the name of the Workflow Type.
 
-A request to spawn a Workflow Execution causes the Temporal Cluster to create the first Event ([WorkflowExecutionStarted](/concepts/what-is-an-event#workflowexecutionstarted)) in the Workflow Execution Event History.
-The Temporal Cluster then creates the first Workflow Task resulting the first [WorkflowTaskScheduled](/concepts/what-is-an-event/#workflowtaskscheduled) Event.
+A request to spawn a Workflow Execution causes the Temporal Cluster to create the first Event ([WorkflowExecutionStarted](/references/events/#workflowexecutionstarted)) in the Workflow Execution Event History.
+The Temporal Cluster then creates the first Workflow Task resulting the first [WorkflowTaskScheduled](/references/events/#workflowtaskscheduled) Event.
 
 <Tabs
 defaultValue="go"
@@ -1892,7 +1892,7 @@ run().catch((err) => {
 
 #### Set Workflow Id
 
-While it is not required, providing your own [Workflow Id](/workflows/#workflow-id) that maps to business process id or business entity id is highly recommended, such as an order id or a customer id.
+While it is not required, providing your own [Workflow Id](/workflows/#workflow-id) that maps to a business process or business entity identifier is highly recommended. Values that can provided include order Id or customer Id.
 
 <Tabs
 defaultValue="go"
@@ -3244,7 +3244,7 @@ Content is not available
 
 #### Parent Close Policy
 
-A [Parent Close Policy](/concepts/what-is-a-parent-close-policy) determines what happens to a Child Workflow Execution if its Parent changes to a Closed status (Completed, Failed, or Timed out).
+A [Parent Close Policy](/concepts/what-is-a-parent-close-policy) determines what happens to a Child Workflow Execution if its Parent changes to a Closed status (Completed, Failed, or Timed Out).
 
 <Tabs
 defaultValue="go"

@@ -5,5 +5,5 @@ To spawn Workflow Executions from within other Workflow Executions, use either t
 
 See the [Customize Workflow Type](#customize-workflow-type) section to see how to customize the name of the Workflow Type.
 
-A request to spawn a Workflow Execution causes the Temporal Cluster to create the first Event ([WorkflowExecutionStarted](/reference/events/#workflowexecutionstarted)) in the Workflow Execution Event History.
-The Temporal Cluster then creates the first Workflow Task resulting the first [WorkflowTaskScheduled](/reference/events/#workflowtaskscheduled) Event.
+A request to spawn a Workflow Execution causes the Temporal Cluster to create the first Event ([WorkflowExecutionStarted](/references/events/#workflowexecutionstarted)) in the Workflow Execution Event History.
+The Temporal Cluster then creates the first Workflow Task resulting the first [WorkflowTaskScheduled](/references/events/#workflowtaskscheduled) Event.

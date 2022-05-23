@@ -1,5 +1,5 @@
 Calls to spawn [Activity Executions](/concepts/what-is-an-activity-execution) are written within a [Workflow Definition](/concepts/what-is-a-workflow-definition).
-The call to spawn an Activity Execution generates the [ScheduleActivityTask](/reference/commands/#scheduleactivitytask) Command.
+The call to spawn an Activity Execution generates the [ScheduleActivityTask](/references/commands/#scheduleactivitytask) Command.
 This results in the set of three [Activity Task](/concepts/what-is-an-activity-task) related Events ([ActivityTaskScheduled](/references/events/#activitytaskscheduled), [ActivityTaskStarted](/references/events/#activitytaskstarted), and ActivityTask[Closed])in your Workflow Execution Event History.
 
 A single instance of the Activities implementation is shared across multiple simultaneous Activity invocations.
