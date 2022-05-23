@@ -142,7 +142,7 @@ A Temporal Workflow Execution is a durable, reliable, and scalable function exec
 It is the main unit of execution of a [Temporal Application](/temporal/#temporal-application).
 
 - [How to spawn a Workflow Execution in Go](/application-development-guide/#start-workflow-execution)
-- [How to spawn a Workflow Execution in Java](/java/how-to-spawn-a-workflow-execution-in-java)
+- [How to spawn a Workflow Execution in Java](/application-development-guide/#start-workflow-execution)
 - [How to spawn a Workflow Execution in PHP](/php/workflows/#starting-workflows)
 - [How to spawn a Workflow Execution in TypeScript](/typescript/workflows/#how-to-start-and-cancel-workflows)
 
@@ -533,14 +533,16 @@ Each Workflow Execution within the series is considered a Run.
 - Each Run inherits the same Workflow Options as the initial Run.
 
 The Temporal Server spawns the first Workflow Execution in the chain of Runs immediately.
-However, it calculates and applies a backoff so that the first Workflow Task of the Workflow Execution does not get placed into a Task Queue until the scheduled time.
-After each Run Completes, Fails, or Times Out, the same thing happens: the next run will be created immediately, but with a backoff.
+However, it calculates and applies a backoff (`firstWorkflowTaskBackoff`) so that the first Workflow Task of the Workflow Execution does not get placed into a Task Queue until the scheduled time.
+After each Run Completes, Fails, or reaches the [Workflow Run Timeout](#workflow-run-timeout), the same thing happens: the next run will be created immediately with a new `firstWorkflowTaskBackoff` that is calculated based on the current Server time and the defined Cron Schedule.
 
-The Temporal Server spawns the next Run only after the current Run has Completed, Failed, or Timed Out.
-This means that, if a Retry Policy has also been provided, and a Run Fails or Times Out, the Run will first be retried per the Retry Policy until the Run Completes or the Retry Policy has been exhausted.
-If the next Run, per the Cron Schedule, is due to spawn while the current Run is still Open (including retries), the Server skips the next scheduled Run.
-A [Workflow Run Timeout](#workflow-run-timeout) is used to limit the maximum amount of time of individual Runs.
-Again, if the Workflow Run Timeout is reached and there is an associated Retry Policy, the Workflow is retried before the next Cron Scheduled spawn occurs.
+The Temporal Server spawns the next Run only after the current Run has Completed, Failed, or has reached the Workflow Run Timeout.
+This means that, if a Retry Policy has also been provided, and a Run Fails or reaches the Workflow Run Timeout, the Run will first be retried per the Retry Policy until the Run Completes or the Retry Policy has been exhausted.
+If the next Run, per the Cron Schedule, is due to spawn while the current Run is still Open (including retries), the Server automatically starts the new Run after the current Run completes successfully.
+The start time for this new Run and the Cron definitions are used to calculate the `firstWorkflowTaskBackoff` that is applied to the new Run.
+
+A [Workflow Execution Timeout](#workflow-execution-timeout) is used to limit how long a Workflow can be executing (have an Open status), including retries and any usage of Continue As New.
+The Cron Schedule runs until the Workflow Execution Timeout is reached or you terminate the Workflow.
 
 ![Temporal Cron Job Run Failure with a Retry Policy](/diagrams/temporal-cron-job-failure-with-retry.svg)
 
@@ -619,6 +621,7 @@ Use the Workflow Id in any requests to Cancel or Terminate.
 **Implementation guides:**
 
 - [How to set a Cron Schedule in Go](/go/startworkflowoptions-reference/#cronschedule)
-- [How to set a Cron Schedule in Java](/java/distributed-cron)
+- [How to set a Cron Schedule in Java](/java/reference-workflowoptions/#cronschedule)
 - [How to set a Cron Schedule in PHP](/php/distributed-cron)
 - [How to set a Cron Schedule in Typescript](/typescript/clients)
+

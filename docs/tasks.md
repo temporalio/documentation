@@ -102,7 +102,7 @@ There are four places where the name of the Task Queue can be set by the develop
 2. A Task Queue name must be set when starting a Worker Entity:
 
 - [How to develop a Worker Program in Go](/go/how-to-develop-a-worker-program-in-go)
-- [How to develop a Worker Program in Java](/java/how-to-develop-a-worker-program-in-java)
+- [How to develop a Worker Program in Java](/application-development-guide/#run-worker-processes)
 - [How to develop a Worker Program in PHP](/php/how-to-develop-a-worker-program-in-php)
 - [How to develop a Worker Program in TypeScript](/application-development-guide/#run-worker-processes)
 
@@ -169,3 +169,4 @@ Some SDKs provide a Session API that provides a straightforward way to ensure th
 It also includes features like **concurrent session limitations** and **worker failure detection**.
 
 - [How to create Worker Sessions in Go](/go/how-to-create-a-worker-session-in-go)
+

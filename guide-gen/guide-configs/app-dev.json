@@ -299,7 +299,7 @@
             {
               "lang": "java",
               "title": "Java",
-              "path": "none"
+              "path": "java/how-to-spawn-an-activity-execution-in-java"
             },
             {
               "lang": "php",
@@ -332,7 +332,7 @@
             {
               "lang": "java",
               "title": "Java",
-              "path": "none"
+              "path": "java/how-to-get-the-result-of-an-activity-execution-in-java"
             },
             {
               "lang": "php",
@@ -363,7 +363,7 @@
             {
               "lang": "java",
               "title": "Java",
-              "path": "none"
+              "path": "java/how-to-create-a-temporal-client-in-java"
             },
             {
               "lang": "php",
@@ -394,7 +394,7 @@
             {
               "lang": "java",
               "title": "Java",
-              "path": "none"
+              "path": "java/how-to-develop-a-worker-program-in-java"
             },
             {
               "lang": "php",
@@ -425,7 +425,7 @@
                 {
                   "lang": "java",
                   "title": "Java",
-                  "path": "none"
+                  "path": "java/how-to-register-types-with-a-worker-in-java"
                 },
                 {
                   "lang": "php",
@@ -458,7 +458,7 @@
             {
               "lang": "java",
               "title": "Java",
-              "path": "none"
+              "path": "java/how-to-spawn-a-workflow-execution-in-java"
             },
             {
               "lang": "php",
@@ -489,7 +489,7 @@
                 {
                   "lang": "java",
                   "title": "Java",
-                  "path": "none"
+                  "path": "java/how-to-set-a-workflow-task-queue-in-java"
                 },
                 {
                   "lang": "php",
@@ -520,7 +520,7 @@
                 {
                   "lang": "java",
                   "title": "Java",
-                  "path": "none"
+                  "path": "java/how-to-set-a-workflow-id-in-java"
                 },
                 {
                   "lang": "php",
@@ -553,7 +553,7 @@
             {
               "lang": "java",
               "title": "Java",
-              "path": "none"
+              "path": "java/how-to-get-the-result-of-a-workflow-execution-in-java"
             },
             {
               "lang": "php",
@@ -599,7 +599,7 @@
                 {
                   "lang": "java",
                   "title": "Java",
-                  "path": "none"
+                  "path": "java/how-to-define-a-signal-in-java"
                 },
                 {
                   "lang": "php",
@@ -630,7 +630,7 @@
                 {
                   "lang": "java",
                   "title": "Java",
-                  "path": "none"
+                  "path": "java/how-to-handle-a-signal-in-a-workflow-in-java"
                 },
                 {
                   "lang": "php",
@@ -661,7 +661,7 @@
                 {
                   "lang": "java",
                   "title": "Java",
-                  "path": "none"
+                  "path": "java/how-to-send-a-signal-from-a-client-in-java"
                 },
                 {
                   "lang": "php",
@@ -692,7 +692,7 @@
                 {
                   "lang": "java",
                   "title": "Java",
-                  "path": "none"
+                  "path": "java/how-to-send-a-signal-from-a-workflow-in-java"
                 },
                 {
                   "lang": "php",
@@ -723,7 +723,7 @@
                 {
                   "lang": "java",
                   "title": "Java",
-                  "path": "none"
+                  "path": "java/how-to-send-a-signal-with-start-in-java"
                 },
                 {
                   "lang": "php",
@@ -761,7 +761,7 @@
                 {
                   "lang": "java",
                   "title": "Java",
-                  "path": "none"
+                  "path": "java/how-to-define-a-query-in-java"
                 },
                 {
                   "lang": "php",
@@ -792,7 +792,7 @@
                 {
                   "lang": "java",
                   "title": "Java",
-                  "path": "none"
+                  "path": "java/how-to-send-a-query-to-a-workflow-in-java"
                 },
                 {
                   "lang": "php",
@@ -823,7 +823,7 @@
                 {
                   "lang": "java",
                   "title": "Java",
-                  "path": "none"
+                  "path": "java/how-to-handle-a-query-in-a-workflow-in-java"
                 },
                 {
                   "lang": "php",
@@ -861,7 +861,7 @@
                 {
                   "lang": "java",
                   "title": "Java",
-                  "path": "none"
+                  "path": "java/how-to-set-a-workflow-execution-timeout-in-java"
                 },
                 {
                   "lang": "php",
@@ -892,7 +892,7 @@
                 {
                   "lang": "java",
                   "title": "Java",
-                  "path": "none"
+                  "path": "java/how-to-set-a-workflow-run-timeout-in-java"
                 },
                 {
                   "lang": "php",
@@ -923,7 +923,7 @@
                 {
                   "lang": "java",
                   "title": "Java",
-                  "path": "none"
+                  "path": "java/how-to-set-a-workflow-task-timeout-in-java"
                 },
                 {
                   "lang": "php",
@@ -954,7 +954,7 @@
                 {
                   "lang": "java",
                   "title": "Java",
-                  "path": "none"
+                  "path": "java/how-to-set-workflow-retry-options-in-java"
                 },
                 {
                   "lang": "php",
@@ -992,7 +992,7 @@
                 {
                   "lang": "java",
                   "title": "Java",
-                  "path": "none"
+                  "path": "java/how-to-set-a-schedule-to-close-timeout-in-java"
                 },
                 {
                   "lang": "php",
@@ -1023,7 +1023,7 @@
                 {
                   "lang": "java",
                   "title": "Java",
-                  "path": "none"
+                  "path": "java/how-to-set-a-start-to-close-timeout-in-java"
                 },
                 {
                   "lang": "php",
@@ -1054,7 +1054,7 @@
                 {
                   "lang": "java",
                   "title": "Java",
-                  "path": "none"
+                  "path": "java/how-to-set-a-schedule-to-start-timeout-in-java"
                 },
                 {
                   "lang": "php",
@@ -1085,7 +1085,7 @@
                 {
                   "lang": "java",
                   "title": "Java",
-                  "path": "none"
+                  "path": "java/how-to-set-a-heartbeat-timeout-in-java"
                 },
                 {
                   "lang": "php",
@@ -1116,7 +1116,7 @@
                 {
                   "lang": "java",
                   "title": "Java",
-                  "path": "none"
+                  "path": "java/how-to-set-activity-retry-options-in-java"
                 },
                 {
                   "lang": "php",
@@ -1149,7 +1149,7 @@
             {
               "lang": "java",
               "title": "Java",
-              "path": "none"
+              "path": "java/how-to-spawn-a-child-workflow-execution-in-java"
             },
             {
               "lang": "php",
@@ -1180,7 +1180,7 @@
                 {
                   "lang": "java",
                   "title": "Java",
-                  "path": "none"
+                  "path": "java/how-to-set-a-parent-close-policy-in-java"
                 },
                 {
                   "lang": "php",
@@ -1213,7 +1213,7 @@
             {
               "lang": "java",
               "title": "Java",
-              "path": "none"
+              "path": "java/how-to-heartbeat-an-activity-in-java"
             },
             {
               "lang": "php",
@@ -1244,7 +1244,7 @@
             {
               "lang": "java",
               "title": "Java",
-              "path": "none"
+              "path": "java/how-to-set-a-cron-schedule-in-java"
             },
             {
               "lang": "php",
