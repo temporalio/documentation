@@ -30,13 +30,11 @@ Keep reading or follow along with this video walkthrough:
 
 ## ![](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/repair-tools.png) Project setup
 
-
 Before starting, make sure you have looked over the [tutorial prerequisites](/docs/go/tutorial-prerequisites).
 
 - Ensure the Temporal Server is running (using [Docker is the fastest way](https://docs.temporal.io/docs/clusters/quick-install))
 - Ensure you're using Go version v1.14 or later.
 - Ensure you have Git installed to clone the project.
-
 
 This tutorial uses a fully working template application which can be downloaded as a zip or converted to a new repository in your own Github account and cloned. Github's ["Creating a Repository from a Template" guide](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-from-a-template#creating-a-repository-from-a-template) will walk you through the steps.
 
@@ -240,11 +238,9 @@ Select the **Show Details** link to see more details including its state, the nu
 
 <br/>
 
-
 **Traditionally application developers are forced to implement timeout and retry logic within the service code itself.**
 This is repetitive and error prone.
 With Temporal, one of the key value propositions is that timeout configurations ([Schedule-To-Start Timeout](/concepts/what-is-a-schedule-to-start-timeout), [Schedule-To-Close Timeout](/concepts/what-is-a-schedule-to-close-timeout), [Start-To-Close Timeout](/concepts/what-is-a-start-to-close-timeout), and [Heartbeat Timeout](/concepts/what-is-a-heartbeat-timeout)) and [Retry Policies](/concepts/what-is-a-retry-policy) are specified in the Workflow code as Activity options. In `workflow.go`, you can see that we have specified a `StartToCloseTimeout` for our Activities, and set a retry policy that tells the server to retry them up to 500 times. You can read more about [Retries](/concepts/what-is-a-retry-policy) in our docs.
-
 
 Your Workflow is running, but only the `Withdraw()` Activity function has succeeded. In any other application, the whole process would likely have to be abandoned and rolled back. So, here is the last value proposition of this tutorial: With Temporal, you can debug and fix the issue while the Workflow is running!
 
