@@ -225,11 +225,13 @@ function Explained() {
       </div>
       <div className="landing-card-section">
         <a className="header-link" href="/application-development">
-          <h2>Legacy SDK docs</h2>
+          <h2>Legacy docs for SDKs</h2>
         </a>
         <p className="landing-card-p">
           Application development by language.{" "}
-          <span className="bold">Deprecated.</span>
+          <span className="bold">
+            Now included in the application development guide.
+          </span>
         </p>
         <ul className="landing-card-list">
           <li className="">
