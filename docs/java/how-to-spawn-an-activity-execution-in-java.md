@@ -2,7 +2,7 @@
 id: how-to-spawn-an-activity-execution-in-java
 title: How to spawn an Activity Execution in Java
 sidebar_label: Activity Execution
-description: Activities are remote procedure calls that must be invoked from within a Workflow using `ActivityStub`.
+description: Invoke Activities using `Workflow.newActivityStub`(type-safe) or `Workflow.newUntypedActivityStub` (untyped) from within a Workflow.
 tags:
   - java
   - developer-guide
@@ -14,7 +14,7 @@ Activities are not executable on their own. You cannot start an Activity Executi
 Note that before an Activity Execution is invoked:
 
 - Activity options (either [`setStartToCloseTimeout`](/concepts/what-is-a-start-to-close-timeout) or [`ScheduleToCloseTimeout`](/concepts/what-is-a-schedule-to-close-timeout) are required) must be set for the Activity.
-  See [Activity Options](/java/how-to-set-activityoptions-in-java).
+  For details, see [Set Activity Options](/java/how-to-set-activityoptions-in-java) and [Activity Options reference](/java/reference-activityoptions).
 - The Activity must be registered with a Worker.
   See [Worker Program](/java/how-to-develop-a-worker-program-in-java)
 - Activity code must be thread-safe.
