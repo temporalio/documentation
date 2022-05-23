@@ -66,7 +66,7 @@ export async function exampleWorkflow(name: string) {
 }
 ```
 
-The full Workflow and Workflow API docs are [here](https://docs.temporal.io/docs/typescript/workflows).
+The full Workflow and Workflow API docs are [here](https://docs.temporal.io/typescript/workflows).
 
 ## Activities
 
@@ -96,11 +96,11 @@ const { greet } = proxyActivities<typeof activities>({
 });
 ```
 
-The full Activity docs are [here](https://docs.temporal.io/docs/typescript/activities) - there are a few more [Context utility](https://docs.temporal.io/docs/typescript/activities#activity-context-utilities) functions exposed as `@temporalio/activity`.
+The full Activity docs are [here](https://docs.temporal.io/typescript/activities) - there are a few more [Context utility](https://docs.temporal.io/typescript/activities#activity-context-utilities) functions exposed as `@temporalio/activity`.
 
 ## Workers
 
-A Worker is a process that connects to the Temporal Server, polls for Tasks sent from Clients, and executes **[Workflows](https://docs.temporal.io/docs/typescript/workflows)** and **[Activities](https://docs.temporal.io/docs/typescript/activities)** in response. An application can have as many Worker Processes as needed to meet scalability and reliability requirements.
+A Worker is a process that connects to the Temporal Server, polls for Tasks sent from Clients, and executes **[Workflows](https://docs.temporal.io/typescript/workflows)** and **[Activities](https://docs.temporal.io/typescript/activities)** in response. An application can have as many Worker Processes as needed to meet scalability and reliability requirements.
 
 A standard Worker looks like this:
 
@@ -123,7 +123,7 @@ run().catch((err) => {
 });
 ```
 
-The full Worker docs are [here](https://docs.temporal.io/docs/typescript/workers). In production, you will also want to [prebundle your Workflows](https://docs.temporal.io/docs/typescript/production-deploy/#pre-build-code) and [configure connection strings and security options](https://docs.temporal.io/docs/typescript/security#encryption-in-transit-with-mtls).
+The full Worker docs are [here](https://docs.temporal.io/typescript/workers). In production, you will also want to [prebundle your Workflows](https://docs.temporal.io/typescript/production-deploy/#pre-build-code) and [configure connection strings and security options](https://docs.temporal.io/typescript/security#encryption-in-transit-with-mtls).
 
 ## Client
 
@@ -141,13 +141,13 @@ const handle = await client.start(exampleWorkflow, {
 });
 ```
 
-The full Client docs are [here](https://docs.temporal.io/docs/typescript/clients). 
+The full Client docs are [here](https://docs.temporal.io/typescript/clients). 
 
 ## Next Steps
 
 The 4 concepts of Workflow, Activity, Worker, and Client are a simple but powerful way to break down any distributed system design that you may need. 
 
-- If you would like to run code and understand this yourself, check [our Hello World tutorial](https://docs.temporal.io/docs/typescript/hello-world).
+- If you would like to run code and understand this yourself, check [our Hello World tutorial](https://docs.temporal.io/typescript/hello-world).
 - If you prefer a long form, guided Workshop with Q&A, [join our upcoming Intro Workshop on Nov 30](https://lu.ma/temporalintro)!
 
 > 2022 Edit - The workshop recording is up on YouTube!!

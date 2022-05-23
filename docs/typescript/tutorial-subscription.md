@@ -5,14 +5,14 @@ sidebar_label: Subscription Tutorial
 description: In this tutorial, we will tour all of the Workflow APIs you should know, primarily Signals, Queries, `condition`, and `sleep`, by building a realistic monthly subscription payments workflow that can be canceled and changed while it runs.
 ---
 
-In this tutorial, we will tour all of the [Workflow APIs](/docs/typescript/workflows#workflow-apis) you should know, primarily Signals, Queries, `condition`, and `sleep` (and eventually Child Workflows and `continueAsNew`), by building a realistic monthly subscription payments workflow that can be canceled and changed while it runs.
+In this tutorial, we will tour all of the [Workflow APIs](/typescript/workflows#workflow-apis) you should know, primarily Signals, Queries, `condition`, and `sleep` (and eventually Child Workflows and `continueAsNew`), by building a realistic monthly subscription payments workflow that can be canceled and changed while it runs.
 
 - The goal is to give you a more accessible introduction to these APIs by explaining them in context of a realistic application.
 - We also give an example of how you break down project requirements into Activities and Workflow logic.
 
 :::info Prerequisites
 
-We assume that you have gone through our [Hello World tutorial](/docs/typescript/hello-world) and understood the basics of getting a Temporal TypeScript SDK project up and running.
+We assume that you have gone through our [Hello World tutorial](/typescript/hello-world) and understood the basics of getting a Temporal TypeScript SDK project up and running.
 
 We don't assume knowledge of the Workflow APIs, but we do expect that you are reasonably comfortable with TypeScript/Node.js.
 
@@ -49,7 +49,7 @@ In future, we will extend this tutorial to look at what is needed for indefinite
 
 ## Write the Activities
 
-**Each of the bolded items in our requirements are actions involving the outside world** (charging customers, sending emails), so they should be written as [Activities](/docs/typescript/activities).
+**Each of the bolded items in our requirements are actions involving the outside world** (charging customers, sending emails), so they should be written as [Activities](/typescript/activities).
 
 Activities are not the focus of this tutorial so they are elided, but you may wish to write them first as they are self contained pieces of regular Node.js code, and you may discover more data model requirements in this process that impact how you write Workflows.
 
@@ -84,7 +84,7 @@ export async function SubscriptionWorkflow(
 ```
 
 Here we are using the `sleep` API for the first time.
-It does what it says; defers execution for a preset time (note that it accepts both a string or number of milliseconds, [per its docs](/docs/typescript/workflows#sleep)).
+It does what it says; defers execution for a preset time (note that it accepts both a string or number of milliseconds, [per its docs](/typescript/workflows#sleep)).
 
 To test this out, you will also have to modify your Client code accordingly:
 
@@ -179,7 +179,7 @@ When you run this script while the main `client` script is running, you should b
 
 ## Using `condition` with timeouts
 
-Where `sleep(ms)` defers execution for a fixed time, `condition` defers execution for an indefinite time until a given predicate function returns `true` ([per the docs](/docs/typescript/workflows#condition)).
+Where `sleep(ms)` defers execution for a fixed time, `condition` defers execution for an indefinite time until a given predicate function returns `true` ([per the docs](/typescript/workflows#condition)).
 So a simple cancellation signal workflow could look like this:
 
 ```ts
@@ -217,7 +217,7 @@ export async function SubscriptionWorkflow(
 
 Now when you run your `cancel-subscription` script you can see that the cancellation happens immediately.
 And now you know the basics of writing asynchronous time- and Signal-based logic.
-We have documented other patterns you are likely to use, like [sleepUntil](/docs/typescript/workflows#sleep) and [Updatable Timers](/docs/typescript/workflows#async-design-patterns).
+We have documented other patterns you are likely to use, like [sleepUntil](/typescript/workflows#sleep) and [Updatable Timers](/typescript/workflows#async-design-patterns).
 
 ## Data Model
 
@@ -315,7 +315,7 @@ wf.setHandler(
 ```
 
 You can set up Signals and Queries and Handlers for every field, or perhaps just one set for the entire Customer object, it depends on your needs.
-But these primitives can be flexibly rearranged (with specific inspiration from React Custom Hooks) to reduce boilerplate for your needs, [as we have documented](/docs/typescript/workflows#signals-and-queries-design-patterns).
+But these primitives can be flexibly rearranged (with specific inspiration from React Custom Hooks) to reduce boilerplate for your needs, [as we have documented](/typescript/workflows#signals-and-queries-design-patterns).
 
 Knowledge check time - Write scripts with Temporal Clients for:
 
@@ -398,5 +398,5 @@ These are meant to be low level primitives, and it is entirely expected that you
 Two paths from here:
 
 - **Go Full Stack**: Integrate the manually-run Temporal Client scripts you have written here into an Express.js app, or serverless function.
-  Our [Next.js Tutorial](/docs/typescript/nextjs-tutorial) should help show you how to integrate this with a frontend app, and give indications on how to deploy.
-- **Learn More**: Explore using [Child Workflows](/docs/typescript/workflows#child-workflows) and [`continueAsNew`](/docs/typescript/workflows#continueasnew) so that your subscriptions can keep running indefinitely.
+  Our [Next.js Tutorial](/typescript/nextjs-tutorial) should help show you how to integrate this with a frontend app, and give indications on how to deploy.
+- **Learn More**: Explore using [Child Workflows](/typescript/workflows#child-workflows) and [`continueAsNew`](/typescript/workflows#continueasnew) so that your subscriptions can keep running indefinitely.

@@ -17,7 +17,7 @@ The [v0.28 changelog blog post](/blog/temporal-v0.28.0-changelog) details many o
 
 When using Temporal, this means the following things:
 
-- Communication over can be encrypted via [TLS](/docs/server/configuration/#tls).
+- Communication over can be encrypted via [TLS](/server/configuration/#tls).
 - Custom service errors backed by standard [gRPC error codes](https://pkg.go.dev/google.golang.org/grpc/codes).
 - Errors are serialized using the Protobuf type `Failure` and they be chained together and passed across different SDKs in different languages.
 - All payloads (Workflow input, Activity input, etc...) sent to Temporal now have headers and data fields.
@@ -60,7 +60,7 @@ When using Temporal, this means the following things:
 - To disable Activity retries, configure Activities with `RetryOptions` that set `maximumAttempts` to 1.
 - `ScheduleToClose` is used to stop retries for Activities.
 
-6. **[Temporal dependencies](/docs/server/versions-and-dependencies) are different**
+6. **[Temporal dependencies](/server/versions-and-dependencies) are different**
 
 - Uber YARPC library is not used by Temporal.
 - Temporal no longer needs to use Kafka.

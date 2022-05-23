@@ -44,7 +44,7 @@ Double check that your Workers are registering the right Workflow and Activity D
 [ERROR] Module not found: Error: Can't resolve '@temporalio/workflow/lib/worker-interface.js' in '/src'
 ```
 
-Our [Next.js tutorial](/docs/typescript/nextjs-tutorial) is written for people setting up Temporal **within an existing monorepo** which may be of use here.
+Our [Next.js tutorial](/typescript/nextjs-tutorial) is written for people setting up Temporal **within an existing monorepo** which may be of use here.
 
 When you pass a `workflowsPath`, our Webpack config tries to find `node_modules` relative to it and expects `temporalio` to be installed there.
 You can explicitly specify `nodeModulesPaths` if you need to take over, and `find . -name @temporalio -type d` will help identify what path to use (typically it will require going up the right number of directories: `path.join(__dirname, '../../../node_modules')`
@@ -60,13 +60,13 @@ You can explicitly specify `nodeModulesPaths` if you need to take over, and `fin
 ```
 
 Temporal Workflow Bundles need to [export a set of methods that fit the compiled `worker-interface.ts` from `@temporalio/workflow`](https://github.com/temporalio/sdk-typescript/blob/eaa2d205c9bc5ff4a3b17c0b34f2dcf6b1e0264a/packages/worker/src/workflow/bundler.ts#L81) as an entry point.
-We do offer a [bundleWorkflowCode](/docs/typescript/workers/#prebuilt-workflow-bundles) method to assist you with this, though it uses our Webpack settings.
+We do offer a [bundleWorkflowCode](/typescript/workers/#prebuilt-workflow-bundles) method to assist you with this, though it uses our Webpack settings.
 
 ## Webpack errors
 
-The TypeScript SDK's [Worker](/docs/typescript/workers) bundles Workflows based on `workflowsPath` and their dependencies from `nodeModulesPaths` with [Webpack](https://webpack.js.org/) and run them inside v8 isolates.
+The TypeScript SDK's [Worker](/typescript/workers) bundles Workflows based on `workflowsPath` and their dependencies from `nodeModulesPaths` with [Webpack](https://webpack.js.org/) and run them inside v8 isolates.
 
-If Webpack fails to create the bundle, the SDK will throw an error and emit webpack logs using the SDK's [logger](/docs/typescript/logging#logs-generated-by-sdk-components).
+If Webpack fails to create the bundle, the SDK will throw an error and emit webpack logs using the SDK's [logger](/typescript/logging#logs-generated-by-sdk-components).
 
 If you do not see Webpack output in your terminal make sure that you have not disabled SDK logging (see reference to `Runtime.install()` in the link above).
 
@@ -230,8 +230,8 @@ Log it out and make sure it is an exact match with what is expected (often, the 
 
 You can "rewind time" using the `tctl` CLI, resetting Workflow History to some previous point in time. You can read the CLI docs on:
 
-- [Restarting and resetting Workflows by ID](https://docs.temporal.io/docs/tctl/how-to-use-tctl/#restart-reset-workflow)
-- [Resetting all Workflows by binary checksum identifier](https://docs.temporal.io/docs/tctl/how-to-use-tctl/#recovery-from-bad-deployment----auto-reset-workflow)
+- [Restarting and resetting Workflows by ID](https://docs.temporal.io/tctl/how-to-use-tctl/#restart-reset-workflow)
+- [Resetting all Workflows by binary checksum identifier](https://docs.temporal.io/tctl/how-to-use-tctl/#recovery-from-bad-deployment----auto-reset-workflow)
 
 If you need to reset programmatically, the TS SDK does not have any high level APIs for this, but you can make raw gRPC calls to [resetWorkflowExecution](https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.workflowservice-1/#resetworkflowexecution).
 
@@ -265,7 +265,7 @@ Querying a Workflow Execution whose query handler causes an error can result in 
 Some troubleshooting actions you can take:
 
 - Verify the connection from your Worker to the Temporal Server is working and doesn't have unusually high latency
-- If you are running Temporal Server yourself, check your [server metrics](/docs/server/production-deployment/#scaling-and-metrics) to ensure it's not overloaded
+- If you are running Temporal Server yourself, check your [server metrics](/server/production-deployment/#scaling-and-metrics) to ensure it's not overloaded
 - If what's timing out is a query, check the logs of your Workers to see if they are having issues handling the query
 
 If none of the preceding actions help you discover why timeouts are occurring, please try to produce a minimal repro and we'll be glad to help.

@@ -8,7 +8,7 @@ tags:
   - go
 ---
 
-To spawn a [Workflow Execution](/docs/concepts/what-is-a-workflow-execution), use the `ExecuteWorkflow()` method on the Go SDK [`Client`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client#Client).
+To spawn a [Workflow Execution](/concepts/what-is-a-workflow-execution), use the `ExecuteWorkflow()` method on the Go SDK [`Client`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client#Client).
 
 The `ExecuteWorkflow()` API call requires an instance of [`context.Context`](https://pkg.go.dev/context#Context), an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client#StartWorkflowOptions), a Workflow Type name, and all variables to be passed to the Workflow Execution.
 The `ExecuteWorkflow()` call returns a Future, which can be used to get the result of the Workflow Execution.

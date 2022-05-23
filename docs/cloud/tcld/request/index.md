@@ -11,4 +11,4 @@ The `tcld request` commands manage asynchronous requests in Temporal Cloud.
 
 Alias: `r`
 
-- [`tcld request get`](/docs/cloud/tcld/request/get)
+- [`tcld request get`](/cloud/tcld/request/get)

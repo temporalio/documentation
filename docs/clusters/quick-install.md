@@ -5,8 +5,8 @@ sidebar_label: Quick install
 description: There are four ways to quickly install and run a Temporal Cluster.
 ---
 
-Whenever we are developing Temporal Applications, we want to have a [Temporal Cluster](/docs/concepts/what-is-a-temporal-cluster) up and running.
-We can interact with a Cluster through [Temporal Client](/docs/concepts/what-is-a-temporal-client) APIs and [tctl](/docs/tctl) commands.
+Whenever we are developing Temporal Applications, we want to have a [Temporal Cluster](/concepts/what-is-a-temporal-cluster) up and running.
+We can interact with a Cluster through [Temporal Client](/concepts/what-is-a-temporal-client) APIs and [tctl](/tctl) commands.
 
 There are four ways to quickly install and run a Temporal Cluster:
 
@@ -15,7 +15,7 @@ There are four ways to quickly install and run a Temporal Cluster:
 - [Helm charts](#helm-charts): Deploying a Cluster to [Kubernetes](https://kubernetes.io/) is an easy way to test the system and develop Temporal Applications.
 - [Gitpod](#gitpod): One-click deployments are available for Go and TypeScript.
 
-**We do not recommend using any of these methods in a [full (production) environment](/docs/server/production-deployment).**
+**We do not recommend using any of these methods in a [full (production) environment](/server/production-deployment).**
 
 #### Helm charts
 
@@ -47,7 +47,7 @@ To try other configurations (different dependencies and databases), or to try a 
 [temporal-render-simple](https://github.com/temporalio/temporal-render-simple) translates our docker-compose to Render by using the [Auto-Setup Docker image](https://docs.temporal.io/blog/auto-setup).
 We do not recommend using this technique for production because all four Temporal internal services (Frontend, Matching, History, and Worker) are run in one process, but the benefit is one-click deployments.
 
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/temporalio/temporal-render-simple)
+[Deploy to Render](https://render.com/deploy?repo=https://github.com/temporalio/temporal-render-simple)
 
 #### Gitpod
 

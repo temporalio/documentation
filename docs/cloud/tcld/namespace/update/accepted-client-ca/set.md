@@ -8,7 +8,7 @@ tags:
   - tcld
 ---
 
-The `tcld namespace update accepted-client-ca set` command sets the accepted client CA certificates for a [Namespace](/docs/concepts/what-is-a-namespace) in Temporal Cloud.
+The `tcld namespace update accepted-client-ca set` command sets the accepted client CA certificates for a [Namespace](/concepts/what-is-a-namespace) in Temporal Cloud.
 
 `tcld namespace update accepted-client-ca set --ca-certificate <value>`
 

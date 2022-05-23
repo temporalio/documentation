@@ -8,7 +8,7 @@ tags:
   - tctl
 ---
 
-The `tctl workflow query` command sends a Query to a [Workflow Executions](/docs/concepts/what-is-a-workflow-execution).
+The `tctl workflow query` command sends a Query to a [Workflow Executions](/concepts/what-is-a-workflow-execution).
 
 `tctl workflow query [<modifiers>]`
 
@@ -16,7 +16,7 @@ The following modifiers control the behavior of the command.
 
 ### `--workflow_id`
 
-Specify a [Workflow Id](/docs/concepts/what-is-a-workflow-id).
+Specify a [Workflow Id](/concepts/what-is-a-workflow-id).
 
 Aliases: `--wid`, `-w`
 
@@ -28,7 +28,7 @@ tctl workflow query --workflow_id <id>
 
 ### `--run_id`
 
-Specify a [Run Id](/docs/concepts/what-is-a-run-id).
+Specify a [Run Id](/concepts/what-is-a-run-id).
 
 Aliases: `--rid`, `-r`
 

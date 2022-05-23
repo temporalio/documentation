@@ -30,5 +30,5 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error
 ```
 
 In the example above, the Workflow code uses `workflow.GetSignalChannel` to open a `workflow.Channel` for the Signal type (identified by the Signal name).
-We then use a [`workflow.Selector`](https://docs.temporal.io/docs/go/selectors) and the `AddReceive()` to wait on a Signal from this channel.
+We then use a [`workflow.Selector`](https://docs.temporal.io/go/selectors) and the `AddReceive()` to wait on a Signal from this channel.
 The `more` bool in the callback function indicates that channel is not closed and more deliveries are possible.

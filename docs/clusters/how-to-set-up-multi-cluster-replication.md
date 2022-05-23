@@ -8,7 +8,7 @@ tags:
   - cluster
 ---
 
-The [Multi-Cluster Replication](/docs/concepts/what-is-multi-cluster-replication) feature asynchronously replicates Workflow Execution Event Histories from active Clusters to other passive Clusters, and can be enabled by setting the appropriate values in the `clusterMetadata` section of your configuration file.
+The [Multi-Cluster Replication](/concepts/what-is-multi-cluster-replication) feature asynchronously replicates Workflow Execution Event Histories from active Clusters to other passive Clusters, and can be enabled by setting the appropriate values in the `clusterMetadata` section of your configuration file.
 
 1. `enableGlobalNamespace` must be set to `true`.
 2. `failoverVersionIncrement` has to be equal across connected Clusters.
@@ -19,7 +19,7 @@ After the above conditions are satisfied, you can start to configure a multi-clu
 
 #### Set up Multi-Cluster Replication prior to v1.14
 
-You can set this up with [`clusterMetadata` configuration](/docs/server/configuration#clustermetadata); however, this is meant to be only a conceptual guide rather than a detailed tutorial.
+You can set this up with [`clusterMetadata` configuration](/server/configuration#clustermetadata); however, this is meant to be only a conceptual guide rather than a detailed tutorial.
 Please reach out to us if you need to set this up.
 
 For example:
@@ -60,7 +60,7 @@ clusterMetadata:
 
 #### Set up Multi-Cluster Replication in v1.14 and later
 
-You still need to set up local cluster [`clusterMetadata` configuration](/docs/server/configuration#clustermetadata)
+You still need to set up local cluster [`clusterMetadata` configuration](/server/configuration#clustermetadata)
 
 For example:
 

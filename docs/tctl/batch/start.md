@@ -18,9 +18,9 @@ The following modifiers control the behavior of the command.
 
 _Required modifier_
 
-Specify the [Workflow Executions](/docs/concepts/what-is-a-workflow-execution) that this batch job should operate.
+Specify the [Workflow Executions](/concepts/what-is-a-workflow-execution) that this batch job should operate.
 
-The SQL-like query of [Search Attributes](/docs/concepts/what-is-a-search-attribute) is the same as used by the `tctl workflow list --query` command.
+The SQL-like query of [Search Attributes](/concepts/what-is-a-search-attribute) is the same as used by the `tctl workflow list --query` command.
 
 Alias: `-q`
 
@@ -56,7 +56,7 @@ tctl batch start --query <value> --batch_type <operation>
 
 ### `--signal_name`
 
-Specify the name of a [Signal](/docs/concepts/what-is-a-signal). This modifier is required when `--batch_type` is `signal`.
+Specify the name of a [Signal](/concepts/what-is-a-signal). This modifier is required when `--batch_type` is `signal`.
 
 Alias: `--sig`
 
@@ -68,7 +68,7 @@ tctl batch start --query <value> --batch_type signal --signal_name <name>
 
 ### `--input`
 
-Pass input for the [Signal](/docs/concepts/what-is-a-signal). Input must be in JSON format.
+Pass input for the [Signal](/concepts/what-is-a-signal). Input must be in JSON format.
 
 Alias: `-i`
 

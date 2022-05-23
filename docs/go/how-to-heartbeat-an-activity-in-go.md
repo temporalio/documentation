@@ -8,7 +8,7 @@ tags:
   - developer-guide
 ---
 
-To [Heartbeat](/docs/concepts/what-is-an-activity-heartbeat) in an Activity, use the `RecordHeartbeat` API.
+To [Heartbeat](/concepts/what-is-an-activity-heartbeat) in an Activity, use the `RecordHeartbeat` API.
 
 ```go
 progress := 0

@@ -1,7 +1,7 @@
 ---
-id: how-to-initialize-a-workflow-client-in-java
-title: How to initialize a Workflow Client in Java
-sidebar_label: Workflow Client Initialization
+id: how-to-create-a-temporal-client-in-java
+title: How to create a Temporal Client in Java
+sidebar_label: Temporal Client
 description: To initialize a Workflow Client, create an instance of a `WorkflowClient`, create a client-side `WorkflowStub`, and then call a Workflow method (annotated with the `@WorkflowMethod` annotation).
 tags:
   - java
@@ -30,7 +30,37 @@ WorkflowServiceStubs service = WorkflowServiceStubs.newServiceStubs(
 
 ```
 
-See [WorkflowServiceStubsOptions](/docs/java/how-to-set-workflowservicestuboptions-in-java) for details.
+You can also provide certificates to be able to connect to your frontend service using mTLS.
+The following example shows how to set up cetificates and pass the `SSLContext` for the Client.
+
+```java
+import io.temporal.serviceclient.SimpleSslContextBuilder;
+...
+// Load your client certificate, which should look like:
+    // -----BEGIN CERTIFICATE-----
+    // ...
+    // -----END CERTIFICATE-----
+    InputStream clientCert = new FileInputStream(System.getenv("TEMPORAL_CLIENT_CERT"));
+    // PKCS8 client key, which should look like:
+    // -----BEGIN PRIVATE KEY-----
+    // ...
+    // -----END PRIVATE KEY-----
+    InputStream clientKey = new FileInputStream(System.getenv("TEMPORAL_CLIENT_KEY"));
+    // For Temporal Cloud this would likely be ${namespace}.tmprl.cloud:7233
+    String targetEndpoint = System.getenv("TEMPORAL_ENDPOINT");
+    // Your registered Namespace.
+    String namespace = System.getenv("TEMPORAL_NAMESPACE");
+    // Create SSL enabled client by passing SslContext, created by SimpleSslContextBuilder.
+    WorkflowServiceStubs service =
+        WorkflowServiceStubs.newInstance(
+            WorkflowServiceStubsOptions.newBuilder()
+                .setSslContext(SimpleSslContextBuilder.forPKCS8(clientCert, clientKey).build())
+                .setTarget(targetEndpoint)
+                .build());
+
+```
+
+For details, see [Sample](https://github.com/temporalio/samples-java/blob/main/src/main/java/io/temporal/samples/ssl/SslEnabledWorker.java).
 
 After the connection to the Temporal frontend service is established, create a Client for the service stub.
 The Workflow Client helps with client-side APIs and is required by Workers.
@@ -47,12 +77,23 @@ WorkflowClient client = WorkflowClient.newServiceStubs(
 
 ```
 
-See [WorkflowClientOptions](/docs/java/how-to-set-workflowclientoptions-in-java) for details.
+See [WorkflowClientOptions](/java/how-to-set-workflowclientoptions-in-java) for details.
 
 `WorkflowService` and `WorkflowClient` creation is a heavyweight operation, and will be resource-intensive if created each time you start a Workflow or send a Signal to it.
 The recommended way is to create them once and reuse where possible.
 
 With the Client defined, you can start interacting with the Temporal Frontend Service using the SDK APIs.
 
+To initialize a Workflow in the Client, create a `WorkflowStub`, and start the Workflow Execution with `WorkflowClient.start()`.
 Starting Workflows or sending Signals or Queries to Workflows from within a Client must be done using `WorkflowStubs`.
-See [How to spawn a Workflow Execution in Java](/docs/java/how-to-spawn-a-workflow-execution-in-java) for details.
+
+```java
+WorkflowClient workflowClient =  WorkflowClient.newInstance(service, clientOptions);
+ // Create a Workflow stub.
+ YourWorkflow workflow = workflowClient.newWorkflowStub(YourWorkflow.class);
+ // Start Workflow asynchronously and call its "yourWFMethod" Workflow method
+ WorkflowClient.start(workflow::yourWFMethod);
+```
+
+For details, see [How to spawn a Workflow Execution in Java](/java/how-to-spawn-a-workflow-execution-in-java).
+See [How to spawn a Workflow Execution in Java](/java/how-to-spawn-a-workflow-execution-in-java) for details.

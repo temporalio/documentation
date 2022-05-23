@@ -10,7 +10,7 @@ export const SDKs = () => {
         Find SDK tutorials and API references in the language of your choice.
       </p>
       <div className="grid grid-cols-1 gap-6  md:grid-cols-2 lg:gap-8 mb-8">
-        <Link to={useBaseUrl("/docs/typescript/introduction")}>
+        <Link to={useBaseUrl("/typescript/introduction")}>
           <div className=" scale flex flex-col items-center justify-center space-y-3 rounded-lg bg-[color:var(--ifm-card-background-color)] p-6 text-center shadow-lg">
             <img
               className="h-16 w-16"
@@ -22,7 +22,7 @@ export const SDKs = () => {
         </Link>
         <Link
           className=" scale flex flex-col items-center justify-center space-y-3 rounded-lg bg-[color:var(--ifm-card-background-color)] p-6 text-center shadow-lg"
-          to={useBaseUrl("/docs/go")}
+          to={useBaseUrl("/go")}
         >
           <img
             className="h-16 w-16"
@@ -33,13 +33,13 @@ export const SDKs = () => {
         </Link>
         <Link
           className=" scale flex flex-col items-center justify-center space-y-3 rounded-lg bg-[color:var(--ifm-card-background-color)] p-6 text-center shadow-lg"
-          to={useBaseUrl("/docs/java")}
+          to={useBaseUrl("/java")}
         >
           <img className="h-16 w-16" src="/img/java.svg" alt="Java logo" />
           <p className="text-lg">Java</p>
         </Link>
         <Link
-          to={useBaseUrl("/docs/php/introduction")}
+          to={useBaseUrl("/php/introduction")}
           className=" scale flex flex-col items-center justify-center space-y-3 rounded-lg bg-[color:var(--ifm-card-background-color)] p-6 text-center shadow-lg"
         >
           <img className="h-16 w-16" src="/img/php.svg" alt="PHP logo" />

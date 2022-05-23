@@ -9,7 +9,7 @@ tags:
   - visibility
 ---
 
-[Advanced Visibility](/docs/concepts/what-is-advanced-visibility) features depend on an integration with Elasticsearch.
+[Advanced Visibility](/concepts/what-is-advanced-visibility) features depend on an integration with Elasticsearch.
 
 To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` section of your `development.yaml` configuration file and run the index schema setup commands.
 

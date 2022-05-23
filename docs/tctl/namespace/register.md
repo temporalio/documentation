@@ -8,7 +8,7 @@ tags:
   - tctl
 ---
 
-The `tctl namespace register` command registers a [Namespace](/docs/concepts/what-is-a-namespace).
+The `tctl namespace register` command registers a [Namespace](/concepts/what-is-a-namespace).
 
 `tctl namespace register`
 
@@ -16,7 +16,7 @@ The following modifiers control the behavior of the command.
 
 ### `--active-cluster`
 
-Specify the name of the active [Temporal Cluster](/docs/concepts/what-is-a-temporal-cluster/) when registering a [Namespace](/docs/concepts/what-is-a-namespace).
+Specify the name of the active [Temporal Cluster](/concepts/what-is-a-temporal-cluster/) when registering a [Namespace](/concepts/what-is-a-namespace).
 
 Alias: `--ac`
 
@@ -28,7 +28,7 @@ tctl namespace register --active-cluster <name>
 
 ### `--clusters`
 
-Specify a list of [Temporal Clusters](/docs/concepts/what-is-a-temporal-cluster/) when registering a [Namespace](/docs/concepts/what-is-a-namespace).
+Specify a list of [Temporal Clusters](/concepts/what-is-a-temporal-cluster/) when registering a [Namespace](/concepts/what-is-a-namespace).
 
 The list contains the names of Clusters (separated by spaces) to which the Namespace can fail over.
 
@@ -44,7 +44,7 @@ tctl namespace register --clusters <names>
 
 ### `--description`
 
-Specify a description when registering a [Namespace](/docs/concepts/what-is-a-namespace).
+Specify a description when registering a [Namespace](/concepts/what-is-a-namespace).
 
 Alias `--desc`
 
@@ -56,7 +56,7 @@ tctl namespace register --description <value>
 
 ### `--global-namespace`
 
-Specify whether a [Namespace](/docs/concepts/what-is-a-namespace) is a Global Namespace.
+Specify whether a [Namespace](/concepts/what-is-a-namespace) is a Global Namespace.
 
 Alias `--gd`
 
@@ -68,7 +68,7 @@ tctl namespace register --global-namespace <boolean>
 
 ### `--history-archival-state`
 
-Set the state of [Archival](/docs/concepts/what-is-archival).
+Set the state of [Archival](/concepts/what-is-archival).
 Valid values are `disabled` and `enabled`.
 
 Alias `--has`
@@ -81,7 +81,7 @@ tctl namespace register --history-archival-state <value>
 
 ### `--history-uri`
 
-Specify the URI for [Archival](/docs/concepts/what-is-archival).
+Specify the URI for [Archival](/concepts/what-is-archival).
 The URI cannot be changed after Archival is first enabled.
 
 Alias `--huri`
@@ -94,7 +94,7 @@ tctl namespace register --history-uri <uri>
 
 ### `--namespace-data`
 
-Specify data for a [Namespace](/docs/concepts/what-is-a-namespace) in the form of key-value pairs (such as `k1:v1,k2:v2,k3:v3`).
+Specify data for a [Namespace](/concepts/what-is-a-namespace) in the form of key-value pairs (such as `k1:v1,k2:v2,k3:v3`).
 
 Alias `--dmd`
 
@@ -106,7 +106,7 @@ tctl namespace register --namespace-data <data>
 
 ### `--owner-email`
 
-Specify the email address of the [Namespace](/docs/concepts/what-is-a-namespace) owner.
+Specify the email address of the [Namespace](/concepts/what-is-a-namespace) owner.
 
 Alias `--oe`
 
@@ -118,7 +118,7 @@ tctl namespace register --owner-email <value>
 
 ### `--retention`
 
-Specify the number of days to retain closed [Workflow Executions](/docs/concepts/what-is-a-workflow-execution) per [Namespace](/docs/concepts/what-is-a-namespace).
+Specify the number of days to retain closed [Workflow Executions](/concepts/what-is-a-workflow-execution) per [Namespace](/concepts/what-is-a-namespace).
 
 Alias `--rd`
 
@@ -130,7 +130,7 @@ tctl namespace register --retention <value>
 
 ### `--visibility-archival-state`
 
-Set the visibility state for [Archival](/docs/concepts/what-is-archival).
+Set the visibility state for [Archival](/concepts/what-is-archival).
 Valid values are `disabled` and `enabled`.
 
 Alias `--vas`
@@ -143,7 +143,7 @@ tctl namespace register --visibility-archival-state <value>
 
 ### `--visibility-uri`
 
-Specify the visibility URI for [Archival](/docs/concepts/what-is-archival).
+Specify the visibility URI for [Archival](/concepts/what-is-archival).
 The URI cannot be changed after Archival is first enabled.
 
 Alias `--vuri`

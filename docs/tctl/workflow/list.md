@@ -8,7 +8,7 @@ tags:
   - tctl
 ---
 
-The `tctl workflow list` command lists open or closed [Workflow Executions](/docs/concepts/what-is-a-workflow-execution).
+The `tctl workflow list` command lists open or closed [Workflow Executions](/concepts/what-is-a-workflow-execution).
 
 By default, this command lists a maximum of 10 closed Workflow Executions.
 
@@ -16,7 +16,7 @@ By default, this command lists a maximum of 10 closed Workflow Executions.
 - To list multiple pages, use the `--more` option.
 - To list open Workflow Executions, use the `--open` option.
 
-See also [`tctl workflow listall`](/docs/tctl/workflow/listall), [`tctl workflow listarchived`](/docs/tctl/workflow/listarchived), and [`tctl workflow scan`](/docs/tctl/workflow/scan).
+See also [`tctl workflow listall`](/tctl/workflow/listall), [`tctl workflow listarchived`](/tctl/workflow/listarchived), and [`tctl workflow scan`](/tctl/workflow/scan).
 
 `tctl workflow list [<modifiers>]`
 
@@ -60,7 +60,7 @@ tctl workflow list --print_memo
 
 ### `--print_search_attr`
 
-Print the [Search Attributes](/docs/concepts/what-is-a-search-attribute).
+Print the [Search Attributes](/concepts/what-is-a-search-attribute).
 
 Alias: `--psa`
 
@@ -96,7 +96,7 @@ tctl workflow list --print_json
 
 ### `--open`
 
-List open [Workflow Executions](/docs/concepts/what-is-a-workflow-execution).
+List open [Workflow Executions](/concepts/what-is-a-workflow-execution).
 (By default, the `tctl workflow list` command lists closed Workflow Executions.)
 
 Alias: `--op`
@@ -173,7 +173,7 @@ tctl workflow list --latest-time '10second'
 
 ### `--workflow_id`
 
-Specify a [Workflow Id](/docs/concepts/what-is-a-workflow-id).
+Specify a [Workflow Id](/concepts/what-is-a-workflow-id).
 
 Aliases: `--wid`, `-w`
 
@@ -185,7 +185,7 @@ tctl workflow list --workflow_id <id>
 
 ### `--workflow_type`
 
-Specify the name of a [Workflow Type](/docs/concepts/what-is-a-workflow-type).
+Specify the name of a [Workflow Type](/concepts/what-is-a-workflow-type).
 
 Alias: `--wt`
 
@@ -197,7 +197,7 @@ tctl workflow list --workflow_type <name>
 
 ### `--status`
 
-Specify the status of a [Workflow Execution](/docs/concepts/what-is-a-workflow-execution).
+Specify the status of a [Workflow Execution](/concepts/what-is-a-workflow-execution).
 Supported values are as follows:
 
 - `completed`
@@ -217,9 +217,9 @@ tctl workflow list --status <value>
 
 ### `--query`
 
-**How to list and filter Workflow Executions with a [List Filter](/docs/concepts/what-is-a-list-filter) using tctl.**
+**How to list and filter Workflow Executions with a [List Filter](/concepts/what-is-a-list-filter) using tctl.**
 
-The `--query` flag is supported only when [Advanced Visibility](/docs/concepts/what-is-advanced-visibility) is configured with the Cluster.
+The `--query` flag is supported only when [Advanced Visibility](/concepts/what-is-advanced-visibility) is configured with the Cluster.
 
 Using the `--query` option causes tctl to ignore all other filter options, including `open`, `earliest_time`, `latest_time`, `workflow_id`, and `workflow_type`.
 
@@ -275,7 +275,7 @@ tctl workflow list --more
 
 ### `--pagesize`
 
-Specify the maximum number of [Workflow Executions](/docs/concepts/what-is-a-workflow-execution) to list on a page.
+Specify the maximum number of [Workflow Executions](/concepts/what-is-a-workflow-execution) to list on a page.
 (By default, the `tctl workflow list` command lists 10 Workflow Executions per page.)
 
 Alias: `--ps`

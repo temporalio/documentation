@@ -14,12 +14,12 @@ Alias : `adm`
 
 ## Commands
 
-- [`tctl admin workflow`](/docs/tctl/admin/workflow/index)
-- [`tctl admin shard`](/docs/tctl/admin/shard/index)
+- [`tctl admin workflow`](/tctl/admin/workflow/index)
+- [`tctl admin shard`](/tctl/admin/shard/index)
 - `tctl history_host`
 - `tctl taskqueue`
 - `tctl membership`
-- [`tctl cluster`](/docs/tctl/admin/cluster/index)
+- [`tctl cluster`](/tctl/admin/cluster/index)
 - `tctl dlq`
 - `tctl db`
 - `tctl decode`

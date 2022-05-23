@@ -1,6 +1,6 @@
 ---
 id: how-to-define-workflow-return-values-in-typescript
-title: How to define Workflow return values in Typescript
+title: How to define Workflow return values in TypeScript
 sidebar_label: Define Workflow return values
 description: Define Workflow return values
 tags:

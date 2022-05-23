@@ -135,7 +135,7 @@ You can also set this inside your Workflow code with `WorkflowOptions.WorkflowId
 
 Memos are immutable key/value pairs that can be attached to a workflow run when starting the workflow.
 These are visible when listing workflows.
-More information on memos can be found [here](/docs/concepts/what-is-a-memo).
+More information on memos can be found [here](/concepts/what-is-a-memo).
 
 ```bash
 tctl workflow start \
@@ -223,7 +223,7 @@ import CustomWarning from "../components/CustomWarning.js"
 
 <CustomWarning>
 
-Temporal's Batch Jobs feature is considered **experimental** and not subject to normal [versioning and support policy](/docs/server/versions-and-dependencies).
+Temporal's Batch Jobs feature is considered **experimental** and not subject to normal [versioning and support policy](/server/versions-and-dependencies).
 
 </CustomWarning>
 
@@ -815,7 +815,7 @@ This might be useful if only part of the Workflow state should be returned.
 
 `tctl` supports plugins that can be used to set headers on outgoing requests.
 
-We ship an [example plugin](https://github.com/temporalio/temporal/blob/master/cmd/tools/cli/plugins/authorization/main.go) that supports HTTP Basic Auth headers (to be used in tandem with a [secure Temporal Server](https://docs.temporal.io/docs/server/security/). You can enable it with:
+We ship an [example plugin](https://github.com/temporalio/temporal/blob/master/cmd/tools/cli/plugins/authorization/main.go) that supports HTTP Basic Auth headers (to be used in tandem with a [secure Temporal Server](https://docs.temporal.io/server/security/). You can enable it with:
 
 ```bash
 tctl --headers_provider_plugin tctl-authorization-plugin

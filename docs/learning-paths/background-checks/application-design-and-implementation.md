@@ -11,13 +11,13 @@ tags:
 
 The application maps each of the following business processes to its own Workflow Definition:
 
-- [Main Background Check](/docs/learning-paths/background-checks/main-background-check)
-- [Candidate Acceptance](/docs/learning-paths/background-checks/candidate-acceptance)
-- [SSN Trace](/docs/learning-paths/background-checks/ssn-trace)
-- [Federal Criminal Search](/docs/learning-paths/background-checks/federal-criminal-search)
-- [State Criminal Search](/docs/learning-paths/background-checks/state-criminal-search)
-- [Motor Vehicle Search](/docs/learning-paths/background-checks/motor-vehicle-search)
-- [Employment Verification](/docs/learning-paths/background-checks/employment-verification)
+- [Main Background Check](/learning-paths/background-checks/main-background-check)
+- [Candidate Acceptance](/learning-paths/background-checks/candidate-acceptance)
+- [SSN Trace](/learning-paths/background-checks/ssn-trace)
+- [Federal Criminal Search](/learning-paths/background-checks/federal-criminal-search)
+- [State Criminal Search](/learning-paths/background-checks/state-criminal-search)
+- [Motor Vehicle Search](/learning-paths/background-checks/motor-vehicle-search)
+- [Employment Verification](/learning-paths/background-checks/employment-verification)
 
 ## Why use Child Workflows for Searches instead of Activities?
 
@@ -92,16 +92,16 @@ However, in real life, our application could use as many Worker Processes (each 
 
 ## How do we ensure PII is encrypted in the Temporal Platform?
 
-To ensure data is encrypted while in the Temporal Platform, we use a customized [Data Converter](/docs/concepts/what-is-a-data-converter).
+To ensure data is encrypted while in the Temporal Platform, we use a customized [Data Converter](/concepts/what-is-a-data-converter).
 
 ## How do we know what the status of a Background Check is
 
 The status refers to the whether a Background Check is Open or Closed.
 
-We can use the Temporal Platform's [Visibility APIs](/docs/concepts/what-is-advanced-visibility) to see the status of any of our Workflow Executions.
+We can use the Temporal Platform's [Visibility APIs](/concepts/what-is-advanced-visibility) to see the status of any of our Workflow Executions.
 In this application we wrapped the `bgc-company list` command around these Visibility APIs.
 We also make sure to add custom Search Attributes to our Background Check Workflows.
-When we run `bgc-company list` we are using the Visibility APIs and passing a [List Filter](/docs/concepts/what-is-a-list-filter) that gives us back only the Background Check Workflow Executions.
+When we run `bgc-company list` we are using the Visibility APIs and passing a [List Filter](/concepts/what-is-a-list-filter) that gives us back only the Background Check Workflow Executions.
 
 ## How do we know what the state of a Background Check is?
 
@@ -112,7 +112,7 @@ Our Background Check actually provides the same object in response to a Query as
 Temporal automatically provides the result of the function if the Workflow Execution is in a closed state when the Query is processed by the Temporal Cluster.
 
 This means that we can use a Query to get the state of a Background Check at any time.
-We can see this implemented in the [Background Check Workflow Definition](/docs/learning-paths/background-checks/main-background-check) where the Query Handler is set.
+We can see this implemented in the [Background Check Workflow Definition](/learning-paths/background-checks/main-background-check) where the Query Handler is set.
 
 We also use a Query to get the details of the Candidate from the Employer Verification Workflow Execution when the Researcher uses the Web UI to load and verify the Candidate information.
 

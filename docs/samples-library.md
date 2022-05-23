@@ -11,10 +11,10 @@ sidebar_label: Samples library
 ## Go
 
 - [**Hello world application template in Go**](https://github.com/temporalio/hello-world-project-template-go): Provides a quick-start development app for users.
-  This sample works in conjunction with the ["Hello World!" from scratch tutorial in Go](/docs/go/hello-world-tutorial).
+  This sample works in conjunction with the ["Hello World!" from scratch tutorial in Go](/go/hello-world-tutorial).
 
 - [**Money transfer application template in Go**](https://github.com/temporalio/money-transfer-project-template-go): Provides a quick-start development app for users.
-  It demonstrates a basic "money transfer" Workflow Definition and works in conjunction with the [Run your first app tutorial in Go](/docs/go/run-your-first-app-tutorial).
+  It demonstrates a basic "money transfer" Workflow Definition and works in conjunction with the [Run your first app tutorial in Go](/go/run-your-first-app-tutorial).
 
 - [**Subscription-style Workflow Definition in Go**](https://github.com/temporalio/subscription-workflow-project-template-go): Demonstrates some of the patterns that could be implemented for a subscription-style business process.
 
@@ -26,10 +26,10 @@ sidebar_label: Samples library
 ## Java
 
 - [**Hello world application template in Java**](https://github.com/temporalio/hello-world-project-template-java): Provides a quick-start development app for users.
-  Works in conjunction with the ["Hello World!" from scratch tutorial in Java](/docs/java/hello-world-tutorial).
+  Works in conjunction with the ["Hello World!" from scratch tutorial in Java](/java/hello-world-tutorial).
 
 - [**Money transfer application template in Java**](https://github.com/temporalio/money-transfer-project-template-java): Provides a quick-start development app for users.
-  It demonstrates a basic "money transfer" Workflow Definition and works in conjunction with the [Run your first app tutorial in Java](/docs/java/run-your-first-app-tutorial).
+  It demonstrates a basic "money transfer" Workflow Definition and works in conjunction with the [Run your first app tutorial in Java](/java/run-your-first-app-tutorial).
 
 - [**Subscription-style Workflow Definition in Java**](https://github.com/temporalio/subscription-workflow-project-template-java): Demonstrates some of the patterns that could be implemented for a subscription-style business process.
 

@@ -1,6 +1,6 @@
 ---
 id: how-to-define-activity-return-values-in-typescript
-title: How to define Activity Return Values in Typescript
+title: How to define Activity Return Values in TypeScript
 sidebar_label: Define Activity Return Values
 description: Define Activity Return Values
 tags:
@@ -9,7 +9,7 @@ tags:
   - typescript
 ---
 
-Import the types of the Activities defined in `./activities`. You must first retrieve an Activity from an _Activity Handle_ before you can call it, then define Return Types in your Activity.
+To import the types of the Activities defined in `./activities`, you must first retrieve an Activity from an _Activity Handle_ before you can call it, then define Return Types in your Activity.
 
 ```typescript
 import type * as activities from './activities';

@@ -6,7 +6,7 @@ sidebar_label: Web UI
 
 The Temporal Web UI can be used to view Workflow Execution states or explore and debug Workflow Executions. It is [open source](https://github.com/temporalio/web).
 
-For a **video demo** of how this looks, you can [check our docs](https://docs.temporal.io/docs/java-run-your-first-app/#state-visibility).
+For a **video demo** of how this looks, you can [check our docs](https://docs.temporal.io/java-run-your-first-app/#state-visibility).
 
 <img width="1222" alt="CleanShot 2021-07-20 at 18 00 27@2x" src="https://user-images.githubusercontent.com/6764957/126414038-860403cd-dd86-4348-82f3-be2214c804bb.png" />
 
@@ -54,7 +54,7 @@ By default we will also verify your server `hostname`, matching it to `TEMPORAL_
 ### Configuring authentication
 
 > This section covers how to secure Temporal Web.
-> To secure the Temporal Server, see the [Server security docs](https://docs.temporal.io/docs/server/security).
+> To secure the Temporal Server, see the [Server security docs](https://docs.temporal.io/server/security).
 > ⚠️ This is currently a beta feature, [please report any and all issues to us!](https://github.com/temporalio/web/issues/new)
 
 Since v1.3, Temporal Web offers optional OAuth SSO authentication.
@@ -134,11 +134,11 @@ It can be enabled it in 2 steps:
 
 ## Using Temporal Web for development
 
-When you have the Temporal Cluster running locally (use the [quick install guide](/docs/clusters/quick-install)), you can view the Temporal Web UI at [http://localhost:8080](http://localhost:8080).
+When you have the Temporal Cluster running locally (use the [quick install guide](/application-development-guide#run-a-dev-cluster)), you can view the Temporal Web UI at [http://localhost:8080](http://localhost:8080).
 (You can configure the port number by setting the `TEMPORAL_WEB_PORT` environment variable.)
 
 > ⚠️ This is a basic guide to troubleshooting/debugging Temporal applications.
-> It is work-in-progress and we encourage [reading about our Architecture](/docs/concepts/what-is-a-temporal-cluster) for more detail.
+> It is work-in-progress and we encourage [reading about our Architecture](/concepts/what-is-a-temporal-cluster) for more detail.
 > The better you understand how Temporal works, the better you will be at debugging Workflow Executions.
 
 If you have the time, we recommend [watching our 19 minute video guide on YouTube](https://youtu.be/PqcVKIxI0nU) which demonstrates the debugging explained below.
@@ -149,11 +149,11 @@ The primary mechanism we recommend for debugging is [Temporal Web](https://githu
 
 ![6XkjmR](https://user-images.githubusercontent.com/6764957/110544958-71746480-8167-11eb-8152-8d3a3eb73d4e.gif)
 
-- [Workflow Executions](/docs/concepts/what-is-a-workflow-execution) are identified by their [**Workflow ID**](/docs/concepts/what-is-a-workflow-id), which you provide when creating the workflow. They also have a **Name** which is directly taken from your code.
+- [Workflow Executions](/concepts/what-is-a-workflow-execution) are identified by their [**Workflow ID**](/concepts/what-is-a-workflow-id), which you provide when creating the workflow. They also have a **Name** which is directly taken from your code.
 - Workflow **Status** is usually in one of a few states: Running, Completed, or Terminated, with **Start Time** and **End Time** shown accordingly.
 - Workflow ID's are are distinct from **Run ID's**, which uniquely identify one of potentially many Runs of Workflows with the same Workflow ID.
 
-> Tip: Don't confuse Runs with [Workflow Executions](/docs/concepts/what-is-a-workflow-execution)—they are similar, but a long-running Workflow Execution can have multiple Runs. A Run is the atomic unit.
+> Tip: Don't confuse Runs with [Workflow Executions](/concepts/what-is-a-workflow-execution)—they are similar, but a long-running Workflow Execution can have multiple Runs. A Run is the atomic unit.
 
 The full state of every Run is inspectable in Temporal Web:
 
@@ -199,7 +199,7 @@ Reading execution histories is one of the more reliable ways of debugging:
 
 Here, you can see the exact sequence of events that has happened so far, which includes the relevant state for each event and details about what went wrong or what is preventing the next correct event.
 There are about 40 system events in total.
-See our [Temporal Server Event Types reference](/docs/concepts/what-is-an-event/) for detailed descriptions.
+See our [Temporal Server Event Types reference](/concepts/what-is-an-event/) for detailed descriptions.
 
 ### Viewing Stack Traces on Temporal Web
 
@@ -215,6 +215,6 @@ Here we will discuss how to proceed once you have identified and fixed the code 
 
 If your activity code is deterministic, you might be able to simply restart the worker to pick up the changes. Execution will continue from where it last succeeded. In other words, we get "hotfixing for free" due to Temporal's execution model.
 
-However, if your activity is more complex, you will have to explicitly [version your workflows](https://docs.temporal.io/docs/go/versioning/) or even manually terminate and restart the workflows.
+However, if your activity is more complex, you will have to explicitly [version your workflows](https://docs.temporal.io/go/versioning/) or even manually terminate and restart the workflows.
 
 _This section is still being written - if you have specific questions you'd like us to answer, please search or [ask on the Temporal Forum](https://community.temporal.io/)._

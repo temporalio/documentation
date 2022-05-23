@@ -7,7 +7,7 @@ description: In this tutorial, we'll integrate all the knowledge gained from Cor
 
 In this tutorial, we'll integrate all the knowledge gained from Core and Logging APIs in an end-to-end, complete demo application - which happens to be a Choose Your Own Adventure game that you can play on Discord or Slack!
 
-This project will integrate and give context to your understanding of [Temporal SDK APIs](/docs/typescript/workflows): logging with Sinks, Activity dependency injection, Timer and Promise.race design patterns, Signals (and HTTP Servers for them), Polling patterns, and `continueAsNew` for indefinitely long running Workflows.
+This project will integrate and give context to your understanding of [Temporal SDK APIs](/typescript/workflows): logging with Sinks, Activity dependency injection, Timer and Promise.race design patterns, Signals (and HTTP Servers for them), Polling patterns, and `continueAsNew` for indefinitely long running Workflows.
 
 Let's dive in!
 
@@ -58,7 +58,7 @@ View Source on GitHub: https://github.com/JoshuaKGoldberg/temporal-adventure-bot
 
 ## Architecture
 
-This project is based off the default [Hello World project](https://docs.temporal.io/docs/typescript/hello-world/) that is scaffolded out when you run `npx @temporalio/create@latest`.
+This project is based off the default [Hello World project](https://docs.temporal.io/typescript/hello-world/) that is scaffolded out when you run `npx @temporalio/create@latest`.
 
 ### Overview
 

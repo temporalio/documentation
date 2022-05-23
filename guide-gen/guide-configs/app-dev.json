@@ -299,7 +299,7 @@
             {
               "lang": "java",
               "title": "Java",
-              "path": "none"
+              "path": "java/how-to-spawn-an-activity-execution-in-java"
             },
             {
               "lang": "php",
@@ -311,12 +311,14 @@
               "title": "TypeScript",
               "path": "typescript/how-to-spawn-an-activity-execution-in-typescript"
             }
+          ],
+          "h4_sections": [
+            {
+              "header": "Get Activity results",
+              "type": "context",
+              "path": "app-dev-context/get-activity-results"
+            }
           ]
-        },
-        {
-          "header": "Get Activity results",
-          "type": "context",
-          "path": "app-dev-context/get-activity-results"
         },
         {
           "header": "none",
@@ -330,7 +332,7 @@
             {
               "lang": "java",
               "title": "Java",
-              "path": "none"
+              "path": "java/how-to-get-the-result-of-an-activity-execution-in-java"
             },
             {
               "lang": "php",
@@ -361,7 +363,7 @@
             {
               "lang": "java",
               "title": "Java",
-              "path": "none"
+              "path": "java/how-to-create-a-temporal-client-in-java"
             },
             {
               "lang": "php",
@@ -392,7 +394,7 @@
             {
               "lang": "java",
               "title": "Java",
-              "path": "none"
+              "path": "java/how-to-develop-a-worker-program-in-java"
             },
             {
               "lang": "php",
@@ -423,7 +425,7 @@
                 {
                   "lang": "java",
                   "title": "Java",
-                  "path": "none"
+                  "path": "java/how-to-register-types-with-a-worker-in-java"
                 },
                 {
                   "lang": "php",
@@ -456,7 +458,7 @@
             {
               "lang": "java",
               "title": "Java",
-              "path": "none"
+              "path": "java/how-to-spawn-a-workflow-execution-in-java"
             },
             {
               "lang": "php",
@@ -487,7 +489,7 @@
                 {
                   "lang": "java",
                   "title": "Java",
-                  "path": "none"
+                  "path": "java/how-to-set-a-workflow-task-queue-in-java"
                 },
                 {
                   "lang": "php",
@@ -518,7 +520,7 @@
                 {
                   "lang": "java",
                   "title": "Java",
-                  "path": "none"
+                  "path": "java/how-to-set-a-workflow-id-in-java"
                 },
                 {
                   "lang": "php",
@@ -551,7 +553,7 @@
             {
               "lang": "java",
               "title": "Java",
-              "path": "none"
+              "path": "java/how-to-get-the-result-of-a-workflow-execution-in-java"
             },
             {
               "lang": "php",
@@ -597,7 +599,7 @@
                 {
                   "lang": "java",
                   "title": "Java",
-                  "path": "none"
+                  "path": "java/how-to-define-a-signal-in-java"
                 },
                 {
                   "lang": "php",
@@ -628,7 +630,7 @@
                 {
                   "lang": "java",
                   "title": "Java",
-                  "path": "none"
+                  "path": "java/how-to-handle-a-signal-in-a-workflow-in-java"
                 },
                 {
                   "lang": "php",
@@ -659,7 +661,7 @@
                 {
                   "lang": "java",
                   "title": "Java",
-                  "path": "none"
+                  "path": "java/how-to-send-a-signal-from-a-client-in-java"
                 },
                 {
                   "lang": "php",
@@ -690,7 +692,7 @@
                 {
                   "lang": "java",
                   "title": "Java",
-                  "path": "none"
+                  "path": "java/how-to-send-a-signal-from-a-workflow-in-java"
                 },
                 {
                   "lang": "php",
@@ -721,7 +723,7 @@
                 {
                   "lang": "java",
                   "title": "Java",
-                  "path": "none"
+                  "path": "java/how-to-send-a-signal-with-start-in-java"
                 },
                 {
                   "lang": "php",
@@ -759,7 +761,7 @@
                 {
                   "lang": "java",
                   "title": "Java",
-                  "path": "none"
+                  "path": "java/how-to-define-a-query-in-java"
                 },
                 {
                   "lang": "php",
@@ -790,7 +792,7 @@
                 {
                   "lang": "java",
                   "title": "Java",
-                  "path": "none"
+                  "path": "java/how-to-send-a-query-to-a-workflow-in-java"
                 },
                 {
                   "lang": "php",
@@ -821,7 +823,7 @@
                 {
                   "lang": "java",
                   "title": "Java",
-                  "path": "none"
+                  "path": "java/how-to-handle-a-query-in-a-workflow-in-java"
                 },
                 {
                   "lang": "php",
@@ -836,11 +838,6 @@
               ]
             }
           ]
-        },
-        {
-          "header": "Timers",
-          "type": "context",
-          "path": "app-dev-context/timers"
         },
         {
           "header": "Workflow timeouts & retries",
@@ -864,7 +861,7 @@
                 {
                   "lang": "java",
                   "title": "Java",
-                  "path": "none"
+                  "path": "java/how-to-set-a-workflow-execution-timeout-in-java"
                 },
                 {
                   "lang": "php",
@@ -895,7 +892,7 @@
                 {
                   "lang": "java",
                   "title": "Java",
-                  "path": "none"
+                  "path": "java/how-to-set-a-workflow-run-timeout-in-java"
                 },
                 {
                   "lang": "php",
@@ -926,7 +923,7 @@
                 {
                   "lang": "java",
                   "title": "Java",
-                  "path": "none"
+                  "path": "java/how-to-set-a-workflow-task-timeout-in-java"
                 },
                 {
                   "lang": "php",
@@ -957,7 +954,7 @@
                 {
                   "lang": "java",
                   "title": "Java",
-                  "path": "none"
+                  "path": "java/how-to-set-workflow-retry-options-in-java"
                 },
                 {
                   "lang": "php",
@@ -995,7 +992,7 @@
                 {
                   "lang": "java",
                   "title": "Java",
-                  "path": "none"
+                  "path": "java/how-to-set-a-schedule-to-close-timeout-in-java"
                 },
                 {
                   "lang": "php",
@@ -1026,7 +1023,7 @@
                 {
                   "lang": "java",
                   "title": "Java",
-                  "path": "none"
+                  "path": "java/how-to-set-a-start-to-close-timeout-in-java"
                 },
                 {
                   "lang": "php",
@@ -1057,7 +1054,7 @@
                 {
                   "lang": "java",
                   "title": "Java",
-                  "path": "none"
+                  "path": "java/how-to-set-a-schedule-to-start-timeout-in-java"
                 },
                 {
                   "lang": "php",
@@ -1088,7 +1085,7 @@
                 {
                   "lang": "java",
                   "title": "Java",
-                  "path": "none"
+                  "path": "java/how-to-set-a-heartbeat-timeout-in-java"
                 },
                 {
                   "lang": "php",
@@ -1119,7 +1116,7 @@
                 {
                   "lang": "java",
                   "title": "Java",
-                  "path": "none"
+                  "path": "java/how-to-set-activity-retry-options-in-java"
                 },
                 {
                   "lang": "php",
@@ -1152,7 +1149,7 @@
             {
               "lang": "java",
               "title": "Java",
-              "path": "none"
+              "path": "java/how-to-spawn-a-child-workflow-execution-in-java"
             },
             {
               "lang": "php",
@@ -1183,7 +1180,7 @@
                 {
                   "lang": "java",
                   "title": "Java",
-                  "path": "none"
+                  "path": "java/how-to-set-a-parent-close-policy-in-java"
                 },
                 {
                   "lang": "php",
@@ -1216,7 +1213,7 @@
             {
               "lang": "java",
               "title": "Java",
-              "path": "none"
+              "path": "java/how-to-heartbeat-an-activity-in-java"
             },
             {
               "lang": "php",
@@ -1247,7 +1244,7 @@
             {
               "lang": "java",
               "title": "Java",
-              "path": "none"
+              "path": "java/how-to-set-a-cron-schedule-in-java"
             },
             {
               "lang": "php",
@@ -1260,222 +1257,6 @@
               "path": "typescript/how-to-set-a-cron-job-in-typescript"
             }
           ]
-        },
-        {
-          "header": "Local Activities",
-          "type": "context",
-          "path": "app-dev-context/local-activities"
-        },
-        {
-          "header": "none",
-          "type": "lang-tabs",
-          "langs": [
-            {
-              "lang": "go",
-              "title": "Go",
-              "path": "go/how-to-set-a-cron-schedule-in-go"
-            },
-            {
-              "lang": "java",
-              "title": "Java",
-              "path": "none"
-            },
-            {
-              "lang": "php",
-              "title": "PHP",
-              "path": "none"
-            },
-            {
-              "lang": "typescript",
-              "title": "TypeScript",
-              "path": "none"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "header": "Observability",
-      "h3_sections": [
-        {
-          "header": "none",
-          "type": "context",
-          "path": "app-dev-context/observability"
-        },
-        {
-          "header": "Logging",
-          "type": "context",
-          "path": "app-dev-context/logging"
-        },
-        {
-          "header": "none",
-          "type": "lang-tabs",
-          "langs": [
-            {
-              "lang": "go",
-              "title": "Go",
-              "path": "none"
-            },
-            {
-              "lang": "java",
-              "title": "Java",
-              "path": "none"
-            },
-            {
-              "lang": "php",
-              "title": "PHP",
-              "path": "none"
-            },
-            {
-              "lang": "typescript",
-              "title": "TypeScript",
-              "path": "typescript/how-to-set-the-default-logger-in-typescript"
-            }
-          ]
-        },
-        {
-          "header": "Visibility",
-          "type": "context",
-          "path": "app-dev-context/visibility"
-        },
-        {
-          "header": "none",
-          "type": "lang-tabs",
-          "langs": [
-            {
-              "lang": "go",
-              "title": "Go",
-              "path": "none"
-            },
-            {
-              "lang": "java",
-              "title": "Java",
-              "path": "none"
-            },
-            {
-              "lang": "php",
-              "title": "PHP",
-              "path": "none"
-            },
-            {
-              "lang": "typescript",
-              "title": "TypeScript",
-              "path": "none"
-            }
-          ]
-        },
-        {
-          "header": "Metrics",
-          "type": "context",
-          "path": "app-dev-context/metrics"
-        },
-        {
-          "header": "none",
-          "type": "lang-tabs",
-          "langs": [
-            {
-              "lang": "go",
-              "title": "Go",
-              "path": "none"
-            },
-            {
-              "lang": "java",
-              "title": "Java",
-              "path": "none"
-            },
-            {
-              "lang": "php",
-              "title": "PHP",
-              "path": "none"
-            },
-            {
-              "lang": "typescript",
-              "title": "TypeScript",
-              "path": "none"
-            }
-          ]
-        },
-        {
-          "header": "Tracing",
-          "type": "context",
-          "path": "app-dev-context/tracing"
-        },
-        {
-          "header": "none",
-          "type": "lang-tabs",
-          "langs": [
-            {
-              "lang": "go",
-              "title": "Go",
-              "path": "none"
-            },
-            {
-              "lang": "java",
-              "title": "Java",
-              "path": "none"
-            },
-            {
-              "lang": "php",
-              "title": "PHP",
-              "path": "none"
-            },
-            {
-              "lang": "typescript",
-              "title": "TypeScript",
-              "path": "none"
-            }
-          ]
-        },
-        {
-          "header": "Replays",
-          "type": "context",
-          "path": "app-dev-context/replays"
-        },
-        {
-          "header": "none",
-          "type": "lang-tabs",
-          "langs": [
-            {
-              "lang": "go",
-              "title": "Go",
-              "path": "none"
-            },
-            {
-              "lang": "java",
-              "title": "Java",
-              "path": "none"
-            },
-            {
-              "lang": "php",
-              "title": "PHP",
-              "path": "none"
-            },
-            {
-              "lang": "typescript",
-              "title": "TypeScript",
-              "path": "none"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "header": "Testing",
-      "h3_sections": [
-        {
-          "header": "none",
-          "type": "context",
-          "path": "app-dev-context/testing"
-        }
-      ]
-    },
-    {
-      "header": "Scaling",
-      "h3_sections": [
-        {
-          "header": "none",
-          "type": "context",
-          "path": "app-dev-context/scaling"
         }
       ]
     }

@@ -7,11 +7,11 @@ tags:
   - tctl
 ---
 
-The `tctl namespace` commands enable [Namespace](/docs/concepts/what-is-a-namespace) operations.
+The `tctl namespace` commands enable [Namespace](/concepts/what-is-a-namespace) operations.
 
 Alias: `n`
 
-- [`tctl namespace describe`](/docs/tctl/namespace/describe)
-- [`tctl namespace list`](/docs/tctl/namespace/list)
-- [`tctl namespace register`](/docs/tctl/namespace/register)
-- [`tctl namespace update`](/docs/tctl/namespace/update)
+- [`tctl namespace describe`](/tctl/namespace/describe)
+- [`tctl namespace list`](/tctl/namespace/list)
+- [`tctl namespace register`](/tctl/namespace/register)
+- [`tctl namespace update`](/tctl/namespace/update)

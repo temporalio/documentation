@@ -8,7 +8,7 @@ tags:
   - tctl
 ---
 
-The `tctl namespace update` command updates a [Namespace](/docs/concepts/what-is-a-namespace).
+The `tctl namespace update` command updates a [Namespace](/concepts/what-is-a-namespace).
 
 `tctl namespace update`
 
@@ -16,7 +16,7 @@ The following modifiers control the behavior of the command.
 
 ### `--active-cluster`
 
-Specify the name of the active [Temporal Cluster](/docs/concepts/what-is-a-temporal-cluster/) when updating a [Namespace](/docs/concepts/what-is-a-namespace).
+Specify the name of the active [Temporal Cluster](/concepts/what-is-a-temporal-cluster/) when updating a [Namespace](/concepts/what-is-a-namespace).
 
 Alias: `--ac`
 
@@ -28,7 +28,7 @@ tctl namespace update --active-cluster <name>
 
 ### `--add-bad-binary`
 
-Add a binary checksum to use when resetting a [Workflow Execution](/docs/concepts/what-is-a-workflow-execution).
+Add a binary checksum to use when resetting a [Workflow Execution](/concepts/what-is-a-workflow-execution).
 
 See also [`--remove-bad-binary`](#--remove-bad-binary).
 
@@ -40,7 +40,7 @@ tctl namespace update --add-bad-binary <value>
 
 ### `--clusters`
 
-Specify a list of [Temporal Clusters](/docs/concepts/what-is-a-temporal-cluster/) when updating a [Namespace](/docs/concepts/what-is-a-namespace).
+Specify a list of [Temporal Clusters](/concepts/what-is-a-temporal-cluster/) when updating a [Namespace](/concepts/what-is-a-namespace).
 
 The list contains the names of Clusters (separated by spaces) to which the Namespace can fail over.
 
@@ -56,7 +56,7 @@ tctl namespace update --clusters <names>
 
 ### `--description`
 
-Specify a description when updating a [Namespace](/docs/concepts/what-is-a-namespace).
+Specify a description when updating a [Namespace](/concepts/what-is-a-namespace).
 
 Alias `--desc`
 
@@ -68,7 +68,7 @@ tctl namespace update --description <value>
 
 ### `--history-archival-state`
 
-Set the state of [Archival](/docs/concepts/what-is-archival).
+Set the state of [Archival](/concepts/what-is-archival).
 Valid values are `disabled` and `enabled`.
 
 Alias `--has`
@@ -81,7 +81,7 @@ tctl namespace update --history-archival-state <value>
 
 ### `--history-uri`
 
-Specify the URI for URI for [Archival](/docs/concepts/what-is-archival).
+Specify the URI for URI for [Archival](/concepts/what-is-archival).
 The URI cannot be changed after Archival is first enabled.
 
 Alias `--huri`
@@ -94,7 +94,7 @@ tctl namespace update --history-uri <uri>
 
 ### `--namespace-data`
 
-Specify data for a [Namespace](/docs/concepts/what-is-a-namespace) in the form of key-value pairs (such as `k1:v1,k2:v2,k3:v3`).
+Specify data for a [Namespace](/concepts/what-is-a-namespace) in the form of key-value pairs (such as `k1:v1,k2:v2,k3:v3`).
 
 Alias `--dmd`
 
@@ -106,7 +106,7 @@ tctl namespace update --namespace-data <data>
 
 ### `--owner-email`
 
-Specify the email address of the [Namespace](/docs/concepts/what-is-a-namespace) owner.
+Specify the email address of the [Namespace](/concepts/what-is-a-namespace) owner.
 
 Alias `--oe`
 
@@ -118,7 +118,7 @@ tctl namespace update --owner-email <value>
 
 ### `--reason`
 
-Specify a reason for updating a [Namespace](/docs/concepts/what-is-a-namespace).
+Specify a reason for updating a [Namespace](/concepts/what-is-a-namespace).
 
 **Example**
 
@@ -140,7 +140,7 @@ tctl namespace update --remove-bad-binary <value>
 
 ### `--retention`
 
-Specify the number of days to retain [Workflow Executions](/docs/concepts/what-is-a-workflow-execution).
+Specify the number of days to retain [Workflow Executions](/concepts/what-is-a-workflow-execution).
 
 Alias `--rd`
 
@@ -152,7 +152,7 @@ tctl namespace update --retention <value>
 
 ### `--visibility-archival-state`
 
-Set the visibility state for [Archival](/docs/concepts/what-is-archival).
+Set the visibility state for [Archival](/concepts/what-is-archival).
 Valid values are `disabled` and `enabled`.
 
 Alias `--vas`
@@ -165,7 +165,7 @@ tctl namespace update --visibility-archival-state <value>
 
 ### `--visibility-uri`
 
-Specify the visibility URI for [Archival](/docs/concepts/what-is-archival).
+Specify the visibility URI for [Archival](/concepts/what-is-archival).
 The URI cannot be changed after Archival is first enabled.
 
 Alias `--vuri`
