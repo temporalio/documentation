@@ -84,7 +84,7 @@ import HeartbeatTimeout from './how-to-set-a-heartbeat-timeout-in-java.md'
                       .build();
   ```
 
-See [Task Queue](/docs/concepts/what-is-a-task-queue)
+See [Task Queue](/concepts/what-is-a-task-queue)
 
 ### `RetryOptions`
 

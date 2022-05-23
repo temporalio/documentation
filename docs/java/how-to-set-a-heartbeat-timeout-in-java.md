@@ -9,7 +9,7 @@ tags:
   - developer-guide
 ---
 
-To set a [Heartbeat Timeout](/docs/concepts/what-is-a-heartbeat-timeout), use [`ActivityOptions.newBuilder.setHeartbeatTimeout`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
+To set a [Heartbeat Timeout](/concepts/what-is-a-heartbeat-timeout), use [`ActivityOptions.newBuilder.setHeartbeatTimeout`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
 
 - Type: `Duration`
 - Default: None

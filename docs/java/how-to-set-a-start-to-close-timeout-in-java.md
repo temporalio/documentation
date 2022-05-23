@@ -9,7 +9,7 @@ tags:
   - developer-guide
 ---
 
-To set a [Start-To-Close Timeout](/docs/concepts/what-is-a-start-to-close-timeout), use [`ActivityOptions.newBuilder.setStartToCloseTimeout​`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
+To set a [Start-To-Close Timeout](/concepts/what-is-a-start-to-close-timeout), use [`ActivityOptions.newBuilder.setStartToCloseTimeout​`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
 
 This or `ScheduleToClose` must be set.
 

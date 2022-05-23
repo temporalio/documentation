@@ -77,7 +77,7 @@ WorkflowClient client = WorkflowClient.newServiceStubs(
 
 ```
 
-See [WorkflowClientOptions](/docs/java/how-to-set-workflowclientoptions-in-java) for details.
+See [WorkflowClientOptions](/java/how-to-set-workflowclientoptions-in-java) for details.
 
 `WorkflowService` and `WorkflowClient` creation is a heavyweight operation, and will be resource-intensive if created each time you start a Workflow or send a Signal to it.
 The recommended way is to create them once and reuse where possible.
@@ -95,4 +95,4 @@ WorkflowClient workflowClient =  WorkflowClient.newInstance(service, clientOptio
  WorkflowClient.start(workflow::yourWFMethod);
 ```
 
-For details, see [How to spawn a Workflow Execution in Java](/docs/java/how-to-spawn-a-workflow-execution-in-java).
+For details, see [How to spawn a Workflow Execution in Java](/java/how-to-spawn-a-workflow-execution-in-java).

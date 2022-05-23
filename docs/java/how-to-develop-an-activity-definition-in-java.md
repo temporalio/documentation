@@ -8,7 +8,7 @@ tags:
   - developer-guide
 ---
 
-An [Activity Definition](/docs/concepts/what-is-an-activity) is a combination of the Temporal Java SDK [Activity](https://www.javadoc.io/static/io.temporal/temporal-sdk/0.19.0/io/temporal/activity/Activity.html) Class implementing a specially annotated interface.
+An [Activity Definition](/concepts/what-is-an-activity) is a combination of the Temporal Java SDK [Activity](https://www.javadoc.io/static/io.temporal/temporal-sdk/0.19.0/io/temporal/activity/Activity.html) Class implementing a specially annotated interface.
 
 An Activity interface is annotated with `@ActivityInterface` and an Activity implementation implements this Activity interface.
 TO handle Activity types that do not have an explicitly registered handler, you can directly implement a dynamic Activity.

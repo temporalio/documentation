@@ -9,7 +9,7 @@ tags:
   - developer-guide
 ---
 
-To set a [Schedule-To-Close Timeout](/docs/concepts/what-is-a-schedule-to-close-timeout), use [`ActivityOptions.newBuilder.setScheduleToCloseTimeout​`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
+To set a [Schedule-To-Close Timeout](/concepts/what-is-a-schedule-to-close-timeout), use [`ActivityOptions.newBuilder.setScheduleToCloseTimeout​`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
 
 This or `StartToCloseTimeout` must be set.
 

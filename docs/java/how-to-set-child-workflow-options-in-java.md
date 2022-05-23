@@ -38,7 +38,7 @@ public void parentWorkflow() {
   }
 ```
 
-See [What is a Namespace?](/docs/concepts/what-is-a-namespace)
+See [What is a Namespace?](/concepts/what-is-a-namespace)
 
 ### `WorkflowId`
 
@@ -59,7 +59,7 @@ See [What is a Namespace?](/docs/concepts/what-is-a-namespace)
     }
 ```
 
-See [What is a WorkflowId?](/docs/concepts/what-is-a-workflow-id)
+See [What is a WorkflowId?](/concepts/what-is-a-workflow-id)
 
 ### `ParentClosePolicy`
 
@@ -90,7 +90,7 @@ import ParentClosePolicy from './how-to-set-a-parent-close-policy-in-java.md'
     }
 ```
 
-See [What is a Workflow Id Reuse Policy?](/docs/concepts/what-is-a-workflow-id-reuse-policy)
+See [What is a Workflow Id Reuse Policy?](/concepts/what-is-a-workflow-id-reuse-policy)
 
 ### `WorkflowExecutionTimeout`
 
@@ -110,7 +110,7 @@ See [What is a Workflow Id Reuse Policy?](/docs/concepts/what-is-a-workflow-id-r
     }
 ```
 
-See [What is a Workflow Execution Timeout?](/docs/concepts/what-is-a-workflow-execution-timeout)
+See [What is a Workflow Execution Timeout?](/concepts/what-is-a-workflow-execution-timeout)
 
 ### `WorkflowRunTimeout`
 
@@ -130,7 +130,7 @@ private void parentWorkflow() {
     }
 ```
 
-See [What is a Workflow Run Timeout?](/docs/concepts/what-is-a-workflow-run-timeout)
+See [What is a Workflow Run Timeout?](/concepts/what-is-a-workflow-run-timeout)
 
 ### `WorkflowTaskTimeout`
 
@@ -151,7 +151,7 @@ See [What is a Workflow Run Timeout?](/docs/concepts/what-is-a-workflow-run-time
     }
 ```
 
-See [What is a Workflow Task Timeout?](/docs/concepts/what-is-a-workflow-task-timeout)
+See [What is a Workflow Task Timeout?](/concepts/what-is-a-workflow-task-timeout)
 
 ### `RetryOptions`
 
@@ -170,7 +170,7 @@ private static void parentWorkflow() {
          child.executeChild();
 ```
 
-See [What is a Retry Policy?](/docs/concepts/what-is-a-retry-policy)
+See [What is a Retry Policy?](/concepts/what-is-a-retry-policy)
 
 ### `CronSchedule`
 
@@ -187,7 +187,7 @@ private static void parentWorkflow() {
          child.executeChild();
 ```
 
-See [Cron Schedules](/docs/concepts/what-is-a-temporal-cron-job#cron-schedules)
+See [Cron Schedules](/concepts/what-is-a-temporal-cron-job#cron-schedules)
 
 ### `Memo`
 
@@ -205,7 +205,7 @@ private static void parentWorkflow() {
                         .build();
 ```
 
-See [What is a Memo?](/docs/concepts/what-is-a-memo)
+See [What is a Memo?](/concepts/what-is-a-memo)
 
 ### `SearchAttributes`
 
@@ -222,4 +222,4 @@ private static void parentWorkflow() {
                         .build();
 ```
 
-See [What is a Search Attribute?](/docs/concepts/what-is-a-search-attribute)
+See [What is a Search Attribute?](/concepts/what-is-a-search-attribute)

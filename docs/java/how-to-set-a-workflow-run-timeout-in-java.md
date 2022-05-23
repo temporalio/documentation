@@ -12,7 +12,7 @@ tags:
 Set the Workflow Run Timeout with the [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) instance in the Client code using [`WorkflowOptions.Builder.setWorkflowRunTimeout`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
 
 - Type: `time.Duration`
-- Default: Same as [WorkflowExecutionTimeout](/docs/java/how-to-set-a-workflow-execution-timeout-in-java).
+- Default: Same as [WorkflowExecutionTimeout](/java/how-to-set-a-workflow-execution-timeout-in-java).
 
 ```java
 //create Workflow stub for YourWorkflowInterface

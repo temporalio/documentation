@@ -20,4 +20,4 @@ Either download and install the [IntelliJ IDEA](https://www.jetbrains.com/idea/)
 
 ## Temporal server
 
-Download, install, and run the [Temporal server](/docs/clusters/quick-install) via docker-compose. It is easy to do and you can keep it running in the background while you build applications.
+Download, install, and run the [Temporal server](/clusters/quick-install) via docker-compose. It is easy to do and you can keep it running in the background while you build applications.
