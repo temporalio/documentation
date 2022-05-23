@@ -229,7 +229,9 @@ function Explained() {
         </a>
         <p className="landing-card-p">
           Application development by language.{" "}
-          <span className="bold">Now included in the application development guide.</span>
+          <span className="bold">
+            Now included in the application development guide.
+          </span>
         </p>
         <ul className="landing-card-list">
           <li className="">
