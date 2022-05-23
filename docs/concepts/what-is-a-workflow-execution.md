@@ -13,7 +13,7 @@ It is the main unit of execution of a [Temporal Application](/concepts/what-is-a
 - [How to spawn a Workflow Execution in Go](/go/how-to-spawn-a-workflow-execution-in-go)
 - [How to spawn a Workflow Execution in Java](/java/how-to-spawn-a-workflow-execution-in-java)
 - [How to spawn a Workflow Execution in PHP](/php/workflows/#starting-workflows)
-- [How to spawn a Workflow Execution in TypeScript](/typescript/workflows#how-to-start-and-cancel-workflows)
+- [How to spawn a Workflow Execution in TypeScript](/typescript/workflows/#how-to-start-and-cancel-workflows)
 
 Each Temporal Workflow Execution has exclusive access to its local state.
 It executes concurrently to all other Workflow Executions, and communicates with other Workflow Executions through [Signals](/concepts/what-is-a-signal) and the environment through [Activities](/concepts/what-is-an-activity).
