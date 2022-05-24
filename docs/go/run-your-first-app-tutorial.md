@@ -30,9 +30,9 @@ Keep reading or follow along with this video walkthrough:
 
 ## ![](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/repair-tools.png) Project setup
 
-Before starting, make sure you have looked over the [tutorial prerequisites](/docs/go/tutorial-prerequisites).
+Before starting, make sure you have looked over the [tutorial prerequisites](/go/tutorial-prerequisites).
 
-- Ensure the Temporal Server is running (using [Docker is the fastest way](https://docs.temporal.io/docs/clusters/quick-install))
+- Ensure the Temporal Server is running (using [Docker is the fastest way](/application-development-guide/#run-a-dev-cluster))
 - Ensure you're using Go version v1.14 or later.
 - Ensure you have Git installed to clone the project.
 
