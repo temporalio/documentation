@@ -438,10 +438,8 @@ A Query is a synchronous operation that is used to get the state of a [Workflow 
 The state of a running Workflow Execution is constantly changing.
 Queries are available to expose the internal Workflow Execution state to the external world.
 
-- [How to use Queries in Go](/go/how-to-use-queries-in-go)
-- [How to use Queries in Java](/java/queries)
-- [How to use Queries in PHP](/php/queries)
-- [How to send a Query to a Workflow Execution using tctl](/tctl/workflow/query)
+- [How to send and handle Queries with an SDK](/application-development-guide/#queries)
+- [How to send a Query using tctl](/tctl/workflow/query)
 
 Queries are sent from a Temporal Client to a Workflow Execution.
 The API call is synchronous.
@@ -471,6 +469,8 @@ The `__stack_trace` Query name does not require special handling in your Workflo
 ## Child Workflows
 
 A Child Workflow Execution is a [Workflow Execution](#workflow-executions) that is spawned from within another Workflow.
+
+- [How to start a Child Workflow Execution](/application-development-guide/#child-workflows)
 
 A Workflow Execution can be both a Parent and a Child Workflow Execution because any Workflow can spawn another Workflow.
 
@@ -512,10 +512,6 @@ As all Workflow Executions, they can communicate only via asynchronous [Signals]
 
 As all Workflow Executions, a Child Workflow Execution can create a 1:1 mapping with a resource.
 For example, a Workflow that manages host upgrades could spawn a Child Workflow Execution per host.
-
-**Implementation guides:**
-
-- [How to spawn a Child Workflow Execution in Go](/application-development-guide/#child-workflows)
 
 ## Cron Jobs
 

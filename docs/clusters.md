@@ -130,6 +130,19 @@ It talks to the Frontend service.
 
 - It uses port 6939 for membership-related communication.
 
+## Retention Period
+
+A Retention Period is the amount of time a Workflow Execution Event History remains in the Cluster's persistence store.
+
+- [How to set the Retention Period for the Namespace](/tctl/namespace/register#--retention)
+
+A Retention Period applies to a single [Namespace](/namespaces/#) and is set when the Namespace is registered.
+
+If the Retention Period isn't set, it defaults to 2 days.
+The minimum Retention Period is 1 day.
+The maximum Retention Period is 30 days.
+Setting the Retention Period to 0 results in the error _A valid retention period is not set on request_.
+
 ## Archival
 
 Archival is a feature that automatically backs up [Event Histories](/workflows/#event-history) and Visibility records from Temporal Cluster persistence to a custom blob store.

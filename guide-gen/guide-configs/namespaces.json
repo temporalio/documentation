@@ -16,6 +16,16 @@
           "path": "concepts/what-is-a-namespace"
         }
       ]
+    },
+    {
+      "header": "Global Namespace",
+      "h3_sections": [
+        {
+          "header": "none",
+          "type": "context",
+          "path": "concepts/what-is-a-global-namespace"
+        }
+      ]
     }
   ]
 }

@@ -16,10 +16,8 @@ A Retry Policy works in cooperation with the timeouts to provide fine controls t
 A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a [Workflow Execution](/workflows/#workflow-executions) or an [Activity Task Execution](/tasks/#activity-task-execution).
 (Retry Policies do not apply to [Workflow Task Executions](/tasks/#workflow-task-execution), which always retry indefinitely.)
 
-**Implementation guides:**
-
-- [How to set a Retry Policy for a Workflow Execution in Go](/go/startworkflowoptions-reference/#retrypolicy)
-- [How to set a custom Retry Policy for Activity Task Executions in Go](/go/activityoptions-reference/#retrypolicy)
+- [How to set a Retry Policy for a Workflow](/application-development-guide#workflow-retry-policy)
+- [How to set a custom Retry Policy for an Activity](/application-development-guide#activity-retry-policy)
 
 <!-- ![Diagram that shows the retry interval and its formula](/img/retry-interval-diagram.png) -->
 
