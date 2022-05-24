@@ -139,7 +139,7 @@ if err != nil {
 - Type: `map[string]interface{}`
 - Default: Empty.
 
-These are the corresponding [Search Attribute value types](/docs/concepts/what-is-a-search-attribute/#types) in Go:
+These are the corresponding [Search Attribute value types](/concepts/what-is-a-search-attribute/#types) in Go:
 
 - Keyword = string
 - Int = int64

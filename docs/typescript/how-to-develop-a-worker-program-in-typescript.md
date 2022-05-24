@@ -1,6 +1,6 @@
 ---
 id: how-to-develop-a-worker-program-in-typescript
-title: How to develop a Worker program in Typescript
+title: How to develop a Worker program in TypeScript
 sidebar_label: Develop a Worker program
 description: Develop a Worker program
 tags:
@@ -9,7 +9,7 @@ tags:
   - typescript
 ---
 
-First create a Worker with `Worker.create()` (which establishes the initial gRPC connection), then call `worker.run()` on it (to start polling the Task Queue).
+Create a Worker with `Worker.create()` (which establishes the initial gRPC connection), then call `worker.run()` on it (to start polling the Task Queue).
 
 Below is an example of starting a Worker that polls the Task Queue named `tutorial`.
 
@@ -53,7 +53,7 @@ run().catch((err) => {
 
 See below for more Worker options.
 
-#### Workflow and Activity registration
+**Workflow and Activity registration**
 
 Workers bundle Workflow code and `node_modules` using Webpack v5 and execute them inside V8 isolates.
 Activities are directly required and run by Workers in the Node.js environment.
@@ -68,7 +68,7 @@ There are three main things the Worker needs:
 - Either specify a `workflowsPath` to your `workflows.ts` file to pass to Webpack, e.g., `require.resolve('./workflows')`. Workflows will be bundled with their dependencies, which you can fine-tune with `nodeModulesPaths`.
 - Or pass a prebuilt bundle to `workflowBundle` instead if you prefer to handle the bundling yourself.
 
-#### Additional Worker Options
+**Additional Worker Options**
 
 This is a selected subset of options you are likely to use. Even more advanced options, particularly for performance tuning, are available in [the API reference](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions).
 
@@ -76,9 +76,9 @@ This is a selected subset of options you are likely to use. Even more advanced o
 | ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `nodeModulesPaths` | Array of paths of Workflow dependencies to pass to Webpack. Defaults to the first encountered `node_modules` directory when scanning the filesystem starting with `workflowsPath`. |
 | `dataConverter`    | Encodes and decodes data entering and exiting a Temporal Server. Supports `undefined`, `UintBArray`, and JSON.                                                                     |
-| `sinks`            | Allows injection of Workflow Sinks (Advanced feature: see [Logging docs](/docs/typescript/logging))                                                                                |
-| `interceptors`     | A mapping of interceptor type to a list of factories or module paths (Advanced feature: see [Interceptors](/docs/typescript/interceptors))                                         |
+| `sinks`            | Allows injection of Workflow Sinks (Advanced feature: see [Logging docs](/typescript/logging))                                                                                     |
+| `interceptors`     | A mapping of interceptor type to a list of factories or module paths (Advanced feature: see [Interceptors](/typescript/interceptors))                                              |
 
 **Operation guides:**
 
-- [How to tune Workers](/docs/operation/how-to-tune-workers)
+- [How to tune Workers](/operation/how-to-tune-workers)

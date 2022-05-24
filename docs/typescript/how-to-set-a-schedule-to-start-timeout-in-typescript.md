@@ -1,6 +1,6 @@
 ---
 id: how-to-set-a-schedule-to-start-timeout-in-typescript
-title: How to set a Schedule to Start Timeout in Typescript
+title: How to set a Schedule to Start Timeout in TypeScript
 sidebar_label: Set a Schedule to Start Timeout
 description: Set a Schedule to Start Timeout
 tags:
@@ -10,8 +10,6 @@ tags:
 ---
 
 When you call `proxyActivities` in a Workflow Function, you can set a range of `ActivityOptions`.
-
-A Schedule-To-Start limits the maximum time that an Activity Task can sit in a Task Queue. It is used to identify whether a Worker is down or for Task routing.
 
 Either `scheduleToCloseTimeout` or `scheduleToStartTimeout` must be set.
 

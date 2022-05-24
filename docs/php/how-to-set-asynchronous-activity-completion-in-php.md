@@ -44,7 +44,7 @@ public function greet(string $name): \Generator
 }
 ```
 
-#### Async completion
+**Async completion**
 
 There are certain scenarios when moving on from an Activity upon completion of its function is not possible or desirable.
 For example, you might have an application that requires user input to complete the Activity.

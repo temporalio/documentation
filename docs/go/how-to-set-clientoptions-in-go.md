@@ -58,10 +58,9 @@ Other more advanced resolvers can also be registered.
 
 ### `Namespace`
 
-Sets the [Namespace](/docs/concepts/what-is-a-namespace) name for this Temporal Client to work with.
+import Namespace from './how-to-set-the-namespace-for-a-temporal-client-in-go.md'
 
-- Type: `string`
-- Default: default
+<Namespace/>
 
 ### `Logger`
 

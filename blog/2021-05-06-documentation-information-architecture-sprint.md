@@ -168,7 +168,7 @@ class SimpleWorkflow implements SimpleWorkflowInterface
 </TabItem>
 </Tabs>
 
-While, one could tabulate between languages within a concept like above, as you get into the details, it becomes much more complicated. Additionally, not all features are available across each language, like [Sessions in Go](/docs/go/how-to-create-a-worker-session-in-go) for example.
+While, one could tabulate between languages within a concept like above, as you get into the details, it becomes much more complicated. Additionally, not all features are available across each language, like [Sessions in Go](/go/how-to-create-a-worker-session-in-go) for example.
 And, because the implementation details and terminology can be so different from language to language, the obvious solution presented itself:
 
 1. Each language should be visually separated from the others as its own topic area.
@@ -195,11 +195,11 @@ We implemented a new SDK landing page, [docs.temporal.io/application-development
 
 And we created a much more immersive experience for the user personas that we identified above:
 
-- Go developers for example, [docs.temporal.io/go](/docs/go):
+- Go developers for example, [docs.temporal.io/go](/go):
 
 ![Go topic area](/img/go-topic-area.png)
 
-- Infra engineers for example, [docs.temporal.io/server](/docs/clusters):
+- Infra engineers for example, [docs.temporal.io/server](/clusters):
 
 ![Server topic area](/img/server-topic-area.png)
 

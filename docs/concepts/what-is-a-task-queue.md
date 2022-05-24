@@ -7,7 +7,7 @@ tags:
   - explanation
 ---
 
-A Task Queue is a lightweight, dynamically allocated queue that one or more [Worker Entities](/docs/concepts/what-is-a-worker-entity) poll for [Tasks](/docs/concepts/what-is-a-task).
+A Task Queue is a lightweight, dynamically allocated queue that one or more [Worker Entities](/concepts/what-is-a-worker-entity) poll for [Tasks](/concepts/what-is-a-task).
 
 Task Queues do not have any ordering guarantees.
 It is possible to have a Task that stays in a Task Queue for a period of time, if there is a backlog that wasn't drained for that time.
@@ -31,7 +31,7 @@ This implementation offers several benefits:
 - A Worker Process polls for a message only when it has spare capacity, avoiding overloading itself.
 - In effect, Task Queues enable load balancing across a large number of Worker Processes.
 - Task Queues support server-side throttling, which enables you to limit the Task dispatching rate to the pool of Worker Processes while still supporting Task dispatching at higher rates when spikes happen.
-- Task Queues enable what we call [Task Routing](/docs/concepts/what-is-task-routing), which is the routing of specific Tasks to specific Worker Processes or even a specific process.
+- Task Queues enable what we call [Task Routing](/concepts/what-is-task-routing), which is the routing of specific Tasks to specific Worker Processes or even a specific process.
 
 All Workers listening to a given Task Queue must have identical registrations of Activities and/or Workflows.
 The one exception is during a Server upgrade, where it is okay to have registration temporarily misaligned while the binary rolls out.
@@ -42,15 +42,15 @@ There are four places where the name of the Task Queue can be set by the develop
 
 1. A Task Queue must be set when spawning a Workflow Execution:
 
-- [How to set `StartWorkflowOptions` in Go](/docs/go/startworkflowoptions-reference/#taskqueue)
-- [How to spawn a Workflow Execution using tctl](/docs/tctl/workflow/start#--taskqueue)
+- [How to set `StartWorkflowOptions` in Go](/go/startworkflowoptions-reference/#taskqueue)
+- [How to spawn a Workflow Execution using tctl](/tctl/workflow/start#--taskqueue)
 
 2. A Task Queue name must be set when starting a Worker Entity:
 
-- [How to develop a Worker Program in Go](/docs/go/how-to-develop-a-worker-program-in-go)
-- [How to develop a Worker Program in Java](/docs/java/how-to-develop-a-worker-program-in-java)
-- [How to develop a Worker Program in PHP](/docs/php/how-to-develop-a-worker-program-in-php)
-- [How to develop a Worker Program in TypeScript](/docs/typescript/how-to-develop-a-worker-program-in-typescript)
+- [How to develop a Worker Program in Go](/go/how-to-develop-a-worker-program-in-go)
+- [How to develop a Worker Program in Java](/java/how-to-develop-a-worker-program-in-java)
+- [How to develop a Worker Program in PHP](/php/how-to-develop-a-worker-program-in-php)
+- [How to develop a Worker Program in TypeScript](/typescript/how-to-develop-a-worker-program-in-typescript)
 
 Note that all Worker Entities listening to the same Task Queue name must be registered to handle the exact same Workflows Types and Activity Types.
 
@@ -62,7 +62,7 @@ However, the failure of the Task will not cause the associated Workflow Executio
 This is optional.
 An Activity Execution inherits the Task Queue name from its Workflow Execution if one is not provided.
 
-- [How to set `ActivityOptions` in Go](/docs/go/activityoptions-reference/#taskqueue)
+- [How to set `ActivityOptions` in Go](/go/activityoptions-reference/#taskqueue)
 
 4. A Task Queue name can be provided when spawning a Child Workflow Execution:
 

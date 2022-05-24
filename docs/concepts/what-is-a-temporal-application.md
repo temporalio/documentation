@@ -7,7 +7,7 @@ tags:
   - explanation
 ---
 
-A Temporal Application is a set of [Temporal Workflow Executions](/docs/concepts/what-is-a-workflow-execution).
+A Temporal Application is a set of [Temporal Workflow Executions](/concepts/what-is-a-workflow-execution).
 Each Temporal Workflow Execution has exclusive access to its local state, executes concurrently to all other Workflow Executions, and communicates with other Workflow Executions and the environment via message passing.
 
 A Temporal Application can consist of millions to billions of Workflow Executions.
@@ -22,4 +22,4 @@ A Temporal Workflow Execution is a Reentrant Process. A Reentrant Process is re
 - Recoverable: Ability of a process to continue execution after execution was suspended on a _failure_.
 - Reactive: Ability of a process to react to external events.
 
-Therefore, a Temporal Workflow Execution executes a [Temporal Workflow Definition](/docs/concepts/what-is-a-workflow-definition), also called a Temporal Workflow Function, your application code, exactly once and to completion—whether your code executes for seconds or years, in the presence of arbitrary load and arbitrary failures.
+Therefore, a Temporal Workflow Execution executes a [Temporal Workflow Definition](/concepts/what-is-a-workflow-definition), also called a Temporal Workflow Function, your application code, exactly once and to completion—whether your code executes for seconds or years, in the presence of arbitrary load and arbitrary failures.

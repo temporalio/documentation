@@ -1,6 +1,6 @@
 ---
 id: how-to-define-workflow-parameters-in-typescript
-title: How to define workflow parameters in Typescript
+title: How to define workflow parameters in TypeScript
 sidebar_label: Define Workflow parameters
 description: Define Workflow parameters
 tags:

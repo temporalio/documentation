@@ -8,7 +8,7 @@ tags:
   - tctl
 ---
 
-The `tctl workflow showid` command shows the Workflow Execution Event History for the specified [Workflow Id](/docs/concepts/what-is-a-workflow-id) and optional [Run Id](/docs/concepts/what-is-a-run-id).
+The `tctl workflow showid` command shows the Workflow Execution Event History for the specified [Workflow Id](/concepts/what-is-a-workflow-id) and optional [Run Id](/concepts/what-is-a-run-id).
 
 `tctl workflow showid <workflow_id> [<run_id>] [<modifiers>]`
 

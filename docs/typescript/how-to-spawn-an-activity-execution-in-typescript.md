@@ -1,6 +1,6 @@
 ---
 id: how-to-spawn-an-activity-execution-in-typescript
-title: How to spawn an Activity Execution in Typescript
+title: How to spawn an Activity Execution in TypeScript
 sidebar_label: Spawn an Activity Execution
 description: Spawn an Activity Execution
 tags:
@@ -20,7 +20,7 @@ const { greet } = proxyActivities<typeof activities>({
   startToCloseTimeout: '1 minute',
 });
 
-/** A workflow that calls an activity */
+// A workflow that calls an activity
 export async function example(name: string): Promise<string> {
   return await greet(name);
 }

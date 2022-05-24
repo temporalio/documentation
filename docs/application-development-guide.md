@@ -21,24 +21,21 @@ Information may change at any time.
 
 :::
 
-This guide is meant to be a comprehensive resource for developing a [Temporal Application](/docs/temporal/#temporal-application).
+This guide is meant to be a comprehensive resource for developing a [Temporal Application](/temporal/#temporal-application).
 
-It is broken down into five large sections:
+It is broken down into two large sections:
 
 - [Foundations](#foundations): The minimum things required to build and run a simple Workflow with a single Activity.
 - [Features](#features): All of the general features available to a Temporal Application.
-- [Observability](#observability): Features and tools available that give you insight into you application.
-- [Testing](#testing): How to test your Temporal Application code.
-- [Scaling](#scaling): Things to consider and look for when scaling a Temporal Application to millions or billions of Workflow Executions.
 
 ## Foundations
 
-This section covers the minimum set of concepts and implementation details needed to build and run a simple [Temporal Application](/docs/temporal/#temporal-application) – that is, all the relevant steps to start a Workflow Execution that executes an Activity.
+This section covers the minimum set of concepts and implementation details needed to build and run a simple [Temporal Application](/temporal/#temporal-application) – that is, all the relevant steps to start a Workflow Execution that executes an Activity.
 
 ### Run a dev Cluster
 
-Whenever we are developing Temporal Applications, we want to have a [Temporal Cluster](/docs/clusters/#) up and running.
-We can interact with a Cluster through [Temporal Client](/docs/temporal/#temporal-client) APIs and [tctl](/docs/tctl) commands.
+Whenever we are developing Temporal Applications, we want to have a [Temporal Cluster](/clusters/#) up and running.
+We can interact with a Cluster through [Temporal Client](/temporal/#temporal-client) APIs and [tctl](/tctl) commands.
 
 There are four ways to quickly install and run a Temporal Cluster:
 
@@ -47,7 +44,7 @@ There are four ways to quickly install and run a Temporal Cluster:
 - [Helm charts](#helm-charts): Deploying a Cluster to [Kubernetes](https://kubernetes.io/) is an easy way to test the system and develop Temporal Applications.
 - [Gitpod](#gitpod): One-click deployments are available for Go and TypeScript.
 
-**We do not recommend using any of these methods in a [full (production) environment](/docs/server/production-deployment).**
+**We do not recommend using any of these methods in a [full (production) environment](/server/production-deployment).**
 
 #### Helm charts
 
@@ -69,7 +66,7 @@ cd  docker-compose
 docker-compose up
 ```
 
-When the Temporal Cluster is running, the Temporal Web UI becomes available in your browser: [localhost:8088](http://localhost:8088/)
+When the Temporal Cluster is running, the Temporal Web UI becomes available in your browser: [localhost:8080](http://localhost:8080/)
 
 The preceding steps start and run a Temporal Cluster using a default configuration.
 To try other configurations (different dependencies and databases), or to try a custom Docker image, follow the [temporalio/docker-compose README](https://github.com/temporalio/docker-compose/blob/main/README.md).
@@ -79,7 +76,7 @@ To try other configurations (different dependencies and databases), or to try a 
 [temporal-render-simple](https://github.com/temporalio/temporal-render-simple) translates our docker-compose to Render by using the [Auto-Setup Docker image](https://docs.temporal.io/blog/auto-setup).
 We do not recommend using this technique for production because all four Temporal internal services (Frontend, Matching, History, and Worker) are run in one process, but the benefit is one-click deployments.
 
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/temporalio/temporal-render-simple)
+[Deploy to Render](https://render.com/deploy?repo=https://github.com/temporalio/temporal-render-simple)
 
 #### Gitpod
 
@@ -94,13 +91,13 @@ When it is running, you can customize the application samples.
 
 ### Add your SDK
 
-Add a [Temporal SDK](/docs/temporal/#temporal-sdk) to your project.
+Add a [Temporal SDK](/temporal/#temporal-sdk) to your project.
 Both TypeScript and Javascript can be used with the TypeScript SDK.
 
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -129,7 +126,7 @@ git clone git@github.com:temporalio/sdk-go.git
 
 **Are there executable code samples?**
 
-You can find a complete list of executable code samples in the [samples library](/docs/samples-library/#go), which includes Temporal Go SDK code samples from the [temporalio/samples-go](https://github.com/temporalio/samples-go) repo.
+You can find a complete list of executable code samples in the [samples library](/samples-library/#go), which includes Temporal Go SDK code samples from the [temporalio/samples-go](https://github.com/temporalio/samples-go) repo.
 Additionally, each of the Go SDK Tutorials is backed by a fully executable template application.
 
 **Where is the Go SDK technical reference?**
@@ -179,8 +176,8 @@ Select an SDK version to see available scripts.
 
 **Are there executable code samples?**
 
-You can find a complete list of executable code samples in the [samples library](/docs/samples-library/#java), which includes Temporal Java SDK code samples from the temporalio/samples-java repo.
-Additionally, several of the [Java SDK Tutorials](/docs/learning-paths) are backed by a fully executable template application.
+You can find a complete list of executable code samples in the [samples library](/samples-library/#java), which includes Temporal Java SDK code samples from the temporalio/samples-java repo.
+Additionally, several of the [Java SDK Tutorials](/learning-paths) are backed by a fully executable template application.
 
 **Where is the Java SDK technical reference?**
 
@@ -254,16 +251,16 @@ The Temporal TypeScript SDK API reference is published on [typescript.temporal.i
 
 ### Develop Workflows
 
-Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a [Workflow Definition](/docs/workflows/#workflow-definitions).
+Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a [Workflow Definition](/workflows/#workflow-definitions).
 
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
-In the Temporal Go SDK programming model, a [Workflow Definition](/docs/workflows/#workflow-definitions) is an exportable function.
+In the Temporal Go SDK programming model, a [Workflow Definition](/workflows/#workflow-definitions) is an exportable function.
 
 ```go
 func YourWorkflowDefinition(ctx workflow.Context) error {
@@ -277,7 +274,59 @@ In Go, by default, the Workflow Type name is the same as the function name.
 </TabItem>
 <TabItem value="java">
 
-Content is not available
+In the Temporal Java SDK programming model, a Workflow definition comprises a Workflow interface annotated with `@WorkflowInterface` and a Workflow implementation that implements the Workflow interface.
+
+The Workflow interface is a Java interface and is annotated with `@WorkflowInterface`.
+Each Workflow interface must have only one method annotated with `@WorkflowMethod`.
+The method name can be used to denote the Workflow Type.
+
+```java
+// Workflow interface
+@WorkflowInterface
+public interface YourWorkflow {
+
+    @WorkflowMethod
+    String yourWFMethod(Arguments args);
+}
+```
+
+However, when using dynamic Workflows, do not specify a `@WorkflowMethod`, and implement the `DynamicWorkflow` directly in the Workflow implementation code.
+
+The `@WorkflowMethod` identifies the method that is the starting point of the Workflow Execution.
+The Workflow Execution completes when this method completes.
+
+You can create interface inheritance hierarchies to reuse components across other Workflow interfaces.
+The interface inheritance approach does not apply to `@WorkflowMethod` annotations.
+
+A Workflow implementation implements a Workflow interface.
+
+```java
+// Define the Workflow implementation which implements our getGreeting Workflow method.
+  public static class GreetingWorkflowImpl implements GreetingWorkflow {
+      ...
+    }
+  }
+```
+
+To call Activities in your Workflow, call the Activity implementation.
+
+Use `ExternalWorkflowStub` to start or send Signals from within a Workflow to other running Workflow Executions.
+
+You can also invoke other Workflows as Child Workflows with `Workflow.newChildWorkflowStub()` or `Workflow.newUntypedChildWorkflowStub()` within a Workflow Definition.
+
+Use [`DynamicWorkflow`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/DynamicWorkflow.html) to implement Workflow Types dynamically.
+Register a Workflow implementation type that extends `DynamicWorkflow` to implement any Workflow Type that is not explicitly registered with the Worker.
+
+The dynamic Workflow interface is implemented with the `execute` method. This method takes in `EncodedValues` that are inputs to the Workflow Execution.
+These inputs can be specified by the Client when invoking the Workflow Execution.
+
+```java
+public class MyDynamicWorkflow implements DynamicWorkflow {
+   @Override
+    public Object execute(EncodedValues args) {
+    }
+}
+```
 
 </TabItem>
 <TabItem value="php">
@@ -300,17 +349,10 @@ interface FileProcessingWorkflow
 </TabItem>
 <TabItem value="typescript">
 
-A Workflow Function has two parts:
-
-- The function name is the [Workflow Type](/docs/workflows/#workflow-types/).
-- The function implementation is the [Workflow Definition](/docs/workflows/#workflow-definitions).
-
-Workflow Functions are bundled with their dependencies and registered by name in a Worker. A Workflow Function becomes a [Workflow Execution](/docs/workflows/#workflow-executions) when it's started from a Workflow Client.
-
-Workflow Functions are _just functions_, which can store state, and orchestrate Activity Functions.
+Workflow Definitions are _just functions_, which can store state and orchestrate Activity Functions.
 The following code snippet uses `proxyActivities` to schedule a `greet` Activity in the system to say hello.
 
-A Workflow Function can have multiple parameters; however, we recommend using a single object parameter.
+A Workflow Definition can have multiple parameters; however, we recommend using a single object parameter.
 
 ```typescript
 type ExampleArgs = {
@@ -335,7 +377,7 @@ All Workflow Definition parameters must be serializable.
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -377,7 +419,23 @@ Parameters can’t be channels, functions, variadic, or unsafe pointers.
 </TabItem>
 <TabItem value="java">
 
-Content is not available
+A method annotated with `@WorkflowMethod` can have any number of parameters.
+
+We recommend passing a single parameter that contains all the input fields to allow for adding fields in a backward-compatible manner.
+
+Note that all inputs should be serializable by the default Jackson JSON Payload Converter.
+
+You can create a custom object and pass it to the Workflow method, as shown in the following example.
+
+```java
+//...
+@WorkflowInterface
+public interface YourWorkflow {
+    @WorkflowMethod
+    String yourWFMethod(CustomObj customobj);
+// ...
+}
+```
 
 </TabItem>
 <TabItem value="php">
@@ -424,7 +482,7 @@ However, Temporal APIs that must be used to get the result of a Workflow Executi
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -458,7 +516,15 @@ Returning a non-nil `error` from a Workflow indicates that an error was encounte
 </TabItem>
 <TabItem value="java">
 
-Content is not available
+Workflow method arguments and return values must be serializable and deserializable using the provided [`DataConverter`](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.11.0/io/temporal/common/converter/DataConverter.html).
+
+The `execute` method for `DynamicWorkflow` can return type Object.
+Ensure that your Client can handle an Object type return or is able to convert the Object type response.
+
+Related references:
+
+- [What is a Data Converter?](/concepts/what-is-a-data-converter)
+- Java DataConverter reference: <https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html>
 
 </TabItem>
 <TabItem value="php">
@@ -506,14 +572,14 @@ function useState<T = any>(name: string, initialValue: T) {
 
 #### Workflow logic requirements
 
-Workflow logic is constrained by [deterministic execution requirements](/docs/workflows/#workflow-definitions/#deterministic-constraints).
+Workflow logic is constrained by [deterministic execution requirements](/concepts/what-is-a-workflow-definition/#deterministic-constraints).
 Therefor each language is limited to the use of certain idiomatic techniques.
 However, each Temporal SDK provides a set of APIs that can be used inside your Workflow to interact with external (to the Workflow) application code.
 
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -533,13 +599,39 @@ The Temporal Go SDK has APIs to handle equivalent Go constructs:
 - `workflow.Go()` This is a replacement for the `go` statement.
 - `workflow.Channel` This is a replacement for the native `chan` type.
   Temporal provides support for both buffered and unbuffered channels.
-- `workflow.Selector` This is a replacement for the `select` statement. Learn more on the [Go SDK Selectors](https://docs.temporal.io/docs/go/selectors) page
-- `workflow.Context` This is a replacement for `context.Context`. Learn more on the [Go SDK Context Propagation](https://docs.temporal.io/docs/go/tracing) page.
+- `workflow.Selector` This is a replacement for the `select` statement. Learn more on the [Go SDK Selectors](https://docs.temporal.io/go/selectors) page
+- `workflow.Context` This is a replacement for `context.Context`. Learn more on the [Go SDK Context Propagation](https://docs.temporal.io/go/tracing) page.
 
 </TabItem>
 <TabItem value="java">
 
-Content is not available
+When defining Workflows using the Temporal Java SDK, the Workflow code must be written to execute effectively once and to completion.
+
+The following constraints apply when writing Workflow Definitions:
+
+- Do not use mutable global variables in your Workflow implementations.
+  This will ensure that multiple Workflow instances are fully isolated.
+- Your Workflow code must be deterministic.
+  Do not call non-deterministic functions (such as non-seeded random or `UUID.randomUUID()`) directly from the Workflow code.
+  The Temporal SDK provides specific API for calling non-deterministic code in your Workflows.
+- Do not use programming language constructs that rely on system time.
+  For example, only use `Workflow.currentTimeMillis()` to get the current time inside a Workflow.
+- Do not use native Java `Thread` or any other multi-threaded classes like `ThreadPoolExecutor`.
+  Use `Async.function` or `Async.procedure`, provided by the Temporal SDK, to execute code asynchronously.
+- Do not use synchronization, locks, or other standard Java blocking concurrency-related classes besides those provided by the Workflow class.
+  There is no need for explicit synchronization because multi-threaded code inside a Workflow is executed one thread at a time and under a global lock.
+  - Call `Workflow.sleep` instead of `Thread.sleep`.
+  - Use `Promise` and `CompletablePromise` instead of `Future` and `CompletableFuture`.
+  - Use `WorkflowQueue` instead of `BlockingQueue`.
+- Use `Workflow.getVersion` when making any changes to the Workflow code.
+  Without this, any deployment of updated Workflow code might break already running Workflows.
+- Do not access configuration APIs directly from a Workflow because changes in the configuration might affect a Workflow Execution path.
+  Pass it as an argument to a Workflow function or use an Activity to load it.
+- Use `DynamicWorkflow` when you need a default Workflow that can handle all Workflow Types that are not registered with a Worker.
+  A single implementation can implement a Workflow Type which by definition is dynamically loaded from some external source.
+  All standard `WorkflowOptions` and determinism rules apply to Dynamic Workflow implementations.
+
+Java Workflow reference: <https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/package-summary.html>
 
 </TabItem>
 <TabItem value="php">
@@ -558,12 +650,12 @@ Content is not available
 
 One of the primary things that Workflows do, is orchestrate the execution of Activities.
 Activities are normal function/method executions that can interact with the world.
-For the Workflow to be able to execute the Activity we must define the [Activity Definition](/docs/activities/#activity-definition)
+For the Workflow to be able to execute the Activity we must define the [Activity Definition](/activities/#activity-definition)
 
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -612,7 +704,65 @@ Because this is such a common need, the rest of this guide shows Activities writ
 </TabItem>
 <TabItem value="java">
 
-Content is not available
+An [Activity Definition](/activities/#) is a combination of the Temporal Java SDK [Activity](https://www.javadoc.io/static/io.temporal/temporal-sdk/0.19.0/io/temporal/activity/Activity.html) Class implementing a specially annotated interface.
+
+An Activity interface is annotated with `@ActivityInterface` and an Activity implementation implements this Activity interface.
+TO handle Activity types that do not have an explicitly registered handler, you can directly implement a dynamic Activity.
+
+```java
+@ActivityInterface
+public interface GreetingActivities {
+    String composeGreeting(String greeting, String language);
+}
+```
+
+Each method defined in the Actvity interface defines a separate Activity method.
+You can annotate each method in the Activity interface with the `@ActivityMethod` annotation, but this is completely optional.
+The following example uses the `@ActivityMethod` annotation for the method defined in the previous example.
+
+```java
+@ActivityInterface
+public interface GreetingActivities {
+    @ActivityMethod()
+    String composeGreeting(String greeting, String language);
+}
+```
+
+An Activity implementation is a Java class that implements an Activity annotated interface.
+
+```java
+// Implementation for the GreetingActivities interface example from in the previous section
+ static class GreetingActivitiesImpl implements GreetingActivities {
+    @Override
+    public String composeGreeting(String greeting, String name) {
+      return greeting + " " + name + "!";
+    }
+  }
+```
+
+Use `DynamicActivity` to implement any number of Activity types dynamically.
+When an Activity implementation that extends `DynamicActivity` is registered, it is called for any Activity type invocation that doesn't have an explicitly registered handler.
+
+The dynamic Activity interface is implemented with the `execute` method, as shown in the following example.
+
+```java
+ // Dynamic Activity implementation
+  public static class DynamicGreetingActivityImpl implements DynamicActivity {
+    @Override
+    public Object execute(EncodedValues args) {
+      String activityType = Activity.getExecutionContext().getInfo().getActivityType();
+      return activityType
+          + ": "
+          + args.get(0, String.class)
+          + " "
+          + args.get(1, String.class)
+          + " from: "
+          + args.get(2, String.class);
+    }
+  }
+```
+
+Use `Activity.getExecutionContext()` to get information about the Activity type that should be implemented dynamically.
 
 </TabItem>
 <TabItem value="php">
@@ -638,7 +788,7 @@ interface FileProcessingActivities
 }
 ```
 
-#### How to customize an Activity type
+**How to customize an Activity type**
 
 We recommend to use a single value type argument for Activity methods.
 In this way, adding new arguments as fields to the value type is a backward-compatible change.
@@ -687,13 +837,13 @@ export async function greet(name: string): Promise<string> {
 
 All Activity parameters must be serializable.
 
-There is no explicit limit to the amount of parameter data that can be passed to an Activity, but keep in mind that all parameters and return values are recorded in a [Workflow Execution Event History](/docs/workflows/#event-history).
-A large Workflow Execution Event History can adversely impact the performance of your Workflow Executions, because the entire Event History is transferred to Worker Processes with every [Workflow Task](/docs/tasks/#workflow-task).
+There is no explicit limit to the amount of parameter data that can be passed to an Activity, but keep in mind that all parameters and return values are recorded in a [Workflow Execution Event History](/workflows/#event-history).
+A large Workflow Execution Event History can adversely impact the performance of your Workflow Executions, because the entire Event History is transferred to Worker Processes with every [Workflow Task](/tasks/#workflow-task).
 
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -721,7 +871,42 @@ func (a *YourActivityStruct) YourActivityDefinition(ctx context.Context, param Y
 </TabItem>
 <TabItem value="java">
 
-Content is not available
+An Activity interface can have any number of parameters.
+All inputs should be serializable by the default Jackson JSON Payload Converter.
+
+When implementing Activities, be mindful of the amount of data that you transfer using the Activity invocation parameters or return values as these are recorded in the Workflow Execution Events History.
+Large Events Histories can adversely impact performance.
+
+You can create a custom object, and pass it to the Activity interface, as shown in the following example.
+
+```java
+@ActivityInterface
+public interface YourActivities {
+    String getCustomObject(CustomObj customobj);
+    void sendCustomObject(CustomObj customobj, String abc);
+}
+```
+
+The `execute` method in the dynamic Activity interface implementation takes in `EncodedValues` that are inputs to the Activity Execution, as shown in the following example.
+
+```java
+ // Dynamic Activity implementation
+  public static class DynamicActivityImpl implements DynamicActivity {
+    @Override
+    public Object execute(EncodedValues args) {
+      String activityType = Activity.getExecutionContext().getInfo().getActivityType();
+      return activityType
+          + ": "
+          + args.get(0, String.class)
+          + " "
+          + args.get(1, String.class)
+          + " from: "
+          + args.get(2, String.class);
+    }
+  }
+```
+
+For more details, see [Dynamic Activity Reference](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/DynamicActivity.html).
 
 </TabItem>
 <TabItem value="php">
@@ -740,12 +925,12 @@ Content is not available
 
 All Activity results must be serializable.
 
-There is no explicit limit to the amount of data that can be returned by an Activity, but keep in mind that all return values are recorded in a [Workflow Execution Event History](/docs/workflows/#event-history)
+There is no explicit limit to the amount of data that can be returned by an Activity, but keep in mind that all return values are recorded in a [Workflow Execution Event History](/workflows/#event-history)
 
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -771,7 +956,13 @@ func (a *YourActivityStruct) YourActivityDefinition(ctx context.Context, param Y
 </TabItem>
 <TabItem value="java">
 
-Content is not available
+Activity return values must be serializable and deserializable by the provided [`DataConverter`](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.11.0/io/temporal/common/converter/DataConverter.html).
+
+The `execute` method for `DynamicActivity can return type Object.
+Ensure that your Workflow or Client can handle an Object type return or is able to convert the Object type response.
+
+- [What is a Data Converter?](/concepts/what-is-a-data-converter)
+- Java DataConverter reference: <https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html>
 
 </TabItem>
 <TabItem value="php">
@@ -781,7 +972,7 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-To define Return Types in your Activity, retrieve an Activity from an _Activity Handle_ before you can call it. Import the types of the activities defined in `./activities`.
+To import the types of the Activities defined in `./activities`, you must first retrieve an Activity from an _Activity Handle_ before you can call it, then define Return Types in your Activity.
 
 ```typescript
 import type * as activities from "./activities";
@@ -789,7 +980,7 @@ const {greet} = proxyActivities<typeof activities>({
   startToCloseTimeout: "1 minute",
 });
 
-/** A workflow that simply calls an activity */
+// A workflow that simply calls an activity
 export async function example(name: string): Promise<string> {
   return await greet(name);
 }
@@ -800,9 +991,9 @@ export async function example(name: string): Promise<string> {
 
 ### Start Activity Execution
 
-Calls to spawn [Activity Executions](/docs/activities/#activity-execution) are written within a Workflow Definition.
-The call to spawn an Activity Execution generates the [ScheduleActivityTask](/docs/workflows/#commands#scheduleactivitytask) Command.
-This results in the set of three [Activity Task](/docs/tasks/#activity-task) related Events ([ActivityTaskScheduled](/docs/references/events/#activitytaskscheduled), [ActivityTaskStarted](/docs/references/events/#activitytaskstarted), and ActivityTask[Closed])in your Workflow Execution Event History.
+Calls to spawn [Activity Executions](/activities/#activity-execution) are written within a [Workflow Definition](/workflows/#workflow-definitions).
+The call to spawn an Activity Execution generates the [ScheduleActivityTask](/references/commands/#scheduleactivitytask) Command.
+This results in the set of three [Activity Task](/tasks/#activity-task) related Events ([ActivityTaskScheduled](/references/events/#activitytaskscheduled), [ActivityTaskStarted](/references/events/#activitytaskstarted), and ActivityTask[Closed])in your Workflow Execution Event History.
 
 A single instance of the Activities implementation is shared across multiple simultaneous Activity invocations.
 Therefore, the Activity implementation code must be _stateless_.
@@ -817,11 +1008,11 @@ Otherwise, no additional limitations exist on Activity implementations.
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
-To spawn an [Activity Execution](/docs/activities/#activity-execution), use the [`ExecuteActivity()`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/workflow#ExecuteActivity) API call inside your Workflow Definition.
+To spawn an [Activity Execution](/activities/#activity-execution), use the [`ExecuteActivity()`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/workflow#ExecuteActivity) API call inside your Workflow Definition.
 The API is available from the [`go.temporal.io/sdk/workflow`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/workflow) package.
 
 The `ExecuteActivity()` API call requires an instance of `workflow.Context`, the Activity function name, and any variables to be passed to the Activity Execution.
@@ -863,14 +1054,198 @@ The `ExecuteActivity` call returns a Future, which can be used to get the result
 </TabItem>
 <TabItem value="java">
 
-Content is not available
+Activities are remote procedure calls that must be invoked from within a Workflow using `ActivityStub`.
+Activities are not executable on their own. You cannot start an Activity Execution by itself.
+
+Note that before an Activity Execution is invoked:
+
+- Activity options (either [`setStartToCloseTimeout`](/activities/#start-to-close-timeout) or [`ScheduleToCloseTimeout`](/activities/#schedule-to-close-timeout) are required) must be set for the Activity.
+  For details, see [Set Activity Options](/java/how-to-set-activityoptions-in-java) and [Activity Options reference](/java/reference-activityoptions).
+- The Activity must be registered with a Worker.
+  See [Worker Program](#run-worker-processes)
+- Activity code must be thread-safe.
+
+Activities should only be instantiated using stubs from within a Workflow.
+An `ActivityStub` returns a client-side stub that implements an Activity interface.
+You can invoke Activities using `Workflow.newActivityStub`(type-safe) or `Workflow.newUntypedActivityStub` (untyped).
+
+Calling a method on the Activity interface schedules the Activity invocation with the Temporal service, and generates an [`ActivityTaskScheduled` Event](/concepts/what-is-an-event#activitytaskscheduled).
+
+Activities can be invoked synchronously or asynchronously.
+
+**Invoking Activities Synchronously**
+
+In the following example, we use the type-safe `Workflow.newActivityStub` within the "FileProcessingWorkflow" Workflow implementation to create a client-side stub of the `FileProcessingActivities` class. We also define `ActivityOptions` and set `setStartToCloseTimeout` option to one hour.
+
+```java
+public class FileProcessingWorkflowImpl implements FileProcessingWorkflow {
+
+    private final FileProcessingActivities activities;
+
+    public FileProcessingWorkflowImpl() {
+        this.activities = Workflow.newActivityStub(
+                FileProcessingActivities.class,
+                ActivityOptions.newBuilder()
+                        .setStartToCloseTimeout(Duration.ofHours(1))
+                        .build());
+    }
+
+    @Override
+    public void processFile(Arguments args) {
+        String localName = null;
+        String processedName = null;
+        try {
+            localName = activities.download(args.getSourceBucketName(), args.getSourceFilename());
+            processedName = activities.processFile(localName);
+            activities.upload(args.getTargetBucketName(), args.getTargetFilename(), processedName);
+        } finally {
+            if (localName != null) {
+                activities.deleteLocalFile(localName);
+            }
+            if (processedName != null) {
+                activities.deleteLocalFile(processedName);
+            }
+        }
+    }
+    // ...
+}
+```
+
+A Workflow can have multiple Activity stubs. Each Activity stub can have its own `ActivityOptions` defined.
+The following example shows a Workflow implementation with two typed Activity stubs.
+
+```java
+public FileProcessingWorkflowImpl() {
+    ActivityOptions options1 = ActivityOptions.newBuilder()
+             .setTaskQueue("taskQueue1")
+             .setStartToCloseTimeout(Duration.ofMinutes(10))
+             .build();
+    this.store1 = Workflow.newActivityStub(FileProcessingActivities.class, options1);
+
+    ActivityOptions options2 = ActivityOptions.newBuilder()
+             .setTaskQueue("taskQueue2")
+             .setStartToCloseTimeout(Duration.ofMinutes(5))
+             .build();
+    this.store2 = Workflow.newActivityStub(FileProcessingActivities.class, options2);
+}
+```
+
+To invoke Activities inside Workflows without referencing the interface it implements, use an untyped Activity stub `Workflow.newUntypedActivityStub`.
+This is useful when the Activity type is not known at compile time, or to invoke Activities implemented in different programming languages.
+
+```java
+   // Workflow code
+    ActivityOptions activityOptions =
+        ActivityOptions.newBuilder()
+        .setStartToCloseTimeout(Duration.ofSeconds(3))
+        .setTaskQueue("simple-queue-node")
+        .build();
+
+    ActivityStub activity = Workflow.newUntypedActivityStub(activityOptions);
+    activity.execute("ComposeGreeting", String.class, "Hello World" , "Spanish");
+```
+
+**Invoking Activities Asynchronously**
+
+Sometimes Workflows need to perform certain operations in parallel.
+The Temporal Java SDK provides the `Async` class which includes static methods used to invoke any Activity asynchronously.
+The calls return a result of type `Promise` which is similar to the Java `Future` and `CompletionStage`.
+When invoking Activities, use `Async.function` for Activities that return a result, and `Async.procedure` for Activities that return void.
+
+In the following asynchronous Activity invocation, the method reference is passed to `Async.function` followed by Activity arguments.
+
+```java
+Promise<String> localNamePromise = Async.function(activities::download, sourceBucket, sourceFile);
+```
+
+The following example shows how to call two Activity methods, "download" and "upload", in parallel on multiple files.
+
+```java
+  public void processFile(Arguments args) {
+    List<Promise<String>> localNamePromises = new ArrayList<>();
+    List<String> processedNames = null;
+    try {
+      // Download all files in parallel.
+      for (String sourceFilename : args.getSourceFilenames()) {
+        Promise<String> localName =
+            Async.function(activities::download, args.getSourceBucketName(), sourceFilename);
+        localNamePromises.add(localName);
+      }
+      List<String> localNames = new ArrayList<>();
+      for (Promise<String> localName : localNamePromises) {
+        localNames.add(localName.get());
+      }
+      processedNames = activities.processFiles(localNames);
+
+      // Upload all results in parallel.
+      List<Promise<Void>> uploadedList = new ArrayList<>();
+      for (String processedName : processedNames) {
+        Promise<Void> uploaded =
+            Async.procedure(
+                activities::upload,
+                args.getTargetBucketName(),
+                args.getTargetFilename(),
+                processedName);
+        uploadedList.add(uploaded);
+      }
+      // Wait for all uploads to complete.
+      Promise.allOf(uploadedList).get();
+    } finally {
+      for (Promise<String> localNamePromise : localNamePromises) {
+        // Skip files that haven't completed downloading.
+        if (localNamePromise.isCompleted()) {
+          activities.deleteLocalFile(localNamePromise.get());
+        }
+      }
+      if (processedNames != null) {
+        for (String processedName : processedNames) {
+          activities.deleteLocalFile(processedName);
+        }
+      }
+    }
+  }
+```
+
+**Activity Execution Context**
+
+`ActivityExecutionContext` is a context object passed to each Activity implementation by default.
+You can access it in your Activity implementations via `Activity.getExecutionContext()`.
+
+It provides getters to access information about the Workflow that invoked the Activity.
+Note that the Activity context information is stored in a thread-local variable.
+Therefore, calls to `getExecutionContext()` succeed only within the thread that invoked the Activity function.
+
+Following is an example of using the `ActivityExecutionContext`:
+
+```java
+public class FileProcessingActivitiesImpl implements FileProcessingActivities {
+
+  @Override
+  public String download(String bucketName, String remoteName, String localName) {
+
+    ActivityExecutionContext ctx = Activity.getExecutionContext();
+    ActivityInfo info = ctx.getInfo();
+
+    log.info("namespace=" +  info.getActivityNamespace());
+    log.info("workflowId=" + info.getWorkflowId());
+    log.info("runId=" + info.getRunId());
+    log.info("activityId=" + info.getActivityId());
+    log.info("activityTimeout=" + info.getStartToCloseTimeoutSeconds());
+
+    return downloadFileFromS3(bucketName, remoteName, localDirectory + localName);
+  }
+    ...
+}
+```
+
+For details on getting the results of an Activity Execution, see [Activity Execution Result](#none).
 
 </TabItem>
 <TabItem value="php">
 
 Activity implementation is an implementation of an Activity interface.
 The following code example, uses a constructor that takes an Amazon S3 client and a local directory, and uploads a file to the S3 bucket.
-Then, the code uses a function to dowload a file from the S3 bucket passing a bucket name, remote name, and local name as arguments.
+Then, the code uses a function to download a file from the S3 bucket passing a bucket name, remote name, and local name as arguments.
 Finally, it uses a function that takes a local file name as an argument and returns a string.
 
 ```php
@@ -938,7 +1313,7 @@ const {greet} = proxyActivities<typeof activities>({
   startToCloseTimeout: "1 minute",
 });
 
-/** A workflow that calls an activity */
+// A workflow that calls an activity
 export async function example(name: string): Promise<string> {
   return await greet(name);
 }
@@ -949,15 +1324,15 @@ This imports the individual Activities and declares the type alias for each Acti
 </TabItem>
 </Tabs>
 
-### Get Activity results
+#### Get Activity results
 
-The call to spawn an [Activity Execution](/docs/activities/#activity-execution) generates the [ScheduleActivityTask](/docs/workflows/#commands/#scheduleactivitytask) Command and provides the Workflow with an Awaitable.
+The call to spawn an [Activity Execution](/activities/#activity-execution) generates the [ScheduleActivityTask](/references/commands/#scheduleactivitytask) Command and provides the Workflow with an Awaitable.
 Workflow Executions can either block progress until the result is available via the Awaitable or continue progressing, making use of the result when it becomes available.
 
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -1006,7 +1381,50 @@ Therefore it is also idiomatic to either block on the results of any of the Acti
 </TabItem>
 <TabItem value="java">
 
-Content is not available
+To get the results of an asynchronously invoked Activity method, use the `Promise` `get` method to block until the Activity method result is available.
+
+Sometimes an Activity Execution lifecycle goes beyond a synchronous method invocation.
+For example, a request can be put in a queue and later a reply comes and is picked up by a different Worker process.
+The whole request-reply interaction can be modeled as a single Activity.
+
+To indicate that an Activity should not be completed upon its method return, call `ActivityExecutionContext.doNotCompleteOnReturn()` from the original Activity thread.
+
+Then later, when replies come, complete the Activity using the `ActivityCompletionClient`.
+To correlate Activity invocation with completion use either a `TaskToken` or Workflow and Activity IDs.
+
+Following is an example of using `ActivityExecutionContext.doNotCompleteOnReturn()`:
+
+```java
+public class FileProcessingActivitiesImpl implements FileProcessingActivities {
+
+  public String download(String bucketName, String remoteName, String localName) {
+
+    ActivityExecutionContext ctx = Activity.getExecutionContext();
+
+    // Used to correlate reply
+    byte[] taskToken = ctx.getInfo().getTaskToken();
+
+    asyncDownloadFileFromS3(taskToken, bucketName, remoteName, localDirectory + localName);
+    ctx.doNotCompleteOnReturn();
+
+    // Return value is ignored when doNotCompleteOnReturn was called.
+    return "ignored";
+  }
+  ...
+}
+```
+
+When the download is complete, the download service potentially can complete the Activity, or fail it from a different process, for example:
+
+```java
+  public <R> void completeActivity(byte[] taskToken, R result) {
+    completionClient.complete(taskToken, result);
+  }
+
+  public void failActivity(byte[] taskToken, Exception failure) {
+    completionClient.completeExceptionally(taskToken, failure);
+  }
+```
 
 </TabItem>
 <TabItem value="php">
@@ -1088,7 +1506,7 @@ However, it is acceptable and common to utilize a Temporal Client, to communicat
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -1114,7 +1532,95 @@ func main() {
 </TabItem>
 <TabItem value="java">
 
-Content is not available
+To initialize a Workflow Client, create an instance of a `WorkflowClient`, create a client-side `WorkflowStub`, and then call a Workflow method (annotated with the `@WorkflowMethod` annotation).
+
+To start a Workflow Execution, your Temporal Server must be running, and your front-end service must be accepting gRPC calls.
+
+To establish a connection with the front-end service, use `WorkflowServiceStubs`.
+
+```java
+WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
+```
+
+You can provide `WorkflowServiceStubsOptions` to override the default values for the gRPC calls.
+
+For example, the default front-end service gRPC address is set to `127.0.0.1:7233`, where `7233` is the default port for the Temporal frontend service. If your server is running on a different host or port from the default, you can set it as shown in the following example.
+
+```java
+WorkflowServiceStubs service = WorkflowServiceStubs.newServiceStubs(
+                    WorkflowServiceStubsOptions.newBuilder()
+                     .setTarget(TARGET_ENDPOINT)
+                            .build());
+
+```
+
+You can also provide certificates to be able to connect to your frontend service using mTLS.
+The following example shows how to set up cetificates and pass the `SSLContext` for the Client.
+
+```java
+import io.temporal.serviceclient.SimpleSslContextBuilder;
+...
+// Load your client certificate, which should look like:
+    // -----BEGIN CERTIFICATE-----
+    // ...
+    // -----END CERTIFICATE-----
+    InputStream clientCert = new FileInputStream(System.getenv("TEMPORAL_CLIENT_CERT"));
+    // PKCS8 client key, which should look like:
+    // -----BEGIN PRIVATE KEY-----
+    // ...
+    // -----END PRIVATE KEY-----
+    InputStream clientKey = new FileInputStream(System.getenv("TEMPORAL_CLIENT_KEY"));
+    // For Temporal Cloud this would likely be ${namespace}.tmprl.cloud:7233
+    String targetEndpoint = System.getenv("TEMPORAL_ENDPOINT");
+    // Your registered Namespace.
+    String namespace = System.getenv("TEMPORAL_NAMESPACE");
+    // Create SSL enabled client by passing SslContext, created by SimpleSslContextBuilder.
+    WorkflowServiceStubs service =
+        WorkflowServiceStubs.newInstance(
+            WorkflowServiceStubsOptions.newBuilder()
+                .setSslContext(SimpleSslContextBuilder.forPKCS8(clientCert, clientKey).build())
+                .setTarget(targetEndpoint)
+                .build());
+
+```
+
+For details, see [Sample](https://github.com/temporalio/samples-java/blob/main/src/main/java/io/temporal/samples/ssl/SslEnabledWorker.java).
+
+After the connection to the Temporal frontend service is established, create a Client for the service stub.
+The Workflow Client helps with client-side APIs and is required by Workers.
+
+Create an instance of a `WorkflowClient` for the Workflow service stub, and use `WorkflowClientOptions` to set options for the Workflow Client.
+The following example shows how to create a `WorkflowClient` instance called "client" for the `WorkflowServiceStubs` "service" that we created in the previous example, and set `Namespace` option for the `WorkflowClient`.
+
+```java
+WorkflowClient client = WorkflowClient.newServiceStubs(
+                service,
+                WorkflowClientOptions.newBuilder()
+                        .setNamespace(“Abc”)
+                    .build());
+
+```
+
+See [WorkflowClientOptions](/java/how-to-set-workflowclientoptions-in-java) for details.
+
+`WorkflowService` and `WorkflowClient` creation is a heavyweight operation, and will be resource-intensive if created each time you start a Workflow or send a Signal to it.
+The recommended way is to create them once and reuse where possible.
+
+With the Client defined, you can start interacting with the Temporal Frontend Service using the SDK APIs.
+
+To initialize a Workflow in the Client, create a `WorkflowStub`, and start the Workflow Execution with `WorkflowClient.start()`.
+Starting Workflows or sending Signals or Queries to Workflows from within a Client must be done using `WorkflowStubs`.
+
+```java
+WorkflowClient workflowClient =  WorkflowClient.newInstance(service, clientOptions);
+ // Create a Workflow stub.
+ YourWorkflow workflow = workflowClient.newWorkflowStub(YourWorkflow.class);
+ // Start Workflow asynchronously and call its "yourWFMethod" Workflow method
+ WorkflowClient.start(workflow::yourWFMethod);
+```
+
+For details, see [How to spawn a Workflow Execution in Java](#start-workflow-execution).
+See [How to spawn a Workflow Execution in Java](#start-workflow-execution) for details.
 
 </TabItem>
 <TabItem value="php">
@@ -1124,7 +1630,7 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Use a new `WorflowClient()` with the requisite gRPC `Connection` to create a new Client.
+Use a new `WorflowClient()` with the requisite gRPC [`Connection`](https://typescript.temporal.io/api/classes/client.Connection#service) to create a new Client.
 
 ```typescript
 import {Connection, WorkflowClient} from "@temporalio/client";
@@ -1134,7 +1640,7 @@ const client = new WorkflowClient(connection.service);
 
 Declaring the `WorflowClient()` creates a new connection to the Temporal service.
 
-If you ommit the connection and just call the `new WorkflowClient()`, you will create a default connection that works locally. However, configure your connection and Namespace when [deploying to production](/docs/typescript/security/#encryption-in-transit-with-mtls).
+If you ommit the connection and just call the `new WorkflowClient()`, you will create a default connection that works locally. However, configure your connection and Namespace when [deploying to production](/typescript/security/#encryption-in-transit-with-mtls).
 
 The following example, creates a Client, connects to an account, and declares your Namespace.
 
@@ -1159,7 +1665,7 @@ const client = new WorkflowClient(connection.service, {
 ```
 
 [The Hello World mTLS sample](https://github.com/temporalio/samples-node/tree/main/hello-world-mtls/) demonstrates sample code used to connect to a Temporal Cloud account.
-When signing up to Temporal Cloud you should receive a Namespace, a Server address and a client certificate and key. Use the following environment variables to set up the sample:
+When signing up to Temporal Cloud you should receive a Namespace, a Server address and a Client certificate and key. Use the following environment variables to set up the sample:
 
 - **TEMPORAL_ADDRESS**: looks like `foo.bar.tmprl.cloud` (NOT web.foo.bar.tmprl.cloud)
 - **TEMPORAL_NAMESPACE**: looks like `foo.bar`
@@ -1226,15 +1732,22 @@ if (certificateS3Bucket) {
 
 ### Run Worker Processes
 
-The [Worker Process](/docs/workers/#worker-process) is where Workflow Functions and Activity Functions are executed.
-Each [Worker Entity](/docs/workers/#worker-entity) in the Worker Process must register the exact Workflow Types and Activity Types it may execute.
-Each Worker Entity must also associate itself with exactly one [Task Queue](/docs/tasks/#task-queues).
+The [Worker Process](/workers/#worker-process) is where Workflow Functions and Activity Functions are executed.
+Each [Worker Entity](/workers/#worker-entity) in the Worker Process must register the exact Workflow Types and Activity Types it may execute.
+Each Worker Entity must also associate itself with exactly one [Task Queue](/tasks/#task-queues).
 Each Worker Entity polling the same Task Queue must be registered with the same Workflow Types and Activity Types.
+
+A [Worker Entity](/workers/#worker-entity) is the component within a Worker Process that listens to a specific Task Queue.
+
+Although multiple Worker Entities can be in a single Worker Process, a single Worker Entity Worker Process may be perfectly sufficient.
+(See the [Worker tuning guide](/operation/how-to-tune-workers).)
+
+A Worker Entity contains both a Workflow Worker and an Activity Worker so that it can make progress for either a Workflow Execution or an Activity Execution.
 
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -1242,7 +1755,7 @@ Create an instance of [`Worker`](https://pkg.go.dev/go.temporal.io/sdk/worker#Wo
 
 1. An instance of the Temporal Go SDK `Client`.
 2. The name of the Task Queue that it will poll.
-3. An instance of [`worker.Options`](/docs/go/how-to-set-workeroptions-in-go), which can be empty.
+3. An instance of [`worker.Options`](/go/how-to-set-workeroptions-in-go), which can be empty.
 
 Then, register the Workflow Types and the Activity Types that the Worker will be capable of executing.
 
@@ -1283,59 +1796,44 @@ func YourActivityDefinition(ctx context.Context, param YourActivityParam) (YourA
 }
 ```
 
-Start the Worker Process by running `go run <filename>.go`.
-
-:::tip
-
-If you have [`gow`](https://github.com/mitranim/gow) installed, the Worker Process automatically "reloads" when you update the file:
-
-```bash
-go install github.com/mitranim/gow@latest
-gow run worker/main.go # automatically reload when file changed
-```
-
-:::
-
-The `RegisterWorkflow()` and `RegisterActivity()` calls essentially create an in-memory mapping between the Workflow Types and their implementations, inside the Worker process.
-
-Notice that the Task Queue name is the same as the name provided when the [Workflow Execution is spawned](#start-workflow-execution).
-
-The name of the Task Queue that is provided to the Worker must be the same Task Queue name that is provided with the invocation of the Workflow Execution.
-
-All Workers listening to the same Task Queue name must be registered to handle the exact same Workflows Types and Activity Types.
-
-If a Worker polls a Task for a Workflow Type or Activity Type it does not know about, it will fail that Task.
-However, the failure of the Task will not cause the associated Workflow Execution to fail.
-
-#### Registering Activity `structs`
-
-Per [Activity Definition](#develop-activities) best practices, you may have an Activity struct that has multiple methods and fields. When you use `RegisterActivity()` for an Activity struct, that Worker has access to all exported methods.
-
-#### Registering multiple Types
-
-To register multiple Activity Types and/or Workflow Types with the Worker Entity, just make multiple Activity registration calls, but make sure each Type name is unique:
-
-```go
-w.registerActivity(ActivityA)
-w.registerActivity(ActivityB)
-w.registerActivity(ActivityC)
-w.registerWorkflow(WorkflowA)
-w.registerWorkflow(WorkflowB)
-w.registerWorkflow(WorkflowC)
-```
-
-#### Registering with options
-
-Options can be applied when the Type is registered.
-
-For example, an Activity Type name can be customized to something other than the function name using the [`RegisterActivityWithOptions`](/docs/go/how-to-set-registeractivityoptions-in-go) call.
-
-And a Workflow Type name can be customized to something other than the function name using the [`RegisterWorkflowWithOptions`](/docs/go/how-to-set-registerworkflowoptions-in-go) call.
-
 </TabItem>
 <TabItem value="java">
 
-Content is not available
+Use the `newWorker` method on an instance of a [`WorkerFactory`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkerFactory.html) to create a new Worker in Java.
+
+A single Worker Entity can contain many Worker Objects.
+Call the `start()` method on the instance of the `WorkerFactory` to start all the Workers created in this process.
+
+```java
+// ...
+import io.temporal.client.WorkflowClient;
+import io.temporal.serviceclient.WorkflowServiceStubs;
+import io.temporal.worker.Worker;
+import io.temporal.worker.WorkerFactory;
+
+public class YourWorker {
+
+  public static void main(String[] args) {
+
+    WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
+    WorkflowClient client = WorkflowClient.newInstance(service);
+    WorkerFactory factory = WorkerFactory.newInstance(client);
+    Worker yourWorker = factory.newWorker("your_task_queue");
+
+    // Register Workflow
+    // and/or register Activities
+
+    factory.start();
+  }
+}
+```
+
+After creating the Worker entity, register all Workflow Types and all Activity Types that the Worker can execute.
+A Worker can be registered with just Workflows, just Activities, or both.
+
+**Operation guides:**
+
+- [How to tune Workers](/operation/how-to-tune-workers)
 
 </TabItem>
 <TabItem value="php">
@@ -1345,7 +1843,7 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-First create a Worker with `Worker.create()` (which establishes the initial gRPC connection), then call `worker.run()` on it (to start polling the Task Queue).
+Create a Worker with `Worker.create()` (which establishes the initial gRPC connection), then call `worker.run()` on it (to start polling the Task Queue).
 
 Below is an example of starting a Worker that polls the Task Queue named `tutorial`.
 
@@ -1389,7 +1887,7 @@ run().catch((err) => {
 
 See below for more Worker options.
 
-#### Workflow and Activity registration
+**Workflow and Activity registration**
 
 Workers bundle Workflow code and `node_modules` using Webpack v5 and execute them inside V8 isolates.
 Activities are directly required and run by Workers in the Node.js environment.
@@ -1404,7 +1902,7 @@ There are three main things the Worker needs:
 - Either specify a `workflowsPath` to your `workflows.ts` file to pass to Webpack, e.g., `require.resolve('./workflows')`. Workflows will be bundled with their dependencies, which you can fine-tune with `nodeModulesPaths`.
 - Or pass a prebuilt bundle to `workflowBundle` instead if you prefer to handle the bundling yourself.
 
-#### Additional Worker Options
+**Additional Worker Options**
 
 This is a selected subset of options you are likely to use. Even more advanced options, particularly for performance tuning, are available in [the API reference](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions).
 
@@ -1412,36 +1910,154 @@ This is a selected subset of options you are likely to use. Even more advanced o
 | ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `nodeModulesPaths` | Array of paths of Workflow dependencies to pass to Webpack. Defaults to the first encountered `node_modules` directory when scanning the filesystem starting with `workflowsPath`. |
 | `dataConverter`    | Encodes and decodes data entering and exiting a Temporal Server. Supports `undefined`, `UintBArray`, and JSON.                                                                     |
-| `sinks`            | Allows injection of Workflow Sinks (Advanced feature: see [Logging docs](/docs/typescript/logging))                                                                                |
-| `interceptors`     | A mapping of interceptor type to a list of factories or module paths (Advanced feature: see [Interceptors](/docs/typescript/interceptors))                                         |
+| `sinks`            | Allows injection of Workflow Sinks (Advanced feature: see [Logging docs](/typescript/logging))                                                                                     |
+| `interceptors`     | A mapping of interceptor type to a list of factories or module paths (Advanced feature: see [Interceptors](/typescript/interceptors))                                              |
 
 **Operation guides:**
 
-- [How to tune Workers](/docs/operation/how-to-tune-workers)
+- [How to tune Workers](/operation/how-to-tune-workers)
+
+</TabItem>
+</Tabs>
+
+#### Register multiple types
+
+All Workers listening to the same Task Queue name must be registered to handle the exact same Workflows Types and Activity Types.
+
+If a Worker polls a Task for a Workflow Type or Activity Type it does not know about, it fails that Task.
+However, the failure of the Task does not cause the associated Workflow Execution to fail.
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+The `RegisterWorkflow()` and `RegisterActivity()` calls essentially create an in-memory mapping between the Workflow Types and their implementations, inside the Worker process.
+
+**Registering Activity `structs`**
+
+Per [Activity Definition](#develop-activities) best practices, you might have an Activity struct that has multiple methods and fields.
+When you use `RegisterActivity()` for an Activity struct, that Worker has access to all exported methods.
+
+**Registering multiple Types**
+
+To register multiple Activity Types and/or Workflow Types with the Worker Entity, just make multiple Activity registration calls, but make sure each Type name is unique:
+
+```go
+w.registerActivity(ActivityA)
+w.registerActivity(ActivityB)
+w.registerActivity(ActivityC)
+w.registerWorkflow(WorkflowA)
+w.registerWorkflow(WorkflowB)
+w.registerWorkflow(WorkflowC)
+```
+
+</TabItem>
+<TabItem value="java">
+
+Use `worker.registerWorkflowImplementationTypes` to register Workflow type and `worker.registerActivitiesImplementations` to register Activity implementation with Workers.
+
+For Workflows, the Workflow Type is registered with a Worker.
+A Workflow Type can be registered only once per Worker entity.
+If you define multiple Workflow implementations of the same type, you get an exception at the time of registration.
+
+For Activities, Activity implementation instances are registered with a Worker because they are stateless and thread-safe.
+You can pass any number of dependencies in the Activity implementation constructor, such as the database connections, services, etc.
+
+The following example shows how to register a Workflow and an Activity with a Worker.
+
+```java
+    Worker worker = workerFactory.newWorker("your_task_queue");
+    ...
+    // Register Workflow
+    worker.registerWorkflowImplementationTypes(GreetingWorkflowImpl.class);
+    // Register Activity
+    worker.registerActivitiesImplementations(new GreetingActivitiesImpl());
+```
+
+When you register a single instance of an Activity, you can have multiple instances of Workflow Executions calling the same Activity.
+Activity code must be thread-safe because the same instance of the Activity code is run for every Workflow Execution that calls it.
+
+For `DynamicWorkflow`, only one Workflow implementation that extends `DynamicWorkflow` can be registered with a Worker.
+The following example shows how to register the `DynamicWorkflow` and `DynamicActivity` implementation with a Worker.
+
+```java
+  public static void main(String[] arg) {
+
+    WorkflowServiceStubs service = WorkflowServiceStubs.newInstance();
+    WorkflowClient client = WorkflowClient.newInstance(service);
+    WorkerFactory factory = WorkerFactory.newInstance(client);
+    Worker worker = factory.newWorker(TASK_QUEUE);
+
+    /* Register the Dynamic Workflow implementation with the Worker. Workflow implementations
+    ** must be known to the Worker at runtime to dispatch Workflow Tasks.
+    */
+    worker.registerWorkflowImplementationTypes(DynamicGreetingWorkflowImpl.class);
+
+    // Start all the Workers that are in this process.
+    factory.start();
+
+    /* Create the Workflow stub. Note that the Workflow type is not explicitly registered with the Worker. */
+    WorkflowOptions workflowOptions =
+        WorkflowOptions.newBuilder().setTaskQueue(TASK_QUEUE).setWorkflowId(WORKFLOW_ID).build();
+    WorkflowStub workflow = client.newUntypedWorkflowStub("DynamicWF", workflowOptions);
+    /**
+     * Register Dynamic Activity implementation with the Worker. Since Activities are stateless
+     * and thread-safe, we need to register a shared instance.
+    */
+    worker.registerActivitiesImplementations(new DynamicGreetingActivityImpl());
+
+    /* Start Workflow Execution and immmediately send Signal. Pass in the Workflow args and Signal args. */
+    workflow.signalWithStart("greetingSignal", new Object[] {"John"}, new Object[] {"Hello"});
+
+    // Wait for the Workflow to finish getting the results.
+    String result = workflow.getResult(String.class);
+
+    System.out.println(result);
+
+    System.exit(0);
+  }
+}
+```
+
+You can register multiple type-specific Workflow implementations alongside a single `DynamicWorkflow` implementation.
+You can register only one Activity instance that implements `DynamicActivity` with a Worker.
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is not available
 
 </TabItem>
 </Tabs>
 
 ### Start Workflow Execution
 
-[Workflow Execution](/docs/workflows/#workflow-executions) semantics rely on several parameters - that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language specific contextual data, and Workflow Function parameters.
+[Workflow Execution](/workflows/#workflow-executions) semantics rely on several parameters - that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
 
 In the examples below, all Workflow Executions are started using a Temporal Client.
 To spawn Workflow Executions from within other Workflow Executions, use either the [Child Workflow](#child-workflows) or External Workflow APIs.
 
 See the [Customize Workflow Type](#customize-workflow-type) section to see how to customize the name of the Workflow Type.
 
-A request to spawn a Workflow Execution causes the Temporal Cluster to create the first Event ([WorkflowExecutionStarted](/docs/workflows/#events#workflowexecutionstarted)) in the Workflow Execution Event History.
-The Temporal Cluster then creates the first Workflow Task resulting the first [WorkflowTaskScheduled](/docs/workflows/#events/#workflowtaskscheduled) Event.
+A request to spawn a Workflow Execution causes the Temporal Cluster to create the first Event ([WorkflowExecutionStarted](/references/events/#workflowexecutionstarted)) in the Workflow Execution Event History.
+The Temporal Cluster then creates the first Workflow Task resulting the first [WorkflowTaskScheduled](/references/events/#workflowtaskscheduled) Event.
 
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
-To spawn a [Workflow Execution](/docs/workflows/#workflow-executions), use the `ExecuteWorkflow()` method on the Go SDK [`Client`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client#Client).
+To spawn a [Workflow Execution](/workflows/#workflow-executions), use the `ExecuteWorkflow()` method on the Go SDK [`Client`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client#Client).
 
 The `ExecuteWorkflow()` API call requires an instance of [`context.Context`](https://pkg.go.dev/context#Context), an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client#StartWorkflowOptions), a Workflow Type name, and all variables to be passed to the Workflow Execution.
 The `ExecuteWorkflow()` call returns a Future, which can be used to get the result of the Workflow Execution.
@@ -1492,7 +2108,123 @@ workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, "Yo
 </TabItem>
 <TabItem value="java">
 
-Content is not available
+Use `WorkflowStub` to start a Workflow Execution from within a Client, and `ExternalWorkflowStub` to start a different Workflow Execution from within a Workflow.
+
+See [`SignalwithStart`](#send-signal-with-start) to start a Workflow Execution to receive a Signal from within another Workflow.
+
+**Using `WorkflowStub`**
+
+`WorkflowStub` is a proxy generated by the `WorkflowClient`.
+Each time a new Workflow Execution is started, an instance of the Workflow implementation object is created.
+Then, one of the methods (depending on the Workflow Type of the instance) annotated with `@WorkflowMethod` can be invoked.
+As soon as this method returns, the Workflow Execution is considered to be complete.
+
+You can use a typed or untyped `WorkflowStub` in the client code.
+
+- Typed `WorkflowStub` are useful because they are type safe and allow you to invoke your Workflow methods such as `@WorkflowMethod`, `@QueryMethod`, and `@SignalMethod` directly.
+- An untyped `WorkflowStub` does not use the Workflow interface, and is not type safe. It is more flexible because it has methods from the `WorkflowStub` interface, such as `start`, `signalWithStart`, `getResults` (sync and async), `query`, `signal`, `cancel` and `terminate`.
+  Note that the Temporal Java SDK also provides typed `WorkflowStub` versions for these methods.
+  When using untyped `WorkflowStub`, we rely on the Workflow Type, Activity Type, Child Workflow Type, as well as Query and Signal names.
+  For details, see [Temporal Client](#create-temporal-clients.md).
+
+A Workflow Execution can be started either synchronously or asynchronously.
+
+- Synchronous invocation starts a Workflow and then waits for its completion. If the process that started the Workflow crashes or stops waiting, the Workflow continues executing.
+  Because Workflows are potentially long-running, and Client crashes happen, it is not very commonly found in production use.
+  The following example is a type-safe approach for starting a Workflow Execution synchronously.
+
+  ```java
+    NotifyUserAccounts workflow = client.newWorkflowStub(
+          NotifyUserAccounts.class,
+          WorkflowOptions.newBuilder()
+                  .setWorkflowId("notifyAccounts")
+                  .setTaskQueue(taskQueue)
+                  .build()
+          );
+
+  // start the Workflow and wait for a result.
+    workflow.notify(new String[] { "Account1", "Account2", "Account3", "Account4", "Account5",
+                  "Account6", "Account7", "Account8", "Account9", "Account10"});
+      }
+  // notify(String[] accountIds) is a Workflow method defined in the Workflow Definition.
+  ```
+
+- Asynchronous start initiates a Workflow Execution and immediately returns to the caller. This is the most common way to start Workflows in production code.
+  The `WorkflowClient`<https://github.com/temporalio/sdk-java/blob/master/temporal-sdk/src/main/java/io/temporal/client/WorkflowClient.java)> provides some static methods, such as `start`, `execute`, `signalWithStart` etc., that help with starting your Workflows asynchronously.
+
+  The following examples show how to start Workflow Executions asynchronously, with either typed or untyped `WorkflowStub`.
+
+  - **Typed WorkflowStub Example**
+
+    ```java
+    // create typed Workflow stub
+    FileProcessingWorkflow workflow = client.newWorkflowStub(FileProcessingWorkflow.class,
+          WorkflowOptions.newBuilder()
+                  .setTaskQueue(taskQueue)
+                  .setWorkflowId(workflowId)
+                  .build());
+    // use WorkflowClient.execute (if your Workflow takes in arguments) or WorkflowClient.start (for zero arguments)
+    WorkflowClient.start(workflow::greetCustomer);
+    ```
+
+  - **Untyped WorkflowStub Example**
+
+    ```java
+    WorkflowStub untyped = client.newUntypedWorkflowStub("FileProcessingWorkflow",
+          WorkflowOptions.newBuilder()
+                  .setWorkflowId(workflowId)
+                  .setTaskQueue(taskQueue)
+                  .build());
+
+    // blocks until Workflow Execution has been started (not until it completes)
+    untyped.start(argument);
+    ```
+
+You can call a Dynamic Workflow implementation using an untyped `WorkflowStub`.
+The following example shows how to call the Dynamic Workflow implementation in the Client code.
+
+```java
+    WorkflowClient client = WorkflowClient.newInstance(service);
+    /**
+      * Note that for this part of the client code, the dynamic Workflow implementation must
+      * be known to the Worker at runtime in order to dispatch Workflow tasks, and may be defined
+      * in the Worker definition as:*/
+    // worker.registerWorkflowImplementationTypes(DynamicGreetingWorkflowImpl.class);
+
+    /* Create the Workflow stub to call the dynamic Workflow.
+    * Note that the Workflow type is not explicitly registered with the Worker.*/
+    WorkflowOptions workflowOptions =
+        WorkflowOptions.newBuilder().setTaskQueue(TASK_QUEUE).setWorkflowId(WORKFLOW_ID).build();
+    WorkflowStub workflow = client.newUntypedWorkflowStub("DynamicWF", workflowOptions);
+```
+
+`DynamicWorkflow` can be used to invoke different Workflow Types.
+To check what type is running when your Dynamic Workflow `execute` method runs, use `getWorkflowType()` in the implementation code.
+
+```java
+String type = Workflow.getInfo().getWorkflowType();
+```
+
+See [Workflow Execution Result](#get-workflow-results) for details on how to get the results of the Workflow Execution.
+
+**Using `ExternalWorkflowStub`**
+
+Use `ExternalWorkflowStub` within a Workflow to invoke, and send Signals to, other Workflows by type.
+
+This helps particularly for executing Workflows written in other language SDKs, as shown in the following example.
+
+```java
+@Override
+  public String yourWFMethod(String name) {
+      ExternalWorkflowStub callOtherWorkflow = Workflow.newUntypedExternalWorkflowStub("OtherWFId");
+    }
+```
+
+See the [Temporal Polyglot](https://github.com/tsurdilo/temporal-polyglot) code for examples of executing Workflows written in other language SDKs.
+
+**Recurring start**
+
+You can start a Workflow Execution on a regular schedule by using [`setCronSchedule`](/java/reference-workflowoptions/#cronschedule) Workflow option in the Client code.
 
 </TabItem>
 <TabItem value="php">
@@ -1518,19 +2250,21 @@ Calling `client.start()` and `client.execute()` send a command to Temporal Serve
 
 You can test this by executing a Workflow Client command without a matching Worker. Temporal Server records the command in Event History, but does not make progress with the Workflow Execution until a Worker starts polling with a matching Task Queue and Workflow Definition.
 
+Workflow Execution run in a separate V8 isolate context in order to provide a [deterministic runtime](/typescript/determinism).
+
 </TabItem>
 </Tabs>
 
 #### Set Task Queue
 
-The only Workflow Option that must be set is the name of the [Task Queue](/docs/tasks/#task-queues).
+The only Workflow Option that must be set is the name of the [Task Queue](/tasks/#task-queues).
 
 For any code to execute, a Worker Process must be running that contains a Worker Entity that is polling the same Task Queue name.
 
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -1554,7 +2288,22 @@ if err != nil {
 </TabItem>
 <TabItem value="java">
 
-Content is not available
+Set the Workflow Task Queue with the [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) instance in the Client code using [`WorkflowOptions.Builder.setTaskQueue`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
+
+- Type: `String`
+- Default: none
+
+```java
+//create Workflow stub for YourWorkflowInterface
+YourWorkflowInterface workflow1 =
+    WorkerGreet.greetclient.newWorkflowStub(
+        GreetWorkflowInterface.class,
+        WorkflowOptions.newBuilder()
+                .setWorkflowId("YourWF")
+                // Set the Task Queue
+                .setTaskQueue(WorkerGreet.TASK_QUEUE)
+                .build());
+```
 
 </TabItem>
 <TabItem value="php">
@@ -1566,17 +2315,15 @@ Content is not available
 
 Workers bundle Workflow code and node modules using Webpack v5 and execute them inside V8 isolates. Activities are directly required and run by Workers in the Node.js environment.
 
-Workers are very flexible – you can host any or all of your Workflows and Activities on a Worker, and you can host multiple Workers in a single machine.
+Workers are flexible. You can host any or all of your Workflows and Activities on a Worker, and you can host multiple Workers on a single machine.
 
 There are three main things the Worker needs:
 
 - `taskQueue`: the Task Queue to poll. This is the only required argument.
-
 - `activities`: Optional. Imported and supplied directly to the Worker.
-
-- Workflow bundle:
-- Either specify a `workflowsPath` to your `workflows.ts` file to pass to Webpack, for example, `require.resolve('./workflows')`. Workflows will be bundled with their dependencies, which you can finetune with `nodeModulesPaths`.
-- Or pass a prebuilt bundle to `workflowBundle` instead if you prefer to handle the bundling yourself.
+- Workflow bundle, specify one of the following options:
+  - a `workflowsPath` to your `workflows.ts` file to pass to Webpack. For example, `require.resolve('./workflows')`. Workflows will be bundled with their dependencies, which you can finetune with `nodeModulesPaths`.
+  - Or pass a prebuilt bundle to `workflowBundle`, if you prefer to handle the bundling yourself.
 
 ```typescript
 import {Worker} from "@temporalio/worker";
@@ -1594,7 +2341,7 @@ async function run() {
   // Customize the Worker by passing more options to create():
   // https://typescript.temporal.io/api/classes/worker.Worker
   // If you need to configure server connection parameters, see docs:
-  // https://docs.temporal.io/docs/typescript/security#encryption-in-transit-with-mtls
+  // https://docs.temporal.io/typescript/security#encryption-in-transit-with-mtls
 
   // Step 2: Start accepting tasks on the `tutorial` queue
   await worker.run();
@@ -1613,12 +2360,12 @@ run().catch((err) => {
 
 #### Set Workflow Id
 
-While it is not required, providing your own [Workflow Id](/docs/workflows/#workflow-id) that maps to business process id or business entity id is highly recommended, such as an order id or a customer id.
+While it is not required, providing your own [Workflow Id](/workflows/#workflow-id) that maps to a business process or business entity identifier is highly recommended. Values that can provided include order Id or customer Id.
 
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -1642,7 +2389,22 @@ if err != nil {
 </TabItem>
 <TabItem value="java">
 
-Content is not available
+Set the Workflow Id with the [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) instance in the Client code using [`WorkflowOptions.Builder.setWorkflowId​`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
+
+- Type: `String`
+- Default: none
+
+```java
+//create Workflow stub for YourWorkflowInterface
+YourWorkflowInterface workflow1 =
+    WorkerGreet.greetclient.newWorkflowStub(
+        GreetWorkflowInterface.class,
+        WorkflowOptions.newBuilder()
+                // Set the Workflow Id
+                .setWorkflowId("YourWF")
+                .setTaskQueue(WorkerGreet.TASK_QUEUE)
+                .build());
+```
 
 </TabItem>
 <TabItem value="php">
@@ -1652,7 +2414,7 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-You can set a Workflow Id in the Client of a Workflow.
+Connect to a Client with `client.start()` and any arguments. Then specify your `taskQueue` and set your `workflowId` to a meaningful business identifier.
 
 ```typescript
 const handle = await client.start(example, {
@@ -1664,28 +2426,23 @@ const handle = await client.start(example, {
 
 This starts a new Client with the given Workflow Id, Task Queue name, and an argument.
 
-```typescript
-const handle = await client.start(example, {
-  args: ["Temporal"], // type inference works! args: [name: string]
-  taskQueue: "your-task-queue",
-  // in practice, use a meaningful business id, eg customerId or transactionId
-  workflowId: "your-workflow-id-",
-});
-```
-
-Connect to a Client with `client.start()` and any arguments. Then specify your `taskQueue` and set your `workflowId` to a meaningful business identifier.
-
 </TabItem>
 </Tabs>
 
 ### Get Workflow results
 
-TODO
+If the call to start a Workflow Execution is successful, you will gain access to the Workflow Execution's Run Id.
+
+The Workflow Id, Run Id, and Namespace maybe be used to uniquely identify a Workflow Execution in the system and get its result.
+
+It's possible to both block progress on the result (synchronous execution) or get the result at some other point in time (asynchronous execution).
+
+In the Temporal Platform it is also acceptable to use Queries as the preferred method for accessing the state and results of Workflow Executions.
 
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -1747,7 +2504,7 @@ Then call the `Get()` method on the instance of `WorkflowRun` that is returned, 
 
 #### Get last completion result
 
-In the case of a [Temporal Cron Job](/docs/workflows/#cron-jobs), you might need to get the result of the previous Workflow Run and use it in the current Workflow Run.
+In the case of a [Temporal Cron Job](/workflows/#cron-jobs), you might need to get the result of the previous Workflow Run and use it in the current Workflow Run.
 
 To do this, use the [`HasLastCompletionResult`](https://pkg.go.dev/go.temporal.io/sdk/workflow#HasLastCompletionResult) and [`GetLastCompletionResult`](https://pkg.go.dev/go.temporal.io/sdk/workflow#GetLastCompletionResult) APIs, available from the [`go.temporal.io/sdk/workflow`](https://pkg.go.dev/go.temporal.io/sdk/workflow) package, directly in your Workflow code.
 
@@ -1779,7 +2536,95 @@ The next Workflow Run gets the result of the last successfully Completed Workflo
 </TabItem>
 <TabItem value="java">
 
-Content is not available
+A synchronous Workflow Execution blocks your client thread until the Workflow Execution completes (or fails) and get the results (or error in case of failure).
+
+The following example is a type-safe approach for getting the results of a synchronous Workflow Execution.
+
+```java
+ FileProcessingWorkflow workflow = client.newWorkflowStub(
+                FileProcessingWorkflow.class,
+                WorkflowOptions.newBuilder()
+                        .setWorkflowId(workflowId)
+                        .setTaskQueue(taskQueue)
+                        .build();
+
+// start sync and wait for results (or failure)
+String result = workflow.processfile(new Argument());
+```
+
+An asynchronous Workflow Execution immediately returns a value to the caller.
+
+The following examples show how to get the results of a Workflow Execution through typed and untyped `WorkflowStub`.
+
+- **Typed WorkflowStub Example**
+
+  ```java
+  // create typed Workflow stub
+  FileProcessingWorkflow workflow = client.newWorkflowStub(FileProcessingWorkflow.class,
+                WorkflowOptions.newBuilder()
+                        .setTaskQueue(taskQueue)
+                        .setWorkflowId(workflowId)
+                        .build());
+  // use WorkflowClient.execute (if your Workflow takes in arguments) or WorkflowClient.start (for zero arguments)
+  WorkflowClient.start(workflow::greetCustomer);
+  ```
+
+- **Untyped WorkflowStub Example**
+
+  ```java
+  WorkflowStub untyped = client.newUntypedWorkflowStub("FileProcessingWorkflow",
+                  WorkflowOptions.newBuilder()
+                          .setWorkflowId(workflowId)
+                          .setTaskQueue(taskQueue)
+                          .build());
+
+  // blocks until Workflow Execution has been started (not until it completes)
+  untyped.start(argument);
+  ```
+
+If you need to wait for a Workflow Execution to complete after an asynchronous start, the most straightforward way is to call the blocking Workflow instance again.
+
+Note that if `WorkflowOptions.WorkflowIdReusePolicy` is not set to `AllowDuplicate`, then instead of throwing `DuplicateWorkflowException`, it reconnects to an existing Workflow and waits for its completion.
+
+The following example shows how to do this from a different process than the one that started the Workflow Execution.
+
+```java
+YourWorkflow workflow = client.newWorkflowStub(YourWorkflow.class, workflowId);
+
+// Returns the result after waiting for the Workflow to complete.
+String result = workflow.yourMethod();
+```
+
+Another way to connect to an existing Workflow and wait for its completion from another process, is to use `UntypedWorkflowStub`. For example:
+
+```java
+WorkflowStub workflowStub = client.newUntypedWorkflowStub(workflowType, workflowOptions);
+
+// Returns the result after waiting for the Workflow to complete.
+String result = untyped.getResult(String.class);
+```
+
+#### Retrieve last (successful) completion result
+
+For a Temporal Cron Job, get the result of previous successful runs using `GetLastCompletionResult()`.
+The method returns `null` if there is no previous completion.
+The following example shows how to implement this in a Workflow.
+
+```java
+public String cronWorkflow() {
+    String lastProcessedFileName = Workflow.getLastCompletionResult(String.class);
+
+    // Process work starting from the lastProcessedFileName.
+    // Business logic implementation goes here.
+    // Updates lastProcessedFileName to the new value.
+
+    return lastProcessedFileName;
+}
+```
+
+Note that this works even if one of the Cron schedule runs failed.
+The next schedule will still get the last successful result if it ever successfully completed at least once.
+For example, for a daily cron Workflow, if the run succeeds on the first day and fails on the second day, then the third day run will get the result from first day's run using these APIs.
 
 </TabItem>
 <TabItem value="php">
@@ -1804,7 +2649,7 @@ return (
 
 A Workflow function may return a result. If it doesn’t (in which case the return type is `Promise<void>`), the result will be `undefined`.
 
-If you started a Workflow with `handle.start()`, you can choose to wait for the result anytime with handle.result().
+If you started a Workflow with `handle.start()`, you can choose to wait for the result anytime with `handle.result()`.
 
 ```typescript
 const handle = client.getHandle(workflowId);
@@ -1839,11 +2684,11 @@ try {
 
 ## Features
 
-This section covers many of the features that are available to use in your [Temporal Application](/docs/temporal/#temporal-application).
+This section covers many of the features that are available to use in your [Temporal Application](/temporal/#temporal-application).
 
 ### Signals
 
-A [Signal](/docs/workflows/#signals) is a message that delivers data to a running Workflow Execution.
+A [Signal](/workflows/#signals) is a message that delivers data to a running Workflow Execution.
 
 Signals are defined alongside your application code and handled in your Workflow Definition.
 Signals can be sent to Workflow Executions from a Temporal Client or from within a Workflow.
@@ -1855,7 +2700,7 @@ A Signal type and its data must be serializable.
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -1873,7 +2718,28 @@ MySignal struct {
 </TabItem>
 <TabItem value="java">
 
-Content is not available
+The `@SignalMethod` annotation indicates that the method is used to handle and react to external Signals.
+
+```java
+ @SignalMethod
+    void mySignal(String signalName);
+```
+
+The method can have parameters that contain the Signal payload and must be serializable by the default Jackson JSON Payload Converter.
+
+```java
+void mySignal(String signalName, Object... args);
+```
+
+This method does not return a value and must have a `void` return type.
+
+Things to consider when defining Signals:
+
+- Use Workflow object constructors and initialization blocks to initialize the internal data structures if possible.
+- Signals might be received by a Workflow before the Workflow method is executed.
+  When implementing Signals in scenarios where this can occur, assume that no parts of Workflow code ran.
+  In some cases, Signal method implementation might require some initialization to be performed by the Workflow method code first—for example, when the Signal processing depends on, and is defined by the Workflow input.
+  In this case, you can use a flag to determine whether the Workflow method is already triggered; if not, persist the Signal data into a collection for delayed processing by the Workflow method.
 
 </TabItem>
 <TabItem value="php">
@@ -1895,7 +2761,7 @@ Workflows listen for Signals by the Signal's name.
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -1921,13 +2787,98 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error
 ```
 
 In the example above, the Workflow code uses `workflow.GetSignalChannel` to open a `workflow.Channel` for the Signal type (identified by the Signal name).
-We then use a [`workflow.Selector`](https://docs.temporal.io/docs/go/selectors) and the `AddReceive()` to wait on a Signal from this channel.
+We then use a [`workflow.Selector`](https://docs.temporal.io/go/selectors) and the `AddReceive()` to wait on a Signal from this channel.
 The `more` bool in the callback function indicates that channel is not closed and more deliveries are possible.
 
 </TabItem>
 <TabItem value="java">
 
-Content is not available
+Use the `@SignalMethod` annotation to handle Signals in the Workflow interface.
+
+The Signal type defaults to the name of the method. In the following example, the Signal type defaults to `retryNow`.
+
+```java
+@WorkflowInterface
+public interface FileProcessingWorkflow {
+
+   @WorkflowMethod
+   String processFile(Arguments args);
+
+   @SignalMethod
+   void retryNow();
+}
+```
+
+To overwrite this default naming and assign a custom Signal type, use the `@SignalMethod` annotation with the `name` parameter.
+In the following example, the Signal type is set to "retrysignal".
+
+```java
+@WorkflowInterface
+public interface FileProcessingWorkflow {
+
+   @WorkflowMethod
+   String processFile(Arguments args);
+
+   @SignalMethod(name = "retrysignal")
+   void retryNow();
+}
+```
+
+A Workflow interface can define any number of methods annotated with `@SignalMethod`, but the method names or the `name` parameters for each must be unique.
+
+In the following example, we define a Signal method "updateGreeting" to update the greeting in the Workflow.
+We set a `Workflow.await` in the Workflow implementation to block the current Workflow Execution until the provided unblock condition is evaluated to `true`.
+In this case, the unblocking condition is evaluated to `true` when the Signal to update the greeting is received.
+
+```java
+@WorkflowInterface
+public interface HelloWorld {
+    @WorkflowMethod
+    void sayHello(String name);
+
+    @SignalMethod
+    void updateGreeting(String greeting);
+}
+```
+
+```java
+public class HelloWorldImpl implements HelloWorld {
+    private final Logger workflowLogger = Workflow.getLogger(HelloWorldImpl.class);
+    private String greeting;
+
+    @Override
+    public void sayHello(String name) {
+        int count = 0;
+        while (!"Bye".equals(greeting)) {
+            String oldGreeting = greeting;
+            Workflow.await(() -> !Objects.equals(greeting, oldGreeting));
+        }
+        workflowLogger.info(++count + ": " + greeting + " " + name + "!");
+    }
+
+    @Override
+    public void updateGreeting(String greeting) {
+        this.greeting = greeting;
+    }
+}
+```
+
+This Workflow completes when the Signal updates the greeting to "Bye".
+
+**Dynamic Signal Handler**
+You can also implement Signal handlers dynamically. This is useful for library-level code and implementation of DSLs.
+
+Use `Workflow.registerListener(Object)` to register an implementation of the `DynamicSignalListener` in the Workflow implementation code.
+
+```java
+      Workflow.registerListener(
+        (DynamicSignalHandler)
+            (signalName, encodedArgs) -> name = encodedArgs.get(0, String.class));
+```
+
+When registered, any Signals sent to the Workflow without a defined handler will be delivered to the `DynamicSignalHandler`.
+Note that you can only register one `Workflow.registerListener(Object)` per Workflow Execution.
+`DynamicSignalHandler` can be implemented in both regular and dynamic Workflow implementations.
 
 </TabItem>
 <TabItem value="php">
@@ -1944,18 +2895,18 @@ Content is not available
 
 #### Send Signal from Client
 
-When a Signal is sent successfully from the Temporal Client, the [WorkflowExecutionSignaled](/docs/references/events#workflowexecutionsignaled) Event appears in the Event History of the Workflow that receives the Signal.
+When a Signal is sent successfully from the Temporal Client, the [WorkflowExecutionSignaled](/references/events#workflowexecutionsignaled) Event appears in the Event History of the Workflow that receives the Signal.
 
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
-Use the `SignalWorkflow()` method on an instance of the [Go SDK Temporal Client](https://pkg.go.dev/go.temporal.io/sdk/client#Client) to send a [Signal](/docs/workflows/#signals) to a [Workflow Execution](/docs/workflows/#workflow-executions).
+Use the `SignalWorkflow()` method on an instance of the [Go SDK Temporal Client](https://pkg.go.dev/go.temporal.io/sdk/client#Client) to send a [Signal](/workflows/#signals) to a [Workflow Execution](/workflows/#workflow-executions).
 
-Pass in both the [Workflow Id](/docs/workflows/#workflow-id) and [Run Id](/docs/workflows/#run-id) to uniquely identify the Workflow Execution.
+Pass in both the [Workflow Id](/workflows/#workflow-id) and [Run Id](/workflows/#run-id) to uniquely identify the Workflow Execution.
 If only the Workflow Id is supplied (provide an empty string as the Run Id param), the Workflow Execution that is Running receives the Signal.
 
 ```go
@@ -1980,7 +2931,28 @@ Possible errors:
 </TabItem>
 <TabItem value="java">
 
-Content is not available
+To send a Signal to a Workflow Execution from a Client, call the Signal method, annotated with `@SignalMethod` in the Workflow interface, from the Client code.
+
+In the following Client code example, we start the Workflow "greetCustomer" and call the Signal method "addCustomer" that is handled in the Workflow.
+
+```java
+// create a typed Workflow stub for GreetingsWorkflow
+GreetingsWorkflow workflow = client.newWorkflowStub(GreetingsWorkflow.class,
+        WorkflowOptions.newBuilder()
+                // set the Task Queue
+                .setTaskQueue(taskQueue)
+                // Workflow Id is recommended but not required
+                .setWorkflowId(workflowId)
+                .build());
+
+// start the Workflow
+WorkflowClient.start(workflow::greetCustomer);
+// send a Signal to the Workflow
+Customer customer = new Customer("John", "Spanish", "john@john.com");
+workflow.addCustomer(customer); //addCustomer is the Signal method defined in the greetCustomer Workflow.
+```
+
+See [Handle Signals](#handle-signal) for details on how to handle Signals in a Workflow.
 
 </TabItem>
 <TabItem value="php">
@@ -1999,12 +2971,12 @@ Content is not available
 
 Sending a Signal from within a Workflow is often referred to as sending an External Signal.
 
-The [SignalExternalWorkflowExecutionInitiated](/docs/references/events#signalexternalworkflowexecutioninitiated) Event appears in the Workflow Execution Event History of the Workflow that sent the Signal, and the [WorkflowExecutionSignaled](/docs/references/events#workflowexecutionsignaled) Event appears in the Event History of the Workflow that receives the Signal.
+The [SignalExternalWorkflowExecutionInitiated](/references/events#signalexternalworkflowexecutioninitiated) Event appears in the Workflow Execution Event History of the Workflow that sent the Signal, and the [WorkflowExecutionSignaled](/references/events#workflowexecutionsignaled) Event appears in the Event History of the Workflow that receives the Signal.
 
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -2028,7 +3000,24 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error
 </TabItem>
 <TabItem value="java">
 
-Content is not available
+To send a Signal from within a Workflow to a different Workflow Execution, initiate an `ExternalWorkflowStub` in the implementation of the current Workflow and call the Signal method defined in the other Workflow.
+
+The following example shows how to use an untyped `ExternalWorkflowStub` in the Workflow implementation to send a Signal to another Workflow.
+
+```java
+    public String sendGreeting(String name) {
+
+        // initiate ExternalWorkflowStub to call another Workflow by its Id "ReplyWF"
+        ExternalWorkflowStub callRespondWorkflow = Workflow.newUntypedExternalWorkflowStub("ReplyWF");
+
+        String responseTrigger = activity.greeting("Hello", name);
+
+        // send a Signal from this sendGreeting Workflow to the other Workflow
+        // by calling the Signal method name "getGreetCall" defined in that Workflow.
+        callRespondWorkflow.signal("getGreetCall", responseTrigger);
+
+        return responseTrigger;
+```
 
 </TabItem>
 <TabItem value="php">
@@ -2075,7 +3064,6 @@ async function SubscriptionWorkflow(id: string, amount: number) {
     await sleepTilNextMonth();
   }
 }
-
 // from client
 await handle.signal(update, 300);
 ```
@@ -2093,7 +3081,7 @@ Signal-With-Start can be used to start a Workflow Execution (if not already runn
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -2116,7 +3104,61 @@ if err != nil {
 </TabItem>
 <TabItem value="java">
 
-Content is not available
+To send Signals to a Workflow Execution whose status is unknown, use `SignalWithStart` with a `WorkflowStub` in the Client code.
+This method ensures that if the Workflow Execution is in a closed state, a new Workflow Execution is spawned and the Signal is delivered to the running Workflow Execution.
+
+Note that when the `SignalwithStart` spawns a new Workflow Execution, the Signal is delivered before the call to your `@WorkflowMethod`.
+This means that the Signal handler in your Workflow interface code will execute before the `@WorkfowMethod`.
+You must ensure that your code logic can deal with this.
+
+In the following example, the Client code uses `SignalwithStart` to send the Signal "setCustomer" to the `UntypedWorkflowStub` named "GreetingWorkflow".
+If the "GreetingWorkflow" Workflow Execution is not running, the `SignalwithStart` starts the Workflow Execution.
+
+```java
+...
+public static void signalWithStart() {
+        // WorkflowStub is a client-side stub to a single Workflow instance
+        WorkflowStub untypedWorkflowStub = client.newUntypedWorkflowStub("GreetingWorkflow",
+        WorkflowOptions.newBuilder()
+                .setWorkflowId(workflowId)
+                .setTaskQueue(taskQueue)
+                .build());
+
+        untypedWorkflowStub.signalWithStart("setCustomer", new Object[] {customer2}, new Object[] {customer1});
+
+        printWorkflowStatus();
+
+        try {
+            String greeting = untypedWorkflowStub.getResult(String.class);
+            printWorkflowStatus();
+            System.out.println("Greeting: " + greeting);
+        } catch(WorkflowFailedException e) {
+            System.out.println("Workflow failed: " + e.getCause().getMessage());
+            printWorkflowStatus();
+        }
+    }
+...
+```
+
+The following example shows the Workflow interface for the "GreetingWorkflow" called in the previous example.
+
+```java
+...
+@WorkflowInterface
+public interface GreetingWorkflow {
+    @WorkflowMethod
+    String greet(Customer customer);
+
+    @SignalMethod
+    void setCustomer(Customer customer);
+
+    @QueryMethod
+    Customer getCustomer();
+...
+}
+```
+
+Note that the Signal handler "setCustomer" is executed before the `@WorkflowMethod` "greet" is called.
 
 </TabItem>
 <TabItem value="php">
@@ -2126,14 +3168,24 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+To send a Signal to a Workflow and start the Workflow if it isn't already running, use `signalWithStart()`.
+
+```typescript
+const client = new WorkflowClient();
+await client.signalWithStart(YourWorkflow, {
+  workflowId,
+  args: [arg1, arg2],
+  signal: YourSignal,
+  signalArgs: [arg3, arg4],
+});
+```
 
 </TabItem>
 </Tabs>
 
 ### Queries
 
-A [Query](/docs/workflows/#queries) is a synchronous operation that is used to get the state of a Workflow Execution.
+A [Query](/workflows/#queries) is a synchronous operation that is used to get the state of a Workflow Execution.
 
 #### Query name
 
@@ -2142,7 +3194,7 @@ A Query name (also called Query type) is simply a string name.
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -2155,7 +3207,23 @@ queryType := "your_query_name"
 </TabItem>
 <TabItem value="java">
 
-Content is not available
+To define a Query, define the method name and the result type of the Query.
+
+```java
+query(String queryType, Class<R> resultClass, Type resultType, Object... args);
+
+  /* @param queryType name of the Query handler. Usually it is a method name.
+   * @param resultClass class of the Query result type
+   * @param args optional Query arguments
+   * @param <R> type of the Query result
+  */
+```
+
+Query methods can take in any number of input parameters which can be used to limit the data that is returned.
+
+Use the Query method names to send and receive Queries.
+
+Query methods must never change any Workflow state including starting Activities or blocking threads in any way.
 
 </TabItem>
 <TabItem value="php">
@@ -2177,7 +3245,7 @@ Queries are sent from a Temporal Client.
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -2222,7 +3290,26 @@ if err != nil {
 </TabItem>
 <TabItem value="java">
 
-Content is not available
+To send a Query to a Workflow Execution from an external process, call the Query method (defined in the Workflow) from a `WorkflowStub` within the Client code.
+
+For example, the following Client code calls a Query method `queryGreeting()` defined in the `GreetingWorkflow` Workflow interface.
+
+```java
+ // Create our workflow options
+    WorkflowOptions workflowOptions =
+        WorkflowOptions.newBuilder()
+        .setWorkflowId(WORKFLOW_ID)
+        .setTaskQueue(TASK_QUEUE).build();
+
+    // Create the Temporal client stub. It is used to start our workflow execution.
+    GreetingWorkflow workflow = client.newWorkflowStub(GreetingWorkflow.class, workflowOptions);
+
+    // Start our workflow asynchronously to not use another thread to query.
+    WorkflowClient.start(workflow::createGreeting, "World");
+
+    // Query the Workflow to get the current value of greeting and print it.
+    System.out.println(workflow.queryGreeting());
+```
 
 </TabItem>
 <TabItem value="php">
@@ -2241,12 +3328,12 @@ Content is not available
 
 Queries are handled by your Workflow.
 
-Do not include any logic that causes [Command](/docs/workflows/#commands) generation within a Query handler (such as executing Activities). as this will lead to unexpected behavior.
+Do not include any logic that causes [Command](/workflows/#commands) generation within a Query handler (such as executing Activities). as this will lead to unexpected behavior.
 
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -2301,7 +3388,87 @@ err := workflow.SetQueryHandler(ctx, "current_state", func(prefix string, suffix
 </TabItem>
 <TabItem value="java">
 
-Content is not available
+To handle a Query in the Workflow, create a Query handler using the `@QueryMethod` annotation in the Workflow interface and define it in the Workflow implementation.
+
+The `@QueryMethod` annotation indicates that the method is used to handle a Query that is sent to the Workflow Execution.
+The method can have parameters that can be used to filter data that the Query returns.
+Because the method returns a value, it must have a return type that is not `void`.
+
+The Query name defaults to the name of the method.
+In the following example, the Query name defaults to `getStatus`.
+
+```java
+@WorkflowInterface
+public interface FileProcessingWorkflow {
+   @QueryMethod
+   String getStatus();
+}
+```
+
+To overwrite this default naming and assign a custom Query name, use the `@QueryMethod` annotation with the `name` parameter. In the following example, the Query name is set to "history".
+
+```java
+@WorkflowInterface
+public interface FileProcessingWorkflow {
+   @QueryMethod(name = "history")
+   String getStatus();
+}
+```
+
+A Workflow Definition interface can define multiple methods annotated with `@QueryMethod`, but the method names or the `name` parameters for each must be unique.
+
+The following Workflow interface has a Query method `getCount()` to handle Queries to this Workflow.
+
+```java
+  @WorkflowInterface
+  public interface HelloWorld {
+    @WorkflowMethod
+    void sayHello(String name);
+
+    @QueryMethod
+    int getCount();
+  }
+```
+
+The following example is the Workflow implementation with the Query method defined in the `HelloWorld` Workflow interface from the previous exmaple.
+
+```java
+  public static class HelloWorldImpl implements HelloWorld {
+
+    private String greeting = "Hello";
+    private int count = 0;
+
+    @Override
+    public void sayHello(String name) {
+      while (!"Bye".equals(greeting)) {
+        logger.info(++count + ": " + greeting + " " + name + "!");
+        String oldGreeting = greeting;
+        Workflow.await(() -> !Objects.equals(greeting, oldGreeting));
+      }
+      logger.info(++count + ": " + greeting + " " + name + "!");
+    }
+
+    @Override
+    public int getCount() {
+      return count;
+    }
+  }
+```
+
+**Dynamic Query Handler**
+You can also implement Query handlers dynamically. This is useful for library-level code and implementation of DSLs.
+
+Use `Workflow.registerListener(Object)` to register an implementation of the `DynamicQueryListener` in the Workflow implementation code.
+
+```java
+      Workflow.registerListener(
+        (DynamicQueryHandler)
+            (queryName, encodedArgs) -> name = encodedArgs.get(0, String.class));
+```
+
+When registered, any Queries sent to the Workflow without a defined handler will be delivered to the `DynamicQueryHandler`.
+Note that you can only register one `Workflow.registerListener(Object)` per Workflow Execution.
+`DynamicQueryHandler` can be implemented in both regular and dynamic Workflow implementations.
 
 </TabItem>
 <TabItem value="php">
@@ -2316,10 +3483,6 @@ Content is not available
 </TabItem>
 </Tabs>
 
-### Timers
-
-TODO
-
 ### Workflow timeouts & retries
 
 Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.
@@ -2327,12 +3490,12 @@ A Retry Policy can work in cooperation with the timeouts to provide fine control
 
 #### Workflow Execution Timeout
 
-Use the [Workflow Execution Timeout](/docs/workflows/#workflow-execution-timeout) to limit maximum time that a Workflow Execution can be executing (have an Open status) including retries and any usage of Continue As New.
+Use the [Workflow Execution Timeout](/workflows/#workflow-execution-timeout) to limit maximum time that a Workflow Execution can be executing (have an Open status) including retries and any usage of Continue As New.
 
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -2356,7 +3519,23 @@ if err != nil {
 </TabItem>
 <TabItem value="java">
 
-Content is not available
+Set the [Workflow Execution Timeout](/workflows/#workflow-execution-timeout) with the [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) instance in the Client code using [`WorkflowOptions.Builder.setWorkflowExecutionTimeout`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
+
+- Type: `time.Duration`
+- Default: Unlimited
+
+```java
+//create Workflow stub for YourWorkflowInterface
+YourWorkflowInterface workflow1 =
+    WorkerGreet.greetclient.newWorkflowStub(
+        GreetWorkflowInterface.class,
+        WorkflowOptions.newBuilder()
+                .setWorkflowId("YourWF")
+                .setTaskQueue(WorkerGreet.TASK_QUEUE)
+                // Set Workflow Execution Timeout duration
+                .setWorkflowExecutionTimeout(Duration.ofSeconds(10))
+                .build());
+```
 
 </TabItem>
 <TabItem value="php">
@@ -2373,12 +3552,12 @@ Content is not available
 
 #### Workflow Run Timeout
 
-Use the [Workflow Execution Timeout](/docs/workflows/#workflow-execution-timeout) to limit maximum time that a Workflow Execution can be executing (have an Open status) including retries and any usage of Continue As New.
+Use the [Workflow Execution Timeout](/workflows/#workflow-execution-timeout) to limit maximum time that a Workflow Execution can be executing (have an Open status) including retries and any usage of Continue As New.
 
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -2401,7 +3580,23 @@ if err != nil {
 </TabItem>
 <TabItem value="java">
 
-Content is not available
+Set the Workflow Run Timeout with the [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) instance in the Client code using [`WorkflowOptions.Builder.setWorkflowRunTimeout`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
+
+- Type: `time.Duration`
+- Default: Same as [WorkflowExecutionTimeout](#workflow-execution-timeout).
+
+```java
+//create Workflow stub for YourWorkflowInterface
+YourWorkflowInterface workflow1 =
+    WorkerGreet.greetclient.newWorkflowStub(
+        GreetWorkflowInterface.class,
+        WorkflowOptions.newBuilder()
+                .setWorkflowId("YourWF")
+                .setTaskQueue(WorkerGreet.TASK_QUEUE)
+                // Set Workflow Run Timeout duration
+                .setWorkflowRunTimeout(Duration.ofSeconds(10))
+                .build());
+```
 
 </TabItem>
 <TabItem value="php">
@@ -2418,12 +3613,12 @@ Content is not available
 
 #### Workflow Task Timeout
 
-Use the [Workflow Execution Timeout](/docs/workflows/#workflow-execution-timeout) to limit maximum time that a Workflow Execution can be executing (have an Open status) including retries and any usage of Continue As New.
+Use the [Workflow Execution Timeout](/workflows/#workflow-execution-timeout) to limit maximum time that a Workflow Execution can be executing (have an Open status) including retries and any usage of Continue As New.
 
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -2446,7 +3641,24 @@ if err != nil {
 </TabItem>
 <TabItem value="java">
 
-Content is not available
+Set the Workflow Task Timeout with the [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) instance in the Client code using [`WorkflowOptions.Builder.setWorkflowTaskTimeout`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
+
+- Type: `time.Duration`
+- Default: 10 seconds.
+- Values: Maximum accepted value is 60 seconds.
+
+```java
+//create Workflow stub for YourWorkflowInterface
+YourWorkflowInterface workflow1 =
+    WorkerGreet.greetclient.newWorkflowStub(
+        GreetWorkflowInterface.class,
+        WorkflowOptions.newBuilder()
+                .setWorkflowId("YourWF")
+                .setTaskQueue(WorkerGreet.TASK_QUEUE)
+                // Set Workflow Task Timeout duration
+                .setWorkflowTaskTimeout(Duration.ofSeconds(10))
+                .build());
+```
 
 </TabItem>
 <TabItem value="php">
@@ -2463,14 +3675,14 @@ Content is not available
 
 #### Workflow Retry Policy
 
-Use a [Retry Policy](/docs/retry-policies/#) to retry a Workflow Execution in the event of a failure.
+Use a [Retry Policy](/retry-policies/#) to retry a Workflow Execution in the event of a failure.
 
 Workflow Executions do not retry by default and Retry Policies should only be used with Workflow Executions in certain situations.
 
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -2498,7 +3710,23 @@ if err != nil {
 </TabItem>
 <TabItem value="java">
 
-Content is not available
+Set Workflow Retry Options in the [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) instance using [`WorkflowOptions.Builder.setWorkflowRetryOptions`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
+
+- Type: `RetryOptions`
+- Default: `Null` which means no retries will be attempted.
+
+```java
+//create Workflow stub for GreetWorkflowInterface
+GreetWorkflowInterface workflow1 =
+    WorkerGreet.greetclient.newWorkflowStub(
+        GreetWorkflowInterface.class,
+        WorkflowOptions.newBuilder()
+                .setWorkflowId("GreetWF")
+                .setTaskQueue(WorkerGreet.TASK_QUEUE)
+                // Set Workflow Retry Options
+                .setRetryOptions(RetryOptions.newBuilder()
+                .build());
+```
 
 </TabItem>
 <TabItem value="php">
@@ -2520,18 +3748,18 @@ A Retry Policy works in cooperation with the timeouts to provide fine controls t
 
 #### Schedule-To-Close Timeout
 
-Use the [Schedule-To-Close Timeout](/docs/activities/#schedule-to-close-timeout) to limit the maximum duration of an [Activity Execution](/docs/activities/#activity-execution).
+Use the [Schedule-To-Close Timeout](/activities/#schedule-to-close-timeout) to limit the maximum duration of an [Activity Execution](/activities/#activity-execution).
 
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
-To set a [Schedule-To-Close Timeout](/docs/activities/#schedule-to-close-timeout), create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `ScheduleToCloseTimeout` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
+To set a [Schedule-To-Close Timeout](/activities/#schedule-to-close-timeout), create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `ScheduleToCloseTimeout` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
 
-This or `ScheduleToStart` must be set.
+This or `StartToCloseTimeout` must be set.
 
 - Type: `time.Duration`
 - Default: ∞ (infinity - no limit)
@@ -2551,7 +3779,39 @@ if err != nil {
 </TabItem>
 <TabItem value="java">
 
-Content is not available
+To set a [Schedule-To-Close Timeout](/activities/#schedule-to-close-timeout), use [`ActivityOptions.newBuilder.setScheduleToCloseTimeout​`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
+
+This or `StartToCloseTimeout` must be set.
+
+- Type: `Duration`
+- Default: Unlimited.
+  Note that if `WorkflowRunTimeout` and/or `WorkflowExecutionTimeout` are defined in the Workflow, all Activity retries will stop when either or both of these timeouts are reached.
+
+You can set Activity Options using an `ActivityStub` within a Workflow implementation, or per-Activity using `WorkflowImplementationOptions` within a Worker.
+Note that if you define options per-Activity Type options with `WorkflowImplementationOptions.setActivityOptions()`, setting them again specifically with `ActivityStub` in a Workflow will override this setting.
+
+- With `ActivityStub`
+
+  ```java
+  GreetingActivities activities = Workflow.newActivityStub(GreetingActivities.class,
+                  ActivityOptions.newBuilder()
+                          .setScheduleToCloseTimeout(Duration.ofSeconds(5))
+                          .build());
+  ```
+
+- With `WorkflowImplementationOptions`
+
+  ```java
+  WorkflowImplementationOptions options =
+              WorkflowImplementationOptions.newBuilder()
+                      .setActivityOptions(
+                              ImmutableMap.of(
+                                      "GetCustomerGreeting",
+                                      ActivityOptions.newBuilder()
+                                          .setScheduleToCloseTimeout(Duration.ofSeconds(5))
+                                          .build()))
+                      .build();
+  ```
 
 </TabItem>
 <TabItem value="php">
@@ -2590,16 +3850,16 @@ const {greet} = proxyActivities<typeof activities>({
 
 #### Start-To-Close Timeout
 
-Use the [Start-To-Close Timeout](/docs/activities/#start-to-close-timeout) to limit the maximum duration of a single [Activity Task Execution](/docs/tasks/#activity-task-execution).
+Use the [Start-To-Close Timeout](/activities/#start-to-close-timeout) to limit the maximum duration of a single [Activity Task Execution](/tasks/#activity-task-execution).
 
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
-To set a [Start-To-Close Timeout](/docs/activities/#start-to-close-timeout), create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `StartToCloseTimeout` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
+To set a [Start-To-Close Timeout](/activities/#start-to-close-timeout), create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `StartToCloseTimeout` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
 
 This or `ScheduleToClose` must be set.
 
@@ -2621,7 +3881,39 @@ if err != nil {
 </TabItem>
 <TabItem value="java">
 
-Content is not available
+To set a [Start-To-Close Timeout](/activities/#start-to-close-timeout), use [`ActivityOptions.newBuilder.setStartToCloseTimeout​`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
+
+This or `ScheduleToClose` must be set.
+
+- Type: `Duration`
+- Default: Defaults to [`ScheduleToCloseTimeout`](#scheduletoclosetimeout) value
+
+You can set Activity Options using an `ActivityStub` within a Workflow implementation, or per-Activity using `WorkflowImplementationOptions` within a Worker.
+Note that if you define options per-Activity Type options with `WorkflowImplementationOptions.setActivityOptions()`, setting them again specifically with `ActivityStub` in a Workflow will override this setting.
+
+- With `ActivityStub`
+
+  ```java
+  GreetingActivities activities = Workflow.newActivityStub(GreetingActivities.class,
+              ActivityOptions.newBuilder()
+                      .setStartToCloseTimeout(Duration.ofSeconds(2))
+                      .build());
+  ```
+
+- With `WorkflowImplementationOptions`
+
+  ```java
+  WorkflowImplementationOptions options =
+              WorkflowImplementationOptions.newBuilder()
+                      .setActivityOptions(
+                              ImmutableMap.of(
+                                "EmailCustomerGreeting",
+                                      ActivityOptions.newBuilder()
+                                            // Set Activity Execution timeout (single run)
+                                            .setStartToCloseTimeout(Duration.ofSeconds(2))
+                                            .build()))
+                      .build();
+  ```
 
 </TabItem>
 <TabItem value="php">
@@ -2660,16 +3952,16 @@ const {greet} = proxyActivities<typeof activities>({
 
 #### Schedule-To-Start Timeout
 
-Use the [Schedule-To-Start Timeout](/docs/activities/#schedule-to-start-timeout) to limit the maximum amount of time that an Activity Task can be enqueued to be picked up by a Worker.
+Use the [Schedule-To-Start Timeout](/activities/#schedule-to-start-timeout) to limit the maximum amount of time that an Activity Task can be enqueued to be picked up by a Worker.
 
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
-To set a [Schedule-To-Start Timeout](/docs/activities/#schedule-to-start-timeout), create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `ScheduleToStartTimeout` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
+To set a [Schedule-To-Start Timeout](/activities/#schedule-to-start-timeout), create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `ScheduleToStartTimeout` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
 
 - Type: `time.Duration`
 - Default: ∞ (infinity - no limit)
@@ -2689,7 +3981,39 @@ if err != nil {
 </TabItem>
 <TabItem value="java">
 
-Content is not available
+To set a [Schedule-To-Start Timeout](/activities/#schedule-to-start-timeout), use [`ActivityOptions.newBuilder.setScheduleToStartTimeout​`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
+
+- Type: `Duration`
+- Default: Unlimited. This timeout is non-retryable.
+
+You can set Activity Options using an `ActivityStub` within a Workflow implementation, or per-Activity using `WorkflowImplementationOptions` within a Worker.
+Note that if you define options per-Activity Type options with `WorkflowImplementationOptions.setActivityOptions()`, setting them again specifically with `ActivityStub` in a Workflow will override this setting.
+
+- With `ActivityStub`
+
+  ```java
+  GreetingActivities activities = Workflow.newActivityStub(GreetingActivities.class,
+                  ActivityOptions.newBuilder()
+                          .setScheduleToStartTimeout(Duration.ofSeconds(5))
+                          // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
+                          // required when setting Activity options.
+                          .setScheduletoCloseTimeout(Duration.ofSeconds(20))
+                          .build());
+  ```
+
+- With `WorkflowImplementationOptions`
+
+  ```java
+  WorkflowImplementationOptions options =
+             WorkflowImplementationOptions.newBuilder()
+                      .setActivityOptions(
+                              ImmutableMap.of(
+                                "GetCustomerGreeting",
+                                ActivityOptions.newBuilder()
+                                    .setScheduleToStartTimeout(Duration.ofSeconds(5))
+                                    .build()))
+                      .build();
+  ```
 
 </TabItem>
 <TabItem value="php">
@@ -2700,8 +4024,6 @@ Content is not available
 <TabItem value="typescript">
 
 When you call `proxyActivities` in a Workflow Function, you can set a range of `ActivityOptions`.
-
-A Schedule-To-Start limits the maximum time that an Activity Task can sit in a Task Queue. It is used to identify whether a Worker is down or for Task routing.
 
 Either `scheduleToCloseTimeout` or `scheduleToStartTimeout` must be set.
 
@@ -2731,16 +4053,16 @@ const {greet} = proxyActivities<typeof activities>({
 
 #### Heartbeat Timeout
 
-A [Heartbeat Timeout](/docs/activities/#heartbeat-timeout) works in conjunction with Activity Heartbeats.
+A [Heartbeat Timeout](/activities/#heartbeat-timeout) works in conjunction with Activity Heartbeats.
 
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
-To set a [Heartbeat Timeout](/docs/activities/#heartbeat-timeout), Create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `RetryPolicy` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
+To set a [Heartbeat Timeout](/activities/#heartbeat-timeout), Create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `RetryPolicy` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
 
 ```go
 activityoptions := workflow.ActivityOptions{
@@ -2757,7 +4079,44 @@ if err != nil {
 </TabItem>
 <TabItem value="java">
 
-Content is not available
+To set a [Heartbeat Timeout](/activities/#heartbeat-timeout), use [`ActivityOptions.newBuilder.setHeartbeatTimeout`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
+
+- Type: `Duration`
+- Default: None
+
+You can set Activity Options using an `ActivityStub` within a Workflow implementation, or per-Activity using `WorkflowImplementationOptions` within a Worker.
+Note that if you define options per-Activity Type options with `WorkflowImplementationOptions.setActivityOptions()`, setting them again specifically with `ActivityStub` in a Workflow will override this setting.
+
+- With `ActivityStub`
+
+  ```java
+  private final GreetingActivities activities =
+      Workflow.newActivityStub(
+          GreetingActivities.class,
+          ActivityOptions.newBuilder()
+              // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
+              // required when setting Activity options.
+              .setStartToCloseTimeout(Duration.ofSeconds(5))
+              .setHeartbeatTimeout(Duration.ofSeconds(2))
+              .build());
+  ```
+
+- With `WorkflowImplementationOptions`
+
+  ```java
+  WorkflowImplementationOptions options =
+              WorkflowImplementationOptions.newBuilder()
+                      .setActivityOptions(
+                              ImmutableMap.of(
+                                "EmailCustomerGreeting",
+                                      ActivityOptions.newBuilder()
+                                          // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
+                                          // required when setting Activity options.
+                                            .setStartToCloseTimeout(Duration.ofSeconds(5))
+                                            .setHeartbeatTimeout(Duration.ofSeconds(2))
+                                            .build()))
+                      .build();
+  ```
 
 </TabItem>
 <TabItem value="php">
@@ -2767,23 +4126,32 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+To set a Heartbeat Timeout, use [`ActivityOptions.heartbeatTimeout`](https://typescript.temporal.io/api/interfaces/common.ActivityOptions#heartbeattimeout). If the Activity takes longer than that between heartbeats, the Activity is failed.
+
+```typescript
+// Creating a proxy for the activity.
+const {longRunningActivity} = proxyActivities<typeof activities>({
+  scheduleToCloseTimeout: "5m", // translates to 300000 ms
+  startToCloseTimeout: "30s", // translates to 30000 ms
+  heartbeatTimeout: 10000, // equivalent to '10 seconds'
+});
+```
 
 </TabItem>
 </Tabs>
 
 #### Activity Retry Policy
 
-Activity Executions are automatically associated with a default [Retry Policy](/docs/retry-policies/#) if a custom one is not provided.
+Activity Executions are automatically associated with a default [Retry Policy](/retry-policies/#) if a custom one is not provided.
 
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
-To set a [RetryPolicy](/docs/retry-policies/#), Create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `RetryPolicy` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
+To set a [RetryPolicy](/retry-policies/#), Create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `RetryPolicy` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
 
 - Type: [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy)
 - Default:
@@ -2821,7 +4189,46 @@ if err != nil {
 </TabItem>
 <TabItem value="java">
 
-Content is not available
+To set [Retry Options](/retry-policies/#), use [`ActivityOptions.newBuilder.setRetryOptions()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
+
+- Type: `RetryOptions`
+- Default: Server-defined Activity Retry policy.
+
+- With `ActivityStub`
+
+  ```java
+  private final ActivityOptions options =
+      ActivityOptions.newBuilder()
+          // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
+          // required when setting Activity options.
+          .setStartToCloseTimeout(Duration.ofSeconds(5))
+          .setRetryOptions(
+              RetryOptions.newBuilder()
+                  .setInitialInterval(Duration.ofSeconds(1))
+                  .setMaximumInterval(Duration.ofSeconds(10))
+                  .build())
+          .build();
+  ```
+
+- With `WorkflowImplementationOptions`
+
+  ```java
+  WorkflowImplementationOptions options =
+          WorkflowImplementationOptions.newBuilder()
+                 .setActivityOptions(
+                      ImmutableMap.of(
+                          "EmailCustomerGreeting",
+                          ActivityOptions.newBuilder()
+                                // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
+                                // required when setting Activity options.
+                                .setStartToCloseTimeout(Duration.ofSeconds(5))
+                                .setRetryOptions(
+                                      RetryOptions.newBuilder()
+                                          .setDoNotRetry(NullPointerException.class.getName())
+                                          .build())
+                                .build()))
+                .build();
+  ```
 
 </TabItem>
 <TabItem value="php">
@@ -2831,28 +4238,43 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+To set Activity Retry Policies in TypeScript, pass [`ActivityOptions.retry`](https://typescript.temporal.io/api/interfaces/common.ActivityOptions#retry) to [`proxyActivities`](https://typescript.temporal.io/api/namespaces/workflow/#proxyactivities).
+
+```typescript
+// Sample of typical options you can set
+const {yourActivity} = proxyActivities<typeof activities>({
+  // ...
+  retry: {
+    // default retry policy if not specified
+    initialInterval: "1s",
+    backoffCoefficient: 2,
+    maximumAttempts: Infinity,
+    maximumInterval: 100 * initialInterval,
+    nonRetryableErrorTypes: [],
+  },
+});
+```
 
 </TabItem>
 </Tabs>
 
 ### Child Workflows
 
-A [Child Workflow Execution](/docs/workflows/#child-workflows) is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.
+A [Child Workflow Execution](/workflows/#child-workflows) is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.
 
-When using a Child Workflow API, Child Workflow related Events ([StartChildWorkflowExecutionInitiated](/docs/references/events#startchildworkflowexecutioninitiated), [ChildWorkflowExecutionStarted](/docs/references/events#childworkflowexecutionstarted), [ChildWorkflowExecutionCompleted](/docs/references/events#childworkflowexecutioncompleted), etc...) are logged in the Workflow Execution Event History.
+When using a Child Workflow API, Child Workflow related Events ([StartChildWorkflowExecutionInitiated](/references/events#startchildworkflowexecutioninitiated), [ChildWorkflowExecutionStarted](/references/events#childworkflowexecutionstarted), [ChildWorkflowExecutionCompleted](/references/events#childworkflowexecutioncompleted), etc...) are logged in the Workflow Execution Event History.
 
-Always block progress until the [ChildWorkflowExecutionStarted](/docs/references/events#childworkflowexecutionstarted) Event is logged to the Event History to ensure the Child Workflow Execution has started.
-After that, Child Workflow Executions may be abandoned using the default _Abandon_ [Parent Close Policy](/docs/concepts/what-is-a-parent-close-policy) set in the Child Workflow Options.
+Always block progress until the [ChildWorkflowExecutionStarted](/references/events#childworkflowexecutionstarted) Event is logged to the Event History to ensure the Child Workflow Execution has started.
+After that, Child Workflow Executions may be abandoned using the default _Abandon_ [Parent Close Policy](/concepts/what-is-a-parent-close-policy) set in the Child Workflow Options.
 
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
-To spawn a [Child Workflow Execution](/docs/workflows/#child-workflows) in Go, use the [`ExecuteChildWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ExecuteChildWorkflow) API, which is available from the `go.temporal.io/sdk/workflow` package.
+To spawn a [Child Workflow Execution](/workflows/#child-workflows) in Go, use the [`ExecuteChildWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ExecuteChildWorkflow) API, which is available from the `go.temporal.io/sdk/workflow` package.
 
 The `ExecuteChildWorkflow` call requires an instance of [`workflow.Context`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Context), with an instance of [`workflow.ChildWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ChildWorkflowOptions) applied to it, the Workflow Type, and any parameters that should be passed to the Child Workflow Execution.
 
@@ -2926,7 +4348,103 @@ func YourOtherWorkflowDefinition(ctx workflow.Context, params ChildParams) (Chil
 </TabItem>
 <TabItem value="java">
 
-Content is not available
+The first call to the Child Workflow stub must always be its Workflow method (method annotated with `@WorkflowMethod`).
+Similar to Activities, invoking Child Workflow methods can be made synchronous or asynchronous by using `Async#function` or `Async#procedure`.
+The synchronous call blocks until a Child Workflow method completes.
+The asynchronous call returns a `Promise` which can be used to wait for the completion of the Child Workflow method, as in the following example:
+
+```java
+GreetingChild child = Workflow.newChildWorkflowStub(GreetingChild.class);
+Promise<String> greeting = Async.function(child::composeGreeting, "Hello", name);
+// ...
+greeting.get()
+```
+
+The following examples show how to spawn a Child Workflow:
+
+- Spawn a Child Workflow from a Workflow:
+
+  ```java
+  // Child Workflow interface
+  @WorkflowInterface
+  public interface GreetingChild {
+  @WorkflowMethod
+  String composeGreeting(String greeting, String name);
+  }
+  // Child Workflow implementation not shown
+
+  // Parent Workflow implementation
+  public class GreetingWorkflowImpl implements GreetingWorkflow {
+
+  @Override
+  public String getGreeting(String name) {
+      GreetingChild child = Workflow.newChildWorkflowStub(GreetingChild.class);
+
+      // This is a blocking call that returns only after child has completed.
+      return child.composeGreeting("Hello", name );
+  }
+  }
+  ```
+
+- Spawn two Child Workflows (with the same type) in parallel:
+
+  ```java
+  // Parent Workflow implementation
+  public class GreetingWorkflowImpl implements GreetingWorkflow {
+
+      @Override
+      public String getGreeting(String name) {
+
+          // Workflows are stateful, so a new stub must be created for each new child.
+          GreetingChild child1 = Workflow.newChildWorkflowStub(GreetingChild.class);
+          Promise<String> greeting1 = Async.function(child1::composeGreeting, "Hello", name);
+
+          // Both children will run concurrently.
+          GreetingChild child2 = Workflow.newChildWorkflowStub(GreetingChild.class);
+          Promise<String> greeting2 = Async.function(child2::composeGreeting, "Bye", name);
+
+          // Do something else here.
+          ...
+          return "First: " + greeting1.get() + ", second: " + greeting2.get();
+      }
+  }
+  ```
+
+- Send a Signal to a Child Workflow from the parent:
+
+  ```java
+  // Child Workflow interface
+  @WorkflowInterface
+  public interface GreetingChild {
+      @WorkflowMethod
+      String composeGreeting(String greeting, String name);
+
+      @SignalMethod
+      void updateName(String name);
+  }
+
+  // Parent Workflow implementation
+  public class GreetingWorkflowImpl implements GreetingWorkflow {
+
+      @Override
+      public String getGreeting(String name) {
+          GreetingChild child = Workflow.newChildWorkflowStub(GreetingChild.class);
+          Promise<String> greeting = Async.function(child::composeGreeting, "Hello", name);
+          child.updateName("Temporal");
+          return greeting.get();
+      }
+  }
+  ```
+
+- Sending a Query to Child Workflows from within the parent Workflow code is not supported. However, you can send a Query to Child Workflows from Activities using `WorkflowClient`.
+
+Related reads:
+
+- [How to set a Child Workflow Options in Java](/java/how-to-set-child-workflow-options-in-java)
+
+- [How to develop a Workflow Definition in Java](#develop-workflows)
+
+- Java Workflow reference: <https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/package-summary.html>
 
 </TabItem>
 <TabItem value="php">
@@ -2943,12 +4461,12 @@ Content is not available
 
 #### Parent Close Policy
 
-A [Parent Close Policy](/docs/concepts/what-is-a-parent-close-policy) determines what happens to a Child Workflow Execution if its Parent changes to a Closed status (Completed, Failed, or Timed out).
+A [Parent Close Policy](/concepts/what-is-a-parent-close-policy) determines what happens to a Child Workflow Execution if its Parent changes to a Closed status (Completed, Failed, or Timed Out).
 
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -2990,7 +4508,36 @@ func YourOtherWorkflowDefinition(ctx workflow.Context, params ChildParams) (Chil
 </TabItem>
 <TabItem value="java">
 
-Content is not available
+Set [Parent Close Policy](/concepts/what-is-a-parent-close-policy) on an instance of `ChildWorkflowOptions` using [`ChildWorkflowOptions.newBuilder().setParentClosePolicy`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/ChildWorkflowOptions.Builder.html).
+
+- Type: `ChildWorkflowOptions.Builder`
+- Default: None.
+
+```java
+   public void parentWorkflow() {
+       ChildWorkflowOptions options =
+          ChildWorkflowOptions.newBuilder()
+              .setParentClosePolicy(ParentClosePolicy.PARENT_CLOSE_POLICY_ABANDON)
+              .build();
+       MyChildWorkflow child = Workflow.newChildWorkflowStub(MyChildWorkflow.class, options);
+       Async.procedure(child::<workflowMethod>, <args>...);
+       Promise<WorkflowExecution> childExecution = Workflow.getWorkflowExecution(child);
+       // Wait for child to start
+       childExecution.get()
+  }
+```
+
+In this example, we are:
+
+1. Setting `ChildWorkflowOptions.ParentClosePolicy` to `ABANDON` when creating a Child Workflow stub.
+2. Starting Child Workflow Execution asynchronously using `Async.function` or `Async.procedure`.
+3. Calling `Workflow.getWorkflowExecution(…)` on the child stub.
+4. Waiting for the `Promise` returned by `getWorkflowExecution` to complete.
+   This indicates whether the Child Workflow started successfully (or failed).
+5. Completing parent Workflow Execution asynchronously.
+
+Steps 3 and 4 are needed to ensure that a Child Workflow Execution starts before the parent closes.
+If the parent initiates a Child Workflow Execution and then completes immediately after, the Child Workflow will never execute.
 
 </TabItem>
 <TabItem value="php">
@@ -3007,21 +4554,106 @@ Content is not available
 
 ### Activity Heartbeats
 
-TODO
+An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster.
+Each ping informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.
+
+Activity Heartbeats work in conjunction with a [Heartbeat Timeout](/activities/#heartbeat-timeout).
 
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
-Content is not available
+To [Heartbeat](/activities/#activity-heartbeats) in an Activity, use the `RecordHeartbeat` API.
+
+```go
+progress := 0
+for progress < 100 {
+    // Send heartbeat message to the server.
+    activity.RecordHeartbeat(ctx, progress)
+    // Do some work.
+    ...
+    progress++
+}
+```
+
+When an Activity Task Execution times out due to a missed Heartbeat, the last value of the details (`progress` in the
+above sample) is returned from the `workflow.ExecuteActivity` function as the details field of `TimeoutError`
+with `TimeoutType` set to `Heartbeat`.
+
+You can also Heartbeat an Activity from an external source:
+
+```go
+// The client is a heavyweight object that should be created once per process.
+temporalClient, err := client.NewClient(client.Options{})
+// Record heartbeat.
+err := temporalClient.RecordActivityHeartbeat(ctx, taskToken, details)
+```
+
+The parameters of the `RecordActivityHeartbeat` function are:
+
+- `taskToken`: The value of the binary `TaskToken` field of the `ActivityInfo` struct retrieved inside
+  the Activity.
+- `details`: The serializable payload containing progress information.
+
+If an Activity Execution Heartbeats its progress before it failed, the retry attempt will have access to the progress information, so that the Activity Execution can resume from the failed state.
+Here's an example of how this can be implemented:
+
+```go
+func SampleActivity(ctx context.Context, inputArg InputParams) error {
+    startIdx := inputArg.StartIndex
+    if activity.HasHeartbeatDetails(ctx) {
+        // Recover from finished progress.
+        var finishedIndex int
+        if err := activity.GetHeartbeatDetails(ctx, &finishedIndex); err == nil {
+            startIdx = finishedIndex + 1 // Start from next one.
+        }
+    }
+
+    // Normal Activity logic...
+    for i:=startIdx; i<inputArg.EndIdx; i++ {
+        // Code for processing item i goes here...
+        activity.RecordHeartbeat(ctx, i) // Report progress.
+    }
+}
+```
 
 </TabItem>
 <TabItem value="java">
 
-Content is not available
+To inform the Temporal service that the Activity is still alive, use `Activity.getExecutionContext().heartbeat()` in the Activity implementation code.
+
+The `Activity.getExecutionContext().heartbeat()` can take an argument that represents Heartbeat `details`.
+If an Activity times out, the last Heartbeat `details` are included in the thrown `ActivityTimeoutException`, which can be caught by the calling Workflow.
+The Workflow can then use the `details` information to pass to the next Activity invocation if needed.
+
+In the case of Activity retries, the last Heartbeat's `details` are available and can be extracted from the last failed attempt by using `Activity.getExecutionContext().getHeartbeatDetails(Class<V> detailsClass)`
+
+The following example uses Activity Heartbeat to report the progress of the `download` Activity method.
+
+```java
+public class FileProcessingActivitiesImpl implements FileProcessingActivities {
+
+  @Override
+  public String download(String bucketName, String remoteName, String localName) {
+    InputStream inputStream = openInputStream(file);
+    try {
+      byte[] bytes = new byte[MAX_BUFFER_SIZE];
+      while ((read = inputStream.read(bytes)) != -1) {
+        totalRead += read;
+        f.write(bytes, 0, read);
+        // Let the Temporal Server know about the download progress.
+        Activity.getExecutionContext().heartbeat(totalRead);
+      }
+    } finally {
+      inputStream.close();
+    }
+  }
+  ...
+}
+```
 
 </TabItem>
 <TabItem value="php">
@@ -3077,107 +4709,58 @@ Content is not available
 
 ### Cron Jobs
 
-A [Temporal Cron Job](/docs/workflows/#cron-jobs) is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.
+A [Temporal Cron Job](/workflows/#cron-jobs) is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.
 
 A Cron Schedule is provided as an option when the call to spawn a Workflow Execution is made.
-
-### Local Activities
-
-TODO
-
-## Observability
-
-TODO
-
-### Logging
-
-TODO
 
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
-Content is not available
+Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, set the `CronSchedule` field, and pass the instance to the `ExecuteWorkflow` call.
 
-</TabItem>
-<TabItem value="java">
+- Type: `string`
+- Default: None
 
-Content is not available
-
-</TabItem>
-<TabItem value="php">
-
-Content is not available
-
-</TabItem>
-<TabItem value="typescript">
-
-Set the `DefaultLogger` to one of the following: `'TRACE'` | `'DEBUG'` | `'INFO'` | `'WARN'` | `'ERROR'`.
-
-The following is an example of setting the `DefaultLogger` to `'Debug'`.
-
-```typescript
-Runtime.install({
-  logger: new DefaultLogger("DEBUG"),
-  telemetryOptions: {
-    logForwardingLevel: "DEBUG",
-    tracingFilter: "temporal_sdk_core=DEBUG",
-  },
-});
-```
-
-The following code sets the `DefaultLogger` to `'Debug'` and creates a Worker that can execute Activities or Workflows.
-
-```typescript
-import {Worker, Runtime, DefaultLogger} from "@temporalio/worker";
-import * as activities from "./activities";
-async function main() {
-  const argv = arg({
-    "--debug": Boolean,
-  });
-  /* Setting the log level to DEBUG. */
-  if (argv["--debug"]) {
-    Runtime.install({
-      logger: new DefaultLogger("DEBUG"),
-      telemetryOptions: {
-        logForwardingLevel: "DEBUG",
-        tracingFilter: "temporal_sdk_core=DEBUG",
-      },
-    });
-  }
-  const worker = await Worker.create({
-    activities,
-    workflowsPath: require.resolve("./workflows"),
-    taskQueue: "test",
-  });
-  await worker.run();
-  console.log("Worker gracefully shutdown");
+```go
+workflowOptions := client.StartWorkflowOptions{
+  CronSchedule: "15 8 * * *",
+  // ...
+}
+workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
+if err != nil {
+  // ...
 }
 ```
 
 </TabItem>
-</Tabs>
-
-### Visibility
-
-TODO
-
-<Tabs
-defaultValue="go"
-groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
-
-<TabItem value="go">
-
-Content is not available
-
-</TabItem>
 <TabItem value="java">
 
-Content is not available
+Set the Cron Schedule with the [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) instance in the Client code using [`WorkflowOptions.Builder.setCronSchedule`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
+
+Setting `setCronSchedule` changes the Workflow Execution into a Temporal Cron Job.
+The default timezone for a Cron is UTC.
+
+- Type: `String`
+- Default: None
+
+```java
+//create Workflow stub for YourWorkflowInterface
+YourWorkflowInterface workflow1 =
+    YourWorker.yourclient.newWorkflowStub(
+        YourWorkflowInterface.class,
+        WorkflowOptions.newBuilder()
+                .setWorkflowId("YourWF")
+                .setTaskQueue(YourWorker.TASK_QUEUE)
+                // Set Cron Schedule
+                .setCronSchedule("* * * * *")
+                .build());
+```
+
+For more details, see the [Cron Sample](https://github.com/temporalio/samples-java/blob/main/src/main/java/io/temporal/samples/hello/HelloCron.java)
 
 </TabItem>
 <TabItem value="php">
@@ -3187,108 +4770,14 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+You can set each Workflow to repeat on a schedule with the `cronSchedule` option:
+
+```typescript
+const handle = await client.start(scheduledWorkflow, {
+  // ...
+  cronSchedule: "* * * * *", // start every minute
+});
+```
 
 </TabItem>
 </Tabs>
-
-### Metrics
-
-TODO
-
-<Tabs
-defaultValue="go"
-groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
-
-<TabItem value="go">
-
-Content is not available
-
-</TabItem>
-<TabItem value="java">
-
-Content is not available
-
-</TabItem>
-<TabItem value="php">
-
-Content is not available
-
-</TabItem>
-<TabItem value="typescript">
-
-Content is not available
-
-</TabItem>
-</Tabs>
-
-### Tracing
-
-TODO
-
-<Tabs
-defaultValue="go"
-groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
-
-<TabItem value="go">
-
-Content is not available
-
-</TabItem>
-<TabItem value="java">
-
-Content is not available
-
-</TabItem>
-<TabItem value="php">
-
-Content is not available
-
-</TabItem>
-<TabItem value="typescript">
-
-Content is not available
-
-</TabItem>
-</Tabs>
-
-### Replays
-
-TODO
-
-<Tabs
-defaultValue="go"
-groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Typescript', value: 'typescript'},]}>
-
-<TabItem value="go">
-
-Content is not available
-
-</TabItem>
-<TabItem value="java">
-
-Content is not available
-
-</TabItem>
-<TabItem value="php">
-
-Content is not available
-
-</TabItem>
-<TabItem value="typescript">
-
-Content is not available
-
-</TabItem>
-</Tabs>
-
-## Testing
-
-TODO
-
-## Scaling
-
-TODO

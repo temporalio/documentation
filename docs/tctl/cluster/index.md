@@ -7,7 +7,7 @@ tags:
   - tctl
 ---
 
-The `tctl cluster` command enables [Temporal Cluster](/docs/concepts/what-is-a-temporal-cluster) operations.
+The `tctl cluster` command enables [Temporal Cluster](/concepts/what-is-a-temporal-cluster) operations.
 
-- [`tctl cluster health`](/docs/tctl/cluster/health)
-- [`tctl cluster list-search-attributes`](/docs/tctl/cluster/list-search-attributes)
+- [`tctl cluster health`](/tctl/cluster/health)
+- [`tctl cluster list-search-attributes`](/tctl/cluster/list-search-attributes)

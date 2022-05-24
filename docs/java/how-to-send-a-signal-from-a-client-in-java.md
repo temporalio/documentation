@@ -29,4 +29,4 @@ Customer customer = new Customer("John", "Spanish", "john@john.com");
 workflow.addCustomer(customer); //addCustomer is the Signal method defined in the greetCustomer Workflow.
 ```
 
-See [Handle Signals](/docs/java/how-to-handle-a-signal-in-a-workflow-in-java) for details on how to handle Signals in a Workflow.
+See [Handle Signals](/java/how-to-handle-a-signal-in-a-workflow-in-java) for details on how to handle Signals in a Workflow.

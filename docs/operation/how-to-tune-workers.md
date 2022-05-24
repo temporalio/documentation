@@ -2,7 +2,7 @@
 id: how-to-tune-workers
 title: How to tune Workers
 description: Guide into Workers Tuning
-sidebar_label: Workers Tuning
+sidebar_label: Worker performance
 tags:
   - operation-guide
   - workers
@@ -19,7 +19,7 @@ _Note: All metrics in this article are prepended with the “temporal\_” prefi
 Performance tuning involves three important SDK metric groups:
 
 1. `worker_task_slots_available` gauges tagged `worker_type=WorkflowWorker` and `worker_type=ActivityWorker` for Workflow Task and Activity Workers correspondingly. These gauges report how many executor “slots” are currently available (unoccupied) for each Worker type.
-2. `workflow_task_schedule_to_start_latency` and `activity_schedule_to_start_latency` timers for Workflow Tasks and Activities correspondingly. For more information about `schedule_to_start` timeout and latency, see [https://docs.temporal.io/docs/concepts/what-is-a-schedule-to-start-timeout/](https://docs.temporal.io/docs/concepts/what-is-a-schedule-to-start-timeout/).
+2. `workflow_task_schedule_to_start_latency` and `activity_schedule_to_start_latency` timers for Workflow Tasks and Activities correspondingly. For more information about `schedule_to_start` timeout and latency, see [https://docs.temporal.io/concepts/what-is-a-schedule-to-start-timeout/](https://docs.temporal.io/concepts/what-is-a-schedule-to-start-timeout/).
 3. `sticky_cache_size` and `workflow_active_thread_count` report the size of the Workflow cache and the number of cached Workflow threads.
 
 _Note: To have access to all the metrics mentioned above in the JavaSDK, version ≥ 1.8.0 is required._
@@ -75,7 +75,9 @@ then consider increasing the maximum number of working slots by adjusting `maxCo
 
 ### Poller count
 
-_Note: Adjustments to pollers are rarely needed and rarely make a difference. Please consider this step only after adjusting Worker slots in the previous step. The only scenario in which the pollers’ adjustment makes sense is when there is a significant network latency between the Workers and Temporal Server._
+:::note
+Adjustments to pollers are rarely needed and rarely make a difference. Please consider this step only after adjusting Worker slots in the previous step. The only scenario in which the pollers’ adjustment makes sense is when there is a significant network latency between the Workers and Temporal Server.
+:::
 
 If:
 
@@ -87,14 +89,14 @@ then consider increasing the number of pollers by adjusting `maxConcurrentWorkfl
 
 ### Rate Limiting
 
-If, after adjusting the poller and executors count as specified above, you still observe an elevated `schedule_to_start`, underutilized Worker hosts, or high `worker_task_slots_available`, you may want to check
+If, after adjusting the poller and executors count as specified earlier, you still observe an elevated `schedule_to_start`, underutilized Worker hosts, or high `worker_task_slots_available`, you might want to check the following:
 
-1. If server-side rate limiting per Task Queue is set by `WorkerOptions#maxTaskQueueActivitiesPerSecond` and remove the limit or adjust the value up.
-2. If Worker-side rate limiting per Worker is set by `WorkerOptions#maxWorkerActivitiesPerSecond` and remove the limit. [GoSDK only]
+- If server-side rate limiting per Task Queue is set by `WorkerOptions#maxTaskQueueActivitiesPerSecond`, remove the limit or adjust the value up. (See [Go](/go/how-to-set-workeroptions-in-go/#taskqueueactivitiespersecond) and [Java](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkerOptions.Builder.html).)
+- If Worker-side rate limiting per Worker is set by `WorkerOptions#maxWorkerActivitiesPerSecond`, remove the limit. (See [Go](/go/how-to-set-workeroptions-in-go/#workeractivitiespersecond), [TypeScript](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#maxconcurrentactivitytaskexecutions), and [Java](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkerOptions.Builder.html).)
 
 ## Workflow Cache Tuning
 
-When the number of cached Workflow Executions reported by `sticky_cache_size` hits `workflowCacheSize` or the number of their threads reported by `workflow_active_thread_count` metrics gauge hits `maxWorkflowThreadCount`, Workflow Executions start to get “evicted” from the cache.
+When the number of cached Workflow Executions reported by `sticky_cache_size` hits `workflowCacheSize` or the number of their threads reported by `workflow_active_thread_count` metrics gauge hits `maxWorkflowThreadCount`, Workflow Executions start to get _evicted_ from the cache.
 An evicted workflow execution will need to be replayed when it gets any action that may advance it.
 
 If
@@ -104,7 +106,9 @@ If
 
 `workflowCacheSize` and `maxWorkflowThreadCount` limits may be increased to decrease the overall latency and cost of the replays in the system. If the opposite occurs, consider decreasing the limits.
 
-_Note: In CoreSDK based SDKs, like TypeScript, this metric works differently and should be monitored and adjusted on a per Worker / Task Queue basis._
+:::note
+In CoreSDK based SDKs, like TypeScript, this metric works differently and should be monitored and adjusted on a per Worker and Task Queue basis.
+:::
 
 ## Invariants
 
@@ -122,9 +126,7 @@ Perform this sanity check after the adjustments to Worker settings.
 
 As with any multithreading system, specifying too large values without monitoring with the SDK and system metrics will lead to constant resource contention/stealing, which decreases the total throughput and increases latency jitter of the system.
 
-<RelatedReadList
-readlist={[
-["Workers in production", "/blog/workers-in-production", "operation guide"],
-["Full set of SDK Metrics", "/docs/references/sdk-metrics", "reference"]
-]}
-/>
+**Related**
+
+- [Workers in production operation guide](/blog/workers-in-production)
+- [Full set of SDK Metrics reference](/references/metrics.md)

@@ -44,8 +44,8 @@ Select an SDK version to see available scripts.
 
 **Are there executable code samples?**
 
-You can find a complete list of executable code samples in the [samples library](/docs/samples-library/#java), which includes Temporal Java SDK code samples from the temporalio/samples-java repo.
-Additionally, several of the [Java SDK Tutorials](/docs/learning-paths) are backed by a fully executable template application.
+You can find a complete list of executable code samples in the [samples library](/samples-library/#java), which includes Temporal Java SDK code samples from the temporalio/samples-java repo.
+Additionally, several of the [Java SDK Tutorials](/learning-paths) are backed by a fully executable template application.
 
 **Where is the Java SDK technical reference?**
 

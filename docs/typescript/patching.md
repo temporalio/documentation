@@ -83,7 +83,7 @@ export async function myWorkflow() {
 
 ## Migrating Workflows in Patches
 
-Workflow code has to be [deterministic](/docs/typescript/determinism) by taking the same code path when replaying history events.
+Workflow code has to be [deterministic](/typescript/determinism) by taking the same code path when replaying history events.
 Any Workflow code change that affects the order in which commands are generated breaks this assumption.
 
 So we have to keep both the old and new code when migrating Workflows while they are still running:

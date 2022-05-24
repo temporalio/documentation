@@ -8,7 +8,7 @@ tags:
   - tctl
 ---
 
-The `tctl cluster list-search-attributes` command lists all [Search Attributes](/docs/concepts/what-is-a-search-attribute) that can be used in the `--query` modifier of the [`tctl workflow list`](/docs/tctl/workflow/list) command.
+The `tctl cluster list-search-attributes` command lists all [Search Attributes](/concepts/what-is-a-search-attribute) that can be used in the `--query` modifier of the [`tctl workflow list`](/tctl/workflow/list) command.
 
 **Example:**
 

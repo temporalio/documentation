@@ -68,7 +68,7 @@ This looks like normal Java code, but it is a workflow because **the state of th
 - If your program restarts or the backend service goes down, your program will be in exactly the same state with all local variables and stack traces in exactly the same state.
 - You can call sleep for 30 days in your code without caring about process restarts or dealing with databases and state recovery, because that is done automatically by Temporal.
 
-Maxim and Samar have given [multiple presentations the Cadence and Temporal programming model](https://docs.temporal.io/docs/external-resources/#how-temporal-works) over the past 4 years if you want to learn more.
+Maxim and Samar have given [multiple presentations the Cadence and Temporal programming model](https://docs.temporal.io/external-resources/#how-temporal-works) over the past 4 years if you want to learn more.
 
 ## Workflow as State Machine (5:15)
 

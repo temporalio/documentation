@@ -1,6 +1,6 @@
 ---
 id: how-to-set-a-start-to-close-timeout-in-typescript
-title: How to set a Start to Close Timeout in Typescript
+title: How to set a Start to Close Timeout in TypeScript
 sidebar_label: Set a Start to Close Timeout
 description: Set a Start to Close Timeout
 tags:

@@ -8,9 +8,9 @@ tags:
   - tctl
 ---
 
-The `tctl workflow reset` command resets a [Workflow Execution](/docs/concepts/what-is-a-workflow-execution) by either `eventId` or `resetType`.
+The `tctl workflow reset` command resets a [Workflow Execution](/concepts/what-is-a-workflow-execution) by either `eventId` or `resetType`.
 
-See also [`tctl workflow reset-batch`](/docs/tctl/workflow/reset-batch).
+See also [`tctl workflow reset-batch`](/tctl/workflow/reset-batch).
 
 `tctl workflow reset [<modifiers>]`
 
@@ -18,7 +18,7 @@ The following modifiers control the behavior of the command.
 
 ### `--workflow_id`
 
-Specify a [Workflow Id](/docs/concepts/what-is-a-workflow-id).
+Specify a [Workflow Id](/concepts/what-is-a-workflow-id).
 
 Aliases: `--wid`, `-w`
 
@@ -30,7 +30,7 @@ tctl workflow reset --workflow_id <id>
 
 ### `--run_id`
 
-Specify a [Run Id](/docs/concepts/what-is-a-run-id).
+Specify a [Run Id](/concepts/what-is-a-run-id).
 
 Aliases: `--rid`, `-r`
 
@@ -53,7 +53,7 @@ tctl workflow reset --event_id <id>
 
 ### `reason`
 
-Specify a reason for resetting the [Workflow Execution](/docs/concepts/what-is-a-workflow-execution).
+Specify a reason for resetting the [Workflow Execution](/concepts/what-is-a-workflow-execution).
 
 <!-- Alias: `--re` -->
 

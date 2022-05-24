@@ -9,8 +9,8 @@ tags:
 
 A Data Converter is a Temporal SDK component that encodes and decodes data entering and exiting a Temporal Server.
 
-- TypeScript: [Data Converters](/docs/typescript/data-converters)
-- Go: [Create a custom Data Converter](/docs/go/how-to-create-a-custom-data-converter-in-go)
+- TypeScript: [Data Converters](/typescript/data-converters)
+- Go: [Create a custom Data Converter](/go/how-to-create-a-custom-data-converter-in-go)
 
 ![Data Converter encodes and decodes data](/diagrams/default-data-converter.svg)
 
@@ -54,8 +54,8 @@ Applications can create their own custom Data Converters to alter the format (fo
 To use a custom Data Converter, provide it to:
 
 - The Client and Worker in the SDKs you use
-- Temporal Web via [`tctl data-converter web`](/docs/tctl/dataconverter/web) (for displaying decoded data in the Web UI)
-- `tctl` via [`--data-converter-plugin`](/docs/tctl/#--data-converter-plugin) (for displaying decoded headers in `tctl` output)
+- Temporal Web via [`tctl data-converter web`](/tctl/dataconverter/web) (for displaying decoded data in the Web UI)
+- `tctl` via [`--data-converter-plugin`](/tctl/#--data-converter-plugin) (for displaying decoded headers in `tctl` output)
 
 Custom Data Converters are not applied to all data:
 
@@ -64,7 +64,7 @@ Custom Data Converters are not applied to all data:
 
 ### Payload Codecs
 
-In [TypeScript](/docs/typescript/data-converters#custom-data-converter) and [Go](https://pkg.go.dev/go.temporal.io/sdk/converter#PayloadCodec), data conversion happens in two stages:
+In [TypeScript](/typescript/data-converters#custom-data-converter) and [Go](https://pkg.go.dev/go.temporal.io/sdk/converter#PayloadCodec), data conversion happens in two stages:
 
 - First, a Payload Converter converts a value into a [`Payload`](https://github.com/temporalio/api/blob/2f980f7ce4349e808b16ec0f21e0fe675f79330f/temporal/api/common/v1/message.proto#L49)
 - Then, a Payload Codec transforms an array of Payloads (for example, a list of Workflow arguments) into another array of Payloads

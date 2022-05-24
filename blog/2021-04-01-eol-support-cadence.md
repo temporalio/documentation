@@ -39,7 +39,7 @@ While this is something which was initially considered, the pace and direction o
 
 ### What is the process of migrating to Temporal?
 
-As of today there is no automatic process to migrate. The fundamental design of your application will generally remain the same, but specific API calls and values you provide them will need to be updated. We've created a page on our docs which details the majority of changes between Temporal and Cadence. If there is something missing from this list we would love to know: [https://docs.temporal.io/docs/cadence-to-temporal](https://docs.temporal.io/docs/cadence-to-temporal)
+As of today there is no automatic process to migrate. The fundamental design of your application will generally remain the same, but specific API calls and values you provide them will need to be updated. We've created a page on our docs which details the majority of changes between Temporal and Cadence. If there is something missing from this list we would love to know: [https://docs.temporal.io/cadence-to-temporal](https://docs.temporal.io/cadence-to-temporal)
 
 We know migrating away from a critical dependency like Cadence can be daunting. We are also available to help with your specific migration process. Please feel free to post on our forums or contact us directly!
 

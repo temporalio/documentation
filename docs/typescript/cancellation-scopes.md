@@ -12,8 +12,7 @@ Scopes are created using the [`CancellationScope`](https://typescript.temporal.i
 - [`withTimeout(timeoutMs, fn)`](https://typescript.temporal.io/api/classes/workflow.cancellationscope#withtimeout): if timeout triggers before `fn` resolves the scope will be cancelled, triggering cancellation of enclosed operations, such as activities and timers.
   - Equivalent to `new CancellationScope({ cancellable: true, timeout: timeoutMs }).run(fn)`.
 
-Cancellations are applied to _cancellation scopes_, which can encompass an entire workflow or just part of one. Scopes can be nested, and cancellation propagates from outer scopes to inner ones. A Workflow's `main` function runs in the outermost scope. Cancellations are handled by catching `CancelledFailure`s
-thrown by _cancellable operations_ (see below).
+Cancellations are applied to _cancellation scopes_, which can encompass an entire workflow or just part of one. Scopes can be nested, and cancellation propagates from outer scopes to inner ones. A Workflow's `main` function runs in the outermost scope. Cancellations are handled by catching `CancelledFailure`s thrown by _cancellable operations_ (see below).
 
 `CancellationScope.run()` and the static helpers mentioned above all return native JS Promises, so you can use the familiar Promise APIs like `Promise.all` and `Promise.race` to model your async logic.
 Other APIs you can use:
@@ -29,7 +28,7 @@ When a `CancellationScope` is cancelled, it propagates cancellation in any child
 - Timers (created with the [`sleep`](https://typescript.temporal.io/api/namespaces/workflow#sleep) function)
 - [`Trigger`](https://typescript.temporal.io/api/classes/workflow.trigger)s
 
-### [CancelledFailure](/docs/typescript/handling-failure/#cancelledfailure)
+### [CancelledFailure](/typescript/handling-failure/#cancelledfailure)
 
 `Timer`s and `Trigger`s throw `CancelledFailure` when cancelled while Activities and Child Workflows throw `ActivityFailure` and `ChildWorkflowFailure` with cause set to `CancelledFailure`.
 One exception is when an Activity or Child Workflow is scheduled in an already cancelled scope (or workflow) in which case they'll propagate the `CancelledFailure` that was thrown to cancel the scope.
