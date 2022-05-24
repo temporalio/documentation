@@ -14,17 +14,17 @@ import TabItem from '@theme/TabItem';
 This guide is meant to provide a comprehensive overview of the structures, primitives, and features used in Temporal Application development.
 
 :::info WORK IN PROGRESS
- 
+
 This guide is a work in progress.
 Some sections may be incomplete or missing for some languages.
 Information may change at any time.
- 
+
 :::
- 
+
 This guide is meant to be a comprehensive resource for developing a [Temporal Application](/temporal/#temporal-application).
- 
+
 It is broken down into two large sections:
- 
+
 - [Foundations](#foundations): The minimum things required to build and run a simple Workflow with a single Activity.
 - [Features](#features): All the general features available to a Temporal Application.
 
@@ -359,11 +359,9 @@ type ExampleArgs = {
   name: string;
 };
 
-export async function example(
-  args: ExampleArgs
-): Promise<{ greeting: string }> {
+export async function example(args: ExampleArgs): Promise<{greeting: string}> {
   const greeting = await greet(args.name);
-  return { greeting };
+  return {greeting};
 }
 ```
 
@@ -383,39 +381,38 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
- 
 The first parameter of a Go-based Workflow Definition must be of the [`workflow.Context`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Context) type, as it is used by the Temporal Go SDK to pass around Workflow Execution context, and virtually all the Go SDK APIs that are callable from the Workflow require it.
 It is acquired from the [`go.temporal.io/sdk/workflow`](https://pkg.go.dev/go.temporal.io/sdk/workflow) package.
- 
+
 ```go
 import (
    "go.temporal.io/sdk/workflow"
 )
- 
+
 func YourWorkflowDefinition(ctx workflow.Context, param string) error {
  // ...
 }
 ```
- 
+
 The `workflow.Context` entity operates similarly to the standard `context.Context` entity provided by Go.
 The only difference between `workflow.Context` and `context.Context` is that the `Done()` function, provided by `workflow.Context`, returns `workflow.Channel` instead of the standard Go `chan`.
- 
+
 The second parameter, `string`, is a custom parameter that is passed to the Workflow when it is invoked.
 A Workflow Definition may support multiple custom parameters, or none.
 These parameters can be regular type variables or safe pointers.
 However, the best practice is to pass a single parameter that is of a `struct` type, so there can be some backward compatibility if new parameters are added.
- 
+
 ```go
 type YourWorkflowParam struct {
  WorkflowParamFieldOne string
  WorkflowParamFieldTwo int
 }
- 
+
 func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error {
  // ...
 }
 ```
- 
+
 All Workflow Definition parameters must be serializable, regardless of whether pointers or regular type values are used.
 Parameters can’t be channels, functions, variadic, or unsafe pointers.
 
@@ -453,12 +450,12 @@ A Task Queue is a dynamic queue in Temporal polled by one or more Workers.
 When scheduling a Workflow, a `taskQueue` must be specified.
 
 ```typescript
-import { Connection, WorkflowClient } from '@temporalio/client';
+import {Connection, WorkflowClient} from "@temporalio/client";
 const connection = new Connection();
 const client = new WorkflowClient();
 const result = await client.execute(myWorkflow, {
-  taskQueue: 'your-task-queue', // required
-  workflowId: 'your-workflow-id', // required
+  taskQueue: "your-task-queue", // required
+  workflowId: "your-workflow-id", // required
 });
 ```
 
@@ -467,7 +464,7 @@ When creating a Worker, you must pass the `taskQueue` option to the `Worker.crea
 ```typescript
 const worker = await Worker.create({
   activities, // imported elsewhere
-  taskQueue: 'your-task-queue',
+  taskQueue: "your-task-queue",
 });
 ```
 
@@ -489,16 +486,15 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
- 
 A Go-based Workflow Definition can return either just an `error` or a `customValue, error` combination.
 Again, the best practice here is to use a `struct` type to hold all custom values.
- 
+
 ```go
 type YourWorkflowResponse struct{
  WorkflowResultFieldOne string
  WorkflowResultFieldTwo int
 }
- 
+
 func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (YourWorkflowResponse, error) {
  // ...
  if err != nil {
@@ -511,7 +507,7 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (Your
  return responseVar, nil
 }
 ```
- 
+
 A Workflow Definition written in Go can return both a custom value and an error.
 However, it's not possible to receive both a custom value and an error in the calling process, as is normal in Go.
 The caller will receive either one or the other.
@@ -554,7 +550,7 @@ Query Handlers can return values inside a Workflow in TypeScript.
 You make a Query with `handle.query(query, ...args)`. A Query needs a return value, but can also take arguments.
 
 ```typescript
-import * as wf from '@temporalio/workflow';
+import * as wf from "@temporalio/workflow";
 
 function useState<T = any>(name: string, initialValue: T) {
   const query = wf.defineQuery<T>(name);
@@ -663,51 +659,47 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
- 
 In the Temporal Go SDK programming model, an Activity Definition is an exportable function or a `struct` method.
- 
+
 **Function**
- 
+
 ```go
 // basic function signature
 func YourActivityDefinition(ctx context.Context) error {
  // ...
  return nil
 }
- 
+
 // with parameters and return values
 func SimpleActivity(ctx context.Context, value string) (string, error)
 ```
- 
+
 **Struct method**
- 
+
 ```go
 type YourActivityStruct struct {
  ActivityFieldOne string
  ActivityFieldTwo int
 }
- 
+
 func(a *YourActivityStruct) YourActivityDefinition(ctx context.Context) error {
  // ...
 }
- 
+
 func(a *YourActivityStruct) YourActivityDefinitionTwo(ctx context.Context) error {
  // ...
 }
 ```
- 
+
 An _Activity struct_ can have more than one method, with each method acting as a separate Activity Type.
 Activities written as struct methods can use shared struct variables, such as:
- 
+
 - an application level DB pool
 - client connection to another service
 - reusable utilities
 - any other expensive resources, you only want to initialize once per process
- 
-Because this is such a common need, the rest of this guide shows Activities written as `struct` methods.
- 
- 
 
+Because this is such a common need, the rest of this guide shows Activities written as `struct` methods.
 
 </TabItem>
 <TabItem value="java">
@@ -855,30 +847,26 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
- 
 The first parameter of an Activity Definition is `context.Context`.
 This parameter is optional for an Activity Definition, though it is recommended, especially if the Activity is expected to use other Go SDK APIs.
- 
+
 An Activity Definition can support as many other custom parameters as needed.
 However, all parameters must be serializable (parameters can’t be channels, functions, variadic, or unsafe pointers), and it is recommended to pass a single struct that can be updated later.
- 
+
 ```go
 type YourActivityParam struct {
  ActivityParamFieldOne string
  ActivityParamFieldTwo int
 }
- 
+
 type YourActivityStruct struct {
  // ...
 }
- 
+
 func (a *YourActivityStruct) YourActivityDefinition(ctx context.Context, param YourActivityParam) error {
  // ...
 }
 ```
- 
- 
-
 
 </TabItem>
 <TabItem value="java">
@@ -987,9 +975,9 @@ Content is not available
 To import the types of the Activities defined in `./activities`, you must first retrieve an Activity from an _Activity Handle_ before you can call it, then define Return Types in your Activity.
 
 ```typescript
-import type * as activities from './activities';
-const { greet } = proxyActivities<typeof activities>({
-  startToCloseTimeout: '1 minute',
+import type * as activities from "./activities";
+const {greet} = proxyActivities<typeof activities>({
+  startToCloseTimeout: "1 minute",
 });
 
 // A workflow that simply calls an activity
@@ -1317,12 +1305,12 @@ class FileProcessingActivitiesImpl implements FileProcessingActivities {
 To spawn an Activity Execution, you must retrieve the _Activity handle_ in your Workflow.
 
 ```typescript
-import { proxyActivities } from '@temporalio/workflow';
+import {proxyActivities} from "@temporalio/workflow";
 // Only import the activity types
-import type * as activities from './activities';
+import type * as activities from "./activities";
 
-const { greet } = proxyActivities<typeof activities>({
-  startToCloseTimeout: '1 minute',
+const {greet} = proxyActivities<typeof activities>({
+  startToCloseTimeout: "1 minute",
 });
 
 // A workflow that calls an activity
@@ -1348,17 +1336,16 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
- 
 The `ExecuteActivity` API call returns an instance of [`workflow.Future`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Futures) which has the following two methods:
- 
+
 - `Get()`: Takes an instance of the `workflow.Context`, that was passed to the Activity Execution, and a pointer as parameters.
- The variable associated with the pointer is populated with the Activity Execution result.
- This call blocks until the results are available.
+  The variable associated with the pointer is populated with the Activity Execution result.
+  This call blocks until the results are available.
 - `IsReady()`: Returns `true` when the result of the Activity Execution is ready.
- 
+
 Call the `Get()` method on the instance of `workflow.Future` to get the result of the Activity Execution.
 The type of the result parameter must match the type of the return value declared by the Activity function.
- 
+
 ```go
 func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (YourWorkflowResponse, error) {
  // ...
@@ -1370,9 +1357,9 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (Your
  // ...
 }
 ```
- 
+
 Use the `IsReady()` method first to make sure the `Get()` call doesn't cause the Workflow Execution to wait on the result.
- 
+
 ```go
 func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (YourWorkflowResponse, error) {
  // ...
@@ -1387,7 +1374,7 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (Your
  // ...
 }
 ```
- 
+
 It is idiomatic to invoke multiple Activity Executions from within a Workflow.
 Therefore, it is also idiomatic to either block on the results of the Activity Executions or continue on to execute additional logic, checking for the Activity Execution results at a later time.
 
@@ -1496,7 +1483,7 @@ export async function DynamicWorkflow(activityName, ...args) {
 
   // these are equivalent
   await acts.activity1();
-  await acts['activity1']();
+  await acts["activity1"]();
 
   let result = await acts[activityName](...args);
   return result;
@@ -1646,7 +1633,7 @@ Content is not available
 Use a new `WorflowClient()` with the requisite gRPC [`Connection`](https://typescript.temporal.io/api/classes/client.Connection#service) to create a new Client.
 
 ```typescript
-import { Connection, WorkflowClient } from '@temporalio/client';
+import {Connection, WorkflowClient} from "@temporalio/client";
 const connection = new Connection(); // to configure for production
 const client = new WorkflowClient(connection.service);
 ```
@@ -1658,10 +1645,10 @@ If you ommit the connection and just call the `new WorkflowClient()`, you will c
 The following example, creates a Client, connects to an account, and declares your Namespace.
 
 ```typescript
-import { Connection, WorkflowClient } from '@temporalio/client';
+import {Connection, WorkflowClient} from "@temporalio/client";
 
 const connection = new Connection({
-  address: '<Namespace ID>.tmprl.cloud', // defaults port to 7233 if not specified
+  address: "<Namespace ID>.tmprl.cloud", // defaults port to 7233 if not specified
   tls: {
     // set to true if TLS without mTLS
     // See docs for other TLS options
@@ -1673,7 +1660,7 @@ const connection = new Connection({
 });
 await connection.untilReady();
 const client = new WorkflowClient(connection.service, {
-  namespace: 'your.namespace',
+  namespace: "your.namespace",
 });
 ```
 
@@ -1692,11 +1679,11 @@ Example environment settings
 ```typescript
 export function getEnv(): Env {
   return {
-    address: 'web.<Namespace ID>.tmprl.cloud', // NOT web.foo.bar.tmprl.cloud
-    namespace: 'your.namespace', // as assigned
-    clientCertPath: 'foobar.pem', // in project root
-    clientKeyPath: 'foobar.key', // in project root
-    taskQueue: process.env.TEMPORAL_TASK_QUEUE || 'hello-world-mtls', // just to ensure task queue is same on client and worker, totally optional
+    address: "web.<Namespace ID>.tmprl.cloud", // NOT web.foo.bar.tmprl.cloud
+    namespace: "your.namespace", // as assigned
+    clientCertPath: "foobar.pem", // in project root
+    clientKeyPath: "foobar.key", // in project root
+    taskQueue: process.env.TEMPORAL_TASK_QUEUE || "hello-world-mtls", // just to ensure task queue is same on client and worker, totally optional
     // // not usually needed
     // serverNameOverride: process.env.TEMPORAL_SERVER_NAME_OVERRIDE,
     // serverRootCACertificatePath: process.env.TEMPORAL_SERVER_ROOT_CA_CERT_PATH,
@@ -1720,7 +1707,7 @@ let serverRootCACertificate: Buffer | undefined;
 let clientCertificate: Buffer | undefined;
 let clientKey: Buffer | undefined;
 if (certificateS3Bucket) {
-  const s3 = new S3client({ region: certificateS3BucketRegion });
+  const s3 = new S3client({region: certificateS3BucketRegion});
   serverRootCACertificate = await s3.getObject({
     bucket: certificateS3Bucket,
     key: serverRootCACertificatePath,
@@ -1749,12 +1736,12 @@ The [Worker Process](/workers/#worker-process) is where Workflow Functions and A
 Each [Worker Entity](/workers/#worker-entity) in the Worker Process must register the exact Workflow Types and Activity Types it may execute.
 Each Worker Entity must also associate itself with exactly one [Task Queue](/tasks/#task-queues).
 Each Worker Entity polling the same Task Queue must be registered with the same Workflow Types and Activity Types.
- 
+
 A [Worker Entity](/workers/#worker-entity) is the component within a Worker Process that listens to a specific Task Queue.
- 
+
 Although multiple Worker Entities can be in a single Worker Process, a single Worker Entity Worker Process may be perfectly sufficient.
 For more information, see the [Worker tuning guide](/operation/how-to-tune-workers).
- 
+
 A Worker Entity contains both a Workflow Worker and an Activity Worker so that it can make progress for either a Workflow Execution or an Activity Execution.
 
 <Tabs
@@ -1764,27 +1751,26 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
- 
 Create an instance of [`Worker`](https://pkg.go.dev/go.temporal.io/sdk/worker#Worker) by calling [`worker.New()`](https://pkg.go.dev/go.temporal.io/sdk/worker#New), available via the `go.temporal.io/sdk/worker` package, and pass it the following parameters:
- 
+
 1. An instance of the Temporal Go SDK `Client`.
 2. The name of the Task Queue that it will poll.
 3. An instance of [`worker.Options`](/go/how-to-set-workeroptions-in-go), which can be empty.
- 
+
 Then, register the Workflow Types and the Activity Types that the Worker will be capable of executing.
- 
+
 Lastly, call either the `Start()` or the `Run()` method on the instance of the Worker.
 Run accepts an interrupt channel as a parameter, so that the Worker can be stopped in the terminal.
 Otherwise, the `Stop()` method must be called to stop the Worker.
- 
+
 ```go
 package main
- 
+
 import (
    "go.temporal.io/sdk/client"
    "go.temporal.io/sdk/worker"
 )
- 
+
 func main() {
    c, err := client.NewClient(client.Options{})
    if err != nil {
@@ -1800,11 +1786,11 @@ func main() {
    }
  // ...
 }
- 
+
 func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (YourWorkflowResponse, error) {
  // ...
 }
- 
+
 func YourActivityDefinition(ctx context.Context, param YourActivityParam) (YourActivityResponse, error) {
  // ...
 }
@@ -1869,12 +1855,12 @@ Below is an example of starting a Worker that polls the Task Queue named `tutori
 A full example for Workers looks like this:
 
 ```typescript
-import { Worker, NativeConnection } from '@temporalio/worker';
-import * as activities from './activities';
+import {Worker, NativeConnection} from "@temporalio/worker";
+import * as activities from "./activities";
 
 async function run() {
   const connection = await NativeConnection.create({
-    address: 'foo.bar.tmprl.cloud', // defaults port to 7233 if not specified
+    address: "foo.bar.tmprl.cloud", // defaults port to 7233 if not specified
     tls: {
       // set to true if TLS without mTLS
       // See docs for other TLS options
@@ -1887,7 +1873,7 @@ async function run() {
 
   const worker = await Worker.create({
     connection,
-    namespace: 'foo.bar', // as explained in Namespaces section
+    namespace: "foo.bar", // as explained in Namespaces section
     // ...
   });
   await worker.run();
@@ -2055,12 +2041,12 @@ Content is not available
 ### Start Workflow Execution
 
 [Workflow Execution](/workflows/#workflow-executions) semantics rely on several parameters – that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
- 
+
 In the examples below, all Workflow Executions are started using a Temporal Client.
 To spawn Workflow Executions from within another Workflow Executions, use either the [Child Workflow](#child-workflows) or External Workflow APIs.
- 
+
 See the [Customize Workflow Type](#customize-workflow-type) section to see how to customize the name of the Workflow Type.
- 
+
 A request to spawn a Workflow Execution causes the Temporal Cluster to create the first Event ([WorkflowExecutionStarted](/references/events/#workflowexecutionstarted)) in the Workflow Execution Event History.
 The Temporal Cluster then creates the first Workflow Task, resulting in the first [WorkflowTaskScheduled](/references/events/#workflowtaskscheduled) Event.
 
@@ -2252,9 +2238,9 @@ When you have a Workflow Client, you can schedule the start of a Workflow with `
 
 ```typescript
 const handle = await client.start(example, {
-  workflowId: 'your-workflow-id',
-  taskQueue: 'your-task-queue',
-  args: ['argument01', 'argument02', 'argument03'], // this is typechecked against workflowFn's args
+  workflowId: "your-workflow-id",
+  taskQueue: "your-task-queue",
+  args: ["argument01", "argument02", "argument03"], // this is typechecked against workflowFn's args
 });
 const handle = client.getHandle(workflowId);
 const result = await handle.result();
@@ -2340,16 +2326,16 @@ There are three main things the Worker needs:
   - Or pass a prebuilt bundle to `workflowBundle`, if you prefer to handle the bundling yourself.
 
 ```typescript
-import { Worker } from '@temporalio/worker';
-import * as activities from './activities';
+import {Worker} from "@temporalio/worker";
+import * as activities from "./activities";
 
 async function run() {
   // Step 1: Register Workflows and Activities with the Worker and connect to
   // the Temporal server.
   const worker = await Worker.create({
-    workflowsPath: require.resolve('./workflows'),
+    workflowsPath: require.resolve("./workflows"),
     activities,
-    taskQueue: 'hello-world',
+    taskQueue: "hello-world",
   });
   // Worker connects to localhost by default and uses console.error for logging.
   // Customize the Worker by passing more options to create():
@@ -2432,9 +2418,9 @@ Connect to a Client with `client.start()` and any arguments. Then specify your `
 
 ```typescript
 const handle = await client.start(example, {
-  workflowId: 'yourWorkflowId',
-  taskQueue: 'yourTaskQueue',
-  args: ['your', 'arg', 'uments'],
+  workflowId: "yourWorkflowId",
+  taskQueue: "yourTaskQueue",
+  args: ["your", "arg", "uments"],
 });
 ```
 
@@ -2446,11 +2432,11 @@ This starts a new Client with the given Workflow Id, Task Queue name, and an arg
 ### Get Workflow results
 
 If the call to start a Workflow Execution is successful, you will gain access to the Workflow Execution's Run Id.
- 
+
 The Workflow Id, Run Id, and Namespace may be used to uniquely identify a Workflow Execution in the system and get its result.
- 
+
 It's possible to both block progress on the result (synchronous execution) or get the result at some other point in time (asynchronous execution).
- 
+
 In the Temporal Platform, it's also acceptable to use Queries as the preferred method for accessing the state and results of Workflow Executions.
 
 <Tabs
@@ -2460,9 +2446,8 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
- 
 The `ExecuteWorkflow` call returns an instance of [`WorkflowRun`](https://pkg.go.dev/go.temporal.io/sdk/client#WorkflowRun), which is the `workflowRun` variable in the following line.
- 
+
 ```go
  workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, app.YourWorkflowDefinition, param)
  if err != nil {
@@ -2471,15 +2456,15 @@ The `ExecuteWorkflow` call returns an instance of [`WorkflowRun`](https://pkg.go
  // ...
 }
 ```
- 
+
 The instance of `WorkflowRun` has the following three methods:
- 
+
 - `GetWorkflowID()`: Returns the Workflow Id of the invoked Workflow Execution.
 - `GetRunID()`: Always returns the Run Id of the initial Run (See [Continue As New](#)) in the series of Runs that make up the full Workflow Execution.
 - `Get`: Takes a pointer as a parameter and populates the associated variable with the Workflow Execution result.
- 
+
 To wait on the result of Workflow Execution in the same process that invoked it, call `Get()` on the instance of `WorkflowRun` that is returned by the `ExecuteWorkflow()` call.
- 
+
 ```go
  workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition, param)
  if err != nil {
@@ -2493,22 +2478,22 @@ To wait on the result of Workflow Execution in the same process that invoked it,
  // ...
 }
 ```
- 
+
 However, the result of a Workflow Execution can be obtained from a completely different process.
 All that is needed is the [Workflow Id](#).
 (A [Run Id](#) is optional if more than one closed Workflow Execution has the same Workflow Id.)
 The result of the Workflow Execution is available for as long as the Workflow Execution Event History remains in the system.
- 
+
 <!-- TODO (See [How long do Workflow Execution Histories persist](#)). -->
- 
+
 Call the `GetWorkflow()` method on an instance of the Go SDK Client and pass it the Workflow Id used to spawn the Workflow Execution.
 Then call the `Get()` method on the instance of `WorkflowRun` that is returned, passing it a pointer to populate the result.
- 
+
 ```go
  // ...
  workflowID := "Your-Custom-Workflow-Id"
  workflowRun := c.GetWorkflow(context.Background, workflowID)
- 
+
  var result YourWorkflowResponse
  err = workflowRun.Get(context.Background(), &result)
  if err != nil {
@@ -2516,35 +2501,35 @@ Then call the `Get()` method on the instance of `WorkflowRun` that is returned, 
  }
  // ...
 ```
- 
+
 #### Get last completion result
- 
+
 In the case of a [Temporal Cron Job](/workflows/#cron-jobs), you might need to get the result of the previous Workflow Run and use it in the current Workflow Run.
- 
+
 To do this, use the [`HasLastCompletionResult`](https://pkg.go.dev/go.temporal.io/sdk/workflow#HasLastCompletionResult) and [`GetLastCompletionResult`](https://pkg.go.dev/go.temporal.io/sdk/workflow#GetLastCompletionResult) APIs, available from the [`go.temporal.io/sdk/workflow`](https://pkg.go.dev/go.temporal.io/sdk/workflow) package, directly in your Workflow code.
- 
+
 ```go
 type CronResult struct {
  Count int
 }
- 
+
 func YourCronWorkflowDefinition(ctx workflow.Context) (CronResult, error) {
  count := 1
- 
+
  if workflow.HasLastCompletionResult(ctx) {
    var lastResult CronResult
    if err := workflow.GetLastCompletionResult(ctx, &lastResult); err == nil {
      count = count + lastResult.Count
    }
  }
- 
+
  newResult := CronResult {
    Count: count,
  }
  return newResult, nil
 }
 ```
- 
+
 This will work even if one of the cron Workflow Runs fails.
 The next Workflow Run gets the result of the last successfully Completed Workflow Run.
 
@@ -2653,9 +2638,9 @@ To return the results of a Workflow Execution:
 
 ```typescript
 return (
-  'Completed ' +
+  "Completed " +
   wf.workflowInfo().workflowId +
-  ', Total Charged: ' +
+  ", Total Charged: " +
   totalCharged
 );
 ```
@@ -2683,11 +2668,11 @@ try {
   const result = await handle.result();
 } catch (err) {
   if (err instanceof WorkflowFailedError) {
-    throw new Error('Temporal workflow failed: ' + workflowId, {
+    throw new Error("Temporal workflow failed: " + workflowId, {
       cause: err,
     });
   } else {
-    throw new Error('error from Temporal workflow ' + workflowId, {
+    throw new Error("error from Temporal workflow " + workflowId, {
       cause: err,
     });
   }
@@ -3045,7 +3030,7 @@ Content is not available
 First, define your Signal that can be sent to the Workflow.
 
 ```typescript
-const update = wf.defineSignal<number>('update');
+const update = wf.defineSignal<number>("update");
 ```
 
 Then create your Workflow. In this example, our Worklfow charges a user every month.
@@ -3070,7 +3055,7 @@ The following is the implemented code that sends a Signal from a Workflow.
 
 ```typescript
 // Defining a signal that can be sent to the workflow.
-const update = wf.defineSignal<number>('update');
+const update = wf.defineSignal<number>("update");
 // workflow
 async function SubscriptionWorkflow(id: string, amount: number) {
   wf.setHandler(update, (newAmt) => (amount = newAmt));
@@ -3342,7 +3327,7 @@ Content is not available
 #### Handle Query
 
 Queries are handled by your Workflow.
- 
+
 Don’t include any logic that causes [Command](/workflows/#commands) generation within a Query handler (such as executing Activities). As this will lead to unexpected behavior.
 
 <Tabs
@@ -3691,7 +3676,7 @@ Content is not available
 #### Workflow Retry Policy
 
 Use a [Retry Policy](/retry-policies/#) to retry a Workflow Execution in the event of a failure.
- 
+
 Workflow Executions do not retry by default, and Retry Policies should only be used with Workflow Executions in certain situations.
 
 <Tabs
@@ -3847,11 +3832,11 @@ In this example, you can set the `scheduleToCloseTimeout` to 5 m.
 
 ```typescript
 // Sample of typical options you can set
-const { greet } = proxyActivities<typeof activities>({
-  scheduleToCloseTimeout: '5m',
+const {greet} = proxyActivities<typeof activities>({
+  scheduleToCloseTimeout: "5m",
   retry: {
     // default retry policy if not specified
-    initialInterval: '1s',
+    initialInterval: "1s",
     backoffCoefficient: 2,
     maximumAttempts: Infinity,
     maximumInterval: 100 * initialInterval,
@@ -3949,11 +3934,11 @@ In this example, you can set the `startToCloseTimeout` to 30 seconds.
 
 ```typescript
 // Sample of typical options you can set
-const { greet } = proxyActivities<typeof activities>({
-  startToCloseTimeout: '30s', // recommended
+const {greet} = proxyActivities<typeof activities>({
+  startToCloseTimeout: "30s", // recommended
   retry: {
     // default retry policy if not specified
-    initialInterval: '1s',
+    initialInterval: "1s",
     backoffCoefficient: 2,
     maximumAttempts: Infinity,
     maximumInterval: 100 * initialInterval,
@@ -4049,12 +4034,12 @@ In this example, you can set the `ScheduleToStartTimeout` to 60 seconds.
 
 ```typescript
 // Sample of typical options you can set
-const { greet } = proxyActivities<typeof activities>({
-  scheduleToCloseTimeout: '5m',
-  ScheduleToStartTimeout: '60s',
+const {greet} = proxyActivities<typeof activities>({
+  scheduleToCloseTimeout: "5m",
+  ScheduleToStartTimeout: "60s",
   retry: {
     // default retry policy if not specified
-    initialInterval: '1s',
+    initialInterval: "1s",
     backoffCoefficient: 2,
     maximumAttempts: Infinity,
     maximumInterval: 100 * initialInterval,
@@ -4145,9 +4130,9 @@ To set a Heartbeat Timeout, use [`ActivityOptions.heartbeatTimeout`](https://typ
 
 ```typescript
 // Creating a proxy for the activity.
-const { longRunningActivity } = proxyActivities<typeof activities>({
-  scheduleToCloseTimeout: '5m', // translates to 300000 ms
-  startToCloseTimeout: '30s', // translates to 30000 ms
+const {longRunningActivity} = proxyActivities<typeof activities>({
+  scheduleToCloseTimeout: "5m", // translates to 300000 ms
+  startToCloseTimeout: "30s", // translates to 30000 ms
   heartbeatTimeout: 10000, // equivalent to '10 seconds'
 });
 ```
@@ -4257,11 +4242,11 @@ To set Activity Retry Policies in TypeScript, pass [`ActivityOptions.retry`](htt
 
 ```typescript
 // Sample of typical options you can set
-const { yourActivity } = proxyActivities<typeof activities>({
+const {yourActivity} = proxyActivities<typeof activities>({
   // ...
   retry: {
     // default retry policy if not specified
-    initialInterval: '1s',
+    initialInterval: "1s",
     backoffCoefficient: 2,
     maximumAttempts: Infinity,
     maximumInterval: 100 * initialInterval,
@@ -4571,7 +4556,7 @@ Content is not available
 
 An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster.
 Each ping informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.
- 
+
 Activity Heartbeats work in conjunction with a [Heartbeat Timeout](/activities/#heartbeat-timeout).
 
 <Tabs
@@ -4790,10 +4775,9 @@ You can set each Workflow to repeat on a schedule with the `cronSchedule` option
 ```typescript
 const handle = await client.start(scheduledWorkflow, {
   // ...
-  cronSchedule: '* * * * *', // start every minute
+  cronSchedule: "* * * * *", // start every minute
 });
 ```
 
 </TabItem>
 </Tabs>
-
