@@ -442,41 +442,16 @@ async function prepToReplace(cfg, link_index) {
   }
 }
 
-async function parseAndReplace(raw_content, link_index, current_guide_id) {
-  const docsLinkRegex = /\/docs\/[a-zA-Z0-9-_]*\/[a-zA-Z0-9-_]*/gm;
-  const lines = raw_content.toString().split("\n");
-  let new_lines = [];
-  let line_count = 0;
-  for (let line of lines) {
-    const line_links = line.match(docsLinkRegex);
-    if (line_links !== null) {
-      for (match of line_links) {
-        const replaceable = match.substring(6);
-        const link = link_index.find((obj) => {
-          return obj.path === replaceable;
-        });
-        if (link != undefined) {
-          line = await replaceLinks(line, replaceable, link, current_guide_id);
-        }
-      }
+// add the option to specify which guide to use
+async function parseAndReplace(raw_content, link_index, cfg_id) {
+  let updated_content = raw_content;
+  for (let link of link_index) {
+    if (link.guide == cfg_id) {
+      updated_content = updated_content.replaceAll(
+        link.local_ref,
+        `[${link.local_ref}](${link.path})`
+      );
     }
-    if (line == "" && (line_count == 0 || line_count == lines.length - 1)) {
-      // silently drop it on purpose
-    } else {
-      new_lines.push(line);
-    }
-    line_count++;
   }
-  raw_content = new_lines.join("\n");
-  return raw_content;
-
-  async function replaceLinks(line, replaceable, link, current_guide_id) {
-    let updated = "";
-    if (link.guide != current_guide_id) {
-      line = line.replaceAll(replaceable, `${link.guide}/#${link.local_ref}`);
-    } else {
-      line = line.replaceAll(`/docs/${replaceable}`, `#${link.local_ref}`);
-    }
-    return line;
-  }
+  return updated_content;
 }

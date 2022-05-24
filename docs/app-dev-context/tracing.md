@@ -1,1 +1,1 @@
-TODO
+Tracing is a form of event logging.

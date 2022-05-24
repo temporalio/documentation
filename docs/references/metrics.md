@@ -34,6 +34,12 @@ Each metric may have some combination of the following keys attached to them:
 - `workflow_type`: The name of the Workflow Function the metric is associated with
 - `operation`: RPC method name; available for metrics related to Temporal Client gRPC requests
 
+| Metric type   | Definition  |
+|---|---|
+| Histogram  | Samples observations (usually things like request durations or response sizes) and counts them in a configurable bucket. |
+| Counter | Measures number of events or actions for values that only ever increase or reset to zero on restart. |
+| Gauge | Measures a single numerical value that can arbitrarily go up and down. |
+
 Some keys may not be available in every SDK, and Histogram metrics may have different buckets in each SDK.
 
 | Metric name                                                                             | Emitted by     | Metric type | Availability              |
