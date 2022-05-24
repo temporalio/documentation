@@ -6,7 +6,7 @@ sidebar_label: Spawn an Activity Execution
 
 Activity implementation is an implementation of an Activity interface.
 The following code example, uses a constructor that takes an Amazon S3 client and a local directory, and uploads a file to the S3 bucket.
-Then, the code uses a function to dowload a file from the S3 bucket passing a bucket name, remote name, and local name as arguments.
+Then, the code uses a function to download a file from the S3 bucket passing a bucket name, remote name, and local name as arguments.
 Finally, it uses a function that takes a local file name as an argument and returns a string.
 
 ```php
