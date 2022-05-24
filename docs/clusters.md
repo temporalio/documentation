@@ -134,7 +134,7 @@ It talks to the Frontend service.
 
 A Retention Period is the amount of time a Workflow Execution Event History remains in the Cluster's persistence store.
 
-- [How to set the Retention Period for the Namespace](/tctl/namespace/register#--retention)
+- [How to set the Retention Period for the Namespace](/tctl/namespace/register/#--retention)
 
 A Retention Period applies to a single [Namespace](/namespaces/#) and is set when the Namespace is registered.
 

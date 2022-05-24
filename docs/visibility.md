@@ -35,7 +35,7 @@ Elasticsearch takes on the Visibility request load, relieving potential performa
 
 A List Filter is the SQL-like string that is provided as the parameter to an [Advanced Visibility](#advanced-visibility) List API.
 
-- [How to use a List Filter using tctl](/tctl/workflow/list#--query)
+- [How to use a List Filter using tctl](/tctl/workflow/list/#--query)
 - [How to use a List Filter in the Web UI](/web-ui/how-to-use-a-list-filter-in-the-temporal-web-ui)
 
 The following is an example List Filter:

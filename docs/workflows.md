@@ -20,7 +20,7 @@ Temporal documentation aims to be explicit and differentiate between them.
 
 A Workflow Definition is the code that defines the constraints of a Workflow Execution.
 
-- [How to develop a Workflow Definition](/application-development-guide#develop-workflows)
+- [How to develop a Workflow Definition](/application-development-guide/#develop-workflows)
 
 A Workflow Definition is often also referred to as a Workflow Function.
 In Temporal's documentation, a Workflow Definition refers to the source for the instance of a Workflow Execution, while a Workflow Function refers to the source for the instance of a Workflow Function Execution.
@@ -138,7 +138,7 @@ A Workflow Type is a name that maps to a Workflow Definition.
 A Temporal Workflow Execution is a durable, reliable, and scalable function execution.
 It is the main unit of execution of a [Temporal Application](/temporal/#temporal-application).
 
-- [How to start a Workflow Execution using an SDK](/application-development-guide#start-workflow-execution)
+- [How to start a Workflow Execution using an SDK](/application-development-guide/#start-workflow-execution)
 - [How to start a Workflow Execution using tctl](/tctl/workflow/start)
 
 Each Temporal Workflow Execution has exclusive access to its local state.

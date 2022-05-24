@@ -10,7 +10,7 @@ tags:
 
 A Heartbeat Timeout is the maximum time between [Activity Heartbeats](/concepts/what-is-an-activity-heartbeat).
 
-- [How to set a Heartbeat Timeout](/application-development-guide#heartbeattimeout)
+- [How to set a Heartbeat Timeout](/application-development-guide/#heartbeat-timeout)
 
 ![Heartbeat Timeout periods](/diagrams/heartbeat-timeout.svg)
 

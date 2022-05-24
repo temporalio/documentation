@@ -252,7 +252,7 @@ This timeout can be used to control the overall duration of an Activity Executio
 
 A Heartbeat Timeout is the maximum time between [Activity Heartbeats](#activity-heartbeats).
 
-- [How to set a Heartbeat Timeout](/application-development-guide#heartbeattimeout)
+- [How to set a Heartbeat Timeout](/application-development-guide/#heartbeat-timeout)
 
 ![Heartbeat Timeout periods](/diagrams/heartbeat-timeout.svg)
 
