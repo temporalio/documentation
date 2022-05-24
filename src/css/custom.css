@@ -401,6 +401,28 @@ p {
   font-family: "Aeonik";
 }
 
+.badge-purple {
+  font-family: "Poppins";
+  font-weight: 500;
+  font-size: 0.75rem;
+  color: #6d28d9;
+  background-color: #ede9fe;
+  border-radius: 0.125rem;
+  margin: 1rem;
+  padding: 0 0.5rem;
+}
+
+.badge-blue {
+  font-family: "Poppins";
+  font-weight: 500;
+  font-size: 0.75rem;
+  color: #1d4ed8;
+  background-color: #dbeafe;
+  border-radius: 0.125rem;
+  margin: 1rem;
+  padding: 0 0.5rem;
+}
+
 /* Leadership page css */
 
 .leadership-container {

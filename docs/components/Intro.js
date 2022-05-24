@@ -80,8 +80,38 @@ function WrenchSVG() {
 function Explained() {
   return (
     <div className="landing-card">
+      <ul className="landing-card-list-b">
+        <li>
+          <img
+            className="h-8 w-8 pl-1 transition hover:scale-110 code-logo"
+            src="/img/golang.svg"
+            alt="Go lang logo"
+          />
+        </li>
+        <li>
+          <img
+            className="h-7 w-7 pl-1 transition hover:scale-110 code-logo"
+            src="/img/java.svg"
+            alt="Java logo"
+          />
+        </li>
+        <li>
+          <img
+            className="h-8 w-8 pl-1 transition hover:scale-110 code-logo"
+            src="/img/php.svg"
+            alt="PHP logo"
+          />
+        </li>
+        <li>
+          <img
+            className="h-7 w-7 pl-1 transition hover:scale-110 code-logo"
+            src="/img/typescript.svg"
+            alt="TypeScript logo"
+          />
+        </li>
+      </ul>
       <div className="landing-card-section">
-        <h2>Temporal core concepts</h2>
+        <h2>Temporal Explained</h2>
         <p className="landing-card-p">
           Temporal terminology, system architecture, and key components
           explained.
@@ -159,43 +189,15 @@ function Explained() {
         </ul>
       </div>
       <div className="landing-card-section">
-        <a className="header-link" href="/application-development-guide">
-          <h2>Application development guide</h2>
-        </a>
+        <div className="flex items-center">
+          <a className="header-link" href="/application-development-guide">
+            <h2>Application Development Guide</h2>
+          </a>
+          <div className="badge-purple">New</div>
+        </div>
         <p className="landing-card-p">
           A day-to-day how-to guide for Temporal Application developers.{" "}
-          <span className="bold">New.</span>
         </p>
-        <ul className="landing-card-list-b">
-          <li>
-            <img
-              className="h-8 w-8 pl-1 transition hover:scale-110 code-logo"
-              src="/img/golang.svg"
-              alt="Go lang logo"
-            />
-          </li>
-          <li>
-            <img
-              className="h-7 w-7 pl-1 transition hover:scale-110 code-logo"
-              src="/img/java.svg"
-              alt="Java logo"
-            />
-          </li>
-          <li>
-            <img
-              className="h-8 w-8 pl-1 transition hover:scale-110 code-logo"
-              src="/img/php.svg"
-              alt="PHP logo"
-            />
-          </li>
-          <li>
-            <img
-              className="h-7 w-7 pl-1 transition hover:scale-110 code-logo"
-              src="/img/typescript.svg"
-              alt="TypeScript logo"
-            />
-          </li>
-        </ul>
         <ul className="landing-card-list">
           <li className="">
             <div className="landing-card-list-item">
@@ -338,7 +340,7 @@ function Explained() {
       </div>
       <div className="landing-card-section">
         <a className="header-link" href="/cluster-deployment-guide">
-          <h2>Cluster deployment guide</h2>
+          <h2>Cluster Deployment Guide</h2>
         </a>
         <p className="landing-card-p">
           Temporal Cluster deployment information and how-to guides.
@@ -386,9 +388,12 @@ function Explained() {
         </ul>
       </div>
       <div className="landing-card-section">
-        <a className="header-link" href="/cloud">
-          <h2>Temporal Cloud</h2>
-        </a>
+        <div className="flex items-center">
+          <a className="header-link" href="/cloud">
+            <h2>Temporal Cloud</h2>
+          </a>
+          <div className="badge-blue">Beta</div>
+        </div>
         <p className="landing-card-p">
           Tools and Temporal Cloud service information.
         </p>
