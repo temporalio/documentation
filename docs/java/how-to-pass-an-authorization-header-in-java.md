@@ -21,7 +21,7 @@ The implementation is called for each SDK gRPC request and may supply dynamic to
 **JWT**
 
 One of the token types that may be passed this way are JWT tokens.
-Temporal Server provides a [default implementation of JWT authentication](/server/security/#default-jwt-claimmapper).
+Temporal Server provides a [default implementation of JWT authentication](server/security/#default-jwt-claimmapper).
 
 **Example**
 

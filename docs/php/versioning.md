@@ -84,7 +84,7 @@ After you are sure that all of the Workflow executions prior to version 1 have c
 remove the code for that version. It should now look like the following:
 
 ```php
-$v = yield Workflow::getVersion('Step1', Workflow::DEFAULT_VERSION, 2);
+$v = yield Workflow::getVersion('Step1', 1, 2);
 
 if ($v === 1) {
     $result1 = yield $myActivity->activityC($data);
