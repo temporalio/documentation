@@ -30,8 +30,8 @@ Keep reading or follow along with this video walkthrough:
 
 ## ![](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/repair-tools.png) Project setup
 
-Before starting, make sure you have looked over the [tutorial prerequisites](/docs/go/tutorial-prerequisites).
-Basically, make sure the Temporal Server is running (using [Docker is the fastest way](https://docs.temporal.io/docs/clusters/quick-install)), and your Go version is v1.14 or later.
+Before starting, make sure you have looked over the [tutorial prerequisites](/go/tutorial-prerequisites).
+Basically, make sure the Temporal Server is running (using [Docker is the fastest way](https://docs.temporal.io/clusters/quick-install)), and your Go version is v1.14 or later.
 
 This tutorial uses a fully working template application which can be downloaded as a zip or converted to a new repository in your own Github account and cloned. Github's ["Creating a Repository from a Template" guide](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-from-a-template#creating-a-repository-from-a-template) will walk you through the steps.
 
@@ -48,7 +48,7 @@ If you convert the template to a new repo, make sure you use the same repository
 
 ## ![](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/workflow.png) Application overview
 
-This project template mimics a "money transfer" application that has a single [Workflow function](/docs/go/workflows) which orchestrates the execution of `Withdraw()` and `Deposit()` functions, representing a transfer of money from one account to another. Temporal calls these particular functions [Activity functions](/docs/go/activities).
+This project template mimics a "money transfer" application that has a single [Workflow function](/go/workflows) which orchestrates the execution of `Withdraw()` and `Deposit()` functions, representing a transfer of money from one account to another. Temporal calls these particular functions [Activity functions](/go/activities).
 
 To run the application you will do the following:
 
@@ -70,14 +70,14 @@ When you "start" a Workflow you are basically telling the Temporal server, "trac
 
 ### Initiate transfer
 
-There are two ways to start a Workflow with Temporal, either via the SDK or via the [CLI](/docs/tctl). For this tutorial we used the SDK to start the Workflow, which is how most Workflows get started in a live environment. The call to the Temporal server can be done [synchronously or asynchronously](/docs/go/workflows/#how-to-start-a-workflow). Here we do it asynchronously, so you will see the program run, tell you the transaction is processing, and exit.
+There are two ways to start a Workflow with Temporal, either via the SDK or via the [CLI](/tctl). For this tutorial we used the SDK to start the Workflow, which is how most Workflows get started in a live environment. The call to the Temporal server can be done [synchronously or asynchronously](/go/workflows/#how-to-start-a-workflow). Here we do it asynchronously, so you will see the program run, tell you the transaction is processing, and exit.
 
 <!--SNIPSTART money-transfer-project-template-go-start-workflow-->
 <!--SNIPEND-->
 
 ### Running the Workflow
 
-Make sure the [Temporal server](/docs/clusters/quick-install) is running in a terminal, and then run start/main.go from the project root using the following command:
+Make sure the [Temporal server](/clusters/quick-install) is running in a terminal, and then run start/main.go from the project root using the following command:
 
 ```bash
 go run start/main.go
@@ -95,7 +95,7 @@ WorkflowID: transfer-money-workflow RunID: 0730a9a3-d17b-4cb5-a4a0-279c9759dfa1
 
 ### State visibility
 
-OK, now it's time to check out one of the really cool value propositions offered by Temporal: application state visibility. Visit the [Temporal Web UI](http://localhost:8088) where you will see your Workflow listed.
+OK, now it's time to check out one of the really cool value propositions offered by Temporal: application state visibility. Visit the [Temporal Web UI](http://localhost:8080) where you will see your Workflow listed.
 
 Next, click the "Run Id" for your Workflow. Now we can see everything we want to know about the execution of the Workflow code we told the server to track, such as what parameter values it was given, timeout configurations, scheduled retries, number of attempts, stack traceable errors, and more.
 
@@ -150,7 +150,7 @@ Withdrawing $54.990002 from account 001-001. ReferenceId: 8e37aafe-5fb8-4649-99e
 > - This causes the server to send Activity Tasks to the Task Queue.
 > - The Worker then grabs each of the Activity Tasks in their respective order from the Task Queue and executes each of the corresponding Activities.
 >
-> Each of these are **History Events** that can be audited in Temporal Web (under the `History` tab next to `Summary`). Once a workflow is completed and closed, the full history will persist for a set retention period (typically 7-30 days) before being deleted. You can set up [the Archival feature](https://docs.temporal.io/docs/server/archive-data/) to send them to long term storage for compliance/audit needs.
+> Each of these are **History Events** that can be audited in Temporal Web (under the `History` tab next to `Summary`). Once a workflow is completed and closed, the full history will persist for a set retention period (typically 7-30 days) before being deleted. You can set up [the Archival feature](https://docs.temporal.io/concepts/what-is-archival) to send them to long term storage for compliance/audit needs.
 
 :::
 
@@ -201,7 +201,7 @@ Depositing $54.990002 into account 002-002. ReferenceId: 1a203da3-f5ea-4c17-b5cf
 # it keeps retrying... with the RetryPolicy specified in workflow.go
 ```
 
-You can view more information about what is happening in the [UI](localhost:8088). Click on the RunId of the Workflow. You will see the pending Activity listed there with details such as its state, the number of times it has been attempted, and the next scheduled attempt.
+You can view more information about what is happening in the [UI](localhost:8080). Click on the `RunId` of the Workflow. You will see the pending Activity listed there with details such as its state, the number of times it has been attempted, and the next scheduled attempt.
 
 <ResponsivePlayer url='https://youtu.be/sMotKSI5xxE' loop='true' playing='true'/>
 
@@ -209,7 +209,7 @@ You can view more information about what is happening in the [UI](localhost:8088
 
 **Traditionally application developers are forced to implement timeout and retry logic within the service code itself.**
 This is repetitive and error prone.
-With Temporal, one of the key value propositions is that timeout configurations ([Schedule-To-Start Timeout](/docs/concepts/what-is-a-schedule-to-start-timeout), [Schedule-To-Close Timeout](/docs/concepts/what-is-a-schedule-to-close-timeout), [Start-To-Close Timeout](/docs/concepts/what-is-a-start-to-close-timeout), and [Heartbeat Timeout](/docs/concepts/what-is-a-heartbeat-timeout)) and [Retry Policies](/docs/concepts/what-is-a-retry-policy) are specified in the Workflow code as Activity options. In `workflow.go`, you can see that we have specified a `StartToCloseTimeout` for our Activities, and set a retry policy that tells the server to retry them up to 500 times. You can read more about [Retries](/docs/concepts/what-is-a-retry-policy) in our docs.
+With Temporal, one of the key value propositions is that timeout configurations ([Schedule-To-Start Timeout](/concepts/what-is-a-schedule-to-start-timeout), [Schedule-To-Close Timeout](/concepts/what-is-a-schedule-to-close-timeout), [Start-To-Close Timeout](/concepts/what-is-a-start-to-close-timeout), and [Heartbeat Timeout](/concepts/what-is-a-heartbeat-timeout)) and [Retry Policies](/concepts/what-is-a-retry-policy) are specified in the Workflow code as Activity options. In `workflow.go`, you can see that we have specified a `StartToCloseTimeout` for our Activities, and set a retry policy that tells the server to retry them up to 500 times. You can read more about [Retries](/concepts/what-is-a-retry-policy) in our docs.
 
 So, your Workflow is running, but only the `Withdraw()` Activity function has succeeded. In any other application, the whole process would likely have to be abandoned and rolled back. So, here is the last value proposition of this tutorial: With Temporal, we can debug the issue while the Workflow is running! Pretend that you found a potential fix for the issue; Switch the comments back on the return statements of the `Deposit()` function in the `activity.go` file and save your changes.
 

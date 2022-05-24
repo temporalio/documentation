@@ -12,18 +12,18 @@ A `tctl admin` command allows the user to run admin operations.
 
 Alias : `adm`
 
-#### tctl admin commands
+## Commands
 
-- [`tctl admin workflow`](/docs/tctl/admin/workflow/)
-- [`tctl admin shard`](/docs/tctl/admin/shard/)
+- [`tctl admin workflow`](/tctl/admin/workflow/index)
+- [`tctl admin shard`](/tctl/admin/shard/index)
 - `tctl history_host`
 - `tctl taskqueue`
 - `tctl membership`
-- `tctl cluster`
+- [`tctl cluster`](/tctl/admin/cluster/index)
 - `tctl dlq`
-- [`tctl db`](/docs/tctl/admin/db/index)
+- `tctl db`
 - `tctl decode`
 
-#### Options
+## Modifiers
 
 Help: `tctl admin [--help | -h]`

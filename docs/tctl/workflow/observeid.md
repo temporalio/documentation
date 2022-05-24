@@ -8,7 +8,7 @@ tags:
   - tctl
 ---
 
-The `tctl workflow observeid` command shows the progress of the [Event History](/docs/concepts/what-is-an-event-history) of a [Workflow Execution](/docs/concepts/what-is-a-workflow-execution) for the specified [Workflow Id](/docs/concepts/what-is-a-workflow-id) and optional [Run Id](/docs/concepts/what-is-a-run-id).
+The `tctl workflow observeid` command shows the progress of the [Event History](/concepts/what-is-an-event-history) of a [Workflow Execution](/concepts/what-is-a-workflow-execution) for the specified [Workflow Id](/concepts/what-is-a-workflow-id) and optional [Run Id](/concepts/what-is-a-run-id).
 
 `tctl workflow observeid <workflow_id> [<run_id>] [<modifiers>]`
 

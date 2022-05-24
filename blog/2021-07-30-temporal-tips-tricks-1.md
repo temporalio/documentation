@@ -61,7 +61,7 @@ You can even leave comments to relevant documentation, like this:
 // @prefix RetryPolicy
 // @description simple retry policy
 
-// https://docs.temporal.io/docs/concepts/what-is-a-retry-policy
+// https://docs.temporal.io/concepts/what-is-a-retry-policy
     RetryPolicy: 			&temporal.RetryPolicy{
 			InitialInterval:    time.Second,
 			BackoffCoefficient: 2,
@@ -76,7 +76,7 @@ In VS Code, you should try [the Easy Snippet extension](https://marketplace.visu
 
 ## Stack Trace
 
-One of the lesser known but extremely useful features of [Temporal Web](https://docs.temporal.io/docs/devtools/web-ui#viewing-stack-traces-on-temporal-web) is the ability to view stack traces.
+One of the lesser known but extremely useful features of [Temporal Web](https://docs.temporal.io/devtools/web-ui#viewing-stack-traces-on-temporal-web) is the ability to view stack traces.
 
 ![image](https://user-images.githubusercontent.com/6764957/127705775-8de7c70d-5d89-4b1b-8f4a-8dcd9ccb70f7.png)
 
@@ -84,7 +84,7 @@ This helps greatly with debugging and understanding how Temporal deals with asyn
 
 ## Event History
 
-You can export the event history via [`tctl`](https://docs.temporal.io/docs/devtools/tctl#show-workflow-history) or the [Web UI](https://docs.temporal.io/docs/devtools/web-ui#execution-histories-on-temporal-web):
+You can export the event history via [`tctl`](https://docs.temporal.io/devtools/tctl#show-workflow-history) or the [Web UI](https://docs.temporal.io/devtools/web-ui#execution-histories-on-temporal-web):
 
 ```bash
 tctl workflow show \

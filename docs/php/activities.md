@@ -287,7 +287,7 @@ public function greet(string $name): \Generator
 ## Async completion
 
 There are certain scenarios when moving on from an Activity upon completion of its function is not possible or desirable.
-For example, you might have an application that requires user input in order to complete the Activity.
+For example, you might have an application that requires user input to complete the Activity.
 You could implement the Activity with a polling mechanism, but a simpler and less resource-intensive implementation is to asynchronously complete a Temporal Activity.
 
 There are two parts to implementing an asynchronously completed Activity:
@@ -311,3 +311,29 @@ To fail the Activity, you would do the following:
 // Fail the Activity.
 $activityClient->completeExceptionallyByToken($taskToken, new \Error("activity failed"));
 ```
+
+## Local Activity
+
+To create a Local Activity you should use `#[LocalActivityInterface]` (instead of `#[ActivityInterface]`):
+
+```php
+use Temporal\Activity\LocalActivityInterface;
+
+#[ActivityInterface]
+interface GreetingActivityInterface
+{
+    #[ActivityMethod("greet")]
+    public function greet(): string;
+}
+```
+
+Local Activity requires `LocalActivityOptions`:
+
+```php
+$greetingActivity = Workflow::newActivityStub(
+    GreetingActivityInterface::class,
+    LocalActivityOptions::new()->withStartToCloseTimeout(\DateInterval::createFromDateString('30 seconds'))
+);
+```
+
+Local Activities have a limited set of options, including: `ScheduleToCloseTimeout`, `StartToCloseTimeout`, `RetryPolicy`.

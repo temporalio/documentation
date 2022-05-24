@@ -1,6 +1,6 @@
 ---
 id: how-to-set-a-cron-job-in-typescript
-title: How to set a cron job in Typescript
+title: How to set a cron job in TypeScript
 sidebar_label: Set a cron job
 description: Set a cron job
 tags:

@@ -1,0 +1,61 @@
+{
+  "file_name": "cluster-deployment-guide.md",
+  "id": "cluster-deployment-guide",
+  "title": "Temporal Cluster deployment guide",
+  "sidebar_label": "Cluster deployment",
+  "description": "This guide provides an overview of how to deploy and operate a Temporal Cluster in a live environment.",
+  "toc_max_heading_level": 4,
+  "add_tabs_support": false,
+  "h2_sections": [
+    {
+      "header": "none",
+      "h3_sections": [
+        {
+          "header": "none",
+          "type": "context",
+          "path": "cluster-ops-context/intro"
+        }
+      ]
+    },
+    {
+      "header": "Advanced Visibility",
+      "h3_sections": [
+        {
+          "header": "none",
+          "type": "how-to",
+          "path": "clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster"
+        }
+      ]
+    },
+    {
+      "header": "Archival",
+      "h3_sections": [
+        {
+          "header": "none",
+          "type": "how-to",
+          "path": "cluster-ops-context/archival"
+        },
+        {
+          "header": "Set up",
+          "type": "how-to",
+          "path": "clusters/how-to-set-up-archival"
+        },
+        {
+          "header": "Custom Archiver",
+          "type": "how-to",
+          "path": "clusters/how-to-create-a-custom-archiver"
+        }
+      ]
+    },
+    {
+      "header": "Multi-Cluster Replication",
+      "h3_sections": [
+        {
+          "header": "none",
+          "type": "how-to",
+          "path": "clusters/how-to-set-up-multi-cluster-replication"
+        }
+      ]
+    }
+  ]
+}

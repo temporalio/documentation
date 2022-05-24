@@ -9,12 +9,12 @@ tags:
   - visibility
 ---
 
-A Search Attribute is an indexed field used in a [List Filter](/docs/concepts/what-is-a-list-filter) to filter a list of Workflow Executions that have the Search Attribute in their metadata.
+A Search Attribute is an indexed field used in a [List Filter](/concepts/what-is-a-list-filter) to filter a list of Workflow Executions that have the Search Attribute in their metadata.
 
 If a Temporal Cluster does not have Elasticsearch integrated, but a Workflow Execution is spawned and tagged with Search Attributes, no errors occur.
 However, you won't be able to use Advanced Visibility List APIs and List Filters to find and list the Workflow Execution.
 
-When using [Continue-As-New](/docs/concepts/what-is-continue-as-new) or a [Temporal Cron Job](/docs/concepts/what-is-a-temporal-cron-job), Search Attributes are carried over to the new Run by default.
+When using [Continue-As-New](/concepts/what-is-continue-as-new) or a [Temporal Cron Job](/concepts/what-is-a-temporal-cron-job), Search Attributes are carried over to the new Run by default.
 
 #### Default Search Attributes
 
@@ -54,7 +54,7 @@ These Search Attributes are created when the initial index is created.
 
 #### Custom Search Attributes
 
-Custom Search Attributes can be [added to a Temporal Cluster only by using `tctl`](/docs/tctl/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl).
+Custom Search Attributes can be [added to a Temporal Cluster only by using `tctl`](/tctl/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl).
 Adding a Search Attribute makes it available to use with Workflow Executions within that Cluster.
 
 There is no hard limit on the number of attributes you can add.
@@ -105,11 +105,11 @@ Note:
   - As a **Text** it would be matched by `ProductId = 2dd8`, which could cause unwanted matches.
 - The **Text** type cannot be used in the "Order By" clause.
 
-- [How to view Search Attributes using tctl](/docs/tctl/cluster/list-search-attributes)
+- [How to view Search Attributes using tctl](/tctl/cluster/list-search-attributes)
 
 #### Search Attributes as Workflow Execution metadata
 
-To actually have results from the use of a [List Filter](/docs/concepts/what-is-a-list-filter), Search Attributes must be added to a Workflow Execution as metadata.
+To actually have results from the use of a [List Filter](/concepts/what-is-a-list-filter), Search Attributes must be added to a Workflow Execution as metadata.
 How to do this entirely depends on the method by which you spawn the Workflow Execution:
 
-- [How to set Search Attributes as Workflow Execution metadata in Go](/docs/go/startworkflowoptions-reference/#searchattributes)
+- [How to set Search Attributes as Workflow Execution metadata in Go](/go/startworkflowoptions-reference/#searchattributes)

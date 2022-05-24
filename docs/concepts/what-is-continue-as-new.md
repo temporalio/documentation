@@ -1,7 +1,7 @@
 ---
 id: what-is-continue-as-new
-title: What is Continue As New
-sidebar_label: Continue As New
+title: What is Continue-As-New?
+sidebar_label: Continue-As-New
 description: Continue-As-New is the mechanism by which all relevant state is passed to a new Workflow Execution with a fresh Event History.
 tags:
   - explanation
@@ -25,6 +25,6 @@ The Continue-As-New feature enables developers to complete the current Workflow 
 
 The new Workflow Execution has the same Workflow Id, but a different Run Id, and has its own Event History.
 
-In the case of [Temporal Cron Jobs](/docs/concepts/what-is-a-temporal-cron-job), Continue-As-New is actually used internally for the same effect.
+In the case of [Temporal Cron Jobs](/concepts/what-is-a-temporal-cron-job), Continue-As-New is actually used internally for the same effect.
 
-- [How to Continue-As-New in Go](/docs/go/how-to-continue-as-new-in-go)
+- [How to Continue-As-New in Go](/go/how-to-continue-as-new-in-go)

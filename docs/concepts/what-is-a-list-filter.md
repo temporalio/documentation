@@ -9,7 +9,7 @@ tags:
   - visibility
 ---
 
-A List Filter is the SQL-like string that is provided as the parameter to an [Advanced Visibility](/docs/concepts/what-is-advanced-visibility) List API.
+A List Filter is the SQL-like string that is provided as the parameter to an [Advanced Visibility](/concepts/what-is-advanced-visibility) List API.
 
 The following is an example List Filter:
 
@@ -19,7 +19,7 @@ WorkflowType = "main.YourWorkflowDefinition" and ExecutionStatus != "Running" an
 
 [More example List Filters](#example-list-filters)
 
-A List Filter contains [Search Attribute](/docs/concepts/what-is-a-search-attribute) names, Search Attribute values, and Operators.
+A List Filter contains [Search Attribute](/concepts/what-is-a-search-attribute) names, Search Attribute values, and Operators.
 
 - The following operators are supported in List Filters:
 
@@ -92,5 +92,5 @@ order by CustomIntField asc
 
 **Implementation guides:**
 
-- [How to list and filter Workflow Executions with a List Filter using tctl](/docs/tctl/workflow/list#--query)
-- [How to use a List Filter in the Web UI](/docs/web-ui/how-to-use-a-list-filter-in-the-temporal-web-ui)
+- [How to list and filter Workflow Executions with a List Filter using tctl](/tctl/workflow/list#--query)
+- [How to use a List Filter in the Web UI](/web-ui/how-to-use-a-list-filter-in-the-temporal-web-ui)

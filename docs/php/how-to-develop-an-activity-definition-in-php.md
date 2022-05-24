@@ -25,7 +25,7 @@ interface FileProcessingActivities
 }
 ```
 
-#### How to customize an Activity type
+**How to customize an Activity type**
 
 We recommend to use a single value type argument for Activity methods.
 In this way, adding new arguments as fields to the value type is a backward-compatible change.

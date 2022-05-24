@@ -7,7 +7,7 @@ tags:
   - explanation
 ---
 
-The Temporal Platform consists of a [Temporal Cluster](/docs/concepts/what-is-a-temporal-cluster) and [Worker Processes](/docs/concepts/what-is-a-worker-process).
+The Temporal Platform consists of a [Temporal Cluster](/concepts/what-is-a-temporal-cluster) and [Worker Processes](/concepts/what-is-a-worker-process).
 Together these components create a runtime for Workflow Executions.
 
 ![The Temporal Platform (runtime)](/diagrams/temporal-platform-simple.svg)

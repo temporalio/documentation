@@ -1,6 +1,6 @@
 ---
 id: how-to-create-a-temporal-client-in-typescript
-title: How to create a Temporal Client in Typescript
+title: How to create a Temporal Client in TypeScript
 sidebar_label: Create a Temporal Client
 description: Create a Temporal Client
 tags:
@@ -19,7 +19,7 @@ const client = new WorkflowClient(connection.service);
 
 Declaring the `WorflowClient()` creates a new connection to the Temporal service.
 
-If you ommit the connection and just call the `new WorkflowClient()`, you will create a default connection that works locally. However, configure your connection and Namespace when [deploying to production](/docs/typescript/security/#encryption-in-transit-with-mtls).
+If you ommit the connection and just call the `new WorkflowClient()`, you will create a default connection that works locally. However, configure your connection and Namespace when [deploying to production](/typescript/security/#encryption-in-transit-with-mtls).
 
 The following example, creates a Client, connects to an account, and declares your Namespace.
 

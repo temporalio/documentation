@@ -11,7 +11,7 @@ description: temporalio/create is an optional tool to set up a new Temporal proj
 
 ### Usage
 
-> See the [Getting started](/docs/typescript/introduction/#getting-started) guide for basic usage and environment set up before running this tool.
+> See the [Getting started](/typescript/introduction/#getting-started) guide for basic usage and environment set up before running this tool.
 
 ```bash
 npx @temporalio/create@latest ./example

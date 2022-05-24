@@ -13,14 +13,6 @@ import TabItem from '@theme/TabItem';
 
 This guide is meant to be a comprehensive overview of Temporal Visibility.
 
-:::info WORK IN PROGRESS
-
-This guide is a work in progress.
-Some sections may be incomplete.
-Information may change at any time.
-
-:::
-
 The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.
 
 ## Standard Visibility
@@ -35,7 +27,7 @@ Closed Workflow Executions can be filtered by a time constraint and either a Wor
 
 Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through a custom SQL-like [List Filter](#list-filters).
 
-To use Advanced Visibility, your Temporal Cluster must be [integrated with Elasticsearch](/docs/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster).
+To use Advanced Visibility, your Temporal Cluster must be [integrated with Elasticsearch](/cluster-deployment-guide/#advanced-visibility).
 We highly recommend operating a Temporal Cluster with Elasticsearch for any use case that spawns more than just a few Workflow Executions.
 Elasticsearch takes on the Visibility request load, relieving potential performance issues.
 
@@ -124,8 +116,8 @@ order by CustomIntField asc
 
 **Implementation guides:**
 
-- [How to list and filter Workflow Executions with a List Filter using tctl](/docs/tctl/workflow/list#--query)
-- [How to use a List Filter in the Web UI](/docs/web-ui/how-to-use-a-list-filter-in-the-temporal-web-ui)
+- [How to list and filter Workflow Executions with a List Filter using tctl](/tctl/workflow/list#--query)
+- [How to use a List Filter in the Web UI](/web-ui/how-to-use-a-list-filter-in-the-temporal-web-ui)
 
 ### Search Attributes
 
@@ -134,7 +126,7 @@ A Search Attribute is an indexed field used in a [List Filter](#list-filters) to
 If a Temporal Cluster does not have Elasticsearch integrated, but a Workflow Execution is spawned and tagged with Search Attributes, no errors occur.
 However, you won't be able to use Advanced Visibility List APIs and List Filters to find and list the Workflow Execution.
 
-When using [Continue-As-New](/docs/workflows/#continue-as-new) or a [Temporal Cron Job](/docs/workflows/#cron-jobs), Search Attributes are carried over to the new Run by default.
+When using [Continue-As-New](/workflows/#continue-as-new) or a [Temporal Cron Job](/workflows/#cron-jobs), Search Attributes are carried over to the new Run by default.
 
 #### Default Search Attributes
 
@@ -174,7 +166,7 @@ These Search Attributes are created when the initial index is created.
 
 #### Custom Search Attributes
 
-Custom Search Attributes can be [added to a Temporal Cluster only by using `tctl`](/docs/tctl/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl).
+Custom Search Attributes can be [added to a Temporal Cluster only by using `tctl`](/tctl/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl).
 Adding a Search Attribute makes it available to use with Workflow Executions within that Cluster.
 
 There is no hard limit on the number of attributes you can add.
@@ -225,11 +217,11 @@ Note:
   - As a **Text** it would be matched by `ProductId = 2dd8`, which could cause unwanted matches.
 - The **Text** type cannot be used in the "Order By" clause.
 
-- [How to view Search Attributes using tctl](/docs/tctl/cluster/list-search-attributes)
+- [How to view Search Attributes using tctl](/tctl/cluster/list-search-attributes)
 
 #### Search Attributes as Workflow Execution metadata
 
 To actually have results from the use of a [List Filter](#list-filters), Search Attributes must be added to a Workflow Execution as metadata.
 How to do this entirely depends on the method by which you spawn the Workflow Execution:
 
-- [How to set Search Attributes as Workflow Execution metadata in Go](/docs/go/startworkflowoptions-reference/#searchattributes)
+- [How to set Search Attributes as Workflow Execution metadata in Go](/go/startworkflowoptions-reference/#searchattributes)

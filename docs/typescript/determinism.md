@@ -33,8 +33,8 @@ The Temporal TypeScript SDK runs each Workflow in a separate v8 isolate — a "s
 
 - When we need to defer execution (such as for a timer or activity), we simply destroy the `vm` context.
 - When we need to continue execution, Temporal Server sends over the Event History, and we replay through the code from the start until the end to restore state.
-  - The serialization takes time, which is why we recommend keeping Event History [under 10,000 events](/docs/server/production-deployment/#server-limits). ["Sticky" optimizations exist to make this faster for common situations](/docs/concepts/what-is-a-sticky-execution).
-  - If the execution logic has changed enough to affect Event History, you need to [patch new code](/docs/typescript/patching).
+  - The serialization takes time, which is why we recommend keeping Event History [under 10,000 events](/server/production-deployment/#server-limits). ["Sticky" optimizations exist to make this faster for common situations](/concepts/what-is-a-sticky-execution).
+  - If the execution logic has changed enough to affect Event History, you need to [patch new code](/typescript/patching).
 - The Workflow runtime is completely deterministic: functions like `Math.random`, `Date`, and `setTimeout` are replaced by deterministic versions, and the only way for a Workflow to interact with the world is via Activities.
 - When an Activity completes, its result is stored in the Workflow history to be replayed in case a Workflow is restored.
 
@@ -52,7 +52,7 @@ Workflow code is bundled on Worker creation using [Webpack](https://webpack.js.o
   - `new Date()` and `Date.now()` are both set on the first invocation of the Workflow Task
 - `WeakRef | FinalizationRegistry` - cannot be used, as GC is non-deterministic and the Workflow code may observe its effect; deleted by the runtime
 - Timers - `setTimeout` and `clearTimeout` are replaced by the runtime.
-  - We recommend you use the `@temporal/workflow` package's exported `sleep` function because it plays well with [cancellation scopes](/docs/typescript/cancellation-scopes): `import { sleep } from '@temporalio/workflow'`
+  - We recommend you use the `@temporal/workflow` package's exported `sleep` function because it plays well with [cancellation scopes](/typescript/cancellation-scopes): `import { sleep } from '@temporalio/workflow'`
 - Activities - use to run non-deterministic code; results are replayed from history
 - Node built ins:
   - `process` global

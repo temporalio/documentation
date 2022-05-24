@@ -25,9 +25,9 @@ tags:
 
 ## Overview
 
-This tutorial focuses on the practicalities of building an application from scratch. To better understand _why_ you should use Temporal, we recommend that you follow the tutorial where you [run a Temporal money transfer application](/docs/java/run-your-first-app-tutorial) to get a taste of its value propositions.
+This tutorial focuses on the practicalities of building an application from scratch. To better understand _why_ you should use Temporal, we recommend that you follow the tutorial where you [run a Temporal money transfer application](/java/run-your-first-app-tutorial) to get a taste of its value propositions.
 
-Before starting, make sure you have looked over the [tutorial prerequisites](/docs/java/tutorial-prerequisites).
+Before starting, make sure you have looked over the [tutorial prerequisites](/java/tutorial-prerequisites).
 
 All of the code in this tutorial is available in the [Java "Hello World!" application template](https://github.com/temporalio/hello-world-project-template-java).
 
@@ -105,14 +105,14 @@ Create HelloWorldWorkflowImpl.java and define the Workflow:
 
 ### Task Queue
 
-[Task Queues](/docs/concepts/what-is-a-task-queue) are how the Temporal server supplies information to Workers. When you start a Workflow, you tell the server which Task Queue the Workflow and/or Activities use as an information queue. We will configure our Worker to listen to the same Task Queue that our Workflow and Activities use. Since the Task Queue name is used by multiple things, let's create Shared.java and define our Task Queue name there:
+[Task Queues](/concepts/what-is-a-task-queue) are how the Temporal server supplies information to Workers. When you start a Workflow, you tell the server which Task Queue the Workflow and/or Activities use as an information queue. We will configure our Worker to listen to the same Task Queue that our Workflow and Activities use. Since the Task Queue name is used by multiple things, let's create Shared.java and define our Task Queue name there:
 
 <!--SNIPSTART hello-world-project-template-java-shared-constants-->
 <!--SNIPEND-->
 
 ### Worker
 
-Our [Worker](/docs/concepts/what-is-a-worker) hosts Workflow and Activity functions and executes them one at a time. The Worker is instructed to execute the specific functions via information it gets from the Task Queue, and after execution, it communicates results back to the server.
+Our [Worker](/concepts/what-is-a-worker) hosts Workflow and Activity functions and executes them one at a time. The Worker is instructed to execute the specific functions via information it gets from the Task Queue, and after execution, it communicates results back to the server.
 
 Create HelloWorldWorker.java and define the Worker:
 
@@ -121,7 +121,7 @@ Create HelloWorldWorker.java and define the Worker:
 
 ### Workflow initiator
 
-There are two ways to start a Workflow, via the Temporal CLI or Temporal SDK. In this tutorial we will use the SDK to start the Workflow which is how most Workflows are started in live environments. Additionally, the call to the Temporal server can be made [synchronously or asynchronously](/docs/java/workflows). Here we do it synchronously, so you will see the caller wait for the result of the Workflow.
+There are two ways to start a Workflow, via the Temporal CLI or Temporal SDK. In this tutorial we will use the SDK to start the Workflow which is how most Workflows are started in live environments. Additionally, the call to the Temporal server can be made [synchronously or asynchronously](/java/workflows). Here we do it synchronously, so you will see the caller wait for the result of the Workflow.
 
 Create InitiateHelloWorld.java and use the SDK to define the start of the Workflow:
 
@@ -151,7 +151,7 @@ Look for "BUILD SUCCESSFUL" in the output to confirm.
 
 ## ![](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/running.png) Run the app
 
-To run the app we need to start the Workflow and the Worker. You can start them in any order. Make sure you have the [Temporal server](https://docs.temporal.io/docs/clusters/quick-install) running in a terminal and have the [Temporal Web UI](localhost:8088) open in your browser
+To run the app we need to start the Workflow and the Worker. You can start them in any order. Make sure you have the [Temporal dev Cluster running](/application-development-guide#run-a-dev-cluster) in a terminal and have the [Temporal Web UI](localhost:8080) open in your browser
 
 If you are using the terminal, add tasks to the build.gradle file so that you can run the main methods from there.
 

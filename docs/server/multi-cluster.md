@@ -8,7 +8,7 @@ import CustomWarning from "../components/CustomWarning.js"
 
 <CustomWarning>
 
-Temporal's Multi-cluster Replication feature is considered **experimental** and not subject to normal [versioning and support policy](/docs/server/versions-and-dependencies).
+Temporal's Multi-cluster Replication feature is considered **experimental** and not subject to normal [versioning and support policy](/server/versions-and-dependencies).
 
 </CustomWarning>
 
@@ -406,7 +406,7 @@ After the above conditions are satisfied, you can start to configure a multi-clu
 
 ### Setup multi-cluster prior to release v1.14
 
-You can set this up with [`clusterMetadata` configuration](/docs/server/configuration#clustermetadata), however this is only meant to be a conceptual guide rather than a detailed tutorial.
+You can set this up with [`clusterMetadata` configuration](/server/configuration#clustermetadata), however this is only meant to be a conceptual guide rather than a detailed tutorial.
 Please reach out to us if you need to set this up.
 
 For example:
@@ -447,7 +447,7 @@ clusterMetadata:
 
 ### Setup multi-cluster in release v1.14+
 
-You still need to set up local cluster [`clusterMetadata` configuration](/docs/server/configuration#clustermetadata)
+You still need to set up local cluster [`clusterMetadata` configuration](/server/configuration#clustermetadata)
 
 For example:
 

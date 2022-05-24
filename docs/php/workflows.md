@@ -39,7 +39,7 @@ interface FileProcessingWorkflow {
 }
 ```
 
-Workflows can also answer synchronous [Queries](/docs/php/queries) and receive [Signals](/docs/php/signals).
+Workflows can also answer synchronous [Queries](/php/queries) and receive [Signals](/php/signals).
 
 All interface methods must have one of the following annotations:
 
@@ -356,7 +356,7 @@ Besides Activities, a Workflow can also start other Workflows.
 
 <RelatedReadList
 readlist={[
-["What is a Child Workflow Execution?","/docs/concepts/what-is-a-child-workflow-execution","explanation"],  
+["What is a Child Workflow Execution?","/concepts/what-is-a-child-workflow-execution","explanation"],  
 ]}
 />
 
