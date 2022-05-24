@@ -6,7 +6,7 @@ sidebar_label: Production deployment
 
 ## Overview
 
-While a lot of effort has been made to easily run and test the Temporal Server in a development environment (see the [Quick install guide](/docs/clusters/quick-install)), there is far less of an established framework for deploying Temporal to a live (production) environment.
+While a lot of effort has been made to easily run and test the Temporal Server in a development environment (see the [Quick install guide](/clusters/quick-install)), there is far less of an established framework for deploying Temporal to a live (production) environment.
 That is because the set up of the Server depends very much on your intended use-case and the hosting infrastructure.
 
 This page is dedicated to providing a "first principles" approach to self-hosting the Temporal Server.
@@ -20,7 +20,7 @@ If you are interested in a fully managed service hosting Temporal Server, please
 
 ## Temporal Server
 
-Temporal Server is a Go application which you can [import](/docs/server/options) or run as a binary (we offer [builds with every release](https://github.com/temporalio/temporal/releases)).
+Temporal Server is a Go application which you can [import](/server/options) or run as a binary (we offer [builds with every release](https://github.com/temporalio/temporal/releases)).
 While Temporal can be run as a single Go binary, we recommend that production deployments of Temporal Server should deploy each of the 4 internal services separately (if you are using Kubernetes, one service per pod) so they can be scaled independently in future.
 
 See below for a refresher on the 4 internal services:
@@ -56,9 +56,9 @@ Though **neither are blessed for production use**, you can consult our [Docker-C
 ## Minimum Requirements
 
 - The minimum Temporal Server dependency is a database. We support [Cassandra](https://cassandra.apache.org/), [MySQL](https://www.mysql.com/), or [PostgreSQL](https://www.postgresql.org/), with [SQLite on the way](https://github.com/temporalio/temporal/pulls?q=is%3Apr+sort%3Aupdated-desc+sqlite+).
-- Further dependencies are only needed to support optional features. For example, enhanced Workflow search can be achieved using [Elasticsearch](/docs/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster).
+- Further dependencies are only needed to support optional features. For example, enhanced Workflow search can be achieved using [Elasticsearch](/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster).
 - Monitoring and observability are available with [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/).
-- Each language SDK also has minimum version requirements. See the [versions & dependencies page](/docs/server/versions-and-dependencies/) for precise versions we support together with these features.
+- Each language SDK also has minimum version requirements. See the [versions & dependencies page](/server/versions-and-dependencies/) for precise versions we support together with these features.
 
 Kubernetes is not required for Temporal, but it is a popular deployment platform anyway.
 We do maintain [a Helm chart](https://github.com/temporalio/helm-charts) you can use as a reference, but you are responsible for customizing it to your needs.
@@ -66,15 +66,15 @@ We also [hosted a YouTube discussion](https://www.youtube.com/watch?v=11I87HKS_N
 
 ## Configuration
 
-At minimum, the `development.yaml` file needs to have the [`global`](/docs/server/configuration/#global) and [`persistence`](https://docs.temporal.io/docs/server/configuration/#persistence) parameters defined.
+At minimum, the `development.yaml` file needs to have the [`global`](/server/configuration/#global) and [`persistence`](https://docs.temporal.io/server/configuration/#persistence) parameters defined.
 
-The [Server configuration reference](/docs/server/configuration) has a more complete list of possible parameters.
+The [Server configuration reference](/server/configuration) has a more complete list of possible parameters.
 
 :::warning Before you deploy: Reminder on shard count
 
 A huge part of production deploy is understanding current and future scale - the **number of shards can't be changed after the cluster is in use** so this decision needs to be upfront. Shard count determines scaling to improve concurrency if you start getting lots of lock contention.
 The default `numHistoryShards` is 4; deployments at scale can go up to 500-2000 shards.
-Please [consult our configuration docs](https://docs.temporal.io/docs/server/configuration/#persistence) and check with us for advice if you are worried about scaling.
+Please [consult our configuration docs](https://docs.temporal.io/server/configuration/#persistence) and check with us for advice if you are worried about scaling.
 
 :::
 
@@ -83,8 +83,8 @@ Please [consult our configuration docs](https://docs.temporal.io/docs/server/con
 The requirements of your Temporal system will vary widely based on your intended production workload.
 You will want to run your own proof of concept tests and watch for key metrics to understand the system health and scaling needs.
 
-- **[Configure your metrics subsystem](https://docs.temporal.io/docs/server/configuration/#metrics).** Temporal supports three metrics providers out of the box via [Uber's Tally](https://github.com/uber-go/tally) interface: [StatsD](https://github.com/statsd/statsd), [Prometheus](https://prometheus.io/), and [M3](https://m3db.io/).
-  Tally offers [extensible custom metrics reporting](https://github.com/uber-go/tally#report-your-metrics), which we expose via [`temporal.WithCustomMetricsReporter`](https://docs.temporal.io/docs/server/options/#withcustommetricsreporter).
+- **[Configure your metrics subsystem](https://docs.temporal.io/server/configuration/#metrics).** Temporal supports three metrics providers out of the box via [Uber's Tally](https://github.com/uber-go/tally) interface: [StatsD](https://github.com/statsd/statsd), [Prometheus](https://prometheus.io/), and [M3](https://m3db.io/).
+  Tally offers [extensible custom metrics reporting](https://github.com/uber-go/tally#report-your-metrics), which we expose via [`temporal.WithCustomMetricsReporter`](https://docs.temporal.io/server/options/#withcustommetricsreporter).
   OpenTelemetry support is planned in the future.
 - **Set up monitoring.** You can use these [Grafana dashboards](https://github.com/temporalio/dashboards) as a starting point.
   The single most important metric to track is `schedule_to_start_latency` - if you get a spike in workload and don't have enough workers, your tasks will get backlogged. **We strongly recommend setting alerts for this metric**. This is usually emitted in client SDKs as both `temporal_activity_schedule_to_start_latency_*` and `temporal_workflow_task_schedule_to_start_latency_*` variants - see [the Prometheus GO SDK example](https://github.com/temporalio/samples-go/pull/65) and the [Go SDK source](https://community.temporal.io/t/strategies-for-scaling-aws-services/1577) and there are [plans to add it on the Server](https://github.com/temporalio/temporal/issues/1754).
@@ -119,12 +119,12 @@ Every shard is low contention by design and it is very difficult to oversubscrib
 With that said, here are some guidelines to some common bottlenecks:
 
 - **Database**. The vast majority of the time the database will be the bottleneck. **We highly recommend setting alerts on `schedule_to_start_latency`** to look out for this. Also check if your database connection is getting saturated.
-- **Internal services**. The next layer will be scaling the 4 internal services of Temporal ([Frontend, Matching, History, and Worker](/docs/concepts/what-is-a-temporal-cluster)).
+- **Internal services**. The next layer will be scaling the 4 internal services of Temporal ([Frontend, Matching, History, and Worker](/concepts/what-is-a-temporal-cluster)).
   Monitor each accordingly. The Frontend service is more CPU bound, whereas the History and Matching services require more memory.
-  If you need more instances of each service, spin them up separately with different command line arguments. You can learn more cross referencing [our Helm chart](https://github.com/temporalio/helm-charts) with our [Server Configuration reference](https://docs.temporal.io/docs/server/configuration/).
+  If you need more instances of each service, spin them up separately with different command line arguments. You can learn more cross referencing [our Helm chart](https://github.com/temporalio/helm-charts) with our [Server Configuration reference](https://docs.temporal.io/server/configuration/).
 - See the **Server Limits** section below for other limits you will want to keep in mind when doing system design, including event history length.
 
-Please see the dedicated docs on [Tuning and Scaling Workers](/docs/operation/how-to-tune-workers).
+Please see the dedicated docs on [Tuning and Scaling Workers](/operation/how-to-tune-workers).
 
 ## FAQs
 
@@ -138,7 +138,7 @@ We do plan to add features that give more visibility into the task queue state i
 
 ### FAQ: High Availability cluster configuration
 
-You can set up a high availability deployment by running more than one instance of the server. Temporal also handles [membership and routing](https://docs.temporal.io/blog/workflow-engine-principles/#membership-and-routing-1350). You can find more details in [the `clusterMetadata` section of the Server Configuration reference](https://docs.temporal.io/docs/server/configuration/#clustermetadata).
+You can set up a high availability deployment by running more than one instance of the server. Temporal also handles [membership and routing](https://docs.temporal.io/blog/workflow-engine-principles/#membership-and-routing-1350). You can find more details in [the `clusterMetadata` section of the Server Configuration reference](https://docs.temporal.io/server/configuration/#clustermetadata).
 
 ```yaml
 clusterMetadata:
@@ -199,7 +199,7 @@ Here is a comprehensive list of all the hard (error) / soft (warn) server limits
 
 ## Securing Temporal
 
-Please see our dedicated docs on [Temporal Server Security](/docs/server/security).
+Please see our dedicated docs on [Temporal Server Security](/server/security).
 
 ## Debugging Temporal
 
@@ -214,7 +214,7 @@ Recommended configuration debugging techniques for production Temporal Server se
 
 ### Debugging Workflows
 
-We recommend [using Temporal Web to debug your Workflow Executions](https://docs.temporal.io/docs/devtools/web-ui) in development and production.
+We recommend [using Temporal Web to debug your Workflow Executions](https://docs.temporal.io/devtools/web-ui) in development and production.
 
 ### Tracing Workflows
 

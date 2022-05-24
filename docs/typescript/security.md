@@ -22,7 +22,7 @@ There are three main features to know:
 - **TLS Encryption** helps encrypt code in transit
 - **Data Converter** helps encrypt code at rest (available soon)
 
-Temporal Server internally has [other Security features](/docs/server/security), particularly Authorization.
+Temporal Server internally has [other Security features](/server/security), particularly Authorization.
 
 An important part of Temporal's security model is that Temporal Server only manages state and time - it never actually sees or runs your Workflow/Activity code.
 Code is hosted by Temporal Workers that you run, and Temporal Server only sees inbound/outbound gRPC messages.
@@ -151,8 +151,8 @@ _Thanks to our Design Partner [Mina Abadir](https://twitter.com/abadir_) for sha
 
 ### Connecting to Temporal Cloud (with mTLS)
 
-[The Hello World mTLS sample](https://github.com/temporalio/samples-node/tree/main/hello-world-mtls/) demonstrates sample code used to connect to a Temporal Cloud account.
-When signing up to Temporal Cloud you should receive a namespace, a server address and a client certificate and key. Use the following environment variables to set up the sample:
+[The Hello World mTLS sample](https://github.com/temporalio/samples-node/tree/main/hello-world-mtls/) shows how to connect to a Temporal Cloud account.
+After signing up for Temporal Cloud, you should have a namespace, a server address, and a client certificate and key. Use the following environment variables to set up the sample:
 
 - **TEMPORAL_ADDRESS**: looks like `foo.bar.tmprl.cloud` (NOT web.foo.bar.tmprl.cloud)
 - **TEMPORAL_NAMESPACE**: looks like `foo.bar`
@@ -217,5 +217,5 @@ Temporal has no opinions on production deployment strategy other than the connec
 
 ## Encryption at rest with Payload Codec
 
-- [Data Converter ➡️ Encryption](https://docs.temporal.io/docs/concepts/what-is-a-data-converter#encryption)
-- [Data Converters in TypeScript ➡️ Encryption](https://docs.temporal.io/docs/typescript/data-converters#encryption)
+- [Data Converter ➡️ Encryption](https://docs.temporal.io/concepts/what-is-a-data-converter#encryption)
+- [Data Converters in TypeScript ➡️ Encryption](https://docs.temporal.io/typescript/data-converters#encryption)

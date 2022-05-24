@@ -1,6 +1,6 @@
 ---
 id: how-to-send-a-signal-with-start-in-typescript
-title: How to send a Signal with Start in Typescript
+title: How to send a Signal with Start in TypeScript
 sidebar_label: Send a Signal with Start
 description: Send a Signal with Start
 tags:

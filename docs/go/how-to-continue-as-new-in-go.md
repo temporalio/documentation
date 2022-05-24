@@ -8,7 +8,7 @@ tags:
   - developer-guide
 ---
 
-To cause a Workflow Execution to [Continue-As-New](/docs/concepts/what-is-continue-as-new), the Workflow function should return the result of the [`NewContinueAsNewError()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#NewContinueAsNewError) API available from the `go.temporal.io/sdk/workflow` package.
+To cause a Workflow Execution to [Continue-As-New](/concepts/what-is-continue-as-new), the Workflow function should return the result of the [`NewContinueAsNewError()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#NewContinueAsNewError) API available from the `go.temporal.io/sdk/workflow` package.
 
 ```go
 func SimpleWorkflow(ctx workflow.Context, value string) error {

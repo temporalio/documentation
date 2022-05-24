@@ -19,26 +19,27 @@ The Task removed must have values that matches what is given in the command line
 
 The modifiers below change the behavior of the command.
 
-### `--shard_id value`
+#### `--shard_id value`
 
 The shardId for the Task to be removed.
 
 Default: 0
 
-### `--task_id value`
+#### `--task_id value`
 
 The taskId for the Task to be removed.
 
 Default: 0
 
-### `--task_type value`
+#### `--task_type value`
 
 The type of Task to remove.
 
 Default: transfer
+
 Values: transfer, timer, replication
 
-### `--task_timestamp value`
+#### `--task_timestamp value`
 
 The task visibility timestamp, given in nanoseconds.
 

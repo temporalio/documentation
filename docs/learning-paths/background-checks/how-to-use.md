@@ -37,13 +37,13 @@ This information should provide insight into the Workflow Executions and Activit
 
 **While pretending to be the Company HR person...**
 
-From the project root, use `./run-cli` to execute the [`bgc-company start`](/docs/learning-paths/background-checks/cli-reference/#start) command:
+From the project root, use `./run-cli` to execute the [`bgc-company start`](/learning-paths/background-checks/cli-reference/#start) command:
 
 ```bash
 ./run-cli bgc-company start --email your-email@example.com --package full
 ```
 
-The main Workflow Execution is now viewable in the Temporal UI: [http://localhost:8088/](http://localhost:8088/).
+The main Workflow Execution is now viewable in the Temporal UI: [http://localhost:8080/](http://localhost:8080/).
 
 The very first thing the Background Check application does is send an email message to the Candidate.
 In this application we are using a single mailbox running on a single mail server running in one of the Docker containers.
@@ -92,10 +92,10 @@ You can see the status of a specific Background Check by providing the `--email`
 
 **While pretending to be the Company HR Person...**
 
-Run the [`bgc-company cancel`](/docs/learning-paths/background-checks/cli-reference/#cancel) command.
+Run the [`bgc-company cancel`](/learning-paths/background-checks/cli-reference/#cancel) command.
 
 ```
 ./run-cli bgc-company cancel --email your-email@example.com --id <Run Id>
 ```
 
-You can obtain the Run Id from the Temporal Web UI ([http://localhost:8088/](http://localhost:8088/)).
+You can obtain the Run Id from the Temporal Web UI ([http://localhost:8080/](http://localhost:8080/)).

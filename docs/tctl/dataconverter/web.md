@@ -8,7 +8,7 @@ tags:
   - tctl
 ---
 
-The `tctl dataconverter web` command specifies the WebSocket URL of a custom [Data Converter](/docs/concepts/what-is-a-data-converter) to use with Temporal Web.
+The `tctl dataconverter web` command specifies the WebSocket URL of a custom [Data Converter](/concepts/what-is-a-data-converter) to use with Temporal Web.
 
 `tctl dataconverter web --web-ui-url <url>`
 
@@ -16,7 +16,7 @@ The following modifiers control the behavior of the command.
 
 ### `port`
 
-Specify a port for the WebSocket URL of a custom [Data Converter](/docs/concepts/what-is-a-data-converter).
+Specify a port for the WebSocket URL of a custom [Data Converter](/concepts/what-is-a-data-converter).
 The default value is 0.
 
 **Example**
@@ -29,7 +29,7 @@ tctl dataconverter web --web-ui-url <url> --port <value>
 
 _Required modifier_
 
-Specify the WebSocket URL of a custom [Data Converter](/docs/concepts/what-is-a-data-converter).
+Specify the WebSocket URL of a custom [Data Converter](/concepts/what-is-a-data-converter).
 
 **Example**
 

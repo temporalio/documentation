@@ -34,13 +34,13 @@ When you click on that link above and log in (there is a generous free tier), Gi
 
 - Pane 1: Temporal Cluster
   - Left: [Temporal Server](https://github.com/temporalio/docker-compose) - always running
-  - Right: [Temporal Web](https://docs.temporal.io/docs/devtools/web-ui) and [Temporal `tctl` CLI](https://docs.temporal.io/docs/devtools/tctl)
+  - Right: [Temporal Web](https://docs.temporal.io/devtools/web-ui) and [Temporal `tctl` CLI](https://docs.temporal.io/devtools/tctl)
 - Pane 2: Hello World
   - Left: [Temporal Worker](https://github.com/temporalio/samples-typescript/blob/main/hello-world/src/worker.ts) - running and hot reloading
   - Right: [Temporal Client](https://github.com/temporalio/samples-typescript/blob/main/hello-world/src/client.ts) - run `npm run workflow`
 
 It takes ~3 minutes for the Docker Compose setup to start up.
-Once you have it up and running (Temporal Web should show the first Workflow Execution), you can use our [Hello World Walkthrough](/docs/typescript/hello-world) tutorial to orient you to the sample file structure.
+Once you have it up and running (Temporal Web should show the first Workflow Execution), you can use our [Hello World Walkthrough](/typescript/hello-world) tutorial to orient you to the sample file structure.
 
 </details>
 
@@ -74,14 +74,14 @@ If you want to run Temporal without Docker, DataDog has created an experimental 
 
 ### Step 1: Create a new project
 
-Use the [package initializer](/docs/typescript/package-initializer) to create a new project:
+Use the [package initializer](/typescript/package-initializer) to create a new project:
 
 ```bash
 npx @temporalio/create@latest ./example
 cd example
 ```
 
-This will set up with [the basic Hello World sample](https://github.com/temporalio/samples-typescript/tree/main/hello-world) using our [Package Initializer](/docs/typescript/package-initializer) (think of it like `create-temporal-app`!)
+This will set up with [the basic Hello World sample](https://github.com/temporalio/samples-typescript/tree/main/hello-world) using our [Package Initializer](/typescript/package-initializer) (think of it like `create-temporal-app`!)
 
 ### Step 2: Run your Workflow
 
@@ -158,7 +158,7 @@ This "Hello, Temporal!" message comes from the combination of:
 <summary>Viewing your Workflow Execution in Temporal Web
 </summary>
 
-You can verify execution in Temporal Web (available at [`localhost:8088`](http://localhost:8088/) on the default [`docker-compose`](https://github.com/temporalio/docker-compose)):
+You can verify execution in Temporal Web (available at [`localhost:8080](http://localhost:8080/) on the default [`docker-compose`](https://github.com/temporalio/docker-compose)):
 
 ![image](https://user-images.githubusercontent.com/6764957/118865735-d7255f80-b913-11eb-8ace-a7dbdc351f8e.png)
 
@@ -166,9 +166,9 @@ You can verify execution in Temporal Web (available at [`localhost:8088`](http:/
 
 ## Next Steps
 
-For a full code walkthrough of our Hello World example, see our [Hello World documentation](/docs/typescript/hello-world).
+For a full code walkthrough of our Hello World example, see our [Hello World documentation](/typescript/hello-world).
 
-If you want an example of what it's like to integrate Temporal into an existing full-stack app, check our [Next.js One-Click Buy Tutorial](/docs/typescript/nextjs-tutorial).
+If you want an example of what it's like to integrate Temporal into an existing full-stack app, check our [Next.js One-Click Buy Tutorial](/typescript/nextjs-tutorial).
 
 </details>
 
@@ -178,11 +178,11 @@ If you want an example of what it's like to integrate Temporal into an existing 
 
 These are the essential pages to have a passing knowledge of our Core APIs:
 
-- [Workflows](/docs/typescript/workflows): How to write Temporal's core orchestration code
-  - Workflows use [Activities](/docs/typescript/activities) to act on the outside world (e.g. call an API with retries and timeouts, or access the filesystem)
-  - see [Workflow APIs](/docs/typescript/workflows) for Signals, Queries, Timers, Child Workflows, Infinite Workflows, and more!
-- [Workers and Task Queues](/docs/typescript/workers): How Workflows and Activities are routed to and executed on machines you control
-- [Clients](/docs/typescript/clients): How to start, signal, query, cancel, or otherwise handle Workflows.
+- [Workflows](/typescript/workflows): How to write Temporal's core orchestration code
+  - Workflows use [Activities](/typescript/activities) to act on the outside world (e.g. call an API with retries and timeouts, or access the filesystem)
+  - see [Workflow APIs](/typescript/workflows) for Signals, Queries, Timers, Child Workflows, Infinite Workflows, and more!
+- [Workers and Task Queues](/typescript/workers): How Workflows and Activities are routed to and executed on machines you control
+- [Clients](/typescript/clients): How to start, signal, query, cancel, or otherwise handle Workflows.
 
 </details>
 

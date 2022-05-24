@@ -8,9 +8,9 @@ tags:
   - tctl
 ---
 
-The `tctl workflow observe` command shows the progress of the [Event History](/docs/concepts/what-is-an-event-history) of a [Workflow Execution](/docs/concepts/what-is-a-workflow-execution).
+The `tctl workflow observe` command shows the progress of the [Event History](/concepts/what-is-an-event-history) of a [Workflow Execution](/concepts/what-is-a-workflow-execution).
 
-See also [`tctl workflow observeid`](/docs/tctl/workflow/observeid).
+See also [`tctl workflow observeid`](/tctl/workflow/observeid).
 
 `tctl workflow observe [<modifiers>]`
 
@@ -20,7 +20,7 @@ The following modifiers control the behavior of the command.
 
 ### `--workflow_id`
 
-Specify a [Workflow Id](/docs/concepts/what-is-a-workflow-id).
+Specify a [Workflow Id](/concepts/what-is-a-workflow-id).
 
 Aliases: `--wid`, `-w`
 
@@ -32,7 +32,7 @@ tctl workflow observe --workflow_id <id>
 
 ### `--run_id`
 
-Specify a [Run Id](/docs/concepts/what-is-a-run-id).
+Specify a [Run Id](/concepts/what-is-a-run-id).
 
 Aliases: `--rid`, `-r`
 

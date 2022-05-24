@@ -23,15 +23,15 @@ The https://github.com/temporalio/samples-server repo offers two examples, which
 
 Temporal supports Mutual TLS (mTLS) as a way of encrypting network traffic between the services of a cluster and also between application processes and a cluster.
 Self-signed or properly minted certificates can be used for mTLS.
-Mutual TLS is set in Temporal's [TLS configuration](/docs/server/configuration/#tls).
+Mutual TLS is set in Temporal's [TLS configuration](/server/configuration/#tls).
 The configuration includes two sections such that intra-cluster and external traffic can be encrypted with different sets of certificates and settings:
 
 - `internode`: Configuration for encrypting communication between nodes in the cluster.
 - `frontend`: Configuration for encrypting the Frontend's public endpoints.
 
-A customized configuration can be passed using either the [WithConfig](/docs/server/options/#withconfig) or [WithConfigLoader](/docs/server/options/#withconfigloader) server options.
+A customized configuration can be passed using either the [WithConfig](/server/options/#withconfig) or [WithConfigLoader](/server/options/#withconfigloader) server options.
 
-See [TLS configuration reference](/docs/server/configuration/#tls) for more details.
+See [TLS configuration reference](/server/configuration/#tls) for more details.
 
 ## Encryption at rest with DataConverter
 
@@ -54,7 +54,7 @@ More guidance on mTLS setup can be found in [the `samples-server` repo](https://
 ### Client connections
 
 To restrict a client's network access to cluster endpoints you can limit it to clients with certificates issued by a specific Certificate Authority (CA).
-Use the `clientCAFiles`/ `clientCAData` and `requireClientAuth` properties in both the `internode` and `frontend` sections of the [mTLS configuration](/docs/server/configuration/#tls).
+Use the `clientCAFiles`/ `clientCAData` and `requireClientAuth` properties in both the `internode` and `frontend` sections of the [mTLS configuration](/server/configuration/#tls).
 
 ### Users
 
@@ -103,14 +103,14 @@ If you don't want to create your own, you can use the default `Authorizer`:
 a := authorization.NewDefaultAuthorizer()
 ```
 
-Configure your `Authorizer` when you start the server via the `temporal.WithAuthorizer` [server option](/docs/server/options/#withauthorizer).
+Configure your `Authorizer` when you start the server via the `temporal.WithAuthorizer` [server option](/server/options/#withauthorizer).
 
 If an `Authorizer` is not set in the server options, Temporal uses the `nopAuthority` authorizer that unconditionally allows all API calls to pass through.
 
 ### `ClaimMapper` plugin interface
 
 `ClaimMapper` has a single method, `GetClaims` that is responsible for translating information from the authorization token and/or mutual TLS certificate of the caller into [Claims](#claims) about the callers roles within Temporal.
-This component is customizable and can be set via the `temporal.WithClaimMapper` [server option](/docs/server/options/#withclaimmapper), enabling a wide range of options for interpreting a caller's identity.
+This component is customizable and can be set via the `temporal.WithClaimMapper` [server option](/server/options/#withclaimmapper), enabling a wide range of options for interpreting a caller's identity.
 
 <!--SNIPSTART temporal-common-authorization-claimmapper-interface-->
 <!--SNIPEND-->

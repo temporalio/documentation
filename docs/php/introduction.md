@@ -14,15 +14,15 @@ sidebar_label: PHP SDK introduction
   },
 ```
 
-2. [Install and run the Temporal Server](/docs/clusters/quick-install) using `docker compose`.
+2. [Install and run the Temporal Server](/clusters/quick-install) using `docker compose`.
 
 ## Tutorials
 
-- You should orient yourself to the Hello World with [the PHP Hello World Walkthrough](/docs/php/hello-world).
-- For those interested in distributed transactions, see the [Booking Saga Tutorial and code sample](/docs/php/booking-saga-tutorial).
-- For a more non-trivial discussion of an application, see [the Subscription Tutorial](/docs/php/subscription-tutorial) or [browse the code directly](https://github.com/temporalio/subscription-workflow-project-template-php).
+- You should orient yourself to the Hello World with [the PHP Hello World Walkthrough](/php/hello-world).
+- For those interested in distributed transactions, see the [Booking Saga Tutorial and code sample](/php/booking-saga-tutorial).
+- For a more non-trivial discussion of an application, see [the Subscription Tutorial](/php/subscription-tutorial) or [browse the code directly](https://github.com/temporalio/subscription-workflow-project-template-php).
 
-Much more detailed API samples can be viewed in [the Samples Repo](/docs/samples-library/#php).
+Much more detailed API samples can be viewed in [the Samples Repo](/samples-library/#php).
 
 ## Resources
 
@@ -42,14 +42,14 @@ Much more detailed API samples can be viewed in [the Samples Repo](/docs/samples
 
 ## The basics
 
-- [Workflows](/docs/php/workflows)
+- [Workflows](/php/workflows)
 
-- [Activities](/docs/php/activities)
+- [Activities](/php/activities)
 
-- [Workers](/docs/php/workers)
+- [Workers](/php/workers)
 
-- [Task Queues](/docs/php/task-queues)
+- [Task Queues](/php/task-queues)
 
-- [Signals](/docs/php/signals)
+- [Signals](/php/signals)
 
-- [Queries](/docs/php/queries)
+- [Queries](/php/queries)

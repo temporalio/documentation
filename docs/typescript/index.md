@@ -1,8 +1,8 @@
 ---
 id: overview
-title: How to use the Temporal Typescript SDK
-sidebar_label: Temporal Typescript SDK
-description: Add the Temporal Typescript SDK to your project.
+title: How to use the Temporal TypeScript SDK
+sidebar_label: Temporal TypeScript SDK
+description: Add the Temporal TypeScript SDK to your project.
 tags:
   - developer-guide
   - sdk

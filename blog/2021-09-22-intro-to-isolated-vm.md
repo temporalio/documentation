@@ -18,7 +18,7 @@ import TabItem from '@theme/TabItem';
 
 ## Introduction
 
-[Temporal's TypeScript SDK](/docs/typescript/introduction) makes heavy use of V8 isolates via the [isolated-vm npm package](https://www.npmjs.com/package/isolated-vm) to ensure your [Workflows are deterministic](/docs/typescript/determinism).
+[Temporal's TypeScript SDK](/typescript/introduction) makes heavy use of V8 isolates via the [isolated-vm npm package](https://www.npmjs.com/package/isolated-vm) to ensure your [Workflows are deterministic](/typescript/determinism).
 Each Workflow runs in an _isolate_ that prevents your Workflow code from directly accessing any logic that may break Workflow determinism, like reading from the file system or generating a random number.
 In this blog post, I'll cover why the TypeScript SDK V8 isolates, sketch out how the TypeScript SDK uses isolates, and describe what that means for how you write Workflows in TypeScript.
 
@@ -28,8 +28,8 @@ The key idea behind Temporal is that each Workflow is stored in the Temporal Ser
 Instead of storing the "current state" of each Workflow, Temporal instead stores the entire history of the Workflow.
 That includes the Workflow's initial state, all Signals the Workflow has received, and the result of all Activities the Workflow executed.
 
-The [Temporal Server](https://docs.temporal.io/docs/clusters/) can pause the Workflow and resume it on a different Worker.
-For example, the Workflow may be evicted from the [Worker's cache if the cache is out of space](https://docs.temporal.io/docs/concepts/workflows/#faq).
+The [Temporal Server](https://docs.temporal.io/clusters/) can pause the Workflow and resume it on a different Worker.
+For example, the Workflow may be evicted from the [Worker's cache if the cache is out of space](https://docs.temporal.io/concepts/workflows/#faq).
 To restore the Workflow, The Temporal Server will replay the Workflow function from the beginning using the same Signals and Activity results.
 However, replaying event histories assumes that the Workflow is fully _deterministic_.
 That means the Workflow will be in the exact same state given the same initial state and same sequence of events.
@@ -170,5 +170,5 @@ export async function makeHTTPRequest(): Promise<void> {
 
 The Temporal TypeScript SDK uses isolated-vm to ensure there's no way for developers to violate Workflow determinism.
 Your Workflow will throw an error if you intentionally or unintentionally write some non-deterministic code.
-This makes the TypeScript SDK different from some of Temporal's other SDKs, like the [Go SDK](https://docs.temporal.io/docs/go/workflows#how-to-write-workflow-code), which currently rely on developers to avoid using language built-ins that violate determinism.
+This makes the TypeScript SDK different from some of Temporal's other SDKs, like the [Go SDK](https://docs.temporal.io/go/workflows#how-to-write-workflow-code), which currently rely on developers to avoid using language built-ins that violate determinism.
 Workflow determinism is a critical assumption in Temporal, so making it impossible to accidentally break Workflow determinism is a major benefit of the Temporal TypeScript SDK.

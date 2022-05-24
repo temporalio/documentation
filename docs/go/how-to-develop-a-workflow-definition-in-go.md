@@ -8,7 +8,7 @@ tags:
   - go
 ---
 
-In the Temporal Go SDK programming model, a [Workflow Definition](/docs/concepts/what-is-a-workflow-definition) is an exportable function.
+In the Temporal Go SDK programming model, a [Workflow Definition](/concepts/what-is-a-workflow-definition) is an exportable function.
 
 ```go
 func YourWorkflowDefinition(ctx workflow.Context) error {
