@@ -376,7 +376,7 @@ module.exports = {
         "references/sdk-metrics",
         "references/commands",
         "references/events",
-        "server/configuration",
+        "references/configuration",
       ],
     },
     "external-resources",

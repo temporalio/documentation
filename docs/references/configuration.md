@@ -1,27 +1,27 @@
 ---
 id: configuration
-title: Configure the Temporal Server
+title: Temporal Cluster configuration reference
 sidebar_label: Cluster configuration
+toc_max_heading_level: 5
 ---
 
-Temporal Server configuration is found in `development.yaml` and may contain the following possible sections:
+Much of the behavior of a Temporal Cluster is configured using the `development.yaml` file and may contain the following top-level sections:
 
-- [**global**](#global)
-- [**persistence**](#persistence)
-- [**log**](#log)
-- [**clusterMetadata**](#clustermetadata)
-- [**services**](#services)
-- [**publicClient**](#publicclient)
-- archival
-- dcRedirectionPolicy
-- dynamicConfigClient
-- namespaceDefaults
+- [`global`](#global)
+- [`persistence`](#persistence)
+- [`log`](#log)
+- [`clusterMetadata`](#clustermetadata)
+- [`services`](#services)
+- [`publicClient`](#publicclient)
+- [`archival`](#archival)
+- [`dcRedirectionPolicy`](#dcredirectionpolicy)
+- [`dynamicConfigClient`](#dynamicconfigclient)
+- [`namespaceDefaults`](#namespacedefaults)
 
-**Note:** Changing any properties in `development.yaml` file requires a process restart for changes to take effect.
+Changing any properties in the `development.yaml` file requires a process restart for changes to take effect.
+Configuration parsing code is available [here](https://github.com/temporalio/temporal/blob/master/common/config/config.go).
 
-**Note:** If you'd like to dig deeper and see how we actually parse this file, see our source code [here](https://github.com/temporalio/temporal/blob/master/common/config/config.go).
-
-## global
+## `global`
 
 The `global` section contains process-wide configuration. See below for a minimal configuration (optional parameters are commented out.)
 
@@ -35,34 +35,49 @@ global:
       listenAddress: "127.0.0.1:8000"
 ```
 
-### membership
+### `membership`
 
-The `membership` section controls the following membership layer parameters:
+The `membership` section controls the following membership layer parameters.
 
-- `maxJoinDuration`: The amount of time the service will attempt to join the gossip layer before failing.
-  Default is 10s.
-- `broadcastAddress`: Used by gossip protocol to communicate with other hosts in the same Cluster for membership info.
-  Use IP address that is reachable by other hosts in the same Cluster.
-  If there is only one host in the Cluster, you can use 127.0.0.1.
-  Check `net.ParseIP` for supported syntax, only IPv4 is supported.
+#### `maxJoinDuration`
 
-### metrics
+The amount of time the service will attempt to join the gossip layer before failing.
 
-The `metrics` config section is for the metrics subsystem.
+Default is 10s.
 
-- `prefix`: The prefix to all outgoing metrics.
-- `tags`: The set of key-value pairs to be reported as part of every metric.
-- `excludeTags`: A map from tag name string to tag values string list.
-  This is useful to exclude some tags that might have unbounded cardinality.
-  The value string list can be used to whitelist values of that excluded tag to continue to be included.
-  For example, if you want to exclude `task_queue` because it has unbounded cardinality, but you still want to see a whitelisted value for `task_queue`.
 
-`metrics` contains configuration for the metrics subsystem keyed by provider name.
-The following providers are supported:
+#### `broadcastAddress`
 
-- `statsd`
+Used by gossip protocol to communicate with other hosts in the same Cluster for membership info.
+Use IP address that is reachable by other hosts in the same Cluster.
+If there is only one host in the Cluster, you can use 127.0.0.1.
+Check `net.ParseIP` for supported syntax, only IPv4 is supported.
+
+### `metrics`
+
+Configures the Cluster's metric subsystem.
+Specific provides are configured using provider names as the keys.
+
+- [`statsd`](#statsd)
 - `prometheus`
 - `m3`
+
+#### `prefix`
+
+The prefix to all outgoing metrics.
+
+#### `tags`
+
+The set of key-value pairs to be reported as part of every metric.
+
+#### `excludeTags`
+
+A map from tag name string to tag values string list.
+This is useful to exclude some tags that might have unbounded cardinality.
+The value string list can be used to whitelist values of that excluded tag to continue to be included.
+For example, if you want to exclude `task_queue` because it has unbounded cardinality, but you still want to see a whitelisted value for `task_queue`.
+
+#### `statsd`
 
 The `statsd` sections supports the following settings:
 
@@ -71,11 +86,15 @@ The `statsd` sections supports the following settings:
 - `flushInterval`: Maximum interval for sending packets. (_Default_ 300ms).
 - `flushBytes`: Specifies the maximum UDP packet size you wish to send. (_Default_ 1432 bytes).
 
+#### `prometheus`
+
 The `prometheus` sections supports the following settings:
 
 - `framework`: The framework to use, currently supports `opentelemetry` and `tally`, default is `tally`. We plan to switch default to `opentelemetry` once its API become stable.
 - `listenAddress`: Address for prometheus to scrape metrics from.
 - `handlerPath`: Metrics handler path for scraper, default is `/metrics`.
+
+#### `m3`
 
 The `m3` sections supports the following settings:
 

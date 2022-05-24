@@ -138,7 +138,8 @@
 /server        /clusters/
 /server-archive-data        /concepts/what-is-archival
 /server/archive-data        /concepts/what-is-archival
-/server-configuration        /server/configuration
+/server-configuration        /references/configuration
+/server/configuration        /references/configuration
 /server-introduction        /clusters
 /server/introduction        /clusters
 /server-namespaces         /server/namespaces
