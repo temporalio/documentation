@@ -56,7 +56,7 @@ tctl namespace register --description <value>
 
 ### `--global-namespace`
 
-Specify whether a [Namespace](/concepts/what-is-a-namespace) is a Global Namespace.
+Specifies whether a [Namespace](/concepts/what-is-a-namespace) is a [Global Namespace](/namespaces/#global-namespace).
 
 Alias `--gd`
 
@@ -118,7 +118,9 @@ tctl namespace register --owner-email <value>
 
 ### `--retention`
 
-Specify the number of days to retain closed [Workflow Executions](/concepts/what-is-a-workflow-execution) per [Namespace](/concepts/what-is-a-namespace).
+Set the [Retention Period](/clusters#retention-period) for the [Namespace](/concepts/what-is-a-namespace).
+
+The Retention Period applies to Closed [Workflow Executions](/concepts/what-is-a-workflow-execution).
 
 Alias `--rd`
 
