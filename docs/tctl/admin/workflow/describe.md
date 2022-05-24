@@ -11,7 +11,7 @@ tags:
 
 Alias: `desc`
 
-The `tctl admin workflow describe` command describes internal information of the current [Workflow Execution](/docs/concepts/what-is-a-workflow-execution).
+The `tctl admin workflow describe` command describes internal information of the current [Workflow Execution](/workflows/#workflow-execution).
 
 ## Modifiers
 
