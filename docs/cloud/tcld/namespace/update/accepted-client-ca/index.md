@@ -19,7 +19,6 @@ For more information on the vulnerabilities of SHA-1, see [SHAttered](https://sh
 
 :::
 
-
 Alias: `ca`
 
 - [`tcld namespace update accepted-client-ca set`](/cloud/tcld/namespace/update/accepted-client-ca/set)
