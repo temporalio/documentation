@@ -9,9 +9,6 @@ tags:
 ---
 
 The `tctl admin dlq` commands run admin operations on a given dead-letter queue (DLQ).
-
----
-
 ## Usage
 
 `tctl admin dlq command [command modifiers] [arguments...]`
