@@ -9,17 +9,14 @@ tags:
 
 A Workflow Definition is the code that defines the constraints of a Workflow Execution.
 
+- [How to develop a Workflow Definition](/application-development-guide#develop-workflows)
+
 A Workflow Definition is often also referred to as a Workflow Function.
 In Temporal's documentation, a Workflow Definition refers to the source for the instance of a Workflow Execution, while a Workflow Function refers to the source for the instance of a Workflow Function Execution.
 
 A Workflow Execution effectively executes once to completion, while a Workflow Function Execution occurs many times during the life of a Workflow Execution.
 
 We strongly recommend that you write a Workflow Definition in a language that has a corresponding Temporal SDK.
-
-- [How to develop a Workflow Definition in Go](/go/how-to-develop-a-workflow-in-go)
-- [How to develop a Workflow Definition in Java](/java/how-to-develop-a-workflow-definition-in-java)
-- [How to develop a Workflow Definition in PHP](/php/workflows)
-- [How to develop a Workflow Definition in TypeScript](/typescript/workflows/#how-to-write-a-workflow-function)
 
 ### Deterministic constraints
 
