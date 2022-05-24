@@ -14,8 +14,8 @@ Alias : `adm`
 
 #### tctl admin commands
 
-- [`tctl admin workflow`](/docs/tctl/admin/workflow/index)
-- [`tctl admin shard`](/docs/tctl/admin/shard/index)
+- [`tctl admin workflow`](/docs/tctl/admin/workflow/)
+- [`tctl admin shard`](/docs/tctl/admin/shard/)
 - `tctl history_host`
 - `tctl taskqueue`
 - `tctl membership`
