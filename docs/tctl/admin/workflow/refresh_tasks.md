@@ -11,7 +11,7 @@ tags:
 
 Alias: `rt`
 
-The `tctl admin workflow refresh_tasks` command updates all [Tasks](/docs/concepts/what-is-a-task) in a [Workflow](/docs/concepts/what-is-a-workflow), provided that the command can fetch new information for Tasks.
+The `tctl admin workflow refresh_tasks` command updates all [Tasks](/tasks) in a [Workflow](/workflows), provided that the command can fetch new information for Tasks.
 
 ## Modifiers
 
