@@ -534,7 +534,6 @@ module.exports = {
       collapsed: false,
       items: [
         "clusters/quick-install",
-        "server/versions-and-dependencies",
         "server/options",
         "server/production-deployment",
         "clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster",

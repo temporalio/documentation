@@ -79,13 +79,13 @@ We explain the Timeouts and Retries below. You can also specify `namespace`, `ta
 ### Activity Timeouts
 
 Timeouts and Retries are the most immediate benefit of moving code onto Temporal.
-There are [four Activity Timeouts](https://docs.temporal.io/blog/activity-timeouts) you can set.
-When a Timeout happens, your activity will be retried according to your [`RetryPolicy`](https://docs.temporal.io/concepts/what-is-a-retry-policy/).
+There are [four Activity Timeouts](/blog/activity-timeouts) you can set.
+When a Timeout happens, your activity will be retried according to your [`RetryPolicy`](/concepts/what-is-a-retry-policy/).
 
-- `startToCloseTimeout`: Maximum time of a single Activity execution attempt. **We recommend always setting this**. [More info](https://docs.temporal.io/concepts/what-is-a-start-to-close-timeout/)
-- `scheduleToCloseTimeout`: Total time that a workflow is willing to wait for Activity to complete. [More info](https://docs.temporal.io/concepts/what-is-a-schedule-to-close-timeout/)
-- `heartbeatTimeout`: A best practice to set for long-running activities. [More info](https://docs.temporal.io/concepts/what-is-a-heartbeat-timeout/)
-- `scheduleToStartTimeout`: Not recommended; Only for task routing. [More info](https://docs.temporal.io/concepts/what-is-a-schedule-to-start-timeout/)
+- `startToCloseTimeout`: Maximum time of a single Activity execution attempt. **We recommend always setting this**. [More info](/concepts/what-is-a-start-to-close-timeout/)
+- `scheduleToCloseTimeout`: Total time that a workflow is willing to wait for Activity to complete. [More info](/concepts/what-is-a-schedule-to-close-timeout/)
+- `heartbeatTimeout`: A best practice to set for long-running activities. [More info](/concepts/what-is-a-heartbeat-timeout/)
+- `scheduleToStartTimeout`: Not recommended; Only for task routing. [More info](/concepts/what-is-a-schedule-to-start-timeout/)
 
 You can specify timeouts as number of milliseconds, or a string to be parsed to number of milliseconds by the [`ms`](https://www.npmjs.com/package/ms) package:
 

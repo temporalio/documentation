@@ -115,3 +115,4 @@ There are some subtle nuances to how Events are recorded to an Event History whe
 import ActivityRetrySimulator from "/docs/app-dev-context/activity-retry-simulator.md"
 
 <ActivityRetrySimulator/>
+

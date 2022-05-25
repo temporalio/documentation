@@ -51,3 +51,21 @@ Since Temporal Server primarily relies on core database functionality, we do not
   Please feel free to discuss them with fellow users [in our forum](https://community.temporal.io/).
 - Temporal is [working on official SQLite v3.x persistence](https://github.com/temporalio/temporal/pulls?q=is%3Apr+sort%3Aupdated-desc+sqlite), but this is only meant for development and testing, not production usage.
   Cassandra, MySQL, and PostgreSQL schemas are supported and thus can be used as the Server's database.
+
+#### Monitoring & observation
+
+Temporal emits metrics by default in a format that is supported by Prometheus.
+Monitoring and observing those metrics is optional.
+Any software that can pull metrics that supports the same format could be used, but we only ensure it works with Prometheus and Grafana versions.
+
+- **Prometheus >= v2.0**
+- **Grafana >= v2.5**
+
+#### Visibility
+
+Temporal has built-in [Visibility](/concepts/what-is-visibility) features.
+To enhance this feature, Temporal supports an [integration with Elasticsearch](/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster).
+
+- Elasticsearch v7.10 is supported from Temporal version 1.7.0 onwards
+- Elasticsearch v6.8 is supported in all Temporal versions
+- Both versions are explicitly supported with AWS Elasticsearch

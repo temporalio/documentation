@@ -37,7 +37,7 @@ We will offer maintenance support of the last 3 **minor** versions after a relea
 
 We will offer maintenance support of **major** versions for at least 12 months after a GA release, and provide at least 6 months' notice before EOL/deprecating support.
 
-## Dependencies
+#### Dependencies
 
 Temporal offers official support for, and is tested against, dependencies with the exact versions described in the `go.mod` file of corresponding release tag (Example, [v1.5.1](https://github.com/temporalio/temporal/tree/v1.5.1) dependencies are documented in [the go.mod for v1.5.1](https://github.com/temporalio/temporal/blob/v1.5.1/go.mod)).
 

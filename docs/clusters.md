@@ -58,6 +58,24 @@ Since Temporal Server primarily relies on core database functionality, we do not
 - Temporal is [working on official SQLite v3.x persistence](https://github.com/temporalio/temporal/pulls?q=is%3Apr+sort%3Aupdated-desc+sqlite), but this is only meant for development and testing, not production usage.
   Cassandra, MySQL, and PostgreSQL schemas are supported and thus can be used as the Server's database.
 
+#### Monitoring & observation
+
+Temporal emits metrics by default in a format that is supported by Prometheus.
+Monitoring and observing those metrics is optional.
+Any software that can pull metrics that supports the same format could be used, but we only ensure it works with Prometheus and Grafana versions.
+
+- **Prometheus >= v2.0**
+- **Grafana >= v2.5**
+
+#### Visibility
+
+Temporal has built-in [Visibility](/visibility/#) features.
+To enhance this feature, Temporal supports an [integration with Elasticsearch](/cluster-deployment-guide/#advanced-visibility).
+
+- Elasticsearch v7.10 is supported from Temporal version 1.7.0 onwards
+- Elasticsearch v6.8 is supported in all Temporal versions
+- Both versions are explicitly supported with AWS Elasticsearch
+
 ## Temporal Server
 
 The Temporal Server consists of four independently scalable services:
@@ -90,7 +108,7 @@ We will offer maintenance support of the last 3 **minor** versions after a relea
 
 We will offer maintenance support of **major** versions for at least 12 months after a GA release, and provide at least 6 months' notice before EOL/deprecating support.
 
-## Dependencies
+#### Dependencies
 
 Temporal offers official support for, and is tested against, dependencies with the exact versions described in the `go.mod` file of corresponding release tag (Example, [v1.5.1](https://github.com/temporalio/temporal/tree/v1.5.1) dependencies are documented in [the go.mod for v1.5.1](https://github.com/temporalio/temporal/blob/v1.5.1/go.mod)).
 
@@ -194,7 +212,7 @@ Archival enables Workflow Execution data to persist as long as needed, while not
 
 This feature is helpful for compliance and debugging.
 
-Temporal's Archival feature is considered **experimental** and not subject to normal [versioning and support policy](/server/versions-and-dependencies).
+Temporal's Archival feature is considered **experimental** and not subject to normal [versioning and support policy](/clusters).
 
 Archival is not supported when running Temporal via docker-compose and is disabled by default when installing the system manually and when deploying via [helm charts](https://github.com/temporalio/helm-charts/blob/master/templates/server-configmap.yaml) (but can be enabled in the [config](https://github.com/temporalio/temporal/blob/master/config/development.yaml)).
 
@@ -203,7 +221,7 @@ Archival is not supported when running Temporal via docker-compose and is disabl
 Multi-Cluster Replication is a feature which asynchronously replicates Workflow Executions from active Clusters to other passive Clusters, for backup and state reconstruction.
 When necessary, for higher availability, Cluster operators can failover to any of the backup Clusters.
 
-Temporal's Multi-Cluster Replication feature is considered **experimental** and not subject to normal [versioning and support policy](/server/versions-and-dependencies).
+Temporal's Multi-Cluster Replication feature is considered **experimental** and not subject to normal [versioning and support policy](/clusters).
 
 #### Namespace Versions
 
@@ -578,3 +596,4 @@ T = 2: task A is loaded.
 
 At this time, due to the rebuild of a Workflow Execution's mutable state (conflict resolution), Task A is no longer relevant (Task A's corresponding Event belongs to non-current branch).
 Task processing logic will verify both the Event Id and version of the Task against a corresponding Workflow Execution's mutable state, then discard task A.
+

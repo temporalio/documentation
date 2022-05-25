@@ -7,7 +7,7 @@ tags:
   - how-to
 ---
 
-If a newer version of the [Temporal Server](/docs/concepts/what-is-the-temporal-server) is available, a notification appears in the Temporal Web UI.
+If a newer version of the [Temporal Server](/concepts/what-is-the-temporal-server) is available, a notification appears in the Temporal Web UI.
 
 :::info
 

@@ -367,7 +367,7 @@ As for now, try to make your syntax similar to the one used by our advanced list
 
 ## Upgrade Server version
 
-If a newer version of the [Temporal Server](/docs/concepts/what-is-the-temporal-server) is available, a notification appears in the Temporal Web UI.
+If a newer version of the [Temporal Server](/clusters/#temporal-server) is available, a notification appears in the Temporal Web UI.
 
 :::info
 
@@ -504,7 +504,7 @@ After the above conditions are satisfied, you can start to configure a multi-clu
 
 #### Set up Multi-Cluster Replication prior to v1.14
 
-You can set this up with [`clusterMetadata` configuration](/server/configuration#clustermetadata); however, this is meant to be only a conceptual guide rather than a detailed tutorial.
+You can set this up with [`clusterMetadata` configuration](/references/configuration#clustermetadata); however, this is meant to be only a conceptual guide rather than a detailed tutorial.
 Please reach out to us if you need to set this up.
 
 For example:
@@ -545,7 +545,7 @@ clusterMetadata:
 
 #### Set up Multi-Cluster Replication in v1.14 and later
 
-You still need to set up local cluster [`clusterMetadata` configuration](/server/configuration#clustermetadata)
+You still need to set up local cluster [`clusterMetadata` configuration](/references/configuration#clustermetadata)
 
 For example:
 
@@ -591,3 +591,4 @@ tctl -address 127.0.0.1:8233 admin cluster upsert-remote-cluster --frontend_addr
 tctl -address 127.0.0.1:7233 admin cluster remove-remote-cluster --cluster "clusterB"
 tctl -address 127.0.0.1:8233 admin cluster remove-remote-cluster --cluster "clusterA"
 ```
+
