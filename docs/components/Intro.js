@@ -174,9 +174,9 @@ function Explained() {
         <div className="aside-svg">
           <InfoSVG />
         </div>
-        <div className="">
+        <div className="p-landing">
           <h3 className="mb-0 aside-head">Temporal Cloud is in beta</h3>
-          <p className="mb-8">
+          <p className="mb-8 ">
             Access to Temporal Cloud is currently by invitation only.
           </p>
           <p>
@@ -195,7 +195,7 @@ function Explained() {
         </div>
       </div>
       <div className="landing-card-section">
-        <h2 className="landing-card-h2">Temporal core concepts</h2>
+        <h2 className="h2-landing">Temporal core concepts</h2>
         <p className="landing-card-p">
           Temporal terminology, system architecture, and key components
           explained.
@@ -273,9 +273,9 @@ function Explained() {
         </ul>
       </div>
       <div className="landing-card-section">
-        <div className="flex items-center landing-card-h2">
+        <div className="flex items-center">
           <a className="header-link" href="/application-development-guide">
-            <h2 className="">Application development guide</h2>
+            <h2 className="h2-landing">Application development guide</h2>
           </a>
           <div className="badge-purple">New</div>
         </div>
@@ -309,7 +309,7 @@ function Explained() {
       </div>
       <div className="landing-card-section">
         <a className="header-link" href="/application-development">
-          <h2 className="landing-card-h2">Legacy docs for SDKs</h2>
+          <h2 className="h2-landing">Legacy docs for SDKs</h2>
         </a>
         <p className="landing-card-p">
           Application development by language.{" "}
@@ -362,7 +362,7 @@ function Explained() {
       </div>
       <div className="landing-card-section">
         <a className="header-link" href="/operation/how-to-tune-workers">
-          <h2 className="landing-card-h2">Worker performance tuning</h2>
+          <h2 className="h2-landing">Worker performance tuning</h2>
         </a>
         <p className="landing-card-p">
           Optimize the performance of your Worker Processes.
@@ -422,7 +422,7 @@ function Explained() {
       </div>
       <div className="landing-card-section">
         <a className="header-link" href="/cluster-deployment-guide">
-          <h2 className="landing-card-h2">Cluster deployment guide</h2>
+          <h2 className="h2-landing">Cluster deployment guide</h2>
         </a>
         <p className="landing-card-p">
           Temporal Cluster deployment information and how-to guides.
@@ -470,11 +470,11 @@ function Explained() {
         </ul>
       </div>
       <div className="landing-card-section">
-        <div className="flex items-center landing-card-h2">
+        <div className="flex items-center">
           <a className="header-link" href="/cloud">
-            <h2 className="">Temporal Cloud</h2>
+            <h2 className="h2-landing">Temporal Cloud</h2>
           </a>
-          <div className="badge-blue">Beta</div>
+          <div className="badge-blue">early access</div>
         </div>
         <p className="landing-card-p">
           Tools and Temporal Cloud service information.
@@ -491,7 +491,7 @@ function Explained() {
         </ul>
       </div>
       <div className="landing-card-section">
-        <h2 className="landing-card-h2">Tutorials</h2>
+        <h2 className="h2-landing">Tutorials</h2>
         <p className="landing-card-p">
           Learning oriented tutorials across multiple SDKs.
         </p>
@@ -546,7 +546,7 @@ function Explained() {
       </div>
 
       <div className="landing-card-section">
-        <h2 className="landing-card-h2">Devtools</h2>
+        <h2 className="h2-landing">Devtools</h2>
         <ul className="landing-card-list">
           <li className="">
             <div className="landing-card-list-item">
@@ -570,7 +570,7 @@ function Explained() {
         </ul>
       </div>
       <div className="landing-card-section">
-        <h2 className="landing-card-h2">References</h2>
+        <h2 className="h2-landing">References</h2>
         <ul className="landing-card-list">
           <li className="">
             <div className="landing-card-list-item">

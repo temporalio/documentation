@@ -344,24 +344,43 @@ h4 {
 }
 
 h1 {
+  font-size: 2rem;
   font-weight: 600;
-  font-size: 6rem;
   letter-spacing: -2px;
 }
 
-h2 {
+@media only screen and (min-width: 1590px) {
+  h1 {
+    font-size: 5.5rem;
+  }
+}
+
+@media only screen and (max-width: 1589px) and (min-width: 1280px) {
+  h1 {
+    font-size: 4rem;
+  }
+}
+
+@media only screen and (max-width: 1279px) and (min-width: 640px) {
+  h1 {
+    font-size: 3rem;
+  }
+}
+
+.h2-landing {
   font-weight: 600;
   font-size: 2.5rem;
   letter-spacing: -2px;
+  margin-top: 2.5rem;
 }
 
-p {
+.p-landing {
   font-family: "Aeonik";
   font-size: 0.875rem;
   font-weight: 400;
 }
 
-a {
+.a-landing {
   font-family: "Aeonik";
   font-size: 0.875rem;
   font-weight: 400;
@@ -383,10 +402,9 @@ a {
   margin-right: 2.5em;
   /* width: 15em; */
   display: inline-block;
-}
-
-.landing-card-h2 {
-  margin-top: 3.25rem;
+  font-family: "Aeonik";
+  font-size: 0.875rem;
+  font-weight: 400;
 }
 
 .landing-card-list-b {
@@ -441,8 +459,11 @@ a {
 .landing-card-section h2 {
   margin-bottom: 0.4rem;
 }
+
 .landing-card-p {
-  /* font-style: italic; */
+  font-family: "Aeonik";
+  font-size: 0.875rem;
+  font-weight: 400;
   margin-bottom: 1.5rem;
 }
 
@@ -471,7 +492,7 @@ a {
   color: #6d28d9;
   background-color: #ede9fe;
   border-radius: 0.125rem;
-  margin: 1rem;
+  margin: 2.5rem 1.5rem 0rem 1.5rem;
   padding: 0 0.5rem;
 }
 
@@ -494,6 +515,9 @@ a {
   border-color: #2563eb;
   border-style: solid;
   padding: 2rem;
+  font-family: "Aeonik";
+  font-size: 0.875rem;
+  font-weight: 400;
 }
 
 .aside-svg {
