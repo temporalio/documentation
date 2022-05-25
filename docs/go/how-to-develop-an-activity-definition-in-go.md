@@ -46,6 +46,6 @@ Activities written as struct methods can use shared struct variables, such as:
 - an application level DB pool
 - client connection to another service
 - reusable utilities
-- any other expensive resources, you only want to initialize once per process
+- any other expensive resources that you only want to initialize once per process
 
 Because this is such a common need, the rest of this guide shows Activities written as `struct` methods.
