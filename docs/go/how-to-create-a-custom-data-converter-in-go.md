@@ -2,7 +2,7 @@
 id: how-to-create-a-custom-data-converter-in-go
 title: How to create a custom Data Converter in Go
 sidebar_label: Custom Data Converter
-description: Wrap your custom functionality around the Default Data Converter.
+description: Wrap your custom functionality around the default Data Converter.
 tags:
   - go
   - developer-guide
