@@ -8,4 +8,4 @@ tags:
   - developer-guide
 ---
 
-Wrap your custom functionality around the [Default Data Converter](https://pkg.go.dev/go.temporal.io/sdk/converter#DataConverter).
+Wrap your custom functionality around the default [Data Converter](https://pkg.go.dev/go.temporal.io/sdk/converter#DataConverter).
