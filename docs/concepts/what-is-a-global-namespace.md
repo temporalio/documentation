@@ -9,6 +9,8 @@ tags:
 
 A Global Namespace is a [Namespace](/concepts/what-is-a-namespace) that exists across Clusters when [Multi-Cluster Replication](/concepts/what-is-multi-cluster-replication) is set up.
 
+- [How to register a Global Namespace](/tctl/namespace/register/#--global-namespace)
+
 The Global Namespace feature enables Workflow Executions to progress through another Cluster in the event of a failover.
 
 A Global Namespace may be replicated to any number of Clusters, but is active in only one Cluster at any given time.
