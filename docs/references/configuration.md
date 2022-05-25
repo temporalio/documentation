@@ -21,7 +21,7 @@ Much of the behavior of a Temporal Cluster is configured using the `development.
 Changing any properties in the `development.yaml` file requires a process restart for changes to take effect.
 Configuration parsing code is available [here](https://github.com/temporalio/temporal/blob/master/common/config/config.go).
 
-## `global`
+## global
 
 The `global` section contains process-wide configuration. See below for a minimal configuration (optional parameters are commented out.)
 
@@ -35,25 +35,24 @@ global:
       listenAddress: "127.0.0.1:8000"
 ```
 
-### `membership`
+### membership
 
 The `membership` section controls the following membership layer parameters.
 
-#### `maxJoinDuration`
+#### maxJoinDuration
 
 The amount of time the service will attempt to join the gossip layer before failing.
 
 Default is 10s.
 
-
-#### `broadcastAddress`
+#### broadcastAddress
 
 Used by gossip protocol to communicate with other hosts in the same Cluster for membership info.
 Use IP address that is reachable by other hosts in the same Cluster.
 If there is only one host in the Cluster, you can use 127.0.0.1.
 Check `net.ParseIP` for supported syntax, only IPv4 is supported.
 
-### `metrics`
+### metrics
 
 Configures the Cluster's metric subsystem.
 Specific provides are configured using provider names as the keys.
@@ -62,22 +61,22 @@ Specific provides are configured using provider names as the keys.
 - `prometheus`
 - `m3`
 
-#### `prefix`
+#### prefix
 
-The prefix to all outgoing metrics.
+The prefix to be applied to all outgoing metrics.
 
-#### `tags`
+#### tags
 
 The set of key-value pairs to be reported as part of every metric.
 
-#### `excludeTags`
+#### excludeTags
 
 A map from tag name string to tag values string list.
 This is useful to exclude some tags that might have unbounded cardinality.
 The value string list can be used to whitelist values of that excluded tag to continue to be included.
 For example, if you want to exclude `task_queue` because it has unbounded cardinality, but you still want to see a whitelisted value for `task_queue`.
 
-#### `statsd`
+#### statsd
 
 The `statsd` sections supports the following settings:
 
@@ -86,7 +85,7 @@ The `statsd` sections supports the following settings:
 - `flushInterval`: Maximum interval for sending packets. (_Default_ 300ms).
 - `flushBytes`: Specifies the maximum UDP packet size you wish to send. (_Default_ 1432 bytes).
 
-#### `prometheus`
+#### prometheus
 
 The `prometheus` sections supports the following settings:
 
@@ -94,7 +93,7 @@ The `prometheus` sections supports the following settings:
 - `listenAddress`: Address for prometheus to scrape metrics from.
 - `handlerPath`: Metrics handler path for scraper, default is `/metrics`.
 
-#### `m3`
+#### m3
 
 The `m3` sections supports the following settings:
 
@@ -105,21 +104,25 @@ The `m3` sections supports the following settings:
 
 ### pprof
 
-- `port` - If specified, this will initialize pprof upon process start on the listed port.
+- `port`: If specified, this will initialize pprof upon process start on the listed port.
 
 ### tls
 
-The `tls` section controls the SSL/TLS settings for network communication and contains two subsections, `internode` and `frontend`. The `internode` section governs internal service communication among roles where the `frontend` governs SDK client communication to the frontend service role.
+The `tls` section controls the SSL/TLS settings for network communication and contains two subsections, `internode` and `frontend`.
+The `internode` section governs internal service communication among roles where the `frontend` governs SDK client communication to the frontend service role.
 
-Each of these subsections contain a `server` section and a `client` section. The `server` contains the following parameters:
+Each of these subsections contain a `server` section and a `client` section.
+The `server` contains the following parameters:
 
-- `certFile` - The path to the file containing the PEM-encoded public key of the certificate to use.
-- `keyFile` - The path to the file containing the PEM-encoded private key of the certificate to use.
-- `requireClientAuth` - _boolean_ - Requires clients to authenticate with a certificate when connecting, otherwise known as mutual TLS.
-- `clientCaFiles` - A list of paths to files containing the PEM-encoded public key of the Certificate Authorities you wish to trust for client authentication. This value is ignored if `requireClientAuth` is not enabled.
+- `certFile`: The path to the file containing the PEM-encoded public key of the certificate to use.
+- `keyFile`: The path to the file containing the PEM-encoded private key of the certificate to use.
+- `requireClientAuth`: _boolean_ - Requires clients to authenticate with a certificate when connecting, otherwise known as mutual TLS.
+- `clientCaFiles`: A list of paths to files containing the PEM-encoded public key of the Certificate Authorities you wish to trust for client authentication. This value is ignored if `requireClientAuth` is not enabled.
 
 :::tip
+
 See the [server samples repo](https://github.com/temporalio/samples-server/tree/master/tls) for sample TLS configurations.
+
 :::
 
 Below is an example enabling Server TLS (https) between SDKs and the Frontend APIs:
@@ -135,9 +138,11 @@ global:
         serverName: dnsSanInFrontendCertificate
 ```
 
-Note, the `client` section generally needs to be provided to specify an expected DNS SubjectName contained in the presented server certificate via the `serverName` field; this is needed as Temporal uses IP to IP communication. You can avoid specifying this if your server certificates contain the appropriate IP Subject Alternative Names.
+Note, the `client` section generally needs to be provided to specify an expected DNS SubjectName contained in the presented server certificate via the `serverName` field; this is needed as Temporal uses IP to IP communication.
+You can avoid specifying this if your server certificates contain the appropriate IP Subject Alternative Names.
 
-Additionally, the `rootCaFiles` field needs to be provided when the client's host does not trust the Root CA used by the server. The example below extends the above example to manually specify the Root CA used by the frontend services:
+Additionally, the `rootCaFiles` field needs to be provided when the client's host does not trust the Root CA used by the server.
+The example below extends the above example to manually specify the Root CA used by the frontend services:
 
 ```yaml
 global:
@@ -195,7 +200,8 @@ global:
 
 ## persistence
 
-The `persistence` section holds configuration for the data store / persistence layer. Below is an example minimal specification for a password-secured Cassandra cluster.
+The `persistence` section holds configuration for the data store / persistence layer.
+Below is an example minimal specification for a password-secured Cluster using Cassandra.
 
 ```yaml
 persistence:
@@ -217,30 +223,49 @@ persistence:
 
 The following top level configuration items are required:
 
-- `numHistoryShards` - _required_ - the number of history shards to create when initializing the cluster.
-  - **Warning**: This value is immutable and will be ignored after the first run. Please ensure you set this value appropriately high enough to scale with the worst case peak load for this cluster.
-- `defaultStore` - _required_ - the name of the data store definition that should be used by the Temporal server.
-- `visibilityStore` - _required_ - the name of the data store definition that should be used by the Temporal visibility server.
-- `datastores` - _required_ - contains named data store definitions to be referenced.
-  - Each definition is defined with a heading declaring a name (ie: `default:` and `visibility:` above), which contains a data store definition.
-  - data store definitions must be either `cassandra` or `sql`.
+### numHistoryShards
+
+_Required_ - The number of history shards to create when initializing the Cluster.
+
+**Warning**: This value is immutable and will be ignored after the first run.
+Please ensure you set this value appropriately high enough to scale with the worst case peak load for this Cluster.
+
+### defaultStore
+
+_Required_ - The name of the data store definition that should be used by the Temporal server.
+
+### visibilityStore
+
+_Required_ - the name of the data store definition that should be used by the Temporal visibility server.
+
+### datastores
+
+_Required_ - contains named data store definitions to be referenced.
+
+Each definition is defined with a heading declaring a name (ie: `default:` and `visibility:` above), which contains a data store definition.
+
+Data store definitions must be either `cassandra` or `sql`.
+
+#### cassandra
 
 A `cassandra` data store definition can contain the following values:
 
-- `hosts` - _required_ - "," separated Cassandra endpoints, e.g. "192.168.1.2,192.168.1.3,192.168.1.4".
-- `port` - default: 9042 - Cassandra port used for connection by `gocql` client.
-- `user` - Cassandra username used for authentication by `gocql` client.
-- `password` - Cassandra password used for authentication by `gocql` client.
-- `keyspace` - _required_ - the Cassandra keyspace.
-- `datacenter` - the data center filter arg for Cassandra.
-- `maxConns` - the max number of connections to this data store for a single TLS configuration.
-- `tls` - See TLS below.
+- `hosts`: _Required_ - "," separated Cassandra endpoints, e.g. "192.168.1.2,192.168.1.3,192.168.1.4".
+- `port`: Default: 9042 - Cassandra port used for connection by `gocql` client.
+- `user`: Cassandra username used for authentication by `gocql` client.
+- `password`: Cassandra password used for authentication by `gocql` client.
+- `keyspace`: _Required_ - the Cassandra keyspace.
+- `datacenter`: The data center filter arg for Cassandra.
+- `maxConns`: The max number of connections to this data store for a single TLS configuration.
+- `tls`: See TLS below.
+
+#### sql
 
 A `sql` data store definition can contain the following values:
 
-- `user` - username used for authentication.
-- `password` - password used for authentication.
-- `pluginName` - _required_ - SQL database type.
+- `user`: Username used for authentication.
+- `password`: Password used for authentication.
+- `pluginName`: _Required_ - SQL database type.
   - _Valid values_: `mysql` or `postgres`.
 - `databaseName` - _required_ - the name of SQL database to connect to.
 - `connectAddr` - _required_ - the remote address of the database, e.g. "192.168.1.2".
@@ -252,7 +277,9 @@ A `sql` data store definition can contain the following values:
 - `maxConnLifetime` - is the maximum time a connection can be alive.
 - `tls` - See below.
 
-`tls` sections may contain:
+#### tls
+
+The `tls` sections may contain:
 
 - `enabled` - _boolean_.
 - `serverName` - name of the server hosting the data store.
@@ -305,7 +332,8 @@ clusterMetadata:
 
 ## services
 
-The `services` section contains configuration keyed by service role type. There are four supported service roles:
+The `services` section contains configuration keyed by service role type.
+There are four supported service roles:
 
 - `frontend`
 - `matching`
@@ -325,7 +353,9 @@ services:
 
 There are two sections defined under each service heading:
 
-### rpc - _required_
+### rpc
+
+_Required_
 
 `rpc` contains settings related to the way a service interacts with other services. The following values are supported:
 

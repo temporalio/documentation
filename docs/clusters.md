@@ -15,17 +15,17 @@ Temporal Clusters explained.
 
 A Temporal Cluster is the group of services, known as the [Temporal Server](#temporal-server), combined with persistence stores, that together act as a component of the Temporal Platform.
 
-![A Temporal Cluster (Server + persistence)](/diagrams/temporal-cluster.svg)
-
 - [How to quickly install a Temporal Cluster for testing and development](/application-development-guide/#run-a-dev-cluster)
+- [Cluster deployment guide](/cluster-deployment-guide)
+
+![A Temporal Cluster (Server + persistence)](/diagrams/temporal-cluster.svg)
 
 #### Persistence
 
 A Temporal Cluster's only required dependency for basic operation is a database.
+Multiple types of databases that are supported.
 
 ![Persistence](/diagrams/temporal-database.svg)
-
-Cassandra, MySQL, and PostgreSQL schemas are supported and thus can be used as the Server's database.
 
 The database stores the following types of data:
 
@@ -38,6 +38,25 @@ The database stores the following types of data:
   For production environments, we recommend using Elasticsearch.
 
 An Elasticsearch database can be added to enable [Advanced Visibility](/visibility/#advanced-visibility).
+
+**Versions**
+
+Temporal tests compatibility by spanning the **minimum** and **maximum** stable non-EOL major versions for each supported database.
+As of time of writing, these specific versions used in our test pipelines and actively tested before we release any version of Temporal:
+
+- **Cassandra v3.11 and v4.0**
+- **PostgreSQL v10.18 and v13.4**
+- **MySQL v5.7 and v8.0** (specifically 8.0.19+ due to a bug)
+
+We will update these support ranges once a year and the release notes of each Temporal Server will declare when we plan to drop support for database versions reaching End of Life.
+Since Temporal Server primarily relies on core database functionality, we do not expect compatibility to break often.
+
+- We only rely on core database features, so compatibility should not break often.
+  Temporal has no opinions on database upgrade paths; as long as you can upgrade your database according to each project's specifications, Temporal should work with any version within supported ranges.
+- We do not run tests with vendors like Vitess and CockroachDB, so you rely on their compatibility claims if you use them.
+  Please feel free to discuss them with fellow users [in our forum](https://community.temporal.io/).
+- Temporal is [working on official SQLite v3.x persistence](https://github.com/temporalio/temporal/pulls?q=is%3Apr+sort%3Aupdated-desc+sqlite), but this is only meant for development and testing, not production usage.
+  Cassandra, MySQL, and PostgreSQL schemas are supported and thus can be used as the Server's database.
 
 ## Temporal Server
 
@@ -56,6 +75,24 @@ The History, Matching, and Worker services can scale horizontally within a Clust
 The Frontend Service scales differently than the others because it has no sharding or partitioning; it is just stateless.
 
 Each service is aware of the others, including scaled instances, through a membership protocol via [Ringpop](https://github.com/temporalio/ringpop-go).
+
+#### Versions and support
+
+All Temporal Server releases abide by the [Semantic Versioning Specification](https://semver.org/).
+
+Fairly precise upgrade paths and support have been established starting from Temporal `v1.7.0`.
+
+We provide maintenance support for previously published minor and major versions by continuing to release critical bug fixes related to security, the prevention of data loss, and reliability, whenever they are found.
+
+We aim to publish incremental upgrade guides for each minor and major version, which will include specifics around dependency upgrades that we have tested for (e.g. Cassandra 3.0 -> 3.11).
+
+We will offer maintenance support of the last 3 **minor** versions after a release, and do not plan to "backport" patches beyond that.
+
+We will offer maintenance support of **major** versions for at least 12 months after a GA release, and provide at least 6 months' notice before EOL/deprecating support.
+
+## Dependencies
+
+Temporal offers official support for, and is tested against, dependencies with the exact versions described in the `go.mod` file of corresponding release tag (Example, [v1.5.1](https://github.com/temporalio/temporal/tree/v1.5.1) dependencies are documented in [the go.mod for v1.5.1](https://github.com/temporalio/temporal/blob/v1.5.1/go.mod)).
 
 #### Frontend Service
 
