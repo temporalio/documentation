@@ -195,7 +195,7 @@ function Explained() {
         </div>
       </div>
       <div className="landing-card-section">
-        <h2 className="h2-landing">Temporal core concepts</h2>
+        <h2 className="h2-landing">Core concepts</h2>
         <p className="landing-card-p">
           Temporal terminology, system architecture, and key components
           explained.
