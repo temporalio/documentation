@@ -28,6 +28,16 @@
       ]
     },
     {
+      "header": "Retention Period",
+      "h3_sections": [
+        {
+          "header": "none",
+          "type": "explanation",
+          "path": "concepts/what-is-a-retention-period"
+        }
+      ]
+    },
+    {
       "header": "Archival",
       "h3_sections": [
         {

@@ -10,6 +10,8 @@ tags:
 
 A Child Workflow Execution is a [Workflow Execution](/concepts/what-is-a-workflow-execution) that is spawned from within another Workflow.
 
+- [How to start a Child Workflow Execution](/application-development-guide/#child-workflows)
+
 A Workflow Execution can be both a Parent and a Child Workflow Execution because any Workflow can spawn another Workflow.
 
 ![Parent & Child Workflow Execution entity relationship](/diagrams/parent-child-workflow-execution-relationship.svg)
@@ -50,7 +52,3 @@ As all Workflow Executions, they can communicate only via asynchronous [Signals]
 
 As all Workflow Executions, a Child Workflow Execution can create a 1:1 mapping with a resource.
 For example, a Workflow that manages host upgrades could spawn a Child Workflow Execution per host.
-
-**Implementation guides:**
-
-- [How to spawn a Child Workflow Execution in Go](/go/how-to-spawn-a-child-workflow-execution-in-go)
