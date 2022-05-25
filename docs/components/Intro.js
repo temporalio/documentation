@@ -2,22 +2,77 @@ import React from "react";
 import Link from "@docusaurus/Link";
 import useBaseUrl from "@docusaurus/useBaseUrl";
 
-function BookSVG() {
+function InfoSVG() {
   return (
     <svg
-      className="rounded-lg p-2 text-[color:var(--ifm-color)] landing-page-book"
-      viewBox="0 0 512 512"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
-        d="M487.085,411.037V117.064c0.074-0.709,0.074-1.424,0-2.133c0.046-0.568,0.046-1.139,0-1.707l-1.067-1.707l-1.28-1.707,h-1.493l-1.92-1.28c-11.762-4.15-23.723-7.71-35.84-10.667v-49.92c0-5.891-4.776-10.667-10.667-10.667,c-75.559,0.77-146.326,37.142-190.933,98.133c-44.179-61.043-114.73-97.467-190.08-98.133c-5.891,0-10.667,4.776-10.667,10.667,V96.37c-12.2,2.993-24.234,6.625-36.053,10.88l-2.133,1.28H3.458l-1.28,1.707l-1.067,1.707c-0.045,0.568-0.045,1.139,0,1.707,c-0.451,0.735-0.809,1.523-1.067,2.347V411.25c-0.06,0.639-0.06,1.281,0,1.92c0.173,0.514,0.387,1.014,0.64,1.493,c0.338,0.76,0.768,1.477,1.28,2.133v1.28l1.707,1.28l1.707,1.067h1.493h2.56h1.707h1.92,c75.287-25.316,158.012-14.867,224.64,28.373l1.92,1.067h3.2h3.2h1.92c66.641-42.418,148.854-52.528,223.787-27.52h1.92h1.707,h2.56h1.493l1.92-1.28l1.493-1.067v-1.493c1.753-0.857,3.231-2.187,4.267-3.84c0.049-0.568,0.049-1.139,0-1.707,C487.145,412.318,487.145,411.676,487.085,411.037z M21.165,396.744V124.957c6.684-2.276,13.796-4.409,21.333-6.4V334.45,c-0.011,5.891,4.756,10.675,10.647,10.686c0.22,0,0.44-0.006,0.659-0.019l0.213,0.213c55.18-0.018,108.116,21.847,147.2,60.8,C143.775,383.706,80.629,380.415,21.165,396.744z M233.218,408.477c-41.743-50.798-102.882-81.755-168.533-85.333V58.824,c68.305,4.623,130.582,40.728,168.533,97.707V408.477z M254.765,409.33v-252.8c38.312-56.698,100.501-92.706,168.747-97.707h0.213,v265.173C357.971,327.639,296.724,358.572,254.765,409.33z M466.392,396.744c-59.407-16.191-122.441-12.901-179.84,9.387,c39.246-38.997,92.3-60.924,147.627-61.013c5.891,0,10.667-4.776,10.667-10.667V118.557c7.111,1.849,14.293,3.982,21.547,6.4,V396.744z"
-        fill="currentColor"
+        d="M12 6.5C8.67188 6.5 6 9.19531 6 12.5C6 15.8281 8.67188 18.5 12 18.5C15.3047 18.5 18 15.8281 18 12.5C18 9.19531 15.3047 6.5 12 6.5ZM12 17.375C9.30469 17.375 7.125 15.1953 7.125 12.5C7.125 9.82812 9.30469 7.625 12 7.625C14.6719 7.625 16.875 9.82812 16.875 12.5C16.875 15.1953 14.6719 17.375 12 17.375ZM12.9375 14.375H12.5625V12.3125C12.5625 12.0078 12.3047 11.75 12 11.75H11.25C10.9219 11.75 10.6875 12.0078 10.6875 12.3125C10.6875 12.6406 10.9219 12.875 11.25 12.875H11.4375V14.375H11.0625C10.7344 14.375 10.5 14.6328 10.5 14.9375C10.5 15.2656 10.7344 15.5 11.0625 15.5H12.9375C13.2422 15.5 13.5 15.2656 13.5 14.9375C13.5 14.6328 13.2422 14.375 12.9375 14.375ZM12 11C12.3984 11 12.75 10.6719 12.75 10.25C12.75 9.85156 12.3984 9.5 12 9.5C11.5781 9.5 11.25 9.85156 11.25 10.25C11.25 10.6719 11.5781 11 12 11Z"
+        fill="#1D4ED8"
+      />
+      <path
+        d="M12 6.5C8.67188 6.5 6 9.19531 6 12.5C6 15.8281 8.67188 18.5 12 18.5C15.3047 18.5 18 15.8281 18 12.5C18 9.19531 15.3047 6.5 12 6.5ZM12 17.375C9.30469 17.375 7.125 15.1953 7.125 12.5C7.125 9.82812 9.30469 7.625 12 7.625C14.6719 7.625 16.875 9.82812 16.875 12.5C16.875 15.1953 14.6719 17.375 12 17.375ZM12.9375 14.375H12.5625V12.3125C12.5625 12.0078 12.3047 11.75 12 11.75H11.25C10.9219 11.75 10.6875 12.0078 10.6875 12.3125C10.6875 12.6406 10.9219 12.875 11.25 12.875H11.4375V14.375H11.0625C10.7344 14.375 10.5 14.6328 10.5 14.9375C10.5 15.2656 10.7344 15.5 11.0625 15.5H12.9375C13.2422 15.5 13.5 15.2656 13.5 14.9375C13.5 14.6328 13.2422 14.375 12.9375 14.375ZM12 11C12.3984 11 12.75 10.6719 12.75 10.25C12.75 9.85156 12.3984 9.5 12 9.5C11.5781 9.5 11.25 9.85156 11.25 10.25C11.25 10.6719 11.5781 11 12 11Z"
+        fill="#1D4ED8"
       />
     </svg>
   );
 }
 
+function BookSVG() {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M12 18.75V8.25C12 7.42157 12.6716 6.75 13.5 6.75H19.05C19.2985 6.75 19.5 6.95147 19.5 7.2V17.0357"
+        stroke="#111827"
+        stroke-width="1.125"
+        stroke-linecap="round"
+      />
+      <path
+        d="M12 18.75V8.25C12 7.42157 11.3284 6.75 10.5 6.75H4.95C4.70147 6.75 4.5 6.95147 4.5 7.2V17.0357"
+        stroke="#111827"
+        stroke-width="1.125"
+        stroke-linecap="round"
+      />
+      <path
+        d="M13.5 17.25H19.5"
+        stroke="#111827"
+        stroke-width="1.125"
+        stroke-linecap="round"
+      />
+      <path
+        d="M10.5 17.25H4.5"
+        stroke="#111827"
+        stroke-width="1.125"
+        stroke-linecap="round"
+      />
+      <path
+        d="M12 18.75C12 17.9216 12.6716 17.25 13.5 17.25"
+        stroke="#111827"
+        stroke-width="1.125"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M12 18.75C12 17.9216 11.3284 17.25 10.5 17.25"
+        stroke="#111827"
+        stroke-width="1.125"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
+}
 function HatSVG() {
   return (
     <svg
@@ -55,23 +110,28 @@ function HatSVG() {
   );
 }
 
-function WrenchSVG() {
+function CliSVG() {
   return (
     <svg
-      className="rounded-lg p-2 text-[color:var(--ifm-color)] landing-page-book"
-      viewBox="0 0 512 512"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
-        d="m499.261 84.264c-2.809-7.233-8.899-12.48-16.291-14.036-7.555-1.595-15.448.841-21.112 6.506l-52.817 52.816-25.79-25.79 56.174-56.174c5.848-5.848 8.358-13.992 6.718-21.786-1.604-7.62-7.017-13.898-14.477-16.795-49.024-19.044-104.726-7.321-141.908 29.86-19.577 19.577-32.359 44.296-36.976 71.5-.987 4.627-1.943 9.541-2.954 14.738-5.906 30.358-13.256 68.14-34.807 89.689l-192.957 192.958c-23.826 23.826-23.826 62.596 0 86.423 11.914 11.913 27.563 17.869 43.212 17.869 15.648 0 31.298-5.956 43.211-17.869l192.956-192.957c21.551-21.551 59.332-28.9 89.69-34.807 5.198-1.011 10.111-1.967 14.739-2.954 27.204-4.617 51.923-17.399 71.5-36.976 5.776-5.777 7.448-13.618 5.056-20.589 26.215-34.726 32.74-80.67 16.833-121.626zm-23.261 6.611c.881-.88 1.92-1.274 2.851-1.076.799.168 1.393.742 1.768 1.705 12.785 32.919 8.366 69.667-11.27 98.354l-46.166-46.166zm-12.771 121.463c-16.67 16.67-37.727 27.538-60.893 31.432-.146.024-.29.052-.435.083-4.508.964-9.404 1.916-14.588 2.925-33.031 6.426-74.141 14.423-100.014 40.296l-192.954 192.956c-16.027 16.029-42.108 16.028-58.138-.001-16.028-16.028-16.028-42.108 0-58.137l192.957-192.957c25.873-25.872 33.87-66.981 40.296-100.013 1.009-5.184 1.961-10.08 2.925-14.588.031-.145.059-.289.084-.436 3.891-23.164 14.76-44.221 31.432-60.892 21.53-21.531 50.367-33.007 79.74-33.007 13.707 0 27.536 2.501 40.785 7.647 1.205.468 1.927 1.232 2.146 2.271.247 1.173-.223 2.458-1.289 3.523l-63.245 63.245c-3.905 3.905-3.905 10.237 0 14.143l101.246 101.246c.036.035.067.068.094.099-.039.051-.088.104-.149.165z"
-        fill="currentColor"
+        d="M12.75 15.75H18"
+        stroke="#111827"
+        stroke-width="1.125"
+        stroke-linecap="round"
+        stroke-linejoin="round"
       />
-
-      <path d="m347.893 124.974c-1.876-1.875-4.419-2.929-7.071-2.929s-5.196 1.054-7.071 2.929l-28.283 28.284c-3.905 3.905-3.905 10.237 0 14.143l39.932 39.933c1.875 1.875 4.419 2.929 7.071 2.929s5.196-1.054 7.071-2.929l28.284-28.284c3.905-3.905 3.905-10.237 0-14.143zm4.577 61.145-25.79-25.79 14.142-14.142 25.79 25.79z" />
       <path
-        d="m72.345 443.888c-3.906-3.906-10.235-3.901-14.14.003-3.905 3.905-3.903 10.239.002 14.145 1.953 1.952 4.512 2.929 7.071 2.929s5.118-.977 7.071-2.929c3.905-3.905 3.905-10.237 0-14.143z"
-        fill="currentColor"
+        d="M6.75 8.25L10.5 12L6.75 15.75"
+        stroke="#111827"
+        stroke-width="1.125"
+        stroke-linecap="round"
+        stroke-linejoin="round"
       />
     </svg>
   );
@@ -80,38 +140,62 @@ function WrenchSVG() {
 function Explained() {
   return (
     <div className="landing-card">
-      <ul className="landing-card-list-b">
-        <li>
+      <ul className="landing-card-list-b logos">
+        <li className="list-logo">
           <img
-            className="h-8 w-8 pl-1 transition hover:scale-110 code-logo"
+            className="w-8 h-8 pl-1 transition hover:scale-110 code-logo"
             src="/img/golang.svg"
             alt="Go lang logo"
           />
         </li>
-        <li>
+        <li className="list-logo">
           <img
-            className="h-7 w-7 pl-1 transition hover:scale-110 code-logo"
+            className="w-7 h-7 pl-1 transition hover:scale-110 code-logo"
             src="/img/java.svg"
             alt="Java logo"
           />
         </li>
-        <li>
+        <li className="list-logo">
           <img
-            className="h-8 w-8 pl-1 transition hover:scale-110 code-logo"
+            className="w-8 h-8 pl-1 transition hover:scale-110 code-logo"
             src="/img/php.svg"
             alt="PHP logo"
           />
         </li>
-        <li>
+        <li className="list-logo">
           <img
-            className="h-7 w-7 pl-1 transition hover:scale-110 code-logo"
+            className="w-7 h-7 pl-1 transition hover:scale-110 code-logo"
             src="/img/typescript.svg"
             alt="TypeScript logo"
           />
         </li>
       </ul>
+      <div className="aside flex">
+        <div className="aside-svg">
+          <InfoSVG />
+        </div>
+        <div className="">
+          <h3 className="mb-0 aside-head">Temporal Cloud is in beta</h3>
+          <p className="mb-8">
+            Access to Temporal Cloud is currently by invitation only.
+          </p>
+          <p>
+            Go to{" "}
+            <a className="aside-link" href={"https://docs.temporal.io/cloud/"}>
+              Cloud docs
+            </a>{" "}
+            or{" "}
+            <a
+              className="aside-link"
+              href="https://us17.list-manage.com/survey?u=2334a0f23e55fd1840613755d&id=f1895b6f4a"
+            >
+              join the waitlist
+            </a>
+          </p>
+        </div>
+      </div>
       <div className="landing-card-section">
-        <h2>Temporal Explained</h2>
+        <h2 className="landing-card-h2">Temporal core concepts</h2>
         <p className="landing-card-p">
           Temporal terminology, system architecture, and key components
           explained.
@@ -189,9 +273,9 @@ function Explained() {
         </ul>
       </div>
       <div className="landing-card-section">
-        <div className="flex items-center">
+        <div className="flex items-center landing-card-h2">
           <a className="header-link" href="/application-development-guide">
-            <h2>Application Development Guide</h2>
+            <h2 className="">Application development guide</h2>
           </a>
           <div className="badge-purple">New</div>
         </div>
@@ -210,8 +294,6 @@ function Explained() {
               </Link>
             </div>
           </li>
-        </ul>
-        <ul className="landing-card-list">
           <li className="">
             <div className="landing-card-list-item">
               <BookSVG />
@@ -227,7 +309,7 @@ function Explained() {
       </div>
       <div className="landing-card-section">
         <a className="header-link" href="/application-development">
-          <h2>Legacy docs for SDKs</h2>
+          <h2 className="landing-card-h2">Legacy docs for SDKs</h2>
         </a>
         <p className="landing-card-p">
           Application development by language.{" "}
@@ -280,7 +362,7 @@ function Explained() {
       </div>
       <div className="landing-card-section">
         <a className="header-link" href="/operation/how-to-tune-workers">
-          <h2>Worker performance tuning</h2>
+          <h2 className="landing-card-h2">Worker performance tuning</h2>
         </a>
         <p className="landing-card-p">
           Optimize the performance of your Worker Processes.
@@ -340,7 +422,7 @@ function Explained() {
       </div>
       <div className="landing-card-section">
         <a className="header-link" href="/cluster-deployment-guide">
-          <h2>Cluster Deployment Guide</h2>
+          <h2 className="landing-card-h2">Cluster deployment guide</h2>
         </a>
         <p className="landing-card-p">
           Temporal Cluster deployment information and how-to guides.
@@ -388,9 +470,9 @@ function Explained() {
         </ul>
       </div>
       <div className="landing-card-section">
-        <div className="flex items-center">
+        <div className="flex items-center landing-card-h2">
           <a className="header-link" href="/cloud">
-            <h2>Temporal Cloud</h2>
+            <h2 className="">Temporal Cloud</h2>
           </a>
           <div className="badge-blue">Beta</div>
         </div>
@@ -400,7 +482,7 @@ function Explained() {
         <ul className="landing-card-list">
           <li className="">
             <div className="landing-card-list-item">
-              <WrenchSVG />
+              <CliSVG />
               <Link to={useBaseUrl("/cloud/tcld")} className="hover:underline">
                 <a className="font-normal">tcld</a>
               </Link>
@@ -409,7 +491,7 @@ function Explained() {
         </ul>
       </div>
       <div className="landing-card-section">
-        <h2>Tutorials</h2>
+        <h2 className="landing-card-h2">Tutorials</h2>
         <p className="landing-card-p">
           Learning oriented tutorials across multiple SDKs.
         </p>
@@ -464,21 +546,19 @@ function Explained() {
       </div>
 
       <div className="landing-card-section">
-        <h2>Devtools</h2>
+        <h2 className="landing-card-h2">Devtools</h2>
         <ul className="landing-card-list">
           <li className="">
             <div className="landing-card-list-item">
-              <WrenchSVG />
+              <CliSVG />
               <Link to={useBaseUrl("/tctl")} className="hover:underline">
                 <a className="font-normal">tctl</a>
               </Link>
             </div>
           </li>
-        </ul>
-        <ul className="landing-card-list">
           <li className="">
             <div className="landing-card-list-item">
-              <WrenchSVG />
+              <CliSVG />
               <Link
                 to={useBaseUrl("/devtools/web-ui")}
                 className="hover:underline"
@@ -490,7 +570,7 @@ function Explained() {
         </ul>
       </div>
       <div className="landing-card-section">
-        <h2>References</h2>
+        <h2 className="landing-card-h2">References</h2>
         <ul className="landing-card-list">
           <li className="">
             <div className="landing-card-list-item">
