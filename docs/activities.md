@@ -256,7 +256,7 @@ A Heartbeat Timeout is the maximum time between [Activity Heartbeats](#activity-
 
 ![Heartbeat Timeout periods](/diagrams/heartbeat-timeout.svg)
 
-If this timeout is reached, the Activity Task Execution and retries if a [Retry Policy](/retry-policies/#) dictates it.
+If this timeout is reached, the Activity Task fails and a retry occurs if a [Retry Policy](/retry-policies/#) dictates it.
 
 ### Activity Heartbeats
 

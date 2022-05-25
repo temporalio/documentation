@@ -238,6 +238,8 @@ Or clone the Go SDK repo to your preferred location:
 git clone git@github.com:temporalio/sdk-typescript.git
 ```
 
+This project requires Node.js 14 or later.
+
 **Are there executable code samples?​**
 
 You can find a complete list of executable code samples in the samples' library, which includes Temporal TypeScript SDK code samples from the [temporalio/samples-typescript](https://github.com/temporalio/samples-typescript) repo. Additionally, each of the TypeScript SDK Tutorials is backed by a fully executable template application.
