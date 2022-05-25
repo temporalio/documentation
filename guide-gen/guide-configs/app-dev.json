@@ -86,6 +86,11 @@
               "path": "php/how-to-develop-a-workflow-definition-in-php"
             },
             {
+              "lang": "python",
+              "title": "Python",
+              "path": "none"
+            },
+            {
               "lang": "typescript",
               "title": "TypeScript",
               "path": "typescript/how-to-develop-a-workflow-definition-in-typescript"

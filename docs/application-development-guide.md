@@ -97,7 +97,7 @@ Both TypeScript and Javascript can be used with the TypeScript SDK.
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -247,6 +247,11 @@ You can find a complete list of executable code samples in the samples' library,
 The Temporal TypeScript SDK API reference is published on [typescript.temporal.io](https://typescript.temporal.io).
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 ### Develop Workflows
@@ -256,7 +261,7 @@ Workflows are the fundamental unit of a Temporal Application, and it all starts 
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -366,6 +371,11 @@ export async function example(args: ExampleArgs): Promise<{greeting: string}> {
 ```
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 #### Workflow parameters
@@ -377,7 +387,7 @@ All Workflow Definition parameters must be serializable.
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -471,6 +481,11 @@ const worker = await Worker.create({
 Optionally, in Workflow code, when calling an Activity, you can specify the Task Queue by passing the `taskQueue` option to `proxyActivities()`, `startChild`, or `executeChild`. If you do not specify a `taskQueue`, then the TypeScript SDK places Activity and Child Workflow Tasks in the same Task Queue as the Workflow Task Queue.
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 #### Workflow return values
@@ -482,7 +497,7 @@ However, Temporal APIs that must be used to get the result of a Workflow Executi
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -568,6 +583,11 @@ function useState<T = any>(name: string, initialValue: T) {
 ```
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 #### Workflow logic requirements
@@ -579,7 +599,7 @@ However, each Temporal SDK provides a set of APIs that can be used inside your W
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -644,6 +664,11 @@ Content is not available
 Content is not available
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 ### Develop Activities
@@ -655,7 +680,7 @@ For the Workflow to be able to execute the Activity we must define the [Activity
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -831,6 +856,11 @@ export async function greet(name: string): Promise<string> {
 ```
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 #### Activity parameters
@@ -843,7 +873,7 @@ A large Workflow Execution Event History can adversely impact the performance of
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -919,6 +949,11 @@ Content is not available
 Content is not available
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 #### Activity return values
@@ -930,7 +965,7 @@ There is no explicit limit to the amount of data that can be returned by an Acti
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -987,6 +1022,11 @@ export async function example(name: string): Promise<string> {
 ```
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 ### Start Activity Execution
@@ -1008,7 +1048,7 @@ Otherwise, no additional limitations exist on Activity implementations.
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -1322,6 +1362,11 @@ export async function example(name: string): Promise<string> {
 This imports the individual Activities and declares the type alias for each Activity.
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 #### Get Activity results
@@ -1332,7 +1377,7 @@ Workflow Executions can either block progress until the result is available via 
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -1493,6 +1538,11 @@ export async function DynamicWorkflow(activityName, ...args) {
 The `proxyActivities()` returns an object that calls the Activities in the function. `acts[activityName]()` references the Activity using the Activity name, then it returns the results.
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 ### Create Temporal Clients
@@ -1506,7 +1556,7 @@ However, it is acceptable and common to utilize a Temporal Client, to communicat
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -1728,6 +1778,11 @@ if (certificateS3Bucket) {
 ```
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 ### Run Worker Processes
@@ -1747,7 +1802,7 @@ A Worker Entity contains both a Workflow Worker and an Activity Worker so that i
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -1918,6 +1973,11 @@ This is a selected subset of options you are likely to use. Even more advanced o
 - [How to tune Workers](/operation/how-to-tune-workers)
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 #### Register multiple types
@@ -1930,7 +1990,7 @@ However, the failure of the Task does not cause the associated Workflow Executio
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -2036,6 +2096,11 @@ Content is not available
 Content is not available
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 ### Start Workflow Execution
@@ -2053,7 +2118,7 @@ The Temporal Cluster then creates the first Workflow Task resulting the first [W
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -2253,6 +2318,11 @@ You can test this by executing a Workflow Client command without a matching Work
 Workflow Execution run in a separate V8 isolate context in order to provide a [deterministic runtime](/typescript/determinism).
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 #### Set Task Queue
@@ -2264,7 +2334,7 @@ For any code to execute, a Worker Process must be running that contains a Worker
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -2356,6 +2426,11 @@ run().catch((err) => {
 `taskQueue` is the only required option; however, use `workflowsPath` and `activities` to register Workflows and Activities with the Worker.
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 #### Set Workflow Id
@@ -2365,7 +2440,7 @@ While it is not required, providing your own [Workflow Id](/workflows/#workflow-
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -2427,6 +2502,11 @@ const handle = await client.start(example, {
 This starts a new Client with the given Workflow Id, Task Queue name, and an argument.
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 ### Get Workflow results
@@ -2442,7 +2522,7 @@ In the Temporal Platform it is also acceptable to use Queries as the preferred m
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -2680,6 +2760,11 @@ try {
 ```
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 ## Features
@@ -2700,7 +2785,7 @@ A Signal type and its data must be serializable.
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -2752,6 +2837,11 @@ Content is not available
 Content is not available
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 #### Handle Signal
@@ -2761,7 +2851,7 @@ Workflows listen for Signals by the Signal's name.
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -2891,6 +2981,11 @@ Content is not available
 Content is not available
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 #### Send Signal from Client
@@ -2900,7 +2995,7 @@ When a Signal is sent successfully from the Temporal Client, the [WorkflowExecut
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -2965,6 +3060,11 @@ Content is not available
 Content is not available
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 #### Send Signal from Workflow
@@ -2976,7 +3076,7 @@ The [SignalExternalWorkflowExecutionInitiated](/references/events#signalexternal
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -3072,6 +3172,11 @@ Every month, a customer will be charged an amount specified by the update handle
 The update handler is a function that takes a number and returns a numer. That number is used to update the amount the customer is charge.
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 #### Send Signal-With-Start
@@ -3081,7 +3186,7 @@ Signal-With-Start can be used to start a Workflow Execution (if not already runn
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -3181,6 +3286,11 @@ await client.signalWithStart(YourWorkflow, {
 ```
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 ### Queries
@@ -3194,7 +3304,7 @@ A Query name (also called Query type) is simply a string name.
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -3236,6 +3346,11 @@ Content is not available
 Content is not available
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 #### Send Query
@@ -3245,7 +3360,7 @@ Queries are sent from a Temporal Client.
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -3322,6 +3437,11 @@ Content is not available
 Content is not available
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 #### Handle Query
@@ -3333,7 +3453,7 @@ Do not include any logic that causes [Command](/workflows/#commands) generation 
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -3481,6 +3601,11 @@ Content is not available
 Content is not available
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 ### Workflow timeouts & retries
@@ -3495,7 +3620,7 @@ Use the [Workflow Execution Timeout](/workflows/#workflow-execution-timeout) to 
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -3548,6 +3673,11 @@ Content is not available
 Content is not available
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 #### Workflow Run Timeout
@@ -3557,7 +3687,7 @@ Use the [Workflow Execution Timeout](/workflows/#workflow-execution-timeout) to 
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -3609,6 +3739,11 @@ Content is not available
 Content is not available
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 #### Workflow Task Timeout
@@ -3618,7 +3753,7 @@ Use the [Workflow Execution Timeout](/workflows/#workflow-execution-timeout) to 
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -3671,6 +3806,11 @@ Content is not available
 Content is not available
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 #### Workflow Retry Policy
@@ -3682,7 +3822,7 @@ Workflow Executions do not retry by default and Retry Policies should only be us
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -3739,6 +3879,11 @@ Content is not available
 Content is not available
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 ### Activity timeouts & retries
@@ -3753,7 +3898,7 @@ Use the [Schedule-To-Close Timeout](/activities/#schedule-to-close-timeout) to l
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -3846,6 +3991,11 @@ const {greet} = proxyActivities<typeof activities>({
 ```
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 #### Start-To-Close Timeout
@@ -3855,7 +4005,7 @@ Use the [Start-To-Close Timeout](/activities/#start-to-close-timeout) to limit t
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -3948,6 +4098,11 @@ const {greet} = proxyActivities<typeof activities>({
 ```
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 #### Schedule-To-Start Timeout
@@ -3957,7 +4112,7 @@ Use the [Schedule-To-Start Timeout](/activities/#schedule-to-start-timeout) to l
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -4049,6 +4204,11 @@ const {greet} = proxyActivities<typeof activities>({
 ```
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 #### Heartbeat Timeout
@@ -4058,7 +4218,7 @@ A [Heartbeat Timeout](/activities/#heartbeat-timeout) works in conjunction with 
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -4138,6 +4298,11 @@ const {longRunningActivity} = proxyActivities<typeof activities>({
 ```
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 #### Activity Retry Policy
@@ -4147,7 +4312,7 @@ Activity Executions are automatically associated with a default [Retry Policy](/
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -4256,6 +4421,11 @@ const {yourActivity} = proxyActivities<typeof activities>({
 ```
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 ### Child Workflows
@@ -4270,7 +4440,7 @@ After that, Child Workflow Executions may be abandoned using the default _Abando
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -4457,6 +4627,11 @@ Content is not available
 Content is not available
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 #### Parent Close Policy
@@ -4466,7 +4641,7 @@ A [Parent Close Policy](/workflows/#parent-close-policy) determines what happens
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -4550,6 +4725,11 @@ Content is not available
 Content is not available
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 ### Activity Heartbeats
@@ -4562,7 +4742,7 @@ Activity Heartbeats work in conjunction with a [Heartbeat Timeout](/activities/#
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -4705,6 +4885,11 @@ class FileProcessingActivitiesImpl implements FileProcessingActivities
 Content is not available
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 ### Cron Jobs
@@ -4716,7 +4901,7 @@ A Cron Schedule is provided as an option when the call to spawn a Workflow Execu
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -4778,6 +4963,11 @@ const handle = await client.start(scheduledWorkflow, {
   cronSchedule: "* * * * *", // start every minute
 });
 ```
+
+</TabItem>
+<TabItem value="python">
+
+Content is not available
 
 </TabItem>
 </Tabs>

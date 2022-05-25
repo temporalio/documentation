@@ -224,20 +224,44 @@ async function generateLangTabs(h3_section) {
 
 async function generateTabString(h3_section) {
   let tab_string = `<Tabs\n`;
+  const unavailable = "Content is not available";
   tab_string = `${tab_string}defaultValue="go"\n`;
   tab_string = `${tab_string}groupId="site-lang"\n`;
-  tab_string = `${tab_string}values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>\n\n`;
+  tab_string = `${tab_string}values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>\n\n`;
   tab_string = `${tab_string}<TabItem value="go">\n\n`;
-  tab_string = `${tab_string}${h3_section.tabs.go.markdown}\n\n`;
+  if (h3_section.tabs.go.markdown != undefined) {
+    tab_string = `${tab_string}${h3_section.tabs.go.markdown}\n\n`;
+  } else {
+    tab_string = `${tab_string}${unavailable}\n\n`;
+  }
   tab_string = `${tab_string}</TabItem>\n`;
   tab_string = `${tab_string}<TabItem value="java">\n\n`;
-  tab_string = `${tab_string}${h3_section.tabs.java.markdown}\n\n`;
+  if (h3_section.tabs.java.markdown != undefined) {
+    tab_string = `${tab_string}${h3_section.tabs.java.markdown}\n\n`;
+  } else {
+    tab_string = `${tab_string}${unavailable}\n\n`;
+  }
   tab_string = `${tab_string}</TabItem>\n`;
   tab_string = `${tab_string}<TabItem value="php">\n\n`;
-  tab_string = `${tab_string}${h3_section.tabs.php.markdown}\n\n`;
+  if (h3_section.tabs.php.markdown != undefined) {
+    tab_string = `${tab_string}${h3_section.tabs.php.markdown}\n\n`;
+  } else {
+    tab_string = `${tab_string}${unavailable}\n\n`;
+  }
   tab_string = `${tab_string}</TabItem>\n`;
   tab_string = `${tab_string}<TabItem value="typescript">\n\n`;
-  tab_string = `${tab_string}${h3_section.tabs.typescript.markdown}\n\n`;
+  if (h3_section.tabs.typescript.markdown != undefined) {
+    tab_string = `${tab_string}${h3_section.tabs.typescript.markdown}\n\n`;
+  } else {
+    tab_string = `${tab_string}${unavailable}\n\n`;
+  }
+  tab_string = `${tab_string}</TabItem>\n`;
+  tab_string = `${tab_string}<TabItem value="python">\n\n`;
+  if (h3_section?.tabs?.python?.markdown != undefined) {
+    tab_string = `${tab_string}${h3_section.tabs.python.markdown}\n\n`;
+  } else {
+    tab_string = `${tab_string}${unavailable}\n\n`;
+  }
   tab_string = `${tab_string}</TabItem>\n`;
   tab_string = `${tab_string}</Tabs>`;
   return tab_string;
