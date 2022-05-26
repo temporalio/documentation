@@ -255,6 +255,17 @@ module.exports = {
                   items: ["tctl/activity/complete", "tctl/activity/fail"],
                 },
                 {
+                  type:"category",
+                  label:"admin",
+                  collapsible:true,
+                  collapsed:true,
+                  link: {
+                    type:"doc",
+                    id: "tctl/admin/index",
+                  },
+                  items: ["tctl/admin/cluster/index", "tctl/admin/db/index", "tctl/admin/decode/index", "tctl/admin/dlq/index", "tctl/admin/history_host/index", "tctl/admin/membership/index", "tctl/admin/shard/index", "tctl/admin/workflow/index"]
+                },
+                {
                   type: "category",
                   label: "batch",
                   collapsible: true,
