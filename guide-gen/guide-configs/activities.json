@@ -69,7 +69,13 @@
           "header": "Activity Heartbeats",
           "type": "explanation",
           "path": "concepts/what-is-an-activity-heartbeat"
+        },
+        {
+          "header": "Asynchronous Activity Completion",
+          "type": "explanation",
+          "path": "concepts/what-is-asynchronous-activity-completion"
         }
+
       ]
     },
     {
