@@ -50,10 +50,10 @@ module.exports = {
       additionalLanguages: ["java", "ruby", "php"],
     },
     docs: {
-        sidebar: {
-            hideable: true,
-            autoCollapseCategories: true,
-        },
+      sidebar: {
+        hideable: true,
+        autoCollapseCategories: true,
+      },
     },
     navbar: {
       hideOnScroll: false,
