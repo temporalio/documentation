@@ -31,15 +31,16 @@ Fairly precise upgrade paths and support have been established starting from Tem
 
 We provide maintenance support for previously published minor and major versions by continuing to release critical bug fixes related to security, the prevention of data loss, and reliability, whenever they are found.
 
-We aim to publish incremental upgrade guides for each minor and major version, which will include specifics around dependency upgrades that we have tested for (e.g. Cassandra 3.0 -> 3.11).
+We aim to publish incremental upgrade guides for each minor and major version, which include specifics about dependency upgrades that we have tested for (such as Cassandra 3.0 -> 3.11).
 
-We will offer maintenance support of the last 3 **minor** versions after a release, and do not plan to "backport" patches beyond that.
+We offer maintenance support of the last three **minor** versions after a release and do not plan to "backport" patches beyond that.
 
-We will offer maintenance support of **major** versions for at least 12 months after a GA release, and provide at least 6 months' notice before EOL/deprecating support.
+We offer maintenance support of **major** versions for at least 12 months after a GA release, and we provide at least 6 months' notice before EOL/deprecating support.
 
 #### Dependencies
 
-Temporal offers official support for, and is tested against, dependencies with the exact versions described in the `go.mod` file of corresponding release tag (Example, [v1.5.1](https://github.com/temporalio/temporal/tree/v1.5.1) dependencies are documented in [the go.mod for v1.5.1](https://github.com/temporalio/temporal/blob/v1.5.1/go.mod)).
+Temporal offers official support for, and is tested against, dependencies with the exact versions described in the `go.mod` file of the corresponding release tag.
+(For example, [v1.5.1](https://github.com/temporalio/temporal/tree/v1.5.1) dependencies are documented in [the go.mod for v1.5.1](https://github.com/temporalio/temporal/blob/v1.5.1/go.mod).)
 
 #### Frontend Service
 

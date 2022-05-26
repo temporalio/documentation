@@ -36,27 +36,27 @@ An Elasticsearch database can be added to enable [Advanced Visibility](/concepts
 **Versions**
 
 Temporal tests compatibility by spanning the **minimum** and **maximum** stable non-EOL major versions for each supported database.
-As of time of writing, these specific versions used in our test pipelines and actively tested before we release any version of Temporal:
+As of time of writing, these specific versions are used in our test pipelines and actively tested before we release any version of Temporal:
 
 - **Cassandra v3.11 and v4.0**
 - **PostgreSQL v10.18 and v13.4**
 - **MySQL v5.7 and v8.0** (specifically 8.0.19+ due to a bug)
 
-We will update these support ranges once a year and the release notes of each Temporal Server will declare when we plan to drop support for database versions reaching End of Life.
-Since Temporal Server primarily relies on core database functionality, we do not expect compatibility to break often.
+We update these support ranges once a year.
+The release notes of each Temporal Server declare when we plan to drop support for database versions reaching End of Life.
 
-- We only rely on core database features, so compatibility should not break often.
+- Because Temporal Server primarily relies on core database functionality, we do not expect compatibility to break often.
   Temporal has no opinions on database upgrade paths; as long as you can upgrade your database according to each project's specifications, Temporal should work with any version within supported ranges.
 - We do not run tests with vendors like Vitess and CockroachDB, so you rely on their compatibility claims if you use them.
-  Please feel free to discuss them with fellow users [in our forum](https://community.temporal.io/).
-- Temporal is [working on official SQLite v3.x persistence](https://github.com/temporalio/temporal/pulls?q=is%3Apr+sort%3Aupdated-desc+sqlite), but this is only meant for development and testing, not production usage.
+  Feel free to discuss them with fellow users [in our forum](https://community.temporal.io/).
+- Temporal is [working on official SQLite v3.x persistence](https://github.com/temporalio/temporal/pulls?q=is%3Apr+sort%3Aupdated-desc+sqlite), but this is meant only for development and testing, not production usage.
   Cassandra, MySQL, and PostgreSQL schemas are supported and thus can be used as the Server's database.
 
 #### Monitoring & observation
 
 Temporal emits metrics by default in a format that is supported by Prometheus.
 Monitoring and observing those metrics is optional.
-Any software that can pull metrics that supports the same format could be used, but we only ensure it works with Prometheus and Grafana versions.
+Any software that can pull metrics that supports the same format could be used, but we ensure it works with Prometheus and Grafana versions only.
 
 - **Prometheus >= v2.0**
 - **Grafana >= v2.5**

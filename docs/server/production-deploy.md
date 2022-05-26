@@ -22,7 +22,7 @@ If you are interested in a fully managed service hosting Temporal Server, please
 
 Temporal Server is a Go application which you can [import](/server/options) or run as a binary (we offer [builds with every release](https://github.com/temporalio/temporal/releases)).
 
-If you are just running the Go binary, Go is not required.
+If you are running only the Go binary, Go is not required.
 
 But if you are building Temporal or running it from source, [Go v1.16+ is required](https://github.com/temporalio/temporal/blob/master/CONTRIBUTING.md).
 
