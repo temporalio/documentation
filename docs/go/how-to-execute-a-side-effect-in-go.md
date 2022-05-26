@@ -12,7 +12,7 @@ Use the [`SideEffect`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SideEffect
 
 Pass it an instance of `context.Context` and the function to execute.
 
-The SideEffect API returns a Future, an instance of [`converter.EncodedValue`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SideEffect).
+The `SideEffect` API returns a Future, an instance of [`converter.EncodedValue`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SideEffect).
 
 Use the `Get` method on the Future to retrieve the result of the Side Effect.
 
@@ -22,7 +22,7 @@ The following example demonstrates the correct way to use `SideEffect`:
 
 ```go
 encodedRandom := workflow.SideEffect(ctx, func(ctx workflow.Context) interface{} {
-  return rand.Intn(100)
+ return rand.Intn(100)
 })
 
 var random int
@@ -40,8 +40,8 @@ The following example demonstrates how NOT to use `SideEffect`:
 // This code is nondeterministic.
 var random int
 workflow.SideEffect(func(ctx workflow.Context) interface{} {
-       random = rand.Intn(100)
-       return nil
+      random = rand.Intn(100)
+      return nil
 })
 // random will always be 0 in replay, so this code is nondeterministic.
 ```
