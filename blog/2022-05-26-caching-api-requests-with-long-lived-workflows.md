@@ -13,8 +13,8 @@ release_version: V1.15
 
 <!--truncate-->
 
-A [Temporal Workflow Execution](/workflows#workflow-executions) has no time limit.
-You can write a Workflow that runs forever, storing some state and responding to Signals and Queries, as long as you remember to use [Continue-As-New](/workflows#continue-as-new).
+A [Temporal Workflow Execution](https://docs.temporal.io/workflows#workflow-executions) has no time limit.
+You can write a Workflow that runs forever, storing some state and responding to Signals and Queries, as long as you remember to use [Continue-As-New](https://docs.temporal.io/workflows#continue-as-new).
 One neat use case for long-lived Workflows is caching API requests.
 
 For example, suppose you want to display prices in various currencies based on cached exchange rates.
@@ -124,7 +124,7 @@ async function run() {
 }
 ```
 
-This Workflow is missing one key detail: a [Continue-As-New](/workflows#continue-as-new).
+This Workflow is missing one key detail: a [Continue-As-New](https://docs.temporal.io/workflows#continue-as-new).
 There's more about that later in this blog post.
 
 ## Storing Historical Data
@@ -175,7 +175,7 @@ If the machine running `exchangeRatesWorkflow()` crashes, Temporal can resume th
 ## Continue-As-New
 
 The `exchangeRatesWorkflow` can run for an unlimited period of time: days, months, even years.
-However, Temporal caps a Workflow at 50,000 events. (See the [Time constraints](/workflows#time-constraints) section in [Temporal Workflows](/workflows).)
+However, Temporal caps a Workflow at 50,000 events. (See the [Time constraints](https://docs.temporal.io/workflows#time-constraints) section in [Temporal Workflows](https://docs.temporal.io/workflows).)
 In the `exchangeRatesWorkflow`, four events are fired at every iteration of the `while` loop, assuming no API errors.
 
 1. `EVENT_TYPE_TIMER_FIRED`: the `setTimeout()` resolved and it's time to refresh the exchange rates
