@@ -219,7 +219,6 @@ module.exports = {
         // Will be passed to @docusaurus/plugin-content-docs
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
-          sidebarCollapsible: true,
           routeBasePath: "/",
           exclude: ["**/app-dev-context/**", "**/concept-context/**"], // do not render context content
           editUrl: "https://github.com/temporalio/documentation/blob/master",
