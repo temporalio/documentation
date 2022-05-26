@@ -91,6 +91,7 @@ a:hover {
 .tailwindcss ul {
   list-style: none;
   padding: 0;
+  margin-bottom: 0;
 }
 .tailwindcss .pl-4 {
   padding-left: 1rem;
@@ -398,7 +399,7 @@ h1 {
 }
 
 .landing-card-list {
-  padding-bottom: 1.5em;
+  /* padding-bottom: 0em; */
   margin-right: 2.5em;
   /* width: 15em; */
   display: inline-block;

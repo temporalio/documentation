@@ -177,7 +177,7 @@ function Explained() {
           <InfoSVG />
         </div>
         <div className="p-landing">
-          <h3 className="mb-1 aside-head">Temporal Cloud is in beta</h3>
+          <h3 className="mb-1 aside-head">Temporal Cloud is early access</h3>
           <p className="mb-0">
             Access to Temporal Cloud is currently by invitation only.
           </p>
