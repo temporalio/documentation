@@ -4783,3 +4783,130 @@ const handle = await client.start(scheduledWorkflow, {
 
 </TabItem>
 </Tabs>
+
+### Search Attributes
+
+The typical method of retrieving a Workflow Execution is by its Workflow Id.
+However, sometimes we want to be able to retrieve one or more Executions based on other properties.
+For example, we may need to get all Executions of a certain type that have failed within a certain time range so we can start new ones with the same arguments.
+We can do this type of query with [Search Attributes](/concepts/what-is-a-search-attribute/).
+
+- [**Default** Search Attributes](/concepts/what-is-a-search-attribute/#default-search-attributes) like `WorkflowType`, `StartTime`, and `ExecutionStatus` are automatically added to Workflow Executions.
+- **Custom** Search Attributes can contain our own domain-specific data (like `customerId` or `numItems`).
+  A few [generic Custom Search Attributes](/concepts/what-is-a-search-attribute/#custom-search-attributes) like `CustomKeywordField` and `CustomIntField` are created by default in Temporal's [Docker Compose](/clusters/quick-install/#docker-compose).
+
+The steps to using Search Attributes are:
+
+- Create a new Search Attribute in your Cluster [using `tctl`](/tctl/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl/).
+- Set the value of the Search Attribute for a Workflow Execution:
+  - On the Client by including it as an option when starting the Execution
+  - In the Worklow by calling `UpsertSearchAttributes`
+- Read the value of the Search Attribute:
+  - On the Client by calling `DescribeWorkflow`
+  - In the Workflow by looking at `WorkflowInfo`
+- Query Workflow Executions by the Search Attribute using a [List Filter](/concepts/what-is-a-list-filter/):
+  - [In the UI](/web-ui/how-to-use-a-list-filter-in-the-temporal-web-ui)
+  - [In `tctl`](/tctl/workflow/list/#--query)
+  - In code by calling `ListWorkflowExecutions`
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+Content is not available
+
+</TabItem>
+<TabItem value="java">
+
+Content is not available
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+#### Client
+
+We can set [`WorkflowOptions.searchAttributes`](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions#searchattributes) during `client.start()` or `client.execute()` and read with [`handle.describe()`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle#describe):
+
+<!--SNIPSTART typescript-search-attributes-client -->
+<!--SNIPEND-->
+
+The type of `searchAttributes` is `Record<string, string[] | number[] | boolean[] | Date[]>`.
+
+#### Workflow
+
+Inside a Workflow, we can read from [`WorkflowInfo.searchAttributes`](https://typescript.temporal.io/api/interfaces/workflow.WorkflowInfo#searchattributes) and call [`upsertSearchAttributes`](https://typescript.temporal.io/api/namespaces/workflow#upsertsearchattributes):
+
+<!--SNIPSTART typescript-search-attributes-workflow -->
+<!--SNIPEND-->
+
+#### Listing
+
+For now, we can call [`client.service.listWorkflowExecutions()`](https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.WorkflowService-1#listworkflowexecutions). A friendlier `client.listWorkflows()` function that does Payload decoding is planned.
+
+```ts
+const {executions, nextPageToken} = await client.service.listWorkflowExecutions(
+  {
+    namespace: "default",
+    ...(input || {}),
+  }
+);
+const decodedWorkflows = executions.map(
+  ({
+    execution,
+    type,
+    startTime,
+    closeTime,
+    status,
+    historyLength,
+    parentNamespaceId,
+    parentExecution,
+    executionTime,
+    memo: memoRaw,
+    searchAttributes: searchAttributesRaw,
+    // autoResetPoints,
+    taskQueue,
+    stateTransitionCount,
+  }) => {
+    let memo: Record<string, unknown> | undefined | null = null;
+    let searchAttributes: Record<string, unknown> | undefined | null = null;
+
+    try {
+      memo = mapFromPayloads(defaultConverter, memoRaw?.fields);
+      searchAttributes = mapFromPayloads(
+        searchAttributeConverter,
+        searchAttributesRaw?.indexedFields
+      );
+    } catch (e) {
+      // unable to convert with default converter
+    }
+
+    return {
+      id: execution!.workflowId,
+      runId: execution!.runId,
+      type: type!.name,
+      status: status!,
+      taskQueue: taskQueue!,
+      historyLength: historyLength!.toInt(),
+      startTime: tsToDate(startTime!),
+      executionTime: tsToDate(executionTime!),
+      closeTime: optionalTsToDate(closeTime),
+      parentExecution,
+      parentNamespace: parentNamespaceId || null, // convert empty string to null
+      memo: memo && Object.keys(memo!).length === 0 ? null : memo, // convert empty object to null
+      searchAttributes,
+      stateTransitionCount: stateTransitionCount!.toInt(),
+    } as unknown as Workflow;
+  }
+);
+```
+
+</TabItem>
+</Tabs>

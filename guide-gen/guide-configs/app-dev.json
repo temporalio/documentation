@@ -1257,6 +1257,37 @@
               "path": "typescript/how-to-set-a-cron-job-in-typescript"
             }
           ]
+        },
+        {
+          "header": "Search Attributes",
+          "type": "context",
+          "path": "app-dev-context/search-attributes"
+        },
+        {
+          "header": "none",
+          "type": "lang-tabs",
+          "langs": [
+            {
+              "lang": "go",
+              "title": "Go",
+              "path": "none"
+            },
+            {
+              "lang": "java",
+              "title": "Java",
+              "path": "none"
+            },
+            {
+              "lang": "php",
+              "title": "PHP",
+              "path": "none"
+            },
+            {
+              "lang": "typescript",
+              "title": "TypeScript",
+              "path": "typescript/how-to-use-search-attributes-in-typescript"
+            }
+          ]
         }
       ]
     }
