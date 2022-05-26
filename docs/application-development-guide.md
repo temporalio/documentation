@@ -4260,6 +4260,23 @@ const {yourActivity} = proxyActivities<typeof activities>({
 </TabItem>
 </Tabs>
 
+#### Activity retry simulator
+
+Use this tool to visualize total Activity Execution times and experiment with different Activity timeouts and Retry Policies.
+
+The simulator is based on a common Activity use-case, which is to call a third party HTTP API and return the results.
+See the example code snippets below.
+
+Use the Activity Retries settings to configure how long the API request takes to succeed or fail.
+There is an option to generate scenarios.
+The "Task Time in Queue" simulates the time the Activity Task might be waiting in the Task Queue.
+
+Use the Activity Timeouts and Retry Policy settings to see how they impact the success or failure of an Activity Execution.
+
+import RetrySimulator from '/docs/components/RetrySimulator/RetrySimulator';
+
+<RetrySimulator />
+
 ### Child Workflows
 
 A [Child Workflow Execution](/workflows/#child-workflows) is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.

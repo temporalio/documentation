@@ -23,6 +23,8 @@
 /concepts/signals         /signals
 /concepts/queries         /workflows#queries
 /concepts/task-queues         /tasks
+/concepts/what-is-a-retry-policy/#visualizing-retry-policies        /application-development-guide#activity-retry-simulator
+/retry-policies/#visualizing-retry-policies        /application-development-guide#activity-retry-simulator
 /temporal-explained/introduction        /temporal
 /temporal-explained/workflows        /workflows
 /temporal-explained/activities        /activities
