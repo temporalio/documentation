@@ -18,10 +18,11 @@ A Retry Policy is a collection of attributes that instructs the Temporal Server 
 
 - [How to set a Retry Policy for a Workflow](/application-development-guide/#workflow-retry-policy)
 - [How to set a custom Retry Policy for an Activity](/application-development-guide/#activity-retry-policy)
+- [Activity retry simulator](/application-development-guide#activity-retry-simulator)
 
 <!-- ![Diagram that shows the retry interval and its formula](/img/retry-interval-diagram.png) -->
 
-### Default behavior
+## Default behavior
 
 - **Workflow Execution**: When a Workflow Execution is spawned, it is not associated with a default Retry Policy and thus does not retry by default.
   The intention is that a Workflow Definition should be written to never fail due to intermittent issues; an Activity is designed to handle such issues.
@@ -29,7 +30,7 @@ A Retry Policy is a collection of attributes that instructs the Temporal Server 
 - **Activity Execution**: When an Activity Execution is spawned, it is associated with a default Retry Policy, and thus Activity Task Executions are retried by default.
   When an Activity Task Execution is retried, the Cluster places a new [Activity Task](/tasks/#activity-task) into its respective [Activity Task Queue](/tasks/#task-queues), which results in a new Activity Task Execution.
 
-### Custom Retry Policy
+## Custom Retry Policy
 
 To use a custom Retry Policy, provide it as an options parameter when starting a Workflow Execution or Activity Execution.
 Only certain scenarios merit starting a Workflow Execution with a custom Retry Policy, such as the following:
@@ -37,9 +38,9 @@ Only certain scenarios merit starting a Workflow Execution with a custom Retry P
 - A [Temporal Cron Job](/workflows/#cron-jobs) or some other stateless, always-running Workflow Execution that can benefit from retries.
 - A file-processing or media-encoding Workflow Execution that downloads files to a host.
 
-### Properties
+## Properties
 
-#### Default values for Retry Policy
+### Default values for Retry Policy
 
 ```
 Initial Interval     = 1 second
@@ -49,13 +50,13 @@ Maximum Attempts     = ∞
 Non-Retryable Errors = []
 ```
 
-#### Initial Interval
+### Initial Interval
 
 - **Description**: Amount of time that must elapse before the first retry occurs.
   - **The default value is 1 second.**
 - **Use case**: This is used as the base interval time for the [Backoff Coefficient](#backoff-coefficient) to multiply against.
 
-#### Backoff Coefficient
+### Backoff Coefficient
 
 - **Description**: The value dictates how much the _retry interval_ increases.
   - **The default value is 2.0.**
@@ -64,13 +65,13 @@ Non-Retryable Errors = []
   By having a backoff coefficient greater than 1.0, the first few retries happen relatively quickly to overcome intermittent failures, but subsequent retries happen farther and farther apart to account for longer outages.
   Use the [Maximum Interval](#maximum-interval) attribute to prevent the coefficient from increasing the retry interval too much.
 
-#### Maximum Interval
+### Maximum Interval
 
 - **Description**: Specifies the maximum interval between retries.
   - **The default value is 100 times the [Initial Interval](#initial-interval).**
 - **Use case**: This attribute is useful for [Backoff Coefficients](#backoff-coefficient) that are greater than 1.0 because it prevents the retry interval from growing infinitely.
 
-#### Maximum Attempts
+### Maximum Attempts
 
 - **Description**: Specifies the maximum number of execution attempts that can be made in the presence of failures.
   - **The default is unlimited.**
@@ -81,7 +82,7 @@ Non-Retryable Errors = []
 - **Use case**: Use this attribute to ensure that retries do not continue indefinitely.
   However, in the majority of cases, we recommend relying on the Workflow Execution Timeout, in the case of [Workflows](#workflow), or Schedule-To-Close Timeout, in the case of [Activities](#activity), to limit the total duration of retries instead of using this attribute.
 
-#### Non-Retryable Errors
+### Non-Retryable Errors
 
 - **Description**: Specifies errors that shouldn't be retried.
   - **Default is none.**
@@ -89,14 +90,14 @@ Non-Retryable Errors = []
 - **Use case**: There may be errors that you know of that should not trigger a retry.
   In this case you can specify them such that if they occur, the given execution will not be retried.
 
-### Retry interval
+## Retry interval
 
 The wait time before a retry is the _retry interval_. A retry interval is the smaller of two values:
 
 - The [Initial Interval](#initial-interval) multiplied by the [Backoff Coefficient](#backoff-coefficient) raised to the power of the number of retries.
 - The [Maximum Interval](#maximum-interval).
 
-### Event History
+## Event History
 
 There are some subtle nuances to how Events are recorded to an Event History when a Retry Policy comes into play.
 
@@ -109,9 +110,3 @@ There are some subtle nuances to how Events are recorded to an Event History whe
   The new Workflow Execution is created immediately.
   But the first Workflow Task won't be scheduled until the backoff duration is exhausted.
   That duration is recorded as the `firstWorkflowTaskBackoff` field of the new run's `WorkflowExecutionStartedEventAttributes` event.
-
-### Visualizing Retry Policies
-
-import ActivityRetrySimulator from "/docs/app-dev-context/activity-retry-simulator.md"
-
-<ActivityRetrySimulator/>
