@@ -191,7 +191,7 @@ You can think of Continue-As-New as restarting your Workflow from an initial sta
 The only data that `exchangeRatesWorkflow()` needs to respond to queries is the `ratesByDay` map, so `exchangeRatesWorkflow()` needs to Continue-As-New with a serialized version of the `ratesByDay` map.
 The `exchangeRatesWorkflow()` also needs to be able to resume from a previous state.
 Continue-As-New just calls `exchangeRatesWorkflow()` with an initial state.
-Below is 
+Following is 
 
 ```ts
 const maxNumRates = 30;
