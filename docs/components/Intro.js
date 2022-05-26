@@ -140,43 +140,45 @@ function CliSVG() {
 function Explained() {
   return (
     <div className="landing-card">
-      <ul className="landing-card-list-b logos">
-        <li className="list-logo">
-          <img
-            className="w-10 h-8 pl-1 transition hover:scale-110 code-logo"
-            src="/img/golang.svg"
-            alt="Go lang logo"
-          />
-        </li>
-        <li className="list-logo">
-          <img
-            className="w-7 h-7 pl-1 transition hover:scale-110 code-logo"
-            src="/img/java.svg"
-            alt="Java logo"
-          />
-        </li>
-        <li className="list-logo">
-          <img
-            className="w-10 h-8 pl-1 transition hover:scale-110 code-logo"
-            src="/img/php.svg"
-            alt="PHP logo"
-          />
-        </li>
-        <li className="list-logo">
-          <img
-            className="w-7 h-7 pl-1 transition hover:scale-110 code-logo"
-            src="/img/typescript.svg"
-            alt="TypeScript logo"
-          />
-        </li>
-      </ul>
+      <div className="supported-tech">
+        <ul className="landing-card-list-b logos">
+          <li className="list-logo">
+            <img
+              className="w-10 h-8 pl-1 transition hover:scale-110 code-logo"
+              src="/img/golang.svg"
+              alt="Go lang logo"
+            />
+          </li>
+          <li className="list-logo">
+            <img
+              className="w-7 h-7 pl-1 transition hover:scale-110 code-logo"
+              src="/img/typescript.svg"
+              alt="TypeScript logo"
+            />
+          </li>
+          <li className="list-logo">
+            <img
+              className="w-10 h-8 pl-1 transition hover:scale-110 code-logo"
+              src="/img/php.svg"
+              alt="PHP logo"
+            />
+          </li>
+          <li className="list-logo">
+            <img
+              className="w-7 h-7 pl-1 transition hover:scale-110 code-logo"
+              src="/img/java.svg"
+              alt="Java logo"
+            />
+          </li>
+        </ul>
+      </div>
       <div className="aside flex">
         <div className="aside-svg">
           <InfoSVG />
         </div>
         <div className="p-landing">
-          <h3 className="mb-0 aside-head">Temporal Cloud is in beta</h3>
-          <p className="mb-8 ">
+          <h3 className="mb-1 aside-head">Temporal Cloud is in beta</h3>
+          <p className="mb-0">
             Access to Temporal Cloud is currently by invitation only.
           </p>
           <p>
