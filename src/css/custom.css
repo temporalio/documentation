@@ -347,7 +347,6 @@ h1 {
   font-size: 2rem;
   font-weight: 600;
   letter-spacing: -2px;
-  line-height: 90%;
 }
 
 @media only screen and (min-width: 1590px) {
@@ -523,10 +522,22 @@ h1 {
   border-radius: 0.5rem;
   border-color: #2563eb;
   border-style: solid;
-  padding: 1rem 1.5rem 0rem 1.5rem;
+  padding: 1.2rem 1.25rem 0.25rem 1.25rem;
   font-family: "Aeonik";
   font-size: 0.875rem;
   font-weight: 400;
+}
+
+@media only screen and (min-width: 640px) {
+  .aside {
+    width: 27rem;
+  }
+}
+
+@media only screen and (max-width: 639px) {
+  .aside {
+    width: 20rem;
+  }
 }
 
 .aside-svg {
