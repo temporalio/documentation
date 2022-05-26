@@ -6,5 +6,5 @@ description: Run your first application with Temporal and experience some of tha
 
 Run your first application with Temporal and experience some of that value propositions.
 
-- [Go](/docs/go/run-your-first-app-tutorial)
-- [Java](/docs/java/run-your-first-app-tutorial)
+- [Go](/go/run-your-first-app-tutorial)
+- [Java](/java/run-your-first-app-tutorial)

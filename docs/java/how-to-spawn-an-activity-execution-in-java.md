@@ -2,7 +2,7 @@
 id: how-to-spawn-an-activity-execution-in-java
 title: How to spawn an Activity Execution in Java
 sidebar_label: Activity Execution
-description: Activities are remote procedure calls that must be invoked from within a Workflow using `ActivityStub`.
+description: Invoke Activities using `Workflow.newActivityStub`(type-safe) or `Workflow.newUntypedActivityStub` (untyped) from within a Workflow.
 tags:
   - java
   - developer-guide
@@ -13,21 +13,21 @@ Activities are not executable on their own. You cannot start an Activity Executi
 
 Note that before an Activity Execution is invoked:
 
-- Activity options (either [`setStartToCloseTimeout`](/docs/concepts/what-is-a-start-to-close-timeout) or [`ScheduleToCloseTimeout`](/docs/concepts/what-is-a-schedule-to-close-timeout) are required) must be set for the Activity.
-  See [Activity Options](/docs/java/how-to-set-activityoptions-in-java).
+- Activity options (either [`setStartToCloseTimeout`](/concepts/what-is-a-start-to-close-timeout) or [`ScheduleToCloseTimeout`](/concepts/what-is-a-schedule-to-close-timeout) are required) must be set for the Activity.
+  For details, see [Set Activity Options](/java/how-to-set-activityoptions-in-java) and [Activity Options reference](/java/reference-activityoptions).
 - The Activity must be registered with a Worker.
-  See [Worker Program](/docs/java/how-to-develop-a-worker-program-in-java)
+  See [Worker Program](/java/how-to-develop-a-worker-program-in-java)
 - Activity code must be thread-safe.
 
 Activities should only be instantiated using stubs from within a Workflow.
 An `ActivityStub` returns a client-side stub that implements an Activity interface.
 You can invoke Activities using `Workflow.newActivityStub`(type-safe) or `Workflow.newUntypedActivityStub` (untyped).
 
-Calling a method on the Activity interface schedules the Activity invocation with the Temporal service, and generates an [`ActivityTaskScheduled` Event](/docs/concepts/what-is-an-event#activitytaskscheduled).
+Calling a method on the Activity interface schedules the Activity invocation with the Temporal service, and generates an [`ActivityTaskScheduled` Event](/concepts/what-is-an-event#activitytaskscheduled).
 
 Activities can be invoked synchronously or asynchronously.
 
-#### Invoking Activities Synchronously
+**Invoking Activities Synchronously**
 
 In the following example, we use the type-safe `Workflow.newActivityStub` within the "FileProcessingWorkflow" Workflow implementation to create a client-side stub of the `FileProcessingActivities` class. We also define `ActivityOptions` and set `setStartToCloseTimeout` option to one hour.
 
@@ -99,7 +99,7 @@ This is useful when the Activity type is not known at compile time, or to invoke
     activity.execute("ComposeGreeting", String.class, "Hello World" , "Spanish");
 ```
 
-#### Invoking Activities Asynchronously
+**Invoking Activities Asynchronously**
 
 Sometimes Workflows need to perform certain operations in parallel.
 The Temporal Java SDK provides the `Async` class which includes static methods used to invoke any Activity asynchronously.
@@ -160,7 +160,7 @@ The following example shows how to call two Activity methods, "download" and "up
   }
 ```
 
-#### Activity Execution Context
+**Activity Execution Context**
 
 `ActivityExecutionContext` is a context object passed to each Activity implementation by default.
 You can access it in your Activity implementations via `Activity.getExecutionContext()`.
@@ -192,4 +192,4 @@ public class FileProcessingActivitiesImpl implements FileProcessingActivities {
 }
 ```
 
-For details on getting the results of an Activity Execution, see [Activity Execution Result](/docs/java/how-to-get-the-result-of-an-activity-execution-in-java).
+For details on getting the results of an Activity Execution, see [Activity Execution Result](/java/how-to-get-the-result-of-an-activity-execution-in-java).

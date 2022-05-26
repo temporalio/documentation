@@ -7,5 +7,5 @@ tags:
   - explanation
 ---
 
-In day-to-day conversations, the term Worker is used to denote either a [Worker Program](/docs/concepts/what-is-a-worker-program), a [Worker Process](/docs/concepts/what-is-a-worker-process), or a [Worker Entity](/docs/concepts/what-is-a-worker-entity).
+In day-to-day conversations, the term Worker is used to denote either a [Worker Program](/concepts/what-is-a-worker-program), a [Worker Process](/concepts/what-is-a-worker-process), or a [Worker Entity](/concepts/what-is-a-worker-entity).
 Temporal documentation aims to be explicit and differentiate between them.

@@ -8,7 +8,7 @@ tags:
   - developer-guide
 ---
 
-Set WorkflowServiceStubs specific options with the `WorkflowServiceStubOptions` class.
+Set `WorkflowServiceStub`-specific options with the `WorkflowServiceStubOptions` class.
 The following table lists the options used to configure `WorkflowServiceStub`.
 
 | Option                             | Description                                                                 | Type            |

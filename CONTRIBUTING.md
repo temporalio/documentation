@@ -66,6 +66,30 @@ To reformat:
 yarn format
 ```
 
+To reformat incremental changes:
+
+```
+yarn prettier --write .prettierrc.json
+```
+
+## Guide generation
+
+The guide generation script is an Alpha state.
+
+Each JSON configuration file in [guide-gen/guide-configs](guide-gen/guide-configs) relates to a specific concept and identifies related Markdown files. The [index.js](guide-gen/index.js) script uses these configuration files to generate guides such as [Concepts](https://docs.temporal.io/temporal/#) and [Application development](https://docs.temporal.io/application-development-guide).
+
+To update a guide, make your changes in the source files that are named in the matching configuration file. For example, if you found a typo in the Concept section _What is a Task?_, you would open [docs/concepts/what-is-a-task.md](docs/concepts/what-is-a-task.md) and make the edit directly there. Then rebuild the Concept guide by running the following commands:
+
+```bash
+yarn gen
+```
+
+To build and view the site locally, run:
+
+```bash
+yarn start
+```
+
 ## Pull requests
 
 You can preview the changes made by your PR by clicking "Details" next to the Netlify deploy-preview check.

@@ -7,7 +7,7 @@ tags:
   - explanation
 ---
 
-An append-log of [Events](/docs/concepts/what-is-an-event) for your application.
+An append-log of [Events](/concepts/what-is-an-event) for your application.
 
 - Event History is durably persisted by the Temporal service, enabling seamless recovery of your application state from crashes or failures.
 - It also serves as an audit log for debugging.

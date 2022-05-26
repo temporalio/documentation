@@ -1,6 +1,6 @@
 ---
 id: how-to-structure-a-project-in-typescript
-title: How to structure a project in Typescript
+title: How to structure a project in TypeScript
 sidebar_label: Structure a project
 description: Structure a project
 tags:

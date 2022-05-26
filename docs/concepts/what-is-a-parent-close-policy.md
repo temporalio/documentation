@@ -8,7 +8,10 @@ tags:
   - child-workflow-executions
 ---
 
-A Parent Close Policy determines what happens to a [Child Workflow Execution](/docs/concepts/what-is-a-child-workflow-execution) if its Parent changes to a Closed status (Completed, Failed, or Timed out).
+A Parent Close Policy determines what happens to a [Child Workflow Execution](/concepts/what-is-a-child-workflow-execution) if its Parent changes to a Closed status (Completed, Failed, or Timed out).
+
+- [How to set a Parent Close Policy](/application-development-guide/#parent-close-policy)
+
 There are three possible values:
 
 - **Abandon**: the Child Workflow Execution is not affected.

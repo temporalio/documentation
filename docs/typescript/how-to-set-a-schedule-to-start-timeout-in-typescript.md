@@ -1,6 +1,6 @@
 ---
 id: how-to-set-a-schedule-to-start-timeout-in-typescript
-title: How to set a Schedule to Start Timeout in Typescript
+title: How to set a Schedule to Start Timeout in TypeScript
 sidebar_label: Set a Schedule to Start Timeout
 description: Set a Schedule to Start Timeout
 tags:

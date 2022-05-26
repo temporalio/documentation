@@ -11,11 +11,6 @@
       "header": "none",
       "h3_sections": [
         {
-  				"header": "none",
-  				"type": "explanation",
-  				"path": "concept-context/intro"
-  			},
-        {
           "header": "none",
           "type": "explanation",
           "path": "concepts/what-is-a-worker"

@@ -4,7 +4,7 @@ title: Hello World! tutorials
 description: Build a Hello World! Temporal Application
 ---
 
-- [Go](/docs/go/hello-world-tutorial)
-- [Java](/docs/java/hello-world-tutorial)
-- [PHP](/docs/php/hello-world)
-- [TypeScript](/docs/typescript/hello-world)
+- [Go](/go/hello-world-tutorial)
+- [Java](/java/hello-world-tutorial)
+- [PHP](/php/hello-world)
+- [TypeScript](/typescript/hello-world)

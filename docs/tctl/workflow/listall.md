@@ -8,12 +8,12 @@ tags:
   - tctl
 ---
 
-The `tctl workflow listall` command lists all open or closed [Workflow Executions](/docs/concepts/what-is-a-workflow-execution).
+The `tctl workflow listall` command lists all open or closed [Workflow Executions](/concepts/what-is-a-workflow-execution).
 
 By default, this command lists all closed Workflow Executions.
 To list open Workflow Executions, use the `--open` option.
 
-See also [`tctl workflow list`](/docs/tctl/workflow/list), [`tctl workflow listarchived`](/docs/tctl/workflow/listarchived), and [`tctl workflow scan`](/docs/tctl/workflow/scan).
+See also [`tctl workflow list`](/tctl/workflow/list), [`tctl workflow listarchived`](/tctl/workflow/listarchived), and [`tctl workflow scan`](/tctl/workflow/scan).
 
 `tctl workflow listall [<modifiers>]`
 
@@ -57,7 +57,7 @@ tctl workflow listall --print_memo
 
 ### `--print_search_attr`
 
-Print the [Search Attributes](/docs/concepts/what-is-a-search-attribute).
+Print the [Search Attributes](/concepts/what-is-a-search-attribute).
 
 Alias: `--psa`
 
@@ -93,7 +93,7 @@ tctl workflow listall --print_json
 
 ### `--open`
 
-List open [Workflow Executions](/docs/concepts/what-is-a-workflow-execution).
+List open [Workflow Executions](/concepts/what-is-a-workflow-execution).
 (By default, the `tctl workflow listall` command lists closed Workflow Executions.)
 
 Alias: `--op`
@@ -168,7 +168,7 @@ tctl workflow listall --latest-time '10second'
 
 ### `--workflow_id`
 
-Specify a [Workflow Id](/docs/concepts/what-is-a-workflow-id).
+Specify a [Workflow Id](/concepts/what-is-a-workflow-id).
 
 Aliases: `--wid`, `-w`
 
@@ -180,7 +180,7 @@ tctl workflow listall --workflow_id <id>
 
 ### `--workflow_type`
 
-Specify the name of a [Workflow Type](/docs/concepts/what-is-a-workflow-type).
+Specify the name of a [Workflow Type](/concepts/what-is-a-workflow-type).
 
 Alias: `--wt`
 
@@ -192,7 +192,7 @@ tctl workflow listall --workflow_type <name>
 
 ### `--status`
 
-Specify the status of a [Workflow Execution](/docs/concepts/what-is-a-workflow-execution).
+Specify the status of a [Workflow Execution](/concepts/what-is-a-workflow-execution).
 Supported values are as follows:
 
 - `completed`
@@ -212,7 +212,7 @@ tctl workflow listall --status <value>
 
 ### `--query`
 
-Specify an SQL-like query of [Search Attributes](/docs/concepts/what-is-a-search-attribute).
+Specify an SQL-like query of [Search Attributes](/concepts/what-is-a-search-attribute).
 
 Using the `--query` option causes tctl to ignore all other filter options, including `open`, `earliest_time`, `latest_time`, `workflow_id`, and `workflow_type`.
 

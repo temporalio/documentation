@@ -22,7 +22,7 @@ We addressed dozens of quality-of-life issues and improved the performance of th
 
 ![Event Summary View](https://user-images.githubusercontent.com/251000/160000073-fcc79ef6-4be3-4f4a-98c8-2831007a26f6.png)
 
-We snuck in some new features along the way. In addition to a fresh look and feel, you'll notice that it's easier to see whether you're using a [Data Converter](https://docs.temporal.io/docs/concepts/what-is-a-data-converter/). We store filter settings and queries in the URL. This means that sharing what you're currently looking at with your team is as easy as sharing a link.
+We snuck in some new features along the way. In addition to a fresh look and feel, you'll notice that it's easier to see whether you're using a [Data Converter](https://docs.temporal.io/concepts/what-is-a-data-converter/). We store filter settings and queries in the URL. This means that sharing what you're currently looking at with your team is as easy as sharing a link.
 
 The new user interface will eventually be the default experience for working with Temporal in the browser. In the meantime, we'd love for you to try it out as we continue to iterate on it. Taking the new UI for a spin is incredibly easy. If you pull down the latest version of Temporal’s [docker-compose](https://github.com/temporalio/docker-compose), it’s already running alongside the current UI but on port 8080.
 

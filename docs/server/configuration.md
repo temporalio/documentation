@@ -1,7 +1,7 @@
 ---
 id: configuration
 title: Configure the Temporal Server
-sidebar_label: Configuration reference
+sidebar_label: Cluster configuration
 ---
 
 Temporal Server configuration is found in `development.yaml` and may contain the following possible sections:
@@ -26,23 +26,63 @@ Temporal Server configuration is found in `development.yaml` and may contain the
 The `global` section contains process-wide configuration. See below for a minimal configuration (optional parameters are commented out.)
 
 ```yaml
-#global:
-#membership:
-#maxJoinDuration: 30s
-#broadcastAddress: "127.0.0.1"
-#pprof:
-#port: 7936
-#tls:
-#... <see below>
+global:
+  membership:
+    broadcastAddress: "127.0.0.1"
+  metrics:
+    prometheus:
+      framework: "opentelemetry"
+      listenAddress: "127.0.0.1:8000"
 ```
 
 ### membership
 
 The `membership` section controls the following membership layer parameters:
 
-- `maxJoinDuration` - The amount of time the service will attempt to join the gossip layer before failing.
-- `broadcastAddress` - Used as the address that is communicated to remote nodes to connect on.
-  - This is generally used when BindOnIP would be the same across several nodes (ie: 0.0.0.0) and for nat traversal scenarios. `net.ParseIP` controls the supported syntax. Note: Only IPV4 is supported.
+- `maxJoinDuration`: The amount of time the service will attempt to join the gossip layer before failing.
+  Default is 10s.
+- `broadcastAddress`: Used by gossip protocol to communicate with other hosts in the same Cluster for membership info.
+  Use IP address that is reachable by other hosts in the same Cluster.
+  If there is only one host in the Cluster, you can use 127.0.0.1.
+  Check `net.ParseIP` for supported syntax, only IPv4 is supported.
+
+### metrics
+
+The `metrics` config section is for the metrics subsystem.
+
+- `prefix`: The prefix to all outgoing metrics.
+- `tags`: The set of key-value pairs to be reported as part of every metric.
+- `excludeTags`: A map from tag name string to tag values string list.
+  This is useful to exclude some tags that might have unbounded cardinality.
+  The value string list can be used to whitelist values of that excluded tag to continue to be included.
+  For example, if you want to exclude `task_queue` because it has unbounded cardinality, but you still want to see a whitelisted value for `task_queue`.
+
+`metrics` contains configuration for the metrics subsystem keyed by provider name.
+The following providers are supported:
+
+- `statsd`
+- `prometheus`
+- `m3`
+
+The `statsd` sections supports the following settings:
+
+- `hostPort`: The host:port of the statsd server.
+- `prefix`: Specific prefix in reporting to `statsd`.
+- `flushInterval`: Maximum interval for sending packets. (_Default_ 300ms).
+- `flushBytes`: Specifies the maximum UDP packet size you wish to send. (_Default_ 1432 bytes).
+
+The `prometheus` sections supports the following settings:
+
+- `framework`: The framework to use, currently supports `opentelemetry` and `tally`, default is `tally`. We plan to switch default to `opentelemetry` once its API become stable.
+- `listenAddress`: Address for prometheus to scrape metrics from.
+- `handlerPath`: Metrics handler path for scraper, default is `/metrics`.
+
+The `m3` sections supports the following settings:
+
+- `hostPort`: The host:port of the M3 server.
+- `service`: The service tag to that this client emits.
+- `queue`: M3 reporter queue size, default is 4k.
+- `packetSize`: M3 reporter max packet size, default is 32k.
 
 ### pprof
 
@@ -215,7 +255,7 @@ The `log` section is optional and contains the following possible values:
 
 ## clusterMetadata
 
-`clusterMetadata` contains the local cluster information. The information will be used in [Multi-cluster Replication](/docs/server/multi-cluster).
+`clusterMetadata` contains the local cluster information. The information is used in [Multi-Cluster Replication](/concepts/what-is-multi-cluster-replication).
 
 An example `clusterMetadata` section:
 
@@ -261,11 +301,7 @@ services:
     rpc:
       grpcPort: 8233
       membershipPort: 8933
-      bindOnLocalHost: true
-    metrics:
-      statsd:
-        hostPort: "127.0.0.1:8125"
-        prefix: "temporal_standby"
+      bindOnIP: "0.0.0.0"
 ```
 
 There are two sections defined under each service heading:
@@ -275,31 +311,14 @@ There are two sections defined under each service heading:
 `rpc` contains settings related to the way a service interacts with other services. The following values are supported:
 
 - `grpcPort` is the port on which gRPC will listen.
-- `membershipPort` - used by the membership listener.
-- `bindOnLocalHost` - whether uses `localhost` as the listener address.
-- `bindOnIP` - used to bind service on specific ip (eg. `0.0.0.0`) - check `net.ParseIP` for supported syntax, only IPv4 is supported, mutually exclusive with `BindOnLocalHost` option.
+- `membershipPort`: Port used to communicate with other hosts in the same Cluster for membership info.
+  Each service should use different port.
+  If there are multiple Temporal Clusters in your environment (Kubernetes for example), and they have network access to each other, each cCluster should use different membershipPort.
+- `bindOnLocalHost`: Determines whether uses `127.0.0.1` as the listener address.
+- `bindOnIP`: Used to bind service on specific IP, or `0.0.0.0`.
+  Check `net.ParseIP` for supported syntax, only IPv4 is supported, mutually exclusive with `BindOnLocalHost` option.
 
 **Note**: Port values are currently expected to be consistent among role types across all hosts.
-
-### metrics
-
-`metrics` contains configuration for the metrics subsystem keyed by provider name. There are three supported providers:
-
-- `statsd`
-- `prometheus`
-- `m3`
-
-The `statsd` sections supports the following settings:
-
-- `hostPort` - the statsd server host:port.
-- `prefix` - specific prefix in reporting to `statsd`.
-- `flushInterval` - maximum interval for sending packets. (_Default_ 300ms).
-- `flushBytes` - specifies the maximum UDP packet size you wish to send. (_Default_ 1432 bytes).
-
-Additionally, metrics supports the following non-provider specific settings:
-
-- `tags` - the set of key-value pairs to be reported.
-- `prefix` - sets the prefix to all outgoing metrics.
 
 ## publicClient
 

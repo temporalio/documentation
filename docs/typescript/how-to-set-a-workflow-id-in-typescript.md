@@ -1,6 +1,6 @@
 ---
 id: how-to-set-a-workflow-id-in-typescript
-title: How to set a Workflow Id in Typescript
+title: How to set a Workflow Id in TypeScript
 sidebar_label: Set a Workflow Id
 description: Set a Workflow Id
 tags:

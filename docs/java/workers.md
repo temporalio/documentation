@@ -6,7 +6,7 @@ sidebar_label: Workers
 
 ## What is a Worker?
 
-A Worker is a service that executes [Workflows](/docs/java/workflows) and [Activities](/docs/java/activities).
+A Worker is a service that executes [Workflows](/java/workflows) and [Activities](/java/activities).
 Workers are defined and executed on user controlled hosts.
 You can use the `WorkerFactory` class to create and run as many Workers as your use case demands, across any number of hosts.
 
