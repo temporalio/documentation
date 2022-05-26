@@ -58,7 +58,7 @@ View Source on GitHub: https://github.com/JoshuaKGoldberg/temporal-adventure-bot
 
 ## Architecture
 
-This project is based off the default [Hello World project](https://docs.temporal.io/typescript/hello-world/) that is scaffolded out when you run `npx @temporalio/create@latest`.
+This project is based off the default [Hello World project](/typescript/hello-world/) that is scaffolded out when you run `npx @temporalio/create@latest`.
 
 ### Overview
 
