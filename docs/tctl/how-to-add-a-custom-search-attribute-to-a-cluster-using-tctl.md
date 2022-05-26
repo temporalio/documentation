@@ -11,7 +11,7 @@ tags:
   - tctl
 ---
 
-::: NOTE
+:::note
 
 The Temporal tctl documentation covers version 1.16 of the Temporal CLI.
 

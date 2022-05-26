@@ -123,6 +123,11 @@
           "header": "none",
           "type": "explanation",
           "path": "concepts/what-is-a-child-workflow-execution"
+        },
+        {
+          "header": "Parent Close Policy",
+          "type": "explanation",
+          "path": "concepts/what-is-a-parent-close-policy"
         }
       ]
     },

@@ -6,7 +6,7 @@ description: Temporal Cluster how-to guides.
 
 - [What is a Temporal Cluster?](/concepts/what-is-a-temporal-cluster)
 
-- Read the [Server versions and dependencies](/server/versions-and-dependencies) page to see which dependencies are supported with the version of the Server you are using.
+- Read the [Server versions and dependencies](/clusters) page to see which dependencies are supported with the version of the Server you are using.
 
 ### Running a Cluster
 
