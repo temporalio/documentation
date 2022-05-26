@@ -11,11 +11,11 @@ tags:
 The `ExecuteWorkflow` call returns an instance of [`WorkflowRun`](https://pkg.go.dev/go.temporal.io/sdk/client#WorkflowRun), which is the `workflowRun` variable in the following line.
 
 ```go
-  workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, app.YourWorkflowDefinition, param)
-  if err != nil {
-    // ...
-  }
-  // ...
+ workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, app.YourWorkflowDefinition, param)
+ if err != nil {
+   // ...
+ }
+ // ...
 }
 ```
 
@@ -28,16 +28,16 @@ The instance of `WorkflowRun` has the following three methods:
 To wait on the result of Workflow Execution in the same process that invoked it, call `Get()` on the instance of `WorkflowRun` that is returned by the `ExecuteWorkflow()` call.
 
 ```go
-  workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition, param)
-  if err != nil {
-    // ...
-  }
-  var result YourWorkflowResponse
-  err = workflowRun.Get(context.Background(), &result)
-  if err != nil {
-      // ...
-  }
-  // ...
+ workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition, param)
+ if err != nil {
+   // ...
+ }
+ var result YourWorkflowResponse
+ err = workflowRun.Get(context.Background(), &result)
+ if err != nil {
+     // ...
+ }
+ // ...
 }
 ```
 
@@ -48,20 +48,20 @@ The result of the Workflow Execution is available for as long as the Workflow Ex
 
 <!-- TODO (See [How long do Workflow Execution Histories persist](#)). -->
 
-Call the `GetWorkflow()` method on the an instance of the Go SDK Client and pass it the Workflow Id used to spawn the Workflow Execution.
+Call the `GetWorkflow()` method on an instance of the Go SDK Client and pass it the Workflow Id used to spawn the Workflow Execution.
 Then call the `Get()` method on the instance of `WorkflowRun` that is returned, passing it a pointer to populate the result.
 
 ```go
-  // ...
-  workflowID := "Your-Custom-Workflow-Id"
-  workflowRun := c.GetWorkflow(context.Background, workflowID)
+ // ...
+ workflowID := "Your-Custom-Workflow-Id"
+ workflowRun := c.GetWorkflow(context.Background, workflowID)
 
-  var result YourWorkflowResponse
-  err = workflowRun.Get(context.Background(), &result)
-  if err != nil {
-      // ...
-  }
-  // ...
+ var result YourWorkflowResponse
+ err = workflowRun.Get(context.Background(), &result)
+ if err != nil {
+     // ...
+ }
+ // ...
 ```
 
 #### Get last completion result
@@ -72,23 +72,23 @@ To do this, use the [`HasLastCompletionResult`](https://pkg.go.dev/go.temporal.i
 
 ```go
 type CronResult struct {
-  Count int
+ Count int
 }
 
 func YourCronWorkflowDefinition(ctx workflow.Context) (CronResult, error) {
-  count := 1
+ count := 1
 
-  if workflow.HasLastCompletionResult(ctx) {
-    var lastResult CronResult
-    if err := workflow.GetLastCompletionResult(ctx, &lastResult); err == nil {
-      count = count + lastResult.Count
-    }
-  }
+ if workflow.HasLastCompletionResult(ctx) {
+   var lastResult CronResult
+   if err := workflow.GetLastCompletionResult(ctx, &lastResult); err == nil {
+     count = count + lastResult.Count
+   }
+ }
 
-  newResult := CronResult {
-    Count: count,
-  }
-  return newResult, nil
+ newResult := CronResult {
+   Count: count,
+ }
+ return newResult, nil
 }
 ```
 
