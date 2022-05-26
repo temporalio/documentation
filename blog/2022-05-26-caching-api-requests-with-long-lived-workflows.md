@@ -2,7 +2,7 @@
 tags:
   - temporal
   - community
-posted_on_: 2022-05-13T00:00:00Z
+posted_on_: 2022-05-26T00:00:00Z
 slug: caching-api-requests-with-long-lived-workflows
 title: 'Caching API Requests With Long-Lived Workflows in Temporal'
 author: Valeri Karpov
@@ -191,13 +191,13 @@ You can think of Continue-As-New as restarting your Workflow from an initial sta
 The only data that `exchangeRatesWorkflow()` needs to respond to queries is the `ratesByDay` map, so `exchangeRatesWorkflow()` needs to Continue-As-New with a serialized version of the `ratesByDay` map.
 The `exchangeRatesWorkflow()` also needs to be able to resume from a previous state.
 Continue-As-New just calls `exchangeRatesWorkflow()` with an initial state.
-Following is 
+Following is the `exchangeRatesWorkflow()` workflow with an extra `storedRatesByDay` parameter that will contain the serialized Workflow state after a Continue-As-New.
 
 ```ts
 const maxNumRates = 30;
 const maxIterations = 10000;
 
-// `storedRatesByDay` contains the serialized data from Continue As New, if available. Otherwise, just an
+// `storedRatesByDay` contains the serialized data from Continue-As-New, if available. Otherwise, just an
 // empty array.
 export async function exchangeRatesWorkflow(storedRatesByDay: Array<[string, any]> = []): Promise<any> {
   const ratesByDay = new Map<string, any>(storedRatesByDay);
@@ -217,7 +217,7 @@ export async function exchangeRatesWorkflow(storedRatesByDay: Array<[string, any
     await sleep(tomorrow - today);
   }
 
-  // After 10k iterations, trigger a Continue As New and finish the Workflow
+  // After 10k iterations, trigger a Continue-As-New and finish the Workflow
   const state = Array.from(ratesByDay.entries());
   await continueAsNew<typeof exchangeRatesWorkflow>(state);
 }
