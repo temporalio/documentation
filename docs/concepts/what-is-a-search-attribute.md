@@ -23,7 +23,7 @@ These Search Attributes are created when the initial index is created.
 
 | NAME                  | TYPE     | DEFINITION                                                |
 | --------------------- | -------- | --------------------------------------------------------- |
-| BatcherNamespace      | Keyword  | Batcher namespace.                                        |
+| BatcherNamespace      | Keyword  | Batcher Namespace.                                        |
 | BatcherUser           | Keyword  | Batcher username.                                         |
 | BinaryChecksums       | Keyword  | Binary Id of a given Worker.                              |
 | CloseTime             | Datetime | The time at which the Workflow Execution closes.          |
