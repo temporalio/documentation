@@ -537,7 +537,6 @@ module.exports = {
         "server/options",
         "server/production-deployment",
         "clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster",
-        "server/namespaces",
         "clusters/how-to-set-up-archival",
         "clusters/how-to-create-a-custom-archiver",
         "clusters/how-to-set-up-multi-cluster-replication",
