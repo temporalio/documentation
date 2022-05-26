@@ -111,7 +111,8 @@ module.exports = {
         href: "https://temporal.io",
         width: 24,
       },
-      copyright: `Copyright © ${new Date().getFullYear()}</span> Temporal Technologies Inc.</div>`,
+      copyright: `Copyright © ${new Date().getFullYear()}</span> Temporal Technologies Inc.</div><noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TSXFPF2"
+      height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>`,
       links: [
         {
           items: [
@@ -316,11 +317,11 @@ module.exports = {
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
         },
-        gtag: {
-          trackingID: "UA-163137879-1",
-          // Optional fields.
-          anonymizeIP: true, // Should IPs be anonymized?
-        },
+        // gtag: {
+        //   trackingID: "UA-163137879-1",
+        //   // Optional fields.
+        //   anonymizeIP: true, // Should IPs be anonymized?
+        // },
         // Will be passed to @docusaurus/plugin-content-sitemap
         sitemap: {
           // Per v2.0.0-alpha.72 cacheTime is now deprecated
@@ -333,12 +334,7 @@ module.exports = {
   ],
   scripts: [
     {
-      src: "/scripts/feedback.js",
-      async: true,
-      defer: true,
-    },
-    {
-      src: "/scripts/fullstory.js",
+      src: "/scripts/google-tag-manager.js",
       async: true,
       defer: true,
     },
