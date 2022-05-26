@@ -699,7 +699,7 @@ Activities written as struct methods can use shared struct variables, such as:
 - an application level DB pool
 - client connection to another service
 - reusable utilities
-- any other expensive resources, you only want to initialize once per process
+- any other expensive resources that you only want to initialize once per process
 
 Because this is such a common need, the rest of this guide shows Activities written as `struct` methods.
 
@@ -994,7 +994,7 @@ export async function example(name: string): Promise<string> {
 ### Start Activity Execution
 
 Calls to spawn [Activity Executions](/activities/#activity-execution) are written within a [Workflow Definition](/workflows/#workflow-definitions).
-The call to spawn an Activity Execution generates the [ScheduleActivityTask](/references/commands/#scheduleactivitytask) command.
+The call to spawn an Activity Execution generates the [ScheduleActivityTask](/references/commands/#scheduleactivitytask) Command.
 This results in the set of three [Activity Task](/tasks/#activity-task) related Events ([ActivityTaskScheduled](/references/events/#activitytaskscheduled), [ActivityTaskStarted](/references/events/#activitytaskstarted), and ActivityTask[Closed])in your Workflow Execution Event History.
 
 A single instance of the Activities implementation is shared across multiple simultaneous Activity invocations.
@@ -2042,10 +2042,10 @@ Content is not available
 
 ### Start Workflow Execution
 
-[Workflow Execution](/workflows/#workflow-executions) semantics rely on several parameters – that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
+[Workflow Execution](/workflows/#workflow-executions) semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
 
 In the examples below, all Workflow Executions are started using a Temporal Client.
-To spawn Workflow Executions from within another Workflow Executions, use either the [Child Workflow](#child-workflows) or External Workflow APIs.
+To spawn Workflow Executions from within another Workflow Execution, use either the [Child Workflow](#child-workflows) or External Workflow APIs.
 
 See the [Customize Workflow Type](#customize-workflow-type) section to see how to customize the name of the Workflow Type.
 
@@ -2362,7 +2362,7 @@ run().catch((err) => {
 
 #### Set Workflow Id
 
-While it is not required, providing your own [Workflow Id](/workflows/#workflow-id) that maps to a business process or business entity identifier is highly recommended. Values that can provided include order identifiers or customer identifiers.
+Also it is not required, we recommend providing your own [Workflow Id](/workflows/#workflow-id) that maps to a business process or business entity identifier, such as an order identifier or customer identifier.
 
 <Tabs
 defaultValue="go"
@@ -2504,7 +2504,7 @@ Then call the `Get()` method on the instance of `WorkflowRun` that is returned, 
  // ...
 ```
 
-#### Get last completion result
+**Get last completion result**
 
 In the case of a [Temporal Cron Job](/workflows/#cron-jobs), you might need to get the result of the previous Workflow Run and use it in the current Workflow Run.
 
@@ -3330,7 +3330,8 @@ Content is not available
 
 Queries are handled by your Workflow.
 
-Don’t include any logic that causes [Command](/workflows/#commands) generation within a Query handler (such as executing Activities). As this will lead to unexpected behavior.
+Don’t include any logic that causes [Command](/workflows/#commands) generation within a Query handler (such as executing Activities).
+Including such logic causes unexpected behavior.
 
 <Tabs
 defaultValue="go"
@@ -3679,7 +3680,7 @@ Content is not available
 
 Use a [Retry Policy](/retry-policies/#) to retry a Workflow Execution in the event of a failure.
 
-Workflow Executions do not retry by default, and Retry Policies should only be used with Workflow Executions in certain situations.
+Workflow Executions do not retry by default, and Retry Policies should be used with Workflow Executions only in certain situations.
 
 <Tabs
 defaultValue="go"
