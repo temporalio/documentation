@@ -143,7 +143,7 @@ function Explained() {
       <ul className="landing-card-list-b logos">
         <li className="list-logo">
           <img
-            className="w-8 h-8 pl-1 transition hover:scale-110 code-logo"
+            className="w-10 h-8 pl-1 transition hover:scale-110 code-logo"
             src="/img/golang.svg"
             alt="Go lang logo"
           />
@@ -157,7 +157,7 @@ function Explained() {
         </li>
         <li className="list-logo">
           <img
-            className="w-8 h-8 pl-1 transition hover:scale-110 code-logo"
+            className="w-10 h-8 pl-1 transition hover:scale-110 code-logo"
             src="/img/php.svg"
             alt="PHP logo"
           />

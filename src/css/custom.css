@@ -409,6 +409,7 @@ h1 {
 
 .landing-card-list-b {
   display: flex;
+  align-items: center;
   padding-right: 1.5em;
 }
 
@@ -418,6 +419,8 @@ h1 {
 
 .list-logo {
   padding-left: 1rem;
+  display: flex;
+  align-items: center;
 }
 
 .landing-card-list li {
