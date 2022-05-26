@@ -13,8 +13,8 @@ release_version: V1.15
 
 <!--truncate-->
 
-A [Temporal Workflow Execution](https://docs.temporal.io/docs/concepts/what-is-a-workflow-execution) has no time limit.
-You can write a Workflow that runs forever, storing some state and responding to Signals and Queries, as long as you remember to use [Continue-As-New](https://docs.temporal.io/docs/concepts/what-is-continue-as-new).
+A [Temporal Workflow Execution](workflows#workflow-executions) has no time limit.
+You can write a Workflow that runs forever, storing some state and responding to Signals and Queries, as long as you remember to use [Continue-As-New](workflows#continue-as-new).
 One neat use case for long-lived Workflows is caching API requests.
 
 For example, suppose you want to display prices in various currencies based on cached exchange rates.
