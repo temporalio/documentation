@@ -138,9 +138,11 @@
 # Server pages redirects
 #
 /server        /clusters/
+/server/configuration        /references/configuration
 /server-archive-data        /concepts/what-is-archival
 /server/archive-data        /concepts/what-is-archival
-/server-configuration        /server/configuration
+/server-configuration        /references/configuration
+/references/configuration        /references/configuration
 /server-introduction        /clusters
 /server/introduction        /clusters
 /server-namespaces         /server/namespaces
@@ -159,7 +161,8 @@
 /cluster/how-to-integrate-elasticsearch-into-a-temporal-cluster        /clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster
 
 /server-security         /server/security
-/server-versions-and-dependencies        /server/versions-and-dependencies
+/server-versions-and-dependencies        /clusters
+/clusters        /clusters
 /server/workflow-search        /visibility
 
 /content/how-to-remove-a-search-attribute-from-a-cluster-using-tctl   /tctl/how-to-remove-a-search-attribute-from-a-cluster-using-tctl

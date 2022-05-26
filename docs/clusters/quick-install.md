@@ -44,7 +44,7 @@ To try other configurations (different dependencies and databases), or to try a 
 
 #### Render
 
-[temporal-render-simple](https://github.com/temporalio/temporal-render-simple) translates our docker-compose to Render by using the [Auto-Setup Docker image](https://docs.temporal.io/blog/auto-setup).
+[temporal-render-simple](https://github.com/temporalio/temporal-render-simple) translates our docker-compose to Render by using the [Auto-Setup Docker image](/blog/auto-setup).
 We do not recommend using this technique for production because all four Temporal internal services (Frontend, Matching, History, and Worker) are run in one process, but the benefit is one-click deployments.
 
 [Deploy to Render](https://render.com/deploy?repo=https://github.com/temporalio/temporal-render-simple)

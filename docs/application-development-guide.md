@@ -73,7 +73,7 @@ To try other configurations (different dependencies and databases), or to try a 
 
 #### Render
 
-[temporal-render-simple](https://github.com/temporalio/temporal-render-simple) translates our docker-compose to Render by using the [Auto-Setup Docker image](https://docs.temporal.io/blog/auto-setup).
+[temporal-render-simple](https://github.com/temporalio/temporal-render-simple) translates our docker-compose to Render by using the [Auto-Setup Docker image](/blog/auto-setup).
 We do not recommend using this technique for production because all four Temporal internal services (Frontend, Matching, History, and Worker) are run in one process, but the benefit is one-click deployments.
 
 [Deploy to Render](https://render.com/deploy?repo=https://github.com/temporalio/temporal-render-simple)
@@ -601,8 +601,8 @@ The Temporal Go SDK has APIs to handle equivalent Go constructs:
 - `workflow.Go()` This is a replacement for the `go` statement.
 - `workflow.Channel` This is a replacement for the native `chan` type.
   Temporal provides support for both buffered and unbuffered channels.
-- `workflow.Selector` This is a replacement for the `select` statement. Learn more on the [Go SDK Selectors](https://docs.temporal.io/go/selectors) page
-- `workflow.Context` This is a replacement for `context.Context`. Learn more on the [Go SDK Context Propagation](https://docs.temporal.io/go/tracing) page.
+- `workflow.Selector` This is a replacement for the `select` statement. Learn more on the [Go SDK Selectors](/go/selectors) page
+- `workflow.Context` This is a replacement for `context.Context`. Learn more on the [Go SDK Context Propagation](/go/tracing) page.
 
 </TabItem>
 <TabItem value="java">
@@ -2343,7 +2343,7 @@ async function run() {
   // Customize the Worker by passing more options to create():
   // https://typescript.temporal.io/api/classes/worker.Worker
   // If you need to configure server connection parameters, see docs:
-  // https://docs.temporal.io/typescript/security#encryption-in-transit-with-mtls
+  // /typescript/security#encryption-in-transit-with-mtls
 
   // Step 2: Start accepting tasks on the `tutorial` queue
   await worker.run();
@@ -2789,7 +2789,7 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error
 ```
 
 In the example above, the Workflow code uses `workflow.GetSignalChannel` to open a `workflow.Channel` for the Signal type (identified by the Signal name).
-We then use a [`workflow.Selector`](https://docs.temporal.io/go/selectors) and the `AddReceive()` to wait on a Signal from this channel.
+We then use a [`workflow.Selector`](/go/selectors) and the `AddReceive()` to wait on a Signal from this channel.
 The `more` bool in the callback function indicates that channel is not closed and more deliveries are possible.
 
 </TabItem>

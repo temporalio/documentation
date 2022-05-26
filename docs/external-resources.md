@@ -14,21 +14,21 @@ If you have made a tutorial or explanation of Temporal, please [submit them here
 
 There have been many high-level descriptions of Temporal from our Series A and B PR. This may be helpful for non-technical or technical-adjacent audiences:
 
-- **Series B (2022)** Linked in [our Series B press roundup](https://docs.temporal.io/blog/series-b-press)
-- **Series A (2020)**: Linked in [our Series A blogpost](https://docs.temporal.io/blog/funding-announcement)
+- **Series B (2022)** Linked in [our Series B press roundup](/blog/series-b-press)
+- **Series A (2020)**: Linked in [our Series A blogpost](/blog/funding-announcement)
 
 ## How Temporal works
 
 _Don't forget our own explainers on [What is Temporal](/temporal)!_
 
 - **Talks**
-  - ⭐ [Designing a Workflow Engine from First Principles](https://docs.temporal.io/blog/workflow-engine-principles/) by Maxim Fateev (23 min talk given at Systems @ Scale 2021)
+  - ⭐ [Designing a Workflow Engine from First Principles](/blog/workflow-engine-principles/) by Maxim Fateev (23 min talk given at Systems @ Scale 2021)
   - 🆕 [Fault Tolerant, Distributed Microservices Orchestration with Temporal](https://www.youtube.com/watch?v=6T6zVZHU7_Q) ([slides](https://temporal-intro-and-demo.netlify.app/)) by Maxim Fateev and Tihomir Surdilovic (35 min talk at TheDevConf 2021)
   - [State of Affairs or Affairs of State](https://www.youtube.com/watch?v=2P_aXee2qh4) by Sergey Bykov (35 min talk on Stateless vs Stateful, Orleans vs Temporal)
   - [Introduction to Temporal Architecture](https://www.youtube.com/watch?v=wMUKhtRhlmY) by Dominik Tornow (16 min talk + Q&A)
   - [Temporal in 7 Minutes - The TL;DR Intro](https://www.youtube.com/watch?v=2HjnQlnA5eY) by swyx (7 min presentation)
 - **Podcasts**
-  - [Maxim and Samar on Gremlin's podcast](https://docs.temporal.io/blog/gremlin-podcast) - Origin story, Choreography vs Orchestration, and Tips (21 min listen/read)
+  - [Maxim and Samar on Gremlin's podcast](/blog/gremlin-podcast) - Origin story, Choreography vs Orchestration, and Tips (21 min listen/read)
   - [Workflow Engine with Maxim Fateev](https://www.listennotes.com/podcasts/software/cadence-ubers-workflow-nNoaPiSfk7v/) on Software Engineering Daily (56 min listen)
   - [Maxim Fateev on Temporal Origin Story](/blog/oss-startups-podcast) on the OSS Startups Podcast (41 min listen)
   - [Temporal Product with Ryland Goldstein](https://softwareengineeringdaily.com/2021/05/08/temporal-product-managing-state-with-ryland-goldstein/) on Software Engineering Daily (53 min listen)
@@ -38,7 +38,7 @@ _Don't forget our own explainers on [What is Temporal](/temporal)!_
 - Temporal's previous iteration was Cadence, which shares a lot of the same design principles:
   - [Cadence Architecture Talk](https://www.youtube.com/watch?v=5M5eiNBUf4Q) (24 min) by Samar Abbas at the 2017 Uber Cadence meetup
   - [Cadence: Micro service Architecture Beyond Request/Response](https://www.youtube.com/watch?v=BJwFxqdSx4Y) (34 min) by Maxim Fateev at Data@Scale 2017
-  - Note: we have documented [the difference between Cadence and Temporal](https://docs.temporal.io/cadence-to-temporal) separately.
+  - Note: we have documented [the difference between Cadence and Temporal](/cadence-to-temporal) separately.
 
 ## Why Workflow Orchestration
 
@@ -103,7 +103,7 @@ _Note: Each of [our SDK docs](/application-development) have a Hello World and R
 - Other Languages
   - (Español) [Construye aplicaciones invencibles con Temporal](https://sistecma.github.io/2021/02/04/aplicaciones-invencibles-con-temporal.html) y [Aplicando el patrón SAGA en tus microservicios construidos](https://sistecma.github.io/2021/03/04/aplicando-saga-en-microservicios-con-temporal.html) by Hernán Moreno
   - (Türkçe) [Nedir Bu Temporal.IO?](https://alameddinc.medium.com/nedir-bu-temporal-io-680f3b242136) by Alameddin Çelik
-  - (русский) [PHP Russia talks](https://docs.temporal.io/php/introduction/#resources) by Anton Titov
+  - (русский) [PHP Russia talks](/php/introduction/#resources) by Anton Titov
   - (中文) [Temporal 简介](https://www.yuque.com/abser/txixor/oz3yav) by Abser Ari 杨鼎睿
 - _submit yours [here](https://github.com/temporalio/documentation/edit/master/docs/external-resources.md)!_
 
