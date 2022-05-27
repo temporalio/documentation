@@ -56,10 +56,10 @@ tctl workflow run -h
 Brief explanation:
 To run a Workflow, the user must specify the following:
 
-1. Task queue name (--tq)
-2. Workflow type (--wt)
-3. Execution start to close timeout in seconds (--et)
-4. Input in JSON format (--i) (optional)
+1. Task queue name (`--tq`)
+2. Workflow type (`--wt`)
+3. Execution start to close timeout in seconds (`--et`)
+4. Input in JSON format (`--i`) (optional)
 
 The example above uses [this sample Workflow](https://github.com/temporalio/samples-go/blob/main/helloworld/helloworld.go) and takes a string as input with the `-i '"temporal"'` parameter.
 Single quotes (`''`) are used to wrap input as JSON.
@@ -225,7 +225,7 @@ import CustomWarning from "../components/CustomWarning.js"
 
 <CustomWarning>
 
-Temporal's Batch Jobs feature is considered **experimental** and not subject to normal [versioning and support policy](/server/versions-and-dependencies).
+Temporal's Batch Jobs feature is considered **experimental** and not subject to normal [versioning and support policy](/clusters).
 
 </CustomWarning>
 
@@ -817,7 +817,7 @@ This might be useful if only part of the Workflow state should be returned.
 
 `tctl` supports plugins that can be used to set headers on outgoing requests.
 
-We ship an [example plugin](https://github.com/temporalio/temporal/blob/master/cmd/tools/cli/plugins/authorization/main.go) that supports HTTP Basic Auth headers (to be used in tandem with a [secure Temporal Server](https://docs.temporal.io/server/security/). You can enable it with:
+We ship an [example plugin](https://github.com/temporalio/temporal/blob/master/cmd/tools/cli/plugins/authorization/main.go) that supports HTTP Basic Auth headers (to be used in tandem with a [secure Temporal Server](/server/security/). You can enable it with:
 
 ```bash
 tctl --headers_provider_plugin tctl-authorization-plugin

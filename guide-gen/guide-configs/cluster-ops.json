@@ -48,6 +48,16 @@
       ]
     },
     {
+      "header": "Upgrade Server version",
+      "h3_sections": [
+        {
+          "header": "none",
+          "type": "how-to",
+          "path": "clusters/how-to-upgrade-the-temporal-server-version"
+        }
+      ]
+    },
+    {
       "header": "Multi-Cluster Replication",
       "h3_sections": [
         {

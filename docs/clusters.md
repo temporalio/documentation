@@ -15,17 +15,17 @@ Temporal Clusters explained.
 
 A Temporal Cluster is the group of services, known as the [Temporal Server](#temporal-server), combined with persistence stores, that together act as a component of the Temporal Platform.
 
-![A Temporal Cluster (Server + persistence)](/diagrams/temporal-cluster.svg)
-
 - [How to quickly install a Temporal Cluster for testing and development](/application-development-guide/#run-a-dev-cluster)
+- [Cluster deployment guide](/cluster-deployment-guide)
+
+![A Temporal Cluster (Server + persistence)](/diagrams/temporal-cluster.svg)
 
 #### Persistence
 
 A Temporal Cluster's only required dependency for basic operation is a database.
+Multiple types of databases that are supported.
 
 ![Persistence](/diagrams/temporal-database.svg)
-
-Cassandra, MySQL, and PostgreSQL schemas are supported and thus can be used as the Server's database.
 
 The database stores the following types of data:
 
@@ -38,6 +38,43 @@ The database stores the following types of data:
   For production environments, we recommend using Elasticsearch.
 
 An Elasticsearch database can be added to enable [Advanced Visibility](/visibility/#advanced-visibility).
+
+**Versions**
+
+Temporal tests compatibility by spanning the **minimum** and **maximum** stable non-EOL major versions for each supported database.
+As of time of writing, these specific versions are used in our test pipelines and actively tested before we release any version of Temporal:
+
+- **Cassandra v3.11 and v4.0**
+- **PostgreSQL v10.18 and v13.4**
+- **MySQL v5.7 and v8.0** (specifically 8.0.19+ due to a bug)
+
+We update these support ranges once a year.
+The release notes of each Temporal Server declare when we plan to drop support for database versions reaching End of Life.
+
+- Because Temporal Server primarily relies on core database functionality, we do not expect compatibility to break often.
+  Temporal has no opinions on database upgrade paths; as long as you can upgrade your database according to each project's specifications, Temporal should work with any version within supported ranges.
+- We do not run tests with vendors like Vitess and CockroachDB, so you rely on their compatibility claims if you use them.
+  Feel free to discuss them with fellow users [in our forum](https://community.temporal.io/).
+- Temporal is [working on official SQLite v3.x persistence](https://github.com/temporalio/temporal/pulls?q=is%3Apr+sort%3Aupdated-desc+sqlite), but this is meant only for development and testing, not production usage.
+  Cassandra, MySQL, and PostgreSQL schemas are supported and thus can be used as the Server's database.
+
+#### Monitoring & observation
+
+Temporal emits metrics by default in a format that is supported by Prometheus.
+Monitoring and observing those metrics is optional.
+Any software that can pull metrics that supports the same format could be used, but we ensure it works with Prometheus and Grafana versions only.
+
+- **Prometheus >= v2.0**
+- **Grafana >= v2.5**
+
+#### Visibility
+
+Temporal has built-in [Visibility](/visibility/#) features.
+To enhance this feature, Temporal supports an [integration with Elasticsearch](/cluster-deployment-guide/#advanced-visibility).
+
+- Elasticsearch v7.10 is supported from Temporal version 1.7.0 onwards
+- Elasticsearch v6.8 is supported in all Temporal versions
+- Both versions are explicitly supported with AWS Elasticsearch
 
 ## Temporal Server
 
@@ -56,6 +93,25 @@ The History, Matching, and Worker services can scale horizontally within a Clust
 The Frontend Service scales differently than the others because it has no sharding or partitioning; it is just stateless.
 
 Each service is aware of the others, including scaled instances, through a membership protocol via [Ringpop](https://github.com/temporalio/ringpop-go).
+
+#### Versions and support
+
+All Temporal Server releases abide by the [Semantic Versioning Specification](https://semver.org/).
+
+Fairly precise upgrade paths and support have been established starting from Temporal `v1.7.0`.
+
+We provide maintenance support for previously published minor and major versions by continuing to release critical bug fixes related to security, the prevention of data loss, and reliability, whenever they are found.
+
+We aim to publish incremental upgrade guides for each minor and major version, which include specifics about dependency upgrades that we have tested for (such as Cassandra 3.0 -> 3.11).
+
+We offer maintenance support of the last three **minor** versions after a release and do not plan to "backport" patches beyond that.
+
+We offer maintenance support of **major** versions for at least 12 months after a GA release, and we provide at least 6 months' notice before EOL/deprecating support.
+
+#### Dependencies
+
+Temporal offers official support for, and is tested against, dependencies with the exact versions described in the `go.mod` file of the corresponding release tag.
+(For example, [v1.5.1](https://github.com/temporalio/temporal/tree/v1.5.1) dependencies are documented in [the go.mod for v1.5.1](https://github.com/temporalio/temporal/blob/v1.5.1/go.mod).)
 
 #### Frontend Service
 
@@ -130,6 +186,19 @@ It talks to the Frontend service.
 
 - It uses port 6939 for membership-related communication.
 
+## Retention Period
+
+A Retention Period is the amount of time a Workflow Execution Event History remains in the Cluster's persistence store.
+
+- [How to set the Retention Period for the Namespace](/tctl/namespace/register/#--retention)
+
+A Retention Period applies to a single [Namespace](/namespaces/#) and is set when the Namespace is registered.
+
+If the Retention Period isn't set, it defaults to 2 days.
+The minimum Retention Period is 1 day.
+The maximum Retention Period is 30 days.
+Setting the Retention Period to 0 results in the error _A valid retention period is not set on request_.
+
 ## Archival
 
 Archival is a feature that automatically backs up [Event Histories](/workflows/#event-history) and Visibility records from Temporal Cluster persistence to a custom blob store.
@@ -144,7 +213,7 @@ Archival enables Workflow Execution data to persist as long as needed, while not
 
 This feature is helpful for compliance and debugging.
 
-Temporal's Archival feature is considered **experimental** and not subject to normal [versioning and support policy](/server/versions-and-dependencies).
+Temporal's Archival feature is considered **experimental** and not subject to normal [versioning and support policy](/clusters).
 
 Archival is not supported when running Temporal via docker-compose and is disabled by default when installing the system manually and when deploying via [helm charts](https://github.com/temporalio/helm-charts/blob/master/templates/server-configmap.yaml) (but can be enabled in the [config](https://github.com/temporalio/temporal/blob/master/config/development.yaml)).
 
@@ -153,7 +222,7 @@ Archival is not supported when running Temporal via docker-compose and is disabl
 Multi-Cluster Replication is a feature which asynchronously replicates Workflow Executions from active Clusters to other passive Clusters, for backup and state reconstruction.
 When necessary, for higher availability, Cluster operators can failover to any of the backup Clusters.
 
-Temporal's Multi-Cluster Replication feature is considered **experimental** and not subject to normal [versioning and support policy](/server/versions-and-dependencies).
+Temporal's Multi-Cluster Replication feature is considered **experimental** and not subject to normal [versioning and support policy](/clusters).
 
 #### Namespace Versions
 

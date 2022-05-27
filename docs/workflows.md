@@ -20,17 +20,14 @@ Temporal documentation aims to be explicit and differentiate between them.
 
 A Workflow Definition is the code that defines the constraints of a Workflow Execution.
 
+- [How to develop a Workflow Definition](/application-development-guide/#develop-workflows)
+
 A Workflow Definition is often also referred to as a Workflow Function.
 In Temporal's documentation, a Workflow Definition refers to the source for the instance of a Workflow Execution, while a Workflow Function refers to the source for the instance of a Workflow Function Execution.
 
 A Workflow Execution effectively executes once to completion, while a Workflow Function Execution occurs many times during the life of a Workflow Execution.
 
 We strongly recommend that you write a Workflow Definition in a language that has a corresponding Temporal SDK.
-
-- [How to develop a Workflow Definition in Go](/go/how-to-develop-a-workflow-in-go)
-- [How to develop a Workflow Definition in Java](/application-development-guide/#develop-workflows)
-- [How to develop a Workflow Definition in PHP](/php/workflows)
-- [How to develop a Workflow Definition in TypeScript](/typescript/workflows/#how-to-write-a-workflow-function)
 
 ### Deterministic constraints
 
@@ -141,10 +138,8 @@ A Workflow Type is a name that maps to a Workflow Definition.
 A Temporal Workflow Execution is a durable, reliable, and scalable function execution.
 It is the main unit of execution of a [Temporal Application](/temporal/#temporal-application).
 
-- [How to spawn a Workflow Execution in Go](/application-development-guide/#start-workflow-execution)
-- [How to spawn a Workflow Execution in Java](/application-development-guide/#start-workflow-execution)
-- [How to spawn a Workflow Execution in PHP](/php/workflows/#starting-workflows)
-- [How to spawn a Workflow Execution in TypeScript](/typescript/workflows/#how-to-start-and-cancel-workflows)
+- [How to start a Workflow Execution using an SDK](/application-development-guide/#start-workflow-execution)
+- [How to start a Workflow Execution using tctl](/tctl/workflow/start)
 
 Each Temporal Workflow Execution has exclusive access to its local state.
 It executes concurrently to all other Workflow Executions, and communicates with other Workflow Executions through [Signals](#signals) and the environment through [Activities](/activities/#).
@@ -438,10 +433,8 @@ A Query is a synchronous operation that is used to get the state of a [Workflow 
 The state of a running Workflow Execution is constantly changing.
 Queries are available to expose the internal Workflow Execution state to the external world.
 
-- [How to use Queries in Go](/go/how-to-use-queries-in-go)
-- [How to use Queries in Java](/java/queries)
-- [How to use Queries in PHP](/php/queries)
-- [How to send a Query to a Workflow Execution using tctl](/tctl/workflow/query)
+- [How to send and handle Queries with an SDK](/application-development-guide/#queries)
+- [How to send a Query using tctl](/tctl/workflow/query)
 
 Queries are sent from a Temporal Client to a Workflow Execution.
 The API call is synchronous.
@@ -472,13 +465,15 @@ The `__stack_trace` Query name does not require special handling in your Workflo
 
 A Child Workflow Execution is a [Workflow Execution](#workflow-executions) that is spawned from within another Workflow.
 
+- [How to start a Child Workflow Execution](/application-development-guide/#child-workflows)
+
 A Workflow Execution can be both a Parent and a Child Workflow Execution because any Workflow can spawn another Workflow.
 
 ![Parent & Child Workflow Execution entity relationship](/diagrams/parent-child-workflow-execution-relationship.svg)
 
 A Parent Workflow Execution must await on the Child Workflow Execution to spawn.
 The Parent can optionally await on the result of the Child Workflow Execution.
-Consider the Child's [Parent Close Policy](/concepts/what-is-a-parent-close-policy) if the Parent does not await on the result of the Child, which includes any use of Continue-As-New by the Parent.
+Consider the Child's [Parent Close Policy](#parent-close-policy) if the Parent does not await on the result of the Child, which includes any use of Continue-As-New by the Parent.
 
 When a Parent Workflow Execution reaches a Closed status, the Cluster propagates Cancellation Requests or Terminations to Child Workflow Executions depending on the Child's Parent Close Policy.
 
@@ -513,9 +508,27 @@ As all Workflow Executions, they can communicate only via asynchronous [Signals]
 As all Workflow Executions, a Child Workflow Execution can create a 1:1 mapping with a resource.
 For example, a Workflow that manages host upgrades could spawn a Child Workflow Execution per host.
 
-**Implementation guides:**
+### Parent Close Policy
 
-- [How to spawn a Child Workflow Execution in Go](/application-development-guide/#child-workflows)
+A Parent Close Policy determines what happens to a [Child Workflow Execution](#child-workflows) if its Parent changes to a Closed status (Completed, Failed, or Timed out).
+
+- [How to set a Parent Close Policy](/application-development-guide/#parent-close-policy)
+
+There are three possible values:
+
+- **Abandon**: the Child Workflow Execution is not affected.
+- **Terminate** (default): the Child Workflow Execution is forcefully Terminated.
+- **Request Cancel**: a Cancellation request is sent to the Child Workflow Execution.
+
+[`ParentClosePolicy` proto definition](https://github.com/temporalio/api/blob/c1f04d0856a3ba2995e92717607f83536b5a44f5/temporal/api/enums/v1/workflow.proto#L44)
+
+Each Child Workflow Execution may have its own Parent Close Policy.
+This policy applies only to Child Workflow Executions and has no effect otherwise.
+
+![Parent Close Policy entity relationship](/diagrams/parent-close-policy.svg)
+
+You can set policies per child, which means you can opt out of propagating terminates / cancels on a per-child basis.
+This is useful for starting Child Workflows asynchronously (see [relevant issue here](https://community.temporal.io/t/best-way-to-create-an-async-child-workflow/114) or the corresponding SDK docs).
 
 ## Cron Jobs
 
