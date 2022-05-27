@@ -4270,7 +4270,7 @@ See the example code snippets below.
 
 Use the Activity Retries settings to configure how long the API request takes to succeed or fail.
 There is an option to generate scenarios.
-The "Task Time in Queue" simulates the time the Activity Task might be waiting in the Task Queue.
+The _Task Time in Queue_ simulates the time the Activity Task might be waiting in the Task Queue.
 
 Use the Activity Timeouts and Retry Policy settings to see how they impact the success or failure of an Activity Execution.
 
@@ -4797,6 +4797,105 @@ const handle = await client.start(scheduledWorkflow, {
   // ...
   cronSchedule: "* * * * *", // start every minute
 });
+```
+
+</TabItem>
+</Tabs>
+
+### Environment variables
+
+Environment variables can be provided in the normal way for our language to our Client, Worker, and Activity code.
+They can't be used normally with Workflow code, as that would be nondeterministic (if the env vars changed between Workflow replays, the code that used them would behave differently).
+
+Most of the time, we don't need to get env vars into Workflow code, as it's sufficient to just provide them to Activities.
+But if we do need to env vars into Workflow code, the two options are:
+
+- Providing them as arguments when starting the Workflow.
+- Calling a Local Activity at the beginning of the Workflow that returns env vars.
+
+In either case, the env vars will appear in Event History, so you may want to use an [encryption Data Converter](/concepts/what-is-a-data-converter/#encryption).
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+Content is not available
+
+</TabItem>
+<TabItem value="java">
+
+Content is not available
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+#### Using in Activity code
+
+```ts
+async function runWorker(): Promise<void> {
+  const activities = createActivities({apiKey: process.env.MAILGUN_API_KEY});
+
+  const worker = await Worker.create({
+    taskQueue: "example",
+    activities,
+    workflowsPath: require.resolve("./workflows"),
+  });
+  await worker.run();
+}
+
+const createActivities = (envVars: {apiKey: string}) => ({
+  async sendNotificationEmail(): Promise<void> {
+    // ...
+    await axios({
+      url: `https://api.mailgun.net/v3/my-domain/messages`,
+      method: "post",
+      params: {to, from, subject, html},
+      auth: {
+        username: "api",
+        password: envVars.apiKey,
+      },
+    });
+  },
+});
+```
+
+#### Getting into Workflow
+
+If we needed env vars in our Workflow, here's how we'd use a Local Activity:
+
+```ts
+const worker = await Worker.create({
+  taskQueue: "example",
+  activities: createActivities(process.env),
+  workflowsPath: require.resolve("./workflows"),
+});
+
+type EnvVars = Record<string, string>;
+
+const createActivities = (envVars: EnvVars) => ({
+  async getEnvVars(): Promise<EnvVars> {
+    return envVars;
+  },
+});
+```
+
+```ts
+const {getEnvVars} = proxyLocalActivities({
+  startToCloseTimeout: "1m",
+});
+
+async function myWorkflow() {
+  const envVars = await getEnvVars();
+  // ...
+}
 ```
 
 </TabItem>
