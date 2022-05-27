@@ -13,11 +13,11 @@ It is acquired from the [`go.temporal.io/sdk/workflow`](https://pkg.go.dev/go.te
 
 ```go
 import (
-    "go.temporal.io/sdk/workflow"
+   "go.temporal.io/sdk/workflow"
 )
 
 func YourWorkflowDefinition(ctx workflow.Context, param string) error {
-  // ...
+ // ...
 }
 ```
 
@@ -27,16 +27,16 @@ The only difference between `workflow.Context` and `context.Context` is that the
 The second parameter, `string`, is a custom parameter that is passed to the Workflow when it is invoked.
 A Workflow Definition may support multiple custom parameters, or none.
 These parameters can be regular type variables or safe pointers.
-However, the best practice is to pass a single parameter that is of a `struct` type so there can be some backward compatibility if new parameters are added.
+However, the best practice is to pass a single parameter that is of a `struct` type, so there can be some backward compatibility if new parameters are added.
 
 ```go
 type YourWorkflowParam struct {
-  WorkflowParamFieldOne string
-  WorkflowParamFieldTwo int
+ WorkflowParamFieldOne string
+ WorkflowParamFieldTwo int
 }
 
 func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error {
-  // ...
+ // ...
 }
 ```
 

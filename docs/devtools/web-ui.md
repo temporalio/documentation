@@ -6,7 +6,7 @@ sidebar_label: Web UI
 
 The Temporal Web UI can be used to view Workflow Execution states or explore and debug Workflow Executions. It is [open source](https://github.com/temporalio/web).
 
-For a **video demo** of how this looks, you can [check our docs](https://docs.temporal.io/java-run-your-first-app/#state-visibility).
+For a **video demo** of how this looks, you can [check our docs](/java/run-your-first-app-tutorial/#state-visibility).
 
 <img width="1222" alt="CleanShot 2021-07-20 at 18 00 27@2x" src="https://user-images.githubusercontent.com/6764957/126414038-860403cd-dd86-4348-82f3-be2214c804bb.png" />
 
@@ -54,7 +54,7 @@ By default we will also verify your server `hostname`, matching it to `TEMPORAL_
 ### Configuring authentication
 
 > This section covers how to secure Temporal Web.
-> To secure the Temporal Server, see the [Server security docs](https://docs.temporal.io/server/security).
+> To secure the Temporal Server, see the [Server security docs](/server/security).
 > ⚠️ This is currently a beta feature, [please report any and all issues to us!](https://github.com/temporalio/web/issues/new)
 
 Since v1.3, Temporal Web offers optional OAuth SSO authentication.
@@ -215,6 +215,6 @@ Here we will discuss how to proceed once you have identified and fixed the code 
 
 If your activity code is deterministic, you might be able to simply restart the worker to pick up the changes. Execution will continue from where it last succeeded. In other words, we get "hotfixing for free" due to Temporal's execution model.
 
-However, if your activity is more complex, you will have to explicitly [version your workflows](https://docs.temporal.io/go/versioning/) or even manually terminate and restart the workflows.
+However, if your activity is more complex, you will have to explicitly [version your workflows](/go/versioning/) or even manually terminate and restart the workflows.
 
 _This section is still being written - if you have specific questions you'd like us to answer, please search or [ask on the Temporal Forum](https://community.temporal.io/)._

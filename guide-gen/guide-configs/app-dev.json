@@ -155,6 +155,37 @@
               ]
             },
             {
+              "header": "Customize Workflow Type",
+              "type": "context",
+              "path": "app-dev-context/customize-workflow-type"
+            },
+            {
+              "header": "none",
+              "type": "lang-tabs",
+              "langs": [
+                {
+                  "lang": "go",
+                  "title": "Go",
+                  "path": "go/how-to-customize-workflow-type-in-go"
+                },
+                {
+                  "lang": "java",
+                  "title": "Java",
+                  "path": "java/how-to-customize-workflow-type-in-java"
+                },
+                {
+                  "lang": "php",
+                  "title": "PHP",
+                  "path": "none"
+                },
+                {
+                  "lang": "typescript",
+                  "title": "TypeScript",
+                  "path": "none"
+                }
+              ]
+            },
+            {
               "header": "Workflow logic requirements",
               "type": "context",
               "path": "app-dev-context/workflow-logic-requirements"
@@ -279,7 +310,39 @@
                   "path": "typescript/how-to-define-activity-return-values-in-typescript"
                 }
               ]
+            },
+            {
+              "header": "Customize Activity Type",
+              "type": "context",
+              "path": "app-dev-context/customize-activity-type"
+            },
+            {
+              "header": "none",
+              "type": "lang-tabs",
+              "langs": [
+                {
+                  "lang": "go",
+                  "title": "Go",
+                  "path": "go/how-to-customize-activity-type-in-go"
+                },
+                {
+                  "lang": "java",
+                  "title": "Java",
+                  "path": "java/how-to-customize-activity-type-in-java"
+                },
+                {
+                  "lang": "php",
+                  "title": "PHP",
+                  "path": "none"
+                },
+                {
+                  "lang": "typescript",
+                  "title": "TypeScript",
+                  "path": "none"
+                }
+              ]
             }
+            
           ]
         },
         {
@@ -1129,6 +1192,11 @@
                   "path": "typescript/how-to-set-an-activity-retry-policy-in-typescript"
                 }
               ]
+            },
+            {
+              "header": "Activity retry simulator",
+              "type": "context",
+              "path": "app-dev-context/activity-retry-simulator"
             }
           ]
         },

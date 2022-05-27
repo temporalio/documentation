@@ -49,7 +49,12 @@ module.exports = {
       darkTheme: require("prism-react-renderer/themes/dracula"),
       additionalLanguages: ["java", "ruby", "php"],
     },
-    // hideableSidebar: true,
+    docs: {
+      sidebar: {
+        hideable: true,
+        autoCollapseCategories: true,
+      },
+    },
     navbar: {
       hideOnScroll: false,
       logo: {

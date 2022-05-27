@@ -22,7 +22,7 @@ More formally, a Worker Process is any process that implements the Task Queue Pr
 Temporal Application developers are responsible for developing [Worker Programs](/concepts/what-is-a-worker-program) and operating Worker Processes.
 Said another way, the [Temporal Cluster](/concepts/what-is-a-temporal-cluster) (including the Temporal Cloud) doesn't execute any of your code (Workflow & Activity Definitions) on Temporal Cluster machines. The Cluster is solely responsible for orchestrating state transitions and providing Tasks to the next available Worker Entity.
 
-While data transferred in Event Histories is [secured by mTLS](https://docs.temporal.io/server/security/#encryption-of-network-traffic), by default, it is still readable at rest in the Temporal Cluster.
+While data transferred in Event Histories is [secured by mTLS](/server/security/#encryption-of-network-traffic), by default, it is still readable at rest in the Temporal Cluster.
 
 To solve this, Temporal SDKs offer a [Data Converter API](/concepts/what-is-a-data-converter) that you can use to customize the serialization of data going out of and coming back in to a Worker Entity, with the net effect of guaranteeing that the Temporal Cluster cannot read sensitive business data.
 
@@ -44,5 +44,5 @@ Worker Processes executing Activity Tasks must have access to any resources need
 - Credentials for infrastructure provisioning.
 - Specialized GPUs for machine learning utilities.
 
-The Temporal Cluster itself has [internal workers](https://docs.temporal.io/blog/workflow-engine-principles/#system-workflows-1910) for system Workflow Executions.
+The Temporal Cluster itself has [internal workers](/blog/workflow-engine-principles/#system-workflows-1910) for system Workflow Executions.
 However, these internal workers are not visible to the developer.
