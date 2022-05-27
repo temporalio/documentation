@@ -19,21 +19,9 @@ Create an instance of [`RegisterOptions`](https://pkg.go.dev/go.temporal.io/sdk/
 
 ## `Name`
 
-Sets the name of the Workflow Type.
+import CustomizeWorkflowType from './how-to-customize-workflow-type-in-go.md'
 
-- Type: `string`
-- Default: function name
-
-```go
-// ...
-w := worker.New(temporalClient, "your_task_queue_name", worker.Options{})
-registerOptions := workflow.RegisterOptions{
-  Name: "CoolWorkflowTypeName",
-  // ...
-}
-w.RegisterWorkflowWithOptions(YourWorkflowDefinition, registerOptions)
-// ...
-```
+<CustomizeWorkflowType/>
 
 ### `DisableAlreadyRegisteredCheck`
 

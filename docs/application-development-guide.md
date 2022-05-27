@@ -572,6 +572,75 @@ function useState<T = any>(name: string, initialValue: T) {
 </TabItem>
 </Tabs>
 
+#### Customize Workflow Type
+
+You can set a custom name for your Workflow Type.
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+To customize the Workflow Type set the `Name` parameter with `RegisterOptions` when registering your Workflow with a Worker.
+
+- Type: `string`
+- Default: function name
+
+```go
+// ...
+w := worker.New(temporalClient, "your_task_queue_name", worker.Options{})
+registerOptions := workflow.RegisterOptions{
+  Name: "CoolWorkflowTypeName",
+  // ...
+}
+w.RegisterWorkflowWithOptions(YourWorkflowDefinition, registerOptions)
+// ...
+```
+
+</TabItem>
+<TabItem value="java">
+
+The Workflow Type defaults to the short name of the Workflow interface.
+In the following example, the Workflow Type defaults to "NotifyUserAccounts".
+
+```java
+  @WorkflowInterface
+
+  public interface NotifyUserAccounts {
+    @WorkflowMethod
+    void notify(String[] accountIds);
+}
+```
+
+To overwrite this default naming and assign a custom Workflow Type, use the `@WorkflowMethod` annotation with the `name` parameter.
+In the following example, the Workflow Type is set to "Abc".
+
+```java
+@WorkflowInterface
+
+  public interface NotifyUserAccounts {
+  @WorkflowMethod(name = "Abc")
+  void notify(String[] accountIds);
+  }
+```
+
+When you set the Workflow Type this way, the value of the `name` parameter does not have to start with an uppercase letter.
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is not available
+
+</TabItem>
+</Tabs>
+
 #### Workflow logic requirements
 
 Workflow logic is constrained by [deterministic execution requirements](/concepts/what-is-a-workflow-definition/#deterministic-constraints).
@@ -987,6 +1056,88 @@ export async function example(name: string): Promise<string> {
   return await greet(name);
 }
 ```
+
+</TabItem>
+</Tabs>
+
+#### Customize Activity Type
+
+You can set a custom name for your Activity Type.
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+To customize the Activity Type set the `Name` parameter with `RegisterOptions` when registering your Activity with a Worker.
+
+- Type: `string`
+- Default: function name
+
+```go
+// ...
+w := worker.New(temporalClient, "your_task_queue_name", worker.Options{})
+registerOptions := activity.RegisterOptions{
+  Name: "CoolActivityTypeName",
+  // ...
+}
+w.RegisterActivityWithOptions(a.YourActivityDefinition, registerOptions)
+// ...
+```
+
+</TabItem>
+<TabItem value="java">
+
+The Activity Type defaults to method name, with the first letter of the method name capitalized, and can be customized using `namePrefix()` or `{ActivityMethod.name()}` to ensure they are distinct.
+
+In the following example, the Activity Type defaults to `ComposeGreeting`.
+
+```java
+@ActivityInterface
+public interface GreetingActivities {
+    @ActivityMethod()
+    String composeGreeting(String greeting, String language);
+}
+```
+
+To overwrite this default naming and assign a custom Activity Type, use the `@ActivityMethod` annotation with the `name` parameter.
+In the following example, the Activity Type is set to "greet".
+
+```java
+@ActivityInterface
+public interface GreetingActivities {
+    @ActivityMethod(name = "greet")
+    String composeGreeting(String greeting, String language);
+}
+```
+
+You can also define a prefix for all of your Activity Types using the `namePrefix` parameter with the `@ActivityInterface` annotation.
+The following example shows a `namePrefix` parameter applied to the `@ActivityInterface`, and two Activity methods, of which one is defined using the `@ActivityMethod` annotation.
+
+```java
+@ActivityInterface(namePrefix = "A_")
+Public interface GreetingActivities {
+    String sendGreeting(String input);
+
+  @ActivityMethod(name = "abc")
+  String composeGreeting(String greeting, String language);
+}
+```
+
+In this example, the Activity type for the first method is set to "A_SendGreeting".
+The Activity type for the method annotated with `@ActivityMethod` is set to "A_abc".
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is not available
 
 </TabItem>
 </Tabs>
@@ -2606,7 +2757,7 @@ WorkflowStub workflowStub = client.newUntypedWorkflowStub(workflowType, workflow
 String result = untyped.getResult(String.class);
 ```
 
-#### Retrieve last (successful) completion result
+**Get last (successful) completion result**
 
 For a Temporal Cron Job, get the result of previous successful runs using `GetLastCompletionResult()`.
 The method returns `null` if there is no previous completion.

@@ -19,21 +19,9 @@ Options for registering an Activity
 
 ### `Name`
 
-Sets the Activity Type name.
+import CustomizeActivityType from './how-to-customize-activity-type-in-go.md'
 
-- Type: `string`
-- Default: function name
-
-```go
-// ...
-w := worker.New(temporalClient, "your_task_queue_name", worker.Options{})
-registerOptions := activity.RegisterOptions{
-  Name: "CoolActivityTypeName",
-  // ...
-}
-w.RegisterActivityWithOptions(a.YourActivityDefinition, registerOptions)
-// ...
-```
+<CustomizeActivityType/>
 
 ### `DisableAlreadyRegisteredCheck`
 
