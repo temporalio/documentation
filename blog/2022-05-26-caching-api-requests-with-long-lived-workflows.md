@@ -72,10 +72,12 @@ const { getExchangeRates } = proxyActivities<typeof activities>({
   startToCloseTimeout: '1 minute',
 });
 
-export const getExchangeRatesQuery = defineQuery<any, [string]>('getExchangeRates');
+type ExchangeRatesType = { [key: string]: number };
 
-export async function exchangeRatesWorkflow(): Promise<any> {
-  let rates: any = null;
+export const getExchangeRatesQuery = defineQuery<ExchangeRatesType | undefined, [string]>('getExchangeRates');
+
+export async function exchangeRatesWorkflow(): Promise<void> {
+  let rates: ExchangeRatesType | undefined = null;
 
   // Register a query handler that allows querying for the current rates
   setHandler(getExchangeRatesQuery, () => rates);
@@ -89,8 +91,7 @@ export async function exchangeRatesWorkflow(): Promise<any> {
     const tomorrow = new Date(today);
     tomorrow.setHours(12, 0, 0, 0);
     tomorrow.setDate(tomorrow.getDate() + 1);
-    // @ts-ignore
-    await sleep(tomorrow - today);
+    await sleep(tomorrow.valueOf() - today.valueOf());
   }
 }
 ```
@@ -99,6 +100,8 @@ That's the entire Workflow for caching exchange rates.
 The full source code is available in [this GitHub repo](https://github.com/vkarpov15/temporal-api-caching-example).
 Notice that the code has no explicit references to a database or job queue.
 This Workflow is almost pure business logic, with a minimum of references to frameworks or services.
+
+## Workflow Queries
 
 To run this Workflow, you can run a `start-workflow.ts` script as shown below.
 This script starts a Workflow and exits, leaving the Workflow running on the Worker.
@@ -124,6 +127,49 @@ async function run() {
 }
 ```
 
+Following is the output of `start-workflow.ts`.
+
+```
+Started workflow exchange-rates-workflow
+```
+
+Once you have started the Workflow, you can execute a Query to get the latest exchange rates using the following `query-workflow.ts` script.
+
+```ts
+import { WorkflowClient } from '@temporalio/client';
+import { getExchangeRatesQuery } from '../workflows';
+import { toYYYYMMDD } from '../shared';
+
+const date: string = process.argv[2] || toYYYYMMDD(new Date()); 
+
+run().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
+
+async function run() {
+  const client = new WorkflowClient();
+
+  const handle = client.getHandle('exchange-rates-workflow');
+  console.log('Query exchange rates for', date);
+  console.log(await handle.query(getExchangeRatesQuery, date));
+}
+```
+
+Following is an example of the output from running `query-workflow.ts`.
+
+```
+
+Query exchange rates for 20220527
+{
+ AED: 3.6731,
+ AFN: 88.999995,
+ ALL: 112.95,
+ AMD: 455.70744,
+ ...
+}
+```
+
 This Workflow is missing one key detail: a [Continue-As-New](https://docs.temporal.io/workflows#continue-as-new).
 There's more about that later in this blog post.
 
@@ -137,8 +183,8 @@ You can store the rates in an in-memory JavaScript map in your Workflow, as show
 ```ts
 const maxNumRates = 30;
 
-export async function exchangeRatesWorkflow(): Promise<any> {
-  const ratesByDay = new Map<string, any>();
+export async function exchangeRatesWorkflow(): Promise<void> {
+  const ratesByDay = new Map<string, ExchangeRatesType>();
 
   // Allow querying exchange rates by day
   setHandler(getExchangeRatesQuery, (date: string) => {
@@ -162,8 +208,7 @@ export async function exchangeRatesWorkflow(): Promise<any> {
     const tomorrow = new Date(today);
     tomorrow.setHours(12, 0, 0, 0);
     tomorrow.setDate(tomorrow.getDate() + 1);
-    // @ts-ignore
-    await sleep(tomorrow - today);
+    await sleep(tomorrow.valueOf() - today.valueOf());
   }
 }
 ```
@@ -176,14 +221,18 @@ If the machine running `exchangeRatesWorkflow()` crashes, Temporal can resume th
 
 The `exchangeRatesWorkflow` can run for an unlimited period of time: days, months, even years.
 However, Temporal caps a Workflow at 50,000 events. (See the [Time constraints](https://docs.temporal.io/workflows#time-constraints) section in [Temporal Workflows](https://docs.temporal.io/workflows).)
-In the `exchangeRatesWorkflow`, four events are fired at every iteration of the `while` loop, assuming no API errors.
+In the `exchangeRatesWorkflow`, eight events are fired at every iteration of the `while` loop, assuming no API errors.
 
 1. `EVENT_TYPE_TIMER_FIRED`: the `setTimeout()` resolved and it's time to refresh the exchange rates
-2. `EVENT_TYPE_ACTIVITY_TASK_STARTED`: the `getExchangeRates()` activity started executing
-3. `EVENT_TYPE_ACTIVITY_TASK_COMPLETED`: the `getExchangeRates()` activity completed successfully
-4. `EVENT_TYPE_TIMER_STARTED`: the Workflow used `setTimeout()` to pause until tomorrow
+2. `EVENT_TYPE_ACTIVITY_TASK_SCHEDULED`: the Temporal server scheduled the `getExchangeRates()` activity
+3. `EVENT_TYPE_ACTIVITY_TASK_STARTED`: the `getExchangeRates()` activity started executing
+4. `EVENT_TYPE_ACTIVITY_TASK_COMPLETED`: the `getExchangeRates()` activity completed successfully
+5. `EVENT_TYPE_WORKFLOW_TASK_SCHEDULED`: the Temporal server scheduled the Workflow logic that handles `getExchangeRates()`
+6. `EVENT_TYPE_WORKFLOW_TASK_STARTED`: the Workflow resumed
+7. `EVENT_TYPE_WORKFLOW_TASK_COMPLETED`: the Workflow paused
+8. `EVENT_TYPE_TIMER_STARTED`: the Workflow used `setTimeout()` to pause until tomorrow
 
-With one API request per day, the `exchangeRatesWorkflow()` can run for almost 12,500 days (approximately 34 years) before running into the 50,000 event limit.
+With one API request per day, the `exchangeRatesWorkflow()` can run for almost 6,250 days (approximately 17 years) before running into the 50,000 event limit.
 However, you should still handle this limit.
 And that's what Continue-As-New is for.
 
@@ -213,8 +262,7 @@ export async function exchangeRatesWorkflow(storedRatesByDay: Array<[string, any
 
     tomorrow.setHours(12, 0, 0, 0);
     tomorrow.setDate(tomorrow.getDate() + 1);
-    // @ts-ignore
-    await sleep(tomorrow - today);
+    await sleep(tomorrow.valueOf() - today.valueOf());
   }
 
   // After 10k iterations, trigger a Continue-As-New and finish the Workflow
