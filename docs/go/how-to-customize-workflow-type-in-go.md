@@ -8,7 +8,7 @@ tags:
   - go
 ---
 
-To customize the Workflow Type set the `Name` parameter with `RegisterOptions` when registering your Workflow with a Worker.
+To customize the Workflow Type, set the `Name` parameter with `RegisterOptions` when registering your Workflow with a Worker.
 
 - Type: `string`
 - Default: function name
