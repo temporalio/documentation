@@ -54,45 +54,36 @@ module.exports = {
                 id: "cloud/tcld/namespace/index",
               },
               items: [
-                "cloud/tcld/namespace/get",
                 "cloud/tcld/namespace/list",
+                "cloud/tcld/namespace/get",
                 {
                   type: "category",
-                  label: "update",
+                  label: "accepted-client-ca",
                   collapsible: true,
                   collapsed: true,
                   link: {
                     type: "doc",
-                    id: "cloud/tcld/namespace/update/index",
+                    id: "cloud/tcld/namespace/accepted-client-ca/index",
                   },
                   items: [
-                    {
-                      type: "category",
-                      label: "accepted-client-ca",
-                      collapsible: true,
-                      collapsed: true,
-                      link: {
-                        type: "doc",
-                        id: "cloud/tcld/namespace/update/accepted-client-ca/index",
-                      },
-                      items: [
-                        "cloud/tcld/namespace/update/accepted-client-ca/set",
-                      ],
-                    },
-                    {
-                      type: "category",
-                      label: "search-attributes",
-                      collapsible: true,
-                      collapsed: true,
-                      link: {
-                        type: "doc",
-                        id: "cloud/tcld/namespace/update/search-attributes/index",
-                      },
-                      items: [
-                        "cloud/tcld/namespace/update/search-attributes/add",
-                        "cloud/tcld/namespace/update/search-attributes/rename",
-                      ],
-                    },
+                    "cloud/tcld/namespace/accepted-client-ca/add",
+                    "cloud/tcld/namespace/accepted-client-ca/list",
+                    "cloud/tcld/namespace/accepted-client-ca/set",
+                    "cloud/tcld/namespace/accepted-client-ca/remove",
+                  ],
+                },
+                {
+                  type: "category",
+                  label: "search-attributes",
+                  collapsible: true,
+                  collapsed: true,
+                  link: {
+                    type: "doc",
+                    id: "cloud/tcld/namespace/search-attributes/index",
+                  },
+                  items: [
+                    "cloud/tcld/namespace/search-attributes/add",
+                    "cloud/tcld/namespace/search-attributes/rename",
                   ],
                 },
               ],
