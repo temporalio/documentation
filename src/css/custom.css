@@ -350,13 +350,7 @@ h1 {
   letter-spacing: -2px;
 }
 
-@media only screen and (min-width: 1590px) {
-  h1 {
-    font-size: 5.5rem;
-  }
-}
-
-@media only screen and (max-width: 1589px) and (min-width: 1280px) {
+@media only screen and (min-width: 1280px) {
   h1 {
     font-size: 4rem;
   }
@@ -372,7 +366,7 @@ h1 {
   font-weight: 600;
   font-size: 2.5rem;
   letter-spacing: -2px;
-  /* margin-top: 2.5rem; */
+  margin-top: 2.5rem;
 }
 
 .p-landing {
@@ -416,7 +410,7 @@ h1 {
 
 .supported-tech {
   position: relative;
-  top: -0.75%;
+  top: -1.75%;
 }
 
 .logos {
@@ -501,7 +495,7 @@ h1 {
   color: #6d28d9;
   background-color: #ede9fe;
   border-radius: 0.125rem;
-  margin: 0rem 1.5rem;
+  margin: 0rem 1rem;
   padding: 0 0.5rem;
 }
 
@@ -512,7 +506,7 @@ h1 {
   color: #1d4ed8;
   background-color: #dbeafe;
   border-radius: 0.125rem;
-  margin: 0rem 1.5rem;
+  margin: 0rem 1rem;
   padding: 0 0.5rem;
 }
 
