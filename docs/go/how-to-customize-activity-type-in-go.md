@@ -8,7 +8,7 @@ tags:
   - go
 ---
 
-To customize the Activity Type set the `Name` parameter with `RegisterOptions` when registering your Activity with a Worker.
+To customize the Activity Type, set the `Name` parameter with `RegisterOptions` when registering your Activity with a Worker.
 
 - Type: `string`
 - Default: function name
