@@ -56,6 +56,18 @@ const createActivities = (envVars: EnvVars) => ({
   async getEnvVars(): Promise<EnvVars> {
     return envVars;
   },
+  async sendNotificationEmail(apiKey: string): Promise<void> {
+    // ...
+    await axios({
+      url: `https://api.mailgun.net/v3/my-domain/messages`,
+      method: 'post',
+      params: { to, from, subject, html },
+      auth: {
+        username: 'api',
+        password: apiKey,
+      },
+    });
+  },
 });
 ```
 
@@ -64,8 +76,15 @@ const { getEnvVars } = proxyLocalActivities({
   startToCloseTimeout: '1m',
 });
 
+const { sendNotificationEmail } = proxyActivities({
+  startToCloseTimeout: '1m',
+});
+
 async function myWorkflow() {
   const envVars = await getEnvVars();
-  // ...
+  if (!envVars.apiKey) {
+    throw new Error('missing env var apiKey');
+  }
+  await sendNotificationEmail(envVars.apiKey);
 }
 ```
