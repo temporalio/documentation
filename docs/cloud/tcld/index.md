@@ -23,3 +23,12 @@ The Temporal Cloud CLI (tcld) is a command-line tool that you can use to interac
 - [`tcld namespace`](/cloud/tcld/namespace)
 - [`tcld request`](/cloud/tcld/request)
 - [`tcld version`](/cloud/tcld/version)
+
+## Global modifier
+
+### `--auto_confirm`
+
+Automatically confirm all prompts. 
+
+You can specify the value for this modifier by setting the AUTO_CONFIRM environment variable.
+The default value is `false`.
