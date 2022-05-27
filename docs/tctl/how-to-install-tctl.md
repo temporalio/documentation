@@ -24,7 +24,7 @@ You can install [tctl](/tctl) in the following ways.
   1. Clone the [Temporal Server repo](https://github.com/temporalio/temporal).
   1. Run `make tctl`.
   1. Copy the `tctl` executable to any directory that appears in the `PATH` environment variable; for example, `/usr/bin/`.
-- Install the latest version of the tctl in your `PATH`: `go install github.com/temporalio/tctl/cmd/tctl@latest`
+- Install the latest version of the tctl in your `GOPATH`: `go install github.com/temporalio/tctl/cmd/tctl@latest`
 
 **Note:** To use [tctl](/tctl), you must have a Temporal Server running.
 
