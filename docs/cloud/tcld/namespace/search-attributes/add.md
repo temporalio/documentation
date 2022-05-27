@@ -1,6 +1,6 @@
 ---
 id: add
-title: tcld namespace update search-attributes add
+title: tcld namespace search-attributes add
 sidebar_label: add
 description: How to add custom Search Attributes to a Namespace in Temporal Cloud using tcld.
 tags:
@@ -8,9 +8,11 @@ tags:
   - tcld
 ---
 
-The `tcld namespace update search-attributes add` command adds custom [Search Attributes](/concepts/what-is-a-search-attribute) to a Namespace in Temporal Cloud.
+The `tcld namespace search-attributes add` command adds custom [Search Attributes](/concepts/what-is-a-search-attribute) to a Namespace in Temporal Cloud.
 
-`tcld namespace update search-attributes add --search-attribute <value>`
+`tcld namespace search-attributes add --search-attribute <value>`
+
+Alias: `a`
 
 The following modifiers control the behavior of the command.
 
@@ -23,7 +25,7 @@ Alias: `-n`
 **Example**
 
 ```bash
-tcld namespace update search-attributes add --namespace <namespace_id> --search-attribute <value>
+tcld namespace search-attributes add --namespace <namespace_id> --search-attribute <value>
 ```
 
 ### `--request-id`
@@ -35,7 +37,7 @@ Alias: `-r`
 **Example**
 
 ```bash
-tcld namespace update search-attributes add --request-id <request_id> --search-attribute <value>
+tcld namespace search-attributes add --request-id <request_id> --search-attribute <value>
 ```
 
 ### `--resource-version`
@@ -47,7 +49,7 @@ Alias: `-v`
 **Example**
 
 ```bash
-tcld namespace update search-attributes add --resource-version <etag> --search-attribute <value>
+tcld namespace search-attributes add --resource-version <etag> --search-attribute <value>
 ```
 
 ### `--search-attribute`
@@ -68,5 +70,5 @@ Alias: `--sa`
 **Example**
 
 ```bash
-tcld namespace update search-attributes add --search-attribute "YourSearchAttribute1=Text" --search-attribute "YourSearchAttribute2=Double"
+tcld namespace search-attributes add --search-attribute "YourSearchAttribute1=Text" --search-attribute "YourSearchAttribute2=Double"
 ```

@@ -12,9 +12,9 @@ The `tcld namespace get` command gets information about the specified [Namespace
 
 Alias: `g`
 
-`tcld namespace get --namespace <namespace_id>`
+`tcld namespace get --request-id <request_id>`
 
-The following modifier controls the behavior of the command.
+The following modifiers control the behavior of the command.
 
 ### `--namespace`
 
@@ -26,4 +26,18 @@ Alias: `-n`
 
 ```bash
 tcld namespace get --namespace <namespace_id>
+```
+
+### `--request-id`
+
+_Required modifier_
+
+Specify the identifier of an asynchronous request.
+
+Alias: `-r`
+
+**Example**
+
+```bash
+tcld namespace get --request-id <request_id>
 ```

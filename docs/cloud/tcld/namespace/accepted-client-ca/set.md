@@ -1,16 +1,18 @@
 ---
 id: set
-title: tcld namespace update accepted-client-ca set
+title: tcld namespace accepted-client-ca set
 sidebar_label: set
-description: How to set the accepted client CA certificates for a Namespace in Temporal Cloud using tcld.
+description: How to set the client CA certificates for a Namespace in Temporal Cloud using tcld.
 tags:
   - reference
   - tcld
 ---
 
-The `tcld namespace update accepted-client-ca set` command sets the accepted client CA certificates for a [Namespace](/concepts/what-is-a-namespace) in Temporal Cloud.
+The `tcld namespace accepted-client-ca set` command sets the client CA certificates for a [Namespace](/concepts/what-is-a-namespace) in Temporal Cloud.
 
-`tcld namespace update accepted-client-ca set --ca-certificate <value>`
+`tcld namespace accepted-client-ca set --ca-certificate <value>`
+
+Alias: `s`
 
 <!--- How to rollover accepted client CA certificates in Temporal Cloud using tcld --->
 
@@ -29,17 +31,17 @@ Doing so enables your Namespace to serve both CA certificates for a period of ti
    -----END CERTIFICATE-----
    ```
 
-1. Run the `tcld namespace update accepted-client-ca set` command with the CA certificate bundle file.
+1. Run the `tcld namespace accepted-client-ca set` command with the CA certificate bundle file.
 
    ```bash
-   tcld namespace update accepted-client-ca set --ca-certificate-file <path>
+   tcld namespace accepted-client-ca set --ca-certificate-file <path>
    ```
 
 1. Monitor traffic to your old certificate until it ceases.
 
 1. Create another file that contains only the new CA certificate.
 
-1. Run the `tcld namespace update accepted-client-ca set` command again with the updated CA certificate bundle file.
+1. Run the `tcld namespace accepted-client-ca set` command again with the updated CA certificate bundle file.
 
 The following modifiers control the behavior of the command.
 
@@ -52,7 +54,7 @@ Alias: `-n`
 **Example**
 
 ```bash
-tcld namespace update accepted-client-ca set --namespace <namespace_id> --ca-certificate <encoded_certificate>
+tcld namespace accepted-client-ca set --namespace <namespace_id> --ca-certificate <encoded_certificate>
 ```
 
 ### `--request-id`
@@ -64,7 +66,7 @@ Alias: `-r`
 **Example**
 
 ```bash
-tcld namespace update accepted-client-ca set --request-id <request_id> --ca-certificate <encoded_certificate>
+tcld namespace accepted-client-ca set --request-id <request_id> --ca-certificate <encoded_certificate>
 ```
 
 ### `--resource-version`
@@ -76,7 +78,7 @@ Alias: `-v`
 **Example**
 
 ```bash
-tcld namespace update accepted-client-ca set --resource-version <etag> --ca-certificate <encoded_certificate>
+tcld namespace accepted-client-ca set --resource-version <etag> --ca-certificate <encoded_certificate>
 ```
 
 ### `--ca-certificate`
@@ -92,7 +94,7 @@ Alias: `-c`
 **Example**
 
 ```bash
-tcld namespace update accepted-client-ca set --ca-certificate <encoded_certificate>
+tcld namespace accepted-client-ca set --ca-certificate <encoded_certificate>
 ```
 
 ### `--ca-certificate-file`
@@ -108,5 +110,5 @@ Alias: `-f`
 **Example**
 
 ```bash
-tcld namespace update accepted-client-ca set --ca-certificate-file <path>
+tcld namespace accepted-client-ca set --ca-certificate-file <path>
 ```
