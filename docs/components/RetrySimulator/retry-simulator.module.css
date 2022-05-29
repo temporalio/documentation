@@ -30,6 +30,25 @@
   margin-left: 0.25em;
 }
 
+@media screen and (max-width: 966px) {
+  .retryRow {
+    display: block;
+  }
+
+  .retryCol {
+    width: 100%;
+    margin-top: 25px;
+  }
+
+  .retryCol:first-of-type {
+    margin-right: 0;
+  }
+
+  .retryCol:not(:first-of-type) {
+    margin-left: 0;
+  }
+}
+
 .scheduleTime {
   padding: 10px;
   padding-top: 15px;
