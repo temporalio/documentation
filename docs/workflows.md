@@ -302,7 +302,7 @@ The new Workflow Execution has the same Workflow Id, but a different Run Id, and
 
 In the case of [Temporal Cron Jobs](#cron-jobs), Continue-As-New is actually used internally for the same effect.
 
-- [How to Continue-As-New in Go](/go/how-to-continue-as-new-in-go)
+- [How to Continue-As-New in Go](/application-development-guide/#continue-as-new)
 
 ### Run Id
 

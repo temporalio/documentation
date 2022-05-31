@@ -1260,6 +1260,37 @@
           ]
         },
         {
+          "header": "Continue-As-New",
+          "type": "context",
+          "path": "app-dev-context/continue-as-new"
+        },
+        {
+          "header": "none",
+          "type": "lang-tabs",
+          "langs": [
+            {
+              "lang": "go",
+              "title": "Go",
+              "path": "go/how-to-continue-as-new-in-go"
+            },
+            {
+              "lang": "java",
+              "title": "Java",
+              "path": "java/how-to-continue-as-new-in-java"
+            },
+            {
+              "lang": "php",
+              "title": "PHP",
+              "path": "none"
+            },
+            {
+              "lang": "typescript",
+              "title": "TypeScript",
+              "path": "none"
+            }
+          ]
+        },
+        {
           "header": "Activity Heartbeats",
           "type": "context",
           "path": "app-dev-context/local-activities"
