@@ -18,11 +18,11 @@ A Global Namespace may be replicated to any number of Clusters, but is active in
 
 For a failover to be successful, Worker Processes must be polling for Tasks for the Global Namespace on all Clusters.
 
-Global Namespaces have a failover version.
-Since a failover can be triggered from any Cluster, the failover version prevents certain conflicts from occurring should a failover be mistakenly triggered simultaneously on two Clusters.
+A Global Namespace has a failover version.
+Because a failover can be triggered from any Cluster, the failover version prevents certain conflicts from occurring if a failover is mistakenly triggered simultaneously on two Clusters.
 
-Only the active Cluster dispatches [Tasks](/concepts/what-is-a-task), however certain conflicts are possible.
-Unlike regular Namespaces which provide at-most-once semantics for an Activity Execution, Global Namespaces can only support at-least-once semantics (see [Conflict resolution](/concepts/what-is-multi-cluster-replication/#conflict-resolution)).
+Only the active Cluster dispatches [Tasks](/concepts/what-is-a-task); however, certain conflicts are possible.
+Unlike regular Namespaces, which provide at-most-once semantics for an Activity Execution, Global Namespaces can support only at-least-once semantics (see [Conflict resolution](/concepts/what-is-multi-cluster-replication/#conflict-resolution)).
 Worker Processes on the standby Clusters are idle until a failover occurs and their Cluster becomes active.
 
 Temporal Application API calls made to a non-active Cluster are rejected with a **NamespaceNotActiveError** which contains the name of the current active Cluster.
