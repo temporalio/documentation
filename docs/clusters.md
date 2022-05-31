@@ -227,11 +227,12 @@ Temporal's Multi-Cluster Replication feature is considered **experimental** and 
 Temporal automatically forwards Start, Signal, and Query requests to the active Cluster.
 This feature must be enabled through a Dynamic Config flag per [Global Namespace](/namespaces/#global-namespace).
 
-Once enabled, Tasks are sent to the Parent Task Queue partition that matches that Namespace, if it exists.
+When the feature is enabled, Tasks are sent to the Parent Task Queue partition that matches that Namespace, if it exists.
 
 All Visibility APIs can be used against active and standby Clusters.
 This enables [Temporal Web](https://github.com/temporalio/temporal-web) to work seamlessly for Global Namespaces.
-Applications making API calls directly to the Temporal Visibility API will continue to work even if a Global Namespace is in standby mode. However, they might see a lag due to replication delay when querying the Workflow execution state from a standby cluster.
+Applications making API calls directly to the Temporal Visibility API continue to work even if a Global Namespace is in standby mode.
+However, they might see a lag due to replication delay when querying the Workflow execution state from a standby Cluster.
 
 #### Namespace Versions
 
@@ -512,16 +513,16 @@ Workflow Execution Histories that diverge will have more than one history branch
 Among all history branches, the history branch with the highest version is considered the `current branch` and the Workflow Execution's mutable state is a summary of the current branch.
 Whenever there is a switch between Workflow Execution History branches, a complete rebuild of the Workflow Execution's mutable state will occur.
 
-Temporal [Multi-Cluster Replication](#multi-cluster-replication) relies on asynchronous replication of Events across Clusters, so in the case of a failover it is possible to have an Activity Task dispatched again to the newly active Cluster due to a replication task lag.
+Temporal Multi-Cluster Replication relies on asynchronous replication of Events across Clusters, so in the case of a failover it is possible to have an Activity Task dispatched again to the newly active Cluster due to a replication task lag.
 This also means that whenever a Workflow Execution is updated after a failover by the new Cluster, any previous replication tasks for that Execution cannot be applied.
 This results in loss of some progress made by the Workflow Execution in the previous active Cluster.
 During such conflict resolution, Temporal re-injects any external Events like Signals in the new Event History before discarding replication tasks.
-Even though some progress could rollback during failovers, Temporal provides the guarantee that Workflow Executions won’t get stuck and will continue to make forward progress.
+Even though some progress could roll back during failovers, Temporal provides the guarantee that Workflow Executions won’t get stuck and will continue to make forward progress.
 
 Activity Execution completions are not forwarded across Clusters.
-Any outstanding Activities will eventually timeout based on the configuration.
+Any outstanding Activities will eventually time out based on the configuration.
 Your application should have retry logic in place so that the Activity gets retried and dispatched again to a Worker after the failover to the new Cluster.
-Handling this is pretty much the same as handling an Activity Task timeout caused by a Worker restarting.
+Handling this is similar to handling an Activity Task timeout caused by a Worker restarting.
 
 #### Zombie Workflows
 
