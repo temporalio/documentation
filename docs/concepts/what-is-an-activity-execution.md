@@ -9,7 +9,14 @@ tags:
 
 An Activity Execution is the full chain of [Activity Task Executions](/concepts/what-is-an-activity-task-execution).
 
+- [How to spawn an Activity Execution](/application-development-guide#start-activity-execution)
+
 ![Activity Execution](/diagrams/activity-execution.svg)
+
+An Activity Execution has no time limit.
+Activity Execution time limits and retries can be optimized for each situation within the Temporal Application.
+
+If for any reason an Activity Execution does not complete (exhausts all retries) the error is returned to the [Workflow](/workflows) which decides how to handle it..
 
 ### Request Cancellation
 
@@ -23,7 +30,3 @@ Cancellation requests are only delivered to Activity Executions that Heartbeat:
   Heartbeats can also fail when the Workflow Execution that spawned it is in a completed state.
 - The Activity should perform all necessary cleanup and report when it is done.
 - The Workflow can decide if it wants to wait for the Activity cancellation confirmation or proceed without waiting.
-
-**Implementation guides:**
-
-- [How to spawn an Activity Execution in Go](/go/how-to-spawn-an-activity-execution-in-go)

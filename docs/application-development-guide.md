@@ -1423,7 +1423,7 @@ public class FileProcessingActivitiesImpl implements FileProcessingActivities {
 }
 ```
 
-For details on getting the results of an Activity Execution, see [Activity Execution Result](#none).
+For details on getting the results of an Activity Execution, see [Activity Execution Result](#get-activity-results).
 
 </TabItem>
 <TabItem value="php">
@@ -1508,6 +1508,12 @@ This imports the individual Activities and declares the type alias for each Acti
 
 </TabItem>
 </Tabs>
+
+#### Required timeout
+
+Activity Execution semantics rely on several parameters.
+The only required custom value that needs to be set is either a [Schedule-To-Close Timeout](/activities/#start-to-close-timeout) or a [Start-To-Close Timeout](/activities/#start-to-close-timeout).
+These parameters are set in the Activity Options.
 
 #### Get Activity results
 

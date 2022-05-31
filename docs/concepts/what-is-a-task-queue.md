@@ -13,14 +13,14 @@ Task Queues do not have any ordering guarantees.
 It is possible to have a Task that stays in a Task Queue for a period of time, if there is a backlog that wasn't drained for that time.
 
 There are two types of Task Queues, Activity Task Queues and Workflow Task Queues.
-But one of each can exist with the same Task Queue name.
 
 ![Task Queue component](/diagrams/task-queue.svg)
 
 Task Queues are very lightweight components.
 
-- Task Queues do not require explicit registration but instead are created on demand when a Workflow Execution or Activity spawns or when a Worker Process subscribes to it.
-- There is no limit to the number of Task Queues a Temporal Application can use or a Temporal Cluster can maintain.
+Task Queues do not require explicit registration but instead are created on demand when a Workflow Execution or Activity spawns or when a Worker Process subscribes to it.
+When a Task Queue is created, both a Workflow Task Queue and an Activity Task Queue are created under the same name.
+There is no limit to the number of Task Queues a Temporal Application can use or a Temporal Cluster can maintain.
 
 Workers poll for Tasks in Task Queues via synchronous RPC.
 This implementation offers several benefits:
@@ -42,15 +42,12 @@ There are four places where the name of the Task Queue can be set by the develop
 
 1. A Task Queue must be set when spawning a Workflow Execution:
 
-- [How to set `StartWorkflowOptions` in Go](/go/startworkflowoptions-reference/#taskqueue)
-- [How to spawn a Workflow Execution using tctl](/tctl/workflow/start#--taskqueue)
+- [How to start a Workflow Execution using an SDK](/application-development-guide#set-task-queue)
+- [How to start a Workflow Execution using tctl](/tctl/workflow/start#--taskqueue)
 
-2. A Task Queue name must be set when starting a Worker Entity:
+2. A Task Queue name must be set when creating a Worker Entity, and running a Worker Process:
 
-- [How to develop a Worker Program in Go](/go/how-to-develop-a-worker-program-in-go)
-- [How to develop a Worker Program in Java](/java/how-to-develop-a-worker-program-in-java)
-- [How to develop a Worker Program in PHP](/php/how-to-develop-a-worker-program-in-php)
-- [How to develop a Worker Program in TypeScript](/typescript/how-to-develop-a-worker-program-in-typescript)
+- [How to develop a Worker Program](/application-development-guide#run-worker-processes)
 
 Note that all Worker Entities listening to the same Task Queue name must be registered to handle the exact same Workflows Types and Activity Types.
 
@@ -62,11 +59,11 @@ However, the failure of the Task will not cause the associated Workflow Executio
 This is optional.
 An Activity Execution inherits the Task Queue name from its Workflow Execution if one is not provided.
 
-- [How to set `ActivityOptions` in Go](/go/activityoptions-reference/#taskqueue)
+- [How to start an Activity Execution](/application-development-guide#start-activity-execution)
 
 4. A Task Queue name can be provided when spawning a Child Workflow Execution:
 
 This is optional.
 A Child Workflow Execution inherits the Task Queue name from its Parent Workflow Execution if one is not provided.
 
-- [How to set `ChildWorkflowOptions` in Go](#)
+- [How to start a Child Workflow Execution](/application-development-guide#child-workflows)

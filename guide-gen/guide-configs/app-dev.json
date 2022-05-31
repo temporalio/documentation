@@ -376,35 +376,40 @@
           ],
           "h4_sections": [
             {
+              "header": "Required timeout",
+              "type": "context",
+              "path": "app-dev-context/required-activity-timeout"
+            },
+            {
               "header": "Get Activity results",
               "type": "context",
               "path": "app-dev-context/get-activity-results"
-            }
-          ]
-        },
-        {
-          "header": "none",
-          "type": "lang-tabs",
-          "langs": [
-            {
-              "lang": "go",
-              "title": "Go",
-              "path": "go/how-to-get-the-result-of-an-activity-execution-in-go"
             },
             {
-              "lang": "java",
-              "title": "Java",
-              "path": "java/how-to-get-the-result-of-an-activity-execution-in-java"
-            },
-            {
-              "lang": "php",
-              "title": "PHP",
-              "path": "php/how-to-get-the-result-of-an-activity-execution-in-php"
-            },
-            {
-              "lang": "typescript",
-              "title": "TypeScript",
-              "path": "typescript/how-to-get-the-result-of-an-activity-execution-in-typescript"
+              "header": "none",
+              "type": "lang-tabs",
+              "langs": [
+                {
+                  "lang": "go",
+                  "title": "Go",
+                  "path": "go/how-to-get-the-result-of-an-activity-execution-in-go"
+                },
+                {
+                  "lang": "java",
+                  "title": "Java",
+                  "path": "java/how-to-get-the-result-of-an-activity-execution-in-java"
+                },
+                {
+                  "lang": "php",
+                  "title": "PHP",
+                  "path": "php/how-to-get-the-result-of-an-activity-execution-in-php"
+                },
+                {
+                  "lang": "typescript",
+                  "title": "TypeScript",
+                  "path": "typescript/how-to-get-the-result-of-an-activity-execution-in-typescript"
+                }
+              ]
             }
           ]
         },
