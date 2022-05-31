@@ -145,7 +145,8 @@
 /references/configuration        /references/configuration
 /server-introduction        /clusters
 /server/introduction        /clusters
-/server-namespaces         /server/namespaces
+/server-namespaces        /namespaces
+/server/namespaces        /namespaces
 /server/multi-cluster        /concepts/what-is-multi-cluster-replication
 /server-options        /server/options
 /server-production-deploy        /server/production-deploy

@@ -4421,7 +4421,7 @@ See the example code snippets below.
 
 Use the Activity Retries settings to configure how long the API request takes to succeed or fail.
 There is an option to generate scenarios.
-The "Task Time in Queue" simulates the time the Activity Task might be waiting in the Task Queue.
+The _Task Time in Queue_ simulates the time the Activity Task might be waiting in the Task Queue.
 
 Use the Activity Timeouts and Retry Policy settings to see how they impact the success or failure of an Activity Execution.
 
