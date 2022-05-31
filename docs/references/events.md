@@ -140,11 +140,11 @@ This Event type contains last Workflow Execution results as well as new Workflow
 This Event type indicates that the Workflow Task has been scheduled.
 The SDK client should now be able to process any new history events.
 
-| Field                  | Description                                                                              |
-| ---------------------- | ---------------------------------------------------------------------------------------- |
+| Field                  | Description                                                                               |
+| ---------------------- | ----------------------------------------------------------------------------------------- |
 | task_queue             | The [Task Queue](/concepts/what-is-a-task-queue) that this Workflow Task was enqueued in. |
-| start_to_close_timeout | The time that the Worker takes to process this Task once it's received.                  |
-| attempt                | The number of attempts that have been made to complete this Task.                        |
+| start_to_close_timeout | The time that the Worker takes to process this Task once it's received.                   |
+| attempt                | The number of attempts that have been made to complete this Task.                         |
 
 ### WorkflowTaskStarted
 
