@@ -373,7 +373,7 @@ h1 {
   font-family: "Aeonik";
   font-size: 0.875rem;
   font-weight: 400;
-  letter-spacing: 2.5px;
+  letter-spacing: 1.25px;
 }
 
 .a-landing {
@@ -381,7 +381,7 @@ h1 {
   font-size: 0.875rem;
   font-weight: 400;
   margin-bottom: 0.25rem;
-  letter-spacing: 2.5px;
+  letter-spacing: 1.25px;
 }
 
 .navbar__logo img {
@@ -402,7 +402,7 @@ h1 {
   font-family: "Aeonik";
   font-size: 1rem;
   font-weight: 400;
-  letter-spacing: 2.5px;
+  letter-spacing: 1.25px;
 }
 
 .landing-card-list-b {
@@ -478,7 +478,7 @@ h1 {
   font-size: 1rem;
   font-weight: 400;
   margin-bottom: 1.5rem;
-  letter-spacing: 2.5px;
+  letter-spacing: 1.25px;
 }
 
 .code-logo-list {
@@ -532,7 +532,7 @@ h1 {
   font-family: "Aeonik";
   font-size: 0.875rem;
   font-weight: 400;
-  letter-spacing: 2.5px;
+  letter-spacing: 1.25px;
 }
 
 @media only screen and (min-width: 640px) {
