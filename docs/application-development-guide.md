@@ -2513,7 +2513,7 @@ run().catch((err) => {
 
 #### Set Workflow Id
 
-While it is not required, we recommend providing your own [Workflow Id](/workflows/#workflow-id) that maps to a business process or business entity identifier, such as an order identifier or customer identifier.
+Although it's not required, we recommend providing your own [Workflow Id](/workflows/#workflow-id) that maps to a business process or business entity identifier, such as an order identifier or customer identifier.
 
 <Tabs
 defaultValue="go"
