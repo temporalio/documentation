@@ -322,9 +322,9 @@ module.exports = {
           customCss: require.resolve("./src/css/custom.css"),
         },
         gtag: {
-          trackingID: "UA-163137879-1",
+          trackingID: "GTM-TSXFPF2",
           // Optional fields.
-          anonymizeIP: true, // Should IPs be anonymized?
+          anonymizeIP: false, // Should IPs be anonymized?
         },
         // Will be passed to @docusaurus/plugin-content-sitemap
         sitemap: {
