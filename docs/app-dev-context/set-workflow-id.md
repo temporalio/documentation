@@ -1,1 +1,1 @@
-While it is not required, providing your own [Workflow Id](/concepts/what-is-a-workflow-id) that maps to a business process or business entity identifier is highly recommended. Values that can provided include order Id or customer Id.
+Also it is not required, we recommend providing your own [Workflow Id](/concepts/what-is-a-workflow-id) that maps to a business process or business entity identifier, such as an order identifier or customer identifier.

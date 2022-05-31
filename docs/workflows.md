@@ -317,7 +317,7 @@ A Run Id uniquely identifies a Workflow Execution even if it shares a Workflow I
 
 ### Workflow Id
 
-A Workflow Id is a customizable, application-level identifier for a [Workflow Execution](#workflow-executions) that is unique to an Open Workflow Execution within a [Namespace](/server/namespaces).
+A Workflow Id is a customizable, application-level identifier for a [Workflow Execution](#workflow-executions) that is unique to an Open Workflow Execution within a [Namespace](/namespaces).
 
 - [How to set a Workflow Id in Go](/application-development-guide/#set-workflow-id)
 

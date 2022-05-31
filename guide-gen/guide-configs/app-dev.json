@@ -1192,6 +1192,11 @@
                   "path": "typescript/how-to-set-an-activity-retry-policy-in-typescript"
                 }
               ]
+            },
+            {
+              "header": "Activity retry simulator",
+              "type": "context",
+              "path": "app-dev-context/activity-retry-simulator"
             }
           ]
         },

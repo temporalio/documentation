@@ -17,6 +17,7 @@ The following modifiers control the behavior of the command.
 ### `--active-cluster`
 
 Specify the name of the active [Temporal Cluster](/concepts/what-is-a-temporal-cluster/) when registering a [Namespace](/concepts/what-is-a-namespace).
+This value changes for Global Namespaces when a failover occurs.
 
 Alias: `--ac`
 
@@ -31,6 +32,8 @@ tctl namespace register --active-cluster <name>
 Specify a list of [Temporal Clusters](/concepts/what-is-a-temporal-cluster/) when registering a [Namespace](/concepts/what-is-a-namespace).
 
 The list contains the names of Clusters (separated by spaces) to which the Namespace can fail over.
+Make sure to include to the currently active Cluster.
+This is a read-only setting and cannot be changed.
 
 This modifier is valid only when the `--global-namespace` modifier is set to true.
 
@@ -57,6 +60,8 @@ tctl namespace register --description <value>
 ### `--global-namespace`
 
 Specifies whether a [Namespace](/concepts/what-is-a-namespace) is a [Global Namespace](/namespaces/#global-namespace).
+When enabled, it controls the creation of replication tasks on updates allowing the state to be replicated across Clusters.
+This is a read-only setting and cannot be changed.
 
 Alias `--gd`
 

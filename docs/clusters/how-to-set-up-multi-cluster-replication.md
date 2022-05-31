@@ -19,7 +19,7 @@ After the above conditions are satisfied, you can start to configure a multi-clu
 
 #### Set up Multi-Cluster Replication prior to v1.14
 
-You can set this up with [`clusterMetadata` configuration](/server/configuration#clustermetadata); however, this is meant to be only a conceptual guide rather than a detailed tutorial.
+You can set this up with [`clusterMetadata` configuration](/references/configuration#clustermetadata); however, this is meant to be only a conceptual guide rather than a detailed tutorial.
 Please reach out to us if you need to set this up.
 
 For example:
@@ -60,7 +60,7 @@ clusterMetadata:
 
 #### Set up Multi-Cluster Replication in v1.14 and later
 
-You still need to set up local cluster [`clusterMetadata` configuration](/server/configuration#clustermetadata)
+You still need to set up local cluster [`clusterMetadata` configuration](/references/configuration#clustermetadata)
 
 For example:
 
