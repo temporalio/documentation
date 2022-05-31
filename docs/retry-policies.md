@@ -110,4 +110,3 @@ There are some subtle nuances to how Events are recorded to an Event History whe
   The new Workflow Execution is created immediately.
   But the first Workflow Task won't be scheduled until the backoff duration is exhausted.
   That duration is recorded as the `firstWorkflowTaskBackoff` field of the new run's `WorkflowExecutionStartedEventAttributes` event.
-  
