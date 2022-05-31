@@ -7,7 +7,7 @@ tags:
   - explanation
 ---
 
-A Workflow Id is a customizable, application-level identifier for a [Workflow Execution](/concepts/what-is-a-workflow-execution) that is unique to an Open Workflow Execution within a [Namespace](/server/namespaces).
+A Workflow Id is a customizable, application-level identifier for a [Workflow Execution](/concepts/what-is-a-workflow-execution) that is unique to an Open Workflow Execution within a [Namespace](/namespaces).
 
 - [How to set a Workflow Id in Go](/go/how-to-set-a-workflow-id-in-go)
 
