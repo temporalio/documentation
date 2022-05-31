@@ -50,7 +50,7 @@ Default: "temporal"
 
 #### `--input_directory value`
 
-The directory which contains the corrupted [Workflow Execution](/concepts/what-is-a-workflow-execution.md) files from running [`scan`](/tctl/admin/db/scan).
+The directory which contains the corrupted [Workflow Execution](/workflows/#workflow-executions) files from running [`scan`](/tctl/admin/db/scan).
 
 #### `--lower_shard_bound value`
 
