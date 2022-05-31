@@ -326,6 +326,9 @@ module.exports = {
           // Optional fields.
           anonymizeIP: false, // Should IPs be anonymized?
         },
+        tagManager: {
+          trackingID: "GTM-TSXFPF2",
+        },
         // Will be passed to @docusaurus/plugin-content-sitemap
         sitemap: {
           // Per v2.0.0-alpha.72 cacheTime is now deprecated
