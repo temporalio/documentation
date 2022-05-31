@@ -339,18 +339,18 @@ module.exports = {
       },
     ],
   ],
-  scripts: [
-    {
-      src: "/scripts/feedback.js",
-      async: true,
-      defer: true,
-    },
-    {
-      src: "/scripts/fullstory.js",
-      async: true,
-      defer: true,
-    },
-  ],
+  // scripts: [
+  //   {
+  //     src: "/scripts/feedback.js",
+  //     async: true,
+  //     defer: true,
+  //   },
+  //   {
+  //     src: "/scripts/fullstory.js",
+  //     async: true,
+  //     defer: true,
+  //   },
+  // ],
 };
 
 function convertIndent4ToIndent2(code) {
