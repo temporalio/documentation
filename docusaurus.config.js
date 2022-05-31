@@ -211,6 +211,9 @@ module.exports = {
       appId: "T5D6KNJCQS", // Optional, if you run the DocSearch crawler on your own
       // algoliaOptions: {}, // Optional, if provided by Algolia
     },
+    tagManager: {
+      trackingID: "GTM-TSXFPF2",
+    },
   },
   presets: [
     [
@@ -325,9 +328,6 @@ module.exports = {
           trackingID: "GTM-TSXFPF2",
           // Optional fields.
           anonymizeIP: false, // Should IPs be anonymized?
-        },
-        tagManager: {
-          trackingID: "GTM-TSXFPF2",
         },
         // Will be passed to @docusaurus/plugin-content-sitemap
         sitemap: {
