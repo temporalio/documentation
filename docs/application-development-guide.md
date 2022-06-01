@@ -679,8 +679,8 @@ function useState<T = any>(name: string, initialValue: T) {
 To return the results of a Workflow, set your Workflow to a variable, like `handle`, then return the results with [`result()`](https://docs.python.org/3/library/asyncio-future.html#asyncio.Future.result).
 
 ```python
-    # Waiting for the workflow to complete and returning the result.
-    return await handle.result()
+# Waiting for the workflow to complete and returning the result.
+return await handle.result()
 ```
 
 </TabItem>
@@ -966,6 +966,7 @@ You can develop an Activity Definition by using the `@activity.defn` decorator.
 
 ```python
 from temporalio import activity
+
 
 @activity.defn
 async def say_hello_activity(name: str) -> str:
@@ -1578,6 +1579,7 @@ import asyncio
 from datetime import datetime, timedelta
 from temporalio import workflow, activity
 
+
 @workflow.defn
 class SayHello:
     @workflow.run
@@ -2012,8 +2014,9 @@ Specify the target_url as a string.
 ```python
 from temporalio.client import Client
 
+
 async def main():
-  Client.connect("http://localhost:7233", namespace="your-namespace")
+    Client.connect("http://localhost:7233", namespace="your-namespace")
 ```
 
 A `Client` does not have an explicit close.
@@ -2219,7 +2222,12 @@ To develop a Worker, specify the `Worker()` function and add your Client, Task Q
 The following code example creates a Worker that polls for tasks from the Task Queue and executes the Workflow.
 
 ```python
-worker = Worker(client, task_queue="your-task-queue", workflows=[YourWorkflow], activities=[your_activity])
+worker = Worker(
+    client,
+    task_queue="your-task-queue",
+    workflows=[YourWorkflow],
+    activities=[your_activity],
+)
 ```
 
 The following code sample shows a Worker hosting Workflows and Activities by using a Client for starting Workflows.
@@ -2229,15 +2237,22 @@ import asyncio
 import logging
 from temporalio.client import Client
 from temporalio.worker import Worker
+
 # Import your own Workflows and Activities
 from my_workflow_package import MyWorkflow, my_activity
+
 
 async def run_worker(stop_event: asyncio.Event):
     # Create Client connected to server at the given address
     client = await Client.connect("http://localhost:7233", namespace="my-namespace")
 
     # Run the worker until the event is set
-    worker = Worker(client, task_queue="my-task-queue", workflows=[MyWorkflow], activities=[my_activity])
+    worker = Worker(
+        client,
+        task_queue="my-task-queue",
+        workflows=[MyWorkflow],
+        activities=[my_activity],
+    )
     async with worker:
         await stop_event.wait()
 ```
@@ -3109,9 +3124,9 @@ Content is not available
 To define a Signal, set the Signal decorator `@workflow.signal` on the Signal function inside of your Workflow.
 
 ```python
-   @workflow.signal
-    async def complete_with_greeting(self) -> None:
-        self._complete.set()
+@workflow.signal
+ async def complete_with_greeting(self) -> None:
+     self._complete.set()
 ```
 
 The `@workflow.signal` decorator defines a method as a Signal. Signals can be asynchronous or synchronous functions at any hierarchy depth; however, if a method is override, the override must also be decorated.
@@ -3641,9 +3656,9 @@ Content is not available
 To define a Query, set the Query decorator `@workflow.query` on the Query function inside of your Workflow.
 
 ```python
-   @workflow.signal
-    async def complete_with_greeting(self) -> None:
-        self._complete.set()
+@workflow.signal
+ async def complete_with_greeting(self) -> None:
+     self._complete.set()
 ```
 
 </TabItem>
@@ -5306,7 +5321,12 @@ You can set a Cron Schedule in your Workflows or Workers.
 The following example, sets a Cron Schedule in the Workflow.
 
 ```python
-handle = await client.start_workflow("your_workflow_name", id="your-workflow-id", task_queue="your-task-queue",  cron_schedule="* * * * *")
+handle = await client.start_workflow(
+    "your_workflow_name",
+    id="your-workflow-id",
+    task_queue="your-task-queue",
+    cron_schedule="* * * * *",
+)
 ```
 
 </TabItem>

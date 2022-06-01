@@ -1,5 +1,5 @@
 ---
-id: how-to-set-childworkflowoptions-in-python
+id: how-to-set-child-workflow-options-in-python
 title: How to set Child Workflow options in Python
 sidebar_label: Set Child Workflow options
 description: Set Child Workflow options
