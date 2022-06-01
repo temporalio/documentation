@@ -157,22 +157,22 @@ My end goal is the same as when I started: to define the trust relationship from
 
 -----
 
- <sup>1</sup>Relatively speaking.
+ <sup>1</sup>Relatively speaking.
 
- <sup>2</sup>Sets off pagers, enforce a "no lone zone", etc. The sort of place you stay on the well-defined path and don't go directly accessing the AWS APIs.
+ <sup>2</sup>Sets off pagers, enforce a "no lone zone", etc. The sort of place you stay on the well-defined path and don't go directly accessing the AWS APIs.
 
- <sup>3</sup>[Subjunctive mood](https://en.wikipedia.org/wiki/Subjunctive_mood)
+ <sup>3</sup>[Subjunctive mood](https://en.wikipedia.org/wiki/Subjunctive_mood)
 
- <sup>4</sup>[How to use service control policies to set permission guardrails across accounts in your AWS Organization](https://aws.amazon.com/blogs/security/how-to-use-service-control-policies-to-set-permission-guardrails-across-accounts-in-your-aws-organization/)
+ <sup>4</sup>[How to use service control policies to set permission guardrails across accounts in your AWS Organization](https://aws.amazon.com/blogs/security/how-to-use-service-control-policies-to-set-permission-guardrails-across-accounts-in-your-aws-organization/)
 
- <sup>5</sup>There's a joke in here somewhere about security people and testing the "unhappy path," the development of which is left as an exercise for the reader.
+ <sup>5</sup>There's a joke in here somewhere about security people and testing the "unhappy path," the development of which is left as an exercise for the reader.
 
- <sup>6</sup>[Vulnerability Reporting](https://pages.awscloud.com/GLOBAL_GC_vulnerability-reporting_2021127_7014z000000rnU1.html) form. I can't imagine the volume of inbound flow this receives; I cut the initial responders some slack, especially because even I didn't understand how IAM worked.
+ <sup>6</sup>[Vulnerability Reporting](https://pages.awscloud.com/GLOBAL_GC_vulnerability-reporting_2021127_7014z000000rnU1.html) form. I can't imagine the volume of inbound flow this receives; I cut the initial responders some slack, especially because even I didn't understand how IAM worked.
 
- <sup>7</sup>Please remove your lawyer-hat now.
+ <sup>7</sup>Please remove your lawyer-hat now.
 
- <sup>8</sup>The boundaries AWS recently released are SCP-based and therefore work only on principals that exist in an account; they cannot do anything about the outside world wanting to come in.
+ <sup>8</sup>The boundaries AWS recently released are SCP-based and therefore work only on principals that exist in an account; they cannot do anything about the outside world wanting to come in.
 
- <sup>9</sup>Remember, AWS account numbers are not secrets!
+ <sup>9</sup>Remember, AWS account numbers are not secrets!
 
- <sup>10</sup>The official AWS documentation for [AssumeRole](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html) call it a "trust policy", but the actual API call only calls it an "[assume role policy](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/iam/update-assume-role-policy.html)." Amusingly, even the documentation admits this confusion: "This is typically referred to as the 'role trust policy'."
+ <sup>10</sup>The official AWS documentation for [AssumeRole](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html) call it a "trust policy", but the actual API call only calls it an "[assume role policy](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/iam/update-assume-role-policy.html)." Amusingly, even the documentation admits this confusion: "This is typically referred to as the 'role trust policy'."
