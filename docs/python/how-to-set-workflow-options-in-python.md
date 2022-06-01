@@ -32,7 +32,7 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-Assuming you have a [Temporal server running on localhost](https://docs.temporal.io/docs/clusters/quick-install/), this
+Assuming you have a Temporal server running on localhost, this
 will start a workflow:
 
 ```bash
