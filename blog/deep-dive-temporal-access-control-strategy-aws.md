@@ -14,7 +14,9 @@ image: /img/temporal-access-control.jpeg
 
 This blog post gives some insight into Temporal's strategy for securing our cloud environment.
 
-![Photo of dodgy-looking ATM](/img/temporal-access-control.jpeg)
+![Photo of dodgy-looking ATM beside a security grate](/img/temporal-access-control.jpeg)
+
+<!-- truncate -->
 
 It also calls attention to an unexpected facet of AWS access policies encountered along the way. Finally, I'll come around to what I discovered—what I thought I wanted isn't what I needed—and describe what I need.
 
@@ -22,21 +24,21 @@ Our long-term goal is to develop an access control mechanism that can be flexibl
 
 Setting up numerous smaller accounts helps to constrain possible damage, but this approach would also make our management infrastructure a very compelling target. If only one management account has permissions configured to allow those with access to assume roles into all other accounts, and the management account is breached, the blast radius goes from being extremely small to being extremely large. **Clearly, this is not ideal.**
 
-We want to provide strong isolation guarantees to our customers as well as ourselves. An engineer paged at 3:00 AM needs to be comfortable in the knowledge they will not cause large-scale problems when they fix the isolated problem they were paged about. To provide these strong isolation guarantees, we plan to have a small number of trusted core accounts. Think of these as Ring 0: interacting with the infrastructure of these accounts in any way should be a big event<sup>2</sup>. The next ring of accounts, Ring 1, will only listen to commands from Ring 0 and issue commands to Ring 2. Similarly, our core accounts—those Ring 0 and Ring 1 accounts—should not be able to read the data in those outer rings.
+We want to provide strong isolation guarantees to our customers as well as ourselves. An engineer paged at 3:00 AM needs to be comfortable in the knowledge they will not cause large-scale problems when they fix the isolated problem they were paged about. To provide these strong isolation guarantees, we plan to have a small number of trusted core accounts. Think of these as Ring 0: interacting with the infrastructure of these accounts in any way should be a big event.<sup>2</sup> The next ring of accounts, Ring 1, will only listen to commands from Ring 0 and issue commands to Ring 2. Similarly, our core accounts—those Ring 0 and Ring 1 accounts—should not be able to read the data in those outer rings.
 
 It's easy enough to describe this approach, but promises are meaningful only if you follow through with them! The first step for me was to codify this into our AWS service control policies (SCPs). SCPs are extremely powerful tools because they apply to all principals within an AWS account, including the all-powerful root user. Effective SCP layout and implementation is critical to a well-secured AWS environment.
 
 ## Digression 
 
-Up until SCPs became available, all AWS Identity Access Management (IAM) functioned via [discretionary access aontrol](https://en.wikipedia.org/wiki/Discretionary_access_control). There was no way to restrict the actions of an AWS account. Note that this differs from restricting the actions of an IAM User account within the AWS account. Controlling the permissions of subsections of an AWS account has been possible since the release of AWS IAM, but these were entirely the user's responsibility to put in place—and it was impossible to mandate that some actions always be denied<sup>3</sup>. With privilege escalation readily usable—for either legitimate or malicious purposes—within an account, it remains unwise to rely on a single AWS account.
+Up until SCPs became available, all AWS Identity Access Management (IAM) functioned via [discretionary access control](https://en.wikipedia.org/wiki/Discretionary_access_control). There was no way to restrict the actions of an AWS account. Note that this differs from restricting the actions of an IAM User account within the AWS account. Controlling the permissions of subsections of an AWS account has been possible since the release of AWS IAM, but these were entirely the user's responsibility to put in place—and it was impossible to mandate that some actions always be denied.<sup>3</sup> With privilege escalation readily usable—for either legitimate or malicious purposes—within an account, it remains unwise to rely on a single AWS account.
 
 When SCPs were released, AWS IAM gained the ability to set [mandatory access controls](https://en.wikipedia.org/wiki/Mandatory_access_control). An SCP applied to anything and everything in the AWS account, including the root user. It doesn't matter if the permissions are allowed within the account—SCPs are more powerful. Now, to escalate permissions within an AWS account, an attacker must first break into another AWS account and take actions to enable their attack on the initial target. AWS CloudTrail logs an event any time a user encounters an "Access denied" message due to SCPs, and CloudTrail can also log actions such as moving accounts between OUs and adding, removing, or modifying SCPs for an OU or account. In short, breaking into an AWS account this way requires a series of steps that are much noisier–and therefore more easily monitored.
 
 ## How Mandatory are SCPs?
 
-The stage is set. We have a group of AWS accounts, some of which need the ability to assume a role into a separate group of accounts to perform infrastructure/maintenance/control tasks. And we have the ability to **mandate** what an account is able to do. All that I should need to do would be to mandate that our accounts operate in this manner. We will have our rings of AWS accounts, and AWS will handle the enforcement of what a principal can do. This is how AWS recommends SCPs be used, as guardrails around an account<sup>4</sup>.
+The stage is set. We have a group of AWS accounts, some of which need the ability to assume a role into a separate group of accounts to perform infrastructure/maintenance/control tasks. And we have the ability to **mandate** what an account is able to do. All that I should need to do would be to mandate that our accounts operate in this manner. We will have our rings of AWS accounts, and AWS will handle the enforcement of what a principal can do. This is how AWS recommends SCPs be used, as guardrails around an account.<sup>4</sup>
 
-I wasn't worried about the positive case of granting the permissions of one account to assume-role into another. Instead, I wanted to test the negative case: disallowing any principal except for a particular role in an account in the correct ring to assume-role<sup>5</sup>.
+I wasn't worried about the positive case of granting the permissions of one account to assume-role into another. Instead, I wanted to test the negative case: disallowing any principal except for a particular role in an account in the correct ring to assume-role.<sup>5</sup>
 
 I reached for the tool that I assumed would be the right one: an SCP with conditionals.
 
@@ -114,7 +116,7 @@ In fact, even with an SCP that denies _everything_, the AssumeRole API call succ
 
 ![Screen shot of event details in AWS CloudTrail event history](/img/cloud-trail-success.png)
 
-At this point I contacted AWS Security. After some initial confusion, I was helped to understand where IAM in practice and my understanding of IAM differed<sup>6</sup>. My mental model was that SCPs applied to an account, and even the root user cannot override an SCP's grants. This is true, but put on a lawyer-hat and read that again. "SCPs applied to an account" is true in a very, very literal sense<sup>7</sup>. Another lesson: Not everything that shows up in CloudTrail has passed through the permission matrix that decides whether an action is successful.
+At this point I contacted AWS Security. After some initial confusion, I was helped to understand where IAM in practice and my understanding of IAM differed.<sup>6</sup> My mental model was that SCPs applied to an account, and even the root user cannot override an SCP's grants. This is true, but put on a lawyer-hat and read that again. "SCPs applied to an account" is true in a very, very literal sense.<sup>7</sup> Another lesson: Not everything that shows up in CloudTrail has passed through the permission matrix that decides whether an action is successful.
 
 To be extremely clear, it is a good thing that AssumeRole calls made against an AWS account are logged, regardless of source. However, it is a subtle nuance worth knowing. Back to the limitation of SCPs.
 
@@ -124,7 +126,7 @@ You see, an SCP is applied to all principals in the account it is applied to. An
 
 With this understanding, it makes sense. An IAM role in a different account is not encumbered by this SCP and therefore will not have the `sts:AssumeRole` call blocked. But when a principal that is subject to the SCP tries to take an action, it _will_ be blocked.
 
-This presents a problem for us. Although we can specify that our inner accounts can communicate to only the next ring of accounts, we have limited options for specifying which outer-ring accounts can accept commands from inner-ring accounts<sup>8</sup>.
+This presents a problem for us. Although we can specify that our inner accounts can communicate to only the next ring of accounts, we have limited options for specifying which outer-ring accounts can accept commands from inner-ring accounts.<sup>8</sup>
 
 There are currently no easy workarounds. The Assume Role Policy Document (ARPD) can be constantly updated to maintain a listing of AWS accounts allowed to assume the role the ARPD is attached to, but modification to the ARPD comes from _inside_ the account. We are back to the early days of IAM, when mandatory access controls were unavailable. It is possible to constantly, exhaustingly, manage this by assuming roles into an account and updating the ARPD attached to various IAM roles, but there is no dynamic way to prevent an account from listening to anyone except those who are trusted. Although it is certainly possible to use an SCP to prevent updates to an IAM role by applying a Deny policy, that is only a partial solution—and it still doesn't solve the problem. It can even generate more problems because the permissions needed to prevent malicious ARPD updates are also needed to create service-linked roles, maintain existing IAM roles, or even to remove unknown accounts trusted by the ARPD.
 
@@ -132,9 +134,9 @@ There are currently no easy workarounds. The Assume Role Policy Document (ARPD) 
 
 Even if I spent the time and energy to build (and test) a system to keep everything updated, and it was automated, and I could define/tag various accounts and specify who is allowed to access them, and AWS IAM enforced that for me, I'll still have a problem: vendors.
 
-Really, what I want is an official way to know who owns an AWS account. Scott Piper runs the ["well known AWS" text file](https://github.com/duo-labs/cloudmapper/blob/main/vendor_accounts.yaml), but I could just edit it to claim an account number<sup>9</sup>. There's no formal verification here. Further, absence of an entry in this file is no indication either way of the trustworthiness of the account. AWS should be providing that capability so that vendors can give out trusted account numbers for me to verify before establishing that IAM role can assume an IAM role in my account.
+Really, what I want is an official way to know who owns an AWS account. Scott Piper runs the ["well known AWS" text file](https://github.com/duo-labs/cloudmapper/blob/main/vendor_accounts.yaml), but I could just edit it to claim an account number.<sup>9</sup> There's no formal verification here. Further, absence of an entry in this file is no indication either way of the trustworthiness of the account. AWS should be providing that capability so that vendors can give out trusted account numbers for me to verify before establishing that IAM role can assume an IAM role in my account.
 
-There are implications even beyond simple IAM roles. For example: How can a Temporal customer know, if they want that from a trustworthy source. The actual item today is called the "Assume Role Policy Document," and that is very literally true. But we (as a community) have been calling it a Trust Relationship or Trust Policy for so long we've blurred the lines too much<sup>10</sup>. Having an ARPD is fine, but I as an operator of the system need to:
+There are implications even beyond simple IAM roles. For example: How can a Temporal customer know, if they want that from a trustworthy source. The actual item today is called the "Assume Role Policy Document," and that is very literally true. But we (as a community) have been calling it a Trust Relationship or Trust Policy for so long we've blurred the lines too much.<sup>10</sup> Having an ARPD is fine, but I as an operator of the system need to:
 
 1. Plan the update process
 2. Update all those documents for all my accounts
@@ -155,22 +157,22 @@ My end goal is the same as when I started: to define the trust relationship from
 
 -----
 
-<sup>1</sup>Relatively speaking.
+<sup>1</sup>Relatively speaking.  
 
-<sup>2</sup>Sets off pagers, enforce a "no lone zone", etc. The sort of place you stay on the well-defined path and don't go directly accessing the AWS APIs.
+<sup>2</sup>Sets off pagers, enforce a "no lone zone", etc. The sort of place you stay on the well-defined path and don't go directly accessing the AWS APIs.  
 
-<sup>3</sup>[Subjunctive mood](https://en.wikipedia.org/wiki/Subjunctive_mood)
+<sup>3</sup>[Subjunctive mood](https://en.wikipedia.org/wiki/Subjunctive_mood)  
 
-<sup>4</sup>[How to use service control policies to set permission guardrails across accounts in your AWS Organization](https://aws.amazon.com/blogs/security/how-to-use-service-control-policies-to-set-permission-guardrails-across-accounts-in-your-aws-organization/)
+<sup>4</sup>[How to use service control policies to set permission guardrails across accounts in your AWS Organization](https://aws.amazon.com/blogs/security/how-to-use-service-control-policies-to-set-permission-guardrails-across-accounts-in-your-aws-organization/)  
 
-<sup>5</sup>There's a joke in here somewhere about security people and testing the "unhappy path," the development of which is left as an exercise for the reader.
+<sup>5</sup>There's a joke in here somewhere about security people and testing the "unhappy path," the development of which is left as an exercise for the reader.  
 
-<sup>6</sup>[Vulnerability Reporting](https://pages.awscloud.com/GLOBAL_GC_vulnerability-reporting_2021127_7014z000000rnU1.html) form. I can't imagine the volume of inbound flow this receives; I cut the initial responders some slack, especially because even I didn't understand how IAM worked.
+<sup>6</sup>[Vulnerability Reporting](https://pages.awscloud.com/GLOBAL_GC_vulnerability-reporting_2021127_7014z000000rnU1.html) form. I can't imagine the volume of inbound flow this receives; I cut the initial responders some slack, especially because even I didn't understand how IAM worked.  
 
-<sup>7</sup>Please remove your lawyer-hat now.
+<sup>7</sup>Please remove your lawyer-hat now.  
 
-<sup>8</sup>The boundaries AWS recently released are SCP-based and therefore work only on principals that exist in an account; they cannot do anything about the outside world wanting to come in.
+<sup>8</sup>The boundaries AWS recently released are SCP-based and therefore work only on principals that exist in an account; they cannot do anything about the outside world wanting to come in.  
 
-<sup>9</sup>Remember, AWS account numbers are not secrets!
+<sup>9</sup>Remember, AWS account numbers are not secrets!  
 
-<sup>10</sup>The official AWS documentation for [AssumeRole](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html) call it a "trust policy", but the actual API call only calls it an "[assume role policy](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/iam/update-assume-role-policy.html)." Amusingly, even the documentation admits this confusion: "This is typically referred to as the 'role trust policy'."
+<sup>10</sup>The official AWS documentation for [AssumeRole](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html) call it a "trust policy", but the actual API call only calls it an "[assume role policy](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/iam/update-assume-role-policy.html)." Amusingly, even the documentation admits this confusion: "This is typically referred to as the 'role trust policy'."  
