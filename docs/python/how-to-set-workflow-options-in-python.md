@@ -1,8 +1,8 @@
 ---
-id: how-to-set-startworkflowoptions-in-python
-title: How to set startworkflowoptions in Python
-sidebar_label: Set startworkflowoptions
-description: Set startworkflowoptions
+id: how-to-set-workflow-options-in-python
+title: How to set Workflow options in Python
+sidebar_label: Set Workflow options
+description: Set Workflow options
 tags:
   - developer-guide
   - sdk
