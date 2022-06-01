@@ -91,6 +91,7 @@ a:hover {
 .tailwindcss ul {
   list-style: none;
   padding: 0;
+  margin-bottom: 0;
 }
 .tailwindcss .pl-4 {
   padding-left: 1rem;
@@ -134,6 +135,22 @@ main.p-6,
 .tailwindcss .rounded-lg {
   border-radius: 0.5rem;
 }
+
+.tailwindcss .mb-0 {
+  margin-bottom: 0;
+}
+
+.tailwindcss .mb-1 {
+  margin-bottom: 0.25;
+}
+
+.tailwindcss .mt-1 {
+  margin-top: 0.25;
+}
+
+.tailwindcss .mb-2 {
+  margin-bottom: 0.5;
+}
 .tailwindcss .mb-4 {
   margin-bottom: 1rem;
 }
@@ -148,17 +165,18 @@ main.p-6,
   margin-bottom: 2.5rem;
   margin-top: 2.5rem;
 }
-.tailwindcss .h-10 {
-  height: 2.5rem;
-}
-.tailwindcss .w-10 {
-  width: 2.5rem;
-}
 .tailwindcss .h-16 {
   height: 4rem;
 }
 .tailwindcss .w-16 {
   width: 4rem;
+}
+
+.tailwindcss .h-10 {
+  height: 2.5rem;
+}
+.tailwindcss .w-10 {
+  width: 2.5rem;
 }
 
 .tailwindcss .h-8 {
@@ -173,6 +191,13 @@ main.p-6,
 }
 .tailwindcss .w-7 {
   width: 1.75rem;
+}
+
+.tailwindcss .h-4 {
+  height: 1rem;
+}
+.tailwindcss .w-4 {
+  width: 4rem;
 }
 
 .tailwindcss .pl-1 {
@@ -216,7 +241,6 @@ main.p-6,
   margin-top: calc(0.75rem * (1 - var(--tw-space-y-reverse)));
 }
 .tailwindcss p {
-  margin: 0;
 }
 
 main.max-w-screen-lg {
@@ -255,6 +279,110 @@ main.max-w-screen-lg {
     line-height: 2.5rem;
   }
 }
+/* End Crazy Tailwind hax */
+
+@font-face {
+  font-family: "Aeonik";
+  src: url("../fonts/Aeonik/Aeonik-Regular.woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Aeonik-Bold";
+  src: url("../fonts/Aeonik/Aeonik-Bold.woff");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Aeonik-Light";
+  src: url("../fonts/Aeonik/Aeonik-Light.woff");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url("../fonts/Poppins/Poppins-Regular.ttf");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url("../fonts/Poppins/Poppins-Medium.ttf");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url("../fonts/Poppins/Poppins-SemiBold.ttf");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url("../fonts/Poppins/Poppins-Bold.ttf");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: "Poppins";
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  letter-spacing: -2px;
+}
+
+@media only screen and (min-width: 1280px) {
+  h1 {
+    font-size: 4rem;
+  }
+}
+
+@media only screen and (max-width: 1279px) and (min-width: 640px) {
+  h1 {
+    font-size: 3rem;
+  }
+}
+
+.h2-landing {
+  font-weight: 600;
+  font-size: 2.5rem;
+  letter-spacing: -2px;
+  margin-top: 2.5rem;
+}
+
+.p-landing {
+  font-family: "Aeonik";
+  font-size: 0.875rem;
+  font-weight: 400;
+  letter-spacing: 1px;
+}
+
+.a-landing {
+  font-family: "Aeonik";
+  font-size: 0.875rem;
+  font-weight: 400;
+  margin-bottom: 0.25rem;
+  letter-spacing: 1px;
+}
 
 .navbar__logo img {
   height: 35px;
@@ -267,18 +395,42 @@ main.max-w-screen-lg {
 }
 
 .landing-card-list {
-  padding-bottom: 1.5em;
-  margin-right: 1.5em;
-  width: 15em;
+  /* padding-bottom: 0em; */
+  margin-right: 2.5em;
+  /* width: 15em; */
   display: inline-block;
+  font-family: "Aeonik";
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 1px;
 }
 
 .landing-card-list-b {
+  display: flex;
+  align-items: center;
+  padding-right: 1.5em;
 }
 
-.landing-card-list-b li {
-  display: inline-block;
-  padding-right: 1.5em;
+.supported-tech {
+  position: relative;
+  top: -1.05%;
+}
+
+@media only screen and (min-width: 645px) {
+  .supported-tech {
+    position: relative;
+    top: -1.75%;
+  }
+}
+
+.logos {
+  /* margin-bottom: 2.5rem; */
+}
+
+.list-logo {
+  padding-left: 1rem;
+  display: flex;
+  align-items: center;
 }
 
 .landing-card-list li {
@@ -320,9 +472,13 @@ main.max-w-screen-lg {
 .landing-card-section h2 {
   margin-bottom: 0.4rem;
 }
+
 .landing-card-p {
-  font-style: italic;
-  margin-bottom: 1em;
+  font-family: "Aeonik";
+  font-size: 1rem;
+  font-weight: 400;
+  margin-bottom: 1.5rem;
+  letter-spacing: 1px;
 }
 
 .code-logo-list {
@@ -338,50 +494,72 @@ main.max-w-screen-lg {
 .bold {
   font-weight: 500;
 }
-/* End Crazy Tailwind hax */
 
-@font-face {
-  font-family: "Aeonik";
-  src: url("../fonts/Aeonik/Aeonik-Regular.woff");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Aeonik-Bold";
-  src: url("../fonts/Aeonik/Aeonik-Bold.woff");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Aeonik-Light";
-  src: url("../fonts/Aeonik/Aeonik-Light.woff");
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Poppins";
-  src: url("../fonts/Poppins/Poppins-Regular.ttf");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-h1,
-h2,
-h3,
-h4 {
-  font-family: "Poppins";
-}
 .menu__link {
   font-family: "Aeonik";
 }
 
+.badge-purple {
+  font-family: "Poppins";
+  font-weight: 500;
+  font-size: 0.75rem;
+  color: #6d28d9;
+  background-color: #ede9fe;
+  border-radius: 0.125rem;
+  margin: 0rem 1rem;
+  padding: 0 0.5rem;
+}
+
+.badge-blue {
+  font-family: "Poppins";
+  font-weight: 500;
+  font-size: 0.75rem;
+  color: #1d4ed8;
+  background-color: #dbeafe;
+  border-radius: 0.125rem;
+  margin: 0rem 1rem;
+  padding: 0 0.5rem;
+}
+
+.aside {
+  color: #2563eb;
+  background-color: #eff6ff;
+  border-width: 1px;
+  border-radius: 0.5rem;
+  border-color: #2563eb;
+  border-style: solid;
+  padding: 1.2rem 1.25rem 0.25rem 1.25rem;
+  font-family: "Aeonik";
+  font-size: 0.875rem;
+  font-weight: 400;
+  letter-spacing: 1px;
+}
+
+@media only screen and (min-width: 640px) {
+  .aside {
+    width: 36rem;
+  }
+}
+
+@media only screen and (max-width: 639px) {
+  .aside {
+    width: 20rem;
+  }
+}
+
+.aside-svg {
+  display: flex;
+  margin-right: 0.5rem;
+}
+
+.aside-head {
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.aside-link {
+  color: #2563eb;
+}
 /* Leadership page css */
 
 .leadership-container {

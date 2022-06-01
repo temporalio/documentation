@@ -1,6 +1,6 @@
 ---
 id: index
-title: Documentation.
+title: Documentation
 sidebar_label: Home
 ---
 
