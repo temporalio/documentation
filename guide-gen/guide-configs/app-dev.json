@@ -55,6 +55,11 @@
               "path": "php/index"
             },
             {
+              "lang": "python",
+              "title": "Python",
+              "path": "python/index"
+            },
+            {
               "lang": "typescript",
               "title": "TypeScript",
               "path": "typescript/index"
@@ -88,7 +93,7 @@
             {
               "lang": "python",
               "title": "Python",
-              "path": "none"
+              "path": "python/how-to-develop-a-workflow-definition-in-python"
             },
             {
               "lang": "typescript",
@@ -153,6 +158,11 @@
                   "path": "php/how-to-define-workflow-return-values-in-php"
                 },
                 {
+                  "lang": "python",
+                  "title": "Python",
+                  "path": "python/how-to-define-workflow-return-values-in-python"
+                },
+                {
                   "lang": "typescript",
                   "title": "TypeScript",
                   "path": "typescript/how-to-define-workflow-return-values-in-typescript"
@@ -182,6 +192,11 @@
                   "lang": "php",
                   "title": "PHP",
                   "path": "none"
+                },
+                {
+                  "lang": "python",
+                  "title": "Python",
+                  "path": "python/how-to-handle-workflow-logic-requirements-in-python"
                 },
                 {
                   "lang": "typescript",
@@ -217,6 +232,11 @@
               "path": "php/how-to-develop-an-activity-definition-in-php"
             },
             {
+              "lang": "python",
+              "title": "Python",
+              "path": "python/how-to-develop-an-activity-definition-in-python"
+            },
+            {
               "lang": "typescript",
               "title": "TypeScript",
               "path": "typescript/how-to-develop-an-activity-definition-in-typescript"
@@ -246,6 +266,11 @@
                   "lang": "php",
                   "title": "PHP",
                   "path": "none"
+                },
+                {
+                  "lang": "python",
+                  "title": "Python",
+                  "path": "python/how-to-define-activity-parameters-in-python"
                 },
                 {
                   "lang": "typescript",
@@ -279,6 +304,11 @@
                   "path": "none"
                 },
                 {
+                  "lang": "python",
+                  "title": "Python",
+                  "path": "python/how-to-define-activity-return-values-in-python"
+                },
+                {
                   "lang": "typescript",
                   "title": "TypeScript",
                   "path": "typescript/how-to-define-activity-return-values-in-typescript"
@@ -310,6 +340,11 @@
               "lang": "php",
               "title": "PHP",
               "path": "php/how-to-spawn-an-activity-execution-in-php"
+            },
+            {
+              "lang": "python",
+              "title": "Python",
+              "path": "python/how-to-spawn-an-activity-execution-in-python"
             },
             {
               "lang": "typescript",
@@ -376,6 +411,11 @@
               "path": "none"
             },
             {
+              "lang": "python",
+              "title": "Python",
+              "path": "python/how-to-create-a-temporal-client-in-python"
+            },
+            {
               "lang": "typescript",
               "title": "TypeScript",
               "path": "typescript/how-to-create-a-temporal-client-in-typescript"
@@ -405,6 +445,11 @@
               "lang": "php",
               "title": "PHP",
               "path": "none"
+            },
+            {
+              "lang": "python",
+              "title": "Python",
+              "path": "python/how-to-develop-a-worker-program-in-python"
             },
             {
               "lang": "typescript",
@@ -612,6 +657,11 @@
                   "path": "none"
                 },
                 {
+                  "lang": "python",
+                  "title": "Python",
+                  "path": "python/how-to-define-a-signal-in-python"
+                },
+                {
                   "lang": "typescript",
                   "title": "TypeScript",
                   "path": "none"
@@ -774,6 +824,11 @@
                   "path": "none"
                 },
                 {
+                  "lang": "python",
+                  "title": "Python",
+                  "path": "python/how-to-define-a-query-in-python"
+                },
+                {
                   "lang": "typescript",
                   "title": "TypeScript",
                   "path": "none"
@@ -872,6 +927,11 @@
                   "lang": "php",
                   "title": "PHP",
                   "path": "none"
+                },
+                {
+                  "lang:": "python",
+                  "title": "Python",
+                  "path": "python/how-to-set-a-workflow-execution-timeout-in-python"
                 },
                 {
                   "lang": "typescript",
@@ -1003,6 +1063,11 @@
                   "lang": "php",
                   "title": "PHP",
                   "path": "none"
+                },
+                {
+                  "lang": "python",
+                  "title": "Python",
+                  "path": "python/how-to-set-a-schedule-to-close-timeout-in-python"
                 },
                 {
                   "lang": "typescript",
@@ -1162,6 +1227,11 @@
               "path": "none"
             },
             {
+              "lang": "python",
+              "title": "Python",
+              "path": "python/how-to-spawn-a-child-workflow-execution-in-python"
+            },
+            {
               "lang": "typescript",
               "title": "TypeScript",
               "path": "none"
@@ -1226,6 +1296,11 @@
               "path": "php/how-to-set-a-heartbeat-for-an-activity-in-php"
             },
             {
+              "lang": "python",
+              "title": "Python",
+              "path": "python/how-to-heartbeat-an-activity-in-python"
+            },
+            {
               "lang": "typescript",
               "title": "TypeScript",
               "path": "none"
@@ -1255,6 +1330,11 @@
               "lang": "php",
               "title": "PHP",
               "path": "none"
+            },
+            {
+              "lang": "python",
+              "title": "Python",
+              "path": "python/how-to-set-a-cron-schedule-in-python"
             },
             {
               "lang": "typescript",
