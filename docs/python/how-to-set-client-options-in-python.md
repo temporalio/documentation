@@ -1,8 +1,8 @@
 ---
-id: how-to-set-clientoptions-in-python
-title: How to set clientoptions in Python
-sidebar_label: Set clientoptions
-description: Set clientoptions
+id: how-to-set-client-options-in-python
+title: How to set Client options in Python
+sidebar_label: Set Client options
+description: Set Client options
 tags:
   - developer-guide
   - sdk
@@ -12,7 +12,7 @@ tags:
 To set the Retry Policy, use `retrypolicy` followed by your Retry statement.
 In this example, we are:
 
-- Creating a Retry Policy with initial interval of 1 second, backoff coefficient of 2.0 and maximum interval of 100 seconds.
+- Creating a Retry Policy with initial interval of 1 second, back off coefficient of 2.0 and maximum interval of 100 seconds.
 - Not allowing any retry attempts.
 - Not allowing any error type to be retried.
 

@@ -15,10 +15,9 @@ The arguments to the workflow are positional.
 
 Child Workflow options are set as keyword arguments after the positional arguments. The `id` must be provided.
 The await of the start does not complete until the workflow has confirmed to be started
-The result is a child workflow handle which is an asyncio.
+The result is a Child Workflow handle which is an `asyncio`.
 
-Task and supports basic task features. The handle also has
-some child info and supports signalling the child workflow
-An async workflow.execute_child_workflow() helper is provided which takes the same arguments as
-workflow.start_child_workflow() and awaits on the result. This should be used in most cases unless advanced task
+Task and supports basic task features. The handle also has some child info and supports signalling the Child Workflow
+A `sync workflow.execute_child_workflow()` helper is provided which takes the same arguments as
+`workflow.start_child_workflow()` and awaits on the result. This should be used in most cases unless advanced task
 capabilities are needed.

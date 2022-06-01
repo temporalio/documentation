@@ -14,7 +14,7 @@ The SDK contains the following tools:
 - APIs to use within your Workflows.
 - APIs to create and manage Worker Entities and Worker Processes.
 
-### Update Python
+**Update Python**
 
 Update `pip`:
 
@@ -22,7 +22,7 @@ Update `pip`:
 python -m install -U pip
 ```
 
-### Get the SDK
+**Get the SDK**
 
 To install the Python SDK, choose from the following options:
 
