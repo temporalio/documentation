@@ -526,7 +526,7 @@ function Explained() {
             <div className="landing-card-list-item">
               <BookSVG />
               <Link
-                to={useBaseUrl("/server/configuration")}
+                to={useBaseUrl("/references/configuration")}
                 className="hover:underline"
               >
                 <a className="font-normal">Cluster configuration</a>
@@ -687,10 +687,7 @@ function Cluster() {
           </Link>
         </li>
         <li className="">
-          <Link
-            to={useBaseUrl("/server/versions-and-dependencies")}
-            className="hover:underline"
-          >
+          <Link to={useBaseUrl("/clusters")} className="hover:underline">
             <a className="font-normal">Upgrade a Cluster</a>
           </Link>
         </li>
