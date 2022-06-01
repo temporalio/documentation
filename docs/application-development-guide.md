@@ -258,7 +258,7 @@ The SDK contains the following tools:
 - APIs to use within your Workflows.
 - APIs to create and manage Worker Entities and Worker Processes.
 
-### Update Python
+**Update Python**
 
 Update `pip`:
 
@@ -266,7 +266,7 @@ Update `pip`:
 python -m install -U pip
 ```
 
-### Get the SDK
+**Get the SDK**
 
 To install the Python SDK, choose from the following options:
 
@@ -289,8 +289,7 @@ pip install temporalio
   ```sh
   git submodule update --init --recursive
   ```
-
-If you get a `The authenticity of host 'github.com (192.30.252.123)' can't be established.` error, run `ssh-keyscan github.com >> ~/.ssh/known_hosts` and retry.
+- **Troubleshooting**: if you receive the `The authenticity of host 'github.com (192.30.252.123)' can't be established.` error, run `ssh-keyscan github.com >> ~/.ssh/known_hosts` and retry.
 
 **Development**
 
@@ -327,7 +326,7 @@ If you get a `The authenticity of host 'github.com (192.30.252.123)' can't be es
 
 **Are there executable code samples?**
 
-You can find a complete list of executable code samples in the [samples library](https://github.com/temporalio/samples-python), which includes Temporal Python SDK code samples from the [temporalio/samples-python](https://github.com/temporalio/samples-python) repo.
+You can find a complete list of executable code samples in the [Samples Library](https://github.com/temporalio/samples-python), which includes Temporal Python SDK code samples from the [temporalio/samples-python](https://github.com/temporalio/samples-python) repo.
 Additionally, each of the Python SDK Tutorials is backed by a fully executable template application.
 
 </TabItem>
@@ -1084,8 +1083,6 @@ Cancellation for asynchronous activities is done by means of the
 `asyncio.CancelledError` will be raised (and can be caught, but it is not recommended). An Activity must Heartbeat to
 receive cancellation and there are other ways to be notified about cancellation.
 
-(see "Activity Context" and "Heartbeating and Cancellation" later).
-
 - **Synchronous Activities**
 
 Synchronous Activities are functions that do not have `async def`, which can be used with Workers, but the
@@ -1096,22 +1093,20 @@ Cancellation for synchronous Activities is done in the background and the Activi
 react appropriately. An Activity must Heartbeat to receive cancellation and there are other ways to be notified about
 cancellation.
 
-(see "Activity Context" and "Heartbeating and Cancellation" later).
-
 - **Synchronous Multithreaded Activities**
 
 Multithreaded Activities are functions that use `activity_executor` set to an instance of `concurrent.futures.ThreadPoolExecutor`.
 Besides `activity_executor`, no other worker parameters are required for
 synchronous multithreaded Activities.
 
-- **Synchronous Multiprocess/Other Activities**
+- **Synchronous Multiprocessing or Other Activities**
 
 Synchronous Activities are functions that do not have `async def` and are used with Workers. The `activity_executor` Worker parameter must be set with `concurrent.futures.Executor` instance to execute the Activities.
 
 If this is _not_ set to an instance of `concurrent.futures.ThreadPoolExecutor` then the synchronous
-Activities are considered multiprocess/other activities.
+Activities are considered multiprocessing or other Activities.
 
-These require special primitives for heartbeating and cancellation. The `shared_state_manager` worker parameter must be
+These require special primitives for Heartbeating and cancellation. The `shared_state_manager` worker parameter must be
 set to an instance of `temporalio.worker.SharedStateManager`. The most common implementation can be created by passing a
 `multiprocessing.managers.SyncManager` (i.e. result of `multiprocessing.managers.Manager()`) to
 `temporalio.worker.SharedStateManager.create_from_multiprocessing()`.
@@ -1210,7 +1205,7 @@ Content is not available
 </TabItem>
 <TabItem value="python">
 
-During Activity Eecution, an implicit Activity context is set as a
+During Activity Execution, an implicit Activity context is set as a
 [context variable](https://docs.python.org/3/library/contextvars.html). The context variable itself is not visible, but
 calls in the `temporalio.activity` package make use of it. Specifically:
 
@@ -1226,7 +1221,7 @@ calls in the `temporalio.activity` package make use of it. Specifically:
 - `raise_complete_async()` - Raise an error that this activity will be completed asynchronously (i.e. after return of
   the activity function in a separate client call)
 
-With the exception of `in_activity()`, if any of the functions are called outside of an activity context, an error
+Except for `in_activity()`, if any of the functions are called outside an Activity context, an error
 occurs. Synchronous Activities cannot call any of the `async` functions.
 
 </TabItem>
@@ -2172,7 +2167,7 @@ if (certificateS3Bucket) {
 
 Use `Client.connect()` to create and connect to a Temporal Server at a given address and Namespace.
 
-Specify the target_url as a string.
+Specify the `target_url` as a string.
 
 ```python
 from temporalio.client import Client
@@ -3284,7 +3279,7 @@ Content is not available
 </TabItem>
 <TabItem value="python">
 
-To define a Signal, set the Signal decorator `@workflow.signal` on the Signal function inside of your Workflow.
+To define a Signal, set the Signal decorator `@workflow.signal` on the Signal function inside your Workflow.
 
 ```python
 @workflow.signal
@@ -3297,15 +3292,11 @@ The method's arguments are also the Signal's arguments.
 You can have a name parameter to customize the Signal's name, otherwise it defaults to the unqualified method name.
 You can use `dynamic=True`, which means all other unhandled Signals fall through to this.
 
-If `dynamic=True` is present, you:
+If `dynamic=True` is present in your Signal, you can't have a `name` argument.
+Your method parameters must be `self`, a string signal name, and a `*args` variable argument parameter.
 
-- cannot have name arguments.
-- method parameters must be self.
-- a string Signal name.
-- and a `*arg vararg `parameter.
-
-Non-dynamic methods can only have positional arguments. Temporal suggests to take a single argument that is an
-object or dataclass of fields that can be added to as needed.
+Non-dynamic methods can only have positional arguments. Temporal suggests taking a single argument that is an
+object or data class of fields that can be added to as needed.
 
 Return values are ignored
 
@@ -3816,7 +3807,7 @@ Content is not available
 </TabItem>
 <TabItem value="python">
 
-To define a Query, set the Query decorator `@workflow.query` on the Query function inside of your Workflow.
+To define a Query, set the Query decorator `@workflow.query` on the Query function inside your Workflow.
 
 ```python
 @workflow.signal

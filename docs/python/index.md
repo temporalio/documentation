@@ -82,5 +82,5 @@ pip install temporalio
 
 **Are there executable code samples?**
 
-You can find a complete list of executable code samples in the [samples library](https://github.com/temporalio/samples-python), which includes Temporal Python SDK code samples from the [temporalio/samples-python](https://github.com/temporalio/samples-python) repo.
+You can find a complete list of executable code samples in the [Samples Library](https://github.com/temporalio/samples-python), which includes Temporal Python SDK code samples from the [temporalio/samples-python](https://github.com/temporalio/samples-python) repo.
 Additionally, each of the Python SDK Tutorials is backed by a fully executable template application.

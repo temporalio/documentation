@@ -55,8 +55,6 @@ Cancellation for asynchronous activities is done by means of the
 `asyncio.CancelledError` will be raised (and can be caught, but it is not recommended). An Activity must Heartbeat to
 receive cancellation and there are other ways to be notified about cancellation.
 
-(see "Activity Context" and "Heartbeating and Cancellation" later).
-
 - **Synchronous Activities**
 
 Synchronous Activities are functions that do not have `async def`, which can be used with Workers, but the
@@ -67,22 +65,20 @@ Cancellation for synchronous Activities is done in the background and the Activi
 react appropriately. An Activity must Heartbeat to receive cancellation and there are other ways to be notified about
 cancellation.
 
-(see "Activity Context" and "Heartbeating and Cancellation" later).
-
 - **Synchronous Multithreaded Activities**
 
 Multithreaded Activities are functions that use `activity_executor` set to an instance of `concurrent.futures.ThreadPoolExecutor`.
 Besides `activity_executor`, no other worker parameters are required for
 synchronous multithreaded Activities.
 
-- **Synchronous Multiprocess/Other Activities**
+- **Synchronous Multiprocessing or Other Activities**
 
 Synchronous Activities are functions that do not have `async def` and are used with Workers. The `activity_executor` Worker parameter must be set with `concurrent.futures.Executor` instance to execute the Activities.
 
 If this is _not_ set to an instance of `concurrent.futures.ThreadPoolExecutor` then the synchronous
-Activities are considered multiprocess/other activities.
+Activities are considered multiprocessing or other Activities.
 
-These require special primitives for heartbeating and cancellation. The `shared_state_manager` worker parameter must be
+These require special primitives for Heartbeating and cancellation. The `shared_state_manager` worker parameter must be
 set to an instance of `temporalio.worker.SharedStateManager`. The most common implementation can be created by passing a
 `multiprocessing.managers.SyncManager` (i.e. result of `multiprocessing.managers.Manager()`) to
 `temporalio.worker.SharedStateManager.create_from_multiprocessing()`.

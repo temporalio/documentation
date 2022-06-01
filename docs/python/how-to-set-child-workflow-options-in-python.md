@@ -14,7 +14,7 @@ reference or a string name.
 The arguments to the workflow are positional.
 
 Child Workflow options are set as keyword arguments after the positional arguments. The `id` must be provided.
-The await of the start does not complete until the workflow has confirmed to be started
+The `await` of the start does not complete until the workflow has confirmed to be started
 The result is a Child Workflow handle which is an `asyncio`.
 
 Task and supports basic task features. The handle also has some child info and supports signalling the Child Workflow

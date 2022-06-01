@@ -9,7 +9,7 @@ tags:
   - python
 ---
 
-Use the `start_activity()` function and specify your the Activity option, Heartbeat timeout.
+Use the `start_activity()` function and specify your Activity option, the Heartbeat timeout.
 This is the timeout that the Worker will use to Heartbeat the Activity.
 
 ```python

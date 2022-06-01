@@ -9,7 +9,7 @@ tags:
   - python
 ---
 
-To define a Query, set the Query decorator `@workflow.query` on the Query function inside of your Workflow.
+To define a Query, set the Query decorator `@workflow.query` on the Query function inside your Workflow.
 
 ```python
 @workflow.signal

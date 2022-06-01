@@ -34,14 +34,14 @@ async def main(stop_event: asyncio.Event):
 
 Workers can `run()` or `shutdown()` until the `stop_event` is set.
 
-- Run the Worker and wait on it to be shutdown.
+- The following example runs the Worker and waits on it to shut down.
 
 ```python
 async with worker:
     await stop_event.run()
 ```
 
-- Shutdown the Worker and wait until all Activities have completed.
+- The following example shuts down the Worker and waits until all Activities have completed.
 
 ```python
 async with worker:
