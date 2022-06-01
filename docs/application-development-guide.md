@@ -26,7 +26,7 @@ This guide is meant to be a comprehensive resource for developing a [Temporal Ap
 It is broken down into two large sections:
 
 - [Foundations](#foundations): The minimum things required to build and run a simple Workflow with a single Activity.
-- [Features](#features): All of the general features available to a Temporal Application.
+- [Features](#features): All the general features available to a Temporal Application.
 
 ## Foundations
 
@@ -73,7 +73,7 @@ To try other configurations (different dependencies and databases), or to try a 
 
 #### Render
 
-[temporal-render-simple](https://github.com/temporalio/temporal-render-simple) translates our docker-compose to Render by using the [Auto-Setup Docker image](https://docs.temporal.io/blog/auto-setup).
+[temporal-render-simple](https://github.com/temporalio/temporal-render-simple) translates our docker-compose to Render by using the [Auto-Setup Docker image](/blog/auto-setup).
 We do not recommend using this technique for production because all four Temporal internal services (Frontend, Matching, History, and Worker) are run in one process, but the benefit is one-click deployments.
 
 [Deploy to Render](https://render.com/deploy?repo=https://github.com/temporalio/temporal-render-simple)
@@ -92,7 +92,7 @@ When it is running, you can customize the application samples.
 ### Add your SDK
 
 Add a [Temporal SDK](/temporal/#temporal-sdk) to your project.
-Both TypeScript and Javascript can be used with the TypeScript SDK.
+Both TypeScript and JavaScript can be used with the TypeScript SDK.
 
 <Tabs
 defaultValue="go"
@@ -237,6 +237,8 @@ Or clone the Go SDK repo to your preferred location:
 ```bash
 git clone git@github.com:temporalio/sdk-typescript.git
 ```
+
+This project requires Node.js 14 or later.
 
 **Are there executable code samples?​**
 
@@ -487,11 +489,11 @@ It is acquired from the [`go.temporal.io/sdk/workflow`](https://pkg.go.dev/go.te
 
 ```go
 import (
-    "go.temporal.io/sdk/workflow"
+   "go.temporal.io/sdk/workflow"
 )
 
 func YourWorkflowDefinition(ctx workflow.Context, param string) error {
-  // ...
+ // ...
 }
 ```
 
@@ -501,16 +503,16 @@ The only difference between `workflow.Context` and `context.Context` is that the
 The second parameter, `string`, is a custom parameter that is passed to the Workflow when it is invoked.
 A Workflow Definition may support multiple custom parameters, or none.
 These parameters can be regular type variables or safe pointers.
-However, the best practice is to pass a single parameter that is of a `struct` type so there can be some backward compatibility if new parameters are added.
+However, the best practice is to pass a single parameter that is of a `struct` type, so there can be some backward compatibility if new parameters are added.
 
 ```go
 type YourWorkflowParam struct {
-  WorkflowParamFieldOne string
-  WorkflowParamFieldTwo int
+ WorkflowParamFieldOne string
+ WorkflowParamFieldTwo int
 }
 
 func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error {
-  // ...
+ // ...
 }
 ```
 
@@ -597,27 +599,27 @@ Again, the best practice here is to use a `struct` type to hold all custom value
 
 ```go
 type YourWorkflowResponse struct{
-  WorkflowResultFieldOne string
-  WorkflowResultFieldTwo int
+ WorkflowResultFieldOne string
+ WorkflowResultFieldTwo int
 }
 
 func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (YourWorkflowResponse, error) {
-  // ...
-  if err != nil {
-    return "", err
-  }
-  responseVar := YourWorkflowResponse {
-    FieldOne: "super",
-    FieldTwo: 1,
-  }
-  return responseVar, nil
+ // ...
+ if err != nil {
+   return "", err
+ }
+ responseVar := YourWorkflowResponse {
+   FieldOne: "super",
+   FieldTwo: 1,
+ }
+ return responseVar, nil
 }
 ```
 
 A Workflow Definition written in Go can return both a custom value and an error.
-However, it is not possible to receive both a custom value and an error in the calling process as is normal in Go.
+However, it's not possible to receive both a custom value and an error in the calling process, as is normal in Go.
 The caller will receive either one or the other.
-Returning a non-nil `error` from a Workflow indicates that an error was encountered during its execution and the Workflow Execution should be Terminated and any custom return values will be ignored by the system.
+Returning a non-nil `error` from a Workflow indicates that an error was encountered during its execution and the Workflow Execution should be terminated, and any custom return values will be ignored by the system.
 
 </TabItem>
 <TabItem value="java">
@@ -686,10 +688,79 @@ To return the results of a Workflow, set your Workflow to a variable, like `hand
 </TabItem>
 </Tabs>
 
+#### Customize Workflow Type
+
+You can set a custom name for your Workflow Type.
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+To customize the Workflow Type set the `Name` parameter with `RegisterOptions` when registering your Workflow with a Worker.
+
+- Type: `string`
+- Default: function name
+
+```go
+// ...
+w := worker.New(temporalClient, "your_task_queue_name", worker.Options{})
+registerOptions := workflow.RegisterOptions{
+  Name: "CoolWorkflowTypeName",
+  // ...
+}
+w.RegisterWorkflowWithOptions(YourWorkflowDefinition, registerOptions)
+// ...
+```
+
+</TabItem>
+<TabItem value="java">
+
+The Workflow Type defaults to the short name of the Workflow interface.
+In the following example, the Workflow Type defaults to "NotifyUserAccounts".
+
+```java
+  @WorkflowInterface
+
+  public interface NotifyUserAccounts {
+    @WorkflowMethod
+    void notify(String[] accountIds);
+}
+```
+
+To overwrite this default naming and assign a custom Workflow Type, use the `@WorkflowMethod` annotation with the `name` parameter.
+In the following example, the Workflow Type is set to "Abc".
+
+```java
+@WorkflowInterface
+
+  public interface NotifyUserAccounts {
+  @WorkflowMethod(name = "Abc")
+  void notify(String[] accountIds);
+  }
+```
+
+When you set the Workflow Type this way, the value of the `name` parameter does not have to start with an uppercase letter.
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is not available
+
+</TabItem>
+</Tabs>
+
 #### Workflow logic requirements
 
 Workflow logic is constrained by [deterministic execution requirements](/concepts/what-is-a-workflow-definition/#deterministic-constraints).
-Therefor each language is limited to the use of certain idiomatic techniques.
+Therefore, each language is limited to the use of certain idiomatic techniques.
 However, each Temporal SDK provides a set of APIs that can be used inside your Workflow to interact with external (to the Workflow) application code.
 
 <Tabs
@@ -715,8 +786,8 @@ The Temporal Go SDK has APIs to handle equivalent Go constructs:
 - `workflow.Go()` This is a replacement for the `go` statement.
 - `workflow.Channel` This is a replacement for the native `chan` type.
   Temporal provides support for both buffered and unbuffered channels.
-- `workflow.Selector` This is a replacement for the `select` statement. Learn more on the [Go SDK Selectors](https://docs.temporal.io/go/selectors) page
-- `workflow.Context` This is a replacement for `context.Context`. Learn more on the [Go SDK Context Propagation](https://docs.temporal.io/go/tracing) page.
+- `workflow.Selector` This is a replacement for the `select` statement. Learn more on the [Go SDK Selectors](/go/selectors) page
+- `workflow.Context` This is a replacement for `context.Context`. Learn more on the [Go SDK Context Propagation](/go/tracing) page.
 
 </TabItem>
 <TabItem value="java">
@@ -777,9 +848,9 @@ All code must run in the implicit [`asyncio` event loop](https://docs.python.org
 
 ### Develop Activities
 
-One of the primary things that Workflows do, is orchestrate the execution of Activities.
+One of the primary things that Workflows do is orchestrate the execution of Activities.
 Activities are normal function/method executions that can interact with the world.
-For the Workflow to be able to execute the Activity we must define the [Activity Definition](/activities/#activity-definition)
+For the Workflow to be able to execute the Activity, we must define the [Activity Definition](/activities/#activity-definition)
 
 <Tabs
 defaultValue="go"
@@ -795,8 +866,8 @@ In the Temporal Go SDK programming model, an Activity Definition is an exportabl
 ```go
 // basic function signature
 func YourActivityDefinition(ctx context.Context) error {
-  // ...
-  return nil
+ // ...
+ return nil
 }
 
 // with parameters and return values
@@ -807,26 +878,26 @@ func SimpleActivity(ctx context.Context, value string) (string, error)
 
 ```go
 type YourActivityStruct struct {
-  ActivityFieldOne string
-  ActivityFieldTwo int
+ ActivityFieldOne string
+ ActivityFieldTwo int
 }
 
 func(a *YourActivityStruct) YourActivityDefinition(ctx context.Context) error {
-  // ...
+ // ...
 }
 
 func(a *YourActivityStruct) YourActivityDefinitionTwo(ctx context.Context) error {
-  // ...
+ // ...
 }
 ```
 
-An "Activity struct" can have more than one method, with each method acting as a separate Activity Type.
-Activities written as struct methods can use shared struct variables such as:
+An _Activity struct_ can have more than one method, with each method acting as a separate Activity Type.
+Activities written as struct methods can use shared struct variables, such as:
 
 - an application level DB pool
 - client connection to another service
 - reusable utilities
-- any other expensive resources you only want to initialize once per process
+- any other expensive resources that you only want to initialize once per process
 
 Because this is such a common need, the rest of this guide shows Activities written as `struct` methods.
 
@@ -1060,23 +1131,23 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 <TabItem value="go">
 
 The first parameter of an Activity Definition is `context.Context`.
-This parameter is optional for an Activity Definition, though it is recommended especially if the Activity is expected to use other Go SDK APIs.
+This parameter is optional for an Activity Definition, though it is recommended, especially if the Activity is expected to use other Go SDK APIs.
 
 An Activity Definition can support as many other custom parameters as needed.
 However, all parameters must be serializable (parameters can’t be channels, functions, variadic, or unsafe pointers), and it is recommended to pass a single struct that can be updated later.
 
 ```go
 type YourActivityParam struct {
-  ActivityParamFieldOne string
-  ActivityParamFieldTwo int
+ ActivityParamFieldOne string
+ ActivityParamFieldTwo int
 }
 
 type YourActivityStruct struct {
-  // ...
+ // ...
 }
 
 func (a *YourActivityStruct) YourActivityDefinition(ctx context.Context, param YourActivityParam) error {
-  // ...
+ // ...
 }
 ```
 
@@ -1232,6 +1303,88 @@ The following example defines an Activity that takes a string as input and retur
 async def say_hello(name: str) -> str:
     return f"Hello, {name}!"
 ```
+
+</TabItem>
+</Tabs>
+
+#### Customize Activity Type
+
+You can set a custom name for your Activity Type.
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+To customize the Activity Type set the `Name` parameter with `RegisterOptions` when registering your Activity with a Worker.
+
+- Type: `string`
+- Default: function name
+
+```go
+// ...
+w := worker.New(temporalClient, "your_task_queue_name", worker.Options{})
+registerOptions := activity.RegisterOptions{
+  Name: "CoolActivityTypeName",
+  // ...
+}
+w.RegisterActivityWithOptions(a.YourActivityDefinition, registerOptions)
+// ...
+```
+
+</TabItem>
+<TabItem value="java">
+
+The Activity Type defaults to method name, with the first letter of the method name capitalized, and can be customized using `namePrefix()` or `{ActivityMethod.name()}` to ensure they are distinct.
+
+In the following example, the Activity Type defaults to `ComposeGreeting`.
+
+```java
+@ActivityInterface
+public interface GreetingActivities {
+    @ActivityMethod()
+    String composeGreeting(String greeting, String language);
+}
+```
+
+To overwrite this default naming and assign a custom Activity Type, use the `@ActivityMethod` annotation with the `name` parameter.
+In the following example, the Activity Type is set to "greet".
+
+```java
+@ActivityInterface
+public interface GreetingActivities {
+    @ActivityMethod(name = "greet")
+    String composeGreeting(String greeting, String language);
+}
+```
+
+You can also define a prefix for all of your Activity Types using the `namePrefix` parameter with the `@ActivityInterface` annotation.
+The following example shows a `namePrefix` parameter applied to the `@ActivityInterface`, and two Activity methods, of which one is defined using the `@ActivityMethod` annotation.
+
+```java
+@ActivityInterface(namePrefix = "A_")
+Public interface GreetingActivities {
+    String sendGreeting(String input);
+
+  @ActivityMethod(name = "abc")
+  String composeGreeting(String greeting, String language);
+}
+```
+
+In this example, the Activity type for the first method is set to "A_SendGreeting".
+The Activity type for the method annotated with `@ActivityMethod` is set to "A_abc".
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is not available
 
 </TabItem>
 </Tabs>
@@ -1597,7 +1750,7 @@ A single argument to the Activity is positional. Multiple arguments are not supp
 #### Get Activity results
 
 The call to spawn an [Activity Execution](/activities/#activity-execution) generates the [ScheduleActivityTask](/references/commands/#scheduleactivitytask) Command and provides the Workflow with an Awaitable.
-Workflow Executions can either block progress until the result is available via the Awaitable or continue progressing, making use of the result when it becomes available.
+Workflow Executions can either block progress until the result is available through the Awaitable or continue progressing, making use of the result when it becomes available.
 
 <Tabs
 defaultValue="go"
@@ -1610,7 +1763,7 @@ The `ExecuteActivity` API call returns an instance of [`workflow.Future`](https:
 
 - `Get()`: Takes an instance of the `workflow.Context`, that was passed to the Activity Execution, and a pointer as parameters.
   The variable associated with the pointer is populated with the Activity Execution result.
-  This call blocks until the result is available.
+  This call blocks until the results are available.
 - `IsReady()`: Returns `true` when the result of the Activity Execution is ready.
 
 Call the `Get()` method on the instance of `workflow.Future` to get the result of the Activity Execution.
@@ -1618,13 +1771,13 @@ The type of the result parameter must match the type of the return value declare
 
 ```go
 func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (YourWorkflowResponse, error) {
-  // ...
-  future := workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam)
-  var yourActivityResult YourActivityResult
-  if err := future.Get(ctx, &yourActivityResult); err != nil {
-    // ...
-  }
-  // ...
+ // ...
+ future := workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam)
+ var yourActivityResult YourActivityResult
+ if err := future.Get(ctx, &yourActivityResult); err != nil {
+   // ...
+ }
+ // ...
 }
 ```
 
@@ -1632,21 +1785,21 @@ Use the `IsReady()` method first to make sure the `Get()` call doesn't cause the
 
 ```go
 func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (YourWorkflowResponse, error) {
-  // ...
-  future := workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam)
-  // ...
-  if(future.IsReady()) {
-    var yourActivityResult YourActivityResult
-    if err := future.Get(ctx, &yourActivityResult); err != nil {
-      // ...
-    }
-  }
-  // ...
+ // ...
+ future := workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam)
+ // ...
+ if(future.IsReady()) {
+   var yourActivityResult YourActivityResult
+   if err := future.Get(ctx, &yourActivityResult); err != nil {
+     // ...
+   }
+ }
+ // ...
 }
 ```
 
 It is idiomatic to invoke multiple Activity Executions from within a Workflow.
-Therefore it is also idiomatic to either block on the results of any of the Activity Executions or continue on to execute additional logic, checking for the Activity Execution results at a later time.
+Therefore, it is also idiomatic to either block on the results of the Activity Executions or continue on to execute additional logic, checking for the Activity Execution results at a later time.
 
 </TabItem>
 <TabItem value="java">
@@ -2034,7 +2187,7 @@ Each Worker Entity polling the same Task Queue must be registered with the same 
 A [Worker Entity](/workers/#worker-entity) is the component within a Worker Process that listens to a specific Task Queue.
 
 Although multiple Worker Entities can be in a single Worker Process, a single Worker Entity Worker Process may be perfectly sufficient.
-(See the [Worker tuning guide](/operation/how-to-tune-workers).)
+For more information, see the [Worker tuning guide](/operation/how-to-tune-workers).
 
 A Worker Entity contains both a Workflow Worker and an Activity Worker so that it can make progress for either a Workflow Execution or an Activity Execution.
 
@@ -2055,38 +2208,38 @@ Then, register the Workflow Types and the Activity Types that the Worker will be
 
 Lastly, call either the `Start()` or the `Run()` method on the instance of the Worker.
 Run accepts an interrupt channel as a parameter, so that the Worker can be stopped in the terminal.
-Otherwise the `Stop()` method must be called to stop the Worker.
+Otherwise, the `Stop()` method must be called to stop the Worker.
 
 ```go
 package main
 
 import (
-	"go.temporal.io/sdk/client"
-	"go.temporal.io/sdk/worker"
+   "go.temporal.io/sdk/client"
+   "go.temporal.io/sdk/worker"
 )
 
 func main() {
-	c, err := client.NewClient(client.Options{})
-	if err != nil {
-		// ...
-	}
-	defer c.Close()
-	w := worker.New(c, "your-task-queue", worker.Options{})
-	w.RegisterWorkflow(YourWorkflowDefinition)
-	w.RegisterActivity(YourActivityDefinition)
-	err = w.Run(worker.InterruptCh())
-	if err != nil
-		// ...
-	}
-  // ...
+   c, err := client.NewClient(client.Options{})
+   if err != nil {
+       // ...
+   }
+   defer c.Close()
+   w := worker.New(c, "your-task-queue", worker.Options{})
+   w.RegisterWorkflow(YourWorkflowDefinition)
+   w.RegisterActivity(YourActivityDefinition)
+   err = w.Run(worker.InterruptCh())
+   if err != nil
+       // ...
+   }
+ // ...
 }
 
 func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (YourWorkflowResponse, error) {
-  // ...
+ // ...
 }
 
 func YourActivityDefinition(ctx context.Context, param YourActivityParam) (YourActivityResponse, error) {
-  // ...
+ // ...
 }
 ```
 
@@ -2372,15 +2525,15 @@ Content is not available
 
 ### Start Workflow Execution
 
-[Workflow Execution](/workflows/#workflow-executions) semantics rely on several parameters - that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
+[Workflow Execution](/workflows/#workflow-executions) semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
 
 In the examples below, all Workflow Executions are started using a Temporal Client.
-To spawn Workflow Executions from within other Workflow Executions, use either the [Child Workflow](#child-workflows) or External Workflow APIs.
+To spawn Workflow Executions from within another Workflow Execution, use either the [Child Workflow](#child-workflows) or External Workflow APIs.
 
 See the [Customize Workflow Type](#customize-workflow-type) section to see how to customize the name of the Workflow Type.
 
 A request to spawn a Workflow Execution causes the Temporal Cluster to create the first Event ([WorkflowExecutionStarted](/references/events/#workflowexecutionstarted)) in the Workflow Execution Event History.
-The Temporal Cluster then creates the first Workflow Task resulting the first [WorkflowTaskScheduled](/references/events/#workflowtaskscheduled) Event.
+The Temporal Cluster then creates the first Workflow Task, resulting in the first [WorkflowTaskScheduled](/references/events/#workflowtaskscheduled) Event.
 
 <Tabs
 defaultValue="go"
@@ -2678,7 +2831,7 @@ async function run() {
   // Customize the Worker by passing more options to create():
   // https://typescript.temporal.io/api/classes/worker.Worker
   // If you need to configure server connection parameters, see docs:
-  // https://docs.temporal.io/typescript/security#encryption-in-transit-with-mtls
+  // /typescript/security#encryption-in-transit-with-mtls
 
   // Step 2: Start accepting tasks on the `tutorial` queue
   await worker.run();
@@ -2702,7 +2855,7 @@ Content is not available
 
 #### Set Workflow Id
 
-While it is not required, providing your own [Workflow Id](/workflows/#workflow-id) that maps to a business process or business entity identifier is highly recommended. Values that can provided include order Id or customer Id.
+Also it is not required, we recommend providing your own [Workflow Id](/workflows/#workflow-id) that maps to a business process or business entity identifier, such as an order identifier or customer identifier.
 
 <Tabs
 defaultValue="go"
@@ -2780,11 +2933,11 @@ Content is not available
 
 If the call to start a Workflow Execution is successful, you will gain access to the Workflow Execution's Run Id.
 
-The Workflow Id, Run Id, and Namespace maybe be used to uniquely identify a Workflow Execution in the system and get its result.
+The Workflow Id, Run Id, and Namespace may be used to uniquely identify a Workflow Execution in the system and get its result.
 
 It's possible to both block progress on the result (synchronous execution) or get the result at some other point in time (asynchronous execution).
 
-In the Temporal Platform it is also acceptable to use Queries as the preferred method for accessing the state and results of Workflow Executions.
+In the Temporal Platform, it's also acceptable to use Queries as the preferred method for accessing the state and results of Workflow Executions.
 
 <Tabs
 defaultValue="go"
@@ -2796,11 +2949,11 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 The `ExecuteWorkflow` call returns an instance of [`WorkflowRun`](https://pkg.go.dev/go.temporal.io/sdk/client#WorkflowRun), which is the `workflowRun` variable in the following line.
 
 ```go
-  workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, app.YourWorkflowDefinition, param)
-  if err != nil {
-    // ...
-  }
-  // ...
+ workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, app.YourWorkflowDefinition, param)
+ if err != nil {
+   // ...
+ }
+ // ...
 }
 ```
 
@@ -2813,16 +2966,16 @@ The instance of `WorkflowRun` has the following three methods:
 To wait on the result of Workflow Execution in the same process that invoked it, call `Get()` on the instance of `WorkflowRun` that is returned by the `ExecuteWorkflow()` call.
 
 ```go
-  workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition, param)
-  if err != nil {
-    // ...
-  }
-  var result YourWorkflowResponse
-  err = workflowRun.Get(context.Background(), &result)
-  if err != nil {
-      // ...
-  }
-  // ...
+ workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition, param)
+ if err != nil {
+   // ...
+ }
+ var result YourWorkflowResponse
+ err = workflowRun.Get(context.Background(), &result)
+ if err != nil {
+     // ...
+ }
+ // ...
 }
 ```
 
@@ -2833,23 +2986,23 @@ The result of the Workflow Execution is available for as long as the Workflow Ex
 
 <!-- TODO (See [How long do Workflow Execution Histories persist](#)). -->
 
-Call the `GetWorkflow()` method on the an instance of the Go SDK Client and pass it the Workflow Id used to spawn the Workflow Execution.
+Call the `GetWorkflow()` method on an instance of the Go SDK Client and pass it the Workflow Id used to spawn the Workflow Execution.
 Then call the `Get()` method on the instance of `WorkflowRun` that is returned, passing it a pointer to populate the result.
 
 ```go
-  // ...
-  workflowID := "Your-Custom-Workflow-Id"
-  workflowRun := c.GetWorkflow(context.Background, workflowID)
+ // ...
+ workflowID := "Your-Custom-Workflow-Id"
+ workflowRun := c.GetWorkflow(context.Background, workflowID)
 
-  var result YourWorkflowResponse
-  err = workflowRun.Get(context.Background(), &result)
-  if err != nil {
-      // ...
-  }
-  // ...
+ var result YourWorkflowResponse
+ err = workflowRun.Get(context.Background(), &result)
+ if err != nil {
+     // ...
+ }
+ // ...
 ```
 
-#### Get last completion result
+**Get last completion result**
 
 In the case of a [Temporal Cron Job](/workflows/#cron-jobs), you might need to get the result of the previous Workflow Run and use it in the current Workflow Run.
 
@@ -2857,23 +3010,23 @@ To do this, use the [`HasLastCompletionResult`](https://pkg.go.dev/go.temporal.i
 
 ```go
 type CronResult struct {
-  Count int
+ Count int
 }
 
 func YourCronWorkflowDefinition(ctx workflow.Context) (CronResult, error) {
-  count := 1
+ count := 1
 
-  if workflow.HasLastCompletionResult(ctx) {
-    var lastResult CronResult
-    if err := workflow.GetLastCompletionResult(ctx, &lastResult); err == nil {
-      count = count + lastResult.Count
-    }
-  }
+ if workflow.HasLastCompletionResult(ctx) {
+   var lastResult CronResult
+   if err := workflow.GetLastCompletionResult(ctx, &lastResult); err == nil {
+     count = count + lastResult.Count
+   }
+ }
 
-  newResult := CronResult {
-    Count: count,
-  }
-  return newResult, nil
+ newResult := CronResult {
+   Count: count,
+ }
+ return newResult, nil
 }
 ```
 
@@ -2951,7 +3104,7 @@ WorkflowStub workflowStub = client.newUntypedWorkflowStub(workflowType, workflow
 String result = untyped.getResult(String.class);
 ```
 
-#### Retrieve last (successful) completion result
+**Get last (successful) completion result**
 
 For a Temporal Cron Job, get the result of previous successful runs using `GetLastCompletionResult()`.
 The method returns `null` if there is no previous completion.
@@ -3167,7 +3320,7 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error
 ```
 
 In the example above, the Workflow code uses `workflow.GetSignalChannel` to open a `workflow.Channel` for the Signal type (identified by the Signal name).
-We then use a [`workflow.Selector`](https://docs.temporal.io/go/selectors) and the `AddReceive()` to wait on a Signal from this channel.
+We then use a [`workflow.Selector`](/go/selectors) and the `AddReceive()` to wait on a Signal from this channel.
 The `more` bool in the callback function indicates that channel is not closed and more deliveries are possible.
 
 </TabItem>
@@ -3744,7 +3897,8 @@ Content is not available
 
 Queries are handled by your Workflow.
 
-Do not include any logic that causes [Command](/workflows/#commands) generation within a Query handler (such as executing Activities). as this will lead to unexpected behavior.
+Don’t include any logic that causes [Command](/workflows/#commands) generation within a Query handler (such as executing Activities).
+Including such logic causes unexpected behavior.
 
 <Tabs
 defaultValue="go"
@@ -3911,7 +4065,7 @@ A Retry Policy can work in cooperation with the timeouts to provide fine control
 
 #### Workflow Execution Timeout
 
-Use the [Workflow Execution Timeout](/workflows/#workflow-execution-timeout) to limit maximum time that a Workflow Execution can be executing (have an Open status) including retries and any usage of Continue As New.
+Use the [Workflow Execution Timeout](/workflows/#workflow-execution-timeout) to limit the maximum time that a Workflow Execution can be executing (have an Open status) including retries and any usage of Continue As New.
 
 <Tabs
 defaultValue="go"
@@ -3978,7 +4132,7 @@ Content is not available
 
 #### Workflow Run Timeout
 
-Use the [Workflow Execution Timeout](/workflows/#workflow-execution-timeout) to limit maximum time that a Workflow Execution can be executing (have an Open status) including retries and any usage of Continue As New.
+Use the [Workflow Execution Timeout](/workflows/#workflow-execution-timeout) to limit the maximum time that a Workflow Execution can be executing (have an Open status) including retries and any usage of Continue As New.
 
 <Tabs
 defaultValue="go"
@@ -4044,7 +4198,7 @@ Content is not available
 
 #### Workflow Task Timeout
 
-Use the [Workflow Execution Timeout](/workflows/#workflow-execution-timeout) to limit maximum time that a Workflow Execution can be executing (have an Open status) including retries and any usage of Continue As New.
+Use the [Workflow Execution Timeout](/workflows/#workflow-execution-timeout) to limit the maximum time that a Workflow Execution can be executing (have an Open status) including retries and any usage of Continue As New.
 
 <Tabs
 defaultValue="go"
@@ -4113,7 +4267,7 @@ Content is not available
 
 Use a [Retry Policy](/retry-policies/#) to retry a Workflow Execution in the event of a failure.
 
-Workflow Executions do not retry by default and Retry Policies should only be used with Workflow Executions in certain situations.
+Workflow Executions do not retry by default, and Retry Policies should be used with Workflow Executions only in certain situations.
 
 <Tabs
 defaultValue="go"
@@ -4735,6 +4889,23 @@ Content is not available
 
 </TabItem>
 </Tabs>
+
+#### Activity retry simulator
+
+Use this tool to visualize total Activity Execution times and experiment with different Activity timeouts and Retry Policies.
+
+The simulator is based on a common Activity use-case, which is to call a third party HTTP API and return the results.
+See the example code snippets below.
+
+Use the Activity Retries settings to configure how long the API request takes to succeed or fail.
+There is an option to generate scenarios.
+The _Task Time in Queue_ simulates the time the Activity Task might be waiting in the Task Queue.
+
+Use the Activity Timeouts and Retry Policy settings to see how they impact the success or failure of an Activity Execution.
+
+import RetrySimulator from '/docs/components/RetrySimulator/RetrySimulator';
+
+<RetrySimulator />
 
 ### Child Workflows
 

@@ -201,10 +201,7 @@ function Cluster() {
           </Link>
         </li>
         <li className="">
-          <Link
-            to={useBaseUrl("/server/versions-and-dependencies")}
-            className="hover:underline"
-          >
+          <Link to={useBaseUrl("/clusters")} className="hover:underline">
             <a className="font-normal">Upgrade a Cluster</a>
           </Link>
         </li>

@@ -10,7 +10,7 @@ tags:
 
 > The Temporal tctl documentation covers version 1.16 of the Temporal CLI.
 
-You can install [tctl](/tctl) in four ways.
+You can install [tctl](/tctl) in the following ways.
 
 - Install locally by using [Homebrew](https://brew.sh/): `brew install tctl`
 - Run locally together with Temporal Server in [docker-compose](https://github.com/temporalio/docker-compose): `docker exec temporal-admin-tools tctl YOUR COMMANDS HERE`
@@ -24,6 +24,7 @@ You can install [tctl](/tctl) in four ways.
   1. Clone the [Temporal Server repo](https://github.com/temporalio/temporal).
   1. Run `make tctl`.
   1. Copy the `tctl` executable to any directory that appears in the `PATH` environment variable; for example, `/usr/bin/`.
+- Install the latest version of the tctl in your `GOPATH`: `go install github.com/temporalio/tctl/cmd/tctl@latest`
 
 **Note:** To use [tctl](/tctl), you must have a Temporal Server running.
 

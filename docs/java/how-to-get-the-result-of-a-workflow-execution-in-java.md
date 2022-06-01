@@ -76,7 +76,7 @@ WorkflowStub workflowStub = client.newUntypedWorkflowStub(workflowType, workflow
 String result = untyped.getResult(String.class);
 ```
 
-#### Retrieve last (successful) completion result
+**Get last (successful) completion result**
 
 For a Temporal Cron Job, get the result of previous successful runs using `GetLastCompletionResult()`.
 The method returns `null` if there is no previous completion.
