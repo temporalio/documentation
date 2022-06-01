@@ -45,8 +45,7 @@ pip install temporalio
   ```sh
   git submodule update --init --recursive
   ```
-
-If you get a `The authenticity of host 'github.com (192.30.252.123)' can't be established.` error, run `ssh-keyscan github.com >> ~/.ssh/known_hosts` and retry.
+ - **Troubleshooting**: if you receive the `The authenticity of host 'github.com (192.30.252.123)' can't be established.` error, run `ssh-keyscan github.com >> ~/.ssh/known_hosts` and retry.
 
 **Development**
 
