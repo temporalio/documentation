@@ -321,7 +321,7 @@ main.max-w-screen-lg {
   margin-bottom: 0.4rem;
 }
 .landing-card-p {
-  /* font-style: italic; */
+  font-style: italic;
   margin-bottom: 1em;
 }
 
@@ -378,25 +378,6 @@ h3,
 h4 {
   font-family: "Poppins";
 }
-
-h1 {
-  font-weight: 700;
-  font-size: 6rem;
-  letter-spacing: -2px;
-}
-
-h2 {
-  font-weight: 700;
-  font-size: 2.5rem;
-  letter-spacing: -2px;
-}
-
-p {
-  font-family: "Aeonik";
-  font-size: 0.875rem;
-  font-weight: 400;
-}
-
 .menu__link {
   font-family: "Aeonik";
 }

@@ -211,9 +211,6 @@ module.exports = {
       appId: "T5D6KNJCQS", // Optional, if you run the DocSearch crawler on your own
       // algoliaOptions: {}, // Optional, if provided by Algolia
     },
-    tagManager: {
-      trackingID: "GTM-TSXFPF2",
-    },
   },
   presets: [
     [
@@ -325,9 +322,9 @@ module.exports = {
           customCss: require.resolve("./src/css/custom.css"),
         },
         gtag: {
-          trackingID: "GTM-TSXFPF2",
+          trackingID: "UA-163137879-1",
           // Optional fields.
-          anonymizeIP: false, // Should IPs be anonymized?
+          anonymizeIP: true, // Should IPs be anonymized?
         },
         // Will be passed to @docusaurus/plugin-content-sitemap
         sitemap: {
@@ -339,18 +336,18 @@ module.exports = {
       },
     ],
   ],
-  // scripts: [
-  //   {
-  //     src: "/scripts/feedback.js",
-  //     async: true,
-  //     defer: true,
-  //   },
-  //   {
-  //     src: "/scripts/fullstory.js",
-  //     async: true,
-  //     defer: true,
-  //   },
-  // ],
+  scripts: [
+    {
+      src: "/scripts/feedback.js",
+      async: true,
+      defer: true,
+    },
+    {
+      src: "/scripts/fullstory.js",
+      async: true,
+      defer: true,
+    },
+  ],
 };
 
 function convertIndent4ToIndent2(code) {
