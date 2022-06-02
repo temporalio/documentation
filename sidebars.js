@@ -264,7 +264,19 @@ module.exports = {
                     id: "tctl/admin/index",
                   },
                   items: [
-                    "tctl/admin/cluster/index",
+               {
+                    type: "category",
+                     label: "cluster",
+                  collapsible: true,
+                  collapsed: true,
+                  link: {
+                    type: "doc",
+                    id: "tctl/admin/cluster/index",
+                    items: [
+                        "tctl/admin/cluster/describe",
+                        etc ...
+                    ]
+                  },
                     "tctl/admin/db/index",
                     "tctl/admin/decode/index",
                     "tctl/admin/dlq/index",
