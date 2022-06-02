@@ -21,5 +21,6 @@ To check whether a Workflow Execution was spawned as a result of Continue-As-New
 
 **Notes**
 
-- To prevent Signal loss, be sure to perform an asynchronous drain on the Signal channel. Failure to do so can result in buffered Signals being ignored and lost.
+- To prevent Signal loss, be sure to perform an asynchronous drain on the Signal channel.
+Failure to do so can result in buffered Signals being ignored and lost.
 - Make sure that the previous Workflow and the Continue-As-New Workflow are referenced by the same alias. Failure to do so can cause the Workflow to Continue-As-New on an entirely different Workflow.
