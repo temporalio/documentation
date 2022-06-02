@@ -794,7 +794,7 @@ The following example uses the `@ActivityMethod` annotation for the method defin
 ```java
 @ActivityInterface
 public interface GreetingActivities {
-    @ActivityMethod()
+    @ActivityMethod
     String composeGreeting(String greeting, String language);
 }
 ```
@@ -1097,7 +1097,7 @@ In the following example, the Activity Type defaults to `ComposeGreeting`.
 ```java
 @ActivityInterface
 public interface GreetingActivities {
-    @ActivityMethod()
+    @ActivityMethod
     String composeGreeting(String greeting, String language);
 }
 ```
@@ -4421,7 +4421,7 @@ See the example code snippets below.
 
 Use the Activity Retries settings to configure how long the API request takes to succeed or fail.
 There is an option to generate scenarios.
-The "Task Time in Queue" simulates the time the Activity Task might be waiting in the Task Queue.
+The _Task Time in Queue_ simulates the time the Activity Task might be waiting in the Task Queue.
 
 Use the Activity Timeouts and Retry Policy settings to see how they impact the success or failure of an Activity Execution.
 
@@ -4709,6 +4709,77 @@ In this example, we are:
 
 Steps 3 and 4 are needed to ensure that a Child Workflow Execution starts before the parent closes.
 If the parent initiates a Child Workflow Execution and then completes immediately after, the Child Workflow will never execute.
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is not available
+
+</TabItem>
+</Tabs>
+
+### Continue-As-New
+
+[Continue-As-New](/workflows/#continue-as-new) enables a Workflow Execution to close successfully and create a new Workflow Execution in a single atomic operation if the number of Events in the Event History is becoming too large.
+The Workflow Execution spawned from the use of Continue-As-New has the same Workflow Id, a new Run Id, and a fresh Event History and is passed all the appropriate parameters.
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+To cause a Workflow Execution to [Continue-As-New](/workflows/#continue-as-new), the Workflow function should return the result of the [`NewContinueAsNewError()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#NewContinueAsNewError) API available from the `go.temporal.io/sdk/workflow` package.
+
+```go
+func SimpleWorkflow(ctx workflow.Context, value string) error {
+    ...
+    return workflow.NewContinueAsNewError(ctx, SimpleWorkflow, value)
+}
+```
+
+To check whether a Workflow Execution was spawned as a result of Continue-As-New, you can check if `workflow.GetInfo(ctx).ContinuedExecutionRunID` is not nil.
+
+</TabItem>
+<TabItem value="java">
+
+Temporal SDK allows you to use [Continue-As-New](/workflows/#continue-as-new) in various ways.
+
+To continue execution of the same Workflow that is currently running, use:
+
+```java
+Workflow.continueAsNew(input1, ...);
+```
+
+To continue execution of a currently running Workflow as a completely different Workflow type, use `Workflow.newContinueAsNewStub()`.
+For example, in a Workflow class called `MyWorkflow`, we can create a Workflow stub with a different type, and call its Workflow method to continue execution as that type:
+
+```java
+MyOtherWorkflow continueAsNew = Workflow.newContinueAsNewStub(MyOtherWorkflow.class);
+coninueAsNew.greet(input);
+```
+
+To provide `ContinueAsNewOptions` options in `Workflow.newContinueAsNewStub()` use:
+
+```java
+ContinueAsNewOptions options = ContinueAsNewOptions.newBuilder()
+        .setTaskQueue("newTaskQueueName")
+        .build();
+
+MyOtherWorkflow continueAsNew = Workflow.newContinueAsNewStub(MyOtherWorkflow.class, options);
+// ...
+continueAsNew.greet(input);
+```
+
+Providing these options allows you to continue Workflow Execution as a new Workflow run, with a different Workflow Type, and on a different Task Queue.
+
+Java Workflow reference: <https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/package-summary.html>
 
 </TabItem>
 <TabItem value="php">
