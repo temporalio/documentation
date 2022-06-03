@@ -9,7 +9,7 @@ tags:
   - typescript
 ---
 
-#### Using in Activity code
+**Using in Activity code**
 
 ```ts
 async function runWorker(): Promise<void> {
