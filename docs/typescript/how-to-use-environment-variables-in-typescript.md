@@ -39,7 +39,7 @@ const createActivities = (envVars: { apiKey: string }) => ({
 });
 ```
 
-#### Getting into Workflow
+**Getting into Workflow**
 
 If we needed env vars in our Workflow, here's how we'd use a Local Activity:
 
