@@ -8,7 +8,7 @@ tags:
   - security
   - transparency
   - cloud
-date: 2022-06-02T00:00:00Z
+date: 2022-06-03T00:00:00Z
 image: /img/temporal-access-control.jpeg
 ---
 
