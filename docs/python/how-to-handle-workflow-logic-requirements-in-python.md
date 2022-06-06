@@ -16,5 +16,6 @@ Workflow code must be deterministic. This means:
 - no external calls to processes
 - no network IO
 - no global state mutation
+- no system date or time
 
 All code must run in the implicit [`asyncio` event loop](https://docs.python.org/3/library/asyncio-eventloop.html) and be deterministic.

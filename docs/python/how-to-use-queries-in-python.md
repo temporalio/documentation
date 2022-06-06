@@ -9,8 +9,8 @@ tags:
   - python
 ---
 
-Use the `@workflow.query` decorator to define a method as a query. Queries are just like Signals, but they should return a value.
-Temporal queries should never mutate anything in the workflow
+Use the `@workflow.query` decorator to define a method as a Query. Queries are just like Signals, but they should return a value.
+Temporal queries should never mutate anything in the Workflow.
 
 ```python
 @workflow.query

@@ -13,12 +13,6 @@ Create a Worker to process Workflows and Activities.
 To create a Worker session, connect a Client to the Temporal server, then add your Worker. In this example, the Worker runs until the event is set.
 
 ```python
-import asyncio
-from temporalio.client import Client
-from temporalio.worker import Worker
-from temporalio import activity
-
-
 @activity.defn
 async def say_hello_activity(name: str) -> str:
     return f"Hello, {name}!"

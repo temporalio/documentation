@@ -376,6 +376,11 @@
                   "path": "none"
                 },
                 {
+                  "lang": "python",
+                  "title": "Python",
+                  "path": "python/how-to-customize-activity-type-in-python"
+                },
+                {
                   "lang": "typescript",
                   "title": "TypeScript",
                   "path": "none"
@@ -581,6 +586,11 @@
               "lang": "php",
               "title": "PHP",
               "path": "none"
+            },
+            {
+              "lang": "python",
+              "title": "Python",
+              "path": "python/how-to-spawn-a-workflow-execution-in-python"
             },
             {
               "lang": "typescript",

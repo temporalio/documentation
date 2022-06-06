@@ -1,8 +1,8 @@
 ---
 id: how-to-develop-a-workflow-definition-in-python
-title: How to develop a workflow definition in Python
-sidebar_label: Develop a workflow definition
-description: Develop a workflow definition
+title: How to develop a Workflow definition in Python
+sidebar_label: Develop a Workflow definition
+description: Develop a Workflow definition
 tags:
   - developer-guide
   - sdk
@@ -11,16 +11,14 @@ tags:
 
 Workflows in Python are classes.
 
-Specify the `@workflow.defn` decorator on the Workflow class. To invoke the method, use the `workflow.run` decorator.
+Specify the `@workflow.defn` decorator on the Workflow class. To mark the entry point method to be invoked, use the `workflow.run` decorator.
 
 ```python
-import asyncio
-from temporalio import workflow
-
-
 @workflow.defn
-class YourWorkflow:
+class YourActivityWorkflow:
     @workflow.run
     async def run(self, name: str) -> str:
-        return await workflow.execute_activity(your_activity, name)
+        return await workflow.execute_activity(
+            say_hello, name, schedule_to_close_timeout=timedelta(seconds=5)
+        )
 ```

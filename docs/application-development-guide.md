@@ -258,76 +258,23 @@ The SDK contains the following tools:
 - APIs to use within your Workflows.
 - APIs to create and manage Worker Entities and Worker Processes.
 
-**Update Python**
-
-Update `pip`:
-
-```bash
-python -m install -U pip
-```
-
 **Get the SDK**
 
-To install the Python SDK, choose from the following options:
+The following section describes how to install the Temporal Python package.
 
-- Install the Temporal Python package from [PyPI](https://pypi.org/project/temporalio/)
-
-```bash
-python -m pip install temporalio
-```
+- To install the Temporal Python package from [PyPI](https://pypi.org/project/temporalio/), run the following command.
 
 ```bash
 pip install temporalio
 ```
 
-- Clone the [Temporal Python SDK](https://github.com/temporalio/sdk-typescript) repo to your preferred location:
-  ```sh
-  git clone https://github.com/temporalio/sdk-python.git
-  cd sdk-python
-  ```
-- Initialize the Core SDK submodule:
-  ```sh
-  git submodule update --init --recursive
-  ```
-- **Troubleshooting**: if you receive the `The authenticity of host 'github.com (192.30.252.123)' can't be established.` error, run `ssh-keyscan github.com >> ~/.ssh/known_hosts` and retry.
-
-**Development**
-
-- Install the system dependencies:
-
-  - Python >=3.7
-  - [pipx](https://github.com/pypa/pipx#install-pipx) (only needed for installing the two dependencies below)
-  - [poetry](https://github.com/python-poetry/poetry) `pipx install poetry`
-  - [poe](https://github.com/nat-n/poethepoet) `pipx install poethepoet`
-
-- Use a local virtual env environment (helps IDEs and Windows):
-
-  ```bash
-  poetry config virtualenvs.in-project true
-  ```
-
-- Install the package dependencies (requires Rust):
-
-  ```bash
-  poetry install
-  ```
-
-- Build the project (requires Rust):
-
-  ```bash
-  poe build-develop
-  ```
-
-- Run the tests (requires Go):
-
-  ```bash
-  poe test
-  ```
-
 **Are there executable code samples?**
 
 You can find a complete list of executable code samples in the [Samples Library](https://github.com/temporalio/samples-python), which includes Temporal Python SDK code samples from the [temporalio/samples-python](https://github.com/temporalio/samples-python) repo.
-Additionally, each of the Python SDK Tutorials is backed by a fully executable template application.
+
+**Where is the Python SDK technical reference?**
+
+The Temporal Python SDK reference is published on [python.temporal.io](https://python.temporal.io/index.html).
 
 </TabItem>
 </Tabs>
@@ -453,18 +400,16 @@ export async function example(args: ExampleArgs): Promise<{greeting: string}> {
 
 Workflows in Python are classes.
 
-Specify the `@workflow.defn` decorator on the Workflow class. To invoke the method, use the `workflow.run` decorator.
+Specify the `@workflow.defn` decorator on the Workflow class. To mark the entry point method to be invoked, use the `workflow.run` decorator.
 
 ```python
-import asyncio
-from temporalio import workflow
-
-
 @workflow.defn
-class YourWorkflow:
+class YourActivityWorkflow:
     @workflow.run
     async def run(self, name: str) -> str:
-        return await workflow.execute_activity(your_activity, name)
+        return await workflow.execute_activity(
+            say_hello, name, schedule_to_close_timeout=timedelta(seconds=5)
+        )
 ```
 
 </TabItem>
@@ -677,7 +622,9 @@ function useState<T = any>(name: string, initialValue: T) {
 </TabItem>
 <TabItem value="python">
 
-To return the results of a Workflow, set your Workflow to a variable, like `handle`, then return the results with [`result()`](https://docs.python.org/3/library/asyncio-future.html#asyncio.Future.result).
+<!-- What handle are you referring to here? A child workflow handle from inside a workflow? Or a client handle when using the client? Either way, neither are asyncio.Future.result. -->
+
+To return the results of a Workflow, set your Workflow to a variable, like `handle`, then return the results with `result()`.
 
 ```python
 # Waiting for the workflow to complete and returning the result.
@@ -756,13 +703,13 @@ Content is not available
 </TabItem>
 <TabItem value="python">
 
-`@workflow.defn` defines the Workflow class name. You must define the Workflow name on the class given to the Worker.
+In Python, you can define the Workflow _class_ name, with `@workflow.defn(name="your-workflow-name")`. `@workflow.defn` marks a class as a Workflow, and defaults the Workflow name to the class's name, which can be overridden.
 
 You can customize the Workflow name with the name parameter, if the name parameter is not specified, the Workflow name defaults to the unqualified class name.
 
 ```python
-@workflow.defn
-class SayHello:
+@workflow.defn(name="your-workflow-name")
+class YourWorkflow:
     @workflow.run
     async def run(self, name: str) -> str:
         return await workflow.execute_activity(
@@ -856,6 +803,7 @@ Workflow code must be deterministic. This means:
 - no external calls to processes
 - no network IO
 - no global state mutation
+- no system date or time
 
 All code must run in the implicit [`asyncio` event loop](https://docs.python.org/3/library/asyncio-eventloop.html) and be deterministic.
 
@@ -1052,18 +1000,15 @@ export async function greet(name: string): Promise<string> {
 You can develop an Activity Definition by using the `@activity.defn` decorator.
 
 ```python
-from temporalio import activity
-
-
 @activity.defn
 async def say_hello_activity(name: str) -> str:
     return f"Hello, {name}!"
 ```
 
-You can register the function as an Activity with a custom name with a decorator argument. For example, `@activity.defn(name="my activity")`.
+You can register the function as an Activity with a custom name with a decorator argument. For example, `@activity.defn(name="your-activity")`.
 
 ```python
-@activity.defn(name="my-activity")
+@activity.defn(name="your-activity")
 async def say_hello_activity(name: str) -> str:
     return f"Hello, {name}!"
 ```
@@ -1074,9 +1019,9 @@ Activities are passed as a mapping with the key as a string activity name and th
 
 There are 3 types of _Activity callables_:
 
-- Asynchronous
-- Synchronous multithreaded
-- Synchronous multiprocess/other
+- Asynchronous Activities
+- Synchronous Activities
+- Synchronous Multithreaded Activities
 
 Functions can contain two types of arguments:
 
@@ -1088,17 +1033,18 @@ Only positional arguments are allowed in Activity callables.
 - **Asynchronous Activities**
 
 Asynchronous Activities (recommended) are functions using `async def`. When using asynchronous
-Activities there aren't any Worker parameters are needed.
+Activities there aren't any additional Worker parameters needed.
 
 Cancellation for asynchronous activities is done by means of the
 [`asyncio.Task.cancel`](https://docs.python.org/3/library/asyncio-task.html#asyncio.Task.cancel) operation. This means that
 `asyncio.CancelledError` will be raised (and can be caught, but it is not recommended). An Activity must Heartbeat to
 receive cancellation and there are other ways to be notified about cancellation.
 
+<!-- Leaves reader hanging. If there are other ways, why don't we tell them where they can learn about them? Same below where you repeat this statement. -->
+
 - **Synchronous Activities**
 
-Synchronous Activities are functions that do not have `async def`, which can be used with Workers, but the
-`activity_executor` worker parameter must be set with a `concurrent.futures.Executor` instance to use for executing the
+The [`activity_executor`](https://python.temporal.io/temporalio.worker.workerconfig#activity_exector) worker parameter must be set with a `concurrent.futures.Executor` instance to use for executing the
 Activities.
 
 Cancellation for synchronous Activities is done in the background and the Activity must choose to listen for it and
@@ -1107,21 +1053,8 @@ cancellation.
 
 - **Synchronous Multithreaded Activities**
 
-Multithreaded Activities are functions that use `activity_executor` set to an instance of `concurrent.futures.ThreadPoolExecutor`.
-Besides `activity_executor`, no other worker parameters are required for
-synchronous multithreaded Activities.
-
-- **Synchronous Multiprocessing or Other Activities**
-
-Synchronous Activities are functions that do not have `async def` and are used with Workers. The `activity_executor` Worker parameter must be set with `concurrent.futures.Executor` instance to execute the Activities.
-
-If this is _not_ set to an instance of `concurrent.futures.ThreadPoolExecutor` then the synchronous
-Activities are considered multiprocessing or other Activities.
-
-These require special primitives for Heartbeating and cancellation. The `shared_state_manager` worker parameter must be
-set to an instance of `temporalio.worker.SharedStateManager`. The most common implementation can be created by passing a
-`multiprocessing.managers.SyncManager` (i.e. result of `multiprocessing.managers.Manager()`) to
-`temporalio.worker.SharedStateManager.create_from_multiprocessing()`.
+Multithreaded Activities are functions that use `activity_executor`set to an instance of `concurrent.futures.ThreadPoolExecutor`.
+Besides `activity_executor`, no other additional Worker parameters are required for synchronous multithreaded Activities.
 
 All of these activity functions must be
 _[picklable](https://docs.python.org/3/library/pickle.html#what-can-be-pickled-and-unpickled)_.
@@ -1217,25 +1150,6 @@ Content is not available
 </TabItem>
 <TabItem value="python">
 
-During Activity Execution, an implicit Activity context is set as a
-[context variable](https://docs.python.org/3/library/contextvars.html). The context variable itself is not visible, but
-calls in the `temporalio.activity` package make use of it. Specifically:
-
-- `in_activity()` - Whether an activity context is present
-- `info()` - Returns the immutable info of the currently running activity
-- `heartbeat(*details)` - Record a heartbeat
-- `is_cancelled()` - Whether a cancellation has been requested on this activity
-- `wait_for_cancelled()` - `async` call to wait for cancellation request
-- `wait_for_cancelled_sync(timeout)` - Synchronous blocking call to wait for cancellation request
-- `is_worker_shutdown()` - Whether the worker has started graceful shutdown
-- `wait_for_worker_shutdown()` - `async` call to wait for start of graceful worker shutdown
-- `wait_for_worker_shutdown_sync(timeout)` - Synchronous blocking call to wait for start of graceful worker shutdown
-- `raise_complete_async()` - Raise an error that this activity will be completed asynchronously (i.e. after return of
-  the activity function in a separate client call)
-
-Except for `in_activity()`, if any of the functions are called outside an Activity context, an error
-occurs. Synchronous Activities cannot call any of the `async` functions.
-
 </TabItem>
 </Tabs>
 
@@ -1309,7 +1223,7 @@ export async function example(name: string): Promise<string> {
 
 You can return inputs and other Activity values.
 
-The following example defines an Activity that takes a string as input and returns the Activity name.
+The following example defines an Activity that takes a string as input and returns a string.
 
 ```python
 @activity.defn
@@ -1402,7 +1316,15 @@ Content is not available
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+You can register the function as an Activity with a custom name with a decorator argument. For example, `@activity.defn(name="your-activity")`.
+
+You can customize the Activity name with the name parameter, if the name parameter is not specified, the Activity name defaults to the unqualified class name.
+
+```python
+@activity.defn(name="your-activity")
+async def say_hello_activity(name: str) -> str:
+    return f"Hello, {name}!"
+```
 
 </TabItem>
 </Tabs>
@@ -1742,14 +1664,9 @@ This imports the individual Activities and declares the type alias for each Acti
 </TabItem>
 <TabItem value="python">
 
-To spawn an Activity Execution, use the `workflow.execute_activity()` operation from within your Workflow Definition. The operation is available from the `from temporalio import activity, workflow` module.
+To spawn an Activity Execution, use the `workflow.execute_activity()` operation from within your Workflow Definition.
 
 ```python
-import asyncio
-from datetime import datetime, timedelta
-from temporalio import workflow, activity
-
-
 @workflow.defn
 class SayHello:
     @workflow.run
@@ -1759,9 +1676,9 @@ class SayHello:
         )
 ```
 
-An `async workflow.execute_activity()` helper is provided which takes the same arguments as `workflow.start_activity()` and awaits on the result. This should be used in most cases unless advanced task capabilities are needed.
+`workflow.execute_activity()` is a shortcut for `workflow.start_activity()` that waits on its result. To get just the handle to wait and cancel separately, `workflow.start_activity()` can be used. This should be used in most cases unless advanced task capabilities are needed.
 
-A single argument to the Activity is positional. Multiple arguments are not supported in the type-safe form of `start_activity()` or `execute_activity` and must be supplied by the argument's keyword argument.
+A single argument to the Activity is positional. Multiple arguments are not supported in the type-safe form of `start_activity()` or `execute_activity` and must be supplied by the `args` keyword argument.
 
 </TabItem>
 </Tabs>
@@ -2182,11 +2099,8 @@ Use `Client.connect()` to create and connect to a Temporal Server at a given add
 Specify the `target_url` as a string.
 
 ```python
-from temporalio.client import Client
-
-
 async def main():
-    Client.connect("http://localhost:7233", namespace="your-namespace")
+    client = await Client.connect("http://localhost:7233", namespace="your-namespace")
 ```
 
 A `Client` does not have an explicit close.
@@ -2387,7 +2301,7 @@ This is a selected subset of options you are likely to use. Even more advanced o
 </TabItem>
 <TabItem value="python">
 
-To develop a Worker, specify the `Worker()` function and add your Client, Task Queue, Workflows, and Activities as arguments.
+To develop a Worker, use the `Worker()` constructor and add your Client, Task Queue, Workflows, and Activities as arguments.
 
 The following code example creates a Worker that polls for tasks from the Task Queue and executes the Workflow.
 
@@ -2403,15 +2317,6 @@ worker = Worker(
 The following code sample shows a Worker hosting Workflows and Activities by using a Client for starting Workflows.
 
 ```python
-import asyncio
-import logging
-from temporalio.client import Client
-from temporalio.worker import Worker
-
-# Import your own Workflows and Activities
-from my_workflow_package import MyWorkflow, my_activity
-
-
 async def run_worker(stop_event: asyncio.Event):
     # Create Client connected to server at the given address
     client = await Client.connect("http://localhost:7233", namespace="my-namespace")
@@ -2427,7 +2332,7 @@ async def run_worker(stop_event: asyncio.Event):
         await stop_event.wait()
 ```
 
-The `asyncio.Event` that will be set when the Worker should stop. While this sample accepts a stop event and uses `async with`, `run()` and `shutdown()` may be used as well.
+The `asyncio.Event` that will be set when the Worker should stop. While this sample accepts a stop event and uses `async with`, `run()` and `shutdown()` may be used as well. The `shutdown()` operation waits on all Activities to complete, so if a long-running Activity does not at least respect cancellation, the shutdown may never complete.
 
 </TabItem>
 </Tabs>
@@ -2772,16 +2677,81 @@ Workflow Execution run in a separate V8 isolate context in order to provide a [d
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+To spawn a [Workflow Execution](/workflows/#workflow-executions), use the `ExecuteWorkflow()` method on the Go SDK [`Client`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client#Client).
+
+The `ExecuteWorkflow()` API call requires an instance of [`context.Context`](https://pkg.go.dev/context#Context), an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client#StartWorkflowOptions), a Workflow Type name, and all variables to be passed to the Workflow Execution.
+The `ExecuteWorkflow()` call returns a Future, which can be used to get the result of the Workflow Execution.
+
+The following code example connects to a server, starts a Workflow, waits for the Workflow to finish, and prints the Workflow result.
+
+```python
+@dataclass
+class GreetingInfo:
+    salutation: str = "Hello"
+    name: str = "<unknown>"
+
+
+@workflow.defn
+class GreetingWorkflow:
+    def __init__() -> None:
+        self._current_greeting = "<unset>"
+        self._greeting_info = GreetingInfo()
+        self._greeting_info_update = asyncio.Event()
+        self._complete = asyncio.Event()
+
+    @workflow.run
+    async def run(self, name: str) -> str:
+        self._greeting_info.name = name
+        while True:
+            # Store greeting
+            self._current_greeting = await workflow.execute_activity(
+                create_greeting_activity,
+                self._greeting_info,
+                start_to_close_timeout=timedelta(seconds=5),
+            )
+            workflow.logger.debug("Greeting set to %s", self._current_greeting)
+
+            # Wait for salutation update or complete signal (this can be
+            # cancelled)
+            await asyncio.wait(
+                [self._greeting_info_update.wait(), self._complete.wait()],
+                return_when=asyncio.FIRST_COMPLETED,
+            )
+            if self._complete.is_set():
+                return self._current_greeting
+            self._greeting_info_update.clear()
+
+    @workflow.signal
+    async def update_salutation(self, salutation: str) -> None:
+        self._greeting_info.salutation = salutation
+        self._greeting_info_update.set()
+
+    @workflow.signal
+    async def complete_with_greeting(self) -> None:
+        self._complete.set()
+
+    @workflow.query
+    async def current_greeting(self) -> str:
+        return self._current_greeting
+
+
+@activity.defn
+async def create_greeting_activity(info: GreetingInfo) -> str:
+    return f"{info.salutation}, {info.name}!"
+```
 
 </TabItem>
 </Tabs>
 
 #### Set Task Queue
 
-The only Workflow Option that must be set is the name of the [Task Queue](/tasks/#task-queues).
+In most SDKs, the only Workflow Option that must be set is the name of the [Task Queue](/tasks/#task-queues).
 
 For any code to execute, a Worker Process must be running that contains a Worker Entity that is polling the same Task Queue name.
+
+:::note
+You must provide the `id` argument when executing a Workflow in Python.
+:::
 
 <Tabs
 defaultValue="go"
@@ -2887,7 +2857,11 @@ Content is not available
 
 #### Set Workflow Id
 
-Also it is not required, we recommend providing your own [Workflow Id](/workflows/#workflow-id) that maps to a business process or business entity identifier, such as an order identifier or customer identifier.
+We recommend providing your own [Workflow Id](/workflows/#workflow-id) that maps to a business process or business entity identifier, such as an order identifier or customer identifier.
+
+:::note
+You must provide the `id` argument when executing a Workflow in Python.
+:::
 
 <Tabs
 defaultValue="go"
@@ -3301,22 +3275,30 @@ To define a Signal, set the Signal decorator `@workflow.signal` on the Signal fu
 
 ```python
 @workflow.signal
- async def complete_with_greeting(self) -> None:
-     self._complete.set()
+def your_signal(self, value: str) -> None:
+    self._signal = value
 ```
 
-The `@workflow.signal` decorator defines a method as a Signal. Signals can be asynchronous or synchronous functions at any hierarchy depth; however, if a method is override, the override must also be decorated.
-The method's arguments are also the Signal's arguments.
-You can have a name parameter to customize the Signal's name, otherwise it defaults to the unqualified method name.
-You can use `dynamic=True`, which means all other unhandled Signals fall through to this.
+The `@workflow.signal` decorator defines a method as a Signal. Signals can be asynchronous or synchronous methods and can be inherited; however, if a method is overridden, the override must also be decorated.
 
-If `dynamic=True` is present in your Signal, you can't have a `name` argument.
+You can have a name parameter to customize the Signal's name, otherwise it defaults to the unqualified method name.
+You can use `@workflow.signal(dynamic=True)`, which means all other unhandled Signals fall through to this.
+
+If `dynamic=True` is applied to your Signal's decorator, you can't have a `name` argument.
 Your method parameters must be `self`, a string signal name, and a `*args` variable argument parameter.
+
+For example:
+
+```python
+@workflow.signal(dynamic=True)
+def signal_dynamic(self, name: str, *args: Any) -> None:
+    self._last_event = f"signal_dynamic {name}: {args[0]}"
+```
 
 Non-dynamic methods can only have positional arguments. Temporal suggests taking a single argument that is an
 object or data class of fields that can be added to as needed.
 
-Return values are ignored
+Return values are ignored.
 
 </TabItem>
 </Tabs>
@@ -3646,7 +3628,7 @@ await handle.signal(update, 300);
 ```
 
 Every month, a customer will be charged an amount specified by the update handler.
-The update handler is a function that takes a number and returns a numer. That number is used to update the amount the customer is charge.
+The update handler is a function that takes a number and returns a number. That number is used to update the amount the customer is charge.
 
 </TabItem>
 <TabItem value="python">
@@ -3828,10 +3810,28 @@ Content is not available
 To define a Query, set the Query decorator `@workflow.query` on the Query function inside your Workflow.
 
 ```python
-@workflow.signal
- async def complete_with_greeting(self) -> None:
-     self._complete.set()
+@workflow.query
+async def current_greeting(self) -> str:
+    return self._current_greeting
 ```
+
+The `@workflow.query` decorator defines a method as a Query. Queries can be asynchronous or synchronous methods and can be inherited; however, if a method is overridden, the override must also be decorated. Queries should return a value.
+
+You can have a name parameter to customize the Queries' name, otherwise it defaults to the unqualified method name.
+You can use `@workflow.Query(dynamic=True)`, which means all other unhandled Queries' fall through to this.
+
+If `dynamic=True` is applied to your Queries' decorator, you can't have a `name` argument.
+Your method parameters must be `self`, a string Query name, and a `*args` variable argument parameter.
+
+For example:
+
+```python
+@workflow.query(dynamic=True)
+def query_dynamic(self, name: str, *args: Any) -> str:
+    return f"query_dynamic {name}: {args[0]}"
+```
+
+Queries should never mutate anything in a Workflow.
 
 </TabItem>
 </Tabs>

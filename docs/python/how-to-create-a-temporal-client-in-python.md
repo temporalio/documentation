@@ -14,11 +14,8 @@ Use `Client.connect()` to create and connect to a Temporal Server at a given add
 Specify the `target_url` as a string.
 
 ```python
-from temporalio.client import Client
-
-
 async def main():
-    Client.connect("http://localhost:7233", namespace="your-namespace")
+    client = await Client.connect("http://localhost:7233", namespace="your-namespace")
 ```
 
 A `Client` does not have an explicit close.

@@ -17,7 +17,6 @@ Child Workflow options are set as keyword arguments after the positional argumen
 The `await` of the start does not complete until the workflow has confirmed to be started
 The result is a Child Workflow handle which is an `asyncio`.
 
-Task and supports basic task features. The handle also has some child info and supports signalling the Child Workflow
-A `sync workflow.execute_child_workflow()` helper is provided which takes the same arguments as
-`workflow.start_child_workflow()` and awaits on the result. This should be used in most cases unless advanced task
-capabilities are needed.
+Task and supports basic task features. The handle also has some child info and supports signalling the Child Workflow.
+
+`workflow.execute_activity()` is a shortcut for `workflow.start_activity()` that waits on its result. To get just the handle to wait and cancel separately, `workflow.start_activity()` can be used. This should be used in most cases unless advanced task capabilities are needed.

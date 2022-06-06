@@ -9,7 +9,9 @@ tags:
   - python
 ---
 
-To return the results of a Workflow, set your Workflow to a variable, like `handle`, then return the results with [`result()`](https://docs.python.org/3/library/asyncio-future.html#asyncio.Future.result).
+<!-- What handle are you referring to here? A child workflow handle from inside a workflow? Or a client handle when using the client? Either way, neither are asyncio.Future.result. -->
+
+To return the results of a Workflow, set your Workflow to a variable, like `handle`, then return the results with `result()`.
 
 ```python
 # Waiting for the workflow to complete and returning the result.

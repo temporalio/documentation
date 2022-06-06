@@ -12,10 +12,6 @@ tags:
 Create the following script at `start_workflow.py`:
 
 ```python
-import asyncio
-from temporalio.client import Client
-
-
 async def main():
     # Create client connected to server at the given address
     client = await Client.connect("http://localhost:7233")
