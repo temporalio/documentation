@@ -18,7 +18,7 @@ We can set [`WorkflowOptions.searchAttributes`](https://typescript.temporal.io/a
 
 The type of `searchAttributes` is `Record<string, string[] | number[] | boolean[] | Date[]>`.
 
-#### Workflow
+**Workflow**
 
 Inside a Workflow, we can read from [`WorkflowInfo.searchAttributes`](https://typescript.temporal.io/api/interfaces/workflow.WorkflowInfo#searchattributes) and call [`upsertSearchAttributes`](https://typescript.temporal.io/api/namespaces/workflow#upsertsearchattributes):
 
