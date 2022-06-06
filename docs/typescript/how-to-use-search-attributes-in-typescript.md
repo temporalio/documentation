@@ -25,7 +25,7 @@ Inside a Workflow, we can read from [`WorkflowInfo.searchAttributes`](https://ty
 <!--SNIPSTART typescript-search-attributes-workflow -->
 <!--SNIPEND-->
 
-#### Listing
+**Listing**
 
 For now, we can call [`client.service.listWorkflowExecutions()`](https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.WorkflowService-1#listworkflowexecutions). A friendlier `client.listWorkflows()` function that does Payload decoding is planned.
 
