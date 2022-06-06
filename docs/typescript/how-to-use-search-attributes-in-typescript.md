@@ -9,7 +9,7 @@ tags:
   - typescript
 ---
 
-#### Client
+**Client**
 
 We can set [`WorkflowOptions.searchAttributes`](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions#searchattributes) during `client.start()` or `client.execute()` and read with [`handle.describe()`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle#describe):
 
