@@ -232,7 +232,7 @@ To download the latest version of the Temporal TypeScript Command, run the follo
 npm i temporalio
 ```
 
-Or clone the Go SDK repo to your preferred location:
+Or clone the TypeScript SDK repo to your preferred location:
 
 ```bash
 git clone git@github.com:temporalio/sdk-typescript.git
