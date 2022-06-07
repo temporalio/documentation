@@ -15,16 +15,43 @@ To start a Child Workflow, use the following function.
 workflow.start_child_workflow()
 ```
 
+The following starts a Child Workflow function in a Workflow.
+
+```python
+@workflow.defn
+class ChildAlreadyStartedWorkflow:
+    @workflow.run
+    async def run(self) -> None:
+        # Try to start it twice
+        id = f"{workflow.info().workflow_id}_child"
+        await workflow.start_child_workflow(LongSleepWorkflow.run, id=id)
+        try:
+            await workflow.start_child_workflow(LongSleepWorkflow.run, id=id)
+        except WorkflowAlreadyStartedError:
+            raise ApplicationError("Already started")
+```
+
 You can also use the helper function `execute_child_workflow()`, which takes the same arguments as `start_child_workflow()` and awaits on the results.
 
 ```python
 async workflow.execute_child_workflow()
 ```
 
-This should be used in most cases unless advanced task
-capabilities are needed.
+The following executes a Child Workflow function in a Workflow.
 
-Child Workflow functions accepts either a Workflow Run Id method or a string name. The arguments to the Workflow are positional.
+```python
+@workflow.defn
+class SimpleChildWorkflow:
+    @workflow.run
+    async def run(self, params: SimpleChildWorkflowParams) -> str:
+        return await workflow.execute_child_workflow(
+            HelloWorkflow.run, params.name, id=params.child_id
+        )
+```
+
+`workflow.execute_child_workflow()` should be used in most cases unless advanced task capabilities are needed.
+
+Child Workflow functions accept either a Workflow Run method or a string name. The arguments to the Workflow are positional.
 
 Child Workflow options are set as keyword arguments _after_ the positional argument. `id` is required.
 

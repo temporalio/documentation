@@ -26,7 +26,7 @@ async def main(stop_event: asyncio.Event):
         await stop_event.wait()
 ```
 
-Workers can `run()` or `shutdown()` until the `stop_event` is set.
+Workers can [`run()`](https://python.temporal.io/temporalio.worker.Worker.html#run) or [`shutdown()`](https://python.temporal.io/temporalio.worker.Worker.html#shutdown) until the `stop_event` is set.
 
 - The following example runs the Worker and waits on it to shut down.
 

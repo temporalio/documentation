@@ -11,7 +11,7 @@ tags:
 
 Data converters are used to convert raw Temporal payloads to and from Python types.
 
-A custom data converter of type `temporalio.converter.DataConverter` can be set by the `data_converter` Client parameter.
+A custom data converter of type [`temporalio.converter.DataConverter`](https://python.temporal.io/temporalio.converter.dataconverter) can be set by the [`data_converter`](https://python.temporal.io/temporalio.client.client#data_converter) Client parameter.
 Data converters are a combination of _payload converters_ and _payload codecs_.
 
 - Payload converters converts Python values to and from serialized bytes.

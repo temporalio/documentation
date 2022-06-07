@@ -8,9 +8,9 @@ tags:
   - how-to
 ---
 
-You can set a Cron Schedule in your Workflows or Workers.
+You can set a Cron Schedule in your Workflows.
 
-The following example, sets a Cron Schedule in the Workflow.
+The following example sets a Cron Schedule in the Workflow.
 
 ```python
 handle = await client.start_workflow(

@@ -35,12 +35,12 @@ There are 3 types of _Activity callables_:
 - Synchronous Activities
 - Synchronous Multithreaded Activities
 
-Functions can contain two types of arguments:
+Normal function code can contain two types of arguments:
 
 - positional arguments: must be included in the correct order.
 - keyword arguments: included with a keyword and equals sign.
 
-Only positional arguments are allowed in Activity callables.
+However, Activity callables only allow for positional arguments.
 
 - **Asynchronous Activities**
 

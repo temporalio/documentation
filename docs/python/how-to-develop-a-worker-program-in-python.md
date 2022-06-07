@@ -9,7 +9,7 @@ tags:
   - workers
 ---
 
-To develop a Worker, use the `Worker()` constructor and add your Client, Task Queue, Workflows, and Activities as arguments.
+To develop a Worker, use the [`Worker()`](https://python.temporal.io/temporalio.worker.html) constructor and add your Client, Task Queue, Workflows, and Activities as arguments.
 
 The following code example creates a Worker that polls for tasks from the Task Queue and executes the Workflow.
 
@@ -40,4 +40,4 @@ async def run_worker(stop_event: asyncio.Event):
         await stop_event.wait()
 ```
 
-The `asyncio.Event` that will be set when the Worker should stop. While this sample accepts a stop event and uses `async with`, `run()` and `shutdown()` may be used as well. The `shutdown()` operation waits on all Activities to complete, so if a long-running Activity does not at least respect cancellation, the shutdown may never complete.
+The `asyncio.Event` that will be set when the Worker should stop. While this sample accepts a stop event and uses `async with`, [`run()`](https://python.temporal.io/temporalio.worker.Worker.html#run) and [`shutdown()`](https://python.temporal.io/temporalio.worker.Worker.html#shutdown) may be used as well. The `shutdown()` operation waits on all Activities to complete, so if a long-running Activity does not at least respect cancellation, the shutdown may never complete.

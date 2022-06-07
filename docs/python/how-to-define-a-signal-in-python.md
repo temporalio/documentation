@@ -17,7 +17,7 @@ def your_signal(self, value: str) -> None:
     self._signal = value
 ```
 
-The `@workflow.signal` decorator defines a method as a Signal. Signals can be asynchronous or synchronous methods and can be inherited; however, if a method is overridden, the override must also be decorated.
+The [`@workflow.signal`](https://python.temporal.io/temporalio.workflow.html#signal) decorator defines a method as a Signal. Signals can be asynchronous or synchronous methods and can be inherited; however, if a method is overridden, the override must also be decorated.
 
 You can have a name parameter to customize the Signal's name, otherwise it defaults to the unqualified method name.
 You can use `@workflow.signal(dynamic=True)`, which means all other unhandled Signals fall through to this.
@@ -36,4 +36,4 @@ def signal_dynamic(self, name: str, *args: Any) -> None:
 Non-dynamic methods can only have positional arguments. Temporal suggests taking a single argument that is an
 object or data class of fields that can be added to as needed.
 
-Return values are ignored.
+Return values from Signal methods are ignored.

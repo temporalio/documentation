@@ -9,9 +9,9 @@ tags:
   - python
 ---
 
-Use `Client.connect()` to create and connect to a Temporal Server at a given address and Namespace.
+Use [`Client.connect()`](https://python.temporal.io/temporalio.client.client#connect) to create and connect to a Temporal Server at a given address and Namespace.
 
-Specify the `target_url` as a string.
+Specify the `target_url` parameter as a string.
 
 ```python
 async def main():
@@ -19,6 +19,6 @@ async def main():
 ```
 
 A `Client` does not have an explicit close.
-If you don't specify a Namespace, Temporal defaults to the name `default`.
+If you don't specify a Namespace, Temporal defaults the `namespace` parameter to the value `default`.
 
 `Client` may be directly instantiated with a service of another. For example, if you need to create another Client to use an additional Namespace.

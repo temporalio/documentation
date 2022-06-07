@@ -9,11 +9,22 @@ tags:
   - python
 ---
 
-<!-- What handle are you referring to here? A child workflow handle from inside a workflow? Or a client handle when using the client? Either way, neither are asyncio.Future.result. -->
-
-To return the results of a Workflow, set your Workflow to a variable, like `handle`, then return the results with `result()`.
+To return the results of a Workflow, set your Workflow to a variable, like `handle`, then return the results with [`result()'](https://python.temporal.io/temporalio.client.WorkflowHandle.html#result).
 
 ```python
-# Waiting for the workflow to complete and returning the result.
-return await handle.result()
+async def main():
+    # Create client connected to server at the given address and namespace
+    client = await Client.connect("http://localhost:7233", namespace="your-namespace")
+
+    # Start a workflow
+    handle = await client.start_workflow(
+        MyWorkflow.run,
+        "your argument",
+        id="your-workflow-id",
+        task_queue="your-task-queue",
+    )
+
+    # Wait for result
+    result = await handle.result()
+    print(f"Result: {result}")
 ```

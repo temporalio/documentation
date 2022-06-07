@@ -9,9 +9,7 @@ tags:
   - python
 ---
 
-Use `async workflow.start_child_workflow()` to set a Child Workflow. This accepts either a Workflow run method
-reference or a string name.
-The arguments to the workflow are positional.
+Use [`workflow.start_child_workflow()`](https://python.temporal.io/temporalio.workflow.html#start_child_workflow) to set a Child Workflow. This accepts either a Workflow run method reference or a string name. The arguments to the Workflow are positional.
 
 Child Workflow options are set as keyword arguments after the positional arguments. The `id` must be provided.
 The `await` of the start does not complete until the workflow has confirmed to be started
