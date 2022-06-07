@@ -185,7 +185,7 @@ module.exports = {
         {
           items: [
             {
-              label: "Join the Cloud waitlist",
+              label: "Join the Cloud Waitlist",
               href: "https://pages.temporal.io/cloud-early-access",
             },
             {
