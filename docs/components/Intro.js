@@ -143,32 +143,40 @@ function Explained() {
       <div className="supported-tech">
         <ul className="landing-card-list-b logos">
           <li className="list-logo">
-            <img
-              className="w-10 h-8 pl-1 transition hover:scale-110 code-logo"
-              src="/img/golang.svg"
-              alt="Go lang logo"
-            />
+            <a href="https://pkg.go.dev/go.temporal.io/sdk">
+              <img
+                className="w-10 h-8 pl-1 transition hover:scale-110 code-logo"
+                src="/img/golang.svg"
+                alt="Go lang logo"
+              />
+            </a>
           </li>
           <li className="list-logo">
-            <img
-              className="w-7 h-7 pl-1 transition hover:scale-110 code-logo"
-              src="/img/typescript.svg"
-              alt="TypeScript logo"
-            />
+            <a href="https://nodejs.temporal.io">
+              <img
+                className="w-7 h-7 pl-1 transition hover:scale-110 code-logo"
+                src="/img/typescript.svg"
+                alt="TypeScript logo"
+              />
+            </a>
           </li>
           <li className="list-logo">
-            <img
-              className="w-10 h-8 pl-1 transition hover:scale-110 code-logo"
-              src="/img/php.svg"
-              alt="PHP logo"
-            />
+            <a href="https://github.com/temporalio/sdk-php">
+              <img
+                className="w-10 h-8 pl-1 transition hover:scale-110 code-logo"
+                src="/img/php.svg"
+                alt="PHP logo"
+              />
+            </a>
           </li>
           <li className="list-logo">
-            <img
-              className="w-7 h-7 pl-1 transition hover:scale-110 code-logo"
-              src="/img/java.svg"
-              alt="Java logo"
-            />
+            <a href="https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/index.html">
+              <img
+                className="w-7 h-7 pl-1 transition hover:scale-110 code-logo"
+                src="/img/java.svg"
+                alt="Java logo"
+              />
+            </a>
           </li>
         </ul>
       </div>
