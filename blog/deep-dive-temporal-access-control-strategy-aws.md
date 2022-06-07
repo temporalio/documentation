@@ -24,7 +24,7 @@ Finally, I'll come around to what I discovered—what I thought I wanted isn't w
 
 Our long-term goal is to develop an access-control mechanism that can be flexible, scalable, and secure. After we reviewed various strategies, a [Biba-style model](https://en.wikipedia.org/wiki/Biba_Model) of segmenting our AWS accounts seems to be the best fit for us. Each account forms a hard<sup>1</sup> "perimeter" and provides an easy way to set, measure, and maintain the maximum "blast radius" of each account. If we assume an account has been breached, what is the maximum extent of damage an attacker can inflict? 
 
-Setting up numerous smaller accounts can constrain possible damage, but this approach makes our management infrastructure a more compelling target. Connfiguring only one management account to allow those with access to assume roles into all other accounts greatly expands the blast radius in the event of a breach. **Clearly, this is not ideal.**
+Setting up numerous smaller accounts can constrain possible damage, but this approach makes our management infrastructure a more compelling target. Configuring only one management account to allow those with access to assume roles into all other accounts greatly expands the blast radius in the event of a breach. **Clearly, this is not ideal.**
 
 We want to provide strong isolation guarantees to our customers as well as ourselves. An engineer paged at 3:00 AM needs the confidence to fix the problem at hand—without the fear of causing more widespread problems. To provide these strong isolation guarantees, we plan to have a small number of trusted core accounts.
 
