@@ -583,7 +583,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-To customize the Workflow Type set the `Name` parameter with `RegisterOptions` when registering your Workflow with a Worker.
+To customize the Workflow Type, set the `Name` parameter with `RegisterOptions` when registering your Workflow with a Worker.
 
 - Type: `string`
 - Default: function name
@@ -1071,7 +1071,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-To customize the Activity Type set the `Name` parameter with `RegisterOptions` when registering your Activity with a Worker.
+To customize the Activity Type, set the `Name` parameter with `RegisterOptions` when registering your Activity with a Worker.
 
 - Type: `string`
 - Default: function name
@@ -4745,6 +4745,13 @@ func SimpleWorkflow(ctx workflow.Context, value string) error {
 ```
 
 To check whether a Workflow Execution was spawned as a result of Continue-As-New, you can check if `workflow.GetInfo(ctx).ContinuedExecutionRunID` is not nil.
+
+**Notes**
+
+- To prevent Signal loss, be sure to perform an asynchronous drain on the Signal channel.
+  Failure to do so can result in buffered Signals being ignored and lost.
+- Make sure that the previous Workflow and the Continue-As-New Workflow are referenced by the same alias.
+  Failure to do so can cause the Workflow to Continue-As-New on an entirely different Workflow.
 
 </TabItem>
 <TabItem value="java">
