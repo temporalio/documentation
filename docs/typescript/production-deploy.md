@@ -9,7 +9,7 @@ The following are recommended steps to take before deploying your Temporal appli
 
 ## Production Temporal Cluster
 
-Either use Temporal Cloud ([join the waitlist](https://us17.list-manage.com/survey?u=2334a0f23e55fd1840613755d&id=f1895b6f4a)) or deploy a self-hosted Temporal Cluster:
+Either use Temporal Cloud ([join the waitlist](https://pages.temporal.io/cloud-early-access)) or deploy a self-hosted Temporal Cluster:
 
 - [Deployment guide](/server/production-deployment/)
 - [Scaling checklist](/server/production-deployment#checklist-for-scaling-temporal)

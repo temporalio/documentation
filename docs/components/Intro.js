@@ -197,7 +197,7 @@ function Explained() {
             or{" "}
             <a
               className="aside-link"
-              href="https://us17.list-manage.com/survey?u=2334a0f23e55fd1840613755d&id=f1895b6f4a"
+              href="https://pages.temporal.io/cloud-early-access"
             >
               join the waitlist
             </a>

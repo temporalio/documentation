@@ -9,7 +9,7 @@ Temporal Cloud is a fully managed public cloud service for the [Temporal Platfor
 :::note Waitlist
 
 Access to Temporal Cloud is currently by invitation only.
-You can [join the waitlist](https://us17.list-manage.com/survey?u=2334a0f23e55fd1840613755d&id=f1895b6f4a).
+You can [join the waitlist](https://pages.temporal.io/cloud-early-access).
 
 :::
 
