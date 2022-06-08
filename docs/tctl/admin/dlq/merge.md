@@ -1,6 +1,7 @@
 ---
 id: merge
 title: tctl admin dlq merge
+sidebar_label: merge
 description: Merging DLQ messages.
 tags:
   - reference

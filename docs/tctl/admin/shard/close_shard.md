@@ -1,6 +1,7 @@
 ---
 id: close_shard
 title: tctl admin shard close_shard
+sidebar_label: close_shard
 description: closing a shard with a given shard Id
 tags:
   - reference

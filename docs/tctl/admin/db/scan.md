@@ -1,6 +1,7 @@
 ---
 id: scan
 title: tctl admin db scan
+sidebar_label: scan
 description: Scanning for corrupted executions in a database
 tags:
   - reference

@@ -1,6 +1,7 @@
 ---
 id: purge
 title: tctl admin dlq purge
+sidebar_label: purge
 description: Deleting DLQ messages.
 tags:
   - reference

@@ -1,6 +1,7 @@
 ---
 id: describe_task
 title: tctl admin shard describe_task
+sidebar_label: describe_task
 description: displaying information on a Task within a shard
 tags:
   - reference

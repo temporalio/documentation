@@ -1,6 +1,7 @@
 ---
 id: show
 title: tctl admin workflow show
+sidebar_label: show
 description: Showing Workflow history.
 tags:
   - reference

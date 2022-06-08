@@ -1,6 +1,7 @@
 ---
 id: remove-remote-cluster
 title: tctl admin cluster remove-remote-cluster
+sidebar_label: remove-remote-cluster
 description: Removing remote Clusters.
 tags:
   - reference

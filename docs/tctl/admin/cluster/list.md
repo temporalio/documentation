@@ -1,6 +1,7 @@
 ---
 id: list
 title: tctl admin cluster list
+sidebar_label: list
 description: Listing Cluster information.
 tags:
   - reference

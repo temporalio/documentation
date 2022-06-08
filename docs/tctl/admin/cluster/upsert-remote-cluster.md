@@ -1,6 +1,7 @@
 ---
 id: upsert-remote-cluster
 title: tctl admin cluster upsert-remote-cluster
+sidebar_label: upsert-remote-cluster
 description: How to run admin-level tctl commands.
 tags:
   - reference

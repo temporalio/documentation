@@ -264,26 +264,129 @@ module.exports = {
                     id: "tctl/admin/index",
                   },
                   items: [
-               {
-                    type: "category",
-                     label: "cluster",
-                  collapsible: true,
-                  collapsed: true,
-                  link: {
-                    type: "doc",
-                    id: "tctl/admin/cluster/index",
-                    items: [
+                    {
+                      type: "category",
+                      label: "cluster",
+                      collapsible: true,
+                      collapsed: true,
+                      link: {
+                        type: "doc",
+                        id: "tctl/admin/cluster/index",
+                      },
+                      items: [
                         "tctl/admin/cluster/describe",
-                        etc ...
-                    ]
-                  },
-                    "tctl/admin/db/index",
-                    "tctl/admin/decode/index",
-                    "tctl/admin/dlq/index",
-                    "tctl/admin/history_host/index",
-                    "tctl/admin/membership/index",
-                    "tctl/admin/shard/index",
-                    "tctl/admin/workflow/index",
+                        "tctl/admin/cluster/list",
+                        "tctl/admin/cluster/upsert-remote-cluster",
+                        "tctl/admin/cluster/remove-remote-cluster",
+                        "tctl/admin/cluster/get-search-attributes",
+                        "tctl/admin/cluster/add-search-attributes",
+                        "tctl/admin/cluster/remove-search-attributes",
+                      ],
+                    },
+                    {
+                      type: "category",
+                      label: "db",
+                      collapsible: true,
+                      collapsed: true,
+                      link: {
+                        type: "doc",
+                        id: "tctl/admin/db/index",
+                      },
+                      items: [
+                        "tctl/admin/db/clean",
+                        "tctl/admin/db/scan",
+                      ],
+                    },
+                    {
+                      type: "category",
+                      label: "decode",
+                      collapsible: true,
+                      collapsed: true,
+                      link: {
+                        type: "doc",
+                        id: "tctl/admin/decode/index",
+                      },
+                      items: [
+                        "tctl/admin/decode/proto",
+                        "tctl/admin/decode/base64",
+                      ],
+                    },
+                    {
+                      type: "category",
+                      label: "dlq",
+                      collapsible: true,
+                      collapsed: true,
+                      link: {
+                        type: "doc",
+                        id: "tctl/admin/dlq/index",
+                      },
+                      items: [
+                        "tctl/admin/dlq/read",
+                        "tctl/admin/dlq/merge",
+                        "tctl/admin/dlq/purge",
+                      ],
+                    },
+                    {
+                      type: "category",
+                      label: "history_host",
+                      collapsible: true,
+                      collapsed: true,
+                      link: {
+                        type: "doc",
+                        id: "tctl/admin/history_host/index",
+                      },
+                      items: [
+                        "tctl/admin/history_host/describe",
+                        "tctl/admin/history_host/get_shardid",
+                      ],
+                    },
+                    {
+                      type: "category",
+                      label: "membership",
+                      collapsible: true,
+                      collapsed: true,
+                      link: {
+                        type: "doc",
+                        id: "tctl/admin/membership/index",
+                      },
+                      items: [
+                        "tctl/admin/membership/list_db",
+                        "tctl/admin/membership/list_gossip",
+                      ],
+                    },
+                    {
+                      type: "category",
+                      label: "shard",
+                      collapsible: true,
+                      collapsed: true,
+                      link: {
+                        type: "doc",
+                        id: "tctl/admin/shard/index",
+                      },
+                      items: [
+                        "tctl/admin/shard/close_shard",
+                        "tctl/admin/shard/describe",
+                        "tctl/admin/shard/describe_task",
+                        "tctl/admin/shard/list_tasks",
+                        "tctl/admin/shard/remove_task",
+                      ],
+                    },
+                    {
+                      type: "category",
+                      label: "workflow",
+                      collapsible: true,
+                      collapsed: true,
+                      link: {
+                        type: "doc",
+                        id: "tctl/admin/workflow/index",
+                      },
+                      items: [
+                        "tctl/admin/workflow/describe",
+                        "tctl/admin/workflow/delete",
+                        "tctl/admin/workflow/refresh_tasks",
+                        "tctl/admin/workflow/show",
+                      ],
+                    },
                   ],
                 },
                 {
