@@ -17,7 +17,6 @@ There are two types of Task Queues, Activity Task Queues and Workflow Task Queue
 ![Task Queue component](/diagrams/task-queue.svg)
 
 Task Queues are very lightweight components.
-
 Task Queues do not require explicit registration but instead are created on demand when a Workflow Execution or Activity spawns or when a Worker Process subscribes to it.
 When a Task Queue is created, both a Workflow Task Queue and an Activity Task Queue are created under the same name.
 There is no limit to the number of Task Queues a Temporal Application can use or a Temporal Cluster can maintain.
