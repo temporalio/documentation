@@ -120,7 +120,7 @@ Perform this sanity check after the adjustments to Worker settings.
 
 1. `workflowCacheSize` should be ≤ `maxWorkflowThreadCount`. Each Workflow has at least 1 Workflow thread.
 2. `maxConcurrentWorkflowTaskExecutionSize` should be ≤ `maxWorkflowThreadCount`. Having more Worker slots than the Workflow cache size will lead to resource contention/stealing between executors and unpredictable delays. It’s recommended that `maxWorkflowThreadCount` be at least 2x of `maxConcurrentWorkflowTaskExecutionSize`.
-3. `maxConcurrentWorkflowTaskExecutionSize` should be significantly ≤ `maxConcurrentWorkflowTaskPollers`. And `maxConcurrentActivityExecutionSize` should be significantly ≤ `maxConcurrentActivityTaskPollers`. The number of pollers should always be lower than the number of executors.
+3. `maxConcurrentWorkflowTaskPollers` should be significantly ≤ `maxConcurrentWorkflowTaskExecutionSize`. And `maxConcurrentActivityTaskPollers` should be significantly ≤ `maxConcurrentActivityExecutionSize`. The number of pollers should always be lower than the number of executors.
 
 ## Drawbacks of putting just "large values everywhere"
 
