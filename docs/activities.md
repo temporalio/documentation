@@ -16,7 +16,7 @@ This guide is meant to be a comprehensive overview of Temporal Activities.
 In day-to-day conversations, the term _Activity_ frequently denotes either an [Activity Definition](#activity-definition), an [Activity Type](#activity-type), or an [Activity Execution](#activity-execution).
 Temporal documentation aims to be explicit and differentiate between them.
 
-An Activity is a normal function or object method that executes a single, well-defined action (either short or long running), such as calling another service, transcoding a media file, or sending an email.
+An Activity is a normal function or object method that executes a single, well-defined action (either short or long running), such as calling another service, transcoding a media file, or sending an email message.
 
 Workflow code orchestrates the execution of Activities, persisting the results.
 If an Activity Function Execution fails, any future execution starts from initial state (with the exception of Heartbeats).
@@ -79,7 +79,7 @@ An Activity Execution is the full chain of [Activity Task Executions](/tasks/#ac
 An Activity Execution has no time limit.
 Activity Execution time limits and retries can be optimized for each situation within the Temporal Application.
 
-If for any reason an Activity Execution does not complete (exhausts all retries) the error is returned to the [Workflow](/workflows) which decides how to handle it..
+If for any reason an Activity Execution does not complete (exhausts all retries), the error is returned to the [Workflow](/workflows), which decides how to handle it.
 
 ### Request Cancellation
 
@@ -210,7 +210,7 @@ Temporal SDKs control the rate at which Heartbeats are sent to the Cluster.
 
 Heartbeating is not required from [Local Activities](#local-activities), and does nothing.
 
-For _long-running_ Activities, we recommend that using a relatively short Heartbeat Timeout and Heartbeat frequently.
+For _long-running_ Activities, we recommend using a relatively short Heartbeat Timeout and a frequent Heartbeat.
 That way if a Worker fails it can be handled in a timely manner.
 
 A Heartbeat can include an application layer payload that can be used to _save_ Activity Execution progress.
@@ -218,11 +218,15 @@ If an [Activity Task Execution](/tasks/#activity-task-execution) times out due t
 
 ### Asynchronous Activity Completion
 
-Asynchronous Activity Completion occurs when the final result of a computation, started by an Activity, is provided to the Temporal System from an external system.
+Asynchronous Activity Completion occurs when an external system provides the final result of a computation, started by an Activity, to the Temporal System.
 
-By default, an Activity is a function or method (depending on the language) that completes as soon as the function or method returns. But in some cases an Activity implementation is asynchronous. For example, the action could be forwarded to an external system through a message queue, and the result could come through a different queue.
+By default, an Activity is a function or method (depending on the language) that completes as soon as the function or method returns.
+But in some cases an Activity implementation is asynchronous.
+For example, the action could be forwarded to an external system through a message queue, and the result could come through a different queue.
 
-To support such use cases, Temporal allows Activity implementations that do not complete upon Activity function completions. A separate API should be used in this case to complete the Activity. This API can be called from any process, even in a different programming language, that the original Activity worker used.
+To support such use cases, Temporal allows Activity implementations that do not complete upon Activity function completions.
+A separate API should be used in this case to complete the Activity.
+This API can be called from any process, even in a different programming language, that the original Activity worker used.
 
 ## Local Activities
 

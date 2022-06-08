@@ -99,7 +99,7 @@ There are four places where the name of the Task Queue can be set by the develop
 - [How to start a Workflow Execution using an SDK](/application-development-guide#set-task-queue)
 - [How to start a Workflow Execution using tctl](/tctl/workflow/start#--taskqueue)
 
-2. A Task Queue name must be set when creating a Worker Entity, and running a Worker Process:
+2. A Task Queue name must be set when creating a Worker Entity and when running a Worker Process:
 
 - [How to develop a Worker Program](/application-development-guide#run-worker-processes)
 
@@ -141,13 +141,13 @@ Sticky Executions are the default behavior of the Temporal Platform.
 
 Task Routing is simply when a Task Queue is paired with one or more Workers, primarily for Activity Task Executions.
 
-This could also mean employing multiple Task Queues each one paired with a Worker Process.
+This could also mean employing multiple Task Queues, each one paired with a Worker Process.
 
-There are many use cases for Task Routing.
+Task Routing has many applicable use cases.
 
 ### Flow control
 
-A Worker that consumes from a Task Queue asks for an Activity Task only when it has available capacity, so that is never overloaded by request spikes.
+A Worker that consumes from a Task Queue asks for an Activity Task only when it has available capacity, so it is never overloaded by request spikes.
 If Activity Tasks get created faster than Workers can process them, they are backlogged in the Task Queue.
 
 ### Throttling
@@ -160,8 +160,8 @@ It is frequently used to limit load on a downstream service that an Activity cal
 
 ### Specific environments
 
-It may be optimal to execute Activities in a dedicated environment.
-To send Activity Tasks to this environment, a dedicated Task Queue would be used.
+In some cases, you might need to execute Activities in a dedicated environment.
+To send Activity Tasks to this environment, use a dedicated Task Queue.
 
 #### Route Activity Tasks to a specific host
 
@@ -194,22 +194,22 @@ It also includes features like **concurrent session limitations** and **worker f
 
 #### Route Activity Tasks to a specific process
 
-Some Activities load large data sets and cache them in the process.
-The Activities that rely on this data set should be routed to the same process.
+Some Activities load large datasets and cache them in the process.
+The Activities that rely on those datasets should be routed to the same process.
 
 In this case, a unique Task Queue would exist for each Worker Process involved.
 
 #### Workers with different capabilities
 
-It may be that some Workers exist on GPU boxes vs non GPU boxes, for example.
-In this case each type of box would have its own Task Queue and Workflow can pick which one to send Activity Tasks.
+Some Workers might exist on GPU boxes versus non-GPU boxes.
+In this case, each type of box would have its own Task Queue and a Workflow can pick one to send Activity Tasks.
 
 ### Multiple priorities
 
-One task queue per priority and having a worker pool per priority.
+If your use case involves more than one priority, you can create one Task Queue per priority, with a Worker pool per priority.
 
 ### Versioning
 
-This is the simplest way to version your code.
+Task Routing is the simplest way to version your code.
 
-If you have a new backwards-incompatible Activity Definition, start by using a different Task Queue.
+If you have a new backward-incompatible Activity Definition, start by using a different Task Queue.
