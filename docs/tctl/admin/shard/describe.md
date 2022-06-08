@@ -1,6 +1,7 @@
 ---
 id: describe
 title: tctl admin shard describe
+sidebar_label: describe
 description: Describes Id of shard.
 tags:
   - reference

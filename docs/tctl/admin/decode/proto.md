@@ -1,6 +1,7 @@
 ---
 id: proto
 title: tctl admin decode proto
+sidebar_label: proto
 description: Decoding proto payloads.
 tags:
   - reference
