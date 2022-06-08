@@ -22,7 +22,7 @@ Temporal SDKs control the rate at which Heartbeats are sent to the Cluster.
 
 Heartbeating is not required from [Local Activities](/concepts/what-is-a-local-activity), and does nothing.
 
-For _long-running_ Activities, we recommend that using a relatively short Heartbeat Timeout and Heartbeat frequently.
+For _long-running_ Activities, we recommend using a relatively short Heartbeat Timeout and a frequent Heartbeat.
 That way if a Worker fails it can be handled in a timely manner.
 
 A Heartbeat can include an application layer payload that can be used to _save_ Activity Execution progress.

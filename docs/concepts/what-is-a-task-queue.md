@@ -45,7 +45,7 @@ There are four places where the name of the Task Queue can be set by the develop
 - [How to start a Workflow Execution using an SDK](/application-development-guide#set-task-queue)
 - [How to start a Workflow Execution using tctl](/tctl/workflow/start#--taskqueue)
 
-2. A Task Queue name must be set when creating a Worker Entity, and running a Worker Process:
+2. A Task Queue name must be set when creating a Worker Entity and when running a Worker Process:
 
 - [How to develop a Worker Program](/application-development-guide#run-worker-processes)
 

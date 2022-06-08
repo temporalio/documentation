@@ -16,7 +16,7 @@ An Activity Execution is the full chain of [Activity Task Executions](/concepts/
 An Activity Execution has no time limit.
 Activity Execution time limits and retries can be optimized for each situation within the Temporal Application.
 
-If for any reason an Activity Execution does not complete (exhausts all retries) the error is returned to the [Workflow](/workflows) which decides how to handle it..
+If for any reason an Activity Execution does not complete (exhausts all retries), the error is returned to the [Workflow](/workflows), which decides how to handle it.
 
 ### Request Cancellation
 
