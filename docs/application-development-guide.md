@@ -232,7 +232,7 @@ To download the latest version of the Temporal TypeScript Command, run the follo
 npm i temporalio
 ```
 
-Or clone the Go SDK repo to your preferred location:
+Or clone the TypeScript SDK repo to your preferred location:
 
 ```bash
 git clone git@github.com:temporalio/sdk-typescript.git
@@ -583,7 +583,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-To customize the Workflow Type set the `Name` parameter with `RegisterOptions` when registering your Workflow with a Worker.
+To customize the Workflow Type, set the `Name` parameter with `RegisterOptions` when registering your Workflow with a Worker.
 
 - Type: `string`
 - Default: function name
@@ -1071,7 +1071,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-To customize the Activity Type set the `Name` parameter with `RegisterOptions` when registering your Activity with a Worker.
+To customize the Activity Type, set the `Name` parameter with `RegisterOptions` when registering your Activity with a Worker.
 
 - Type: `string`
 - Default: function name
@@ -1146,7 +1146,7 @@ Content is not available
 
 Calls to spawn [Activity Executions](/activities/#activity-execution) are written within a [Workflow Definition](/workflows/#workflow-definitions).
 The call to spawn an Activity Execution generates the [ScheduleActivityTask](/references/commands/#scheduleactivitytask) Command.
-This results in the set of three [Activity Task](/tasks/#activity-task) related Events ([ActivityTaskScheduled](/references/events/#activitytaskscheduled), [ActivityTaskStarted](/references/events/#activitytaskstarted), and one of the Closed status Events) in your Workflow Execution Event History.
+This results in the set of three [Activity Task](/tasks/#activity-task) related Events ([ActivityTaskScheduled](/references/events/#activitytaskscheduled), [ActivityTaskStarted](/references/events/#activitytaskstarted), and ActivityTask[Closed])in your Workflow Execution Event History.
 
 A single instance of the Activities implementation is shared across multiple simultaneous Activity invocations.
 Therefore, the Activity implementation code must be _stateless_.
@@ -2513,7 +2513,7 @@ run().catch((err) => {
 
 #### Set Workflow Id
 
-Although it's not required, we recommend providing your own [Workflow Id](/workflows/#workflow-id) that maps to a business process or business entity identifier, such as an order identifier or customer identifier.
+Also it is not required, we recommend providing your own [Workflow Id](/workflows/#workflow-id) that maps to a business process or business entity identifier, such as an order identifier or customer identifier.
 
 <Tabs
 defaultValue="go"
@@ -4648,7 +4648,7 @@ The possible values can be obtained from the [`go.temporal.io/api/enums/v1`](htt
 - `PARENT_CLOSE_POLICY_TERMINATE`
 - `PARENT_CLOSE_POLICY_REQUEST_CANCEL`
 
-The Child Workflow Options are then applied to the the instance of `workflow.Context` by using the `WithChildOptions` API, which is then passed to the `ExecuteChildWorkflow()` call.
+The Child Workflow Options are then applied to the instance of `workflow.Context` by using the `WithChildOptions` API, which is then passed to the `ExecuteChildWorkflow()` call.
 
 - Type: [`ParentClosePolicy`](https://pkg.go.dev/go.temporal.io/api/enums/v1#ParentClosePolicy)
 - Default: `PARENT_CLOSE_POLICY_ABANDON`
