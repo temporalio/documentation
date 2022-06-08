@@ -292,10 +292,7 @@ module.exports = {
                         type: "doc",
                         id: "tctl/admin/db/index",
                       },
-                      items: [
-                        "tctl/admin/db/clean",
-                        "tctl/admin/db/scan",
-                      ],
+                      items: ["tctl/admin/db/clean", "tctl/admin/db/scan"],
                     },
                     {
                       type: "category",
