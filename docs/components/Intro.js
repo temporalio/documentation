@@ -501,7 +501,9 @@ function Explained() {
         </ul>
       </div>
       <div className="landing-card-section">
-        <h2 className="h2-landing">Tutorials</h2>
+        <a className="header-link" href="/learning-paths/">
+          <h2 className="h2-landing">Tutorials</h2>
+        </a>
         <p className="landing-card-p">
           Learning oriented tutorials across multiple SDKs.
         </p>
@@ -556,7 +558,9 @@ function Explained() {
       </div>
 
       <div className="landing-card-section">
-        <h2 className="h2-landing">Devtools</h2>
+        <a className="header-link" href="/devtools/">
+          <h2 className="h2-landing">Devtools</h2>
+        </a>
         <ul className="landing-card-list">
           <li className="">
             <div className="landing-card-list-item">
@@ -580,7 +584,9 @@ function Explained() {
         </ul>
       </div>
       <div className="landing-card-section">
-        <h2 className="h2-landing">References</h2>
+        <a className="header-link" href="/references/">
+          <h2 className="h2-landing">References</h2>
+        </a>
         <ul className="landing-card-list">
           <li className="">
             <div className="landing-card-list-item">
