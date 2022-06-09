@@ -16,11 +16,11 @@ Start a Workflow with the give parameters in the `client.ts` file. In this examp
 `client.ts`
 
 ```typescript
-import { example } from ‘./workflows’;
+import { example } from './workflows';
 await client.start(example, {
-  args: [{ name: ‘Temporal’, born: 2019 }],
-  taskQueue: ‘my-queue’,
-  workflowId: ‘business-meaningful-id’,
+  args: [{ name: 'Temporal', born: 2019 }],
+  taskQueue: 'my-queue',
+  workflowId: 'business-meaningful-id',
 });
 ```
 
