@@ -317,11 +317,11 @@ module.exports = {
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
         },
-        gtag: {
-          trackingID: "GTM-TSXFPF2",
-          // Optional fields.
-          anonymizeIP: false, // Should IPs be anonymized?
-        },
+        // gtag: {
+        //   trackingID: "GTM-TSXFPF2",
+        //   // Optional fields.
+        //   anonymizeIP: false, // Should IPs be anonymized?
+        // },
         // Will be passed to @docusaurus/plugin-content-sitemap
         sitemap: {
           // Per v2.0.0-alpha.72 cacheTime is now deprecated
@@ -332,18 +332,23 @@ module.exports = {
       },
     ],
   ],
-  // scripts: [
-  //   {
-  //     src: "/scripts/feedback.js",
-  //     async: true,
-  //     defer: true,
-  //   },
-  //   {
-  //     src: "/scripts/fullstory.js",
-  //     async: true,
-  //     defer: true,
-  //   },
-  // ],
+  scripts: [
+    {
+      src: "/scripts/googletag.js",
+      async: true,
+      defer: true,
+    },
+    {
+      src: "/scripts/feedback.js",
+      async: true,
+      defer: true,
+    },
+    // {
+    //   src: "/scripts/fullstory.js",
+    //   async: true,
+    //   defer: true,
+    // },
+  ],
 };
 
 function convertIndent4ToIndent2(code) {
