@@ -1,6 +1,6 @@
 ---
 id: how-to-define-workflow-parameters-in-typescript
-title: How to define workflow parameters in TypeScript
+title: How to define Workflow parameters in TypeScript
 sidebar_label: Define Workflow parameters
 description: Define Workflow parameters
 tags:
@@ -9,27 +9,29 @@ tags:
   - typescript
 ---
 
-A Task Queue is a dynamic queue in Temporal polled by one or more Workers.
+You can define and pass parameters in your Workflow. In this example, you'll define your arguments in your `client.ts` file and pass those parameters to `workflow.ts` through your Workflow function.
 
-When scheduling a Workflow, a `taskQueue` must be specified.
+Start a Workflow with the give parameters in the `client.ts` file. In this example we use set the `name` parameter to `Temporal` and `born` to `2019`. Then set the Task Queue and Workflow Id.
+
+`client.ts`
 
 ```typescript
-import { Connection, WorkflowClient } from '@temporalio/client';
-const connection = new Connection();
-const client = new WorkflowClient();
-const result = await client.execute(myWorkflow, {
-  taskQueue: 'your-task-queue', // required
-  workflowId: 'your-workflow-id', // required
+import { example } from ‘./workflows’;
+await client.start(example, {
+  args: [{ name: ‘Temporal’, born: 2019 }],
+  taskQueue: ‘my-queue’,
+  workflowId: ‘business-meaningful-id’,
 });
 ```
 
-When creating a Worker, you must pass the `taskQueue` option to the `Worker.create()` function.
+In `workflows.ts` define the type of the parameter that the Workflow function takes in. The `interface` `ExampleParam` is a name we can now use to describe the requirement in the previous example. It still represents having the two properties called `name` and `born` that is of the type `string`. Then define a function that takes in ta parameter of the type `ExampleParam` and return a `Promise<string>`. The `Promise` object represents the eventual completion, or failure, of `await client.start()` and its resulting value.
 
-```typescript
-const worker = await Worker.create({
-  activities, // imported elsewhere
-  taskQueue: 'your-task-queue',
-});
+```ts
+interface ExampleParam {
+  name: string;
+  born: number;
+}
+export async function example({ name, born }: ExampleParam): Promise<string> {
+  return `Hello ${name}, you were born in ${born}.`;
+}
 ```
-
-Optionally, in Workflow code, when calling an Activity, you can specify the Task Queue by passing the `taskQueue` option to `proxyActivities()`, `startChild`, or `executeChild`. If you do not specify a `taskQueue`, then the TypeScript SDK places Activity and Child Workflow Tasks in the same Task Queue as the Workflow Task Queue.
