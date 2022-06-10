@@ -17,6 +17,8 @@ Start a Workflow with the parameters that are in the `client.ts` file. In this e
 
 ```typescript
 import { example } from './workflows';
+
+...
 await client.start(example, {
   args: [{ name: 'Temporal', born: 2019 }],
   taskQueue: 'my-queue',
