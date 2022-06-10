@@ -338,11 +338,11 @@ module.exports = {
       async: true,
       defer: true,
     },
-    {
-      src: "/scripts/feedback.js",
-      async: true,
-      defer: true,
-    },
+    // {
+    //   src: "/scripts/feedback.js",
+    //   async: true,
+    //   defer: true,
+    // },
     // {
     //   src: "/scripts/fullstory.js",
     //   async: true,
