@@ -5771,3 +5771,83 @@ const handle = await client.start(scheduledWorkflow, {
 
 </TabItem>
 </Tabs>
+
+### Async Activity Completion
+
+[Asynchronous Activity Completion](/activities/#asynchronous-activity-completion) enables the Activity Function to return without the Activity Execution completing.
+
+There are three steps to follow:
+
+1. The Activity provides the external system with the [Task Token](/activities/#task-token) needed to complete it.
+2. The Activity identifies itself as waiting to be completed by an external system.
+3. The Temporal Client is used to complete the Activity.
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+1. Provide the external system with the a Task Token to complete the Activity Execution.
+   To do this, use the `GetInfo()` API from the `go.temporal.io/sdk/activity` package.
+
+```go
+// Retrieve the Activity information needed to asynchronously complete the Activity.
+activityInfo := activity.GetInfo(ctx)
+taskToken := activityInfo.TaskToken
+// Send the taskToken to the external service that will complete the Activity.
+```
+
+2. Return an `activity.ErrResultPending` error to indicate that the Activity is completing asynchronously.
+
+```go
+return "", activity.ErrResultPending
+```
+
+3. Use the Temporal Client to complete the Activity using the Task Token.
+
+```go
+// Instantiate a Temporal service client.
+// The same client can be used to complete or fail any number of Activities.
+// The client is a heavyweight object that should be created once per process.
+temporalClient, err := client.NewClient(client.Options{})
+
+// Complete the Activity.
+temporalClient.CompleteActivity(context.Background(), taskToken, result, nil)
+```
+
+Following are the parameters of the `CompleteActivity` function:
+
+- `taskToken`: The value of the binary `TaskToken` field of the `ActivityInfo` struct retrieved inside
+  the Activity.
+- `result`: The return value to record for the Activity. The type of this value must match the type
+  of the return value declared by the Activity function.
+- `err`: The error code to return if the Activity terminates with an error.
+
+If `error` is not null, the value of the `result` field is ignored.
+
+To fail the Activity, you would do the following:
+
+```go
+// Fail the Activity.
+client.CompleteActivity(context.Background(), taskToken, nil, err)
+```
+
+</TabItem>
+<TabItem value="java">
+
+Content is not available
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is not available
+
+</TabItem>
+</Tabs>

@@ -218,15 +218,27 @@ If an [Activity Task Execution](/tasks/#activity-task-execution) times out due t
 
 ### Asynchronous Activity Completion
 
-Asynchronous Activity Completion occurs when an external system provides the final result of a computation, started by an Activity, to the Temporal System.
+Asynchronous Activity Completion is a feature that enables an Activity Function to return without causing the Activity Execution to complete.
+The Temporal Client can then be used to both Heartbeat Activity Execution progress and eventually provide a result if needed.
 
-By default, an Activity is a function or method (depending on the language) that completes as soon as the function or method returns.
-But in some cases an Activity implementation is asynchronous.
-For example, the action could be forwarded to an external system through a message queue, and the result could come through a different queue.
+- [How to complete an Activity Asynchronously](#)
 
-To support such use cases, Temporal allows Activity implementations that do not complete upon Activity function completions.
-A separate API should be used in this case to complete the Activity.
-This API can be called from any process, even in a different programming language, that the original Activity worker used.
+#### When to use
+
+The intended use-case for this feature is when an external system has the final result of a computation, started by an Activity.
+
+Consider Heartbeating using the Temporal Client only if the external process is unreliable.
+
+Consider using [Signals](/workflows/#signals) to return data back to a Workflow Execution if there is a human in the process loop.
+The reason is that a human in the loop means multiple steps in the process.
+The first is the Activity Function that stores state in an external system and at least one other step where a human would “complete” the activity.
+If the first step fails, you want to detect that quickly and retry instead of waiting for the entire process, which could be significantly longer when humans are involved.
+
+#### Task Token
+
+A Task Token is a unique Id that correlates to an [Activity Execution](#activity-execution).
+
+Activity Execution completion calls take either a single Task Token, or the [Namespace](/namespaces/#), [Workflow Id](/workflows/#workflow-id), and [Activity Id](#activity-id) as a set of arguments.
 
 ## Local Activities
 

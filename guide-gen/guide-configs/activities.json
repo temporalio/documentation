@@ -73,7 +73,14 @@
         {
           "header": "Asynchronous Activity Completion",
           "type": "explanation",
-          "path": "concepts/what-is-asynchronous-activity-completion"
+          "path": "concepts/what-is-asynchronous-activity-completion",
+          "h4_sections": [
+            {
+              "header": "Task Token",
+              "type": "explanation",
+              "path": "concepts/what-is-a-task-token"
+            }
+          ]
         }
       ]
     },

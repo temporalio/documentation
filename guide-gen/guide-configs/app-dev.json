@@ -1360,6 +1360,37 @@
               "path": "typescript/how-to-set-a-cron-job-in-typescript"
             }
           ]
+        },
+        {
+          "header": "Async Activity Completion",
+          "type": "context",
+          "path": "app-dev-context/async-activity-completion"
+        },
+        {
+          "header": "none",
+          "type": "lang-tabs",
+          "langs": [
+            {
+              "lang": "go",
+              "title": "Go",
+              "path": "go/how-to-asynchronously-complete-an-activity-in-go"
+            },
+            {
+              "lang": "java",
+              "title": "Java",
+              "path": "none"
+            },
+            {
+              "lang": "php",
+              "title": "PHP",
+              "path": "none"
+            },
+            {
+              "lang": "typescript",
+              "title": "TypeScript",
+              "path": "none"
+            }
+          ]
         }
       ]
     }

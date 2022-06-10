@@ -50,7 +50,8 @@
 #
 /go/getting-started        /go
 /go/introduction        /go
-/go-activities         /application-development-guide#develop-activities
+/go-activities        /application-development-guide#develop-activities
+/go/activities        /application-development-guide#develop-activities
 /go/child-workflows        /application-development-guide#child-workflows
 /go-continue-as-new        /go/how-to-continue-as-new-in-go
 /go/continue-as-new        /go/how-to-continue-as-new-in-go

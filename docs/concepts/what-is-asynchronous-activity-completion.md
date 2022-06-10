@@ -7,12 +7,18 @@ tags:
   - explanation
 ---
 
-Asynchronous Activity Completion occurs when an external system provides the final result of a computation, started by an Activity, to the Temporal System.
+Asynchronous Activity Completion is a feature that enables an Activity Function to return without causing the Activity Execution to complete.
+The Temporal Client can then be used to both Heartbeat Activity Execution progress and eventually provide a result if needed.
 
-By default, an Activity is a function or method (depending on the language) that completes as soon as the function or method returns.
-But in some cases an Activity implementation is asynchronous.
-For example, the action could be forwarded to an external system through a message queue, and the result could come through a different queue.
+- [How to complete an Activity Asynchronously](#)
 
-To support such use cases, Temporal allows Activity implementations that do not complete upon Activity function completions.
-A separate API should be used in this case to complete the Activity.
-This API can be called from any process, even in a different programming language, that the original Activity worker used.
+#### When to use
+
+The intended use-case for this feature is when an external system has the final result of a computation, started by an Activity.
+
+Consider Heartbeating using the Temporal Client only if the external process is unreliable.
+
+Consider using [Signals](/concepts/what-is-a-signal) to return data back to a Workflow Execution if there is a human in the process loop.
+The reason is that a human in the loop means multiple steps in the process.
+The first is the Activity Function that stores state in an external system and at least one other step where a human would “complete” the activity.
+If the first step fails, you want to detect that quickly and retry instead of waiting for the entire process, which could be significantly longer when humans are involved.
