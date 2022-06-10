@@ -11,7 +11,7 @@ tags:
 
 You can define and pass parameters in your Workflow. In this example, you define your arguments in your `client.ts` file and pass those parameters to `workflow.ts` through your Workflow function.
 
-Start a Workflow with the give parameters in the `client.ts` file. In this example we use set the `name` parameter to `Temporal` and `born` to `2019`. Then set the Task Queue and Workflow Id.
+Start a Workflow with the parameters that are in the `client.ts` file. In this example we set the `name` parameter to `Temporal` and `born` to `2019`. Then set the Task Queue and Workflow Id.
 
 `client.ts`
 
