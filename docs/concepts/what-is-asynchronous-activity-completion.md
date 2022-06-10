@@ -12,7 +12,7 @@ The Temporal Client can then be used to both Heartbeat Activity Execution progre
 
 - [How to complete an Activity Asynchronously](/application-development-guide#async-activity-completion)
 
-#### When to use
+#### When to use Async Completion
 
 The intended use-case for this feature is when an external system has the final result of a computation, started by an Activity.
 
