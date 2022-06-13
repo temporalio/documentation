@@ -9,6 +9,8 @@ tags:
   - typescript
 ---
 
+A Task Queue is a dynamic queue in Temporal polled by one or more Workers.
+
 Workers bundle Workflow code and node modules using Webpack v5 and execute them inside V8 isolates. Activities are directly required and run by Workers in the Node.js environment.
 
 Workers are flexible. You can host any or all of your Workflows and Activities on a Worker, and you can host multiple Workers on a single machine.
@@ -21,7 +23,7 @@ There are three main things the Worker needs:
   - a `workflowsPath` to your `workflows.ts` file to pass to Webpack. For example, `require.resolve('./workflows')`. Workflows will be bundled with their dependencies, which you can finetune with `nodeModulesPaths`.
   - Or pass a prebuilt bundle to `workflowBundle`, if you prefer to handle the bundling yourself.
 
-```typescript
+```ts
 import { Worker } from '@temporalio/worker';
 import * as activities from './activities';
 
@@ -50,3 +52,27 @@ run().catch((err) => {
 ```
 
 `taskQueue` is the only required option; however, use `workflowsPath` and `activities` to register Workflows and Activities with the Worker.
+
+When scheduling a Workflow, a `taskQueue` must be specified.
+
+```ts
+import { Connection, WorkflowClient } from '@temporalio/client';
+// This is the code that is used to start a workflow.
+const connection = new Connection();
+const client = new WorkflowClient();
+const result = await client.execute(myWorkflow, {
+  taskQueue: 'your-task-queue', // required
+  workflowId: 'your-workflow-id', // required
+});
+```
+
+When creating a Worker, you must pass the `taskQueue` option to the `Worker.create()` function.
+
+```ts
+const worker = await Worker.create({
+  activities, // imported elsewhere
+  taskQueue: 'your-task-queue',
+});
+```
+
+Optionally, in Workflow code, when calling an Activity, you can specify the Task Queue by passing the `taskQueue` option to `proxyActivities()`, `startChild()`, or `executeChild()`. If you do not specify a `taskQueue`, then the TypeScript SDK places Activity and Child Workflow Tasks in the same Task Queue as the Workflow Task Queue.

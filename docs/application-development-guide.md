@@ -447,30 +447,34 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-A Task Queue is a dynamic queue in Temporal polled by one or more Workers.
+You can define and pass parameters in your Workflow. In this example, you define your arguments in your `client.ts` file and pass those parameters to `workflow.ts` through your Workflow function.
 
-When scheduling a Workflow, a `taskQueue` must be specified.
+Start a Workflow with the parameters that are in the `client.ts` file. In this example we set the `name` parameter to `Temporal` and `born` to `2019`. Then set the Task Queue and Workflow Id.
+
+`client.ts`
 
 ```typescript
-import {Connection, WorkflowClient} from "@temporalio/client";
-const connection = new Connection();
-const client = new WorkflowClient();
-const result = await client.execute(myWorkflow, {
-  taskQueue: "your-task-queue", // required
-  workflowId: "your-workflow-id", // required
+import { example } from './workflows';
+
+...
+await client.start(example, {
+  args: [{ name: 'Temporal', born: 2019 }],
+  taskQueue: 'my-queue',
+  workflowId: 'business-meaningful-id',
 });
 ```
 
-When creating a Worker, you must pass the `taskQueue` option to the `Worker.create()` function.
+In `workflows.ts` define the type of the parameter that the Workflow function takes in. The interface `ExampleParam` is a name we can now use to describe the requirement in the previous example. It still represents having the two properties called `name` and `born` that is of the type `string`. Then define a function that takes in a parameter of the type `ExampleParam` and return a `Promise<string>`. The `Promise` object represents the eventual completion, or failure, of `await client.start()` and its resulting value.
 
-```typescript
-const worker = await Worker.create({
-  activities, // imported elsewhere
-  taskQueue: "your-task-queue",
-});
+```ts
+interface ExampleParam {
+  name: string;
+  born: number;
+}
+export async function example({name, born}: ExampleParam): Promise<string> {
+  return `Hello ${name}, you were born in ${born}.`;
+}
 ```
-
-Optionally, in Workflow code, when calling an Activity, you can specify the Task Queue by passing the `taskQueue` option to `proxyActivities()`, `startChild`, or `executeChild`. If you do not specify a `taskQueue`, then the TypeScript SDK places Activity and Child Workflow Tasks in the same Task Queue as the Workflow Task Queue.
 
 </TabItem>
 </Tabs>
@@ -547,25 +551,17 @@ interface FileProcessingWorkflow {
 </TabItem>
 <TabItem value="typescript">
 
-Query Handlers can return values inside a Workflow in TypeScript.
+To return a value of the Workflow function, use `Promise<something>`. The `Promise` is used to make asynchronous calls and comes with guarantees.
 
-You make a Query with `handle.query(query, ...args)`. A Query needs a return value, but can also take arguments.
+The following example uses a `Promise<string>` to eventually return a `name` and `born` parameter.
 
 ```typescript
-import * as wf from "@temporalio/workflow";
-
-function useState<T = any>(name: string, initialValue: T) {
-  const query = wf.defineQuery<T>(name);
-  let state: T = initialValue;
-  return {
-    query,
-    get value() {
-      return state;
-    },
-    set value(newVal: T) {
-      state = newVal;
-    },
-  };
+interface ExampleParam {
+  name: string;
+  born: number;
+}
+export async function example({name, born}: ExampleParam): Promise<string> {
+  return `Hello ${name}, you were born in ${born}.`;
 }
 ```
 
@@ -2466,6 +2462,8 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
+A Task Queue is a dynamic queue in Temporal polled by one or more Workers.
+
 Workers bundle Workflow code and node modules using Webpack v5 and execute them inside V8 isolates. Activities are directly required and run by Workers in the Node.js environment.
 
 Workers are flexible. You can host any or all of your Workflows and Activities on a Worker, and you can host multiple Workers on a single machine.
@@ -2478,7 +2476,7 @@ There are three main things the Worker needs:
   - a `workflowsPath` to your `workflows.ts` file to pass to Webpack. For example, `require.resolve('./workflows')`. Workflows will be bundled with their dependencies, which you can finetune with `nodeModulesPaths`.
   - Or pass a prebuilt bundle to `workflowBundle`, if you prefer to handle the bundling yourself.
 
-```typescript
+```ts
 import {Worker} from "@temporalio/worker";
 import * as activities from "./activities";
 
@@ -2507,6 +2505,30 @@ run().catch((err) => {
 ```
 
 `taskQueue` is the only required option; however, use `workflowsPath` and `activities` to register Workflows and Activities with the Worker.
+
+When scheduling a Workflow, a `taskQueue` must be specified.
+
+```ts
+import {Connection, WorkflowClient} from "@temporalio/client";
+// This is the code that is used to start a workflow.
+const connection = new Connection();
+const client = new WorkflowClient();
+const result = await client.execute(myWorkflow, {
+  taskQueue: "your-task-queue", // required
+  workflowId: "your-workflow-id", // required
+});
+```
+
+When creating a Worker, you must pass the `taskQueue` option to the `Worker.create()` function.
+
+```ts
+const worker = await Worker.create({
+  activities, // imported elsewhere
+  taskQueue: "your-task-queue",
+});
+```
+
+Optionally, in Workflow code, when calling an Activity, you can specify the Task Queue by passing the `taskQueue` option to `proxyActivities()`, `startChild()`, or `executeChild()`. If you do not specify a `taskQueue`, then the TypeScript SDK places Activity and Child Workflow Tasks in the same Task Queue as the Workflow Task Queue.
 
 </TabItem>
 </Tabs>
@@ -3632,7 +3654,32 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+Query Handlers can return values inside a Workflow in TypeScript.
+
+You make a Query with `handle.query(query, ...args)`. A Query needs a return value, but can also take arguments.
+
+```typescript
+import * as wf from "@temporalio/workflow";
+
+export const unblockSignal = wf.defineSignal("unblock");
+export const isBlockedQuery = wf.defineQuery<boolean>("isBlocked");
+
+export async function unblockOrCancel(): Promise<void> {
+  let isBlocked = true;
+  wf.setHandler(unblockSignal, () => void (isBlocked = false));
+  wf.setHandler(isBlockedQuery, () => isBlocked);
+  console.log("Blocked");
+  try {
+    await wf.condition(() => !isBlocked);
+    console.log("Unblocked");
+  } catch (err) {
+    if (err instanceof wf.CancelledFailure) {
+      console.log("Cancelled");
+    }
+    throw err;
+  }
+}
+```
 
 </TabItem>
 </Tabs>
