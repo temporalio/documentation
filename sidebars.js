@@ -500,6 +500,7 @@ module.exports = {
         "references/commands",
         "references/events",
         "references/configuration",
+        "references/ui-configuration",
       ],
     },
     "external-resources",
