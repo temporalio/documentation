@@ -624,6 +624,11 @@
                   "path": "none"
                 },
                 {
+                  "lang": "python",
+                  "title": "Python",
+                  "path": "python/how-to-set-a-workflow-task-queue-in-python"
+                },
+                {
                   "lang": "typescript",
                   "title": "TypeScript",
                   "path": "typescript/how-to-set-a-workflow-task-queue-in-typescript"
@@ -691,6 +696,11 @@
               "lang": "php",
               "title": "PHP",
               "path": "none"
+            },
+            {
+              "lang": "python",
+              "title": "Python",
+              "path": "python/how-to-get-the-result-of-a-workflow-execution-in-python"
             },
             {
               "lang": "typescript",
