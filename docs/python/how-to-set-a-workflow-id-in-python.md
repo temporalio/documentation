@@ -9,9 +9,9 @@ tags:
   - python
 ---
 
-To set a Workflow Id in Python, specify the `id` argument when executing a Workflow with the [`execute_workflow`](file:///Users/rachfop/Documents/Python-SDK/sdk-python/build/apidocs/temporalio.client.Client.html#execute_workflow).
+To set a Workflow Id in Python, specify the `id` argument when executing a Workflow with the [`execute_workflow`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow).
 
-The `id` agrument should be a unique identifier for the Workflow Execution.
+The `id` argument should be a unique identifier for the Workflow Execution.
 The `execute_workflow` function starts a Workflow and wait for completion.
 
 ```python

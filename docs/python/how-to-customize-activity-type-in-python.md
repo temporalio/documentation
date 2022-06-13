@@ -9,12 +9,12 @@ tags:
   - python
 ---
 
-You can register the function as an Activity with a custom name with a decorator argument. For example, `@activity.defn(name="your-activity")`.
+You can register an Activity function with a custom name in the decorator argument. For example, `@activity.defn(name="your-activity")`.
 
 You can customize the Activity name with the name parameter, if the name parameter is not specified, the Activity name defaults to the unqualified class name.
 
 ```python
-@activity.defn(name="your-activity")
+@activity.defn()
 async def say_hello_activity(name: str) -> str:
     return f"Hello, {name}!"
 ```

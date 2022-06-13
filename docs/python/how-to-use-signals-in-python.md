@@ -10,7 +10,7 @@ tags:
 ---
 
 Use the `@workflow.signal` decorator to define a method as a Signal.
-Temporal queries should never mutate anything in the workflow
+Signals should never mutate anything in the workflow
 
 ```python
 @workflow.signal

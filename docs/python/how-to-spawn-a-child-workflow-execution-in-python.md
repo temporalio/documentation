@@ -9,11 +9,7 @@ tags:
   - python
 ---
 
-To start a Child Workflow, use the following function.
-
-```python
-workflow.start_child_workflow()
-```
+To start a Child Workflow, use the following function [`workflow.start_child_workflow()`](https://python.temporal.io/temporalio.workflow.html#start_child_workflow) function.
 
 The following starts a Child Workflow function in a Workflow.
 
@@ -31,7 +27,7 @@ class ChildAlreadyStartedWorkflow:
             raise ApplicationError("Already started")
 ```
 
-You can also use the helper function `execute_child_workflow()`, which takes the same arguments as `start_child_workflow()` and awaits on the results.
+You can also use the helper function [`execute_child_workflow()`](https://python.temporal.io/temporalio.workflow.html#execute_child_workflow), which takes the same arguments as `start_child_workflow()` and awaits on the results.
 
 ```python
 async workflow.execute_child_workflow()
