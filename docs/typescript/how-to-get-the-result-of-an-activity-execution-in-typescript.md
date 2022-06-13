@@ -24,4 +24,4 @@ export async function DynamicWorkflow(activityName, ...args) {
 }
 ```
 
-The `proxyActivities()` returns an object that calls the Activities in the function. `acts[activityName]()` references the Activity using the Activity name, then it returns the results.
+The `proxyActivities()` returns an object that calls the Activities in the function. `acts[activityName]` references the Activity using the Activity name, then it returns the results.

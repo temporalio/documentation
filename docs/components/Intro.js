@@ -573,10 +573,7 @@ function Explained() {
           <li className="">
             <div className="landing-card-list-item">
               <CliSVG />
-              <Link
-                to={useBaseUrl("/devtools/web-ui")}
-                className="hover:underline"
-              >
+              <Link to={useBaseUrl("/web-ui")} className="hover:underline">
                 <a className="font-normal">Web UI</a>
               </Link>
             </div>
@@ -858,7 +855,7 @@ function Tools() {
         <li className="">
           <Link
             className="flex items-center space-x-3 hover:underline"
-            to={useBaseUrl("/devtools/web-ui")}
+            to={useBaseUrl("/web-ui")}
           >
             <svg
               className="h-8 w-8 transition hover:scale-110 code-logo"
