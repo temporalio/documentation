@@ -624,7 +624,7 @@ function useState<T = any>(name: string, initialValue: T) {
 </TabItem>
 <TabItem value="python">
 
-To return the results of a Workflow, set your Workflow to a variable, like `handle`, then return the results with [`result()'](https://python.temporal.io/temporalio.client.WorkflowHandle.html#result).
+To return the results of a Workflow, set your Workflow to a variable, like `handle`, then return the results with [`result()`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#result).
 
 ```python
 async def main():
@@ -1026,15 +1026,15 @@ async def say_hello_activity(name: str) -> str:
     return f"Hello, {name}!"
 ```
 
-Activities are passed as a mapping with the key as a string activity name and the value as a _callable_. Callables are functions you can call.
+Activities are passed as a mapping with the key as a string Activity name and the value as a _callable_. Callables are functions you can call.
 
 **Types of Activities**
 
 There are 3 types of _Activity callables_:
 
-- Asynchronous Activities
-- Synchronous Activities
-- Synchronous Multithreaded Activities
+- Asynchronous Activities.
+- Synchronous Activities.
+- Synchronous Multithreaded Activities.
 
 Normal function code can contain two types of arguments:
 
@@ -1066,7 +1066,7 @@ cancellation.
 
 - **Synchronous Multithreaded Activities**
 
-Multithreaded Activities are functions that use `activity_executor`set to an instance of `concurrent.futures.ThreadPoolExecutor`.
+Multithreaded Activities are functions that use `activity_executor` set to an instance of `concurrent.futures.ThreadPoolExecutor`.
 Besides `activity_executor`, no other additional Worker parameters are required for synchronous multithreaded Activities.
 
 All of these activity functions must be
@@ -4381,7 +4381,25 @@ Content is not available
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+To set a [RetryPolicy()](https://python.temporal.io/temporalio.common.retrypolicy), create a Retry Policy inside the Workflow function. In this example, we create a new Worker for the Workflow and set a Retry Policy parameters. Valid parameters for `RetryPolicy` are:
+
+- `backoff_coefficient`: Coefficient to multiply previous back off interval by to get new interval. Defaults to 2.0 if not specified.
+- `initial_interval`: Back off interval for the first retry. Default to 1 second if not specified.
+- `maximum_attempts`: The maximum number of attempts.
+- `maximum_interval`: The maximum back off interval between retries. Default to 100x `initial_interval` if not specified.
+- `non_retryable_error_types`: List of error types that are not retryable.
+
+```python
+async def your_workflow(client: Client):
+    async with new_worker(client, InfoWorkflow) as worker:
+        workflow_id = f"workflow-{uuid.uuid4()}"
+        retry_policy = RetryPolicy(
+            initial_interval=timedelta(seconds=3),
+            backoff_coefficient=4.0,
+            maximum_interval=timedelta(seconds=5),
+            maximum_attempts=6,
+        )
+```
 
 </TabItem>
 </Tabs>
@@ -4612,7 +4630,24 @@ const {greet} = proxyActivities<typeof activities>({
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+Activity options are set as keyword arguments after the Activity arguments. At least one of `start_to_close_timeout` or `schedule_to_close_timeout` must be provided.
+
+```python
+start_to_close_timeout = (timedelta(seconds=5),)
+```
+
+The following code executes an Activity with a `start_to_close_timeout` of 5 seconds.
+
+```python
+@workflow.defn
+// Defining a workflow that executes an activity with a start to close timeout of 5 seconds.
+class YourWorkflow:
+    @workflow.run
+    async def run(self, name: str) -> str:
+        return await workflow.execute_activity(
+            your_activity, name, start_to_close_timeout=timedelta(seconds=5)
+        )
+```
 
 </TabItem>
 </Tabs>
@@ -4718,7 +4753,22 @@ const {greet} = proxyActivities<typeof activities>({
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+Activity options are set as keyword arguments after the Activity arguments. At least one of `start_to_close_timeout` or `schedule_to_close_timeout` must be provided.
+
+The following code schedules to close a timeout in Python by calling the Activity with the argument `name` and setting the `schedule_to_start_timeout` to 1 seconds.
+
+```python
+@workflow.defn
+class SimpleActivityWorkflow:
+    @workflow.run
+    async def run(self, name: str) -> str:
+        return await workflow.execute_activity(
+            say_hello,
+            name,
+            schedule_to_close_timeout_ms=5000,
+            schedule_to_start_timeout_ms=1000,
+        )
+```
 
 </TabItem>
 </Tabs>
@@ -4935,7 +4985,52 @@ const {yourActivity} = proxyActivities<typeof activities>({
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+To set a [RetryPolicy()](https://python.temporal.io/temporalio.common.retrypolicy), create a Retry Policy inside the Activity function. Valid parameters for `RetryPolicy` are:
+
+- `backoff_coefficient`: Coefficient to multiply previous back off interval by to get new interval. Defaults to 2.0 if not specified.
+- `initial_interval`: Back off interval for the first retry. Default to 1 second if not specified.
+- `maximum_attempts`: The maximum number of attempts.
+- `maximum_interval`: The maximum back off interval between retries. Default to 100x `initial_interval` if not specified.
+- `non_retryable_error_types`: List of error types that are not retryable.
+
+```python
+from temporalio.common import RetryPolicy
+from datetime import timedelta
+
+
+async def retry_policy(client: Client, worker: ExternalWorker):
+    handle = await client.start_workflow(
+        "your_workflow",
+        id="your_workflow_id",
+        task_queue=worker.task_queue,
+        retry_policy=RetryPolicy(
+            initial_interval=timedelta(seconds=3),
+            backoff_coefficient=4.0,
+            maximum_interval=timedelta(seconds=5),
+            maximum_attempts=6,
+        ),
+    )
+```
+
+You can also use the qualified class name, `temporalio.common.RetryPolicy` for the Retry Policy.
+
+```python
+from datetime import timedelta
+
+
+async def retry_policy(client: Client, worker: ExternalWorker):
+    handle = await client.start_workflow(
+        "your_workflow",
+        id="your_workflow_id",
+        task_queue=worker.task_queue,
+        retry_policy=temporalio.common.RetryPolicy(
+            initial_interval=timedelta(seconds=3),
+            backoff_coefficient=4.0,
+            maximum_interval=timedelta(seconds=5),
+            maximum_attempts=6,
+        ),
+    )
+```
 
 </TabItem>
 </Tabs>
@@ -5304,7 +5399,31 @@ Content is not available
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+In Python, a [Parent Close Policy](https://docs.temporal.io/workflows/#parent-close-policy) is register with [`ParentClosePolicy`](https://python.temporal.io/temporalio.workflow.parentclosepolicy).
+Parent Close Policies determine how a child Workflow should be handled when the parent closes.
+Possible enumerated constants include:
+
+- `ABANDON` - the Child Workflow Execution is not affected.
+- `REQUEST_CANCEL` - a Cancellation request is sent to the Child Workflow Execution.
+- `TERMINATE` - the Child Workflow Execution is forcefully Terminated.
+- `UNSPECIFIED`
+
+To specify a Parent Close policy, set your `parent_close_policy` variable to `workflow.ParentClosePolicy.<ParentCloseValue>`
+
+The following code example starts a Child Workflow with a Parent Close policy of `TERMINATE`.
+
+```python
+@workflow.defn
+class ChildWorkflow:
+    @workflow.run
+    async def run(self) -> None:
+        id = f"{workflow.info().workflow_id}_child"
+        await workflow.start_child_workflow(
+            LongSleepWorkflow.run,
+            id=id,
+            parent_close_policy=workflow.ParentClosePolicy.TERMINATE,
+        )
+```
 
 </TabItem>
 </Tabs>

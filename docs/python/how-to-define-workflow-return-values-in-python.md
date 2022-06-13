@@ -9,7 +9,7 @@ tags:
   - python
 ---
 
-To return the results of a Workflow, set your Workflow to a variable, like `handle`, then return the results with [`result()'](https://python.temporal.io/temporalio.client.WorkflowHandle.html#result).
+To return the results of a Workflow, set your Workflow to a variable, like `handle`, then return the results with [`result()`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#result).
 
 ```python
 async def main():

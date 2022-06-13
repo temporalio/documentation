@@ -1109,6 +1109,11 @@
                   "path": "none"
                 },
                 {
+                  "lang": "python",
+                  "title": "Python",
+                  "path": "python/how-to-set-a-workflow-retry-policy-in-python"
+                },
+                {
                   "lang": "typescript",
                   "title": "TypeScript",
                   "path": "none"
@@ -1183,6 +1188,11 @@
                   "path": "none"
                 },
                 {
+                  "lang": "python",
+                  "title": "Python",
+                  "path": "python/how-to-set-a-start-to-close-timeout-in-python"
+                },
+                {
                   "lang": "typescript",
                   "title": "TypeScript",
                   "path": "typescript/how-to-set-a-start-to-close-timeout-in-typescript"
@@ -1212,6 +1222,11 @@
                   "lang": "php",
                   "title": "PHP",
                   "path": "none"
+                },
+                {
+                  "lang": "python",
+                  "title": "Python",
+                  "path": "python/how-to-set-a-schedule-to-start-timeout-in-python"
                 },
                 {
                   "lang": "typescript",
@@ -1274,6 +1289,11 @@
                   "lang": "php",
                   "title": "PHP",
                   "path": "none"
+                },
+                {
+                  "lang": "python",
+                  "title": "Python",
+                  "path": "python/how-to-set-an-activity-retry-policy-in-python"
                 },
                 {
                   "lang": "typescript",
@@ -1348,6 +1368,11 @@
                   "lang": "php",
                   "title": "PHP",
                   "path": "none"
+                },
+                {
+                  "lang": "python",
+                  "title": "Python",
+                  "path": "python/how-to-set-a-parent-close-policy-in-python"
                 },
                 {
                   "lang": "typescript",

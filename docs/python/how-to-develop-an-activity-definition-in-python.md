@@ -25,15 +25,15 @@ async def say_hello_activity(name: str) -> str:
     return f"Hello, {name}!"
 ```
 
-Activities are passed as a mapping with the key as a string activity name and the value as a _callable_. Callables are functions you can call.
+Activities are passed as a mapping with the key as a string Activity name and the value as a _callable_. Callables are functions you can call.
 
 **Types of Activities**
 
 There are 3 types of _Activity callables_:
 
-- Asynchronous Activities
-- Synchronous Activities
-- Synchronous Multithreaded Activities
+- Asynchronous Activities.
+- Synchronous Activities.
+- Synchronous Multithreaded Activities.
 
 Normal function code can contain two types of arguments:
 
@@ -65,7 +65,7 @@ cancellation.
 
 - **Synchronous Multithreaded Activities**
 
-Multithreaded Activities are functions that use `activity_executor`set to an instance of `concurrent.futures.ThreadPoolExecutor`.
+Multithreaded Activities are functions that use `activity_executor` set to an instance of `concurrent.futures.ThreadPoolExecutor`.
 Besides `activity_executor`, no other additional Worker parameters are required for synchronous multithreaded Activities.
 
 All of these activity functions must be
