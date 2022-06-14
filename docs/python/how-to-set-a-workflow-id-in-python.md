@@ -16,6 +16,6 @@ The `execute_workflow` function starts a Workflow and wait for completion.
 
 ```python
 result = await client.execute_workflow(
-    SayHello.run, "my name", id="my-workflow-id", task_queue="my-task-queue"
+    SayHello.run, "Temporal", id="your-workflow-id", task_queue="your-task-queue"
 )
 ```

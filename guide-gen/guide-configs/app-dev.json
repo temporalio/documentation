@@ -127,6 +127,11 @@
                   "path": "none"
                 },
                 {
+                  "lang": "python",
+                  "title": "Python",
+                  "path": "python/how-to-define-workflow-parameters-in-python"
+                },
+                {
                   "lang": "typescript",
                   "title": "TypeScript",
                   "path": "typescript/how-to-define-workflow-parameters-in-typescript"
@@ -558,6 +563,11 @@
                   "lang": "php",
                   "title": "PHP",
                   "path": "none"
+                },
+                {
+                  "lang": "python",
+                  "title": "Python",
+                  "path": "python/how-to-register-types-with-a-worker-in-python"
                 },
                 {
                   "lang": "typescript",
@@ -1031,7 +1041,7 @@
                   "path": "none"
                 },
                 {
-                  "lang:": "python",
+                  "lang": "python",
                   "title": "Python",
                   "path": "python/how-to-set-a-workflow-execution-timeout-in-python"
                 },
@@ -1067,6 +1077,11 @@
                   "path": "none"
                 },
                 {
+                  "lang": "python",
+                  "title": "Python",
+                  "path": "python/how-to-set-a-workflow-run-timeout-in-python"
+                },
+                {
                   "lang": "typescript",
                   "title": "TypeScript",
                   "path": "none"
@@ -1096,6 +1111,11 @@
                   "lang": "php",
                   "title": "PHP",
                   "path": "none"
+                },
+                {
+                  "lang": "python",
+                  "title": "Python",
+                  "path": "python/how-to-set-a-workflow-task-timeout-in-python"
                 },
                 {
                   "lang": "typescript",
@@ -1431,6 +1451,11 @@
               "lang": "php",
               "title": "PHP",
               "path": "none"
+            },
+            {
+              "lang": "python",
+              "title": "Python",
+              "path": "python/how-to-continue-as-new-in-python"
             },
             {
               "lang": "typescript",

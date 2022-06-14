@@ -19,7 +19,6 @@ The following code executes an Activity with a `start_to_close_timeout` of 5 sec
 
 ```python
 @workflow.defn
-// Defining a workflow that executes an activity with a start to close timeout of 5 seconds.
 class YourWorkflow:
     @workflow.run
     async def run(self, name: str) -> str:

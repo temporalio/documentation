@@ -28,15 +28,15 @@ async def main():
     client = await Client.connect("http://localhost:7233")
     async with Worker(
         client,
-        task_queue="my-task-queue",
+        task_queue="your-task-queue",
         workflows=[SayHelloWorkflow],
         activities=[say_hello_activity],
     ):
         result = await client.execute_workflow(
             SayHelloWorkflow.run,
             "Temporal",
-            id="my-workflow-id",
-            task_queue="my-task-queue",
+            id="your-workflow-id",
+            task_queue="your-task-queue",
         )
         print(f"Result: {result}")
 ```

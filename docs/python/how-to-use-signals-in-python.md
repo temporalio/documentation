@@ -19,3 +19,11 @@ async def complete_with_greeting(self) -> None:
 ```
 
 Signals are decorators that take a function and returns a function or a returns a `Signal` object.
+
+The following example demonstrates how to set a custom Signal name in the Signal decorator.
+
+```python
+@workflow.signal(name="Custom Name")
+def signal_custom(self, arg: str) -> None:
+    self._last_event = f"signal_custom: {arg}"
+```

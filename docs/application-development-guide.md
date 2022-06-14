@@ -526,7 +526,26 @@ export async function example({name, born}: ExampleParam): Promise<string> {
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+Workflow parameters are the method parameters of the singular method decorated
+with `@workflow.run`. These can be any data type Temporal can convert including
+`dataclass`es. Technically this can be multiple parameters, but Temporal
+strongly encourages a single `dataclass` parameter containing all input fields.
+For example:
+
+```python
+@dataclass
+class MyParams:
+    my_int_param: int
+    my_str_param: str
+
+
+@workflow.defn
+class MyWorkflow:
+    @workflow.run
+    async def run(self, params: MyParams) -> None:
+        # Do stuff
+        ...
+```
 
 </TabItem>
 </Tabs>
@@ -1158,6 +1177,25 @@ Content is not available
 
 </TabItem>
 <TabItem value="python">
+
+Activity parameters are the function parameters of the function decorated with
+`@activity.defn`. These can be any data type Temporal can convert including
+`dataclass`es. Technically this can be multiple parameters, but Temporal
+strongly encourages a single `dataclass` parameter containing all input fields.
+For example:
+
+```python
+@dataclass
+class MyParams:
+    my_int_param: int
+    my_str_param: str
+
+
+@activity.defn
+async def my_activity(params: MyParams) -> None:
+    # Do stuff
+    ...
+```
 
 </TabItem>
 </Tabs>
@@ -2135,7 +2173,7 @@ Clients also provide a shallow copy of their config for use in making slightly d
 
 ```python
 config = client.config()
-config["namespace"] = "my-other-namespace"
+config["namespace"] = "your-other-namespace"
 other_ns_client = Client(**config)
 ```
 
@@ -2350,14 +2388,14 @@ The following code sample shows a Worker hosting Workflows and Activities by usi
 ```python
 async def run_worker(stop_event: asyncio.Event):
     # Create Client connected to server at the given address
-    client = await Client.connect("http://localhost:7233", namespace="my-namespace")
+    client = await Client.connect("http://localhost:7233", namespace="your-namespace")
 
     # Run the worker until the event is set
     worker = Worker(
         client,
-        task_queue="my-task-queue",
-        workflows=[MyWorkflow],
-        activities=[my_activity],
+        task_queue="your-task-queue",
+        workflows=[YourWorkflow],
+        activities=[your_activity],
     )
     async with worker:
         await stop_event.wait()
@@ -2486,7 +2524,9 @@ Content is not available
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+When a `Worker` is created, it accepts [iterable objects](https://docs.python.org/3/library/functions.html#iter), like: lists, tuples, dictionaries, or sets, in Workflows and Activities in the `workflows` and `activities` parameters respectively.
+
+Provide more than one value to register multiple values.
 
 </TabItem>
 </Tabs>
@@ -2915,7 +2955,7 @@ The following example, starts a Workflow with the `GreetingWorkflow` class, pass
 
 ```python
 await client.start_workflow(
-    GreetingWorkflow.run, "my name", id="my-workflow-id", task_queue="my-task-queue"
+    GreetingWorkflow.run, "my name", id="your-workflow-id", task_queue="your-task-queue"
 )
 ```
 
@@ -3004,7 +3044,7 @@ The `execute_workflow` function starts a Workflow and wait for completion.
 
 ```python
 result = await client.execute_workflow(
-    SayHello.run, "my name", id="my-workflow-id", task_queue="my-task-queue"
+    SayHello.run, "Temporal", id="your-workflow-id", task_queue="your-task-queue"
 )
 ```
 
@@ -3299,7 +3339,10 @@ async def main():
 
     # Run the worker
     worker = Worker(
-        client, task_queue="my-task-queue", workflows=[SayHello], activities=[say_hello]
+        client,
+        task_queue="your-task-queue",
+        workflows=[SayHello],
+        activities=[say_hello],
     )
     await worker.run()
 
@@ -3321,7 +3364,7 @@ async def main():
     # Execute a workflow
 
     result = await client.execute_workflow(
-        SayHello.run, "my name", id="my-workflow-id", task_queue="my-task-queue"
+        SayHello.run, "my name", id="your-workflow-id", task_queue="your-task-queue"
     )
 
     # It's printing the result of the workflow.
@@ -3900,13 +3943,13 @@ Use the `start_signal` and `start_signal_args` arguments from the [`start_workfl
 
 ```python
 async def start_with_signal(client: Client, worker: ExternalWorker):
-        handle = await client.start_workflow(
-            "your-workflow-name",
-            id=f"workflow-{uuid.uuid4()}",
-            task_queue=worker.task_queue,
-            start_signal="your-signal",
-            start_signal_args=[KSAction(result=KSResultAction(value="some signal arg"))],
-        )
+    handle = await client.start_workflow(
+        "your-workflow-name",
+        id=f"workflow-{uuid.uuid4()}",
+        task_queue=worker.task_queue,
+        start_signal="your-signal",
+        start_signal_args=[KSAction(result=KSResultAction(value="some signal arg"))],
+    )
 ```
 
 </TabItem>
@@ -4344,7 +4387,16 @@ Content is not available
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+When setting [`client.start_workflow`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`client.execute_workflow`](https://python.temporal.io/temporalio.client.client#execute_workflow) you can provide `run_timeout` as a parameter to set the total Workflow Execution timeout, including Retries and Continue-As-New.
+
+```python
+handle = await client.start_workflow(
+    "your workflow name",
+    id="your-workflow-id",
+    task_queue="your-task-queue",
+    execution_timeout=timedelta(seconds=10),
+)
+```
 
 </TabItem>
 </Tabs>
@@ -4410,7 +4462,16 @@ Content is not available
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+When setting [`client.start_workflow`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`client.execute_workflow`](https://python.temporal.io/temporalio.client.client#execute_workflow) you can provide `run_timeout` as a parameter to set the timeout of a single Workflow run.
+
+```python
+handle = await client.start_workflow(
+    "my workflow name",
+    id="your-workflow-id",
+    task_queue="your-task-queue",
+    run_timeout=timedelta(seconds=1),
+)
+```
 
 </TabItem>
 </Tabs>
@@ -4477,7 +4538,16 @@ Content is not available
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+When setting [`client.start_workflow`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`client.execute_workflow`](https://python.temporal.io/temporalio.client.client#execute_workflow) you can provide `task_timeout` as a parameter to set the timeout of a single Workflow Task.
+
+```python
+handle = await client.start_workflow(
+    "my workflow name",
+    id="your-workflow-id",
+    task_queue="your-task-queue",
+    task_timeout=timedelta(seconds=1),
+)
+```
 
 </TabItem>
 </Tabs>
@@ -4802,14 +4872,13 @@ const {greet} = proxyActivities<typeof activities>({
 Activity options are set as keyword arguments after the Activity arguments. At least one of `start_to_close_timeout` or `schedule_to_close_timeout` must be provided.
 
 ```python
-start_to_close_timeout = (timedelta(seconds=5))
+start_to_close_timeout = timedelta(seconds=5)
 ```
 
 The following code executes an Activity with a `start_to_close_timeout` of 5 seconds.
 
 ```python
 @workflow.defn
-// Defining a workflow that executes an activity with a start to close timeout of 5 seconds.
 class YourWorkflow:
     @workflow.run
     async def run(self, name: str) -> str:
@@ -5609,7 +5678,7 @@ The Workflow Execution spawned from the use of Continue-As-New has the same Work
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -5675,6 +5744,20 @@ Content is not available
 <TabItem value="typescript">
 
 Content is not available
+
+</TabItem>
+<TabItem value="python">
+
+[`continue_as_new()`](https://python.temporal.io/temporalio.workflow.html#continue_as_new) is an async function to stop the Workflow immediately and continue the Workflow as new.
+
+```python
+async def continue_as_new(client: Client, worker: ExternalWorker):
+    handle = await client.start_workflow(
+        "your-workflow",
+        id="your-workflow-id",
+        task_queue="your-task-queue",
+    )
+```
 
 </TabItem>
 </Tabs>

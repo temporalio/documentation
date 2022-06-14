@@ -27,14 +27,14 @@ The following code sample shows a Worker hosting Workflows and Activities by usi
 ```python
 async def run_worker(stop_event: asyncio.Event):
     # Create Client connected to server at the given address
-    client = await Client.connect("http://localhost:7233", namespace="my-namespace")
+    client = await Client.connect("http://localhost:7233", namespace="your-namespace")
 
     # Run the worker until the event is set
     worker = Worker(
         client,
-        task_queue="my-task-queue",
-        workflows=[MyWorkflow],
-        activities=[my_activity],
+        task_queue="your-task-queue",
+        workflows=[YourWorkflow],
+        activities=[your_activity],
     )
     async with worker:
         await stop_event.wait()

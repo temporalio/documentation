@@ -21,7 +21,9 @@ async def say_hello_activity(name: str) -> str:
 async def main(stop_event: asyncio.Event):
     client = await Client.connect("http://localhost:7233")
 
-    worker = Worker(client, task_queue="my-task-queue", activities=[say_hello_activity])
+    worker = Worker(
+        client, task_queue="your-task-queue", activities=[say_hello_activity]
+    )
     async with worker:
         await stop_event.wait()
 ```

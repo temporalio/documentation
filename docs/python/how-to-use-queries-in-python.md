@@ -12,8 +12,10 @@ tags:
 Use the `@workflow.query` decorator to define a method as a Query. Queries are just like Signals, but they should return a value.
 Queries should never mutate anything in the Workflow.
 
+The following example demonstrates how to set a custom Query name in the Query decorator.
+
 ```python
-@workflow.query
-  async def current_greeting(self) -> str:
-      return self._current_greeting
+@workflow.query(name="Custom Name")
+def query_custom(self, arg: str) -> str:
+    return f"query_custom: {arg}"
 ```

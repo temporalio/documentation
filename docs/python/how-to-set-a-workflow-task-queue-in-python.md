@@ -16,6 +16,6 @@ The following example, starts a Workflow with the `GreetingWorkflow` class, pass
 
 ```python
 await client.start_workflow(
-    GreetingWorkflow.run, "my name", id="my-workflow-id", task_queue="my-task-queue"
+    GreetingWorkflow.run, "my name", id="your-workflow-id", task_queue="your-task-queue"
 )
 ```

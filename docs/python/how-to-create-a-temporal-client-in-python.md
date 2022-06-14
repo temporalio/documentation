@@ -27,6 +27,6 @@ Clients also provide a shallow copy of their config for use in making slightly d
 
 ```python
 config = client.config()
-config["namespace"] = "my-other-namespace"
+config["namespace"] = "your-other-namespace"
 other_ns_client = Client(**config)
 ```

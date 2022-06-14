@@ -43,7 +43,10 @@ async def main():
 
     # Run the worker
     worker = Worker(
-        client, task_queue="my-task-queue", workflows=[SayHello], activities=[say_hello]
+        client,
+        task_queue="your-task-queue",
+        workflows=[SayHello],
+        activities=[say_hello],
     )
     await worker.run()
 
@@ -65,7 +68,7 @@ async def main():
     # Execute a workflow
 
     result = await client.execute_workflow(
-        SayHello.run, "my name", id="my-workflow-id", task_queue="my-task-queue"
+        SayHello.run, "my name", id="your-workflow-id", task_queue="your-task-queue"
     )
 
     # It's printing the result of the workflow.
