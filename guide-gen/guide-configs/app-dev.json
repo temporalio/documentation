@@ -800,6 +800,11 @@
                   "path": "none"
                 },
                 {
+                  "lang": "python",
+                  "title": "Python",
+                  "path": "python/how-to-handle-a-signal-in-a-workflow-in-python"
+                },
+                {
                   "lang": "typescript",
                   "title": "TypeScript",
                   "path": "none"
@@ -1001,6 +1006,11 @@
                   "lang": "php",
                   "title": "PHP",
                   "path": "none"
+                },
+                {
+                  "lang": "python",
+                  "title": "Python",
+                  "path": "python/how-to-handle-a-query-in-a-workflow-in-python"
                 },
                 {
                   "lang": "typescript",

@@ -3634,7 +3634,13 @@ Content is not available
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+To send a Signal from to the Workflow, use the [`signal`](https://python.temporal.io/temporalio.client.workflowhandle#signal) method from the [`WorkflowHandle`](https://python.temporal.io/temporalio.client.workflowhandle) class.
+
+This will signal for `run_id` if present.
+
+```python
+await handle.signal("some signal")
+```
 
 </TabItem>
 </Tabs>
@@ -4315,7 +4321,13 @@ export async function unblockOrCancel(): Promise<void> {
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+To send a Query from to the Workflow, use the [`query`](https://python.temporal.io/temporalio.client.workflowhandle#query) method from the [`WorkflowHandle`](https://python.temporal.io/temporalio.client.workflowhandle) class.
+
+This will Query for `run_id` if present.
+
+```python
+await handle.query("some query")
+```
 
 </TabItem>
 </Tabs>
