@@ -40,4 +40,4 @@ Temporal Server provides a [default implementation of JWT authentication](server
 
 Related read:
 
-- [How to secure a Temporal Cluster](/server/security]
+- [How to secure a Temporal Cluster](/server/security)
