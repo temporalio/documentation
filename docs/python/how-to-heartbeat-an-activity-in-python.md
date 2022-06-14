@@ -18,7 +18,6 @@ next run.
 
 ```python
 async def heartbeat(self, *details: Any) -> None:
-    """Record a heartbeat for the activity."""
     await self._client._impl.heartbeat_async_activity(
         HeartbeatAsyncActivityInput(id_or_token=self._id_or_token, details=details),
     )
