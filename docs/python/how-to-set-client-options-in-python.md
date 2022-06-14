@@ -22,7 +22,6 @@ retry_policy = temporalio.common.RetryPolicy(
     backoff_coefficient=2.0,  # float
     maximum_interval=time.Second * 100,
     maximum_attempts=0,  # init
-    non_retryable_error_types=[],  # Iterable[str]
 )
 ```
 
