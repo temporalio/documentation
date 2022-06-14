@@ -655,10 +655,7 @@ module.exports = {
       label: "Cluster how-tos",
       collapsible: false,
       collapsed: false,
-      items: [
-        "server/options",
-        "server/production-deployment",
-      ],
+      items: ["server/options", "server/production-deployment"],
     },
   ],
   sidebarGo: [
