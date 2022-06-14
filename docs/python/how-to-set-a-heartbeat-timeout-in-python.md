@@ -9,15 +9,12 @@ tags:
   - python
 ---
 
-Use the [`start_activity()`](https://python.temporal.io/temporalio.workflow.html#start_activity) function and the Heartbeat timeout.
-This is the timeout that the Worker will use to Heartbeat the Activity. `heartbeat_timeout` determines how frequently an Activity must invoke Heartbeats while running before it is considered timed out.
-
-At least one of `start_to_close_timeout` or `schedule_to_close_timeout` must be provided.
+[`heartbeat_timeout`](https://python.temporal.io/temporalio.worker.startactivityinput#heartbeat_timeout) is a class variable for the [`start_activity()`](https://python.temporal.io/temporalio.workflow.html#start_activity) function used to set the maximum time between Activity Heartbeats.
 
 ```python
 def start_activity(
     activity: "your-activity",
     schedule_to_close_timeout=timedelta(seconds=5),
-    heartbeat_timeout: timedelta(seconds=5)
+    heartbeat_timeout=timedelta(seconds=5)
 )
 ```

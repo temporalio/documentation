@@ -452,6 +452,11 @@
               "path": "php/how-to-get-the-result-of-an-activity-execution-in-php"
             },
             {
+              "lang": "python",
+              "title": "Python",
+              "path": "python/how-to-get-the-result-of-an-activity-execution-in-python"
+            },
+            {
               "lang": "typescript",
               "title": "TypeScript",
               "path": "typescript/how-to-get-the-result-of-an-activity-execution-in-typescript"
@@ -878,6 +883,11 @@
                   "path": "none"
                 },
                 {
+                  "lang": "python",
+                  "title": "Python",
+                  "path": "python/how-to-send-a-signal-with-start-in-python"
+                },
+                {
                   "lang": "typescript",
                   "title": "TypeScript",
                   "path": "typescript/how-to-send-a-signal-with-start-in-typescript"
@@ -1268,6 +1278,11 @@
                   "lang": "php",
                   "title": "PHP",
                   "path": "none"
+                },
+                {
+                  "lang": "python",
+                  "title": "Python",
+                  "path": "python/how-to-set-a-heartbeat-timeout-in-python"
                 },
                 {
                   "lang": "typescript",

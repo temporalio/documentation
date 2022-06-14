@@ -41,4 +41,19 @@ async def main():
         print(f"Result: {result}")
 ```
 
+You can also use the `workflow.logger` to log a message. The following logs a message from the Workflow.
+
+```python
+@workflow.run
+async def run(self, name: str) -> str:
+    self._greeting_info.name = name
+    while True:
+        self._current_greeting = await workflow.execute_activity(
+            create_greeting_activity,
+            self._greeting_info,
+            start_to_close_timeout=timedelta(seconds=5),
+        )
+        workflow.logger.debug("Greeting set to %s", self._current_greeting)
+```
+
 For more information on Logging, see [Logging HOWTO](https://docs.python.org/3/howto/logging.html).

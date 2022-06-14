@@ -72,6 +72,7 @@ async def main():
     print(f"Result: {result}")
 ```
 
+The `execute_workflow()` registers a Workflow. The Workflow exists until the Workflow is explicitly terminated.
 Assuming you have a Temporal server running on 7233, this will run the Worker:
 
 ```bash
@@ -83,3 +84,7 @@ The output will return the result of the Workflow:
 ```text
 Result: Hello, my-name!
 ```
+
+You can use [`Client.get_workflow_handle()`](https://python.temporal.io/temporalio.client.client#get_workflow_handle), or [`Client.get_workflow_handle_for()`](https://python.temporal.io/temporalio.client.client#get_workflow_handle_for) for type safety, to get a handle for an existing Workflow by its Id.
+
+Then use [`WorkflowHandle.describe()`](https://python.temporal.io/temporalio.client.workflowhandle#describe) to get the current status of the Workflow. This will fail if the Workflow does not exist.

@@ -884,7 +884,7 @@ Because this is such a common need, the rest of this guide shows Activities writ
 An [Activity Definition](/activities/#) is a combination of the Temporal Java SDK [Activity](https://www.javadoc.io/static/io.temporal/temporal-sdk/0.19.0/io/temporal/activity/Activity.html) Class implementing a specially annotated interface.
 
 An Activity interface is annotated with `@ActivityInterface` and an Activity implementation implements this Activity interface.
-TO handle Activity types that do not have an explicitly registered handler, you can directly implement a dynamic Activity.
+To handle Activity types that do not have an explicitly registered handler, you can directly implement a dynamic Activity.
 
 ```java
 @ActivityInterface
@@ -893,7 +893,7 @@ public interface GreetingActivities {
 }
 ```
 
-Each method defined in the Actvity interface defines a separate Activity method.
+Each method defined in the Activity interface defines a separate Activity method.
 You can annotate each method in the Activity interface with the `@ActivityMethod` annotation, but this is completely optional.
 The following example uses the `@ActivityMethod` annotation for the method defined in the previous example.
 
@@ -1867,7 +1867,21 @@ The `proxyActivities()` returns an object that calls the Activities in the funct
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+Use [`start_activity()`](https://python.temporal.io/temporalio.workflow.html#start_activity) or [`execute_activity`](https://python.temporal.io/temporalio.workflow.html#execute_activity) to start an Activity and return its handle, [`ActivityHandle`](https://python.temporal.io/temporalio.workflow.activityhandle).
+
+You must provide either `schedule_to_close_timeout` or `start_to_close_timeout`.
+
+`execute_activity` is a shortcut for `await start_activity()`. An async `workflow.execute_activity()` helper is provided which takes the same arguments as `workflow.start_activity()` and `await`s on the result. This should be used in most cases unless advanced task capabilities are needed.
+
+```python
+@workflow.defn
+class SimpleActivityWorkflow:
+    @workflow.run
+    async def run(self, name: str) -> str:
+        return await workflow.execute_activity(
+            say_hello, name, schedule_to_close_timeout=timedelta(seconds=5)
+        )
+```
 
 </TabItem>
 </Tabs>
@@ -2120,6 +2134,14 @@ A `Client` does not have an explicit close.
 If you don't specify a Namespace, Temporal defaults the `namespace` parameter to the value `default`.
 
 `Client` may be directly instantiated with a service of another. For example, if you need to create another Client to use an additional Namespace.
+
+Clients also provide a shallow copy of their config for use in making slightly different Clients backed by the same connection with [`client.config`](https://python.temporal.io/temporalio.client.client#config). The following example creates a new Client with the same connection but a different Namespace.
+
+```python
+config = client.config()
+config["namespace"] = "my-other-namespace"
+other_ns_client = Client(**config)
+```
 
 </TabItem>
 </Tabs>
@@ -3284,6 +3306,7 @@ async def main():
     print(f"Result: {result}")
 ```
 
+The `execute_workflow()` registers a Workflow. The Workflow exists until the Workflow is explicitly terminated.
 Assuming you have a Temporal server running on 7233, this will run the Worker:
 
 ```bash
@@ -3295,6 +3318,10 @@ The output will return the result of the Workflow:
 ```text
 Result: Hello, my-name!
 ```
+
+You can use [`Client.get_workflow_handle()`](https://python.temporal.io/temporalio.client.client#get_workflow_handle), or [`Client.get_workflow_handle_for()`](https://python.temporal.io/temporalio.client.client#get_workflow_handle_for) for type safety, to get a handle for an existing Workflow by its Id.
+
+Then use [`WorkflowHandle.describe()`](https://python.temporal.io/temporalio.client.workflowhandle#describe) to get the current status of the Workflow. This will fail if the Workflow does not exist.
 
 </TabItem>
 </Tabs>
@@ -3847,7 +3874,18 @@ await client.signalWithStart(YourWorkflow, {
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+Use the `start_signal` and `start_signal_args` arguments from the [`start_workflow`](https://python.temporal.io/temporalio.client.client#start_workflow) method.
+
+```python
+async def start_with_signal(client: Client, worker: ExternalWorker):
+        handle = await client.start_workflow(
+            "your-workflow-name",
+            id=f"workflow-{uuid.uuid4()}",
+            task_queue=worker.task_queue,
+            start_signal="your-signal",
+            start_signal_args=[KSAction(result=KSResultAction(value="some signal arg"))],
+        )
+```
 
 </TabItem>
 </Tabs>
@@ -4717,7 +4755,7 @@ const {greet} = proxyActivities<typeof activities>({
 Activity options are set as keyword arguments after the Activity arguments. At least one of `start_to_close_timeout` or `schedule_to_close_timeout` must be provided.
 
 ```python
-start_to_close_timeout = (timedelta(seconds=5),)
+start_to_close_timeout = (timedelta(seconds=5))
 ```
 
 The following code executes an Activity with a `start_to_close_timeout` of 5 seconds.
@@ -4946,7 +4984,15 @@ const {longRunningActivity} = proxyActivities<typeof activities>({
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+[`heartbeat_timeout`](https://python.temporal.io/temporalio.worker.startactivityinput#heartbeat_timeout) is a class variable for the [`start_activity()`](https://python.temporal.io/temporalio.workflow.html#start_activity) function used to set the maximum time between Activity Heartbeats.
+
+```python
+def start_activity(
+    activity: "your-activity",
+    schedule_to_close_timeout=timedelta(seconds=5),
+    heartbeat_timeout=timedelta(seconds=5)
+)
+```
 
 </TabItem>
 </Tabs>

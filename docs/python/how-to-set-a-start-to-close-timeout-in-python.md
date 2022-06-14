@@ -12,7 +12,7 @@ tags:
 Activity options are set as keyword arguments after the Activity arguments. At least one of `start_to_close_timeout` or `schedule_to_close_timeout` must be provided.
 
 ```python
-start_to_close_timeout = (timedelta(seconds=5),)
+start_to_close_timeout = timedelta(seconds=5)
 ```
 
 The following code executes an Activity with a `start_to_close_timeout` of 5 seconds.
