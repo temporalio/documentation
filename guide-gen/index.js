@@ -286,10 +286,17 @@ async function frontmatter(guide_config) {
 
 async function writeGuides(guide_configs) {
   for (const guide_config of guide_configs.cfgs) {
-    fs.writeFile(
-      path.join(DOCS_PATH, guide_config.file_name),
-      guide_config.guide_string
-    );
+    let writePath = "";
+    if (guide_config.file_dir != undefined && guide_config.file_dir != "/") {
+      writePath = path.join(
+        DOCS_PATH,
+        guide_config.file_dir,
+        guide_config.file_name
+      );
+    } else {
+      writePath = path.join(DOCS_PATH, guide_config.file_name);
+    }
+    await fs.writeFile(writePath, guide_config.guide_string);
   }
 }
 

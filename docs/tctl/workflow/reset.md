@@ -51,7 +51,7 @@ Valid values are `WorkflowTaskCompleted`, `WorkflowTaskFailed`, and `WorkflowTas
 tctl workflow reset --event_id <id>
 ```
 
-### `reason`
+### `--reason`
 
 Specify a reason for resetting the [Workflow Execution](/concepts/what-is-a-workflow-execution).
 

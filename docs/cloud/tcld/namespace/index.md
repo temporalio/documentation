@@ -11,6 +11,7 @@ The `tcld namespace` commands enable [Namespace](/concepts/what-is-a-namespace) 
 
 Alias: `n`
 
-- [`tcld namespace get`](/cloud/tcld/namespace/get)
 - [`tcld namespace list`](/cloud/tcld/namespace/list)
-- [`tcld namespace update`](/cloud/tcld/namespace/update)
+- [`tcld namespace get`](/cloud/tcld/namespace/get)
+- [`tcld namespace accepted-client-ca`](/cloud/tcld/namespace/accepted-client-ca)
+- [`tcld namespace search-attributes`](/cloud/tcld/namespace/search-attributes)

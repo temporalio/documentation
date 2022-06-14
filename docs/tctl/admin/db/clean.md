@@ -1,6 +1,7 @@
 ---
 id: clean
 title: tctl admin db clean
+sidebar_label: clean
 description: How to clean up corrupted Workflows using tctl.
 tags:
   - reference
@@ -9,7 +10,7 @@ tags:
   - db
 ---
 
-The `tctl admin db clean` command cleans corrupted [Workflow Executions](/workflows/#workflow-execution) from the targeted database.
+The `tctl admin db clean` command cleans corrupted [Workflow Executions](/workflows/#workflow-executions) from the targeted database.
 
 ### Modifiers
 
@@ -50,7 +51,7 @@ Default: "temporal"
 
 #### `--input_directory value`
 
-The directory which contains the corrupted [Workflow Execution](/workflows/#workflow-execution) files from running [`scan`](/tctl/admin/db/scan).
+The directory which contains the corrupted [Workflow Execution](/workflows/#workflow-executions) files from running [`scan`](/tctl/admin/db/scan).
 
 #### `--lower_shard_bound value`
 

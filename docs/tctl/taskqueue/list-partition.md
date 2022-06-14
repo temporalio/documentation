@@ -14,7 +14,7 @@ The `tctl taskqueue list-partition` command lists the partitions of a [Task Queu
 
 The following modifier controls the behavior of the command.
 
-### `taskqueue`
+### `--taskqueue`
 
 _Required modifier_
 

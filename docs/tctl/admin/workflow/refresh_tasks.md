@@ -1,6 +1,7 @@
 ---
 id: refresh_tasks
 title: tctl admin workflow refresh_tasks
+sidebar_label: refresh_tasks
 description: Refreshing Workflow Tasks.
 tags:
   - reference

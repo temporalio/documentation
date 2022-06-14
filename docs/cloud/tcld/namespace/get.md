@@ -12,7 +12,7 @@ The `tcld namespace get` command gets information about the specified [Namespace
 
 Alias: `g`
 
-`tcld namespace get --namespace <namespace_id>`
+`tcld namespace get`
 
 The following modifier controls the behavior of the command.
 

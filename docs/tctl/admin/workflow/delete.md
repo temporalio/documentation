@@ -1,6 +1,7 @@
 ---
 id: delete
 title: tctl admin workflow delete
+sidebar_label: delete
 description: Deleting the Workflow Execution.
 tags:
   - reference

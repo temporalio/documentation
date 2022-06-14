@@ -1,6 +1,7 @@
 ---
 id: list_gossip
 title: tctl admin membership list_gossip
+sidebar_label: list_gossip
 description: How to describe ringpop membership items
 tags:
   - operation-guide

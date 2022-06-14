@@ -1,6 +1,7 @@
 ---
 id: describe
 title: tctl admin cluster describe
+sidebar_label: describe
 description: Displaying Cluster information.
 tags:
   - reference

@@ -63,7 +63,7 @@ We are also fortunate to have public cloud customers. Each of these companies is
 
 ![cloud-customers](/img/cloud-customers.png)
 
-If you are interested in the cloud, we are still being selective with onboarding but are taking new partners. Please fill out our newly updated cloud survey to help us understand if your use case would be a good fit [https://us17.list-manage.com/survey?u=2334a0f23e55fd1840613755d&id=f1895b6f4a](https://us17.list-manage.com/survey?u=2334a0f23e55fd1840613755d&id=f1895b6f4a).
+If you are interested in the cloud, we are still being selective with onboarding but are taking new partners. ~~Please fill out our newly updated cloud survey to help us understand if your use case would be a good fit.~~ [Survey closed—thanks for your feedback!]
 
 ## Node.js
 

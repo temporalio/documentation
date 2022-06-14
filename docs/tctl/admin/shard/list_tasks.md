@@ -1,6 +1,7 @@
 ---
 id: list_tasks
 title: tctl admin shard list_tasks
+sidebar_label: list_tasks
 description: listing tasks for a given shard Id and Task type
 tags:
   - reference

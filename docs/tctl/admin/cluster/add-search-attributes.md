@@ -1,6 +1,7 @@
 ---
 id: add-search-attributes
 title: tctl admin cluster add-search-attributes
+sidebar_label: add-search-attributes
 description: Adding custom Search Attributes to a Cluster.
 tags:
   - reference

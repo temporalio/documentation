@@ -1,6 +1,7 @@
 ---
 id: remove_task
 title: tctl admin shard remove_task
+sidebar_label: remove_task
 description: removing a Task with given information
 tags:
   - reference

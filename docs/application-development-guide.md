@@ -494,30 +494,34 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-A Task Queue is a dynamic queue in Temporal polled by one or more Workers.
+You can define and pass parameters in your Workflow. In this example, you define your arguments in your `client.ts` file and pass those parameters to `workflow.ts` through your Workflow function.
 
-When scheduling a Workflow, a `taskQueue` must be specified.
+Start a Workflow with the parameters that are in the `client.ts` file. In this example we set the `name` parameter to `Temporal` and `born` to `2019`. Then set the Task Queue and Workflow Id.
+
+`client.ts`
 
 ```typescript
-import {Connection, WorkflowClient} from "@temporalio/client";
-const connection = new Connection();
-const client = new WorkflowClient();
-const result = await client.execute(myWorkflow, {
-  taskQueue: "your-task-queue", // required
-  workflowId: "your-workflow-id", // required
+import { example } from './workflows';
+
+...
+await client.start(example, {
+  args: [{ name: 'Temporal', born: 2019 }],
+  taskQueue: 'my-queue',
+  workflowId: 'business-meaningful-id',
 });
 ```
 
-When creating a Worker, you must pass the `taskQueue` option to the `Worker.create()` function.
+In `workflows.ts` define the type of the parameter that the Workflow function takes in. The interface `ExampleParam` is a name we can now use to describe the requirement in the previous example. It still represents having the two properties called `name` and `born` that is of the type `string`. Then define a function that takes in a parameter of the type `ExampleParam` and return a `Promise<string>`. The `Promise` object represents the eventual completion, or failure, of `await client.start()` and its resulting value.
 
-```typescript
-const worker = await Worker.create({
-  activities, // imported elsewhere
-  taskQueue: "your-task-queue",
-});
+```ts
+interface ExampleParam {
+  name: string;
+  born: number;
+}
+export async function example({name, born}: ExampleParam): Promise<string> {
+  return `Hello ${name}, you were born in ${born}.`;
+}
 ```
-
-Optionally, in Workflow code, when calling an Activity, you can specify the Task Queue by passing the `taskQueue` option to `proxyActivities()`, `startChild`, or `executeChild`. If you do not specify a `taskQueue`, then the TypeScript SDK places Activity and Child Workflow Tasks in the same Task Queue as the Workflow Task Queue.
 
 </TabItem>
 <TabItem value="python">
@@ -599,25 +603,17 @@ interface FileProcessingWorkflow {
 </TabItem>
 <TabItem value="typescript">
 
-Query Handlers can return values inside a Workflow in TypeScript.
+To return a value of the Workflow function, use `Promise<something>`. The `Promise` is used to make asynchronous calls and comes with guarantees.
 
-You make a Query with `handle.query(query, ...args)`. A Query needs a return value, but can also take arguments.
+The following example uses a `Promise<string>` to eventually return a `name` and `born` parameter.
 
 ```typescript
-import * as wf from "@temporalio/workflow";
-
-function useState<T = any>(name: string, initialValue: T) {
-  const query = wf.defineQuery<T>(name);
-  let state: T = initialValue;
-  return {
-    query,
-    get value() {
-      return state;
-    },
-    set value(newVal: T) {
-      state = newVal;
-    },
-  };
+interface ExampleParam {
+  name: string;
+  born: number;
+}
+export async function example({name, born}: ExampleParam): Promise<string> {
+  return `Hello ${name}, you were born in ${born}.`;
 }
 ```
 
@@ -900,7 +896,7 @@ The following example uses the `@ActivityMethod` annotation for the method defin
 ```java
 @ActivityInterface
 public interface GreetingActivities {
-    @ActivityMethod()
+    @ActivityMethod
     String composeGreeting(String greeting, String language);
 }
 ```
@@ -1284,7 +1280,7 @@ In the following example, the Activity Type defaults to `ComposeGreeting`.
 ```java
 @ActivityInterface
 public interface GreetingActivities {
-    @ActivityMethod()
+    @ActivityMethod
     String composeGreeting(String greeting, String language);
 }
 ```
@@ -2840,6 +2836,8 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
+A Task Queue is a dynamic queue in Temporal polled by one or more Workers.
+
 Workers bundle Workflow code and node modules using Webpack v5 and execute them inside V8 isolates. Activities are directly required and run by Workers in the Node.js environment.
 
 Workers are flexible. You can host any or all of your Workflows and Activities on a Worker, and you can host multiple Workers on a single machine.
@@ -2852,7 +2850,7 @@ There are three main things the Worker needs:
   - a `workflowsPath` to your `workflows.ts` file to pass to Webpack. For example, `require.resolve('./workflows')`. Workflows will be bundled with their dependencies, which you can finetune with `nodeModulesPaths`.
   - Or pass a prebuilt bundle to `workflowBundle`, if you prefer to handle the bundling yourself.
 
-```typescript
+```ts
 import {Worker} from "@temporalio/worker";
 import * as activities from "./activities";
 
@@ -2881,6 +2879,30 @@ run().catch((err) => {
 ```
 
 `taskQueue` is the only required option; however, use `workflowsPath` and `activities` to register Workflows and Activities with the Worker.
+
+When scheduling a Workflow, a `taskQueue` must be specified.
+
+```ts
+import {Connection, WorkflowClient} from "@temporalio/client";
+// This is the code that is used to start a workflow.
+const connection = new Connection();
+const client = new WorkflowClient();
+const result = await client.execute(myWorkflow, {
+  taskQueue: "your-task-queue", // required
+  workflowId: "your-workflow-id", // required
+});
+```
+
+When creating a Worker, you must pass the `taskQueue` option to the `Worker.create()` function.
+
+```ts
+const worker = await Worker.create({
+  activities, // imported elsewhere
+  taskQueue: "your-task-queue",
+});
+```
+
+Optionally, in Workflow code, when calling an Activity, you can specify the Task Queue by passing the `taskQueue` option to `proxyActivities()`, `startChild()`, or `executeChild()`. If you do not specify a `taskQueue`, then the TypeScript SDK places Activity and Child Workflow Tasks in the same Task Queue as the Workflow Task Queue.
 
 </TabItem>
 <TabItem value="python">
@@ -4220,7 +4242,32 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+Query Handlers can return values inside a Workflow in TypeScript.
+
+You make a Query with `handle.query(query, ...args)`. A Query needs a return value, but can also take arguments.
+
+```typescript
+import * as wf from "@temporalio/workflow";
+
+export const unblockSignal = wf.defineSignal("unblock");
+export const isBlockedQuery = wf.defineQuery<boolean>("isBlocked");
+
+export async function unblockOrCancel(): Promise<void> {
+  let isBlocked = true;
+  wf.setHandler(unblockSignal, () => void (isBlocked = false));
+  wf.setHandler(isBlockedQuery, () => isBlocked);
+  console.log("Blocked");
+  try {
+    await wf.condition(() => !isBlocked);
+    console.log("Unblocked");
+  } catch (err) {
+    if (err instanceof wf.CancelledFailure) {
+      console.log("Cancelled");
+    }
+    throw err;
+  }
+}
+```
 
 </TabItem>
 <TabItem value="python">
@@ -5550,6 +5597,84 @@ class ChildWorkflow:
             parent_close_policy=workflow.ParentClosePolicy.TERMINATE,
         )
 ```
+
+</TabItem>
+</Tabs>
+
+### Continue-As-New
+
+[Continue-As-New](/workflows/#continue-as-new) enables a Workflow Execution to close successfully and create a new Workflow Execution in a single atomic operation if the number of Events in the Event History is becoming too large.
+The Workflow Execution spawned from the use of Continue-As-New has the same Workflow Id, a new Run Id, and a fresh Event History and is passed all the appropriate parameters.
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+To cause a Workflow Execution to [Continue-As-New](/workflows/#continue-as-new), the Workflow function should return the result of the [`NewContinueAsNewError()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#NewContinueAsNewError) API available from the `go.temporal.io/sdk/workflow` package.
+
+```go
+func SimpleWorkflow(ctx workflow.Context, value string) error {
+    ...
+    return workflow.NewContinueAsNewError(ctx, SimpleWorkflow, value)
+}
+```
+
+To check whether a Workflow Execution was spawned as a result of Continue-As-New, you can check if `workflow.GetInfo(ctx).ContinuedExecutionRunID` is not nil.
+
+**Notes**
+
+- To prevent Signal loss, be sure to perform an asynchronous drain on the Signal channel.
+  Failure to do so can result in buffered Signals being ignored and lost.
+- Make sure that the previous Workflow and the Continue-As-New Workflow are referenced by the same alias.
+  Failure to do so can cause the Workflow to Continue-As-New on an entirely different Workflow.
+
+</TabItem>
+<TabItem value="java">
+
+Temporal SDK allows you to use [Continue-As-New](/workflows/#continue-as-new) in various ways.
+
+To continue execution of the same Workflow that is currently running, use:
+
+```java
+Workflow.continueAsNew(input1, ...);
+```
+
+To continue execution of a currently running Workflow as a completely different Workflow type, use `Workflow.newContinueAsNewStub()`.
+For example, in a Workflow class called `MyWorkflow`, we can create a Workflow stub with a different type, and call its Workflow method to continue execution as that type:
+
+```java
+MyOtherWorkflow continueAsNew = Workflow.newContinueAsNewStub(MyOtherWorkflow.class);
+coninueAsNew.greet(input);
+```
+
+To provide `ContinueAsNewOptions` options in `Workflow.newContinueAsNewStub()` use:
+
+```java
+ContinueAsNewOptions options = ContinueAsNewOptions.newBuilder()
+        .setTaskQueue("newTaskQueueName")
+        .build();
+
+MyOtherWorkflow continueAsNew = Workflow.newContinueAsNewStub(MyOtherWorkflow.class, options);
+// ...
+continueAsNew.greet(input);
+```
+
+Providing these options allows you to continue Workflow Execution as a new Workflow run, with a different Workflow Type, and on a different Task Queue.
+
+Java Workflow reference: <https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/package-summary.html>
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is not available
 
 </TabItem>
 </Tabs>

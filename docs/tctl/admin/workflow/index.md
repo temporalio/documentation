@@ -19,16 +19,16 @@ The `tctl admin workflow` commands enable administrator-level operations on Work
 
 ## Commands
 
-- #### [`show`](/tctl/admin/workflow/show)
+- [`show`](/tctl/admin/workflow/show)
 
-- #### [`describe`](/tctl/admin/workflow/describe)
+- [`describe`](/tctl/admin/workflow/describe)
 
-- #### [`refresh_tasks`](/tctl/admin/workflow/refresh_tasks)
+- [`refresh_tasks`](/tctl/admin/workflow/refresh_tasks)
 
-- #### [`delete`](/tctl/admin/workflow/delete)
+- [`delete`](/tctl/admin/workflow/delete)
 
 ## Modifiers
 
-- #### `--help`
+- `--help`
 
   Show helpful information for `tctl admin workflow` commands.

@@ -1,6 +1,7 @@
 ---
 id: get-search-attributes
-title: tctl admin
+title: tctl admin cluster get-search-attributes
+sidebar_label: get-search-attributes
 description: Showing existing search attributes.
 tags:
   - reference

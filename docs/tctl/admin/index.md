@@ -16,13 +16,13 @@ Alias : `adm`
 
 - [`tctl admin workflow`](/tctl/admin/workflow/index)
 - [`tctl admin shard`](/tctl/admin/shard/index)
-- `tctl history_host`
-- `tctl taskqueue`
-- `tctl membership`
-- [`tctl cluster`](/tctl/admin/cluster/index)
-- `tctl dlq`
-- `tctl db`
-- `tctl decode`
+- [`tctl admin history_host`](/tctl/admin/history_host/index)
+- `tctl admin taskqueue`
+- [`tctl admin membership`](/tctl/admin/membership/index)
+- [`tctl admin cluster`](/tctl/admin/cluster/index)
+- [`tctl admin dlq`](/tctl/admin/dlq/index)
+- [`tctl admin db`](/tctl/admin/db/index)
+- [`tctl admin decode`](/tctl/admin/decode/index)
 
 ## Modifiers
 

@@ -1,6 +1,7 @@
 ---
 id: describe
 title: tctl admin workflow describe
+sidebar_label: describe
 description: Description of Workflow Execution.
 tags:
   - reference

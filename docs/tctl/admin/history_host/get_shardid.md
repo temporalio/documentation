@@ -1,6 +1,7 @@
 ---
 id: get_shardid
 title: tctl admin history_host get_shardid
+sidebar_label: get_shardid
 description: Providing the shardId on command
 tags:
   - reference

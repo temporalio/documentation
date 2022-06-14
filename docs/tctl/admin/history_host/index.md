@@ -15,5 +15,5 @@ The `tctl admin history_host` command runs an admin-level operation on the histo
 
 ## Commands
 
-- `tctl admin history_host describe`
-- `tctl admin history_host get_shardid`
+- [`tctl admin history_host describe`](/tctl/admin/history_host/describe)
+- [`tctl admin history_host get_shardid`](/tctl/admin/history_host/get_shardid)
