@@ -940,7 +940,7 @@
             {
               "header": "Workflow Run Timeout",
               "type": "context",
-              "path": "app-dev-context/workflow-execution-timeout"
+              "path": "app-dev-context/workflow-run-timeout"
             },
             {
               "header": "none",
@@ -971,7 +971,7 @@
             {
               "header": "Workflow Task Timeout",
               "type": "context",
-              "path": "app-dev-context/workflow-execution-timeout"
+              "path": "app-dev-context/workflow-task-timeout"
             },
             {
               "header": "none",

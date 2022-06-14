@@ -3753,7 +3753,7 @@ Content is not available
 
 #### Workflow Run Timeout
 
-Use the [Workflow Execution Timeout](/workflows/#workflow-execution-timeout) to limit the maximum time that a Workflow Execution can be executing (have an Open status) including retries and any usage of Continue As New.
+Use the [Workflow Run Timeout](/workflows/#workflow-run-timeout) to restrict the maximum amount of time that a single [Workflow Run](/concepts/what-is-a-workflow-execution/#workflow-execution-chain) can last.
 
 <Tabs
 defaultValue="go"
@@ -3814,7 +3814,7 @@ Content is not available
 
 #### Workflow Task Timeout
 
-Use the [Workflow Execution Timeout](/workflows/#workflow-execution-timeout) to limit the maximum time that a Workflow Execution can be executing (have an Open status) including retries and any usage of Continue As New.
+Use the [Workflow Task Timeout](/workflows/#workflow-task-timeout) to restrict the maximum amount of time that a Worker can execute a [Workflow Task](/tasks/#workflow-task).
 
 <Tabs
 defaultValue="go"
