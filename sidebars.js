@@ -19,6 +19,7 @@ module.exports = {
       ],
     },
     "application-development-guide",
+    "scheduled-workflows",
     "operation/how-to-tune-workers",
     "cluster-deployment-guide",
     "server/security",
