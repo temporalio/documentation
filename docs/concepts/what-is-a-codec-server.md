@@ -2,31 +2,37 @@
 id: what-is-a-codec-server
 title: What is a Codec Server?
 sidebar_label: Codec Server
-description: Explanation and implementation of a remote encryption/decryption server.   
+description: Explanation and implementation of a remote encryption/decryption server.
 ---
 
-## Overview
+A codec server provides a means of encrypting and decrypting data between a Temporal application and a customer’s remote database.
 
-A codec server provides a means of encrypting and decrypting data between a Temporal application and a customer's remote database.
+Codec servers act as a go-between for the application and the database. Data from the customer’s remote server is decrypted via a codec server before it can be viewed on the WebUI. Conversely, data from the WebUI is encrypted through the codec server before being passed along to the database.
 
-Codec servers serve as a go-between for the application and the database. Data retrived from the user's remote server is decrypted through a codec server before it can be viewed on the WebUI. Conversely, data from the WebUI is sent to the codec server for encryption before getting sent back to the remote database.
+Codec servers handle authentication and authorization in a similar manner used by Temporal Clusters. Encrypted data is much more secure to store on the client’s server. In the event of a data breach, any information uncovered would be indecipherable to bad actors.
 
-Encrypted data is much more secure to store on the client's servers. In the event of a data breach, any information uncovered would be indecipherable to bad actors.
+## Purpose
 
-## Components
+DataConverters can be configured to use a PayloadCodec to encrypt data before it’s sent to Temporal.
 
-Codec servers handle authentication and authorization in a similar manner to what's utilized by Temporal Clusters.
+[diagram of problem]
 
+However, the pre-built tctl and WebUI binaries use a default DataConverter that excludes your PayloadCodec.
 
-Web UI
-Remote server
-URL
+Because of this, the tctl and the WebUI will not be able to show decrypted data—at least, not without help.
 
-## Setup
+[diagram of solution]
 
-Use the code samples below to build a basic codec server for your projects.
-Go and TS
+This is where a remote Codec Server comes into play. The server exposes your PayloadCodec’s encode/decode methods via HTTP interface. This allows tctl and the WebUI to use the PayloadCodec to encrypt and decrypt data as needed.
 
-## Usage in Codes
+## Configuration
 
-Put BG check here
+Codec servers are initiated in a similar manner to a Temporal Worker.
+
+Before you begin to run a codec server, make sure that a Temporal service is running in your SDK of choice.
+
+If you are using Go, feel free to base your remote codec server off of this existing repo.
+
+For other languages, please refer to the diagrams below to construct the means to run a codec server.
+
+To see an example of a codec server in action, refer to the background check sample [here].
