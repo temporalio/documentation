@@ -15,7 +15,7 @@ An example development.yaml file can be found in the [temporalio/ui-server repo]
 ## enableUi
 
 Enables the browser UI.
-If disabled – that is set to `false`, the UI server APIs remain available.
+If disabled—that is, set to `false`—the UI server APIs remain available.
 
 ```yaml
 enableUi: true
@@ -32,8 +32,8 @@ enableOpenApi: true
 
 ## cors
 
-The `cors` field stands for Cross-Origin Resource Sharing.
-This configuration allows for a list of domains that are authorized access to the UI Server APIs.
+The name of the `cors` field stands for Cross-Origin Resource Sharing.
+Use this field to provide a list of domains that are authorized to access the UI Server APIs.```
 
 ```yaml
 cors:
@@ -61,8 +61,8 @@ defaultNamespace: default
 
 ## showTemporalSystemNamespace
 
-When enabled, – that is when it is set to `true`, the Temporal System Namespace becomes visible in the UI.
-The Temporal System Namespace lists Workflow Executions utilized by the Temporal Platform.
+When enabled—that is, when set to `true`—the Temporal System Namespace becomes visible in the UI.
+The Temporal System Namespace lists Workflow Executions used by the Temporal Platform.
 
 ```yaml
 showTemporalSystemNamespace: false
@@ -79,7 +79,7 @@ feedbackUrl: https://github.com/temporalio/ui/issues/new/choose
 
 ## notifyOnNewVersion
 
-When enabled – that is when it is set to `true`, a notification appears in the UI when a newer version of the [Temporal Server](/clusters#temporal-server) is available.
+When enabled—that is, when set to `true`—a notification appears in the UI when a newer version of the [Temporal Server](/clusters#temporal-server) is available.
 
 ```yaml
 notifyOnNewVersion: true
@@ -112,7 +112,7 @@ auth:
 
 ## tls
 
-TLS configuration.
+Transport Layer Security (TLS) configuration.
 
 ```yaml
 tls:
