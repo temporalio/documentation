@@ -12,11 +12,11 @@ tags:
 
 Temporal Web UI v2 is now generally available.
 
-Temporal Web UI v1 is being deprecated on September 30, 2022
+Temporal Web UI v1 is being deprecated on September 30, 2022.
 
 :::
 
-The Temporal Web UI is a GUI that provides users with Workflow Execution state and metadata and it's intended to be used to debug execution issues.
+The Temporal Web UI is a GUI that provides users with Workflow Execution state and metadata and is intended to be used to debug execution issues.
 It ships with every [docker-compose](/application-development-guide#docker-compose) update and is available with [Temporal Cloud](/cloud).
 
 <!-- TODO
@@ -32,19 +32,20 @@ The Web UI is packed with several features.
 
 ### Namespace selection
 
-Users can switch between Namespaces by clicking the Namespace Switcher icon located in the Left Navigation.
-Clicking the Namespace Switcher will reveal a side panel where users can search for a Namespace or select a given Namespace from the list.
-Once a Namespace has been selected, the user is redirected to the corresponding Namespace’s recent Workflows page.
-In Temporal Cloud, users can only access Namespaces that they have been granted access to.
+Users can switch between Namespaces by clicking the Namespace Switcher icon in the left navigation.
+Clicking the Namespace Switcher reveals a side panel where users can search for a Namespace or select a Namespace from the list.
+After a Namespace is selected, the user is redirected to the Recent Workflows page for that Namespace.
+In Temporal Cloud, users can access only Namespaces that they have been granted access to.
 
 ### Recent Workflows
 
-The Recent Workflows page lists the most recent 1,000 Workflow Executions from within the last 24 hours, by default. Users can list Workflow Executions by any of the following:
+The Recent Workflows page lists the most recent 1,000 Workflow Executions in the past 24 hours, by default.
+Users can list Workflow Executions by any of the following:
 
 - [Workflow ID](/concepts/what-is-a-workflow-id)
 - [Workflow Type](/concepts/what-is-a-workflow-type)
 - Status
-- Date & Time: Users can set their preferred date & time format as one of the following:
+- Date & Time—users can set their preferred date & time format as one of the following:
   - UTC
   - Local
   - Relative
@@ -55,7 +56,7 @@ Select a Workflow Execution to see a breakdown of the Workflow Execution's Histo
 #### History
 
 This is a view of the [Events](/concepts/what-is-an-event) and Event fields that make up the Workflow Execution.
-There are approximately [40 different Events](/references/events) that could appear in a Workflow Execution's Event History.
+Approximately [40 different Events](/references/events) can appear in a Workflow Execution's Event History.
 The top of the page lists the following execution metadata:
 
 - [Workflow Type](/concepts/what-is-a-workflow-type)
@@ -71,9 +72,9 @@ Results are not available until the Workflow finishes.
 The Recent Events tab has the following views:
 
 - Timeline: A chronological or reverse-chronological order of events with a summary.
-  Clicking into an Event will display all of the event details.
-  Clicking “Expand all” will display all Event details.
-  Similarly, clicking “Collapse All” will collapse the table and only display the summary.
+  Clicking into an Event displays all details for that Event.
+  Clicking “Expand all” displays all Event details.
+  Similarly, clicking “Collapse all” collapses the table and displays only the summary.
 - Compact: A logical grouping of Activities, Signals and Timers.
 - JSON: The full JSON code for the workflow.
 
@@ -88,19 +89,19 @@ A custom note can be logged from the UI when that happens.
 
 #### Workers
 
-The Workers currently polling on the workflow task queue with a count.
-If there are no Workers polling, an error displays.
+Displays the Workers currently polling on the Workflow Task Queue with a count.
+If no Workers are polling, an error displays.
 
 #### Pending Activities
 
 Displays a summary of recently active and/or pending Activity Executions.
-Clicking on a pending Activity will direct the user to the Pending Activities tab to view details.
+Clicking a pending Activity directs the user to the Pending Activities tab to view details.
 
 #### Stack Trace
 
 The screen shows the captured result from the [\_\_stack_trace](/workflows#stack-trace-query) Query.
 The Query is performed when the tab is selected.
-It only works if a Worker is running and available to return the stack trace.
+It works only if a Worker is running and available to return the stack trace.
 
 #### Queries
 
@@ -112,10 +113,10 @@ Displays the following information:
 
 - Description of the Namespace.
 - Owner: Namespace owner.
-- Global?: Is a Global Namespace or not.
+- Global?: Whether the Namespace is a Global Namespace
 - Retention Period: Namespace Retention Period
-- History Archival: Is History Archival enabled
-- Visibility Archival: Is Visibility Archival enabled
+- History Archival: Whether History Archival is enabled
+- Visibility Archival: Whether Visibility Archival is enabled
 - Failover Version: Namespace Failover Version
 - Clusters: Cluster information
 
