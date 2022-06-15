@@ -71,7 +71,7 @@ showTemporalSystemNamespace: false
 ## feedbackUrl
 
 The URL to direct users to when they click on the Feedback button in the UI.
-If not specified, it defaults to the UI Server's GitHub Issue page.
+If not specified, it defaults to the UI's GitHub Issue page.
 
 ```yaml
 feedbackUrl: https://github.com/temporalio/ui/issues/new/choose
