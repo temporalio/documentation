@@ -55,7 +55,7 @@ An Activity must Heartbeat to receive cancellation.
 
 The [`activity_executor`](https://python.temporal.io/temporalio.worker.workerconfig#activity_exector) worker parameter must be set with a `concurrent.futures.Executor` instance to use for executing the Activities.
 
-Cancellation for synchronous Activities is done in the background and the Activity must choose to listen for it and react appropriately. 
+Cancellation for synchronous Activities is done in the background and the Activity must choose to listen for it and react appropriately.
 
 An Activity must Heartbeat to receive cancellation.
 

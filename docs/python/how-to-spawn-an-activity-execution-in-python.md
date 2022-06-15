@@ -20,7 +20,7 @@ class SayHello:
         )
 ```
 
-`workflow.execute_activity()` is a shortcut for [`workflow.start_activity()`](https://python.temporal.io/temporalio.workflow.html#start_activity) that waits on its result. 
+`workflow.execute_activity()` is a shortcut for [`workflow.start_activity()`](https://python.temporal.io/temporalio.workflow.html#start_activity) that waits on its result.
 
 To get just the handle to wait and cancel separately, use `workflow.start_activity()`. This should be used in most cases unless advanced task capabilities are needed.
 
