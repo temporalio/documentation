@@ -1060,32 +1060,28 @@ However, Activity callables only allow for positional arguments.
 
 - **Asynchronous Activities**
 
-Asynchronous Activities (recommended) are functions using `async def`. When using asynchronous
-Activities there aren't any additional Worker parameters needed.
+Asynchronous Activities (recommended) are functions using `async def`. When using asynchronous Activities there aren't any additional Worker parameters needed.
 
 Cancellation for asynchronous activities is done by means of the
-[`asyncio.Task.cancel`](https://docs.python.org/3/library/asyncio-task.html#asyncio.Task.cancel) operation. This means that
-`asyncio.CancelledError` will be raised (and can be caught, but it is not recommended). An Activity must Heartbeat to
-receive cancellation and there are other ways to be notified about cancellation.
+[`asyncio.Task.cancel`](https://docs.python.org/3/library/asyncio-task.html#asyncio.Task.cancel) operation. This means that `asyncio.CancelledError` will be raised (and can be caught, but it is not recommended).
 
-<!-- Leaves reader hanging. If there are other ways, why don't we tell them where they can learn about them? Same below where you repeat this statement. -->
+An Activity must Heartbeat to receive cancellation.
 
 - **Synchronous Activities**
 
-The [`activity_executor`](https://python.temporal.io/temporalio.worker.workerconfig#activity_exector) worker parameter must be set with a `concurrent.futures.Executor` instance to use for executing the
-Activities.
+The [`activity_executor`](https://python.temporal.io/temporalio.worker.workerconfig#activity_exector) worker parameter must be set with a `concurrent.futures.Executor` instance to use for executing the Activities.
 
-Cancellation for synchronous Activities is done in the background and the Activity must choose to listen for it and
-react appropriately. An Activity must Heartbeat to receive cancellation and there are other ways to be notified about
-cancellation.
+Cancellation for synchronous Activities is done in the background and the Activity must choose to listen for it and react appropriately.
+
+An Activity must Heartbeat to receive cancellation.
 
 - **Synchronous Multithreaded Activities**
 
 Multithreaded Activities are functions that use `activity_executor` set to an instance of `concurrent.futures.ThreadPoolExecutor`.
+
 Besides `activity_executor`, no other additional Worker parameters are required for synchronous multithreaded Activities.
 
-All of these activity functions must be
-_[picklable](https://docs.python.org/3/library/pickle.html#what-can-be-pickled-and-unpickled)_.
+All of these activity functions must be _[picklable](https://docs.python.org/3/library/pickle.html#what-can-be-pickled-and-unpickled)_.
 
 </TabItem>
 </Tabs>
@@ -1723,7 +1719,9 @@ class SayHello:
         )
 ```
 
-`workflow.execute_activity()` is a shortcut for [`workflow.start_activity()`](https://python.temporal.io/temporalio.workflow.html#start_activity) that waits on its result. To get just the handle to wait and cancel separately, `workflow.start_activity()` can be used. This should be used in most cases unless advanced task capabilities are needed.
+`workflow.execute_activity()` is a shortcut for [`workflow.start_activity()`](https://python.temporal.io/temporalio.workflow.html#start_activity) that waits on its result.
+
+To get just the handle to wait and cancel separately, use `workflow.start_activity()`. This should be used in most cases unless advanced task capabilities are needed.
 
 A single argument to the Activity is positional. Multiple arguments are not supported in the type-safe form of `start_activity()` or `execute_activity` and must be supplied by the `args` keyword argument.
 
@@ -2526,7 +2524,7 @@ Content is not available
 
 When a `Worker` is created, it accepts [iterable objects](https://docs.python.org/3/library/functions.html#iter), like: lists, tuples, dictionaries, or sets, in Workflows and Activities in the `workflows` and `activities` parameters respectively.
 
-Provide more than one value to register multiple values.
+To register multiple values, provide more than one values to the Worker.
 
 </TabItem>
 </Tabs>
@@ -2947,7 +2945,7 @@ Optionally, in Workflow code, when calling an Activity, you can specify the Task
 </TabItem>
 <TabItem value="python">
 
-Set the Workflow Task Queue with the [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`execute_workflow`](https://python.temporal.io/temporalio.client.client#execute_workflow) async method in the Client code.
+Set the Workflow Task Queue with the [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`execute_workflow`](https://python.temporal.io/temporalio.client.client#execute_workflow) asynchronous method in the Client code.
 
 In Python, the Workflow `id` and `task_queue` are required arguments in the Workflow Options.
 
@@ -3954,7 +3952,7 @@ async def start_with_signal(client: Client, worker: ExternalWorker):
         id=f"workflow-{uuid.uuid4()}",
         task_queue=worker.task_queue,
         start_signal="your-signal",
-        start_signal_args=[KSAction(result=KSResultAction(value="some signal arg"))],
+        start_signal_args=[YourAction(result=YourResultAction(value="some signal arg"))],
     )
 ```
 
@@ -5549,12 +5547,12 @@ class SimpleChildWorkflow:
 
 `workflow.execute_child_workflow()` should be used in most cases unless advanced task capabilities are needed.
 
-Child Workflow functions accept either a Workflow Run method or a string name. The arguments to the Workflow are positional.
+Child Workflow functions accept either a Workflow Run method or a string name. Workflow arguments are positional.
 
 Child Workflow options are set as keyword arguments _after_ the positional argument. `id` is required.
 
-The `await` of the start does not complete until the Workflow has confirmed to be started.
-The result is a Child Workflow handle which is an `asyncio.Task` and supports basic Task features.
+The `await` of the start does not complete until the Workflow start is confirmed.
+The result is a Child Workflow handle, which is an `asyncio.Task` and supports basic Task features.
 The handle also has some child info and supports Signalling the Child Workflow.
 
 </TabItem>
@@ -5931,14 +5929,10 @@ Content is not available
 
 In order for an Activity to be notified of cancellation requests, you must invoke [`temporalio.activity.heartbeat()`](https://python.temporal.io/temporalio.activity.html#heartbeat).
 
-In addition to obtaining cancellation information, Heartbeats also support detail data that is persisted on the server
-for retrieval during Activity Retry. If an activity calls `temporalio.activity.heartbeat(123, 456)` and then fails and
-is retried, `temporalio.activity.info().heartbeat_details` will return an iterable containing `123` and `456` on the
-next run.
+In addition to obtaining cancellation information, Heartbeats also support detail data that persists on the server for retrieval during Activity Retry. If an Activity calls `temporalio.activity.heartbeat(123, 456)` and then fails and is retried, `temporalio.activity.info().heartbeat_details` will return an iterable containing `123` and `456` on the next run.
 
 ```python
 async def heartbeat(self, *details: Any) -> None:
-    """Record a heartbeat for the activity."""
     await self._client._impl.heartbeat_async_activity(
         HeartbeatAsyncActivityInput(id_or_token=self._id_or_token, details=details),
     )
