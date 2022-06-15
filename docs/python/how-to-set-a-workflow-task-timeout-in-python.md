@@ -12,7 +12,7 @@ When setting [`client.start_workflow`](https://python.temporal.io/temporalio.cli
 
 ```python
 handle = await client.start_workflow(
-    "my workflow name",
+    "your workflow name",
     id="your-workflow-id",
     task_queue="your-task-queue",
     task_timeout=timedelta(seconds=1),

@@ -47,10 +47,10 @@ class SimpleChildWorkflow:
 
 `workflow.execute_child_workflow()` should be used in most cases unless advanced task capabilities are needed.
 
-Child Workflow functions accept either a Workflow Run method or a string name. The arguments to the Workflow are positional.
+Child Workflow functions accept either a Workflow Run method or a string name. Workflow arguments are positional.
 
 Child Workflow options are set as keyword arguments _after_ the positional argument. `id` is required.
 
-The `await` of the start does not complete until the Workflow has confirmed to be started.
-The result is a Child Workflow handle which is an `asyncio.Task` and supports basic Task features.
+The `await` of the start does not complete until the Workflow start is confirmed.
+The result is a Child Workflow handle, which is an `asyncio.Task` and supports basic Task features.
 The handle also has some child info and supports Signalling the Child Workflow.

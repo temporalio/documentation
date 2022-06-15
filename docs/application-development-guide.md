@@ -2951,11 +2951,11 @@ Set the Workflow Task Queue with the [`start_workflow()`](https://python.tempora
 
 In Python, the Workflow `id` and `task_queue` are required arguments in the Workflow Options.
 
-The following example, starts a Workflow with the `GreetingWorkflow` class, passing in the argument `my name`, and sets the Workflow `id` and `task_queue` options.
+The following example, starts a Workflow with the `GreetingWorkflow` class, passing in the argument `your name`, and sets the Workflow `id` and `task_queue` options.
 
 ```python
 await client.start_workflow(
-    GreetingWorkflow.run, "my name", id="your-workflow-id", task_queue="your-task-queue"
+    GreetingWorkflow.run, "your name", id="your-workflow-id", task_queue="your-task-queue"
 )
 ```
 
@@ -3354,7 +3354,7 @@ if __name__ == "__main__":
 **Running a Workflow**
 Create the following script at `run_workflow.py`.
 
-This will create a Client connected to the server at the given address, executes the Workflow `SayHello.run` with the input `my name`, the Workflow Id as `my-workflow-id`, and the Task Queue set to `my-task-queue`.
+This will create a Client connected to the server at the given address, executes the Workflow `SayHello.run` with the input `your name`, the Workflow Id as `my-workflow-id`, and the Task Queue set to `my-task-queue`.
 
 ```python
 async def main():
@@ -3364,7 +3364,7 @@ async def main():
     # Execute a workflow
 
     result = await client.execute_workflow(
-        SayHello.run, "my name", id="your-workflow-id", task_queue="your-task-queue"
+        SayHello.run, "your name", id="your-workflow-id", task_queue="your-task-queue"
     )
 
     # It's printing the result of the workflow.
@@ -4478,7 +4478,7 @@ When setting [`client.start_workflow`](https://python.temporal.io/temporalio.cli
 
 ```python
 handle = await client.start_workflow(
-    "my workflow name",
+    "your workflow name",
     id="your-workflow-id",
     task_queue="your-task-queue",
     run_timeout=timedelta(seconds=1),
@@ -4554,7 +4554,7 @@ When setting [`client.start_workflow`](https://python.temporal.io/temporalio.cli
 
 ```python
 handle = await client.start_workflow(
-    "my workflow name",
+    "your workflow name",
     id="your-workflow-id",
     task_queue="your-task-queue",
     task_timeout=timedelta(seconds=1),

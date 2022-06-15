@@ -18,6 +18,6 @@ async def start_with_signal(client: Client, worker: ExternalWorker):
         id=f"workflow-{uuid.uuid4()}",
         task_queue=worker.task_queue,
         start_signal="your-signal",
-        start_signal_args=[KSAction(result=KSResultAction(value="some signal arg"))],
+        start_signal_args=[YourAction(result=YourResultAction(value="some signal arg"))],
     )
 ```

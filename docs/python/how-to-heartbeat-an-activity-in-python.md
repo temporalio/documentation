@@ -11,10 +11,7 @@ tags:
 
 In order for an Activity to be notified of cancellation requests, you must invoke [`temporalio.activity.heartbeat()`](https://python.temporal.io/temporalio.activity.html#heartbeat).
 
-In addition to obtaining cancellation information, Heartbeats also support detail data that is persisted on the server
-for retrieval during Activity Retry. If an activity calls `temporalio.activity.heartbeat(123, 456)` and then fails and
-is retried, `temporalio.activity.info().heartbeat_details` will return an iterable containing `123` and `456` on the
-next run.
+In addition to obtaining cancellation information, Heartbeats also support detail data that persists on the server for retrieval during Activity Retry. If an Activity calls `temporalio.activity.heartbeat(123, 456)` and then fails and is retried, `temporalio.activity.info().heartbeat_details` will return an iterable containing `123` and `456` on the next run.
 
 ```python
 async def heartbeat(self, *details: Any) -> None:

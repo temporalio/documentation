@@ -9,12 +9,8 @@ tags:
   - python
 ---
 
-To set the Retry Policy, use `retry_policy` followed by your Retry statement.
-In this example, we are:
-
-- Creating a Retry Policy with initial interval of 1 millisecond, back off coefficient of 2.0 and maximum interval of 100 seconds.
-- Not allowing any retry attempts.
-- Not allowing any error type to be retried.
+To set the Retry Policy, use [`retry_policy`](https://python.temporal.io/temporalio.common.retrypolicy) followed by your Retry statement.
+The following is an example of a Retry Policy.
 
 ```python
 retry_policy = temporalio.common.RetryPolicy(
@@ -24,6 +20,13 @@ retry_policy = temporalio.common.RetryPolicy(
     maximum_attempts=0,  # init
 )
 ```
+
+The previous code example does the following:
+
+- Creates a Retry Policy with initial interval of 1 millisecond.
+- Sets the back off coefficient to 2.0.
+- Sets the maximum interval of 100 seconds.
+- Prevents any retry attempts.
 
 The following is an example of a Retry Policy in a Workflow Execution.
 

@@ -1,6 +1,6 @@
 ---
 id: how-to-spawn-a-workflow-execution-in-python
-title: How to spawn a workflow execution in Python
+title: How to spawn a Workflow Execution in Python
 sidebar_label: Spawn a Workflow Execution
 description: Spawn a Workflow Execution
 tags:

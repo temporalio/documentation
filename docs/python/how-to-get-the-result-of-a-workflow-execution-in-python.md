@@ -58,7 +58,7 @@ if __name__ == "__main__":
 **Running a Workflow**
 Create the following script at `run_workflow.py`.
 
-This will create a Client connected to the server at the given address, executes the Workflow `SayHello.run` with the input `my name`, the Workflow Id as `my-workflow-id`, and the Task Queue set to `my-task-queue`.
+This will create a Client connected to the server at the given address, executes the Workflow `SayHello.run` with the input `your name`, the Workflow Id as `my-workflow-id`, and the Task Queue set to `my-task-queue`.
 
 ```python
 async def main():
@@ -68,7 +68,7 @@ async def main():
     # Execute a workflow
 
     result = await client.execute_workflow(
-        SayHello.run, "my name", id="your-workflow-id", task_queue="your-task-queue"
+        SayHello.run, "your name", id="your-workflow-id", task_queue="your-task-queue"
     )
 
     # It's printing the result of the workflow.

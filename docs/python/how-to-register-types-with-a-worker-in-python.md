@@ -11,4 +11,4 @@ tags:
 
 When a `Worker` is created, it accepts [iterable objects](https://docs.python.org/3/library/functions.html#iter), like: lists, tuples, dictionaries, or sets, in Workflows and Activities in the `workflows` and `activities` parameters respectively.
 
-Provide more than one value to register multiple values.
+To register multiple values, provide more than one values to the Worker.
