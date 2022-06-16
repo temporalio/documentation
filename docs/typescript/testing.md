@@ -120,10 +120,47 @@ test('httpWorkflow with mock activity', async () => {
 });
 ```
 
-### Time skipping
+### Time skipping in Workflows
 
-The built-in test server automatically "skips" (fast forwards) time when no activities are executing.
+The built-in test server automatically "skips" (fast forwards) time when no Activities are executing.
+The test server starts in "normal" time, using the `TestWorkflowEnvironment.workflowClient` `execute` or `result`
+methods switch the test server to "skipped" time mode until the Workflow completes.
 If a Workflow sleeps for days, running it in the test environment will cause it to complete almost immediately.
+
+`workflows.ts`
+
+```ts
+import { sleep } from '@temporalio/workflow';
+
+export async function sleeperWorkflow() {
+  await sleep('1 day');
+}
+```
+
+`test.ts`
+
+```ts
+test('sleep completes almost immediately', async () => {
+  const worker = await Worker.create({
+    connection: testEnv.nativeConnection,
+    taskQueue: 'test',
+    workflowsPath: require.resolve('../workflows'),
+  });
+  // Does not wait an entire day
+  await worker.runUntil(
+    testEnv.workflowClient.execute(sleeperWorkflow, {
+      workflowId: uuid(),
+      taskQueue: 'test',
+    })
+  );
+});
+```
+
+### Time skipping in Activities
+
+When an Activity is executing time switches back to "normal",
+[`TestWorkflowEnvironment.sleep`](https://typescript.temporal.io/api/classes/testing.testworkflowenvironment/#sleep)
+can be used outside of Workflow code to skip time.
 
 <details>
 <summary>
@@ -197,7 +234,9 @@ export async function functionToTest() {
 const worker = await Worker.create({
   ...someOtherOptions,
   connection: testEnv.nativeConnection,
-  workflowPath: require.resolve('./workflows/file-workflow-function-to-test'),
+  workflowPath: require.resolve(
+    './workflows/file-with-workflow-function-to-test'
+  ),
 });
 
 await worker.runUntil(
@@ -238,7 +277,9 @@ const worker = await Worker.create({
   interceptors: {
     workflowModules: workflowInterceptorModules,
   },
-  workflowPath: require.resolve('./workflows/file-workflow-function-to-test'),
+  workflowPath: require.resolve(
+    './workflows/file-with-workflow-function-to-test'
+  ),
 });
 
 await worker.runUntil(
