@@ -14,11 +14,11 @@ The test framework provides utilities for testing both Activities and Workflows.
 
 Activities can be tested with [`MockActivityEnvironment`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment)
 
-The constructor accepts an optional partial activity [`Info`](https://typescript.temporal.io/api/classes/activity.Info) object in case any info fields are needed for the test.
+The constructor accepts an optional partial Activity [`Info`](https://typescript.temporal.io/api/classes/activity.Info) object in case any info fields are needed for the test.
 
 ### Running an activity in Context
 
-[`MockActivityEnvironment.run()`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment#run) runs a function in an activity [Context](https://typescript.temporal.io/api/classes/activity.context).
+[`MockActivityEnvironment.run()`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment#run) runs a function in an Activity [Context](https://typescript.temporal.io/api/classes/activity.context).
 
 ```ts
 import { MockActivityEnvironment } from '@temporalio/testing';
@@ -34,7 +34,7 @@ assert.equal(result, 4);
 
 ### Heartbeats and cancellation
 
-`MockActivityEnvironment` is an [`EventEmitter`](https://nodejs.org/api/events.html#class-eventemitter) which emits a `heartbeat` event which you can use to listen on heartbeats emitted by the Activity.
+`MockActivityEnvironment` is an [`EventEmitter`](https://nodejs.org/api/events.html#class-eventemitter) that emits a `heartbeat` event which you can use to listen for heartbeats emitted by the Activity.
 
 It also exposes a `cancel` method which cancels the Activity Context.
 
@@ -52,10 +52,10 @@ env.on('heartbeat', (d: unknown) => {
 
 await assert.rejects(
   () =>
-    env.run(async (x) => {
+    env.run(async () => {
       Context.current().heartbeat(6);
       await Context.current().sleep(100); // <- sleep is cancellation aware
-    }, 3),
+    }),
   (err) => {
     assert.ok(err instanceof CancelledFailure);
   }
@@ -68,7 +68,7 @@ Workflows can be tested with [`TestWorkflowEnvironment`](https://typescript.temp
 
 A typical test suite would set up a single instance of the test environment to be reused in all tests (e.g. in a [jest](https://jestjs.io/) `beforeAll` hook).
 
-When creating an environment [`TestWorkflowEnvironment.create`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment#create) it will automatically start a test server which you can access with [`workflowClient`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment#workflowclient) and [`nativeConnection`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment#nativeconnection).
+When creating an environment, [`TestWorkflowEnvironment.create`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment#create) will automatically start a test server that you can access with [`workflowClient`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment#workflowclient) and [`nativeConnection`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment#nativeconnection).
 
 ### Example setup
 
@@ -94,21 +94,21 @@ afterAll(async () => {
 
 ### Mocking Activities
 
-Since the `TestWorkflowEnvironment` is meant for testing Workflows, you'd typically want to mock your activities in tests to avoid generating side-effects.
+Since the `TestWorkflowEnvironment` is meant for testing Workflows, you'd typically want to mock your Activities in tests to avoid generating side effects.
 
 ```ts
 test('httpWorkflow with mock activity', async () => {
   const { workflowClient, nativeConnection } = testEnv;
 
   // Implement only the relevant activities for this workflow
-  const activities: Partial<typeof Activities> = {
+  const mockActivities: Partial<typeof Activities> = {
     makeHTTPRequest: async () => '99',
   };
   const worker = await Worker.create({
     connection: nativeConnection,
     taskQueue: 'test',
     workflowsPath: require.resolve('./workflows'),
-    activities,
+    activities: mockActivities,
   });
   const result = await worker.runUntil(
     await workflowClient.execute(httpWorkflow, {
@@ -248,10 +248,10 @@ await worker.runUntil(
 
 In some cases it's useful to assert directly in Workflow context.
 
-The Workflow context is injected with the Node.js [`assert`](https://nodejs.org/api/assert.html) module and can be imported as any other module.
+The Workflow context is injected with the Node.js [`assert`](https://nodejs.org/api/assert.html) module and can be imported with `import assert from 'assert'`.
 
-By default, failed `assert` statement throw `AssertionError`s which cause Workflow Tasks to fail and be indefinitely retried.
-To prevent this, make sure to use `workflowInterceptorModules` from `@temporalio/testing`, these interceptors will catch `AssertionError`s and turn them into `ApplicationFailure`s which fail the entire Workflow Execution.
+By default, failed `assert` statements throw `AssertionError`s which cause Workflow Tasks to fail and be indefinitely retried.
+To prevent this, use `workflowInterceptorModules` from `@temporalio/testing`. These interceptors catch `AssertionError`s and turn them into `ApplicationFailure`s that fail the entire Workflow Execution (not just the Workflow Task).
 
 `workflows/file-with-workflow-function-to-test.ts`
 
