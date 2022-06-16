@@ -7,6 +7,7 @@ tags:
   - go
   - how-to
 ---
+
 The Go SDK provides support for distributed tracing through [OpenTracing](https://opentracing.io/).
 Tracing allows you to view the call graph of a Workflow along with its Activities and any child Workflows.
 

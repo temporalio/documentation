@@ -12,10 +12,11 @@ tags:
 **Logging in Workers and Clients**
 
 The Worker comes with a default logger which defaults to log any messages with level `INFO` and higher to `STDERR` using `console.error`.
-There are 5 levels in total: 
-- `TRACE` 
-- `DEBUG` 
-- `INFO` 
+There are 5 levels in total:
+
+- `TRACE`
+- `DEBUG`
+- `INFO`
 - `WARN`
 - `ERROR`
 
@@ -27,8 +28,8 @@ Temporal ships a [`DefaultLogger`](https://typescript.temporal.io/api/classes/wo
 
 **Set Default logger level**
 
-
 The following example creates a new logger that will log all messages with a level `WARN` and higher.
+
 ```ts
 import { Runtime, DefaultLogger } from '@temporalio/worker';
 
