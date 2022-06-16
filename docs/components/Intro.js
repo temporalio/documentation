@@ -290,7 +290,7 @@ function Explained() {
           <div className="badge-purple">New</div>
         </div>
         <p className="landing-card-p">
-          A day-to-day how-to guide for Temporal Application developers.{" "}
+          How-to guides for Temporal Application developers.{" "}
         </p>
         <ul className="landing-card-list">
           <li className="">
@@ -312,6 +312,17 @@ function Explained() {
                 className="hover:underline"
               >
                 <a className="font-normal">Features</a>
+              </Link>
+            </div>
+          </li>
+          <li className="">
+            <div className="landing-card-list-item">
+              <BookSVG />
+              <Link
+                to={useBaseUrl("/observability")}
+                className="hover:underline"
+              >
+                <a className="font-normal">Observability</a>
               </Link>
             </div>
           </li>

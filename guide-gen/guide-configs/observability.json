@@ -3,7 +3,7 @@
   "id": "observability",
   "title": "Observability",
   "sidebar_label": "Observability",
-  "description": "Observability refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.",
+  "description": "This guide provides an overview of how to observe your Temporal application.",
   "toc_max_heading_level": 4,
   "add_tabs_support": false,
   "h2_sections": [
@@ -18,24 +18,18 @@
       ]
     },
     {
-      "header": "Observability",
+      "header": "Metrics",
       "h3_sections": [
         {
           "header": "none",
-          "type": "context",
-          "path": "Metrics"
-        },
-        {
-          "header": "What are Metrics?",
-          "type": "explanation",
+          "type": "how-to",
           "path": "concepts/what-are-metrics"
         },
         {
           "header": "none",
-          "type": "explanation",
+          "type": "how-to",
           "path": "app-dev-context/metrics"
         },
-
         {
           "header": "none",
           "type": "lang-tabs",
@@ -43,7 +37,7 @@
             {
               "lang": "go",
               "title": "Go",
-              "path": "none"
+              "path": "go/how-to-emit-metrics-in-go"
             },
             {
               "lang": "java",
@@ -58,14 +52,65 @@
             {
               "lang": "typescript",
               "title": "TypeScript",
+              "path": "typescript/how-to-emit-metrics-typescript"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "header": "Tracing",
+      "h3_sections": [
+        {
+          "header": "none",
+          "type": "how-to",
+          "path": "app-dev-context/tracing"
+        },
+        {
+          "header": "none",
+          "type": "lang-tabs",
+          "langs": [
+            {
+              "lang": "go",
+              "title": "Go",
+              "path": "go/how-to-use-tracing-in-go"
+            },
+            {
+              "lang": "java",
+              "title": "Java",
               "path": "none"
+            },
+            {
+              "lang": "php",
+              "title": "PHP",
+              "path": "none"
+            },
+            {
+              "lang": "typescript",
+              "title": "TypeScript",
+              "path": "typescript/how-to-use-tracing-in-typescript"
             }
           ]
         },
         {
+          "header": "Custom Archiver",
+          "type": "how-to",
+          "path": "clusters/how-to-create-a-custom-archiver"
+        }
+      ]
+    },
+    {
+      "header": "Logging",
+      "h3_sections": [
+        {
           "header": "none",
-          "type": "context",
-          "path": "none"
+          "type": "how-to",
+          "path": "app-dev-context/logging"
+        },
+        {
+          "header": "none",
+          "type": "how-to",
+          "path": "app-dev-context/custom-logging"
         },
         {
           "header": "none",
@@ -74,7 +119,7 @@
             {
               "lang": "go",
               "title": "Go",
-              "path": "none"
+              "path": "go/how-to-set-a-custom-logger-in-go"
             },
             {
               "lang": "java",
@@ -89,38 +134,7 @@
             {
               "lang": "typescript",
               "title": "TypeScript",
-              "path": "none"
-            }
-          ]
-        },
-        {
-          "header": "none",
-          "type": "context",
-          "path": "none"
-        },
-        {
-          "header": "none",
-          "type": "lang-tabs",
-          "langs": [
-            {
-              "lang": "go",
-              "title": "Go",
-              "path": "none"
-            },
-            {
-              "lang": "java",
-              "title": "Java",
-              "path": "none"
-            },
-            {
-              "lang": "php",
-              "title": "PHP",
-              "path": "none"
-            },
-            {
-              "lang": "typescript",
-              "title": "TypeScript",
-              "path": "none"
+              "path": "typescript/how-to-use-tracing-in-typescript"
             }
           ]
         }
