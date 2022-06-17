@@ -13,7 +13,7 @@ Codec servers can handle authentication and authorization in a similar manner us
 
 ## Purpose
 
-DataConverters can be configured to use a PayloadCodec to encrypt data before it’s sent to Temporal.
+In application code DataConverters can be configured to use a PayloadCodec to encrypt data before it’s sent to Temporal.
 
 ![](/static/img/remote-codec-server-problem)
 
