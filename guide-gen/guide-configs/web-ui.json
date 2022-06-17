@@ -4,7 +4,7 @@
   "id": "web-ui",
   "title": "Temporal Web UI",
   "sidebar_label": "Web UI",
-  "description": "This guide is meant to be a comprehensive overview of Temporal Web UI.",
+  "description": "This guide is a comprehensive overview of Temporal Web UI.",
   "toc_max_heading_level": 4,
   "add_tabs_support": false,
   "h2_sections": [
