@@ -207,7 +207,7 @@
                 {
                   "lang": "php",
                   "title": "PHP",
-                  "path": "none"
+                  "path": "php/how-to-handle-workflow-logic-requirements-in-php"
                 },
                 {
                   "lang": "typescript",
@@ -271,7 +271,7 @@
                 {
                   "lang": "php",
                   "title": "PHP",
-                  "path": "none"
+                  "path": "php/how-to-define-activity-parameters-in-php"
                 },
                 {
                   "lang": "typescript",
@@ -430,7 +430,7 @@
             {
               "lang": "php",
               "title": "PHP",
-              "path": "none"
+              "path": "php/how-to-create-a-temporal-client-in-php"
             },
             {
               "lang": "typescript",
@@ -461,7 +461,7 @@
             {
               "lang": "php",
               "title": "PHP",
-              "path": "none"
+              "path": "php/how-to-develop-a-worker-program-in-php"
             },
             {
               "lang": "typescript",
@@ -556,7 +556,7 @@
                 {
                   "lang": "php",
                   "title": "PHP",
-                  "path": "none"
+                  "path": "php/how-to-set-a-workflow-task-queue-in-php"
                 },
                 {
                   "lang": "typescript",
@@ -587,7 +587,7 @@
                 {
                   "lang": "php",
                   "title": "PHP",
-                  "path": "none"
+                  "path": "php/how-to-set-a-workflow-id-in-php"
                 },
                 {
                   "lang": "typescript",
@@ -620,7 +620,7 @@
             {
               "lang": "php",
               "title": "PHP",
-              "path": "none"
+              "path": "php/how-to-get-the-result-of-a-workflow-execution-in-php"
             },
             {
               "lang": "typescript",
@@ -666,7 +666,7 @@
                 {
                   "lang": "php",
                   "title": "PHP",
-                  "path": "none"
+                  "path": "php/how-to-define-a-signal-in-php"
                 },
                 {
                   "lang": "typescript",
@@ -759,7 +759,7 @@
                 {
                   "lang": "php",
                   "title": "PHP",
-                  "path": "none"
+                  "path": "php/how-to-send-a-signal-from-a-workflow-in-php"
                 },
                 {
                   "lang": "typescript",
@@ -790,7 +790,7 @@
                 {
                   "lang": "php",
                   "title": "PHP",
-                  "path": "none"
+                  "path": "php/how-to-send-a-signal-with-start-in-php"
                 },
                 {
                   "lang": "typescript",
@@ -828,7 +828,7 @@
                 {
                   "lang": "php",
                   "title": "PHP",
-                  "path": "none"
+                  "path": "php/how-to-define-a-query-in-php"
                 },
                 {
                   "lang": "typescript",
@@ -890,7 +890,7 @@
                 {
                   "lang": "php",
                   "title": "PHP",
-                  "path": "none"
+                  "path": "php/how-to-handle-a-query-in-a-workflow-in-php"
                 },
                 {
                   "lang": "typescript",
@@ -928,7 +928,7 @@
                 {
                   "lang": "php",
                   "title": "PHP",
-                  "path": "none"
+                  "path": "php/how-to-set-a-workflow-execution-timeout-in-php"
                 },
                 {
                   "lang": "typescript",
@@ -959,7 +959,7 @@
                 {
                   "lang": "php",
                   "title": "PHP",
-                  "path": "none"
+                  "path": "php/how-to-set-a-workflow-run-timeout-in-php"
                 },
                 {
                   "lang": "typescript",
@@ -990,7 +990,7 @@
                 {
                   "lang": "php",
                   "title": "PHP",
-                  "path": "none"
+                  "path": "php/how-to-set-a-workflow-task-timeout-in-php"
                 },
                 {
                   "lang": "typescript",
@@ -1059,7 +1059,7 @@
                 {
                   "lang": "php",
                   "title": "PHP",
-                  "path": "none"
+                  "path": "php/how-to-set-a-schedule-to-close-timeout-in-php"
                 },
                 {
                   "lang": "typescript",
@@ -1090,7 +1090,7 @@
                 {
                   "lang": "php",
                   "title": "PHP",
-                  "path": "none"
+                  "path": "php/how-to-set-a-start-to-close-timeout-in-php"
                 },
                 {
                   "lang": "typescript",
@@ -1121,7 +1121,7 @@
                 {
                   "lang": "php",
                   "title": "PHP",
-                  "path": "none"
+                  "path": "php/how-to-set-a-schedule-to-start-timeout-in-php"
                 },
                 {
                   "lang": "typescript",
@@ -1152,7 +1152,7 @@
                 {
                   "lang": "php",
                   "title": "PHP",
-                  "path": "none"
+                  "path": "php/how-to-set-a-heartbeat-timeout-in-php"
                 },
                 {
                   "lang": "typescript",
@@ -1183,7 +1183,7 @@
                 {
                   "lang": "php",
                   "title": "PHP",
-                  "path": "none"
+                  "path": "php/how-to-set-activity-retry-options-in-php"
                 },
                 {
                   "lang": "typescript",
@@ -1221,7 +1221,7 @@
             {
               "lang": "php",
               "title": "PHP",
-              "path": "none"
+              "path": "php/how-to-spawn-a-child-workflow-execution-in-php"
             },
             {
               "lang": "typescript",
@@ -1285,7 +1285,7 @@
             {
               "lang": "php",
               "title": "PHP",
-              "path": "none"
+              "path": "php/how-to-continue-as-new-in-php"
             },
             {
               "lang": "typescript",
@@ -1347,7 +1347,7 @@
             {
               "lang": "php",
               "title": "PHP",
-              "path": "none"
+              "path": "php/how-to-set-a-cron-schedule-in-php"
             },
             {
               "lang": "typescript",
