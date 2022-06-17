@@ -234,7 +234,7 @@ export async function functionToTest() {
 const worker = await Worker.create({
   ...someOtherOptions,
   connection: testEnv.nativeConnection,
-  workflowPath: require.resolve(
+  workflowsPath: require.resolve(
     './workflows/file-with-workflow-function-to-test'
   ),
 });
@@ -277,7 +277,7 @@ const worker = await Worker.create({
   interceptors: {
     workflowModules: workflowInterceptorModules,
   },
-  workflowPath: require.resolve(
+  workflowsPath: require.resolve(
     './workflows/file-with-workflow-function-to-test'
   ),
 });
