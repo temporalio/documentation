@@ -17,7 +17,7 @@ DataConverters can be configured to use a PayloadCodec to encrypt data before it
 
 ![](/static/img/remote-codec-server-problem)
 
-However, the pre-built tctl and WebUI binaries use a default DataConverter that excludes your PayloadCodec.
+However, the pre-built tctl and WebUI binaries use a default DataConverter that does not include your PayloadCodec.
 
 Because of this, tctl and the WebUI will not be able to show decrypted data—at least, not without help.
 
