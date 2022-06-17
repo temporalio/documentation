@@ -5,7 +5,7 @@ sidebar_label: Codec Server
 description: Explanation and implementation of a remote encryption/decryption server.
 ---
 
-A codec server provides a means of encrypting and decrypting data between a Temporal application and a customer’s remote database.
+A codec server provides a means of securely decrypting payload data for display by Temporal user interfaces.
 
 Codec servers act as a go-between for the application and the database. Data from the customer’s remote server is decrypted via a codec server before it can be viewed on the WebUI. Conversely, data from the WebUI is encrypted through the codec server before being passed along to the database.
 
