@@ -191,7 +191,7 @@ export async function sleeperWorkflow() {
 `test.ts`
 
 ```ts
-test('advancing time using `testEnv.sleep()`', async function() {
+test('advancing time using `testEnv.sleep()`', async function () {
   const client = testEnv.workflowClient;
 
   handle = await client.start(sleeperWorkflow, {
