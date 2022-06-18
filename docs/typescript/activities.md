@@ -378,11 +378,9 @@ You can [read the tests](https://github.com/temporalio/sdk-typescript/blob/7d47f
 
 Temporal has an optimization feature called Local Activities.
 
-This document is still WIP, for more details see [What is a local activity](/concepts/what-is-a-local-activity/)
+This document is still a WIP. For more details, see [What is a Local Activity?](/concepts/what-is-a-local-activity/)
 
-To use local activities in TS, use `proxyLocalActivities`.
-
-Local Activities must be registered with the Worker the same way non-local Activities are.
+To call Local Activities in TS, use [`proxyLocalActivities`](https://typescript.temporal.io/api/namespaces/workflow/#proxylocalactivities).
 
 ```ts
 import * as workflow from '@temporalio/workflow';
@@ -396,3 +394,5 @@ export async function myWorkflow(): Promise<void> {
   // ...
 }
 ```
+
+Local Activities must be registered with the Worker the same way non-local Activities are.

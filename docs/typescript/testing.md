@@ -6,7 +6,7 @@ sidebar_label: Testing
 
 :::note Sample available
 
-A complete sample for testing with jest can be found in our [samples repo](https://github.com/temporalio/samples-typescript/blob/main/activities-examples/src/workflows.test.ts).
+A complete sample for testing with Jest can be found in our [samples repo](https://github.com/temporalio/samples-typescript/blob/main/activities-examples/src/workflows.test.ts).
 :::
 
 The TypeScript SDK comes with an optional test framework (npm `@temporalio/testing`).

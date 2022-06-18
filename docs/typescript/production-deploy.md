@@ -102,12 +102,12 @@ For more information about sending logs, see [Logging](/typescript/logging).
 
 ### Options
 
-Workers can emit metrics and traces. There are a few [temlemetry options](https://typescript.temporal.io/api/interfaces/worker.TelemetryOptions) that can be provided to [`Runtime.install`](https://typescript.temporal.io/api/classes/worker.runtime/#install), the common ones being:
+Workers can emit metrics and traces. There are a few [telemetry options](https://typescript.temporal.io/api/interfaces/worker.TelemetryOptions) that can be provided to [`Runtime.install`](https://typescript.temporal.io/api/classes/worker.runtime/#install). The common options are:
 
 - `metrics: { otel: { url } }`: The URL of a gRPC [OpenTelemetry collector](https://opentelemetry.io/docs/collector/).
 - `metrics: { prometheus: { bindAddress } }`: Address on the Worker host that will have metrics for [Prometheus](https://prometheus.io/) to scrape.
 
-To set up tracing of Workflows and Activities use our [opentelemetry-interceptors](/typescript/logging#opentelemetry-tracing) package.
+To set up tracing of Workflows and Activities, use our [opentelemetry-interceptors](/typescript/logging#opentelemetry-tracing) package.
 
 ### Monitoring
 
