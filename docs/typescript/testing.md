@@ -4,7 +4,12 @@ title: Testing TypeScript Workflows
 sidebar_label: Testing
 ---
 
-The TypeScript SDK comes with an optional test framework (npm [`@temporalio/testing`](https://www.npmjs.com/package/@temporalio/testing)).
+:::note Sample available
+
+A complete sample for testing with jest can be found in our [samples repo](https://github.com/temporalio/samples-typescript/blob/main/activities-examples/src/workflows.test.ts).
+:::
+
+The TypeScript SDK comes with an optional test framework (npm `@temporalio/testing`).
 
 Upon installation, it will automatically download a test server with time skipping support (more on that later).
 
@@ -35,6 +40,9 @@ assert.equal(result, 4);
 ### Heartbeats and cancellation
 
 `MockActivityEnvironment` is an [`EventEmitter`](https://nodejs.org/api/events.html#class-eventemitter) that emits a `heartbeat` event which you can use to listen for heartbeats emitted by the Activity.
+
+> NOTE: When run by a `Worker`, heartbeats are throttled to avoid overloading the server.
+> `MockActivityEnvironment` on the other hand does not apply any throttling.
 
 It also exposes a `cancel` method which cancels the Activity Context.
 

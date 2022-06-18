@@ -107,34 +107,25 @@ $ npm run start.watch
 [nodemon] watching path(s): src/**/*
 [nodemon] watching extensions: ts
 [nodemon] starting `ts-node src/worker.ts`
-2021-10-14T00:31:39.875Z [INFO] [temporal_sdk_core] Registering worker task_queue="tutorial"
-2021-10-14T00:31:41.360Z [INFO] assets by path ./lib/*.map 605 bytes
-2021-10-14T00:31:41.360Z [INFO]   asset ./lib/workflows.d.ts.map 192 bytes [emitted]
-2021-10-14T00:31:41.360Z [INFO]   asset ./lib/activities.d.ts.map 181 bytes [emitted]
-2021-10-14T00:31:41.360Z [INFO]   asset ./lib/client.d.ts.map 126 bytes [emitted]
-2021-10-14T00:31:41.360Z [INFO]   asset ./lib/worker.d.ts.map 106 bytes [emitted]
-2021-10-14T00:31:41.360Z [INFO] assets by path ./lib/*.ts 357 bytes
-2021-10-14T00:31:41.360Z [INFO]   asset ./lib/workflows.d.ts 151 bytes [emitted]
-2021-10-14T00:31:41.360Z [INFO]   asset ./lib/activities.d.ts 102 bytes [emitted]
-2021-10-14T00:31:41.360Z [INFO]   asset ./lib/client.d.ts 57 bytes [emitted]
-2021-10-14T00:31:41.360Z [INFO]   asset ./lib/worker.d.ts 47 bytes [emitted]
-2021-10-14T00:31:41.360Z [INFO] asset main.js 7.47 MiB [emitted] (name: main)
-2021-10-14T00:31:41.360Z [INFO] runtime modules 891 bytes 4 modules
-2021-10-14T00:31:41.360Z [INFO] modules by path ./node_modules/ 2.92 MiB
-2021-10-14T00:31:41.360Z [INFO]   modules by path ./node_modules/@opentelemetry/api/build/esm/ 73.4 KiB 48 modules
-2021-10-14T00:31:41.360Z [INFO]   modules by path ./node_modules/@temporalio/ 2.74 MiB 31 modules
-2021-10-14T00:31:41.360Z [INFO]   modules by path ./node_modules/protobufjs/ 51.2 KiB
-2021-10-14T00:31:41.360Z [INFO]     modules by path ./node_modules/protobufjs/src/*.js 28.8 KiB 7 modules
-2021-10-14T00:31:41.360Z [INFO]     modules by path ./node_modules/protobufjs/src/util/*.js 17.7 KiB 2 modules
-2021-10-14T00:31:41.360Z [INFO]     2 modules
-2021-10-14T00:31:41.360Z [INFO]   modules by path ./node_modules/@protobufjs/ 23.7 KiB 7 modules
-2021-10-14T00:31:41.360Z [INFO]   ./node_modules/long/src/long.js 39.2 KiB [built] [code generated]
-2021-10-14T00:31:41.360Z [INFO]   ./node_modules/ms/index.js 2.95 KiB [built] [code generated]
-2021-10-14T00:31:41.360Z [INFO] ../../../../../src/main.js 462 bytes [built] [code generated]
-2021-10-14T00:31:41.360Z [INFO] ./src/workflows.ts 443 bytes [built] [code generated]
-2021-10-14T00:31:41.360Z [INFO] webpack 5.58.2 compiled successfully in 1293 ms
-2021-10-14T00:31:41.563Z [INFO] Worker state changed { state: 'RUNNING' }
-
+2022-06-17T23:47:12.854Z [INFO] asset main.js 352 KiB [emitted] (name: main) 1 related asset
+2022-06-17T23:47:12.855Z [INFO] runtime modules 2.03 KiB 5 modules
+2022-06-17T23:47:12.855Z [INFO] modules by path ./packages/test/lib/workflows/*.js 91.7 KiB 95 modules
+2022-06-17T23:47:12.855Z [INFO] modules by path ./packages/workflow/lib/*.js 90.9 KiB
+2022-06-17T23:47:12.855Z [INFO]   ./packages/workflow/lib/worker-interface.js 11.2 KiB [built] [code generated]
+2022-06-17T23:47:12.855Z [INFO]   + 10 modules
+2022-06-17T23:47:12.855Z [INFO] modules by path ./packages/common/lib/ 46.9 KiB
+2022-06-17T23:47:12.855Z [INFO]   modules by path ./packages/common/lib/converter/*.js 27 KiB 8 modules
+2022-06-17T23:47:12.855Z [INFO]   modules by path ./packages/common/lib/*.js 19.9 KiB 2 modules
+2022-06-17T23:47:12.855Z [INFO] modules by path ./packages/internal-workflow-common/lib/*.js 13.5 KiB
+2022-06-17T23:47:12.855Z [INFO]   ./packages/internal-workflow-common/lib/index.js 1.3 KiB [built] [code generated]
+2022-06-17T23:47:12.855Z [INFO]   + 9 modules
+2022-06-17T23:47:12.855Z [INFO] modules by path ./node_modules/ 43.5 KiB
+2022-06-17T23:47:12.855Z [INFO]   modules by path ./node_modules/ramda/src/ 1.42 KiB 3 modules
+2022-06-17T23:47:12.855Z [INFO]   + 2 modules
+2022-06-17T23:47:12.855Z [INFO] __temporal_custom_payload_converter (ignored) 15 bytes [built] [code generated]
+2022-06-17T23:47:12.855Z [INFO] webpack 5.72.0 compiled successfully in 351 ms
+2022-06-17T23:47:12.857Z [INFO] Workflow bundle created { size: '0.34MB' }
+2022-06-17T23:47:12.987Z [INFO] Worker state changed { state: 'RUNNING' }
 ```
 
 </details>
