@@ -164,6 +164,54 @@ test('sleep completes almost immediately', async () => {
 });
 ```
 
+The `runUntil()` function runs your Workflow to the end.
+You can also call `testEnv.sleep()` from your test code to advance time in "skipped" time mode.
+This is useful for testing intermediate state, or for testing infinite Workflows.
+
+`workflow.ts`
+
+```ts
+import { sleep } from '@temporalio/workflow';
+import { defineQuery, setHandler } from '@temporalio/workflow';
+
+export const daysQuery = defineQuery('days');
+
+export async function sleeperWorkflow() {
+  let numDays = 0;
+
+  setHandler(daysQuery, () => numDays);
+
+  for (let i = 0; i < 100; ++i) {
+    await sleep('1 day');
+    ++numDays;
+  }
+}
+```
+
+`test.ts`
+
+```ts
+test('advancing time using `testEnv.sleep()`', async function() {
+  const client = testEnv.workflowClient;
+
+  handle = await client.start(sleeperWorkflow, {
+    taskQueue,
+    workflowId: uuidv4(),
+  });
+
+  let numDays = await handle.query(daysQuery);
+  assert.equal(numDays, 0);
+
+  await testEnv.sleep('25 hours');
+  numDays = await handle.query(daysQuery);
+  assert.equal(numDays, 1);
+
+  await testEnv.sleep('25 hours');
+  numDays = await handle.query(daysQuery);
+  assert.equal(numDays, 2);
+});
+```
+
 ### Time skipping in Activities
 
 When an Activity is executing time switches back to "normal",
