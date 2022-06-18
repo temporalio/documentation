@@ -11,9 +11,10 @@ tags:
 Set the `namespace` field on the options object.
 
 ```ts
-const connection = new Connection();
+const connection = await Connection.connect();
 // https://typescript.temporal.io/api/interfaces/client.WorkflowClientOptions
-const client = new WorkflowClient(connection.service, {
+const client = new WorkflowClient({
+  connection,
   namespace: 'my-namespace-name',
 });
 ```
