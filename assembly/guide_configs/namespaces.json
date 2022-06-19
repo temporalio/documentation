@@ -1,0 +1,32 @@
+{
+  "file_name": "namespaces.md",
+  "active": false,
+  "id": "namespaces",
+  "title": "Namespaces",
+  "sidebar_label": "Namespaces",
+  "description": "Namespaces are a logical unit of isolation within the Temporal Platform.",
+  "toc_max_heading_level": 4,
+  "add_tabs_support": false,
+  "h2_sections": [
+    {
+      "header": "none",
+      "h3_sections": [
+        {
+          "header": "none",
+          "type": "context",
+          "path": "concepts/what-is-a-namespace"
+        }
+      ]
+    },
+    {
+      "header": "Global Namespace",
+      "h3_sections": [
+        {
+          "header": "none",
+          "type": "context",
+          "path": "concepts/what-is-a-global-namespace"
+        }
+      ]
+    }
+  ]
+}

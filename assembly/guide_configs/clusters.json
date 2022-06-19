@@ -1,0 +1,62 @@
+{
+  "file_name": "clusters.md",
+  "active": false,
+  "id": "clusters",
+  "title": "Clusters",
+  "sidebar_label": "Clusters",
+  "description": "Temporal Clusters explained.",
+  "toc_max_heading_level": 4,
+  "add_tabs_support": true,
+  "h2_sections": [
+    {
+      "header": "none",
+      "h3_sections": [
+        {
+          "header": "none",
+          "type": "explanation",
+          "path": "concepts/what-is-a-temporal-cluster"
+        }
+      ]
+    },
+    {
+      "header": "Temporal Server",
+      "h3_sections": [
+        {
+          "header": "none",
+          "type": "explanation",
+          "path": "concepts/what-is-the-temporal-server"
+        }
+      ]
+    },
+    {
+      "header": "Retention Period",
+      "h3_sections": [
+        {
+          "header": "none",
+          "type": "explanation",
+          "path": "concepts/what-is-a-retention-period"
+        }
+      ]
+    },
+    {
+      "header": "Archival",
+      "h3_sections": [
+        {
+          "header": "none",
+          "type": "explanation",
+          "path": "concepts/what-is-archival"
+        }
+      ]
+    },
+    {
+      "header": "Multi-Cluster Replication",
+      "h3_sections": [
+        {
+          "header": "none",
+          "type": "explanation",
+          "path": "concepts/what-is-multi-cluster-replication"
+        }
+      ]
+    }
+  ]
+}
