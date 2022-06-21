@@ -571,10 +571,7 @@ function Explained() {
           <li className="">
             <div className="landing-card-list-item">
               <CliSVG />
-              <Link
-                to={useBaseUrl("/web-ui")}
-                className="hover:underline"
-              >
+              <Link to={useBaseUrl("/web-ui")} className="hover:underline">
                 <a className="font-normal">Web UI</a>
               </Link>
             </div>
