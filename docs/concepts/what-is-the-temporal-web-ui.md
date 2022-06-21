@@ -4,7 +4,7 @@ title: What is the Temporal Web UI?
 sidebar_label: Temporal Web UI
 description: The Temporal Web UI
 tags:
-  - how-to
+  - term
   - web-ui
 ---
 
