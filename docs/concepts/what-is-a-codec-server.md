@@ -7,28 +7,29 @@ description: Explanation and implementation of a remote encryption/decryption se
 
 A Codec Server provides a means of securely decrypting payload data for display by Temporal user interfaces.
 
-Data from the customer’s remote server is decrypted via a codec server before it can be viewed on the [Temporal Web UI](/concepts/what-is-the-temporal-web-ui/). Conversely, data from the WebUI is encrypted through the codec server before being passed along to the database. Therefore, it is more secure for Temporal to store encrypted data.
+In a Temporal system, you can use the WebUI or tctl to request data from the Temporal Cluster. This request is passed through a client's DataConverter, which sends and receives API calls from the Remote Codec Server. These calls are then passed from the client to the cluster, where a successful request passes an encoded payload back through the system.
 
-Codec servers can handle authentication and authorization in a similar manner used by Temporal Clusters. In the event of a data breach, any information uncovered would be indecipherable to bad actors.
+With a Codec Server, data is decrypted before it can be viewed on the [Temporal Web UI](/concepts/what-is-the-temporal-web-ui/). Conversely, data from the WebUI is encrypted through the codec server before being passed along to the database. Therefore, it is more secure for Temporal to store encrypted data.
+
+Codec Servers can handle authentication and authorization in a similar manner used by Temporal Clusters. In the event of a data breach, any information uncovered would be indecipherable to bad actors.
 
 ## Purpose
 
-In application code DataConverters can be configured to use a PayloadCodec to encrypt data before it’s sent to Temporal.
+In application code, Data Converters can be configured to use a PayloadCodec to encrypt data before it’s sent to Temporal.
 
 ![](/static/img/remote-codec-server-problem)
 
-However, the pre-built tctl and WebUI binaries use a default DataConverter that does not include your PayloadCodec.
-
-Because of this, tctl and the WebUI will not be able to show decrypted data—at least, not without help.
+However, the pre-built tctl and WebUI binaries use a default Data Converter that does not include your Payload Codec.
+The tctl and WebUI won't be able to show decrypted data.
 
 ![](/static/img/remote-codec-server-solution)
 
-This is where a Codec Server comes into play. The server exposes your PayloadCodec’s encode and decode methods via HTTP interface. This allows tctl and the WebUI to use the PayloadCodec to encrypt and decrypt data as needed.
+This is where a Codec Server comes into play. The server exposes your Payload Codec’s encode and decode methods via HTTP interface. This allows tctl and the WebUI to use the Payload Codec to encrypt and decrypt data as needed.
 
 ## Configuration
 
-Codec servers are initiated in a similar manner to a Temporal Worker.
+Codec Servers are initiated in a similar manner to a Temporal Worker.
 
-Before running a codec server, make sure that a Temporal service is running in your SDK of choice.
+Before running a Codec Server, make sure that a [Temporal service](https://docs.temporal.io/application-development-guide/#run-a-dev-cluster) is running in your SDK of choice.
 
-If you are using Go, feel free to base your remote codec server off of [this existing repo](https://github.com/temporalio/samples-go). For other languages, please refer to the diagrams in the Go sample to construct the codec server.
+If you are using Go, feel free to base your remote Codec Server off of [this existing repo](https://github.com/temporalio/samples-go). For other languages, please refer to the diagrams in the Go sample to construct the Codec Server.
