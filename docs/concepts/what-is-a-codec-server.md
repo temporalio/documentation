@@ -29,6 +29,6 @@ This is where a Codec Server comes into play. The server exposes your PayloadCod
 
 Codec servers are initiated in a similar manner to a Temporal Worker.
 
-Before you begin to run a codec server, make sure that a Temporal service is running in your SDK of choice.
+Before running a codec server, make sure that a Temporal service is running in your SDK of choice.
 
 If you are using Go, feel free to base your remote codec server off of [this existing repo](https://github.com/temporalio/samples-go). For other languages, please refer to the diagrams in the Go sample to construct the codec server.
