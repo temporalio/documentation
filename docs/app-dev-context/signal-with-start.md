@@ -1,1 +1,4 @@
-Signal-With-Start can be used to start a Workflow Execution (if not already running) and pass it the Signal at the same time.
+Signal-With-Start is used from the Client.
+It takes a Workflow Id, Workflow arguments, a Signal name, and Signal arguments.
+
+If there's a Workflow running with the given Workflow Id, it will be signaled. If there isn't, a new Workflow will be started and immediately signaled.

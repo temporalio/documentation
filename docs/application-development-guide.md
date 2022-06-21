@@ -2863,14 +2863,14 @@ This section covers many of the features that are available to use in your [Temp
 
 ### Signals
 
-A [Signal](/workflows/#signals) is a message that delivers data to a running Workflow Execution.
+A [Signal](/workflows/#signals) is a message sent to a running Workflow Execution.
 
-Signals are defined alongside your application code and handled in your Workflow Definition.
-Signals can be sent to Workflow Executions from a Temporal Client or from within a Workflow.
+Signals are defined in your code and handled in your Workflow Definition.
+Signals can be sent to Workflow Executions from a Temporal Client or from another Workflow Execution.
 
 #### Define Signal
 
-A Signal type and its data must be serializable.
+A Signal has a name and can have arguments. The arguments must be [serializable](/concepts/what-is-a-data-converter/).
 
 <Tabs
 defaultValue="go"
@@ -2924,7 +2924,18 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+[`defineSignal`](https://typescript.temporal.io/api/namespaces/workflow/#definesignal)
+
+```ts
+import {defineSignal} from "@temporalio/workflow";
+
+interface JoinInput {
+  userId: string;
+  groupId: string;
+}
+
+const joinSignal = defineSignal<JoinInput>("join");
+```
 
 </TabItem>
 </Tabs>
@@ -3063,7 +3074,24 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+[`setHandler`](https://typescript.temporal.io/api/namespaces/workflow/#sethandler)
+
+```ts
+import {setHandler} from "@temporalio/workflow";
+
+export async function myWorkflow() {
+  const groups = new Map<string, Set<string>>();
+
+  setHandler(joinSignal, ({userId, groupId}: JoinInput) => {
+    const group = groups.get(groupId);
+    if (group) {
+      group.add(userId);
+    } else {
+      groups.set(groupId, new Set([userId]));
+    }
+  });
+}
+```
 
 </TabItem>
 </Tabs>
@@ -3137,16 +3165,30 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+[`WorkflowHandle.signal`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle#signal)
+
+```typescript
+import {WorkflowClient} from "@temporalio/client";
+import {joinSignal} from "./workflows";
+
+const client = new WorkflowClient();
+
+const handle = await client.getHandle("workflow-id-123");
+
+await handle.signal(joinSignal, {userId: "user-1", groupId: "group-1"});
+```
 
 </TabItem>
 </Tabs>
 
 #### Send Signal from Workflow
 
-Sending a Signal from within a Workflow is often referred to as sending an External Signal.
+A Workflow can send a Signal to another Workflow, in which case it's called an _External Signal_.
 
-The [SignalExternalWorkflowExecutionInitiated](/references/events#signalexternalworkflowexecutioninitiated) Event appears in the Workflow Execution Event History of the Workflow that sent the Signal, and the [WorkflowExecutionSignaled](/references/events#workflowexecutionsignaled) Event appears in the Event History of the Workflow that receives the Signal.
+When an External Signal is sent:
+
+- A [SignalExternalWorkflowExecutionInitiated](/references/events#signalexternalworkflowexecutioninitiated) Event appears in the sender's Event History.
+- A [WorkflowExecutionSignaled](/references/events#workflowexecutionsignaled) Event appears in the recipient's Event History.
 
 <Tabs
 defaultValue="go"
@@ -3202,56 +3244,27 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-First, define your Signal that can be sent to the Workflow.
+[`getExternalWorkflowHandle`](https://typescript.temporal.io/api/namespaces/workflow#getexternalworkflowhandle)
 
 ```typescript
-const update = wf.defineSignal<number>("update");
-```
+import {getExternalWorkflowHandle} from "@temporalio/workflow";
+import {joinSignal} from "./other-workflow";
 
-Then create your Workflow. In this example, our Worklfow charges a user every month.
-
-```typescript
-async function SubscriptionWorkflow(id: string, amount: number) {
-  wf.setHandler(update, (newAmt) => (amount = newAmt));
-  while (true) {
-    await charge(id, amount);
-    await sleepTilNextMonth();
-  }
+export async function myWorkflowThatSignals() {
+  const handle = getExternalWorkflowHandle("workflow-id-123");
+  await handle.signal(joinSignal, {userId: "user-1", groupId: "group-1"});
 }
 ```
-
-Then send your Signal to the Workflow.
-
-```typescript
-await handle.signal(update, 300);
-```
-
-The following is the implemented code that sends a Signal from a Workflow.
-
-```typescript
-// Defining a signal that can be sent to the workflow.
-const update = wf.defineSignal<number>("update");
-// workflow
-async function SubscriptionWorkflow(id: string, amount: number) {
-  wf.setHandler(update, (newAmt) => (amount = newAmt));
-  while (true) {
-    await charge(id, amount);
-    await sleepTilNextMonth();
-  }
-}
-// from client
-await handle.signal(update, 300);
-```
-
-Every month, a customer will be charged an amount specified by the update handler.
-The update handler is a function that takes a number and returns a numer. That number is used to update the amount the customer is charge.
 
 </TabItem>
 </Tabs>
 
 #### Send Signal-With-Start
 
-Signal-With-Start can be used to start a Workflow Execution (if not already running) and pass it the Signal at the same time.
+Signal-With-Start is used from the Client.
+It takes a Workflow Id, Workflow arguments, a Signal name, and Signal arguments.
+
+If there's a Workflow running with the given Workflow Id, it will be signaled. If there isn't, a new Workflow will be started and immediately signaled.
 
 <Tabs
 defaultValue="go"
@@ -3343,15 +3356,19 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-To send a Signal to a Workflow and start the Workflow if it isn't already running, use `signalWithStart()`.
+[`WorkflowClient.signalWithStart`](https://typescript.temporal.io/api/classes/client.WorkflowClient#signalwithstart)
 
 ```typescript
+import {WorkflowClient} from "@temporalio/client";
+import {myWorkflow, joinSignal} from "./workflows";
+
 const client = new WorkflowClient();
-await client.signalWithStart(YourWorkflow, {
-  workflowId,
-  args: [arg1, arg2],
-  signal: YourSignal,
-  signalArgs: [arg3, arg4],
+
+await client.signalWithStart(myWorkflow, {
+  workflowId: "workflow-id-123",
+  args: [{foo: 1}],
+  signal: joinSignal,
+  signalArgs: [{userId: "user-1", groupId: "group-1"}],
 });
 ```
 
