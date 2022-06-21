@@ -1,4 +1,3 @@
-* @flossypurse
-/docs/ @temporalio/docs
+* @temporalio/docs
 /docs/typescript/ @temporalio/docs @lorensr
 /blog/ @temporalio/docs @rylandg
