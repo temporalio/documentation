@@ -87,10 +87,9 @@ However, you can still force manual actions, see [trigger immediately](/tctl/sch
 
 To assist communication among developers and operators, there's a “notes” field that can be updated on pause/unpause to store an explanation for the current state.
 
-### Limited Actions
+### Limiting number of Actions
 
-A Schedule may be limited to a certain number of Actions (i.e. not
-trigger immediately).
+A Schedule may be limited to a certain number of Actions (i.e. not trigger immediately).
 After that it will act as if it was Paused.
 
 ### Policies
@@ -104,13 +103,13 @@ The following options are available:
 
 - `Skip`: **Default**.
   Nothing happens, and the specified Action is not started.
-- `BufferOne`: Start the Workflow Execution as soon as the current one completes. The buffer is limited to one.
+- `BufferOne`: Starts the Workflow Execution as soon as the current one completes. The buffer is limited to one.
   If another Workflow Execution is supposed to start, but there is already one in the buffer, only the one in the buffer eventually starts.
 - `BufferAll`: Allows an unlimited number of Workflows to buffer.
   They are started sequentially.
 - `CancelOther`: Cancels the running Workflow Execution, and then starts the new one after the old one completes cancellation.
 - `TerminateOther`: Termiantes the running Workflow Execution and starts the new one immediately.
-- `AllowAll` Start any number of concurrent Workflow Executions.
+- `AllowAll` Starts any number of concurrent Workflow Executions.
   With this policy (and only this policy), there may be more than one Workflow Execution, started by the Schedule, running simultaneously.
 
 #### Catchup Window
@@ -122,11 +121,10 @@ An outage that lasts longer than the catchup window could lead to missed actions
 
 #### Pause-on-failure
 
-If this policy is set, a workflow started by a Schedule that ends with a failure or timeout (but not cancellation or terminate) will cause the Schedule to automatically pause.
+If this policy is set, a Workflow Execution started by a Schedule that ends with a failure or timeout (but not Cancellation or Termination) will cause the Schedule to automatically pause.
 
 Note that with the `AllowAll` overlap policy, this pause might not apply to the next Run, because the next run might have started before the failed run finished.
-It applies only to Runs that were Scheduled to start after the
-failed Run finished.
+It applies only to Runs that were Scheduled to start after the failed Run finished.
 
 ### Last completion result
 
