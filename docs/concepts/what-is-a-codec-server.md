@@ -17,12 +17,12 @@ Codec Servers can handle authentication and authorization in a similar manner us
 
 In application code, Data Converters can be configured to use a PayloadCodec to encrypt data before it’s sent to Temporal.
 
-![](/static/img/remote-codec-server-problem)
+![](/img/remote-codec-server-problem)
 
 However, the pre-built tctl and WebUI binaries use a default Data Converter that does not include your Payload Codec.
 The tctl and WebUI won't be able to show decrypted data.
 
-![](/static/img/remote-codec-server-solution)
+![](/img/remote-codec-server-solution)
 
 This is where a Codec Server comes into play. The server exposes your Payload Codec’s encode and decode methods via HTTP interface. This allows tctl and the WebUI to use the Payload Codec to encrypt and decrypt data as needed.
 
