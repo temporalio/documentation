@@ -400,7 +400,7 @@ export async function example(args: ExampleArgs): Promise<{greeting: string}> {
 
 Workflows in Python are classes.
 
-Specify the [`@workflow.defn`](https://python.temporal.io/temporalio.workflow.html) decorator on the Workflow class to register a Workflow class.
+Specify the [`@workflow.defn`](https://python.temporal.io/temporalio.workflow.html#defn) decorator on the Workflow class to register a Workflow class.
 
 Use the [`@workflow.run`](https://python.temporal.io/temporalio.workflow.html#run) to mark the entry point method to be invoked. This must be set on one asynchronous method defined on the same class as `@workflow.defn`. Run methods have positional parameters.
 
