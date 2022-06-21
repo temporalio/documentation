@@ -13,7 +13,7 @@ release_version: V1.15
 
 <!--truncate-->
 
-There are numerous task queues for Node.js: [Bull](https://optimalbits.github.io/bull/) is the most popular, but [Bee Queue](https://www.npmjs.com/package/bee-queue), [Agenda](https://www.npmjs.com/package/agenda), and [Kue](https://www.npmjs.com/package/kue) are also common.
+There are numerous task queues for Node.js. [Bull](https://optimalbits.github.io/bull/) is the most popular, but [Bee Queue](https://www.npmjs.com/package/bee-queue), [Agenda](https://www.npmjs.com/package/agenda), and [Kue](https://www.npmjs.com/package/kue) are also common.
 All these task queue libraries solve a similar problem.
 They let you put a task onto a queue, and define a worker that consumes tasks from the queue.
 While Temporal is much more than a task queue, Temporal does solve the same problems as these task queue libraries.
