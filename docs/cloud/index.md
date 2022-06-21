@@ -8,7 +8,7 @@ Temporal Cloud is a fully managed public cloud service for the [Temporal Platfor
 
 :::tip Updated UI
 
-Temporal Cloud is now using Temporal UI v2 as the default UI.
+Temporal Cloud is now using [Temporal Web UI v2](/concepts/what-is-the-temporal-web-ui/) as the default UI.
 
 :::
 
