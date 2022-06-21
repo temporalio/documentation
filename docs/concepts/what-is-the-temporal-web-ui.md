@@ -24,8 +24,8 @@ See the [UI configuration reference](/references/ui-configuration).
 
 Web UI open source repos:
 
-- [temporalio/ui](https://github.com/temporalio/ui-server)
-- [temporalio/ui-server](https://github.com/temporalio/ui)
+- [temporalio/ui](https://github.com/temporalio/ui)
+- [temporalio/ui-server](https://github.com/temporalio/ui-server)
 
 The Web UI is packed with several features.
 
