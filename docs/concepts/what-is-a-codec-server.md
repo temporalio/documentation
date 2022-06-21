@@ -23,7 +23,7 @@ Because of this, tctl and the WebUI will not be able to show decrypted data—at
 
 ![](/static/img/remote-codec-server-solution)
 
-This is where a Codec Server comes into play. The server exposes your PayloadCodec’s encode/decode methods via HTTP interface. This allows tctl and the WebUI to use the PayloadCodec to encrypt and decrypt data as needed.
+This is where a Codec Server comes into play. The server exposes your PayloadCodec’s encode and decode methods via HTTP interface. This allows tctl and the WebUI to use the PayloadCodec to encrypt and decrypt data as needed.
 
 ## Configuration
 
