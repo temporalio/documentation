@@ -9,7 +9,7 @@ tags:
   - python
 ---
 
-The Temporal Python SDK uses the [Logging](https://docs.python.org/3/library/logging.html) package.
+The Temporal Python SDK uses the [logging](https://docs.python.org/3/library/logging.html) module.
 
 Logging provides a set of convenience functions for simple logging usage including:
 
