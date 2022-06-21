@@ -561,6 +561,10 @@ function Explained() {
         <a className="header-link" href="/devtools/">
           <h2 className="h2-landing">Devtools</h2>
         </a>
+        <p className="landing-card-p">
+          Tools to visualize the state of things and interact with the Temporal
+          system.{" "}
+        </p>
         <ul className="landing-card-list">
           <li className="">
             <div className="landing-card-list-item">
@@ -587,6 +591,35 @@ function Explained() {
         <a className="header-link" href="/references/">
           <h2 className="h2-landing">References</h2>
         </a>
+        <p className="landing-card-p">
+          References for the Temporal SDK APIs and more.{" "}
+        </p>
+
+        <ul className="landing-card-list">
+          <li className="">
+            <div className="landing-card-list-item">
+              <BookSVG />
+              <Link
+                to={useBaseUrl("/references/sdk-references")}
+                className="hover:underline"
+              >
+                <a className="font-normal">SDK API</a>
+              </Link>
+            </div>
+          </li>
+
+          <li className="landing-card-list">
+            <div className="landing-card-list-item">
+              <BookSVG />
+              <Link
+                to={useBaseUrl("/references/sdk-metrics")}
+                className="hover:underline"
+              >
+                <a className="font-normal">SDK metrics</a>
+              </Link>
+            </div>
+          </li>
+        </ul>
         <ul className="landing-card-list">
           <li className="">
             <div className="landing-card-list-item">
@@ -611,15 +644,16 @@ function Explained() {
             </div>
           </li>
         </ul>
+
         <ul className="landing-card-list">
           <li className="">
             <div className="landing-card-list-item">
               <BookSVG />
               <Link
-                to={useBaseUrl("/references/sdk-metrics")}
+                to={useBaseUrl("/references/ui-configuration")}
                 className="hover:underline"
               >
-                <a className="font-normal">SDK metrics</a>
+                <a className="font-normal">UI configuration</a>
               </Link>
             </div>
           </li>

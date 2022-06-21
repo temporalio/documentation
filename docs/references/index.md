@@ -3,16 +3,19 @@ id: index
 title: Temporal Platform references
 ---
 
+### Temporal SDK API references
+
+- [Java](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/index.html)
+- [Go](https://pkg.go.dev/go.temporal.io/sdk)
+- [TypeScript](https://nodejs.temporal.io)
+- [Python](https://python.temporal.io)
+
+### SDK metric reference
+
 [SDK metrics reference](/references/sdk-metrics)
 
-[Commands reference](/references/commands)
+### Command and Events references
 
-[Events reference](/references/events)
+- [Commands reference](/references/commands)
 
-[Go SDK reference](https://pkg.go.dev/go.temporal.io/sdk)
-
-[Java SDK reference](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/index.html)
-
-[TypeScript SDK reference](https://typescript.temporal.io)
-
-[Glossary](/glossary)
+- [Events reference](/references/events)

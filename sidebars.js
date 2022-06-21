@@ -496,6 +496,7 @@ module.exports = {
         id: "references/index",
       },
       items: [
+        "references/sdk-references",
         "references/sdk-metrics",
         "references/commands",
         "references/events",
