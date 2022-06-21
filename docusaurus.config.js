@@ -307,6 +307,7 @@ module.exports = {
         // Will be passed to @docusaurus/plugin-content-blog
         // options: https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-blog
         blog: {
+          id: 'blog',
           routeBasePath: "blog",
           path: "blog",
           postsPerPage: 10,
@@ -353,6 +354,26 @@ module.exports = {
     //   async: true,
     //   defer: true,
     // },
+  ],
+  plugins: [
+    [
+      '@docusaurus/plugin-content-blog',
+      {
+        /**
+         * Required for any multi-instance plugin
+         */
+        id: 'cloud-release-notes',
+        /**
+         * URL route for the blog section of your site.
+         * *DO NOT* include a trailing slash.
+         */
+        routeBasePath: 'cloud/release-notes',
+        /**
+         * Path to data on filesystem relative to site dir.
+         */
+        path: 'cloud/release-notes',
+      },
+    ],
   ],
 };
 
