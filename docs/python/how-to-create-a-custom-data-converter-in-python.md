@@ -22,6 +22,6 @@ The default data converter supports converting multiple types including:
 - `None`
 - `bytes`
 - `google.protobuf.message.Message`: as JSON when encoding, but has ability to decode binary Protobuf from other languages.
-- `json.dump`: supported.
+- Anything that [json.dump](https://docs.python.org/3/library/json.html#json.dump) supports
 
 As a special case in the default converter, data classes are automatically converted to dictionaries before encoding as JSON. Because Python is a dynamic language, when decoding by means of `json.load`, the type is not known at runtime. For example, a JSON object will be a dictionary. As a special case, if the parameter type hint is a data class for a JSON payload, it is decoded into an instance of that data class (properly recursing into child data classes).

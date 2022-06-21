@@ -41,7 +41,7 @@ async def main():
         print(f"Result: {result}")
 ```
 
-You can also use the `workflow.logger` to log a message. The following logs a message from the Workflow.
+You should use the `workflow.logger` to log a message inside a workflow. The following logs a message from the Workflow.
 
 ```python
 @workflow.run
