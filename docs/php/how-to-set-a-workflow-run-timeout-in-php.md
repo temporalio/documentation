@@ -4,7 +4,7 @@ title: How to set Workflow Run Timeout in PHP
 sidebar_label: Workflow Run Timeout
 ---
 
-`workflowRuntTimeout` runs timeout limits duration of a single Workflow invocation.
+`WorkflowRunTimeout` runs timeout limits duration of a single Workflow invocation.
 
 ```php
 $workflow = $this->workflowClient->newWorkflowStub(
