@@ -64,7 +64,7 @@ Some important features of the [InjectedSinkFunction](https://typescript.tempora
 - **Limited arguments types**: The remaining Sink function arguments are copied between the sandbox and the Node.js environment using the [structured clone algorithm](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm).
 - **No return value**: To prevent breaking determinism, Sink functions cannot return values to the Workflow.
 
-#### Advanced: Performance considerations and non-blocking Sinks
+**Advanced: Performance considerations and non-blocking Sinks**
 
 The injected sink function contributes to the overall Workflow Task processing duration.
 

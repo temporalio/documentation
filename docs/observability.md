@@ -347,44 +347,563 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-The [`interceptors-opentelemetry`](https://github.com/temporalio/samples-typescript/tree/main/interceptors-opentelemetry) sample shows how to use the SDK's built-in OpenTelemetry tracing to trace everything from starting a Workflow to Workflow Execution to running an Activity from that Workflow.
+A common logging use case is logging to a file to be picked up by a collector like the [Datadog Agent](https://docs.datadoghq.com/logs/log_collection/nodejs/?tab=winston30).
 
-The built-in tracing uses protobuf message headers (like [this one](https://github.com/temporalio/api/blob/b2b8ae6592a8730dd5be6d90569d1aea84e1712f/temporal/api/workflowservice/v1/request_response.proto#L161) when starting a Workflow) to propagate the tracing information from the client to the Workflow and from the Workflow to its successors (when Continued As New), children, and Activities.
-All of these executions are linked with a single trace identifier and have the proper parent->child span relation.
+```ts
+import {Runtime} from "@temporalio/worker";
+import winston from "winston";
 
-Tracing is compatible between different Temporal SDKs as long as compatible [context propagators](https://opentelemetry.lightstep.com/core-concepts/context-propagation/) are used.
+const logger = winston.createLogger({
+  level: "info",
+  format: winston.format.json(),
+  transports: [new transports.File({filename: "/path/to/worker.log"})],
+});
+Runtime.install({logger});
+```
 
-**Context propagation**
+</TabItem>
+</Tabs>
 
-The TypeScript SDK uses the global OpenTelemetry propagator.
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
 
-To extend the default ([Trace Context](https://github.com/open-telemetry/opentelemetry-js/blob/main/packages/opentelemetry-core/README.md#w3ctracecontextpropagator-propagator) and [Baggage](https://github.com/open-telemetry/opentelemetry-js/blob/main/packages/opentelemetry-core/README.md#baggage-propagator) propagators) to also include the [Jaeger propagator](https://www.npmjs.com/package/@opentelemetry/propagator-jaeger), follow these steps:
+<TabItem value="go">
 
-- `npm i @opentelemetry/propagator-jaeger`
+Content is not available
 
-- At the top level of your Workflow code, add the following lines:
+</TabItem>
+<TabItem value="java">
 
-  ```js
-  import {propagation} from "@opentelemetry/api";
-  import {
-    CompositePropagator,
-    W3CTraceContextPropagator,
-    W3CBaggagePropagator,
-  } from "@opentelemetry/core";
-  import {JaegerPropagator} from "@opentelemetry/propagator-jaeger";
+Content is not available
 
-  propagation.setGlobalPropagator(
-    new CompositePropagator({
-      propagators: [
-        new W3CTraceContextPropagator(),
-        new W3CBaggagePropagator(),
-        new JaegerPropagator(),
-      ],
-    })
-  );
-  ```
+</TabItem>
+<TabItem value="php">
 
-Similarly, you can customize the OpenTelemetry `NodeSDK` propagators by following the instructions in the [Initialize the SDK](https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/opentelemetry-sdk-node#initialize-the-sdk) section of the README.
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+Logging from Workflows is tricky for two reasons:
+
+1. Workflows run in a sandboxed environment and cannot do any I/O.
+1. Workflow code might get replayed at any time, generating duplicate log messages.
+
+To work around these limitations, we recommend using the Sinks feature in the TypeScript SDK.
+Sinks enable one-way export of logs, metrics, and traces from the Workflow isolate to the Node.js environment.
+
+<!--
+Workflows in Temporal may be replayed from the beginning of their history when resumed. In order for Temporal to recreate the exact state Workflow code was in, the code is required to be fully deterministic. To prevent breaking [determinism](/typescript/determinism), in the TypeScript SDK, Workflow code runs in an isolated execution environment and may not use any of the Node.js APIs or communicate directly with the outside world. -->
+
+Sinks are written as objects with methods. Similar to Activities, they are declared in the Worker and then proxied in Workflow code, and it helps to share types between both.
+
+<details>
+  <summary>Comparing Sinks, Activities and Interceptors</summary>
+  
+Sinks are similar to Activities in that they are both registered on the Worker and proxied into the Workflow.
+However, they differ from Activities in important ways:
+
+- Sink functions don't return any value back to the Workflow and cannot not be awaited.
+- Sink calls are not recorded in Workflow histories (no timeouts or retries).
+- Sink functions are _always_ run on the same Worker that runs the Workflow they are called from.
+
+</details>
+
+**Declaring the Sink Interface**
+
+Explicitly declaring a Sink's interface is optional, but is useful for ensuring type safety in subsequent steps:
+
+<!--SNIPSTART typescript-logger-sink-interface-->
+<!--SNIPEND-->
+
+**Implementing Sinks**
+
+Implementing Sinks is a two-step process.
+
+Implement and inject the Sink function into a Worker
+
+<!--SNIPSTART typescript-logger-sink-worker-->
+<!--SNIPEND-->
+
+- Sink function implementations are passed as an object into [WorkerOptions](https://typescript.temporal.io/api/interfaces/worker.workeroptions/#sinks)
+- You can specify whether you want the injected function to be called during Workflow replay by setting the `callDuringReplay` boolean option.
+
+**Proxy and call a Sink function from a Workflow**
+
+<!--SNIPSTART typescript-logger-sink-workflow-->
+<!--SNIPEND-->
+
+Some important features of the [InjectedSinkFunction](https://typescript.temporal.io/api/interfaces/worker.InjectedSinkFunction) interface:
+
+- **Injected WorkflowInfo argument**: The first argument of a Sink function implementation is a [`workflowInfo` object](https://typescript.temporal.io/api/interfaces/workflow.workflowinfo/) that contains useful metadata.
+- **Limited arguments types**: The remaining Sink function arguments are copied between the sandbox and the Node.js environment using the [structured clone algorithm](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm).
+- **No return value**: To prevent breaking determinism, Sink functions cannot return values to the Workflow.
+
+**Advanced: Performance considerations and non-blocking Sinks**
+
+The injected sink function contributes to the overall Workflow Task processing duration.
+
+- If you have a long-running sink function, such as one that tries to communicate with external services, you might start seeing Workflow Task timeouts.
+- The effect is multiplied when using `callDuringReplay: true` and replaying long Workflow histories because the Workflow Task timer starts when the first history page is delivered to the Worker.
+
+</TabItem>
+</Tabs>
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+Content is not available
+
+</TabItem>
+<TabItem value="java">
+
+Content is not available
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+Activities run in the standard Node.js environment and can use any Node.js logger.
+
+<details>
+<summary>
+Inject Activity context via interceptor and log all Activity executions
+</summary>
+
+<!--SNIPSTART typescript-activity-logging-interceptor-->
+<!--SNIPEND-->
+
+</details>
+
+<details>
+<summary>
+Use the injected logger from an Activity
+</summary>
+
+<!--SNIPSTART typescript-activity-use-injected-logger -->
+<!--SNIPEND-->
+
+</details>
+
+</TabItem>
+</Tabs>
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+Content is not available
+
+</TabItem>
+<TabItem value="java">
+
+Content is not available
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+**Logging in Workers and Clients**
+
+The Worker comes with a default logger which defaults to log any messages with level `INFO` and higher to `STDERR` using `console.error`.
+There are 5 levels in total:
+
+- `TRACE`
+- `DEBUG`
+- `INFO`
+- `WARN`
+- `ERROR`
+
+The reason we only offer a default logger is to minimize Worker dependencies and allow SDK users to bring their own logger.
+
+**Customizing the default logger**
+
+Temporal ships a [`DefaultLogger`](https://typescript.temporal.io/api/classes/worker.defaultlogger/) that implements the basic interface.
+
+**Set Default logger level**
+
+The following example creates a new logger that will log all messages with a level `WARN` and higher.
+
+```ts
+import {Runtime, DefaultLogger} from "@temporalio/worker";
+
+// Creating a new logger that will log all messages with level WARN and higher.
+const logger = new DefaultLogger("WARN", ({level, message}) => {
+  console.log(`Custom logger: ${level} — ${message}`);
+});
+Runtime.install({logger});
+```
+
+**Example: Accumulate logs for testing/reporting**
+
+The following example creates a logger that will log all the messages to an array.
+
+```ts
+import {DefaultLogger, LogEntry} from "@temporalio/worker";
+
+const logs: LogEntry[] = [];
+const logger = new DefaultLogger("TRACE", (entry) => logs.push(entry));
+log.debug("hey", {a: 1});
+log.info("ho");
+log.warn("lets", {a: 1});
+log.error("go");
+```
+
+The log levels are [listed here](https://typescript.temporal.io/api/namespaces/worker#loglevel) in increasing order of severity.
+
+</TabItem>
+</Tabs>
+
+## Visibility
+
+The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.
+
+A List Filter is the SQL-like string that is provided as the parameter to an [Advanced Visibility](/visibility/#advanced-visibility) List API.
+
+A List Filter contains [Search Attribute](/visibility/#search-attributes) names, Search Attribute values, and Operators.
+
+- The following operators are supported in List Filters:
+
+  - **AND, OR, ()**
+  - **=, !=, >, >=, <, <=**
+  - **IN**
+  - **BETWEEN ... AND**
+  - **ORDER BY**
+
+- A List Filter applies to a single Namespace.
+
+- The range of a List Filter timestamp (`StartTime`, `CloseTime`, `ExecutionTime`) cannot exceed `9223372036854775807` (that is, `maxInt64: 1001`).
+
+- A List Filter that uses a time range has a resolution of 1 ms on Elasticsearch 6 and 1 ns on Elasticsearch 7.
+
+- List Filter Search Attribute names are case-sensitive.
+
+- An Advanced List Filter API may take longer than expected if it is retrieving more than 10 million Workflow Executions.
+
+- A `ListWorkflow` API supports pagination.
+  Use the page token in the following call to retrieve the next page; continue until the page token is `null`/`nil`.
+
+- To efficiently count the number of Workflow Executions, use the `CountWorkflow` API.
+
+A List Filter is the SQL-like string that is provided as the parameter to an [Advanced Visibility](/visibility/#advanced-visibility) List API.
+
+A List Filter contains [Search Attribute](/visibility/#search-attributes) names, Search Attribute values, and Operators.
+
+- The following operators are supported in List Filters:
+
+  - **AND, OR, ()**
+  - **=, !=, >, >=, <, <=**
+  - **IN**
+  - **BETWEEN ... AND**
+  - **ORDER BY**
+
+- A List Filter applies to a single Namespace.
+
+- The range of a List Filter timestamp (`StartTime`, `CloseTime`, `ExecutionTime`) cannot exceed `9223372036854775807` (that is, `maxInt64: 1001`).
+
+- A List Filter that uses a time range has a resolution of 1 ms on Elasticsearch 6 and 1 ns on Elasticsearch 7.
+
+- List Filter Search Attribute names are case-sensitive.
+
+- An Advanced List Filter API may take longer than expected if it is retrieving more than 10 million Workflow Executions.
+
+- A `ListWorkflow` API supports pagination.
+  Use the page token in the following call to retrieve the next page; continue until the page token is `null`/`nil`.
+
+- To efficiently count the number of Workflow Executions, use the `CountWorkflow` API.
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+- Type: `map[string]interface{}`
+- Default: Empty.
+
+These are the corresponding [Search Attribute value types](/concepts/what-is-a-search-attribute/#types) in Go:
+
+- Keyword = string
+- Int = int64
+- Double = float64
+- Bool = bool
+- Datetime = time.Time
+- Text = string
+
+The following code starts a Workflow Execution with a Search Attribute of `CustomIntField` and `MiscData`.
+
+```go
+searchAttributes := map[string]interface{}{
+  "CustomIntField": 1,
+  "MiscData": "yellow",
+}
+workflowOptions := client.StartWorkflowOptions{
+  SearchAttributes: searchAttributes,
+  // ...
+}
+workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
+if err != nil {
+  // ...
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+Content is not available
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is not available
+
+</TabItem>
+</Tabs>
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+You can provide key-value pairs as Search Attributes in [StartWorkflowOptions](https://pkg.go.dev/go.temporal.io/sdk/internal#StartWorkflowOptions).
+In Go, Search Attributes are represented as `map[string]interface{}`.
+The value provided in the map must be the same type that was added to a Cluster.
+
+This can be useful for tagging executions with useful attributes you may want to search up later. For example:
+
+```go
+func (c *Client) CallMyWorkflow(ctx context.Context, workflowID string, payload map[string]interface{}) error {
+    // ...
+    searchAttributes := map[string]interface{}{
+        "CustomerId": payload["customer"],
+        "MiscData": payload["miscData"]
+    }
+    options := client.StartWorkflowOptions{
+        ID:                 workflowID,
+        TaskQueue:          app.MyTaskQueue,
+        SearchAttributes:   searchAttributes
+    }
+    we, err := c.Client.ExecuteWorkflow(ctx, options, app.MyWorkflow, payload)
+    // ...
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+Content is not available
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is not available
+
+</TabItem>
+</Tabs>
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+In advanced cases, you may want to dynamically update these attributes as the Workflow progresses.
+[UpsertSearchAttributes](https://pkg.go.dev/go.temporal.io/sdk/workflow#UpsertSearchAttributes) is used to add or update Search Attributes from within Workflow code.
+
+`UpsertSearchAttributes` will merge attributes to the existing map in the Workflow.
+Consider this example Workflow code:
+
+```go
+func MyWorkflow(ctx workflow.Context, input string) error {
+
+    attr1 := map[string]interface{}{
+        "CustomIntField": 1,
+        "CustomBoolField": true,
+    }
+    workflow.UpsertSearchAttributes(ctx, attr1)
+
+    attr2 := map[string]interface{}{
+        "CustomIntField": 2,
+        "CustomKeywordField": "seattle",
+    }
+    workflow.UpsertSearchAttributes(ctx, attr2)
+}
+```
+
+After the second call to `UpsertSearchAttributes`, the map will contain:
+
+```go
+map[string]interface{}{
+    "CustomIntField": 2, // last update wins
+    "CustomBoolField": true,
+    "CustomKeywordField": "seattle",
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+Content is not available
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+In advanced cases, you may want to dynamically update these attributes as the Workflow progresses.
+Temporal has an `UpsertSearchAttributes` capability, but it is not yet supported in the TypeScript SDK.
+
+</TabItem>
+</Tabs>
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+**There is no support for removing a field.**
+
+However, to achieve a similar effect, set the field to some placeholder value.
+For example, you could set `CustomKeywordField` to `impossibleVal`.
+Then searching `CustomKeywordField != 'impossibleVal'` will match Workflows with `CustomKeywordField` not equal to `impossibleVal`, which includes Workflows without the `CustomKeywordField` set.
+
+</TabItem>
+<TabItem value="java">
+
+Content is not available
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+**There is no support for removing a field.**
+
+However, to achieve a similar effect, set the field to some placeholder value.
+For example, you could set `CustomKeywordField` to `impossibleVal`.
+Then searching `CustomKeywordField != 'impossibleVal'` will match Workflows with `CustomKeywordField` not equal to `impossibleVal`, which includes Workflows without the `CustomKeywordField` set.
+
+</TabItem>
+</Tabs>
+
+## Replays
+
+TODO
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+Use the [worker.WorflowReplayer](https://pkg.go.dev/go.temporal.io/sdk/worker#WorkflowReplayer) to replay an existing Workflow Execution from its Event History to replicate errors.
+
+For example, the following code retrieves the Event History of a Workflow:
+
+```go
+import (
+	"context"
+
+	"go.temporal.io/api/enums/v1"
+	"go.temporal.io/api/history/v1"
+	"go.temporal.io/sdk/client"
+)
+
+func GetWorkflowHistory(ctx context.Context, client client.Client, id, runID string) (*history.History, error) {
+	var hist history.History
+	iter := client.GetWorkflowHistory(ctx, id, runID, false, enums.HISTORY_EVENT_FILTER_TYPE_ALL_EVENT)
+	for iter.HasNext() {
+		event, err := iter.Next()
+		if err != nil {
+			return nil, err
+		}
+		hist.Events = append(hist.Events, event)
+	}
+	return &hist, nil
+}
+```
+
+This history can then be used to _replay_.
+For example, the following code creates a `WorkflowReplayer` and register the `MyWorkflow` Workflow function.
+Then it calls the `ReplayWorkflowHistory` to _replay_ the Event History and return an error code.
+
+```go
+import (
+	"context"
+
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/worker"
+)
+
+func ReplayWorkflow(ctx context.Context, client client.Client, id, runID string) error {
+	hist, err := GetWorkflowHistory(ctx, client, id, runID)
+	if err != nil {
+		return err
+	}
+	replayer := worker.NewWorkflowReplayer()
+	replayer.RegisterWorkflow(MyWorkflow)
+	return replayer.ReplayWorkflowHistory(nil, hist)
+}
+```
+
+The code above will cause the Worker to re-execute the Workflow's Workflow Function using the original Event History.
+If a noticeably different code path was followed or some code caused a deadlock, it will be returned in the error code.
+Replaying a Workflow Execution locally is a good way to see exactly what code path was taken for given input and events.
+
+</TabItem>
+<TabItem value="java">
+
+Content is not available
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is not available
 
 </TabItem>
 </Tabs>

@@ -39,7 +39,7 @@ Search Attributes are often queried via the Web UI, but you can also Query from 
 
 ## Tagging Search Attributes at workflow creation
 
-You can provide key-value pairs as searchAttributes in [StartWorkflowOptions](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions#searchattributes).
+You can provide key-value pairs as Search Attributes in [StartWorkflowOptions](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions#searchattributes).
 In TypeScript, SearchAttributes are represented as `Record<string, string | number | boolean>`.
 
 - The value provided in the map must match what is registered in the dynamic config.

@@ -1,8 +1,8 @@
 ---
-id: how-to-use-tracing-in-go
-title: How to use tracing in Go
-sidebar_label: Use tracing
-description: Use tracing
+id: how-to-configure-tracing-in-go
+title: How to configure tracing in Go
+sidebar_label: Configure tracing
+description: Configure tracing
 tags:
   - go
   - how-to

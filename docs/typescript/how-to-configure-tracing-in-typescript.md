@@ -1,8 +1,8 @@
 ---
-id: how-to-use-tracing-in-typescript
-title: How to use tracing in TypeScript
-sidebar_label: Use tracing
-description: Use tracing
+id: how-to-configure-tracing-in-typescript
+title: How to configure tracing in TypeScript
+sidebar_label: Configure tracing
+description: Configure tracing
 tags:
   - developer-guide
   - sdk
