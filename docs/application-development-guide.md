@@ -270,11 +270,30 @@ pip install temporalio
 
 **Are there executable code samples?**
 
-You can find a complete list of executable code samples in the [Samples Library](https://github.com/temporalio/samples-python), which includes Temporal Python SDK code samples from the [temporalio/samples-python](https://github.com/temporalio/samples-python) repo.
+You can find a complete list of executable code samples in the [Samples Library](https://github.com/temporalio/samples-python), which includes Temporal Python SDK code samples.
 
 **Where is the Python SDK technical reference?**
 
-The Temporal Python SDK reference is published on [python.temporal.io](https://python.temporal.io/index.html).
+The Temporal Python SDK API reference is published on [python.temporal.io](https://python.temporal.io/index.html).
+
+**How to use `import`s in the Python SDK**
+To import Activities and Workflows, use the following:
+
+```python
+from temporalio import activity, workflow
+```
+
+To import the Worker class from the `temporalio.worker` module, use the following:
+
+```python
+from temporalio.worker import Worker
+```
+
+````
+To import the Client class from the` temporalio.client` module, use the following:
+```python
+from temporalio.client import Client
+````
 
 </TabItem>
 </Tabs>
@@ -406,7 +425,7 @@ Use the [`@workflow.run`](https://python.temporal.io/temporalio.workflow.html#ru
 
 ```python
 @workflow.defn
-class YourActivityWorkflow:
+class YourWorkflow:
     @workflow.run
     async def run(self, name: str) -> str:
         return await workflow.execute_activity(
@@ -526,10 +545,7 @@ export async function example({name, born}: ExampleParam): Promise<string> {
 </TabItem>
 <TabItem value="python">
 
-Workflow parameters are the method parameters of the singular method decorated
-with `@workflow.run`. These can be any data type Temporal can convert including
-`dataclass`es. Technically this can be multiple parameters, but Temporal
-strongly encourages a single `dataclass` parameter containing all input fields.
+Workflow parameters are the method parameters of the singular method decorated with `@workflow.run`. These can be any data type Temporal can convert including ['dataclasses'](https://docs.python.org/3/library/dataclasses.html) when properly type-annotated. Technically this can be multiple parameters, but Temporal strongly encourages a single `dataclass` parameter containing all input fields.
 For example:
 
 ```python
@@ -731,9 +747,9 @@ Content is not available
 </TabItem>
 <TabItem value="python">
 
-In Python, you can define the Workflow class name, with `@workflow.defn(name="your-workflow-name")`. `@workflow.defn` marks a class as a Workflow, and defaults the Workflow name to the class's name, which can be overridden.
+In Python, you can define the Workflow type name, with `@workflow.defn(name="your-workflow-name")`. `@workflow.defn` marks a class as a Workflow, and defaults the Workflow name to the class's name, which can be overridden.
 
-You can customize the Workflow name with the name parameter, if the name parameter is not specified, the Workflow name defaults to the unqualified class name.
+You can customize the Workflow name with the name parameter, if the name parameter is not specified, the Workflow name defaults to the function name.
 
 ```python
 @workflow.defn(name="your-workflow-name")
@@ -1025,7 +1041,7 @@ export async function greet(name: string): Promise<string> {
 </TabItem>
 <TabItem value="python">
 
-You can develop an Activity Definition by using the `@activity.defn` decorator.
+You can develop an Activity Definition by using the [`@activity.defn`](https://python.temporal.io/temporalio.activity.html#defn) decorator.
 
 ```python
 @activity.defn
@@ -1033,6 +1049,7 @@ async def say_hello_activity(name: str) -> str:
     return f"Hello, {name}!"
 ```
 
+V
 You can register the function as an Activity with a custom name with a decorator argument. For example, `@activity.defn(name="your-activity")`.
 
 ```python
@@ -1041,24 +1058,20 @@ async def say_hello_activity(name: str) -> str:
     return f"Hello, {name}!"
 ```
 
-Activities are passed as a mapping with the key as a string Activity name and the value as a _callable_. Callables are functions you can call.
-
 **Types of Activities**
 
-There are 3 types of _Activity callables_:
+The following lists the different types of _Activity callables_:
 
-- Asynchronous Activities.
-- Synchronous Activities.
-- Synchronous Multithreaded Activities.
+- [Asynchronous Activities](#asynchronous-activities)
+- [Synchronous Activities](#synchronous-activities)
 
-Normal function code can contain two types of arguments:
+:::note Positional arguments
 
-- positional arguments: must be included in the correct order.
-- keyword arguments: included with a keyword and equals sign.
+Only positional arguments are supported by Activities.
 
-However, Activity callables only allow for positional arguments.
+:::
 
-- **Asynchronous Activities**
+##### [Asynchronous Activities](#asynchronous-activities)
 
 Asynchronous Activities (recommended) are functions using `async def`. When using asynchronous Activities there aren't any additional Worker parameters needed.
 
@@ -1067,21 +1080,25 @@ Cancellation for asynchronous activities is done by means of the
 
 An Activity must Heartbeat to receive cancellation.
 
-- **Synchronous Activities**
+##### [Synchronous Activities](#synchronous-activities)
 
-The [`activity_executor`](https://python.temporal.io/temporalio.worker.workerconfig#activity_exector) worker parameter must be set with a `concurrent.futures.Executor` instance to use for executing the Activities.
+The [`activity_executor`](https://python.temporal.io/temporalio.worker.workerconfig#activity_exector) Worker parameter must be set with a [`concurrent.futures.Executor`](https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.Executor) instance to use for executing the Activities.
 
 Cancellation for synchronous Activities is done in the background and the Activity must choose to listen for it and react appropriately.
 
 An Activity must Heartbeat to receive cancellation.
 
-- **Synchronous Multithreaded Activities**
+- ###### [Synchronous Multithreaded Activities](#synchronous-multithreaded-activities)
 
-Multithreaded Activities are functions that use `activity_executor` set to an instance of `concurrent.futures.ThreadPoolExecutor`.
+Multithreaded Activities are functions that use `activity_executor` set to an instance of [`concurrent.futures.ThreadPoolExecutor`](https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.ThreadPoolExecutor).
 
 Besides `activity_executor`, no other additional Worker parameters are required for synchronous multithreaded Activities.
 
-All of these activity functions must be _[picklable](https://docs.python.org/3/library/pickle.html#what-can-be-pickled-and-unpickled)_.
+- ###### [Synchronous Multiprocess/Other Activities](#synchronous-multiprocess)
+
+If `activity_executor` is set to an instance of [`concurrent.futures.Executor`](https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.Executor) that is not `concurrent.futures.ThreadPoolExecutor`, then the synchronous activities are considered multiprocess/other activities.
+
+These require special primitives for Heartbeating and cancellation. The [`shared_state_manager`](https://python.temporal.io/temporalio.worker.sharedstatemanager) Worker parameter must be set to an instance of [`temporalio.worker.SharedStateManager`](https://python.temporal.io/temporalio.worker.sharedstatemanager). The most common implementation can be created by passing a [`multiprocessing.managers.SyncManager`](https://docs.python.org/3/library/multiprocessing.html#multiprocessing.managers.SyncManager) (i.e. result of [`multiprocessing.managers.Manager()`](https://docs.python.org/3/library/multiprocessing.html#multiprocessing.Manager)) to [`temporalio.worker.SharedStateManager.create_from_multiprocessing()`](https://python.temporal.io/temporalio.worker.sharedstatemanager#create_from_multiprocessing).
 
 </TabItem>
 </Tabs>
@@ -1174,10 +1191,7 @@ Content is not available
 </TabItem>
 <TabItem value="python">
 
-Activity parameters are the function parameters of the function decorated with
-`@activity.defn`. These can be any data type Temporal can convert including
-`dataclass`es. Technically this can be multiple parameters, but Temporal
-strongly encourages a single `dataclass` parameter containing all input fields.
+Activity parameters are the function parameters of the function decorated with `@activity.defn`. These can be any data type Temporal can convert including ['dataclasses'](https://docs.python.org/3/library/dataclasses.html) when properly type-annotated. Technically this can be multiple parameters, but Temporal strongly encourages a single `dataclass` parameter containing all input fields.
 For example:
 
 ```python
@@ -1359,12 +1373,10 @@ Content is not available
 </TabItem>
 <TabItem value="python">
 
-You can register an Activity function with a custom name in the decorator argument. For example, `@activity.defn(name="your-activity")`.
-
-You can customize the Activity name with the name parameter, if the name parameter is not specified, the Activity name defaults to the unqualified class name.
+You can customize the Activity name with a custom name in the decorator argument, for example, `@activity.defn(name="your-activity")`. If the name parameter is not specified, the Activity name defaults to the function name.
 
 ```python
-@activity.defn()
+@activity.defn(name="your-activity")
 async def say_hello_activity(name: str) -> str:
     return f"Hello, {name}!"
 ```
@@ -1721,9 +1733,9 @@ class SayHello:
 
 `workflow.execute_activity()` is a shortcut for [`workflow.start_activity()`](https://python.temporal.io/temporalio.workflow.html#start_activity) that waits on its result.
 
-To get just the handle to wait and cancel separately, use `workflow.start_activity()`. This should be used in most cases unless advanced task capabilities are needed.
+To get just the handle to wait and cancel separately, use `workflow.start_activity()`. `workflow.execute_activity()` should be used in most cases unless advanced task capabilities are needed.
 
-A single argument to the Activity is positional. Multiple arguments are not supported in the type-safe form of `start_activity()` or `execute_activity` and must be supplied by the `args` keyword argument.
+A single argument to the Activity is positional. Multiple arguments are not supported in the type-safe form of `start_activity()` or `execute_activity()` and must be supplied by the `args` keyword argument.
 
 </TabItem>
 </Tabs>
@@ -1899,11 +1911,11 @@ The `proxyActivities()` returns an object that calls the Activities in the funct
 </TabItem>
 <TabItem value="python">
 
-Use [`start_activity()`](https://python.temporal.io/temporalio.workflow.html#start_activity) or [`execute_activity`](https://python.temporal.io/temporalio.workflow.html#execute_activity) to start an Activity and return its handle, [`ActivityHandle`](https://python.temporal.io/temporalio.workflow.activityhandle).
+Use [`start_activity()`](https://python.temporal.io/temporalio.workflow.html#start_activity) to start an Activity and return its handle, [`ActivityHandle`](https://python.temporal.io/temporalio.workflow.activityhandle). Use [`execute_activity()`](https://python.temporal.io/temporalio.workflow.html#execute_activity) to return the results.
 
 You must provide either `schedule_to_close_timeout` or `start_to_close_timeout`.
 
-`execute_activity` is a shortcut for `await start_activity()`. An async `workflow.execute_activity()` helper is provided which takes the same arguments as `workflow.start_activity()` and `await`s on the result. This should be used in most cases unless advanced task capabilities are needed.
+`execute_activity()` is a shortcut for `await start_activity()`. An async `workflow.execute_activity()` helper is provided which takes the same arguments as `workflow.start_activity()` and `await`s on the result. `workflow.execute_activity()` should be used in most cases unless advanced task capabilities are needed.
 
 ```python
 @workflow.defn
@@ -2368,7 +2380,7 @@ This is a selected subset of options you are likely to use. Even more advanced o
 </TabItem>
 <TabItem value="python">
 
-To develop a Worker, use the [`Worker()`](https://python.temporal.io/temporalio.worker.html) constructor and add your Client, Task Queue, Workflows, and Activities as arguments.
+To develop a Worker, use the [`Worker()`](https://python.temporal.io/temporalio.worker.worker#__init__) constructor and add your Client, Task Queue, Workflows, and Activities as arguments.
 
 The following code example creates a Worker that polls for tasks from the Task Queue and executes the Workflow.
 
@@ -2522,7 +2534,7 @@ Content is not available
 </TabItem>
 <TabItem value="python">
 
-When a `Worker` is created, it accepts [iterable objects](https://docs.python.org/3/library/functions.html#iter), like: lists, tuples, dictionaries, or sets, in Workflows and Activities in the `workflows` and `activities` parameters respectively.
+When a `Worker` is created, it accepts a list of Workflows and/or Activities in the `workflows` and/or `activities` parameters respectively.
 
 To register multiple values, provide more than one values to the Worker.
 
@@ -2748,9 +2760,6 @@ Workflow Execution run in a separate V8 isolate context in order to provide a [d
 
 To spawn a [Workflow Execution](/workflows/#workflow-executions), use the `ExecuteWorkflow()` method on the `Client`.
 
-The `ExecuteWorkflow()` API call requires an instance of `context.Context`, an instance of `StartWorkflowOptions`, a Workflow Type name, and all variables to be passed to the Workflow Execution.
-The `ExecuteWorkflow()` call returns a Future, which can be used to get the result of the Workflow Execution.
-
 The following code example connects to a server, starts a Workflow, waits for the Workflow to finish, and prints the Workflow result.
 
 ```python
@@ -2953,7 +2962,10 @@ The following example, starts a Workflow with the `GreetingWorkflow` class, pass
 
 ```python
 await client.start_workflow(
-    GreetingWorkflow.run, "your name", id="your-workflow-id", task_queue="your-task-queue"
+    GreetingWorkflow.run,
+    "your name",
+    id="your-workflow-id",
+    task_queue="your-task-queue",
 )
 ```
 
@@ -3952,7 +3964,9 @@ async def start_with_signal(client: Client, worker: ExternalWorker):
         id=f"workflow-{uuid.uuid4()}",
         task_queue=worker.task_queue,
         start_signal="your-signal",
-        start_signal_args=[YourAction(result=YourResultAction(value="some signal arg"))],
+        start_signal_args=[
+            YourAction(result=YourResultAction(value="some signal arg"))
+        ],
     )
 ```
 

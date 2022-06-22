@@ -9,11 +9,11 @@ tags:
   - python
 ---
 
-Use [`start_activity()`](https://python.temporal.io/temporalio.workflow.html#start_activity) or [`execute_activity`](https://python.temporal.io/temporalio.workflow.html#execute_activity) to start an Activity and return its handle, [`ActivityHandle`](https://python.temporal.io/temporalio.workflow.activityhandle).
+Use [`start_activity()`](https://python.temporal.io/temporalio.workflow.html#start_activity) to start an Activity and return its handle, [`ActivityHandle`](https://python.temporal.io/temporalio.workflow.activityhandle). Use [`execute_activity()`](https://python.temporal.io/temporalio.workflow.html#execute_activity) to return the results.
 
 You must provide either `schedule_to_close_timeout` or `start_to_close_timeout`.
 
-`execute_activity` is a shortcut for `await start_activity()`. An async `workflow.execute_activity()` helper is provided which takes the same arguments as `workflow.start_activity()` and `await`s on the result. This should be used in most cases unless advanced task capabilities are needed.
+`execute_activity()` is a shortcut for `await start_activity()`. An async `workflow.execute_activity()` helper is provided which takes the same arguments as `workflow.start_activity()` and `await`s on the result. `workflow.execute_activity()` should be used in most cases unless advanced task capabilities are needed.
 
 ```python
 @workflow.defn

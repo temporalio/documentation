@@ -26,8 +26,28 @@ pip install temporalio
 
 **Are there executable code samples?**
 
-You can find a complete list of executable code samples in the [Samples Library](https://github.com/temporalio/samples-python), which includes Temporal Python SDK code samples from the [temporalio/samples-python](https://github.com/temporalio/samples-python) repo.
+You can find a complete list of executable code samples in the [Samples Library](https://github.com/temporalio/samples-python), which includes Temporal Python SDK code samples.
 
 **Where is the Python SDK technical reference?**
 
-The Temporal Python SDK reference is published on [python.temporal.io](https://python.temporal.io/index.html).
+The Temporal Python SDK API reference is published on [python.temporal.io](https://python.temporal.io/index.html).
+
+**How to use `import`s in the Python SDK**
+
+To import Activities and Workflows, use the following:
+
+```python
+from temporalio import activity, workflow
+```
+
+To import the Worker class from the `temporalio.worker` module, use the following:
+
+```python
+from temporalio.worker import Worker
+```
+
+````
+To import the Client class from the` temporalio.client` module, use the following:
+```python
+from temporalio.client import Client
+````

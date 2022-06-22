@@ -17,4 +17,4 @@ The result is a Child Workflow handle which is an `asyncio`.
 
 Task and supports basic task features. The handle also has some child info and supports signalling the Child Workflow.
 
-`workflow.execute_activity()` is a shortcut for `workflow.start_activity()` that waits on its result. To get just the handle to wait and cancel separately, `workflow.start_activity()` can be used. This should be used in most cases unless advanced task capabilities are needed.
+`workflow.execute_activity()` is a shortcut for `workflow.start_activity()` that waits on its result. To get just the handle to wait and cancel separately, `workflow.start_activity()` can be used. `workflow.execute_activity()` should be used in most cases unless advanced task capabilities are needed.

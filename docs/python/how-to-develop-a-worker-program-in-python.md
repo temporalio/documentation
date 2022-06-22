@@ -9,7 +9,7 @@ tags:
   - workers
 ---
 
-To develop a Worker, use the [`Worker()`](https://python.temporal.io/temporalio.worker.html) constructor and add your Client, Task Queue, Workflows, and Activities as arguments.
+To develop a Worker, use the [`Worker()`](https://python.temporal.io/temporalio.worker.worker#__init__) constructor and add your Client, Task Queue, Workflows, and Activities as arguments.
 
 The following code example creates a Worker that polls for tasks from the Task Queue and executes the Workflow.
 

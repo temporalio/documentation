@@ -9,6 +9,6 @@ tags:
   - python
 ---
 
-When a `Worker` is created, it accepts [iterable objects](https://docs.python.org/3/library/functions.html#iter), like: lists, tuples, dictionaries, or sets, in Workflows and Activities in the `workflows` and `activities` parameters respectively.
+When a `Worker` is created, it accepts a list of Workflows and/or Activities in the `workflows` and/or `activities` parameters respectively.
 
 To register multiple values, provide more than one values to the Worker.

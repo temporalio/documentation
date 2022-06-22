@@ -9,7 +9,7 @@ tags:
   - python
 ---
 
-You can develop an Activity Definition by using the `@activity.defn` decorator.
+You can develop an Activity Definition by using the [`@activity.defn`](https://python.temporal.io/temporalio.activity.html#defn) decorator.
 
 ```python
 @activity.defn
@@ -17,6 +17,7 @@ async def say_hello_activity(name: str) -> str:
     return f"Hello, {name}!"
 ```
 
+V
 You can register the function as an Activity with a custom name with a decorator argument. For example, `@activity.defn(name="your-activity")`.
 
 ```python
@@ -25,24 +26,20 @@ async def say_hello_activity(name: str) -> str:
     return f"Hello, {name}!"
 ```
 
-Activities are passed as a mapping with the key as a string Activity name and the value as a _callable_. Callables are functions you can call.
-
 **Types of Activities**
 
-There are 3 types of _Activity callables_:
+The following lists the different types of _Activity callables_:
 
-- Asynchronous Activities.
-- Synchronous Activities.
-- Synchronous Multithreaded Activities.
+- [Asynchronous Activities](#asynchronous-activities)
+- [Synchronous Activities](#synchronous-activities)
 
-Normal function code can contain two types of arguments:
+:::note Positional arguments
 
-- positional arguments: must be included in the correct order.
-- keyword arguments: included with a keyword and equals sign.
+Only positional arguments are supported by Activities.
 
-However, Activity callables only allow for positional arguments.
+:::
 
-- **Asynchronous Activities**
+##### [Asynchronous Activities](#asynchronous-activities)
 
 Asynchronous Activities (recommended) are functions using `async def`. When using asynchronous Activities there aren't any additional Worker parameters needed.
 
@@ -51,18 +48,22 @@ Cancellation for asynchronous activities is done by means of the
 
 An Activity must Heartbeat to receive cancellation.
 
-- **Synchronous Activities**
+##### [Synchronous Activities](#synchronous-activities)
 
-The [`activity_executor`](https://python.temporal.io/temporalio.worker.workerconfig#activity_exector) worker parameter must be set with a `concurrent.futures.Executor` instance to use for executing the Activities.
+The [`activity_executor`](https://python.temporal.io/temporalio.worker.workerconfig#activity_exector) Worker parameter must be set with a [`concurrent.futures.Executor`](https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.Executor) instance to use for executing the Activities.
 
 Cancellation for synchronous Activities is done in the background and the Activity must choose to listen for it and react appropriately.
 
 An Activity must Heartbeat to receive cancellation.
 
-- **Synchronous Multithreaded Activities**
+- ###### [Synchronous Multithreaded Activities](#synchronous-multithreaded-activities)
 
-Multithreaded Activities are functions that use `activity_executor` set to an instance of `concurrent.futures.ThreadPoolExecutor`.
+Multithreaded Activities are functions that use `activity_executor` set to an instance of [`concurrent.futures.ThreadPoolExecutor`](https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.ThreadPoolExecutor).
 
 Besides `activity_executor`, no other additional Worker parameters are required for synchronous multithreaded Activities.
 
-All of these activity functions must be _[picklable](https://docs.python.org/3/library/pickle.html#what-can-be-pickled-and-unpickled)_.
+- ###### [Synchronous Multiprocess/Other Activities](#synchronous-multiprocess)
+
+If `activity_executor` is set to an instance of [`concurrent.futures.Executor`](https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.Executor) that is not `concurrent.futures.ThreadPoolExecutor`, then the synchronous activities are considered multiprocess/other activities.
+
+These require special primitives for Heartbeating and cancellation. The [`shared_state_manager`](https://python.temporal.io/temporalio.worker.sharedstatemanager) Worker parameter must be set to an instance of [`temporalio.worker.SharedStateManager`](https://python.temporal.io/temporalio.worker.sharedstatemanager). The most common implementation can be created by passing a [`multiprocessing.managers.SyncManager`](https://docs.python.org/3/library/multiprocessing.html#multiprocessing.managers.SyncManager) (i.e. result of [`multiprocessing.managers.Manager()`](https://docs.python.org/3/library/multiprocessing.html#multiprocessing.Manager)) to [`temporalio.worker.SharedStateManager.create_from_multiprocessing()`](https://python.temporal.io/temporalio.worker.sharedstatemanager#create_from_multiprocessing).

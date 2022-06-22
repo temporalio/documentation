@@ -11,9 +11,6 @@ tags:
 
 To spawn a [Workflow Execution](/concepts/what-is-a-workflow-execution), use the `ExecuteWorkflow()` method on the `Client`.
 
-The `ExecuteWorkflow()` API call requires an instance of `context.Context`, an instance of `StartWorkflowOptions`, a Workflow Type name, and all variables to be passed to the Workflow Execution.
-The `ExecuteWorkflow()` call returns a Future, which can be used to get the result of the Workflow Execution.
-
 The following code example connects to a server, starts a Workflow, waits for the Workflow to finish, and prints the Workflow result.
 
 ```python

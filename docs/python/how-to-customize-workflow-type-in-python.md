@@ -9,9 +9,9 @@ tags:
   - python
 ---
 
-In Python, you can define the Workflow class name, with `@workflow.defn(name="your-workflow-name")`. `@workflow.defn` marks a class as a Workflow, and defaults the Workflow name to the class's name, which can be overridden.
+In Python, you can define the Workflow type name, with `@workflow.defn(name="your-workflow-name")`. `@workflow.defn` marks a class as a Workflow, and defaults the Workflow name to the class's name, which can be overridden.
 
-You can customize the Workflow name with the name parameter, if the name parameter is not specified, the Workflow name defaults to the unqualified class name.
+You can customize the Workflow name with the name parameter, if the name parameter is not specified, the Workflow name defaults to the function name.
 
 ```python
 @workflow.defn(name="your-workflow-name")

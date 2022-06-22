@@ -22,6 +22,6 @@ class SayHello:
 
 `workflow.execute_activity()` is a shortcut for [`workflow.start_activity()`](https://python.temporal.io/temporalio.workflow.html#start_activity) that waits on its result.
 
-To get just the handle to wait and cancel separately, use `workflow.start_activity()`. This should be used in most cases unless advanced task capabilities are needed.
+To get just the handle to wait and cancel separately, use `workflow.start_activity()`. `workflow.execute_activity()` should be used in most cases unless advanced task capabilities are needed.
 
-A single argument to the Activity is positional. Multiple arguments are not supported in the type-safe form of `start_activity()` or `execute_activity` and must be supplied by the `args` keyword argument.
+A single argument to the Activity is positional. Multiple arguments are not supported in the type-safe form of `start_activity()` or `execute_activity()` and must be supplied by the `args` keyword argument.
