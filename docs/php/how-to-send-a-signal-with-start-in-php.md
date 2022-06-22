@@ -5,7 +5,7 @@ sidebar_label: Signal-With-Start
 ---
 
 In cases where you may not know if a Workflow is running, and want to send a Signal to it, use `startwithSignal`.
-If a running Workflow exists, the `startwithSignal` API sends the Signal. 
+If a running Workflow exists, the `startwithSignal` API sends the Signal.
 If there is no running Workflow, the API starts a new Workflow Run and delivers the Signal to it.
 
 ```php
