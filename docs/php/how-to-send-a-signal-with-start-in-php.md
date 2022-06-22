@@ -4,7 +4,9 @@ title: How to send Signal-With-Start in PHP
 sidebar_label: Signal-With-Start
 ---
 
-You may not know if a Workflow is running and can accept a signal. The `WorkflowClient`->`startWithSignal` API allows you to send a Signal to the current Workflow instance if one exists or to create a new run and then send the Signal.
+In cases where you may not know if a Workflow is running, and want to send a Signal to it, use `startwithSignal`.
+If a running Workflow exists, the `startwithSignal` API sends the Signal. 
+If there is no running Workflow, the API starts a new Workflow Run and delivers the Signal to it.
 
 ```php
 $workflow = $workflowClient->newWorkflowStub(MyWorkflow::class);

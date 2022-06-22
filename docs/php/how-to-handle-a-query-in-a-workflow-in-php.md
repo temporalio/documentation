@@ -76,9 +76,9 @@ class MyWorkflow
 }
 ```
 
-You can also issue a query from code using the `QueryWorkflow()` API on a Temporal client object.
+You can also issue a Query from code using the `QueryWorkflow()` API on a Temporal Client object.
 
-Use `WorkflowStub` to Query Workflow instances from your Client code (can be applied to running Workflows as well):
+Use `WorkflowStub` to Query Workflow instances from your Client code (can be applied to both running and closed Workflows):
 
 ```php
 $workflow = $workflowClient->newWorkflowStub(

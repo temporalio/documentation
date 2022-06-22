@@ -5,7 +5,7 @@ sidebar_label: Schedule-to-Start Timeout
 ---
 
 Because Activities are reentrant, only a single stub can be used for multiple Activity invocations.
-The follow code creates an Activity with a `ScheduleToCloseTimeout` set to 2 seconds.
+The following code creates an Activity with a `ScheduleToCloseTimeout` set to 2 seconds.
 
 ```php
 $this->greetingActivity = Workflow::newActivityStub(
