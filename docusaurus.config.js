@@ -372,6 +372,12 @@ module.exports = {
          * Path to data on filesystem relative to site dir.
          */
         path: "cloud/release-notes",
+        blogTitle: "Temporal Cloud release notes",
+        showReadingTime: false, // Show estimated reading time for the blog post.
+        feedOptions: {
+          type: "all",
+          copyright: `Copyright © ${new Date().getFullYear()} Temporal Technologies Inc.  All rights reserved. Copyright © 2020 Uber Technologies, Inc.`,
+        },
       },
     ],
   ],
