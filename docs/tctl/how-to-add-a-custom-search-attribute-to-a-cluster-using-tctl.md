@@ -27,7 +27,7 @@ Search Attribute names are case sensitive.
 
 The possible values for `--type` are:
 
-- String
+- Text
 - Keyword
 - Int
 - Double

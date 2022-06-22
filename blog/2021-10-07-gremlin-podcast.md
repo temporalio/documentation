@@ -69,7 +69,7 @@ Obviously, there is some magic there, in the sense that we need to be able to pe
 
 ## Temporal Features and Use Cases
 
-There is a lot more under the the hood:
+There is a lot more under the hood:
 
 - **Task Queues**: We don’t invoke services directly, usually we invoke them from queues. But these queues are hidden in a sense, because when you call some API in Workflow code, it gets called asynchronously. But in your code, it’s not visible. It’s just a normal RPC call, but behind the scenes, it’s all asynchronous, has **infinite retries, exponential backoff, heartbeating for long-running tasks**, and so on.
 - **Local State**. Workflows are stateful because you can keep state in variables and you don’t need to talk to a database.
