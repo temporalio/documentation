@@ -1783,8 +1783,8 @@ Use a new `WorflowClient()` with the requisite gRPC [`Connection`](https://types
 
 ```typescript
 import {Connection, WorkflowClient} from "@temporalio/client";
-const connection = new Connection(); // to configure for production
-const client = new WorkflowClient(connection.service);
+const connection = await Connection.connect(); // to configure for production
+const client = new WorkflowClient({connection});
 ```
 
 Declaring the `WorflowClient()` creates a new connection to the Temporal service.
@@ -1796,7 +1796,7 @@ The following example, creates a Client, connects to an account, and declares yo
 ```typescript
 import {Connection, WorkflowClient} from "@temporalio/client";
 
-const connection = new Connection({
+const connection = await Connection.connect({
   address: "<Namespace ID>.tmprl.cloud", // defaults port to 7233 if not specified
   tls: {
     // set to true if TLS without mTLS
@@ -1807,8 +1807,8 @@ const connection = new Connection({
     },
   },
 });
-await connection.untilReady();
-const client = new WorkflowClient(connection.service, {
+const client = new WorkflowClient({
+  connection,
   namespace: "your.namespace",
 });
 ```
@@ -2008,7 +2008,7 @@ import {Worker, NativeConnection} from "@temporalio/worker";
 import * as activities from "./activities";
 
 async function run() {
-  const connection = await NativeConnection.create({
+  const connection = await NativeConnection.connect({
     address: "foo.bar.tmprl.cloud", // defaults port to 7233 if not specified
     tls: {
       // set to true if TLS without mTLS
@@ -2511,8 +2511,8 @@ When scheduling a Workflow, a `taskQueue` must be specified.
 ```ts
 import {Connection, WorkflowClient} from "@temporalio/client";
 // This is the code that is used to start a workflow.
-const connection = new Connection();
-const client = new WorkflowClient();
+const connection = await Connection.create();
+const client = new WorkflowClient({connection});
 const result = await client.execute(myWorkflow, {
   taskQueue: "your-task-queue", // required
   workflowId: "your-workflow-id", // required
@@ -2535,7 +2535,7 @@ Optionally, in Workflow code, when calling an Activity, you can specify the Task
 
 #### Set Workflow Id
 
-Also it is not required, we recommend providing your own [Workflow Id](/workflows/#workflow-id) that maps to a business process or business entity identifier, such as an order identifier or customer identifier.
+Although it is not required, we recommend providing your own [Workflow Id](/workflows/#workflow-id) that maps to a business process or business entity identifier, such as an order identifier or customer identifier.
 
 <Tabs
 defaultValue="go"
