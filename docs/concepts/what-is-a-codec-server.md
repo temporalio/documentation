@@ -7,15 +7,15 @@ description: Explanation and implementation of a remote encryption/decryption se
 
 A Codec Server provides a means of securely decrypting payload data for display by Temporal user interfaces.
 
-In a Temporal system, you can use the WebUI or tctl to request data from the Temporal Cluster. This request is passed through a client's DataConverter, which sends and receives API calls from the Remote Codec Server. These calls are then passed from the client to the cluster, where a successful request passes an encoded payload back through the system.
+On the Temporal Platform, you can use the WebUI or the [tctl plugin](/docs/tctl/index) to request data from the Temporal Cluster. This request is passed through a client's [Data Converter](/docs/concepts/what-is-a-data-converter), which sends and receives API calls from the Remote Codec Server. These calls are then passed from the client to the cluster, where a successful request passes an encoded payload back through the platform.
 
-With a Codec Server, data is decrypted before it can be viewed on the [Temporal Web UI](/concepts/what-is-the-temporal-web-ui/). Conversely, data from the WebUI is encrypted through the codec server before being passed along to the database. Therefore, it is more secure for Temporal to store encrypted data.
+With a Codec Server, data is decrypted before it can be viewed on the [Temporal Web UI](/concepts/what-is-the-temporal-web-ui/). Conversely, data from the WebUI is encrypted through the Codec Server before being passed along to the Temporal Server. Therefore, it is more secure for Temporal to store encrypted data.
 
 Codec Servers can handle authentication and authorization in a similar manner used by Temporal Clusters. In the event of a data breach, any information uncovered would be indecipherable to bad actors.
 
 ## Purpose
 
-In application code, Data Converters can be configured to use a PayloadCodec to encrypt data before it’s sent to Temporal.
+In application code, Data Converters can be configured to use a Payload Codec to encrypt data before it’s sent to Temporal.
 
 ![](/img/remote-codec-server-problem.svg)
 
