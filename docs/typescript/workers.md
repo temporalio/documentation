@@ -30,7 +30,7 @@ Your Workflows will only progress if there are Workers polling the right Task Qu
 </summary>
 
 The TypeScript SDK uses TypeScript, but cannot completely protect you from typos.
-If you are experiencing issues, you can check the status of Workers and the Task Queues they poll with [`tctl` or the Temporal Web UI](/devtools).
+If you are experiencing issues, you can check the status of Workers and the Task Queues they poll with [tctl](/tctl) or the [Temporal Web UI](/web-ui).
 
 ![Temporal Web Task Queues view](https://user-images.githubusercontent.com/6764957/126413160-18663430-bb7a-4d3a-874e-80598e1fa07d.png)
 
