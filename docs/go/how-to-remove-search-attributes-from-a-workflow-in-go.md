@@ -1,5 +1,5 @@
 ---
-id: how-to-list-open-workflow-executions-using-the-client-in-go
+id: how-to-remove-search-attributes-from-a-workflow-in-go
 title: How to remove Search Attributes from a Workflow in Go
 sidebar_label: How to remove Search Attributes from a Workflow
 description: How to remove Search Attributes from a Workflow
