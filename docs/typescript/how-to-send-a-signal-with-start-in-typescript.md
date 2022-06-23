@@ -9,14 +9,18 @@ tags:
   - typescript
 ---
 
-To send a Signal to a Workflow and start the Workflow if it isn't already running, use `signalWithStart()`.
+[`WorkflowClient.signalWithStart`](https://typescript.temporal.io/api/classes/client.WorkflowClient#signalwithstart)
 
 ```typescript
+import { WorkflowClient } from '@temporalio/client';
+import { myWorkflow, joinSignal } from './workflows';
+
 const client = new WorkflowClient();
-await client.signalWithStart(YourWorkflow, {
-  workflowId,
-  args: [arg1, arg2],
-  signal: YourSignal,
-  signalArgs: [arg3, arg4],
+
+await client.signalWithStart(myWorkflow, {
+  workflowId: 'workflow-id-123',
+  args: [{ foo: 1 }],
+  signal: joinSignal,
+  signalArgs: [{ userId: 'user-1', groupId: 'group-1' }],
 });
 ```

@@ -7,7 +7,8 @@
 /reference/*        /references/:splat
 /system-tools/*        /devtools/:splat
 /devtools/tctl        /tctl
-/devtools/introduction        /devtools
+/devtools/introduction        /
+/devtools/web-ui        /web-ui
 /sdks-introduction         /application-development-guide
 /other-sdks        /application-development-guide
 /get-started         /
