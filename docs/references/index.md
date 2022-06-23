@@ -7,7 +7,7 @@ title: Temporal Platform references
 
 - [Java](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/index.html)
 - [Go](https://pkg.go.dev/go.temporal.io/sdk)
-- [TypeScript](https://nodejs.temporal.io)
+- [TypeScript](https://typescript.temporal.io)
 - [Python](https://python.temporal.io)
 
 ### SDK metric reference
