@@ -3247,6 +3247,7 @@ Content is not available
 [`getExternalWorkflowHandle`](https://typescript.temporal.io/api/namespaces/workflow#getexternalworkflowhandle)
 
 ```typescript
+// Sending a signal to a workflow.
 import {getExternalWorkflowHandle} from "@temporalio/workflow";
 import {joinSignal} from "./other-workflow";
 
