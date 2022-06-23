@@ -5,13 +5,13 @@ sidebar_label: Codec Server
 description: Explanation and implementation of a remote encryption/decryption server.
 ---
 
-A Codec Server is an optional implementation for your Temporal Platform. With it, deserialized Payloads can have their data displayed on your WebUI.
+A Codec Server is an optional implementation for your [Temporal Platform](/docs/concepts/what-is-the-temporal-platform). With it, deserialized Payloads can have their data displayed on your WebUI.
 
 ## Purpose
 
 ![](/img/remote-codec-server-problem.svg)
 
-By default, the Temporal Platform provides Clients to receive information from the tctl, WebUI, and running Workers. Each Client has a built-in Data Converter.
+By default, the Temporal Platform provides Clients to receive information from the tctl, WebUI, and running Workers. Each Client has a built-in [Data Converter](/docs/concepts/what-is-a-data-converter).
 
 Data Converters serialize and deserialize between a language's native data types and raw Payloads received from the Temporal Cluster. However, the pre-built tctl and WebUI binaries won't be able to decrypt the Payloads.
 
