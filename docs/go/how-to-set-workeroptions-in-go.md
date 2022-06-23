@@ -36,7 +36,7 @@ Create an instance of [`Options`](https://pkg.go.dev/go.temporal.io/sdk/worker#O
 
 ### `MaxConcurrentActivityExecutionSize`
 
-Sets the the maximum concurrent Activity Executions for the Worker.
+Sets the maximum concurrent Activity Executions for the Worker.
 
 - Type: `int`
 - Default: `1000`

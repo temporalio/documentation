@@ -144,7 +144,7 @@ However, all checks beyond the SSN trace should be conducted in parallel to save
 
 ## What is the step-by-step flow?
 
-Now we can envision the the high-level step-by-step flow that we could expect from the application.
+Now we can envision the high-level step-by-step flow.
 
 ![Swim lane diagram of the high-level step-by-step flow for the Full package](/diagrams/background-checks/step-by-step-high-level-swim-lane.svg)
 

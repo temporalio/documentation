@@ -4,8 +4,7 @@ There are two main places where the name of the Task Queue is supplied by the de
 When scheduling a Workflow, a `taskQueue` must be specified.
 
 ```typescript
-import { Connection, WorkflowClient } from '@temporalio/client';
-const connection = new Connection();
+import { WorkflowClient } from '@temporalio/client';
 const client = new WorkflowClient();
 const result = await client.execute(myWorkflow, {
   taskQueue: 'testhttp', // required

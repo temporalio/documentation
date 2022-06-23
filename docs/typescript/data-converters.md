@@ -55,7 +55,7 @@ interface PayloadConverter {
    * Converts a value to a {@link Payload}.
    * @param value The value to convert. Example values include the Workflow args sent by the client and the values returned by a Workflow or Activity.
    */
-  toPayload<T>(value: T): Payload | undefined;
+  toPayload<T>(value: T): Payload;
 
   /**
    * Converts a {@link Payload} back to a value.
