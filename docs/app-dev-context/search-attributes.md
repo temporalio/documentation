@@ -18,6 +18,5 @@ The steps to using Search Attributes are:
   - On the Client by calling `DescribeWorkflow`,
   - In the Workflow by looking at `WorkflowInfo`.
 - Query Workflow Executions by the Search Attribute using a [List Filter](/concepts/what-is-a-list-filter/):
-  - [In the UI](/web-ui/how-to-use-a-list-filter-in-the-temporal-web-ui).
-  - [In `tctl`](/tctl/workflow/list/#--query),
+  - [In `tctl`](/tctl/workflow/list/#--query).
   - In code by calling `ListWorkflowExecutions`.
