@@ -14,10 +14,11 @@ release_version: V1.15
 <!--truncate-->
 
 There are numerous task queues for Node.js. [Bull](https://optimalbits.github.io/bull/) is the most popular, but [Bee Queue](https://www.npmjs.com/package/bee-queue), [Agenda](https://www.npmjs.com/package/agenda), and [Kue](https://www.npmjs.com/package/kue) are also common.
+
 All these task queue libraries solve a similar problem.
 They let you put a task onto a queue, and define a worker that consumes tasks from the queue.
 While Temporal is much more than a task queue, Temporal does solve the same problems as these task queue libraries.
-Plus, Temporal's feature set provides several advantages if you use Temporal as your task queue.
+Plus, Temporal's feature set provides several advantages if you use Temporal instead of a task queue library.
 
 ## Setting Up a Task Queue With Temporal
 
@@ -25,6 +26,8 @@ A common use case for a task queue is sending a welcome email when a new user re
 Sending email is a good candidate for a task queue, because sending an email often requires a slow API call and is more of a "side effect" of registering the user.
 The following is a basic example of defining an email queue with Bull.
 If you're interested in a more complete tutorial, here's a [tutorial about building an email queue with Bull in TypeScript](https://blog.taskforce.sh/implementing-mail-microservice-with-bullmq/).
+
+`email-queue.js`
 
 ```javascript
 const Queue = require('bull');
@@ -47,8 +50,7 @@ queue.process(async function sendEmail(job) {
 });
 ```
 
-Then, from a separate process, you can create a task to send an email as follows.
-You can create a task from an [Express](http://expressjs.com/) route handler that's responsible for registering users.
+`create-test-task.js`
 
 ```javascript
 const Queue = require('bull');
@@ -66,6 +68,8 @@ emailQueue.add({
 With Temporal, the setup is similar.
 A task or job corresponds to a [Workflow](https://docs.temporal.io/concepts/what-is-a-workflow-execution).
 But, first, you need to define an [Activity](https://docs.temporal.io/concepts/what-is-an-activity) to send the email as follows.
+
+`src/activities.ts`
 
 ```ts
 import axios from 'axios';
@@ -96,6 +100,8 @@ export const createActivities = ({ apiKey, domain }: MailgunSettings) => ({
 
 Next, you need to define a Workflow that calls this activity.
 
+`src/workflows.ts`
+
 ```ts
 import { proxyActivities } from '@temporalio/workflow';
 import type { createActivities } from './activities';
@@ -111,6 +117,8 @@ export async function sendEmailWorkflow(params: SendEmailParams): Promise<void> 
 ```
 
 Finally, you need to create [Worker](https://docs.temporal.io/concepts/what-is-a-worker-entity) to process tasks as follows.
+
+`src/worker.ts`
 
 ```ts
 import { Worker } from '@temporalio/worker';
@@ -148,6 +156,8 @@ run().catch((err) => {
 ```
 
 Finally, to start a Workflow, you need to create a `WorkflowClient` and `start()` the Workflow as follows.
+
+`src/client.ts`
 
 ```ts
 import { Connection, WorkflowClient } from '@temporalio/client';
@@ -191,6 +201,8 @@ Some task queues support retrying failed jobs: Bull does not, but [Bee Queue doe
 Temporal supports retrying activities with exponential backoff via [retry policies](https://docs.temporal.io/concepts/what-is-a-retry-policy/).
 For example, the following code shows how you might configure Temporal to retry the `sendEmail()` activity at most 2 times.
 
+`src/workflows.ts`
+
 ```ts
 import { proxyActivities } from '@temporalio/workflow';
 import type { createActivities } from './activities';
@@ -213,6 +225,8 @@ Many task queues also support delaying processing a task.
 For example, [Bull lets you specify a `delay` in milliseconds](https://github.com/OptimalBits/bull/blob/develop/REFERENCE.md#queueadd) when adding a task to a queue.
 
 Temporal Workflows are durable, which means you can safely put a `sleep()` in your Workflow to add a delay.
+
+`src/workflows.ts`
 
 ```ts
 import { proxyActivities, sleep } from '@temporalio/workflow';
@@ -246,6 +260,8 @@ Add in conditional logic, like sending a different email if a customer has no in
 
 With Temporal, you can send multiple emails from one Workflow.
 In the following code, the `customerWelcomeSeriesWorkflow()` sends multiple emails separated by 24 hours.
+
+`src/workflows.ts`
 
 ```ts
 import { proxyActivities, sleep } from '@temporalio/workflow';
@@ -290,6 +306,8 @@ export async function customerWelcomeSeriesWorkflow(params: CustomerWelcomeSerie
 
 You can also conditionally schedule emails based on user actions using [Signals](https://docs.temporal.io/concepts/what-is-a-signal/).
 For example, your app can send a Signal to `customerWelcomeSeriesWorkflow()` when a user logs in, so `customerWelcomeSeriesWorkflow()` can send a different email if a new customer hasn't logged in for 24 hours.
+
+`src/workflows.ts`
 
 ```ts
 import { defineSignal, proxyActivities, sleep } from '@temporalio/workflow';
@@ -350,5 +368,5 @@ Temporal Workflows make writing multi-part tasks much easier, because you can wr
 
 Temporal is not a task queue, but you can use Temporal Workflows to solve the same problem that task queues solve: sending tasks to workers using a queue in a durable and observable way.
 Temporal provides a lot of the same features as task queues, including retries, delays, and a sleek UI.
-But Temporal Workflows also allow you to write JavaScript functions that represent a potentially complex series of interdependent tasks.
+But Temporal Workflows also help you write more complex multi-step tasks in a single JavaScript function, including logic that would require multiple tasks in a traditional task queue.
 So next time you're looking for a Node.js task queue, try Temporal instead!
