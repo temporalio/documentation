@@ -91,11 +91,6 @@
               "path": "typescript/how-to-configure-tracing-in-typescript"
             }
           ]
-        },
-        {
-          "header": "Custom Archiver",
-          "type": "how-to",
-          "path": "clusters/how-to-create-a-custom-archiver"
         }
       ]
     },
@@ -160,59 +155,7 @@
             {
               "lang": "typescript",
               "title": "TypeScript",
-              "path": "typescript/how-to-send-logs-from-workflows-in-typescript"
-            }
-          ]
-        },
-        {
-          "header": "none",
-          "type": "lang-tabs",
-          "langs": [
-            {
-              "lang": "go",
-              "title": "Go",
-              "path": "none"
-            },
-            {
-              "lang": "java",
-              "title": "Java",
-              "path": "none"
-            },
-            {
-              "lang": "php",
-              "title": "PHP",
-              "path": "none"
-            },
-            {
-              "lang": "typescript",
-              "title": "TypeScript",
-              "path": "typescript/how-to-send-logs-from-activities-in-typescript"
-            }
-          ]
-        },
-        {
-          "header": "none",
-          "type": "lang-tabs",
-          "langs": [
-            {
-              "lang": "go",
-              "title": "Go",
-              "path": "none"
-            },
-            {
-              "lang": "java",
-              "title": "Java",
-              "path": "none"
-            },
-            {
-              "lang": "php",
-              "title": "PHP",
-              "path": "none"
-            },
-            {
-              "lang": "typescript",
-              "title": "TypeScript",
-              "path": "typescript/how-to-send-logs-in-workers-in-typescript"
+              "path": "typescript/how-to-log-from-a-workflow-in-typescript"
             }
           ]
         }
@@ -229,12 +172,7 @@
         {
           "header": "none",
           "type": "how-to",
-          "path": "app-dev-context/list-filter"
-        },
-        {
-          "header": "none",
-          "type": "how-to",
-          "path": "app-dev-context/list-filter"
+          "path": "app-dev-context/search-attributes"
         },
         {
           "header": "none",
@@ -372,7 +310,7 @@
             {
               "lang": "typescript",
               "title": "TypeScript",
-              "path": "none"
+              "path": "typescript/how-to-replay-a-workflow-execution-in-typescript"
             }
           ]
         }

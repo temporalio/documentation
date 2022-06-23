@@ -19,36 +19,31 @@ This section covers features related to measuring the state of the application, 
 
 ## Metrics
 
-Temporal emits metrics by default in a format that is supported by Prometheus. Monitoring and observing those metrics is optional. Any software that can pull metrics that supports the same format could be used, but we ensure it works with Prometheus and Grafana versions only.
+Temporal emits metrics which gives you insight into how your application and service are working and performing. Monitoring and observing those metrics is optional. Any software that can pull metrics that supports the same format could be used, but we ensure it works with Prometheus and Grafana versions.
 
-- Prometheus >= v2.0
-- Grafana >= v2.5
+You can store your data in time series databases like:
+
+- [Prometheus](https://prometheus.io/docs/introduction/overview/),
+- [M3db](https://m3db.io/docs/)
+- [statsd](https://github.com/statsd/statsd)
+
+Temporal also provides a dashboard you can integrate with graphing services like Grafana. For more information, see Temporal’s [Grafana dashboard](https://github.com/temporalio/dashboards).
+
+There are a variety of metrics which gives you information into your service, persistence, and Workflow metrics. For more information on metrics, see the [SDK metric reference](https://docs.temporal.io/docs/references/sdk-metrics/).
 
 The requirements of your Temporal system will vary widely based on your intended production workload.
 You will want to run your own proof of concept tests and watch for key metrics to understand the system health and scaling needs.
 
-- **[Configure your metrics subsystem](/references/configuration/#metrics).** Temporal supports three metrics providers out of the box via [Uber's Tally](https://github.com/uber-go/tally) interface: [StatsD](https://github.com/statsd/statsd), [Prometheus](https://prometheus.io/), and [M3](https://m3db.io/).
-  Tally offers [extensible custom metrics reporting](https://github.com/uber-go/tally#report-your-metrics), which we expose via [`temporal.WithCustomMetricsReporter`](/server/options/#withcustommetricsreporter).
-  OpenTelemetry support is planned in the future.
-- **Set up monitoring.** You can use these [Grafana dashboards](https://github.com/temporalio/dashboards) as a starting point.
-  The single most important metric to track is `schedule_to_start_latency` - if you get a spike in workload and don't have enough workers, your tasks will get backlogged. **We strongly recommend setting alerts for this metric**. This is usually emitted in client SDKs as both `temporal_activity_schedule_to_start_latency_*` and `temporal_workflow_task_schedule_to_start_latency_*` variants - see [the Prometheus GO SDK example](https://github.com/temporalio/samples-go/pull/65) and the [Go SDK source](https://community.temporal.io/t/strategies-for-scaling-aws-services/1577) and there are [plans to add it on the Server](https://github.com/temporalio/temporal/issues/1754).
-  - Set up alerts for Workflow Task failures.
-  - Also set up monitoring/alerting for all Temporal Workers for standard metrics like CPU/Memory utilization.
-- **Load testing.** You can use [the Maru benchmarking tool](https://github.com/temporalio/maru/) ([author's guide here](https://mikhail.io/2021/03/maru-load-testing-tool-for-temporal-workflows/)), see how we ourselves [stress test Temporal](/blog/temporal-deep-dive-stress-testing/), or write your own.
+Temporal emits metrics which gives you insight into how your application and service are working and performing.
+To enable metrics, define your endpoints so that your time-series database can scrape your metrics.
 
-All metrics emitted by the server are [listed in Temporal's source](https://github.com/temporalio/temporal/blob/master/common/metrics/defs.go).
-There are also equivalent metrics that you can configure from the client side.
-At a high level, you will want to track these 3 categories of metrics:
+There are a variety of metrics which gives you information into your service, persistence, and Workflow metrics.
 
-- **Service metrics**: For each request made by the service handler we emit `service_requests`, `service_errors`, and `service_latency` metrics with `type`, `operation`, and `namespace` tags.
-  This gives you basic visibility into service usage and allows you to look at request rates across services, namespaces and even operations.
-- **Persistence metrics**: The Server emits `persistence_requests`, `persistence_errors` and `persistence_latency` metrics for each persistence operation.
-  These metrics include the `operation` tag such that you can get the request rates, error rates or latencies per operation.
-  These are super useful in identifying issues caused by the database.
-- **Workflow Execution stats**: The Server also emits counters for when Workflow Executions are complete.
-  These are useful in getting overall stats about Workflow Execution completions.
-  Use `workflow_success`, `workflow_failed`, `workflow_timeout`, `workflow_terminate` and `workflow_cancel` counters for each type of Workflow Execution completion.
-  These include the `namespace` tag.
+- Service metrics: For each request by the service handler, Temporal emits `service_requests`, `service_errors`, and `service_latency` metrics with type, operation, and namespace tags. This gives you visibility into service usage and request rates across services, Namespaces, or even operations.
+
+  - Persistence metrics: Temporal emits `persistence_requests`, `persistence_errors,` and `persistence_latency` metric for each persistence operation. These metrics are tagged with operation tags to allow getting request rates, error rates, or latencies per operation. These are used to identify issues like database problems.
+
+- Workflow metrics: Temporal also emits counters on Workflows. These are useful in getting overall stats about Workflow completion. Use `workflow_success`, `workflow_failed`, `workflow_timeout`, `workflow_terminate`, and `workflow_cancel` counters for each type of Workflow completion. They're also tagged with the Namespace tag.
 
 <Tabs
 defaultValue="go"
@@ -188,116 +183,11 @@ Similarly, you can customize the OpenTelemetry `NodeSDK` propagators by followin
 </TabItem>
 </Tabs>
 
-### Custom Archiver
-
-To archive data with a given provider, using the [Archival](/clusters/#archival) feature, Temporal must have a corresponding Archiver component installed.
-The platform does not limit you to the existing providers.
-To use a provider that is not currently supported, you can create your own Archiver.
-
-#### Create a new package
-
-The first step is to create a new package for your implementation in [/common/archiver](https://github.com/temporalio/temporal/tree/master/common/archiver).
-Create a directory in the archiver folder and arrange the structure to look like the following:
-
-```
-temporal/common/archiver
-  - filestore/                      -- Filestore implementation
-  - provider/
-      - provider.go                 -- Provider of archiver instances
-  - yourImplementation/
-      - historyArchiver.go          -- HistoryArchiver implementation
-      - historyArchiver_test.go     -- Unit tests for HistoryArchiver
-      - visibilityArchiver.go       -- VisibilityArchiver implementations
-      - visibilityArchiver_test.go  -- Unit tests for VisibilityArchiver
-```
-
-#### Archiver interfaces
-
-Next, define objects that implement the [HistoryArchiver](https://github.com/temporalio/temporal/blob/master/common/archiver/interface.go#L80) and the [VisibilityArchiver](https://github.com/temporalio/temporal/blob/master/common/archiver/interface.go#L121) interfaces.
-
-The objects should live in `historyArchiver.go` and `visibilityArchiver.go`, respectively.
-
-#### Update provider
-
-Update the `GetHistoryArchiver` and `GetVisibilityArchiver` methods of the `archiverProvider` object in the [/common/archiver/provider/provider.go](https://github.com/temporalio/temporal/blob/master/common/archiver/provider/provider.go) file so that it knows how to create an instance of your archiver.
-
-#### Add configs
-
-Add configs for your archiver to the `config/development.yaml` file and then modify the [HistoryArchiverProvider](https://github.com/temporalio/temporal/blob/master/common/config/config.go#L376) and [VisibilityArchiverProvider](https://github.com/temporalio/temporal/blob/master/common/config/config.go#L393) structs in `/common/common/config.go` accordingly.
-
-#### Custom archiver FAQ
-
-**If my custom Archive method can automatically be retried by the caller, how can I record and access progress between retries?**
-
-Handle this situation by using `ArchiverOptions`.
-Here is an example:
-
-```go
-func(a * Archiver) Archive(ctx context.Context, URI string, request * ArchiveRequest, opts...ArchiveOption) error {
-    featureCatalog: = GetFeatureCatalog(opts...) // this function is defined in options.go
-    var progress progress
-    // Check if the feature for recording progress is enabled.
-    if featureCatalog.ProgressManager != nil {
-        if err: = featureCatalog.ProgressManager.LoadProgress(ctx, & prevProgress);
-        err != nil {
-            // log some error message and return error if needed.
-        }
-    }
-
-    // Your archiver implementation...
-
-    // Record current progress
-    if featureCatalog.ProgressManager != nil {
-        if err: = featureCatalog.ProgressManager.RecordProgress(ctx, progress);
-        err != nil {
-            // log some error message and return error if needed.
-        }
-    }
-}
-```
-
-**If my `Archive` method encounters an error that is non-retryable, how do I indicate to the caller that it should not retry?**
-
-```go
-func(a * Archiver) Archive(ctx context.Context, URI string, request * ArchiveRequest, opts...ArchiveOption) error {
-    featureCatalog: = GetFeatureCatalog(opts...) // this function is defined in options.go
-
-    err: = youArchiverImpl()
-
-    if nonRetryableErr(err) {
-        if featureCatalog.NonRetryableError != nil {
-            return featureCatalog.NonRetryableError() // when the caller gets this error type back it will not retry anymore.
-        }
-    }
-}
-```
-
-**How does my history archiver implementation read history?**
-
-The archiver package provides a utility called [HistoryIterator](https://github.com/temporalio/temporal/blob/master/common/archiver/historyIterator.go) which is a wrapper of [ExecutionManager](https://github.com/temporalio/temporal/blob/master/common/persistence/dataInterfaces.go#L1014).
-`HistoryIterator` is more simple than the `HistoryManager`, which is available in the BootstrapContainer, so archiver implementations can choose to use it when reading Workflow histories.
-See the [historyIterator.go](https://github.com/temporalio/temporal/blob/master/common/archiver/historyIterator.go) file for more details.
-Use the [filestore historyArchiver implementation](https://github.com/temporalio/temporal/tree/master/common/archiver/filestore) as an example.
-
-**Should my archiver define its own error types?**
-
-Each archiver is free to define and return its own errors.
-However, many common errors that exist between archivers are already defined in [common/archiver/constants.go](https://github.com/temporalio/temporal/blob/master/common/archiver/constants.go).
-
-**Is there a generic query syntax for the visibility archiver?**
-
-Currently, no.
-But this is something we plan to do in the future.
-As for now, try to make your syntax similar to the one used by our advanced list Workflow API.
-
-- [s3store](https://github.com/temporalio/temporal/tree/master/common/archiver/s3store#visibility-query-syntax)
-- [gcloud](https://github.com/temporalio/temporal/tree/master/common/archiver/gcloud#visibility-query-syntax)
-
 ## Logging
 
 Send logs and errors to a logging service, so that when things go wrong, you can see what happened.
 
-Use a custom logger for logging actions of the Temporal Client.
+Use a custom logger for logging.
 
 <Tabs
 defaultValue="go"
@@ -346,6 +236,45 @@ Content is not available
 
 </TabItem>
 <TabItem value="typescript">
+
+**Logging in Workers and Clients**
+
+The Worker comes with a default logger which defaults to log any messages with level `INFO` and higher to `STDERR` using `console.error`.
+The following [log levels](https://typescript.temporal.io/api/namespaces/worker#loglevel) are listed in increasing order of severity.
+
+- `TRACE`
+- `DEBUG`
+- `INFO`
+- `WARN`
+- `ERROR`
+
+**Customizing the default logger**
+
+Temporal ships a [`DefaultLogger`](https://typescript.temporal.io/api/classes/worker.defaultlogger/) that implements the basic interface:
+
+```ts
+import {Runtime, DefaultLogger} from "@temporalio/worker";
+
+const logger = new DefaultLogger("WARN", ({level, message}) => {
+  console.log(`Custom logger: ${level} — ${message}`);
+});
+Runtime.install({logger});
+```
+
+The previous code example sets the default logger to only log messages with level `WARN` and higher.
+
+- **Accumulate logs for testing and reporting**
+
+```ts
+import {DefaultLogger, LogEntry} from "@temporalio/worker";
+
+const logs: LogEntry[] = [];
+const logger = new DefaultLogger("TRACE", (entry) => logs.push(entry));
+log.debug("hey", {a: 1});
+log.info("ho");
+log.warn("lets", {a: 1});
+log.error("go");
+```
 
 A common logging use case is logging to a file to be picked up by a collector like the [Datadog Agent](https://docs.datadoghq.com/logs/log_collection/nodejs/?tab=winston30).
 
@@ -451,183 +380,33 @@ The injected sink function contributes to the overall Workflow Task processing d
 </TabItem>
 </Tabs>
 
-<Tabs
-defaultValue="go"
-groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
-
-<TabItem value="go">
-
-Content is not available
-
-</TabItem>
-<TabItem value="java">
-
-Content is not available
-
-</TabItem>
-<TabItem value="php">
-
-Content is not available
-
-</TabItem>
-<TabItem value="typescript">
-
-Activities run in the standard Node.js environment and can use any Node.js logger.
-
-<details>
-<summary>
-Inject Activity context via interceptor and log all Activity executions
-</summary>
-
-<!--SNIPSTART typescript-activity-logging-interceptor-->
-<!--SNIPEND-->
-
-</details>
-
-<details>
-<summary>
-Use the injected logger from an Activity
-</summary>
-
-<!--SNIPSTART typescript-activity-use-injected-logger -->
-<!--SNIPEND-->
-
-</details>
-
-</TabItem>
-</Tabs>
-
-<Tabs
-defaultValue="go"
-groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
-
-<TabItem value="go">
-
-Content is not available
-
-</TabItem>
-<TabItem value="java">
-
-Content is not available
-
-</TabItem>
-<TabItem value="php">
-
-Content is not available
-
-</TabItem>
-<TabItem value="typescript">
-
-**Logging in Workers and Clients**
-
-The Worker comes with a default logger which defaults to log any messages with level `INFO` and higher to `STDERR` using `console.error`.
-There are 5 levels in total:
-
-- `TRACE`
-- `DEBUG`
-- `INFO`
-- `WARN`
-- `ERROR`
-
-The reason we only offer a default logger is to minimize Worker dependencies and allow SDK users to bring their own logger.
-
-**Customizing the default logger**
-
-Temporal ships a [`DefaultLogger`](https://typescript.temporal.io/api/classes/worker.defaultlogger/) that implements the basic interface.
-
-**Set Default logger level**
-
-The following example creates a new logger that will log all messages with a level `WARN` and higher.
-
-```ts
-import {Runtime, DefaultLogger} from "@temporalio/worker";
-
-// Creating a new logger that will log all messages with level WARN and higher.
-const logger = new DefaultLogger("WARN", ({level, message}) => {
-  console.log(`Custom logger: ${level} — ${message}`);
-});
-Runtime.install({logger});
-```
-
-**Example: Accumulate logs for testing/reporting**
-
-The following example creates a logger that will log all the messages to an array.
-
-```ts
-import {DefaultLogger, LogEntry} from "@temporalio/worker";
-
-const logs: LogEntry[] = [];
-const logger = new DefaultLogger("TRACE", (entry) => logs.push(entry));
-log.debug("hey", {a: 1});
-log.info("ho");
-log.warn("lets", {a: 1});
-log.error("go");
-```
-
-The log levels are [listed here](https://typescript.temporal.io/api/namespaces/worker#loglevel) in increasing order of severity.
-
-</TabItem>
-</Tabs>
-
 ## Visibility
 
 The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.
 
-A List Filter is the SQL-like string that is provided as the parameter to an [Advanced Visibility](/visibility/#advanced-visibility) List API.
+The typical method of retrieving a Workflow Execution is by its Workflow Id.
 
-A List Filter contains [Search Attribute](/visibility/#search-attributes) names, Search Attribute values, and Operators.
+However, sometimes you'll want to retrieve one or more Workflow Executions based on another property. For example, imagine you want to get all Workflow Executions of a certain type that have failed within a time range, so that you can start new ones with the same arguments.
 
-- The following operators are supported in List Filters:
+You can do this with [Search Attributes](/concepts/what-is-a-search-attribute/).
 
-  - **AND, OR, ()**
-  - **=, !=, >, >=, <, <=**
-  - **IN**
-  - **BETWEEN ... AND**
-  - **ORDER BY**
+- [**Default** Search Attributes](/concepts/what-is-a-search-attribute/#default-search-attributes) like `WorkflowType`, `StartTime` and `ExecutionStatus` are automatically added to Workflow Executions.
+- _Custom Search Attributes_ can contain their own domain-specific data (like `customerId` or `numItems`).
+  - A few [generic Custom Search Attributes](/concepts/what-is-a-search-attribute/#custom-search-attributes) like `CustomKeywordField` and `CustomIntField` are created by default in Temporal's [Docker Compose](/clusters/quick-install/#docker-compose).
 
-- A List Filter applies to a single Namespace.
+The steps to using Search Attributes are:
 
-- The range of a List Filter timestamp (`StartTime`, `CloseTime`, `ExecutionTime`) cannot exceed `9223372036854775807` (that is, `maxInt64: 1001`).
-
-- A List Filter that uses a time range has a resolution of 1 ms on Elasticsearch 6 and 1 ns on Elasticsearch 7.
-
-- List Filter Search Attribute names are case-sensitive.
-
-- An Advanced List Filter API may take longer than expected if it is retrieving more than 10 million Workflow Executions.
-
-- A `ListWorkflow` API supports pagination.
-  Use the page token in the following call to retrieve the next page; continue until the page token is `null`/`nil`.
-
-- To efficiently count the number of Workflow Executions, use the `CountWorkflow` API.
-
-A List Filter is the SQL-like string that is provided as the parameter to an [Advanced Visibility](/visibility/#advanced-visibility) List API.
-
-A List Filter contains [Search Attribute](/visibility/#search-attributes) names, Search Attribute values, and Operators.
-
-- The following operators are supported in List Filters:
-
-  - **AND, OR, ()**
-  - **=, !=, >, >=, <, <=**
-  - **IN**
-  - **BETWEEN ... AND**
-  - **ORDER BY**
-
-- A List Filter applies to a single Namespace.
-
-- The range of a List Filter timestamp (`StartTime`, `CloseTime`, `ExecutionTime`) cannot exceed `9223372036854775807` (that is, `maxInt64: 1001`).
-
-- A List Filter that uses a time range has a resolution of 1 ms on Elasticsearch 6 and 1 ns on Elasticsearch 7.
-
-- List Filter Search Attribute names are case-sensitive.
-
-- An Advanced List Filter API may take longer than expected if it is retrieving more than 10 million Workflow Executions.
-
-- A `ListWorkflow` API supports pagination.
-  Use the page token in the following call to retrieve the next page; continue until the page token is `null`/`nil`.
-
-- To efficiently count the number of Workflow Executions, use the `CountWorkflow` API.
+- Create a new Search Attribute in your Cluster [using `tctl`](/tctl/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl/).
+- Set the value of the Search Attribute for a Workflow Execution:
+  - On the Client by including it as an option when starting the Execution,
+  - In the Workflow by calling `UpsertSearchAttributes`.
+- Read the value of the Search Attribute:
+  - On the Client by calling `DescribeWorkflow`,
+  - In the Workflow by looking at `WorkflowInfo`.
+- Query Workflow Executions by the Search Attribute using a [List Filter](/concepts/what-is-a-list-filter/):
+  - [In the UI](/web-ui/how-to-use-a-list-filter-in-the-temporal-web-ui).
+  - [In `tctl`](/tctl/workflow/list/#--query),
+  - In code by calling `ListWorkflowExecutions`.
 
 <Tabs
 defaultValue="go"
@@ -903,7 +682,7 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+Workflows in Temporal may be replayed from the beginning of their history when resumed. In order for Temporal to recreate the exact state Workflow code was in, the code is required to be fully deterministic. To prevent breaking [determinism](/typescript/determinism), in the TypeScript SDK, Workflow code runs in an isolated execution environment and may not use any of the Node.js APIs or communicate directly with the outside world.
 
 </TabItem>
 </Tabs>

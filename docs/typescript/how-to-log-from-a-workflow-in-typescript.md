@@ -1,12 +1,13 @@
 ---
-id: how-to-send-logs-from-workflows-in-typescript
-title: How to send logs from Workflows in TypeScript
-sidebar_label: Send logs from Workflows
-description: Send logs from Workflows
+id: how-to-log-from-a-workflow-in-typescript.md
+title: How to log from a Workflow in TypeScript
+sidebar_label: Log from a Workflow
+description: Log from a Workflow
 tags:
   - developer-guide
   - sdk
   - typescript
+  - log
 ---
 
 Logging from Workflows is tricky for two reasons:

@@ -1,6 +1,7 @@
 The typical method of retrieving a Workflow Execution is by its Workflow Id.
 
 However, sometimes you'll want to retrieve one or more Workflow Executions based on another property. For example, imagine you want to get all Workflow Executions of a certain type that have failed within a time range, so that you can start new ones with the same arguments.
+
 You can do this with [Search Attributes](/concepts/what-is-a-search-attribute/).
 
 - [**Default** Search Attributes](/concepts/what-is-a-search-attribute/#default-search-attributes) like `WorkflowType`, `StartTime` and `ExecutionStatus` are automatically added to Workflow Executions.
