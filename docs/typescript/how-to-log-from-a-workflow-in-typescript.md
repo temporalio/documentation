@@ -1,5 +1,5 @@
 ---
-id: how-to-log-from-a-workflow-in-typescript.md
+id: how-to-log-from-a-workflow-in-typescript
 title: How to log from a Workflow in TypeScript
 sidebar_label: Log from a Workflow
 description: Log from a Workflow

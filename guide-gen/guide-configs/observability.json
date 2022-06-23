@@ -3,7 +3,7 @@
   "id": "observability",
   "title": "Observability",
   "sidebar_label": "Observability",
-  "description": "This guide provides an overview of how to observe your Temporal application.",
+  "description": "This guide provides information on how to observe your Temporal application.",
   "toc_max_heading_level": 4,
   "add_tabs_support": false,
   "h2_sections": [
@@ -140,7 +140,7 @@
             {
               "lang": "go",
               "title": "Go",
-              "path": "none"
+              "path": "go/how-to-log-from-a-workflow-in-go"
             },
             {
               "lang": "java",
