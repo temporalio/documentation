@@ -19,7 +19,23 @@
     window.localStorage.setItem("docusaurus.tab.language", "ts");
   }
 
-  if (entries.lang) {
-    window.localStorage.setItem("docusaurus.tab.site-lang", entries.lang);
+  // for app dev guide
+  if (typeof entries.lang === "string") {
+    const lang = entries.lang.toLowerCase();
+    const validSiteLangs = [
+      "go",
+      "java",
+      "php",
+      "typescript",
+      "python",
+      "dotnet",
+      "ruby",
+      "rust",
+    ];
+    const isValid = validSiteLangs.indexOf(lang) !== -1;
+
+    if (isValid) {
+      window.localStorage.setItem("docusaurus.tab.site-lang", lang);
+    }
   }
 })();
