@@ -558,9 +558,7 @@ function Explained() {
       </div>
 
       <div className="landing-card-section">
-        <a className="header-link" href="/devtools/">
-          <h2 className="h2-landing">Devtools</h2>
-        </a>
+        <h2 className="h2-landing">Devtools</h2>
         <p className="landing-card-p">
           Tools to visualize the state of things and interact with the Temporal
           system.{" "}
