@@ -18,4 +18,8 @@
   } else if (entries.language === "ts") {
     window.localStorage.setItem("docusaurus.tab.language", "ts");
   }
+
+  if (entries.lang) {
+    window.localStorage.setItem("docusaurus.tab.site-lang", entries.lang);
+  }
 })();
