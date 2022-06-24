@@ -28,6 +28,6 @@ The following reference lists available metrics for use by the SDKs and your Tem
 
 The following references lists available command and events for your Temporal application:
 
-- [Commands reference](/references/commands):
+- [Commands reference](/references/commands)
 
 - [Events reference](/references/events)
