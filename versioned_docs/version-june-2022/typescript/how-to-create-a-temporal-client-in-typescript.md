@@ -12,9 +12,9 @@ tags:
 Use a new `WorflowClient()` with the requisite gRPC [`Connection`](https://typescript.temporal.io/api/classes/client.Connection#service) to create a new Client.
 
 ```typescript
-import { Connection, WorkflowClient } from '@temporalio/client';
+import {Connection, WorkflowClient} from "@temporalio/client";
 const connection = await Connection.connect(); // to configure for production
-const client = new WorkflowClient({ connection });
+const client = new WorkflowClient({connection});
 ```
 
 Declaring the `WorflowClient()` creates a new connection to the Temporal service.
@@ -24,10 +24,10 @@ If you ommit the connection and just call the `new WorkflowClient()`, you will c
 The following example, creates a Client, connects to an account, and declares your Namespace.
 
 ```typescript
-import { Connection, WorkflowClient } from '@temporalio/client';
+import {Connection, WorkflowClient} from "@temporalio/client";
 
 const connection = await Connection.connect({
-  address: '<Namespace ID>.tmprl.cloud', // defaults port to 7233 if not specified
+  address: "<Namespace ID>.tmprl.cloud", // defaults port to 7233 if not specified
   tls: {
     // set to true if TLS without mTLS
     // See docs for other TLS options
@@ -39,7 +39,7 @@ const connection = await Connection.connect({
 });
 const client = new WorkflowClient({
   connection,
-  namespace: 'your.namespace',
+  namespace: "your.namespace",
 });
 ```
 
@@ -58,11 +58,11 @@ Example environment settings
 ```typescript
 export function getEnv(): Env {
   return {
-    address: 'web.<Namespace ID>.tmprl.cloud', // NOT web.foo.bar.tmprl.cloud
-    namespace: 'your.namespace', // as assigned
-    clientCertPath: 'foobar.pem', // in project root
-    clientKeyPath: 'foobar.key', // in project root
-    taskQueue: process.env.TEMPORAL_TASK_QUEUE || 'hello-world-mtls', // just to ensure task queue is same on client and worker, totally optional
+    address: "web.<Namespace ID>.tmprl.cloud", // NOT web.foo.bar.tmprl.cloud
+    namespace: "your.namespace", // as assigned
+    clientCertPath: "foobar.pem", // in project root
+    clientKeyPath: "foobar.key", // in project root
+    taskQueue: process.env.TEMPORAL_TASK_QUEUE || "hello-world-mtls", // just to ensure task queue is same on client and worker, totally optional
     // // not usually needed
     // serverNameOverride: process.env.TEMPORAL_SERVER_NAME_OVERRIDE,
     // serverRootCACertificatePath: process.env.TEMPORAL_SERVER_ROOT_CA_CERT_PATH,
@@ -86,7 +86,7 @@ let serverRootCACertificate: Buffer | undefined;
 let clientCertificate: Buffer | undefined;
 let clientKey: Buffer | undefined;
 if (certificateS3Bucket) {
-  const s3 = new S3client({ region: certificateS3BucketRegion });
+  const s3 = new S3client({region: certificateS3BucketRegion});
   serverRootCACertificate = await s3.getObject({
     bucket: certificateS3Bucket,
     key: serverRootCACertificatePath,

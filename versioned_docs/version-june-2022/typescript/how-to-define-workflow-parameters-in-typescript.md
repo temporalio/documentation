@@ -33,7 +33,7 @@ interface ExampleParam {
   name: string;
   born: number;
 }
-export async function example({ name, born }: ExampleParam): Promise<string> {
+export async function example({name, born}: ExampleParam): Promise<string> {
   return `Hello ${name}, you were born in ${born}.`;
 }
 ```

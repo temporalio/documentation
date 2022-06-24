@@ -31,11 +31,11 @@ Temporal Clients and Workers connect with Temporal Clusters through gRPC.
   ```ts
   export function getEnv(): Env {
     return {
-      address: 'foo.bar.tmprl.cloud', // NOT web.foo.bar.tmprl.cloud
-      namespace: 'foo.bar', // as assigned
-      clientCertPath: 'foobar.pem', // in project root
-      clientKeyPath: 'foobar.key', // in project root
-      taskQueue: process.env.TEMPORAL_TASK_QUEUE || 'hello-world-mtls', // just to ensure task queue is same on client and worker, totally optional
+      address: "foo.bar.tmprl.cloud", // NOT web.foo.bar.tmprl.cloud
+      namespace: "foo.bar", // as assigned
+      clientCertPath: "foobar.pem", // in project root
+      clientKeyPath: "foobar.key", // in project root
+      taskQueue: process.env.TEMPORAL_TASK_QUEUE || "hello-world-mtls", // just to ensure task queue is same on client and worker, totally optional
       // not usually needed:
       // serverNameOverride: process.env.TEMPORAL_SERVER_NAME_OVERRIDE,
       // serverRootCACertificatePath: process.env.TEMPORAL_SERVER_ROOT_CA_CERT_PATH,
@@ -68,18 +68,18 @@ node lib/worker.js
 You can programmatically bundle Workflow code on your own with [`bundleWorkflowCode`](/typescript/workers#prebuilt-workflow-bundles):
 
 ```ts
-const { code } = await bundleWorkflowCode({
-  workflowsPath: require.resolve('src/workflows'),
+const {code} = await bundleWorkflowCode({
+  workflowsPath: require.resolve("src/workflows"),
 });
 
-await writeFile(path.join(__dirname, 'workflow-bundle.js'), code);
+await writeFile(path.join(__dirname, "workflow-bundle.js"), code);
 ```
 
 And then the bundle can be passed to the Worker:
 
 ```ts
 const worker = await Worker.create({
-  workflowBundle: { path: require.resolve('workflow-bundle.js') },
+  workflowBundle: {path: require.resolve("workflow-bundle.js")},
   activities,
   taskQueue,
 });

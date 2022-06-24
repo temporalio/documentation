@@ -65,20 +65,20 @@ If you need to compile the Worker yourself, set up the Rust toolchain by followi
 Advanced users can pass a prebuilt bundle instead of `workflowsPath`, or you can use Temporal's `bundleWorkflowCode` helper:
 
 ```ts
-import { bundleWorkflowCode, Worker } from '@temporalio/worker';
+import {bundleWorkflowCode, Worker} from "@temporalio/worker";
 
 // Option 1: passing path to prebuilt bundle
 const worker = await Worker.create({
   taskQueue,
   workflowBundle: {
-    codePath: './path-to-bundle.js',
-    sourceMapPath: './path-to-bundle.js.map',
+    codePath: "./path-to-bundle.js",
+    sourceMapPath: "./path-to-bundle.js.map",
   },
 });
 
 // Option 2: bundling code using Temporal's bundler settings
 const workflowBundle = await bundleWorkflowCode({
-  workflowsPath: require.resolve('./path-to-your-workflows'),
+  workflowsPath: require.resolve("./path-to-your-workflows"),
 });
 const worker = await Worker.create({
   taskQueue,
@@ -120,19 +120,19 @@ import {
   DefaultLogger,
   Runtime,
   NativeConnection,
-} from '@temporalio/worker';
+} from "@temporalio/worker";
 
-const logger = new DefaultLogger('DEBUG');
+const logger = new DefaultLogger("DEBUG");
 Runtime.install({
   logger,
-  telemetryOptions: { logForwardingLevel: 'INFO' },
+  telemetryOptions: {logForwardingLevel: "INFO"},
 });
 const connection = await NativeConnection.connect({
-  address: 'temporal.myorg.io',
+  address: "temporal.myorg.io",
 });
 const worker = await Worker.create({
   connection,
-  namespace: 'my-custom-namespace',
+  namespace: "my-custom-namespace",
   /* standard Worker options from here */
 });
 ```
@@ -166,12 +166,12 @@ When scheduling a Workflow, a `taskQueue` must be specified.
 </summary>
 
 ```ts
-import { Connection, WorkflowClient } from '@temporalio/client';
+import {Connection, WorkflowClient} from "@temporalio/client";
 const connection = await Connection.connect();
-const client = new WorkflowClient({ connection });
+const client = new WorkflowClient({connection});
 const result = await client.execute(myWorkflow, {
-  taskQueue: 'testhttp', // required
-  workflowId: 'business-meaningful-id', // also required but not the point
+  taskQueue: "testhttp", // required
+  workflowId: "business-meaningful-id", // also required but not the point
 });
 ```
 
@@ -186,7 +186,7 @@ When creating a Worker, you **must** pass the `taskQueue` option to the [`Worker
 ```ts
 const worker = await Worker.create({
   activities, // imported elsewhere
-  taskQueue: 'my-task-queue',
+  taskQueue: "my-task-queue",
 });
 ```
 

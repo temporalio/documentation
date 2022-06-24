@@ -19,12 +19,12 @@ If, for example, a TypeScript Workflow starts a Java Child Workflow which calls 
 <!--TODO: use snipsync-->
 
 ```ts
-import { executeChild } from '@temporalio/workflow';
+import {executeChild} from "@temporalio/workflow";
 import {
   ActivityFailure,
   ApplicationFailure,
   ChildWorkflowFailure,
-} from '@temporalio/common';
+} from "@temporalio/common";
 
 // Define the TypeScript version of the Java Workflow interface
 // to get a type safe child WorkflowHandle
@@ -32,7 +32,7 @@ export type JavaWorkflow = () => Promise<void>;
 
 async function myWorkflow(): Promise<void> {
   try {
-    await executeChild<JavaWorkflow>('RunAnActivityWorkflow');
+    await executeChild<JavaWorkflow>("RunAnActivityWorkflow");
   } catch (err) {
     if (
       err instanceof ChildWorkflowFailure &&
@@ -40,7 +40,7 @@ async function myWorkflow(): Promise<void> {
       err.cause.cause instanceof ApplicationFailure
     ) {
       console.log(
-        'Child workflow failure root cause was a failed activity',
+        "Child workflow failure root cause was a failed activity",
         err.cause.cause.message
       );
     }
@@ -84,7 +84,7 @@ async function wrapError<T>(fn: () => Promise<T>): Promise<T> {
     if (err instanceof MySpecialRetryableError) {
       throw ApplicationFailure.retryable(
         err.message,
-        'MySpecialRetryableError'
+        "MySpecialRetryableError"
       ); // can also make this nonRetryable if that is the intent. remember to change the error name.
     }
     throw err;
@@ -94,14 +94,14 @@ async function wrapError<T>(fn: () => Promise<T>): Promise<T> {
 class WorkflowErrorInterceptor implements WorkflowInboundCallsInterceptor {
   async execute(
     input: WorkflowExecuteInput,
-    next: Next<WorkflowInboundCallsInterceptor, 'execute'>
+    next: Next<WorkflowInboundCallsInterceptor, "execute">
   ): Promise<unknown> {
     return await wrapError(() => next(input));
   }
 
   async handleSignal(
     input: SignalInput,
-    next: Next<WorkflowInboundCallsInterceptor, 'handleSignal'>
+    next: Next<WorkflowInboundCallsInterceptor, "handleSignal">
   ): Promise<void> {
     return await wrapError(() => next(input));
   }
@@ -119,11 +119,11 @@ import {
   CancellationScope,
   proxyActivities,
   isCancellation,
-} from '@temporalio/workflow';
-import * as activities from '../activities';
+} from "@temporalio/workflow";
+import * as activities from "../activities";
 
 export function myWorkflow(urls: string[], timeoutMs: number): Promise<any[]> {
-  const { httpGetJSON } = proxyActivities<typeof activities>({
+  const {httpGetJSON} = proxyActivities<typeof activities>({
     scheduleToCloseTimeout: timeoutMs,
   });
 
@@ -133,7 +133,7 @@ export function myWorkflow(urls: string[], timeoutMs: number): Promise<any[]> {
     );
   } catch (err) {
     if (isCancellation(err)) {
-      console.log('Deadline exceeded while waiting for activities to complete');
+      console.log("Deadline exceeded while waiting for activities to complete");
     }
     throw err;
   }

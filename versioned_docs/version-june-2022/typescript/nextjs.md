@@ -107,7 +107,7 @@ Inside of `/temporal/src/activities.ts` we'll write a simple Activity function t
 
 ```ts
 // /temporal/src/activities.ts
-import { Context } from '@temporalio/activity';
+import {Context} from "@temporalio/activity";
 
 export async function purchase(id: string): Promise<string> {
   console.log(`Purchased ${id}!`);
@@ -122,16 +122,16 @@ Inside of `/temporal/src/workflows.ts` we'll write a Workflow function that call
 
 ```ts
 // /temporal/src/workflows.ts
-import { proxyActivities, sleep } from '@temporalio/workflow';
-import type * as activities from './activities'; // purely for type safety
+import {proxyActivities, sleep} from "@temporalio/workflow";
+import type * as activities from "./activities"; // purely for type safety
 
-const { purchase } = proxyActivities<typeof activities>({
-  startToCloseTimeout: '1 minute',
+const {purchase} = proxyActivities<typeof activities>({
+  startToCloseTimeout: "1 minute",
 });
 
 export async function OneClickBuy(id: string): Promise<string> {
   const result = await purchase(id); // calling the activity
-  await sleep('10 seconds'); // demo use of timer
+  await sleep("10 seconds"); // demo use of timer
   console.log(`Activity ID: ${result} executed!`);
 }
 ```
@@ -144,16 +144,16 @@ With your Workflows and Activities done, you can now write the Worker that will 
 
 ```ts
 // /temporal/src/worker.ts
-import { Worker } from '@temporalio/worker';
-import * as activities from './activities';
+import {Worker} from "@temporalio/worker";
+import * as activities from "./activities";
 
 run().catch((err) => console.log(err));
 
 async function run() {
   const worker = await Worker.create({
-    workflowsPath: require.resolve('./workflows'), // passed to Webpack for bundling
+    workflowsPath: require.resolve("./workflows"), // passed to Webpack for bundling
     activities, // directly imported in Node.js
-    taskQueue: 'tutorial',
+    taskQueue: "tutorial",
   });
   await worker.run();
 }
@@ -183,20 +183,20 @@ Now we will create a Client and start a Workflow Execution:
 
 ```ts
 // pages/api/startBuy.ts
-import { Connection, WorkflowClient } from '@temporalio/client';
-import { OneClickBuy } from '../../temporal/lib/workflows.js';
+import {Connection, WorkflowClient} from "@temporalio/client";
+import {OneClickBuy} from "../../temporal/lib/workflows.js";
 
 export default async function startBuy(req, res) {
-  const { itemId } = req.body; // TODO: validate itemId and req.method
+  const {itemId} = req.body; // TODO: validate itemId and req.method
   const client = new WorkflowClient();
   const handle = await client.start(OneClickBuy, {
-    workflowId: 'business-meaningful-id',
-    taskQueue: 'tutorial', // must match the taskQueue polled by Worker above
+    workflowId: "business-meaningful-id",
+    taskQueue: "tutorial", // must match the taskQueue polled by Worker above
     args: [itemId],
     // workflowId: // TODO: use business-meaningful user/transaction ID here
   }); // kick off the purchase async
 
-  res.status(200).json({ workflowId: handle.workflowId });
+  res.status(200).json({workflowId: handle.workflowId});
 }
 ```
 
@@ -217,10 +217,10 @@ For tutorial purposes we will just assume you have an `itemId` to use here; in r
 ```ts
 // /pages/index.ts or whatever page you are on
 // inside event handler
-fetch('/api/startBuy', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ itemId }),
+fetch("/api/startBuy", {
+  method: "POST",
+  headers: {"Content-Type": "application/json"},
+  body: JSON.stringify({itemId}),
 });
 ```
 

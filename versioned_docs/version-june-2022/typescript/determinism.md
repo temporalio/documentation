@@ -6,18 +6,18 @@ As soon as your Worker and Cluster are back up, your code will _appear_ to resum
 This also means that sleeping or retrying code does not tie up the process - you can run thousands of timers off a single Worker.
 
 ```js
-import * as wf from '@temporalio/workflow';
-const { myActivity } = wf.proxyActivities({
-  startToCloseTimeout: '1 week', // persisted
+import * as wf from "@temporalio/workflow";
+const {myActivity} = wf.proxyActivities({
+  startToCloseTimeout: "1 week", // persisted
   retry: {
-    initialInterval: '1 day', // persisted
+    initialInterval: "1 day", // persisted
   },
 });
 
 export async function ExampleWorkflow() {
   let state = []; // mutable local state
   while (true) {
-    await wf.sleep('30 days'); // persisted
+    await wf.sleep("30 days"); // persisted
     state.push(myActivity()); // activity results can be replayed
   }
 }
@@ -63,7 +63,7 @@ Workflow code is bundled on Worker creation using [Webpack](https://webpack.js.o
 How `Date` is deterministic:
 
 ```js
-import { sleep } from '@temporalio/workflow';
+import {sleep} from "@temporalio/workflow";
 
 // this prints the *exact* same timestamp repeatedly
 for (let x = 0; x < 10; ++x) {
@@ -72,7 +72,7 @@ for (let x = 0; x < 10; ++x) {
 
 // this prints timestamps increasing roughly 1s each iteration
 for (let x = 0; x < 10; ++x) {
-  await sleep('1 second');
+  await sleep("1 second");
   console.log(Date.now());
 }
 ```

@@ -39,11 +39,11 @@ The rest of this document explains each step in detail with practical usage tips
 Create a [`WorkflowClient`](https://typescript.temporal.io/api/classes/client.workflowclient) with the requisite gRPC [`Connection`](https://typescript.temporal.io/api/classes/client.Connection):
 
 ```ts
-import { Connection, WorkflowClient } from '@temporalio/client';
+import {Connection, WorkflowClient} from "@temporalio/client";
 const connection = await Connection.connect({
-  address: 'temporal.prod.my.org',
+  address: "temporal.prod.my.org",
 }); // to configure for production
-const client = new WorkflowClient({ connection });
+const client = new WorkflowClient({connection});
 ```
 
 If you omit the connection and just call `new WorkflowClient()`, it creates a default connection that will work locally. Just remember you will need to configure your Connection and Namespace when [deploying to production](/typescript/security#encryption-in-transit-with-mtls).
@@ -56,17 +56,17 @@ When you have a Workflow Client, you can schedule the start of a Workflow with `
 // // STEP ONE: client.start
 // Option 1: Specifying args and workflowId
 const handle = await client.start(example, {
-  workflowId: 'business-meaningful-id',
-  taskQueue: 'tutorial',
-  args: ['foo', 'bar', 'baz'], // this is typechecked against workflowFn's args
+  workflowId: "business-meaningful-id",
+  taskQueue: "tutorial",
+  args: ["foo", "bar", "baz"], // this is typechecked against workflowFn's args
 });
 
 // Option 2: Just using string name; no need to import Workflow, but no type inference
-import { WorkflowStartOptions } from '@temporalio/client';
+import {WorkflowStartOptions} from "@temporalio/client";
 type WFType = (key: number) => Promise<string>; // arg types intentionally wrong to prove a point
-const handle = await client.start<string>('example', {
-  workflowId: 'business-meaningful-id',
-  taskQueue: 'tutorial',
+const handle = await client.start<string>("example", {
+  workflowId: "business-meaningful-id",
+  taskQueue: "tutorial",
   args: [123], // typechecked, but actually wrong at runtime because wrong type signature
 } as WorkflowStartOptions<WFType>);
 
@@ -170,11 +170,11 @@ Using a Workflow Handle isn't necessary with `client.execute` by definition.
     const result = await handle.result(); // block until the workflow completes, if you wish
   } catch (err) {
     if (err instanceof WorkflowFailedError) {
-      throw new Error('Temporal workflow failed: ' + workflowId, {
+      throw new Error("Temporal workflow failed: " + workflowId, {
         cause: err,
       });
     } else {
-      throw new Error('error from Temporal workflow ' + workflowId, {
+      throw new Error("error from Temporal workflow " + workflowId, {
         cause: err,
       });
     }
@@ -205,9 +205,9 @@ You can set each workflow to repeat on a schedule with the `cronSchedule` option
 
 ```ts
 const handle = await client.start(scheduledWorkflow, {
-  workflowId: 'business-meaningful-id',
-  taskQueue: 'tutorial',
-  cronSchedule: '* * * * *', // start every minute
+  workflowId: "business-meaningful-id",
+  taskQueue: "tutorial",
+  cronSchedule: "* * * * *", // start every minute
 });
 ```
 
@@ -226,8 +226,8 @@ You can set each Workflow to repeat on a schedule with the `cronSchedule` option
 
 ```ts
 const handle = await client.start(scheduledWorkflow, {
-  taskQueue: 'test',
-  cronSchedule: '* * * * *', // start every minute
+  taskQueue: "test",
+  cronSchedule: "* * * * *", // start every minute
 });
 ```
 
@@ -243,7 +243,7 @@ A lot of the same concepts about starting, executing, and signaling Workflow Exe
 
 ```ts
 // inside Workflow code
-import { startChild } from '@temporalio/workflow';
+import {startChild} from "@temporalio/workflow";
 
 export async function example(WFname: string, args: string[]): Promise<string> {
   const childHandle = await startChild(WFname, {
@@ -264,7 +264,7 @@ The same concept of "Workflow Handles" applies to retrieving handles for Child a
 
 ```ts
 // inside Workflow code
-import { getExternalWorkflowHandle } from '@temporalio/workflow';
+import {getExternalWorkflowHandle} from "@temporalio/workflow";
 
 export async function CancelExternalWorkflow(wfId: string): void {
   const extHandle = getExternalWorkflowHandle(wfId);

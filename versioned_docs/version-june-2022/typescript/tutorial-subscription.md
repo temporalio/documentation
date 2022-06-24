@@ -64,13 +64,13 @@ A nice first subset of the requirements is to send the email, wait for the trial
 
 ```ts
 // /src/workflows.ts
-import { sleep, proxyActivities } from '@temporalio/workflow';
-import type * as activities from './activities';
+import {sleep, proxyActivities} from "@temporalio/workflow";
+import type * as activities from "./activities";
 
-const { sendWelcomeEmail, sendSubscriptionOverEmail } = proxyActivities<
+const {sendWelcomeEmail, sendSubscriptionOverEmail} = proxyActivities<
   typeof activities
 >({
-  startToCloseTimeout: '1 minute',
+  startToCloseTimeout: "1 minute",
 });
 
 export async function SubscriptionWorkflow(
@@ -90,13 +90,13 @@ To test this out, you will also have to modify your Client code accordingly:
 
 ```ts
 // /src/client.ts
-import { SubscriptionWorkflow } from './workflows';
+import {SubscriptionWorkflow} from "./workflows";
 
 // etc...
 const result = await client.execute(SubscriptionWorkflow, {
-  workflowId: 'business-meaningful-id',
-  taskQueue: 'tutorial',
-  args: ['foo@bar.com', '30 seconds'],
+  workflowId: "business-meaningful-id",
+  taskQueue: "tutorial",
+  args: ["foo@bar.com", "30 seconds"],
 });
 ```
 
@@ -131,15 +131,15 @@ The import code is starting to get a little verbose, so there are some optional 
 
 ```ts
 // /src/workflows.ts
-import * as wf from '@temporalio/workflow'; // don't need to import everything
+import * as wf from "@temporalio/workflow"; // don't need to import everything
 // import activity types
 
 const acts = wf.proxyActivities<typeof activities>({
   // don't need to destructure activities
-  startToCloseTimeout: '1 minute',
+  startToCloseTimeout: "1 minute",
 });
 
-export const cancelSubscription = wf.defineSignal('cancelSignal'); // new
+export const cancelSubscription = wf.defineSignal("cancelSignal"); // new
 
 export async function SubscriptionWorkflow(
   email: string,
@@ -166,10 +166,10 @@ To invoke the Signal from here, we have to get a handle to the running Workflow 
 
 ```ts
 // cancel-subscription.ts
-import { cancelSubscription } from '../workflows';
+import {cancelSubscription} from "../workflows";
 // ...
 
-const handle = client.getHandle('business-meaningful-id'); // match the Workflow id
+const handle = client.getHandle("business-meaningful-id"); // match the Workflow id
 await handle.signal(cancelSubscription);
 ```
 
@@ -301,8 +301,8 @@ The complement to Signals is Queries, where we can get data out of a running Wor
 
 ```ts
 // not suggested code - just for illustrative purposes
-const amountChargedQuery = wf.defineQuery<number>('amountChargedQuery');
-const updateAmountCharged = wf.defineSignal<number>('updateAmountCharged');
+const amountChargedQuery = wf.defineQuery<number>("amountChargedQuery");
+const updateAmountCharged = wf.defineSignal<number>("updateAmountCharged");
 
 // inside Workflow
 let amountCharged = customer.initialBillingPeriodCharge;
@@ -348,8 +348,8 @@ export async function SubscriptionWorkflow(customer: Customer) {
 }
 
 async function BillingCycle(_customer: Customer) {
-  const customer = useState('customer', _customer); // wrapped up signals + queries + state
-  const period = useState('period', 0); // same
+  const customer = useState("customer", _customer); // wrapped up signals + queries + state
+  const period = useState("period", 0); // same
   let isCanceled = false;
   wf.setHandler(cancelSignal, () => void (isCanceled = true));
   await acts.chargeCustomerForBillingPeriod(customer);

@@ -4,11 +4,11 @@ There are two main places where the name of the Task Queue is supplied by the de
 When scheduling a Workflow, a `taskQueue` must be specified.
 
 ```typescript
-import { WorkflowClient } from '@temporalio/client';
+import {WorkflowClient} from "@temporalio/client";
 const client = new WorkflowClient();
 const result = await client.execute(myWorkflow, {
-  taskQueue: 'testhttp', // required
-  workflowId: 'business-meaningful-id', // also required but not the point
+  taskQueue: "testhttp", // required
+  workflowId: "business-meaningful-id", // also required but not the point
 });
 ```
 
@@ -17,7 +17,7 @@ When creating a Worker, you must pass the `taskQueue` option to the [`Worker.cre
 ```typescript
 const worker = await Worker.create({
   activities, // imported elsewhere
-  taskQueue: 'my-task-queue',
+  taskQueue: "my-task-queue",
 });
 ```
 

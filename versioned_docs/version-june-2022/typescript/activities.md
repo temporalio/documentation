@@ -37,9 +37,9 @@ Note that we only import the type of our activities, the TypeScript compiler wil
 You may be tempted to import activities directly instead of using `proxyActivities`:
 
 ```ts
-import { greet } from './activities';
+import {greet} from "./activities";
 // error when you try to use the function in your code
-greet('Hello world');
+greet("Hello world");
 ```
 
 This will result in a Webpack error, because the Temporal Worker will try to bundle this as part of the Workflow.
@@ -59,13 +59,13 @@ When you call `proxyActivities` in a Workflow function, there are [a range of Ac
 
 ```ts
 // Sample of typical options you can set while creating a proxy for the `greet` Activity
-const { greet } = proxyActivities<typeof activities>({
-  startToCloseTimeout: '30s', // recommended
-  scheduleToCloseTimeout: '5m', // useful
+const {greet} = proxyActivities<typeof activities>({
+  startToCloseTimeout: "30s", // recommended
+  scheduleToCloseTimeout: "5m", // useful
   // The below is a Retry Policy. It is used to retry the Activity if it fails.
   retry: {
     // These are the values of the Default Retry Policy
-    initialInterval: '1s',
+    initialInterval: "1s",
     backoffCoefficient: 2,
     maximumAttempts: Infinity,
     maximumInterval: 100 * initialInterval,
@@ -91,14 +91,14 @@ You can specify timeouts as number of milliseconds, or a string to be parsed to 
 
 ```ts
 // Example 1
-const { greet } = proxyActivities<typeof activities>({
-  startToCloseTimeout: '1 minute', // translates to 60000 ms
+const {greet} = proxyActivities<typeof activities>({
+  startToCloseTimeout: "1 minute", // translates to 60000 ms
 });
 
 // Example 2
-const { longRunningActivity } = proxyActivities<typeof activities>({
-  scheduleToCloseTimeout: '5m', // translates to 300000 ms
-  startToCloseTimeout: '30s', // translates to 30000 ms
+const {longRunningActivity} = proxyActivities<typeof activities>({
+  scheduleToCloseTimeout: "5m", // translates to 300000 ms
+  startToCloseTimeout: "30s", // translates to 30000 ms
   heartbeatTimeout: 10000, // equivalent to '10 seconds'
 });
 ```
@@ -109,11 +109,11 @@ You can set a `retry` policy with [RetryPolicy](https://typescript.temporal.io/a
 
 ```ts
 // Example 1 - default
-const { greet } = proxyActivities<typeof activities>({
-  startToCloseTimeout: '20s',
+const {greet} = proxyActivities<typeof activities>({
+  startToCloseTimeout: "20s",
   retry: {
     // default retry policy if not specified
-    initialInterval: '1s',
+    initialInterval: "1s",
     backoffCoefficient: 2,
     maximumAttempts: Infinity,
     maximumInterval: 100 * initialInterval,
@@ -122,8 +122,8 @@ const { greet } = proxyActivities<typeof activities>({
 });
 
 // Example 2 - no retries
-const { greet } = proxyActivities<typeof activities>({
-  startToCloseTimeout: '20s',
+const {greet} = proxyActivities<typeof activities>({
+  startToCloseTimeout: "20s",
   retry: {
     // guarantee no retries
     maximumAttempts: 1,
@@ -131,8 +131,8 @@ const { greet } = proxyActivities<typeof activities>({
 });
 
 // Example 3 - linear retries up to 5x
-const { greet } = proxyActivities<typeof activities>({
-  startToCloseTimeout: '20s',
+const {greet} = proxyActivities<typeof activities>({
+  startToCloseTimeout: "20s",
   retry: {
     // retry every 1s, no exponential backoff
     backoffCoefficient: 1,
@@ -151,8 +151,8 @@ As you customize your Workflow errors to be more descriptive, advanced users wil
 All activities must be registered by a Worker, or you will get an error that looks like `"Activity function myActivity is not registered on this Worker"` when you try to invoke it from a Workflow.
 
 ```ts
-import { Worker } from '@temporalio/worker';
-import * as activities from './activities';
+import {Worker} from "@temporalio/worker";
+import * as activities from "./activities";
 
 // ...
 const worker = await Worker.create({
@@ -218,7 +218,7 @@ You may proxy multiple Activities from the same `proxyActivities` call if you wa
 ```ts
 export async function Workflow(name: string): Promise<string> {
   // destructuring multiple activities with the same options
-  const { act1, act2, act3 } =
+  const {act1, act2, act3} =
     proxyActivities<typeof activities>(/* activityOptions */);
   await act1();
   await Promise.all([act2, act3]);
@@ -235,7 +235,7 @@ export async function DynamicWorkflow(activityName, ...args) {
 
   // these are equivalent
   await acts.activity1();
-  await acts['activity1']();
+  await acts["activity1"]();
 
   // dynamic reference to activities using activityName
   let result = await acts[activityName](...args);
@@ -297,9 +297,9 @@ export async function example(sleepIntervalMs = 1000): Promise<void> {
 }
 
 // workflow code calling activity
-const { example } = proxyActivities<typeof activities>({
-  startToCloseTimeout: '1 hour',
-  heartbeatTimeout: '10s',
+const {example} = proxyActivities<typeof activities>({
+  startToCloseTimeout: "1 hour",
+  heartbeatTimeout: "10s",
 });
 ```
 
@@ -383,14 +383,14 @@ This document is still a WIP. For more details, see [What is a Local Activity?](
 To call Local Activities in TS, use [`proxyLocalActivities`](https://typescript.temporal.io/api/namespaces/workflow/#proxylocalactivities).
 
 ```ts
-import * as workflow from '@temporalio/workflow';
+import * as workflow from "@temporalio/workflow";
 
-const { getEnvVar } = workflow.proxyLocalActivities({
-  startToCloseTimeout: '2 seconds',
+const {getEnvVar} = workflow.proxyLocalActivities({
+  startToCloseTimeout: "2 seconds",
 });
 
 export async function myWorkflow(): Promise<void> {
-  const someSetting = await getEnvVar('SOME_SETTING');
+  const someSetting = await getEnvVar("SOME_SETTING");
   // ...
 }
 ```

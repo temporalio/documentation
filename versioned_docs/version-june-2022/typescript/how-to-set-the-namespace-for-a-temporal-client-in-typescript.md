@@ -15,6 +15,6 @@ const connection = await Connection.connect();
 // https://typescript.temporal.io/api/interfaces/client.WorkflowClientOptions
 const client = new WorkflowClient({
   connection,
-  namespace: 'my-namespace-name',
+  namespace: "my-namespace-name",
 });
 ```

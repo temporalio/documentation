@@ -24,16 +24,16 @@ There are three main things the Worker needs:
   - Or pass a prebuilt bundle to `workflowBundle`, if you prefer to handle the bundling yourself.
 
 ```ts
-import { Worker } from '@temporalio/worker';
-import * as activities from './activities';
+import {Worker} from "@temporalio/worker";
+import * as activities from "./activities";
 
 async function run() {
   // Step 1: Register Workflows and Activities with the Worker and connect to
   // the Temporal server.
   const worker = await Worker.create({
-    workflowsPath: require.resolve('./workflows'),
+    workflowsPath: require.resolve("./workflows"),
     activities,
-    taskQueue: 'hello-world',
+    taskQueue: "hello-world",
   });
   // Worker connects to localhost by default and uses console.error for logging.
   // Customize the Worker by passing more options to create():
@@ -56,13 +56,13 @@ run().catch((err) => {
 When scheduling a Workflow, a `taskQueue` must be specified.
 
 ```ts
-import { Connection, WorkflowClient } from '@temporalio/client';
+import {Connection, WorkflowClient} from "@temporalio/client";
 // This is the code that is used to start a workflow.
 const connection = await Connection.create();
-const client = new WorkflowClient({ connection });
+const client = new WorkflowClient({connection});
 const result = await client.execute(myWorkflow, {
-  taskQueue: 'your-task-queue', // required
-  workflowId: 'your-workflow-id', // required
+  taskQueue: "your-task-queue", // required
+  workflowId: "your-workflow-id", // required
 });
 ```
 
@@ -71,7 +71,7 @@ When creating a Worker, you must pass the `taskQueue` option to the `Worker.crea
 ```ts
 const worker = await Worker.create({
   activities, // imported elsewhere
-  taskQueue: 'your-task-queue',
+  taskQueue: "your-task-queue",
 });
 ```
 

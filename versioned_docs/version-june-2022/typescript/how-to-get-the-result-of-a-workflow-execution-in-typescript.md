@@ -13,9 +13,9 @@ To return the results of a Workflow Execution:
 
 ```typescript
 return (
-  'Completed ' +
+  "Completed " +
   wf.workflowInfo().workflowId +
-  ', Total Charged: ' +
+  ", Total Charged: " +
   totalCharged
 );
 ```
@@ -43,11 +43,11 @@ try {
   const result = await handle.result();
 } catch (err) {
   if (err instanceof WorkflowFailedError) {
-    throw new Error('Temporal workflow failed: ' + workflowId, {
+    throw new Error("Temporal workflow failed: " + workflowId, {
       cause: err,
     });
   } else {
-    throw new Error('error from Temporal workflow ' + workflowId, {
+    throw new Error("error from Temporal workflow " + workflowId, {
       cause: err,
     });
   }

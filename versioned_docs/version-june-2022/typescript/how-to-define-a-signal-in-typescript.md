@@ -12,12 +12,12 @@ tags:
 [`defineSignal`](https://typescript.temporal.io/api/namespaces/workflow/#definesignal)
 
 ```ts
-import { defineSignal } from '@temporalio/workflow';
+import {defineSignal} from "@temporalio/workflow";
 
 interface JoinInput {
   userId: string;
   groupId: string;
 }
 
-const joinSignal = defineSignal<JoinInput>('join');
+const joinSignal = defineSignal<JoinInput>("join");
 ```

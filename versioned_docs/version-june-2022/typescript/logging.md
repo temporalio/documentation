@@ -112,25 +112,25 @@ Temporal ships a [`DefaultLogger`](https://typescript.temporal.io/api/classes/wo
 #### Example: Set up the DefaultLogger to only log messages with level WARN and higher
 
 ```ts
-import { Runtime, DefaultLogger } from '@temporalio/worker';
+import {Runtime, DefaultLogger} from "@temporalio/worker";
 
-const logger = new DefaultLogger('WARN', ({ level, message }) => {
+const logger = new DefaultLogger("WARN", ({level, message}) => {
   console.log(`Custom logger: ${level} — ${message}`);
 });
-Runtime.install({ logger });
+Runtime.install({logger});
 ```
 
 #### Example: Accumulate logs for testing/reporting
 
 ```ts
-import { DefaultLogger, LogEntry } from '@temporalio/worker';
+import {DefaultLogger, LogEntry} from "@temporalio/worker";
 
 const logs: LogEntry[] = [];
-const logger = new DefaultLogger('TRACE', (entry) => logs.push(entry));
-log.debug('hey', { a: 1 });
-log.info('ho');
-log.warn('lets', { a: 1 });
-log.error('go');
+const logger = new DefaultLogger("TRACE", (entry) => logs.push(entry));
+log.debug("hey", {a: 1});
+log.info("ho");
+log.warn("lets", {a: 1});
+log.error("go");
 ```
 
 The log levels are [listed here](https://typescript.temporal.io/api/namespaces/worker#loglevel) in increasing order of severity.
@@ -140,15 +140,15 @@ The log levels are [listed here](https://typescript.temporal.io/api/namespaces/w
 A common logging use case is logging to a file to be picked up by a collector like the [Datadog Agent](https://docs.datadoghq.com/logs/log_collection/nodejs/?tab=winston30).
 
 ```ts
-import { Runtime } from '@temporalio/worker';
-import winston from 'winston';
+import {Runtime} from "@temporalio/worker";
+import winston from "winston";
 
 const logger = winston.createLogger({
-  level: 'info',
+  level: "info",
   format: winston.format.json(),
-  transports: [new transports.File({ filename: '/path/to/worker.log' })],
+  transports: [new transports.File({filename: "/path/to/worker.log"})],
 });
-Runtime.install({ logger });
+Runtime.install({logger});
 ```
 
 ## Metrics
@@ -175,13 +175,13 @@ To extend the default ([Trace Context](https://github.com/open-telemetry/opentel
 - At the top level of your Workflow code, add the following lines:
 
   ```js
-  import { propagation } from '@opentelemetry/api';
+  import {propagation} from "@opentelemetry/api";
   import {
     CompositePropagator,
     W3CTraceContextPropagator,
     W3CBaggagePropagator,
-  } from '@opentelemetry/core';
-  import { JaegerPropagator } from '@opentelemetry/propagator-jaeger';
+  } from "@opentelemetry/core";
+  import {JaegerPropagator} from "@opentelemetry/propagator-jaeger";
 
   propagation.setGlobalPropagator(
     new CompositePropagator({

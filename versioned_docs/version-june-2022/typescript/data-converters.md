@@ -132,8 +132,8 @@ To serialize values as [Protocol Buffers](https://en.wikipedia.org/wiki/Protocol
 Alternatively, we can use Protobuf Payload Converters directly, or with other converters. If we know that we only use Protobuf objects, and we want them binary encoded (which saves space over proto3 JSON, but can't be viewed in the Web UI), we could do:
 
 ```ts
-import { ProtobufBinaryPayloadConverter } from '@temporalio/common/lib/protobufs';
-import root from '../protos/root';
+import {ProtobufBinaryPayloadConverter} from "@temporalio/common/lib/protobufs";
+import root from "../protos/root";
 
 export const payloadConverter = new ProtobufBinaryPayloadConverter(root);
 ```
@@ -146,9 +146,9 @@ import {
   CompositePayloadConverter,
   JsonPayloadConverter,
   UndefinedPayloadConverter,
-} from '@temporalio/common';
-import { ProtobufBinaryPayloadConverter } from '@temporalio/common/lib/protobufs';
-import root from '../protos/root';
+} from "@temporalio/common";
+import {ProtobufBinaryPayloadConverter} from "@temporalio/common/lib/protobufs";
+import root from "../protos/root";
 
 export const payloadConverter = new CompositePayloadConverter(
   new UndefinedPayloadConverter(),

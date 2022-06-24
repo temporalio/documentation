@@ -82,9 +82,9 @@ Importing node built-in modules
 :::danger Antipattern
 
 ```ts
-import fs from 'fs';
+import fs from "fs";
 
-const config = fs.readFileSync('config.json', 'utf8');
+const config = fs.readFileSync("config.json", "utf8");
 ```
 
 :::
@@ -111,10 +111,10 @@ Importing and calling Activities directly from Workflow code
 :::danger Antipattern
 
 ```ts
-import { makeHTTPRequest } from './activities';
+import {makeHTTPRequest} from "./activities";
 
 export async function myWorkflow(): Promise<string> {
-  return await makeHTTPRequest('https://temporal.io');
+  return await makeHTTPRequest("https://temporal.io");
 }
 ```
 
@@ -143,13 +143,13 @@ You'll typically see an error in this form in the Webpack output:
 To properly call your Activities from Workflow code use `proxyActivities` and make sure to only import the Activity types.
 
 ```ts
-import { proxyActivities } from '@temporalio/workflow';
+import {proxyActivities} from "@temporalio/workflow";
 
-import type * as activities from './activities';
-const { makeHTTPRequest } = proxyActivities<typeof activities>();
+import type * as activities from "./activities";
+const {makeHTTPRequest} = proxyActivities<typeof activities>();
 
 export async function myWorkflow(): Promise<string> {
-  return await makeHTTPRequest('https://temporal.io');
+  return await makeHTTPRequest("https://temporal.io");
 }
 ```
 
@@ -202,11 +202,11 @@ module.exports = {
 <TabItem value="esbuild">
 
 ```js
-require('esbuild').buildSync({
-  entryPoints: ['app.js'],
+require("esbuild").buildSync({
+  entryPoints: ["app.js"],
   minify: true,
   keepNames: true,
-  outfile: 'out.js',
+  outfile: "out.js",
 });
 ```
 
