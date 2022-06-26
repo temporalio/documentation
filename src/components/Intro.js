@@ -271,7 +271,7 @@ function Tools() {
         <li className="">
           <Link
             className="flex items-center space-x-3 hover:underline"
-            to={useBaseUrl("/devtools/web-ui")}
+            to={useBaseUrl("/web-ui")}
           >
             <svg
               className="h-8 w-8 transition hover:scale-110 code-logo"
