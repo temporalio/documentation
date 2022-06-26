@@ -164,9 +164,11 @@ test('sleep completes almost immediately', async () => {
 });
 ```
 
-The `runUntil()` function runs your Workflow to the end.
-You can also call `testEnv.sleep()` from your test code to advance time in "skipped" time mode.
+### Time skipping in Tests
+
+You can also call `testEnv.sleep()` from your test code to advance the test server's time.
 This is useful for testing intermediate state, or for testing infinite Workflows.
+However, to advance time using `testEnv.sleep()`, you need to start the Workflow using `start()`, not `execute()`.
 
 `workflow.ts`
 
@@ -194,6 +196,9 @@ export async function sleeperWorkflow() {
 test('advancing time using `testEnv.sleep()`', async function () {
   const client = testEnv.workflowClient;
 
+  // Important: `start()` starts the test server in "normal" mode,
+  // not skipped time mode. If you don't advance time using `testEnv.sleep()`,
+  // then `sleeperWorkflow()` will run for days.
   handle = await client.start(sleeperWorkflow, {
     taskQueue,
     workflowId: uuidv4(),
@@ -202,10 +207,14 @@ test('advancing time using `testEnv.sleep()`', async function () {
   let numDays = await handle.query(daysQuery);
   assert.equal(numDays, 0);
 
+  // Advance the test server's time by 25 hours and assert that
+  // `sleeperWorkflow()` correctly incremented `numDays`.
   await testEnv.sleep('25 hours');
   numDays = await handle.query(daysQuery);
   assert.equal(numDays, 1);
 
+  // Advance the test server's time by an additional 25 hours and
+  // assert that `sleeperWorkflow()` incremented `numDays` a second time.
   await testEnv.sleep('25 hours');
   numDays = await handle.query(daysQuery);
   assert.equal(numDays, 2);
