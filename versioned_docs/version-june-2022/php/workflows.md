@@ -238,8 +238,13 @@ Workflow::async(
     }
 );
 
-// wait for $done to become true
-yield Workflow::await(fn() => $done);
+// Wait for $done to become true
+// We not using arrow function here, because $done is
+// a local variable, and fn() will capture it by value so
+// await will not be affected by the async variable change.
+yield Workflow::await(function() use (&$done) {
+    return $done;
+});
 ```
 
 You can not use any activity, timer or child workflow invocation inside `await` or `awaitWithTimeout` method.
