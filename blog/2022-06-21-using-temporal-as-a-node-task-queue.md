@@ -18,7 +18,7 @@ There are numerous task queues for Node.js. [Bull](https://optimalbits.github.io
 All these task queue libraries solve a similar problem.
 They let you put a task onto a queue, and define a worker that consumes tasks from the queue.
 While Temporal is much more than a task queue, Temporal does solve the same problems as these task queue libraries.
-Plus, Temporal's feature set provides several advantages over plain task queues.
+Plus, Temporal's feature set provides several advantages over conventional task queues.
 
 ## Setting Up a Task Queue With Temporal
 
@@ -173,9 +173,8 @@ const handle = await client.start(sendEmailWorkflow, {
     from: 'test@temporal.io',
     subject: 'Welcome to Temporal!',
     html: 'This is a test email'
-  }], // type inference works! args: [name: string]
+  }],
   taskQueue: 'email',
-  // in practice, use a meaningful business id, eg customerId or transactionId
   workflowId: 'workflow-' + nanoid(),
 });
 ```
@@ -183,7 +182,7 @@ const handle = await client.start(sendEmailWorkflow, {
 The Temporal code is slight more verbose, because you need a separate Activity function.
 However, Temporal has several features that make it an excellent option for the task queue use case.
 
-## Additional Features: UI, Retries, Delays
+## Additional Features: UI, Type Checking, Retries, Delays
 
 Most Node.js task queues have a corresponding UI for monitoring and managing tasks.
 For example, [Taskforce](https://taskforce.sh/) for Bull, or [Agendash](https://github.com/agenda/agendash) for Agenda.
@@ -192,7 +191,25 @@ The Temporal UI lets you manage and monitor Workflows in a similar way.
 The Temporal UI for an execution of `sendEmailWorkflow()` looks like the following.
 It displays when the `sendEmailWorkflow()` started and ended, when the `sendEmail()` activity started and ended, and the data `sendEmail()` returned.
 
-<img src="https://codebarbarian-images.s3.amazonaws.com/temporal-ui.png" />
+![](/img/ui-send-email.png)
+
+Temporal has stronger built-in type safety than conventional task queues.
+For example, Bull doesn't provide a way for TypeScript to tie the `email` queue to the arguments that the `sendEmail()` handler expects.
+You can call `emailQueue.add(args)` with an arbitrarily typed argument.
+On the other hand, TypeScript type checks `args` in the following code to make sure it lines up with the parameters `sendEmailWorkflow()` expects.
+
+```ts
+const handle = await client.start(sendEmailWorkflow, {
+  args: [{
+    to: 'john.smith@gmail.com',
+    from: 'test@temporal.io',
+    subject: 'Welcome to Temporal!',
+    html: 'This is a test email'
+  }], // TypeScript can type check `args`
+  taskQueue: 'email',
+  workflowId: 'workflow-' + nanoid(),
+});
+```
 
 Suppose the Mailgun API has a temporary issue.
 Ideally, your task queue would retry sending the email automatically a fixed number of times before marking the task as failed.
@@ -207,6 +224,13 @@ For example, the following code shows how you might configure Temporal to retry 
 import { proxyActivities } from '@temporalio/workflow';
 import type { createActivities } from './activities';
 import { SendEmailParams } from './interfaces';
+
+interface SendEmailParams {
+  to: string;
+  from: string;
+  subject: string;
+  html: string;
+}
 
 const { sendEmail } = proxyActivities<ReturnType<typeof createActivities>>({
   retry: {
@@ -266,7 +290,11 @@ In the following code, the `customerWelcomeSeriesWorkflow()` sends multiple emai
 ```ts
 import { proxyActivities, sleep } from '@temporalio/workflow';
 import type { createActivities } from './activities';
-import { CustomerWelcomeSeriesParams } from './interfaces';
+
+interface CustomerWelcomeSeriesParams {
+  to: string;
+  from: string;
+}
 
 const { sendEmail } = proxyActivities<ReturnType<typeof createActivities>>({
   retry: {
@@ -312,9 +340,13 @@ For example, your app can send a Signal to `customerWelcomeSeriesWorkflow()` whe
 ```ts
 import { defineSignal, proxyActivities, sleep } from '@temporalio/workflow';
 import type { createActivities } from './activities';
-import { CustomerWelcomeSeriesParams } from './interfaces';
 
 export const loggedInSignal = defineSignal('loggedIn');
+
+interface CustomerWelcomeSeriesParams {
+  to: string;
+  from: string;
+}
 
 const { sendEmail } = proxyActivities<ReturnType<typeof createActivities>>({
   retry: {
