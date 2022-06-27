@@ -18,7 +18,7 @@ There are numerous task queues for Node.js. [Bull](https://optimalbits.github.io
 All these task queue libraries solve a similar problem.
 They let you put a task onto a queue, and define a worker that consumes tasks from the queue.
 While Temporal is much more than a task queue, Temporal does solve the same problems as these task queue libraries.
-Plus, Temporal's feature set provides several advantages if you use Temporal instead of a task queue library.
+Plus, Temporal's feature set provides several advantages over plain task queues.
 
 ## Setting Up a Task Queue With Temporal
 
