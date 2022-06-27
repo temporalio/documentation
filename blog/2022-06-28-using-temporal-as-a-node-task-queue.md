@@ -2,7 +2,7 @@
 tags:
   - temporal
   - community
-posted_on_: 2022-06-21T00:00:00Z
+posted_on_: 2022-06-28T00:00:00Z
 slug: using-temporal-as-a-node-task-queue
 title: 'Using Temporal as a Node.js Task Queue'
 author: Valeri Karpov
