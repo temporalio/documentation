@@ -19,6 +19,6 @@ Authorizer then returns one of two decisions:
 - `DecisionDeny`: the requested API call is not invoked and an error is returned to the caller.
 - `DecisionAllow`: the requested API call is invoked.
 
-Temporal provides a default [Authorizer](/docs/server/options/#withauthorizer) if you don't wish to create one.
+Configure your `Authorizer` when you start the server via the `temporal.WithAuthorizer` [server option](/server/options/#withauthorizer).
 
-Configure the Authorizer when you start the server with temporal.WithAuthorizer.
+If an `Authorizer` is not set in the server options, Temporal uses the `nopAuthority` authorizer that unconditionally allows all API calls to pass through.
