@@ -2052,8 +2052,8 @@ Use a new `WorflowClient()` with the requisite gRPC [`Connection`](https://types
 
 ```typescript
 import {Connection, WorkflowClient} from "@temporalio/client";
-const connection = new Connection(); // to configure for production
-const client = new WorkflowClient(connection.service);
+const connection = await Connection.connect(); // to configure for production
+const client = new WorkflowClient({connection});
 ```
 
 Declaring the `WorflowClient()` creates a new connection to the Temporal service.
@@ -2065,7 +2065,7 @@ The following example, creates a Client, connects to an account, and declares yo
 ```typescript
 import {Connection, WorkflowClient} from "@temporalio/client";
 
-const connection = new Connection({
+const connection = await Connection.connect({
   address: "<Namespace ID>.tmprl.cloud", // defaults port to 7233 if not specified
   tls: {
     // set to true if TLS without mTLS
@@ -2076,8 +2076,8 @@ const connection = new Connection({
     },
   },
 });
-await connection.untilReady();
-const client = new WorkflowClient(connection.service, {
+const client = new WorkflowClient({
+  connection,
   namespace: "your.namespace",
 });
 ```
@@ -2302,7 +2302,7 @@ import {Worker, NativeConnection} from "@temporalio/worker";
 import * as activities from "./activities";
 
 async function run() {
-  const connection = await NativeConnection.create({
+  const connection = await NativeConnection.connect({
     address: "foo.bar.tmprl.cloud", // defaults port to 7233 if not specified
     tls: {
       // set to true if TLS without mTLS
@@ -2883,8 +2883,8 @@ When scheduling a Workflow, a `taskQueue` must be specified.
 ```ts
 import {Connection, WorkflowClient} from "@temporalio/client";
 // This is the code that is used to start a workflow.
-const connection = new Connection();
-const client = new WorkflowClient();
+const connection = await Connection.create();
+const client = new WorkflowClient({connection});
 const result = await client.execute(myWorkflow, {
   taskQueue: "your-task-queue", // required
   workflowId: "your-workflow-id", // required
@@ -2922,11 +2922,7 @@ await client.start_workflow(
 
 #### Set Workflow Id
 
-We recommend providing your own [Workflow Id](/workflows/#workflow-id) that maps to a business process or business entity identifier, such as an order identifier or customer identifier.
-
-:::note
-You must provide the `id` argument when executing a Workflow in Python.
-:::
+Although it is not required, we recommend providing your own [Workflow Id](/workflows/#workflow-id) that maps to a business process or business entity identifier, such as an order identifier or customer identifier.
 
 <Tabs
 defaultValue="go"
@@ -3291,14 +3287,14 @@ This section covers many of the features that are available to use in your [Temp
 
 ### Signals
 
-A [Signal](/workflows/#signals) is a message that delivers data to a running Workflow Execution.
+A [Signal](/workflows/#signals) is a message sent to a running Workflow Execution.
 
-Signals are defined alongside your application code and handled in your Workflow Definition.
-Signals can be sent to Workflow Executions from a Temporal Client or from within a Workflow.
+Signals are defined in your code and handled in your Workflow Definition.
+Signals can be sent to Workflow Executions from a Temporal Client or from another Workflow Execution.
 
 #### Define Signal
 
-A Signal type and its data must be serializable.
+A Signal has a name and can have arguments. The arguments must be [serializable](/concepts/what-is-a-data-converter/).
 
 <Tabs
 defaultValue="go"
@@ -3352,7 +3348,18 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+[`defineSignal`](https://typescript.temporal.io/api/namespaces/workflow/#definesignal)
+
+```ts
+import {defineSignal} from "@temporalio/workflow";
+
+interface JoinInput {
+  userId: string;
+  groupId: string;
+}
+
+const joinSignal = defineSignal<JoinInput>("join");
+```
 
 </TabItem>
 <TabItem value="python">
@@ -3523,7 +3530,24 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+[`setHandler`](https://typescript.temporal.io/api/namespaces/workflow/#sethandler)
+
+```ts
+import {setHandler} from "@temporalio/workflow";
+
+export async function myWorkflow() {
+  const groups = new Map<string, Set<string>>();
+
+  setHandler(joinSignal, ({userId, groupId}: JoinInput) => {
+    const group = groups.get(groupId);
+    if (group) {
+      group.add(userId);
+    } else {
+      groups.set(groupId, new Set([userId]));
+    }
+  });
+}
+```
 
 </TabItem>
 <TabItem value="python">
@@ -3608,7 +3632,18 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+[`WorkflowHandle.signal`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle#signal)
+
+```typescript
+import {WorkflowClient} from "@temporalio/client";
+import {joinSignal} from "./workflows";
+
+const client = new WorkflowClient();
+
+const handle = await client.getHandle("workflow-id-123");
+
+await handle.signal(joinSignal, {userId: "user-1", groupId: "group-1"});
+```
 
 </TabItem>
 <TabItem value="python">
@@ -3620,9 +3655,12 @@ Content is not available
 
 #### Send Signal from Workflow
 
-Sending a Signal from within a Workflow is often referred to as sending an External Signal.
+A Workflow can send a Signal to another Workflow, in which case it's called an _External Signal_.
 
-The [SignalExternalWorkflowExecutionInitiated](/references/events#signalexternalworkflowexecutioninitiated) Event appears in the Workflow Execution Event History of the Workflow that sent the Signal, and the [WorkflowExecutionSignaled](/references/events#workflowexecutionsignaled) Event appears in the Event History of the Workflow that receives the Signal.
+When an External Signal is sent:
+
+- A [SignalExternalWorkflowExecutionInitiated](/references/events#signalexternalworkflowexecutioninitiated) Event appears in the sender's Event History.
+- A [WorkflowExecutionSignaled](/references/events#workflowexecutionsignaled) Event appears in the recipient's Event History.
 
 <Tabs
 defaultValue="go"
@@ -3678,45 +3716,16 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-First, define your Signal that can be sent to the Workflow.
+[`getExternalWorkflowHandle`](https://typescript.temporal.io/api/namespaces/workflow#getexternalworkflowhandle)
 
 ```typescript
-const update = wf.defineSignal<number>("update");
-```
+import {getExternalWorkflowHandle} from "@temporalio/workflow";
+import {joinSignal} from "./other-workflow";
 
-Then create your Workflow. In this example, our Worklfow charges a user every month.
-
-```typescript
-async function SubscriptionWorkflow(id: string, amount: number) {
-  wf.setHandler(update, (newAmt) => (amount = newAmt));
-  while (true) {
-    await charge(id, amount);
-    await sleepTilNextMonth();
-  }
+export async function myWorkflowThatSignals() {
+  const handle = getExternalWorkflowHandle("workflow-id-123");
+  await handle.signal(joinSignal, {userId: "user-1", groupId: "group-1"});
 }
-```
-
-Then send your Signal to the Workflow.
-
-```typescript
-await handle.signal(update, 300);
-```
-
-The following is the implemented code that sends a Signal from a Workflow.
-
-```typescript
-// Defining a signal that can be sent to the workflow.
-const update = wf.defineSignal<number>("update");
-// workflow
-async function SubscriptionWorkflow(id: string, amount: number) {
-  wf.setHandler(update, (newAmt) => (amount = newAmt));
-  while (true) {
-    await charge(id, amount);
-    await sleepTilNextMonth();
-  }
-}
-// from client
-await handle.signal(update, 300);
 ```
 
 Every month, a customer will be charged an amount specified by the update handler.
@@ -3746,7 +3755,10 @@ def signal_custom(self, arg: str) -> None:
 
 #### Send Signal-With-Start
 
-Signal-With-Start can be used to start a Workflow Execution (if not already running) and pass it the Signal at the same time.
+Signal-With-Start is used from the Client.
+It takes a Workflow Id, Workflow arguments, a Signal name, and Signal arguments.
+
+If there's a Workflow running with the given Workflow Id, it will be signaled. If there isn't, a new Workflow will be started and immediately signaled.
 
 <Tabs
 defaultValue="go"
@@ -3838,15 +3850,19 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-To send a Signal to a Workflow and start the Workflow if it isn't already running, use `signalWithStart()`.
+[`WorkflowClient.signalWithStart`](https://typescript.temporal.io/api/classes/client.WorkflowClient#signalwithstart)
 
 ```typescript
+import {WorkflowClient} from "@temporalio/client";
+import {myWorkflow, joinSignal} from "./workflows";
+
 const client = new WorkflowClient();
-await client.signalWithStart(YourWorkflow, {
-  workflowId,
-  args: [arg1, arg2],
-  signal: YourSignal,
-  signalArgs: [arg3, arg4],
+
+await client.signalWithStart(myWorkflow, {
+  workflowId: "workflow-id-123",
+  args: [{foo: 1}],
+  signal: joinSignal,
+  signalArgs: [{userId: "user-1", groupId: "group-1"}],
 });
 ```
 
@@ -5522,7 +5538,7 @@ The possible values can be obtained from the [`go.temporal.io/api/enums/v1`](htt
 - `PARENT_CLOSE_POLICY_TERMINATE`
 - `PARENT_CLOSE_POLICY_REQUEST_CANCEL`
 
-The Child Workflow Options are then applied to the the instance of `workflow.Context` by using the `WithChildOptions` API, which is then passed to the `ExecuteChildWorkflow()` call.
+The Child Workflow Options are then applied to the instance of `workflow.Context` by using the `WithChildOptions` API, which is then passed to the `ExecuteChildWorkflow()` call.
 
 - Type: [`ParentClosePolicy`](https://pkg.go.dev/go.temporal.io/api/enums/v1#ParentClosePolicy)
 - Default: `PARENT_CLOSE_POLICY_ABANDON`

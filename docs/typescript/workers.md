@@ -30,7 +30,7 @@ Your Workflows will only progress if there are Workers polling the right Task Qu
 </summary>
 
 The TypeScript SDK uses TypeScript, but cannot completely protect you from typos.
-If you are experiencing issues, you can check the status of Workers and the Task Queues they poll with [`tctl` or the Temporal Web UI](/devtools).
+If you are experiencing issues, you can check the status of Workers and the Task Queues they poll with [tctl](/tctl) or the [Temporal Web UI](/web-ui).
 
 ![Temporal Web Task Queues view](https://user-images.githubusercontent.com/6764957/126413160-18663430-bb7a-4d3a-874e-80598e1fa07d.png)
 
@@ -53,6 +53,7 @@ We've provided pre-compiled binaries for:
 - Mac with an Intel chip: `x86_64-apple-darwin`
 - Mac with an Apple chip: `aarch64-apple-darwin`
 - Linux with x86_64 architecture: `x86_64-unknown-linux-gnu`
+- Linux with aarch64 architecture: `aarch64-unknown-linux-gnu`
 - Windows with x86_64 architecture: `x86_64-pc-windows-gnu` (Windows is not yet supported but it is a [priority for us](https://github.com/temporalio/sdk-typescript/issues/12)).
 
 If you need to compile the Worker yourself, set up the Rust toolchain by following the instructions [here](https://rustup.rs/).
@@ -69,7 +70,10 @@ import { bundleWorkflowCode, Worker } from '@temporalio/worker';
 // Option 1: passing path to prebuilt bundle
 const worker = await Worker.create({
   taskQueue,
-  workflowBundle: { path: './path-to-bundle.js' },
+  workflowBundle: {
+    codePath: './path-to-bundle.js',
+    sourceMapPath: './path-to-bundle.js.map',
+  },
 });
 
 // Option 2: bundling code using Temporal's bundler settings
@@ -123,11 +127,13 @@ Runtime.install({
   logger,
   telemetryOptions: { logForwardingLevel: 'INFO' },
 });
-const connection = await NativeConnection.create({
+const connection = await NativeConnection.connect({
   address: 'temporal.myorg.io',
 });
 const worker = await Worker.create({
-  connection /* standard Worker options from here */,
+  connection,
+  namespace: 'my-custom-namespace',
+  /* standard Worker options from here */
 });
 ```
 
@@ -161,8 +167,8 @@ When scheduling a Workflow, a `taskQueue` must be specified.
 
 ```ts
 import { Connection, WorkflowClient } from '@temporalio/client';
-const connection = new Connection();
-const client = new WorkflowClient();
+const connection = await Connection.connect();
+const client = new WorkflowClient({ connection });
 const result = await client.execute(myWorkflow, {
   taskQueue: 'testhttp', // required
   workflowId: 'business-meaningful-id', // also required but not the point

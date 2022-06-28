@@ -122,8 +122,7 @@ Inside of `/temporal/src/workflows.ts` we'll write a Workflow function that call
 
 ```ts
 // /temporal/src/workflows.ts
-import { proxyActivities } from '@temporalio/workflow';
-import { sleep } from '@temporalio/workflow';
+import { proxyActivities, sleep } from '@temporalio/workflow';
 import type * as activities from './activities'; // purely for type safety
 
 const { purchase } = proxyActivities<typeof activities>({
@@ -242,7 +241,7 @@ You will need to configure gRPC connection address, namespace, and mTLS cert and
 
 ```ts
 // before Worker.create call in worker.ts
-const connection = await NativeConnection.create({
+const connection = await NativeConnection.connect({
   address,
   tls: {
     serverNameOverride,
@@ -255,7 +254,7 @@ const connection = await NativeConnection.create({
 });
 
 // inside each Client call inside API Route
-const connection = new Connection({
+const connection = await Connection.connect({
   address,
   tls: {
     serverNameOverride,
