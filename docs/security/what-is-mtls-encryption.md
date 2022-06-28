@@ -12,5 +12,7 @@ Mutual TLS can be enabled in Temporal’s TLS configuration. This configuration 
 
 This configuration includes two sections that serve to separate intra-cluster and external traffic. That way, different certificates and settings can be used to encrypt each section of traffic:
 
-- internode
-- frontend
+- internode: configuration for encrypting communication between nodes within the Cluster.
+- frontend: configuration for encrypting the Frontend's public endpoints
+
+See TLS configuration reference for more information concerning mTLS encryption.
