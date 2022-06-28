@@ -17,7 +17,8 @@ Data Converters serialize and deserialize between a language's native data types
 
 ![](/img/remote-codec-server-solution.svg)
 
-With a Codec Server, the Client's Data Converter can send an HTTP API to request the codec to decrypt a given Payload. This decrypted data is passed back to a user-facing interface (whether through the command line or by WebUI) for viewing by the developer.
+With a Codec Server, the Client's Data Converter can send an HTTP API request to the codec to decrypt a Payload.
+This decrypted data is passed back to a user-facing interface (through the command line or by WebUI) for viewing by the developer.
 
 Decrypted data can also be passed back through the Codec Server for encryption. Then, when passed through the Client's Data Converter, it can be deserialized before being sent back to the Temporal Cluster.
 
