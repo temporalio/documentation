@@ -22,7 +22,8 @@ This decrypted data is passed back to a user-facing interface (through the comma
 
 Decrypted data can also be passed back through the Codec Server for encryption. Then, when passed through the Client's Data Converter, it can be deserialized before being sent back to the Temporal Cluster.
 
-The Codec Server can only receive HTTP APIs from Clients. The WebUI and tctl cannot send or receive anything directly to the Codec Server.
+The Codec Server can receive HTTP API calls only from Clients.
+The WebUI and tctl cannot send anything directly to or receive anything directly from the Codec Server.
 
 ## Configuration
 
