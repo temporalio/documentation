@@ -46,4 +46,3 @@ await handle.signal(update, 300);
 
 Every month, a customer will be charged an amount specified by the update handler.
 The update handler is a function that takes a number and returns a number. That number is used to update the amount the customer is charge.
-
