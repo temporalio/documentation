@@ -31,4 +31,5 @@ Codec Servers are initiated in a similar manner to a Temporal Worker.
 
 Before running a Codec Server, make sure that a [Temporal service](https://docs.temporal.io/application-development-guide/#run-a-dev-cluster) is running in your SDK of choice.
 
-If you are using Go, feel free to base your remote Codec Server off of [this existing repo](https://github.com/temporalio/samples-go). For other languages, please refer to the diagrams in the Go sample to construct the Codec Server.
+If you are using Go, feel free to base your remote Codec Server on the [temporalio/samples-go](https://github.com/temporalio/samples-go) repository.
+For other languages, please refer to the diagrams in the Go sample to construct the Codec Server.
