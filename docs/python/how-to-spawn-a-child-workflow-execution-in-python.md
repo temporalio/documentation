@@ -9,7 +9,7 @@ tags:
   - python
 ---
 
-To start a Child Workflow, use the following function [`workflow.start_child_workflow()`](https://python.temporal.io/temporalio.workflow.html#start_child_workflow) function.
+To start a Child Workflow, use [`start_child_workflow()`](https://python.temporal.io/temporalio.workflow.html#start_child_workflow).
 
 The following starts a Child Workflow function in a Workflow.
 
@@ -18,19 +18,18 @@ The following starts a Child Workflow function in a Workflow.
 class ChildAlreadyStartedWorkflow:
     @workflow.run
     async def run(self) -> None:
-        # Try to start it twice
         id = f"{workflow.info().workflow_id}_child"
         await workflow.start_child_workflow(LongSleepWorkflow.run, id=id)
-        try:
-            await workflow.start_child_workflow(LongSleepWorkflow.run, id=id)
-        except WorkflowAlreadyStartedError:
-            raise ApplicationError("Already started")
 ```
 
 You can also use the helper function [`execute_child_workflow()`](https://python.temporal.io/temporalio.workflow.html#execute_child_workflow), which takes the same arguments as `start_child_workflow()` and awaits on the results.
 
 ```python
-async workflow.execute_child_workflow()
+await workflow.execute_child_workflow(
+    "your-arguments",
+    "your-params",
+    id="your-workflow-id",
+)
 ```
 
 The following executes a Child Workflow function in a Workflow.
@@ -45,7 +44,7 @@ class SimpleChildWorkflow:
         )
 ```
 
-`workflow.execute_child_workflow()` should be used in most cases unless advanced task capabilities are needed.
+`execute_child_workflow()` should be used in most cases unless advanced task capabilities are needed.
 
 Child Workflow functions accept either a Workflow Run method or a string name. Workflow arguments are positional.
 

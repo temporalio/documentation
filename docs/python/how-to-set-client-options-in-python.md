@@ -9,15 +9,15 @@ tags:
   - python
 ---
 
-To set the Retry Policy, set the `retry_policy` in `Client.start_workflow()` or `Client.execute_workflow()` as a [`RetryPolicy`](https://python.temporal.io/temporalio.common.retrypolicy).
+To set the Retry Policy, set the `retry_policy` in [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.client#execute_workflow) as a [`RetryPolicy`](https://python.temporal.io/temporalio.common.retrypolicy).
 The following is an example of a Retry Policy.
 
 ```python
 retry_policy = temporalio.common.RetryPolicy(
-    initial_interval=timedelta(milliseconds=1),
-    backoff_coefficient=2.0,  # float
-    maximum_interval=time.Second * 100,
-    maximum_attempts=0,  # init
+    initial_interval=timedelta(seconds=3),
+    backoff_coefficient=4.0,
+    maximum_interval=timedelta(seconds=5),
+    maximum_attempts=6,
 )
 ```
 

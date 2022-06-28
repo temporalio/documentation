@@ -9,7 +9,7 @@ tags:
   - python
 ---
 
-To define a Signal, set the Signal decorator `@workflow.signal` on the Signal function inside your Workflow.
+To define a Signal, set the Signal decorator [`@workflow.signal`](https://python.temporal.io/temporalio.workflow.html#signal) on the Signal function inside your Workflow.
 
 ```python
 @workflow.signal

@@ -276,25 +276,6 @@ You can find a complete list of executable code samples in the [Samples Library]
 
 The Temporal Python SDK API reference is published on [python.temporal.io](https://python.temporal.io/index.html).
 
-**How to use `import`s in the Python SDK**
-To import Activities and Workflows, use the following:
-
-```python
-from temporalio import activity, workflow
-```
-
-To import the Worker class from the `temporalio.worker` module, use the following:
-
-```python
-from temporalio.worker import Worker
-```
-
-````
-To import the Client class from the` temporalio.client` module, use the following:
-```python
-from temporalio.client import Client
-````
-
 </TabItem>
 </Tabs>
 
@@ -550,16 +531,15 @@ For example:
 
 ```python
 @dataclass
-class MyParams:
-    my_int_param: int
-    my_str_param: str
+class YourParams:
+    your_int_param: int
+    your_str_param: str
 
 
 @workflow.defn
-class MyWorkflow:
+class YourWorkflow:
     @workflow.run
-    async def run(self, params: MyParams) -> None:
-        # Do stuff
+    async def run(self, params: YourParams) -> None:
         ...
 ```
 
@@ -655,24 +635,28 @@ export async function example({name, born}: ExampleParam): Promise<string> {
 </TabItem>
 <TabItem value="python">
 
-To return the results of a Workflow, set your Workflow to a variable, like `handle`, then return the results with [`result()`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#result).
+A Python-based Workflow Definition can return the results of a Workflow.
+
+To return the results of a Workflow Definition, use either [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.client#execute_workflow) asynchronous methods.
 
 ```python
-async def main():
-    # Create client connected to server at the given address and namespace
-    client = await Client.connect("http://localhost:7233", namespace="your-namespace")
+handle = await client.start_workflow(
+    "your-workflow-name",
+    id="your-workflow-id",
+    task_queue="your-task-queue",
+)
 
-    # Start a workflow
-    handle = await client.start_workflow(
-        MyWorkflow.run,
-        "your argument",
-        id="your-workflow-id",
-        task_queue="your-task-queue",
-    )
+result = await handle.result()
+```
 
-    # Wait for result
-    result = await handle.result()
-    print(f"Result: {result}")
+`execute_workflow()` is a helper function for `start_workflow()` and `handle.result()`.
+
+```python
+handle = await client.execute_workflow(
+    "your-workflow-name",
+    id="your-workflow-id",
+    task_queue="your-task-queue",
+)
 ```
 
 </TabItem>
@@ -767,7 +751,7 @@ class YourWorkflow:
 #### Workflow logic requirements
 
 Workflow logic is constrained by [deterministic execution requirements](/concepts/what-is-a-workflow-definition/#deterministic-constraints).
-Therefore, each language is limited to the use of certain idiomatic techniques.
+Therefore, each language is limited to the use of certain idiomatic techniques, meaning Workflow functions must be deterministic.
 However, each Temporal SDK provides a set of APIs that can be used inside your Workflow to interact with external (to the Workflow) application code.
 
 <Tabs
@@ -849,7 +833,7 @@ Workflow code must be deterministic. This means:
 - no global state mutation
 - no system date or time
 
-All code must run in the implicit [`asyncio` event loop](https://docs.python.org/3/library/asyncio-eventloop.html) and be deterministic.
+All API safe for Workflows used in the [`temporalio.workflow`](https://python.temporal.io/temporalio.workflow.html) must run in the implicit [`asyncio` event loop](https://docs.python.org/3/library/asyncio-eventloop.html) and be _deterministic_.
 
 </TabItem>
 </Tabs>
@@ -1196,14 +1180,13 @@ For example:
 
 ```python
 @dataclass
-class MyParams:
-    my_int_param: int
-    my_str_param: str
+class YourParams:
+    your_int_param: int
+    your_str_param: str
 
 
 @activity.defn
-async def my_activity(params: MyParams) -> None:
-    # Do stuff
+async def your_activity(params: YourParams) -> None:
     ...
 ```
 
@@ -1719,7 +1702,7 @@ This imports the individual Activities and declares the type alias for each Acti
 </TabItem>
 <TabItem value="python">
 
-To spawn an Activity Execution, use the [`workflow.execute_activity()`](https://python.temporal.io/temporalio.workflow.html#execute_activity) operation from within your Workflow Definition.
+To spawn an Activity Execution, use the [`execute_activity()`](https://python.temporal.io/temporalio.workflow.html#execute_activity) operation from within your Workflow Definition.
 
 ```python
 @workflow.defn
@@ -1731,9 +1714,9 @@ class SayHello:
         )
 ```
 
-`workflow.execute_activity()` is a shortcut for [`workflow.start_activity()`](https://python.temporal.io/temporalio.workflow.html#start_activity) that waits on its result.
+`execute_activity()` is a shortcut for [`start_activity()`](https://python.temporal.io/temporalio.workflow.html#start_activity) that waits on its result.
 
-To get just the handle to wait and cancel separately, use `workflow.start_activity()`. `workflow.execute_activity()` should be used in most cases unless advanced task capabilities are needed.
+To get just the handle to wait and cancel separately, use `start_activity()`. `execute_activity()` should be used in most cases unless advanced task capabilities are needed.
 
 A single argument to the Activity is positional. Multiple arguments are not supported in the type-safe form of `start_activity()` or `execute_activity()` and must be supplied by the `args` keyword argument.
 
@@ -1915,7 +1898,7 @@ Use [`start_activity()`](https://python.temporal.io/temporalio.workflow.html#sta
 
 You must provide either `schedule_to_close_timeout` or `start_to_close_timeout`.
 
-`execute_activity()` is a shortcut for `await start_activity()`. An async `workflow.execute_activity()` helper is provided which takes the same arguments as `workflow.start_activity()` and `await`s on the result. `workflow.execute_activity()` should be used in most cases unless advanced task capabilities are needed.
+`execute_activity()` is a shortcut for `await start_activity()`. An asynchronous `execute_activity()` helper is provided which takes the same arguments as `start_activity()` and `await`s on the result. `execute_activity()` should be used in most cases unless advanced task capabilities are needed.
 
 ```python
 @workflow.defn
@@ -2165,7 +2148,7 @@ if (certificateS3Bucket) {
 </TabItem>
 <TabItem value="python">
 
-Use [`Client.connect()`](https://python.temporal.io/temporalio.client.client#connect) to create and connect to a Temporal Server at a given address and Namespace.
+Use [`connect()`](https://python.temporal.io/temporalio.client.client#connect) method on the [`Client`](https://python.temporal.io/temporalio.client.client) class to create and connect to a Temporal Server at a given address and Namespace.
 
 Specify the `target_url` parameter as a string.
 
@@ -2179,7 +2162,7 @@ If you don't specify a Namespace, Temporal defaults the `namespace` parameter to
 
 `Client` may be directly instantiated with a service of another. For example, if you need to create another Client to use an additional Namespace.
 
-Clients also provide a shallow copy of their config for use in making slightly different Clients backed by the same connection with [`client.config`](https://python.temporal.io/temporalio.client.client#config). The following example creates a new Client with the same connection but a different Namespace.
+Clients also provide a shallow copy of their config for use in making slightly different Clients backed by the same connection with [`config`](https://python.temporal.io/temporalio.client.client#config). The following example creates a new Client with the same connection but a different Namespace.
 
 ```python
 config = client.config()
@@ -2393,7 +2376,7 @@ worker = Worker(
 )
 ```
 
-The following code sample shows a Worker hosting Workflows and Activities by using a Client for starting Workflows.
+The following code sample shows a Worker hosting Workflows and Activities.
 
 ```python
 async def run_worker(stop_event: asyncio.Event):
@@ -2535,8 +2518,6 @@ Content is not available
 <TabItem value="python">
 
 When a `Worker` is created, it accepts a list of Workflows and/or Activities in the `workflows` and/or `activities` parameters respectively.
-
-To register multiple values, provide more than one values to the Worker.
 
 </TabItem>
 </Tabs>
@@ -2758,64 +2739,34 @@ Workflow Execution run in a separate V8 isolate context in order to provide a [d
 </TabItem>
 <TabItem value="python">
 
-To spawn a [Workflow Execution](/workflows/#workflow-executions), use the `ExecuteWorkflow()` method on the `Client`.
+To start a Workflow Execution in python, use either the [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.client#execute_workflow) asynchronous methods in the Client code.
 
-The following code example connects to a server, starts a Workflow, waits for the Workflow to finish, and prints the Workflow result.
+The following code example, starts a Workflow and returns its handle.
 
 ```python
-@dataclass
-class GreetingInfo:
-    salutation: str = "Hello"
-    name: str = "<unknown>"
+async def main():
+    client = await Client.connect("http://localhost:7233", namespace="your-namespace")
 
+    handle = await client.start_workflow(
+        "your-workflow-name",
+        "some arg",
+        id="your-workflow-id",
+        task_queue="your-task-queue",
+    )
+```
 
-@workflow.defn
-class GreetingWorkflow:
-    def __init__() -> None:
-        self._current_greeting = "<unset>"
-        self._greeting_info = GreetingInfo()
-        self._greeting_info_update = asyncio.Event()
-        self._complete = asyncio.Event()
+The following code example, starts a Workflow and waits for completion.
 
-    @workflow.run
-    async def run(self, name: str) -> str:
-        self._greeting_info.name = name
-        while True:
-            # Store greeting
-            self._current_greeting = await workflow.execute_activity(
-                create_greeting_activity,
-                self._greeting_info,
-                start_to_close_timeout=timedelta(seconds=5),
-            )
-            workflow.logger.debug("Greeting set to %s", self._current_greeting)
+```python
+async def main():
+    client = await Client.connect("http://localhost:7233")
 
-            # Wait for salutation update or complete signal (this can be
-            # cancelled)
-            await asyncio.wait(
-                [self._greeting_info_update.wait(), self._complete.wait()],
-                return_when=asyncio.FIRST_COMPLETED,
-            )
-            if self._complete.is_set():
-                return self._current_greeting
-            self._greeting_info_update.clear()
-
-    @workflow.signal
-    async def update_salutation(self, salutation: str) -> None:
-        self._greeting_info.salutation = salutation
-        self._greeting_info_update.set()
-
-    @workflow.signal
-    async def complete_with_greeting(self) -> None:
-        self._complete.set()
-
-    @workflow.query
-    async def current_greeting(self) -> str:
-        return self._current_greeting
-
-
-@activity.defn
-async def create_greeting_activity(info: GreetingInfo) -> str:
-    return f"{info.salutation}, {info.name}!"
+    handle = await client.execute_workflow(
+        "your-workflow-name",
+        "some arg",
+        id="your-workflow-id",
+        task_queue="your-task-queue",
+    )
 ```
 
 </TabItem>
@@ -2954,16 +2905,13 @@ Optionally, in Workflow code, when calling an Activity, you can specify the Task
 </TabItem>
 <TabItem value="python">
 
-Set the Workflow Task Queue with the [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`execute_workflow`](https://python.temporal.io/temporalio.client.client#execute_workflow) asynchronous method in the Client code.
+To set the Workflow Task Queue parameter, use either [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.client#execute_workflow) methods and specify the Workflow `id` and `task_queue` name in the Workflow options.
 
-In Python, the Workflow `id` and `task_queue` are required arguments in the Workflow Options.
-
-The following example, starts a Workflow with the `GreetingWorkflow` class, passing in the argument `your name`, and sets the Workflow `id` and `task_queue` options.
+The following code example, starts a Workflow with the `GreetingWorkflow` class, passing in the argument `your name`, and sets the Workflow `id` and `task_queue` options.
 
 ```python
 await client.start_workflow(
-    GreetingWorkflow.run,
-    "your name",
+    "your-workflow-name",
     id="your-workflow-id",
     task_queue="your-task-queue",
 )
@@ -3047,14 +2995,17 @@ This starts a new Client with the given Workflow Id, Task Queue name, and an arg
 </TabItem>
 <TabItem value="python">
 
-To set a Workflow Id in Python, specify the `id` argument when executing a Workflow with the [`execute_workflow`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow).
+To set a Workflow Id in Python, specify the `id` argument when executing a Workflow with either [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.client#execute_workflow) methods.
 
 The `id` argument should be a unique identifier for the Workflow Execution.
-The `execute_workflow` function starts a Workflow and wait for completion.
+The `execute_workflow()` function starts a Workflow and wait for completion.
 
 ```python
 result = await client.execute_workflow(
-    SayHello.run, "Temporal", id="your-workflow-id", task_queue="your-task-queue"
+    "your-workflow-name",
+    "some arg",
+    id="your-workflow-id",
+    task_queue="your-task-queue",
 )
 ```
 
@@ -3314,89 +3265,22 @@ try {
 </TabItem>
 <TabItem value="python">
 
-To return the result of a Workflow Execution, you can print the results from a `start_workflow` or `execute_workflow` method from the Client.
-
-The following is a working example of returning the results of `execute_workflow` async method.
-
-**Implementing a Workflow**
-Create the following script at `run_worker.py`.
+Use [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`get_workflow_handle()`](https://python.temporal.io/temporalio.client.client#get_workflow_handle) to return a Workflow handle.
+Then use the method, [`result`](https://python.temporal.io/temporalio.client.workflowhandle#result) to await on the result of the Workflow.
 
 ```python
-import asyncio
-from datetime import datetime, timedelta
-from temporalio import workflow, activity
-from temporalio.client import Client
-from temporalio.worker import Worker
+handle = await client.start_workflow(
+    YourWorkflow.run, "some arg", id="your-workflow-id", task_queue="your-task-queue"
+)
 
-
-@activity.defn
-async def say_hello(name: str) -> str:
-    return f"Hello, {name}!"
-
-
-@workflow.defn
-class SayHello:
-    @workflow.run
-    async def run(self, name: str) -> str:
-        return await workflow.execute_activity(
-            say_hello, name, schedule_to_close_timeout=timedelta(seconds=5)
-        )
-
-
-async def main():
-    # Create client connected to server at the given address
-    client = await Client.connect("http://localhost:7233")
-
-    # Run the worker
-    worker = Worker(
-        client,
-        task_queue="your-task-queue",
-        workflows=[SayHello],
-        activities=[say_hello],
-    )
-    await worker.run()
-
-
-if __name__ == "__main__":
-    asyncio.run(main())
+# Wait for result
+result = await handle.result()
+print(f"Result: {result}")
 ```
 
-**Running a Workflow**
-Create the following script at `run_workflow.py`.
+You can use [`get_workflow_handle()`](https://python.temporal.io/temporalio.client.client#get_workflow_handle), or [`get_workflow_handle_for()`](https://python.temporal.io/temporalio.client.client#get_workflow_handle_for) for type safety, and to get a handle for an existing Workflow by its Id.
 
-This will create a Client connected to the server at the given address, executes the Workflow `SayHello.run` with the input `your name`, the Workflow Id as `my-workflow-id`, and the Task Queue set to `my-task-queue`.
-
-```python
-async def main():
-    # Create client connected to server at the given address
-    client = await Client.connect("http://localhost:7233")
-
-    # Execute a workflow
-
-    result = await client.execute_workflow(
-        SayHello.run, "your name", id="your-workflow-id", task_queue="your-task-queue"
-    )
-
-    # It's printing the result of the workflow.
-    print(f"Result: {result}")
-```
-
-The `execute_workflow()` registers a Workflow. The Workflow exists until the Workflow is explicitly terminated.
-Assuming you have a Temporal server running on 7233, this will run the Worker:
-
-```bash
-python run_worker.py
-```
-
-The output will return the result of the Workflow:
-
-```text
-Result: Hello, my-name!
-```
-
-You can use [`Client.get_workflow_handle()`](https://python.temporal.io/temporalio.client.client#get_workflow_handle), or [`Client.get_workflow_handle_for()`](https://python.temporal.io/temporalio.client.client#get_workflow_handle_for) for type safety, to get a handle for an existing Workflow by its Id.
-
-Then use [`WorkflowHandle.describe()`](https://python.temporal.io/temporalio.client.workflowhandle#describe) to get the current status of the Workflow. This will fail if the Workflow does not exist.
+Then use [`describe()`](https://python.temporal.io/temporalio.client.workflowhandle#describe) to get the current status of the Workflow. This will fail if the Workflow does not exist.
 
 </TabItem>
 </Tabs>
@@ -3473,7 +3357,7 @@ Content is not available
 </TabItem>
 <TabItem value="python">
 
-To define a Signal, set the Signal decorator `@workflow.signal` on the Signal function inside your Workflow.
+To define a Signal, set the Signal decorator [`@workflow.signal`](https://python.temporal.io/temporalio.workflow.html#signal) on the Signal function inside your Workflow.
 
 ```python
 @workflow.signal
@@ -3644,9 +3528,9 @@ Content is not available
 </TabItem>
 <TabItem value="python">
 
-To send a Signal from to the Workflow, use the [`signal`](https://python.temporal.io/temporalio.client.workflowhandle#signal) method from the [`WorkflowHandle`](https://python.temporal.io/temporalio.client.workflowhandle) class.
+To send a Signal to the Workflow, use the [`signal`](https://python.temporal.io/temporalio.client.workflowhandle#signal) method from the [`WorkflowHandle`](https://python.temporal.io/temporalio.client.workflowhandle) class.
 
-This will signal for `run_id` if present.
+This will signal for `run_id` if the Workflow is present.
 
 ```python
 await handle.signal("some signal")
@@ -3841,7 +3725,21 @@ The update handler is a function that takes a number and returns a number. That 
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+Use the [`@workflow.signal`](https://python.temporal.io/temporalio.workflow.html#signal) decorator to define a method as a Signal.
+
+```python
+@workflow.signal
+async def complete_with_greeting(self) -> None:
+    self._complete.set()
+```
+
+The following example demonstrates how to set a custom Signal name in the Signal decorator.
+
+```python
+@workflow.signal(name="Custom Name")
+def signal_custom(self, arg: str) -> None:
+    self._last_event = f"signal_custom: {arg}"
+```
 
 </TabItem>
 </Tabs>
@@ -3955,14 +3853,14 @@ await client.signalWithStart(YourWorkflow, {
 </TabItem>
 <TabItem value="python">
 
-Use the `start_signal` and `start_signal_args` arguments from the [`start_workflow`](https://python.temporal.io/temporalio.client.client#start_workflow) method.
+Use the `start_signal` and `start_signal_args` arguments from either the [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.client#execute_workflow) asynchronous methods.
 
 ```python
-async def start_with_signal(client: Client, worker: ExternalWorker):
+async def start_with_signal(client: Client):
     handle = await client.start_workflow(
         "your-workflow-name",
-        id=f"workflow-{uuid.uuid4()}",
-        task_queue=worker.task_queue,
+        id="your-workflow-id",
+        task_queue="your-task-queue",
         start_signal="your-signal",
         start_signal_args=[
             YourAction(result=YourResultAction(value="some signal arg"))
@@ -4036,12 +3934,12 @@ async def current_greeting(self) -> str:
     return self._current_greeting
 ```
 
-The `@workflow.query` decorator defines a method as a Query. Queries can be asynchronous or synchronous methods and can be inherited; however, if a method is overridden, the override must also be decorated. Queries should return a value.
+The [`@workflow.query`](https://python.temporal.io/temporalio.workflow.html#query) decorator defines a method as a Query. Queries can be asynchronous or synchronous methods and can be inherited; however, if a method is overridden, the override must also be decorated. Queries should return a value.
 
-You can have a name parameter to customize the Queries' name, otherwise it defaults to the unqualified method name.
-You can use `@workflow.query(dynamic=True)`, which means all other unhandled Queries' fall through to this.
+You can have a name parameter to customize the Query's name, otherwise it defaults to the unqualified method name.
+You can use `@workflow.query(dynamic=True)`, which means all other unhandled Query's fall through to this.
 
-If `dynamic=True` is applied to your Queries' decorator, you can't have a `name` argument.
+If `dynamic=True` is applied to your Query's decorator, you can't have a `name` argument.
 Your method parameters must be `self`, a string Query name, and a `*args` variable argument parameter.
 
 For example:
@@ -4052,7 +3950,9 @@ def query_dynamic(self, name: str, *args: Any) -> str:
     return f"query_dynamic {name}: {args[0]}"
 ```
 
-Queries should never mutate anything in a Workflow.
+:::note
+Queries should never mutate anything in the Workflow.
+:::
 
 </TabItem>
 </Tabs>
@@ -4143,7 +4043,27 @@ Content is not available
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+Use the [`@workflow.query`](https://python.temporal.io/temporalio.workflow.html#query) decorator to define a method as a Query.
+
+```python
+@workflow.query
+async def complete_with_greeting(self) -> None:
+    self._complete.set()
+```
+
+The following example demonstrates how to set a custom Query name in the Query decorator.
+
+```python
+@workflow.signal(name="Custom Name")
+def signal_custom(self, arg: str) -> None:
+    self._last_event = f"signal_custom: {arg}"
+```
+
+:::note
+
+Queries should never mutate anything in the Workflow.
+
+:::
 
 </TabItem>
 </Tabs>
@@ -4411,11 +4331,11 @@ Content is not available
 </TabItem>
 <TabItem value="python">
 
-When setting [`client.start_workflow`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`client.execute_workflow`](https://python.temporal.io/temporalio.client.client#execute_workflow) you can provide `run_timeout` as a parameter to set the total Workflow Execution timeout, including Retries and Continue-As-New.
+When setting [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.client#execute_workflow) methods, set the `execution_timeout` argument, which specifies the total Workflow Execution Timeout including Retries and Continue-as-New.
 
 ```python
 handle = await client.start_workflow(
-    "your workflow name",
+    "your-workflow-name",
     id="your-workflow-id",
     task_queue="your-task-queue",
     execution_timeout=timedelta(seconds=10),
@@ -4486,11 +4406,11 @@ Content is not available
 </TabItem>
 <TabItem value="python">
 
-When setting [`client.start_workflow`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`client.execute_workflow`](https://python.temporal.io/temporalio.client.client#execute_workflow) you can provide `run_timeout` as a parameter to set the timeout of a single Workflow run.
+When invoking [`start_workflow`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`execute_workflow`](https://python.temporal.io/temporalio.client.client#execute_workflow) you can provide `run_timeout` as a parameter to set the timeout of a single Workflow run.
 
 ```python
 handle = await client.start_workflow(
-    "your workflow name",
+    "your-workflow-name",
     id="your-workflow-id",
     task_queue="your-task-queue",
     run_timeout=timedelta(seconds=1),
@@ -4562,11 +4482,11 @@ Content is not available
 </TabItem>
 <TabItem value="python">
 
-When setting [`client.start_workflow`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`client.execute_workflow`](https://python.temporal.io/temporalio.client.client#execute_workflow) you can provide `task_timeout` as a parameter to set the timeout of a single Workflow Task.
+When invoking [`start_workflow`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`execute_workflow`](https://python.temporal.io/temporalio.client.client#execute_workflow) you can provide `task_timeout` as a parameter to set the timeout of a single Workflow Task.
 
 ```python
 handle = await client.start_workflow(
-    "your workflow name",
+    "your-workflow-name",
     id="your-workflow-id",
     task_queue="your-task-queue",
     task_timeout=timedelta(seconds=1),
@@ -4776,7 +4696,7 @@ const {greet} = proxyActivities<typeof activities>({
 
 Activity options are set as keyword arguments after the Activity arguments. At least one of `start_to_close_timeout` or `schedule_to_close_timeout` must be provided.
 
-The following code schedules to close a timeout in Python by calling the Activity with the argument `name` and setting the `schedule_to_close_timeout` to 5 seconds.
+The following code example sets a Schedule-to-Close timeout in Python, by calling the Activity with the argument `name` and setting the `schedule_to_close_timeout` to 5 seconds.
 
 ```python
 @workflow.defn
@@ -4899,7 +4819,7 @@ Activity options are set as keyword arguments after the Activity arguments. At l
 start_to_close_timeout = timedelta(seconds=5)
 ```
 
-The following code executes an Activity with a `start_to_close_timeout` of 5 seconds.
+The following code example executes an Activity with a `start_to_close_timeout` of 5 seconds.
 
 ```python
 @workflow.defn
@@ -5017,7 +4937,7 @@ const {greet} = proxyActivities<typeof activities>({
 
 Activity options are set as keyword arguments after the Activity arguments. At least one of `start_to_close_timeout` or `schedule_to_close_timeout` must be provided.
 
-The following code schedules to close a timeout in Python by calling the Activity with the argument `name` and setting the `schedule_to_start_timeout` to 1 seconds.
+The following code sets a Schedule-to-Close timeout in Python, by calling the Activity with the argument `name` and setting the `schedule_to_start_timeout` to 1 seconds.
 
 ```python
 @workflow.defn
@@ -5027,8 +4947,8 @@ class SimpleActivityWorkflow:
         return await workflow.execute_activity(
             say_hello,
             name,
-            schedule_to_close_timeout_ms=5000,
-            schedule_to_start_timeout_ms=1000,
+            schedule_to_close_timeout=5000,
+            schedule_to_start_timeout=1000,
         )
 ```
 
@@ -5127,10 +5047,23 @@ const {longRunningActivity} = proxyActivities<typeof activities>({
 [`heartbeat_timeout`](https://python.temporal.io/temporalio.worker.startactivityinput#heartbeat_timeout) is a class variable for the [`start_activity()`](https://python.temporal.io/temporalio.workflow.html#start_activity) function used to set the maximum time between Activity Heartbeats.
 
 ```python
-def start_activity(
-    activity: "your-activity",
+workflow.start_activity(
+    activity="your-activity",
     schedule_to_close_timeout=timedelta(seconds=5),
-    heartbeat_timeout=timedelta(seconds=5)
+    heartbeat_timeout=timedelta(seconds=1),
+)
+```
+
+`execute_activity()` is a shortcut for [`start_activity()`](https://python.temporal.io/temporalio.workflow.html#start_activity) that waits on its result.
+
+To get just the handle to wait and cancel separately, use `start_activity()`. `execute_activity()` should be used in most cases unless advanced task capabilities are needed.
+
+```python
+workflow.execute_activity(
+    activity="your-activity",
+    name,
+    schedule_to_close_timeout=timedelta(seconds=5),
+    heartbeat_timeout=timedelta(seconds=1),
 )
 ```
 
@@ -5523,7 +5456,7 @@ Content is not available
 </TabItem>
 <TabItem value="python">
 
-To start a Child Workflow, use the following function [`workflow.start_child_workflow()`](https://python.temporal.io/temporalio.workflow.html#start_child_workflow) function.
+To start a Child Workflow, use [`start_child_workflow()`](https://python.temporal.io/temporalio.workflow.html#start_child_workflow).
 
 The following starts a Child Workflow function in a Workflow.
 
@@ -5532,19 +5465,18 @@ The following starts a Child Workflow function in a Workflow.
 class ChildAlreadyStartedWorkflow:
     @workflow.run
     async def run(self) -> None:
-        # Try to start it twice
         id = f"{workflow.info().workflow_id}_child"
         await workflow.start_child_workflow(LongSleepWorkflow.run, id=id)
-        try:
-            await workflow.start_child_workflow(LongSleepWorkflow.run, id=id)
-        except WorkflowAlreadyStartedError:
-            raise ApplicationError("Already started")
 ```
 
 You can also use the helper function [`execute_child_workflow()`](https://python.temporal.io/temporalio.workflow.html#execute_child_workflow), which takes the same arguments as `start_child_workflow()` and awaits on the results.
 
 ```python
-async workflow.execute_child_workflow()
+await workflow.execute_child_workflow(
+    "your-arguments",
+    "your-params",
+    id="your-workflow-id",
+)
 ```
 
 The following executes a Child Workflow function in a Workflow.
@@ -5559,7 +5491,7 @@ class SimpleChildWorkflow:
         )
 ```
 
-`workflow.execute_child_workflow()` should be used in most cases unless advanced task capabilities are needed.
+`execute_child_workflow()` should be used in most cases unless advanced task capabilities are needed.
 
 Child Workflow functions accept either a Workflow Run method or a string name. Workflow arguments are positional.
 
@@ -5772,12 +5704,12 @@ Content is not available
 </TabItem>
 <TabItem value="python">
 
-[`continue_as_new()`](https://python.temporal.io/temporalio.workflow.html#continue_as_new) is an async function to stop the Workflow immediately and continue the Workflow as new.
+[`continue_as_new()`](https://python.temporal.io/temporalio.workflow.html#continue_as_new) is an asynchronous function to stop the Workflow immediately and continue the Workflow as new.
 
 ```python
 async def continue_as_new(client: Client, worker: ExternalWorker):
     handle = await client.start_workflow(
-        "your-workflow",
+        "your-workflow-name",
         id="your-workflow-id",
         task_queue="your-task-queue",
     )

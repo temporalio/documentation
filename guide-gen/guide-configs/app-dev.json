@@ -867,6 +867,11 @@
                   "path": "none"
                 },
                 {
+                  "lang": "python",
+                  "title": "Python",
+                  "path": "python/how-to-send-a-signal-from-a-workflow-in-python"
+                },
+                {
                   "lang": "typescript",
                   "title": "TypeScript",
                   "path": "typescript/how-to-send-a-signal-from-a-workflow-in-typescript"
@@ -975,6 +980,11 @@
                   "lang": "php",
                   "title": "PHP",
                   "path": "none"
+                },
+                {
+                  "lang": "python",
+                  "title": "Python",
+                  "path": "python/how-to-send-a-query-to-a-workflow-in-python"
                 },
                 {
                   "lang": "typescript",

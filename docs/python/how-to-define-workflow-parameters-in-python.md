@@ -14,15 +14,14 @@ For example:
 
 ```python
 @dataclass
-class MyParams:
-    my_int_param: int
-    my_str_param: str
+class YourParams:
+    your_int_param: int
+    your_str_param: str
 
 
 @workflow.defn
-class MyWorkflow:
+class YourWorkflow:
     @workflow.run
-    async def run(self, params: MyParams) -> None:
-        # Do stuff
+    async def run(self, params: YourParams) -> None:
         ...
 ```

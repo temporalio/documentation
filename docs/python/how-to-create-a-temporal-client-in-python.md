@@ -9,7 +9,7 @@ tags:
   - python
 ---
 
-Use [`Client.connect()`](https://python.temporal.io/temporalio.client.client#connect) to create and connect to a Temporal Server at a given address and Namespace.
+Use [`connect()`](https://python.temporal.io/temporalio.client.client#connect) method on the [`Client`](https://python.temporal.io/temporalio.client.client) class to create and connect to a Temporal Server at a given address and Namespace.
 
 Specify the `target_url` parameter as a string.
 
@@ -23,7 +23,7 @@ If you don't specify a Namespace, Temporal defaults the `namespace` parameter to
 
 `Client` may be directly instantiated with a service of another. For example, if you need to create another Client to use an additional Namespace.
 
-Clients also provide a shallow copy of their config for use in making slightly different Clients backed by the same connection with [`client.config`](https://python.temporal.io/temporalio.client.client#config). The following example creates a new Client with the same connection but a different Namespace.
+Clients also provide a shallow copy of their config for use in making slightly different Clients backed by the same connection with [`config`](https://python.temporal.io/temporalio.client.client#config). The following example creates a new Client with the same connection but a different Namespace.
 
 ```python
 config = client.config()

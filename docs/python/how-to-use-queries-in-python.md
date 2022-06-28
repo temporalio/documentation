@@ -9,7 +9,7 @@ tags:
   - python
 ---
 
-Use the `@workflow.query` decorator to define a method as a Query. Queries are defined just like Signals, but they should return a value.
+Use the [`@workflow.query`](https://python.temporal.io/temporalio.workflow.html#query) decorator to define a method as a Query. Queries are defined just like Signals, but they should return a value.
 Queries should never mutate anything in the Workflow.
 
 The following example demonstrates how to set a custom Query name in the Query decorator.

@@ -8,11 +8,11 @@ tags:
   - how-to
 ---
 
-When setting [`client.start_workflow`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`client.execute_workflow`](https://python.temporal.io/temporalio.client.client#execute_workflow) you can provide `run_timeout` as a parameter to set the timeout of a single Workflow run.
+When invoking [`start_workflow`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`execute_workflow`](https://python.temporal.io/temporalio.client.client#execute_workflow) you can provide `run_timeout` as a parameter to set the timeout of a single Workflow run.
 
 ```python
 handle = await client.start_workflow(
-    "your workflow name",
+    "your-workflow-name",
     id="your-workflow-id",
     task_queue="your-task-queue",
     run_timeout=timedelta(seconds=1),

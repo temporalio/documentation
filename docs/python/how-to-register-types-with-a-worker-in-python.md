@@ -10,5 +10,3 @@ tags:
 ---
 
 When a `Worker` is created, it accepts a list of Workflows and/or Activities in the `workflows` and/or `activities` parameters respectively.
-
-To register multiple values, provide more than one values to the Worker.

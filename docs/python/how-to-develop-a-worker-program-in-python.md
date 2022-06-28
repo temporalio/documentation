@@ -22,7 +22,7 @@ worker = Worker(
 )
 ```
 
-The following code sample shows a Worker hosting Workflows and Activities by using a Client for starting Workflows.
+The following code sample shows a Worker hosting Workflows and Activities.
 
 ```python
 async def run_worker(stop_event: asyncio.Event):

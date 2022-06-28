@@ -9,22 +9,26 @@ tags:
   - python
 ---
 
-To return the results of a Workflow, set your Workflow to a variable, like `handle`, then return the results with [`result()`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#result).
+A Python-based Workflow Definition can return the results of a Workflow.
+
+To return the results of a Workflow Definition, use either [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.client#execute_workflow) asynchronous methods.
 
 ```python
-async def main():
-    # Create client connected to server at the given address and namespace
-    client = await Client.connect("http://localhost:7233", namespace="your-namespace")
+handle = await client.start_workflow(
+    "your-workflow-name",
+    id="your-workflow-id",
+    task_queue="your-task-queue",
+)
 
-    # Start a workflow
-    handle = await client.start_workflow(
-        MyWorkflow.run,
-        "your argument",
-        id="your-workflow-id",
-        task_queue="your-task-queue",
-    )
+result = await handle.result()
+```
 
-    # Wait for result
-    result = await handle.result()
-    print(f"Result: {result}")
+`execute_workflow()` is a helper function for `start_workflow()` and `handle.result()`.
+
+```python
+handle = await client.execute_workflow(
+    "your-workflow-name",
+    id="your-workflow-id",
+    task_queue="your-task-queue",
+)
 ```

@@ -33,8 +33,8 @@ async def main():
         activities=[say_hello_activity],
     ):
         result = await client.execute_workflow(
-            SayHelloWorkflow.run,
-            "Temporal",
+            "your-workflow-name",
+            "some arg",
             id="your-workflow-id",
             task_queue="your-task-queue",
         )

@@ -9,7 +9,7 @@ tags:
   - python
 ---
 
-Use the `@workflow.signal` decorator to define a method as a Signal.
+Use the [`@workflow.signal`](https://python.temporal.io/temporalio.workflow.html#signal) decorator to define a method as a Signal.
 
 ```python
 @workflow.signal

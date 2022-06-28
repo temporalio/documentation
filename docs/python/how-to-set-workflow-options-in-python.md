@@ -18,7 +18,7 @@ async def main():
 
     # Start a workflow
     handle = await client.start_workflow(
-        "your workflow name",
+        "your-workflow-name",
         "some arg",
         id="your-workflow-id",
         task_queue="your-task-queue",

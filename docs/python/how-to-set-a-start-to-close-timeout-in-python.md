@@ -15,7 +15,7 @@ Activity options are set as keyword arguments after the Activity arguments. At l
 start_to_close_timeout = timedelta(seconds=5)
 ```
 
-The following code executes an Activity with a `start_to_close_timeout` of 5 seconds.
+The following code example executes an Activity with a `start_to_close_timeout` of 5 seconds.
 
 ```python
 @workflow.defn

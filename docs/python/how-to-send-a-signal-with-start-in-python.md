@@ -9,14 +9,14 @@ tags:
   - python
 ---
 
-Use the `start_signal` and `start_signal_args` arguments from the [`start_workflow`](https://python.temporal.io/temporalio.client.client#start_workflow) method.
+Use the `start_signal` and `start_signal_args` arguments from either the [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.client#execute_workflow) asynchronous methods.
 
 ```python
-async def start_with_signal(client: Client, worker: ExternalWorker):
+async def start_with_signal(client: Client):
     handle = await client.start_workflow(
         "your-workflow-name",
-        id=f"workflow-{uuid.uuid4()}",
-        task_queue=worker.task_queue,
+        id="your-workflow-id",
+        task_queue="your-task-queue",
         start_signal="your-signal",
         start_signal_args=[
             YourAction(result=YourResultAction(value="some signal arg"))

@@ -18,4 +18,4 @@ Workflow code must be deterministic. This means:
 - no global state mutation
 - no system date or time
 
-All code must run in the implicit [`asyncio` event loop](https://docs.python.org/3/library/asyncio-eventloop.html) and be deterministic.
+All API safe for Workflows used in the [`temporalio.workflow`](https://python.temporal.io/temporalio.workflow.html) must run in the implicit [`asyncio` event loop](https://docs.python.org/3/library/asyncio-eventloop.html) and be _deterministic_.

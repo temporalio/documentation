@@ -8,16 +8,13 @@ tags:
   - how-to
 ---
 
-Set the Workflow Task Queue with the [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`execute_workflow`](https://python.temporal.io/temporalio.client.client#execute_workflow) asynchronous method in the Client code.
+To set the Workflow Task Queue parameter, use either [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.client#execute_workflow) methods and specify the Workflow `id` and `task_queue` name in the Workflow options.
 
-In Python, the Workflow `id` and `task_queue` are required arguments in the Workflow Options.
-
-The following example, starts a Workflow with the `GreetingWorkflow` class, passing in the argument `your name`, and sets the Workflow `id` and `task_queue` options.
+The following code example, starts a Workflow with the `GreetingWorkflow` class, passing in the argument `your name`, and sets the Workflow `id` and `task_queue` options.
 
 ```python
 await client.start_workflow(
-    GreetingWorkflow.run,
-    "your name",
+    "your-workflow-name",
     id="your-workflow-id",
     task_queue="your-task-queue",
 )

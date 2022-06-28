@@ -13,13 +13,12 @@ For example:
 
 ```python
 @dataclass
-class MyParams:
-    my_int_param: int
-    my_str_param: str
+class YourParams:
+    your_int_param: int
+    your_str_param: str
 
 
 @activity.defn
-async def my_activity(params: MyParams) -> None:
-    # Do stuff
+async def your_activity(params: YourParams) -> None:
     ...
 ```

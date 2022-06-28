@@ -13,7 +13,7 @@ Use [`start_activity()`](https://python.temporal.io/temporalio.workflow.html#sta
 
 You must provide either `schedule_to_close_timeout` or `start_to_close_timeout`.
 
-`execute_activity()` is a shortcut for `await start_activity()`. An async `workflow.execute_activity()` helper is provided which takes the same arguments as `workflow.start_activity()` and `await`s on the result. `workflow.execute_activity()` should be used in most cases unless advanced task capabilities are needed.
+`execute_activity()` is a shortcut for `await start_activity()`. An asynchronous `execute_activity()` helper is provided which takes the same arguments as `start_activity()` and `await`s on the result. `execute_activity()` should be used in most cases unless advanced task capabilities are needed.
 
 ```python
 @workflow.defn

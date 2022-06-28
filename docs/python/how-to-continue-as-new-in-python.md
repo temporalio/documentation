@@ -9,12 +9,12 @@ tags:
   - python
 ---
 
-[`continue_as_new()`](https://python.temporal.io/temporalio.workflow.html#continue_as_new) is an async function to stop the Workflow immediately and continue the Workflow as new.
+[`continue_as_new()`](https://python.temporal.io/temporalio.workflow.html#continue_as_new) is an asynchronous function to stop the Workflow immediately and continue the Workflow as new.
 
 ```python
 async def continue_as_new(client: Client, worker: ExternalWorker):
     handle = await client.start_workflow(
-        "your-workflow",
+        "your-workflow-name",
         id="your-workflow-id",
         task_queue="your-task-queue",
     )

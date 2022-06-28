@@ -11,7 +11,7 @@ tags:
 
 Activity options are set as keyword arguments after the Activity arguments. At least one of `start_to_close_timeout` or `schedule_to_close_timeout` must be provided.
 
-The following code schedules to close a timeout in Python by calling the Activity with the argument `name` and setting the `schedule_to_start_timeout` to 1 seconds.
+The following code sets a Schedule-to-Close timeout in Python, by calling the Activity with the argument `name` and setting the `schedule_to_start_timeout` to 1 seconds.
 
 ```python
 @workflow.defn
@@ -21,7 +21,7 @@ class SimpleActivityWorkflow:
         return await workflow.execute_activity(
             say_hello,
             name,
-            schedule_to_close_timeout_ms=5000,
-            schedule_to_start_timeout_ms=1000,
+            schedule_to_close_timeout=5000,
+            schedule_to_start_timeout=1000,
         )
 ```

@@ -9,11 +9,11 @@ tags:
   - python
 ---
 
-When setting [`client.start_workflow`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`client.execute_workflow`](https://python.temporal.io/temporalio.client.client#execute_workflow) you can provide `run_timeout` as a parameter to set the total Workflow Execution timeout, including Retries and Continue-As-New.
+When setting [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.client#execute_workflow) methods, set the `execution_timeout` argument, which specifies the total Workflow Execution Timeout including Retries and Continue-as-New.
 
 ```python
 handle = await client.start_workflow(
-    "your workflow name",
+    "your-workflow-name",
     id="your-workflow-id",
     task_queue="your-task-queue",
     execution_timeout=timedelta(seconds=10),

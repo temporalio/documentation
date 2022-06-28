@@ -9,9 +9,9 @@ tags:
   - python
 ---
 
-To send a Signal from to the Workflow, use the [`signal`](https://python.temporal.io/temporalio.client.workflowhandle#signal) method from the [`WorkflowHandle`](https://python.temporal.io/temporalio.client.workflowhandle) class.
+To send a Signal to the Workflow, use the [`signal`](https://python.temporal.io/temporalio.client.workflowhandle#signal) method from the [`WorkflowHandle`](https://python.temporal.io/temporalio.client.workflowhandle) class.
 
-This will signal for `run_id` if present.
+This will signal for `run_id` if the Workflow is present.
 
 ```python
 await handle.signal("some signal")
