@@ -103,7 +103,7 @@ There are four places where the name of the Task Queue can be set by the develop
 
 - [How to develop a Worker Program in Go](/go/how-to-develop-a-worker-program-in-go)
 - [How to develop a Worker Program in Java](/application-development-guide/#run-worker-processes)
-- [How to develop a Worker Program in PHP](/php/how-to-develop-a-worker-program-in-php)
+- [How to develop a Worker Program in PHP](/application-development-guide/#run-worker-processes)
 - [How to develop a Worker Program in TypeScript](/application-development-guide/#run-worker-processes)
 
 Note that all Worker Entities listening to the same Task Queue name must be registered to handle the exact same Workflows Types and Activity Types.
