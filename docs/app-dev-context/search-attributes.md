@@ -12,10 +12,10 @@ The steps to using Search Attributes are:
 
 - Create a new Search Attribute in your Cluster [using `tctl`](/tctl/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl/).
 - Set the value of the Search Attribute for a Workflow Execution:
-  - On the Client by including it as an option when starting the Execution,
+  - On the Client by including it as an option when starting the Execution.
   - In the Workflow by calling `UpsertSearchAttributes`.
 - Read the value of the Search Attribute:
-  - On the Client by calling `DescribeWorkflow`,
+  - On the Client by calling `DescribeWorkflow`.
   - In the Workflow by looking at `WorkflowInfo`.
 - Query Workflow Executions by the Search Attribute using a [List Filter](/concepts/what-is-a-list-filter/):
   - [In `tctl`](/tctl/workflow/list/#--query).
