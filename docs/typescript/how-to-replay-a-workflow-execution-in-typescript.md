@@ -10,3 +10,5 @@ tags:
 ---
 
 Workflows in Temporal may be replayed from the beginning of their history when resumed. In order for Temporal to recreate the exact state Workflow code was in, the code is required to be fully deterministic. To prevent breaking [determinism](/typescript/determinism), in the TypeScript SDK, Workflow code runs in an isolated execution environment and may not use any of the Node.js APIs or communicate directly with the outside world.
+
+See how to replay in [this video](https://www.youtube.com/watch?v=fN5bIL7wc5M).
