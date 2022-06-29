@@ -31,7 +31,13 @@
     "trailingComma": "es5",
     "useTabs": false
   },
-  "includes": ["docs/*.{md}", "docs/**/*.{md}", "guide-gen/**/*.{md}", "versioned_docs/*.{md}", "versioned_docs/**/*.{md}"],
+  "includes": [
+    "docs/*.{md}",
+    "docs/**/*.{md}",
+    "guide-gen/**/*.{md}",
+    "versioned_docs/*.{md}",
+    "versioned_docs/**/*.{md}"
+  ],
   "excludes": [
     "**/node_modules",
     "**/*-lock.json",
@@ -40,7 +46,7 @@
     ".github",
     "/build"
   ],
-  "incremental": false,
+  "incremental": true,
   "plugins": [
     "https://plugins.dprint.dev/typescript-0.69.5.wasm",
     "https://plugins.dprint.dev/json-0.15.3.wasm",
