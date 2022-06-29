@@ -2,6 +2,7 @@
 
 There are three steps to follow:
 
-1. The Activity provides the external system with the [Task Token](/concepts/what-is-a-task-token) needed to complete it.
-2. The Activity identifies itself as waiting to be completed by an external system.
-3. The Temporal Client is used to complete the Activity.
+1. The Activity provides the external system with identifying information needed to complete the Activity Execution.
+   Identifying information can be a [Task Token](/concepts/what-is-a-task-token), or a combination of Namespace, Workflow Id, and Activity Id.
+2. The Activity Function completes in a way that identifies it as waiting to be completed by an external system.
+3. The Temporal Client is used to Heartbeat and complete the Activity.

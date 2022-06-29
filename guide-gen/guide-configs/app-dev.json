@@ -1205,6 +1205,68 @@
           ]
         },
         {
+          "header": "Activity Heartbeats",
+          "type": "context",
+          "path": "app-dev-context/local-activities"
+        },
+        {
+          "header": "none",
+          "type": "lang-tabs",
+          "langs": [
+            {
+              "lang": "go",
+              "title": "Go",
+              "path": "go/how-to-heartbeat-an-activity-in-go"
+            },
+            {
+              "lang": "java",
+              "title": "Java",
+              "path": "java/how-to-heartbeat-an-activity-in-java"
+            },
+            {
+              "lang": "php",
+              "title": "PHP",
+              "path": "php/how-to-set-a-heartbeat-for-an-activity-in-php"
+            },
+            {
+              "lang": "typescript",
+              "title": "TypeScript",
+              "path": "none"
+            }
+          ]
+        },
+        {
+          "header": "Async Activity Completion",
+          "type": "context",
+          "path": "app-dev-context/async-activity-completion"
+        },
+        {
+          "header": "none",
+          "type": "lang-tabs",
+          "langs": [
+            {
+              "lang": "go",
+              "title": "Go",
+              "path": "go/how-to-asynchronously-complete-an-activity-in-go"
+            },
+            {
+              "lang": "java",
+              "title": "Java",
+              "path": "none"
+            },
+            {
+              "lang": "php",
+              "title": "PHP",
+              "path": "none"
+            },
+            {
+              "lang": "typescript",
+              "title": "TypeScript",
+              "path": "none"
+            }
+          ]
+        },
+        {
           "header": "Child Workflows",
           "type": "context",
           "path": "app-dev-context/child-workflows"
@@ -1300,37 +1362,6 @@
           ]
         },
         {
-          "header": "Activity Heartbeats",
-          "type": "context",
-          "path": "app-dev-context/local-activities"
-        },
-        {
-          "header": "none",
-          "type": "lang-tabs",
-          "langs": [
-            {
-              "lang": "go",
-              "title": "Go",
-              "path": "go/how-to-heartbeat-an-activity-in-go"
-            },
-            {
-              "lang": "java",
-              "title": "Java",
-              "path": "java/how-to-heartbeat-an-activity-in-java"
-            },
-            {
-              "lang": "php",
-              "title": "PHP",
-              "path": "php/how-to-set-a-heartbeat-for-an-activity-in-php"
-            },
-            {
-              "lang": "typescript",
-              "title": "TypeScript",
-              "path": "none"
-            }
-          ]
-        },
-        {
           "header": "Cron Jobs",
           "type": "context",
           "path": "app-dev-context/cron-jobs"
@@ -1358,37 +1389,6 @@
               "lang": "typescript",
               "title": "TypeScript",
               "path": "typescript/how-to-set-a-cron-job-in-typescript"
-            }
-          ]
-        },
-        {
-          "header": "Async Activity Completion",
-          "type": "context",
-          "path": "app-dev-context/async-activity-completion"
-        },
-        {
-          "header": "none",
-          "type": "lang-tabs",
-          "langs": [
-            {
-              "lang": "go",
-              "title": "Go",
-              "path": "go/how-to-asynchronously-complete-an-activity-in-go"
-            },
-            {
-              "lang": "java",
-              "title": "Java",
-              "path": "none"
-            },
-            {
-              "lang": "php",
-              "title": "PHP",
-              "path": "none"
-            },
-            {
-              "lang": "typescript",
-              "title": "TypeScript",
-              "path": "none"
             }
           ]
         }
