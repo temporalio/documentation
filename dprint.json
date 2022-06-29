@@ -31,7 +31,7 @@
     "trailingComma": "es5",
     "useTabs": false
   },
-  "includes": ["docs/*.{md}", "docs/**/*.{md}", "guide-gen/**/*.{md}"],
+  "includes": ["docs/*.{md}", "docs/**/*.{md}", "guide-gen/**/*.{md}", "versioned_docs/*.{md}", "versioned_docs/**/*.{md}"],
   "excludes": [
     "**/node_modules",
     "**/*-lock.json",
