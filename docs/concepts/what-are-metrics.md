@@ -8,4 +8,4 @@ You can store your data in time series databases like:
 
 Temporal also provides a dashboard you can integrate with graphing services like Grafana. For more information, see Temporal’s [Grafana dashboard](https://github.com/temporalio/dashboards).
 
-There are a variety of metrics which gives you information into your service, persistence, and Workflow metrics. For more information on metrics, see the [SDK metric reference](https://docs.temporal.io/docs/references/sdk-metrics/).
+There are a variety of metrics which gives you information into your service, persistence, and Workflow metrics. For more information on metrics, see the [SDK metric reference](../references/sdk-metrics).
