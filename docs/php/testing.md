@@ -6,8 +6,7 @@ sidebar_label: Testing
 
 ## Testing Workflows
 
-PHP SDK provides tools for testing workflows without running a regular Temporal server.
-Instead, it uses a light-weight testing server.
+The PHP SDK provides tools for testing Workflows without running a regular Temporal Cluster. Instead, it uses a light-weight testing server.
 
 ### Quick start
 
@@ -57,6 +56,7 @@ $environment->start('./rr serve -c .rr.test.yaml -w tests');
 ```
 
 The snippet above will start Temporal test server and RoadRunner with `.rr.test.yaml` config and `tests` working
+
 directory. Having a separate RoadRunner config file for tests can be useful to mock you activities. For
 example, you can create a separate _worker_ that registers activity implementations mocks:
 
@@ -66,7 +66,7 @@ server:
   command: "php worker.test.php"
 ```
 
-And within the worker you register your workflows and mock activities:
+And within the worker you register your Workflows and mock Activities:
 
 ```php
 // worker.test.php
@@ -78,7 +78,7 @@ $worker->registerActivity(MyActvivityMock::class);
 $factory->run();
 ```
 
-You can test Workflows by running them with a WorkflowClient like this:
+You can test Workflows by running them with a Workflow Client like this:
 
 ```php
 final class SimpleWorkflowTestCase extends TestCase
@@ -105,15 +105,16 @@ final class SimpleWorkflowTestCase extends TestCase
 
 ### Time management
 
-If we consider activities as some external code that can be mocked than unit-testing your workflows becomes
+If we consider Activities as some external code that can be mocked than unit-testing your Workflows becomes
 straight-forward:
 
 1. Register activity mocks in a separate "test" worker.
 2. In your test create a `WorkflowClient`.
-3. Use `WorkflowClient` to run the workflow and assert the result.
+3. Use `WorkflowClient` to run the Workflow and assert the result.
 
-The problem may occure when your workflow depends on some time changes: it waits for timeout or some other conditions.
+The problem may occur when your Workflow depends on some time changes: it waits for timeout or some other conditions.
 In unit tests we don't want to waste time waiting for timeouts. Thus, by default, the test server starts with
+
 a _"time-skipping"_ option. It means that if the workflow has a timer, the server doesn't wait for it and
 continues immediately. For example, when testing such a workflow the test server will not wait for a minute:
 
@@ -147,7 +148,7 @@ $testService->lockTimeSkipping();
 $testService->unlockTimeSkipping();
 ```
 
-Class `TestService` communicates with a test server and provides method for "time management". Time skipping
+Class `TestService` communicates with a test server and provides method for _time management_. Time skipping
 can be switched on/off with `unlockTimeSkipping()` and `lockTimeSkipping()` method:
 
 ```php
@@ -189,6 +190,6 @@ final class WaitTestCase extends TestCase
 }
 ```
 
-In case you need to emulate some "waiting" on a test server, you can use `sleep(int secods)` or `sleepUntil(int $timestamp)` methods.
+In case you need to emulate some "waiting" on a test server, you can use `sleep(int seconds)` or `sleepUntil(int $timestamp)` methods.
 
 Current server time can be retrieved with `getCurrentTime(): Carbon` method.

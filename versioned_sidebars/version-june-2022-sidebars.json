@@ -97,9 +97,7 @@
                 "type": "doc",
                 "id": "cloud/tcld/request/index"
               },
-              "items": [
-                "cloud/tcld/request/get"
-              ]
+              "items": ["cloud/tcld/request/get"]
             },
             "cloud/tcld/version"
           ]
@@ -235,10 +233,7 @@
                 "type": "doc",
                 "id": "tctl/activity/index"
               },
-              "items": [
-                "tctl/activity/complete",
-                "tctl/activity/fail"
-              ]
+              "items": ["tctl/activity/complete", "tctl/activity/fail"]
             },
             {
               "type": "category",
@@ -278,10 +273,7 @@
                     "type": "doc",
                     "id": "tctl/admin/db/index"
                   },
-                  "items": [
-                    "tctl/admin/db/clean",
-                    "tctl/admin/db/scan"
-                  ]
+                  "items": ["tctl/admin/db/clean", "tctl/admin/db/scan"]
                 },
                 {
                   "type": "category",
@@ -414,9 +406,7 @@
                 "type": "doc",
                 "id": "tctl/dataconverter/index"
               },
-              "items": [
-                "tctl/dataconverter/web"
-              ]
+              "items": ["tctl/dataconverter/web"]
             },
             {
               "type": "category",
