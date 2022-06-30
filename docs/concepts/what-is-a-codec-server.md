@@ -14,12 +14,9 @@ Each Client has a built-in [Data Converter](/docs/concepts/what-is-a-data-conver
 ![](/img/remote-codec-server-solution.svg)
 
 With a Codec Server, the Client's Data Converter can send an HTTP API request to the codec to decrypt a Payload.
-This decrypted data is passed back to a user-facing interface (through the command line or by WebUI) for viewing by the developer.
+This decrypted data is passed back to the WebUI.
 
 Decrypted data can also be passed back through the Codec Server for encryption. Then, when passed through the Client's Data Converter, it can be deserialized before being sent back to the Temporal Cluster.
-
-The Codec Server can receive HTTP API calls only from Clients.
-The WebUI and tctl cannot send anything directly to or receive anything directly from the Codec Server.
 
 ## Configuration
 
