@@ -18,6 +18,8 @@ This decrypted data is passed back to the WebUI.
 
 Decrypted data can also be passed back through the Codec Server for encryption. Then, when passed through the Client's Data Converter, it can be deserialized before being sent back to the Temporal Cluster.
 
+![](/img/remote-codec-server-diagram.svg)
+
 ## Configuration
 
 Before running a Codec Server, make sure that a [Temporal service](https://docs.temporal.io/application-development-guide/#run-a-dev-cluster) is running in your SDK of choice.
