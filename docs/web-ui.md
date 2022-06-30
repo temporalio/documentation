@@ -134,4 +134,3 @@ Navigate to `/import` to import an Event History in JSON format and populate a W
 
 The Web UI can use the same Data Converter that Workers use for inputs and return values.
 The UI supports both a Remote Codec endpoint and/or the tctl plugin port.
-
