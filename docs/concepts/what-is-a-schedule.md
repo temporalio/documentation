@@ -94,7 +94,7 @@ After that it will act as if it was Paused.
 
 ### Policies
 
-A Schedule supports a set of Policies that enable behavior customizations.
+A Schedule supports a set of Policies that enable customizing behavior.
 
 #### Overlap Policy
 
@@ -102,7 +102,7 @@ The Overlap Policy controls what happens when it is time to start a Workflow Exe
 The following options are available:
 
 - `Skip`: **Default**.
-  Nothing happens, and the specified Action is not started.
+  Nothing happens – the Workflow Execution is not started.
 - `BufferOne`: Starts the Workflow Execution as soon as the current one completes. The buffer is limited to one.
   If another Workflow Execution is supposed to start, but there is already one in the buffer, only the one in the buffer eventually starts.
 - `BufferAll`: Allows an unlimited number of Workflows to buffer.
