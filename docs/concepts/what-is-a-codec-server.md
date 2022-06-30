@@ -5,27 +5,17 @@ sidebar_label: Codec Server
 description: Explanation and implementation of a remote encryption/decryption server.
 ---
 
-A Codec Server is an optional implementation for your [Temporal Platform](/docs/concepts/what-is-the-temporal-platform). With it, deserialized Payloads can have their data displayed on your WebUI.
-
-## Purpose
+A Codec Server is an optional feature used to encrypt and decrypt Payloads for the WebUI.
 
 ![](/img/remote-codec-server-problem.svg)
 
-By default, the Temporal Platform provides Clients to receive information from the tctl, WebUI, and running Workers. Each Client has a built-in [Data Converter](/docs/concepts/what-is-a-data-converter).
-
-Data Converters serialize and deserialize between a language's native data types and raw Payloads received from the Temporal Cluster. However, the pre-built tctl and WebUI binaries won't be able to decrypt the Payloads.
+Each Client has a built-in [Data Converter](/docs/concepts/what-is-a-data-converter). However, the pre-built tctl and WebUI binaries won't be able to decrypt the serialized Payloads.
 
 ![](/img/remote-codec-server-solution.svg)
 
-With a Codec Server, the Client's Data Converter can send an HTTP API to request the codec to decrypt a given Payload. This decrypted data is passed back to a user-facing interface (whether through the command line or by WebUI) for viewing by the developer.
-
-Decrypted data can also be passed back through the Codec Server for encryption. Then, when passed through the Client's Data Converter, it can be deserialized before being sent back to the Temporal Cluster.
-
-The Codec Server can only receive HTTP APIs from Clients. The WebUI and tctl cannot send or receive anything directly to the Codec Server.
+With a Codec Server, the platform can decrypt Payloads. This decrypted data is passed back to the WebUI.
 
 ## Configuration
-
-Codec Servers are initiated in a similar manner to a Temporal Worker.
 
 Before running a Codec Server, make sure that a [Temporal service](https://docs.temporal.io/application-development-guide/#run-a-dev-cluster) is running in your SDK of choice.
 
