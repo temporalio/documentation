@@ -67,14 +67,13 @@ Task Queues do not have any ordering guarantees.
 It is possible to have a Task that stays in a Task Queue for a period of time, if there is a backlog that wasn't drained for that time.
 
 There are two types of Task Queues, Activity Task Queues and Workflow Task Queues.
-But one of each can exist with the same Task Queue name.
 
 ![Task Queue component](/diagrams/task-queue.svg)
 
 Task Queues are very lightweight components.
-
-- Task Queues do not require explicit registration but instead are created on demand when a Workflow Execution or Activity spawns or when a Worker Process subscribes to it.
-- There is no limit to the number of Task Queues a Temporal Application can use or a Temporal Cluster can maintain.
+Task Queues do not require explicit registration but instead are created on demand when a Workflow Execution or Activity spawns or when a Worker Process subscribes to it.
+When a Task Queue is created, both a Workflow Task Queue and an Activity Task Queue are created under the same name.
+There is no limit to the number of Task Queues a Temporal Application can use or a Temporal Cluster can maintain.
 
 Workers poll for Tasks in Task Queues via synchronous RPC.
 This implementation offers several benefits:
@@ -96,15 +95,12 @@ There are four places where the name of the Task Queue can be set by the develop
 
 1. A Task Queue must be set when spawning a Workflow Execution:
 
-- [How to set `StartWorkflowOptions` in Go](/go/startworkflowoptions-reference/#taskqueue)
-- [How to spawn a Workflow Execution using tctl](/tctl/workflow/start#--taskqueue)
+- [How to start a Workflow Execution using an SDK](/application-development-guide#set-task-queue)
+- [How to start a Workflow Execution using tctl](/tctl/workflow/start#--taskqueue)
 
-2. A Task Queue name must be set when starting a Worker Entity:
+2. A Task Queue name must be set when creating a Worker Entity and when running a Worker Process:
 
-- [How to develop a Worker Program in Go](/go/how-to-develop-a-worker-program-in-go)
-- [How to develop a Worker Program in Java](/application-development-guide/#run-worker-processes)
-- [How to develop a Worker Program in PHP](/php/how-to-develop-a-worker-program-in-php)
-- [How to develop a Worker Program in TypeScript](/application-development-guide/#run-worker-processes)
+- [How to develop a Worker Program](/application-development-guide#run-worker-processes)
 
 Note that all Worker Entities listening to the same Task Queue name must be registered to handle the exact same Workflows Types and Activity Types.
 
@@ -116,14 +112,14 @@ However, the failure of the Task will not cause the associated Workflow Executio
 This is optional.
 An Activity Execution inherits the Task Queue name from its Workflow Execution if one is not provided.
 
-- [How to set `ActivityOptions` in Go](/go/activityoptions-reference/#taskqueue)
+- [How to start an Activity Execution](/application-development-guide#start-activity-execution)
 
 4. A Task Queue name can be provided when spawning a Child Workflow Execution:
 
 This is optional.
 A Child Workflow Execution inherits the Task Queue name from its Parent Workflow Execution if one is not provided.
 
-- [How to set `ChildWorkflowOptions` in Go](#)
+- [How to start a Child Workflow Execution](/application-development-guide#child-workflows)
 
 ## Sticky Execution
 
@@ -142,9 +138,34 @@ Sticky Executions are the default behavior of the Temporal Platform.
 
 ## Task Routing
 
-Task Routing is when a Task Queue is paired with one or more Workers, primarily for Activity Task Executions.
+Task Routing is simply when a Task Queue is paired with one or more Workers, primarily for Activity Task Executions.
+
+This could also mean employing multiple Task Queues, each one paired with a Worker Process.
+
+Task Routing has many applicable use cases.
+
+### Flow control
+
+A Worker that consumes from a Task Queue asks for an Activity Task only when it has available capacity, so it is never overloaded by request spikes.
+If Activity Tasks get created faster than Workers can process them, they are backlogged in the Task Queue.
+
+### Throttling
+
+The rate at which each Activity Worker polls for and processes Activity Tasks is configurable per Worker.
+Workers do not exceed this rate even if it has spare capacity.
+There is also support for global Task Queue rate limiting.
+This limit works across all Workers for the given Task Queue.
+It is frequently used to limit load on a downstream service that an Activity calls into.
+
+### Specific environments
+
+In some cases, you might need to execute Activities in a dedicated environment.
+To send Activity Tasks to this environment, use a dedicated Task Queue.
+
+#### Route Activity Tasks to a specific host
 
 In some use cases, such as file processing or machine learning model training, an Activity Task must be routed to a specific Worker Process or Worker Entity.
+
 For example, suppose that you have a Workflow with the following three separate Activities:
 
 - Download a file.
@@ -163,9 +184,31 @@ Code samples:
 - [PHP file processing example](https://github.com/temporalio/samples-php/tree/master/app/src/FileProcessing)
 - [Go file processing example](https://github.com/temporalio/samples-go/tree/master/fileprocessing)
 
-### Sessions
+#### Sessions
 
 Some SDKs provide a Session API that provides a straightforward way to ensure that Activity Tasks are executed with the same Worker without requiring you to manually specify Task Queue names.
 It also includes features like **concurrent session limitations** and **worker failure detection**.
 
 - [How to create Worker Sessions in Go](/go/how-to-create-a-worker-session-in-go)
+
+#### Route Activity Tasks to a specific process
+
+Some Activities load large datasets and cache them in the process.
+The Activities that rely on those datasets should be routed to the same process.
+
+In this case, a unique Task Queue would exist for each Worker Process involved.
+
+#### Workers with different capabilities
+
+Some Workers might exist on GPU boxes versus non-GPU boxes.
+In this case, each type of box would have its own Task Queue and a Workflow can pick one to send Activity Tasks.
+
+### Multiple priorities
+
+If your use case involves more than one priority, you can create one Task Queue per priority, with a Worker pool per priority.
+
+### Versioning
+
+Task Routing is the simplest way to version your code.
+
+If you have a new backward-incompatible Activity Definition, start by using a different Task Queue.

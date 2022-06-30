@@ -42,7 +42,8 @@ temporal-test-server
 
 ### How it works
 
-For testing Workflows there is no need to run a full Temporal Cluster (with storage and UI interface).
+
+For testing workflows there is no need to run a full Temporal server (with storage and UI interface).
 Instead, we can use a light-weight test server.
 
 The code in `bootstrap.php` will start/stop (and download if it doesn't exist) Temporal test
@@ -56,7 +57,8 @@ $environment->start('./rr serve -c .rr.test.yaml -w tests');
 ```
 
 The snippet above will start Temporal test server and RoadRunner with `.rr.test.yaml` config and `tests` working
-directory. Having a separate RoadRunner config file for tests can be useful to mock you Activities. For
+
+directory. Having a separate RoadRunner config file for tests can be useful to mock you activities. For
 example, you can create a separate _worker_ that registers activity implementations mocks:
 
 ```yaml
@@ -113,8 +115,9 @@ straight-forward:
 
 The problem may occur when your Workflow depends on some time changes: it waits for timeout or some other conditions.
 In unit tests we don't want to waste time waiting for timeouts. Thus, by default, the test server starts with
-a _"time-skipping"_ option. It means that if the Workflow has a timer, the server doesn't wait for it and
-continues immediately. For example, when testing such a Workflow the test server will not wait for a minute:
+
+a _"time-skipping"_ option. It means that if the workflow has a timer, the server doesn't wait for it and
+continues immediately. For example, when testing such a workflow the test server will not wait for a minute:
 
 ```php
 #[WorkflowInterface]
@@ -135,7 +138,8 @@ final class WaitWorkflow
 }
 ```
 
-The activity will be called immediately. But, there may be cases when you do need to wait. So, to change this behavior
+
+The activity will be called immediately. But, there may be cases when you do need to wait. So, to change this behaviour
 you can use `TestService` class:
 
 ```php

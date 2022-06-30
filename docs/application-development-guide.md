@@ -703,7 +703,39 @@ Java Workflow reference: <https://www.javadoc.io/doc/io.temporal/temporal-sdk/la
 </TabItem>
 <TabItem value="php">
 
-Content is not available
+\*\*Temporal uses the [Microsoft Azure Event Sourcing pattern](https://docs.microsoft.com/en-us/azure/architecture/patterns/event-sourcing) to recover the state of a Workflow object including its local variable values.
+
+In essence, every time a Workflow state has to be restored, its code is re-executed from the beginning.
+When replaying, side effects (such as Activity invocations) are ignored because they are already recorded in the Workflow event history.
+When writing Workflow logic, the replay is not visible, so the code should be written since it executes only once.
+This design puts the following constraints on the Workflow implementation:
+
+- Do not use any mutable global variables because multiple instances of Workflows are executed in parallel.
+- Do not call any non-deterministic functions like non seeded random or `UUID` directly from the Workflow code.
+
+Always do the following in the Workflow implementation code:
+
+- Don’t perform any IO or service calls as they are not usually deterministic. Use Activities for this.
+- Only use `Workflow::now()` to get the current time inside a Workflow.
+- Call `yield Workflow::timer()` instead of `sleep()`.
+- Do not use any blocking SPL provided by PHP (i.e. `fopen`, `PDO`, etc) in **Workflow code**.
+- Use `yield Workflow::getVersion()` when making any changes to the Workflow code. Without this, any deployment of updated Workflow code
+  might break already open Workflows.
+- Don’t access configuration APIs directly from a Workflow because changes in the configuration might affect a Workflow execution path.
+  Pass it as an argument to a Workflow function or use an Activity to load it.
+
+Workflow method arguments and return values are serializable to a byte array using the provided [DataConverter](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html) interface.
+The default implementation uses JSON serializer, but you can use any alternative serialization mechanism.
+
+Make sure to annotate your `WorkflowMethod` using `ReturnType` to specify concrete return type.
+
+> You can not use the default return type declaration as Workflow methods are generators.
+
+The values passed to Workflows through invocation parameters or returned through a result value are recorded in the execution history.
+The entire execution history is transferred from the Temporal service to Workflow workers with every event that the Workflow logic needs to process.
+A large execution history can thus adversely impact the performance of your Workflow.
+Therefore, be mindful of the amount of data that you transfer via Activity invocation parameters or return values.
+Otherwise, no additional limitations exist on Activity implementations.\*\*
 
 </TabItem>
 <TabItem value="typescript">
@@ -978,7 +1010,11 @@ For more details, see [Dynamic Activity Reference](https://www.javadoc.io/doc/io
 </TabItem>
 <TabItem value="php">
 
-Content is not available
+Each method defines a single Activity type.
+A single Workflow can use more than one Activity interface and call more than one Activity method from the same interface.
+
+The only requirement is that Activity method arguments and return values are serializable to a byte array using the provided [DataConverter](https://github.com/temporalio/sdk-php/blob/master/src/DataConverter/DataConverterInterface.php) interface.
+The default implementation uses a JSON serializer, but an alternative implementation can be easily configured.
 
 </TabItem>
 <TabItem value="typescript">
@@ -1387,7 +1423,7 @@ public class FileProcessingActivitiesImpl implements FileProcessingActivities {
 }
 ```
 
-For details on getting the results of an Activity Execution, see [Activity Execution Result](#none).
+For details on getting the results of an Activity Execution, see [Activity Execution Result](#get-activity-results).
 
 </TabItem>
 <TabItem value="php">
@@ -1472,6 +1508,12 @@ This imports the individual Activities and declares the type alias for each Acti
 
 </TabItem>
 </Tabs>
+
+#### Required timeout
+
+Activity Execution semantics rely on several parameters.
+The only required value that needs to be set is either a [Schedule-To-Close Timeout](/activities/#start-to-close-timeout) or a [Start-To-Close Timeout](/activities/#start-to-close-timeout).
+These values are set in the Activity Options.
 
 #### Get Activity results
 
@@ -1774,7 +1816,16 @@ See [How to spawn a Workflow Execution in Java](#start-workflow-execution) for d
 </TabItem>
 <TabItem value="php">
 
-Content is not available
+The following example represents a console command that starts a workflow, prints its IDs, and then waits for its result:
+
+<!--SNIPSTART php-hello-client {"enable_source_link": true}-->
+<!--SNIPEND-->
+
+In the snippet above we use `WorkflowClientInterface` - an entry point to get access to Workflows.
+Once you need to create, retrieve, or start a workflow you should use an instance of `WorkflowClientInterface`.
+Here we create an instance of `GreetingWorkflowInterface` with execution timeout of 1 minute.
+
+Then we print some information and start the Workflow.
 
 </TabItem>
 <TabItem value="typescript">
@@ -1987,7 +2038,81 @@ A Worker can be registered with just Workflows, just Activities, or both.
 </TabItem>
 <TabItem value="php">
 
-Content is not available
+The [RoadRunner application server](https://roadrunner.dev/) will launch multiple Temporal PHP Worker processes based on provided `.rr.yaml` configuration.
+
+Each Worker might connect to one or multiple Task Queues.
+Worker poll _Temporal service_ for tasks, performs those tasks, and communicates task execution results back to the _Temporal service_.
+
+Worker code are developed, deployed, and operated by Temporal customers.
+To create a worker use `Temporal\WorkerFactory`:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+use Temporal\WorkerFactory;
+
+ini_set('display_errors', 'stderr');
+include "vendor/autoload.php";
+
+// factory initiates and runs task queue specific activity and workflow workers
+$factory = WorkerFactory::create();
+
+// Worker that listens on a Task Queue and hosts both workflow and activity implementations.
+$worker = $factory->newWorker();
+
+// Workflows are stateful. So you need a type to create instances.
+$worker->registerWorkflowTypes(App\DemoWorkflow::class);
+
+// Activities are stateless and thread safe. So a shared instance is used.
+$worker->registerActivity(App\DemoActivity::class);
+
+// In case an activity class requires some external dependencies provide a callback - factory
+// that creates or builds a new activity instance. The factory should be a callable which accepts
+// an instance of ReflectionClass with an activity class which should be created.
+$worker->registerActivity(App\DemoActivity::class, fn(ReflectionClass $class) => $container->create($class->getName()));
+
+// start primary loop
+$factory->run();
+```
+
+You can configure task queue name using first argument of `WorkerFactory`->`newWorker`:
+
+```php
+$worker = $factory->newWorker('my-task-queue');
+```
+
+As mentioned above you can create as many Task Queue connections inside a single Worker Process as you need.
+
+To configure additional WorkerOptions use `Temporal\Worker\WorkerOptions`:
+
+```php
+use Temporal\Worker\WorkerOptions;
+
+$worker = $factory->newWorker(
+    'my-task-queue',
+    WorkerOptions::new()
+        ->withMaxConcurrentWorkflowTaskPollers(10)
+);
+```
+
+Make sure to point the Worker file in application server configuration:
+
+```yaml
+rpc:
+  listen: tcp://127.0.0.1:6001
+
+server:
+  command: "php worker.php"
+
+temporal:
+  address: "temporal:7233"
+  activities:
+    num_workers: 10
+```
+
+> You can serve HTTP endpoints using the same server setup.
 
 </TabItem>
 <TabItem value="typescript">
@@ -2457,7 +2582,102 @@ YourWorkflowInterface workflow1 =
 </TabItem>
 <TabItem value="php">
 
-Content is not available
+In PHP, a Task Queue is represented in code by its name as a `string`.
+There are four places where the name of the Task Queue is supplied by the developer.
+
+1. When starting a Workflow, a Task Queue name must be provided in the `StartWorkflowOptions`.
+
+```php
+// Create new Workflow Options and set the Task Queue
+$workflowOptions = WorkflowOptions::new()
+  ->withTaskQueue("Workflow-Task-Queue-1")
+  // ...
+
+$yourWorkflow = $workflowClient->newWorkflowStub(
+  YourWorkflowInterface::class,
+  $workflowOptions
+);
+
+$result = $yourWorkflow->workflowMethod();
+
+```
+
+2. A Task Queue name must be provided as a parameter when creating a Worker.
+
+```php
+use Temporal\WorkerFactory;
+
+// Create a Worker Factory
+$factory = WorkerFactory::create();
+
+// Set the Task Queue when creating the Worker
+$worker = $factory->newWorker("Workflow-Task-Queue-1");
+
+// Workflows are stateful. So you need a type to create instances.
+$worker->registerWorkflowTypes(YourWorkflow::class);
+
+// start primary loop
+$factory->run();
+```
+
+A single Worker can listen to only one Task Queue.
+And, it is important to remember that the name of the Task Queue the Worker is listening to must match the name of the Task Queue provided in the options to any given Workflow or Activity.
+
+All Workers listening to the same Task Queue name must be registered to handle the exact same Workflows Types and Activity Types.
+
+If a Worker polls a Task for a Workflow Type or Activity Type it does not know about, it will fail that Task.
+However, the failure of the Task will not cause the associated Workflow Execution to fail.
+
+3. Optionally, the name of a Task Queue can be provided in the `ActivityOptions` when calling an Activity from a Workflow.
+
+```php
+class YourWorkflow implements YourWorkflowInterface
+{
+  private $yourActivity;
+
+  public function __construct()
+  {
+    // Create Activity options and set the Task Queue
+    $activityOptions = ActivityOptions::new()
+      ->withTaskQueue("Activity-Task-Queue-1")
+      // ...
+
+    // Create a new Activity Stub and pass the options
+    $this->yourActivity = Workflow::newActivityStub(
+      YourActivityInterface::class,
+      $activityOptions
+    );
+  }
+
+  public function workflowMethod(): \Generator
+  {
+    // Call the Activity
+    return yield $this->yourActivity->activityMethod();
+  }
+}
+```
+
+If a Task Queue name is not provided in the `ActivityOptions`, then the Activity Tasks are placed in the same Task Queue as the Workflow Task Queue.
+
+4. Optionally, the name of a Task Queue can be provided in the `ChildWorkflowOptions` when calling a Child Workflow.
+
+```php
+//Create new Child Workflow Options and set the Task Queue
+$childWorkflowOptions = ChildWorkflowOptions::new()
+    ->withTaskQueue("Child-Workflow-Task-Queue-1")
+    // ...
+
+// Create a new Child Workflow Stub and set the Task Queue
+$childWorkflow = Workflow::newChildWorkflowStub(
+    ChildWorkflowInterface::class,
+    $childWorkflowOptions
+);
+
+// Call the Child Workflow method
+$promise = $childWorkflow->workflowMethod();
+```
+
+If a Task Queue name is not provided in the `ChildWorkflowOptions`, then the Child Workflow Tasks are placed in the same Task Queue as the Parent Workflow Task Queue.
 
 </TabItem>
 <TabItem value="typescript">
@@ -2584,7 +2804,35 @@ YourWorkflowInterface workflow1 =
 </TabItem>
 <TabItem value="php">
 
-Content is not available
+The following code example grabs the `userID` as an input and uses it to start the Workflow. The `userID` is used as Workflow Id. You can use this to cancel your Workflow later.
+
+```php
+#[WorkflowInterface]
+interface SubscriptionWorkflowInterface
+{
+    #[WorkflowMethod]
+    public function subscribe(string $userID);
+}
+```
+
+The following code example, uses the input parameter `userID` as the Workflow Id.
+
+```php
+#[WorkflowInterface]
+interface SubscriptionWorkflowInterface
+{
+    #[WorkflowMethod]
+    public function subscribe(
+        string $userID
+    );
+}
+```
+
+You can also set the Workflow Id as a constant, for example:
+
+```php
+ public const WORKFLOW_ID = Your-Workflow-Id
+```
 
 </TabItem>
 <TabItem value="typescript">
@@ -2804,7 +3052,14 @@ For example, for a daily cron Workflow, if the run succeeds on the first day and
 </TabItem>
 <TabItem value="php">
 
-Content is not available
+If you need to wait for the completion of a Workflow after an asynchronous start, make a blocking call to
+the `WorkflowRun`->`getResult` method.
+
+```php
+$run = $workflowClient->start($accountTransfer, 'fromID', 'toID', 'refID', 1000);
+
+var_dump($run->getResult());
+```
 
 </TabItem>
 <TabItem value="typescript">
@@ -2919,7 +3174,52 @@ Things to consider when defining Signals:
 </TabItem>
 <TabItem value="php">
 
-Content is not available
+Workflows can also answer synchronous [Queries](/php/queries) and receive [Signals](/php/signals).
+
+All interface methods must have one of the following annotations:
+
+- **#[WorkflowMethod]** indicates an entry point to a Workflow.
+  It contains parameters that specify timeouts and a Task Queue name.
+  Required parameters (such as `executionStartToCloseTimeoutSeconds`) that are not specified through the annotation must be provided at runtime.
+- **#[SignalMethod]** indicates a method that reacts to external signals. It must have a `void` return type.
+- **#[QueryMethod]** indicates a method that reacts to synchronous query requests. It must have a non `void` return type.
+
+> It is possible (though not recommended for usability reasons) to annotate concrete class implementation.
+
+You can have more than one method with the same annotation (except #[WorkflowMethod]).
+
+For example:
+
+```php
+use Temporal\Workflow\WorkflowInterface;
+use Temporal\Workflow\WorkflowMethod;
+use Temporal\Workflow\SignalMethod;
+use Temporal\Workflow\QueryMethod;
+
+#[WorkflowInterface]
+interface FileProcessingWorkflow
+{
+    #[WorkflowMethod]
+    public function processFile(Argument $args);
+
+    #[QueryMethod("history")]
+    public function getHistory(): array;
+
+    #[QueryMethod("status")]
+    public function getStatus(): string;
+
+    #[SignalMethod]
+    public function retryNow(): void;
+
+    #[SignalMethod]
+    public function abandon(): void;
+}
+```
+
+Note that name parameter of Workflow method annotations can be used to specify name of Workflow, Signal and Query types.
+If name is not specified the short name of the Workflow interface is used.
+
+In the above code the `#[WorkflowMethod(name)]` is not specified, thus the Workflow type defaults to `"FileProcessingWorkflow"`.
 
 </TabItem>
 <TabItem value="typescript">
@@ -3239,7 +3539,27 @@ The following example shows how to use an untyped `ExternalWorkflowStub` in the 
 </TabItem>
 <TabItem value="php">
 
-Content is not available
+To send signal to a Workflow use `WorkflowClient`->`newWorkflowStub` or `WorkflowClient`->`newUntypedWorkflowStub`:
+
+```php
+$workflow = $workflowClient->newWorkflowStub(MyWorkflow::class);
+
+$run = $workflowClient->start($workflow);
+
+// do something
+
+$workflow->setValue(true);
+
+assert($run->getValue() === true);
+```
+
+Use `WorkflowClient`->`newRunningWorkflowStub` or `WorkflowClient->newUntypedRunningWorkflowStub` with Workflow Id to send
+Signals to a running Workflow.
+
+```php
+$workflow = $workflowClient->newRunningWorkflowStub(MyWorkflow::class, 'workflowID');
+$workflow->setValue(true);
+```
 
 </TabItem>
 <TabItem value="typescript">
@@ -3351,7 +3671,18 @@ Note that the Signal handler "setCustomer" is executed before the `@WorkflowMeth
 </TabItem>
 <TabItem value="php">
 
-Content is not available
+You may not know if a Workflow is running and can accept a signal. The `WorkflowClient`->`startWithSignal` API allows you to send a Signal to the current Workflow instance if one exists or to create a new run and then send the Signal.
+
+```php
+$workflow = $workflowClient->newWorkflowStub(MyWorkflow::class);
+
+$run = $workflowClient->startWithSignal(
+    $workflow,
+    'setValue',
+    [true], // signal arguments
+    [] // start arguments
+);
+```
 
 </TabItem>
 <TabItem value="typescript">
@@ -3420,7 +3751,52 @@ Query methods must never change any Workflow state including starting Activities
 </TabItem>
 <TabItem value="php">
 
-Content is not available
+Workflows can also answer synchronous [Queries](/php/queries) and receive [Signals](/php/signals).
+
+All interface methods must have one of the following annotations:
+
+- **#[WorkflowMethod]** indicates an entry point to a Workflow.
+  It contains parameters that specify timeouts and a Task Queue name.
+  Required parameters (such as `executionStartToCloseTimeoutSeconds`) that are not specified through the annotation must be provided at runtime.
+- **#[SignalMethod]** indicates a method that reacts to external signals. It must have a `void` return type.
+- **#[QueryMethod]** indicates a method that reacts to synchronous query requests. It must have a non `void` return type.
+
+> It is possible (though not recommended for usability reasons) to annotate concrete class implementation.
+
+You can have more than one method with the same annotation (except #[WorkflowMethod]).
+
+For example:
+
+```php
+use Temporal\Workflow\WorkflowInterface;
+use Temporal\Workflow\WorkflowMethod;
+use Temporal\Workflow\SignalMethod;
+use Temporal\Workflow\QueryMethod;
+
+#[WorkflowInterface]
+interface FileProcessingWorkflow
+{
+    #[WorkflowMethod]
+    public function processFile(Argument $args);
+
+    #[QueryMethod("history")]
+    public function getHistory(): array;
+
+    #[QueryMethod("status")]
+    public function getStatus(): string;
+
+    #[SignalMethod]
+    public function retryNow(): void;
+
+    #[SignalMethod]
+    public function abandon(): void;
+}
+```
+
+Note that name parameter of Workflow method annotations can be used to specify name of Workflow, Signal and Query types.
+If name is not specified the short name of the Workflow interface is used.
+
+In the above code the `#[WorkflowMethod(name)]` is not specified, thus the Workflow type defaults to `"FileProcessingWorkflow"`.
 
 </TabItem>
 <TabItem value="typescript">
@@ -3666,7 +4042,94 @@ Note that you can only register one `Workflow.registerListener(Object)` per Work
 </TabItem>
 <TabItem value="php">
 
-Content is not available
+You can add custom Query types to handle Queries such as Querying the current state of a
+Workflow, or Querying how many Activities the Workflow has completed. To do this, you need to set
+up a Query handler using method attribute `QueryMethod` or `Workflow::registerQueryHandler`.
+
+```php
+#[Workflow\WorkflowInterface]
+class MyWorkflow
+{
+    #[Workflow\QueryMethod]
+    public function getValue()
+    {
+        return 42;
+    }
+
+    #[Workflow\WorkflowMethod]
+    public function run()
+    {
+        // workflow code
+    }
+
+}
+```
+
+The handler function can receive any number of input parameters, but all input parameters must be
+serializable. The following sample code sets up a Query handler that handles the Query type of
+`currentState`:
+
+```php
+#[Workflow\WorkflowInterface]
+class MyWorkflow
+{
+    private string $currentState;
+
+    #[Workflow\QueryMethod('current_state')]
+    public function getCurrentState(): string
+    {
+        return $this->currentState;
+    }
+
+    #[Workflow\WorkflowMethod]
+    public function run()
+    {
+        // Your normal Workflow code begins here, and you update the currentState
+        // as the code makes progress.
+        $this->currentState = 'waiting timer';
+        try{
+            yield Workflow::timer(DateInterval::createFromDateString('1 hour'));
+        } catch (\Throwable $e) {
+            $this->currentState = 'timer failed';
+            throw $e;
+        }
+
+        $myActivity = Workflow::newActivityStub(
+            MyActivityInterface::class,
+            ActivityOptions::new()->withScheduleToStartTimeout(60)
+        );
+
+        $this->currentState = 'waiting activity';
+        try{
+            yield $myActivity->doSomething('some input');
+        } catch (\Throwable $e) {
+            $this->currentState = 'activity failed';
+            throw $e;
+        }
+
+        $this->currentState = 'done';
+
+        return null;
+    }
+}
+```
+
+You can also issue a query from code using the `QueryWorkflow()` API on a Temporal client object.
+
+Use `WorkflowStub` to Query Workflow instances from your Client code (can be applied to running Workflows as well):
+
+```php
+$workflow = $workflowClient->newWorkflowStub(
+    MyWorkflow::class,
+    WorkflowOptions::new()
+);
+
+$workflowClient->start($workflow);
+
+var_dump($workflow->getCurrentState());
+sleep(60);
+var_dump($workflow->getCurrentState());
+```
 
 </TabItem>
 <TabItem value="typescript">
@@ -3758,7 +4221,17 @@ YourWorkflowInterface workflow1 =
 </TabItem>
 <TabItem value="php">
 
-Content is not available
+The following code example creates a new Workflow and sets the Workflow ID. Then it sets the Workflow ID resuse policy and the Workflow Execution Timeout to 2 minutes.
+
+```php
+$workflow = $this->workflowClient->newWorkflowStub(
+    DynamicSleepWorkflowInterface::class,
+    WorkflowOptions::new()
+        ->withWorkflowId(DynamicSleepWorkflow::WORKFLOW_ID)
+        ->withWorkflowIdReusePolicy(WorkflowIdReusePolicy::WORKFLOW_ID_REUSE_POLICY_ALLOW_DUPLICATE)
+        ->withWorkflowExecutionTimeout(CarbonInterval::minutes(2))
+);
+```
 
 </TabItem>
 <TabItem value="typescript">
@@ -3819,7 +4292,18 @@ YourWorkflowInterface workflow1 =
 </TabItem>
 <TabItem value="php">
 
-Content is not available
+`workflowRuntTimeout` runs timeout limits duration of a single Workflow invocation.
+
+```php
+$workflow = $this->workflowClient->newWorkflowStub(
+    CronWorkflowInterface::class,
+    WorkflowOptions::new()
+        ->withWorkflowId(CronWorkflowInterface::WORKFLOW_ID)
+        ->withCronSchedule('* * * * *')
+        ->withWorkflowExecutionTimeout(CarbonInterval::minutes(10))
+        ->withWorkflowRunTimeout(CarbonInterval::minute(1))
+);
+```
 
 </TabItem>
 <TabItem value="typescript">
@@ -3881,7 +4365,18 @@ YourWorkflowInterface workflow1 =
 </TabItem>
 <TabItem value="php">
 
-Content is not available
+`WorkflowTaskTimeout` runs timeout limits duration of a single Workflow invocation.
+
+```php
+$workflow = $this->workflowClient->newWorkflowStub(
+    CronWorkflowInterface::class,
+    WorkflowOptions::new()
+        ->withWorkflowId(CronWorkflowInterface::WORKFLOW_ID)
+        ->withCronSchedule('* * * * *')
+        ->withWorkflowExecutionTimeout(CarbonInterval::minutes(10))
+        ->withWorkflowTaskTimeout(CarbonInterval::minute(1))
+);
+```
 
 </TabItem>
 <TabItem value="typescript">
@@ -4034,7 +4529,16 @@ Note that if you define options per-Activity Type options with `WorkflowImplemen
 </TabItem>
 <TabItem value="php">
 
-Content is not available
+Because Activities are reentrant, only a single stub can be used for multiple Activity invocations.
+The follow code creates an Activity with a `ScheduleToCloseTimeout` set to 2 seconds.
+
+```php
+$this->greetingActivity = Workflow::newActivityStub(
+    GreetingActivityInterface::class,
+    ActivityOptions::new()
+        ->withScheduleToCloseTimeout(CarbonInterval::seconds(2))
+);
+```
 
 </TabItem>
 <TabItem value="typescript">
@@ -4136,7 +4640,15 @@ Note that if you define options per-Activity Type options with `WorkflowImplemen
 </TabItem>
 <TabItem value="php">
 
-Content is not available
+Because Activities are reentrant, only a single stub can be used for multiple Activity invocations.
+The follow code creates an Activity with a `ScheduleToStartTimeout` set to 2 seconds.
+
+```php
+$this->greetingActivity = Workflow::newActivityStub(
+    GreetingActivityInterface::class,
+    ActivityOptions::new()->withStartToCloseTimeout(CarbonInterval::seconds(2))
+);
+```
 
 </TabItem>
 <TabItem value="typescript">
@@ -4236,7 +4748,17 @@ Note that if you define options per-Activity Type options with `WorkflowImplemen
 </TabItem>
 <TabItem value="php">
 
-Content is not available
+Because Activities are reentrant, only a single stub can be used for multiple Activity invocations.
+The follow code creates an Activity with a `ScheduleToStartTimeout` set to 10 seconds.
+
+```php
+// Creating a stub for the activity.
+        $this->greetingActivity = Workflow::newActivityStub(
+            GreetingActivityInterface::class,
+            ActivityOptions::new()
+                ->withScheduleToStartTimeout(CarbonInterval::seconds(10))
+        );
+```
 
 </TabItem>
 <TabItem value="typescript">
@@ -4339,7 +4861,46 @@ Note that if you define options per-Activity Type options with `WorkflowImplemen
 </TabItem>
 <TabItem value="php">
 
-Content is not available
+Some Activities are long-running.
+To react to a crash quickly, use the Heartbeat mechanism, `Activity::heartbeat()`, which lets the Temporal Server know that the Activity is still alive.
+This acts as a periodic checkpoint mechanism for the progress of an Activity.
+
+You can piggyback `details` on an Activity Heartbeat.
+If an Activity times out, the last value of `details` is included in the `TimeoutFailure` delivered to a Workflow.
+Then the Workflow can pass the details to the next Activity invocation.
+Additionally, you can access the details from within an Activity via `Activity::getHeartbeatDetails`.
+When an Activity is retried after a failure `getHeartbeatDetails` enables you to get the value from the last successful Heartbeat.
+
+```php
+use Temporal\Activity;
+
+class FileProcessingActivitiesImpl implements FileProcessingActivities
+{
+    // ...
+    public function download(
+        string $bucketName,
+        string $remoteName,
+        string $localName
+    ): void
+    {
+        $this->dowloader->downloadWithProgress(
+            $bucketName,
+            $remoteName,
+            $localName,
+            // on progress
+            function ($progress) {
+                Activity::heartbeat($progress);
+            }
+        );
+
+        Activity::heartbeat(100); // download complete
+
+        // ...
+    }
+
+    // ...
+}
+```
 
 </TabItem>
 <TabItem value="typescript">
@@ -4451,7 +5012,25 @@ To set [Retry Options](/retry-policies/#), use [`ActivityOptions.newBuilder.setR
 </TabItem>
 <TabItem value="php">
 
-Content is not available
+To enable Activity Retry, set `{@link RetryOptions}` on `{@link ActivityOptions}`.
+The follow example creates a new Activity with the given options.
+
+```php
+$this->greetingActivity = Workflow::newActivityStub(
+    GreetingActivityInterface::class,
+    ActivityOptions::new()
+        ->withScheduleToCloseTimeout(CarbonInterval::seconds(10))
+        ->withRetryOptions(
+            RetryOptions::new()
+                ->withInitialInterval(CarbonInterval::seconds(1))
+                ->withMaximumAttempts(5)
+                ->withNonRetryableExceptions([\InvalidArgumentException::class])
+        )
+);
+}
+```
+
+For an executable code sample, see [ActivityRetry sample](https://github.com/temporalio/samples-php/tree/master/app/src/ActivityRetry) in the PHP samples repository.
 
 </TabItem>
 <TabItem value="typescript">
@@ -4492,6 +5071,242 @@ Use the Activity Timeouts and Retry Policy settings to see how they impact the s
 import RetrySimulator from '/docs/components/RetrySimulator/RetrySimulator';
 
 <RetrySimulator />
+
+### Activity Heartbeats
+
+An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster.
+Each ping informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.
+
+Activity Heartbeats work in conjunction with a [Heartbeat Timeout](/activities/#heartbeat-timeout).
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+To [Heartbeat](/activities/#activity-heartbeats) in an Activity, use the `RecordHeartbeat` API.
+
+```go
+progress := 0
+for progress < 100 {
+    // Send heartbeat message to the server.
+    activity.RecordHeartbeat(ctx, progress)
+    // Do some work.
+    ...
+    progress++
+}
+```
+
+When an Activity Task Execution times out due to a missed Heartbeat, the last value of the details (`progress` in the
+above sample) is returned from the `workflow.ExecuteActivity` function as the details field of `TimeoutError`
+with `TimeoutType` set to `Heartbeat`.
+
+You can also Heartbeat an Activity from an external source:
+
+```go
+// The client is a heavyweight object that should be created once per process.
+temporalClient, err := client.NewClient(client.Options{})
+// Record heartbeat.
+err := temporalClient.RecordActivityHeartbeat(ctx, taskToken, details)
+```
+
+The parameters of the `RecordActivityHeartbeat` function are:
+
+- `taskToken`: The value of the binary `TaskToken` field of the `ActivityInfo` struct retrieved inside
+  the Activity.
+- `details`: The serializable payload containing progress information.
+
+If an Activity Execution Heartbeats its progress before it failed, the retry attempt will have access to the progress information, so that the Activity Execution can resume from the failed state.
+Here's an example of how this can be implemented:
+
+```go
+func SampleActivity(ctx context.Context, inputArg InputParams) error {
+    startIdx := inputArg.StartIndex
+    if activity.HasHeartbeatDetails(ctx) {
+        // Recover from finished progress.
+        var finishedIndex int
+        if err := activity.GetHeartbeatDetails(ctx, &finishedIndex); err == nil {
+            startIdx = finishedIndex + 1 // Start from next one.
+        }
+    }
+
+    // Normal Activity logic...
+    for i:=startIdx; i<inputArg.EndIdx; i++ {
+        // Code for processing item i goes here...
+        activity.RecordHeartbeat(ctx, i) // Report progress.
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+To inform the Temporal service that the Activity is still alive, use `Activity.getExecutionContext().heartbeat()` in the Activity implementation code.
+
+The `Activity.getExecutionContext().heartbeat()` can take an argument that represents Heartbeat `details`.
+If an Activity times out, the last Heartbeat `details` are included in the thrown `ActivityTimeoutException`, which can be caught by the calling Workflow.
+The Workflow can then use the `details` information to pass to the next Activity invocation if needed.
+
+In the case of Activity retries, the last Heartbeat's `details` are available and can be extracted from the last failed attempt by using `Activity.getExecutionContext().getHeartbeatDetails(Class<V> detailsClass)`
+
+The following example uses Activity Heartbeat to report the progress of the `download` Activity method.
+
+```java
+public class FileProcessingActivitiesImpl implements FileProcessingActivities {
+
+  @Override
+  public String download(String bucketName, String remoteName, String localName) {
+    InputStream inputStream = openInputStream(file);
+    try {
+      byte[] bytes = new byte[MAX_BUFFER_SIZE];
+      while ((read = inputStream.read(bytes)) != -1) {
+        totalRead += read;
+        f.write(bytes, 0, read);
+        // Let the Temporal Server know about the download progress.
+        Activity.getExecutionContext().heartbeat(totalRead);
+      }
+    } finally {
+      inputStream.close();
+    }
+  }
+  ...
+}
+```
+
+</TabItem>
+<TabItem value="php">
+
+Some Activities are long-running.
+To react to a crash quickly, use the Heartbeat mechanism, `Activity::heartbeat()`, which lets the Temporal Server know that the Activity is still alive.
+This acts as a periodic checkpoint mechanism for the progress of an Activity.
+
+You can piggyback `details` on an Activity Heartbeat.
+If an Activity times out, the last value of `details` is included in the `TimeoutFailure` delivered to a Workflow.
+Then the Workflow can pass the details to the next Activity invocation.
+Additionally, you can access the details from within an Activity via `Activity::getHeartbeatDetails`.
+When an Activity is retried after a failure `getHeartbeatDetails` enables you to get the value from the last successful Heartbeat.
+
+```php
+use Temporal\Activity;
+
+class FileProcessingActivitiesImpl implements FileProcessingActivities
+{
+    // ...
+    public function download(
+        string $bucketName,
+        string $remoteName,
+        string $localName
+    ): void
+    {
+        $this->dowloader->downloadWithProgress(
+            $bucketName,
+            $remoteName,
+            $localName,
+            // on progress
+            function ($progress) {
+                Activity::heartbeat($progress);
+            }
+        );
+
+        Activity::heartbeat(100); // download complete
+
+        // ...
+    }
+
+    // ...
+}
+```
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is not available
+
+</TabItem>
+</Tabs>
+
+### Async Activity Completion
+
+[Asynchronous Activity Completion](/activities/#asynchronous-activity-completion) enables the Activity Function to return without the Activity Execution completing.
+
+There are three steps to follow:
+
+1. The Activity provides the external system with identifying information needed to complete the Activity Execution.
+   Identifying information can be a [Task Token](/activities/#task-token), or a combination of Namespace, Workflow Id, and Activity Id.
+2. The Activity Function completes in a way that identifies it as waiting to be completed by an external system.
+3. The Temporal Client is used to Heartbeat and complete the Activity.
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+1. Provide the external system with the a Task Token to complete the Activity Execution.
+   To do this, use the `GetInfo()` API from the `go.temporal.io/sdk/activity` package.
+
+```go
+// Retrieve the Activity information needed to asynchronously complete the Activity.
+activityInfo := activity.GetInfo(ctx)
+taskToken := activityInfo.TaskToken
+// Send the taskToken to the external service that will complete the Activity.
+```
+
+2. Return an `activity.ErrResultPending` error to indicate that the Activity is completing asynchronously.
+
+```go
+return "", activity.ErrResultPending
+```
+
+3. Use the Temporal Client to complete the Activity using the Task Token.
+
+```go
+// Instantiate a Temporal service client.
+// The same client can be used to complete or fail any number of Activities.
+// The client is a heavyweight object that should be created once per process.
+temporalClient, err := client.NewClient(client.Options{})
+
+// Complete the Activity.
+temporalClient.CompleteActivity(context.Background(), taskToken, result, nil)
+```
+
+Following are the parameters of the `CompleteActivity` function:
+
+- `taskToken`: The value of the binary `TaskToken` field of the `ActivityInfo` struct retrieved inside
+  the Activity.
+- `result`: The return value to record for the Activity. The type of this value must match the type
+  of the return value declared by the Activity function.
+- `err`: The error code to return if the Activity terminates with an error.
+
+If `error` is not null, the value of the `result` field is ignored.
+
+To fail the Activity, you would do the following:
+
+```go
+// Fail the Activity.
+client.CompleteActivity(context.Background(), taskToken, nil, err)
+```
+
+</TabItem>
+<TabItem value="java">
+
+Content is not available
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is not available
+
+</TabItem>
+</Tabs>
 
 ### Child Workflows
 
@@ -4684,7 +5499,59 @@ Related reads:
 </TabItem>
 <TabItem value="php">
 
-Content is not available
+Besides Activities, a Workflow can also start other Workflows.
+
+`Workflow::executeChildWorkflow` and `Workflow::newChildWorkflowStub` enables the scheduling of other Workflows from within a Workflow's implementation.
+The parent Workflow has the ability to monitor and impact the lifecycle of the child Workflow, similar to the way it does for an Activity that it invoked.
+
+```php
+// Use one stub per child workflow run
+$child = Workflow::newChildWorkflowStub(
+    ChildWorkflowInterface::class,
+    ChildWorkflowOptions::new()
+        // Do not specify WorkflowId if you want Temporal to generate a unique Id
+        // for the child execution.
+        ->withWorkflowId('BID-SIMPLE-CHILD-WORKFLOW')
+        ->withExecutionStartToCloseTimeout(DateInterval::createFromDateString('30 minutes'))
+);
+
+// This is a non blocking call that returns immediately.
+// Use yield $child->workflowMethod(name) to call synchronously.
+$promise = $child->workflowMethod('value');
+
+// Do something else here.
+try{
+    $value = yield $promise;
+} catch(TemporalException $e) {
+    $logger->error('child workflow failed');
+    throw $e;
+}
+```
+
+Let's take a look at each component of this call.
+
+Before calling `$child->workflowMethod()`, you must configure `ChildWorkflowOptions` for the invocation.
+These options customize various execution timeouts, and are passed into the workflow stub defined by the `Workflow::newChildWorkflowStub`.
+Once stub created you can invoke its Workflow method based on attribute `WorkflowMethod`.
+
+The method call returns immediately and returns a `Promise`.
+This allows you to execute more code without having to wait for the scheduled Workflow to complete.
+
+When you are ready to process the results of the Workflow, call the `yield $promise` method on the returned promise object.
+
+When a parent Workflow is cancelled by the user, the child Workflow can be cancelled or abandoned based on a configurable child policy.
+
+You can also skip the stub part of child workflow initiation and use `Workflow::executeChildWorkflow` directly:
+
+```php
+// Use one stub per child workflow run
+$childResult = yield Workflow::executeChildWorkflow(
+    'ChildWorkflowName',
+    ['args'],
+    ChildWorkflowOptions::new()->withWorkflowId('BID-SIMPLE-CHILD-WORKFLOW'),
+    Type::TYPE_STRING // optional: defines the return type
+);
+```
 
 </TabItem>
 <TabItem value="typescript">
@@ -4855,160 +5722,26 @@ Java Workflow reference: <https://www.javadoc.io/doc/io.temporal/temporal-sdk/la
 </TabItem>
 <TabItem value="php">
 
-Content is not available
+Workflows that need to rerun periodically could naively be implemented as a big **while** loop with a sleep where the entire logic of the Workflow is inside the body of the **while** loop.
+The problem with this approach is that the history for that Workflow will keep growing to a point where it reaches the maximum size enforced by the service.
 
-</TabItem>
-<TabItem value="typescript">
+**ContinueAsNew** is the low level construct that enables implementing such Workflows without the risk of failures down the road.
+The operation atomically completes the current execution and starts a new execution of the Workflow with the same **Workflow Id**.
+The new execution will not carry over any history from the old execution.
 
-Content is not available
-
-</TabItem>
-</Tabs>
-
-### Activity Heartbeats
-
-An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster.
-Each ping informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.
-
-Activity Heartbeats work in conjunction with a [Heartbeat Timeout](/activities/#heartbeat-timeout).
-
-<Tabs
-defaultValue="go"
-groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
-
-<TabItem value="go">
-
-To [Heartbeat](/activities/#activity-heartbeats) in an Activity, use the `RecordHeartbeat` API.
-
-```go
-progress := 0
-for progress < 100 {
-    // Send heartbeat message to the server.
-    activity.RecordHeartbeat(ctx, progress)
-    // Do some work.
-    ...
-    progress++
-}
-```
-
-When an Activity Task Execution times out due to a missed Heartbeat, the last value of the details (`progress` in the
-above sample) is returned from the `workflow.ExecuteActivity` function as the details field of `TimeoutError`
-with `TimeoutType` set to `Heartbeat`.
-
-You can also Heartbeat an Activity from an external source:
-
-```go
-// The client is a heavyweight object that should be created once per process.
-temporalClient, err := client.NewClient(client.Options{})
-// Record heartbeat.
-err := temporalClient.RecordActivityHeartbeat(ctx, taskToken, details)
-```
-
-The parameters of the `RecordActivityHeartbeat` function are:
-
-- `taskToken`: The value of the binary `TaskToken` field of the `ActivityInfo` struct retrieved inside
-  the Activity.
-- `details`: The serializable payload containing progress information.
-
-If an Activity Execution Heartbeats its progress before it failed, the retry attempt will have access to the progress information, so that the Activity Execution can resume from the failed state.
-Here's an example of how this can be implemented:
-
-```go
-func SampleActivity(ctx context.Context, inputArg InputParams) error {
-    startIdx := inputArg.StartIndex
-    if activity.HasHeartbeatDetails(ctx) {
-        // Recover from finished progress.
-        var finishedIndex int
-        if err := activity.GetHeartbeatDetails(ctx, &finishedIndex); err == nil {
-            startIdx = finishedIndex + 1 // Start from next one.
-        }
-    }
-
-    // Normal Activity logic...
-    for i:=startIdx; i<inputArg.EndIdx; i++ {
-        // Code for processing item i goes here...
-        activity.RecordHeartbeat(ctx, i) // Report progress.
-    }
-}
-```
-
-</TabItem>
-<TabItem value="java">
-
-To inform the Temporal service that the Activity is still alive, use `Activity.getExecutionContext().heartbeat()` in the Activity implementation code.
-
-The `Activity.getExecutionContext().heartbeat()` can take an argument that represents Heartbeat `details`.
-If an Activity times out, the last Heartbeat `details` are included in the thrown `ActivityTimeoutException`, which can be caught by the calling Workflow.
-The Workflow can then use the `details` information to pass to the next Activity invocation if needed.
-
-In the case of Activity retries, the last Heartbeat's `details` are available and can be extracted from the last failed attempt by using `Activity.getExecutionContext().getHeartbeatDetails(Class<V> detailsClass)`
-
-The following example uses Activity Heartbeat to report the progress of the `download` Activity method.
-
-```java
-public class FileProcessingActivitiesImpl implements FileProcessingActivities {
-
-  @Override
-  public String download(String bucketName, String remoteName, String localName) {
-    InputStream inputStream = openInputStream(file);
-    try {
-      byte[] bytes = new byte[MAX_BUFFER_SIZE];
-      while ((read = inputStream.read(bytes)) != -1) {
-        totalRead += read;
-        f.write(bytes, 0, read);
-        // Let the Temporal Server know about the download progress.
-        Activity.getExecutionContext().heartbeat(totalRead);
-      }
-    } finally {
-      inputStream.close();
-    }
-  }
-  ...
-}
-```
-
-</TabItem>
-<TabItem value="php">
-
-Some Activities are long-running.
-To react to a crash quickly, use the Heartbeat mechanism, `Activity::heartbeat()`, which lets the Temporal Server know that the Activity is still alive.
-This acts as a periodic checkpoint mechanism for the progress of an Activity.
-
-You can piggyback `details` on an Activity Heartbeat.
-If an Activity times out, the last value of `details` is included in the `TimeoutFailure` delivered to a Workflow.
-Then the Workflow can pass the details to the next Activity invocation.
-Additionally, you can access the details from within an Activity via `Activity::getHeartbeatDetails`.
-When an Activity is retried after a failure `getHeartbeatDetails` enables you to get the value from the last successful Heartbeat.
+To trigger this behavior, use `Workflow::continueAsNew` or `Workflow::newContinueAsNewStub` method:
 
 ```php
-use Temporal\Activity;
-
-class FileProcessingActivitiesImpl implements FileProcessingActivities
+#[Workflow\WorkflowMethod]
+public function periodic(string $name, int $value = 0)
 {
-    // ...
-    public function download(
-        string $bucketName,
-        string $remoteName,
-        string $localName
-    ): void
-    {
-        $this->dowloader->downloadWithProgress(
-            $bucketName,
-            $remoteName,
-            $localName,
-            // on progress
-            function ($progress) {
-                Activity::heartbeat($progress);
-            }
-        );
-
-        Activity::heartbeat(100); // download complete
-
-        // ...
+    for ($i = 0; $i < 100; $i++) {
+        // do something
+        $value++;
     }
 
-    // ...
+    // maintain $value counter between runs
+    return Workflow::newContinueAsNewStub(self::class)->periodic($name, $value);
 }
 ```
 
@@ -5078,7 +5811,32 @@ For more details, see the [Cron Sample](https://github.com/temporalio/samples-ja
 </TabItem>
 <TabItem value="php">
 
-Content is not available
+Set your Cron Schedule with `CronSchedule('* * * * *')`.
+
+The following example sets a Cron Schedule in PHP:
+
+```php
+  $workflow = $this->workflowClient->newWorkflowStub(
+      CronWorkflowInterface::class,
+      WorkflowOptions::new()
+          ->withWorkflowId(CronWorkflowInterface::WORKFLOW_ID)
+          ->withCronSchedule('* * * * *')
+          // Execution timeout limits total time. Cron will stop executing after this timeout.
+          ->withWorkflowExecutionTimeout(CarbonInterval::minutes(10))
+          // Run timeout limits duration of a single workflow invocation.
+          ->withWorkflowRunTimeout(CarbonInterval::minute(1))
+  );
+
+  $output->writeln("Starting <comment>CronWorkflow</comment>... ");
+
+  try {
+      $run = $this->workflowClient->start($workflow, 'Antony');
+      // ...
+  }
+```
+
+Setting `withCronSchedule` turns the Workflow Execution into a Temporal Cron Job.
+For more information, see the [PHP samples](https://github.com/temporalio/samples-php/tree/master/app/src/Cron) for example code or the PHP SDK `WorkflowOptions` [source code](https://github.com/temporalio/sdk-php/blob/master/src/Client/WorkflowOptions.php).
 
 </TabItem>
 <TabItem value="typescript">
