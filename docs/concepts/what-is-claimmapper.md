@@ -42,7 +42,7 @@ Bearer <token>
 
 The Permissions Claim in the JWT Token is expected to be a collection of Individual Permission Claims. Each Individual Permission Claim must be formatted as follows:
 
-<namespace>: <permission>
+`<namespace>` : `<permission>`
 
 These permissions are then converted into Temporal roles for the caller.
 

@@ -4,6 +4,8 @@ title: What is Authorization?
 sidebar_label: What is Authorization?
 ---
 
+## Overview
+
 Authorization is the verification of applications and data that a user on your Cluster or application has access to.
 
 Temporal offers two plugin interfaces for implementing API call authorization.

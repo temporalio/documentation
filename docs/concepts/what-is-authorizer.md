@@ -8,6 +8,8 @@ The `Authorizer` contains a single `Authorize` method, which is invoked for each
 
 Authorizer allows for a wide range of authorization logic, including call target, role/permissions claims, and other data available to the system.
 
+## Configuration
+
 The following arguments must be passed to the Authorizer:
 
 - `context.Context`: General context of the call.
