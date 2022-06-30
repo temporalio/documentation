@@ -9,13 +9,20 @@ tags:
   - client
 ---
 
-You can provide key-value pairs as Search Attributes in [StartWorkflowOptions](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions#searchattributes).
-In TypeScript, SearchAttributes are represented as `Record<string, string | number | boolean>`.
+Use [`workflowService.listOpenWorkflowExecutions`](https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.WorkflowService-1#listopenworkflowexecutions):
 
-- The value provided in the map must match what is registered in the dynamic config.
-- The type of value should be a primitive (e.g. string, number, boolean), for dates use `Date.toISOString()`.
+```typescript
+import { Connection } from '@temporalio/client';
 
-This can be useful for tagging executions with useful attributes you may want to search up later. For example:
+const connection = await Connection.connect();
+await connection.workflowService.listOpenWorkflowExecutions();
+```
 
-<!--SNIPSTART typescript-search-attributes-at-creation-->
-<!--SNIPEND-->
+To search with a [List Filter](/concepts/what-is-a-list-filter/), use [`workflowService.scanWorkflowExecutions`](https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.WorkflowService-1#scanworkflowexecutions).
+
+```typescript
+import { Connection } from '@temporalio/client';
+
+const connection = await Connection.connect();
+await connection.workflowService.scanWorkflowExecutions();
+```

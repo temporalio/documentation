@@ -23,12 +23,14 @@
         {
           "header": "none",
           "type": "how-to",
-          "path": "concepts/what-are-metrics"
-        },
-        {
-          "header": "none",
-          "type": "how-to",
-          "path": "app-dev-context/metrics"
+          "path": "concepts/what-are-metrics",
+          "h4_sections": [
+            {
+              "header": "Configure the SDK to emit metrics",
+              "type": "explanation",
+              "path": "app-dev-context/configure-metrics"
+            }
+          ]
         },
         {
           "header": "none",
@@ -100,12 +102,14 @@
         {
           "header": "none",
           "type": "how-to",
-          "path": "app-dev-context/logging"
-        },
-        {
-          "header": "none",
-          "type": "how-to",
-          "path": "app-dev-context/custom-logging"
+          "path": "app-dev-context/logging",
+          "h4_sections": [
+            {
+              "header": "Custom logging",
+              "type": "explanation",
+              "path": "app-dev-context/custom-logging"
+            }
+          ]
         },
         {
           "header": "none",
@@ -132,6 +136,11 @@
               "path": "typescript/how-to-set-a-custom-logger-in-typescript"
             }
           ]
+        },
+        {
+          "header": "Log from a Workflow",
+          "type": "context",
+          "path": "app-dev-context/log-from-a-workflow"
         },
         {
           "header": "none",
@@ -166,7 +175,7 @@
       "h3_sections": [
         {
           "header": "none",
-          "type": "how-to",
+          "type": "context",
           "path": "app-dev-context/visibility"
         },
         {
@@ -198,33 +207,45 @@
               "title": "TypeScript",
               "path": "none"
             }
+          ],
+          "h4_sections": [
+            {
+              "header": "Custom Search attributes",
+              "type": "context",
+              "path": "app-dev-context/custom-search-attributes"
+            },
+            {
+              "header": "none",
+              "type": "lang-tabs",
+              "langs": [
+                {
+                  "lang": "go",
+                  "title": "Go",
+                  "path": "go/how-to-add-custom-search-attributes-to-a-workflow-executions-at-start-time-in-go"
+                },
+                {
+                  "lang": "java",
+                  "title": "Java",
+                  "path": "none"
+                },
+                {
+                  "lang": "php",
+                  "title": "PHP",
+                  "path": "none"
+                },
+                {
+                  "lang": "typescript",
+                  "title": "TypeScript",
+                  "path": "none"
+                }
+              ]
+            }
           ]
         },
         {
-          "header": "none",
-          "type": "lang-tabs",
-          "langs": [
-            {
-              "lang": "go",
-              "title": "Go",
-              "path": "go/how-to-add-custom-search-attributes-to-a-workflow-executions-at-start-time-in-go"
-            },
-            {
-              "lang": "java",
-              "title": "Java",
-              "path": "none"
-            },
-            {
-              "lang": "php",
-              "title": "PHP",
-              "path": "none"
-            },
-            {
-              "lang": "typescript",
-              "title": "TypeScript",
-              "path": "none"
-            }
-          ]
+          "header": "Upsert custom search attributes",
+          "type": "context",
+          "path": "app-dev-context/upsert-custom-search-attributes"
         },
         {
           "header": "none",
@@ -253,6 +274,11 @@
           ]
         },
         {
+          "header": "Remove search attributes",
+          "type": "context",
+          "path": "app-dev-context/remove-search-attributes"
+        },
+        {
           "header": "none",
           "type": "lang-tabs",
           "langs": [
@@ -269,7 +295,7 @@
             {
               "lang": "php",
               "title": "PHP",
-              "path": "none"
+              "path": "php/how-to-remove-search-attributes-from-a-workflow-in-php"
             },
             {
               "lang": "typescript",
@@ -288,6 +314,7 @@
           "type": "how-to",
           "path": "app-dev-context/replays"
         },
+
         {
           "header": "none",
           "type": "lang-tabs",

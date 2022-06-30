@@ -1,8 +1,8 @@
 ---
-id: how-to-set-search-attributes-in-the-client-in-typescript
-title: How to set Search Attributes in the Client in TypeScript
-sidebar_label: Use Search Attributes in the Client
-description: Use Search Attributes in the Client
+id: how-to-set-search-attributes-from-the-client-in-typescript
+title: How to set Search Attributes from the Client in TypeScript
+sidebar_label: Use Search Attributes from the Client
+description: Use Search Attributes from the Client
 tags:
   - developer-guide
   - sdk

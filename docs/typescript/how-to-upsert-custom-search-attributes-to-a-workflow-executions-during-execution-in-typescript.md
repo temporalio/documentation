@@ -7,5 +7,7 @@ tags:
   - typescript
 ---
 
-In advanced cases, you may want to dynamically update these attributes as the Workflow progresses.
-Temporal has an `UpsertSearchAttributes` capability, but it is not yet supported in the TypeScript SDK.
+Inside a Workflow, we can read from [`WorkflowInfo.searchAttributes`](https://typescript.temporal.io/api/interfaces/workflow.WorkflowInfo#searchattributes) and call [`upsertSearchAttributes`](https://typescript.temporal.io/api/namespaces/workflow#upsertsearchattributes):
+
+<!--SNIPSTART typescript-search-attributes-workflow -->
+<!--SNIPEND-->

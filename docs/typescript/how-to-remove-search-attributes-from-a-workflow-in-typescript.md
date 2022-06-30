@@ -9,8 +9,15 @@ tags:
   - client
 ---
 
-**There is no support for removing a field.**
+Use [`upsertSearchAttributes`](https://typescript.temporal.io/api/namespaces/workflow/#upsertsearchattributes) to merge the provided [`searchAttributes`](https://typescript.temporal.io/api/namespaces/workflow/#searchattributess) with the existing Search Attributes, `workflowInfo().searchAttributes`:
 
-However, to achieve a similar effect, set the field to some placeholder value.
-For example, you could set `CustomKeywordField` to `impossibleVal`.
-Then searching `CustomKeywordField != 'impossibleVal'` will match Workflows with `CustomKeywordField` not equal to `impossibleVal`, which includes Workflows without the `CustomKeywordField` set.
+```typescript
+import { upsertSearchAttributes } from '@temporalio/workflow';
+
+async function myWorkflow() {
+  upsertSearchAttributes({ CustomIntField: [1, 2, 3] });
+
+  // ... later, to remove:
+  upsertSearchAttributes({ CustomIntField: [] });
+}
+```

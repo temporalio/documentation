@@ -32,19 +32,32 @@ Temporal also provides a dashboard you can integrate with graphing services like
 
 There are a variety of metrics which gives you information into your service, persistence, and Workflow metrics. For more information on metrics, see the [SDK metric reference](https://docs.temporal.io/docs/references/sdk-metrics/).
 
+#### Configure the SDK to emit metrics
+
 The requirements of your Temporal system will vary widely based on your intended production workload.
 You will want to run your own proof of concept tests and watch for key metrics to understand the system health and scaling needs.
 
-Temporal emits metrics which gives you insight into how your application and service are working and performing.
-To enable metrics, define your endpoints so that your time-series database can scrape your metrics.
+There are a variety of metrics which gives you information into your _service_, _persistence_, and _Workflow metrics_.
 
-There are a variety of metrics which gives you information into your service, persistence, and Workflow metrics.
+_Service metrics_: For each request by the service handler, Temporal emits metrics with type, operation, and namespace tags. This gives you visibility into service usage and request rates across services, Namespaces, or even operations.
 
-- Service metrics: For each request by the service handler, Temporal emits `service_requests`, `service_errors`, and `service_latency` metrics with type, operation, and namespace tags. This gives you visibility into service usage and request rates across services, Namespaces, or even operations.
+- `service_requests`
+- `service_errors`
+- `service_latency`
 
-  - Persistence metrics: Temporal emits `persistence_requests`, `persistence_errors,` and `persistence_latency` metric for each persistence operation. These metrics are tagged with operation tags to allow getting request rates, error rates, or latencies per operation. These are used to identify issues like database problems.
+_Persistence metrics_: Temporal emits metrics for each persistence operation. These metrics are tagged with operation tags to allow getting request rates, error rates, or latencies per operation. These can be used to identify issues like database problems.
 
-- Workflow metrics: Temporal also emits counters on Workflows. These are useful in getting overall stats about Workflow completion. Use `workflow_success`, `workflow_failed`, `workflow_timeout`, `workflow_terminate`, and `workflow_cancel` counters for each type of Workflow completion. They're also tagged with the Namespace tag.
+- `persistence_requests`
+- `persistence_errors,`
+- `persistence_latency`
+
+_Workflow metrics_: Temporal also emits counters on Workflows. These are useful in getting overall stats about Workflow completion. The following are commonly used Workflow metrics used as counters for each type of Workflow completion, that can also be tagged with the Namespace tag:
+
+- `workflow_success`
+- `workflow_failed`
+- `workflow_timeout`
+- `workflow_terminate`
+- `workflow_cancel`
 
 <Tabs
 defaultValue="go"
@@ -86,18 +99,12 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Workers can emit metrics and traces. There are two [output options](https://github.com/temporalio/sdk-typescript/blob/9dd17554f3fa514f501d906da26cf710020bf34d/packages/core-bridge/index.d.ts#L74-L98) that can be provided to [`Runtime.install`](https://typescript.temporal.io/api/classes/worker.runtime/#install):
+Workers can emit metrics and traces. There are a few [telemetry options](https://typescript.temporal.io/api/interfaces/worker.TelemetryOptions) that can be provided to [`Runtime.install`](https://typescript.temporal.io/api/classes/worker.runtime/#install). The common options are:
 
-- `oTelCollectorUrl`: The URL of a gRPC [OpenTelemetry collector](https://opentelemetry.io/docs/collector/).
-- `prometheusMetricsBindAddress`: Address on the Worker host that will have metrics for [Prometheus](https://prometheus.io/) to scrape.
+- `metrics: { otel: { url } }`: The URL of a gRPC [OpenTelemetry collector](https://opentelemetry.io/docs/collector/).
+- `metrics: { prometheus: { bindAddress } }`: Address on the Worker host that will have metrics for [Prometheus](https://prometheus.io/) to scrape.
 
-There are three combinations of these options:
-
-- Only `oTelCollectorUrl` is specified: Metrics and traces are sent to the OpenTelemetry collector.
-- Both `oTelCollectorUrl` and `prometheusMetricsBindAddress` are specified: Traces are sent to the collector, and metrics are published for Prometheus.
-- Only `prometheusMetricsBindAddress` is specified: Only metrics are published for Prometheus.
-
-In addition to core tracing via `oTelCollectorUrl`, you can set up tracing of Workflows and Activities [with interceptors](/typescript/logging#opentelemetry-tracing).
+To set up tracing of Workflows and Activities, use our [opentelemetry-interceptors](/typescript/logging#opentelemetry-tracing) package.
 
 </TabItem>
 </Tabs>
@@ -187,6 +194,8 @@ Similarly, you can customize the OpenTelemetry `NodeSDK` propagators by followin
 ## Logging
 
 Send logs and errors to a logging service, so that when things go wrong, you can see what happened.
+
+#### Custom logging
 
 Use a custom logger for logging.
 
@@ -293,6 +302,8 @@ Runtime.install({logger});
 
 </TabItem>
 </Tabs>
+
+### Log from a Workflow
 
 <Tabs
 defaultValue="go"
@@ -432,10 +443,10 @@ The steps to using Search Attributes are:
 
 - Create a new Search Attribute in your Cluster [using `tctl`](/tctl/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl/).
 - Set the value of the Search Attribute for a Workflow Execution:
-  - On the Client by including it as an option when starting the Execution,
+  - On the Client by including it as an option when starting the Execution.
   - In the Workflow by calling `UpsertSearchAttributes`.
 - Read the value of the Search Attribute:
-  - On the Client by calling `DescribeWorkflow`,
+  - On the Client by calling `DescribeWorkflow`.
   - In the Workflow by looking at `WorkflowInfo`.
 - Query Workflow Executions by the Search Attribute using a [List Filter](/concepts/what-is-a-list-filter/):
   - [In `tctl`](/tctl/workflow/list/#--query).
@@ -495,6 +506,8 @@ Content is not available
 </TabItem>
 </Tabs>
 
+#### Custom Search attributes
+
 <Tabs
 defaultValue="go"
 groupId="site-lang"
@@ -542,6 +555,10 @@ Content is not available
 
 </TabItem>
 </Tabs>
+
+### Upsert custom search attributes
+
+Upsert Search Attributes is used to add or update Search Attributes from within Workflow code.
 
 <Tabs
 defaultValue="go"
@@ -596,11 +613,17 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-In advanced cases, you may want to dynamically update these attributes as the Workflow progresses.
-Temporal has an `UpsertSearchAttributes` capability, but it is not yet supported in the TypeScript SDK.
+Inside a Workflow, we can read from [`WorkflowInfo.searchAttributes`](https://typescript.temporal.io/api/interfaces/workflow.WorkflowInfo#searchattributes) and call [`upsertSearchAttributes`](https://typescript.temporal.io/api/namespaces/workflow#upsertsearchattributes):
+
+<!--SNIPSTART typescript-search-attributes-workflow -->
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>
+
+### Remove search attributes
+
+To remove a Search Attribute that was previously set, set it to an empty array, `[]`.
 
 <Tabs
 defaultValue="go"
@@ -623,21 +646,32 @@ Content is not available
 </TabItem>
 <TabItem value="php">
 
-Content is not available
+To remove a Search Attribute that was previously set, set it to an empty array `[]`.
 
 </TabItem>
 <TabItem value="typescript">
 
-**There is no support for removing a field.**
+Use [`upsertSearchAttributes`](https://typescript.temporal.io/api/namespaces/workflow/#upsertsearchattributes) to merge the provided [`searchAttributes`](https://typescript.temporal.io/api/namespaces/workflow/#searchattributess) with the existing Search Attributes, `workflowInfo().searchAttributes`:
 
-However, to achieve a similar effect, set the field to some placeholder value.
-For example, you could set `CustomKeywordField` to `impossibleVal`.
-Then searching `CustomKeywordField != 'impossibleVal'` will match Workflows with `CustomKeywordField` not equal to `impossibleVal`, which includes Workflows without the `CustomKeywordField` set.
+```typescript
+import {upsertSearchAttributes} from "@temporalio/workflow";
+
+async function myWorkflow() {
+  upsertSearchAttributes({CustomIntField: [1, 2, 3]});
+
+  // ... later, to remove:
+  upsertSearchAttributes({CustomIntField: []});
+}
+```
 
 </TabItem>
 </Tabs>
 
 ## Replays
+
+Replays recreate the exact state the Workflow code was in. You can replay Workflows from the beginning of their history when resumed.
+
+Replays only allow code to resume if it is compatible from a deterministic point of view.
 
 <Tabs
 defaultValue="go"
@@ -714,6 +748,8 @@ Content is not available
 <TabItem value="typescript">
 
 Workflows in Temporal may be replayed from the beginning of their history when resumed. In order for Temporal to recreate the exact state Workflow code was in, the code is required to be fully deterministic. To prevent breaking [determinism](/typescript/determinism), in the TypeScript SDK, Workflow code runs in an isolated execution environment and may not use any of the Node.js APIs or communicate directly with the outside world.
+
+See how to replay in [this video](https://www.youtube.com/watch?v=fN5bIL7wc5M).
 
 </TabItem>
 </Tabs>
