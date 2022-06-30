@@ -1423,7 +1423,7 @@ public class FileProcessingActivitiesImpl implements FileProcessingActivities {
 }
 ```
 
-For details on getting the results of an Activity Execution, see [Activity Execution Result](#none).
+For details on getting the results of an Activity Execution, see [Activity Execution Result](#get-activity-results).
 
 </TabItem>
 <TabItem value="php">
@@ -1508,6 +1508,12 @@ This imports the individual Activities and declares the type alias for each Acti
 
 </TabItem>
 </Tabs>
+
+#### Required timeout
+
+Activity Execution semantics rely on several parameters.
+The only required value that needs to be set is either a [Schedule-To-Close Timeout](/activities/#start-to-close-timeout) or a [Start-To-Close Timeout](/activities/#start-to-close-timeout).
+These values are set in the Activity Options.
 
 #### Get Activity results
 
@@ -5066,6 +5072,242 @@ import RetrySimulator from '/docs/components/RetrySimulator/RetrySimulator';
 
 <RetrySimulator />
 
+### Activity Heartbeats
+
+An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster.
+Each ping informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.
+
+Activity Heartbeats work in conjunction with a [Heartbeat Timeout](/activities/#heartbeat-timeout).
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+To [Heartbeat](/activities/#activity-heartbeats) in an Activity, use the `RecordHeartbeat` API.
+
+```go
+progress := 0
+for progress < 100 {
+    // Send heartbeat message to the server.
+    activity.RecordHeartbeat(ctx, progress)
+    // Do some work.
+    ...
+    progress++
+}
+```
+
+When an Activity Task Execution times out due to a missed Heartbeat, the last value of the details (`progress` in the
+above sample) is returned from the `workflow.ExecuteActivity` function as the details field of `TimeoutError`
+with `TimeoutType` set to `Heartbeat`.
+
+You can also Heartbeat an Activity from an external source:
+
+```go
+// The client is a heavyweight object that should be created once per process.
+temporalClient, err := client.NewClient(client.Options{})
+// Record heartbeat.
+err := temporalClient.RecordActivityHeartbeat(ctx, taskToken, details)
+```
+
+The parameters of the `RecordActivityHeartbeat` function are:
+
+- `taskToken`: The value of the binary `TaskToken` field of the `ActivityInfo` struct retrieved inside
+  the Activity.
+- `details`: The serializable payload containing progress information.
+
+If an Activity Execution Heartbeats its progress before it failed, the retry attempt will have access to the progress information, so that the Activity Execution can resume from the failed state.
+Here's an example of how this can be implemented:
+
+```go
+func SampleActivity(ctx context.Context, inputArg InputParams) error {
+    startIdx := inputArg.StartIndex
+    if activity.HasHeartbeatDetails(ctx) {
+        // Recover from finished progress.
+        var finishedIndex int
+        if err := activity.GetHeartbeatDetails(ctx, &finishedIndex); err == nil {
+            startIdx = finishedIndex + 1 // Start from next one.
+        }
+    }
+
+    // Normal Activity logic...
+    for i:=startIdx; i<inputArg.EndIdx; i++ {
+        // Code for processing item i goes here...
+        activity.RecordHeartbeat(ctx, i) // Report progress.
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+To inform the Temporal service that the Activity is still alive, use `Activity.getExecutionContext().heartbeat()` in the Activity implementation code.
+
+The `Activity.getExecutionContext().heartbeat()` can take an argument that represents Heartbeat `details`.
+If an Activity times out, the last Heartbeat `details` are included in the thrown `ActivityTimeoutException`, which can be caught by the calling Workflow.
+The Workflow can then use the `details` information to pass to the next Activity invocation if needed.
+
+In the case of Activity retries, the last Heartbeat's `details` are available and can be extracted from the last failed attempt by using `Activity.getExecutionContext().getHeartbeatDetails(Class<V> detailsClass)`
+
+The following example uses Activity Heartbeat to report the progress of the `download` Activity method.
+
+```java
+public class FileProcessingActivitiesImpl implements FileProcessingActivities {
+
+  @Override
+  public String download(String bucketName, String remoteName, String localName) {
+    InputStream inputStream = openInputStream(file);
+    try {
+      byte[] bytes = new byte[MAX_BUFFER_SIZE];
+      while ((read = inputStream.read(bytes)) != -1) {
+        totalRead += read;
+        f.write(bytes, 0, read);
+        // Let the Temporal Server know about the download progress.
+        Activity.getExecutionContext().heartbeat(totalRead);
+      }
+    } finally {
+      inputStream.close();
+    }
+  }
+  ...
+}
+```
+
+</TabItem>
+<TabItem value="php">
+
+Some Activities are long-running.
+To react to a crash quickly, use the Heartbeat mechanism, `Activity::heartbeat()`, which lets the Temporal Server know that the Activity is still alive.
+This acts as a periodic checkpoint mechanism for the progress of an Activity.
+
+You can piggyback `details` on an Activity Heartbeat.
+If an Activity times out, the last value of `details` is included in the `TimeoutFailure` delivered to a Workflow.
+Then the Workflow can pass the details to the next Activity invocation.
+Additionally, you can access the details from within an Activity via `Activity::getHeartbeatDetails`.
+When an Activity is retried after a failure `getHeartbeatDetails` enables you to get the value from the last successful Heartbeat.
+
+```php
+use Temporal\Activity;
+
+class FileProcessingActivitiesImpl implements FileProcessingActivities
+{
+    // ...
+    public function download(
+        string $bucketName,
+        string $remoteName,
+        string $localName
+    ): void
+    {
+        $this->dowloader->downloadWithProgress(
+            $bucketName,
+            $remoteName,
+            $localName,
+            // on progress
+            function ($progress) {
+                Activity::heartbeat($progress);
+            }
+        );
+
+        Activity::heartbeat(100); // download complete
+
+        // ...
+    }
+
+    // ...
+}
+```
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is not available
+
+</TabItem>
+</Tabs>
+
+### Async Activity Completion
+
+[Asynchronous Activity Completion](/activities/#asynchronous-activity-completion) enables the Activity Function to return without the Activity Execution completing.
+
+There are three steps to follow:
+
+1. The Activity provides the external system with identifying information needed to complete the Activity Execution.
+   Identifying information can be a [Task Token](/activities/#task-token), or a combination of Namespace, Workflow Id, and Activity Id.
+2. The Activity Function completes in a way that identifies it as waiting to be completed by an external system.
+3. The Temporal Client is used to Heartbeat and complete the Activity.
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+1. Provide the external system with the a Task Token to complete the Activity Execution.
+   To do this, use the `GetInfo()` API from the `go.temporal.io/sdk/activity` package.
+
+```go
+// Retrieve the Activity information needed to asynchronously complete the Activity.
+activityInfo := activity.GetInfo(ctx)
+taskToken := activityInfo.TaskToken
+// Send the taskToken to the external service that will complete the Activity.
+```
+
+2. Return an `activity.ErrResultPending` error to indicate that the Activity is completing asynchronously.
+
+```go
+return "", activity.ErrResultPending
+```
+
+3. Use the Temporal Client to complete the Activity using the Task Token.
+
+```go
+// Instantiate a Temporal service client.
+// The same client can be used to complete or fail any number of Activities.
+// The client is a heavyweight object that should be created once per process.
+temporalClient, err := client.NewClient(client.Options{})
+
+// Complete the Activity.
+temporalClient.CompleteActivity(context.Background(), taskToken, result, nil)
+```
+
+Following are the parameters of the `CompleteActivity` function:
+
+- `taskToken`: The value of the binary `TaskToken` field of the `ActivityInfo` struct retrieved inside
+  the Activity.
+- `result`: The return value to record for the Activity. The type of this value must match the type
+  of the return value declared by the Activity function.
+- `err`: The error code to return if the Activity terminates with an error.
+
+If `error` is not null, the value of the `result` field is ignored.
+
+To fail the Activity, you would do the following:
+
+```go
+// Fail the Activity.
+client.CompleteActivity(context.Background(), taskToken, nil, err)
+```
+
+</TabItem>
+<TabItem value="java">
+
+Content is not available
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is not available
+
+</TabItem>
+</Tabs>
+
 ### Child Workflows
 
 A [Child Workflow Execution](/workflows/#child-workflows) is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.
@@ -5500,161 +5742,6 @@ public function periodic(string $name, int $value = 0)
 
     // maintain $value counter between runs
     return Workflow::newContinueAsNewStub(self::class)->periodic($name, $value);
-}
-```
-
-</TabItem>
-<TabItem value="typescript">
-
-Content is not available
-
-</TabItem>
-</Tabs>
-
-### Activity Heartbeats
-
-An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster.
-Each ping informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.
-
-Activity Heartbeats work in conjunction with a [Heartbeat Timeout](/activities/#heartbeat-timeout).
-
-<Tabs
-defaultValue="go"
-groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
-
-<TabItem value="go">
-
-To [Heartbeat](/activities/#activity-heartbeats) in an Activity, use the `RecordHeartbeat` API.
-
-```go
-progress := 0
-for progress < 100 {
-    // Send heartbeat message to the server.
-    activity.RecordHeartbeat(ctx, progress)
-    // Do some work.
-    ...
-    progress++
-}
-```
-
-When an Activity Task Execution times out due to a missed Heartbeat, the last value of the details (`progress` in the
-above sample) is returned from the `workflow.ExecuteActivity` function as the details field of `TimeoutError`
-with `TimeoutType` set to `Heartbeat`.
-
-You can also Heartbeat an Activity from an external source:
-
-```go
-// The client is a heavyweight object that should be created once per process.
-temporalClient, err := client.NewClient(client.Options{})
-// Record heartbeat.
-err := temporalClient.RecordActivityHeartbeat(ctx, taskToken, details)
-```
-
-The parameters of the `RecordActivityHeartbeat` function are:
-
-- `taskToken`: The value of the binary `TaskToken` field of the `ActivityInfo` struct retrieved inside
-  the Activity.
-- `details`: The serializable payload containing progress information.
-
-If an Activity Execution Heartbeats its progress before it failed, the retry attempt will have access to the progress information, so that the Activity Execution can resume from the failed state.
-Here's an example of how this can be implemented:
-
-```go
-func SampleActivity(ctx context.Context, inputArg InputParams) error {
-    startIdx := inputArg.StartIndex
-    if activity.HasHeartbeatDetails(ctx) {
-        // Recover from finished progress.
-        var finishedIndex int
-        if err := activity.GetHeartbeatDetails(ctx, &finishedIndex); err == nil {
-            startIdx = finishedIndex + 1 // Start from next one.
-        }
-    }
-
-    // Normal Activity logic...
-    for i:=startIdx; i<inputArg.EndIdx; i++ {
-        // Code for processing item i goes here...
-        activity.RecordHeartbeat(ctx, i) // Report progress.
-    }
-}
-```
-
-</TabItem>
-<TabItem value="java">
-
-To inform the Temporal service that the Activity is still alive, use `Activity.getExecutionContext().heartbeat()` in the Activity implementation code.
-
-The `Activity.getExecutionContext().heartbeat()` can take an argument that represents Heartbeat `details`.
-If an Activity times out, the last Heartbeat `details` are included in the thrown `ActivityTimeoutException`, which can be caught by the calling Workflow.
-The Workflow can then use the `details` information to pass to the next Activity invocation if needed.
-
-In the case of Activity retries, the last Heartbeat's `details` are available and can be extracted from the last failed attempt by using `Activity.getExecutionContext().getHeartbeatDetails(Class<V> detailsClass)`
-
-The following example uses Activity Heartbeat to report the progress of the `download` Activity method.
-
-```java
-public class FileProcessingActivitiesImpl implements FileProcessingActivities {
-
-  @Override
-  public String download(String bucketName, String remoteName, String localName) {
-    InputStream inputStream = openInputStream(file);
-    try {
-      byte[] bytes = new byte[MAX_BUFFER_SIZE];
-      while ((read = inputStream.read(bytes)) != -1) {
-        totalRead += read;
-        f.write(bytes, 0, read);
-        // Let the Temporal Server know about the download progress.
-        Activity.getExecutionContext().heartbeat(totalRead);
-      }
-    } finally {
-      inputStream.close();
-    }
-  }
-  ...
-}
-```
-
-</TabItem>
-<TabItem value="php">
-
-Some Activities are long-running.
-To react to a crash quickly, use the Heartbeat mechanism, `Activity::heartbeat()`, which lets the Temporal Server know that the Activity is still alive.
-This acts as a periodic checkpoint mechanism for the progress of an Activity.
-
-You can piggyback `details` on an Activity Heartbeat.
-If an Activity times out, the last value of `details` is included in the `TimeoutFailure` delivered to a Workflow.
-Then the Workflow can pass the details to the next Activity invocation.
-Additionally, you can access the details from within an Activity via `Activity::getHeartbeatDetails`.
-When an Activity is retried after a failure `getHeartbeatDetails` enables you to get the value from the last successful Heartbeat.
-
-```php
-use Temporal\Activity;
-
-class FileProcessingActivitiesImpl implements FileProcessingActivities
-{
-    // ...
-    public function download(
-        string $bucketName,
-        string $remoteName,
-        string $localName
-    ): void
-    {
-        $this->dowloader->downloadWithProgress(
-            $bucketName,
-            $remoteName,
-            $localName,
-            // on progress
-            function ($progress) {
-                Activity::heartbeat($progress);
-            }
-        );
-
-        Activity::heartbeat(100); // download complete
-
-        // ...
-    }
-
-    // ...
 }
 ```
 

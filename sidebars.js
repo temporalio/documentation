@@ -700,7 +700,6 @@ module.exports = {
         "go/how-to-set-executelocalactivityoptions-in-go",
         "go/how-to-heartbeat-an-activity-in-go",
         "go/workflows",
-        "go/activities",
         "go/how-to-use-signals-in-go",
         "go/how-to-send-a-query-to-a-workflow-execution-in-go",
         "go/how-to-handle-a-query-in-a-workflow-in-go",
