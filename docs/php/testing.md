@@ -42,7 +42,6 @@ temporal-test-server
 
 ### How it works
 
-
 For testing workflows there is no need to run a full Temporal server (with storage and UI interface).
 Instead, we can use a light-weight test server.
 
@@ -137,7 +136,6 @@ final class WaitWorkflow
     }
 }
 ```
-
 
 The activity will be called immediately. But, there may be cases when you do need to wait. So, to change this behaviour
 you can use `TestService` class:
