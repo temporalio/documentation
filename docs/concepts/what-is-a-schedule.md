@@ -40,7 +40,12 @@ Calendar expressions are given as separate named fields.
 For example in tctl, they can be provided as JSON:
 
 ```json
-{"year": "2022", "month": "Jan,Apr,Jul,Oct", "dayOfMonth": "1,15", "hour": "11-14"}
+{
+  "year": "2022",
+  "month": "Jan,Apr,Jul,Oct",
+  "dayOfMonth": "1,15",
+  "hour": "11-14"
+}
 ```
 
 The following calendar fields are available:
