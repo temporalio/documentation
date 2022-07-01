@@ -1,6 +1,6 @@
 ---
-id: how-to-tune-workers
-title: How to tune Workers
+id: worker-performance
+title: Application development Worker performance
 description: Guide into Workers Tuning
 sidebar_label: Worker performance
 tags:

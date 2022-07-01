@@ -1,6 +1,7 @@
 {
   "file_name": "cluster-deployment-guide.md",
   "id": "cluster-deployment-guide",
+  "file_dir": "/",
   "title": "Temporal Cluster deployment guide",
   "sidebar_label": "Cluster deployment",
   "description": "This section provides an overview of how to deploy and operate a Temporal Cluster in a live environment.",

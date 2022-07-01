@@ -1,6 +1,7 @@
 {
   "file_name": "workers.md",
   "id": "workers",
+  "file_dir": "/",
   "title": "Workers",
   "sidebar_label": "Workers",
   "description": "This guide is meant to be a comprehensive overview of Temporal Workers.",

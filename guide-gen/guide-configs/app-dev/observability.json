@@ -1,7 +1,8 @@
 {
   "file_name": "observability.md",
   "id": "observability",
-  "title": "Observability",
+  "file_dir": "application-development",
+  "title": "Application development observability",
   "sidebar_label": "Observability",
   "description": "This section provides documentation on how to observe your Temporal application.",
   "toc_max_heading_level": 4,

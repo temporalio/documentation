@@ -1,6 +1,7 @@
 {
   "file_name": "activities.md",
   "id": "activities",
+  "file_dir": "/",
   "title": "Activities",
   "sidebar_label": "Activities",
   "description": "This guide is meant to be a comprehensive overview of Temporal Activities.",

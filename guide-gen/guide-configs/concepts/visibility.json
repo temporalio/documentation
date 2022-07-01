@@ -1,6 +1,7 @@
 {
   "file_name": "visibility.md",
   "id": "visibility",
+  "file_dir": "/",
   "title": "Visibility",
   "sidebar_label": "Visibility",
   "description": "This guide is meant to be a comprehensive overview of Temporal Visibility.",

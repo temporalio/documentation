@@ -1,6 +1,6 @@
 ---
 id: observability
-title: Observability
+title: Application development observability
 sidebar_label: Observability
 description: This section provides documentation on how to observe your Temporal application.
 toc_max_heading_level: 4
@@ -167,13 +167,13 @@ To extend the default ([Trace Context](https://github.com/open-telemetry/opentel
 - At the top level of your Workflow code, add the following lines:
 
   ```js
-  import {propagation} from "@opentelemetry/api";
+  import { propagation } from '@opentelemetry/api';
   import {
     CompositePropagator,
     W3CTraceContextPropagator,
     W3CBaggagePropagator,
-  } from "@opentelemetry/core";
-  import {JaegerPropagator} from "@opentelemetry/propagator-jaeger";
+  } from '@opentelemetry/core';
+  import { JaegerPropagator } from '@opentelemetry/propagator-jaeger';
 
   propagation.setGlobalPropagator(
     new CompositePropagator({
@@ -263,12 +263,12 @@ The following [log levels](https://typescript.temporal.io/api/namespaces/worker#
 Temporal ships a [`DefaultLogger`](https://typescript.temporal.io/api/classes/worker.defaultlogger/) that implements the basic interface:
 
 ```ts
-import {Runtime, DefaultLogger} from "@temporalio/worker";
+import { Runtime, DefaultLogger } from '@temporalio/worker';
 
-const logger = new DefaultLogger("WARN", ({level, message}) => {
+const logger = new DefaultLogger('WARN', ({ level, message }) => {
   console.log(`Custom logger: ${level} — ${message}`);
 });
-Runtime.install({logger});
+Runtime.install({ logger });
 ```
 
 The previous code example sets the default logger to only log messages with level `WARN` and higher.
@@ -276,34 +276,36 @@ The previous code example sets the default logger to only log messages with leve
 - **Accumulate logs for testing and reporting**
 
 ```ts
-import {DefaultLogger, LogEntry} from "@temporalio/worker";
+import { DefaultLogger, LogEntry } from '@temporalio/worker';
 
 const logs: LogEntry[] = [];
-const logger = new DefaultLogger("TRACE", (entry) => logs.push(entry));
-log.debug("hey", {a: 1});
-log.info("ho");
-log.warn("lets", {a: 1});
-log.error("go");
+const logger = new DefaultLogger('TRACE', (entry) => logs.push(entry));
+log.debug('hey', { a: 1 });
+log.info('ho');
+log.warn('lets', { a: 1 });
+log.error('go');
 ```
 
 A common logging use case is logging to a file to be picked up by a collector like the [Datadog Agent](https://docs.datadoghq.com/logs/log_collection/nodejs/?tab=winston30).
 
 ```ts
-import {Runtime} from "@temporalio/worker";
-import winston from "winston";
+import { Runtime } from '@temporalio/worker';
+import winston from 'winston';
 
 const logger = winston.createLogger({
-  level: "info",
+  level: 'info',
   format: winston.format.json(),
-  transports: [new transports.File({filename: "/path/to/worker.log"})],
+  transports: [new transports.File({ filename: '/path/to/worker.log' })],
 });
-Runtime.install({logger});
+Runtime.install({ logger });
 ```
 
 </TabItem>
 </Tabs>
 
 ### Log from a Workflow
+
+
 
 <Tabs
 defaultValue="go"
@@ -508,6 +510,8 @@ Content is not available
 
 #### Custom Search attributes
 
+
+
 <Tabs
 defaultValue="go"
 groupId="site-lang"
@@ -654,13 +658,13 @@ To remove a Search Attribute that was previously set, set it to an empty array `
 Use [`upsertSearchAttributes`](https://typescript.temporal.io/api/namespaces/workflow/#upsertsearchattributes) to merge the provided [`searchAttributes`](https://typescript.temporal.io/api/namespaces/workflow/#searchattributess) with the existing Search Attributes, `workflowInfo().searchAttributes`:
 
 ```typescript
-import {upsertSearchAttributes} from "@temporalio/workflow";
+import { upsertSearchAttributes } from '@temporalio/workflow';
 
 async function myWorkflow() {
-  upsertSearchAttributes({CustomIntField: [1, 2, 3]});
+  upsertSearchAttributes({ CustomIntField: [1, 2, 3] });
 
   // ... later, to remove:
-  upsertSearchAttributes({CustomIntField: []});
+  upsertSearchAttributes({ CustomIntField: [] });
 }
 ```
 
@@ -753,3 +757,4 @@ See how to replay in [this video](https://www.youtube.com/watch?v=fN5bIL7wc5M).
 
 </TabItem>
 </Tabs>
+

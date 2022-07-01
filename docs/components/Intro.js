@@ -319,7 +319,7 @@ function Explained() {
             <div className="landing-card-list-item">
               <BookSVG />
               <Link
-                to={useBaseUrl("/observability")}
+                to={useBaseUrl("/next/application-development/observability")}
                 className="hover:underline"
               >
                 <a className="font-normal">Observability</a>
@@ -329,7 +329,7 @@ function Explained() {
         </ul>
       </div>
       <div className="landing-card-section">
-        <a className="header-link" href="/application-development">
+        <a className="header-link" href="/next/application-development">
           <h2 className="h2-landing">Legacy docs for SDKs</h2>
         </a>
         <p className="landing-card-p">

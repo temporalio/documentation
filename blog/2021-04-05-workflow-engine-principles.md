@@ -61,7 +61,7 @@ The basic idea of Temporal is that you "just write code", as in this Java sample
 
 ![Designing Workflow Engine-v7-images 008](https://user-images.githubusercontent.com/6764957/113586779-7d691e80-9660-11eb-9186-f7c68fa33279.png)
 
-We also support [Go, PHP, and other SDKs](https://docs.temporal.io/application-development) (TypeScript and Python are in the works).
+We also support [Go, PHP, and other SDKs](https://docs.temporal.io/application-development-guide) (TypeScript and Python are in the works).
 
 This looks like normal Java code, but it is a workflow because **the state of the program is fully preserved at all times**. If your program restarts or the backend service goes down, your program will be in exactly the same state with all local variables and stack traces in exactly the same state. You can call sleep for 30 days in your code without caring about process restarts or dealing with databases and state recovery
 

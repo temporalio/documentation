@@ -1,6 +1,7 @@
 {
   "file_name": "clusters.md",
   "id": "clusters",
+  "file_dir": "/",
   "title": "Clusters",
   "sidebar_label": "Clusters",
   "description": "Temporal Clusters explained.",
