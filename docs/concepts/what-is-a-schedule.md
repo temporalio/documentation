@@ -40,7 +40,7 @@ Calendar expressions are given as separate named fields.
 For example in tctl, they can be provided as JSON:
 
 ```json
-{"year": "2022", "month": "*/3", "dayOfMonth": "1,15", "hour": "11-14"}
+{"year": "2022", "month": "Jan,Apr,Jul,Oct", "dayOfMonth": "1,15", "hour": "11-14"}
 ```
 
 The following calendar fields are available:
@@ -89,7 +89,7 @@ To assist communication among developers and operators, there's a “notes” fi
 
 ### Limiting number of Actions
 
-A Schedule may be limited to a certain number of Actions (i.e. not trigger immediately).
+A Schedule may be limited to a certain number of scheduled Actions (i.e. not trigger immediately).
 After that it will act as if it was Paused.
 
 ### Policies

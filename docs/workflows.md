@@ -640,12 +640,12 @@ Use the Workflow Id in any requests to Cancel or Terminate.
 
 ## Schedules
 
-A Schedule contains instructions for starting a [Workflow Execution](#workflow-executions) at specific times, and is meant to be a more flexible and user friendly approach over [Temporal Cron Jobs](#cron-jobs).
+A Schedule contains instructions for starting a [Workflow Execution](#workflow-executions) at specific times, and is meant to be a more flexible and user-friendly approach over [Temporal Cron Jobs](#cron-jobs).
 
 - [How to enable Schedules](#how-to-enable-schedules)
 - [How to operate Schedules using tctl](/tctl/schedule/)
 
-A Schedule has identity, and is independent from a Workflow Execution.
+A Schedule has identity, and is independent of a Workflow Execution.
 This is different from Temporal Cron Jobs, which rely on a cron schedule as a property of the Workflow Execution.
 
 ### Action
