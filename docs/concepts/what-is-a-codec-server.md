@@ -23,7 +23,7 @@ Decrypted data can also be passed back through the Codec Server for encryption. 
 
 ## Configuration
 
-Before running a Codec Server, make sure that a [Temporal service](https://docs.temporal.io/application-development-guide/#run-a-dev-cluster) is running in your SDK of choice.
+Before running a Codec Server, make sure that a [Temporal Cluster](https://docs.temporal.io/application-development-guide/#run-a-dev-cluster) is running.
 
 If you are using Go, feel free to base your remote Codec Server on the [temporalio/samples-go](https://github.com/temporalio/samples-go) repository.
 For other languages, please refer to the diagrams in the Go sample to construct the Codec Server.
