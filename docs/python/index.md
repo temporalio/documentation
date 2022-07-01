@@ -7,9 +7,7 @@ tags:
   - python
 ---
 
-The following section describes how to install the Temporal Python package.
-
-- To install the Temporal Python package from [PyPI](https://pypi.org/project/temporalio/), run the following command.
+To install the latest version of the Temporal Python package, run the following command.
 
 ```bash
 pip install temporalio

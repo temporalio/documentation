@@ -137,7 +137,6 @@
                   "path": "typescript/api-reference-typescript"
                 }
               ]
-              
             }
           ]
         },
@@ -792,7 +791,7 @@
               "lang": "php",
               "title": "PHP",
               "path": "php/how-to-get-the-result-of-a-workflow-execution-in-php"
-            },            
+            },
             {
               "lang": "python",
               "title": "Python",

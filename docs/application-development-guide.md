@@ -127,15 +127,6 @@ git clone git@github.com:temporalio/sdk-go.git
 
 [![Build status](https://badge.buildkite.com/663f6d1be81be6700c28c242b35905f20b68c4fda7b2c7c4e3.svg?branch=master)](https://buildkite.com/temporal/java-sdk-public)
 
-The Temporal Java SDK provides a framework for Temporal Application development in Java.
-The SDK contains the following tools:
-
-- A Temporal Client to communicate with a Temporal Cluster
-- APIs to use within your Workflows
-- APIs to create and manage Worker Entities and Worker Processes
-
-**Get the SDK**
-
 Add the [Temporal Java SDK](https://github.com/temporalio/sdk-java) to your project as a dependency:
 
 **[Apache Maven](https://maven.apache.org/)**:
@@ -215,9 +206,7 @@ npm install @temporalio/client @temporalio/worker @temporalio/workflow @temporal
 </TabItem>
 <TabItem value="python">
 
-The following section describes how to install the Temporal Python package.
-
-- To install the Temporal Python package from [PyPI](https://pypi.org/project/temporalio/), run the following command.
+To install the latest version of the Temporal Python package, run the following command.
 
 ```bash
 pip install temporalio
@@ -267,6 +256,9 @@ Use the [PHP samples library](https://github.com/temporalio/samples-php) stored 
 
 Use the [TypeScript samples library](https://github.com/temporalio/samples-typescript) stored on GitHub to demonstrate various capabilities of Temporal.
 
+**Where can I find video demos?**
+[Temporal Go TypeScript YouTube playlist](https://www.youtube.com/playlist?list=PLl9kRkvFJrlTavecydpk9r6cF7qBmQJvb).
+
 </TabItem>
 <TabItem value="python">
 
@@ -291,7 +283,7 @@ The Temporal Go SDK API reference is published on [pkg.go.dev](https://pkg.go.de
 </TabItem>
 <TabItem value="java">
 
-The Temporal Go SDK API reference is published on [javadoc.io](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/index.html).
+The Temporal Java SDK API reference is published on [javadoc.io](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/index.html).
 
 </TabItem>
 <TabItem value="php">
@@ -301,7 +293,7 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-The Temporal TypeScript SDK API reference is published on [https://typescript.temporal.io](https://typescript.temporal.io).
+The Temporal TypeScript SDK API reference is published on [typescript.temporal.io](https://typescript.temporal.io).
 
 </TabItem>
 <TabItem value="python">
