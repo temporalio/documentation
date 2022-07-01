@@ -9,7 +9,8 @@ A Codec Server is an optional feature used to encrypt and decrypt Payloads for t
 
 ![](/img/remote-codec-server-problem.svg)
 
-Each Client has a built-in [Data Converter](/docs/concepts/what-is-a-data-converter). However, the pre-built tctl and WebUI binaries won't be able to decrypt the serialized Payloads.
+Each Temporal Client has a built-in [Data Converter](/docs/concepts/what-is-a-data-converter) that serializes Payloads.
+However, the pre-built tctl and WebUI binaries are unable to decode Payloads with additional levels of encoding.
 
 ![](/img/remote-codec-server-solution.svg)
 
