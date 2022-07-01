@@ -5,24 +5,12 @@ sidebar_label: Codec Server
 description: Explanation and implementation of a remote encryption/decryption server.
 ---
 
-A Codec Server is an optional feature used to encrypt and decrypt Payloads for the WebUI.
+A Codec Server is an optional feature for altering Payloads returned from a default Data Converter.
 
-![](/img/remote-codec-server-problem.svg)
+Suppose that a developer wants to view Workflow History. They can accomplish this with the `workflow show` command with tctl, or by selecting it in the WebUI. A Payload is retrieved and sent to a default Data Converter, which converts the Payload object into a human-readable format. Suppose it wasn't what you wanted.
 
-Each Client has a built-in [Data Converter](/docs/concepts/what-is-a-data-converter). However, the pre-built tctl and WebUI binaries won't be able to decrypt the serialized Payloads.
+Codec Servers allow further customization for Payload objects. The default Data Converter sends the Payload to a given endpoint, and receives a decoded Payload if the API returns a successful result. The Data Converter passes this back to the Client for viewing.
 
-![](/img/remote-codec-server-solution.svg)
+Codec Servers can be used to encrypt, compress, and change the format of a Payload object. These measures further secure your data while formatting it to your preference.
 
-With a Codec Server, the Client's Data Converter can send an HTTP API request to the codec to decrypt a Payload.
-This decrypted data is passed back to the WebUI.
-
-Decrypted data can also be passed back through the Codec Server for encryption. Then, when passed through the Client's Data Converter, it can be deserialized before being sent back to the Temporal Cluster.
-
-![](/img/remote-codec-server-diagram.svg)
-
-## Configuration
-
-Before running a Codec Server, make sure that a [Temporal service](https://docs.temporal.io/application-development-guide/#run-a-dev-cluster) is running in your SDK of choice.
-
-If you are using Go, feel free to base your remote Codec Server on the [temporalio/samples-go](https://github.com/temporalio/samples-go) repository.
-For other languages, please refer to the diagrams in the Go sample to construct the Codec Server.
+![](/img/codec-implementation.svg)
