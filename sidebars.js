@@ -365,6 +365,26 @@ module.exports = {
                     "tctl/admin/workflow/show",
                   ],
                 },
+                {
+                  type: "category",
+                  label: "schedule",
+                  collapsible: true,
+                  collapsed: true,
+                  link: {
+                    type: "doc",
+                    id: "tctl/schedule/index",
+                  },
+                  items: [
+                    "tctl/schedule/create",
+                    "tctl/schedule/describe",
+                    "tctl/schedule/update",
+                    "tctl/schedule/delete",
+                    "tctl/schedule/list",
+                    "tctl/schedule/toggle",
+                    "tctl/schedule/trigger",
+                    "tctl/schedule/backfill",
+                  ],
+                },
               ],
             },
             {
