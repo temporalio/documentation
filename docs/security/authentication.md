@@ -1,7 +1,7 @@
 ---
-id: what-is-authentication
-title: What is Authentication?
-sidebar_label: What is Authentication?
+id: authentication-in-temporal
+title: Authentication in Temporal
+sidebar_label: Authentication in Temporal
 ---
 
 # Overview
