@@ -28,11 +28,13 @@ Both TypeScript and JavaScript can be used with the TypeScript SDK.
 :::
 
 **Create a new project**
+
 ```bash
 npx @temporalio/create@latest ./my-app
 ```
 
 **Add to an existing project**
+
 ```bash
 npm install @temporalio/client @temporalio/worker @temporalio/workflow @temporalio/activity @temporalio/common
 ```

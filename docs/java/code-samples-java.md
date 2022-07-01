@@ -3,6 +3,7 @@ id: code-samples-java
 title: Code samples
 sidebar_label: Code samples
 ---
+
 Use the [Java samples library](https://github.com/temporalio/samples-java) stored on GitHub to demonstrate various capabilities of Temporal.
 
 **Where can I find video demos?**
