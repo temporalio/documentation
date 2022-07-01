@@ -12,8 +12,7 @@ This guide is an overview of the Temporal Web UI.
 
 :::info Upgrade available
 
-Temporal Web UI v2 is now generally available
-It requires Temporal v1.16.0 or later.
+Temporal Web UI v2 is now generally available.
 
 Temporal Web UI v1 is being deprecated on September 30, 2022.
 
@@ -134,3 +133,4 @@ Navigate to `/import` to import an Event History in JSON format and populate a W
 
 The Web UI can use the same Data Converter that Workers use for inputs and return values.
 The UI supports both a Remote Codec endpoint and/or the tctl plugin port.
+

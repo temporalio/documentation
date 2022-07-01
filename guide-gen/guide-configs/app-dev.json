@@ -55,12 +55,93 @@
               "path": "php/index"
             },
             {
+              "lang": "python",
+              "title": "Python",
+              "path": "python/index"
+            },
+            {
               "lang": "typescript",
               "title": "TypeScript",
               "path": "typescript/index"
             }
+          ],
+          "h4_sections": [
+            {
+              "header": "Code samples",
+              "type": "context",
+              "path": "app-dev-context/code-samples"
+            },
+            {
+              "header": "none",
+              "type": "lang-tabs",
+              "langs": [
+                {
+                  "lang": "go",
+                  "title": "Go",
+                  "path": "go/code-samples-go"
+                },
+                {
+                  "lang": "java",
+                  "title": "Java",
+                  "path": "java/code-samples-java"
+                },
+                {
+                  "lang": "php",
+                  "title": "PHP",
+                  "path": "php/code-samples-php"
+                },
+                {
+                  "lang": "python",
+                  "title": "Python",
+                  "path": "python/code-samples-python"
+                },
+                {
+                  "lang": "typescript",
+                  "title": "TypeScript",
+                  "path": "typescript/code-samples-typescript"
+                }
+              ]
+            },
+            {
+              "header": "API reference",
+              "type": "context",
+              "path": "app-dev-context/api-reference"
+            },
+            {
+              "header": "none",
+              "type": "lang-tabs",
+              "langs": [
+                {
+                  "lang": "go",
+                  "title": "Go",
+                  "path": "go/api-reference-go"
+                },
+                {
+                  "lang": "java",
+                  "title": "Java",
+                  "path": "java/api-reference-java"
+                },
+                {
+                  "lang": "php",
+                  "title": "PHP",
+                  "path": "none"
+                },
+                {
+                  "lang": "python",
+                  "title": "Python",
+                  "path": "python/api-reference-python"
+                },
+                {
+                  "lang": "typescript",
+                  "title": "TypeScript",
+                  "path": "typescript/api-reference-typescript"
+                }
+              ]
+              
+            }
           ]
         },
+
         {
           "header": "Develop Workflows",
           "type": "context",
@@ -84,6 +165,11 @@
               "lang": "php",
               "title": "PHP",
               "path": "php/how-to-develop-a-workflow-definition-in-php"
+            },
+            {
+              "lang": "python",
+              "title": "Python",
+              "path": "none"
             },
             {
               "lang": "typescript",
@@ -114,6 +200,11 @@
                 {
                   "lang": "php",
                   "title": "PHP",
+                  "path": "none"
+                },
+                {
+                  "lang": "python",
+                  "title": "Python",
                   "path": "none"
                 },
                 {
@@ -148,6 +239,11 @@
                   "path": "php/how-to-define-workflow-return-values-in-php"
                 },
                 {
+                  "lang": "python",
+                  "title": "Python",
+                  "path": "none"
+                },
+                {
                   "lang": "typescript",
                   "title": "TypeScript",
                   "path": "typescript/how-to-define-workflow-return-values-in-typescript"
@@ -176,6 +272,11 @@
                 {
                   "lang": "php",
                   "title": "PHP",
+                  "path": "none"
+                },
+                {
+                  "lang": "python",
+                  "title": "Python",
                   "path": "none"
                 },
                 {
@@ -208,6 +309,11 @@
                   "lang": "php",
                   "title": "PHP",
                   "path": "php/how-to-handle-workflow-logic-requirements-in-php"
+                },
+                {
+                  "lang": "python",
+                  "title": "Python",
+                  "path": "none"
                 },
                 {
                   "lang": "typescript",
@@ -243,6 +349,11 @@
               "path": "php/how-to-develop-an-activity-definition-in-php"
             },
             {
+              "lang": "python",
+              "title": "Python",
+              "path": "none"
+            },
+            {
               "lang": "typescript",
               "title": "TypeScript",
               "path": "typescript/how-to-develop-an-activity-definition-in-typescript"
@@ -274,6 +385,11 @@
                   "path": "php/how-to-define-activity-parameters-in-php"
                 },
                 {
+                  "lang": "python",
+                  "title": "Python",
+                  "path": "none"
+                },
+                {
                   "lang": "typescript",
                   "title": "TypeScript",
                   "path": "none"
@@ -302,6 +418,11 @@
                 {
                   "lang": "php",
                   "title": "PHP",
+                  "path": "none"
+                },
+                {
+                  "lang": "python",
+                  "title": "Python",
                   "path": "none"
                 },
                 {
@@ -336,6 +457,11 @@
                   "path": "none"
                 },
                 {
+                  "lang": "python",
+                  "title": "Python",
+                  "path": "none"
+                },
+                {
                   "lang": "typescript",
                   "title": "TypeScript",
                   "path": "none"
@@ -367,6 +493,11 @@
               "lang": "php",
               "title": "PHP",
               "path": "php/how-to-spawn-an-activity-execution-in-php"
+            },
+            {
+              "lang": "python",
+              "title": "Python",
+              "path": "none"
             },
             {
               "lang": "typescript",
@@ -405,6 +536,11 @@
                   "path": "php/how-to-get-the-result-of-an-activity-execution-in-php"
                 },
                 {
+                  "lang": "python",
+                  "title": "Python",
+                  "path": "none"
+                },
+                {
                   "lang": "typescript",
                   "title": "TypeScript",
                   "path": "typescript/how-to-get-the-result-of-an-activity-execution-in-typescript"
@@ -438,6 +574,11 @@
               "path": "php/how-to-create-a-temporal-client-in-php"
             },
             {
+              "lang": "python",
+              "title": "Python",
+              "path": "none"
+            },
+            {
               "lang": "typescript",
               "title": "TypeScript",
               "path": "typescript/how-to-create-a-temporal-client-in-typescript"
@@ -469,6 +610,11 @@
               "path": "php/how-to-develop-a-worker-program-in-php"
             },
             {
+              "lang": "python",
+              "title": "Python",
+              "path": "none"
+            },
+            {
               "lang": "typescript",
               "title": "TypeScript",
               "path": "typescript/how-to-develop-a-worker-program-in-typescript"
@@ -497,6 +643,11 @@
                 {
                   "lang": "php",
                   "title": "PHP",
+                  "path": "none"
+                },
+                {
+                  "lang": "python",
+                  "title": "Python",
                   "path": "none"
                 },
                 {
@@ -533,6 +684,11 @@
               "path": "none"
             },
             {
+              "lang": "python",
+              "title": "Python",
+              "path": "none"
+            },
+            {
               "lang": "typescript",
               "title": "TypeScript",
               "path": "typescript/how-to-spawn-a-workflow-execution-in-typescript"
@@ -562,6 +718,11 @@
                   "lang": "php",
                   "title": "PHP",
                   "path": "php/how-to-set-a-workflow-task-queue-in-php"
+                },
+                {
+                  "lang": "python",
+                  "title": "Python",
+                  "path": "none"
                 },
                 {
                   "lang": "typescript",
@@ -595,6 +756,11 @@
                   "path": "php/how-to-set-a-workflow-id-in-php"
                 },
                 {
+                  "lang": "python",
+                  "title": "Python",
+                  "path": "none"
+                },
+                {
                   "lang": "typescript",
                   "title": "TypeScript",
                   "path": "typescript/how-to-set-a-workflow-id-in-typescript"
@@ -626,6 +792,11 @@
               "lang": "php",
               "title": "PHP",
               "path": "php/how-to-get-the-result-of-a-workflow-execution-in-php"
+            },            
+            {
+              "lang": "python",
+              "title": "Python",
+              "path": "none"
             },
             {
               "lang": "typescript",
@@ -674,6 +845,11 @@
                   "path": "php/how-to-define-a-signal-in-php"
                 },
                 {
+                  "lang": "python",
+                  "title": "Python",
+                  "path": "none"
+                },
+                {
                   "lang": "typescript",
                   "title": "TypeScript",
                   "path": "typescript/how-to-define-a-signal-in-typescript"
@@ -702,6 +878,11 @@
                 {
                   "lang": "php",
                   "title": "PHP",
+                  "path": "none"
+                },
+                {
+                  "lang": "python",
+                  "title": "Python",
                   "path": "none"
                 },
                 {
@@ -736,6 +917,11 @@
                   "path": "none"
                 },
                 {
+                  "lang": "python",
+                  "title": "Python",
+                  "path": "none"
+                },
+                {
                   "lang": "typescript",
                   "title": "TypeScript",
                   "path": "typescript/how-to-send-a-signal-from-a-client-in-typescript"
@@ -767,6 +953,11 @@
                   "path": "php/how-to-send-a-signal-from-a-workflow-in-php"
                 },
                 {
+                  "lang": "python",
+                  "title": "Python",
+                  "path": "none"
+                },
+                {
                   "lang": "typescript",
                   "title": "TypeScript",
                   "path": "typescript/how-to-send-a-signal-from-a-workflow-in-typescript"
@@ -796,6 +987,11 @@
                   "lang": "php",
                   "title": "PHP",
                   "path": "php/how-to-send-a-signal-with-start-in-php"
+                },
+                {
+                  "lang": "python",
+                  "title": "Python",
+                  "path": "none"
                 },
                 {
                   "lang": "typescript",
@@ -836,6 +1032,11 @@
                   "path": "php/how-to-define-a-query-in-php"
                 },
                 {
+                  "lang": "python",
+                  "title": "Python",
+                  "path": "none"
+                },
+                {
                   "lang": "typescript",
                   "title": "TypeScript",
                   "path": "none"
@@ -864,6 +1065,11 @@
                 {
                   "lang": "php",
                   "title": "PHP",
+                  "path": "none"
+                },
+                {
+                  "lang": "python",
+                  "title": "Python",
                   "path": "none"
                 },
                 {
@@ -896,6 +1102,11 @@
                   "lang": "php",
                   "title": "PHP",
                   "path": "php/how-to-handle-a-query-in-a-workflow-in-php"
+                },
+                {
+                  "lang": "python",
+                  "title": "Python",
+                  "path": "none"
                 },
                 {
                   "lang": "typescript",
@@ -936,6 +1147,11 @@
                   "path": "php/how-to-set-a-workflow-execution-timeout-in-php"
                 },
                 {
+                  "lang": "python",
+                  "title": "Python",
+                  "path": "none"
+                },
+                {
                   "lang": "typescript",
                   "title": "TypeScript",
                   "path": "none"
@@ -965,6 +1181,11 @@
                   "lang": "php",
                   "title": "PHP",
                   "path": "php/how-to-set-a-workflow-run-timeout-in-php"
+                },
+                {
+                  "lang": "python",
+                  "title": "Python",
+                  "path": "none"
                 },
                 {
                   "lang": "typescript",
@@ -998,6 +1219,11 @@
                   "path": "php/how-to-set-a-workflow-task-timeout-in-php"
                 },
                 {
+                  "lang": "python",
+                  "title": "Python",
+                  "path": "none"
+                },
+                {
                   "lang": "typescript",
                   "title": "TypeScript",
                   "path": "none"
@@ -1026,6 +1252,11 @@
                 {
                   "lang": "php",
                   "title": "PHP",
+                  "path": "none"
+                },
+                {
+                  "lang": "python",
+                  "title": "Python",
                   "path": "none"
                 },
                 {
@@ -1067,6 +1298,11 @@
                   "path": "php/how-to-set-a-schedule-to-close-timeout-in-php"
                 },
                 {
+                  "lang": "python",
+                  "title": "Python",
+                  "path": "none"
+                },
+                {
                   "lang": "typescript",
                   "title": "TypeScript",
                   "path": "typescript/how-to-set-a-schedule-to-close-timeout-in-typescript"
@@ -1096,6 +1332,11 @@
                   "lang": "php",
                   "title": "PHP",
                   "path": "php/how-to-set-a-start-to-close-timeout-in-php"
+                },
+                {
+                  "lang": "python",
+                  "title": "Python",
+                  "path": "none"
                 },
                 {
                   "lang": "typescript",
@@ -1129,6 +1370,11 @@
                   "path": "php/how-to-set-a-schedule-to-start-timeout-in-php"
                 },
                 {
+                  "lang": "python",
+                  "title": "Python",
+                  "path": "none"
+                },
+                {
                   "lang": "typescript",
                   "title": "TypeScript",
                   "path": "typescript/how-to-set-a-schedule-to-start-timeout-in-typescript"
@@ -1160,6 +1406,11 @@
                   "path": "php/how-to-set-a-heartbeat-timeout-in-php"
                 },
                 {
+                  "lang": "python",
+                  "title": "Python",
+                  "path": "none"
+                },
+                {
                   "lang": "typescript",
                   "title": "TypeScript",
                   "path": "typescript/how-to-set-a-heartbeat-timeout-in-typescript"
@@ -1189,6 +1440,11 @@
                   "lang": "php",
                   "title": "PHP",
                   "path": "php/how-to-set-activity-retry-options-in-php"
+                },
+                {
+                  "lang": "python",
+                  "title": "Python",
+                  "path": "none"
                 },
                 {
                   "lang": "typescript",
@@ -1229,6 +1485,11 @@
               "path": "php/how-to-set-a-heartbeat-for-an-activity-in-php"
             },
             {
+              "lang": "python",
+              "title": "Python",
+              "path": "none"
+            },
+            {
               "lang": "typescript",
               "title": "TypeScript",
               "path": "none"
@@ -1257,6 +1518,11 @@
             {
               "lang": "php",
               "title": "PHP",
+              "path": "none"
+            },
+            {
+              "lang": "python",
+              "title": "Python",
               "path": "none"
             },
             {
@@ -1291,6 +1557,11 @@
               "path": "php/how-to-spawn-a-child-workflow-execution-in-php"
             },
             {
+              "lang": "python",
+              "title": "Python",
+              "path": "none"
+            },
+            {
               "lang": "typescript",
               "title": "TypeScript",
               "path": "none"
@@ -1319,6 +1590,11 @@
                 {
                   "lang": "php",
                   "title": "PHP",
+                  "path": "none"
+                },
+                {
+                  "lang": "python",
+                  "title": "Python",
                   "path": "none"
                 },
                 {

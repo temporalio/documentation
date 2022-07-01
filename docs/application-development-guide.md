@@ -92,25 +92,23 @@ When it is running, you can customize the application samples.
 ### Add your SDK
 
 Add a [Temporal SDK](/temporal/#temporal-sdk) to your project.
-Both TypeScript and JavaScript can be used with the TypeScript SDK.
+
+The Temporal SDK provides a framework for Temporal application development. 
+
+The SDK contains the following tools:
+
+- A Temporal Client to communicate with a Temporal Cluster.
+- APIs to use within your Workflows.
+- APIs to create and manage Worker Entities and Worker Processes.
 
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
 [![Build Status](https://badge.buildkite.com/ce6df3b1a8b375270261ae70fb2d2756af298fef3a0dac4d20.svg?theme=github&branch=master)](https://buildkite.com/temporal/temporal-go-client) [![Coverage Status](https://coveralls.io/repos/github/temporalio/temporal-go-sdk/badge.svg?branch=master)](https://coveralls.io/github/temporalio/temporal-go-sdk?branch=master) [![Go reference](https://pkg.go.dev/badge/go.temporal.io/sdk)](https://pkg.go.dev/go.temporal.io/sdk)
-
-The Temporal Go SDK provides a framework for Temporal Application development in the Go language.
-The SDK contains the following tools:
-
-- A Temporal Client to communicate with a Temporal Cluster
-- APIs to use within your Workflows
-- APIs to create and manage Worker Entities and Worker Processes
-
-**Get the SDK**
 
 Add the [Temporal Go SDK](https://github.com/temporalio/sdk-go) to your project:
 
@@ -123,19 +121,6 @@ Or clone the Go SDK repo to your preferred location:
 ```bash
 git clone git@github.com:temporalio/sdk-go.git
 ```
-
-**Are there executable code samples?**
-
-You can find a complete list of executable code samples in the [samples library](/samples-library/#go), which includes Temporal Go SDK code samples from the [temporalio/samples-go](https://github.com/temporalio/samples-go) repo.
-Additionally, each of the Go SDK Tutorials is backed by a fully executable template application.
-
-**Where is the Go SDK technical reference?**
-
-The [Temporal Go SDK API reference](https://pkg.go.dev/go.temporal.io/sdk) is published on [pkg.go.dev](https://pkg.go.dev/go.temporal.io/sdk)
-
-**Where can I find video demos?**
-
-[Temporal Go SDK YouTube playlist](https://www.youtube.com/playlist?list=PLl9kRkvFJrlRYHYaTPnsvE46szyMIZLdk)
 
 </TabItem>
 <TabItem value="java">
@@ -174,29 +159,8 @@ implementation 'io.temporal:temporal-sdk:1.11.0'
 Additional scripts for each SDK version are available here: [https://search.maven.org/artifact/io.temporal/temporal-sdk](https://search.maven.org/artifact/io.temporal/temporal-sdk).
 Select an SDK version to see available scripts.
 
-**Are there executable code samples?**
-
-You can find a complete list of executable code samples in the [samples library](/samples-library/#java), which includes Temporal Java SDK code samples from the temporalio/samples-java repo.
-Additionally, several of the [Java SDK Tutorials](/learning-paths) are backed by a fully executable template application.
-
-**Where is the Java SDK technical reference?**
-
-The [Java SDK API reference](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/index.html) is published to [javadoc.io](https://www.javadoc.io/).
-
-**Where can I find video demos?**
-
-[Temporal Java SDK YouTube playlist](https://www.youtube.com/playlist?list=PLl9kRkvFJrlQ8KsM6m9cFfCeQegq_B8x4)
-
 </TabItem>
 <TabItem value="php">
-
-The Temporal TypeScript PHP provides a framework for Temporal Application development in the PHP language. The SDK contains the following tools:
-
-- A Temporal Client to communicate with a Temporal Cluster
-- APIs to use within your Workflows
-- APIs to create and manage Worker Entities and Worker Processes
-
-**Get the SDK**
 
 The Temporal PHP SDK is available as composer package and can be installed using the following command in a root of your project:
 
@@ -206,7 +170,7 @@ composer require temporal/sdk
 
 The Temporal PHP SDK requires the RoadRunner 2.0 application server and supervisor to run Activities and Workflows in a scalable way.
 
-Install RoadRunner manually by dowloading its binary from the [release page](https://github.com/roadrunner-server/roadrunner/releases/tag/v1.9.2).
+Install RoadRunner manually by downloading its binary from the [release page](https://github.com/roadrunner-server/roadrunner/releases/tag/v1.9.2).
 
 Or install RoadRunner through the CLI:
 
@@ -217,14 +181,6 @@ composer require spiral/roadrunner:v2.0 nyholm/psr7
 
 </TabItem>
 <TabItem value="typescript">
-
-The Temporal TypeScript SDK provides a framework for Temporal Application development in the TypeScript language. The SDK contains the following tools:
-
-- A Temporal Client to communicate with a Temporal Cluster
-- APIs to use within your Workflows
-- APIs to create and manage Worker Entities and Worker Processes
-
-**Get the SDK**
 
 To download the latest version of the Temporal TypeScript Command, run the following command:
 
@@ -240,13 +196,121 @@ git clone git@github.com:temporalio/sdk-typescript.git
 
 This project requires Node.js 14 or later.
 
-**Are there executable code samples?​**
+:::note
+Both TypeScript and JavaScript can be used with the TypeScript SDK.
+:::
 
-You can find a complete list of executable code samples in the samples' library, which includes Temporal TypeScript SDK code samples from the [temporalio/samples-typescript](https://github.com/temporalio/samples-typescript) repo. Additionally, each of the TypeScript SDK Tutorials is backed by a fully executable template application.
+**Create a new project**
+```bash
+npx @temporalio/create@latest ./my-app
+```
 
-**Where is the TypeScript SDK technical reference?​**
+**Add to an existing project**
+```bash
+npm install @temporalio/client @temporalio/worker @temporalio/workflow @temporalio/activity @temporalio/common
+```
 
-The Temporal TypeScript SDK API reference is published on [typescript.temporal.io](https://typescript.temporal.io).
+</TabItem>
+<TabItem value="python">
+
+The following section describes how to install the Temporal Python package.
+
+- To install the Temporal Python package from [PyPI](https://pypi.org/project/temporalio/), run the following command.
+
+```bash
+pip install temporalio
+```
+
+</TabItem>
+</Tabs>
+
+#### Code samples
+
+You can find a complete list of executable code samples in the samples' library.
+
+The [Temporal Simple Polyglot](https://github.com/temporalio/temporal-polyglot) repository showcases how Workflow Executions, written in different languages, can send messages to each other. Go, Java, PHP, and TypeScript SDKs are represented in this sample. 
+It also shows how to properly propagate errors, including how to do so across Workflows written in different languages.
+
+
+Additionally, several of the [Tutorials](/learning-paths) are backed by a fully executable template application.
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+Use the [Go samples library](https://github.com/temporalio/samples-go) stored on GitHub to demonstrate various capabilities of Temporal.
+
+**Where can I find video demos?**
+
+[Temporal Go SDK YouTube playlist](https://www.youtube.com/playlist?list=PLl9kRkvFJrlRYHYaTPnsvE46szyMIZLdk).
+
+
+
+
+
+</TabItem>
+<TabItem value="java">
+
+Use the [Java samples library](https://github.com/temporalio/samples-java) stored on GitHub to demonstrate various capabilities of Temporal.
+
+**Where can I find video demos?**
+
+[Temporal Java SDK YouTube playlist](https://www.youtube.com/playlist?list=PLl9kRkvFJrlQ8KsM6m9cFfCeQegq_B8x4)
+
+</TabItem>
+<TabItem value="php">
+
+Use the [PHP samples library](https://github.com/temporalio/samples-php) stored on GitHub to demonstrate various capabilities of Temporal.
+
+</TabItem>
+<TabItem value="typescript">
+
+Use the [TypeScript samples library](https://github.com/temporalio/samples-typescript) stored on GitHub to demonstrate various capabilities of Temporal.
+
+</TabItem>
+<TabItem value="python">
+
+Use the [Python samples library](https://github.com/temporalio/samples-python) stored on GitHub to demonstrate various capabilities of Temporal.
+
+
+</TabItem>
+</Tabs>
+
+#### API reference
+
+Each SDK has its own API reference. Select a programming language and follow the link to be taken to that reference page.
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+The Temporal Go SDK API reference is published on [pkg.go.dev](https://pkg.go.dev/go.temporal.io/sdk).
+
+</TabItem>
+<TabItem value="java">
+
+The Temporal Go SDK API reference is published on [javadoc.io](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/index.html).
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+The Temporal TypeScript SDK API reference is published on [https://typescript.temporal.io](https://typescript.temporal.io).
+
+</TabItem>
+<TabItem value="python">
+
+The Temporal Python SDK API reference is published on [python.temporal.io](https://python.temporal.io/index.html).
 
 </TabItem>
 </Tabs>
@@ -258,7 +322,7 @@ Workflows are the fundamental unit of a Temporal Application, and it all starts 
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -361,11 +425,18 @@ type ExampleArgs = {
   name: string;
 };
 
-export async function example(args: ExampleArgs): Promise<{greeting: string}> {
+export async function example(
+  args: ExampleArgs
+): Promise<{ greeting: string }> {
   const greeting = await greet(args.name);
-  return {greeting};
+  return { greeting };
 }
 ```
+
+</TabItem>
+<TabItem value="python">
+
+Content is not available
 
 </TabItem>
 </Tabs>
@@ -379,7 +450,7 @@ All Workflow Definition parameters must be serializable.
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -471,10 +542,15 @@ interface ExampleParam {
   name: string;
   born: number;
 }
-export async function example({name, born}: ExampleParam): Promise<string> {
+export async function example({ name, born }: ExampleParam): Promise<string> {
   return `Hello ${name}, you were born in ${born}.`;
 }
 ```
+
+</TabItem>
+<TabItem value="python">
+
+Content is not available
 
 </TabItem>
 </Tabs>
@@ -488,7 +564,7 @@ However, Temporal APIs that must be used to get the result of a Workflow Executi
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -560,10 +636,15 @@ interface ExampleParam {
   name: string;
   born: number;
 }
-export async function example({name, born}: ExampleParam): Promise<string> {
+export async function example({ name, born }: ExampleParam): Promise<string> {
   return `Hello ${name}, you were born in ${born}.`;
 }
 ```
+
+</TabItem>
+<TabItem value="python">
+
+Content is not available
 
 </TabItem>
 </Tabs>
@@ -575,7 +656,7 @@ You can set a custom name for your Workflow Type.
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -635,6 +716,11 @@ Content is not available
 Content is not available
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 #### Workflow logic requirements
@@ -646,7 +732,7 @@ However, each Temporal SDK provides a set of APIs that can be used inside your W
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -743,6 +829,11 @@ Otherwise, no additional limitations exist on Activity implementations.\*\*
 Content is not available
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 ### Develop Activities
@@ -754,7 +845,7 @@ For the Workflow to be able to execute the Activity, we must define the [Activit
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -806,7 +897,7 @@ Because this is such a common need, the rest of this guide shows Activities writ
 An [Activity Definition](/activities/#) is a combination of the Temporal Java SDK [Activity](https://www.javadoc.io/static/io.temporal/temporal-sdk/0.19.0/io/temporal/activity/Activity.html) Class implementing a specially annotated interface.
 
 An Activity interface is annotated with `@ActivityInterface` and an Activity implementation implements this Activity interface.
-TO handle Activity types that do not have an explicitly registered handler, you can directly implement a dynamic Activity.
+To handle Activity types that do not have an explicitly registered handler, you can directly implement a dynamic Activity.
 
 ```java
 @ActivityInterface
@@ -815,7 +906,7 @@ public interface GreetingActivities {
 }
 ```
 
-Each method defined in the Actvity interface defines a separate Activity method.
+Each method defined in the Activity interface defines a separate Activity method.
 You can annotate each method in the Activity interface with the `@ActivityMethod` annotation, but this is completely optional.
 The following example uses the `@ActivityMethod` annotation for the method defined in the previous example.
 
@@ -930,6 +1021,11 @@ export async function greet(name: string): Promise<string> {
 ```
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 #### Activity parameters
@@ -942,7 +1038,7 @@ A large Workflow Execution Event History can adversely impact the performance of
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -1022,6 +1118,11 @@ The default implementation uses a JSON serializer, but an alternative implementa
 Content is not available
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 #### Activity return values
@@ -1033,7 +1134,7 @@ There is no explicit limit to the amount of data that can be returned by an Acti
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -1078,9 +1179,9 @@ Content is not available
 To import the types of the Activities defined in `./activities`, you must first retrieve an Activity from an _Activity Handle_ before you can call it, then define Return Types in your Activity.
 
 ```typescript
-import type * as activities from "./activities";
-const {greet} = proxyActivities<typeof activities>({
-  startToCloseTimeout: "1 minute",
+import type * as activities from './activities';
+const { greet } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '1 minute',
 });
 
 // A workflow that simply calls an activity
@@ -1088,6 +1189,11 @@ export async function example(name: string): Promise<string> {
   return await greet(name);
 }
 ```
+
+</TabItem>
+<TabItem value="python">
+
+Content is not available
 
 </TabItem>
 </Tabs>
@@ -1099,7 +1205,7 @@ You can set a custom name for your Activity Type.
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -1172,6 +1278,11 @@ Content is not available
 Content is not available
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 ### Start Activity Execution
@@ -1193,7 +1304,7 @@ Otherwise, no additional limitations exist on Activity implementations.
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -1490,12 +1601,12 @@ class FileProcessingActivitiesImpl implements FileProcessingActivities {
 To spawn an Activity Execution, you must retrieve the _Activity handle_ in your Workflow.
 
 ```typescript
-import {proxyActivities} from "@temporalio/workflow";
+import { proxyActivities } from '@temporalio/workflow';
 // Only import the activity types
-import type * as activities from "./activities";
+import type * as activities from './activities';
 
-const {greet} = proxyActivities<typeof activities>({
-  startToCloseTimeout: "1 minute",
+const { greet } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '1 minute',
 });
 
 // A workflow that calls an activity
@@ -1505,6 +1616,11 @@ export async function example(name: string): Promise<string> {
 ```
 
 This imports the individual Activities and declares the type alias for each Activity.
+
+</TabItem>
+<TabItem value="python">
+
+Content is not available
 
 </TabItem>
 </Tabs>
@@ -1523,7 +1639,7 @@ Workflow Executions can either block progress until the result is available thro
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -1674,7 +1790,7 @@ export async function DynamicWorkflow(activityName, ...args) {
 
   // these are equivalent
   await acts.activity1();
-  await acts["activity1"]();
+  await acts['activity1']();
 
   let result = await acts[activityName](...args);
   return result;
@@ -1682,6 +1798,11 @@ export async function DynamicWorkflow(activityName, ...args) {
 ```
 
 The `proxyActivities()` returns an object that calls the Activities in the function. `acts[activityName]()` references the Activity using the Activity name, then it returns the results.
+
+</TabItem>
+<TabItem value="python">
+
+Content is not available
 
 </TabItem>
 </Tabs>
@@ -1697,7 +1818,7 @@ However, it is acceptable and common to utilize a Temporal Client, to communicat
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -1816,14 +1937,14 @@ See [How to spawn a Workflow Execution in Java](#start-workflow-execution) for d
 </TabItem>
 <TabItem value="php">
 
-The following example represents a console command that starts a workflow, prints its IDs, and then waits for its result:
+The following example represents a console command that starts a Workflow, prints its IDs, and then waits for its result:
 
 <!--SNIPSTART php-hello-client {"enable_source_link": true}-->
 <!--SNIPEND-->
 
-In the snippet above we use `WorkflowClientInterface` - an entry point to get access to Workflows.
-Once you need to create, retrieve, or start a workflow you should use an instance of `WorkflowClientInterface`.
-Here we create an instance of `GreetingWorkflowInterface` with execution timeout of 1 minute.
+The `WorkflowClientInterface` in the snippet is an entry point to get access to Workflow.
+Use an instance of `WorkflowClientInterface` to create, retrieve, or start a Workflow .
+Here we create an instance of `GreetingWorkflowInterface` with a Workflow Execution Timeout of 1 minute.
 
 Then we print some information and start the Workflow.
 
@@ -1833,9 +1954,9 @@ Then we print some information and start the Workflow.
 Use a new `WorflowClient()` with the requisite gRPC [`Connection`](https://typescript.temporal.io/api/classes/client.Connection#service) to create a new Client.
 
 ```typescript
-import {Connection, WorkflowClient} from "@temporalio/client";
+import { Connection, WorkflowClient } from '@temporalio/client';
 const connection = await Connection.connect(); // to configure for production
-const client = new WorkflowClient({connection});
+const client = new WorkflowClient({ connection });
 ```
 
 Declaring the `WorflowClient()` creates a new connection to the Temporal service.
@@ -1845,10 +1966,10 @@ If you ommit the connection and just call the `new WorkflowClient()`, you will c
 The following example, creates a Client, connects to an account, and declares your Namespace.
 
 ```typescript
-import {Connection, WorkflowClient} from "@temporalio/client";
+import { Connection, WorkflowClient } from '@temporalio/client';
 
 const connection = await Connection.connect({
-  address: "<Namespace ID>.tmprl.cloud", // defaults port to 7233 if not specified
+  address: '<Namespace ID>.tmprl.cloud', // defaults port to 7233 if not specified
   tls: {
     // set to true if TLS without mTLS
     // See docs for other TLS options
@@ -1860,7 +1981,7 @@ const connection = await Connection.connect({
 });
 const client = new WorkflowClient({
   connection,
-  namespace: "your.namespace",
+  namespace: 'your.namespace',
 });
 ```
 
@@ -1879,11 +2000,11 @@ Example environment settings
 ```typescript
 export function getEnv(): Env {
   return {
-    address: "web.<Namespace ID>.tmprl.cloud", // NOT web.foo.bar.tmprl.cloud
-    namespace: "your.namespace", // as assigned
-    clientCertPath: "foobar.pem", // in project root
-    clientKeyPath: "foobar.key", // in project root
-    taskQueue: process.env.TEMPORAL_TASK_QUEUE || "hello-world-mtls", // just to ensure task queue is same on client and worker, totally optional
+    address: 'web.<Namespace ID>.tmprl.cloud', // NOT web.foo.bar.tmprl.cloud
+    namespace: 'your.namespace', // as assigned
+    clientCertPath: 'foobar.pem', // in project root
+    clientKeyPath: 'foobar.key', // in project root
+    taskQueue: process.env.TEMPORAL_TASK_QUEUE || 'hello-world-mtls', // just to ensure task queue is same on client and worker, totally optional
     // // not usually needed
     // serverNameOverride: process.env.TEMPORAL_SERVER_NAME_OVERRIDE,
     // serverRootCACertificatePath: process.env.TEMPORAL_SERVER_ROOT_CA_CERT_PATH,
@@ -1907,7 +2028,7 @@ let serverRootCACertificate: Buffer | undefined;
 let clientCertificate: Buffer | undefined;
 let clientKey: Buffer | undefined;
 if (certificateS3Bucket) {
-  const s3 = new S3client({region: certificateS3BucketRegion});
+  const s3 = new S3client({ region: certificateS3BucketRegion });
   serverRootCACertificate = await s3.getObject({
     bucket: certificateS3Bucket,
     key: serverRootCACertificatePath,
@@ -1926,6 +2047,11 @@ if (certificateS3Bucket) {
   clientKey = fs.readFileSync(clientKeyPath);
 }
 ```
+
+</TabItem>
+<TabItem value="python">
+
+Content is not available
 
 </TabItem>
 </Tabs>
@@ -1947,7 +2073,7 @@ A Worker Entity contains both a Workflow Worker and an Activity Worker so that i
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -2129,12 +2255,12 @@ Below is an example of starting a Worker that polls the Task Queue named `tutori
 A full example for Workers looks like this:
 
 ```typescript
-import {Worker, NativeConnection} from "@temporalio/worker";
-import * as activities from "./activities";
+import { Worker, NativeConnection } from '@temporalio/worker';
+import * as activities from './activities';
 
 async function run() {
   const connection = await NativeConnection.connect({
-    address: "foo.bar.tmprl.cloud", // defaults port to 7233 if not specified
+    address: 'foo.bar.tmprl.cloud', // defaults port to 7233 if not specified
     tls: {
       // set to true if TLS without mTLS
       // See docs for other TLS options
@@ -2147,7 +2273,7 @@ async function run() {
 
   const worker = await Worker.create({
     connection,
-    namespace: "foo.bar", // as explained in Namespaces section
+    namespace: 'foo.bar', // as explained in Namespaces section
     // ...
   });
   await worker.run();
@@ -2192,6 +2318,11 @@ This is a selected subset of options you are likely to use. Even more advanced o
 - [How to tune Workers](/operation/how-to-tune-workers)
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 #### Register multiple types
@@ -2204,7 +2335,7 @@ However, the failure of the Task does not cause the associated Workflow Executio
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -2310,6 +2441,11 @@ Content is not available
 Content is not available
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 ### Start Workflow Execution
@@ -2327,7 +2463,7 @@ The Temporal Cluster then creates the first Workflow Task, resulting in the firs
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -2512,9 +2648,9 @@ When you have a Workflow Client, you can schedule the start of a Workflow with `
 
 ```typescript
 const handle = await client.start(example, {
-  workflowId: "your-workflow-id",
-  taskQueue: "your-task-queue",
-  args: ["argument01", "argument02", "argument03"], // this is typechecked against workflowFn's args
+  workflowId: 'your-workflow-id',
+  taskQueue: 'your-task-queue',
+  args: ['argument01', 'argument02', 'argument03'], // this is typechecked against workflowFn's args
 });
 const handle = client.getHandle(workflowId);
 const result = await handle.result();
@@ -2527,18 +2663,23 @@ You can test this by executing a Workflow Client command without a matching Work
 Workflow Execution run in a separate V8 isolate context in order to provide a [deterministic runtime](/typescript/determinism).
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 #### Set Task Queue
 
-The only Workflow Option that must be set is the name of the [Task Queue](/tasks/#task-queues).
+In most SDKs, the only Workflow Option that must be set is the name of the [Task Queue](/tasks/#task-queues).
 
 For any code to execute, a Worker Process must be running that contains a Worker Entity that is polling the same Task Queue name.
 
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -2697,16 +2838,16 @@ There are three main things the Worker needs:
   - Or pass a prebuilt bundle to `workflowBundle`, if you prefer to handle the bundling yourself.
 
 ```ts
-import {Worker} from "@temporalio/worker";
-import * as activities from "./activities";
+import { Worker } from '@temporalio/worker';
+import * as activities from './activities';
 
 async function run() {
   // Step 1: Register Workflows and Activities with the Worker and connect to
   // the Temporal server.
   const worker = await Worker.create({
-    workflowsPath: require.resolve("./workflows"),
+    workflowsPath: require.resolve('./workflows'),
     activities,
-    taskQueue: "hello-world",
+    taskQueue: 'hello-world',
   });
   // Worker connects to localhost by default and uses console.error for logging.
   // Customize the Worker by passing more options to create():
@@ -2729,13 +2870,13 @@ run().catch((err) => {
 When scheduling a Workflow, a `taskQueue` must be specified.
 
 ```ts
-import {Connection, WorkflowClient} from "@temporalio/client";
+import { Connection, WorkflowClient } from '@temporalio/client';
 // This is the code that is used to start a workflow.
 const connection = await Connection.create();
-const client = new WorkflowClient({connection});
+const client = new WorkflowClient({ connection });
 const result = await client.execute(myWorkflow, {
-  taskQueue: "your-task-queue", // required
-  workflowId: "your-workflow-id", // required
+  taskQueue: 'your-task-queue', // required
+  workflowId: 'your-workflow-id', // required
 });
 ```
 
@@ -2744,11 +2885,16 @@ When creating a Worker, you must pass the `taskQueue` option to the `Worker.crea
 ```ts
 const worker = await Worker.create({
   activities, // imported elsewhere
-  taskQueue: "your-task-queue",
+  taskQueue: 'your-task-queue',
 });
 ```
 
 Optionally, in Workflow code, when calling an Activity, you can specify the Task Queue by passing the `taskQueue` option to `proxyActivities()`, `startChild()`, or `executeChild()`. If you do not specify a `taskQueue`, then the TypeScript SDK places Activity and Child Workflow Tasks in the same Task Queue as the Workflow Task Queue.
+
+</TabItem>
+<TabItem value="python">
+
+Content is not available
 
 </TabItem>
 </Tabs>
@@ -2760,7 +2906,7 @@ Although it is not required, we recommend providing your own [Workflow Id](/work
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -2841,13 +2987,18 @@ Connect to a Client with `client.start()` and any arguments. Then specify your `
 
 ```typescript
 const handle = await client.start(example, {
-  workflowId: "yourWorkflowId",
-  taskQueue: "yourTaskQueue",
-  args: ["your", "arg", "uments"],
+  workflowId: 'yourWorkflowId',
+  taskQueue: 'yourTaskQueue',
+  args: ['your', 'arg', 'uments'],
 });
 ```
 
 This starts a new Client with the given Workflow Id, Task Queue name, and an argument.
+
+</TabItem>
+<TabItem value="python">
+
+Content is not available
 
 </TabItem>
 </Tabs>
@@ -2865,7 +3016,7 @@ In the Temporal Platform, it's also acceptable to use Queries as the preferred m
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -3068,9 +3219,9 @@ To return the results of a Workflow Execution:
 
 ```typescript
 return (
-  "Completed " +
+  'Completed ' +
   wf.workflowInfo().workflowId +
-  ", Total Charged: " +
+  ', Total Charged: ' +
   totalCharged
 );
 ```
@@ -3098,16 +3249,21 @@ try {
   const result = await handle.result();
 } catch (err) {
   if (err instanceof WorkflowFailedError) {
-    throw new Error("Temporal workflow failed: " + workflowId, {
+    throw new Error('Temporal workflow failed: ' + workflowId, {
       cause: err,
     });
   } else {
-    throw new Error("error from Temporal workflow " + workflowId, {
+    throw new Error('error from Temporal workflow ' + workflowId, {
       cause: err,
     });
   }
 }
 ```
+
+</TabItem>
+<TabItem value="python">
+
+Content is not available
 
 </TabItem>
 </Tabs>
@@ -3130,7 +3286,7 @@ A Signal has a name and can have arguments. The arguments must be [serializable]
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -3174,7 +3330,7 @@ Things to consider when defining Signals:
 </TabItem>
 <TabItem value="php">
 
-Workflows can also answer synchronous [Queries](/php/queries) and receive [Signals](/php/signals).
+Workflows can answer synchronous [Queries](/php/queries) and receive [Signals](/php/signals).
 
 All interface methods must have one of the following annotations:
 
@@ -3227,15 +3383,20 @@ In the above code the `#[WorkflowMethod(name)]` is not specified, thus the Workf
 [`defineSignal`](https://typescript.temporal.io/api/namespaces/workflow/#definesignal)
 
 ```ts
-import {defineSignal} from "@temporalio/workflow";
+import { defineSignal } from '@temporalio/workflow';
 
 interface JoinInput {
   userId: string;
   groupId: string;
 }
 
-const joinSignal = defineSignal<JoinInput>("join");
+const joinSignal = defineSignal<JoinInput>('join');
 ```
+
+</TabItem>
+<TabItem value="python">
+
+Content is not available
 
 </TabItem>
 </Tabs>
@@ -3247,7 +3408,7 @@ Workflows listen for Signals by the Signal's name.
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -3377,12 +3538,12 @@ Content is not available
 [`setHandler`](https://typescript.temporal.io/api/namespaces/workflow/#sethandler)
 
 ```ts
-import {setHandler} from "@temporalio/workflow";
+import { setHandler } from '@temporalio/workflow';
 
 export async function myWorkflow() {
   const groups = new Map<string, Set<string>>();
 
-  setHandler(joinSignal, ({userId, groupId}: JoinInput) => {
+  setHandler(joinSignal, ({ userId, groupId }: JoinInput) => {
     const group = groups.get(groupId);
     if (group) {
       group.add(userId);
@@ -3394,6 +3555,11 @@ export async function myWorkflow() {
 ```
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 #### Send Signal from Client
@@ -3403,7 +3569,7 @@ When a Signal is sent successfully from the Temporal Client, the [WorkflowExecut
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -3468,15 +3634,20 @@ Content is not available
 [`WorkflowHandle.signal`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle#signal)
 
 ```typescript
-import {WorkflowClient} from "@temporalio/client";
-import {joinSignal} from "./workflows";
+import { WorkflowClient } from '@temporalio/client';
+import { joinSignal } from './workflows';
 
 const client = new WorkflowClient();
 
-const handle = await client.getHandle("workflow-id-123");
+const handle = await client.getHandle('workflow-id-123');
 
-await handle.signal(joinSignal, {userId: "user-1", groupId: "group-1"});
+await handle.signal(joinSignal, { userId: 'user-1', groupId: 'group-1' });
 ```
+
+</TabItem>
+<TabItem value="python">
+
+Content is not available
 
 </TabItem>
 </Tabs>
@@ -3493,7 +3664,7 @@ When an External Signal is sent:
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -3567,14 +3738,19 @@ $workflow->setValue(true);
 [`getExternalWorkflowHandle`](https://typescript.temporal.io/api/namespaces/workflow#getexternalworkflowhandle)
 
 ```typescript
-import {getExternalWorkflowHandle} from "@temporalio/workflow";
-import {joinSignal} from "./other-workflow";
+import { getExternalWorkflowHandle } from '@temporalio/workflow';
+import { joinSignal } from './other-workflow';
 
 export async function myWorkflowThatSignals() {
-  const handle = getExternalWorkflowHandle("workflow-id-123");
-  await handle.signal(joinSignal, {userId: "user-1", groupId: "group-1"});
+  const handle = getExternalWorkflowHandle('workflow-id-123');
+  await handle.signal(joinSignal, { userId: 'user-1', groupId: 'group-1' });
 }
 ```
+
+</TabItem>
+<TabItem value="python">
+
+Content is not available
 
 </TabItem>
 </Tabs>
@@ -3589,7 +3765,7 @@ If there's a Workflow running with the given Workflow Id, it will be signaled. I
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -3671,7 +3847,9 @@ Note that the Signal handler "setCustomer" is executed before the `@WorkflowMeth
 </TabItem>
 <TabItem value="php">
 
-You may not know if a Workflow is running and can accept a signal. The `WorkflowClient`->`startWithSignal` API allows you to send a Signal to the current Workflow instance if one exists or to create a new run and then send the Signal.
+In cases where you may not know if a Workflow is running, and want to send a Signal to it, use `startwithSignal`.
+If a running Workflow exists, the `startwithSignal` API sends the Signal.
+If there is no running Workflow, the API starts a new Workflow Run and delivers the Signal to it.
 
 ```php
 $workflow = $workflowClient->newWorkflowStub(MyWorkflow::class);
@@ -3690,18 +3868,23 @@ $run = $workflowClient->startWithSignal(
 [`WorkflowClient.signalWithStart`](https://typescript.temporal.io/api/classes/client.WorkflowClient#signalwithstart)
 
 ```typescript
-import {WorkflowClient} from "@temporalio/client";
-import {myWorkflow, joinSignal} from "./workflows";
+import { WorkflowClient } from '@temporalio/client';
+import { myWorkflow, joinSignal } from './workflows';
 
 const client = new WorkflowClient();
 
 await client.signalWithStart(myWorkflow, {
-  workflowId: "workflow-id-123",
-  args: [{foo: 1}],
+  workflowId: 'workflow-id-123',
+  args: [{ foo: 1 }],
   signal: joinSignal,
-  signalArgs: [{userId: "user-1", groupId: "group-1"}],
+  signalArgs: [{ userId: 'user-1', groupId: 'group-1' }],
 });
 ```
+
+</TabItem>
+<TabItem value="python">
+
+Content is not available
 
 </TabItem>
 </Tabs>
@@ -3717,7 +3900,7 @@ A Query name (also called Query type) is simply a string name.
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -3751,7 +3934,7 @@ Query methods must never change any Workflow state including starting Activities
 </TabItem>
 <TabItem value="php">
 
-Workflows can also answer synchronous [Queries](/php/queries) and receive [Signals](/php/signals).
+Workflows can answer synchronous [Queries](/php/queries) and receive [Signals](/php/signals).
 
 All interface methods must have one of the following annotations:
 
@@ -3804,6 +3987,11 @@ In the above code the `#[WorkflowMethod(name)]` is not specified, thus the Workf
 Content is not available
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 #### Send Query
@@ -3813,7 +4001,7 @@ Queries are sent from a Temporal Client.
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -3890,6 +4078,11 @@ Content is not available
 Content is not available
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 #### Handle Query
@@ -3902,7 +4095,7 @@ Including such logic causes unexpected behavior.
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -4114,9 +4307,9 @@ class MyWorkflow
 }
 ```
 
-You can also issue a query from code using the `QueryWorkflow()` API on a Temporal client object.
+You can also issue a Query from code using the `QueryWorkflow()` API on a Temporal Client object.
 
-Use `WorkflowStub` to Query Workflow instances from your Client code (can be applied to running Workflows as well):
+Use `WorkflowStub` to Query Workflow instances from your Client code (can be applied to both running and closed Workflows):
 
 ```php
 $workflow = $workflowClient->newWorkflowStub(
@@ -4139,27 +4332,32 @@ Query Handlers can return values inside a Workflow in TypeScript.
 You make a Query with `handle.query(query, ...args)`. A Query needs a return value, but can also take arguments.
 
 ```typescript
-import * as wf from "@temporalio/workflow";
+import * as wf from '@temporalio/workflow';
 
-export const unblockSignal = wf.defineSignal("unblock");
-export const isBlockedQuery = wf.defineQuery<boolean>("isBlocked");
+export const unblockSignal = wf.defineSignal('unblock');
+export const isBlockedQuery = wf.defineQuery<boolean>('isBlocked');
 
 export async function unblockOrCancel(): Promise<void> {
   let isBlocked = true;
   wf.setHandler(unblockSignal, () => void (isBlocked = false));
   wf.setHandler(isBlockedQuery, () => isBlocked);
-  console.log("Blocked");
+  console.log('Blocked');
   try {
     await wf.condition(() => !isBlocked);
-    console.log("Unblocked");
+    console.log('Unblocked');
   } catch (err) {
     if (err instanceof wf.CancelledFailure) {
-      console.log("Cancelled");
+      console.log('Cancelled');
     }
     throw err;
   }
 }
 ```
+
+</TabItem>
+<TabItem value="python">
+
+Content is not available
 
 </TabItem>
 </Tabs>
@@ -4176,7 +4374,7 @@ Use the [Workflow Execution Timeout](/workflows/#workflow-execution-timeout) to 
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -4239,6 +4437,11 @@ $workflow = $this->workflowClient->newWorkflowStub(
 Content is not available
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 #### Workflow Run Timeout
@@ -4248,7 +4451,7 @@ Use the [Workflow Run Timeout](/workflows/#workflow-run-timeout) to restrict the
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -4292,7 +4495,7 @@ YourWorkflowInterface workflow1 =
 </TabItem>
 <TabItem value="php">
 
-`workflowRuntTimeout` runs timeout limits duration of a single Workflow invocation.
+`WorkflowRunTimeout` runs timeout limits duration of a single Workflow invocation.
 
 ```php
 $workflow = $this->workflowClient->newWorkflowStub(
@@ -4311,6 +4514,11 @@ $workflow = $this->workflowClient->newWorkflowStub(
 Content is not available
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 #### Workflow Task Timeout
@@ -4320,7 +4528,7 @@ Use the [Workflow Task Timeout](/workflows/#workflow-task-timeout) to restrict t
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -4384,6 +4592,11 @@ $workflow = $this->workflowClient->newWorkflowStub(
 Content is not available
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 #### Workflow Retry Policy
@@ -4395,7 +4608,7 @@ Workflow Executions do not retry by default, and Retry Policies should be used w
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -4452,6 +4665,11 @@ Content is not available
 Content is not available
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 ### Activity timeouts & retries
@@ -4466,7 +4684,7 @@ Use the [Schedule-To-Close Timeout](/activities/#schedule-to-close-timeout) to l
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -4530,7 +4748,7 @@ Note that if you define options per-Activity Type options with `WorkflowImplemen
 <TabItem value="php">
 
 Because Activities are reentrant, only a single stub can be used for multiple Activity invocations.
-The follow code creates an Activity with a `ScheduleToCloseTimeout` set to 2 seconds.
+The following code creates an Activity with a `ScheduleToCloseTimeout` set to 2 seconds.
 
 ```php
 $this->greetingActivity = Workflow::newActivityStub(
@@ -4554,11 +4772,11 @@ In this example, you can set the `scheduleToCloseTimeout` to 5 m.
 
 ```typescript
 // Sample of typical options you can set
-const {greet} = proxyActivities<typeof activities>({
-  scheduleToCloseTimeout: "5m",
+const { greet } = proxyActivities<typeof activities>({
+  scheduleToCloseTimeout: '5m',
   retry: {
     // default retry policy if not specified
-    initialInterval: "1s",
+    initialInterval: '1s',
     backoffCoefficient: 2,
     maximumAttempts: Infinity,
     maximumInterval: 100 * initialInterval,
@@ -4566,6 +4784,11 @@ const {greet} = proxyActivities<typeof activities>({
   },
 });
 ```
+
+</TabItem>
+<TabItem value="python">
+
+Content is not available
 
 </TabItem>
 </Tabs>
@@ -4577,7 +4800,7 @@ Use the [Start-To-Close Timeout](/activities/#start-to-close-timeout) to limit t
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -4641,7 +4864,7 @@ Note that if you define options per-Activity Type options with `WorkflowImplemen
 <TabItem value="php">
 
 Because Activities are reentrant, only a single stub can be used for multiple Activity invocations.
-The follow code creates an Activity with a `ScheduleToStartTimeout` set to 2 seconds.
+The following code creates an Activity with a `StartToCloseTimeout` set to 2 seconds.
 
 ```php
 $this->greetingActivity = Workflow::newActivityStub(
@@ -4664,11 +4887,11 @@ In this example, you can set the `startToCloseTimeout` to 30 seconds.
 
 ```typescript
 // Sample of typical options you can set
-const {greet} = proxyActivities<typeof activities>({
-  startToCloseTimeout: "30s", // recommended
+const { greet } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '30s', // recommended
   retry: {
     // default retry policy if not specified
-    initialInterval: "1s",
+    initialInterval: '1s',
     backoffCoefficient: 2,
     maximumAttempts: Infinity,
     maximumInterval: 100 * initialInterval,
@@ -4676,6 +4899,11 @@ const {greet} = proxyActivities<typeof activities>({
   },
 });
 ```
+
+</TabItem>
+<TabItem value="python">
+
+Content is not available
 
 </TabItem>
 </Tabs>
@@ -4687,7 +4915,7 @@ Use the [Schedule-To-Start Timeout](/activities/#schedule-to-start-timeout) to l
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -4749,7 +4977,7 @@ Note that if you define options per-Activity Type options with `WorkflowImplemen
 <TabItem value="php">
 
 Because Activities are reentrant, only a single stub can be used for multiple Activity invocations.
-The follow code creates an Activity with a `ScheduleToStartTimeout` set to 10 seconds.
+The following code creates an Activity with a `ScheduleToStartTimeout` set to 10 seconds.
 
 ```php
 // Creating a stub for the activity.
@@ -4774,12 +5002,12 @@ In this example, you can set the `ScheduleToStartTimeout` to 60 seconds.
 
 ```typescript
 // Sample of typical options you can set
-const {greet} = proxyActivities<typeof activities>({
-  scheduleToCloseTimeout: "5m",
-  ScheduleToStartTimeout: "60s",
+const { greet } = proxyActivities<typeof activities>({
+  scheduleToCloseTimeout: '5m',
+  ScheduleToStartTimeout: '60s',
   retry: {
     // default retry policy if not specified
-    initialInterval: "1s",
+    initialInterval: '1s',
     backoffCoefficient: 2,
     maximumAttempts: Infinity,
     maximumInterval: 100 * initialInterval,
@@ -4787,6 +5015,11 @@ const {greet} = proxyActivities<typeof activities>({
   },
 });
 ```
+
+</TabItem>
+<TabItem value="python">
+
+Content is not available
 
 </TabItem>
 </Tabs>
@@ -4798,7 +5031,7 @@ A [Heartbeat Timeout](/activities/#heartbeat-timeout) works in conjunction with 
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -4909,12 +5142,17 @@ To set a Heartbeat Timeout, use [`ActivityOptions.heartbeatTimeout`](https://typ
 
 ```typescript
 // Creating a proxy for the activity.
-const {longRunningActivity} = proxyActivities<typeof activities>({
-  scheduleToCloseTimeout: "5m", // translates to 300000 ms
-  startToCloseTimeout: "30s", // translates to 30000 ms
+const { longRunningActivity } = proxyActivities<typeof activities>({
+  scheduleToCloseTimeout: '5m', // translates to 300000 ms
+  startToCloseTimeout: '30s', // translates to 30000 ms
   heartbeatTimeout: 10000, // equivalent to '10 seconds'
 });
 ```
+
+</TabItem>
+<TabItem value="python">
+
+Content is not available
 
 </TabItem>
 </Tabs>
@@ -4926,7 +5164,7 @@ Activity Executions are automatically associated with a default [Retry Policy](/
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -5039,11 +5277,11 @@ To set Activity Retry Policies in TypeScript, pass [`ActivityOptions.retry`](htt
 
 ```typescript
 // Sample of typical options you can set
-const {yourActivity} = proxyActivities<typeof activities>({
+const { yourActivity } = proxyActivities<typeof activities>({
   // ...
   retry: {
     // default retry policy if not specified
-    initialInterval: "1s",
+    initialInterval: '1s',
     backoffCoefficient: 2,
     maximumAttempts: Infinity,
     maximumInterval: 100 * initialInterval,
@@ -5051,6 +5289,11 @@ const {yourActivity} = proxyActivities<typeof activities>({
   },
 });
 ```
+
+</TabItem>
+<TabItem value="python">
+
+Content is not available
 
 </TabItem>
 </Tabs>
@@ -5082,7 +5325,7 @@ Activity Heartbeats work in conjunction with a [Heartbeat Timeout](/activities/#
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -5225,6 +5468,11 @@ class FileProcessingActivitiesImpl implements FileProcessingActivities
 Content is not available
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 ### Async Activity Completion
@@ -5241,7 +5489,7 @@ There are three steps to follow:
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -5306,6 +5554,11 @@ Content is not available
 Content is not available
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 ### Child Workflows
@@ -5320,7 +5573,7 @@ After that, Child Workflow Executions may be abandoned using the default _Abando
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -5559,6 +5812,11 @@ $childResult = yield Workflow::executeChildWorkflow(
 Content is not available
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 #### Parent Close Policy
@@ -5568,7 +5826,7 @@ A [Parent Close Policy](/workflows/#parent-close-policy) determines what happens
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -5652,6 +5910,11 @@ Content is not available
 Content is not available
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 ### Continue-As-New
@@ -5662,7 +5925,7 @@ The Workflow Execution spawned from the use of Continue-As-New has the same Work
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -5751,6 +6014,11 @@ public function periodic(string $name, int $value = 0)
 Content is not available
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
 
 ### Cron Jobs
@@ -5762,7 +6030,7 @@ A Cron Schedule is provided as an option when the call to spawn a Workflow Execu
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -5846,9 +6114,15 @@ You can set each Workflow to repeat on a schedule with the `cronSchedule` option
 ```typescript
 const handle = await client.start(scheduledWorkflow, {
   // ...
-  cronSchedule: "* * * * *", // start every minute
+  cronSchedule: '* * * * *', // start every minute
 });
 ```
 
 </TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
 </Tabs>
+
