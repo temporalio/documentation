@@ -7,7 +7,9 @@ tags:
   - tctl
 ---
 
-A [Schedule](/concepts/what-is-a-schedule) is an experimental feature that is only available in tctl version bleeding-edge.
+A [Schedule](/concepts/what-is-a-schedule) is an experimental feature and the `schedule` command is available in versions 1.17.0-alpha.2 and later.
+Version 1.17.0-alpha.2 is currently available in version 1.16.2.
+Use `tctl config set version next` command while on version 1.16.2.
 
 - [Create a Schedule using tctl](/tctl/schedule/create)
 - [Describe a Schedule using tctl](/tctl/schedule/describe)

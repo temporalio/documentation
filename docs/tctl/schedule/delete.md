@@ -8,8 +8,10 @@ tags:
 ---
 
 A Schedule may be deleted.
+
 Deleting a Schedule **does not** affect any Workflows started by the Schedule.
-If you would also like to terminate Workflows started by the Schedule, you can identify them using the Search Attributes added to them and do a batch terminate or manually terminate them all.
+Workflow Executions started by Schedules may be Cancelled or Terminated using the same methods as any others.
+However, Workflow Executions started by a Schedule can be identified by the Search Attributes added to them and can be targeted by a [batch](/tctl/batch/) command for Termination.
 
 ```shell
 $ tctl schedule delete --sid 'my-schedule-id'

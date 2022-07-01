@@ -640,7 +640,7 @@ Use the Workflow Id in any requests to Cancel or Terminate.
 
 ## Schedules
 
-A Schedule contains instructions for starting a [Workflow Execution](#workflow-executions) at specific times, and is meant to be a more flexible and user-friendly approach over [Temporal Cron Jobs](#cron-jobs).
+A Schedule contains instructions for starting a [Workflow Execution](#workflow-executions) at specific times, and is meant to be a more flexible and user friendly approach over [Temporal Cron Jobs](#cron-jobs).
 
 - [How to enable Schedules](#how-to-enable-schedules)
 - [How to operate Schedules using tctl](/tctl/schedule/)
@@ -672,7 +672,12 @@ Calendar expressions are given as separate named fields.
 For example in tctl, they can be provided as JSON:
 
 ```json
-{"year": "2022", "month": "*/3", "dayOfMonth": "1,15", "hour": "11-14"}
+{
+  "year": "2022",
+  "month": "Jan,Apr,Jul,Oct",
+  "dayOfMonth": "1,15",
+  "hour": "11-14"
+}
 ```
 
 The following calendar fields are available:
@@ -687,62 +692,61 @@ The following calendar fields are available:
 
 Each field may contain a comma-separated list of ranges (or `*`), and each range may include a skip value following a slash.
 
-For `month`, names of months may be used instead of integers(case-insensitive, abbreviations permitted).
+For `month`, names of months may be used instead of integers (case-insensitive, abbreviations permitted).
 For `dayOfWeek`, day of week names may be used.
 
 Other Spec features:
 
-- **Multiple intervals/calendar expressions:** A Spec can be the union of zero or more of each of those types.
+**Multiple intervals/calendar expressions:** A Spec can have combinations of multiple intervals and/or calendar expressions to define a specific Schedule.
 
-**Time bounds:** An absolute start or end time (or both) can be provided. No actions will be taken before the start time or after the end time.
+**Time bounds:** Provide an absolute start or end time (or both) with a Spec to ensure that no actions are taken before the start time or after the end time.
 
 **Exclusions:** A Spec can contain exclusions in the form of zero or more calendar expressions.
-This can be used to express things like "each Monday at noon except for holidays".
+This can be used to express scheduling like "each Monday at noon except for holidays.
 You'll have to provide your own set of exclusions and include it in each schedule, there are no pre-defined sets.
 (Note: this isn't currently exposed in tctl or the web UI.)
 
-**Jitter:** If given, a random offset between zero and the maximum jitter is added to each action time (but bounded by the time until the next scheduled action).
+**Jitter:** If given, a random offset between zero and the maximum jitter is added to each Action time (but bounded by the time until the next scheduled Action).
 
 **Time zones:** By default, calendar-based expressions are interpreted in UTC.
 Temporal recommends using UTC to avoid various surprising properties of time zones.
-If you don't want to use UTC, you may provide the name of a time zone to interpret them in instead.
-The time zone definition will be loaded from disk on the Temporal Server Worker Service, or the fallback embedded in the binary.
+If you don't want to use UTC, you may provide the name of a time zone to apply them instead.
+The time zone definition will be loaded on the Temporal Server Worker Service from either disk or the fallback embedded in the binary.
 
-For even greater operational control, you may embed the contents of the time zone database file in the Schedule Spec itself.
+For more operational control, embed the contents of the time zone database file in the Schedule Spec itself.
 (Note: this isn't currently exposed in tctl or the web UI.)
 
 ### Pausing
 
 A Schedule may be Paused.
-When a Schedule is Paused, it does not take any Action.
+When a Schedule is Paused, the Spec has no effect.
 However, you can still force manual actions, see [trigger immediately](/tctl/schedule/trigger).
 
-To assist communication among developers and operators, there's a “notes” field that can be updated on pause/unpause to store an explanation for the current state.
+To assist communication among developers and operators, there's a “notes” field that can be updated on pause/resume to store an explanation for the current state.
 
-### Limited Actions
+### Limiting number of Actions
 
-A Schedule may be limited to a certain number of Actions (i.e. not
-trigger immediately).
+A Schedule may be limited to a certain number of scheduled Actions (i.e. not trigger immediately).
 After that it will act as if it was Paused.
 
 ### Policies
 
-A Schedule supports a set of Policies that enable behavior customizations.
+A Schedule supports a set of Policies that enable customizing behavior.
 
 #### Overlap Policy
 
-The Overlap Policy controls what happens when it's time to start a Workflow Execution but a previously started Workflow Execution is still running.
+The Overlap Policy controls what happens when it is time to start a Workflow Execution but a previously started Workflow Execution is still running.
 The following options are available:
 
 - `Skip`: **Default**.
-  Nothing happens, and the specified Action is not started.
-- `BufferOne`: Start the Workflow Execution as soon as the current one completes. The buffer is limited to one.
+  Nothing happens – the Workflow Execution is not started.
+- `BufferOne`: Starts the Workflow Execution as soon as the current one completes. The buffer is limited to one.
   If another Workflow Execution is supposed to start, but there is already one in the buffer, only the one in the buffer eventually starts.
 - `BufferAll`: Allows an unlimited number of Workflows to buffer.
   They are started sequentially.
 - `CancelOther`: Cancels the running Workflow Execution, and then starts the new one after the old one completes cancellation.
-- `TerminateOther`: Termiantes the running Workflow Execution and starts the new one immediately.
-- `AllowAll` Start any number of concurrent Workflow Executions.
+- `TerminateOther`: Terminates the running Workflow Execution and starts the new one immediately.
+- `AllowAll` Starts any number of concurrent Workflow Executions.
   With this policy (and only this policy), there may be more than one Workflow Execution, started by the Schedule, running simultaneously.
 
 #### Catchup Window
@@ -754,11 +758,10 @@ An outage that lasts longer than the catchup window could lead to missed actions
 
 #### Pause-on-failure
 
-If this policy is set, a workflow started by a Schedule that ends with a failure or timeout (but not cancellation or terminate) will cause the Schedule to automatically pause.
+If this policy is set, a Workflow Execution started by a Schedule that ends with a failure or timeout (but not Cancellation or Termination) will cause the Schedule to automatically pause.
 
 Note that with the `AllowAll` overlap policy, this pause might not apply to the next Run, because the next run might have started before the failed run finished.
-It applies only to Runs that were Scheduled to start after the
-failed Run finished.
+It applies only to Runs that were Scheduled to start after the failed Run finished.
 
 ### Last completion result
 
@@ -795,7 +798,7 @@ However the feature is in an experimental stage and is disabled by default.
 Internally, a Schedule is implemented as a Workflow.
 These implementation Workflow Executions are visible to you as you navigate the Web UI and use tctl, though you should not interact with it directly.
 
-In later versions the implementatin Workflows will cease to be visible by default.
+In later versions the implementation Workflows will cease to be visible by default.
 
 :::
 
