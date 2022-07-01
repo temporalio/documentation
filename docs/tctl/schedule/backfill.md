@@ -17,5 +17,6 @@ tctl schedule backfill --sid 'my-schedule-id' \
   --end-time   '2022-05-31T23:59:59Z'
 ```
 
-Note that similarly to trigger immediately, you probably want to override the overlap policy.
-`AllowAll` would run all the backfilled Workflows at once, while `BufferAll` would run them sequentially. The other policies don't make much sense in this context.
+Note that, similar to [tctl schedule trigger](/tctl/schedule/trigger) immediately, you probably want to override the Overlap Policy.
+Specifying `AllowAll` runs all the backfilled Workflows at once; `BufferAll` runs them sequentially.
+The other policies don't make much sense in this context.

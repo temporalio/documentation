@@ -1,8 +1,8 @@
 ---
 id: update
-title: tctl schedule create
-sidebar_label: create
-description: How to create a Schedule using tctl.
+title: tctl schedule update
+sidebar_label: update
+description: How to update a Schedule using tctl.
 tags:
   - tctl
 ---

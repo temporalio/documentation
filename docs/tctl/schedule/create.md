@@ -21,10 +21,9 @@ $ tctl schedule create \
     --type 'MyWorkflowType'
 ```
 
-This Schedule will take action every 5 hours at 15 minutes past the hour, and also at 11:03 on Fridays.
-It will start a Workflow `MyWorkflowType` on task
-queue `my-task-queue`, giving it an Id like
-`my-workflow-id-2022-06-17T11:03:00Z`. Workflows will not be run in parallel,
-but will be buffered to run sequentially if they would otherwise overlap.
+This Schedule takes action every 5 hours at 15 minutes past the hour and also at 11:03 on Fridays.
+It starts a Workflow `MyWorkflowType` on Task Queue `my-task-queue`, giving it a Workflow Id like `my-workflow-id-2022-06-17T11:03:00Z`.
+Workflows do not be run in parallel.
+If they would other overlap, they are buffered to run sequentially.
 
 See `tctl schedule create --help` for the full set of available options.
