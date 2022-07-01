@@ -1,14 +1,12 @@
 ---
-id: authentication-in-temporal
-title: Authentication in Temporal
-sidebar_label: Authentication in Temporal
+id: configuring-authentication
+title: Configuring Authentication
+sidebar_label: Configuring Authentication
 ---
 
-# Overview
+Authentication is the process of verifying users that wish to access your application.
 
-Authentication is the process of verifying users that wish to access your Cluster or application.
-
-With Temporal, there are several authentication protocols that can be set to restrict access to your data. These protocols address three different areas: servers, client connections, and users.
+Temporal has several authentication protocols that can be set to restrict access to your data. These protocols address three different areas: servers, client connections, and users.
 
 # Authentication Target Areas
 
@@ -19,8 +17,6 @@ Servers can fall victim to spoofing and MITM attacks. To prevent these, specify 
 This enables established connections to authenticate the endpoint. This means that the server certificate that is presented to a connecting client has the given the server name.
 
 Server configuration can be accomplished on `internode` and `frontend` endpoints.
-
-For more information on configuring authentication for your server, refer to the [`samples-server` repository](https://github.com/temporalio/samples-server/tree/master/tls).
 
 ## Client Connections
 
@@ -38,5 +34,3 @@ Temporal offers two plugin interfaces for user authentication via API call:
 - ['Authorizer'](/docs/security/what-is-authorizer)
 
 These plugins are adapatable to a variety of use cases and identity schemes.
-
-See the [`samples-server` repository](https://github.com/temporalio/samples-server/blob/main/extensibility/authorizer) for a sample integration of the `Authorizer` plugin.

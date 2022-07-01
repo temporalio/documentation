@@ -1,10 +1,8 @@
 ---
-id: what-is-authorization
-title: What is Authorization?
-sidebar_label: What is Authorization?
+id: configuring-authorization
+title: Configuring Authorization
+sidebar_label: Configuring Authorization
 ---
-
-## Overview
 
 Authorization is the verification of applications and data that a user on your Cluster or application has access to.
 
@@ -19,5 +17,3 @@ The logic of both plugins can be customized to fit a variety of use cases. When 
 ## Authorizer Plugin Interface
 
 `Authorizer` has a single `Authorize` method that is invoked for each incoming API call received by the Frontend gRPC service. `Authorize` receives information about the calls, along with the role and permission claims of the caller.
-
-For more information, visit the Authorizer page.

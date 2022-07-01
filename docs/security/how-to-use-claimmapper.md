@@ -1,7 +1,7 @@
 ---
-id: what-is-claimmapper
-title: What is ClaimMapper?
-sidebar_label: What is ClaimMapper?
+id: how-to-use-claimmapper
+title: How to Use ClaimMapper
+sidebar_label: How to Use ClaimMapper
 ---
 
 ## Overview
