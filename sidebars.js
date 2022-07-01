@@ -23,9 +23,17 @@ module.exports = {
       label: "Application Development guides",
       collapsible: true,
       collapsed: true,
-      items: ["application-development-guide", "observability"],
+      link: {
+        type: "doc",
+        id: "references/index-app",
+      },
+      items: [
+        "foundations",
+        "features",
+        "observability",
+        "operation/how-to-tune-workers",
+      ],
     },
-    "operation/how-to-tune-workers",
     "cluster-deployment-guide",
     "server/security",
     {

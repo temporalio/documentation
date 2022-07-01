@@ -12,8 +12,7 @@ This guide is an overview of the Temporal Web UI.
 
 :::info Upgrade available
 
-Temporal Web UI v2 is now generally available
-It requires Temporal v1.16.0 or later.
+Temporal Web UI v2 is now generally available.
 
 Temporal Web UI v1 is being deprecated on September 30, 2022.
 

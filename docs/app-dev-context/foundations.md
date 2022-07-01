@@ -1,1 +1,1 @@
-This section covers the minimum set of concepts and implementation details needed to build and run a simple [Temporal Application](/concepts/what-is-a-temporal-application) – that is, all the relevant steps to start a Workflow Execution that executes an Activity.
+Before you can begin implementing your Temporal application, you should run a Cluster to interact with your application. Choose one of the following methods to run a Temporal Cluster.

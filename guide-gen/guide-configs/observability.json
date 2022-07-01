@@ -3,7 +3,7 @@
   "id": "observability",
   "title": "Observability",
   "sidebar_label": "Observability",
-  "description": "This guide provides information on how to observe your Temporal application.",
+  "description": "This section provides documentation on how to observe your Temporal application.",
   "toc_max_heading_level": 4,
   "add_tabs_support": false,
   "h2_sections": [
