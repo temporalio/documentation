@@ -1,6 +1,6 @@
 This section covers features related to measuring the state of the application, including:
 
-- [Metrics](#logging)
+- [Metrics](#metrics)
 - [Tracing](#tracing)
 - [Logging](#logging)
 - [Visibility](#visibility)

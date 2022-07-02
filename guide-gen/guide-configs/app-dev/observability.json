@@ -23,15 +23,8 @@
       "h3_sections": [
         {
           "header": "none",
-          "type": "how-to",
-          "path": "concepts/what-are-metrics",
-          "h4_sections": [
-            {
-              "header": "Configure the SDK to emit metrics",
-              "type": "explanation",
-              "path": "app-dev-context/configure-metrics"
-            }
-          ]
+          "type": "context",
+          "path": "app-dev-context/metrics"
         },
         {
           "header": "none",

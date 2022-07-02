@@ -12,7 +12,7 @@ This section provides documentation on how to observe your Temporal application.
 
 This section covers features related to measuring the state of the application, including:
 
-- [Metrics](#logging)
+- [Metrics](#metrics)
 - [Tracing](#tracing)
 - [Logging](#logging)
 - [Visibility](#visibility)
@@ -20,44 +20,18 @@ This section covers features related to measuring the state of the application, 
 
 ## Metrics
 
-Temporal emits metrics which gives you insight into how your application and service are working and performing. Monitoring and observing those metrics is optional. Any software that can pull metrics that supports the same format could be used, but we ensure it works with Prometheus and Grafana versions.
+Each [Temporal SDK](/next/temporal#temporal-sdk) is capable of emitting a set of metrics, some from a Temporal Client and some from the Worker Processes.
 
-You can store your data in time series databases like:
+The full set of metrics is available in the [SDK metrics reference](/references/).
+
+Monitoring and observing the metrics is optional.
+The metrics can be scraped and stored in time series databases like:
 
 - [Prometheus](https://prometheus.io/docs/introduction/overview/),
 - [M3db](https://m3db.io/docs/)
 - [statsd](https://github.com/statsd/statsd)
 
 Temporal also provides a dashboard you can integrate with graphing services like Grafana. For more information, see Temporal’s [Grafana dashboard](https://github.com/temporalio/dashboards).
-
-There are a variety of metrics which gives you information into your service, persistence, and Workflow metrics. For more information on metrics, see the [SDK metric reference](../references/sdk-metrics).
-
-#### Configure the SDK to emit metrics
-
-The requirements of your Temporal system will vary widely based on your intended production workload.
-You will want to run your own proof of concept tests and watch for key metrics to understand the system health and scaling needs.
-
-There are a variety of metrics which gives you information into your _service_, _persistence_, and _Workflow metrics_.
-
-_Service metrics_: For each request by the service handler, Temporal emits metrics with type, operation, and namespace tags. This gives you visibility into service usage and request rates across services, Namespaces, or even operations.
-
-- `service_requests`
-- `service_errors`
-- `service_latency`
-
-_Persistence metrics_: Temporal emits metrics for each persistence operation. These metrics are tagged with operation tags to allow getting request rates, error rates, or latencies per operation. These can be used to identify issues like database problems.
-
-- `persistence_requests`
-- `persistence_errors,`
-- `persistence_latency`
-
-_Workflow metrics_: Temporal also emits counters on Workflows. These are useful in getting overall stats about Workflow completion. The following are commonly used Workflow metrics used as counters for each type of Workflow completion, that can also be tagged with the Namespace tag:
-
-- `workflow_success`
-- `workflow_failed`
-- `workflow_timeout`
-- `workflow_terminate`
-- `workflow_cancel`
 
 <Tabs
 defaultValue="go"
