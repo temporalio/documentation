@@ -9,7 +9,7 @@ __dirname = path.resolve();
 const DOCS_PATH = `${__dirname}/docs`;
 const GUIDE_CONFIGS_PATH = `${__dirname}/guide-gen/guide-configs`;
 const FILE_EXTENSION = ".md";
-const NEXT = "/next"
+const NEXT = "/next";
 
 // const WORKFLOW_CONCEPTS_CONFIG = require("./guide-configs/concepts.json");
 // const WORKFLOW_CONCEPTS_CONFIG = require("./guide-configs/concepts.json");
