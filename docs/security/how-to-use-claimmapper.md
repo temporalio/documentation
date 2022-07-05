@@ -4,8 +4,6 @@ title: How to Use ClaimMapper
 sidebar_label: How to Use ClaimMapper
 ---
 
-## Overview
-
 `ClaimMapper` is a plugin that extracts claims from JSON Web Tokens (JWT). This process is achieved with the method `GetClaims`, which translates `AuthInfo` structs from the caller into `Claims` about the caller's roles within Temporal.
 
 A `Role` (within Temporal) is a bit mask that combines one or more of the role constants.
