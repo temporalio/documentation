@@ -1,4 +1,4 @@
-You can find a complete list of executable code samples in the samples' library.
+You can find a complete list of executable code samples in [Temporal's GitHub repository](https://github.com/temporalio).
 
 The [Temporal Simple Polyglot](https://github.com/temporalio/temporal-polyglot) repository showcases how Workflow Executions, written in different languages, can send messages to each other. Go, Java, PHP, and TypeScript SDKs are represented in this sample.
 It also shows how to properly propagate errors, including how to do so across Workflows written in different languages.
