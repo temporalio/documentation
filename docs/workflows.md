@@ -832,4 +832,3 @@ Only the first two values are required; the second two are suggested because, by
 Setting the Task Queue to use one partition reduces latency.
 
 If you're familiar with Dynamic Config, you can also constrain these settings per Namespace as needed for your installation.
-
