@@ -5,7 +5,8 @@ sidebar_label: Codec Server
 description: Explanation and implementation of a remote encryption/decryption server.
 ---
 
-A Codec Server is an optional feature for altering Payloads returned from a default Data Converter.
+A Codec Server is an optional feature that carries out additional levels of encoding/decoding to Payloads that are handled by tctl or the Web UI.
+The Web UI and tctl both use a default Data Converter, which is only capable of serialization.
 
 Suppose that a developer wants to view Workflow History. They can accomplish this with the `workflow show` command with tctl, or by selecting it in the WebUI. A Payload is retrieved and sent to a default Data Converter, which converts the Payload object into a human-readable format. Suppose it wasn't what you wanted.
 
