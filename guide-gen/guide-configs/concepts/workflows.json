@@ -141,6 +141,16 @@
           "path": "concepts/what-is-a-temporal-cron-job"
         }
       ]
+    },
+    {
+      "header": "Schedules",
+      "h3_sections": [
+        {
+          "header": "none",
+          "type": "explanation",
+          "path": "concepts/what-is-a-schedule"
+        }
+      ]
     }
   ]
 }
