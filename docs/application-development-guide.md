@@ -153,6 +153,10 @@ Select an SDK version to see available scripts.
 </TabItem>
 <TabItem value="php">
 
+[![CI Status](https://github.com/temporalio/php-sdk/workflows/Unit/badge.svg)](https://github.com/temporalio/php-sdk/actions)
+[![Stable Release](https://poser.pugx.org/temporal/sdk/version)](https://packagist.org/packages/temporal/sdk)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Ftemporalio%2Fsdk-php.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Ftemporalio%2Fsdk-php?ref=badge_shield)
+
 The Temporal PHP SDK is available as composer package and can be installed using the following command in a root of your project:
 
 ```bash
@@ -172,6 +176,10 @@ composer require spiral/roadrunner:v2.0 nyholm/psr7
 
 </TabItem>
 <TabItem value="typescript">
+
+[![CI Status](https://img.shields.io/github/workflow/status/temporalio/sdk-typescript/Continuous%20Integration?style=for-the-badge)](https://www.npmjs.com/package/temporalio)
+[![NPM](https://img.shields.io/npm/v/temporalio.svg?style=for-the-badge)](https://www.npmjs.com/package/temporalio)
+[![MIT](https://img.shields.io/pypi/l/temporalio.svg?style=for-the-badge)](LICENSE)
 
 To download the latest version of the Temporal TypeScript Command, run the following command:
 
@@ -206,63 +214,15 @@ npm install @temporalio/client @temporalio/worker @temporalio/workflow @temporal
 </TabItem>
 <TabItem value="python">
 
+[![Python 3.7+](https://img.shields.io/pypi/pyversions/temporalio.svg?style=for-the-badge)](https://pypi.org/project/temporalio)
+[![PyPI](https://img.shields.io/pypi/v/temporalio.svg?style=for-the-badge)](https://pypi.org/project/temporalio)
+[![MIT](https://img.shields.io/pypi/l/temporalio.svg?style=for-the-badge)](LICENSE)
+
 To install the latest version of the Temporal Python package, run the following command.
 
 ```bash
 pip install temporalio
 ```
-
-</TabItem>
-</Tabs>
-
-#### Code samples
-
-You can find a complete list of executable code samples in the samples' library.
-
-The [Temporal Simple Polyglot](https://github.com/temporalio/temporal-polyglot) repository showcases how Workflow Executions, written in different languages, can send messages to each other. Go, Java, PHP, and TypeScript SDKs are represented in this sample.
-It also shows how to properly propagate errors, including how to do so across Workflows written in different languages.
-
-Additionally, several of the [Tutorials](/learning-paths) are backed by a fully executable template application.
-
-<Tabs
-defaultValue="go"
-groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
-
-<TabItem value="go">
-
-Use the [Go samples library](https://github.com/temporalio/samples-go) stored on GitHub to demonstrate various capabilities of Temporal.
-
-**Where can I find video demos?**
-
-[Temporal Go SDK YouTube playlist](https://www.youtube.com/playlist?list=PLl9kRkvFJrlRYHYaTPnsvE46szyMIZLdk).
-
-</TabItem>
-<TabItem value="java">
-
-Use the [Java samples library](https://github.com/temporalio/samples-java) stored on GitHub to demonstrate various capabilities of Temporal.
-
-**Where can I find video demos?**
-
-[Temporal Java SDK YouTube playlist](https://www.youtube.com/playlist?list=PLl9kRkvFJrlQ8KsM6m9cFfCeQegq_B8x4)
-
-</TabItem>
-<TabItem value="php">
-
-Use the [PHP samples library](https://github.com/temporalio/samples-php) stored on GitHub to demonstrate various capabilities of Temporal.
-
-</TabItem>
-<TabItem value="typescript">
-
-Use the [TypeScript samples library](https://github.com/temporalio/samples-typescript) stored on GitHub to demonstrate various capabilities of Temporal.
-
-**Where can I find video demos?**
-[Temporal Go TypeScript YouTube playlist](https://www.youtube.com/playlist?list=PLl9kRkvFJrlTavecydpk9r6cF7qBmQJvb).
-
-</TabItem>
-<TabItem value="python">
-
-Use the [Python samples library](https://github.com/temporalio/samples-python) stored on GitHub to demonstrate various capabilities of Temporal.
 
 </TabItem>
 </Tabs>
@@ -299,6 +259,58 @@ The Temporal TypeScript SDK API reference is published on [typescript.temporal.i
 <TabItem value="python">
 
 The Temporal Python SDK API reference is published on [python.temporal.io](https://python.temporal.io/index.html).
+
+</TabItem>
+</Tabs>
+
+#### Code samples
+
+You can find a complete list of executable code samples in [Temporal's GitHub repository](https://github.com/temporalio).
+
+The [Temporal Simple Polyglot](https://github.com/temporalio/temporal-polyglot) repository showcases how Workflow Executions, written in different languages, can send messages to each other. Go, Java, PHP, and TypeScript SDKs are represented in this sample. It also shows how to properly propagate errors, including how to do so across Workflows written in different languages. For more information, see the [Polyglot Microservice Orchestration](https://www.youtube.com/playlist?list=PLl9kRkvFJrlTLo5URV5IK6lCmiM3ir3f5) video on YouTube.
+
+Additionally, several of the [Tutorials](/learning-paths) are backed by a fully executable template application.
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+Use the [Go samples library](https://github.com/temporalio/samples-go) stored on GitHub to demonstrate various capabilities of Temporal.
+
+**Where can I find video demos?**
+
+[Temporal Go SDK YouTube playlist](https://www.youtube.com/playlist?list=PLl9kRkvFJrlRYHYaTPnsvE46szyMIZLdk).
+
+</TabItem>
+<TabItem value="java">
+
+Use the [Java samples library](https://github.com/temporalio/samples-java) stored on GitHub to demonstrate various capabilities of Temporal.
+
+**Where can I find video demos?**
+
+[Temporal Java SDK YouTube playlist](https://www.youtube.com/playlist?list=PLl9kRkvFJrlQ8KsM6m9cFfCeQegq_B8x4)
+
+</TabItem>
+<TabItem value="php">
+
+Use the [PHP samples library](https://github.com/temporalio/samples-php) stored on GitHub to demonstrate various capabilities of Temporal.
+
+</TabItem>
+<TabItem value="typescript">
+
+Use the [TypeScript samples library](https://github.com/temporalio/samples-typescript) stored on GitHub to demonstrate various capabilities of Temporal.
+
+**Where can I find video demos?**
+
+[Temporal Go TypeScript YouTube playlist](https://www.youtube.com/playlist?list=PLl9kRkvFJrlTavecydpk9r6cF7qBmQJvb).
+
+</TabItem>
+<TabItem value="python">
+
+Use the [Python samples library](https://github.com/temporalio/samples-python) stored on GitHub to demonstrate various capabilities of Temporal.
 
 </TabItem>
 </Tabs>

@@ -67,42 +67,6 @@
           ],
           "h4_sections": [
             {
-              "header": "Code samples",
-              "type": "context",
-              "path": "app-dev-context/code-samples"
-            },
-            {
-              "header": "none",
-              "type": "lang-tabs",
-              "langs": [
-                {
-                  "lang": "go",
-                  "title": "Go",
-                  "path": "go/code-samples-go"
-                },
-                {
-                  "lang": "java",
-                  "title": "Java",
-                  "path": "java/code-samples-java"
-                },
-                {
-                  "lang": "php",
-                  "title": "PHP",
-                  "path": "php/code-samples-php"
-                },
-                {
-                  "lang": "python",
-                  "title": "Python",
-                  "path": "python/code-samples-python"
-                },
-                {
-                  "lang": "typescript",
-                  "title": "TypeScript",
-                  "path": "typescript/code-samples-typescript"
-                }
-              ]
-            },
-            {
               "header": "API reference",
               "type": "context",
               "path": "app-dev-context/api-reference"
@@ -135,6 +99,42 @@
                   "lang": "typescript",
                   "title": "TypeScript",
                   "path": "typescript/api-reference-typescript"
+                }
+              ]
+            },
+            {
+              "header": "Code samples",
+              "type": "context",
+              "path": "app-dev-context/code-samples"
+            },
+            {
+              "header": "none",
+              "type": "lang-tabs",
+              "langs": [
+                {
+                  "lang": "go",
+                  "title": "Go",
+                  "path": "go/code-samples-go"
+                },
+                {
+                  "lang": "java",
+                  "title": "Java",
+                  "path": "java/code-samples-java"
+                },
+                {
+                  "lang": "php",
+                  "title": "PHP",
+                  "path": "php/code-samples-php"
+                },
+                {
+                  "lang": "python",
+                  "title": "Python",
+                  "path": "python/code-samples-python"
+                },
+                {
+                  "lang": "typescript",
+                  "title": "TypeScript",
+                  "path": "typescript/code-samples-typescript"
                 }
               ]
             }
