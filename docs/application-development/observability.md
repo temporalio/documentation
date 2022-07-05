@@ -20,18 +20,19 @@ This section covers features related to measuring the state of the application, 
 
 ## Metrics
 
-Each [Temporal SDK](/next/temporal#temporal-sdk) is capable of emitting a set of metrics, some from a Temporal Client and some from the Worker Processes.
+Each Temporal SDK is capable of emitting an optional set of metrics from either the Client or the Worker process.
+For a complete list of metrics capable of being emitted, see the [SDK metrics reference](/references/sdk-metrics).
 
-The full set of metrics is available in the [SDK metrics reference](/references/).
-
-Monitoring and observing the metrics is optional.
-The metrics can be scraped and stored in time series databases like:
+Metrics can be scraped and stored in time series databases, such as:
 
 - [Prometheus](https://prometheus.io/docs/introduction/overview/)
 - [M3db](https://m3db.io/docs/)
 - [statsd](https://github.com/statsd/statsd)
 
-Temporal also provides a dashboard you can integrate with graphing services like [Grafana](https://grafana.com/docs/). For more information, see Temporal’s [Grafana dashboard](https://github.com/temporalio/dashboards).
+Temporal also provides a dashboard you can integrate with graphing services like [Grafana](https://grafana.com/docs/). For more information, see:
+
+- Temporal's implementation of the [Grafana dashboard](https://github.com/temporalio/dashboards)
+- [How to export metrics in Grafana](https://github.com/temporalio/helm-charts#exploring-metrics-via-grafana)
 
 <Tabs
 defaultValue="go"
@@ -40,25 +41,19 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Set the metric scope, which metrics should be reported
-
-- Type: [`metrics.Handler`](https://pkg.go.dev/go.temporal.io/sdk/internal/common/metrics#Handler)
-- Default: None
-
-To emit metrics from the Workflow, use the `getMetricsScope()`, that will return a `Scope` object that can be used to emit metrics.
+To emit metrics from the Temporal Client in Go, create a [metrics handler](https://pkg.go.dev/go.temporal.io/sdk/internal/common/metrics#Handler) from the [Client Options](https://pkg.go.dev/go.temporal.io/sdk@v1.15.0/internal#ClientOptions) and specify a listener address to be used by Prometheus.
 
 ```go
-// It returns a `Scope` object that can be used to emit metrics.
-Workflow.getMetricsScope()
+client.Options{
+		MetricsHandler: sdktally.NewMetricsHandler(newPrometheusScope(prometheus.Configuration{
+			ListenAddress: "0.0.0.0:9090",
+			TimerType:     "histogram",
+		}
 ```
 
-The following code example creates a timer, emits a metric, and starts the timer.
+The Go SDK currently supports the [Tally](https://pkg.go.dev/go.temporal.io/sdk/contrib/tally) library; however, Tally offers [extensible custom metrics reporting](https://github.com/uber-go/tally#report-your-metrics), which is exposed through the [`WithCustomMetricsReporter`](https://docs.temporal.io/docs/server/options/#withcustommetricsreporter) API.
 
-```go
-Stopwatch watch = metricScope.timer(METRIC_NAME).start();
-operation();
-watch.stop();
-```
+For more information, see the [Go sample for metrics](https://github.com/temporalio/samples-go/tree/main/metrics).
 
 </TabItem>
 <TabItem value="java">
@@ -80,6 +75,15 @@ Workers can emit metrics and traces. There are a few [telemetry options](https:/
 
 To set up tracing of Workflows and Activities, use our [opentelemetry-interceptors](/typescript/logging#opentelemetry-tracing) package.
 
+```typescript
+  telemetryOptions: {
+      metrics: {
+        prometheus: { bindAddress: '0.0.0.0:9464' },
+      },
+      logging: { forward: { level: 'DEBUG' } },
+    },
+```
+
 </TabItem>
 </Tabs>
 
@@ -89,7 +93,7 @@ Tracing allows you to view the call graph of a Workflow along with its Activitie
 
 Temporal Web's tracing capabilities mainly track Activity Execution within a Temporal context. If you need custom tracing specific for your use case, you should make use of context propagation to add tracing logic accordingly.
 
-- Example: [Tracing Temporal Workflows with DataDog](https://spiralscout.com/blog/tracing-temporal-workflow-with-datadog)
+For more information, see [Tracing Temporal Workflows with DataDog](https://spiralscout.com/blog/tracing-temporal-workflow-with-datadog).
 
 <Tabs
 defaultValue="go"
@@ -126,7 +130,7 @@ Content is not available
 The [`interceptors-opentelemetry`](https://github.com/temporalio/samples-typescript/tree/main/interceptors-opentelemetry) sample shows how to use the SDK's built-in OpenTelemetry tracing to trace everything from starting a Workflow to Workflow Execution to running an Activity from that Workflow.
 
 The built-in tracing uses protobuf message headers (like [this one](https://github.com/temporalio/api/blob/b2b8ae6592a8730dd5be6d90569d1aea84e1712f/temporal/api/workflowservice/v1/request_response.proto#L161) when starting a Workflow) to propagate the tracing information from the client to the Workflow and from the Workflow to its successors (when Continued As New), children, and Activities.
-All of these executions are linked with a single trace identifier and have the proper parent->child span relation.
+All of these executions are linked with a single trace identifier and have the proper `parent -> child` span relation.
 
 Tracing is compatible between different Temporal SDKs as long as compatible [context propagators](https://opentelemetry.lightstep.com/core-concepts/context-propagation/) are used.
 
@@ -141,13 +145,13 @@ To extend the default ([Trace Context](https://github.com/open-telemetry/opentel
 - At the top level of your Workflow code, add the following lines:
 
   ```js
-  import {propagation} from "@opentelemetry/api";
+  import { propagation } from '@opentelemetry/api';
   import {
     CompositePropagator,
     W3CTraceContextPropagator,
     W3CBaggagePropagator,
-  } from "@opentelemetry/core";
-  import {JaegerPropagator} from "@opentelemetry/propagator-jaeger";
+  } from '@opentelemetry/core';
+  import { JaegerPropagator } from '@opentelemetry/propagator-jaeger';
 
   propagation.setGlobalPropagator(
     new CompositePropagator({
@@ -226,58 +230,54 @@ Content is not available
 The Worker comes with a default logger which defaults to log any messages with level `INFO` and higher to `STDERR` using `console.error`.
 The following [log levels](https://typescript.temporal.io/api/namespaces/worker#loglevel) are listed in increasing order of severity.
 
-- `TRACE`
-- `DEBUG`
-- `INFO`
-- `WARN`
-- `ERROR`
-
 **Customizing the default logger**
 
-Temporal ships a [`DefaultLogger`](https://typescript.temporal.io/api/classes/worker.defaultlogger/) that implements the basic interface:
+Temporal uses a [`DefaultLogger`](https://typescript.temporal.io/api/classes/worker.defaultlogger/) that implements the basic interface:
 
 ```ts
-import {Runtime, DefaultLogger} from "@temporalio/worker";
+import { Runtime, DefaultLogger } from '@temporalio/worker';
 
-const logger = new DefaultLogger("WARN", ({level, message}) => {
+const logger = new DefaultLogger('WARN', ({ level, message }) => {
   console.log(`Custom logger: ${level} — ${message}`);
 });
-Runtime.install({logger});
+Runtime.install({ logger });
 ```
 
 The previous code example sets the default logger to only log messages with level `WARN` and higher.
 
-- **Accumulate logs for testing and reporting**
+**Accumulate logs for testing and reporting**
 
 ```ts
-import {DefaultLogger, LogEntry} from "@temporalio/worker";
+import { DefaultLogger, LogEntry } from '@temporalio/worker';
 
 const logs: LogEntry[] = [];
-const logger = new DefaultLogger("TRACE", (entry) => logs.push(entry));
-log.debug("hey", {a: 1});
-log.info("ho");
-log.warn("lets", {a: 1});
-log.error("go");
+const logger = new DefaultLogger('TRACE', (entry) => logs.push(entry));
+log.debug('hey', { a: 1 });
+log.info('ho');
+log.warn('lets', { a: 1 });
+log.error('go');
 ```
 
 A common logging use case is logging to a file to be picked up by a collector like the [Datadog Agent](https://docs.datadoghq.com/logs/log_collection/nodejs/?tab=winston30).
 
 ```ts
-import {Runtime} from "@temporalio/worker";
-import winston from "winston";
+import { Runtime } from '@temporalio/worker';
+import winston from 'winston';
 
 const logger = winston.createLogger({
-  level: "info",
+  level: 'info',
   format: winston.format.json(),
-  transports: [new transports.File({filename: "/path/to/worker.log"})],
+  transports: [new transports.File({ filename: '/path/to/worker.log' })],
 });
-Runtime.install({logger});
+Runtime.install({ logger });
 ```
 
 </TabItem>
 </Tabs>
 
 ### Log from a Workflow
+
+
 
 <Tabs
 defaultValue="go"
@@ -482,6 +482,8 @@ Content is not available
 
 #### Custom Search attributes
 
+
+
 <Tabs
 defaultValue="go"
 groupId="site-lang"
@@ -628,13 +630,13 @@ To remove a Search Attribute that was previously set, set it to an empty array `
 Use [`upsertSearchAttributes`](https://typescript.temporal.io/api/namespaces/workflow/#upsertsearchattributes) to merge the provided [`searchAttributes`](https://typescript.temporal.io/api/namespaces/workflow/#searchattributess) with the existing Search Attributes, `workflowInfo().searchAttributes`:
 
 ```typescript
-import {upsertSearchAttributes} from "@temporalio/workflow";
+import { upsertSearchAttributes } from '@temporalio/workflow';
 
 async function myWorkflow() {
-  upsertSearchAttributes({CustomIntField: [1, 2, 3]});
+  upsertSearchAttributes({ CustomIntField: [1, 2, 3] });
 
   // ... later, to remove:
-  upsertSearchAttributes({CustomIntField: []});
+  upsertSearchAttributes({ CustomIntField: [] });
 }
 ```
 
@@ -727,3 +729,4 @@ See how to replay in [this video](https://www.youtube.com/watch?v=fN5bIL7wc5M).
 
 </TabItem>
 </Tabs>
+
