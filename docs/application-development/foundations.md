@@ -740,7 +740,7 @@ Content is not available
 
 One of the primary things that Workflows do is orchestrate the execution of Activities.
 Activities are normal function/method executions that can interact with the world.
-For the Workflow to be able to execute the Activity, we must define the [Activity Definition](/next/activities#activity-definition)
+For the Workflow to be able to execute the Activity, we must define the [Activity Definition](/next/activities#activity-definition).
 
 <Tabs
 defaultValue="go"
@@ -1019,7 +1019,7 @@ Content is not available
 
 All Activity results must be serializable.
 
-There is no explicit limit to the amount of data that can be returned by an Activity, but keep in mind that all return values are recorded in a [Workflow Execution Event History](/next/workflows#event-history)
+There is no explicit limit to the amount of data that can be returned by an Activity, but keep in mind that all return values are recorded in a [Workflow Execution Event History](/next/workflows#event-history)/
 
 <Tabs
 defaultValue="go"
