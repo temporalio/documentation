@@ -11,7 +11,7 @@ The Web UI and tctl both use a default [Data Converter](/docs/concepts/what-is-a
 
 Codec Servers can be used to encrypt, compress, and change the format of a Payload object. These measures further secure your data while formatting it to your preference.
 
-## Use Case - tctl
+## Use case - tctl
 
 Suppose that a developer wants to view Workflow History. They can accomplish this with the `workflow show` command with tctl. A Payload is retrieved and sent to a default Data Converter, which converts the Payload object into a human-readable format. Suppose it wasn't what you wanted.
 
