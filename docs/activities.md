@@ -200,7 +200,7 @@ Each ping informs the Temporal Cluster that the Activity Execution is making pro
 
 - [How to Heartbeat an Activity](/application-development-guide#activity-heartbeats)
 
-Activity Heartbeats work in conjunction with a [Heartbeat Timeout](#heartbeat-timeout).
+Activity Heartbeats only work when a [Heartbeat Timeout](#heartbeat-timeout) is set.
 
 Activity Heartbeats are implemented within the Activity Definition.
 Custom progress information can be included in the Heartbeat which can then be used by the Activity Execution should a retry occur.
