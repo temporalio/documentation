@@ -21,6 +21,6 @@ A List Filter contains [Search Attribute](/concepts/what-is-a-search-attribute) 
 - An Advanced List Filter API may take longer than expected if it is retrieving more than 10 million Workflow Executions.
 
 - A `ListWorkflow` API supports pagination.
-  Use the page token in the following call to retrieve the next page; continue until the page token is `null`/`nil`.
+  Use the page token in the following call to retrieve the next page; continue until the page token is `null` or `nil`.
 
 - To efficiently count the number of Workflow Executions, use the `CountWorkflow` API.
