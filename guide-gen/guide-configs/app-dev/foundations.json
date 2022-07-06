@@ -532,7 +532,7 @@
       "header": "Start Workflow Execution",
       "h3_sections": [
         {
-          "header": "Start Workflow Execution",
+          "header": "none",
           "type": "context",
           "path": "app-dev-context/spawning-workflows"
         },

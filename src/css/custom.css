@@ -594,3 +594,7 @@ h1 {
 .table-of-contents__link {
   text-decoration: none;
 }
+
+.app-dev-landing-page-lang-logo {
+  max-width: 100px;
+}

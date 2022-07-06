@@ -771,7 +771,7 @@
       "header": "Cron Jobs",
       "h3_sections": [
         {
-          "header": "Cron Jobs",
+          "header": "none",
           "type": "context",
           "path": "app-dev-context/cron-jobs"
         },
