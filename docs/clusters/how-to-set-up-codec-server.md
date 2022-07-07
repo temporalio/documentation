@@ -5,7 +5,7 @@ sidebar_label: Codec Server
 description: Implementation of a remote encryption/decryption server.
 ---
 
-A [Codec Server]() is an optional feature that can further encode or decode Payloads. This can be done through the [Web UI]() or with [tctl]().
+A [Codec Server](/docs/concepts/what-is-a-codec-server) is an optional feature that can further encode or decode Payloads. This can be done through the [Web UI](/docs/web-ui/how-to-use-a-list-filter-in-the-temporal-web-ui) or with [tctl](/docs/tctl/index).
 
 A codec HTTP protocol specifies two endpoints to handle Payload encoding and decoding. Implementations must:
 
