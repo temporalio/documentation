@@ -17,13 +17,15 @@ Codec Servers can be used to encrypt, compress, and change the format of a Paylo
 
 Suppose that a developer wants to view Workflow History. This can be done with the following command:
 
-[command here]
+```bash
+    tctl workflow show {workflowID}
+```
 
 This command retrieves all events that occurred within that Workflow, along with a list of details. These details might include a Payload. Without a Codec Server, this Payload cannot be read.
 
 Codec Servers allow further customization for Payload objects. The default Data Converter sends the Payload to a given endpoint, and receives a decoded Payload if the API returns a successful result. The Data Converter passes this result back to the command line, which prints the decoded result.
 
-## Use Case - Web UI
+## Use case - Web UI
 
 Suppose that another developer wanted to view the Workflow History of a given Workflow on their browser. This view allows the developer to see additional information about the Workflow, such as the time needed for each Event to occur.
 
