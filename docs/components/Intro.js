@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "@docusaurus/Link";
 import useBaseUrl from "@docusaurus/useBaseUrl";
+import {createTextChangeRange} from "typescript";
 
 function InfoSVG() {
   return (
@@ -35,44 +36,45 @@ function BookSVG() {
       <path
         d="M12 18.75V8.25C12 7.42157 12.6716 6.75 13.5 6.75H19.05C19.2985 6.75 19.5 6.95147 19.5 7.2V17.0357"
         stroke="currentColor"
-        stroke-width="1.125"
-        stroke-linecap="round"
+        strokeWidth="1.125"
+        strokeLinecap="round"
       />
       <path
         d="M12 18.75V8.25C12 7.42157 11.3284 6.75 10.5 6.75H4.95C4.70147 6.75 4.5 6.95147 4.5 7.2V17.0357"
         stroke="currentColor"
-        stroke-width="1.125"
-        stroke-linecap="round"
+        strokeWidth="1.125"
+        strokeLinecap="round"
       />
       <path
         d="M13.5 17.25H19.5"
         stroke="currentColor"
-        stroke-width="1.125"
-        stroke-linecap="round"
+        strokeWidth="1.125"
+        strokeLinecap="round"
       />
       <path
         d="M10.5 17.25H4.5"
         stroke="currentColor"
-        stroke-width="1.125"
-        stroke-linecap="round"
+        strokeWidth="1.125"
+        strokeLinecap="round"
       />
       <path
         d="M12 18.75C12 17.9216 12.6716 17.25 13.5 17.25"
         stroke="currentColor"
-        stroke-width="1.125"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.125"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M12 18.75C12 17.9216 11.3284 17.25 10.5 17.25"
         stroke="currentColor"
-        stroke-width="1.125"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.125"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
 }
+
 function HatSVG() {
   return (
     <svg
@@ -121,49 +123,299 @@ function CliSVG() {
     >
       <path
         d="M12.75 15.75H18"
-        stroke="#111827"
-        stroke-width="1.125"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        stroke="currentColor"
+        strokeWidth="1.125"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M6.75 8.25L10.5 12L6.75 15.75"
-        stroke="#111827"
-        stroke-width="1.125"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        stroke="currentColor"
+        strokeWidth="1.125"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
 }
 
+const supportedTech = [
+  {
+    link: " /application-development-guide?lang=go",
+    image: "/img/golang.svg",
+    alt: "Go lang logo",
+    class: "w-10 h-8",
+  },
+  {
+    link: " /application-development-guide?lang=typescript",
+    image: "/img/typescript.svg",
+    alt: "TypeScript logo",
+    class: "w-7 h-7",
+  },
+  {
+    link: " /application-development-guide?lang=php",
+    image: "/img/php.svg",
+    alt: "php logo",
+    class: "w-10 h-8",
+  },
+  {
+    link: " /application-development-guide?lang=java",
+    image: "/img/java.svg",
+    alt: "Java logo",
+    class: "w-7 h-7",
+  },
+  {
+    link: " /application-development-guide?lang=python",
+    image: "/img/python.svg",
+    alt: "Python logo",
+    class: "w-7 h-7",
+  },
+];
+
+const coreConcepts = {
+  listOne: [
+    {
+      book: true,
+      path: "/temporal",
+      name: "Temporal",
+    },
+    {
+      book: true,
+      path: "/workflows",
+      name: "Workflows",
+    },
+    {
+      book: true,
+      path: "/activities",
+      name: "Activities",
+    },
+    {
+      book: true,
+      path: "/retry-policies",
+      name: "Retry Policies",
+    },
+  ],
+  listTwo: [
+    {
+      book: true,
+      path: "/clusters",
+      name: "Clusters",
+    },
+    {
+      book: true,
+      path: "/workers",
+      name: "Workers",
+    },
+    {
+      book: true,
+      path: "/visibility",
+      name: "Visibility",
+    },
+    {
+      book: true,
+      path: "/namespaces",
+      name: "Namespaces",
+    },
+  ],
+};
+
+const appDevGuideLinks = {
+  listOne: [
+    {
+      book: true,
+      path: "/application-development-guide/#foundations",
+      name: "Foundations",
+    },
+    {
+      book: true,
+      path: "/application-development-guide/#features",
+      name: "Features",
+    },
+  ],
+  listTwo: [
+    {
+      book: true,
+      path: "https://docs.temporal.io/operation/how-to-tune-workers",
+      name: "Worker Performance",
+    },
+  ],
+};
+
+const appByLang = {
+  listOne: [
+    {
+      book: true,
+      path: "/go",
+      name: "Go",
+    },
+    {
+      book: true,
+      path: "/java",
+      name: "Java",
+    },
+  ],
+  listTwo: [
+    {
+      book: true,
+      path: "/php/introduction",
+      name: "PHP",
+    },
+    {
+      book: true,
+      path: "/typescript/introduction",
+      name: "TypeScript",
+    },
+  ],
+};
+
+const clusterGuide = {
+  listOne: [
+    {
+      book: true,
+      path: "/cluster-deployment-guide/#advanced-visibility",
+      name: "Visibility",
+    },
+    {
+      book: true,
+      path: "/cluster-deployment-guide/#archival",
+      name: "Archival",
+    },
+  ],
+  listTwo: [
+    {
+      book: true,
+      path: "/cluster-deployment-guide/#multi-cluster-replication",
+      name: "Multi-Cluster Replication",
+    },
+  ],
+};
+
+const cloudInfo = {
+  listOne: [
+    {
+      cli: true,
+      path: "/cloud/tcld",
+      name: "tcld",
+    },
+  ],
+};
+
+const tutorials = {
+  listOne: [
+    {
+      hat: true,
+      path: "/learning-paths/run-your-first-app",
+      name: "Run your first application",
+    },
+    {
+      hat: true,
+      path: "/learning-paths/hello-world",
+      name: `"Hello World" from scratch`,
+    },
+  ],
+  listTwo: [
+    {
+      hat: true,
+      path: "/learning-paths/background-checks",
+      name: "Background Checks",
+    },
+    {
+      hat: true,
+      path: "/blog/tags/go-ecommerce-tutorial",
+      name: `e-Commerce series`,
+    },
+  ],
+};
+
+const devTools = {
+  listOne: [
+    {
+      cli: true,
+      path: "/tctl",
+      name: "tctl",
+    },
+    {
+      cli: true,
+      path: "/web-ui",
+      name: `Web UI`,
+    },
+  ],
+};
+
+const references = {
+  listOne: [
+    {
+      book: true,
+      path: "/references/events",
+      name: "Events",
+    },
+    {
+      book: true,
+      path: "/references/commands",
+      name: `Commands`,
+    },
+  ],
+  listTwo: [
+    {
+      book: true,
+      path: "/references/sdk-metrics",
+      name: "SDK metrics",
+    },
+    {
+      book: true,
+      path: "/references/configuration",
+      name: `Cluster configuration`,
+    },
+  ],
+};
+
+const displayTechListItems = () => {
+  return supportedTech.map((tech) => {
+    return (
+      <li className="list-logo" key={tech.alt}>
+        <a href={tech.link}>
+          <img
+            className={`${tech.class} pl-1 transition hover:scale-110 code-logo`}
+            src={tech.image}
+            alt={tech.alt}
+          />
+        </a>
+      </li>
+    );
+  });
+};
+
+const displaySupportedTech = () => {
+  return (
+    <div className="supported-tech">
+      <ul className="landing-card-list-b logos">{displayTechListItems()}</ul>
+    </div>
+  );
+};
+
+const displayLinks = (links) => {
+  return links.map((link, i) => {
+    return (
+      <li className="" key={`${link.name} ${i}`}>
+        <div className="landing-card-list-item">
+          {link.book && <BookSVG />}
+          {link.hat && <HatSVG />}
+          {link.cli && <CliSVG />}
+          <Link
+            to={useBaseUrl(link.path)}
+            className="hover:underline font-normal"
+          >
+            {link.name}
+          </Link>
+        </div>
+      </li>
+    );
+  });
+};
+
 function Explained() {
   return (
     <div className="landing-card">
-      <div className="aside flex">
-        <div className="aside-svg">
-          <InfoSVG />
-        </div>
-        <div className="p-landing">
-          <h3 className="mb-1 aside-head">Temporal Cloud is early access</h3>
-          <p className="mb-0">
-            Access to Temporal Cloud is currently by invitation only.
-          </p>
-          <p>
-            Go to{" "}
-            <a className="aside-link" href={"https://docs.temporal.io/cloud/"}>
-              Cloud docs
-            </a>{" "}
-            or{" "}
-            <a
-              className="aside-link"
-              href="https://pages.temporal.io/cloud-early-access"
-            >
-              join the waitlist
-            </a>
-          </p>
-        </div>
-      </div>
       <div className="landing-card-section">
         <h2 className="h2-landing">Core concepts</h2>
         <p className="landing-card-p">
@@ -171,75 +423,10 @@ function Explained() {
           explained.
         </p>
         <ul className="landing-card-list">
-          <li className="">
-            <div className="landing-card-list-item">
-              <BookSVG />
-              <Link to={useBaseUrl("/temporal")} className="hover:underline">
-                <a className="font-normal">Temporal</a>
-              </Link>
-            </div>
-          </li>
-          <li className="">
-            <div className="landing-card-list-item">
-              <BookSVG />
-              <Link to={useBaseUrl("/workflows")} className="hover:underline">
-                <a className="font-normal">Workflows</a>
-              </Link>
-            </div>
-          </li>
-          <li className="">
-            <div className="landing-card-list-item">
-              <BookSVG />
-              <Link to={useBaseUrl("/activities")} className="hover:underline">
-                <a className="font-normal">Activities</a>
-              </Link>
-            </div>
-          </li>
-          <li className="">
-            <div className="landing-card-list-item">
-              <BookSVG />
-              <Link
-                to={useBaseUrl("/retry-policies")}
-                className="hover:underline"
-              >
-                <a className="font-normal">Retry Policies</a>
-              </Link>
-            </div>
-          </li>
+          {displayLinks(coreConcepts.listOne)}
         </ul>
         <ul className="landing-card-list">
-          <li className="">
-            <div className="landing-card-list-item">
-              <BookSVG />
-              <Link to={useBaseUrl("/clusters")} className="hover:underline">
-                <a className="font-normal">Clusters</a>
-              </Link>
-            </div>
-          </li>
-          <li className="">
-            <div className="landing-card-list-item">
-              <BookSVG />
-              <Link to={useBaseUrl("/workers")} className="hover:underline">
-                <a className="font-normal">Workers</a>
-              </Link>
-            </div>
-          </li>
-          <li className="">
-            <div className="landing-card-list-item">
-              <BookSVG />
-              <Link to={useBaseUrl("/visibility")} className="hover:underline">
-                <a className="font-normal">Visibility</a>
-              </Link>
-            </div>
-          </li>
-          <li className="">
-            <div className="landing-card-list-item">
-              <BookSVG />
-              <Link to={useBaseUrl("/namespaces")} className="hover:underline">
-                <a className="font-normal">Namespaces</a>
-              </Link>
-            </div>
-          </li>
+          {displayLinks(coreConcepts.listTwo)}
         </ul>
       </div>
       <div className="landing-card-section">
@@ -249,72 +436,15 @@ function Explained() {
           </a>
           <div className="badge-purple">New</div>
         </div>
-        <div className="supported-tech">
-        <ul className="landing-card-list-b logos">
-          <li className="list-logo">
-            <a href="https://pkg.go.dev/go.temporal.io/sdk">
-              <img
-                className="w-10 h-8 pl-1 transition hover:scale-110 code-logo"
-                src="/img/golang.svg"
-                alt="Go lang logo"
-              />
-            </a>
-          </li>
-          <li className="list-logo">
-            <a href="https://nodejs.temporal.io">
-              <img
-                className="w-7 h-7 pl-1 transition hover:scale-110 code-logo"
-                src="/img/typescript.svg"
-                alt="TypeScript logo"
-              />
-            </a>
-          </li>
-          <li className="list-logo">
-            <a href="https://github.com/temporalio/sdk-php">
-              <img
-                className="w-10 h-8 pl-1 transition hover:scale-110 code-logo"
-                src="/img/php.svg"
-                alt="PHP logo"
-              />
-            </a>
-          </li>
-          <li className="list-logo">
-            <a href="https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/index.html">
-              <img
-                className="w-7 h-7 pl-1 transition hover:scale-110 code-logo"
-                src="/img/java.svg"
-                alt="Java logo"
-              />
-            </a>
-          </li>
-        </ul>
-      </div>
+        {displaySupportedTech()}
         <p className="landing-card-p">
           A day-to-day how-to guide for Temporal Application developers.{" "}
         </p>
         <ul className="landing-card-list">
-          <li className="">
-            <div className="landing-card-list-item">
-              <BookSVG />
-              <Link
-                to={useBaseUrl("/application-development-guide/#foundations")}
-                className="hover:underline"
-              >
-                <a className="font-normal">Foundations</a>
-              </Link>
-            </div>
-          </li>
-          <li className="">
-            <div className="landing-card-list-item">
-              <BookSVG />
-              <Link
-                to={useBaseUrl("/application-development-guide/#features")}
-                className="hover:underline"
-              >
-                <a className="font-normal">Features</a>
-              </Link>
-            </div>
-          </li>
+          {displayLinks(appDevGuideLinks.listOne)}
+        </ul>
+        <ul className="landing-card-list">
+          {displayLinks(appDevGuideLinks.listTwo)}
         </ul>
       </div>
       <div className="landing-card-section">
@@ -327,108 +457,8 @@ function Explained() {
             Now included in the application development guide.
           </span>
         </p>
-        <ul className="landing-card-list">
-          <li className="">
-            <div className="landing-card-list-item">
-              <BookSVG />
-              <Link to={useBaseUrl("/go")} className="hover:underline">
-                <a className="font-normal">Go</a>
-              </Link>
-            </div>
-          </li>
-          <li className="">
-            <div className="landing-card-list-item">
-              <BookSVG />
-              <Link to={useBaseUrl("/java")} className="hover:underline">
-                <a className="font-normal">Java</a>
-              </Link>
-            </div>
-          </li>
-        </ul>
-        <ul className="landing-card-list">
-          <li className="">
-            <div className="landing-card-list-item">
-              <BookSVG />
-              <Link
-                to={useBaseUrl("/php/introduction")}
-                className="hover:underline"
-              >
-                <a className="font-normal">PHP</a>
-              </Link>
-            </div>
-          </li>
-          <li className="">
-            <div className="landing-card-list-item">
-              <BookSVG />
-              <Link
-                to={useBaseUrl("/typescript/introduction")}
-                className="hover:underline"
-              >
-                <a className="font-normal">TypeScript</a>
-              </Link>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <div className="landing-card-section">
-        <a className="header-link" href="/operation/how-to-tune-workers">
-          <h2 className="h2-landing">Worker performance tuning</h2>
-        </a>
-        <p className="landing-card-p">
-          Optimize the performance of your Worker Processes.
-        </p>
-        <ul className="landing-card-list">
-          <li className="">
-            <div className="landing-card-list-item">
-              <BookSVG />
-              <Link
-                to={useBaseUrl("/operation/how-to-tune-workers#metrics")}
-                className="hover:underline"
-              >
-                <a className="font-normal">Metrics</a>
-              </Link>
-            </div>
-          </li>
-          <li className="">
-            <div className="landing-card-list-item">
-              <BookSVG />
-              <Link
-                to={useBaseUrl("/operation/how-to-tune-workers#configuration")}
-                className="hover:underline"
-              >
-                <a className="font-normal">Configuration</a>
-              </Link>
-            </div>
-          </li>
-        </ul>
-        <ul className="landing-card-list">
-          <li className="">
-            <div className="landing-card-list-item">
-              <BookSVG />
-              <Link
-                to={useBaseUrl(
-                  "/operation/how-to-tune-workers#workflow-cache-tuning"
-                )}
-                className="hover:underline"
-              >
-                <a className="font-normal">Workflow cache</a>
-              </Link>
-            </div>
-          </li>
-          <li className="">
-            <div className="landing-card-list-item">
-              <BookSVG />
-              <Link
-                to={useBaseUrl(
-                  "/operation/how-to-tune-workers#task-queues-processing-tuning"
-                )}
-                className="hover:underline"
-              >
-                <a className="font-normal">Task Queues</a>
-              </Link>
-            </div>
-          </li>
-        </ul>
+        <ul className="landing-card-list">{displayLinks(appByLang.listOne)}</ul>
+        <ul className="landing-card-list">{displayLinks(appByLang.listTwo)}</ul>
       </div>
       <div className="landing-card-section">
         <a className="header-link" href="/cluster-deployment-guide">
@@ -438,45 +468,10 @@ function Explained() {
           Temporal Cluster deployment information and how-to guides.
         </p>
         <ul className="landing-card-list">
-          <li className="">
-            <div className="landing-card-list-item">
-              <BookSVG />
-              <Link
-                to={useBaseUrl(
-                  "/cluster-deployment-guide/#advanced-visibility"
-                )}
-                className="hover:underline"
-              >
-                <a className="font-normal">Visibility</a>
-              </Link>
-            </div>
-          </li>
-          <li className="">
-            <div className="landing-card-list-item">
-              <BookSVG />
-              <Link
-                to={useBaseUrl("/cluster-deployment-guide/#archival")}
-                className="hover:underline"
-              >
-                <a className="font-normal">Archival</a>
-              </Link>
-            </div>
-          </li>
+          {displayLinks(clusterGuide.listOne)}
         </ul>
         <ul className="landing-card-list">
-          <li className="">
-            <div className="landing-card-list-item">
-              <BookSVG />
-              <Link
-                to={useBaseUrl(
-                  "/cluster-deployment-guide/#multi-cluster-replication"
-                )}
-                className="hover:underline"
-              >
-                <a className="font-normal">Multi-Cluster Replication</a>
-              </Link>
-            </div>
-          </li>
+          {displayLinks(clusterGuide.listTwo)}
         </ul>
       </div>
       <div className="landing-card-section">
@@ -489,16 +484,7 @@ function Explained() {
         <p className="landing-card-p">
           Tools and Temporal Cloud service information.
         </p>
-        <ul className="landing-card-list">
-          <li className="">
-            <div className="landing-card-list-item">
-              <CliSVG />
-              <Link to={useBaseUrl("/cloud/tcld")} className="hover:underline">
-                <a className="font-normal">tcld</a>
-              </Link>
-            </div>
-          </li>
-        </ul>
+        <ul className="landing-card-list">{displayLinks(cloudInfo.listOne)}</ul>
       </div>
       <div className="landing-card-section">
         <a className="header-link" href="/learning-paths/">
@@ -507,128 +493,24 @@ function Explained() {
         <p className="landing-card-p">
           Learning oriented tutorials across multiple SDKs.
         </p>
-        <ul className="landing-card-list">
-          <li className="">
-            <div className="landing-card-list-item">
-              <HatSVG />
-              <Link
-                to={useBaseUrl("/learning-paths/run-your-first-app")}
-                className="hover:underline"
-              >
-                <a className="font-normal">Run your first application</a>
-              </Link>
-            </div>
-          </li>
-          <li className="">
-            <div className="landing-card-list-item">
-              <HatSVG />
-              <Link
-                to={useBaseUrl("/learning-paths/hello-world")}
-                className="hover:underline"
-              >
-                <a className="font-normal">"Hello World" from scratch</a>
-              </Link>
-            </div>
-          </li>
-        </ul>
-        <ul className="landing-card-list">
-          <li className="">
-            <div className="landing-card-list-item">
-              <HatSVG />
-              <Link
-                to={useBaseUrl("/learning-paths/background-checks")}
-                className="hover:underline"
-              >
-                <a className="font-normal">Background Checks</a>
-              </Link>
-            </div>
-          </li>
-          <li className="">
-            <div className="landing-card-list-item">
-              <HatSVG />
-              <Link
-                to={useBaseUrl("/blog/tags/go-ecommerce-tutorial")}
-                className="hover:underline"
-              >
-                <a className="font-normal">e-Commerce series</a>
-              </Link>
-            </div>
-          </li>
-        </ul>
+        <ul className="landing-card-list">{displayLinks(tutorials.listOne)}</ul>
+        <ul className="landing-card-list">{displayLinks(tutorials.listTwo)}</ul>
       </div>
 
       <div className="landing-card-section">
         <h2 className="h2-landing">Devtools</h2>
-        <ul className="landing-card-list">
-          <li className="">
-            <div className="landing-card-list-item">
-              <CliSVG />
-              <Link to={useBaseUrl("/tctl")} className="hover:underline">
-                <a className="font-normal">tctl</a>
-              </Link>
-            </div>
-          </li>
-          <li className="">
-            <div className="landing-card-list-item">
-              <CliSVG />
-              <Link to={useBaseUrl("/web-ui")} className="hover:underline">
-                <a className="font-normal">Web UI</a>
-              </Link>
-            </div>
-          </li>
-        </ul>
+        <ul className="landing-card-list">{displayLinks(devTools.listOne)}</ul>
       </div>
       <div className="landing-card-section">
         <a className="header-link" href="/references/">
           <h2 className="h2-landing">References</h2>
         </a>
         <ul className="landing-card-list">
-          <li className="">
-            <div className="landing-card-list-item">
-              <BookSVG />
-              <Link
-                to={useBaseUrl("/references/events")}
-                className="hover:underline"
-              >
-                <a className="font-normal">Events</a>
-              </Link>
-            </div>
-          </li>
-          <li className="">
-            <div className="landing-card-list-item">
-              <BookSVG />
-              <Link
-                to={useBaseUrl("/references/commands")}
-                className="hover:underline"
-              >
-                <a className="font-normal">Commands</a>
-              </Link>
-            </div>
-          </li>
+          {displayLinks(references.listOne)}
         </ul>
         <ul className="landing-card-list">
-          <li className="">
-            <div className="landing-card-list-item">
-              <BookSVG />
-              <Link
-                to={useBaseUrl("/references/sdk-metrics")}
-                className="hover:underline"
-              >
-                <a className="font-normal">SDK metrics</a>
-              </Link>
-            </div>
-          </li>
-          <li className="">
-            <div className="landing-card-list-item">
-              <BookSVG />
-              <Link
-                to={useBaseUrl("/references/configuration")}
-                className="hover:underline"
-              >
-                <a className="font-normal">Cluster configuration</a>
-              </Link>
-            </div>
-          </li>
+          {" "}
+          {displayLinks(references.listTwo)}
         </ul>
       </div>
     </div>

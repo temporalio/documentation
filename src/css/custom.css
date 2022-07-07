@@ -506,7 +506,7 @@ h1 {
   color: #6d28d9;
   background-color: #ede9fe;
   border-radius: 0.125rem;
-  margin: 0rem 1rem;
+  margin: 2.5rem 1rem 0rem 1rem;
   padding: 0 0.5rem;
 }
 
@@ -517,7 +517,7 @@ h1 {
   color: #1d4ed8;
   background-color: #dbeafe;
   border-radius: 0.125rem;
-  margin: 0rem 1rem;
+  margin: 2.5rem 1rem 0rem 1rem;
   padding: 0 0.5rem;
 }
 
@@ -593,4 +593,10 @@ h1 {
 .dropdown__link,
 .table-of-contents__link {
   text-decoration: none;
+}
+
+.DocSearch-Hit-title,
+.DocSearch-Hit-icon,
+.DocSearch-Hit-action {
+  --docsearch-hit-active-color: black;
 }
