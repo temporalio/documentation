@@ -24,7 +24,6 @@ npx @temporalio/create@latest ./example
 - `--list-samples` — List available projects from [our samples repo](https://github.com/temporalio/samples-typescript).
 - `--use-yarn` — Use Yarn instead of npm.
 - `--[no-]git-init` - Initialize an empty git repository.
-- `--temporalio-version <version>` - Specify which version of the Temporal npm package to use.
 
 ### Project structure
 

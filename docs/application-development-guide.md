@@ -229,7 +229,7 @@ The Temporal TypeScript SDK provides a framework for Temporal Application develo
 To download the latest version of the Temporal TypeScript Command, run the following command:
 
 ```bash
-npm i temporalio
+npm i @temporalio/client @temporalio/worker @temporalio/workflow @temporalio/activity
 ```
 
 Or clone the TypeScript SDK repo to your preferred location:
