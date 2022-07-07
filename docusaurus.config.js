@@ -55,6 +55,14 @@ module.exports = {
         autoCollapseCategories: true,
       },
     },
+    announcementBar: {
+      id: "how_are_we_doing",
+      content:
+        'Take the <a target="_blank" rel="noopener noreferrer" href="#">User Survey</a> and let us know how we are doing!',
+      backgroundColor: "#141414",
+      textColor: "#ffffff",
+      isCloseable: true,
+    },
     navbar: {
       hideOnScroll: false,
       logo: {

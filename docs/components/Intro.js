@@ -432,7 +432,7 @@ function Explained() {
         </ul>
       </div>
       <div className="landing-card-section">
-        <div className="flex items-center">
+        <div className="badge-header">
           <a className="header-link" href="/application-development-guide">
             <h2 className="h2-landing">Application development guide</h2>
           </a>
