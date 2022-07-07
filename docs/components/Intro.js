@@ -1,7 +1,6 @@
 import React from "react";
 import Link from "@docusaurus/Link";
 import useBaseUrl from "@docusaurus/useBaseUrl";
-import {createTextChangeRange} from "typescript";
 
 function InfoSVG() {
   return (
@@ -416,6 +415,9 @@ const displayLinks = (links) => {
 function Explained() {
   return (
     <div className="landing-card">
+      <p className="main-subhead">
+        Temporal Platform explanation and usage information.
+      </p>
       <div className="landing-card-section">
         <h2 className="h2-landing">Core concepts</h2>
         <p className="landing-card-p">
