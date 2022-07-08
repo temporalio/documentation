@@ -9,6 +9,7 @@ __dirname = path.resolve();
 const DOCS_PATH = `${__dirname}/docs`;
 const GUIDE_CONFIGS_PATH = `${__dirname}/guide-gen/guide-configs`;
 const FILE_EXTENSION = ".md";
+const NEXT = "/next";
 
 // const WORKFLOW_CONCEPTS_CONFIG = require("./guide-configs/concepts.json");
 // const WORKFLOW_CONCEPTS_CONFIG = require("./guide-configs/concepts.json");
@@ -224,20 +225,44 @@ async function generateLangTabs(h3_section) {
 
 async function generateTabString(h3_section) {
   let tab_string = `<Tabs\n`;
+  const unavailable = "Content is not available";
   tab_string = `${tab_string}defaultValue="go"\n`;
   tab_string = `${tab_string}groupId="site-lang"\n`;
-  tab_string = `${tab_string}values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'TypeScript', value: 'typescript'},]}>\n\n`;
+  tab_string = `${tab_string}values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>\n\n`;
   tab_string = `${tab_string}<TabItem value="go">\n\n`;
-  tab_string = `${tab_string}${h3_section.tabs.go.markdown}\n\n`;
+  if (h3_section.tabs.go.markdown != undefined) {
+    tab_string = `${tab_string}${h3_section.tabs.go.markdown}\n\n`;
+  } else {
+    tab_string = `${tab_string}${unavailable}\n\n`;
+  }
   tab_string = `${tab_string}</TabItem>\n`;
   tab_string = `${tab_string}<TabItem value="java">\n\n`;
-  tab_string = `${tab_string}${h3_section.tabs.java.markdown}\n\n`;
+  if (h3_section.tabs.java.markdown != undefined) {
+    tab_string = `${tab_string}${h3_section.tabs.java.markdown}\n\n`;
+  } else {
+    tab_string = `${tab_string}${unavailable}\n\n`;
+  }
   tab_string = `${tab_string}</TabItem>\n`;
   tab_string = `${tab_string}<TabItem value="php">\n\n`;
-  tab_string = `${tab_string}${h3_section.tabs.php.markdown}\n\n`;
+  if (h3_section.tabs.php.markdown != undefined) {
+    tab_string = `${tab_string}${h3_section.tabs.php.markdown}\n\n`;
+  } else {
+    tab_string = `${tab_string}${unavailable}\n\n`;
+  }
   tab_string = `${tab_string}</TabItem>\n`;
   tab_string = `${tab_string}<TabItem value="typescript">\n\n`;
-  tab_string = `${tab_string}${h3_section.tabs.typescript.markdown}\n\n`;
+  if (h3_section.tabs.typescript.markdown != undefined) {
+    tab_string = `${tab_string}${h3_section.tabs.typescript.markdown}\n\n`;
+  } else {
+    tab_string = `${tab_string}${unavailable}\n\n`;
+  }
+  tab_string = `${tab_string}</TabItem>\n`;
+  tab_string = `${tab_string}<TabItem value="python">\n\n`;
+  if (h3_section?.tabs?.python?.markdown != undefined) {
+    tab_string = `${tab_string}${h3_section.tabs.python.markdown}\n\n`;
+  } else {
+    tab_string = `${tab_string}${unavailable}\n\n`;
+  }
   tab_string = `${tab_string}</TabItem>\n`;
   tab_string = `${tab_string}</Tabs>`;
   return tab_string;
@@ -263,7 +288,7 @@ async function frontmatter(guide_config) {
 async function writeGuides(guide_configs) {
   for (const guide_config of guide_configs.cfgs) {
     let writePath = "";
-    if (guide_config.file_dir != undefined && guide_config.file_dir != "/") {
+    if (guide_config.file_dir != "/") {
       writePath = path.join(
         DOCS_PATH,
         guide_config.file_dir,
@@ -299,6 +324,7 @@ async function generateLinkIndex(guide_config) {
     for (const h3_section of h2_section.h3_sections) {
       if (h3_section.header == "none" && h2_section.header == "none") {
         link_index.push({
+          guide_dir: guide_config.file_dir,
           guide: guide_config.id,
           local_ref: "",
           path: h3_section.path,
@@ -308,12 +334,14 @@ async function generateLinkIndex(guide_config) {
         h3_section.type != "lang-tabs"
       ) {
         link_index.push({
+          guide_dir: guide_config.file_dir,
           guide: guide_config.id,
           local_ref: localRef(h2_section.header),
           path: h3_section.path,
         });
       } else if (h3_section.type != "lang-tabs") {
         link_index.push({
+          guide_dir: guide_config.file_dir,
           guide: guide_config.id,
           local_ref: localRef(h3_section.header),
           path: h3_section.path,
@@ -327,6 +355,7 @@ async function generateLinkIndex(guide_config) {
             header = h2_section.header;
           }
           link_index.push({
+            guide_dir: guide_config.file_dir,
             guide: guide_config.id,
             local_ref: localRef(header),
             path: lang.path,
@@ -338,12 +367,14 @@ async function generateLinkIndex(guide_config) {
         for (h4_section of h3_section.h4_sections) {
           if (h4_section.header == "none" && h4_section.type != "lang-tabs") {
             link_index.push({
+              guide_dir: guide_config.file_dir,
               guide: guide_config.id,
               local_ref: localRef(h3_section.header),
               path: h4_section.path,
             });
           } else if (h4_section.type != "lang-tabs") {
             link_index.push({
+              guide_dir: guide_config.file_dir,
               guide: guide_config.id,
               local_ref: localRef(h4_section.header),
               path: h4_section.path,
@@ -357,6 +388,7 @@ async function generateLinkIndex(guide_config) {
                 header = h3_section.header;
               }
               link_index.push({
+                guide_dir: guide_config.file_dir,
                 guide: guide_config.id,
                 local_ref: localRef(header),
                 path: lang.path,
@@ -482,12 +514,17 @@ async function parseAndReplace(raw_content, link_index, current_guide_id) {
   return raw_content;
 
   async function replaceLinks(line, replaceable, link, current_guide_id) {
-    let updated = "";
+    let new_path = "";
     if (link.guide != current_guide_id) {
-      line = line.replaceAll(replaceable, `/${link.guide}/#${link.local_ref}`);
+      if (link.guide_dir != "/") {
+        new_path = `${NEXT}/${link.guide_dir}/${link.guide}#${link.local_ref}`;
+      } else {
+        new_path = `${NEXT}/${link.guide}#${link.local_ref}`;
+      }
     } else {
-      line = line.replaceAll(`${replaceable}`, `#${link.local_ref}`);
+      new_path = `#${link.local_ref}`;
     }
+    line = line.replaceAll(replaceable, new_path);
     return line;
   }
 }
