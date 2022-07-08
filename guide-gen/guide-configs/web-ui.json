@@ -1,6 +1,7 @@
 {
   "file_name": "web-ui.md",
   "id": "web-ui",
+  "file_dir": "/",
   "title": "Temporal Web UI",
   "sidebar_label": "Web UI",
   "description": "This guide is an overview of the Temporal Web UI.",
