@@ -18,7 +18,7 @@ This guide is meant to provide a comprehensive overview of the structures, primi
 
 The following language SDKs are supported.
 Language tab selection is preserved through a browser cookie.
-You are currently have the following language selected:
+The following language is selected:
 
 <Tabs
 defaultValue="go"
@@ -79,7 +79,7 @@ The following third party SDKs exist, but are not supported in the application d
 
 ## Guide structure
 
-The applicationd development guide is broken down into four sections:
+The application development guide is broken down into four sections:
 
 1. [**Foundations**](/next/application-development/foundations): The minimum things required to build and run a simple Workflow with a single Activity.
 
