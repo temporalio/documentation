@@ -596,7 +596,7 @@
         {
           "header": "none",
           "type": "context",
-          "path": "app-dev-context/local-activities"
+          "path": "app-dev-context/activity-heartbeats"
         },
         {
           "header": "none",

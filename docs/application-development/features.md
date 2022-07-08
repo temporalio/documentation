@@ -134,14 +134,14 @@ In the above code the `#[WorkflowMethod(name)]` is not specified, thus the Workf
 [`defineSignal`](https://typescript.temporal.io/api/namespaces/workflow/#definesignal)
 
 ```ts
-import { defineSignal } from '@temporalio/workflow';
+import {defineSignal} from "@temporalio/workflow";
 
 interface JoinInput {
   userId: string;
   groupId: string;
 }
 
-const joinSignal = defineSignal<JoinInput>('join');
+const joinSignal = defineSignal<JoinInput>("join");
 ```
 
 </TabItem>
@@ -289,12 +289,12 @@ Content is not available
 [`setHandler`](https://typescript.temporal.io/api/namespaces/workflow/#sethandler)
 
 ```ts
-import { setHandler } from '@temporalio/workflow';
+import {setHandler} from "@temporalio/workflow";
 
 export async function myWorkflow() {
   const groups = new Map<string, Set<string>>();
 
-  setHandler(joinSignal, ({ userId, groupId }: JoinInput) => {
+  setHandler(joinSignal, ({userId, groupId}: JoinInput) => {
     const group = groups.get(groupId);
     if (group) {
       group.add(userId);
@@ -385,14 +385,14 @@ Content is not available
 [`WorkflowHandle.signal`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle#signal)
 
 ```typescript
-import { WorkflowClient } from '@temporalio/client';
-import { joinSignal } from './workflows';
+import {WorkflowClient} from "@temporalio/client";
+import {joinSignal} from "./workflows";
 
 const client = new WorkflowClient();
 
-const handle = await client.getHandle('workflow-id-123');
+const handle = await client.getHandle("workflow-id-123");
 
-await handle.signal(joinSignal, { userId: 'user-1', groupId: 'group-1' });
+await handle.signal(joinSignal, {userId: "user-1", groupId: "group-1"});
 ```
 
 </TabItem>
@@ -489,12 +489,12 @@ $workflow->setValue(true);
 [`getExternalWorkflowHandle`](https://typescript.temporal.io/api/namespaces/workflow#getexternalworkflowhandle)
 
 ```typescript
-import { getExternalWorkflowHandle } from '@temporalio/workflow';
-import { joinSignal } from './other-workflow';
+import {getExternalWorkflowHandle} from "@temporalio/workflow";
+import {joinSignal} from "./other-workflow";
 
 export async function myWorkflowThatSignals() {
-  const handle = getExternalWorkflowHandle('workflow-id-123');
-  await handle.signal(joinSignal, { userId: 'user-1', groupId: 'group-1' });
+  const handle = getExternalWorkflowHandle("workflow-id-123");
+  await handle.signal(joinSignal, {userId: "user-1", groupId: "group-1"});
 }
 ```
 
@@ -619,16 +619,16 @@ $run = $workflowClient->startWithSignal(
 [`WorkflowClient.signalWithStart`](https://typescript.temporal.io/api/classes/client.WorkflowClient#signalwithstart)
 
 ```typescript
-import { WorkflowClient } from '@temporalio/client';
-import { myWorkflow, joinSignal } from './workflows';
+import {WorkflowClient} from "@temporalio/client";
+import {myWorkflow, joinSignal} from "./workflows";
 
 const client = new WorkflowClient();
 
 await client.signalWithStart(myWorkflow, {
-  workflowId: 'workflow-id-123',
-  args: [{ foo: 1 }],
+  workflowId: "workflow-id-123",
+  args: [{foo: 1}],
   signal: joinSignal,
-  signalArgs: [{ userId: 'user-1', groupId: 'group-1' }],
+  signalArgs: [{userId: "user-1", groupId: "group-1"}],
 });
 ```
 
@@ -1083,22 +1083,22 @@ Query Handlers can return values inside a Workflow in TypeScript.
 You make a Query with `handle.query(query, ...args)`. A Query needs a return value, but can also take arguments.
 
 ```typescript
-import * as wf from '@temporalio/workflow';
+import * as wf from "@temporalio/workflow";
 
-export const unblockSignal = wf.defineSignal('unblock');
-export const isBlockedQuery = wf.defineQuery<boolean>('isBlocked');
+export const unblockSignal = wf.defineSignal("unblock");
+export const isBlockedQuery = wf.defineQuery<boolean>("isBlocked");
 
 export async function unblockOrCancel(): Promise<void> {
   let isBlocked = true;
   wf.setHandler(unblockSignal, () => void (isBlocked = false));
   wf.setHandler(isBlockedQuery, () => isBlocked);
-  console.log('Blocked');
+  console.log("Blocked");
   try {
     await wf.condition(() => !isBlocked);
-    console.log('Unblocked');
+    console.log("Unblocked");
   } catch (err) {
     if (err instanceof wf.CancelledFailure) {
-      console.log('Cancelled');
+      console.log("Cancelled");
     }
     throw err;
   }
@@ -1523,11 +1523,11 @@ In this example, you can set the `scheduleToCloseTimeout` to 5 m.
 
 ```typescript
 // Sample of typical options you can set
-const { greet } = proxyActivities<typeof activities>({
-  scheduleToCloseTimeout: '5m',
+const {greet} = proxyActivities<typeof activities>({
+  scheduleToCloseTimeout: "5m",
   retry: {
     // default retry policy if not specified
-    initialInterval: '1s',
+    initialInterval: "1s",
     backoffCoefficient: 2,
     maximumAttempts: Infinity,
     maximumInterval: 100 * initialInterval,
@@ -1638,11 +1638,11 @@ In this example, you can set the `startToCloseTimeout` to 30 seconds.
 
 ```typescript
 // Sample of typical options you can set
-const { greet } = proxyActivities<typeof activities>({
-  startToCloseTimeout: '30s', // recommended
+const {greet} = proxyActivities<typeof activities>({
+  startToCloseTimeout: "30s", // recommended
   retry: {
     // default retry policy if not specified
-    initialInterval: '1s',
+    initialInterval: "1s",
     backoffCoefficient: 2,
     maximumAttempts: Infinity,
     maximumInterval: 100 * initialInterval,
@@ -1753,12 +1753,12 @@ In this example, you can set the `ScheduleToStartTimeout` to 60 seconds.
 
 ```typescript
 // Sample of typical options you can set
-const { greet } = proxyActivities<typeof activities>({
-  scheduleToCloseTimeout: '5m',
-  ScheduleToStartTimeout: '60s',
+const {greet} = proxyActivities<typeof activities>({
+  scheduleToCloseTimeout: "5m",
+  ScheduleToStartTimeout: "60s",
   retry: {
     // default retry policy if not specified
-    initialInterval: '1s',
+    initialInterval: "1s",
     backoffCoefficient: 2,
     maximumAttempts: Infinity,
     maximumInterval: 100 * initialInterval,
@@ -1777,7 +1777,7 @@ Content is not available
 
 ### Heartbeat Timeout
 
-A [Heartbeat Timeout](/next/activities#heartbeat-timeout) works in conjunction with Activity Heartbeats.
+A [Heartbeat Timeout](/next/activities#heartbeat-timeout) works in conjunction with [Activity Heartbeats](#activity-heartbeats).
 
 <Tabs
 defaultValue="go"
@@ -1893,9 +1893,9 @@ To set a Heartbeat Timeout, use [`ActivityOptions.heartbeatTimeout`](https://typ
 
 ```typescript
 // Creating a proxy for the activity.
-const { longRunningActivity } = proxyActivities<typeof activities>({
-  scheduleToCloseTimeout: '5m', // translates to 300000 ms
-  startToCloseTimeout: '30s', // translates to 30000 ms
+const {longRunningActivity} = proxyActivities<typeof activities>({
+  scheduleToCloseTimeout: "5m", // translates to 300000 ms
+  startToCloseTimeout: "30s", // translates to 30000 ms
   heartbeatTimeout: 10000, // equivalent to '10 seconds'
 });
 ```
@@ -2028,11 +2028,11 @@ To set Activity Retry Policies in TypeScript, pass [`ActivityOptions.retry`](htt
 
 ```typescript
 // Sample of typical options you can set
-const { yourActivity } = proxyActivities<typeof activities>({
+const {yourActivity} = proxyActivities<typeof activities>({
   // ...
   retry: {
     // default retry policy if not specified
-    initialInterval: '1s',
+    initialInterval: "1s",
     backoffCoefficient: 2,
     maximumAttempts: Infinity,
     maximumInterval: 100 * initialInterval,
@@ -2069,9 +2069,29 @@ import RetrySimulator from '/docs/components/RetrySimulator/RetrySimulator';
 ## Activity Heartbeats
 
 An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster.
-Each ping informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.
+Each Heartbeat informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.
+If the Cluster does not receive a Heartbeat within a [Heartbeat Timeout](/next/activities#heartbeat-timeout) time period, the Activity will be considered failed and another [Activity Task Execution](/next/tasks#activity-task-execution) may be scheduled according to the Retry Policy.
 
-Activity Heartbeats work in conjunction with a [Heartbeat Timeout](/next/activities#heartbeat-timeout).
+Heartbeats may not always be sent to the Cluster—they may be throttled by the Worker.
+The throttle interval is the smaller of:
+
+- `if heartbeatTimeout is provided, heartbeatTimeout * 0.8; else defaultHeartbeatThrottleInterval`
+- `maxHeartbeatThrottleInterval`
+
+`defaultHeartbeatThrottleInterval` is 30 seconds by default, and `maxHeartbeatThrottleInterval` is 60 seconds by default.
+Each can be set in Worker options.
+
+Throttling is implemented as follows:
+
+- After sending a Heartbeat, the Worker sets a timer for the throttle interval.
+- The Worker stops sending Heartbeats, but continues receiving Heartbeats from the Activity and remembers the most recent one.
+- When the timer fires, the Worker:
+  - Sends the most recent Heartbeat.
+  - Sets the timer again.
+
+Activity Cancellations are delivered to Activities from the Cluster when they Heartbeat. Activities that don't Heartbeat can't receive a Cancellation. Heartbeat throttling may lead to Cancellation getting delivered later than expected.
+
+Heartbeats may contain a `details` field describing the Activity's current progress. If an Activity gets retried, the Activity can access the `details` from the last heartbeat that was sent to the Cluster.
 
 <Tabs
 defaultValue="go"
@@ -2865,7 +2885,7 @@ You can set each Workflow to repeat on a schedule with the `cronSchedule` option
 ```typescript
 const handle = await client.start(scheduledWorkflow, {
   // ...
-  cronSchedule: '* * * * *', // start every minute
+  cronSchedule: "* * * * *", // start every minute
 });
 ```
 
@@ -2876,4 +2896,3 @@ Content is not available
 
 </TabItem>
 </Tabs>
-
