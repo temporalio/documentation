@@ -14,12 +14,13 @@ These measures can further secure your data.
 
 ![](/img/tctl-diagram-codec-server.svg)
 
-## Use case - tctl
+## Use case: tctl
 
-Suppose that a developer wants to view Workflow History. This can be done with the following command:
+Suppose that a developer wants to view Workflow History.
+This can be done with the following command:
 
 ```bash
-    tctl workflow show {workflowID}
+    tctl workflow showid <workflowID>
 ```
 
 This command retrieves all events that occurred within that Workflow, along with a list of details. These details might include a Payload. Without a Codec Server, this Payload cannot be read.
