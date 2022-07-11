@@ -8,7 +8,25 @@ sidebar_label: How to Use ClaimMapper
 
 A `Role` (within Temporal) is a bit mask that combines one or more of the role constants.
 
+```go
+role := authorization.RoleReader | authorization.RoleWriter
+```
+
 `GetClaims` is customizable, and can be modified with the `temporal.WithClaimMapper` server option. Temporal also offers a default JWT `ClaimMapper` for your use.
+
+A typical approach is for `ClaimMapper` to interpret custom `Claims` from a caller's JWT access token, such as membership in groups, and map them to Temporal roles for the user. The subject information from the caller's TLS certificate can also be a parameter in determining roles.
+
+### `AuthInfo`
+
+`AuthInfo` is a struct that is passed to `GetClaims`. `AuthInfo` contains an authorization token extracted from the `authorization` header of the gRPC request.
+
+`AuthInfo` includes a pointer to the `pkix.Name` struct. This struct contains an x.509 distinguishable name from the caller's mTLS certificate.
+
+### `Claims`
+
+`Claims` is a struct that contains information about permission claims granted to the caller.
+
+`Authorizer` assumes that the caller has been properly authenticated, and trusts the `Claims` when making an authorization decision.
 
 ## Default JWT ClaimMapper
 
@@ -45,3 +63,5 @@ The Permissions Claim in the JWT Token is expected to be a collection of Individ
 These permissions are then converted into Temporal roles for the caller.
 
 Multiple permissions for the same namespace will be overriden by the `ClaimMapper`.
+
+// example

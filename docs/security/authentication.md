@@ -12,15 +12,13 @@ Temporal has several authentication protocols that can be set to restrict access
 
 ## Servers
 
-Servers can fall victim to spoofing and MITM attacks. To prevent these, specify the `serverName` in the `client` section of your mTLS configuration.
-
-This enables established connections to authenticate the endpoint. This means that the server certificate that is presented to a connecting client has the given the server name.
+Servers can fall victim to spoofing and [MITM attacks](). Prevent this by specifying `serverName` in the `client` section of your mTLS configuration.
 
 Server configuration can be accomplished on `internode` and `frontend` endpoints.
 
 ## Client Connections
 
-Client connections can be restricted to certain endpoints. These clients would need certificates issued by a specific Certificate Authority.
+Client connections can be restricted to certain endpoints by requiring certificates from a specific Certificate Authority (CA).
 
 Specify the certificates allowed by modifying the `clientCaFiles`/ `clientCaData` and `requireClientAuth` properties. These properties are found in the `internode` and `frontend` sections of the mTLS configuration.
 
