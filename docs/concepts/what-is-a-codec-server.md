@@ -5,7 +5,7 @@ sidebar_label: Codec Server
 description: Explanation and implementation of a remote encryption/decryption server.
 ---
 
-A Codec Server is an optional feature that carries out additional levels of encoding/decoding to Payloads that are handled by [tctl](/docs/tctl/index) or the [Web UI](/docs/web-ui/how-to-use-a-list-filter-in-the-temporal-web-ui).
+A Codec Server is a feature that can perform additional levels of encoding and decoding on Payloads that are handled by [tctl](/docs/tctl/index) or the [Web UI](/docs/web-ui/how-to-use-a-list-filter-in-the-temporal-web-ui).
 
 The Web UI and tctl both use a default [Data Converter](/docs/concepts/what-is-a-data-converter), which is only capable of serialization.
 
