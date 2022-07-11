@@ -10,7 +10,7 @@ tags:
 
 Continue-As-New is a mechanism by which the latest relevant state is passed to a new Workflow Execution, with a fresh Event History.
 
-As a precautionary measure, the Temporal Platform limits Event History to 50,000 Events, and will warn you every 10,000 Events.
+As a precautionary measure, the Temporal Platform limits the total [Event History](/concepts/what-is-an-event-history) to 50,000 Events or 50MB, and will warn you every 10,000 Events or 10MB.
 To prevent a Workflow Execution Event History from exceeding this limit and failing, use Continue-As-New to start a new Workflow Execution with a fresh Event History.
 
 All values passed to a Workflow Execution through parameters or returned through a result value are recorded into the Event History.
