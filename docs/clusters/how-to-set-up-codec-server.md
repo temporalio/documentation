@@ -35,7 +35,7 @@ tctl --codec_endpoint 'http://localhost:{PORT}/{namespace}' workflow show --wid 
 
 ## Web UI
 
-Before running the Temporal service, specify the codec endpoint in the config yaml file.
+Before running the Temporal service, specify the codec endpoint in the configuration file.
 
 ```yaml
 codec:
