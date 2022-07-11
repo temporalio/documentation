@@ -42,8 +42,10 @@ codec:
     endpoint: {{ default .Env.TEMPORAL_CODEC_ENDPOINT "{namespace}"}}
 ```
 
-Select the button with two arrows in the top right area of the screen. This will bring up the codec endpoint dialog.
+Select the button with two arrows in the top right area of the screen.
+This action displays the codec endpoint dialog.
 
-Enter the URL and port number for your codec endpoint. Exit the dialog, go back to the previous page, and refresh the page.
+Enter the URL and port number for your codec endpoint.
+Exit the dialog, go back to the previous page, and refresh the page.
 
 The button should now be light blue, and your Payloads should be displayed in a readable format.
