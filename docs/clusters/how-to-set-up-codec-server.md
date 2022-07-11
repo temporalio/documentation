@@ -1,6 +1,6 @@
 ---
 id: how-to-set-up-codec-server
-title: How to Set Up a Codec Server?
+title: How to set up a Codec Server
 sidebar_label: Codec Server
 description: Implementation of a remote encryption/decryption server.
 ---
