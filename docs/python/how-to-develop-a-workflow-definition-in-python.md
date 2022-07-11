@@ -9,7 +9,7 @@ tags:
   - python
 ---
 
-Workflows in Python are classes.
+Workflows in Python are defined as classes.
 
 Specify the [`@workflow.defn`](https://python.temporal.io/temporalio.workflow.html#defn) decorator on the Workflow class to register a Workflow class.
 
@@ -21,6 +21,6 @@ class YourWorkflow:
     @workflow.run
     async def run(self, name: str) -> str:
         return await workflow.execute_activity(
-            say_hello, name, schedule_to_close_timeout=timedelta(seconds=5)
+            say_hello_activity, name, schedule_to_close_timeout=timedelta(seconds=5)
         )
 ```

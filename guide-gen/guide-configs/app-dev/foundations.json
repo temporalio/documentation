@@ -269,6 +269,11 @@
               "path": "none"
             },
             {
+              "lang": "python",
+              "title": "Python",
+              "path": "python/how-to-customize-workflow-type-in-python"
+            },
+            {
               "lang": "typescript",
               "title": "TypeScript",
               "path": "none"
@@ -334,6 +339,11 @@
               "lang": "php",
               "title": "PHP",
               "path": "php/how-to-develop-an-activity-definition-in-php"
+            },
+            {
+              "lang": "python",
+              "title": "Python",
+              "path": "python/how-to-develop-an-activity-definition-in-python"
             },
             {
               "lang": "typescript",
@@ -427,6 +437,11 @@
               "lang": "php",
               "title": "PHP",
               "path": "none"
+            },
+            {
+              "python": "Python",
+              "title": "Python",
+              "path": "python/how-to-customize-activity-type-in-python"
             },
             {
               "lang": "typescript",
@@ -535,6 +550,11 @@
               "lang": "php",
               "title": "PHP",
               "path": "php/how-to-create-a-temporal-client-in-php"
+            },
+            {
+              "lang": "python",
+              "title": "Python",
+              "path": "python/how-to-create-a-temporal-client-in-python"
             },
             {
               "lang": "typescript",
