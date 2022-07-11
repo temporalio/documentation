@@ -23,9 +23,13 @@ This can be done with the following command:
     tctl workflow showid <workflowID>
 ```
 
-This command retrieves all events that occurred within that Workflow, along with a list of details. These details might include a Payload. Without a Codec Server, this Payload cannot be read.
+This command retrieves all events that occurred within that Workflow, along with a list of details.
+These details might include a Payload.
+Without a Codec Server, this Payload cannot be read.
 
-Codec Servers allow further customization for Payload objects. The default Data Converter sends the Payload to a given endpoint, and receives a decoded Payload if the API returns a successful result. The Data Converter passes this result back to the command line, which prints the decoded result.
+Codec Servers allow further customization for Payload objects.
+The default Data Converter sends the Payload to a given endpoint, and receives a decoded Payload if the API returns a successful result.
+The Data Converter passes this result back to the command line, which prints the decoded result.
 
 ## Use case - Web UI
 
