@@ -8,12 +8,14 @@ description: Implementation of a remote encryption/decryption server.
 A [Codec Server](/docs/concepts/what-is-a-codec-server) is an optional feature that can further encode or decode Payloads.
 This can be done through the [Web UI](/docs/web-ui/how-to-use-a-list-filter-in-the-temporal-web-ui) or with [tctl](/docs/tctl/index).
 
-A codec HTTP protocol specifies two endpoints to handle Payload encoding and decoding. Implementations must:
+A codec HTTP protocol specifies two endpoints to handle Payload encoding and decoding.
+Implementations must do the following:
 
-1. Send and receive Payloads protobuf as JSON.
-2. Only check the final part of the incoming URL to determine if the request is for /encode or /decode.
+- Send and receive Payloads protobuf as JSON.
+- Check only the final part of the incoming URL to determine whether the request is for /encode or /decode.
 
-Each platform has a different approach to setting up and running the Codec Server. Follow the steps below to get a Codec Server running on your preferred platform.
+Each platform has a different approach to setting up and running the Codec Server.
+Follow these steps to get a Codec Server running on your preferred platform.
 
 ## tctl
 
