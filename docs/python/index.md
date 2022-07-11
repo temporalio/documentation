@@ -9,7 +9,7 @@ tags:
 
 [![Python 3.7+](https://img.shields.io/pypi/pyversions/temporalio.svg?style=for-the-badge)](https://pypi.org/project/temporalio)
 [![PyPI](https://img.shields.io/pypi/v/temporalio.svg?style=for-the-badge)](https://pypi.org/project/temporalio)
-[![MIT](https://img.shields.io/pypi/l/temporalio.svg?style=for-the-badge)](LICENSE)
+[![MIT](https://img.shields.io/pypi/l/temporalio.svg?style=for-the-badge)](next/LICENSE)
 
 To install the latest version of the Temporal Python package, run the following command.
 

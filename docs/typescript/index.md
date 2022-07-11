@@ -11,7 +11,7 @@ tags:
 
 [![CI Status](https://img.shields.io/github/workflow/status/temporalio/sdk-typescript/Continuous%20Integration?style=for-the-badge)](https://www.npmjs.com/package/temporalio)
 [![NPM](https://img.shields.io/npm/v/temporalio.svg?style=for-the-badge)](https://www.npmjs.com/package/temporalio)
-[![MIT](https://img.shields.io/pypi/l/temporalio.svg?style=for-the-badge)](LICENSE)
+[![MIT](https://img.shields.io/pypi/l/temporalio.svg?style=for-the-badge)](next/LICENSE)
 
 To download the latest version of the Temporal TypeScript Command, run the following command:
 
