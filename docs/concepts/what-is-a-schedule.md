@@ -12,7 +12,7 @@ A Schedule contains instructions for starting a [Workflow Execution](/concepts/w
 Schedules provide a more flexible and user-friendly approach than [Temporal Cron Jobs](/concepts/what-is-a-temporal-cron-job).
 
 - [How to enable Schedules](#how-to-enable-schedules)
-- [How to operate Schedules using tctl](/tctl/schedule/)
+- [How to operate Schedules using tctl](/next/tctl/schedule/)
 
 A Schedule has identity, and is independent of a Workflow Execution.
 This differs from a Temporal Cron Job, which relies on a cron schedule as a property of the Workflow Execution.
@@ -89,7 +89,7 @@ For more operational control, embed the contents of the time zone database file 
 
 A Schedule can be Paused.
 When a Schedule is Paused, the Spec has no effect.
-However, you can still force manual actions by using the [tctl schedule trigger](/tctl/schedule/trigger) command.
+However, you can still force manual actions by using the [tctl schedule trigger](/next/tctl/schedule/trigger) command.
 
 To assist communication among developers and operators, a “notes” field can be updated on pause or resume to store an explanation for the current state.
 

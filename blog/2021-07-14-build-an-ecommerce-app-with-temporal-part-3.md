@@ -373,6 +373,4 @@ Temporal's testing environment makes unit testing Workflows easy.
 Sending Signals and Queries to the currently running Workflow is straightforward with `RegisterDelayedCallback()`.
 Most importantly, Temporal's testing environment provides utilities for mocking Activities and testing logic that executes after a delay.
 That makes it to unit test Workflows that depend on external services or Workflows that involve long timeouts.
-In the [next blog post in this series](https://docs.temporal.io/blog/build-an-ecommerce-app-with-temporal-part-4-rest-api), you'll learn how to build a RESTful API on top of a Temporal Workflow.
-
-> Update: You can now [find Part 4 here](https://docs.temporal.io/blog/build-an-ecommerce-app-with-temporal-part-4-rest-api)!
+In the next blog post in this series, you'll learn how to build a RESTful API on top of a Temporal Workflow.
