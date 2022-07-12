@@ -493,7 +493,7 @@ function Explained() {
           <h2 className="h2-landing">Tutorials</h2>
         </a>
         <p className="landing-card-p">
-          Learning oriented tutorials across multiple SDKs.
+          Learning-oriented tutorials across multiple SDKs.
         </p>
         <ul className="landing-card-list">{displayLinks(tutorials.listOne)}</ul>
         <ul className="landing-card-list">{displayLinks(tutorials.listTwo)}</ul>

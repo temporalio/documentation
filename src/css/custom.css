@@ -591,6 +591,7 @@ h1 {
   font-size: 24px;
   position: relative;
   top: -1.05%;
+  height: 0;
 }
 
 .leadership-container {
