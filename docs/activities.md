@@ -13,83 +13,26 @@ import TabItem from '@theme/TabItem';
 
 This guide is meant to be a comprehensive overview of Temporal Activities.
 
-In day-to-day conversations, the term _Activity_ frequently denotes either an [Activity Type](#activity-type), an [Activity Definition](#activity-definition), or an [Activity Execution](#activity-execution).
+In day-to-day conversations, the term _Activity_ frequently denotes either an [Activity Definition](#activity-definition), an [Activity Type](#activity-type), or an [Activity Execution](#activity-execution).
 Temporal documentation aims to be explicit and differentiate between them.
 
-The purpose of an Activity is to execute a single, well-defined action (either short or long running), such as calling another service, transcoding a media file, or sending an email.
+An Activity is a normal function or object method that executes a single, well-defined action (either short or long running), such as calling another service, transcoding a media file, or sending an email message.
 
-#### Activities calling Activities
-
-For some use cases, having an Activity call another Activity might seem convenient.
-We generally recommend not doing so. Activities are regular functions, so calling one directly is not seen—and therefore not logged—by the Temporal Server.
-
-Instead, move logic out of the Activities and have the parent Workflow use the result of one Activity to call the other Activity.
-
-Fault-oblivious stateful Workflow code is the core abstraction of Temporal.
-But, due to deterministic execution requirements, they are not allowed to call any external API directly.
-Instead they orchestrate execution of Activities.
-In its simplest form, a Temporal Activity is a function or an object method in one of the supported languages.
-Temporal does not recover Activity state in case of failures.
+Workflow code orchestrates the execution of Activities, persisting the results.
+If an Activity Function Execution fails, any future execution starts from initial state (with the exception of Heartbeats).
 Therefore an Activity function is allowed to contain any code without restrictions.
 
-Activities are invoked asynchronously through task queues.
-A task queue is essentially a queue used to store an Activity task until it is picked up by an available worker.
-The worker processes an Activity by invoking its implementation function.
-When the function returns, the worker reports the result back to the Temporal service which in turn notifies the Workflow about completion.
-It is possible to implement an Activity fully asynchronously by completing it from a different process.
-
-- An Activity can be implemented as a synchronous method or fully asynchronously involving multiple processes.
-- An Activity can be retried indefinitely according to the provided exponential retry policy.
-- If for any reason an Activity is not completed within the specified timeout, an error is reported to the [Workflow](#workflow), which decides how to handle it. The duration of an Activity has no limit.
-- Activities support an [Activity Heartbeat](#activity-heartbeat) that helps to identify timeouts faster in case the Activity execution fails.
-
-Temporal does not impose any system limit on Activity duration. It is up to the application to choose the timeouts for its execution.
-
-Activities are dispatched to workers through task queues.
-Task queues are queues that workers listen on.
-Task queues are highly dynamic and lightweight.
-They don't need to be explicitly registered. And it is okay to have one task queue per worker process. It is normal to have more than one Activity type to be invoked through a single task queue. And it is normal in some cases (like host routing) to invoke the same Activity type on multiple task queues.
-
-Here are some use cases for employing multiple Activity task queues in a single Workflow:
-
-- _Flow control_. A worker that consumes from a task queue asks for an Activity task only when it has available capacity. So workers are never overloaded by request spikes. If Activity executions are requested faster than workers can process them, they are backlogged in the task queue.
-- _Throttling_. Each Activity worker can specify the maximum rate it is allowed to process Activities on a task queue. It does not exceed this limit even if it has spare capacity. There is also support for global task queue rate limiting. This limit works across all workers for the given task queue. It is frequently used to limit load on a downstream service that an Activity calls into.
-- _Deploying a set of Activities independently_. Think about a service that hosts Activities and can be deployed independently from other Activities and Workflows. To send Activity tasks to this service, a separate task queue is needed.
-- _Workers with different capabilities_. For example, workers on GPU boxes vs non GPU boxes. Having two separate task queues in this case allows Workflows to pick which one to send Activity an execution request to.
-- _Routing Activity to a specific host_. For example, in the media encoding case the transform and upload Activity have to run on the same host as the download one.
-- _Routing Activity to a specific process_. For example, some Activities load large data sets and cache them in the process. The Activities that rely on this data set should be routed to the same process.
-- _Multiple priorities_. One task queue per priority and having a worker pool per priority.
-- _Versioning_. A new backwards incompatible implementation of an Activity might use a different task queue.
-
-For long running Activities, we recommend that you specify a relatively short heartbeat timeout and constantly heartbeat. This way worker failures for even very long running Activities can be handled in a timely manner. An Activity that specifies the heartbeat timeout is expected to call the heartbeat method _periodically_ from its implementation.
-
-A heartbeat request can include application specific payload. This is useful to save Activity execution progress. If an Activity times out due to a missed heartbeat, the next attempt to execute it can access that progress and continue its execution from that point.
-
-Long running Activities can be used as a special case of leader election. Temporal timeouts use second resolution. So it is not a solution for realtime applications. But if it is okay to react to the process failure within a few seconds, then a Temporal heartbeat Activity is a good fit.
-
-One common use case for such leader election is monitoring. An Activity executes an internal loop that periodically polls some API and checks for some condition. It also heartbeats on every iteration. If the condition is satisfied, the Activity completes which lets its Workflow to handle it. If the Activity worker dies, the Activity times out after the heartbeat interval is exceeded and is retried on a different worker. The same pattern works for polling for new files in Amazon S3 buckets or responses in REST or other synchronous APIs.
-
-note Cancellations are not immediate
-
-`ctx.Done()` is only signaled when a heartbeat is sent to the service.
-Temporal's SDK throttles this so a heartbeat may not be sent to the service until 80% of the heartbeat timeout has elapsed.
-
-For example, if your heartbeat timeout is 20 seconds, `ctx.Done()` will not be signaled until 80% of 20 seconds (~16 seconds) has elapsed.
-To increase or decrease the delay of cancelation, modify the heartbeat timeout defined for the activity context.
-
-#### Asynchronous Activity Completion
-
-Asynchronous Activity Completion occurs when the final result of a computation, started by an Activity, is provided to the Temporal System from an external system.
-
-By default, an Activity is a function or method (depending on the language) that completes as soon as the function or method returns. But in some cases an Activity implementation is asynchronous. For example, the action could be forwarded to an external system through a message queue, and the result could come through a different queue.
-
-To support such use cases, Temporal allows Activity implementations that do not complete upon Activity function completions. A separate API should be used in this case to complete the Activity. This API can be called from any process, even in a different programming language, that the original Activity worker used.
+Activity Functions are executed by Worker Processes.
+When the Activity Function returns, the Worker sends the results back to the Temporal Cluster as part of the ActivityTaskCompleted Event.
+The Event is added to the Workflow Execution's Event History.
 
 ## Activity Definition
 
-An Activity Definition is the code that defines the constraints of an [Activity Task Execution](/tasks/#activity-task-execution).
+An Activity Definition is the code that defines the constraints of an [Activity Task Execution](/next/tasks#activity-task-execution).
 
-The term 'Activity Definition' is used to refer to the full set of primitives in any given language SDK that provides an access point to an Activity Function Definition——the method or function that is invoked for an [Activity Task Execution](/tasks/#activity-task-execution).
+- [How to develop an Activity Definition](/application-development-guide/#develop-activities)
+
+The term 'Activity Definition' is used to refer to the full set of primitives in any given language SDK that provides an access point to an Activity Function Definition——the method or function that is invoked for an [Activity Task Execution](/next/tasks#activity-task-execution).
 Therefore, the terms Activity Function and Activity Method refer to the source of an instance of an execution.
 
 Activity Definitions are named and referenced in code by their [Activity Type](#activity-type).
@@ -108,7 +51,7 @@ Therefore, an Activity Definition has no restrictions on the code it contains.
 
 An Activity Definition can support as many parameters as needed.
 
-All values passed through these parameters are recorded in the [Event History](/workflows/#event-history) of the Workflow Execution.
+All values passed through these parameters are recorded in the [Event History](/next/workflows#event-history) of the Workflow Execution.
 Return values are also captured in the Event History for the calling Workflow Execution.
 
 Activity Definitions must contain the following parameters:
@@ -117,18 +60,7 @@ Activity Definitions must contain the following parameters:
 - Heartbeat: a notification from the Worker to the Temporal Cluster that the Activity Execution is progressing. Cancelations are allowed only if the Activity Definition permits Heartbeating.
 - Timeouts: intervals that control the execution and retrying of Activity Task Executions.
 
-Other parameters, such as [Retry Policies](/retry-policies/#) and return values, can be seen in the implementation guides, listed in the next section.
-
-#### Implementing Activity Definitions
-
-We strongly recommend that you develop an Activity Definition in a language that has a corresponding Temporal SDK.
-
-**Implementation guides:**
-
-- [How to develop an Activity Definition in Go](/application-development-guide/#develop-activities)
-- [How to develop an Activity Interface in Java](/java/activities/#activity-interface)
-- [How to develop an Activity Interface in PHP](/php/activities/#activity-interface)
-- [How to develop an Activity Interface in TypeScript](/typescript/activities/#how-to-write-an-activity-function)
+Other parameters, such as [Retry Policies](/next/retry-policies#) and return values, can be seen in the implementation guides, listed in the next section.
 
 ### Activity Type
 
@@ -138,9 +70,16 @@ Activity Types are scoped via Task Queues.
 
 ## Activity Execution
 
-An Activity Execution is the full chain of [Activity Task Executions](/tasks/#activity-task-execution).
+An Activity Execution is the full chain of [Activity Task Executions](/next/tasks#activity-task-execution).
+
+- [How to spawn an Activity Execution](/application-development-guide#start-activity-execution)
 
 ![Activity Execution](/diagrams/activity-execution.svg)
+
+An Activity Execution has no time limit.
+Activity Execution time limits and retries can be optimized for each situation within the Temporal Application.
+
+If for any reason an Activity Execution does not complete (exhausts all retries), the error is returned to the [Workflow](/workflows), which decides how to handle it.
 
 ### Request Cancellation
 
@@ -155,10 +94,6 @@ Cancellation requests are only delivered to Activity Executions that Heartbeat:
 - The Activity should perform all necessary cleanup and report when it is done.
 - The Workflow can decide if it wants to wait for the Activity cancellation confirmation or proceed without waiting.
 
-**Implementation guides:**
-
-- [How to spawn an Activity Execution in Go](/application-development-guide/#start-activity-execution)
-
 ### Activity Id
 
 A unique identifier for an [Activity Execution](#activity-execution).
@@ -167,10 +102,10 @@ An Activity Id can be used to complete the Activity asynchronously.
 
 ### Schedule-To-Start Timeout
 
-A Schedule-To-Start Timeout is the maximum amount of time that is allowed from when an [Activity Task](/tasks/#activity-task) is scheduled (that is, placed in a Task Queue) to when a [Worker](/workers/#) starts (that is, picks up from the Task Queue) that Activity Task.
+A Schedule-To-Start Timeout is the maximum amount of time that is allowed from when an [Activity Task](/next/tasks#activity-task) is scheduled (that is, placed in a Task Queue) to when a [Worker](/next/workers#) starts (that is, picks up from the Task Queue) that Activity Task.
 In other words, it's a limit for how long an Activity Task can be enqueued.
 
-[How to set a Schedule-To-Start Timeout in Go](/application-development-guide/#schedule-to-start-timeout)
+[How to set a Schedule-To-Start Timeout in Go](/next/application-development/features#schedule-to-start-timeout)
 
 The moment that the Task is picked by the Worker from the Task Queue is considered to be the start of the Activity Task for the purposes of the Schedule-To-Start Timeout and associated metrics.
 This definition of "Start" avoids issues that a clock difference between the Temporal Cluster and a Worker might create.
@@ -183,7 +118,7 @@ The Schedule-To-Start Timeout is enforced for each Activity Task, whereas the Sc
 Thus, "Schedule" in Schedule-To-Start refers to the scheduling moment of _every_ Activity Task in the sequence of Activity Tasks that make up the Activity Execution, while
 "Schedule" in Schedule-To-Close refers to the _first_ Activity Task in that sequence.
 
-A [Retry Policy](/retry-policies/#) attached to an Activity Execution retries an Activity Task.
+A [Retry Policy](/next/retry-policies#) attached to an Activity Execution retries an Activity Task.
 
 ![Start-To-Close Timeout period with retries](/diagrams/schedule-to-start-timeout-with-retry.svg)
 
@@ -202,9 +137,9 @@ In most cases, we recommend monitoring the `temporal_activity_schedule_to_start_
 
 ### Start-To-Close Timeout
 
-A Start-To-Close Timeout is the maximum time allowed for a single [Activity Task Execution](/tasks/#activity-task-execution).
+A Start-To-Close Timeout is the maximum time allowed for a single [Activity Task Execution](/next/tasks#activity-task-execution).
 
-- [How to set a Start-To-Close Timeout in Go](/application-development-guide/#start-to-close-timeout)
+- [How to set a Start-To-Close Timeout in Go](/next/application-development/features#start-to-close-timeout)
 
 **The default Start-To-Close Timeout is the same as the default [Schedule-To-Close Timeout](#schedule-to-close-timeout).**
 
@@ -216,7 +151,7 @@ The main use case for the Start-To-Close timeout is to detect when a Worker cras
 
 ![Start-To-Close Timeout period](/diagrams/start-to-close-timeout.svg)
 
-A [Retry Policy](/retry-policies/#) attached to an Activity Execution retries an Activity Task Execution.
+A [Retry Policy](/next/retry-policies#) attached to an Activity Execution retries an Activity Task Execution.
 Thus the Start-To-Close Timeout is applied to each Activity Task Execution within an Activity Execution.
 
 If the first Activity Task Execution returns an error the first time, then the full Activity Execution might look like this:
@@ -232,9 +167,9 @@ If this timeout is reached, the following actions occur:
 
 ### Schedule-To-Close Timeout
 
-A Schedule-To-Close Timeout is the maximum amount of time allowed for the overall [Activity Execution](#activity-execution), from when the first [Activity Task](/tasks/#activity-task) is scheduled to when the last Activity Task, in the chain of Activity Tasks that make up the Activity Execution, reaches a Closed status.
+A Schedule-To-Close Timeout is the maximum amount of time allowed for the overall [Activity Execution](#activity-execution), from when the first [Activity Task](/next/tasks#activity-task) is scheduled to when the last Activity Task, in the chain of Activity Tasks that make up the Activity Execution, reaches a Closed status.
 
-- [How to set a Schedule-To-Close Timeout in Go](/application-development-guide/#schedule-to-close-timeout)
+- [How to set a Schedule-To-Close Timeout in Go](/next/application-development/features#schedule-to-close-timeout)
 
 ![Schedule-To-Close Timeout period](/diagrams/schedule-to-close-timeout.svg)
 
@@ -256,12 +191,14 @@ A Heartbeat Timeout is the maximum time between [Activity Heartbeats](#activity-
 
 ![Heartbeat Timeout periods](/diagrams/heartbeat-timeout.svg)
 
-If this timeout is reached, the Activity Task fails and a retry occurs if a [Retry Policy](/retry-policies/#) dictates it.
+If this timeout is reached, the Activity Task fails and a retry occurs if a [Retry Policy](/next/retry-policies#) dictates it.
 
 ### Activity Heartbeats
 
 An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster.
 Each ping informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.
+
+- [How to Heartbeat an Activity](/application-development-guide#activity-heartbeats)
 
 Activity Heartbeats work in conjunction with a [Heartbeat Timeout](#heartbeat-timeout).
 
@@ -269,15 +206,44 @@ Activity Heartbeats are implemented within the Activity Definition.
 Custom progress information can be included in the Heartbeat which can then be used by the Activity Execution should a retry occur.
 
 An Activity Heartbeat can be recorded as often as needed (e.g. once a minute or every loop iteration).
+It is often a good practice to Heartbeat on anything but the shortest Activity Function Execution.
 Temporal SDKs control the rate at which Heartbeats are sent to the Cluster.
 
 Heartbeating is not required from [Local Activities](#local-activities), and does nothing.
 
-- [How to Heartbeat an Activity in Go](/application-development-guide/#activity-heartbeats)
+For _long-running_ Activities, we recommend using a relatively short Heartbeat Timeout and a frequent Heartbeat.
+That way if a Worker fails it can be handled in a timely manner.
+
+A Heartbeat can include an application layer payload that can be used to _save_ Activity Execution progress.
+If an [Activity Task Execution](/next/tasks#activity-task-execution) times out due to a missed Heartbeat, the next Activity Task can access and continue with that payload.
+
+### Asynchronous Activity Completion
+
+Asynchronous Activity Completion is a feature that enables an Activity Function to return without causing the Activity Execution to complete.
+The Temporal Client can then be used to both Heartbeat Activity Execution progress and eventually provide a result.
+
+- [How to complete an Activity Asynchronously](/application-development-guide#async-activity-completion)
+
+#### When to use Async Completion
+
+The intended use-case for this feature is when an external system has the final result of a computation, started by an Activity.
+
+Consider using Asynchronous Activities instead of Signals if the external process is unreliable and might fail to send critical status updates through a Signal.
+
+Consider using [Signals](/next/workflows#signals) as an alternative to Asynchronous Activities to return data back to a Workflow Execution if there is a human in the process loop.
+The reason is that a human in the loop means multiple steps in the process.
+The first is the Activity Function that stores state in an external system and at least one other step where a human would “complete” the activity.
+If the first step fails, you want to detect that quickly and retry instead of waiting for the entire process, which could be significantly longer when humans are involved.
+
+#### Task Token
+
+A Task Token is a unique Id that correlates to an [Activity Execution](#activity-execution).
+
+Activity Execution completion calls take either a single Task Token, or the [Namespace](/next/namespaces#), [Workflow Id](/next/workflows#workflow-id), and [Activity Id](#activity-id) as a set of arguments.
 
 ## Local Activities
 
-A Local Activity is an [Activity Execution](#activity-execution) that executes in the same process as the [Workflow Execution](/workflows/#workflow-executions) that spawns it.
+A Local Activity is an [Activity Execution](#activity-execution) that executes in the same process as the [Workflow Execution](/next/workflows#workflow-executions) that spawns it.
 
 Some Activity Executions are very short-living and do not need the queuing semantic, flow control, rate limiting, and routing capabilities.
 For this case, Temporal supports the Local Activity feature.

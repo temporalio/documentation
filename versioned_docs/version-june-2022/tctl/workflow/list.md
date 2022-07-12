@@ -86,7 +86,7 @@ tctl workflow list --print_full
 
 Print the raw JSON objects.
 
-Alias: `pjson`
+Alias: `--pjson`
 
 **Example**
 

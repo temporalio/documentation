@@ -1,7 +1,7 @@
 ---
 id: how-to-set-asynchronous-activity-completion-in-php
-title: How to set asynchronous Activity completion
-sidebar_label: Async Activity completion
+title: How to set asynchronous Activity completion in PHP
+sidebar_label: Asynchronous Activity completion
 ---
 
 Sometimes Workflows need to perform certain operations in parallel.

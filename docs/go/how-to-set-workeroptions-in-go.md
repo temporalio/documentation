@@ -212,7 +212,7 @@ Set to enable logging in Workflow Execution replays.
 - Default: `false`
 
 In Workflow Definitions you can use `workflow.GetLogger(ctx)` to write logs.
-By default, the logger will skip logging during replays so you do not see duplicate logs.
+By default, the logger will skip logging during replays, so you do not see duplicate logs.
 
 This is only really useful for debugging purpose.
 

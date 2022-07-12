@@ -19,6 +19,10 @@ You can [join the waitlist](https://pages.temporal.io/cloud-early-access).
 
 :::
 
+## Release notes
+
+For the latest release notes, see [Temporal Cloud release notes](/cloud/release-notes).
+
 ## Upgrade policy
 
 All customers will automatically be upgraded to the latest minor version.
