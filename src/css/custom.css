@@ -642,3 +642,7 @@ h1 {
 .close {
   color: #ffffff;
 }
+
+.app-dev-landing-page-lang-logo {
+  max-width: 100px;
+}

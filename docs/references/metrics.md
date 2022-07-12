@@ -8,7 +8,7 @@ sidebar_label: SDK metrics
 The Temporal SDKs emit a set of metrics from Temporal Client usage and Worker Processes.
 All metrics are prefixed with `temporal_` before being exported to their configured destination.
 (The prefix has been removed in the following reference.)
-Currently some metrics are specific to certain SDKs.
+Currently, some metrics are specific to certain SDKs.
 
 Metrics are defined in the following locations (The Typescript SDK metrics are defined in the Core SDK and PHP SDK metric are defined in the Go SDK):
 
