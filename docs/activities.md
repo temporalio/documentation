@@ -183,16 +183,6 @@ An Activity Execution must have either this timeout (Schedule-To-Close) or [Star
 By default, an Activity Execution Retry Policy dictates that retries will occur for up to 10 years.
 This timeout can be used to control the overall duration of an Activity Execution in the face of failures (repeated Activity Task Executions), without altering the Maximum Attempts field of the Retry Policy.
 
-### Heartbeat Timeout
-
-A Heartbeat Timeout is the maximum time between [Activity Heartbeats](#activity-heartbeats).
-
-- [How to set a Heartbeat Timeout](/application-development-guide/#heartbeat-timeout)
-
-![Heartbeat Timeout periods](/diagrams/heartbeat-timeout.svg)
-
-If this timeout is reached, the Activity Task fails and a retry occurs if a [Retry Policy](/retry-policies/#) dictates it.
-
 ### Activity Heartbeats
 
 An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster.
@@ -216,6 +206,16 @@ That way if a Worker fails it can be handled in a timely manner.
 
 A Heartbeat can include an application layer payload that can be used to _save_ Activity Execution progress.
 If an [Activity Task Execution](/tasks/#activity-task-execution) times out due to a missed Heartbeat, the next Activity Task can access and continue with that payload.
+
+### Heartbeat Timeout
+
+A Heartbeat Timeout is the maximum time between [Activity Heartbeats](#activity-heartbeats).
+
+- [How to set a Heartbeat Timeout](/application-development-guide/#heartbeat-timeout)
+
+![Heartbeat Timeout periods](/diagrams/heartbeat-timeout.svg)
+
+If this timeout is reached, the Activity Task fails and a retry occurs if a [Retry Policy](/retry-policies/#) dictates it.
 
 ### Asynchronous Activity Completion
 
