@@ -42,9 +42,22 @@ The code for the default `ClaimMapper` can also be used to build a custom `Claim
 
 ### Token Key Provider
 
-A `TokenKeyProvider` obtains public keys from given issuers' URIs that adhere to a specific format.
+A `TokenKeyProvider` obtains public keys from given issuers' URIs that adhere to a specific format. The default JWT ClaimMapper uses this component to obtain and refresh public keys over time.
 
 Temporal provides an `rsaTokenKeyProvider`. This component dynamically obtains public keys that follow the JWKS format. `rsaTokenKeyProvider` will only use the `RSAKey` and `Close` methods.
+
+```go
+provider := authorization.NewRSAKeyProvider(cfg)
+```
+
+Note that the `rsaTokenKeyProvider` returned by `NewRSAKeyProvider` only implements `RSAKey` and `Close` methods, and returns an error from `EcdsaKey` and `HmacKey` methods. It is configured via `config.Config.Global.Authorization.JWTKeyProvider`:
+
+<!--SNIPSTART temporal-common-service-config-jwtkeyprovider-->
+<!--SNIPEND-->
+
+`KeySourceURIs` are the HTTP endpoints that return public keys of token issuers in the [JWKS format](https://tools.ietf.org/html/rfc7517).
+`RefreshInterval` defines how frequently keys should be refreshed.
+For example, [Auth0](https://auth0.com/) exposes such endpoints as `https://YOUR_DOMAIN/.well-known/jwks.json`.
 
 By default, "permissions" is used to name the `permissionsClaimName` value.
 
@@ -54,14 +67,37 @@ Configure the plugin with `config.Config.Global.Authorization.JWTKeyProvider`.
 
 The default JWT `ClaimMapper` expects authorization tokens to be formatted as follows:
 
+```
 Bearer <token>
+```
 
 The Permissions Claim in the JWT Token is expected to be a collection of Individual Permission Claims. Each Individual Permission Claim must be formatted as follows:
 
-`<namespace>` : `<permission>`
+```
+<namespace> : <permission>
+```
 
-These permissions are then converted into Temporal roles for the caller.
+These permissions are then converted into Temporal roles for the caller. This can be one of Temporal's four values:
+
+- read
+- write
+- worker
+- admin
 
 Multiple permissions for the same namespace will be overriden by the `ClaimMapper`.
 
-// example
+##### Example of a JWT payload for The Default JWT ClaimMapper
+
+```
+{
+   "permissions":[
+      "system:read",
+      "namespace1:write"
+   ],
+   "aud":[
+      "audience"
+   ],
+   "exp":1630295722,
+   "iss":"Issuer"
+}
+```
