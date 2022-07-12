@@ -15,7 +15,7 @@ Temporal Clusters explained.
 
 A Temporal Cluster is the group of services, known as the [Temporal Server](#temporal-server), combined with persistence stores, that together act as a component of the Temporal Platform.
 
-- [How to quickly install a Temporal Cluster for testing and development](/application-development-guide/#run-a-dev-cluster)
+- [How to quickly install a Temporal Cluster for testing and development](/next/application-development/foundations#run-a-dev-cluster)
 - [Cluster deployment guide](/cluster-deployment-guide)
 
 ![A Temporal Cluster (Server + persistence)](/diagrams/temporal-cluster.svg)
@@ -37,7 +37,7 @@ The database stores the following types of data:
 - Visibility data: Enables operations like "show all running Workflow Executions".
   For production environments, we recommend using Elasticsearch.
 
-An Elasticsearch database can be added to enable [Advanced Visibility](/visibility/#advanced-visibility).
+An Elasticsearch database can be added to enable [Advanced Visibility](/next/visibility#advanced-visibility).
 
 **Versions**
 
@@ -69,8 +69,8 @@ Any software that can pull metrics that supports the same format could be used, 
 
 #### Visibility
 
-Temporal has built-in [Visibility](/visibility/#) features.
-To enhance this feature, Temporal supports an [integration with Elasticsearch](/cluster-deployment-guide/#advanced-visibility).
+Temporal has built-in [Visibility](/next/visibility#) features.
+To enhance this feature, Temporal supports an [integration with Elasticsearch](/next/cluster-deployment-guide#advanced-visibility).
 
 - Elasticsearch v7.10 is supported from Temporal version 1.7.0 onwards
 - Elasticsearch v6.8 is supported in all Temporal versions
@@ -192,7 +192,7 @@ A Retention Period is the amount of time a Workflow Execution Event History rema
 
 - [How to set the Retention Period for the Namespace](/tctl/namespace/register/#--retention)
 
-A Retention Period applies to a single [Namespace](/namespaces/#) and is set when the Namespace is registered.
+A Retention Period applies to a single [Namespace](/next/namespaces#) and is set when the Namespace is registered.
 
 If the Retention Period isn't set, it defaults to 2 days.
 The minimum Retention Period is 1 day.
@@ -201,10 +201,10 @@ Setting the Retention Period to 0 results in the error _A valid retention period
 
 ## Archival
 
-Archival is a feature that automatically backs up [Event Histories](/workflows/#event-history) and Visibility records from Temporal Cluster persistence to a custom blob store.
+Archival is a feature that automatically backs up [Event Histories](/next/workflows#event-history) and Visibility records from Temporal Cluster persistence to a custom blob store.
 
-- [How to set up Archival](/cluster-deployment-guide/#set-up)
-- [How to create a custom Archiver](/cluster-deployment-guide/#custom-archiver)
+- [How to set up Archival](/next/cluster-deployment-guide#set-up)
+- [How to create a custom Archiver](/next/cluster-deployment-guide#custom-archiver)
 
 Workflow Execution Event Histories are backed up after the [Retention Period](/concepts/what-is-a-namespace/#retention-period) is reached.
 Visibility records are backed up immediately after a Workflow Execution reaches a Closed status.
@@ -225,7 +225,7 @@ When necessary, for higher availability, Cluster operators can failover to any o
 Temporal's Multi-Cluster Replication feature is considered **experimental** and not subject to normal [versioning and support policy](/clusters).
 
 Temporal automatically forwards Start, Signal, and Query requests to the active Cluster.
-This feature must be enabled through a Dynamic Config flag per [Global Namespace](/namespaces/#global-namespace).
+This feature must be enabled through a Dynamic Config flag per [Global Namespace](/next/namespaces#global-namespace).
 
 When the feature is enabled, Tasks are sent to the Parent Task Queue partition that matches that Namespace, if it exists.
 

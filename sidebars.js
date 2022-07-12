@@ -18,8 +18,22 @@ module.exports = {
         "namespaces",
       ],
     },
-    "application-development-guide",
-    "operation/how-to-tune-workers",
+    {
+      type: "category",
+      label: "Application development",
+      collapsible: true,
+      collapsed: true,
+      link: {
+        type: "doc",
+        id: "application-development/index",
+      },
+      items: [
+        "application-development/foundations",
+        "application-development/features",
+        "application-development/observability",
+        "application-development/worker-performance",
+      ],
+    },
     "cluster-deployment-guide",
     "server/security",
     {

@@ -64,7 +64,7 @@ A Workflow Execution can be started either synchronously or asynchronously.
                   .setWorkflowId(workflowId)
                   .build());
     // use WorkflowClient.execute to return future that contains Workflow result or failure, or
-    // WorkflowClient.start to return WorkflowId and RunId of the started Workflow).
+    // use WorkflowClient.start to return WorkflowId and RunId of the started Workflow).
     WorkflowClient.start(workflow::greetCustomer);
     ```
 

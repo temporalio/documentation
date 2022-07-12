@@ -13,7 +13,7 @@ import TabItem from '@theme/TabItem';
 
 Temporal Task Queues and Worker Processes are tightly coupled components.
 
-A Task is the context that a Worker needs to progress with a specific [Workflow Execution](/workflows/#workflow-executions) or [Activity Execution](/activities/#activity-execution).
+A Task is the context that a Worker needs to progress with a specific [Workflow Execution](/next/workflows#workflow-executions) or [Activity Execution](/next/activities#activity-execution).
 
 There are two types of Tasks:
 
@@ -25,7 +25,7 @@ There are two types of Tasks:
 A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.
 
 - Every time a new external event that might affect a Workflow state is recorded, a Workflow Task that contains the event is added to a Task Queue and then picked up by a Workflow Worker.
-- After the new event is handled, the Workflow Task is completed with a list of [Commands](/workflows/#commands).
+- After the new event is handled, the Workflow Task is completed with a list of [Commands](/next/workflows#commands).
 - Handling of a Workflow Task is usually very fast and is not related to the duration of operations that the Workflow invokes.
 
 ### Workflow Task Execution
@@ -41,7 +41,7 @@ If Heartbeat data is being passed, an Activity Task will also contain the latest
 
 ### Activity Task Execution
 
-An Activity Task Execution is when the Worker uses the Context provided from the [Activity Task](#activity-task) and executes the [Activity Definition](/activities/#activity-definition) (also known as the Activity Function).
+An Activity Task Execution is when the Worker uses the Context provided from the [Activity Task](#activity-task) and executes the [Activity Definition](/next/activities#activity-definition) (also known as the Activity Function).
 
 The [ActivityTaskScheduled Event](/concepts/what-is-an-event#activitytaskscheduled) corresponds to when the Temporal Cluster puts the Activity Task into the Task Queue.
 
@@ -61,7 +61,7 @@ Once an Activity Task finishes execution, the Worker responds to the Cluster wit
 
 ## Task Queues
 
-A Task Queue is a lightweight, dynamically allocated queue that one or more [Worker Entities](/workers/#worker-entity) poll for [Tasks](#).
+A Task Queue is a lightweight, dynamically allocated queue that one or more [Worker Entities](/next/workers#worker-entity) poll for [Tasks](#).
 
 Task Queues do not have any ordering guarantees.
 It is possible to have a Task that stays in a Task Queue for a period of time, if there is a backlog that wasn't drained for that time.
