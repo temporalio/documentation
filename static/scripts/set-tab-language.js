@@ -15,8 +15,10 @@
 
   if (entries.lang === "js") {
     window.localStorage.setItem("docusaurus.tab.language", "js");
+    window.localStorage.setItem("docusaurus.tab.site-lang", "typescript");
   } else if (entries.lang === "ts") {
     window.localStorage.setItem("docusaurus.tab.language", "ts");
+    window.localStorage.setItem("docusaurus.tab.site-lang", "typescript");
   }
 
   // for app dev guide
