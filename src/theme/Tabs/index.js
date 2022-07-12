@@ -1,12 +1,12 @@
-import React, { useState, cloneElement, isValidElement } from 'react';
-import useIsBrowser from '@docusaurus/useIsBrowser';
+import React, {useState, cloneElement, isValidElement} from "react";
+import useIsBrowser from "@docusaurus/useIsBrowser";
 import {
   useScrollPositionBlocker,
   duplicates,
   useTabGroupChoice,
-} from '@docusaurus/theme-common';
-import clsx from 'clsx';
-import styles from './styles.module.css'; // A very rough duck type, but good enough to guard against mistakes while
+} from "@docusaurus/theme-common";
+import clsx from "clsx";
+import styles from "./styles.module.css"; // A very rough duck type, but good enough to guard against mistakes while
 // allowing customization
 
 // Temporal additions
@@ -20,19 +20,19 @@ const allowedLanguages = new Set([
   "python",
   "dotnet",
   "ruby",
-  "rust"
+  "rust",
 ]);
 
 function updateTemporalLang(val) {
   if (!allowedLanguages.has(val)) {
     return;
   }
-  history.replaceState({}, '', '?lang=' + val);
+  history.replaceState({}, "", "?lang=" + val);
 }
 // End Temporal additions
 
 function isTabItem(comp) {
-  return typeof comp.props.value !== 'undefined';
+  return typeof comp.props.value !== "undefined";
 }
 
 function TabsComponent(props) {
@@ -52,14 +52,14 @@ function TabsComponent(props) {
 
     throw new Error(
       `Docusaurus error: Bad <Tabs> child <${
-      // @ts-expect-error: guarding against unexpected cases
-      typeof child.type === 'string' ? child.type : child.type.name
-      }>: all children of the <Tabs> component should be <TabItem>, and every <TabItem> should have a unique "value" prop.`,
+        // @ts-expect-error: guarding against unexpected cases
+        typeof child.type === "string" ? child.type : child.type.name
+      }>: all children of the <Tabs> component should be <TabItem>, and every <TabItem> should have a unique "value" prop.`
     );
   });
   const values =
     valuesProp ?? // Only pick keys that we recognize. MDX would inject some keys by default
-    children.map(({ props: { value, label, attributes } }) => ({
+    children.map(({props: {value, label, attributes}}) => ({
       value,
       label,
       attributes,
@@ -70,7 +70,7 @@ function TabsComponent(props) {
     throw new Error(
       `Docusaurus error: Duplicate values "${dup
         .map((a) => a.value)
-        .join(', ')}" found in <Tabs>. Every value needs to be unique.`,
+        .join(", ")}" found in <Tabs>. Every value needs to be unique.`
     );
   } // When defaultValueProp is null, don't show a default tab
 
@@ -78,23 +78,23 @@ function TabsComponent(props) {
     defaultValueProp === null
       ? defaultValueProp
       : defaultValueProp ??
-      children.find((child) => child.props.default)?.props.value ??
-      children[0]?.props.value;
+        children.find((child) => child.props.default)?.props.value ??
+        children[0]?.props.value;
 
   if (defaultValue !== null && !values.some((a) => a.value === defaultValue)) {
     throw new Error(
       `Docusaurus error: The <Tabs> has a defaultValue "${defaultValue}" but none of its children has the corresponding value. Available values are: ${values
         .map((a) => a.value)
         .join(
-          ', ',
-        )}. If you intend to show no default tab, use defaultValue={null} instead.`,
+          ", "
+        )}. If you intend to show no default tab, use defaultValue={null} instead.`
     );
   }
 
-  const { tabGroupChoices, setTabGroupChoices } = useTabGroupChoice();
+  const {tabGroupChoices, setTabGroupChoices} = useTabGroupChoice();
   const [selectedValue, setSelectedValue] = useState(defaultValue);
   const tabRefs = [];
-  const { blockElementScrollPositionUntilNextRender } =
+  const {blockElementScrollPositionUntilNextRender} =
     useScrollPositionBlocker();
 
   if (groupId != null) {
@@ -132,13 +132,13 @@ function TabsComponent(props) {
     let focusElement = null;
 
     switch (event.key) {
-      case 'ArrowRight': {
+      case "ArrowRight": {
         const nextTab = tabRefs.indexOf(event.currentTarget) + 1;
         focusElement = tabRefs[nextTab] || tabRefs[0];
         break;
       }
 
-      case 'ArrowLeft': {
+      case "ArrowLeft": {
         const prevTab = tabRefs.indexOf(event.currentTarget) - 1;
         focusElement = tabRefs[prevTab] || tabRefs[tabRefs.length - 1];
         break;
@@ -152,18 +152,19 @@ function TabsComponent(props) {
   };
 
   return (
-    <div className={clsx('tabs-container', styles.tabList)}>
+    <div className={clsx("tabs-container", styles.tabList)}>
       <ul
         role="tablist"
         aria-orientation="horizontal"
         className={clsx(
-          'tabs',
+          "tabs",
           {
-            'tabs--block': block,
+            "tabs--block": block,
           },
-          className,
-        )}>
-        {values.map(({ value, label, attributes }) => (
+          className
+        )}
+      >
+        {values.map(({value, label, attributes}) => (
           <li
             role="tab"
             tabIndex={selectedValue === value ? 0 : -1}
@@ -175,13 +176,14 @@ function TabsComponent(props) {
             onClick={handleTabChange}
             {...attributes}
             className={clsx(
-              'tabs__item',
+              "tabs__item",
               styles.tabItem,
               attributes?.className,
               {
-                'tabs__item--active': selectedValue === value,
-              },
-            )}>
+                "tabs__item--active": selectedValue === value,
+              }
+            )}
+          >
             {label ?? value}
           </li>
         ))}
@@ -190,11 +192,11 @@ function TabsComponent(props) {
       {lazy ? (
         cloneElement(
           children.filter(
-            (tabItem) => tabItem.props.value === selectedValue,
+            (tabItem) => tabItem.props.value === selectedValue
           )[0],
           {
-            className: 'margin-top--md',
-          },
+            className: "margin-top--md",
+          }
         )
       ) : (
         <div className="margin-top--md">
@@ -202,7 +204,7 @@ function TabsComponent(props) {
             cloneElement(tabItem, {
               key: i,
               hidden: tabItem.props.value !== selectedValue,
-            }),
+            })
           )}
         </div>
       )}
