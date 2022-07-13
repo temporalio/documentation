@@ -217,8 +217,8 @@ Heartbeating is best thought about not in terms of time, but in terms of "How do
 
 Suitable for Heartbeating:
 
-- Read a large file from S3
-- Run a ML training job on some local GPUs
+- Reading a large file from Amazon S3
+- Running a ML training job on some local GPUs
 
 Not suitable for Heartbeating:
 
