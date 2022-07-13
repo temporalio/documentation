@@ -1775,139 +1775,6 @@ Content is not available
 </TabItem>
 </Tabs>
 
-### Heartbeat Timeout
-
-A [Heartbeat Timeout](/next/activities#heartbeat-timeout) works in conjunction with [Activity Heartbeats](#activity-heartbeats).
-
-<Tabs
-defaultValue="go"
-groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
-
-<TabItem value="go">
-
-To set a [Heartbeat Timeout](/next/activities#heartbeat-timeout), Create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `RetryPolicy` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
-
-```go
-activityoptions := workflow.ActivityOptions{
-  HeartbeatTimeout: 10 * time.Second,
-}
-ctx = workflow.WithActivityOptions(ctx, activityoptions)
-var yourActivityResult YourActivityResult
-err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
-if err != nil {
-  // ...
-}
-```
-
-</TabItem>
-<TabItem value="java">
-
-To set a [Heartbeat Timeout](/next/activities#heartbeat-timeout), use [`ActivityOptions.newBuilder.setHeartbeatTimeout`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
-
-- Type: `Duration`
-- Default: None
-
-You can set Activity Options using an `ActivityStub` within a Workflow implementation, or per-Activity using `WorkflowImplementationOptions` within a Worker.
-Note that if you define options per-Activity Type options with `WorkflowImplementationOptions.setActivityOptions()`, setting them again specifically with `ActivityStub` in a Workflow will override this setting.
-
-- With `ActivityStub`
-
-  ```java
-  private final GreetingActivities activities =
-      Workflow.newActivityStub(
-          GreetingActivities.class,
-          ActivityOptions.newBuilder()
-              // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
-              // required when setting Activity options.
-              .setStartToCloseTimeout(Duration.ofSeconds(5))
-              .setHeartbeatTimeout(Duration.ofSeconds(2))
-              .build());
-  ```
-
-- With `WorkflowImplementationOptions`
-
-  ```java
-  WorkflowImplementationOptions options =
-              WorkflowImplementationOptions.newBuilder()
-                      .setActivityOptions(
-                              ImmutableMap.of(
-                                "EmailCustomerGreeting",
-                                      ActivityOptions.newBuilder()
-                                          // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
-                                          // required when setting Activity options.
-                                            .setStartToCloseTimeout(Duration.ofSeconds(5))
-                                            .setHeartbeatTimeout(Duration.ofSeconds(2))
-                                            .build()))
-                      .build();
-  ```
-
-</TabItem>
-<TabItem value="php">
-
-Some Activities are long-running.
-To react to a crash quickly, use the Heartbeat mechanism, `Activity::heartbeat()`, which lets the Temporal Server know that the Activity is still alive.
-This acts as a periodic checkpoint mechanism for the progress of an Activity.
-
-You can piggyback `details` on an Activity Heartbeat.
-If an Activity times out, the last value of `details` is included in the `TimeoutFailure` delivered to a Workflow.
-Then the Workflow can pass the details to the next Activity invocation.
-Additionally, you can access the details from within an Activity via `Activity::getHeartbeatDetails`.
-When an Activity is retried after a failure `getHeartbeatDetails` enables you to get the value from the last successful Heartbeat.
-
-```php
-use Temporal\Activity;
-
-class FileProcessingActivitiesImpl implements FileProcessingActivities
-{
-    // ...
-    public function download(
-        string $bucketName,
-        string $remoteName,
-        string $localName
-    ): void
-    {
-        $this->dowloader->downloadWithProgress(
-            $bucketName,
-            $remoteName,
-            $localName,
-            // on progress
-            function ($progress) {
-                Activity::heartbeat($progress);
-            }
-        );
-
-        Activity::heartbeat(100); // download complete
-
-        // ...
-    }
-
-    // ...
-}
-```
-
-</TabItem>
-<TabItem value="typescript">
-
-To set a Heartbeat Timeout, use [`ActivityOptions.heartbeatTimeout`](https://typescript.temporal.io/api/interfaces/common.ActivityOptions#heartbeattimeout). If the Activity takes longer than that between heartbeats, the Activity is failed.
-
-```typescript
-// Creating a proxy for the activity.
-const {longRunningActivity} = proxyActivities<typeof activities>({
-  scheduleToCloseTimeout: "5m", // translates to 300000 ms
-  startToCloseTimeout: "30s", // translates to 30000 ms
-  heartbeatTimeout: 10000, // equivalent to '10 seconds'
-});
-```
-
-</TabItem>
-<TabItem value="python">
-
-Content is not available
-
-</TabItem>
-</Tabs>
-
 ### Activity Retry Policy
 
 Activity Executions are automatically associated with a default [Retry Policy](/next/retry-policies#) if a custom one is not provided.
@@ -2236,7 +2103,180 @@ class FileProcessingActivitiesImpl implements FileProcessingActivities
 </TabItem>
 <TabItem value="typescript">
 
+Long running Activities should Heartbeat their progress back to the Workflow for earlier detection of stalled activities (with [Heartbeat Timeout](/next/activities#heartbeat-timeout)) and resuming stalled activities from checkpoints (with Heartbeat details).
+
+To set Activity Heartbeat, use `Context.current().heartbeat()` in your Activity implementation, and set the `heartbeatTimeout` in your Workflow.
+
+```ts
+// activity implementation
+export async function example(sleepIntervalMs = 1000): Promise<void> {
+  for (let progress = 1; progress <= 1000; ++progress) {
+    await Context.current().sleep(sleepIntervalMs);
+    // record activity heartbeat
+    Context.current().heartbeat();
+  }
+}
+
+//...
+
+// workflow code calling activity
+const {example} = proxyActivities<typeof activities>({
+  startToCloseTimeout: "1 hour",
+  heartbeatTimeout: "10s",
+});
+```
+
+In the previous example, setting the Heartbeat informs the Temporal Server of the Activity's progress at regular intervals.
+If the Activity stalls or the Activity Worker becomes unavailable, the absence of Heartbeats prompts the Temporal Server to retry the Activity immediately, without waiting for `startToCloseTimeout` to complete.
+
+You can also add `heartbeatDetails` as a checkpoint to collect data about failures during the execution, and use it to resume the Activity from that point.
+
+The following example extends the previous sample to include a `heartbeatDetails` checkpoint.
+
+```ts
+export async function example(sleepIntervalMs = 1000): Promise<void> {
+  const startingPoint = Context.current().info.heartbeatDetails || 1; // allow for resuming from heartbeat
+  for (let progress = startingPoint; progress <= 100; ++progress) {
+    await Context.current().sleep(sleepIntervalMs);
+    Context.current().heartbeat(progress);
+  }
+}
+```
+
+In this example, when the `heartbeatTimeout` is reached and the Activity is retried, the Activity Worker picks up the execution from where the previous attempt left off.
+
+</TabItem>
+<TabItem value="python">
+
 Content is not available
+
+</TabItem>
+</Tabs>
+
+#### Heartbeat Timeout
+
+A [Heartbeat Timeout](/next/activities#heartbeat-timeout) works in conjunction with [Activity Heartbeats](#activity-heartbeats).
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+To set a [Heartbeat Timeout](/next/activities#heartbeat-timeout), Create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `RetryPolicy` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
+
+```go
+activityoptions := workflow.ActivityOptions{
+  HeartbeatTimeout: 10 * time.Second,
+}
+ctx = workflow.WithActivityOptions(ctx, activityoptions)
+var yourActivityResult YourActivityResult
+err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
+if err != nil {
+  // ...
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+To set a [Heartbeat Timeout](/next/activities#heartbeat-timeout), use [`ActivityOptions.newBuilder.setHeartbeatTimeout`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
+
+- Type: `Duration`
+- Default: None
+
+You can set Activity Options using an `ActivityStub` within a Workflow implementation, or per-Activity using `WorkflowImplementationOptions` within a Worker.
+Note that if you define options per-Activity Type options with `WorkflowImplementationOptions.setActivityOptions()`, setting them again specifically with `ActivityStub` in a Workflow will override this setting.
+
+- With `ActivityStub`
+
+  ```java
+  private final GreetingActivities activities =
+      Workflow.newActivityStub(
+          GreetingActivities.class,
+          ActivityOptions.newBuilder()
+              // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
+              // required when setting Activity options.
+              .setStartToCloseTimeout(Duration.ofSeconds(5))
+              .setHeartbeatTimeout(Duration.ofSeconds(2))
+              .build());
+  ```
+
+- With `WorkflowImplementationOptions`
+
+  ```java
+  WorkflowImplementationOptions options =
+              WorkflowImplementationOptions.newBuilder()
+                      .setActivityOptions(
+                              ImmutableMap.of(
+                                "EmailCustomerGreeting",
+                                      ActivityOptions.newBuilder()
+                                          // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
+                                          // required when setting Activity options.
+                                            .setStartToCloseTimeout(Duration.ofSeconds(5))
+                                            .setHeartbeatTimeout(Duration.ofSeconds(2))
+                                            .build()))
+                      .build();
+  ```
+
+</TabItem>
+<TabItem value="php">
+
+Some Activities are long-running.
+To react to a crash quickly, use the Heartbeat mechanism, `Activity::heartbeat()`, which lets the Temporal Server know that the Activity is still alive.
+This acts as a periodic checkpoint mechanism for the progress of an Activity.
+
+You can piggyback `details` on an Activity Heartbeat.
+If an Activity times out, the last value of `details` is included in the `TimeoutFailure` delivered to a Workflow.
+Then the Workflow can pass the details to the next Activity invocation.
+Additionally, you can access the details from within an Activity via `Activity::getHeartbeatDetails`.
+When an Activity is retried after a failure `getHeartbeatDetails` enables you to get the value from the last successful Heartbeat.
+
+```php
+use Temporal\Activity;
+
+class FileProcessingActivitiesImpl implements FileProcessingActivities
+{
+    // ...
+    public function download(
+        string $bucketName,
+        string $remoteName,
+        string $localName
+    ): void
+    {
+        $this->dowloader->downloadWithProgress(
+            $bucketName,
+            $remoteName,
+            $localName,
+            // on progress
+            function ($progress) {
+                Activity::heartbeat($progress);
+            }
+        );
+
+        Activity::heartbeat(100); // download complete
+
+        // ...
+    }
+
+    // ...
+}
+```
+
+</TabItem>
+<TabItem value="typescript">
+
+To set a Heartbeat Timeout, use [`ActivityOptions.heartbeatTimeout`](https://typescript.temporal.io/api/interfaces/common.ActivityOptions#heartbeattimeout). If the Activity takes longer than that between heartbeats, the Activity is failed.
+
+```typescript
+// Creating a proxy for the activity.
+const {longRunningActivity} = proxyActivities<typeof activities>({
+  scheduleToCloseTimeout: "5m", // translates to 300000 ms
+  startToCloseTimeout: "30s", // translates to 30000 ms
+  heartbeatTimeout: 10000, // equivalent to '10 seconds'
+});
+```
 
 </TabItem>
 <TabItem value="python">
@@ -2432,6 +2472,21 @@ GreetingChild child = Workflow.newChildWorkflowStub(GreetingChild.class);
 Promise<String> greeting = Async.function(child::composeGreeting, "Hello", name);
 // ...
 greeting.get()
+```
+
+To execute an untyped Child Workflow asynchronously, call `executeAsync` on the `ChildWorkflowStub`, as shown in the following example.
+
+```java
+//...
+ChildWorkflowStub childUntyped =
+    Workflow.newUntypedChildWorkflowStub(
+        "GreetingChild", // your workflow type
+        ChildWorkflowOptions.newBuilder().setWorkflowId("childWorkflow").build());
+
+Promise<String> greeting =
+    childUntyped.executeAsync(String.class, String.class, "Hello", name);
+String result = greeting.get();
+//...
 ```
 
 The following examples show how to spawn a Child Workflow:

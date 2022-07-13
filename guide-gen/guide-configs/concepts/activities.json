@@ -62,14 +62,14 @@
           "path": "concepts/what-is-a-schedule-to-close-timeout"
         },
         {
-          "header": "Heartbeat Timeout",
-          "type": "explanation",
-          "path": "concepts/what-is-a-heartbeat-timeout"
-        },
-        {
           "header": "Activity Heartbeats",
           "type": "explanation",
           "path": "concepts/what-is-an-activity-heartbeat"
+        },
+        {
+          "header": "Heartbeat Timeout",
+          "type": "explanation",
+          "path": "concepts/what-is-a-heartbeat-timeout"
         },
         {
           "header": "Asynchronous Activity Completion",
