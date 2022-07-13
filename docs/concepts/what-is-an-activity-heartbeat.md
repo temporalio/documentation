@@ -31,18 +31,23 @@ If an [Activity Task Execution](/concepts/what-is-an-activity-task-execution) ti
 
 **What Activities should Heartbeat?**
 
-Heartbeating is best thought about not in terms of time, but in terms of "How do you know you are making progress"? If an operation is so short that it doesn't make any sense to say "I am still working on this", then don't heartbeat, conversely for longer operations.
+Heartbeating is best thought about not in terms of time, but in terms of "How do you know you are making progress"?
+For short-term operations, progress updates are not a requirement. However, checking the progress and status of Activities that run over long periods is almost always useful.
 
-- If your underlying task can report definite progress, that is ideal.
-  However, do note that your Workflow cannot read this progress information while the Activity is still executing (or it would have to store it in Event History). You may report progress to external sources if you need it exposed to the user.
-- Even without a "progress you may get something useful from just verifying that the Worker processing your Activity is at the very least "still alive" (has not run out of memory or silently crashed).
+Consider the following when deciding on setting Activity Hearbeats:
 
-Suitable for Heartbeating:
+- Your underlying task must be able to report definite progress.
+  Note that your Workflow cannot read this progress information while the Activity is still executing (or it would have to store it in Event History).
+  You may report progress to external sources if you need it exposed to the user.
+
+- Your Activity Execution is long-running and you need to verify whether the Worker that is processing your Activity is still alive and has not run out of memory or silently crashed.
+
+For example, the following scenarios are suitable for Heartbeating:
 
 - Reading a large file from Amazon S3
 - Running a ML training job on some local GPUs
 
-Not suitable for Heartbeating:
+And the following scenarios are not suitable for Heartbeating:
 
 - Reading a small file from disk
 - Making a quick API call
