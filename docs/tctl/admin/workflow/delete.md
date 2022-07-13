@@ -99,7 +99,7 @@ Enables TLS over the database connection.
 
 :::note
 
-TLS must be enabled to use the modifiers below
+TLS must be enabled to use the following modifiers.
 
 :::
 
