@@ -1,8 +1,8 @@
 ---
-id: how-to-send-a-signal-from-a-workflow-in-typescript
-title: How to send a Signal from Workflow in TypeScript
-sidebar_label: Send a Signal from Workflow
-description: Send a Signal from Workflow
+id: how-to-send-a-signal-from-a-client-in-typescript
+title: How to send a Signal from a Client in TypeScript
+sidebar_label: Send a Signal from Client
+description: Send a Signal from Client
 tags:
   - developer-guide
   - sdk

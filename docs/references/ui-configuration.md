@@ -33,7 +33,7 @@ enableOpenApi: true
 ## cors
 
 The name of the `cors` field stands for Cross-Origin Resource Sharing.
-Use this field to provide a list of domains that are authorized to access the UI Server APIs.```
+Use this field to provide a list of domains that are authorized to access the UI Server APIs.
 
 ```yaml
 cors:
