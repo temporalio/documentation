@@ -11,7 +11,7 @@ tags:
 
 Long running Activities should Heartbeat their progress back to the Workflow for earlier detection of stalled activities (with [Heartbeat Timeout](/concepts/what-is-a-heartbeat-timeout)) and resuming stalled activities from checkpoints (with Heartbeat details).
 
-To set Activity Heartbet, use `Context.current().heartbeat()` in your Activity implementation, and set the `heartbeatTimeout` in your Workflow.
+To set Activity Heartbeat, use `Context.current().heartbeat()` in your Activity implementation, and set the `heartbeatTimeout` in your Workflow.
 
 ```ts
 // activity implementation
