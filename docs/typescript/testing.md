@@ -357,4 +357,4 @@ There are a couple of caveats for testing with Jest:
 
 1. The Temporal TypeScript SDK only supports Jest `>= 27.0.0`.
 2. The Temporal TypeScript SDK recommends using ESM. In order to test ESM modules, you need to run Jest with the `NODE_OPTIONS` environment variable set to `--experimental-vm-modules`, for example: `NODE_OPTIONS=--experimental-vm-modules jest`.
-3. Make sure you run Jest with [`testEnvironment: 'node'`](https://jestjs.io/docs/configuration#testenvironment-string). `testEnvironment: 'jsdom'` is not supported. 
+3. Make sure you run Jest with [`testEnvironment: 'node'`](https://jestjs.io/docs/configuration#testenvironment-string). `testEnvironment: 'jsdom'` is not supported.
