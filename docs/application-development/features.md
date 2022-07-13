@@ -134,14 +134,14 @@ In the above code the `#[WorkflowMethod(name)]` is not specified, thus the Workf
 [`defineSignal`](https://typescript.temporal.io/api/namespaces/workflow/#definesignal)
 
 ```ts
-import {defineSignal} from "@temporalio/workflow";
+import { defineSignal } from '@temporalio/workflow';
 
 interface JoinInput {
   userId: string;
   groupId: string;
 }
 
-const joinSignal = defineSignal<JoinInput>("join");
+const joinSignal = defineSignal<JoinInput>('join');
 ```
 
 </TabItem>
@@ -289,12 +289,12 @@ Content is not available
 [`setHandler`](https://typescript.temporal.io/api/namespaces/workflow/#sethandler)
 
 ```ts
-import {setHandler} from "@temporalio/workflow";
+import { setHandler } from '@temporalio/workflow';
 
 export async function myWorkflow() {
   const groups = new Map<string, Set<string>>();
 
-  setHandler(joinSignal, ({userId, groupId}: JoinInput) => {
+  setHandler(joinSignal, ({ userId, groupId }: JoinInput) => {
     const group = groups.get(groupId);
     if (group) {
       group.add(userId);
@@ -385,14 +385,14 @@ Content is not available
 [`WorkflowHandle.signal`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle#signal)
 
 ```typescript
-import {WorkflowClient} from "@temporalio/client";
-import {joinSignal} from "./workflows";
+import { WorkflowClient } from '@temporalio/client';
+import { joinSignal } from './workflows';
 
 const client = new WorkflowClient();
 
-const handle = await client.getHandle("workflow-id-123");
+const handle = await client.getHandle('workflow-id-123');
 
-await handle.signal(joinSignal, {userId: "user-1", groupId: "group-1"});
+await handle.signal(joinSignal, { userId: 'user-1', groupId: 'group-1' });
 ```
 
 </TabItem>
@@ -489,12 +489,12 @@ $workflow->setValue(true);
 [`getExternalWorkflowHandle`](https://typescript.temporal.io/api/namespaces/workflow#getexternalworkflowhandle)
 
 ```typescript
-import {getExternalWorkflowHandle} from "@temporalio/workflow";
-import {joinSignal} from "./other-workflow";
+import { getExternalWorkflowHandle } from '@temporalio/workflow';
+import { joinSignal } from './other-workflow';
 
 export async function myWorkflowThatSignals() {
-  const handle = getExternalWorkflowHandle("workflow-id-123");
-  await handle.signal(joinSignal, {userId: "user-1", groupId: "group-1"});
+  const handle = getExternalWorkflowHandle('workflow-id-123');
+  await handle.signal(joinSignal, { userId: 'user-1', groupId: 'group-1' });
 }
 ```
 
@@ -619,16 +619,16 @@ $run = $workflowClient->startWithSignal(
 [`WorkflowClient.signalWithStart`](https://typescript.temporal.io/api/classes/client.WorkflowClient#signalwithstart)
 
 ```typescript
-import {WorkflowClient} from "@temporalio/client";
-import {myWorkflow, joinSignal} from "./workflows";
+import { WorkflowClient } from '@temporalio/client';
+import { myWorkflow, joinSignal } from './workflows';
 
 const client = new WorkflowClient();
 
 await client.signalWithStart(myWorkflow, {
-  workflowId: "workflow-id-123",
-  args: [{foo: 1}],
+  workflowId: 'workflow-id-123',
+  args: [{ foo: 1 }],
   signal: joinSignal,
-  signalArgs: [{userId: "user-1", groupId: "group-1"}],
+  signalArgs: [{ userId: 'user-1', groupId: 'group-1' }],
 });
 ```
 
@@ -1083,22 +1083,22 @@ Query Handlers can return values inside a Workflow in TypeScript.
 You make a Query with `handle.query(query, ...args)`. A Query needs a return value, but can also take arguments.
 
 ```typescript
-import * as wf from "@temporalio/workflow";
+import * as wf from '@temporalio/workflow';
 
-export const unblockSignal = wf.defineSignal("unblock");
-export const isBlockedQuery = wf.defineQuery<boolean>("isBlocked");
+export const unblockSignal = wf.defineSignal('unblock');
+export const isBlockedQuery = wf.defineQuery<boolean>('isBlocked');
 
 export async function unblockOrCancel(): Promise<void> {
   let isBlocked = true;
   wf.setHandler(unblockSignal, () => void (isBlocked = false));
   wf.setHandler(isBlockedQuery, () => isBlocked);
-  console.log("Blocked");
+  console.log('Blocked');
   try {
     await wf.condition(() => !isBlocked);
-    console.log("Unblocked");
+    console.log('Unblocked');
   } catch (err) {
     if (err instanceof wf.CancelledFailure) {
-      console.log("Cancelled");
+      console.log('Cancelled');
     }
     throw err;
   }
@@ -1523,11 +1523,11 @@ In this example, you can set the `scheduleToCloseTimeout` to 5 m.
 
 ```typescript
 // Sample of typical options you can set
-const {greet} = proxyActivities<typeof activities>({
-  scheduleToCloseTimeout: "5m",
+const { greet } = proxyActivities<typeof activities>({
+  scheduleToCloseTimeout: '5m',
   retry: {
     // default retry policy if not specified
-    initialInterval: "1s",
+    initialInterval: '1s',
     backoffCoefficient: 2,
     maximumAttempts: Infinity,
     maximumInterval: 100 * initialInterval,
@@ -1638,11 +1638,11 @@ In this example, you can set the `startToCloseTimeout` to 30 seconds.
 
 ```typescript
 // Sample of typical options you can set
-const {greet} = proxyActivities<typeof activities>({
-  startToCloseTimeout: "30s", // recommended
+const { greet } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '30s', // recommended
   retry: {
     // default retry policy if not specified
-    initialInterval: "1s",
+    initialInterval: '1s',
     backoffCoefficient: 2,
     maximumAttempts: Infinity,
     maximumInterval: 100 * initialInterval,
@@ -1753,150 +1753,17 @@ In this example, you can set the `ScheduleToStartTimeout` to 60 seconds.
 
 ```typescript
 // Sample of typical options you can set
-const {greet} = proxyActivities<typeof activities>({
-  scheduleToCloseTimeout: "5m",
-  ScheduleToStartTimeout: "60s",
+const { greet } = proxyActivities<typeof activities>({
+  scheduleToCloseTimeout: '5m',
+  ScheduleToStartTimeout: '60s',
   retry: {
     // default retry policy if not specified
-    initialInterval: "1s",
+    initialInterval: '1s',
     backoffCoefficient: 2,
     maximumAttempts: Infinity,
     maximumInterval: 100 * initialInterval,
     nonRetryableErrorTypes: [],
   },
-});
-```
-
-</TabItem>
-<TabItem value="python">
-
-Content is not available
-
-</TabItem>
-</Tabs>
-
-### Heartbeat Timeout
-
-A [Heartbeat Timeout](/next/activities#heartbeat-timeout) works in conjunction with [Activity Heartbeats](#activity-heartbeats).
-
-<Tabs
-defaultValue="go"
-groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
-
-<TabItem value="go">
-
-To set a [Heartbeat Timeout](/next/activities#heartbeat-timeout), Create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `RetryPolicy` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
-
-```go
-activityoptions := workflow.ActivityOptions{
-  HeartbeatTimeout: 10 * time.Second,
-}
-ctx = workflow.WithActivityOptions(ctx, activityoptions)
-var yourActivityResult YourActivityResult
-err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
-if err != nil {
-  // ...
-}
-```
-
-</TabItem>
-<TabItem value="java">
-
-To set a [Heartbeat Timeout](/next/activities#heartbeat-timeout), use [`ActivityOptions.newBuilder.setHeartbeatTimeout`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
-
-- Type: `Duration`
-- Default: None
-
-You can set Activity Options using an `ActivityStub` within a Workflow implementation, or per-Activity using `WorkflowImplementationOptions` within a Worker.
-Note that if you define options per-Activity Type options with `WorkflowImplementationOptions.setActivityOptions()`, setting them again specifically with `ActivityStub` in a Workflow will override this setting.
-
-- With `ActivityStub`
-
-  ```java
-  private final GreetingActivities activities =
-      Workflow.newActivityStub(
-          GreetingActivities.class,
-          ActivityOptions.newBuilder()
-              // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
-              // required when setting Activity options.
-              .setStartToCloseTimeout(Duration.ofSeconds(5))
-              .setHeartbeatTimeout(Duration.ofSeconds(2))
-              .build());
-  ```
-
-- With `WorkflowImplementationOptions`
-
-  ```java
-  WorkflowImplementationOptions options =
-              WorkflowImplementationOptions.newBuilder()
-                      .setActivityOptions(
-                              ImmutableMap.of(
-                                "EmailCustomerGreeting",
-                                      ActivityOptions.newBuilder()
-                                          // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
-                                          // required when setting Activity options.
-                                            .setStartToCloseTimeout(Duration.ofSeconds(5))
-                                            .setHeartbeatTimeout(Duration.ofSeconds(2))
-                                            .build()))
-                      .build();
-  ```
-
-</TabItem>
-<TabItem value="php">
-
-Some Activities are long-running.
-To react to a crash quickly, use the Heartbeat mechanism, `Activity::heartbeat()`, which lets the Temporal Server know that the Activity is still alive.
-This acts as a periodic checkpoint mechanism for the progress of an Activity.
-
-You can piggyback `details` on an Activity Heartbeat.
-If an Activity times out, the last value of `details` is included in the `TimeoutFailure` delivered to a Workflow.
-Then the Workflow can pass the details to the next Activity invocation.
-Additionally, you can access the details from within an Activity via `Activity::getHeartbeatDetails`.
-When an Activity is retried after a failure `getHeartbeatDetails` enables you to get the value from the last successful Heartbeat.
-
-```php
-use Temporal\Activity;
-
-class FileProcessingActivitiesImpl implements FileProcessingActivities
-{
-    // ...
-    public function download(
-        string $bucketName,
-        string $remoteName,
-        string $localName
-    ): void
-    {
-        $this->dowloader->downloadWithProgress(
-            $bucketName,
-            $remoteName,
-            $localName,
-            // on progress
-            function ($progress) {
-                Activity::heartbeat($progress);
-            }
-        );
-
-        Activity::heartbeat(100); // download complete
-
-        // ...
-    }
-
-    // ...
-}
-```
-
-</TabItem>
-<TabItem value="typescript">
-
-To set a Heartbeat Timeout, use [`ActivityOptions.heartbeatTimeout`](https://typescript.temporal.io/api/interfaces/common.ActivityOptions#heartbeattimeout). If the Activity takes longer than that between heartbeats, the Activity is failed.
-
-```typescript
-// Creating a proxy for the activity.
-const {longRunningActivity} = proxyActivities<typeof activities>({
-  scheduleToCloseTimeout: "5m", // translates to 300000 ms
-  startToCloseTimeout: "30s", // translates to 30000 ms
-  heartbeatTimeout: 10000, // equivalent to '10 seconds'
 });
 ```
 
@@ -2028,11 +1895,11 @@ To set Activity Retry Policies in TypeScript, pass [`ActivityOptions.retry`](htt
 
 ```typescript
 // Sample of typical options you can set
-const {yourActivity} = proxyActivities<typeof activities>({
+const { yourActivity } = proxyActivities<typeof activities>({
   // ...
   retry: {
     // default retry policy if not specified
-    initialInterval: "1s",
+    initialInterval: '1s',
     backoffCoefficient: 2,
     maximumAttempts: Infinity,
     maximumInterval: 100 * initialInterval,
@@ -2236,7 +2103,180 @@ class FileProcessingActivitiesImpl implements FileProcessingActivities
 </TabItem>
 <TabItem value="typescript">
 
+Long running activities should Heartbeat their progress back to the Workflow for earlier detection of stalled activities (with [Heartbeat Timeout](/next/activities#heartbeat-timeout)) and resuming stalled activities from checkpoints (with Heartbeat details).
+
+To set Activity Heartbet, use `Context.current().heartbeat()` in your Activity implementation, and set the `heartbeatTimeout` in your Workflow.
+
+```ts
+// activity implementation
+export async function example(sleepIntervalMs = 1000): Promise<void> {
+  for (let progress = 1; progress <= 1000; ++progress) {
+    await Context.current().sleep(sleepIntervalMs);
+    // record activity heartbeat
+    Context.current().heartbeat();
+  }
+}
+
+//...
+
+// workflow code calling activity
+const { example } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '1 hour',
+  heartbeatTimeout: '10s',
+});
+```
+
+In the previous example, setting the Heartbeat informs the Temporal Server of the Activity's progress regularly.
+If the Activity stalls or the Activity Worker becomes unavailable, the absence of Heartbeats prompts the Temporal Server to retry the Activity immediately, without waiting for `startToCloseTimeout` to complete.
+
+You can also add `heartbeatDetails` as a checkpoint to collect data about failures during the execution, and use it to resume the Activity from that point.
+
+The following example extends the previous sample to include a `heartbeatDetails` checkpoint.
+
+```ts
+export async function example(sleepIntervalMs = 1000): Promise<void> {
+  const startingPoint = Context.current().info.heartbeatDetails || 1; // allow for resuming from heartbeat
+  for (let progress = startingPoint; progress <= 100; ++progress) {
+    await Context.current().sleep(sleepIntervalMs);
+    Context.current().heartbeat(progress);
+  }
+}
+```
+
+In this example, when the `heartbeatTimeout` is reached and the Activity is retried, the Activity Worker picks up the execution from where the previous attempt left off.
+
+</TabItem>
+<TabItem value="python">
+
 Content is not available
+
+</TabItem>
+</Tabs>
+
+#### Heartbeat Timeout
+
+A [Heartbeat Timeout](/next/activities#heartbeat-timeout) works in conjunction with [Activity Heartbeats](#activity-heartbeats).
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+To set a [Heartbeat Timeout](/next/activities#heartbeat-timeout), Create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `RetryPolicy` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
+
+```go
+activityoptions := workflow.ActivityOptions{
+  HeartbeatTimeout: 10 * time.Second,
+}
+ctx = workflow.WithActivityOptions(ctx, activityoptions)
+var yourActivityResult YourActivityResult
+err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
+if err != nil {
+  // ...
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+To set a [Heartbeat Timeout](/next/activities#heartbeat-timeout), use [`ActivityOptions.newBuilder.setHeartbeatTimeout`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
+
+- Type: `Duration`
+- Default: None
+
+You can set Activity Options using an `ActivityStub` within a Workflow implementation, or per-Activity using `WorkflowImplementationOptions` within a Worker.
+Note that if you define options per-Activity Type options with `WorkflowImplementationOptions.setActivityOptions()`, setting them again specifically with `ActivityStub` in a Workflow will override this setting.
+
+- With `ActivityStub`
+
+  ```java
+  private final GreetingActivities activities =
+      Workflow.newActivityStub(
+          GreetingActivities.class,
+          ActivityOptions.newBuilder()
+              // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
+              // required when setting Activity options.
+              .setStartToCloseTimeout(Duration.ofSeconds(5))
+              .setHeartbeatTimeout(Duration.ofSeconds(2))
+              .build());
+  ```
+
+- With `WorkflowImplementationOptions`
+
+  ```java
+  WorkflowImplementationOptions options =
+              WorkflowImplementationOptions.newBuilder()
+                      .setActivityOptions(
+                              ImmutableMap.of(
+                                "EmailCustomerGreeting",
+                                      ActivityOptions.newBuilder()
+                                          // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
+                                          // required when setting Activity options.
+                                            .setStartToCloseTimeout(Duration.ofSeconds(5))
+                                            .setHeartbeatTimeout(Duration.ofSeconds(2))
+                                            .build()))
+                      .build();
+  ```
+
+</TabItem>
+<TabItem value="php">
+
+Some Activities are long-running.
+To react to a crash quickly, use the Heartbeat mechanism, `Activity::heartbeat()`, which lets the Temporal Server know that the Activity is still alive.
+This acts as a periodic checkpoint mechanism for the progress of an Activity.
+
+You can piggyback `details` on an Activity Heartbeat.
+If an Activity times out, the last value of `details` is included in the `TimeoutFailure` delivered to a Workflow.
+Then the Workflow can pass the details to the next Activity invocation.
+Additionally, you can access the details from within an Activity via `Activity::getHeartbeatDetails`.
+When an Activity is retried after a failure `getHeartbeatDetails` enables you to get the value from the last successful Heartbeat.
+
+```php
+use Temporal\Activity;
+
+class FileProcessingActivitiesImpl implements FileProcessingActivities
+{
+    // ...
+    public function download(
+        string $bucketName,
+        string $remoteName,
+        string $localName
+    ): void
+    {
+        $this->dowloader->downloadWithProgress(
+            $bucketName,
+            $remoteName,
+            $localName,
+            // on progress
+            function ($progress) {
+                Activity::heartbeat($progress);
+            }
+        );
+
+        Activity::heartbeat(100); // download complete
+
+        // ...
+    }
+
+    // ...
+}
+```
+
+</TabItem>
+<TabItem value="typescript">
+
+To set a Heartbeat Timeout, use [`ActivityOptions.heartbeatTimeout`](https://typescript.temporal.io/api/interfaces/common.ActivityOptions#heartbeattimeout). If the Activity takes longer than that between heartbeats, the Activity is failed.
+
+```typescript
+// Creating a proxy for the activity.
+const { longRunningActivity } = proxyActivities<typeof activities>({
+  scheduleToCloseTimeout: '5m', // translates to 300000 ms
+  startToCloseTimeout: '30s', // translates to 30000 ms
+  heartbeatTimeout: 10000, // equivalent to '10 seconds'
+});
+```
 
 </TabItem>
 <TabItem value="python">
@@ -2900,7 +2940,7 @@ You can set each Workflow to repeat on a schedule with the `cronSchedule` option
 ```typescript
 const handle = await client.start(scheduledWorkflow, {
   // ...
-  cronSchedule: "* * * * *", // start every minute
+  cronSchedule: '* * * * *', // start every minute
 });
 ```
 
@@ -2911,3 +2951,4 @@ Content is not available
 
 </TabItem>
 </Tabs>
+
