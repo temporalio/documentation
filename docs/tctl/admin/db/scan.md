@@ -93,7 +93,7 @@ Default: 10
 
 Enable TLS over the DB connection.
 
-::: note
+:::note
 Enable `--tls` before using any of the modifiers below.
 :::
 
