@@ -31,7 +31,7 @@ If an [Activity Task Execution](/concepts/what-is-an-activity-task-execution) ti
 
 **What Activities should Heartbeat?**
 
-Heartbeating is best thought about not in terms of time, but in terms of "How do you know you are making progress"? If an operation is so short that it doesn't make any sense to say "I am still working on this", then don't heartbeat. Vice versa for longer operations.
+Heartbeating is best thought about not in terms of time, but in terms of "How do you know you are making progress"? If an operation is so short that it doesn't make any sense to say "I am still working on this", then don't heartbeat, conversely for longer operations.
 
 - If your underlying task can report definite progress, that is ideal.
   However, do note that your Workflow cannot read this progress information while the Activity is still executing (or it would have to store it in Event History). You may report progress to external sources if you need it exposed to the user.
