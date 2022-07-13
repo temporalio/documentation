@@ -11,6 +11,15 @@ The `tcld namespace certificate-filters import` command sets certificate filters
 
 `tcld namespace certificate-filters import --certificate-filter-file <path>`
 
+Alias: `imp`
+
+A certificate filter can include any combination (and at least one) of the following:
+
+- `commonName`
+- `organization`
+- `organizationalUnit`
+- `subjectAlternativeName`
+
 The following modifiers control the behavior of the command.
 
 ### `--certificate-filter-file`
