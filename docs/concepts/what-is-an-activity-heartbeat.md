@@ -35,11 +35,11 @@ Heartbeating is best thought about not in terms of time, but in terms of "How do
 For short-term operations, progress updates are not a requirement.
 However, checking the progress and status of Activities that run over long periods is almost always useful.
 
-Consider the following when deciding on setting Activity Hearbeats:
+Consider the following when setting Activity Hearbeats:
 
 - Your underlying task must be able to report definite progress.
   Note that your Workflow cannot read this progress information while the Activity is still executing (or it would have to store it in Event History).
-  You may report progress to external sources if you need it exposed to the user.
+  You can report progress to external sources if you need it exposed to the user.
 
 - Your Activity Execution is long-running and you need to verify whether the Worker that is processing your Activity is still alive and has not run out of memory or silently crashed.
 
