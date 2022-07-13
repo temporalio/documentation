@@ -32,7 +32,8 @@ If an [Activity Task Execution](/concepts/what-is-an-activity-task-execution) ti
 **What Activities should Heartbeat?**
 
 Heartbeating is best thought about not in terms of time, but in terms of "How do you know you are making progress"?
-For short-term operations, progress updates are not a requirement. However, checking the progress and status of Activities that run over long periods is almost always useful.
+For short-term operations, progress updates are not a requirement.
+However, checking the progress and status of Activities that run over long periods is almost always useful.
 
 Consider the following when deciding on setting Activity Hearbeats:
 
