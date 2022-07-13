@@ -46,7 +46,7 @@ Double check that your Workers are registering the right Workflow and Activity D
 
 Our [Next.js tutorial](/typescript/nextjs-tutorial) is written for people setting up Temporal **within an existing monorepo** which may be of use here.
 
-When you pass a `workflowsPath`, our Webpack config tries to find `node_modules` relative to it and expects `temporalio` to be installed there.
+When you pass a `workflowsPath`, our Webpack config tries to find `node_modules` relative to it and expects `@temporalio/*` to be installed there.
 You can explicitly specify `nodeModulesPaths` if you need to take over, and `find . -name @temporalio -type d` will help identify what path to use (typically it will require going up the right number of directories: `path.join(__dirname, '../../../node_modules')`
 
 **If you are custom bundling your own Workflows** you may get errors like these:
