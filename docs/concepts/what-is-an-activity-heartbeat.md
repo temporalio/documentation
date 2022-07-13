@@ -29,7 +29,7 @@ That way if a Worker fails it can be handled in a timely manner.
 A Heartbeat can include an application layer payload that can be used to _save_ Activity Execution progress.
 If an [Activity Task Execution](/concepts/what-is-an-activity-task-execution) times out due to a missed Heartbeat, the next Activity Task can access and continue with that payload.
 
-**What activities should Heartbeat?**
+**What Activities should Heartbeat?**
 
 Heartbeating is best thought about not in terms of time, but in terms of "How do you know you are making progress"? If an operation is so short that it doesn't make any sense to say "I am still working on this", then don't heartbeat. Vice versa for longer operations.
 
