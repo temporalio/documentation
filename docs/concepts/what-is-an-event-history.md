@@ -16,4 +16,4 @@ An append-log of [Events](/concepts/what-is-an-event) for your application.
 The Temporal Cluster stores the complete Event History for the entire lifecycle of a Workflow Execution.
 There is a hard limit of 50,000 Events in a Workflow Execution Event History, as well as a hard limit of 50 MB in terms of size.
 The Temporal Cluster logs a warning at every 10,000 Events.
-When the Event History reaches 50,000 Events or the size limit of 50MB, the Workflow Execution is forcefully terminated.
+When the Event History reaches 50,000 Events or the size limit of 50 MB, the Workflow Execution is forcefully terminated.
