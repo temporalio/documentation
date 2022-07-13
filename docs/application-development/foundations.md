@@ -174,7 +174,7 @@ composer require spiral/roadrunner:v2.0 nyholm/psr7
 To download the latest version of the Temporal TypeScript Command, run the following command:
 
 ```bash
-npm i temporalio
+npm i @temporalio/client @temporalio/worker @temporalio/workflow @temporalio/activity
 ```
 
 Or clone the TypeScript SDK repo to your preferred location:
