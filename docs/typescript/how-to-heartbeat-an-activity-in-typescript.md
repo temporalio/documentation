@@ -32,7 +32,7 @@ const { example } = proxyActivities<typeof activities>({
 });
 ```
 
-In the previous example, setting the Heartbeat informs the Temporal Server of the Activity's progress regularly.
+In the previous example, setting the Heartbeat informs the Temporal Server of the Activity's progress at regular intervals.
 If the Activity stalls or the Activity Worker becomes unavailable, the absence of Heartbeats prompts the Temporal Server to retry the Activity immediately, without waiting for `startToCloseTimeout` to complete.
 
 You can also add `heartbeatDetails` as a checkpoint to collect data about failures during the execution, and use it to resume the Activity from that point.
