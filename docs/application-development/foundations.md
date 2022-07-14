@@ -174,7 +174,7 @@ composer require spiral/roadrunner:v2.0 nyholm/psr7
 To download the latest version of the Temporal TypeScript Command, run the following command:
 
 ```bash
-npm i temporalio
+npm i @temporalio/client @temporalio/worker @temporalio/workflow @temporalio/activity
 ```
 
 Or clone the TypeScript SDK repo to your preferred location:
@@ -1597,7 +1597,7 @@ public class FileProcessingActivitiesImpl implements FileProcessingActivities {
     log.info("workflowId=" + info.getWorkflowId());
     log.info("runId=" + info.getRunId());
     log.info("activityId=" + info.getActivityId());
-    log.info("activityTimeout=" + info.getStartToCloseTimeoutSeconds());
+    log.info("activityTimeout=" + info.getStartToCloseTimeout();
 
     return downloadFileFromS3(bucketName, remoteName, localDirectory + localName);
   }
@@ -1930,7 +1930,7 @@ You can provide `WorkflowServiceStubsOptions` to override the default values for
 For example, the default front-end service gRPC address is set to `127.0.0.1:7233`, where `7233` is the default port for the Temporal frontend service. If your server is running on a different host or port from the default, you can set it as shown in the following example.
 
 ```java
-WorkflowServiceStubs service = WorkflowServiceStubs.newServiceStubs(
+WorkflowServiceStubs service = WorkflowServiceStubs.newInstance(
                     WorkflowServiceStubsOptions.newBuilder()
                      .setTarget(TARGET_ENDPOINT)
                             .build());
@@ -1976,7 +1976,7 @@ Create an instance of a `WorkflowClient` for the Workflow service stub, and use 
 The following example shows how to create a `WorkflowClient` instance called "client" for the `WorkflowServiceStubs` "service" that we created in the previous example, and set `Namespace` option for the `WorkflowClient`.
 
 ```java
-WorkflowClient client = WorkflowClient.newServiceStubs(
+WorkflowClient client = WorkflowClient.newInstance(
                 service,
                 WorkflowClientOptions.newBuilder()
                         .setNamespace(“Abc”)
@@ -2664,7 +2664,8 @@ A Workflow Execution can be started either synchronously or asynchronously.
                   .setTaskQueue(taskQueue)
                   .setWorkflowId(workflowId)
                   .build());
-    // use WorkflowClient.execute (if your Workflow takes in arguments) or WorkflowClient.start (for zero arguments)
+    // use WorkflowClient.execute to return future that contains Workflow result or failure, or
+    // use WorkflowClient.start to return WorkflowId and RunId of the started Workflow).
     WorkflowClient.start(workflow::greetCustomer);
     ```
 

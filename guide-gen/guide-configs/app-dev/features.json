@@ -522,37 +522,6 @@
           ]
         },
         {
-          "header": "Heartbeat Timeout",
-          "type": "context",
-          "path": "app-dev-context/heartbeat-timeout"
-        },
-        {
-          "header": "none",
-          "type": "lang-tabs",
-          "langs": [
-            {
-              "lang": "go",
-              "title": "Go",
-              "path": "go/how-to-set-a-heartbeat-timeout-in-go"
-            },
-            {
-              "lang": "java",
-              "title": "Java",
-              "path": "java/how-to-set-a-heartbeat-timeout-in-java"
-            },
-            {
-              "lang": "php",
-              "title": "PHP",
-              "path": "php/how-to-set-a-heartbeat-timeout-in-php"
-            },
-            {
-              "lang": "typescript",
-              "title": "TypeScript",
-              "path": "typescript/how-to-set-a-heartbeat-timeout-in-typescript"
-            }
-          ]
-        },
-        {
           "header": "Activity Retry Policy",
           "type": "context",
           "path": "app-dev-context/activity-retry-policy"
@@ -620,7 +589,40 @@
             {
               "lang": "typescript",
               "title": "TypeScript",
-              "path": "none"
+              "path": "typescript/how-to-heartbeat-an-activity-in-typescript"
+            }
+          ],
+          "h4_sections": [
+            {
+              "header": "Heartbeat Timeout",
+              "type": "context",
+              "path": "app-dev-context/heartbeat-timeout"
+            },
+            {
+              "header": "none",
+              "type": "lang-tabs",
+              "langs": [
+                {
+                  "lang": "go",
+                  "title": "Go",
+                  "path": "go/how-to-set-a-heartbeat-timeout-in-go"
+                },
+                {
+                  "lang": "java",
+                  "title": "Java",
+                  "path": "java/how-to-set-a-heartbeat-timeout-in-java"
+                },
+                {
+                  "lang": "php",
+                  "title": "PHP",
+                  "path": "php/how-to-set-a-heartbeat-timeout-in-php"
+                },
+                {
+                  "lang": "typescript",
+                  "title": "TypeScript",
+                  "path": "typescript/how-to-set-a-heartbeat-timeout-in-typescript"
+                }
+              ]
             }
           ]
         }

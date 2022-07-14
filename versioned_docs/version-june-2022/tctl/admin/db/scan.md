@@ -93,8 +93,10 @@ Default: 10
 
 Enable TLS over the DB connection.
 
-::: note
-Enable `--tls` before using any of the modifiers below.
+:::note
+
+Enable `--tls` before using any of the following modifiers.
+
 :::
 
 #### `--tls_cert_path value`

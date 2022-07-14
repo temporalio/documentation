@@ -89,8 +89,10 @@ The number of shards handled between each emittance of progress.
 
 Default: 10
 
-::: note
-Enable `--tls` before using any of the modifiers below.
+:::note
+
+Enable `--tls` before using any of the following modifiers.
+
 :::
 
 #### `--tls_cert_path value`
