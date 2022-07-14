@@ -40,44 +40,43 @@ You may need to patch if:
 - You want to change the remaining logic of a Workflow while it is still running
 - If your new logic can result in a different execution path
 
-This code does not need patching (i.e. since execution path does not change, you can update your Workflow and restart Workers straight away):
+This added `sleep()` can result in a different execution path:
 
 ```ts
 // from v1
-export async function myWorkflow({force}): Promise<void> {
-  await sleep("1 days");
-  console.log("force", force);
+export async function myWorkflow(value: number): Promise<number> {
+  await runActivity();
+  return 7;
 }
 
 // to v2
-export async function myWorkflow(payload): Promise<void> {
-  let force = payload.force;
+export async function myWorkflow(value: number): Promise<number> {
+  await sleep("1 day");
 
-  setHandler(updatePayloadSignal, (newPayload) => {
-    force = newPayload.force;
-  });
-
-  await sleep("1 days");
-  console.log("force", force);
+  await runActivity();
+  return 7;
 }
 ```
 
-This is an example of how npm packages can break determinism:
+If v2 is deployed while there's a Workflow on the `runActivity` step, when the Activity completes, the Worker will try to replay the Workflow (in order to continue Workflow execution), notice that the sleep command is called and doesn't match with the Workflow's Event History, and throw a nondeterminism error.
+
+Adding a Signal Handler for a Signal type that has never been sent before does not need patching:
 
 ```ts
 // from v1
-export async function myWorkflow() {
-  await runActivity();
+export async function myWorkflow(value: number): Promise<number> {
+  await sleep("1 days");
+  return value;
 }
 
 // to v2
-import {something} from "a-package-from-npm";
+const updateValueSignal = defineSignal<[number]>("updateValue");
 
-export async function myWorkflow() {
-  if (something()) {
-    await sleep("1 day");
-  }
-  await runActivity();
+export async function myWorkflow(value: number): Promise<number> {
+  setHandler(updateValueSignal, (newValue) => (value = newValue));
+
+  await sleep("1 days");
+  return value;
 }
 ```
 

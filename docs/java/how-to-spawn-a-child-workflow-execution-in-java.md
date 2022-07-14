@@ -20,6 +20,21 @@ Promise<String> greeting = Async.function(child::composeGreeting, "Hello", name)
 greeting.get()
 ```
 
+To execute an untyped Child Workflow asynchronously, call `executeAsync` on the `ChildWorkflowStub`, as shown in the following example.
+
+```java
+//...
+ChildWorkflowStub childUntyped =
+    Workflow.newUntypedChildWorkflowStub(
+        "GreetingChild", // your workflow type
+        ChildWorkflowOptions.newBuilder().setWorkflowId("childWorkflow").build());
+
+Promise<String> greeting =
+    childUntyped.executeAsync(String.class, String.class, "Hello", name);
+String result = greeting.get();
+//...
+```
+
 The following examples show how to spawn a Child Workflow:
 
 - Spawn a Child Workflow from a Workflow:
