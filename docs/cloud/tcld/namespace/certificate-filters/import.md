@@ -37,6 +37,7 @@ Aliases: `--file`, `-f`
 ```bash
 tcld namespace certificate-filters import --certificate-filter-file <path>
 ```
+
 ### `--certificate-filter-input`
 
 _Required modifier unless `--certificate-filter-file` is specified_

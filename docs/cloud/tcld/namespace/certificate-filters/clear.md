@@ -9,9 +9,9 @@ tags:
 
 The `tcld namespace certificate-filters clear` command clears all certificate filters from a [Namespace](/concepts/what-is-a-namespace) in Temporal Cloud.
 
-:::info Be aware 
+:::info Be aware
 
-Using this command allows *any* client certificate that chains up to a configured CA certificate to connect to the Namespace.
+Using this command allows _any_ client certificate that chains up to a configured CA certificate to connect to the Namespace.
 
 :::
 
