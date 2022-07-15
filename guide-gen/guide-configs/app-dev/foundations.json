@@ -691,6 +691,11 @@
               "path": "php/how-to-set-a-workflow-task-queue-in-php"
             },
             {
+              "lang": "python",
+              "title": "Python",
+              "path": "python/how-to-set-a-workflow-task-queue-in-python"
+            },
+            {
               "lang": "typescript",
               "title": "TypeScript",
               "path": "typescript/how-to-set-a-workflow-task-queue-in-typescript"
@@ -720,6 +725,11 @@
               "lang": "php",
               "title": "PHP",
               "path": "php/how-to-set-a-workflow-id-in-php"
+            },
+            {
+              "lang": "python",
+              "title": "Python",
+              "path": "python/how-to-set-a-workflow-id-in-python"
             },
             {
               "lang": "typescript",
@@ -756,6 +766,11 @@
               "lang": "php",
               "title": "PHP",
               "path": "php/how-to-get-the-result-of-a-workflow-execution-in-php"
+            },
+            {
+              "lang": "python",
+              "title": "Python",
+              "path": "python/how-to-get-the-result-of-a-workflow-execution-in-python"
             },
             {
               "lang": "typescript",

@@ -210,13 +210,13 @@ To extend the default ([Trace Context](https://github.com/open-telemetry/opentel
 - At the top level of your Workflow code, add the following lines:
 
   ```js
-  import {propagation} from "@opentelemetry/api";
+  import { propagation } from '@opentelemetry/api';
   import {
     CompositePropagator,
     W3CTraceContextPropagator,
     W3CBaggagePropagator,
-  } from "@opentelemetry/core";
-  import {JaegerPropagator} from "@opentelemetry/propagator-jaeger";
+  } from '@opentelemetry/core';
+  import { JaegerPropagator } from '@opentelemetry/propagator-jaeger';
 
   propagation.setGlobalPropagator(
     new CompositePropagator({
@@ -242,6 +242,8 @@ Content is not available
 ## Logging
 
 Send logs and errors to a logging service, so that when things go wrong, you can see what happened.
+
+The SDK core uses `WARN` for its default logging level.
 
 #### Custom logging
 
@@ -305,12 +307,12 @@ The following [log levels](https://typescript.temporal.io/api/namespaces/worker#
 Temporal uses a [`DefaultLogger`](https://typescript.temporal.io/api/classes/worker.defaultlogger/) that implements the basic interface:
 
 ```ts
-import {Runtime, DefaultLogger} from "@temporalio/worker";
+import { Runtime, DefaultLogger } from '@temporalio/worker';
 
-const logger = new DefaultLogger("WARN", ({level, message}) => {
+const logger = new DefaultLogger('WARN', ({ level, message }) => {
   console.log(`Custom logger: ${level} — ${message}`);
 });
-Runtime.install({logger});
+Runtime.install({ logger });
 ```
 
 The previous code example sets the default logger to only log messages with level `WARN` and higher.
@@ -318,28 +320,28 @@ The previous code example sets the default logger to only log messages with leve
 **Accumulate logs for testing and reporting**
 
 ```ts
-import {DefaultLogger, LogEntry} from "@temporalio/worker";
+import { DefaultLogger, LogEntry } from '@temporalio/worker';
 
 const logs: LogEntry[] = [];
-const logger = new DefaultLogger("TRACE", (entry) => logs.push(entry));
-log.debug("hey", {a: 1});
-log.info("ho");
-log.warn("lets", {a: 1});
-log.error("go");
+const logger = new DefaultLogger('TRACE', (entry) => logs.push(entry));
+log.debug('hey', { a: 1 });
+log.info('ho');
+log.warn('lets', { a: 1 });
+log.error('go');
 ```
 
 A common logging use case is logging to a file to be picked up by a collector like the [Datadog Agent](https://docs.datadoghq.com/logs/log_collection/nodejs/?tab=winston30).
 
 ```ts
-import {Runtime} from "@temporalio/worker";
-import winston from "winston";
+import { Runtime } from '@temporalio/worker';
+import winston from 'winston';
 
 const logger = winston.createLogger({
-  level: "info",
+  level: 'info',
   format: winston.format.json(),
-  transports: [new transports.File({filename: "/path/to/worker.log"})],
+  transports: [new transports.File({ filename: '/path/to/worker.log' })],
 });
-Runtime.install({logger});
+Runtime.install({ logger });
 ```
 
 </TabItem>
@@ -351,6 +353,8 @@ Content is not available
 </Tabs>
 
 ### Log from a Workflow
+
+
 
 <Tabs
 defaultValue="go"
@@ -472,7 +476,38 @@ The injected sink function contributes to the overall Workflow Task processing d
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+You can log from a Workflow using Python's standard library, by importing the logging module `import logging`.
+
+Set you logging configuration to a level you'd want to expose logs to. The following example sets the logging information level to `INFO`.
+
+```python
+logging.basicConfig(level=logging.INFO)
+```
+
+Then in your Workflow, set your [`logger`](https://python.temporal.io/temporalio.workflow.html#logger) and level on the Workflow. The following example logs the Workflow.
+
+```python
+@workflow.defn
+class SayHelloWorkflow:
+    @workflow.run
+    async def run(self, name: str) -> str:
+        workflow.logger.info(f"Running workflow with parameter {name}")
+        return await workflow.execute_activity(
+            say_hello_activity, name, start_to_close_timeout=timedelta(seconds=10)
+        )
+```
+
+
+
+The following is an example output:
+
+```
+INFO:temporalio.workflow:Running workflow with parameter Temporal ({'attempt': 1, 'your-namespace': 'default', 'run_id': 'your-run-id', 'task_queue': 'your-task-queue', 'workflow_id': 'your-workflow-id', 'workflow_type': 'SayHelloWorkflow'})
+```
+
+:::note
+Logs are skipped during replay by default.
+:::
 
 </TabItem>
 </Tabs>
@@ -564,6 +599,8 @@ Content is not available
 </Tabs>
 
 #### Custom Search attributes
+
+
 
 <Tabs
 defaultValue="go"
@@ -721,13 +758,13 @@ To remove a Search Attribute that was previously set, set it to an empty array `
 Use [`upsertSearchAttributes`](https://typescript.temporal.io/api/namespaces/workflow/#upsertsearchattributes) to merge the provided [`searchAttributes`](https://typescript.temporal.io/api/namespaces/workflow/#searchattributess) with the existing Search Attributes, `workflowInfo().searchAttributes`:
 
 ```typescript
-import {upsertSearchAttributes} from "@temporalio/workflow";
+import { upsertSearchAttributes } from '@temporalio/workflow';
 
 async function myWorkflow() {
-  upsertSearchAttributes({CustomIntField: [1, 2, 3]});
+  upsertSearchAttributes({ CustomIntField: [1, 2, 3] });
 
   // ... later, to remove:
-  upsertSearchAttributes({CustomIntField: []});
+  upsertSearchAttributes({ CustomIntField: [] });
 }
 ```
 
@@ -830,3 +867,4 @@ Content is not available
 
 </TabItem>
 </Tabs>
+
