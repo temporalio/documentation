@@ -30,7 +30,7 @@ A Workflow Task is a Task that contains the context needed to make progress with
 
 ### Workflow Task Execution
 
-A Workflow Task Execution is when a Worker picks up a Worker Task and uses it to make progress on the execution of a Workflow function.
+A Workflow Task Execution is when a Worker picks up a Workflow Task and uses it to make progress on the execution of a Workflow function.
 
 ### Activity Task
 
@@ -212,4 +212,3 @@ If your use case involves more than one priority, you can create one Task Queue 
 Task Routing is the simplest way to version your code.
 
 If you have a new backward-incompatible Activity Definition, start by using a different Task Queue.
-

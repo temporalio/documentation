@@ -281,11 +281,17 @@ An append-log of [Events](#events) for your application.
 - Event History is durably persisted by the Temporal service, enabling seamless recovery of your application state from crashes or failures.
 - It also serves as an audit log for debugging.
 
+**Event History limits**
+The Temporal Cluster stores the complete Event History for the entire lifecycle of a Workflow Execution.
+There is a hard limit of 50,000 Events in a Workflow Execution Event History, as well as a hard limit of 50 MB in terms of size.
+The Temporal Cluster logs a warning at every 10,000 Events.
+When the Event History reaches 50,000 Events or the size limit of 50 MB, the Workflow Execution is forcefully terminated.
+
 #### Continue-As-New
 
 Continue-As-New is a mechanism by which the latest relevant state is passed to a new Workflow Execution, with a fresh Event History.
 
-As a precautionary measure, the Temporal Platform limits Event History to 50,000 Events, and will warn you every 10,000 Events.
+As a precautionary measure, the Temporal Platform limits the total [Event History](#event-history) to 50,000 Events or 50 MB, and will warn you every 10,000 Events or 10 MB.
 To prevent a Workflow Execution Event History from exceeding this limit and failing, use Continue-As-New to start a new Workflow Execution with a fresh Event History.
 
 All values passed to a Workflow Execution through parameters or returned through a result value are recorded into the Event History.
@@ -302,7 +308,7 @@ The new Workflow Execution has the same Workflow Id, but a different Run Id, and
 
 In the case of [Temporal Cron Jobs](#cron-jobs), Continue-As-New is actually used internally for the same effect.
 
-- [How to Continue-As-New in Go](/next/application-development/features#none)
+- [How to Continue-As-New](/application-development-guide/#continue-as-new)
 
 ### Run Id
 
@@ -319,7 +325,7 @@ A Run Id uniquely identifies a Workflow Execution even if it shares a Workflow I
 
 A Workflow Id is a customizable, application-level identifier for a [Workflow Execution](#workflow-executions) that is unique to an Open Workflow Execution within a [Namespace](/namespaces).
 
-- [How to set a Workflow Id in Go](/next/application-development/foundations#set-workflow-id)
+- [How to set a Workflow Id](/next/application-development/foundations#set-workflow-id)
 
 A Workflow Id is meant to be a business-process identifier such as customer identifier or order identifier.
 
@@ -357,7 +363,7 @@ If there is an attempt to spawn a Workflow Execution with a Workflow Id Reuse Po
 
 A Workflow Execution Timeout is the maximum time that a Workflow Execution can be executing (have an Open status) including retries and any usage of Continue As New.
 
-- [How to set a Workflow Execution Timeout in Go](/next/application-development/features#workflow-execution-timeout)
+- [How to set a Workflow Execution Timeout](/next/application-development/features#workflow-execution-timeout)
 
 ![Workflow Execution Timeout period](/diagrams/workflow-execution-timeout.svg)
 
@@ -370,7 +376,7 @@ This timeout is most commonly used for stopping the execution of a [Temporal Cro
 
 A Workflow Run Timeout is the maximum amount of time that a single Workflow Run is restricted to.
 
-- [How to set a Workflow Run Timeout in Go](/go/startworkflowoptions-reference/#workflowruntimeout)
+- [How to set a Workflow Run Timeout](/go/startworkflowoptions-reference/#workflowruntimeout)
 
 ![Workflow Run Timeout period](/diagrams/workflow-run-timeout.svg)
 
@@ -391,7 +397,7 @@ The main reason for increasing the default value would be to accommodate a Workf
 
 **Implementation guides:**
 
-- [How to set a Workflow Task Timeout in Go](/go/startworkflowoptions-reference/#workflowtasktimeout)
+- [How to set a Workflow Task Timeout](/go/startworkflowoptions-reference/#workflowtasktimeout)
 
 ## Signals
 
@@ -423,9 +429,7 @@ Workflow Execution can optionally await on a single Signal name or multiple Sign
 
 If you are using Signals with the Go SDK, you should make sure to do an asynchronous drain on the Signal channel or the Signals will be lost.
 
-- [How to use Signals in Go](/go/how-to-use-signals-in-go)
-- [How to use Signals in Java](/java/signals)
-- [How to use Signals in PHP](/php/signals)
+- [How to use Signals](/application-development-guide/#signals)
 
 ## Queries
 
@@ -832,4 +836,3 @@ Only the first two values are required; the second two are suggested because, by
 Setting the Task Queue to use one partition reduces latency.
 
 If you're familiar with Dynamic Config, you can also constrain these settings per Namespace as needed for your installation.
-

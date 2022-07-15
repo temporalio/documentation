@@ -30,8 +30,6 @@ class SayHelloWorkflow:
         )
 ```
 
-
-
 The following is an example output:
 
 ```

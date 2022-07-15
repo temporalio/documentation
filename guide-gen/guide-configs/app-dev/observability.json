@@ -189,7 +189,7 @@
             {
               "lang": "go",
               "title": "Go",
-              "path": "go/how-to-list-open-workflow-executions-using-the-client-in-go"
+              "path": "go/how-to-list-workflow-executions-using-the-client-in-go"
             },
             {
               "lang": "java",
@@ -204,40 +204,38 @@
             {
               "lang": "typescript",
               "title": "TypeScript",
-              "path": "none"
+              "path": "typescript/how-to-list-workflow-executions-using-the-client-in-typescript"
             }
-          ],
-          "h4_sections": [
+          ]
+        },
+        {
+          "header": "Set custom search attributes",
+          "type": "context",
+          "path": "app-dev-context/set-custom-search-attributes"
+        },
+        {
+          "header": "none",
+          "type": "lang-tabs",
+          "langs": [
             {
-              "header": "Custom Search attributes",
-              "type": "context",
-              "path": "app-dev-context/custom-search-attributes"
+              "lang": "go",
+              "title": "Go",
+              "path": "go/how-to-add-custom-search-attributes-to-workflow-executions-at-start-time-in-go"
             },
             {
-              "header": "none",
-              "type": "lang-tabs",
-              "langs": [
-                {
-                  "lang": "go",
-                  "title": "Go",
-                  "path": "go/how-to-add-custom-search-attributes-to-a-workflow-executions-at-start-time-in-go"
-                },
-                {
-                  "lang": "java",
-                  "title": "Java",
-                  "path": "none"
-                },
-                {
-                  "lang": "php",
-                  "title": "PHP",
-                  "path": "none"
-                },
-                {
-                  "lang": "typescript",
-                  "title": "TypeScript",
-                  "path": "none"
-                }
-              ]
+              "lang": "java",
+              "title": "Java",
+              "path": "none"
+            },
+            {
+              "lang": "php",
+              "title": "PHP",
+              "path": "none"
+            },
+            {
+              "lang": "typescript",
+              "title": "TypeScript",
+              "path": "typescript/how-to-add-custom-search-attributes-to-workflow-executions-at-start-time-in-typescript"
             }
           ]
         },
