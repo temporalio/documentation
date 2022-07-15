@@ -11,6 +11,6 @@ The `tcld namespace certificate-filters` commands manage optional certificate fi
 
 Alias: `cf`
 
-- [`tcld namespace certificate-filters import`](/next/next/cloud/tcld/namespace/certificate-filters/import)
-- [`tcld namespace certificate-filters export`](/next/next/cloud/tcld/namespace/certificate-filters/export)
-- [`tcld namespace certificate-filters clear`](/next/next/cloud/tcld/namespace/certificate-filters/clear)
+- [`tcld namespace certificate-filters import`](/next/cloud/tcld/namespace/certificate-filters/import)
+- [`tcld namespace certificate-filters export`](/next/cloud/tcld/namespace/certificate-filters/export)
+- [`tcld namespace certificate-filters clear`](/next/cloud/tcld/namespace/certificate-filters/clear)
