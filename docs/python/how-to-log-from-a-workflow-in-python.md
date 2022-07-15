@@ -11,7 +11,8 @@ tags:
 
 You can log from a Workflow using Python's standard library, by importing the logging module `import logging`.
 
-Set you logging configuration to a level you'd want to expose logs to. The following example sets the logging information level to `INFO`.
+Set your logging configuration to a level you want to expose logs to.
+The following example sets the logging information level to `INFO`.
 
 ```python
 logging.basicConfig(level=logging.INFO)
@@ -37,5 +38,7 @@ INFO:temporalio.workflow:Running workflow with parameter Temporal ({'attempt': 1
 ```
 
 :::note
+
 Logs are skipped during replay by default.
+
 :::

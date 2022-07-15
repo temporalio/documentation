@@ -11,7 +11,7 @@ tags:
 
 To start a Workflow Execution in python, use either the [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.client#execute_workflow) asynchronous methods in the Client.
 
-The following code example, starts a Workflow and returns its handle.
+The following code example starts a Workflow and returns its handle.
 
 ```python
 async def main():
@@ -25,7 +25,7 @@ async def main():
     )
 ```
 
-The following code example, starts a Workflow and waits for completion.
+The following code example starts a Workflow and waits for completion.
 
 ```python
 async def main():

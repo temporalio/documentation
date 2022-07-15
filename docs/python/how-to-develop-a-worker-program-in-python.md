@@ -22,7 +22,7 @@ worker = Worker(
 )
 ```
 
-The following code sample shows a Worker hosting Workflows and Activities.
+The following code example shows a Worker hosting Workflows and Activities.
 
 ```python
 async def run_worker(stop_event: asyncio.Event):
@@ -40,4 +40,6 @@ async def run_worker(stop_event: asyncio.Event):
         await stop_event.wait()
 ```
 
-The `asyncio.Event` that will be set when the Worker should stop. While this sample accepts a stop event and uses `async with`, [`run()`](https://python.temporal.io/temporalio.worker.Worker.html#run) and [`shutdown()`](https://python.temporal.io/temporalio.worker.Worker.html#shutdown) may be used as well. The `shutdown()` operation waits on all Activities to complete, so if a long-running Activity does not at least respect cancellation, the shutdown may never complete.
+The `asyncio.Event` that will be set when the Worker should stop.
+Although this example accepts a stop event and uses `async with`, you can also use [`run()`](https://python.temporal.io/temporalio.worker.Worker.html#run) and [`shutdown()`](https://python.temporal.io/temporalio.worker.Worker.html#shutdown).
+The `shutdown()` operation waits on all Activities to complete, so if a long-running Activity does not at least respect cancellation, the shutdown might never complete.

@@ -9,7 +9,7 @@ tags:
   - python
 ---
 
-When a `Worker` is created, it accepts a list of Workflows and/or Activities in the `workflows` and/or `activities` parameters respectively.
+When a `Worker` is created, it accepts a list of Workflows in the `workflows` parameter, a list of Activities in the `activities` parameter, or both.
 
 ```python
 worker = Worker(

@@ -14,7 +14,7 @@ Workflow code must be deterministic. This means:
 - no threading
 - no randomness
 - no external calls to processes
-- no network IO
+- no network I/O
 - no global state mutation
 - no system date or time
 

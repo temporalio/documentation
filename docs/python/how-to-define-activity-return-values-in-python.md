@@ -8,7 +8,7 @@ tags:
   - python
 ---
 
-Activity Definition can return inputs and other Activity values.
+An Activity Definition can return inputs and other Activity values.
 
 The following example defines an Activity that takes a string as input and returns a string.
 
