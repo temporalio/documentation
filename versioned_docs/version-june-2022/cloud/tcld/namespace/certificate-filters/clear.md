@@ -1,6 +1,7 @@
 ---
 id: clear
 title: tcld namespace certificate-filters clear
+sidebar_label: clear
 description: How to clear all certificate filters from a Namespace in Temporal Cloud using tcld.
 tags:
   - reference

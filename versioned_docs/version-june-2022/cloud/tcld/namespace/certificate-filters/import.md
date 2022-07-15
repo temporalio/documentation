@@ -1,6 +1,7 @@
 ---
 id: import
 title: tcld namespace certificate-filters import
+sidebar_label: import
 description: How to set certificate filters for a Namespace in Temporal Cloud using tcld.
 tags:
   - reference
