@@ -1,12 +1,25 @@
-# 1.0.0 release of our TypeScript SDK
+---
+tags:
+  - temporal
+  - sdk
+  - typescript
+  - javascript
+posted_on_: 2022-07-15T00:00:00Z
+slug: typescript-1.0.0
+title: '1.0.0 release of our TypeScript SDK'
+author: Roey Berman & Loren Sands-Ramshaw
+author_title: Engineering
+author_image_url: /img/roey-loren.jpg
+release_version: V1.16
+---
 
-After almost 2 years of development, 728 commits, 431 pull requests, and 48 releases, we've finally published the stable
+After almost 2 years of development, 729 commits, 433 pull requests, and 48 releases, we've finally published the stable
 `1.0.0` version of the Temporal TypeScript SDK. In this post, we'll share what's special about this SDK, how it's been
 built, how we've improved the API, and our future plans.
 
 <!--truncate-->
 
-> For those new to [Temporal](https://temporal.io/), I think of it as a "durable code execution framework." We execute
+> For those new to [Temporal](https://temporal.io/), We think of it as a "durable code execution framework." We execute
 > your backend code in a durable fashion: by persisting each step your program takes, we can recover your program's
 > state in the event of failure—even if the machine goes offline or loses power in the middle of execution. We also
 > durably retry and timeout external calls, so if your services or databases are unreachable or returning errors, we
