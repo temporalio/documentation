@@ -90,7 +90,7 @@
                     "cloud/tcld/namespace/certificate-filters/import",
                     "cloud/tcld/namespace/certificate-filters/export",
                     "cloud/tcld/namespace/certificate-filters/clear",
-                  ],
+                  ]
                 },
                 {
                   "type": "category",
