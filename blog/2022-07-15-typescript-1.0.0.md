@@ -9,22 +9,20 @@ The SDK was designed with TypeScript-first developer experience in mind, but wor
 
 ### Shared Core
 
-This is the first stable SDK built on top of a shared Rust [Core SDK](https://github.com/temporalio/sdk-core/). 
-The development of the Core SDK was started roughly around the time we started to develop the TypeScript SDK, and the API
+This is the first stable SDK built on top of a shared Rust [Core SDK](https://github.com/temporalio/sdk-core/). The
+development of the Core SDK was started roughly around the time we started to develop the TypeScript SDK, and the API
 boundary between the two evolved over time.
 
 By investing in a shared Core, we can reuse lot of the complex concurrency management and state machine logic to build
-new SDKs much faster. For example, our Python SDK (currently in Alpha) was built in just a few months.
-Sharing the logic makes all of our SDKs more reliable because when a problem is fixed in Core it is fixed for any
-dependent SDK.
+new SDKs much faster. For example, our Python SDK (currently in Alpha) was built in just a few months. Sharing the logic
+makes all of our SDKs more reliable because when a problem is fixed in Core it is fixed for any dependent SDK.
 
 ### Sandboxed workflow runtime
 
 The SDK leverages V8 isolates (the technology behind Chrome's isolation) to run each workflow in an isolated JavaScript
 runtime with a distinct global scope and to prevent the use of "unsafe" JavaScript modules that could break the code's
-[deterministic constraints](https://docs.temporal.io/workflows#deterministic-constraints).
-All non-deterministic JavaScript APIs, such as getting the current time or a random number, have been replaced with
-deterministic versions.
+[deterministic constraints](https://docs.temporal.io/workflows#deterministic-constraints).  All non-deterministic
+JavaScript APIs, such as getting the current time or a random number, have been replaced with deterministic versions.
 
 With all of this put together, we eliminated an entire class of footguns and made it easier to get started with
 Temporal.
@@ -34,9 +32,9 @@ Temporal.
 When we released the first Alpha of the SDK back in March of 2021, we set out to iterate on the public API and have
 asked our community of users to help us shape it.
 
-We've been very fortunate to have gotten such wide adoption for an SDK at such an early stage.
-The SDK's Slack channel has grown to more than 1000 members, and we've been actively responding and supporting users on a
-daily basis.
+We've been very fortunate to have gotten such wide adoption for an SDK at such an early stage. The SDK's [Slack
+channel](https://temporal.io/slack) has grown to more than 1000 members, and we've been actively responding and
+supporting users on a daily basis.
 
 The feedback and trust we've gotten from our early adopters to put the SDK in production has been invaluable. We
 wouldn't have been able to reach API and functional stability without them.
@@ -95,10 +93,9 @@ export async function example(name: string): Promise<string> {
 
 ## The future
 
-Now that the SDK is stable, we will invest in even safer APIs to help steer users in the right path by avoiding
-common anti-patterns.
-We'll build high-level abstractions that make writing workflows with long histories easier.
-And we will invest in developer tools that make the local development experience better, like IDE plugins.
+Now that the SDK is stable, we will invest in even safer APIs to help steer users in the right path by avoiding common
+anti-patterns. We'll build high-level abstractions that make writing workflows with long histories easier. And we will
+invest in developer tools that make the local development experience better, like IDE plugins.
 
 There are many more general Temporal features planned this year (TODO: should we mention some of those here?)
 
