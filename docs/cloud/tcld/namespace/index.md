@@ -14,5 +14,5 @@ Alias: `n`
 - [`tcld namespace list`](/cloud/tcld/namespace/list)
 - [`tcld namespace get`](/cloud/tcld/namespace/get)
 - [`tcld namespace accepted-client-ca`](/cloud/tcld/namespace/accepted-client-ca)
-- [`tcld namespace certificate-filters`](/next/cloud/tcld/namespace/certificate-filters)
+- [`tcld namespace certificate-filters`](/cloud/tcld/namespace/certificate-filters)
 - [`tcld namespace search-attributes`](/cloud/tcld/namespace/search-attributes)
