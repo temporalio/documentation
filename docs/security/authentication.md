@@ -4,7 +4,7 @@ title: Configuring Authentication
 sidebar_label: Configuring Authentication
 ---
 
-Authentication is the process of verifying users that wish to access your application.
+Authentication is the process of verifying users that wish to access your application are actually the users you want accessing it.
 
 Temporal has several authentication protocols that can be set to restrict access to your data. These protocols address three different areas: servers, client connections, and users.
 

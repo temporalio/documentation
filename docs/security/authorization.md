@@ -8,9 +8,9 @@ Authorization is the verification of applications and data that a user on your C
 
 Temporal offers two plugin interfaces for implementing API call authorization.
 
-- [`ClaimMapper`](https://www.notion.so/ClaimMapper-44aae103936b4e0789b23a7a32374ec4)
+- [`ClaimMapper`](/docs/security/how-to-use-claimmapper)
 
-- [`Authorizer`](https://www.notion.so/Authorizer-11cccb9167034e21a93797f4cafc7ee5)
+- [`Authorizer`](/docs/security/how-to-use-authorizer)
 
 The logic of both plugins can be customized to fit a variety of use cases. When provided, the front-end will invoke the implementation of the plugins before running the requested operation.
 

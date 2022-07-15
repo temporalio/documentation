@@ -20,13 +20,13 @@ A typical approach is for `ClaimMapper` to interpret custom `Claims` from a call
 
 `AuthInfo` is a struct that is passed to `GetClaims`. `AuthInfo` contains an authorization token extracted from the `authorization` header of the gRPC request.
 
-`AuthInfo` includes a pointer to the `pkix.Name` struct. This struct contains an x.509 distinguishable name from the caller's mTLS certificate.
+`AuthInfo` includes a pointer to the `pkix.Name` struct. This struct contains an [x.509](https://www.ibm.com/docs/en/ibm-mq/7.5?topic=certificates-distinguished-names) distinguishable name from the caller's mTLS certificate.
 
 ### `Claims`
 
 `Claims` is a struct that contains information about permission claims granted to the caller.
 
-`Authorizer` assumes that the caller has been properly authenticated, and trusts the `Claims` when making an authorization decision.
+`Authorizer` assumes that the caller has been properly [authenticated](/docs/security/authentication), and trusts the `Claims` when making an authorization decision.
 
 ## Default JWT ClaimMapper
 
@@ -50,10 +50,14 @@ Temporal provides an `rsaTokenKeyProvider`. This component dynamically obtains p
 provider := authorization.NewRSAKeyProvider(cfg)
 ```
 
-Note that the `rsaTokenKeyProvider` returned by `NewRSAKeyProvider` only implements `RSAKey` and `Close` methods, and returns an error from `EcdsaKey` and `HmacKey` methods. It is configured via `config.Config.Global.Authorization.JWTKeyProvider`:
+:::note
+
+The `rsaTokenKeyProvider` returned by `NewRSAKeyProvider` only implements `RSAKey` and `Close` methods, and returns an error from `EcdsaKey` and `HmacKey` methods. It is configured via `config.Config.Global.Authorization.JWTKeyProvider`:
 
 <!--SNIPSTART temporal-common-service-config-jwtkeyprovider-->
 <!--SNIPEND-->
+
+:::
 
 `KeySourceURIs` are the HTTP endpoints that return public keys of token issuers in the [JWKS format](https://tools.ietf.org/html/rfc7517).
 `RefreshInterval` defines how frequently keys should be refreshed.
