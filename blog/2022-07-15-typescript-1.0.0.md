@@ -3,6 +3,8 @@
 After almost 2 years of development, 728 commits, 431 pull requests, and 48 releases we're finally releasing the stable
 version of the Temporal TypeScript SDK.
 
+<!--truncate-->
+
 The SDK was designed with TypeScript-first developer experience in mind, but works equally well with JavaScript.
 
 ## What makes this SDK unique?
