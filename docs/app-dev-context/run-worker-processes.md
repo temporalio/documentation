@@ -9,9 +9,4 @@ A [Worker Entity](/concepts/what-is-a-worker-entity) is the component within a W
 Although multiple Worker Entities can be in a single Worker Process, a single Worker Entity Worker Process may be perfectly sufficient.
 For more information, see the [Worker tuning guide](/operation/how-to-tune-workers).
 
-A Worker Entity contains both a Workflow Worker and an Activity Worker so that it can make progress for either a Workflow Execution or an Activity Execution. In other words:
-
-- An Activity Worker must be able to handle all the Activities on that Queue.
-- A Workflow Worker must be able to handle all the Workflows on that Queue.
-
-So that all are registered by the Worker.
+A Worker Entity contains both a Workflow Worker and an Activity Worker so that it can make progress for either a Workflow Execution or an Activity Execution. 
