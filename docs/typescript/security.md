@@ -9,7 +9,7 @@ import CustomWarning from "../components/CustomWarning.js"
 
 <CustomWarning>
 
-Custom DataConverters are a standard SDK security feature that is not yet available in the TypeScript Beta.
+Custom DataConverters are a standard SDK security feature that is not yet available in the TypeScript.
 
 The Connection API is not final and may change slightly before the full launch.
 

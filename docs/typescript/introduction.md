@@ -4,7 +4,7 @@ sidebar_label: Introduction
 description: The TypeScript SDK lets developers write highly scalable, reliable, annd long-running workflows without being a distributed systems expert.
 ---
 
-The Temporal TypeScript SDK ([now in Beta](/blog/typescript-beta)) lets you write highly scalable and reliable long-running Workflows without being a distributed systems expert.
+The Temporal TypeScript SDK lets you write highly scalable and reliable long-running Workflows without being a distributed systems expert.
 It is designed with TypeScript-first developer experience in mind, but works equally well with JavaScript.
 
 [Introduction to Temporal](https://youtu.be/2HjnQlnA5eY)
