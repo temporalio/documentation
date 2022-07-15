@@ -1,6 +1,7 @@
 ---
 id: export
 title: tcld namespace certificate-filters export
+sidebar_label: export
 description: How to export certificate filters from a Namespace in Temporal Cloud using tcld.
 tags:
   - reference
