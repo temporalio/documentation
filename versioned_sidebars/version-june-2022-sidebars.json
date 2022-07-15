@@ -35,7 +35,7 @@
         {
           "type": "link",
           "label": "Release notes",
-          "href": "https://docs.temporal.io/cloud/release-notes",
+          "href": "https://docs.temporal.io/cloud/release-notes"
         },
         "cloud/tcld/how-to-install-tcld",
         {
@@ -84,12 +84,12 @@
                   "collapsed": true,
                   "link": {
                     "type": "doc",
-                    "id": "cloud/tcld/namespace/certificate-filters/index",
+                    "id": "cloud/tcld/namespace/certificate-filters/index"
                   },
                   "items": [
                     "cloud/tcld/namespace/certificate-filters/import",
                     "cloud/tcld/namespace/certificate-filters/export",
-                    "cloud/tcld/namespace/certificate-filters/clear",
+                    "cloud/tcld/namespace/certificate-filters/clear"
                   ]
                 },
                 {
