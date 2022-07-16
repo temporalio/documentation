@@ -10,10 +10,9 @@ title: '1.0.0 release of our TypeScript SDK'
 author: Roey Berman & Loren Sands-Ramshaw
 author_title: Engineering
 author_image_url: /img/roey-loren.jpg
-release_version: V1.16
 ---
 
-After almost 2 years of development, 729 commits, 433 pull requests, and 48 releases, we've finally published the stable
+After almost 2 years of development, 730 commits, 434 pull requests, and 48 releases, we've finally published the stable
 `1.0.0` version of the Temporal TypeScript SDK. In this post, we'll share what's special about this SDK, how it's been
 built, how we've improved the API, and our future plans.
 
@@ -70,16 +69,16 @@ breaking changes](https://github.com/temporalio/sdk-typescript/blob/main/CHANGEL
 committed to avoiding backward-incompatible changes from now on.
 
 A special thank you to everyone [who contributed](https://github.com/temporalio/sdk-typescript/graphs/contributors) to
-the SDK's development—[lorensr](https://github.com/lorensr), [Sushisource](https://github.com/Sushisource),
-[vkarpov15](https://github.com/vkarpov15), [mjameswh](https://github.com/mjameswh),
-[JoshuaKGoldberg](https://github.com/JoshuaKGoldberg), [yoDon](https://github.com/yoDon),
-[SamSokolin](https://github.com/SamSokolin), [julianocomg](https://github.com/julianocomg),
-[vitarb](https://github.com/vitarb), [joebowbeer](https://github.com/joebowbeer),
-[andreasasprou](https://github.com/andreasasprou), and [jameslnewell](https://github.com/jameslnewell)—and to
-[swyx](https://twitter.com/swyx) for writing and recording most of the [docs and
-tutorials](https://docs.temporal.io/typescript/introduction/) and tirelessly advocating for API simplication. We welcome
-more involvement from anyone, from helping answer community questions to submitting issues or PRs—check out
-[CONTRIBUTING.md](https://github.com/temporalio/sdk-typescript/blob/main/CONTRIBUTING.md) for more information.
+the SDK's development—[Sushisource](https://github.com/Sushisource), [vkarpov15](https://github.com/vkarpov15),
+[mjameswh](https://github.com/mjameswh), [JoshuaKGoldberg](https://github.com/JoshuaKGoldberg),
+[yoDon](https://github.com/yoDon), [SamSokolin](https://github.com/SamSokolin),
+[julianocomg](https://github.com/julianocomg), [vitarb](https://github.com/vitarb),
+[joebowbeer](https://github.com/joebowbeer), [andreasasprou](https://github.com/andreasasprou), and
+[jameslnewell](https://github.com/jameslnewell)—and to [swyx](https://twitter.com/swyx) for writing and recording most
+of the [docs and tutorials](https://docs.temporal.io/typescript/introduction/) and tirelessly advocating for API
+simplication. We welcome more involvement from anyone, from helping answer community questions to submitting issues or
+PRs—check out [CONTRIBUTING.md](https://github.com/temporalio/sdk-typescript/blob/main/CONTRIBUTING.md) for more
+information.
 
 ## The journey
 
