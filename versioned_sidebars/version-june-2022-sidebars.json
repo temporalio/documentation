@@ -711,7 +711,8 @@
         "php/error-handling",
         "php/side-effect",
         "php/versioning",
-        "php/distributed-cron"
+        "php/distributed-cron",
+        "php/testing"
       ]
     }
   ],

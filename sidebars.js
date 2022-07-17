@@ -817,6 +817,7 @@ module.exports = {
         "php/side-effect",
         "php/versioning",
         "php/distributed-cron",
+        "php/testing",
       ],
     },
   ],
