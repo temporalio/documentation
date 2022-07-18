@@ -491,9 +491,9 @@ You can do this with [Search Attributes](/concepts/what-is-a-search-attribute/).
 - _Custom Search Attributes_ can contain their own domain-specific data (like `customerId` or `numItems`).
   - A few [generic Custom Search Attributes](/concepts/what-is-a-search-attribute/#custom-search-attributes) like `CustomKeywordField` and `CustomIntField` are created by default in Temporal's [Docker Compose](/clusters/quick-install/#docker-compose).
 
-The steps to using Search Attributes are:
+The steps to using custom Search Attributes are:
 
-- Create a new Search Attribute in your Cluster [using `tctl`](/tctl/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl/).
+- Create a new Search Attribute in your Cluster [using `tctl`](/tctl/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl/) or the Cloud UI.
 - Set the value of the Search Attribute for a Workflow Execution:
   - On the Client by including it as an option when starting the Execution.
   - In the Workflow by calling `UpsertSearchAttributes`.
@@ -504,6 +504,8 @@ The steps to using Search Attributes are:
   - [In `tctl`](/tctl/workflow/list/#--query).
   - In code by calling `ListWorkflowExecutions`.
 
+Here is how to query Workflow Executions:
+
 <Tabs
 defaultValue="go"
 groupId="site-lang"
@@ -511,34 +513,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-- Type: `map[string]interface{}`
-- Default: Empty.
-
-These are the corresponding [Search Attribute value types](/concepts/what-is-a-search-attribute/#types) in Go:
-
-- Keyword = string
-- Int = int64
-- Double = float64
-- Bool = bool
-- Datetime = time.Time
-- Text = string
-
-The following code starts a Workflow Execution with a Search Attribute of `CustomIntField` and `MiscData`.
-
-```go
-searchAttributes := map[string]interface{}{
-  "CustomIntField": 1,
-  "MiscData": "yellow",
-}
-workflowOptions := client.StartWorkflowOptions{
-  SearchAttributes: searchAttributes,
-  // ...
-}
-workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
-if err != nil {
-  // ...
-}
-```
+Use [`Client.ListWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/client#Client.ListWorkflow).
 
 </TabItem>
 <TabItem value="java">
@@ -553,7 +528,18 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+Use [`WorkflowService.listWorkflowExecutions`](https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.workflowservice-1/#listworkflowexecutions):
+
+```typescript
+import {Connection} from "@temporalio/client";
+
+const connection = await Connection.connect();
+const response = await connection.workflowService.listWorkflowExecutions({
+  query: `ExecutionStatus = "Running"`,
+});
+```
+
+where `query` is a [List Filter](/concepts/what-is-a-list-filter/).
 
 </TabItem>
 <TabItem value="python">
@@ -563,7 +549,9 @@ Content is not available
 </TabItem>
 </Tabs>
 
-#### Custom Search attributes
+### Set custom search attributes
+
+After you've created custom Search Attributes in your Cluster ([using `tctl`](/tctl/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl/) or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
 
 <Tabs
 defaultValue="go"
@@ -572,11 +560,19 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-You can provide key-value pairs as Search Attributes in [StartWorkflowOptions](https://pkg.go.dev/go.temporal.io/sdk/internal#StartWorkflowOptions).
-In Go, Search Attributes are represented as `map[string]interface{}`.
-The value provided in the map must be the same type that was added to a Cluster.
+Provide key-value pairs in [`StartWorkflowOptions.SearchAttributes`](https://pkg.go.dev/go.temporal.io/sdk/internal#StartWorkflowOptions).
 
-This can be useful for tagging executions with useful attributes you may want to search up later. For example:
+Search Attributes are represented as `map[string]interface{}`.
+The values in the map must correspond to the [Search Attribute's value type](/concepts/what-is-a-search-attribute/#types):
+
+- Keyword = `string`
+- Int = `int64`
+- Double = `float64`
+- Bool = `bool`
+- Datetime = `time.Time`
+- Text = `string`
+
+If you had custom Search Attributes `CustomerId` of type Keyword and `MiscData` of type Text, you would provide `string` values:
 
 ```go
 func (c *Client) CallMyWorkflow(ctx context.Context, workflowID string, payload map[string]interface{}) error {
@@ -586,9 +582,8 @@ func (c *Client) CallMyWorkflow(ctx context.Context, workflowID string, payload 
         "MiscData": payload["miscData"]
     }
     options := client.StartWorkflowOptions{
-        ID:                 workflowID,
-        TaskQueue:          app.MyTaskQueue,
         SearchAttributes:   searchAttributes
+        // ...
     }
     we, err := c.Client.ExecuteWorkflow(ctx, options, app.MyWorkflow, payload)
     // ...
@@ -608,7 +603,12 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+Use [`WorkflowOptions.searchAttributes`](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions#searchattributes).
+
+<!--SNIPSTART typescript-search-attributes-client-->
+<!--SNIPEND-->
+
+The type of `searchAttributes` is `Record<string, string[] | number[] | boolean[] | Date[]>`.
 
 </TabItem>
 <TabItem value="python">
@@ -620,7 +620,7 @@ Content is not available
 
 ### Upsert custom search attributes
 
-Upsert Search Attributes is used to add or update Search Attributes from within Workflow code.
+You can upsert Search Attributes to add or update Search Attributes from within Workflow code.
 
 <Tabs
 defaultValue="go"
@@ -690,7 +690,7 @@ Content is not available
 
 ### Remove search attributes
 
-To remove a Search Attribute that was previously set, set it to an empty array, `[]`.
+To remove a Search Attribute that was previously set, set it to an empty array: `[]`.
 
 <Tabs
 defaultValue="go"
@@ -717,8 +717,6 @@ To remove a Search Attribute that was previously set, set it to an empty array `
 
 </TabItem>
 <TabItem value="typescript">
-
-Use [`upsertSearchAttributes`](https://typescript.temporal.io/api/namespaces/workflow/#upsertsearchattributes) to merge the provided [`searchAttributes`](https://typescript.temporal.io/api/namespaces/workflow/#searchattributess) with the existing Search Attributes, `workflowInfo().searchAttributes`:
 
 ```typescript
 import {upsertSearchAttributes} from "@temporalio/workflow";

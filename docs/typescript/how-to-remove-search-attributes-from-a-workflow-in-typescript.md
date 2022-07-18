@@ -9,8 +9,6 @@ tags:
   - client
 ---
 
-Use [`upsertSearchAttributes`](https://typescript.temporal.io/api/namespaces/workflow/#upsertsearchattributes) to merge the provided [`searchAttributes`](https://typescript.temporal.io/api/namespaces/workflow/#searchattributess) with the existing Search Attributes, `workflowInfo().searchAttributes`:
-
 ```typescript
 import { upsertSearchAttributes } from '@temporalio/workflow';
 
