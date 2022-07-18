@@ -18,7 +18,8 @@ These measures can further secure your data.
 
 ## Use case: tctl
 
-Suppose that you want to view Workflow History. This information will need to be decoded before it can be viewed.
+Suppose that you want to view Workflow History.
+This information needs to be decoded before it can be viewed.
 
 You can use [tctl workflow showid](/tctl/workflow/showid) to view a Workflow Execution Event History.
 
