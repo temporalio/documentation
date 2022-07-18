@@ -59,7 +59,7 @@ Temporal.
 When we released the first alpha version of the SDK back in March of 2021, we set out to iterate on the public API and
 have asked our community of users to help us shape it.
 
-We've been very fortunate to have gotten such wide adoption for an SDK at such an early stage. The SDK's Slack channel
+We've been very fortunate to have received such wide adoption for the SDK, especially at such an early stage. The SDK's Slack channel
 ([#typescript-sdk](https://temporal.io/slack)) has grown to more than 1000 members, and we've been actively responding
 to and supporting users on a daily basis.
 
