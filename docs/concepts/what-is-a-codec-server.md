@@ -36,4 +36,5 @@ Workflow Execution Event History is available in the Web UI.
 Payload information for each Event is captured within Event 'input' and 'result' fields.
 Without a Codec Server, this information remains encoded.
 
-Passing these Payloads through a Codec Server will return decoded results to the Web UI. Make sure to [enter a valid URL and port](/docs/clusters/how-to-set-up-codec-server/#web-ui) for the codec endpoint when configuring the Codec Server.
+Passing these Payloads through a Codec Server returns decoded results to the Web UI.
+Make sure to [enter a valid URL and port](/clusters/how-to-set-up-codec-server/#web-ui) for the codec endpoint when configuring the Codec Server.
