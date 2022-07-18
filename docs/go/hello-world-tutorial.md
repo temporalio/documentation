@@ -58,7 +58,9 @@ In the Go SDK, an Activity function is just like any other [exported Go function
 Create activity.go in the project root and add the following code:
 
 <!--SNIPSTART hello-world-project-template-go-activity-->
+
 [activity.go](https://github.com/temporalio/hello-world-project-template-go/blob/master/activity.go)
+
 ```go
 package app
 
@@ -71,6 +73,7 @@ func ComposeGreeting(name string) (string, error) {
 	return greeting, nil
 }
 ```
+
 <!--SNIPEND-->
 
 ### Workflow
@@ -80,7 +83,9 @@ Next is our Workflow. Workflow functions are where you configure and organize th
 Create workflow.go and add the following code:
 
 <!--SNIPSTART hello-world-project-template-go-workflow-->
+
 [workflow.go](https://github.com/temporalio/hello-world-project-template-go/blob/master/workflow.go)
+
 ```go
 package app
 
@@ -100,6 +105,7 @@ func GreetingWorkflow(ctx workflow.Context, name string) (string, error) {
 	return result, err
 }
 ```
+
 <!--SNIPEND-->
 
 ### Task Queue
@@ -107,12 +113,15 @@ func GreetingWorkflow(ctx workflow.Context, name string) (string, error) {
 [Task Queues](/concepts/what-is-a-task-queue) are how the Temporal server supplies information to Workers. When you start a Workflow, you tell the server which Task Queue the Workflow and/or Activities use as an information queue. We will configure our Worker to listen to the same Task Queue that our Workflow and Activities use. Since the Task Queue name is used by multiple things, let's create shared.go and define our Task Queue name there:
 
 <!--SNIPSTART hello-world-project-template-go-shared-->
+
 [shared.go](https://github.com/temporalio/hello-world-project-template-go/blob/master/shared.go)
+
 ```go
 package app
 
 const GreetingTaskQueue = "GREETING_TASK_QUEUE"
 ```
+
 <!--SNIPEND-->
 
 ### Worker
@@ -122,7 +131,9 @@ Our [Worker](/concepts/what-is-a-worker) hosts Workflow and Activity functions a
 Create worker/main.go and add the following code:
 
 <!--SNIPSTART hello-world-project-template-go-worker-->
+
 [worker/main.go](https://github.com/temporalio/hello-world-project-template-go/blob/master/worker/main.go)
+
 ```go
 package main
 
@@ -153,6 +164,7 @@ func main() {
 	}
 }
 ```
+
 <!--SNIPEND-->
 
 ### Workflow starter
@@ -162,7 +174,9 @@ There are two ways to start a Workflow, via the Temporal CLI or Temporal SDK. In
 Create start/main.go and add the following code:
 
 <!--SNIPSTART hello-world-project-template-go-start-workflow-->
+
 [start/main.go](https://github.com/temporalio/hello-world-project-template-go/blob/master/start/main.go)
+
 ```go
 package main
 
@@ -205,6 +219,7 @@ func printResults(greeting string, workflowID, runID string) {
 	fmt.Printf("\n%s\n\n", greeting)
 }
 ```
+
 <!--SNIPEND-->
 
 ## ![](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/check.png) Test the app
@@ -212,7 +227,9 @@ func printResults(greeting string, workflowID, runID string) {
 Let's add a simple unit test to our application to make sure things are working as expected. Create workflow_test.go and add the following code:
 
 <!--SNIPSTART hello-world-project-template-go-workflow-test-->
+
 [workflow_test.go](https://github.com/temporalio/hello-world-project-template-go/blob/master/workflow_test.go)
+
 ```go
 package app
 
@@ -237,6 +254,7 @@ func Test_Workflow(t *testing.T) {
 	require.Equal(t, "Hello World!", greeting)
 }
 ```
+
 <!--SNIPEND-->
 
 Add the required `testify` packages to your `go.mod` file by running the following:

@@ -6,7 +6,9 @@ description: The Motor Vehicle Search Workflow calls an external API via an Acti
 ---
 
 <!--SNIPSTART background-checks-motor-vehicle-workflow-definition-->
+
 [workflows/motor_vehicle_incident_search.go](https://github.com/temporalio/background-checks/blob/master/workflows/motor_vehicle_incident_search.go)
+
 ```go
 func MotorVehicleIncidentSearch(ctx workflow.Context, input *MotorVehicleIncidentSearchWorkflowInput) (*MotorVehicleIncidentSearchWorkflowResult, error) {
 	var result MotorVehicleIncidentSearchWorkflowResult
@@ -38,6 +40,7 @@ func MotorVehicleIncidentSearch(ctx workflow.Context, input *MotorVehicleInciden
 }
 
 ```
+
 <!--SNIPEND-->
 
 ![Swim lane diagram of the State Criminal Search Child Workflow Execution](/diagrams/background-checks/motor-vehicle-search-flow.svg)

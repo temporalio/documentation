@@ -90,7 +90,9 @@ You can also bundle code on your own and pass it to the `workflowBundle`.
 We can see this process working in the [production sample](https://github.com/temporalio/samples-typescript/tree/main/production):
 
 <!--SNIPSTART typescript-production-worker-->
+
 [production/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/master/production/src/worker.ts)
+
 ```ts
 const workflowOption = () =>
   process.env.NODE_ENV === 'production'
@@ -112,6 +114,7 @@ async function run() {
   await worker.run();
 }
 ```
+
 <!--SNIPEND-->
 
 ## Logging

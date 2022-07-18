@@ -6,7 +6,9 @@ description: The Federal Criminal Search Workflow calls an external API via an A
 ---
 
 <!--SNIPSTART background-checks-federal-criminal-workflow-definition-->
+
 [workflows/federal_criminal_search.go](https://github.com/temporalio/background-checks/blob/master/workflows/federal_criminal_search.go)
+
 ```go
 func FederalCriminalSearch(ctx workflow.Context, input *FederalCriminalSearchWorkflowInput) (*FederalCriminalSearchWorkflowResult, error) {
 	var result activities.FederalCriminalSearchResult
@@ -41,6 +43,7 @@ func FederalCriminalSearch(ctx workflow.Context, input *FederalCriminalSearchWor
 }
 
 ```
+
 <!--SNIPEND-->
 
 ![Swim lane diagram of the Federal Criminal Search Child Workflow Execution](/diagrams/background-checks/federal-criminal-search-flow.svg)

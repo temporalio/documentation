@@ -6,7 +6,9 @@ description: The SSN Trace Workflow calls an external API via an Activity Execut
 ---
 
 <!--SNIPSTART background-checks-ssn-trace-workflow-definition-->
+
 [workflows/ssn_trace.go](https://github.com/temporalio/background-checks/blob/master/workflows/ssn_trace.go)
+
 ```go
 
 // SSNTrace is a Workflow Definition that calls for the execution of a single Activity.
@@ -26,6 +28,7 @@ func SSNTrace(ctx workflow.Context, input *SSNTraceWorkflowInput) (*SSNTraceWork
 }
 
 ```
+
 <!--SNIPEND-->
 
 ![Swim lane diagram of the SSN Trace Child Workflow Execution](/diagrams/background-checks/ssn-trace-flow.svg)

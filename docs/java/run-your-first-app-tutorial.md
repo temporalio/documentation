@@ -65,7 +65,9 @@ Here's a high-level illustration of what's happening:
 The Workflow function is the application entry point. This is what our money transfer Workflow looks like:
 
 <!--SNIPSTART money-transfer-project-template-java-workflow-implementation-->
+
 [src/main/java/moneytransferapp/MoneyTransferWorkflowImpl.java](https://github.com/temporalio/money-transfer-project-template-java/blob/master/src/main/java/moneytransferapp/MoneyTransferWorkflowImpl.java)
+
 ```java
 public class MoneyTransferWorkflowImpl implements MoneyTransferWorkflow {
     private static final String WITHDRAW = "Withdraw";
@@ -99,6 +101,7 @@ public class MoneyTransferWorkflowImpl implements MoneyTransferWorkflow {
     }
 }
 ```
+
 <!--SNIPEND-->
 
 When you "start" a Workflow you are basically telling the Temporal server, "track the state of the Workflow with this function signature". Workers will execute the Workflow code below, piece by piece, relaying the execution events and results back to the server.
@@ -108,7 +111,9 @@ When you "start" a Workflow you are basically telling the Temporal server, "trac
 There are two ways to start a Workflow with Temporal, either via the SDK or via the [CLI](/tctl). For this tutorial we used the SDK to start the Workflow, which is how most Workflows get started in a live environment. The call to the Temporal server can be done [synchronously or asynchronously](/java/workflows). Here we do it asynchronously, so you will see the program run, tell you the transaction is processing, and exit.
 
 <!--SNIPSTART money-transfer-project-template-java-workflow-initiator-->
+
 [src/main/java/moneytransferapp/InitiateMoneyTransfer.java](https://github.com/temporalio/money-transfer-project-template-java/blob/master/src/main/java/moneytransferapp/InitiateMoneyTransfer.java)
+
 ```java
 public class InitiateMoneyTransfer {
 
@@ -137,6 +142,7 @@ public class InitiateMoneyTransfer {
     }
 }
 ```
+
 <!--SNIPEND-->
 
 Run the InitiateMoneyTransfer class within IntelliJ or from the project root using the following command:
@@ -180,7 +186,9 @@ It's time to start the Worker. A Worker is responsible for executing pieces of W
 After The Worker executes code, it returns the results back to the Temporal server. Note that the Worker listens to the same Task Queue that the Workflow and Activity tasks are sent to. This is called "Task routing", and is a built-in mechanism for load balancing.
 
 <!--SNIPSTART money-transfer-project-template-java-worker-->
+
 [src/main/java/moneytransferapp/MoneyTransferWorker.java](https://github.com/temporalio/money-transfer-project-template-java/blob/master/src/main/java/moneytransferapp/MoneyTransferWorker.java)
+
 ```java
 public class MoneyTransferWorker {
 
@@ -202,18 +210,22 @@ public class MoneyTransferWorker {
     }
 }
 ```
+
 <!--SNIPEND-->
 
 Task Queues are defined by a simple string name.
 
 <!--SNIPSTART money-transfer-project-template-java-shared-constants-->
+
 [src/main/java/moneytransferapp/Shared.java](https://github.com/temporalio/money-transfer-project-template-java/blob/master/src/main/java/moneytransferapp/Shared.java)
+
 ```java
 public interface Shared {
 
     static final String MONEY_TRANSFER_TASK_QUEUE = "MONEY_TRANSFER_TASK_QUEUE";
 }
 ```
+
 <!--SNIPEND-->
 
 Run the TransferMoneyWorker class from IntelliJ, or run the following command from the project root in separate terminal:
@@ -258,7 +270,9 @@ Your Workflow is still there!
 Next let's simulate a bug in one of the Activity functions. Inside your project, open the `AccountActivityImpl.java` file and uncomment the line that throws an Exception in the `deposit()` method.
 
 <!--SNIPSTART money-transfer-project-template-java-activity-implementation-->
+
 [src/main/java/moneytransferapp/AccountActivityImpl.java](https://github.com/temporalio/money-transfer-project-template-java/blob/master/src/main/java/moneytransferapp/AccountActivityImpl.java)
+
 ```java
 public class AccountActivityImpl implements AccountActivity {
 
@@ -283,6 +297,7 @@ public class AccountActivityImpl implements AccountActivity {
     }
 }
 ```
+
 <!--SNIPEND-->
 
 Save your changes and run the Worker. You will see the Worker complete the `withdraw()` Activity method, but throw the Exception when it attempts the `deposit()` Activity method. The important thing to note here is that the Worker keeps retrying the `deposit()` method.

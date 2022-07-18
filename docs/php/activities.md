@@ -298,7 +298,9 @@ There are two parts to implementing an asynchronously completed Activity:
 The following example demonstrates the first part:
 
 <!--SNIPSTART samples-php-async-activity-completion-activity-class-->
+
 [app/src/AsyncActivityCompletion/GreetingActivity.php](https://github.com/temporalio/samples-php/blob/master/app/src/AsyncActivityCompletion/GreetingActivity.php)
+
 ```php
 class GreetingActivity implements GreetingActivityInterface
 {
@@ -326,12 +328,15 @@ class GreetingActivity implements GreetingActivityInterface
     }
 }
 ```
+
 <!--SNIPEND-->
 
 The following code demonstrates how to complete the Activity successfully using `WorkflowClient`:
 
 <!--SNIPSTART samples-php-async-activity-completion-completebytoken-->
+
 [app/src/AsyncActivityCompletion/CompleteCommand.php](https://github.com/temporalio/samples-php/blob/master/app/src/AsyncActivityCompletion/CompleteCommand.php)
+
 ```php
         $client = $this->workflowClient->newActivityCompletionClient();
         // Complete the Activity.
@@ -340,6 +345,7 @@ The following code demonstrates how to complete the Activity successfully using 
             $input->getArgument('message')
         );
 ```
+
 <!--SNIPEND-->
 
 To fail the Activity, you would do the following:

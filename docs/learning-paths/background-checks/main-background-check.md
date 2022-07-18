@@ -9,7 +9,9 @@ This is the entry point of the Temporal Application.
 When a new Background Check is started, this is the function that executes.
 
 <!--SNIPSTART background-checks-main-workflow-definition-->
+
 [workflows/background_check.go](https://github.com/temporalio/background-checks/blob/master/workflows/background_check.go)
+
 ```go
 
 // BackgroundCheck is a Workflow Definition that calls for the execution of a variable set of Activities and Child Workflows.
@@ -117,6 +119,7 @@ func BackgroundCheck(ctx workflow.Context, input *BackgroundCheckWorkflowInput) 
 }
 
 ```
+
 <!--SNIPEND-->
 
 The sequence that the code defines can be represented in the following diagram:

@@ -6,7 +6,9 @@ description: The Candidate Acceptance Workflow sends email to the Candidate via 
 ---
 
 <!--SNIPSTART background-checks-accept-workflow-definition-->
+
 [workflows/accept.go](https://github.com/temporalio/background-checks/blob/master/workflows/accept.go)
+
 ```go
 func Accept(ctx workflow.Context, input *AcceptWorkflowInput) (*AcceptWorkflowResult, error) {
 	err := emailCandidate(ctx, input)
@@ -21,6 +23,7 @@ func Accept(ctx workflow.Context, input *AcceptWorkflowInput) (*AcceptWorkflowRe
 }
 
 ```
+
 <!--SNIPEND-->
 
 ![Swim lane diagram of the Candidate Acceptance Child Workflow Execution](/diagrams/background-checks/candidate-accept-flow.svg)

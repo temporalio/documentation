@@ -6,7 +6,9 @@ description: The State Criminal Search Workflow calls an external API via an Act
 ---
 
 <!--SNIPSTART background-checks-state-criminal-workflow-definition-->
+
 [workflows/state_criminal_search.go](https://github.com/temporalio/background-checks/blob/master/workflows/state_criminal_search.go)
+
 ```go
 
 // StateCriminalSearch is a Workflow Definition that calls for the execution an Activity for
@@ -44,6 +46,7 @@ func StateCriminalSearch(ctx workflow.Context, input *StateCriminalSearchWorkflo
 }
 
 ```
+
 <!--SNIPEND-->
 
 ![Swim lane diagram of the State Criminal Search Child Workflow Execution](/diagrams/background-checks/state-criminal-search-flow.svg)

@@ -6,7 +6,9 @@ description: The Employment Verification Workflow sends email to a Researcher vi
 ---
 
 <!--SNIPSTART background-checks-employment-verification-workflow-definition-->
+
 [workflows/employment_verification.go](https://github.com/temporalio/background-checks/blob/master/workflows/employment_verification.go)
+
 ```go
 
 // EmploymentVerification is a Workflow Definition that calls for the execution of a Side Effect, and an Activity,
@@ -38,6 +40,7 @@ func EmploymentVerification(ctx workflow.Context, input *EmploymentVerificationW
 }
 
 ```
+
 <!--SNIPEND-->
 
 ![Swim lane diagram of the Employment Verification Child Workflow Execution](/diagrams/background-checks/employment-verification-flow.svg)

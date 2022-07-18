@@ -22,11 +22,13 @@ Activities run in the Node.js execution environment, meaning you can easily port
 `src/activities.ts`
 
 <!--SNIPSTART typescript-hello-activity {"enable_source_link": false}-->
+
 ```ts
 export async function greet(name: string): Promise<string> {
   return `Hello, ${name}!`;
 }
 ```
+
 <!--SNIPEND-->
 
 ### Workflow
@@ -42,6 +44,7 @@ The snippet below uses `proxyActivities` to create a function that, when called,
 `src/workflows.ts`
 
 <!--SNIPSTART typescript-hello-workflow {"enable_source_link": false}-->
+
 ```ts
 import { proxyActivities } from '@temporalio/workflow';
 // Only import the activity types
@@ -56,6 +59,7 @@ export async function example(name: string): Promise<string> {
   return await greet(name);
 }
 ```
+
 <!--SNIPEND-->
 
 ### Worker
@@ -68,6 +72,7 @@ See the list of [WorkerOptions](https://typescript.temporal.io/api/interfaces/wo
 `src/worker.ts`
 
 <!--SNIPSTART typescript-hello-worker {"enable_source_link": false}-->
+
 ```ts
 import { Worker } from '@temporalio/worker';
 import * as activities from './activities';
@@ -95,6 +100,7 @@ run().catch((err) => {
   process.exit(1);
 });
 ```
+
 <!--SNIPEND-->
 
 ### Client
@@ -108,6 +114,7 @@ It can be used in any Node.js process (for example, an [Express](https://express
 `src/client.ts`
 
 <!--SNIPSTART typescript-hello-client {"enable_source_link": false}-->
+
 ```ts
 import { Connection, WorkflowClient } from '@temporalio/client';
 import { example } from './workflows';
@@ -143,6 +150,7 @@ run().catch((err) => {
   process.exit(1);
 });
 ```
+
 <!--SNIPEND-->
 
 ### Testing

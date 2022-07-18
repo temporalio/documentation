@@ -67,7 +67,9 @@ Here's a high-level illustration of what's happening:
 The Workflow function is the application entry point. This is what our money transfer Workflow looks like:
 
 <!--SNIPSTART money-transfer-project-template-go-workflow-->
+
 [workflow.go](https://github.com/temporalio/money-transfer-project-template-go/blob/master/workflow.go)
+
 ```go
 func TransferMoney(ctx workflow.Context, transferDetails TransferDetails) error {
 	// RetryPolicy specifies how to automatically handle retries if an Activity fails.
@@ -96,6 +98,7 @@ func TransferMoney(ctx workflow.Context, transferDetails TransferDetails) error 
 	return nil
 }
 ```
+
 <!--SNIPEND-->
 
 When you "start" a Workflow you are basically telling the Temporal server, "track the state of the Workflow with this function signature". Workers will execute the Workflow code below, piece by piece, relaying the execution events and results back to the server.
@@ -105,7 +108,9 @@ When you "start" a Workflow you are basically telling the Temporal server, "trac
 There are two ways to start a Workflow with Temporal, either via the SDK or via the [CLI](/tctl). For this tutorial we used the SDK to start the Workflow, which is how most Workflows get started in a live environment. The call to the Temporal server can be done [synchronously or asynchronously](/go/workflows/#how-to-start-a-workflow). Here we do it asynchronously, so you will see the program run, tell you the transaction is processing, and exit.
 
 <!--SNIPSTART money-transfer-project-template-go-start-workflow-->
+
 [start/main.go](https://github.com/temporalio/money-transfer-project-template-go/blob/master/start/main.go)
+
 ```go
 func main() {
 	// Create the client object just once per process
@@ -131,6 +136,7 @@ func main() {
 	printResults(transferDetails, we.GetID(), we.GetRunID())
 }
 ```
+
 <!--SNIPEND-->
 
 ### Running the Workflow
@@ -180,7 +186,9 @@ Note that the Worker listens to the same Task Queue that the Workflow and Activi
 This is called "Task routing", and is a built-in mechanism for load balancing.
 
 <!--SNIPSTART money-transfer-project-template-go-worker-->
+
 [worker/main.go](https://github.com/temporalio/money-transfer-project-template-go/blob/master/worker/main.go)
+
 ```go
 func main() {
 	// Create the client object just once per process
@@ -201,15 +209,19 @@ func main() {
 	}
 }
 ```
+
 <!--SNIPEND-->
 
 Task Queues are defined by a simple string name:
 
 <!--SNIPSTART money-transfer-project-template-go-shared-task-queue-->
+
 [shared.go](https://github.com/temporalio/money-transfer-project-template-go/blob/master/shared.go)
+
 ```go
 const TransferMoneyTaskQueue = "TRANSFER_MONEY_TASK_QUEUE"
 ```
+
 <!--SNIPEND-->
 
 ### Running the Worker
@@ -278,7 +290,9 @@ Next you'll simulate a bug in the `Deposit()` Activity function. Let your Workfl
 Open the `activity.go` file and switch out the comments on the `return` statements such that the `Deposit()` function returns an error.
 
 <!--SNIPSTART money-transfer-project-template-go-activity-->
+
 [activity.go](https://github.com/temporalio/money-transfer-project-template-go/blob/master/activity.go)
+
 ```go
 func Deposit(ctx context.Context, transferDetails TransferDetails) error {
 	fmt.Printf(
@@ -292,6 +306,7 @@ func Deposit(ctx context.Context, transferDetails TransferDetails) error {
 	return nil
 }
 ```
+
 <!--SNIPEND-->
 
 Save your changes and run the Worker.
