@@ -23,9 +23,9 @@ A Worker Program is the static code that defines the constraints of the Worker P
 **Implementation guides:**
 
 - [How to develop a Worker Program in Go](/go/how-to-develop-a-worker-program-in-go)
-- [How to develop a Worker Program in Java](/next/application-development/foundations#none)
-- [How to develop a Worker Program in PHP](/next/application-development/foundations#none)
-- [How to develop a Worker Program in TypeScript](/next/application-development/foundations#none)
+- [How to develop a Worker Program in Java](/application-development/foundations#none)
+- [How to develop a Worker Program in PHP](/application-development/foundations#none)
+- [How to develop a Worker Program in TypeScript](/application-development/foundations#none)
 
 ### Worker Entity
 
@@ -45,13 +45,13 @@ Therefore, a single Worker can handle millions of open Workflow Executions, assu
 
 **Operation guides:**
 
-- [How to tune Workers](/operation/how-to-tune-workers)
+- [How to tune Workers](/application-development/worker-performance)
 
 ## Worker Process
 
 ![Component diagram of a Worker Process and the Temporal Server](/diagrams/worker-and-server-component.svg)
 
-A Worker Process is responsible for polling a [Task Queue](/next/tasks#task-queues), dequeueing a [Task](/next/tasks#), executing your code in response to a Task, and responding to the [Temporal Cluster](/next/clusters#) with the results.
+A Worker Process is responsible for polling a [Task Queue](/tasks#task-queues), dequeueing a [Task](/tasks#), executing your code in response to a Task, and responding to the [Temporal Cluster](/clusters#) with the results.
 
 More formally, a Worker Process is any process that implements the Task Queue Protocol and the Task Execution Protocol.
 
@@ -62,7 +62,7 @@ More formally, a Worker Process is any process that implements the Task Queue Pr
 
 **Worker Processes are external to a Temporal Cluster.**
 Temporal Application developers are responsible for developing [Worker Programs](#worker-program) and operating Worker Processes.
-Said another way, the [Temporal Cluster](/next/clusters#) (including the Temporal Cloud) doesn't execute any of your code (Workflow & Activity Definitions) on Temporal Cluster machines. The Cluster is solely responsible for orchestrating state transitions and providing Tasks to the next available Worker Entity.
+Said another way, the [Temporal Cluster](/clusters#) (including the Temporal Cloud) doesn't execute any of your code (Workflow & Activity Definitions) on Temporal Cluster machines. The Cluster is solely responsible for orchestrating state transitions and providing Tasks to the next available Worker Entity.
 
 While data transferred in Event Histories is [secured by mTLS](/server/security/#encryption-of-network-traffic), by default, it is still readable at rest in the Temporal Cluster.
 
@@ -88,3 +88,4 @@ Worker Processes executing Activity Tasks must have access to any resources need
 
 The Temporal Cluster itself has [internal workers](/blog/workflow-engine-principles/#system-workflows-1910) for system Workflow Executions.
 However, these internal workers are not visible to the developer.
+

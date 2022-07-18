@@ -80,7 +80,7 @@ _Don't forget our own explainers on [What is Temporal](/temporal)!_
 
 ## External content
 
-_Note: Each of [our SDK docs](/next/application-development) have a Hello World and Run Your First App tutorial!_
+_Note: Each of [our SDK docs](/application-development) have a Hello World and Run Your First App tutorial!_
 
 - Architecture
   - [Why Temporal - the iPhone of System Design](https://www.swyx.io/why-temporal/) by swyx (19 min read)

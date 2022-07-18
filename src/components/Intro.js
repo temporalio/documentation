@@ -318,7 +318,7 @@ function Operation() {
       <ul className="flex list-disc flex-col space-y-2 pl-4">
         <li className="">
           <a
-            href="/operation/how-to-tune-workers"
+            href="/application-development/worker-performance"
             className="font-normal hover:underline"
           >
             Tune Workers

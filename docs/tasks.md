@@ -13,7 +13,7 @@ import TabItem from '@theme/TabItem';
 
 Temporal Task Queues and Worker Processes are tightly coupled components.
 
-A Task is the context that a Worker needs to progress with a specific [Workflow Execution](/next/workflows#workflow-executions) or [Activity Execution](/next/activities#activity-execution).
+A Task is the context that a Worker needs to progress with a specific [Workflow Execution](/workflows#workflow-executions) or [Activity Execution](/activities#activity-execution).
 
 There are two types of Tasks:
 
@@ -25,12 +25,12 @@ There are two types of Tasks:
 A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.
 
 - Every time a new external event that might affect a Workflow state is recorded, a Workflow Task that contains the event is added to a Task Queue and then picked up by a Workflow Worker.
-- After the new event is handled, the Workflow Task is completed with a list of [Commands](/next/workflows#commands).
+- After the new event is handled, the Workflow Task is completed with a list of [Commands](/workflows#commands).
 - Handling of a Workflow Task is usually very fast and is not related to the duration of operations that the Workflow invokes.
 
 ### Workflow Task Execution
 
-A Workflow Task Execution is when a Worker picks up a Worker Task and uses it to make progress on the execution of a Workflow function.
+A Workflow Task Execution is when a Worker picks up a Workflow Task and uses it to make progress on the execution of a Workflow function.
 
 ### Activity Task
 
@@ -41,7 +41,7 @@ If Heartbeat data is being passed, an Activity Task will also contain the latest
 
 ### Activity Task Execution
 
-An Activity Task Execution is when the Worker uses the Context provided from the [Activity Task](#activity-task) and executes the [Activity Definition](/next/activities#activity-definition) (also known as the Activity Function).
+An Activity Task Execution is when the Worker uses the Context provided from the [Activity Task](#activity-task) and executes the [Activity Definition](/activities#activity-definition) (also known as the Activity Function).
 
 The [ActivityTaskScheduled Event](/concepts/what-is-an-event#activitytaskscheduled) corresponds to when the Temporal Cluster puts the Activity Task into the Task Queue.
 
@@ -61,7 +61,7 @@ Once an Activity Task finishes execution, the Worker responds to the Cluster wit
 
 ## Task Queues
 
-A Task Queue is a lightweight, dynamically allocated queue that one or more [Worker Entities](/next/workers#worker-entity) poll for [Tasks](#).
+A Task Queue is a lightweight, dynamically allocated queue that one or more [Worker Entities](/workers#worker-entity) poll for [Tasks](#).
 
 Task Queues do not have any ordering guarantees.
 It is possible to have a Task that stays in a Task Queue for a period of time, if there is a backlog that wasn't drained for that time.
@@ -95,12 +95,12 @@ There are four places where the name of the Task Queue can be set by the develop
 
 1. A Task Queue must be set when spawning a Workflow Execution:
 
-- [How to start a Workflow Execution using an SDK](/application-development-guide#set-task-queue)
+- [How to start a Workflow Execution using an SDK](/application-development/foundations#set-task-queue)
 - [How to start a Workflow Execution using tctl](/tctl/workflow/start#--taskqueue)
 
 2. A Task Queue name must be set when creating a Worker Entity and when running a Worker Process:
 
-- [How to develop a Worker Program](/application-development-guide#run-worker-processes)
+- [How to develop a Worker Program](/application-development/foundations#run-worker-processes)
 
 Note that all Worker Entities listening to the same Task Queue name must be registered to handle the exact same Workflows Types and Activity Types.
 
@@ -112,14 +112,14 @@ However, the failure of the Task will not cause the associated Workflow Executio
 This is optional.
 An Activity Execution inherits the Task Queue name from its Workflow Execution if one is not provided.
 
-- [How to start an Activity Execution](/application-development-guide#start-activity-execution)
+- [How to start an Activity Execution](/application-development/foundations#start-activity-execution)
 
 4. A Task Queue name can be provided when spawning a Child Workflow Execution:
 
 This is optional.
 A Child Workflow Execution inherits the Task Queue name from its Parent Workflow Execution if one is not provided.
 
-- [How to start a Child Workflow Execution](/application-development-guide#child-workflows)
+- [How to start a Child Workflow Execution](/application-development/features#child-workflows)
 
 ## Sticky Execution
 
@@ -212,3 +212,4 @@ If your use case involves more than one priority, you can create one Task Queue 
 Task Routing is the simplest way to version your code.
 
 If you have a new backward-incompatible Activity Definition, start by using a different Task Queue.
+

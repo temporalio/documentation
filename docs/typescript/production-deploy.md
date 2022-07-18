@@ -90,6 +90,28 @@ You can also bundle code on your own and pass it to the `workflowBundle`.
 We can see this process working in the [production sample](https://github.com/temporalio/samples-typescript/tree/main/production):
 
 <!--SNIPSTART typescript-production-worker-->
+[production/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/master/production/src/worker.ts)
+```ts
+const workflowOption = () =>
+  process.env.NODE_ENV === 'production'
+    ? {
+        workflowBundle: {
+          codePath: require.resolve('../workflow-bundle.js'),
+          sourceMapPath: require.resolve('../workflow-bundle.js.map'),
+        },
+      }
+    : { workflowsPath: require.resolve('./workflows') };
+
+async function run() {
+  const worker = await Worker.create({
+    ...workflowOption(),
+    activities,
+    taskQueue: 'production-sample',
+  });
+
+  await worker.run();
+}
+```
 <!--SNIPEND-->
 
 ## Logging
@@ -111,7 +133,7 @@ To set up tracing of Workflows and Activities, use our [opentelemetry-intercepto
 
 ### Monitoring
 
-Here is the [full list of SDK metrics](/references/sdk-metrics/). Some of them are used in the [Worker Tuning Guide](/operation/how-to-tune-workers) to determine how to change your deployment configuration. The guide also assumes you track the host-level metrics that are important for measuring your application's load (for many applications, this is just CPU, but some applications may run into other bottlenecks—like with Activities that use a lot of memory, or open a lot of sockets). How you track host-level metrics depends on where you deploy your Workers.
+Here is the [full list of SDK metrics](/references/sdk-metrics/). Some of them are used in the [Worker Tuning Guide](/application-development/worker-performance) to determine how to change your deployment configuration. The guide also assumes you track the host-level metrics that are important for measuring your application's load (for many applications, this is just CPU, but some applications may run into other bottlenecks—like with Activities that use a lot of memory, or open a lot of sockets). How you track host-level metrics depends on where you deploy your Workers.
 
 ## Performance tuning
 
@@ -123,7 +145,7 @@ We endeavor to give you good defaults, so you don't have to worry about them, bu
   - `maxCachedWorkflows` to limit Workflow cache size and trade memory for CPU (biggest lever for Worker performance)
   - `maxConcurrentActivityTaskExecutions` and other options for tuning concurrency
   - `stickyQueueScheduleToStartTimeout` to determine how quickly Temporal stops trying to send work to Workers that are no longer present, via [Sticky Queues](/concepts/what-is-a-sticky-execution)
-  - See [Worker Tuning Guide](/operation/how-to-tune-workers)
+  - See [Worker Tuning Guide](/application-development/worker-performance)
 - [Activity Timeouts and Retries](/typescript/activities#activity-timeouts) as you gain an understanding of Temporal and the services you rely on, you will likely want to adjust the timeouts and Retry Policy to reflect your desired behavior.
   - Note that there are separate [Timeouts and Retry Policy](https://typescript.temporal.io/api/interfaces/client.workflowoptions/#workflowruntimeout) at the Workflow level, but we do not encourage their usage unless you know what you are doing.
 - _to be completed as we get more user feedback_

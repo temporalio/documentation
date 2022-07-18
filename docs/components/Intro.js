@@ -140,31 +140,31 @@ function CliSVG() {
 
 const supportedTech = [
   {
-    link: " /application-development-guide?lang=go",
+    link: " /application-development?lang=go",
     image: "/img/golang.svg",
     alt: "Go lang logo",
     class: "w-10 h-8",
   },
   {
-    link: " /application-development-guide?lang=typescript",
+    link: " /application-development?lang=typescript",
     image: "/img/typescript.svg",
     alt: "TypeScript logo",
     class: "w-7 h-7",
   },
   {
-    link: " /application-development-guide?lang=php",
+    link: " /application-development?lang=php",
     image: "/img/php.svg",
     alt: "php logo",
     class: "w-10 h-8",
   },
   {
-    link: " /application-development-guide?lang=java",
+    link: " /application-development?lang=java",
     image: "/img/java.svg",
     alt: "Java logo",
     class: "w-7 h-7",
   },
   {
-    link: " /application-development-guide?lang=python",
+    link: " /application-development?lang=python",
     image: "/img/python.svg",
     alt: "Python logo",
     class: "w-7 h-7",
@@ -222,19 +222,24 @@ const appDevGuideLinks = {
   listOne: [
     {
       book: true,
-      path: "/application-development-guide/#foundations",
+      path: "/application-development/foundations",
       name: "Foundations",
     },
     {
       book: true,
-      path: "/application-development-guide/#features",
+      path: "/application-development/features",
       name: "Features",
     },
   ],
   listTwo: [
     {
       book: true,
-      path: "https://docs.temporal.io/operation/how-to-tune-workers",
+      path: "/application-development/observability",
+      name: "Observability",
+    },
+    {
+      book: true,
+      path: "/application-development/worker-performance",
       name: "Worker Performance",
     },
   ],
@@ -433,7 +438,7 @@ function Explained() {
       </div>
       <div className="landing-card-section">
         <div className="badge-header">
-          <a className="header-link" href="/application-development-guide">
+          <a className="header-link" href="/application-development">
             <h2 className="h2-landing">Application development guide</h2>
           </a>
           <div className="badge-purple">New</div>
@@ -450,7 +455,7 @@ function Explained() {
         </ul>
       </div>
       <div className="landing-card-section">
-        <a className="header-link" href="/next/application-development">
+        <a className="header-link" href="/application-development">
           <h2 className="h2-landing">Legacy docs for SDKs</h2>
         </a>
         <p className="landing-card-p">
@@ -789,7 +794,7 @@ function Operation() {
       <ul className="flex list-disc flex-col space-y-2 pl-4">
         <li className="">
           <a
-            href="/operation/how-to-tune-workers"
+            href="/application-development/worker-performance"
             className="font-normal hover:underline"
           >
             Tune Workers
