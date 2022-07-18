@@ -32,3 +32,6 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error
 In the example above, the Workflow code uses `workflow.GetSignalChannel` to open a `workflow.Channel` for the Signal type (identified by the Signal name).
 We then use a [`workflow.Selector`](/go/selectors) and the `AddReceive()` to wait on a Signal from this channel.
 The `more` bool in the callback function indicates that channel is not closed and more deliveries are possible.
+
+Before completing the Workflow or [Continuing-As-New](/application-development/features#continue-as-new), make sure to do an asynchronous drain on the Signal channel.
+Otherwise, the Signals will be lost.

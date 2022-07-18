@@ -188,6 +188,9 @@ In the example above, the Workflow code uses `workflow.GetSignalChannel` to open
 We then use a [`workflow.Selector`](/go/selectors) and the `AddReceive()` to wait on a Signal from this channel.
 The `more` bool in the callback function indicates that channel is not closed and more deliveries are possible.
 
+Before completing the Workflow or [Continuing-As-New](/application-development/features#continue-as-new), make sure to do an asynchronous drain on the Signal channel.
+Otherwise, the Signals will be lost.
+
 </TabItem>
 <TabItem value="java">
 
@@ -2103,9 +2106,9 @@ class FileProcessingActivitiesImpl implements FileProcessingActivities
 </TabItem>
 <TabItem value="typescript">
 
-Long running Activities should Heartbeat their progress back to the Workflow for earlier detection of stalled activities (with [Heartbeat Timeout](/next/activities#heartbeat-timeout)) and resuming stalled activities from checkpoints (with Heartbeat details).
+Long-running Activities should Heartbeat their progress back to the Workflow for earlier detection of stalled Activities (with [Heartbeat Timeout](/next/activities#heartbeat-timeout)) and resuming stalled Activities from checkpoints (with Heartbeat details).
 
-To set Activity Heartbeat, use `Context.current().heartbeat()` in your Activity implementation, and set the `heartbeatTimeout` in your Workflow.
+To set Activity Heartbeat, use `Context.current().heartbeat()` in your Activity implementation, and set `heartbeatTimeout` in your Workflow.
 
 ```ts
 // activity implementation
