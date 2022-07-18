@@ -8,23 +8,21 @@ description: Implementation of a remote encryption/decryption server.
 The [Codec Server Go sample](https://github.com/temporalio/samples-go/tree/main/codec-server) is an example that shows how to decode a Payload that has been encoded so the Payload can be displayed by [tctl](/tctl) and the [Web UI](/web-ui/how-to-use-a-list-filter-in-the-temporal-web-ui).
 
 A codec HTTP protocol specifies two endpoints to handle Payload encoding and decoding.
+
 Implementations must do the following:
 
 - Send and receive Payloads protobuf as JSON.
 - Check only the final part of the incoming URL to determine whether the request is for /encode or /decode.
 
-Each platform has a different approach to setting up and running the Codec Server.
-Follow these steps to get a Codec Server running on your preferred platform.
+Each platform has a different approach to setting up the endpoints for the Codec Server. Follow these steps to get a Codec Server running on your preferred platform.
+
+:::note
+A Temporal Cluster should already be in operation before starting the Codec Server.
+:::
 
 ## tctl
 
-Before running a Codec Server, make sure that a Temporal service is running.
-
-Start the codec server:
-
-```bash
-go run ./codec-server
-```
+[Start up the Codec Server](https://github.com/temporalio/samples-go/tree/main/codec-server).
 
 Pass the encoded Payloads to the codec endpoint:
 
@@ -34,12 +32,12 @@ tctl --codec_endpoint 'http://localhost:{PORT}/{namespace}' workflow show --wid 
 
 ## Web UI
 
-Before running the Temporal service, specify the codec endpoint in the configuration file.
-
 ```yaml
 codec:
     endpoint: {{ default .Env.TEMPORAL_CODEC_ENDPOINT "{namespace}"}}
 ```
+
+The [codec endpoint](/docs/references/ui-configuration/#codec) can be specified in the configuration file. It can also be changed during runtime.
 
 Select the button with two arrows in the top right area of the screen.
 This action displays the codec endpoint dialog.
