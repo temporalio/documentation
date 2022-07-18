@@ -105,3 +105,7 @@ Specifying this modifier also enables host verification.
 Display the version of tctl in the CLI.
 
 Alias: `-v`
+
+### `--codec_endpoint`
+
+The URL and port number for a Codec Server.
