@@ -154,4 +154,4 @@ To learn more about using the TypeScript SDK, check out [our docs and
 tutorials](https://docs.temporal.io/typescript/introduction/). If you have questions, you can post a new topic with the
 `typescript-sdk` tag on our [community forum](https://community.temporal.io/).
 
-We're building Temporal because we want to help developers easily write reliable code. We hope you find it useful!
+We're building Temporal because we want to enable developers to easily build highly reliable applications. We hope you find it useful!
