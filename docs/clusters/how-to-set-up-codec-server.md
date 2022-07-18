@@ -35,7 +35,8 @@ codec:
     endpoint: {{ default .Env.TEMPORAL_CODEC_ENDPOINT "{namespace}"}}
 ```
 
-The [codec endpoint](/references/ui-configuration#codec) can be specified in the configuration file. It can also be changed during runtime.
+The [codec endpoint](/references/ui-configuration#codec) can be specified in the configuration file.
+It can also be changed during runtime.
 
 Select the button with two arrows in the top right area of the screen.
 This action displays the codec endpoint dialog.
