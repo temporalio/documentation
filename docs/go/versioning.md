@@ -10,11 +10,7 @@ a non-deterministic issue if not handled correctly.
 
 ## Introduction to Versioning
 
-Because we design for potentially long running Workflows at scale, versioning with Temporal works differently. We explain more in this optional 30 minute introduction:
-
-import { ResponsivePlayer } from '../../src/components'
-
-<ResponsivePlayer url='https://www.youtube.com/watch?v=kkP899WxgzY' />
+Because we design for potentially long running Workflows at scale, versioning with Temporal works differently. We explain more in this optional 30 minute introduction: [https://www.youtube.com/watch?v=kkP899WxgzY](https://www.youtube.com/watch?v=kkP899WxgzY)
 
 ## workflow.GetVersion()
 

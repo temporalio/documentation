@@ -114,8 +114,8 @@ This is the direction that we decided to send new users. If a user can wrap thei
 
 Check out these finished tutorials and see for yourself!
 
-- [Go: Run your first Temporal application](/go/run-your-first-app-tutorial)
-- [Java: Run your first Temporal application](/java/run-your-first-app-tutorial)
+- [Go: Run your first Temporal application](https://learn.temporal.io/getting_started/go/first_program_in_go/)
+- [Java: Run your first Temporal application](https://learn.temporal.io/getting_started/java/first_program_in_java/)
 
 ## Next steps
 

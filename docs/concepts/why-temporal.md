@@ -120,9 +120,7 @@ values={[
 <TabItem value="go">
 
 <!--SNIPSTART subscription-go-workflow-definition-->
-
 [workflow.go](https://github.com/temporalio/subscription-workflow-project-template-go/blob/master/workflow.go)
-
 ```go
 package subscription
 
@@ -266,16 +264,13 @@ func SubscriptionWorkflow(ctx workflow.Context, customer Customer) (string, erro
 	return "Completed Subscription Workflow", err
 }
 ```
-
 <!--SNIPEND-->
 
 </TabItem>
 <TabItem value="java">
 
 <!--SNIPSTART subscription-java-workflow-definition-implementation-->
-
 [src/main/java/io/temporal/sample/workflow/SubscriptionWorkflowImpl.java](https://github.com/temporalio/subscription-workflow-project-template-java/blob/master/src/main/java/io/temporal/sample/workflow/SubscriptionWorkflowImpl.java)
-
 ```java
 package io.temporal.sample.workflow;
 
@@ -379,20 +374,17 @@ public class SubscriptionWorkflowImpl implements SubscriptionWorkflow {
   }
 }
 ```
-
 <!--SNIPEND-->
 
 </TabItem>
 <TabItem value="ts">
 
 <!--SNIPSTART subscription-ts-workflow-definition-->
-
 [src/workflows.ts](https://github.com/temporalio/subscription-workflow-project-template-typescript/blob/master/src/workflows.ts)
-
 ```ts
 import * as wf from "@temporalio/workflow";
 import type * as activitiesTypes from "./activities";
-import {Customer} from "./types";
+import { Customer } from "./types";
 
 const activities = wf.proxyActivities<typeof activitiesTypes>({
   startToCloseTimeout: "5s", // short only because we are just console.logging
@@ -497,16 +489,13 @@ function querysignalState<T = any>(name: string, initialValue: T) {
   };
 }
 ```
-
 <!--SNIPEND-->
 
 </TabItem>
 <TabItem value="php">
 
 <!--SNIPSTART subscription-php-workflow-definition-implementation-->
-
 [src/subscription/SubscriptionWorkflow.php](https://github.com/temporalio/subscription-workflow-project-template-php/blob/master/src/subscription/SubscriptionWorkflow.php)
-
 ```php
 declare(strict_types=1);
 
@@ -623,7 +612,6 @@ class SubscriptionWorkflow implements SubscriptionWorkflowInterface
     }
 }
 ```
-
 <!--SNIPEND-->
 
 </TabItem>

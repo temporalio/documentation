@@ -7,9 +7,7 @@ sidebar_label: Temporal Client
 The following example represents a console command that starts a Workflow, prints its IDs, and then waits for its result:
 
 <!--SNIPSTART php-hello-client {"enable_source_link": true}-->
-
 [app/src/SimpleActivity/ExecuteCommand.php](https://github.com/temporalio/samples-php/blob/master/app/src/SimpleActivity/ExecuteCommand.php)
-
 ```php
 class ExecuteCommand extends Command
 {
@@ -43,7 +41,6 @@ class ExecuteCommand extends Command
     }
 }
 ```
-
 <!--SNIPEND-->
 
 The `WorkflowClientInterface` in the snippet is an entry point to get access to Workflow.

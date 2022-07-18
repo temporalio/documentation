@@ -14,7 +14,6 @@ Create a Worker with `Worker.create()` (which establishes the initial gRPC conne
 Below is an example of starting a Worker that polls the Task Queue named `tutorial`.
 
 <!--SNIPSTART typescript-hello-worker {"enable_source_link": false}-->
-
 ```ts
 import { Worker } from '@temporalio/worker';
 import * as activities from './activities';
@@ -42,7 +41,6 @@ run().catch((err) => {
   process.exit(1);
 });
 ```
-
 <!--SNIPEND-->
 
 `taskQueue` is the only required option, but you will also use `workflowsPath` and `activities` to register Workflows and Activities with the Worker.

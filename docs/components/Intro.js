@@ -304,33 +304,6 @@ const cloudInfo = {
   ],
 };
 
-const tutorials = {
-  listOne: [
-    {
-      hat: true,
-      path: "/learning-paths/run-your-first-app",
-      name: "Run your first application",
-    },
-    {
-      hat: true,
-      path: "/learning-paths/hello-world",
-      name: `"Hello World" from scratch`,
-    },
-  ],
-  listTwo: [
-    {
-      hat: true,
-      path: "/learning-paths/background-checks",
-      name: "Background Checks",
-    },
-    {
-      hat: true,
-      path: "/blog/tags/go-ecommerce-tutorial",
-      name: `e-Commerce series`,
-    },
-  ],
-};
-
 const devTools = {
   listOne: [
     {
@@ -493,17 +466,6 @@ function Explained() {
         </p>
         <ul className="landing-card-list">{displayLinks(cloudInfo.listOne)}</ul>
       </div>
-      <div className="landing-card-section">
-        <a className="header-link" href="/learning-paths/">
-          <h2 className="h2-landing">Tutorials</h2>
-        </a>
-        <p className="landing-card-p">
-          Learning-oriented tutorials across multiple SDKs.
-        </p>
-        <ul className="landing-card-list">{displayLinks(tutorials.listOne)}</ul>
-        <ul className="landing-card-list">{displayLinks(tutorials.listTwo)}</ul>
-      </div>
-
       <div className="landing-card-section">
         <h2 className="h2-landing">Devtools</h2>
         <ul className="landing-card-list">{displayLinks(devTools.listOne)}</ul>
@@ -812,60 +774,6 @@ function Operation() {
           <a href="/references/" className="font-normal hover:underline">
             References
           </a>
-        </li>
-      </ul>
-    </div>
-  );
-}
-
-function Learning() {
-  return (
-    <div className="flex flex-col rounded-lg bg-[color:var(--ifm-card-background-color)] p-5 shadow landing-card">
-      <div className="flex items-center space-x-4">
-        <svg
-          width="13"
-          className="mb-4 h-10 w-10 rounded-lg bg-[color:var(--ifm-background-color)] p-2 text-[color:var(--ifm-color)] icon "
-          height="14"
-          viewBox="0 0 511.973 511.973"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="m502.332 177.307c-1.414-.614-35.889-15.549-240-104-4.06-1.76-8.66-1.76-12.72 0l-240 104c-12.878 5.569-12.754 23.849 0 29.36 46.624 20.201 122.845 53.234 240 104 4.036 1.75 8.636 1.771 12.72 0 11.125-4.821 162.711-70.509 169.64-73.51v170.381c0 8.618 6.626 16.031 15.235 16.431 9.188.428 16.765-6.888 16.765-15.982v-176.633c0-2.514-1.862-4.637-4.356-4.958-30.031-3.87-171.66-22.15-205.694-26.539-9.844-1.23-15.978-11.198-13.39-20.07 2.03-7.493 9.144-12.266 16.35-11.77.718.042 228.73 29.466 228.567 29.445 4.26.548 7.762 3.276 9.444 6.975 1.176 2.586 4.17 3.771 6.742 2.565 4.305-2.018 8.039-4.674 9.737-10.685 2.186-7.789-1.764-15.864-9.04-19.01z"
-            fill="currentColor"
-          />
-          <path
-            d="m236.882 340.027-133.922-58.032c-3.302-1.431-6.988.99-6.988 4.588v57.404c0 53.83 70.28 96 160 96s160-42.17 160-96v-57.404c0-3.598-3.686-6.018-6.988-4.588l-133.932 58.032c-12.16 5.286-25.998 5.282-38.17 0z"
-            fill="currentColor"
-          />
-        </svg>
-        <h2 className="mb-4 text-xl font-semibold">Learning</h2>
-      </div>
-      <p className="mb-4 flex font-medium">Tutorials and learning materials.</p>
-      <ul className="flex list-disc flex-col content-start space-y-2 pl-4">
-        <li className="">
-          <Link
-            to={useBaseUrl("/learning-paths/run-your-first-app")}
-            className="hover:underline"
-          >
-            <a className="font-normal">Run your first app</a>
-          </Link>
-        </li>
-        <li className="">
-          <Link
-            to={useBaseUrl("/learning-paths/hello-world")}
-            className="hover:underline"
-          >
-            <a className="font-normal">"Hello World!" from scratch</a>
-          </Link>
-        </li>
-        <li className="">
-          <Link
-            to={useBaseUrl("/learning-paths/background-checks")}
-            className="hover:underline"
-          >
-            <a className="font-normal">Background Check project</a>
-          </Link>
         </li>
       </ul>
     </div>

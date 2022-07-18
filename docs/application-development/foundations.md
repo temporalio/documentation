@@ -258,7 +258,7 @@ You can find a complete list of executable code samples in [Temporal's GitHub re
 
 The [Temporal Simple Polyglot](https://github.com/temporalio/temporal-polyglot) repository showcases how Workflow Executions, written in different languages, can send messages to each other. Go, Java, PHP, and TypeScript SDKs are represented in this sample. It also shows how to properly propagate errors, including how to do so across Workflows written in different languages. For more information, see the [Polyglot Microservice Orchestration](https://www.youtube.com/playlist?list=PLl9kRkvFJrlTLo5URV5IK6lCmiM3ir3f5) video on YouTube.
 
-Additionally, several of the [Tutorials](/learning-paths) are backed by a fully executable template application.
+Additionally, several of the [Tutorials](https://learn.temporal.io) are backed by a fully executable template application.
 
 <Tabs
 defaultValue="go"
@@ -267,25 +267,32 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Use the [Go samples library](https://github.com/temporalio/samples-go) stored on GitHub to demonstrate various capabilities of Temporal.
-
-**Where can I find video demos?**
-
-[Temporal Go SDK YouTube playlist](https://www.youtube.com/playlist?list=PLl9kRkvFJrlRYHYaTPnsvE46szyMIZLdk).
+- [Go Samples repo](https://github.com/temporalio/samples-go#samples-directory)
+- [Background Check application](https://github.com/temporalio/background-checks): Provides a non-trivial Temporal Application implementation in conjunction with [application documentaion](https://learn.temporal.io/examples/go/background-checks/).
+- [Hello world application template in Go](https://github.com/temporalio/hello-world-project-template-go): Provides a quick-start development app for users.
+  This sample works in conjunction with the ["Hello World!" from scratch tutorial in Go](https://learn.temporal.io/getting_started/go/hello_world_in_go/).
+- [Money transfer application template in Go](https://github.com/temporalio/money-transfer-project-template-go): Provides a quick-start development app for users.
+  It demonstrates a basic "money transfer" Workflow Definition and works in conjunction with the [Run your first app tutorial in Go](https://learn.temporal.io/getting_started/go/first_program_in_go/).
+- [Subscription-style Workflow Definition in Go](https://github.com/temporalio/subscription-workflow-project-template-go): Demonstrates some of the patterns that could be implemented for a subscription-style business process.
+- [eCommerce application example in Go](https://github.com/temporalio/temporal-ecommerce): Showcases a per-user shopping cart–style Workflow Definition that includes an API for adding and removing items from the cart as well as a web UI.
+  This application sample works in conjunction with the [eCommerce in Go tutorial](/blog/tags/go-ecommerce-tutorial).
 
 </TabItem>
 <TabItem value="java">
 
-Use the [Java samples library](https://github.com/temporalio/samples-java) stored on GitHub to demonstrate various capabilities of Temporal.
-
-**Where can I find video demos?**
-
-[Temporal Java SDK YouTube playlist](https://www.youtube.com/playlist?list=PLl9kRkvFJrlQ8KsM6m9cFfCeQegq_B8x4)
+- [Java samples library](https://github.com/temporalio/samples-java)
+- [Hello world application template in Java](https://github.com/temporalio/hello-world-project-template-java): Provides a quick-start development app for users.
+  Works in conjunction with the ["Hello World!" from scratch tutorial in Java](https://learn.temporal.io/getting_started/java/hello_world_in_java/).
+- [Money transfer application template in Java](https://github.com/temporalio/money-transfer-project-template-java): Provides a quick-start development app for users.
+  It demonstrates a basic "money transfer" Workflow Definition and works in conjunction with the [Run your first app tutorial in Java](https://learn.temporal.io/getting_started/java/first_program_in_java/).
+- [Subscription-style Workflow Definition in Java](https://github.com/temporalio/subscription-workflow-project-template-java): Demonstrates some of the patterns that could be implemented for a subscription-style business process.
 
 </TabItem>
 <TabItem value="php">
 
-Use the [PHP samples library](https://github.com/temporalio/samples-php) stored on GitHub to demonstrate various capabilities of Temporal.
+- [PHP samples repo](https://github.com/temporalio/samples-php)
+
+- [Subscription-style Workflow Definition in PHP](https://github.com/temporalio/subscription-workflow-project-template-php): Demonstrates some of the patterns that could be implemented for a subscription-style business process.
 
 </TabItem>
 <TabItem value="typescript">
@@ -299,11 +306,7 @@ Use the [TypeScript samples library](https://github.com/temporalio/samples-types
 </TabItem>
 <TabItem value="python">
 
-Use the [Python samples library](https://github.com/temporalio/samples-python) stored on GitHub to demonstrate various capabilities of Temporal.
-
-**Where can I find video demos?**
-
-[Temporal Python Release Highlights](https://youtu.be/yPZK82Kwe3o?t=1397).
+- [Python samples library](https://github.com/temporalio/samples-python)
 
 </TabItem>
 </Tabs>
@@ -2113,9 +2116,7 @@ See [How to spawn a Workflow Execution in Java](#none) for details.
 The following example represents a console command that starts a Workflow, prints its IDs, and then waits for its result:
 
 <!--SNIPSTART php-hello-client {"enable_source_link": true}-->
-
 [app/src/SimpleActivity/ExecuteCommand.php](https://github.com/temporalio/samples-php/blob/master/app/src/SimpleActivity/ExecuteCommand.php)
-
 ```php
 class ExecuteCommand extends Command
 {
@@ -2149,7 +2150,6 @@ class ExecuteCommand extends Command
     }
 }
 ```
-
 <!--SNIPEND-->
 
 The `WorkflowClientInterface` in the snippet is an entry point to get access to Workflow.
@@ -2479,18 +2479,17 @@ Create a Worker with `Worker.create()` (which establishes the initial gRPC conne
 Below is an example of starting a Worker that polls the Task Queue named `tutorial`.
 
 <!--SNIPSTART typescript-hello-worker {"enable_source_link": false}-->
-
 ```ts
-import {Worker} from "@temporalio/worker";
-import * as activities from "./activities";
+import { Worker } from '@temporalio/worker';
+import * as activities from './activities';
 
 async function run() {
   // Step 1: Register Workflows and Activities with the Worker and connect to
   // the Temporal server.
   const worker = await Worker.create({
-    workflowsPath: require.resolve("./workflows"),
+    workflowsPath: require.resolve('./workflows'),
     activities,
-    taskQueue: "hello-world",
+    taskQueue: 'hello-world',
   });
   // Worker connects to localhost by default and uses console.error for logging.
   // Customize the Worker by passing more options to create():
@@ -2507,7 +2506,6 @@ run().catch((err) => {
   process.exit(1);
 });
 ```
-
 <!--SNIPEND-->
 
 `taskQueue` is the only required option, but you will also use `workflowsPath` and `activities` to register Workflows and Activities with the Worker.
