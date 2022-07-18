@@ -27,7 +27,7 @@ Closed Workflow Executions can be filtered by a time constraint and either a Wor
 
 Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through a custom SQL-like [List Filter](#list-filters).
 
-To use Advanced Visibility, your Temporal Cluster must be [integrated with Elasticsearch](/cluster-deployment-guide/#advanced-visibility).
+To use Advanced Visibility, your Temporal Cluster must be [integrated with Elasticsearch](/next/cluster-deployment-guide#advanced-visibility).
 We highly recommend operating a Temporal Cluster with Elasticsearch for any use case that spawns more than just a few Workflow Executions.
 Elasticsearch takes on the Visibility request load, relieving potential performance issues.
 
@@ -36,7 +36,6 @@ Elasticsearch takes on the Visibility request load, relieving potential performa
 A List Filter is the SQL-like string that is provided as the parameter to an [Advanced Visibility](#advanced-visibility) List API.
 
 - [How to use a List Filter using tctl](/tctl/workflow/list/#--query)
-- [How to use a List Filter in the Web UI](/web-ui/how-to-use-a-list-filter-in-the-temporal-web-ui)
 
 The following is an example List Filter:
 
@@ -124,7 +123,7 @@ A Search Attribute is an indexed field used in a [List Filter](#list-filters) to
 If a Temporal Cluster does not have Elasticsearch integrated, but a Workflow Execution is spawned and tagged with Search Attributes, no errors occur.
 However, you won't be able to use Advanced Visibility List APIs and List Filters to find and list the Workflow Execution.
 
-When using [Continue-As-New](/workflows/#continue-as-new) or a [Temporal Cron Job](/workflows/#cron-jobs), Search Attributes are carried over to the new Run by default.
+When using [Continue-As-New](/next/workflows#continue-as-new) or a [Temporal Cron Job](/next/workflows#cron-jobs), Search Attributes are carried over to the new Run by default.
 
 #### Default Search Attributes
 

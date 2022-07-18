@@ -14,7 +14,8 @@
     "write-heading-ids": "docusaurus write-heading-ids",
     "format": "prettier --write .",
     "prepare": "husky install",
-    "gen": "./guide-gen/index.js"
+    "gen": "./guide-gen/index.js",
+    "dprint": "dprint output-format-times"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
@@ -51,6 +52,7 @@
     ]
   },
   "devDependencies": {
+    "dprint": "^0.29.1",
     "eslint": "^7.32.0",
     "eslint-plugin-react": "^7.23.2",
     "husky": "^6.0.0",

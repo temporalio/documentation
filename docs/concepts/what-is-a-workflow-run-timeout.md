@@ -10,7 +10,7 @@ tags:
 
 A Workflow Run Timeout is the maximum amount of time that a single Workflow Run is restricted to.
 
-- [How to set a Workflow Run Timeout in Go](/go/startworkflowoptions-reference/#workflowruntimeout)
+- [How to set a Workflow Run Timeout](/go/startworkflowoptions-reference/#workflowruntimeout)
 
 ![Workflow Run Timeout period](/diagrams/workflow-run-timeout.svg)
 

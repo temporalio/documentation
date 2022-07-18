@@ -9,6 +9,8 @@ tags:
 
 An Activity Definition is the code that defines the constraints of an [Activity Task Execution](/concepts/what-is-an-activity-task-execution).
 
+- [How to develop an Activity Definition](/application-development-guide/#develop-activities)
+
 The term 'Activity Definition' is used to refer to the full set of primitives in any given language SDK that provides an access point to an Activity Function Definition——the method or function that is invoked for an [Activity Task Execution](/concepts/what-is-an-activity-task-execution).
 Therefore, the terms Activity Function and Activity Method refer to the source of an instance of an execution.
 
@@ -38,14 +40,3 @@ Activity Definitions must contain the following parameters:
 - Timeouts: intervals that control the execution and retrying of Activity Task Executions.
 
 Other parameters, such as [Retry Policies](/concepts/what-is-a-retry-policy) and return values, can be seen in the implementation guides, listed in the next section.
-
-#### Implementing Activity Definitions
-
-We strongly recommend that you develop an Activity Definition in a language that has a corresponding Temporal SDK.
-
-**Implementation guides:**
-
-- [How to develop an Activity Definition in Go](/go/how-to-develop-an-activity-definition-in-go)
-- [How to develop an Activity Interface in Java](/java/activities/#activity-interface)
-- [How to develop an Activity Interface in PHP](/php/activities/#activity-interface)
-- [How to develop an Activity Interface in TypeScript](/typescript/activities/#how-to-write-an-activity-function)

@@ -184,7 +184,7 @@ public class FileProcessingActivitiesImpl implements FileProcessingActivities {
     log.info("workflowId=" + info.getWorkflowId());
     log.info("runId=" + info.getRunId());
     log.info("activityId=" + info.getActivityId());
-    log.info("activityTimeout=" + info.getStartToCloseTimeoutSeconds());
+    log.info("activityTimeout=" + info.getStartToCloseTimeout();
 
     return downloadFileFromS3(bucketName, remoteName, localDirectory + localName);
   }

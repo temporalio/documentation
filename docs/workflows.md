@@ -73,7 +73,7 @@ Before the Timer is up, we change the Workflow Definition to the following seque
 When the Timer fires, the next Workflow Task will cause the Workflow Function to re-execute.
 The first Command the Worker sees would be be ScheduleActivityTask Command, which wouldn't match up to the expected [TimerStarted](/references/events/#timerstarted) Event.
 
-The Workflow Execution would fail, and return the non-determinism error.
+The Workflow Execution would fail, and return a non-deterministic error.
 
 The following are examples of minor changes that would not result in non-determinism errors when re-executing a History which already contain the Events:
 
@@ -136,13 +136,13 @@ A Workflow Type is a name that maps to a Workflow Definition.
 ## Workflow Executions
 
 A Temporal Workflow Execution is a durable, reliable, and scalable function execution.
-It is the main unit of execution of a [Temporal Application](/temporal/#temporal-application).
+It is the main unit of execution of a [Temporal Application](/next/temporal#temporal-application).
 
 - [How to start a Workflow Execution using an SDK](/application-development-guide/#start-workflow-execution)
 - [How to start a Workflow Execution using tctl](/tctl/workflow/start)
 
 Each Temporal Workflow Execution has exclusive access to its local state.
-It executes concurrently to all other Workflow Executions, and communicates with other Workflow Executions through [Signals](#signals) and the environment through [Activities](/activities/#).
+It executes concurrently to all other Workflow Executions, and communicates with other Workflow Executions through [Signals](#signals) and the environment through [Activities](/next/activities#).
 While a single Workflow Execution has limits on size and throughput, a Temporal Application can consist of millions to billions of Workflow Executions.
 
 **Durability**
@@ -160,7 +160,7 @@ The Temporal Platform ensures the state of the Workflow Execution persists in th
 
 Scalability is responsiveness in the presence of load.
 A single Workflow Execution is limited in size and throughput but is scalable because it can [Continue-As-New](#continue-as-new) in response to load.
-A Temporal Application is scalable because the Temporal Platform is capable of supporting millions to billions of Workflow Executions executing concurrently, which is realized by the design and nature of the [Temporal Cluster](/clusters/#) and [Worker Processes](/workers/#worker-process).
+A Temporal Application is scalable because the Temporal Platform is capable of supporting millions to billions of Workflow Executions executing concurrently, which is realized by the design and nature of the [Temporal Cluster](/next/clusters#) and [Worker Processes](/next/workers#worker-process).
 
 ### Commands & awaitables
 
@@ -176,14 +176,14 @@ Commands are issued and Awaitables are provided by the use of Workflow APIs in t
 Commands are generated whenever the Workflow Function is executed.
 The Worker Process supervises the Command generation and makes sure that it maps to the current Event History.
 (For more information, see [Deterministic constraints](/concepts/what-is-a-workflow-definition/#deterministic-constraints).)
-The Worker Process batches the Commands and then suspends progress to send the Commands to the Cluster whenever the Workflow Function reaches a place where it can no longer progress without a result from a Awaitable.
+The Worker Process batches the Commands and then suspends progress to send the Commands to the Cluster whenever the Workflow Function reaches a place where it can no longer progress without a result from an Awaitable.
 
 A Workflow Execution may only ever block progress on an Awaitable that is provided through a Temporal SDK API.
 Awaitables are provided when using APIs for the following:
 
 - Spawning a [Child Workflow Execution](#child-workflows): Progress can block on confirmation that the Child Workflow Execution started, and on the result of the Child Workflow Execution.
 - Sending a [Signal](#signals): Progress can block on confirmation that the Signal sent.
-- Spawning an [Activity Execution](/activities/#activity-execution): Progress can block on the result of the Activity Execution.
+- Spawning an [Activity Execution](/next/activities#activity-execution): Progress can block on the result of the Activity Execution.
 - Requesting cancellation of another Workflow Execution: Progress can block on confirmation that the other Workflow Execution is cancelled.
 - Starting a Timer: Progress can block until the Timer fires.
 - Awaiting: Progress can block using explicit "Await" APIs.
@@ -218,9 +218,9 @@ Each Workflow Run in the sequence is connected by one of the following:
 
 - [Temporal Cron Job](#cron-jobs)
 - [Continue-As-New](#continue-as-new)
-- [Retries](/retry-policies/#)
+- [Retries](/next/retry-policies#)
 
-A Workflow Execution is uniquely identified by its [Namespace](/namespaces/#), [Workflow Id](#workflow-id), and [Run Id](#run-id).
+A Workflow Execution is uniquely identified by its [Namespace](/next/namespaces#), [Workflow Id](#workflow-id), and [Run Id](#run-id).
 
 The [Workflow Execution Timeout](#workflow-execution-timeout) applies to a Workflow Execution Chain.
 The [Workflow Run Timeout](#workflow-run-timeout) applies to a single Workflow Execution (Workflow Run).
@@ -253,7 +253,7 @@ For example, it may be reasonable to use Continue-As-New once per day for a long
 
 ### Commands
 
-A Command is a requested action issued by a [Worker](/workers/#) to the [Temporal Cluster](/clusters/#) after a [Workflow Task Execution](/tasks/#workflow-task-execution) completes.
+A Command is a requested action issued by a [Worker](/next/workers#) to the [Temporal Cluster](/next/clusters#) after a [Workflow Task Execution](/next/tasks#workflow-task-execution) completes.
 
 The action that the Cluster takes is recorded in the [Workflow Execution's](#workflow-executions) [Event History](#event-history) as an [Event](#events).
 The Workflow Execution can await on some of the Events that come as a result from some of the Commands.
@@ -281,11 +281,17 @@ An append-log of [Events](#events) for your application.
 - Event History is durably persisted by the Temporal service, enabling seamless recovery of your application state from crashes or failures.
 - It also serves as an audit log for debugging.
 
+**Events History Limits**
+The Temporal Cluster stores the complete Event History for the entire lifecycle of a Workflow Execution.
+There is a hard limit of 50,000 Events in a Workflow Execution Event History, as well as a hard limit of 50 MB in terms of size.
+The Temporal Cluster logs a warning at every 10,000 Events.
+When the Event History reaches 50,000 Events or the size limit of 50 MB, the Workflow Execution is forcefully terminated.
+
 #### Continue-As-New
 
 Continue-As-New is a mechanism by which the latest relevant state is passed to a new Workflow Execution, with a fresh Event History.
 
-As a precautionary measure, the Temporal Platform limits Event History to 50,000 Events, and will warn you every 10,000 Events.
+As a precautionary measure, the Temporal Platform limits the total [Event History](#event-history) to 50,000 Events or 50 MB, and will warn you every 10,000 Events or 10 MB.
 To prevent a Workflow Execution Event History from exceeding this limit and failing, use Continue-As-New to start a new Workflow Execution with a fresh Event History.
 
 All values passed to a Workflow Execution through parameters or returned through a result value are recorded into the Event History.
@@ -302,7 +308,7 @@ The new Workflow Execution has the same Workflow Id, but a different Run Id, and
 
 In the case of [Temporal Cron Jobs](#cron-jobs), Continue-As-New is actually used internally for the same effect.
 
-- [How to Continue-As-New in Go](/application-development-guide/#continue-as-new)
+- [How to Continue-As-New](/application-development-guide/#continue-as-new)
 
 ### Run Id
 
@@ -319,17 +325,17 @@ A Run Id uniquely identifies a Workflow Execution even if it shares a Workflow I
 
 A Workflow Id is a customizable, application-level identifier for a [Workflow Execution](#workflow-executions) that is unique to an Open Workflow Execution within a [Namespace](/namespaces).
 
-- [How to set a Workflow Id in Go](/application-development-guide/#set-workflow-id)
+- [How to set a Workflow Id](/next/application-development/foundations#set-workflow-id)
 
 A Workflow Id is meant to be a business-process identifier such as customer identifier or order identifier.
 
 A [Workflow Id Reuse Policy](#workflow-id-reuse-policy) can be used to manage whether a Workflow Id can be re-used.
-The Temporal Platform guarantees uniqueness of the Workflow Id within a [Namespace](/namespaces/#) based on the Workflow Id Reuse Policy.
+The Temporal Platform guarantees uniqueness of the Workflow Id within a [Namespace](/next/namespaces#) based on the Workflow Id Reuse Policy.
 
 It is never possible for a new Workflow Execution to spawn with the same Workflow Id as another Open Workflow Execution, regardless of the Workflow Id Reuse Policy.
 An attempt to spawn a Workflow Execution with a Workflow Id that is the same as the Id of a currently Open Workflow Execution results in a "Workflow execution already started" error.
 
-A Workflow Execution can be uniquely identified across all Namespaces by its [Namespace](/namespaces/#), Workflow Id, and [Run Id](#run-id).
+A Workflow Execution can be uniquely identified across all Namespaces by its [Namespace](/next/namespaces#), Workflow Id, and [Run Id](#run-id).
 
 #### Workflow Id Reuse Policy
 
@@ -357,7 +363,7 @@ If there is an attempt to spawn a Workflow Execution with a Workflow Id Reuse Po
 
 A Workflow Execution Timeout is the maximum time that a Workflow Execution can be executing (have an Open status) including retries and any usage of Continue As New.
 
-- [How to set a Workflow Execution Timeout in Go](/application-development-guide/#workflow-execution-timeout)
+- [How to set a Workflow Execution Timeout](/next/application-development/features#workflow-execution-timeout)
 
 ![Workflow Execution Timeout period](/diagrams/workflow-execution-timeout.svg)
 
@@ -370,7 +376,7 @@ This timeout is most commonly used for stopping the execution of a [Temporal Cro
 
 A Workflow Run Timeout is the maximum amount of time that a single Workflow Run is restricted to.
 
-- [How to set a Workflow Run Timeout in Go](/go/startworkflowoptions-reference/#workflowruntimeout)
+- [How to set a Workflow Run Timeout](/go/startworkflowoptions-reference/#workflowruntimeout)
 
 ![Workflow Run Timeout period](/diagrams/workflow-run-timeout.svg)
 
@@ -381,7 +387,7 @@ If the Workflow Run Timeout is reached, the Workflow Execution is Terminated.
 
 ### Workflow Task Timeout
 
-A Workflow Task Timeout is the maximum amount of time allowed for a [Worker](/workers/#) to execute a [Workflow Task](/tasks/#workflow-task) after the Worker has pulled that Workflow Task from the [Task Queue](/tasks/#task-queues).
+A Workflow Task Timeout is the maximum amount of time allowed for a [Worker](/next/workers#) to execute a [Workflow Task](/next/tasks#workflow-task) after the Worker has pulled that Workflow Task from the [Task Queue](/next/tasks#task-queues).
 
 ![Workflow Task Timeout period](/diagrams/workflow-task-timeout.svg)
 
@@ -391,7 +397,7 @@ The main reason for increasing the default value would be to accommodate a Workf
 
 **Implementation guides:**
 
-- [How to set a Workflow Task Timeout in Go](/go/startworkflowoptions-reference/#workflowtasktimeout)
+- [How to set a Workflow Task Timeout](/go/startworkflowoptions-reference/#workflowtasktimeout)
 
 ## Signals
 
@@ -423,9 +429,7 @@ Workflow Execution can optionally await on a single Signal name or multiple Sign
 
 If you are using Signals with the Go SDK, you should make sure to do an asynchronous drain on the Signal channel or the Signals will be lost.
 
-- [How to use Signals in Go](/go/how-to-use-signals-in-go)
-- [How to use Signals in Java](/java/signals)
-- [How to use Signals in PHP](/php/signals)
+- [How to use Signals](/application-development-guide/#signals)
 
 ## Queries
 
@@ -488,7 +492,7 @@ If a Child Workflow Execution uses Continue-As-New, from the Parent Workflow Exe
 An individual Workflow Execution has an [Event History](#event-history) size limit, which imposes a couple of considerations for using Child Workflows.
 
 On one hand, because Child Workflow Executions have their own Event Histories, they are often used to partition large workloads into smaller chunks.
-For example, a single Workflow Execution does not have enough space in its Event History to spawn 100,000 [Activity Executions](/activities/#activity-execution).
+For example, a single Workflow Execution does not have enough space in its Event History to spawn 100,000 [Activity Executions](/next/activities#activity-execution).
 But a Parent Workflow Execution can spawn 1000 Child Workflow Executions that each spawn 1000 Activity Executions to achieve a total of 1,000,000 Activity Executions.
 
 On the other hand, because a Parent Workflow Execution Event History contains [Events](#events) that correspond to the status of the Child Workflow Execution, a single Parent should not spawn more than 1000 Child Workflow Executions.
@@ -499,7 +503,7 @@ Therefore, we recommend starting with a single Workflow implementation that uses
 
 **Consider each Child Workflow Execution as a separate service.**
 
-Because a Child Workflow Execution can be processed by a completely separate set of [Workers](/workers/#) than the Parent Workflow Execution, it can act as an entirely separate service.
+Because a Child Workflow Execution can be processed by a completely separate set of [Workers](/next/workers#) than the Parent Workflow Execution, it can act as an entirely separate service.
 However, this also means that a Parent Workflow Execution and a Child Workflow Execution do not share any local state.
 As all Workflow Executions, they can communicate only via asynchronous [Signals](#signals).
 
@@ -637,3 +641,198 @@ Use the Workflow Id in any requests to Cancel or Terminate.
 - [How to set a Cron Schedule in Java](/java/reference-workflowoptions/#cronschedule)
 - [How to set a Cron Schedule in PHP](/php/distributed-cron)
 - [How to set a Cron Schedule in Typescript](/typescript/clients)
+
+## Schedules
+
+A Schedule contains instructions for starting a [Workflow Execution](#workflow-executions) at specific times.
+Schedules provide a more flexible and user-friendly approach than [Temporal Cron Jobs](#cron-jobs).
+
+- [How to enable Schedules](#how-to-enable-schedules)
+- [How to operate Schedules using tctl](/next/tctl/schedule/)
+
+A Schedule has identity, and is independent of a Workflow Execution.
+This differs from a Temporal Cron Job, which relies on a cron schedule as a property of the Workflow Execution.
+
+### Action
+
+The Action of a Schedule is where the Workflow Execution properties are established, such as Workflow Type, Task Queue, parameters, and timeouts.
+
+Workflow Executions started by a Schedule have the following additional properties:
+
+- The Action's timestamp is appended to the Workflow Id.
+- The `TemporalScheduledStartTime` [Search Attribute](/next/visibility#search-attributes) is added to the Workflow Execution.
+  The Action's timestamp is the value.
+- The `TemporalScheduledById` Search Attribute is added to the Workflow Execution.
+  The Schedule Id is the value.
+
+### Spec
+
+There are two ways to express a Schedule Spec:
+
+- A simple interval, like "every 30 minutes" (measured from the Unix epoch, and optionally including a phase offset).
+- A calendar-based expression, similar to the "cron expressions" supported by lots of software, including the older Temporal Cron feature.
+
+Calendar expressions are given as separate named fields.
+
+For example, in tctl they can be provided as JSON:
+
+```json
+{
+  "year": "2022",
+  "month": "Jan,Apr,Jul,Oct",
+  "dayOfMonth": "1,15",
+  "hour": "11-14"
+}
+```
+
+The following calendar fields are available:
+
+- `year`
+- `month`
+- `dayOfMonth`
+- `dayOfWeek`
+- `hour`
+- `minute`
+- `second`
+
+Each field may contain a comma-separated list of ranges (or `*`), and each range may include a skip value following a slash.
+
+For `month`, names of months may be used instead of integers (case-insensitive, abbreviations permitted).
+For `dayOfWeek`, day-of-week names may be used.
+
+Other Spec features:
+
+**Multiple intervals/calendar expressions:** A Spec can have combinations of multiple intervals and/or calendar expressions to define a specific Schedule.
+
+**Time bounds:** Provide an absolute start or end time (or both) with a Spec to ensure that no actions are taken before the start time or after the end time.
+
+**Exclusions:** A Spec can contain exclusions in the form of zero or more calendar expressions.
+This can be used to express scheduling like "each Monday at noon except for holidays.
+You'll have to provide your own set of exclusions and include it in each schedule; there are no pre-defined sets.
+(This feature isn't currently exposed in tctl or the Temporal Web UI.)
+
+**Jitter:** If given, a random offset between zero and the maximum jitter is added to each Action time (but bounded by the time until the next scheduled Action).
+
+**Time zones:** By default, calendar-based expressions are interpreted in UTC.
+Temporal recommends using UTC to avoid various surprising properties of time zones.
+If you don't want to use UTC, you can provide the name of a time zone.
+The time zone definition is loaded on the Temporal Server Worker Service from either disk or the fallback embedded in the binary.
+
+For more operational control, embed the contents of the time zone database file in the Schedule Spec itself.
+(Note: this isn't currently exposed in tctl or the web UI.)
+
+### Pausing
+
+A Schedule can be Paused.
+When a Schedule is Paused, the Spec has no effect.
+However, you can still force manual actions by using the [tctl schedule trigger](/next/tctl/schedule/trigger) command.
+
+To assist communication among developers and operators, a “notes” field can be updated on pause or resume to store an explanation for the current state.
+
+### Limiting number of Actions
+
+A Schedule can be limited to a certain number of scheduled Actions (that is, not trigger immediately).
+After that it will act as if it were paused.
+
+### Policies
+
+A Schedule supports a set of Policies that enable customizing behavior.
+
+#### Overlap Policy
+
+The Overlap Policy controls what happens when it is time to start a Workflow Execution but a previously started Workflow Execution is still running.
+The following options are available:
+
+- `Skip`: **Default**.
+  Nothing happens; the Workflow Execution is not started.
+- `BufferOne`: Starts the Workflow Execution as soon as the current one completes.
+  The buffer is limited to one.
+  If another Workflow Execution is supposed to start, but one is already in the buffer, only the one in the buffer eventually starts.
+- `BufferAll`: Allows an unlimited number of Workflows to buffer.
+  They are started sequentially.
+- `CancelOther`: Cancels the running Workflow Execution, and then starts the new one after the old one completes cancellation.
+- `TerminateOther`: Terminates the running Workflow Execution and starts the new one immediately.
+- `AllowAll` Starts any number of concurrent Workflow Executions.
+  With this policy (and only this policy), more than one Workflow Execution, started by the Schedule, can run simultaneously.
+
+#### Catchup Window
+
+The Temporal Cluster might be down or unavailable at the time when a Schedule should take an Action.
+When it comes back up, the Catchup Window controls which missed Actions should be taken at that point.
+The default is one minute, which means that the Schedule attempts to take any Actions that wouldn't be more than one minute late.
+An outage that lasts longer than the Catchup Window could lead to missed Actions.
+(But you can always Backfill.)
+
+#### Pause-on-failure
+
+If this policy is set, a Workflow Execution started by a Schedule that ends with a failure or timeout (but not Cancellation or Termination) causes the Schedule to automatically pause.
+
+Note that with the `AllowAll` Overlap Policy, this pause might not apply to the next Workflow Execution, because the next Workflow Execution might have started before the failed one finished.
+It applies only to Workflow Executions that were scheduled to start after the failed one finished.
+
+### Last completion result
+
+A Workflow started by a Schedule can obtain the completion result from the most recent successful run.
+(How you do this depends on the SDK you're using.)
+
+For overlap policies that don't allow overlap, “the most recent successful run” is straightforward to define.
+For the `AllowAll` policy, it refers to the run that completed most recently, at the time that the run in question is started.
+Consider the following overlapping runs:
+
+```
+time -------------------------------------------->
+ A     |----------------------|
+ B               |-------|
+ C                          |---------------|
+ D                                |--------------T
+```
+
+If D asks for the last completion result at time T, it gets the result of A.
+Not B, even though B started more recently, because A completed later.
+And not C, even though C completed after A, because the result for D is captured when D is started, not when it's queried.
+
+Failures and timeouts do not affect the last completion result.
+
+### Last failure
+
+A Workflow started by a Schedule can obtain the details of the failure of the most recent run that ended at the time when the Workflow in question was started. Unlike last completion result, a _successful_ run _does_ reset the last failure.
+
+### How to enable Schedules
+
+:::info Experimental
+
+The Scheduled Workflows feature is available in Temporal Server version 1.17.
+However the feature is in an experimental stage and is disabled by default.
+
+Internally, a Schedule is implemented as a Workflow.
+These implementation Workflow Executions are visible to you as you navigate the Web UI and use tctl, though you should not interact with it directly.
+
+In later versions the implementation Workflows will cease to be visible by default.
+
+:::
+
+**Requirements**
+
+- Temporal Server version 1.17 or later.
+- [Advanced Visibility](/next/visibility#advanced-visibility) optional.
+- The following dynamic config values:
+
+```yaml
+frontend.enableSchedules:
+  - value: true
+worker.enableScheduler:
+  - value: true
+matching.numTaskqueueReadPartitions:
+  - value: 1
+    constraints:
+      taskQueueName: temporal-sys-scheduler-tq
+matching.numTaskqueueWritePartitions:
+  - value: 1
+    constraints:
+      taskQueueName: temporal-sys-scheduler-tq
+```
+
+Only the first two values are required; the second two are suggested because, by default, only one Worker runs per Task Queue, so more than one partition is not useful.
+Setting the Task Queue to use one partition reduces latency.
+
+If you're familiar with Dynamic Config, you can also constrain these settings per Namespace as needed for your installation.

@@ -374,7 +374,25 @@ Async Activity completion is done through a two step process:
 
 You can [read the tests](https://github.com/temporalio/sdk-typescript/blob/7d47f501cb56cced27118b5f0abb320cc0ba03ef/packages/test/src/test-async-completion.ts#L40-L98) for more information.
 
-### Local Activities
+### Local Activities (experimental)
 
 Temporal has an optimization feature called Local Activities.
-The TypeScript SDK has not yet implemented this feature.
+
+This document is still a WIP. For more details, see [What is a Local Activity?](/concepts/what-is-a-local-activity/)
+
+To call Local Activities in TS, use [`proxyLocalActivities`](https://typescript.temporal.io/api/namespaces/workflow/#proxylocalactivities).
+
+```ts
+import * as workflow from '@temporalio/workflow';
+
+const { getEnvVar } = workflow.proxyLocalActivities({
+  startToCloseTimeout: '2 seconds',
+});
+
+export async function myWorkflow(): Promise<void> {
+  const someSetting = await getEnvVar('SOME_SETTING');
+  // ...
+}
+```
+
+Local Activities must be registered with the Worker the same way non-local Activities are.

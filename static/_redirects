@@ -7,7 +7,8 @@
 /reference/*        /references/:splat
 /system-tools/*        /devtools/:splat
 /devtools/tctl        /tctl
-/devtools/introduction        /devtools
+/devtools/introduction        /
+/devtools/web-ui        /web-ui
 /sdks-introduction         /application-development-guide
 /other-sdks        /application-development-guide
 /get-started         /
@@ -49,7 +50,8 @@
 #
 /go/getting-started        /go
 /go/introduction        /go
-/go-activities         /application-development-guide#develop-activities
+/go-activities        /application-development-guide#develop-activities
+/go/activities        /application-development-guide#develop-activities
 /go/child-workflows        /application-development-guide#child-workflows
 /go-continue-as-new        /go/how-to-continue-as-new-in-go
 /go/continue-as-new        /go/how-to-continue-as-new-in-go

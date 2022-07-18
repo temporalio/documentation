@@ -38,9 +38,10 @@ All SDK connections (whether Workers or Clients) are to a specific namespace.
 If not specified in [WorkflowClientOptions](https://typescript.temporal.io/api/interfaces/client.WorkflowClientOptions), this defaults to the `default` namespace.
 
 ```ts
-const connection = new Connection();
+const connection = await Connection.connect();
 
-const client = new WorkflowClient(connection.service, {
+const client = new WorkflowClient({
+  connection,
   namespace: 'my-namespace-name', // defaults to 'default'
 });
 ```
@@ -60,7 +61,7 @@ A full example for Clients looks like this:
 ```js
 import { Connection, WorkflowClient } from '@temporalio/client';
 
-const connection = new Connection({
+const connection = await Connection.connect({
   address: 'foo.bar.tmprl.cloud', // defaults port to 7233 if not specified
   tls: {
     // set to true if TLS without mTLS
@@ -71,8 +72,8 @@ const connection = new Connection({
     },
   },
 });
-await connection.untilReady();
-const client = new WorkflowClient(connection.service, {
+const client = new WorkflowClient({
+  connection,
   namespace: 'foo.bar', // as explained in Namespaces section
 });
 ```
@@ -84,7 +85,7 @@ import { Worker, NativeConnection } from '@temporalio/worker';
 import * as activities from './activities';
 
 async function run() {
-  const connection = await NativeConnection.create({
+  const connection = await NativeConnection.connect({
     address: 'foo.bar.tmprl.cloud', // defaults port to 7233 if not specified
     tls: {
       // set to true if TLS without mTLS
