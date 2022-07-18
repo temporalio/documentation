@@ -36,7 +36,7 @@ The SDK was designed with TypeScript-first developer experience in mind, but wor
 This is the first stable SDK built on top of a shared Rust Core SDK (see [blog
 post](https://docs.temporal.io/blog/why-rust-powers-core-sdk/) and [repo](https://github.com/temporalio/sdk-core/)). The
 development of the Core SDK was started roughly around the time we started to develop the TypeScript SDK, and the API
-boundary between the two evolved over time.
+boundary between the two mutually evolved over time.
 
 By investing in a shared Core, we can reuse a lot of the complex concurrency management and state machine logic to build
 new SDKs much faster. For example, our [Python SDK](https://github.com/temporalio/sdk-python) (currently in alpha) was
