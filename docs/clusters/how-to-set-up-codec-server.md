@@ -14,8 +14,6 @@ Implementations must do the following:
 - Send and receive Payloads protobuf as JSON.
 - Check only the final part of the incoming URL to determine whether the request is for /encode or /decode.
 
-Each platform has a different approach to setting up the endpoints for the Codec Server. Follow these steps to get a Codec Server running on your preferred platform.
-
 :::note
 A Temporal Cluster should already be in operation before starting the Codec Server.
 :::
@@ -24,7 +22,7 @@ A Temporal Cluster should already be in operation before starting the Codec Serv
 
 [Start up the Codec Server](https://github.com/temporalio/samples-go/tree/main/codec-server).
 
-Pass the encoded Payloads to the codec endpoint:
+Configure the codec endpoint:
 
 ```bash
 tctl --codec_endpoint 'http://localhost:{PORT}/{namespace}' workflow show --wid codecserver_workflowID
