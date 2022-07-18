@@ -32,8 +32,8 @@ The Data Converter passes this result back to the command line, which prints the
 
 ## Use case - Web UI
 
-Suppose that you'd rather view the Workflow History on a web browser. Temporal's Web UI allows you to see additional information about the Workflow, such as the time needed for each Event to occur.
-
-Payload information can also be seen under the 'input' and 'result' variables. Without a Codec Server, this information remains encoded.
+Workflow Execution Event History is available in the Web UI.
+Payload information for each Event is captured within Event 'input' and 'result' fields.
+Without a Codec Server, this information remains encoded.
 
 Passing these Payloads through a Codec Server will return decoded results to the Web UI. Make sure to [enter a valid URL and port](/docs/clusters/how-to-set-up-codec-server/#web-ui) for the codec endpoint when configuring the Codec Server.
