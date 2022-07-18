@@ -5,8 +5,7 @@ sidebar_label: Codec Server
 description: Implementation of a remote encryption/decryption server.
 ---
 
-A [Codec Server](/docs/concepts/what-is-a-codec-server) is an optional feature that can further encode or decode Payloads.
-This can be done through the [Web UI](/docs/web-ui/how-to-use-a-list-filter-in-the-temporal-web-ui) or with [tctl](/docs/tctl/index).
+The [Codec Server Go sample](https://github.com/temporalio/samples-go/tree/main/codec-server) is an example that shows how to decode a Payload that has been encoded so the Payload can be displayed by [tctl](/tctl) and the [Web UI](/web-ui/how-to-use-a-list-filter-in-the-temporal-web-ui).
 
 A codec HTTP protocol specifies two endpoints to handle Payload encoding and decoding.
 Implementations must do the following:
