@@ -41,7 +41,7 @@ Data Converters have [two parts](/concepts/what-is-a-data-converter#payload-code
 ```ts
 interface DataConverter {
   payloadConverterPath?: string;
-  payloadCodec?: PayloadCodec;
+  payloadCodecs?: PayloadCodec[];
 }
 ```
 

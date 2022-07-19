@@ -31,7 +31,7 @@ Here are the [Search Attribute value types](/concepts/what-is-a-search-attribute
 
 ## Tagging Search Attributes at Workflow creation
 
-You can provide key-value pairs as SearchAttributes in [StartWorkflowOptions](https://pkg.go.dev/go.temporal.io/sdk/internal#StartWorkflowOptions).
+You can provide key-value pairs as Search Attributes in [StartWorkflowOptions](https://pkg.go.dev/go.temporal.io/sdk/internal#StartWorkflowOptions).
 In Go, Search Attributes are represented as `map[string]interface{}`.
 The value provided in the map must be the same type that was added to a Cluster.
 

@@ -29,14 +29,14 @@ You can get started by:
  
 The minimum Node.js version is 14 but we recommend using 16.4.1 and up.
 
-When you spin up a project, you will notice a single `temporalio` dependency, which actually bundles 4 other dependencies you will use:
+When you spin up a project, you will notice four dependencies you will use:
 
 - `@temporalio/workflow` for Workflow APIs
 - `@temporalio/activity` for Activity APIs
 - `@temporalio/worker` for Worker APIs
 - `@temporalio/client` for Client APIs
 
-These represent the 4 core APIs you need to know to be productive with Temporal.
+These represent the four core APIs you need to know to be productive with Temporal.
 
 ## Workflows and Workflow APIs
 

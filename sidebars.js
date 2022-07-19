@@ -18,8 +18,22 @@ module.exports = {
         "namespaces",
       ],
     },
-    "application-development-guide",
-    "operation/how-to-tune-workers",
+    {
+      type: "category",
+      label: "Application development",
+      collapsible: true,
+      collapsed: true,
+      link: {
+        type: "doc",
+        id: "application-development/index",
+      },
+      items: [
+        "application-development/foundations",
+        "application-development/features",
+        "application-development/observability",
+        "application-development/worker-performance",
+      ],
+    },
     "cluster-deployment-guide",
     "server/security",
     {
@@ -32,6 +46,11 @@ module.exports = {
         id: "cloud/index",
       },
       items: [
+        {
+          type: "link",
+          label: "Release notes",
+          href: "https://docs.temporal.io/cloud/release-notes",
+        },
         "cloud/tcld/how-to-install-tcld",
         {
           type: "category",
@@ -70,6 +89,21 @@ module.exports = {
                     "cloud/tcld/namespace/accepted-client-ca/list",
                     "cloud/tcld/namespace/accepted-client-ca/set",
                     "cloud/tcld/namespace/accepted-client-ca/remove",
+                  ],
+                },
+                {
+                  type: "category",
+                  label: "certificate-filters",
+                  collapsible: true,
+                  collapsed: true,
+                  link: {
+                    type: "doc",
+                    id: "cloud/tcld/namespace/certificate-filters/index",
+                  },
+                  items: [
+                    "cloud/tcld/namespace/certificate-filters/import",
+                    "cloud/tcld/namespace/certificate-filters/export",
+                    "cloud/tcld/namespace/certificate-filters/clear",
                   ],
                 },
                 {

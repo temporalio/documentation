@@ -229,7 +229,7 @@ The Temporal TypeScript SDK provides a framework for Temporal Application develo
 To download the latest version of the Temporal TypeScript Command, run the following command:
 
 ```bash
-npm i temporalio
+npm i @temporalio/client @temporalio/worker @temporalio/workflow @temporalio/activity
 ```
 
 Or clone the TypeScript SDK repo to your preferred location:
@@ -774,7 +774,7 @@ Because this is such a common need, the rest of this guide shows Activities writ
 An [Activity Definition](/activities/#) is a combination of the Temporal Java SDK [Activity](https://www.javadoc.io/static/io.temporal/temporal-sdk/0.19.0/io/temporal/activity/Activity.html) Class implementing a specially annotated interface.
 
 An Activity interface is annotated with `@ActivityInterface` and an Activity implementation implements this Activity interface.
-TO handle Activity types that do not have an explicitly registered handler, you can directly implement a dynamic Activity.
+To handle Activity types that do not have an explicitly registered handler, you can directly implement a dynamic Activity.
 
 ```java
 @ActivityInterface
@@ -783,7 +783,7 @@ public interface GreetingActivities {
 }
 ```
 
-Each method defined in the Actvity interface defines a separate Activity method.
+Each method defined in the Activity interface defines a separate Activity method.
 You can annotate each method in the Activity interface with the `@ActivityMethod` annotation, but this is completely optional.
 The following example uses the `@ActivityMethod` annotation for the method defined in the previous example.
 
