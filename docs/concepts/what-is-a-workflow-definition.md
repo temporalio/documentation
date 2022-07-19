@@ -30,7 +30,7 @@ If a corresponding Event already exists within the Event History that maps to th
 
 For example, using an SDK's "Execute Activity" API generates the [ScheduleActivityTask](/references/commands/#scheduleactivitytask) Command.
 When this API is called upon re-execution, that Command is compared with the Event that is in the same location within the sequence.
-The Event in the sequence must be an [ActivityTaskScheduled](/references/events/#activitytaskscheduled) Event, where the Activity Name and the Task Queue name are the same as what is in the Command.
+The Event in the sequence must be an [ActivityTaskScheduled](/references/events/#activitytaskscheduled) Event, where the Activity name is the same as what is in the Command.
 
 If a generated Command doesn't match what it needs to in the existing Event History, then the Workflow Execution returns a _non-deterministic_ error.
 
