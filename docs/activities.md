@@ -183,16 +183,6 @@ An Activity Execution must have either this timeout (Schedule-To-Close) or [Star
 By default, an Activity Execution Retry Policy dictates that retries will occur for up to 10 years.
 This timeout can be used to control the overall duration of an Activity Execution in the face of failures (repeated Activity Task Executions), without altering the Maximum Attempts field of the Retry Policy.
 
-### Heartbeat Timeout
-
-A Heartbeat Timeout is the maximum time between [Activity Heartbeats](#activity-heartbeats).
-
-- [How to set a Heartbeat Timeout](/application-development-guide/#heartbeat-timeout)
-
-![Heartbeat Timeout periods](/diagrams/heartbeat-timeout.svg)
-
-If this timeout is reached, the Activity Task fails and a retry occurs if a [Retry Policy](/next/retry-policies#) dictates it.
-
 ### Activity Heartbeats
 
 An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster.
@@ -216,6 +206,39 @@ That way if a Worker fails it can be handled in a timely manner.
 
 A Heartbeat can include an application layer payload that can be used to _save_ Activity Execution progress.
 If an [Activity Task Execution](/next/tasks#activity-task-execution) times out due to a missed Heartbeat, the next Activity Task can access and continue with that payload.
+
+**What Activities should Heartbeat?**
+
+Heartbeating is best thought about not in terms of time, but in terms of "How do you know you are making progress"?
+For short-term operations, progress updates are not a requirement. However, checking the progress and status of Activities that run over long periods is almost always useful.
+
+Consider the following when deciding on setting Activity Hearbeats:
+
+- Your underlying task must be able to report definite progress.
+  Note that your Workflow cannot read this progress information while the Activity is still executing (or it would have to store it in Event History).
+  You may report progress to external sources if you need it exposed to the user.
+
+- Your Activity Execution is long-running and you need to verify whether the Worker that is processing your Activity is still alive and has not run out of memory or silently crashed.
+
+For example, the following scenarios are suitable for Heartbeating:
+
+- Reading a large file from Amazon S3
+- Running a ML training job on some local GPUs
+
+And the following scenarios are not suitable for Heartbeating:
+
+- Reading a small file from disk
+- Making a quick API call
+
+### Heartbeat Timeout
+
+A Heartbeat Timeout is the maximum time between [Activity Heartbeats](#activity-heartbeats).
+
+- [How to set a Heartbeat Timeout](/application-development-guide/#heartbeat-timeout)
+
+![Heartbeat Timeout periods](/diagrams/heartbeat-timeout.svg)
+
+If this timeout is reached, the Activity Task fails and a retry occurs if a [Retry Policy](/next/retry-policies#) dictates it.
 
 ### Asynchronous Activity Completion
 

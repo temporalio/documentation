@@ -32,7 +32,7 @@ npx @temporalio/create@latest nextjs-temporal-app --sample nextjs-ecommerce-onec
 You can install Temporal's packages with a single dependency, then set up folders and files for your Workflow, Activity, and Worker code:
 
 ```bash
-npm i temporalio # in Next.js project root
+npm i @temporalio/client @temporalio/worker @temporalio/workflow @temporalio/activity # in Next.js project root
 mkdir -p temporal/src # create folder, recursively
 cd temporal
 touch src/worker.ts src/workflows.ts src/activities.ts
