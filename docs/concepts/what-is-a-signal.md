@@ -27,4 +27,4 @@ If multiple deliveries of a Signal would be a problem for your Workflow, add ide
 
 - [How to use Signals](/application-development-guide/#signals)
 
-[^1]: The Cluster usually deduplicates Signals, but does not guarantee deduplication: there can be two Signal Events (and therefore two deliveries to the Workflow Execution) for a single Signal during shard migration, since the deduping info is only stored in memory.
+[^1]: The Cluster usually deduplicates Signals, but does not guarantee deduplication: During shard migration, two Signal Events (and therefore two deliveries to the Workflow Execution) can occur for a single Signal because the deduping info is stored only in memory.
