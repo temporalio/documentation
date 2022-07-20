@@ -4,7 +4,7 @@ tags:
   - sdk
   - typescript
   - javascript
-posted_on_: 2022-07-15T00:00:00Z
+posted_on_: 2022-07-20T00:00:00Z
 slug: typescript-1.0.0
 title: '1.0.0 release of our TypeScript SDK'
 author: Roey Berman & Loren Sands-Ramshaw
@@ -27,11 +27,24 @@ built, how we've improved the API, and our future plans.
 > introduction](https://twitter.com/lorendsr/status/1544806504443695104?s=20&t=XFYNWSB8BEroAhjA6ATDPQ) and [formal
 > definition](https://docs.temporal.io/temporal).
 
-The SDK was designed with TypeScript-first developer experience in mind, but works equally well with JavaScript.
+We call it the TypeScript SDK, but we designed it for TypeScript and JavaScript developers alike.
 
 ## What makes this SDK unique?
 
-### Shared Core
+### Deterministic sandboxed workflow runtime
+
+The SDK leverages V8 isolates (the technology behind Chrome's isolation) to run each Workflow in an isolated JavaScript
+runtime to get a distinct global scope and to prevent the use of "unsafe" JavaScript modules that could break the code's
+[deterministic constraints](https://docs.temporal.io/workflows#deterministic-constraints). All non-deterministic
+JavaScript APIs, such as getting the current time or a random number, have been replaced with [deterministic
+versions](https://docs.temporal.io/typescript/determinism#sources-of-non-determinism).
+
+With all of this put together, we eliminated an entire class of footguns and made it easier to get started with
+Temporal.
+Realizing the benefits of the deterministic runtime, we've set the tone for the future of Temporal SDKs. We'll strive to
+bring this added safety to the older and upcoming SDKs.
+
+### Reuse of complex shared logic
 
 This is the first stable SDK built on top of a shared Rust Core SDK (see [blog
 post](https://docs.temporal.io/blog/why-rust-powers-core-sdk/) and [repo](https://github.com/temporalio/sdk-core/)). The
@@ -43,30 +56,20 @@ new SDKs much faster. For example, our [Python SDK](https://github.com/temporali
 built in just a few months. Sharing the logic makes all of our SDKs more reliable because when a problem is fixed in
 Core, it is fixed for all Core-based SDKs.
 
-### Sandboxed workflow runtime
-
-The SDK leverages V8 isolates (the technology behind Chrome's isolation) to run each Workflow in an isolated JavaScript
-runtime to get a distinct global scope and to prevent the use of "unsafe" JavaScript modules that could break the code's
-[deterministic constraints](https://docs.temporal.io/workflows#deterministic-constraints). All non-deterministic
-JavaScript APIs, such as getting the current time or a random number, have been replaced with [deterministic
-versions](https://docs.temporal.io/typescript/determinism#sources-of-non-determinism).
-
-With all of this put together, we eliminated an entire class of footguns and made it easier to get started with
-Temporal.
-
 ## Built with the community
 
 When we released the first alpha version of the SDK back in March of 2021, we set out to iterate on the public API and
 have asked our community of users to help us shape it.
 
-We've been very fortunate to have received such wide adoption for the SDK, especially at such an early stage. The SDK's Slack channel
-([#typescript-sdk](https://temporal.io/slack)) has grown to more than 1000 members, and we've been actively responding
-to and supporting users on a daily basis.
+We've been very fortunate to have received such wide adoption for the SDK, especially at such an early stage. The SDK's
+Slack channel ([#typescript-sdk](https://temporal.io/slack)) has grown to more than 1000 members, and we've been
+actively responding to and supporting users on a daily basis.
 
-The feedback and trust we've gotten from our early adopters who put the SDK in production has been invaluable. We
-wouldn't have been able to reach API and functional stability without them. Thank you for putting up with our [many
-breaking changes](https://github.com/temporalio/sdk-typescript/blob/main/CHANGELOG.md) during the alpha and beta. We are
-committed to avoiding backward-incompatible changes from now on.
+The feedback and trust we've gotten from our early adopters has been invaluable. We wouldn't have been able to reach API
+and functional stability without them. Thank you for putting up with our [many breaking
+changes](https://github.com/temporalio/sdk-typescript/blob/main/CHANGELOG.md) during the alpha and beta. From now on, we
+are committed to maintain backwards-compatibility for Core APIs and history replayablity, and to miminize
+backward-incompatible changes for non-Core APIs.
 
 A special thank you to everyone [who contributed](https://github.com/temporalio/sdk-typescript/graphs/contributors) to
 the SDK's development—[Sushisource](https://github.com/Sushisource), [vkarpov15](https://github.com/vkarpov15),
@@ -87,6 +90,7 @@ Since the first release of the SDK, we've made significant changes to the public
 We went from Workflows that look like this, where a Workflow interface was required, we relied on path aliases, and the
 Workflow name was based on the containing file—
 
+:::note proposal - stage 1
 ```ts
 import { Example } from '@interfaces/workflows';
 import { greet } from '@activities/greeter';
@@ -98,9 +102,11 @@ async function main(name: string): Promise<string> {
 
 export const workflow: Example = { main };
 ```
+:::
 
 —to this, where Activities are proxied using their types and Workflows names are function names—
 
+:::note alpha - stage 2
 ```ts
 import { createActivityHandle } from '@temporalio/workflow';
 import { Example } from '../interfaces';
@@ -116,9 +122,11 @@ export const example: Example = (name: string) => ({
   },
 });
 ```
+:::
 
 —to where we are today, where Workflows are just functions and don't require interface definitions:
 
+:::note stable - stage 3
 ```ts
 import { proxyActivities } from '@temporalio/workflow';
 import type * as activities from './activities';
@@ -131,27 +139,25 @@ export async function example(name: string): Promise<string> {
   return await greet(name);
 }
 ```
+:::
 
 ## The future
 
 Now that the SDK is stable, we will invest in even safer APIs to help steer users in the right direction by avoiding
-common anti-patterns. We'll build high-level abstractions that make writing Workflows with long histories easier. And we
-will invest in developer tools that make the local development experience better, like IDE plugins.
+common anti-patterns, and we will invest in developer tools that make the local development experience better, like IDE
+plugins.
 
 There are many more general Temporal features planned this year, including:
 
 - Synchronous Updates (like a Signal, but can return a value)
 - Better versioning
-- More languages:
-  - [Python](https://github.com/temporalio/sdk-python)
-  - [.NET](https://github.com/temporalio/sdk-dotnet)
-  - [Rust](https://github.com/temporalio/sdk-core)
-  - [Ruby](https://github.com/temporalio/sdk-ruby)
+- More languages: [Python](https://github.com/temporalio/sdk-python) is close to beta and more will be announced later
+  this year.
 
 ## Learn more
 
 To learn more about using the TypeScript SDK, check out [our docs and
 tutorials](https://docs.temporal.io/typescript/introduction/). If you have questions, you can post a new topic with the
-`typescript-sdk` tag on our [community forum](https://community.temporal.io/).
+`#typescript-sdk` tag on our [community forum](https://community.temporal.io/).
 
 We're building Temporal because we want to enable developers to easily build highly reliable applications. We hope you find it useful!
