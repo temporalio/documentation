@@ -32,7 +32,7 @@ npx @temporalio/create@latest nextjs-temporal-app --sample nextjs-ecommerce-onec
 You can install Temporal's packages with a single dependency, then set up folders and files for your Workflow, Activity, and Worker code:
 
 ```bash
-npm i temporalio # in Next.js project root
+npm i @temporalio/client @temporalio/worker @temporalio/workflow @temporalio/activity # in Next.js project root
 mkdir -p temporal/src # create folder, recursively
 cd temporal
 touch src/worker.ts src/workflows.ts src/activities.ts
@@ -122,8 +122,7 @@ Inside of `/temporal/src/workflows.ts` we'll write a Workflow function that call
 
 ```ts
 // /temporal/src/workflows.ts
-import { proxyActivities } from '@temporalio/workflow';
-import { sleep } from '@temporalio/workflow';
+import { proxyActivities, sleep } from '@temporalio/workflow';
 import type * as activities from './activities'; // purely for type safety
 
 const { purchase } = proxyActivities<typeof activities>({
@@ -242,7 +241,7 @@ You will need to configure gRPC connection address, namespace, and mTLS cert and
 
 ```ts
 // before Worker.create call in worker.ts
-const connection = await NativeConnection.create({
+const connection = await NativeConnection.connect({
   address,
   tls: {
     serverNameOverride,
@@ -255,7 +254,7 @@ const connection = await NativeConnection.create({
 });
 
 // inside each Client call inside API Route
-const connection = new Connection({
+const connection = await Connection.connect({
   address,
   tls: {
     serverNameOverride,

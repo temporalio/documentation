@@ -290,7 +290,7 @@ function Explained() {
           <div className="badge-purple">New</div>
         </div>
         <p className="landing-card-p">
-          A day-to-day how-to guide for Temporal Application developers.{" "}
+          How-to guides for Temporal Application developers.{" "}
         </p>
         <ul className="landing-card-list">
           <li className="">
@@ -315,10 +315,21 @@ function Explained() {
               </Link>
             </div>
           </li>
+          <li className="">
+            <div className="landing-card-list-item">
+              <BookSVG />
+              <Link
+                to={useBaseUrl("/next/application-development/observability")}
+                className="hover:underline"
+              >
+                <a className="font-normal">Observability</a>
+              </Link>
+            </div>
+          </li>
         </ul>
       </div>
       <div className="landing-card-section">
-        <a className="header-link" href="/application-development">
+        <a className="header-link" href="/next/application-development">
           <h2 className="h2-landing">Legacy docs for SDKs</h2>
         </a>
         <p className="landing-card-p">
@@ -558,9 +569,7 @@ function Explained() {
       </div>
 
       <div className="landing-card-section">
-        <a className="header-link" href="/devtools/">
-          <h2 className="h2-landing">Devtools</h2>
-        </a>
+        <h2 className="h2-landing">Devtools</h2>
         <ul className="landing-card-list">
           <li className="">
             <div className="landing-card-list-item">
@@ -573,10 +582,7 @@ function Explained() {
           <li className="">
             <div className="landing-card-list-item">
               <CliSVG />
-              <Link
-                to={useBaseUrl("/devtools/web-ui")}
-                className="hover:underline"
-              >
+              <Link to={useBaseUrl("/web-ui")} className="hover:underline">
                 <a className="font-normal">Web UI</a>
               </Link>
             </div>
@@ -858,7 +864,7 @@ function Tools() {
         <li className="">
           <Link
             className="flex items-center space-x-3 hover:underline"
-            to={useBaseUrl("/devtools/web-ui")}
+            to={useBaseUrl("/web-ui")}
           >
             <svg
               className="h-8 w-8 transition hover:scale-110 code-logo"

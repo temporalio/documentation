@@ -51,7 +51,7 @@ If you convert the template to a new repo, make sure you use the same repository
 
 ## ![](https://raw.githubusercontent.com/temporalio/documentation-images/main/static/workflow.png) Application overview
 
-This project template mimics a "money transfer" application that has a single [Workflow function](/go/workflows) which orchestrates the execution of `Withdraw()` and `Deposit()` functions, representing a transfer of money from one account to another. Temporal calls these particular functions [Activity functions](/go/activities).
+This project template mimics a "money transfer" application that has a single [Workflow function](/go/workflows) which orchestrates the execution of `Withdraw()` and `Deposit()` functions, representing a transfer of money from one account to another. Temporal calls these particular functions [Activity functions](/activities).
 
 To run the application you will do the following:
 

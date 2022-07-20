@@ -3,7 +3,7 @@ slug: designing-for-journey-candance-van-oostrum
 title: Designing for the Journey
 author: Candace Van Oostrum
 author_title: First Designer
-author_image_url: https://media-exp1.licdn.com/dms/image/C5603AQFq2qVIOpFU5Q/profile-displayphoto-shrink_200_200/0/1611000515802?e=1656547200&v=beta&t=xu184mRNVPc1qHTvHoZ3LE_udGzYG5_l2GtXf34kiD0
+author_image_url: https://pbs.twimg.com/profile_images/1351260439292817412/uVO-80gf_400x400.jpg
 tags:
   - reflections
 date: 2022-4-27T00:00:00Z
