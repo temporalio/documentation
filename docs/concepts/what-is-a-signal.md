@@ -18,8 +18,8 @@ When a Signal is sent, it is received by the Cluster and recorded as an Event to
 A successful response from the Cluster means that the Signal has been persisted and will be delivered at least once to the Workflow Execution.[^1]
 The next scheduled Workflow Task will contain the Signal Event.
 
-A Signal must include a destination (Namespace & Workflow Id) and name.
-It may include a list of arguments.
+A Signal must include a destination (Namespace and Workflow Id) and name.
+It can include a list of arguments.
 
 Signal handlers are Workflow functions that listen for Signals by the Signal name.
 Signals are delivered in the order they are received by the Cluster.
