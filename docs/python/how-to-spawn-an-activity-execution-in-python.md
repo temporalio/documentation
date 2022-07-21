@@ -16,7 +16,7 @@ class YourWorkflow:
     @workflow.run
     async def run(self, name: str) -> str:
         return await workflow.execute_activity(
-            say_hello_activity, name, schedule_to_close_timeout=timedelta(seconds=5)
+            your_activity, name, schedule_to_close_timeout=timedelta(seconds=5)
         )
 ```
 

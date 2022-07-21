@@ -27,7 +27,7 @@ class SayHelloWorkflow:
     async def run(self, name: str) -> str:
         workflow.logger.info(f"Running workflow with parameter {name}")
         return await workflow.execute_activity(
-            say_hello_activity, name, start_to_close_timeout=timedelta(seconds=10)
+            your_activity, name, start_to_close_timeout=timedelta(seconds=10)
         )
 ```
 
