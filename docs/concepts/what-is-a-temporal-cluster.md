@@ -69,3 +69,32 @@ To enhance this feature, Temporal supports an [integration with Elasticsearch](/
 - Elasticsearch v7.10 is supported from Temporal version 1.7.0 onwards
 - Elasticsearch v6.8 is supported in all Temporal versions
 - Both versions are explicitly supported with AWS Elasticsearch
+
+### mTLS Encryption
+
+Temporal supports Mutual Transport Layer Security (mTLS) as a method of encrypting network traffic between services within a Temporal Cluster, or between application processes and a Cluster.
+
+Mutual TLS can be enabled in Temporal’s [TLS configuration](/references/configuration#tls). This configuration can be passed along through WithConfig or WithConfigLoader.
+
+This configuration includes two sections that serve to separate intra-cluster and external traffic. That way, different certificates and settings can be used to encrypt each section of traffic:
+
+- `internode`: configuration for encrypting communication between nodes within the Cluster.
+- `frontend`: configuration for encrypting the Frontend's public endpoints
+
+### Client connections
+
+A client's network access can be limited to clients with certificates issued by a specific Certificate Authority.
+
+To restrict access to cluster endpoints, use the `clientCAFiles`/ `clientCAData` and `requireClientAuth` properties.
+
+These can be found in both the `internode` and `frontend` sections of the [mTLS configuration](/references/configuration/#tls).
+
+#### Server name specification
+
+Specify the `serverName` in the `client` section of your mTLS configuration to prevent spoofing and [MITM attacks](https://en.wikipedia.org/wiki/Man-in-the-middle_attack).
+
+Entering a value for `serverName` enables established connections to authenticate the endpoint. This ensures that the server certificate presented to any connected client has the given server name in its CN property.
+
+This measure can be taken for `internode` and `frontend` endpoints.
+
+For more information on mTLS configuration, refer to our [TLS configuration guide](/references/configuration#tls).
