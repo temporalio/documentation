@@ -44,17 +44,20 @@ Temporal.
 Realizing the benefits of the deterministic runtime, we've set the tone for the future of Temporal SDKs. We'll strive to
 bring this added safety to the older and upcoming SDKs.
 
-### Reuse of complex shared logic
+### Reliability through a shared Core
 
 This is the first stable SDK built on top of a shared Rust Core SDK (see [blog
-post](https://docs.temporal.io/blog/why-rust-powers-core-sdk/) and [repo](https://github.com/temporalio/sdk-core/)). The
-development of the Core SDK was started roughly around the time we started to develop the TypeScript SDK, and the API
-boundary between the two mutually evolved over time.
+post](https://docs.temporal.io/blog/why-rust-powers-core-sdk/) and [repo](https://github.com/temporalio/sdk-core/)). We
+started developing the Core SDK around the same time as the TypeScript SDK, and the API boundary between the two
+evolved over time.
 
-By investing in a shared Core, we can reuse a lot of the complex concurrency management and state machine logic to build
-new SDKs much faster. For example, our [Python SDK](https://github.com/temporalio/sdk-python) (currently in alpha) was
-built in just a few months. Sharing the logic makes all of our SDKs more reliable because when a problem is fixed in
-Core, it is fixed for all Core-based SDKs.
+Most of the complex concurrency management and state machine logic is in Core, which means that:
+
+- We can build new SDKs much faster. For example, our [Python SDK](https://github.com/temporalio/sdk-python) (currently
+  in alpha) was built in just a few months.
+- Our SDKs are more reliable: When a problem is fixed in Core, it is fixed for all Core-based SDKs. Our previous SDKs
+  implemented the complex logic differently, and have had very different bugs and quirks.
+
 
 ## Built with the community
 
