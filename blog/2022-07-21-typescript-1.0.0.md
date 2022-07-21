@@ -4,7 +4,7 @@ tags:
   - sdk
   - typescript
   - javascript
-posted_on_: 2022-07-20T00:00:00Z
+posted_on_: 2022-07-21T00:00:00Z
 slug: typescript-1.0.0
 title: '1.0.0 release of our TypeScript SDK'
 author: Roey Berman & Loren Sands-Ramshaw
