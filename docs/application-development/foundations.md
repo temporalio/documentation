@@ -442,7 +442,7 @@ class YourWorkflow:
     @workflow.run
     async def run(self, name: str) -> str:
         return await workflow.execute_activity(
-            say_hello_activity, name, schedule_to_close_timeout=timedelta(seconds=5)
+            your_activity, name, schedule_to_close_timeout=timedelta(seconds=5)
         )
 ```
 
@@ -773,7 +773,7 @@ class YourWorkflow:
     @workflow.run
     async def run(self, name: str) -> str:
         return await workflow.execute_activity(
-            say_hello_activity, name, schedule_to_close_timeout=timedelta(seconds=5)
+            your_activity, name, schedule_to_close_timeout=timedelta(seconds=5)
         )
 ```
 
@@ -1093,7 +1093,7 @@ You can develop an Activity Definition by using the [`@activity.defn`](https://p
 
 ```python
 @activity.defn
-async def say_hello_activity(name: str) -> str:
+async def your_activity(name: str) -> str:
     return f"Hello, {name}!"
 ```
 
@@ -1101,7 +1101,7 @@ You can register the function as an Activity with a custom name through a decora
 
 ```python
 @activity.defn(name="your-activity")
-async def say_hello_activity(name: str) -> str:
+async def your_activity(name: str) -> str:
     return f"Hello, {name}!"
 ```
 
@@ -1773,7 +1773,7 @@ class YourWorkflow:
     @workflow.run
     async def run(self, name: str) -> str:
         return await workflow.execute_activity(
-            say_hello_activity, name, schedule_to_close_timeout=timedelta(seconds=5)
+            your_activity, name, schedule_to_close_timeout=timedelta(seconds=5)
         )
 ```
 
@@ -1972,11 +1972,11 @@ You must provide either `schedule_to_close_timeout` or `start_to_close_timeout`.
 
 ```python
 @workflow.defn
-class SimpleActivityWorkflow:
+class YourWorkflow:
     @workflow.run
     async def run(self, name: str) -> str:
         return await workflow.execute_activity(
-            say_hello_activity, name, schedule_to_close_timeout=timedelta(seconds=5)
+            your_activity, name, schedule_to_close_timeout=timedelta(seconds=5)
         )
 ```
 

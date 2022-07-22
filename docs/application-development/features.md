@@ -32,7 +32,10 @@ Signals can be sent to Workflow Executions from a Temporal Client or from anothe
 
 ### Define Signal
 
-A Signal has a name and can have arguments. The arguments must be [serializable](/concepts/what-is-a-data-converter/).
+A Signal has a name and can have arguments.
+
+- The name, also called a Signal type, is a string.
+- The arguments must be [serializable](/concepts/what-is-a-data-converter/).
 
 <Tabs
 defaultValue="go"
@@ -147,7 +150,52 @@ const joinSignal = defineSignal<JoinInput>("join");
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+To define a Signal, set the Signal decorator [`@workflow.signal`](https://python.temporal.io/temporalio.workflow.html#signal) on the Signal function inside your Workflow.
+
+```python
+@workflow.signal
+def your_signal(self, value: str) -> None:
+    self._signal = value
+```
+
+The [`@workflow.signal`](https://python.temporal.io/temporalio.workflow.html#signal) decorator defines a method as a Signal. Signals can be asynchronous or synchronous methods and can be inherited; however, if a method is overridden, the override must also be decorated.
+
+**Dynamic Signals**
+
+You can use `@workflow.signal(dynamic=True)`, which means all other unhandled Signals fall through to this.
+
+Your method parameters must be `self`, a string signal name, and a `*args` variable argument parameter.
+
+For example:
+
+```python
+@workflow.signal(dynamic=True)
+def signal_dynamic(self, name: str, *args: Any) -> None:
+    self._last_event = f"signal_dynamic {name}: {args[0]}"
+```
+
+**Customize name**
+
+Non-dynamic methods can only have positional arguments. Temporal suggests taking a single argument that is an
+object or data class of fields that can be added to as needed.
+
+Return values from Signal methods are ignored.
+
+You can have a name parameter to customize the Signal's name, otherwise it defaults to the unqualified method `__name__`.
+
+The following example sets a custom Signal name.
+
+```python
+@workflow.signal(name="Custom-Name")
+def signal(self, arg: str) -> None:
+    self._last_event = f"signal: {arg}"
+```
+
+:::note
+
+You can either set the `name` or the `dynamic` parameter in a Signal's decorator, but not both.
+
+:::
 
 </TabItem>
 </Tabs>
@@ -308,7 +356,11 @@ export async function myWorkflow() {
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+To send a Signal to the Workflow, use the [`signal`](https://python.temporal.io/temporalio.client.workflowhandle#signal) method from the [`WorkflowHandle`](https://python.temporal.io/temporalio.client.workflowhandle) class.
+
+```python
+await handle.signal("some signal")
+```
 
 </TabItem>
 </Tabs>
@@ -382,18 +434,7 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-[`WorkflowHandle.signal`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle#signal)
-
-```typescript
-import {WorkflowClient} from "@temporalio/client";
-import {joinSignal} from "./workflows";
-
-const client = new WorkflowClient();
-
-const handle = await client.getHandle("workflow-id-123");
-
-await handle.signal(joinSignal, {userId: "user-1", groupId: "group-1"});
-```
+Content is not available
 
 </TabItem>
 <TabItem value="python">
@@ -644,9 +685,12 @@ Content is not available
 
 A [Query](/workflows#queries) is a synchronous operation that is used to get the state of a Workflow Execution.
 
-### Query name
+### Define Query
 
-A Query name (also called Query type) is simply a string name.
+A Query has a name and can have arguments.
+
+- The name, also called a Query type, is a string.
+- The arguments must be [serializable](/concepts/what-is-a-data-converter/).
 
 <Tabs
 defaultValue="go"
@@ -740,98 +784,45 @@ Content is not available
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+To define a Query, set the Query decorator [`@workflow.query`](https://python.temporal.io/temporalio.workflow.html#query) on the Query function inside your Workflow.
 
-</TabItem>
-</Tabs>
-
-### Send Query
-
-Queries are sent from a Temporal Client.
-
-<Tabs
-defaultValue="go"
-groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
-
-<TabItem value="go">
-
-Use the `QueryWorkflow()` API or the `QueryWorkflowWithOptions` API on the Temporal Client to send a Query to a Workflow Execution.
-
-```go
-// ...
-response, err := temporalClient.QueryWorkflow(context.Background(), workflowID, runID, queryType)
-if err != nil {
-  // ...
-}
-// ...
+```python
+@workflow.query
+async def current_greeting(self) -> str:
+    return self._current_greeting
 ```
 
-You can pass an arbitrary number of arguments to the `QueryWorkflow()` function.
+The [`@workflow.query`](https://python.temporal.io/temporalio.workflow.html#query) decorator defines a method as a Query. Queries can be asynchronous or synchronous methods and can be inherited; however, if a method is overridden, the override must also be decorated. Queries should return a value.
 
-```go
-// ...
-response, err := temporalClient.QueryWorkflow(context.Background(), workflowID, runID, queryType, "foo", "baz")
-if err != nil {
-  // ...
-}
-// ...
+**Dynamic Queries**
+
+You can use `@workflow.query(dynamic=True)`, which means all other unhandled Query's fall through to this.
+
+For example:
+
+```python
+@workflow.query(dynamic=True)
+def query_dynamic(self, name: str, *args: Any) -> str:
+    return f"query_dynamic {name}: {args[0]}"
 ```
 
-The `QueryWorkflowWithOptions()` API provides similar functionality, but with the ability to set additional configurations through [QueryWorkflowWithOptionsRequest](https://pkg.go.dev/go.temporal.io/sdk/client#QueryWorkflowWithOptionsRequest).
-When using this API, you will also receive a structured response of type [QueryWorkflowWithOptionsResponse](https://pkg.go.dev/go.temporal.io/sdk/client#QueryWorkflowWithOptionsResponse).
+**Customize names**
 
-```go
-// ...
-response, err := temporalClient.QueryWorkflowWithOptions(context.Background(), &client.QueryWorkflowWithOptionsRequest{
-    WorkflowID: workflowID,
-    RunID: runID,
-    QueryType: queryType,
-    Args: args,
-})
-if err != nil {
-  // ...
-}
+You can have a name parameter to customize the Query's name, otherwise it defaults to the unqualified method `__name__`.
+
+The following example sets a custom Query name.
+
+```python
+@workflow.query(name="Custom-Name")
+def query(self, arg: str) -> None:
+    self._last_event = f"query: {arg}"
 ```
 
-</TabItem>
-<TabItem value="java">
+:::note
 
-To send a Query to a Workflow Execution from an external process, call the Query method (defined in the Workflow) from a `WorkflowStub` within the Client code.
+You can either set the `name` or the `dynamic` parameter in a Query's decorator, but not both.
 
-For example, the following Client code calls a Query method `queryGreeting()` defined in the `GreetingWorkflow` Workflow interface.
-
-```java
- // Create our workflow options
-    WorkflowOptions workflowOptions =
-        WorkflowOptions.newBuilder()
-        .setWorkflowId(WORKFLOW_ID)
-        .setTaskQueue(TASK_QUEUE).build();
-
-    // Create the Temporal client stub. It is used to start our workflow execution.
-    GreetingWorkflow workflow = client.newWorkflowStub(GreetingWorkflow.class, workflowOptions);
-
-    // Start our workflow asynchronously to not use another thread to query.
-    WorkflowClient.start(workflow::createGreeting, "World");
-
-    // Query the Workflow to get the current value of greeting and print it.
-    System.out.println(workflow.queryGreeting());
-```
-
-</TabItem>
-<TabItem value="php">
-
-Content is not available
-
-</TabItem>
-<TabItem value="typescript">
-
-Content is not available
-
-</TabItem>
-<TabItem value="python">
-
-Content is not available
+:::
 
 </TabItem>
 </Tabs>
@@ -1104,6 +1095,101 @@ export async function unblockOrCancel(): Promise<void> {
   }
 }
 ```
+
+</TabItem>
+<TabItem value="python">
+
+To send a Query from to the Workflow, use the [`query`](https://python.temporal.io/temporalio.client.workflowhandle#query) method from the [`WorkflowHandle`](https://python.temporal.io/temporalio.client.workflowhandle) class.
+
+```python
+await handle.query("some query")
+```
+
+</TabItem>
+</Tabs>
+
+### Send Query
+
+Queries are sent from a Temporal Client.
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+Use the `QueryWorkflow()` API or the `QueryWorkflowWithOptions` API on the Temporal Client to send a Query to a Workflow Execution.
+
+```go
+// ...
+response, err := temporalClient.QueryWorkflow(context.Background(), workflowID, runID, queryType)
+if err != nil {
+  // ...
+}
+// ...
+```
+
+You can pass an arbitrary number of arguments to the `QueryWorkflow()` function.
+
+```go
+// ...
+response, err := temporalClient.QueryWorkflow(context.Background(), workflowID, runID, queryType, "foo", "baz")
+if err != nil {
+  // ...
+}
+// ...
+```
+
+The `QueryWorkflowWithOptions()` API provides similar functionality, but with the ability to set additional configurations through [QueryWorkflowWithOptionsRequest](https://pkg.go.dev/go.temporal.io/sdk/client#QueryWorkflowWithOptionsRequest).
+When using this API, you will also receive a structured response of type [QueryWorkflowWithOptionsResponse](https://pkg.go.dev/go.temporal.io/sdk/client#QueryWorkflowWithOptionsResponse).
+
+```go
+// ...
+response, err := temporalClient.QueryWorkflowWithOptions(context.Background(), &client.QueryWorkflowWithOptionsRequest{
+    WorkflowID: workflowID,
+    RunID: runID,
+    QueryType: queryType,
+    Args: args,
+})
+if err != nil {
+  // ...
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+To send a Query to a Workflow Execution from an external process, call the Query method (defined in the Workflow) from a `WorkflowStub` within the Client code.
+
+For example, the following Client code calls a Query method `queryGreeting()` defined in the `GreetingWorkflow` Workflow interface.
+
+```java
+ // Create our workflow options
+    WorkflowOptions workflowOptions =
+        WorkflowOptions.newBuilder()
+        .setWorkflowId(WORKFLOW_ID)
+        .setTaskQueue(TASK_QUEUE).build();
+
+    // Create the Temporal client stub. It is used to start our workflow execution.
+    GreetingWorkflow workflow = client.newWorkflowStub(GreetingWorkflow.class, workflowOptions);
+
+    // Start our workflow asynchronously to not use another thread to query.
+    WorkflowClient.start(workflow::createGreeting, "World");
+
+    // Query the Workflow to get the current value of greeting and print it.
+    System.out.println(workflow.queryGreeting());
+```
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is not available
 
 </TabItem>
 <TabItem value="python">
@@ -1539,7 +1625,19 @@ const {greet} = proxyActivities<typeof activities>({
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+Activity options are set as keyword arguments after the Activity arguments. At least one of `start_to_close_timeout` or `schedule_to_close_timeout` must be provided.
+
+The following code example sets a Schedule-to-Close timeout in Python, by calling the Activity with the argument `name` and setting the `schedule_to_close_timeout` to 5 seconds.
+
+```python
+@workflow.defn
+class YourWorkflow:
+    @workflow.run
+    async def run(self, name: str) -> str:
+        return await workflow.execute_activity(
+            your_activity, name, schedule_to_close_timeout=timedelta(seconds=5)
+        )
+```
 
 </TabItem>
 </Tabs>
@@ -1654,7 +1752,23 @@ const {greet} = proxyActivities<typeof activities>({
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+Activity options are set as keyword arguments after the Activity arguments. At least one of `start_to_close_timeout` or `schedule_to_close_timeout` must be provided.
+
+```python
+start_to_close_timeout = timedelta(seconds=5)
+```
+
+The following code example executes an Activity with a `start_to_close_timeout` of 5 seconds.
+
+```python
+@workflow.defn
+class YourWorkflow:
+    @workflow.run
+    async def run(self, name: str) -> str:
+        return await workflow.execute_activity(
+            your_activity, name, start_to_close_timeout=timedelta(seconds=5)
+        )
+```
 
 </TabItem>
 </Tabs>
@@ -1770,7 +1884,22 @@ const {greet} = proxyActivities<typeof activities>({
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+Activity options are set as keyword arguments after the Activity arguments. At least one of `start_to_close_timeout` or `schedule_to_close_timeout` must be provided.
+
+The following code sets a Schedule-to-Close timeout in Python, by calling the Activity with the argument `name` and setting the `schedule_to_start_timeout` to 1 seconds.
+
+```python
+@workflow.defn
+class YourWorkflow:
+    @workflow.run
+    async def run(self, name: str) -> str:
+        return await workflow.execute_activity(
+            your_activity,
+            name,
+            schedule_to_close_timeout=5000,
+            schedule_to_start_timeout=1000,
+        )
+```
 
 </TabItem>
 </Tabs>
@@ -2148,7 +2277,15 @@ In this example, when the `heartbeatTimeout` is reached and the Activity is retr
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+In order for an Activity to be notified of cancellation requests, you must invoke [`heartbeat()`](https://python.temporal.io/temporalio.activity.html#heartbeat).
+
+```python
+    @activity.defn
+    async def some_activity() -> str:
+        activity.heartbeat("heartbeat details!")
+```
+
+In addition to obtaining cancellation information, Heartbeats also support detail data that persists on the server for retrieval during Activity Retry. If an Activity calls `heartbeat(123, 456)` and then fails and is retried, `heartbeat_details` will return an iterable containing `123` and `456` on the next run.
 
 </TabItem>
 </Tabs>
@@ -2281,7 +2418,28 @@ const {longRunningActivity} = proxyActivities<typeof activities>({
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+[`heartbeat_timeout`](https://python.temporal.io/temporalio.worker.startactivityinput#heartbeat_timeout) is a class variable for the [`start_activity()`](https://python.temporal.io/temporalio.workflow.html#start_activity) function used to set the maximum time between Activity Heartbeats.
+
+```python
+workflow.start_activity(
+    activity="your-activity",
+    schedule_to_close_timeout=timedelta(seconds=5),
+    heartbeat_timeout=timedelta(seconds=1),
+)
+```
+
+`execute_activity()` is a shortcut for [`start_activity()`](https://python.temporal.io/temporalio.workflow.html#start_activity) that waits on its result.
+
+To get just the handle to wait and cancel separately, use `start_activity()`. `execute_activity()` should be used in most cases unless advanced task capabilities are needed.
+
+```python
+workflow.execute_activity(
+    activity="your-activity",
+    name,
+    schedule_to_close_timeout=timedelta(seconds=5),
+    heartbeat_timeout=timedelta(seconds=1),
+)
+```
 
 </TabItem>
 </Tabs>
@@ -2947,7 +3105,16 @@ const handle = await client.start(scheduledWorkflow, {
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+You can set each Workflow to repeat on a schedule with the `cron_schedule` option from either the [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.client#execute_workflow) asynchronous methods:
+
+```python
+await client.start_workflow(
+    "your_workflow_name",
+    id="your-workflow-id",
+    task_queue="your-task-queue",
+    cron_schedule="* * * * *",
+)
+```
 
 </TabItem>
 </Tabs>
