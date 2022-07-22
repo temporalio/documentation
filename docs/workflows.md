@@ -281,7 +281,7 @@ An append-log of [Events](#events) for your application.
 - Event History is durably persisted by the Temporal service, enabling seamless recovery of your application state from crashes or failures.
 - It also serves as an audit log for debugging.
 
-**Events History Limits**
+**Event History limits**
 The Temporal Cluster stores the complete Event History for the entire lifecycle of a Workflow Execution.
 There is a hard limit of 50,000 Events in a Workflow Execution Event History, as well as a hard limit of 50 MB in terms of size.
 The Temporal Cluster logs a warning at every 10,000 Events.

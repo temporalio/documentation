@@ -2103,9 +2103,9 @@ class FileProcessingActivitiesImpl implements FileProcessingActivities
 </TabItem>
 <TabItem value="typescript">
 
-Long running Activities should Heartbeat their progress back to the Workflow for earlier detection of stalled activities (with [Heartbeat Timeout](/next/activities#heartbeat-timeout)) and resuming stalled activities from checkpoints (with Heartbeat details).
+Long-running Activities should Heartbeat their progress back to the Workflow for earlier detection of stalled Activities (with [Heartbeat Timeout](/next/activities#heartbeat-timeout)) and resuming stalled Activities from checkpoints (with Heartbeat details).
 
-To set Activity Heartbeat, use `Context.current().heartbeat()` in your Activity implementation, and set the `heartbeatTimeout` in your Workflow.
+To set Activity Heartbeat, use `Context.current().heartbeat()` in your Activity implementation, and set `heartbeatTimeout` in your Workflow.
 
 ```ts
 // activity implementation
