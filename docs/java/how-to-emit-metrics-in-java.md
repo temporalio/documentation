@@ -2,69 +2,32 @@
 id: how-to-emit-metrics-in-java
 title: How to emit metrics in Java
 sidebar_label: Emit metrics
+description: To emit metrics with the Java SDK, use the `MicrometerClientStatsReporter` implementation for Prometheus and other backends supported by Micrometer, and use `WorkflowServiceStubsOptions.Builder.setMetricsScope` to set the metrics scope in your Worker or Client code.
 tags:
   - developer-guide
   - java
 ---
 
-To emit metrics in Java, you should use the following steps:
+To emit metrics with the Java SDK, use the [`MicrometerClientStatsReporter`](https://github.com/temporalio/sdk-java/blob/55ee7894aec427d7e384c3519732bdd61119961a/src/main/java/io/temporal/common/reporter/MicrometerClientStatsReporter.java#L34) implementation for Prometheus and other backends supported by [Micrometer](https://micrometer.io/docs), and use `WorkflowServiceStubsOptions.Builder.setMetricsScope` to set the metrics scope in your Worker or Client code.
 
-- Set the scope
-- Set the scrape end point
-- Initialize the Workflow service stub
-- Add metrics scope in the Workflow service stubs options
-- Initialize the Client
-
-In addition to the `client workflow workflowservicestubs workflowservicestubsoptions` options, set the following:
+The following example shows how to set the `MicrometerClientStatsReporter` for Prometheus and define the metrics scope with the `WorkflowServiceStubsOptions`.
 
 ```java
-import com.sun.net.httpserver.HttpServer;
-import com.uber.m3.tally.RootScopeBuilder;
-import com.uber.m3.tally.Scope;
-import com.uber.m3.util.ImmutableMap;
-import io.micrometer.prometheus.PrometheusConfig;
-import io.micrometer.prometheus.PrometheusMeterRegistry;
-import io.temporal.common.reporter.MicrometerClientStatsReporter;
+//...
+   // Set up Prometheus registry and stats reported
+   PrometheusMeterRegistry registry = new PrometheusMeterRegistry(PrometheusConfig.DEFAULT);
+   StatsReporter reporter = new MicrometerClientStatsReporter(registry);
+    // Set up a new scope, report every 10 seconds
+     Scope scope = new RootScopeBuilder()
+             .reporter(reporter)
+             .reportEvery(com.uber.m3.util.Duration.ofSeconds(10));
+   // Start the Prometheus scrape endpoint for metrics
+   HttpServer scrapeEndpoint = MetricsUtils.startPrometheusScrapeEndpoint(registry, 8081);
+   //...
+   // Add metrics scope to WorkflowServiceStub options
+   WorkflowServiceStubsOptions stubOptions =
+       WorkflowServiceStubsOptions.newBuilder().setMetricsScope(scope).build();
+//...
 ```
 
-The following code example demonstrates how to emit metrics from your Workflow.
-
-```java
-// task queue to be used for this sample
-  public static final String DEFAULT_TASK_QUEUE_NAME = "metricsqueue";
-
-  public static void main(String[] args) {
-
-    PrometheusMeterRegistry registry = new PrometheusMeterRegistry(PrometheusConfig.DEFAULT);
-```
-
-Set your scope.
-In this example, the scope will report once a second.
-
-```java
-Scope scope =
-        new RootScopeBuilder()
-            .reporter(new MicrometerClientStatsReporter(registry))
-            .reportEvery(com.uber.m3.util.Duration.ofSeconds(1));
-```
-
-Next, set an endpoint to allow Prometheus to scrape metrics from. In this example, the endpoint is set to a http server at `8080`.
-
-```java
-HttpServer scrapeEndpoint = MetricsUtils.startPrometheusScrapeEndpoint(registry, 8080);
-```
-
-Stopping the Worker will stop the http server that exposes the scrape endpoint.
-
-```java
-    Runtime.getRuntime().addShutdownHook(new Thread(() -> scrapeEndpoint.stop(1)));
-```
-
-Add the metrics scope to Workflow service stub options.
-
-```java
- WorkflowServiceStubsOptions stubOptions =
-        WorkflowServiceStubsOptions.newBuilder().setMetricsScope(scope).build();
-```
-
-For more information, see the [Setting up SDK metrics](https://github.com/temporalio/samples-java/tree/main/src/main/java/io/temporal/samples/metrics) in the Java Samples repository.
+See the [Java SDK Samples](https://github.com/temporalio/samples-java/tree/main/src/main/java/io/temporal/samples/metrics) for more details.

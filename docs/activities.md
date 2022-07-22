@@ -210,13 +210,14 @@ If an [Activity Task Execution](/next/tasks#activity-task-execution) times out d
 **What Activities should Heartbeat?**
 
 Heartbeating is best thought about not in terms of time, but in terms of "How do you know you are making progress"?
-For short-term operations, progress updates are not a requirement. However, checking the progress and status of Activities that run over long periods is almost always useful.
+For short-term operations, progress updates are not a requirement.
+However, checking the progress and status of Activities that run over long periods is almost always useful.
 
-Consider the following when deciding on setting Activity Hearbeats:
+Consider the following when setting Activity Hearbeats:
 
 - Your underlying task must be able to report definite progress.
   Note that your Workflow cannot read this progress information while the Activity is still executing (or it would have to store it in Event History).
-  You may report progress to external sources if you need it exposed to the user.
+  You can report progress to external sources if you need it exposed to the user.
 
 - Your Activity Execution is long-running and you need to verify whether the Worker that is processing your Activity is still alive and has not run out of memory or silently crashed.
 
@@ -284,3 +285,4 @@ Consider using Local Activities for functions that are the following:
 Using a Local Activity without understanding its limitations can cause various production issues.
 **We recommend using regular Activities unless your use case requires very high throughput and large Activity fan outs of very short-lived Activities.**
 More guidance in choosing between [Local Activity vs Activity](https://community.temporal.io/t/local-activity-vs-activity/290/3) is available in our forums.
+

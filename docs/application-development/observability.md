@@ -58,67 +58,29 @@ For more information, see the [Go sample for metrics](https://github.com/tempora
 </TabItem>
 <TabItem value="java">
 
-To emit metrics in Java, you should use the following steps:
+To emit metrics with the Java SDK, use the [`MicrometerClientStatsReporter`](https://github.com/temporalio/sdk-java/blob/55ee7894aec427d7e384c3519732bdd61119961a/src/main/java/io/temporal/common/reporter/MicrometerClientStatsReporter.java#L34) implementation for Prometheus and other backends supported by [Micrometer](https://micrometer.io/docs), and use `WorkflowServiceStubsOptions.Builder.setMetricsScope` to set the metrics scope in your Worker or Client code.
 
-- Set the scope
-- Set the scrape end point
-- Initialize the Workflow service stub
-- Add metrics scope in the Workflow service stubs options
-- Initialize the Client
-
-In addition to the `client workflow workflowservicestubs workflowservicestubsoptions` options, set the following:
+The following example shows how to set the `MicrometerClientStatsReporter` for Prometheus and define the metrics scope with the `WorkflowServiceStubsOptions`.
 
 ```java
-import com.sun.net.httpserver.HttpServer;
-import com.uber.m3.tally.RootScopeBuilder;
-import com.uber.m3.tally.Scope;
-import com.uber.m3.util.ImmutableMap;
-import io.micrometer.prometheus.PrometheusConfig;
-import io.micrometer.prometheus.PrometheusMeterRegistry;
-import io.temporal.common.reporter.MicrometerClientStatsReporter;
+//...
+   // Set up Prometheus registry and stats reported
+   PrometheusMeterRegistry registry = new PrometheusMeterRegistry(PrometheusConfig.DEFAULT);
+   StatsReporter reporter = new MicrometerClientStatsReporter(registry);
+    // Set up a new scope, report every 10 seconds
+     Scope scope = new RootScopeBuilder()
+             .reporter(reporter)
+             .reportEvery(com.uber.m3.util.Duration.ofSeconds(10));
+   // Start the Prometheus scrape endpoint for metrics
+   HttpServer scrapeEndpoint = MetricsUtils.startPrometheusScrapeEndpoint(registry, 8081);
+   //...
+   // Add metrics scope to WorkflowServiceStub options
+   WorkflowServiceStubsOptions stubOptions =
+       WorkflowServiceStubsOptions.newBuilder().setMetricsScope(scope).build();
+//...
 ```
 
-The following code example demonstrates how to emit metrics from your Workflow.
-
-```java
-// task queue to be used for this sample
-  public static final String DEFAULT_TASK_QUEUE_NAME = "metricsqueue";
-
-  public static void main(String[] args) {
-
-    PrometheusMeterRegistry registry = new PrometheusMeterRegistry(PrometheusConfig.DEFAULT);
-```
-
-Set your scope.
-In this example, the scope will report once a second.
-
-```java
-Scope scope =
-        new RootScopeBuilder()
-            .reporter(new MicrometerClientStatsReporter(registry))
-            .reportEvery(com.uber.m3.util.Duration.ofSeconds(1));
-```
-
-Next, set an endpoint to allow Prometheus to scrape metrics from. In this example, the endpoint is set to a http server at `8080`.
-
-```java
-HttpServer scrapeEndpoint = MetricsUtils.startPrometheusScrapeEndpoint(registry, 8080);
-```
-
-Stopping the Worker will stop the http server that exposes the scrape endpoint.
-
-```java
-    Runtime.getRuntime().addShutdownHook(new Thread(() -> scrapeEndpoint.stop(1)));
-```
-
-Add the metrics scope to Workflow service stub options.
-
-```java
- WorkflowServiceStubsOptions stubOptions =
-        WorkflowServiceStubsOptions.newBuilder().setMetricsScope(scope).build();
-```
-
-For more information, see the [Setting up SDK metrics](https://github.com/temporalio/samples-java/tree/main/src/main/java/io/temporal/samples/metrics) in the Java Samples repository.
+See the [Java SDK Samples](https://github.com/temporalio/samples-java/tree/main/src/main/java/io/temporal/samples/metrics) for more details.
 
 </TabItem>
 <TabItem value="php">
@@ -210,13 +172,13 @@ To extend the default ([Trace Context](https://github.com/open-telemetry/opentel
 - At the top level of your Workflow code, add the following lines:
 
   ```js
-  import {propagation} from "@opentelemetry/api";
+  import { propagation } from '@opentelemetry/api';
   import {
     CompositePropagator,
     W3CTraceContextPropagator,
     W3CBaggagePropagator,
-  } from "@opentelemetry/core";
-  import {JaegerPropagator} from "@opentelemetry/propagator-jaeger";
+  } from '@opentelemetry/core';
+  import { JaegerPropagator } from '@opentelemetry/propagator-jaeger';
 
   propagation.setGlobalPropagator(
     new CompositePropagator({
@@ -305,12 +267,12 @@ The following [log levels](https://typescript.temporal.io/api/namespaces/worker#
 Temporal uses a [`DefaultLogger`](https://typescript.temporal.io/api/classes/worker.defaultlogger/) that implements the basic interface:
 
 ```ts
-import {Runtime, DefaultLogger} from "@temporalio/worker";
+import { Runtime, DefaultLogger } from '@temporalio/worker';
 
-const logger = new DefaultLogger("WARN", ({level, message}) => {
+const logger = new DefaultLogger('WARN', ({ level, message }) => {
   console.log(`Custom logger: ${level} — ${message}`);
 });
-Runtime.install({logger});
+Runtime.install({ logger });
 ```
 
 The previous code example sets the default logger to only log messages with level `WARN` and higher.
@@ -318,28 +280,28 @@ The previous code example sets the default logger to only log messages with leve
 **Accumulate logs for testing and reporting**
 
 ```ts
-import {DefaultLogger, LogEntry} from "@temporalio/worker";
+import { DefaultLogger, LogEntry } from '@temporalio/worker';
 
 const logs: LogEntry[] = [];
-const logger = new DefaultLogger("TRACE", (entry) => logs.push(entry));
-log.debug("hey", {a: 1});
-log.info("ho");
-log.warn("lets", {a: 1});
-log.error("go");
+const logger = new DefaultLogger('TRACE', (entry) => logs.push(entry));
+log.debug('hey', { a: 1 });
+log.info('ho');
+log.warn('lets', { a: 1 });
+log.error('go');
 ```
 
 A common logging use case is logging to a file to be picked up by a collector like the [Datadog Agent](https://docs.datadoghq.com/logs/log_collection/nodejs/?tab=winston30).
 
 ```ts
-import {Runtime} from "@temporalio/worker";
-import winston from "winston";
+import { Runtime } from '@temporalio/worker';
+import winston from 'winston';
 
 const logger = winston.createLogger({
-  level: "info",
+  level: 'info',
   format: winston.format.json(),
-  transports: [new transports.File({filename: "/path/to/worker.log"})],
+  transports: [new transports.File({ filename: '/path/to/worker.log' })],
 });
-Runtime.install({logger});
+Runtime.install({ logger });
 ```
 
 </TabItem>
@@ -351,6 +313,8 @@ Content is not available
 </Tabs>
 
 ### Log from a Workflow
+
+
 
 <Tabs
 defaultValue="go"
@@ -531,7 +495,7 @@ Content is not available
 Use [`WorkflowService.listWorkflowExecutions`](https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.workflowservice-1/#listworkflowexecutions):
 
 ```typescript
-import {Connection} from "@temporalio/client";
+import { Connection } from '@temporalio/client';
 
 const connection = await Connection.connect();
 const response = await connection.workflowService.listWorkflowExecutions({
@@ -719,13 +683,13 @@ To remove a Search Attribute that was previously set, set it to an empty array `
 <TabItem value="typescript">
 
 ```typescript
-import {upsertSearchAttributes} from "@temporalio/workflow";
+import { upsertSearchAttributes } from '@temporalio/workflow';
 
 async function myWorkflow() {
-  upsertSearchAttributes({CustomIntField: [1, 2, 3]});
+  upsertSearchAttributes({ CustomIntField: [1, 2, 3] });
 
   // ... later, to remove:
-  upsertSearchAttributes({CustomIntField: []});
+  upsertSearchAttributes({ CustomIntField: [] });
 }
 ```
 
@@ -828,3 +792,4 @@ Content is not available
 
 </TabItem>
 </Tabs>
+
