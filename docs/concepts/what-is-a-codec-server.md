@@ -27,7 +27,7 @@ You can use [tctl workflow showid](/tctl/workflow/showid) to view a Workflow Exe
     tctl workflow showid <workflowID>
 ```
 
-With a Codec Server, the Payload is decoded after being deserialized by tctl's default Data Converter. The default Data Converter sends the Payload to a given endpoint, and receives a decoded Payload if the API returns a successful result.
+With a Codec Server, the Payload is decoded before being deserialized by tctl's default Data Converter. The default Data Converter sends the Payload to a given endpoint, and receives a decoded Payload if the API returns a successful result.
 
 The Data Converter passes this result back to the command line, which prints the decoded result.
 
@@ -36,6 +36,10 @@ The Data Converter passes this result back to the command line, which prints the
 Workflow Execution Event History is available in the Web UI.
 Payload information for each Event is captured within Event 'input' and 'result' fields.
 Without a Codec Server, this information remains encoded.
+
+import DataConverter from '../concepts/what-is-a-data-converter.md'
+
+<DataConverter />
 
 Passing these Payloads through a Codec Server returns decoded results to the Web UI.
 Make sure to [enter a valid URL and port](/clusters/how-to-set-up-codec-server#web-ui) for the codec endpoint when configuring the Codec Server.
