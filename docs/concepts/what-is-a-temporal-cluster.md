@@ -98,3 +98,19 @@ Entering a value for `serverName` enables established connections to authenticat
 This measure can be taken for `internode` and `frontend` endpoints.
 
 For more information on mTLS configuration, refer to our [TLS configuration guide](/references/configuration#tls).
+
+### Auth
+
+Authorization is the verification of applications and data that a user on your Cluster or application has access to.
+
+Temporal offers two plugin interfaces for implementing API call authorization.
+
+- [`ClaimMapper`](/clusters/how-to-use-claimmapper)
+
+- [`Authorizer`](/clusters/how-to-use-authorizer)
+
+The logic of both plugins can be customized to fit a variety of use cases. When provided, the front-end will invoke the implementation of the plugins before running the requested operation.
+
+Details about configuring the ClaimMapper plugin can be found in our [ClaimMapper guide](/clusters/how-to-use-claimmapper).
+
+For more information about the Authorizer plugin, refer to our [Authorizer setup guide](/clusters/how-to-use-authorizer).

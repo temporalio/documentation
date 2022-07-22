@@ -28,7 +28,7 @@ User access can be restricted through extensibility points and plugins. When imp
 
 Temporal offers two plugin interfaces for user authentication via API call:
 
-- ['ClaimMapper'](/docs/security/what-is-claimmapper)
-- ['Authorizer'](/docs/security/what-is-authorizer)
+- ['ClaimMapper'](/clusters/what-is-claimmapper)
+- ['Authorizer'](/clusters/what-is-authorizer)
 
 These plugins are adapatable to a variety of use cases and identity schemes.
