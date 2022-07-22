@@ -13,9 +13,9 @@ Temporal documentation aims to be explicit and differentiate between them.
 An Activity is a normal function or object method that executes a single, well-defined action (either short or long running), such as calling another service, transcoding a media file, or sending an email message.
 
 Workflow code orchestrates the execution of Activities, persisting the results.
-If an Activity Function Execution fails, any future execution starts from initial state (with the exception of Heartbeats).
-Therefore an Activity function is allowed to contain any code without restrictions.
+If an Activity Function Execution fails, any future execution starts from initial state (except Heartbeats).
+Therefore, an Activity function is allowed to contain any code without restrictions.
 
 Activity Functions are executed by Worker Processes.
-When the Activity Function returns, the Worker sends the results back to the Temporal Cluster as part of the ActivityTaskCompleted Event.
+When the Activity Function returns, the Worker sends the results back to the Temporal Cluster as part of the `ActivityTaskCompleted` Event.
 The Event is added to the Workflow Execution's Event History.

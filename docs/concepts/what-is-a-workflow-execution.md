@@ -20,17 +20,20 @@ While a single Workflow Execution has limits on size and throughput, a Temporal 
 **Durability**
 
 Durability is the absence of an imposed time limit.
+
 A Workflow Execution is durable because it executes a Temporal Workflow Definition (also called a Temporal Workflow Function), your application code, effectively once and to completion—whether your code executes for seconds or years.
 
 **Reliability**
 
 Reliability is responsiveness in the presence of failure.
+
 A Workflow Execution is reliable, because it is fully recoverable after a failure.
 The Temporal Platform ensures the state of the Workflow Execution persists in the face of failures and outages and resumes execution from the latest state.
 
 **Scalability**
 
 Scalability is responsiveness in the presence of load.
+
 A single Workflow Execution is limited in size and throughput but is scalable because it can [Continue-As-New](/concepts/what-is-continue-as-new) in response to load.
 A Temporal Application is scalable because the Temporal Platform is capable of supporting millions to billions of Workflow Executions executing concurrently, which is realized by the design and nature of the [Temporal Cluster](/concepts/what-is-a-temporal-cluster) and [Worker Processes](/concepts/what-is-a-worker-process).
 
@@ -38,8 +41,8 @@ A Temporal Application is scalable because the Temporal Platform is capable of s
 
 A Workflow Execution does two things:
 
-1. Issue [Commands](/concepts/what-is-a-command)
-2. Wait on an Awaitables (often called Futures)
+1. Issue [Commands](/concepts/what-is-a-command).
+2. Wait on an Awaitables (often called Futures).
 
 ![Command generation and waiting](/diagrams/workflow-execution-progession-simple.svg)
 
@@ -53,12 +56,12 @@ The Worker Process batches the Commands and then suspends progress to send the C
 A Workflow Execution may only ever block progress on an Awaitable that is provided through a Temporal SDK API.
 Awaitables are provided when using APIs for the following:
 
-- Spawning a [Child Workflow Execution](/concepts/what-is-a-child-workflow-execution): Progress can block on confirmation that the Child Workflow Execution started, and on the result of the Child Workflow Execution.
-- Sending a [Signal](/concepts/what-is-a-signal): Progress can block on confirmation that the Signal sent.
-- Spawning an [Activity Execution](/concepts/what-is-an-activity-execution): Progress can block on the result of the Activity Execution.
-- Requesting cancellation of another Workflow Execution: Progress can block on confirmation that the other Workflow Execution is cancelled.
-- Starting a Timer: Progress can block until the Timer fires.
 - Awaiting: Progress can block using explicit "Await" APIs.
+- Requesting cancellation of another Workflow Execution: Progress can block on confirmation that the other Workflow Execution is cancelled.
+- Sending a [Signal](/concepts/what-is-a-signal): Progress can block on confirmation that the Signal sent.
+- Spawning a [Child Workflow Execution](/concepts/what-is-a-child-workflow-execution): Progress can block on confirmation that the Child Workflow Execution started, and on the result of the Child Workflow Execution.
+- Spawning an [Activity Execution](/concepts/what-is-an-activity-execution): Progress can block on the result of the Activity Execution.
+- Starting a Timer: Progress can block until the Timer fires.
 
 ### Status
 
@@ -75,11 +78,11 @@ A Workflow Execution can be either Open or Closed.
 
 A Closed status means that the Workflow Execution cannot make further progress because of one of the following reasons:
 
+- Cancelled: The Workflow Execution successfully handled a cancellation request.
 - Completed: The Workflow Execution has completed successfully.
 - Continued-As-New: The Workflow Execution [Continued-As-New](/concepts/what-is-continue-as-new).
-- Terminated: The Workflow Execution was terminated.
-- Cancelled: The Workflow Execution successfully handled a cancellation request.
 - Failed: The Workflow Execution returned an error and failed.
+- Terminated: The Workflow Execution was terminated.
 - Timed Out: The Workflow Execution reached a timeout limit.
 
 ### Workflow Execution Chain
@@ -88,9 +91,9 @@ A Workflow Execution Chain is a sequence of Workflow Executions that share the s
 Each link in the Chain is often called a Workflow Run.
 Each Workflow Run in the sequence is connected by one of the following:
 
-- [Temporal Cron Job](/concepts/what-is-a-temporal-cron-job)
 - [Continue-As-New](/concepts/what-is-continue-as-new)
 - [Retries](/concepts/what-is-a-retry-policy)
+- [Temporal Cron Job](/concepts/what-is-a-temporal-cron-job)
 
 A Workflow Execution is uniquely identified by its [Namespace](/concepts/what-is-a-namespace), [Workflow Id](/concepts/what-is-a-workflow-id), and [Run Id](/concepts/what-is-a-run-id).
 
@@ -114,9 +117,9 @@ However, Workflow Executions intended to run indefinitely should be written with
 The Temporal Cluster stores the complete Event History for the entire lifecycle of a Workflow Execution.
 There is a hard limit of 50,000 Events in a Workflow Execution Event History, as well as a hard limit of 50 MB in terms of size.
 The Temporal Cluster logs a warning at every 10,000 Events.
-When the Event History reaches 50,000 Events or the size limit of 50MB, the Workflow Execution is forcefully terminated.
+When the Event History reaches 50,000 Events or the size limit of 50 MB, the Workflow Execution is forcefully terminated.
 
-To prevent "runaway" Workflow Executions, you can use the Workflow Execution Timeout, the Workflow Run Timeout, or both.
+To prevent _runaway_ Workflow Executions, you can use the Workflow Execution Timeout, the Workflow Run Timeout, or both.
 A Workflow Execution Timeout can be used to limit the duration of Workflow Execution Chain, and a Workflow Run Timeout can be used to limit the duration an individual Workflow Execution (Run).
 
 You can use the [Continue-As-New](/concepts/what-is-continue-as-new) feature to close the current Workflow Execution and create a new Workflow Execution in a single atomic operation.

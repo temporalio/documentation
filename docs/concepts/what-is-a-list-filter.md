@@ -25,10 +25,10 @@ A List Filter contains [Search Attribute](/concepts/what-is-a-search-attribute) 
 
 - The following operators are supported in List Filters:
 
-  - **AND, OR, ()**
   - **=, !=, >, >=, <, <=**
-  - **IN**
+  - **AND, OR, ()**
   - **BETWEEN ... AND**
+  - **IN**
   - **ORDER BY**
 
 - A List Filter applies to a single Namespace.

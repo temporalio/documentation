@@ -49,10 +49,10 @@ A List Filter contains [Search Attribute](#search-attributes) names, Search Attr
 
 - The following operators are supported in List Filters:
 
-  - **AND, OR, ()**
   - **=, !=, >, >=, <, <=**
-  - **IN**
+  - **AND, OR, ()**
   - **BETWEEN ... AND**
+  - **IN**
   - **ORDER BY**
 
 - A List Filter applies to a single Namespace.
@@ -183,23 +183,23 @@ It is not possible to rename Search Attributes or remove them from the index sch
 The [temporalio/auto-setup](https://hub.docker.com/r/temporalio/auto-setup) Docker image uses a pre-defined set of custom Search Attributes that are handy for testing.
 Their names indicate their types:
 
-- CustomTextField
-- CustomKeywordField
-- CustomIntField
-- CustomDoubleField
 - CustomBoolField
 - CustomDatetimeField
+- CustomDoubleField
+- CustomIntField
+- CustomKeywordField
+- CustomTextField
 
 #### Types
 
 Search Attributes must be one of the following types:
 
-- Text
-- Keyword
-- Int
-- Double
 - Bool
 - Datetime
+- Double
+- Int
+- Keyword
+- Text
 
 Note:
 
@@ -222,3 +222,4 @@ To actually have results from the use of a [List Filter](#list-filters), Search 
 How to do this entirely depends on the method by which you spawn the Workflow Execution:
 
 - [How to set Search Attributes as Workflow Execution metadata in Go](/go/startworkflowoptions-reference/#searchattributes)
+

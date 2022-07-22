@@ -63,11 +63,11 @@ A Temporal Client is available in each SDK and provides a set of APIs to communi
 
 The most common operations that a Temporal Client enables you to perform are the following:
 
-- Start a Workflow Execution.
 - Get the result of Workflow Execution.
-- Signal a Workflow Execution.
-- Query a Workflow Execution.
 - List Workflow Executions.
+- Query a Workflow Execution.
+- Signal a Workflow Execution.
+- Start a Workflow Execution.
 
 ## Temporal SDK
 
@@ -84,7 +84,9 @@ Temporal currently offers the following SDKs:
 - [How to use the Go SDK](/application-development/foundations#none)
 - [How to use the Java SDK](/java/)
 - [How to use the PHP SDK](/php/introduction)
+- [How to use the Python SDK](/application-development/foundations#none)
 - [How to use the TypeScript SDK](/typescript/introduction)
 
 Each SDK emits metrics which can be ingested into monitoring platforms.
 See the [SDK metrics reference](/references/sdk-metrics) for a complete list.
+

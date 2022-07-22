@@ -35,7 +35,7 @@ A Workflow Task Execution is when a Worker picks up a Workflow Task and uses it 
 ### Activity Task
 
 An Activity Task contains the context needed to proceed with an [Activity Task Execution](#activity-task-execution).
-Activity Tasks largely represent the Activity Task Scheduled Event , which contains the data needed to execute an Activity Function.
+Activity Tasks largely represent the Activity Task Scheduled Event, which contains the data needed to execute an Activity Function.
 
 If Heartbeat data is being passed, an Activity Task will also contain the latest Heartbeat details.
 
@@ -53,11 +53,11 @@ The API to schedule an Activity Execution provides an "effectively once" experie
 
 Once an Activity Task finishes execution, the Worker responds to the Cluster with a specific Event:
 
+- ActivityTaskCanceled
 - ActivityTaskCompleted
 - ActivityTaskFailed
-- ActivityTaskTimedOut
-- ActivityTaskCanceled
 - ActivityTaskTerminated
+- ActivityTaskTimedOut
 
 ## Task Queues
 
@@ -78,13 +78,13 @@ There is no limit to the number of Task Queues a Temporal Application can use or
 Workers poll for Tasks in Task Queues via synchronous RPC.
 This implementation offers several benefits:
 
-- Worker Processes do not need to have any open ports, which is more secure.
-- Worker Processes do not need to advertise themselves through DNS or any other network discovery mechanism.
-- When all Worker Processes are down, messages simply persist in a Task Queue, waiting for the Worker Processes to recover.
 - A Worker Process polls for a message only when it has spare capacity, avoiding overloading itself.
-- In effect, Task Queues enable load balancing across a large number of Worker Processes.
-- Task Queues support server-side throttling, which enables you to limit the Task dispatching rate to the pool of Worker Processes while still supporting Task dispatching at higher rates when spikes happen.
+- In effect, Task Queues enable load balancing across many Worker Processes.
 - Task Queues enable what we call [Task Routing](#task-routing), which is the routing of specific Tasks to specific Worker Processes or even a specific process.
+- Task Queues support server-side throttling, which enables you to limit the Task dispatching rate to the pool of Worker Processes while still supporting Task dispatching at higher rates when spikes happen.
+- When all Worker Processes are down, messages simply persist in a Task Queue, waiting for the Worker Processes to recover.
+- Worker Processes do not need to advertise themselves through DNS or any other network discovery mechanism.
+- Worker Processes do not need to have any open ports, which is more secure.
 
 All Workers listening to a given Task Queue must have identical registrations of Activities and/or Workflows.
 The one exception is during a Server upgrade, where it is okay to have registration temporarily misaligned while the binary rolls out.
@@ -180,9 +180,9 @@ You would need to develop your Temporal Application to route Tasks to specific W
 
 Code samples:
 
+- [Go file processing example](https://github.com/temporalio/samples-go/tree/master/fileprocessing)
 - [Java file processing example](https://github.com/temporalio/samples-java/tree/master/src/main/java/io/temporal/samples/fileprocessing)
 - [PHP file processing example](https://github.com/temporalio/samples-php/tree/master/app/src/FileProcessing)
-- [Go file processing example](https://github.com/temporalio/samples-go/tree/master/fileprocessing)
 
 #### Sessions
 
@@ -212,3 +212,4 @@ If your use case involves more than one priority, you can create one Task Queue 
 Task Routing is the simplest way to version your code.
 
 If you have a new backward-incompatible Activity Definition, start by using a different Task Queue.
+

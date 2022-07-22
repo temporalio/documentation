@@ -80,10 +80,10 @@ To enhance this feature, Temporal supports an [integration with Elasticsearch](/
 
 The Temporal Server consists of four independently scalable services:
 
-- Frontend gateway: for rate limiting, routing, authorizing
-- History subsystem: maintains data (mutable state, queues, and timers)
-- Matching subsystem: hosts Task Queues for dispatching
-- Worker service: for internal background workflows
+- Frontend gateway: for rate limiting, routing, authorizing.
+- History subsystem: maintains data (mutable state, queues, and timers).
+- Matching subsystem: hosts Task Queues for dispatching.
+- Worker service: for internal background Workflows.
 
 For example, a real-life production deployment can have 5 Frontend, 15 History, 17 Matching, and 3 Worker services per cluster.
 
@@ -203,8 +203,8 @@ Setting the Retention Period to 0 results in the error _A valid retention period
 
 Archival is a feature that automatically backs up [Event Histories](/workflows#event-history) and Visibility records from Temporal Cluster persistence to a custom blob store.
 
-- [How to set up Archival](/cluster-deployment-guide#set-up)
 - [How to create a custom Archiver](/cluster-deployment-guide#custom-archiver)
+- [How to set up Archival](/cluster-deployment-guide#set-up)
 
 Workflow Execution Event Histories are backed up after the [Retention Period](/concepts/what-is-a-namespace/#retention-period) is reached.
 Visibility records are backed up immediately after a Workflow Execution reaches a Closed status.
@@ -215,7 +215,7 @@ This feature is helpful for compliance and debugging.
 
 Temporal's Archival feature is considered **experimental** and not subject to normal [versioning and support policy](/clusters).
 
-Archival is not supported when running Temporal via docker-compose and is disabled by default when installing the system manually and when deploying via [helm charts](https://github.com/temporalio/helm-charts/blob/master/templates/server-configmap.yaml) (but can be enabled in the [config](https://github.com/temporalio/temporal/blob/master/config/development.yaml)).
+Archival is not supported when running Temporal via docker-compose and is disabled by default when installing the system manually and when deploying through [helm charts](https://github.com/temporalio/helm-charts/blob/master/templates/server-configmap.yaml) (but can be enabled in the [config](https://github.com/temporalio/temporal/blob/master/config/development.yaml)).
 
 ## Multi-Cluster Replication
 
@@ -618,3 +618,4 @@ T = 2: task A is loaded.
 
 At this time, due to the rebuild of a Workflow Execution's mutable state (conflict resolution), Task A is no longer relevant (Task A's corresponding Event belongs to non-current branch).
 Task processing logic will verify both the Event Id and version of the Task against a corresponding Workflow Execution's mutable state, then discard task A.
+

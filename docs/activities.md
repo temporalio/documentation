@@ -19,11 +19,11 @@ Temporal documentation aims to be explicit and differentiate between them.
 An Activity is a normal function or object method that executes a single, well-defined action (either short or long running), such as calling another service, transcoding a media file, or sending an email message.
 
 Workflow code orchestrates the execution of Activities, persisting the results.
-If an Activity Function Execution fails, any future execution starts from initial state (with the exception of Heartbeats).
-Therefore an Activity function is allowed to contain any code without restrictions.
+If an Activity Function Execution fails, any future execution starts from initial state (except Heartbeats).
+Therefore, an Activity function is allowed to contain any code without restrictions.
 
 Activity Functions are executed by Worker Processes.
-When the Activity Function returns, the Worker sends the results back to the Temporal Cluster as part of the ActivityTaskCompleted Event.
+When the Activity Function returns, the Worker sends the results back to the Temporal Cluster as part of the `ActivityTaskCompleted` Event.
 The Event is added to the Workflow Execution's Event History.
 
 ## Activity Definition
@@ -66,7 +66,7 @@ Other parameters, such as [Retry Policies](/retry-policies#) and return values, 
 
 An Activity Type is the mapping of a name to an Activity Definition.
 
-Activity Types are scoped via Task Queues.
+Activity Types are scoped through Task Queues.
 
 ## Activity Execution
 
@@ -152,7 +152,7 @@ The main use case for the Start-To-Close timeout is to detect when a Worker cras
 ![Start-To-Close Timeout period](/diagrams/start-to-close-timeout.svg)
 
 A [Retry Policy](/retry-policies#) attached to an Activity Execution retries an Activity Task Execution.
-Thus the Start-To-Close Timeout is applied to each Activity Task Execution within an Activity Execution.
+Thus, the Start-To-Close Timeout is applied to each Activity Task Execution within an Activity Execution.
 
 If the first Activity Task Execution returns an error the first time, then the full Activity Execution might look like this:
 
@@ -219,17 +219,17 @@ Consider the following when setting Activity Hearbeats:
   Note that your Workflow cannot read this progress information while the Activity is still executing (or it would have to store it in Event History).
   You can report progress to external sources if you need it exposed to the user.
 
-- Your Activity Execution is long-running and you need to verify whether the Worker that is processing your Activity is still alive and has not run out of memory or silently crashed.
+- Your Activity Execution is long-running, and you need to verify whether the Worker that is processing your Activity is still alive and has not run out of memory or silently crashed.
 
 For example, the following scenarios are suitable for Heartbeating:
 
-- Reading a large file from Amazon S3
-- Running a ML training job on some local GPUs
+- Reading a large file from Amazon S3.
+- Running a ML training job on some local GPUs.
 
 And the following scenarios are not suitable for Heartbeating:
 
-- Reading a small file from disk
-- Making a quick API call
+- Making a quick API call.
+- Reading a small file from disk.
 
 ### Heartbeat Timeout
 
@@ -277,11 +277,12 @@ However, Local Activities are subject to shorter durations and a lack of rate li
 
 Consider using Local Activities for functions that are the following:
 
-- no longer than a few seconds, inclusive of retries (shorter than the Workflow Task Timeout, which is 10 seconds by default).
+- can be implemented in the same binary as the Workflow that calls them.
 - do not require global rate limiting.
 - do not require routing to a specific Worker or Worker pool.
-- can be implemented in the same binary as the Workflow that calls them.
+- no longer than a few seconds, inclusive of retries (shorter than the Workflow Task Timeout, which is 10 seconds by default).
 
 Using a Local Activity without understanding its limitations can cause various production issues.
 **We recommend using regular Activities unless your use case requires very high throughput and large Activity fan outs of very short-lived Activities.**
 More guidance in choosing between [Local Activity vs Activity](https://community.temporal.io/t/local-activity-vs-activity/290/3) is available in our forums.
+

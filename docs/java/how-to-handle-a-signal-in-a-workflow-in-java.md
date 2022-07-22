@@ -25,7 +25,7 @@ public interface FileProcessingWorkflow {
 ```
 
 To overwrite this default naming and assign a custom Signal type, use the `@SignalMethod` annotation with the `name` parameter.
-In the following example, the Signal type is set to "retrysignal".
+In the following example, the Signal type is set to `retrysignal`.
 
 ```java
 @WorkflowInterface
@@ -41,7 +41,7 @@ public interface FileProcessingWorkflow {
 
 A Workflow interface can define any number of methods annotated with `@SignalMethod`, but the method names or the `name` parameters for each must be unique.
 
-In the following example, we define a Signal method "updateGreeting" to update the greeting in the Workflow.
+In the following example, we define a Signal method `updateGreeting` to update the greeting in the Workflow.
 We set a `Workflow.await` in the Workflow implementation to block the current Workflow Execution until the provided unblock condition is evaluated to `true`.
 In this case, the unblocking condition is evaluated to `true` when the Signal to update the greeting is received.
 
@@ -78,7 +78,7 @@ public class HelloWorldImpl implements HelloWorld {
 }
 ```
 
-This Workflow completes when the Signal updates the greeting to "Bye".
+This Workflow completes when the Signal updates the greeting to `Bye`.
 
 **Dynamic Signal Handler**
 You can also implement Signal handlers dynamically. This is useful for library-level code and implementation of DSLs.

@@ -46,23 +46,23 @@ To alleviate non-deterministic issues that arise from code changes, we recommend
 
 For example, let's say we have a Workflow Definition that defines the following sequence:
 
-1. Start and wait on a Timer/sleep
-2. Spawn and wait on an Activity Execution
-3. Complete
+1. Start and wait on a Timer/sleep.
+2. Spawn and wait on an Activity Execution.
+3. Complete.
 
 We start a Worker and spawn a Workflow Execution that uses that Workflow Definition.
 The Worker would emit the [StartTimer](/references/commands/#starttimer) Command and the Workflow Execution would become suspended.
 
 Before the Timer is up, we change the Workflow Definition to the following sequence:
 
-1. Spawn and wait on an Activity Execution
-2. Start and wait on a Timer/sleep
-3. Complete
+1. Spawn and wait on an Activity Execution.
+2. Start and wait on a Timer/sleep.
+3. Complete.
 
 When the Timer fires, the next Workflow Task will cause the Workflow Function to re-execute.
-The first Command the Worker sees would be be ScheduleActivityTask Command, which wouldn't match up to the expected [TimerStarted](/references/events/#timerstarted) Event.
+The first Command the Worker sees would be ScheduleActivityTask Command, which wouldn't match up to the expected [TimerStarted](/references/events/#timerstarted) Event.
 
-The Workflow Execution would fail, and return a non-deterministic error.
+The Workflow Execution would fail and return a non-deterministic error.
 
 The following are examples of minor changes that would not result in non-determinism errors when re-executing a History which already contain the Events:
 

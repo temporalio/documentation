@@ -24,13 +24,13 @@ There is no limit to the number of Task Queues a Temporal Application can use or
 Workers poll for Tasks in Task Queues via synchronous RPC.
 This implementation offers several benefits:
 
-- Worker Processes do not need to have any open ports, which is more secure.
-- Worker Processes do not need to advertise themselves through DNS or any other network discovery mechanism.
-- When all Worker Processes are down, messages simply persist in a Task Queue, waiting for the Worker Processes to recover.
 - A Worker Process polls for a message only when it has spare capacity, avoiding overloading itself.
-- In effect, Task Queues enable load balancing across a large number of Worker Processes.
-- Task Queues support server-side throttling, which enables you to limit the Task dispatching rate to the pool of Worker Processes while still supporting Task dispatching at higher rates when spikes happen.
+- In effect, Task Queues enable load balancing across many Worker Processes.
 - Task Queues enable what we call [Task Routing](/concepts/what-is-task-routing), which is the routing of specific Tasks to specific Worker Processes or even a specific process.
+- Task Queues support server-side throttling, which enables you to limit the Task dispatching rate to the pool of Worker Processes while still supporting Task dispatching at higher rates when spikes happen.
+- When all Worker Processes are down, messages simply persist in a Task Queue, waiting for the Worker Processes to recover.
+- Worker Processes do not need to advertise themselves through DNS or any other network discovery mechanism.
+- Worker Processes do not need to have any open ports, which is more secure.
 
 All Workers listening to a given Task Queue must have identical registrations of Activities and/or Workflows.
 The one exception is during a Server upgrade, where it is okay to have registration temporarily misaligned while the binary rolls out.

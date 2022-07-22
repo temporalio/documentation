@@ -137,14 +137,14 @@ In the above code the `#[WorkflowMethod(name)]` is not specified, thus the Workf
 [`defineSignal`](https://typescript.temporal.io/api/namespaces/workflow/#definesignal)
 
 ```ts
-import {defineSignal} from "@temporalio/workflow";
+import { defineSignal } from '@temporalio/workflow';
 
 interface JoinInput {
   userId: string;
   groupId: string;
 }
 
-const joinSignal = defineSignal<JoinInput>("join");
+const joinSignal = defineSignal<JoinInput>('join');
 ```
 
 </TabItem>
@@ -256,7 +256,7 @@ public interface FileProcessingWorkflow {
 ```
 
 To overwrite this default naming and assign a custom Signal type, use the `@SignalMethod` annotation with the `name` parameter.
-In the following example, the Signal type is set to "retrysignal".
+In the following example, the Signal type is set to `retrysignal`.
 
 ```java
 @WorkflowInterface
@@ -272,7 +272,7 @@ public interface FileProcessingWorkflow {
 
 A Workflow interface can define any number of methods annotated with `@SignalMethod`, but the method names or the `name` parameters for each must be unique.
 
-In the following example, we define a Signal method "updateGreeting" to update the greeting in the Workflow.
+In the following example, we define a Signal method `updateGreeting` to update the greeting in the Workflow.
 We set a `Workflow.await` in the Workflow implementation to block the current Workflow Execution until the provided unblock condition is evaluated to `true`.
 In this case, the unblocking condition is evaluated to `true` when the Signal to update the greeting is received.
 
@@ -309,7 +309,7 @@ public class HelloWorldImpl implements HelloWorld {
 }
 ```
 
-This Workflow completes when the Signal updates the greeting to "Bye".
+This Workflow completes when the Signal updates the greeting to `Bye`.
 
 **Dynamic Signal Handler**
 You can also implement Signal handlers dynamically. This is useful for library-level code and implementation of DSLs.
@@ -337,12 +337,12 @@ Content is not available
 [`setHandler`](https://typescript.temporal.io/api/namespaces/workflow/#sethandler)
 
 ```ts
-import {setHandler} from "@temporalio/workflow";
+import { setHandler } from '@temporalio/workflow';
 
 export async function myWorkflow() {
   const groups = new Map<string, Set<string>>();
 
-  setHandler(joinSignal, ({userId, groupId}: JoinInput) => {
+  setHandler(joinSignal, ({ userId, groupId }: JoinInput) => {
     const group = groups.get(groupId);
     if (group) {
       group.add(userId);
@@ -405,7 +405,7 @@ Possible errors:
 
 To send a Signal to a Workflow Execution from a Client, call the Signal method, annotated with `@SignalMethod` in the Workflow interface, from the Client code.
 
-In the following Client code example, we start the Workflow "greetCustomer" and call the Signal method "addCustomer" that is handled in the Workflow.
+In the following Client code example, we start the Workflow `greetCustomer` and call the Signal method `addCustomer` that is handled in the Workflow.
 
 ```java
 // create a typed Workflow stub for GreetingsWorkflow
@@ -530,12 +530,12 @@ $workflow->setValue(true);
 [`getExternalWorkflowHandle`](https://typescript.temporal.io/api/namespaces/workflow#getexternalworkflowhandle)
 
 ```typescript
-import {getExternalWorkflowHandle} from "@temporalio/workflow";
-import {joinSignal} from "./other-workflow";
+import { getExternalWorkflowHandle } from '@temporalio/workflow';
+import { joinSignal } from './other-workflow';
 
 export async function myWorkflowThatSignals() {
-  const handle = getExternalWorkflowHandle("workflow-id-123");
-  await handle.signal(joinSignal, {userId: "user-1", groupId: "group-1"});
+  const handle = getExternalWorkflowHandle('workflow-id-123');
+  await handle.signal(joinSignal, { userId: 'user-1', groupId: 'group-1' });
 }
 ```
 
@@ -587,8 +587,8 @@ Note that when the `SignalwithStart` spawns a new Workflow Execution, the Signal
 This means that the Signal handler in your Workflow interface code will execute before the `@WorkfowMethod`.
 You must ensure that your code logic can deal with this.
 
-In the following example, the Client code uses `SignalwithStart` to send the Signal "setCustomer" to the `UntypedWorkflowStub` named "GreetingWorkflow".
-If the "GreetingWorkflow" Workflow Execution is not running, the `SignalwithStart` starts the Workflow Execution.
+In the following example, the Client code uses `SignalwithStart` to send the Signal `setCustomer` to the `UntypedWorkflowStub` named `GreetingWorkflow`.
+If the `GreetingWorkflow` Workflow Execution is not running, the `SignalwithStart` starts the Workflow Execution.
 
 ```java
 ...
@@ -616,7 +616,7 @@ public static void signalWithStart() {
 ...
 ```
 
-The following example shows the Workflow interface for the "GreetingWorkflow" called in the previous example.
+The following example shows the Workflow interface for the `GreetingWorkflow` called in the previous example.
 
 ```java
 ...
@@ -634,7 +634,7 @@ public interface GreetingWorkflow {
 }
 ```
 
-Note that the Signal handler "setCustomer" is executed before the `@WorkflowMethod` "greet" is called.
+Note that the Signal handler `setCustomer` is executed before the `@WorkflowMethod` `greet` is called.
 
 </TabItem>
 <TabItem value="php">
@@ -660,16 +660,16 @@ $run = $workflowClient->startWithSignal(
 [`WorkflowClient.signalWithStart`](https://typescript.temporal.io/api/classes/client.WorkflowClient#signalwithstart)
 
 ```typescript
-import {WorkflowClient} from "@temporalio/client";
-import {myWorkflow, joinSignal} from "./workflows";
+import { WorkflowClient } from '@temporalio/client';
+import { myWorkflow, joinSignal } from './workflows';
 
 const client = new WorkflowClient();
 
 await client.signalWithStart(myWorkflow, {
-  workflowId: "workflow-id-123",
-  args: [{foo: 1}],
+  workflowId: 'workflow-id-123',
+  args: [{ foo: 1 }],
   signal: joinSignal,
-  signalArgs: [{userId: "user-1", groupId: "group-1"}],
+  signalArgs: [{ userId: 'user-1', groupId: 'group-1' }],
 });
 ```
 
@@ -934,7 +934,7 @@ The following Workflow interface has a Query method `getCount()` to handle Queri
   }
 ```
 
-The following example is the Workflow implementation with the Query method defined in the `HelloWorld` Workflow interface from the previous exmaple.
+The following example is the Workflow implementation with the Query method defined in the `HelloWorld` Workflow interface from the previous example.
 
 ```java
   public static class HelloWorldImpl implements HelloWorld {
@@ -1074,22 +1074,22 @@ Query Handlers can return values inside a Workflow in TypeScript.
 You make a Query with `handle.query(query, ...args)`. A Query needs a return value, but can also take arguments.
 
 ```typescript
-import * as wf from "@temporalio/workflow";
+import * as wf from '@temporalio/workflow';
 
-export const unblockSignal = wf.defineSignal("unblock");
-export const isBlockedQuery = wf.defineQuery<boolean>("isBlocked");
+export const unblockSignal = wf.defineSignal('unblock');
+export const isBlockedQuery = wf.defineQuery<boolean>('isBlocked');
 
 export async function unblockOrCancel(): Promise<void> {
   let isBlocked = true;
   wf.setHandler(unblockSignal, () => void (isBlocked = false));
   wf.setHandler(isBlockedQuery, () => isBlocked);
-  console.log("Blocked");
+  console.log('Blocked');
   try {
     await wf.condition(() => !isBlocked);
-    console.log("Unblocked");
+    console.log('Unblocked');
   } catch (err) {
     if (err instanceof wf.CancelledFailure) {
-      console.log("Cancelled");
+      console.log('Cancelled');
     }
     throw err;
   }
@@ -1609,11 +1609,11 @@ In this example, you can set the `scheduleToCloseTimeout` to 5 m.
 
 ```typescript
 // Sample of typical options you can set
-const {greet} = proxyActivities<typeof activities>({
-  scheduleToCloseTimeout: "5m",
+const { greet } = proxyActivities<typeof activities>({
+  scheduleToCloseTimeout: '5m',
   retry: {
     // default retry policy if not specified
-    initialInterval: "1s",
+    initialInterval: '1s',
     backoffCoefficient: 2,
     maximumAttempts: Infinity,
     maximumInterval: 100 * initialInterval,
@@ -1736,11 +1736,11 @@ In this example, you can set the `startToCloseTimeout` to 30 seconds.
 
 ```typescript
 // Sample of typical options you can set
-const {greet} = proxyActivities<typeof activities>({
-  startToCloseTimeout: "30s", // recommended
+const { greet } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '30s', // recommended
   retry: {
     // default retry policy if not specified
-    initialInterval: "1s",
+    initialInterval: '1s',
     backoffCoefficient: 2,
     maximumAttempts: Infinity,
     maximumInterval: 100 * initialInterval,
@@ -1867,12 +1867,12 @@ In this example, you can set the `ScheduleToStartTimeout` to 60 seconds.
 
 ```typescript
 // Sample of typical options you can set
-const {greet} = proxyActivities<typeof activities>({
-  scheduleToCloseTimeout: "5m",
-  ScheduleToStartTimeout: "60s",
+const { greet } = proxyActivities<typeof activities>({
+  scheduleToCloseTimeout: '5m',
+  ScheduleToStartTimeout: '60s',
   retry: {
     // default retry policy if not specified
-    initialInterval: "1s",
+    initialInterval: '1s',
     backoffCoefficient: 2,
     maximumAttempts: Infinity,
     maximumInterval: 100 * initialInterval,
@@ -2024,11 +2024,11 @@ To set Activity Retry Policies in TypeScript, pass [`ActivityOptions.retry`](htt
 
 ```typescript
 // Sample of typical options you can set
-const {yourActivity} = proxyActivities<typeof activities>({
+const { yourActivity } = proxyActivities<typeof activities>({
   // ...
   retry: {
     // default retry policy if not specified
-    initialInterval: "1s",
+    initialInterval: '1s',
     backoffCoefficient: 2,
     maximumAttempts: Infinity,
     maximumInterval: 100 * initialInterval,
@@ -2249,9 +2249,9 @@ export async function example(sleepIntervalMs = 1000): Promise<void> {
 //...
 
 // workflow code calling activity
-const {example} = proxyActivities<typeof activities>({
-  startToCloseTimeout: "1 hour",
-  heartbeatTimeout: "10s",
+const { example } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '1 hour',
+  heartbeatTimeout: '10s',
 });
 ```
 
@@ -2408,9 +2408,9 @@ To set a Heartbeat Timeout, use [`ActivityOptions.heartbeatTimeout`](https://typ
 
 ```typescript
 // Creating a proxy for the activity.
-const {longRunningActivity} = proxyActivities<typeof activities>({
-  scheduleToCloseTimeout: "5m", // translates to 300000 ms
-  startToCloseTimeout: "30s", // translates to 30000 ms
+const { longRunningActivity } = proxyActivities<typeof activities>({
+  scheduleToCloseTimeout: '5m', // translates to 300000 ms
+  startToCloseTimeout: '30s', // translates to 30000 ms
   heartbeatTimeout: 10000, // equivalent to '10 seconds'
 });
 ```
@@ -3098,7 +3098,7 @@ You can set each Workflow to repeat on a schedule with the `cronSchedule` option
 ```typescript
 const handle = await client.start(scheduledWorkflow, {
   // ...
-  cronSchedule: "* * * * *", // start every minute
+  cronSchedule: '* * * * *', // start every minute
 });
 ```
 
@@ -3118,3 +3118,4 @@ await client.start_workflow(
 
 </TabItem>
 </Tabs>
+
