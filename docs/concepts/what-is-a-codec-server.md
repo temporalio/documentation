@@ -37,7 +37,7 @@ Workflow Execution Event History is available in the Web UI.
 Payload information for each Event is captured within Event 'input' and 'result' fields.
 Without a Codec Server, this information remains encoded.
 
-import DataConverter from '../concepts/what-is-a-data-converter.md'
+import DataConverter from '../concepts/what-is-a-data-converter'
 
 <DataConverter />
 
