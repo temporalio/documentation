@@ -16,7 +16,7 @@ The following example shows how to use `MicrometerClientStatsReporter` to define
 ```java
 //...
    // see the Micrometer documentation for configuration details on other supported monitoring systems.
-   // in this example shows how to set up Prometheus registry and stats reported. 
+   // in this example shows how to set up Prometheus registry and stats reported.
    PrometheusMeterRegistry registry = new PrometheusMeterRegistry(PrometheusConfig.DEFAULT);
    StatsReporter reporter = new MicrometerClientStatsReporter(registry);
     // set up a new scope, report every 10 seconds
