@@ -60,7 +60,7 @@ For more information, see the [Go sample for metrics](https://github.com/tempora
 
 To emit metrics with the Java SDK, use the [`MicrometerClientStatsReporter`](https://github.com/temporalio/sdk-java/blob/55ee7894aec427d7e384c3519732bdd61119961a/src/main/java/io/temporal/common/reporter/MicrometerClientStatsReporter.java#L34) implementation for Prometheus and other backends supported by [Micrometer](https://micrometer.io/docs), and use `WorkflowServiceStubsOptions.Builder.setMetricsScope` to set the metrics scope in your Worker or Client code.
 
-The following example shows how to set the `MicrometerClientStatsReporter` for Prometheus and define the metrics scope with the `WorkflowServiceStubsOptions`.
+The following example shows how to set the `MicrometerClientStatsReporter` for Prometheus, define the metrics scope, and set it with the `WorkflowServiceStubsOptions`.
 
 ```java
 //...
