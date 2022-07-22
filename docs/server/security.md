@@ -41,11 +41,9 @@ import DataConverter from '../concepts/what-is-a-data-converter.md'
 
 ## Codec Server
 
-import \* as WhatIsACodecServer from '../concepts/what-is-a-codec-server.md'
+import CodecServer from '../concepts/what-is-a-codec-server.md'
 
-<RelatedReadContainer>
-  <RelatedReadItem page={WhatIsACodecServer} />
-</RelatedReadContainer>
+<CodecServer />
 
 ## Authentication
 
