@@ -39,6 +39,14 @@ import DataConverter from '../concepts/what-is-a-data-converter.md'
 
 <DataConverter />
 
+## Codec Server
+
+import \* as WhatIsACodecServer from '../concepts/what-is-a-codec-server.md'
+
+<RelatedReadContainer>
+  <RelatedReadItem page={WhatIsACodecServer} />
+</RelatedReadContainer>
+
 ## Authentication
 
 There are a few authentication protocols available to prevent unwanted access such as authentication of servers, clients, and users.
