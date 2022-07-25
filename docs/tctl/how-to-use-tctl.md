@@ -473,8 +473,8 @@ OPTIONS:
    --memo_key value                            Optional key of memo. If there are multiple keys, concatenate them and separate by space
    --memo value                                Optional info that can be showed when list Workflow, in JSON format. If there are multiple JSON, concatenate them and separate by space. The order must be same as memo_key
    --memo_file value                           Optional info that can be listed in list Workflow, from JSON format file. If there are multiple JSON, concatenate them and separate by space or newline. The order must be same as memo_key
-   --search_attr_key value                     Optional search attributes keys that can be be used in list query. If there are multiple keys, concatenate them and separate by |. Use 'cluster get-search-attr' cmd to list legal keys.
-   --search_attr_value value                   Optional search attributes value that can be be used in list query. If there are multiple keys, concatenate them and separate by |. If value is array, use json array like ["a","b"], [1,2], ["true","false"], ["2019-06-07T17:16:34-08:00","2019-06-07T18:16:34-08:00"]. Use 'cluster get-search-attr' cmd to list legal keys and value types
+   --search_attr_key value                     Optional search attributes keys that can be used in list query. If there are multiple keys, concatenate them and separate by |. Use 'cluster get-search-attr' cmd to list legal keys.
+   --search_attr_value value                   Optional search attributes value that can be used in list query. If there are multiple keys, concatenate them and separate by |. If value is array, use json array like ["a","b"], [1,2], ["true","false"], ["2019-06-07T17:16:34-08:00","2019-06-07T18:16:34-08:00"]. Use 'cluster get-search-attr' cmd to list legal keys and value types
 ```
 
 ## Debugging with tctl
