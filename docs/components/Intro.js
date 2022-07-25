@@ -146,9 +146,9 @@ const supportedTech = [
     class: "w-10 h-8",
   },
   {
-    link: " /application-development?lang=typescript",
-    image: "/img/typescript.svg",
-    alt: "TypeScript logo",
+    link: " /application-development?lang=java",
+    image: "/img/java.svg",
+    alt: "Java logo",
     class: "w-7 h-7",
   },
   {
@@ -158,15 +158,15 @@ const supportedTech = [
     class: "w-10 h-8",
   },
   {
-    link: " /application-development?lang=java",
-    image: "/img/java.svg",
-    alt: "Java logo",
-    class: "w-7 h-7",
-  },
-  {
     link: " /application-development?lang=python",
     image: "/img/python.svg",
     alt: "Python logo",
+    class: "w-7 h-7",
+  },
+  {
+    link: " /application-development?lang=typescript",
+    image: "/img/typescript.svg",
+    alt: "TypeScript logo",
     class: "w-7 h-7",
   },
 ];
