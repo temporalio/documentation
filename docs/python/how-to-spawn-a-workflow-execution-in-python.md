@@ -15,7 +15,7 @@ The following code example starts a Workflow and returns its handle.
 
 ```python
 async def main():
-    client = await Client.connect("http://localhost:7233", namespace="your-namespace")
+    client = await Client.connect("localhost:7233", namespace="your-namespace")
 
     handle = await client.start_workflow(
         "your-workflow-name",
@@ -29,7 +29,7 @@ The following code example starts a Workflow and waits for completion.
 
 ```python
 async def main():
-    client = await Client.connect("http://localhost:7233")
+    client = await Client.connect("localhost:7233")
 
     handle = await client.execute_workflow(
         "your-workflow-name",
