@@ -790,7 +790,7 @@ export class UpdatableTimer implements PromiseLike<void> {
 
 [Triggers](https://typescript.temporal.io/api/classes/workflow.trigger) are a Promise-like concept in the TypeScript SDK.
 
-Triggers, like Promises, can be awaited and expose a `then` method.
+Triggers, like the [`condition()`](#condition) return value and other Promises, can be awaited and expose a `then` method.
 Unlike Promises, they export `resolve` or `reject` methods, so you can programmatically control them.
 
 <details>
