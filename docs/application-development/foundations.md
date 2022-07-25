@@ -417,7 +417,7 @@ WorkflowClient client = WorkflowClient.newInstance(
 
 ```
 
-See [WorkflowClientOptions](/java/how-to-set-workflowclientoptions-in-java) for details.
+See [WorkflowClientOptions](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowClientOptions.Builder.html) for details.
 
 `WorkflowService` and `WorkflowClient` creation is a heavyweight operation, and will be resource-intensive if created each time you start a Workflow or send a Signal to it.
 The recommended way is to create them once and reuse where possible.
