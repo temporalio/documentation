@@ -27,7 +27,7 @@ Closed Workflow Executions can be filtered by a time constraint and either a Wor
 
 Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through a custom SQL-like [List Filter](#list-filters).
 
-To use Advanced Visibility, your Temporal Cluster must be [integrated with Elasticsearch](/next/cluster-deployment-guide#advanced-visibility).
+To use Advanced Visibility, your Temporal Cluster must be [integrated with Elasticsearch](/cluster-deployment-guide#advanced-visibility).
 We highly recommend operating a Temporal Cluster with Elasticsearch for any use case that spawns more than just a few Workflow Executions.
 Elasticsearch takes on the Visibility request load, relieving potential performance issues.
 
@@ -49,10 +49,10 @@ A List Filter contains [Search Attribute](#search-attributes) names, Search Attr
 
 - The following operators are supported in List Filters:
 
-  - **AND, OR, ()**
   - **=, !=, >, >=, <, <=**
-  - **IN**
+  - **AND, OR, ()**
   - **BETWEEN ... AND**
+  - **IN**
   - **ORDER BY**
 
 - A List Filter applies to a single Namespace.
@@ -123,7 +123,7 @@ A Search Attribute is an indexed field used in a [List Filter](#list-filters) to
 If a [Temporal Cluster](/next/clusters#) does not have [Elasticsearch integrated](/next/cluster-deployment-guide#advanced-visibility), but a Workflow Execution is spawned and tagged with Search Attributes, no errors occur.
 However, you won't be able to use [Advanced Visibility](#advanced-visibility) List APIs and List Filters to find and list the Workflow Execution.
 
-When using [Continue-As-New](/next/workflows#continue-as-new) or a [Temporal Cron Job](/next/workflows#cron-jobs), Search Attributes are carried over to the new Workflow Run by default.
+When using [Continue-As-New](/workflows#continue-as-new) or a [Temporal Cron Job](/workflows#cron-jobs), Search Attributes are carried over to the new Run by default.
 
 #### Search Attributes maximums
 
@@ -201,23 +201,23 @@ It is not possible to rename Search Attributes or remove them from the index sch
 The [temporalio/auto-setup](https://hub.docker.com/r/temporalio/auto-setup) Docker image uses a pre-defined set of custom Search Attributes that are handy for testing.
 Their names indicate their types:
 
-- CustomTextField
-- CustomKeywordField
-- CustomIntField
-- CustomDoubleField
 - CustomBoolField
 - CustomDatetimeField
+- CustomDoubleField
+- CustomIntField
+- CustomKeywordField
+- CustomTextField
 
 #### Types
 
 Search Attributes must be one of the following types:
 
-- Text
-- Keyword
-- Int
-- Double
 - Bool
 - Datetime
+- Double
+- Int
+- Keyword
+- Text
 
 Note:
 

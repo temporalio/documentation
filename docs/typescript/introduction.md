@@ -7,9 +7,7 @@ description: The TypeScript SDK lets developers write highly scalable, reliable,
 The Temporal TypeScript SDK ([now in Beta](/blog/typescript-beta)) lets you write highly scalable and reliable long-running Workflows without being a distributed systems expert.
 It is designed with TypeScript-first developer experience in mind, but works equally well with JavaScript.
 
-import { ResponsivePlayer } from '../../src/components'
-
-<ResponsivePlayer url='https://youtu.be/2HjnQlnA5eY' />
+[Introduction to Temporal](https://youtu.be/2HjnQlnA5eY)
 
 You can view:
 
@@ -40,7 +38,7 @@ When you click on that link above and log in (there is a generous free tier), Gi
   - Right: [Temporal Client](https://github.com/temporalio/samples-typescript/blob/main/hello-world/src/client.ts) - run `npm run workflow`
 
 It takes ~3 minutes for the Docker Compose setup to start up.
-Once you have it up and running (Temporal Web should show the first Workflow Execution), you can use our [Hello World Walkthrough](/typescript/hello-world) tutorial to orient you to the sample file structure.
+Once you have it up and running (Temporal Web should show the first Workflow Execution), you can use our [Hello World Walkthrough](https://learn.temporal.io/getting_started/typescript/hello_world_in_typescript/) tutorial to orient you to the sample file structure.
 
 </details>
 
@@ -157,7 +155,7 @@ You can verify execution in Temporal Web (available at [`localhost:8080](http://
 
 ## Next Steps
 
-For a full code walkthrough of our Hello World example, see our [Hello World documentation](/typescript/hello-world).
+For a full code walkthrough of our Hello World example, see our [Hello World documentation](https://learn.temporal.io/getting_started/typescript/hello_world_in_typescript/).
 
 If you want an example of what it's like to integrate Temporal into an existing full-stack app, check our [Next.js One-Click Buy Tutorial](/typescript/nextjs-tutorial).
 
@@ -185,9 +183,7 @@ For long form/FAQs, please search and ask on [the Temporal community forum](http
 
 ## TS SDK Intro Workshop
 
-We held a 2-hour introduction workshop explaining every core concept from scratch:
-
-<ResponsivePlayer url='https://www.youtube.com/watch?v=CeHSmv8oF_4&feature=youtu.be' />
+We held a 2-hour introduction workshop explaining every core concept from scratch: [https://www.youtube.com/watch?v=CeHSmv8oF_4][https://www.youtube.com/watch?v=cehsmv8of_4]
 
 Timestamps:
 

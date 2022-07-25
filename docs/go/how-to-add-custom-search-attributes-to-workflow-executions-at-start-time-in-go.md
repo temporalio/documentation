@@ -14,11 +14,11 @@ Provide key-value pairs in [`StartWorkflowOptions.SearchAttributes`](https://pkg
 Search Attributes are represented as `map[string]interface{}`.
 The values in the map must correspond to the [Search Attribute's value type](/concepts/what-is-a-search-attribute/#types):
 
-- Keyword = `string`
-- Int = `int64`
-- Double = `float64`
 - Bool = `bool`
 - Datetime = `time.Time`
+- Double = `float64`
+- Int = `int64`
+- Keyword = `string`
 - Text = `string`
 
 If you had custom Search Attributes `CustomerId` of type Keyword and `MiscData` of type Text, you would provide `string` values:

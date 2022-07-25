@@ -10,7 +10,7 @@ tags:
 An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster.
 Each ping informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.
 
-- [How to Heartbeat an Activity](/application-development-guide#activity-heartbeats)
+- [How to Heartbeat an Activity](/application-development/features#activity-heartbeats)
 
 Activity Heartbeats work in conjunction with a [Heartbeat Timeout](/concepts/what-is-a-heartbeat-timeout).
 
@@ -41,14 +41,14 @@ Consider the following when setting Activity Hearbeats:
   Note that your Workflow cannot read this progress information while the Activity is still executing (or it would have to store it in Event History).
   You can report progress to external sources if you need it exposed to the user.
 
-- Your Activity Execution is long-running and you need to verify whether the Worker that is processing your Activity is still alive and has not run out of memory or silently crashed.
+- Your Activity Execution is long-running, and you need to verify whether the Worker that is processing your Activity is still alive and has not run out of memory or silently crashed.
 
 For example, the following scenarios are suitable for Heartbeating:
 
-- Reading a large file from Amazon S3
-- Running a ML training job on some local GPUs
+- Reading a large file from Amazon S3.
+- Running a ML training job on some local GPUs.
 
 And the following scenarios are not suitable for Heartbeating:
 
-- Reading a small file from disk
-- Making a quick API call
+- Making a quick API call.
+- Reading a small file from disk.

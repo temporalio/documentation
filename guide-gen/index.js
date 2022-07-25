@@ -517,9 +517,9 @@ async function parseAndReplace(raw_content, link_index, current_guide_id) {
     let new_path = "";
     if (link.guide != current_guide_id) {
       if (link.guide_dir != "/") {
-        new_path = `${NEXT}/${link.guide_dir}/${link.guide}#${link.local_ref}`;
+        new_path = `/${link.guide_dir}/${link.guide}#${link.local_ref}`;
       } else {
-        new_path = `${NEXT}/${link.guide}#${link.local_ref}`;
+        new_path = `/${link.guide}#${link.local_ref}`;
       }
     } else {
       new_path = `#${link.local_ref}`;

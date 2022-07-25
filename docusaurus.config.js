@@ -55,6 +55,14 @@ module.exports = {
         autoCollapseCategories: true,
       },
     },
+    announcementBar: {
+      id: "how_are_we_doing",
+      content:
+        'Take the <a target="_blank" rel="noopener noreferrer" href="#">User Survey</a> and let us know how we are doing!',
+      backgroundColor: "#141414",
+      textColor: "#ffffff",
+      isCloseable: true,
+    },
     navbar: {
       hideOnScroll: false,
       logo: {
@@ -64,48 +72,8 @@ module.exports = {
       },
       items: [
         {
-          to: "/",
-          activeBasePath: "none",
-          label: "Docs",
-        },
-        {
-          activeBasePath: "none",
-          label: "Case Studies",
-          items: [
-            {
-              to: "/blog/how-datadog-ensures-database-reliability-with-temporal",
-              label: "Datadog",
-            },
-            {
-              to: "/blog/how-temporal-simplified-checkr-workflows",
-              label: "Checkr",
-            },
-            {
-              to: "/blog/temporal-a-central-brain-for-box",
-              label: "Box",
-            },
-            {
-              to: "/blog/reliable-crypto-transactions-at-coinbase",
-              label: "Coinbase",
-            },
-            {
-              to: "/blog/descript-case-study",
-              label: "Descript",
-            },
-            {
-              to: "/blog/zebra-medical-case-study",
-              label: "Zebra",
-            },
-            {
-              to: "/blog/airbyte-case-study",
-              label: "Airbyte",
-            },
-          ],
-        },
-        {
-          to: "/blog",
-          activeBasePath: "/blog",
           label: "Blog",
+          href: "/blog",
         },
       ],
     },
