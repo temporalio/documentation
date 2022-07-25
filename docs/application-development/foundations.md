@@ -557,25 +557,14 @@ if (certificateS3Bucket) {
 
 Use [`connect()`](https://python.temporal.io/temporalio.client.client#connect) method on the [`Client`](https://python.temporal.io/temporalio.client.client) class to create and connect to a Temporal Server at a given address and Namespace.
 
-Specify the `target_url` parameter as a string.
+Specify the `target_host` parameter as a string.
 
 ```python
 async def main():
-    client = await Client.connect("http://localhost:7233", namespace="your-namespace")
+    client = await Client.connect("localhost:7233", namespace="your-namespace")
 ```
 
 A `Client` does not have an explicit close.
-If you don't specify a Namespace, Temporal defaults the `namespace` parameter to the value `default`.
-
-`Client` may be directly instantiated with a service of another. For example, if you need to create another Client to use an additional Namespace.
-
-Clients also provide a shallow copy of their config for use in making slightly different Clients backed by the same connection with [`config`](https://python.temporal.io/temporalio.client.client#config). The following example creates a new Client with the same connection but a different Namespace.
-
-```python
-config = client.config()
-config["namespace"] = "your-other-namespace"
-other_ns_client = Client(**config)
-```
 
 </TabItem>
 </Tabs>
@@ -643,7 +632,24 @@ const client = new WorkflowClient({
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+If you don't specify a Namespace, Temporal defaults the `namespace` parameter to the value `default`.
+
+To specify a Namespace, set the `namespace` parameter from the [`connect()`](https://python.temporal.io/temporalio.client.client#connect) method.
+
+```python
+async def main():
+    client = await Client.connect("localhost:7233", namespace="your-custom-namespace")
+```
+
+`Client` may be directly instantiated with a service of another. For example, if you need to create another Client to use an additional Namespace.
+
+Clients also provide a shallow copy of their config for use in making slightly different Clients backed by the same connection with [`config`](https://python.temporal.io/temporalio.client.client#config). The following example creates a new Client with the same connection but a different Namespace.
+
+```python
+config = client.config()
+config["namespace"] = "your-other-namespace"
+other_ns_client = Client(**config)
+```
 
 </TabItem>
 </Tabs>
@@ -2603,7 +2609,7 @@ The following code example shows a Worker hosting Workflows and Activities.
 ```python
 async def run_worker(stop_event: asyncio.Event):
     # Create Client connected to server at the given address
-    client = await Client.connect("http://localhost:7233", namespace="your-namespace")
+    client = await Client.connect("localhost:7233", namespace="your-namespace")
 
     # Run the worker until the event is set
     worker = Worker(
@@ -2979,7 +2985,7 @@ The following code example starts a Workflow and returns its handle.
 
 ```python
 async def main():
-    client = await Client.connect("http://localhost:7233", namespace="your-namespace")
+    client = await Client.connect("localhost:7233", namespace="your-namespace")
 
     handle = await client.start_workflow(
         "your-workflow-name",
@@ -2993,7 +2999,7 @@ The following code example starts a Workflow and waits for completion.
 
 ```python
 async def main():
-    client = await Client.connect("http://localhost:7233")
+    client = await Client.connect("localhost:7233")
 
     handle = await client.execute_workflow(
         "your-workflow-name",
