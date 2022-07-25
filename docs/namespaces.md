@@ -14,9 +14,7 @@ A Namespace is a unit of isolation within the Temporal Platform.
 
 - [How to list Namespaces in a Cluster using tctl](/tctl/namespace/list)
 - [How to register a new Namespace using tctl](/tctl/namespace/register)
-- [How to set the Namespace for a Temporal Client in Go](/application-development/foundations#set-namespace)
-- [How to set the Namespace for a Temporal Client in Java](/application-development/foundations#set-namespace)
-- [How to set the Namespace for a Temporal Client in Typescript](/application-development/foundations#set-namespace)
+- [How to set the Namespace for a Temporal Client](/application-development/foundations#set-namespace)
 - [How to view (describe) Namespace metadata and details using tctl](/tctl/namespace/describe)
 
 A single Namespace is still multi-tenant.
