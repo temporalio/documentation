@@ -14,9 +14,9 @@ A Namespace is a unit of isolation within the Temporal Platform.
 
 - [How to list Namespaces in a Cluster using tctl](/tctl/namespace/list)
 - [How to register a new Namespace using tctl](/tctl/namespace/register)
-- [How to set the Namespace for a Temporal Client in Go](/go/how-to-set-the-namespace-for-a-temporal-client-in-go)
-- [How to set the Namespace for a Temporal Client in Java](/java/how-to-set-the-namespace-for-a-temporal-client-in-java)
-- [How to set the Namespace for a Temporal Client in Typescript](/typescript/how-to-set-the-namespace-for-a-temporal-client-in-typescript)
+- [How to set the Namespace for a Temporal Client in Go](/application-development/foundations#set-namespace)
+- [How to set the Namespace for a Temporal Client in Java](/application-development/foundations#set-namespace)
+- [How to set the Namespace for a Temporal Client in Typescript](/application-development/foundations#set-namespace)
 - [How to view (describe) Namespace metadata and details using tctl](/tctl/namespace/describe)
 
 A single Namespace is still multi-tenant.
@@ -57,3 +57,4 @@ Worker Processes on the standby Clusters are idle until a failover occurs and th
 
 Temporal Application API calls made to a non-active Cluster are rejected with a **NamespaceNotActiveError** which contains the name of the current active Cluster.
 It is the responsibility of the Temporal Application to call the Cluster that is currently active.
+
