@@ -70,7 +70,12 @@ module.exports = {
         src: "img/temporal-logo-dark.svg",
         srcDark: "img/temporal-logo.svg",
       },
-      items: [],
+      items: [
+        {
+          label: "Blog",
+          href: "/blog",
+        },
+      ],
     },
     footer: {
       logo: {
