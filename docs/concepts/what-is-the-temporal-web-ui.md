@@ -17,7 +17,7 @@ Temporal Web UI v1 is being deprecated on September 30, 2022.
 :::
 
 The Temporal Web UI is a GUI that provides users with Workflow Execution state and metadata and is intended to be used to debug execution issues.
-It ships with every [docker-compose](/application-development-guide#docker-compose) update and is available with [Temporal Cloud](/cloud).
+It ships with every [docker-compose](/application-development/foundations#docker-compose) update and is available with [Temporal Cloud](/cloud).
 
 You can configure the Temporal Web UI to work in your own environment.
 See the [UI configuration reference](/references/ui-configuration).

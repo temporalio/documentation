@@ -9,10 +9,10 @@ tags:
 
 The Temporal Server consists of four independently scalable services:
 
-- Frontend gateway: for rate limiting, routing, authorizing
-- History subsystem: maintains data (mutable state, queues, and timers)
-- Matching subsystem: hosts Task Queues for dispatching
-- Worker service: for internal background workflows
+- Frontend gateway: for rate limiting, routing, authorizing.
+- History subsystem: maintains data (mutable state, queues, and timers).
+- Matching subsystem: hosts Task Queues for dispatching.
+- Worker service: for internal background Workflows.
 
 For example, a real-life production deployment can have 5 Frontend, 15 History, 17 Matching, and 3 Worker services per cluster.
 

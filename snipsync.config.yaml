@@ -36,7 +36,6 @@ origins:
 
 targets:
   - docs
-  - versioned_docs/version-june-2022
   - blog
 
 features:

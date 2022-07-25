@@ -49,9 +49,9 @@ You would need to develop your Temporal Application to route Tasks to specific W
 
 Code samples:
 
+- [Go file processing example](https://github.com/temporalio/samples-go/tree/master/fileprocessing)
 - [Java file processing example](https://github.com/temporalio/samples-java/tree/master/src/main/java/io/temporal/samples/fileprocessing)
 - [PHP file processing example](https://github.com/temporalio/samples-php/tree/master/app/src/FileProcessing)
-- [Go file processing example](https://github.com/temporalio/samples-go/tree/master/fileprocessing)
 
 #### Sessions
 

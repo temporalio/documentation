@@ -96,11 +96,7 @@ So we have to keep both the old and new code when migrating Workflows while they
 </summary>
 
 Because we design for potentially long-running Workflows at scale, versioning with Temporal works differently than with other Workflow systems.
-We explain more in this optional 30 minute introduction:
-
-import { ResponsivePlayer } from '../../src/components'
-
-<ResponsivePlayer url='https://www.youtube.com/watch?v=kkP899WxgzY' />
+We explain more in this optional 30 minute introduction: [https://www.youtube.com/watch?v=kkP899WxgzY](https://www.youtube.com/watch?v=kkP899WxgzY)
 
 </details>
 
