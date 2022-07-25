@@ -14,13 +14,15 @@ Your feedback is invaluable to us as we work to improve the information that is 
 
 :::
 
-- Python examples are now available in much of the Foundations section of the Application Development guide.
+- Python examples are now available in much of the [Foundations section](/application-development/foundations?lang=python) of the Application Development guide.
 
-- We added an Observability section to the Application Development guide.
+- We added an [Observability section](/application-development/observability) to the Application Development guide.
 
 - Temporal Cloud release notes are now available at [docs.temporal.io/cloud/release-notes](https://docs.temporal.io/cloud/release-notes/).
 
-- Experimental Schedule feature documentation is now available. (link live by tuesday)
+- Experimental [Schedule feature](/workflows#schedules) documentation is now available.
+
+- [Codec Server feature](/server/security#codec-server) documentation is now available.
 
 - Last call for feedback on our [quarterly docs survey](https://forms.gle/VWgQdPbV5qa8zJVBA)
 
