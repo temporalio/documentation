@@ -381,6 +381,31 @@ module.exports = {
         },
       },
     ],
+    [
+      "@docusaurus/plugin-content-blog",
+      {
+        /**
+         * Required for any multi-instance plugin
+         */
+        id: "kb",
+        /**
+         * URL route for the blog section of your site.
+         * *DO NOT* include a trailing slash.
+         */
+        routeBasePath: "kb",
+        /**
+         * Path to data on filesystem relative to site dir.
+         */
+        path: "kb",
+        blogTitle: "Knowledge base",
+        blogSidebarTitle: "Most recent articles",
+        showReadingTime: false, // Show estimated reading time for the blog post.
+        feedOptions: {
+          type: "all",
+          copyright: `Copyright © ${new Date().getFullYear()} Temporal Technologies Inc.  All rights reserved. Copyright © 2020 Uber Technologies, Inc.`,
+        },
+      },
+    ],
   ],
 };
 
