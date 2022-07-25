@@ -20,12 +20,9 @@ Temporal documentation aims to be explicit and differentiate between them.
 
 A Worker Program is the static code that defines the constraints of the Worker Process, developed using the APIs of a Temporal SDK.
 
-**Implementation guides:**
+**Implementation guide:**
 
-- [How to develop a Worker Program in Go](/go/how-to-develop-a-worker-program-in-go)
-- [How to develop a Worker Program in Java](/application-development/foundations#none)
-- [How to develop a Worker Program in PHP](/application-development/foundations#none)
-- [How to develop a Worker Program in TypeScript](/application-development/foundations#none)
+- [How to develop a Worker Program](/application-development/foundations#run-worker-processes)
 
 ### Worker Entity
 
@@ -88,3 +85,4 @@ Worker Processes executing Activity Tasks must have access to any resources need
 
 The Temporal Cluster itself has [internal workers](/blog/workflow-engine-principles/#system-workflows-1910) for system Workflow Executions.
 However, these internal workers are not visible to the developer.
+
