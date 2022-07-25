@@ -58,7 +58,7 @@ module.exports = {
     announcementBar: {
       id: "how_are_we_doing",
       content:
-        'Take the <a target="_blank" rel="noopener noreferrer" href="#">User Survey</a> and let us know how we are doing!',
+        'Take the <a target="_blank" rel="noopener noreferrer" href="https://forms.gle/1kASKmmm2XrBDhzr5">User Survey</a> and let us know how we are doing!',
       backgroundColor: "#141414",
       textColor: "#ffffff",
       isCloseable: true,
