@@ -16,9 +16,9 @@ Your feedback is invaluable to us as we work to improve the information that is 
 
 - Python examples are now available in much of the Foundations section of the Application Development guide.
 
-- An Observability section has been added to the Application development guide.
+- We added an Observability section to the Application Development guide.
 
-- Cloud release notes are now available at [docs.temporal.io/cloud/release-notes](https://docs.temporal.io/cloud/release-notes/).
+- Temporal Cloud release notes are now available at [docs.temporal.io/cloud/release-notes](https://docs.temporal.io/cloud/release-notes/).
 
 - Experimental Schedule feature documentation is now available. (link live by tuesday)
 

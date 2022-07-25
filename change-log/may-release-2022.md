@@ -6,7 +6,7 @@ tags:
 date: 2022-05-23T00:00:00Z
 ---
 
-- `/docs` has been removed from the URLs of documentation pages.
+- We removed `/docs` from the URLs of documentation pages.
   Redirects are in place, but we encourage you to update your references to our pages when possible.
 
 - `/cloud` now exists with early versions of Temporal Cloud documentation.
