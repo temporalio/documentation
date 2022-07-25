@@ -8,8 +8,6 @@ tags:
   - how-to
 ---
 
-If you don't specify a Namespace, Temporal defaults the `namespace` parameter to the value `default`.
-
 To specify a Namespace, set the `namespace` parameter from the [`connect()`](https://python.temporal.io/temporalio.client.client#connect) method.
 
 ```python
